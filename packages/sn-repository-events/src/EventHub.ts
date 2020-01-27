@@ -136,6 +136,7 @@ export class EventHub implements Disposable {
       Trace.method({
         object: this.repository,
         method: this.repository.post,
+        methodName: 'post',
         isAsync: true,
         // Post finished to Content Create
         onFinished: async pushPromise => {
@@ -156,6 +157,7 @@ export class EventHub implements Disposable {
       Trace.method({
         object: this.repository,
         method: this.repository.patch,
+        methodName: 'patch',
         isAsync: true,
         // Patch finished to ContentModified
         onFinished: async patchPromise => {
@@ -176,6 +178,7 @@ export class EventHub implements Disposable {
       Trace.method({
         object: this.repository,
         method: this.repository.put,
+        methodName: 'put',
         isAsync: true,
         // Put finished to ContentModified
         onFinished: async putPromise => {
@@ -196,6 +199,7 @@ export class EventHub implements Disposable {
       Trace.method({
         object: this.repository,
         method: this.repository.delete,
+        methodName: 'delete',
         isAsync: true,
         // handle DeleteBatch finished based on the response value
         onFinished: async deletePromise => {
@@ -240,6 +244,7 @@ export class EventHub implements Disposable {
       Trace.method({
         object: this.repository,
         method: this.repository.copy,
+        methodName: 'copy',
         isAsync: true,
         // handle CopyBatch finished based on the response value
         onFinished: async copyPromise => {
@@ -282,6 +287,7 @@ export class EventHub implements Disposable {
       Trace.method({
         object: this.repository,
         method: this.repository.move,
+        methodName: 'move',
         isAsync: true,
         // handle MoveBatch finished based on the response value
         onFinished: async movePromise => {
@@ -323,6 +329,7 @@ export class EventHub implements Disposable {
       Trace.method({
         object: this.repository,
         method: this.repository.executeAction,
+        methodName: 'executeAction',
         isAsync: true,
         onFinished: async actionPromise => {
           const result = await actionPromise.returned
@@ -343,6 +350,7 @@ export class EventHub implements Disposable {
       Trace.method({
         object: this.repository,
         method: this.repository.load,
+        methodName: 'load',
         isAsync: true,
         onFinished: async loadPromise => {
           const value = await loadPromise.returned
@@ -356,6 +364,7 @@ export class EventHub implements Disposable {
       Trace.method({
         object: this.repository,
         method: this.repository.loadCollection,
+        methodName: 'loadCollection',
         isAsync: true,
         onFinished: async loadPromise => {
           const value = await loadPromise.returned
@@ -368,6 +377,7 @@ export class EventHub implements Disposable {
       Trace.method({
         isAsync: true,
         object: this.repository.upload,
+        methodName: 'uploadChunked',
         method: this.repository.upload.uploadChunked,
         onFinished: async promise => {
           const returnValue = await promise.returned
@@ -380,6 +390,7 @@ export class EventHub implements Disposable {
       Trace.method({
         isAsync: true,
         object: this.repository.upload,
+        methodName: 'uploadNonChunked',
         method: this.repository.upload.uploadNonChunked,
         onFinished: async promise => {
           const returnValue = await promise.returned

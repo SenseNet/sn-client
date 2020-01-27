@@ -43,6 +43,7 @@ export const CommentsContextProvider: React.FC<CommentContextProviderProps> = ({
       Trace.method({
         object: api.commentActions,
         isAsync: true,
+        methodName: 'addPreviewComment',
         method: api.commentActions.addPreviewComment,
         onFinished: async ({ returned }) => {
           const a = await returned
@@ -53,6 +54,7 @@ export const CommentsContextProvider: React.FC<CommentContextProviderProps> = ({
       Trace.method({
         object: api.commentActions,
         method: api.commentActions.deletePreviewComment,
+        methodName: 'deletePreviewComment',
         isAsync: true,
         onFinished: async ({ returned, methodArguments }) => {
           const returnedValue = await returned

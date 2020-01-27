@@ -1,4 +1,4 @@
-import { FieldSetting, GenericContent, Schema } from '@sensenet/default-content-types'
+import { FieldSetting, Schema } from '@sensenet/default-content-types'
 
 /**
  * Class that stores schema information
@@ -13,18 +13,6 @@ export class SchemaStore {
   public setSchemas(newSchemas: Schema[]) {
     this.schemas = newSchemas
     this.byNameSchemaCache = new Map<string, Schema>()
-  }
-
-  /**
-   * Returns the Content Type Schema for the provided Content Type;
-   * @param type {string} The name of the Content Type;
-   * @returns {Schemas.Schema}
-   * ```ts
-   * const genericContentSchema = SenseNet.Content.getSchema(Content);
-   * ```
-   */
-  public getSchema<TType>(currentType: new (...args: any[]) => TType): Schema {
-    return this.getSchemaByName(currentType.name)
   }
 
   private mergeFieldSettings(
@@ -51,13 +39,13 @@ export class SchemaStore {
    * Returns the Content Type Schema for the provided content type name
    * @param {string} contentTypeName The name of the content type
    */
-  public getSchemaByName(contentTypeName: string) {
+  public getSchemaByName(contentTypeName: string): Schema {
     if (this.byNameSchemaCache.has(contentTypeName)) {
       return Object.assign({}, this.byNameSchemaCache.get(contentTypeName)) as Schema
     }
     let schema = this.schemas.find(s => s.ContentTypeName === contentTypeName) as Schema
     if (!schema) {
-      return this.getSchema(GenericContent)
+      return this.getSchemaByName('GenericContent')
     }
     schema = Object.assign({}, schema)
     const parentSchema = schema.ParentTypeName && this.getSchemaByName(schema.ParentTypeName)
@@ -70,26 +58,23 @@ export class SchemaStore {
   }
 
   /**
-   * Returns a boolean value that indicates if the specified content is an instance or descendant of a given content constructor
+   * Returns a boolean value that indicates if the specified content is an instance or descendant of a given content type
    * @param content The given content to check
-   * @param contentType The content type constructor
+   * @param contentTypeName The name of content type
    */
-  public isContentFromType<T extends typeof GenericContent>(
-    content: GenericContent,
-    contentType: T,
-  ): content is InstanceType<T> {
-    if (content.Type === contentType.name) {
+  public isContentFromType<T>(content: any, contentTypeName: string): content is T {
+    if (content.Type === contentTypeName) {
       return true
     }
 
     let currentSchema = this.getSchemaByName(content.Type)
     do {
-      if (currentSchema.ContentTypeName === contentType.name) {
+      if (currentSchema.ContentTypeName === contentTypeName) {
         return true
       }
       currentSchema = this.getSchemaByName(currentSchema.ParentTypeName || '')
-    } while (currentSchema.ContentTypeName && currentSchema.ContentTypeName !== GenericContent.name)
-    return contentType.name === GenericContent.name
+    } while (currentSchema.ContentTypeName && currentSchema.ContentTypeName !== 'GenericContent')
+    return contentTypeName === 'GenericContent'
   }
 
   /**
@@ -104,8 +89,8 @@ export class SchemaStore {
         return true
       }
       currentSchema = this.getSchemaByName(currentSchema.ParentTypeName || '')
-    } while (currentSchema.ContentTypeName && currentSchema.ContentTypeName !== GenericContent.name)
+    } while (currentSchema.ContentTypeName && currentSchema.ContentTypeName !== 'GenericContent')
 
-    return parent === GenericContent.name
+    return parent === 'GenericContent'
   }
 }
