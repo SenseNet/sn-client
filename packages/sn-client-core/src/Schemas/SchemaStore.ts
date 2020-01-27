@@ -15,18 +15,6 @@ export class SchemaStore {
     this.byNameSchemaCache = new Map<string, Schema>()
   }
 
-  /**
-   * Returns the Content Type Schema for the provided Content Type;
-   * @param type {string} The name of the Content Type;
-   * @returns {Schemas.Schema}
-   * ```ts
-   * const genericContentSchema = SenseNet.Content.getSchema(Content);
-   * ```
-   */
-  public getSchema<TType>(currentType: new (...args: any[]) => TType): Schema {
-    return this.getSchemaByName(currentType.name)
-  }
-
   private mergeFieldSettings(
     currentFieldSettings: FieldSetting[],
     parentFieldSettings: FieldSetting[],
@@ -51,13 +39,13 @@ export class SchemaStore {
    * Returns the Content Type Schema for the provided content type name
    * @param {string} contentTypeName The name of the content type
    */
-  public getSchemaByName(contentTypeName: string) {
+  public getSchemaByName(contentTypeName: string): Schema {
     if (this.byNameSchemaCache.has(contentTypeName)) {
       return Object.assign({}, this.byNameSchemaCache.get(contentTypeName)) as Schema
     }
     let schema = this.schemas.find(s => s.ContentTypeName === contentTypeName) as Schema
     if (!schema) {
-      return this.getSchema(GenericContent)
+      return this.getSchemaByName('GenericContent')
     }
     schema = Object.assign({}, schema)
     const parentSchema = schema.ParentTypeName && this.getSchemaByName(schema.ParentTypeName)

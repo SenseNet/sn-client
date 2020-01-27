@@ -6,7 +6,6 @@ import {
   Image,
   Schema,
   File as SnFile,
-  User,
   UserProfile,
 } from '@sensenet/default-content-types'
 import { SchemaStore } from '../src/Schemas/SchemaStore'
@@ -24,13 +23,6 @@ describe('SchemaStore', () => {
     const newSchemaArray: Schema[] = []
     store.setSchemas(newSchemaArray)
     expect(store['schemas']).toBe(newSchemaArray)
-  })
-
-  it('Schemas can be retrieved by Content Type', () => {
-    const store = new SchemaStore()
-    store.setSchemas(DefaultSchemaStore)
-    const schema = store.getSchema(User)
-    expect(schema.ContentTypeName).toBe('User')
   })
 
   it('Schemas can be retrieved by name', () => {

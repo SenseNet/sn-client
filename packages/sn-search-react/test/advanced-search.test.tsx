@@ -8,7 +8,7 @@ import { AdvancedSearch } from '../src/Components/AdvancedSearch'
 describe('AdvancedSearch component', () => {
   const schemaStore = new SchemaStore()
   schemaStore.setSchemas(defaultSchemas)
-  const exampleSchema = schemaStore.getSchema(GenericContent)
+  const exampleSchema = schemaStore.getSchemaByName('GenericContent')
 
   it('Should be constructed with minimal parameters', () => {
     shallow(<AdvancedSearch fields={() => <div />} schema={exampleSchema} />)
