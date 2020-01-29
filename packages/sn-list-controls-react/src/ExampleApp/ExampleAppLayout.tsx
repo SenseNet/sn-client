@@ -8,12 +8,9 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import { Icon, iconType } from '@sensenet/icons-react'
-
 import React from 'react'
-import { Route, Switch } from 'react-router'
 import { HashRouter, Link } from 'react-router-dom'
-import { ContentListDemo } from './ContentListDemo'
-import { WelcomePage } from './WelcomePage'
+import { ReactVirtualizedTable } from './virtualized-table-demo'
 
 export interface ExampleAppState {
   isDrawerOpened: boolean
@@ -80,12 +77,7 @@ export class ExampleAppLayout extends React.Component<{}, ExampleAppState> {
             </List>
           </Drawer>
           <div className="content">
-            <Switch>
-              <Route exact={true} path="/contentlist" component={ContentListDemo} />
-            </Switch>
-            <Switch>
-              <Route exact={true} path="/" component={() => <WelcomePage />} />
-            </Switch>
+            <ReactVirtualizedTable />
           </div>
         </div>
       </HashRouter>

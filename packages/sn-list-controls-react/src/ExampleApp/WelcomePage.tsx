@@ -1,8 +1,6 @@
 import Typography from '@material-ui/core/Typography'
 import React from 'react'
 
-import { ContentListDemo } from './ContentListDemo'
-
 export const WelcomePage: React.StatelessComponent = () => (
   <div style={{ padding: '2em' }}>
     <Typography variant="h5">
@@ -12,6 +10,5 @@ export const WelcomePage: React.StatelessComponent = () => (
     <Typography variant="body1">
       You can install it right from <a href="https://www.npmjs.com/package/@sensenet/list-controls-react">npm</a>
     </Typography>
-    <ContentListDemo />
   </div>
 )

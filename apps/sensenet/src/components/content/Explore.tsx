@@ -1,5 +1,5 @@
 import { ConstantContent } from '@sensenet/client-core'
-import React from 'react'
+import React, { useContext } from 'react'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsProvider,
@@ -9,8 +9,9 @@ import {
 } from '@sensenet/hooks-react'
 import { useSelectionService } from '../../hooks'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
-import { CollectionComponent } from '../content-list'
 import { Tree } from '../tree/index'
+import { ReactVirtualizedTable } from '../content-list/virtualized-table'
+import { ResponsivePersonalSetttings } from '../../context'
 
 export interface ExploreComponentProps {
   parent: number | string
@@ -22,6 +23,7 @@ export interface ExploreComponentProps {
 
 export const Explore: React.FunctionComponent<ExploreComponentProps> = props => {
   const selectionService = useSelectionService()
+  const personalSettings = useContext(ResponsivePersonalSetttings)
 
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column' }}>
@@ -54,21 +56,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                   activeItemIdOrPath={props.parent}
                 />
 
-                <CollectionComponent
-                  enableBreadcrumbs={false}
-                  onActivateItem={props.onActivateItem}
-                  style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
-                  onParentChange={props.onNavigate}
-                  onSelectionChange={sel => {
-                    selectionService.selection.setValue(sel)
-                  }}
-                  parentIdOrPath={props.parent}
-                  onTabRequest={() => {
-                    /** */
-                  }}
-                  fieldsToDisplay={props.fieldsToDisplay}
-                  onActiveItemChange={item => selectionService.activeContent.setValue(item)}
-                />
+                <ReactVirtualizedTable fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields} />
               </div>
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>
