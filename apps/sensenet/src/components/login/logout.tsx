@@ -1,28 +1,30 @@
-import { useRepository } from '@sensenet/hooks-react'
+import { authenticationResultStatus } from '@sensenet/client-core'
+import { useLogger } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
-import authService, {
-  applicationPaths,
-  authenticationResultStatus,
-  logoutActions,
-  queryParameterNames,
-} from '../../services/auth-service'
+import authService, { applicationPaths, logoutActions, queryParameterNames } from '../../services/auth-service'
+import { useRepository } from '../../context'
 import { useAuthenticated } from './useAuthenticatedCheck'
 
 type LogoutProps = { action: keyof typeof logoutActions }
 
 export function Logout({ action }: LogoutProps) {
   const [message, setMessage] = useState<string>()
+  const logger = useLogger('logout')
   const { isReady, setIsReady, populateAuthenticationState } = useAuthenticated()
   const history = useHistory<{ local: boolean }>()
-  const repo = useRepository()
+  const { repository } = useRepository()
 
   useEffect(() => {
+    if (!repository) {
+      logger.debug({ message: 'no repository found' })
+      return
+    }
     const logout = async (returnUrl: string) => {
       const state = { returnUrl }
-      const isauthenticated = await authService.isAuthenticated(repo.configuration.repositoryUrl)
+      const isauthenticated = await authService.isAuthenticated(repository.configuration.repositoryUrl)
       if (isauthenticated) {
-        const result = await authService.signOut(state, repo.configuration.repositoryUrl)
+        const result = await authService.signOut(state, repository.configuration.repositoryUrl)
         switch (result.status) {
           case authenticationResultStatus.redirect:
             break
@@ -52,7 +54,7 @@ export function Logout({ action }: LogoutProps) {
 
     const processLogoutCallback = async () => {
       const url = window.location.href
-      const result = await authService.completeSignOut(url, repo.configuration.repositoryUrl)
+      const result = await authService.completeSignOut(url, repository.configuration.repositoryUrl)
       switch (result.status) {
         case authenticationResultStatus.success:
           history.replace(getReturnUrl(result.state))
@@ -88,7 +90,7 @@ export function Logout({ action }: LogoutProps) {
     }
 
     populateAuthenticationState()
-  }, [action, history, populateAuthenticationState, repo.configuration.repositoryUrl, setIsReady])
+  }, [action, history, logger, populateAuthenticationState, repository, setIsReady])
 
   if (!isReady) {
     return null

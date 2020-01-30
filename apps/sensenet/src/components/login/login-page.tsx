@@ -21,14 +21,14 @@ export function LoginPage() {
   const personalSettings = injector.getInstance(PersonalSettings).userValue.getValue()
   const settingsManager = injector.getInstance(PersonalSettings)
   const localization = useLocalization().login
-  const history = useHistory()
+  const history = useHistory<{ repositoryUrl: string }>()
   const [url, setUrl] = useState('')
 
   const handleSubmit = (ev: React.FormEvent) => {
     ev.preventDefault()
     personalSettings.lastRepository = url
     settingsManager.setPersonalSettingsValue({ ...personalSettings })
-    history.push(applicationPaths.login)
+    history.push(applicationPaths.login, { repositoryUrl: url })
   }
 
   return (

@@ -1,11 +1,8 @@
 import { useLogger } from '@sensenet/hooks-react'
+import { authenticationResultStatus } from '@sensenet/client-core'
 import React, { useEffect } from 'react'
-import authService, {
-  applicationPaths,
-  authenticationResultStatus,
-  loginActions,
-  queryParameterNames,
-} from '../../services/auth-service'
+import { useHistory } from 'react-router'
+import authService, { applicationPaths, loginActions, queryParameterNames } from '../../services/auth-service'
 import { FullScreenLoader } from '../FullScreenLoader'
 import { usePersonalSettings } from '../../hooks'
 
@@ -13,16 +10,26 @@ type Login2Props = { action: keyof typeof loginActions }
 
 export function Login2({ action }: Login2Props) {
   const logger = useLogger('login')
+  const history = useHistory<{ repositoryUrl: string }>()
   const settings = usePersonalSettings()
 
   useEffect(() => {
-    const login = async (returnUrl: string) => {
-      if (!settings.lastRepository) {
-        logger.debug({ message: 'no repository found' })
-        return
+    const getRepoUrl = () => {
+      if (history.location.state?.repositoryUrl) {
+        return history.location.state.repositoryUrl
       }
+      return settings.lastRepository
+    }
+
+    const repoUrl = getRepoUrl()
+    if (!repoUrl) {
+      logger.debug({ message: 'no repository found' })
+      return
+    }
+
+    const login = async (returnUrl: string) => {
       const state = { returnUrl }
-      const result = await authService.signIn(state, settings.lastRepository)
+      const result = await authService.signIn(state, repoUrl)
       switch (result.status) {
         case authenticationResultStatus.redirect:
           break
@@ -38,14 +45,10 @@ export function Login2({ action }: Login2Props) {
     }
 
     const processLoginCallback = async () => {
-      if (settings.lastRepository === undefined) {
-        logger.debug({ message: 'no repository found' })
-        return
-      }
-      const result = await authService.completeSignIn(settings.lastRepository)
+      const result = await authService.completeSignIn(repoUrl)
       switch (result.status) {
         case authenticationResultStatus.success:
-          window.location.replace(`${window.location.origin}/${btoa(settings.lastRepository)}`)
+          window.location.replace(`${window.location.origin}/${btoa(repoUrl)}`)
           break
         case authenticationResultStatus.fail:
           logger.warning({ message: result.message })
@@ -73,15 +76,9 @@ export function Login2({ action }: Login2Props) {
     const redirectToProfile = () => {
       redirectToApiAuthorizationPath(applicationPaths.identityManagePath)
     }
-
-    if (settings.lastRepository === undefined) {
-      logger.debug({ message: 'no repository found' })
-      return
-    }
-
     switch (action) {
       case loginActions.login:
-        login(`${window.location.origin}/${btoa(settings.lastRepository)}`)
+        login(`${window.location.origin}/${btoa(repoUrl)}`)
         break
       case loginActions.loginCallback:
         processLoginCallback()
@@ -102,7 +99,7 @@ export function Login2({ action }: Login2Props) {
       default:
         logger.debug({ message: `Invalid action '${action}'` })
     }
-  }, [action, logger, settings.lastRepository])
+  }, [action, history.location.state, logger, settings.lastRepository])
 
   return <FullScreenLoader />
 }
