@@ -1,11 +1,11 @@
 /* eslint-disable import/named */
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles'
 import TableCell from '@material-ui/core/TableCell'
-import { GenericContent } from '@sensenet/default-content-types'
+import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import clsx from 'clsx'
 import React from 'react'
 import { AutoSizer, Column, Table, TableCellRenderer, TableProps } from 'react-virtualized'
-import { VirtualDateCell, VirtualDefaultCell, VirtualDisplayNameCell } from '.'
+import { ActionsCell, DateCell, ReferenceCell, VirtualDefaultCell, VirtualDisplayNameCell } from '.'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -13,13 +13,6 @@ const styles = (theme: Theme) =>
       display: 'flex',
       alignItems: 'center',
       boxSizing: 'border-box',
-    },
-    table: {
-      // temporary right-to-left patch, waiting for
-      // https://github.com/bvaughn/react-virtualized/issues/454
-      '& .ReactVirtualized__Table__headerRow': {
-        paddingRight: theme.direction === 'rtl' ? '0px !important' : undefined,
-      },
     },
     tableRow: {
       cursor: 'pointer',
@@ -44,6 +37,8 @@ interface Row {
 interface MuiVirtualizedTableProps<T = GenericContent> extends WithStyles<typeof styles> {
   fieldsToDisplay: Array<keyof T>
   tableProps: TableProps
+  onRequestActionsMenu?: (ev: React.MouseEvent, content: T) => void
+  cellRenderer?: TableCellRenderer
 }
 
 const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
@@ -62,12 +57,26 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
     switch (dataKey) {
       case 'DisplayName':
         return <VirtualDisplayNameCell rowData={rowData} />
+      case 'Actions':
+        if (rowData.Actions && rowData.Actions instanceof Array) {
+          return (
+            <ActionsCell
+              actions={rowData.Actions as ActionModel[]}
+              content={rowData}
+              openActionMenu={(ev: any) => props.onRequestActionsMenu && props.onRequestActionsMenu(ev, rowData)}
+            />
+          )
+        }
+        break
       case 'ModificationDate':
-        return <VirtualDateCell date={cellData} />
+        return <DateCell date={cellData} />
       default:
         break
     }
-
+    const field: any = rowData[dataKey]
+    if (field && field.Id && field.Path && field.DisplayName) {
+      return <ReferenceCell content={field} fieldName={'DisplayName'} />
+    }
     return <VirtualDefaultCell cellData={cellData} />
   }
 
@@ -100,7 +109,6 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
             direction: 'inherit',
           }}
           headerHeight={tableProps.headerHeight || 48}
-          className={classes.table}
           {...tableProps}
           rowClassName={getRowClassName}>
           {fieldsToDisplay.map(field => {
@@ -110,7 +118,7 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
                 columnData={{ label: field }}
                 headerRenderer={() => headerRenderer(field)}
                 className={classes.flexContainer}
-                cellRenderer={defaultCellRenderer}
+                cellRenderer={props.cellRenderer || defaultCellRenderer}
                 dataKey={field}
                 width={width}
               />
