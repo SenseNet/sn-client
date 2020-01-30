@@ -8,9 +8,7 @@ import { RepositoryProvider } from './context/repository-provider'
  * Initialize React
  */
 ReactDOM.render(
-  <RepositoryProvider
-    /** You can insert your additional repository settings here */
-    sessionLifetime="expiration">
+  <RepositoryProvider>
     <App />
   </RepositoryProvider>,
   document.getElementById('root'),

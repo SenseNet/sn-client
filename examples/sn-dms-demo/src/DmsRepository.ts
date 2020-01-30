@@ -22,7 +22,6 @@ export const repository = new Repository({
   ],
   defaultExpand: ['Actions', 'Owner', 'CheckedOutTo'],
   schemas: customSchema,
-  sessionLifetime: 'expiration',
 })
 
 export const dmsInjector = new Injector()

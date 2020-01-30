@@ -14,7 +14,6 @@ const testRepository = new Repository({
   repositoryUrl: 'https://dmsservice.demo.sensenet.com',
   requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'DisplayName'],
   schemas: SchemaStore,
-  sessionLifetime: 'expiration',
 })
 
 export const ExampleApp = () => {

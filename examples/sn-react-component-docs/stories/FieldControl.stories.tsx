@@ -58,7 +58,6 @@ export const testRepository = new Repository({
   repositoryUrl: 'https://devservice.demo.sensenet.com',
   requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'DisplayName'] as any,
   schemas: customSchema,
-  sessionLifetime: 'expiration',
 })
 
 const taskContent: Task = {

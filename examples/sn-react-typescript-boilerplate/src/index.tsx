@@ -9,9 +9,7 @@ import { RepositoryProvider } from './context/repository-provider'
  */
 ReactDOM.render(
   /** The RepositoryProvider will display a login form for non-authenticated users */
-  <RepositoryProvider
-    /** You can insert your additional repository settings here */
-    sessionLifetime="expiration">
+  <RepositoryProvider>
     <App />
   </RepositoryProvider>,
   document.getElementById('root'),

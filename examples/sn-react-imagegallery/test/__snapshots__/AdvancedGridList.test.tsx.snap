@@ -18,7 +18,7 @@ exports[`AdvancedGridList Matches snapshot 1`] = `
         alt="Description"
         className="makeStyles-imgTile-3"
         onClick={[Function]}
-        src="http://localhost/Root/Content/IT/ImageLibrary/bagas-haryo-1415756-unsplash.jpg"
+        src="/Root/Content/IT/ImageLibrary/bagas-haryo-1415756-unsplash.jpg"
       />
       <WithStyles(ForwardRef(GridListTileBar))
         actionIcon={
@@ -48,7 +48,7 @@ exports[`AdvancedGridList Matches snapshot 1`] = `
         alt="Description"
         className="makeStyles-imgTile-3"
         onClick={[Function]}
-        src="http://localhost/Root/Content/IT/ImageLibrary/brunetto-ziosi-1231102-unsplash.jpg"
+        src="/Root/Content/IT/ImageLibrary/brunetto-ziosi-1231102-unsplash.jpg"
       />
       <WithStyles(ForwardRef(GridListTileBar))
         actionIcon={

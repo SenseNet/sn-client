@@ -520,7 +520,6 @@ describe('Repository', () => {
       repository = new Repository({
         repositoryUrl: 'https://my-sensenet-site.com',
         oDataToken: 'OData.svc',
-        sessionLifetime: 'expiration',
         defaultSelect: ['DisplayName', 'Icon'],
         requiredSelect: ['Id', 'Type', 'Path', 'Name'],
         defaultMetadata: 'no',

@@ -16,12 +16,6 @@ export const jwtServiceTests = describe('JwtService', () => {
     expect(jwtService).toBeInstanceOf(JwtService)
   })
 
-  it('can be constructed with exporation option', () => {
-    repo.configuration.sessionLifetime = 'expiration'
-    const jwtService2 = new JwtService(repo)
-    expect(jwtService2).toBeInstanceOf(JwtService)
-  })
-
   it('can be disposed with oauth providers', () => {
     const dispose = jest.fn()
     jwtService.oauthProviders.add({ dispose } as any)

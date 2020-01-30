@@ -14,7 +14,6 @@ export const testRepository = new Repository({
   repositoryUrl: 'https://devservice.demo.sensenet.com',
   requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'DisplayName'],
   schemas: customSchema,
-  sessionLifetime: 'expiration',
 })
 
 export const testFile: File = {
