@@ -1,12 +1,12 @@
-import { GenericContent, Schema, SchemaStore } from '@sensenet/default-content-types'
-import { ODataFieldParameter, ODataMetadataType } from '../Models/ODataParams'
+import { AllFieldNames, Schema, SchemaStore } from '@sensenet/default-content-types'
+import { ODataMetadataType } from '../Models/ODataParams'
 
 /**
  * The default Sense/Net OData Service token (odata.svc)
  */
 const DEFAULT_SERVICE_TOKEN = 'odata.svc'
 
-type GenericContentODataFieldParameterWithAll = ODataFieldParameter<GenericContent> | 'all'
+type AllPossibleFieldNamesWithAll = AllFieldNames[] | string[] | 'all'
 
 /**
  * Class that contains basic configuration for a sensenet Repository
@@ -20,7 +20,7 @@ export interface RepositoryConfiguration {
   /**
    * This field describes what fields should be expanded on every OData request by default
    */
-  defaultExpand?: ODataFieldParameter<GenericContent>
+  defaultExpand?: AllFieldNames[] | string[]
 
   /**
    * This field sets the default OData inline count value (default:'allpages')
@@ -35,7 +35,7 @@ export interface RepositoryConfiguration {
   /**
    * This parameter describes what fields should be included in the OData $select statements by default (default:['DisplayName', 'Description', 'Icon'])
    */
-  defaultSelect?: GenericContentODataFieldParameterWithAll
+  defaultSelect?: AllPossibleFieldNamesWithAll
 
   /**
    * This field sets up a default OData $top parameter (default:10000)
@@ -55,7 +55,7 @@ export interface RepositoryConfiguration {
   /**
    * This parameter describes what fields should always be included in the OData $select statements (default:['Id', 'Path', 'Name', 'Type'])
    */
-  requiredSelect?: GenericContentODataFieldParameterWithAll
+  requiredSelect?: AllPossibleFieldNamesWithAll
 
   /**
    * An array of schemas
