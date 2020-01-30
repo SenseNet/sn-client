@@ -5,6 +5,7 @@ import { BypassAuthentication } from '../Authentication/BypassAuthentication'
 import { Content } from '../Models/Content'
 import { ODataBatchResponse } from '../Models/ODataBatchResponse'
 import { ODataCollectionResponse } from '../Models/ODataCollectionResponse'
+import { ODataParams } from '../Models/ODataParams'
 import { ODataResponse } from '../Models/ODataResponse'
 import { ODataWopiResponse } from '../Models/ODataWopiResponse'
 import {
@@ -20,10 +21,13 @@ import {
   PutOptions,
 } from '../Models/RequestOptions'
 import { SchemaStore } from '../Schemas/SchemaStore'
-import { ODataParams } from '../Models/ODataParams'
 import { ConstantContent } from './ConstantContent'
 import { ODataUrlBuilder } from './ODataUrlBuilder'
-import { RepositoryConfiguration } from './RepositoryConfiguration'
+import {
+  defaultRepositoryConfiguration,
+  RepositoryConfiguration,
+  RepositoryConfigurationWithDefaults,
+} from './RepositoryConfiguration'
 import { Security } from './Security'
 import { Upload } from './Upload'
 import { Versioning } from './Versioning'
@@ -67,7 +71,7 @@ export class Repository implements Disposable {
   /**
    * The configuration for the Repository object
    */
-  public readonly configuration: RepositoryConfiguration
+  public readonly configuration: RepositoryConfigurationWithDefaults
 
   /**
    * Async method that will be resolved when the Repository is ready to make HTTP calls
@@ -487,11 +491,11 @@ export class Repository implements Disposable {
   }
 
   constructor(
-    config?: Partial<RepositoryConfiguration>,
+    config?: RepositoryConfiguration,
     private fetchMethod: GlobalFetch['fetch'] = window && window.fetch && window.fetch.bind(window),
     public schemas: SchemaStore = new SchemaStore(),
   ) {
-    this.configuration = new RepositoryConfiguration(config)
+    this.configuration = { ...defaultRepositoryConfiguration, ...config }
     this.schemas.setSchemas(this.configuration.schemas)
   }
 }

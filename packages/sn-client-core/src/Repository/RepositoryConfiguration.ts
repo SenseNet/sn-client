@@ -2,82 +2,89 @@ import { GenericContent, Schema, SchemaStore } from '@sensenet/default-content-t
 import { ODataFieldParameter, ODataMetadataType } from '../Models/ODataParams'
 
 /**
+ * The default Sense/Net OData Service token (odata.svc)
+ */
+const DEFAULT_SERVICE_TOKEN = 'odata.svc'
+
+type GenericContentODataFieldParameterWithAll = ODataFieldParameter<GenericContent> | 'all'
+
+/**
  * Class that contains basic configuration for a sensenet Repository
  */
-export class RepositoryConfiguration {
+export interface RepositoryConfiguration {
   /**
-   * A reference to the global window instance
+   * Chunk size for chunked uploads, must be equal to BinaryChunkSize setting at the backend (default:10485760) // 10 mb
    */
-  public static windowInstance?: Window = typeof window === 'undefined' ? undefined : window
-
-  /**
-   * The default base URL, returns window.location if available
-   */
-  public static get DEFAULT_BASE_URL(): string {
-    return (this.windowInstance && this.windowInstance.location && this.windowInstance.location.origin) || ''
-  }
-
-  /**
-   * The default Sense/Net OData Service token (odata.svc)
-   */
-  public static readonly DEFAULT_SERVICE_TOKEN: string = 'odata.svc'
-
-  /**
-   * The root URL for the Sense/Net repository (e.g.: demo.sensenet.com)
-   */
-  public repositoryUrl: string = RepositoryConfiguration.DEFAULT_BASE_URL
-
-  /**
-   * The service token for the OData Endpoint
-   */
-  public oDataToken: string = RepositoryConfiguration.DEFAULT_SERVICE_TOKEN
-
-  /**
-   * This string describes how long the user sessions should be persisted.
-   */
-  public sessionLifetime: 'session' | 'expiration' = 'session'
-
-  /**
-   * This parameter describes what fields should be included in the OData $select statements by default
-   */
-  public defaultSelect: ODataFieldParameter<GenericContent> | 'all' = ['DisplayName', 'Description', 'Icon']
-
-  /**
-   * This parameter describes what fields should always be included in the OData $select statements
-   */
-  public requiredSelect: ODataFieldParameter<GenericContent> | 'all' = ['Id', 'Path', 'Name', 'Type']
-
-  /**
-   * This field sets the default OData $metadata value
-   */
-  public defaultMetadata: ODataMetadataType = 'no'
-
-  /**
-   * This field sets the default OData inline count value
-   */
-  public defaultInlineCount: 'allpages' | 'none' = 'allpages'
+  chunkSize?: number
 
   /**
    * This field describes what fields should be expanded on every OData request by default
    */
-  public defaultExpand: ODataFieldParameter<GenericContent> | undefined = undefined
+  defaultExpand?: ODataFieldParameter<GenericContent>
 
   /**
-   * This field sets up a default OData $top parameter
+   * This field sets the default OData inline count value (default:'allpages')
    */
-  public defaultTop = 10000
+  defaultInlineCount?: 'allpages' | 'none'
 
   /**
-   * Chunk size for chunked uploads, must be equal to BinaryChunkSize setting at the backend
+   * This field sets the default OData $metadata value (default:'no')
    */
-  public chunkSize = 10485760 // 10 mb
+  defaultMetadata?: ODataMetadataType
+
+  /**
+   * This parameter describes what fields should be included in the OData $select statements by default (default:['DisplayName', 'Description', 'Icon'])
+   */
+  defaultSelect?: GenericContentODataFieldParameterWithAll
+
+  /**
+   * This field sets up a default OData $top parameter (default:10000)
+   */
+  defaultTop?: number
+
+  /**
+   * The service token for the OData Endpoint (default:'odata.svc')
+   */
+  oDataToken?: string
+
+  /**
+   * The root URL for the Sense/Net repository (e.g.: demo.sensenet.com) (default:'')
+   */
+  repositoryUrl?: string
+
+  /**
+   * This parameter describes what fields should always be included in the OData $select statements (default:['Id', 'Path', 'Name', 'Type'])
+   */
+  requiredSelect?: GenericContentODataFieldParameterWithAll
 
   /**
    * An array of schemas
    */
-  public schemas: Schema[] = SchemaStore.map(s => s)
+  schemas?: Schema[]
 
-  constructor(config?: Partial<RepositoryConfiguration>) {
-    config && Object.assign(this, config)
-  }
+  /**
+   * Access token to authorize access to data
+   */
+  token?: string
 }
+
+/**
+ * Reposiotry configuration with defaults that are not undefined.
+ * token, defaultExpand properties doesn't have a default value. They are undefined.
+ */
+export type RepositoryConfigurationWithDefaults = Required<Omit<RepositoryConfiguration, 'token' | 'defaultExpand'>> &
+  Pick<RepositoryConfiguration, 'token' | 'defaultExpand'>
+
+const defaultRepositoryConfiguration: RepositoryConfigurationWithDefaults = {
+  chunkSize: 10485760,
+  defaultInlineCount: 'allpages',
+  defaultMetadata: 'no',
+  defaultSelect: ['DisplayName', 'Description', 'Icon'],
+  defaultTop: 10000,
+  oDataToken: DEFAULT_SERVICE_TOKEN,
+  repositoryUrl: '',
+  requiredSelect: ['Id', 'Path', 'Name', 'Type'],
+  schemas: SchemaStore,
+}
+
+export { defaultRepositoryConfiguration }
