@@ -12,7 +12,7 @@ import { ReferenceFieldSuggestion } from '../src/Components/Fields/ReferenceFiel
 describe('ReferenceField Component', () => {
   const schemaStore = new SchemaStore()
   schemaStore.setSchemas(defaultSchemas)
-  const exampleSchema = schemaStore.getSchema(GenericContent)
+  const exampleSchema = schemaStore.getSchemaByName('GenericContent')
   const exampleFieldSetting = exampleSchema.FieldSettings.find(f => f.Name === 'CreatedBy') as ReferenceFieldSetting
 
   it('Should be constructed', () => {

@@ -1,5 +1,5 @@
 import { Repository } from '@sensenet/client-core'
-import { ChoiceFieldSetting, FieldVisibility, ShortTextFieldSetting, Task } from '@sensenet/default-content-types'
+import { ChoiceFieldSetting, FieldVisibility, Task } from '@sensenet/default-content-types'
 import { ControlMapper } from '../src'
 
 class ExampleControlBase {}
@@ -48,7 +48,7 @@ export const controlMapperTests = describe('ControlMapper', () => {
   })
 
   it('Should return correct explicit defined Control for FieldSettings', () => {
-    mapper.setupFieldSettingDefault(ChoiceFieldSetting, setting => {
+    mapper.setupFieldSettingDefault('ChoiceFieldSetting', setting => {
       if (setting.Compulsory) {
         return ExampleModifiedControl
       }
@@ -70,7 +70,7 @@ export const controlMapperTests = describe('ControlMapper', () => {
   })
 
   it('Should return a correct default control for a specified Content Field when FieldSetting has default value', () => {
-    mapper.setupFieldSettingDefault(ShortTextFieldSetting, () => {
+    mapper.setupFieldSettingDefault('ShortTextFieldSetting', () => {
       return ExampleModifiedControl
     })
     const control = mapper.getControlForContentField('Task', 'DisplayName', 'new')

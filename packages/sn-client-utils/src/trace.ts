@@ -14,6 +14,10 @@ export interface TraceMethodOptions<T, TMethod extends (...args: TArgs) => any, 
    */
   method: TMethod
   /**
+   * Unique identifier for the method
+   */
+  methodName: string
+  /**
    * Callback that will be called right before executing the method
    */
   onCalled?: (newValue: TraceMethodCall<TArgs>) => void
@@ -98,6 +102,7 @@ export interface ObjectTrace {
  * const methodTracer: Disposable = Trace.method({
  *     object: myObjectInstance,           // You can define an object constructor for static methods as well
  *     method: myObjectInstance.method,    // The method to be tracked
+ *     methodName: 'method', // Unique identifier for the method
  *     isAsync: true,                      // if you set to async, method finished will be *await*-ed
  *     onCalled: (traceData) => {
  *         console.log("Method called:", traceData)
@@ -116,10 +121,10 @@ export class Trace {
 
   private static getMethodTrace<TArgs extends any[], TReturns>(
     object: object,
-    method: (...args: TArgs) => TReturns,
+    methodName: string,
   ): MethodMapping<TReturns, TArgs> {
     const objectTrace = (this.objectTraces.get(object) as any) as ObjectTrace
-    return (objectTrace.methodMappings.get(method.name) as any) as MethodMapping<TReturns, TArgs>
+    return (objectTrace.methodMappings.get(methodName) as any) as MethodMapping<TReturns, TArgs>
   }
 
   private static traceStart<TReturns, TArgs extends any[]>(
@@ -166,12 +171,8 @@ export class Trace {
     return errorTrace
   }
 
-  private static callMethod<TReturns, TArgs extends any[]>(
-    object: object,
-    method: (...args: TArgs) => TReturns,
-    args: TArgs,
-  ) {
-    const methodTrace = this.getMethodTrace(object, method)
+  private static callMethod<TArgs extends any[]>(object: object, methodName: string, args: TArgs) {
+    const methodTrace = this.getMethodTrace(object, methodName)
     const start = this.traceStart(methodTrace, args)
     try {
       const returned = methodTrace.originalMethod.call(object, ...args)
@@ -183,12 +184,8 @@ export class Trace {
     }
   }
 
-  private static async callMethodAsync<TReturns, TArgs extends any[]>(
-    object: object,
-    method: (...args: TArgs) => TReturns,
-    args: TArgs,
-  ) {
-    const methodTrace = this.getMethodTrace(object, method)
+  private static async callMethodAsync<TArgs extends any[]>(object: object, methodName: string, args: TArgs) {
+    const methodTrace = this.getMethodTrace(object, methodName)
     const start = this.traceStart(methodTrace, args)
     try {
       const returned = await methodTrace.originalMethod.call(object, ...args)
@@ -214,26 +211,26 @@ export class Trace {
       })
     }
     // setup override if needed
-    if (!((options.object as any)[options.method.name] as any).isTraced) {
+    if (!((options.object as any)[options.methodName] as any).isTraced) {
       const overriddenMethod = options.isAsync
-        ? (...args: TArgs) => this.callMethodAsync(options.object, options.method, args)
-        : (...args: TArgs) => this.callMethod(options.object, options.method, args)
-      Object.defineProperty(overriddenMethod, 'name', { value: options.method.name })
-      Object.defineProperty(overriddenMethod, 'isTraced', { value: options.method.name })
-      ;(options.object as any)[options.method.name] = overriddenMethod
+        ? (...args: TArgs) => this.callMethodAsync(options.object, options.methodName, args)
+        : (...args: TArgs) => this.callMethod(options.object, options.methodName, args)
+      Object.defineProperty(overriddenMethod, 'name', { value: options.methodName })
+      Object.defineProperty(overriddenMethod, 'isTraced', { value: options.methodName })
+      ;(options.object as any)[options.methodName] = overriddenMethod
     }
     const objectTrace = (this.objectTraces.get(options.object) as any) as ObjectTrace
 
     // add method mapping if needed
-    if (!objectTrace.methodMappings.has(options.method.name)) {
-      objectTrace.methodMappings.set(options.method.name, {
+    if (!objectTrace.methodMappings.has(options.methodName)) {
+      objectTrace.methodMappings.set(options.methodName, {
         originalMethod: options.method,
         callObservable: new ObservableValue<TraceMethodCall<TArgs>>(),
         finishedObservable: new ObservableValue<TraceMethodFinished<ReturnType<TMethod>, TArgs>>(),
         errorObservable: new ObservableValue<TraceMethodError<TArgs>>(),
       } as any)
     }
-    const methodTrace = (objectTrace.methodMappings.get(options.method.name) as any) as MethodMapping<
+    const methodTrace = (objectTrace.methodMappings.get(options.methodName) as any) as MethodMapping<
       ReturnType<TMethod>,
       TArgs
     >

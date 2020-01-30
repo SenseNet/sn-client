@@ -6,7 +6,6 @@ import {
   Image,
   Schema,
   File as SnFile,
-  User,
   UserProfile,
 } from '@sensenet/default-content-types'
 import { SchemaStore } from '../src/Schemas/SchemaStore'
@@ -24,13 +23,6 @@ describe('SchemaStore', () => {
     const newSchemaArray: Schema[] = []
     store.setSchemas(newSchemaArray)
     expect(store['schemas']).toBe(newSchemaArray)
-  })
-
-  it('Schemas can be retrieved by Content Type', () => {
-    const store = new SchemaStore()
-    store.setSchemas(DefaultSchemaStore)
-    const schema = store.getSchema(User)
-    expect(schema.ContentTypeName).toBe('User')
   })
 
   it('Schemas can be retrieved by name', () => {
@@ -100,19 +92,19 @@ describe('SchemaStore', () => {
     it('Should be return true for descendants', () => {
       const store = new SchemaStore()
       store.setSchemas(DefaultSchemaStore)
-      expect(store.isContentFromType({ Type: SnFile.name } as GenericContent, SnFile)).toBeTruthy()
-      expect(store.isContentFromType({ Type: SnFile.name } as GenericContent, GenericContent)).toBeTruthy()
-      expect(store.isContentFromType({ Type: Image.name } as GenericContent, SnFile)).toBeTruthy()
-      expect(store.isContentFromType({ Type: Image.name } as GenericContent, GenericContent)).toBeTruthy()
-      expect(store.isContentFromType({ Type: UserProfile.name } as GenericContent, GenericContent)).toBeTruthy()
+      expect(store.isContentFromType({ Type: 'SnFile' } as GenericContent, 'SnFile')).toBeTruthy()
+      expect(store.isContentFromType({ Type: 'SnFile' } as GenericContent, 'GenericContent')).toBeTruthy()
+      expect(store.isContentFromType({ Type: 'Image' } as GenericContent, 'File')).toBeTruthy()
+      expect(store.isContentFromType({ Type: 'Image' } as GenericContent, 'GenericContent')).toBeTruthy()
+      expect(store.isContentFromType({ Type: 'UserProfile' } as GenericContent, 'GenericContent')).toBeTruthy()
     })
 
     it('Should return false for non-descendants values', () => {
       const store = new SchemaStore()
       store.setSchemas(DefaultSchemaStore)
-      expect(store.isContentFromType({ Type: File.name } as GenericContent, Image)).toBeFalsy()
-      expect(store.isContentFromType({ Type: GenericContent.name } as GenericContent, ContentType)).toBeFalsy()
-      expect(store.isContentFromType({ Type: UserProfile.name } as GenericContent, Group)).toBeFalsy()
+      expect(store.isContentFromType({ Type: File.name } as GenericContent, 'Image')).toBeFalsy()
+      expect(store.isContentFromType({ Type: GenericContent.name } as GenericContent, 'ContentType')).toBeFalsy()
+      expect(store.isContentFromType({ Type: UserProfile.name } as GenericContent, 'Group')).toBeFalsy()
     })
   })
 })

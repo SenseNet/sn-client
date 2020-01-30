@@ -90,6 +90,7 @@ Trace is an utility that can be used to track method calls, method returns and e
 const methodTracer: Disposable = Trace.method({
   object: myObjectInstance, // You can define an object constructor for static methods as well
   method: myObjectInstance.method, // The method to be tracked
+  methodName: 'method', // Unique identifier for the method
   isAsync: true, // if you set to async, method finished will be *await*-ed
   onCalled: traceData => {
     console.log('Method called:', traceData)
