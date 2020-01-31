@@ -1,9 +1,8 @@
 import { authenticationResultStatus } from '@sensenet/client-core'
 import { useLogger } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router'
-import authService, { applicationPaths, logoutActions, queryParameterNames } from '../../services/auth-service'
 import { useRepository } from '../../context'
+import authService, { logoutActions } from '../../services/auth-service'
 import { useAuthenticated } from './useAuthenticatedCheck'
 
 type LogoutProps = { action: keyof typeof logoutActions }
@@ -12,7 +11,6 @@ export function Logout({ action }: LogoutProps) {
   const [message, setMessage] = useState<string>()
   const logger = useLogger('logout')
   const { isReady, setIsReady, populateAuthenticationState } = useAuthenticated()
-  const history = useHistory<{ local: boolean }>()
   const { repository } = useRepository()
 
   useEffect(() => {
@@ -20,44 +18,13 @@ export function Logout({ action }: LogoutProps) {
       logger.debug({ message: 'no repository found' })
       return
     }
-    const logout = async (returnUrl: string) => {
-      const state = { returnUrl }
-      const isauthenticated = await authService.isAuthenticated(repository.configuration.repositoryUrl)
-      if (isauthenticated) {
-        const result = await authService.signOut(state, repository.configuration.repositoryUrl)
-        switch (result.status) {
-          case authenticationResultStatus.redirect:
-            break
-          case authenticationResultStatus.success:
-            history.replace(returnUrl)
-            break
-          case authenticationResultStatus.fail:
-            setMessage(result.message)
-            break
-          default:
-            throw new Error('Invalid authentication result status.')
-        }
-      } else {
-        setMessage('You successfully logged out!')
-      }
-    }
-
-    const getReturnUrl = (state?: { returnUrl: string }) => {
-      const params = new URLSearchParams(window.location.search)
-      const fromQuery = params.get(queryParameterNames.returnUrl)
-      if (fromQuery && !fromQuery.startsWith(`${window.location.origin}/`)) {
-        // This is an extra check to prevent open redirects.
-        throw new Error('Invalid return url. The return url needs to have the same origin as the current page.')
-      }
-      return state?.returnUrl || fromQuery || window.location.origin + applicationPaths.loggedOut
-    }
 
     const processLogoutCallback = async () => {
       const url = window.location.href
       const result = await authService.completeSignOut(url, repository.configuration.repositoryUrl)
       switch (result.status) {
         case authenticationResultStatus.success:
-          history.replace(getReturnUrl(result.state))
+          window.location.replace(window.location.origin)
           break
         case authenticationResultStatus.fail:
           setMessage(result.message)
@@ -68,15 +35,6 @@ export function Logout({ action }: LogoutProps) {
     }
 
     switch (action) {
-      case logoutActions.logout:
-        if (history.location.state.local) {
-          logout(getReturnUrl())
-        } else {
-          // This prevents regular links to <app>/authentication/logout from triggering a logout
-          setIsReady(true)
-          setMessage('The logout was not initiated from within the page.')
-        }
-        break
       case logoutActions.logoutCallback:
         processLogoutCallback()
         break
@@ -90,7 +48,7 @@ export function Logout({ action }: LogoutProps) {
     }
 
     populateAuthenticationState()
-  }, [action, history, logger, populateAuthenticationState, repository, setIsReady])
+  }, [action, logger, populateAuthenticationState, repository, setIsReady])
 
   if (!isReady) {
     return null
