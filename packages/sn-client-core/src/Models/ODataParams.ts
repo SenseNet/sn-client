@@ -33,6 +33,7 @@ export interface ODataParams<T> {
    * The field(s) to be include in a $select list. Can be a field (e.g. 'DisplayName'), an array of fields (e.g. ['Name', 'Type']) or 'all'
    */
   select?: ODataFieldParameter<T> | 'all'
+
   /**
    * The field(s) to be include in an $expand list. Can be a reference field (e.g. 'Owner') or an array of fields (e.g. ['CreatedBy', 'ModifiecBy'])
    */
@@ -60,6 +61,7 @@ export interface ODataParams<T> {
    * ```
    */
   orderby?: ODataOrderParameter<T>
+
   /**
    * Sets the OData $top parameter
    */
@@ -81,7 +83,7 @@ export interface ODataParams<T> {
   format?: ODataFormatType
 
   /**
-   * Sets the OData $format parameter. Can be 'json' or 'verbosejson'
+   * Sets the OData $inlinecount parameter. Can be 'allpages' or 'none'
    */
   inlinecount?: ODataInlineCountType
 
@@ -89,6 +91,7 @@ export interface ODataParams<T> {
    * Sets the OData 'query' parameter. Can be a Content Query
    */
   query?: string
+
   /**
    * Sets the OData metadata parameter. Can be 'full', 'minimal' or 'no'
    */
