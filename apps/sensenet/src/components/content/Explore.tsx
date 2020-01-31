@@ -56,7 +56,11 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                   activeItemIdOrPath={props.parent}
                 />
 
-                <ReactVirtualizedTable fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields} />
+                <ReactVirtualizedTable
+                  fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields}
+                  onParentChange={props.onNavigate}
+                  onActivateItem={props.onActivateItem}
+                />
               </div>
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>

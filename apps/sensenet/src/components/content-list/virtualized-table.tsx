@@ -1,11 +1,17 @@
 import { Paper } from '@material-ui/core'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { VirtualDefaultCell, VirtualizedTable } from '@sensenet/list-controls-react'
-import { CurrentChildrenContext, LoadSettingsContext, useRepository } from '@sensenet/hooks-react'
+import {
+  CurrentChildrenContext,
+  CurrentContentContext,
+  LoadSettingsContext,
+  useRepository,
+} from '@sensenet/hooks-react'
 import { GenericContent } from '@sensenet/default-content-types/src'
 import { Repository } from '@sensenet/client-core/src'
 import { ResponsiveContext } from '../../context'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
+import { useSelectionService } from '../../hooks'
 import { ReferenceField } from './reference-field'
 import { LockedField } from './locked-field'
 import { IconField } from './icon-field'
@@ -23,18 +29,33 @@ const isReferenceField = (fieldName: string, repo: Repository) => {
   return refWhiteList.indexOf(fieldName) !== -1 || (setting && setting.Type === 'ReferenceFieldSetting') || false
 }
 
-export function ReactVirtualizedTable(props: { fieldsToDisplay: Array<keyof GenericContent> }) {
+export function ReactVirtualizedTable(props: {
+  fieldsToDisplay: Array<keyof GenericContent>
+  onParentChange: (newParent: GenericContent) => void
+  onActivateItem: (item: GenericContent) => void
+}) {
+  const selectionService = useSelectionService()
+  const parentContent = useContext(CurrentContentContext)
   const children = useContext(CurrentChildrenContext)
   const device = useContext(ResponsiveContext)
   const loadSettings = useContext(LoadSettingsContext)
   const repo = useRepository()
 
+  const [selected, setSelected] = useState<GenericContent[]>([])
   const [activeContent, setActiveContent] = useState<GenericContent>(children[0])
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<{ top: number; left: number }>({
     top: 0,
     left: 0,
   })
+
+  useEffect(() => {
+    setSelected([])
+  }, [parentContent.Id])
+
+  useEffect(() => {
+    selectionService.selection.setValue(selected)
+  }, [selected, selectionService.selection])
 
   useEffect(() => {
     const fields = props.fieldsToDisplay
@@ -47,6 +68,45 @@ export function ReactVirtualizedTable(props: { fieldsToDisplay: Array<keyof Gene
   const onCloseFunc = () => setIsContextMenuOpened(false)
   const onOpenFunc = () => setIsContextMenuOpened(true)
 
+  const handleActivateItem = useCallback(
+    (item: GenericContent) => {
+      if (item.IsFolder) {
+        props.onParentChange(item)
+      } else {
+        props.onActivateItem(item)
+      }
+    },
+    [props],
+  )
+
+  const handleItemClick = useCallback(
+    (ev: React.MouseEvent, content: GenericContent) => {
+      if (device !== 'desktop' && activeContent && activeContent.Id === content.Id) {
+        handleActivateItem(content)
+        return
+      }
+      if (ev.ctrlKey) {
+        if (selected.find(s => s.Id === content.Id)) {
+          setSelected(selected.filter(s => s.Id !== content.Id))
+        } else {
+          setSelected([...selected, content])
+        }
+      } else if (ev.shiftKey) {
+        const activeIndex = (activeContent && children.findIndex(s => s.Id === activeContent.Id)) || 0
+        const clickedIndex = children.findIndex(s => s.Id === content.Id)
+        const newSelection = Array.from(
+          new Set([
+            ...selected,
+            ...[...children].slice(Math.min(activeIndex, clickedIndex), Math.max(activeIndex, clickedIndex) + 1),
+          ]),
+        )
+        setSelected(newSelection)
+      } else if (!selected.length || (selected.length === 1 && selected[0].Id !== content.Id)) {
+        setSelected([content])
+      }
+    },
+    [activeContent, children, device, handleActivateItem, selected],
+  )
   const menuPropsObj = {
     disablePortal: true,
     anchorReference: 'anchorPosition' as 'anchorPosition',
@@ -133,9 +193,17 @@ export function ReactVirtualizedTable(props: { fieldsToDisplay: Array<keyof Gene
           rowHeight: 48,
           headerHeight: 48,
           rowGetter: ({ index }) => children[index],
-          onRowClick: ({ rowData }) => console.log(rowData),
+          onRowClick: () => handleItemClick,
+          disableHeader: false,
         }}
         cellRenderer={fieldComponentFunc}
+        items={children}
+        displayRowCheckbox={true}
+        selected={selected}
+        onRequestSelectionChange={setSelected}
+        active={activeContent}
+        onRequestActiveItemChange={setActiveContent}
+        onItemClick={handleItemClick}
       />
       {activeContent ? (
         <ContentContextMenu
