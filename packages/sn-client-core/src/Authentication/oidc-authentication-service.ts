@@ -14,7 +14,7 @@ export class OIDCAuthenticationService {
   public user: ObservableValue<User | undefined> = new ObservableValue(undefined)
   private userManager?: UserManager
 
-  constructor(private readonly settings: UserManagerSettings) {}
+  constructor(private readonly settings: UserManagerSettings & { isPopupEnabled?: boolean }) {}
 
   async isAuthenticated(authorityUrl?: string) {
     const user = await this.getUser(authorityUrl)
@@ -59,15 +59,19 @@ export class OIDCAuthenticationService {
       // User might not be authenticated, fallback to popup authentication
       console.log('Silent authentication error: ', silentError)
 
-      // try {
-      //   const popUpUser = await this.userManager?.signinPopup(this.createArguments())
-      //   this.updateState(popUpUser)
-      //   return this.success(state)
-      // } catch (popUpError) {
-      //   if (popUpError.message === 'Popup window closed') {
-      //     // The user explicitly cancelled the login action by closing an opened popup.
-      //     return this.error('The user closed the window.')
-      //   }
+      if (this.settings.isPopupEnabled) {
+        try {
+          const popUpUser = await this.userManager?.signinPopup(this.createArguments())
+          this.updateState(popUpUser)
+          return this.success(state)
+        } catch (popUpError) {
+          if (popUpError.message === 'Popup window closed') {
+            // The user explicitly cancelled the login action by closing an opened popup.
+            return this.error('The user closed the window.')
+          }
+          console.log('Popup authentication error: ', popUpError)
+        }
+      }
 
       // PopUps might be blocked by the user, fallback to redirect
       try {
@@ -99,19 +103,24 @@ export class OIDCAuthenticationService {
   //    post logout redirect flow.
   async signOut(state: { returnUrl: string }, authorityUrl: string) {
     await this.ensureUserManagerInitialized(authorityUrl)
-    try {
-      await this.userManager?.signoutPopup(this.createArguments())
-      this.updateState(undefined)
-      return this.success(state)
-    } catch (popupSignOutError) {
-      console.log('Popup signout error: ', popupSignOutError)
+
+    if (this.settings.isPopupEnabled) {
       try {
-        await this.userManager?.signoutRedirect(this.createArguments(state))
-        return this.redirect()
-      } catch (redirectSignOutError) {
-        console.log('Redirect signout error: ', redirectSignOutError)
-        return this.error(redirectSignOutError)
+        await this.userManager?.signoutPopup(this.createArguments())
+        this.updateState(undefined)
+        return this.success(state)
+      } catch (popupSignOutError) {
+        console.log('Popup signout error: ', popupSignOutError)
+        return this.error(popupSignOutError.message)
       }
+    }
+
+    try {
+      await this.userManager?.signoutRedirect(this.createArguments(state))
+      return this.redirect()
+    } catch (redirectSignOutError) {
+      console.log('Redirect signout error: ', redirectSignOutError)
+      return this.error(redirectSignOutError)
     }
   }
 
