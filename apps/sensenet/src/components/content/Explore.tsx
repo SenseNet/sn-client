@@ -60,6 +60,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                   fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields}
                   onParentChange={props.onNavigate}
                   onActivateItem={props.onActivateItem}
+                  onActiveItemChange={item => selectionService.activeContent.setValue(item)}
                 />
               </div>
             </CurrentAncestorsProvider>

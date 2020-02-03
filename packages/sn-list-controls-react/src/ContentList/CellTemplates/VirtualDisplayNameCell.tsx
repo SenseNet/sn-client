@@ -20,7 +20,7 @@ export const VirtualDisplayNameCell: React.FC<VirtualDisplayNameCellProps> = pro
   )
 
   return (
-    <TableCell className="display-name">
+    <TableCell component="div" className="display-name">
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {icon ? <Icon type={type} iconName={icon} style={{ marginRight: '.5em' }} /> : null}
         <div>{props.rowData.DisplayName || props.rowData.Name}</div>

@@ -1,11 +1,12 @@
 /* eslint-disable import/named */
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles'
 import TableCell from '@material-ui/core/TableCell'
-import { ActionModel, GenericContent } from '@sensenet/default-content-types'
+import { ActionModel, FieldSetting, GenericContent, Schema } from '@sensenet/default-content-types'
 import clsx from 'clsx'
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { AutoSizer, Column, Table, TableCellProps, TableCellRenderer, TableProps } from 'react-virtualized'
 import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox'
+import { TableSortLabel, Tooltip } from '@material-ui/core'
 import { ActionsCell, DateCell, ReferenceCell, RowCheckbox, VirtualDefaultCell, VirtualDisplayNameCell } from '.'
 
 const styles = (theme: Theme) =>
@@ -36,19 +37,24 @@ interface Row {
 }
 
 interface MuiVirtualizedTableProps<T = GenericContent> extends WithStyles<typeof styles> {
-  fieldsToDisplay: Array<keyof T>
-  tableProps: TableProps
-  onRequestActionsMenu?: (ev: React.MouseEvent, content: T) => void
-  cellRenderer?: TableCellRenderer
-  displayRowCheckbox?: boolean
-  items: T[]
-  checkboxProps?: CheckboxProps
-  getSelectionControl?: (selected: boolean, content: T, callBack: () => void) => JSX.Element
-  onRequestSelectionChange?: (newSelection: T[]) => void
-  selected: T[]
   active?: T
-  onRequestActiveItemChange?: (newActiveItem: T) => void
-  onItemClick?: (e: React.MouseEvent, content: T) => void
+  cellRenderer?: TableCellRenderer
+  checkboxProps?: CheckboxProps
+  displayRowCheckbox?: boolean
+  fieldsToDisplay: Array<keyof T>
+  getSelectionControl?: (selected: boolean, content: T, callBack: () => void) => JSX.Element
+  icons?: any
+  items: T[]
+  onItemTap?: (e: React.TouchEvent, content: T) => void
+  onItemContextMenu?: (e: React.MouseEvent, content: T) => void
+  onRequestActionsMenu?: (ev: React.MouseEvent, content: T) => void
+  onRequestOrderChange?: (field: keyof T, direction: 'asc' | 'desc') => void
+  onRequestSelectionChange?: (newSelection: T[]) => void
+  orderBy?: keyof T
+  orderDirection?: 'asc' | 'desc'
+  schema: Schema
+  selected: T[]
+  tableProps: TableProps
 }
 
 const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
@@ -101,7 +107,7 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
   const defaultCellRenderer: TableCellRenderer = ({ cellData, dataKey, rowData }) => {
     switch (dataKey) {
       case 'DisplayName':
-        return <VirtualDisplayNameCell rowData={rowData} />
+        return <VirtualDisplayNameCell rowData={rowData} icons={props.icons} />
       case 'Actions':
         if (rowData.Actions && rowData.Actions instanceof Array) {
           return (
@@ -125,15 +131,27 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
     return <VirtualDefaultCell cellData={cellData} />
   }
 
+  const fieldSchemas = useMemo<{ [key: string]: FieldSetting }>(
+    () =>
+      props.schema.FieldSettings.reduce((v: any, field: { Name: React.ReactText }) => {
+        ;(v as any)[field.Name] = props.schema.FieldSettings.find(
+          (s: { Name: React.ReactText }) => s.Name === field.Name,
+        )
+        return v
+      }, {}),
+    [props.schema.FieldSettings],
+  )
+
+  const getSchemaForField = useCallback((fieldName: string) => fieldSchemas[fieldName] as FieldSetting, [fieldSchemas])
+
   const headerRenderer = (columnName: string) => {
     const {
-      classes,
       tableProps: { headerHeight },
     } = props
 
     if (columnName === 'Checkbox') {
       return (
-        <TableCell padding="checkbox" key="selectAll" style={{ width: '30px', paddingRight: 0 }}>
+        <TableCell padding="checkbox" key="selectAll" style={{ width: '30px', paddingRight: 0 }} component="div">
           <Checkbox
             className="select-all"
             indeterminate={
@@ -145,13 +163,26 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
         </TableCell>
       )
     }
+
+    const fieldSetting = getSchemaForField(columnName)
+    const description = (fieldSetting && fieldSetting.Description) || columnName
+
     return (
-      <TableCell
-        component="div"
-        className={clsx(classes.tableCell, classes.flexContainer, classes.noClick)}
-        variant="head"
-        style={{ height: headerHeight || 48 }}>
-        <span>{columnName}</span>
+      <TableCell component="div" variant="head" style={{ height: headerHeight || 48 }} className={columnName as string}>
+        <Tooltip title={description}>
+          <TableSortLabel
+            active={props.orderBy === columnName}
+            direction={props.orderDirection}
+            onClick={() =>
+              props.onRequestOrderChange &&
+              props.onRequestOrderChange(
+                columnName as keyof GenericContent,
+                props.orderDirection === 'asc' ? 'desc' : 'asc',
+              )
+            }>
+            {columnName}
+          </TableSortLabel>
+        </Tooltip>
       </TableCell>
     )
   }

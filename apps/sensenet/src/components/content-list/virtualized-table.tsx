@@ -12,6 +12,7 @@ import { Repository } from '@sensenet/client-core/src'
 import { ResponsiveContext } from '../../context'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { useSelectionService } from '../../hooks'
+import { SelectionControl } from '../SelectionControl'
 import { ReferenceField } from './reference-field'
 import { LockedField } from './locked-field'
 import { IconField } from './icon-field'
@@ -31,8 +32,9 @@ const isReferenceField = (fieldName: string, repo: Repository) => {
 
 export function ReactVirtualizedTable(props: {
   fieldsToDisplay: Array<keyof GenericContent>
-  onParentChange: (newParent: GenericContent) => void
   onActivateItem: (item: GenericContent) => void
+  onActiveItemChange?: (item: GenericContent) => void
+  onParentChange: (newParent: GenericContent) => void
 }) {
   const selectionService = useSelectionService()
   const parentContent = useContext(CurrentContentContext)
@@ -48,10 +50,25 @@ export function ReactVirtualizedTable(props: {
     top: 0,
     left: 0,
   })
+  const loadChildrenSettingsOrderBy = loadSettings?.loadChildrenSettings.orderby
+  const [currentOrder, setCurrentOrder] = useState<keyof GenericContent>(
+    ((loadChildrenSettingsOrderBy && loadChildrenSettingsOrderBy[0][0]) as keyof GenericContent) || 'DisplayName',
+  )
+  const [currentDirection, setCurrentDirection] = useState<'asc' | 'desc'>(
+    (loadChildrenSettingsOrderBy && (loadChildrenSettingsOrderBy[0][1] as any)) || 'asc',
+  )
+
+  useEffect(() => {
+    props.onActiveItemChange && props.onActiveItemChange(activeContent)
+  }, [activeContent, props])
 
   useEffect(() => {
     setSelected([])
   }, [parentContent.Id])
+
+  useEffect(() => {
+    setIsContextMenuOpened(false)
+  }, [children, activeContent, selected])
 
   useEffect(() => {
     selectionService.selection.setValue(selected)
@@ -62,8 +79,9 @@ export function ReactVirtualizedTable(props: {
     loadSettings?.setLoadChildrenSettings({
       ...loadSettings?.loadChildrenSettings,
       expand: ['CheckedOutTo', ...fields.filter(fieldName => isReferenceField(fieldName, repo))],
+      orderby: [[currentOrder as any, currentDirection as any]],
     })
-  }, [loadSettings, props.fieldsToDisplay, repo])
+  }, [currentDirection, currentOrder, loadSettings, props.fieldsToDisplay, repo])
 
   const onCloseFunc = () => setIsContextMenuOpened(false)
   const onOpenFunc = () => setIsContextMenuOpened(true)
@@ -80,20 +98,20 @@ export function ReactVirtualizedTable(props: {
   )
 
   const handleItemClick = useCallback(
-    (ev: React.MouseEvent, content: GenericContent) => {
-      if (device !== 'desktop' && activeContent && activeContent.Id === content.Id) {
-        handleActivateItem(content)
+    rowMouseEventHandlerParams => {
+      if (device !== 'desktop' && activeContent && activeContent.Id === rowMouseEventHandlerParams.rowData.Id) {
+        handleActivateItem(rowMouseEventHandlerParams.rowData)
         return
       }
-      if (ev.ctrlKey) {
-        if (selected.find(s => s.Id === content.Id)) {
-          setSelected(selected.filter(s => s.Id !== content.Id))
+      if (rowMouseEventHandlerParams.event.ctrlKey) {
+        if (selected.find(s => s.Id === rowMouseEventHandlerParams.rowData.Id)) {
+          setSelected(selected.filter(s => s.Id !== rowMouseEventHandlerParams.rowData.Id))
         } else {
-          setSelected([...selected, content])
+          setSelected([...selected, rowMouseEventHandlerParams.rowData])
         }
-      } else if (ev.shiftKey) {
+      } else if (rowMouseEventHandlerParams.event.shiftKey) {
         const activeIndex = (activeContent && children.findIndex(s => s.Id === activeContent.Id)) || 0
-        const clickedIndex = children.findIndex(s => s.Id === content.Id)
+        const clickedIndex = children.findIndex(s => s.Id === rowMouseEventHandlerParams.rowData.Id)
         const newSelection = Array.from(
           new Set([
             ...selected,
@@ -101,8 +119,11 @@ export function ReactVirtualizedTable(props: {
           ]),
         )
         setSelected(newSelection)
-      } else if (!selected.length || (selected.length === 1 && selected[0].Id !== content.Id)) {
-        setSelected([content])
+      } else if (
+        !selected.length ||
+        (selected.length === 1 && selected[0].Id !== rowMouseEventHandlerParams.rowData.Id)
+      ) {
+        setSelected([rowMouseEventHandlerParams.rowData])
       }
     },
     [activeContent, children, device, handleActivateItem, selected],
@@ -182,10 +203,32 @@ export function ReactVirtualizedTable(props: {
     return <VirtualDefaultCell cellData={fieldOptions.rowData} />
   }
 
+  const getSelectionControl = (isSelected: any, content: any, onChangeCallback: any) => (
+    <SelectionControl {...{ isSelected, content, onChangeCallback }} />
+  )
+  const onRequestOrderChangeFunc = (field: any, dir: any) => {
+    setCurrentOrder(field)
+    setCurrentDirection(dir)
+  }
+
+  const onItemDoubleClickFunc = (rowMouseEventHandlerParams: { rowData: GenericContent }) =>
+    handleActivateItem(rowMouseEventHandlerParams.rowData)
+
   return (
-    <Paper style={{ height: '100%', width: '100%', background: 'transparent' }}>
+    <Paper style={{ height: '100%', width: '100%', background: 'transparent', position: 'relative' }}>
       <VirtualizedTable
+        active={activeContent}
+        cellRenderer={fieldComponentFunc}
+        displayRowCheckbox={true}
         fieldsToDisplay={props.fieldsToDisplay}
+        getSelectionControl={getSelectionControl}
+        items={children}
+        onRequestOrderChange={onRequestOrderChangeFunc}
+        onRequestSelectionChange={setSelected}
+        orderBy={currentOrder}
+        orderDirection={currentDirection}
+        schema={repo.schemas.getSchema(GenericContent)}
+        selected={selected}
         tableProps={{
           width: 1200,
           height: 800,
@@ -193,23 +236,19 @@ export function ReactVirtualizedTable(props: {
           rowHeight: 48,
           headerHeight: 48,
           rowGetter: ({ index }) => children[index],
-          onRowClick: () => handleItemClick,
+          onRowClick: rowMouseEventHandlerParams => {
+            setActiveContent(rowMouseEventHandlerParams.rowData)
+            handleItemClick(rowMouseEventHandlerParams)
+          },
+          onRowDoubleClick: onItemDoubleClickFunc,
           disableHeader: false,
         }}
-        cellRenderer={fieldComponentFunc}
-        items={children}
-        displayRowCheckbox={true}
-        selected={selected}
-        onRequestSelectionChange={setSelected}
-        active={activeContent}
-        onRequestActiveItemChange={setActiveContent}
-        onItemClick={handleItemClick}
       />
       {activeContent ? (
         <ContentContextMenu
           content={activeContent}
-          menuProps={menuPropsObj}
           isOpened={isContextMenuOpened}
+          menuProps={menuPropsObj}
           onClose={onCloseFunc}
           onOpen={onOpenFunc}
         />

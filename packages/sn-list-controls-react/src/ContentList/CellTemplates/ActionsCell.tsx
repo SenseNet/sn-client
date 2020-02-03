@@ -47,7 +47,7 @@ export class ActionsCell<T extends GenericContent> extends React.Component<Actio
   }
   public render() {
     return (
-      <TableCell style={styles.actionMenuButton}>
+      <TableCell component="div" style={styles.actionMenuButton}>
         <IconButton aria-label="Menu" aria-owns="actionmenu" onClick={event => this.handleActionMenuClick(event)}>
           <Icon type={iconType.materialui} iconName="more_vert" />
         </IconButton>

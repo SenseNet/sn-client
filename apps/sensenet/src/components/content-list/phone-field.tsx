@@ -2,7 +2,7 @@ import React from 'react'
 import { TableCell } from '@material-ui/core'
 
 export const PhoneField: React.FC<{ phoneNo: string }> = ({ phoneNo }) => (
-  <TableCell>
+  <TableCell component="div">
     <a href={`tel:${phoneNo}`}>{phoneNo}</a>
   </TableCell>
 )

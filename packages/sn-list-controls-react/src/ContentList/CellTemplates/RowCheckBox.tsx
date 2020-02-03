@@ -13,7 +13,7 @@ interface RowCheckboxProps<T = GenericContent> {
 
 export const RowCheckbox: React.StatelessComponent<RowCheckboxProps> = props => {
   return (
-    <TableCell padding="checkbox" key="select">
+    <TableCell component="div" padding="checkbox" key="select">
       {props.getSelectionControl ? (
         props.getSelectionControl(props.isSelected, props.rowData, () => props.handleContentSelection(props.rowData))
       ) : (

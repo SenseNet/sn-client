@@ -7,5 +7,5 @@ export interface VirtualDefaultCellProps<T extends GenericContent> {
 }
 
 export const VirtualDefaultCell = <T extends GenericContent>(props: VirtualDefaultCellProps<T>) => (
-  <TableCell>{props.cellData.toString()}</TableCell>
+  <TableCell component="div">{props.cellData.toString()}</TableCell>
 )

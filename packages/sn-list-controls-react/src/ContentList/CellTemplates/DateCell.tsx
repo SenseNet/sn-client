@@ -8,7 +8,7 @@ interface DateCellProps {
 
 export const DateCell: React.StatelessComponent<DateCellProps> = props => {
   return (
-    <TableCell>
+    <TableCell component="div">
       <Moment fromNow={true}>{props.date}</Moment>
     </TableCell>
   )

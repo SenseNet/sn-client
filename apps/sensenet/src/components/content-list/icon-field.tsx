@@ -5,7 +5,7 @@ import { Icon } from '../Icon'
 
 export const IconField: React.FC<{ content: GenericContent }> = props => {
   return (
-    <TableCell>
+    <TableCell component="div">
       <Icon item={props.content} />
     </TableCell>
   )
