@@ -29,6 +29,7 @@ export const RepositoryContextProvider = (props: PropsWithChildren<{}>) => {
 
 export function useRepository() {
   const injector = useInjector()
+  const [isRepositoryFound, setIsRepositoryFound] = useState<boolean>()
   const match = useRouteMatch<{ repo?: string }>()
   const settings = usePersonalSettings()
   const logger = useLogger('useRepository')
@@ -45,6 +46,7 @@ export function useRepository() {
       const getToken = async () => {
         const token = await authService.getAccessToken(url)
         if (!token) {
+          setIsRepositoryFound(false)
           return
         }
         const repoWithToken = injector.getRepository(url, undefined, (input, init) => {
@@ -52,6 +54,7 @@ export function useRepository() {
           request.headers.append('Authorization', `Bearer ${token}`)
           return fetch(request)
         })
+        setIsRepositoryFound(true)
         setRepository(repoWithToken)
       }
       getToken()
@@ -62,20 +65,13 @@ export function useRepository() {
   useEffect(() => {
     const subscription = authService.user.subscribe(user => {
       if (!user || !settings.lastRepository) {
+        setIsRepositoryFound(false)
         return
       }
       getRepoWithToken(settings.lastRepository)
     })
     return () => subscription.dispose()
-  }, [getRepoWithToken, injector, setRepository, settings.lastRepository])
-
-  // useEffect(() => {
-  //   if (!settings.lastRepository) {
-  //     return
-  //   }
-  //   const lastRepo = injector.getRepository(settings.lastRepository)
-  //   setRepository(lastRepo)
-  // }, [injector, setRepository, settings.lastRepository])
+  }, [getRepoWithToken, settings.lastRepository])
 
   useEffect(() => {
     const repoFromUrl = (match.params.repo && atob(match.params.repo)) || ''
@@ -88,8 +84,10 @@ export function useRepository() {
         message: `Swithed from repository ${repository?.configuration.repositoryUrl} to ${newRepoUrl}`,
       })
       getRepoWithToken(newRepoUrl)
+    } else {
+      setIsRepositoryFound(false)
     }
   }, [getRepoWithToken, logger, match.params.repo, repository, settings.lastRepository])
 
-  return { repository, setRepository }
+  return { repository, setRepository, isRepositoryFound }
 }

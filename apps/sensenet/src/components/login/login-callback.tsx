@@ -1,11 +1,10 @@
 import { authenticationResultStatus } from '@sensenet/client-core'
 import { useLogger } from '@sensenet/hooks-react'
-import React, { useEffect } from 'react'
+import React, { PropsWithChildren, useEffect } from 'react'
 import { usePersonalSettings } from '../../hooks'
 import authService from '../../services/auth-service'
-import { FullScreenLoader } from '../FullScreenLoader'
 
-export function LoginCallback() {
+export function LoginCallback({ children }: PropsWithChildren<{}>) {
   const logger = useLogger('loginCallback')
   const settings = usePersonalSettings()
 
@@ -31,5 +30,5 @@ export function LoginCallback() {
     processLoginCallback()
   }, [logger, settings.lastRepository])
 
-  return <FullScreenLoader />
+  return <>{children}</>
 }

@@ -1,44 +1,32 @@
-import React, { useEffect, useState } from 'react'
-import { useRepository } from '../context/RepositoryContext'
-import authService from '../services/auth-service'
-import ApiAuthorizationRoutes from './login/api-authorization-routes'
+import React from 'react'
+import { Route, Switch } from 'react-router'
+import { applicationPaths } from '../services/auth-service'
+import { FullScreenLoader } from './FullScreenLoader'
+import { LoginCallback } from './login/login-callback'
 import { LoginPage } from './login/login-page'
-import { DesktopLayout } from './layout/DesktopLayout'
+import { LogoutCallback } from './login/logout-callback'
 import { MainRouter } from './MainRouter'
 
 export function AppNavigator() {
-  const { repository } = useRepository()
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-
-  useEffect(() => {
-    if (!repository) {
-      return
-    }
-
-    const populateAuthenticationState = async () => {
-      const authenticated = await authService.isAuthenticated(repository.configuration.repositoryUrl)
-      setIsAuthenticated(authenticated)
-    }
-    const subscription = authService.user.subscribe(async () => {
-      setIsAuthenticated(false)
-      await populateAuthenticationState()
-    })
-    populateAuthenticationState()
-    return () => subscription.dispose()
-  }, [repository])
-
-  if (isAuthenticated) {
-    return (
-      <DesktopLayout>
-        <MainRouter />
-      </DesktopLayout>
-    )
-  }
-
   return (
     <>
-      <ApiAuthorizationRoutes />
-      <LoginPage />
+      <Switch>
+        <Route path={applicationPaths.login}>
+          <LoginPage />
+        </Route>
+        <Route path={applicationPaths.loginCallback}>
+          <LoginCallback>
+            <FullScreenLoader />
+            <p>Processing login</p>
+          </LoginCallback>
+        </Route>
+        <Route path={applicationPaths.logOutCallback}>
+          <LogoutCallback>
+            <p>Processing logout</p>
+          </LogoutCallback>
+        </Route>
+        <MainRouter />
+      </Switch>
     </>
   )
 }

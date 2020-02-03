@@ -1,24 +1,47 @@
-import React, { PropsWithChildren, useEffect } from 'react'
-import { Redirect, Route } from 'react-router'
-import authService, { applicationPaths, queryParameterNames } from '../../services/auth-service'
-import { useAuthenticated } from './useAuthenticatedCheck'
+import React, { useEffect, useState } from 'react'
+import { Redirect, Route, RouteProps } from 'react-router'
+import { useRepository } from '../../context'
+import authService, { applicationPaths } from '../../services/auth-service'
 
-export default function AuthorizedRoute({ path, children }: PropsWithChildren<{ path: string }>) {
-  const { isReady, isAuthenticated, setIsReady, setIsAuthenticated, populateAuthenticationState } = useAuthenticated()
+export default function AuthorizedRoute({ children, ...rest }: RouteProps) {
+  const { repository, isRepositoryFound } = useRepository()
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
-    const subscription = authService.user.subscribe(async () => {
-      setIsReady(false)
-      setIsAuthenticated(false)
-      await populateAuthenticationState()
-    })
-    return () => subscription.dispose()
-  }, [populateAuthenticationState, setIsAuthenticated, setIsReady])
+    async function getIsAuthenticated() {
+      if (isRepositoryFound === undefined) {
+        return
+      }
+      if (!repository) {
+        setIsAuthenticated(false)
+        setIsLoaded(true)
+        return
+      }
+      const authenticated = await authService.isAuthenticated(repository!.configuration.repositoryUrl)
+      setIsAuthenticated(authenticated)
+      setIsLoaded(true)
+    }
+    getIsAuthenticated()
+  }, [isRepositoryFound, repository])
 
-  if (!isReady) {
+  /**
+   * Until we don't know if we have a repository or not just show null
+   */
+  if (isRepositoryFound === undefined || !isLoaded) {
     return null
-  } else {
-    const redirectUrl = `${applicationPaths.login}?${queryParameterNames.returnUrl}=${encodeURI(window.location.href)}`
-    return <Route path={path}>{isAuthenticated ? children : <Redirect to={redirectUrl} />}</Route>
   }
+
+  return (
+    <Route
+      {...rest}
+      render={({ location }) => {
+        return isAuthenticated ? (
+          children
+        ) : (
+          <Redirect to={{ pathname: applicationPaths.login, state: { from: location } }} />
+        )
+      }}
+    />
+  )
 }

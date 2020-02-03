@@ -1,17 +1,13 @@
 import Paper from '@material-ui/core/Paper'
-import React, { useContext, useState } from 'react'
 import { Repository } from '@sensenet/client-core'
-import { RouteComponentProps } from 'react-router-dom'
-import { useWidgets } from '../../hooks'
+import React, { useContext, useState } from 'react'
+import { useRouteMatch } from 'react-router-dom'
 import { ResponsiveContext } from '../../context'
+import { useWidgets } from '../../hooks'
 import { ErrorWidget } from './error-widget'
-import { QueryWidget } from './query-widget'
 import { MarkdownWidget } from './markdown-widget'
+import { QueryWidget } from './query-widget'
 import { UpdatesWidget } from './updates-widget'
-
-export interface DashboardProps {
-  repository?: Repository
-}
 
 export const getWidgetComponent = (widget: ReturnType<typeof useWidgets>[0], repo?: Repository) => {
   switch (widget.widgetType) {
@@ -32,10 +28,8 @@ export const getWidgetComponent = (widget: ReturnType<typeof useWidgets>[0], rep
   }
 }
 
-const Dashboard: React.FunctionComponent<DashboardProps & RouteComponentProps<{ dashboardName?: string }>> = ({
-  repository,
-  match,
-}) => {
+const Dashboard = ({ repository }: { repository?: Repository }) => {
+  const match = useRouteMatch<{ dashboardName?: string }>()
   const widgets = useWidgets(repository, match.params.dashboardName)
   const platform = useContext(ResponsiveContext)
   const [defaultMinWidth] = useState(250)

@@ -1,12 +1,12 @@
 import { LoadSettingsContextProvider, RepositoryContext } from '@sensenet/hooks-react'
 import React, { lazy, Suspense, useEffect, useRef } from 'react'
-import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
-import { applicationPaths, logoutActions } from '../services/auth-service'
+import { Switch, useHistory } from 'react-router'
 import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './FullScreenLoader'
+import AuthorizedRoute from './login/authorized-route'
 import { WopiPage } from './wopi-page'
-import { Logout } from './login/logout'
+import { DesktopLayout } from './layout/DesktopLayout'
 
 const ExploreComponent = lazy(async () => await import(/* webpackChunkName: "content" */ './content'))
 const DashboardComponent = lazy(async () => await import(/* webpackChunkName: "dashboard" */ './dashboard'))
@@ -16,7 +16,6 @@ const SavedQueriesComponent = lazy(
 )
 const SetupComponent = lazy(async () => await import(/* webpackChunkName: "setup" */ './setup'))
 
-const LoginComponent = lazy(async () => await import(/* webpackChunkName: "Login" */ './login/Login'))
 const EditBinary = lazy(async () => await import(/* webpackChunkName: "editBinary" */ './edit/EditBinary'))
 const EditProperties = lazy(async () => await import(/* webpackChunkName: "editProperties" */ './edit/EditProperties'))
 const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
@@ -28,11 +27,12 @@ const PersonalSettingsEditor = lazy(
   async () => await import(/* webpackChunkName: "PersonalSettingsEditor" */ './edit/PersonalSettingsEditor'),
 )
 
-const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
+export const MainRouter = () => {
   const previousLocation = useRef<string>()
+  const history = useHistory()
 
   useEffect(() => {
-    const listen = props.history.listen(location => {
+    const listen = history.listen(location => {
       /**
        *  Do not add preview locations to previousLocation
        *  this way the user can go back to the location where she
@@ -46,132 +46,81 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
     return () => {
       listen()
     }
-  }, [props.history])
+  }, [history])
 
   return (
     <ErrorBoundary FallbackComponent={ErrorBoundaryWithDialogs}>
       <div style={{ width: '100%', height: '100%', boxSizing: 'border-box', position: 'relative' }}>
         <Suspense fallback={<FullScreenLoader />}>
-          <Route path={applicationPaths.logOut}>
-            <Logout action={logoutActions.logout} />
-          </Route>
-          <Route path={applicationPaths.logOutCallback}>
-            <Logout action={logoutActions.logoutCallback} />
-          </Route>
-          <Route
-            path="/personalSettings"
-            render={() => {
-              return <PersonalSettingsEditor />
-            }}
-          />
-          <Route
-            path="/:repo/login"
-            render={() => {
-              return <LoginComponent />
-            }}
-          />
-          <Route
-            path="/events/:eventGuid?"
-            render={() => {
-              return <EventListComponent />
-            }}
-          />
+          <AuthorizedRoute path="/personalSettings">
+            <PersonalSettingsEditor />
+          </AuthorizedRoute>
+          <AuthorizedRoute path="/events/:eventGuid?">
+            <EventListComponent />
+          </AuthorizedRoute>
           <Switch>
-            <Route
-              path="/:repo/browse/:browseData?"
-              render={routeProps => {
-                return <ExploreComponent {...routeProps} />
-              }}
-            />
-            <Route
-              path="/:repo/search/:queryData?"
-              render={routeProps => {
-                return (
-                  <LoadSettingsContextProvider>
-                    <SearchComponent {...routeProps} />
-                  </LoadSettingsContextProvider>
-                )
-              }}
-            />
+            <AuthorizedRoute path="/:repo/browse/:browseData?">
+              <ExploreComponent />
+            </AuthorizedRoute>
 
-            <Route
-              path="/:repo/saved-queries"
-              render={() => {
-                return (
-                  <LoadSettingsContextProvider>
-                    <SavedQueriesComponent />
-                  </LoadSettingsContextProvider>
-                )
-              }}
-            />
-            <Route
-              path="/:repo/setup"
-              render={() => {
-                return <SetupComponent />
-              }}
-            />
-            <Route
-              path="/:repo/trash"
-              render={() => {
-                return <TrashComponent />
-              }}
-            />
-            <Route
-              path="/:repo/editBinary/:contentId?"
-              render={() => {
-                return <EditBinary />
-              }}
-            />
-            <Route
-              path="/:repo/editProperties/:contentId?"
-              render={() => {
-                return <EditProperties />
-              }}
-            />
-            <Route
-              path="/:repo/preview/:documentId?"
-              render={() => {
-                return <DocumentViewerComponent previousLocation={previousLocation.current} />
-              }}
-            />
-            <Route path="/:repo/wopi/:documentId/:action?">
+            <AuthorizedRoute path="/:repo/search/:queryData?">
+              <LoadSettingsContextProvider>
+                <SearchComponent />
+              </LoadSettingsContextProvider>
+            </AuthorizedRoute>
+
+            <AuthorizedRoute path="/:repo/saved-queries">
+              <LoadSettingsContextProvider>
+                <SavedQueriesComponent />
+              </LoadSettingsContextProvider>
+            </AuthorizedRoute>
+
+            <AuthorizedRoute path="/:repo/setup">
+              <SetupComponent />
+            </AuthorizedRoute>
+
+            <AuthorizedRoute path="/:repo/trash">
+              <TrashComponent />
+            </AuthorizedRoute>
+
+            <AuthorizedRoute path="/:repo/editBinary/:contentId?">
+              <EditBinary />
+            </AuthorizedRoute>
+
+            <AuthorizedRoute path="/:repo/editProperties/:contentId?">
+              <EditProperties />
+            </AuthorizedRoute>
+
+            <AuthorizedRoute path="/:repo/preview/:documentId?">
+              <DocumentViewerComponent previousLocation={previousLocation.current} />{' '}
+            </AuthorizedRoute>
+
+            <AuthorizedRoute path="/:repo/wopi/:documentId/:action?">
               <WopiPage />
-            </Route>
-            <Route
-              path="/:repo/dashboard/:dashboardName?"
-              render={routeParams => {
-                return (
-                  <RepositoryContext.Consumer>
-                    {repo => <DashboardComponent repository={repo} {...routeParams} />}
-                  </RepositoryContext.Consumer>
-                )
-              }}
-            />
-            <Route
-              path="/:repo/"
-              exact
-              render={routeParams => {
-                return (
-                  <RepositoryContext.Consumer>
-                    {repo => <DashboardComponent repository={repo} {...routeParams} />}
-                  </RepositoryContext.Consumer>
-                )
-              }}
-            />
-            <Route
-              path="/"
-              exact
-              render={routeParams => {
-                return <DashboardComponent {...routeParams} />
-              }}
-            />
+            </AuthorizedRoute>
+
+            <AuthorizedRoute path="/:repo/dashboard/:dashboardName?">
+              <RepositoryContext.Consumer>
+                {repo => <DashboardComponent repository={repo} />}
+              </RepositoryContext.Consumer>
+            </AuthorizedRoute>
+
+            <AuthorizedRoute path="/:repo/" exact>
+              <DesktopLayout>
+                <RepositoryContext.Consumer>
+                  {repo => <DashboardComponent repository={repo} />}
+                </RepositoryContext.Consumer>
+              </DesktopLayout>
+            </AuthorizedRoute>
+
+            <AuthorizedRoute path="/" exact>
+              <DesktopLayout>
+                <DashboardComponent />
+              </DesktopLayout>
+            </AuthorizedRoute>
           </Switch>
         </Suspense>
       </div>
     </ErrorBoundary>
   )
 }
-
-const connectedComponent = withRouter(MainRouter)
-
-export { connectedComponent as MainRouter }
