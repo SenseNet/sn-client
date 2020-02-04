@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Redirect, Route, RouteProps } from 'react-router'
+import { applicationPaths } from '../../application-paths'
 import { useRepository } from '../../context'
-import authService, { applicationPaths } from '../../services/auth-service'
+import authService from '../../services/auth-service'
 
 export default function AuthorizedRoute({ children, ...rest }: RouteProps) {
   const { repository, isRepositoryFound } = useRepository()
