@@ -124,7 +124,7 @@ export class OIDCAuthenticationService {
     }
   }
 
-  async completeSignOut(url: string, authorityUrl: string) {
+  async completeSignOut(authorityUrl: string, url?: string) {
     await this.ensureUserManagerInitialized(authorityUrl)
     try {
       const response = await this.userManager?.signoutCallback(url)

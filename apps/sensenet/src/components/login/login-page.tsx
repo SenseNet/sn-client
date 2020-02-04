@@ -1,5 +1,5 @@
 import { Button, Container, createStyles, Grid, makeStyles, TextField, Theme, Typography } from '@material-ui/core'
-import { useInjector } from '@sensenet/hooks-react'
+import { useAuthentication, useInjector } from '@sensenet/hooks-react'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import snLogo from '../../assets/sensenet-icon-32.png'
@@ -7,7 +7,6 @@ import { useLocalization } from '../../hooks'
 import { PersonalSettings } from '../../services'
 import { FullScreenLoader } from '../FullScreenLoader'
 import authService from '../../services/auth-service'
-import { useAuthentication } from './use-authentication'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

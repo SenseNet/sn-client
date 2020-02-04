@@ -1,29 +1,29 @@
 import React from 'react'
 import { Route, Switch } from 'react-router'
-import { applicationPaths } from '../services/auth-service'
-import { FullScreenLoader } from './FullScreenLoader'
-import { LoginCallback } from './login/login-callback'
+import { OidcRoutes } from '@sensenet/hooks-react'
+import { applicationPaths } from '../application-paths'
+import { usePersonalSettings } from '../hooks'
+import authService from '../services/auth-service'
 import { LoginPage } from './login/login-page'
-import { LogoutCallback } from './login/logout-callback'
 import { MainRouter } from './MainRouter'
 
 export function AppNavigator() {
+  const personalSettings = usePersonalSettings()
+
   return (
     <>
+      {personalSettings.lastRepository ? (
+        <OidcRoutes
+          repoUrl={personalSettings.lastRepository}
+          authService={authService}
+          loginCallback={{ url: applicationPaths.loginCallback }}
+          logoutCallback={{ url: applicationPaths.logOutCallback }}
+        />
+      ) : null}
+
       <Switch>
         <Route path={applicationPaths.login}>
           <LoginPage />
-        </Route>
-        <Route path={applicationPaths.loginCallback}>
-          <LoginCallback>
-            <FullScreenLoader />
-            <p>Processing login</p>
-          </LoginCallback>
-        </Route>
-        <Route path={applicationPaths.logOutCallback}>
-          <LogoutCallback>
-            <p>Processing logout</p>
-          </LogoutCallback>
         </Route>
         <MainRouter />
       </Switch>

@@ -1,7 +1,11 @@
 import { authenticationResultStatus, OIDCAuthenticationService } from '@sensenet/client-core'
-import { useLogger } from '@sensenet/hooks-react'
 import { useState } from 'react'
+import { useLogger } from '.'
 
+/**
+ * useAuthentication hook helps provide helper methods for login and logout with an OIDC authentication service.
+ * It **doesn't** work with forms authentication.
+ */
 export function useAuthentication({ authService }: { authService: OIDCAuthenticationService }) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string>()

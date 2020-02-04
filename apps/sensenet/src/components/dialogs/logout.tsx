@@ -8,11 +8,11 @@ import {
   Typography,
 } from '@material-ui/core'
 import { User } from '@sensenet/default-content-types'
+import { useAuthentication } from '@sensenet/hooks-react'
 import React from 'react'
 import { useLocalization } from '../../hooks'
 import authService from '../../services/auth-service'
 import { Icon } from '../Icon'
-import { useAuthentication } from '../login/use-authentication'
 import { useRepository } from '../../context'
 import { useDialog } from './dialog-provider'
 
