@@ -141,26 +141,28 @@ export function ReactVirtualizedTable(props: {
   const fieldComponentFunc = (fieldOptions: any) => {
     switch (fieldOptions.dataKey) {
       case 'Locked':
-        return <LockedField content={fieldOptions.rowData} />
+        return <LockedField content={fieldOptions.rowData} virtual={true} />
       case 'Icon':
-        return <IconField content={fieldOptions.rowData} />
+        return <IconField content={fieldOptions.rowData} virtual={true} />
       case 'Email' as any:
-        return <EmailField mail={fieldOptions.rowData[fieldOptions.dataKey] as string} />
+        return <EmailField mail={fieldOptions.rowData[fieldOptions.dataKey] as string} virtual={true} />
       case 'Phone' as any:
-        return <PhoneField phoneNo={fieldOptions.rowData[fieldOptions.dataKey] as string} />
+        return <PhoneField phoneNo={fieldOptions.rowData[fieldOptions.dataKey] as string} virtual={true} />
       case 'DisplayName':
         return (
           <DisplayNameComponent
             content={fieldOptions.rowData}
             device={device}
             isActive={activeContent && fieldOptions.rowData.Id === activeContent.Id}
+            virtual={true}
           />
         )
       case 'Description':
-        return <DescriptionField text={fieldOptions.rowData[fieldOptions.dataKey] as string} />
+        return <DescriptionField text={fieldOptions.rowData[fieldOptions.dataKey] as string} virtual={true} />
       case 'Actions':
         return (
           <ActionsField
+            virtual={true}
             onOpen={async ev => {
               ev.preventDefault()
               ev.stopPropagation()
@@ -178,7 +180,7 @@ export function ReactVirtualizedTable(props: {
       fieldOptions.fieldSetting &&
       fieldOptions.fieldSetting.FieldClassName === 'SenseNet.ContentRepository.Fields.DateTimeField'
     ) {
-      return <DateField date={fieldOptions.content[fieldOptions.field] as string} />
+      return <DateField date={fieldOptions.content[fieldOptions.field] as string} virtual={true} />
     }
 
     if (
@@ -193,12 +195,12 @@ export function ReactVirtualizedTable(props: {
         expectedContent.Name &&
         expectedContent.Path
       ) {
-        return <ReferenceField content={expectedContent} />
+        return <ReferenceField content={expectedContent} virtual={true} />
       }
       return null
     }
     if (typeof fieldOptions.rowData[fieldOptions.dataKey] === 'boolean') {
-      return <BooleanField value={fieldOptions.content[fieldOptions.dataKey] as boolean | undefined} />
+      return <BooleanField value={fieldOptions.content[fieldOptions.dataKey] as boolean | undefined} virtual={true} />
     }
     return <VirtualDefaultCell cellData={fieldOptions.rowData} />
   }
@@ -230,11 +232,9 @@ export function ReactVirtualizedTable(props: {
         schema={repo.schemas.getSchema(GenericContent)}
         selected={selected}
         tableProps={{
-          width: 1200,
-          height: 800,
           rowCount: children.length,
-          rowHeight: 48,
-          headerHeight: 48,
+          rowHeight: 57,
+          headerHeight: 42,
           rowGetter: ({ index }) => children[index],
           onRowClick: rowMouseEventHandlerParams => {
             setActiveContent(rowMouseEventHandlerParams.rowData)

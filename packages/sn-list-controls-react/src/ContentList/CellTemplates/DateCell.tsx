@@ -4,11 +4,25 @@ import Moment from 'react-moment'
 
 interface DateCellProps {
   date: string
+  virtual?: boolean
 }
 
 export const DateCell: React.StatelessComponent<DateCellProps> = props => {
   return (
-    <TableCell component="div">
+    <TableCell
+      style={
+        props.virtual
+          ? {
+              height: '57px',
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 0,
+            }
+          : {}
+      }
+      component="div">
       <Moment fromNow={true}>{props.date}</Moment>
     </TableCell>
   )

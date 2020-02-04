@@ -20,12 +20,18 @@ export const styles = {
   hoveredIcon: {
     verticalAlign: 'middle' as any,
   },
+  virtual: {
+    height: '57px',
+    width: '100%',
+    padding: 0,
+  },
 }
 
 export interface ActionsCellProps<T extends GenericContent> {
   content: T
   actions: ActionModel[]
   openActionMenu: (ev: React.MouseEvent) => any
+  virtual?: boolean
 }
 
 export interface MenuCellState {
@@ -47,7 +53,16 @@ export class ActionsCell<T extends GenericContent> extends React.Component<Actio
   }
   public render() {
     return (
-      <TableCell component="div" style={styles.actionMenuButton}>
+      <TableCell
+        component="div"
+        style={
+          this.props.virtual
+            ? {
+                ...styles.actionMenuButton,
+                ...styles.virtual,
+              }
+            : styles.actionMenuButton
+        }>
         <IconButton aria-label="Menu" aria-owns="actionmenu" onClick={event => this.handleActionMenuClick(event)}>
           <Icon type={iconType.materialui} iconName="more_vert" />
         </IconButton>

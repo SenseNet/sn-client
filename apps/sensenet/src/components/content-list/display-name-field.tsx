@@ -9,9 +9,15 @@ type DisplayNameProps = {
   content: GenericContent
   device: ResponsivePlatforms
   isActive: boolean
+  virtual?: boolean
 }
 
-export const DisplayNameComponent: React.FunctionComponent<DisplayNameProps> = ({ content, device, isActive }) => {
+export const DisplayNameComponent: React.FunctionComponent<DisplayNameProps> = ({
+  content,
+  device,
+  isActive,
+  virtual,
+}) => {
   const buttonRef = useRef<HTMLButtonElement>(null)
   const [isOpened, setIsOpened] = useState(false)
 
@@ -22,7 +28,9 @@ export const DisplayNameComponent: React.FunctionComponent<DisplayNameProps> = (
   }
 
   return (
-    <TableCell padding={'none'}>
+    <TableCell
+      padding={'none'}
+      style={virtual ? { height: '57px', display: 'flex', alignItems: 'center', width: '100%', padding: 0 } : {}}>
       <div
         style={{
           display: 'flex',

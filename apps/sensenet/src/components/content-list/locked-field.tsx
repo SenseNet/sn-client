@@ -9,9 +9,10 @@ import { useLocalization } from '../../hooks'
 
 type LockedFieldProps = {
   content: GenericContent
+  virtual?: boolean
 }
 
-export function LockedField({ content }: LockedFieldProps) {
+export function LockedField({ content, virtual }: LockedFieldProps) {
   const session = useSession()
   const localization = useLocalization().lockedCell
 
@@ -26,11 +27,24 @@ export function LockedField({ content }: LockedFieldProps) {
 
   if (!content.Locked && !content.Approvable) {
     // We need to return an empty TableCell so the Table remains aligned.
-    return <TableCell />
+    return <TableCell style={virtual ? { height: '57px', width: '100%', padding: 0 } : {}} />
   }
 
   return (
-    <TableCell component="div">
+    <TableCell
+      style={
+        virtual
+          ? {
+              height: '57px',
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 0,
+            }
+          : {}
+      }
+      component="div">
       <Tooltip title={content.Approvable ? localization.actionNeeded : localization.checkedOutTo(lockedByName())}>
         {content.Approvable ? <AssignmentLateIcon /> : <Lock />}
       </Tooltip>

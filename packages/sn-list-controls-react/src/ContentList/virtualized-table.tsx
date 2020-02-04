@@ -1,15 +1,23 @@
 /* eslint-disable import/named */
-import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core/styles'
+import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles'
 import TableCell from '@material-ui/core/TableCell'
 import { ActionModel, FieldSetting, GenericContent, Schema } from '@sensenet/default-content-types'
 import clsx from 'clsx'
 import React, { useCallback, useMemo } from 'react'
-import { AutoSizer, Column, Table, TableCellProps, TableCellRenderer, TableProps } from 'react-virtualized'
+import {
+  AutoSizer,
+  Column,
+  Index,
+  RowMouseEventHandlerParams,
+  Table,
+  TableCellProps,
+  TableCellRenderer,
+} from 'react-virtualized'
 import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox'
 import { TableSortLabel, Tooltip } from '@material-ui/core'
 import { ActionsCell, DateCell, ReferenceCell, RowCheckbox, VirtualDefaultCell, VirtualDisplayNameCell } from '.'
 
-const styles = (theme: Theme) =>
+const styles = () =>
   createStyles({
     flexContainer: {
       display: 'flex',
@@ -21,7 +29,7 @@ const styles = (theme: Theme) =>
     },
     tableRowHover: {
       '&:hover': {
-        backgroundColor: theme.palette.grey[200],
+        backgroundColor: 'rgba(255, 255, 255, 0.14)',
       },
     },
     tableCell: {
@@ -54,7 +62,15 @@ interface MuiVirtualizedTableProps<T = GenericContent> extends WithStyles<typeof
   orderDirection?: 'asc' | 'desc'
   schema: Schema
   selected: T[]
-  tableProps: TableProps
+  tableProps: {
+    rowCount: number
+    rowHeight: number | ((params: Index) => number)
+    headerHeight: number
+    rowGetter?: (info: Index) => any
+    onRowClick?: (info: RowMouseEventHandlerParams) => void
+    onRowDoubleClick?: (info: RowMouseEventHandlerParams) => void
+    disableHeader?: boolean
+  }
 }
 
 const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
@@ -115,18 +131,19 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
               actions={rowData.Actions as ActionModel[]}
               content={rowData}
               openActionMenu={(ev: any) => props.onRequestActionsMenu && props.onRequestActionsMenu(ev, rowData)}
+              virtual={true}
             />
           )
         }
         break
       case 'ModificationDate':
-        return <DateCell date={cellData} />
+        return <DateCell date={cellData} virtual={true} />
       default:
         break
     }
     const field: any = rowData[dataKey]
     if (field && field.Id && field.Path && field.DisplayName) {
-      return <ReferenceCell content={field} fieldName={'DisplayName'} />
+      return <ReferenceCell content={field} fieldName={'DisplayName'} virtual={true} />
     }
     return <VirtualDefaultCell cellData={cellData} />
   }
@@ -144,14 +161,18 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
 
   const getSchemaForField = useCallback((fieldName: string) => fieldSchemas[fieldName] as FieldSetting, [fieldSchemas])
 
-  const headerRenderer = (columnName: string) => {
+  const headerRenderer = (columnName: string, columnCount: number, autoSizerWidth: number) => {
     const {
       tableProps: { headerHeight },
     } = props
 
     if (columnName === 'Checkbox') {
       return (
-        <TableCell padding="checkbox" key="selectAll" style={{ width: '30px', paddingRight: 0 }} component="div">
+        <TableCell
+          padding="checkbox"
+          key="selectAll"
+          style={{ width: '48px', paddingRight: 0, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+          component="div">
           <Checkbox
             className="select-all"
             indeterminate={
@@ -168,7 +189,32 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
     const description = (fieldSetting && fieldSetting.Description) || columnName
 
     return (
-      <TableCell component="div" variant="head" style={{ height: headerHeight || 48 }} className={columnName as string}>
+      <TableCell
+        component="div"
+        variant="head"
+        style={
+          columnName === 'DisplayName'
+            ? {
+                height: headerHeight || 42,
+                width: props.displayRowCheckbox
+                  ? (autoSizerWidth - 48) / (columnCount - 1)
+                  : autoSizerWidth / columnCount,
+                display: 'flex',
+                padding: 0,
+                alignItems: 'center',
+              }
+            : {
+                height: headerHeight || 42,
+                width: props.displayRowCheckbox
+                  ? (autoSizerWidth - 48) / (columnCount - 1)
+                  : autoSizerWidth / columnCount,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: 0,
+              }
+        }
+        className={columnName as string}>
         <Tooltip title={description}>
           <TableSortLabel
             active={props.orderBy === columnName}
@@ -202,15 +248,17 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
           gridStyle={{
             direction: 'inherit',
           }}
-          headerHeight={tableProps.headerHeight || 48}
+          headerHeight={tableProps.headerHeight || 42}
           {...tableProps}
           rowClassName={getRowClassName}>
           {fieldsToDisplayWithOrWithoutCheckbox.map(field => {
             return (
               <Column
+                flexGrow={props.displayRowCheckbox && field === 'Checkbox' ? 0 : 0}
+                flexShrink={props.displayRowCheckbox && field === 'Checkbox' ? 5 : 1}
                 key={field}
                 columnData={{ label: field }}
-                headerRenderer={() => headerRenderer(field)}
+                headerRenderer={() => headerRenderer(field, fieldsToDisplayWithOrWithoutCheckbox.length, width)}
                 className={classes.flexContainer}
                 cellRenderer={tableCellProps => {
                   if (props.displayRowCheckbox && field === 'Checkbox') {
@@ -223,6 +271,8 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
                 }}
                 dataKey={field}
                 width={width}
+                minWidth={props.displayRowCheckbox && field === 'Checkbox' ? 48 : undefined}
+                maxWidth={props.displayRowCheckbox && field === 'Checkbox' ? 48 : undefined}
               />
             )
           })}
