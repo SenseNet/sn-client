@@ -36,7 +36,7 @@ export function useRepository() {
   const context = useContext(RepositoryContext)
 
   if (!context) {
-    throw new Error('useRepository must be used within a DialogProvider')
+    throw new Error('useRepository must be used within a RepositoryContextProvider')
   }
 
   const { repository, setRepository } = context

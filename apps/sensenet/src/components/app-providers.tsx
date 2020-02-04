@@ -1,5 +1,5 @@
-import React from 'react'
 import { InjectorContext, LoggerContextProvider, SessionContextProvider } from '@sensenet/hooks-react'
+import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import {
   ContentRoutingContextProvider,
@@ -19,11 +19,11 @@ import {
   NavigationCommandProvider,
   QueryCommandProvider,
 } from '../services'
-import theme from './theme'
 import '../utils/errorToJson'
 import '../utils/InjectorExtensions'
-import { snInjector } from './sn-injector'
 import { DialogProvider } from './dialogs/dialog-provider'
+import { snInjector } from './sn-injector'
+import theme from './theme'
 
 export type AppProvidersProps = {
   children: React.ReactNode
