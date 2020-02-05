@@ -10,7 +10,7 @@ import {
 import { useSelectionService } from '../../hooks'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { Tree } from '../tree/index'
-import { ReactVirtualizedTable } from '../content-list/virtualized-table'
+import { ReactVirtualizedTable } from '../content-list/react-virtualized-table'
 import { ResponsivePersonalSetttings } from '../../context'
 
 export interface ExploreComponentProps {

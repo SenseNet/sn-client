@@ -24,6 +24,9 @@ export const styles = {
     height: '57px',
     width: '100%',
     padding: 0,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 }
 
