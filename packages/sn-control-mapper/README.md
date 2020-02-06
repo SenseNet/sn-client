@@ -27,6 +27,6 @@ const repository = new Repository({
 })
 
 const mapper = new ControlMapper(repository, ExampleDefaultControl, ExampleDefaultFieldControl)
-  .setupFieldSettingDefault(NumberFieldSetting, setting => MyNumberFieldImplementation)
-  .setupFieldSettingDefault(PasswordFieldSetting, setting => MyPasswordFieldImplementation)
+  .setupFieldSettingDefault('NumberFieldSetting', setting => MyNumberFieldImplementation)
+  .setupFieldSettingDefault('PasswordFieldSetting', setting => MyPasswordFieldImplementation)
 ```

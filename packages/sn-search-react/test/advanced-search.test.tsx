@@ -1,5 +1,5 @@
 import { SchemaStore } from '@sensenet/client-core'
-import { SchemaStore as defaultSchemas, GenericContent } from '@sensenet/default-content-types'
+import { SchemaStore as defaultSchemas } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
 import { shallow } from 'enzyme'
 import React from 'react'
@@ -8,7 +8,7 @@ import { AdvancedSearch } from '../src/Components/AdvancedSearch'
 describe('AdvancedSearch component', () => {
   const schemaStore = new SchemaStore()
   schemaStore.setSchemas(defaultSchemas)
-  const exampleSchema = schemaStore.getSchema(GenericContent)
+  const exampleSchema = schemaStore.getSchemaByName('GenericContent')
 
   it('Should be constructed with minimal parameters', () => {
     shallow(<AdvancedSearch fields={() => <div />} schema={exampleSchema} />)
