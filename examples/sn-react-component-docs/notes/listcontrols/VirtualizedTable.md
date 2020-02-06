@@ -45,3 +45,5 @@ tableProps={{
   disableHeader: false,
 }}
 ```
+
+For tableProps rowCount,rowHeight, headerHeight and rowGetter attributes are mandatory

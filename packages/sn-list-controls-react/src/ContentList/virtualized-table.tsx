@@ -61,12 +61,12 @@ interface MuiVirtualizedTableProps<T = GenericContent> extends WithStyles<typeof
   orderBy?: keyof T
   orderDirection?: 'asc' | 'desc'
   schema: Schema
-  selected: T[]
+  selected?: T[]
   tableProps: {
     rowCount: number
     rowHeight: number | ((params: Index) => number)
     headerHeight: number
-    rowGetter?: (info: Index) => any
+    rowGetter: (info: Index) => any
     onRowClick?: (info: RowMouseEventHandlerParams) => void
     onRowDoubleClick?: (info: RowMouseEventHandlerParams) => void
     disableHeader?: boolean
