@@ -12,10 +12,10 @@ import { useContentRouting, useLocalization, useTheme } from '../../hooks'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 
 export const getMonacoModelUri = (content: GenericContent, repo: Repository, action?: ActionModel) => {
-  if (repo.schemas.isContentFromType(content, Settings) || content.Type === 'PersonalSettings') {
+  if (repo.schemas.isContentFromType<Settings>(content, 'Settings') || content.Type === 'PersonalSettings') {
     return Uri.parse(`sensenet://${content.Type}/${content.Name}`)
   }
-  if (repo.schemas.isContentFromType(content, SnFile)) {
+  if (repo.schemas.isContentFromType<SnFile>(content, 'File')) {
     if (content.Binary) {
       return Uri.parse(`sensenet://${content.Type}/${content.Binary.__mediaresource.content_type}`)
     }

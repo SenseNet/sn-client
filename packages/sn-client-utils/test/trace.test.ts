@@ -35,6 +35,7 @@ export const traceTests = describe('Trace tests', () => {
       const observer = Trace.method({
         object: MockClass,
         method: MockClass.addStatic,
+        methodName: 'addStatic',
         onCalled: traceData => {
           expect(args).toEqual(traceData.methodArguments)
           observer.dispose()
@@ -49,6 +50,7 @@ export const traceTests = describe('Trace tests', () => {
       const observer = Trace.method({
         object: MockClass,
         method: MockClass.addStatic,
+        methodName: 'addStatic',
         onFinished: traceData => {
           expect(args).toEqual(traceData.methodArguments)
           expect(traceData.returned).toBe(1 + 2 + 3)
@@ -64,6 +66,7 @@ export const traceTests = describe('Trace tests', () => {
       const observer = Trace.method({
         object: MockClass,
         method: MockClass.addStatic,
+        methodName: 'addStatic',
         onCalled: () => {
           done("Shouldn't be triggered here")
         },
@@ -71,6 +74,7 @@ export const traceTests = describe('Trace tests', () => {
       const observer2 = Trace.method({
         object: MockClass,
         method: MockClass.addStatic,
+        methodName: 'addStatic',
         onCalled: () => {
           observer2.dispose()
           done()
@@ -89,6 +93,7 @@ export const traceTests = describe('Trace tests', () => {
       const observer = Trace.method({
         object: instance,
         method: instance.addInstance,
+        methodName: 'addInstance',
         onFinished: traceData => {
           expect(args).toEqual(traceData.methodArguments)
           expect(traceData.returned).toBe(1 + 2 + 3)
@@ -105,6 +110,7 @@ export const traceTests = describe('Trace tests', () => {
       const observer = Trace.method({
         object: instance,
         method: instance.addInstanceAsync,
+        methodName: 'addInstanceAsync',
         isAsync: true,
         onFinished: traceData => {
           expect(args).toEqual(traceData.methodArguments)
@@ -122,6 +128,7 @@ export const traceTests = describe('Trace tests', () => {
       const observer = Trace.method({
         object: instance,
         method: instance.testScope,
+        methodName: 'testScope',
         onFinished: traceData => {
           if (traceData.returned) {
             expect(traceData.returned).toBe('testValue')
@@ -138,6 +145,7 @@ export const traceTests = describe('Trace tests', () => {
       const observer = Trace.method({
         object: instance,
         method: instance.testError,
+        methodName: 'testError',
         onError: traceData => {
           if (traceData.error) {
             expect(traceData.error.message).toBe('message')
@@ -156,6 +164,7 @@ export const traceTests = describe('Trace tests', () => {
       const observer = Trace.method({
         object: instance,
         method: instance.testErrorAsync,
+        methodName: 'testErrorAsync',
         isAsync: true,
         onError: traceData => {
           if (traceData.error) {

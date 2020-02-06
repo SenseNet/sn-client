@@ -1,12 +1,5 @@
 import { Repository } from '@sensenet/client-core'
-import {
-  ActionModel,
-  ContentType,
-  GenericContent,
-  Resource,
-  Settings,
-  File as SnFile,
-} from '@sensenet/default-content-types'
+import { ActionModel, ContentType, File, GenericContent, Resource, Settings } from '@sensenet/default-content-types'
 import { encodeBrowseData } from '../components/content'
 
 export type RouteType =
@@ -20,16 +13,19 @@ export type RouteType =
 
 export class ContentContextProvider {
   public getMonacoLanguage(content: GenericContent) {
-    if (this.repository.schemas.isContentFromType(content, Settings) || content.Type === 'PersonalSettings') {
+    if (
+      this.repository.schemas.isContentFromType<Settings>(content, 'Settings') ||
+      content.Type === 'PersonalSettings'
+    ) {
       return 'json'
     }
     if (
-      this.repository.schemas.isContentFromType(content, ContentType) ||
-      this.repository.schemas.isContentFromType(content, Resource)
+      this.repository.schemas.isContentFromType<ContentType>(content, 'ContentType') ||
+      this.repository.schemas.isContentFromType<Resource>(content, 'Resource')
     ) {
       return 'xml'
     }
-    if (this.repository.schemas.isContentFromType(content, SnFile)) {
+    if (this.repository.schemas.isContentFromType<File>(content, 'File')) {
       if (content.Binary) {
         switch (content.Binary.__mediaresource.content_type) {
           case 'application/x-javascript':
