@@ -192,28 +192,14 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
       <TableCell
         component="div"
         variant="head"
-        style={
-          columnName === 'DisplayName'
-            ? {
-                height: headerHeight || 42,
-                width: props.displayRowCheckbox
-                  ? (autoSizerWidth - 48) / (columnCount - 1)
-                  : autoSizerWidth / columnCount,
-                display: 'flex',
-                padding: 0,
-                alignItems: 'center',
-              }
-            : {
-                height: headerHeight || 42,
-                width: props.displayRowCheckbox
-                  ? (autoSizerWidth - 48) / (columnCount - 1)
-                  : autoSizerWidth / columnCount,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: 0,
-              }
-        }
+        style={{
+          height: headerHeight || 42,
+          width: props.displayRowCheckbox ? (autoSizerWidth - 48) / (columnCount - 1) : autoSizerWidth / columnCount,
+          display: 'flex',
+          padding: 0,
+          alignItems: 'center',
+          justifyContent: columnName === 'DisplayName' ? 'left' : 'center',
+        }}
         className={columnName as string}>
         <Tooltip title={description}>
           <TableSortLabel

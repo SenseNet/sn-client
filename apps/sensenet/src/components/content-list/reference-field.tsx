@@ -6,6 +6,7 @@ import { Icon } from '../Icon'
 export const ReferenceField: React.FC<{ content: GenericContent; virtual?: boolean }> = ({ content, virtual }) => {
   return (
     <TableCell
+      component="div"
       padding={'none'}
       style={
         virtual

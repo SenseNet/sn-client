@@ -8,6 +8,7 @@ export const ActionsField: React.FC<{
 }> = ({ onOpen, virtual }) => {
   return (
     <TableCell
+      component="div"
       style={
         virtual
           ? {

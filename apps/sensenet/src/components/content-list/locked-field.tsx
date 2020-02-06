@@ -27,11 +27,12 @@ export function LockedField({ content, virtual }: LockedFieldProps) {
 
   if (!content.Locked && !content.Approvable) {
     // We need to return an empty TableCell so the Table remains aligned.
-    return <TableCell style={virtual ? { height: '57px', width: '100%', padding: 0 } : {}} />
+    return <TableCell component="div" style={virtual ? { height: '57px', width: '100%', padding: 0 } : {}} />
   }
 
   return (
     <TableCell
+      component="div"
       style={
         virtual
           ? {
@@ -43,8 +44,7 @@ export function LockedField({ content, virtual }: LockedFieldProps) {
               padding: 0,
             }
           : {}
-      }
-      component="div">
+      }>
       <Tooltip title={content.Approvable ? localization.actionNeeded : localization.checkedOutTo(lockedByName())}>
         {content.Approvable ? <AssignmentLateIcon /> : <Lock />}
       </Tooltip>

@@ -29,6 +29,7 @@ export const DisplayNameComponent: React.FunctionComponent<DisplayNameProps> = (
 
   return (
     <TableCell
+      component="div"
       padding={'none'}
       style={virtual ? { height: '57px', display: 'flex', alignItems: 'center', width: '100%', padding: 0 } : {}}>
       <div
