@@ -7,8 +7,8 @@ import {
   LoadSettingsContext,
   useRepository,
 } from '@sensenet/hooks-react'
-import { GenericContent } from '@sensenet/default-content-types/src'
-import { Repository } from '@sensenet/client-core/src'
+import { GenericContent } from '@sensenet/default-content-types'
+import { Repository } from '@sensenet/client-core'
 import { ResponsiveContext } from '../../context'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { useSelectionService } from '../../hooks'
@@ -229,7 +229,7 @@ export function ReactVirtualizedTable(props: {
         onRequestSelectionChange={setSelected}
         orderBy={currentOrder}
         orderDirection={currentDirection}
-        schema={repo.schemas.getSchema(GenericContent)}
+        schema={repo.schemas.getSchemaByName('GenericContent')}
         selected={selected}
         tableProps={{
           rowCount: children.length,
