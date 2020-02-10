@@ -171,7 +171,14 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
         <TableCell
           padding="checkbox"
           key="selectAll"
-          style={{ width: '48px', paddingRight: 0, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+          style={{
+            width: '48px',
+            height: '42px',
+            paddingRight: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
           component="div">
           <Checkbox
             className="select-all"
