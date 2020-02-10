@@ -81,6 +81,34 @@ const uploadResponse = {
   },
 } as Response
 
+const countResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return 4
+  },
+}
+
+const propertyResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return {
+      d: {
+        DisplayName: 'Document Workspaces',
+      },
+    }
+  },
+}
+
+const propertyValueResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return 'Document Workspaces'
+  },
+}
+
 describe('Actions', () => {
   const path = '/workspaces/project'
   let repo: Repository
@@ -754,6 +782,84 @@ describe('Actions', () => {
         },
       }
       expect(Actions.setDefaultOdataOptions({ scenario: '' })).toEqual(expectedAction)
+    })
+  })
+  describe('getChildrenCount', () => {
+    beforeEach(() => {
+      repo = new Repository(
+        { repositoryUrl: 'https://dmsservice.demo.sensenet.com/' },
+        async () => countResponse as any,
+      )
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getChildrenCount(path).type).toBe('GET_CHILDREN_COUNT')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.fetch() resolves', () => {
+        let data: any
+        beforeEach(async () => {
+          data = await Actions.getChildrenCount(path).payload(repo)
+        })
+        it('should return a GET_CHILDREN_COUNT action', () => {
+          expect(Actions.getChildrenCount(path)).toHaveProperty('type', 'GET_CHILDREN_COUNT')
+        })
+        it('should return 4', () => {
+          expect(data).toEqual(countResponse)
+        })
+      })
+    })
+  })
+  describe('getProperty', () => {
+    beforeEach(() => {
+      repo = new Repository(
+        { repositoryUrl: 'https://dmsservice.demo.sensenet.com/' },
+        async () => propertyResponse as any,
+      )
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getProperty(path, 'DisplayName').type).toBe('GET_PROPERTY')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.fetch() resolves', () => {
+        let data: any
+        beforeEach(async () => {
+          data = await Actions.getProperty(path, 'DisplayName').payload(repo)
+        })
+        it('should return a GET_PROPERTY action', () => {
+          expect(Actions.getProperty(path, 'DisplayName')).toHaveProperty('type', 'GET_PROPERTY')
+        })
+        it('should return propertyResponse', () => {
+          expect(data).toEqual(propertyResponse)
+        })
+      })
+    })
+  })
+  describe('getPropertyValue', () => {
+    beforeEach(() => {
+      repo = new Repository(
+        { repositoryUrl: 'https://dmsservice.demo.sensenet.com/' },
+        async () => propertyValueResponse as any,
+      )
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getPropertyValue(path, 'DisplayName').type).toBe('GET_PROPERTY_VALUE')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.fetch() resolves', () => {
+        let data: any
+        beforeEach(async () => {
+          data = await Actions.getPropertyValue(path, 'DisplayName').payload(repo)
+        })
+        it('should return a GET_PROPERTY_VALUE action', () => {
+          expect(Actions.getPropertyValue(path, 'DisplayName')).toHaveProperty('type', 'GET_PROPERTY_VALUE')
+        })
+        it('should return propertyResponse', () => {
+          expect(data).toEqual(propertyValueResponse)
+        })
+      })
     })
   })
 })
