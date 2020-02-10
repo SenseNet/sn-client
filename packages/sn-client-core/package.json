@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/client-core",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Core Client package for sensenet",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -29,7 +29,7 @@
   "dependencies": {
     "@sensenet/client-utils": "^1.8.0",
     "@sensenet/default-content-types": "^2.0.4",
-    "@sensenet/query": "^1.1.12",
+    "@sensenet/query": "^1.1.13",
     "semaphore-async-await": "^1.5.1",
     "tslib": "^1.10.0",
     "uuid": "^3.3.3"
