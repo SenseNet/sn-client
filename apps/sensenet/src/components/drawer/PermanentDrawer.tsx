@@ -5,13 +5,13 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
 import Tooltip from '@material-ui/core/Tooltip'
 import { Close, Menu } from '@material-ui/icons'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { withRouter } from 'react-router'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { useRepository } from '@sensenet/hooks-react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import clsx from 'clsx'
-import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
+import { useDrawerItems, useLocalization, usePersonalSettings } from '../../hooks'
 import { ResponsivePersonalSetttings } from '../../context'
 import { AddButton } from '../AddButton'
 import { SearchButton } from '../search-button'
@@ -71,23 +71,11 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const personalSettings = usePersonalSettings()
   const classes = useStyles()
   const settings = useContext(ResponsivePersonalSetttings)
-  const selectionService = useSelectionService()
   const repo = useRepository()
-  const [currentComponent, setCurrentComponent] = useState(selectionService.activeContent.getValue())
   const [currentPath, setCurrentPath] = useState('')
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const items = useDrawerItems()
   const localization = useLocalization().drawer
-
-  useEffect(() => {
-    const activeComponentObserve = selectionService.activeContent.subscribe(newActiveComponent =>
-      setCurrentComponent(newActiveComponent),
-    )
-
-    return function cleanup() {
-      activeComponentObserve.dispose()
-    }
-  }, [selectionService.activeContent])
 
   if (!settings.drawer.enabled) {
     return null
@@ -110,7 +98,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
           </div>
 
           {matchPath(props.location.pathname, `/:repositoryId/saved-queries`) === null ? (
-            <AddButton isOpened={opened} parent={currentComponent} path={currentPath} />
+            <AddButton isOpened={opened} path={currentPath} />
           ) : (
             <SearchButton isOpened={opened} />
           )}
