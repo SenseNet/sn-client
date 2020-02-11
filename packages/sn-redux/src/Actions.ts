@@ -535,7 +535,7 @@ export const getChildrenCount = (path: string) => ({
  * Action creator for requesting a content's property from sensenet Content Repository.
  * @param path path of the requested parent item.
  * @param propertyName name of the property
- * @returns Returns number of children content in the given container.
+ * @returns Returns a property and its value of the given content.
  */
 export const getProperty = (idOrPath: string | number, propertyName: string) => {
   const path = PathHelper.getContentUrl(idOrPath)
@@ -549,12 +549,25 @@ export const getProperty = (idOrPath: string | number, propertyName: string) => 
  * Action creator for requesting a content's from sensenet Content Repository to get its value.
  * @param path path of the requested parent item.
  * @param propertyName name of the property
- * @returns Returns number of children content in the given container.
+ * @returns Returns the value of the given content property.
  */
 export const getPropertyValue = (idOrPath: string | number, propertyName: string) => {
   const path = PathHelper.getContentUrl(idOrPath)
   return {
     type: 'GET_PROPERTY_VALUE',
     payload: (repository: Repository) => repository.fetch(`${path}/${propertyName}/$value`),
+  }
+}
+
+/**
+ * Action creator for requesting a content's metadata from sensenet Content Repository.
+ * @param path path of the requested parent item.
+ * @returns Returns metadata of the given content.
+ */
+export const getMetadata = (idOrPath: string | number) => {
+  const path = PathHelper.getContentUrl(idOrPath)
+  return {
+    type: 'GET_METADATA',
+    payload: (repository: Repository) => repository.fetch(`${path}/$metadata`),
   }
 }
