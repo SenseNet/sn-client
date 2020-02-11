@@ -11,7 +11,12 @@ describe('LoadSettings', () => {
   it('Has the default methods and settings', () => {
     const MockComponent: React.FC = () => {
       const ls = useContext(LoadSettingsContext)
-      expect(ls).toEqual(undefined)
+      ls.setLoadAncestorsSettings({})
+      ls.setLoadChildrenSettings({})
+      ls.setLoadSettings({})
+      expect(ls.loadAncestorsSettings).toEqual({})
+      expect(ls.loadChildrenSettings).toEqual({})
+      expect(ls.loadSettings).toEqual({})
       return <div />
     }
     shallow(<MockComponent />)

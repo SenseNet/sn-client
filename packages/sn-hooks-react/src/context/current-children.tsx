@@ -38,7 +38,7 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
         const childrenResult = await repo.loadCollection<GenericContent>({
           path: currentContent.Path,
           requestInit: { signal: ac.signal },
-          oDataOptions: loadSettings?.loadChildrenSettings,
+          oDataOptions: loadSettings.loadChildrenSettings,
         })
         setChildren(childrenResult.d.results)
       } catch (err) {
@@ -50,7 +50,7 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
       }
     })()
     return () => ac.abort()
-  }, [currentContent.Path, loadSettings, repo, reloadToken, loadLock])
+  }, [currentContent.Path, loadSettings.loadChildrenSettings, repo, reloadToken, loadLock])
 
   useEffect(() => {
     const handleCreate = (c: Created) => {

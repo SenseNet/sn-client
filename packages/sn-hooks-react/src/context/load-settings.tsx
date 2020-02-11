@@ -6,7 +6,7 @@ export interface LoadSettingsContextProps {
   /**
    * OData settings for the Current Content
    */
-  loadSettings?: ODataParams<GenericContent>
+  loadSettings: ODataParams<GenericContent>
   /**
    * OData settings for loading the current content's children
    */
@@ -14,7 +14,7 @@ export interface LoadSettingsContextProps {
   /**
    * OData settings for loading ancestors
    */
-  loadAncestorsSettings?: ODataParams<GenericContent>
+  loadAncestorsSettings: ODataParams<GenericContent>
 
   /**
    * Sets the Current Content's load settings
@@ -35,7 +35,14 @@ export interface LoadSettingsContextProps {
 /**
  * Context that stores load settings for OData requests
  */
-export const LoadSettingsContext = React.createContext<LoadSettingsContextProps | undefined>(undefined)
+export const LoadSettingsContext = React.createContext<LoadSettingsContextProps>({
+  setLoadSettings: () => undefined,
+  setLoadChildrenSettings: () => undefined,
+  setLoadAncestorsSettings: () => undefined,
+  loadAncestorsSettings: {},
+  loadChildrenSettings: {},
+  loadSettings: {},
+})
 
 const initialLoadChildrenSettings: ODataParams<GenericContent> = {
   orderby: [['DisplayName', 'asc']],
@@ -46,10 +53,7 @@ const initialLoadChildrenSettings: ODataParams<GenericContent> = {
  * Provider for the LoadSettingsContext. Sets up default loading settings.
  */
 
-const setLoadSettingsReducer = (
-  state: ODataParams<GenericContent> | undefined,
-  value: ODataParams<GenericContent> | undefined,
-) => {
+const setLoadSettingsReducer = (state: ODataParams<GenericContent>, value: ODataParams<GenericContent>) => {
   if (JSON.stringify(value) === JSON.stringify(state)) {
     return state
   }
@@ -64,12 +68,12 @@ const setLoadChildrenSettingsReducer = (state: ODataParams<GenericContent>, valu
 }
 
 export const LoadSettingsContextProvider: React.FunctionComponent = props => {
-  const [loadSettings, setLoadSettings] = React.useReducer(setLoadSettingsReducer, undefined)
+  const [loadSettings, setLoadSettings] = React.useReducer(setLoadSettingsReducer, {})
   const [loadChildrenSettings, setLoadChildrenSettings] = React.useReducer(
     setLoadChildrenSettingsReducer,
     initialLoadChildrenSettings,
   )
-  const [loadAncestorsSettings, setLoadAncestorsSettings] = React.useReducer(setLoadSettingsReducer, undefined)
+  const [loadAncestorsSettings, setLoadAncestorsSettings] = React.useReducer(setLoadSettingsReducer, {})
 
   return (
     <LoadSettingsContext.Provider

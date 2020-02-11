@@ -76,8 +76,8 @@ export function ReactVirtualizedTable(props: {
 
   useEffect(() => {
     const fields = props.fieldsToDisplay
-    loadSettings?.setLoadChildrenSettings({
-      ...loadSettings?.loadChildrenSettings,
+    loadSettings.setLoadChildrenSettings({
+      ...loadSettings.loadChildrenSettings,
       expand: ['CheckedOutTo', ...fields.filter(fieldName => isReferenceField(fieldName, repo))],
       orderby: [[currentOrder as any, currentDirection as any]],
     })
