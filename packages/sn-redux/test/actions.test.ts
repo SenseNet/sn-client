@@ -109,6 +109,12 @@ const propertyValueResponse = {
   },
 }
 
+const metadataResponse = {
+  ok: true,
+  status: 200,
+  'content-type': 'application/xml; charset=utf-8',
+}
+
 describe('Actions', () => {
   const path = '/workspaces/project'
   let repo: Repository
@@ -858,6 +864,32 @@ describe('Actions', () => {
         })
         it('should return propertyResponse', () => {
           expect(data).toEqual(propertyValueResponse)
+        })
+      })
+    })
+  })
+  describe('getMetadata', () => {
+    beforeEach(() => {
+      repo = new Repository(
+        { repositoryUrl: 'https://dmsservice.demo.sensenet.com/' },
+        async () => metadataResponse as any,
+      )
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getMetadata(path).type).toBe('GET_METADATA')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.fetch() resolves', () => {
+        let data: any
+        beforeEach(async () => {
+          data = await Actions.getMetadata(path).payload(repo)
+        })
+        it('should return a GET_METADATA action', () => {
+          expect(Actions.getMetadata(path)).toHaveProperty('type', 'GET_METADATA')
+        })
+        it('should return propertyResponse', () => {
+          expect(data).toEqual(metadataResponse)
         })
       })
     })
