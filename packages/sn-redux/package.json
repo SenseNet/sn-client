@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/redux",
-  "version": "5.1.19",
+  "version": "5.1.20",
   "description": "A set of redux actions, reducers and redux-ovbservable epics for sensenet",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.23",
-    "@types/node": "^12.12.7",
+    "@types/node": "^13.1.7",
     "@types/redux-logger": "^3.0.7",
     "jest": "^24.9.0",
     "redux-mock-store": "^1.5.3",

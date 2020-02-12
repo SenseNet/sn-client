@@ -28,7 +28,7 @@ export const Login = () => {
   const injector = useInjector()
   const history = useHistory()
   const match = useRouteMatch()
-  const location = useLocation()
+  const location = useLocation<{ from: string }>()
   const repo = useRepository()
   const theme = useTheme()
   const classes = useStyles()
@@ -191,10 +191,11 @@ export const Login = () => {
           ) : (
             <form onSubmit={handleSubmit}>
               <TextField
+                id="username"
                 required={true}
                 margin="normal"
-                label={localization.userNameLabel}
                 name="userName"
+                label={localization.userNameLabel}
                 helperText={!inputState.userName.isValid ? inputState.userName.errorMessage : ''}
                 placeholder={localization.userNameHelperText}
                 error={!inputState.userName.isValid}
@@ -207,6 +208,7 @@ export const Login = () => {
                 }}
               />
               <TextField
+                id="password"
                 required={true}
                 margin="dense"
                 name="password"
@@ -224,6 +226,7 @@ export const Login = () => {
                 }}
               />
               <TextField
+                id="repository"
                 margin="dense"
                 required={true}
                 name="repository"
@@ -241,7 +244,12 @@ export const Login = () => {
                 }}
               />
               {error ? <Typography style={{ color: theme.palette.error.main }}>{error}</Typography> : null}
-              <Button fullWidth={true} variant="contained" color="primary" type="submit">
+              <Button
+                aria-label={localization.loginButtonTitle}
+                fullWidth={true}
+                variant="contained"
+                color="primary"
+                type="submit">
                 <Typography variant="button">{localization.loginButtonTitle}</Typography>
               </Button>
             </form>

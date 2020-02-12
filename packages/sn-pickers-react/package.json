@@ -50,6 +50,6 @@
     "enzyme-to-json": "^3.4.3",
     "jest": "^24.9.0",
     "ts-jest": "^24.1.0",
-    "typescript": "3.7.2"
+    "typescript": "^3.7.2"
   }
 }
