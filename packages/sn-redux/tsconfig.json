@@ -11,6 +11,7 @@
     { "path": "../sn-icons-react" },
     { "path": "../sn-client-core" },
     { "path": "../sn-default-content-types" },
-    { "path": "../sn-redux-promise-middleware" }
+    { "path": "../sn-redux-promise-middleware" },
+    { "path": "./sn-client-utils" }
   ]
 }
