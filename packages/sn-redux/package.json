@@ -44,11 +44,11 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.23",
-    "@types/node": "^13.1.7",
+    "@types/node": "^13.7.1",
     "@types/redux-logger": "^3.0.7",
     "jest": "^24.9.0",
     "redux-mock-store": "^1.5.3",
     "ts-jest": "^24.1.0",
-    "typescript": "^3.7.2"
+    "typescript": "^3.7.5"
   }
 }
