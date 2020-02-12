@@ -51,6 +51,8 @@ export class ODataUrlBuilder {
     oDataParams.inlinecount = oDataParams.inlinecount ?? config.defaultInlineCount
     oDataParams.expand = oDataParams.expand ?? (config.defaultExpand as any)
     oDataParams.top = oDataParams.top ?? config.defaultTop
+    oDataParams.enableautofilters = oDataParams.enableautofilters ?? config.defaultEnableAutofilters
+    oDataParams.enablelifespanfilter = oDataParams.enablelifespanfilter ?? config.defaultEnableLifespanfilter
 
     const segments: Array<{ name: string; value: string }> = []
     for (const key in oDataParams) {
