@@ -122,6 +122,7 @@ import {
 } from '@sensenet/client-core'
 import { GenericContent, User } from '@sensenet/default-content-types'
 import { PromiseMiddlewareAction } from '@sensenet/redux-promise-middleware'
+import { PathHelper } from '@sensenet/client-utils'
 
 /**
  * Type alias for getting the result type from a Promise middleware
@@ -519,3 +520,54 @@ export const setDefaultOdataOptions = (options: ODataParams<GenericContent>) => 
   type: 'SET_ODATAOPTIONS',
   options,
 })
+
+/**
+ * Action creator for requesting a content from sensenet Content Repository to get count of its children content.
+ * @param path path of the requested parent item.
+ * @returns Returns number of children content in the given container.
+ */
+export const getChildrenCount = (path: string) => ({
+  type: 'GET_CHILDREN_COUNT',
+  payload: (repository: Repository) => repository.fetch(`${path}/$count`),
+})
+
+/**
+ * Action creator for requesting a content's property from sensenet Content Repository.
+ * @param path path of the requested parent item.
+ * @param propertyName name of the property
+ * @returns Returns a property and its value of the given content.
+ */
+export const getProperty = (idOrPath: string | number, propertyName: string) => {
+  const path = PathHelper.getContentUrl(idOrPath)
+  return {
+    type: 'GET_PROPERTY',
+    payload: (repository: Repository) => repository.fetch(`${path}/${propertyName}`),
+  }
+}
+
+/**
+ * Action creator for requesting a content's property from sensenet Content Repository to get its value.
+ * @param path path of the requested parent item.
+ * @param propertyName name of the property
+ * @returns Returns the value of the given content property.
+ */
+export const getPropertyValue = (idOrPath: string | number, propertyName: string) => {
+  const path = PathHelper.getContentUrl(idOrPath)
+  return {
+    type: 'GET_PROPERTY_VALUE',
+    payload: (repository: Repository) => repository.fetch(`${path}/${propertyName}/$value`),
+  }
+}
+
+/**
+ * Action creator for requesting a content's metadata from sensenet Content Repository.
+ * @param path path of the requested parent item.
+ * @returns Returns metadata of the given content.
+ */
+export const getMetadata = (idOrPath: string | number) => {
+  const path = PathHelper.getContentUrl(idOrPath)
+  return {
+    type: 'GET_METADATA',
+    payload: (repository: Repository) => repository.fetch(`${path}/$metadata`),
+  }
+}
