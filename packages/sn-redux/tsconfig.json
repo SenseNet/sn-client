@@ -12,6 +12,6 @@
     { "path": "../sn-client-core" },
     { "path": "../sn-default-content-types" },
     { "path": "../sn-redux-promise-middleware" },
-    { "path": "./sn-client-utils" }
+    { "path": "../sn-client-utils" }
   ]
 }
