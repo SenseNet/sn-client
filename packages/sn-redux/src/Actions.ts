@@ -546,7 +546,7 @@ export const getProperty = (idOrPath: string | number, propertyName: string) => 
 }
 
 /**
- * Action creator for requesting a content's from sensenet Content Repository to get its value.
+ * Action creator for requesting a content's property from sensenet Content Repository to get its value.
  * @param path path of the requested parent item.
  * @param propertyName name of the property
  * @returns Returns the value of the given content property.
