@@ -1,4 +1,4 @@
-import { authenticationResultStatus, OIDCAuthenticationService } from '@sensenet/client-core'
+import { authenticationResultStatus, AuthFuncResult, OIDCAuthenticationService } from '@sensenet/client-core'
 import React, { ReactNode, useEffect, useState } from 'react'
 import { useLogger } from '.'
 
@@ -17,19 +17,6 @@ type OidcRoutesProps = {
   authService: OIDCAuthenticationService
 }
 
-type completeCallbackResult = Promise<
-  | {
-      status: 'success'
-      state: {
-        returnUrl: string
-      }
-    }
-  | {
-      status: 'fail'
-      message: string
-    }
->
-
 /**
  * This component will act as a router without any router implementation.
  * It will call the completeSignIn/completeSignOut once the window location is at {loginCallback.url | logoutCallback.url}
@@ -39,10 +26,7 @@ export function OidcRoutes({ loginCallback, logoutCallback, authService, repoUrl
   const logger = useLogger('oidcRoutes')
 
   useEffect(() => {
-    const processCallback = async (
-      callBack: (repoUrl: string) => completeCallbackResult,
-      successRedirectUrl?: string,
-    ) => {
+    const processCallback = async (callBack: (repoUrl: string) => AuthFuncResult, successRedirectUrl?: string) => {
       if (!repoUrl) {
         logger.debug({ message: 'no repository url found' })
         return
@@ -54,7 +38,7 @@ export function OidcRoutes({ loginCallback, logoutCallback, authService, repoUrl
           window.location.replace(successRedirectUrl ?? window.location.origin)
           break
         case authenticationResultStatus.fail:
-          logger.warning({ message: result.message })
+          logger.warning({ message: result.error.message })
           break
         default:
           logger.debug({ message: `Invalid authentication result status '${result}'.` })

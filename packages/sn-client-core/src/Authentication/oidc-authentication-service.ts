@@ -10,6 +10,25 @@ export const authenticationResultStatus = {
   fail: 'fail',
 } as const
 
+export interface AuthFuncOptions {
+  returnUrl: string
+  authorityUrl: string
+}
+
+export type AuthFuncResult = Promise<
+  | { status: 'redirect' }
+  | {
+      status: 'success'
+      state: {
+        returnUrl: string
+      }
+    }
+  | {
+      status: 'fail'
+      error: Error
+    }
+>
+
 export class OIDCAuthenticationService {
   public user: ObservableValue<User | undefined> = new ObservableValue(undefined)
   private userManager?: UserManager
@@ -49,12 +68,12 @@ export class OIDCAuthenticationService {
   //    Pop-Up blocker or the user has disabled PopUps.
   // 3) If the two methods above fail, we redirect the browser to the IdP to perform a traditional
   //    redirect flow.
-  async signIn(state: { returnUrl: string }, authorityUrl: string) {
+  async signIn({ returnUrl, authorityUrl }: AuthFuncOptions): AuthFuncResult {
     await this.ensureUserManagerInitialized(authorityUrl)
     try {
       const silentUser = await this.userManager?.signinSilent(this.createArguments())
       this.updateState(silentUser)
-      return this.success(state)
+      return this.success({ returnUrl })
     } catch (silentError) {
       // User might not be authenticated, fallback to popup authentication
       console.log('Silent authentication error: ', silentError)
@@ -63,11 +82,11 @@ export class OIDCAuthenticationService {
         try {
           const popUpUser = await this.userManager?.signinPopup(this.createArguments())
           this.updateState(popUpUser)
-          return this.success(state)
+          return this.success({ returnUrl })
         } catch (popUpError) {
           if (popUpError.message === 'Popup window closed') {
             // The user explicitly cancelled the login action by closing an opened popup.
-            return this.error('The user closed the window.')
+            return this.error(new Error('The user closed the window.'))
           }
           console.log('Popup authentication error: ', popUpError)
         }
@@ -75,7 +94,7 @@ export class OIDCAuthenticationService {
 
       // PopUps might be blocked by the user, fallback to redirect
       try {
-        await this.userManager?.signinRedirect(this.createArguments(state))
+        await this.userManager?.signinRedirect(this.createArguments({ returnUrl }))
         return this.redirect()
       } catch (redirectError) {
         console.log('Redirect authentication error: ', redirectError)
@@ -92,7 +111,7 @@ export class OIDCAuthenticationService {
       return this.success(user?.state)
     } catch (error) {
       console.log('There was an error signing in: ', error)
-      return this.error('There was an error signing in.')
+      return this.error(new Error('There was an error signing in.'))
     }
   }
 
@@ -101,14 +120,14 @@ export class OIDCAuthenticationService {
   //    Pop-Up blocker or the user has disabled PopUps.
   // 2) If the method above fails, we redirect the browser to the IdP to perform a traditional
   //    post logout redirect flow.
-  async signOut(state: { returnUrl: string }, authorityUrl: string) {
+  async signOut({ authorityUrl, returnUrl }: AuthFuncOptions): AuthFuncResult {
     await this.ensureUserManagerInitialized(authorityUrl)
 
     if (this.settings.isPopupEnabled) {
       try {
         await this.userManager?.signoutPopup(this.createArguments())
         this.updateState(undefined)
-        return this.success(state)
+        return this.success({ returnUrl })
       } catch (popupSignOutError) {
         console.log('Popup signout error: ', popupSignOutError)
         return this.error(popupSignOutError.message)
@@ -116,7 +135,7 @@ export class OIDCAuthenticationService {
     }
 
     try {
-      await this.userManager?.signoutRedirect(this.createArguments(state))
+      await this.userManager?.signoutRedirect(this.createArguments({ returnUrl }))
       return this.redirect()
     } catch (redirectSignOutError) {
       console.log('Redirect signout error: ', redirectSignOutError)
@@ -144,8 +163,8 @@ export class OIDCAuthenticationService {
     return { useReplaceToNavigate: true, data: state }
   }
 
-  error(message: string) {
-    return { status: authenticationResultStatus.fail, message }
+  error(error: Error) {
+    return { status: authenticationResultStatus.fail, error }
   }
 
   success(state: { returnUrl: string }) {

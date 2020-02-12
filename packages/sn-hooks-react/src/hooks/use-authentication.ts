@@ -1,4 +1,4 @@
-import { authenticationResultStatus, OIDCAuthenticationService } from '@sensenet/client-core'
+import { authenticationResultStatus, AuthFuncResult, OIDCAuthenticationService } from '@sensenet/client-core'
 import { useState } from 'react'
 import { useLogger } from '.'
 
@@ -11,9 +11,9 @@ export function useAuthentication({ authService }: { authService: OIDCAuthentica
   const [error, setError] = useState<string>()
   const logger = useLogger('useAuthentication')
 
-  const login = async (returnUrl: string, repoUrl: string) => {
+  const doAuthenticationAction = async (action: () => AuthFuncResult, returnUrl: string) => {
     setIsLoading(true)
-    const result = await authService.signIn({ returnUrl }, repoUrl)
+    const result = await action()
     setIsLoading(false)
     switch (result.status) {
       case authenticationResultStatus.redirect:
@@ -22,32 +22,20 @@ export function useAuthentication({ authService }: { authService: OIDCAuthentica
         window.location.replace(returnUrl)
         break
       case authenticationResultStatus.fail:
-        logger.warning({ message: result.message })
+        logger.warning({ message: result.error.message })
+        setError(result.error.message)
         break
       default:
         logger.debug({ message: `Invalid status result ${result}.` })
     }
   }
 
-  const logout = async (returnUrl: string, repoUrl: string) => {
-    setIsLoading(true)
-    const isauthenticated = await authService.isAuthenticated(repoUrl)
-    setIsLoading(false)
-    if (isauthenticated) {
-      const result = await authService.signOut({ returnUrl }, repoUrl)
-      switch (result.status) {
-        case authenticationResultStatus.redirect:
-          break
-        case authenticationResultStatus.success:
-          window.location.replace(returnUrl)
-          break
-        case authenticationResultStatus.fail:
-          setError(result.message)
-          break
-        default:
-          logger.debug({ message: 'Invalid authentication result status.' })
-      }
-    }
+  const login = async (returnUrl: string, authorityUrl: string) => {
+    await doAuthenticationAction(() => authService.signIn({ returnUrl, authorityUrl }), returnUrl)
+  }
+
+  const logout = async (returnUrl: string, authorityUrl: string) => {
+    await doAuthenticationAction(() => authService.signOut({ returnUrl, authorityUrl }), returnUrl)
   }
 
   return { login, isLoading, error, logout }
