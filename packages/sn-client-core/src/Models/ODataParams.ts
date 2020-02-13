@@ -106,4 +106,14 @@ export interface ODataParams<T> {
    * Defines the content version (e.g. 'V1.0A')
    */
   version?: string
+
+  /**
+   * Switch system type filtering on and off
+   */
+  enableautofilters?: boolean
+
+  /**
+   * Switch lifespan filtering on and off
+   */
+  enablelifespanfilter?: boolean
 }
