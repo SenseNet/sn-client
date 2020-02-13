@@ -17,6 +17,6 @@ export const VirtualDefaultCell = <T extends GenericContent>(props: VirtualDefau
       padding: 0,
     }}
     component="div">
-    {props.cellData.toString()}
+    {props.cellData?.toString()}
   </TableCell>
 )

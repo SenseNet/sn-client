@@ -57,10 +57,16 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                 />
 
                 <ReactVirtualizedTable
+                  style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
+                  enableBreadcrumbs={false}
                   fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields}
                   onParentChange={props.onNavigate}
                   onActivateItem={props.onActivateItem}
                   onActiveItemChange={item => selectionService.activeContent.setValue(item)}
+                  parentIdOrPath={props.parent}
+                  onSelectionChange={sel => {
+                    selectionService.selection.setValue(sel)
+                  }}
                 />
               </div>
             </CurrentAncestorsProvider>

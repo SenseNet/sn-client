@@ -17,7 +17,7 @@ import {
   useRepositoryEvents,
 } from '@sensenet/hooks-react'
 import { useLocalization } from '../../hooks'
-import { CollectionComponent } from '../content-list'
+import { ReactVirtualizedTable } from '../content-list/react-virtualized-table'
 import { encodeQueryData } from '.'
 
 const Search: React.FunctionComponent<RouteComponentProps> = props => {
@@ -88,7 +88,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
           <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>
             <CurrentChildrenContext.Provider value={queries}>
               <CurrentAncestorsContext.Provider value={[]}>
-                <CollectionComponent
+                <ReactVirtualizedTable
                   style={{
                     height: 'calc(100% - 75px)',
                     overflow: 'auto',
@@ -104,9 +104,6 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
                         term: (p as Query).Query || '',
                       })}`,
                     )
-                  }}
-                  onTabRequest={() => {
-                    /** */
                   }}
                 />
               </CurrentAncestorsContext.Provider>

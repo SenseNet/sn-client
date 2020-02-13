@@ -37,7 +37,7 @@ const Trash = React.memo(() => {
       ) : null}
       <SimpleList
         parent="/Root/Trash"
-        collectionComponentProps={{
+        reactVirtualizedTableProps={{
           enableBreadcrumbs: false,
           fieldsToDisplay: ['DisplayName', 'ModificationDate', 'ModifiedBy'],
         }}

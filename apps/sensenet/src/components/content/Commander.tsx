@@ -10,8 +10,8 @@ import {
   useRepository,
 } from '@sensenet/hooks-react'
 import { useSelectionService } from '../../hooks'
-import { CollectionComponent } from '../content-list'
 import { useDialog } from '../dialogs'
+import { ReactVirtualizedTable } from '../content-list/react-virtualized-table'
 
 export interface CommanderComponentProps {
   leftParent: number | string
@@ -90,7 +90,7 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
           </CurrentContentContext.Consumer>
           <CurrentChildrenProvider>
             <CurrentAncestorsProvider root={props.rootPath}>
-              <CollectionComponent
+              <ReactVirtualizedTable
                 onFocus={() => {
                   setActivePanel('left')
                 }}
@@ -120,7 +120,7 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
           </CurrentContentContext.Consumer>
           <CurrentChildrenProvider>
             <CurrentAncestorsProvider>
-              <CollectionComponent
+              <ReactVirtualizedTable
                 enableBreadcrumbs={true}
                 onFocus={() => {
                   setActivePanel('right')

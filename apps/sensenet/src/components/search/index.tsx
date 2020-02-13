@@ -6,7 +6,7 @@ import { ConstantContent } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { generatePath, RouteComponentProps, withRouter } from 'react-router'
+import { generatePath, useHistory, useRouteMatch } from 'react-router'
 import Semaphore from 'semaphore-async-await'
 import {
   CurrentAncestorsContext,
@@ -18,10 +18,10 @@ import {
 } from '@sensenet/hooks-react'
 import { ResponsivePersonalSetttings } from '../../context'
 import { useContentRouting, useLocalization, useSelectionService } from '../../hooks'
-import { CollectionComponent, isReferenceField } from '../content-list'
+import { isReferenceField } from '../content-list'
 import { useDialog } from '../dialogs'
+import { ReactVirtualizedTable } from '../content-list/react-virtualized-table'
 
-const loadCount = 20
 const searchDebounceTime = 400
 export interface QueryData {
   term: string
@@ -37,12 +37,14 @@ export const encodeQueryData = (data: QueryData) => encodeURIComponent(btoa(JSON
 export const decodeQueryData = (encoded?: string) =>
   encoded ? (JSON.parse(atob(decodeURIComponent(encoded))) as QueryData) : { term: '' }
 
-const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }>> = props => {
+export const Search = () => {
   const repo = useRepository()
   const contentRouter = useContentRouting()
+  const match = useRouteMatch<{ queryData?: string }>()
+  const history = useHistory()
   const { openDialog } = useDialog()
   const logger = useLogger('Search')
-  const [queryData, setQueryData] = useState<QueryData>(decodeQueryData(props.match.params.queryData))
+  const [queryData, setQueryData] = useState<QueryData>(decodeQueryData(match.params.queryData))
   const selectionService = useSelectionService()
   const localization = useLocalization().search
   const [scrollToken, setScrollToken] = useState(Math.random())
@@ -57,13 +59,13 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
 
   useEffect(() => {
     try {
-      const data = decodeQueryData(props.match.params.queryData || '{}')
+      const data = decodeQueryData(match.params.queryData || '{}')
       setQueryData(data)
     } catch (error) {
       logger.warning({ message: 'Wrong link :(' })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [logger, props.match.params.queryData])
+  }, [logger, match.params.queryData])
 
   const [requestScroll] = useState(() =>
     debounce((div: HTMLDivElement, total: number, loaded: number, update: (token: number) => void) => {
@@ -86,9 +88,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
       await loadLock.acquire()
       try {
         setResult([])
-        props.history.push(
-          generatePath(props.match.path, { ...props.match.params, queryData: encodeQueryData(queryData) }),
-        )
+        history.push(generatePath(match.path, { ...match.params, queryData: encodeQueryData(queryData) }))
 
         const r = await repo.loadCollection({
           path: ConstantContent.PORTAL_ROOT.Path,
@@ -97,7 +97,6 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
             select: ['Actions', ...(queryData.fieldsToDisplay || [])],
             expand: ['Actions', ...(queryData.fieldsToDisplay || []).filter(f => isReferenceField(f, repo))],
             query: personalSettings.commandPalette.wrapQuery.replace('{0}', queryData.term),
-            top: loadCount,
           },
           requestInit: { signal: ac.signal },
         })
@@ -116,7 +115,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
     })()
     // loadSettings should be excluded :(
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryData.term, repo, personalSettings.commandPalette.wrapQuery, logger, loadSettingsContext])
+  }, [queryData.term, repo, personalSettings.commandPalette.wrapQuery, logger])
 
   useEffect(() => {
     ;(async () => {
@@ -129,7 +128,6 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
             select: ['Actions', ...(queryData.fieldsToDisplay || [])],
             expand: ['Actions', ...(queryData.fieldsToDisplay || []).filter(f => isReferenceField(f, repo))],
             query: personalSettings.commandPalette.wrapQuery.replace('{0}', queryData.term),
-            top: loadCount,
             skip: result.length,
           },
         })
@@ -184,7 +182,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
       <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>
         <CurrentChildrenContext.Provider value={result}>
           <CurrentAncestorsContext.Provider value={[]}>
-            <CollectionComponent
+            <ReactVirtualizedTable
               style={{
                 height: 'calc(100% - 33px)',
                 overflow: 'auto',
@@ -196,10 +194,10 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
               fieldsToDisplay={queryData.fieldsToDisplay}
               parentIdOrPath={0}
               onParentChange={p => {
-                props.history.push(contentRouter.getPrimaryActionUrl(p))
+                history.push(contentRouter.getPrimaryActionUrl(p))
               }}
               onActivateItem={p => {
-                props.history.push(contentRouter.getPrimaryActionUrl(p))
+                history.push(contentRouter.getPrimaryActionUrl(p))
               }}
               onTabRequest={() => {
                 /** */
@@ -215,5 +213,4 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
     </div>
   )
 }
-
-export default withRouter(Search)
+export default Search

@@ -44,9 +44,14 @@ interface Row {
   index: number
 }
 
+export interface VirtualCellProps {
+  tableCellProps: TableCellProps
+  fieldSettings: FieldSetting
+}
+
 interface MuiVirtualizedTableProps<T = GenericContent> extends WithStyles<typeof styles> {
   active?: T
-  cellRenderer?: TableCellRenderer
+  cellRenderer?: (props: VirtualCellProps) => React.ReactNode
   checkboxProps?: CheckboxProps
   displayRowCheckbox?: boolean
   fieldsToDisplay: Array<keyof T>
@@ -137,7 +142,7 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
         }
         break
       case 'ModificationDate':
-        return <DateCell date={cellData} virtual={true} />
+        return <DateCell date={cellData as string} virtual={true} />
       default:
         break
     }
@@ -205,7 +210,7 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
           display: 'flex',
           padding: 0,
           alignItems: 'center',
-          justifyContent: columnName === 'DisplayName' ? 'left' : 'center',
+          justifyContent: columnName === 'DisplayName' || columnName === 'Description' ? 'left' : 'center',
         }}
         className={columnName as string}>
         <Tooltip title={description}>
@@ -259,7 +264,9 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
                       props.selected && props.selected.find(s => s.Id === tableCellProps.rowData.Id) ? true : false
                     return checkBoxRenderer(tableCellProps, isSelected)
                   } else {
-                    return props.cellRenderer ? props.cellRenderer(tableCellProps) : defaultCellRenderer(tableCellProps)
+                    return props.cellRenderer
+                      ? props.cellRenderer({ tableCellProps, fieldSettings: getSchemaForField(tableCellProps.dataKey) })
+                      : defaultCellRenderer(tableCellProps)
                   }
                 }}
                 dataKey={field}
