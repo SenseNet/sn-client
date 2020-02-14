@@ -4,7 +4,7 @@ import { ErrorBoundary } from './error-boundary'
 import AppProviders from './app-providers'
 import { NotificationComponent } from './NotificationComponent'
 import { Dialogs } from './dialogs'
-import { AppNavigator } from './app-navigator'
+import { MainRouter } from './MainRouter'
 
 export function App() {
   return (
@@ -12,7 +12,7 @@ export function App() {
       <ErrorBoundary>
         <AppProviders>
           <CssBaseline />
-          <AppNavigator />
+          <MainRouter />
           <NotificationComponent />
           <Dialogs />
         </AppProviders>

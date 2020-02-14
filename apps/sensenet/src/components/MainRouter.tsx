@@ -1,11 +1,13 @@
-import { LoadSettingsContextProvider, RepositoryContext } from '@sensenet/hooks-react'
+import { LoadSettingsContextProvider } from '@sensenet/hooks-react'
 import React, { lazy, Suspense, useEffect, useRef } from 'react'
 import { Route, Switch, useHistory } from 'react-router-dom'
+import { useRepoState } from '../services'
 import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './FullScreenLoader'
-import { WopiPage } from './wopi-page'
 import { DesktopLayout } from './layout/DesktopLayout'
+import { AuthCallback } from './login/auth-callback'
+import { WopiPage } from './wopi-page'
 
 const ExploreComponent = lazy(async () => await import(/* webpackChunkName: "content" */ './content'))
 const DashboardComponent = lazy(async () => await import(/* webpackChunkName: "dashboard" */ './dashboard'))
@@ -29,6 +31,7 @@ const PersonalSettingsEditor = lazy(
 export const MainRouter = () => {
   const previousLocation = useRef<string>()
   const history = useHistory()
+  const repository = useRepoState().getCurrentRepository()
 
   useEffect(() => {
     const listen = history.listen(location => {
@@ -49,6 +52,7 @@ export const MainRouter = () => {
 
   return (
     <ErrorBoundary FallbackComponent={ErrorBoundaryWithDialogs}>
+      <AuthCallback repoUrl={repository!.configuration.repositoryUrl} />
       <div style={{ width: '100%', height: '100%', boxSizing: 'border-box', position: 'relative' }}>
         <Suspense fallback={<FullScreenLoader />}>
           <Route path="/personalSettings">
@@ -99,16 +103,12 @@ export const MainRouter = () => {
             </Route>
 
             <Route path="/:repo/dashboard/:dashboardName?">
-              <RepositoryContext.Consumer>
-                {repo => <DashboardComponent repository={repo} />}
-              </RepositoryContext.Consumer>
+              <DashboardComponent repository={repository} />
             </Route>
 
             <Route path="/:repo/" exact>
               <DesktopLayout>
-                <RepositoryContext.Consumer>
-                  {repo => <DashboardComponent repository={repo} />}
-                </RepositoryContext.Consumer>
+                <DashboardComponent repository={repository} />
               </DesktopLayout>
             </Route>
 

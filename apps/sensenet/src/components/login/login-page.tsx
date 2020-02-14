@@ -1,14 +1,13 @@
 import { Button, Container, createStyles, Grid, makeStyles, TextField, Theme, Typography } from '@material-ui/core'
-import { OidcRoutes, useAuthentication, useInjector } from '@sensenet/hooks-react'
-import React, { useEffect, useState } from 'react'
+import { useAuthentication, useInjector } from '@sensenet/hooks-react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { OIDCAuthenticationService, Repository } from '@sensenet/client-core'
 import snLogo from '../../assets/sensenet-icon-32.png'
 import { useLocalization, usePersonalSettings } from '../../hooks'
-import { PersonalSettings, useRepoState } from '../../services'
-import { FullScreenLoader } from '../FullScreenLoader'
+import { PersonalSettings } from '../../services'
 import { getAuthService } from '../../services/auth-service'
-import { applicationPaths } from '../../application-paths'
+import { FullScreenLoader } from '../FullScreenLoader'
+import { AuthCallback } from './auth-callback'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,19 +25,6 @@ export function LoginPage() {
   const localization = useLocalization().login
   const { login, isLoading } = useAuthentication()
   const [url, setUrl] = useState('')
-  const [authService, setAuthService] = useState<OIDCAuthenticationService>()
-  const { addRepository } = useRepoState()
-
-  useEffect(() => {
-    async function fetchAuthService() {
-      if (!personalSettings.lastRepository) {
-        return
-      }
-      const service = await getAuthService(personalSettings.lastRepository)
-      setAuthService(service)
-    }
-    fetchAuthService()
-  }, [personalSettings.lastRepository])
 
   const handleSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault()
@@ -48,30 +34,9 @@ export function LoginPage() {
     login(`${window.location.origin}/${btoa(url)}`, service)
   }
 
-  const loginSuccessCallback = async (returnUrl: string) => {
-    if (!authService) {
-      console.log('no auth service available')
-      return
-    }
-    const accessToken = await authService.getAccessToken()
-    addRepository({
-      currentUser: { Name: 'Admin' } as any,
-      isActive: true,
-      isOnline: true,
-      repository: new Repository({ repositoryUrl: personalSettings.lastRepository, token: accessToken }),
-    })
-    window.location.replace(returnUrl)
-  }
-
   return (
     <div>
-      {authService ? (
-        <OidcRoutes
-          authService={authService}
-          loginCallback={{ successCallback: loginSuccessCallback, url: applicationPaths.loginCallback }}
-          logoutCallback={{ url: applicationPaths.logOutCallback }}
-        />
-      ) : null}
+      {personalSettings.lastRepository ? <AuthCallback repoUrl={personalSettings.lastRepository} /> : null}
       <Grid container={true} direction="row">
         <Container maxWidth="lg" className={classes.topbar}>
           <Link to="/">

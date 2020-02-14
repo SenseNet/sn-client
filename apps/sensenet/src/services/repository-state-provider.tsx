@@ -55,12 +55,14 @@ export function RepoStateProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     async function getRepo() {
       if (!currentRepoUrl) {
+        setIsLoading(false)
         return
       }
       setIsLoading(true)
       const authService = await getAuthService(currentRepoUrl)
       const user = await authService.getUser()
-      if (!user) {
+      const token = await authService.getAccessToken()
+      if (!user || !token) {
         setIsLoading(false)
         return
       }
@@ -71,7 +73,7 @@ export function RepoStateProvider({ children }: { children: React.ReactNode }) {
         state: {
           isActive: true,
           isOnline: true,
-          repository: new Repository({ repositoryUrl: currentRepoUrl }),
+          repository: new Repository({ repositoryUrl: currentRepoUrl, token }),
           currentUser: { Name: user?.preferred_username ?? 'Visitor' } as any,
         },
       })
