@@ -12,7 +12,6 @@ import {
 import { LocalizationContext, ResponsiveContext } from '../../context'
 import { setupModel } from '../../services/MonacoModels/PersonalSettingsModel'
 import { defaultSettings, PersonalSettings } from '../../services/PersonalSettings'
-import { RepositoryManager } from '../../services/RepositoryManager'
 import { useDialog } from '../dialogs'
 import { TextEditor } from './TextEditor'
 
@@ -21,6 +20,7 @@ const editorContent: any = {
   Name: `PersonalSettings`,
 }
 
+// TODO: revisit this after repository refactor
 export function SettingsEditor() {
   const [showDefaults, setShowDefaults] = useState(false)
   const { openDialog, closeLastDialog } = useDialog()
@@ -39,12 +39,12 @@ export function SettingsEditor() {
   }, [localization.values, repo])
 
   const callBack = async () => {
-    const rm = injector.getInstance(RepositoryManager)
-    const logoutPromises = service.effectiveValue
-      .getValue()
-      .repositories.map(repoEntry => rm.getRepository(repoEntry.url).authentication.logout())
+    // const rm = injector.getInstance(RepositoryManager)
+    // const logoutPromises = service.effectiveValue
+    //   .getValue()
+    //   .repositories.map(repoEntry => rm.getRepository(repoEntry.url).authentication.logout())
 
-    await Promise.all(logoutPromises)
+    // await Promise.all(logoutPromises)
     eventService.dispose() // ???
     service.setPersonalSettingsValue({})
     closeLastDialog()

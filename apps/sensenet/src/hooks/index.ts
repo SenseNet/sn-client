@@ -1,5 +1,4 @@
 export * from './use-command-palette'
-export * from './use-content-routing'
 export * from './use-drawer-items'
 export * from './use-event-service'
 export * from './use-loadContent'

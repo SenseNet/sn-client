@@ -11,9 +11,10 @@ import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import clsx from 'clsx'
 import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
-import { ResponsivePersonalSetttings, useRepository } from '../../context'
+import { ResponsivePersonalSetttings } from '../../context'
 import { AddButton } from '../AddButton'
 import { SearchButton } from '../search-button'
+import { useRepoState } from '../../services'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -71,7 +72,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const classes = useStyles()
   const settings = useContext(ResponsivePersonalSetttings)
   const selectionService = useSelectionService()
-  const { repository } = useRepository()
+  const repository = useRepoState().getCurrentRepository()
   const [currentComponent, setCurrentComponent] = useState(selectionService.activeContent.getValue())
   const [currentPath, setCurrentPath] = useState('')
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')

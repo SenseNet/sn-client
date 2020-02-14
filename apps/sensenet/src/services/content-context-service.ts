@@ -11,7 +11,7 @@ export type RouteType =
   | 'WopiEdit'
   | 'WopiRead'
 
-export class ContentContextProvider {
+export class ContentContextService {
   public getMonacoLanguage(content: GenericContent) {
     if (
       this.repository.schemas.isContentFromType<Settings>(content, 'Settings') ||

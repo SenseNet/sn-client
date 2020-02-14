@@ -1,11 +1,9 @@
-import { InjectorContext, LoggerContextProvider, SessionContextProvider } from '@sensenet/hooks-react'
+import { InjectorContext, LoggerContextProvider } from '@sensenet/hooks-react'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import {
-  ContentRoutingContextProvider,
   LocalizationProvider,
   PersonalSettingsContextProvider,
-  RepositoryContextProvider,
   ResponsiveContextProvider,
   ThemeProvider,
 } from '../context'
@@ -18,9 +16,9 @@ import {
   InFolderSearchCommandProvider,
   NavigationCommandProvider,
   QueryCommandProvider,
+  RepoStateProvider,
 } from '../services'
 import '../utils/errorToJson'
-import '../utils/InjectorExtensions'
 import { DialogProvider } from './dialogs/dialog-provider'
 import { snInjector } from './sn-injector'
 import theme from './theme'
@@ -47,17 +45,13 @@ export default function AppProviders({ children }: AppProvidersProps) {
         <PersonalSettingsContextProvider>
           <LocalizationProvider>
             <BrowserRouter>
-              <RepositoryContextProvider>
-                <ContentRoutingContextProvider>
-                  <SessionContextProvider>
-                    <ResponsiveContextProvider>
-                      <ThemeProvider theme={theme}>
-                        <DialogProvider>{children}</DialogProvider>
-                      </ThemeProvider>
-                    </ResponsiveContextProvider>
-                  </SessionContextProvider>
-                </ContentRoutingContextProvider>
-              </RepositoryContextProvider>
+              <RepoStateProvider>
+                <ResponsiveContextProvider>
+                  <ThemeProvider theme={theme}>
+                    <DialogProvider>{children}</DialogProvider>
+                  </ThemeProvider>
+                </ResponsiveContextProvider>
+              </RepoStateProvider>
             </BrowserRouter>
           </LocalizationProvider>
         </PersonalSettingsContextProvider>

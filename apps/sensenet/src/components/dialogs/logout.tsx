@@ -11,9 +11,9 @@ import { User } from '@sensenet/default-content-types'
 import { useAuthentication } from '@sensenet/hooks-react'
 import React from 'react'
 import { useLocalization } from '../../hooks'
-import authService from '../../services/auth-service'
+import { getAuthService } from '../../services/auth-service'
 import { Icon } from '../Icon'
-import { useRepository } from '../../context'
+import { useRepoState } from '../../services'
 import { useDialog } from './dialog-provider'
 
 export type LogoutDialogProps = {
@@ -23,8 +23,8 @@ export type LogoutDialogProps = {
 
 export function LogoutDialog({ userToLogout }: LogoutDialogProps) {
   const { closeLastDialog } = useDialog()
-  const { logout, isLoading } = useAuthentication({ authService })
-  const { repository } = useRepository()
+  const { logout, isLoading } = useAuthentication()
+  const repository = useRepoState().getCurrentRepository()
   const localization = useLocalization().logout
 
   if (!repository) {
@@ -68,8 +68,9 @@ export function LogoutDialog({ userToLogout }: LogoutDialogProps) {
           <DialogActions>
             <Button onClick={closeLastDialog}>{localization.logoutCancel}</Button>
             <Button
-              onClick={() => {
-                logout(window.location.origin, repository.configuration.repositoryUrl)
+              onClick={async () => {
+                const authService = await getAuthService(repository.configuration.repositoryUrl)
+                logout(window.location.origin, authService)
                 closeLastDialog()
               }}
               autoFocus={true}>

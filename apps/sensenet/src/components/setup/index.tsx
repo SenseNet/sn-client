@@ -11,20 +11,22 @@ import { Settings } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useRepository } from '@sensenet/hooks-react'
-import { useContentRouting, useLocalization } from '../../hooks'
+import { useLocalization } from '../../hooks'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
+import { ContentContextService, useRepoState } from '../../services'
 
 const SETUP_DOCS_URL = 'https://community.sensenet.com/docs/admin-ui/setup/'
 
 const createAnchorFromName = (displayName: string) => `#${displayName.replace('.', '-').toLocaleLowerCase()}`
 
+// TODO: refactor this out to a new file
 const WellKnownContentCard: React.FunctionComponent<{
   settings: Settings
   onContextMenu: (ev: React.MouseEvent) => void
 }> = ({ settings, onContextMenu }) => {
   const localization = useLocalization().settings
-  const contentRouter = useContentRouting()
+  const repo = useRepoState().getCurrentRepository()!
+  const contentContextService = new ContentContextService(repo)
 
   return (
     <Card
@@ -47,7 +49,7 @@ const WellKnownContentCard: React.FunctionComponent<{
         <Typography color="textSecondary">{(localization.descriptions as any)[settings.Path]}</Typography>
       </CardContent>
       <CardActions style={{ justifyContent: 'flex-end' }}>
-        <Link to={contentRouter.getPrimaryActionUrl(settings)} style={{ textDecoration: 'none' }}>
+        <Link to={contentContextService.getPrimaryActionUrl(settings)} style={{ textDecoration: 'none' }}>
           <Button size="small">{localization.edit}</Button>
         </Link>
         <a
@@ -63,9 +65,9 @@ const WellKnownContentCard: React.FunctionComponent<{
 }
 
 const Setup: React.StatelessComponent = () => {
-  const repo = useRepository()
+  const repo = useRepoState().getCurrentRepository()!
+  const contentContextService = new ContentContextService(repo)
   const localization = useLocalization().settings
-  const contentRouter = useContentRouting()
 
   const [wellKnownSettings, setWellKnownSettings] = useState<Settings[]>([])
   const [settings, setSettings] = useState<Settings[]>([])
@@ -135,7 +137,7 @@ const Setup: React.StatelessComponent = () => {
           <Typography variant="h5">{localization.otherSettings}</Typography>
           <List>
             {settings.map(s => (
-              <Link key={s.Id} to={contentRouter.getPrimaryActionUrl(s)} style={{ textDecoration: 'none' }}>
+              <Link key={s.Id} to={contentContextService.getPrimaryActionUrl(s)} style={{ textDecoration: 'none' }}>
                 <ListItem button={true}>
                   <ListItemText primary={s.DisplayName || s.Name} secondary={s.Path} />
                 </ListItem>

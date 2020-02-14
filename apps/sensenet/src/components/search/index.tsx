@@ -14,12 +14,12 @@ import {
   CurrentContentContext,
   LoadSettingsContext,
   useLogger,
-  useRepository,
 } from '@sensenet/hooks-react'
 import { ResponsivePersonalSetttings } from '../../context'
-import { useContentRouting, useLocalization, useSelectionService } from '../../hooks'
+import { useLocalization, useSelectionService } from '../../hooks'
 import { CollectionComponent, isReferenceField } from '../content-list'
 import { useDialog } from '../dialogs'
+import { ContentContextService, useRepoState } from '../../services'
 
 const loadCount = 20
 const searchDebounceTime = 400
@@ -38,8 +38,8 @@ export const decodeQueryData = (encoded?: string) =>
   encoded ? (JSON.parse(atob(decodeURIComponent(encoded))) as QueryData) : { term: '' }
 
 const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }>> = props => {
-  const repo = useRepository()
-  const contentRouter = useContentRouting()
+  const repo = useRepoState().getCurrentRepository()!
+  const contentContextService = new ContentContextService(repo)
   const { openDialog } = useDialog()
   const logger = useLogger('Search')
   const [queryData, setQueryData] = useState<QueryData>(decodeQueryData(props.match.params.queryData))
@@ -204,10 +204,10 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
               fieldsToDisplay={queryData.fieldsToDisplay}
               parentIdOrPath={0}
               onParentChange={p => {
-                props.history.push(contentRouter.getPrimaryActionUrl(p))
+                props.history.push(contentContextService.getPrimaryActionUrl(p))
               }}
               onActivateItem={p => {
-                props.history.push(contentRouter.getPrimaryActionUrl(p))
+                props.history.push(contentContextService.getPrimaryActionUrl(p))
               }}
               onTabRequest={() => {
                 /** */

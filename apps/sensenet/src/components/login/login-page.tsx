@@ -1,12 +1,14 @@
 import { Button, Container, createStyles, Grid, makeStyles, TextField, Theme, Typography } from '@material-ui/core'
-import { useAuthentication, useInjector } from '@sensenet/hooks-react'
-import React, { useState } from 'react'
+import { OidcRoutes, useAuthentication, useInjector } from '@sensenet/hooks-react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { OIDCAuthenticationService, Repository } from '@sensenet/client-core'
 import snLogo from '../../assets/sensenet-icon-32.png'
-import { useLocalization } from '../../hooks'
-import { PersonalSettings } from '../../services'
+import { useLocalization, usePersonalSettings } from '../../hooks'
+import { PersonalSettings, useRepoState } from '../../services'
 import { FullScreenLoader } from '../FullScreenLoader'
-import authService from '../../services/auth-service'
+import { getAuthService } from '../../services/auth-service'
+import { applicationPaths } from '../../application-paths'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -19,21 +21,57 @@ const useStyles = makeStyles((theme: Theme) =>
 export function LoginPage() {
   const classes = useStyles()
   const injector = useInjector()
-  const personalSettings = injector.getInstance(PersonalSettings).userValue.getValue()
+  const personalSettings = usePersonalSettings()
   const settingsManager = injector.getInstance(PersonalSettings)
   const localization = useLocalization().login
-  const { login, isLoading } = useAuthentication({ authService })
+  const { login, isLoading } = useAuthentication()
   const [url, setUrl] = useState('')
+  const [authService, setAuthService] = useState<OIDCAuthenticationService>()
+  const { addRepository } = useRepoState()
 
-  const handleSubmit = (ev: React.FormEvent) => {
+  useEffect(() => {
+    async function fetchAuthService() {
+      if (!personalSettings.lastRepository) {
+        return
+      }
+      const service = await getAuthService(personalSettings.lastRepository)
+      setAuthService(service)
+    }
+    fetchAuthService()
+  }, [personalSettings.lastRepository])
+
+  const handleSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault()
     personalSettings.lastRepository = url
     settingsManager.setPersonalSettingsValue({ ...personalSettings })
-    login(`${window.location.origin}/${btoa(url)}`, url)
+    const service = await getAuthService(url)
+    login(`${window.location.origin}/${btoa(url)}`, service)
+  }
+
+  const loginSuccessCallback = async (returnUrl: string) => {
+    if (!authService) {
+      console.log('no auth service available')
+      return
+    }
+    const accessToken = await authService.getAccessToken()
+    addRepository({
+      currentUser: { Name: 'Admin' } as any,
+      isActive: true,
+      isOnline: true,
+      repository: new Repository({ repositoryUrl: personalSettings.lastRepository, token: accessToken }),
+    })
+    window.location.replace(returnUrl)
   }
 
   return (
     <div>
+      {authService ? (
+        <OidcRoutes
+          authService={authService}
+          loginCallback={{ successCallback: loginSuccessCallback, url: applicationPaths.loginCallback }}
+          logoutCallback={{ url: applicationPaths.logOutCallback }}
+        />
+      ) : null}
       <Grid container={true} direction="row">
         <Container maxWidth="lg" className={classes.topbar}>
           <Link to="/">

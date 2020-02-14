@@ -1,4 +1,3 @@
-import { LeveledLogEntry, LogLevel } from '@sensenet/client-utils'
 import IconButton from '@material-ui/core/IconButton'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -7,15 +6,15 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import CompareArrows from '@material-ui/icons/CompareArrows'
 import OpenInNewTwoTone from '@material-ui/icons/OpenInNewTwoTone'
+import { LeveledLogEntry, LogLevel } from '@sensenet/client-utils'
+import { RepositoryContext } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { CurrentContentContext, RepositoryContext, useInjector } from '@sensenet/hooks-react'
-import { ContentRoutingContext, ContentRoutingContextProvider } from '../../context'
 import { useLocalization } from '../../hooks'
-import { RepositoryManager } from '../../services/RepositoryManager'
 import { Icon } from '../Icon'
 import { EventListFilterContext } from './filter-context'
 
+// TODO: revisit this after repository refactor
 export const List: React.FunctionComponent<{
   values: Array<LeveledLogEntry<any>>
   style?: React.CSSProperties
@@ -25,7 +24,7 @@ export const List: React.FunctionComponent<{
 
   const localization = useLocalization().eventList.list
 
-  const repositoryManager = useInjector().getInstance(RepositoryManager)
+  // const repositoryManager = useInjector().getInstance(RepositoryManager)
 
   useEffect(() => {
     setEffectiveValues(
@@ -64,8 +63,8 @@ export const List: React.FunctionComponent<{
               <TableCell>{row.scope}</TableCell>
               <TableCell>
                 {row.data && row.data.relatedContent && row.data.relatedRepository ? (
-                  <RepositoryContext.Provider value={repositoryManager.getRepository(row.data.relatedRepository)}>
-                    <ContentRoutingContextProvider>
+                  <RepositoryContext.Provider value={row.data.relatedRepository}>
+                    {/* <ContentRoutingContextProvider>
                       <ContentRoutingContext.Consumer>
                         {ctx => (
                           <CurrentContentContext.Provider value={row.data.relatedContent}>
@@ -78,7 +77,7 @@ export const List: React.FunctionComponent<{
                           </CurrentContentContext.Provider>
                         )}
                       </ContentRoutingContext.Consumer>
-                    </ContentRoutingContextProvider>
+                    </ContentRoutingContextProvider> */}
                   </RepositoryContext.Provider>
                 ) : null}
               </TableCell>

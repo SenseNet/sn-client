@@ -2,11 +2,11 @@ import { Injectable, Injector } from '@sensenet/client-utils'
 import { ConstantContent } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
-import { ContentContextProvider } from '../ContentContextProvider'
 import { LocalizationService } from '../LocalizationService'
 import { PersonalSettings } from '../PersonalSettings'
 import { CommandPaletteItem } from '../../hooks'
 import { encodeQueryData } from '../../components/search'
+import { ContentContextService } from '../content-context-service'
 
 @Injectable({ lifetime: 'singleton' })
 export class QueryCommandProvider implements CommandProvider {
@@ -21,7 +21,7 @@ export class QueryCommandProvider implements CommandProvider {
   }
 
   public async getItems(options: SearchOptions): Promise<CommandPaletteItem[]> {
-    const ctx = new ContentContextProvider(options.repository)
+    const ctx = new ContentContextService(options.repository)
     const extendedQuery = this.personalSettings.effectiveValue
       .getValue()
       .default.commandPalette.wrapQuery.replace('{0}', options.term)

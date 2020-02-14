@@ -1,14 +1,13 @@
-import { LogLevel, sleepAsync } from '@sensenet/client-utils'
 import amber from '@material-ui/core/colors/amber'
 import red from '@material-ui/core/colors/red'
 import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
 import Close from '@material-ui/icons/Close'
-import React, { useContext, useEffect, useState } from 'react'
+import { LogLevel, sleepAsync } from '@sensenet/client-utils'
 import { RepositoryContext, useInjector } from '@sensenet/hooks-react'
+import React, { useContext, useEffect, useState } from 'react'
 import { ResponsiveContext } from '../context'
 import { EventLogEntry, EventService } from '../services/EventService'
-import { RepositoryManager } from '../services/RepositoryManager'
 import { Icon } from './Icon'
 
 export const getItemBackgroundColor = (item: EventLogEntry<any>) => {
@@ -47,9 +46,10 @@ export const getAutoHideDuration = (item: EventLogEntry<any>) => {
   }
 }
 
+// TODO: revisit this after repository refactor
 export const NotificationComponent: React.FunctionComponent = () => {
   const injector = useInjector()
-  const repoManager = injector.getInstance(RepositoryManager)
+  // const repoManager = injector.getInstance(RepositoryManager)
   const eventService = injector.getInstance(EventService)
   const [values, setValues] = useState<Array<[string, Array<EventLogEntry<any>>]>>([])
   const [dismisses, setDismisses] = useState<string[]>([])
@@ -92,7 +92,7 @@ export const NotificationComponent: React.FunctionComponent = () => {
             autoHideDuration={(item.data && item.data.autoHideDuration) || getAutoHideDuration(item)}
             message={
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <RepositoryContext.Provider value={repoManager.getRepository(item.data.relatedRepository)}>
+                <RepositoryContext.Provider value={item.data.relatedRepository}>
                   <Icon item={item.data.relatedContent || item} style={{ marginRight: '1em' }} />
                 </RepositoryContext.Provider>
                 <div

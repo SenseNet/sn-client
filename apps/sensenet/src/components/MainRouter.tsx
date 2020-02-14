@@ -1,10 +1,9 @@
 import { LoadSettingsContextProvider, RepositoryContext } from '@sensenet/hooks-react'
 import React, { lazy, Suspense, useEffect, useRef } from 'react'
-import { Switch, useHistory } from 'react-router'
+import { Route, Switch, useHistory } from 'react-router-dom'
 import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './FullScreenLoader'
-import AuthorizedRoute from './login/authorized-route'
 import { WopiPage } from './wopi-page'
 import { DesktopLayout } from './layout/DesktopLayout'
 
@@ -52,72 +51,72 @@ export const MainRouter = () => {
     <ErrorBoundary FallbackComponent={ErrorBoundaryWithDialogs}>
       <div style={{ width: '100%', height: '100%', boxSizing: 'border-box', position: 'relative' }}>
         <Suspense fallback={<FullScreenLoader />}>
-          <AuthorizedRoute path="/personalSettings">
+          <Route path="/personalSettings">
             <PersonalSettingsEditor />
-          </AuthorizedRoute>
-          <AuthorizedRoute path="/events/:eventGuid?">
+          </Route>
+          <Route path="/events/:eventGuid?">
             <EventListComponent />
-          </AuthorizedRoute>
+          </Route>
           <Switch>
-            <AuthorizedRoute path="/:repo/browse/:browseData?">
+            <Route path="/:repo/browse/:browseData?">
               <ExploreComponent />
-            </AuthorizedRoute>
+            </Route>
 
-            <AuthorizedRoute path="/:repo/search/:queryData?">
+            <Route path="/:repo/search/:queryData?">
               <LoadSettingsContextProvider>
                 <SearchComponent />
               </LoadSettingsContextProvider>
-            </AuthorizedRoute>
+            </Route>
 
-            <AuthorizedRoute path="/:repo/saved-queries">
+            <Route path="/:repo/saved-queries">
               <LoadSettingsContextProvider>
                 <SavedQueriesComponent />
               </LoadSettingsContextProvider>
-            </AuthorizedRoute>
+            </Route>
 
-            <AuthorizedRoute path="/:repo/setup">
+            <Route path="/:repo/setup">
               <SetupComponent />
-            </AuthorizedRoute>
+            </Route>
 
-            <AuthorizedRoute path="/:repo/trash">
+            <Route path="/:repo/trash">
               <TrashComponent />
-            </AuthorizedRoute>
+            </Route>
 
-            <AuthorizedRoute path="/:repo/editBinary/:contentId?">
+            <Route path="/:repo/editBinary/:contentId?">
               <EditBinary />
-            </AuthorizedRoute>
+            </Route>
 
-            <AuthorizedRoute path="/:repo/editProperties/:contentId?">
+            <Route path="/:repo/editProperties/:contentId?">
               <EditProperties />
-            </AuthorizedRoute>
+            </Route>
 
-            <AuthorizedRoute path="/:repo/preview/:documentId?">
+            <Route path="/:repo/preview/:documentId?">
               <DocumentViewerComponent previousLocation={previousLocation.current} />{' '}
-            </AuthorizedRoute>
+            </Route>
 
-            <AuthorizedRoute path="/:repo/wopi/:documentId/:action?">
+            <Route path="/:repo/wopi/:documentId/:action?">
               <WopiPage />
-            </AuthorizedRoute>
+            </Route>
 
-            <AuthorizedRoute path="/:repo/dashboard/:dashboardName?">
+            <Route path="/:repo/dashboard/:dashboardName?">
               <RepositoryContext.Consumer>
                 {repo => <DashboardComponent repository={repo} />}
               </RepositoryContext.Consumer>
-            </AuthorizedRoute>
+            </Route>
 
-            <AuthorizedRoute path="/:repo/" exact>
+            <Route path="/:repo/" exact>
               <DesktopLayout>
                 <RepositoryContext.Consumer>
                   {repo => <DashboardComponent repository={repo} />}
                 </RepositoryContext.Consumer>
               </DesktopLayout>
-            </AuthorizedRoute>
+            </Route>
 
-            <AuthorizedRoute path="/" exact>
+            <Route path="/" exact>
               <DesktopLayout>
                 <DashboardComponent />
               </DesktopLayout>
-            </AuthorizedRoute>
+            </Route>
           </Switch>
         </Suspense>
       </div>

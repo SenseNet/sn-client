@@ -4,8 +4,8 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger } from '@sensenet/hooks-react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router'
-import { ResponsivePersonalSetttings, useRepository } from '../../context'
-import { useContentRouting } from '../../hooks'
+import { ResponsivePersonalSetttings } from '../../context'
+import { ContentContextService, useRepoState } from '../../services'
 import Commander from './Commander'
 import { Explore } from './Explore'
 import { SimpleList } from './Simple'
@@ -24,7 +24,7 @@ export const encodeBrowseData = (data: BrowseData) => encodeURIComponent(btoa(JS
 export const decodeBrowseData = (encoded: string) => JSON.parse(atob(decodeURIComponent(encoded))) as BrowseData
 
 export const Content = () => {
-  const { repository } = useRepository()
+  const repository = useRepoState().getCurrentRepository()
   const match = useRouteMatch<{ browseData: string }>()
   const history = useHistory()
   const settings = useContext(ResponsivePersonalSetttings)
@@ -33,7 +33,6 @@ export const Content = () => {
   const [browseData, setBrowseData] = useState<BrowseData>({
     type: settings.content.browseType,
   })
-  const contentRouter = useContentRouting()
 
   useEffect(() => {
     try {
@@ -88,9 +87,12 @@ export const Content = () => {
 
   const openItem = useCallback(
     (itm: GenericContent) => {
-      history.push(contentRouter.getPrimaryActionUrl(itm))
+      if (!repository) {
+        return
+      }
+      history.push(new ContentContextService(repository).getPrimaryActionUrl(itm))
     },
-    [contentRouter, history],
+    [history, repository],
   )
 
   return (

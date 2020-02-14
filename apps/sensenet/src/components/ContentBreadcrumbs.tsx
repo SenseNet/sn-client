@@ -1,16 +1,16 @@
 import React, { useContext } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router'
 import { CurrentAncestorsContext, CurrentContentContext } from '@sensenet/hooks-react'
 import { GenericContent } from '@sensenet/default-content-types'
-import { useContentRouting } from '../hooks'
+import { useHistory } from 'react-router'
+import { ContentContextService, useRepoState } from '../services'
 import Breadcrumbs, { BreadcrumbItem } from './Breadcrumbs'
 
-export const ContentBreadcrumbsComponent: React.FunctionComponent<RouteComponentProps & {
-  onItemClick?: (item: BreadcrumbItem<GenericContent>) => void
-}> = props => {
+export const ContentBreadcrumbs = (props: { onItemClick?: (item: BreadcrumbItem<GenericContent>) => void }) => {
   const ancestors = useContext(CurrentAncestorsContext)
   const parent = useContext(CurrentContentContext)
-  const contentRouter = useContentRouting()
+  const repository = useRepoState().getCurrentRepository()!
+  const history = useHistory()
+  const contentContextService = new ContentContextService(repository)
 
   return (
     <Breadcrumbs
@@ -18,24 +18,21 @@ export const ContentBreadcrumbsComponent: React.FunctionComponent<RouteComponent
         ...ancestors.map(content => ({
           displayName: content.DisplayName || content.Name,
           title: content.Path,
-          url: contentRouter.getPrimaryActionUrl(content),
+          url: contentContextService.getPrimaryActionUrl(content),
           content,
         })),
         {
           displayName: parent.DisplayName || parent.Name,
           title: parent.Path,
-          url: contentRouter.getPrimaryActionUrl(parent),
+          url: contentContextService.getPrimaryActionUrl(parent),
           content: parent,
         },
       ]}
       onItemClick={(_ev, item) => {
         props.onItemClick
           ? props.onItemClick(item)
-          : props.history.push(contentRouter.getPrimaryActionUrl(item.content))
+          : history.push(contentContextService.getPrimaryActionUrl(item.content))
       }}
     />
   )
 }
-
-const routed = withRouter(ContentBreadcrumbsComponent)
-export { routed as ContentBreadcrumbs }

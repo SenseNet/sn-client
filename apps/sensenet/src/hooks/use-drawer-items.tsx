@@ -9,10 +9,11 @@ import {
   DrawerItem as DrawerItemSetting,
   QueryDrawerItem,
 } from '../services/PersonalSettings'
-import { ResponsivePersonalSetttings, useRepository } from '../context'
+import { ResponsivePersonalSetttings } from '../context'
 import { encodeBrowseData } from '../components/content'
 import { encodeQueryData } from '../components/search'
 import DefaultLocalization from '../localization/default'
+import { useRepoState } from '../services'
 import { useLocalization } from '.'
 
 export interface DrawerItem {
@@ -30,7 +31,7 @@ type EveryDrawerType = ContentDrawerItem | QueryDrawerItem | BuiltinDrawerItem |
 export const useDrawerItems = () => {
   const settings = useContext(ResponsivePersonalSetttings)
   const localization = useLocalization().drawer
-  const { repository } = useRepository()
+  const repository = useRepoState().getCurrentRepository()
   const logger = useLogger('use-drawer-items')
 
   const [drawerItems, setDrawerItems] = useState<DrawerItem[]>([])

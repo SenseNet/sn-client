@@ -1,15 +1,16 @@
-import { useDownload, useLogger, useRepository } from '@sensenet/hooks-react'
 import { GenericContent } from '@sensenet/default-content-types'
+import { useDownload, useLogger } from '@sensenet/hooks-react'
 import { useHistory } from 'react-router'
-import { useContentRouting, useLoadContent } from '../../hooks'
+import { useLoadContent } from '../../hooks'
+import { ContentContextService, useRepoState } from '../../services'
 import { useDialog } from '../dialogs'
 import { contextMenuODataOptions } from './context-menu-odata-options'
 
 export function useContextMenuActions(content: GenericContent, setActions: (content: GenericContent) => void) {
   const logger = useLogger('context-menu')
   const history = useHistory()
-  const repo = useRepository()
-  const routing = useContentRouting()
+  const repo = useRepoState().getCurrentRepository()!
+  const contentContextService = new ContentContextService(repo)
   const download = useDownload(content)
   const currentParent = useLoadContent({ idOrPath: content.ParentId! }).content
   const { openDialog } = useDialog()
@@ -37,7 +38,7 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
         break
       }
       case 'Preview':
-        history.push(routing.getPrimaryActionUrl(content))
+        history.push(contentContextService.getPrimaryActionUrl(content))
         break
       case 'CheckOut': {
         try {
