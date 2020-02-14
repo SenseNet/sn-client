@@ -33,6 +33,8 @@ exports[`NewDialogBody NewDialogBody snapshot test 1`] = `
           },
           "configuration": RepositoryConfiguration {
             "chunkSize": 10485760,
+            "defaultEnableAutofilters": false,
+            "defaultEnableLifespanfilter": false,
             "defaultExpand": undefined,
             "defaultInlineCount": "allpages",
             "defaultMetadata": "no",

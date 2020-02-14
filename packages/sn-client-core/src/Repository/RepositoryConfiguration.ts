@@ -73,6 +73,18 @@ export class RepositoryConfiguration {
   public chunkSize = 10485760 // 10 mb
 
   /**
+   * This field sets up a default OData enableautofilters parameter
+   */
+
+  public defaultEnableAutofilters = false
+
+  /**
+   * This field sets up a default OData enablelifespan parameter
+   */
+
+  public defaultEnableLifespanfilter = false
+
+  /**
    * An array of schemas
    */
   public schemas: Schema[] = SchemaStore.map(s => s)
