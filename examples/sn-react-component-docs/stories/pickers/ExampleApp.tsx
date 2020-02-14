@@ -11,7 +11,7 @@ import {
 import React from 'react'
 
 const testRepository = new Repository({
-  repositoryUrl: 'https://dmsservice.demo.sensenet.com',
+  repositoryUrl: 'https://dev.demo.sensenet.com',
   requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'DisplayName'],
   schemas: SchemaStore,
   sessionLifetime: 'expiration',
@@ -23,8 +23,8 @@ export const ExampleApp = () => {
       return (
         <p>
           You need to <strong>login</strong> to{' '}
-          <a href="https://dmsservice.demo.sensenet.com" target="_blank" rel="noopener noreferrer">
-            https://dmsservice.demo.sensenet.com
+          <a href="https://dev.demo.sensenet.com" target="_blank" rel="noopener noreferrer">
+            https://dev.demo.sensenet.com
           </a>{' '}
           to see this component working!
         </p>
