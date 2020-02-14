@@ -535,10 +535,10 @@ describe('Virtualized Table component', () => {
               orderDirection="asc"
               icons={{}}
               cellRenderer={props => {
-                if (props.dataKey === 'Name') {
+                if (props.tableCellProps.dataKey === 'Name') {
                   return (
                     <td>
-                      <div className="custom-field">{props.rowData[props.dataKey]}</div>
+                      <div className="custom-field">{props.tableCellProps.rowData[props.tableCellProps.dataKey]}</div>
                     </td>
                   )
                 }

@@ -82,15 +82,18 @@ export const ReactVirtualizedTable: React.FunctionComponent<ReactVirtualizedTabl
 
   useEffect(() => {
     props.onActiveItemChange && props.onActiveItemChange(activeContent)
-  }, [activeContent, props])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeContent])
 
   useEffect(() => {
     isFocused && props.onFocus && props.onFocus()
-  }, [isFocused, props])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFocused])
 
   useEffect(() => {
     props.onSelectionChange && props.onSelectionChange(selected)
-  }, [props, selected])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected])
 
   useEffect(() => {
     const fields = props.fieldsToDisplay || personalSettings.content.fields
@@ -99,7 +102,8 @@ export const ReactVirtualizedTable: React.FunctionComponent<ReactVirtualizedTabl
       expand: ['CheckedOutTo', ...fields.filter(fieldName => isReferenceField(fieldName, repo))],
       orderby: [[currentOrder as any, currentDirection as any]],
     })
-  }, [currentDirection, currentOrder, loadSettings, personalSettings.content.fields, props.fieldsToDisplay, repo])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentDirection, currentOrder, personalSettings.content.fields, props.fieldsToDisplay, repo])
 
   useEffect(() => {
     setSelected([])
@@ -358,7 +362,14 @@ export const ReactVirtualizedTable: React.FunctionComponent<ReactVirtualizedTabl
           }}
           ref={props.containerRef}
           onKeyDown={handleKeyDown}>
-          <Paper style={{ height: '100%', width: '100%', background: 'transparent', position: 'relative' }}>
+          <Paper
+            style={{
+              height: '100%',
+              width: '100%',
+              background: 'transparent',
+              position: 'relative',
+              overflowY: 'hidden',
+            }}>
             <VirtualizedTable
               active={activeContent}
               cellRenderer={fieldComponentFunc}

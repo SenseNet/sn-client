@@ -7,7 +7,6 @@ import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { generatePath, useHistory, useRouteMatch } from 'react-router'
-import Semaphore from 'semaphore-async-await'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
@@ -47,9 +46,6 @@ export const Search = () => {
   const [queryData, setQueryData] = useState<QueryData>(decodeQueryData(match.params.queryData))
   const selectionService = useSelectionService()
   const localization = useLocalization().search
-  const [scrollToken, setScrollToken] = useState(Math.random())
-  const [scrollLock] = useState(new Semaphore(1))
-  const [loadLock] = useState(new Semaphore(1))
   const requestReload = useCallback(
     debounce((qd: QueryData, term: string) => {
       setQueryData({ ...qd, term })
@@ -67,17 +63,7 @@ export const Search = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [logger, match.params.queryData])
 
-  const [requestScroll] = useState(() =>
-    debounce((div: HTMLDivElement, total: number, loaded: number, update: (token: number) => void) => {
-      const table = div.querySelector('table')
-      if (table && total > loaded && table.getBoundingClientRect().bottom <= window.innerHeight) {
-        update(Math.random())
-      }
-    }, 250),
-  )
-
   const [result, setResult] = useState<GenericContent[]>([])
-  const [count, setCount] = useState(0)
   const [error, setError] = useState('')
   const loadSettingsContext = useContext(LoadSettingsContext)
   const personalSettings = useContext(ResponsivePersonalSetttings)
@@ -85,7 +71,6 @@ export const Search = () => {
   useEffect(() => {
     const ac = new AbortController()
     ;(async () => {
-      await loadLock.acquire()
       try {
         setResult([])
         history.push(generatePath(match.path, { ...match.params, queryData: encodeQueryData(queryData) }))
@@ -102,44 +87,23 @@ export const Search = () => {
         })
         setError('')
         setResult(r.d.results)
-        setCount(r.d.__count)
       } catch (e) {
         if (!ac.signal.aborted) {
           setError(e.message)
           setResult([])
           logger.warning({ message: 'Error executing search', data: { details: { error: e }, isDismissed: true } })
         }
-      } finally {
-        loadLock.release()
       }
     })()
     // loadSettings should be excluded :(
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [queryData.term, repo, personalSettings.commandPalette.wrapQuery, logger])
-
-  useEffect(() => {
-    ;(async () => {
-      try {
-        await scrollLock.acquire()
-        const response = await repo.loadCollection({
-          path: ConstantContent.PORTAL_ROOT.Path,
-          oDataOptions: {
-            ...loadSettingsContext.loadChildrenSettings,
-            select: ['Actions', ...(queryData.fieldsToDisplay || [])],
-            expand: ['Actions', ...(queryData.fieldsToDisplay || []).filter(f => isReferenceField(f, repo))],
-            query: personalSettings.commandPalette.wrapQuery.replace('{0}', queryData.term),
-            skip: result.length,
-          },
-        })
-        setResult([...result, ...response.d.results])
-        setCount(response.d.__count)
-      } finally {
-        scrollLock.release()
-      }
-    })()
-    // Infinite loader fx, only lock-related stuff should be included as dependency!
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scrollLock, scrollToken])
+  }, [
+    loadSettingsContext.loadChildrenSettings,
+    queryData.term,
+    repo,
+    personalSettings.commandPalette.wrapQuery,
+    logger,
+  ])
 
   return (
     <div style={{ padding: '1em 0 0 1em', height: '100%', width: '100%' }}>
@@ -184,11 +148,8 @@ export const Search = () => {
           <CurrentAncestorsContext.Provider value={[]}>
             <ReactVirtualizedTable
               style={{
-                height: 'calc(100% - 33px)',
+                height: queryData.title === 'Content Types' ? 'calc(100% - 33px)' : 'calc(100% - 100px)',
                 overflow: 'auto',
-              }}
-              containerProps={{
-                onScroll: ev => requestScroll(ev.currentTarget, count, result.length, setScrollToken),
               }}
               enableBreadcrumbs={false}
               fieldsToDisplay={queryData.fieldsToDisplay}

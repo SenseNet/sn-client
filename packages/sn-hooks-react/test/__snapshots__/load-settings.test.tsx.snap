@@ -4,7 +4,7 @@ exports[`LoadSettings matches snapshot 1`] = `
 <ContextProvider
   value={
     Object {
-      "loadAncestorsSettings": undefined,
+      "loadAncestorsSettings": Object {},
       "loadChildrenSettings": Object {
         "expand": Array [
           "CreatedBy",
@@ -17,7 +17,7 @@ exports[`LoadSettings matches snapshot 1`] = `
         ],
         "select": "all",
       },
-      "loadSettings": undefined,
+      "loadSettings": Object {},
       "setLoadAncestorsSettings": [Function],
       "setLoadChildrenSettings": [Function],
       "setLoadSettings": [Function],
