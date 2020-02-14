@@ -85,16 +85,15 @@ export class Repository implements Disposable {
    * @param {RequestInfo} input The RequestInfo object
    * @param {RequestInit} init Optional init parameters
    */
-  public async fetch(info: RequestInfo, init?: RequestInit, awaitReadyState = true): Promise<Response> {
+  public async fetch(input: RequestInfo, init?: RequestInit, awaitReadyState = true): Promise<Response> {
     if (awaitReadyState) {
       await this.awaitReadyState()
     }
-    return await this.fetchMethod(
-      info,
-      init || {
-        credentials: 'include',
-      },
-    )
+    const request = new Request(input, init)
+    if (this.configuration.token) {
+      request.headers.append('Authorization', `Bearer ${this.configuration.token}`)
+    }
+    return await this.fetchMethod(request)
   }
 
   /**
