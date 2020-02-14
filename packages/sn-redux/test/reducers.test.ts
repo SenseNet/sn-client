@@ -1359,12 +1359,12 @@ describe('Reducers', () => {
     const state = {
       session: {
         repository: {
-          repositoryUrl: 'https://dmsservice.demo.sensenet.com',
+          repositoryUrl: 'https://dev.demo.sensenet.com',
         },
       },
     }
     it('should return the value of RepositoryUrl from the current state', () => {
-      expect(Reducers.getRepositoryUrl(state as any)).toBe('https://dmsservice.demo.sensenet.com')
+      expect(Reducers.getRepositoryUrl(state as any)).toBe('https://dev.demo.sensenet.com')
     })
   })
   describe('getSelectedContentIds', () => {

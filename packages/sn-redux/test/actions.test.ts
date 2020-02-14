@@ -24,10 +24,7 @@ const jwtMockResponse = {
   },
 } as Response
 
-const repository = new Repository(
-  { repositoryUrl: 'https://dmsservice.demo.sensenet.com/' },
-  async () => jwtMockResponse,
-)
+const repository = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => jwtMockResponse)
 
 export const _jwtService = new JwtService(repository)
 
@@ -119,14 +116,11 @@ describe('Actions', () => {
   const path = '/workspaces/project'
   let repo: Repository
   beforeEach(() => {
-    repo = new Repository({ repositoryUrl: 'https://dmsservice.demo.sensenet.com/' }, async () => contentMockResponse)
+    repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => contentMockResponse)
   })
   describe('FetchContent', () => {
     beforeEach(() => {
-      repo = new Repository(
-        { repositoryUrl: 'https://dmsservice.demo.sensenet.com/' },
-        async () => collectionMockResponse,
-      )
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => collectionMockResponse)
     })
     describe('Action types are types', () => {
       expect(Actions.requestContent(path, { scenario: '' }).type).toBe('FETCH_CONTENT')
@@ -211,7 +205,7 @@ describe('Actions', () => {
   })
   describe('LoadContentActions', () => {
     beforeEach(() => {
-      repo = new Repository({ repositoryUrl: 'https://dmsservice.demo.sensenet.com/' }, async () => actionsMockResponse)
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => actionsMockResponse)
     })
     describe('Action types are types', () => {
       expect(Actions.loadContentActions(path).type).toBe('LOAD_CONTENT_ACTIONS')
@@ -769,7 +763,7 @@ describe('Actions', () => {
   })
   describe('getSchema', () => {
     beforeEach(() => {
-      repo = new Repository({ repositoryUrl: 'https://dmsservice.demo.sensenet.com/' }, async () => contentMockResponse)
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => contentMockResponse)
     })
     describe('Action types are types', () => {
       expect(Actions.getSchema('Task').type).toBe('GET_SCHEMA')
@@ -792,10 +786,7 @@ describe('Actions', () => {
   })
   describe('getChildrenCount', () => {
     beforeEach(() => {
-      repo = new Repository(
-        { repositoryUrl: 'https://dmsservice.demo.sensenet.com/' },
-        async () => countResponse as any,
-      )
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => countResponse as any)
     })
     describe('Action types are types', () => {
       expect(Actions.getChildrenCount(path).type).toBe('GET_CHILDREN_COUNT')
@@ -818,10 +809,7 @@ describe('Actions', () => {
   })
   describe('getProperty', () => {
     beforeEach(() => {
-      repo = new Repository(
-        { repositoryUrl: 'https://dmsservice.demo.sensenet.com/' },
-        async () => propertyResponse as any,
-      )
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => propertyResponse as any)
     })
     describe('Action types are types', () => {
       expect(Actions.getProperty(path, 'DisplayName').type).toBe('GET_PROPERTY')
@@ -845,7 +833,7 @@ describe('Actions', () => {
   describe('getPropertyValue', () => {
     beforeEach(() => {
       repo = new Repository(
-        { repositoryUrl: 'https://dmsservice.demo.sensenet.com/' },
+        { repositoryUrl: 'https://dev.demo.sensenet.com/' },
         async () => propertyValueResponse as any,
       )
     })
@@ -870,10 +858,7 @@ describe('Actions', () => {
   })
   describe('getMetadata', () => {
     beforeEach(() => {
-      repo = new Repository(
-        { repositoryUrl: 'https://dmsservice.demo.sensenet.com/' },
-        async () => metadataResponse as any,
-      )
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => metadataResponse as any)
     })
     describe('Action types are types', () => {
       expect(Actions.getMetadata(path).type).toBe('GET_METADATA')
