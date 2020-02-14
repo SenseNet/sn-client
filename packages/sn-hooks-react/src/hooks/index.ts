@@ -1,6 +1,7 @@
 export * from './use-authentication'
 export * from './use-download'
 export * from './use-injector'
+export * from './use-local-storage'
 export * from './use-logger'
 export * from './use-repository-events'
 export * from './use-repository'
