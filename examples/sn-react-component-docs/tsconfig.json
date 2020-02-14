@@ -1,26 +1,17 @@
 {
-  "extends": "../../tsconfig-base.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDirs": ["stories", "assets"],
-    "lib": ["es6", "dom"],
+    "target": "es5",
+    "module": "esnext",
+    "jsx": "react",
+    "lib": ["esnext", "dom"],
+    "moduleResolution": "node",
     "experimentalDecorators": true,
     "noUnusedParameters": false,
     "noImplicitAny": false,
     "alwaysStrict": false,
-    "removeComments": false
+    "removeComments": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
-  "include": ["stories", "assets", "../../typings"],
-  "references": [
-    { "path": "../../packages/sn-client-core" },
-    { "path": "../../packages/sn-client-utils" },
-    { "path": "../../packages/sn-controls-react" },
-    { "path": "../../packages/sn-default-content-types" },
-    { "path": "../../packages/sn-document-viewer-react" },
-    { "path": "../../packages/sn-icons-react" },
-    { "path": "../../packages/sn-list-controls-react" },
-    { "path": "../../packages/sn-pickers-react" },
-    { "path": "../../packages/sn-query" },
-    { "path": "../../packages/sn-search-react" }
-  ]
+  "include": ["../../typings"]
 }
