@@ -1,8 +1,8 @@
 import { User, UserManager, UserManagerSettings } from 'oidc-client'
 import { ObservableValue } from '@sensenet/client-utils'
 
-// Re export UserManagerSettings
-export { UserManagerSettings }
+// Re export UserManager
+export { UserManager, User as OidcUser, UserManagerSettings }
 
 export const authenticationResultStatus = {
   redirect: 'redirect',
@@ -12,7 +12,6 @@ export const authenticationResultStatus = {
 
 export interface AuthFuncOptions {
   returnUrl: string
-  authorityUrl: string
 }
 
 export type AuthFuncResult = Promise<
@@ -29,34 +28,37 @@ export type AuthFuncResult = Promise<
     }
 >
 
+interface AuthOptions {
+  userManager: UserManager
+  isPopupEnabled?: boolean
+}
+
 export class OIDCAuthenticationService {
   public user: ObservableValue<User | undefined> = new ObservableValue(undefined)
-  private userManager?: UserManager
+  private userManager: UserManager
+  private isPopupEnabled = true
 
-  constructor(private readonly settings: UserManagerSettings & { isPopupEnabled?: boolean }) {}
+  constructor({ isPopupEnabled = true, userManager }: AuthOptions) {
+    this.isPopupEnabled = isPopupEnabled
+    this.userManager = userManager
+  }
 
-  async isAuthenticated(authorityUrl?: string) {
-    const user = await this.getUser(authorityUrl)
+  async isAuthenticated() {
+    const user = await this.getUser()
     return !!user
   }
 
-  async getUser(authorityUrl?: string) {
+  async getUser() {
     if (this.user.getValue()?.profile) {
       return this.user.getValue()?.profile
     }
 
-    if (!authorityUrl) {
-      return
-    }
-
-    await this.ensureUserManagerInitialized(authorityUrl)
-    const user = await this.userManager?.getUser()
+    const user = await this.userManager.getUser()
     return user?.profile
   }
 
-  async getAccessToken(authorityUrl: string) {
-    await this.ensureUserManagerInitialized(authorityUrl)
-    const user = await this.userManager?.getUser()
+  async getAccessToken() {
+    const user = await this.userManager.getUser()
     return user?.access_token
   }
 
@@ -68,19 +70,18 @@ export class OIDCAuthenticationService {
   //    Pop-Up blocker or the user has disabled PopUps.
   // 3) If the two methods above fail, we redirect the browser to the IdP to perform a traditional
   //    redirect flow.
-  async signIn({ returnUrl, authorityUrl }: AuthFuncOptions): AuthFuncResult {
-    await this.ensureUserManagerInitialized(authorityUrl)
+  async signIn({ returnUrl }: AuthFuncOptions): AuthFuncResult {
     try {
-      const silentUser = await this.userManager?.signinSilent(this.createArguments())
+      const silentUser = await this.userManager.signinSilent(this.createArguments())
       this.updateState(silentUser)
       return this.success({ returnUrl })
     } catch (silentError) {
       // User might not be authenticated, fallback to popup authentication
       console.log('Silent authentication error: ', silentError)
 
-      if (this.settings.isPopupEnabled) {
+      if (this.isPopupEnabled) {
         try {
-          const popUpUser = await this.userManager?.signinPopup(this.createArguments())
+          const popUpUser = await this.userManager.signinPopup(this.createArguments())
           this.updateState(popUpUser)
           return this.success({ returnUrl })
         } catch (popUpError) {
@@ -94,7 +95,7 @@ export class OIDCAuthenticationService {
 
       // PopUps might be blocked by the user, fallback to redirect
       try {
-        await this.userManager?.signinRedirect(this.createArguments({ returnUrl }))
+        await this.userManager.signinRedirect(this.createArguments({ returnUrl }))
         return this.redirect()
       } catch (redirectError) {
         console.log('Redirect authentication error: ', redirectError)
@@ -103,10 +104,9 @@ export class OIDCAuthenticationService {
     }
   }
 
-  async completeSignIn(authorityUrl: string, url?: string) {
+  async completeSignIn(url?: string) {
     try {
-      await this.ensureUserManagerInitialized(authorityUrl)
-      const user = await this.userManager?.signinCallback(url)
+      const user = await this.userManager.signinCallback(url)
       this.updateState(user)
       return this.success(user?.state)
     } catch (error) {
@@ -120,12 +120,10 @@ export class OIDCAuthenticationService {
   //    Pop-Up blocker or the user has disabled PopUps.
   // 2) If the method above fails, we redirect the browser to the IdP to perform a traditional
   //    post logout redirect flow.
-  async signOut({ authorityUrl, returnUrl }: AuthFuncOptions): AuthFuncResult {
-    await this.ensureUserManagerInitialized(authorityUrl)
-
-    if (this.settings.isPopupEnabled) {
+  async signOut({ returnUrl }: AuthFuncOptions): AuthFuncResult {
+    if (this.isPopupEnabled) {
       try {
-        await this.userManager?.signoutPopup(this.createArguments())
+        await this.userManager.signoutPopup(this.createArguments())
         this.updateState(undefined)
         return this.success({ returnUrl })
       } catch (popupSignOutError) {
@@ -135,7 +133,7 @@ export class OIDCAuthenticationService {
     }
 
     try {
-      await this.userManager?.signoutRedirect(this.createArguments({ returnUrl }))
+      await this.userManager.signoutRedirect(this.createArguments({ returnUrl }))
       return this.redirect()
     } catch (redirectSignOutError) {
       console.log('Redirect signout error: ', redirectSignOutError)
@@ -143,10 +141,9 @@ export class OIDCAuthenticationService {
     }
   }
 
-  async completeSignOut(authorityUrl: string, url?: string) {
-    await this.ensureUserManagerInitialized(authorityUrl)
+  async completeSignOut(url?: string) {
     try {
-      const response = await this.userManager?.signoutCallback(url)
+      const response = await this.userManager.signoutCallback(url)
       this.updateState(undefined)
       return this.success(response && response.state)
     } catch (error) {
@@ -175,16 +172,25 @@ export class OIDCAuthenticationService {
     return { status: authenticationResultStatus.redirect }
   }
 
-  async ensureUserManagerInitialized(authorityUrl: string) {
-    if (this.userManager !== undefined && authorityUrl === this.userManager.settings.authority) {
-      return
-    }
+  // async ensureUserManagerInitialized(authorityUrl: string) {
+  //   if (this.userManager !== undefined) {
+  //     return
+  //   }
 
-    this.userManager = new UserManager({ ...this.settings, authority: authorityUrl })
+  //   const response = await fetch(`${authorityUrl}/odata.svc/('Root')/GetClientRequestParameters?clientType=adminui`)
+  //   if (!response.ok) {
+  //     throw new Error(`Could not load settings`)
+  //   }
 
-    this.userManager.events.addUserSignedOut(async () => {
-      await this.userManager?.removeUser()
-      this.updateState(undefined)
-    })
-  }
+  //   const settings = await response.json()
+
+  //   this.userManager = new UserManager({ ...settings, ...this.settings })
+
+  //   // this.userManager = new UserManager({ ...this.settings, authority: authorityUrl })
+
+  //   this.userManager.events.addUserSignedOut(async () => {
+  //     await this.userManager.removeUser()
+  //     this.updateState(undefined)
+  //   })
+  // }
 }
