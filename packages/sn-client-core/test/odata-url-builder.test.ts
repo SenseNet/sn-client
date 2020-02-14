@@ -129,5 +129,19 @@ describe('ODataUrlBuilder', () => {
       } as any)
       expect(urlParamString).toBe('$select=Id%2CType&metadata=no')
     })
+
+    it('should return a string with enabautofilters true', () => {
+      const urlParamString = ODataUrlBuilder.buildUrlParamString<GenericContent>({ defaultMetadata: 'no' } as any, {
+        enableautofilters: true,
+      })
+      expect(urlParamString).toBe('enableautofilters=true&metadata=no')
+    })
+
+    it('should return a string with enablelifespanfilter true', () => {
+      const urlParamString = ODataUrlBuilder.buildUrlParamString<GenericContent>({ defaultMetadata: 'no' } as any, {
+        enablelifespanfilter: true,
+      })
+      expect(urlParamString).toBe('enablelifespanfilter=true&metadata=no')
+    })
   })
 })

@@ -18,6 +18,16 @@ export interface RepositoryConfiguration {
   chunkSize?: number
 
   /**
+   * This field sets up a default OData enableautofilters parameter
+   */
+  defaultEnableAutofilters?: boolean
+
+  /**
+   * This field sets up a default OData enablelifespan parameter
+   */
+  defaultEnableLifespanfilter?: boolean
+
+  /**
    * This field describes what fields should be expanded on every OData request by default
    */
   defaultExpand?: AllFieldNames[] | string[]
@@ -77,6 +87,8 @@ export type RepositoryConfigurationWithDefaults = Required<Omit<RepositoryConfig
 
 const defaultRepositoryConfiguration: RepositoryConfigurationWithDefaults = {
   chunkSize: 10485760,
+  defaultEnableAutofilters: false,
+  defaultEnableLifespanfilter: false,
   defaultInlineCount: 'allpages',
   defaultMetadata: 'no',
   defaultSelect: ['DisplayName', 'Description', 'Icon'],

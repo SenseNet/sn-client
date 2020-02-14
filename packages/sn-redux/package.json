@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/redux",
-  "version": "5.1.19",
+  "version": "5.1.20",
   "description": "A set of redux actions, reducers and redux-ovbservable epics for sensenet",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -38,6 +38,7 @@
     "@sensenet/client-core": "^2.3.0",
     "@sensenet/default-content-types": "^2.0.4",
     "@sensenet/redux-promise-middleware": "^2.1.12",
+    "@sensenet/client-utils": "^1.8.0",
     "redux": "^4.0.4",
     "redux-logger": "^3.0.6",
     "tslib": "^1.10.0"

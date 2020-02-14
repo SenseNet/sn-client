@@ -33,6 +33,8 @@ exports[`NewDialogBody NewDialogBody snapshot test 1`] = `
           },
           "configuration": Object {
             "chunkSize": 10485760,
+            "defaultEnableAutofilters": false,
+            "defaultEnableLifespanfilter": false,
             "defaultInlineCount": "allpages",
             "defaultMetadata": "no",
             "defaultSelect": Array [
