@@ -6,7 +6,7 @@ import { useLogger } from '.'
  * useAuthentication hook helps provide helper methods for login and logout with an OIDC authentication service.
  * It **doesn't** work with forms authentication.
  */
-export function useAuthentication({ authService }: { authService: OIDCAuthenticationService }) {
+export function useAuthentication() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string>()
   const logger = useLogger('useAuthentication')
@@ -30,12 +30,12 @@ export function useAuthentication({ authService }: { authService: OIDCAuthentica
     }
   }
 
-  const login = async (returnUrl: string, authorityUrl: string) => {
-    await doAuthenticationAction(() => authService.signIn({ returnUrl, authorityUrl }), returnUrl)
+  const login = async (returnUrl: string, authService: OIDCAuthenticationService) => {
+    await doAuthenticationAction(() => authService.signIn({ returnUrl }), returnUrl)
   }
 
-  const logout = async (returnUrl: string, authorityUrl: string) => {
-    await doAuthenticationAction(() => authService.signOut({ returnUrl, authorityUrl }), returnUrl)
+  const logout = async (returnUrl: string, authService: OIDCAuthenticationService) => {
+    await doAuthenticationAction(() => authService.signOut({ returnUrl }), returnUrl)
   }
 
   return { login, isLoading, error, logout }
