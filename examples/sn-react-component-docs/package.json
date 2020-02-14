@@ -62,9 +62,9 @@
     "@types/uuid": "^3.4.6",
     "babel-loader": "^8.0.6",
     "prop-types": "^15.7.2",
-    "react-docgen-typescript-loader": "^3.3.0",
+    "react-docgen-typescript-loader": "^3.6.0",
     "regenerator-runtime": "^0.13.3",
-    "ts-config-webpack-plugin": "^1.4.0",
+    "ts-loader": "^6.2.1",
     "uuid": "^3.3.3",
     "webpack": "^4.41.2"
   }
