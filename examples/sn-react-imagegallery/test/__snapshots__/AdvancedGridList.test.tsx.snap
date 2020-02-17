@@ -22,7 +22,7 @@ exports[`AdvancedGridList Matches snapshot 1`] = `
       />
       <WithStyles(ForwardRef(GridListTileBar))
         actionIcon={
-          <ForwardRef(WithStyles)
+          <WithStyles(ForwardRef(IconButton))
             aria-label="star bagas-haryo-1415756-unsplash.jpg"
             className="makeStyles-icon-4"
           />
@@ -52,7 +52,7 @@ exports[`AdvancedGridList Matches snapshot 1`] = `
       />
       <WithStyles(ForwardRef(GridListTileBar))
         actionIcon={
-          <ForwardRef(WithStyles)
+          <WithStyles(ForwardRef(IconButton))
             aria-label="star brunetto-ziosi-1231102-unsplash.jpg"
             className="makeStyles-icon-4"
           />

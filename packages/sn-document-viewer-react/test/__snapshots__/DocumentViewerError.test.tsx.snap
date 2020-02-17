@@ -35,8 +35,10 @@ exports[`Document Viewer Error component matches snapshot wihtout provided conte
           classes={
             Object {
               "colorDefault": "MuiAppBar-colorDefault",
+              "colorInherit": "MuiAppBar-colorInherit",
               "colorPrimary": "MuiAppBar-colorPrimary",
               "colorSecondary": "MuiAppBar-colorSecondary",
+              "colorTransparent": "MuiAppBar-colorTransparent",
               "positionAbsolute": "MuiAppBar-positionAbsolute",
               "positionFixed": "MuiAppBar-positionFixed",
               "positionRelative": "MuiAppBar-positionRelative",
@@ -417,8 +419,10 @@ exports[`Document Viewer Error component matches snapshot with provided context 
           classes={
             Object {
               "colorDefault": "MuiAppBar-colorDefault",
+              "colorInherit": "MuiAppBar-colorInherit",
               "colorPrimary": "MuiAppBar-colorPrimary",
               "colorSecondary": "MuiAppBar-colorSecondary",
+              "colorTransparent": "MuiAppBar-colorTransparent",
               "positionAbsolute": "MuiAppBar-positionAbsolute",
               "positionFixed": "MuiAppBar-positionFixed",
               "positionRelative": "MuiAppBar-positionRelative",

@@ -40,11 +40,11 @@
     "tslib": "^1.10.0"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.23",
-    "@types/jsdom": "^12.2.4",
-    "jest": "^24.9.0",
-    "jsdom": "16.0.0",
-    "ts-jest": "^24.1.0",
-    "typescript": "^3.7.2"
+    "@types/jest": "^25.1.2",
+    "@types/jsdom": "^16.1.0",
+    "jest": "^25.1.0",
+    "jsdom": "16.2.0",
+    "ts-jest": "^25.2.0",
+    "typescript": "^3.7.5"
   }
 }
