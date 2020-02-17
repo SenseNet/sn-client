@@ -11,7 +11,7 @@ describe('Google Authentication Options', () => {
       {
         clientId: exampleClientId,
       },
-      dom.window,
+      dom.window as any,
     )
     expect(options).toBeInstanceOf(GoogleAuthenticationOptions)
     expect(options.clientId).toBe(exampleClientId)
