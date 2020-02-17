@@ -16,7 +16,6 @@ const resources = {
   PASSWORD_SHOULD_BE_VALID: 'Password needs to contain at least 3 characters!',
   PASSWORDS_SHOULD_MATCH: 'Passwords should match!',
   USER_IS_ALREADY_REGISTERED: 'The email address you have entered is already registered!',
-  CAPTCHA_ERROR: 'Please complete the captcha!',
   OPEN_MENU: 'Open menu',
   LOGOUT: 'Logout',
   UPLOAD_BUTTON_TITLE: 'Upload',

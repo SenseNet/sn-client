@@ -63,21 +63,11 @@ export const registrationDone: Reducer<boolean> = (state = false, action: AnyAct
   }
 }
 
-export const captcha: Reducer<boolean> = (state = false, action: AnyAction) => {
-  switch (action.type) {
-    case 'VERIFY_CAPTCHA_SUCCESS':
-      return true
-    default:
-      return state
-  }
-}
-
 export const register = combineReducers({
   email,
   registrationError,
   isRegistering,
   registrationDone,
-  captcha,
 })
 
 export const open: Reducer<boolean> = (state = false, action: AnyAction) => {

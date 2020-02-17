@@ -23,11 +23,9 @@ const mapStateToProps = (state: rootStateType) => {
   }
 }
 
-const verifyCaptcha = DMSActions.verifyCaptchaSuccess
 const clearReg = DMSActions.clearRegistration
 
 const mapDispatchToProps = {
-  recaptchaCallback: verifyCaptcha,
   clearRegistration: clearReg,
 }
 
@@ -80,7 +78,7 @@ class Sensenet extends React.Component<SensenetProps & ReturnType<typeof mapStat
                 path="/registration"
                 authorize={() => this.props.loginState !== LoginState.Authenticated}
                 redirectOnUnauthorized="/">
-                <Registration oAuthProvider={this.props.oAuthProvider} verify={this.props.recaptchaCallback} />
+                <Registration oAuthProvider={this.props.oAuthProvider} />
               </AuthorizedRoute>
               {/* Empty path, default routes per login state */}
               {this.props.loginState === LoginState.Unauthenticated ? <Redirect path="*" to="/login" /> : null}

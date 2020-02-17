@@ -9,7 +9,6 @@ import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { OauthProvider } from '@sensenet/authentication-jwt'
 import { userRegistration } from '../Actions'
-import GoogleReCaptcha from '../components/GoogleReCaptcha'
 import ConnectedLoginTabs from '../components/LoginTabs'
 import { OauthRow } from '../components/OAuthRow'
 import { WelcomeMessage } from '../components/WelcomeMessage'
@@ -49,7 +48,6 @@ const mapStateToProps = (state: rootStateType) => {
     registrationError: state.dms.register.registrationError,
     inProgress: state.dms.register.isRegistering,
     isRegistered: state.dms.register.registrationDone,
-    isNotARobot: state.dms.register.captcha,
   }
 }
 
@@ -58,7 +56,6 @@ const mapDispatchToProps = {
 }
 
 interface RegistrationProps extends RouteComponentProps<any> {
-  verify: any
   oAuthProvider: OauthProvider
 }
 
@@ -74,8 +71,6 @@ interface RegistrationState {
   confirmPasswordErrorMessage: string
   formIsValid: boolean
   isButtonDisabled: boolean
-  captchaError: boolean
-  captchaErrorMessage: string
 }
 
 class Registration extends React.Component<
@@ -96,8 +91,6 @@ class Registration extends React.Component<
       isButtonDisabled: false,
       confirmPasswordError: false,
       confirmPasswordErrorMessage: '',
-      captchaError: false,
-      captchaErrorMessage: '',
     }
 
     this.handleEmailBlur = this.handleEmailBlur.bind(this)
@@ -226,13 +219,6 @@ class Registration extends React.Component<
         confirmPasswordError: true,
       })
     }
-    if (!this.props.isNotARobot && process.env.NODE_ENV !== 'test') {
-      valid = false
-      this.setState({
-        captchaErrorMessage: resources.CAPTCHA_ERROR,
-        captchaError: true,
-      })
-    }
     return valid
   }
   public render() {
@@ -324,14 +310,6 @@ class Registration extends React.Component<
                   placeholder={resources.PASSWORD_INPUT_PLACEHOLDER}
                 />
                 <FormHelperText>{this.state.confirmPasswordErrorMessage}</FormHelperText>
-              </FormControl>
-              <FormControl>
-                <GoogleReCaptcha verify={this.props.verify} />
-                <FormHelperText error={true}>
-                  {this.state.captchaError && this.state.captchaErrorMessage.length > 0
-                    ? this.state.captchaErrorMessage
-                    : ''}
-                </FormHelperText>
               </FormControl>
               <FormControl>
                 <FormHelperText error={true}>

@@ -34,9 +34,6 @@ export const userRegistration = (email: string, password: string) => ({
     })
   },
 })
-export const verifyCaptchaSuccess = () => ({
-  type: 'VERIFY_CAPTCHA_SUCCESS',
-})
 export const clearRegistration = () => ({
   type: 'CLEAR_USER_REGISTRATION',
 })

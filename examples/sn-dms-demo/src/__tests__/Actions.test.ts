@@ -6,15 +6,6 @@ describe('UserRegistration', () => {
   })
 })
 
-describe('VerifyCaptchaSuccess', () => {
-  it('should create an action to captcha verifing success', () => {
-    const expectedAction = {
-      type: 'VERIFY_CAPTCHA_SUCCESS',
-    }
-    expect(DMSActions.verifyCaptchaSuccess()).toEqual(expectedAction)
-  })
-})
-
 describe('ClearRegistration', () => {
   it('should create an action to clear registration', () => {
     const expectedAction = {
