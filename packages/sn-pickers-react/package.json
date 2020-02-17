@@ -32,7 +32,7 @@
     "url": "https://github.com/SenseNet/sn-client/issues"
   },
   "dependencies": {
-    "@material-ui/core": "^4.9.2",
+    "@material-ui/core": "^4.9.3",
     "@sensenet/client-core": "^2.3.0",
     "@sensenet/client-utils": "^1.8.0",
     "@sensenet/default-content-types": "^2.0.4",
@@ -42,14 +42,14 @@
   },
   "devDependencies": {
     "@types/enzyme": "^3.10.5",
-    "@types/jest": "^24.0.23",
+    "@types/jest": "^25.1.2",
     "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "enzyme-to-json": "^3.4.4",
-    "jest": "^24.9.0",
-    "ts-jest": "^24.1.0",
+    "jest": "^25.1.0",
+    "ts-jest": "^25.2.0",
     "typescript": "^3.7.5"
   }
 }

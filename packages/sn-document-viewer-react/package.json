@@ -26,7 +26,7 @@
   "license": "GPL-2.0",
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@material-ui/core": "^4.9.2",
+    "@material-ui/core": "^4.9.3",
     "@material-ui/icons": "^4.9.1",
     "@sensenet/client-utils": "^1.8.0",
     "@sensenet/control-mapper": "^2.1.0",
@@ -40,15 +40,15 @@
   },
   "devDependencies": {
     "@types/enzyme": "^3.10.5",
-    "@types/jest": "^24.0.23",
+    "@types/jest": "^25.1.2",
     "@types/react": "^16.9.19",
     "@types/styled-components": "^4.4.3",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "enzyme-to-json": "^3.4.4",
-    "jest": "^24.9.0",
+    "jest": "^25.1.0",
     "react-is": "^16.12.0",
-    "ts-jest": "^24.1.0",
+    "ts-jest": "^25.2.0",
     "typescript": "^3.7.5"
   }
 }
