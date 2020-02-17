@@ -2,7 +2,7 @@
 
 exports[`The app layout instance should be rendered correctly 1`] = `
 <Fragment>
-  <CssBaseline />
+  <WithStyles(CssBaseline) />
   <Component />
   <WithStyles(ForwardRef(Toolbar)) />
   <WithStyles(ForwardRef(Container))
