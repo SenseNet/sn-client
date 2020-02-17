@@ -22,7 +22,7 @@ describe('GoogleOauthProvider', () => {
     )
     jwtService = new JwtService(repo)
     repo.authentication = jwtService
-    oauth = addGoogleAuth(jwtService, { clientId: '', redirectUri: '/' }, dom.window)
+    oauth = addGoogleAuth(jwtService, { clientId: '', redirectUri: '/' }, dom.window as any)
   })
 
   afterEach(() => {

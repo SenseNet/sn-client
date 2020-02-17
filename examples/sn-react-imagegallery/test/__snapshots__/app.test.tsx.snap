@@ -17,7 +17,7 @@ exports[`App Layout Matches snapshot 1`] = `
     }
   }
 >
-  <CssBaseline />
+  <WithStyles(CssBaseline) />
   <Component
     imgList={Array []}
     openFunction={[Function]}
