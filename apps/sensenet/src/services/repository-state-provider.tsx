@@ -1,4 +1,4 @@
-import { Repository } from '@sensenet/client-core'
+import { ConstantContent, Repository } from '@sensenet/client-core'
 import { User } from '@sensenet/default-content-types'
 import { useLocalStorage } from '@sensenet/hooks-react'
 import React, { createContext, useCallback, useContext, useEffect, useReducer, useState } from 'react'
@@ -53,6 +53,23 @@ export function RepoStateProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    async function getCurrentUser(repository: Repository, idOrPath: string) {
+      try {
+        const result = await repository.load<User>({
+          idOrPath,
+          oDataOptions: {
+            select: 'all',
+          },
+        })
+        if (result.d.Id !== ConstantContent.VISITOR_USER.Id) {
+          return result.d
+        }
+        return ConstantContent.VISITOR_USER as User
+      } catch (error) {
+        console.log(`Couldn't load current user: ${error.message}`)
+        return ConstantContent.VISITOR_USER as User
+      }
+    }
     async function getRepo() {
       if (!currentRepoUrl) {
         setIsLoading(false)
@@ -66,15 +83,16 @@ export function RepoStateProvider({ children }: { children: React.ReactNode }) {
         setIsLoading(false)
         return
       }
-      console.log(user)
+      const repository = new Repository({ repositoryUrl: currentRepoUrl, token })
+      const currentUser = await getCurrentUser(repository, user.sub)
 
       dispatch({
         type: 'PUSH_REPOSITORYSTATE',
         state: {
           isActive: true,
           isOnline: true,
-          repository: new Repository({ repositoryUrl: currentRepoUrl, token }),
-          currentUser: { Name: user?.preferred_username ?? 'Visitor' } as any,
+          repository,
+          currentUser,
         },
       })
       setIsLoading(false)
@@ -115,10 +133,12 @@ export function useRepoState() {
     [dispatch],
   )
   const getCurrentRepository = () => repoStates.find(repoState => repoState.isActive)?.repository
+  const getCurrentRepoState = () => repoStates.find(repoState => repoState.isActive)
 
   return {
     repoStates,
     addRepository,
     getCurrentRepository,
+    getCurrentRepoState,
   }
 }
