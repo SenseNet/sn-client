@@ -35,8 +35,10 @@ exports[`Document Regenerate Previews component Should trigger regeneration on b
           classes={
             Object {
               "colorDefault": "MuiAppBar-colorDefault",
+              "colorInherit": "MuiAppBar-colorInherit",
               "colorPrimary": "MuiAppBar-colorPrimary",
               "colorSecondary": "MuiAppBar-colorSecondary",
+              "colorTransparent": "MuiAppBar-colorTransparent",
               "positionAbsolute": "MuiAppBar-positionAbsolute",
               "positionFixed": "MuiAppBar-positionFixed",
               "positionRelative": "MuiAppBar-positionRelative",
