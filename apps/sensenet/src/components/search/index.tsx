@@ -38,7 +38,7 @@ export const decodeQueryData = (encoded?: string) =>
   encoded ? (JSON.parse(atob(decodeURIComponent(encoded))) as QueryData) : { term: '' }
 
 const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }>> = props => {
-  const repo = useRepoState().getCurrentRepository()!
+  const repo = useRepoState().getCurrentRepoState()!.repository
   const contentContextService = new ContentContextService(repo)
   const { openDialog } = useDialog()
   const logger = useLogger('Search')

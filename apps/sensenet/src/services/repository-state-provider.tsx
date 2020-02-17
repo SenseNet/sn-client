@@ -132,13 +132,11 @@ export function useRepoState() {
     (state: Omit<RepositoryWithState, 'id'>) => dispatch({ type: 'PUSH_REPOSITORYSTATE', state }),
     [dispatch],
   )
-  const getCurrentRepository = () => repoStates.find(repoState => repoState.isActive)?.repository
   const getCurrentRepoState = () => repoStates.find(repoState => repoState.isActive)
 
   return {
     repoStates,
     addRepository,
-    getCurrentRepository,
     getCurrentRepoState,
   }
 }

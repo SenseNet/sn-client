@@ -23,7 +23,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
   const [error, setError] = useState('')
   const [refreshToken, setRefreshToken] = useState(Math.random())
   const [count, setCount] = useState(0)
-  const repo = useRepoState().getCurrentRepository()!
+  const repo = useRepoState().getCurrentRepoState()!.repository
   const contentContextService = new ContentContextService(repo)
   const replacedTitle = useStringReplace(props.title)
   const localization = useLocalization().dashboard

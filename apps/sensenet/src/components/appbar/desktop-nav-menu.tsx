@@ -1,5 +1,3 @@
-import React from 'react'
-import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import {
   Grid,
   Grow,
@@ -12,15 +10,17 @@ import {
   Popper,
   Typography,
 } from '@material-ui/core'
+import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles'
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
-import { useInjector, useRepository, useSession } from '@sensenet/hooks-react'
+import { useInjector } from '@sensenet/hooks-react'
+import React, { useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { UserAvatar } from '../UserAvatar'
 import { useLocalization, usePersonalSettings } from '../../hooks'
-import { useDialog } from '../dialogs'
-import { PersonalSettings } from '../../services'
+import { PersonalSettings, useRepoState } from '../../services'
 import { AntSwitch } from '../ant-switch'
+import { useDialog } from '../dialogs'
+import { UserAvatar } from '../UserAvatar'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -44,10 +44,9 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   const theme = useTheme()
   const service = injector.getInstance(PersonalSettings)
   const { openDialog } = useDialog()
-  const [open, setOpen] = React.useState(false)
-  const anchorRef = React.useRef<HTMLButtonElement>(null)
-  const session = useSession()
-  const repo = useRepository()
+  const [open, setOpen] = useState(false)
+  const anchorRef = useRef<HTMLButtonElement>(null)
+  const repoState = useRepoState().getCurrentRepoState()!
   const localization = useLocalization()
 
   const handleToggle = () => {
@@ -79,7 +78,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   }, [open])
 
   const logout = (event: React.MouseEvent<EventTarget>) => {
-    openDialog({ name: 'logout', props: { userToLogout: session.currentUser } })
+    openDialog({ name: 'logout', props: { userToLogout: repoState.currentUser } })
     handleClose(event)
   }
 
@@ -90,7 +89,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
 
   return (
     <div className={classes.root}>
-      <UserAvatar user={session.currentUser} repositoryUrl={repo.configuration.repositoryUrl} />
+      <UserAvatar user={repoState.currentUser} repositoryUrl={repoState.repository.configuration.repositoryUrl} />
       <IconButton
         ref={anchorRef}
         aria-controls={open ? 'menu-list-grow' : undefined}
@@ -117,14 +116,17 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                 <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                   <MenuItem onClick={handleClose}>
                     <ListItemIcon>
-                      <UserAvatar user={session.currentUser} repositoryUrl={repo.configuration.repositoryUrl} />
+                      <UserAvatar
+                        user={repoState.currentUser}
+                        repositoryUrl={repoState.repository.configuration.repositoryUrl}
+                      />
                     </ListItemIcon>
                     <ListItemText
                       primaryTypographyProps={{
                         style: { overflow: 'hidden', textOverflow: 'ellipsis' },
-                        title: session.currentUser.DisplayName || session.currentUser.Name,
+                        title: repoState.currentUser.DisplayName || repoState.currentUser.Name,
                       }}
-                      primary={`${session.currentUser.DisplayName || session.currentUser.Name} user`}
+                      primary={`${repoState.currentUser.DisplayName || repoState.currentUser.Name} user`}
                     />
                   </MenuItem>
                   <NavLink to="/personalSettings" onClick={handleClose}>

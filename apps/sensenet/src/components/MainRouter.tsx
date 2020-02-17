@@ -31,7 +31,7 @@ const PersonalSettingsEditor = lazy(
 export const MainRouter = () => {
   const previousLocation = useRef<string>()
   const history = useHistory()
-  const repository = useRepoState().getCurrentRepository()
+  const { repository } = useRepoState().getCurrentRepoState()!
 
   useEffect(() => {
     const listen = history.listen(location => {

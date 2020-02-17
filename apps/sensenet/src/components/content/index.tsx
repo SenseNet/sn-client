@@ -24,7 +24,7 @@ export const encodeBrowseData = (data: BrowseData) => encodeURIComponent(btoa(JS
 export const decodeBrowseData = (encoded: string) => JSON.parse(atob(decodeURIComponent(encoded))) as BrowseData
 
 export const Content = () => {
-  const repository = useRepoState().getCurrentRepository()
+  const { repository } = useRepoState().getCurrentRepoState()!
   const match = useRouteMatch<{ browseData: string }>()
   const history = useHistory()
   const settings = useContext(ResponsivePersonalSetttings)

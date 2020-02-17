@@ -25,7 +25,7 @@ const WellKnownContentCard: React.FunctionComponent<{
   onContextMenu: (ev: React.MouseEvent) => void
 }> = ({ settings, onContextMenu }) => {
   const localization = useLocalization().settings
-  const repo = useRepoState().getCurrentRepository()!
+  const repo = useRepoState().getCurrentRepoState()!.repository
   const contentContextService = new ContentContextService(repo)
 
   return (
@@ -65,7 +65,7 @@ const WellKnownContentCard: React.FunctionComponent<{
 }
 
 const Setup: React.StatelessComponent = () => {
-  const repo = useRepoState().getCurrentRepository()!
+  const repo = useRepoState().getCurrentRepoState()!.repository
   const contentContextService = new ContentContextService(repo)
   const localization = useLocalization().settings
 

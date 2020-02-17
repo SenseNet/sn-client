@@ -72,7 +72,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const classes = useStyles()
   const settings = useContext(ResponsivePersonalSetttings)
   const selectionService = useSelectionService()
-  const repository = useRepoState().getCurrentRepository()
+  const { repository } = useRepoState().getCurrentRepoState()!
   const [currentComponent, setCurrentComponent] = useState(selectionService.activeContent.getValue())
   const [currentPath, setCurrentPath] = useState('')
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')

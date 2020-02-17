@@ -40,7 +40,7 @@ export interface TextEditorProps {
 export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   const theme = useTheme()
   const platform = useContext(ResponsiveContext)
-  const repo = useRepoState().getCurrentRepository()!
+  const repo = useRepoState().getCurrentRepoState()!.repository
   const contentContextService = new ContentContextService(repo)
 
   const [textValue, setTextValue] = useState('')

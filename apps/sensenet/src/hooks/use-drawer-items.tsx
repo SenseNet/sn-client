@@ -31,7 +31,7 @@ type EveryDrawerType = ContentDrawerItem | QueryDrawerItem | BuiltinDrawerItem |
 export const useDrawerItems = () => {
   const settings = useContext(ResponsivePersonalSetttings)
   const localization = useLocalization().drawer
-  const repository = useRepoState().getCurrentRepository()
+  const { repository } = useRepoState().getCurrentRepoState()!
   const logger = useLogger('use-drawer-items')
 
   const [drawerItems, setDrawerItems] = useState<DrawerItem[]>([])

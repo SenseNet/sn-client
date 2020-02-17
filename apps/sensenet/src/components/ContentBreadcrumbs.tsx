@@ -8,7 +8,7 @@ import Breadcrumbs, { BreadcrumbItem } from './Breadcrumbs'
 export const ContentBreadcrumbs = (props: { onItemClick?: (item: BreadcrumbItem<GenericContent>) => void }) => {
   const ancestors = useContext(CurrentAncestorsContext)
   const parent = useContext(CurrentContentContext)
-  const repository = useRepoState().getCurrentRepository()!
+  const { repository } = useRepoState().getCurrentRepoState()!
   const history = useHistory()
   const contentContextService = new ContentContextService(repository)
 

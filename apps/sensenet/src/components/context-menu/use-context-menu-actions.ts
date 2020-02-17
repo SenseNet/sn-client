@@ -9,7 +9,7 @@ import { contextMenuODataOptions } from './context-menu-odata-options'
 export function useContextMenuActions(content: GenericContent, setActions: (content: GenericContent) => void) {
   const logger = useLogger('context-menu')
   const history = useHistory()
-  const repo = useRepoState().getCurrentRepository()!
+  const repo = useRepoState().getCurrentRepoState()!.repository
   const contentContextService = new ContentContextService(repo)
   const download = useDownload(content)
   const currentParent = useLoadContent({ idOrPath: content.ParentId! }).content

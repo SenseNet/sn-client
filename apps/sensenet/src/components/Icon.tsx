@@ -39,8 +39,9 @@ import {
 import { Repository } from '@sensenet/client-core'
 import { Injector, LogLevel, PathHelper, tuple } from '@sensenet/client-utils'
 import { File, GenericContent, User } from '@sensenet/default-content-types'
-import { useInjector, useRepository } from '@sensenet/hooks-react'
+import { useInjector } from '@sensenet/hooks-react'
 import React from 'react'
+import { useRepoState } from '../services'
 import { EventLogEntry } from '../services/EventService'
 import { UserAvatar } from './UserAvatar'
 
@@ -282,7 +283,7 @@ export const IconComponent: React.FunctionComponent<{
   style?: React.CSSProperties
 }> = props => {
   const injector = useInjector()
-  const repo = useRepository()
+  const repo = useRepoState().getCurrentRepoState()!.repository
 
   const options: IconOptions = { style: props.style, injector, repo }
   const resolvers = [

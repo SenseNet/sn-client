@@ -24,7 +24,7 @@ export type LogoutDialogProps = {
 export function LogoutDialog({ userToLogout }: LogoutDialogProps) {
   const { closeLastDialog } = useDialog()
   const { logout, isLoading } = useAuthentication()
-  const repository = useRepoState().getCurrentRepository()
+  const { repository } = useRepoState().getCurrentRepoState()!
   const localization = useLocalization().logout
 
   if (!repository) {
