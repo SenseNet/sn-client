@@ -32,6 +32,6 @@ export const getAuthService = async (repoUrl: string) => {
 
   const userManager = new UserManager({ ...settings, ...mySettings })
   service = new OIDCAuthenticationService({ userManager })
-  currentRepoUrl = trimmedRepoUrl
+  currentRepoUrl = repoUrl
   return service
 }
