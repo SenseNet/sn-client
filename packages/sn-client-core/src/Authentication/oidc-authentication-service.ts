@@ -171,26 +171,4 @@ export class OIDCAuthenticationService {
   redirect() {
     return { status: authenticationResultStatus.redirect }
   }
-
-  // async ensureUserManagerInitialized(authorityUrl: string) {
-  //   if (this.userManager !== undefined) {
-  //     return
-  //   }
-
-  //   const response = await fetch(`${authorityUrl}/odata.svc/('Root')/GetClientRequestParameters?clientType=adminui`)
-  //   if (!response.ok) {
-  //     throw new Error(`Could not load settings`)
-  //   }
-
-  //   const settings = await response.json()
-
-  //   this.userManager = new UserManager({ ...settings, ...this.settings })
-
-  //   // this.userManager = new UserManager({ ...this.settings, authority: authorityUrl })
-
-  //   this.userManager.events.addUserSignedOut(async () => {
-  //     await this.userManager.removeUser()
-  //     this.updateState(undefined)
-  //   })
-  // }
 }
