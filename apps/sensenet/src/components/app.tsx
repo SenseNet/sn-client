@@ -5,6 +5,7 @@ import AppProviders from './app-providers'
 import { NotificationComponent } from './NotificationComponent'
 import { Dialogs } from './dialogs'
 import { MainRouter } from './MainRouter'
+import { DesktopLayout } from './layout/DesktopLayout'
 
 export function App() {
   return (
@@ -12,7 +13,9 @@ export function App() {
       <ErrorBoundary>
         <AppProviders>
           <CssBaseline />
-          <MainRouter />
+          <DesktopLayout>
+            <MainRouter />
+          </DesktopLayout>
           <NotificationComponent />
           <Dialogs />
         </AppProviders>

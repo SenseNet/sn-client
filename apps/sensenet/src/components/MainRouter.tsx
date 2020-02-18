@@ -5,27 +5,21 @@ import { useRepoState } from '../services'
 import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './FullScreenLoader'
-import { DesktopLayout } from './layout/DesktopLayout'
 import { AuthCallback } from './login/auth-callback'
 import { WopiPage } from './wopi-page'
 
-const ExploreComponent = lazy(async () => await import(/* webpackChunkName: "content" */ './content'))
-const DashboardComponent = lazy(async () => await import(/* webpackChunkName: "dashboard" */ './dashboard'))
-const SearchComponent = lazy(async () => await import(/* webpackChunkName: "search" */ './search'))
-const SavedQueriesComponent = lazy(
-  async () => await import(/* webpackChunkName: "saved-queries" */ './search/saved-queries'),
-)
-const SetupComponent = lazy(async () => await import(/* webpackChunkName: "setup" */ './setup'))
-
-const EditBinary = lazy(async () => await import(/* webpackChunkName: "editBinary" */ './edit/EditBinary'))
-const EditProperties = lazy(async () => await import(/* webpackChunkName: "editProperties" */ './edit/EditProperties'))
-const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
-
-const TrashComponent = lazy(async () => await import(/* webpackChunkName: "Trash" */ './trash/Trash'))
-const EventListComponent = lazy(async () => await import(/* webpackChunkName: "EventList" */ './event-list'))
-
-const PersonalSettingsEditor = lazy(
-  async () => await import(/* webpackChunkName: "PersonalSettingsEditor" */ './edit/PersonalSettingsEditor'),
+const ExploreComponent = lazy(() => import(/* webpackChunkName: "content" */ './content'))
+const DashboardComponent = lazy(() => import(/* webpackChunkName: "dashboard" */ './dashboard'))
+const SearchComponent = lazy(() => import(/* webpackChunkName: "search" */ './search'))
+const SavedQueriesComponent = lazy(() => import(/* webpackChunkName: "saved-queries" */ './search/saved-queries'))
+const SetupComponent = lazy(() => import(/* webpackChunkName: "setup" */ './setup'))
+const EditBinary = lazy(() => import(/* webpackChunkName: "editBinary" */ './edit/EditBinary'))
+const EditProperties = lazy(() => import(/* webpackChunkName: "editProperties" */ './edit/EditProperties'))
+const DocumentViewerComponent = lazy(() => import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
+const TrashComponent = lazy(() => import(/* webpackChunkName: "Trash" */ './trash/Trash'))
+const EventListComponent = lazy(() => import(/* webpackChunkName: "EventList" */ './event-list'))
+const PersonalSettingsEditor = lazy(() =>
+  import(/* webpackChunkName: "PersonalSettingsEditor" */ './edit/PersonalSettingsEditor'),
 )
 
 export const MainRouter = () => {
@@ -52,7 +46,7 @@ export const MainRouter = () => {
 
   return (
     <ErrorBoundary FallbackComponent={ErrorBoundaryWithDialogs}>
-      <AuthCallback repoUrl={repository!.configuration.repositoryUrl} />
+      <AuthCallback repoUrl={repository.configuration.repositoryUrl} />
       <div style={{ width: '100%', height: '100%', boxSizing: 'border-box', position: 'relative' }}>
         <Suspense fallback={<FullScreenLoader />}>
           <Route path="/personalSettings">
@@ -95,7 +89,7 @@ export const MainRouter = () => {
             </Route>
 
             <Route path="/:repo/preview/:documentId?">
-              <DocumentViewerComponent previousLocation={previousLocation.current} />{' '}
+              <DocumentViewerComponent previousLocation={previousLocation.current} />
             </Route>
 
             <Route path="/:repo/wopi/:documentId/:action?">
@@ -107,15 +101,11 @@ export const MainRouter = () => {
             </Route>
 
             <Route path="/:repo/" exact>
-              <DesktopLayout>
-                <DashboardComponent repository={repository} />
-              </DesktopLayout>
+              <DashboardComponent repository={repository} />
             </Route>
 
             <Route path="/" exact>
-              <DesktopLayout>
-                <DashboardComponent />
-              </DesktopLayout>
+              <DashboardComponent />
             </Route>
           </Switch>
         </Suspense>
