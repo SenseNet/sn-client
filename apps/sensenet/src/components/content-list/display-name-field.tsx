@@ -9,7 +9,6 @@ type DisplayNameProps = {
   content: GenericContent
   device: ResponsivePlatforms
   isActive: boolean
-  virtual?: boolean
 }
 
 export const DisplayNameComponent: React.FunctionComponent<DisplayNameProps> = ({ content, device, isActive }) => {
