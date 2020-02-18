@@ -1,10 +1,13 @@
 const resources = {
   EMAIL_IS_NOT_VALID_MESSAGE: 'Please provide a valid e-mail address!',
+  USERNAME_IS_NOT_VALID_MESSAGE: 'Please provide a valid e-mail address!',
   PASSWORD_IS_NOT_VALID_MESSAGE: 'Please provide a password!',
   WRONG_USERNAME_OR_PASSWORD: 'Wrong user name or password',
   EMAIL_INPUT_LABEL: 'E-mail',
+  USERNAME_INPUT_LABEL: 'Username',
   PASSWORD_INPUT_LABEL: 'Password',
   EMAIL_INPUT_PLACEHOLDER: 'E-mail',
+  USERNAME_INPUT_PLACEHOLDER: 'Username',
   PASSWORD_INPUT_PLACEHOLDER: 'Password',
   LOGIN_BUTTON_TEXT: 'Login',
   LOGIN_TAB_TEXT: 'Login',
