@@ -5,10 +5,10 @@ exports[`Color field control in browse view should show the displayname and fiel
   <WithStyles(ForwardRef(TextField))
     InputProps={
       Object {
-        "startAdornment": <ForwardRef(WithStyles)
+        "startAdornment": <WithStyles(ForwardRef(InputAdornment))
           position="start"
         >
-          <ForwardRef(WithStyles)
+          <WithStyles(ForwardRef(Icon))
             style={
               Object {
                 "color": "#016d9e",
@@ -16,8 +16,8 @@ exports[`Color field control in browse view should show the displayname and fiel
             }
           >
             lens
-          </ForwardRef(WithStyles)>
-        </ForwardRef(WithStyles)>,
+          </WithStyles(ForwardRef(Icon))>
+        </WithStyles(ForwardRef(InputAdornment))>,
       }
     }
     disabled={true}
@@ -35,10 +35,10 @@ exports[`Color field control in edit/new view should set all the props 1`] = `
   <WithStyles(ForwardRef(TextField))
     InputProps={
       Object {
-        "startAdornment": <ForwardRef(WithStyles)
+        "startAdornment": <WithStyles(ForwardRef(InputAdornment))
           position="start"
         >
-          <ForwardRef(WithStyles)
+          <WithStyles(ForwardRef(Icon))
             style={
               Object {
                 "color": "#016d9e",
@@ -46,8 +46,8 @@ exports[`Color field control in edit/new view should set all the props 1`] = `
             }
           >
             lens
-          </ForwardRef(WithStyles)>
-        </ForwardRef(WithStyles)>,
+          </WithStyles(ForwardRef(Icon))>
+        </WithStyles(ForwardRef(InputAdornment))>,
       }
     }
     defaultValue="defaultValue"
