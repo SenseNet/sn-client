@@ -58,7 +58,7 @@ module.exports = {
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development',
       DEBUG: true,
-      REACT_APP_SERVICE_URL: 'https://devservice.demo.sensenet.com',
+      REACT_APP_SERVICE_URL: 'https://dev.demo.sensenet.com',
     }),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale/, /en-us/), // Bundle only english locale for moment
     // new BundleAnalyzerPlugin(),

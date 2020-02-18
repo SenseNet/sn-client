@@ -55,7 +55,7 @@ import { fieldControlStory } from './field-control-story'
 import { PleaseLogin } from './PleaseLogin'
 
 export const testRepository = new Repository({
-  repositoryUrl: 'https://devservice.demo.sensenet.com',
+  repositoryUrl: 'https://dev.demo.sensenet.com',
   requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'DisplayName'] as any,
   schemas: customSchema,
   sessionLifetime: 'expiration',
