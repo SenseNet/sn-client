@@ -12,10 +12,11 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
+import { useLogger } from '@sensenet/hooks-react'
 import React, { useContext, useState } from 'react'
 import { ResponsiveContext } from '../../context'
 import { useLocalization } from '../../hooks'
+import { useRepoState } from '../../services'
 import { Icon } from '../Icon'
 import { useDialog } from '.'
 
@@ -28,7 +29,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
   const { closeLastDialog } = useDialog()
   const [isDeleteInProgress, setIsDeleteInProgress] = useState(false)
   const [permanent, setPermanent] = useState(false)
-  const repo = useRepository()
+  const repo = useRepoState().getCurrentRepoState()!.repository
   const localization = useLocalization().deleteContentDialog
   const logger = useLogger('DeleteContentDialog')
   const isTrashBag = !!props.content.length && repo.schemas.isContentFromType(props.content[0], 'TrashBag')

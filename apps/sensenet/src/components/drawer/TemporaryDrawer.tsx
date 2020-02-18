@@ -9,13 +9,13 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import Tooltip from '@material-ui/core/Tooltip'
 import Settings from '@material-ui/icons/Settings'
 import { PathHelper } from '@sensenet/client-utils'
+import { useSession } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { Link, matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
-
-import { useRepository, useSession } from '@sensenet/hooks-react'
 import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
 import { useDrawerItems, useLocalization, usePersonalSettings, useTheme } from '../../hooks'
+import { useRepoState } from '../../services'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
 
@@ -27,7 +27,7 @@ const TemporaryDrawer: React.FunctionComponent<RouteComponentProps & {
   const settings = useContext(ResponsivePersonalSetttings)
   const device = useContext(ResponsiveContext)
   const personalSettings = usePersonalSettings()
-  const repo = useRepository()
+  const repo = useRepoState().getCurrentRepoState()!.repository
   const theme = useTheme()
   const session = useSession()
   const items = useDrawerItems()

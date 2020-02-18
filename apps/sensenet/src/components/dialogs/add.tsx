@@ -2,9 +2,10 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import { NewView } from '@sensenet/controls-react'
 import { Schema } from '@sensenet/default-content-types'
+import { useLogger } from '@sensenet/hooks-react'
 import React from 'react'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { useLocalization } from '../../hooks'
+import { useRepoState } from '../../services'
 import { useDialog } from './dialog-provider'
 
 export type AddDialogProps = {
@@ -15,7 +16,7 @@ export type AddDialogProps = {
 export const AddDialog: React.FunctionComponent<AddDialogProps> = ({ schema, parentPath }) => {
   const localization = useLocalization().addButton
   const { closeLastDialog } = useDialog()
-  const repo = useRepository()
+  const repo = useRepoState().getCurrentRepoState()!.repository
   const logger = useLogger('AddDialog')
 
   return (

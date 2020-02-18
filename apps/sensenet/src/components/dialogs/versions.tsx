@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react'
 import {
   DialogContent,
   DialogTitle,
@@ -10,11 +9,13 @@ import {
   TableRow,
   Tooltip,
 } from '@material-ui/core'
-import { GenericContent, User } from '@sensenet/default-content-types'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
-import moment from 'moment'
 import HistoryIcon from '@material-ui/icons/History'
+import { GenericContent, User } from '@sensenet/default-content-types'
+import { useLogger } from '@sensenet/hooks-react'
+import moment from 'moment'
+import React, { useEffect, useState } from 'react'
 import { useLocalization } from '../../hooks'
+import { useRepoState } from '../../services'
 import { useDialog } from './dialog-provider'
 
 export type VersionsProps = {
@@ -22,7 +23,7 @@ export type VersionsProps = {
 }
 
 export function Versions({ content }: VersionsProps) {
-  const repo = useRepository()
+  const repo = useRepoState().getCurrentRepoState()!.repository
   const localization = useLocalization().versionsDialog
   const { openDialog, closeAllDialogs } = useDialog()
   const logger = useLogger('VersionsDialog')

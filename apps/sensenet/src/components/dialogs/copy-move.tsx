@@ -6,13 +6,14 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
+import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
+import { useLogger } from '@sensenet/hooks-react'
 import { useListPicker } from '@sensenet/pickers-react'
 import React, { useEffect, useState } from 'react'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
-import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import { useLocalization } from '../../hooks'
+import { useRepoState } from '../../services'
 import { Icon } from '../Icon'
 import { useDialog } from './dialog-provider'
 
@@ -23,7 +24,7 @@ export interface CopyMoveDialogProps {
 }
 
 export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = props => {
-  const repo = useRepository()
+  const repo = useRepoState().getCurrentRepoState()!.repository
   const { closeLastDialog } = useDialog()
   const list = useListPicker({
     repository: repo,

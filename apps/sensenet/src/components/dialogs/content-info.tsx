@@ -1,12 +1,12 @@
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Drawer from '@material-ui/core/Drawer'
+import { BrowseView } from '@sensenet/controls-react'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext } from 'react'
-import { BrowseView } from '@sensenet/controls-react'
-import { useRepository } from '@sensenet/hooks-react'
 import { ResponsiveContext } from '../../context'
 import { useLocalization } from '../../hooks'
+import { useRepoState } from '../../services'
 
 export type ContentInfoDialogProps = {
   content: GenericContent
@@ -15,7 +15,7 @@ export type ContentInfoDialogProps = {
 export const ContentInfoDialog: React.FunctionComponent<ContentInfoDialogProps> = props => {
   const device = useContext(ResponsiveContext)
   const localization = useLocalization().contentInfoDialog
-  const repo = useRepository()
+  const repo = useRepoState().getCurrentRepoState()!.repository
 
   if (device === 'mobile') {
     return (

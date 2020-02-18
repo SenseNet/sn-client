@@ -1,15 +1,16 @@
 import { ConstantContent } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useEffect, useState } from 'react'
 import {
   CurrentAncestorsProvider,
   CurrentChildrenProvider,
   CurrentContentContext,
   CurrentContentProvider,
   LoadSettingsContextProvider,
-  useRepository,
+  RepositoryContext,
 } from '@sensenet/hooks-react'
+import React, { useEffect, useState } from 'react'
 import { useSelectionService } from '../../hooks'
+import { useRepoState } from '../../services'
 import { CollectionComponent } from '../content-list'
 import { useDialog } from '../dialogs'
 
@@ -25,7 +26,7 @@ export interface CommanderComponentProps {
 }
 
 export const CommanderComponent: React.FunctionComponent<CommanderComponentProps> = props => {
-  const repo = useRepository()
+  const { repository } = useRepoState().getCurrentRepoState()!
   const { openDialog } = useDialog()
   const selectionService = useSelectionService()
   const [_leftPanelRef, setLeftPanelRef] = useState<null | any>(null)
@@ -75,73 +76,75 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
           ev.stopPropagation()
           openDialog({
             name: 'add',
-            props: { parentPath: activeParent.Path, schema: repo.schemas.getSchemaByName('Folder') },
+            props: { parentPath: activeParent.Path, schema: repository.schemas.getSchemaByName('Folder') },
           })
         }
       }}
       style={{ display: 'flex', width: '100%', height: '100%' }}>
-      <LoadSettingsContextProvider>
-        <CurrentContentProvider idOrPath={props.leftParent}>
-          <CurrentContentContext.Consumer>
-            {lp => {
-              setLeftParent(lp)
-              return null
-            }}
-          </CurrentContentContext.Consumer>
-          <CurrentChildrenProvider>
-            <CurrentAncestorsProvider root={props.rootPath}>
-              <CollectionComponent
-                onFocus={() => {
-                  setActivePanel('left')
-                }}
-                enableBreadcrumbs={true}
-                onActivateItem={props.onActivateItem}
-                containerRef={r => setLeftPanelRef(r)}
-                style={{ width: '100%', maxHeight: '100%' }}
-                parentIdOrPath={props.leftParent}
-                onParentChange={props.onNavigateLeft}
-                onSelectionChange={sel => {
-                  setLeftSelection(sel)
-                  selectionService.selection.setValue(sel)
-                }}
-                onTabRequest={() => _rightPanelRef && _rightPanelRef.focus()}
-                onActiveItemChange={item => selectionService.activeContent.setValue(item)}
-                fieldsToDisplay={props.fieldsToDisplay}
-              />
-            </CurrentAncestorsProvider>
-          </CurrentChildrenProvider>
-        </CurrentContentProvider>
-        <CurrentContentProvider idOrPath={props.rightParent}>
-          <CurrentContentContext.Consumer>
-            {rp => {
-              setRightParent(rp)
-              return null
-            }}
-          </CurrentContentContext.Consumer>
-          <CurrentChildrenProvider>
-            <CurrentAncestorsProvider>
-              <CollectionComponent
-                enableBreadcrumbs={true}
-                onFocus={() => {
-                  setActivePanel('right')
-                }}
-                onActivateItem={props.onActivateItem}
-                containerRef={r => setRightPanelRef(r)}
-                parentIdOrPath={props.rightParent}
-                style={{ width: '100%', borderLeft: '1px solid rgba(255,255,255,0.3)', maxHeight: '100%' }}
-                onParentChange={props.onNavigateRight}
-                onSelectionChange={sel => {
-                  setRightSelection(sel)
-                  selectionService.selection.setValue(sel)
-                }}
-                onTabRequest={() => _leftPanelRef && _leftPanelRef.focus()}
-                onActiveItemChange={item => selectionService.activeContent.setValue(item)}
-                fieldsToDisplay={props.fieldsToDisplay}
-              />
-            </CurrentAncestorsProvider>
-          </CurrentChildrenProvider>
-        </CurrentContentProvider>
-      </LoadSettingsContextProvider>
+      <RepositoryContext.Provider value={repository}>
+        <LoadSettingsContextProvider>
+          <CurrentContentProvider idOrPath={props.leftParent}>
+            <CurrentContentContext.Consumer>
+              {lp => {
+                setLeftParent(lp)
+                return null
+              }}
+            </CurrentContentContext.Consumer>
+            <CurrentChildrenProvider>
+              <CurrentAncestorsProvider root={props.rootPath}>
+                <CollectionComponent
+                  onFocus={() => {
+                    setActivePanel('left')
+                  }}
+                  enableBreadcrumbs={true}
+                  onActivateItem={props.onActivateItem}
+                  containerRef={r => setLeftPanelRef(r)}
+                  style={{ width: '100%', maxHeight: '100%' }}
+                  parentIdOrPath={props.leftParent}
+                  onParentChange={props.onNavigateLeft}
+                  onSelectionChange={sel => {
+                    setLeftSelection(sel)
+                    selectionService.selection.setValue(sel)
+                  }}
+                  onTabRequest={() => _rightPanelRef && _rightPanelRef.focus()}
+                  onActiveItemChange={item => selectionService.activeContent.setValue(item)}
+                  fieldsToDisplay={props.fieldsToDisplay}
+                />
+              </CurrentAncestorsProvider>
+            </CurrentChildrenProvider>
+          </CurrentContentProvider>
+          <CurrentContentProvider idOrPath={props.rightParent}>
+            <CurrentContentContext.Consumer>
+              {rp => {
+                setRightParent(rp)
+                return null
+              }}
+            </CurrentContentContext.Consumer>
+            <CurrentChildrenProvider>
+              <CurrentAncestorsProvider>
+                <CollectionComponent
+                  enableBreadcrumbs={true}
+                  onFocus={() => {
+                    setActivePanel('right')
+                  }}
+                  onActivateItem={props.onActivateItem}
+                  containerRef={r => setRightPanelRef(r)}
+                  parentIdOrPath={props.rightParent}
+                  style={{ width: '100%', borderLeft: '1px solid rgba(255,255,255,0.3)', maxHeight: '100%' }}
+                  onParentChange={props.onNavigateRight}
+                  onSelectionChange={sel => {
+                    setRightSelection(sel)
+                    selectionService.selection.setValue(sel)
+                  }}
+                  onTabRequest={() => _leftPanelRef && _leftPanelRef.focus()}
+                  onActiveItemChange={item => selectionService.activeContent.setValue(item)}
+                  fieldsToDisplay={props.fieldsToDisplay}
+                />
+              </CurrentAncestorsProvider>
+            </CurrentChildrenProvider>
+          </CurrentContentProvider>
+        </LoadSettingsContextProvider>
+      </RepositoryContext.Provider>
     </div>
   )
 }

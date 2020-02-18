@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { Button, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core'
 import { ODataResponse } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
+import { useLogger } from '@sensenet/hooks-react'
+import React, { useState } from 'react'
 import { useLocalization } from '../../hooks'
+import { useRepoState } from '../../services'
 import { QueryData } from '../search'
 import { useDialog } from './dialog-provider'
 
@@ -13,7 +14,7 @@ export type SaveQueryProps = {
 }
 
 export function SaveQuery(props: SaveQueryProps) {
-  const repo = useRepository()
+  const repo = useRepoState().getCurrentRepoState()!.repository
   const localization = useLocalization().search
   const { closeLastDialog } = useDialog()
   const logger = useLogger('Search')

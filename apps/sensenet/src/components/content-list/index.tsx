@@ -1,31 +1,31 @@
+import { Repository } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import { ContentList, DefaultCell } from '@sensenet/list-controls-react'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { Repository } from '@sensenet/client-core'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
   CurrentContentContext,
   LoadSettingsContext,
-  useRepository,
 } from '@sensenet/hooks-react'
+import { ContentList, DefaultCell } from '@sensenet/list-controls-react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
+import { useRepoState } from '../../services'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
+import { useDialog } from '../dialogs'
 import { DropFileArea } from '../DropFileArea'
 import { SelectionControl } from '../SelectionControl'
-import { useDialog } from '../dialogs'
-import { IconField } from './icon-field'
-import { EmailField } from './email-field'
-import { PhoneField } from './phone-field'
-import { DisplayNameComponent } from './display-name-field'
 import { ActionsField } from './actions-field'
-import { ReferenceField } from './reference-field'
 import { BooleanField } from './boolean-field'
 import { DateField } from './date-field'
 import { DescriptionField } from './description-field'
+import { DisplayNameComponent } from './display-name-field'
+import { EmailField } from './email-field'
+import { IconField } from './icon-field'
 import { LockedField } from './locked-field'
+import { PhoneField } from './phone-field'
+import { ReferenceField } from './reference-field'
 
 export interface CollectionComponentProps {
   enableBreadcrumbs?: boolean
@@ -67,7 +67,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
   })
 
   const { openDialog } = useDialog()
-  const repo = useRepository()
+  const repo = useRepoState().getCurrentRepoState()!.repository
   const loadSettings = useContext(LoadSettingsContext)
 
   const [currentOrder, setCurrentOrder] = useState<keyof GenericContent>(

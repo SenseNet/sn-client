@@ -1,13 +1,14 @@
+import { Button, Typography } from '@material-ui/core'
+import { isExtendedError, ODataWopiResponse } from '@sensenet/client-core'
+import { useLogger } from '@sensenet/hooks-react'
 import React, { useEffect, useRef, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { isExtendedError, ODataWopiResponse } from '@sensenet/client-core'
-import { Button, Typography } from '@material-ui/core'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { useLocalization } from '../hooks'
+import { useRepoState } from '../services'
 import { FullScreenLoader } from './FullScreenLoader'
 
 const WopiPage: React.FunctionComponent<RouteComponentProps<{ documentId?: string; action?: string }>> = props => {
-  const repo = useRepository()
+  const repo = useRepoState().getCurrentRepoState()!.repository
   const formElement = useRef<HTMLFormElement>(null)
   const [wopiData, setWopiData] = useState<ODataWopiResponse | null>(null)
   const [error, setError] = useState('')

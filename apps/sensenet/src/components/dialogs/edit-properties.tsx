@@ -1,10 +1,11 @@
-import React from 'react'
 import { DialogContent, DialogTitle } from '@material-ui/core'
+import { ConstantContent, isExtendedError } from '@sensenet/client-core'
 import { EditView } from '@sensenet/controls-react'
 import { GenericContent } from '@sensenet/default-content-types'
-import { ConstantContent, isExtendedError } from '@sensenet/client-core'
-import { CurrentContentContext, CurrentContentProvider, useLogger, useRepository } from '@sensenet/hooks-react'
+import { CurrentContentContext, CurrentContentProvider, useLogger } from '@sensenet/hooks-react'
+import React from 'react'
 import { useLocalization, useSelectionService } from '../../hooks'
+import { useRepoState } from '../../services'
 import { useDialog } from '.'
 
 export type EditPropertiesProps = {
@@ -14,7 +15,7 @@ export type EditPropertiesProps = {
 export const EditProperties: React.FunctionComponent<EditPropertiesProps> = props => {
   const selectionService = useSelectionService()
   const { closeLastDialog } = useDialog()
-  const repo = useRepository()
+  const repo = useRepoState().getCurrentRepoState()!.repository
   const localization = useLocalization().editPropertiesDialog
   const logger = useLogger('EditPropertiesDialog')
 

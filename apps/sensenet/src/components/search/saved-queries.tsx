@@ -1,27 +1,26 @@
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Typography from '@material-ui/core/Typography'
-
 import { ConstantContent } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { Query } from '@sensenet/default-content-types'
-import React, { useContext, useEffect, useState } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
   CurrentContentContext,
   LoadSettingsContext,
   useInjector,
-  useRepository,
   useRepositoryEvents,
 } from '@sensenet/hooks-react'
+import React, { useContext, useEffect, useState } from 'react'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { useLocalization } from '../../hooks'
+import { useRepoState } from '../../services'
 import { CollectionComponent } from '../content-list'
 import { encodeQueryData } from '.'
 
 const Search: React.FunctionComponent<RouteComponentProps> = props => {
-  const repo = useRepository()
+  const repo = useRepoState().getCurrentRepoState()!.repository
   const localization = useLocalization().search
   const injector = useInjector()
 

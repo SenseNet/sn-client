@@ -6,9 +6,10 @@ import ListItemText from '@material-ui/core/ListItemText'
 import { ODataParams } from '@sensenet/client-core'
 import { PathHelper, sleepAsync } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
+import { CurrentAncestorsContext, useRepositoryEvents } from '@sensenet/hooks-react'
 import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
-import { CurrentAncestorsContext, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
+import { useRepoState } from '../../services'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { DropFileArea } from '../DropFileArea'
 import { Icon } from '../Icon'
@@ -27,7 +28,7 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
   const [opened, setOpened] = useState<number[]>([])
   const [reloadToken, setReloadToken] = useState(0)
   const [ancestorPaths, setAncestorPaths] = useState(ancestors.map(a => a.Path))
-  const repo = useRepository()
+  const repo = useRepoState().getCurrentRepoState()!.repository
   const eventHub = useRepositoryEvents()
 
   const [contextMenuItem, setContextMenuItem] = useState<GenericContent | null>(null)

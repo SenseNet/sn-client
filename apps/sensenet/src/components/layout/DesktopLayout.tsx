@@ -1,19 +1,19 @@
 import CssBaseline from '@material-ui/core/CssBaseline'
+import { useInjector } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
-
-import { useInjector, useRepository } from '@sensenet/hooks-react'
 import snLogo from '../../assets/sensenet_logo_transparent.png'
 import { ResponsivePersonalSetttings } from '../../context'
+import { useRepoState } from '../../services'
+import { CustomActionCommandProvider } from '../../services/CommandProviders/CustomActionCommandProvider'
 import { DesktopAppBar } from '../appbar/desktop-app-bar'
+import { useDialog } from '../dialogs'
 import { PermanentDrawer } from '../drawer/PermanentDrawer'
 import { TemporaryDrawer } from '../drawer/TemporaryDrawer'
-import { CustomActionCommandProvider } from '../../services/CommandProviders/CustomActionCommandProvider'
-import { useDialog } from '../dialogs'
 import { getMonacoModelUri } from '../edit/TextEditor'
 
 export const DesktopLayout: React.FunctionComponent = props => {
   const settings = useContext(ResponsivePersonalSetttings)
-  const repo = useRepository()
+  const repo = useRepoState().getCurrentRepoState()!.repository
   const { openDialog, closeLastDialog } = useDialog()
   const customActionService = useInjector().getInstance(CustomActionCommandProvider)
   const [tempDrawerOpened, setTempDrawerOpened] = useState(false)

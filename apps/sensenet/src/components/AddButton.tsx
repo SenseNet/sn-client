@@ -1,7 +1,3 @@
-import Add from '@material-ui/icons/Add'
-import { GenericContent, Schema } from '@sensenet/default-content-types'
-import React, { useContext, useEffect, useState } from 'react'
-import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
 import {
   createStyles,
   IconButton,
@@ -14,9 +10,14 @@ import {
   Theme,
   Tooltip,
 } from '@material-ui/core'
-import clsx from 'clsx'
 import { CloudUpload } from '@material-ui/icons'
+import Add from '@material-ui/icons/Add'
+import { GenericContent, Schema } from '@sensenet/default-content-types'
+import { CurrentContentContext, useLogger } from '@sensenet/hooks-react'
+import clsx from 'clsx'
+import React, { useContext, useEffect, useState } from 'react'
 import { useLocalization } from '../hooks'
+import { useRepoState } from '../services'
 import { useDialog } from './dialogs'
 import { Icon } from './Icon'
 
@@ -91,7 +92,7 @@ export interface AddButtonProps {
 
 export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   const classes = useStyles()
-  const repo = useRepository()
+  const { repository } = useRepoState().getCurrentRepoState()!
   const { openDialog } = useDialog()
   const parentContext = useContext(CurrentContentContext)
   const [parent, setParent] = useState(parentContext)
@@ -113,7 +114,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   useEffect(() => {
     const getActions = async () => {
       try {
-        const actions = await repo.getActions({ idOrPath: props.parent ? parent.Id : props.path })
+        const actions = await repository.getActions({ idOrPath: props.parent ? parent.Id : props.path })
         const isActionFound = actions.d.Actions.some(action => action.Name === 'Add' || action.Name === 'Upload')
         setAvailable(isActionFound)
       } catch (error) {
@@ -131,20 +132,20 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
     } else {
       setAvailable(false)
     }
-  }, [localization.errorGettingActions, logger, parent, props.parent, props.path, repo])
+  }, [localization.errorGettingActions, logger, parent, props.parent, props.path, repository])
 
   useEffect(() => {
     const getAllowedChildTypes = async () => {
       try {
-        const allowedChildTypesFromRepo = await repo.getAllowedChildTypes({
+        const allowedChildTypesFromRepo = await repository.getAllowedChildTypes({
           idOrPath: props.parent ? parent.Id : props.path,
         })
 
         const tempAllowedChildTypes: Schema[] = []
 
         allowedChildTypesFromRepo.d.results.forEach(type => {
-          if (repo.schemas.getSchemaByName(type.Name).ContentTypeName === type.Name) {
-            tempAllowedChildTypes.push(repo.schemas.getSchemaByName(type.Name))
+          if (repository.schemas.getSchemaByName(type.Name).ContentTypeName === type.Name) {
+            tempAllowedChildTypes.push(repository.schemas.getSchemaByName(type.Name))
           }
         })
         setAllowedChildTypes(tempAllowedChildTypes)
@@ -161,7 +162,15 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
     if (showSelectType) {
       props.parent || props.path !== '' ? getAllowedChildTypes() : setAllowedChildTypes([])
     }
-  }, [localization.errorGettingAllowedContentTypes, logger, parent.Id, props.parent, props.path, repo, showSelectType])
+  }, [
+    localization.errorGettingAllowedContentTypes,
+    logger,
+    parent.Id,
+    props.parent,
+    props.path,
+    repository,
+    showSelectType,
+  ])
 
   return (
     <div className={classes.mainDiv}>
