@@ -1,11 +1,11 @@
+import { withStore } from '../../__tests__/TestHelper'
+import { rootStateType } from '../../store/rootReducer'
+import Registration from '../Registration'
 import { LoginState } from '@sensenet/client-core'
 import { Store } from '@sensenet/redux'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { MemoryRouter } from 'react-router-dom'
-import { withStore } from '../../__tests__/TestHelper'
-import { rootStateType } from '../../store/rootReducer'
-import Registration from '../Registration'
 
 it('renders without crashing', () => {
   const div = document.createElement('div')
@@ -50,7 +50,7 @@ it('renders without crashing', () => {
   ReactDOM.render(
     withStore(
       <MemoryRouter>
-        <Registration verify={null} oAuthProvider={null as any} />
+        <Registration oAuthProvider={null as any} />
       </MemoryRouter>,
       options,
     ),
