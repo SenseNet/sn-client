@@ -19,7 +19,7 @@ import { ResponsivePersonalSetttings } from '../../context'
 import { useContentRouting, useLocalization, useSelectionService } from '../../hooks'
 import { isReferenceField } from '../content-list'
 import { useDialog } from '../dialogs'
-import { ReactVirtualizedTable } from '../content-list/react-virtualized-table'
+import { ContentList } from '../content-list/content-list'
 
 const searchDebounceTime = 400
 export interface QueryData {
@@ -146,7 +146,7 @@ export const Search = () => {
       <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>
         <CurrentChildrenContext.Provider value={result}>
           <CurrentAncestorsContext.Provider value={[]}>
-            <ReactVirtualizedTable
+            <ContentList
               style={{
                 height: queryData.title === 'Content Types' ? 'calc(100% - 33px)' : 'calc(100% - 100px)',
                 overflow: 'auto',

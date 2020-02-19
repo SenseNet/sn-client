@@ -10,7 +10,7 @@ import {
 import { useSelectionService } from '../../hooks'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { Tree } from '../tree/index'
-import { ReactVirtualizedTable } from '../content-list/react-virtualized-table'
+import { ContentList } from '../content-list/content-list'
 import { ResponsivePersonalSetttings } from '../../context'
 
 export interface ExploreComponentProps {
@@ -56,7 +56,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                   activeItemIdOrPath={props.parent}
                 />
 
-                <ReactVirtualizedTable
+                <ContentList
                   style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
                   enableBreadcrumbs={false}
                   fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields}

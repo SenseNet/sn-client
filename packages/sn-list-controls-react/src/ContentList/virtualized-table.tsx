@@ -1,5 +1,5 @@
 /* eslint-disable import/named */
-import { createStyles, withStyles, WithStyles } from '@material-ui/core/styles'
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import TableCell from '@material-ui/core/TableCell'
 import { ActionModel, FieldSetting, GenericContent, Schema } from '@sensenet/default-content-types'
 import clsx from 'clsx'
@@ -17,7 +17,7 @@ import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox'
 import { TableSortLabel, Tooltip } from '@material-ui/core'
 import { ActionsCell, DateCell, ReferenceCell, RowCheckbox, VirtualDefaultCell, VirtualDisplayNameCell } from '.'
 
-const styles = () =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     flexContainer: {
       display: 'flex',
@@ -29,7 +29,7 @@ const styles = () =>
     },
     tableRowHover: {
       '&:hover': {
-        backgroundColor: 'rgba(255, 255, 255, 0.14)',
+        backgroundColor: theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 0.14)' : 'rgba(0, 0, 0, 0.07)',
       },
     },
     tableCell: {
@@ -38,7 +38,14 @@ const styles = () =>
     noClick: {
       cursor: 'initial',
     },
-  })
+    selected: {
+      backgroundColor: theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)',
+    },
+    selectedLight: {
+      backgroundColor: 'rgba(255, 255, 255, 0.04)',
+    },
+  }),
+)
 
 interface Row {
   index: number
@@ -49,7 +56,7 @@ export interface VirtualCellProps {
   fieldSettings: FieldSetting
 }
 
-interface MuiVirtualizedTableProps<T = GenericContent> extends WithStyles<typeof styles> {
+interface MuiVirtualizedTableProps<T = GenericContent> {
   active?: T
   cellRenderer?: (props: VirtualCellProps) => React.ReactNode
   checkboxProps?: CheckboxProps
@@ -79,6 +86,8 @@ interface MuiVirtualizedTableProps<T = GenericContent> extends WithStyles<typeof
 }
 
 const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
+  const classes = useStyles()
+
   const handleSelectAllClick = useCallback(() => {
     props.onRequestSelectionChange &&
       (props.selected && props.selected.length === props.items.length
@@ -104,13 +113,20 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
 
   const getRowClassName = ({ index }: Row) => {
     const {
-      classes,
       tableProps: { onRowClick },
     } = props
 
-    return clsx(classes.tableRow, classes.flexContainer, {
-      [classes.tableRowHover]: index !== -1 && onRowClick != null,
-    })
+    const isSelected =
+      index !== -1 && props.selected && props.selected.find(s => s.Id === props.items[index].Id) ? true : false
+
+    return clsx(
+      classes.tableRow,
+      classes.flexContainer,
+      {
+        [classes.tableRowHover]: index !== -1 && onRowClick != null,
+      },
+      { [classes.selected]: isSelected },
+    )
   }
 
   const checkBoxRenderer = (tableCellProps: TableCellProps, isSelected: boolean) => {
@@ -231,7 +247,7 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
     )
   }
 
-  const { classes, fieldsToDisplay, tableProps } = props
+  const { fieldsToDisplay, tableProps } = props
   const fieldsToDisplayWithOrWithoutCheckbox = props.displayRowCheckbox
     ? ['Checkbox'].concat(fieldsToDisplay)
     : fieldsToDisplay
@@ -282,4 +298,4 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
   )
 }
 
-export const VirtualizedTable = withStyles(styles)(MuiVirtualizedTable)
+export const VirtualizedTable = MuiVirtualizedTable

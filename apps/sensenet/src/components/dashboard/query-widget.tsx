@@ -16,7 +16,7 @@ import { QueryWidget as QueryWidgetModel } from '../../services/PersonalSettings
 import { useContentRouting, useLocalization, useSelectionService, useStringReplace } from '../../hooks'
 import { isReferenceField } from '../content-list'
 import { encodeQueryData } from '../search'
-import { ReactVirtualizedTable } from '../content-list/react-virtualized-table'
+import { ContentList } from '../content-list/content-list'
 
 const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & RouteComponentProps> = props => {
   const [items, setItems] = useState<GenericContent[]>([])
@@ -134,7 +134,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
                   setLoadSettings: () => ({}),
                   setLoadAncestorsSettings: () => ({}),
                 }}>
-                <ReactVirtualizedTable
+                <ContentList
                   disableSelection={!props.settings.enableSelection}
                   hideHeader={!props.settings.showColumnNames}
                   fieldsToDisplay={props.settings.columns}

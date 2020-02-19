@@ -18,18 +18,20 @@ import { SelectionControl } from '../SelectionControl'
 import { useDialog } from '../dialogs'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { DropFileArea } from '../DropFileArea'
-import { ReferenceField } from './reference-field'
-import { LockedField } from './locked-field'
-import { IconField } from './icon-field'
-import { EmailField } from './email-field'
-import { PhoneField } from './phone-field'
-import { DisplayNameComponent } from './display-name-field'
-import { DescriptionField } from './description-field'
-import { ActionsField } from './actions-field'
-import { DateField } from './date-field'
-import { BooleanField } from './boolean-field'
+import {
+  ActionsField,
+  BooleanField,
+  DateField,
+  DescriptionField,
+  DisplayNameComponent,
+  EmailField,
+  IconField,
+  LockedField,
+  PhoneField,
+  ReferenceField,
+} from '.'
 
-export interface ReactVirtualizedTableProps {
+export interface ContentListProps {
   enableBreadcrumbs?: boolean
   hideHeader?: boolean
   disableSelection?: boolean
@@ -52,7 +54,10 @@ export const isReferenceField = (fieldName: string, repo: Repository) => {
   return refWhiteList.indexOf(fieldName) !== -1 || (setting && setting.Type === 'ReferenceFieldSetting') || false
 }
 
-export const ReactVirtualizedTable: React.FunctionComponent<ReactVirtualizedTableProps> = props => {
+const rowHeightConst = 57
+const headerHeightConst = 42
+
+export const ContentList: React.FunctionComponent<ContentListProps> = props => {
   const selectionService = useSelectionService()
   const parentContent = useContext(CurrentContentContext)
   const children = useContext(CurrentChildrenContext)
@@ -109,9 +114,9 @@ export const ReactVirtualizedTable: React.FunctionComponent<ReactVirtualizedTabl
     setSelected([])
   }, [parentContent.Id])
 
-  useEffect(() => {
-    setIsContextMenuOpened(false)
-  }, [children, activeContent, selected])
+  // useEffect(() => {
+  //   setIsContextMenuOpened(false)
+  // }, [children, activeContent, selected])
 
   useEffect(() => {
     selectionService.selection.setValue(selected)
@@ -251,7 +256,7 @@ export const ReactVirtualizedTable: React.FunctionComponent<ReactVirtualizedTabl
     [activeContent, children, props, selected, handleActivateItem, ancestors, openDialog, searchString, runSearch],
   )
 
-  const onRequestOrderChangeFunc = (field: any, dir: any) => {
+  const onRequestOrderChangeFunc = (field: keyof GenericContent, dir: 'asc' | 'desc') => {
     setCurrentOrder(field)
     setCurrentDirection(dir)
   }
@@ -289,10 +294,9 @@ export const ReactVirtualizedTable: React.FunctionComponent<ReactVirtualizedTabl
             onOpen={async ev => {
               ev.preventDefault()
               ev.stopPropagation()
-              ev.persist()
-              await setActiveContent(fieldOptions.rowData)
-              await setContextMenuAnchor({ top: ev.clientY, left: ev.clientX })
-              await setIsContextMenuOpened(true)
+              setActiveContent(fieldOptions.rowData)
+              setContextMenuAnchor({ top: ev.clientY, left: ev.clientX })
+              setIsContextMenuOpened(true)
             }}
           />
         )
@@ -385,8 +389,8 @@ export const ReactVirtualizedTable: React.FunctionComponent<ReactVirtualizedTabl
               selected={selected}
               tableProps={{
                 rowCount: children.length,
-                rowHeight: 57,
-                headerHeight: 42,
+                rowHeight: rowHeightConst,
+                headerHeight: headerHeightConst,
                 rowGetter: ({ index }) => children[index],
                 onRowClick: rowMouseEventHandlerParams => {
                   setActiveContent(rowMouseEventHandlerParams.rowData)
@@ -408,15 +412,6 @@ export const ReactVirtualizedTable: React.FunctionComponent<ReactVirtualizedTabl
           </Paper>
         </div>
       </DropFileArea>
-      {activeContent ? (
-        <ContentContextMenu
-          content={activeContent}
-          menuProps={menuPropsObj}
-          isOpened={isContextMenuOpened}
-          onClose={onCloseFunc}
-          onOpen={onOpenFunc}
-        />
-      ) : null}
     </div>
   )
 }

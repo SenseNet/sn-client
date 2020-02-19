@@ -2,20 +2,11 @@ import { TableCell } from '@material-ui/core'
 import React from 'react'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Icon } from '../Icon'
+import { virtualStyle } from './virtualizedStyleForFields'
 
 export const ReferenceField: React.FC<{ content: GenericContent }> = ({ content }) => {
   return (
-    <TableCell
-      component="div"
-      padding={'none'}
-      style={{
-        height: '57px',
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 0,
-      }}>
+    <TableCell component="div" style={virtualStyle}>
       {content.Name !== 'Somebody' ? (
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Icon item={content} />

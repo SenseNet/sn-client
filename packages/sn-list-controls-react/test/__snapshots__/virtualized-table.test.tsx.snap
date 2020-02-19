@@ -41,7 +41,7 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     }
   }
 >
-  <WithStyles(MuiVirtualizedTable)
+  <MuiVirtualizedTable
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [
@@ -1064,7 +1064,7 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     }
   }
 >
-  <WithStyles(MuiVirtualizedTable)
+  <MuiVirtualizedTable
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [
@@ -2098,7 +2098,7 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     }
   }
 >
-  <WithStyles(MuiVirtualizedTable)
+  <MuiVirtualizedTable
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [
@@ -3120,7 +3120,7 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     }
   }
 >
-  <WithStyles(MuiVirtualizedTable)
+  <MuiVirtualizedTable
     displayRowCheckbox={false}
     fieldsToDisplay={
       Array [
@@ -4143,7 +4143,7 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     }
   }
 >
-  <WithStyles(MuiVirtualizedTable)
+  <MuiVirtualizedTable
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [
@@ -5165,7 +5165,7 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     }
   }
 >
-  <WithStyles(MuiVirtualizedTable)
+  <MuiVirtualizedTable
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [
@@ -6187,7 +6187,7 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     }
   }
 >
-  <WithStyles(MuiVirtualizedTable)
+  <MuiVirtualizedTable
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [
@@ -7209,7 +7209,7 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     }
   }
 >
-  <WithStyles(MuiVirtualizedTable)
+  <MuiVirtualizedTable
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [

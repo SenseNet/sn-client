@@ -6,6 +6,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useSession } from '@sensenet/hooks-react'
 import { isUser } from '../../utils/type-guards'
 import { useLocalization } from '../../hooks'
+import { virtualStyle } from './virtualizedStyleForFields'
 
 type LockedFieldProps = {
   content: GenericContent
@@ -30,16 +31,7 @@ export function LockedField({ content }: LockedFieldProps) {
   }
 
   return (
-    <TableCell
-      component="div"
-      style={{
-        height: '57px',
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 0,
-      }}>
+    <TableCell component="div" style={virtualStyle}>
       <Tooltip title={content.Approvable ? localization.actionNeeded : localization.checkedOutTo(lockedByName())}>
         {content.Approvable ? <AssignmentLateIcon /> : <Lock />}
       </Tooltip>

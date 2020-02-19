@@ -11,7 +11,7 @@ import {
 } from '@sensenet/hooks-react'
 import { useSelectionService } from '../../hooks'
 import { useDialog } from '../dialogs'
-import { ReactVirtualizedTable } from '../content-list/react-virtualized-table'
+import { ContentList } from '../content-list/content-list'
 
 export interface CommanderComponentProps {
   leftParent: number | string
@@ -90,7 +90,7 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
           </CurrentContentContext.Consumer>
           <CurrentChildrenProvider>
             <CurrentAncestorsProvider root={props.rootPath}>
-              <ReactVirtualizedTable
+              <ContentList
                 onFocus={() => {
                   setActivePanel('left')
                 }}
@@ -120,7 +120,7 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
           </CurrentContentContext.Consumer>
           <CurrentChildrenProvider>
             <CurrentAncestorsProvider>
-              <ReactVirtualizedTable
+              <ContentList
                 enableBreadcrumbs={true}
                 onFocus={() => {
                   setActivePanel('right')

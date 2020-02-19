@@ -107,7 +107,7 @@ export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: 
       ) : (
         <SimpleList
           rootPath={browseData.root || ConstantContent.PORTAL_ROOT.Path}
-          reactVirtualizedTableProps={{
+          contentListProps={{
             onActivateItem: openItem,
             onParentChange: navigate,
             fieldsToDisplay: browseData.fieldsToDisplay,

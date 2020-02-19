@@ -6,12 +6,12 @@ import {
   LoadSettingsContextProvider,
 } from '@sensenet/hooks-react'
 import { useSelectionService } from '../../hooks'
-import { ReactVirtualizedTable, ReactVirtualizedTableProps } from '../content-list/react-virtualized-table'
+import { ContentList, ContentListProps } from '../content-list/content-list'
 
 export interface SimpleListComponentProps {
   parent: number | string
   rootPath?: string
-  reactVirtualizedTableProps?: Partial<ReactVirtualizedTableProps>
+  contentListProps?: Partial<ContentListProps>
 }
 
 export const SimpleList: React.FunctionComponent<SimpleListComponentProps> = props => {
@@ -23,7 +23,7 @@ export const SimpleList: React.FunctionComponent<SimpleListComponentProps> = pro
         <CurrentContentProvider idOrPath={props.parent}>
           <CurrentChildrenProvider>
             <CurrentAncestorsProvider root={props.rootPath}>
-              <ReactVirtualizedTable
+              <ContentList
                 enableBreadcrumbs={true}
                 onActivateItem={() => null}
                 style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%', width: '100%' }}
@@ -33,7 +33,7 @@ export const SimpleList: React.FunctionComponent<SimpleListComponentProps> = pro
                   selectionService.selection.setValue(sel)
                 }}
                 onActiveItemChange={item => selectionService.activeContent.setValue(item)}
-                {...props.reactVirtualizedTableProps}
+                {...props.contentListProps}
               />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>
