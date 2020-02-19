@@ -1,11 +1,11 @@
 import { Repository } from '@sensenet/client-core'
 import { RepositoryContext } from '@sensenet/hooks-react'
-import React, { useEffect, useState } from 'react'
-import { LoginPage } from '../components/login/login-page'
-import theme from '../components/theme'
+import React, { lazy, Suspense, useEffect, useState } from 'react'
 import { useRepoUrlFromLocalStorage } from '../hooks'
 import { getAuthService } from '../services/auth-service'
-import { ThemeProvider } from '.'
+import { FullScreenLoader } from '../components/FullScreenLoader'
+
+const LoginPage = lazy(() => import(/* webpackChunkName: "login" */ '../components/login/login-page'))
 
 export function RepositoryProvider({ children }: { children: React.ReactNode }) {
   const { repoUrl } = useRepoUrlFromLocalStorage()
@@ -20,9 +20,8 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
       }
       setIsLoading(true)
       const authService = await getAuthService(repoUrl)
-      const user = await authService.getUser()
       const token = await authService.getAccessToken()
-      if (!user || !token) {
+      if (!token) {
         setIsLoading(false)
         return
       }
@@ -30,7 +29,7 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
       setIsLoading(false)
     }
     getRepo()
-  }, [repoUrl, repository])
+  }, [repoUrl])
 
   if (isLoading) {
     return null
@@ -38,9 +37,9 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
 
   if (!repository) {
     return (
-      <ThemeProvider theme={theme}>
+      <Suspense fallback={<FullScreenLoader />}>
         <LoginPage />
-      </ThemeProvider>
+      </Suspense>
     )
   }
 

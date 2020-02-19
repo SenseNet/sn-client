@@ -45,13 +45,13 @@ export default function AppProviders({ children }: AppProvidersProps) {
         <PersonalSettingsContextProvider>
           <LocalizationProvider>
             <BrowserRouter>
-              <RepositoryProvider>
-                <ResponsiveContextProvider>
-                  <ThemeProvider theme={theme}>
+              <ThemeProvider theme={theme}>
+                <RepositoryProvider>
+                  <ResponsiveContextProvider>
                     <DialogProvider>{children}</DialogProvider>
-                  </ThemeProvider>
-                </ResponsiveContextProvider>
-              </RepositoryProvider>
+                  </ResponsiveContextProvider>
+                </RepositoryProvider>
+              </ThemeProvider>
             </BrowserRouter>
           </LocalizationProvider>
         </PersonalSettingsContextProvider>

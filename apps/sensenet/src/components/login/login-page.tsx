@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-export function LoginPage() {
+export default function LoginPage() {
   const classes = useStyles()
   const localization = useLocalization().login
   const { login, isLoading } = useAuthentication()
