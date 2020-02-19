@@ -55,7 +55,7 @@ interface WorkspaceListItemProps extends RouteComponentProps<any> {
   followed: boolean
   workspace: Workspace
   userName: string
-  favorites: number[]
+  // favorites: number[]
   closeDropDown: (open: boolean) => void
 }
 
@@ -97,25 +97,25 @@ class WorkspaceListItem extends React.Component<
     this.props.history.push(newPath)
     this.props.closeDropDown(true)
   }
-  public startButtonClick = (id: number) => {
-    const { userName, favorites } = this.props
-    this.state.followed
-      ? this.props.unfollowWorkspace(userName, id, favorites)
-      : this.props.followWorkspace(userName, id, favorites)
-    this.setState({
-      followed: !this.state.followed,
-    })
-  }
+  // public startButtonClick = (id: number) => {
+  //   const { userName, favorites } = this.props
+  //   this.state.followed
+  //     ? this.props.unfollowWorkspace(userName, id, favorites)
+  //     : this.props.followWorkspace(userName, id, favorites)
+  //   this.setState({
+  //     followed: !this.state.followed,
+  //   })
+  // }
   public handleMouseOver = (e: any) => (e.currentTarget.style.backgroundColor = '#01A1EA')
   public handleMouseLeave = (e: any) => (e.currentTarget.style.backgroundColor = 'transparent')
   public render() {
-    const { classes, workspace, followed } = this.props
+    const { classes, workspace } = this.props
     return (
       <MenuItem
         onMouseOver={e => this.handleMouseOver(e)}
         onMouseLeave={e => this.handleMouseLeave(e)}
         style={styles.listItem}>
-        <ListItemIcon className={classes.icon}>
+        {/* <ListItemIcon className={classes.icon}>
           <IconButton
             className={followed ? classes.followedIconButton : classes.iconButton}
             onClick={() => this.startButtonClick(workspace.Id)}>
@@ -126,7 +126,7 @@ class WorkspaceListItem extends React.Component<
               style={followed ? { color: '#ffeb3b', margin: '0 10px' } : { color: '#fff', margin: '0 10px' }}
             />
           </IconButton>
-        </ListItemIcon>
+        </ListItemIcon> */}
         <ListItemText
           classes={{ primary: classes.primary, root: classes.listItemRoot }}
           primary={workspace.DisplayName}

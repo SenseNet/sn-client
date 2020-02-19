@@ -128,8 +128,8 @@ class DocumentLibrary extends React.Component<
   private static updateStoreFromPath(newProps: DocumentLibrary['props']) {
     try {
       const pathFromUrl = newProps.match.params.folderPath && atob(decodeURIComponent(newProps.match.params.folderPath))
-      const userProfilePath = `/Root/Profiles/Public/${newProps.loggedinUser.content.Name}/Document_Library`
-      newProps.loadParent(pathFromUrl || userProfilePath)
+      const defaultWsPath = `/Root/Content/IT/Document_Library`
+      newProps.loadParent(pathFromUrl || defaultWsPath)
 
       const queryObject = newProps.location.search
         .substring(1)

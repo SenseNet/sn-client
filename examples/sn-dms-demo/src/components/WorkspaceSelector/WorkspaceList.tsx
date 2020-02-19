@@ -5,7 +5,7 @@ import React from 'react'
 import Scrollbars from 'react-custom-scrollbars'
 import { connect } from 'react-redux'
 import { rootStateType } from '../../store/rootReducer'
-import { getWorkspaces, loadFavoriteWorkspaces, searchWorkspaces } from '../../store/workspaces/actions'
+import { getWorkspaces, searchWorkspaces } from '../../store/workspaces/actions'
 import WorkspaceListItem from './WorkspaceListItem'
 import WorkspaceSearch from './WorkspaceSearch'
 
@@ -35,7 +35,7 @@ const styles = () => ({
 const mapStateToProps = (state: rootStateType) => {
   return {
     workspaces: state.dms.workspaces.all,
-    favorites: state.dms.workspaces.favorites,
+    // favorites: state.dms.workspaces.favorites,
     user: state.sensenet.session.user,
     term: state.dms.workspaces.searchTerm,
   }
@@ -43,7 +43,7 @@ const mapStateToProps = (state: rootStateType) => {
 
 const mapDispatchToProps = {
   getWorkspaces,
-  getFavorites: loadFavoriteWorkspaces,
+  // getFavorites: loadFavoriteWorkspaces,
   searchWorkspaces,
 }
 
@@ -66,7 +66,7 @@ class WorkspaceList extends React.Component<
   public state = {
     workspaces: this.props.workspaces || [],
     orderedWsList: [],
-    favorites: this.props.favorites,
+    // favorites: this.props.favorites,
     top: 0,
     term: '',
   }
@@ -78,28 +78,28 @@ class WorkspaceList extends React.Component<
     if (newProps.workspaces.length !== lastState.workspaces.length || lastState.workspaces.length === 0) {
       newProps.getWorkspaces()
     }
-    if (
-      lastState.orderedWsList === null ||
-      (newProps.favorites && newProps.favorites.length === 0 && lastState.orderedWsList.length === 0)
-    ) {
-      newProps.getFavorites(newProps.user.userName)
-    }
+    // if (
+    //   lastState.orderedWsList === null ||
+    //   (newProps.favorites && newProps.favorites.length === 0 && lastState.orderedWsList.length === 0)
+    // ) {
+    //   // newProps.getFavorites(newProps.user.userName)
+    // }
     return {
       ...lastState,
       workspaces: newProps.workspaces,
-      favorites: newProps.favorites,
-      orderedWsList:
-        newProps.term.length > 0
-          ? [
-              ...newProps.workspaces.filter(ws => newProps.favorites.indexOf(ws.Id) > -1),
-              ...newProps.workspaces.filter(ws => newProps.favorites.indexOf(ws.Id) === -1),
-            ].filter(ws =>
-              ws.DisplayName ? ws.DisplayName.includes(newProps.term) || ws.Name.includes(newProps.term) : '',
-            )
-          : [
-              ...newProps.workspaces.filter(ws => newProps.favorites.indexOf(ws.Id) > -1),
-              ...newProps.workspaces.filter(ws => newProps.favorites.indexOf(ws.Id) === -1),
-            ],
+      // favorites: newProps.favorites,
+      orderedWsList: [],
+      // newProps.term.length > 0
+      //   ? [
+      //       ...newProps.workspaces.filter(ws => newProps.favorites.indexOf(ws.Id) > -1),
+      //       ...newProps.workspaces.filter(ws => newProps.favorites.indexOf(ws.Id) === -1),
+      //     ].filter(ws =>
+      //       ws.DisplayName ? ws.DisplayName.includes(newProps.term) || ws.Name.includes(newProps.term) : '',
+      //     )
+      //   : [
+      //       ...newProps.workspaces.filter(ws => newProps.favorites.indexOf(ws.Id) > -1),
+      //       ...newProps.workspaces.filter(ws => newProps.favorites.indexOf(ws.Id) === -1),
+      //     ],
       term: newProps.term,
     }
   }
@@ -110,7 +110,7 @@ class WorkspaceList extends React.Component<
     this.props.closeDropDown(true)
   }
   public render() {
-    const { orderedWsList, favorites } = this.state
+    const { orderedWsList } = this.state
     const { classes, matches } = this.props
     return (
       <div>
@@ -131,8 +131,10 @@ class WorkspaceList extends React.Component<
                 closeDropDown={this.props.closeDropDown}
                 key={workspace.Id}
                 workspace={workspace}
-                favorites={favorites}
-                followed={favorites.indexOf(workspace.Id) > -1}
+                favorites={[]}
+                followed={false}
+                // favorites={favorites}
+                // followed={favorites.indexOf(workspace.Id) > -1}
               />
             ))}
           </MenuList>
