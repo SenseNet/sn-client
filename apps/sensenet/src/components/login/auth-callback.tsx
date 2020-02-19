@@ -1,12 +1,13 @@
-import { OIDCAuthenticationService, Repository } from '@sensenet/client-core'
+import { OIDCAuthenticationService } from '@sensenet/client-core'
 import { OidcRoutes } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
-import { getAuthService, useRepoState } from '../../services'
 import { applicationPaths } from '../../application-paths'
+import { getAuthService } from '../../services'
+import { useRepoUrlFromLocalStorage } from '../../hooks'
 
 export function AuthCallback({ repoUrl }: { repoUrl: string }) {
   const [authService, setAuthService] = useState<OIDCAuthenticationService>()
-  const { addRepository } = useRepoState()
+  const { setRepoUrl } = useRepoUrlFromLocalStorage()
 
   useEffect(() => {
     async function fetchAuthService() {
@@ -21,13 +22,7 @@ export function AuthCallback({ repoUrl }: { repoUrl: string }) {
       console.log('no auth service available')
       return
     }
-    const accessToken = await authService.getAccessToken()
-    addRepository({
-      currentUser: { Name: 'Admin' } as any,
-      isActive: true,
-      isOnline: true,
-      repository: new Repository({ repositoryUrl: repoUrl, token: accessToken }),
-    })
+    setRepoUrl(repoUrl)
     window.location.replace(returnUrl)
   }
 

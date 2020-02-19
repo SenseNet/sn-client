@@ -1,3 +1,4 @@
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
@@ -5,16 +6,15 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
 import Tooltip from '@material-ui/core/Tooltip'
 import { Close, Menu } from '@material-ui/icons'
+import { useRepository } from '@sensenet/hooks-react'
+import clsx from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
-import clsx from 'clsx'
-import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { ResponsivePersonalSetttings } from '../../context'
+import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
 import { SearchButton } from '../search-button'
-import { useRepoState } from '../../services'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -72,7 +72,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const classes = useStyles()
   const settings = useContext(ResponsivePersonalSetttings)
   const selectionService = useSelectionService()
-  const { repository } = useRepoState().getCurrentRepoState()!
+  const repository = useRepository()
   const [currentComponent, setCurrentComponent] = useState(selectionService.activeContent.getValue())
   const [currentPath, setCurrentPath] = useState('')
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')

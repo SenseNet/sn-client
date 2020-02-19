@@ -1,10 +1,9 @@
 import { Button, Container, createStyles, Grid, makeStyles, TextField, Theme, Typography } from '@material-ui/core'
-import { useAuthentication, useInjector } from '@sensenet/hooks-react'
+import { useAuthentication } from '@sensenet/hooks-react'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import snLogo from '../../assets/sensenet-icon-32.png'
-import { useLocalization, usePersonalSettings } from '../../hooks'
-import { PersonalSettings } from '../../services'
+import { useLocalization, useRepoUrlFromLocalStorage } from '../../hooks'
 import { getAuthService } from '../../services/auth-service'
 import { FullScreenLoader } from '../FullScreenLoader'
 import { AuthCallback } from './auth-callback'
@@ -19,24 +18,21 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export function LoginPage() {
   const classes = useStyles()
-  const injector = useInjector()
-  const personalSettings = usePersonalSettings()
-  const settingsManager = injector.getInstance(PersonalSettings)
   const localization = useLocalization().login
   const { login, isLoading } = useAuthentication()
+  const { repoUrl, setRepoUrl } = useRepoUrlFromLocalStorage()
   const [url, setUrl] = useState('')
 
   const handleSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault()
-    personalSettings.lastRepository = url
-    settingsManager.setPersonalSettingsValue({ ...personalSettings })
     const service = await getAuthService(url)
+    setRepoUrl(url)
     login(`${window.location.origin}/${btoa(url)}`, service)
   }
 
   return (
     <div>
-      {personalSettings.lastRepository ? <AuthCallback repoUrl={personalSettings.lastRepository} /> : null}
+      {repoUrl ? <AuthCallback repoUrl={repoUrl} /> : null}
       <Grid container={true} direction="row">
         <Container maxWidth="lg" className={classes.topbar}>
           <Link to="/">

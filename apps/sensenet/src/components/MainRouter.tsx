@@ -1,7 +1,6 @@
-import { LoadSettingsContextProvider } from '@sensenet/hooks-react'
+import { LoadSettingsContextProvider, useRepository } from '@sensenet/hooks-react'
 import React, { lazy, Suspense, useEffect, useRef } from 'react'
 import { Route, Switch, useHistory } from 'react-router-dom'
-import { useRepoState } from '../services'
 import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './FullScreenLoader'
@@ -25,7 +24,7 @@ const PersonalSettingsEditor = lazy(() =>
 export const MainRouter = () => {
   const previousLocation = useRef<string>()
   const history = useHistory()
-  const { repository } = useRepoState().getCurrentRepoState()!
+  const repository = useRepository()
 
   useEffect(() => {
     const listen = history.listen(location => {

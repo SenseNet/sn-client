@@ -8,12 +8,11 @@ import {
   Typography,
 } from '@material-ui/core'
 import { User } from '@sensenet/default-content-types'
-import { useAuthentication } from '@sensenet/hooks-react'
+import { useAuthentication, useRepository } from '@sensenet/hooks-react'
 import React from 'react'
 import { useLocalization } from '../../hooks'
 import { getAuthService } from '../../services/auth-service'
 import { Icon } from '../Icon'
-import { useRepoState } from '../../services'
 import { useDialog } from './dialog-provider'
 
 export type LogoutDialogProps = {
@@ -24,12 +23,8 @@ export type LogoutDialogProps = {
 export function LogoutDialog({ userToLogout }: LogoutDialogProps) {
   const { closeLastDialog } = useDialog()
   const { logout, isLoading } = useAuthentication()
-  const { repository } = useRepoState().getCurrentRepoState()!
+  const repository = useRepository()
   const localization = useLocalization().logout
-
-  if (!repository) {
-    return null
-  }
 
   return (
     <>

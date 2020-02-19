@@ -13,11 +13,11 @@ import {
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles'
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
-import { useInjector } from '@sensenet/hooks-react'
+import { useInjector, useRepository, useSession } from '@sensenet/hooks-react'
 import React, { useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useLocalization, usePersonalSettings } from '../../hooks'
-import { PersonalSettings, useRepoState } from '../../services'
+import { PersonalSettings } from '../../services'
 import { AntSwitch } from '../ant-switch'
 import { useDialog } from '../dialogs'
 import { UserAvatar } from '../UserAvatar'
@@ -46,7 +46,8 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   const { openDialog } = useDialog()
   const [open, setOpen] = useState(false)
   const anchorRef = useRef<HTMLButtonElement>(null)
-  const repoState = useRepoState().getCurrentRepoState()!
+  const session = useSession()
+  const repo = useRepository()
   const localization = useLocalization()
 
   const handleToggle = () => {
@@ -78,7 +79,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   }, [open])
 
   const logout = (event: React.MouseEvent<EventTarget>) => {
-    openDialog({ name: 'logout', props: { userToLogout: repoState.currentUser } })
+    openDialog({ name: 'logout', props: { userToLogout: session.currentUser } })
     handleClose(event)
   }
 
@@ -89,7 +90,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
 
   return (
     <div className={classes.root}>
-      <UserAvatar user={repoState.currentUser} repositoryUrl={repoState.repository.configuration.repositoryUrl} />
+      <UserAvatar user={session.currentUser} repositoryUrl={repo.configuration.repositoryUrl} />
       <IconButton
         ref={anchorRef}
         aria-controls={open ? 'menu-list-grow' : undefined}
@@ -116,17 +117,14 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                 <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                   <MenuItem onClick={handleClose}>
                     <ListItemIcon>
-                      <UserAvatar
-                        user={repoState.currentUser}
-                        repositoryUrl={repoState.repository.configuration.repositoryUrl}
-                      />
+                      <UserAvatar user={session.currentUser} repositoryUrl={repo.configuration.repositoryUrl} />
                     </ListItemIcon>
                     <ListItemText
                       primaryTypographyProps={{
                         style: { overflow: 'hidden', textOverflow: 'ellipsis' },
-                        title: repoState.currentUser.DisplayName || repoState.currentUser.Name,
+                        title: session.currentUser.DisplayName || session.currentUser.Name,
                       }}
-                      primary={`${repoState.currentUser.DisplayName || repoState.currentUser.Name} user`}
+                      primary={`${session.currentUser.DisplayName || session.currentUser.Name} user`}
                     />
                   </MenuItem>
                   <NavLink to="/personalSettings" onClick={handleClose}>

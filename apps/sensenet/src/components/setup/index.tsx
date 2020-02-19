@@ -8,12 +8,13 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import { ConstantContent } from '@sensenet/client-core'
 import { Settings } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
 import { Query } from '@sensenet/query'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useLocalization } from '../../hooks'
+import { ContentContextService } from '../../services'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
-import { ContentContextService, useRepoState } from '../../services'
 
 const SETUP_DOCS_URL = 'https://community.sensenet.com/docs/admin-ui/setup/'
 
@@ -25,7 +26,7 @@ const WellKnownContentCard: React.FunctionComponent<{
   onContextMenu: (ev: React.MouseEvent) => void
 }> = ({ settings, onContextMenu }) => {
   const localization = useLocalization().settings
-  const repo = useRepoState().getCurrentRepoState()!.repository
+  const repo = useRepository()
   const contentContextService = new ContentContextService(repo)
 
   return (
@@ -65,7 +66,7 @@ const WellKnownContentCard: React.FunctionComponent<{
 }
 
 const Setup: React.StatelessComponent = () => {
-  const repo = useRepoState().getCurrentRepoState()!.repository
+  const repo = useRepository()
   const contentContextService = new ContentContextService(repo)
   const localization = useLocalization().settings
 

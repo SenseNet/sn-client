@@ -1,14 +1,14 @@
-import React, { useContext } from 'react'
-import { CurrentAncestorsContext, CurrentContentContext } from '@sensenet/hooks-react'
 import { GenericContent } from '@sensenet/default-content-types'
+import { CurrentAncestorsContext, CurrentContentContext, useRepository } from '@sensenet/hooks-react'
+import React, { useContext } from 'react'
 import { useHistory } from 'react-router'
-import { ContentContextService, useRepoState } from '../services'
+import { ContentContextService } from '../services'
 import Breadcrumbs, { BreadcrumbItem } from './Breadcrumbs'
 
 export const ContentBreadcrumbs = (props: { onItemClick?: (item: BreadcrumbItem<GenericContent>) => void }) => {
   const ancestors = useContext(CurrentAncestorsContext)
   const parent = useContext(CurrentContentContext)
-  const { repository } = useRepoState().getCurrentRepoState()!
+  const repository = useRepository()
   const history = useHistory()
   const contentContextService = new ContentContextService(repository)
 

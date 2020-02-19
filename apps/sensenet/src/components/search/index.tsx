@@ -5,21 +5,22 @@ import Save from '@material-ui/icons/Save'
 import { ConstantContent } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { generatePath, RouteComponentProps, withRouter } from 'react-router'
-import Semaphore from 'semaphore-async-await'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
   CurrentContentContext,
   LoadSettingsContext,
   useLogger,
+  useRepository,
 } from '@sensenet/hooks-react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { generatePath, RouteComponentProps, withRouter } from 'react-router'
+import Semaphore from 'semaphore-async-await'
 import { ResponsivePersonalSetttings } from '../../context'
 import { useLocalization, useSelectionService } from '../../hooks'
+import { ContentContextService } from '../../services'
 import { CollectionComponent, isReferenceField } from '../content-list'
 import { useDialog } from '../dialogs'
-import { ContentContextService, useRepoState } from '../../services'
 
 const loadCount = 20
 const searchDebounceTime = 400
@@ -38,7 +39,7 @@ export const decodeQueryData = (encoded?: string) =>
   encoded ? (JSON.parse(atob(decodeURIComponent(encoded))) as QueryData) : { term: '' }
 
 const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }>> = props => {
-  const repo = useRepoState().getCurrentRepoState()!.repository
+  const repo = useRepository()
   const contentContextService = new ContentContextService(repo)
   const { openDialog } = useDialog()
   const logger = useLogger('Search')

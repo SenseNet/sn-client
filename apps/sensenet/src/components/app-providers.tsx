@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import {
   LocalizationProvider,
   PersonalSettingsContextProvider,
+  RepositoryProvider,
   ResponsiveContextProvider,
   ThemeProvider,
 } from '../context'
@@ -16,7 +17,6 @@ import {
   InFolderSearchCommandProvider,
   NavigationCommandProvider,
   QueryCommandProvider,
-  RepoStateProvider,
 } from '../services'
 import '../utils/errorToJson'
 import { DialogProvider } from './dialogs/dialog-provider'
@@ -45,13 +45,13 @@ export default function AppProviders({ children }: AppProvidersProps) {
         <PersonalSettingsContextProvider>
           <LocalizationProvider>
             <BrowserRouter>
-              <RepoStateProvider>
+              <RepositoryProvider>
                 <ResponsiveContextProvider>
                   <ThemeProvider theme={theme}>
                     <DialogProvider>{children}</DialogProvider>
                   </ThemeProvider>
                 </ResponsiveContextProvider>
-              </RepoStateProvider>
+              </RepositoryProvider>
             </BrowserRouter>
           </LocalizationProvider>
         </PersonalSettingsContextProvider>

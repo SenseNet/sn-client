@@ -1,16 +1,16 @@
 import Button from '@material-ui/core/Button'
+import { Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { ActionModel, GenericContent, Settings, File as SnFile } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { Uri } from 'monaco-editor'
 import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 import { Prompt } from 'react-router'
-import { useLogger } from '@sensenet/hooks-react'
-import { Repository } from '@sensenet/client-core'
 import { ResponsiveContext } from '../../context'
 import { useLocalization, useTheme } from '../../hooks'
+import { ContentContextService } from '../../services'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
-import { ContentContextService, useRepoState } from '../../services'
 
 export const getMonacoModelUri = (content: GenericContent, repo: Repository, action?: ActionModel) => {
   if (repo.schemas.isContentFromType<Settings>(content, 'Settings') || content.Type === 'PersonalSettings') {
@@ -40,7 +40,7 @@ export interface TextEditorProps {
 export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   const theme = useTheme()
   const platform = useContext(ResponsiveContext)
-  const repo = useRepoState().getCurrentRepoState()!.repository
+  const repo = useRepository()
   const contentContextService = new ContentContextService(repo)
 
   const [textValue, setTextValue] = useState('')

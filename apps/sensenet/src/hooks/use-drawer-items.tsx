@@ -1,7 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
 import { Build, Dashboard, Delete, Language, People, Public, Search, Widgets } from '@material-ui/icons'
-import { useLogger } from '@sensenet/hooks-react'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
+import React, { useContext, useEffect, useState } from 'react'
+import { encodeBrowseData } from '../components/content'
 import { Icon } from '../components/Icon'
+import { encodeQueryData } from '../components/search'
+import { ResponsivePersonalSetttings } from '../context'
+import DefaultLocalization from '../localization/default'
 import {
   BuiltinDrawerItem,
   ContentDrawerItem,
@@ -9,11 +13,6 @@ import {
   DrawerItem as DrawerItemSetting,
   QueryDrawerItem,
 } from '../services/PersonalSettings'
-import { ResponsivePersonalSetttings } from '../context'
-import { encodeBrowseData } from '../components/content'
-import { encodeQueryData } from '../components/search'
-import DefaultLocalization from '../localization/default'
-import { useRepoState } from '../services'
 import { useLocalization } from '.'
 
 export interface DrawerItem {
@@ -31,7 +30,7 @@ type EveryDrawerType = ContentDrawerItem | QueryDrawerItem | BuiltinDrawerItem |
 export const useDrawerItems = () => {
   const settings = useContext(ResponsivePersonalSetttings)
   const localization = useLocalization().drawer
-  const { repository } = useRepoState().getCurrentRepoState()!
+  const repository = useRepository()
   const logger = useLogger('use-drawer-items')
 
   const [drawerItems, setDrawerItems] = useState<DrawerItem[]>([])

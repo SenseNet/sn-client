@@ -1,11 +1,11 @@
 import { ConstantContent } from '@sensenet/client-core'
 import { tuple } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import { useLogger } from '@sensenet/hooks-react'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router'
 import { ResponsivePersonalSetttings } from '../../context'
-import { ContentContextService, useRepoState } from '../../services'
+import { ContentContextService } from '../../services'
 import Commander from './Commander'
 import { Explore } from './Explore'
 import { SimpleList } from './Simple'
@@ -24,7 +24,7 @@ export const encodeBrowseData = (data: BrowseData) => encodeURIComponent(btoa(JS
 export const decodeBrowseData = (encoded: string) => JSON.parse(atob(decodeURIComponent(encoded))) as BrowseData
 
 export const Content = () => {
-  const { repository } = useRepoState().getCurrentRepoState()!
+  const repository = useRepository()
   const match = useRouteMatch<{ browseData: string }>()
   const history = useHistory()
   const settings = useContext(ResponsivePersonalSetttings)

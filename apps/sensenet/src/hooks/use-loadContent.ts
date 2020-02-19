@@ -1,7 +1,7 @@
 import { ODataParams } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
 import { useCallback, useEffect, useState } from 'react'
-import { useRepoState } from '../services'
 
 type Options = {
   idOrPath: string | number
@@ -15,11 +15,11 @@ export const useLoadContent = <T extends GenericContent>({ idOrPath, oDataOption
   const reload = useCallback(() => {
     setReloadToken(Math.random())
   }, [])
-  const repo = useRepoState().getCurrentRepoState()?.repository
+  const repo = useRepository()
 
   useEffect(() => {
     const ac = new AbortController()
-    if (idOrPath && repo) {
+    if (idOrPath) {
       ;(async () => {
         try {
           const response = await repo.load<T>({
