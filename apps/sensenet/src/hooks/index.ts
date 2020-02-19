@@ -1,4 +1,5 @@
 export * from './use-command-palette'
+export * from './use-current-user'
 export * from './use-drawer-items'
 export * from './use-event-service'
 export * from './use-loadContent'
