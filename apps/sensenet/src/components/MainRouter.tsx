@@ -95,16 +95,12 @@ export const MainRouter = () => {
               <WopiPage />
             </Route>
 
-            <Route path="/:repo/dashboard/:dashboardName?">
-              <DashboardComponent repository={repository} />
-            </Route>
-
-            <Route path="/:repo/" exact>
+            <Route path="/dashboard/:dashboardName?">
               <DashboardComponent repository={repository} />
             </Route>
 
             <Route path="/" exact>
-              <DashboardComponent />
+              <DashboardComponent repository={repository} />
             </Route>
           </Switch>
         </Suspense>

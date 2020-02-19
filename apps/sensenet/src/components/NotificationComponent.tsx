@@ -4,7 +4,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
 import Close from '@material-ui/icons/Close'
 import { LogLevel, sleepAsync } from '@sensenet/client-utils'
-import { RepositoryContext, useInjector } from '@sensenet/hooks-react'
+import { useInjector } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { ResponsiveContext } from '../context'
 import { EventLogEntry, EventService } from '../services/EventService'
@@ -46,10 +46,8 @@ export const getAutoHideDuration = (item: EventLogEntry<any>) => {
   }
 }
 
-// TODO: revisit this after repository refactor
 export const NotificationComponent: React.FunctionComponent = () => {
   const injector = useInjector()
-  // const repoManager = injector.getInstance(RepositoryManager)
   const eventService = injector.getInstance(EventService)
   const [values, setValues] = useState<Array<[string, Array<EventLogEntry<any>>]>>([])
   const [dismisses, setDismisses] = useState<string[]>([])
@@ -92,9 +90,7 @@ export const NotificationComponent: React.FunctionComponent = () => {
             autoHideDuration={(item.data && item.data.autoHideDuration) || getAutoHideDuration(item)}
             message={
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <RepositoryContext.Provider value={item.data.relatedRepository}>
-                  <Icon item={item.data.relatedContent || item} style={{ marginRight: '1em' }} />
-                </RepositoryContext.Provider>
+                <Icon item={item.data.relatedContent || item} style={{ marginRight: '1em' }} />
                 <div
                   title={item.message}
                   style={{ overflow: 'hidden', textOverflow: 'ellipsis', wordBreak: 'break-word' }}>
