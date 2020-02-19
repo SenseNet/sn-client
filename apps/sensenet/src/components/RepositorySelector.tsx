@@ -1,20 +1,20 @@
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
+import { useRepository } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import logo from '../assets/sensenet-icon-32.png'
 import { ResponsiveContext } from '../context'
 import { usePersonalSettings, useTheme } from '../hooks'
-import { useRepoState } from '../services'
 
 // TODO: revisit this after repository refactor
 export const RepositorySelectorComponent: React.FunctionComponent<RouteComponentProps & {
   alwaysOpened?: boolean
 }> = props => {
   const settings = usePersonalSettings()
-  const repo = useRepoState().getCurrentRepoState()!.repository
+  const repo = useRepository()
   const theme = useTheme()
   const device = useContext(ResponsiveContext)
   const [isActive, setIsActive] = useState(props.alwaysOpened || false)

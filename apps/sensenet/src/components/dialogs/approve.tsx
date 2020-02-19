@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import {
   Button,
   DialogActions,
@@ -7,12 +8,10 @@ import {
   Fade,
   TextField,
 } from '@material-ui/core'
-import { ODataParams } from '@sensenet/client-core'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { GenericContent } from '@sensenet/default-content-types'
-import { useLogger } from '@sensenet/hooks-react'
-import React, { useState } from 'react'
+import { ODataParams } from '@sensenet/client-core'
 import { useLocalization } from '../../hooks'
-import { useRepoState } from '../../services'
 import { useDialog } from './dialog-provider'
 
 export type ApproveProps = {
@@ -24,7 +23,7 @@ export type ApproveProps = {
 export function Approve(props: ApproveProps) {
   const { content, oDataOptions, onActionSuccess } = props
   const localization = useLocalization().approveDialog
-  const repo = useRepoState().getCurrentRepoState()!.repository
+  const repo = useRepository()
   const logger = useLogger('approve-reject')
   const { closeLastDialog } = useDialog()
   const [reason, setReason] = useState<string>()

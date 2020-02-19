@@ -1,10 +1,9 @@
-import { Button, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core'
-import { ODataParams } from '@sensenet/client-core'
-import { GenericContent } from '@sensenet/default-content-types'
-import { useLogger } from '@sensenet/hooks-react'
 import React, { useState } from 'react'
+import { Button, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core'
+import { GenericContent } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
+import { ODataParams } from '@sensenet/client-core'
 import { useLocalization } from '../../hooks'
-import { useRepoState } from '../../services'
 import { useDialog } from '.'
 
 export type CheckInProps = {
@@ -17,7 +16,7 @@ export function CheckIn({ content, onActionSuccess, oDataOptions }: CheckInProps
   const [comment, setComment] = useState<string>()
   const localization = useLocalization().checkInDialog
   const logger = useLogger('CheckInDialog')
-  const repo = useRepoState().getCurrentRepoState()!.repository
+  const repo = useRepository()
   const { closeLastDialog } = useDialog()
 
   const onSubmit = async () => {

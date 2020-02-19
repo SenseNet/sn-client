@@ -1,3 +1,4 @@
+import React, { useEffect, useRef, useState } from 'react'
 import {
   Button,
   createStyles,
@@ -11,14 +12,12 @@ import {
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import NoteAddSharpIcon from '@material-ui/icons/NoteAddSharp'
-import { UploadProgressInfo } from '@sensenet/client-core'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { ObservableValue } from '@sensenet/client-utils'
-import { useLogger } from '@sensenet/hooks-react'
-import React, { useEffect, useRef, useState } from 'react'
+import { UploadProgressInfo } from '@sensenet/client-core'
 import { Prompt } from 'react-router'
-import { useLocalization } from '../../../hooks'
-import { useRepoState } from '../../../services'
 import { DropFileArea } from '../../DropFileArea'
+import { useLocalization } from '../../../hooks'
 import { useDialog } from '../dialog-provider'
 import { FileList } from './file-list'
 import { FileWithFullPath, getFilesFromDragEvent } from './helper'
@@ -58,7 +57,7 @@ export function UploadDialog(props: UploadDialogProps) {
   const classes = useStyles()
   const logger = useLogger('upload')
   const { closeLastDialog } = useDialog()
-  const { repository } = useRepoState().getCurrentRepoState()!
+  const repository = useRepository()
   const localization = useLocalization().uploadProgress
   const inputFile = useRef<HTMLInputElement>(null)
   const [files, setFiles] = useState<FileWithFullPath[] | undefined>(props.files)

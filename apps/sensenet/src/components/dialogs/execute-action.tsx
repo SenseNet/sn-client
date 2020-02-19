@@ -4,17 +4,16 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import Typography from '@material-ui/core/Typography'
-import { PathHelper } from '@sensenet/client-utils'
-import { useInjector, useLogger } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
+import { useInjector, useLogger, useRepository } from '@sensenet/hooks-react'
+import { PathHelper } from '@sensenet/client-utils'
 import { useLocalization, useTheme } from '../../hooks'
 import {
-  createCustomActionModel,
   CustomActionCommandProvider,
   OnExecuteActionPayload,
-  useRepoState,
-} from '../../services'
+} from '../../services/CommandProviders/CustomActionCommandProvider'
+import { createCustomActionModel } from '../../services/MonacoModels/create-custom-action-model'
 import { useDialog } from './dialog-provider'
 
 const postBodyCache = new Map<string, string>()
@@ -33,7 +32,7 @@ export function ExecuteActionDialog({ actionValue, uri }: ExecuteActionDialogPro
   const localization = useLocalization().customActions.executeCustomActionDialog
   const customActionService = useInjector().getInstance(CustomActionCommandProvider)
   const logger = useLogger('ExecuteAction')
-  const repo = useRepoState().getCurrentRepoState()!.repository
+  const repo = useRepository()
 
   const [postBody, setPostBody] = useState(EDITOR_INITIAL_VALUE)
   const [isExecuting, setIsExecuting] = useState(false)

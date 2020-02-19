@@ -1,9 +1,8 @@
-import { GenericContent } from '@sensenet/default-content-types'
-import { useInjector } from '@sensenet/hooks-react'
 import { useContext, useEffect, useState } from 'react'
-import { ResponsiveContext } from '../context'
-import { useRepoState } from '../services'
+import { GenericContent } from '@sensenet/default-content-types'
+import { useInjector, useRepository } from '@sensenet/hooks-react'
 import { CommandProviderManager } from '../services/CommandProviderManager'
+import { ResponsiveContext } from '../context'
 
 export interface CommandPaletteItem {
   primaryText: string
@@ -19,7 +18,7 @@ export const useCommandPalette = () => {
   const [isOpened, setIsOpened] = useState(false)
   const [items, setItems] = useState<CommandPaletteItem[]>([])
 
-  const defaultRepository = useRepoState().getCurrentRepoState()!.repository
+  const defaultRepository = useRepository()
   const [repository, setRepository] = useState(defaultRepository)
   const device = useContext(ResponsiveContext)
 

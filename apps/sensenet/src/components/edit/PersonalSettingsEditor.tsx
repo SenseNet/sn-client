@@ -1,10 +1,15 @@
-import { Button, FormControlLabel, Switch, Typography, useTheme } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
-import { CurrentContentContext, useInjector, useLogger, useRepositoryEvents } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
+import { Button, FormControlLabel, Switch, Typography, useTheme } from '@material-ui/core'
 import MonacoEditor from 'react-monaco-editor'
+import {
+  CurrentContentContext,
+  useInjector,
+  useLogger,
+  useRepository,
+  useRepositoryEvents,
+} from '@sensenet/hooks-react'
 import { LocalizationContext, ResponsiveContext } from '../../context'
-import { useRepoState } from '../../services'
 import { setupModel } from '../../services/MonacoModels/PersonalSettingsModel'
 import { defaultSettings, PersonalSettings } from '../../services/PersonalSettings'
 import { useDialog } from '../dialogs'
@@ -23,7 +28,7 @@ export function SettingsEditor() {
   const service = injector.getInstance(PersonalSettings)
   const settings = service.userValue.getValue()
   const localization = useContext(LocalizationContext)
-  const repo = useRepoState().getCurrentRepoState()!.repository
+  const repo = useRepository()
   const theme = useTheme()
   const platform = useContext(ResponsiveContext)
   const eventService = useRepositoryEvents()

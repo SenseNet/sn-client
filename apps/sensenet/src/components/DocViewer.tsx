@@ -3,9 +3,8 @@ import React, { useCallback, useEffect } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { Close } from '@material-ui/icons'
 import { Button } from '@material-ui/core'
-import { CurrentContentProvider, RepositoryContext } from '@sensenet/hooks-react'
+import { CurrentContentProvider } from '@sensenet/hooks-react'
 import { useLocalization, useSelectionService, useTheme } from '../hooks'
-import { useRepoState } from '../services'
 
 const DocViewer: React.FunctionComponent<RouteComponentProps<{ documentId: string }> & {
   previousLocation?: string
@@ -13,7 +12,6 @@ const DocViewer: React.FunctionComponent<RouteComponentProps<{ documentId: strin
   const documentId = parseInt(props.match.params.documentId, 10)
   const selectionService = useSelectionService()
   const localization = useLocalization()
-  const { repository } = useRepoState().getCurrentRepoState()!
   const theme = useTheme()
   const closeViewer = useCallback(() => {
     props.previousLocation ? props.history.push(props.previousLocation) : props.history.goBack()
@@ -39,18 +37,16 @@ const DocViewer: React.FunctionComponent<RouteComponentProps<{ documentId: strin
 
   return (
     <div style={{ overflow: 'hidden', width: '100%', height: '100%', position: 'fixed' }}>
-      <RepositoryContext.Provider value={repository}>
-        <CurrentContentProvider idOrPath={documentId} onContentLoaded={c => selectionService.activeContent.setValue(c)}>
-          <DocumentViewer documentIdOrPath={documentId}>
-            <Button
-              style={{ placeSelf: 'flex-end', position: 'relative', top: '1em', right: '4.5em' }}
-              onClick={closeViewer}>
-              <Close style={{ marginRight: theme.spacing(1) }} />
-              {localization.customActions.resultsDialog.closeButton}
-            </Button>
-          </DocumentViewer>
-        </CurrentContentProvider>
-      </RepositoryContext.Provider>
+      <CurrentContentProvider idOrPath={documentId} onContentLoaded={c => selectionService.activeContent.setValue(c)}>
+        <DocumentViewer documentIdOrPath={documentId}>
+          <Button
+            style={{ placeSelf: 'flex-end', position: 'relative', top: '1em', right: '4.5em' }}
+            onClick={closeViewer}>
+            <Close style={{ marginRight: theme.spacing(1) }} />
+            {localization.customActions.resultsDialog.closeButton}
+          </Button>
+        </DocumentViewer>
+      </CurrentContentProvider>
     </div>
   )
 }

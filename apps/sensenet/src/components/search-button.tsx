@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from 'react'
+import { useRepository } from '@sensenet/hooks-react'
 import {
   createStyles,
   IconButton,
@@ -9,10 +11,8 @@ import {
   Tooltip,
 } from '@material-ui/core'
 import Add from '@material-ui/icons/Add'
-import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useLocalization } from '../hooks'
-import { useRepoState } from '../services'
 import { encodeQueryData } from './search'
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -68,7 +68,7 @@ export interface SearchButtonProps {
 
 export const SearchButton: React.FunctionComponent<SearchButtonProps> = props => {
   const classes = useStyles()
-  const repo = useRepoState().getCurrentRepoState()!.repository
+  const repo = useRepository()
   const localization = useLocalization().drawer
   const [repoToken, setRepoToken] = useState(btoa(repo.configuration.repositoryUrl))
 
