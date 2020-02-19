@@ -128,7 +128,7 @@ const TemporaryDrawer: React.FunctionComponent<RouteComponentProps & {
                   </IconButton>
                 </Link>
               )}
-              <LogoutButton onLoggedOut={() => props.onClose()} />
+              <LogoutButton />
             </ListItemSecondaryAction>
           </ListItem>
         </Paper>

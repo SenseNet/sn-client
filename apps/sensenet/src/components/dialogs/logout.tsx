@@ -7,21 +7,16 @@ import {
   DialogTitle,
   Typography,
 } from '@material-ui/core'
-import { User } from '@sensenet/default-content-types'
 import { useAuthentication, useRepository } from '@sensenet/hooks-react'
 import React from 'react'
-import { useLocalization } from '../../hooks'
+import { useCurrentUser, useLocalization } from '../../hooks'
 import { getAuthService } from '../../services/auth-service'
 import { Icon } from '../Icon'
 import { useDialog } from './dialog-provider'
 
-export type LogoutDialogProps = {
-  userToLogout: User
-  onLoggedOut?: () => void
-}
-
-export function LogoutDialog({ userToLogout }: LogoutDialogProps) {
+export function LogoutDialog() {
   const { closeLastDialog } = useDialog()
+  const currentUser = useCurrentUser()
   const { logout, isLoading } = useAuthentication()
   const repository = useRepository()
   const localization = useLocalization().logout
@@ -35,7 +30,7 @@ export function LogoutDialog({ userToLogout }: LogoutDialogProps) {
               margin: '0 1em 0 0',
               transition: 'filter linear 1s, opacity linear 1.5s',
             }}
-            item={userToLogout}
+            item={currentUser}
           />
           {localization.logoutDialogTitle}
         </div>
@@ -56,7 +51,7 @@ export function LogoutDialog({ userToLogout }: LogoutDialogProps) {
             <DialogContentText style={{ wordBreak: 'break-word' }}>
               {localization.logoutConfirmText(
                 repository.configuration.repositoryUrl,
-                userToLogout.DisplayName ?? userToLogout.Name,
+                currentUser?.DisplayName ?? currentUser?.Name ?? 'Visitor',
               )}
             </DialogContentText>
           </DialogContent>

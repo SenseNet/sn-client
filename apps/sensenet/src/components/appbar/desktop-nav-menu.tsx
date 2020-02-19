@@ -79,7 +79,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   }, [open])
 
   const logout = (event: React.MouseEvent<EventTarget>) => {
-    openDialog({ name: 'logout', props: { userToLogout: session.currentUser } })
+    openDialog({ name: 'logout' })
     handleClose(event)
   }
 
