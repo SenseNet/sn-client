@@ -118,7 +118,7 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
       this.setState({
         dataSource: req.d.results,
       })
-      if (this.props.actionName === 'edit' || this.props.actionName === 'browse') {
+      if (this.props.actionName !== 'new') {
         this.getSelected()
       }
       return req
