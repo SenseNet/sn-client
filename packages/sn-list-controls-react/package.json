@@ -31,6 +31,8 @@
     "@material-ui/core": "^4.9.3",
     "@sensenet/default-content-types": "^2.0.4",
     "@sensenet/icons-react": "^1.2.16",
+    "clsx": "^1.1.0",
+    "moment": "^2.24.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-moment": "^0.9.6",
@@ -48,6 +50,7 @@
     "enzyme-adapter-react-16": "^1.15.1",
     "enzyme-to-json": "^3.4.4",
     "jest": "^25.1.0",
+    "prop-types": "^15.7.2",
     "ts-jest": "^25.2.0",
     "typescript": "^3.7.5"
   }

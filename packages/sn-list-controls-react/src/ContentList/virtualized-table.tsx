@@ -1,7 +1,7 @@
 /* eslint-disable import/named */
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import TableCell from '@material-ui/core/TableCell'
-import { ActionModel, FieldSetting, GenericContent, Schema } from '@sensenet/default-content-types'
+import { ActionModel, FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import clsx from 'clsx'
 import React, { useCallback, useMemo } from 'react'
 import {
@@ -13,8 +13,9 @@ import {
   TableCellProps,
   TableCellRenderer,
 } from 'react-virtualized'
-import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox'
+import Checkbox from '@material-ui/core/Checkbox'
 import { TableSortLabel, Tooltip } from '@material-ui/core'
+import { ContentListBaseProps } from './content-list-base-props'
 import { ActionsCell, DateCell, ReferenceCell, RowCheckbox, VirtualDefaultCell, VirtualDisplayNameCell } from '.'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -56,68 +57,73 @@ export interface VirtualCellProps {
   fieldSettings: FieldSetting
 }
 
-interface MuiVirtualizedTableProps<T = GenericContent> {
-  active?: T
+interface VirtualizedTableProps<T = GenericContent> extends ContentListBaseProps {
+  /**
+   * Contains custom cell template components
+   */
   cellRenderer?: (props: VirtualCellProps) => React.ReactNode
-  checkboxProps?: CheckboxProps
-  displayRowCheckbox?: boolean
+  /**
+   * Array of fields that should be displayed
+   * @default []
+   */
   fieldsToDisplay: Array<keyof T>
-  getSelectionControl?: (selected: boolean, content: T, callBack: () => void) => JSX.Element
-  icons?: any
-  items: T[]
-  onItemTap?: (e: React.TouchEvent, content: T) => void
-  onItemContextMenu?: (e: React.MouseEvent, content: T) => void
-  onRequestActionsMenu?: (ev: React.MouseEvent, content: T) => void
-  onRequestOrderChange?: (field: keyof T, direction: 'asc' | 'desc') => void
-  onRequestSelectionChange?: (newSelection: T[]) => void
-  orderBy?: keyof T
-  orderDirection?: 'asc' | 'desc'
-  schema: Schema
-  selected?: T[]
   tableProps: {
+    /** Number of rows in table. */
     rowCount: number
+    /**
+     * Callback responsible for returning a data row given an index.
+     * ({ index: number }): any
+     */
     rowHeight: number | ((params: Index) => number)
+    /** Fixed height of header row */
     headerHeight: number
+    /**
+     * Callback responsible for returning a data row given an index.
+     * ({ index: number }): any
+     */
     rowGetter: (info: Index) => any
+    /**
+     * Callback invoked when a user clicks on a table row.
+     * ({ index: number }): void
+     */
     onRowClick?: (info: RowMouseEventHandlerParams) => void
+    /**
+     * Callback invoked when a user double-clicks on a table row.
+     * ({ index: number }): void
+     */
     onRowDoubleClick?: (info: RowMouseEventHandlerParams) => void
+    /** Disable rendering the header at all */
     disableHeader?: boolean
   }
 }
 
-const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
+export const VirtualizedTable: React.FC<VirtualizedTableProps> = props => {
   const classes = useStyles()
 
-  const handleSelectAllClick = useCallback(() => {
+  const handleSelectAllClick = () => {
     props.onRequestSelectionChange &&
       (props.selected && props.selected.length === props.items.length
         ? props.onRequestSelectionChange([])
         : props.onRequestSelectionChange(props.items))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.onRequestSelectionChange, props.selected, props.items])
+  }
 
-  const handleContentSelection = useCallback(
-    (content: GenericContent) => {
-      const tempSelected = props.selected !== undefined && props.selected.length > 0 ? props.selected : []
-      if (props.onRequestSelectionChange) {
-        if (tempSelected.find(c => c.Id === content.Id)) {
-          props.onRequestSelectionChange(tempSelected.filter(s => s.Id !== content.Id))
-        } else {
-          props.onRequestSelectionChange([...tempSelected, content])
-        }
+  const handleContentSelection = (content: GenericContent) => {
+    const tempSelected = props.selected !== undefined && props.selected.length > 0 ? props.selected : []
+    if (props.onRequestSelectionChange) {
+      if (tempSelected.find(c => c.Id === content.Id)) {
+        props.onRequestSelectionChange(tempSelected.filter(s => s.Id !== content.Id))
+      } else {
+        props.onRequestSelectionChange([...tempSelected, content])
       }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [props.onRequestSelectionChange, props.selected, props.items],
-  )
+    }
+  }
 
   const getRowClassName = ({ index }: Row) => {
     const {
       tableProps: { onRowClick },
     } = props
 
-    const isSelected =
-      index !== -1 && props.selected && props.selected.find(s => s.Id === props.items[index].Id) ? true : false
+    const isActive = index !== -1 && props.active && props.active.Id === props.items[index].Id ? true : false
 
     return clsx(
       classes.tableRow,
@@ -125,7 +131,7 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
       {
         [classes.tableRowHover]: index !== -1 && onRowClick != null,
       },
-      { [classes.selected]: isSelected },
+      { [classes.selected]: isActive },
     )
   }
 
@@ -297,5 +303,3 @@ const MuiVirtualizedTable: React.FC<MuiVirtualizedTableProps> = props => {
     </AutoSizer>
   )
 }
-
-export const VirtualizedTable = MuiVirtualizedTable

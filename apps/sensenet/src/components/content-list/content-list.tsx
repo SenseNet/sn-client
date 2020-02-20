@@ -18,6 +18,7 @@ import { SelectionControl } from '../SelectionControl'
 import { useDialog } from '../dialogs'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { DropFileArea } from '../DropFileArea'
+import { ContextMenuWrapper } from './context-menu-wrapper'
 import {
   ActionsField,
   BooleanField,
@@ -113,10 +114,6 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
   useEffect(() => {
     setSelected([])
   }, [parentContent.Id])
-
-  // useEffect(() => {
-  //   setIsContextMenuOpened(false)
-  // }, [children, activeContent, selected])
 
   useEffect(() => {
     selectionService.selection.setValue(selected)
@@ -268,43 +265,71 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
     <SelectionControl {...{ isSelected, content, onChangeCallback }} />
   )
 
+  const openContext = (ev: React.MouseEvent, rowData: GenericContent) => {
+    ev.preventDefault()
+    ev.stopPropagation()
+    setActiveContent(rowData)
+    setContextMenuAnchor({ top: ev.clientY, left: ev.clientX })
+    setIsContextMenuOpened(true)
+  }
+
   const fieldComponentFunc = ({ tableCellProps: fieldOptions, fieldSettings }: VirtualCellProps) => {
     switch (fieldOptions.dataKey) {
       case 'Locked':
-        return <LockedField content={fieldOptions.rowData} />
+        return (
+          <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+            <LockedField content={fieldOptions.rowData} />
+          </ContextMenuWrapper>
+        )
       case 'Icon':
-        return <IconField content={fieldOptions.rowData} />
+        return (
+          <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+            <IconField content={fieldOptions.rowData} />
+          </ContextMenuWrapper>
+        )
       case 'Email' as any:
-        return <EmailField mail={fieldOptions.rowData[fieldOptions.dataKey] as string} />
+        return (
+          <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+            <EmailField mail={fieldOptions.rowData[fieldOptions.dataKey] as string} />
+          </ContextMenuWrapper>
+        )
       case 'Phone' as any:
-        return <PhoneField phoneNo={fieldOptions.rowData[fieldOptions.dataKey] as string} />
+        return (
+          <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+            <PhoneField phoneNo={fieldOptions.rowData[fieldOptions.dataKey] as string} />
+          </ContextMenuWrapper>
+        )
       case 'DisplayName':
         return (
-          <DisplayNameComponent
-            content={fieldOptions.rowData}
-            device={device}
-            isActive={activeContent && fieldOptions.rowData.Id === activeContent.Id}
-          />
+          <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+            <DisplayNameComponent
+              content={fieldOptions.rowData}
+              device={device}
+              isActive={activeContent && fieldOptions.rowData.Id === activeContent.Id}
+            />
+          </ContextMenuWrapper>
         )
       case 'Description':
-        return <DescriptionField text={fieldOptions.rowData[fieldOptions.dataKey] as string} />
+        return (
+          <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+            <DescriptionField text={fieldOptions.rowData[fieldOptions.dataKey] as string} />
+          </ContextMenuWrapper>
+        )
       case 'Actions':
         return (
-          <ActionsField
-            onOpen={async ev => {
-              ev.preventDefault()
-              ev.stopPropagation()
-              setActiveContent(fieldOptions.rowData)
-              setContextMenuAnchor({ top: ev.clientY, left: ev.clientX })
-              setIsContextMenuOpened(true)
-            }}
-          />
+          <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+            <ActionsField onOpen={ev => openContext(ev, fieldOptions.rowData)} />
+          </ContextMenuWrapper>
         )
       default:
         break
     }
     if (fieldSettings && fieldSettings.FieldClassName === 'SenseNet.ContentRepository.Fields.DateTimeField') {
-      return <DateField date={fieldOptions.rowData[fieldOptions.dataKey] as string} />
+      return (
+        <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+          <DateField date={fieldOptions.rowData[fieldOptions.dataKey] as string} />
+        </ContextMenuWrapper>
+      )
     }
 
     if (
@@ -319,14 +344,26 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
         expectedContent.Name &&
         expectedContent.Path
       ) {
-        return <ReferenceField content={expectedContent} />
+        return (
+          <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+            <ReferenceField content={expectedContent} />
+          </ContextMenuWrapper>
+        )
       }
       return null
     }
     if (typeof fieldOptions.rowData[fieldOptions.dataKey] === 'boolean') {
-      return <BooleanField value={fieldOptions.rowData[fieldOptions.dataKey] as boolean | undefined} />
+      return (
+        <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+          <BooleanField value={fieldOptions.rowData[fieldOptions.dataKey] as boolean | undefined} />
+        </ContextMenuWrapper>
+      )
     }
-    return <VirtualDefaultCell cellData={fieldOptions.cellData} />
+    return (
+      <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+        <VirtualDefaultCell cellData={fieldOptions.cellData} />
+      </ContextMenuWrapper>
+    )
   }
 
   const menuPropsObj = {

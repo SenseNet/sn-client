@@ -4,8 +4,7 @@ import React, { useRef, useState } from 'react'
 import { MoreHoriz } from '@material-ui/icons'
 import { ResponsivePlatforms } from '../../context'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
-import { virtualStyle } from './virtualizedStyleForFields'
-
+import { virtualStyle } from './virtualized-style-for-fields'
 type DisplayNameProps = {
   content: GenericContent
   device: ResponsivePlatforms

@@ -1,7 +1,7 @@
 import { IconButton, TableCell } from '@material-ui/core'
 import React from 'react'
 import MoreHoriz from '@material-ui/icons/MoreHoriz'
-import { virtualStyle } from './virtualizedStyleForFields'
+import { virtualStyle } from './virtualized-style-for-fields'
 
 export const ActionsField: React.FC<{
   onOpen: (ev: React.MouseEvent<HTMLButtonElement>) => void

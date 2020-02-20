@@ -1,6 +1,6 @@
 import { TableCell } from '@material-ui/core'
 import React from 'react'
-import { virtualStyle } from './virtualizedStyleForFields'
+import { virtualStyle } from './virtualized-style-for-fields'
 
 export const EmailField: React.FC<{ mail: string }> = ({ mail }) => (
   <TableCell style={virtualStyle} component="div">

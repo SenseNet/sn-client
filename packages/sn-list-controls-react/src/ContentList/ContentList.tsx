@@ -1,4 +1,4 @@
-import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox'
+import Checkbox from '@material-ui/core/Checkbox'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -7,59 +7,24 @@ import TableRow from '@material-ui/core/TableRow'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
 import Tooltip from '@material-ui/core/Tooltip'
 
-import { ActionModel, FieldSetting, GenericContent, Schema } from '@sensenet/default-content-types'
+import { ActionModel, FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import React, { useCallback, useMemo } from 'react'
 import { ActionsCell, CellProps, DateCell, DefaultCell, DisplayNameCell, ReferenceCell } from './CellTemplates'
+import { ContentListBaseProps } from './content-list-base-props'
 
 /**
  * Interface for ContentList properties
  */
-export interface ContentListProps<T extends GenericContent = GenericContent> {
-  /**
-   * Array of content items
-   */
-  items: T[]
-  /**
-   * Schema object
-   */
-  schema: Schema
-  /**
-   * Active content item
-   */
-  active?: T
-  /**
-   * Array of selected content items
-   * @default []
-   */
-  selected?: T[]
+export interface ContentListProps<T extends GenericContent = GenericContent> extends ContentListBaseProps {
   /**
    * Array of fields that should be displayed
    * @default []
    */
   fieldsToDisplay?: Array<keyof T>
   /**
-   * Array of fields that descibe how the list items should be sorted
-   * @default 'DisplayName'
-   */
-  orderBy?: keyof T
-  /**
-   * Direction of ordering
-   * @default asc
-   */
-  orderDirection?: 'asc' | 'desc'
-  /**
    * Contains custom cell template components
    */
   fieldComponent?: React.StatelessComponent<CellProps<T, keyof T>>
-  /**
-   * Object that contains icon names
-   * @default null
-   */
-  icons?: any
-  /**
-   * Defines wheter a checkbox per row should be displayed or not
-   */
-  displayRowCheckbox?: boolean
   /**
    * Called when a content item is clicked
    */
@@ -68,6 +33,7 @@ export interface ContentListProps<T extends GenericContent = GenericContent> {
    * Called when a content item is double-clicked
    */
   onItemDoubleClick?: (e: React.MouseEvent, content: T) => void
+
   /**
    * Called when a content item is tapped
    */
@@ -77,18 +43,6 @@ export interface ContentListProps<T extends GenericContent = GenericContent> {
    */
   onItemContextMenu?: (e: React.MouseEvent, content: T) => void
   /**
-   * Called when actionmenu is requested
-   */
-  onRequestActionsMenu?: (ev: React.MouseEvent, content: T) => void
-  /**
-   * Called when the order params are changed
-   */
-  onRequestOrderChange?: (field: keyof T, direction: 'asc' | 'desc') => void
-  /**
-   * Called when a content item is selected
-   */
-  onRequestSelectionChange?: (newSelection: T[]) => void
-  /**
    * Called when there's a new active item
    */
   onRequestActiveItemChange?: (newActiveItem: T) => void
@@ -96,15 +50,6 @@ export interface ContentListProps<T extends GenericContent = GenericContent> {
    * Called when a action is requested
    */
   onAction?: (item: T, action: ActionModel) => void
-  /**
-   * Props for the selection checkbox
-   */
-  checkboxProps?: CheckboxProps
-
-  /**
-   * Optional custom selection component
-   */
-  getSelectionControl?: (selected: boolean, content: T, callBack: () => void) => JSX.Element
 
   /**
    * Setting to hide the table headers

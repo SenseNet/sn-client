@@ -2,7 +2,7 @@ import React from 'react'
 import { TableCell } from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Icon } from '../Icon'
-import { virtualStyle } from './virtualizedStyleForFields'
+import { virtualStyle } from './virtualized-style-for-fields'
 
 export const IconField: React.FC<{ content: GenericContent }> = props => {
   return (

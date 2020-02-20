@@ -3,7 +3,6 @@ import TableRow from '@material-ui/core/TableRow'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
 import { SchemaStore } from '@sensenet/default-content-types'
 import { mount, shallow } from 'enzyme'
-import { act } from 'react-dom/test-utils'
 import React from 'react'
 import { Paper } from '@material-ui/core'
 import { ActionsCell, DateCell, ReferenceCell } from '../src/ContentList/CellTemplates'
@@ -709,7 +708,7 @@ describe('Virtualized Table component', () => {
           <Paper style={{ height: 400, width: '100%' }}>
             <VirtualizedTable
               items={items}
-              schema={genericSchema}
+              schema={genericSchema.DisplayName}
               fieldsToDisplay={['DisplayName']}
               selected={[]}
               orderBy="DisplayName"
@@ -735,7 +734,7 @@ describe('Virtualized Table component', () => {
           <Paper style={{ height: 400, width: '100%' }}>
             <VirtualizedTable
               items={items}
-              schema={genericSchema}
+              schema={genericSchema.DisplayName}
               fieldsToDisplay={['DisplayName']}
               orderBy="DisplayName"
               orderDirection="asc"
@@ -760,7 +759,7 @@ describe('Virtualized Table component', () => {
           <Paper style={{ height: 400, width: '100%' }}>
             <VirtualizedTable
               items={items}
-              schema={genericSchema}
+              schema={genericSchema.DisplayName}
               selected={undefined}
               fieldsToDisplay={['DisplayName']}
               orderBy="DisplayName"
@@ -786,7 +785,7 @@ describe('Virtualized Table component', () => {
           <Paper style={{ height: 400, width: '100%' }}>
             <VirtualizedTable
               items={items}
-              schema={genericSchema}
+              schema={genericSchema.DisplayName}
               selected={undefined}
               fieldsToDisplay={['DisplayName']}
               orderBy="DisplayName"
@@ -812,7 +811,7 @@ describe('Virtualized Table component', () => {
           <Paper style={{ height: 400, width: '100%' }}>
             <VirtualizedTable
               items={content}
-              schema={genericSchema}
+              schema={genericSchema.DisplayName}
               selected={content}
               fieldsToDisplay={['DisplayName']}
               orderBy="DisplayName"
@@ -839,7 +838,7 @@ describe('Virtualized Table component', () => {
           <Paper style={{ height: 400, width: '100%' }}>
             <VirtualizedTable
               items={items}
-              schema={genericSchema}
+              schema={genericSchema.DisplayName}
               fieldsToDisplay={['DisplayName']}
               selected={[]}
               orderDirection="asc"
@@ -864,7 +863,7 @@ describe('Virtualized Table component', () => {
           <Paper style={{ height: 400, width: '100%' }}>
             <VirtualizedTable
               items={items}
-              schema={genericSchema}
+              schema={genericSchema.DisplayName}
               fieldsToDisplay={['DisplayName']}
               selected={[]}
               orderBy="DisplayName"
@@ -889,7 +888,7 @@ describe('Virtualized Table component', () => {
           <Paper style={{ height: 400, width: '100%' }}>
             <VirtualizedTable
               items={items}
-              schema={genericSchema}
+              schema={genericSchema.DisplayName}
               fieldsToDisplay={['DisplayName']}
               selected={[]}
               orderBy="DisplayName"

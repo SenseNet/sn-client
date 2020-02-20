@@ -6,7 +6,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useSession } from '@sensenet/hooks-react'
 import { isUser } from '../../utils/type-guards'
 import { useLocalization } from '../../hooks'
-import { virtualStyle } from './virtualizedStyleForFields'
+import { virtualStyle } from './virtualized-style-for-fields'
 
 type LockedFieldProps = {
   content: GenericContent
