@@ -20,6 +20,12 @@ export interface ExploreComponentProps {
   rootPath?: string
 }
 
+const treeLoadOptions = {
+  orderby: [
+    ['DisplayName', 'asc'],
+    ['Name', 'asc'],
+  ] as any,
+}
 export const Explore: React.FunctionComponent<ExploreComponentProps> = props => {
   const selectionService = useSelectionService()
 
@@ -41,12 +47,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                     overflow: 'auto',
                   }}
                   parentPath={props.rootPath || ConstantContent.PORTAL_ROOT.Path}
-                  loadOptions={{
-                    orderby: [
-                      ['DisplayName', 'asc'],
-                      ['Name', 'asc'],
-                    ],
-                  }}
+                  loadOptions={treeLoadOptions}
                   onItemClick={item => {
                     selectionService.activeContent.setValue(item)
                     props.onNavigate(item)
