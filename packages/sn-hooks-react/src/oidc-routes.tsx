@@ -5,6 +5,7 @@ import { useLogger } from '.'
 interface Callback {
   url?: string
   successCallback?: (returnUrl: string) => void
+  failCallback?: (errorMessage: string) => void
   component?: ReactNode
 }
 
@@ -27,14 +28,19 @@ export function OidcRoutes({
   const logger = useLogger('oidcRoutes')
 
   useEffect(() => {
-    const processCallback = async (callBack: () => AuthFuncResult, successCallback?: (returnUrl: string) => void) => {
-      const result = await callBack()
+    const processCallback = async (
+      options: {
+        authAction: () => AuthFuncResult
+      } & Pick<Callback, 'successCallback' | 'failCallback'>,
+    ) => {
+      const result = await options.authAction()
 
       switch (result.status) {
         case authenticationResultStatus.success:
-          successCallback?.(result.state.returnUrl)
+          options.successCallback?.(result.state.returnUrl)
           break
         case authenticationResultStatus.fail:
+          options.failCallback?.(result.error.message)
           logger.warning({ message: result.error.message })
           break
         default:
@@ -53,10 +59,10 @@ export function OidcRoutes({
       setPath(window.location.pathname)
       switch (path) {
         case loginCallback.url:
-          processCallback(() => authService.completeSignIn(), loginCallback.successCallback)
+          processCallback({ authAction: () => authService.completeSignIn(), ...loginCallback })
           break
         case logoutCallback.url:
-          processCallback(() => authService.completeSignOut(), logoutCallback.successCallback)
+          processCallback({ authAction: () => authService.completeSignOut(), ...logoutCallback })
           break
         default:
           break
