@@ -86,7 +86,7 @@ export const userName: Reducer<string, ReturnType<typeof userChanged>> = (
  * @returns  state. Returns the next state based on the action.
  */
 export const fullName: Reducer<string, ReturnType<typeof userChanged>> = (
-  state = ConstantContent.VISITOR_USER.DisplayName,
+  state = ConstantContent.VISITOR_USER.DisplayName!,
   action,
 ) => {
   switch (action.type) {
