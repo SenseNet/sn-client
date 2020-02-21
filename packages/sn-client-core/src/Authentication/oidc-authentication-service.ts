@@ -35,7 +35,7 @@ interface AuthOptions {
 
 export class OIDCAuthenticationService {
   public user: ObservableValue<User | undefined> = new ObservableValue(undefined)
-  private userManager: UserManager
+  public userManager: UserManager
   private isPopupEnabled = true
 
   constructor({ isPopupEnabled = true, userManager }: AuthOptions) {
@@ -128,7 +128,6 @@ export class OIDCAuthenticationService {
         return this.success({ returnUrl })
       } catch (popupSignOutError) {
         console.log('Popup signout error: ', popupSignOutError)
-        return this.error(popupSignOutError.message)
       }
     }
 
