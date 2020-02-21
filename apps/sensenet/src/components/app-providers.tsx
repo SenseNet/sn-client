@@ -2,6 +2,7 @@ import { InjectorContext, LoggerContextProvider } from '@sensenet/hooks-react'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import {
+  CurrentUserProvider,
   LocalizationProvider,
   PersonalSettingsContextProvider,
   RepositoryProvider,
@@ -47,9 +48,11 @@ export default function AppProviders({ children }: AppProvidersProps) {
             <BrowserRouter>
               <ThemeProvider theme={theme}>
                 <RepositoryProvider>
-                  <ResponsiveContextProvider>
-                    <DialogProvider>{children}</DialogProvider>
-                  </ResponsiveContextProvider>
+                  <CurrentUserProvider>
+                    <ResponsiveContextProvider>
+                      <DialogProvider>{children}</DialogProvider>
+                    </ResponsiveContextProvider>
+                  </CurrentUserProvider>
                 </RepositoryProvider>
               </ThemeProvider>
             </BrowserRouter>

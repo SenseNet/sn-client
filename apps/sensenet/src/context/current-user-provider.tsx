@@ -1,12 +1,13 @@
-import { ConstantContent } from '@sensenet/client-core'
 import { User } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { useEffect, useState } from 'react'
+import React, { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react'
 import { getAuthService } from '../services'
 
-export function useCurrentUser() {
+const CurrentUserContext = createContext<User | undefined>(undefined)
+
+export function CurrentUserProvider({ children }: PropsWithChildren<{}>) {
   const repository = useRepository()
-  const logger = useLogger('use-current-user')
+  const logger = useLogger('current-user-provider')
   const [currentUser, setCurrentUser] = useState<User>()
 
   useEffect(() => {
@@ -14,7 +15,6 @@ export function useCurrentUser() {
       const authService = await getAuthService(repository.configuration.repositoryUrl)
       const user = await authService.getUser()
       if (!user) {
-        logger.debug({ message: `Couldn't get user from auth service` })
         return
       }
 
@@ -25,17 +25,26 @@ export function useCurrentUser() {
             select: 'all',
           },
         })
-        if (result.d.Id !== ConstantContent.VISITOR_USER.Id) {
-          setCurrentUser(result.d)
-        }
-        setCurrentUser(ConstantContent.VISITOR_USER as User)
+        setCurrentUser(result.d)
       } catch (error) {
         logger.debug({ message: `Couldn't load current user: ${error.message}` })
-        setCurrentUser(ConstantContent.VISITOR_USER as User)
       }
     }
     getUser()
   }, [logger, repository])
 
-  return currentUser
+  if (!currentUser) {
+    return null
+  }
+
+  return <CurrentUserContext.Provider value={currentUser}>{children}</CurrentUserContext.Provider>
+}
+
+export function useCurrentUser() {
+  const context = useContext(CurrentUserContext)
+
+  if (!context) {
+    throw new Error('useCurrentUser must be used within a CurrentUserProvider')
+  }
+  return context
 }

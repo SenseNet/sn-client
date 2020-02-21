@@ -13,9 +13,10 @@ import {
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles'
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
-import { useInjector, useRepository, useSession } from '@sensenet/hooks-react'
+import { useInjector, useRepository } from '@sensenet/hooks-react'
 import React, { useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { useCurrentUser } from '../../context'
 import { useLocalization, usePersonalSettings } from '../../hooks'
 import { PersonalSettings } from '../../services'
 import { AntSwitch } from '../ant-switch'
@@ -46,7 +47,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   const { openDialog } = useDialog()
   const [open, setOpen] = useState(false)
   const anchorRef = useRef<HTMLButtonElement>(null)
-  const session = useSession()
+  const currentUser = useCurrentUser()
   const repo = useRepository()
   const localization = useLocalization()
 
@@ -90,7 +91,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
 
   return (
     <div className={classes.root}>
-      <UserAvatar user={session.currentUser} repositoryUrl={repo.configuration.repositoryUrl} />
+      <UserAvatar user={currentUser} repositoryUrl={repo.configuration.repositoryUrl} />
       <IconButton
         ref={anchorRef}
         aria-controls={open ? 'menu-list-grow' : undefined}
@@ -117,14 +118,14 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                 <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                   <MenuItem onClick={handleClose}>
                     <ListItemIcon>
-                      <UserAvatar user={session.currentUser} repositoryUrl={repo.configuration.repositoryUrl} />
+                      <UserAvatar user={currentUser} repositoryUrl={repo.configuration.repositoryUrl} />
                     </ListItemIcon>
                     <ListItemText
                       primaryTypographyProps={{
                         style: { overflow: 'hidden', textOverflow: 'ellipsis' },
-                        title: session.currentUser.DisplayName || session.currentUser.Name,
+                        title: currentUser.DisplayName ?? currentUser.Name,
                       }}
-                      primary={`${session.currentUser.DisplayName || session.currentUser.Name} user`}
+                      primary={`${currentUser.DisplayName ?? currentUser.Name} user`}
                     />
                   </MenuItem>
                   <NavLink to="/personalSettings" onClick={handleClose}>
