@@ -49,7 +49,7 @@ export interface QueryWidget<T extends GenericContent>
   widgetType: 'query'
 }
 
-export type WidgetSection = Array<MarkdownWidget | QueryWidget<GenericContent> | UpdatesWidget>
+export type WidgetSection = MarkdownWidget | QueryWidget<GenericContent> | UpdatesWidget
 
 export const DrawerItemType = tuple(
   'Content',
@@ -139,12 +139,10 @@ export interface BuiltinDrawerItem extends DrawerItem<undefined> {
 }
 
 export type PersonalSettingsType = PlatformDependent<UiSettings> & {
-  repositories: Array<{ url: string; loginName?: string; displayName?: string; dashboard?: WidgetSection }>
-  lastRepository?: string
   dashboards: {
-    globalDefault: WidgetSection
-    repositoryDefault: WidgetSection
-  } & { [key: string]: WidgetSection }
+    globalDefault: WidgetSection[]
+    repositoryDefault: WidgetSection[]
+  } & { [key: string]: WidgetSection[] }
   eventLogSize: number
   sendLogWithCrashReports: boolean
   logLevel: Array<keyof typeof LogLevel>
@@ -336,7 +334,6 @@ export const defaultSettings: PersonalSettingsType = {
       fields: ['DisplayName'],
     },
   },
-  repositories: [],
   language: 'default',
   eventLogSize: 500,
   sendLogWithCrashReports: true,

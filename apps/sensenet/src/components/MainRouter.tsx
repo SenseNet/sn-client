@@ -1,4 +1,4 @@
-import { LoadSettingsContextProvider, useRepository } from '@sensenet/hooks-react'
+import { LoadSettingsContextProvider } from '@sensenet/hooks-react'
 import React, { lazy, Suspense, useEffect, useRef } from 'react'
 import { Route, Switch, useHistory } from 'react-router-dom'
 import { ErrorBoundary } from './error-boundary'
@@ -11,7 +11,7 @@ const ExploreComponent = lazy(() => import(/* webpackChunkName: "content" */ './
 const DashboardComponent = lazy(() => import(/* webpackChunkName: "dashboard" */ './dashboard'))
 const SearchComponent = lazy(() => import(/* webpackChunkName: "search" */ './search'))
 const SavedQueriesComponent = lazy(() => import(/* webpackChunkName: "saved-queries" */ './search/saved-queries'))
-const SetupComponent = lazy(() => import(/* webpackChunkName: "setup" */ './setup'))
+const SetupComponent = lazy(() => import(/* webpackChunkName: "setup" */ './setup/setup'))
 const EditBinary = lazy(() => import(/* webpackChunkName: "editBinary" */ './edit/EditBinary'))
 const EditProperties = lazy(() => import(/* webpackChunkName: "editProperties" */ './edit/EditProperties'))
 const DocumentViewerComponent = lazy(() => import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
@@ -24,7 +24,6 @@ const PersonalSettingsEditor = lazy(() =>
 export const MainRouter = () => {
   const previousLocation = useRef<string>()
   const history = useHistory()
-  const repository = useRepository()
 
   useEffect(() => {
     const listen = history.listen(location => {
@@ -45,7 +44,7 @@ export const MainRouter = () => {
 
   return (
     <ErrorBoundary FallbackComponent={ErrorBoundaryWithDialogs}>
-      <AuthCallback repoUrl={repository.configuration.repositoryUrl} />
+      <AuthCallback />
       <div style={{ width: '100%', height: '100%', boxSizing: 'border-box', position: 'relative' }}>
         <Suspense fallback={<FullScreenLoader />}>
           <Route path="/personalSettings">
@@ -96,11 +95,11 @@ export const MainRouter = () => {
             </Route>
 
             <Route path="/dashboard/:dashboardName?">
-              <DashboardComponent repository={repository} />
+              <DashboardComponent />
             </Route>
 
             <Route path="/" exact>
-              <DashboardComponent repository={repository} />
+              <DashboardComponent />
             </Route>
           </Switch>
         </Suspense>

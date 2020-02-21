@@ -1,6 +1,7 @@
 import { User } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react'
+import { ConstantContent } from '@sensenet/client-core/src'
 import { getAuthService } from '../services'
 
 const CurrentUserContext = createContext<User | undefined>(undefined)
@@ -28,6 +29,7 @@ export function CurrentUserProvider({ children }: PropsWithChildren<{}>) {
         setCurrentUser(result.d)
       } catch (error) {
         logger.debug({ message: `Couldn't load current user: ${error.message}` })
+        setCurrentUser(ConstantContent.VISITOR_USER)
       }
     }
     getUser()

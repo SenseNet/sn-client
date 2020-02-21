@@ -4,7 +4,7 @@ import { PathHelper } from '@sensenet/client-utils'
 import { ActionModel, GenericContent, Settings, File as SnFile } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { Uri } from 'monaco-editor'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 import { Prompt } from 'react-router'
 import { ResponsiveContext } from '../../context'
@@ -41,8 +41,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   const theme = useTheme()
   const platform = useContext(ResponsiveContext)
   const repo = useRepository()
-  const contentContextService = new ContentContextService(repo)
-
+  const contentContextService = useMemo(() => new ContentContextService(repo), [repo])
   const [textValue, setTextValue] = useState('')
   const [savedTextValue, setSavedTextValue] = useState('')
   const [language, setLanguage] = useState(contentContextService.getMonacoLanguage(props.content))

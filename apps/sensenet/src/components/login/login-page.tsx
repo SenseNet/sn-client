@@ -27,12 +27,12 @@ export default function LoginPage() {
     ev.preventDefault()
     const service = await getAuthService(url)
     setRepoUrl(url)
-    login(`${window.location.origin}/${btoa(url)}`, service)
+    login(window.location.origin, service)
   }
 
   return (
     <div>
-      {repoUrl ? <AuthCallback repoUrl={repoUrl} /> : null}
+      {repoUrl ? <AuthCallback /> : null}
       <Grid container={true} direction="row">
         <Container maxWidth="lg" className={classes.topbar}>
           <Link to="/">
