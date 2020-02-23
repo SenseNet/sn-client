@@ -1,12 +1,11 @@
 import { Button, Container, createStyles, Grid, makeStyles, TextField, Theme, Typography } from '@material-ui/core'
-import { useAuthentication } from '@sensenet/hooks-react'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useAuthentication } from '@sensenet/hooks-react'
 import snLogo from '../../assets/sensenet-icon-32.png'
 import { useLocalization, useRepoUrlFromLocalStorage } from '../../hooks'
 import { getAuthService } from '../../services/auth-service'
 import { FullScreenLoader } from '../FullScreenLoader'
-import { AuthCallback } from './auth-callback'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -19,20 +18,19 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function LoginPage() {
   const classes = useStyles()
   const localization = useLocalization().login
+  const { setRepoUrl } = useRepoUrlFromLocalStorage()
   const { login, isLoading } = useAuthentication()
-  const { repoUrl, setRepoUrl } = useRepoUrlFromLocalStorage()
   const [url, setUrl] = useState('')
 
   const handleSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault()
-    const service = await getAuthService(url)
+    const authService = await getAuthService(url)
     setRepoUrl(url)
-    login(window.location.origin, service)
+    login({ returnUrl: window.location.origin, authService })
   }
 
   return (
     <div>
-      {repoUrl ? <AuthCallback /> : null}
       <Grid container={true} direction="row">
         <Container maxWidth="lg" className={classes.topbar}>
           <Link to="/">

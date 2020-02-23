@@ -13,6 +13,7 @@ type OidcRoutesProps = {
   loginCallback?: Callback
   logoutCallback?: Callback
   authService: OIDCAuthenticationService
+  children: ReactNode
 }
 
 /**
@@ -23,6 +24,7 @@ export function OidcRoutes({
   loginCallback = { url: `/authentication/login-callback` },
   logoutCallback = { url: `/authentication/logout-callback` },
   authService,
+  children,
 }: OidcRoutesProps) {
   const [path, setPath] = useState(window.location.pathname)
   const logger = useLogger('oidcRoutes')
@@ -37,7 +39,7 @@ export function OidcRoutes({
 
       switch (result.status) {
         case authenticationResultStatus.success:
-          options.successCallback?.(result.state.returnUrl)
+          options.successCallback?.(result.state?.returnUrl)
           break
         case authenticationResultStatus.fail:
           options.failCallback?.(result.error.message)
@@ -69,16 +71,14 @@ export function OidcRoutes({
       }
     }
     setNewPath()
-    window.addEventListener('popstate', setNewPath, false)
-    return () => window.removeEventListener('popstate', setNewPath, false)
   }, [authService, logger, loginCallback, logoutCallback, path])
 
   switch (path) {
     case loginCallback.url:
-      return <>{loginCallback.component}</>
+      return <>{loginCallback.component ?? null}</>
     case logoutCallback.url:
-      return <>{logoutCallback.component}</>
+      return <>{logoutCallback.component ?? null}</>
     default:
-      return null
+      return <>{children}</>
   }
 }

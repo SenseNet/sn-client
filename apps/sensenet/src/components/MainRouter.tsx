@@ -4,7 +4,6 @@ import { Route, Switch, useHistory } from 'react-router-dom'
 import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './FullScreenLoader'
-import { AuthCallback } from './login/auth-callback'
 import { WopiPage } from './wopi-page'
 
 const ExploreComponent = lazy(() => import(/* webpackChunkName: "content" */ './content'))
@@ -44,7 +43,6 @@ export const MainRouter = () => {
 
   return (
     <ErrorBoundary FallbackComponent={ErrorBoundaryWithDialogs}>
-      <AuthCallback />
       <div style={{ width: '100%', height: '100%', boxSizing: 'border-box', position: 'relative' }}>
         <Suspense fallback={<FullScreenLoader />}>
           <Route path="/personalSettings">

@@ -2,6 +2,12 @@ import { authenticationResultStatus, AuthFuncResult, OIDCAuthenticationService }
 import { useState } from 'react'
 import { useLogger } from '.'
 
+export interface AuthActionParams {
+  returnUrl: string
+  authService: OIDCAuthenticationService
+  successCallback?: (url: string) => void
+}
+
 /**
  * useAuthentication hook helps provide helper methods for login and logout with an OIDC authentication service.
  * It **doesn't** work with forms authentication.
@@ -11,7 +17,7 @@ export function useAuthentication() {
   const [error, setError] = useState<string>()
   const logger = useLogger('useAuthentication')
 
-  const doAuthenticationAction = async (action: () => AuthFuncResult, returnUrl: string) => {
+  const doAuthenticationAction = async (action: () => AuthFuncResult, successCallback?: (url: string) => void) => {
     setIsLoading(true)
     const result = await action()
     setIsLoading(false)
@@ -19,7 +25,8 @@ export function useAuthentication() {
       case authenticationResultStatus.redirect:
         break
       case authenticationResultStatus.success:
-        window.location.replace(returnUrl)
+        // TODO(Zoli): Check if this is really needed
+        successCallback?.(result.state.returnUrl)
         break
       case authenticationResultStatus.fail:
         logger.warning({ message: result.error.message })
@@ -30,12 +37,12 @@ export function useAuthentication() {
     }
   }
 
-  const login = async (returnUrl: string, authService: OIDCAuthenticationService) => {
-    await doAuthenticationAction(() => authService.signIn({ returnUrl }), returnUrl)
+  const login = async ({ authService, returnUrl, successCallback }: AuthActionParams) => {
+    await doAuthenticationAction(() => authService.signIn({ returnUrl }), successCallback)
   }
 
-  const logout = async (returnUrl: string, authService: OIDCAuthenticationService) => {
-    await doAuthenticationAction(() => authService.signOut({ returnUrl }), returnUrl)
+  const logout = async ({ authService, returnUrl, successCallback }: AuthActionParams) => {
+    await doAuthenticationAction(() => authService.signOut({ returnUrl }), successCallback)
   }
 
   return { login, isLoading, error, logout }

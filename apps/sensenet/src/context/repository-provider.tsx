@@ -1,9 +1,10 @@
 import { Repository } from '@sensenet/client-core'
+import { ValueObserver } from '@sensenet/client-utils'
 import { RepositoryContext, useLogger } from '@sensenet/hooks-react'
 import React, { lazy, Suspense, useEffect, useState } from 'react'
+import { FullScreenLoader } from '../components/FullScreenLoader'
 import { useRepoUrlFromLocalStorage } from '../hooks'
 import { getAuthService } from '../services/auth-service'
-import { FullScreenLoader } from '../components/FullScreenLoader'
 
 const LoginPage = lazy(() => import(/* webpackChunkName: "login" */ '../components/login/login-page'))
 
@@ -14,20 +15,16 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    async function subscribeToAuthEvent() {
-      if (!repoUrl) {
+    let subscription: ValueObserver<any> | undefined
+    const createRepository = (repositoryUrl: string, token?: string) => {
+      if (!token) {
+        setIsLoading(false)
         return
       }
-      const authService = await getAuthService(repoUrl)
-      authService.userManager.events.addUserSignedOut(() => {
-        setRepository(undefined)
-        setIsLoading(false)
-      })
+      setRepository(new Repository({ repositoryUrl, token }))
+      setIsLoading(false)
     }
-    subscribeToAuthEvent()
-  }, [repoUrl])
 
-  useEffect(() => {
     async function getRepo() {
       if (!repoUrl) {
         setIsLoading(false)
@@ -36,19 +33,25 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
       setIsLoading(true)
       try {
         const authService = await getAuthService(repoUrl)
+
+        subscription = authService.user.subscribe(user => {
+          if (!user) {
+            setRepository(undefined)
+            setIsLoading(false)
+          } else {
+            createRepository(repoUrl, user.access_token)
+          }
+        })
+
         const token = await authService.getAccessToken()
-        if (!token) {
-          setIsLoading(false)
-          return
-        }
-        setRepository(new Repository({ repositoryUrl: repoUrl, token }))
-        setIsLoading(false)
+        createRepository(repoUrl, token)
       } catch (error) {
         logger.debug({ data: error, message: `network error at ${repoUrl}` })
         setIsLoading(false)
       }
     }
     getRepo()
+    return () => subscription?.dispose()
   }, [logger, repoUrl])
 
   if (isLoading) {

@@ -152,7 +152,7 @@ export class OIDCAuthenticationService {
   }
 
   updateState(user?: User) {
-    this.user?.setValue(user)
+    this.user.setValue(user)
   }
 
   createArguments(state?: { returnUrl: string }) {
