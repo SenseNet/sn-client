@@ -25,7 +25,6 @@ export function useAuthentication() {
       case authenticationResultStatus.redirect:
         break
       case authenticationResultStatus.success:
-        // TODO(Zoli): Check if this is really needed
         successCallback?.(result.state.returnUrl)
         break
       case authenticationResultStatus.fail:
