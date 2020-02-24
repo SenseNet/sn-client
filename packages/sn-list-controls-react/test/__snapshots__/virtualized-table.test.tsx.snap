@@ -1,0 +1,615 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Virtualized Table component Selection and active item changes Event bindings should render with custom selection control 1`] = `
+<ForwardRef(Paper)
+  classes={
+    Object {
+      "elevation0": "MuiPaper-elevation0",
+      "elevation1": "MuiPaper-elevation1",
+      "elevation10": "MuiPaper-elevation10",
+      "elevation11": "MuiPaper-elevation11",
+      "elevation12": "MuiPaper-elevation12",
+      "elevation13": "MuiPaper-elevation13",
+      "elevation14": "MuiPaper-elevation14",
+      "elevation15": "MuiPaper-elevation15",
+      "elevation16": "MuiPaper-elevation16",
+      "elevation17": "MuiPaper-elevation17",
+      "elevation18": "MuiPaper-elevation18",
+      "elevation19": "MuiPaper-elevation19",
+      "elevation2": "MuiPaper-elevation2",
+      "elevation20": "MuiPaper-elevation20",
+      "elevation21": "MuiPaper-elevation21",
+      "elevation22": "MuiPaper-elevation22",
+      "elevation23": "MuiPaper-elevation23",
+      "elevation24": "MuiPaper-elevation24",
+      "elevation3": "MuiPaper-elevation3",
+      "elevation4": "MuiPaper-elevation4",
+      "elevation5": "MuiPaper-elevation5",
+      "elevation6": "MuiPaper-elevation6",
+      "elevation7": "MuiPaper-elevation7",
+      "elevation8": "MuiPaper-elevation8",
+      "elevation9": "MuiPaper-elevation9",
+      "outlined": "MuiPaper-outlined",
+      "root": "MuiPaper-root",
+      "rounded": "MuiPaper-rounded",
+    }
+  }
+  style={
+    Object {
+      "height": 400,
+      "width": "100%",
+    }
+  }
+>
+  <Component
+    displayRowCheckbox={true}
+    fieldsToDisplay={
+      Array [
+        "DisplayName",
+      ]
+    }
+    getSelectionControl={[Function]}
+    icons={Object {}}
+    items={
+      Array [
+        Object {
+          "DisplayName": "A",
+          "Id": 1,
+          "Name": "1",
+          "Path": "1",
+          "Type": "Folder",
+        },
+      ]
+    }
+    orderBy="DisplayName"
+    orderDirection="asc"
+    schema="$Ctd-GenericContent,DisplayName"
+    tableProps={
+      Object {
+        "headerHeight": 42,
+        "rowCount": 1,
+        "rowGetter": [Function],
+        "rowHeight": 57,
+      }
+    }
+  />
+</ForwardRef(Paper)>
+`;
+
+exports[`Virtualized Table component Selection and active item changes Event bindings should render with custom selection control and selection 1`] = `
+<ForwardRef(Paper)
+  classes={
+    Object {
+      "elevation0": "MuiPaper-elevation0",
+      "elevation1": "MuiPaper-elevation1",
+      "elevation10": "MuiPaper-elevation10",
+      "elevation11": "MuiPaper-elevation11",
+      "elevation12": "MuiPaper-elevation12",
+      "elevation13": "MuiPaper-elevation13",
+      "elevation14": "MuiPaper-elevation14",
+      "elevation15": "MuiPaper-elevation15",
+      "elevation16": "MuiPaper-elevation16",
+      "elevation17": "MuiPaper-elevation17",
+      "elevation18": "MuiPaper-elevation18",
+      "elevation19": "MuiPaper-elevation19",
+      "elevation2": "MuiPaper-elevation2",
+      "elevation20": "MuiPaper-elevation20",
+      "elevation21": "MuiPaper-elevation21",
+      "elevation22": "MuiPaper-elevation22",
+      "elevation23": "MuiPaper-elevation23",
+      "elevation24": "MuiPaper-elevation24",
+      "elevation3": "MuiPaper-elevation3",
+      "elevation4": "MuiPaper-elevation4",
+      "elevation5": "MuiPaper-elevation5",
+      "elevation6": "MuiPaper-elevation6",
+      "elevation7": "MuiPaper-elevation7",
+      "elevation8": "MuiPaper-elevation8",
+      "elevation9": "MuiPaper-elevation9",
+      "outlined": "MuiPaper-outlined",
+      "root": "MuiPaper-root",
+      "rounded": "MuiPaper-rounded",
+    }
+  }
+  style={
+    Object {
+      "height": 400,
+      "width": "100%",
+    }
+  }
+>
+  <Component
+    displayRowCheckbox={true}
+    fieldsToDisplay={
+      Array [
+        "DisplayName",
+      ]
+    }
+    getSelectionControl={[Function]}
+    icons={Object {}}
+    items={
+      Array [
+        Object {
+          "DisplayName": "A",
+          "Id": 1,
+          "Name": "1",
+          "Path": "1",
+          "Type": "Folder",
+        },
+      ]
+    }
+    orderBy="DisplayName"
+    orderDirection="asc"
+    schema="$Ctd-GenericContent,DisplayName"
+    selected={
+      Array [
+        Object {
+          "DisplayName": "A",
+          "Id": 1,
+          "Name": "1",
+          "Path": "1",
+          "Type": "Folder",
+        },
+      ]
+    }
+    tableProps={
+      Object {
+        "headerHeight": 42,
+        "rowCount": 1,
+        "rowGetter": [Function],
+        "rowHeight": 57,
+      }
+    }
+  />
+</ForwardRef(Paper)>
+`;
+
+exports[`Virtualized Table component Selection and active item changes Event bindings should render without crashing if selected is undefined 1`] = `
+<ForwardRef(Paper)
+  classes={
+    Object {
+      "elevation0": "MuiPaper-elevation0",
+      "elevation1": "MuiPaper-elevation1",
+      "elevation10": "MuiPaper-elevation10",
+      "elevation11": "MuiPaper-elevation11",
+      "elevation12": "MuiPaper-elevation12",
+      "elevation13": "MuiPaper-elevation13",
+      "elevation14": "MuiPaper-elevation14",
+      "elevation15": "MuiPaper-elevation15",
+      "elevation16": "MuiPaper-elevation16",
+      "elevation17": "MuiPaper-elevation17",
+      "elevation18": "MuiPaper-elevation18",
+      "elevation19": "MuiPaper-elevation19",
+      "elevation2": "MuiPaper-elevation2",
+      "elevation20": "MuiPaper-elevation20",
+      "elevation21": "MuiPaper-elevation21",
+      "elevation22": "MuiPaper-elevation22",
+      "elevation23": "MuiPaper-elevation23",
+      "elevation24": "MuiPaper-elevation24",
+      "elevation3": "MuiPaper-elevation3",
+      "elevation4": "MuiPaper-elevation4",
+      "elevation5": "MuiPaper-elevation5",
+      "elevation6": "MuiPaper-elevation6",
+      "elevation7": "MuiPaper-elevation7",
+      "elevation8": "MuiPaper-elevation8",
+      "elevation9": "MuiPaper-elevation9",
+      "outlined": "MuiPaper-outlined",
+      "root": "MuiPaper-root",
+      "rounded": "MuiPaper-rounded",
+    }
+  }
+  style={
+    Object {
+      "height": 400,
+      "width": "100%",
+    }
+  }
+>
+  <Component
+    displayRowCheckbox={true}
+    fieldsToDisplay={
+      Array [
+        "DisplayName",
+      ]
+    }
+    icons={Object {}}
+    items={
+      Array [
+        Object {
+          "DisplayName": "A",
+          "Id": 1,
+          "Name": "1",
+          "Path": "1",
+          "Type": "Folder",
+        },
+      ]
+    }
+    orderBy="DisplayName"
+    orderDirection="asc"
+    schema="$Ctd-GenericContent,DisplayName"
+    tableProps={
+      Object {
+        "headerHeight": 42,
+        "rowCount": 1,
+        "rowGetter": [Function],
+        "rowHeight": 57,
+      }
+    }
+  />
+</ForwardRef(Paper)>
+`;
+
+exports[`Virtualized Table component Selection and active item changes Event bindings should render without crashing with setting displayRowCheckbox to false 1`] = `
+<ForwardRef(Paper)
+  classes={
+    Object {
+      "elevation0": "MuiPaper-elevation0",
+      "elevation1": "MuiPaper-elevation1",
+      "elevation10": "MuiPaper-elevation10",
+      "elevation11": "MuiPaper-elevation11",
+      "elevation12": "MuiPaper-elevation12",
+      "elevation13": "MuiPaper-elevation13",
+      "elevation14": "MuiPaper-elevation14",
+      "elevation15": "MuiPaper-elevation15",
+      "elevation16": "MuiPaper-elevation16",
+      "elevation17": "MuiPaper-elevation17",
+      "elevation18": "MuiPaper-elevation18",
+      "elevation19": "MuiPaper-elevation19",
+      "elevation2": "MuiPaper-elevation2",
+      "elevation20": "MuiPaper-elevation20",
+      "elevation21": "MuiPaper-elevation21",
+      "elevation22": "MuiPaper-elevation22",
+      "elevation23": "MuiPaper-elevation23",
+      "elevation24": "MuiPaper-elevation24",
+      "elevation3": "MuiPaper-elevation3",
+      "elevation4": "MuiPaper-elevation4",
+      "elevation5": "MuiPaper-elevation5",
+      "elevation6": "MuiPaper-elevation6",
+      "elevation7": "MuiPaper-elevation7",
+      "elevation8": "MuiPaper-elevation8",
+      "elevation9": "MuiPaper-elevation9",
+      "outlined": "MuiPaper-outlined",
+      "root": "MuiPaper-root",
+      "rounded": "MuiPaper-rounded",
+    }
+  }
+  style={
+    Object {
+      "height": 400,
+      "width": "100%",
+    }
+  }
+>
+  <Component
+    displayRowCheckbox={false}
+    fieldsToDisplay={
+      Array [
+        "DisplayName",
+      ]
+    }
+    icons={Object {}}
+    items={
+      Array [
+        Object {
+          "DisplayName": "A",
+          "Id": 1,
+          "Name": "1",
+          "Path": "1",
+          "Type": "Folder",
+        },
+      ]
+    }
+    orderBy="DisplayName"
+    orderDirection="asc"
+    schema="$Ctd-GenericContent,DisplayName"
+    selected={Array []}
+    tableProps={
+      Object {
+        "headerHeight": 42,
+        "rowCount": 1,
+        "rowGetter": [Function],
+        "rowHeight": 57,
+      }
+    }
+  />
+</ForwardRef(Paper)>
+`;
+
+exports[`Virtualized Table component Selection and active item changes Event bindings should render without crashing without icons 1`] = `
+<ForwardRef(Paper)
+  classes={
+    Object {
+      "elevation0": "MuiPaper-elevation0",
+      "elevation1": "MuiPaper-elevation1",
+      "elevation10": "MuiPaper-elevation10",
+      "elevation11": "MuiPaper-elevation11",
+      "elevation12": "MuiPaper-elevation12",
+      "elevation13": "MuiPaper-elevation13",
+      "elevation14": "MuiPaper-elevation14",
+      "elevation15": "MuiPaper-elevation15",
+      "elevation16": "MuiPaper-elevation16",
+      "elevation17": "MuiPaper-elevation17",
+      "elevation18": "MuiPaper-elevation18",
+      "elevation19": "MuiPaper-elevation19",
+      "elevation2": "MuiPaper-elevation2",
+      "elevation20": "MuiPaper-elevation20",
+      "elevation21": "MuiPaper-elevation21",
+      "elevation22": "MuiPaper-elevation22",
+      "elevation23": "MuiPaper-elevation23",
+      "elevation24": "MuiPaper-elevation24",
+      "elevation3": "MuiPaper-elevation3",
+      "elevation4": "MuiPaper-elevation4",
+      "elevation5": "MuiPaper-elevation5",
+      "elevation6": "MuiPaper-elevation6",
+      "elevation7": "MuiPaper-elevation7",
+      "elevation8": "MuiPaper-elevation8",
+      "elevation9": "MuiPaper-elevation9",
+      "outlined": "MuiPaper-outlined",
+      "root": "MuiPaper-root",
+      "rounded": "MuiPaper-rounded",
+    }
+  }
+  style={
+    Object {
+      "height": 400,
+      "width": "100%",
+    }
+  }
+>
+  <Component
+    displayRowCheckbox={true}
+    fieldsToDisplay={
+      Array [
+        "DisplayName",
+      ]
+    }
+    items={
+      Array [
+        Object {
+          "DisplayName": "A",
+          "Id": 1,
+          "Name": "1",
+          "Path": "1",
+          "Type": "Folder",
+        },
+      ]
+    }
+    orderBy="DisplayName"
+    orderDirection="asc"
+    schema="$Ctd-GenericContent,DisplayName"
+    selected={Array []}
+    tableProps={
+      Object {
+        "headerHeight": 42,
+        "rowCount": 1,
+        "rowGetter": [Function],
+        "rowHeight": 57,
+      }
+    }
+  />
+</ForwardRef(Paper)>
+`;
+
+exports[`Virtualized Table component Selection and active item changes Event bindings should render without crashing without orderBy 1`] = `
+<ForwardRef(Paper)
+  classes={
+    Object {
+      "elevation0": "MuiPaper-elevation0",
+      "elevation1": "MuiPaper-elevation1",
+      "elevation10": "MuiPaper-elevation10",
+      "elevation11": "MuiPaper-elevation11",
+      "elevation12": "MuiPaper-elevation12",
+      "elevation13": "MuiPaper-elevation13",
+      "elevation14": "MuiPaper-elevation14",
+      "elevation15": "MuiPaper-elevation15",
+      "elevation16": "MuiPaper-elevation16",
+      "elevation17": "MuiPaper-elevation17",
+      "elevation18": "MuiPaper-elevation18",
+      "elevation19": "MuiPaper-elevation19",
+      "elevation2": "MuiPaper-elevation2",
+      "elevation20": "MuiPaper-elevation20",
+      "elevation21": "MuiPaper-elevation21",
+      "elevation22": "MuiPaper-elevation22",
+      "elevation23": "MuiPaper-elevation23",
+      "elevation24": "MuiPaper-elevation24",
+      "elevation3": "MuiPaper-elevation3",
+      "elevation4": "MuiPaper-elevation4",
+      "elevation5": "MuiPaper-elevation5",
+      "elevation6": "MuiPaper-elevation6",
+      "elevation7": "MuiPaper-elevation7",
+      "elevation8": "MuiPaper-elevation8",
+      "elevation9": "MuiPaper-elevation9",
+      "outlined": "MuiPaper-outlined",
+      "root": "MuiPaper-root",
+      "rounded": "MuiPaper-rounded",
+    }
+  }
+  style={
+    Object {
+      "height": 400,
+      "width": "100%",
+    }
+  }
+>
+  <Component
+    displayRowCheckbox={true}
+    fieldsToDisplay={
+      Array [
+        "DisplayName",
+      ]
+    }
+    icons={Object {}}
+    items={
+      Array [
+        Object {
+          "DisplayName": "A",
+          "Id": 1,
+          "Name": "1",
+          "Path": "1",
+          "Type": "Folder",
+        },
+      ]
+    }
+    orderDirection="asc"
+    schema="$Ctd-GenericContent,DisplayName"
+    selected={Array []}
+    tableProps={
+      Object {
+        "headerHeight": 42,
+        "rowCount": 1,
+        "rowGetter": [Function],
+        "rowHeight": 57,
+      }
+    }
+  />
+</ForwardRef(Paper)>
+`;
+
+exports[`Virtualized Table component Selection and active item changes Event bindings should render without crashing without orderDirection 1`] = `
+<ForwardRef(Paper)
+  classes={
+    Object {
+      "elevation0": "MuiPaper-elevation0",
+      "elevation1": "MuiPaper-elevation1",
+      "elevation10": "MuiPaper-elevation10",
+      "elevation11": "MuiPaper-elevation11",
+      "elevation12": "MuiPaper-elevation12",
+      "elevation13": "MuiPaper-elevation13",
+      "elevation14": "MuiPaper-elevation14",
+      "elevation15": "MuiPaper-elevation15",
+      "elevation16": "MuiPaper-elevation16",
+      "elevation17": "MuiPaper-elevation17",
+      "elevation18": "MuiPaper-elevation18",
+      "elevation19": "MuiPaper-elevation19",
+      "elevation2": "MuiPaper-elevation2",
+      "elevation20": "MuiPaper-elevation20",
+      "elevation21": "MuiPaper-elevation21",
+      "elevation22": "MuiPaper-elevation22",
+      "elevation23": "MuiPaper-elevation23",
+      "elevation24": "MuiPaper-elevation24",
+      "elevation3": "MuiPaper-elevation3",
+      "elevation4": "MuiPaper-elevation4",
+      "elevation5": "MuiPaper-elevation5",
+      "elevation6": "MuiPaper-elevation6",
+      "elevation7": "MuiPaper-elevation7",
+      "elevation8": "MuiPaper-elevation8",
+      "elevation9": "MuiPaper-elevation9",
+      "outlined": "MuiPaper-outlined",
+      "root": "MuiPaper-root",
+      "rounded": "MuiPaper-rounded",
+    }
+  }
+  style={
+    Object {
+      "height": 400,
+      "width": "100%",
+    }
+  }
+>
+  <Component
+    displayRowCheckbox={true}
+    fieldsToDisplay={
+      Array [
+        "DisplayName",
+      ]
+    }
+    icons={Object {}}
+    items={
+      Array [
+        Object {
+          "DisplayName": "A",
+          "Id": 1,
+          "Name": "1",
+          "Path": "1",
+          "Type": "Folder",
+        },
+      ]
+    }
+    orderBy="DisplayName"
+    schema="$Ctd-GenericContent,DisplayName"
+    selected={Array []}
+    tableProps={
+      Object {
+        "headerHeight": 42,
+        "rowCount": 1,
+        "rowGetter": [Function],
+        "rowHeight": 57,
+      }
+    }
+  />
+</ForwardRef(Paper)>
+`;
+
+exports[`Virtualized Table component Selection and active item changes Event bindings should render without crashing without selected 1`] = `
+<ForwardRef(Paper)
+  classes={
+    Object {
+      "elevation0": "MuiPaper-elevation0",
+      "elevation1": "MuiPaper-elevation1",
+      "elevation10": "MuiPaper-elevation10",
+      "elevation11": "MuiPaper-elevation11",
+      "elevation12": "MuiPaper-elevation12",
+      "elevation13": "MuiPaper-elevation13",
+      "elevation14": "MuiPaper-elevation14",
+      "elevation15": "MuiPaper-elevation15",
+      "elevation16": "MuiPaper-elevation16",
+      "elevation17": "MuiPaper-elevation17",
+      "elevation18": "MuiPaper-elevation18",
+      "elevation19": "MuiPaper-elevation19",
+      "elevation2": "MuiPaper-elevation2",
+      "elevation20": "MuiPaper-elevation20",
+      "elevation21": "MuiPaper-elevation21",
+      "elevation22": "MuiPaper-elevation22",
+      "elevation23": "MuiPaper-elevation23",
+      "elevation24": "MuiPaper-elevation24",
+      "elevation3": "MuiPaper-elevation3",
+      "elevation4": "MuiPaper-elevation4",
+      "elevation5": "MuiPaper-elevation5",
+      "elevation6": "MuiPaper-elevation6",
+      "elevation7": "MuiPaper-elevation7",
+      "elevation8": "MuiPaper-elevation8",
+      "elevation9": "MuiPaper-elevation9",
+      "outlined": "MuiPaper-outlined",
+      "root": "MuiPaper-root",
+      "rounded": "MuiPaper-rounded",
+    }
+  }
+  style={
+    Object {
+      "height": 400,
+      "width": "100%",
+    }
+  }
+>
+  <Component
+    displayRowCheckbox={true}
+    fieldsToDisplay={
+      Array [
+        "DisplayName",
+      ]
+    }
+    icons={Object {}}
+    items={
+      Array [
+        Object {
+          "DisplayName": "A",
+          "Id": 1,
+          "Name": "1",
+          "Path": "1",
+          "Type": "Folder",
+        },
+      ]
+    }
+    orderBy="DisplayName"
+    orderDirection="asc"
+    schema="$Ctd-GenericContent,DisplayName"
+    tableProps={
+      Object {
+        "headerHeight": 42,
+        "rowCount": 1,
+        "rowGetter": [Function],
+        "rowHeight": 57,
+      }
+    }
+  />
+</ForwardRef(Paper)>
+`;

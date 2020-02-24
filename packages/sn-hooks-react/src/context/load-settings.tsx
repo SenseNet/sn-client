@@ -1,6 +1,6 @@
 import { ODataParams } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { Dispatch, useState } from 'react'
+import React, { Dispatch } from 'react'
 
 export interface LoadSettingsContextProps {
   /**
@@ -44,17 +44,36 @@ export const LoadSettingsContext = React.createContext<LoadSettingsContextProps>
   loadSettings: {},
 })
 
+const initialLoadChildrenSettings: ODataParams<GenericContent> = {
+  orderby: [['DisplayName', 'asc']],
+  select: 'all',
+  expand: ['CreatedBy'],
+}
 /**
  * Provider for the LoadSettingsContext. Sets up default loading settings.
  */
+
+const setLoadSettingsReducer = (state: ODataParams<GenericContent>, value: ODataParams<GenericContent>) => {
+  if (JSON.stringify(value) === JSON.stringify(state)) {
+    return state
+  }
+  return value
+}
+
+const setLoadChildrenSettingsReducer = (state: ODataParams<GenericContent>, value: ODataParams<GenericContent>) => {
+  if (JSON.stringify(value) === JSON.stringify(state)) {
+    return state
+  }
+  return value
+}
+
 export const LoadSettingsContextProvider: React.FunctionComponent = props => {
-  const [loadSettings, setLoadSettings] = useState<ODataParams<GenericContent>>({})
-  const [loadChildrenSettings, setLoadChildrenSettings] = useState<ODataParams<GenericContent>>({
-    orderby: [['DisplayName', 'asc']],
-    select: 'all',
-    expand: ['CreatedBy'],
-  })
-  const [loadAncestorsSettings, setLoadAncestorsSettings] = useState<ODataParams<GenericContent>>({})
+  const [loadSettings, setLoadSettings] = React.useReducer(setLoadSettingsReducer, {})
+  const [loadChildrenSettings, setLoadChildrenSettings] = React.useReducer(
+    setLoadChildrenSettingsReducer,
+    initialLoadChildrenSettings,
+  )
+  const [loadAncestorsSettings, setLoadAncestorsSettings] = React.useReducer(setLoadSettingsReducer, {})
 
   return (
     <LoadSettingsContext.Provider
