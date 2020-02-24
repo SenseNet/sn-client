@@ -317,7 +317,10 @@ export const loadBreadcrumbActions = (idOrPath: number | string) => ({
     })) as any
     options.dispatch({
       type: 'LOAD_BREADCRUMB_ACTIONS_SUCCESS',
-      result: { idOrPath, actions: actions.d.Actions },
+      result: {
+        idOrPath,
+        actions: actions.d.Actions.filter(action => action.Name !== 'Browse' && action.Name !== 'SetPermissions'),
+      },
     })
   },
 })
