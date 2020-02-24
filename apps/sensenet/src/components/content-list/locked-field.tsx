@@ -6,6 +6,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useSession } from '@sensenet/hooks-react'
 import { isUser } from '../../utils/type-guards'
 import { useLocalization } from '../../hooks'
+import { virtualStyle } from './virtualized-style-for-fields'
 
 type LockedFieldProps = {
   content: GenericContent
@@ -26,11 +27,11 @@ export function LockedField({ content }: LockedFieldProps) {
 
   if (!content.Locked && !content.Approvable) {
     // We need to return an empty TableCell so the Table remains aligned.
-    return <TableCell />
+    return <TableCell component="div" style={{ height: '57px', width: '100%', padding: 0 }} />
   }
 
   return (
-    <TableCell>
+    <TableCell component="div" style={virtualStyle}>
       <Tooltip title={content.Approvable ? localization.actionNeeded : localization.checkedOutTo(lockedByName())}>
         {content.Approvable ? <AssignmentLateIcon /> : <Lock />}
       </Tooltip>
