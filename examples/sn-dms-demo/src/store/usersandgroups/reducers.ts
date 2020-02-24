@@ -99,7 +99,7 @@ const defaultOptions: ODataParams<GenericContent & User & Group> = {
     ['DisplayName', 'asc'],
   ],
   filter: `isOf('Group')`,
-  scenario: 'DMSListItem',
+  scenario: 'ContextMenu',
   top: loadChunkSize,
 }
 
