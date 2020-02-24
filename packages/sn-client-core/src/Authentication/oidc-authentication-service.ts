@@ -124,7 +124,6 @@ export class OIDCAuthenticationService {
     if (this.isPopupEnabled) {
       try {
         await this.userManager.signoutPopup(this.createArguments())
-        this.updateState(undefined)
         return this.success({ returnUrl })
       } catch (popupSignOutError) {
         console.log('Popup signout error: ', popupSignOutError)
@@ -143,7 +142,6 @@ export class OIDCAuthenticationService {
   async completeSignOut(url?: string) {
     try {
       const response = await this.userManager.signoutCallback(url)
-      this.updateState(undefined)
       return this.success(response && response.state)
     } catch (error) {
       console.log(`There was an error trying to log out '${error}'.`)
