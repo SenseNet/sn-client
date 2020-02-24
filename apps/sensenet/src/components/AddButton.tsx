@@ -1,7 +1,3 @@
-import Add from '@material-ui/icons/Add'
-import { Schema } from '@sensenet/default-content-types'
-import React, { useContext, useEffect, useMemo, useState } from 'react'
-import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
 import {
   createStyles,
   IconButton,
@@ -14,8 +10,12 @@ import {
   Theme,
   Tooltip,
 } from '@material-ui/core'
-import clsx from 'clsx'
 import { CloudUpload } from '@material-ui/icons'
+import Add from '@material-ui/icons/Add'
+import { Schema } from '@sensenet/default-content-types'
+import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
+import clsx from 'clsx'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useLocalization, usePersonalSettings, useSelectionService } from '../hooks'
 import { useDialog } from './dialogs'
 import { Icon } from './Icon'
