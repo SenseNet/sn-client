@@ -61,7 +61,14 @@ export function LogoutDialog() {
             <Button
               onClick={async () => {
                 const authService = await getAuthService(repository.configuration.repositoryUrl)
-                logout({ returnUrl: window.location.origin, authService })
+                logout({
+                  returnUrl: window.location.origin,
+                  authService,
+                  successCallback: () => {
+                    closeLastDialog()
+                    authService.user.setValue(undefined)
+                  },
+                })
               }}
               autoFocus={true}>
               {localization.logoutButtonTitle}
