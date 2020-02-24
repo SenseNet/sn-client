@@ -55,10 +55,9 @@ export const RepositorySelectorComponent: React.FunctionComponent<RouteComponent
           display: 'flex',
           alignItems: 'center',
           overflow: 'hidden',
-        }}
-        variant="h5">
-        <Link to="/">
-          <img src={logo} style={{ marginRight: '.5em', filter: 'drop-shadow(0px 0px 3px black)' }} alt="logo" />
+        }}>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
+          <img src={logo} style={{ marginRight: '39px', filter: 'drop-shadow(0px 0px 3px black)' }} alt="logo" />
         </Link>
         <Link
           to={`/${btoa(lastRepositoryUrl)}`}
@@ -70,10 +69,12 @@ export const RepositorySelectorComponent: React.FunctionComponent<RouteComponent
             whiteSpace: 'nowrap',
             textDecoration: 'none',
             color: theme.palette.text.primary,
+            width: '288px',
+            letterSpacing: '2.14px',
           }}>
           {lastRepositoryName}
         </Link>
-        <IconButton onClick={() => setIsActive(true)}>
+        <IconButton onClick={() => setIsActive(true)} style={{ padding: '4px' }}>
           <KeyboardArrowDown />
         </IconButton>
       </Typography>

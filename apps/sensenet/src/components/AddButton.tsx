@@ -55,9 +55,11 @@ const useStyles = makeStyles((theme: Theme) => {
       backgroundColor: theme.palette.primary.main,
     },
     iconButtonWrapper: {
+      height: '65px',
       width: '100%',
       display: 'flex',
       justifyContent: 'center',
+      alignItems: 'center',
       position: 'relative',
       '&:hover': {
         backgroundColor: 'rgba(255, 255, 255, 0.1)',

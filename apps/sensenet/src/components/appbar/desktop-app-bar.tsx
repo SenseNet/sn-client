@@ -19,8 +19,14 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
   return (
     <AppBar
       position="sticky"
-      style={{ backgroundColor: theme.palette.background.paper, position: 'relative', height: '64px' }}>
-      <Toolbar style={{ position: 'static' }}>
+      style={{
+        backgroundColor: theme.palette.background.paper,
+        position: 'relative',
+        height: '80px',
+        display: 'flex',
+        justifyContent: 'center',
+      }}>
+      <Toolbar style={{ position: 'static', paddingLeft: '32px', paddingRight: 0, height: '100%' }}>
         <div
           style={{
             display: 'flex',
@@ -41,7 +47,11 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
           {device !== 'desktop' && commandPalette.isOpened ? null : <RepositorySelector />}
         </div>
 
-        {personalSettings.commandPalette.enabled ? <CommandPalette {...commandPalette} /> : <div style={{ flex: 1 }} />}
+        {personalSettings.commandPalette.enabled ? (
+          <CommandPalette {...commandPalette} />
+        ) : (
+          <div style={{ flex: 1, marginRight: '10px' }} />
+        )}
         <DesktopNavMenu />
       </Toolbar>
     </AppBar>

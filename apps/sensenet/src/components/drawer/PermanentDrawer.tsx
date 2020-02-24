@@ -21,9 +21,11 @@ const useStyles = makeStyles((theme: Theme) => {
     paperStyle: {
       flexGrow: 0,
       flexShrink: 0,
+      width: '90px',
+      position: 'relative',
     },
     listStyle: {
-      width: 55,
+      width: '100%',
       height: '100%',
       flexGrow: 1,
       flexShrink: 0,
@@ -33,23 +35,27 @@ const useStyles = makeStyles((theme: Theme) => {
       flexDirection: 'column',
       backgroundColor: theme.palette.background.default, // '#222',
       transition: 'width 100ms ease-in-out',
+      paddingTop: 0,
       '&$opened': {
         width: 330,
       },
     },
     opened: {},
     listWrapper: {
-      paddingTop: '1em',
       overflowY: 'auto',
       overflowX: 'hidden',
+      width: '100%',
     },
     navLinkStyle: {
       textDecoration: 'none',
       opacity: 0.54,
     },
+    listButton: {
+      height: '65px',
+    },
     navLinkActiveStyle: {
       opacity: 1,
-      '& .MuiListItem-root': { backgroundColor: theme.palette.primary.main },
+      '& .MuiListItem-root': { backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText },
       '& svg': {
         fill: theme.palette.common.white,
       },
@@ -63,6 +69,20 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     listItemIconActiveStyle: {
       color: theme.palette.common.white,
+    },
+    expandCollapseWrapper: {
+      height: '49px',
+      padding: '0 0 12px 0',
+      borderBottom: 'transparent 1px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: '13px',
+    },
+    centered: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
   })
 })
@@ -97,17 +117,22 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
     <Paper className={classes.paperStyle}>
       <List className={clsx(classes.listStyle, { [classes.opened]: opened })}>
         <div className={classes.listWrapper}>
-          <div>
-            {settings.drawer.type === 'mini-variant' ? (
-              <ListItem button={true} onClick={() => setOpened(!opened)} key="expandcollapse">
-                <ListItemIcon>
-                  <Tooltip title={opened ? localization.collapse : localization.expand} placement="right">
-                    <div>{opened ? <Close /> : <Menu />}</div>
-                  </Tooltip>
-                </ListItemIcon>
-              </ListItem>
-            ) : null}
-          </div>
+          {settings.drawer.type === 'mini-variant' ? (
+            <ListItem
+              className={clsx(classes.centered, classes.listButton)}
+              button={true}
+              onClick={() => setOpened(!opened)}
+              key="expandcollapse">
+              <ListItemIcon className={classes.centered}>
+                <Tooltip
+                  className={classes.centered}
+                  title={opened ? localization.collapse : localization.expand}
+                  placement="right">
+                  <div>{opened ? <Close /> : <Menu />}</div>
+                </Tooltip>
+              </ListItemIcon>
+            </ListItem>
+          ) : null}
 
           {matchPath(props.location.pathname, `/:repositoryId/saved-queries`) === null ? (
             <AddButton isOpened={opened} parent={currentComponent} path={currentPath} />
@@ -124,11 +149,12 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                 onClick={() => setCurrentPath(item.root ? item.root : '')}
                 activeClassName={classes.navLinkActiveStyle}>
                 <ListItem
+                  className={classes.listButton}
                   button={true}
                   key={index}
                   selected={matchPath(props.location.pathname, `/:repositoryId${item.url}`) === null ? false : true}>
                   <ListItemIcon
-                    className={clsx(classes.listItemIconDark, {
+                    className={clsx(classes.listItemIconDark, classes.centered, {
                       [classes.listItemIconLight]: personalSettings.theme === 'light',
                     })}>
                     <Tooltip title={item.secondaryText} placement="right">

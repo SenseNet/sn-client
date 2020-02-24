@@ -27,9 +27,10 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       display: 'flex',
       height: '100%',
-      padding: '8px 16px',
+      width: '140px',
       background: theme.palette.background.paper,
       alignItems: 'center',
+      justifyContent: 'center',
     },
     paper: {
       marginRight: theme.spacing(2),
@@ -90,7 +91,11 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
 
   return (
     <div className={classes.root}>
-      <UserAvatar user={session.currentUser} repositoryUrl={repo.configuration.repositoryUrl} />
+      <UserAvatar
+        user={session.currentUser}
+        repositoryUrl={repo.configuration.repositoryUrl}
+        style={{ height: '35px', width: '35px' }}
+      />
       <IconButton
         ref={anchorRef}
         aria-controls={open ? 'menu-list-grow' : undefined}

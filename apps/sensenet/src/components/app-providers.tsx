@@ -19,7 +19,6 @@ import {
   NavigationCommandProvider,
   QueryCommandProvider,
 } from '../services'
-import theme from './theme'
 import '../utils/errorToJson'
 import '../utils/InjectorExtensions'
 import { snInjector } from './sn-injector'
@@ -51,7 +50,7 @@ export default function AppProviders({ children }: AppProvidersProps) {
                 <ContentRoutingContextProvider>
                   <SessionContextProvider>
                     <ResponsiveContextProvider>
-                      <ThemeProvider theme={theme}>
+                      <ThemeProvider>
                         <DialogProvider>{children}</DialogProvider>
                       </ThemeProvider>
                     </ResponsiveContextProvider>
