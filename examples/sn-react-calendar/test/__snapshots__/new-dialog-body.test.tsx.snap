@@ -3887,7 +3887,7 @@ exports[`NewDialogBody NewDialogBody snapshot test 1`] = `
               },
             ],
           },
-          "fetchMethod": undefined,
+          "fetchMethod": [Function],
           "schemas": SchemaStore {
             "byNameSchemaCache": Map {},
             "schemas": Array [
