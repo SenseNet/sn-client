@@ -313,7 +313,7 @@ export const loadBreadcrumbActions = (idOrPath: number | string) => ({
     const repository = options.getInjectable(Repository)
     const actions: { d: { Actions: ActionModel[] } } = (await repository.getActions({
       idOrPath,
-      scenario: 'DMSBreadcrumb',
+      scenario: 'ContextMenu',
     })) as any
     options.dispatch({
       type: 'LOAD_BREADCRUMB_ACTIONS_SUCCESS',
