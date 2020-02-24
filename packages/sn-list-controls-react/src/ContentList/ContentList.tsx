@@ -17,11 +17,6 @@ import { ContentListBaseProps } from './content-list-base-props'
  */
 export interface ContentListProps<T extends GenericContent = GenericContent> extends ContentListBaseProps {
   /**
-   * Array of fields that should be displayed
-   * @default []
-   */
-  fieldsToDisplay?: Array<keyof T>
-  /**
    * Contains custom cell template components
    */
   fieldComponent?: React.StatelessComponent<CellProps<T, keyof T>>

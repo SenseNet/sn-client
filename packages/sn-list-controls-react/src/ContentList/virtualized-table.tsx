@@ -42,33 +42,24 @@ const useStyles = makeStyles((theme: Theme) =>
     selected: {
       backgroundColor: theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)',
     },
-    selectedLight: {
-      backgroundColor: 'rgba(255, 255, 255, 0.04)',
-    },
   }),
 )
-
-interface Row {
-  index: number
-}
 
 export interface VirtualCellProps {
   tableCellProps: TableCellProps
   fieldSettings: FieldSetting
 }
 
-interface VirtualizedTableProps<T = GenericContent> extends ContentListBaseProps {
+interface VirtualizedTableProps extends ContentListBaseProps {
   /**
    * Contains custom cell template components
    */
   cellRenderer?: (props: VirtualCellProps) => React.ReactNode
-  /**
-   * Array of fields that should be displayed
-   * @default []
-   */
-  fieldsToDisplay: Array<keyof T>
+
   tableProps: {
-    /** Number of rows in table. */
+    /**
+     * Number of rows in table.
+     */
     rowCount: number
     /**
      * Callback responsible for returning a data row given an index.
@@ -92,7 +83,9 @@ interface VirtualizedTableProps<T = GenericContent> extends ContentListBaseProps
      * ({ index: number }): void
      */
     onRowDoubleClick?: (info: RowMouseEventHandlerParams) => void
-    /** Disable rendering the header at all */
+    /**
+     * Disable rendering the header at all
+     */
     disableHeader?: boolean
   }
 }
@@ -118,7 +111,7 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = props => {
     }
   }
 
-  const getRowClassName = ({ index }: Row) => {
+  const getRowClassName = ({ index }: Index) => {
     const {
       tableProps: { onRowClick },
     } = props
@@ -230,7 +223,7 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = props => {
           height: headerHeight || 42,
           width: props.displayRowCheckbox ? (autoSizerWidth - 48) / (columnCount - 1) : autoSizerWidth / columnCount,
           display: 'flex',
-          padding: 0,
+          padding: columnName === 'DisplayName' || columnName === 'Description' ? 0 : '0 0 0 24px',
           alignItems: 'center',
           justifyContent: columnName === 'DisplayName' || columnName === 'Description' ? 'left' : 'center',
         }}

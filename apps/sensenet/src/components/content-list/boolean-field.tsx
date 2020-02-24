@@ -13,15 +13,7 @@ export const BooleanField: React.FC<{ value?: boolean }> = ({ value }) => {
     )
   } else if (value === false) {
     return (
-      <TableCell
-        style={{
-          height: '57px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-          padding: 0,
-        }}>
+      <TableCell style={virtualStyle}>
         <Close color="error" />
       </TableCell>
     )

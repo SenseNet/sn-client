@@ -35,6 +35,10 @@ export interface ContentListBaseProps<T extends GenericContent = GenericContent>
    */
   icons?: any
   /**
+   * Array of fields that should be displayed
+   */
+  fieldsToDisplay: Array<keyof T>
+  /**
    * Defines wheter a checkbox per row should be displayed or not
    */
   displayRowCheckbox?: boolean
