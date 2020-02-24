@@ -1,17 +1,13 @@
-import IconButton from '@material-ui/core/IconButton'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import MenuItem from '@material-ui/core/MenuItem'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { Workspace } from '@sensenet/default-content-types'
-import { Icon, iconType } from '@sensenet/icons-react'
 import { Actions } from '@sensenet/redux'
 import { compile } from 'path-to-regexp'
 import React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { rootStateType } from '../../store/rootReducer'
-import { followWorkspace, unfollowWorkspace } from '../../store/workspaces/actions'
 
 const styles = {
   listItem: {
@@ -44,18 +40,11 @@ const styles = {
       backgroundColor: 'transparent',
     },
   },
-  followedIconButton: {
-    margin: 0,
-    padding: 0,
-    color: '#ffeb3b',
-  },
 }
 
 interface WorkspaceListItemProps extends RouteComponentProps<any> {
-  followed: boolean
   workspace: Workspace
   userName: string
-  // favorites: number[]
   closeDropDown: (open: boolean) => void
 }
 
@@ -67,23 +56,13 @@ const mapStateToProps = (state: rootStateType) => {
 }
 
 const mapDispatchToProps = {
-  followWorkspace,
-  unfollowWorkspace,
   loadContent: Actions.loadContent,
   fetchContent: Actions.requestContent,
 }
 
-interface WorkspaceListItemState {
-  followed: boolean
-}
-
 class WorkspaceListItem extends React.Component<
-  { classes: any } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & WorkspaceListItemProps,
-  WorkspaceListItemState
+  { classes: any } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & WorkspaceListItemProps
 > {
-  public state = {
-    followed: this.props.followed,
-  }
   constructor(props: WorkspaceListItem['props']) {
     super(props)
 
@@ -97,15 +76,6 @@ class WorkspaceListItem extends React.Component<
     this.props.history.push(newPath)
     this.props.closeDropDown(true)
   }
-  // public startButtonClick = (id: number) => {
-  //   const { userName, favorites } = this.props
-  //   this.state.followed
-  //     ? this.props.unfollowWorkspace(userName, id, favorites)
-  //     : this.props.followWorkspace(userName, id, favorites)
-  //   this.setState({
-  //     followed: !this.state.followed,
-  //   })
-  // }
   public handleMouseOver = (e: any) => (e.currentTarget.style.backgroundColor = '#01A1EA')
   public handleMouseLeave = (e: any) => (e.currentTarget.style.backgroundColor = 'transparent')
   public render() {
@@ -115,18 +85,6 @@ class WorkspaceListItem extends React.Component<
         onMouseOver={e => this.handleMouseOver(e)}
         onMouseLeave={e => this.handleMouseLeave(e)}
         style={styles.listItem}>
-        {/* <ListItemIcon className={classes.icon}>
-          <IconButton
-            className={followed ? classes.followedIconButton : classes.iconButton}
-            onClick={() => this.startButtonClick(workspace.Id)}>
-            <Icon
-              className={followed ? classes.followedIconButton : classes.iconButton}
-              type={iconType.materialui}
-              iconName="star"
-              style={followed ? { color: '#ffeb3b', margin: '0 10px' } : { color: '#fff', margin: '0 10px' }}
-            />
-          </IconButton>
-        </ListItemIcon> */}
         <ListItemText
           classes={{ primary: classes.primary, root: classes.listItemRoot }}
           primary={workspace.DisplayName}

@@ -127,15 +127,7 @@ class WorkspaceList extends React.Component<
           thumbMinSize={180}>
           <MenuList className={classes.workspaceList}>
             {orderedWsList.map((workspace: Workspace) => (
-              <WorkspaceListItem
-                closeDropDown={this.props.closeDropDown}
-                key={workspace.Id}
-                workspace={workspace}
-                favorites={[]}
-                followed={false}
-                // favorites={favorites}
-                // followed={favorites.indexOf(workspace.Id) > -1}
-              />
+              <WorkspaceListItem closeDropDown={this.props.closeDropDown} key={workspace.Id} workspace={workspace} />
             ))}
           </MenuList>
         </Scrollbars>
