@@ -58,7 +58,7 @@ export interface TagsInputState {
 export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldSetting>, TagsInputState> {
   constructor(props: TagsInput['props']) {
     super(props)
-    if (this.props.actionName === 'edit') {
+    if (this.props.actionName !== 'new') {
       this.getSelected()
     }
     this.state = {
@@ -118,7 +118,7 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
       this.setState({
         dataSource: req.d.results,
       })
-      if (this.props.actionName === 'edit') {
+      if (this.props.actionName !== 'new') {
         this.getSelected()
       }
       return req
@@ -244,11 +244,11 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
         )
       case 'browse':
       default:
-        return this.props.fieldValue ? (
+        return this.state.fieldValue && this.state.fieldValue.length > 0 ? (
           <FormControl component={'fieldset' as 'div'}>
             <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <FormGroup>
-              {(this.props.fieldValue as any).map((content: GenericContent, index: number) => (
+              {this.state.fieldValue.map((content: GenericContent, index: number) => (
                 <FormControl key={index} component={'fieldset' as 'div'}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
