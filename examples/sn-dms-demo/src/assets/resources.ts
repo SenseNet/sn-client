@@ -27,6 +27,7 @@ const resources = {
   UPLOAD_BAR_TITLE: 'Uploads',
   UPLOAD_BAR_CLOSE_TITLE: 'Close',
   MYPROFILE: 'My profile',
+  PROFILE: 'My profile',
   SETTINGS: 'Settings',
   ADD_NEW: 'New',
   USER: 'user',
