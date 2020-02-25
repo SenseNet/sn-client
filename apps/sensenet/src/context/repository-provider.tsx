@@ -5,6 +5,7 @@ import React, { lazy, Suspense, useEffect, useState } from 'react'
 import { FullScreenLoader } from '../components/FullScreenLoader'
 import { useRepoUrlFromLocalStorage } from '../hooks'
 import { getAuthService } from '../services/auth-service'
+import { NotificationComponent } from '../components/NotificationComponent'
 
 const LoginPage = lazy(() => import(/* webpackChunkName: "login" */ '../components/login/login-page'))
 
@@ -62,6 +63,7 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
     return (
       <Suspense fallback={<FullScreenLoader />}>
         <LoginPage />
+        <NotificationComponent />
       </Suspense>
     )
   }

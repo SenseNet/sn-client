@@ -1,7 +1,7 @@
 import { Button, Container, createStyles, Grid, makeStyles, TextField, Theme, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useAuthentication } from '@sensenet/hooks-react'
+import { useAuthentication, useLogger } from '@sensenet/hooks-react'
 import snLogo from '../../assets/sensenet-icon-32.png'
 import { useLocalization, useRepoUrlFromLocalStorage } from '../../hooks'
 import { getAuthService } from '../../services/auth-service'
@@ -18,15 +18,20 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function LoginPage() {
   const classes = useStyles()
   const localization = useLocalization().login
+  const logger = useLogger('LoginPage')
   const { setRepoUrl } = useRepoUrlFromLocalStorage()
   const { login, isLoading } = useAuthentication()
   const [url, setUrl] = useState('')
 
   const handleSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault()
-    const authService = await getAuthService(url)
-    setRepoUrl(url)
-    login({ returnUrl: window.location.origin, authService })
+    try {
+      const authService = await getAuthService(url)
+      setRepoUrl(url)
+      login({ returnUrl: window.location.origin, authService })
+    } catch (error) {
+      logger.warning({ message: `Couldn't conntect to ${url}`, data: error })
+    }
   }
 
   return (
