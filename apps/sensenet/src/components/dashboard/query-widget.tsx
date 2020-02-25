@@ -15,7 +15,7 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import { useLocalization, useSelectionService, useStringReplace } from '../../hooks'
 import { ContentContextService } from '../../services'
 import { QueryWidget as QueryWidgetModel } from '../../services/PersonalSettings'
-import { CollectionComponent, isReferenceField } from '../content-list'
+import { ContentList, isReferenceField } from '../content-list'
 import { encodeQueryData } from '../search'
 
 const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & RouteComponentProps> = props => {
@@ -134,7 +134,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
                   setLoadSettings: () => ({}),
                   setLoadAncestorsSettings: () => ({}),
                 }}>
-                <CollectionComponent
+                <ContentList
                   disableSelection={!props.settings.enableSelection}
                   hideHeader={!props.settings.showColumnNames}
                   fieldsToDisplay={props.settings.columns}

@@ -5,8 +5,7 @@ import {
   UploadProgressInfo,
 } from '@sensenet/client-core'
 import { ObservableValue, usingAsync } from '@sensenet/client-utils'
-import { GenericContent, File as SnFile } from '@sensenet/default-content-types'
-import { ActionModel } from '@sensenet/default-content-types/dist/ActionModel'
+import { ActionModel, GenericContent, File as SnFile } from '@sensenet/default-content-types'
 import { Dispatch } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { debounceReloadOnProgress } from './store/documentlibrary/actions'

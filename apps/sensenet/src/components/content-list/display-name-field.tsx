@@ -4,7 +4,7 @@ import React, { useRef, useState } from 'react'
 import { MoreHoriz } from '@material-ui/icons'
 import { ResponsivePlatforms } from '../../context'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
-
+import { virtualStyle } from './virtualized-style-for-fields'
 type DisplayNameProps = {
   content: GenericContent
   device: ResponsivePlatforms
@@ -22,7 +22,7 @@ export const DisplayNameComponent: React.FunctionComponent<DisplayNameProps> = (
   }
 
   return (
-    <TableCell padding={'none'}>
+    <TableCell component="div" style={{ ...virtualStyle, justifyContent: 'left' }}>
       <div
         style={{
           display: 'flex',

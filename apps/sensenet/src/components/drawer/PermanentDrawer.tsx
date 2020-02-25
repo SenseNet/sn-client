@@ -8,11 +8,10 @@ import Tooltip from '@material-ui/core/Tooltip'
 import { Close, Menu } from '@material-ui/icons'
 import { useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
-import React, { useContext, useEffect, useState } from 'react'
-import { withRouter } from 'react-router'
-import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
+import React, { useContext, useState } from 'react'
+import { matchPath, NavLink, useLocation } from 'react-router-dom'
 import { ResponsivePersonalSetttings } from '../../context'
-import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
+import { useDrawerItems, useLocalization, usePersonalSettings } from '../../hooks'
 import { AddButton } from '../AddButton'
 import { SearchButton } from '../search-button'
 
@@ -67,29 +66,18 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
+export const PermanentDrawer = () => {
   const personalSettings = usePersonalSettings()
   const classes = useStyles()
   const settings = useContext(ResponsivePersonalSetttings)
-  const selectionService = useSelectionService()
   const repository = useRepository()
-  const [currentComponent, setCurrentComponent] = useState(selectionService.activeContent.getValue())
   const [currentPath, setCurrentPath] = useState('')
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const items = useDrawerItems()
   const localization = useLocalization().drawer
+  const location = useLocation()
 
-  useEffect(() => {
-    const activeComponentObserve = selectionService.activeContent.subscribe(newActiveComponent =>
-      setCurrentComponent(newActiveComponent),
-    )
-
-    return function cleanup() {
-      activeComponentObserve.dispose()
-    }
-  }, [selectionService.activeContent])
-
-  if (!settings.drawer.enabled || !repository) {
+  if (!settings.drawer.enabled) {
     return null
   }
 
@@ -109,8 +97,8 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
             ) : null}
           </div>
 
-          {matchPath(props.location.pathname, `/:repositoryId/saved-queries`) === null ? (
-            <AddButton isOpened={opened} parent={currentComponent} path={currentPath} />
+          {matchPath(location.pathname, `/:repositoryId/saved-queries`) === null ? (
+            <AddButton isOpened={opened} path={currentPath} />
           ) : (
             <SearchButton isOpened={opened} />
           )}
@@ -126,7 +114,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                 <ListItem
                   button={true}
                   key={index}
-                  selected={matchPath(props.location.pathname, `/:repositoryId${item.url}`) === null ? false : true}>
+                  selected={matchPath(location.pathname, `/:repositoryId${item.url}`) === null ? false : true}>
                   <ListItemIcon
                     className={clsx(classes.listItemIconDark, {
                       [classes.listItemIconLight]: personalSettings.theme === 'light',
@@ -145,6 +133,3 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
     </Paper>
   )
 }
-
-const connectedComponent = withRouter(PermanentDrawer)
-export { connectedComponent as PermanentDrawer }

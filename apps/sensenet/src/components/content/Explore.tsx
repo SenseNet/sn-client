@@ -1,5 +1,5 @@
 import { ConstantContent } from '@sensenet/client-core'
-import React from 'react'
+import React, { useContext } from 'react'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsProvider,
@@ -9,8 +9,9 @@ import {
 } from '@sensenet/hooks-react'
 import { useSelectionService } from '../../hooks'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
-import { CollectionComponent } from '../content-list'
 import { Tree } from '../tree/index'
+import { ContentList } from '../content-list/content-list'
+import { ResponsivePersonalSetttings } from '../../context'
 
 export interface ExploreComponentProps {
   parent: number | string
@@ -28,6 +29,7 @@ const treeLoadOptions = {
 }
 export const Explore: React.FunctionComponent<ExploreComponentProps> = props => {
   const selectionService = useSelectionService()
+  const personalSettings = useContext(ResponsivePersonalSetttings)
 
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column' }}>
@@ -55,20 +57,17 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                   activeItemIdOrPath={props.parent}
                 />
 
-                <CollectionComponent
-                  enableBreadcrumbs={false}
-                  onActivateItem={props.onActivateItem}
+                <ContentList
                   style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
+                  enableBreadcrumbs={false}
+                  fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields}
                   onParentChange={props.onNavigate}
+                  onActivateItem={props.onActivateItem}
+                  onActiveItemChange={item => selectionService.activeContent.setValue(item)}
+                  parentIdOrPath={props.parent}
                   onSelectionChange={sel => {
                     selectionService.selection.setValue(sel)
                   }}
-                  parentIdOrPath={props.parent}
-                  onTabRequest={() => {
-                    /** */
-                  }}
-                  fieldsToDisplay={props.fieldsToDisplay}
-                  onActiveItemChange={item => selectionService.activeContent.setValue(item)}
                 />
               </div>
             </CurrentAncestorsProvider>

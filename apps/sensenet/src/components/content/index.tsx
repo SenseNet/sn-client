@@ -3,7 +3,7 @@ import { tuple } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { useHistory, useRouteMatch } from 'react-router'
+import { useHistory, useRouteMatch } from 'react-router-dom'
 import { ResponsivePersonalSetttings } from '../../context'
 import { ContentContextService } from '../../services'
 import Commander from './Commander'
@@ -24,12 +24,11 @@ export const encodeBrowseData = (data: BrowseData) => encodeURIComponent(btoa(JS
 export const decodeBrowseData = (encoded: string) => JSON.parse(atob(decodeURIComponent(encoded))) as BrowseData
 
 export const Content = () => {
-  const repository = useRepository()
+  const repo = useRepository()
   const match = useRouteMatch<{ browseData: string }>()
   const history = useHistory()
   const settings = useContext(ResponsivePersonalSetttings)
   const logger = useLogger('Browse view')
-
   const [browseData, setBrowseData] = useState<BrowseData>({
     type: settings.content.browseType,
   })
@@ -47,52 +46,41 @@ export const Content = () => {
   }, [browseData, logger, match.params.browseData])
 
   const refreshUrl = useCallback(
-    (data: BrowseData, repositoryUrl: string) => {
-      history.push(`/${btoa(repositoryUrl)}/browse/${encodeBrowseData(data)}`)
+    (data: BrowseData) => {
+      history.push(`/${btoa(repo.configuration.repositoryUrl)}/browse/${encodeBrowseData(data)}`)
     },
-    [history],
+    [history, repo.configuration.repositoryUrl],
   )
 
   const navigate = useCallback(
     (itm: GenericContent) => {
-      if (!repository) {
-        logger.debug({ message: 'No repository found.' })
-        return
-      }
       const newBrowseData = {
         ...browseData,
         currentContent: itm.Id,
       }
       setBrowseData(newBrowseData)
-      refreshUrl(newBrowseData, repository.configuration.repositoryUrl)
+      refreshUrl(newBrowseData)
     },
-    [browseData, logger, refreshUrl, repository],
+    [browseData, refreshUrl],
   )
 
   const navigateSecondary = useCallback(
     (itm: GenericContent) => {
-      if (!repository) {
-        logger.debug({ message: 'No repository found.' })
-        return
-      }
       const newBrowseData = {
         ...browseData,
         secondaryContent: itm.Id,
       }
       setBrowseData(newBrowseData)
-      refreshUrl(newBrowseData, repository.configuration.repositoryUrl)
+      refreshUrl(newBrowseData)
     },
-    [browseData, logger, refreshUrl, repository],
+    [browseData, refreshUrl],
   )
 
   const openItem = useCallback(
     (itm: GenericContent) => {
-      if (!repository) {
-        return
-      }
-      history.push(new ContentContextService(repository).getPrimaryActionUrl(itm))
+      history.push(new ContentContextService(repo).getPrimaryActionUrl(itm))
     },
-    [history, repository],
+    [history, repo],
   )
 
   return (
@@ -118,7 +106,7 @@ export const Content = () => {
       ) : (
         <SimpleList
           rootPath={browseData.root || ConstantContent.PORTAL_ROOT.Path}
-          collectionComponentProps={{
+          contentListProps={{
             onActivateItem: openItem,
             onParentChange: navigate,
             fieldsToDisplay: browseData.fieldsToDisplay,

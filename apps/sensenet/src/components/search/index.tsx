@@ -5,6 +5,8 @@ import Save from '@material-ui/icons/Save'
 import { ConstantContent } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { generatePath, useHistory, useRouteMatch } from 'react-router'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
@@ -13,16 +15,12 @@ import {
   useLogger,
   useRepository,
 } from '@sensenet/hooks-react'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { generatePath, RouteComponentProps, withRouter } from 'react-router'
-import Semaphore from 'semaphore-async-await'
 import { ResponsivePersonalSetttings } from '../../context'
 import { useLocalization, useSelectionService } from '../../hooks'
-import { ContentContextService } from '../../services'
-import { CollectionComponent, isReferenceField } from '../content-list'
+import { ContentList, isReferenceField } from '../content-list'
 import { useDialog } from '../dialogs'
+import { ContentContextService } from '../../services'
 
-const loadCount = 20
 const searchDebounceTime = 400
 export interface QueryData {
   term: string
@@ -38,17 +36,20 @@ export const encodeQueryData = (data: QueryData) => encodeURIComponent(btoa(JSON
 export const decodeQueryData = (encoded?: string) =>
   encoded ? (JSON.parse(atob(decodeURIComponent(encoded))) as QueryData) : { term: '' }
 
-const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }>> = props => {
+export const Search = () => {
   const repo = useRepository()
-  const contentContextService = new ContentContextService(repo)
+  const match = useRouteMatch<{ queryData?: string }>()
+  const history = useHistory()
   const { openDialog } = useDialog()
   const logger = useLogger('Search')
-  const [queryData, setQueryData] = useState<QueryData>(decodeQueryData(props.match.params.queryData))
+  const [queryData, setQueryData] = useState<QueryData>(decodeQueryData(match.params.queryData))
   const selectionService = useSelectionService()
   const localization = useLocalization().search
-  const [scrollToken, setScrollToken] = useState(Math.random())
-  const [scrollLock] = useState(new Semaphore(1))
-  const [loadLock] = useState(new Semaphore(1))
+  const [result, setResult] = useState<GenericContent[]>([])
+  const [error, setError] = useState('')
+  const loadSettingsContext = useContext(LoadSettingsContext)
+  const personalSettings = useContext(ResponsivePersonalSetttings)
+
   const requestReload = useCallback(
     debounce((qd: QueryData, term: string) => {
       setQueryData({ ...qd, term })
@@ -58,38 +59,19 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
 
   useEffect(() => {
     try {
-      const data = decodeQueryData(props.match.params.queryData || '{}')
+      const data = decodeQueryData(match.params.queryData || '{}')
       setQueryData(data)
-    } catch (error) {
+    } catch {
       logger.warning({ message: 'Wrong link :(' })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [logger, props.match.params.queryData])
-
-  const [requestScroll] = useState(() =>
-    debounce((div: HTMLDivElement, total: number, loaded: number, update: (token: number) => void) => {
-      const table = div.querySelector('table')
-      if (table && total > loaded && table.getBoundingClientRect().bottom <= window.innerHeight) {
-        update(Math.random())
-      }
-    }, 250),
-  )
-
-  const [result, setResult] = useState<GenericContent[]>([])
-  const [count, setCount] = useState(0)
-  const [error, setError] = useState('')
-  const loadSettingsContext = useContext(LoadSettingsContext)
-  const personalSettings = useContext(ResponsivePersonalSetttings)
+  }, [logger, match.params.queryData])
 
   useEffect(() => {
     const ac = new AbortController()
     ;(async () => {
-      await loadLock.acquire()
       try {
         setResult([])
-        props.history.push(
-          generatePath(props.match.path, { ...props.match.params, queryData: encodeQueryData(queryData) }),
-        )
+        history.push(generatePath(match.path, { ...match.params, queryData: encodeQueryData(queryData) }))
 
         const r = await repo.loadCollection({
           path: ConstantContent.PORTAL_ROOT.Path,
@@ -98,59 +80,28 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
             select: ['Actions', ...(queryData.fieldsToDisplay || [])],
             expand: ['Actions', ...(queryData.fieldsToDisplay || []).filter(f => isReferenceField(f, repo))],
             query: personalSettings.commandPalette.wrapQuery.replace('{0}', queryData.term),
-            top: loadCount,
           },
           requestInit: { signal: ac.signal },
         })
         setError('')
         setResult(r.d.results)
-        setCount(r.d.__count)
       } catch (e) {
         if (!ac.signal.aborted) {
           setError(e.message)
           setResult([])
           logger.warning({ message: 'Error executing search', data: { details: { error: e }, isDismissed: true } })
         }
-      } finally {
-        loadLock.release()
       }
     })()
     // loadSettings should be excluded :(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    loadSettingsContext.loadChildrenSettings,
     queryData.term,
     repo,
     personalSettings.commandPalette.wrapQuery,
     logger,
-    loadSettingsContext.loadChildrenSettings.orderby,
-    loadSettingsContext.loadChildrenSettings.select,
-    loadSettingsContext.loadChildrenSettings.expand,
   ])
-
-  useEffect(() => {
-    ;(async () => {
-      try {
-        await scrollLock.acquire()
-        const response = await repo.loadCollection({
-          path: ConstantContent.PORTAL_ROOT.Path,
-          oDataOptions: {
-            ...loadSettingsContext.loadChildrenSettings,
-            select: ['Actions', ...(queryData.fieldsToDisplay || [])],
-            expand: ['Actions', ...(queryData.fieldsToDisplay || []).filter(f => isReferenceField(f, repo))],
-            query: personalSettings.commandPalette.wrapQuery.replace('{0}', queryData.term),
-            top: loadCount,
-            skip: result.length,
-          },
-        })
-        setResult([...result, ...response.d.results])
-        setCount(response.d.__count)
-      } finally {
-        scrollLock.release()
-      }
-    })()
-    // Infinite loader fx, only lock-related stuff should be included as dependency!
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scrollLock, scrollToken])
 
   return (
     <div style={{ padding: '1em 0 0 1em', height: '100%', width: '100%' }}>
@@ -193,22 +144,19 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
       <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>
         <CurrentChildrenContext.Provider value={result}>
           <CurrentAncestorsContext.Provider value={[]}>
-            <CollectionComponent
+            <ContentList
               style={{
-                height: 'calc(100% - 33px)',
+                height: queryData.title === 'Content Types' ? 'calc(100% - 33px)' : 'calc(100% - 100px)',
                 overflow: 'auto',
-              }}
-              containerProps={{
-                onScroll: ev => requestScroll(ev.currentTarget, count, result.length, setScrollToken),
               }}
               enableBreadcrumbs={false}
               fieldsToDisplay={queryData.fieldsToDisplay}
               parentIdOrPath={0}
               onParentChange={p => {
-                props.history.push(contentContextService.getPrimaryActionUrl(p))
+                history.push(new ContentContextService(repo).getPrimaryActionUrl(p))
               }}
               onActivateItem={p => {
-                props.history.push(contentContextService.getPrimaryActionUrl(p))
+                history.push(new ContentContextService(repo).getPrimaryActionUrl(p))
               }}
               onTabRequest={() => {
                 /** */
@@ -224,5 +172,4 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
     </div>
   )
 }
-
-export default withRouter(Search)
+export default Search
