@@ -2,7 +2,7 @@ import * as DMSActions from '../Actions'
 
 describe('UserRegistration', () => {
   it('should create an action to request user registration', () => {
-    expect(DMSActions.userRegistration('alba@sensenet.com', 'alba').type).toEqual('USER_REGISTRATION_REQUEST')
+    expect(DMSActions.userRegistration('alba', 'alba@sensenet.com', 'alba').type).toEqual('USER_REGISTRATION_REQUEST')
   })
 })
 
