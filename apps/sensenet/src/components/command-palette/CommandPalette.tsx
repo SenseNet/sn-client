@@ -14,6 +14,7 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import { RepositoryContext } from '@sensenet/hooks-react'
 import { LocalizationContext, ThemeContext } from '../../context'
 import { CommandPaletteItem, useCommandPalette } from '../../hooks'
+import { globals } from '../../globalStyles'
 import { CommandPaletteHitsContainer } from './CommandPaletteHitsContainer'
 import { CommandPaletteSuggestion } from './CommandPaletteSuggestion'
 
@@ -130,7 +131,9 @@ export class CommandPaletteComponent extends React.Component<
                 <LocalizationContext.Consumer>
                   {localization => (
                     <Tooltip style={{}} placeholder="bottom-end" title={localization.values.commandPalette.title}>
-                      <IconButton onClick={() => this.props.setIsOpened(true)} style={{ padding: undefined }}>
+                      <IconButton
+                        onClick={() => this.props.setIsOpened(true)}
+                        style={{ padding: undefined, color: globals.common.headerText }}>
                         <KeyboardArrowRightTwoTone />
                         {'_'}
                       </IconButton>

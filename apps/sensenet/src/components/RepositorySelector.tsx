@@ -33,7 +33,7 @@ const useStyles = makeStyles(() => {
       fontSize: '20px',
       textOverflow: 'ellipsis',
       textDecoration: 'none',
-      color: globals.common.repoText,
+      color: globals.common.headerText,
       opacity: '87%',
     },
   })
