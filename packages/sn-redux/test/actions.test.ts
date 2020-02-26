@@ -112,6 +112,42 @@ const metadataResponse = {
   'content-type': 'application/xml; charset=utf-8',
 }
 
+const schemaResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return [
+      {
+        ContentTypeName: 'ContentType',
+        DisplayName: 'Content Type',
+        Description: 'A content type is a reusable set of fields you want to apply to certain content.',
+        Icon: 'ContentType',
+        AllowIndexing: true,
+        AllowIncrementalNaming: false,
+        AllowedChildTypes: [],
+        HandlerName: 'SenseNet.ContentRepository.Schema.ContentType',
+        FieldSettings: [
+          {
+            Type: 'IntegerFieldSetting',
+            Name: 'Id',
+            FieldClassName: 'SenseNet.ContentRepository.Fields.IntegerField',
+            DisplayName: 'Id',
+            Description: 'A unique ID for the Content.',
+            ReadOnly: true,
+            Compulsory: false,
+            OutputMethod: 0,
+            Visible: false,
+            VisibleBrowse: 1,
+            VisibleEdit: 1,
+            VisibleNew: 1,
+            DefaultOrder: 0,
+          },
+        ],
+      },
+    ]
+  },
+} as Response
+
 describe('Actions', () => {
   const path = '/workspaces/project'
   let repo: Repository
@@ -761,15 +797,15 @@ describe('Actions', () => {
       expect(Actions.changeFieldValue('Name', 'aaa')).toEqual(expectedAction)
     })
   })
-  describe('getSchema', () => {
+  describe('getSchemaByTypeName', () => {
     beforeEach(() => {
       repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => contentMockResponse)
     })
     describe('Action types are types', () => {
-      expect(Actions.getSchema('Task').type).toBe('GET_SCHEMA')
+      expect(Actions.getSchemaByTypeName('Task').type).toBe('GET_SCHEMA_BY_TYPENAME')
     })
     it('should return task schema', () => {
-      const data = Actions.getSchema('Task').payload(repo)
+      const data = Actions.getSchemaByTypeName('Task').payload(repo)
       expect(data).toEqual(repo.schemas.getSchemaByName('Task'))
     })
   })
@@ -875,6 +911,30 @@ describe('Actions', () => {
         })
         it('should return propertyResponse', () => {
           expect(data).toEqual(metadataResponse)
+        })
+      })
+    })
+  })
+  describe('getSchema', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => schemaResponse as any)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getSchema().type).toBe('GET_SCHEMA')
+    })
+    describe('serviceChecks()', () => {
+      describe('Given repository.getSchema() resolves', () => {
+        let data
+        let mockSchemaResponseData: ReturnType<typeof schemaResponse['json']>
+        beforeEach(async () => {
+          data = await Actions.getSchema().payload(repo)
+          mockSchemaResponseData = await schemaResponse.json()
+        })
+        it('should return a GET_SCHEMA action', () => {
+          expect(Actions.getSchema()).toHaveProperty('type', 'GET_SCHEMA')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(mockSchemaResponseData)
         })
       })
     })

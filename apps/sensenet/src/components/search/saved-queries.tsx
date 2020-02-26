@@ -17,7 +17,7 @@ import {
   useRepositoryEvents,
 } from '@sensenet/hooks-react'
 import { useLocalization } from '../../hooks'
-import { CollectionComponent } from '../content-list'
+import { ContentList } from '../content-list/content-list'
 import { encodeQueryData } from '.'
 
 const Search: React.FunctionComponent<RouteComponentProps> = props => {
@@ -88,7 +88,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
           <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>
             <CurrentChildrenContext.Provider value={queries}>
               <CurrentAncestorsContext.Provider value={[]}>
-                <CollectionComponent
+                <ContentList
                   style={{
                     height: 'calc(100% - 75px)',
                     overflow: 'auto',
@@ -104,9 +104,6 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
                         term: (p as Query).Query || '',
                       })}`,
                     )
-                  }}
-                  onTabRequest={() => {
-                    /** */
                   }}
                 />
               </CurrentAncestorsContext.Provider>

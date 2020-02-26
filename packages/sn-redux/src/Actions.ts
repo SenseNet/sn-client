@@ -508,8 +508,8 @@ export const changeFieldValue = (name: string, value: any) => ({
  * Action creator for loading schema of a given type
  * @param {string} typeName Name of the Content Type.
  */
-export const getSchema = (typeName: string) => ({
-  type: 'GET_SCHEMA',
+export const getSchemaByTypeName = (typeName: string) => ({
+  type: 'GET_SCHEMA_BY_TYPENAME',
   payload: (repository: Repository) => repository.schemas.getSchemaByName(typeName),
 })
 /**
@@ -571,3 +571,16 @@ export const getMetadata = (idOrPath: string | number) => {
     payload: (repository: Repository) => repository.fetch(`${path}/$metadata`),
   }
 }
+
+/**
+ * Action creator for loading repository schema
+ */
+export const getSchema = () => ({
+  type: 'GET_SCHEMA',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath: '/Root',
+      name: 'GetSchema',
+      method: 'GET',
+    }),
+})

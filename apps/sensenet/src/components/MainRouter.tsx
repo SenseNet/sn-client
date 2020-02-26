@@ -84,17 +84,11 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                       return <ExploreComponent {...routeProps} />
                     }}
                   />
-                  <Route
-                    path="/:repo/search/:queryData?"
-                    render={routeProps => {
-                      return (
-                        <LoadSettingsContextProvider>
-                          <SearchComponent {...routeProps} />
-                        </LoadSettingsContextProvider>
-                      )
-                    }}
-                  />
-
+                  <Route path="/:repo/search/:queryData?">
+                    <LoadSettingsContextProvider>
+                      <SearchComponent />
+                    </LoadSettingsContextProvider>
+                  </Route>
                   <Route
                     path="/:repo/saved-queries"
                     render={() => {
