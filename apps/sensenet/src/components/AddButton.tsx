@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme: Theme) => {
       display: 'flex',
       justifyContent: 'center',
       position: 'relative',
+      alignItems: 'center',
     },
     addButton: {
       width: '32px',

@@ -27,18 +27,13 @@ export const ThemeProvider: React.FunctionComponent = props => {
         type: pageTheme,
         background: {
           default: pageTheme === 'light' ? '#FFFFFF' : '#121212',
-        },
-        secondary: {
-          light: '#90caf9',
-          main: '#1976d2',
-          dark: '#1565c0',
-          contrastText: '#fff',
+          paper: pageTheme === 'light' ? '#FFFFFF' : 'rgba(255,255,255,0.11)',
         },
         primary: {
-          light: '#80cbc4',
-          main: '#26a69a',
-          dark: '#00796b',
-          contrastText: '#fff',
+          main: '#26A69A',
+        },
+        secondary: {
+          main: '#1976d2',
         },
       },
       overrides: {
@@ -50,6 +45,12 @@ export const ThemeProvider: React.FunctionComponent = props => {
         MuiTableCell: {
           root: {
             padding: '4px 56px 4px 24px',
+          },
+        },
+        MuiInputBase: {
+          input: {
+            border: '1px solid #505050',
+            borderRadius: '4px',
           },
         },
       },
