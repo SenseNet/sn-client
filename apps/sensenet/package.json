@@ -83,6 +83,7 @@
     "react-markdown": "^4.2.2",
     "react-monaco-editor": "^0.34.0",
     "react-responsive": "^8.0.3",
+    "react-virtualized": "^9.21.2",
     "semaphore-async-await": "^1.5.1",
     "uuid": "^3.4.0"
   },
