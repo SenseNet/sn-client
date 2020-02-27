@@ -3,7 +3,7 @@ import { ListItem, ListItemIcon, ListItemText, List as MuiList } from '@material
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
-import { AutoSizer, Index, List, ListRowProps } from 'react-virtualized'
+import { AutoSizer, Index, IndexRange, InfiniteLoader, List, ListRowProps } from 'react-virtualized'
 import { Icon } from '../Icon'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { useSelectionService } from '../../hooks'
@@ -18,18 +18,36 @@ type TreeProps = {
   onItemClick: (item: GenericContent) => void
 }
 
+const ROW_HEIGHT = 48
+
 export function Tree(props: TreeProps) {
-  const listRef = useRef<List>(null)
+  const listRef = useRef<List>()
   const selectionService = useSelectionService()
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const repo = useRepository()
   const [items, setItems] = useState<GenericContent[]>()
+  const [itemCount, setItemCount] = useState<number>()
 
   const rowHeight = ({ index }: Index) => {
-    if (!items) {
-      return 48
+    if (!items || !items[index]) {
+      return ROW_HEIGHT
     }
-    return getExpandedItemCount(items[index] as any) * 48
+    return getExpandedItemCount(items[index] as any) * ROW_HEIGHT
+  }
+
+  const isRowLoaded = ({ index }: Index) => {
+    return !!items?.[index]
+  }
+
+  const loadMoreRows = async ({ startIndex, stopIndex }: IndexRange) => {
+    const ac = new AbortController()
+    const result = await getContent(ac, props.parentPath, stopIndex, startIndex)
+    setItems(prevItems => {
+      if (prevItems) {
+        return [...prevItems, ...result.d.results]
+      }
+      return result.d.results
+    })
   }
 
   function renderItem(item: ItemType, keyPrefix: string, paddingLeft: number) {
@@ -38,7 +56,8 @@ export function Tree(props: TreeProps) {
       props.onItemClick(item)
       if (!item.expanded && !item.Children) {
         const ac = new AbortController()
-        const result = await getContent(ac, item.Path)
+        // TODO: figure out how to load this lazily
+        const result = await getContent(ac, item.Path, 100, 0)
         item.Children = result.d.results as any
       }
       item.expanded = !item.expanded
@@ -80,7 +99,11 @@ export function Tree(props: TreeProps) {
 
   const rowRenderer = ({ key, style, index }: ListRowProps) => {
     if (!items) {
-      return <p>No items</p>
+      return (
+        <p style={style} key={key}>
+          Loading
+        </p>
+      )
     }
     const node = renderItem(items[index] as any, index.toString(), 0)
     return (
@@ -103,13 +126,15 @@ export function Tree(props: TreeProps) {
   }
 
   const getContent = useCallback(
-    async (ac: AbortController, path: string) => {
+    async (ac: AbortController, path: string, top: number, skip: number) => {
       return await repo.loadCollection<GenericContent>({
         path,
         requestInit: {
           signal: ac.signal,
         },
         oDataOptions: {
+          top,
+          skip,
           orderby: [
             ['DisplayName', 'asc'],
             ['Name', 'asc'],
@@ -122,10 +147,15 @@ export function Tree(props: TreeProps) {
 
   useEffect(() => {
     const ac = new AbortController()
-    async function getItems() {
+    async function getItemCount() {
       try {
-        const children = await getContent(ac, props.parentPath)
-        setItems(children.d.results)
+        const count = await repo.count({
+          requestInit: {
+            signal: ac.signal,
+          },
+          path: props.parentPath,
+        })
+        setItemCount(count)
       } catch (err) {
         if (!ac.signal.aborted) {
           console.log(err)
@@ -133,11 +163,11 @@ export function Tree(props: TreeProps) {
         }
       }
     }
-    getItems()
+    getItemCount()
     return () => ac.abort()
-  }, [getContent, props.parentPath, repo])
+  }, [props.parentPath, repo])
 
-  if (!items) {
+  if (!itemCount) {
     return <p>Loading...</p>
   }
 
@@ -149,19 +179,28 @@ export function Tree(props: TreeProps) {
         borderRight: '1px solid rgba(128,128,128,.2)',
         overflow: 'auto',
       }}>
-      <AutoSizer>
-        {({ height, width }) => (
-          <List
-            height={height}
-            overscanRowCount={10}
-            ref={listRef}
-            rowHeight={rowHeight}
-            rowRenderer={rowRenderer}
-            rowCount={items.length}
-            width={width}
-          />
+      <InfiniteLoader isRowLoaded={isRowLoaded} loadMoreRows={loadMoreRows} rowCount={itemCount}>
+        {({ onRowsRendered, registerChild }) => (
+          <AutoSizer>
+            {({ height, width }) => (
+              <List
+                height={height}
+                onRowsRendered={onRowsRendered}
+                overscanRowCount={10}
+                ref={ref => {
+                  registerChild(ref)
+                  // ref type is List | null but listref.Current is List | undefined
+                  listRef.current = ref as any
+                }}
+                rowHeight={rowHeight}
+                rowRenderer={rowRenderer}
+                rowCount={itemCount}
+                width={width}
+              />
+            )}
+          </AutoSizer>
         )}
-      </AutoSizer>
+      </InfiniteLoader>
       {selectionService.activeContent.getValue() ? (
         <ContentContextMenu
           isOpened={!!contextMenuAnchor}
