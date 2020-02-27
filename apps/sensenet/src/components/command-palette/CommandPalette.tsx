@@ -12,14 +12,46 @@ import Autosuggest, {
 } from 'react-autosuggest'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { RepositoryContext } from '@sensenet/hooks-react'
+import { withStyles, WithStyles } from '@material-ui/core'
+import clsx from 'clsx'
 import { LocalizationContext, ThemeContext } from '../../context'
 import { CommandPaletteItem, useCommandPalette } from '../../hooks'
 import { globals } from '../../globalStyles'
 import { CommandPaletteHitsContainer } from './CommandPaletteHitsContainer'
 import { CommandPaletteSuggestion } from './CommandPaletteSuggestion'
 
+const styles = {
+  buttonWrapper: {
+    display: 'flex',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    border: 'none',
+    backgroundColor: 'transparent',
+  },
+  buttonWrapperOpened: {
+    border: '1px solid #13a5ad',
+    backgroundColor: 'rgba(255,255,255,.10)',
+  },
+  iconButton: {
+    padding: undefined,
+    color: globals.common.headerText,
+  },
+  comboBox: {
+    overflow: 'visible',
+    transition:
+      'width cubic-bezier(0.230, 1.000, 0.320, 1.000) 350ms, opacity cubic-bezier(0.230, 1.000, 0.320, 1.000) 250ms',
+    opacity: 0,
+    width: 0,
+  },
+  comboBoxOpened: {
+    opacity: 1,
+    width: '100%',
+  },
+}
+
 export class CommandPaletteComponent extends React.Component<
-  RouteComponentProps & ReturnType<typeof useCommandPalette>,
+  RouteComponentProps & ReturnType<typeof useCommandPalette> & WithStyles<typeof styles>,
   { delayedOpened: boolean }
 > {
   private containerRef?: HTMLDivElement
@@ -119,21 +151,16 @@ export class CommandPaletteComponent extends React.Component<
         <ThemeContext.Consumer>
           {theme => (
             <div
-              style={{
-                flex: 1,
-                display: 'flex',
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-                border: this.props.isOpened ? '1px solid #13a5ad' : '',
-                backgroundColor: this.props.isOpened ? 'rgba(255,255,255,.10)' : 'transparent',
-              }}>
+              className={clsx(this.props.classes.buttonWrapper, {
+                [this.props.classes.buttonWrapperOpened]: this.props.isOpened,
+              })}>
               {this.props.isOpened ? null : (
                 <LocalizationContext.Consumer>
                   {localization => (
-                    <Tooltip style={{}} placeholder="bottom-end" title={localization.values.commandPalette.title}>
+                    <Tooltip placeholder="bottom-end" title={localization.values.commandPalette.title}>
                       <IconButton
                         onClick={() => this.props.setIsOpened(true)}
-                        style={{ padding: undefined, color: globals.common.headerText }}>
+                        className={this.props.classes.iconButton}>
                         <KeyboardArrowRightTwoTone />
                         {'_'}
                       </IconButton>
@@ -144,13 +171,9 @@ export class CommandPaletteComponent extends React.Component<
 
               <div
                 ref={r => (r ? (this.containerRef = r) : null)}
-                style={{
-                  overflow: 'visible',
-                  transition:
-                    'width cubic-bezier(0.230, 1.000, 0.320, 1.000) 350ms, opacity cubic-bezier(0.230, 1.000, 0.320, 1.000) 250ms',
-                  opacity: this.props.isOpened ? 1 : 0,
-                  width: this.props.isOpened ? '100%' : 0,
-                }}>
+                className={clsx(this.props.classes.comboBox, {
+                  [this.props.classes.comboBoxOpened]: this.props.isOpened,
+                })}>
                 <Autosuggest<CommandPaletteItem>
                   theme={{
                     suggestionsList: {
@@ -162,7 +185,7 @@ export class CommandPaletteComponent extends React.Component<
                       width: '100%',
                       padding: '5px',
                       fontFamily: 'monospace',
-                      color: theme.palette.text.primary,
+                      color: theme.palette.common.white,
                       backgroundColor: 'transparent',
                       border: 'none',
                       margin: '.3em 0',
@@ -196,6 +219,4 @@ export class CommandPaletteComponent extends React.Component<
   }
 }
 
-const routed = withRouter(CommandPaletteComponent)
-
-export { routed as CommandPalette }
+export const CommandPalette = withStyles(styles)(withRouter(CommandPaletteComponent))

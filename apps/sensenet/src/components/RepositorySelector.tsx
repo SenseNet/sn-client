@@ -25,11 +25,10 @@ const useStyles = makeStyles(() => {
       filter: 'drop-shadow(0px 0px 3px black)',
     },
     repoUrl: {
-      width: '288px',
       flexShrink: 1,
       overflow: 'hidden',
       whiteSpace: 'nowrap',
-      marginRight: '4px',
+      marginRight: '12px',
       fontSize: '20px',
       textOverflow: 'ellipsis',
       textDecoration: 'none',

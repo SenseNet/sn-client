@@ -143,7 +143,12 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                 </ListItemIcon>
                 <ListItemText
                   primaryTypographyProps={{
-                    style: { overflow: 'hidden', textOverflow: 'ellipsis', marginLeft: '30px' },
+                    style: {
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      marginLeft: '30px',
+                      color: theme.palette.type === 'light' ? globals.light.textColor : globals.dark.textColor,
+                    },
                     title: session.currentUser.DisplayName || session.currentUser.Name,
                   }}
                   primary={`${session.currentUser.DisplayName || session.currentUser.Name} user`}
