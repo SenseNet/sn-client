@@ -81,6 +81,9 @@ const useStyles = makeStyles((theme: Theme) => {
       whiteSpace: 'nowrap',
       maxWidth: '139px',
     },
+    disabled: {
+      cursor: 'not-allowed',
+    },
   })
 })
 export interface AddButtonProps {
@@ -105,7 +108,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   const [currentComponent, setCurrentComponent] = useState(selectionService.activeContent.getValue())
   const personalSettings = usePersonalSettings()
 
-  useMemo(() => {
+  useEffect(() => {
     const activeComponentObserve = selectionService.activeContent.subscribe(newActiveComponent =>
       setCurrentComponent(newActiveComponent),
     )
@@ -153,19 +156,13 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
           idOrPath: currentComponent ? parent.Id : props.path,
         })
 
-        const tempAllowedChildTypes: Schema[] = []
-        let tempHasUpload = false
+        const filteredTypes = allowedChildTypesFromRepo.d.results
+          .filter(type => repo.schemas.getSchemaByName(type.Name).ContentTypeName === type.Name)
+          .map(type => repo.schemas.getSchemaByName(type.Name))
 
-        allowedChildTypesFromRepo.d.results.forEach(type => {
-          if (repo.schemas.getSchemaByName(type.Name).ContentTypeName === type.Name) {
-            tempAllowedChildTypes.push(repo.schemas.getSchemaByName(type.Name))
-            if (personalSettings.uploadHandlers.includes(repo.schemas.getSchemaByName(type.Name).HandlerName)) {
-              tempHasUpload = tempHasUpload || true
-            }
-          }
-        })
+        const tempHasUpload = filteredTypes.some(type => personalSettings.uploadHandlers.includes(type.HandlerName))
 
-        setAllowedChildTypes(tempAllowedChildTypes)
+        setAllowedChildTypes(filteredTypes)
         setHasUpload(tempHasUpload)
       } catch (error) {
         logger.error({
@@ -192,10 +189,34 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   ])
 
   return (
-    <div className={classes.mainDiv}>
+    <div
+      className={clsx(classes.mainDiv, {
+        [classes.disabled]: !isAvailable,
+      })}>
       {!props.isOpened ? (
         <div className={classes.iconButtonWrapper}>
-          <Tooltip title={localization.addNew} placement="right">
+          {isAvailable ? (
+            <Tooltip
+              title={localization.addNew}
+              placement="right"
+              className={clsx({
+                [classes.disabled]: !isAvailable,
+              })}>
+              <span>
+                <IconButton
+                  className={clsx(classes.addButton, {
+                    [classes.addButtonDisabled]: !isAvailable,
+                  })}
+                  onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+                    setAnchorEl(event.currentTarget)
+                    setShowSelectType(true)
+                  }}
+                  disabled={!isAvailable}>
+                  <Add className={classes.addButtonIcon} />
+                </IconButton>
+              </span>
+            </Tooltip>
+          ) : (
             <span>
               <IconButton
                 className={clsx(classes.addButton, {
@@ -209,7 +230,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
                 <Add className={classes.addButtonIcon} />
               </IconButton>
             </span>
-          </Tooltip>
+          )}
         </div>
       ) : (
         <ListItem
