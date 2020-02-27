@@ -157,6 +157,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
         let tempHasUpload = false
 
         allowedChildTypesFromRepo.d.results.forEach(type => {
+          // Do not add schema if it is GenericContent
           if (repo.schemas.getSchemaByName(type.Name).ContentTypeName === type.Name) {
             tempAllowedChildTypes.push(repo.schemas.getSchemaByName(type.Name))
             if (personalSettings.uploadHandlers.includes(repo.schemas.getSchemaByName(type.Name).HandlerName)) {
