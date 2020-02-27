@@ -30,7 +30,7 @@ const mapStateToProps = (state: rootStateType) => {
 const mapDispatchToProps = {
   closeDialog: DMSActions.closeDialog,
   createContent: Actions.createContent,
-  getSchema: Actions.getSchema,
+  getSchema: Actions.getSchemaByTypeName,
 }
 
 const LoadableNewView = Loadable({

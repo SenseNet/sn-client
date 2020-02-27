@@ -36,7 +36,7 @@ const mapDispatchToProps = {
   openDialog: DMSActions.openDialog,
   editContent: Actions.updateContent,
   loadEditedContent,
-  getSchema: Actions.getSchema,
+  getSchema: Actions.getSchemaByTypeName,
 }
 
 interface EditPropertiesDialogState {
