@@ -168,6 +168,24 @@ export class Repository implements Disposable {
   }
 
   /**
+   * Returns the count of items in the requested collection.
+   * The value depends on other optional query string parameters ($top, $skip, $filter, query, etc.) and does not depend on the $inlinecount parameter.
+   */
+  public async count<TContentType extends Content>(options: LoadCollectionOptions<TContentType>): Promise<number> {
+    const params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions)
+    const path = PathHelper.joinPaths(this.configuration.repositoryUrl, this.configuration.oDataToken, options.path)
+    const response = await this.fetch(`${path}/$count?${params}`, {
+      ...options.requestInit,
+      credentials: 'include',
+      method: 'GET',
+    })
+    if (!response.ok) {
+      throw await this.getErrorFromResponse(response)
+    }
+    return await response.json()
+  }
+
+  /**
    * Posts a new content to the content repository
    * @param options Post request Options
    */
