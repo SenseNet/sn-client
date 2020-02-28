@@ -2,16 +2,7 @@ import * as DMSActions from '../Actions'
 
 describe('UserRegistration', () => {
   it('should create an action to request user registration', () => {
-    expect(DMSActions.userRegistration('alba@sensenet.com', 'alba').type).toEqual('USER_REGISTRATION_REQUEST')
-  })
-})
-
-describe('VerifyCaptchaSuccess', () => {
-  it('should create an action to captcha verifing success', () => {
-    const expectedAction = {
-      type: 'VERIFY_CAPTCHA_SUCCESS',
-    }
-    expect(DMSActions.verifyCaptchaSuccess()).toEqual(expectedAction)
+    expect(DMSActions.userRegistration('alba', 'alba@sensenet.com', 'alba').type).toEqual('USER_REGISTRATION_REQUEST')
   })
 })
 

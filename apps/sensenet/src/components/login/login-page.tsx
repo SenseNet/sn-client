@@ -23,7 +23,7 @@ export function LoginPage() {
           </Link>
         </Container>
       </Grid>
-      <Login />
+      <Login clear={this.props.clearRegistration} />
     </div>
   )
 }
