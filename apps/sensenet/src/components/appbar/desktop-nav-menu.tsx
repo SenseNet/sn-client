@@ -26,12 +26,14 @@ const useStyles = makeStyles((theme: Theme) =>
     arrowDownIcon: {
       opacity: '87%',
     },
-    popper: {
+    popperWrapper: {
       position: 'absolute',
       top: globals.common.headerHeight,
       right: '1px',
       height: 'fit-content',
       width: '216px',
+    },
+    popper: {
       backgroundColor: theme.palette.type === 'light' ? globals.light.navMenuColor : globals.dark.navMenuColor,
       border: theme.palette.type === 'light' ? clsx(globals.light.navMenuBorderColor, '1px') : 'none',
     },
@@ -125,55 +127,57 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
         <KeyboardArrowDown className={classes.arrowDownIcon} />
       </IconButton>
       {open ? (
-        <Paper className={classes.popper}>
-          <ClickAwayListener onClickAway={handleClose}>
-            <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-              <MenuItem onClick={handleClose}>
-                <ListItemIcon className={classes.listItemIcon}>
-                  <UserAvatar
-                    style={{
-                      width: '35px',
-                      height: '35px',
-                      backgroundColor: theme.palette.primary.main,
-                      color: globals.common.headerText,
+        <Paper className={classes.popperWrapper}>
+          <div className={classes.popper}>
+            <ClickAwayListener onClickAway={handleClose}>
+              <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                <MenuItem onClick={handleClose}>
+                  <ListItemIcon className={classes.listItemIcon}>
+                    <UserAvatar
+                      style={{
+                        width: '35px',
+                        height: '35px',
+                        backgroundColor: theme.palette.primary.main,
+                        color: globals.common.headerText,
+                      }}
+                      user={session.currentUser}
+                      repositoryUrl={repo.configuration.repositoryUrl}
+                    />
+                  </ListItemIcon>
+                  <ListItemText
+                    primaryTypographyProps={{
+                      style: {
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        marginLeft: '30px',
+                        color: theme.palette.type === 'light' ? globals.light.textColor : globals.dark.textColor,
+                      },
+                      title: session.currentUser.DisplayName || session.currentUser.Name,
                     }}
-                    user={session.currentUser}
-                    repositoryUrl={repo.configuration.repositoryUrl}
+                    primary={`${session.currentUser.DisplayName || session.currentUser.Name} user`}
                   />
-                </ListItemIcon>
-                <ListItemText
-                  primaryTypographyProps={{
-                    style: {
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      marginLeft: '30px',
-                      color: theme.palette.type === 'light' ? globals.light.textColor : globals.dark.textColor,
-                    },
-                    title: session.currentUser.DisplayName || session.currentUser.Name,
-                  }}
-                  primary={`${session.currentUser.DisplayName || session.currentUser.Name} user`}
-                />
-              </MenuItem>
-              <NavLink to="/personalSettings" onClick={handleClose}>
-                <MenuItem className={classes.menuItem}>{localization.topMenu.personalSettings}</MenuItem>
-              </NavLink>
-              <MenuItem onClick={logout} className={classes.menuItem}>
-                {localization.topMenu.logout}
-              </MenuItem>
-              <MenuItem>
-                <Typography component="div" className={classes.themeSwitcher}>
-                  <Grid component="label" container alignItems="center" spacing={1}>
-                    <Grid item style={{ textTransform: 'uppercase', paddingRight: '32px' }}>
-                      {personalSettings.theme === 'dark' ? 'Light theme' : 'Dark theme'}
+                </MenuItem>
+                <NavLink to="/personalSettings" onClick={handleClose}>
+                  <MenuItem className={classes.menuItem}>{localization.topMenu.personalSettings}</MenuItem>
+                </NavLink>
+                <MenuItem onClick={logout} className={classes.menuItem}>
+                  {localization.topMenu.logout}
+                </MenuItem>
+                <MenuItem>
+                  <Typography component="div" className={classes.themeSwitcher}>
+                    <Grid component="label" container alignItems="center" spacing={1}>
+                      <Grid item style={{ paddingRight: '32px' }}>
+                        {personalSettings.theme === 'dark' ? 'Light theme' : 'Dark theme'}
+                      </Grid>
+                      <Grid item>
+                        <AntSwitch checked={personalSettings.theme === 'dark'} onChange={switchTheme()} />
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <AntSwitch checked={personalSettings.theme === 'dark'} onChange={switchTheme()} />
-                    </Grid>
-                  </Grid>
-                </Typography>
-              </MenuItem>
-            </MenuList>
-          </ClickAwayListener>
+                  </Typography>
+                </MenuItem>
+              </MenuList>
+            </ClickAwayListener>
+          </div>
         </Paper>
       ) : null}
     </div>

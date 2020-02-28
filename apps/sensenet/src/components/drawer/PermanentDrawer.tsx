@@ -9,22 +9,32 @@ import React, { useContext, useState } from 'react'
 import { withRouter } from 'react-router'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { useRepository } from '@sensenet/hooks-react'
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core'
 import clsx from 'clsx'
 import { useDrawerItems, useLocalization, usePersonalSettings } from '../../hooks'
 import { ResponsivePersonalSetttings } from '../../context'
 import { AddButton } from '../AddButton'
 import { SearchButton } from '../search-button'
+import { globals } from '../../globalStyles'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
-    paperStyle: {
+    paper: {
       flexGrow: 0,
       flexShrink: 0,
-      width: '90px',
       position: 'relative',
+      width: globals.common.drawerWidthCollapsed,
+      '&$opened': {
+        width: globals.common.drawerWidthExpanded,
+      },
     },
-    listStyle: {
+    opened: {},
+    backgroundDiv: {
+      height: '100%',
+      backgroundColor: theme.palette.type === 'light' ? globals.light.drawerBackground : globals.dark.drawerBackground,
+      border: theme.palette.type === 'light' ? clsx(globals.light.navMenuBorderColor, '1px') : 'none',
+    },
+    list: {
       width: '100%',
       height: '100%',
       flexGrow: 1,
@@ -33,27 +43,22 @@ const useStyles = makeStyles((theme: Theme) => {
       overflow: 'hidden',
       justifyContent: 'space-between',
       flexDirection: 'column',
-      backgroundColor: theme.palette.background.default, // '#222',
       transition: 'width 100ms ease-in-out',
       paddingTop: 0,
-      '&$opened': {
-        width: 330,
-      },
     },
-    opened: {},
     listWrapper: {
       overflowY: 'auto',
       overflowX: 'hidden',
       width: '100%',
     },
-    navLinkStyle: {
+    navLink: {
       textDecoration: 'none',
       opacity: 0.54,
     },
     listButton: {
       height: '65px',
     },
-    navLinkActiveStyle: {
+    navLinkActive: {
       opacity: 1,
       '& .MuiListItem-root': { backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText },
       '& svg': {
@@ -66,9 +71,6 @@ const useStyles = makeStyles((theme: Theme) => {
     listItemIconLight: {
       color: theme.palette.common.black,
       opacity: 0.87,
-    },
-    listItemIconActiveStyle: {
-      color: theme.palette.common.white,
     },
     expandCollapseWrapper: {
       height: '49px',
@@ -91,6 +93,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const personalSettings = usePersonalSettings()
   const classes = useStyles()
   const settings = useContext(ResponsivePersonalSetttings)
+  const theme = useTheme()
 
   const repo = useRepository()
   const [currentPath, setCurrentPath] = useState('')
@@ -103,60 +106,70 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   }
 
   return (
-    <Paper className={classes.paperStyle}>
-      <List className={clsx(classes.listStyle, { [classes.opened]: opened })}>
-        <div className={classes.listWrapper}>
-          {settings.drawer.type === 'mini-variant' ? (
-            <ListItem
-              className={clsx(classes.centered, classes.listButton)}
-              button={true}
-              onClick={() => setOpened(!opened)}
-              key="expandcollapse">
-              <ListItemIcon className={classes.centered}>
-                <Tooltip
-                  className={classes.centered}
-                  title={opened ? localization.collapse : localization.expand}
-                  placement="right">
-                  <div>{opened ? <Close /> : <Menu />}</div>
-                </Tooltip>
-              </ListItemIcon>
-            </ListItem>
-          ) : null}
+    <Paper className={clsx(classes.paper, { [classes.opened]: opened })}>
+      <div className={classes.backgroundDiv}>
+        <List className={classes.list}>
+          <div className={classes.listWrapper}>
+            {settings.drawer.type === 'mini-variant' ? (
+              <ListItem
+                className={clsx(classes.listButton)}
+                button={true}
+                onClick={() => setOpened(!opened)}
+                key="expandcollapse">
+                <ListItemIcon className={classes.centered}>
+                  <Tooltip
+                    className={classes.centered}
+                    title={opened ? localization.collapse : localization.expand}
+                    placement="right">
+                    <div>{opened ? <Close /> : <Menu />}</div>
+                  </Tooltip>
+                </ListItemIcon>
+              </ListItem>
+            ) : null}
 
-          {matchPath(props.location.pathname, `/:repositoryId/saved-queries`) === null ? (
-            <AddButton isOpened={opened} path={currentPath} />
-          ) : (
-            <SearchButton isOpened={opened} />
-          )}
+            {matchPath(props.location.pathname, `/:repositoryId/saved-queries`) === null ? (
+              <AddButton isOpened={opened} path={currentPath} />
+            ) : (
+              <SearchButton isOpened={opened} />
+            )}
 
-          {items.map((item, index) => {
-            return (
-              <NavLink
-                to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
-                className={classes.navLinkStyle}
-                key={index}
-                onClick={() => setCurrentPath(item.root ? item.root : '')}
-                activeClassName={classes.navLinkActiveStyle}>
-                <ListItem
-                  className={classes.listButton}
-                  button={true}
+            {items.map((item, index) => {
+              return (
+                <NavLink
+                  to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
+                  className={classes.navLink}
                   key={index}
-                  selected={matchPath(props.location.pathname, `/:repositoryId${item.url}`) === null ? false : true}>
-                  <ListItemIcon
-                    className={clsx(classes.listItemIconDark, classes.centered, {
-                      [classes.listItemIconLight]: personalSettings.theme === 'light',
-                    })}>
-                    <Tooltip title={item.secondaryText} placement="right">
-                      {item.icon}
-                    </Tooltip>
-                  </ListItemIcon>
-                  {opened ? <ListItemText primary={item.primaryText} /> : null}
-                </ListItem>
-              </NavLink>
-            )
-          })}
-        </div>
-      </List>
+                  onClick={() => setCurrentPath(item.root ? item.root : '')}
+                  activeClassName={classes.navLinkActive}>
+                  <ListItem
+                    className={classes.listButton}
+                    button={true}
+                    key={index}
+                    selected={matchPath(props.location.pathname, `/:repositoryId${item.url}`) === null ? false : true}>
+                    <ListItemIcon
+                      className={clsx(classes.listItemIconDark, classes.centered, {
+                        [classes.listItemIconLight]: personalSettings.theme === 'light',
+                      })}>
+                      <Tooltip title={item.secondaryText} placement="right">
+                        {item.icon}
+                      </Tooltip>
+                    </ListItemIcon>
+                    {opened ? (
+                      <ListItemText
+                        primary={item.primaryText}
+                        style={{
+                          color:
+                            theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
+                        }}
+                      />
+                    ) : null}
+                  </ListItem>
+                </NavLink>
+              )
+            })}
+          </div>
+        </List>
+      </div>
     </Paper>
   )
 }

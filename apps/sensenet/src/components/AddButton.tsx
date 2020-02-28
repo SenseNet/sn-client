@@ -16,7 +16,7 @@ import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks
 import clsx from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
 import { useLocalization, useSelectionService } from '../hooks'
-import { useGlobalStyles } from '../globalStyles'
+import { globals, useGlobalStyles } from '../globalStyles'
 import { useDialog } from './dialogs'
 import { Icon } from './Icon'
 
@@ -33,6 +33,7 @@ const useStyles = makeStyles(() => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-evenly',
+      height: globals.common.drawerItemHeight,
     },
     listDropdown: {
       padding: '10px 0 10px 10px',
@@ -177,7 +178,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
             setShowSelectType(true)
           }}
           disabled={!isAvailable}>
-          <ListItemIcon>
+          <ListItemIcon className={globalClasses.centeredHorizontal}>
             <Tooltip title={localization.addNew} placement="right">
               <span>
                 <IconButton

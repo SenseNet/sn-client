@@ -4,6 +4,9 @@ export const globals = {
   common: {
     //Fix sizes
     headerHeight: 80,
+    drawerWidthCollapsed: 90,
+    drawerWidthExpanded: 250,
+    drawerItemHeight: 65,
     //Colors
     headerBackground: '#353B4E',
     headerText: 'rgba(255,255,255,0.87)',
@@ -11,10 +14,12 @@ export const globals = {
   light: {
     navMenuColor: '#F6F6F6',
     navMenuBorderColor: '#E2E2E2',
+    drawerBackground: '#F8F8F8',
     textColor: 'rgba(0,0,0,0.87)',
   },
   dark: {
     navMenuColor: 'rgba(255, 255, 255, 0.16)',
+    drawerBackground: 'rgba(255,255,255, 0.05)',
     textColor: 'rgba(255,255,255,0.87)',
   },
 }
@@ -59,7 +64,7 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
       backgroundColor: theme.palette.primary.main,
     },
     drawerIconButtonWrapper: {
-      height: '65px',
+      height: globals.common.drawerItemHeight,
       width: '100%',
       display: 'flex',
       justifyContent: 'center',

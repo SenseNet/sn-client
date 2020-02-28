@@ -27,7 +27,7 @@ export const ThemeProvider: React.FunctionComponent = props => {
         type: pageTheme,
         background: {
           default: pageTheme === 'light' ? '#FFFFFF' : '#121212',
-          paper: pageTheme === 'light' ? '#FFFFFF' : 'rgba(255,255,255,0.11)',
+          paper: pageTheme === 'light' ? '#FFFFFF' : '#121212',
         },
         primary: {
           main: '#26A69A',
