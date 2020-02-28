@@ -8,7 +8,6 @@ const resources = {
   PASSWORD_INPUT_LABEL: 'Password',
   USERNAME_INPUT_PLACEHOLDER: 'Username',
   EMAIL_INPUT_PLACEHOLDER: 'E-mail',
-  USERNAME_INPUT_PLACEHOLDER: 'Username',
   PASSWORD_INPUT_PLACEHOLDER: 'Password',
   LOGIN_BUTTON_TEXT: 'Login',
   LOGIN_TAB_TEXT: 'Login',
