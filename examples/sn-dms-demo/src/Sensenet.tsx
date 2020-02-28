@@ -1,5 +1,4 @@
 import { MuiThemeProvider } from '@material-ui/core/styles'
-import { OauthProvider } from '@sensenet/authentication-jwt'
 import { LoginState } from '@sensenet/client-core'
 import React from 'react'
 import Loadable from 'react-loadable'
@@ -29,11 +28,7 @@ const mapDispatchToProps = {
   clearRegistration: clearReg,
 }
 
-export interface SensenetProps {
-  oAuthProvider: OauthProvider
-}
-
-class Sensenet extends React.Component<SensenetProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps> {
+class Sensenet extends React.Component<ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps> {
   public name = ''
   public password = ''
 
@@ -71,14 +66,14 @@ class Sensenet extends React.Component<SensenetProps & ReturnType<typeof mapStat
                 path="/login"
                 authorize={() => this.props.loginState !== LoginState.Authenticated}
                 redirectOnUnauthorized="/">
-                <Login oauthProvider={this.props.oAuthProvider} clear={this.props.clearRegistration} />
+                <Login clear={this.props.clearRegistration} />
               </AuthorizedRoute>
               <AuthorizedRoute
                 exact={true}
                 path="/registration"
                 authorize={() => this.props.loginState !== LoginState.Authenticated}
                 redirectOnUnauthorized="/">
-                <Registration oAuthProvider={this.props.oAuthProvider} />
+                <Registration />
               </AuthorizedRoute>
               {/* Empty path, default routes per login state */}
               {this.props.loginState === LoginState.Unauthenticated ? <Redirect path="*" to="/login" /> : null}

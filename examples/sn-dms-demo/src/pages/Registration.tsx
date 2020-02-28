@@ -7,10 +7,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import { OauthProvider } from '@sensenet/authentication-jwt'
 import { userRegistration } from '../Actions'
 import ConnectedLoginTabs from '../components/LoginTabs'
-import { OauthRow } from '../components/OAuthRow'
 import { WelcomeMessage } from '../components/WelcomeMessage'
 import { resources } from '../assets/resources'
 import { rootStateType } from '../store/rootReducer'
@@ -55,17 +53,16 @@ const mapDispatchToProps = {
   registration: userRegistration,
 }
 
-interface RegistrationProps extends RouteComponentProps<any> {
-  oAuthProvider: OauthProvider
-}
-
 interface RegistrationState {
+  username: string
   email: string
   password: string
   confirmpassword: string
+  usernameError: boolean
   emailError: boolean
   passwordError: boolean
   confirmPasswordError: boolean
+  usernameErrorMessage: string
   emailErrorMessage: string
   passwordErrorMessage: string
   confirmPasswordErrorMessage: string
@@ -74,17 +71,20 @@ interface RegistrationState {
 }
 
 class Registration extends React.Component<
-  RegistrationProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
+  RouteComponentProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   RegistrationState
 > {
   constructor(props: Registration['props']) {
     super(props)
     this.state = {
+      username: '',
       email: '',
       password: '',
       confirmpassword: '',
+      usernameError: false,
       emailError: false,
       passwordError: false,
+      usernameErrorMessage: '',
       emailErrorMessage: '',
       passwordErrorMessage: '',
       formIsValid: false,
@@ -93,6 +93,8 @@ class Registration extends React.Component<
       confirmPasswordErrorMessage: '',
     }
 
+    this.handleUsernameBlur = this.handleUsernameBlur.bind(this)
+    this.handleUsernameChange = this.handleUsernameChange.bind(this)
     this.handleEmailBlur = this.handleEmailBlur.bind(this)
     this.handleEmailChange = this.handleEmailChange.bind(this)
     this.handlePasswordBlur = this.handlePasswordBlur.bind(this)
@@ -181,9 +183,23 @@ class Registration extends React.Component<
   public confirmPasswords(p1: string, p2: string) {
     return p1 === p2
   }
+  public handleUsernameBlur(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    this.setState({
+      username: e.target.value,
+      usernameErrorMessage: '',
+      usernameError: false,
+      isButtonDisabled: false,
+    })
+  }
+  public handleUsernameChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
+    this.setState({
+      username: e.target.value,
+      isButtonDisabled: false,
+    })
+  }
   public formSubmit() {
     if (this.valid()) {
-      this.props.registration(this.state.email, this.state.password)
+      this.props.registration(this.state.username, this.state.email, this.state.password)
       this.setState({
         isButtonDisabled: true,
       })
@@ -260,6 +276,27 @@ class Registration extends React.Component<
               }}>
               <FormControl
                 error={
+                  this.state.usernameError ||
+                  (this.props.registrationError !== null && this.props.registrationError.length) > 0
+                    ? true
+                    : false
+                }
+                fullWidth={true}
+                required={true}
+                style={styles.formControl}>
+                <TextField
+                  name="username"
+                  onBlur={event => this.handleUsernameBlur(event)}
+                  onChange={event => this.handleUsernameChange(event)}
+                  fullWidth={true}
+                  autoFocus={true}
+                  label={resources.USERNAME_INPUT_LABEL}
+                  placeholder={resources.USERNAME_INPUT_PLACEHOLDER}
+                />
+                <FormHelperText>{this.state.usernameErrorMessage}</FormHelperText>
+              </FormControl>
+              <FormControl
+                error={
                   this.state.emailError ||
                   (this.props.registrationError !== null && this.props.registrationError.length) > 0
                     ? true
@@ -327,7 +364,6 @@ class Registration extends React.Component<
                 {resources.REGISTRATION_BUTTON_TEXT}
               </Button>
             </form>
-            <OauthRow oAuthProvider={this.props.oAuthProvider} />
           </div>
         </div>
       </div>

@@ -7,11 +7,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { Redirect } from 'react-router-dom'
-import { GoogleOauthProvider } from '@sensenet/authentication-google'
-import { OauthProvider } from '@sensenet/authentication-jwt'
 import { LoginState } from '@sensenet/client-core'
 import ConnectedLoginTabs from '../components/LoginTabs'
-import { OauthRow } from '../components/OAuthRow'
 import { WelcomeMessage } from '../components/WelcomeMessage'
 import { resources } from '../assets/resources'
 import { FullScreenLoader } from '../components/FullScreenLoader'
@@ -53,7 +50,6 @@ const mapDispatchToProps = {
 interface LoginProps {
   clear: () => any
   loginState: LoginState
-  oauthProvider: OauthProvider | GoogleOauthProvider
 }
 
 interface LoginComponentState {
@@ -93,18 +89,11 @@ class Login extends React.Component<
   }
 
   public handleUsernameBlur(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    if (e.target.value.length > 0) {
-      this.setState({
-        username: e.target.value,
-        usernameErrorMessage: '',
-        usernameError: false,
-      })
-    } else {
-      this.setState({
-        usernameErrorMessage: resources.USERNAME_IS_NOT_VALID_MESSAGE,
-        usernameError: true,
-      })
-    }
+    this.setState({
+      username: e.target.value,
+      usernameErrorMessage: '',
+      usernameError: false,
+    })
   }
 
   public handlePasswordBlur(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -261,7 +250,6 @@ class Login extends React.Component<
               {resources.LOGIN_BUTTON_TEXT}
             </Button>
           </form>
-          <OauthRow oAuthProvider={this.props.oauthProvider} />
         </div>
       </div>
     )

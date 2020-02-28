@@ -19,6 +19,7 @@ export enum MessageMode {
 
 export const userRegistration = (username: string, email: string, password: string) => ({
   type: 'USER_REGISTRATION_REQUEST',
+  username,
   email,
   password,
   async payload(repository: Repository) {
