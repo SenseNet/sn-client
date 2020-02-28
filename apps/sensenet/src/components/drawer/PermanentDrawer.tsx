@@ -67,22 +67,6 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-const isLocalization = (pathname: string) => {
-  const res = decodeURIComponent(pathname).split('/')
-  if (res.length === 4) {
-    return res[2] === 'browse' && JSON.parse(window.atob(res[res.length - 1])).root === '/Root/Localization'
-  }
-  return false
-}
-
-const isQuery = (pathname: string) => {
-  const res = decodeURIComponent(pathname).split('/')
-  if (res.length === 4) {
-    return res[2] === 'search'
-  }
-  return false
-}
-
 const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const personalSettings = usePersonalSettings()
   const classes = useStyles()
@@ -114,11 +98,11 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
           </div>
 
           {matchPath(props.location.pathname, `/:repositoryId/saved-queries`) === null ? (
-            matchPath(props.location.pathname, { path: `/`, exact: true }) === null &&
-            matchPath(props.location.pathname, { path: `/personalSettings`, exact: true }) === null &&
-            matchPath(props.location.pathname, { path: `/:repositoryId/trash`, exact: true }) === null &&
-            !isLocalization(props.location.pathname) &&
-            !isQuery(props.location.pathname) && <AddButton isOpened={opened} path={currentPath} />
+            (matchPath(props.location.pathname, { path: `/:repositoryId/browse` }) !== null ||
+              matchPath(props.location.pathname, { path: `/:repositoryId/usersAndGroups`, exact: true }) !== null ||
+              matchPath(props.location.pathname, { path: `/:repositoryId/setup`, exact: true }) !== null) && (
+              <AddButton isOpened={opened} path={currentPath} />
+            )
           ) : (
             <SearchButton isOpened={opened} />
           )}

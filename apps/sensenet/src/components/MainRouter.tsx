@@ -22,6 +22,12 @@ const EditProperties = lazy(async () => await import(/* webpackChunkName: "editP
 const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 
 const TrashComponent = lazy(async () => await import(/* webpackChunkName: "Trash" */ './trash/Trash'))
+const UsersAndGroupsComponent = lazy(
+  async () => await import(/* webpackChunkName: "Trash" */ './users-and-groups/users-and-groups'),
+)
+const LocalizationComponent = lazy(
+  async () => await import(/* webpackChunkName: "Trash" */ './localization/localization'),
+)
 const EventListComponent = lazy(async () => await import(/* webpackChunkName: "EventList" */ './event-list'))
 
 const PersonalSettingsEditor = lazy(
@@ -109,6 +115,18 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                     path="/:repo/trash"
                     render={() => {
                       return <TrashComponent />
+                    }}
+                  />
+                  <Route
+                    path="/:repo/localization"
+                    render={() => {
+                      return <LocalizationComponent />
+                    }}
+                  />
+                  <Route
+                    path="/:repo/usersAndGroups"
+                    render={() => {
+                      return <UsersAndGroupsComponent />
                     }}
                   />
                   <Route
