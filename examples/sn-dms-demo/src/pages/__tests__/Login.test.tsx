@@ -46,7 +46,6 @@ it('renders without crashing', () => {
     withStore(
       <MemoryRouter>
         <Login
-          oauthProvider={{} as any}
           clear={() => {
             //
           }}

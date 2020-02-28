@@ -50,7 +50,7 @@ it('renders without crashing', () => {
   ReactDOM.render(
     withStore(
       <MemoryRouter>
-        <Registration verify={null} oAuthProvider={null as any} />
+        <Registration />
       </MemoryRouter>,
       options,
     ),

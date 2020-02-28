@@ -17,8 +17,9 @@ export enum MessageMode {
   info = 'info',
 }
 
-export const userRegistration = (email: string, password: string) => ({
+export const userRegistration = (username: string, email: string, password: string) => ({
   type: 'USER_REGISTRATION_REQUEST',
+  username,
   email,
   password,
   async payload(repository: Repository) {
@@ -26,6 +27,7 @@ export const userRegistration = (email: string, password: string) => ({
       name: 'RegisterUser',
       idOrPath: `/Root/IMS('Public')`,
       body: {
+        username,
         email,
         password,
       },

@@ -1,4 +1,3 @@
-import { GoogleOauthProvider } from '@sensenet/authentication-google'
 import { Repository } from '@sensenet/client-core'
 import { Store } from '@sensenet/redux'
 import React from 'react'
@@ -30,7 +29,7 @@ store.dispatch(initLog())
 ReactDOM.render(
   <Provider store={store}>
     <RepositoryContext.Provider value={repository}>
-      <Sensenet oAuthProvider={dmsInjector.getInstance(GoogleOauthProvider)} />
+      <Sensenet />
     </RepositoryContext.Provider>
   </Provider>,
   document.getElementById('root') as HTMLElement,
