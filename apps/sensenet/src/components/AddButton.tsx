@@ -149,7 +149,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
     }
   }, [localization.errorGettingActions, logger, parent, props.path, repo])
 
-  useMemo(() => {
+  useEffect(() => {
     const getAllowedChildTypes = async () => {
       try {
         const allowedChildTypesFromRepo = await repo.getAllowedChildTypes({
