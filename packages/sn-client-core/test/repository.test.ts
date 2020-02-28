@@ -105,6 +105,11 @@ describe('Repository', () => {
         await countRepository.count({ path: '/Root/Content' })
         expect(url).toMatch(/http:\/\/localhost\/odata.svc\/Root\/Content\/\$count/g)
       })
+
+      it('should throw on unsuccessfull request', async () => {
+        ;(mockResponse as any).ok = false
+        await expect(repository.count({ path: 'Root/Content' })).rejects.toThrow()
+      })
     })
 
     describe('#loadCollection()', () => {
