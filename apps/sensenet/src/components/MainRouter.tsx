@@ -23,7 +23,7 @@ const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkNam
 
 const TrashComponent = lazy(async () => await import(/* webpackChunkName: "Trash" */ './trash/Trash'))
 const UsersAndGroupsComponent = lazy(
-  async () => await import(/* webpackChunkName: "Trash" */ './users-and-groups/users-and-groups'),
+  async () => await import(/* webpackChunkName: "UserAndGroup" */ './users-and-groups/users-and-groups'),
 )
 const LocalizationComponent = lazy(
   async () => await import(/* webpackChunkName: "Trash" */ './localization/localization'),
