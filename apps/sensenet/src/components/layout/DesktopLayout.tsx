@@ -2,7 +2,6 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import React, { useContext, useEffect, useState } from 'react'
 
 import { useInjector, useRepository } from '@sensenet/hooks-react'
-import snLogo from '../../assets/sensenet_logo_transparent.png'
 import { ResponsivePersonalSetttings } from '../../context'
 import { DesktopAppBar } from '../appbar/desktop-app-bar'
 import { PermanentDrawer } from '../drawer/PermanentDrawer'
@@ -85,10 +84,6 @@ export const DesktopLayout: React.FunctionComponent = props => {
           style={{
             display: 'flex',
             flexGrow: 1,
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            backgroundImage: `url(${snLogo})`,
-            backgroundSize: 'contain',
             overflow: 'hidden',
             height: '100%',
           }}>

@@ -57,8 +57,8 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
       color: theme.palette.common.white,
     },
     drawerButtonExpanded: {
-      width: '28px',
-      height: '28px',
+      width: '32px',
+      height: '32px',
       minHeight: 0,
       padding: 0,
       backgroundColor: theme.palette.primary.main,

@@ -29,6 +29,10 @@ export const ThemeProvider: React.FunctionComponent = props => {
           default: pageTheme === 'light' ? '#FFFFFF' : '#121212',
           paper: pageTheme === 'light' ? '#FFFFFF' : '#121212',
         },
+        text: {
+          primary: pageTheme === 'light' ? '#000000' : '#FFFFFF',
+          secondary: pageTheme === 'light' ? '#000000' : '#FFFFFF',
+        },
         primary: {
           main: '#26A69A',
         },
@@ -51,6 +55,11 @@ export const ThemeProvider: React.FunctionComponent = props => {
           input: {
             border: '1px solid #505050',
             borderRadius: '4px',
+          },
+        },
+        MuiListItemIcon: {
+          root: {
+            color: pageTheme === 'light' ? '#000000' : '#FFFFFF',
           },
         },
       },

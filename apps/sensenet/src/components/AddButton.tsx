@@ -9,7 +9,7 @@ import {
   Popover,
   Tooltip,
 } from '@material-ui/core'
-import { CloudUpload } from '@material-ui/icons'
+import { CloudUploadOutlined } from '@material-ui/icons'
 import Add from '@material-ui/icons/Add'
 import { Schema } from '@sensenet/default-content-types'
 import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
@@ -224,7 +224,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
                 })
               }}>
               <ListItemIcon style={{ minWidth: '36px' }}>
-                <CloudUpload />
+                <CloudUploadOutlined />
               </ListItemIcon>
               <ListItemText primary={localization.upload} className={classes.listItemTextDropdown} />
             </ListItem>
