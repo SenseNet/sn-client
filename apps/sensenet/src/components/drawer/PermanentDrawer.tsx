@@ -128,7 +128,11 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
             ) : null}
 
             {matchPath(props.location.pathname, `/:repositoryId/saved-queries`) === null ? (
-              <AddButton isOpened={opened} path={currentPath} />
+              (matchPath(props.location.pathname, { path: `/:repositoryId/browse` }) !== null ||
+                matchPath(props.location.pathname, { path: `/:repositoryId/usersAndGroups`, exact: true }) !== null ||
+                matchPath(props.location.pathname, { path: `/:repositoryId/setup`, exact: true }) !== null) && (
+                <AddButton isOpened={opened} path={currentPath} />
+              )
             ) : (
               <SearchButton isOpened={opened} />
             )}

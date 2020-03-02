@@ -15,7 +15,7 @@ import { Schema } from '@sensenet/default-content-types'
 import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
-import { useLocalization, useSelectionService } from '../hooks'
+import { useLocalization, usePersonalSettings, useSelectionService } from '../hooks'
 import { globals, useGlobalStyles } from '../globalStyles'
 import { useDialog } from './dialogs'
 import { Icon } from './Icon'
@@ -47,6 +47,9 @@ const useStyles = makeStyles(() => {
       whiteSpace: 'nowrap',
       maxWidth: '139px',
     },
+    disabled: {
+      cursor: 'not-allowed',
+    },
   })
 })
 export interface AddButtonProps {
@@ -68,7 +71,9 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   const logger = useLogger('AddButton')
   const [isAvailable, setAvailable] = useState(true)
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
+  const [hasUpload, setHasUpload] = useState(false)
   const [currentComponent, setCurrentComponent] = useState(selectionService.activeContent.getValue())
+  const personalSettings = usePersonalSettings()
 
   useEffect(() => {
     const activeComponentObserve = selectionService.activeContent.subscribe(newActiveComponent =>
@@ -118,14 +123,14 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
           idOrPath: currentComponent ? parent.Id : props.path,
         })
 
-        const tempAllowedChildTypes: Schema[] = []
+        const filteredTypes = allowedChildTypesFromRepo.d.results
+          .filter(type => repo.schemas.getSchemaByName(type.Name).ContentTypeName === type.Name)
+          .map(type => repo.schemas.getSchemaByName(type.Name))
 
-        allowedChildTypesFromRepo.d.results.forEach(type => {
-          if (repo.schemas.getSchemaByName(type.Name).ContentTypeName === type.Name) {
-            tempAllowedChildTypes.push(repo.schemas.getSchemaByName(type.Name))
-          }
-        })
-        setAllowedChildTypes(tempAllowedChildTypes)
+        const tempHasUpload = filteredTypes.some(type => personalSettings.uploadHandlers.includes(type.HandlerName))
+
+        setAllowedChildTypes(filteredTypes)
+        setHasUpload(tempHasUpload)
       } catch (error) {
         logger.error({
           message: localization.errorGettingAllowedContentTypes,
@@ -140,10 +145,11 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
       currentComponent || props.path !== '' ? getAllowedChildTypes() : setAllowedChildTypes([])
     }
   }, [
+    currentComponent,
     localization.errorGettingAllowedContentTypes,
     logger,
     parent.Id,
-    currentComponent,
+    personalSettings.uploadHandlers,
     props.path,
     repo,
     showSelectType,
@@ -153,7 +159,21 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
     <div className={clsx(globalClasses.centered, globalClasses.relative)}>
       {!props.isOpened ? (
         <div className={globalClasses.drawerIconButtonWrapper}>
-          <Tooltip title={localization.addNew} placement="right">
+          {isAvailable ? (
+            <Tooltip title={localization.addNew} placement="right">
+              <span>
+                <IconButton
+                  className={globalClasses.drawerButton}
+                  onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+                    setAnchorEl(event.currentTarget)
+                    setShowSelectType(true)
+                  }}
+                  disabled={!isAvailable}>
+                  <Add className={globalClasses.drawerButtonIcon} />
+                </IconButton>
+              </span>
+            </Tooltip>
+          ) : (
             <span>
               <IconButton
                 className={clsx(globalClasses.drawerButton, {
@@ -167,7 +187,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
                 <Add className={globalClasses.drawerButtonIcon} />
               </IconButton>
             </span>
-          </Tooltip>
+          )}
         </div>
       ) : (
         <ListItem
@@ -210,25 +230,27 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
           horizontal: 'left',
         }}>
         <List className={classes.listDropdown}>
-          <Tooltip title={localization.upload} placement="right">
-            <ListItem
-              key="Upload"
-              button={true}
-              style={{ padding: '10px 0 10px 10px' }}
-              onClick={() => {
-                setShowSelectType(false)
-                openDialog({
-                  name: 'upload',
-                  props: { uploadPath: parent.Path },
-                  dialogProps: { open: true, fullScreen: true },
-                })
-              }}>
-              <ListItemIcon style={{ minWidth: '36px' }}>
-                <CloudUploadOutlined />
-              </ListItemIcon>
-              <ListItemText primary={localization.upload} className={classes.listItemTextDropdown} />
-            </ListItem>
-          </Tooltip>
+          {hasUpload ? (
+            <Tooltip title={localization.upload} placement="right">
+              <ListItem
+                key="Upload"
+                button={true}
+                style={{ padding: '10px 0 10px 10px' }}
+                onClick={() => {
+                  setShowSelectType(false)
+                  openDialog({
+                    name: 'upload',
+                    props: { uploadPath: parent.Path },
+                    dialogProps: { open: true, fullScreen: true },
+                  })
+                }}>
+                <ListItemIcon style={{ minWidth: '36px' }}>
+                  <CloudUploadOutlined />
+                </ListItemIcon>
+                <ListItemText primary={localization.upload} className={classes.listItemTextDropdown} />
+              </ListItem>
+            </Tooltip>
+          ) : null}
 
           {allowedChildTypes.map(childType => (
             <Tooltip key={childType.ContentTypeName} title={childType.DisplayName} placement="right">
