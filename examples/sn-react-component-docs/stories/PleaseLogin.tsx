@@ -17,9 +17,10 @@ export const PleaseLogin: React.FunctionComponent = props => {
   return (
     <div style={{ fontStyle: 'italic', fontSize: 13 }}>
       To see this control in action, please login at{' '}
-      <a target="_blank" href="https://dev.demo.sensenet.com/" rel="noopener noreferrer">
-        https://dev.demo.sensenet.com/
+      <a target="_blank" href="https://admin.sensenet.com/" rel="noopener noreferrer">
+        https://admin.sensenet.com/
       </a>
+      to https://dev.demo.sensenet.com with one of the given demo users.
     </div>
   )
 }
