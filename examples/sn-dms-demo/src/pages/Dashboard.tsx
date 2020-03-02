@@ -17,7 +17,6 @@ import { ContentTypes } from '../components/ContentTypes'
 import DashboardDrawer from '../components/DashboardDrawer'
 import DocumentLibrary from '../components/DocumentLibrary'
 import { FullScreenLoader } from '../components/FullScreenLoader'
-import Groups from '../components/Groups'
 import Header from '../components/Header'
 import MobileHeader from '../components/Mobile/Header'
 import Picker from '../components/Pickers/PickerBase'
@@ -25,7 +24,6 @@ import { SavedQueries } from '../components/SavedQueries'
 import { Settings } from '../components/Settings'
 import { Shared } from '../components/Shared'
 import { Trash } from '../components/Trash'
-import Users from '../components/UsersAndGroups/User/Users'
 import { rootStateType } from '../store/rootReducer'
 
 const styles = {
@@ -184,38 +182,6 @@ class DashboardComponent extends React.Component<
                             </Switch>
                           )}
                         />
-                        <Route
-                          path="/users"
-                          component={() => (
-                            <Switch>
-                              <Route
-                                path={`/${PathHelper.joinPaths('/users', '/:folderPath?/:otherActions*')}`}
-                                exact={true}
-                                component={() => (
-                                  <div>
-                                    <Users matchesDesktop={matches} />
-                                  </div>
-                                )}
-                              />
-                            </Switch>
-                          )}
-                        />
-                        <Route
-                          path="/groups"
-                          component={() => (
-                            <Switch>
-                              <Route
-                                path={`/${PathHelper.joinPaths('/groups', '/:folderPath?/:otherActions*')}`}
-                                exact={true}
-                                component={() => (
-                                  <div>
-                                    <Groups matchesDesktop={matches} />
-                                  </div>
-                                )}
-                              />
-                            </Switch>
-                          )}
-                        />
                         <Route path="/contenttypes">
                           <ContentTypes />
                         </Route>
@@ -253,38 +219,6 @@ class DashboardComponent extends React.Component<
                               component={() => (
                                 <div>
                                   <DocumentLibrary matchesDesktop={matches} />
-                                </div>
-                              )}
-                            />
-                          </Switch>
-                        )}
-                      />
-                      <Route
-                        path="/users"
-                        component={() => (
-                          <Switch>
-                            <Route
-                              path={`/${PathHelper.joinPaths('/users', '/:folderPath?/:otherActions*')}`}
-                              exact={true}
-                              component={() => (
-                                <div>
-                                  <Users matchesDesktop={matches} />
-                                </div>
-                              )}
-                            />
-                          </Switch>
-                        )}
-                      />
-                      <Route
-                        path="/groups"
-                        component={() => (
-                          <Switch>
-                            <Route
-                              path={`/${PathHelper.joinPaths('/groups', '/:folderPath?/:otherActions*')}`}
-                              exact={true}
-                              component={() => (
-                                <div>
-                                  <Groups matchesDesktop={matches} />
                                 </div>
                               )}
                             />

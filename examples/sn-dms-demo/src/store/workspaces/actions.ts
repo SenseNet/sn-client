@@ -19,9 +19,9 @@ export const getWorkspaces = () => ({
       options.dispatch(loadWorkspaces())
       const repository = options.getInjectable(Repository)
       const workspaces = await repository.loadCollection<Workspace>({
-        path: '/',
+        path: '/Root/Content',
         oDataOptions: {
-          query: 'TypeIs:Workspace -TypeIs:Site',
+          query: 'TypeIs:Workspace',
           select: ['DisplayName', 'Id', 'Path'],
           orderby: [['DisplayName', 'asc']],
         },

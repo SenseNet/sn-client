@@ -105,7 +105,7 @@ class BatchActionlist extends React.Component<
       lastState.currentId !== newProps.currentContent.Id &&
       lastState.actions.length === 0
     ) {
-      newProps.getActions(newProps.currentContent.Id, 'DMSBatchActions')
+      newProps.getActions(newProps.currentContent.Id, 'BatchActions')
     }
     const optionList: ActionModel[] = []
     if (lastState.actions.length !== newProps.actions.length) {

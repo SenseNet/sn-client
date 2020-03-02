@@ -16,7 +16,6 @@ import { editedContent } from './store/edited/reducers'
 import { picker } from './store/picker/reducers'
 import { queries } from './store/queries'
 import { sharing } from './store/sharing'
-import { usersAndGroups } from './store/usersandgroups/reducers'
 import { workspaces } from './store/workspaces/reducers'
 
 export const email: Reducer<string, Action & { email?: string }> = (state = '', action: AnyAction) => {
@@ -537,7 +536,6 @@ export const dms = combineReducers({
   edited: editedContent,
   menuOpen,
   log: logReducer,
-  usersAndGroups,
   queries,
   sharing,
 })
