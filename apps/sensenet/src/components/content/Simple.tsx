@@ -18,7 +18,7 @@ export const SimpleList: React.FunctionComponent<SimpleListComponentProps> = pro
   const selectionService = useSelectionService()
 
   return (
-    <div style={{ display: 'flex', width: '100%', height: '100%' }}>
+    <>
       <LoadSettingsContextProvider>
         <CurrentContentProvider idOrPath={props.parent}>
           <CurrentChildrenProvider>
@@ -39,6 +39,6 @@ export const SimpleList: React.FunctionComponent<SimpleListComponentProps> = pro
           </CurrentChildrenProvider>
         </CurrentContentProvider>
       </LoadSettingsContextProvider>
-    </div>
+    </>
   )
 }

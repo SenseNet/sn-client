@@ -69,7 +69,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
   }, [reloadToken, loadSettingsContext.loadChildrenSettings, repo, onlyPublic])
   return (
     <div style={{ padding: '1em', margin: '1em', overflow: 'hidden' }}>
-      <div>
+      <>
         <Typography variant="h5">{localization.savedQueries}</Typography>
         <FormControlLabel
           label={localization.onlyPublic}
@@ -82,8 +82,8 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
             />
           }
         />
-      </div>
-      <div>
+      </>
+      <>
         {queries.length > 0 ? (
           <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>
             <CurrentChildrenContext.Provider value={queries}>
@@ -114,7 +114,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
             {localization.noSavedQuery}
           </Typography>
         )}
-      </div>
+      </>
     </div>
   )
 }

@@ -5,6 +5,6 @@ import { virtualStyle } from './virtualized-style-for-fields'
 
 export const DateField: React.FC<{ date: string | Date }> = ({ date }) => (
   <TableCell style={virtualStyle}>
-    <div>{moment(date).fromNow()}</div>
+    <>{moment(date).fromNow()}</>
   </TableCell>
 )

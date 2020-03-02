@@ -33,7 +33,7 @@ import {
   TextFormat,
   Warning,
   WebAssetOutlined,
-  WidgetsOutlined,
+  Widgets,
 } from '@material-ui/icons'
 import { Repository } from '@sensenet/client-core'
 import { Injector, LogLevel, PathHelper, tuple } from '@sensenet/client-utils'
@@ -142,7 +142,7 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   { get: (item, options) => (item.Type === 'SystemFolder' ? <Folder style={options.style} /> : null) },
   { get: (item, options) => (item.Type === 'Resources' ? <LanguageOutlined style={options.style} /> : null) },
   { get: (item, options) => (item.Type === 'Resource' ? <TextFormat style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'ContentType' ? <WidgetsOutlined style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'ContentType' ? <Widgets style={options.style} /> : null) },
   {
     get: (item, options) => (item.Type === 'OrganizationalUnit' ? <GroupOutlined style={options.style} /> : null),
   },
@@ -229,7 +229,7 @@ export const defaultSchemaResolvers: Array<IconResolver<{ ContentTypeName: typeo
         case 'Group':
           return <GroupOutlined style={options.style} />
         case 'ContentType':
-          return <WidgetsOutlined style={options.style} />
+          return <Widgets style={options.style} />
         case 'SystemFolder':
           return <Folder style={options.style} />
         case 'Resource':

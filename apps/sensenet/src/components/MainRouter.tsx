@@ -63,7 +63,7 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
           sessionContext.state === LoginState.Unauthenticated || !personalSettings.lastRepository ? (
             <Redirect to={{ pathname: '/login', state: { from: location } }} />
           ) : (
-            <div style={{ width: '100%', height: '100%', boxSizing: 'border-box', position: 'relative' }}>
+            <>
               <Suspense fallback={<FullScreenLoader />}>
                 <Route
                   path="/personalSettings"
@@ -180,7 +180,7 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                   />
                 </Switch>
               </Suspense>
-            </div>
+            </>
           )
         }
       />

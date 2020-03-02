@@ -42,6 +42,10 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
     relative: {
       position: 'relative',
     },
+    full: {
+      width: '100%',
+      height: '100%',
+    },
     drawerButton: {
       width: '32px',
       height: '32px',

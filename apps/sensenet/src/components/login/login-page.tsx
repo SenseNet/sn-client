@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export function LoginPage() {
   const classes = useStyles()
   return (
-    <div>
+    <>
       <Grid container={true} direction="row">
         <Container maxWidth="lg" className={classes.topbar}>
           <Link to="/">
@@ -24,7 +24,7 @@ export function LoginPage() {
         </Container>
       </Grid>
       <Login />
-    </div>
+    </>
   )
 }
 

@@ -15,7 +15,7 @@ import { useDrawerItems, useLocalization, usePersonalSettings } from '../../hook
 import { ResponsivePersonalSetttings } from '../../context'
 import { AddButton } from '../AddButton'
 import { SearchButton } from '../search-button'
-import { globals } from '../../globalStyles'
+import { globals, useGlobalStyles } from '../../globalStyles'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -81,17 +81,13 @@ const useStyles = makeStyles((theme: Theme) => {
       justifyContent: 'center',
       marginTop: '13px',
     },
-    centered: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
   })
 })
 
 const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const personalSettings = usePersonalSettings()
   const classes = useStyles()
+  const globalClasses = useGlobalStyles()
   const settings = useContext(ResponsivePersonalSetttings)
   const theme = useTheme()
 
@@ -112,16 +108,16 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
           <div className={classes.listWrapper}>
             {settings.drawer.type === 'mini-variant' ? (
               <ListItem
-                className={clsx(classes.listButton)}
+                className={classes.listButton}
                 button={true}
                 onClick={() => setOpened(!opened)}
                 key="expandcollapse">
-                <ListItemIcon className={classes.centered}>
+                <ListItemIcon className={globalClasses.centered}>
                   <Tooltip
-                    className={classes.centered}
+                    className={globalClasses.centered}
                     title={opened ? localization.collapse : localization.expand}
                     placement="right">
-                    <div>{opened ? <Close /> : <Menu />}</div>
+                    <>{opened ? <Close /> : <Menu />}</>
                   </Tooltip>
                 </ListItemIcon>
               </ListItem>
@@ -151,7 +147,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                     key={index}
                     selected={matchPath(props.location.pathname, `/:repositoryId${item.url}`) === null ? false : true}>
                     <ListItemIcon
-                      className={clsx(classes.listItemIconDark, classes.centered, {
+                      className={clsx(classes.listItemIconDark, globalClasses.centered, {
                         [classes.listItemIconLight]: personalSettings.theme === 'light',
                       })}>
                       <Tooltip title={item.secondaryText} placement="right">

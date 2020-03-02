@@ -1,7 +1,8 @@
 import CssBaseline from '@material-ui/core/CssBaseline'
 import React, { useContext, useEffect, useState } from 'react'
-
 import { useInjector, useRepository } from '@sensenet/hooks-react'
+import { createStyles, makeStyles } from '@material-ui/core'
+import clsx from 'clsx'
 import { ResponsivePersonalSetttings } from '../../context'
 import { DesktopAppBar } from '../appbar/desktop-app-bar'
 import { PermanentDrawer } from '../drawer/PermanentDrawer'
@@ -9,6 +10,35 @@ import { TemporaryDrawer } from '../drawer/TemporaryDrawer'
 import { CustomActionCommandProvider } from '../../services/CommandProviders/CustomActionCommandProvider'
 import { useDialog } from '../dialogs'
 import { getMonacoModelUri } from '../edit/TextEditor'
+import { globals, useGlobalStyles } from '../../globalStyles'
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    desktopLayoutWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      position: 'fixed',
+      top: 0,
+      left: 0,
+    },
+    drawerandContentWrapper: {
+      display: 'flex',
+      flexGrow: 1,
+      flexDirection: 'row',
+      position: 'relative',
+      height: `calc(100% - ${globals.common.headerHeight}px)`,
+      width: '100%',
+    },
+    contentWrapper: {
+      display: 'flex',
+      flexGrow: 1,
+      position: 'relative',
+      boxSizing: 'border-box',
+      overflow: 'hidden',
+      height: '100%',
+    },
+  })
+})
 
 export const DesktopLayout: React.FunctionComponent = props => {
   const settings = useContext(ResponsivePersonalSetttings)
@@ -16,6 +46,8 @@ export const DesktopLayout: React.FunctionComponent = props => {
   const { openDialog, closeLastDialog } = useDialog()
   const customActionService = useInjector().getInstance(CustomActionCommandProvider)
   const [tempDrawerOpened, setTempDrawerOpened] = useState(false)
+  const classes = useStyles()
+  const globalClasses = useGlobalStyles()
 
   useEffect(() => {
     const observables = [
@@ -45,27 +77,10 @@ export const DesktopLayout: React.FunctionComponent = props => {
   }, [closeLastDialog, customActionService.onActionExecuted, customActionService.onExecuteAction, openDialog, repo])
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-      }}>
+    <div className={clsx(globalClasses.full, classes.desktopLayoutWrapper)}>
       <CssBaseline />
       <DesktopAppBar openDrawer={() => setTempDrawerOpened(!tempDrawerOpened)} />
-      <div
-        style={{
-          flexGrow: 1,
-          display: 'flex',
-          flexDirection: 'row',
-          height: 'calc(100% - 64px)',
-          width: '100%',
-          position: 'relative',
-        }}>
+      <div className={classes.drawerandContentWrapper}>
         {settings.drawer.enabled ? (
           <>
             {settings.drawer.type === 'temporary' ? (
@@ -80,15 +95,7 @@ export const DesktopLayout: React.FunctionComponent = props => {
           </>
         ) : null}
 
-        <div
-          style={{
-            display: 'flex',
-            flexGrow: 1,
-            overflow: 'hidden',
-            height: '100%',
-          }}>
-          {props.children}
-        </div>
+        <div className={classes.contentWrapper}>{props.children}</div>
       </div>
     </div>
   )

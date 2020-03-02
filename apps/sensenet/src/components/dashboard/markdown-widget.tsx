@@ -9,7 +9,7 @@ export const MarkdownWidget: React.FunctionComponent<MarkdownWidgetModel> = prop
   const replacedTitle = useStringReplace(props.title)
 
   return (
-    <div>
+    <>
       <Typography
         variant="h5"
         title={props.title}
@@ -20,6 +20,6 @@ export const MarkdownWidget: React.FunctionComponent<MarkdownWidgetModel> = prop
       <div style={{ overflow: 'auto' }}>
         <ReactMarkdown escapeHtml={false} source={replacedContent} />
       </div>
-    </div>
+    </>
   )
 }

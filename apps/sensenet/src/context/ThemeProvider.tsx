@@ -49,6 +49,7 @@ export const ThemeProvider: React.FunctionComponent = props => {
         MuiTableCell: {
           root: {
             padding: '4px 56px 4px 24px',
+            border: 'none',
           },
         },
         MuiInputBase: {

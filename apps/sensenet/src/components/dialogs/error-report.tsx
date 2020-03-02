@@ -75,7 +75,7 @@ export const ErrorReport: React.FunctionComponent<ErrorReportProps> = props => {
                 }
                 label={localization.allowLogSending}
               />
-              <div>
+              <>
                 <Button onClick={() => closeDialog()}>
                   <Clear />
                   {localization.cancel}
@@ -88,7 +88,7 @@ export const ErrorReport: React.FunctionComponent<ErrorReportProps> = props => {
                   <SendTwoTone />
                   {localization.send}
                 </Button>
-              </div>
+              </>
             </DialogActions>
           </>
         )}

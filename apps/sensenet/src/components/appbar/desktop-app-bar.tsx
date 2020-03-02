@@ -18,6 +18,7 @@ const useStyles = makeStyles(() => {
       position: 'relative',
       height: globals.common.headerHeight,
       backgroundColor: globals.common.headerBackground,
+      boxShadow: 'none',
     },
     toolBar: {
       position: 'static',

@@ -12,8 +12,44 @@ import { Query } from '@sensenet/query'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useRepository } from '@sensenet/hooks-react'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import clsx from 'clsx'
 import { useContentRouting, useLocalization } from '../../hooks'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
+import { useGlobalStyles } from '../../globalStyles'
+
+const useStyles = makeStyles((theme: Theme) => {
+  return createStyles({
+    card: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      flexDirection: 'column',
+      width: 339,
+      height: 374,
+      margin: '0.5em',
+      marginRight: '49px',
+      marginBottom: '49px',
+      backgroundColor: theme.palette.type === 'light' ? '#F8F8F8' : 'rgba(255,255,255,0.11)',
+      border: theme.palette.type === 'light' ? '1px solid #D6D6D6' : 'none',
+      boxShadow: theme.palette.type === 'light' ? '4px 4px 8px #0000001A' : 'none',
+    },
+    setupWrapper: {
+      padding: '2em',
+      height: '100%',
+      overflow: 'auto',
+    },
+    cardWrapper: {
+      flexWrap: 'wrap',
+      margin: '1em',
+    },
+    button: {
+      width: '110px',
+      height: '36px',
+      border: clsx('1px solid', theme.palette.primary.main),
+      margin: '7px',
+    },
+  })
+})
 
 const SETUP_DOCS_URL = 'https://community.sensenet.com/docs/admin-ui/setup/'
 
@@ -25,6 +61,7 @@ const WellKnownContentCard: React.FunctionComponent<{
 }> = ({ settings, onContextMenu }) => {
   const localization = useLocalization().settings
   const contentRouter = useContentRouting()
+  const classes = useStyles()
 
   return (
     <Card
@@ -32,30 +69,27 @@ const WellKnownContentCard: React.FunctionComponent<{
         ev.preventDefault()
         onContextMenu(ev)
       }}
-      style={{
-        width: 330,
-        height: 320,
-        margin: '0.5em',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-      }}>
+      className={classes.card}>
       <CardContent>
-        <Typography variant="h5" gutterBottom={true}>
+        <Typography variant="h6" gutterBottom={true} style={{ marginBottom: '30px' }}>
           {settings.DisplayName || settings.Name}
         </Typography>
         <Typography color="textSecondary">{(localization.descriptions as any)[settings.Path]}</Typography>
       </CardContent>
       <CardActions style={{ justifyContent: 'flex-end' }}>
         <Link to={contentRouter.getPrimaryActionUrl(settings)} style={{ textDecoration: 'none' }}>
-          <Button size="small">{localization.edit}</Button>
+          <Button size="small" className={classes.button} style={{ marginRight: '35px' }}>
+            {localization.edit}
+          </Button>
         </Link>
         <a
           target="_blank"
           rel="noopener noreferrer"
           href={`${SETUP_DOCS_URL}${createAnchorFromName(settings.DisplayName ? settings.DisplayName : '')}`}
           style={{ textDecoration: 'none' }}>
-          <Button size="small">{localization.learnMore}</Button>
+          <Button size="small" className={classes.button}>
+            {localization.learnMore}
+          </Button>
         </a>
       </CardActions>
     </Card>
@@ -66,6 +100,8 @@ const Setup: React.StatelessComponent = () => {
   const repo = useRepository()
   const localization = useLocalization().settings
   const contentRouter = useContentRouting()
+  const classes = useStyles()
+  const globalClasses = useGlobalStyles()
 
   const [wellKnownSettings, setWellKnownSettings] = useState<Settings[]>([])
   const [settings, setSettings] = useState<Settings[]>([])
@@ -92,17 +128,12 @@ const Setup: React.StatelessComponent = () => {
   }, [localization.descriptions, repo])
 
   return (
-    <div style={{ padding: '1em', margin: '1em', height: '100%', overflow: 'auto' }}>
-      <Typography variant="h5">Setup</Typography>
+    <div className={classes.setupWrapper}>
+      <Typography variant="h6" style={{ margin: '2px 0 48px 0' }}>
+        Setup
+      </Typography>
       {wellKnownSettings.length ? (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-            margin: '1em',
-          }}>
+        <div className={clsx(classes.cardWrapper, globalClasses.centered)}>
           <ContentContextMenu
             isOpened={isContextMenuOpened}
             content={contextMenuItem ?? wellKnownSettings[0]}

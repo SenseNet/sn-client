@@ -70,7 +70,7 @@ const WopiPage: React.FunctionComponent<RouteComponentProps<{ documentId?: strin
           {localization.errorOpeningFileText} <br />
           {error}
         </Typography>
-        <div>
+        <>
           {props.match.params.action !== 'view' ? (
             <Button
               onClick={() => {
@@ -83,14 +83,14 @@ const WopiPage: React.FunctionComponent<RouteComponentProps<{ documentId?: strin
           ) : null}
 
           <Button onClick={() => props.history.goBack()}>{localization.goBack}</Button>
-        </div>
+        </>
       </div>
     )
   }
   if (!wopiData) return <FullScreenLoader />
 
   return (
-    <div>
+    <>
       <form
         id="office_form"
         name="office_form"
@@ -116,7 +116,7 @@ const WopiPage: React.FunctionComponent<RouteComponentProps<{ documentId?: strin
           }
         />
       </span>
-    </div>
+    </>
   )
 }
 
