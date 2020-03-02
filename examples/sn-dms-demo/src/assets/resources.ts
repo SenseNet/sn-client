@@ -12,7 +12,8 @@ const resources = {
   LOGIN_BUTTON_TEXT: 'Login',
   LOGIN_TAB_TEXT: 'Login',
   REGISTER_TAB_TEXT: 'Register',
-  WELCOME_MESSAGE: 'Welcome to the sensenet Document Management System Experiment! We are thrilled to have you here.',
+  WELCOME_MESSAGE:
+    '<b>Welcome to the sensenet Document Management System Experiment! We are thrilled to have you here.</b><br/> Feel free to use one of the following demo users to login:<br/ > <b>name</b>: businesscat <b>password</b>: bussinesscat<br/><b>name</b>: devdog <b>password</b>: devdog',
   REGISTRATION_BUTTON_TEXT: 'Register',
   EMAIL_INPUT_FORMAT_PLACEHOLDER: 'example@domain.com',
   CONFIRM_PASSWORD_INPUT_LABEL: 'Confirm password',
