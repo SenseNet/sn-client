@@ -228,6 +228,7 @@ const values = {
     lastRepository: 'The last visited repository URL',
     languageTitle: 'The name of the active language',
     themeTitle: 'Select a dark or a light theme',
+    uploadHandlerTitle: 'Select which handlertype(s) has/have upload permission',
     eventLogSize: 'Number of entries to store in the Event Log',
     sendLogWithCrashReports: 'Send log data with crash reports by default',
     dashboard: {
