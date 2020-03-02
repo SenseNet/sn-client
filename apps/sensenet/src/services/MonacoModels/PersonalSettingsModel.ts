@@ -416,6 +416,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
               description: language.personalSettings.languageTitle,
               enum: ['default', 'hungarian'],
             },
+            uploadHandlers: { type: 'array', description: language.personalSettings.uploadHandlerTitle },
           },
         },
       },

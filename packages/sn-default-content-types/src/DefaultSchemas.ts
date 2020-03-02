@@ -29,6 +29,7 @@ export class Schema {
   public AllowIncrementalNaming!: boolean
   public AllowedChildTypes!: string[]
   public FieldSettings!: FieldSettings.FieldSetting[]
+  public HandlerName!: string
 }
 
 export const SchemaStore: Schema[] = [
@@ -331,6 +332,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.Schema.ContentType',
   },
   {
     ContentTypeName: 'GenericContent',
@@ -1193,6 +1195,7 @@ export const SchemaStore: Schema[] = [
         Type: 'DateTimeFieldSetting',
       } as FieldSettings.DateTimeFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.GenericContent',
   },
   {
     ContentTypeName: 'ContentLink',
@@ -1220,6 +1223,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.ContentLink',
   },
   {
     ContentTypeName: 'File',
@@ -1348,6 +1352,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.File',
   },
   {
     ContentTypeName: 'DynamicJsonContent',
@@ -1359,6 +1364,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
+    HandlerName: 'SenseNet.Portal.Handlers.DynamicJsonContent',
   },
   {
     ContentTypeName: 'ExecutableFile',
@@ -1370,6 +1376,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.File',
   },
   {
     ContentTypeName: 'HtmlTemplate',
@@ -1396,6 +1403,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.LongTextFieldSetting,
     ],
+    HandlerName: 'SenseNet.Portal.UI.HtmlTemplate',
   },
   {
     ContentTypeName: 'Image',
@@ -1463,6 +1471,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.Image',
   },
   {
     ContentTypeName: 'PreviewImage',
@@ -1474,6 +1483,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.Image',
   },
   {
     ContentTypeName: 'Settings',
@@ -1501,6 +1511,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.Settings',
   },
   {
     ContentTypeName: 'IndexingSettings',
@@ -1527,6 +1538,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
     ],
+    HandlerName: 'SenseNet.Search.IndexingSettings',
   },
   {
     ContentTypeName: 'LoggingSettings',
@@ -1538,6 +1550,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.LoggingSettings',
   },
   {
     ContentTypeName: 'PortalSettings',
@@ -1549,6 +1562,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
+    HandlerName: 'SenseNet.Portal.PortalSettings',
   },
   {
     ContentTypeName: 'SystemFile',
@@ -1560,6 +1574,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.File',
   },
   {
     ContentTypeName: 'Resource',
@@ -1586,6 +1601,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.NumberFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.i18n.Resource',
   },
   {
     ContentTypeName: 'Folder',
@@ -1597,6 +1613,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.Folder',
   },
   {
     ContentTypeName: 'ContentList',
@@ -1843,6 +1860,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.ContentList',
   },
   {
     ContentTypeName: 'Aspect',
@@ -1869,6 +1887,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.LongTextFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.Aspect',
   },
   {
     ContentTypeName: 'ItemList',
@@ -1880,6 +1899,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.ContentList',
   },
   {
     ContentTypeName: 'CustomList',
@@ -1891,6 +1911,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['ListItem'],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.ContentList',
   },
   {
     ContentTypeName: 'MemoList',
@@ -1902,6 +1923,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['Memo'],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.ContentList',
   },
   {
     ContentTypeName: 'TaskList',
@@ -1913,6 +1935,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['Task'],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.ContentList',
   },
   {
     ContentTypeName: 'Library',
@@ -1924,6 +1947,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.ContentList',
   },
   {
     ContentTypeName: 'DocumentLibrary',
@@ -1935,6 +1959,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['Folder', 'File'],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.ContentList',
   },
   {
     ContentTypeName: 'ImageLibrary',
@@ -1963,6 +1988,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.ContentList',
   },
   {
     ContentTypeName: 'Device',
@@ -1989,6 +2015,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
     ],
+    HandlerName: 'SenseNet.ApplicationModel.Device',
   },
   {
     ContentTypeName: 'Domain',
@@ -2030,6 +2057,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.Domain',
   },
   {
     ContentTypeName: 'Domains',
@@ -2041,6 +2069,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['Domain'],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.Folder',
   },
   {
     ContentTypeName: 'Email',
@@ -2098,6 +2127,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.Folder',
   },
   {
     ContentTypeName: 'OrganizationalUnit',
@@ -2139,6 +2169,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.OrganizationalUnit',
   },
   {
     ContentTypeName: 'PortalRoot',
@@ -2161,6 +2192,7 @@ export const SchemaStore: Schema[] = [
       'Workspace',
     ],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.PortalRoot',
   },
   {
     ContentTypeName: 'ProfileDomain',
@@ -2172,6 +2204,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['UserProfile'],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.Folder',
   },
   {
     ContentTypeName: 'Profiles',
@@ -2183,6 +2216,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['ProfileDomain'],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.Folder',
   },
   {
     ContentTypeName: 'RuntimeContentContainer',
@@ -2194,6 +2228,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.RuntimeContentContainer',
   },
   {
     ContentTypeName: 'Sites',
@@ -2205,6 +2240,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['Site'],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.Folder',
   },
   {
     ContentTypeName: 'SmartFolder',
@@ -2278,6 +2314,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.SmartFolder',
   },
   {
     ContentTypeName: 'SystemFolder',
@@ -2289,6 +2326,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.SystemFolder',
   },
   {
     ContentTypeName: 'Resources',
@@ -2300,6 +2338,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['Resource'],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.SystemFolder',
   },
   {
     ContentTypeName: 'TrashBag',
@@ -2383,6 +2422,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.TrashBag',
   },
   {
     ContentTypeName: 'Workspace',
@@ -2498,6 +2538,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.Workspaces.Workspace',
   },
   {
     ContentTypeName: 'Site',
@@ -2650,6 +2691,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
     ],
+    HandlerName: 'SenseNet.Portal.Site',
   },
   {
     ContentTypeName: 'TrashBin',
@@ -2708,6 +2750,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.TrashBin',
   },
   {
     ContentTypeName: 'UserProfile',
@@ -2736,6 +2779,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.UserProfile',
   },
   {
     ContentTypeName: 'Group',
@@ -2794,6 +2838,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.Group',
   },
   {
     ContentTypeName: 'ListItem',
@@ -2805,6 +2850,7 @@ export const SchemaStore: Schema[] = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.GenericContent',
   },
   {
     ContentTypeName: 'CustomListItem',
@@ -2829,6 +2875,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.GenericContent',
   },
   {
     ContentTypeName: 'Memo',
@@ -2895,6 +2942,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.GenericContent',
   },
   {
     ContentTypeName: 'Task',
@@ -3056,6 +3104,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.Task',
   },
   {
     ContentTypeName: 'Query',
@@ -3106,6 +3155,7 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.QueryContent',
   },
   {
     ContentTypeName: 'User',
@@ -3552,5 +3602,6 @@ export const SchemaStore: Schema[] = [
         DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.Users',
   },
 ]
