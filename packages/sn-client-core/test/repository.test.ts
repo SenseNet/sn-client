@@ -4,6 +4,7 @@ import { ActionOptions, ODataWopiResponse, Repository, SharingLevel, SharingMode
 import { Content } from '../src/Models/Content'
 import { ODataCollectionResponse } from '../src/Models/ODataCollectionResponse'
 import { ODataResponse } from '../src/Models/ODataResponse'
+import { ODataSharingResponse } from '../src/Models/ODataSharingResponse'
 import { ConstantContent } from '../src/Repository/ConstantContent'
 import { isExtendedError } from '../src/Repository/Repository'
 
@@ -646,8 +647,8 @@ describe('Repository', () => {
       ;(mockResponse as any).ok = true
       mockResponse.json = async () => {
         return {
-          d: ConstantContent.PORTAL_ROOT,
-        } as ODataResponse<Content>
+          Token: 'alba@sensenet.com',
+        } as ODataSharingResponse
       }
       const response = await repository.share({
         content: ConstantContent.PORTAL_ROOT,
@@ -657,7 +658,7 @@ describe('Repository', () => {
         sendNotification: false,
       })
 
-      expect(response.d).toEqual(ConstantContent.PORTAL_ROOT)
+      expect(response.Token).toEqual('alba@sensenet.com')
     })
   })
 })
