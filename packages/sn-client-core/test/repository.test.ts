@@ -1,6 +1,6 @@
 import { using } from '@sensenet/client-utils'
 import { ActionModel, ContentType, User } from '@sensenet/default-content-types'
-import { ActionOptions, ODataWopiResponse, Repository } from '../src'
+import { ActionOptions, ODataWopiResponse, Repository, SharingLevel, SharingMode } from '../src'
 import { Content } from '../src/Models/Content'
 import { ODataCollectionResponse } from '../src/Models/ODataCollectionResponse'
 import { ODataResponse } from '../src/Models/ODataResponse'
@@ -639,6 +639,25 @@ describe('Repository', () => {
       expect(e).toBeInstanceOf(Error)
       expect(isExtendedError(e)).toBe(true)
       expect(e.message).toBe('errorValue')
+    })
+  })
+  describe('#share()', () => {
+    it('should return with a promise', async () => {
+      ;(mockResponse as any).ok = true
+      mockResponse.json = async () => {
+        return {
+          d: ConstantContent.PORTAL_ROOT,
+        } as ODataResponse<Content>
+      }
+      const response = await repository.share({
+        content: ConstantContent.PORTAL_ROOT,
+        identity: 'alba@sensenet.com',
+        sharingLevel: SharingLevel.Open,
+        sharingMode: SharingMode.Private,
+        sendNotification: false,
+      })
+
+      expect(response.d).toEqual(ConstantContent.PORTAL_ROOT)
     })
   })
 })
