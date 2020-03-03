@@ -6,8 +6,10 @@ import {
   ODataBatchResponse,
   ODataCollectionResponse,
   ODataResponse,
+  ODataSharingResponse,
   Repository,
-  SharingOptions,
+  SharingLevel,
+  SharingMode,
 } from '@sensenet/client-core'
 import { ActionModel, GenericContent, Task, User } from '@sensenet/default-content-types'
 import * as Actions from '../src/Actions'
@@ -146,6 +148,28 @@ const schemaResponse = {
         ],
       },
     ]
+  },
+} as Response
+
+const sharingResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return {
+      Token: 'devdog@sensenet.com',
+    }
+  },
+} as Response
+
+const sharingEntriesResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return {
+      d: {
+        results: [{ Token: 'devdog@sensenet.com' }, { Token: 'alba@sensenet.com' }],
+      },
+    }
   },
 } as Response
 
@@ -941,32 +965,68 @@ describe('Actions', () => {
     })
   })
   describe('share', () => {
-    repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => schemaResponse as any)
-
-    const content = { DisplayName: 'My content', Id: 123 } as Task
-    const sharingOptions = {
-      identity: 'devdog@sensenet.com',
-      content,
-      sharingLevel: 'Edit',
-      sharingMode: 'Private',
-      sendNotification: false,
-    } as SharingOptions
-    describe('Action types are types', () => {
-      expect(Actions.share(sharingOptions).type).toBe('SHARE')
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => sharingResponse)
     })
+    describe('Action types are types', () => {
+      expect(
+        Actions.share({
+          identity: 'devdog@sensenet.com',
+          sharingLevel: SharingLevel.Edit,
+          sharingMode: SharingMode.Private,
+          content: { Id: 42 } as GenericContent,
+        }).type,
+      ).toBe('SHARE')
+    })
+
     describe('serviceChecks()', () => {
       describe('Given repository.share() resolves', () => {
-        let data
-        let mockContentResponseData: ReturnType<typeof contentMockResponse['json']>
+        let data: ODataSharingResponse
+        const expectedResult = { Token: 'devdog@sensenet.com' }
         beforeEach(async () => {
-          data = await Actions.share(sharingOptions).payload(repo)
-          mockContentResponseData = await contentMockResponse.json()
+          data = await Actions.share({
+            identity: 'devdog@sensenet.com',
+            sharingLevel: SharingLevel.Edit,
+            sharingMode: SharingMode.Private,
+            content: { Id: 42 } as GenericContent,
+          }).payload(repo)
         })
         it('should return a SHARE action', () => {
-          expect(Actions.share(sharingOptions)).toHaveProperty('type', 'SHARE')
+          expect(
+            Actions.share({
+              identity: 'devdog@sensenet.com',
+              sharingLevel: SharingLevel.Edit,
+              sharingMode: SharingMode.Private,
+              content: { Id: 42 } as GenericContent,
+            }),
+          ).toHaveProperty('type', 'SHARE')
         })
         it('should return mockdata', () => {
-          expect(data).toEqual(mockContentResponseData)
+          expect(data).toEqual(expectedResult)
+        })
+      })
+    })
+  })
+  describe('getSharingEntries', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => sharingEntriesResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getSharingEntries(42).type).toBe('GET_SHARING_ENTRIES')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given getSharingEntries() resolves', () => {
+        let data: any
+        const expectedResult = { d: { results: [{ Token: 'devdog@sensenet.com' }, { Token: 'alba@sensenet.com' }] } }
+        beforeEach(async () => {
+          data = await Actions.getSharingEntries(42).payload(repo)
+        })
+        it('should return a GET_SHARING_ENTRIES action', () => {
+          expect(Actions.getSharingEntries(42)).toHaveProperty('type', 'GET_SHARING_ENTRIES')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(expectedResult)
         })
       })
     })
