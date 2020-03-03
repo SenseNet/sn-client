@@ -119,6 +119,7 @@ import {
   ODataParams,
   Repository,
   RepositoryConfiguration,
+  SharingOptions,
 } from '@sensenet/client-core'
 import { GenericContent, User } from '@sensenet/default-content-types'
 import { PromiseMiddlewareAction } from '@sensenet/redux-promise-middleware'
@@ -582,5 +583,20 @@ export const getSchema = () => ({
       idOrPath: '/Root',
       name: 'GetSchema',
       method: 'GET',
+    }),
+})
+
+/**
+ * Action creator for sharing content
+ */
+export const Share = (options: SharingOptions) => ({
+  type: 'SHARE',
+  payload: (repository: Repository) =>
+    repository.share({
+      content: options.content,
+      identity: options.identity,
+      sharingLevel: options.sharingLevel,
+      sharingMode: options.sharingMode,
+      sendNotification: options.sendNotification || true,
     }),
 })
