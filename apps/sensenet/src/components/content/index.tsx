@@ -98,7 +98,7 @@ export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: 
         />
       ) : browseData.type === 'explorer' ? (
         <Explore
-          rootPath={browseData.root || ConstantContent.PORTAL_ROOT.Path}
+          rootPath={browseData.root}
           onNavigate={navigate}
           onActivateItem={openItem}
           parent={browseData.currentContent || browseData.root || ConstantContent.PORTAL_ROOT.Id}

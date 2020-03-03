@@ -1,46 +1,81 @@
 /* eslint-disable import/named */
 import { ListItem, ListItemIcon, ListItemText, List as MuiList } from '@material-ui/core'
-import { Add } from '@material-ui/icons'
 import { GenericContent } from '@sensenet/default-content-types'
-import { useRepository } from '@sensenet/hooks-react'
-import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
-import { AutoSizer, Index, IndexRange, InfiniteLoader, List, ListRowProps } from 'react-virtualized'
+import React, { ReactNode, useEffect, useRef, useState } from 'react'
+import { AutoSizer, Index, List, ListRowProps } from 'react-virtualized'
 import { useSelectionService } from '../../hooks'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { Icon } from '../Icon'
 
-type ItemType = GenericContent & {
-  children: ItemType[]
+export type ItemType = GenericContent & {
+  children?: ItemType[]
   expanded?: boolean
   hasNextPage?: boolean
 }
 
 type TreeProps = {
-  parentPath: string
+  itemCount: number
+  isLoading: boolean
+  loadMore: (startIndex: number, path?: string) => Promise<void>
   onItemClick: (item: GenericContent) => void
+  treeData: ItemType
 }
 
 const ROW_HEIGHT = 48
 
-export function Tree(props: TreeProps) {
+export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading }: TreeProps) {
   const listRef = useRef<List>(null)
+  const loader = useRef(loadMore)
   const selectionService = useSelectionService()
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
-  const repo = useRepository()
-  const [items, setItems] = useState<ItemType[]>()
-  const [itemCount, setItemCount] = useState<number>()
+  const [element, setElement] = useState<Element>()
+
+  const observer = useRef(
+    new IntersectionObserver(
+      entries => {
+        if (entries.length && entries.some(entry => entry.isIntersecting)) {
+          const { path, startindex } = (entries[0].target as HTMLElement).dataset
+
+          loader.current(parseInt(startindex ?? '0', 10), path)
+        }
+      },
+      { threshold: 0 },
+    ),
+  )
+
+  useEffect(() => {
+    const currentObserver = observer.current
+    if (element) {
+      currentObserver.observe(element)
+    }
+
+    return () => {
+      if (element) {
+        currentObserver.unobserve(element)
+      }
+    }
+  }, [element])
+
+  useEffect(() => {
+    listRef.current?.recomputeRowHeights()
+    listRef.current?.forceUpdate()
+  }, [treeData])
+
+  useEffect(() => {
+    loader.current = loadMore
+  }, [loadMore])
 
   const rowHeight = ({ index }: Index) => {
-    if (!items || !items[index]) {
+    if (!treeData.children?.[index]) {
       return ROW_HEIGHT
     }
-    return getExpandedItemCount(items[index]) * ROW_HEIGHT
+    return getExpandedItemCount(treeData.children[index]) * ROW_HEIGHT
   }
 
   const getExpandedItemCount = (item: ItemType) => {
     let totalCount = 1
 
-    if (item.expanded) {
+    if (item.expanded && item.children) {
       totalCount += item.children.map(getExpandedItemCount).reduce((total, count) => {
         return total + count
       }, 0)
@@ -52,42 +87,18 @@ export function Tree(props: TreeProps) {
     return totalCount
   }
 
-  const isRowLoaded = ({ index }: Index) => {
-    return !!items?.[index]
-  }
-
-  const loadMoreRows = async ({ startIndex, stopIndex }: IndexRange) => {
-    const result = await getContent(props.parentPath, stopIndex, startIndex)
-    setItems(prevItems => {
-      if (prevItems) {
-        return [...prevItems, ...result.d.results.map(mapContentToItemType)]
-      }
-      return result.d.results.map(mapContentToItemType)
-    })
-  }
-
-  const mapContentToItemType = (content: GenericContent) => ({ children: [], ...content })
-
   function renderItem(item: ItemType, keyPrefix: string, paddingLeft: number) {
     const onClick = async (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       event.stopPropagation()
-      props.onItemClick(item)
-      if (item.Type === 'File') {
-        return
-      }
-      if (!item.expanded && !item.children.length) {
-        const result = await getContent(item.Path, 10, 0)
-        item.children = result.d.results.map(mapContentToItemType)
-        item.hasNextPage = result.d.__count > result.d.results.length
-      }
-      item.expanded = !item.expanded
+      selectionService.activeContent.setValue(item)
+      onItemClick(item)
       listRef.current?.recomputeRowHeights()
       listRef.current?.forceUpdate()
     }
 
     let children: ReactNode[] = []
 
-    if (item.expanded) {
+    if (item.expanded && item.children) {
       children = item.children.map((child, index) => {
         return renderItem(child, `${keyPrefix}-${index}`, paddingLeft + 20)
       })
@@ -112,26 +123,11 @@ export function Tree(props: TreeProps) {
       </ListItem>
     )
 
-    if (item.hasNextPage && item.expanded) {
-      const loadMore = (
-        <ListItem
-          button
-          style={{ paddingLeft: paddingLeft + 20 }}
-          onClick={async e => {
-            e.stopPropagation()
-            const result = await getContent(item.Path, 10, item.children.length)
-            item.children = [...item.children, ...result.d.results.map(mapContentToItemType)]
-            item.hasNextPage = result.d.results.length >= 10
-            listRef.current?.recomputeRowHeights()
-            listRef.current?.forceUpdate()
-          }}>
-          <ListItemIcon>
-            <Add />
-          </ListItemIcon>
-          <ListItemText primary="Load more" />
-        </ListItem>
+    if (item.hasNextPage && item.children && !isLoading) {
+      const loadMoreEl = (
+        <div className="loadMore" key="loadMore" data-startindex={item.children.length} data-path={item.Path} />
       )
-      children.push(loadMore)
+      children.push(loadMoreEl)
     }
     children.unshift(nodeItem)
 
@@ -139,66 +135,30 @@ export function Tree(props: TreeProps) {
   }
 
   const rowRenderer = ({ key, style, index }: ListRowProps) => {
-    if (!items || !items[index]) {
+    if (!treeData.children?.[index]) {
+      if (treeData.children) {
+        return (
+          <p
+            style={style}
+            key={index}
+            className="loadMore"
+            data-startindex={treeData.children.length}
+            data-path={treeData.Path}>
+            Loading
+          </p>
+        )
+      }
       return (
-        <p style={style} key={key}>
+        <p style={style} key={index}>
           Loading
         </p>
       )
     }
-
     return (
       <MuiList key={key} style={style}>
-        {renderItem(items[index], index.toString(), 10)}
+        {renderItem(treeData.children?.[index], index.toString(), 10)}
       </MuiList>
     )
-  }
-
-  const getContent = useCallback(
-    async (path: string, top: number, skip: number) => {
-      const ac = new AbortController()
-      return await repo.loadCollection<GenericContent>({
-        path,
-        requestInit: {
-          signal: ac.signal,
-        },
-        oDataOptions: {
-          top,
-          skip,
-          orderby: [
-            ['DisplayName', 'asc'],
-            ['Name', 'asc'],
-          ],
-        },
-      })
-    },
-    [repo],
-  )
-
-  useEffect(() => {
-    const ac = new AbortController()
-    async function getItemCount() {
-      try {
-        const count = await repo.count({
-          requestInit: {
-            signal: ac.signal,
-          },
-          path: props.parentPath,
-        })
-        setItemCount(count)
-      } catch (err) {
-        if (!ac.signal.aborted) {
-          console.log(err)
-          // setError(err)
-        }
-      }
-    }
-    getItemCount()
-    return () => ac.abort()
-  }, [props.parentPath, repo])
-
-  if (!itemCount) {
-    return <p>Loading...</p>
   }
 
   return (
@@ -208,27 +168,26 @@ export function Tree(props: TreeProps) {
         flexShrink: 0,
         borderRight: '1px solid rgba(128,128,128,.2)',
       }}>
-      <InfiniteLoader isRowLoaded={isRowLoaded} loadMoreRows={loadMoreRows} rowCount={itemCount}>
-        {({ onRowsRendered, registerChild }) => {
-          registerChild(listRef.current)
-          return (
-            <AutoSizer>
-              {({ width, height }) => (
-                <List
-                  height={height}
-                  onRowsRendered={onRowsRendered}
-                  overscanRowCount={10}
-                  ref={listRef}
-                  rowHeight={rowHeight}
-                  rowRenderer={rowRenderer}
-                  rowCount={itemCount}
-                  width={width}
-                />
-              )}
-            </AutoSizer>
-          )
-        }}
-      </InfiniteLoader>
+      <AutoSizer>
+        {({ width, height }) => (
+          <List
+            height={height}
+            overscanRowCount={10}
+            ref={listRef}
+            rowHeight={rowHeight}
+            onRowsRendered={() => {
+              const loadMoreElements = document.getElementsByClassName('loadMore')
+              if (!loadMoreElements.length && !element) {
+                return
+              }
+              setElement(loadMoreElements[0])
+            }}
+            rowRenderer={rowRenderer}
+            rowCount={itemCount}
+            width={width}
+          />
+        )}
+      </AutoSizer>
       {selectionService.activeContent.getValue() ? (
         <ContentContextMenu
           isOpened={!!contextMenuAnchor}

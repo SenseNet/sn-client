@@ -1,4 +1,3 @@
-import { ConstantContent } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsProvider,
@@ -11,7 +10,7 @@ import { ResponsivePersonalSetttings } from '../../context'
 import { useSelectionService } from '../../hooks'
 import { ContentList } from '../content-list/content-list'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
-import { Tree } from '../tree/tree'
+import TreeWithData from '../tree/tree-with-data'
 
 export interface ExploreComponentProps {
   parent: number | string
@@ -25,6 +24,10 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
   const selectionService = useSelectionService()
   const personalSettings = useContext(ResponsivePersonalSetttings)
 
+  if (!props.rootPath) {
+    return null
+  }
+
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column' }}>
       <LoadSettingsContextProvider>
@@ -35,12 +38,12 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                 <ContentBreadcrumbs onItemClick={i => props.onNavigate(i.content)} />
               </div>
               <div style={{ display: 'flex', width: '100%', height: 'calc(100% - 62px)', position: 'relative' }}>
-                <Tree
+                <TreeWithData
                   onItemClick={item => {
                     selectionService.activeContent.setValue(item)
                     props.onNavigate(item)
                   }}
-                  parentPath={props.rootPath || ConstantContent.PORTAL_ROOT.Path}
+                  parentPath={props.rootPath}
                 />
 
                 <ContentList
