@@ -940,7 +940,7 @@ describe('Actions', () => {
       })
     })
   })
-  describe('Share', () => {
+  describe('share', () => {
     repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => schemaResponse as any)
 
     const content = { DisplayName: 'My content', Id: 123 } as Task
@@ -952,18 +952,18 @@ describe('Actions', () => {
       sendNotification: false,
     } as SharingOptions
     describe('Action types are types', () => {
-      expect(Actions.Share(sharingOptions).type).toBe('SHARE')
+      expect(Actions.share(sharingOptions).type).toBe('SHARE')
     })
     describe('serviceChecks()', () => {
       describe('Given repository.share() resolves', () => {
         let data
         let mockContentResponseData: ReturnType<typeof contentMockResponse['json']>
         beforeEach(async () => {
-          data = await Actions.Share(sharingOptions).payload(repo)
+          data = await Actions.share(sharingOptions).payload(repo)
           mockContentResponseData = await contentMockResponse.json()
         })
         it('should return a SHARE action', () => {
-          expect(Actions.Share(sharingOptions)).toHaveProperty('type', 'SHARE')
+          expect(Actions.share(sharingOptions)).toHaveProperty('type', 'SHARE')
         })
         it('should return mockdata', () => {
           expect(data).toEqual(mockContentResponseData)

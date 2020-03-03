@@ -587,9 +587,9 @@ export const getSchema = () => ({
 })
 
 /**
- * Action creator for sharing content
+ * Action creator for sharing a content
  */
-export const Share = (options: SharingOptions) => ({
+export const share = (options: SharingOptions) => ({
   type: 'SHARE',
   payload: (repository: Repository) =>
     repository.share({
@@ -598,5 +598,19 @@ export const Share = (options: SharingOptions) => ({
       sharingLevel: options.sharingLevel,
       sharingMode: options.sharingMode,
       sendNotification: options.sendNotification || true,
+    }),
+})
+
+/**
+ * Action creator for getting sharing entries
+ */
+export const getSharingEntries = (idOrPath: number | string) => ({
+  type: 'GET_SHARING_ENTRIES',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'GetSharing',
+      method: 'GET',
+      body: undefined,
     }),
 })
