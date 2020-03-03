@@ -218,7 +218,7 @@ class ActionMenu extends React.Component<
               this.props.closeDialog,
             )
           break
-        case 'ShareContent':
+        case 'Share':
           this.handleClose()
           this.props.currentContent && this.props.openDialog(<ShareDialog currentContent={this.props.currentContent} />)
           break
