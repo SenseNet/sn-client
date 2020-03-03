@@ -7,6 +7,7 @@ import {
   ODataCollectionResponse,
   ODataResponse,
   Repository,
+  SharingOptions,
 } from '@sensenet/client-core'
 import { ActionModel, GenericContent, Task, User } from '@sensenet/default-content-types'
 import * as Actions from '../src/Actions'
@@ -935,6 +936,37 @@ describe('Actions', () => {
         })
         it('should return mockdata', () => {
           expect(data).toEqual(mockSchemaResponseData)
+        })
+      })
+    })
+  })
+  describe('Share', () => {
+    repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => schemaResponse as any)
+
+    const content = { DisplayName: 'My content', Id: 123 } as Task
+    const sharingOptions = {
+      identity: 'devdog@sensenet.com',
+      content,
+      sharingLevel: 'Edit',
+      sharingMode: 'Private',
+      sendNotification: false,
+    } as SharingOptions
+    describe('Action types are types', () => {
+      expect(Actions.Share(sharingOptions).type).toBe('SHARE')
+    })
+    describe('serviceChecks()', () => {
+      describe('Given repository.share() resolves', () => {
+        let data
+        let mockContentResponseData: ReturnType<typeof contentMockResponse['json']>
+        beforeEach(async () => {
+          data = await Actions.Share(sharingOptions).payload(repo)
+          mockContentResponseData = await contentMockResponse.json()
+        })
+        it('should return a SHARE action', () => {
+          expect(Actions.Share(sharingOptions)).toHaveProperty('type', 'SHARE')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(mockContentResponseData)
         })
       })
     })
