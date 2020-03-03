@@ -20,7 +20,6 @@ import { versionName } from '../../assets/helpers'
 import { icons } from '../../assets/icons'
 import { resources } from '../../assets/resources'
 import { rootStateType } from '../../store/rootReducer'
-import { getSharingEntries } from '../../store/sharing'
 import DialogInfo from './DialogInfo'
 
 const styles = {
@@ -69,12 +68,12 @@ interface ShareDialogProps extends RouteComponentProps<any> {
 
 const mapStateToProps = (state: rootStateType) => ({
   repositoryUrl: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
-  items: state.dms.sharing,
+  items: state.sensenet.sharing,
 })
 
 const mapDispatchToProps = {
-  getSharingEntries,
-  share: Actions.Share,
+  getSharingEntries: Actions.getSharingEntries,
+  share: Actions.share,
   closeDialog: DMSActions.closeDialog,
 }
 
@@ -119,14 +118,15 @@ class ShareDialog extends React.Component<
       newProps.currentContent.Icon &&
       icons[newProps.currentContent.Icon.toLowerCase() as any]
     const entries = Object.values(newProps.items)
-      .map(item => Object.values(item))
+      .map(item => Object.values(item as any))
       .reduce((acc, val) => acc.concat(val), []) // .flat()
+    console.log(entries)
     return {
       icon,
       sharedWithValues: [
         ...entries
-          .filter(e => lastState.sharedWithValues.findIndex(s => s.value === e.Token) === -1)
-          .map(entry => ({
+          .filter((e: any) => lastState.sharedWithValues.findIndex(s => s.value === e.Token) === -1)
+          .map((entry: any) => ({
             value: entry.Token,
             type: entry.Level,
             isSaved: true,
