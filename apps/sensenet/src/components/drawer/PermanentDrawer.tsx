@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => {
     backgroundDiv: {
       height: '100%',
       backgroundColor: theme.palette.type === 'light' ? globals.light.drawerBackground : globals.dark.drawerBackground,
-      border: theme.palette.type === 'light' ? clsx(globals.light.navMenuBorderColor, '1px') : 'none',
+      border: theme.palette.type === 'light' ? clsx(globals.light.borderColor, '1px') : 'none',
     },
     list: {
       width: '100%',

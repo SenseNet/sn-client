@@ -1,10 +1,15 @@
 import { TableCell } from '@material-ui/core'
 import React from 'react'
 import moment from 'moment'
-import { virtualStyle } from './virtualized-style-for-fields'
+import clsx from 'clsx'
+import { useGlobalStyles } from '../../globalStyles'
 
-export const DateField: React.FC<{ date: string | Date }> = ({ date }) => (
-  <TableCell style={virtualStyle}>
-    <>{moment(date).fromNow()}</>
-  </TableCell>
-)
+export const DateField: React.FC<{ date: string | Date }> = ({ date }) => {
+  const globalClasses = useGlobalStyles()
+
+  return (
+    <TableCell className={clsx(globalClasses.centered, globalClasses.virtualizedCellStyle)}>
+      <>{moment(date).fromNow()}</>
+    </TableCell>
+  )
+}

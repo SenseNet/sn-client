@@ -1,4 +1,4 @@
-import { Paper } from '@material-ui/core'
+import { createStyles, makeStyles } from '@material-ui/core'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { VirtualCellProps, VirtualDefaultCell, VirtualizedTable } from '@sensenet/list-controls-react'
 import {
@@ -31,6 +31,17 @@ import {
   PhoneField,
   ReferenceField,
 } from '.'
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    tableWrapper: {
+      height: '100%',
+      overflow: 'auto',
+      userSelect: 'none',
+      outline: 'none',
+    },
+  })
+})
 
 export interface ContentListProps {
   enableBreadcrumbs?: boolean
@@ -67,9 +78,8 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
   const personalSettings = useContext(ResponsivePersonalSetttings)
   const loadSettings = useContext(LoadSettingsContext)
   const repo = useRepository()
-
+  const classes = useStyles()
   const { openDialog } = useDialog()
-
   const [selected, setSelected] = useState<GenericContent[]>([])
   const [activeContent, setActiveContent] = useState<GenericContent>(children[0])
   const [isFocused, setIsFocused] = useState(true)
@@ -381,16 +391,9 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
   return (
     <div style={{ ...props.style }} {...props.containerProps}>
       {props.enableBreadcrumbs ? <ContentBreadcrumbs onItemClick={i => props.onParentChange(i.content)} /> : null}
-      <DropFileArea
-        parentContent={parentContent}
-        style={{ height: props.parentIdOrPath !== 0 ? 'calc(100% - 36px)' : '100%', overflow: 'hidden' }}>
+      <DropFileArea parentContent={parentContent} style={{ height: '100%', overflow: 'hidden' }}>
         <div
-          style={{
-            height: '100%',
-            overflow: 'auto',
-            userSelect: 'none',
-            outline: 'none',
-          }}
+          className={classes.tableWrapper}
           tabIndex={0}
           onClick={() => {
             setIsFocused(true)
@@ -403,50 +406,41 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
           }}
           ref={props.containerRef}
           onKeyDown={handleKeyDown}>
-          <Paper
-            style={{
-              height: '100%',
-              width: '100%',
-              background: 'transparent',
-              position: 'relative',
-              overflowY: 'hidden',
-            }}>
-            <VirtualizedTable
-              active={activeContent}
-              cellRenderer={fieldComponentFunc}
-              displayRowCheckbox={!props.disableSelection}
-              fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields || displayNameInArray}
-              getSelectionControl={getSelectionControl}
-              items={children}
-              onRequestOrderChange={onRequestOrderChangeFunc}
-              onRequestSelectionChange={setSelected}
-              orderBy={currentOrder}
-              orderDirection={currentDirection}
-              schema={repo.schemas.getSchemaByName('GenericContent')}
-              selected={selected}
-              tableProps={{
-                rowCount: children.length,
-                rowHeight: rowHeightConst,
-                headerHeight: headerHeightConst,
-                rowGetter: ({ index }) => children[index],
-                onRowClick: rowMouseEventHandlerParams => {
-                  setActiveContent(rowMouseEventHandlerParams.rowData)
-                  handleItemClick(rowMouseEventHandlerParams)
-                },
-                onRowDoubleClick: onItemDoubleClickFunc,
-                disableHeader: props.hideHeader,
-              }}
+          <VirtualizedTable
+            active={activeContent}
+            cellRenderer={fieldComponentFunc}
+            displayRowCheckbox={!props.disableSelection}
+            fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields || displayNameInArray}
+            getSelectionControl={getSelectionControl}
+            items={children}
+            onRequestOrderChange={onRequestOrderChangeFunc}
+            onRequestSelectionChange={setSelected}
+            orderBy={currentOrder}
+            orderDirection={currentDirection}
+            schema={repo.schemas.getSchemaByName('GenericContent')}
+            selected={selected}
+            tableProps={{
+              rowCount: children.length,
+              rowHeight: rowHeightConst,
+              headerHeight: headerHeightConst,
+              rowGetter: ({ index }) => children[index],
+              onRowClick: rowMouseEventHandlerParams => {
+                setActiveContent(rowMouseEventHandlerParams.rowData)
+                handleItemClick(rowMouseEventHandlerParams)
+              },
+              onRowDoubleClick: onItemDoubleClickFunc,
+              disableHeader: props.hideHeader,
+            }}
+          />
+          {activeContent ? (
+            <ContentContextMenu
+              content={activeContent}
+              isOpened={isContextMenuOpened}
+              menuProps={menuPropsObj}
+              onClose={onCloseFunc}
+              onOpen={onOpenFunc}
             />
-            {activeContent ? (
-              <ContentContextMenu
-                content={activeContent}
-                isOpened={isContextMenuOpened}
-                menuProps={menuPropsObj}
-                onClose={onCloseFunc}
-                onOpen={onOpenFunc}
-              />
-            ) : null}
-          </Paper>
+          ) : null}
         </div>
       </DropFileArea>
     </div>

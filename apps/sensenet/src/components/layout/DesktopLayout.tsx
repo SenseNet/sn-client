@@ -21,7 +21,7 @@ const useStyles = makeStyles(() => {
       top: 0,
       left: 0,
     },
-    drawerandContentWrapper: {
+    drawerandContentSlot: {
       display: 'flex',
       flexGrow: 1,
       flexDirection: 'row',
@@ -29,9 +29,10 @@ const useStyles = makeStyles(() => {
       height: `calc(100% - ${globals.common.headerHeight}px)`,
       width: '100%',
     },
-    contentWrapper: {
+    contentSlot: {
       display: 'flex',
       flexGrow: 1,
+      flexFlow: 'column',
       position: 'relative',
       boxSizing: 'border-box',
       overflow: 'hidden',
@@ -80,7 +81,7 @@ export const DesktopLayout: React.FunctionComponent = props => {
     <div className={clsx(globalClasses.full, classes.desktopLayoutWrapper)}>
       <CssBaseline />
       <DesktopAppBar openDrawer={() => setTempDrawerOpened(!tempDrawerOpened)} />
-      <div className={classes.drawerandContentWrapper}>
+      <div className={classes.drawerandContentSlot}>
         {settings.drawer.enabled ? (
           <>
             {settings.drawer.type === 'temporary' ? (
@@ -95,7 +96,7 @@ export const DesktopLayout: React.FunctionComponent = props => {
           </>
         ) : null}
 
-        <div className={classes.contentWrapper}>{props.children}</div>
+        <div className={classes.contentSlot}>{props.children}</div>
       </div>
     </div>
   )

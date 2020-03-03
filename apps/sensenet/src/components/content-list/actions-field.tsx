@@ -1,13 +1,15 @@
 import { IconButton, TableCell } from '@material-ui/core'
 import React from 'react'
 import MoreHoriz from '@material-ui/icons/MoreHoriz'
-import { virtualStyle } from './virtualized-style-for-fields'
+import clsx from 'clsx'
+import { useGlobalStyles } from '../../globalStyles'
 
 export const ActionsField: React.FC<{
   onOpen: (ev: React.MouseEvent<HTMLButtonElement>) => void
 }> = ({ onOpen }) => {
+  const globalClasses = useGlobalStyles()
   return (
-    <TableCell component="div" style={virtualStyle}>
+    <TableCell component="div" className={clsx(globalClasses.centered, globalClasses.virtualizedCellStyle)}>
       <IconButton onClick={onOpen}>
         <MoreHoriz />
       </IconButton>

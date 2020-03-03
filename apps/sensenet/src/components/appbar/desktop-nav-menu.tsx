@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     popper: {
       backgroundColor: theme.palette.type === 'light' ? globals.light.navMenuColor : globals.dark.navMenuColor,
-      border: theme.palette.type === 'light' ? clsx(globals.light.navMenuBorderColor, '1px') : 'none',
+      border: theme.palette.type === 'light' ? clsx(globals.light.borderColor, '1px') : 'none',
     },
     listItemIcon: {
       width: '35px',

@@ -33,14 +33,8 @@ const useStyles = makeStyles((theme: Theme) => {
       border: theme.palette.type === 'light' ? '1px solid #D6D6D6' : 'none',
       boxShadow: theme.palette.type === 'light' ? '4px 4px 8px #0000001A' : 'none',
     },
-    setupWrapper: {
-      padding: '2em',
-      height: '100%',
-      overflow: 'auto',
-    },
     cardWrapper: {
       flexWrap: 'wrap',
-      margin: '1em',
     },
     button: {
       width: '110px',
@@ -128,8 +122,8 @@ const Setup: React.StatelessComponent = () => {
   }, [localization.descriptions, repo])
 
   return (
-    <div className={classes.setupWrapper}>
-      <Typography variant="h6" style={{ margin: '2px 0 48px 0' }}>
+    <div className={globalClasses.contentWrapper}>
+      <Typography variant="h6" className={globalClasses.contentTitle}>
         Setup
       </Typography>
       {wellKnownSettings.length ? (

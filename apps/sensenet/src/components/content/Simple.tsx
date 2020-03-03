@@ -26,7 +26,7 @@ export const SimpleList: React.FunctionComponent<SimpleListComponentProps> = pro
               <ContentList
                 enableBreadcrumbs={true}
                 onActivateItem={() => null}
-                style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%', width: '100%' }}
+                style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%', width: '100%', position: 'relative' }}
                 onParentChange={() => null}
                 parentIdOrPath={props.parent}
                 onSelectionChange={sel => {

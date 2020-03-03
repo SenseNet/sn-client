@@ -1,21 +1,16 @@
 import React from 'react'
-import { createStyles, Grid, IconButton, makeStyles, Typography } from '@material-ui/core'
+import { Grid, IconButton, Typography } from '@material-ui/core'
 import { Settings } from '@material-ui/icons'
 import { TrashBin } from '@sensenet/default-content-types'
+import clsx from 'clsx'
 import { useLocalization } from '../../hooks'
-
-const useStyles = makeStyles(() =>
-  createStyles({
-    title: { display: 'flex', alignItems: 'center' },
-    grow: { flexGrow: 1 },
-  }),
-)
+import { useGlobalStyles } from '../../globalStyles'
 
 type props = { trash: TrashBin; iconClickHandler: () => void }
 
 const TrashHeader: React.FC<props> = ({ trash, iconClickHandler }) => {
   const localization = useLocalization().trash
-  const classes = useStyles()
+  const globalClasses = useGlobalStyles()
   const infos = [
     { title: localization.retentionTime, value: trash.MinRetentionTime, unit: localization.retentionTimeUnit },
     { title: localization.sizeQuota, value: trash.SizeQuota, unit: localization.sizeQuotaUnit },
@@ -23,21 +18,26 @@ const TrashHeader: React.FC<props> = ({ trash, iconClickHandler }) => {
   ]
 
   return (
-    <Grid container={true} spacing={2} alignItems="center">
-      <Grid item={true} className={classes.title}>
-        <Typography variant="h5">{localization.title}</Typography>
+    <Grid
+      container={true}
+      alignItems="center"
+      className={clsx(globalClasses.centeredVertical, globalClasses.contentTitle)}
+      style={{ justifyContent: 'space-between' }}>
+      <Grid item={true} className={globalClasses.centeredVertical}>
+        <Typography variant="h6">{localization.title}</Typography>
         <IconButton onClick={() => iconClickHandler()}>
           <Settings />
         </IconButton>
       </Grid>
-      <Grid item={true} className={classes.grow} />
-      {infos.map(info => (
-        <Grid item={true} key={info.title}>
-          <Typography>
-            {info.title} : {info.value} {info.unit}
-          </Typography>
-        </Grid>
-      ))}
+      <div className={globalClasses.centeredVertical}>
+        {infos.map(info => (
+          <Grid item={true} key={info.title}>
+            <Typography style={{ marginRight: '15px' }}>
+              {info.title} : {info.value} {info.unit}
+            </Typography>
+          </Grid>
+        ))}
+      </div>
     </Grid>
   )
 }

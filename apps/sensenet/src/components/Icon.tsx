@@ -86,19 +86,23 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   {
     get: (item, options) =>
       options.repo.schemas.isContentFromType<File>(item, 'File') && item.PageCount ? (
-        <img
-          width={(options.style && options.style.width) || 32}
-          height={(options.style && options.style.width) || 32}
-          alt=""
-          src={PathHelper.joinPaths(
-            options.repo.configuration.repositoryUrl,
-            item.Path,
-            '/Previews',
-            item.Version as string,
-            'thumbnail1.png',
-          )}
-          style={options.style}
-        />
+        !item.Path.includes('Localization') ? (
+          <img
+            width={(options.style && options.style.width) || 32}
+            height={(options.style && options.style.width) || 32}
+            alt=""
+            src={PathHelper.joinPaths(
+              options.repo.configuration.repositoryUrl,
+              item.Path,
+              '/Previews',
+              item.Version as string,
+              'thumbnail1.png',
+            )}
+            style={options.style}
+          />
+        ) : (
+          <TextFormat style={options.style} />
+        )
       ) : null,
   },
   { get: (item, options) => (item.Type === 'Profiles' ? <GroupOutlined style={options.style} /> : null) },

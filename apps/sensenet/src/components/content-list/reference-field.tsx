@@ -1,14 +1,16 @@
 import { TableCell } from '@material-ui/core'
 import React from 'react'
 import { GenericContent } from '@sensenet/default-content-types'
+import clsx from 'clsx'
 import { Icon } from '../Icon'
-import { virtualStyle } from './virtualized-style-for-fields'
+import { useGlobalStyles } from '../../globalStyles'
 
 export const ReferenceField: React.FC<{ content: GenericContent }> = ({ content }) => {
+  const globalClasses = useGlobalStyles()
   return (
-    <TableCell component="div" style={virtualStyle}>
+    <TableCell component="div" className={clsx(globalClasses.centered, globalClasses.virtualizedCellStyle)}>
       {content.Name !== 'Somebody' ? (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div className={globalClasses.centeredVertical}>
           <Icon item={content} />
           <div style={{ marginLeft: '1em' }}>{content.DisplayName || content.Name}</div>
         </div>
