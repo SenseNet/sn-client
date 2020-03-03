@@ -1304,6 +1304,32 @@ describe('Reducers', () => {
     })
   })
 
+  describe('sharing reducer', () => {
+    const result = {
+      d: {
+        results: [
+          {
+            Token: 'alba@sensenet.com',
+            Id: 1,
+          },
+          {
+            Token: 'devdog@sensenet.com',
+            Id: 2,
+          },
+        ],
+      },
+    }
+
+    it('should return the initial state', () => {
+      expect(Reducers.sharing(undefined, defaultAction)).toEqual({ sharingEntries: [] })
+    })
+    it('should return the sharing entries', () => {
+      expect(Reducers.sharing(undefined, { type: 'GET_SHARING_ENTRIES_SUCCESS', result })).toEqual({
+        sharingEntries: { '1': { Id: 1, Token: 'alba@sensenet.com' }, '2': { Id: 2, Token: 'devdog@sensenet.com' } },
+      })
+    })
+  })
+
   describe('getIds', () => {
     const state = {
       ids: [5145, 5146],

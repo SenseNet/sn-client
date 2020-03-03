@@ -14,8 +14,6 @@ export interface SharingEntry {
 export const sharingEntries: Reducer<SharingEntry[]> = (state = [], action) => {
   switch (action.type) {
     case 'GET_SHARING_ENTRIES_SUCCESS':
-      console.log(action.result.d.results)
-      console.log(action)
       for (const entry of action.result.d.results) {
         state[entry.Id] = entry
       }
