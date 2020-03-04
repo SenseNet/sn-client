@@ -22,13 +22,14 @@ type TreeProps = {
 }
 
 const ROW_HEIGHT = 48
+const LOAD_MORE_CLASS = 'loadMore'
 
 export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading }: TreeProps) {
   const listRef = useRef<List>(null)
   const loader = useRef(loadMore)
   const selectionService = useSelectionService()
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
-  const [element, setElement] = useState<Element>()
+  const [elements, setElements] = useState<Element[]>()
 
   const observer = useRef(
     new IntersectionObserver(
@@ -45,16 +46,12 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading }: 
 
   useEffect(() => {
     const currentObserver = observer.current
-    if (element) {
-      currentObserver.observe(element)
-    }
+    elements?.forEach(element => currentObserver.observe(element))
 
     return () => {
-      if (element) {
-        currentObserver.unobserve(element)
-      }
+      elements?.forEach(element => currentObserver.unobserve(element))
     }
-  }, [element])
+  }, [elements])
 
   useEffect(() => {
     listRef.current?.recomputeRowHeights()
@@ -75,7 +72,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading }: 
   const getExpandedItemCount = (item: ItemType) => {
     let totalCount = 1
 
-    if (item.expanded && item.children) {
+    if (item.expanded && item.children?.length) {
       totalCount += item.children.map(getExpandedItemCount).reduce((total, count) => {
         return total + count
       }, 0)
@@ -125,7 +122,12 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading }: 
 
     if (item.hasNextPage && item.children && !isLoading) {
       const loadMoreEl = (
-        <div className="loadMore" key="loadMore" data-startindex={item.children.length} data-path={item.Path} />
+        <div
+          className={LOAD_MORE_CLASS}
+          key={LOAD_MORE_CLASS}
+          data-startindex={item.children.length}
+          data-path={item.Path}
+        />
       )
       children.push(loadMoreEl)
     }
@@ -136,22 +138,15 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading }: 
 
   const rowRenderer = ({ key, style, index }: ListRowProps) => {
     if (!treeData.children?.[index]) {
-      if (treeData.children) {
-        return (
-          <p
-            style={style}
-            key={index}
-            className="loadMore"
-            data-startindex={treeData.children.length}
-            data-path={treeData.Path}>
-            Loading
-          </p>
-        )
-      }
       return (
-        <p style={style} key={index}>
-          Loading
-        </p>
+        <ListItem
+          style={style}
+          key={index}
+          className={LOAD_MORE_CLASS}
+          data-startindex={treeData.children?.length}
+          data-path={treeData.Path}>
+          <ListItemText primary="Loading" />
+        </ListItem>
       )
     }
     return (
@@ -176,11 +171,11 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading }: 
             ref={listRef}
             rowHeight={rowHeight}
             onRowsRendered={() => {
-              const loadMoreElements = document.getElementsByClassName('loadMore')
-              if (!loadMoreElements.length && !element) {
+              const loadMoreElements = document.getElementsByClassName(LOAD_MORE_CLASS)
+              if (!loadMoreElements.length && !elements) {
                 return
               }
-              setElement(loadMoreElements[0])
+              setElements([...loadMoreElements])
             }}
             rowRenderer={rowRenderer}
             rowCount={itemCount}

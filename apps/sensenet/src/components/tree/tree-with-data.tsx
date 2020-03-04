@@ -1,51 +1,65 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { useRepository } from '@sensenet/hooks-react'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { GenericContent } from '@sensenet/default-content-types'
-import Semaphore from 'semaphore-async-await'
+import { FullScreenLoader } from '../FullScreenLoader'
 import { ItemType, Tree } from './tree'
-
-const mapContentToItemType = (content: GenericContent) => ({ children: [], ...content })
 
 type TreeWithDataProps = {
   onItemClick: (item: GenericContent) => void
   parentPath: string
 }
 
+let lastRequest: { path: string; lastIndex: number } | undefined
+
+const ITEM_THRESHOLD = 50
+
 export default function TreeWithData(props: TreeWithDataProps) {
   const repo = useRepository()
   const [itemCount, setItemCount] = useState<number>()
   const [treeData, setTreeData] = useState<ItemType>()
   const [isLoading, setIsLoading] = useState(false)
-  const lock = useRef(new Semaphore(1))
+  const logger = useLogger('tree-with-data')
 
-  const getContent = useCallback(
+  const loadCollection = useCallback(
     async (path: string, top: number, skip: number) => {
       const ac = new AbortController()
       setIsLoading(true)
-      const result = await repo.loadCollection<GenericContent>({
-        path,
-        requestInit: {
-          signal: ac.signal,
-        },
-        oDataOptions: {
-          top,
-          skip,
-          orderby: [
-            ['DisplayName', 'asc'],
-            ['Name', 'asc'],
-          ],
-        },
-      })
-      setIsLoading(false)
-      return result
+      try {
+        const result = await repo.loadCollection<GenericContent>({
+          path,
+          requestInit: {
+            signal: ac.signal,
+          },
+          oDataOptions: {
+            top,
+            skip,
+            orderby: [
+              ['DisplayName', 'asc'],
+              ['Name', 'asc'],
+            ],
+          },
+        })
+        setIsLoading(false)
+        return result
+      } catch (error) {
+        if (!ac.signal.aborted) {
+          logger.warning({ message: `Couldn't load content for ${path}`, data: error })
+        }
+        setIsLoading(false)
+      }
     },
-    [repo],
+    [logger, repo],
   )
 
   useEffect(() => {
     async function getData() {
       const root = await repo.load({ idOrPath: props.parentPath })
-      const result = await getContent(props.parentPath, 10, 0)
+      const result = await loadCollection(props.parentPath, ITEM_THRESHOLD, 0)
+
+      if (!result) {
+        logger.debug({ message: `loadCollection failed to load from ${props.parentPath}` })
+        return
+      }
 
       setTreeData({
         ...root.d,
@@ -55,8 +69,12 @@ export default function TreeWithData(props: TreeWithDataProps) {
       })
     }
     getData()
-  }, [getContent, props.parentPath, repo])
+  }, [loadCollection, logger, props.parentPath, repo])
 
+  /**
+   * First thing we want to do is get the count for the collection
+   * to let virtual list know about the height of its container
+   */
   useEffect(() => {
     const ac = new AbortController()
     async function getItemCount() {
@@ -68,21 +86,30 @@ export default function TreeWithData(props: TreeWithDataProps) {
           path: props.parentPath,
         })
         setItemCount(count)
-      } catch (err) {
+      } catch (error) {
         if (!ac.signal.aborted) {
-          console.log(err)
-          // setError(err)
+          logger.warning({ message: `Couldn't get the count for ${props.parentPath}`, data: error })
         }
       }
     }
     getItemCount()
     return () => ac.abort()
-  }, [props.parentPath, repo])
+  }, [logger, props.parentPath, repo])
 
   const loadMoreItems = async (startIndex: number, path = props.parentPath) => {
-    await lock.current.wait()
-    const result = await getContent(path, 20, startIndex)
-    lock.current.signal()
+    // Do not load duplicate request
+    if (lastRequest?.lastIndex === startIndex && lastRequest.path === path) {
+      return
+    }
+    lastRequest = { lastIndex: startIndex, path }
+    const result = await loadCollection(path, ITEM_THRESHOLD, startIndex)
+
+    if (!result) {
+      logger.debug({ message: `loadCollection failed to load from ${props.parentPath}` })
+      return
+    }
+
+    // load more items under root
     if (path === props.parentPath) {
       setTreeData(prevItem => {
         if (prevItem && prevItem.children) {
@@ -94,6 +121,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
         }
       })
     } else {
+      // load more items under tree node
       walkTree(treeData!, node => {
         if (node.Path === path && node.children) {
           node.children = [...node.children, ...result.d.results]
@@ -114,6 +142,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
   }
 
   const onItemClick = async (item: ItemType) => {
+    // Do not expand File types, we don't want to show the Previews folder under it
     if (item.Type === 'File' || !treeData) {
       return
     }
@@ -121,9 +150,11 @@ export default function TreeWithData(props: TreeWithDataProps) {
     walkTree(treeData, async (node: ItemType) => {
       if (node.Id === item.Id) {
         if (!node.expanded && !node.children?.length) {
-          const children = await getContent(node.Path, 10, 0)
-          node.children = children.d.results.map(mapContentToItemType)
-          node.hasNextPage = children.d.__count > node.children.length
+          const children = await loadCollection(node.Path, ITEM_THRESHOLD, 0)
+          if (children) {
+            node.children = children.d.results
+            node.hasNextPage = children.d.__count > node.children.length
+          }
         }
         node.expanded = !node.expanded
         props.onItemClick(item)
@@ -133,8 +164,9 @@ export default function TreeWithData(props: TreeWithDataProps) {
   }
 
   if (!itemCount || !treeData) {
-    return <p>Loading...</p>
+    return <FullScreenLoader />
   }
+
   return (
     <Tree
       itemCount={itemCount}
