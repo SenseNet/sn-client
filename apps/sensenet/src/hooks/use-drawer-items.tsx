@@ -92,11 +92,7 @@ export const useDrawerItems = () => {
             fieldsToDisplay: (item.settings && item.settings.columns) || settings.content.fields,
           })}`
         case 'Users and groups':
-          return `/browse/${encodeBrowseData({
-            type: 'simple',
-            root: '/Root/IMS/Public',
-            fieldsToDisplay: ['DisplayName', 'ModificationDate', 'ModifiedBy', 'Actions'],
-          })}`
+          return '/usersAndGroups'
         case 'Content Types':
           return `/search/${encodeQueryData({
             title: localization.titles['Content Types'],
@@ -115,10 +111,7 @@ export const useDrawerItems = () => {
             fieldsToDisplay: item.settings && item.settings.columns,
           })}`
         case 'Localization':
-          return `/browse/${encodeBrowseData({
-            type: 'simple',
-            root: '/Root/Localization',
-          })}`
+          return '/localization'
         case 'Trash':
           return '/trash'
         case 'Setup':

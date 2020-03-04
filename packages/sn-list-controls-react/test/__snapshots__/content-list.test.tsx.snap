@@ -1053,6 +1053,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
                 "VisibleNew": 1,
               },
             ],
+            "HandlerName": "SenseNet.ContentRepository.GenericContent",
             "Icon": "Content",
           }
         }
@@ -2115,6 +2116,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
                 "VisibleNew": 1,
               },
             ],
+            "HandlerName": "SenseNet.ContentRepository.GenericContent",
             "Icon": "Content",
           }
         }
@@ -3164,6 +3166,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
                 "VisibleNew": 1,
               },
             ],
+            "HandlerName": "SenseNet.ContentRepository.GenericContent",
             "Icon": "Content",
           }
         }
@@ -4276,6 +4279,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
                 "VisibleNew": 1,
               },
             ],
+            "HandlerName": "SenseNet.ContentRepository.GenericContent",
             "Icon": "Content",
           }
         }
@@ -5340,6 +5344,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
                 "VisibleNew": 1,
               },
             ],
+            "HandlerName": "SenseNet.ContentRepository.GenericContent",
             "Icon": "Content",
           }
         }
@@ -6403,6 +6408,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
                 "VisibleNew": 1,
               },
             ],
+            "HandlerName": "SenseNet.ContentRepository.GenericContent",
             "Icon": "Content",
           }
         }
@@ -7468,6 +7474,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
                 "VisibleNew": 1,
               },
             ],
+            "HandlerName": "SenseNet.ContentRepository.GenericContent",
             "Icon": "Content",
           }
         }
@@ -8532,6 +8539,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
                 "VisibleNew": 1,
               },
             ],
+            "HandlerName": "SenseNet.ContentRepository.GenericContent",
             "Icon": "Content",
           }
         }

@@ -1017,6 +1017,7 @@ export const customSchema = [
         Type: 'ShortTextFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.GenericContent',
   },
   {
     ContentTypeName: 'File',
@@ -1293,6 +1294,7 @@ export const customSchema = [
         Type: 'ShortTextFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.File',
   },
   {
     ContentTypeName: 'ContentView',
@@ -1321,6 +1323,7 @@ export const customSchema = [
         Type: 'ShortTextFieldSetting',
       },
     ],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'Contract',
@@ -1495,6 +1498,7 @@ export const customSchema = [
         Type: 'ReferenceFieldSetting',
       },
     ],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'DemoFile',
@@ -1524,6 +1528,7 @@ export const customSchema = [
         AllowedTypes: ['File', 'DemoFile', 'Image'],
       },
     ],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'DynamicJsonContent',
@@ -1535,6 +1540,7 @@ export const customSchema = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
+    HandlerName: 'SenseNet.Portal.Handlers.DynamicJsonContent',
   },
   {
     ContentTypeName: 'FieldControlTemplate',
@@ -1563,6 +1569,7 @@ export const customSchema = [
         Type: 'ShortTextFieldSetting',
       },
     ],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'HtmlTemplate',
@@ -1590,6 +1597,7 @@ export const customSchema = [
         Type: 'LongTextFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.Portal.UI.HtmlTemplate',
   },
   {
     ContentTypeName: 'Image',
@@ -1691,6 +1699,7 @@ export const customSchema = [
         Type: 'IntegerFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.Image',
   },
   {
     ContentTypeName: 'PreviewImage',
@@ -1702,6 +1711,7 @@ export const customSchema = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.Image',
   },
   {
     ContentTypeName: 'OrderForm',
@@ -1798,6 +1808,7 @@ export const customSchema = [
         Type: 'ShortTextFieldSetting',
       },
     ],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'Settings',
@@ -1905,6 +1916,7 @@ export const customSchema = [
         Type: 'NullFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.Settings',
   },
   {
     ContentTypeName: 'IndexingSettings',
@@ -1932,6 +1944,7 @@ export const customSchema = [
         Type: 'NullFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.Search.IndexingSettings',
   },
   {
     ContentTypeName: 'LoggingSettings',
@@ -1943,6 +1956,7 @@ export const customSchema = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.LoggingSettings',
   },
   {
     ContentTypeName: 'PortalSettings',
@@ -1954,6 +1968,7 @@ export const customSchema = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
+    HandlerName: 'SenseNet.Portal.PortalSettings',
   },
   {
     ContentTypeName: 'SystemFile',
@@ -1982,6 +1997,7 @@ export const customSchema = [
         Type: 'ShortTextFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.File',
   },
   {
     ContentTypeName: 'MasterPage',
@@ -1993,6 +2009,7 @@ export const customSchema = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'PageTemplate',
@@ -2037,6 +2054,7 @@ export const customSchema = [
         Type: 'ReferenceFieldSetting',
       },
     ],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'Resource',
@@ -2111,6 +2129,7 @@ export const customSchema = [
         Type: 'NumberFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.i18n.Resource',
   },
   {
     ContentTypeName: 'UserControl',
@@ -2139,6 +2158,7 @@ export const customSchema = [
         Type: 'ShortTextFieldSetting',
       },
     ],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'ViewBase',
@@ -2360,6 +2380,7 @@ export const customSchema = [
         Type: 'ShortTextFieldSetting',
       },
     ],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'ListView',
@@ -2502,6 +2523,7 @@ export const customSchema = [
         Type: 'ShortTextFieldSetting',
       },
     ],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'WorkflowDefinition',
@@ -2666,6 +2688,7 @@ export const customSchema = [
         Type: 'ChoiceFieldSetting',
       },
     ],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'Folder',
@@ -2756,6 +2779,7 @@ export const customSchema = [
         Type: 'ShortTextFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.Folder',
   },
   {
     ContentTypeName: 'ArticleSection',
@@ -2925,6 +2949,7 @@ export const customSchema = [
         Type: 'ChoiceFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.Folder',
   },
   {
     ContentTypeName: 'ContentList',
@@ -3319,6 +3344,7 @@ export const customSchema = [
         Type: 'ReferenceFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.ContentList',
   },
   {
     ContentTypeName: 'Aspect',
@@ -3663,6 +3689,7 @@ export const customSchema = [
         Type: 'ChoiceFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.Aspect',
   },
   {
     ContentTypeName: 'ItemList',
@@ -3787,6 +3814,7 @@ export const customSchema = [
         Type: 'ChoiceFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.ContentList',
   },
   {
     ContentTypeName: 'CustomList',
@@ -3798,6 +3826,7 @@ export const customSchema = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['ListItem'],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.ContentList',
   },
   {
     ContentTypeName: 'EventList',
@@ -3981,6 +4010,7 @@ export const customSchema = [
         Type: 'ChoiceFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.ContentList',
   },
   {
     ContentTypeName: 'LinkList',
@@ -3992,6 +4022,7 @@ export const customSchema = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['Link'],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.ContentList',
   },
   {
     ContentTypeName: 'MemoList',
@@ -4003,6 +4034,7 @@ export const customSchema = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['Memo'],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.ContentList',
   },
   {
     ContentTypeName: 'TaskList',
@@ -4014,6 +4046,7 @@ export const customSchema = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['Task', 'ApprovalWorkflowTask'],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.ContentList',
   },
   {
     ContentTypeName: 'Library',
@@ -4118,6 +4151,7 @@ export const customSchema = [
         Type: 'ChoiceFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.ContentList',
   },
   {
     ContentTypeName: 'DocumentLibrary',
@@ -4129,6 +4163,7 @@ export const customSchema = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['Folder', 'File', 'SmartFolder'],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.ContentList',
   },
   {
     ContentTypeName: 'ImageLibrary',
@@ -4174,6 +4209,7 @@ export const customSchema = [
         Type: 'ReferenceFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.ContentList',
   },
   {
     ContentTypeName: 'ContentViews',
@@ -4186,6 +4222,7 @@ export const customSchema = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['ContentView', 'ContentViews'],
     FieldSettings: [],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'Device',
@@ -4214,6 +4251,7 @@ export const customSchema = [
         Type: 'ShortTextFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ApplicationModel.Device',
   },
   {
     ContentTypeName: 'DocumentWorkspaceFolder',
@@ -4225,6 +4263,7 @@ export const customSchema = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['DocumentWorkspace', 'DocumentWorkspaceFolder'],
     FieldSettings: [],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'Domain',
@@ -4317,6 +4356,7 @@ export const customSchema = [
         Type: 'DateTimeFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.Domain',
   },
   {
     ContentTypeName: 'Domains',
@@ -4328,6 +4368,7 @@ export const customSchema = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['Domain'],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.Folder',
   },
   {
     ContentTypeName: 'Email',
@@ -4404,6 +4445,7 @@ export const customSchema = [
         Type: 'DateTimeFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.Folder',
   },
   {
     ContentTypeName: 'FieldControlTemplates',
@@ -4416,6 +4458,7 @@ export const customSchema = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['FieldControlTemplates', 'FieldControlTemplate'],
     FieldSettings: [],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'OrganizationalUnit',
@@ -4507,6 +4550,7 @@ export const customSchema = [
         Type: 'DateTimeFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.OrganizationalUnit',
   },
   {
     ContentTypeName: 'PortalRoot',
@@ -4555,6 +4599,7 @@ export const customSchema = [
         Type: 'ShortTextFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.PortalRoot',
   },
   {
     ContentTypeName: 'PortletCategory',
@@ -4630,6 +4675,7 @@ export const customSchema = [
         Type: 'NullFieldSetting',
       },
     ],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'ProfileDomain',
@@ -4690,6 +4736,7 @@ export const customSchema = [
         Type: 'LongTextFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.Folder',
   },
   {
     ContentTypeName: 'Profiles',
@@ -4701,6 +4748,7 @@ export const customSchema = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['ProfileDomain'],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.Folder',
   },
   {
     ContentTypeName: 'ProjectWorkspaceFolder',
@@ -4712,6 +4760,7 @@ export const customSchema = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['ProjectWorkspace', 'ProjectWorkspaceFolder'],
     FieldSettings: [],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'RuntimeContentContainer',
@@ -4723,6 +4772,7 @@ export const customSchema = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.RuntimeContentContainer',
   },
   {
     ContentTypeName: 'SalesWorkspaceFolder',
@@ -4734,6 +4784,7 @@ export const customSchema = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['SalesWorkspace', 'SalesWorkspaceFolder'],
     FieldSettings: [],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'Sites',
@@ -4745,6 +4796,7 @@ export const customSchema = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['Site'],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.Folder',
   },
   {
     ContentTypeName: 'SmartFolder',
@@ -4857,6 +4909,7 @@ export const customSchema = [
         Type: 'ChoiceFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.SmartFolder',
   },
   {
     ContentTypeName: 'TrashBag',
@@ -4961,6 +5014,7 @@ export const customSchema = [
         Type: 'ReferenceFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.TrashBag',
   },
   {
     ContentTypeName: 'Workspace',
@@ -5234,6 +5288,7 @@ export const customSchema = [
         Type: 'NullFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.Workspaces.Workspace',
   },
   {
     ContentTypeName: 'DocumentWorkspace',
@@ -5254,6 +5309,7 @@ export const customSchema = [
       'CustomList',
     ],
     FieldSettings: [],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'ProjectWorkspace',
@@ -5293,6 +5349,7 @@ export const customSchema = [
         Type: 'NumberFieldSetting',
       },
     ],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'SalesWorkspace',
@@ -5504,6 +5561,7 @@ export const customSchema = [
         Type: 'DateTimeFieldSetting',
       },
     ],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'Site',
@@ -5884,6 +5942,7 @@ export const customSchema = [
         Type: 'ChoiceFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.Portal.Site',
   },
   {
     ContentTypeName: 'TrashBin',
@@ -6229,6 +6288,7 @@ export const customSchema = [
         Type: 'NullFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.TrashBin',
   },
   {
     ContentTypeName: 'UserProfile',
@@ -6347,6 +6407,7 @@ export const customSchema = [
         Type: 'ReferenceFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.UserProfile',
   },
   {
     ContentTypeName: 'ListItem',
@@ -6406,6 +6467,7 @@ export const customSchema = [
         Type: 'DateTimeFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.GenericContent',
   },
   {
     ContentTypeName: 'CalendarEvent',
@@ -6826,6 +6888,7 @@ export const customSchema = [
         Type: 'ChoiceFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.CalendarEvent',
   },
   {
     ContentTypeName: 'ConfirmationItem',
@@ -6869,6 +6932,7 @@ export const customSchema = [
         Type: 'NullFieldSetting',
       },
     ],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'CustomListItem',
@@ -7003,6 +7067,7 @@ export const customSchema = [
         Type: 'IntegerFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.GenericContent',
   },
   {
     ContentTypeName: 'Link',
@@ -7158,6 +7223,7 @@ export const customSchema = [
         Type: 'DateTimeFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.GenericContent',
   },
   {
     ContentTypeName: 'Memo',
@@ -7261,6 +7327,7 @@ export const customSchema = [
         Type: 'ReferenceFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.GenericContent',
   },
   {
     ContentTypeName: 'Portlet',
@@ -7362,6 +7429,7 @@ export const customSchema = [
         Type: 'NullFieldSetting',
       },
     ],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'Task',
@@ -7596,6 +7664,7 @@ export const customSchema = [
         Type: 'ShortTextFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.Task',
   },
   {
     ContentTypeName: 'ApprovalWorkflowTask',
@@ -7690,6 +7759,7 @@ export const customSchema = [
         Type: 'ReferenceFieldSetting',
       },
     ],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'WebContent',
@@ -7814,6 +7884,7 @@ export const customSchema = [
         Type: 'LongTextFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.GenericContent',
   },
   {
     ContentTypeName: 'Article',
@@ -7978,6 +8049,7 @@ export const customSchema = [
         Type: 'NullFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.GenericContent',
   },
   {
     ContentTypeName: 'HTMLContent',
@@ -8005,6 +8077,7 @@ export const customSchema = [
         Type: 'LongTextFieldSetting',
       },
     ],
+    HandlerName: '',
   },
   {
     ContentTypeName: 'User',
@@ -8531,6 +8604,7 @@ export const customSchema = [
         Type: 'LongTextFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.User',
   },
   {
     ContentTypeName: 'Group',
@@ -8682,5 +8756,6 @@ export const customSchema = [
         Type: 'ShortTextFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.Group',
   },
 ]

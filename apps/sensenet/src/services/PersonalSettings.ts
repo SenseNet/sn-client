@@ -150,6 +150,7 @@ export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   logLevel: Array<keyof typeof LogLevel>
   language: 'default' | 'hungarian'
   theme: 'light' | 'dark'
+  uploadHandlers: string[]
 }
 
 export const defaultSettings: PersonalSettingsType = {
@@ -343,6 +344,11 @@ export const defaultSettings: PersonalSettingsType = {
   sendLogWithCrashReports: true,
   logLevel: ['Information', 'Warning', 'Error', 'Fatal'],
   theme: 'light',
+  uploadHandlers: [
+    'SenseNet.ContentRepository.File',
+    'SenseNet.ContentRepository.Image',
+    'SenseNet.ContentRepository.Settings',
+  ],
 }
 
 @Injectable({ lifetime: 'singleton' })
