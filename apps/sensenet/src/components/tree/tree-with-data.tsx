@@ -62,7 +62,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
       // }),
       eventHub.onContentDeleted.subscribe(d => {
         walkTree(treeData!, node => {
-          if (node.Path === PathHelper.getParentPath(d.contentData.Path)) {
+          if (PathHelper.trimSlashes(node.Path) === PathHelper.getParentPath(d.contentData.Path)) {
             node.children = node.children?.filter(n => n.Id !== d.contentData.Id)
             if (selectionService.activeContent.getValue()?.Id === d.contentData.Id) {
               selectionService.activeContent.setValue(node)
