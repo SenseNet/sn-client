@@ -1,5 +1,5 @@
 import { combineReducers, Reducer } from 'redux'
-import { SharingLevel, SharingMode } from '@sensenet/client-core/src'
+import { SharingLevel, SharingMode } from '@sensenet/client-core'
 
 export interface SharingEntry {
   Id: string
