@@ -171,6 +171,10 @@ export const pathHelperTests = describe('PathHelper', () => {
       expect(PathHelper.getParentPath('Root/Example/Content')).toBe('Root/Example')
     })
 
+    it('Should return the parent path in case of more than 1 segments as it is', () => {
+      expect(PathHelper.getParentPath('/Root/Example/Content')).toBe('/Root/Example')
+    })
+
     it('Should return the parent path in case of more than 1 segments with item path', () => {
       expect(PathHelper.getParentPath("Root/Example('Content')")).toBe('Root/Example')
     })

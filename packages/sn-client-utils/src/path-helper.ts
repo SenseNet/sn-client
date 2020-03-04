@@ -132,6 +132,7 @@ export class PathHelper {
     if (segments.length > 1) {
       segments.pop()
     }
-    return segments.join('/')
+    const parent = segments.join('/')
+    return path[0] === '/' ? `/${parent}` : parent
   }
 }
