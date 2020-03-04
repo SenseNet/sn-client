@@ -120,7 +120,6 @@ class ShareDialog extends React.Component<
     const entries = Object.values(newProps.items)
       .map(item => Object.values(item as any))
       .reduce((acc, val) => acc.concat(val), []) // .flat()
-    console.log(entries)
     return {
       icon,
       sharedWithValues: [
