@@ -1,7 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
+import { useLogger, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
 import { GenericContent } from '@sensenet/default-content-types'
+import { PathHelper } from '@sensenet/client-utils'
+// import { Created } from '@sensenet/repository-events'
 import { FullScreenLoader } from '../FullScreenLoader'
+import { useSelectionService } from '../../hooks'
 import { ItemType, Tree } from './tree'
 
 type TreeWithDataProps = {
@@ -13,12 +16,72 @@ let lastRequest: { path: string; lastIndex: number } | undefined
 
 const ITEM_THRESHOLD = 50
 
+const walkTree = (node: ItemType, callBack: (node: ItemType) => void) => {
+  if (node.children?.length) {
+    node.children.forEach(child => {
+      callBack(child)
+      walkTree(child, callBack)
+    })
+  }
+}
+
 export default function TreeWithData(props: TreeWithDataProps) {
   const repo = useRepository()
   const [itemCount, setItemCount] = useState<number>()
   const [treeData, setTreeData] = useState<ItemType>()
   const [isLoading, setIsLoading] = useState(false)
+  const selectionService = useSelectionService()
+  const eventHub = useRepositoryEvents()
   const logger = useLogger('tree-with-data')
+
+  useEffect(() => {
+    // const handleCreate = (createdContent: Created) => {
+    //   walkTree(treeData!, node => {
+    //     if (node.Id === (createdContent.content as GenericContent).ParentId) {
+    //       node.children = [...node.children!, createdContent.content]
+    //     }
+    //   })
+    //   setTreeData({ ...treeData! })
+    // }
+
+    const subscriptions = [
+      // eventHub.onCustomActionExecuted.subscribe(requestReload),
+      // eventHub.onContentCreated.subscribe(handleCreate),
+      // eventHub.onContentCopied.subscribe(handleCreate),
+      // eventHub.onContentMoved.subscribe(handleCreate),
+      // eventHub.onContentModified.subscribe(mod => {
+      //   if (children.some(c => c.Id === mod.content.Id)) {
+      //     requestReload()
+      //   }
+      // }),
+
+      // eventHub.onUploadFinished.subscribe(data => {
+      //   if (PathHelper.getParentPath(data.Url) === PathHelper.trimSlashes(currentContent.Path)) {
+      //     requestReload()
+      //   }
+      // }),
+      eventHub.onContentDeleted.subscribe(d => {
+        walkTree(treeData!, node => {
+          if (node.Path === PathHelper.getParentPath(d.contentData.Path)) {
+            node.children = node.children?.filter(n => n.Id !== d.contentData.Id)
+            if (selectionService.activeContent.getValue()?.Id === d.contentData.Id) {
+              selectionService.activeContent.setValue(node)
+            }
+          }
+        })
+        setTreeData({ ...treeData! })
+      }),
+    ]
+
+    return () => subscriptions.forEach(s => s.dispose())
+  }, [
+    eventHub.onContentDeleted,
+    treeData,
+    selectionService.activeContent,
+    eventHub.onContentCreated,
+    eventHub.onContentCopied,
+    eventHub.onContentMoved,
+  ])
 
   const loadCollection = useCallback(
     async (path: string, top: number, skip: number) => {
@@ -129,15 +192,6 @@ export default function TreeWithData(props: TreeWithDataProps) {
         }
       })
       setTreeData({ ...treeData! })
-    }
-  }
-
-  const walkTree = (node: ItemType, callBack: (node: ItemType) => void) => {
-    if (node.children?.length) {
-      node.children.forEach(child => {
-        callBack(child)
-        walkTree(child, callBack)
-      })
     }
   }
 
