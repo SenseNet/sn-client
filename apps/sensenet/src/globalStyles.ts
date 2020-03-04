@@ -18,7 +18,6 @@ export const globals = {
     drawerBackground: '#F8F8F8',
     textColor: 'rgba(0,0,0,0.87)',
     dialogBackground: '#F8F8F8',
-    dialogBorderColor: '#E2E2E2',
   },
   dark: {
     navMenuColor: 'rgba(255, 255, 255, 0.16)',
@@ -30,6 +29,11 @@ export const globals = {
 
 export const useGlobalStyles = makeStyles((theme: Theme) => {
   return createStyles({
+    '@global': {
+      a: {
+        textDecoration: 'unset',
+      },
+    },
     centered: {
       display: 'flex',
       justifyContent: 'center',

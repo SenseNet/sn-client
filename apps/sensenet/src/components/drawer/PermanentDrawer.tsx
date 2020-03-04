@@ -60,7 +60,8 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     navLinkActive: {
       opacity: 1,
-      '& .MuiListItem-root': { backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText },
+      '& .MuiListItem-root': { backgroundColor: theme.palette.primary.main },
+      '& .MuiTypography-root': { color: theme.palette.common.white },
       '& svg': {
         fill: theme.palette.common.white,
       },

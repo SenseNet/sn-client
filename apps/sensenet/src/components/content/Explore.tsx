@@ -7,11 +7,35 @@ import {
   CurrentContentProvider,
   LoadSettingsContextProvider,
 } from '@sensenet/hooks-react'
+import { createStyles, makeStyles } from '@material-ui/core'
+import clsx from 'clsx'
 import { useSelectionService } from '../../hooks'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { Tree } from '../tree/index'
 import { ContentList } from '../content-list/content-list'
 import { ResponsivePersonalSetttings } from '../../context'
+import { globals, useGlobalStyles } from '../../globalStyles'
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    exploreWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    breadcrumbsWrapper: {
+      height: globals.common.drawerItemHeight,
+      boxSizing: 'border-box',
+      borderBottom: '1px solid rgba(255, 255, 255, 0.11)',
+      paddingLeft: '15px',
+    },
+    treeAndDatagridWrapper: {
+      display: 'flex',
+      width: '100%',
+      height: `calc(100% - ${globals.common.drawerItemHeight}px)`,
+      position: 'relative',
+    },
+  })
+})
 
 export interface ExploreComponentProps {
   parent: number | string
@@ -24,22 +48,24 @@ export interface ExploreComponentProps {
 export const Explore: React.FunctionComponent<ExploreComponentProps> = props => {
   const selectionService = useSelectionService()
   const personalSettings = useContext(ResponsivePersonalSetttings)
+  const classes = useStyles()
+  const globalClasses = useGlobalStyles()
 
   return (
-    <div style={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column' }}>
+    <>
       <LoadSettingsContextProvider>
         <CurrentContentProvider idOrPath={props.parent}>
           <CurrentChildrenProvider>
             <CurrentAncestorsProvider root={props.rootPath}>
-              <div style={{ marginTop: '13px', paddingBottom: '12px', borderBottom: '1px solid rgba(128,128,128,.2)' }}>
+              <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
                 <ContentBreadcrumbs onItemClick={i => props.onNavigate(i.content)} />
               </div>
-              <div style={{ display: 'flex', width: '100%', height: 'calc(100% - 62px)', position: 'relative' }}>
+              <div className={classes.treeAndDatagridWrapper}>
                 <Tree
                   style={{
                     flexGrow: 1,
                     flexShrink: 0,
-                    borderRight: '1px solid rgba(128,128,128,.2)',
+                    borderRight: '1px solid (255, 255, 255, 0.11)',
                     overflow: 'auto',
                   }}
                   parentPath={props.rootPath || ConstantContent.PORTAL_ROOT.Path}
@@ -73,6 +99,6 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
           </CurrentChildrenProvider>
         </CurrentContentProvider>
       </LoadSettingsContextProvider>
-    </div>
+    </>
   )
 }

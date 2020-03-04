@@ -1,6 +1,6 @@
 import { deepMerge } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
-import { Button, FormControlLabel, Switch, Typography, useTheme } from '@material-ui/core'
+import { Button, createStyles, FormControlLabel, makeStyles, Switch, Typography, useTheme } from '@material-ui/core'
 import MonacoEditor from 'react-monaco-editor'
 import {
   CurrentContentContext,
@@ -9,17 +9,38 @@ import {
   useRepository,
   useRepositoryEvents,
 } from '@sensenet/hooks-react'
+import clsx from 'clsx'
 import { LocalizationContext, ResponsiveContext } from '../../context'
 import { setupModel } from '../../services/MonacoModels/PersonalSettingsModel'
 import { defaultSettings, PersonalSettings } from '../../services/PersonalSettings'
 import { RepositoryManager } from '../../services/RepositoryManager'
 import { useDialog } from '../dialogs'
+import { useGlobalStyles } from '../../globalStyles'
 import { TextEditor } from './TextEditor'
 
 const editorContent: any = {
   Type: 'PersonalSettings',
   Name: `PersonalSettings`,
 }
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    personalSettingsWrapper: {
+      display: 'flex',
+      flexDirection: 'row',
+      overflow: 'hidden',
+    },
+    monacoWrapper: {
+      height: '100%',
+      transition: 'width 200ms cubic-bezier(0.215, 0.610, 0.355, 1.000)',
+    },
+    typography: {
+      lineHeight: '60px',
+      height: '60px',
+      marginLeft: '2em',
+    },
+  })
+})
 
 export function SettingsEditor() {
   const [showDefaults, setShowDefaults] = useState(false)
@@ -33,6 +54,8 @@ export function SettingsEditor() {
   const platform = useContext(ResponsiveContext)
   const eventService = useRepositoryEvents()
   const logger = useLogger('PersonalSettingsEditor')
+  const classes = useStyles()
+  const globalClasses = useGlobalStyles()
 
   useEffect(() => {
     setupModel(localization.values, repo)
@@ -66,15 +89,14 @@ export function SettingsEditor() {
   return (
     <CurrentContentContext.Provider
       value={{ Id: 0, Type: 'PersonalSettings', Path: '', Name: localization.values.personalSettings.title }}>
-      <div style={{ display: 'flex', width: '100%', height: '100%', overflow: 'hidden', flexDirection: 'row' }}>
+      <div className={clsx(globalClasses.full, classes.personalSettingsWrapper)}>
         <div
+          className={classes.monacoWrapper}
           style={{
             width: showDefaults ? '50%' : '0',
-            height: '100%',
-            transition: 'width 200ms cubic-bezier(0.215, 0.610, 0.355, 1.000)',
             overflow: 'hidden',
           }}>
-          <Typography variant="button" style={{ lineHeight: '60px', height: '60px', marginLeft: '2em' }}>
+          <Typography variant="button" className={classes.typography}>
             {localization.values.personalSettings.defaults}
           </Typography>
           <MonacoEditor
@@ -92,10 +114,9 @@ export function SettingsEditor() {
           />
         </div>
         <div
+          className={classes.monacoWrapper}
           style={{
             width: showDefaults ? '50%' : '100%',
-            height: '100%',
-            transition: 'width 200ms cubic-bezier(0.215, 0.610, 0.355, 1.000)',
           }}>
           <TextEditor
             content={editorContent}

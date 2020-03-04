@@ -11,6 +11,7 @@ import {
 import { GenericContent } from '@sensenet/default-content-types'
 import { Repository } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
+import clsx from 'clsx'
 import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { useSelectionService } from '../../hooks'
@@ -18,6 +19,7 @@ import { SelectionControl } from '../SelectionControl'
 import { useDialog } from '../dialogs'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { DropFileArea } from '../DropFileArea'
+import { globals, useGlobalStyles } from '../../globalStyles'
 import { ContextMenuWrapper } from './context-menu-wrapper'
 import {
   ActionsField,
@@ -35,10 +37,18 @@ import {
 const useStyles = makeStyles(() => {
   return createStyles({
     tableWrapper: {
+      display: 'flex',
+      flex: 1,
       height: '100%',
-      overflow: 'auto',
       userSelect: 'none',
       outline: 'none',
+      position: 'relative',
+    },
+    breadcrumbsWrapper: {
+      height: globals.common.drawerItemHeight,
+      boxSizing: 'border-box',
+      borderBottom: '1px solid rgba(255, 255, 255, 0.11)',
+      paddingLeft: '15px',
     },
   })
 })
@@ -79,6 +89,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
   const loadSettings = useContext(LoadSettingsContext)
   const repo = useRepository()
   const classes = useStyles()
+  const globalClasses = useGlobalStyles()
   const { openDialog } = useDialog()
   const [selected, setSelected] = useState<GenericContent[]>([])
   const [activeContent, setActiveContent] = useState<GenericContent>(children[0])
@@ -390,7 +401,11 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
 
   return (
     <div style={{ ...props.style }} {...props.containerProps}>
-      {props.enableBreadcrumbs ? <ContentBreadcrumbs onItemClick={i => props.onParentChange(i.content)} /> : null}
+      {props.enableBreadcrumbs ? (
+        <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
+          <ContentBreadcrumbs onItemClick={i => props.onParentChange(i.content)} />
+        </div>
+      ) : null}
       <DropFileArea parentContent={parentContent} style={{ height: '100%', overflow: 'hidden' }}>
         <div
           className={classes.tableWrapper}

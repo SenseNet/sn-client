@@ -4,9 +4,9 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
+import { Typography } from '@material-ui/core'
 import { ContentContextMenu } from './context-menu/content-context-menu'
 import { DropFileArea } from './DropFileArea'
-import { Icon } from './Icon'
 
 export interface BreadcrumbItem<T extends GenericContent> {
   url: string
@@ -42,8 +42,9 @@ function BreadcrumbsComponent<T extends GenericContent>(props: BreadcrumbProps<T
                   setIsContextMenuOpened(true)
                   ev.preventDefault()
                 }}>
-                <Icon item={item.content} style={{ marginRight: '0.3em' }} />
-                {item.displayName}
+                <Typography variant="h6" style={{ textTransform: 'none' }}>
+                  {item.displayName}
+                </Typography>
               </Button>
             </Tooltip>
           </DropFileArea>
