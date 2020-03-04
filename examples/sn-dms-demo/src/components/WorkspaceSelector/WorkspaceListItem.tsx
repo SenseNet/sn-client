@@ -13,7 +13,7 @@ const styles = {
   listItem: {
     listStyleType: 'none',
     borderTop: 'solid 1px #2080aa',
-    padding: '12px 12px 12px 0px',
+    padding: '12px',
   },
   listItemRoot: {
     padding: 0,

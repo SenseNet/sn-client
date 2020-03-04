@@ -47,7 +47,6 @@ const mapDispatchToProps = {
 
 interface WorkspaceListState {
   workspaces: Workspace[]
-  orderedWsList: Workspace[]
   top: number
   term: string
 }
@@ -63,7 +62,6 @@ class WorkspaceList extends React.Component<
 > {
   public state = {
     workspaces: this.props.workspaces || [],
-    orderedWsList: [],
     top: 0,
     term: '',
   }
@@ -78,7 +76,6 @@ class WorkspaceList extends React.Component<
     return {
       ...lastState,
       workspaces: newProps.workspaces,
-      orderedWsList: [],
       term: newProps.term,
     }
   }
@@ -89,7 +86,6 @@ class WorkspaceList extends React.Component<
     this.props.closeDropDown(true)
   }
   public render() {
-    const { orderedWsList } = this.state
     const { classes, matches } = this.props
     return (
       <div>
@@ -105,7 +101,7 @@ class WorkspaceList extends React.Component<
           )}
           thumbMinSize={180}>
           <MenuList className={classes.workspaceList}>
-            {orderedWsList.map((workspace: Workspace) => (
+            {this.props.workspaces.map((workspace: Workspace) => (
               <WorkspaceListItem closeDropDown={this.props.closeDropDown} key={workspace.Id} workspace={workspace} />
             ))}
           </MenuList>
