@@ -13,7 +13,7 @@ import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import TreeWithData from '../tree/tree-with-data'
 
 export interface ExploreComponentProps {
-  parent: number | string
+  parentIdOrPath: number | string
   onNavigate: (newParent: GenericContent) => void
   onActivateItem: (item: GenericContent) => void
   fieldsToDisplay?: Array<keyof GenericContent>
@@ -31,7 +31,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column' }}>
       <LoadSettingsContextProvider>
-        <CurrentContentProvider idOrPath={props.parent}>
+        <CurrentContentProvider idOrPath={props.parentIdOrPath}>
           <CurrentChildrenProvider>
             <CurrentAncestorsProvider root={props.rootPath}>
               <div style={{ marginTop: '13px', paddingBottom: '12px', borderBottom: '1px solid rgba(128,128,128,.2)' }}>
@@ -44,6 +44,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                     props.onNavigate(item)
                   }}
                   parentPath={props.rootPath}
+                  activeItemIdOrPath={props.parentIdOrPath}
                 />
 
                 <ContentList
@@ -53,7 +54,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                   onParentChange={props.onNavigate}
                   onActivateItem={props.onActivateItem}
                   onActiveItemChange={item => selectionService.activeContent.setValue(item)}
-                  parentIdOrPath={props.parent}
+                  parentIdOrPath={props.parentIdOrPath}
                   onSelectionChange={sel => {
                     selectionService.selection.setValue(sel)
                   }}

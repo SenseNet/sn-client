@@ -10,6 +10,7 @@ import { ItemType, Tree } from './tree'
 type TreeWithDataProps = {
   onItemClick: (item: GenericContent) => void
   parentPath: string
+  activeItemIdOrPath: string | number
 }
 
 let lastRequest: { path: string; lastIndex: number } | undefined
@@ -174,6 +175,22 @@ export default function TreeWithData(props: TreeWithDataProps) {
     loadCollection,
     logger,
   ])
+
+  useEffect(() => {
+    const activeContent = selectionService.activeContent.getValue()
+    if (activeContent?.Id !== props.activeItemIdOrPath) {
+      loadActiveContent()
+    }
+
+    async function loadActiveContent() {
+      try {
+        const newActiveContent = await repo.load({ idOrPath: props.activeItemIdOrPath })
+        selectionService.activeContent.setValue(newActiveContent.d)
+      } catch (error) {
+        logger.warning({ message: `Couldn't load active content`, data: { idOrPath: props.activeItemIdOrPath } })
+      }
+    }
+  }, [logger, props.activeItemIdOrPath, repo, selectionService.activeContent])
 
   useEffect(() => {
     loadRoot()
