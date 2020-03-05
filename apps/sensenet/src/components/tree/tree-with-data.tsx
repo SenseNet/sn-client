@@ -73,7 +73,6 @@ export default function TreeWithData(props: TreeWithDataProps) {
       logger.debug({ message: `loadCollection failed to load from ${props.parentPath}` })
       return
     }
-    // ItemCount might change so we have to set it again
     setItemCount(result.d.__count)
     setTreeData({
       ...root.d,
@@ -180,31 +179,6 @@ export default function TreeWithData(props: TreeWithDataProps) {
     loadRoot()
   }, [loadRoot])
 
-  /**
-   * First thing we want to do is get the count for the collection
-   * to let virtual list know about the height of its container
-   */
-  useEffect(() => {
-    const ac = new AbortController()
-    async function getItemCount() {
-      try {
-        const count = await repo.count({
-          requestInit: {
-            signal: ac.signal,
-          },
-          path: props.parentPath,
-        })
-        setItemCount(count)
-      } catch (error) {
-        if (!ac.signal.aborted) {
-          logger.warning({ message: `Couldn't get the count for ${props.parentPath}`, data: error })
-        }
-      }
-    }
-    getItemCount()
-    return () => ac.abort()
-  }, [logger, props.parentPath, repo])
-
   const onItemClick = async (item: ItemType) => {
     // Do not expand File types, we don't want to show the Previews folder under it
     if (item.Type === 'File' || !treeData) {
@@ -227,7 +201,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
     })
   }
 
-  if (!itemCount || !treeData) {
+  if (itemCount == null || !treeData) {
     return <FullScreenLoader />
   }
 
