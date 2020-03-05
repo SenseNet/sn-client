@@ -19,7 +19,7 @@ export const PleaseLogin: React.FunctionComponent = props => {
       To see this control in action, please login at{' '}
       <a target="_blank" href="https://admin.sensenet.com/" rel="noopener noreferrer">
         https://admin.sensenet.com/
-      </a>
+      </a>{' '}
       to https://dev.demo.sensenet.com with one of the given demo users.
     </div>
   )
