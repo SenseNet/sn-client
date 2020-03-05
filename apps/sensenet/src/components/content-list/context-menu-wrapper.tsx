@@ -6,7 +6,7 @@ export const ContextMenuWrapper: React.FC<{ onContextMenu: (ev: React.MouseEvent
   const globalClasses = useGlobalStyles()
   return (
     <div
-      className={clsx(globalClasses.centered, globalClasses.virtualizedCellStyle)}
+      className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)}
       onContextMenu={ev => props.onContextMenu(ev)}>
       {props.children}
     </div>

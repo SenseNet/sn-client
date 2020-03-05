@@ -123,9 +123,9 @@ const Setup: React.StatelessComponent = () => {
 
   return (
     <div className={globalClasses.contentWrapper}>
-      <Typography variant="h6" className={globalClasses.contentTitle}>
-        Setup
-      </Typography>
+      <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)} style={{ display: 'grid' }}>
+        <Typography variant="h6">Setup</Typography>
+      </div>
       {wellKnownSettings.length ? (
         <div className={clsx(classes.cardWrapper, globalClasses.centered)}>
           <ContentContextMenu

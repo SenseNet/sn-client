@@ -39,6 +39,11 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
       justifyContent: 'center',
       alignItems: 'center',
     },
+    centeredLeft: {
+      display: 'flex',
+      justifyContent: 'left',
+      alignItems: 'center',
+    },
     centeredHorizontal: {
       display: 'flex',
       justifyContent: 'center',
@@ -59,11 +64,13 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
       flexFlow: 'column',
       height: '100%',
       width: '100%',
-      padding: '30px 0 0 30px',
+      padding: '0 0 0 30px',
       overflowY: 'auto',
     },
     contentTitle: {
-      padding: '0 0 48px 15px',
+      height: globals.common.drawerItemHeight,
+      minHeight: globals.common.drawerItemHeight,
+      paddingLeft: '15px',
     },
     drawerButton: {
       width: '32px',

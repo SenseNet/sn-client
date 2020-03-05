@@ -7,9 +7,11 @@ import MonacoEditor from 'react-monaco-editor'
 import { Prompt } from 'react-router'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { Repository } from '@sensenet/client-core'
+import clsx from 'clsx'
 import { ResponsiveContext } from '../../context'
 import { useContentRouting, useLocalization, useTheme } from '../../hooks'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
+import { globals, useGlobalStyles } from '../../globalStyles'
 
 export const getMonacoModelUri = (content: GenericContent, repo: Repository, action?: ActionModel) => {
   if (repo.schemas.isContentFromType<Settings>(content, 'Settings') || content.Type === 'PersonalSettings') {
@@ -51,6 +53,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   const [hasChanges, setHasChanges] = useState(false)
   const logger = useLogger('TextEditor')
   const [error, setError] = useState<Error | undefined>()
+  const globalClasses = useGlobalStyles()
 
   const saveContent = async () => {
     try {
@@ -146,7 +149,13 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
           }
         }
       }}>
-      <div style={{ display: 'flex', justifyContent: props.showBreadCrumb ? 'space-between' : 'flex-end' }}>
+      <div
+        className={clsx([globalClasses.centeredVertical])}
+        style={{
+          height: globals.common.drawerItemHeight,
+          paddingLeft: '15px',
+          justifyContent: props.showBreadCrumb ? 'space-between' : 'flex-end',
+        }}>
         {props.showBreadCrumb && <ContentBreadcrumbs />}
         <div
           style={{

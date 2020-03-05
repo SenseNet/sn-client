@@ -8,7 +8,7 @@ import { useGlobalStyles } from '../../globalStyles'
 export const ReferenceField: React.FC<{ content: GenericContent }> = ({ content }) => {
   const globalClasses = useGlobalStyles()
   return (
-    <TableCell component="div" className={clsx(globalClasses.centered, globalClasses.virtualizedCellStyle)}>
+    <TableCell component="div" className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)}>
       {content.Name !== 'Somebody' ? (
         <div className={globalClasses.centeredVertical}>
           <Icon item={content} />

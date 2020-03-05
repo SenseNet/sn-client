@@ -6,7 +6,7 @@ import { useGlobalStyles } from '../../globalStyles'
 export const PhoneField: React.FC<{ phoneNo: string }> = ({ phoneNo }) => {
   const globalClasses = useGlobalStyles()
   return (
-    <TableCell component="div" className={clsx(globalClasses.centered, globalClasses.virtualizedCellStyle)}>
+    <TableCell component="div" className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)}>
       <a href={`tel:${phoneNo}`}>{phoneNo}</a>
     </TableCell>
   )

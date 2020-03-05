@@ -16,6 +16,7 @@ import {
   useRepository,
 } from '@sensenet/hooks-react'
 import { createStyles, makeStyles } from '@material-ui/core'
+import clsx from 'clsx'
 import { ResponsivePersonalSetttings } from '../../context'
 import { useContentRouting, useLocalization, useSelectionService } from '../../hooks'
 import { isReferenceField } from '../content-list'
@@ -121,9 +122,9 @@ export const Search = () => {
 
   return (
     <div className={globalClasses.contentWrapper}>
-      <Typography variant="h6" className={globalClasses.contentTitle}>
-        {queryData.title || localization.title}
-      </Typography>
+      <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}>
+        <Typography variant="h6">{queryData.title || localization.title}</Typography>
+      </div>
       <div className={globalClasses.centeredVertical}>
         {queryData.hideSearchBar ? null : (
           <div className={classes.searchBar}>

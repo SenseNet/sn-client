@@ -16,8 +16,10 @@ import {
   useRepository,
   useRepositoryEvents,
 } from '@sensenet/hooks-react'
+import clsx from 'clsx'
 import { useLocalization } from '../../hooks'
 import { ContentList } from '../content-list/content-list'
+import { useGlobalStyles } from '../../globalStyles'
 import { encodeQueryData } from '.'
 
 const Search: React.FunctionComponent<RouteComponentProps> = props => {
@@ -33,6 +35,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
   const loadSettingsContext = useContext(LoadSettingsContext)
 
   const eventHub = useRepositoryEvents()
+  const globalClasses = useGlobalStyles()
 
   useEffect(() => {
     const subscriptions = [
@@ -68,9 +71,11 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
       .then(result => setQueries(result.d.results))
   }, [reloadToken, loadSettingsContext.loadChildrenSettings, repo, onlyPublic])
   return (
-    <div style={{ padding: '1em', margin: '1em', overflow: 'hidden' }}>
+    <div style={{ padding: '0 15px', overflow: 'hidden' }}>
       <>
-        <Typography variant="h5">{localization.savedQueries}</Typography>
+        <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}>
+          <Typography variant="h6">{localization.savedQueries}</Typography>
+        </div>
         <FormControlLabel
           label={localization.onlyPublic}
           control={
@@ -90,7 +95,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
               <CurrentAncestorsContext.Provider value={[]}>
                 <ContentList
                   style={{
-                    height: 'calc(100% - 75px)',
+                    height: '(100% - 75px)',
                     overflow: 'auto',
                   }}
                   enableBreadcrumbs={false}

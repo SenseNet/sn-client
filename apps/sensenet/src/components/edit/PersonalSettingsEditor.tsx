@@ -15,7 +15,7 @@ import { setupModel } from '../../services/MonacoModels/PersonalSettingsModel'
 import { defaultSettings, PersonalSettings } from '../../services/PersonalSettings'
 import { RepositoryManager } from '../../services/RepositoryManager'
 import { useDialog } from '../dialogs'
-import { useGlobalStyles } from '../../globalStyles'
+import { globals, useGlobalStyles } from '../../globalStyles'
 import { TextEditor } from './TextEditor'
 
 const editorContent: any = {
@@ -36,7 +36,7 @@ const useStyles = makeStyles(() => {
     },
     typography: {
       lineHeight: '60px',
-      height: '60px',
+      height: globals.common.drawerItemHeight,
       marginLeft: '2em',
     },
   })
@@ -89,52 +89,55 @@ export function SettingsEditor() {
   return (
     <CurrentContentContext.Provider
       value={{ Id: 0, Type: 'PersonalSettings', Path: '', Name: localization.values.personalSettings.title }}>
-      <div className={clsx(globalClasses.full, classes.personalSettingsWrapper)}>
-        <div
-          className={classes.monacoWrapper}
-          style={{
-            width: showDefaults ? '50%' : '0',
-            overflow: 'hidden',
-          }}>
-          <Typography variant="button" className={classes.typography}>
-            {localization.values.personalSettings.defaults}
-          </Typography>
-          <MonacoEditor
-            theme={theme.palette.type === 'dark' ? 'vs-dark' : 'vs-light'}
-            width="100%"
-            language={'json'}
-            value={JSON.stringify(defaultSettings, undefined, 2)}
-            options={{
-              readOnly: true,
-              automaticLayout: true,
-              minimap: {
-                enabled: platform === 'desktop' ? true : false,
-              },
-            }}
-          />
-        </div>
-        <div
-          className={classes.monacoWrapper}
-          style={{
-            width: showDefaults ? '50%' : '100%',
-          }}>
-          <TextEditor
-            content={editorContent}
-            loadContent={async () => JSON.stringify(settings, undefined, 3)}
-            additionalButtons={
-              <>
-                <FormControlLabel
-                  control={<Switch onClick={() => setShowDefaults(!showDefaults)} />}
-                  label={localization.values.personalSettings.showDefaults}
-                />
-                <Button onClick={openAreYouSureDialog}>{localization.values.personalSettings.restoreDefaults}</Button>
-              </>
-            }
-            saveContent={async (_c, v) => {
-              service.setPersonalSettingsValue(deepMerge(JSON.parse(v)))
-            }}
-            showBreadCrumb={true}
-          />
+      <div style={{ position: 'relative', width: '100%', height: '100%', boxSizing: 'border-box' }}>
+        <div className={clsx(globalClasses.full, classes.personalSettingsWrapper)}>
+          <div
+            className={classes.monacoWrapper}
+            style={{
+              width: showDefaults ? '50%' : '0',
+              minWidth: showDefaults ? '50%' : '0',
+              overflow: 'hidden',
+            }}>
+            <Typography variant="button" className={classes.typography}>
+              {localization.values.personalSettings.defaults}
+            </Typography>
+            <MonacoEditor
+              theme={theme.palette.type === 'dark' ? 'vs-dark' : 'vs-light'}
+              width="100%"
+              language={'json'}
+              value={JSON.stringify(defaultSettings, undefined, 2)}
+              options={{
+                readOnly: true,
+                automaticLayout: true,
+                minimap: {
+                  enabled: platform === 'desktop' ? true : false,
+                },
+              }}
+            />
+          </div>
+          <div
+            className={classes.monacoWrapper}
+            style={{
+              width: showDefaults ? '50%' : '100%',
+            }}>
+            <TextEditor
+              content={editorContent}
+              loadContent={async () => JSON.stringify(settings, undefined, 3)}
+              additionalButtons={
+                <>
+                  <FormControlLabel
+                    control={<Switch onClick={() => setShowDefaults(!showDefaults)} />}
+                    label={localization.values.personalSettings.showDefaults}
+                  />
+                  <Button onClick={openAreYouSureDialog}>{localization.values.personalSettings.restoreDefaults}</Button>
+                </>
+              }
+              saveContent={async (_c, v) => {
+                service.setPersonalSettingsValue(deepMerge(JSON.parse(v)))
+              }}
+              showBreadCrumb={true}
+            />
+          </div>
         </div>
       </div>
     </CurrentContentContext.Provider>

@@ -221,11 +221,13 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = props => {
         variant="head"
         style={{
           height: headerHeight || 42,
-          width: props.displayRowCheckbox ? (autoSizerWidth - 48) / (columnCount - 1) : autoSizerWidth / columnCount,
+          width: props.displayRowCheckbox
+            ? (autoSizerWidth - 48 - 10) / (columnCount - 1)
+            : autoSizerWidth / columnCount,
           display: 'flex',
-          padding: columnName === 'DisplayName' || columnName === 'Description' ? 0 : '0 0 0 24px',
+          padding: columnName === 'Actions' ? '0 0 0 24px' : 0,
           alignItems: 'center',
-          justifyContent: columnName === 'DisplayName' || columnName === 'Description' ? 'left' : 'center',
+          justifyContent: columnName === 'Actions' ? 'center' : 'left',
         }}
         className={columnName as string}>
         <Tooltip title={description}>
