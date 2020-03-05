@@ -32,6 +32,7 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
     '@global': {
       a: {
         textDecoration: 'unset',
+        color: 'inherit',
       },
     },
     centered: {

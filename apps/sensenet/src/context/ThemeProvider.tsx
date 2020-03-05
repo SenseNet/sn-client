@@ -34,10 +34,14 @@ export const ThemeProvider: React.FunctionComponent = props => {
           secondary: pageTheme === 'light' ? '#000000' : '#FFFFFF',
         },
         primary: {
-          main: '#26A69A',
+          light: '#80cbc4',
+          main: '#26a69a',
+          dark: '#00796b',
         },
         secondary: {
+          light: '#90caf9',
           main: '#1976d2',
+          dark: '#1565c0',
         },
       },
       overrides: {
@@ -56,6 +60,12 @@ export const ThemeProvider: React.FunctionComponent = props => {
           input: {
             border: '1px solid #505050',
             borderRadius: '4px',
+            padding: '6px 0 7px 4px',
+          },
+        },
+        MuiInputLabel: {
+          root: {
+            paddingLeft: '4px',
           },
         },
         MuiListItemIcon: {

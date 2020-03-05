@@ -83,7 +83,10 @@ export function InfoBox({ onSelect }: InfoBoxProps) {
         </Typography>
         <Typography className={classes.marginBottom}>
           If you are not registered you can log in to our{' '}
-          <a href="https://www.sensenet.com/try-it/1000-content-demo" target="blank">
+          <a
+            style={{ textDecoration: 'underline' }}
+            href="https://www.sensenet.com/try-it/1000-content-demo"
+            target="blank">
             public demo repository
           </a>{' '}
           with one of our built-in users with different roles.

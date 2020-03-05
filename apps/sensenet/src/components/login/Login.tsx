@@ -21,6 +21,22 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: 'column',
       alignItems: 'center',
     },
+    loginInput: {
+      '& div': {
+        '&::before': {
+          borderBottom: 'none',
+        },
+        '&::after': {
+          borderBottom: 'none',
+        },
+        '&:hover:not(.Mui-disabled):before': {
+          borderBottom: 'none',
+        },
+      },
+      '& input:focus': {
+        borderColor: theme.palette.primary.main,
+      },
+    },
   }),
 )
 
@@ -206,6 +222,7 @@ export const Login = () => {
                   clearInputError(ev)
                   setUserName(ev.target.value)
                 }}
+                className={classes.loginInput}
               />
               <TextField
                 id="password"
@@ -224,6 +241,7 @@ export const Login = () => {
                   clearInputError(ev)
                   setPassword(ev.target.value)
                 }}
+                className={classes.loginInput}
               />
               <TextField
                 id="repository"
@@ -242,6 +260,7 @@ export const Login = () => {
                   clearInputError(ev)
                   setUrl(ev.target.value)
                 }}
+                className={classes.loginInput}
               />
               {error ? <Typography style={{ color: theme.palette.error.main }}>{error}</Typography> : null}
               <Button
