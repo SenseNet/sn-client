@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useLogger, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
 import { GenericContent } from '@sensenet/default-content-types'
 import { PathHelper } from '@sensenet/client-utils'
-// import { Created } from '@sensenet/repository-events'
+import { Created } from '@sensenet/repository-events'
 import { FullScreenLoader } from '../FullScreenLoader'
 import { useSelectionService } from '../../hooks'
 import { ItemType, Tree } from './tree'
@@ -33,55 +33,6 @@ export default function TreeWithData(props: TreeWithDataProps) {
   const selectionService = useSelectionService()
   const eventHub = useRepositoryEvents()
   const logger = useLogger('tree-with-data')
-
-  useEffect(() => {
-    // const handleCreate = (createdContent: Created) => {
-    //   walkTree(treeData!, node => {
-    //     if (node.Id === (createdContent.content as GenericContent).ParentId) {
-    //       node.children = [...node.children!, createdContent.content]
-    //     }
-    //   })
-    //   setTreeData({ ...treeData! })
-    // }
-
-    const subscriptions = [
-      // eventHub.onCustomActionExecuted.subscribe(requestReload),
-      // eventHub.onContentCreated.subscribe(handleCreate),
-      // eventHub.onContentCopied.subscribe(handleCreate),
-      // eventHub.onContentMoved.subscribe(handleCreate),
-      // eventHub.onContentModified.subscribe(mod => {
-      //   if (children.some(c => c.Id === mod.content.Id)) {
-      //     requestReload()
-      //   }
-      // }),
-
-      // eventHub.onUploadFinished.subscribe(data => {
-      //   if (PathHelper.getParentPath(data.Url) === PathHelper.trimSlashes(currentContent.Path)) {
-      //     requestReload()
-      //   }
-      // }),
-      eventHub.onContentDeleted.subscribe(d => {
-        walkTree(treeData!, node => {
-          if (PathHelper.trimSlashes(node.Path) === PathHelper.getParentPath(d.contentData.Path)) {
-            node.children = node.children?.filter(n => n.Id !== d.contentData.Id)
-            if (selectionService.activeContent.getValue()?.Id === d.contentData.Id) {
-              selectionService.activeContent.setValue(node)
-            }
-          }
-        })
-        setTreeData({ ...treeData! })
-      }),
-    ]
-
-    return () => subscriptions.forEach(s => s.dispose())
-  }, [
-    eventHub.onContentDeleted,
-    treeData,
-    selectionService.activeContent,
-    eventHub.onContentCreated,
-    eventHub.onContentCopied,
-    eventHub.onContentMoved,
-  ])
 
   const loadCollection = useCallback(
     async (path: string, top: number, skip: number) => {
@@ -114,25 +65,120 @@ export default function TreeWithData(props: TreeWithDataProps) {
     [logger, repo],
   )
 
-  useEffect(() => {
-    async function getData() {
-      const root = await repo.load({ idOrPath: props.parentPath })
-      const result = await loadCollection(props.parentPath, ITEM_THRESHOLD, 0)
+  const loadRoot = useCallback(async () => {
+    const root = await repo.load({ idOrPath: props.parentPath })
+    const result = await loadCollection(props.parentPath, ITEM_THRESHOLD, 0)
+
+    if (!result) {
+      logger.debug({ message: `loadCollection failed to load from ${props.parentPath}` })
+      return
+    }
+    // ItemCount might change so we have to set it again
+    setItemCount(result.d.__count)
+    setTreeData({
+      ...root.d,
+      children: result.d.results,
+      hasNextPage: result.d.__count > result.d.results.length,
+      expanded: true,
+    })
+  }, [loadCollection, logger, props.parentPath, repo])
+
+  const loadMoreItems = useCallback(
+    async (startIndex: number, path = props.parentPath) => {
+      // Do not load duplicate request
+      if (lastRequest?.lastIndex === startIndex && lastRequest.path === path) {
+        return
+      }
+      lastRequest = { lastIndex: startIndex, path }
+      const result = await loadCollection(path, ITEM_THRESHOLD, startIndex)
 
       if (!result) {
         logger.debug({ message: `loadCollection failed to load from ${props.parentPath}` })
         return
       }
 
-      setTreeData({
-        ...root.d,
-        children: result.d.results,
-        hasNextPage: result.d.__count > result.d.results.length,
-        expanded: true,
-      })
+      // load more items under root
+      if (path === props.parentPath) {
+        setTreeData(prevItem => {
+          if (prevItem && prevItem.children) {
+            return {
+              ...prevItem,
+              children: [...prevItem.children, ...result.d.results],
+              hasNextPage: result.d.__count > result.d.results.length,
+            }
+          }
+        })
+      } else {
+        // load more items under tree node
+        walkTree(treeData!, node => {
+          if (node.Path === path && node.children) {
+            node.children = [...node.children, ...result.d.results]
+            node.hasNextPage = result.d.__count > node.children.length
+          }
+        })
+        setTreeData({ ...treeData! })
+      }
+    },
+    [loadCollection, logger, props.parentPath, treeData],
+  )
+
+  useEffect(() => {
+    const handleCreate = (c: Created) => {
+      // we need to reset the lastRequest object so we can make the same request again to get updated data
+      lastRequest = undefined
+      if ((c.content as GenericContent).ParentId === treeData?.Id) {
+        loadRoot()
+      } else {
+        walkTree(treeData!, async node => {
+          if ((c.content as GenericContent).ParentId === node.Id) {
+            const result = await loadCollection(node.Path, ITEM_THRESHOLD, 0)
+            if (!result) {
+              logger.debug({ message: `loadCollection failed to load from ${node.Path}` })
+              return
+            }
+            node.children = result.d.results
+            node.hasNextPage = result.d.__count > node.children.length
+            setTreeData({ ...treeData! })
+          }
+        })
+      }
     }
-    getData()
-  }, [loadCollection, logger, props.parentPath, repo])
+
+    const subscriptions = [
+      eventHub.onContentCreated.subscribe(handleCreate),
+      eventHub.onContentCopied.subscribe(handleCreate),
+      eventHub.onContentMoved.subscribe(handleCreate),
+      eventHub.onContentModified.subscribe(handleCreate),
+      eventHub.onContentDeleted.subscribe(d => {
+        walkTree(treeData!, node => {
+          if (PathHelper.trimSlashes(node.Path) === PathHelper.getParentPath(d.contentData.Path)) {
+            node.children = node.children?.filter(n => n.Id !== d.contentData.Id)
+            if (selectionService.activeContent.getValue()?.Id === d.contentData.Id) {
+              selectionService.activeContent.setValue(node)
+            }
+          }
+        })
+        setTreeData({ ...treeData! })
+      }),
+    ]
+
+    return () => subscriptions.forEach(s => s.dispose())
+  }, [
+    treeData,
+    eventHub.onContentDeleted,
+    selectionService.activeContent,
+    eventHub.onContentCreated,
+    eventHub.onContentCopied,
+    eventHub.onContentMoved,
+    eventHub.onContentModified,
+    loadRoot,
+    loadCollection,
+    logger,
+  ])
+
+  useEffect(() => {
+    loadRoot()
+  }, [loadRoot])
 
   /**
    * First thing we want to do is get the count for the collection
@@ -158,42 +204,6 @@ export default function TreeWithData(props: TreeWithDataProps) {
     getItemCount()
     return () => ac.abort()
   }, [logger, props.parentPath, repo])
-
-  const loadMoreItems = async (startIndex: number, path = props.parentPath) => {
-    // Do not load duplicate request
-    if (lastRequest?.lastIndex === startIndex && lastRequest.path === path) {
-      return
-    }
-    lastRequest = { lastIndex: startIndex, path }
-    const result = await loadCollection(path, ITEM_THRESHOLD, startIndex)
-
-    if (!result) {
-      logger.debug({ message: `loadCollection failed to load from ${props.parentPath}` })
-      return
-    }
-
-    // load more items under root
-    if (path === props.parentPath) {
-      setTreeData(prevItem => {
-        if (prevItem && prevItem.children) {
-          return {
-            ...prevItem,
-            children: [...prevItem.children, ...result.d.results],
-            hasNextPage: result.d.__count > result.d.results.length,
-          }
-        }
-      })
-    } else {
-      // load more items under tree node
-      walkTree(treeData!, node => {
-        if (node.Path === path && node.children) {
-          node.children = [...node.children, ...result.d.results]
-          node.hasNextPage = result.d.__count > node.children.length
-        }
-      })
-      setTreeData({ ...treeData! })
-    }
-  }
 
   const onItemClick = async (item: ItemType) => {
     // Do not expand File types, we don't want to show the Previews folder under it
