@@ -598,7 +598,7 @@ export const share = (options: SharingOptions) => ({
       identity: options.identity,
       sharingLevel: options.sharingLevel,
       sharingMode: options.sharingMode,
-      sendNotification: options.sendNotification || true,
+      sendNotification: options.sendNotification ?? true,
     }),
 })
 
