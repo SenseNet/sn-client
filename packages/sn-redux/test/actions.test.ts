@@ -157,6 +157,7 @@ const sharingResponse = {
   json: async () => {
     return {
       Token: 'devdog@sensenet.com',
+      Id: 11,
     }
   },
 } as Response
@@ -982,7 +983,7 @@ describe('Actions', () => {
     describe('serviceChecks()', () => {
       describe('Given repository.share() resolves', () => {
         let data: ODataSharingResponse
-        const expectedResult = { Token: 'devdog@sensenet.com' }
+        const expectedResult = { Token: 'devdog@sensenet.com', Id: 11 }
         beforeEach(async () => {
           data = await Actions.share({
             identity: 'devdog@sensenet.com',
@@ -1000,6 +1001,30 @@ describe('Actions', () => {
               content: { Id: 42 } as GenericContent,
             }),
           ).toHaveProperty('type', 'SHARE')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(expectedResult)
+        })
+      })
+    })
+  })
+  describe('remove sharing', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => sharingResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.removeSharing({ Id: 42 } as GenericContent, 11).type).toBe('REMOVE_SHARING')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.removeSharing() resolves', () => {
+        let data: ODataSharingResponse
+        const expectedResult = { Token: 'devdog@sensenet.com', Id: 11 }
+        beforeEach(async () => {
+          data = await Actions.removeSharing({ Id: 42 } as GenericContent, 11).payload(repo)
+        })
+        it('should return a REMOVE_SHARING action', () => {
+          expect(Actions.removeSharing({ Id: 42 } as GenericContent, 11)).toHaveProperty('type', 'REMOVE_SHARING')
         })
         it('should return mockdata', () => {
           expect(data).toEqual(expectedResult)

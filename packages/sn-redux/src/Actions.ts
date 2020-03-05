@@ -588,6 +588,7 @@ export const getSchema = () => ({
 
 /**
  * Action creator for sharing a content
+ * @param options object with the sharing options(identity, level, mode, etc).
  */
 export const share = (options: SharingOptions) => ({
   type: 'SHARE',
@@ -602,7 +603,26 @@ export const share = (options: SharingOptions) => ({
 })
 
 /**
+ * Action creator for remove a sharing entry
+ * @param content Content which holds the sharing entry.
+ * @param id Id of the sharing entry to delete.
+ */
+export const removeSharing = (content: GenericContent, id: number) => ({
+  type: 'REMOVE_SHARING',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath: content.Id,
+      name: 'RemoveSharing',
+      method: 'POST',
+      body: {
+        id,
+      },
+    }),
+})
+
+/**
  * Action creator for getting sharing entries
+ * @param idOrPath Id or Path of the content.
  */
 export const getSharingEntries = (idOrPath: number | string) => ({
   type: 'GET_SHARING_ENTRIES',
