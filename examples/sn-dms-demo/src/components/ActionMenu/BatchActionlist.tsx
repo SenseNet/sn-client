@@ -174,6 +174,7 @@ class BatchActionlist extends React.Component<
         )
         break
       case 'CopyBatch':
+      case 'CopyTo':
         this.handleClose()
         this.props.openPicker(
           <PathPickerDialog
