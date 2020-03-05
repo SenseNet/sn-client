@@ -4,7 +4,7 @@ export const PleaseLogin: React.FunctionComponent = props => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   useEffect(() => {
     async function checkIsLoggedIn() {
-      const response = await window.fetch('https://dev.demo.sensenet.com/odata.svc/login', {
+      const response = await window.fetch('https://dev.demo.sensenet.com/odata.svc/Root/Content', {
         credentials: 'include',
       })
       setIsLoggedIn(response.ok)
