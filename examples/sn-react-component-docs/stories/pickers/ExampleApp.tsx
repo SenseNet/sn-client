@@ -42,6 +42,7 @@ export const ExampleApp = () => {
 
 export const ExampleAppWithHook = () => {
   const { items, selectedItem, setSelectedItem, path, navigateTo, reload } = useListPicker<GenericContentWithIsParent>({
+    currentPath: '/Root/Content',
     repository: testRepository,
     stateReducer: (_state, action) => {
       if (action.type === SET_SELECTED_ITEM && action.payload && action.payload.isParent) {
