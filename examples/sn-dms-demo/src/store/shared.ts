@@ -1,6 +1,6 @@
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { GenericContent, User } from '@sensenet/default-content-types'
-import { createAction, deleteContent, isFromAction, PromiseReturns, updateContent } from '@sensenet/redux'
+import { Actions, createAction, isFromAction } from '@sensenet/redux'
 import { Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { rootStateType } from './rootReducer'
@@ -80,7 +80,7 @@ export const shared: Reducer<SharedItemsType> = (
     return {
       ...state,
       sharedItems: state.sharedItems.map((c: GenericContent) => {
-        if (c.Id === (action.result as PromiseReturns<typeof updateContent>).d.Id) {
+        if (c.Id === (action.result as Actions.PromiseReturns<typeof Actions.updateContent>).d.Id) {
           return action.result.d
         }
         return c
@@ -89,7 +89,7 @@ export const shared: Reducer<SharedItemsType> = (
   }
   /** todo: auto-generated success action from @sn/redux */
   if (action.type === 'DELETE_CONTENT_SUCCESS') {
-    const deletedIds = (action.result as PromiseReturns<typeof deleteContent>).d.results.map(d => d.Id)
+    const deletedIds = (action.result as Actions.PromiseReturns<typeof Actions.deleteContent>).d.results.map(d => d.Id)
     return {
       ...state,
       sharedItems: [...state.sharedItems.filter((c: GenericContent) => !(deletedIds as any).includes(c.Id))],
