@@ -317,7 +317,7 @@ export class Repository implements Disposable {
         content: options.content,
         level: options.sharingLevel,
         mode: options.sharingMode,
-        sendNotification: options.sendNotification || true,
+        sendNotification: options.sendNotification ?? true,
       },
     })
   }

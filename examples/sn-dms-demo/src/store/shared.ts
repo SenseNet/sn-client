@@ -1,7 +1,6 @@
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { GenericContent, User } from '@sensenet/default-content-types'
-import { createAction, isFromAction } from '@sensenet/redux'
-import { deleteContent, PromiseReturns, updateContent } from '@sensenet/redux/dist/Actions'
+import { createAction, deleteContent, isFromAction, PromiseReturns, updateContent } from '@sensenet/redux'
 import { Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { rootStateType } from './rootReducer'
