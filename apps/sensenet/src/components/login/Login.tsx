@@ -268,7 +268,8 @@ export const Login = () => {
                 fullWidth={true}
                 variant="contained"
                 color="primary"
-                type="submit">
+                type="submit"
+                style={{ marginTop: '30px' }}>
                 <Typography variant="button">{localization.loginButtonTitle}</Typography>
               </Button>
             </form>

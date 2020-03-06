@@ -262,6 +262,7 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = props => {
           rowHeight={tableProps.rowHeight}
           gridStyle={{
             direction: 'inherit',
+            outline: 'none',
           }}
           headerHeight={tableProps.headerHeight || 42}
           {...tableProps}

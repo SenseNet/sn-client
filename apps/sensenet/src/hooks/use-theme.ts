@@ -2,8 +2,9 @@ import { useContext } from 'react'
 import { ThemeContext } from '../context'
 
 export const useTheme = () => {
-  if (!ThemeContext) {
+  const context = useContext(ThemeContext)
+  if (!context) {
     throw new Error('ThemeContext is not provided')
   }
-  return useContext(ThemeContext)
+  return context
 }

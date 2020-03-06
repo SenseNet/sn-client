@@ -36,6 +36,9 @@ const styles = {
   iconButton: {
     padding: undefined,
     color: globals.common.headerText,
+    '&:hover': {
+      backgroundColor: 'initial',
+    },
   },
   comboBox: {
     overflow: 'visible',

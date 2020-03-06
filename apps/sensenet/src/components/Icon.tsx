@@ -85,7 +85,7 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
   {
     get: (item, options) =>
-      options.repo.schemas.isContentFromType<File>(item, 'File') && item.PageCount ? (
+      options.repo.schemas.isContentFromType<File>(item, 'File') && item.PageCount && item.PageCount > 0 ? (
         !item.Path.includes('Localization') ? (
           <img
             width={(options.style && options.style.width) || 32}

@@ -58,7 +58,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
   useEffect(() => {
     repo
       .executeAction<undefined, { d: { results: Query[] } }>({
-        idOrPath: ConstantContent.PORTAL_ROOT.Id,
+        idOrPath: '/Root/Content',
         name: 'GetQueries',
         method: 'GET',
         oDataOptions: {
@@ -71,10 +71,10 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
       .then(result => setQueries(result.d.results))
   }, [reloadToken, loadSettingsContext.loadChildrenSettings, repo, onlyPublic])
   return (
-    <div style={{ padding: '0 15px', overflow: 'hidden' }}>
+    <div style={{ padding: '0 15px', overflow: 'hidden', height: '100%' }}>
       <>
         <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}>
-          <Typography variant="h6">{localization.savedQueries}</Typography>
+          <span style={{ fontSize: '20px' }}>{localization.savedQueries}</span>
         </div>
         <FormControlLabel
           label={localization.onlyPublic}
@@ -95,7 +95,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
               <CurrentAncestorsContext.Provider value={[]}>
                 <ContentList
                   style={{
-                    height: '(100% - 75px)',
+                    height: 'calc(100% - 107px)',
                     overflow: 'auto',
                   }}
                   enableBreadcrumbs={false}

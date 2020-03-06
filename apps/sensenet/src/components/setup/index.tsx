@@ -96,6 +96,7 @@ const Setup: React.StatelessComponent = () => {
   const contentRouter = useContentRouting()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
+  const localizationDrawerTitles = useLocalization().drawer.titles
 
   const [wellKnownSettings, setWellKnownSettings] = useState<Settings[]>([])
   const [settings, setSettings] = useState<Settings[]>([])
@@ -124,7 +125,7 @@ const Setup: React.StatelessComponent = () => {
   return (
     <div className={globalClasses.contentWrapper}>
       <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)} style={{ display: 'grid' }}>
-        <Typography variant="h6">Setup</Typography>
+        <span style={{ fontSize: '20px' }}>{localizationDrawerTitles.Setup}</span>
       </div>
       {wellKnownSettings.length ? (
         <div className={clsx(classes.cardWrapper, globalClasses.centered)}>

@@ -123,7 +123,7 @@ export const Search = () => {
   return (
     <div className={globalClasses.contentWrapper}>
       <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}>
-        <Typography variant="h6">{queryData.title || localization.title}</Typography>
+        <span style={{ fontSize: '20px' }}>{queryData.title || localization.title}</span>
       </div>
       <div className={globalClasses.centeredVertical}>
         {queryData.hideSearchBar ? null : (

@@ -7,7 +7,7 @@ import {
   CurrentContentProvider,
   LoadSettingsContextProvider,
 } from '@sensenet/hooks-react'
-import { createStyles, makeStyles } from '@material-ui/core'
+import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core'
 import clsx from 'clsx'
 import { useSelectionService } from '../../hooks'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
@@ -16,7 +16,7 @@ import { ContentList } from '../content-list/content-list'
 import { ResponsivePersonalSetttings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     exploreWrapper: {
       display: 'flex',
@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => {
     breadcrumbsWrapper: {
       height: globals.common.drawerItemHeight,
       boxSizing: 'border-box',
-      borderBottom: '1px solid rgba(255, 255, 255, 0.11)',
+      borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
       paddingLeft: '15px',
     },
     treeAndDatagridWrapper: {
@@ -50,6 +50,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
   const personalSettings = useContext(ResponsivePersonalSetttings)
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
+  const theme = useTheme()
 
   return (
     <>
@@ -65,8 +66,9 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                   style={{
                     flexGrow: 1,
                     flexShrink: 0,
-                    borderRight: '1px solid (255, 255, 255, 0.11)',
                     overflow: 'auto',
+                    borderRight:
+                      theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
                   }}
                   parentPath={props.rootPath || ConstantContent.PORTAL_ROOT.Path}
                   loadOptions={{

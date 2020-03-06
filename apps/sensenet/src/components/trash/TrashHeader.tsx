@@ -24,7 +24,7 @@ const TrashHeader: React.FC<props> = ({ trash, iconClickHandler }) => {
       className={clsx(globalClasses.centeredVertical, globalClasses.contentTitle)}
       style={{ justifyContent: 'space-between' }}>
       <Grid item={true} className={globalClasses.centeredVertical}>
-        <Typography variant="h6">{localization.title}</Typography>
+        <span style={{ fontSize: '20px' }}>{localization.title}</span>
         <IconButton onClick={() => iconClickHandler()}>
           <Settings />
         </IconButton>
