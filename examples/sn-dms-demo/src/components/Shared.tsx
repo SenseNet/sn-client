@@ -1,6 +1,6 @@
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import { ActionModel, GenericContent } from '@sensenet/default-content-types'
+import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
 import { Actions } from '@sensenet/redux'
 import React from 'react'
@@ -81,62 +81,8 @@ class Shared extends React.Component<
             fieldsToDisplay={['DisplayName', 'ModifiedBy', 'ModificationDate']}
             onRequestActiveItemChange={this.props.setActive}
             displayRowCheckbox={false}
-            onRequestActionsMenu={(ev, content) => {
-              ev.preventDefault()
-              this.props.closeActionMenu()
-              this.props.openActionMenu(
-                [
-                  {
-                    Name: 'ExecuteQuery',
-                    DisplayName: 'Execute Query',
-                    Icon: 'queryExecute',
-                    ClientAction: true,
-                    Forbidden: false,
-                    IncludeBackUrl: 0,
-                    Index: 3,
-                    Url: '',
-                    IsODataAction: false,
-                  },
-                  ...(content.Actions as ActionModel[]).filter(a => a.Name === 'Rename' || a.Name === 'Delete'),
-                ],
-                content,
-                '',
-                ev.currentTarget.parentElement,
-                {
-                  top: ev.clientY,
-                  left: ev.clientX,
-                },
-              )
-            }}
             checkboxProps={{
               color: 'primary',
-            }}
-            onItemContextMenu={(ev, content) => {
-              ev.preventDefault()
-              this.props.closeActionMenu()
-              this.props.openActionMenu(
-                [
-                  {
-                    Name: 'ExecuteQuery',
-                    DisplayName: 'Execute Query',
-                    Icon: 'queryExecute',
-                    ClientAction: true,
-                    Forbidden: false,
-                    IncludeBackUrl: 1,
-                    Index: 1,
-                    Url: '',
-                    IsODataAction: false,
-                  },
-                  ...(content.Actions as ActionModel[]).filter(a => a.Name === 'Rename' || a.Name === 'Delete'),
-                ],
-                content,
-                '',
-                ev.currentTarget.parentElement,
-                {
-                  top: ev.clientY,
-                  left: ev.clientX,
-                },
-              )
             }}
             onItemDoubleClick={(_ev, content) => {
               this.handleOpenItem(content)
