@@ -1,17 +1,7 @@
 import { combineReducers, Reducer } from 'redux'
-import { SharingLevel, SharingMode } from '@sensenet/client-core'
+import { ODataSharingResponse } from '@sensenet/client-core'
 
-export interface SharingEntry {
-  Id: string
-  Token: string
-  Identity: 0
-  Mode: SharingMode
-  Level: SharingLevel
-  CreatorId: number
-  ShareDate: string
-}
-
-export const sharingEntries: Reducer<SharingEntry[]> = (state = [], action) => {
+export const sharingEntries: Reducer<ODataSharingResponse[]> = (state = [], action) => {
   switch (action.type) {
     case 'GET_SHARING_ENTRIES_SUCCESS':
       for (const entry of action.result.d.results) {
