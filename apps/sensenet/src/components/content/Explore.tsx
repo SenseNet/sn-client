@@ -1,5 +1,3 @@
-import { ConstantContent } from '@sensenet/client-core'
-import React, { useContext } from 'react'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsProvider,
@@ -7,14 +5,15 @@ import {
   CurrentContentProvider,
   LoadSettingsContextProvider,
 } from '@sensenet/hooks-react'
-import { useSelectionService } from '../../hooks'
-import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
-import { Tree } from '../tree/index'
-import { ContentList } from '../content-list/content-list'
+import React, { useContext } from 'react'
 import { ResponsivePersonalSetttings } from '../../context'
+import { useSelectionService } from '../../hooks'
+import { ContentList } from '../content-list/content-list'
+import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
+import TreeWithData from '../tree/tree-with-data'
 
 export interface ExploreComponentProps {
-  parent: number | string
+  parentIdOrPath: number | string
   onNavigate: (newParent: GenericContent) => void
   onActivateItem: (item: GenericContent) => void
   fieldsToDisplay?: Array<keyof GenericContent>
@@ -25,35 +24,27 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
   const selectionService = useSelectionService()
   const personalSettings = useContext(ResponsivePersonalSetttings)
 
+  if (!props.rootPath) {
+    return null
+  }
+
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column' }}>
       <LoadSettingsContextProvider>
-        <CurrentContentProvider idOrPath={props.parent}>
+        <CurrentContentProvider idOrPath={props.parentIdOrPath}>
           <CurrentChildrenProvider>
             <CurrentAncestorsProvider root={props.rootPath}>
               <div style={{ marginTop: '13px', paddingBottom: '12px', borderBottom: '1px solid rgba(128,128,128,.2)' }}>
                 <ContentBreadcrumbs onItemClick={i => props.onNavigate(i.content)} />
               </div>
               <div style={{ display: 'flex', width: '100%', height: 'calc(100% - 62px)', position: 'relative' }}>
-                <Tree
-                  style={{
-                    flexGrow: 1,
-                    flexShrink: 0,
-                    borderRight: '1px solid rgba(128,128,128,.2)',
-                    overflow: 'auto',
-                  }}
-                  parentPath={props.rootPath || ConstantContent.PORTAL_ROOT.Path}
-                  loadOptions={{
-                    orderby: [
-                      ['DisplayName', 'asc'],
-                      ['Name', 'asc'],
-                    ],
-                  }}
+                <TreeWithData
                   onItemClick={item => {
                     selectionService.activeContent.setValue(item)
                     props.onNavigate(item)
                   }}
-                  activeItemIdOrPath={props.parent}
+                  parentPath={props.rootPath}
+                  activeItemIdOrPath={props.parentIdOrPath}
                 />
 
                 <ContentList
@@ -63,7 +54,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                   onParentChange={props.onNavigate}
                   onActivateItem={props.onActivateItem}
                   onActiveItemChange={item => selectionService.activeContent.setValue(item)}
-                  parentIdOrPath={props.parent}
+                  parentIdOrPath={props.parentIdOrPath}
                   onSelectionChange={sel => {
                     selectionService.selection.setValue(sel)
                   }}
