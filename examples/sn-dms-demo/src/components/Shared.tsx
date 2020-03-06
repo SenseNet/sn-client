@@ -2,7 +2,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
-import { updateContent } from '@sensenet/redux'
+import { Actions } from '@sensenet/redux'
 import React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
@@ -35,7 +35,7 @@ const mapDispatchToProps = {
   setActive,
   openActionMenu,
   closeActionMenu,
-  updateContent,
+  updateContent: Actions.updateContent,
   resetSearchValues,
   updateChildrenOptions,
 }
