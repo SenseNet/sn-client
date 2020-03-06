@@ -48,6 +48,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
           oDataOptions: {
             top,
             skip,
+            filter: 'IsFolder eq true',
             orderby: [
               ['DisplayName', 'asc'],
               ['Name', 'asc'],
@@ -197,8 +198,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
   }, [loadRoot])
 
   const onItemClick = async (item: ItemType) => {
-    // Do not expand File types, we don't want to show the Previews folder under it
-    if (item.Type === 'File' || !treeData) {
+    if (!treeData) {
       return
     }
 
