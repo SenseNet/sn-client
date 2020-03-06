@@ -23,7 +23,7 @@ import Picker from '../components/Pickers/PickerBase'
 import { SavedQueries } from '../components/SavedQueries'
 import { Settings } from '../components/Settings'
 import { Shared } from '../components/Shared'
-import { Trash } from '../components/Trash'
+import Trash from '../components/Trash'
 import { rootStateType } from '../store/rootReducer'
 
 const styles = {
@@ -168,7 +168,7 @@ class DashboardComponent extends React.Component<
                                 <SavedQueries />
                               </Route>
                               <Route path={`${props.match.url}/trash`}>
-                                <Trash />
+                                <Trash matchesDesktop={matches} />
                               </Route>
                               <Route
                                 path={`/${PathHelper.joinPaths(props.match.url, '/:folderPath?/:otherActions*')}`}
@@ -211,7 +211,7 @@ class DashboardComponent extends React.Component<
                               <SavedQueries />
                             </Route>
                             <Route path={`${props.match.url}/trash`}>
-                              <Trash />
+                              <Trash matchesDesktop={matches} />
                             </Route>
                             <Route
                               path={`/${PathHelper.joinPaths(props.match.url)}`}
