@@ -11,7 +11,7 @@ export default function UsersAndGroups() {
   return (
     <div className={globalClasses.contentWrapper}>
       <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}>
-        <span style={{ fontSize: '20px' }}>{localizationDrawerTitles}</span>
+        <span style={{ fontSize: '20px' }}>{localizationDrawerTitles['Users and groups']}</span>
       </div>
       <SimpleList
         parent="/Root/IMS/Public"
