@@ -61,7 +61,7 @@ export function Approve(props: ApproveProps) {
   }
 
   return (
-    <div>
+    <>
       <DialogTitle>{localization.title}</DialogTitle>
       <DialogContent>
         <DialogContentText>{localization.body(name)}</DialogContentText>
@@ -83,7 +83,7 @@ export function Approve(props: ApproveProps) {
         <Button onClick={approve}>{localization.approveButton}</Button>
         <Button onClick={reject}>{localization.rejectButton}</Button>
       </DialogActions>
-    </div>
+    </>
   )
 }
 

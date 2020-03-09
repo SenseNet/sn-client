@@ -1,9 +1,39 @@
 import CloudUploadTwoTone from '@material-ui/icons/CloudUploadTwoTone'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
-import { useTheme } from '../hooks'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import clsx from 'clsx'
+import { useGlobalStyles } from '../globalStyles'
 import { getFilesFromDragEvent } from './dialogs/upload/helper'
 import { useDialog } from './dialogs'
+
+const useStyles = makeStyles((theme: Theme) => {
+  return createStyles({
+    dropArea: {
+      position: 'relative',
+      filter: undefined,
+      opacity: 1,
+      transition:
+        'opacity 300ms cubic-bezier(0.445, 0.050, 0.550, 0.950), filter 300ms cubic-bezier(0.445, 0.050, 0.550, 0.950)',
+    },
+    dragOverDropArea: {
+      filter: 'blur(1px)',
+      opacity: 0.8,
+    },
+    uploadDialog: {
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      backgroundColor: theme.palette.primary.main,
+      opacity: 0,
+      zIndex: -1,
+      transition: 'opacity 300ms cubic-bezier(0.445, 0.050, 0.550, 0.950)',
+    },
+    dragOverUploadDialog: {
+      opacity: 0.1,
+    },
+  })
+})
 
 type Props = {
   parentContent?: GenericContent
@@ -14,7 +44,8 @@ type Props = {
 export const DropFileArea: React.FunctionComponent<Props> = props => {
   const [isDragOver, setDragOver] = useState(false)
   const { openDialog } = useDialog()
-  const theme = useTheme()
+  const classes = useStyles()
+  const globalClasses = useGlobalStyles()
 
   const onDrop = async (event: React.DragEvent) => {
     event.stopPropagation()
@@ -36,12 +67,8 @@ export const DropFileArea: React.FunctionComponent<Props> = props => {
   return (
     <>
       <div
+        className={clsx(classes.dropArea, { [classes.dragOverDropArea]: isDragOver })}
         style={{
-          position: 'relative',
-          filter: isDragOver ? 'blur(1px)' : undefined,
-          opacity: isDragOver ? 0.8 : 1,
-          transition:
-            'opacity 300ms cubic-bezier(0.445, 0.050, 0.550, 0.950), filter 300ms cubic-bezier(0.445, 0.050, 0.550, 0.950)',
           ...props.style,
         }}
         onDragEnter={ev => {
@@ -60,17 +87,8 @@ export const DropFileArea: React.FunctionComponent<Props> = props => {
           setDragOver(true)
         }}
         onDrop={onDrop}>
-        <div
-          style={{
-            width: '100%',
-            height: '100%',
-            backgroundColor: theme.palette.primary.main,
-            opacity: isDragOver ? 0.1 : 0,
-            position: 'absolute',
-            zIndex: -1,
-            transition: 'opacity 300ms cubic-bezier(0.445, 0.050, 0.550, 0.950)',
-          }}>
-          <CloudUploadTwoTone style={{ width: '100%', height: '100%' }} />
+        <div className={clsx(classes.uploadDialog, { [classes.dragOverUploadDialog]: isDragOver })}>
+          <CloudUploadTwoTone className={globalClasses.full} />
         </div>
         {props.children}
       </div>

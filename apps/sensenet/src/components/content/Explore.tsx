@@ -5,12 +5,36 @@ import {
   CurrentContentProvider,
   LoadSettingsContextProvider,
 } from '@sensenet/hooks-react'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import clsx from 'clsx'
 import React, { useContext } from 'react'
 import { ResponsivePersonalSetttings } from '../../context'
 import { useSelectionService } from '../../hooks'
 import { ContentList } from '../content-list/content-list'
+import { globals, useGlobalStyles } from '../../globalStyles'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import TreeWithData from '../tree/tree-with-data'
+
+const useStyles = makeStyles((theme: Theme) => {
+  return createStyles({
+    exploreWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    breadcrumbsWrapper: {
+      height: globals.common.drawerItemHeight,
+      boxSizing: 'border-box',
+      borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
+      paddingLeft: '15px',
+    },
+    treeAndDatagridWrapper: {
+      display: 'flex',
+      width: '100%',
+      height: `calc(100% - ${globals.common.drawerItemHeight}px)`,
+      position: 'relative',
+    },
+  })
+})
 
 export interface ExploreComponentProps {
   parentIdOrPath: number | string
@@ -23,21 +47,23 @@ export interface ExploreComponentProps {
 export const Explore: React.FunctionComponent<ExploreComponentProps> = props => {
   const selectionService = useSelectionService()
   const personalSettings = useContext(ResponsivePersonalSetttings)
+  const classes = useStyles()
+  const globalClasses = useGlobalStyles()
 
   if (!props.rootPath) {
     return null
   }
 
   return (
-    <div style={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column' }}>
+    <>
       <LoadSettingsContextProvider>
         <CurrentContentProvider idOrPath={props.parentIdOrPath}>
           <CurrentChildrenProvider>
             <CurrentAncestorsProvider root={props.rootPath}>
-              <div style={{ marginTop: '13px', paddingBottom: '12px', borderBottom: '1px solid rgba(128,128,128,.2)' }}>
+              <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
                 <ContentBreadcrumbs onItemClick={i => props.onNavigate(i.content)} />
               </div>
-              <div style={{ display: 'flex', width: '100%', height: 'calc(100% - 62px)', position: 'relative' }}>
+              <div className={classes.treeAndDatagridWrapper}>
                 <TreeWithData
                   onItemClick={item => {
                     selectionService.activeContent.setValue(item)
@@ -64,6 +90,6 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
           </CurrentChildrenProvider>
         </CurrentContentProvider>
       </LoadSettingsContextProvider>
-    </div>
+    </>
   )
 }

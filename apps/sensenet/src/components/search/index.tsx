@@ -15,11 +15,24 @@ import {
   useLogger,
   useRepository,
 } from '@sensenet/hooks-react'
+import { createStyles, makeStyles } from '@material-ui/core'
+import clsx from 'clsx'
 import { ResponsivePersonalSetttings } from '../../context'
 import { useContentRouting, useLocalization, useSelectionService } from '../../hooks'
 import { isReferenceField } from '../content-list'
 import { useDialog } from '../dialogs'
 import { ContentList } from '../content-list/content-list'
+import { useGlobalStyles } from '../../globalStyles'
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    searchBar: {
+      display: 'flex',
+      width: '100%',
+      marginLeft: '1em',
+    },
+  })
+})
 
 const searchDebounceTime = 400
 export interface QueryData {
@@ -46,6 +59,8 @@ export const Search = () => {
   const [queryData, setQueryData] = useState<QueryData>(decodeQueryData(match.params.queryData))
   const selectionService = useSelectionService()
   const localization = useLocalization().search
+  const classes = useStyles()
+  const globalClasses = useGlobalStyles()
   const requestReload = useCallback(
     debounce((qd: QueryData, term: string) => {
       setQueryData({ ...qd, term })
@@ -106,11 +121,13 @@ export const Search = () => {
   ])
 
   return (
-    <div style={{ padding: '1em 0 0 1em', height: '100%', width: '100%' }}>
-      <Typography variant="h5">{queryData.title || localization.title}</Typography>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div className={globalClasses.contentWrapper}>
+      <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}>
+        <span style={{ fontSize: '20px' }}>{queryData.title || localization.title}</span>
+      </div>
+      <div className={globalClasses.centeredVertical}>
         {queryData.hideSearchBar ? null : (
-          <div style={{ marginLeft: '1em', width: '100%', display: 'flex' }}>
+          <div className={classes.searchBar}>
             <TextField
               label={localization.queryLabel}
               helperText={localization.queryHelperText}
@@ -148,7 +165,7 @@ export const Search = () => {
           <CurrentAncestorsContext.Provider value={[]}>
             <ContentList
               style={{
-                height: queryData.title === 'Content Types' ? 'calc(100% - 33px)' : 'calc(100% - 100px)',
+                height: '100%',
                 overflow: 'auto',
               }}
               enableBreadcrumbs={false}

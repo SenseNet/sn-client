@@ -1,9 +1,13 @@
 import React from 'react'
 import { TableCell } from '@material-ui/core'
-import { virtualStyle } from './virtualized-style-for-fields'
+import clsx from 'clsx'
+import { useGlobalStyles } from '../../globalStyles'
 
-export const PhoneField: React.FC<{ phoneNo: string }> = ({ phoneNo }) => (
-  <TableCell component="div" style={virtualStyle}>
-    <a href={`tel:${phoneNo}`}>{phoneNo}</a>
-  </TableCell>
-)
+export const PhoneField: React.FC<{ phoneNo: string }> = ({ phoneNo }) => {
+  const globalClasses = useGlobalStyles()
+  return (
+    <TableCell component="div" className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)}>
+      <a href={`tel:${phoneNo}`}>{phoneNo}</a>
+    </TableCell>
+  )
+}

@@ -63,27 +63,27 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
           sessionContext.state === LoginState.Unauthenticated || !personalSettings.lastRepository ? (
             <Redirect to={{ pathname: '/login', state: { from: location } }} />
           ) : (
-            <div style={{ width: '100%', height: '100%', boxSizing: 'border-box', position: 'relative' }}>
+            <>
               <Suspense fallback={<FullScreenLoader />}>
-                <Route
-                  path="/personalSettings"
-                  render={() => {
-                    return <PersonalSettingsEditor />
-                  }}
-                />
-                <Route
-                  path="/:repo/login"
-                  render={() => {
-                    return <LoginComponent />
-                  }}
-                />
-                <Route
-                  path="/events/:eventGuid?"
-                  render={() => {
-                    return <EventListComponent />
-                  }}
-                />
                 <Switch>
+                  <Route
+                    path="/personalSettings"
+                    render={() => {
+                      return <PersonalSettingsEditor />
+                    }}
+                  />
+                  <Route
+                    path="/:repo/login"
+                    render={() => {
+                      return <LoginComponent />
+                    }}
+                  />
+                  <Route
+                    path="/events/:eventGuid?"
+                    render={() => {
+                      return <EventListComponent />
+                    }}
+                  />
                   <Route
                     path="/:repo/browse/:browseData?"
                     render={routeProps => {
@@ -180,7 +180,7 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                   />
                 </Switch>
               </Suspense>
-            </div>
+            </>
           )
         }
       />

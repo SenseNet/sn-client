@@ -12,6 +12,7 @@ import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { User } from '@sensenet/default-content-types'
 import { useLocalization } from '../../hooks'
 import { Icon } from '../Icon'
+import { useGlobalStyles } from '../../globalStyles'
 import { useDialog } from './dialog-provider'
 
 export type LogoutDialogProps = {
@@ -25,11 +26,12 @@ export function LogoutDialog({ userToLogout, onLoggedOut }: LogoutDialogProps) {
   const logger = useLogger('LogoutComponent')
   const repo = useRepository()
   const localization = useLocalization().logout
+  const globalClasses = useGlobalStyles()
 
   return (
     <>
       <DialogTitle>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div className={globalClasses.centeredVertical}>
           <Icon
             style={{
               margin: '0 1em 0 0',
@@ -44,7 +46,7 @@ export function LogoutDialog({ userToLogout, onLoggedOut }: LogoutDialogProps) {
       </DialogTitle>
       <DialogContent>
         {isLoggingOut ? (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+          <div className={globalClasses.centered} style={{ flexDirection: 'column' }}>
             <CircularProgress size={64} />
             <Typography style={{ marginTop: '2em', wordBreak: 'break-word' }}>
               {localization.loggingOutFrom(repo.configuration.repositoryUrl)}

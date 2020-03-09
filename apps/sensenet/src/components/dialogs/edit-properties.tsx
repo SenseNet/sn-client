@@ -5,6 +5,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { ConstantContent, isExtendedError } from '@sensenet/client-core'
 import { CurrentContentContext, CurrentContentProvider, useLogger, useRepository } from '@sensenet/hooks-react'
 import { useLocalization, useSelectionService } from '../../hooks'
+import { useGlobalStyles } from '../../globalStyles'
 import { useDialog } from '.'
 
 export type EditPropertiesProps = {
@@ -17,6 +18,7 @@ export const EditProperties: React.FunctionComponent<EditPropertiesProps> = prop
   const repo = useRepository()
   const localization = useLocalization().editPropertiesDialog
   const logger = useLogger('EditPropertiesDialog')
+  const globalClasses = useGlobalStyles()
 
   const onSubmit = async (content: GenericContent, saveableFields: Partial<GenericContent>) => {
     try {
@@ -60,7 +62,7 @@ export const EditProperties: React.FunctionComponent<EditPropertiesProps> = prop
       <CurrentContentContext.Consumer>
         {content =>
           content.Id !== ConstantContent.PORTAL_ROOT.Id && (
-            <>
+            <div className={globalClasses.dialog}>
               <DialogTitle>{localization.dialogTitle.replace('{0}', content.DisplayName || content.Name)} </DialogTitle>
               <DialogContent>
                 <EditView
@@ -70,7 +72,7 @@ export const EditProperties: React.FunctionComponent<EditPropertiesProps> = prop
                   onSubmit={onSubmit}
                 />
               </DialogContent>
-            </>
+            </div>
           )
         }
       </CurrentContentContext.Consumer>

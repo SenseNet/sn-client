@@ -2,8 +2,10 @@ import Paper from '@material-ui/core/Paper'
 import React, { useContext, useState } from 'react'
 import { Repository } from '@sensenet/client-core'
 import { RouteComponentProps } from 'react-router-dom'
+import { useTheme } from '@material-ui/core'
 import { useWidgets } from '../../hooks'
 import { ResponsiveContext } from '../../context'
+import { globals } from '../../globalStyles'
 import { ErrorWidget } from './error-widget'
 import { QueryWidget } from './query-widget'
 import { MarkdownWidget } from './markdown-widget'
@@ -39,6 +41,7 @@ const Dashboard: React.FunctionComponent<DashboardProps & RouteComponentProps<{ 
   const widgets = useWidgets(repository, match.params.dashboardName)
   const platform = useContext(ResponsiveContext)
   const [defaultMinWidth] = useState(250)
+  const theme = useTheme()
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%', height: '100%', overflow: 'auto' }}>
@@ -57,6 +60,8 @@ const Dashboard: React.FunctionComponent<DashboardProps & RouteComponentProps<{ 
               padding: '1em',
               minWidth: width === '100%' ? 'calc(100% - 2em)' : width,
               overflow: 'hidden',
+              backgroundColor:
+                theme.palette.type === 'light' ? globals.light.drawerBackground : globals.dark.drawerBackground,
             }}>
             {widgetComponent}
           </Paper>

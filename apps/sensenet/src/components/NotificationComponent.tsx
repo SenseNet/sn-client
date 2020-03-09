@@ -63,7 +63,7 @@ export const NotificationComponent: React.FunctionComponent = () => {
   }, [eventService.notificationValues])
 
   return (
-    <div>
+    <>
       {values.map((v, i) => {
         const item = v[1][0]
         const count = v[1].length
@@ -124,6 +124,6 @@ export const NotificationComponent: React.FunctionComponent = () => {
           />
         )
       })}
-    </div>
+    </>
   )
 }
