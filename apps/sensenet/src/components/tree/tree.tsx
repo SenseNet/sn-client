@@ -180,6 +180,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading }: 
             rowRenderer={rowRenderer}
             rowCount={itemCount}
             width={width}
+            style={{ outline: 'none' }}
           />
         )}
       </AutoSizer>
