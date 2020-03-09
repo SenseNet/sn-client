@@ -194,6 +194,7 @@ const resources = {
   NEWDOCUMENT: 'New document',
   NEWIMAGE: 'New image',
   NEWFOLDER: 'New folder',
+  NEWFILE: 'New file',
   NEWSHEET: 'New sheet',
   NEWSLIDE: 'New slide',
   NEWTEXT: 'New text',

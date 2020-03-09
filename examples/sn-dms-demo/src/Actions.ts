@@ -5,7 +5,7 @@ import {
   UploadProgressInfo,
 } from '@sensenet/client-core'
 import { ObservableValue, usingAsync } from '@sensenet/client-utils'
-import { ActionModel, GenericContent, File as SnFile } from '@sensenet/default-content-types'
+import { ActionModel, ContentType, GenericContent, File as SnFile } from '@sensenet/default-content-types'
 import { Dispatch } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { debounceReloadOnProgress } from './store/documentlibrary/actions'
@@ -258,7 +258,11 @@ export const closeViewer = () => ({
 export const loadTypesToAddNewList = (idOrPath: number | string) => ({
   type: 'LOAD_TYPES_TO_ADDNEW_LIST',
   async payload(repository: Repository) {
-    const data: { d: { Actions: ActionModel[] } } = (await repository.getActions({ idOrPath, scenario: 'New' })) as any
+    const data: { d: { results: ContentType[] } } = (await repository.executeAction({
+      idOrPath,
+      method: 'GET',
+      name: 'EffectiveAllowedChildTypes',
+    })) as any
     return data
   },
 })

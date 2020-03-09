@@ -252,11 +252,11 @@ export const userActions: Reducer<ActionModel[]> = (state = [], action: AnyActio
   }
 }
 
-export const addNewTypes: Reducer<ActionModel[]> = (state = [], action: AnyAction) => {
+export const addNewTypes: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
     case 'LOAD_TYPES_TO_ADDNEW_LIST_SUCCESS': {
       const result = action.result as Actions.PromiseReturns<typeof loadTypesToAddNewList>
-      return result ? result.d.Actions : []
+      return result ? result.d.results : []
     }
     default:
       return state
