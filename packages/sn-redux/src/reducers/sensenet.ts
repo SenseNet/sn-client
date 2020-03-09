@@ -6,6 +6,7 @@ import { currentcontent } from './currentcontent'
 import { currentitems } from './currentitems'
 import { selected } from './selected'
 import { session } from './session'
+import { sharing } from './sharing'
 
 /**
  * Reducer to handle Actions on the currentworkspace object.
@@ -36,6 +37,7 @@ export const sensenet = combineReducers<{
   currentitems: ReturnType<typeof currentitems>
   selected: ReturnType<typeof selected>
   batchResponses: ReturnType<typeof batchResponses>
+  sharing: ReturnType<typeof sharing>
 }>({
   session,
   currentworkspace,
@@ -43,4 +45,5 @@ export const sensenet = combineReducers<{
   currentitems,
   selected,
   batchResponses,
+  sharing,
 })

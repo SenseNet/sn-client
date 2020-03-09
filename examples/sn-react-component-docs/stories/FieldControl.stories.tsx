@@ -55,7 +55,7 @@ import { fieldControlStory } from './field-control-story'
 import { PleaseLogin } from './PleaseLogin'
 
 export const testRepository = new Repository({
-  repositoryUrl: 'https://devservice.demo.sensenet.com',
+  repositoryUrl: 'https://dev.demo.sensenet.com',
   requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'DisplayName'] as any,
   schemas: customSchema,
   sessionLifetime: 'expiration',
@@ -64,16 +64,16 @@ export const testRepository = new Repository({
 const taskContent: Task = {
   Id: 2344,
   Name: 'Task',
-  Path: '/Root/Sites/Default_Site',
+  Path: '/Root/Content/IT/Tasks',
   Type: 'Task',
   TaskCompletion: 20,
 }
 
 const fileContent: Image = {
   Id: 3777,
-  Path: '/Root/Sites/Default_Site/infos/images/approving_enabled.png',
-  Name: 'approving_enabled.png',
-  DisplayName: 'approving_enabled.png',
+  Path: '/Root/Content/IT/ImageLibrary/bagas-haryo-1415756-unsplash.jpg',
+  Name: 'bagas-haryo-1415756-unsplash.jpg',
+  DisplayName: 'bagas-haryo-1415756-unsplash.jpg',
   Type: 'Image',
   Icon: 'image',
   RateAvg: 32.5,
@@ -89,7 +89,7 @@ const testContent: GenericContent & { ExpectedRevenue: number; Color: string; Pa
   Curabitur semper facilisis odio, eu vehicula nibh auctor a.
   Donec eleifend aliquam massa, vel dictum erat suscipit quis.`,
   Id: 4808,
-  Path: '/Root/Sites/Default_Site',
+  Path: '/Root/Content',
   Type: 'GenericContent',
   VersioningMode: [VersioningMode.Option1],
   ModificationDate: new Date().toISOString(),
@@ -100,19 +100,19 @@ const testContent: GenericContent & { ExpectedRevenue: number; Color: string; Pa
 }
 
 const userContent: User = {
-  Name: 'Alba Monday',
-  Path: 'Root/IMS/Public/alba',
-  DisplayName: 'Alba Monday',
-  Id: 4804,
+  Name: 'Developer Dog',
+  Path: 'Root/IMS/Public/devdog',
+  DisplayName: 'Developer Dog',
+  Id: 1498,
   Type: 'User',
   BirthDate: new Date(2000, 5, 15).toISOString(),
-  Avatar: { Url: '/Root/Sites/Default_Site/demoavatars/alba.jpg' },
+  Avatar: { Url: '/Root/Content/demoavatars/devdog.jpeg' },
   Enabled: true,
   Manager: {
     Name: 'Business Cat',
     Path: 'Root/IMS/Public/businesscat',
     DisplayName: 'Business Cat',
-    Id: 4810,
+    Id: 1497,
     Type: 'User',
   },
 }

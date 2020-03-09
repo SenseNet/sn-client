@@ -32,6 +32,10 @@ import { FetchError } from './FetchError'
 import { GridPlaceholder } from './Loaders/GridPlaceholder'
 import { SearchResultsHeader } from './SearchResultsHeader'
 import { UploadBar } from './Upload/UploadBar'
+import ActionsCell from './ContentList/CellTemplates/ActionsCell'
+import { DefaultCell } from './ContentList/CellTemplates/DefaultCell'
+import { ReferencedUserCell } from './ContentList/CellTemplates/ReferencedUserCell'
+import { DateCell } from './ContentList/CellTemplates/DateCell'
 
 const ConnectedUploadBar = connect(
   (state: rootStateType) => ({
@@ -128,8 +132,8 @@ class DocumentLibrary extends React.Component<
   private static updateStoreFromPath(newProps: DocumentLibrary['props']) {
     try {
       const pathFromUrl = newProps.match.params.folderPath && atob(decodeURIComponent(newProps.match.params.folderPath))
-      const userProfilePath = `/Root/Profiles/Public/${newProps.loggedinUser.content.Name}/Document_Library`
-      newProps.loadParent(pathFromUrl || userProfilePath)
+      const defaultWsPath = `/Root/Content/IT/Document_Library`
+      newProps.loadParent(pathFromUrl || defaultWsPath)
 
       const queryObject = newProps.location.search
         .substring(1)
@@ -371,9 +375,15 @@ class DocumentLibrary extends React.Component<
                         />
                       )
                     }
-
+                  case 'Owner':
+                    return <ReferencedUserCell content={props.content} fieldName={props.field} />
+                  case 'Actions':
+                    return <ActionsCell content={props.content} fieldName={props.field} />
+                  case 'ModificationDate':
+                  case 'CreationDate':
+                    return <DateCell content={props.content} fieldName={props.field} />
                   default:
-                    return null
+                    return <DefaultCell content={props.content} fieldName={props.field} />
                 }
               }}
               icons={icons}

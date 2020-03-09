@@ -15,9 +15,8 @@ import { documentLibrary } from './store/documentlibrary/reducers'
 import { editedContent } from './store/edited/reducers'
 import { picker } from './store/picker/reducers'
 import { queries } from './store/queries'
-import { sharing } from './store/sharing'
-import { usersAndGroups } from './store/usersandgroups/reducers'
 import { workspaces } from './store/workspaces/reducers'
+import { shared } from './store/shared'
 
 export const email: Reducer<string, Action & { email?: string }> = (state = '', action: AnyAction) => {
   switch (action.type) {
@@ -63,21 +62,11 @@ export const registrationDone: Reducer<boolean> = (state = false, action: AnyAct
   }
 }
 
-export const captcha: Reducer<boolean> = (state = false, action: AnyAction) => {
-  switch (action.type) {
-    case 'VERIFY_CAPTCHA_SUCCESS':
-      return true
-    default:
-      return state
-  }
-}
-
 export const register = combineReducers({
   email,
   registrationError,
   isRegistering,
   registrationDone,
-  captcha,
 })
 
 export const open: Reducer<boolean> = (state = false, action: AnyAction) => {
@@ -263,11 +252,11 @@ export const userActions: Reducer<ActionModel[]> = (state = [], action: AnyActio
   }
 }
 
-export const addNewTypes: Reducer<ActionModel[]> = (state = [], action: AnyAction) => {
+export const addNewTypes: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
     case 'LOAD_TYPES_TO_ADDNEW_LIST_SUCCESS': {
       const result = action.result as Actions.PromiseReturns<typeof loadTypesToAddNewList>
-      return result ? result.d.Actions : []
+      return result ? result.d.results : []
     }
     default:
       return state
@@ -547,7 +536,6 @@ export const dms = combineReducers({
   edited: editedContent,
   menuOpen,
   log: logReducer,
-  usersAndGroups,
   queries,
-  sharing,
+  shared,
 })

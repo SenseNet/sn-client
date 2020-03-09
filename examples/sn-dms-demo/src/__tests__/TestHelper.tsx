@@ -28,7 +28,7 @@ export const withStore = (component: JSX.Element, options?: Partial<CreateStoreO
       sensenet: {
         session: {
           repository: {
-            RepositoryUrl: 'https://dmsservice.demo.sensenet.com',
+            RepositoryUrl: 'https://dev.demo.sensenet.com',
           },
         },
       },

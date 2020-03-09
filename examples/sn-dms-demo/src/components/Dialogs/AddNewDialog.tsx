@@ -64,7 +64,6 @@ class AddNewDialog extends React.Component<
   }
   public render() {
     const { parentPath, contentTypeName, createContent, schema, title, extension } = this.props
-
     return (
       <MediaQuery minDeviceWidth={700}>
         {matches => (

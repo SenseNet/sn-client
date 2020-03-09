@@ -64,7 +64,7 @@ export const getQueries = createAction((idOrPath: string | number, queryType = '
       method: 'GET',
       oDataOptions: {
         select: ['Query', 'Icon'],
-        scenario: 'DMSListItem',
+        scenario: 'ContextMenu',
         onlyPublic: queryType === 'Public' ? true : false,
       } as any,
       body: undefined,
