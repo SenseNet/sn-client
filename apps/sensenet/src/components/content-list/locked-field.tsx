@@ -33,7 +33,10 @@ export function LockedField({ content }: LockedFieldProps) {
   }
 
   return (
-    <TableCell component="div" className={clsx(globalClasses.centered, globalClasses.virtualizedCellStyle)}>
+    <TableCell
+      component="div"
+      className={clsx(globalClasses.centered, globalClasses.virtualizedCellStyle)}
+      style={{ justifyContent: 'left', paddingLeft: '9px' }}>
       <Tooltip title={content.Approvable ? localization.actionNeeded : localization.checkedOutTo(lockedByName())}>
         {content.Approvable ? <AssignmentLateIcon /> : <Lock />}
       </Tooltip>
