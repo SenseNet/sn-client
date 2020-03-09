@@ -10,6 +10,7 @@ import {
 } from '@sensenet/pickers-react'
 import React from 'react'
 
+const contentPath = '/Root/Content'
 const testRepository = new Repository({
   repositoryUrl: 'https://dev.demo.sensenet.com',
   requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'DisplayName'],
@@ -37,12 +38,19 @@ export const ExampleApp = () => {
       <CircularProgress />
     </Fade>
   )
-  return <ListPickerComponent renderError={renderError} renderLoading={renderLoading} repository={testRepository} />
+  return (
+    <ListPickerComponent
+      renderError={renderError}
+      renderLoading={renderLoading}
+      repository={testRepository}
+      currentPath={contentPath}
+    />
+  )
 }
 
 export const ExampleAppWithHook = () => {
   const { items, selectedItem, setSelectedItem, path, navigateTo, reload } = useListPicker<GenericContentWithIsParent>({
-    currentPath: '/Root/Content',
+    currentPath: contentPath,
     repository: testRepository,
     stateReducer: (_state, action) => {
       if (action.type === SET_SELECTED_ITEM && action.payload && action.payload.isParent) {
