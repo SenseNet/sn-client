@@ -11,7 +11,7 @@ export default function Localization() {
   return (
     <div className={globalClasses.contentWrapper}>
       <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}>
-        <span style={{ fontSize: '20px' }}>{localizationDrawerTitles.Trash}</span>
+        <span style={{ fontSize: '20px' }}>{localizationDrawerTitles.Localization}</span>
       </div>
       <SimpleList
         parent="/Root/Localization"
