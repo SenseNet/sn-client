@@ -21,22 +21,6 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: 'column',
       alignItems: 'center',
     },
-    loginInput: {
-      '& div': {
-        '&::before': {
-          borderBottom: 'none',
-        },
-        '&::after': {
-          borderBottom: 'none',
-        },
-        '&:hover:not(.Mui-disabled):before': {
-          borderBottom: 'none',
-        },
-      },
-      '& input:focus': {
-        borderColor: theme.palette.primary.main,
-      },
-    },
   }),
 )
 
@@ -209,7 +193,8 @@ export const Login = () => {
               <TextField
                 id="username"
                 required={true}
-                margin="normal"
+                margin="dense"
+                variant="outlined"
                 name="userName"
                 label={localization.userNameLabel}
                 helperText={!inputState.userName.isValid ? inputState.userName.errorMessage : ''}
@@ -222,12 +207,13 @@ export const Login = () => {
                   clearInputError(ev)
                   setUserName(ev.target.value)
                 }}
-                className={classes.loginInput}
+                style={{ marginTop: '30px' }}
               />
               <TextField
                 id="password"
                 required={true}
                 margin="dense"
+                variant="outlined"
                 name="password"
                 label={localization.passwordLabel}
                 fullWidth={true}
@@ -241,11 +227,11 @@ export const Login = () => {
                   clearInputError(ev)
                   setPassword(ev.target.value)
                 }}
-                className={classes.loginInput}
               />
               <TextField
                 id="repository"
                 margin="dense"
+                variant="outlined"
                 required={true}
                 name="repository"
                 label={localization.repositoryLabel}
@@ -260,7 +246,6 @@ export const Login = () => {
                   clearInputError(ev)
                   setUrl(ev.target.value)
                 }}
-                className={classes.loginInput}
               />
               {error ? <Typography style={{ color: theme.palette.error.main }}>{error}</Typography> : null}
               <Button

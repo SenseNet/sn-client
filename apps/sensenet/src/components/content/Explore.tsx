@@ -1,5 +1,3 @@
-import { ConstantContent } from '@sensenet/client-core'
-import React, { useContext } from 'react'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsProvider,
@@ -7,14 +5,15 @@ import {
   CurrentContentProvider,
   LoadSettingsContextProvider,
 } from '@sensenet/hooks-react'
-import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import clsx from 'clsx'
-import { useSelectionService } from '../../hooks'
-import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
-import { Tree } from '../tree/index'
-import { ContentList } from '../content-list/content-list'
+import React, { useContext } from 'react'
 import { ResponsivePersonalSetttings } from '../../context'
+import { useSelectionService } from '../../hooks'
+import { ContentList } from '../content-list/content-list'
 import { globals, useGlobalStyles } from '../../globalStyles'
+import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
+import TreeWithData from '../tree/tree-with-data'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -38,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) => {
 })
 
 export interface ExploreComponentProps {
-  parent: number | string
+  parentIdOrPath: number | string
   onNavigate: (newParent: GenericContent) => void
   onActivateItem: (item: GenericContent) => void
   fieldsToDisplay?: Array<keyof GenericContent>
@@ -50,38 +49,28 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
   const personalSettings = useContext(ResponsivePersonalSetttings)
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
-  const theme = useTheme()
+
+  if (!props.rootPath) {
+    return null
+  }
 
   return (
     <>
       <LoadSettingsContextProvider>
-        <CurrentContentProvider idOrPath={props.parent}>
+        <CurrentContentProvider idOrPath={props.parentIdOrPath}>
           <CurrentChildrenProvider>
             <CurrentAncestorsProvider root={props.rootPath}>
               <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
                 <ContentBreadcrumbs onItemClick={i => props.onNavigate(i.content)} />
               </div>
               <div className={classes.treeAndDatagridWrapper}>
-                <Tree
-                  style={{
-                    flexGrow: 1,
-                    flexShrink: 0,
-                    overflow: 'auto',
-                    borderRight:
-                      theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
-                  }}
-                  parentPath={props.rootPath || ConstantContent.PORTAL_ROOT.Path}
-                  loadOptions={{
-                    orderby: [
-                      ['DisplayName', 'asc'],
-                      ['Name', 'asc'],
-                    ],
-                  }}
+                <TreeWithData
                   onItemClick={item => {
                     selectionService.activeContent.setValue(item)
                     props.onNavigate(item)
                   }}
-                  activeItemIdOrPath={props.parent}
+                  parentPath={props.rootPath}
+                  activeItemIdOrPath={props.parentIdOrPath}
                 />
 
                 <ContentList
@@ -91,7 +80,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                   onParentChange={props.onNavigate}
                   onActivateItem={props.onActivateItem}
                   onActiveItemChange={item => selectionService.activeContent.setValue(item)}
-                  parentIdOrPath={props.parent}
+                  parentIdOrPath={props.parentIdOrPath}
                   onSelectionChange={sel => {
                     selectionService.selection.setValue(sel)
                   }}

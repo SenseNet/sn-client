@@ -188,7 +188,7 @@ export class CommandPaletteComponent extends React.Component<
                       width: '100%',
                       padding: '5px',
                       fontFamily: 'monospace',
-                      color: theme.palette.common.white,
+                      color: theme?.palette.common.white,
                       backgroundColor: 'transparent',
                       border: 'none',
                       margin: '.3em 0',

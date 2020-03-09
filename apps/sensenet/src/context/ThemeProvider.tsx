@@ -56,18 +56,6 @@ export const ThemeProvider: React.FunctionComponent = props => {
             border: 'none !important',
           },
         },
-        MuiInputBase: {
-          input: {
-            border: '1px solid #505050',
-            borderRadius: '4px',
-            padding: '6px 0 7px 4px',
-          },
-        },
-        MuiInputLabel: {
-          root: {
-            paddingLeft: '4px',
-          },
-        },
         MuiListItemIcon: {
           root: {
             color: pageTheme === 'light' ? '#000000' : '#FFFFFF',

@@ -49,11 +49,11 @@ export default function AppProviders({ children }: AppProvidersProps) {
               <RepositoryContextProvider>
                 <ContentRoutingContextProvider>
                   <SessionContextProvider>
-                    <ResponsiveContextProvider>
-                      <ThemeProvider>
+                    <ThemeProvider>
+                      <ResponsiveContextProvider>
                         <DialogProvider>{children}</DialogProvider>
-                      </ThemeProvider>
-                    </ResponsiveContextProvider>
+                      </ResponsiveContextProvider>
+                    </ThemeProvider>
                   </SessionContextProvider>
                 </ContentRoutingContextProvider>
               </RepositoryContextProvider>

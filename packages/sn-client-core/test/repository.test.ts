@@ -95,6 +95,23 @@ describe('Repository', () => {
       })
     })
 
+    describe('count', () => {
+      it('should construct the url to contain /$count', async () => {
+        let url: string
+        const countRepository = new Repository(undefined, input => {
+          url = input.toString()
+          return Promise.resolve({ ok: true, json: () => 42 }) as any
+        })
+        await countRepository.count({ path: '/Root/Content' })
+        expect(url).toMatch(/http:\/\/localhost\/odata.svc\/Root\/Content\/\$count/g)
+      })
+
+      it('should throw on unsuccessfull request', async () => {
+        ;(mockResponse as any).ok = false
+        await expect(repository.count({ path: 'Root/Content' })).rejects.toThrow()
+      })
+    })
+
     describe('#loadCollection()', () => {
       it('should resolve with a proper collection response', async () => {
         ;(mockResponse as any).ok = true
