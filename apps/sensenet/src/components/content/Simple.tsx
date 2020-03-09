@@ -18,7 +18,7 @@ export const SimpleList: React.FunctionComponent<SimpleListComponentProps> = pro
   const selectionService = useSelectionService()
 
   return (
-    <div style={{ display: 'flex', width: '100%', height: '100%' }}>
+    <>
       <LoadSettingsContextProvider>
         <CurrentContentProvider idOrPath={props.parent}>
           <CurrentChildrenProvider>
@@ -26,7 +26,7 @@ export const SimpleList: React.FunctionComponent<SimpleListComponentProps> = pro
               <ContentList
                 enableBreadcrumbs={true}
                 onActivateItem={() => null}
-                style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%', width: '100%' }}
+                style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%', width: '100%', position: 'relative' }}
                 onParentChange={() => null}
                 parentIdOrPath={props.parent}
                 onSelectionChange={sel => {
@@ -39,6 +39,6 @@ export const SimpleList: React.FunctionComponent<SimpleListComponentProps> = pro
           </CurrentChildrenProvider>
         </CurrentContentProvider>
       </LoadSettingsContextProvider>
-    </div>
+    </>
   )
 }

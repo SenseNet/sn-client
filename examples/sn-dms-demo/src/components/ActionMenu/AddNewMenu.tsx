@@ -1,12 +1,10 @@
-import { ActionModel, GenericContent } from '@sensenet/default-content-types'
+import { ActionModel, ContentType, GenericContent } from '@sensenet/default-content-types'
 import React from 'react'
 import { connect } from 'react-redux'
 import * as DMSActions from '../../Actions'
-import { getContentTypeFromUrl, getExtensionFromUrl } from '../../assets/helpers'
 import { rootStateType } from '../../store/rootReducer'
 import AddNewDialog from '../Dialogs/AddNewDialog'
 import { AddNewButton } from '../Menu/AddNewButton'
-import { CallableActionModel } from '../CallableAction'
 
 const mapStateToProps = (state: rootStateType) => {
   return {
@@ -25,11 +23,11 @@ const mapDispatchToProps = {
 
 interface AddNemMenuProps {
   currentContent?: GenericContent
-  actions: ActionModel[]
+  actions: ContentType[]
 }
 
 interface AddNemMenuState {
-  addNewOptions: ActionModel[]
+  addNewOptions: ContentType[]
   currentContent: GenericContent | null
 }
 
@@ -58,13 +56,10 @@ class AddNewMenu extends React.Component<
     const optionList: ActionModel[] = []
     const folderList: ActionModel[] = []
     if (lastState.addNewOptions.length !== newProps.actions.length) {
-      newProps.actions.forEach((action: CallableActionModel) => {
-        const contentType = action.Url.includes('ContentType') ? getContentTypeFromUrl(action.Url) : null
-        const extension = contentType && contentType.indexOf('File') > -1 ? getExtensionFromUrl(action.Url) : null
-        const displayName =
-          action.DisplayName.indexOf('New') === -1 ? action.DisplayName : action.DisplayName.substring(3)
-        const newDisplayName =
-          action.DisplayName.indexOf('New') === -1 ? `New ${action.DisplayName.toLowerCase()}` : action.DisplayName
+      newProps.actions.forEach((action: any) => {
+        const contentType = action.Name
+        const displayName = action.DisplayName
+        const newDisplayName = `New ${displayName}`
         action.DisplayName = newDisplayName
         action.Action = () => {
           newProps.closeActionMenu()
@@ -72,7 +67,6 @@ class AddNewMenu extends React.Component<
             <AddNewDialog
               parentPath={newProps.currentContent ? newProps.currentContent.Path : ''}
               contentTypeName={contentType || ''}
-              extension={extension || ''}
               title={
                 contentType && contentType.indexOf('File') ? displayName : contentType ? contentType.toLowerCase() : ''
               }

@@ -30,15 +30,12 @@ type EveryDrawerType = ContentDrawerItem | QueryDrawerItem | BuiltinDrawerItem |
 export const useDrawerItems = () => {
   const settings = useContext(ResponsivePersonalSetttings)
   const localization = useLocalization().drawer
-  const repository = useRepository()
+  const repo = useRepository()
   const logger = useLogger('use-drawer-items')
 
   const [drawerItems, setDrawerItems] = useState<DrawerItem[]>([])
 
   useEffect(() => {
-    if (!repository) {
-      return
-    }
     const getItemNameFromSettings = (item: DrawerItemSetting<any>) => {
       return item.settings?.title || localization.titles[item.itemType] || '!NO TITLE!'
     }
@@ -88,11 +85,7 @@ export const useDrawerItems = () => {
             fieldsToDisplay: (item.settings && item.settings.columns) || settings.content.fields,
           })}`
         case 'Users and groups':
-          return `/browse/${encodeBrowseData({
-            type: 'simple',
-            root: '/Root/IMS/Public',
-            fieldsToDisplay: ['DisplayName', 'ModificationDate', 'ModifiedBy', 'Actions'],
-          })}`
+          return '/usersAndGroups'
         case 'Content Types':
           return `/search/${encodeQueryData({
             title: localization.titles['Content Types'],
@@ -111,10 +104,7 @@ export const useDrawerItems = () => {
             fieldsToDisplay: item.settings && item.settings.columns,
           })}`
         case 'Localization':
-          return `/browse/${encodeBrowseData({
-            type: 'simple',
-            root: '/Root/Localization',
-          })}`
+          return '/localization'
         case 'Trash':
           return '/trash'
         case 'Setup':
@@ -147,7 +137,7 @@ export const useDrawerItems = () => {
         }
         try {
           for (const permission of item.permissions) {
-            const actions = await repository.getActions({ idOrPath: permission.path })
+            const actions = await repo.getActions({ idOrPath: permission.path })
             const actionIndex = actions.d.Actions.findIndex(action => action.Name === permission.action)
             if (actionIndex === -1 || actions.d.Actions[actionIndex].Forbidden) {
               return false
@@ -169,7 +159,7 @@ export const useDrawerItems = () => {
     localization.descriptions,
     localization.titles,
     logger,
-    repository,
+    repo,
     settings.content.browseType,
     settings.content.fields,
     settings.drawer.items,

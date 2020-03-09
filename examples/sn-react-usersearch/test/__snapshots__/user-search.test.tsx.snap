@@ -1451,6 +1451,7 @@ exports[`The user search component instance should be rendered correctly 1`] = `
                 "VisibleNew": 1,
               },
             ],
+            "HandlerName": "SenseNet.ContentRepository.Users",
             "Icon": "User",
             "ParentTypeName": "GenericContent",
           }

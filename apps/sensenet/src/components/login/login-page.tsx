@@ -35,7 +35,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div>
+    <>
       <Grid container={true} direction="row">
         <Container maxWidth="lg" className={classes.topbar}>
           <Link to="/">
@@ -76,6 +76,6 @@ export default function LoginPage() {
           </form>
         )}
       </Container>
-    </div>
+    </>
   )
 }

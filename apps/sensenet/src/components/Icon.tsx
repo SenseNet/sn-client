@@ -1,40 +1,39 @@
 import { Avatar } from '@material-ui/core'
 import {
-  AllInboxTwoTone,
-  AssignmentTwoTone,
-  BallotTwoTone,
+  AllInboxOutlined,
+  AssignmentOutlined,
+  BallotOutlined,
   BugReport,
-  CalendarTodayTwoTone,
-  CodeTwoTone,
-  CommentTwoTone,
-  DeleteTwoTone,
-  DescriptionTwoTone,
-  DomainTwoTone,
-  ErrorTwoTone,
-  EventTwoTone,
-  FolderOutlined,
-  FolderTwoTone,
-  FormatPaintTwoTone,
-  GridOnTwoTone,
-  GroupTwoTone,
+  CalendarTodayOutlined,
+  CodeOutlined,
+  CommentOutlined,
+  DeleteOutlined,
+  DescriptionOutlined,
+  DomainOutlined,
+  ErrorOutlined,
+  EventOutlined,
+  Folder,
+  FormatPaintOutlined,
+  GridOnOutlined,
+  GroupOutlined,
   Info,
-  InsertDriveFileTwoTone,
-  LanguageTwoTone,
-  LibraryBooksTwoTone,
-  LinkTwoTone,
-  ListAltTwoTone,
-  PersonTwoTone,
-  PhotoLibraryTwoTone,
-  PhotoTwoTone,
-  PictureAsPdfTwoTone,
-  PresentToAllTwoTone,
-  PublicTwoTone,
-  SearchTwoTone,
-  SettingsTwoTone,
+  InsertDriveFileOutlined,
+  LanguageOutlined,
+  LibraryBooksOutlined,
+  LinkOutlined,
+  ListAltOutlined,
+  PersonOutlined,
+  PhotoLibrary,
+  PhotoOutlined,
+  PictureAsPdfOutlined,
+  PresentToAllOutlined,
+  PublicOutlined,
+  SearchOutlined,
+  SettingsOutlined,
   TextFormat,
   Warning,
-  WebAssetTwoTone,
-  WidgetsTwoTone,
+  WebAssetOutlined,
+  Widgets,
 } from '@material-ui/icons'
 import { Repository } from '@sensenet/client-core'
 import { Injector, LogLevel, PathHelper, tuple } from '@sensenet/client-utils'
@@ -67,13 +66,13 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
         />
       ) : null,
   },
-  { get: (item, options) => (item.Type === 'Group' ? <GroupTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Group' ? <GroupOutlined style={options.style} /> : null) },
   {
     get: (item, options) =>
       item.Type === 'File' &&
       (item as any).Binary &&
       (item as any).Binary.__mediaresource.content_type === 'application/x-javascript' ? (
-        <CodeTwoTone style={options.style} />
+        <CodeOutlined style={options.style} />
       ) : null,
   },
   {
@@ -81,79 +80,83 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
       item.Type === 'File' &&
       (item as any).Binary &&
       (item as any).Binary.__mediaresource.content_type === 'text/css' ? (
-        <FormatPaintTwoTone style={options.style} />
+        <FormatPaintOutlined style={options.style} />
       ) : null,
   },
   {
     get: (item, options) =>
-      options.repo.schemas.isContentFromType<File>(item, 'File') && item.PageCount ? (
-        <img
-          width={(options.style && options.style.width) || 32}
-          height={(options.style && options.style.width) || 32}
-          alt=""
-          src={PathHelper.joinPaths(
-            options.repo.configuration.repositoryUrl,
-            item.Path,
-            '/Previews',
-            item.Version as string,
-            'thumbnail1.png',
-          )}
-          style={options.style}
-        />
+      options.repo.schemas.isContentFromType<File>(item, 'File') && item.PageCount && item.PageCount > 0 ? (
+        !item.Path.includes('Localization') ? (
+          <img
+            width={(options.style && options.style.width) || 32}
+            height={(options.style && options.style.width) || 32}
+            alt=""
+            src={PathHelper.joinPaths(
+              options.repo.configuration.repositoryUrl,
+              item.Path,
+              '/Previews',
+              item.Version as string,
+              'thumbnail1.png',
+            )}
+            style={options.style}
+          />
+        ) : (
+          <TextFormat style={options.style} />
+        )
       ) : null,
   },
-  { get: (item, options) => (item.Type === 'Profiles' ? <GroupTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'Folder' ? <FolderTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'SystemFolder' ? <FolderTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'TrashBin' ? <DeleteTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'PortalRoot' ? <PublicTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'Search' ? <SearchTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'Comment' ? <CommentTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'EventLog' ? <ListAltTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'ImageLibrary' ? <PhotoLibraryTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'Image' ? <PhotoTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'EventList' ? <CalendarTodayTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'CalendarEvent' ? <EventTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'DocumentLibrary' ? <LibraryBooksTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Profiles' ? <GroupOutlined style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Folder' ? <Folder style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'SystemFolder' ? <Folder style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'TrashBin' ? <DeleteOutlined style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'PortalRoot' ? <PublicOutlined style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Search' ? <SearchOutlined style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Comment' ? <CommentOutlined style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'EventLog' ? <ListAltOutlined style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'ImageLibrary' ? <PhotoLibrary style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Image' ? <PhotoOutlined style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'EventList' ? <CalendarTodayOutlined style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'CalendarEvent' ? <EventOutlined style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'DocumentLibrary' ? <LibraryBooksOutlined style={options.style} /> : null) },
   {
     get: (item, options) =>
-      item.Type === 'File' && item.Icon === 'excel' ? <GridOnTwoTone style={options.style} /> : null,
+      item.Type === 'File' && item.Icon === 'excel' ? <GridOnOutlined style={options.style} /> : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'File' && item.Icon === 'word' ? <DescriptionTwoTone style={options.style} /> : null,
+      item.Type === 'File' && item.Icon === 'word' ? <DescriptionOutlined style={options.style} /> : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'File' && item.Icon === 'powerpoint' ? <PresentToAllTwoTone style={options.style} /> : null,
+      item.Type === 'File' && item.Icon === 'powerpoint' ? <PresentToAllOutlined style={options.style} /> : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'File' && item.Icon === 'adobe' ? <PictureAsPdfTwoTone style={options.style} /> : null,
+      item.Type === 'File' && item.Icon === 'adobe' ? <PictureAsPdfOutlined style={options.style} /> : null,
   },
-  { get: (item, options) => (item.Type === 'LinkList' ? <ListAltTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'Link' ? <LinkTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'MemoList' ? <ListAltTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'Memo' ? <AssignmentTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'TaskList' ? <ListAltTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'Task' ? <BallotTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'Domain' ? <DomainTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'User' ? <PersonTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'Group' ? <GroupTwoTone style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'SystemFolder' ? <FolderOutlined style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'Resources' ? <LanguageTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'LinkList' ? <ListAltOutlined style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Link' ? <LinkOutlined style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'MemoList' ? <ListAltOutlined style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Memo' ? <AssignmentOutlined style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'TaskList' ? <ListAltOutlined style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Task' ? <BallotOutlined style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Domain' ? <DomainOutlined style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'User' ? <PersonOutlined style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Group' ? <GroupOutlined style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'SystemFolder' ? <Folder style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Resources' ? <LanguageOutlined style={options.style} /> : null) },
   { get: (item, options) => (item.Type === 'Resource' ? <TextFormat style={options.style} /> : null) },
-  { get: (item, options) => (item.Type === 'ContentType' ? <WidgetsTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'ContentType' ? <Widgets style={options.style} /> : null) },
   {
-    get: (item, options) => (item.Type === 'OrganizationalUnit' ? <GroupTwoTone style={options.style} /> : null),
+    get: (item, options) => (item.Type === 'OrganizationalUnit' ? <GroupOutlined style={options.style} /> : null),
   },
   {
     get: (item, options) =>
-      item.Type && item.Type.indexOf('Workspace') > -1 ? <AllInboxTwoTone style={options.style} /> : null,
+      item.Type && item.Type.indexOf('Workspace') > -1 ? <AllInboxOutlined style={options.style} /> : null,
   },
   {
     get: (item, options) =>
-      item.Type && item.Type.indexOf('Settings') !== -1 ? <SettingsTwoTone style={options.style} /> : null,
+      item.Type && item.Type.indexOf('Settings') !== -1 ? <SettingsOutlined style={options.style} /> : null,
   },
   {
     get: (item, options) =>
@@ -202,41 +205,41 @@ export const defaultSchemaResolvers: Array<IconResolver<{ ContentTypeName: typeo
     get: (item, options) => {
       switch (item.ContentTypeName) {
         case 'Folder':
-          return <FolderTwoTone style={{ ...options.style }} />
+          return <Folder style={{ ...options.style }} />
         case 'File':
-          return <InsertDriveFileTwoTone style={{ ...options.style }} />
+          return <InsertDriveFileOutlined style={{ ...options.style }} />
         case 'ImageLibrary':
-          return <PhotoLibraryTwoTone style={options.style} />
+          return <PhotoLibrary style={options.style} />
         case 'EventList':
-          return <CalendarTodayTwoTone style={options.style} />
+          return <CalendarTodayOutlined style={options.style} />
         case 'CalendarEvent':
-          return <EventTwoTone style={options.style} />
+          return <EventOutlined style={options.style} />
         case 'DocumentLibrary':
-          return <LibraryBooksTwoTone style={options.style} />
+          return <LibraryBooksOutlined style={options.style} />
         case 'LinkList':
-          return <ListAltTwoTone style={options.style} />
+          return <ListAltOutlined style={options.style} />
         case 'Link':
-          return <LinkTwoTone style={options.style} />
+          return <LinkOutlined style={options.style} />
         case 'MemoList':
-          return <ListAltTwoTone style={options.style} />
+          return <ListAltOutlined style={options.style} />
         case 'Memo':
-          return <AssignmentTwoTone style={options.style} />
+          return <AssignmentOutlined style={options.style} />
         case 'TaskList':
-          return <ListAltTwoTone style={options.style} />
+          return <ListAltOutlined style={options.style} />
         case 'Task':
-          return <BallotTwoTone style={options.style} />
+          return <BallotOutlined style={options.style} />
         case 'User':
-          return <PersonTwoTone style={options.style} />
+          return <PersonOutlined style={options.style} />
         case 'Group':
-          return <GroupTwoTone style={options.style} />
+          return <GroupOutlined style={options.style} />
         case 'ContentType':
-          return <WidgetsTwoTone style={options.style} />
+          return <Widgets style={options.style} />
         case 'SystemFolder':
-          return <FolderOutlined style={options.style} />
+          return <Folder style={options.style} />
         case 'Resource':
           return <TextFormat style={options.style} />
         case 'OrganizationalUnit':
-          return <GroupTwoTone style={options.style} />
+          return <GroupOutlined style={options.style} />
         default:
           return null
       }
@@ -245,7 +248,7 @@ export const defaultSchemaResolvers: Array<IconResolver<{ ContentTypeName: typeo
   {
     get: (item, options) =>
       item.ContentTypeName && item.ContentTypeName.indexOf('Workspace') > -1 ? (
-        <AllInboxTwoTone style={options.style} />
+        <AllInboxOutlined style={options.style} />
       ) : null,
   },
 ]
@@ -254,7 +257,7 @@ export const defaultNotificationResolvers: Array<IconResolver<EventLogEntry<any>
   {
     get: (item, options) => {
       return item.level === LogLevel.Fatal || item.level === LogLevel.Error ? (
-        <ErrorTwoTone style={{ ...options.style }} />
+        <ErrorOutlined style={{ ...options.style }} />
       ) : null
     },
   },
@@ -291,7 +294,7 @@ export const IconComponent: React.FunctionComponent<{
     ...defaultSchemaResolvers,
     ...defaultNotificationResolvers,
   ]
-  const defaultIcon = props.defaultIcon || <WebAssetTwoTone style={props.style} /> || null
+  const defaultIcon = props.defaultIcon || <WebAssetOutlined style={props.style} /> || null
   const assignedResolver = resolvers.find(r => (r.get(props.item, options) ? true : false))
   if (assignedResolver) {
     return assignedResolver.get(props.item, options) as JSX.Element

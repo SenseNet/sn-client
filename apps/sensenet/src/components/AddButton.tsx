@@ -7,60 +7,25 @@ import {
   ListItemText,
   makeStyles,
   Popover,
-  Theme,
   Tooltip,
 } from '@material-ui/core'
-import { CloudUpload } from '@material-ui/icons'
+import { CloudUploadOutlined } from '@material-ui/icons'
 import Add from '@material-ui/icons/Add'
 import { Schema } from '@sensenet/default-content-types'
 import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
-import { useLocalization, useSelectionService } from '../hooks'
+import { useLocalization, usePersonalSettings, useSelectionService } from '../hooks'
+import { globals, useGlobalStyles } from '../globalStyles'
 import { useDialog } from './dialogs'
 import { Icon } from './Icon'
 
-const useStyles = makeStyles((theme: Theme) => {
+const useStyles = makeStyles(() => {
   return createStyles({
-    mainDiv: {
-      display: 'flex',
-      justifyContent: 'center',
-      position: 'relative',
-    },
-    addButton: {
-      width: '32px',
-      height: '32px',
-      minHeight: 0,
-      padding: 0,
-      margin: '0.5rem 0.5rem',
-      backgroundColor: theme.palette.primary.main,
-      '&:hover': {
-        backgroundColor: theme.palette.primary.main,
-      },
-    },
     addButtonDisabled: {
       backgroundColor: '#CCCCCC !important',
       '& svg': {
         color: '#8C8C8C',
-      },
-    },
-    addButtonIcon: {
-      color: theme.palette.common.white,
-    },
-    addButtonExpanded: {
-      width: '28px',
-      height: '28px',
-      minHeight: 0,
-      padding: 0,
-      backgroundColor: theme.palette.primary.main,
-    },
-    iconButtonWrapper: {
-      width: '100%',
-      display: 'flex',
-      justifyContent: 'center',
-      position: 'relative',
-      '&:hover': {
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
       },
     },
     listItem: {
@@ -68,6 +33,7 @@ const useStyles = makeStyles((theme: Theme) => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-evenly',
+      height: globals.common.drawerItemHeight,
     },
     listDropdown: {
       padding: '10px 0 10px 10px',
@@ -81,6 +47,9 @@ const useStyles = makeStyles((theme: Theme) => {
       whiteSpace: 'nowrap',
       maxWidth: '139px',
     },
+    disabled: {
+      cursor: 'not-allowed',
+    },
   })
 })
 export interface AddButtonProps {
@@ -91,6 +60,7 @@ export interface AddButtonProps {
 export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   const selectionService = useSelectionService()
   const classes = useStyles()
+  const globalClasses = useGlobalStyles()
   const repo = useRepository()
   const { openDialog } = useDialog()
   const parentContext = useContext(CurrentContentContext)
@@ -101,7 +71,9 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   const logger = useLogger('AddButton')
   const [isAvailable, setAvailable] = useState(true)
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
+  const [hasUpload, setHasUpload] = useState(false)
   const [currentComponent, setCurrentComponent] = useState(selectionService.activeContent.getValue())
+  const personalSettings = usePersonalSettings()
 
   useEffect(() => {
     const activeComponentObserve = selectionService.activeContent.subscribe(newActiveComponent =>
@@ -151,14 +123,14 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
           idOrPath: currentComponent ? parent.Id : props.path,
         })
 
-        const tempAllowedChildTypes: Schema[] = []
+        const filteredTypes = allowedChildTypesFromRepo.d.results
+          .filter(type => repo.schemas.getSchemaByName(type.Name).ContentTypeName === type.Name)
+          .map(type => repo.schemas.getSchemaByName(type.Name))
 
-        allowedChildTypesFromRepo.d.results.forEach(type => {
-          if (repo.schemas.getSchemaByName(type.Name).ContentTypeName === type.Name) {
-            tempAllowedChildTypes.push(repo.schemas.getSchemaByName(type.Name))
-          }
-        })
-        setAllowedChildTypes(tempAllowedChildTypes)
+        const tempHasUpload = filteredTypes.some(type => personalSettings.uploadHandlers.includes(type.HandlerName))
+
+        setAllowedChildTypes(filteredTypes)
+        setHasUpload(tempHasUpload)
       } catch (error) {
         logger.error({
           message: localization.errorGettingAllowedContentTypes,
@@ -173,23 +145,38 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
       currentComponent || props.path !== '' ? getAllowedChildTypes() : setAllowedChildTypes([])
     }
   }, [
+    currentComponent,
     localization.errorGettingAllowedContentTypes,
     logger,
     parent.Id,
-    currentComponent,
+    personalSettings.uploadHandlers,
     props.path,
     repo,
     showSelectType,
   ])
 
   return (
-    <div className={classes.mainDiv}>
+    <div className={clsx(globalClasses.centered, globalClasses.relative)}>
       {!props.isOpened ? (
-        <div className={classes.iconButtonWrapper}>
-          <Tooltip title={localization.addNew} placement="right">
+        <div className={globalClasses.drawerIconButtonWrapper}>
+          {isAvailable ? (
+            <Tooltip title={localization.addNew} placement="right">
+              <span>
+                <IconButton
+                  className={globalClasses.drawerButton}
+                  onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+                    setAnchorEl(event.currentTarget)
+                    setShowSelectType(true)
+                  }}
+                  disabled={!isAvailable}>
+                  <Add className={globalClasses.drawerButtonIcon} />
+                </IconButton>
+              </span>
+            </Tooltip>
+          ) : (
             <span>
               <IconButton
-                className={clsx(classes.addButton, {
+                className={clsx(globalClasses.drawerButton, {
                   [classes.addButtonDisabled]: !isAvailable,
                 })}
                 onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -197,10 +184,10 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
                   setShowSelectType(true)
                 }}
                 disabled={!isAvailable}>
-                <Add className={classes.addButtonIcon} />
+                <Add className={globalClasses.drawerButtonIcon} />
               </IconButton>
             </span>
-          </Tooltip>
+          )}
         </div>
       ) : (
         <ListItem
@@ -211,15 +198,15 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
             setShowSelectType(true)
           }}
           disabled={!isAvailable}>
-          <ListItemIcon>
+          <ListItemIcon className={globalClasses.centeredHorizontal}>
             <Tooltip title={localization.addNew} placement="right">
               <span>
                 <IconButton
-                  className={clsx(classes.addButtonExpanded, {
+                  className={clsx(globalClasses.drawerButtonExpanded, {
                     [classes.addButtonDisabled]: !isAvailable,
                   })}
                   disabled={!isAvailable}>
-                  <Add className={classes.addButtonIcon} />
+                  <Add className={globalClasses.drawerButtonIcon} />
                 </IconButton>
               </span>
             </Tooltip>
@@ -243,25 +230,27 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
           horizontal: 'left',
         }}>
         <List className={classes.listDropdown}>
-          <Tooltip title={localization.upload} placement="right">
-            <ListItem
-              key="Upload"
-              button={true}
-              style={{ padding: '10px 0 10px 10px' }}
-              onClick={() => {
-                setShowSelectType(false)
-                openDialog({
-                  name: 'upload',
-                  props: { uploadPath: parent.Path },
-                  dialogProps: { open: true, fullScreen: true },
-                })
-              }}>
-              <ListItemIcon style={{ minWidth: '36px' }}>
-                <CloudUpload />
-              </ListItemIcon>
-              <ListItemText primary={localization.upload} className={classes.listItemTextDropdown} />
-            </ListItem>
-          </Tooltip>
+          {hasUpload ? (
+            <Tooltip title={localization.upload} placement="right">
+              <ListItem
+                key="Upload"
+                button={true}
+                style={{ padding: '10px 0 10px 10px' }}
+                onClick={() => {
+                  setShowSelectType(false)
+                  openDialog({
+                    name: 'upload',
+                    props: { uploadPath: parent.Path },
+                    dialogProps: { open: true, fullScreen: true },
+                  })
+                }}>
+                <ListItemIcon style={{ minWidth: '36px' }}>
+                  <CloudUploadOutlined />
+                </ListItemIcon>
+                <ListItemText primary={localization.upload} className={classes.listItemTextDropdown} />
+              </ListItem>
+            </Tooltip>
+          ) : null}
 
           {allowedChildTypes.map(childType => (
             <Tooltip key={childType.ContentTypeName} title={childType.DisplayName} placement="right">

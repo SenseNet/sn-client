@@ -10,6 +10,7 @@ import {
 import { useAuthentication, useRepository } from '@sensenet/hooks-react'
 import React from 'react'
 import { useCurrentUser } from '../../context'
+import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { getAuthService } from '../../services/auth-service'
 import { Icon } from '../Icon'
@@ -21,11 +22,12 @@ export function LogoutDialog() {
   const { logout, isLoading } = useAuthentication()
   const repository = useRepository()
   const localization = useLocalization().logout
+  const globalClasses = useGlobalStyles()
 
   return (
     <>
       <DialogTitle>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div className={globalClasses.centeredVertical}>
           <Icon
             style={{
               margin: '0 1em 0 0',
@@ -39,7 +41,7 @@ export function LogoutDialog() {
 
       {isLoading ? (
         <DialogContent>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+          <div className={globalClasses.centered} style={{ flexDirection: 'column' }}>
             <CircularProgress size={64} />
             <Typography style={{ marginTop: '2em', wordBreak: 'break-word' }}>
               {localization.loggingOutFrom(repository.configuration.repositoryUrl)}

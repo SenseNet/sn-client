@@ -22,7 +22,6 @@ import {
 import '../utils/errorToJson'
 import { DialogProvider } from './dialogs/dialog-provider'
 import { snInjector } from './sn-injector'
-import theme from './theme'
 
 export type AppProvidersProps = {
   children: React.ReactNode
@@ -46,7 +45,7 @@ export default function AppProviders({ children }: AppProvidersProps) {
         <PersonalSettingsContextProvider>
           <LocalizationProvider>
             <BrowserRouter>
-              <ThemeProvider theme={theme}>
+              <ThemeProvider>
                 <RepositoryProvider>
                   <CurrentUserProvider>
                     <ResponsiveContextProvider>

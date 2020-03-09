@@ -2,9 +2,25 @@ import { DocumentViewer } from '@sensenet/document-viewer-react'
 import React, { useCallback, useEffect } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { Close } from '@material-ui/icons'
-import { Button } from '@material-ui/core'
+import { Button, createStyles, makeStyles } from '@material-ui/core'
 import { CurrentContentProvider } from '@sensenet/hooks-react'
+import clsx from 'clsx'
 import { useLocalization, useSelectionService, useTheme } from '../hooks'
+import { useGlobalStyles } from '../globalStyles'
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    docViewerWrapper: {
+      overflow: 'hidden',
+    },
+    closeButton: {
+      placeSelf: 'flex-end',
+      position: 'relative',
+      top: '1em',
+      right: '4.5em',
+    },
+  })
+})
 
 const DocViewer: React.FunctionComponent<RouteComponentProps<{ documentId: string }> & {
   previousLocation?: string
@@ -16,6 +32,8 @@ const DocViewer: React.FunctionComponent<RouteComponentProps<{ documentId: strin
   const closeViewer = useCallback(() => {
     props.previousLocation ? props.history.push(props.previousLocation) : props.history.goBack()
   }, [props.history, props.previousLocation])
+  const classes = useStyles()
+  const globalClasses = useGlobalStyles()
 
   useEffect(() => {
     const keyboardHandler = (event: KeyboardEvent) => {
@@ -36,12 +54,10 @@ const DocViewer: React.FunctionComponent<RouteComponentProps<{ documentId: strin
   }
 
   return (
-    <div style={{ overflow: 'hidden', width: '100%', height: '100%', position: 'fixed' }}>
+    <div className={clsx(globalClasses.full, classes.docViewerWrapper)}>
       <CurrentContentProvider idOrPath={documentId} onContentLoaded={c => selectionService.activeContent.setValue(c)}>
         <DocumentViewer documentIdOrPath={documentId}>
-          <Button
-            style={{ placeSelf: 'flex-end', position: 'relative', top: '1em', right: '4.5em' }}
-            onClick={closeViewer}>
+          <Button className={classes.closeButton} onClick={closeViewer}>
             <Close style={{ marginRight: theme.spacing(1) }} />
             {localization.customActions.resultsDialog.closeButton}
           </Button>

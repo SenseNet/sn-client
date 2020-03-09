@@ -7,12 +7,12 @@ import {
 
 context('The documents page with admin', () => {
   const adminUser = {
-    email: 'e2e.admin@sensenet.com',
+    username: 'e2eadmin',
     password: 'e2eadmin',
-    doclibPath: 'Root/Profiles/Public/e2e-admin/Document_Library',
+    doclibPath: 'Root/Content/IT/Document_Library',
   }
   beforeEach(() => {
-    cy.login(adminUser.email, adminUser.password)
+    cy.login(adminUser.username, adminUser.password)
   })
 
   it('should check actions availability', () => {

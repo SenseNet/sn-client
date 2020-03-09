@@ -13,7 +13,7 @@ export const VirtualDefaultCell = <T extends GenericContent>(props: VirtualDefau
       width: '100%',
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'left',
       padding: 0,
     }}
     component="div">

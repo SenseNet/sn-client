@@ -59,8 +59,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
       setActionsWopi(content)
     }
   }, [content, setActionsWopi])
-
-  return (
+  return !actions?.length ? null : (
     <div onKeyDown={ev => ev.stopPropagation()} onKeyPress={ev => ev.stopPropagation()}>
       {device === 'mobile' ? (
         <Drawer

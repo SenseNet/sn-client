@@ -45,14 +45,14 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
   return (
     <>
       <DialogTitle>
-        <div>
+        <>
           <Icon item={props.content[0]} style={{ marginRight: '1em' }} />
           {props.content.length === 1
             ? localization.title
                 .replace('{0}', props.content[0].DisplayName || props.content[0].Name)
                 .replace('{1}', list.path)
             : localization.titleMultiple.replace('{0}', props.content.length.toString()).replace('{1}', list.path)}
-        </div>
+        </>
       </DialogTitle>
       <DialogContent>
         <List>

@@ -1053,6 +1053,7 @@ export const customSchema = [
         Type: 'ShortTextFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.GenericContent',
   },
   {
     ContentTypeName: 'File',
@@ -1329,6 +1330,7 @@ export const customSchema = [
         Type: 'ShortTextFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.File',
   },
   {
     ContentTypeName: 'Image',
@@ -1430,6 +1432,7 @@ export const customSchema = [
         Type: 'IntegerFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.Image',
   },
   {
     ContentTypeName: 'PreviewImage',
@@ -1441,6 +1444,7 @@ export const customSchema = [
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
+    HandlerName: 'SenseNet.ContentRepository.Image',
   },
   {
     ContentTypeName: 'Folder',
@@ -1531,6 +1535,7 @@ export const customSchema = [
         Type: 'ShortTextFieldSetting',
       },
     ],
+    HandlerName: 'SenseNet.ContentRepository.Folder',
   },
   {
     ContentTypeName: 'User',
@@ -1978,6 +1983,7 @@ export const customSchema = [
         DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.User',
   },
   {
     ContentTypeName: 'Group',
@@ -2036,6 +2042,7 @@ export const customSchema = [
         DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.Group',
   },
   {
     ContentTypeName: 'Task',
@@ -2212,5 +2219,6 @@ export const customSchema = [
         DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
     ],
+    HandlerName: 'SenseNet.ContentRepository.Task',
   },
 ]

@@ -2,8 +2,9 @@ import Paper from '@material-ui/core/Paper'
 import React, { useContext } from 'react'
 import { useRouteMatch } from 'react-router-dom'
 import { ResponsiveContext } from '../../context'
-import { usePersonalSettings } from '../../hooks'
+import { usePersonalSettings, useTheme } from '../../hooks'
 import { WidgetSection } from '../../services'
+import { globals } from '../../globalStyles'
 import { ErrorWidget } from './error-widget'
 import { MarkdownWidget } from './markdown-widget'
 import { QueryWidget } from './query-widget'
@@ -30,6 +31,7 @@ const Dashboard = () => {
     ? personalSettings.dashboards[match.params.dashboardName]
     : personalSettings.dashboards.repositoryDefault
   const platform = useContext(ResponsiveContext)
+  const theme = useTheme()
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%', height: '100%', overflow: 'auto' }}>
@@ -48,6 +50,8 @@ const Dashboard = () => {
               padding: '1em',
               minWidth: width === '100%' ? 'calc(100% - 2em)' : width,
               overflow: 'hidden',
+              backgroundColor:
+                theme.palette.type === 'light' ? globals.light.drawerBackground : globals.dark.drawerBackground,
             }}>
             {widgetComponent}
           </Paper>

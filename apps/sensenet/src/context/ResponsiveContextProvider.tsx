@@ -16,7 +16,7 @@ export const ResponsiveContextProvider: React.FunctionComponent = props => {
   const theme = useTheme()
   const personalSettings = usePersonalSettings()
   return (
-    <div>
+    <>
       <MediaQuery query={theme.breakpoints.up('lg').replace('@media ', '')}>
         <ResponsivePersonalSetttings.Provider value={deepMerge(personalSettings.default, personalSettings.desktop)}>
           <ResponsiveContext.Provider value="desktop">{props.children}</ResponsiveContext.Provider>
@@ -32,6 +32,6 @@ export const ResponsiveContextProvider: React.FunctionComponent = props => {
           <ResponsiveContext.Provider value="mobile">{props.children}</ResponsiveContext.Provider>
         </ResponsivePersonalSetttings.Provider>
       </MediaQuery>
-    </div>
+    </>
   )
 }

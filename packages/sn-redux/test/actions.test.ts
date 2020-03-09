@@ -6,7 +6,10 @@ import {
   ODataBatchResponse,
   ODataCollectionResponse,
   ODataResponse,
+  ODataSharingResponse,
   Repository,
+  SharingLevel,
+  SharingMode,
 } from '@sensenet/client-core'
 import { ActionModel, GenericContent, Task, User } from '@sensenet/default-content-types'
 import * as Actions from '../src/Actions'
@@ -24,10 +27,7 @@ const jwtMockResponse = {
   },
 } as Response
 
-const repository = new Repository(
-  { repositoryUrl: 'https://dmsservice.demo.sensenet.com/' },
-  async () => jwtMockResponse,
-)
+const repository = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => jwtMockResponse)
 
 export const _jwtService = new JwtService(repository)
 
@@ -115,18 +115,74 @@ const metadataResponse = {
   'content-type': 'application/xml; charset=utf-8',
 }
 
+const schemaResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return [
+      {
+        ContentTypeName: 'ContentType',
+        DisplayName: 'Content Type',
+        Description: 'A content type is a reusable set of fields you want to apply to certain content.',
+        Icon: 'ContentType',
+        AllowIndexing: true,
+        AllowIncrementalNaming: false,
+        AllowedChildTypes: [],
+        HandlerName: 'SenseNet.ContentRepository.Schema.ContentType',
+        FieldSettings: [
+          {
+            Type: 'IntegerFieldSetting',
+            Name: 'Id',
+            FieldClassName: 'SenseNet.ContentRepository.Fields.IntegerField',
+            DisplayName: 'Id',
+            Description: 'A unique ID for the Content.',
+            ReadOnly: true,
+            Compulsory: false,
+            OutputMethod: 0,
+            Visible: false,
+            VisibleBrowse: 1,
+            VisibleEdit: 1,
+            VisibleNew: 1,
+            DefaultOrder: 0,
+          },
+        ],
+      },
+    ]
+  },
+} as Response
+
+const sharingResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return {
+      Token: 'devdog@sensenet.com',
+      Id: 11,
+    }
+  },
+} as Response
+
+const sharingEntriesResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return {
+      d: {
+        results: [{ Token: 'devdog@sensenet.com' }, { Token: 'alba@sensenet.com' }],
+      },
+    }
+  },
+} as Response
+
 describe('Actions', () => {
   const path = '/workspaces/project'
   let repo: Repository
   beforeEach(() => {
-    repo = new Repository({ repositoryUrl: 'https://dmsservice.demo.sensenet.com/' }, async () => contentMockResponse)
+    repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => contentMockResponse)
   })
   describe('FetchContent', () => {
     beforeEach(() => {
-      repo = new Repository(
-        { repositoryUrl: 'https://dmsservice.demo.sensenet.com/' },
-        async () => collectionMockResponse,
-      )
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => collectionMockResponse)
     })
     describe('Action types are types', () => {
       expect(Actions.requestContent(path, { scenario: '' }).type).toBe('FETCH_CONTENT')
@@ -211,7 +267,7 @@ describe('Actions', () => {
   })
   describe('LoadContentActions', () => {
     beforeEach(() => {
-      repo = new Repository({ repositoryUrl: 'https://dmsservice.demo.sensenet.com/' }, async () => actionsMockResponse)
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => actionsMockResponse)
     })
     describe('Action types are types', () => {
       expect(Actions.loadContentActions(path).type).toBe('LOAD_CONTENT_ACTIONS')
@@ -767,15 +823,15 @@ describe('Actions', () => {
       expect(Actions.changeFieldValue('Name', 'aaa')).toEqual(expectedAction)
     })
   })
-  describe('getSchema', () => {
+  describe('getSchemaByTypeName', () => {
     beforeEach(() => {
-      repo = new Repository({ repositoryUrl: 'https://dmsservice.demo.sensenet.com/' }, async () => contentMockResponse)
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => contentMockResponse)
     })
     describe('Action types are types', () => {
-      expect(Actions.getSchema('Task').type).toBe('GET_SCHEMA')
+      expect(Actions.getSchemaByTypeName('Task').type).toBe('GET_SCHEMA_BY_TYPENAME')
     })
     it('should return task schema', () => {
-      const data = Actions.getSchema('Task').payload(repo)
+      const data = Actions.getSchemaByTypeName('Task').payload(repo)
       expect(data).toEqual(repo.schemas.getSchemaByName('Task'))
     })
   })
@@ -792,10 +848,7 @@ describe('Actions', () => {
   })
   describe('getChildrenCount', () => {
     beforeEach(() => {
-      repo = new Repository(
-        { repositoryUrl: 'https://dmsservice.demo.sensenet.com/' },
-        async () => countResponse as any,
-      )
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => countResponse as any)
     })
     describe('Action types are types', () => {
       expect(Actions.getChildrenCount(path).type).toBe('GET_CHILDREN_COUNT')
@@ -818,10 +871,7 @@ describe('Actions', () => {
   })
   describe('getProperty', () => {
     beforeEach(() => {
-      repo = new Repository(
-        { repositoryUrl: 'https://dmsservice.demo.sensenet.com/' },
-        async () => propertyResponse as any,
-      )
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => propertyResponse as any)
     })
     describe('Action types are types', () => {
       expect(Actions.getProperty(path, 'DisplayName').type).toBe('GET_PROPERTY')
@@ -845,7 +895,7 @@ describe('Actions', () => {
   describe('getPropertyValue', () => {
     beforeEach(() => {
       repo = new Repository(
-        { repositoryUrl: 'https://dmsservice.demo.sensenet.com/' },
+        { repositoryUrl: 'https://dev.demo.sensenet.com/' },
         async () => propertyValueResponse as any,
       )
     })
@@ -870,10 +920,7 @@ describe('Actions', () => {
   })
   describe('getMetadata', () => {
     beforeEach(() => {
-      repo = new Repository(
-        { repositoryUrl: 'https://dmsservice.demo.sensenet.com/' },
-        async () => metadataResponse as any,
-      )
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => metadataResponse as any)
     })
     describe('Action types are types', () => {
       expect(Actions.getMetadata(path).type).toBe('GET_METADATA')
@@ -890,6 +937,121 @@ describe('Actions', () => {
         })
         it('should return propertyResponse', () => {
           expect(data).toEqual(metadataResponse)
+        })
+      })
+    })
+  })
+  describe('getSchema', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => schemaResponse as any)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getSchema().type).toBe('GET_SCHEMA')
+    })
+    describe('serviceChecks()', () => {
+      describe('Given repository.getSchema() resolves', () => {
+        let data
+        let mockSchemaResponseData: ReturnType<typeof schemaResponse['json']>
+        beforeEach(async () => {
+          data = await Actions.getSchema().payload(repo)
+          mockSchemaResponseData = await schemaResponse.json()
+        })
+        it('should return a GET_SCHEMA action', () => {
+          expect(Actions.getSchema()).toHaveProperty('type', 'GET_SCHEMA')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(mockSchemaResponseData)
+        })
+      })
+    })
+  })
+  describe('share', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => sharingResponse)
+    })
+    describe('Action types are types', () => {
+      expect(
+        Actions.share({
+          identity: 'devdog@sensenet.com',
+          sharingLevel: SharingLevel.Edit,
+          sharingMode: SharingMode.Private,
+          content: { Id: 42 } as GenericContent,
+        }).type,
+      ).toBe('SHARE')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.share() resolves', () => {
+        let data: ODataSharingResponse
+        const expectedResult = { Token: 'devdog@sensenet.com', Id: 11 }
+        beforeEach(async () => {
+          data = await Actions.share({
+            identity: 'devdog@sensenet.com',
+            sharingLevel: SharingLevel.Edit,
+            sharingMode: SharingMode.Private,
+            content: { Id: 42 } as GenericContent,
+          }).payload(repo)
+        })
+        it('should return a SHARE action', () => {
+          expect(
+            Actions.share({
+              identity: 'devdog@sensenet.com',
+              sharingLevel: SharingLevel.Edit,
+              sharingMode: SharingMode.Private,
+              content: { Id: 42 } as GenericContent,
+            }),
+          ).toHaveProperty('type', 'SHARE')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(expectedResult)
+        })
+      })
+    })
+  })
+  describe('remove sharing', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => sharingResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.removeSharing({ Id: 42 } as GenericContent, 11).type).toBe('REMOVE_SHARING')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.removeSharing() resolves', () => {
+        let data: ODataSharingResponse
+        const expectedResult = { Token: 'devdog@sensenet.com', Id: 11 }
+        beforeEach(async () => {
+          data = await Actions.removeSharing({ Id: 42 } as GenericContent, 11).payload(repo)
+        })
+        it('should return a REMOVE_SHARING action', () => {
+          expect(Actions.removeSharing({ Id: 42 } as GenericContent, 11)).toHaveProperty('type', 'REMOVE_SHARING')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(expectedResult)
+        })
+      })
+    })
+  })
+  describe('getSharingEntries', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => sharingEntriesResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getSharingEntries(42).type).toBe('GET_SHARING_ENTRIES')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given getSharingEntries() resolves', () => {
+        let data: any
+        const expectedResult = { d: { results: [{ Token: 'devdog@sensenet.com' }, { Token: 'alba@sensenet.com' }] } }
+        beforeEach(async () => {
+          data = await Actions.getSharingEntries(42).payload(repo)
+        })
+        it('should return a GET_SHARING_ENTRIES action', () => {
+          expect(Actions.getSharingEntries(42)).toHaveProperty('type', 'GET_SHARING_ENTRIES')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(expectedResult)
         })
       })
     })

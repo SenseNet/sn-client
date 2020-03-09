@@ -3,13 +3,15 @@ import { Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { ActionModel, GenericContent, Settings, File as SnFile } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
+import clsx from 'clsx'
 import { Uri } from 'monaco-editor'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 import { Prompt } from 'react-router'
 import { ResponsiveContext } from '../../context'
+import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useTheme } from '../../hooks'
-import { ContentContextService } from '../../services'
+import { ContentContextService } from '../../services/content-context-service'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 
 export const getMonacoModelUri = (content: GenericContent, repo: Repository, action?: ActionModel) => {
@@ -50,6 +52,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   const [hasChanges, setHasChanges] = useState(false)
   const logger = useLogger('TextEditor')
   const [error, setError] = useState<Error | undefined>()
+  const globalClasses = useGlobalStyles()
 
   const saveContent = async () => {
     try {
@@ -122,7 +125,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
         setError(err)
       }
     })()
-  }, [contentContextService, savedTextValue, props, repo])
+  }, [savedTextValue, props, repo, contentContextService])
 
   if (error) {
     logger.information({
@@ -145,7 +148,13 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
           }
         }
       }}>
-      <div style={{ display: 'flex', justifyContent: props.showBreadCrumb ? 'space-between' : 'flex-end' }}>
+      <div
+        className={clsx([globalClasses.centeredVertical])}
+        style={{
+          height: globals.common.drawerItemHeight,
+          paddingLeft: '15px',
+          justifyContent: props.showBreadCrumb ? 'space-between' : 'flex-end',
+        }}>
         {props.showBreadCrumb && <ContentBreadcrumbs />}
         <div
           style={{

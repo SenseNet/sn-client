@@ -13,12 +13,12 @@ context('The login page', () => {
   })
 
   it('requires password', () => {
-    cy.get('input[name=email]').type('businesscat@sensenet.com{enter}')
+    cy.get('input[name=email]').type('businesscat{enter}')
     cy.contains(resources.PASSWORD_IS_NOT_VALID_MESSAGE).should('exist')
   })
 
   it('requires valid email and password', () => {
-    cy.get('input[name=email]').type('businesscat@sensenet.com')
+    cy.get('input[name=email]').type('businesscat.com')
     cy.get('input[name=password]').type(`invalid{enter}`)
     cy.contains(resources.WRONG_USERNAME_OR_PASSWORD).should('exist')
   })
@@ -30,7 +30,7 @@ context('The login page', () => {
   })
 
   it('can authenticate properly', () => {
-    cy.get('input[name=email]').type('businesscat@sensenet.com')
+    cy.get('input[name=email]').type('businesscat')
     cy.get('input[name=password]').type(`businesscat{enter}`)
 
     cy.url({ timeout: 10000 }).should('include', '/documents')
@@ -39,7 +39,7 @@ context('The login page', () => {
 
     cy.window()
       .its('localStorage')
-      .invoke('getItem', 'sn-https://dmsservice.demo.sensenet.com-access')
+      .invoke('getItem', 'sn-https://dev.demo.sensenet.com-access')
       .should('not.be.empty')
   })
 })

@@ -9,6 +9,8 @@ import Typography from '@material-ui/core/Typography'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
+import { Actions } from '@sensenet/redux'
+import { SharingOptions } from '@sensenet/client-core'
 import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
@@ -18,7 +20,6 @@ import { versionName } from '../../assets/helpers'
 import { icons } from '../../assets/icons'
 import { resources } from '../../assets/resources'
 import { rootStateType } from '../../store/rootReducer'
-import { getSharingEntries, share } from '../../store/sharing'
 import DialogInfo from './DialogInfo'
 
 const styles = {
@@ -67,12 +68,12 @@ interface ShareDialogProps extends RouteComponentProps<any> {
 
 const mapStateToProps = (state: rootStateType) => ({
   repositoryUrl: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
-  items: state.dms.sharing,
+  items: state.sensenet.sharing,
 })
 
 const mapDispatchToProps = {
-  getSharingEntries,
-  share,
+  getSharingEntries: Actions.getSharingEntries,
+  share: Actions.share,
   closeDialog: DMSActions.closeDialog,
 }
 
@@ -117,15 +118,14 @@ class ShareDialog extends React.Component<
       newProps.currentContent.Icon &&
       icons[newProps.currentContent.Icon.toLowerCase() as any]
     const entries = Object.values(newProps.items)
-      .map(item => Object.values(item))
+      .map(item => Object.values(item as any))
       .reduce((acc, val) => acc.concat(val), []) // .flat()
-    console.log(entries)
     return {
       icon,
       sharedWithValues: [
         ...entries
-          .filter(e => lastState.sharedWithValues.findIndex(s => s.value === e.Token) === -1)
-          .map(entry => ({
+          .filter((e: any) => lastState.sharedWithValues.findIndex(s => s.value === e.Token) === -1)
+          .map((entry: any) => ({
             value: entry.Token,
             type: entry.Level,
             isSaved: true,
@@ -146,12 +146,17 @@ class ShareDialog extends React.Component<
     this.state.sharedWithValues
       .filter(v => !v.isSaved)
       .forEach(v => {
-        this.props.currentContent && this.props.share(this.props.currentContent.Id, v.value, v.type, 'Private')
+        const sharingOptions = {
+          identity: v.value,
+          content: this.props.currentContent,
+          sharingLevel: v.type,
+          sharingMode: 'Private',
+        } as SharingOptions
+        this.props.currentContent && this.props.share(sharingOptions)
       })
     this.setState({
       sharedWithValues: [],
     })
-    console.log('Share form submitted, payload:', this.state)
   }
 
   public handleAddTypeChange(event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>) {
@@ -286,8 +291,8 @@ class ShareDialog extends React.Component<
                   inputProps={{
                     name: 'addType',
                   }}>
-                  <MenuItem value="Open">{resources.SHARE_PERMISSION_VIEW}</MenuItem>
-                  <MenuItem value="Edit">{resources.SHARE_PERMISSION_EDIT}</MenuItem>
+                  <MenuItem value={`Open`}>{resources.SHARE_PERMISSION_VIEW}</MenuItem>
+                  <MenuItem value={`Edit`}>{resources.SHARE_PERMISSION_EDIT}</MenuItem>
                 </Select>
               </div>
               {matches && this.state.sharedWithValues.length ? (
@@ -344,7 +349,12 @@ class ShareDialog extends React.Component<
                   </Button>
                 ) : null}
 
-                <Button style={styles.actionButton} variant="contained" color="secondary" type="submit">
+                <Button
+                  disabled={this.state.sharedWithValues.length === 0}
+                  style={styles.actionButton}
+                  variant="contained"
+                  color="secondary"
+                  type="submit">
                   {resources.OK}
                 </Button>
               </div>

@@ -56,7 +56,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
       </DialogContent>
       <DialogActions style={{ display: 'flex', justifyContent: 'space-between' }}>
         {!isTrashBag ? (
-          <div>
+          <>
             <Tooltip title={localization.permanentlyHint}>
               <FormControlLabel
                 style={{ marginLeft: '1em' }}
@@ -64,9 +64,9 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                 control={<Checkbox disabled={isDeleteInProgress} onChange={ev => setPermanent(ev.target.checked)} />}
               />
             </Tooltip>
-          </div>
+          </>
         ) : null}
-        <div>
+        <>
           <Button disabled={isDeleteInProgress} onClick={() => closeLastDialog()}>
             {localization.cancelButton}
           </Button>
@@ -134,7 +134,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
             }}>
             {isTrashBag ? localization.deletePermanently : localization.deleteButton}
           </Button>
-        </div>
+        </>
       </DialogActions>
     </>
   )

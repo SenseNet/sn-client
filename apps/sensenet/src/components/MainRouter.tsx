@@ -6,6 +6,10 @@ import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './FullScreenLoader'
 import { WopiPage } from './wopi-page'
 
+const UsersAndGroupsComponent = lazy(() =>
+  import(/* webpackChunkName: "UserAndGroup" */ './users-and-groups/users-and-groups'),
+)
+const LocalizationComponent = lazy(() => import(/* webpackChunkName: "Localization" */ './localization/localization'))
 const ExploreComponent = lazy(() => import(/* webpackChunkName: "content" */ './content'))
 const DashboardComponent = lazy(() => import(/* webpackChunkName: "dashboard" */ './dashboard'))
 const SearchComponent = lazy(() => import(/* webpackChunkName: "search" */ './search'))
@@ -43,65 +47,73 @@ export const MainRouter = () => {
 
   return (
     <ErrorBoundary FallbackComponent={ErrorBoundaryWithDialogs}>
-      <div style={{ width: '100%', height: '100%', boxSizing: 'border-box', position: 'relative' }}>
-        <Suspense fallback={<FullScreenLoader />}>
+      <Suspense fallback={<FullScreenLoader />}>
+        <Switch>
           <Route path="/personalSettings">
             <PersonalSettingsEditor />
           </Route>
+
           <Route path="/events/:eventGuid?">
             <EventListComponent />
           </Route>
-          <Switch>
-            <Route path="/:repo/browse/:browseData?">
-              <ExploreComponent />
-            </Route>
 
-            <Route path="/:repo/search/:queryData?">
-              <LoadSettingsContextProvider>
-                <SearchComponent />
-              </LoadSettingsContextProvider>
-            </Route>
+          <Route path="/:repo/browse/:browseData?">
+            <ExploreComponent />
+          </Route>
 
-            <Route path="/:repo/saved-queries">
-              <LoadSettingsContextProvider>
-                <SavedQueriesComponent />
-              </LoadSettingsContextProvider>
-            </Route>
+          <Route path="/:repo/search/:queryData?">
+            <LoadSettingsContextProvider>
+              <SearchComponent />
+            </LoadSettingsContextProvider>
+          </Route>
 
-            <Route path="/:repo/setup">
-              <SetupComponent />
-            </Route>
+          <Route path="/:repo/saved-queries">
+            <LoadSettingsContextProvider>
+              <SavedQueriesComponent />
+            </LoadSettingsContextProvider>
+          </Route>
 
-            <Route path="/:repo/trash">
-              <TrashComponent />
-            </Route>
+          <Route path="/:repo/setup">
+            <SetupComponent />
+          </Route>
 
-            <Route path="/:repo/editBinary/:contentId?">
-              <EditBinary />
-            </Route>
+          <Route path="/:repo/trash">
+            <TrashComponent />
+          </Route>
 
-            <Route path="/:repo/editProperties/:contentId?">
-              <EditProperties />
-            </Route>
+          <Route path="/:repo/localization">
+            <LocalizationComponent />
+          </Route>
 
-            <Route path="/:repo/preview/:documentId?">
-              <DocumentViewerComponent previousLocation={previousLocation.current} />
-            </Route>
+          <Route path="/:repo/usersAndGroups">
+            <UsersAndGroupsComponent />
+          </Route>
 
-            <Route path="/:repo/wopi/:documentId/:action?">
-              <WopiPage />
-            </Route>
+          <Route path="/:repo/editBinary/:contentId?">
+            <EditBinary />
+          </Route>
 
-            <Route path="/dashboard/:dashboardName?">
-              <DashboardComponent />
-            </Route>
+          <Route path="/:repo/editProperties/:contentId?">
+            <EditProperties />
+          </Route>
 
-            <Route path="/" exact>
-              <DashboardComponent />
-            </Route>
-          </Switch>
-        </Suspense>
-      </div>
+          <Route path="/:repo/preview/:documentId?">
+            <DocumentViewerComponent previousLocation={previousLocation.current} />
+          </Route>
+
+          <Route path="/:repo/wopi/:documentId/:action?">
+            <WopiPage />
+          </Route>
+
+          <Route path="/dashboard/:dashboardName?">
+            <DashboardComponent />
+          </Route>
+
+          <Route path="/" exact>
+            <DashboardComponent />
+          </Route>
+        </Switch>
+      </Suspense>
     </ErrorBoundary>
   )
 }

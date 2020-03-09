@@ -71,7 +71,7 @@ export const defaultState: DocumentLibraryState = {
       ['DisplayName', 'asc'],
     ],
     filter: "ContentType ne 'SystemFolder'",
-    scenario: 'DMSListItem',
+    scenario: 'ContextMenu',
   },
   childrenOptions: {
     select: [
@@ -98,7 +98,7 @@ export const defaultState: DocumentLibraryState = {
       ['DisplayName', 'asc'],
     ],
     filter: "ContentType ne 'SystemFolder'",
-    scenario: 'DMSListItem',
+    scenario: 'ContextMenu',
     top: loadChunkSize,
   },
   searchState: {

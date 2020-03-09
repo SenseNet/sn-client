@@ -6,18 +6,21 @@ import { ConstantContent } from '@sensenet/client-core'
 import { Settings } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import { Query } from '@sensenet/query'
+import clsx from 'clsx'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { ContentContextService } from '../../services'
+import { ContentContextService } from '../../services/content-context-service'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { WellKnownContentCard } from './well-known-content-card'
 
 const Setup = () => {
   const repo = useRepository()
-  const contentContextService = new ContentContextService(repo)
   const localization = useLocalization().settings
-
+  const contentContextService = new ContentContextService(repo)
+  const globalClasses = useGlobalStyles()
+  const localizationDrawerTitles = useLocalization().drawer.titles
   const [wellKnownSettings, setWellKnownSettings] = useState<Settings[]>([])
   const [settings, setSettings] = useState<Settings[]>([])
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
@@ -43,17 +46,12 @@ const Setup = () => {
   }, [localization.descriptions, repo])
 
   return (
-    <div style={{ padding: '1em', margin: '1em', height: '100%', overflow: 'auto' }}>
-      <Typography variant="h5">Setup</Typography>
+    <div className={globalClasses.contentWrapper}>
+      <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)} style={{ display: 'grid' }}>
+        <span style={{ fontSize: '20px' }}>{localizationDrawerTitles.Setup}</span>
+      </div>
       {wellKnownSettings.length ? (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-            margin: '1em',
-          }}>
+        <div className={globalClasses.centered} style={{ flexWrap: 'wrap' }}>
           <ContentContextMenu
             isOpened={isContextMenuOpened}
             content={contextMenuItem ?? wellKnownSettings[0]}
@@ -81,7 +79,7 @@ const Setup = () => {
         </div>
       ) : null}
       <br />
-      {settings?.length ? (
+      {settings && settings.length ? (
         <>
           <Typography variant="h5">{localization.otherSettings}</Typography>
           <List>

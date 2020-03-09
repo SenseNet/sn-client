@@ -1,3 +1,4 @@
+import { createStyles, makeStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
@@ -5,8 +6,6 @@ import Save from '@material-ui/icons/Save'
 import { ConstantContent } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { generatePath, useHistory, useRouteMatch } from 'react-router'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
@@ -15,11 +14,15 @@ import {
   useLogger,
   useRepository,
 } from '@sensenet/hooks-react'
+import clsx from 'clsx'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { generatePath, useHistory, useRouteMatch } from 'react-router'
 import { ResponsivePersonalSetttings } from '../../context'
+import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useSelectionService } from '../../hooks'
+import { ContentContextService } from '../../services'
 import { ContentList, isReferenceField } from '../content-list'
 import { useDialog } from '../dialogs'
-import { ContentContextService } from '../../services'
 
 const searchDebounceTime = 400
 export interface QueryData {
@@ -36,6 +39,16 @@ export const encodeQueryData = (data: QueryData) => encodeURIComponent(btoa(JSON
 export const decodeQueryData = (encoded?: string) =>
   encoded ? (JSON.parse(atob(decodeURIComponent(encoded))) as QueryData) : { term: '' }
 
+const useStyles = makeStyles(() => {
+  return createStyles({
+    searchBar: {
+      display: 'flex',
+      width: '100%',
+      marginLeft: '1em',
+    },
+  })
+})
+
 export const Search = () => {
   const repo = useRepository()
   const match = useRouteMatch<{ queryData?: string }>()
@@ -45,6 +58,8 @@ export const Search = () => {
   const [queryData, setQueryData] = useState<QueryData>(decodeQueryData(match.params.queryData))
   const selectionService = useSelectionService()
   const localization = useLocalization().search
+  const classes = useStyles()
+  const globalClasses = useGlobalStyles()
   const [result, setResult] = useState<GenericContent[]>([])
   const [error, setError] = useState('')
   const loadSettingsContext = useContext(LoadSettingsContext)
@@ -104,11 +119,13 @@ export const Search = () => {
   ])
 
   return (
-    <div style={{ padding: '1em 0 0 1em', height: '100%', width: '100%' }}>
-      <Typography variant="h5">{queryData.title || localization.title}</Typography>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div className={globalClasses.contentWrapper}>
+      <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}>
+        <span style={{ fontSize: '20px' }}>{queryData.title || localization.title}</span>
+      </div>
+      <div className={globalClasses.centeredVertical}>
         {queryData.hideSearchBar ? null : (
-          <div style={{ marginLeft: '1em', width: '100%', display: 'flex' }}>
+          <div className={classes.searchBar}>
             <TextField
               label={localization.queryLabel}
               helperText={localization.queryHelperText}
@@ -146,7 +163,7 @@ export const Search = () => {
           <CurrentAncestorsContext.Provider value={[]}>
             <ContentList
               style={{
-                height: queryData.title === 'Content Types' ? 'calc(100% - 33px)' : 'calc(100% - 100px)',
+                height: '100%',
                 overflow: 'auto',
               }}
               enableBreadcrumbs={false}

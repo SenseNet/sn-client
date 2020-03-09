@@ -11,7 +11,7 @@ it('renders without crashing', () => {
       sensenet: {
         session: {
           repository: {
-            repositoryUrl: 'https://dmsservice.demo.sensenet.com',
+            repositoryUrl: 'https://dev.demo.sensenet.com',
           } as any,
           user: {
             fullName: 'Alba Monday',

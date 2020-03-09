@@ -119,6 +119,7 @@ import {
   ODataParams,
   Repository,
   RepositoryConfiguration,
+  SharingOptions,
 } from '@sensenet/client-core'
 import { GenericContent, User } from '@sensenet/default-content-types'
 import { PromiseMiddlewareAction } from '@sensenet/redux-promise-middleware'
@@ -508,8 +509,8 @@ export const changeFieldValue = (name: string, value: any) => ({
  * Action creator for loading schema of a given type
  * @param {string} typeName Name of the Content Type.
  */
-export const getSchema = (typeName: string) => ({
-  type: 'GET_SCHEMA',
+export const getSchemaByTypeName = (typeName: string) => ({
+  type: 'GET_SCHEMA_BY_TYPENAME',
   payload: (repository: Repository) => repository.schemas.getSchemaByName(typeName),
 })
 /**
@@ -571,3 +572,65 @@ export const getMetadata = (idOrPath: string | number) => {
     payload: (repository: Repository) => repository.fetch(`${path}/$metadata`),
   }
 }
+
+/**
+ * Action creator for loading repository schema
+ */
+export const getSchema = () => ({
+  type: 'GET_SCHEMA',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath: '/Root',
+      name: 'GetSchema',
+      method: 'GET',
+    }),
+})
+
+/**
+ * Action creator for sharing a content
+ * @param options object with the sharing options(identity, level, mode, etc).
+ */
+export const share = (options: SharingOptions) => ({
+  type: 'SHARE',
+  payload: (repository: Repository) =>
+    repository.share({
+      content: options.content,
+      identity: options.identity,
+      sharingLevel: options.sharingLevel,
+      sharingMode: options.sharingMode,
+      sendNotification: options.sendNotification ?? true,
+    }),
+})
+
+/**
+ * Action creator for remove a sharing entry
+ * @param content Content which holds the sharing entry.
+ * @param id Id of the sharing entry to delete.
+ */
+export const removeSharing = (content: GenericContent, id: number) => ({
+  type: 'REMOVE_SHARING',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath: content.Id,
+      name: 'RemoveSharing',
+      method: 'POST',
+      body: {
+        id,
+      },
+    }),
+})
+
+/**
+ * Action creator for getting sharing entries
+ * @param idOrPath Id or Path of the content.
+ */
+export const getSharingEntries = (idOrPath: number | string) => ({
+  type: 'GET_SHARING_ENTRIES',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'GetSharing',
+      method: 'GET',
+      body: undefined,
+    }),
+})
