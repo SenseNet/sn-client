@@ -66,7 +66,7 @@ export const openContextMenuItem = (fileName: string, menuItem: string) => {
 
 export const uploadNewFileAndOpenContextMenuItem = (currentUserEmail: string, fileName: string, menuItem: string) => {
   cy.uploadWithApi({
-    parentPath: `Root/Profiles/Public/${currentUserEmail}/Document_Library`,
+    parentPath: `Root/Content/IT/Document_Library`,
     fileName,
   })
   cy.contains('div', fileName, { timeout: 10000 }).should('exist')

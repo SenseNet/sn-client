@@ -1,4 +1,5 @@
 import { ObservableValue } from '@sensenet/client-utils'
+import { GenericContent, User } from '@sensenet/default-content-types'
 import { Content } from './Content'
 import { ODataParams } from './ODataParams'
 import { UploadProgressInfo } from './UploadProgressInfo'
@@ -278,4 +279,41 @@ export interface UploadFromFileListOptions<T extends Content> extends UploadOpti
    * Option to create folders. Files will be uploaded to the root
    */
   createFolders: boolean
+}
+
+export enum SharingLevel {
+  Open = 'Open',
+  Edit = 'Edit',
+}
+
+export enum SharingMode {
+  Private = 'Private',
+  Authenticated = 'Authenticated',
+  Public = 'Public',
+}
+
+/**
+ * Options for a content share request
+ */
+export interface SharingOptions extends WithRequestInit {
+  /**
+   * Content that will be shared
+   */
+  content: GenericContent
+  /**
+   * Email of the person or Id of the user whom the content will be shared with
+   */
+  identity: string | User
+  /**
+   * ‘permission set’ that want to be allowed for the target user (open, edit)
+   */
+  sharingLevel: SharingLevel
+  /**
+   * Determine who will get permissions to access the content
+   */
+  sharingMode: SharingMode
+  /**
+   * Determine if people will get a notification that something is shared with them or not. By default it is true.
+   */
+  sendNotification?: boolean
 }

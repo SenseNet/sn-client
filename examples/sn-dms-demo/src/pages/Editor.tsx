@@ -54,7 +54,7 @@ class DashboardComponent extends React.Component<
       newProps.loggedinUser.userName !== lastState.currentUserName ||
       (newProps.loggedinUser.userName !== 'Visitor' && newProps.userActions.length === 0)
     ) {
-      newProps.loadUserActions(newProps.loggedinUser.content.Path, 'DMSUserActions')
+      newProps.loadUserActions(newProps.loggedinUser.content.Path, 'UserActions')
     }
 
     return {

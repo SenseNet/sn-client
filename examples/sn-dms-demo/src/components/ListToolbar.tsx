@@ -17,6 +17,7 @@ const styles = {
   appBar: {
     background: 'transparent',
     boxShadow: 'none',
+    position: 'relative',
   },
   appBarMobile: {
     background: '#4cc9f2',

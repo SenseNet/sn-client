@@ -18,9 +18,11 @@ import {
   PatchOptions,
   PostOptions,
   PutOptions,
+  SharingOptions,
 } from '../Models/RequestOptions'
 import { SchemaStore } from '../Schemas/SchemaStore'
 import { ODataParams } from '../Models/ODataParams'
+import { ODataSharingResponse } from '../Models/ODataSharingResponse'
 import { ConstantContent } from './ConstantContent'
 import { ODataUrlBuilder } from './ODataUrlBuilder'
 import { RepositoryConfiguration } from './RepositoryConfiguration'
@@ -320,6 +322,25 @@ export class Repository implements Disposable {
   }
 
   /**
+   * Shares a content or content collection with a specified
+   * @param options Options for the Copy request
+   */
+  public async share(options: SharingOptions): Promise<ODataSharingResponse> {
+    return await this.executeAction<{}, ODataSharingResponse>({
+      idOrPath: options.content.Id,
+      method: 'POST',
+      name: 'Share',
+      body: {
+        token: options.identity.toString(),
+        content: options.content,
+        level: options.sharingLevel,
+        mode: options.sharingMode,
+        sendNotification: options.sendNotification ?? true,
+      },
+    })
+  }
+
+  /**
    * Retrieves a list of content actions for a specified content
    * @param options Options for fetching the Custom Actions
    */
@@ -442,6 +463,7 @@ export class Repository implements Disposable {
       } as any,
     })
   }
+
   /**
    * Executes a specified custom OData action
    * @param options Options for the Custom Action

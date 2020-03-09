@@ -218,7 +218,7 @@ class ActionMenu extends React.Component<
               this.props.closeDialog,
             )
           break
-        case 'ShareContent':
+        case 'Share':
           this.handleClose()
           this.props.currentContent && this.props.openDialog(<ShareDialog currentContent={this.props.currentContent} />)
           break
@@ -356,86 +356,100 @@ class ActionMenu extends React.Component<
               anchorReference="anchorPosition"
               anchorPosition={position}
               TransitionComponent={Fade}>
-              {actions.map((action, index) => {
-                const displayName = resources[action.DisplayName.replace(/ /g, '').toUpperCase()]
-                let iconFileType
-                switch (action.Icon) {
-                  case 'word':
-                  case 'excel':
-                  case 'acrobat':
-                  case 'powerpoint':
-                  case 'office':
-                    iconFileType = iconType.flaticon
-                    break
-                  default:
-                    iconFileType = iconType.materialui
-                    break
-                }
-                return actions.findIndex(a => a.Name === 'WopiOpenEdit') > -1 &&
-                  action.Name === 'WopiOpenView' ? null : (
-                  <MenuItem
-                    key={index}
-                    onClick={event => this.handleMenuItemClick(event, action)}
-                    onMouseEnter={e => {
-                      e.currentTarget.style.color = '#016d9e'
-                      e.currentTarget.style.fontWeight = 'bold'
-                    }}
-                    onMouseLeave={e => {
-                      e.currentTarget.style.color = '#000'
-                      e.currentTarget.style.fontWeight = 'normal'
-                    }}
-                    style={styles.menuItem}
-                    title={displayName}>
-                    <ListItemIcon style={styles.actionIcon}>
-                      <Icon
-                        type={iconFileType}
-                        color="primary"
-                        iconName={
-                          action.Icon === 'Application'
-                            ? icons[action.Name.toLowerCase() as keyof typeof icons]
-                            : icons[action.Icon.toLowerCase() as keyof typeof icons]
-                        }>
-                        {action.Name === 'MoveTo' ? (
-                          <Icon
-                            iconName="forward"
-                            type={iconType.materialui}
-                            style={{ position: 'absolute', left: '1.8em', top: '1.1em', color: '#fff', fontSize: 12 }}
-                          />
-                        ) : null}
-                        {action.Name === 'Rename' ? (
-                          <Icon
-                            iconName="mode_edit"
-                            type={iconType.materialui}
-                            style={{ position: 'absolute', left: '1.87em', top: '1.38em', color: '#fff', fontSize: 11 }}
-                          />
-                        ) : null}
-                        {action.Name === 'ForceUndoCheckOut' ? (
-                          <Icon
-                            iconName="warning"
-                            type={iconType.materialui}
-                            style={{ position: 'absolute', left: '1.87em', top: '1.38em', color: '#fff', fontSize: 11 }}
-                          />
-                        ) : null}
-                      </Icon>
-                    </ListItemIcon>
-                    {action.Name.indexOf('Wopi') > -1 ? (
-                      <Link
-                        onClick={this.handleClose}
-                        to={`/wopi/${btoa(currentContent ? currentContent.Id.toString() : '')}`}
-                        target="_blank"
-                        onMouseOver={e => this.handleMouseEnter(e, 'OpenInEditor')}
-                        onMouseLeave={this.handleMouseLeave}
-                        style={
-                          this.isHovered('OpenInEditor') ? styles.openInEditorLinkHovered : styles.openInEditorLink
-                        }>
-                        {displayName}
-                      </Link>
-                    ) : (
-                      displayName
-                    )}
-                  </MenuItem>
-                )
-              })}
+              {actions
+                .filter(action => action.Name !== 'Browse' && action.Name !== 'SetPermissions')
+                .map((action, index) => {
+                  const displayName = resources[action.DisplayName.replace(/ /g, '').toUpperCase()]
+                  let iconFileType
+                  switch (action.Icon) {
+                    case 'word':
+                    case 'excel':
+                    case 'acrobat':
+                    case 'powerpoint':
+                    case 'office':
+                      iconFileType = iconType.flaticon
+                      break
+                    default:
+                      iconFileType = iconType.materialui
+                      break
+                  }
+                  return actions.findIndex(a => a.Name === 'WopiOpenEdit') > -1 &&
+                    action.Name === 'WopiOpenView' ? null : (
+                    <MenuItem
+                      key={index}
+                      onClick={event => this.handleMenuItemClick(event, action)}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.color = '#016d9e'
+                        e.currentTarget.style.fontWeight = 'bold'
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.color = '#000'
+                        e.currentTarget.style.fontWeight = 'normal'
+                      }}
+                      style={styles.menuItem}
+                      title={displayName}>
+                      <ListItemIcon style={styles.actionIcon}>
+                        <Icon
+                          type={iconFileType}
+                          color="primary"
+                          iconName={
+                            action.Icon === 'Application'
+                              ? icons[action.Name.toLowerCase() as keyof typeof icons]
+                              : icons[action.Icon.toLowerCase() as keyof typeof icons]
+                          }>
+                          {action.Name === 'MoveTo' ? (
+                            <Icon
+                              iconName="forward"
+                              type={iconType.materialui}
+                              style={{ position: 'absolute', left: '1.8em', top: '1.1em', color: '#fff', fontSize: 12 }}
+                            />
+                          ) : null}
+                          {action.Name === 'Rename' ? (
+                            <Icon
+                              iconName="mode_edit"
+                              type={iconType.materialui}
+                              style={{
+                                position: 'absolute',
+                                left: '1.87em',
+                                top: '1.38em',
+                                color: '#fff',
+                                fontSize: 11,
+                              }}
+                            />
+                          ) : null}
+                          {action.Name === 'ForceUndoCheckOut' ? (
+                            <Icon
+                              iconName="warning"
+                              type={iconType.materialui}
+                              style={{
+                                position: 'absolute',
+                                left: '1.87em',
+                                top: '1.38em',
+                                color: '#fff',
+                                fontSize: 11,
+                              }}
+                            />
+                          ) : null}
+                        </Icon>
+                      </ListItemIcon>
+                      {action.Name.indexOf('Wopi') > -1 ? (
+                        <Link
+                          onClick={this.handleClose}
+                          to={`/wopi/${btoa(currentContent ? currentContent.Id.toString() : '')}`}
+                          target="_blank"
+                          onMouseOver={e => this.handleMouseEnter(e, 'OpenInEditor')}
+                          onMouseLeave={this.handleMouseLeave}
+                          style={
+                            this.isHovered('OpenInEditor') ? styles.openInEditorLinkHovered : styles.openInEditorLink
+                          }>
+                          {displayName}
+                        </Link>
+                      ) : (
+                        displayName
+                      )}
+                    </MenuItem>
+                  )
+                })}
             </Menu>
           ) : (
             <Drawer anchor="bottom" open={open} onClose={this.handleClose}>
