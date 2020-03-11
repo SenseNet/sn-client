@@ -16,8 +16,10 @@ import {
   useRepository,
   useRepositoryEvents,
 } from '@sensenet/hooks-react'
+import clsx from 'clsx'
 import { useLocalization } from '../../hooks'
-import { CollectionComponent } from '../content-list'
+import { ContentList } from '../content-list/content-list'
+import { useGlobalStyles } from '../../globalStyles'
 import { encodeQueryData } from '.'
 
 const Search: React.FunctionComponent<RouteComponentProps> = props => {
@@ -33,6 +35,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
   const loadSettingsContext = useContext(LoadSettingsContext)
 
   const eventHub = useRepositoryEvents()
+  const globalClasses = useGlobalStyles()
 
   useEffect(() => {
     const subscriptions = [
@@ -55,7 +58,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
   useEffect(() => {
     repo
       .executeAction<undefined, { d: { results: Query[] } }>({
-        idOrPath: ConstantContent.PORTAL_ROOT.Id,
+        idOrPath: '/Root/Content',
         name: 'GetQueries',
         method: 'GET',
         oDataOptions: {
@@ -68,9 +71,11 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
       .then(result => setQueries(result.d.results))
   }, [reloadToken, loadSettingsContext.loadChildrenSettings, repo, onlyPublic])
   return (
-    <div style={{ padding: '1em', margin: '1em', overflow: 'hidden' }}>
-      <div>
-        <Typography variant="h5">{localization.savedQueries}</Typography>
+    <div style={{ padding: '0 15px', overflow: 'hidden', height: '100%' }}>
+      <>
+        <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}>
+          <span style={{ fontSize: '20px' }}>{localization.savedQueries}</span>
+        </div>
         <FormControlLabel
           label={localization.onlyPublic}
           control={
@@ -82,15 +87,15 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
             />
           }
         />
-      </div>
-      <div>
+      </>
+      <>
         {queries.length > 0 ? (
           <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>
             <CurrentChildrenContext.Provider value={queries}>
               <CurrentAncestorsContext.Provider value={[]}>
-                <CollectionComponent
+                <ContentList
                   style={{
-                    height: 'calc(100% - 75px)',
+                    height: 'calc(100% - 107px)',
                     overflow: 'auto',
                   }}
                   enableBreadcrumbs={false}
@@ -105,9 +110,6 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
                       })}`,
                     )
                   }}
-                  onTabRequest={() => {
-                    /** */
-                  }}
                 />
               </CurrentAncestorsContext.Provider>
             </CurrentChildrenContext.Provider>
@@ -117,7 +119,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
             {localization.noSavedQuery}
           </Typography>
         )}
-      </div>
+      </>
     </div>
   )
 }

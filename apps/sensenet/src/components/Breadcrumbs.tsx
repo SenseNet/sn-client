@@ -6,7 +6,6 @@ import React, { useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { ContentContextMenu } from './context-menu/content-context-menu'
 import { DropFileArea } from './DropFileArea'
-import { Icon } from './Icon'
 
 export interface BreadcrumbItem<T extends GenericContent> {
   url: string
@@ -42,8 +41,7 @@ function BreadcrumbsComponent<T extends GenericContent>(props: BreadcrumbProps<T
                   setIsContextMenuOpened(true)
                   ev.preventDefault()
                 }}>
-                <Icon item={item.content} style={{ marginRight: '0.3em' }} />
-                {item.displayName}
+                <span style={{ textTransform: 'none', fontSize: '16px' }}>{item.displayName}</span>
               </Button>
             </Tooltip>
           </DropFileArea>

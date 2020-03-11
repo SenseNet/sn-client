@@ -23,7 +23,7 @@ export const LogoutButton: React.FunctionComponent<LogoutButtonProps> = props =>
   }
 
   return (
-    <div>
+    <>
       {session.state !== LoginState.Authenticated ? null : (
         <Tooltip placement="bottom-end" title={localization.logoutButtonTitle}>
           <Button
@@ -34,6 +34,6 @@ export const LogoutButton: React.FunctionComponent<LogoutButtonProps> = props =>
           </Button>
         </Tooltip>
       )}
-    </div>
+    </>
   )
 }

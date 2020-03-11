@@ -5,8 +5,7 @@ import {
   UploadProgressInfo,
 } from '@sensenet/client-core'
 import { ObservableValue, usingAsync } from '@sensenet/client-utils'
-import { GenericContent, File as SnFile } from '@sensenet/default-content-types'
-import { ActionModel } from '@sensenet/default-content-types/dist/ActionModel'
+import { ActionModel, ContentType, GenericContent, File as SnFile } from '@sensenet/default-content-types'
 import { Dispatch } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { debounceReloadOnProgress } from './store/documentlibrary/actions'
@@ -18,8 +17,9 @@ export enum MessageMode {
   info = 'info',
 }
 
-export const userRegistration = (email: string, password: string) => ({
+export const userRegistration = (username: string, email: string, password: string) => ({
   type: 'USER_REGISTRATION_REQUEST',
+  username,
   email,
   password,
   async payload(repository: Repository) {
@@ -27,15 +27,13 @@ export const userRegistration = (email: string, password: string) => ({
       name: 'RegisterUser',
       idOrPath: `/Root/IMS('Public')`,
       body: {
+        username,
         email,
         password,
       },
       method: 'POST',
     })
   },
-})
-export const verifyCaptchaSuccess = () => ({
-  type: 'VERIFY_CAPTCHA_SUCCESS',
 })
 export const clearRegistration = () => ({
   type: 'CLEAR_USER_REGISTRATION',
@@ -260,7 +258,11 @@ export const closeViewer = () => ({
 export const loadTypesToAddNewList = (idOrPath: number | string) => ({
   type: 'LOAD_TYPES_TO_ADDNEW_LIST',
   async payload(repository: Repository) {
-    const data: { d: { Actions: ActionModel[] } } = (await repository.getActions({ idOrPath, scenario: 'New' })) as any
+    const data: { d: { results: ContentType[] } } = (await repository.executeAction({
+      idOrPath,
+      method: 'GET',
+      name: 'EffectiveAllowedChildTypes',
+    })) as any
     return data
   },
 })
@@ -316,11 +318,14 @@ export const loadBreadcrumbActions = (idOrPath: number | string) => ({
     const repository = options.getInjectable(Repository)
     const actions: { d: { Actions: ActionModel[] } } = (await repository.getActions({
       idOrPath,
-      scenario: 'DMSBreadcrumb',
+      scenario: 'ContextMenu',
     })) as any
     options.dispatch({
       type: 'LOAD_BREADCRUMB_ACTIONS_SUCCESS',
-      result: { idOrPath, actions: actions.d.Actions },
+      result: {
+        idOrPath,
+        actions: actions.d.Actions.filter(action => action.Name !== 'Browse' && action.Name !== 'SetPermissions'),
+      },
     })
   },
 })

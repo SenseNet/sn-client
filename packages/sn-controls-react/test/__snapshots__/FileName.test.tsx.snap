@@ -21,13 +21,13 @@ exports[`File name field control in edit/new view should set all the props 1`] =
 <WithStyles(ForwardRef(TextField))
   InputProps={
     Object {
-      "endAdornment": <ForwardRef(WithStyles)
+      "endAdornment": <WithStyles(ForwardRef(InputAdornment))
         position="end"
       >
         <span>
           .png
         </span>
-      </ForwardRef(WithStyles)>,
+      </WithStyles(ForwardRef(InputAdornment))>,
     }
   }
   autoFocus={true}

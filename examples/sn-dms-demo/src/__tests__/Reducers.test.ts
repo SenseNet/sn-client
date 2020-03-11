@@ -66,15 +66,6 @@ describe('registrationDone reducer', () => {
   })
 })
 
-describe('captcha reducer', () => {
-  it('should return the initial state', () => {
-    expect(DMSReducers.captcha(undefined, { type: '' })).toEqual(false)
-  })
-  it('should return true after verifying captcha', () => {
-    expect(DMSReducers.captcha(undefined, { type: 'VERIFY_CAPTCHA_SUCCESS' })).toEqual(true)
-  })
-})
-
 describe('actions reducer', () => {
   it('should return the initial state', () => {
     expect(DMSReducers.actions(undefined, { type: '' })).toEqual([])

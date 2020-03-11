@@ -1,29 +1,21 @@
 import React from 'react'
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import { TrashBin } from '@sensenet/default-content-types'
 import { ODataParams } from '@sensenet/client-core'
 import { useLoadContent } from '../../hooks/use-loadContent'
 import { useDialog } from '../dialogs'
 import { SimpleList } from '../content/Simple'
+import { useGlobalStyles } from '../../globalStyles'
 import TrashHeader from './TrashHeader'
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: { margin: theme.spacing(2), height: '92vh' },
-    title: { display: 'flex', alignItems: 'center' },
-    grow: { flexGrow: 1 },
-  }),
-)
 
 const oDataOptions: ODataParams<TrashBin> = { select: 'all' }
 
 const Trash = React.memo(() => {
   const { openDialog } = useDialog()
   const { content } = useLoadContent<TrashBin>({ idOrPath: '/Root/Trash', oDataOptions })
-  const classes = useStyles()
+  const globalClasses = useGlobalStyles()
 
   return (
-    <div className={classes.root}>
+    <div className={globalClasses.contentWrapper}>
       {content ? (
         <TrashHeader
           iconClickHandler={() =>
@@ -37,7 +29,7 @@ const Trash = React.memo(() => {
       ) : null}
       <SimpleList
         parent="/Root/Trash"
-        collectionComponentProps={{
+        contentListProps={{
           enableBreadcrumbs: false,
           fieldsToDisplay: ['DisplayName', 'ModificationDate', 'ModifiedBy'],
         }}

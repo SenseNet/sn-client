@@ -1,9 +1,11 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import { IconButton, TableCell } from '@material-ui/core'
 import React, { useRef, useState } from 'react'
+import clsx from 'clsx'
 import { MoreHoriz } from '@material-ui/icons'
 import { ResponsivePlatforms } from '../../context'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
+import { useGlobalStyles } from '../../globalStyles'
 
 type DisplayNameProps = {
   content: GenericContent
@@ -14,6 +16,7 @@ type DisplayNameProps = {
 export const DisplayNameComponent: React.FunctionComponent<DisplayNameProps> = ({ content, device, isActive }) => {
   const buttonRef = useRef<HTMLButtonElement>(null)
   const [isOpened, setIsOpened] = useState(false)
+  const globalClasses = useGlobalStyles()
 
   const onButtonClick = (ev: React.MouseEvent<HTMLElement>) => {
     ev.preventDefault()
@@ -22,11 +25,13 @@ export const DisplayNameComponent: React.FunctionComponent<DisplayNameProps> = (
   }
 
   return (
-    <TableCell padding={'none'}>
+    <TableCell
+      component="div"
+      className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)}
+      style={{ justifyContent: 'left' }}>
       <div
+        className={globalClasses.centeredVertical}
         style={{
-          display: 'flex',
-          alignItems: 'center',
           justifyContent: 'space-between',
         }}>
         {content.DisplayName || content.Name}

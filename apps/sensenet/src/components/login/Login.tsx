@@ -193,7 +193,8 @@ export const Login = () => {
               <TextField
                 id="username"
                 required={true}
-                margin="normal"
+                margin="dense"
+                variant="outlined"
                 name="userName"
                 label={localization.userNameLabel}
                 helperText={!inputState.userName.isValid ? inputState.userName.errorMessage : ''}
@@ -206,11 +207,13 @@ export const Login = () => {
                   clearInputError(ev)
                   setUserName(ev.target.value)
                 }}
+                style={{ marginTop: '30px' }}
               />
               <TextField
                 id="password"
                 required={true}
                 margin="dense"
+                variant="outlined"
                 name="password"
                 label={localization.passwordLabel}
                 fullWidth={true}
@@ -228,6 +231,7 @@ export const Login = () => {
               <TextField
                 id="repository"
                 margin="dense"
+                variant="outlined"
                 required={true}
                 name="repository"
                 label={localization.repositoryLabel}
@@ -249,7 +253,8 @@ export const Login = () => {
                 fullWidth={true}
                 variant="contained"
                 color="primary"
-                type="submit">
+                type="submit"
+                style={{ marginTop: '30px' }}>
                 <Typography variant="button">{localization.loginButtonTitle}</Typography>
               </Button>
             </form>

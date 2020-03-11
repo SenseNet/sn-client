@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react'
 import { Dialog } from '@material-ui/core'
+import { useGlobalStyles } from '../../globalStyles'
 import { DialogWithProps, EditProperties, useDialog } from '.'
 
 const Add = React.lazy(() => import('./add'))
@@ -59,6 +60,7 @@ function dialogRenderer(dialog: DialogWithProps) {
 
 export function Dialogs() {
   const { dialogs, closeLastDialog } = useDialog()
+  const globalClasses = useGlobalStyles()
 
   return (
     <Suspense fallback="Loading">
@@ -72,7 +74,7 @@ export function Dialogs() {
           }}
           key={index}
           open={true}>
-          {dialogRenderer(dialog)}
+          <div className={globalClasses.dialog}>{dialogRenderer(dialog)}</div>
         </Dialog>
       ))}
     </Suspense>

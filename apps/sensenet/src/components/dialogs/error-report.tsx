@@ -12,6 +12,7 @@ import SendTwoTone from '@material-ui/icons/SendTwoTone'
 import { sleepAsync } from '@sensenet/client-utils'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useEventService, useLocalization, usePersonalSettings } from '../../hooks'
+import { useGlobalStyles } from '../../globalStyles'
 import { useDialog } from '.'
 
 export type ErrorReportProps = { error: Error }
@@ -21,7 +22,7 @@ export const ErrorReport: React.FunctionComponent<ErrorReportProps> = props => {
   const personalSettings = usePersonalSettings()
   const { closeAllDialogs } = useDialog()
   const evtService = useEventService()
-
+  const globalClasses = useGlobalStyles()
   const [description, setDescription] = useState('')
   const [sendLog, setSendLog] = useState(personalSettings.sendLogWithCrashReports)
 
@@ -52,7 +53,7 @@ export const ErrorReport: React.FunctionComponent<ErrorReportProps> = props => {
       <DialogTitle>{localization.title}</DialogTitle>
       <DialogContent>
         {isSending ? (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className={globalClasses.centered}>
             <CircularProgress style={{ marginRight: '1em' }} />
             <Typography>{localization.sendingInProgress}</Typography>
           </div>
@@ -75,7 +76,7 @@ export const ErrorReport: React.FunctionComponent<ErrorReportProps> = props => {
                 }
                 label={localization.allowLogSending}
               />
-              <div>
+              <>
                 <Button onClick={() => closeDialog()}>
                   <Clear />
                   {localization.cancel}
@@ -88,7 +89,7 @@ export const ErrorReport: React.FunctionComponent<ErrorReportProps> = props => {
                   <SendTwoTone />
                   {localization.send}
                 </Button>
-              </div>
+              </>
             </DialogActions>
           </>
         )}

@@ -1,9 +1,10 @@
 import { using } from '@sensenet/client-utils'
 import { ActionModel, ContentType, User } from '@sensenet/default-content-types'
-import { ActionOptions, ODataWopiResponse, Repository } from '../src'
+import { ActionOptions, ODataWopiResponse, Repository, SharingLevel, SharingMode } from '../src'
 import { Content } from '../src/Models/Content'
 import { ODataCollectionResponse } from '../src/Models/ODataCollectionResponse'
 import { ODataResponse } from '../src/Models/ODataResponse'
+import { ODataSharingResponse } from '../src/Models/ODataSharingResponse'
 import { ConstantContent } from '../src/Repository/ConstantContent'
 import { isExtendedError } from '../src/Repository/Repository'
 
@@ -92,6 +93,23 @@ describe('Repository', () => {
           .catch(() => {
             done()
           })
+      })
+    })
+
+    describe('count', () => {
+      it('should construct the url to contain /$count', async () => {
+        let url: string
+        const countRepository = new Repository(undefined, input => {
+          url = input.toString()
+          return Promise.resolve({ ok: true, json: () => 42 }) as any
+        })
+        await countRepository.count({ path: '/Root/Content' })
+        expect(url).toMatch(/http:\/\/localhost\/odata.svc\/Root\/Content\/\$count/g)
+      })
+
+      it('should throw on unsuccessfull request', async () => {
+        ;(mockResponse as any).ok = false
+        await expect(repository.count({ path: 'Root/Content' })).rejects.toThrow()
       })
     })
 
@@ -639,6 +657,25 @@ describe('Repository', () => {
       expect(e).toBeInstanceOf(Error)
       expect(isExtendedError(e)).toBe(true)
       expect(e.message).toBe('errorValue')
+    })
+  })
+  describe('#share()', () => {
+    it('should return with a promise', async () => {
+      ;(mockResponse as any).ok = true
+      mockResponse.json = async () => {
+        return {
+          Token: 'alba@sensenet.com',
+        } as ODataSharingResponse
+      }
+      const response = await repository.share({
+        content: ConstantContent.PORTAL_ROOT,
+        identity: 'alba@sensenet.com',
+        sharingLevel: SharingLevel.Open,
+        sharingMode: SharingMode.Private,
+        sendNotification: false,
+      })
+
+      expect(response.Token).toEqual('alba@sensenet.com')
     })
   })
 })

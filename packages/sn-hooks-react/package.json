@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/hooks-react",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -26,25 +26,25 @@
   "license": "GPL-2.0",
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@sensenet/client-core": "^2.3.0",
-    "@sensenet/client-utils": "^1.8.0",
-    "@sensenet/default-content-types": "^2.0.4",
-    "@sensenet/repository-events": "^1.4.11",
+    "@sensenet/client-core": "^2.4.0",
+    "@sensenet/client-utils": "^1.8.1",
+    "@sensenet/default-content-types": "^2.0.5",
+    "@sensenet/repository-events": "^1.4.12",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "semaphore-async-await": "^1.5.1",
     "tslib": "^1.10.0"
   },
   "devDependencies": {
-    "@types/enzyme": "^3.10.3",
-    "@types/jest": "^24.0.23",
-    "@types/react": "^16.9.11",
-    "@types/react-dom": "^16.9.4",
+    "@types/enzyme": "^3.10.5",
+    "@types/jest": "^25.1.2",
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
-    "enzyme-to-json": "^3.4.3",
-    "jest": "^24.9.0",
-    "ts-jest": "^24.1.0",
-    "typescript": "^3.7.2"
+    "enzyme-to-json": "^3.4.4",
+    "jest": "^25.1.0",
+    "ts-jest": "^25.2.0",
+    "typescript": "^3.7.5"
   }
 }

@@ -139,7 +139,7 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
                       isOpened ? opened.filter(o => o !== content.Id) : Array.from(new Set([...opened, content.Id])),
                     )
                   }}>
-                  <ListItemIcon>
+                  <ListItemIcon style={{ minWidth: '42px' }}>
                     <Icon item={content} />
                   </ListItemIcon>
                   <ListItemText

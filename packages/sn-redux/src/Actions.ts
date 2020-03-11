@@ -119,9 +119,11 @@ import {
   ODataParams,
   Repository,
   RepositoryConfiguration,
+  SharingOptions,
 } from '@sensenet/client-core'
 import { GenericContent, User } from '@sensenet/default-content-types'
 import { PromiseMiddlewareAction } from '@sensenet/redux-promise-middleware'
+import { PathHelper } from '@sensenet/client-utils'
 
 /**
  * Type alias for getting the result type from a Promise middleware
@@ -507,8 +509,8 @@ export const changeFieldValue = (name: string, value: any) => ({
  * Action creator for loading schema of a given type
  * @param {string} typeName Name of the Content Type.
  */
-export const getSchema = (typeName: string) => ({
-  type: 'GET_SCHEMA',
+export const getSchemaByTypeName = (typeName: string) => ({
+  type: 'GET_SCHEMA_BY_TYPENAME',
   payload: (repository: Repository) => repository.schemas.getSchemaByName(typeName),
 })
 /**
@@ -518,4 +520,117 @@ export const getSchema = (typeName: string) => ({
 export const setDefaultOdataOptions = (options: ODataParams<GenericContent>) => ({
   type: 'SET_ODATAOPTIONS',
   options,
+})
+
+/**
+ * Action creator for requesting a content from sensenet Content Repository to get count of its children content.
+ * @param path path of the requested parent item.
+ * @returns Returns number of children content in the given container.
+ */
+export const getChildrenCount = (path: string) => ({
+  type: 'GET_CHILDREN_COUNT',
+  payload: (repository: Repository) => repository.fetch(`${path}/$count`),
+})
+
+/**
+ * Action creator for requesting a content's property from sensenet Content Repository.
+ * @param path path of the requested parent item.
+ * @param propertyName name of the property
+ * @returns Returns a property and its value of the given content.
+ */
+export const getProperty = (idOrPath: string | number, propertyName: string) => {
+  const path = PathHelper.getContentUrl(idOrPath)
+  return {
+    type: 'GET_PROPERTY',
+    payload: (repository: Repository) => repository.fetch(`${path}/${propertyName}`),
+  }
+}
+
+/**
+ * Action creator for requesting a content's property from sensenet Content Repository to get its value.
+ * @param path path of the requested parent item.
+ * @param propertyName name of the property
+ * @returns Returns the value of the given content property.
+ */
+export const getPropertyValue = (idOrPath: string | number, propertyName: string) => {
+  const path = PathHelper.getContentUrl(idOrPath)
+  return {
+    type: 'GET_PROPERTY_VALUE',
+    payload: (repository: Repository) => repository.fetch(`${path}/${propertyName}/$value`),
+  }
+}
+
+/**
+ * Action creator for requesting a content's metadata from sensenet Content Repository.
+ * @param path path of the requested parent item.
+ * @returns Returns metadata of the given content.
+ */
+export const getMetadata = (idOrPath: string | number) => {
+  const path = PathHelper.getContentUrl(idOrPath)
+  return {
+    type: 'GET_METADATA',
+    payload: (repository: Repository) => repository.fetch(`${path}/$metadata`),
+  }
+}
+
+/**
+ * Action creator for loading repository schema
+ */
+export const getSchema = () => ({
+  type: 'GET_SCHEMA',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath: '/Root',
+      name: 'GetSchema',
+      method: 'GET',
+    }),
+})
+
+/**
+ * Action creator for sharing a content
+ * @param options object with the sharing options(identity, level, mode, etc).
+ */
+export const share = (options: SharingOptions) => ({
+  type: 'SHARE',
+  payload: (repository: Repository) =>
+    repository.share({
+      content: options.content,
+      identity: options.identity,
+      sharingLevel: options.sharingLevel,
+      sharingMode: options.sharingMode,
+      sendNotification: options.sendNotification ?? true,
+    }),
+})
+
+/**
+ * Action creator for remove a sharing entry
+ * @param content Content which holds the sharing entry.
+ * @param id Id of the sharing entry to delete.
+ */
+export const removeSharing = (content: GenericContent, id: number) => ({
+  type: 'REMOVE_SHARING',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath: content.Id,
+      name: 'RemoveSharing',
+      method: 'POST',
+      body: {
+        id,
+      },
+    }),
+})
+
+/**
+ * Action creator for getting sharing entries
+ * @param idOrPath Id or Path of the content.
+ */
+export const getSharingEntries = (idOrPath: number | string) => ({
+  type: 'GET_SHARING_ENTRIES',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'GetSharing',
+      method: 'GET',
+      body: undefined,
+    }),
 })

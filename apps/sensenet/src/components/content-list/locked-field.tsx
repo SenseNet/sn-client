@@ -4,8 +4,10 @@ import AssignmentLateIcon from '@material-ui/icons/AssignmentLate'
 import { TableCell, Tooltip } from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useSession } from '@sensenet/hooks-react'
+import clsx from 'clsx'
 import { isUser } from '../../utils/type-guards'
 import { useLocalization } from '../../hooks'
+import { useGlobalStyles } from '../../globalStyles'
 
 type LockedFieldProps = {
   content: GenericContent
@@ -14,6 +16,7 @@ type LockedFieldProps = {
 export function LockedField({ content }: LockedFieldProps) {
   const session = useSession()
   const localization = useLocalization().lockedCell
+  const globalClasses = useGlobalStyles()
 
   const lockedByName = () => {
     const checkedOutTo = content?.CheckedOutTo
@@ -26,11 +29,14 @@ export function LockedField({ content }: LockedFieldProps) {
 
   if (!content.Locked && !content.Approvable) {
     // We need to return an empty TableCell so the Table remains aligned.
-    return <TableCell />
+    return <TableCell component="div" className={globalClasses.virtualizedCellStyle} />
   }
 
   return (
-    <TableCell>
+    <TableCell
+      component="div"
+      className={clsx(globalClasses.centered, globalClasses.virtualizedCellStyle)}
+      style={{ justifyContent: 'left', paddingLeft: '9px' }}>
       <Tooltip title={content.Approvable ? localization.actionNeeded : localization.checkedOutTo(lockedByName())}>
         {content.Approvable ? <AssignmentLateIcon /> : <Lock />}
       </Tooltip>

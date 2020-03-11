@@ -17,13 +17,10 @@ import * as DMSActions from '../Actions'
 import { icons } from '../assets/icons'
 import { resources } from '../assets/resources'
 import { rootStateType } from '../store/rootReducer'
-import { userIsAdmin } from '../store/usersandgroups/actions'
 import ContentTemplatesMenu from './Menu/ContentTemplatesMenu'
 import ContentTypesMenu from './Menu/ContentTypesMenu'
 import DocumentsMenu from './Menu/DocumentsMenu'
-import GroupsMenu from './Menu/GroupsMenu'
 import SettingsMenu from './Menu/SettingsMenu'
-import UsersMenu from './Menu/UsersMenu'
 
 const menu: Array<{
   title: string
@@ -42,24 +39,6 @@ const menu: Array<{
     routeName: '/documents',
     mobile: true,
     adminOnly: false,
-  },
-  {
-    title: resources.USERS,
-    name: 'users',
-    icon: 'person',
-    component: UsersMenu,
-    routeName: '/users',
-    mobile: true,
-    adminOnly: true,
-  },
-  {
-    title: resources.GROUPS,
-    name: 'groups',
-    icon: 'supervised_user_circle',
-    component: GroupsMenu,
-    routeName: '/groups',
-    mobile: true,
-    adminOnly: true,
   },
   {
     title: resources.CONTENT_TYPES,
@@ -164,7 +143,6 @@ const mapStateToProps = (state: rootStateType) => {
     menuIsOpen: state.dms.menuOpen,
     userActions: state.dms.actionmenu.userActions,
     currentUser: state.sensenet.session.user.userName,
-    isAdmin: state.dms.usersAndGroups.user.isAdmin,
     currentContent: state.sensenet.session.user.content,
   }
 }
@@ -173,7 +151,6 @@ const mapDispatchToProps = {
   chooseMenuItem: DMSActions.chooseMenuItem,
   chooseSubmenuItem: DMSActions.chooseSubmenuItem,
   logout: Actions.userLogout,
-  userIsAdmin,
   closeActionMenu: DMSActions.closeActionMenu,
   handleDrawerMenu: DMSActions.handleDrawerMenu,
 }
@@ -191,14 +168,6 @@ class DashboardDrawer extends Component<
   public handleClick = (name: string) => {
     this.props.chooseMenuItem(name)
     this.props.handleDrawerMenu(false)
-  }
-  public static getDerivedStateFromProps(newProps: DashboardDrawer['props'], lastState: DashboardDrawer['state']) {
-    if (newProps.currentUser !== lastState.currentUser) {
-      newProps.userIsAdmin(`/Root/IMS/Public/${newProps.currentUser}`)
-    }
-    return {
-      ...lastState,
-    }
   }
   public handleMenuItemClick = (_e: React.MouseEvent, action: ActionModel) => {
     if ((action as any).Action) {
@@ -227,7 +196,7 @@ class DashboardDrawer extends Component<
     }
   }
   public render() {
-    const { classes, activeItem, chooseMenuItem, chooseSubmenuItem, userActions, isAdmin } = this.props
+    const { classes, activeItem, chooseMenuItem, chooseSubmenuItem, userActions } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
         {matches => {
@@ -258,31 +227,9 @@ class DashboardDrawer extends Component<
                         })}
                         <Divider light={true} />
                       </div>
-                    ) : isAdmin ? (
-                      <div key={index}>
-                        {React.createElement(item.component, {
-                          active: activeItem === item.name,
-                          item,
-                          chooseMenuItem,
-                          chooseSubmenuItem,
-                          matches,
-                        })}
-                        <Divider light={true} />
-                      </div>
                     ) : null
                   ) : item.mobile ? (
                     !item.adminOnly ? (
-                      <div key={index}>
-                        {React.createElement(item.component, {
-                          active: activeItem === item.name,
-                          item,
-                          chooseMenuItem,
-                          chooseSubmenuItem,
-                          matches,
-                        })}
-                        <Divider light={true} />
-                      </div>
-                    ) : isAdmin ? (
                       <div key={index}>
                         {React.createElement(item.component, {
                           active: activeItem === item.name,

@@ -22,6 +22,12 @@ const EditProperties = lazy(async () => await import(/* webpackChunkName: "editP
 const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 
 const TrashComponent = lazy(async () => await import(/* webpackChunkName: "Trash" */ './trash/Trash'))
+const UsersAndGroupsComponent = lazy(
+  async () => await import(/* webpackChunkName: "UserAndGroup" */ './users-and-groups/users-and-groups'),
+)
+const LocalizationComponent = lazy(
+  async () => await import(/* webpackChunkName: "Trash" */ './localization/localization'),
+)
 const EventListComponent = lazy(async () => await import(/* webpackChunkName: "EventList" */ './event-list'))
 
 const PersonalSettingsEditor = lazy(
@@ -57,44 +63,38 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
           sessionContext.state === LoginState.Unauthenticated || !personalSettings.lastRepository ? (
             <Redirect to={{ pathname: '/login', state: { from: location } }} />
           ) : (
-            <div style={{ width: '100%', height: '100%', boxSizing: 'border-box', position: 'relative' }}>
+            <>
               <Suspense fallback={<FullScreenLoader />}>
-                <Route
-                  path="/personalSettings"
-                  render={() => {
-                    return <PersonalSettingsEditor />
-                  }}
-                />
-                <Route
-                  path="/:repo/login"
-                  render={() => {
-                    return <LoginComponent />
-                  }}
-                />
-                <Route
-                  path="/events/:eventGuid?"
-                  render={() => {
-                    return <EventListComponent />
-                  }}
-                />
                 <Switch>
+                  <Route
+                    path="/personalSettings"
+                    render={() => {
+                      return <PersonalSettingsEditor />
+                    }}
+                  />
+                  <Route
+                    path="/:repo/login"
+                    render={() => {
+                      return <LoginComponent />
+                    }}
+                  />
+                  <Route
+                    path="/events/:eventGuid?"
+                    render={() => {
+                      return <EventListComponent />
+                    }}
+                  />
                   <Route
                     path="/:repo/browse/:browseData?"
                     render={routeProps => {
                       return <ExploreComponent {...routeProps} />
                     }}
                   />
-                  <Route
-                    path="/:repo/search/:queryData?"
-                    render={routeProps => {
-                      return (
-                        <LoadSettingsContextProvider>
-                          <SearchComponent {...routeProps} />
-                        </LoadSettingsContextProvider>
-                      )
-                    }}
-                  />
-
+                  <Route path="/:repo/search/:queryData?">
+                    <LoadSettingsContextProvider>
+                      <SearchComponent />
+                    </LoadSettingsContextProvider>
+                  </Route>
                   <Route
                     path="/:repo/saved-queries"
                     render={() => {
@@ -115,6 +115,18 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                     path="/:repo/trash"
                     render={() => {
                       return <TrashComponent />
+                    }}
+                  />
+                  <Route
+                    path="/:repo/localization"
+                    render={() => {
+                      return <LocalizationComponent />
+                    }}
+                  />
+                  <Route
+                    path="/:repo/usersAndGroups"
+                    render={() => {
+                      return <UsersAndGroupsComponent />
                     }}
                   />
                   <Route
@@ -168,7 +180,7 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                   />
                 </Switch>
               </Suspense>
-            </div>
+            </>
           )
         }
       />

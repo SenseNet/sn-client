@@ -61,7 +61,7 @@ class UserActionMenu extends React.Component<
   }
   public static getDerivedStateFromProps(newProps: UserActionMenu['props'], lastState: UserActionMenu['state']) {
     if (lastState.userName !== newProps.loggedinUser.userName && newProps.loggedinUser.userName !== 'Visitor') {
-      newProps.loadUserActions(newProps.loggedinUser.content.Path, 'DMSUserActions')
+      newProps.loadUserActions(newProps.loggedinUser.content.Path, 'UserActions')
     }
     return {
       ...lastState,

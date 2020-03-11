@@ -1,5 +1,3 @@
-import { ConstantContent } from '@sensenet/client-core'
-import React from 'react'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsProvider,
@@ -7,13 +5,39 @@ import {
   CurrentContentProvider,
   LoadSettingsContextProvider,
 } from '@sensenet/hooks-react'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import clsx from 'clsx'
+import React, { useContext } from 'react'
+import { ResponsivePersonalSetttings } from '../../context'
 import { useSelectionService } from '../../hooks'
+import { ContentList } from '../content-list/content-list'
+import { globals, useGlobalStyles } from '../../globalStyles'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
-import { CollectionComponent } from '../content-list'
-import { Tree } from '../tree/index'
+import TreeWithData from '../tree/tree-with-data'
+
+const useStyles = makeStyles((theme: Theme) => {
+  return createStyles({
+    exploreWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    breadcrumbsWrapper: {
+      height: globals.common.drawerItemHeight,
+      boxSizing: 'border-box',
+      borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
+      paddingLeft: '15px',
+    },
+    treeAndDatagridWrapper: {
+      display: 'flex',
+      width: '100%',
+      height: `calc(100% - ${globals.common.drawerItemHeight}px)`,
+      position: 'relative',
+    },
+  })
+})
 
 export interface ExploreComponentProps {
-  parent: number | string
+  parentIdOrPath: number | string
   onNavigate: (newParent: GenericContent) => void
   onActivateItem: (item: GenericContent) => void
   fieldsToDisplay?: Array<keyof GenericContent>
@@ -22,58 +46,50 @@ export interface ExploreComponentProps {
 
 export const Explore: React.FunctionComponent<ExploreComponentProps> = props => {
   const selectionService = useSelectionService()
+  const personalSettings = useContext(ResponsivePersonalSetttings)
+  const classes = useStyles()
+  const globalClasses = useGlobalStyles()
+
+  if (!props.rootPath) {
+    return null
+  }
 
   return (
-    <div style={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column' }}>
+    <>
       <LoadSettingsContextProvider>
-        <CurrentContentProvider idOrPath={props.parent}>
+        <CurrentContentProvider idOrPath={props.parentIdOrPath}>
           <CurrentChildrenProvider>
             <CurrentAncestorsProvider root={props.rootPath}>
-              <div style={{ marginTop: '13px', paddingBottom: '12px', borderBottom: '1px solid rgba(128,128,128,.2)' }}>
+              <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
                 <ContentBreadcrumbs onItemClick={i => props.onNavigate(i.content)} />
               </div>
-              <div style={{ display: 'flex', width: '100%', height: 'calc(100% - 62px)', position: 'relative' }}>
-                <Tree
-                  style={{
-                    flexGrow: 1,
-                    flexShrink: 0,
-                    borderRight: '1px solid rgba(128,128,128,.2)',
-                    overflow: 'auto',
-                  }}
-                  parentPath={props.rootPath || ConstantContent.PORTAL_ROOT.Path}
-                  loadOptions={{
-                    orderby: [
-                      ['DisplayName', 'asc'],
-                      ['Name', 'asc'],
-                    ],
-                  }}
+              <div className={classes.treeAndDatagridWrapper}>
+                <TreeWithData
                   onItemClick={item => {
                     selectionService.activeContent.setValue(item)
                     props.onNavigate(item)
                   }}
-                  activeItemIdOrPath={props.parent}
+                  parentPath={props.rootPath}
+                  activeItemIdOrPath={props.parentIdOrPath}
                 />
 
-                <CollectionComponent
-                  enableBreadcrumbs={false}
-                  onActivateItem={props.onActivateItem}
+                <ContentList
                   style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
+                  enableBreadcrumbs={false}
+                  fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields}
                   onParentChange={props.onNavigate}
+                  onActivateItem={props.onActivateItem}
+                  onActiveItemChange={item => selectionService.activeContent.setValue(item)}
+                  parentIdOrPath={props.parentIdOrPath}
                   onSelectionChange={sel => {
                     selectionService.selection.setValue(sel)
                   }}
-                  parentIdOrPath={props.parent}
-                  onTabRequest={() => {
-                    /** */
-                  }}
-                  fieldsToDisplay={props.fieldsToDisplay}
-                  onActiveItemChange={item => selectionService.activeContent.setValue(item)}
                 />
               </div>
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>
         </CurrentContentProvider>
       </LoadSettingsContextProvider>
-    </div>
+    </>
   )
 }

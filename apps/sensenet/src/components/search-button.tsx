@@ -7,53 +7,21 @@ import {
   ListItemIcon,
   ListItemText,
   makeStyles,
-  Theme,
   Tooltip,
+  useTheme,
 } from '@material-ui/core'
 import Add from '@material-ui/icons/Add'
 import { Link } from 'react-router-dom'
+import clsx from 'clsx'
 import { useLocalization } from '../hooks'
+import { globals, useGlobalStyles } from '../globalStyles'
 import { encodeQueryData } from './search'
 
-const useStyles = makeStyles((theme: Theme) => {
+const useStyles = makeStyles(() => {
   return createStyles({
-    mainDiv: {
-      display: 'flex',
-      justifyContent: 'center',
-      position: 'relative',
-    },
-    searchButton: {
-      width: '32px',
-      height: '32px',
-      minHeight: 0,
-      padding: 0,
-      margin: '0.5rem 0.5rem',
-      backgroundColor: theme.palette.primary.main,
-      '&:hover': {
-        backgroundColor: theme.palette.primary.main,
-      },
-    },
-    searchButtonIcon: {
-      color: theme.palette.common.white,
-    },
-    searchButtonExpanded: {
-      width: '28px',
-      height: '28px',
-      minHeight: 0,
-      padding: 0,
-      backgroundColor: theme.palette.primary.main,
-    },
-    iconButtonWrapper: {
-      width: '100%',
-      display: 'flex',
-      justifyContent: 'center',
-      position: 'relative',
-      '&:hover': {
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-      },
-    },
     navLinkListItem: {
       width: '100%',
+      height: globals.common.drawerItemHeight,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-evenly',
@@ -68,6 +36,8 @@ export interface SearchButtonProps {
 
 export const SearchButton: React.FunctionComponent<SearchButtonProps> = props => {
   const classes = useStyles()
+  const globalClasses = useGlobalStyles()
+  const theme = useTheme()
   const repo = useRepository()
   const localization = useLocalization().drawer
   const [repoToken, setRepoToken] = useState(btoa(repo.configuration.repositoryUrl))
@@ -77,30 +47,35 @@ export const SearchButton: React.FunctionComponent<SearchButtonProps> = props =>
   }, [repo.configuration.repositoryUrl])
 
   return (
-    <div className={classes.mainDiv}>
+    <div className={clsx(globalClasses.centered, globalClasses.relative)}>
       {!props.isOpened ? (
-        <div className={classes.iconButtonWrapper}>
+        <div className={globalClasses.drawerIconButtonWrapper}>
           <Tooltip title={localization.newSearch} placement="right">
             <Link style={{ textDecoration: 'none' }} to={`/${repoToken}/search/${encodeQueryData({ term: '' })}`}>
-              <IconButton className={classes.searchButton}>
-                <Add className={classes.searchButtonIcon} />
+              <IconButton className={globalClasses.drawerButton}>
+                <Add className={globalClasses.drawerButtonIcon} />
               </IconButton>
             </Link>
           </Tooltip>
         </div>
       ) : (
         <Link className={classes.navLinkListItem} to={`/${repoToken}/search/${encodeQueryData({ term: '' })}`}>
-          <ListItem button={true}>
-            <ListItemIcon>
+          <ListItem button={true} style={{ height: globals.common.drawerItemHeight }}>
+            <ListItemIcon className={globalClasses.centeredHorizontal}>
               <Tooltip title={localization.newSearch} placement="right">
                 <span>
-                  <IconButton className={classes.searchButtonExpanded}>
-                    <Add className={classes.searchButtonIcon} />
+                  <IconButton className={globalClasses.drawerButtonExpanded}>
+                    <Add className={globalClasses.drawerButtonIcon} />
                   </IconButton>
                 </span>
               </Tooltip>
             </ListItemIcon>
-            <ListItemText primary={localization.newSearch} />
+            <ListItemText
+              primary={localization.newSearch}
+              style={{
+                color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
+              }}
+            />
           </ListItem>
         </Link>
       )}

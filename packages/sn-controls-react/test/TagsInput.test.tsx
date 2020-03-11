@@ -54,18 +54,20 @@ const repository: any = {
 }
 describe('Tags input field control', () => {
   describe('in browse view', () => {
-    it('should show all the content passed as fieldValue', () => {
-      const wrapper = shallow(
-        <TagsInput actionName="browse" settings={defaultSettings} fieldValue={[userContent] as any} />,
+    it('should show the value of the field when content is passed', async () => {
+      const consoleSpy = jest.spyOn(console, 'error')
+      const wrapper = mount(
+        <TagsInput
+          actionName="browse"
+          settings={{ ...defaultSettings, AllowMultiple: true }}
+          content={userContent}
+          repository={repository}
+        />,
       )
-      expect(wrapper.find(FormLabel).text()).toBe(defaultSettings.DisplayName)
-      expect(
-        wrapper
-          .find(FormControlLabel)
-          .last()
-          .prop('label'),
-      ).toBe(userContent.DisplayName)
-      expect(wrapper).toMatchSnapshot()
+      expect(consoleSpy).not.toBeCalled()
+      await sleepAsync(0)
+      const updatedWrapper = wrapper.update()
+      expect(updatedWrapper.find(FormControlLabel).children()).toHaveLength(1)
     })
 
     it('should not show anything when field value is not provided', () => {

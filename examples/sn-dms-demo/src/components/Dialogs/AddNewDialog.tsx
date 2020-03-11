@@ -30,7 +30,7 @@ const mapStateToProps = (state: rootStateType) => {
 const mapDispatchToProps = {
   closeDialog: DMSActions.closeDialog,
   createContent: Actions.createContent,
-  getSchema: Actions.getSchema,
+  getSchema: Actions.getSchemaByTypeName,
 }
 
 const LoadableNewView = Loadable({
@@ -64,7 +64,6 @@ class AddNewDialog extends React.Component<
   }
   public render() {
     const { parentPath, contentTypeName, createContent, schema, title, extension } = this.props
-
     return (
       <MediaQuery minDeviceWidth={700}>
         {matches => (
