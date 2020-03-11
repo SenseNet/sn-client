@@ -48,34 +48,36 @@ export const EditView: React.FC<EditViewProps> = props => {
   return (
     <form style={{ margin: '0 auto' }} onSubmit={handleSubmit}>
       <Grid container={true} spacing={2}>
-        {schema.fieldMappings.map(field => {
-          const fieldControl = createElement(
-            controlMapper.getControlForContentField(props.content.Type, field.fieldSettings.Name, 'edit'),
-            {
-              repository: props.repository,
-              settings: field.fieldSettings,
-              content: props.content,
-              fieldValue: (props.content as any)[field.fieldSettings.Name],
-              actionName: 'edit',
-              renderIcon: props.renderIcon,
-              fieldOnChange: handleInputChange,
-              uploadFolderPath: props.uploadFolderpath,
-            },
-          )
+        {schema.fieldMappings
+          .sort((item1, item2) => item2.fieldSettings.DefaultOrder! - item1.fieldSettings.DefaultOrder!)
+          .map(field => {
+            const fieldControl = createElement(
+              controlMapper.getControlForContentField(props.content.Type, field.fieldSettings.Name, 'edit'),
+              {
+                repository: props.repository,
+                settings: field.fieldSettings,
+                content: props.content,
+                fieldValue: (props.content as any)[field.fieldSettings.Name],
+                actionName: 'edit',
+                renderIcon: props.renderIcon,
+                fieldOnChange: handleInputChange,
+                uploadFolderPath: props.uploadFolderpath,
+              },
+            )
 
-          return (
-            <Grid
-              item={true}
-              xs={12}
-              sm={12}
-              md={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
-              lg={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
-              xl={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
-              key={field.fieldSettings.Name}>
-              {fieldControl}
-            </Grid>
-          )
-        })}
+            return (
+              <Grid
+                item={true}
+                xs={12}
+                sm={12}
+                md={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
+                lg={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
+                xl={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
+                key={field.fieldSettings.Name}>
+                {fieldControl}
+              </Grid>
+            )
+          })}
         <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: 'right' }}>
           <MediaQuery minDeviceWidth={700}>
             <Button

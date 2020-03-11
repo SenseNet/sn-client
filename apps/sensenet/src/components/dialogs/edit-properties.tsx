@@ -62,9 +62,9 @@ export const EditProperties: React.FunctionComponent<EditPropertiesProps> = prop
       <CurrentContentContext.Consumer>
         {content =>
           content.Id !== ConstantContent.PORTAL_ROOT.Id && (
-            <div className={globalClasses.dialog}>
+            <>
               <DialogTitle>{localization.dialogTitle.replace('{0}', content.DisplayName || content.Name)} </DialogTitle>
-              <DialogContent>
+              <DialogContent style={{ padding: '40px 20px 34px 20px' }}>
                 <EditView
                   content={content}
                   repository={repo}
@@ -72,7 +72,7 @@ export const EditProperties: React.FunctionComponent<EditPropertiesProps> = prop
                   onSubmit={onSubmit}
                 />
               </DialogContent>
-            </div>
+            </>
           )
         }
       </CurrentContentContext.Consumer>
