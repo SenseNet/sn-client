@@ -46,13 +46,12 @@ export const CurrentContentProvider: React.FunctionComponent<CurrentContentProvi
         }
       }),
       events.onContentDeleted.subscribe(async c => {
-        console.log(c)
         const parentContent = await repo.load({ idOrPath: PathHelper.getParentPath(c.contentData.Path) })
         setContent(parentContent.d)
       }),
     ]
     return () => subscriptions.forEach(s => s.dispose())
-  }, [content.Id, content.Path, events.onContentDeleted, events.onContentModified, repo])
+  }, [content.Id, events.onContentDeleted, events.onContentModified, repo])
 
   const [error, setError] = useState<Error | undefined>()
 
