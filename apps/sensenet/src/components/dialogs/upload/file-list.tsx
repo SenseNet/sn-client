@@ -1,5 +1,3 @@
-import { FileWithFullPath } from './helper'
-import { ProgressBar } from './progress-bar'
 import React from 'react'
 import {
   createStyles,
@@ -17,6 +15,9 @@ import InfoIcon from '@material-ui/icons/Info'
 import filesize from 'filesize'
 import clsx from 'clsx'
 import { v1 } from 'uuid'
+import { FileWithFullPath } from './helper'
+import { ProgressBar } from './progress-bar'
+
 
 type Props = {
   files: FileWithFullPath[]
