@@ -3,7 +3,7 @@ import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { RepositoryContext } from '../src/context'
-import { CurrentContentProvider } from '../src/context/current-content'
+import { CurrentContentContext, CurrentContentProvider } from '../src/context/current-content'
 
 describe('CurrentContent', () => {
   it('matches snapshot', () => {
@@ -57,5 +57,47 @@ describe('CurrentContent', () => {
       repo.delete({ idOrPath: mockContent.Path })
     })
     expect(currentRepoLoadArgs.idOrPath).toBe('Root/Content')
+  })
+
+  it('should reload on modify', async () => {
+    const mockContent = { Id: 1, Name: 'Teszt1', Path: '/Root/Content/IT' }
+
+    const repo = new Repository()
+    repo.load = () => {
+      return { d: { ...mockContent } } as any
+    }
+    repo.patch = (patchOptions: any) => {
+      mockContent.Name = patchOptions.content.Name
+      return { d: mockContent, errors: [] } as any
+    }
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(
+        <RepositoryContext.Provider value={repo}>
+          <CurrentContentProvider idOrPath={mockContent.Path} onContentLoaded={jest.fn}>
+            <CurrentContentContext.Consumer>{value => <div>Name: {value.Name}</div>}</CurrentContentContext.Consumer>
+          </CurrentContentProvider>
+        </RepositoryContext.Provider>,
+      )
+    })
+    expect(
+      wrapper
+        .update()
+        .find('div')
+        .text(),
+    ).toBe('Name: Teszt1')
+    await act(async () => {
+      repo.patch({
+        idOrPath: mockContent.Path,
+        content: { Name: 'Teszt2', Id: 1 },
+      })
+    })
+
+    expect(
+      wrapper
+        .update()
+        .find('div')
+        .text(),
+    ).toBe('Name: Teszt2')
   })
 })
