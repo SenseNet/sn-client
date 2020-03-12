@@ -15,10 +15,10 @@ import { Schema } from '@sensenet/default-content-types'
 import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
-import { useLocalization, usePersonalSettings, useSelectionService } from '../hooks'
 import { globals, useGlobalStyles } from '../globalStyles'
-import { useDialog } from './dialogs'
+import { useLocalization, usePersonalSettings, useSelectionService } from '../hooks'
 import { Icon } from './Icon'
+import { useDialog } from './dialogs'
 
 const useStyles = makeStyles(() => {
   return createStyles({

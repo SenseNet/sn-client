@@ -30,21 +30,21 @@
     "@sensenet/client-utils": "^1.8.1",
     "@sensenet/default-content-types": "^2.0.5",
     "@sensenet/repository-events": "^1.4.12",
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
     "semaphore-async-await": "^1.5.1",
-    "tslib": "^1.10.0"
+    "tslib": "^1.11.1"
   },
   "devDependencies": {
     "@types/enzyme": "^3.10.5",
-    "@types/jest": "^25.1.2",
-    "@types/react": "^16.9.19",
+    "@types/jest": "^25.1.4",
+    "@types/react": "^16.9.23",
     "@types/react-dom": "^16.9.5",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "enzyme-to-json": "^3.4.4",
     "jest": "^25.1.0",
-    "ts-jest": "^25.2.0",
-    "typescript": "^3.7.5"
+    "ts-jest": "^25.2.1",
+    "typescript": "^3.8.3"
   }
 }
