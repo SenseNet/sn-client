@@ -2,9 +2,11 @@ import { AppBar, createStyles, IconButton, makeStyles, Toolbar } from '@material
 import Menu from '@material-ui/icons/Menu'
 import clsx from 'clsx'
 import React, { useContext } from 'react'
+import { Link } from 'react-router-dom'
 import { ResponsivePersonalSetttings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useCommandPalette } from '../../hooks'
+import logo from '../../assets/sensenet-icon-32.png'
 import { CommandPalette } from '../command-palette/CommandPalette'
 import { DesktopNavMenu } from './desktop-nav-menu'
 
@@ -21,6 +23,10 @@ const useStyles = makeStyles(() => {
       height: '100%',
       paddingLeft: '32px',
       paddingRight: 0,
+    },
+    logo: {
+      marginRight: '39px',
+      filter: 'drop-shadow(0px 0px 3px black)',
     },
     repositorySelectorWrapper: {
       flexDirection: 'row',
@@ -51,6 +57,9 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
           className={clsx(globalClasses.centeredVertical, classes.repositorySelectorWrapper, {
             [classes.flexGrow0]: commandPalette.isOpened,
           })}>
+          <Link to="/" className={globalClasses.centeredVertical}>
+            <img src={logo} className={classes.logo} alt="logo" />
+          </Link>
           {personalSettings.drawer.type === 'temporary' ? (
             <IconButton
               onClick={() => {

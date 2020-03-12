@@ -12,6 +12,7 @@ export function CurrentUserProvider({ children }: PropsWithChildren<{}>) {
   const [currentUser, setCurrentUser] = useState<User>()
 
   useEffect(() => {
+    const ac = new AbortController()
     async function getUser() {
       const authService = await getAuthService(repository.configuration.repositoryUrl)
       const user = await authService.getUser()
@@ -25,14 +26,20 @@ export function CurrentUserProvider({ children }: PropsWithChildren<{}>) {
           oDataOptions: {
             select: 'all',
           },
+          requestInit: {
+            signal: ac.signal,
+          },
         })
         setCurrentUser(result.d)
       } catch (error) {
-        logger.debug({ message: `Couldn't load current user: ${error.message}` })
-        setCurrentUser(ConstantContent.VISITOR_USER)
+        if (!ac.signal.aborted) {
+          logger.debug({ message: `Couldn't load current user`, data: error })
+          setCurrentUser(ConstantContent.VISITOR_USER)
+        }
       }
     }
     getUser()
+    return () => ac.abort()
   }, [logger, repository])
 
   if (!currentUser) {
