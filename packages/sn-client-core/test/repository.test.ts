@@ -100,11 +100,11 @@ describe('Repository', () => {
       it('should construct the url to contain /$count', async () => {
         let url: string
         const countRepository = new Repository(undefined, input => {
-          url = input.toString()
+          url = (input as any).path
           return Promise.resolve({ ok: true, json: () => 42 }) as any
         })
         await countRepository.count({ path: '/Root/Content' })
-        expect(url).toMatch(/http:\/\/localhost\/odata.svc\/Root\/Content\/\$count/g)
+        expect(url).toMatch(/\/odata.svc\/Root\/Content\/\$count/g)
       })
 
       it('should throw on unsuccessfull request', async () => {
