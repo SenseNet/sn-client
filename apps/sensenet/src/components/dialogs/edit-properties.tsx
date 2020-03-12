@@ -63,8 +63,10 @@ export const EditProperties: React.FunctionComponent<EditPropertiesProps> = prop
         {content =>
           content.Id !== ConstantContent.PORTAL_ROOT.Id && (
             <>
-              <DialogTitle>{localization.dialogTitle.replace('{0}', content.DisplayName || content.Name)} </DialogTitle>
-              <DialogContent style={{ padding: '40px 20px 34px 20px' }}>
+              <DialogTitle className={globalClasses.centered} style={{ height: '49px' }}>
+                {localization.dialogTitle.replace('{0}', content.DisplayName || content.Name)}{' '}
+              </DialogTitle>
+              <DialogContent style={{ padding: '0 20px 34px 20px' }}>
                 <EditView
                   content={content}
                   repository={repo}

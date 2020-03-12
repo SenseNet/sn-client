@@ -10,8 +10,25 @@ import {
   useLogger,
   useRepository,
 } from '@sensenet/hooks-react'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import clsx from 'clsx'
 import { useLocalization, useSelectionService } from '../../hooks'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
+import { globals, useGlobalStyles } from '../../globalStyles'
+
+const useStyles = makeStyles((theme: Theme) => {
+  return createStyles({
+    editWrapper: {
+      padding: '0 20px 0 20px',
+      overflow: 'auto',
+    },
+    breadcrumbsWrapper: {
+      height: globals.common.drawerItemHeight,
+      boxSizing: 'border-box',
+      borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
+    },
+  })
+})
 
 const GenericContentEditor: React.FunctionComponent<RouteComponentProps<{ contentId?: string }>> = props => {
   const repo = useRepository()
@@ -19,15 +36,19 @@ const GenericContentEditor: React.FunctionComponent<RouteComponentProps<{ conten
   const logger = useLogger('EditProperties')
   const localization = useLocalization().editPropertiesDialog
   const selectionService = useSelectionService()
+  const classes = useStyles()
+  const globalClasses = useGlobalStyles()
 
   return (
-    <div style={{ width: '100%', height: '100%', padding: '1em', overflow: 'auto' }}>
+    <div className={clsx(globalClasses.full, classes.editWrapper)}>
       <CurrentContentProvider
         idOrPath={contentId}
         onContentLoaded={c => selectionService.activeContent.setValue(c)}
         oDataOptions={{ select: 'all' }}>
         <CurrentAncestorsProvider>
-          <ContentBreadcrumbs />
+          <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
+            <ContentBreadcrumbs />
+          </div>
           <CurrentContentContext.Consumer>
             {content => (
               <>

@@ -7,7 +7,17 @@ import { Repository } from '@sensenet/client-core'
 import { ContentType, GenericContent } from '@sensenet/default-content-types'
 import React, { createElement, ReactElement, useState } from 'react'
 import MediaQuery from 'react-responsive'
+import { createStyles, makeStyles } from '@material-ui/core'
 import { reactControlMapper } from '../ReactControlMapper'
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    form: {
+      margin: '0 auto',
+      padding: '27px 22px 39px 22px',
+    },
+  })
+})
 
 /**
  * Interface for EditView properties
@@ -34,6 +44,7 @@ export const EditView: React.FC<EditViewProps> = props => {
   const controlMapper = reactControlMapper(props.repository)
   const schema = controlMapper.getFullSchemaForContentType(props.content.Type, 'edit')
   const [saveableFields, setSaveableFields] = useState({})
+  const classes = useStyles()
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -46,7 +57,7 @@ export const EditView: React.FC<EditViewProps> = props => {
   }
 
   return (
-    <form style={{ margin: '0 auto' }} onSubmit={handleSubmit}>
+    <form className={classes.form} onSubmit={handleSubmit}>
       <Grid container={true} spacing={2}>
         {schema.fieldMappings
           .sort((item1, item2) => item2.fieldSettings.DefaultOrder! - item1.fieldSettings.DefaultOrder!)
@@ -87,7 +98,7 @@ export const EditView: React.FC<EditViewProps> = props => {
               Cancel
             </Button>
           </MediaQuery>
-          <Button type="submit" variant="contained" color="secondary">
+          <Button type="submit" variant="contained" color="primary">
             Submit
           </Button>
         </Grid>
