@@ -22,6 +22,11 @@ module.exports = merge(common, {
       favicon: './src/assets/favicon.ico',
     }),
   ],
+  resolve: {
+    alias: {
+      'react-transition-group': '@material-ui/react-transition-group',
+    },
+  },
   module: {
     rules: [
       {
