@@ -7,14 +7,18 @@ import { Repository } from '@sensenet/client-core'
 import { ContentType, GenericContent } from '@sensenet/default-content-types'
 import React, { createElement, ReactElement, useState } from 'react'
 import MediaQuery from 'react-responsive'
-import { createStyles, makeStyles } from '@material-ui/core'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import { reactControlMapper } from '../ReactControlMapper'
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     form: {
       margin: '0 auto',
       padding: '27px 22px 39px 22px',
+    },
+    cancel: {
+      marginRight: 38,
+      border: theme.palette.type === 'light' ? '2px solid #212121DE' : '2px solid #505050',
     },
   })
 })
@@ -81,9 +85,9 @@ export const EditView: React.FC<EditViewProps> = props => {
                 item={true}
                 xs={12}
                 sm={12}
-                md={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
-                lg={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
-                xl={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
+                md={field.fieldSettings.Name === 'Avatar' || field.fieldSettings.Name === 'Enabled' ? 12 : 6}
+                lg={field.fieldSettings.Name === 'Avatar' || field.fieldSettings.Name === 'Enabled' ? 12 : 6}
+                xl={field.fieldSettings.Name === 'Avatar' || field.fieldSettings.Name === 'Enabled' ? 12 : 6}
                 key={field.fieldSettings.Name}>
                 {fieldControl}
               </Grid>
@@ -93,7 +97,7 @@ export const EditView: React.FC<EditViewProps> = props => {
           <MediaQuery minDeviceWidth={700}>
             <Button
               color="default"
-              style={{ marginRight: 20 }}
+              className={classes.cancel}
               onClick={() => props.handleCancel && props.handleCancel()}>
               Cancel
             </Button>

@@ -2,7 +2,6 @@ import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import FormControl from '@material-ui/core/FormControl'
-import FormHelperText from '@material-ui/core/FormHelperText'
 import InputLabel from '@material-ui/core/InputLabel'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
@@ -68,6 +67,7 @@ export class Avatar extends Component<ReactClientFieldSetting<ReferenceFieldSett
     this.setState({
       fieldValue: '',
     })
+    this.handleDialogClose()
   }
 
   public handleDialogClose = () => {
@@ -113,40 +113,37 @@ export class Avatar extends Component<ReactClientFieldSetting<ReferenceFieldSett
   public render() {
     switch (this.props.actionName) {
       case 'edit':
-      case 'new':
         return (
           <FormControl
             style={styles.root as any}
             key={this.props.settings.Name}
             component={'fieldset' as 'div'}
             required={this.props.settings.Compulsory}>
-            <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
-              {this.props.settings.DisplayName}
-            </InputLabel>
-            <List
-              dense={true}
-              style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
-              {
-                <DefaultAvatarTemplate
-                  repositoryUrl={this.props.repository && this.props.repository.configuration.repositoryUrl}
-                  add={this.addItem}
-                  actionName={this.props.actionName}
-                  readOnly={this.props.settings.ReadOnly}
-                  url={this.state.fieldValue}
-                  remove={this.removeItem}
-                  renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}
-                />
-              }
+            <List dense={true} style={styles.listContainer}>
+              <DefaultAvatarTemplate
+                repositoryUrl={this.props.repository && this.props.repository.configuration.repositoryUrl}
+                add={this.addItem}
+                actionName={this.props.actionName}
+                readOnly={this.props.settings.ReadOnly}
+                url={this.state.fieldValue}
+                renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}
+              />
             </List>
-            {this.props.settings.Description ? (
-              <FormHelperText>{this.props.settings.Description}</FormHelperText>
-            ) : null}
 
             <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen}>
               <div style={styles.dialog}>
                 <Typography variant="h5" gutterBottom={true}>
                   {AVATAR_PICKER_TITLE}
                 </Typography>
+                {console.log('this.props.uploadFolderPath', this.props.uploadFolderPath)}
+                {console.log(
+                  'SelectionRoots[0]',
+                  this.props.settings.SelectionRoots && this.props.settings.SelectionRoots[0],
+                )}
+                {console.log(
+                  'this.state.fieldValue.substring',
+                  this.state.fieldValue.substring(0, this.state.fieldValue.lastIndexOf('/')),
+                )}
                 <AvatarPicker
                   path={
                     this.props.uploadFolderPath ||
@@ -157,6 +154,7 @@ export class Avatar extends Component<ReactClientFieldSetting<ReferenceFieldSett
                   repository={this.props.repository!}
                   select={this.selectItem}
                   renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}
+                  remove={this.removeItem}
                 />
                 <DialogActions>
                   <Button onClick={this.handleCancelClick}>{CANCEL}</Button>
@@ -168,6 +166,7 @@ export class Avatar extends Component<ReactClientFieldSetting<ReferenceFieldSett
             </Dialog>
           </FormControl>
         )
+      case 'new':
       case 'browse':
       default:
         return this.props.fieldValue ? (

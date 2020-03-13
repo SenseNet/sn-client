@@ -17,6 +17,8 @@ const ShortTextInput = withStyles((theme: Theme) =>
     },
     input: {
       width: '536px',
+      height: '36px',
+      boxSizing: 'border-box',
       borderRadius: 4,
       position: 'relative',
       backgroundColor: 'transparent',
@@ -44,10 +46,9 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
 
   switch (props.actionName) {
     case 'edit':
-    case 'new':
       return (
         <>
-          <InputLabel shrink htmlFor={props.settings.Name}>
+          <InputLabel shrink htmlFor={props.settings.Name} required={props.settings.Compulsory}>
             {props.settings.DisplayName}
           </InputLabel>
           <ShortTextInput
@@ -55,7 +56,28 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
             id={props.settings.Name}
             placeholder={props.settings.DisplayName}
             value={value}
-            required={props.settings.Compulsory}
+            disabled={props.settings.ReadOnly}
+            defaultValue={changeJScriptValue(props.settings.DefaultValue)}
+            inputProps={{
+              minLength: props.settings.MinLength,
+              maxLength: props.settings.MaxLength,
+              pattern: props.settings.Regex,
+            }}
+            onChange={handleChange}
+          />
+        </>
+      )
+    case 'new':
+      return (
+        <>
+          <InputLabel shrink htmlFor={props.settings.Name} required={props.settings.Compulsory}>
+            {props.settings.DisplayName}
+          </InputLabel>
+          <ShortTextInput
+            name={props.settings.Name}
+            id={props.settings.Name}
+            placeholder={props.settings.DisplayName}
+            value={value}
             disabled={props.settings.ReadOnly}
             defaultValue={changeJScriptValue(props.settings.DefaultValue)}
             inputProps={{

@@ -10,13 +10,13 @@ import {
   useLogger,
   useRepository,
 } from '@sensenet/hooks-react'
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import { createStyles, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
 import { useLocalization, useSelectionService } from '../../hooks'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { globals, useGlobalStyles } from '../../globalStyles'
 
-const useStyles = makeStyles((theme: Theme) => {
+const useStyles = makeStyles(() => {
   return createStyles({
     editWrapper: {
       padding: '0 20px 0 20px',
@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme: Theme) => {
     breadcrumbsWrapper: {
       height: globals.common.drawerItemHeight,
       boxSizing: 'border-box',
-      borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
     },
   })
 })
