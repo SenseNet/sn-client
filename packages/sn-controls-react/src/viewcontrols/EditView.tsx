@@ -14,11 +14,16 @@ const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     form: {
       margin: '0 auto',
-      padding: '27px 22px 39px 22px',
+      padding: '0 22px 39px 22px',
     },
     cancel: {
       marginRight: 38,
       border: theme.palette.type === 'light' ? '2px solid #212121DE' : '2px solid #505050',
+    },
+    grid: {
+      display: 'grid',
+      justifyContent: 'center',
+      padding: '6px !important',
     },
   })
 })
@@ -88,7 +93,8 @@ export const EditView: React.FC<EditViewProps> = props => {
                 md={field.fieldSettings.Name === 'Avatar' || field.fieldSettings.Name === 'Enabled' ? 12 : 6}
                 lg={field.fieldSettings.Name === 'Avatar' || field.fieldSettings.Name === 'Enabled' ? 12 : 6}
                 xl={field.fieldSettings.Name === 'Avatar' || field.fieldSettings.Name === 'Enabled' ? 12 : 6}
-                key={field.fieldSettings.Name}>
+                key={field.fieldSettings.Name}
+                className={classes.grid}>
                 {fieldControl}
               </Grid>
             )

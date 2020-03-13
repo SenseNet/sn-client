@@ -19,7 +19,7 @@ import { globals, useGlobalStyles } from '../../globalStyles'
 const useStyles = makeStyles(() => {
   return createStyles({
     editWrapper: {
-      padding: '0 20px 0 20px',
+      padding: '0',
       overflow: 'auto',
     },
     breadcrumbsWrapper: {
@@ -89,6 +89,7 @@ const GenericContentEditor: React.FunctionComponent<RouteComponentProps<{ conten
                           })
                         })
                     }}
+                    uploadFolderpath={'/Root/Content/demoavatars'}
                   />
                 ) : (
                   <CircularProgress />

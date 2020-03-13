@@ -24,7 +24,7 @@ const styles = {
   },
   listContainer: {
     display: 'block',
-    marginTop: 10,
+    padding: 0,
   },
   closeButton: {
     position: 'absolute',
@@ -135,15 +135,6 @@ export class Avatar extends Component<ReactClientFieldSetting<ReferenceFieldSett
                 <Typography variant="h5" gutterBottom={true}>
                   {AVATAR_PICKER_TITLE}
                 </Typography>
-                {console.log('this.props.uploadFolderPath', this.props.uploadFolderPath)}
-                {console.log(
-                  'SelectionRoots[0]',
-                  this.props.settings.SelectionRoots && this.props.settings.SelectionRoots[0],
-                )}
-                {console.log(
-                  'this.state.fieldValue.substring',
-                  this.state.fieldValue.substring(0, this.state.fieldValue.lastIndexOf('/')),
-                )}
                 <AvatarPicker
                   path={
                     this.props.uploadFolderPath ||

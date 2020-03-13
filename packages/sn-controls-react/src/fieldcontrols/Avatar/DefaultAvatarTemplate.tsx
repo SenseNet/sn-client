@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme: Theme) => {
       '&:hover': {
         backgroundColor: 'transparent',
       },
+      padding: 0,
     },
     avatar: {
       width: 80,
