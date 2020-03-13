@@ -30,7 +30,7 @@ const styles = {
 
 const mapStateToProps = (state: rootStateType) => {
   return {
-    actions: state.dms.actionmenu.addNewTypes,
+    actions: state.dms.actionmenu.userActions,
     menuIsOpen: state.dms.menuOpen,
     currentContent: state.dms.documentLibrary.parent,
   }
