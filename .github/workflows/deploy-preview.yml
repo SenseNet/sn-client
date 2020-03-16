@@ -25,6 +25,8 @@ jobs:
 
       - name: build snapp
         run: yarn snapp build
+        env:
+          RELATIVE_CI_KEY: ${{ secrets.RELATIVE_CI_KEY }}
 
       - name: Publish
         uses: netlify/actions/cli@master
