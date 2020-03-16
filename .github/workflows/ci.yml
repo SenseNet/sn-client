@@ -17,6 +17,8 @@ jobs:
 
       - name: install
         run: yarn install
+        env:
+          CYPRESS_INSTALL_BINARY: 0
 
       - name: lint
         run: yarn lint
@@ -36,7 +38,7 @@ jobs:
       - name: install
         run: yarn install
         env:
-          CYPRESS_INSTALL_BINARY: 0 # dont forget to remove this once we move e2e to github actions
+          CYPRESS_INSTALL_BINARY: 0
 
       - name: build
         run: yarn build

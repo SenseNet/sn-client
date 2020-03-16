@@ -20,14 +20,13 @@ jobs:
       before_script: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p && yarn build
       script: yarn test:dms:e2e
       after_failure: bash ./scripts/sendscreenshots.sh
-
-    - name: 'Component docs'
-      install: yarn
-      script: yarn build && yarn storybook build-storybook
-      after_success:
-        - test $TRAVIS_EVENT_TYPE = pull_request &&
-          wait-on $SN_BOT_URL -l -t 60000 &&
-          netlify deploy --site 1747b330-27d8-4ddd-bf74-39469c257010 --auth $NETLIFY_ACCESS_TOKEN --dir ./examples/sn-react-component-docs/storybook-static --message $TRAVIS_PULL_REQUEST
+    # - name: 'Component docs'
+    #   install: yarn
+    #   script: yarn build && yarn storybook build-storybook
+    #   after_success:
+    #     - test $TRAVIS_EVENT_TYPE = pull_request &&
+    #       wait-on $SN_BOT_URL -l -t 60000 &&
+    #       netlify deploy --site 1747b330-27d8-4ddd-bf74-39469c257010 --auth $NETLIFY_ACCESS_TOKEN --dir ./examples/sn-react-component-docs/storybook-static --message $TRAVIS_PULL_REQUEST
     # - name: 'Sn app'
     #   install: yarn
     #   script: yarn build && yarn snapp build
