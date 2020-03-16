@@ -120,8 +120,8 @@ const userContent: User = {
 const groupContent: Group = {
   Id: 4815,
   Type: 'Group',
-  Name: 'DMSAdmins',
-  Path: '/Root/IMS/Public/DMSAdmins',
+  Name: 'Administrators',
+  Path: '/Root/IMS/Public/Administrators',
   Members: [userContent],
 }
 
