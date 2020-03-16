@@ -4,19 +4,23 @@
 import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import { ShortTextFieldSetting } from '@sensenet/default-content-types'
-import { changeJScriptValue } from '../helpers'
+import { LongTextFieldSetting } from '@sensenet/default-content-types'
+import { changeJScriptValue } from '@sensenet/controls-react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
- * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
+ * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
-export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>> = props => {
-  const [value, setValue] = useState(props.fieldValue || changeJScriptValue(props.settings.DefaultValue) || '')
+export const Textarea: React.FC<ReactClientFieldSetting<LongTextFieldSetting>> = props => {
+  const initialState =
+    (props.fieldValue && props.fieldValue.replace(/<[^>]*>/g, '')) ||
+    changeJScriptValue(props.settings.DefaultValue) ||
+    ''
+  const [value, setValue] = useState(initialState)
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
-    setValue(e.target.value)
-    props.fieldOnChange && props.fieldOnChange(props.settings.Name, e.target.value)
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setValue(event.target.value)
+    props.fieldOnChange && props.fieldOnChange(props.settings.Name, event.target.value)
   }
 
   switch (props.actionName) {
@@ -24,21 +28,17 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
     case 'new':
       return (
         <TextField
+          onChange={handleChange}
           name={props.settings.Name}
           id={props.settings.Name}
           label={props.settings.DisplayName}
+          defaultValue={changeJScriptValue(props.settings.DefaultValue)}
           placeholder={props.settings.DisplayName}
           value={value}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}
-          defaultValue={changeJScriptValue(props.settings.DefaultValue)}
-          inputProps={{
-            minLength: props.settings.MinLength,
-            maxLength: props.settings.MaxLength,
-            pattern: props.settings.Regex,
-          }}
+          multiline={true}
           fullWidth={true}
-          onChange={handleChange}
           helperText={props.settings.Description}
         />
       )

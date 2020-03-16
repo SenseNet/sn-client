@@ -1,6 +1,5 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { isExtendedError } from '@sensenet/client-core'
-import { EditView } from '@sensenet/controls-react'
 import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import {
@@ -12,6 +11,7 @@ import {
 } from '@sensenet/hooks-react'
 import { createStyles, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
+import { EditView } from '../view-controls/edit-view'
 import { useLocalization, useSelectionService } from '../../hooks'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { globals, useGlobalStyles } from '../../globalStyles'

@@ -2,7 +2,6 @@ import Avatar from '@material-ui/core/Avatar'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Fade from '@material-ui/core/Fade'
 import IconButton from '@material-ui/core/IconButton'
-import InputLabel from '@material-ui/core/InputLabel'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
@@ -13,6 +12,7 @@ import { useListPicker } from '@sensenet/pickers-react'
 import React, { useEffect, useRef, useState } from 'react'
 
 const UPLOAD = 'Upload'
+const REMOVE_AVATAR = 'Remove avatar'
 
 const styles: { [index: string]: React.CSSProperties } = {
   uploadContainer: { minHeight: 50, position: 'relative' },
@@ -25,6 +25,7 @@ interface AvatarPickerProps {
   repository: Repository
   path: string
   renderIcon: (name: string) => JSX.Element
+  remove?: () => void
 }
 
 const pickerItemOptions: ODataParams<Folder> = {
@@ -131,13 +132,14 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = props => {
           type="file"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleUpload(e)}
         />
-        <InputLabel
-          htmlFor="raised-button-file"
-          onClick={() => input.current && input.current.click()}
-          style={{ transform: 'translate(0, 58px) scale(1)', cursor: 'pointer' }}
-          title={UPLOAD}>
-          <IconButton>{props.renderIcon('add_circle')}</IconButton>
-        </InputLabel>
+        <div style={{ transform: 'translate(0, 62px) scale(1)' }}>
+          <IconButton style={{ padding: '2px' }} title={UPLOAD} onClick={() => input.current && input.current.click()}>
+            {props.renderIcon('add_circle')}
+          </IconButton>
+          <IconButton style={{ padding: '2px' }} title={REMOVE_AVATAR} onClick={() => props.remove && props.remove()}>
+            {props.renderIcon('remove_circle')}
+          </IconButton>
+        </div>
       </div>
     </div>
   )
