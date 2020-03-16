@@ -31,7 +31,6 @@
     "jest-environment-jsdom-sixteen": "^1.0.3",
     "lerna": "^3.20.2",
     "lint-staged": "^10.0.8",
-    "netlify-cli": "^2.38.0",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.2",
     "start-server-and-test": "^1.10.9",
