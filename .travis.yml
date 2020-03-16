@@ -28,11 +28,10 @@ jobs:
         - test $TRAVIS_EVENT_TYPE = pull_request &&
           wait-on $SN_BOT_URL -l -t 60000 &&
           netlify deploy --site 1747b330-27d8-4ddd-bf74-39469c257010 --auth $NETLIFY_ACCESS_TOKEN --dir ./examples/sn-react-component-docs/storybook-static --message $TRAVIS_PULL_REQUEST
-
-    - name: 'Sn app'
-      install: yarn
-      script: yarn build && yarn snapp build
-      after_success:
-        - test $TRAVIS_EVENT_TYPE = pull_request &&
-          wait-on $SN_BOT_URL -l -t 60000 &&
-          netlify deploy --site 94fb346c-b540-40f7-aaaf-21eee2a9c891 --auth $NETLIFY_ACCESS_TOKEN --dir ./apps/sensenet/build --message $TRAVIS_PULL_REQUEST
+    # - name: 'Sn app'
+    #   install: yarn
+    #   script: yarn build && yarn snapp build
+    #   after_success:
+    #     - test $TRAVIS_EVENT_TYPE = pull_request &&
+    #       wait-on $SN_BOT_URL -l -t 60000 &&
+    #       netlify deploy --site 94fb346c-b540-40f7-aaaf-21eee2a9c891 --auth $NETLIFY_ACCESS_TOKEN --dir ./apps/sensenet/build --message $TRAVIS_PULL_REQUEST
