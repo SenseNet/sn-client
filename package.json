@@ -46,7 +46,7 @@
     "storybook": "yarn workspace sn-react-component-docs",
     "dms": "yarn workspace sn-dms-demo",
     "build": "tsc -b packages",
-    "build:examples": "tsc -b packages",
+    "build:examples": "tsc -b examples",
     "build:dms": "yarn && yarn build && yarn workspace sn-dms-demo run build",
     "build:sn-app": "yarn && yarn build && yarn workspace @sensenet/sn-app run build",
     "build:docs": "yarn && yarn build && yarn workspace sn-react-component-docs run build-storybook",
