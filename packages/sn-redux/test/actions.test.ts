@@ -182,6 +182,12 @@ const previewNumberResponse = {
   },
 } as Response
 
+const emptyResponse = {
+  ok: true,
+  status: 200,
+  json: async () => undefined,
+} as Response
+
 describe('Actions', () => {
   const path = '/workspaces/project'
   let repo: Repository
@@ -1136,14 +1142,24 @@ describe('Actions', () => {
     })
   })
   describe('regeneratePreviews', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => emptyResponse as any)
+    })
     describe('Action types are types', () => {
       expect(Actions.regeneratePreviews(42).type).toBe('REGENERATE_PREVIEW_IMAGES')
     })
 
     describe('serviceChecks()', () => {
-      describe('Given regeneratePreviews() resolves', () => {
+      describe('Given repository.executeAction() resolves', () => {
+        let data: any
+        beforeEach(async () => {
+          data = await Actions.regeneratePreviews(42).payload(repo)
+        })
         it('should return a REGENERATE_PREVIEW_IMAGES action', () => {
           expect(Actions.regeneratePreviews(42)).toHaveProperty('type', 'REGENERATE_PREVIEW_IMAGES')
+        })
+        it('should return propertyResponse', () => {
+          expect(data).toBeUndefined()
         })
       })
     })
