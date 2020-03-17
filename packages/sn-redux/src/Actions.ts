@@ -203,14 +203,24 @@ export const createContent = <T extends Content = Content>(parentPath: string, c
   payload: (repository: Repository) => repository.post<T>({ parentPath, content, contentType }),
 })
 /**
- * Action creator for creating a Content in the Content Repository.
- * @param idOrPath {number|string} Id or path of the Content.
- * @param content {Content} Content with the patchable Fields.
+ * Action creator for updating fields of a Content in the Content Repository.
+ * @param content {GenericContent} Content that should be updated.
+ * @param saveableFields {Partial<T>} object with the patchable Fields.
  * @returns Returns the modified Content and dispatches the next action based on the response.
  */
 export const updateContent = <T extends Content = Content>(content: GenericContent, saveableFields: Partial<T>) => ({
   type: 'UPDATE_CONTENT',
   payload: (repository: Repository) => repository.patch<T>({ idOrPath: content.Id, content: saveableFields }),
+})
+/**
+ * Action creator for reseting a Content (update the given Fields and reset all the others with their default value) in the Content Repository.
+ * @param content {GenericContent} Content that should be updated.
+ * @param saveableFields {Partial<T>} object with the patchable Fields.
+ * @returns Returns the modified Content and dispatches the next action based on the response.
+ */
+export const resetContent = <T extends Content = Content>(content: GenericContent, saveableFields: Partial<T>) => ({
+  type: 'RESET_CONTENT',
+  payload: (repository: Repository) => repository.put<T>({ idOrPath: content.Id, content: saveableFields }),
 })
 /**
  * Action creator for deleting a Content from the Content Repository.
