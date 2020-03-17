@@ -696,3 +696,61 @@ export const regeneratePreviews = (idOrPath: number | string) => ({
       method: 'POST',
     }),
 })
+
+/**
+ * Action creator for adding comments to document pages/preview images
+ * @param idOrPath Id or Path of the document
+ * @param page Page number
+ * @param x Coordinate x of the comment.
+ * @param y Coordinate y of the comment.
+ * @param text Text of the comment.
+ */
+export const addPreviewComment = (idOrPath: number | string, page: number, x: number, y: number, text: string) => ({
+  type: 'ADD_PREVIEW_COMMENT',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'AddPreviewComment',
+      method: 'POST',
+      body: {
+        page,
+        x,
+        y,
+        text,
+      },
+    }),
+})
+/**
+ * Action creator for getting comments for a page of a document.
+ * @param idOrPath Id or Path of the document
+ * @param page Page number
+ */
+export const getPreviewComments = (idOrPath: number | string, page: number) => ({
+  type: 'GET_PREVIEW_COMMENTS',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'GetPreviewComments',
+      method: 'GET',
+      body: {
+        page,
+      },
+    }),
+})
+/**
+ * Action creator for removing a specified comment.
+ * @param idOrPath Id or Path of the document,
+ * @param commentId Id of the comment that should be deleted.
+ */
+export const removePreviewComment = (idOrPath: number | string, commentId: number) => ({
+  type: 'REMOVE_PREVIEW_COMMENT',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'DeletePreviewComment',
+      method: 'POST',
+      body: {
+        id: commentId,
+      },
+    }),
+})
