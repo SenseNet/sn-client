@@ -335,6 +335,29 @@ describe('Actions', () => {
       })
     })
   })
+  describe('ResetContent', () => {
+    const content = { DisplayName: 'My content', Id: 123 } as Task
+
+    describe('Action types are types', () => {
+      expect(Actions.resetContent(content, content).type).toBe('RESET_CONTENT')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.patch() resolves', () => {
+        let data: ODataResponse<Content>
+        const expectedResult = { d: { Name: 'DefaultSite' } }
+        beforeEach(async () => {
+          data = await Actions.resetContent(content, content).payload(repo)
+        })
+        it('should return a RESET_CONTENT action', () => {
+          expect(Actions.resetContent(content, content)).toHaveProperty('type', 'RESET_CONTENT')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(expectedResult)
+        })
+      })
+    })
+  })
   describe('DeleteContent', () => {
     describe('Action types are types', () => {
       expect(Actions.deleteContent(path, true).type).toBe('DELETE_CONTENT')
