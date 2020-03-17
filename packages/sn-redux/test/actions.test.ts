@@ -188,6 +188,44 @@ const emptyResponse = {
   json: async () => undefined,
 } as Response
 
+const previewCommentResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return {
+      id: '1234',
+      createdBy: { Name: 'alba' } as User,
+      page: 3,
+      x: 100,
+      y: 100,
+      text: 'Lorem ipsum',
+    }
+  },
+} as Response
+
+const previewCommentsResponse = {
+  ok: true,
+  status: 200,
+  json: async () => [
+    {
+      id: '1234',
+      createdBy: { Name: 'alba' } as User,
+      page: 3,
+      x: 100,
+      y: 100,
+      text: 'Lorem ipsum',
+    },
+    {
+      id: '5678',
+      createdBy: { Name: 'devdog' } as User,
+      page: 3,
+      x: 100,
+      y: 200,
+      text: 'Dolor sit amet',
+    },
+  ],
+} as Response
+
 describe('Actions', () => {
   const path = '/workspaces/project'
   let repo: Repository
@@ -1160,6 +1198,112 @@ describe('Actions', () => {
         })
         it('should return propertyResponse', () => {
           expect(data).toBeUndefined()
+        })
+      })
+    })
+  })
+  describe('getPreviewComments', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => previewCommentsResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getPreviewComments(42, 4).type).toBe('GET_PREVIEW_COMMENTS')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given getPreviewComments() resolves', () => {
+        let data: any
+        const expectedResult = [
+          {
+            id: '1234',
+            createdBy: { Name: 'alba' } as User,
+            page: 3,
+            x: 100,
+            y: 100,
+            text: 'Lorem ipsum',
+          },
+          {
+            id: '5678',
+            createdBy: { Name: 'devdog' } as User,
+            page: 3,
+            x: 100,
+            y: 200,
+            text: 'Dolor sit amet',
+          },
+        ]
+        beforeEach(async () => {
+          data = await Actions.getPreviewComments(42, 4).payload(repo)
+        })
+        it('should return a GET_PREVIEW_COMMENTS action', () => {
+          expect(Actions.getPreviewComments(42, 4)).toHaveProperty('type', 'GET_PREVIEW_COMMENTS')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(expectedResult)
+        })
+      })
+    })
+  })
+  describe('addPreviewComment', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => previewCommentResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.addPreviewComment(42, 4, 100, 100, 'Lorem ipsum').type).toBe('ADD_PREVIEW_COMMENT')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given addPreviewComment() resolves', () => {
+        let data: any
+        const expectedResult = {
+          id: '1234',
+          createdBy: { Name: 'alba' } as User,
+          page: 3,
+          x: 100,
+          y: 100,
+          text: 'Lorem ipsum',
+        }
+        beforeEach(async () => {
+          data = await Actions.addPreviewComment(42, 4, 100, 100, 'Lorem ipsum').payload(repo)
+        })
+        it('should return a ADD_PREVIEW_COMMENT action', () => {
+          expect(Actions.addPreviewComment(42, 4, 100, 100, 'Lorem ipsum')).toHaveProperty(
+            'type',
+            'ADD_PREVIEW_COMMENT',
+          )
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(expectedResult)
+        })
+      })
+    })
+  })
+  describe('removePreviewComment', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => previewCommentResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.removePreviewComment(42, 5678).type).toBe('REMOVE_PREVIEW_COMMENT')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given removePreviewComment() resolves', () => {
+        let data: any
+        const expectedResult = {
+          id: '1234',
+          createdBy: { Name: 'alba' } as User,
+          page: 3,
+          x: 100,
+          y: 100,
+          text: 'Lorem ipsum',
+        }
+        beforeEach(async () => {
+          data = await Actions.removePreviewComment(42, 5678).payload(repo)
+        })
+        it('should return a REMOVE_PREVIEW_COMMENT action', () => {
+          expect(Actions.removePreviewComment(42, 5678)).toHaveProperty('type', 'REMOVE_PREVIEW_COMMENT')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(expectedResult)
         })
       })
     })
