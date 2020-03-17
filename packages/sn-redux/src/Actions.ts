@@ -196,11 +196,17 @@ export const loadContentActions = (idOrPath: number | string, scenario?: string)
  * @param parentPath {string} Path of the Content where the new Content should be created.
  * @param content {Content} Content that have to be created in the Content Respository.
  * @param contentType {string} Name of the Content Type of the Content.
+ * @param contentTemplate {string} Optional parameter to define which content template should be used on creation.
  * @returns Returns the newly created Content and dispatches the next action based on the response.
  */
-export const createContent = <T extends Content = Content>(parentPath: string, content: T, contentType: string) => ({
+export const createContent = <T extends Content = Content>(
+  parentPath: string,
+  content: T,
+  contentType: string,
+  contentTemplate?: string,
+) => ({
   type: 'CREATE_CONTENT',
-  payload: (repository: Repository) => repository.post<T>({ parentPath, content, contentType }),
+  payload: (repository: Repository) => repository.post<T>({ parentPath, content, contentType, contentTemplate }),
 })
 /**
  * Action creator for updating fields of a Content in the Content Repository.
