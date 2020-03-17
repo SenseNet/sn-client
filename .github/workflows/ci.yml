@@ -1,0 +1,52 @@
+on: [push]
+
+name: ci
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: install
+        run: yarn install
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+
+      - name: lint
+        run: yarn lint
+
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: install
+        run: yarn install
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+
+      - name: build
+        run: yarn build
+
+      - name: build examples
+        run: yarn build:examples
+
+      - name: test
+        run: yarn test --coverage
+
+      - uses: codecov/codecov-action@v1

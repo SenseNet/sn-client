@@ -32,7 +32,6 @@
     "jest-environment-jsdom-sixteen": "^1.0.3",
     "lerna": "^3.20.2",
     "lint-staged": "^10.0.8",
-    "netlify-cli": "^2.38.0",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.2",
     "start-server-and-test": "^1.10.9",
@@ -47,12 +46,12 @@
     "storybook": "yarn workspace sn-react-component-docs",
     "dms": "yarn workspace sn-dms-demo",
     "build": "tsc -b packages",
-    "build:dms": "yarn && yarn build && yarn workspace sn-dms-demo run build:webpack",
+    "build:examples": "tsc -b examples",
+    "build:dms": "yarn && yarn build && yarn workspace sn-dms-demo run build",
     "build:sn-app": "yarn && yarn build && yarn workspace @sensenet/sn-app run build",
     "build:docs": "yarn && yarn build && yarn workspace sn-react-component-docs run build-storybook",
     "clean:packages": "rimraf ./packages/**/dist ./packages/**/tsconfig.tsbuildinfo ./packages/tsconfig.tsbuildinfo",
     "test": "jest",
-    "test:coverage": "jest --coverage",
     "clean": "lerna clean",
     "lint": "eslint . --ext .tsx,.ts --cache"
   },
@@ -64,12 +63,10 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint --ext .tsx,.ts --cache --fix",
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "*.{js,jsx}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   }
 }
