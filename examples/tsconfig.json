@@ -1,0 +1,16 @@
+{
+  "files": [],
+  "include": [],
+  "references": [
+    { "path": "./sn-dms-demo" },
+    { "path": "./sn-react-browser" },
+    { "path": "./sn-react-calendar" },
+    // { "path": "./sn-react-component-docs" },
+    { "path": "./sn-react-imagegallery" },
+    { "path": "./sn-react-imageupload" },
+    { "path": "./sn-react-memoapp" },
+    { "path": "./sn-react-tasklist" },
+    { "path": "./sn-react-typescript-boilerplate" },
+    { "path": "./sn-react-usersearch" }
+  ]
+}

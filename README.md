@@ -6,7 +6,7 @@
 
 # sensenet client
 
-[![Build Status](https://travis-ci.org/SenseNet/sn-client.svg?branch=master)](https://travis-ci.org/SenseNet/sn-client)
+![Build Status](https://github.com/SenseNet/sn-client/workflows/ci/badge.svg)
 [![Coverage](https://img.shields.io/codecov/c/github/SenseNet/sn-client.svg?style=flat)](https://codecov.io/gh/SenseNet/sn-client)
 [![Gitter chat](https://img.shields.io/gitter/room/SenseNet/sensenet.svg?style=flat)](https://gitter.im/SenseNet/sensenet)
 
@@ -31,4 +31,4 @@ This repository is a monorepo that we manage using [Lerna](https://github.com/le
 | [@sensenet/repository-events](/packages/sn-repository-events)               | [![npm](https://img.shields.io/npm/v/@sensenet/repository-events.svg?maxAge=3600)](https://www.npmjs.com/package/@sensenet/repository-events)               |
 | [@sensenet/search-react](/packages/sn-search-react)                         | [![npm](https://img.shields.io/npm/v/@sensenet/search-react.svg?maxAge=3600)](https://www.npmjs.com/package/@sensenet/search-react)                         |
 
-*This article can also be read in [Brazilian Portuguese](README-pt-BR.md).*
+_This article can also be read in [Brazilian Portuguese](README-pt-BR.md)._
