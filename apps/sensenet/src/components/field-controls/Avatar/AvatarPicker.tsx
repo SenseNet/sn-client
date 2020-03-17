@@ -10,9 +10,7 @@ import { ODataParams, Repository } from '@sensenet/client-core'
 import { Folder, User } from '@sensenet/default-content-types'
 import { useListPicker } from '@sensenet/pickers-react'
 import React, { useEffect, useRef, useState } from 'react'
-
-const UPLOAD = 'Upload'
-const REMOVE_AVATAR = 'Remove avatar'
+import { LocalizationContext } from '../../../context'
 
 const styles: { [index: string]: React.CSSProperties } = {
   uploadContainer: { minHeight: 50, position: 'relative' },
@@ -103,44 +101,54 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = props => {
   }
 
   return (
-    <div>
-      <List>
-        {items &&
-          items.map(node => (
-            <ListItem
-              key={node.Id}
-              onClick={e => onClickHandler(e, node)}
-              onDoubleClick={() => navigateTo(node)}
-              button={true}
-              selected={selectedItem && node.Id === selectedItem.Id}>
-              {node.IsFolder || node.IsFolder === undefined ? (
-                <ListItemIcon>{props.renderIcon(iconName(node))}</ListItemIcon>
-              ) : (
-                <ListItemIcon>
-                  <Avatar src={`${props.repository.configuration.repositoryUrl}${node.Path}`} />
-                </ListItemIcon>
-              )}
-              <ListItemText primary={node.DisplayName} />
-            </ListItem>
-          ))}
-      </List>
-      <div style={styles.uploadContainer}>
-        <input
-          style={{ display: 'none' }}
-          id="raised-button-file"
-          ref={input}
-          type="file"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleUpload(e)}
-        />
-        <div style={{ transform: 'translate(0, 62px) scale(1)' }}>
-          <IconButton style={{ padding: '2px' }} title={UPLOAD} onClick={() => input.current && input.current.click()}>
-            {props.renderIcon('add_circle')}
-          </IconButton>
-          <IconButton style={{ padding: '2px' }} title={REMOVE_AVATAR} onClick={() => props.remove && props.remove()}>
-            {props.renderIcon('remove_circle')}
-          </IconButton>
+    <LocalizationContext.Consumer>
+      {localization => (
+        <div>
+          <List>
+            {items &&
+              items.map(node => (
+                <ListItem
+                  key={node.Id}
+                  onClick={e => onClickHandler(e, node)}
+                  onDoubleClick={() => navigateTo(node)}
+                  button={true}
+                  selected={selectedItem && node.Id === selectedItem.Id}>
+                  {node.IsFolder || node.IsFolder === undefined ? (
+                    <ListItemIcon>{props.renderIcon(iconName(node))}</ListItemIcon>
+                  ) : (
+                    <ListItemIcon>
+                      <Avatar src={`${props.repository.configuration.repositoryUrl}${node.Path}`} />
+                    </ListItemIcon>
+                  )}
+                  <ListItemText primary={node.DisplayName} />
+                </ListItem>
+              ))}
+          </List>
+          <div style={styles.uploadContainer}>
+            <input
+              style={{ display: 'none' }}
+              id="raised-button-file"
+              ref={input}
+              type="file"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleUpload(e)}
+            />
+            <div style={{ transform: 'translate(0, 62px) scale(1)' }}>
+              <IconButton
+                style={{ padding: '2px' }}
+                title={localization.values.forms.upload}
+                onClick={() => input.current && input.current.click()}>
+                {props.renderIcon('add_circle')}
+              </IconButton>
+              <IconButton
+                style={{ padding: '2px' }}
+                title={localization.values.forms.removeAvatar}
+                onClick={() => props.remove && props.remove()}>
+                {props.renderIcon('remove_circle')}
+              </IconButton>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </LocalizationContext.Consumer>
   )
 }

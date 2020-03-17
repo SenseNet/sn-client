@@ -112,6 +112,16 @@ const values: DeepPartial<typeof import('./default').default> = {
     personalSettings: 'Személyes beállítások',
     logout: 'Kijelentkezés',
   },
+  forms: {
+    referencePicker: 'Referencia választó',
+    avatarPicker: 'Avatar választó',
+    removeAvatar: 'Avatar törlése',
+    changeReference: 'Referencia módosítása',
+    addReference: 'Referencia hozzáadása',
+    ok: 'Ok',
+    cancel: 'Vissza',
+    upload: 'Feltöltés',
+  },
 }
 
 export default values

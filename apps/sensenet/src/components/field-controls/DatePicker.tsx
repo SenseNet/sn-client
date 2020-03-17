@@ -83,18 +83,30 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
               />
             </>
           ) : (
-            <DateTimePicker
-              value={value}
-              onChange={handleDateChange}
-              label={props.settings.DisplayName}
-              name={props.settings.Name}
-              defaultValue={changeJScriptValue(props.settings.DefaultValue)}
-              id={props.settings.Name}
-              disabled={props.settings.ReadOnly}
-              placeholder={props.settings.DisplayName}
-              required={props.settings.Compulsory}
-              fullWidth={true}
-            />
+            <>
+              <InputLabel
+                shrink
+                htmlFor={props.settings.Name}
+                required={props.settings.Compulsory}
+                style={{ height: '16px' }}>
+                {props.settings.DisplayName}
+              </InputLabel>
+              <DateTimePicker
+                value={value}
+                onChange={handleDateChange}
+                name={props.settings.Name}
+                defaultValue={changeJScriptValue(props.settings.DefaultValue)}
+                id={props.settings.Name}
+                disabled={props.settings.ReadOnly}
+                placeholder={props.settings.DisplayName}
+                fullWidth={true}
+                InputProps={{
+                  className: classes.inputBase,
+                }}
+                inputVariant="outlined"
+                className={classes.formControl}
+              />
+            </>
           )}
         </MuiPickersUtilsProvider>
       )
@@ -102,31 +114,55 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
       return (
         <MuiPickersUtilsProvider utils={MomentUtils}>
           {props.settings.DateTimeMode === DateTimeMode.Date ? (
-            <MUIDatePicker
-              value={value}
-              onChange={handleDateChange}
-              name={props.settings.Name}
-              defaultValue={changeJScriptValue(props.settings.DefaultValue)}
-              label={props.settings.DisplayName}
-              id={props.settings.Name}
-              disabled={props.settings.ReadOnly}
-              placeholder={props.settings.DisplayName}
-              required={props.settings.Compulsory}
-              fullWidth={true}
-            />
+            <>
+              <InputLabel
+                shrink
+                htmlFor={props.settings.Name}
+                required={props.settings.Compulsory}
+                style={{ height: '16px' }}>
+                {props.settings.DisplayName}
+              </InputLabel>
+              <MUIDatePicker
+                value={value}
+                onChange={handleDateChange}
+                name={props.settings.Name}
+                defaultValue={changeJScriptValue(props.settings.DefaultValue)}
+                id={props.settings.Name}
+                disabled={props.settings.ReadOnly}
+                placeholder={props.settings.DisplayName}
+                fullWidth={true}
+                InputProps={{
+                  className: classes.inputBase,
+                }}
+                inputVariant="outlined"
+                className={classes.formControl}
+              />
+            </>
           ) : (
-            <DateTimePicker
-              value={value}
-              onChange={handleDateChange}
-              label={props.settings.DisplayName}
-              name={props.settings.Name}
-              defaultValue={changeJScriptValue(props.settings.DefaultValue)}
-              id={props.settings.Name}
-              disabled={props.settings.ReadOnly}
-              placeholder={props.settings.DisplayName}
-              required={props.settings.Compulsory}
-              fullWidth={true}
-            />
+            <>
+              <InputLabel
+                shrink
+                htmlFor={props.settings.Name}
+                required={props.settings.Compulsory}
+                style={{ height: '16px' }}>
+                {props.settings.DisplayName}
+              </InputLabel>
+              <DateTimePicker
+                value={value}
+                onChange={handleDateChange}
+                name={props.settings.Name}
+                defaultValue={changeJScriptValue(props.settings.DefaultValue)}
+                id={props.settings.Name}
+                disabled={props.settings.ReadOnly}
+                placeholder={props.settings.DisplayName}
+                fullWidth={true}
+                InputProps={{
+                  className: classes.inputBase,
+                }}
+                inputVariant="outlined"
+                className={classes.formControl}
+              />
+            </>
           )}
         </MuiPickersUtilsProvider>
       )

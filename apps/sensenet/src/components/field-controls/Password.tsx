@@ -3,12 +3,12 @@
  */
 import React, { useState } from 'react'
 import FormControl from '@material-ui/core/FormControl'
-import FormHelperText from '@material-ui/core/FormHelperText'
 import IconButton from '@material-ui/core/IconButton'
 import Input from '@material-ui/core/Input'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import InputLabel from '@material-ui/core/InputLabel'
 import Typography from '@material-ui/core/Typography'
+import { globals } from '../../globalStyles'
 import { renderIconDefault } from './icon'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
@@ -39,6 +39,7 @@ export const Password: React.FC<ReactClientFieldSetting> = props => {
             onChange={handleChange}
             value={value}
             fullWidth={true}
+            style={{ width: globals.common.formFieldWidth }}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton aria-label="Toggle password visibility" onClick={() => setShowPassword(!showPassword)}>
@@ -49,7 +50,6 @@ export const Password: React.FC<ReactClientFieldSetting> = props => {
               </InputAdornment>
             }
           />
-          <FormHelperText>{props.settings.Description}</FormHelperText>
         </FormControl>
       )
     default:

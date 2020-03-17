@@ -5,13 +5,13 @@ import React, { useState } from 'react'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormGroup from '@material-ui/core/FormGroup'
-import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import { ChoiceFieldSetting } from '@sensenet/default-content-types'
 import { changeJScriptValue } from '@sensenet/controls-react'
+import { globals } from '../../globalStyles'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
@@ -56,7 +56,8 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
             multiple={props.settings.AllowMultiple}
             autoWidth={true}
             defaultValue={changeJScriptValue(props.settings.DefaultValue)}
-            fullWidth={true}>
+            fullWidth={true}
+            style={{ width: globals.common.formFieldWidth }}>
             {props.settings.Options?.map(option => {
               return (
                 <MenuItem key={option.Value} value={option.Value}>
@@ -65,7 +66,6 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
               )
             })}
           </Select>
-          <FormHelperText>{props.settings.Description}</FormHelperText>
         </FormControl>
       )
     case 'browse':

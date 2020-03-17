@@ -3,54 +3,56 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import FormControl from '@material-ui/core/FormControl'
 import FormGroup from '@material-ui/core/FormGroup'
-import FormHelperText from '@material-ui/core/FormHelperText'
 import InputLabel from '@material-ui/core/InputLabel'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
+import { Avatar, Chip, createStyles, IconButton, Theme, withStyles, WithStyles } from '@material-ui/core'
+import { InsertDriveFile } from '@material-ui/icons'
+import { renderIconDefault } from '@sensenet/controls-react/src/fieldcontrols/icon'
 import { ReactClientFieldSetting } from '../ClientFieldSetting'
+import { isUser } from '../type-guards'
+import { globals } from '../../../globalStyles'
+import { LocalizationContext } from '../../../context'
 import { DefaultItemTemplate } from './DefaultItemTemplate'
 import { ReferencePicker } from './ReferencePicker'
 
-const styles = {
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  dialog: {
-    padding: 20,
-  },
-  listContainer: {
-    display: 'block',
-    marginTop: 10,
-  },
-}
-
-const ADD_REFERENCE = 'Add reference'
-const CHANGE_REFERENCE = 'Change reference'
-const REFERENCE_PICKER_TITLE = 'Reference picker'
-const OK = 'Ok'
-const CANCEL = 'Cancel'
-
-const emptyContent = {
-  DisplayName: ADD_REFERENCE,
-  Icon: '',
-  Id: -1,
-  Path: '',
-  Type: '',
-  Name: 'AddReference',
-}
-
-const changeContent = {
-  DisplayName: CHANGE_REFERENCE,
-  Icon: '',
-  Id: -2,
-  Path: '',
-  Type: '',
-  Name: 'ChangeReference',
-}
+const styles = ({ palette }: Theme) =>
+  createStyles({
+    formControl: {
+      display: 'flex',
+      flexFlow: 'row',
+      justifyContent: 'space-between',
+      width: globals.common.formFieldWidth,
+      marginTop: '9px',
+      borderBottom: '1px solid rgba(80, 80, 80, 0.87)',
+    },
+    dialog: {
+      padding: 20,
+      '& .MuiDialogActions-root': {
+        backgroundColor: palette.type === 'light' ? '#FFFFFF' : '#121212',
+      },
+    },
+    listContainer: {
+      display: 'block',
+      marginTop: 10,
+    },
+    labelWrapper: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+    chip: {
+      border: 'none',
+    },
+    change: {
+      cursor: 'pointer',
+      fontSize: '12px',
+      marginTop: '11px',
+      color: palette.primary.main,
+    },
+  })
 
 /**
  * Interface for ReferenceGrid state
@@ -61,8 +63,11 @@ export interface ReferenceGridState {
   selected: GenericContent[]
 }
 
-export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFieldSetting>, ReferenceGridState> {
-  constructor(props: ReferenceGrid['props']) {
+class ReferenceGridComponent extends Component<
+  ReactClientFieldSetting<ReferenceFieldSetting> & WithStyles<typeof styles>,
+  ReferenceGridState
+> {
+  constructor(props: ReferenceGridComponent['props']) {
     super(props)
 
     this.state = {
@@ -172,91 +177,103 @@ export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFi
       case 'new':
       case 'edit':
         return (
-          <FormControl
-            style={styles.root as any}
-            key={this.props.settings.Name}
-            component={'fieldset' as 'div'}
-            required={this.props.settings.Compulsory}>
-            <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
-              {this.props.settings.DisplayName}
-            </InputLabel>
-            <List
-              dense={true}
-              style={
-                this.state.fieldValue && this.state.fieldValue.length > 0
-                  ? styles.listContainer
-                  : { ...styles.listContainer, width: 200 }
-              }>
-              {this.state.fieldValue &&
-                this.state.fieldValue.map((item: GenericContent) => {
-                  return (
-                    <DefaultItemTemplate
-                      content={item}
-                      remove={this.removeItem}
-                      add={this.addItem}
-                      key={item.Id}
-                      actionName={this.props.actionName}
-                      readOnly={this.props.settings.ReadOnly}
-                      repositoryUrl={this.props.repository ? this.props.repository.configuration.repositoryUrl : ''}
-                      multiple={this.props.settings.AllowMultiple ? this.props.settings.AllowMultiple : false}
-                      renderIcon={this.props.renderIcon}
-                    />
-                  )
-                })}
-              {!this.props.settings.ReadOnly ? (
-                <DefaultItemTemplate
-                  content={
-                    this.state.fieldValue &&
-                    this.state.fieldValue.length > 0 &&
-                    this.props.settings.AllowMultiple != null &&
-                    !this.props.settings.AllowMultiple
-                      ? changeContent
-                      : emptyContent
-                  }
-                  add={this.addItem}
-                  actionName={this.props.actionName}
-                  repositoryUrl={this.props.repository ? this.props.repository.configuration.repositoryUrl : ''}
-                  multiple={this.props.settings.AllowMultiple ? this.props.settings.AllowMultiple : false}
-                  renderIcon={this.props.renderIcon}
-                />
-              ) : null}
-            </List>
-            <FormHelperText>{this.props.settings.Description}</FormHelperText>
+          <LocalizationContext.Consumer>
+            {localization => (
+              <>
+                <div className={this.props.classes.labelWrapper}>
+                  <InputLabel
+                    shrink={true}
+                    htmlFor={this.props.settings.Name}
+                    required={this.props.settings.Compulsory}>
+                    {this.props.settings.DisplayName}
+                  </InputLabel>
+                  <IconButton
+                    color={'primary'}
+                    style={{ padding: 0, height: '24px', width: '24px' }}
+                    onClick={() => this.addItem()}>
+                    {this.props.renderIcon ? this.props.renderIcon('add_circle') : renderIconDefault('add_circle')}
+                  </IconButton>
+                </div>
+                <FormControl className={this.props.classes.formControl} key={this.props.settings.Name}>
+                  {this.state.fieldValue.map((item: GenericContent) => {
+                    const repositoryUrl = this.props.repository ? this.props.repository.configuration.repositoryUrl : ''
+                    return item.Type ? (
+                      isUser(item) ? (
+                        <>
+                          <Chip
+                            className={this.props.classes.chip}
+                            key={item.Id}
+                            variant="outlined"
+                            onDelete={() => this.removeItem(item.Id)}
+                            icon={
+                              <Avatar
+                                alt={item.FullName}
+                                src={
+                                  item.Avatar && item.Avatar.Url && repositoryUrl
+                                    ? `${repositoryUrl}${item.Avatar.Url}`
+                                    : ''
+                                }
+                                style={{ height: '24px', width: '24px' }}
+                              />
+                            }
+                            label={item.DisplayName}
+                          />
+                        </>
+                      ) : (
+                        <Chip
+                          className={this.props.classes.chip}
+                          key={item.Id}
+                          variant="outlined"
+                          onDelete={() => this.removeItem(item.Id)}
+                          icon={<InsertDriveFile style={{ height: '24px', width: '24px' }} />}
+                          label={item.DisplayName}
+                        />
+                      )
+                    ) : null
+                  })}
+                  <div className={this.props.classes.change} onClick={() => this.addItem()}>
+                    {this.state.fieldValue && this.state.fieldValue.length === 0
+                      ? localization.values.forms.addReference
+                      : localization.values.forms.changeReference}
+                  </div>
 
-            <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen}>
-              <div style={styles.dialog}>
-                <Typography variant="h5" gutterBottom={true}>
-                  {REFERENCE_PICKER_TITLE}
-                </Typography>
-                <ReferencePicker
-                  path={this.props.settings.SelectionRoots ? this.props.settings.SelectionRoots[0] : '/Root'}
-                  allowedTypes={this.props.settings.AllowedTypes}
-                  repository={this.props.repository!}
-                  select={content => this.selectItem(content)}
-                  selected={this.state.selected}
-                  renderIcon={this.props.renderIcon}
-                />
-                <DialogActions>
-                  <Button variant="contained" onClick={this.handleOkClick} color="primary">
-                    {OK}
-                  </Button>
-                  <Button variant="contained" onClick={this.handleCancelClick} color="secondary">
-                    {CANCEL}
-                  </Button>
-                </DialogActions>
-              </div>
-            </Dialog>
-          </FormControl>
+                  <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen}>
+                    <div className={this.props.classes.dialog}>
+                      <Typography variant="h5" gutterBottom={true}>
+                        {localization.values.forms.referencePicker}
+                      </Typography>
+                      <ReferencePicker
+                        path={this.props.settings.SelectionRoots ? this.props.settings.SelectionRoots[0] : '/Root'}
+                        allowedTypes={this.props.settings.AllowedTypes}
+                        repository={this.props.repository!}
+                        select={content => this.selectItem(content)}
+                        selected={this.state.selected}
+                        renderIcon={this.props.renderIcon}
+                      />
+                      <DialogActions>
+                        <Button variant="contained" onClick={this.handleOkClick} color="primary">
+                          {localization.values.forms.ok}
+                        </Button>
+                        <Button variant="contained" onClick={this.handleCancelClick} color="secondary">
+                          {localization.values.forms.cancel}
+                        </Button>
+                      </DialogActions>
+                    </div>
+                  </Dialog>
+                </FormControl>
+              </>
+            )}
+          </LocalizationContext.Consumer>
         )
       case 'browse':
       default: {
         return this.props.fieldValue ? (
-          <FormControl style={styles.root as any}>
+          <FormControl className={this.props.classes.formControl}>
             <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
               {this.props.settings.DisplayName}
             </InputLabel>
             <FormGroup>
-              <List dense={true} style={styles.listContainer}>
+              <List dense={true} className={this.props.classes.listContainer}>
                 {Array.isArray(this.props.fieldValue)
                   ? (this.props.fieldValue as any).map((item: GenericContent) => (
                       <DefaultItemTemplate
@@ -279,3 +296,4 @@ export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFi
     }
   }
 }
+export const ReferenceGrid = withStyles(styles)(ReferenceGridComponent)
