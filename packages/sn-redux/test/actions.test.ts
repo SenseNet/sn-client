@@ -174,6 +174,14 @@ const sharingEntriesResponse = {
   },
 } as Response
 
+const previewNumberResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return 4
+  },
+} as Response
+
 describe('Actions', () => {
   const path = '/workspaces/project'
   let repo: Repository
@@ -1075,6 +1083,67 @@ describe('Actions', () => {
         })
         it('should return mockdata', () => {
           expect(data).toEqual(expectedResult)
+        })
+      })
+    })
+  })
+  describe('checkPreviews', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => previewNumberResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.checkPreviews(42).type).toBe('CHECK_PREVIEWS')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given checkPreviews() resolves', () => {
+        let data: any
+        const expectedResult = 4
+        beforeEach(async () => {
+          data = await Actions.checkPreviews(42).payload(repo)
+        })
+        it('should return a CHECK_PREVIEWS action', () => {
+          expect(Actions.checkPreviews(42)).toHaveProperty('type', 'CHECK_PREVIEWS')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(expectedResult)
+        })
+      })
+    })
+  })
+  describe('getPageCount', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => previewNumberResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getPageCount(42).type).toBe('GET_PAGE_COUNT')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given getPageCount() resolves', () => {
+        let data: any
+        const expectedResult = 4
+        beforeEach(async () => {
+          data = await Actions.getPageCount(42).payload(repo)
+        })
+        it('should return a GET_PAGE_COUNT action', () => {
+          expect(Actions.getPageCount(42)).toHaveProperty('type', 'GET_PAGE_COUNT')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(expectedResult)
+        })
+      })
+    })
+  })
+  describe('regeneratePreviews', () => {
+    describe('Action types are types', () => {
+      expect(Actions.regeneratePreviews(42).type).toBe('REGENERATE_PREVIEW_IMAGES')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given regeneratePreviews() resolves', () => {
+        it('should return a REGENERATE_PREVIEW_IMAGES action', () => {
+          expect(Actions.regeneratePreviews(42)).toHaveProperty('type', 'REGENERATE_PREVIEW_IMAGES')
         })
       })
     })

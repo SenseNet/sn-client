@@ -650,3 +650,49 @@ export const getSharingEntries = (idOrPath: number | string) => ({
       body: undefined,
     }),
 })
+
+/**
+ * Action creator for check preview images.
+ * @param idOrPath Id or Path of the content
+ * @param generateMissing Sets whether the missing previews should be generated or not.
+ */
+export const checkPreviews = (idOrPath: number | string, generateMissing?: boolean) => ({
+  type: 'CHECK_PREVIEWS',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'CheckPreviews',
+      method: 'POST',
+      body: {
+        generateMissing,
+      },
+    }),
+})
+
+/**
+ *  Action creator for get page count of a document.
+ * @param idOrPath Id or Path of the content.
+ */
+export const getPageCount = (idOrPath: number | string) => ({
+  type: 'GET_PAGE_COUNT',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'GetPageCount',
+      method: 'GET',
+    }),
+})
+
+/**
+ * Action creator for regenerate preview images of a document.
+ * @param idOrPath Id or Path of the content.
+ */
+export const regeneratePreviews = (idOrPath: number | string) => ({
+  type: 'REGENERATE_PREVIEW_IMAGES',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'RegeneratePreviews',
+      method: 'POST',
+    }),
+})
