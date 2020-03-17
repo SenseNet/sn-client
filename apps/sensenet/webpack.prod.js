@@ -58,7 +58,7 @@ module.exports = merge(common, {
       { from: path.resolve(`${__dirname}/web.config`), to: path.resolve(`${__dirname}/build`) },
     ]),
     new RelativeCiAgentWebpackPlugin({
-      enabled: process.env.TRAVIS, // Run this only under Travis CI
+      enabled: process.env.GITHUB_ACTIONS, // Run this only under GitHub Actions
     }),
   ],
   module: {
