@@ -46,6 +46,11 @@ jobs:
       - name: build examples
         run: yarn build:examples
 
+      - name: build snapp
+        run: yarn snapp build
+        env:
+          RELATIVE_CI_KEY: ${{ secrets.RELATIVE_CI_KEY }}
+
       - name: test
         run: yarn test --coverage
 
