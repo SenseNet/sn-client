@@ -754,3 +754,22 @@ export const removePreviewComment = (idOrPath: number | string, commentId: numbe
       },
     }),
 })
+/**
+ * Action creator for restoring a content from the Trash.
+ * @param idOrPath Id or Path of the content.
+ * @param destination Path of the parent where the content should be restored.
+ * @param newName Determines rename the content automatically if another content with the same name already exists in the desired parent container
+ */
+export const restoreFromTrash = (idOrPath: number | string, destination: string, newName?: boolean) => ({
+  type: 'RESTORE_FROM_TRASH',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'Restore',
+      method: 'POST',
+      body: {
+        destination,
+        newName,
+      },
+    }),
+})
