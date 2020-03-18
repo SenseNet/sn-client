@@ -9,12 +9,14 @@ import React, { createElement, ReactElement, useState } from 'react'
 import MediaQuery from 'react-responsive'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import { reactControlMapper } from '../react-control-mapper'
+import { useLocalization } from '../../hooks'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     form: {
       margin: '0 auto',
-      padding: '0 22px 39px 22px',
+      padding: '22px 22px 39px 22px',
+      overflowY: 'auto',
     },
     cancel: {
       marginRight: 38,
@@ -55,6 +57,7 @@ export const EditView: React.FC<EditViewProps> = props => {
   const schema = controlMapper.getFullSchemaForContentType(props.content.Type, 'edit')
   const [saveableFields, setSaveableFields] = useState({})
   const classes = useStyles()
+  const localization = useLocalization()
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -106,11 +109,11 @@ export const EditView: React.FC<EditViewProps> = props => {
               color="default"
               className={classes.cancel}
               onClick={() => props.handleCancel && props.handleCancel()}>
-              Cancel
+              {localization.forms.cancel}
             </Button>
           </MediaQuery>
           <Button type="submit" variant="contained" color="primary">
-            Submit
+            {localization.forms.submit}
           </Button>
         </Grid>
       </Grid>

@@ -16,13 +16,15 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
 
   const getContentName = () => content.DisplayName ?? content.Name
 
-  const runAction = async (actionName: string) => {
+  const runAction = async (actionName: string, halfPage?: boolean, setFormOpen?: () => void) => {
     switch (actionName) {
       case 'Delete':
         openDialog({ name: 'delete', props: { content: [content] } })
         break
       case 'Edit':
-        openDialog({ name: 'edit', props: { contentId: content.Id } })
+        !halfPage
+          ? history.push(`/${btoa(repo.configuration.repositoryUrl)}/EditProperties/${content.Id}`)
+          : setFormOpen && setFormOpen()
         break
       case 'Browse':
         openDialog({ name: 'info', props: { content } })

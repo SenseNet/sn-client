@@ -121,6 +121,7 @@ const values: DeepPartial<typeof import('./default').default> = {
     ok: 'Ok',
     cancel: 'Vissza',
     upload: 'Feltöltés',
+    submit: 'Küldés',
   },
 }
 

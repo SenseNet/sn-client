@@ -19,12 +19,13 @@ type TreeProps = {
   loadMore: (startIndex: number, path?: string) => Promise<void>
   onItemClick: (item: GenericContent) => void
   treeData: ItemType
+  setFormOpen?: () => void
 }
 
 const ROW_HEIGHT = 48
 const LOAD_MORE_CLASS = 'loadMore'
 
-export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading }: TreeProps) {
+export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, setFormOpen }: TreeProps) {
   const listRef = useRef<List>(null)
   const loader = useRef(loadMore)
   const selectionService = useSelectionService()
@@ -156,9 +157,14 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading }: 
     )
   }
 
+  const setFormOpenFunc = () => {
+    setFormOpen && setFormOpen()
+  }
+
   return (
     <div
       style={{
+        minWidth: '243px',
         flexGrow: 2,
         flexShrink: 0,
         borderRight: '1px solid rgba(128,128,128,.2)',
@@ -196,6 +202,8 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading }: 
             },
           }}
           onClose={() => setContextMenuAnchor(null)}
+          halfPage={true}
+          setFormOpen={setFormOpenFunc}
         />
       ) : null}
     </div>

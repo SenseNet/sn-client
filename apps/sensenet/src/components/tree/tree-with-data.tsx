@@ -11,6 +11,7 @@ type TreeWithDataProps = {
   onItemClick: (item: GenericContent) => void
   parentPath: string
   activeItemIdOrPath: string | number
+  setFormOpen?: () => void
 }
 
 let lastRequest: { path: string; lastIndex: number } | undefined
@@ -222,6 +223,10 @@ export default function TreeWithData(props: TreeWithDataProps) {
     return <FullScreenLoader />
   }
 
+  const setFormOpen = () => {
+    props.setFormOpen && props.setFormOpen()
+  }
+
   return (
     <Tree
       itemCount={itemCount}
@@ -229,6 +234,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
       loadMore={loadMoreItems}
       onItemClick={onItemClick}
       isLoading={isLoading}
+      setFormOpen={setFormOpen}
     />
   )
 }

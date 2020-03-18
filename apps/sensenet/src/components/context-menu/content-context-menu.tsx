@@ -22,6 +22,8 @@ type ContentContextMenuProps = {
   onClose?: () => void
   menuProps?: Partial<MenuProps>
   content: GenericContent
+  halfPage?: boolean
+  setFormOpen?: () => void
 }
 
 export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps> = props => {
@@ -51,6 +53,10 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
     [isWriteAvailable, logger],
   )
 
+  const setFormOpen = () => {
+    props.setFormOpen && props.setFormOpen()
+  }
+
   const { runAction } = useContextMenuActions(props.content, setActionsWopi)
   const device = useContext(ResponsiveContext)
 
@@ -76,7 +82,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
                   disabled={DISABLED_ACTIONS.includes(action.Name)}
                   onClick={() => {
                     props.onClose?.()
-                    runAction(action.Name)
+                    runAction(action.Name, props.halfPage, setFormOpen)
                   }}>
                   <ListItemIcon>{getIcon(action.Name.toLowerCase())}</ListItemIcon>
                   <ListItemText primary={action.DisplayName || action.Name} />
@@ -95,7 +101,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
                 disabled={DISABLED_ACTIONS.includes(action.Name)}
                 onClick={() => {
                   props.onClose?.()
-                  runAction(action.Name)
+                  runAction(action.Name, props.halfPage, setFormOpen)
                 }}>
                 <ListItemIcon>{getIcon(action.Name.toLowerCase())}</ListItemIcon>
                 <div style={{ flexGrow: 1 }}>{action.DisplayName || action.Name}</div>

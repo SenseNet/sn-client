@@ -90,6 +90,7 @@ const GenericContentEditor: React.FunctionComponent<RouteComponentProps<{ conten
                         })
                     }}
                     uploadFolderpath={'/Root/Content/demoavatars'}
+                    handleCancel={props.history.goBack}
                   />
                 ) : (
                   <CircularProgress />

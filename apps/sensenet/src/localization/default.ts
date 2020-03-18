@@ -418,6 +418,7 @@ const values = {
     ok: 'Ok',
     cancel: 'Cancel',
     upload: 'Upload',
+    submit: 'Submit',
   },
 }
 
