@@ -64,6 +64,15 @@ describe('Repository', () => {
       }) as any
       repository.fetch('', undefined, false)
     })
+
+    it('should add authorization header when token is passed', async () => {
+      const token = 'someToken'
+      const myRepository = new Repository({ token }, input => {
+        expect((input as Request).headers.get('Authorization')).toBe(`Bearer ${token}`)
+        return Promise.resolve(mockResponse)
+      })
+      await myRepository.fetch('/load')
+    })
   })
 
   describe('Content operations', () => {
