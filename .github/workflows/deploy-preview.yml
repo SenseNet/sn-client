@@ -28,6 +28,9 @@ jobs:
         env:
           RELATIVE_CI_KEY: ${{ secrets.RELATIVE_CI_KEY }}
 
+      - name: wake up deploy notifier
+        run: yarn wait-on https://sensenet-sn-deploy-notifier.glitch.me/ -l -t 60000
+
       - name: Publish
         uses: netlify/actions/cli@master
         with:
@@ -58,6 +61,9 @@ jobs:
 
       - name: build storybook
         run: yarn storybook build-storybook
+
+      - name: wake up deploy notifier
+        run: yarn wait-on https://sensenet-sn-deploy-notifier.glitch.me/ -l -t 60000
 
       - name: Publish
         uses: netlify/actions/cli@master
