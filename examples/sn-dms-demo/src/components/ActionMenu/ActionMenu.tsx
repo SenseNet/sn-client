@@ -454,51 +454,123 @@ class ActionMenu extends React.Component<
           ) : (
             <Drawer anchor="bottom" open={open} onClose={this.handleClose}>
               <List>
-                {actions.map((action, index) => {
-                  const displayName = resources[action.DisplayName.replace(/ /g, '').toUpperCase()]
-                  if (action.Name === 'uploadFile') {
-                    const uploadFileButtonId = `${UPLOAD_FILE_BUTTON_ID}-${v1()}`
-                    return (
-                      <label htmlFor={uploadFileButtonId} style={{ outline: 'none' }}>
-                        <MenuItem style={styles.menuItem}>
-                          <ListItemIcon style={styles.actionIcon}>
-                            <div>
-                              <Icon iconName="insert_drive_file" type={iconType.materialui} />
-                              <Icon
-                                iconName="forward"
-                                type={iconType.materialui}
-                                style={{
-                                  color: '#fff',
-                                  position: 'absolute',
-                                  left: '1.75em',
-                                  top: '1em',
-                                  fontSize: 12,
-                                  transform: 'rotate(-90deg)',
-                                }}
-                              />
-                            </div>
-                          </ListItemIcon>
-                          {resources.UPLOAD_BUTTON_UPLOAD_FILE_TITLE}
-                        </MenuItem>
-                        <input
-                          multiple={true}
-                          id={uploadFileButtonId}
-                          type="file"
-                          onChange={ev => this.handleUpload(ev)}
-                          style={{ display: 'none' }}
-                        />
-                      </label>
-                    )
-                  }
+                {actions
+                  .filter(action => action.Name !== 'Browse' && action.Name !== 'SetPermissions')
+                  .map((action, index) => {
+                    const displayName = resources[action.DisplayName.replace(/ /g, '').toUpperCase()]
+                    if (action.Name === 'uploadFile') {
+                      const uploadFileButtonId = `${UPLOAD_FILE_BUTTON_ID}-${v1()}`
+                      return (
+                        <label htmlFor={uploadFileButtonId} style={{ outline: 'none' }}>
+                          <MenuItem style={styles.menuItem}>
+                            <ListItemIcon style={styles.actionIcon}>
+                              <div>
+                                <Icon iconName="insert_drive_file" type={iconType.materialui} />
+                                <Icon
+                                  iconName="forward"
+                                  type={iconType.materialui}
+                                  style={{
+                                    color: '#fff',
+                                    position: 'absolute',
+                                    left: '1.75em',
+                                    top: '1em',
+                                    fontSize: 12,
+                                    transform: 'rotate(-90deg)',
+                                  }}
+                                />
+                              </div>
+                            </ListItemIcon>
+                            {resources.UPLOAD_BUTTON_UPLOAD_FILE_TITLE}
+                          </MenuItem>
+                          <input
+                            multiple={true}
+                            id={uploadFileButtonId}
+                            type="file"
+                            onChange={ev => this.handleUpload(ev)}
+                            style={{ display: 'none' }}
+                          />
+                        </label>
+                      )
+                    }
 
-                  if (action.Name === 'uploadFolder') {
-                    const uploadFolderButtonId = `${UPLOAD_FOLDER_BUTTON_ID}-${v1()}`
+                    if (action.Name === 'uploadFolder') {
+                      const uploadFolderButtonId = `${UPLOAD_FOLDER_BUTTON_ID}-${v1()}`
+                      return (
+                        <label htmlFor={uploadFolderButtonId} style={{ outline: 'none' }}>
+                          <MenuItem style={styles.menuItem}>
+                            <ListItemIcon style={styles.actionIcon}>
+                              <div>
+                                <Icon iconName="folder" type={iconType.materialui} />
+                                <Icon
+                                  iconName="forward"
+                                  type={iconType.materialui}
+                                  style={{
+                                    color: '#fff',
+                                    position: 'absolute',
+                                    left: '1.75em',
+                                    top: '0.85em',
+                                    fontSize: 12,
+                                    transform: 'rotate(-90deg)',
+                                  }}
+                                />
+                              </div>
+                            </ListItemIcon>
+                            {resources.UPLOAD_BUTTON_UPLOAD_FOLDER_TITLE}
+                          </MenuItem>
+                          <input
+                            multiple={true}
+                            id={uploadFolderButtonId}
+                            type="file"
+                            onChange={ev => this.handleUpload(ev)}
+                            style={{ display: 'none' }}
+                            {...({
+                              directory: '',
+                              webkitdirectory: '',
+                            } as any)}
+                          />
+                        </label>
+                      )
+                    }
+                    let iconFileType
+                    switch (action.Icon) {
+                      case 'word':
+                      case 'excel':
+                      case 'acrobat':
+                      case 'powerpoint':
+                      case 'office':
+                        iconFileType = iconType.flaticon
+                        break
+                      default:
+                        iconFileType = iconType.materialui
+                        break
+                    }
                     return (
-                      <label htmlFor={uploadFolderButtonId} style={{ outline: 'none' }}>
-                        <MenuItem style={styles.menuItem}>
-                          <ListItemIcon style={styles.actionIcon}>
-                            <div>
-                              <Icon iconName="folder" type={iconType.materialui} />
+                      <MenuItem
+                        key={index}
+                        onClick={event => this.handleMenuItemClick(event, action)}
+                        onMouseEnter={e => {
+                          e.currentTarget.style.color = '#016d9e'
+                          e.currentTarget.style.fontWeight = 'bold'
+                        }}
+                        onMouseLeave={e => {
+                          e.currentTarget.style.color = '#000'
+                          e.currentTarget.style.fontWeight = 'normal'
+                        }}
+                        style={styles.menuItemMobile}
+                        title={displayName}>
+                        <ListItemIcon style={styles.actionIcon}>
+                          <Icon
+                            type={iconFileType}
+                            color="primary"
+                            iconName={
+                              action.Icon === 'Application'
+                                ? icons[action.Name.toLowerCase() as keyof typeof icons]
+                                : icons[action.Icon.toLowerCase() as keyof typeof icons]
+                            }>
+                            {action.Icon === 'Application'
+                              ? icons[action.Name.toLowerCase() as keyof typeof icons]
+                              : icons[action.Icon.toLowerCase() as keyof typeof icons]}
+                            {action.Name === 'MoveTo' ? (
                               <Icon
                                 iconName="forward"
                                 type={iconType.materialui}
@@ -506,141 +578,71 @@ class ActionMenu extends React.Component<
                                   color: '#fff',
                                   position: 'absolute',
                                   left: '1.75em',
-                                  top: '0.85em',
+                                  top: '1.4em',
                                   fontSize: 12,
+                                }}
+                              />
+                            ) : null}
+                            {action.Name === 'Rename' ? (
+                              <Icon
+                                iconName="mode_edit"
+                                type={iconType.materialui}
+                                style={{
+                                  color: '#fff',
+                                  position: 'absolute',
+                                  left: '1.87em',
+                                  top: '1.78em',
+                                  fontSize: 11,
+                                }}
+                              />
+                            ) : null}
+                            {action.Name === 'ForceUndoCheckOut' ? (
+                              <Icon
+                                iconName="warning"
+                                type={iconType.materialui}
+                                style={{
+                                  color: '#fff',
+                                  position: 'absolute',
+                                  left: '1.87em',
+                                  top: '1.38em',
+                                  fontSize: 11,
+                                }}
+                              />
+                            ) : null}
+                            {action.Name === 'uploadFile' ? (
+                              <Icon
+                                iconName="forward"
+                                type={iconType.materialui}
+                                style={{
+                                  color: '#fff',
+                                  position: 'absolute',
+                                  left: '0.86em',
+                                  top: '0.48em',
+                                  fontSize: 11,
                                   transform: 'rotate(-90deg)',
                                 }}
                               />
-                            </div>
-                          </ListItemIcon>
-                          {resources.UPLOAD_BUTTON_UPLOAD_FOLDER_TITLE}
-                        </MenuItem>
-                        <input
-                          multiple={true}
-                          id={uploadFolderButtonId}
-                          type="file"
-                          onChange={ev => this.handleUpload(ev)}
-                          style={{ display: 'none' }}
-                          {...({
-                            directory: '',
-                            webkitdirectory: '',
-                          } as any)}
-                        />
-                      </label>
+                            ) : null}
+                            {action.Name === 'uploadFolder' ? (
+                              <Icon
+                                iconName="forward"
+                                type={iconType.materialui}
+                                style={{
+                                  color: '#fff',
+                                  position: 'absolute',
+                                  left: '0.87em',
+                                  top: '0.42em',
+                                  fontSize: 11,
+                                  transform: 'rotate(-90deg)',
+                                }}
+                              />
+                            ) : null}
+                          </Icon>
+                        </ListItemIcon>
+                        {resources[action.Name.toUpperCase()]}
+                      </MenuItem>
                     )
-                  }
-                  let iconFileType
-                  switch (action.Icon) {
-                    case 'word':
-                    case 'excel':
-                    case 'acrobat':
-                    case 'powerpoint':
-                    case 'office':
-                      iconFileType = iconType.flaticon
-                      break
-                    default:
-                      iconFileType = iconType.materialui
-                      break
-                  }
-                  return (
-                    <MenuItem
-                      key={index}
-                      onClick={event => this.handleMenuItemClick(event, action)}
-                      onMouseEnter={e => {
-                        e.currentTarget.style.color = '#016d9e'
-                        e.currentTarget.style.fontWeight = 'bold'
-                      }}
-                      onMouseLeave={e => {
-                        e.currentTarget.style.color = '#000'
-                        e.currentTarget.style.fontWeight = 'normal'
-                      }}
-                      style={styles.menuItemMobile}
-                      title={displayName}>
-                      <ListItemIcon style={styles.actionIcon}>
-                        <Icon
-                          type={iconFileType}
-                          color="primary"
-                          iconName={
-                            action.Icon === 'Application'
-                              ? icons[action.Name.toLowerCase() as keyof typeof icons]
-                              : icons[action.Icon.toLowerCase() as keyof typeof icons]
-                          }>
-                          {action.Icon === 'Application'
-                            ? icons[action.Name.toLowerCase() as keyof typeof icons]
-                            : icons[action.Icon.toLowerCase() as keyof typeof icons]}
-                          {action.Name === 'MoveTo' ? (
-                            <Icon
-                              iconName="forward"
-                              type={iconType.materialui}
-                              style={{
-                                color: '#fff',
-                                position: 'absolute',
-                                left: '1.75em',
-                                top: '1.4em',
-                                fontSize: 12,
-                              }}
-                            />
-                          ) : null}
-                          {action.Name === 'Rename' ? (
-                            <Icon
-                              iconName="mode_edit"
-                              type={iconType.materialui}
-                              style={{
-                                color: '#fff',
-                                position: 'absolute',
-                                left: '1.87em',
-                                top: '1.78em',
-                                fontSize: 11,
-                              }}
-                            />
-                          ) : null}
-                          {action.Name === 'ForceUndoCheckOut' ? (
-                            <Icon
-                              iconName="warning"
-                              type={iconType.materialui}
-                              style={{
-                                color: '#fff',
-                                position: 'absolute',
-                                left: '1.87em',
-                                top: '1.38em',
-                                fontSize: 11,
-                              }}
-                            />
-                          ) : null}
-                          {action.Name === 'uploadFile' ? (
-                            <Icon
-                              iconName="forward"
-                              type={iconType.materialui}
-                              style={{
-                                color: '#fff',
-                                position: 'absolute',
-                                left: '0.86em',
-                                top: '0.48em',
-                                fontSize: 11,
-                                transform: 'rotate(-90deg)',
-                              }}
-                            />
-                          ) : null}
-                          {action.Name === 'uploadFolder' ? (
-                            <Icon
-                              iconName="forward"
-                              type={iconType.materialui}
-                              style={{
-                                color: '#fff',
-                                position: 'absolute',
-                                left: '0.87em',
-                                top: '0.42em',
-                                fontSize: 11,
-                                transform: 'rotate(-90deg)',
-                              }}
-                            />
-                          ) : null}
-                        </Icon>
-                      </ListItemIcon>
-                      {resources(action.Name.toUpperCase())}
-                    </MenuItem>
-                  )
-                })}
+                  })}
               </List>
             </Drawer>
           )
