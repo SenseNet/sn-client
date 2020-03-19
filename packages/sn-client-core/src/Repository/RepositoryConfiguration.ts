@@ -4,12 +4,12 @@ import { ODataMetadataType } from '../Models/ODataParams'
 /**
  * The default Sense/Net OData Service token (odata.svc)
  */
-const DEFAULT_SERVICE_TOKEN = 'odata.svc'
+export const DEFAULT_SERVICE_TOKEN = 'odata.svc'
 
 type AllPossibleFieldNamesWithAll = AllFieldNames[] | string[] | 'all'
 
 /**
- * Class that contains basic configuration for a sensenet Repository
+ * Interface for sensenet Repository configuration
  */
 export interface RepositoryConfiguration {
   /**
@@ -79,13 +79,13 @@ export interface RepositoryConfiguration {
 }
 
 /**
- * Reposiotry configuration with defaults that are not undefined.
+ * Repository configuration with defaults that are not undefined.
  * token, defaultExpand properties doesn't have a default value. They are undefined.
  */
 export type RepositoryConfigurationWithDefaults = Required<Omit<RepositoryConfiguration, 'token' | 'defaultExpand'>> &
   Pick<RepositoryConfiguration, 'token' | 'defaultExpand'>
 
-const defaultRepositoryConfiguration: RepositoryConfigurationWithDefaults = {
+export const defaultRepositoryConfiguration: RepositoryConfigurationWithDefaults = {
   chunkSize: 10485760,
   defaultEnableAutofilters: false,
   defaultEnableLifespanfilter: false,
@@ -98,5 +98,3 @@ const defaultRepositoryConfiguration: RepositoryConfigurationWithDefaults = {
   requiredSelect: ['Id', 'Path', 'Name', 'Type'],
   schemas: SchemaStore,
 }
-
-export { defaultRepositoryConfiguration }
