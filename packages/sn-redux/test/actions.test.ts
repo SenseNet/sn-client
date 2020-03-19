@@ -950,7 +950,7 @@ describe('Actions', () => {
     })
     describe('serviceChecks()', () => {
       describe('Given repository.getSchema() resolves', () => {
-        let data
+        let data: any
         let mockSchemaResponseData: ReturnType<typeof schemaResponse['json']>
         beforeEach(async () => {
           data = await Actions.getSchema().payload(repo)
@@ -1018,7 +1018,7 @@ describe('Actions', () => {
 
     describe('serviceChecks()', () => {
       describe('Given repository.removeSharing() resolves', () => {
-        let data: ODataSharingResponse
+        let data: any
         const expectedResult = { Token: 'devdog@sensenet.com', Id: 11 }
         beforeEach(async () => {
           data = await Actions.removeSharing({ Id: 42 } as GenericContent, 11).payload(repo)

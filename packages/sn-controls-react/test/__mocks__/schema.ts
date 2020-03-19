@@ -9,6 +9,7 @@ export const schema = [
     AllowIndexing: true,
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
+    HandlerName: 'a',
     FieldSettings: [
       {
         Name: 'DisplayName',
