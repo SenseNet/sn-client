@@ -15,6 +15,8 @@ import Select from '@material-ui/core/Select'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
+import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core'
+import { globals } from '../../globalStyles'
 import { renderIconDefault } from './icon'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 import { isUser } from './type-guards'
@@ -31,19 +33,32 @@ const menuProps = {
   },
 }
 
-const styles = {
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  chips: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  chip: {
-    margin: 2,
-  },
-}
+const styles = ({ palette }: Theme) =>
+  createStyles({
+    root: {
+      width: globals.common.formFieldWidth,
+      display: 'flex',
+      flexWrap: 'wrap',
+      '& .MuiSelect-root': {
+        paddingBottom: 0,
+        paddingTop: '9px',
+        display: 'flex',
+        flexWrap: 'wrap',
+      },
+      '& .MuiChip-deleteIcon': {
+        color: 'rgba(255, 255, 255, 0.26)',
+      },
+    },
+    chips: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    chip: {
+      backgroundColor: '#0C0C0C',
+      color: palette.common.white,
+      margin: '0 3px 3px 0',
+    },
+  })
 
 /**
  * Interface for TagsInput state
@@ -55,8 +70,11 @@ export interface TagsInputState {
 /**
  * Field control that represents a Reference field. Available values will be populated from the FieldSettings.
  */
-export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldSetting>, TagsInputState> {
-  constructor(props: TagsInput['props']) {
+class TagsInputComponent extends Component<
+  ReactClientFieldSetting<ReferenceFieldSetting> & WithStyles<typeof styles>,
+  TagsInputState
+> {
+  constructor(props: TagsInputComponent['props']) {
     super(props)
     if (this.props.actionName !== 'new') {
       this.getSelected()
@@ -183,10 +201,73 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
   public render() {
     switch (this.props.actionName) {
       case 'edit':
+        return (
+          <FormControl
+            className={this.props.classes.root}
+            key={this.props.settings.Name}
+            component={'fieldset' as 'div'}
+            required={this.props.settings.Compulsory}>
+            <InputLabel required={this.props.settings.Compulsory} htmlFor={this.props.settings.Name}>
+              {this.props.settings.DisplayName}
+            </InputLabel>
+            <Select
+              className={this.props.classes.root}
+              value={this.getValue()}
+              onChange={this.handleChange}
+              multiple={this.props.settings.AllowMultiple}
+              input={<Input id={this.props.settings.Name} fullWidth={true} />}
+              renderValue={() => (
+                <>
+                  {this.state.fieldValue &&
+                    this.state.fieldValue.map(content =>
+                      isUser(content) ? (
+                        <Chip
+                          avatar={
+                            <Avatar
+                              style={{ height: '24px', width: '24px' }}
+                              alt={content.DisplayName}
+                              src={
+                                content.Avatar && content.Avatar.Url
+                                  ? `${this.props.repository!.configuration.repositoryUrl}${content.Avatar.Url}`
+                                  : `${this.props.repository!.configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
+                              }
+                            />
+                          }
+                          key={content.Id}
+                          label={content.DisplayName}
+                          onDelete={() => this.handleDelete(content.Id)}
+                          className={this.props.classes.chip}
+                        />
+                      ) : (
+                        <Chip
+                          key={content.Id}
+                          label={content.DisplayName}
+                          icon={
+                            this.props.renderIcon
+                              ? this.props.renderIcon(content.Type.toLowerCase())
+                              : renderIconDefault(content.Type.toLowerCase())
+                          }
+                          onDelete={() => this.handleDelete(content.Id)}
+                          className={this.props.classes.chip}
+                        />
+                      ),
+                    )}
+                </>
+              )}
+              MenuProps={menuProps}>
+              {this.state.dataSource &&
+                this.state.dataSource.map(content => (
+                  <MenuItem key={content.Id} value={content.Id}>
+                    {content.DisplayName}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
+        )
       case 'new':
         return (
           <FormControl
-            style={styles.root as any}
+            className={this.props.classes.root}
             key={this.props.settings.Name}
             component={'fieldset' as 'div'}
             required={this.props.settings.Compulsory}>
@@ -197,7 +278,7 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
               multiple={this.props.settings.AllowMultiple}
               input={<Input id={this.props.settings.Name} fullWidth={true} />}
               renderValue={() => (
-                <div style={styles.chips as any}>
+                <>
                   {this.state.fieldValue &&
                     this.state.fieldValue.map(content =>
                       isUser(content) ? (
@@ -229,7 +310,7 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
                         />
                       ),
                     )}
-                </div>
+                </>
               )}
               MenuProps={menuProps}>
               {this.state.dataSource &&
@@ -264,3 +345,5 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
     }
   }
 }
+
+export const TagsInput = withStyles(styles)(TagsInputComponent)

@@ -94,9 +94,27 @@ export const EditView: React.FC<EditViewProps> = props => {
                 item={true}
                 xs={12}
                 sm={12}
-                md={field.fieldSettings.Name === 'Avatar' || field.fieldSettings.Name === 'Enabled' ? 12 : 6}
-                lg={field.fieldSettings.Name === 'Avatar' || field.fieldSettings.Name === 'Enabled' ? 12 : 6}
-                xl={field.fieldSettings.Name === 'Avatar' || field.fieldSettings.Name === 'Enabled' ? 12 : 6}
+                md={
+                  field.fieldSettings.Name === 'Avatar' ||
+                  field.fieldSettings.Name === 'Enabled' ||
+                  field.fieldSettings.Name === 'Description'
+                    ? 12
+                    : 6
+                }
+                lg={
+                  field.fieldSettings.Name === 'Avatar' ||
+                  field.fieldSettings.Name === 'Enabled' ||
+                  field.fieldSettings.Name === 'Description'
+                    ? 12
+                    : 6
+                }
+                xl={
+                  field.fieldSettings.Name === 'Avatar' ||
+                  field.fieldSettings.Name === 'Enabled' ||
+                  field.fieldSettings.Name === 'Description'
+                    ? 12
+                    : 6
+                }
                 key={field.fieldSettings.Name}
                 className={classes.grid}>
                 {fieldControl}

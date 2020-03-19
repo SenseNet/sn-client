@@ -2,15 +2,38 @@
  * @module FieldControls
  */
 import FormControl from '@material-ui/core/FormControl'
-import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
 import ReactQuill, { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { changeJScriptValue } from '@sensenet/controls-react'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import { ReactClientFieldSetting } from '../ClientFieldSetting'
 import QuillOEmbedModule from './QuillOEmbedModule'
+
+const useStyles = makeStyles((theme: Theme) => {
+  return createStyles({
+    richTextEditor: {
+      '& .ql-toolbar': {
+        backgroundColor: theme.palette.type === 'light' ? theme.palette.common.white : '#1e1e1e',
+        borderColor: theme.palette.type === 'light' ? theme.palette.common.white : '#1e1e1e',
+      },
+      '& .ql-fill': {
+        fill: theme.palette.type === 'light' ? '#444' : 'white',
+      },
+      '& .ql-stroke': {
+        stroke: theme.palette.type === 'light' ? '#444' : 'white',
+      },
+      '& .ql-picker-label': {
+        color: theme.palette.type === 'light' ? '#444' : 'white',
+      },
+      '& .ql-container': {
+        minHeight: '124px',
+      },
+    },
+  })
+})
 
 const modules = {
   toolbar: [
@@ -43,6 +66,7 @@ Quill.register('modules/oembed', QuillOEmbedModule)
 export const RichTextEditor: React.FC<ReactClientFieldSetting> = props => {
   const initialState = props.fieldValue || changeJScriptValue(props.settings.DefaultValue) || ''
   const [value, setValue] = useState(initialState)
+  const classes = useStyles()
 
   const handleChange = (changedValue: string) => {
     setValue(changedValue)
@@ -51,6 +75,25 @@ export const RichTextEditor: React.FC<ReactClientFieldSetting> = props => {
 
   switch (props.actionName) {
     case 'edit':
+      return (
+        <FormControl
+          className={classes.richTextEditor}
+          component={'fieldset' as 'div'}
+          fullWidth={true}
+          required={props.settings.Compulsory}>
+          <FormLabel component={'legend' as 'label'}>{props.settings.DisplayName}</FormLabel>
+          <ReactQuill
+            style={{ background: '#fff', marginTop: 10, color: '#000' }}
+            defaultValue={changeJScriptValue(props.settings.DefaultValue)}
+            placeholder={props.settings.DisplayName}
+            readOnly={props.settings.ReadOnly}
+            modules={modules}
+            onChange={handleChange}
+            value={value}
+            theme="snow"
+          />
+        </FormControl>
+      )
     case 'new':
       return (
         <FormControl component={'fieldset' as 'div'} fullWidth={true} required={props.settings.Compulsory}>
@@ -65,7 +108,6 @@ export const RichTextEditor: React.FC<ReactClientFieldSetting> = props => {
             value={value}
             theme="snow"
           />
-          <FormHelperText>{props.settings.Description}</FormHelperText>
         </FormControl>
       )
     case 'browse':

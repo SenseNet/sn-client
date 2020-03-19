@@ -188,6 +188,7 @@ class ReferenceGridComponent extends Component<
                     {this.props.settings.DisplayName}
                   </InputLabel>
                   <IconButton
+                    disabled={this.state.fieldValue && this.state.fieldValue.length !== 0}
                     color={'primary'}
                     style={{ padding: 0, height: '24px', width: '24px' }}
                     onClick={() => this.addItem()}>
@@ -231,11 +232,11 @@ class ReferenceGridComponent extends Component<
                       )
                     ) : null
                   })}
-                  <div className={this.props.classes.change} onClick={() => this.addItem()}>
-                    {this.state.fieldValue && this.state.fieldValue.length === 0
-                      ? localization.values.forms.addReference
-                      : localization.values.forms.changeReference}
-                  </div>
+                  {this.state.fieldValue && this.state.fieldValue.length !== 0 ? (
+                    <div className={this.props.classes.change} onClick={() => this.addItem()}>
+                      {localization.values.forms.changeReference}
+                    </div>
+                  ) : null}
 
                   <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen}>
                     <div className={this.props.classes.dialog}>

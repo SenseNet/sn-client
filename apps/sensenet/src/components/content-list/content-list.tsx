@@ -466,7 +466,6 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
           ) : null}
         </div>
       </DropFileArea>
-      )
     </div>
   )
 }
