@@ -27,11 +27,6 @@ describe('NewDialogBody', () => {
     setOpennoti: jest.fn(),
   }
 
-  it('NewDialogBody snapshot test', () => {
-    const wrapper = shallow(<NewDialogBody {...(testprops as any)} />)
-    expect(wrapper).toMatchSnapshot()
-  })
-
   it('Submit test', async () => {
     window.fetch = function fetchMethod() {
       return Promise.resolve({ d: content } as any)
