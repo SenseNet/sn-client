@@ -3177,54 +3177,6 @@ exports[`ContentList component Selection and active item changes Event bindings 
 </WithStyles(ForwardRef(Table))>
 `;
 
-exports[`ContentList component Selection and active item changes Event bindings should render without crashing without fieldsToDisplay 1`] = `
-<WithStyles(ForwardRef(Table))>
-  <WithStyles(ForwardRef(TableHead))>
-    <WithStyles(ForwardRef(TableRow))>
-      <WithStyles(ForwardRef(TableCell))
-        key="selectAll"
-        padding="checkbox"
-        style={
-          Object {
-            "paddingRight": 0,
-            "width": "30px",
-          }
-        }
-      >
-        <WithStyles(ForwardRef(Checkbox))
-          checked={false}
-          className="select-all"
-          indeterminate={false}
-          onChange={[Function]}
-        />
-      </WithStyles(ForwardRef(TableCell))>
-    </WithStyles(ForwardRef(TableRow))>
-  </WithStyles(ForwardRef(TableHead))>
-  <WithStyles(ForwardRef(TableBody))>
-    <WithStyles(ForwardRef(TableRow))
-      className="  type-folder"
-      hover={true}
-      key="1"
-      onClick={[Function]}
-      onContextMenu={[Function]}
-      onDoubleClick={[Function]}
-      onTouchEnd={[Function]}
-      selected={false}
-    >
-      <WithStyles(ForwardRef(TableCell))
-        key="select"
-        padding="checkbox"
-      >
-        <WithStyles(ForwardRef(Checkbox))
-          checked={false}
-          onChange={[Function]}
-        />
-      </WithStyles(ForwardRef(TableCell))>
-    </WithStyles(ForwardRef(TableRow))>
-  </WithStyles(ForwardRef(TableBody))>
-</WithStyles(ForwardRef(Table))>
-`;
-
 exports[`ContentList component Selection and active item changes Event bindings should render without crashing without icons 1`] = `
 <WithStyles(ForwardRef(Table))>
   <WithStyles(ForwardRef(TableHead))>
