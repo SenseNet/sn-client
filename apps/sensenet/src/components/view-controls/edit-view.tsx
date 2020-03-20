@@ -23,8 +23,9 @@ const useStyles = makeStyles((theme: Theme) => {
       border: theme.palette.type === 'light' ? '2px solid #212121DE' : '2px solid #505050',
     },
     grid: {
-      display: 'grid',
-      justifyContent: 'center',
+      display: 'flex',
+      alignItems: 'center',
+      flexFlow: 'column',
       padding: '6px !important',
       height: 'fit-content',
     },
@@ -117,7 +118,7 @@ export const EditView: React.FC<EditViewProps> = props => {
                 }
                 key={field.fieldSettings.Name}
                 className={classes.grid}>
-                {fieldControl}
+                <div> {fieldControl}</div>
               </Grid>
             )
           })}

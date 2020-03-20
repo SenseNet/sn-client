@@ -1,8 +1,6 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import FormControl from '@material-ui/core/FormControl'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import FormLabel from '@material-ui/core/FormLabel'
 import IconButton from '@material-ui/core/IconButton'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import List from '@material-ui/core/List'
@@ -16,41 +14,48 @@ import { ConstantContent, ODataCollectionResponse } from '@sensenet/client-core'
 import { ContentType, GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { typeicons } from '@sensenet/controls-react'
+import { createStyles, InputLabel, withStyles, WithStyles } from '@material-ui/core'
+import clsx from 'clsx'
+import { LocalizationContext } from '../../context'
+import { globals } from '../../globalStyles'
 import { renderIconDefault } from './icon'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
-const INPUT_PLACEHOLDER = 'Start typing to add another type'
 const ITEM_HEIGHT = 48
 
-const styles = {
-  inputContainer: {
-    padding: '2px 4px',
-    display: 'flex',
-    alignItems: 'center',
-    boxShadow: 'none',
-    position: 'relative',
-  },
-  input: {
-    marginLeft: 8,
-    flex: 1,
-  },
-  button: {
-    padding: 10,
-  },
-  listContainer: {
-    position: 'absolute',
-    top: '40px',
-    maxHeight: ITEM_HEIGHT * 2.5,
-    overflow: 'auto',
-    zIndex: 10,
-  },
-  ddIsOpened: {
-    display: 'block',
-  },
-  ddIsClosed: {
-    display: 'none',
-  },
-}
+const styles = () =>
+  createStyles({
+    inputContainer: {
+      padding: '2px 4px',
+      display: 'flex',
+      alignItems: 'center',
+      boxShadow: 'none',
+      position: 'relative',
+    },
+    input: {
+      marginLeft: 8,
+      flex: 1,
+    },
+    listContainer: {
+      position: 'absolute',
+      top: '40px',
+      maxHeight: ITEM_HEIGHT * 2.5,
+      overflow: 'auto',
+      zIndex: 10,
+    },
+    ddIsOpened: {
+      display: 'block',
+    },
+    ddIsClosed: {
+      display: 'none',
+    },
+    list: {
+      padding: 0,
+      marginTop: '9px',
+      height: '80px',
+      overflowY: 'scroll',
+    },
+  })
 
 const compare = (a: GenericContent, b: GenericContent) => {
   if (a.Name < b.Name) {
@@ -83,8 +88,11 @@ export interface AllowedChildTypesState {
 /**
  * Field control that represents an AllowedChildTypes field. Available values will be populated from the FieldSettings.
  */
-export class AllowedChildTypes extends Component<ReactClientFieldSetting, AllowedChildTypesState> {
-  constructor(props: AllowedChildTypes['props']) {
+export class AllowedChildTypesComponent extends Component<
+  ReactClientFieldSetting & WithStyles<typeof styles>,
+  AllowedChildTypesState
+> {
+  constructor(props: AllowedChildTypesComponent['props']) {
     super(props)
     this.state = {
       value: [],
@@ -282,85 +290,95 @@ export class AllowedChildTypes extends Component<ReactClientFieldSetting, Allowe
   public render() {
     switch (this.props.actionName) {
       case 'edit':
-      case 'new':
         return (
-          <ClickAwayListener onClickAway={this.handleClickAway}>
-            <FormControl>
-              <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
-              <List dense={true}>
-                {this.state.items.map((item, index) => (
-                  <ListItem key={index}>
-                    <ListItemIcon style={{ margin: 0 }}>
-                      {this.props.renderIcon
-                        ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                        : renderIconDefault(
-                            item.Icon && typeicons[item.Icon.toLowerCase()]
-                              ? typeicons[item.Icon.toLowerCase()]
-                              : typeicons.contenttype,
-                          )}
-                    </ListItemIcon>
-                    <ListItemText primary={item.DisplayName} />
-                    {this.state.removeable ? (
-                      <ListItemSecondaryAction>
-                        <IconButton aria-label="Remove" onClick={() => this.handleRemove(item)}>
-                          {this.props.renderIcon ? this.props.renderIcon('delete') : renderIconDefault('delete')}
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    ) : null}
-                  </ListItem>
-                ))}
-              </List>
-              <div
-                ref={(ref: HTMLDivElement) => ref && this.state.anchorEl !== ref && this.setState({ anchorEl: ref })}
-                style={{ position: 'relative' }}>
-                <div style={styles.inputContainer as any}>
-                  <TextField
-                    type="text"
-                    onClick={this.handleOnClick}
-                    onChange={this.handleInputChange}
-                    placeholder={INPUT_PLACEHOLDER}
-                    InputProps={{
-                      endAdornment: this.state.isLoading ? (
-                        <InputAdornment position="end">
-                          <CircularProgress size={16} />
-                        </InputAdornment>
-                      ) : null,
-                    }}
-                    fullWidth={true}
-                    value={this.state.inputValue}
-                    style={styles.input}
-                  />
-                  <IconButton
-                    style={styles.button}
-                    disabled={this.state.selected && this.state.selected.Name.length > 0 ? false : true}
-                    onClick={this.handleAddClick}>
-                    {this.props.renderIcon ? this.props.renderIcon('add') : renderIconDefault('add')}
-                  </IconButton>
-                </div>
-                <Paper
-                  style={
-                    this.state.isOpened
-                      ? { ...styles.ddIsOpened, ...(styles.listContainer as any) }
-                      : { ...styles.ddIsClosed, ...(styles.listContainer as any) }
-                  }>
-                  <List>
-                    {this.state.filteredList.length > 0 ? (
-                      this.state.filteredList.map((item: any) => this.state.getMenuItem(item, this.handleSelect))
-                    ) : (
-                      <ListItem>No hits</ListItem>
-                    )}
+          <LocalizationContext.Consumer>
+            {localization => (
+              <ClickAwayListener onClickAway={this.handleClickAway}>
+                <div style={{ width: globals.common.formFieldWidth }}>
+                  <InputLabel shrink htmlFor={this.props.settings.Name} required={this.props.settings.Compulsory}>
+                    {this.props.settings.DisplayName}
+                  </InputLabel>
+
+                  <List dense={true} className={this.props.classes.list}>
+                    {this.state.items.map((item, index) => (
+                      <ListItem key={index}>
+                        <ListItemIcon style={{ margin: 0 }}>
+                          {this.props.renderIcon
+                            ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                            : renderIconDefault(
+                                item.Icon && typeicons[item.Icon.toLowerCase()]
+                                  ? typeicons[item.Icon.toLowerCase()]
+                                  : typeicons.contenttype,
+                              )}
+                        </ListItemIcon>
+                        <ListItemText primary={item.DisplayName} />
+                        {this.state.removeable ? (
+                          <ListItemSecondaryAction>
+                            <IconButton aria-label="Remove" onClick={() => this.handleRemove(item)}>
+                              {this.props.renderIcon ? this.props.renderIcon('delete') : renderIconDefault('delete')}
+                            </IconButton>
+                          </ListItemSecondaryAction>
+                        ) : null}
+                      </ListItem>
+                    ))}
                   </List>
-                </Paper>
-                <FormHelperText>{this.props.settings.Description}</FormHelperText>
-              </div>
-            </FormControl>
-          </ClickAwayListener>
+                  <div
+                    ref={(ref: HTMLDivElement) =>
+                      ref && this.state.anchorEl !== ref && this.setState({ anchorEl: ref })
+                    }
+                    style={{ position: 'relative' }}>
+                    <div className={this.props.classes.inputContainer}>
+                      <TextField
+                        type="text"
+                        onClick={this.handleOnClick}
+                        onChange={this.handleInputChange}
+                        placeholder={localization.values.forms.inputPlaceHolder}
+                        InputProps={{
+                          endAdornment: this.state.isLoading ? (
+                            <InputAdornment position="end">
+                              <CircularProgress size={16} />
+                            </InputAdornment>
+                          ) : null,
+                        }}
+                        fullWidth={true}
+                        value={this.state.inputValue}
+                        className={this.props.classes.input}
+                      />
+                      <IconButton
+                        color={'primary'}
+                        style={{ padding: 0, height: '24px', width: '24px' }}
+                        disabled={this.state.selected && this.state.selected.Name.length > 0 ? false : true}
+                        onClick={this.handleAddClick}>
+                        {this.props.renderIcon ? this.props.renderIcon('add_circle') : renderIconDefault('add_circle')}
+                      </IconButton>
+                    </div>
+                    <Paper
+                      className={clsx(this.props.classes.listContainer, {
+                        [this.props.classes.listContainer]: this.state.isOpened,
+                        [this.props.classes.ddIsClosed]: !this.state.isOpened,
+                      })}>
+                      <List>
+                        {this.state.filteredList.length > 0 ? (
+                          this.state.filteredList.map((item: any) => this.state.getMenuItem(item, this.handleSelect))
+                        ) : (
+                          <ListItem>No hits</ListItem>
+                        )}
+                      </List>
+                    </Paper>
+                  </div>
+                </div>
+              </ClickAwayListener>
+            )}
+          </LocalizationContext.Consumer>
         )
+      case 'new':
       case 'browse':
       default:
         return this.state.items.length ? (
           <FormControl>
-            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
+            <InputLabel shrink htmlFor={this.props.settings.Name} required={this.props.settings.Compulsory}>
+              {this.props.settings.DisplayName}
+            </InputLabel>
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
@@ -382,3 +400,5 @@ export class AllowedChildTypes extends Component<ReactClientFieldSetting, Allowe
     }
   }
 }
+
+export const AllowedChildTypes = withStyles(styles)(AllowedChildTypesComponent)

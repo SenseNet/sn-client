@@ -419,6 +419,7 @@ const values = {
     cancel: 'Cancel',
     upload: 'Upload',
     submit: 'Submit',
+    inputPlaceHolder: 'Start typing to add another type',
   },
 }
 

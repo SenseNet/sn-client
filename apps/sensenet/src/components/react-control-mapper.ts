@@ -35,8 +35,6 @@ export const reactControlMapper = (repository: Repository) => {
     })
     .setupFieldSettingDefault('ShortTextFieldSetting', setting => {
       switch (setting.ControlHint) {
-        case 'sn:Name':
-          return FieldControls.Name
         case 'sn:FileName':
           return FieldControls.FileName
         case 'sn:ColorPicker':

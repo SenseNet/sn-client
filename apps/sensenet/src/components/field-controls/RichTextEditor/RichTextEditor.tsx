@@ -8,16 +8,17 @@ import React, { useState } from 'react'
 import ReactQuill, { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { changeJScriptValue } from '@sensenet/controls-react'
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import { createStyles, InputLabel, makeStyles, Theme } from '@material-ui/core'
 import { ReactClientFieldSetting } from '../ClientFieldSetting'
 import QuillOEmbedModule from './QuillOEmbedModule'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     richTextEditor: {
+      width: '85%',
       '& .ql-toolbar': {
         backgroundColor: theme.palette.type === 'light' ? theme.palette.common.white : '#1e1e1e',
-        borderColor: theme.palette.type === 'light' ? theme.palette.common.white : '#1e1e1e',
+        borderColor: theme.palette.type === 'light' ? 'rgb(204, 204, 204)' : '#1e1e1e',
       },
       '& .ql-fill': {
         fill: theme.palette.type === 'light' ? '#444' : 'white',
@@ -76,12 +77,10 @@ export const RichTextEditor: React.FC<ReactClientFieldSetting> = props => {
   switch (props.actionName) {
     case 'edit':
       return (
-        <FormControl
-          className={classes.richTextEditor}
-          component={'fieldset' as 'div'}
-          fullWidth={true}
-          required={props.settings.Compulsory}>
-          <FormLabel component={'legend' as 'label'}>{props.settings.DisplayName}</FormLabel>
+        <div className={classes.richTextEditor}>
+          <InputLabel shrink htmlFor={props.settings.Name} required={props.settings.Compulsory}>
+            {props.settings.DisplayName}
+          </InputLabel>
           <ReactQuill
             style={{ background: '#fff', marginTop: 10, color: '#000' }}
             defaultValue={changeJScriptValue(props.settings.DefaultValue)}
@@ -92,7 +91,7 @@ export const RichTextEditor: React.FC<ReactClientFieldSetting> = props => {
             value={value}
             theme="snow"
           />
-        </FormControl>
+        </div>
       )
     case 'new':
       return (
