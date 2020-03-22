@@ -119,7 +119,7 @@ describe('Virtualized Table component', () => {
                 height: 400,
                 width: 800,
                 headerHeight: 42,
-                rowGetter: ({ index }) => items[index],
+                rowGetter: ({ index }: any) => items[index],
               } as any
             }
           />
@@ -165,7 +165,7 @@ describe('Virtualized Table component', () => {
                 height: 400,
                 width: 800,
                 headerHeight: 42,
-                rowGetter: ({ index }) => items[index],
+                rowGetter: ({ index }: any) => items[index],
               } as any
             }
           />
@@ -208,7 +208,7 @@ describe('Virtualized Table component', () => {
                 height: 400,
                 width: 800,
                 headerHeight: 42,
-                rowGetter: ({ index }) => items[index],
+                rowGetter: ({ index }: any) => items[index],
               } as any
             }
           />
@@ -250,7 +250,7 @@ describe('Virtualized Table component', () => {
                 height: 400,
                 width: 800,
                 headerHeight: 42,
-                rowGetter: ({ index }) => items[index],
+                rowGetter: ({ index }: any) => items[index],
               } as any
             }
           />
@@ -292,7 +292,7 @@ describe('Virtualized Table component', () => {
                 height: 400,
                 width: 800,
                 headerHeight: 42,
-                rowGetter: ({ index }) => items[index],
+                rowGetter: ({ index }: any) => items[index],
               } as any
             }
           />
@@ -324,12 +324,12 @@ describe('Virtualized Table component', () => {
                 headerHeight: 42,
                 height: 400,
                 width: 800,
-                onRowClick: rowMouseEventHandlerParams => {
+                onRowClick: (rowMouseEventHandlerParams: any) => {
                   expect(rowMouseEventHandlerParams.rowData.Id).toBe(1)
                   component.unmount()
                   done()
                 },
-                rowGetter: ({ index }) => items[index],
+                rowGetter: ({ index }: any) => items[index],
               } as any
             }
           />
@@ -390,7 +390,7 @@ describe('Virtualized Table component', () => {
                   height: 400,
                   width: 800,
                   headerHeight: 42,
-                  rowGetter: ({ index }) => items[index],
+                  rowGetter: ({ index }: any) => items[index],
                 } as any
               }
             />
@@ -426,7 +426,7 @@ describe('Virtualized Table component', () => {
                   width: 800,
                   rowHeight: 57,
                   headerHeight: 42,
-                  rowGetter: ({ index }) => items[index],
+                  rowGetter: ({ index }: any) => items[index],
                 } as any
               }
             />
@@ -463,7 +463,7 @@ describe('Virtualized Table component', () => {
                   headerHeight: 42,
                   height: 400,
                   width: 800,
-                  rowGetter: ({ index }) => items[index],
+                  rowGetter: ({ index }: any) => items[index],
                 } as any
               }
             />
@@ -506,7 +506,7 @@ describe('Virtualized Table component', () => {
                   headerHeight: 42,
                   height: 400,
                   width: 800,
-                  rowGetter: ({ index }) => items[index],
+                  rowGetter: ({ index }: any) => items[index],
                 } as any
               }
             />
@@ -536,9 +536,7 @@ describe('Virtualized Table component', () => {
               cellRenderer={props => {
                 if (props.tableCellProps.dataKey === 'Name') {
                   return (
-                    <td>
-                      <div className="custom-field">{props.tableCellProps.rowData[props.tableCellProps.dataKey]}</div>
-                    </td>
+                    <span className="custom-field">{props.tableCellProps.rowData[props.tableCellProps.dataKey]}</span>
                   )
                 }
                 return null
@@ -550,7 +548,7 @@ describe('Virtualized Table component', () => {
                   headerHeight: 42,
                   width: 800,
                   height: 400,
-                  rowGetter: ({ index }) => items[index],
+                  rowGetter: ({ index }: any) => items[index],
                 } as any
               }
             />
@@ -586,12 +584,12 @@ describe('Virtualized Table component', () => {
                   headerHeight: 42,
                   height: 400,
                   width: 800,
-                  onRowClick: rowMouseEventHandlerParams => {
+                  onRowClick: (rowMouseEventHandlerParams: any) => {
                     expect(rowMouseEventHandlerParams.rowData.Id).toBe(1)
                     component.unmount()
                     done()
                   },
-                  rowGetter: ({ index }) => items[index],
+                  rowGetter: ({ index }: any) => items[index],
                 } as any
               }
             />
@@ -621,12 +619,12 @@ describe('Virtualized Table component', () => {
                   headerHeight: 42,
                   height: 400,
                   width: 800,
-                  onRowDoubleClick: param => {
+                  onRowDoubleClick: (param: any) => {
                     expect(param.rowData.Id).toBe(1)
                     component.unmount()
                     done()
                   },
-                  rowGetter: ({ index }) => items[index],
+                  rowGetter: ({ index }: any) => items[index],
                 } as any
               }
             />
@@ -708,7 +706,7 @@ describe('Virtualized Table component', () => {
           <Paper style={{ height: 400, width: '100%' }}>
             <VirtualizedTable
               items={items}
-              schema={genericSchema.DisplayName}
+              schema={genericSchema.DisplayName as any}
               fieldsToDisplay={['DisplayName']}
               selected={[]}
               orderBy="DisplayName"
@@ -734,7 +732,7 @@ describe('Virtualized Table component', () => {
           <Paper style={{ height: 400, width: '100%' }}>
             <VirtualizedTable
               items={items}
-              schema={genericSchema.DisplayName}
+              schema={genericSchema.DisplayName as any}
               fieldsToDisplay={['DisplayName']}
               orderBy="DisplayName"
               orderDirection="asc"
@@ -759,7 +757,7 @@ describe('Virtualized Table component', () => {
           <Paper style={{ height: 400, width: '100%' }}>
             <VirtualizedTable
               items={items}
-              schema={genericSchema.DisplayName}
+              schema={genericSchema.DisplayName as any}
               selected={undefined}
               fieldsToDisplay={['DisplayName']}
               orderBy="DisplayName"
@@ -785,7 +783,7 @@ describe('Virtualized Table component', () => {
           <Paper style={{ height: 400, width: '100%' }}>
             <VirtualizedTable
               items={items}
-              schema={genericSchema.DisplayName}
+              schema={genericSchema.DisplayName as any}
               selected={undefined}
               fieldsToDisplay={['DisplayName']}
               orderBy="DisplayName"
@@ -811,7 +809,7 @@ describe('Virtualized Table component', () => {
           <Paper style={{ height: 400, width: '100%' }}>
             <VirtualizedTable
               items={content}
-              schema={genericSchema.DisplayName}
+              schema={genericSchema.DisplayName as any}
               selected={content}
               fieldsToDisplay={['DisplayName']}
               orderBy="DisplayName"
@@ -838,7 +836,7 @@ describe('Virtualized Table component', () => {
           <Paper style={{ height: 400, width: '100%' }}>
             <VirtualizedTable
               items={items}
-              schema={genericSchema.DisplayName}
+              schema={genericSchema.DisplayName as any}
               fieldsToDisplay={['DisplayName']}
               selected={[]}
               orderDirection="asc"
@@ -863,7 +861,7 @@ describe('Virtualized Table component', () => {
           <Paper style={{ height: 400, width: '100%' }}>
             <VirtualizedTable
               items={items}
-              schema={genericSchema.DisplayName}
+              schema={genericSchema.DisplayName as any}
               fieldsToDisplay={['DisplayName']}
               selected={[]}
               orderBy="DisplayName"
@@ -888,7 +886,7 @@ describe('Virtualized Table component', () => {
           <Paper style={{ height: 400, width: '100%' }}>
             <VirtualizedTable
               items={items}
-              schema={genericSchema.DisplayName}
+              schema={genericSchema.DisplayName as any}
               fieldsToDisplay={['DisplayName']}
               selected={[]}
               orderBy="DisplayName"
