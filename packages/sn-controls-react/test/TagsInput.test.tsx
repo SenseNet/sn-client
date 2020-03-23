@@ -1,11 +1,10 @@
-import React from 'react'
-import { mount, shallow } from 'enzyme'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormLabel from '@material-ui/core/FormLabel'
-import Select from '@material-ui/core/Select'
-import { sleepAsync } from '@sensenet/client-utils'
 import Chip from '@material-ui/core/Chip'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Select from '@material-ui/core/Select'
 import SvgIcon from '@material-ui/core/SvgIcon'
+import { sleepAsync } from '@sensenet/client-utils'
+import { mount, shallow } from 'enzyme'
+import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { TagsInput } from '../src/fieldcontrols/TagsInput'
 
@@ -55,7 +54,6 @@ const repository: any = {
 describe('Tags input field control', () => {
   describe('in browse view', () => {
     it('should show the value of the field when content is passed', async () => {
-      const consoleSpy = jest.spyOn(console, 'error')
       const wrapper = mount(
         <TagsInput
           actionName="browse"
@@ -64,14 +62,13 @@ describe('Tags input field control', () => {
           repository={repository}
         />,
       )
-      expect(consoleSpy).not.toBeCalled()
       await sleepAsync(0)
       const updatedWrapper = wrapper.update()
       expect(updatedWrapper.find(FormControlLabel).children()).toHaveLength(1)
     })
 
     it('should not show anything when field value is not provided', () => {
-      const wrapper = shallow(<TagsInput actionName="browse" settings={defaultSettings} />)
+      const wrapper = shallow(<TagsInput actionName="browse" repository={repository} settings={defaultSettings} />)
       expect(wrapper.get(0)).toBeFalsy()
     })
   })

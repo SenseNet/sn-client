@@ -177,7 +177,7 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
     if (this.props.settings.AllowMultiple) {
       return this.state.fieldValue.length ? this.state.fieldValue.map(c => c.Id) : []
     }
-    return this.state.fieldValue.length ? [this.state.fieldValue[0].Id] : []
+    return this.state.fieldValue.length ? [this.state.fieldValue[0].Id] : ''
   }
 
   public render() {
@@ -204,7 +204,7 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
                         <Chip
                           avatar={
                             <Avatar
-                              alt={content.DisplayName}
+                              alt={`The avatar of ${content.DisplayName}`}
                               src={
                                 content.Avatar && content.Avatar.Url
                                   ? `${this.props.repository!.configuration.repositoryUrl}${content.Avatar.Url}`
