@@ -1,21 +1,17 @@
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsProvider,
   CurrentChildrenProvider,
-  CurrentContentContext,
   CurrentContentProvider,
   LoadSettingsContextProvider,
-  useLogger,
-  useRepository,
 } from '@sensenet/hooks-react'
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import clsx from 'clsx'
 import React, { useContext, useState } from 'react'
-import { isExtendedError } from '@sensenet/client-core/src'
 import { ResponsivePersonalSetttings } from '../../context'
-import { useLocalization, useSelectionService } from '../../hooks'
-import { ContentList } from '../content-list/content-list'
 import { globals, useGlobalStyles } from '../../globalStyles'
+import { useSelectionService } from '../../hooks'
+import { ContentList } from '../content-list/content-list'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import TreeWithData from '../tree/tree-with-data'
 import { EditView } from '../view-controls/edit-view'
@@ -55,9 +51,6 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const [isFormOpened, setIsFormOpened] = useState(false)
-  const repo = useRepository()
-  const logger = useLogger('EditProperties')
-  const localization = useLocalization().editPropertiesDialog
 
   if (!props.rootPath) {
     return null
@@ -87,50 +80,10 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                   setFormOpen={setFormOpen}
                 />
                 {isFormOpened ? (
-                  <CurrentContentContext.Consumer>
-                    {content => (
-                      <EditView
-                        content={content}
-                        repository={repo}
-                        onSubmit={(c, s) => {
-                          repo
-                            .patch({
-                              idOrPath: c.Id,
-                              content: s,
-                            })
-                            .then(response => {
-                              logger.information({
-                                message: localization.saveSuccessNotification.replace(
-                                  '{0}',
-                                  c.DisplayName || c.Name || content.DisplayName || content.Name,
-                                ),
-                                data: {
-                                  relatedContent: content,
-                                  content: response,
-                                  relatedRepository: repo.configuration.repositoryUrl,
-                                },
-                              })
-                            })
-                            .catch(error => {
-                              logger.error({
-                                message: localization.saveFailedNotification.replace(
-                                  '{0}',
-                                  c.DisplayName || c.Name || content.DisplayName || content.Name,
-                                ),
-                                data: {
-                                  relatedContent: content,
-                                  content: c,
-                                  relatedRepository: repo.configuration.repositoryUrl,
-                                  error: isExtendedError(error) ? repo.getErrorFromResponse(error.response) : error,
-                                },
-                              })
-                            })
-                        }}
-                        uploadFolderpath={'/Root/Content/demoavatars'}
-                        handleCancel={() => setIsFormOpened(false)}
-                      />
-                    )}
-                  </CurrentContentContext.Consumer>
+                  <EditView
+                    uploadFolderpath={'/Root/Content/demoavatars'}
+                    handleCancel={() => setIsFormOpened(false)}
+                  />
                 ) : (
                   <ContentList
                     style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}

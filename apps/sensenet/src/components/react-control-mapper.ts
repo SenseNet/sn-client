@@ -39,6 +39,8 @@ export const reactControlMapper = (repository: Repository) => {
           return FieldControls.FileName
         case 'sn:ColorPicker':
           return FieldControls.ColorPicker
+        case 'sn:Path':
+          return FieldControls.Path
         default:
           return FieldControls.ShortText
       }

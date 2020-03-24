@@ -17,7 +17,6 @@ import { typeicons } from '@sensenet/controls-react'
 import { createStyles, InputLabel, withStyles, WithStyles } from '@material-ui/core'
 import clsx from 'clsx'
 import { LocalizationContext } from '../../context'
-import { globals } from '../../globalStyles'
 import { renderIconDefault } from './icon'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
@@ -26,20 +25,19 @@ const ITEM_HEIGHT = 48
 const styles = () =>
   createStyles({
     inputContainer: {
-      padding: '2px 4px',
+      padding: '4px 0',
       display: 'flex',
       alignItems: 'center',
       boxShadow: 'none',
       position: 'relative',
     },
     input: {
-      marginLeft: 8,
       flex: 1,
     },
     listContainer: {
       position: 'absolute',
       top: '40px',
-      maxHeight: ITEM_HEIGHT * 2.5,
+      maxHeight: ITEM_HEIGHT * 5,
       overflow: 'auto',
       zIndex: 10,
     },
@@ -294,14 +292,14 @@ export class AllowedChildTypesComponent extends Component<
           <LocalizationContext.Consumer>
             {localization => (
               <ClickAwayListener onClickAway={this.handleClickAway}>
-                <div style={{ width: globals.common.formFieldWidth }}>
+                <>
                   <InputLabel shrink htmlFor={this.props.settings.Name} required={this.props.settings.Compulsory}>
                     {this.props.settings.DisplayName}
                   </InputLabel>
 
                   <List dense={true} className={this.props.classes.list}>
                     {this.state.items.map((item, index) => (
-                      <ListItem key={index}>
+                      <ListItem key={index} style={{ paddingLeft: 0, paddingRight: 0 }}>
                         <ListItemIcon style={{ margin: 0 }}>
                           {this.props.renderIcon
                             ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
@@ -313,7 +311,7 @@ export class AllowedChildTypesComponent extends Component<
                         </ListItemIcon>
                         <ListItemText primary={item.DisplayName} />
                         {this.state.removeable ? (
-                          <ListItemSecondaryAction>
+                          <ListItemSecondaryAction style={{ padding: 0 }}>
                             <IconButton aria-label="Remove" onClick={() => this.handleRemove(item)}>
                               {this.props.renderIcon ? this.props.renderIcon('delete') : renderIconDefault('delete')}
                             </IconButton>
@@ -366,7 +364,7 @@ export class AllowedChildTypesComponent extends Component<
                       </List>
                     </Paper>
                   </div>
-                </div>
+                </>
               </ClickAwayListener>
             )}
           </LocalizationContext.Consumer>

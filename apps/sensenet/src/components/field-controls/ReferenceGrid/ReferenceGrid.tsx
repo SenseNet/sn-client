@@ -1,3 +1,4 @@
+import { Avatar, Chip, createStyles, IconButton, Theme, withStyles, WithStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -6,16 +7,14 @@ import FormGroup from '@material-ui/core/FormGroup'
 import InputLabel from '@material-ui/core/InputLabel'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
+import { InsertDriveFile } from '@material-ui/icons'
 import { PathHelper } from '@sensenet/client-utils'
+import { renderIconDefault } from '@sensenet/controls-react/src/fieldcontrols/icon'
 import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
-import { Avatar, Chip, createStyles, IconButton, Theme, withStyles, WithStyles } from '@material-ui/core'
-import { InsertDriveFile } from '@material-ui/icons'
-import { renderIconDefault } from '@sensenet/controls-react/src/fieldcontrols/icon'
+import { LocalizationContext } from '../../../context'
 import { ReactClientFieldSetting } from '../ClientFieldSetting'
 import { isUser } from '../type-guards'
-import { globals } from '../../../globalStyles'
-import { LocalizationContext } from '../../../context'
 import { DefaultItemTemplate } from './DefaultItemTemplate'
 import { ReferencePicker } from './ReferencePicker'
 
@@ -25,7 +24,6 @@ const styles = ({ palette }: Theme) =>
       display: 'flex',
       flexFlow: 'row',
       justifyContent: 'space-between',
-      width: globals.common.formFieldWidth,
       marginTop: '9px',
       borderBottom: '1px solid rgba(80, 80, 80, 0.87)',
     },

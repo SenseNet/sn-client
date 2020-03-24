@@ -1,16 +1,15 @@
 /**
  * @module FieldControls
  */
-import React, { useState } from 'react'
 import FormControl from '@material-ui/core/FormControl'
 import IconButton from '@material-ui/core/IconButton'
 import Input from '@material-ui/core/Input'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import InputLabel from '@material-ui/core/InputLabel'
 import Typography from '@material-ui/core/Typography'
-import { globals } from '../../globalStyles'
-import { renderIconDefault } from './icon'
+import React, { useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
+import { renderIconDefault } from './icon'
 
 /**
  * Field control that represents a Password field. Available values will be populated from the FieldSettings.
@@ -27,7 +26,7 @@ export const Password: React.FC<ReactClientFieldSetting> = props => {
     case 'edit':
     case 'new':
       return (
-        <FormControl>
+        <FormControl style={{ width: '100%' }}>
           <InputLabel htmlFor={props.settings.Name}>{props.settings.DisplayName}</InputLabel>
           <Input
             type={showPassword ? 'text' : 'password'}
@@ -39,7 +38,6 @@ export const Password: React.FC<ReactClientFieldSetting> = props => {
             onChange={handleChange}
             value={value}
             fullWidth={true}
-            style={{ width: globals.common.formFieldWidth }}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton aria-label="Toggle password visibility" onClick={() => setShowPassword(!showPassword)}>

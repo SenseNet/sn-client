@@ -1,15 +1,17 @@
 /**
  * @module ViewControls
  */
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import { Repository } from '@sensenet/client-core'
-import { ContentType, GenericContent } from '@sensenet/default-content-types'
-import React, { createElement, ReactElement, useState } from 'react'
+import { isExtendedError } from '@sensenet/client-core'
+import { FieldSetting } from '@sensenet/default-content-types/src'
+import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
+import React, { createElement, ReactElement, useContext, useState } from 'react'
 import MediaQuery from 'react-responsive'
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
-import { reactControlMapper } from '../react-control-mapper'
+import clsx from 'clsx'
 import { useLocalization } from '../../hooks'
+import { reactControlMapper } from '../react-control-mapper'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -28,6 +30,14 @@ const useStyles = makeStyles((theme: Theme) => {
       flexFlow: 'column',
       padding: '6px !important',
       height: 'fit-content',
+      position: 'relative',
+    },
+    wrapper: {
+      width: '75%',
+      position: 'relative',
+    },
+    wrapperFullWidth: {
+      width: '88%',
     },
   })
 })
@@ -36,9 +46,6 @@ const useStyles = makeStyles((theme: Theme) => {
  * Interface for EditView properties
  */
 export interface EditViewProps {
-  content: ContentType
-  onSubmit?: (content: GenericContent, saveableFields: Partial<GenericContent>) => void
-  repository: Repository
   renderIcon?: (name: string) => ReactElement
   handleCancel?: () => void
   submitCallback?: () => void
@@ -54,20 +61,61 @@ export interface EditViewProps {
  * ```
  */
 export const EditView: React.FC<EditViewProps> = props => {
-  const controlMapper = reactControlMapper(props.repository)
-  const schema = controlMapper.getFullSchemaForContentType(props.content.Type, 'edit')
+  const repo = useRepository()
+  const content = useContext(CurrentContentContext)
+  const controlMapper = reactControlMapper(repo)
+  const schema = controlMapper.getFullSchemaForContentType(content.Type, 'edit')
   const [saveableFields, setSaveableFields] = useState({})
   const classes = useStyles()
   const localization = useLocalization()
+  const logger = useLogger('EditView')
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    props.onSubmit?.(props.content, saveableFields as any)
-    props.submitCallback?.()
+    repo
+      .patch({
+        idOrPath: content.Id,
+        content: saveableFields,
+      })
+      .then(response => {
+        logger.information({
+          message: localization.editPropertiesDialog.saveSuccessNotification.replace(
+            '{0}',
+            content.DisplayName || content.Name || content.DisplayName || content.Name,
+          ),
+          data: {
+            relatedContent: content,
+            content: response,
+            relatedRepository: repo.configuration.repositoryUrl,
+          },
+        })
+      })
+      .catch(error => {
+        logger.error({
+          message: localization.editPropertiesDialog.saveFailedNotification.replace(
+            '{0}',
+            content.DisplayName || content.Name || content.DisplayName || content.Name,
+          ),
+          data: {
+            relatedContent: content,
+            content,
+            relatedRepository: repo.configuration.repositoryUrl,
+            error: isExtendedError(error) ? repo.getErrorFromResponse(error.response) : error,
+          },
+        })
+      })
   }
 
   const handleInputChange = (field: string, value: unknown) => {
     setSaveableFields({ ...saveableFields, [field]: value })
+  }
+
+  const isFullWidthField = (field: { fieldSettings: FieldSetting }) => {
+    return (
+      field.fieldSettings.Name === 'Avatar' ||
+      field.fieldSettings.Name === 'Enabled' ||
+      field.fieldSettings.Name === 'Description'
+    )
   }
 
   return (
@@ -77,12 +125,12 @@ export const EditView: React.FC<EditViewProps> = props => {
           .sort((item1, item2) => item2.fieldSettings.DefaultOrder! - item1.fieldSettings.DefaultOrder!)
           .map(field => {
             const fieldControl = createElement(
-              controlMapper.getControlForContentField(props.content.Type, field.fieldSettings.Name, 'edit'),
+              controlMapper.getControlForContentField(content.Type, field.fieldSettings.Name, 'edit'),
               {
-                repository: props.repository,
+                repository: repo,
                 settings: field.fieldSettings,
-                content: props.content,
-                fieldValue: (props.content as any)[field.fieldSettings.Name],
+                content,
+                fieldValue: (content as any)[field.fieldSettings.Name],
                 actionName: 'edit',
                 renderIcon: props.renderIcon,
                 fieldOnChange: handleInputChange,
@@ -95,30 +143,17 @@ export const EditView: React.FC<EditViewProps> = props => {
                 item={true}
                 xs={12}
                 sm={12}
-                md={
-                  field.fieldSettings.Name === 'Avatar' ||
-                  field.fieldSettings.Name === 'Enabled' ||
-                  field.fieldSettings.Name === 'Description'
-                    ? 12
-                    : 6
-                }
-                lg={
-                  field.fieldSettings.Name === 'Avatar' ||
-                  field.fieldSettings.Name === 'Enabled' ||
-                  field.fieldSettings.Name === 'Description'
-                    ? 12
-                    : 6
-                }
-                xl={
-                  field.fieldSettings.Name === 'Avatar' ||
-                  field.fieldSettings.Name === 'Enabled' ||
-                  field.fieldSettings.Name === 'Description'
-                    ? 12
-                    : 6
-                }
+                md={isFullWidthField(field) ? 12 : 6}
+                lg={isFullWidthField(field) ? 12 : 6}
+                xl={isFullWidthField(field) ? 12 : 6}
                 key={field.fieldSettings.Name}
                 className={classes.grid}>
-                <div> {fieldControl}</div>
+                <div
+                  className={clsx(classes.wrapper, {
+                    [classes.wrapperFullWidth]: isFullWidthField(field),
+                  })}>
+                  {fieldControl}
+                </div>
               </Grid>
             )
           })}

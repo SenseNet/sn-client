@@ -11,7 +11,6 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import { ChoiceFieldSetting } from '@sensenet/default-content-types'
 import { changeJScriptValue } from '@sensenet/controls-react'
-import { globals } from '../../globalStyles'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
@@ -56,8 +55,7 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
             multiple={props.settings.AllowMultiple}
             autoWidth={true}
             defaultValue={changeJScriptValue(props.settings.DefaultValue)}
-            fullWidth={true}
-            style={{ width: globals.common.formFieldWidth }}>
+            fullWidth={true}>
             {props.settings.Options?.map(option => {
               return (
                 <MenuItem key={option.Value} value={option.Value}>

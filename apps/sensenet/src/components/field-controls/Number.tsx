@@ -1,15 +1,14 @@
 /**
  * @module FieldControls
  */
+import { createStyles, InputBase, InputLabel, Theme, withStyles } from '@material-ui/core'
+import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import React, { useState } from 'react'
-import { CurrencyFieldSetting, NumberFieldSetting } from '@sensenet/default-content-types'
-import InputAdornment from '@material-ui/core/InputAdornment'
 import { toNumber } from '@sensenet/client-utils'
 import { changeJScriptValue } from '@sensenet/controls-react'
-import { createStyles, InputBase, InputLabel, Theme, withStyles } from '@material-ui/core'
-import { globals } from '../../globalStyles'
+import { CurrencyFieldSetting, NumberFieldSetting } from '@sensenet/default-content-types'
+import React, { useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 import { isCurrencyFieldSetting } from './type-guards'
 
@@ -21,7 +20,6 @@ const NumberTextInput = withStyles((theme: Theme) =>
       },
     },
     input: {
-      width: globals.common.formFieldWidth,
       height: '36px',
       boxSizing: 'border-box',
       borderRadius: 4,
@@ -84,7 +82,6 @@ export const NumberComponent: React.FC<ReactClientFieldSetting<NumberFieldSettin
             {props.settings.DisplayName}
           </InputLabel>
           <NumberTextInput
-            style={{ width: globals.common.formFieldWidth }}
             name={props.settings.Name}
             type="number"
             value={value}

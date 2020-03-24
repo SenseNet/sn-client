@@ -16,7 +16,6 @@ import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core'
-import { globals } from '../../globalStyles'
 import { renderIconDefault } from './icon'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 import { isUser } from './type-guards'
@@ -36,7 +35,6 @@ const menuProps = {
 const styles = ({ palette }: Theme) =>
   createStyles({
     root: {
-      width: globals.common.formFieldWidth,
       display: 'flex',
       flexWrap: 'wrap',
       '& .MuiSelect-root': {

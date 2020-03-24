@@ -15,7 +15,7 @@ import QuillOEmbedModule from './QuillOEmbedModule'
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     richTextEditor: {
-      width: '85%',
+      width: '100%',
       '& .ql-toolbar': {
         backgroundColor: theme.palette.type === 'light' ? theme.palette.common.white : '#1e1e1e',
         borderColor: theme.palette.type === 'light' ? 'rgb(204, 204, 204)' : '#1e1e1e',

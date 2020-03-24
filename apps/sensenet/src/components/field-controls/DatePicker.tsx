@@ -10,14 +10,12 @@ import Typography from '@material-ui/core/Typography'
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import { changeJScriptValue } from '@sensenet/controls-react'
 import { createStyles, InputLabel, makeStyles, Theme } from '@material-ui/core'
-import { globals } from '../../globalStyles'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     inputBase: {
       '& input': {
-        width: globals.common.formFieldWidth,
         height: '36px',
         boxSizing: 'border-box',
         borderRadius: 4,

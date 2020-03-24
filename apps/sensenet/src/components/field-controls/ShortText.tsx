@@ -1,12 +1,11 @@
 /**
  * @module FieldControls
  */
-import React, { useState } from 'react'
-import Typography from '@material-ui/core/Typography'
-import { ShortTextFieldSetting } from '@sensenet/default-content-types'
 import { createStyles, InputBase, InputLabel, Theme, withStyles } from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
 import { changeJScriptValue } from '@sensenet/controls-react'
-import { globals } from '../../globalStyles'
+import { ShortTextFieldSetting } from '@sensenet/default-content-types'
+import React, { useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 const ShortTextInput = withStyles((theme: Theme) =>
@@ -15,9 +14,9 @@ const ShortTextInput = withStyles((theme: Theme) =>
       'label + &': {
         marginTop: '9px',
       },
+      width: '100%',
     },
     input: {
-      width: globals.common.formFieldWidth,
       height: '36px',
       boxSizing: 'border-box',
       borderRadius: 4,
