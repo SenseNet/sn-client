@@ -23,6 +23,9 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
+    "@material-ui/core": "^4.9.5",
+    "@types/history": "^4.7.5",
+    "oidc-client": "^1.10.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "tslib": "^1.11.1"
@@ -32,6 +35,8 @@
     "@types/jest": "^25.1.4",
     "@types/react": "^16.9.23",
     "@types/react-dom": "^16.9.5",
+    "@types/react-router": "^5.1.2",
+    "@types/react-router-dom": "^5.1.2",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "enzyme-to-json": "^3.4.4",
