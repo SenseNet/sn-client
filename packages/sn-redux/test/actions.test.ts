@@ -1308,4 +1308,35 @@ describe('Actions', () => {
       })
     })
   })
+  describe('restoreFromTrash', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => contentMockResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.restoreFromTrash(42, '/Root/Content/IT/Document_Library').type).toBe('RESTORE_FROM_TRASH')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given addPreviewComment() resolves', () => {
+        let data: any
+        const expectedResult = {
+          d: {
+            Name: 'DefaultSite',
+          },
+        }
+        beforeEach(async () => {
+          data = await Actions.restoreFromTrash(42, '/Root/Content/IT/Document_Library').payload(repo)
+        })
+        it('should return a RESTORE_FROM_TRASH action', () => {
+          expect(Actions.restoreFromTrash(42, '/Root/Content/IT/Document_Library')).toHaveProperty(
+            'type',
+            'RESTORE_FROM_TRASH',
+          )
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(expectedResult)
+        })
+      })
+    })
+  })
 })
