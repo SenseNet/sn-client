@@ -17,7 +17,7 @@ export interface BreadcrumbItem<T extends GenericContent> {
 export interface BreadcrumbProps<T extends GenericContent> {
   items: Array<BreadcrumbItem<T>>
   onItemClick: (event: React.MouseEvent, item: BreadcrumbItem<T>) => void
-  setFormOpen?: () => void
+  setFormOpen?: (actionName: 'new' | 'edit' | 'browse' | undefined) => void
 }
 
 /**
@@ -28,8 +28,8 @@ function BreadcrumbsComponent<T extends GenericContent>(props: BreadcrumbProps<T
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
 
-  const setFormOpen = () => {
-    props.setFormOpen && props.setFormOpen()
+  const setFormOpen = (actionName: 'new' | 'edit' | 'browse' | undefined) => {
+    props.setFormOpen && props.setFormOpen(actionName)
   }
 
   return (
@@ -65,7 +65,7 @@ function BreadcrumbsComponent<T extends GenericContent>(props: BreadcrumbProps<T
           }}
           onClose={() => setIsContextMenuOpened(false)}
           halfPage={true}
-          setFormOpen={setFormOpen}
+          setFormOpen={actionName => setFormOpen(actionName)}
         />
       ) : null}
     </>

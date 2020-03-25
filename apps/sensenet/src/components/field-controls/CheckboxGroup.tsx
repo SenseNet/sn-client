@@ -46,8 +46,8 @@ export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>
   }
 
   switch (props.actionName) {
-    case 'edit':
     case 'new':
+    case 'edit':
       return (
         <FormControl
           disabled={props.settings.ReadOnly}

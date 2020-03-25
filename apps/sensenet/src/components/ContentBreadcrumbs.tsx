@@ -7,14 +7,14 @@ import Breadcrumbs, { BreadcrumbItem } from './Breadcrumbs'
 
 export const ContentBreadcrumbsComponent: React.FunctionComponent<RouteComponentProps & {
   onItemClick?: (item: BreadcrumbItem<GenericContent>) => void
-  setFormOpen?: () => void
+  setFormOpen?: (actionName: 'new' | 'edit' | 'browse' | undefined) => void
 }> = props => {
   const ancestors = useContext(CurrentAncestorsContext)
   const parent = useContext(CurrentContentContext)
   const contentRouter = useContentRouting()
 
-  const setFormOpen = () => {
-    props.setFormOpen && props.setFormOpen()
+  const setFormOpen = (actionName: 'new' | 'edit' | 'browse' | undefined) => {
+    props.setFormOpen && props.setFormOpen(actionName)
   }
 
   return (
@@ -38,7 +38,7 @@ export const ContentBreadcrumbsComponent: React.FunctionComponent<RouteComponent
           ? props.onItemClick(item)
           : props.history.push(contentRouter.getPrimaryActionUrl(item.content))
       }}
-      setFormOpen={setFormOpen}
+      setFormOpen={actionName => setFormOpen(actionName)}
     />
   )
 }

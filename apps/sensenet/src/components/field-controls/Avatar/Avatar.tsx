@@ -39,6 +39,11 @@ const styles = ({ palette }: Theme) =>
     icon: {
       marginRight: 0,
     },
+    centeredVertical: {
+      display: 'flex',
+      flexFlow: 'column',
+      alignItems: 'center',
+    },
   })
 
 const DEFAULT_AVATAR_PATH = '/Root/Sites/Default_Site/demoavatars/Admin.png'
@@ -118,6 +123,7 @@ class AvatarComponent extends Component<
 
   public render() {
     switch (this.props.actionName) {
+      case 'new':
       case 'edit':
         return (
           <LocalizationContext.Consumer>
@@ -167,14 +173,10 @@ class AvatarComponent extends Component<
             )}
           </LocalizationContext.Consumer>
         )
-      case 'new':
       case 'browse':
       default:
         return this.props.fieldValue ? (
-          <FormControl className={this.props.classes.root}>
-            <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
-              {this.props.settings.DisplayName}
-            </InputLabel>
+          <div className={this.props.classes.centeredVertical}>
             <List dense={true} className={this.props.classes.listContainer}>
               <DefaultAvatarTemplate
                 repositoryUrl={this.props.repository && this.props.repository.configuration.repositoryUrl}
@@ -183,7 +185,10 @@ class AvatarComponent extends Component<
                 renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}
               />
             </List>
-          </FormControl>
+            <InputLabel shrink={true} htmlFor={this.props.settings.Name} style={{ paddingTop: '9px' }}>
+              {this.props.settings.DisplayName}
+            </InputLabel>
+          </div>
         ) : null
     }
   }

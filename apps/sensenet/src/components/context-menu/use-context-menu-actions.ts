@@ -27,7 +27,9 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
           : setFormOpen && setFormOpen()
         break
       case 'Browse':
-        openDialog({ name: 'info', props: { content } })
+        !halfPage
+          ? history.push(`/${btoa(repo.configuration.repositoryUrl)}/BrowseProperties/${content.Id}`)
+          : setFormOpen && setFormOpen()
         break
       case 'MoveTo':
       case 'CopyTo': {

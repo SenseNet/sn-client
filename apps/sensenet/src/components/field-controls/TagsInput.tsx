@@ -6,7 +6,6 @@ import Chip from '@material-ui/core/Chip'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormGroup from '@material-ui/core/FormGroup'
-import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -198,6 +197,7 @@ class TagsInputComponent extends Component<
 
   public render() {
     switch (this.props.actionName) {
+      case 'new':
       case 'edit':
         return (
           <FormControl
@@ -260,65 +260,6 @@ class TagsInputComponent extends Component<
                   </MenuItem>
                 ))}
             </Select>
-          </FormControl>
-        )
-      case 'new':
-        return (
-          <FormControl
-            className={this.props.classes.root}
-            key={this.props.settings.Name}
-            component={'fieldset' as 'div'}
-            required={this.props.settings.Compulsory}>
-            <InputLabel htmlFor={this.props.settings.Name}>{this.props.settings.DisplayName}</InputLabel>
-            <Select
-              value={this.getValue()}
-              onChange={this.handleChange}
-              multiple={this.props.settings.AllowMultiple}
-              input={<Input id={this.props.settings.Name} fullWidth={true} />}
-              renderValue={() => (
-                <>
-                  {this.state.fieldValue &&
-                    this.state.fieldValue.map(content =>
-                      isUser(content) ? (
-                        <Chip
-                          avatar={
-                            <Avatar
-                              alt={content.DisplayName}
-                              src={
-                                content.Avatar && content.Avatar.Url
-                                  ? `${this.props.repository!.configuration.repositoryUrl}${content.Avatar.Url}`
-                                  : `${this.props.repository!.configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
-                              }
-                            />
-                          }
-                          key={content.Id}
-                          label={content.DisplayName}
-                          onDelete={() => this.handleDelete(content.Id)}
-                        />
-                      ) : (
-                        <Chip
-                          key={content.Id}
-                          label={content.DisplayName}
-                          icon={
-                            this.props.renderIcon
-                              ? this.props.renderIcon(content.Type.toLowerCase())
-                              : renderIconDefault(content.Type.toLowerCase())
-                          }
-                          onDelete={() => this.handleDelete(content.Id)}
-                        />
-                      ),
-                    )}
-                </>
-              )}
-              MenuProps={menuProps}>
-              {this.state.dataSource &&
-                this.state.dataSource.map(content => (
-                  <MenuItem key={content.Id} value={content.Id}>
-                    {content.DisplayName}
-                  </MenuItem>
-                ))}
-            </Select>
-            <FormHelperText>{this.props.settings.Description}</FormHelperText>
           </FormControl>
         )
       case 'browse':

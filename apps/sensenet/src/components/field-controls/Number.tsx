@@ -3,7 +3,6 @@
  */
 import { createStyles, InputBase, InputLabel, Theme, withStyles } from '@material-ui/core'
 import InputAdornment from '@material-ui/core/InputAdornment'
-import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { toNumber } from '@sensenet/client-utils'
 import { changeJScriptValue } from '@sensenet/controls-react'
@@ -75,6 +74,7 @@ export const NumberComponent: React.FC<ReactClientFieldSetting<NumberFieldSettin
   }
 
   switch (props.actionName) {
+    case 'new':
     case 'edit':
       return (
         <>
@@ -100,31 +100,6 @@ export const NumberComponent: React.FC<ReactClientFieldSetting<NumberFieldSettin
             onChange={handleChange}
           />
         </>
-      )
-    case 'new':
-      return (
-        <TextField
-          name={props.settings.Name}
-          type="number"
-          label={props.settings.DisplayName}
-          value={value}
-          required={props.settings.Compulsory}
-          disabled={props.settings.ReadOnly}
-          placeholder={props.settings.DisplayName}
-          InputProps={{
-            startAdornment: defineCurrency(),
-            endAdornment: props.settings.ShowAsPercentage ? <InputAdornment position="end">%</InputAdornment> : null,
-          }}
-          inputProps={{
-            step: defineStepValue(),
-            max: props.settings.MaxValue,
-            min: props.settings.MinValue,
-          }}
-          id={props.settings.Name}
-          fullWidth={true}
-          onChange={handleChange}
-          helperText={props.settings.Description}
-        />
       )
     case 'browse':
     default:

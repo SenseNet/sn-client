@@ -287,6 +287,7 @@ export class AllowedChildTypesComponent extends Component<
 
   public render() {
     switch (this.props.actionName) {
+      case 'new':
       case 'edit':
         return (
           <LocalizationContext.Consumer>
@@ -369,31 +370,32 @@ export class AllowedChildTypesComponent extends Component<
             )}
           </LocalizationContext.Consumer>
         )
-      case 'new':
       case 'browse':
       default:
         return this.state.items.length ? (
-          <FormControl>
+          <>
             <InputLabel shrink htmlFor={this.props.settings.Name} required={this.props.settings.Compulsory}>
               {this.props.settings.DisplayName}
             </InputLabel>
-            <List dense={true}>
-              {this.state.items.map((item, index) => (
-                <ListItem key={index}>
-                  <ListItemIcon style={{ margin: 0 }}>
-                    {this.props.renderIcon
-                      ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                      : renderIconDefault(
-                          item.Icon && typeicons[item.Icon.toLowerCase()]
-                            ? typeicons[item.Icon.toLowerCase()]
-                            : typeicons.contenttype,
-                        )}
-                  </ListItemIcon>
-                  <ListItemText primary={item.DisplayName} />
-                </ListItem>
-              ))}
-            </List>
-          </FormControl>
+            <FormControl>
+              <List dense={true}>
+                {this.state.items.map((item, index) => (
+                  <ListItem key={index}>
+                    <ListItemIcon style={{ margin: 0 }}>
+                      {this.props.renderIcon
+                        ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                        : renderIconDefault(
+                            item.Icon && typeicons[item.Icon.toLowerCase()]
+                              ? typeicons[item.Icon.toLowerCase()]
+                              : typeicons.contenttype,
+                          )}
+                    </ListItemIcon>
+                    <ListItemText primary={item.DisplayName} />
+                  </ListItem>
+                ))}
+              </List>
+            </FormControl>
+          </>
         ) : null
     }
   }

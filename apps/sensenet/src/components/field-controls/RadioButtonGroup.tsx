@@ -30,8 +30,8 @@ export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetti
   }
 
   switch (props.actionName) {
-    case 'edit':
     case 'new':
+    case 'edit':
       return (
         <FormControl
           component={'fieldset' as 'div'}

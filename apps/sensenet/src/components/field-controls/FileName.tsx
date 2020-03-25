@@ -40,8 +40,8 @@ export const FileName: React.FC<ReactClientFieldSetting> = props => {
   }
 
   switch (props.actionName) {
-    case 'edit':
     case 'new':
+    case 'edit':
       return (
         <TextField
           name={props.settings.Name}

@@ -23,7 +23,7 @@ type ContentContextMenuProps = {
   menuProps?: Partial<MenuProps>
   content: GenericContent
   halfPage?: boolean
-  setFormOpen?: () => void
+  setFormOpen?: (actionname: 'new' | 'edit' | 'browse' | undefined) => void
 }
 
 export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps> = props => {
@@ -53,8 +53,20 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
     [isWriteAvailable, logger],
   )
 
-  const setFormOpen = () => {
-    props.setFormOpen && props.setFormOpen()
+  const setFormOpen = (actionName: 'new' | 'edit' | 'browse' | undefined) => {
+    props.setFormOpen && props.setFormOpen(actionName)
+  }
+
+  const getAction = (actionName: string) => {
+    if (actionName === 'Edit') {
+      return 'edit'
+    } else if (actionName === 'New') {
+      return 'new'
+    } else if (actionName === 'Browse') {
+      return 'browse'
+    } else {
+      return undefined
+    }
   }
 
   const { runAction } = useContextMenuActions(props.content, setActionsWopi)
@@ -82,7 +94,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
                   disabled={DISABLED_ACTIONS.includes(action.Name)}
                   onClick={() => {
                     props.onClose?.()
-                    runAction(action.Name, props.halfPage, setFormOpen)
+                    runAction(action.Name, props.halfPage, () => setFormOpen(getAction(action.Name)))
                   }}>
                   <ListItemIcon>{getIcon(action.Name.toLowerCase())}</ListItemIcon>
                   <ListItemText primary={action.DisplayName || action.Name} />
@@ -101,7 +113,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
                 disabled={DISABLED_ACTIONS.includes(action.Name)}
                 onClick={() => {
                   props.onClose?.()
-                  runAction(action.Name, props.halfPage, setFormOpen)
+                  runAction(action.Name, props.halfPage, () => setFormOpen(getAction(action.Name)))
                 }}>
                 <ListItemIcon>{getIcon(action.Name.toLowerCase())}</ListItemIcon>
                 <div style={{ flexGrow: 1 }}>{action.DisplayName || action.Name}</div>

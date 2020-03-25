@@ -122,7 +122,8 @@ const values: DeepPartial<typeof import('./default').default> = {
     cancel: 'Vissza',
     upload: 'Feltöltés',
     submit: 'Küldés',
-    inputPlaceHolder: 'Start typing to add another type',
+    inputPlaceHolder: 'Új típus hozzáadásához kezdje el gépelni',
+    emptyField: '<Ez a mező üres>',
   },
 }
 

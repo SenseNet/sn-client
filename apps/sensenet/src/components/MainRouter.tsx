@@ -19,6 +19,9 @@ const SetupComponent = lazy(async () => await import(/* webpackChunkName: "setup
 const LoginComponent = lazy(async () => await import(/* webpackChunkName: "Login" */ './login/Login'))
 const EditBinary = lazy(async () => await import(/* webpackChunkName: "editBinary" */ './edit/EditBinary'))
 const EditProperties = lazy(async () => await import(/* webpackChunkName: "editProperties" */ './edit/EditProperties'))
+const BrowseProperties = lazy(
+  async () => await import(/* webpackChunkName: "browseProperties" */ './browse/BrowseProperties'),
+)
 const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 
 const TrashComponent = lazy(async () => await import(/* webpackChunkName: "Trash" */ './trash/Trash'))
@@ -139,6 +142,12 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                     path="/:repo/editProperties/:contentId?"
                     render={() => {
                       return <EditProperties />
+                    }}
+                  />
+                  <Route
+                    path="/:repo/browseProperties/:contentId?"
+                    render={() => {
+                      return <BrowseProperties />
                     }}
                   />
                   <Route

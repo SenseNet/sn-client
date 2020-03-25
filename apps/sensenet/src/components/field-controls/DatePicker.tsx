@@ -52,63 +52,8 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
   }
 
   switch (props.actionName) {
-    case 'edit':
-      return (
-        <MuiPickersUtilsProvider utils={MomentUtils}>
-          {props.settings.DateTimeMode === DateTimeMode.Date ? (
-            <>
-              <InputLabel
-                shrink
-                htmlFor={props.settings.Name}
-                required={props.settings.Compulsory}
-                style={{ height: '16px' }}>
-                {props.settings.DisplayName}
-              </InputLabel>
-              <MUIDatePicker
-                value={value}
-                onChange={handleDateChange}
-                name={props.settings.Name}
-                defaultValue={changeJScriptValue(props.settings.DefaultValue)}
-                id={props.settings.Name}
-                disabled={props.settings.ReadOnly}
-                placeholder={props.settings.DisplayName}
-                fullWidth={true}
-                InputProps={{
-                  className: classes.inputBase,
-                }}
-                inputVariant="outlined"
-                className={classes.formControl}
-              />
-            </>
-          ) : (
-            <>
-              <InputLabel
-                shrink
-                htmlFor={props.settings.Name}
-                required={props.settings.Compulsory}
-                style={{ height: '16px' }}>
-                {props.settings.DisplayName}
-              </InputLabel>
-              <DateTimePicker
-                value={value}
-                onChange={handleDateChange}
-                name={props.settings.Name}
-                defaultValue={changeJScriptValue(props.settings.DefaultValue)}
-                id={props.settings.Name}
-                disabled={props.settings.ReadOnly}
-                placeholder={props.settings.DisplayName}
-                fullWidth={true}
-                InputProps={{
-                  className: classes.inputBase,
-                }}
-                inputVariant="outlined"
-                className={classes.formControl}
-              />
-            </>
-          )}
-        </MuiPickersUtilsProvider>
-      )
     case 'new':
+    case 'edit':
       return (
         <MuiPickersUtilsProvider utils={MomentUtils}>
           {props.settings.DateTimeMode === DateTimeMode.Date ? (

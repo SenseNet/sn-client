@@ -127,6 +127,7 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
   }
 
   switch (props.actionName) {
+    case 'new':
     case 'edit':
       return (
         <FormControl

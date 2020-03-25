@@ -420,6 +420,7 @@ const values = {
     upload: 'Upload',
     submit: 'Submit',
     inputPlaceHolder: 'Start typing to add another type',
+    emptyField: '<This field is empty>',
   },
 }
 

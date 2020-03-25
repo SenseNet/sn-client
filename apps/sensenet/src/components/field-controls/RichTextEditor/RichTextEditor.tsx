@@ -1,14 +1,14 @@
 /**
  * @module FieldControls
  */
-import FormControl from '@material-ui/core/FormControl'
-import FormLabel from '@material-ui/core/FormLabel'
+
+import { createStyles, InputLabel, makeStyles, Theme } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
+import { changeJScriptValue } from '@sensenet/controls-react'
 import React, { useState } from 'react'
 import ReactQuill, { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
-import { changeJScriptValue } from '@sensenet/controls-react'
-import { createStyles, InputLabel, makeStyles, Theme } from '@material-ui/core'
+import { useLocalization } from '../../../hooks'
 import { ReactClientFieldSetting } from '../ClientFieldSetting'
 import QuillOEmbedModule from './QuillOEmbedModule'
 
@@ -68,6 +68,7 @@ export const RichTextEditor: React.FC<ReactClientFieldSetting> = props => {
   const initialState = props.fieldValue || changeJScriptValue(props.settings.DefaultValue) || ''
   const [value, setValue] = useState(initialState)
   const classes = useStyles()
+  const localization = useLocalization().forms
 
   const handleChange = (changedValue: string) => {
     setValue(changedValue)
@@ -75,6 +76,7 @@ export const RichTextEditor: React.FC<ReactClientFieldSetting> = props => {
   }
 
   switch (props.actionName) {
+    case 'new':
     case 'edit':
       return (
         <div className={classes.richTextEditor}>
@@ -93,31 +95,19 @@ export const RichTextEditor: React.FC<ReactClientFieldSetting> = props => {
           />
         </div>
       )
-    case 'new':
-      return (
-        <FormControl component={'fieldset' as 'div'} fullWidth={true} required={props.settings.Compulsory}>
-          <FormLabel component={'legend' as 'label'}>{props.settings.DisplayName}</FormLabel>
-          <ReactQuill
-            style={{ background: '#fff', marginTop: 10, color: '#000' }}
-            defaultValue={changeJScriptValue(props.settings.DefaultValue)}
-            placeholder={props.settings.DisplayName}
-            readOnly={props.settings.ReadOnly}
-            modules={modules}
-            onChange={handleChange}
-            value={value}
-            theme="snow"
-          />
-        </FormControl>
-      )
     case 'browse':
     default:
-      return props.fieldValue ? (
+      return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
-          <div dangerouslySetInnerHTML={{ __html: props.fieldValue }} />
+          <div
+            dangerouslySetInnerHTML={{
+              __html: props.fieldValue ? props.fieldValue : localization.emptyField,
+            }}
+          />
         </div>
-      ) : null
+      )
   }
 }

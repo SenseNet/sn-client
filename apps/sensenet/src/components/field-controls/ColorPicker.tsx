@@ -6,10 +6,10 @@ import FormControl from '@material-ui/core/FormControl'
 import Icon from '@material-ui/core/Icon'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
+import { changeJScriptValue } from '@sensenet/controls-react'
+import { ColorFieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { ColorResult, SketchPicker } from 'react-color'
-import { ColorFieldSetting } from '@sensenet/default-content-types'
-import { changeJScriptValue } from '@sensenet/controls-react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 const style = {
@@ -40,8 +40,8 @@ export const ColorPicker: React.FC<ReactClientFieldSetting<ColorFieldSetting>> =
   }
 
   switch (props.actionName) {
-    case 'edit':
     case 'new':
+    case 'edit':
       return (
         <FormControl>
           <TextField

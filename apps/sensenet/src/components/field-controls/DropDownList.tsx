@@ -37,8 +37,8 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
   }
 
   switch (props.actionName) {
-    case 'edit':
     case 'new':
+    case 'edit':
       return (
         <FormControl fullWidth={true} required={props.settings.Compulsory} disabled={props.settings.ReadOnly}>
           <InputLabel htmlFor={props.settings.Name}>{props.settings.DisplayName}</InputLabel>

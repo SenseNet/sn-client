@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme: Theme) => {
       margin: '0 auto',
       padding: '22px 22px 39px 22px',
       overflowY: 'auto',
+      width: '100%',
     },
     cancel: {
       marginRight: 38,
@@ -50,6 +51,7 @@ export interface EditViewProps {
   handleCancel?: () => void
   submitCallback?: () => void
   uploadFolderpath?: string
+  actionName?: 'new' | 'edit' | 'browse' | undefined
 }
 
 /**
@@ -64,7 +66,7 @@ export const EditView: React.FC<EditViewProps> = props => {
   const repo = useRepository()
   const content = useContext(CurrentContentContext)
   const controlMapper = reactControlMapper(repo)
-  const schema = controlMapper.getFullSchemaForContentType(content.Type, 'edit')
+  const schema = controlMapper.getFullSchemaForContentType(content.Type, props.actionName ? props.actionName : 'browse')
   const [saveableFields, setSaveableFields] = useState({})
   const classes = useStyles()
   const localization = useLocalization()
@@ -125,13 +127,17 @@ export const EditView: React.FC<EditViewProps> = props => {
           .sort((item1, item2) => item2.fieldSettings.DefaultOrder! - item1.fieldSettings.DefaultOrder!)
           .map(field => {
             const fieldControl = createElement(
-              controlMapper.getControlForContentField(content.Type, field.fieldSettings.Name, 'edit'),
+              controlMapper.getControlForContentField(
+                content.Type,
+                field.fieldSettings.Name,
+                props.actionName ? props.actionName : 'browse',
+              ),
               {
                 repository: repo,
                 settings: field.fieldSettings,
                 content,
                 fieldValue: (content as any)[field.fieldSettings.Name],
-                actionName: 'edit',
+                actionName: props.actionName,
                 renderIcon: props.renderIcon,
                 fieldOnChange: handleInputChange,
                 uploadFolderPath: props.uploadFolderpath,

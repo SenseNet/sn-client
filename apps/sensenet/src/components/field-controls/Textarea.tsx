@@ -24,8 +24,8 @@ export const Textarea: React.FC<ReactClientFieldSetting<LongTextFieldSetting>> =
   }
 
   switch (props.actionName) {
-    case 'edit':
     case 'new':
+    case 'edit':
       return (
         <TextField
           onChange={handleChange}

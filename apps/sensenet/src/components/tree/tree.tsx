@@ -19,7 +19,7 @@ type TreeProps = {
   loadMore: (startIndex: number, path?: string) => Promise<void>
   onItemClick: (item: GenericContent) => void
   treeData: ItemType
-  setFormOpen?: () => void
+  setFormOpen?: (actionName: 'new' | 'edit' | 'browse' | undefined) => void
 }
 
 const ROW_HEIGHT = 48
@@ -157,22 +157,24 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, se
     )
   }
 
-  const setFormOpenFunc = () => {
-    setFormOpen && setFormOpen()
+  const setFormOpenFunc = (actionName: 'new' | 'edit' | 'browse' | undefined) => {
+    setFormOpen && setFormOpen(actionName)
   }
 
   return (
     <div
       style={{
-        minWidth: '243px',
+        minWidth: '350px',
+        maxWidth: '400px',
         flexGrow: 2,
         flexShrink: 0,
         borderRight: '1px solid rgba(128,128,128,.2)',
       }}>
       <AutoSizer>
-        {({ width, height }) => (
+        {({ height, width }) => (
           <List
             height={height}
+            width={width}
             overscanRowCount={10}
             ref={listRef}
             rowHeight={rowHeight}
@@ -185,7 +187,6 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, se
             }}
             rowRenderer={rowRenderer}
             rowCount={itemCount}
-            width={width}
             style={{ outline: 'none' }}
           />
         )}
@@ -203,7 +204,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, se
           }}
           onClose={() => setContextMenuAnchor(null)}
           halfPage={true}
-          setFormOpen={setFormOpenFunc}
+          setFormOpen={actionName => setFormOpenFunc(actionName)}
         />
       ) : null}
     </div>

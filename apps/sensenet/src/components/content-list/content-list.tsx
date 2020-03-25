@@ -69,7 +69,7 @@ export interface ContentListProps {
   onFocus?: () => void
   containerProps?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
   isOpenFrom?: 'explore' | 'commander' | 'simple'
-  setFormOpen?: () => void
+  setFormOpen?: (actionName: 'new' | 'edit' | 'browse' | undefined) => void
 }
 
 export const isReferenceField = (fieldName: string, repo: Repository) => {
@@ -401,15 +401,18 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
 
   const displayNameInArray = ['DisplayName']
 
-  const setFormOpen = () => {
-    props.setFormOpen && props.setFormOpen()
+  const setFormOpen = (actionName: 'new' | 'edit' | 'browse' | undefined) => {
+    props.setFormOpen && props.setFormOpen(actionName)
   }
 
   return (
     <div style={{ ...props.style }} {...props.containerProps}>
       {props.enableBreadcrumbs ? (
         <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
-          <ContentBreadcrumbs setFormOpen={setFormOpen} onItemClick={i => props.onParentChange(i.content)} />
+          <ContentBreadcrumbs
+            setFormOpen={actionName => setFormOpen(actionName)}
+            onItemClick={i => props.onParentChange(i.content)}
+          />
         </div>
       ) : null}
       <DropFileArea parentContent={parentContent} style={{ height: '100%', overflow: 'hidden' }}>
@@ -461,7 +464,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
               onClose={onCloseFunc}
               onOpen={onOpenFunc}
               halfPage={props.isOpenFrom && props.isOpenFrom === 'explore'}
-              setFormOpen={setFormOpen}
+              setFormOpen={actionName => setFormOpen(actionName)}
             />
           ) : null}
         </div>

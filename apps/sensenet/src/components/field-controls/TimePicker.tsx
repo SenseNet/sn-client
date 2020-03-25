@@ -27,8 +27,8 @@ export const TimePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
   }
 
   switch (props.actionName) {
-    case 'edit':
     case 'new':
+    case 'edit':
       return (
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <MUITimePicker

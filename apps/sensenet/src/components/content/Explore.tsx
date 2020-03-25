@@ -51,13 +51,15 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const [isFormOpened, setIsFormOpened] = useState(false)
+  const [action, setAction] = useState<'new' | 'edit' | 'browse' | undefined>(undefined)
 
   if (!props.rootPath) {
     return null
   }
 
-  const setFormOpen = () => {
+  const setFormOpen = (actionName: 'new' | 'edit' | 'browse' | undefined) => {
     setIsFormOpened(true)
+    setAction(actionName)
   }
 
   return (
@@ -67,7 +69,10 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
           <CurrentChildrenProvider>
             <CurrentAncestorsProvider root={props.rootPath}>
               <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
-                <ContentBreadcrumbs setFormOpen={setFormOpen} onItemClick={i => props.onNavigate(i.content)} />
+                <ContentBreadcrumbs
+                  setFormOpen={actionName => setFormOpen(actionName)}
+                  onItemClick={i => props.onNavigate(i.content)}
+                />
               </div>
               <div className={classes.treeAndDatagridWrapper}>
                 <TreeWithData
@@ -77,12 +82,16 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                   }}
                   parentPath={props.rootPath}
                   activeItemIdOrPath={props.parentIdOrPath}
-                  setFormOpen={setFormOpen}
+                  setFormOpen={actionName => setFormOpen(actionName)}
                 />
                 {isFormOpened ? (
                   <EditView
                     uploadFolderpath={'/Root/Content/demoavatars'}
-                    handleCancel={() => setIsFormOpened(false)}
+                    handleCancel={() => {
+                      setIsFormOpened(false)
+                      setAction(undefined)
+                    }}
+                    actionName={action}
                   />
                 ) : (
                   <ContentList
@@ -97,7 +106,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                       selectionService.selection.setValue(sel)
                     }}
                     isOpenFrom={'explore'}
-                    setFormOpen={setFormOpen}
+                    setFormOpen={actionName => setFormOpen(actionName)}
                   />
                 )}
               </div>

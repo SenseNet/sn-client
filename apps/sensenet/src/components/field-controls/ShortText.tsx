@@ -45,6 +45,7 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
   }
 
   switch (props.actionName) {
+    case 'new':
     case 'edit':
       return (
         <>
@@ -57,28 +58,6 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
             placeholder={props.settings.DisplayName}
             value={value}
             required={props.settings.Compulsory}
-            disabled={props.settings.ReadOnly}
-            defaultValue={changeJScriptValue(props.settings.DefaultValue)}
-            inputProps={{
-              minLength: props.settings.MinLength,
-              maxLength: props.settings.MaxLength,
-              pattern: props.settings.Regex,
-            }}
-            onChange={handleChange}
-          />
-        </>
-      )
-    case 'new':
-      return (
-        <>
-          <InputLabel shrink htmlFor={props.settings.Name} required={props.settings.Compulsory}>
-            {props.settings.DisplayName}
-          </InputLabel>
-          <ShortTextInput
-            name={props.settings.Name}
-            id={props.settings.Name}
-            placeholder={props.settings.DisplayName}
-            value={value}
             disabled={props.settings.ReadOnly}
             defaultValue={changeJScriptValue(props.settings.DefaultValue)}
             inputProps={{

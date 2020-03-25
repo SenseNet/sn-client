@@ -40,7 +40,7 @@ const GenericContentEditor: React.FunctionComponent<RouteComponentProps<{ conten
           <EditView
             uploadFolderpath={'/Root/Content/demoavatars'}
             handleCancel={props.history.goBack}
-            actionName={'edit'}
+            actionName={'browse'}
           />
         </CurrentAncestorsProvider>
       </CurrentContentProvider>

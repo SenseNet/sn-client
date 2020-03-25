@@ -23,8 +23,8 @@ export const Password: React.FC<ReactClientFieldSetting> = props => {
     props.fieldOnChange?.(props.settings.Name, e.target.value)
   }
   switch (props.actionName) {
-    case 'edit':
     case 'new':
+    case 'edit':
       return (
         <FormControl style={{ width: '100%' }}>
           <InputLabel htmlFor={props.settings.Name}>{props.settings.DisplayName}</InputLabel>
