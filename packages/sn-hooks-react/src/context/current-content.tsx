@@ -2,6 +2,7 @@ import { ConstantContent, ODataParams } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
+import { PathHelper } from '@sensenet/client-utils'
 import { useRepository, useRepositoryEvents } from '../hooks'
 
 /**
@@ -44,9 +45,13 @@ export const CurrentContentProvider: React.FunctionComponent<CurrentContentProvi
           reload()
         }
       }),
+      events.onContentDeleted.subscribe(async c => {
+        const parentContent = await repo.load({ idOrPath: PathHelper.getParentPath(c.contentData.Path) })
+        setContent(parentContent.d)
+      }),
     ]
     return () => subscriptions.forEach(s => s.dispose())
-  }, [content.Id, events.onContentModified])
+  }, [content.Id, events.onContentDeleted, events.onContentModified, repo])
 
   const [error, setError] = useState<Error | undefined>()
 

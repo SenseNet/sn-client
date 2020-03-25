@@ -138,34 +138,29 @@ export const ContentList: React.FC<ContentListProps<GenericContent>> = props => 
                 />
               </TableCell>
             ) : null}
-            {props.fieldsToDisplay
-              ? props.fieldsToDisplay.map(field => {
-                  const fieldSetting = getSchemaForField(field)
-                  const isNumeric =
-                    fieldSetting &&
-                    (fieldSetting.Type === 'IntegerFieldSetting' || fieldSetting.Type === 'NumberFieldSetting')
-                  const description = (fieldSetting && fieldSetting.Description) || field
-                  const displayName = (fieldSetting && fieldSetting.DisplayName) || field
-                  return (
-                    <TableCell
-                      key={field as string}
-                      align={isNumeric ? 'right' : 'inherit'}
-                      className={field as string}>
-                      <Tooltip title={description}>
-                        <TableSortLabel
-                          active={props.orderBy === field}
-                          direction={props.orderDirection}
-                          onClick={() =>
-                            props.onRequestOrderChange &&
-                            props.onRequestOrderChange(field, props.orderDirection === 'asc' ? 'desc' : 'asc')
-                          }>
-                          {displayName}
-                        </TableSortLabel>
-                      </Tooltip>
-                    </TableCell>
-                  )
-                })
-              : null}
+            {props.fieldsToDisplay.map(field => {
+              const fieldSetting = getSchemaForField(field)
+              const isNumeric =
+                fieldSetting &&
+                (fieldSetting.Type === 'IntegerFieldSetting' || fieldSetting.Type === 'NumberFieldSetting')
+              const description = (fieldSetting && fieldSetting.Description) || field
+              const displayName = (fieldSetting && fieldSetting.DisplayName) || field
+              return (
+                <TableCell key={field as string} align={isNumeric ? 'right' : 'inherit'} className={field as string}>
+                  <Tooltip title={description}>
+                    <TableSortLabel
+                      active={props.orderBy === field}
+                      direction={props.orderDirection}
+                      onClick={() =>
+                        props.onRequestOrderChange &&
+                        props.onRequestOrderChange(field, props.orderDirection === 'asc' ? 'desc' : 'asc')
+                      }>
+                      {displayName}
+                    </TableSortLabel>
+                  </Tooltip>
+                </TableCell>
+              )
+            })}
           </TableRow>
         </TableHead>
       )}
@@ -202,21 +197,19 @@ export const ContentList: React.FC<ContentListProps<GenericContent>> = props => 
                   )}
                 </TableCell>
               ) : null}
-              {props.fieldsToDisplay
-                ? props.fieldsToDisplay.map(field => {
-                    const fieldSetting = getSchemaForField(field)
-                    const cellProps: CellProps = {
-                      ...(props as ContentListProps),
-                      field,
-                      content: item,
-                      fieldSetting,
-                      isSelected,
-                    }
+              {props.fieldsToDisplay.map(field => {
+                const fieldSetting = getSchemaForField(field)
+                const cellProps: CellProps = {
+                  ...(props as ContentListProps),
+                  field,
+                  content: item,
+                  fieldSetting,
+                  isSelected,
+                }
 
-                    const FieldComponent = props.fieldComponent || defaultFieldComponents
-                    return <FieldComponent key={cellProps.field} {...cellProps} />
-                  })
-                : null}
+                const FieldComponent = props.fieldComponent || defaultFieldComponents
+                return <FieldComponent key={cellProps.field} {...cellProps} />
+              })}
             </TableRow>
           )
         })}

@@ -22,7 +22,7 @@ export const DateCell: React.StatelessComponent<DateCellProps> = props => {
             }
           : {}
       }
-      component="div">
+      component={props.virtual ? 'div' : 'td'}>
       <Moment fromNow={true}>{props.date}</Moment>
     </TableCell>
   )

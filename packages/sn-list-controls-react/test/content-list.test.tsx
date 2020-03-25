@@ -682,21 +682,6 @@ describe('ContentList component', () => {
         expect(component).toMatchSnapshot()
         component.unmount()
       })
-      it('should render without crashing without fieldsToDisplay', () => {
-        const component = shallow(
-          <ContentList
-            items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
-            schema={genericSchema}
-            selected={[]}
-            orderBy="DisplayName"
-            orderDirection="asc"
-            icons={{}}
-            displayRowCheckbox={true}
-          />,
-        )
-        expect(component).toMatchSnapshot()
-        component.unmount()
-      })
     })
   })
 })
