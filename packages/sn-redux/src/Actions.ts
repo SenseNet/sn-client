@@ -773,3 +773,73 @@ export const restoreFromTrash = (idOrPath: number | string, destination: string,
       },
     }),
 })
+/**
+ * Action creator for get allowedchildtypes of a content
+ * @param idOrPath Id or Path of the content
+ */
+export const getAllowedChildTypes = (idOrPath: number | string) => ({
+  type: 'GET_ALLOWED_CHILDTYPES',
+  payload: (repository: Repository) =>
+    repository.getImplicitAllowedChildTypes({
+      idOrPath,
+    }),
+})
+
+/**
+ * Action creator for get effective allowedchildtypes of a content
+ * @param idOrPath Id or Path of the content
+ */
+export const getEffectiveAllowedChildTypes = (idOrPath: number | string) => ({
+  type: 'GET_EFFECTIVE_ALLOWED_CHILDTYPES',
+  payload: (repository: Repository) =>
+    repository.getAllowedChildTypes({
+      idOrPath,
+    }),
+})
+
+/**
+ * Action creator for get allowedchildtypes of a content set in the related CTD
+ * @param idOrPath Id or Path of the content
+ */
+export const getAllowedTypesFromCTD = (idOrPath: number | string) => ({
+  type: 'GET_ALLOWED_CHILDTYPES_FROM_CTD',
+  payload: (repository: Repository) =>
+    repository.getExplicitAllowedChildTypes({
+      idOrPath,
+    }),
+})
+/**
+ * Action creator for adding allowed childtypes to the given content
+ * @param idOrPath Id or Path of the content
+ * @param contentTypes List of names of the content types that should be added
+ */
+export const addAllowedChildTypes = (idOrPath: number | string, contentTypes: string[]) => ({
+  type: 'ADD_ALLOWED_CHILDTYPES',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'AddAllowedChildTypes',
+      method: 'POST',
+      body: {
+        contentTypes,
+      },
+    }),
+})
+
+/**
+ * Action creator for removing allowed childtypes to the given content
+ * @param idOrPath Id or Path of the content
+ * @param contentTypes List of names of the content types that should be removed
+ */
+export const removeAllowedChildTypes = (idOrPath: number | string, contentTypes: string[]) => ({
+  type: 'REMOVE_ALLOWED_CHILDTYPES',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'RemoveAllowedChildTypes',
+      method: 'POST',
+      body: {
+        contentTypes,
+      },
+    }),
+})

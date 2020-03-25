@@ -226,6 +226,19 @@ const previewCommentsResponse = {
   ],
 } as Response
 
+const contentTypeCollectionMockResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return {
+      d: {
+        __count: 0,
+        results: [],
+      },
+    }
+  },
+} as Response
+
 describe('Actions', () => {
   const path = '/workspaces/project'
   let repo: Repository
@@ -1335,6 +1348,139 @@ describe('Actions', () => {
         })
         it('should return mockdata', () => {
           expect(data).toEqual(expectedResult)
+        })
+      })
+    })
+  })
+  describe('addAllowedChildTypes', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => emptyResponse as any)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.addAllowedChildTypes(42, ['Image', 'Task']).type).toBe('ADD_ALLOWED_CHILDTYPES')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.executeAction() resolves', () => {
+        let data: any
+        beforeEach(async () => {
+          data = await Actions.addAllowedChildTypes(42, ['Image', 'Task']).payload(repo)
+        })
+        it('should return a ADD_ALLOWED_CHILDTYPES action', () => {
+          expect(Actions.addAllowedChildTypes(42, ['Image', 'Task'])).toHaveProperty('type', 'ADD_ALLOWED_CHILDTYPES')
+        })
+        it('should return propertyResponse', () => {
+          expect(data).toBeUndefined()
+        })
+      })
+    })
+  })
+  describe('removeAllowedChildTypes', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => emptyResponse as any)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.removeAllowedChildTypes(42, ['Image', 'Task']).type).toBe('REMOVE_ALLOWED_CHILDTYPES')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.executeAction() resolves', () => {
+        let data: any
+        beforeEach(async () => {
+          data = await Actions.removeAllowedChildTypes(42, ['Image', 'Task']).payload(repo)
+        })
+        it('should return a REMOVE_ALLOWED_CHILDTYPES action', () => {
+          expect(Actions.removeAllowedChildTypes(42, ['Image', 'Task'])).toHaveProperty(
+            'type',
+            'REMOVE_ALLOWED_CHILDTYPES',
+          )
+        })
+        it('should return propertyResponse', () => {
+          expect(data).toBeUndefined()
+        })
+      })
+    })
+  })
+  describe('getAllowedChildTypes', () => {
+    beforeEach(() => {
+      repo = new Repository(
+        { repositoryUrl: 'https://dev.demo.sensenet.com/' },
+        async () => contentTypeCollectionMockResponse,
+      )
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getAllowedChildTypes(path).type).toBe('GET_ALLOWED_CHILDTYPES')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.getImplicitAllowedChildTypes() resolves', () => {
+        let data: ODataCollectionResponse<GenericContent>
+        let mockCollectionResponseData: ReturnType<typeof contentTypeCollectionMockResponse['json']>
+        beforeEach(async () => {
+          data = await Actions.getAllowedChildTypes(path).payload(repo)
+          mockCollectionResponseData = await contentTypeCollectionMockResponse.json()
+        })
+        it('should return a GET_ALLOWED_CHILDTYPES action', () => {
+          expect(Actions.getAllowedChildTypes(path)).toHaveProperty('type', 'GET_ALLOWED_CHILDTYPES')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(mockCollectionResponseData)
+        })
+      })
+    })
+  })
+  describe('getEffectiveAllowedChildTypes', () => {
+    beforeEach(() => {
+      repo = new Repository(
+        { repositoryUrl: 'https://dev.demo.sensenet.com/' },
+        async () => contentTypeCollectionMockResponse,
+      )
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getEffectiveAllowedChildTypes(path).type).toBe('GET_EFFECTIVE_ALLOWED_CHILDTYPES')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.getAllowedChildTypes() resolves', () => {
+        let data: ODataCollectionResponse<GenericContent>
+        let mockCollectionResponseData: ReturnType<typeof contentTypeCollectionMockResponse['json']>
+        beforeEach(async () => {
+          data = await Actions.getEffectiveAllowedChildTypes(path).payload(repo)
+          mockCollectionResponseData = await contentTypeCollectionMockResponse.json()
+        })
+        it('should return a GET_EFFECTIVE_ALLOWED_CHILDTYPES action', () => {
+          expect(Actions.getEffectiveAllowedChildTypes(path)).toHaveProperty('type', 'GET_EFFECTIVE_ALLOWED_CHILDTYPES')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(mockCollectionResponseData)
+        })
+      })
+    })
+  })
+  describe('getAllowedTypesFromCTD', () => {
+    beforeEach(() => {
+      repo = new Repository(
+        { repositoryUrl: 'https://dev.demo.sensenet.com/' },
+        async () => contentTypeCollectionMockResponse,
+      )
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getAllowedTypesFromCTD(path).type).toBe('GET_ALLOWED_CHILDTYPES_FROM_CTD')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.getAllowedTypesFromCTD() resolves', () => {
+        let data: ODataCollectionResponse<GenericContent>
+        let mockCollectionResponseData: ReturnType<typeof contentTypeCollectionMockResponse['json']>
+        beforeEach(async () => {
+          data = await Actions.getAllowedTypesFromCTD(path).payload(repo)
+          mockCollectionResponseData = await contentTypeCollectionMockResponse.json()
+        })
+        it('should return a GET_ALLOWED_CHILDTYPES_FROM_CTD action', () => {
+          expect(Actions.getAllowedTypesFromCTD(path)).toHaveProperty('type', 'GET_ALLOWED_CHILDTYPES_FROM_CTD')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(mockCollectionResponseData)
         })
       })
     })
