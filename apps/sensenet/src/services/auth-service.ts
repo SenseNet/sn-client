@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { OIDCAuthenticationService, UserManager, UserManagerSettings } from '@sensenet/client-core'
+import { UserManagerSettings } from '@sensenet/authentication-oidc-react'
 import { applicationPaths } from '../application-paths'
 
-let service: OIDCAuthenticationService
+let config: UserManagerSettings
 let currentRepoUrl: string
 
-export const getAuthService = async (repoUrl: string) => {
-  if (service && repoUrl === currentRepoUrl) {
-    return service
+export const getAuthConfig = async (repoUrl: string) => {
+  if (config && repoUrl === currentRepoUrl) {
+    return config
   }
 
   const trimmedRepoUrl = repoUrl.replace(/\/\s*$/, '')
@@ -21,17 +21,12 @@ export const getAuthService = async (repoUrl: string) => {
     redirect_uri: window.location.origin + applicationPaths.loginCallback,
     response_type: 'code',
     scope: 'openid profile sensenet',
-    automaticSilentRenew: true,
-    loadUserInfo: true,
-    includeIdTokenInSilentRenew: true,
-    post_logout_redirect_uri: window.location.origin + applicationPaths.logOutCallback,
-    popup_post_logout_redirect_uri: window.location.origin + applicationPaths.logOutCallback,
-    popup_redirect_uri: window.location.origin + applicationPaths.loginCallback,
+    post_logout_redirect_uri: window.location.origin,
+    silent_redirect_uri: window.location.origin + applicationPaths.silentCallback,
     extraQueryParams: { snrepo: trimmedRepoUrl },
   }
 
-  const userManager = new UserManager({ ...settings, ...mySettings })
-  service = new OIDCAuthenticationService({ userManager })
+  const userManagerSettings = { ...settings, ...mySettings }
   currentRepoUrl = repoUrl
-  return service
+  return userManagerSettings
 }

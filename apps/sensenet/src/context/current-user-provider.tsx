@@ -1,28 +1,27 @@
+import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
+import { ConstantContent } from '@sensenet/client-core/src'
 import { User } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react'
-import { ConstantContent } from '@sensenet/client-core/src'
-import { getAuthService } from '../services'
 
 const CurrentUserContext = createContext<User | undefined>(undefined)
 
 export function CurrentUserProvider({ children }: PropsWithChildren<{}>) {
   const repository = useRepository()
+  const { oidcUser } = useOidcAuthentication()
   const logger = useLogger('current-user-provider')
   const [currentUser, setCurrentUser] = useState<User>()
 
   useEffect(() => {
     const ac = new AbortController()
     async function getUser() {
-      const authService = await getAuthService(repository.configuration.repositoryUrl)
-      const user = await authService.getUser()
-      if (!user) {
+      if (!oidcUser) {
         return
       }
 
       try {
         const result = await repository.load<User>({
-          idOrPath: user.sub,
+          idOrPath: oidcUser.profile.sub,
           oDataOptions: {
             select: 'all',
           },
@@ -40,7 +39,7 @@ export function CurrentUserProvider({ children }: PropsWithChildren<{}>) {
     }
     getUser()
     return () => ac.abort()
-  }, [logger, repository])
+  }, [logger, oidcUser, repository])
 
   if (!currentUser) {
     return null

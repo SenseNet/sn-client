@@ -1,72 +1,92 @@
+import { AuthenticationProvider, useOidcAuthentication, UserManagerSettings } from '@sensenet/authentication-oidc-react'
 import { Repository } from '@sensenet/client-core'
-import { ValueObserver } from '@sensenet/client-utils'
 import { RepositoryContext, useLogger } from '@sensenet/hooks-react'
-import React, { lazy, Suspense, useEffect, useState } from 'react'
+import React, { lazy, ReactNode, Suspense, useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { FullScreenLoader } from '../components/FullScreenLoader'
-import { useRepoUrlFromLocalStorage } from '../hooks'
-import { getAuthService } from '../services/auth-service'
 import { NotificationComponent } from '../components/NotificationComponent'
+import { useRepoUrlFromLocalStorage } from '../hooks'
+import { getAuthConfig } from '../services/auth-service'
 
 const LoginPage = lazy(() => import(/* webpackChunkName: "login" */ '../components/login/login-page'))
 
 export function RepositoryProvider({ children }: { children: React.ReactNode }) {
-  const { repoUrl } = useRepoUrlFromLocalStorage()
+  const { repoUrl, setRepoUrl } = useRepoUrlFromLocalStorage()
   const logger = useLogger('repository-provider')
-  const [repository, setRepository] = useState<Repository>()
-  const [isLoading, setIsLoading] = useState(true)
+  const history = useHistory()
+  const [authConfig, setAuthConfig] = useState<UserManagerSettings>()
+  const [isLoggingIn, setIsLoggingIn] = useState(false)
 
   useEffect(() => {
-    let subscription: ValueObserver<any> | undefined
-    const createRepository = (repositoryUrl: string, token?: string) => {
-      if (!token) {
-        setIsLoading(false)
-        return
-      }
-      setRepository(new Repository({ repositoryUrl, token }))
-      setIsLoading(false)
-    }
-
     async function getRepo() {
       if (!repoUrl) {
-        setIsLoading(false)
         return
       }
-      setIsLoading(true)
       try {
-        const authService = await getAuthService(repoUrl)
-
-        subscription = authService.user.subscribe(user => {
-          if (!user) {
-            setRepository(undefined)
-            setIsLoading(false)
-          } else {
-            createRepository(repoUrl, user.access_token)
-          }
-        })
-
-        const token = await authService.getAccessToken()
-        createRepository(repoUrl, token)
+        const config = await getAuthConfig(repoUrl)
+        setAuthConfig(config)
       } catch (error) {
         logger.debug({ data: error, message: `network error at ${repoUrl}` })
-        setIsLoading(false)
       }
     }
     getRepo()
-    return () => subscription?.dispose()
   }, [logger, repoUrl])
 
-  if (isLoading) {
-    return null
-  }
-
-  if (!repository) {
+  if (!authConfig || !repoUrl) {
     return (
       <Suspense fallback={<FullScreenLoader />}>
-        <LoginPage />
+        <LoginPage
+          handleSubmit={repoUrlFromLogin => {
+            setRepoUrl(repoUrlFromLogin)
+            setIsLoggingIn(true)
+          }}
+        />
         <NotificationComponent />
       </Suspense>
     )
   }
 
-  return <RepositoryContext.Provider value={repository}>{children}</RepositoryContext.Provider>
+  return (
+    <AuthenticationProvider isEnabled={true} configuration={authConfig} history={history}>
+      {isLoggingIn ? <Login /> : null}
+      <RepoProvider setIsLoggingIn={() => setIsLoggingIn(true)}>{children}</RepoProvider>
+    </AuthenticationProvider>
+  )
+}
+
+const Login = () => {
+  const { login } = useOidcAuthentication()
+
+  useEffect(() => {
+    login()
+  }, [login])
+
+  return null
+}
+
+const RepoProvider = ({ children, setIsLoggingIn }: { children: ReactNode; setIsLoggingIn: () => void }) => {
+  const { repoUrl, setRepoUrl } = useRepoUrlFromLocalStorage()
+  const { oidcUser } = useOidcAuthentication()
+
+  if (!repoUrl || !oidcUser) {
+    return (
+      <Suspense fallback={<FullScreenLoader />}>
+        <LoginPage
+          handleSubmit={repoUrlFromLogin => {
+            if (repoUrl !== repoUrlFromLogin) {
+              setRepoUrl(repoUrlFromLogin)
+            }
+            setIsLoggingIn()
+          }}
+        />
+        <NotificationComponent />
+      </Suspense>
+    )
+  }
+
+  return (
+    <RepositoryContext.Provider value={new Repository({ repositoryUrl: repoUrl, token: oidcUser.access_token })}>
+      {children}
+    </RepositoryContext.Provider>
+  )
 }
