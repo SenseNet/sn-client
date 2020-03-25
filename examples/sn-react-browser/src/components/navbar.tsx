@@ -1,7 +1,7 @@
-import React from 'react'
 import { AppBar, Button, Toolbar, Tooltip, Typography } from '@material-ui/core'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import { useRepository } from '@sensenet/hooks-react'
+import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
+import React from 'react'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
  * Navbar component
  */
 export const NavBarComponent: React.FunctionComponent = () => {
-  const repo = useRepository()
+  const { logout } = useOidcAuthentication()
   const classes = useStyles()
   return (
     <div className={classes.root}>
@@ -30,7 +30,7 @@ export const NavBarComponent: React.FunctionComponent = () => {
             Document Browser
           </Typography>
           <Tooltip title="Return to the Login screen and select another repository">
-            <Button color="inherit" onClick={() => repo.authentication.logout()}>
+            <Button color="inherit" onClick={() => logout()}>
               Log out
             </Button>
           </Tooltip>
