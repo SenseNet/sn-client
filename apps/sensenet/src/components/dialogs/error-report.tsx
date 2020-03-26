@@ -77,12 +77,14 @@ export const ErrorReport: React.FunctionComponent<ErrorReportProps> = props => {
                 label={localization.allowLogSending}
               />
               <>
-                <Button onClick={() => closeDialog()}>
+                <Button onClick={() => closeDialog()} className={globalClasses.cancelButton}>
                   <Clear />
                   {localization.cancel}
                 </Button>
 
                 <Button
+                  color="primary"
+                  variant="contained"
                   onClick={() => {
                     setIsSending(true)
                   }}>

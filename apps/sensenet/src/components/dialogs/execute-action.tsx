@@ -4,10 +4,11 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import Typography from '@material-ui/core/Typography'
+import { PathHelper } from '@sensenet/client-utils'
+import { useInjector, useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
-import { useInjector, useLogger, useRepository } from '@sensenet/hooks-react'
-import { PathHelper } from '@sensenet/client-utils'
+import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useTheme } from '../../hooks'
 import {
   CustomActionCommandProvider,
@@ -33,6 +34,7 @@ export function ExecuteActionDialog({ actionValue, uri }: ExecuteActionDialogPro
   const customActionService = useInjector().getInstance(CustomActionCommandProvider)
   const logger = useLogger('ExecuteAction')
   const repo = useRepository()
+  const globalClasses = useGlobalStyles()
 
   const [postBody, setPostBody] = useState(EDITOR_INITIAL_VALUE)
   const [isExecuting, setIsExecuting] = useState(false)
@@ -184,8 +186,14 @@ export function ExecuteActionDialog({ actionValue, uri }: ExecuteActionDialogPro
         <div style={{ flex: 1, marginLeft: '1.5em' }}>
           {error ? <Typography color="error">{error}</Typography> : null}
         </div>
-        <Button onClick={closeLastDialog}>{localization.cancelButton}</Button>
-        <Button autoFocus={!actionValue?.metadata?.parameters?.length} onClick={onClick}>
+        <Button className={globalClasses.cancelButton} onClick={closeLastDialog}>
+          {localization.cancelButton}
+        </Button>
+        <Button
+          color="primary"
+          variant="contained"
+          autoFocus={!actionValue?.metadata?.parameters?.length}
+          onClick={onClick}>
           {localization.executeButton}
         </Button>
       </DialogActions>

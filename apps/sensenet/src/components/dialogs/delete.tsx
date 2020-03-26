@@ -15,6 +15,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useContext, useState } from 'react'
 import { ResponsiveContext } from '../../context'
+import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { Icon } from '../Icon'
 import { useDialog } from '.'
@@ -32,6 +33,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
   const localization = useLocalization().deleteContentDialog
   const logger = useLogger('DeleteContentDialog')
   const isTrashBag = !!props.content.length && repo.schemas.isContentFromType(props.content[0], 'TrashBag')
+  const globalClasses = useGlobalStyles()
 
   return (
     <>
@@ -66,11 +68,16 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
             </Tooltip>
           </>
         ) : null}
-        <>
-          <Button disabled={isDeleteInProgress} onClick={() => closeLastDialog()}>
+        <div>
+          <Button
+            className={globalClasses.cancelButton}
+            disabled={isDeleteInProgress}
+            onClick={() => closeLastDialog()}>
             {localization.cancelButton}
           </Button>
           <Button
+            color="primary"
+            variant="contained"
             autoFocus={true}
             disabled={isDeleteInProgress}
             onClick={async () => {
@@ -134,7 +141,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
             }}>
             {isTrashBag ? localization.deletePermanently : localization.deleteButton}
           </Button>
-        </>
+        </div>
       </DialogActions>
     </>
   )

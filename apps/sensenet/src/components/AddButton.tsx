@@ -15,8 +15,9 @@ import { Schema } from '@sensenet/default-content-types'
 import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
-import { useLocalization, usePersonalSettings, useSelectionService } from '../hooks'
+import { useHistory } from 'react-router'
 import { globals, useGlobalStyles } from '../globalStyles'
+import { useLocalization, usePersonalSettings, useSelectionService } from '../hooks'
 import { useDialog } from './dialogs'
 import { Icon } from './Icon'
 
@@ -74,6 +75,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   const [hasUpload, setHasUpload] = useState(false)
   const [currentComponent, setCurrentComponent] = useState(selectionService.activeContent.getValue())
   const personalSettings = usePersonalSettings()
+  const history = useHistory<{ schema: Schema }>()
 
   useEffect(() => {
     const activeComponentObserve = selectionService.activeContent.subscribe(newActiveComponent =>
@@ -258,10 +260,10 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
                 button={true}
                 style={{ padding: '10px 0 10px 10px' }}
                 onClick={() => {
+                  const componentId = currentComponent ? currentComponent.Id : parent.Id
                   setShowSelectType(false)
-                  openDialog({
-                    name: 'add',
-                    props: { schema: childType, parentPath: currentComponent ? currentComponent.Path : props.path },
+                  history.push(`/${btoa(repo.configuration.repositoryUrl)}/NewProperties/${componentId}`, {
+                    schema: childType,
                   })
                 }}>
                 <ListItemIcon style={{ minWidth: '36px' }}>

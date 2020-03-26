@@ -1,26 +1,28 @@
 /**
  * @module ViewControls
  */
-import { createStyles, makeStyles } from '@material-ui/core'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import { isExtendedError } from '@sensenet/client-core'
-import { FieldSetting } from '@sensenet/default-content-types/src'
-import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
+import { Repository } from '@sensenet/client-core'
+import { ContentType, FieldSetting } from '@sensenet/default-content-types'
 import clsx from 'clsx'
-import React, { createElement, ReactElement, useContext, useState } from 'react'
+import React, { createElement, ReactElement, useState } from 'react'
 import MediaQuery from 'react-responsive'
-import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { reactControlMapper } from '../react-control-mapper'
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     form: {
       margin: '0 auto',
       padding: '22px 22px 39px 22px',
       overflowY: 'auto',
       width: '100%',
+    },
+    cancel: {
+      marginRight: 38,
+      border: theme.palette.type === 'light' ? '2px solid #212121DE' : '2px solid #505050',
     },
     grid: {
       display: 'flex',
@@ -41,73 +43,43 @@ const useStyles = makeStyles(() => {
 })
 
 /**
- * Interface for EditView properties
+ * Interface for NewView properties
  */
-export interface EditViewProps {
+export interface NewViewProps {
+  onSubmit?: (content: ContentType, contentTypeName?: string) => void
+  repository: Repository
   renderIcon?: (name: string) => ReactElement
+  contentTypeName: string
   handleCancel?: () => void
   submitCallback?: () => void
+  showTitle?: boolean
+  extension?: string
   uploadFolderpath?: string
-  actionName?: 'new' | 'edit' | 'browse' | undefined
 }
 
 /**
- * View Control for editing a Content, works with a single Content and based on the ReactControlMapper
+ * View Control for adding a Content, works with a single Content and based on the ReactControlMapper
  *
  * Usage:
  * ```html
- *  <EditView content={selectedContent} onSubmit={editSubmitClick} />
+ *  <NewView content={content} onSubmit={createSubmitClick} />
  * ```
  */
-export const EditView: React.FC<EditViewProps> = props => {
-  const repo = useRepository()
-  const content = useContext(CurrentContentContext)
-  const controlMapper = reactControlMapper(repo)
-  const schema = controlMapper.getFullSchemaForContentType(content.Type, props.actionName ? props.actionName : 'browse')
-  const [saveableFields, setSaveableFields] = useState({})
+export const NewView: React.FC<NewViewProps> = props => {
+  const controlMapper = reactControlMapper(props.repository)
+  const schema = controlMapper.getFullSchemaForContentType(props.contentTypeName, 'new')
+  const [content, setContent] = useState({})
   const classes = useStyles()
-  const globalClasses = useGlobalStyles()
   const localization = useLocalization()
-  const logger = useLogger('EditView')
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    repo
-      .patch({
-        idOrPath: content.Id,
-        content: saveableFields,
-      })
-      .then(response => {
-        logger.information({
-          message: localization.editPropertiesDialog.saveSuccessNotification.replace(
-            '{0}',
-            content.DisplayName || content.Name || content.DisplayName || content.Name,
-          ),
-          data: {
-            relatedContent: content,
-            content: response,
-            relatedRepository: repo.configuration.repositoryUrl,
-          },
-        })
-      })
-      .catch(error => {
-        logger.error({
-          message: localization.editPropertiesDialog.saveFailedNotification.replace(
-            '{0}',
-            content.DisplayName || content.Name || content.DisplayName || content.Name,
-          ),
-          data: {
-            relatedContent: content,
-            content,
-            relatedRepository: repo.configuration.repositoryUrl,
-            error: isExtendedError(error) ? repo.getErrorFromResponse(error.response) : error,
-          },
-        })
-      })
+    props.onSubmit && props.onSubmit(content as any, schema.schema.ContentTypeName)
+    props.submitCallback && props.submitCallback()
   }
 
   const handleInputChange = (field: string, value: unknown) => {
-    setSaveableFields({ ...saveableFields, [field]: value })
+    setContent({ ...content, [field]: value })
   }
 
   const isFullWidthField = (field: { fieldSettings: FieldSetting }) => {
@@ -125,19 +97,14 @@ export const EditView: React.FC<EditViewProps> = props => {
           .sort((item1, item2) => item2.fieldSettings.DefaultOrder! - item1.fieldSettings.DefaultOrder!)
           .map(field => {
             const fieldControl = createElement(
-              controlMapper.getControlForContentField(
-                content.Type,
-                field.fieldSettings.Name,
-                props.actionName ? props.actionName : 'browse',
-              ),
+              controlMapper.getControlForContentField(props.contentTypeName, field.fieldSettings.Name, 'new'),
               {
-                repository: repo,
+                actionName: 'new',
                 settings: field.fieldSettings,
-                content,
-                fieldValue: (content as any)[field.fieldSettings.Name],
-                actionName: props.actionName,
+                repository: props.repository,
                 renderIcon: props.renderIcon,
                 fieldOnChange: handleInputChange,
+                extension: props.extension,
                 uploadFolderPath: props.uploadFolderpath,
               },
             )
@@ -165,12 +132,12 @@ export const EditView: React.FC<EditViewProps> = props => {
           <MediaQuery minDeviceWidth={700}>
             <Button
               color="default"
-              className={globalClasses.cancelButton}
+              style={{ marginRight: 20 }}
               onClick={() => props.handleCancel && props.handleCancel()}>
               {localization.forms.cancel}
             </Button>
           </MediaQuery>
-          <Button type="submit" variant="contained" color="primary">
+          <Button type="submit" variant="contained" color="secondary">
             {localization.forms.submit}
           </Button>
         </Grid>

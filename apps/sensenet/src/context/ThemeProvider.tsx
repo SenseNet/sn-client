@@ -76,9 +76,11 @@ export const ThemeProvider: React.FunctionComponent = props => {
             backgroundColor: 'transparent',
           },
         },
-        MuiDialogActions: {
-          root: {
-            backgroundColor: pageTheme === 'light' ? '#E2E2E2' : 'rgba(255,255,255,0.11)',
+        MuiPickersModal: {
+          dialogRoot: {
+            '& .MuiDialogActions-root': {
+              backgroundColor: pageTheme === 'light' ? '#E2E2E2' : 'rgba(255,255,255,0.11)',
+            },
           },
         },
       },
