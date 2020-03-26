@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const NavBarComponent: React.FunctionComponent = () => {
   const { logout } = useOidcAuthentication()
   const classes = useStyles()
+
   return (
     <div className={classes.root}>
       <AppBar position="relative">
@@ -30,7 +31,7 @@ export const NavBarComponent: React.FunctionComponent = () => {
             Document Browser
           </Typography>
           <Tooltip title="Return to the Login screen and select another repository">
-            <Button color="inherit" onClick={() => logout()}>
+            <Button color="inherit" onClick={logout}>
               Log out
             </Button>
           </Tooltip>
