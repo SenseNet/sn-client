@@ -760,7 +760,7 @@ export const removePreviewComment = (idOrPath: number | string, commentId: numbe
  * @param destination Path of the parent where the content should be restored.
  * @param newName Determines rename the content automatically if another content with the same name already exists in the desired parent container
  */
-export const restoreFromTrash = (idOrPath: number | string, destination: string, newName?: boolean) => ({
+export const restoreFromTrash = (idOrPath: number | string, destination: string, newname?: boolean) => ({
   type: 'RESTORE_FROM_TRASH',
   payload: (repository: Repository) =>
     repository.executeAction({
@@ -769,7 +769,7 @@ export const restoreFromTrash = (idOrPath: number | string, destination: string,
       method: 'POST',
       body: {
         destination,
-        newName,
+        newname,
       },
     }),
 })
