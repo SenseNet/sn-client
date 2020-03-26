@@ -1485,4 +1485,29 @@ describe('Actions', () => {
       })
     })
   })
+  describe('checkAllowedChildTypes', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => collectionMockResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.checkAllowedChildTypes(path).type).toBe('CHECK_ALLOWED_CHILDTYPES')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.checkAllowedChildTypes() resolves', () => {
+        let data: ODataCollectionResponse<GenericContent>
+        let mockCollectionResponseData: ReturnType<typeof collectionMockResponse['json']>
+        beforeEach(async () => {
+          data = await Actions.checkAllowedChildTypes(path).payload(repo)
+          mockCollectionResponseData = await collectionMockResponse.json()
+        })
+        it('should return a CHECK_ALLOWED_CHILDTYPES action', () => {
+          expect(Actions.checkAllowedChildTypes(path)).toHaveProperty('type', 'CHECK_ALLOWED_CHILDTYPES')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(mockCollectionResponseData)
+        })
+      })
+    })
+  })
 })

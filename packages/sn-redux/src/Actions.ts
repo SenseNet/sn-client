@@ -843,3 +843,16 @@ export const removeAllowedChildTypes = (idOrPath: number | string, contentTypes:
       },
     }),
 })
+/**
+ * Action creator for getting a list of contents in a subtree where AllowedChildTypes list is empty
+ * @param idOrPath Id or Path of the root of the subtree
+ */
+export const checkAllowedChildTypes = (idOrPath: number | string) => ({
+  type: 'CHECK_ALLOWED_CHILDTYPES',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'CheckAllowedChildTypesOfFolders',
+      method: 'GET',
+    }),
+})
