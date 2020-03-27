@@ -2,7 +2,7 @@ import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle } 
 import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
 import { useRepository } from '@sensenet/hooks-react'
 import React from 'react'
-import { useCurrentUser } from '../../context'
+import { authConfigKey, useCurrentUser } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { Icon } from '../Icon'
@@ -44,6 +44,7 @@ export function LogoutDialog() {
           <Button
             onClick={() => {
               logout()
+              window.localStorage.removeItem(authConfigKey)
             }}
             autoFocus={true}>
             {localization.logoutButtonTitle}

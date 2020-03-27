@@ -5,40 +5,50 @@ import React, { lazy, ReactNode, Suspense, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { FullScreenLoader } from '../components/FullScreenLoader'
 import { NotificationComponent } from '../components/NotificationComponent'
-import { useRepoUrlFromLocalStorage } from '../hooks'
-import { getAuthConfig } from '../services/auth-service'
+import { getAuthConfig } from '../services/auth-config'
 
 const LoginPage = lazy(() => import(/* webpackChunkName: "login" */ '../components/login/login-page'))
 
+export const authConfigKey = 'sn-oidc-config'
+
 export function RepositoryProvider({ children }: { children: React.ReactNode }) {
-  const { repoUrl, setRepoUrl } = useRepoUrlFromLocalStorage()
+  const [repoUrl, setRepoUrl] = useState<string>()
   const logger = useLogger('repository-provider')
   const history = useHistory()
   const [authConfig, setAuthConfig] = useState<UserManagerSettings>()
-  const [isLoggingIn, setIsLoggingIn] = useState(false)
 
   useEffect(() => {
-    async function getRepo() {
+    const configString = window.localStorage.getItem(authConfigKey)
+    if (configString) {
+      const config = JSON.parse(configString)
+      setAuthConfig(config)
+      setRepoUrl(config.extraQueryParams.snrepo)
+    }
+  }, [])
+
+  useEffect(() => {
+    async function getConfig() {
       if (!repoUrl) {
         return
       }
       try {
         const config = await getAuthConfig(repoUrl)
         setAuthConfig(config)
+        window.localStorage.setItem(authConfigKey, JSON.stringify(config))
       } catch (error) {
-        logger.debug({ data: error, message: `network error at ${repoUrl}` })
+        logger.warning({ data: error, message: `Couldn't connect to ${repoUrl}` })
       }
     }
-    getRepo()
+    getConfig()
   }, [logger, repoUrl])
 
   if (!authConfig || !repoUrl) {
     return (
       <Suspense fallback={<FullScreenLoader />}>
         <LoginPage
-          handleSubmit={repoUrlFromLogin => {
-            setRepoUrl(repoUrlFromLogin)
-            setIsLoggingIn(true)
+          isLoginDisabled={true}
+          inputChangeCallback={url => {
+            setRepoUrl(url)
           }}
         />
         <NotificationComponent />
@@ -48,35 +58,22 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
 
   return (
     <AuthenticationProvider isEnabled={true} configuration={authConfig} history={history}>
-      {isLoggingIn ? <Login /> : null}
-      <RepoProvider setIsLoggingIn={() => setIsLoggingIn(true)}>{children}</RepoProvider>
+      <RepoProvider repoUrl={repoUrl}>{children}</RepoProvider>
     </AuthenticationProvider>
   )
 }
 
-const Login = () => {
-  const { login } = useOidcAuthentication()
+const RepoProvider = ({ children, repoUrl }: { children: ReactNode; repoUrl: string }) => {
+  const { oidcUser, login } = useOidcAuthentication()
 
-  useEffect(() => {
-    login()
-  }, [login])
-
-  return null
-}
-
-const RepoProvider = ({ children, setIsLoggingIn }: { children: ReactNode; setIsLoggingIn: () => void }) => {
-  const { repoUrl, setRepoUrl } = useRepoUrlFromLocalStorage()
-  const { oidcUser } = useOidcAuthentication()
-
-  if (!repoUrl || !oidcUser) {
+  if (!oidcUser) {
     return (
       <Suspense fallback={<FullScreenLoader />}>
         <LoginPage
-          handleSubmit={repoUrlFromLogin => {
-            if (repoUrl !== repoUrlFromLogin) {
-              setRepoUrl(repoUrlFromLogin)
-            }
-            setIsLoggingIn()
+          url={repoUrl}
+          isLoginDisabled={false}
+          handleSubmit={() => {
+            login()
           }}
         />
         <NotificationComponent />

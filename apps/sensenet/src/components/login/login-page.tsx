@@ -1,5 +1,6 @@
-import { Button, Container, createStyles, Grid, makeStyles, TextField, Theme, Typography } from '@material-ui/core'
-import React, { useState } from 'react'
+import { Button, Container, createStyles, Grid, makeStyles, TextField, Theme } from '@material-ui/core'
+import { debounce } from '@sensenet/client-utils'
+import React, { useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import snLogo from '../../assets/sensenet-icon-32.png'
 import { useLocalization } from '../../hooks'
@@ -12,14 +13,33 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-export default function LoginPage(props: { handleSubmit: (repoUrl: string) => void }) {
+type LoginPageProps = {
+  handleSubmit?: () => void
+  inputChangeCallback?: (url: string) => void
+  url?: string
+  isLoginDisabled: boolean
+}
+
+export default function LoginPage(props: LoginPageProps) {
   const classes = useStyles()
   const localization = useLocalization().login
-  const [url, setUrl] = useState('')
+
+  const debounced = useCallback(
+    debounce((text: string) => {
+      try {
+        new URL(text)
+        console.log(text)
+        props.inputChangeCallback?.(text)
+      } catch {
+        return
+      }
+    }, 2000),
+    [],
+  )
 
   const handleSubmit = (ev: React.FormEvent) => {
     ev.preventDefault()
-    props.handleSubmit(url)
+    props.handleSubmit?.()
   }
 
   return (
@@ -42,18 +62,19 @@ export default function LoginPage(props: { handleSubmit: (repoUrl: string) => vo
             placeholder={localization.repositoryHelperText}
             fullWidth={true}
             type="url"
-            value={url}
+            value={props.url}
             onChange={ev => {
-              setUrl(ev.target.value)
+              debounced(ev.target.value)
             }}
           />
           <Button
             aria-label={localization.loginButtonTitle}
             fullWidth={true}
             variant="contained"
+            disabled={props.isLoginDisabled}
             color="primary"
             type="submit">
-            <Typography variant="button">{localization.loginButtonTitle}</Typography>
+            {localization.loginButtonTitle}
           </Button>
         </form>
       </Container>
