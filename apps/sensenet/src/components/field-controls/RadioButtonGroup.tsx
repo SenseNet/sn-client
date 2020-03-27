@@ -69,7 +69,9 @@ export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetti
             </FormControl>
           </FormGroup>
         </FormControl>
-      ) : null
+      ) : (
+        <FormLabel component={'legend' as 'label'}>{props.settings.DisplayName}</FormLabel>
+      )
     }
   }
 }

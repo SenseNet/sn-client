@@ -34,6 +34,7 @@ export const Name: React.FC<ReactClientFieldSetting> = props => {
     case 'edit':
       return (
         <TextField
+          autoComplete="off"
           name={props.settings.Name}
           id={props.settings.Name}
           label={props.settings.DisplayName}
@@ -63,6 +64,10 @@ export const Name: React.FC<ReactClientFieldSetting> = props => {
             {props.fieldValue}
           </Typography>
         </div>
-      ) : null
+      ) : (
+        <Typography variant="caption" gutterBottom={true}>
+          {props.settings.DisplayName}
+        </Typography>
+      )
   }
 }

@@ -53,6 +53,10 @@ export const Textarea: React.FC<ReactClientFieldSetting<LongTextFieldSetting>> =
             {props.fieldValue}
           </Typography>
         </div>
-      ) : null
+      ) : (
+        <Typography variant="caption" gutterBottom={true}>
+          {props.settings.DisplayName}
+        </Typography>
+      )
   }
 }

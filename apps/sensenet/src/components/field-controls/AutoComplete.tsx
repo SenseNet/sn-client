@@ -76,7 +76,11 @@ export const AutoComplete: React.FC<ReactClientFieldSetting<ReferenceFieldSettin
             {(props.fieldValue as any)[0].DisplayName}
           </Typography>
         </div>
-      ) : null
+      ) : (
+        <Typography variant="caption" gutterBottom={true}>
+          {props.settings.DisplayName}
+        </Typography>
+      )
     }
   }
 }

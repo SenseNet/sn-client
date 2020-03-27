@@ -49,6 +49,7 @@ export interface EditViewProps {
   submitCallback?: () => void
   uploadFolderpath?: string
   actionName?: 'new' | 'edit' | 'browse' | undefined
+  refresh?: boolean
 }
 
 /**
@@ -170,9 +171,11 @@ export const EditView: React.FC<EditViewProps> = props => {
               {localization.forms.cancel}
             </Button>
           </MediaQuery>
-          <Button type="submit" variant="contained" color="primary">
-            {localization.forms.submit}
-          </Button>
+          {props.actionName !== 'browse' && (
+            <Button type="submit" variant="contained" color="primary">
+              {localization.forms.submit}
+            </Button>
+          )}
         </Grid>
       </Grid>
     </form>

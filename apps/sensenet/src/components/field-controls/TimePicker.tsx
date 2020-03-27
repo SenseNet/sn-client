@@ -56,6 +56,10 @@ export const TimePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
             {moment(props.fieldValue).format('HH:mm:ss')}
           </Typography>
         </div>
-      ) : null
+      ) : (
+        <Typography variant="caption" gutterBottom={true}>
+          {props.settings.DisplayName}
+        </Typography>
+      )
   }
 }

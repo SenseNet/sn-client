@@ -189,7 +189,11 @@ class AvatarComponent extends Component<
               {this.props.settings.DisplayName}
             </InputLabel>
           </div>
-        ) : null
+        ) : (
+          <InputLabel shrink={true} htmlFor={this.props.settings.Name} style={{ paddingTop: '9px' }}>
+            {this.props.settings.DisplayName}
+          </InputLabel>
+        )
     }
   }
 }

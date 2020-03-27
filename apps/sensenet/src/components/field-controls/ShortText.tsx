@@ -53,6 +53,7 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
             {props.settings.DisplayName}
           </InputLabel>
           <ShortTextInput
+            autoComplete="off"
             name={props.settings.Name}
             id={props.settings.Name}
             placeholder={props.settings.DisplayName}
@@ -80,6 +81,10 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
             {props.fieldValue}
           </Typography>
         </div>
-      ) : null
+      ) : (
+        <Typography variant="caption" gutterBottom={true}>
+          {props.settings.DisplayName}
+        </Typography>
+      )
   }
 }

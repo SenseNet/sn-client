@@ -27,9 +27,12 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
           : setFormOpen && setFormOpen()
         break
       case 'Browse':
-        !halfPage
-          ? history.push(`/${btoa(repo.configuration.repositoryUrl)}/BrowseProperties/${content.Id}`)
-          : setFormOpen && setFormOpen()
+        if (!halfPage) {
+          history.push(`/${btoa(repo.configuration.repositoryUrl)}/BrowseProperties/${content.Id}`)
+        } else {
+          setFormOpen && setFormOpen()
+        }
+
         break
       case 'MoveTo':
       case 'CopyTo': {

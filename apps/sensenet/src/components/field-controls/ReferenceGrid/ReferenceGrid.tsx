@@ -170,6 +170,10 @@ class ReferenceGridComponent extends Component<
         })
   }
 
+  public isObject = function(a: any) {
+    return !!a && a.constructor === Object
+  }
+
   public render() {
     switch (this.props.actionName) {
       case 'new':
@@ -267,30 +271,38 @@ class ReferenceGridComponent extends Component<
       case 'browse':
       default: {
         return this.props.fieldValue ? (
-          <FormControl className={this.props.classes.formControl}>
+          <FormControl className={this.props.classes.formControl} style={{ borderBottom: 'none' }}>
             <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
               {this.props.settings.DisplayName}
             </InputLabel>
             <FormGroup>
               <List dense={true} className={this.props.classes.listContainer}>
-                {Array.isArray(this.props.fieldValue)
-                  ? (this.props.fieldValue as any).map((item: GenericContent) => (
-                      <DefaultItemTemplate
-                        content={item}
-                        remove={this.removeItem}
-                        add={this.addItem}
-                        key={item.Id}
-                        actionName="browse"
-                        repositoryUrl={this.props.repository ? this.props.repository.configuration.repositoryUrl : ''}
-                        multiple={this.props.settings.AllowMultiple ? this.props.settings.AllowMultiple : false}
-                        renderIcon={this.props.renderIcon}
-                      />
-                    ))
-                  : null}
+                {Array.isArray(this.props.fieldValue) ? (
+                  (this.props.fieldValue as any).map((item: GenericContent) => (
+                    <DefaultItemTemplate
+                      content={item}
+                      remove={this.removeItem}
+                      add={this.addItem}
+                      key={item.Id}
+                      actionName="browse"
+                      repositoryUrl={this.props.repository ? this.props.repository.configuration.repositoryUrl : ''}
+                      multiple={this.props.settings.AllowMultiple ? this.props.settings.AllowMultiple : false}
+                      renderIcon={this.props.renderIcon}
+                    />
+                  ))
+                ) : this.isObject(this.props.fieldValue) ? (
+                  <Typography variant="body1" gutterBottom={true}>
+                    {(this.props.fieldValue as any).Name}
+                  </Typography>
+                ) : null}
               </List>
             </FormGroup>
           </FormControl>
-        ) : null
+        ) : (
+          <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
+            {this.props.settings.DisplayName}
+          </InputLabel>
+        )
       }
     }
   }

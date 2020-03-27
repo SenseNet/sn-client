@@ -127,6 +127,10 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
             </Typography>
           )}
         </div>
-      ) : null
+      ) : (
+        <Typography variant="caption" gutterBottom={true}>
+          {props.settings.DisplayName}
+        </Typography>
+      )
   }
 }

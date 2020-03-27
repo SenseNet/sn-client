@@ -99,7 +99,9 @@ export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>
             )}
           </FormGroup>
         </FormControl>
-      ) : null
+      ) : (
+        <FormLabel component={'legend' as 'label'}>{props.settings.DisplayName}</FormLabel>
+      )
     }
   }
 }

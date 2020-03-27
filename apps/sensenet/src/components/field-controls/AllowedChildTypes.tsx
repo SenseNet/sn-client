@@ -396,7 +396,11 @@ export class AllowedChildTypesComponent extends Component<
               </List>
             </FormControl>
           </>
-        ) : null
+        ) : (
+          <InputLabel shrink htmlFor={this.props.settings.Name} required={this.props.settings.Compulsory}>
+            {this.props.settings.DisplayName}
+          </InputLabel>
+        )
     }
   }
 }

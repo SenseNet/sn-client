@@ -13,6 +13,7 @@ import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
 import { ContentList } from '../content-list/content-list'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
+import { Icon } from '../Icon'
 import TreeWithData from '../tree/tree-with-data'
 import { EditView } from '../view-controls/edit-view'
 
@@ -34,6 +35,15 @@ const useStyles = makeStyles((theme: Theme) => {
       height: `calc(100% - ${globals.common.drawerItemHeight}px)`,
       position: 'relative',
     },
+    title: {
+      height: '68px',
+      fontSize: '20px',
+    },
+    exploreContainer: {
+      display: 'flex',
+      flexFlow: 'column',
+      width: '100%',
+    },
   })
 })
 
@@ -52,14 +62,16 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
   const globalClasses = useGlobalStyles()
   const [isFormOpened, setIsFormOpened] = useState(false)
   const [action, setAction] = useState<'new' | 'edit' | 'browse' | undefined>(undefined)
+  const [refreshEditView, setRefreshEditView] = useState(false)
 
   if (!props.rootPath) {
     return null
   }
 
   const setFormOpen = (actionName: 'new' | 'edit' | 'browse' | undefined) => {
-    setIsFormOpened(true)
     setAction(actionName)
+    setIsFormOpened(true)
+    setRefreshEditView(!refreshEditView)
   }
 
   return (
@@ -84,31 +96,54 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                   activeItemIdOrPath={props.parentIdOrPath}
                   setFormOpen={actionName => setFormOpen(actionName)}
                 />
-                {isFormOpened ? (
-                  <EditView
-                    uploadFolderpath={'/Root/Content/demoavatars'}
-                    handleCancel={() => {
-                      setIsFormOpened(false)
-                      setAction(undefined)
-                    }}
-                    actionName={action}
-                  />
-                ) : (
-                  <ContentList
-                    style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
-                    enableBreadcrumbs={false}
-                    fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields}
-                    onParentChange={props.onNavigate}
-                    onActivateItem={props.onActivateItem}
-                    onActiveItemChange={item => selectionService.activeContent.setValue(item)}
-                    parentIdOrPath={props.parentIdOrPath}
-                    onSelectionChange={sel => {
-                      selectionService.selection.setValue(sel)
-                    }}
-                    isOpenFrom={'explore'}
-                    setFormOpen={actionName => setFormOpen(actionName)}
-                  />
-                )}
+                <div className={classes.exploreContainer}>
+                  {isFormOpened ? (
+                    <>
+                      {action === 'edit' ? (
+                        <div className={clsx(classes.title, globalClasses.centered)}>
+                          {clsx('Edit', selectionService.activeContent.getValue()?.DisplayName)}
+                          <Icon
+                            style={{ marginLeft: '9px', height: '24px', width: '24px' }}
+                            item={selectionService.activeContent.getValue()}
+                          />
+                        </div>
+                      ) : action === 'browse' ? (
+                        <div className={clsx(classes.title, globalClasses.centered)}>
+                          {clsx('Info about', selectionService.activeContent.getValue()?.DisplayName)}
+                          <Icon
+                            style={{ marginLeft: '9px', height: '24px', width: '24px' }}
+                            item={selectionService.activeContent.getValue()}
+                          />
+                        </div>
+                      ) : null}
+
+                      <EditView
+                        uploadFolderpath={'/Root/Content/demoavatars'}
+                        handleCancel={() => {
+                          setIsFormOpened(false)
+                          setAction(undefined)
+                        }}
+                        actionName={action}
+                        refresh={refreshEditView}
+                      />
+                    </>
+                  ) : (
+                    <ContentList
+                      style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
+                      enableBreadcrumbs={false}
+                      fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields}
+                      onParentChange={props.onNavigate}
+                      onActivateItem={props.onActivateItem}
+                      onActiveItemChange={item => selectionService.activeContent.setValue(item)}
+                      parentIdOrPath={props.parentIdOrPath}
+                      onSelectionChange={sel => {
+                        selectionService.selection.setValue(sel)
+                      }}
+                      isOpenFrom={'explore'}
+                      setFormOpen={actionName => setFormOpen(actionName)}
+                    />
+                  )}
+                </div>
               </div>
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>

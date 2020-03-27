@@ -280,7 +280,9 @@ class TagsInputComponent extends Component<
               ))}
             </FormGroup>
           </FormControl>
-        ) : null
+        ) : (
+          <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
+        )
     }
   }
 }

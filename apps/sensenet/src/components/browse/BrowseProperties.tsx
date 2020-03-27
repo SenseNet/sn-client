@@ -32,7 +32,10 @@ const GenericContentEditor: React.FunctionComponent<RouteComponentProps<{ conten
       <CurrentContentProvider
         idOrPath={contentId}
         onContentLoaded={c => selectionService.activeContent.setValue(c)}
-        oDataOptions={{ select: 'all' }}>
+        oDataOptions={{
+          select: 'all',
+          expand: ['Manager', 'FollowedWorkspaces'] as any,
+        }}>
         <CurrentAncestorsProvider>
           <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
             <ContentBreadcrumbs />

@@ -29,6 +29,7 @@ export const Password: React.FC<ReactClientFieldSetting> = props => {
         <FormControl style={{ width: '100%' }}>
           <InputLabel htmlFor={props.settings.Name}>{props.settings.DisplayName}</InputLabel>
           <Input
+            autoComplete="new-password"
             type={showPassword ? 'text' : 'password'}
             name={props.settings.Name}
             id={props.settings.Name}

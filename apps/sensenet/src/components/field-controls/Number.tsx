@@ -114,6 +114,10 @@ export const NumberComponent: React.FC<ReactClientFieldSetting<NumberFieldSettin
             {props.settings.ShowAsPercentage ? '%' : null}
           </Typography>
         </div>
-      ) : null
+      ) : (
+        <Typography variant="caption" gutterBottom={true}>
+          {props.settings.DisplayName}
+        </Typography>
+      )
   }
 }

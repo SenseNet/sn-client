@@ -76,6 +76,10 @@ export const FileName: React.FC<ReactClientFieldSetting> = props => {
             {props.fieldValue}
           </Typography>
         </div>
-      ) : null
+      ) : (
+        <Typography variant="caption" gutterBottom={true}>
+          {props.settings.DisplayName}
+        </Typography>
+      )
   }
 }
