@@ -45,8 +45,8 @@ export const authenticateUser = (
   }
 }
 
-export const logoutUser = async (userManager: UserManager) => {
-  if (!userManager || !userManager.getUser) {
+export const logoutUser = async (userManager?: UserManager) => {
+  if (!userManager) {
     return
   }
   const oidcUser = await userManager.getUser()
