@@ -1,10 +1,6 @@
-import { UserManager, UserManagerSettings, WebStorageStateStore } from 'oidc-client'
+import { UserManager, UserManagerSettings } from 'oidc-client'
 
 let userManager: UserManager | undefined
-
-export const setUserManager = (userManagerToSet: UserManager) => {
-  userManager = userManagerToSet
-}
 
 export const getUserManager = () => {
   return userManager
@@ -17,5 +13,3 @@ export const authenticationService = (configuration: UserManagerSettings) => {
   userManager = new UserManager(configuration)
   return userManager
 }
-
-export { WebStorageStateStore, UserManagerSettings, UserManager }

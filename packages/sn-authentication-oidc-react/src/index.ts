@@ -1,6 +1,5 @@
-export * from './components'
-export * from './authentication-service'
-export * from './oidc-events'
-export * from './oidc-service'
-export * from './route-utils'
+import { UserManager, UserManagerSettings, WebStorageStateStore } from 'oidc-client'
+export * from './components/authentication-provider'
 export * from './use-authentication'
+
+export { WebStorageStateStore, UserManagerSettings, UserManager }

@@ -1,25 +1,24 @@
-import React, { memo, ReactNode, useEffect, useState } from 'react'
 import { UserManagerSettings } from 'oidc-client'
+import React, { memo, ReactNode, useEffect, useState } from 'react'
 import { getPath } from '../route-utils'
 import { NotAuthenticated } from './not-authenticated'
 import { NotAuthorized } from './not-authorized'
-import { SessionLost } from './session-lost'
 import { SilentCallback } from './silent-callback'
 
 export type OidcRoutesProps = {
   notAuthenticated?: ReactNode
   notAuthorized?: ReactNode
-  callbackComponent?: ReactNode
+  callbackComponent: ReactNode
   sessionLost?: ReactNode
   configuration: UserManagerSettings
   children: ReactNode
 }
 
 const OidcRoutesComponent = ({
-  notAuthenticated = NotAuthenticated,
-  notAuthorized = NotAuthorized,
+  notAuthenticated = <NotAuthenticated />,
+  notAuthorized = <NotAuthorized />,
   callbackComponent,
-  sessionLost = SessionLost,
+  sessionLost,
   configuration,
   children,
 }: OidcRoutesProps) => {

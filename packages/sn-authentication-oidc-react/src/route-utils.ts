@@ -1,6 +1,5 @@
 const getLocation = (href?: string) => {
   if (!href) {
-    console.log('No path passed')
     return
   }
   const match = href.match(/^(https?:)\/\/(([^:/?#]*)(?::([0-9]+))?)([/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/)
@@ -21,7 +20,6 @@ const getLocation = (href?: string) => {
 export const getPath = (href?: string) => {
   const location = getLocation(href)
   if (!location) {
-    console.error("Couldn't get location")
     return
   }
   let { path } = location

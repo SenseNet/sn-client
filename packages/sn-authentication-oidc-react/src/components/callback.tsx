@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 import { History } from 'history'
 import React, { ReactNode, useEffect } from 'react'
 import { Container, Typography } from '@material-ui/core'
@@ -19,24 +20,16 @@ type CallbackContainerProps = {
 
 export const CallbackContainer = ({ callbackComponentOverride, history }: CallbackContainerProps) => {
   useEffect(() => {
-    // eslint-disable-next-line require-jsdoc
     async function signIn() {
-      const userManager = getUserManager()
-      if (!userManager) {
-        console.error('No usermanager')
-        return
-      }
-
       try {
-        const user = await userManager.signinRedirectCallback()
-        console.info('Successfull login Callback', user)
+        // In here we are most probably going to have userManager if not the error will be catched
+        const user = await getUserManager()!.signinRedirectCallback()
         if (user.state.url) {
           history.push(user.state.url)
         } else {
           console.warn('no location in state')
         }
       } catch (error) {
-        console.error(`There was an error handling the token callback: ${error.message}`)
         history.push(`/authentication/not-authenticated?message=${encodeURIComponent(error.message)}`)
       }
     }
