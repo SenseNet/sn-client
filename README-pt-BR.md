@@ -6,14 +6,14 @@
 
 # sensenet client
 
-[![Build Status](https://travis-ci.org/SenseNet/sn-client.svg?branch=master)](https://travis-ci.org/SenseNet/sn-client)
+![Build Status](https://github.com/SenseNet/sn-client/workflows/ci/badge.svg)
 [![Coverage](https://img.shields.io/codecov/c/github/SenseNet/sn-client.svg?style=flat)](https://codecov.io/gh/SenseNet/sn-client)
 [![Gitter chat](https://img.shields.io/gitter/room/SenseNet/sensenet.svg?style=flat)](https://gitter.im/SenseNet/sensenet)
 
-Este repositório é um monorepo que gerenciamos usando [Lerna](https://github.com/lerna/lerna). 
+Este repositório é um monorepo que gerenciamos usando [Lerna](https://github.com/lerna/lerna).
 Isso significa que publicamos [several packages](/packages) para npm da mesma base de código, incluindo:
 
-| Pacote                                                                      | Versão                                                                                                                                                     |
+| Pacote                                                                      | Versão                                                                                                                                                      |
 | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [@sensenet/authentication-google](/packages/sn-client-auth-google)          | [![npm](https://img.shields.io/npm/v/@sensenet/authentication-google.svg?maxAge=3600)](https://www.npmjs.com/package/@sensenet/authentication-google)       |
 | [@sensenet/authentication-jwt](/packages/sn-authentication-jwt)             | [![npm](https://img.shields.io/npm/v/@sensenet/authentication-jwt.svg?maxAge=3600)](https://www.npmjs.com/package/@sensenet/authentication-jwt)             |
@@ -32,4 +32,4 @@ Isso significa que publicamos [several packages](/packages) para npm da mesma ba
 | [@sensenet/repository-events](/packages/sn-repository-events)               | [![npm](https://img.shields.io/npm/v/@sensenet/repository-events.svg?maxAge=3600)](https://www.npmjs.com/package/@sensenet/repository-events)               |
 | [@sensenet/search-react](/packages/sn-search-react)                         | [![npm](https://img.shields.io/npm/v/@sensenet/search-react.svg?maxAge=3600)](https://www.npmjs.com/package/@sensenet/search-react)                         |
 
-*Este artigo foi traduzido do [Inglês](README.md) para [Português (Brasil)](README-pt-BR.md).*
+_Este artigo foi traduzido do [Inglês](README.md) para [Português (Brasil)](README-pt-BR.md)._

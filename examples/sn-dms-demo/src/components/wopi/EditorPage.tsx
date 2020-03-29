@@ -9,7 +9,7 @@ import { getWopiData } from '../../store/wopi/actions'
 const mapStateToProps = (state: rootStateType) => {
   return {
     wopiData: state.wopi,
-    documentId: state.dms.documentLibrary.active,
+    documentId: state.dms.documentLibrary.active?.Id,
   }
 }
 
@@ -19,7 +19,7 @@ const mapDispatchToProps = {
 
 interface EditorPageProps extends RouteComponentProps<any> {
   repository: Repository
-  documentId: number
+  documentId?: number
 }
 
 interface EditorPageState {

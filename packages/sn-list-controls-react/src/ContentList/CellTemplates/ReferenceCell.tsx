@@ -25,7 +25,7 @@ export class ReferenceCell<T extends GenericContent> extends React.Component<Ref
               }
             : {}
         }
-        component="div">
+        component={virtual ? 'div' : 'td'}>
         <span>{content[fieldName]}</span>
       </TableCell>
     )
