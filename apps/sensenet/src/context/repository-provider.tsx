@@ -57,7 +57,7 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
   }
 
   return (
-    <AuthenticationProvider isEnabled={true} configuration={authConfig} history={history}>
+    <AuthenticationProvider configuration={authConfig} history={history}>
       <RepoProvider repoUrl={repoUrl}>{children}</RepoProvider>
     </AuthenticationProvider>
   )

@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<{}>) => {
   const history = useHistory()
 
   return (
-    <AuthenticationProvider configuration={configuration} isEnabled={true} history={history}>
+    <AuthenticationProvider configuration={configuration} history={history}>
       {children}
     </AuthenticationProvider>
   )
