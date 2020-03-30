@@ -29,7 +29,6 @@ export type AuthenticationProviderProps = {
   sessionLost?: ElementType<SessionLostProps>
   callbackComponentOverride?: ReactNode
   configuration: UserManagerSettings
-  isEnabled?: boolean
 }
 
 const setDefaultState = (configuration: UserManagerSettings) => ({
@@ -55,7 +54,6 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
   const { oidcUser, isLoading, error } = oidcState
   const {
     authenticating,
-    isEnabled,
     notAuthenticated,
     notAuthorized,
     callbackComponentOverride,
@@ -72,7 +70,6 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
         oidcUser,
         error,
         authenticating,
-        isEnabled,
         login: useCallback(() => login(oidcState.userManager, dispatch, history.location, history)(), [
           history,
           oidcState.userManager,
