@@ -33,13 +33,11 @@ export function oidcReducer(state: State, action: Action) {
 }
 
 export const onError = (dispatch: Dispatch<Action>) => (error: Error) => {
-  console.error(`Error : ${error.message}`)
   dispatch({ type: 'ON_ERROR', message: error.message })
 }
 
 export const logout = (userManager: UserManager, dispatch: Dispatch<Action>) => async () => {
   try {
-    console.info('Logout successfull')
     await logoutUser(userManager)
   } catch (error) {
     onError(dispatch)(error)
@@ -53,22 +51,18 @@ export const login = (
   history: History,
 ) => async () => {
   dispatch({ type: 'ON_LOADING' })
-  console.info('Login requested')
   await authenticateUser(userManager, location, history)()
 }
 
 export const onUserLoaded = (dispatch: Dispatch<Action>) => (user: User) => {
-  console.info(`User Loaded`)
   dispatch({ type: 'ON_LOAD_USER', user })
 }
 
 export const onUserUnloaded = (dispatch: Dispatch<Action>) => () => {
-  console.info(`User unloaded `)
   dispatch({ type: 'ON_UNLOAD_USER' })
 }
 
 export const onAccessTokenExpired = (dispatch: Dispatch<Action>, userManager: UserManager) => async () => {
-  console.info(`AccessToken Expired `)
   dispatch({ type: 'ON_UNLOAD_USER' })
   await userManager.signinSilent()
 }

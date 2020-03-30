@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/camelcase */
+import { Button } from '@material-ui/core'
 import { mount } from 'enzyme'
 import { UserManager } from 'oidc-client'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { Button } from '@material-ui/core'
+import { useOidcAuthentication } from '../src'
 import { getUserManager } from '../src/authentication-service'
 import { AuthenticationProvider } from '../src/components/authentication-provider'
 import { Callback } from '../src/components/callback'
 import { NotAuthenticated } from '../src/components/not-authenticated'
 import { NotAuthorized } from '../src/components/not-authorized'
-import { SilentCallback } from '../src/components/silent-callback'
 import { SessionLost } from '../src/components/session-lost'
+import { SilentCallback } from '../src/components/silent-callback'
 
 jest.mock('../src/authentication-service', () => {
   return {

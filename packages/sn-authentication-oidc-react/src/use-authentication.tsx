@@ -8,6 +8,6 @@ export function useOidcAuthentication() {
   if (!context) {
     throw new Error('useOidcAuthentication must be used within a AuthenticationProvider')
   }
-  const { isEnabled, login, logout, oidcUser, events, isLoading } = context
-  return { isEnabled, login, logout, oidcUser, events, isLoading }
+
+  return context
 }

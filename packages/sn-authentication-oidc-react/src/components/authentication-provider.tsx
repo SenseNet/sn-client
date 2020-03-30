@@ -12,7 +12,6 @@ export type AuthenticationContextState = {
   authenticating?: ReactNode
   oidcUser?: User
   error?: string
-  isEnabled?: boolean
   login: () => Promise<void>
   logout: () => Promise<void>
   events: UserManagerEvents
