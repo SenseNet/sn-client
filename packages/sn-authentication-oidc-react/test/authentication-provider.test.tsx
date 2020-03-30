@@ -3,12 +3,14 @@ import { mount } from 'enzyme'
 import { UserManager } from 'oidc-client'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
+import { Button } from '@material-ui/core'
 import { getUserManager } from '../src/authentication-service'
 import { AuthenticationProvider } from '../src/components/authentication-provider'
 import { Callback } from '../src/components/callback'
 import { NotAuthenticated } from '../src/components/not-authenticated'
 import { NotAuthorized } from '../src/components/not-authorized'
 import { SilentCallback } from '../src/components/silent-callback'
+import { SessionLost } from '../src/components/session-lost'
 
 jest.mock('../src/authentication-service', () => {
   return {
@@ -148,5 +150,64 @@ describe('AuthenticationProvider component', () => {
     )
 
     expect(wrapper.find(NotAuthenticated)).toHaveLength(1)
+  })
+
+  it('should show SessionLost component when path is /authentication/session-lost', () => {
+    delete window.location
+    window.location = new URL('https://localhost:3000/authentication/session-lost') as any
+
+    const wrapper = mount(
+      <AuthenticationProvider configuration={{}} history={{ location: window.location } as any}>
+        <p id="a">a</p>
+      </AuthenticationProvider>,
+    )
+
+    expect(wrapper.find(SessionLost)).toHaveLength(1)
+  })
+
+  it('should call authenticateUser when SessionLost re-authenticate button is clicked', async () => {
+    delete window.location
+    window.location = new URL('https://localhost:3000/authentication/session-lost') as any
+    const signinRedirect = jest.fn()
+    ;(getUserManager as any).mockImplementationOnce(() => {
+      return { signinRedirect, getUser: () => null }
+    })
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(
+        <AuthenticationProvider configuration={{}} history={{ location: window.location } as any}>
+          <p id="a">a</p>
+        </AuthenticationProvider>,
+      )
+    })
+
+    await act(async () => {
+      wrapper
+        .find(SessionLost)
+        .find(Button)
+        .simulate('click')
+    })
+
+    expect(signinRedirect).toBeCalled()
+  })
+
+  it('should show overrided SessionLost component when path is /authentication/session-lost and sessionLost props passed', () => {
+    delete window.location
+    window.location = new URL('https://localhost:3000/authentication/session-lost') as any
+
+    const wrapper = mount(
+      <AuthenticationProvider
+        configuration={{}}
+        sessionLost={s => (
+          <p onClick={s.onAuthenticate} id="b">
+            b
+          </p>
+        )}
+        history={{ location: window.location } as any}>
+        <p id="a">a</p>
+      </AuthenticationProvider>,
+    )
+
+    expect(wrapper.find('#b')).toHaveLength(1)
   })
 })

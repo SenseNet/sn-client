@@ -1,6 +1,6 @@
 import { History } from 'history'
 import { User, UserManagerEvents, UserManagerSettings } from 'oidc-client'
-import React, { createContext, ReactNode, useCallback, useEffect, useReducer } from 'react'
+import React, { createContext, ElementType, ReactNode, useCallback, useEffect, useReducer } from 'react'
 import { authenticationService } from '../authentication-service'
 import { addOidcEvents, login, logout, oidcReducer, removeOidcEvents } from '../oidc-events'
 import { CallbackContainer } from './callback'
@@ -26,7 +26,7 @@ export type AuthenticationProviderProps = {
   authenticating?: ReactNode
   notAuthenticated?: ReactNode
   notAuthorized?: ReactNode
-  sessionLost?: (props: SessionLostProps) => ReactNode
+  sessionLost?: ElementType<SessionLostProps>
   callbackComponentOverride?: ReactNode
   configuration: UserManagerSettings
   isEnabled?: boolean
@@ -86,7 +86,7 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
         callbackComponent={
           <CallbackContainer callbackComponentOverride={callbackComponentOverride} history={history} />
         }
-        sessionLost={<SessionLostContainer sessionLostComponentOverride={sessionLost} history={history} />}
+        sessionLost={<SessionLostContainer SessionLostComponentOverride={sessionLost} history={history} />}
         configuration={configuration}>
         {children}
       </OidcRoutes>

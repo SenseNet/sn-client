@@ -1,6 +1,6 @@
 import { Button, Container, Typography } from '@material-ui/core'
 import { History } from 'history'
-import React, { ReactNode } from 'react'
+import React, { ElementType } from 'react'
 import { getUserManager } from '../authentication-service'
 import { authenticateUser } from '../oidc-service'
 
@@ -20,21 +20,16 @@ export const SessionLost = ({ onAuthenticate }: SessionLostProps) => (
 
 type SessionLostContainerProps = {
   history: History
-  sessionLostComponentOverride?: (props: SessionLostProps) => ReactNode
+  SessionLostComponentOverride?: ElementType<SessionLostProps>
 }
 
-export const SessionLostContainer = ({ history, sessionLostComponentOverride }: SessionLostContainerProps) => {
+export const SessionLostContainer = ({ history, SessionLostComponentOverride }: SessionLostContainerProps) => {
   const callbackPath = history.location.search.replace('?path=', '')
   const onAuthenticate = () => {
-    const userManager = getUserManager()
-    if (!userManager) {
-      console.error('SessionLostContainer: No user manager found.')
-      return
-    }
-    authenticateUser(userManager, history.location, history)(true, callbackPath)
+    authenticateUser(getUserManager()!, history.location, history)(true, callbackPath)
   }
-  return sessionLostComponentOverride ? (
-    <>{sessionLostComponentOverride({ onAuthenticate })}</>
+  return SessionLostComponentOverride ? (
+    <SessionLostComponentOverride onAuthenticate={onAuthenticate} />
   ) : (
     <SessionLost onAuthenticate={onAuthenticate} />
   )

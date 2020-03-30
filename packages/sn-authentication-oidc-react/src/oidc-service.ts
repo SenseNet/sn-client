@@ -4,10 +4,7 @@ import { User, UserManager } from 'oidc-client'
 let userRequested = false
 let numberAuthentication = 0
 
-export const isRequireAuthentication = (user: User | undefined, isForce: boolean) =>
-  isForce || !user || user?.expired === true
-
-export const isRequireSignin = (oidcUser: User | null, isForce: boolean) => isForce || !oidcUser
+const isRequireSignin = (oidcUser: User | null, isForce: boolean) => isForce || !oidcUser
 
 export const authenticateUser = (
   userManager: UserManager,
@@ -54,6 +51,3 @@ export const logoutUser = async (userManager?: UserManager) => {
     await userManager.signoutRedirect()
   }
 }
-
-export const signinSilent = (getUserManager: () => UserManager) => (data = undefined) =>
-  getUserManager().signinSilent(data)
