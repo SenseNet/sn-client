@@ -1,8 +1,8 @@
 import { createStyles, makeStyles } from '@material-ui/core'
-import { CurrentAncestorsProvider, CurrentContentProvider } from '@sensenet/hooks-react'
+import { CurrentAncestorsProvider, CurrentContentProvider, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React from 'react'
-import { RouteComponentProps, withRouter } from 'react-router'
+import { RouteComponentProps, useHistory, withRouter } from 'react-router'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
@@ -26,16 +26,24 @@ const GenericContentEditor: React.FunctionComponent<RouteComponentProps<{ conten
   const selectionService = useSelectionService()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
+  const history = useHistory()
+  const repo = useRepository()
 
   return (
     <div className={clsx(globalClasses.full, classes.editWrapper)}>
       <CurrentContentProvider
         idOrPath={contentId}
-        onContentLoaded={c => selectionService.activeContent.setValue(c)}
+        onContentLoaded={c => {
+          selectionService.activeContent.setValue(c)
+        }}
         oDataOptions={{ select: 'all' }}>
         <CurrentAncestorsProvider>
           <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
-            <ContentBreadcrumbs />
+            <ContentBreadcrumbs
+              onItemClick={item => {
+                history.push(`/${btoa(repo.configuration.repositoryUrl)}/EditProperties/${item.content.Id}`)
+              }}
+            />
           </div>
           <EditView
             uploadFolderpath={'/Root/Content/demoavatars'}

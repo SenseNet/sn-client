@@ -62,7 +62,6 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
   const globalClasses = useGlobalStyles()
   const [isFormOpened, setIsFormOpened] = useState(false)
   const [action, setAction] = useState<'new' | 'edit' | 'browse' | undefined>(undefined)
-  const [refreshEditView, setRefreshEditView] = useState(false)
 
   if (!props.rootPath) {
     return null
@@ -71,7 +70,6 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
   const setFormOpen = (actionName: 'new' | 'edit' | 'browse' | undefined) => {
     setAction(actionName)
     setIsFormOpened(true)
-    setRefreshEditView(!refreshEditView)
   }
 
   return (
@@ -90,6 +88,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                 <TreeWithData
                   onItemClick={item => {
                     selectionService.activeContent.setValue(item)
+                    setIsFormOpened(false)
                     props.onNavigate(item)
                   }}
                   parentPath={props.rootPath}
@@ -124,7 +123,6 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                           setAction(undefined)
                         }}
                         actionName={action}
-                        refresh={refreshEditView}
                       />
                     </>
                   ) : (

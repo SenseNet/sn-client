@@ -1,9 +1,10 @@
+import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import Button from '@material-ui/core/Button'
 import Tooltip from '@material-ui/core/Tooltip'
-import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
+import { useSelectionService } from '../hooks'
 import { ContentContextMenu } from './context-menu/content-context-menu'
 import { DropFileArea } from './DropFileArea'
 
@@ -27,6 +28,7 @@ function BreadcrumbsComponent<T extends GenericContent>(props: BreadcrumbProps<T
   const [contextMenuItem, setContextMenuItem] = useState<GenericContent | null>(null)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
+  const selectionService = useSelectionService()
 
   const setFormOpen = (actionName: 'new' | 'edit' | 'browse' | undefined) => {
     props.setFormOpen && props.setFormOpen(actionName)
@@ -44,6 +46,7 @@ function BreadcrumbsComponent<T extends GenericContent>(props: BreadcrumbProps<T
                   setContextMenuItem(item.content)
                   setContextMenuAnchor(ev.currentTarget)
                   setIsContextMenuOpened(true)
+                  selectionService.activeContent.setValue(item.content)
                   ev.preventDefault()
                 }}>
                 <span style={{ textTransform: 'none', fontSize: '16px' }}>{item.displayName}</span>

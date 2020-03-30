@@ -1,11 +1,10 @@
 import { createStyles, makeStyles } from '@material-ui/core'
-import { CurrentAncestorsProvider, CurrentContentProvider } from '@sensenet/hooks-react'
+import { CurrentContentProvider } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
-import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { EditView } from '../view-controls/edit-view'
 
 const useStyles = makeStyles(() => {
@@ -36,16 +35,11 @@ const GenericContentEditor: React.FunctionComponent<RouteComponentProps<{ conten
           select: 'all',
           expand: ['Manager', 'FollowedWorkspaces'] as any,
         }}>
-        <CurrentAncestorsProvider>
-          <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
-            <ContentBreadcrumbs />
-          </div>
-          <EditView
-            uploadFolderpath={'/Root/Content/demoavatars'}
-            handleCancel={props.history.goBack}
-            actionName={'browse'}
-          />
-        </CurrentAncestorsProvider>
+        <EditView
+          uploadFolderpath={'/Root/Content/demoavatars'}
+          handleCancel={props.history.goBack}
+          actionName={'browse'}
+        />
       </CurrentContentProvider>
     </div>
   )
