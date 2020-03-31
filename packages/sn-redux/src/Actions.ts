@@ -872,7 +872,10 @@ export const udpateListField = (idOrPath: number | string, field: Partial<FieldS
       body: field,
     }),
 })
-
+/**
+ * Action creator for deleting a custom field from a content list
+ * @param idOrPath Id or Path of the custom field
+ */
 export const deleteListField = (idOrPath: number | string) => ({
   type: 'DELETE_LIST_FIELD',
   payload: (repository: Repository) =>
