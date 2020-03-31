@@ -84,7 +84,7 @@ class ReferenceGridComponent extends Component<
         throw new Error('You must pass a repository to this control')
       }
       const loadPath = this.props.content
-        ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props.content.Path), '/', this.props.settings.Name)
+        ? PathHelper.joinPaths('/', PathHelper.getContentUrl(this.props.content.Path), this.props.settings.Name)
         : ''
       const references = await this.props.repository.load({
         idOrPath: loadPath,

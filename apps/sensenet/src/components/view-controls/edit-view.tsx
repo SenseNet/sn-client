@@ -12,7 +12,7 @@ import React, { createElement, ReactElement, useEffect, useState } from 'react'
 import MediaQuery from 'react-responsive'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useSelectionService } from '../../hooks'
-import { reactControlMapper } from '../react-control-mapper'
+import { ActionNameType, reactControlMapper } from '../react-control-mapper'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -48,7 +48,7 @@ export interface EditViewProps {
   handleCancel?: () => void
   submitCallback?: () => void
   uploadFolderpath?: string
-  actionName?: 'new' | 'edit' | 'browse' | undefined
+  actionName?: ActionNameType
 }
 
 /**
@@ -80,9 +80,6 @@ export const EditView: React.FC<EditViewProps> = props => {
   }, [selectionService.activeContent])
 
   if (content === undefined) {
-    logger.warning({
-      message: 'Content is not available',
-    })
     return null
   } else {
     const schema = controlMapper.getFullSchemaForContentType(
@@ -170,7 +167,7 @@ export const EditView: React.FC<EditViewProps> = props => {
                   md={isFullWidthField(field) ? 12 : 6}
                   lg={isFullWidthField(field) ? 12 : 6}
                   xl={isFullWidthField(field) ? 12 : 6}
-                  key={field.fieldSettings.Name}
+                  key={field.fieldSettings.Name + content.Id}
                   className={classes.grid}>
                   <div
                     className={clsx(classes.wrapper, {

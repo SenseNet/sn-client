@@ -1,6 +1,7 @@
 import { createStyles, makeStyles } from '@material-ui/core'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { VirtualCellProps, VirtualDefaultCell, VirtualizedTable } from '@sensenet/list-controls-react'
+import { Repository } from '@sensenet/client-core'
+import { debounce } from '@sensenet/client-utils'
+import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
@@ -8,18 +9,18 @@ import {
   LoadSettingsContext,
   useRepository,
 } from '@sensenet/hooks-react'
-import { GenericContent } from '@sensenet/default-content-types'
-import { Repository } from '@sensenet/client-core'
-import { debounce } from '@sensenet/client-utils'
+import { VirtualCellProps, VirtualDefaultCell, VirtualizedTable } from '@sensenet/list-controls-react'
 import clsx from 'clsx'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
-import { ContentContextMenu } from '../context-menu/content-context-menu'
-import { useSelectionService } from '../../hooks'
-import { SelectionControl } from '../SelectionControl'
-import { useDialog } from '../dialogs'
-import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
-import { DropFileArea } from '../DropFileArea'
 import { globals, useGlobalStyles } from '../../globalStyles'
+import { useSelectionService } from '../../hooks'
+import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
+import { ContentContextMenu } from '../context-menu/content-context-menu'
+import { useDialog } from '../dialogs'
+import { DropFileArea } from '../DropFileArea'
+import { ActionNameType } from '../react-control-mapper'
+import { SelectionControl } from '../SelectionControl'
 import { ContextMenuWrapper } from './context-menu-wrapper'
 import {
   ActionsField,
@@ -69,7 +70,7 @@ export interface ContentListProps {
   onFocus?: () => void
   containerProps?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
   isOpenFrom?: 'explore' | 'commander' | 'simple'
-  setFormOpen?: (actionName: 'new' | 'edit' | 'browse' | undefined) => void
+  setFormOpen?: (actionName: ActionNameType) => void
 }
 
 export const isReferenceField = (fieldName: string, repo: Repository) => {
@@ -401,7 +402,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
 
   const displayNameInArray = ['DisplayName']
 
-  const setFormOpen = (actionName: 'new' | 'edit' | 'browse' | undefined) => {
+  const setFormOpen = (actionName: ActionNameType) => {
     props.setFormOpen && props.setFormOpen(actionName)
   }
 

@@ -6,6 +6,7 @@ import { AutoSizer, Index, List, ListRowProps } from 'react-virtualized'
 import { useSelectionService } from '../../hooks'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { Icon } from '../Icon'
+import { ActionNameType } from '../react-control-mapper'
 
 export type ItemType = GenericContent & {
   children?: ItemType[]
@@ -19,7 +20,7 @@ type TreeProps = {
   loadMore: (startIndex: number, path?: string) => Promise<void>
   onItemClick: (item: GenericContent) => void
   treeData: ItemType
-  setFormOpen?: (actionName: 'new' | 'edit' | 'browse' | undefined) => void
+  setFormOpen?: (actionName: ActionNameType) => void
 }
 
 const ROW_HEIGHT = 48
@@ -157,7 +158,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, se
     )
   }
 
-  const setFormOpenFunc = (actionName: 'new' | 'edit' | 'browse' | undefined) => {
+  const setFormOpenFunc = (actionName: ActionNameType) => {
     setFormOpen && setFormOpen(actionName)
   }
 

@@ -18,11 +18,11 @@ const SetupComponent = lazy(async () => await import(/* webpackChunkName: "setup
 
 const LoginComponent = lazy(async () => await import(/* webpackChunkName: "Login" */ './login/Login'))
 const EditBinary = lazy(async () => await import(/* webpackChunkName: "editBinary" */ './edit/EditBinary'))
-const EditProperties = lazy(async () => await import(/* webpackChunkName: "editProperties" */ './edit/EditProperties'))
+const EditProperties = lazy(async () => await import(/* webpackChunkName: "editProperties" */ './edit/edit-properties'))
 const BrowseProperties = lazy(
-  async () => await import(/* webpackChunkName: "browseProperties" */ './browse/BrowseProperties'),
+  async () => await import(/* webpackChunkName: "browseProperties" */ './browse/browse-properties'),
 )
-const NewProperties = lazy(async () => await import(/* webpackChunkName: "newProperties" */ './new/NewProperties'))
+const NewProperties = lazy(async () => await import(/* webpackChunkName: "newProperties" */ './new/new-properties'))
 const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 
 const TrashComponent = lazy(async () => await import(/* webpackChunkName: "Trash" */ './trash/Trash'))

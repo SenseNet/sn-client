@@ -1,6 +1,6 @@
 import { ODataParams } from '@sensenet/client-core'
 import { TrashBin } from '@sensenet/default-content-types'
-import { useRepository } from '@sensenet/hooks-react/src'
+import { useRepository } from '@sensenet/hooks-react'
 import React from 'react'
 import { useHistory } from 'react-router'
 import { useGlobalStyles } from '../../globalStyles'

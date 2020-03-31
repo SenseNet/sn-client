@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => {
   })
 })
 
-export default function GenericContentEditor() {
+export default function NewProperties() {
   const match = useRouteMatch<{ contentId: string }>()
   const history = useHistory<{ schema: Schema }>()
   const selectionService = useSelectionService()
@@ -48,8 +48,6 @@ export default function GenericContentEditor() {
             <ContentBreadcrumbs />
           </div>
           <NewView
-            handleCancel={history.goBack}
-            repository={repo}
             contentTypeName={contentTypeName}
             onSubmit={async content => {
               try {

@@ -4,11 +4,12 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import { Repository } from '@sensenet/client-core'
-import { ContentType, FieldSetting } from '@sensenet/default-content-types'
+import { ContentType, FieldSetting, Schema } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { createElement, ReactElement, useState } from 'react'
 import MediaQuery from 'react-responsive'
+import { useHistory } from 'react-router'
 import { useLocalization } from '../../hooks'
 import { reactControlMapper } from '../react-control-mapper'
 
@@ -47,11 +48,9 @@ const useStyles = makeStyles((theme: Theme) => {
  */
 export interface NewViewProps {
   onSubmit?: (content: ContentType, contentTypeName?: string) => void
-  repository: Repository
   renderIcon?: (name: string) => ReactElement
   contentTypeName: string
   handleCancel?: () => void
-  submitCallback?: () => void
   showTitle?: boolean
   extension?: string
   uploadFolderpath?: string
@@ -66,16 +65,17 @@ export interface NewViewProps {
  * ```
  */
 export const NewView: React.FC<NewViewProps> = props => {
-  const controlMapper = reactControlMapper(props.repository)
+  const repo = useRepository()
+  const controlMapper = reactControlMapper(repo)
   const schema = controlMapper.getFullSchemaForContentType(props.contentTypeName, 'new')
   const [content, setContent] = useState({})
   const classes = useStyles()
   const localization = useLocalization()
+  const history = useHistory<{ schema: Schema }>()
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     props.onSubmit && props.onSubmit(content as any, schema.schema.ContentTypeName)
-    props.submitCallback && props.submitCallback()
   }
 
   const handleInputChange = (field: string, value: unknown) => {
@@ -101,7 +101,7 @@ export const NewView: React.FC<NewViewProps> = props => {
               {
                 actionName: 'new',
                 settings: field.fieldSettings,
-                repository: props.repository,
+                repository: repo,
                 renderIcon: props.renderIcon,
                 fieldOnChange: handleInputChange,
                 extension: props.extension,
@@ -130,10 +130,7 @@ export const NewView: React.FC<NewViewProps> = props => {
           })}
         <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: 'right' }}>
           <MediaQuery minDeviceWidth={700}>
-            <Button
-              color="default"
-              style={{ marginRight: 20 }}
-              onClick={() => props.handleCancel && props.handleCancel()}>
+            <Button color="default" style={{ marginRight: 20 }} onClick={history.goBack}>
               {localization.forms.cancel}
             </Button>
           </MediaQuery>

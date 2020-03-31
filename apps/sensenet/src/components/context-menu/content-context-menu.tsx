@@ -5,13 +5,14 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Menu, { MenuProps } from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { ActionModel, GenericContent, isActionModel } from '@sensenet/default-content-types'
 import { useLogger, useWopi } from '@sensenet/hooks-react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { ResponsiveContext } from '../../context'
 import { useLoadContent } from '../../hooks'
-import { getIcon } from './icons'
+import { ActionNameType } from '../react-control-mapper'
 import { contextMenuODataOptions } from './context-menu-odata-options'
+import { getIcon } from './icons'
 import { useContextMenuActions } from './use-context-menu-actions'
 
 const DISABLED_ACTIONS = ['SetPermissions']
@@ -23,7 +24,7 @@ type ContentContextMenuProps = {
   menuProps?: Partial<MenuProps>
   content: GenericContent
   halfPage?: boolean
-  setFormOpen?: (actionname: 'new' | 'edit' | 'browse' | undefined) => void
+  setFormOpen?: (actionname: ActionNameType) => void
 }
 
 export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps> = props => {
@@ -53,20 +54,12 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
     [isWriteAvailable, logger],
   )
 
-  const setFormOpen = (actionName: 'new' | 'edit' | 'browse' | undefined) => {
+  const setFormOpen = (actionName: ActionNameType) => {
     props.setFormOpen && props.setFormOpen(actionName)
   }
 
   const getAction = (actionName: string) => {
-    if (actionName === 'Edit') {
-      return 'edit'
-    } else if (actionName === 'New') {
-      return 'new'
-    } else if (actionName === 'Browse') {
-      return 'browse'
-    } else {
-      return undefined
-    }
+    return (actionName.toLowerCase() as ActionNameType) || undefined
   }
 
   const { runAction } = useContextMenuActions(props.content, setActionsWopi)

@@ -7,6 +7,7 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import { useSelectionService } from '../hooks'
 import { ContentContextMenu } from './context-menu/content-context-menu'
 import { DropFileArea } from './DropFileArea'
+import { ActionNameType } from './react-control-mapper'
 
 export interface BreadcrumbItem<T extends GenericContent> {
   url: string
@@ -18,7 +19,7 @@ export interface BreadcrumbItem<T extends GenericContent> {
 export interface BreadcrumbProps<T extends GenericContent> {
   items: Array<BreadcrumbItem<T>>
   onItemClick: (event: React.MouseEvent, item: BreadcrumbItem<T>) => void
-  setFormOpen?: (actionName: 'new' | 'edit' | 'browse' | undefined) => void
+  setFormOpen?: (actionName: ActionNameType) => void
 }
 
 /**
@@ -30,7 +31,7 @@ function BreadcrumbsComponent<T extends GenericContent>(props: BreadcrumbProps<T
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
   const selectionService = useSelectionService()
 
-  const setFormOpen = (actionName: 'new' | 'edit' | 'browse' | undefined) => {
+  const setFormOpen = (actionName: ActionNameType) => {
     props.setFormOpen && props.setFormOpen(actionName)
   }
 

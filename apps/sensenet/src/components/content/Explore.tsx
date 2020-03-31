@@ -16,6 +16,7 @@ import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { Icon } from '../Icon'
 import TreeWithData from '../tree/tree-with-data'
 import { EditView } from '../view-controls/edit-view'
+import { ActionNameType } from '../react-control-mapper'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -61,13 +62,13 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const [isFormOpened, setIsFormOpened] = useState(false)
-  const [action, setAction] = useState<'new' | 'edit' | 'browse' | undefined>(undefined)
+  const [action, setAction] = useState<ActionNameType>(undefined)
 
   if (!props.rootPath) {
     return null
   }
 
-  const setFormOpen = (actionName: 'new' | 'edit' | 'browse' | undefined) => {
+  const setFormOpen = (actionName: ActionNameType) => {
     setAction(actionName)
     setIsFormOpened(true)
   }
@@ -81,7 +82,10 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
               <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
                 <ContentBreadcrumbs
                   setFormOpen={actionName => setFormOpen(actionName)}
-                  onItemClick={i => props.onNavigate(i.content)}
+                  onItemClick={i => {
+                    props.onNavigate(i.content)
+                    setIsFormOpened(false)
+                  }}
                 />
               </div>
               <div className={classes.treeAndDatagridWrapper}>
@@ -98,17 +102,11 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                 <div className={classes.exploreContainer}>
                   {isFormOpened ? (
                     <>
-                      {action === 'edit' ? (
+                      {action === 'edit' || action === 'browse' ? (
                         <div className={clsx(classes.title, globalClasses.centered)}>
-                          {clsx('Edit', selectionService.activeContent.getValue()?.DisplayName)}
-                          <Icon
-                            style={{ marginLeft: '9px', height: '24px', width: '24px' }}
-                            item={selectionService.activeContent.getValue()}
-                          />
-                        </div>
-                      ) : action === 'browse' ? (
-                        <div className={clsx(classes.title, globalClasses.centered)}>
-                          {clsx('Info about', selectionService.activeContent.getValue()?.DisplayName)}
+                          {action === 'edit'
+                            ? `Edit ${selectionService.activeContent.getValue()?.DisplayName}`
+                            : `Info about ${selectionService.activeContent.getValue()?.DisplayName}`}
                           <Icon
                             style={{ marginLeft: '9px', height: '24px', width: '24px' }}
                             item={selectionService.activeContent.getValue()}

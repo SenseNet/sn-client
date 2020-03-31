@@ -66,7 +66,7 @@ export function Dialogs() {
           }}
           key={index}
           open={true}
-          maxWidth={'md'}>
+          maxWidth="md">
           <div className={globalClasses.dialog}>{dialogRenderer(dialog)}</div>
         </Dialog>
       ))}

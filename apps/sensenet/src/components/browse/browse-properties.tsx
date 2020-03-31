@@ -1,8 +1,9 @@
 import { createStyles, makeStyles } from '@material-ui/core'
+import { Schema } from '@sensenet/default-content-types'
 import { CurrentContentProvider } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React from 'react'
-import { RouteComponentProps, withRouter } from 'react-router'
+import { useHistory, useRouteMatch } from 'react-router'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
 import { EditView } from '../view-controls/edit-view'
@@ -20,8 +21,9 @@ const useStyles = makeStyles(() => {
   })
 })
 
-const GenericContentEditor: React.FunctionComponent<RouteComponentProps<{ contentId?: string }>> = props => {
-  const contentId = parseInt(props.match.params.contentId as string, 10)
+export default function BrowseProperties() {
+  const match = useRouteMatch<{ contentId: string }>()
+  const history = useHistory<{ schema: Schema }>()
   const selectionService = useSelectionService()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
@@ -29,20 +31,14 @@ const GenericContentEditor: React.FunctionComponent<RouteComponentProps<{ conten
   return (
     <div className={clsx(globalClasses.full, classes.editWrapper)}>
       <CurrentContentProvider
-        idOrPath={contentId}
+        idOrPath={match.params.contentId}
         onContentLoaded={c => selectionService.activeContent.setValue(c)}
         oDataOptions={{
           select: 'all',
           expand: ['Manager', 'FollowedWorkspaces'] as any,
         }}>
-        <EditView
-          uploadFolderpath={'/Root/Content/demoavatars'}
-          handleCancel={props.history.goBack}
-          actionName={'browse'}
-        />
+        <EditView uploadFolderpath="/Root/Content/demoavatars" handleCancel={history.goBack} actionName="browse" />
       </CurrentContentProvider>
     </div>
   )
 }
-
-export default withRouter(GenericContentEditor)
