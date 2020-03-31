@@ -1,6 +1,6 @@
 import React from 'react'
 import { UserManager } from 'oidc-client'
-import { mount } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import { act } from 'react-dom/test-utils'
 import { AuthenticationContext } from '../src/components/authentication-provider'
 import { OidcSecure } from '../src/components/oidc-secure'
@@ -15,6 +15,18 @@ jest.mock('../src/authentication-service', () => {
 })
 
 describe('OidcSecure component', () => {
+  it('should throw error when used outside of AuthenticationProvider', () => {
+    try {
+      shallow(
+        <OidcSecure history={{} as any}>
+          <div />
+        </OidcSecure>,
+      )
+    } catch (error) {
+      expect(error.message).toBe('useOidcAuthentication must be used within a AuthenticationProvider')
+    }
+  })
+
   it('should show Authenticating component when user is not logged in and call signinRedirect', async () => {
     const signinRedirect = jest.fn()
     ;(getUserManager as any).mockImplementationOnce(() => {
@@ -73,5 +85,47 @@ describe('OidcSecure component', () => {
     expect(wrapper.find('#a')).toHaveLength(1)
     expect(wrapper.find(Authenticating)).toHaveLength(0)
     expect(signinRedirect).not.toBeCalled()
+  })
+
+  it('should call signinSilent when token is expired', async () => {
+    const signinSilent = jest.fn()
+    ;(getUserManager as any).mockImplementationOnce(() => {
+      return { signinSilent, getUser: () => ({ expired: true }) }
+    })
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(
+        <AuthenticationContext.Provider value={{ oidcUser: { expired: true } } as any}>
+          <OidcSecure history={{ location: new URL('https://localhost:3000') } as any}>
+            <p id="a">a</p>
+          </OidcSecure>
+        </AuthenticationContext.Provider>,
+      )
+    })
+
+    expect(signinSilent).toBeCalled()
+  })
+
+  it('should navigate to session lost when token is expired and signinSilent fails', async () => {
+    const signinSilent = jest.fn(() => {
+      throw new Error('error')
+    })
+    const push = jest.fn()
+    ;(getUserManager as any).mockImplementationOnce(() => {
+      return { signinSilent, getUser: () => ({ expired: true }) }
+    })
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(
+        <AuthenticationContext.Provider value={{ oidcUser: { expired: true } } as any}>
+          <OidcSecure history={{ location: new URL('https://localhost:3000'), push } as any}>
+            <p id="a">a</p>
+          </OidcSecure>
+        </AuthenticationContext.Provider>,
+      )
+    })
+
+    expect(signinSilent).toBeCalled()
+    expect(push).toBeCalledWith('/authentication/session-lost?path=/')
   })
 })
