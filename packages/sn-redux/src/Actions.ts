@@ -121,7 +121,7 @@ import {
   RepositoryConfiguration,
   SharingOptions,
 } from '@sensenet/client-core'
-import { GenericContent, User } from '@sensenet/default-content-types'
+import { FieldSetting, GenericContent, User } from '@sensenet/default-content-types'
 import { PromiseMiddlewareAction } from '@sensenet/redux-promise-middleware'
 import { PathHelper } from '@sensenet/client-utils'
 
@@ -854,5 +854,31 @@ export const checkAllowedChildTypes = (idOrPath: number | string) => ({
       idOrPath,
       name: 'CheckAllowedChildTypesOfFolders',
       method: 'GET',
+    }),
+})
+
+/**
+ * Action creator for updating a custom field of a content list
+ * @param idOrPath Id or Path of the custom field
+ * @param field Fields and values that should be updated wrapped to an object
+ */
+export const udpateListField = (idOrPath: number | string, field: Partial<FieldSetting>) => ({
+  type: 'UPDATE_LIST_FIELD',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'EditField',
+      method: 'POST',
+      body: field,
+    }),
+})
+
+export const deleteListField = (idOrPath: number | string) => ({
+  type: 'DELETE_LIST_FIELD',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'DeleteField',
+      method: 'POST',
     }),
 })
