@@ -1510,4 +1510,52 @@ describe('Actions', () => {
       })
     })
   })
+  describe('updateListField', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => contentMockResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.udpateListField(path, { Name: 'MyCustomField' }).type).toBe('UPDATE_LIST_FIELD')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.udpateListField() resolves', () => {
+        let data: ODataResponse<GenericContent>
+        let mockContentResponseData: ReturnType<typeof contentMockResponse['json']>
+        beforeEach(async () => {
+          data = await Actions.udpateListField(path, { Name: 'MyCustomField' }).payload(repo)
+          mockContentResponseData = await contentMockResponse.json()
+        })
+        it('should return a UPDATE_LIST_FIELD action', () => {
+          expect(Actions.udpateListField(path, { Name: 'MyCustomField' })).toHaveProperty('type', 'UPDATE_LIST_FIELD')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(mockContentResponseData)
+        })
+      })
+    })
+  })
+  describe('deleteListField', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => emptyResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.deleteListField(path).type).toBe('DELETE_LIST_FIELD')
+    })
+
+    describe('serviceChecks()', () => {
+      let data: any
+      beforeEach(async () => {
+        data = await Actions.deleteListField(path).payload(repo)
+      })
+      describe('Given repository.deleteListField() resolves', () => {
+        it('should return a DELETE_LIST_FIELD action', () => {
+          expect(Actions.deleteListField(path)).toHaveProperty('type', 'DELETE_LIST_FIELD')
+        })
+        it('should return mockdata', () => {
+          expect(data).toBeUndefined()
+        })
+      })
+    })
+  })
 })
