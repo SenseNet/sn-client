@@ -112,6 +112,9 @@ const values: DeepPartial<typeof import('./default').default> = {
     personalSettings: 'Személyes beállítások',
     logout: 'Kijelentkezés',
   },
+  common: {
+    loadingContent: 'Content betöltése...',
+  },
 }
 
 export default values
