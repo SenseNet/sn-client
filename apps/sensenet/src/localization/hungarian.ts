@@ -113,7 +113,7 @@ const values: DeepPartial<typeof import('./default').default> = {
     logout: 'Kijelentkezés',
   },
   common: {
-    loadingContent: 'Content betöltése...',
+    loadingContent: 'Tartalom betöltése...',
   },
 }
 
