@@ -18,15 +18,19 @@ const useStyles = makeStyles(() => {
   return createStyles({
     form: {
       margin: '0 auto',
-      padding: '22px 22px 39px 22px',
+      padding: '22px 22px 0 22px',
       overflowY: 'auto',
       width: '100%',
+      height: 'calc(100% - 148px)',
+    },
+    fullpage: {
+      height: 'calc(100% - 80px)',
     },
     grid: {
       display: 'flex',
       alignItems: 'center',
       flexFlow: 'column',
-      padding: '6px !important',
+      padding: '15px !important',
       height: 'fit-content',
       position: 'relative',
     },
@@ -36,6 +40,14 @@ const useStyles = makeStyles(() => {
     },
     wrapperFullWidth: {
       width: '88%',
+    },
+    actionButtonWrapper: {
+      height: '80px',
+      width: '100%',
+      position: 'absolute',
+      padding: '20px',
+      bottom: 0,
+      textAlign: 'right',
     },
   })
 })
@@ -49,6 +61,7 @@ export interface EditViewProps {
   submitCallback?: () => void
   uploadFolderpath?: string
   actionName?: ActionNameType
+  isFullPage?: boolean
 }
 
 /**
@@ -87,8 +100,7 @@ export const EditView: React.FC<EditViewProps> = props => {
       props.actionName ? props.actionName : 'browse',
     )
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault()
+    const handleSubmit = () => {
       repo
         .patch({
           idOrPath: content.Id,
@@ -131,70 +143,76 @@ export const EditView: React.FC<EditViewProps> = props => {
       return (
         field.fieldSettings.Name === 'Avatar' ||
         field.fieldSettings.Name === 'Enabled' ||
-        field.fieldSettings.Name === 'Description'
+        field.fieldSettings.Type === 'LongTextFieldSetting'
       )
     }
 
     return (
-      <form className={classes.form} onSubmit={handleSubmit}>
-        <Grid container={true} spacing={2}>
-          {schema.fieldMappings
-            .sort((item1, item2) => item2.fieldSettings.DefaultOrder! - item1.fieldSettings.DefaultOrder!)
-            .map(field => {
-              const fieldControl = createElement(
-                controlMapper.getControlForContentField(
-                  content.Type,
-                  field.fieldSettings.Name,
-                  props.actionName ? props.actionName : 'browse',
-                ),
-                {
-                  repository: repo,
-                  settings: field.fieldSettings,
-                  content,
-                  fieldValue: (content as any)[field.fieldSettings.Name],
-                  actionName: props.actionName,
-                  renderIcon: props.renderIcon,
-                  fieldOnChange: handleInputChange,
-                  uploadFolderPath: props.uploadFolderpath,
-                },
-              )
+      <>
+        <form
+          className={clsx(classes.form, {
+            [classes.fullpage]: props.isFullPage,
+          })}
+          onSubmit={handleSubmit}>
+          <Grid container={true} spacing={2}>
+            {schema.fieldMappings
+              .sort((item1, item2) => item2.fieldSettings.DefaultOrder! - item1.fieldSettings.DefaultOrder!)
+              .map(field => {
+                const fieldControl = createElement(
+                  controlMapper.getControlForContentField(
+                    content.Type,
+                    field.fieldSettings.Name,
+                    props.actionName ? props.actionName : 'browse',
+                  ),
+                  {
+                    repository: repo,
+                    settings: field.fieldSettings,
+                    content,
+                    fieldValue: (content as any)[field.fieldSettings.Name],
+                    actionName: props.actionName,
+                    renderIcon: props.renderIcon,
+                    fieldOnChange: handleInputChange,
+                    uploadFolderPath: props.uploadFolderpath,
+                  },
+                )
 
-              return (
-                <Grid
-                  item={true}
-                  xs={12}
-                  sm={12}
-                  md={isFullWidthField(field) ? 12 : 6}
-                  lg={isFullWidthField(field) ? 12 : 6}
-                  xl={isFullWidthField(field) ? 12 : 6}
-                  key={field.fieldSettings.Name + content.Id}
-                  className={classes.grid}>
-                  <div
-                    className={clsx(classes.wrapper, {
-                      [classes.wrapperFullWidth]: isFullWidthField(field),
-                    })}>
-                    {fieldControl}
-                  </div>
-                </Grid>
-              )
-            })}
-          <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: 'right' }}>
-            <MediaQuery minDeviceWidth={700}>
-              <Button
-                color="default"
-                className={globalClasses.cancelButton}
-                onClick={() => props.handleCancel && props.handleCancel()}>
-                {localization.forms.cancel}
-              </Button>
-            </MediaQuery>
-            {props.actionName !== 'browse' && (
-              <Button type="submit" variant="contained" color="primary">
-                {localization.forms.submit}
-              </Button>
-            )}
+                return (
+                  <Grid
+                    item={true}
+                    xs={12}
+                    sm={12}
+                    md={isFullWidthField(field) ? 12 : 6}
+                    lg={isFullWidthField(field) ? 12 : 6}
+                    xl={isFullWidthField(field) ? 12 : 6}
+                    key={field.fieldSettings.Name + content.Id}
+                    className={classes.grid}>
+                    <div
+                      className={clsx(classes.wrapper, {
+                        [classes.wrapperFullWidth]: isFullWidthField(field),
+                      })}>
+                      {fieldControl}
+                    </div>
+                  </Grid>
+                )
+              })}
           </Grid>
-        </Grid>
-      </form>
+        </form>
+        <div className={classes.actionButtonWrapper}>
+          <MediaQuery minDeviceWidth={700}>
+            <Button
+              color="default"
+              className={globalClasses.cancelButton}
+              onClick={() => props.handleCancel && props.handleCancel()}>
+              {localization.forms.cancel}
+            </Button>
+          </MediaQuery>
+          {props.actionName !== 'browse' && (
+            <Button variant="contained" color="primary" onClick={() => handleSubmit()}>
+              {localization.forms.submit}
+            </Button>
+          )}
+        </div>
+      </>
     )
   }
 }

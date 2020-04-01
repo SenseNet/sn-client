@@ -1,7 +1,7 @@
 /**
  * @module ViewControls
  */
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import { createStyles, makeStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import { ContentType, FieldSetting, Schema } from '@sensenet/default-content-types'
@@ -12,24 +12,22 @@ import MediaQuery from 'react-responsive'
 import { useHistory } from 'react-router'
 import { useLocalization } from '../../hooks'
 import { reactControlMapper } from '../react-control-mapper'
+import { useGlobalStyles } from '../../globalStyles'
 
-const useStyles = makeStyles((theme: Theme) => {
+const useStyles = makeStyles(() => {
   return createStyles({
     form: {
       margin: '0 auto',
-      padding: '22px 22px 39px 22px',
+      padding: '22px 22px 0 22px',
       overflowY: 'auto',
       width: '100%',
-    },
-    cancel: {
-      marginRight: 38,
-      border: theme.palette.type === 'light' ? '2px solid #212121DE' : '2px solid #505050',
+      height: 'calc(100% - 80px)',
     },
     grid: {
       display: 'flex',
       alignItems: 'center',
       flexFlow: 'column',
-      padding: '6px !important',
+      padding: '15px !important',
       height: 'fit-content',
       position: 'relative',
     },
@@ -39,6 +37,14 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     wrapperFullWidth: {
       width: '88%',
+    },
+    actionButtonWrapper: {
+      height: '80px',
+      width: '100%',
+      position: 'absolute',
+      padding: '20px',
+      bottom: 0,
+      textAlign: 'right',
     },
   })
 })
@@ -72,9 +78,9 @@ export const NewView: React.FC<NewViewProps> = props => {
   const classes = useStyles()
   const localization = useLocalization()
   const history = useHistory<{ schema: Schema }>()
+  const globalClasses = useGlobalStyles()
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const handleSubmit = () => {
     props.onSubmit && props.onSubmit(content as any, schema.schema.ContentTypeName)
   }
 
@@ -86,59 +92,61 @@ export const NewView: React.FC<NewViewProps> = props => {
     return (
       field.fieldSettings.Name === 'Avatar' ||
       field.fieldSettings.Name === 'Enabled' ||
-      field.fieldSettings.Name === 'Description'
+      field.fieldSettings.Type === 'LongTextFieldSetting'
     )
   }
 
   return (
-    <form className={classes.form} onSubmit={handleSubmit}>
-      <Grid container={true} spacing={2}>
-        {schema.fieldMappings
-          .sort((item1, item2) => item2.fieldSettings.DefaultOrder! - item1.fieldSettings.DefaultOrder!)
-          .map(field => {
-            const fieldControl = createElement(
-              controlMapper.getControlForContentField(props.contentTypeName, field.fieldSettings.Name, 'new'),
-              {
-                actionName: 'new',
-                settings: field.fieldSettings,
-                repository: repo,
-                renderIcon: props.renderIcon,
-                fieldOnChange: handleInputChange,
-                extension: props.extension,
-                uploadFolderPath: props.uploadFolderpath,
-              },
-            )
+    <>
+      <form className={classes.form} onSubmit={handleSubmit}>
+        <Grid container={true} spacing={2}>
+          {schema.fieldMappings
+            .sort((item1, item2) => item2.fieldSettings.DefaultOrder! - item1.fieldSettings.DefaultOrder!)
+            .map(field => {
+              const fieldControl = createElement(
+                controlMapper.getControlForContentField(props.contentTypeName, field.fieldSettings.Name, 'new'),
+                {
+                  actionName: 'new',
+                  settings: field.fieldSettings,
+                  repository: repo,
+                  renderIcon: props.renderIcon,
+                  fieldOnChange: handleInputChange,
+                  extension: props.extension,
+                  uploadFolderPath: props.uploadFolderpath,
+                },
+              )
 
-            return (
-              <Grid
-                item={true}
-                xs={12}
-                sm={12}
-                md={isFullWidthField(field) ? 12 : 6}
-                lg={isFullWidthField(field) ? 12 : 6}
-                xl={isFullWidthField(field) ? 12 : 6}
-                key={field.fieldSettings.Name}
-                className={classes.grid}>
-                <div
-                  className={clsx(classes.wrapper, {
-                    [classes.wrapperFullWidth]: isFullWidthField(field),
-                  })}>
-                  {fieldControl}
-                </div>
-              </Grid>
-            )
-          })}
-        <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: 'right' }}>
-          <MediaQuery minDeviceWidth={700}>
-            <Button color="default" style={{ marginRight: 20 }} onClick={history.goBack}>
-              {localization.forms.cancel}
-            </Button>
-          </MediaQuery>
-          <Button type="submit" variant="contained" color="secondary">
-            {localization.forms.submit}
-          </Button>
+              return (
+                <Grid
+                  item={true}
+                  xs={12}
+                  sm={12}
+                  md={isFullWidthField(field) ? 12 : 6}
+                  lg={isFullWidthField(field) ? 12 : 6}
+                  xl={isFullWidthField(field) ? 12 : 6}
+                  key={field.fieldSettings.Name}
+                  className={classes.grid}>
+                  <div
+                    className={clsx(classes.wrapper, {
+                      [classes.wrapperFullWidth]: isFullWidthField(field),
+                    })}>
+                    {fieldControl}
+                  </div>
+                </Grid>
+              )
+            })}
         </Grid>
-      </Grid>
-    </form>
+      </form>
+      <div className={classes.actionButtonWrapper}>
+        <MediaQuery minDeviceWidth={700}>
+          <Button color="default" className={globalClasses.cancelButton} onClick={history.goBack}>
+            {localization.forms.cancel}
+          </Button>
+        </MediaQuery>
+        <Button variant="contained" color="primary" onClick={() => handleSubmit()}>
+          {localization.forms.submit}
+        </Button>
+      </div>
+    </>
   )
 }

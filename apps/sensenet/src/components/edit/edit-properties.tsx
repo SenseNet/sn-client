@@ -36,7 +36,12 @@ export default function EditProperties() {
           selectionService.activeContent.setValue(c)
         }}
         oDataOptions={{ select: 'all' }}>
-        <EditView uploadFolderpath={'/Root/Content/demoavatars'} handleCancel={history.goBack} actionName={'edit'} />
+        <EditView
+          uploadFolderpath={'/Root/Content/demoavatars'}
+          handleCancel={history.goBack}
+          actionName={'edit'}
+          isFullPage={true}
+        />
       </CurrentContentProvider>
     </div>
   )

@@ -1,12 +1,11 @@
 import { createStyles, makeStyles } from '@material-ui/core'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
-import { CurrentAncestorsProvider, CurrentContentProvider, useLogger, useRepository } from '@sensenet/hooks-react'
+import { CurrentContentProvider, useLogger, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useSelectionService } from '../../hooks'
-import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { NewView } from '../view-controls/new-view'
 
 const useStyles = makeStyles(() => {
@@ -43,43 +42,38 @@ export default function NewProperties() {
           setCurrentContent(c)
         }}
         oDataOptions={{ select: 'all' }}>
-        <CurrentAncestorsProvider>
-          <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
-            <ContentBreadcrumbs />
-          </div>
-          <NewView
-            contentTypeName={contentTypeName}
-            onSubmit={async content => {
-              try {
-                const created = await repo.post({
-                  contentType: contentTypeName,
-                  parentPath: currentContent!.Path,
-                  content,
-                  contentTemplate: contentTypeName,
-                })
-                logger.information({
-                  message: localization.contentCreatedNotification.replace(
-                    '{0}',
-                    created.d.DisplayName || created.d.Name,
-                  ),
-                  data: {
-                    relatedContent: created,
-                    relatedRepository: repo.configuration.repositoryUrl,
-                  },
-                })
-              } catch (error) {
-                logger.error({
-                  message: localization.errorPostingContentNotification,
-                  data: {
-                    details: { error },
-                  },
-                })
-              } finally {
-                history.goBack()
-              }
-            }}
-          />
-        </CurrentAncestorsProvider>
+        <NewView
+          contentTypeName={contentTypeName}
+          onSubmit={async content => {
+            try {
+              const created = await repo.post({
+                contentType: contentTypeName,
+                parentPath: currentContent!.Path,
+                content,
+                contentTemplate: contentTypeName,
+              })
+              logger.information({
+                message: localization.contentCreatedNotification.replace(
+                  '{0}',
+                  created.d.DisplayName || created.d.Name,
+                ),
+                data: {
+                  relatedContent: created,
+                  relatedRepository: repo.configuration.repositoryUrl,
+                },
+              })
+            } catch (error) {
+              logger.error({
+                message: localization.errorPostingContentNotification,
+                data: {
+                  details: { error },
+                },
+              })
+            } finally {
+              history.goBack()
+            }
+          }}
+        />
       </CurrentContentProvider>
     </div>
   )

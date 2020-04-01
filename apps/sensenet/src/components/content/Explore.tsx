@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme: Theme) => {
       display: 'flex',
       flexFlow: 'column',
       width: '100%',
+      position: 'relative',
     },
   })
 })

@@ -73,6 +73,9 @@ class ReferenceGridComponent extends Component<
       pickerIsOpen: false,
       selected: [],
     }
+  }
+
+  public componentDidMount() {
     if (this.props.actionName === 'edit') {
       this.getSelected()
     }
@@ -102,6 +105,10 @@ class ReferenceGridComponent extends Component<
         selected: result,
       })
     } catch (error) {
+      // If the field is null we don't want to show error message. On /Manager request we got this error message if the field is null
+      if (error.message === 'Unexpected end of JSON input') {
+        return
+      }
       console.error(error.message)
     }
   }
