@@ -10,7 +10,7 @@ export const FullScreenLoader = ({ loaderText }: { loaderText?: string }) => {
 
   return (
     <div className={clsx(centered, full)}>
-      <CircularProgress color="primary" />{' '}
+      <CircularProgress color="primary" />
       <span style={{ fontSize: '1.5em', marginLeft: 20 }}>{loaderText ?? loadingContent}</span>
     </div>
   )
