@@ -20,7 +20,7 @@ npm install @sensenet/authentication-jwt
 
 You can use JWT authentication with a [preconfigured](https://community.sensenet.com/docs/web-token-authentication/) sensenet >7.0.0 backend.
 
-- **sessionLifetime** - You can change how user sessions should be persisted on the client, you can use _'session'_, whitch means the user will be logged out when closing a browser, or _'expiration'_, in that case the token expiration property will be used. This behaviour is implemented for JWT Authentication. (See [JWT Token docs](http://community.sensenet.com/docs/web-token-authentication/) for further details)
+- **sessionLifetime** - You can change how user sessions should be persisted on the client, you can use _'session'_, which means the user will be logged out when the browser is closed, or _'expiration'_, in that case the token expiration property will be used. This behavior is implemented for JWT Authentication. (See [JWT Token docs](http://community.sensenet.com/docs/web-token-authentication/) for further details)
 
 Service setup:
 
