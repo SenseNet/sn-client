@@ -37,7 +37,12 @@ export default function BrowseProperties() {
           select: 'all',
           expand: ['Manager', 'FollowedWorkspaces'] as any,
         }}>
-        <EditView uploadFolderpath="/Root/Content/demoavatars" handleCancel={history.goBack} actionName="browse" />
+        <EditView
+          uploadFolderpath="/Root/Content/demoavatars"
+          handleCancel={history.goBack}
+          actionName="browse"
+          isFullPage={true}
+        />
       </CurrentContentProvider>
     </div>
   )

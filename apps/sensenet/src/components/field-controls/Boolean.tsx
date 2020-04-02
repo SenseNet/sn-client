@@ -6,6 +6,7 @@ import FormControl from '@material-ui/core/FormControl'
 import { changeJScriptValue } from '@sensenet/controls-react'
 import { FieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
+import clsx from 'clsx'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 import { Switcher } from './switcher'
 
@@ -14,8 +15,11 @@ const useStyles = makeStyles(() =>
     root: {
       width: '100%',
       display: 'flex',
-      alignItems: 'center',
       justifyContent: 'center',
+      alignItems: 'flex-start',
+    },
+    alignedCenter: {
+      alignItems: 'center',
     },
   }),
 )
@@ -36,7 +40,12 @@ export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> =
     case 'new':
     case 'edit':
       return (
-        <FormControl className={classes.root} required={props.settings.Compulsory} disabled={props.settings.ReadOnly}>
+        <FormControl
+          className={clsx(classes.root, {
+            [classes.alignedCenter]: props.content?.Type === 'User' && props.settings.Name === 'Enabled',
+          })}
+          required={props.settings.Compulsory}
+          disabled={props.settings.ReadOnly}>
           <Typography component="div">
             <Grid component="label" container alignItems="center" spacing={1}>
               <Grid item style={{ paddingRight: '30px' }}>
@@ -52,7 +61,12 @@ export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> =
     case 'browse':
     default:
       return props.fieldValue != null ? (
-        <FormControl className={classes.root} required={props.settings.Compulsory} disabled={props.settings.ReadOnly}>
+        <FormControl
+          className={clsx(classes.root, {
+            [classes.alignedCenter]: props.content?.Type === 'User' && props.settings.Name === 'Enabled',
+          })}
+          required={props.settings.Compulsory}
+          disabled={props.settings.ReadOnly}>
           <Typography component="div">
             <Grid component="label" container alignItems="center" spacing={1}>
               <Grid item style={{ paddingRight: '30px' }}>

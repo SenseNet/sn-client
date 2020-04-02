@@ -95,7 +95,9 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
   const globalClasses = useGlobalStyles()
   const { openDialog } = useDialog()
   const [selected, setSelected] = useState<GenericContent[]>([])
-  const [activeContent, setActiveContent] = useState<GenericContent>(children[0])
+  const [activeContent, setActiveContent] = useState<GenericContent>(
+    selectionService.activeContent.getValue() || children[0],
+  )
   const [isFocused, setIsFocused] = useState(true)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<{ top: number; left: number }>({
