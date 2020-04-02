@@ -3,7 +3,7 @@ import { Repository } from '@sensenet/client-core'
 import { RepositoryContext, useLogger } from '@sensenet/hooks-react'
 import React, { lazy, ReactNode, Suspense, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { FullScreenLoader } from '../components/FullScreenLoader'
+import { FullScreenLoader } from '../components/full-screen-loader'
 import { NotificationComponent } from '../components/NotificationComponent'
 import { getAuthConfig } from '../services/auth-config'
 
