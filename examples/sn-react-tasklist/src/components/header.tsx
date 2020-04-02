@@ -14,7 +14,6 @@ import { ODataResponse } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
-import { useCurrentUser } from '../hooks/use-current-user'
 // end of sensenet imports
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -40,9 +39,8 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const HeaderPanel = () => {
-  const usr = useCurrentUser()
   const repo = useRepository() // Custom hook that will return with a Repository object
-  const { logout } = useOidcAuthentication()
+  const { logout, oidcUser } = useOidcAuthentication()
   const classes = useStyles()
   const [container, setContainer] = useState<GenericContent>()
 
@@ -64,7 +62,7 @@ const HeaderPanel = () => {
       <AppBar position="fixed">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            {usr.DisplayName}
+            {oidcUser?.profile.name}
             {container !== undefined ? `'s ${container.DisplayName}` : ''}
           </Typography>
           <IconButton
