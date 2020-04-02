@@ -18,7 +18,7 @@ npm install @sensenet/authentication-oidc-react
 
 ## Usage
 
-There are 2 components and 1 hook that you can use. AuthenticationProvider, OidcSecure, useOidcAuthentication.
+There are 2 components and 1 hook that you can use. `AuthenticationProvider`, `OidcSecure`, `useOidcAuthentication`.
 
 ### AuthenticationProvider
 
@@ -29,7 +29,7 @@ There are 2 components and 1 hook that you can use. AuthenticationProvider, Oidc
 | history                   | History from 'history'                      |    ✔     | history object from react-router or history package. Needed for navigation.                                                                        |
 | configuration             | UserManagerSettings from 'oidc-client'      |    ✔     | configuration object for oidc-client. These properties are required: client_id, redirect_uri, response_type, scope, authority, silent_redirect_uri |
 | children                  | ReactNode                                   |    ✔     | You can only use AuthenticationProvider as a wrapper.                                                                                              |
-| authenticating            | ReactNode                                   |          | Component shown when OidcSecure used and login is required.                                                                                        |
+| authenticating            | ReactNode                                   |          | Component shown when OidcSecure is used and login is required.                                                                                        |
 | notAuthenticated          | ReactNode                                   |          | Component shown on route /authentication/not-authenticated                                                                                         |
 | notAuthorized             | ReactNode                                   |          | Component shown on route /authentication/not-authorized                                                                                            |
 | sessionLost               | ElementType<{ onAuthenticate: () => void }> |          | Component shown on route /authentication/session-lost                                                                                              |
@@ -94,7 +94,7 @@ export const RepositoryProvider = ({ children }: PropsWithChildren<{}>) => {
 
 ### OidcSecure
 
-This component can be used secure routes that needs authentication. This must be inside a router of course and the AuthenticationProvider.
+This component can be used to secure routes that needs authentication. This must be inside a router and the AuthenticationProvider of course .
 
 **Props**
 
