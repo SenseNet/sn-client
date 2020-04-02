@@ -3,7 +3,7 @@ import { useLogger, useRepository, useRepositoryEvents } from '@sensenet/hooks-r
 import { GenericContent } from '@sensenet/default-content-types'
 import { PathHelper } from '@sensenet/client-utils'
 import { Created } from '@sensenet/repository-events'
-import { FullScreenLoader } from '../FullScreenLoader'
+import { FullScreenLoader } from '../full-screen-loader'
 import { useSelectionService } from '../../hooks'
 import { ItemType, Tree } from './tree'
 

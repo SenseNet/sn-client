@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { CurrentContentProvider } from '@sensenet/hooks-react'
 import { useLoadContent, useSelectionService } from '../../hooks'
-import { FullScreenLoader } from '../FullScreenLoader'
+import { FullScreenLoader } from '../full-screen-loader'
 import { TextEditor } from './TextEditor'
 
 const Editor: React.FunctionComponent<RouteComponentProps<{ contentId?: string }>> = props => {

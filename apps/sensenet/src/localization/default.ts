@@ -409,6 +409,9 @@ const values = {
       `Couldn't restore version to  ${version} for content: ${name}`,
     restoreButtonTitle: 'Restore version',
   },
+  common: {
+    loadingContent: 'Loading content...',
+  },
 }
 
 export default values
