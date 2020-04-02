@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography'
 import { ODataResponse } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
+import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
 import { useCurrentUser } from '../hooks/use-current-user'
 // end of sensenet imports
 
@@ -41,6 +42,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const HeaderPanel = () => {
   const usr = useCurrentUser()
   const repo = useRepository() // Custom hook that will return with a Repository object
+  const { logout } = useOidcAuthentication()
   const classes = useStyles()
   const [container, setContainer] = useState<GenericContent>()
 
@@ -70,7 +72,7 @@ const HeaderPanel = () => {
             className={classes.logoutButton}
             color="inherit"
             aria-label="logout"
-            onClick={() => repo.authentication.logout()}>
+            onClick={logout}>
             <LogoutIcon />
           </IconButton>
         </Toolbar>
