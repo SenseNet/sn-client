@@ -69,7 +69,7 @@ const RepoProvider = ({ children, repoUrl }: { children: ReactNode; repoUrl: str
   if (!oidcUser) {
     return (
       <Suspense fallback={<FullScreenLoader />}>
-<LoginPage url={repoUrl} isLoginDisabled={false} handleSubmit={login} />
+        <LoginPage url={repoUrl} isLoginDisabled={false} handleSubmit={login} />
         <NotificationComponent />
       </Suspense>
     )
