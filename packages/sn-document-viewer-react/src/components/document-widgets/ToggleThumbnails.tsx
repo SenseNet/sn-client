@@ -18,7 +18,7 @@ export const ToggleThumbnailsWidget: React.FC = () => {
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
         style={{ width: '1em', height: '1em' }}
-        fill={viewerState.showThumbnails ? styles.colors.icon.active : styles.colors.icon.inactive}
+        fill={viewerState.showThumbnails ? styles.colors.icon.inactive : styles.colors.icon.active}
         viewBox="0 0 1000 1000"
         enableBackground="new 0 0 1000 1000">
         <g>
