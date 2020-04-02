@@ -4,7 +4,7 @@ import { useLogger, useRepository, useRepositoryEvents } from '@sensenet/hooks-r
 import { Created } from '@sensenet/repository-events'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useSelectionService } from '../../hooks'
-import { FullScreenLoader } from '../FullScreenLoader'
+import { FullScreenLoader } from '../full-screen-loader'
 import { ActionNameType } from '../react-control-mapper'
 import { ItemType, Tree } from './tree'
 

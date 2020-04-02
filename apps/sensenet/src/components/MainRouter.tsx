@@ -5,7 +5,7 @@ import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-
 import { usePersonalSettings } from '../hooks'
 import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
-import { FullScreenLoader } from './FullScreenLoader'
+import { FullScreenLoader } from './full-screen-loader'
 import { WopiPage } from './wopi-page'
 
 const ExploreComponent = lazy(async () => await import(/* webpackChunkName: "content" */ './content'))

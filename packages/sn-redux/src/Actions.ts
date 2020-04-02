@@ -121,7 +121,7 @@ import {
   RepositoryConfiguration,
   SharingOptions,
 } from '@sensenet/client-core'
-import { GenericContent, User } from '@sensenet/default-content-types'
+import { FieldSetting, GenericContent, User } from '@sensenet/default-content-types'
 import { PromiseMiddlewareAction } from '@sensenet/redux-promise-middleware'
 import { PathHelper } from '@sensenet/client-utils'
 
@@ -196,21 +196,37 @@ export const loadContentActions = (idOrPath: number | string, scenario?: string)
  * @param parentPath {string} Path of the Content where the new Content should be created.
  * @param content {Content} Content that have to be created in the Content Respository.
  * @param contentType {string} Name of the Content Type of the Content.
+ * @param contentTemplate {string} Optional parameter to define which content template should be used on creation.
  * @returns Returns the newly created Content and dispatches the next action based on the response.
  */
-export const createContent = <T extends Content = Content>(parentPath: string, content: T, contentType: string) => ({
+export const createContent = <T extends Content = Content>(
+  parentPath: string,
+  content: T,
+  contentType: string,
+  contentTemplate?: string,
+) => ({
   type: 'CREATE_CONTENT',
-  payload: (repository: Repository) => repository.post<T>({ parentPath, content, contentType }),
+  payload: (repository: Repository) => repository.post<T>({ parentPath, content, contentType, contentTemplate }),
 })
 /**
- * Action creator for creating a Content in the Content Repository.
- * @param idOrPath {number|string} Id or path of the Content.
- * @param content {Content} Content with the patchable Fields.
+ * Action creator for updating fields of a Content in the Content Repository.
+ * @param content {GenericContent} Content that should be updated.
+ * @param saveableFields {Partial<T>} object with the patchable Fields.
  * @returns Returns the modified Content and dispatches the next action based on the response.
  */
 export const updateContent = <T extends Content = Content>(content: GenericContent, saveableFields: Partial<T>) => ({
   type: 'UPDATE_CONTENT',
   payload: (repository: Repository) => repository.patch<T>({ idOrPath: content.Id, content: saveableFields }),
+})
+/**
+ * Action creator for reseting a Content (update the given Fields and reset all the others with their default value) in the Content Repository.
+ * @param content {GenericContent} Content that should be updated.
+ * @param saveableFields {Partial<T>} object with the patchable Fields.
+ * @returns Returns the modified Content and dispatches the next action based on the response.
+ */
+export const resetContent = <T extends Content = Content>(content: GenericContent, saveableFields: Partial<T>) => ({
+  type: 'RESET_CONTENT',
+  payload: (repository: Repository) => repository.put<T>({ idOrPath: content.Id, content: saveableFields }),
 })
 /**
  * Action creator for deleting a Content from the Content Repository.
@@ -632,5 +648,240 @@ export const getSharingEntries = (idOrPath: number | string) => ({
       name: 'GetSharing',
       method: 'GET',
       body: undefined,
+    }),
+})
+
+/**
+ * Action creator for check preview images.
+ * @param idOrPath Id or Path of the content
+ * @param generateMissing Sets whether the missing previews should be generated or not.
+ */
+export const checkPreviews = (idOrPath: number | string, generateMissing?: boolean) => ({
+  type: 'CHECK_PREVIEWS',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'CheckPreviews',
+      method: 'POST',
+      body: {
+        generateMissing,
+      },
+    }),
+})
+
+/**
+ *  Action creator for get page count of a document.
+ * @param idOrPath Id or Path of the content.
+ */
+export const getPageCount = (idOrPath: number | string) => ({
+  type: 'GET_PAGE_COUNT',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'GetPageCount',
+      method: 'GET',
+    }),
+})
+
+/**
+ * Action creator for regenerate preview images of a document.
+ * @param idOrPath Id or Path of the content.
+ */
+export const regeneratePreviews = (idOrPath: number | string) => ({
+  type: 'REGENERATE_PREVIEW_IMAGES',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'RegeneratePreviews',
+      method: 'POST',
+    }),
+})
+
+/**
+ * Action creator for adding comments to document pages/preview images
+ * @param idOrPath Id or Path of the document
+ * @param page Page number
+ * @param x Coordinate x of the comment.
+ * @param y Coordinate y of the comment.
+ * @param text Text of the comment.
+ */
+export const addPreviewComment = (idOrPath: number | string, page: number, x: number, y: number, text: string) => ({
+  type: 'ADD_PREVIEW_COMMENT',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'AddPreviewComment',
+      method: 'POST',
+      body: {
+        page,
+        x,
+        y,
+        text,
+      },
+    }),
+})
+/**
+ * Action creator for getting comments for a page of a document.
+ * @param idOrPath Id or Path of the document
+ * @param page Page number
+ */
+export const getPreviewComments = (idOrPath: number | string, page: number) => ({
+  type: 'GET_PREVIEW_COMMENTS',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'GetPreviewComments',
+      method: 'GET',
+      body: {
+        page,
+      },
+    }),
+})
+/**
+ * Action creator for removing a specified comment.
+ * @param idOrPath Id or Path of the document,
+ * @param commentId Id of the comment that should be deleted.
+ */
+export const removePreviewComment = (idOrPath: number | string, commentId: number) => ({
+  type: 'REMOVE_PREVIEW_COMMENT',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'DeletePreviewComment',
+      method: 'POST',
+      body: {
+        id: commentId,
+      },
+    }),
+})
+/**
+ * Action creator for restoring a content from the Trash.
+ * @param idOrPath Id or Path of the content.
+ * @param destination Path of the parent where the content should be restored.
+ * @param newName Determines rename the content automatically if another content with the same name already exists in the desired parent container
+ */
+export const restoreFromTrash = (idOrPath: number | string, destination: string, newname?: boolean) => ({
+  type: 'RESTORE_FROM_TRASH',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'Restore',
+      method: 'POST',
+      body: {
+        destination,
+        newname,
+      },
+    }),
+})
+/**
+ * Action creator for get allowedchildtypes of a content
+ * @param idOrPath Id or Path of the content
+ */
+export const getAllowedChildTypes = (idOrPath: number | string) => ({
+  type: 'GET_ALLOWED_CHILDTYPES',
+  payload: (repository: Repository) =>
+    repository.getImplicitAllowedChildTypes({
+      idOrPath,
+    }),
+})
+
+/**
+ * Action creator for get effective allowedchildtypes of a content
+ * @param idOrPath Id or Path of the content
+ */
+export const getEffectiveAllowedChildTypes = (idOrPath: number | string) => ({
+  type: 'GET_EFFECTIVE_ALLOWED_CHILDTYPES',
+  payload: (repository: Repository) =>
+    repository.getAllowedChildTypes({
+      idOrPath,
+    }),
+})
+
+/**
+ * Action creator for get allowedchildtypes of a content set in the related CTD
+ * @param idOrPath Id or Path of the content
+ */
+export const getAllowedTypesFromCTD = (idOrPath: number | string) => ({
+  type: 'GET_ALLOWED_CHILDTYPES_FROM_CTD',
+  payload: (repository: Repository) =>
+    repository.getExplicitAllowedChildTypes({
+      idOrPath,
+    }),
+})
+/**
+ * Action creator for adding allowed childtypes to the given content
+ * @param idOrPath Id or Path of the content
+ * @param contentTypes List of names of the content types that should be added
+ */
+export const addAllowedChildTypes = (idOrPath: number | string, contentTypes: string[]) => ({
+  type: 'ADD_ALLOWED_CHILDTYPES',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'AddAllowedChildTypes',
+      method: 'POST',
+      body: {
+        contentTypes,
+      },
+    }),
+})
+
+/**
+ * Action creator for removing allowed childtypes to the given content
+ * @param idOrPath Id or Path of the content
+ * @param contentTypes List of names of the content types that should be removed
+ */
+export const removeAllowedChildTypes = (idOrPath: number | string, contentTypes: string[]) => ({
+  type: 'REMOVE_ALLOWED_CHILDTYPES',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'RemoveAllowedChildTypes',
+      method: 'POST',
+      body: {
+        contentTypes,
+      },
+    }),
+})
+/**
+ * Action creator for getting a list of contents in a subtree where AllowedChildTypes list is empty
+ * @param idOrPath Id or Path of the root of the subtree
+ */
+export const checkAllowedChildTypes = (idOrPath: number | string) => ({
+  type: 'CHECK_ALLOWED_CHILDTYPES',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'CheckAllowedChildTypesOfFolders',
+      method: 'GET',
+    }),
+})
+
+/**
+ * Action creator for updating a custom field of a content list
+ * @param idOrPath Id or Path of the custom field
+ * @param field Fields and values that should be updated wrapped to an object
+ */
+export const udpateListField = (idOrPath: number | string, field: Partial<FieldSetting>) => ({
+  type: 'UPDATE_LIST_FIELD',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'EditField',
+      method: 'POST',
+      body: field,
+    }),
+})
+/**
+ * Action creator for deleting a custom field from a content list
+ * @param idOrPath Id or Path of the custom field
+ */
+export const deleteListField = (idOrPath: number | string) => ({
+  type: 'DELETE_LIST_FIELD',
+  payload: (repository: Repository) =>
+    repository.executeAction({
+      idOrPath,
+      name: 'DeleteField',
+      method: 'POST',
     }),
 })

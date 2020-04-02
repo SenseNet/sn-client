@@ -125,6 +125,9 @@ const values: DeepPartial<typeof import('./default').default> = {
     inputPlaceHolder: 'Új típus hozzáadásához kezdje el gépelni',
     emptyField: '<Ez a mező üres>',
   },
+  common: {
+    loadingContent: 'Tartalom betöltése...',
+  },
 }
 
 export default values

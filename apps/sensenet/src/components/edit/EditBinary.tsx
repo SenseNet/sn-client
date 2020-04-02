@@ -5,7 +5,7 @@ import React, { useEffect } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLoadContent, useSelectionService } from '../../hooks'
-import { FullScreenLoader } from '../FullScreenLoader'
+import { FullScreenLoader } from '../full-screen-loader'
 import { TextEditor } from './TextEditor'
 
 const useStyles = makeStyles(() => {
