@@ -92,9 +92,8 @@ describe('OidcSecure component', () => {
     ;(getUserManager as any).mockImplementationOnce(() => {
       return { signinSilent, getUser: () => ({ expired: true }) }
     })
-    let wrapper: any
     await act(async () => {
-      wrapper = mount(
+      mount(
         <AuthenticationContext.Provider value={{ oidcUser: { expired: true } } as any}>
           <OidcSecure history={{ location: new URL('https://localhost:3000') } as any}>
             <p id="a">a</p>
@@ -114,9 +113,8 @@ describe('OidcSecure component', () => {
     ;(getUserManager as any).mockImplementationOnce(() => {
       return { signinSilent, getUser: () => ({ expired: true }) }
     })
-    let wrapper: any
     await act(async () => {
-      wrapper = mount(
+      mount(
         <AuthenticationContext.Provider value={{ oidcUser: { expired: true } } as any}>
           <OidcSecure history={{ location: new URL('https://localhost:3000'), push } as any}>
             <p id="a">a</p>
