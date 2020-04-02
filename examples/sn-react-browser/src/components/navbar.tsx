@@ -1,9 +1,9 @@
 import { AppBar, Button, Toolbar, Typography } from '@material-ui/core'
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
 import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
 import React from 'react'
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
       flexGrow: 1,

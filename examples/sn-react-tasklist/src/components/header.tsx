@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 // start of material imports
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
@@ -10,9 +10,6 @@ import Typography from '@material-ui/core/Typography'
 // end of material imports
 
 // start of sensenet imports
-import { ODataResponse } from '@sensenet/client-core'
-import { GenericContent } from '@sensenet/default-content-types'
-import { useRepository } from '@sensenet/hooks-react'
 import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
 // end of sensenet imports
 
@@ -39,23 +36,8 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const HeaderPanel = () => {
-  const repo = useRepository() // Custom hook that will return with a Repository object
   const { logout, oidcUser } = useOidcAuthentication()
   const classes = useStyles()
-  const [container, setContainer] = useState<GenericContent>()
-
-  useEffect(() => {
-    /**
-     * load from repo
-     */
-    async function loadContent() {
-      const result: ODataResponse<GenericContent> = await repo.load({
-        idOrPath: `/Root/Content/IT/Tasks`,
-      })
-      setContainer(result.d)
-    }
-    loadContent()
-  }, [repo])
 
   return (
     <div className={classes.root}>
@@ -63,7 +45,7 @@ const HeaderPanel = () => {
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
             {oidcUser?.profile.name}
-            {container !== undefined ? `'s ${container.DisplayName}` : ''}
+            &apos;s Task
           </Typography>
           <IconButton
             edge="start"

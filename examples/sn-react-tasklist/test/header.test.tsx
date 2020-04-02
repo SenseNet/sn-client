@@ -1,37 +1,27 @@
-import { mount, shallow } from 'enzyme'
-import React from 'react'
+/* eslint-disable react/display-name */
+/* eslint-disable @typescript-eslint/camelcase */
 import { IconButton } from '@material-ui/core'
+import { mount } from 'enzyme'
+import React, { PropsWithChildren } from 'react'
 import { act } from 'react-dom/test-utils'
-import { RepositoryContext } from '@sensenet/hooks-react'
+import { AppProviders } from '../src/components/app-providers'
 import HeaderPanel from '../src/components/header'
-import { TestContentCollection } from './_mocks_/test_contents'
+
+const logout = jest.fn()
+jest.mock('@sensenet/authentication-oidc-react', () => ({
+  useOidcAuthentication: () => ({ oidcUser: { access_token: 'token', profile: { name: 'Joe' } }, logout }),
+  AuthenticationProvider: ({ children }: PropsWithChildren<{}>) => <>{children}</>,
+}))
 
 describe('Header', () => {
-  it('Matches snapshot', () => {
-    const l = shallow(<HeaderPanel />)
-    expect(l).toMatchSnapshot()
-  })
   it('Logout function', async () => {
-    const logoutfn = jest.fn()
-    const getValue = () => {
-      return { DisplayName: 'Test man' } as any
-    }
-    const subscribe = () => {
-      return { DisplayName: 'Test man', Id: 2, Domain: 'Test man' } as any
-    }
-    const repo = {
-      authentication: { logout: logoutfn, currentUser: { getValue, subscribe } },
-      load: function loadMethod() {
-        return Promise.resolve({ d: { results: TestContentCollection } } as any)
-      },
-    }
     let wrapper: any
 
     await act(async () => {
       wrapper = mount(
-        <RepositoryContext.Provider value={repo as any}>
+        <AppProviders>
           <HeaderPanel />
-        </RepositoryContext.Provider>,
+        </AppProviders>,
       )
     })
 
@@ -39,6 +29,6 @@ describe('Header', () => {
       .update()
       .find(IconButton)
       .simulate('click')
-    expect(logoutfn).toBeCalled()
+    expect(logout).toBeCalled()
   })
 })

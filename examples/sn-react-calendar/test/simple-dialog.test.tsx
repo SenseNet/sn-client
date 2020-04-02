@@ -15,10 +15,6 @@ describe('DialogComponent', () => {
     wrapper = shallow(<DialogComponent {...testprops} />)
   })
 
-  it('DialogComponent snapshot', () => {
-    expect(wrapper).toMatchSnapshot()
-  })
-
   it('Open dialog', () => {
     wrapper
       .find(Button)
