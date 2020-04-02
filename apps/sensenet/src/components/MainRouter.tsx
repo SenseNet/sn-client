@@ -3,7 +3,7 @@ import React, { lazy, Suspense, useEffect, useRef } from 'react'
 import { Route, Switch, useHistory } from 'react-router-dom'
 import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
-import { FullScreenLoader } from './FullScreenLoader'
+import { FullScreenLoader } from './full-screen-loader'
 import { WopiPage } from './wopi-page'
 
 const UsersAndGroupsComponent = lazy(() =>
