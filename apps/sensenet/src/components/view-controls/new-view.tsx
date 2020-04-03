@@ -123,7 +123,7 @@ export const NewView: React.FC<NewViewProps> = props => {
       <form className={classes.form} onSubmit={handleSubmit}>
         <Grid container={true} spacing={2}>
           {schema.fieldMappings
-            .sort((item1, item2) => item2.fieldSettings.FieldIndex! - item1.fieldSettings.FieldIndex!)
+            .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
             .map(field => {
               const fieldControl = createElement(
                 controlMapper.getControlForContentField(props.contentTypeName, field.fieldSettings.Name, 'new'),
