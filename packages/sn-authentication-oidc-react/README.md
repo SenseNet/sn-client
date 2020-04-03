@@ -22,6 +22,8 @@ There are 2 components and 1 hook that you can use. `AuthenticationProvider`, `O
 
 ### AuthenticationProvider
 
+For `AuthenticationProvider` to work properly you must pass a configuration object. To work with sensenet you must include `sensenet` as a scope and add the repository url as `snrepo` to `extraQueryParams`. See the example below for proper configuration.
+
 **Props**
 
 | name                      | type                                        | required | description                                                                                                                                        |
@@ -29,7 +31,7 @@ There are 2 components and 1 hook that you can use. `AuthenticationProvider`, `O
 | history                   | History from 'history'                      |    ✔     | history object from react-router or history package. Needed for navigation.                                                                        |
 | configuration             | UserManagerSettings from 'oidc-client'      |    ✔     | configuration object for oidc-client. These properties are required: client_id, redirect_uri, response_type, scope, authority, silent_redirect_uri |
 | children                  | ReactNode                                   |    ✔     | You can only use AuthenticationProvider as a wrapper.                                                                                              |
-| authenticating            | ReactNode                                   |          | Component shown when OidcSecure is used and login is required.                                                                                        |
+| authenticating            | ReactNode                                   |          | Component shown when OidcSecure is used and login is required.                                                                                     |
 | notAuthenticated          | ReactNode                                   |          | Component shown on route /authentication/not-authenticated                                                                                         |
 | notAuthorized             | ReactNode                                   |          | Component shown on route /authentication/not-authorized                                                                                            |
 | sessionLost               | ElementType<{ onAuthenticate: () => void }> |          | Component shown on route /authentication/session-lost                                                                                              |
@@ -51,7 +53,7 @@ export const configuration: UserManagerSettings = {
   redirect_uri: 'http://localhost:3000/authentication/callback',
   response_type: 'code',
   post_logout_redirect_uri: 'http://localhost:3000/',
-  scope: 'openid profile',
+  scope: 'openid profile sensenet',
   authority: 'https://is.my-service.sensenet.com/',
   silent_redirect_uri: 'http://localhost:3000/authentication/silent_callback',
   extraQueryParams: { snrepo: repositoryUrl },
