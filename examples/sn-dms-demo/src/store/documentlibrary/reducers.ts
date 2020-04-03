@@ -99,7 +99,7 @@ export const defaultState: DocumentLibraryState = {
     ],
     filter: "ContentType ne 'SystemFolder'",
     scenario: 'ContextMenu',
-    top: loadChunkSize,
+    top: 25,
   },
   searchState: {
     contains: '',

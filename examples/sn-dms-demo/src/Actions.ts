@@ -17,27 +17,6 @@ export enum MessageMode {
   info = 'info',
 }
 
-export const userRegistration = (username: string, email: string, password: string) => ({
-  type: 'USER_REGISTRATION_REQUEST',
-  username,
-  email,
-  password,
-  async payload(repository: Repository) {
-    return await repository.executeAction({
-      name: 'RegisterUser',
-      idOrPath: `/Root/IMS('Public')`,
-      body: {
-        username,
-        email,
-        password,
-      },
-      method: 'POST',
-    })
-  },
-})
-export const clearRegistration = () => ({
-  type: 'CLEAR_USER_REGISTRATION',
-})
 export const setCurrentId = (id: number | string) => ({
   type: 'SET_CURRENT_ID',
   id,

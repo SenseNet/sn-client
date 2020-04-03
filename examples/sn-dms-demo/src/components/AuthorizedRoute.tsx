@@ -1,37 +1,32 @@
-import React from 'react'
-import { Route, RouteComponentProps, RouteProps, withRouter } from 'react-router-dom'
+import React, { PropsWithChildren } from 'react'
+import { useSelector } from 'react-redux'
+import { Redirect, Route, RouteProps } from 'react-router-dom'
+import { UserState } from 'redux-oidc'
+import { rootStateType } from '../store/rootReducer'
 
-import { Location } from 'history'
+export const AuthorizedRoute = ({ children, ...rest }: PropsWithChildren<RouteProps>) => {
+  const stateAuth = useSelector<rootStateType, UserState>(state => state.auth)
+  const { user } = stateAuth
 
-export interface AuthorizedRouteProps extends RouteComponentProps<any>, RouteProps {
-  authorize: () => boolean
-  redirectOnUnauthorized: string
-  location: Location
+  if (stateAuth.isLoadingUser) {
+    return <div>Loading...</div>
+  }
+
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        user ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: { from: location },
+            }}
+          />
+        )
+      }
+    />
+  )
 }
-
-export class AuthorizedRouteComponent extends React.Component<AuthorizedRouteProps> {
-  constructor(props: AuthorizedRouteComponent['props']) {
-    super(props)
-    this.checkIsAuthorized(props)
-  }
-
-  private checkIsAuthorized(props = this.props) {
-    if (!props.authorize()) {
-      props.history.push(props.redirectOnUnauthorized)
-    }
-  }
-
-  // this should be revisited
-  public UNSAFE_componentWillReceiveProps(newProps: this['props']) {
-    this.checkIsAuthorized(newProps)
-  }
-
-  public render() {
-    const { ...routeProps } = { ...this.props }
-    return <Route {...routeProps} />
-  }
-}
-
-const component = withRouter(AuthorizedRouteComponent)
-
-export { component as AuthorizedRoute }

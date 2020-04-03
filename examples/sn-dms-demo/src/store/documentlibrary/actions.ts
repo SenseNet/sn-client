@@ -6,7 +6,7 @@ import { EventHub } from '@sensenet/repository-events'
 import { Dispatch } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { rootStateType } from '../../store/rootReducer'
-import { DocumentLibraryState, loadChunkSize } from './reducers'
+import { DocumentLibraryState } from './reducers'
 
 const eventObservables: Array<ValueObserver<any>> = []
 
@@ -119,7 +119,7 @@ function methodToDebounce(getState: () => rootStateType, dispatch: Dispatch) {
 }
 export const debounceReloadOnProgress = debounce(methodToDebounce, 300)
 
-export const loadMore = createAction((count: number = loadChunkSize) => ({
+export const loadMore = createAction((count = 25) => ({
   type: 'DMS_DOCLIB_LOAD_MORE',
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const currentDocLibState = options.getState().dms.documentLibrary
