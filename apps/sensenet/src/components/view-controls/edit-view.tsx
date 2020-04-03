@@ -156,7 +156,7 @@ export const EditView: React.FC<EditViewProps> = props => {
           onSubmit={handleSubmit}>
           <Grid container={true} spacing={2}>
             {schema.fieldMappings
-              .sort((item1, item2) => item2.fieldSettings.DefaultOrder! - item1.fieldSettings.DefaultOrder!)
+              .sort((item1, item2) => item2.fieldSettings.FieldIndex! - item1.fieldSettings.FieldIndex!)
               .map(field => {
                 const fieldControl = createElement(
                   controlMapper.getControlForContentField(
