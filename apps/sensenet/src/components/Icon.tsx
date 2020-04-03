@@ -249,53 +249,13 @@ export const defaultSchemaResolvers: Array<IconResolver<{ ContentTypeName: typeo
   },
 ]
 
-export const defaultTypeResolvers: Array<IconResolver<GenericContent>> = [
+export const editviewFileResolver: Array<IconResolver<GenericContent>> = [
   {
     get: (item, options) => {
-      switch (item.Type) {
-        case 'Folder':
-          return <Folder style={{ ...options.style }} />
-        case 'File':
-          return <InsertDriveFileOutlined style={{ ...options.style }} />
-        case 'ImageLibrary':
-          return <PhotoLibrary style={options.style} />
-        case 'EventList':
-          return <CalendarTodayOutlined style={options.style} />
-        case 'CalendarEvent':
-          return <EventOutlined style={options.style} />
-        case 'DocumentLibrary':
-          return <LibraryBooksOutlined style={options.style} />
-        case 'LinkList':
-          return <ListAltOutlined style={options.style} />
-        case 'Link':
-          return <LinkOutlined style={options.style} />
-        case 'MemoList':
-          return <ListAltOutlined style={options.style} />
-        case 'Memo':
-          return <AssignmentOutlined style={options.style} />
-        case 'TaskList':
-          return <ListAltOutlined style={options.style} />
-        case 'Task':
-          return <BallotOutlined style={options.style} />
-        case 'User':
-          return <PersonOutlined style={options.style} />
-        case 'Group':
-          return <GroupOutlined style={options.style} />
-        case 'ContentType':
-          return <Widgets style={options.style} />
-        case 'SystemFolder':
-          return <Folder style={options.style} />
-        case 'Resource':
-          return <TextFormat style={options.style} />
-        case 'OrganizationalUnit':
-          return <GroupOutlined style={options.style} />
-        case 'Workspace':
-          return <AllInboxOutlined style={options.style} />
-        case 'DemoWorkspace':
-          return <AllInboxOutlined style={options.style} />
-        default:
-          return null
+      if (item.Type === 'File') {
+        return <InsertDriveFileOutlined style={{ ...options.style }} />
       }
+      return null
     },
   },
 ]
@@ -335,9 +295,12 @@ export const IconComponent: React.FunctionComponent<{
   const repo = useRepository()
 
   const options: IconOptions = { style: props.style, injector, repo }
-  const resolvers = props.resolvers
-    ? [...(props.resolvers || [])]
-    : [...defaultContentResolvers, ...defaultSchemaResolvers, ...defaultNotificationResolvers]
+  const resolvers = [
+    ...(props.resolvers || []),
+    ...defaultContentResolvers,
+    ...defaultSchemaResolvers,
+    ...defaultNotificationResolvers,
+  ]
   const defaultIcon = props.defaultIcon || <WebAssetOutlined style={props.style} /> || null
   const assignedResolver = resolvers.find(r => (r.get(props.item, options) ? true : false))
   if (assignedResolver) {

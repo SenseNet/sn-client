@@ -15,7 +15,7 @@ import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
 import { ContentList } from '../content-list/content-list'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
-import { defaultTypeResolvers, Icon } from '../Icon'
+import { editviewFileResolver, Icon } from '../Icon'
 import { ActionNameType } from '../react-control-mapper'
 import TreeWithData from '../tree/tree-with-data'
 import { EditView } from '../view-controls/edit-view'
@@ -113,7 +113,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                             ? `Edit ${selectionService.activeContent.getValue()?.DisplayName}`
                             : `Info about ${selectionService.activeContent.getValue()?.DisplayName}`}
                           <Icon
-                            resolvers={defaultTypeResolvers}
+                            resolvers={editviewFileResolver}
                             style={{ marginLeft: '9px', height: '24px', width: '24px' }}
                             item={selectionService.activeContent.getValue()}
                           />
