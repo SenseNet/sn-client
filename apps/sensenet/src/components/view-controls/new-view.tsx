@@ -4,15 +4,15 @@
 import { createStyles, makeStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import { ContentType, FieldSetting, Schema } from '@sensenet/default-content-types'
-import { useRepository } from '@sensenet/hooks-react'
+import { FieldSetting, GenericContent, Schema } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { createElement, ReactElement, useState } from 'react'
 import MediaQuery from 'react-responsive'
 import { useHistory } from 'react-router'
+import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { reactControlMapper } from '../react-control-mapper'
-import { useGlobalStyles } from '../../globalStyles'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -53,11 +53,9 @@ const useStyles = makeStyles(() => {
  * Interface for NewView properties
  */
 export interface NewViewProps {
-  onSubmit?: (content: ContentType, contentTypeName?: string) => void
   renderIcon?: (name: string) => ReactElement
   contentTypeName: string
-  handleCancel?: () => void
-  showTitle?: boolean
+  currentContent: GenericContent | undefined
   extension?: string
   uploadFolderpath?: string
 }
@@ -79,9 +77,33 @@ export const NewView: React.FC<NewViewProps> = props => {
   const localization = useLocalization()
   const history = useHistory<{ schema: Schema }>()
   const globalClasses = useGlobalStyles()
+  const logger = useLogger('AddDialog')
 
-  const handleSubmit = () => {
-    props.onSubmit && props.onSubmit(content as any, schema.schema.ContentTypeName)
+  const handleSubmit = async () => {
+    try {
+      const created = await repo.post({
+        contentType: props.contentTypeName,
+        parentPath: props.currentContent!.Path,
+        content,
+        contentTemplate: props.contentTypeName,
+      })
+      logger.information({
+        message: localization.addButton.contentCreatedNotification.replace('{0}', created.d.Name || created.d.Path),
+        data: {
+          relatedContent: created,
+          relatedRepository: repo.configuration.repositoryUrl,
+        },
+      })
+    } catch (error) {
+      logger.error({
+        message: localization.addButton.errorPostingContentNotification,
+        data: {
+          details: { error },
+        },
+      })
+    } finally {
+      history.goBack()
+    }
   }
 
   const handleInputChange = (field: string, value: unknown) => {

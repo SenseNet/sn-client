@@ -1,11 +1,11 @@
 import { createStyles, makeStyles } from '@material-ui/core'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
-import { CurrentContentProvider, useLogger, useRepository } from '@sensenet/hooks-react'
+import { CurrentContentProvider } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { globals, useGlobalStyles } from '../../globalStyles'
-import { useLocalization, useSelectionService } from '../../hooks'
+import { useSelectionService } from '../../hooks'
 import { NewView } from '../view-controls/new-view'
 
 const useStyles = makeStyles(() => {
@@ -27,9 +27,6 @@ export default function NewProperties() {
   const selectionService = useSelectionService()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
-  const repo = useRepository()
-  const localization = useLocalization().addButton
-  const logger = useLogger('AddDialog')
   const [currentContent, setCurrentContent] = useState<GenericContent | undefined>(undefined)
   const contentTypeName = history.location.state.schema.ContentTypeName
 
@@ -44,35 +41,8 @@ export default function NewProperties() {
         oDataOptions={{ select: 'all' }}>
         <NewView
           contentTypeName={contentTypeName}
-          onSubmit={async content => {
-            try {
-              const created = await repo.post({
-                contentType: contentTypeName,
-                parentPath: currentContent!.Path,
-                content,
-                contentTemplate: contentTypeName,
-              })
-              logger.information({
-                message: localization.contentCreatedNotification.replace(
-                  '{0}',
-                  created.d.DisplayName || created.d.Name,
-                ),
-                data: {
-                  relatedContent: created,
-                  relatedRepository: repo.configuration.repositoryUrl,
-                },
-              })
-            } catch (error) {
-              logger.error({
-                message: localization.errorPostingContentNotification,
-                data: {
-                  details: { error },
-                },
-              })
-            } finally {
-              history.goBack()
-            }
-          }}
+          currentContent={currentContent}
+          uploadFolderpath="/Root/Content/demoavatars"
         />
       </CurrentContentProvider>
     </div>

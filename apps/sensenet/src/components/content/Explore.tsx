@@ -1,10 +1,12 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import { PathHelper } from '@sensenet/client-utils/src'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsProvider,
   CurrentChildrenProvider,
   CurrentContentProvider,
   LoadSettingsContextProvider,
+  useRepository,
 } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { useContext, useState } from 'react'
@@ -64,6 +66,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
   const globalClasses = useGlobalStyles()
   const [isFormOpened, setIsFormOpened] = useState(false)
   const [action, setAction] = useState<ActionNameType>(undefined)
+  const repo = useRepository()
 
   if (!props.rootPath) {
     return null
@@ -119,9 +122,15 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
 
                       <EditView
                         uploadFolderpath={'/Root/Content/demoavatars'}
-                        handleCancel={() => {
+                        handleCancel={async () => {
                           setIsFormOpened(false)
                           setAction(undefined)
+                          if (selectionService.activeContent.getValue() !== undefined) {
+                            const parentContent = await repo.load({
+                              idOrPath: PathHelper.getParentPath(selectionService.activeContent.getValue()!.Path),
+                            })
+                            selectionService.activeContent.setValue(parentContent.d)
+                          }
                         }}
                         actionName={action}
                       />
