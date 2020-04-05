@@ -15,6 +15,7 @@
     "@typescript-eslint/eslint-plugin": "^2.23.0",
     "@typescript-eslint/parser": "^2.23.0",
     "babel-eslint": "10.1.0",
+    "cypress": "^4.3.0",
     "cz-conventional-changelog": "^3.1.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
@@ -52,7 +53,9 @@
     "clean:packages": "rimraf ./packages/**/dist ./packages/**/tsconfig.tsbuildinfo ./packages/tsconfig.tsbuildinfo",
     "test": "jest",
     "clean": "lerna clean",
-    "lint": "eslint . --ext .tsx,.ts --cache"
+    "lint": "eslint . --ext .tsx,.ts --cache",
+    "cypress": "cypress open",
+    "cypress:all": "cypress run"
   },
   "husky": {
     "hooks": {
