@@ -142,12 +142,10 @@ export const Page: React.FC<PageProps> = props => {
         return
       }
       const newCommentMarker = {
-        x:
-          event.nativeEvent.offsetX / (relativeImageSize.height / ((page.image && page.image.Height) || 1)) -
-          MARKER_SIZE,
-        y:
-          event.nativeEvent.offsetY / (relativeImageSize.height / ((page.image && page.image.Height) || 1)) -
-          MARKER_SIZE,
+        x: `${event.nativeEvent.offsetX / (relativeImageSize.height / ((page.image && page.image.Height) || 1)) -
+          MARKER_SIZE}`,
+        y: `${event.nativeEvent.offsetY / (relativeImageSize.height / ((page.image && page.image.Height) || 1)) -
+          MARKER_SIZE}`,
         id: 'draft',
       }
       commentState.setDraft(newCommentMarker)
