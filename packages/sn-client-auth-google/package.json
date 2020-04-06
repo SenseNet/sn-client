@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/authentication-google",
-  "version": "2.0.19",
+  "version": "2.0.20",
   "description": "Client-side Google authentication provider for sensenet",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -35,7 +35,7 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@sensenet/authentication-jwt": "^1.0.23",
+    "@sensenet/authentication-jwt": "^1.0.24",
     "@sensenet/client-utils": "^1.8.1",
     "tslib": "^1.11.1"
   },
