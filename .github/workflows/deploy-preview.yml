@@ -4,7 +4,7 @@ name: deploy preview
 
 jobs:
   deploy-snapp:
-    if: "!contains(github.event.head_commit.message, 'skip-deploy')"
+    if: "!contains(toJSON(github.event.commits.*.message), 'skip-deploy')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -41,7 +41,7 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
 
   deploy-storybook:
-    if: "!contains(github.event.head_commit.message, 'skip-deploy')"
+    if: "!contains(toJSON(github.event.commits.*.message), 'skip-deploy')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
