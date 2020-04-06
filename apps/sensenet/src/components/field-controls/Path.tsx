@@ -2,8 +2,7 @@
  * @module FieldControls
  */
 import { createStyles, Icon, Input, InputAdornment, InputLabel, makeStyles } from '@material-ui/core'
-import { changeJScriptValue } from '@sensenet/controls-react'
-import { renderIconDefault } from '@sensenet/controls-react/src/fieldcontrols/icon'
+import { changeJScriptValue, renderIconDefault } from '@sensenet/controls-react'
 import { ShortTextFieldSetting } from '@sensenet/default-content-types'
 import React from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'

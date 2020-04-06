@@ -1,5 +1,5 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
-import { PathHelper } from '@sensenet/client-utils/src'
+import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsProvider,
