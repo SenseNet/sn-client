@@ -4,6 +4,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import React from 'react'
 import MonacoEditor from 'react-monaco-editor'
+import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useTheme } from '../../hooks'
 import { useDialog } from './dialog-provider'
 
@@ -15,6 +16,7 @@ export function CustomActionResultDialog({ response = '{}' }: CustomActionResult
   const localization = useLocalization().customActions.resultsDialog
   const { closeLastDialog } = useDialog()
   const theme = useTheme()
+  const globalClasses = useGlobalStyles()
 
   return (
     <>
@@ -35,7 +37,9 @@ export function CustomActionResultDialog({ response = '{}' }: CustomActionResult
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeLastDialog}>{localization.closeButton}</Button>
+        <Button className={globalClasses.cancelButton} onClick={closeLastDialog}>
+          {localization.closeButton}
+        </Button>
       </DialogActions>
     </>
   )

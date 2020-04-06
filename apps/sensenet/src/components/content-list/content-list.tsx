@@ -1,6 +1,7 @@
 import { createStyles, makeStyles } from '@material-ui/core'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { VirtualCellProps, VirtualDefaultCell, VirtualizedTable } from '@sensenet/list-controls-react'
+import { Repository } from '@sensenet/client-core'
+import { debounce } from '@sensenet/client-utils'
+import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
@@ -8,18 +9,18 @@ import {
   LoadSettingsContext,
   useRepository,
 } from '@sensenet/hooks-react'
-import { GenericContent } from '@sensenet/default-content-types'
-import { Repository } from '@sensenet/client-core'
-import { debounce } from '@sensenet/client-utils'
+import { VirtualCellProps, VirtualDefaultCell, VirtualizedTable } from '@sensenet/list-controls-react'
 import clsx from 'clsx'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
-import { ContentContextMenu } from '../context-menu/content-context-menu'
-import { useSelectionService } from '../../hooks'
-import { SelectionControl } from '../SelectionControl'
-import { useDialog } from '../dialogs'
-import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
-import { DropFileArea } from '../DropFileArea'
 import { globals, useGlobalStyles } from '../../globalStyles'
+import { useSelectionService } from '../../hooks'
+import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
+import { ContentContextMenu } from '../context-menu/content-context-menu'
+import { useDialog } from '../dialogs'
+import { DropFileArea } from '../DropFileArea'
+import { ActionNameType } from '../react-control-mapper'
+import { SelectionControl } from '../SelectionControl'
 import { ContextMenuWrapper } from './context-menu-wrapper'
 import {
   ActionsField,
@@ -68,6 +69,8 @@ export interface ContentListProps {
   onSelectionChange?: (sel: GenericContent[]) => void
   onFocus?: () => void
   containerProps?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+  isOpenFrom?: 'explore' | 'commander' | 'simple'
+  setFormOpen?: (actionName: ActionNameType) => void
 }
 
 export const isReferenceField = (fieldName: string, repo: Repository) => {
@@ -92,7 +95,9 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
   const globalClasses = useGlobalStyles()
   const { openDialog } = useDialog()
   const [selected, setSelected] = useState<GenericContent[]>([])
-  const [activeContent, setActiveContent] = useState<GenericContent>(children[0])
+  const [activeContent, setActiveContent] = useState<GenericContent>(
+    selectionService.activeContent.getValue() || children[0],
+  )
   const [isFocused, setIsFocused] = useState(true)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<{ top: number; left: number }>({
@@ -106,6 +111,16 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
   const [currentDirection, setCurrentDirection] = useState<'asc' | 'desc'>(
     (loadChildrenSettingsOrderBy && (loadChildrenSettingsOrderBy[0][1] as any)) || 'asc',
   )
+
+  useEffect(() => {
+    const activeComponentObserve = selectionService.activeContent.subscribe(
+      newActiveComponent => newActiveComponent !== undefined && setActiveContent(newActiveComponent),
+    )
+
+    return function cleanup() {
+      activeComponentObserve.dispose()
+    }
+  }, [selectionService.activeContent])
 
   useEffect(() => {
     props.onActiveItemChange && props.onActiveItemChange(activeContent)
@@ -399,11 +414,18 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
 
   const displayNameInArray = ['DisplayName']
 
+  const setFormOpen = (actionName: ActionNameType) => {
+    props.setFormOpen && props.setFormOpen(actionName)
+  }
+
   return (
     <div style={{ ...props.style }} {...props.containerProps}>
       {props.enableBreadcrumbs ? (
         <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
-          <ContentBreadcrumbs onItemClick={i => props.onParentChange(i.content)} />
+          <ContentBreadcrumbs
+            setFormOpen={actionName => setFormOpen(actionName)}
+            onItemClick={i => props.onParentChange(i.content)}
+          />
         </div>
       ) : null}
       <DropFileArea parentContent={parentContent} style={{ height: '100%', overflow: 'hidden' }}>
@@ -454,6 +476,8 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
               menuProps={menuPropsObj}
               onClose={onCloseFunc}
               onOpen={onOpenFunc}
+              halfPage={props.isOpenFrom && props.isOpenFrom === 'explore'}
+              setFormOpen={actionName => setFormOpen(actionName)}
             />
           ) : null}
         </div>

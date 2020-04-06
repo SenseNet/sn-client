@@ -1,12 +1,12 @@
 import { LoginState } from '@sensenet/client-core'
+import { LoadSettingsContextProvider, RepositoryContext, useSession } from '@sensenet/hooks-react'
 import React, { lazy, Suspense, useEffect, useRef } from 'react'
 import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router'
-import { LoadSettingsContextProvider, RepositoryContext, useSession } from '@sensenet/hooks-react'
 import { usePersonalSettings } from '../hooks'
+import { ErrorBoundary } from './error-boundary'
+import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './full-screen-loader'
 import { WopiPage } from './wopi-page'
-import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
-import { ErrorBoundary } from './error-boundary'
 
 const ExploreComponent = lazy(async () => await import(/* webpackChunkName: "content" */ './content'))
 const DashboardComponent = lazy(async () => await import(/* webpackChunkName: "dashboard" */ './dashboard'))
@@ -18,7 +18,11 @@ const SetupComponent = lazy(async () => await import(/* webpackChunkName: "setup
 
 const LoginComponent = lazy(async () => await import(/* webpackChunkName: "Login" */ './login/Login'))
 const EditBinary = lazy(async () => await import(/* webpackChunkName: "editBinary" */ './edit/EditBinary'))
-const EditProperties = lazy(async () => await import(/* webpackChunkName: "editProperties" */ './edit/EditProperties'))
+const EditProperties = lazy(async () => await import(/* webpackChunkName: "editProperties" */ './edit/edit-properties'))
+const BrowseProperties = lazy(
+  async () => await import(/* webpackChunkName: "browseProperties" */ './browse/browse-properties'),
+)
+const NewProperties = lazy(async () => await import(/* webpackChunkName: "newProperties" */ './new/new-properties'))
 const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 
 const TrashComponent = lazy(async () => await import(/* webpackChunkName: "Trash" */ './trash/Trash'))
@@ -139,6 +143,18 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                     path="/:repo/editProperties/:contentId?"
                     render={() => {
                       return <EditProperties />
+                    }}
+                  />
+                  <Route
+                    path="/:repo/browseProperties/:contentId?"
+                    render={() => {
+                      return <BrowseProperties />
+                    }}
+                  />
+                  <Route
+                    path="/:repo/newProperties/:contentId?"
+                    render={() => {
+                      return <NewProperties />
                     }}
                   />
                   <Route

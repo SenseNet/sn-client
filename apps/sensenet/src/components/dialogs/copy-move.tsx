@@ -6,12 +6,13 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
+import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { useListPicker } from '@sensenet/pickers-react'
 import React, { useEffect, useState } from 'react'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
-import ArrowUpward from '@material-ui/icons/ArrowUpward'
+import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { Icon } from '../Icon'
 import { useDialog } from './dialog-provider'
@@ -33,6 +34,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
   const localizations = useLocalization().copyMoveContentDialog
   const [localization, setLocalization] = useState(localizations[props.operation])
   const logger = useLogger('CopyDialog')
+  const globalClasses = useGlobalStyles()
 
   useEffect(() => {
     setLocalization(localizations[props.operation])
@@ -74,8 +76,12 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
         </List>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => closeLastDialog()}>{localization.cancelButton}</Button>
+        <Button className={globalClasses.cancelButton} onClick={() => closeLastDialog()}>
+          {localization.cancelButton}
+        </Button>
         <Button
+          color="primary"
+          variant="contained"
           autoFocus={true}
           disabled={
             (list.selectedItem && list.selectedItem.Path === props.content[0].Path) ||

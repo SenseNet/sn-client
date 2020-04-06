@@ -63,8 +63,12 @@ export function LogoutDialog({ userToLogout, onLoggedOut }: LogoutDialogProps) {
       </DialogContent>
       {isLoggingOut ? null : (
         <DialogActions>
-          <Button onClick={closeLastDialog}>{localization.logoutCancel}</Button>
+          <Button className={globalClasses.cancelButton} onClick={closeLastDialog}>
+            {localization.logoutCancel}
+          </Button>
           <Button
+            color="primary"
+            variant="contained"
             onClick={async () => {
               try {
                 setIsLoggingOut(true)

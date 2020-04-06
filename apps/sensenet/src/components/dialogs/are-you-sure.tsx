@@ -1,5 +1,6 @@
-import React from 'react'
 import { Button, DialogActions, DialogContent, DialogTitle } from '@material-ui/core'
+import React from 'react'
+import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { useDialog } from './dialog-provider'
 
@@ -21,14 +22,19 @@ export function AreYouSure(props: AreYouSureProps) {
     titleText = localization.title,
   } = props
   const { closeLastDialog } = useDialog()
+  const globalClasses = useGlobalStyles()
 
   return (
     <>
       <DialogTitle>{titleText}</DialogTitle>
       <DialogContent dangerouslySetInnerHTML={{ __html: bodyText }} />
       <DialogActions>
-        <Button onClick={() => callBack()}>{submitText}</Button>
-        <Button onClick={() => closeLastDialog()}>{cancelText}</Button>
+        <Button color="primary" variant="contained" onClick={() => callBack()}>
+          {submitText}
+        </Button>
+        <Button className={globalClasses.cancelButton} onClick={() => closeLastDialog()}>
+          {cancelText}
+        </Button>
       </DialogActions>
     </>
   )

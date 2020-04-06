@@ -114,5 +114,9 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
       backgroundColor: theme.palette.type === 'light' ? globals.light.dialogBackground : globals.dark.dialogBackground,
       border: theme.palette.type === 'light' ? clsx(globals.light.borderColor, '1px') : 'none',
     },
+    cancelButton: {
+      marginRight: 38,
+      border: theme.palette.type === 'light' ? '2px solid #212121DE' : '2px solid #505050',
+    },
   })
 })
