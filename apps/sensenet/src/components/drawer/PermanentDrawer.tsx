@@ -11,7 +11,7 @@ import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { useRepository } from '@sensenet/hooks-react'
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core'
 import clsx from 'clsx'
-import { useDrawerItems, useLocalization, usePersonalSettings } from '../../hooks'
+import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { ResponsivePersonalSetttings } from '../../context'
 import { AddButton } from '../AddButton'
 import { SearchButton } from '../search-button'
@@ -97,6 +97,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const items = useDrawerItems()
   const localization = useLocalization().drawer
+  const selectionService = useSelectionService()
 
   if (!settings.drawer.enabled) {
     return null
@@ -140,7 +141,10 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                   to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
                   className={classes.navLink}
                   key={index}
-                  onClick={() => setCurrentPath(item.root ? item.root : '')}
+                  onClick={() => {
+                    selectionService.activeContent.setValue(undefined)
+                    setCurrentPath(item.root ? item.root : '')
+                  }}
                   activeClassName={classes.navLinkActive}>
                   <ListItem
                     className={classes.listButton}

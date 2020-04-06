@@ -113,6 +113,16 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
   )
 
   useEffect(() => {
+    const activeComponentObserve = selectionService.activeContent.subscribe(
+      newActiveComponent => newActiveComponent !== undefined && setActiveContent(newActiveComponent),
+    )
+
+    return function cleanup() {
+      activeComponentObserve.dispose()
+    }
+  }, [selectionService.activeContent])
+
+  useEffect(() => {
     props.onActiveItemChange && props.onActiveItemChange(activeContent)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeContent])

@@ -11,7 +11,7 @@ import React, { createElement, ReactElement, useState } from 'react'
 import MediaQuery from 'react-responsive'
 import { useHistory } from 'react-router'
 import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization } from '../../hooks'
+import { useLocalization, useSelectionService } from '../../hooks'
 import { reactControlMapper } from '../react-control-mapper'
 
 const useStyles = makeStyles(() => {
@@ -78,6 +78,7 @@ export const NewView: React.FC<NewViewProps> = props => {
   const history = useHistory<{ schema: Schema }>()
   const globalClasses = useGlobalStyles()
   const logger = useLogger('AddDialog')
+  const selectionService = useSelectionService()
 
   const handleSubmit = async () => {
     try {
@@ -116,6 +117,13 @@ export const NewView: React.FC<NewViewProps> = props => {
       field.fieldSettings.Name === 'Enabled' ||
       field.fieldSettings.Type === 'LongTextFieldSetting'
     )
+  }
+
+  const handleCancel = async () => {
+    if (selectionService.activeContent.getValue() !== undefined) {
+      selectionService.activeContent.setValue(undefined)
+    }
+    history.goBack()
   }
 
   return (
@@ -161,7 +169,7 @@ export const NewView: React.FC<NewViewProps> = props => {
       </form>
       <div className={classes.actionButtonWrapper}>
         <MediaQuery minDeviceWidth={700}>
-          <Button color="default" className={globalClasses.cancelButton} onClick={history.goBack}>
+          <Button color="default" className={globalClasses.cancelButton} onClick={handleCancel}>
             {localization.forms.cancel}
           </Button>
         </MediaQuery>
