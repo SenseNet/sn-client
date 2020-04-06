@@ -79,6 +79,6 @@ describe('Page component', () => {
       .find('div')
       .at(1)
       .simulate('click', { nativeEvent: { offsetX: 3, offsetY: 3 } })
-    expect(setDraft).toBeCalledWith({ id: 'draft', x: -6, y: -6 })
+    expect(setDraft).toBeCalledWith({ id: 'draft', x: '-6', y: '-6' })
   })
 })

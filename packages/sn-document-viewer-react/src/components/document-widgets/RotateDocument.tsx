@@ -28,12 +28,8 @@ export const RotateDocumentWidget: React.FC = () => {
 
   return (
     <div style={{ display: 'inline-block' }}>
-      <IconButton
-        title={localization.rotateDocumentLeft}
-        onClick={rotateDocumentLeft}
-        style={{ border: '2px solid', borderRadius: '5px' }}
-        id="RotateLeft">
-        <RotateLeft />
+      <IconButton title={localization.rotateDocumentLeft} onClick={rotateDocumentLeft} id="RotateLeft">
+        <RotateLeft style={{ border: '2px solid', borderRadius: '5px' }} />
       </IconButton>
       <IconButton title={localization.rotateDocumentRight} onClick={rotateDocumentRight} id="RotateRight">
         <RotateRight style={{ border: '2px solid', borderRadius: '5px' }} />

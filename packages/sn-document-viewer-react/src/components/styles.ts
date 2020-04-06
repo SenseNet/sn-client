@@ -9,10 +9,10 @@ export const styles = {
     sidebar: '#eaeaeb',
     appBar: '#2a2a2c',
     icon: {
-      inactive: '#707070',
-      active: '#3c91f2',
+      inactive: '#ffffff',
+      active: '#ffffff',
     },
-    commentButton: '#ff9800',
+    commentButton: '#ffffff',
   },
 }
 
