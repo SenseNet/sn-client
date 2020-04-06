@@ -12,7 +12,7 @@ import React, { useContext, useState } from 'react'
 import { matchPath, NavLink, useLocation } from 'react-router-dom'
 import { ResponsivePersonalSetttings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
-import { useDrawerItems, useLocalization, usePersonalSettings } from '../../hooks'
+import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
 import { SearchButton } from '../search-button'
 
@@ -96,6 +96,7 @@ export const PermanentDrawer = () => {
   const items = useDrawerItems()
   const localization = useLocalization().drawer
   const location = useLocation()
+  const selectionService = useSelectionService()
 
   if (!settings.drawer.enabled) {
     return null
@@ -139,7 +140,10 @@ export const PermanentDrawer = () => {
                   to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
                   className={classes.navLink}
                   key={index}
-                  onClick={() => setCurrentPath(item.root ? item.root : '')}
+                  onClick={() => {
+                    selectionService.activeContent.setValue(undefined)
+                    setCurrentPath(item.root ? item.root : '')
+                  }}
                   activeClassName={classes.navLinkActive}>
                   <ListItem
                     className={classes.listButton}

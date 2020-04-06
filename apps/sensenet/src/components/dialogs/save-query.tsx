@@ -5,6 +5,7 @@ import { ODataResponse } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLocalization } from '../../hooks'
 import { QueryData } from '../search'
+import { useGlobalStyles } from '../../globalStyles'
 import { useDialog } from './dialog-provider'
 
 export type SaveQueryProps = {
@@ -18,6 +19,7 @@ export function SaveQuery(props: SaveQueryProps) {
   const { closeLastDialog } = useDialog()
   const logger = useLogger('Search')
   const [saveName, setSaveName] = useState(props.saveName)
+  const globalClasses = useGlobalStyles()
 
   const onClick = async () => {
     try {
@@ -56,8 +58,10 @@ export function SaveQuery(props: SaveQueryProps) {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeLastDialog}>{localization.cancel}</Button>
-        <Button onClick={onClick} color="primary">
+        <Button className={globalClasses.cancelButton} onClick={closeLastDialog}>
+          {localization.cancel}
+        </Button>
+        <Button color="primary" variant="contained" onClick={onClick}>
           {localization.save}
         </Button>
       </DialogActions>

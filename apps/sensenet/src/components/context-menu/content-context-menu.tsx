@@ -5,13 +5,14 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Menu, { MenuProps } from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { ActionModel, GenericContent, isActionModel } from '@sensenet/default-content-types'
 import { useLogger, useWopi } from '@sensenet/hooks-react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { ResponsiveContext } from '../../context'
 import { useLoadContent } from '../../hooks'
-import { getIcon } from './icons'
+import { ActionNameType } from '../react-control-mapper'
 import { contextMenuODataOptions } from './context-menu-odata-options'
+import { getIcon } from './icons'
 import { useContextMenuActions } from './use-context-menu-actions'
 
 const DISABLED_ACTIONS = ['SetPermissions']
@@ -22,6 +23,8 @@ type ContentContextMenuProps = {
   onClose?: () => void
   menuProps?: Partial<MenuProps>
   content: GenericContent
+  halfPage?: boolean
+  setFormOpen?: (actionname: ActionNameType) => void
 }
 
 export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps> = props => {
@@ -51,6 +54,14 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
     [isWriteAvailable, logger],
   )
 
+  const setFormOpen = (actionName: ActionNameType) => {
+    props.setFormOpen && props.setFormOpen(actionName)
+  }
+
+  const getAction = (actionName: string) => {
+    return (actionName.toLowerCase() as ActionNameType) || undefined
+  }
+
   const { runAction } = useContextMenuActions(props.content, setActionsWopi)
   const device = useContext(ResponsiveContext)
 
@@ -76,7 +87,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
                   disabled={DISABLED_ACTIONS.includes(action.Name)}
                   onClick={() => {
                     props.onClose?.()
-                    runAction(action.Name)
+                    runAction(action.Name, props.halfPage, () => setFormOpen(getAction(action.Name)))
                   }}>
                   <ListItemIcon>{getIcon(action.Name.toLowerCase())}</ListItemIcon>
                   <ListItemText primary={action.DisplayName || action.Name} />
@@ -95,7 +106,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
                 disabled={DISABLED_ACTIONS.includes(action.Name)}
                 onClick={() => {
                   props.onClose?.()
-                  runAction(action.Name)
+                  runAction(action.Name, props.halfPage, () => setFormOpen(getAction(action.Name)))
                 }}>
                 <ListItemIcon>{getIcon(action.Name.toLowerCase())}</ListItemIcon>
                 <div style={{ flexGrow: 1 }}>{action.DisplayName || action.Name}</div>

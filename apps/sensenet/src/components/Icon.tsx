@@ -249,6 +249,17 @@ export const defaultSchemaResolvers: Array<IconResolver<{ ContentTypeName: typeo
   },
 ]
 
+export const editviewFileResolver: Array<IconResolver<GenericContent>> = [
+  {
+    get: (item, options) => {
+      if (item.Type === 'File') {
+        return <InsertDriveFileOutlined style={{ ...options.style }} />
+      }
+      return null
+    },
+  },
+]
+
 export const defaultNotificationResolvers: Array<IconResolver<EventLogEntry<any>>> = [
   {
     get: (item, options) => {

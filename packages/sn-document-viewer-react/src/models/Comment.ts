@@ -16,8 +16,8 @@ export interface CommentData {
   id: string
   createdBy: CreatedByUser
   page: number
-  x: number
-  y: number
+  x: string
+  y: string
   text: string
 }
 

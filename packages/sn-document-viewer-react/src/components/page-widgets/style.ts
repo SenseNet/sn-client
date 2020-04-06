@@ -13,8 +13,8 @@ export const MARKER_SIZE = 10
 
 export const CommentMarker = styled('div')<{ marker: DraftCommentMarker; zoomRatio: number; isSelected: boolean }>`
   position: absolute;
-  top: ${props => props.marker.y * props.zoomRatio}px;
-  left: ${props => props.marker.x * props.zoomRatio}px;
+  top: ${props => parseFloat(props.marker.y) * props.zoomRatio}px;
+  left: ${props => parseFloat(props.marker.x) * props.zoomRatio}px;
   width: ${MARKER_SIZE}px;
   height: ${MARKER_SIZE}px;
   border-radius: ${MARKER_SIZE}px;

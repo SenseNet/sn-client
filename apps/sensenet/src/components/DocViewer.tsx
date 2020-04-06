@@ -1,4 +1,14 @@
-import { DocumentViewer } from '@sensenet/document-viewer-react'
+import {
+  DocumentTitlePager,
+  DocumentViewer,
+  LayoutAppBar,
+  RotateActivePagesWidget,
+  RotateDocumentWidget,
+  ToggleCommentsWidget,
+  ToggleThumbnailsWidget,
+  ZoomInOutWidget,
+  ZoomModeWidget,
+} from '@sensenet/document-viewer-react'
 import React, { useCallback, useEffect } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { Close } from '@material-ui/icons'
@@ -16,8 +26,6 @@ const useStyles = makeStyles(() => {
     closeButton: {
       placeSelf: 'flex-end',
       position: 'relative',
-      top: '1em',
-      right: '4.5em',
     },
   })
 })
@@ -57,10 +65,25 @@ const DocViewer: React.FunctionComponent<RouteComponentProps<{ documentId: strin
     <div className={clsx(globalClasses.full, classes.docViewerWrapper)}>
       <CurrentContentProvider idOrPath={documentId} onContentLoaded={c => selectionService.activeContent.setValue(c)}>
         <DocumentViewer documentIdOrPath={documentId}>
-          <Button className={classes.closeButton} onClick={closeViewer}>
-            <Close style={{ marginRight: theme.spacing(1) }} />
-            {localization.customActions.resultsDialog.closeButton}
-          </Button>
+          <LayoutAppBar>
+            <div style={{ flexShrink: 0 }}>
+              <ToggleThumbnailsWidget />
+              <ZoomInOutWidget />
+              <ZoomModeWidget />
+              <RotateActivePagesWidget />
+              <RotateDocumentWidget />
+            </div>
+            <DocumentTitlePager />
+            <div style={{ display: 'flex', flexShrink: 0 }}>
+              <ToggleCommentsWidget />
+            </div>
+            <div style={{ display: 'flex', flexShrink: 0 }}>
+              <Button className={classes.closeButton} onClick={closeViewer}>
+                <Close style={{ marginRight: theme.spacing(1) }} />
+                {localization.customActions.resultsDialog.closeButton}
+              </Button>
+            </div>
+          </LayoutAppBar>
         </DocumentViewer>
       </CurrentContentProvider>
     </div>

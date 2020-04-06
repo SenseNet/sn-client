@@ -10,23 +10,30 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
   const logger = useLogger('context-menu')
   const history = useHistory()
   const repo = useRepository()
-  const contentContextService = new ContentContextService(repo)
+  const routing = new ContentContextService(repo)
   const download = useDownload(content)
   const currentParent = useLoadContent({ idOrPath: content.ParentId! }).content
   const { openDialog } = useDialog()
 
   const getContentName = () => content.DisplayName ?? content.Name
 
-  const runAction = async (actionName: string) => {
+  const runAction = async (actionName: string, halfPage?: boolean, setFormOpen?: () => void) => {
     switch (actionName) {
       case 'Delete':
         openDialog({ name: 'delete', props: { content: [content] } })
         break
       case 'Edit':
-        openDialog({ name: 'edit', props: { contentId: content.Id } })
+        !halfPage
+          ? history.push(`/${btoa(repo.configuration.repositoryUrl)}/EditProperties/${content.Id}`)
+          : setFormOpen && setFormOpen()
         break
       case 'Browse':
-        openDialog({ name: 'info', props: { content } })
+        if (!halfPage) {
+          history.push(`/${btoa(repo.configuration.repositoryUrl)}/BrowseProperties/${content.Id}`)
+        } else {
+          setFormOpen && setFormOpen()
+        }
+
         break
       case 'MoveTo':
       case 'CopyTo': {
@@ -38,7 +45,7 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
         break
       }
       case 'Preview':
-        history.push(contentContextService.getPrimaryActionUrl(content))
+        history.push(routing.getPrimaryActionUrl(content))
         break
       case 'CheckOut': {
         try {

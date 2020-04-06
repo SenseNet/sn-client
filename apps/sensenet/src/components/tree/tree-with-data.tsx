@@ -1,16 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { useLogger, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
-import { GenericContent } from '@sensenet/default-content-types'
 import { PathHelper } from '@sensenet/client-utils'
+import { GenericContent } from '@sensenet/default-content-types'
+import { useLogger, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
 import { Created } from '@sensenet/repository-events'
-import { FullScreenLoader } from '../full-screen-loader'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useSelectionService } from '../../hooks'
+import { FullScreenLoader } from '../full-screen-loader'
+import { ActionNameType } from '../react-control-mapper'
 import { ItemType, Tree } from './tree'
 
 type TreeWithDataProps = {
   onItemClick: (item: GenericContent) => void
   parentPath: string
   activeItemIdOrPath: string | number
+  setFormOpen?: (actionName: ActionNameType) => void
 }
 
 let lastRequest: { path: string; lastIndex: number } | undefined
@@ -225,6 +227,10 @@ export default function TreeWithData(props: TreeWithDataProps) {
     return <FullScreenLoader />
   }
 
+  const setFormOpen = (actionName: ActionNameType) => {
+    props.setFormOpen && props.setFormOpen(actionName)
+  }
+
   return (
     <Tree
       itemCount={itemCount}
@@ -232,6 +238,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
       loadMore={loadMoreItems}
       onItemClick={onItemClick}
       isLoading={isLoading}
+      setFormOpen={actionName => setFormOpen(actionName)}
     />
   )
 }

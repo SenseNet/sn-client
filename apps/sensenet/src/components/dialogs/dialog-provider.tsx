@@ -2,15 +2,12 @@ import { DialogProps } from '@material-ui/core/Dialog'
 import React, { createContext, useCallback, useContext, useReducer } from 'react'
 import { ErrorBoundary, ErrorBoundaryState } from '../error-boundary'
 import {
-  AddDialogProps,
   ApproveProps,
   AreYouSureProps,
   CheckInProps,
-  ContentInfoDialogProps,
   CopyMoveDialogProps,
   CustomActionResultDialogProps,
   DeleteContentDialogProps,
-  EditPropertiesProps,
   ErrorReportProps,
   ExecuteActionDialogProps,
   SaveQueryProps,
@@ -22,14 +19,11 @@ export type DialogWithProps = (
   | { name: 'delete'; props: DeleteContentDialogProps }
   | { name: 'error-report'; props: ErrorReportProps }
   | { name: 'error'; props: ErrorBoundaryState }
-  | { name: 'edit'; props: EditPropertiesProps }
-  | { name: 'info'; props: ContentInfoDialogProps }
   | { name: 'copy-move'; props: CopyMoveDialogProps }
   | { name: 'check-in'; props: CheckInProps }
   | { name: 'versions'; props: VersionsProps }
   | { name: 'are-you-sure'; props: AreYouSureProps }
   | { name: 'approve'; props: ApproveProps }
-  | { name: 'add'; props: AddDialogProps }
   | { name: 'upload'; props: UploadDialogProps }
   | { name: 'execute-action'; props: ExecuteActionDialogProps }
   | { name: 'custom-action-result'; props: CustomActionResultDialogProps }

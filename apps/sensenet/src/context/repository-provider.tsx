@@ -44,7 +44,7 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
 
   if (!authConfig || !repoUrl) {
     return (
-      <Suspense fallback={<FullScreenLoader />}>
+      <Suspense fallback={<FullScreenLoader loaderText="" />}>
         <LoginPage
           isLoginDisabled={true}
           inputChangeCallback={url => {

@@ -40,8 +40,12 @@ export function LogoutDialog() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeLastDialog}>{localization.logoutCancel}</Button>
+          <Button className={globalClasses.cancelButton} onClick={closeLastDialog}>
+            {localization.logoutCancel}
+          </Button>
           <Button
+            color="primary"
+            variant="contained"
             onClick={() => {
               logout()
               window.localStorage.removeItem(authConfigKey)

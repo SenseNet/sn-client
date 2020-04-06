@@ -16,7 +16,9 @@ const SearchComponent = lazy(() => import(/* webpackChunkName: "search" */ './se
 const SavedQueriesComponent = lazy(() => import(/* webpackChunkName: "saved-queries" */ './search/saved-queries'))
 const SetupComponent = lazy(() => import(/* webpackChunkName: "setup" */ './setup/setup'))
 const EditBinary = lazy(() => import(/* webpackChunkName: "editBinary" */ './edit/EditBinary'))
-const EditProperties = lazy(() => import(/* webpackChunkName: "editProperties" */ './edit/EditProperties'))
+const EditProperties = lazy(() => import(/* webpackChunkName: "editProperties" */ './edit/edit-properties'))
+const BrowseProperties = lazy(() => import(/* webpackChunkName: "browseProperties" */ './browse/browse-properties'))
+const NewProperties = lazy(() => import(/* webpackChunkName: "newProperties" */ './new/new-properties'))
 const DocumentViewerComponent = lazy(() => import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 const TrashComponent = lazy(() => import(/* webpackChunkName: "Trash" */ './trash/Trash'))
 const EventListComponent = lazy(() => import(/* webpackChunkName: "EventList" */ './event-list'))
@@ -95,6 +97,14 @@ export const MainRouter = () => {
 
           <Route path="/:repo/editProperties/:contentId?">
             <EditProperties />
+          </Route>
+
+          <Route path="/:repo/browseProperties/:contentId?">
+            <BrowseProperties />
+          </Route>
+
+          <Route path="/:repo/newProperties/:contentId?">
+            <NewProperties />
           </Route>
 
           <Route path="/:repo/preview/:documentId?">

@@ -4,13 +4,23 @@ import React, { useContext } from 'react'
 import { useHistory } from 'react-router'
 import { ContentContextService } from '../services'
 import Breadcrumbs, { BreadcrumbItem } from './Breadcrumbs'
+import { ActionNameType } from './react-control-mapper'
 
-export const ContentBreadcrumbs = (props: { onItemClick?: (item: BreadcrumbItem<GenericContent>) => void }) => {
+type ContentBreadcrumbsProps = {
+  onItemClick?: (item: BreadcrumbItem<GenericContent>) => void
+  setFormOpen?: (actionName: ActionNameType) => void
+}
+
+export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
   const ancestors = useContext(CurrentAncestorsContext)
   const parent = useContext(CurrentContentContext)
   const repository = useRepository()
   const history = useHistory()
-  const contentContextService = new ContentContextService(repository)
+  const contentRouter = new ContentContextService(repository)
+
+  const setFormOpen = (actionName: ActionNameType) => {
+    props.setFormOpen && props.setFormOpen(actionName)
+  }
 
   return (
     <Breadcrumbs
@@ -18,21 +28,20 @@ export const ContentBreadcrumbs = (props: { onItemClick?: (item: BreadcrumbItem<
         ...ancestors.map(content => ({
           displayName: content.DisplayName || content.Name,
           title: content.Path,
-          url: contentContextService.getPrimaryActionUrl(content),
+          url: contentRouter.getPrimaryActionUrl(content),
           content,
         })),
         {
           displayName: parent.DisplayName || parent.Name,
           title: parent.Path,
-          url: contentContextService.getPrimaryActionUrl(parent),
+          url: contentRouter.getPrimaryActionUrl(parent),
           content: parent,
         },
       ]}
       onItemClick={(_ev, item) => {
-        props.onItemClick
-          ? props.onItemClick(item)
-          : history.push(contentContextService.getPrimaryActionUrl(item.content))
+        props.onItemClick ? props.onItemClick(item) : history.push(contentRouter.getPrimaryActionUrl(item.content))
       }}
+      setFormOpen={actionName => setFormOpen(actionName)}
     />
   )
 }

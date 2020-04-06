@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import {
   Button,
   DialogActions,
@@ -8,9 +7,11 @@ import {
   Fade,
   TextField,
 } from '@material-ui/core'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { GenericContent } from '@sensenet/default-content-types'
 import { ODataParams } from '@sensenet/client-core'
+import { GenericContent } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
+import React, { useState } from 'react'
+import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { useDialog } from './dialog-provider'
 
@@ -28,6 +29,7 @@ export function Approve(props: ApproveProps) {
   const { closeLastDialog } = useDialog()
   const [reason, setReason] = useState<string>()
   const [aboutToReject, setAboutToReject] = useState(false)
+  const globalClasses = useGlobalStyles()
 
   const name = content.DisplayName ?? content.Name
 
@@ -79,9 +81,17 @@ export function Approve(props: ApproveProps) {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={closeLastDialog}>{localization.cancelButton}</Button>
-        <Button onClick={approve}>{localization.approveButton}</Button>
-        <Button onClick={reject}>{localization.rejectButton}</Button>
+        <Button onClick={closeLastDialog} className={globalClasses.cancelButton}>
+          {localization.cancelButton}
+        </Button>
+        <div>
+          <Button onClick={approve} color="primary" variant="contained">
+            {localization.approveButton}
+          </Button>
+          <Button onClick={reject} className={globalClasses.cancelButton}>
+            {localization.rejectButton}
+          </Button>
+        </div>
       </DialogActions>
     </>
   )

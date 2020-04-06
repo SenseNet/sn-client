@@ -6,6 +6,7 @@ import { AutoSizer, Index, List, ListRowProps } from 'react-virtualized'
 import { useSelectionService } from '../../hooks'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { Icon } from '../Icon'
+import { ActionNameType } from '../react-control-mapper'
 
 export type ItemType = GenericContent & {
   children?: ItemType[]
@@ -19,12 +20,13 @@ type TreeProps = {
   loadMore: (startIndex: number, path?: string) => Promise<void>
   onItemClick: (item: GenericContent) => void
   treeData: ItemType
+  setFormOpen?: (actionName: ActionNameType) => void
 }
 
 const ROW_HEIGHT = 48
 const LOAD_MORE_CLASS = 'loadMore'
 
-export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading }: TreeProps) {
+export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, setFormOpen }: TreeProps) {
   const listRef = useRef<List>(null)
   const loader = useRef(loadMore)
   const selectionService = useSelectionService()
@@ -156,17 +158,24 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading }: 
     )
   }
 
+  const setFormOpenFunc = (actionName: ActionNameType) => {
+    setFormOpen && setFormOpen(actionName)
+  }
+
   return (
     <div
       style={{
+        minWidth: '350px',
+        maxWidth: '400px',
         flexGrow: 2,
         flexShrink: 0,
         borderRight: '1px solid rgba(128,128,128,.2)',
       }}>
       <AutoSizer>
-        {({ width, height }) => (
+        {({ height, width }) => (
           <List
             height={height}
+            width={width}
             overscanRowCount={10}
             ref={listRef}
             rowHeight={rowHeight}
@@ -179,7 +188,6 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading }: 
             }}
             rowRenderer={rowRenderer}
             rowCount={itemCount}
-            width={width}
             style={{ outline: 'none' }}
           />
         )}
@@ -196,6 +204,8 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading }: 
             },
           }}
           onClose={() => setContextMenuAnchor(null)}
+          halfPage={true}
+          setFormOpen={actionName => setFormOpenFunc(actionName)}
         />
       ) : null}
     </div>
