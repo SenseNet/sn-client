@@ -260,9 +260,9 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
                 button={true}
                 style={{ padding: '10px 0 10px 10px' }}
                 onClick={() => {
-                  const componentId = currentComponent ? currentComponent.Id : parent.Id
+                  const contentPath = currentComponent ? currentComponent.Path : props.path
                   setShowSelectType(false)
-                  history.push(`/${btoa(repo.configuration.repositoryUrl)}/NewProperties/${componentId}`, {
+                  history.push(`/${btoa(repo.configuration.repositoryUrl)}/NewProperties?path=${contentPath}`, {
                     schema: childType,
                   })
                 }}>
