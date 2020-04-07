@@ -23,7 +23,6 @@ const useStyles = makeStyles(() => {
 })
 
 export default function NewProperties() {
-  //const match = useRouteMatch<{ contentPath: string }>()
   const history = useHistory<{ schema: Schema }>()
   const query = useQuery()
   const selectionService = useSelectionService()
