@@ -81,7 +81,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
           open={props.isOpened}
           PaperProps={{ style: { paddingBottom: '2em' } }}>
           <List>
-            {actions.map(action => {
+            {actions?.map(action => {
               return (
                 <ListItem
                   key={action.Name}
@@ -99,7 +99,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
         </Drawer>
       ) : (
         <Menu open={props.isOpened} {...props.menuProps}>
-          {actions.map(action => {
+          {actions?.map(action => {
             return (
               <MenuItem
                 key={action.Name}
