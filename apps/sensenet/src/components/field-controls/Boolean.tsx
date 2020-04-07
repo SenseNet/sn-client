@@ -42,7 +42,8 @@ export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> =
       return (
         <FormControl
           className={clsx(classes.root, {
-            [classes.alignedCenter]: props.content?.Type === 'User' && props.settings.Name === 'Enabled',
+            [classes.alignedCenter]:
+              props.settings.Name === 'Enabled' && (props.content?.Type === 'User' || props.actionName === 'new'),
           })}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>

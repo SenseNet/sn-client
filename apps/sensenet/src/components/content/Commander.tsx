@@ -76,7 +76,7 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
         } else if (ev.key === 'F7') {
           ev.preventDefault()
           ev.stopPropagation()
-          history.push(`/${btoa(repo.configuration.repositoryUrl)}/NewProperties/${activeParent.Id}`, {
+          history.push(`/${btoa(repo.configuration.repositoryUrl)}/NewProperties?path=${activeParent.Path}`, {
             schema: repo.schemas.getSchemaByName('Folder'),
           })
         }
