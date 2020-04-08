@@ -51,6 +51,7 @@ export default function EditProperties() {
           }}
           actionName={'edit'}
           isFullPage={true}
+          submitCallback={history.goBack}
         />
       </CurrentContentProvider>
     </div>

@@ -133,6 +133,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                           }
                         }}
                         actionName={action}
+                        submitCallback={() => setIsFormOpened(false)}
                       />
                     </>
                   ) : (

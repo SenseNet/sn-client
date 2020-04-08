@@ -10,7 +10,6 @@ import { useLogger, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { createElement, ReactElement, useEffect, useState } from 'react'
 import MediaQuery from 'react-responsive'
-import { useHistory } from 'react-router'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useSelectionService } from '../../hooks'
 import { ActionNameType, reactControlMapper } from '../react-control-mapper'
@@ -87,7 +86,6 @@ export const EditView: React.FC<EditViewProps> = props => {
   const globalClasses = useGlobalStyles()
   const localization = useLocalization()
   const logger = useLogger('EditView')
-  const history = useHistory()
 
   useEffect(() => {
     const activeComponentObserve = selectionService.activeContent.subscribe(newActiveComponent =>
@@ -138,7 +136,7 @@ export const EditView: React.FC<EditViewProps> = props => {
           },
         })
       } finally {
-        history.goBack()
+        props.submitCallback && props.submitCallback()
       }
     }
 
