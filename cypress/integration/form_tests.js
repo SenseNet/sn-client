@@ -1,6 +1,6 @@
 const userName = 'builtin\\admin'
 const password = 'admin'
-const repository = 'https://dev.demo.sensenet.com'
+const repository = 'https://netfw-dev.service.sn.hu/'
 
 const loginNameText = 'testuser'
 const fullNameText = 'Test Test'
@@ -121,6 +121,8 @@ describe('Test forms', () => {
       .children('div')
       .children('div')
       .contains(modifiedFullNameText)
+
+    cy.get('.MuiIconButton-colorInherit').click()
   })
 
   it('checks browse of new user', () => {
