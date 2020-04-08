@@ -32,7 +32,6 @@
     "lerna": "^3.20.2",
     "lint-staged": "^10.1.2",
     "prettier": "^2.0.4",
-    "rimraf": "^3.0.2",
     "start-server-and-test": "^1.10.11",
     "typescript": "^3.8.3",
     "wait-on": "^4.0.1"
@@ -49,7 +48,7 @@
     "build:dms": "yarn && yarn build && yarn workspace sn-dms-demo run build",
     "build:sn-app": "yarn && yarn build && yarn workspace @sensenet/sn-app run build",
     "build:docs": "yarn && yarn build && yarn workspace sn-react-component-docs run build-storybook",
-    "clean:packages": "rimraf ./packages/**/dist ./packages/**/tsconfig.tsbuildinfo ./packages/tsconfig.tsbuildinfo",
+    "clean:packages": "yarn build --clean",
     "test": "jest",
     "clean": "lerna clean",
     "lint": "eslint . --ext .tsx,.ts --cache"
