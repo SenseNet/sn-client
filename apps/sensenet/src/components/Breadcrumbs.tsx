@@ -1,11 +1,13 @@
+import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import Button from '@material-ui/core/Button'
 import Tooltip from '@material-ui/core/Tooltip'
-import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
+import { useSelectionService } from '../hooks'
 import { ContentContextMenu } from './context-menu/content-context-menu'
 import { DropFileArea } from './DropFileArea'
+import { ActionNameType } from './react-control-mapper'
 
 export interface BreadcrumbItem<T extends GenericContent> {
   url: string
@@ -17,6 +19,7 @@ export interface BreadcrumbItem<T extends GenericContent> {
 export interface BreadcrumbProps<T extends GenericContent> {
   items: Array<BreadcrumbItem<T>>
   onItemClick: (event: React.MouseEvent, item: BreadcrumbItem<T>) => void
+  setFormOpen?: (actionName: ActionNameType) => void
 }
 
 /**
@@ -26,6 +29,11 @@ function BreadcrumbsComponent<T extends GenericContent>(props: BreadcrumbProps<T
   const [contextMenuItem, setContextMenuItem] = useState<GenericContent | null>(null)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
+  const selectionService = useSelectionService()
+
+  const setFormOpen = (actionName: ActionNameType) => {
+    props.setFormOpen && props.setFormOpen(actionName)
+  }
 
   return (
     <>
@@ -39,6 +47,7 @@ function BreadcrumbsComponent<T extends GenericContent>(props: BreadcrumbProps<T
                   setContextMenuItem(item.content)
                   setContextMenuAnchor(ev.currentTarget)
                   setIsContextMenuOpened(true)
+                  selectionService.activeContent.setValue(item.content)
                   ev.preventDefault()
                 }}>
                 <span style={{ textTransform: 'none', fontSize: '16px' }}>{item.displayName}</span>
@@ -59,6 +68,8 @@ function BreadcrumbsComponent<T extends GenericContent>(props: BreadcrumbProps<T
             },
           }}
           onClose={() => setIsContextMenuOpened(false)}
+          halfPage={true}
+          setFormOpen={actionName => setFormOpen(actionName)}
         />
       ) : null}
     </>

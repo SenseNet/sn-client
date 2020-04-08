@@ -28,14 +28,14 @@ export const RotateActivePagesWidget: React.FC = () => {
     <div style={{ display: 'inline-block' }}>
       <IconButton
         color="inherit"
-        title={localization.rotateDocumentLeft}
+        title={localization.rotatePageLeft}
         onClick={() => rotateDocumentLeft()}
         id="RotateActiveLeft">
         <RotateLeft />
       </IconButton>
       <IconButton
         color="inherit"
-        title={localization.rotateDocumentRight}
+        title={localization.rotatePageRight}
         onClick={() => rotateDocumentRight()}
         id="RotateActiveRight">
         <RotateRight />

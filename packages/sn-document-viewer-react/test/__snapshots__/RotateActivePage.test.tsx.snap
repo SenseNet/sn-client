@@ -13,7 +13,7 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
       color="inherit"
       id="RotateActiveLeft"
       onClick={[Function]}
-      title="Rotate document left"
+      title="Rotate page left"
     >
       <ForwardRef(IconButton)
         classes={
@@ -32,7 +32,7 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
         color="inherit"
         id="RotateActiveLeft"
         onClick={[Function]}
-        title="Rotate document left"
+        title="Rotate page left"
       >
         <WithStyles(ForwardRef(ButtonBase))
           centerRipple={true}
@@ -41,7 +41,7 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
           focusRipple={true}
           id="RotateActiveLeft"
           onClick={[Function]}
-          title="Rotate document left"
+          title="Rotate page left"
         >
           <ForwardRef(ButtonBase)
             centerRipple={true}
@@ -57,7 +57,7 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
             focusRipple={true}
             id="RotateActiveLeft"
             onClick={[Function]}
-            title="Rotate document left"
+            title="Rotate page left"
           >
             <button
               className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit"
@@ -76,7 +76,7 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
               onTouchMove={[Function]}
               onTouchStart={[Function]}
               tabIndex={0}
-              title="Rotate document left"
+              title="Rotate page left"
               type="button"
             >
               <span
@@ -153,7 +153,7 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
       color="inherit"
       id="RotateActiveRight"
       onClick={[Function]}
-      title="Rotate document right"
+      title="Rotate page right"
     >
       <ForwardRef(IconButton)
         classes={
@@ -172,7 +172,7 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
         color="inherit"
         id="RotateActiveRight"
         onClick={[Function]}
-        title="Rotate document right"
+        title="Rotate page right"
       >
         <WithStyles(ForwardRef(ButtonBase))
           centerRipple={true}
@@ -181,7 +181,7 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
           focusRipple={true}
           id="RotateActiveRight"
           onClick={[Function]}
-          title="Rotate document right"
+          title="Rotate page right"
         >
           <ForwardRef(ButtonBase)
             centerRipple={true}
@@ -197,7 +197,7 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
             focusRipple={true}
             id="RotateActiveRight"
             onClick={[Function]}
-            title="Rotate document right"
+            title="Rotate page right"
           >
             <button
               className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit"
@@ -216,7 +216,7 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
               onTouchMove={[Function]}
               onTouchStart={[Function]}
               tabIndex={0}
-              title="Rotate document right"
+              title="Rotate page right"
               type="button"
             >
               <span

@@ -174,6 +174,71 @@ const sharingEntriesResponse = {
   },
 } as Response
 
+const previewNumberResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return 4
+  },
+} as Response
+
+const emptyResponse = {
+  ok: true,
+  status: 200,
+  json: async () => undefined,
+} as Response
+
+const previewCommentResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return {
+      id: '1234',
+      createdBy: { Name: 'alba' } as User,
+      page: 3,
+      x: 100,
+      y: 100,
+      text: 'Lorem ipsum',
+    }
+  },
+} as Response
+
+const previewCommentsResponse = {
+  ok: true,
+  status: 200,
+  json: async () => [
+    {
+      id: '1234',
+      createdBy: { Name: 'alba' } as User,
+      page: 3,
+      x: 100,
+      y: 100,
+      text: 'Lorem ipsum',
+    },
+    {
+      id: '5678',
+      createdBy: { Name: 'devdog' } as User,
+      page: 3,
+      x: 100,
+      y: 200,
+      text: 'Dolor sit amet',
+    },
+  ],
+} as Response
+
+const contentTypeCollectionMockResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return {
+      d: {
+        __count: 0,
+        results: [],
+      },
+    }
+  },
+} as Response
+
 describe('Actions', () => {
   const path = '/workspaces/project'
   let repo: Repository
@@ -328,6 +393,29 @@ describe('Actions', () => {
         })
         it('should return a UPDATE_CONTENT action', () => {
           expect(Actions.updateContent(content, content)).toHaveProperty('type', 'UPDATE_CONTENT')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(expectedResult)
+        })
+      })
+    })
+  })
+  describe('ResetContent', () => {
+    const content = { DisplayName: 'My content', Id: 123 } as Task
+
+    describe('Action types are types', () => {
+      expect(Actions.resetContent(content, content).type).toBe('RESET_CONTENT')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.patch() resolves', () => {
+        let data: ODataResponse<Content>
+        const expectedResult = { d: { Name: 'DefaultSite' } }
+        beforeEach(async () => {
+          data = await Actions.resetContent(content, content).payload(repo)
+        })
+        it('should return a RESET_CONTENT action', () => {
+          expect(Actions.resetContent(content, content)).toHaveProperty('type', 'RESET_CONTENT')
         })
         it('should return mockdata', () => {
           expect(data).toEqual(expectedResult)
@@ -950,7 +1038,7 @@ describe('Actions', () => {
     })
     describe('serviceChecks()', () => {
       describe('Given repository.getSchema() resolves', () => {
-        let data
+        let data: any
         let mockSchemaResponseData: ReturnType<typeof schemaResponse['json']>
         beforeEach(async () => {
           data = await Actions.getSchema().payload(repo)
@@ -1018,7 +1106,7 @@ describe('Actions', () => {
 
     describe('serviceChecks()', () => {
       describe('Given repository.removeSharing() resolves', () => {
-        let data: ODataSharingResponse
+        let data: any
         const expectedResult = { Token: 'devdog@sensenet.com', Id: 11 }
         beforeEach(async () => {
           data = await Actions.removeSharing({ Id: 42 } as GenericContent, 11).payload(repo)
@@ -1052,6 +1140,420 @@ describe('Actions', () => {
         })
         it('should return mockdata', () => {
           expect(data).toEqual(expectedResult)
+        })
+      })
+    })
+  })
+  describe('checkPreviews', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => previewNumberResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.checkPreviews(42).type).toBe('CHECK_PREVIEWS')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given checkPreviews() resolves', () => {
+        let data: any
+        const expectedResult = 4
+        beforeEach(async () => {
+          data = await Actions.checkPreviews(42).payload(repo)
+        })
+        it('should return a CHECK_PREVIEWS action', () => {
+          expect(Actions.checkPreviews(42)).toHaveProperty('type', 'CHECK_PREVIEWS')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(expectedResult)
+        })
+      })
+    })
+  })
+  describe('getPageCount', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => previewNumberResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getPageCount(42).type).toBe('GET_PAGE_COUNT')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given getPageCount() resolves', () => {
+        let data: any
+        const expectedResult = 4
+        beforeEach(async () => {
+          data = await Actions.getPageCount(42).payload(repo)
+        })
+        it('should return a GET_PAGE_COUNT action', () => {
+          expect(Actions.getPageCount(42)).toHaveProperty('type', 'GET_PAGE_COUNT')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(expectedResult)
+        })
+      })
+    })
+  })
+  describe('regeneratePreviews', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => emptyResponse as any)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.regeneratePreviews(42).type).toBe('REGENERATE_PREVIEW_IMAGES')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.executeAction() resolves', () => {
+        let data: any
+        beforeEach(async () => {
+          data = await Actions.regeneratePreviews(42).payload(repo)
+        })
+        it('should return a REGENERATE_PREVIEW_IMAGES action', () => {
+          expect(Actions.regeneratePreviews(42)).toHaveProperty('type', 'REGENERATE_PREVIEW_IMAGES')
+        })
+        it('should return propertyResponse', () => {
+          expect(data).toBeUndefined()
+        })
+      })
+    })
+  })
+  describe('getPreviewComments', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => previewCommentsResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getPreviewComments(42, 4).type).toBe('GET_PREVIEW_COMMENTS')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given getPreviewComments() resolves', () => {
+        let data: any
+        const expectedResult = [
+          {
+            id: '1234',
+            createdBy: { Name: 'alba' } as User,
+            page: 3,
+            x: 100,
+            y: 100,
+            text: 'Lorem ipsum',
+          },
+          {
+            id: '5678',
+            createdBy: { Name: 'devdog' } as User,
+            page: 3,
+            x: 100,
+            y: 200,
+            text: 'Dolor sit amet',
+          },
+        ]
+        beforeEach(async () => {
+          data = await Actions.getPreviewComments(42, 4).payload(repo)
+        })
+        it('should return a GET_PREVIEW_COMMENTS action', () => {
+          expect(Actions.getPreviewComments(42, 4)).toHaveProperty('type', 'GET_PREVIEW_COMMENTS')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(expectedResult)
+        })
+      })
+    })
+  })
+  describe('addPreviewComment', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => previewCommentResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.addPreviewComment(42, 4, 100, 100, 'Lorem ipsum').type).toBe('ADD_PREVIEW_COMMENT')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given addPreviewComment() resolves', () => {
+        let data: any
+        const expectedResult = {
+          id: '1234',
+          createdBy: { Name: 'alba' } as User,
+          page: 3,
+          x: 100,
+          y: 100,
+          text: 'Lorem ipsum',
+        }
+        beforeEach(async () => {
+          data = await Actions.addPreviewComment(42, 4, 100, 100, 'Lorem ipsum').payload(repo)
+        })
+        it('should return a ADD_PREVIEW_COMMENT action', () => {
+          expect(Actions.addPreviewComment(42, 4, 100, 100, 'Lorem ipsum')).toHaveProperty(
+            'type',
+            'ADD_PREVIEW_COMMENT',
+          )
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(expectedResult)
+        })
+      })
+    })
+  })
+  describe('removePreviewComment', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => previewCommentResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.removePreviewComment(42, 5678).type).toBe('REMOVE_PREVIEW_COMMENT')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given removePreviewComment() resolves', () => {
+        let data: any
+        const expectedResult = {
+          id: '1234',
+          createdBy: { Name: 'alba' } as User,
+          page: 3,
+          x: 100,
+          y: 100,
+          text: 'Lorem ipsum',
+        }
+        beforeEach(async () => {
+          data = await Actions.removePreviewComment(42, 5678).payload(repo)
+        })
+        it('should return a REMOVE_PREVIEW_COMMENT action', () => {
+          expect(Actions.removePreviewComment(42, 5678)).toHaveProperty('type', 'REMOVE_PREVIEW_COMMENT')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(expectedResult)
+        })
+      })
+    })
+  })
+  describe('restoreFromTrash', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => contentMockResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.restoreFromTrash(42, '/Root/Content/IT/Document_Library').type).toBe('RESTORE_FROM_TRASH')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given addPreviewComment() resolves', () => {
+        let data: any
+        const expectedResult = {
+          d: {
+            Name: 'DefaultSite',
+          },
+        }
+        beforeEach(async () => {
+          data = await Actions.restoreFromTrash(42, '/Root/Content/IT/Document_Library').payload(repo)
+        })
+        it('should return a RESTORE_FROM_TRASH action', () => {
+          expect(Actions.restoreFromTrash(42, '/Root/Content/IT/Document_Library')).toHaveProperty(
+            'type',
+            'RESTORE_FROM_TRASH',
+          )
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(expectedResult)
+        })
+      })
+    })
+  })
+  describe('addAllowedChildTypes', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => emptyResponse as any)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.addAllowedChildTypes(42, ['Image', 'Task']).type).toBe('ADD_ALLOWED_CHILDTYPES')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.executeAction() resolves', () => {
+        let data: any
+        beforeEach(async () => {
+          data = await Actions.addAllowedChildTypes(42, ['Image', 'Task']).payload(repo)
+        })
+        it('should return a ADD_ALLOWED_CHILDTYPES action', () => {
+          expect(Actions.addAllowedChildTypes(42, ['Image', 'Task'])).toHaveProperty('type', 'ADD_ALLOWED_CHILDTYPES')
+        })
+        it('should return propertyResponse', () => {
+          expect(data).toBeUndefined()
+        })
+      })
+    })
+  })
+  describe('removeAllowedChildTypes', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => emptyResponse as any)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.removeAllowedChildTypes(42, ['Image', 'Task']).type).toBe('REMOVE_ALLOWED_CHILDTYPES')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.executeAction() resolves', () => {
+        let data: any
+        beforeEach(async () => {
+          data = await Actions.removeAllowedChildTypes(42, ['Image', 'Task']).payload(repo)
+        })
+        it('should return a REMOVE_ALLOWED_CHILDTYPES action', () => {
+          expect(Actions.removeAllowedChildTypes(42, ['Image', 'Task'])).toHaveProperty(
+            'type',
+            'REMOVE_ALLOWED_CHILDTYPES',
+          )
+        })
+        it('should return propertyResponse', () => {
+          expect(data).toBeUndefined()
+        })
+      })
+    })
+  })
+  describe('getAllowedChildTypes', () => {
+    beforeEach(() => {
+      repo = new Repository(
+        { repositoryUrl: 'https://dev.demo.sensenet.com/' },
+        async () => contentTypeCollectionMockResponse,
+      )
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getAllowedChildTypes(path).type).toBe('GET_ALLOWED_CHILDTYPES')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.getImplicitAllowedChildTypes() resolves', () => {
+        let data: ODataCollectionResponse<GenericContent>
+        let mockCollectionResponseData: ReturnType<typeof contentTypeCollectionMockResponse['json']>
+        beforeEach(async () => {
+          data = await Actions.getAllowedChildTypes(path).payload(repo)
+          mockCollectionResponseData = await contentTypeCollectionMockResponse.json()
+        })
+        it('should return a GET_ALLOWED_CHILDTYPES action', () => {
+          expect(Actions.getAllowedChildTypes(path)).toHaveProperty('type', 'GET_ALLOWED_CHILDTYPES')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(mockCollectionResponseData)
+        })
+      })
+    })
+  })
+  describe('getEffectiveAllowedChildTypes', () => {
+    beforeEach(() => {
+      repo = new Repository(
+        { repositoryUrl: 'https://dev.demo.sensenet.com/' },
+        async () => contentTypeCollectionMockResponse,
+      )
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getEffectiveAllowedChildTypes(path).type).toBe('GET_EFFECTIVE_ALLOWED_CHILDTYPES')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.getAllowedChildTypes() resolves', () => {
+        let data: ODataCollectionResponse<GenericContent>
+        let mockCollectionResponseData: ReturnType<typeof contentTypeCollectionMockResponse['json']>
+        beforeEach(async () => {
+          data = await Actions.getEffectiveAllowedChildTypes(path).payload(repo)
+          mockCollectionResponseData = await contentTypeCollectionMockResponse.json()
+        })
+        it('should return a GET_EFFECTIVE_ALLOWED_CHILDTYPES action', () => {
+          expect(Actions.getEffectiveAllowedChildTypes(path)).toHaveProperty('type', 'GET_EFFECTIVE_ALLOWED_CHILDTYPES')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(mockCollectionResponseData)
+        })
+      })
+    })
+  })
+  describe('getAllowedTypesFromCTD', () => {
+    beforeEach(() => {
+      repo = new Repository(
+        { repositoryUrl: 'https://dev.demo.sensenet.com/' },
+        async () => contentTypeCollectionMockResponse,
+      )
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getAllowedTypesFromCTD(path).type).toBe('GET_ALLOWED_CHILDTYPES_FROM_CTD')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.getAllowedTypesFromCTD() resolves', () => {
+        let data: ODataCollectionResponse<GenericContent>
+        let mockCollectionResponseData: ReturnType<typeof contentTypeCollectionMockResponse['json']>
+        beforeEach(async () => {
+          data = await Actions.getAllowedTypesFromCTD(path).payload(repo)
+          mockCollectionResponseData = await contentTypeCollectionMockResponse.json()
+        })
+        it('should return a GET_ALLOWED_CHILDTYPES_FROM_CTD action', () => {
+          expect(Actions.getAllowedTypesFromCTD(path)).toHaveProperty('type', 'GET_ALLOWED_CHILDTYPES_FROM_CTD')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(mockCollectionResponseData)
+        })
+      })
+    })
+  })
+  describe('checkAllowedChildTypes', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => collectionMockResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.checkAllowedChildTypes(path).type).toBe('CHECK_ALLOWED_CHILDTYPES')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.checkAllowedChildTypes() resolves', () => {
+        let data: ODataCollectionResponse<GenericContent>
+        let mockCollectionResponseData: ReturnType<typeof collectionMockResponse['json']>
+        beforeEach(async () => {
+          data = await Actions.checkAllowedChildTypes(path).payload(repo)
+          mockCollectionResponseData = await collectionMockResponse.json()
+        })
+        it('should return a CHECK_ALLOWED_CHILDTYPES action', () => {
+          expect(Actions.checkAllowedChildTypes(path)).toHaveProperty('type', 'CHECK_ALLOWED_CHILDTYPES')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(mockCollectionResponseData)
+        })
+      })
+    })
+  })
+  describe('updateListField', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => contentMockResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.udpateListField(path, { Name: 'MyCustomField' }).type).toBe('UPDATE_LIST_FIELD')
+    })
+
+    describe('serviceChecks()', () => {
+      describe('Given repository.udpateListField() resolves', () => {
+        let data: ODataResponse<GenericContent>
+        let mockContentResponseData: ReturnType<typeof contentMockResponse['json']>
+        beforeEach(async () => {
+          data = await Actions.udpateListField(path, { Name: 'MyCustomField' }).payload(repo)
+          mockContentResponseData = await contentMockResponse.json()
+        })
+        it('should return a UPDATE_LIST_FIELD action', () => {
+          expect(Actions.udpateListField(path, { Name: 'MyCustomField' })).toHaveProperty('type', 'UPDATE_LIST_FIELD')
+        })
+        it('should return mockdata', () => {
+          expect(data).toEqual(mockContentResponseData)
+        })
+      })
+    })
+  })
+  describe('deleteListField', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => emptyResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.deleteListField(path).type).toBe('DELETE_LIST_FIELD')
+    })
+
+    describe('serviceChecks()', () => {
+      let data: any
+      beforeEach(async () => {
+        data = await Actions.deleteListField(path).payload(repo)
+      })
+      describe('Given repository.deleteListField() resolves', () => {
+        it('should return a DELETE_LIST_FIELD action', () => {
+          expect(Actions.deleteListField(path)).toHaveProperty('type', 'DELETE_LIST_FIELD')
+        })
+        it('should return mockdata', () => {
+          expect(data).toBeUndefined()
         })
       })
     })

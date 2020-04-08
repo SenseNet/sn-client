@@ -1,27 +1,21 @@
 {
-  "extends": "../../tsconfig-base.json",
   "compilerOptions": {
-    "outDir": "build/dist",
-    "rootDir": "src",
-    "lib": ["es6", "dom"],
-    "noImplicitReturns": false,
-    "alwaysStrict": false
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
-  "include": ["src", "../../typings"],
-  "references": [
-    { "path": "../../packages/sn-authentication-jwt" },
-    { "path": "../../packages/sn-client-auth-google" },
-    { "path": "../../packages/sn-client-core" },
-    { "path": "../../packages/sn-client-utils" },
-    { "path": "../../packages/sn-controls-react" },
-    { "path": "../../packages/sn-default-content-types" },
-    { "path": "../../packages/sn-document-viewer-react" },
-    { "path": "../../packages/sn-hooks-react" },
-    { "path": "../../packages/sn-icons-react" },
-    { "path": "../../packages/sn-list-controls-react" },
-    { "path": "../../packages/sn-pickers-react" },
-    { "path": "../../packages/sn-redux" },
-    { "path": "../../packages/sn-repository-events" },
-    { "path": "../../packages/sn-search-react" }
-  ]
+  "include": ["src", "../../typings"]
 }

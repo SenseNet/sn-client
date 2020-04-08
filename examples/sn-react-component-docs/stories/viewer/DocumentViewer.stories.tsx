@@ -29,8 +29,8 @@ storiesOf('DocumentViewer', module)
         comment={{
           createdBy: object('Created by', createdBy),
           page: 1,
-          x: 10,
-          y: 10,
+          x: '10',
+          y: '10',
           id: text('id', 'randomId'),
           text: text(
             'commentBody',
@@ -52,8 +52,8 @@ storiesOf('DocumentViewer', module)
         comment={{
           createdBy: object('Created by', createdBy),
           page: 1,
-          x: 10,
-          y: 10,
+          x: '10',
+          y: '10',
           id: text('id', 'randomId'),
           text: text('commentBody', `Lorem ipsum dolor is single short text`),
         }}

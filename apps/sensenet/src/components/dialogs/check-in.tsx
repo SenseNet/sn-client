@@ -44,7 +44,9 @@ export function CheckIn({ content, onActionSuccess, oDataOptions }: CheckInProps
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={onSubmit}>{localization.send}</Button>
+        <Button color="primary" variant="contained" onClick={onSubmit}>
+          {localization.send}
+        </Button>
       </DialogActions>
     </>
   )

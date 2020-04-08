@@ -6,3 +6,5 @@
 export * from './ReactControlMapper'
 export * from './fieldcontrols'
 export * from './viewcontrols'
+export * from './assets'
+export * from './helpers'

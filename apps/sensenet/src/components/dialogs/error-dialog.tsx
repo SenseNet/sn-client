@@ -1,13 +1,15 @@
-import React from 'react'
 import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core'
 import { BugReportTwoTone, RefreshTwoTone } from '@material-ui/icons'
-import { ErrorBoundaryState } from '../error-boundary'
+import React from 'react'
+import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+import { ErrorBoundaryState } from '../error-boundary'
 import { useDialog } from '.'
 
 export function ErrorDialog(props: ErrorBoundaryState) {
   const { openDialog } = useDialog()
   const localization = useLocalization().errorBoundary
+  const globalClasses = useGlobalStyles()
 
   const openErrorReportingDialog = () => {
     openDialog({
@@ -32,12 +34,13 @@ export function ErrorDialog(props: ErrorBoundaryState) {
           ) : null}
         </DialogContentText>
         <DialogActions>
-          <Button onClick={() => window.location.reload()}>
+          <Button className={globalClasses.cancelButton} onClick={() => window.location.reload()}>
             <RefreshTwoTone />
             {localization.reload}
           </Button>
 
           <Button
+            className={globalClasses.cancelButton}
             onClick={() => {
               openErrorReportingDialog()
             }}>

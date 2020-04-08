@@ -57,7 +57,7 @@ export class ActionsCell<T extends GenericContent> extends React.Component<Actio
   public render() {
     return (
       <TableCell
-        component="div"
+        component={this.props.virtual ? 'div' : 'td'}
         style={
           this.props.virtual
             ? {

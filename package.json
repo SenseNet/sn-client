@@ -12,31 +12,30 @@
     }
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^2.19.2",
-    "@typescript-eslint/parser": "^2.19.2",
-    "babel-eslint": "10.x",
+    "@typescript-eslint/eslint-plugin": "^2.23.0",
+    "@typescript-eslint/parser": "^2.23.0",
+    "babel-eslint": "10.1.0",
     "cz-conventional-changelog": "^3.1.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-config-react-app": "^5.2.0",
-    "eslint-plugin-cypress": "^2.10.1",
+    "eslint-plugin-cypress": "^2.10.3",
     "eslint-plugin-flowtype": "4.6.0",
     "eslint-plugin-import": "2.20.0",
-    "eslint-plugin-jsdoc": "^21.0.0",
+    "eslint-plugin-jsdoc": "^22.0.0",
     "eslint-plugin-jsx-a11y": "6.x",
     "eslint-plugin-prettier": "^3.1.2",
-    "eslint-plugin-react": "^7.18.3",
-    "eslint-plugin-react-hooks": "^2.3.0",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^2.5.0",
     "husky": "^4.2.3",
-    "jest-environment-jsdom-sixteen": "^1.0.2",
+    "jest-environment-jsdom-sixteen": "^1.0.3",
     "lerna": "^3.20.2",
-    "lint-staged": "^10.0.7",
-    "netlify-cli": "^2.32.0",
+    "lint-staged": "^10.0.8",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.2",
-    "start-server-and-test": "^1.10.8",
-    "typescript": "^3.7.5",
-    "wait-on": "^4.0.0"
+    "start-server-and-test": "^1.10.9",
+    "typescript": "^3.8.3",
+    "wait-on": "^4.0.1"
   },
   "scripts": {
     "cy:run:dms": "cypress run --project ./examples/sn-dms-demo",
@@ -46,12 +45,12 @@
     "storybook": "yarn workspace sn-react-component-docs",
     "dms": "yarn workspace sn-dms-demo",
     "build": "tsc -b packages",
-    "build:dms": "yarn && yarn build && yarn workspace sn-dms-demo run build:webpack",
+    "build:examples": "tsc -b examples",
+    "build:dms": "yarn && yarn build && yarn workspace sn-dms-demo run build",
     "build:sn-app": "yarn && yarn build && yarn workspace @sensenet/sn-app run build",
     "build:docs": "yarn && yarn build && yarn workspace sn-react-component-docs run build-storybook",
     "clean:packages": "rimraf ./packages/**/dist ./packages/**/tsconfig.tsbuildinfo ./packages/tsconfig.tsbuildinfo",
     "test": "jest",
-    "test:coverage": "jest --coverage",
     "clean": "lerna clean",
     "lint": "eslint . --ext .tsx,.ts --cache"
   },
@@ -63,12 +62,10 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint --ext .tsx,.ts --cache --fix",
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "*.{js,jsx}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   }
 }

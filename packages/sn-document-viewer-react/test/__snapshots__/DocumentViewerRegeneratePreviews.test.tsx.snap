@@ -381,6 +381,7 @@ exports[`Document Regenerate Previews component Should trigger regeneration on b
                   </WithStyles(ForwardRef(CircularProgress))>
                   Generate
                 </span>
+                <NoSsr />
               </button>
             </ForwardRef(ButtonBase)>
           </WithStyles(ForwardRef(ButtonBase))>

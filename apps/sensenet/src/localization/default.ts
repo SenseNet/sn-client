@@ -409,6 +409,22 @@ const values = {
       `Couldn't restore version to  ${version} for content: ${name}`,
     restoreButtonTitle: 'Restore version',
   },
+  forms: {
+    referencePicker: 'Reference picker',
+    avatarPicker: 'Avatar picker',
+    removeAvatar: 'Remove avatar',
+    changeReference: 'Change reference',
+    addReference: 'Add reference',
+    ok: 'Ok',
+    cancel: 'Cancel',
+    upload: 'Upload',
+    submit: 'Submit',
+    inputPlaceHolder: 'Start typing to add another type',
+    emptyField: '<This field is empty>',
+  },
+  common: {
+    loadingContent: 'Loading content...',
+  },
 }
 
 export default values

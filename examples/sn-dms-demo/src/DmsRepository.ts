@@ -1,7 +1,5 @@
-import { Injector } from '@sensenet/client-utils'
-import { addGoogleAuth } from '@sensenet/authentication-google'
-import { JwtService } from '@sensenet/authentication-jwt'
 import { FormsAuthenticationService, Repository } from '@sensenet/client-core'
+import { Injector } from '@sensenet/client-utils'
 import { EventHub } from '@sensenet/repository-events'
 import { customSchema } from './assets/schema'
 
@@ -29,15 +27,7 @@ export const dmsInjector = new Injector()
 
 const formsAuthService = FormsAuthenticationService.Setup(repository)
 dmsInjector.setExplicitInstance(formsAuthService)
-
-const jwt = JwtService.setup(repository, { select: 'all' })
-
-const googleOauthProvider = addGoogleAuth(jwt, {
-  clientId: '188576321252-cad8ho16mf68imajdvai6e2cpl3iv8ss.apps.googleusercontent.com',
-})
 const repositoryEvents = new EventHub(repository)
 
 dmsInjector.setExplicitInstance(repository)
-dmsInjector.setExplicitInstance(jwt)
-dmsInjector.setExplicitInstance(googleOauthProvider)
 dmsInjector.setExplicitInstance(repositoryEvents)

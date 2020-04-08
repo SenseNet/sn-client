@@ -1,6 +1,5 @@
 import { ConstantContent } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useEffect, useState } from 'react'
 import {
   CurrentAncestorsProvider,
   CurrentChildrenProvider,
@@ -9,9 +8,11 @@ import {
   LoadSettingsContextProvider,
   useRepository,
 } from '@sensenet/hooks-react'
+import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router'
 import { useSelectionService } from '../../hooks'
-import { useDialog } from '../dialogs'
 import { ContentList } from '../content-list/content-list'
+import { useDialog } from '../dialogs'
 
 export interface CommanderComponentProps {
   leftParent: number | string
@@ -43,6 +44,8 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
 
   const [rightSelection, setRightSelection] = useState<GenericContent[]>([])
 
+  const history = useHistory()
+
   useEffect(() => {
     activePanel === 'left' ? setActiveParent(leftParent) : setActiveParent(rightParent)
   }, [leftParent, rightParent, activePanel])
@@ -73,9 +76,8 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
         } else if (ev.key === 'F7') {
           ev.preventDefault()
           ev.stopPropagation()
-          openDialog({
-            name: 'add',
-            props: { parentPath: activeParent.Path, schema: repo.schemas.getSchemaByName('Folder') },
+          history.push(`/${btoa(repo.configuration.repositoryUrl)}/NewProperties?path=${activeParent.Path}`, {
+            schema: repo.schemas.getSchemaByName('Folder'),
           })
         }
       }}
@@ -107,6 +109,7 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
                 onTabRequest={() => _rightPanelRef && _rightPanelRef.focus()}
                 onActiveItemChange={item => selectionService.activeContent.setValue(item)}
                 fieldsToDisplay={props.fieldsToDisplay}
+                isOpenFrom={'commander'}
               />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>
@@ -137,6 +140,7 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
                 onTabRequest={() => _leftPanelRef && _leftPanelRef.focus()}
                 onActiveItemChange={item => selectionService.activeContent.setValue(item)}
                 fieldsToDisplay={props.fieldsToDisplay}
+                isOpenFrom={'commander'}
               />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>

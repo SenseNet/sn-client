@@ -4,7 +4,7 @@ import { isExtendedError, ODataWopiResponse } from '@sensenet/client-core'
 import { Button, Typography } from '@material-ui/core'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { useLocalization } from '../hooks'
-import { FullScreenLoader } from './FullScreenLoader'
+import { FullScreenLoader } from './full-screen-loader'
 
 const WopiPage: React.FunctionComponent<RouteComponentProps<{ documentId?: string; action?: string }>> = props => {
   const repo = useRepository()

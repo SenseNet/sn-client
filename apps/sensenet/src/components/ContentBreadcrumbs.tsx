@@ -4,13 +4,19 @@ import { CurrentAncestorsContext, CurrentContentContext } from '@sensenet/hooks-
 import { GenericContent } from '@sensenet/default-content-types'
 import { useContentRouting } from '../hooks'
 import Breadcrumbs, { BreadcrumbItem } from './Breadcrumbs'
+import { ActionNameType } from './react-control-mapper'
 
 export const ContentBreadcrumbsComponent: React.FunctionComponent<RouteComponentProps & {
   onItemClick?: (item: BreadcrumbItem<GenericContent>) => void
+  setFormOpen?: (actionName: ActionNameType) => void
 }> = props => {
   const ancestors = useContext(CurrentAncestorsContext)
   const parent = useContext(CurrentContentContext)
   const contentRouter = useContentRouting()
+
+  const setFormOpen = (actionName: ActionNameType) => {
+    props.setFormOpen && props.setFormOpen(actionName)
+  }
 
   return (
     <Breadcrumbs
@@ -33,6 +39,7 @@ export const ContentBreadcrumbsComponent: React.FunctionComponent<RouteComponent
           ? props.onItemClick(item)
           : props.history.push(contentRouter.getPrimaryActionUrl(item.content))
       }}
+      setFormOpen={actionName => setFormOpen(actionName)}
     />
   )
 }

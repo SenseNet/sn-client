@@ -61,6 +61,28 @@ export const ThemeProvider: React.FunctionComponent = props => {
             color: pageTheme === 'light' ? '#000000' : '#FFFFFF',
           },
         },
+        MuiPickersDatePickerRoot: {
+          toolbar: {
+            backgroundColor: pageTheme === 'light' ? '#B2B2B2' : 'rgba(255,255,255,0.05)',
+          },
+        },
+        MuiPickersBasePicker: {
+          pickerView: {
+            backgroundColor: pageTheme === 'light' ? '#E2E2E2' : 'rgba(255,255,255,0.11)',
+          },
+        },
+        MuiPickersCalendarHeader: {
+          iconButton: {
+            backgroundColor: 'transparent',
+          },
+        },
+        MuiPickersModal: {
+          dialogRoot: {
+            '& .MuiDialogActions-root': {
+              backgroundColor: pageTheme === 'light' ? '#E2E2E2' : 'rgba(255,255,255,0.11)',
+            },
+          },
+        },
       },
     })
 
