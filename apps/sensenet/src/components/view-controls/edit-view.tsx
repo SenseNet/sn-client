@@ -10,6 +10,7 @@ import { useLogger, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { createElement, ReactElement, useEffect, useState } from 'react'
 import MediaQuery from 'react-responsive'
+import { useHistory } from 'react-router'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useSelectionService } from '../../hooks'
 import { ActionNameType, reactControlMapper } from '../react-control-mapper'
@@ -82,6 +83,7 @@ export const EditView: React.FC<EditViewProps> = props => {
   const globalClasses = useGlobalStyles()
   const localization = useLocalization()
   const logger = useLogger('EditView')
+  const history = useHistory()
 
   useEffect(() => {
     const activeComponentObserve = selectionService.activeContent.subscribe(newActiveComponent =>
@@ -100,39 +102,40 @@ export const EditView: React.FC<EditViewProps> = props => {
       props.actionName ? props.actionName : 'browse',
     )
 
-    const handleSubmit = () => {
-      repo
-        .patch({
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault()
+      try {
+        const response = repo.patch({
           idOrPath: content.Id,
           content: saveableFields,
         })
-        .then(response => {
-          logger.information({
-            message: localization.editPropertiesDialog.saveSuccessNotification.replace(
-              '{0}',
-              content.DisplayName || content.Name || content.DisplayName || content.Name,
-            ),
-            data: {
-              relatedContent: content,
-              content: response,
-              relatedRepository: repo.configuration.repositoryUrl,
-            },
-          })
+        logger.information({
+          message: localization.editPropertiesDialog.saveSuccessNotification.replace(
+            '{0}',
+            content.DisplayName || content.Name || content.DisplayName || content.Name,
+          ),
+          data: {
+            relatedContent: content,
+            content: response,
+            relatedRepository: repo.configuration.repositoryUrl,
+          },
         })
-        .catch(error => {
-          logger.error({
-            message: localization.editPropertiesDialog.saveFailedNotification.replace(
-              '{0}',
-              content.DisplayName || content.Name || content.DisplayName || content.Name,
-            ),
-            data: {
-              relatedContent: content,
-              content,
-              relatedRepository: repo.configuration.repositoryUrl,
-              error: isExtendedError(error) ? repo.getErrorFromResponse(error.response) : error,
-            },
-          })
+      } catch (error) {
+        logger.error({
+          message: localization.editPropertiesDialog.saveFailedNotification.replace(
+            '{0}',
+            content.DisplayName || content.Name || content.DisplayName || content.Name,
+          ),
+          data: {
+            relatedContent: content,
+            content,
+            relatedRepository: repo.configuration.repositoryUrl,
+            error: isExtendedError(error) ? repo.getErrorFromResponse(error.response) : error,
+          },
         })
+      } finally {
+        history.goBack()
+      }
     }
 
     const handleInputChange = (field: string, value: unknown) => {
@@ -148,12 +151,11 @@ export const EditView: React.FC<EditViewProps> = props => {
     }
 
     return (
-      <>
-        <form
+      <form style={{ display: 'initial' }} onSubmit={handleSubmit}>
+        <div
           className={clsx(classes.form, {
             [classes.fullpage]: props.isFullPage,
-          })}
-          onSubmit={handleSubmit}>
+          })}>
           <Grid container={true} spacing={2}>
             {schema.fieldMappings
               .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
@@ -196,7 +198,7 @@ export const EditView: React.FC<EditViewProps> = props => {
                 )
               })}
           </Grid>
-        </form>
+        </div>
         <div className={classes.actionButtonWrapper}>
           <MediaQuery minDeviceWidth={700}>
             <Button
@@ -207,12 +209,12 @@ export const EditView: React.FC<EditViewProps> = props => {
             </Button>
           </MediaQuery>
           {props.actionName !== 'browse' && (
-            <Button variant="contained" color="primary" onClick={() => handleSubmit()}>
+            <Button variant="contained" color="primary" type="submit">
               {localization.forms.submit}
             </Button>
           )}
         </div>
-      </>
+      </form>
     )
   }
 }
