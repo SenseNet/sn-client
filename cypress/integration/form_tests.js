@@ -74,9 +74,11 @@ describe('Test forms', () => {
       .children('div')
       .children('div')
       .contains(fullNameText)
+
+    cy.get('.MuiIconButton-colorInherit').click()
   })
 
-  it('edit the name of new user', () => {
+  it('edits the name of new user', () => {
     cy.xpath('/html/body/div[1]/div/div/div[1]/div/ul/div/a[3]/div').click()
 
     cy.xpath('/html/body/div[1]/div/div/div[2]/div/div[1]/span').as('usersAndGroupsTitle')
@@ -107,8 +109,6 @@ describe('Test forms', () => {
 
     cy.contains('Submit').click()
 
-    cy.contains('Cancel').click()
-
     cy.get('.ReactVirtualized__Grid__innerScrollContainer')
       .children()
       .last()
@@ -121,5 +121,64 @@ describe('Test forms', () => {
       .children('div')
       .children('div')
       .contains(modifiedFullNameText)
+  })
+
+  it('checks browse of new user', () => {
+    cy.xpath('/html/body/div[1]/div/div/div[1]/div/ul/div/a[3]/div').click()
+
+    cy.xpath('/html/body/div[1]/div/div/div[2]/div/div[1]/span').as('usersAndGroupsTitle')
+
+    cy.get('@usersAndGroupsTitle').contains(usersAndGroupsTitle)
+
+    cy.get('.ReactVirtualized__Grid__innerScrollContainer')
+      .children()
+      .last()
+      .as('newUser')
+
+    cy.get('@newUser').rightclick()
+
+    cy.get('.MuiPopover-root div ul')
+      .children()
+      .should('have.length', 8)
+
+    cy.get('.MuiPopover-root div ul')
+      .children('li')
+      .children('div')
+      .contains('Browse')
+      .click()
+
+    cy.contains('Full name')
+      .parent()
+      .children('p')
+      .contains(modifiedFullNameText)
+
+    cy.contains('Cancel').click()
+  })
+
+  it('deletes newly created user', () => {
+    cy.xpath('/html/body/div[1]/div/div/div[1]/div/ul/div/a[3]/div').click()
+
+    cy.xpath('/html/body/div[1]/div/div/div[2]/div/div[1]/span').as('usersAndGroupsTitle')
+
+    cy.get('@usersAndGroupsTitle').contains(usersAndGroupsTitle)
+
+    cy.get('.ReactVirtualized__Grid__innerScrollContainer')
+      .children()
+      .last()
+      .as('newUser')
+
+    cy.get('@newUser').rightclick()
+
+    cy.get('.MuiPopover-root div ul')
+      .children()
+      .should('have.length', 8)
+
+    cy.get('.MuiPopover-root div ul')
+      .children('li')
+      .children('div')
+      .contains('Delete')
+      .click()
+
+    cy.xpath('/html/body/div[2]/div[3]/div/div/div[3]/div/button[2]').click()
   })
 })

@@ -19,7 +19,11 @@ Cypress.Commands.add('login', (userName, password, repository) => {
 
   cy.get('button[aria-label="Login"]').click()
 
+  cy.get('.MuiIconButton-colorInherit').click()
+
   cy.location('pathname', { timeout: 20000 }).should('eq', '/')
+
+  cy.get('.MuiIconButton-colorInherit').click()
 })
 
 Cypress.Commands.add('logout', () => {
