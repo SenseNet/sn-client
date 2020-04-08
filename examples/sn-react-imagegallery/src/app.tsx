@@ -26,9 +26,11 @@ export const useStyles = makeStyles((theme) => ({
 }))
 
 // eslint-disable-next-line react/display-name
-export const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => {
-  return <Slide direction="up" ref={ref} {...props} />
-})
+export const Transition = React.forwardRef(
+  (props: TransitionProps & { children?: React.ReactElement<any, any> }, ref: React.Ref<unknown>) => {
+    return <Slide direction="up" ref={ref} {...props} />
+  },
+)
 
 export const App: React.FunctionComponent = () => {
   const repo = useRepository()

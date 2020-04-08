@@ -7,7 +7,7 @@ import { SharedContext } from '../context/shared-context'
 
 const NewDialogBody: React.FunctionComponent<{
   parentpath: string
-  dialogProps: DialogProps
+  dialogProps: Partial<DialogProps>
 }> = (props) => {
   const repo = useRepository()
   const sharedcontext = useContext(SharedContext)
