@@ -19,7 +19,7 @@ export class SelectionService implements Disposable {
   constructor(injector: Injector) {
     this.logger = injector.logger.withScope('SelectionService')
 
-    this.activeContent.subscribe(ac =>
+    this.activeContent.subscribe((ac) =>
       this.logger.verbose({
         message: ac ? `Active content changed to ${ac.DisplayName || ac.Name}` : `Active content set to None`,
         data: {
@@ -27,10 +27,10 @@ export class SelectionService implements Disposable {
         },
       }),
     )
-    this.selection.subscribe(sel => {
+    this.selection.subscribe((sel) => {
       this.logger.verbose({
         message: sel.length
-          ? `Selection changed to: ${sel.map(s => s.DisplayName || s.Name).join(', ')}`
+          ? `Selection changed to: ${sel.map((s) => s.DisplayName || s.Name).join(', ')}`
           : `Selection cleared`,
       })
     })

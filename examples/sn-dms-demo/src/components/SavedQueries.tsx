@@ -81,7 +81,7 @@ class SavedQueries extends React.Component<
                     Url: '',
                     IsODataAction: false,
                   },
-                  ...(content.Actions as ActionModel[]).filter(a => a.Name === 'Rename' || a.Name === 'Delete'),
+                  ...(content.Actions as ActionModel[]).filter((a) => a.Name === 'Rename' || a.Name === 'Delete'),
                 ],
                 content,
                 '',
@@ -111,7 +111,7 @@ class SavedQueries extends React.Component<
                     Url: '',
                     IsODataAction: false,
                   },
-                  ...(content.Actions as ActionModel[]).filter(a => a.Name === 'Rename' || a.Name === 'Delete'),
+                  ...(content.Actions as ActionModel[]).filter((a) => a.Name === 'Rename' || a.Name === 'Delete'),
                 ],
                 content,
                 '',
@@ -125,7 +125,7 @@ class SavedQueries extends React.Component<
             onItemDoubleClick={(_ev, q) => {
               this.handleOpenQuery(q)
             }}
-            fieldComponent={props => {
+            fieldComponent={(props) => {
               switch (props.field) {
                 case 'DisplayName':
                   if (this.props.editedItemId === props.content.Id) {
@@ -134,7 +134,7 @@ class SavedQueries extends React.Component<
                         icon={props.content.Icon || ''}
                         icons={icons}
                         displayName={props.content.DisplayName || props.content.Name}
-                        onFinish={newName => {
+                        onFinish={(newName) => {
                           this.props.updateContent<Query>(props.content, { DisplayName: newName })
                         }}
                       />

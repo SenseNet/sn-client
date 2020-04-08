@@ -11,9 +11,7 @@ import fontawesomeNotes from '../notes/icon/FontAwesome.md'
 import flaticonNotes from '../notes/icon/Flaticon.md'
 import imageNotes from '../notes/icon/Image.md'
 
-const stories = storiesOf('Icon', module)
-  .addDecorator(withKnobs)
-  .addDecorator(withA11y)
+const stories = storiesOf('Icon', module).addDecorator(withKnobs).addDecorator(withA11y)
 
 stories
   .add(

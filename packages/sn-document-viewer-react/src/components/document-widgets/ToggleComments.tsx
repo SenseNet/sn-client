@@ -13,7 +13,7 @@ export const ToggleCommentsWidget: React.FC = () => {
     <ToggleBase
       isVisible={viewerState.showComments}
       title={localization.toggleComments}
-      setValue={v => viewerState.updateState({ showComments: v })}>
+      setValue={(v) => viewerState.updateState({ showComments: v })}>
       <Comment color="action" fill={viewerState.showComments ? '#ffffff' : '#ffffff'} />
     </ToggleBase>
   )

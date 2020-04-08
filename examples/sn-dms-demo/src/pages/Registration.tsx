@@ -242,7 +242,7 @@ class Registration extends React.Component<
       <div className="Sensenet">
         <div className="Sensenet-header">
           <MediaQuery minDeviceWidth={700}>
-            {matches => {
+            {(matches) => {
               return (
                 <img
                   src={logo}
@@ -270,7 +270,7 @@ class Registration extends React.Component<
               ''
             )}
             <form
-              onSubmit={e => {
+              onSubmit={(e) => {
                 e.preventDefault()
                 this.formSubmit()
               }}>
@@ -286,8 +286,8 @@ class Registration extends React.Component<
                 style={styles.formControl}>
                 <TextField
                   name="username"
-                  onBlur={event => this.handleUsernameBlur(event)}
-                  onChange={event => this.handleUsernameChange(event)}
+                  onBlur={(event) => this.handleUsernameBlur(event)}
+                  onChange={(event) => this.handleUsernameChange(event)}
                   fullWidth={true}
                   autoFocus={true}
                   label={resources.USERNAME_INPUT_LABEL}
@@ -307,8 +307,8 @@ class Registration extends React.Component<
                 style={styles.formControl}>
                 <TextField
                   name="email"
-                  onBlur={event => this.handleEmailBlur(event)}
-                  onChange={event => this.handleEmailChange(event)}
+                  onBlur={(event) => this.handleEmailBlur(event)}
+                  onChange={(event) => this.handleEmailChange(event)}
                   fullWidth={true}
                   autoFocus={true}
                   label={resources.EMAIL_INPUT_LABEL}
@@ -324,8 +324,8 @@ class Registration extends React.Component<
                 <TextField
                   type="password"
                   name="password"
-                  onBlur={event => this.handlePasswordBlur(event)}
-                  onChange={event => this.handlePasswordChange(event)}
+                  onBlur={(event) => this.handlePasswordBlur(event)}
+                  onChange={(event) => this.handlePasswordChange(event)}
                   fullWidth={true}
                   label={resources.PASSWORD_INPUT_LABEL}
                   placeholder={resources.PASSWORD_INPUT_PLACEHOLDER}
@@ -340,8 +340,8 @@ class Registration extends React.Component<
                 <TextField
                   type="password"
                   name="confirmpassword"
-                  onBlur={event => this.handleConfirmPasswordBlur(event)}
-                  onChange={event => this.handleConfirmPasswordChange(event)}
+                  onBlur={(event) => this.handleConfirmPasswordBlur(event)}
+                  onChange={(event) => this.handleConfirmPasswordChange(event)}
                   fullWidth={true}
                   label={resources.CONFIRM_PASSWORD_INPUT_LABEL}
                   placeholder={resources.PASSWORD_INPUT_PLACEHOLDER}

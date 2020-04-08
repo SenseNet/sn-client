@@ -9,7 +9,7 @@ export const useCurrentUser = () => {
   const repo = useRepository()
   const [currentUser, setCurrentUser] = useState<User>(repo.authentication.currentUser.getValue())
   useEffect(() => {
-    const observable = repo.authentication.currentUser.subscribe(usr => setCurrentUser(usr), true)
+    const observable = repo.authentication.currentUser.subscribe((usr) => setCurrentUser(usr), true)
     return () => observable.dispose()
   }, [repo])
 

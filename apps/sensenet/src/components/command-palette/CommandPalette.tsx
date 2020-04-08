@@ -152,14 +152,14 @@ export class CommandPaletteComponent extends React.Component<
     return (
       <ClickAwayListener onClickAway={() => this.props.setIsOpened(false)}>
         <ThemeContext.Consumer>
-          {theme => (
+          {(theme) => (
             <div
               className={clsx(this.props.classes.buttonWrapper, {
                 [this.props.classes.buttonWrapperOpened]: this.props.isOpened,
               })}>
               {this.props.isOpened ? null : (
                 <LocalizationContext.Consumer>
-                  {localization => (
+                  {(localization) => (
                     <Tooltip placeholder="bottom-end" title={localization.values.commandPalette.title}>
                       <IconButton
                         onClick={() => this.props.setIsOpened(true)}
@@ -173,7 +173,7 @@ export class CommandPaletteComponent extends React.Component<
               )}
 
               <div
-                ref={r => (r ? (this.containerRef = r) : null)}
+                ref={(r) => (r ? (this.containerRef = r) : null)}
                 className={clsx(this.props.classes.comboBox, {
                   [this.props.classes.comboBoxOpened]: this.props.isOpened,
                 })}>
@@ -201,11 +201,11 @@ export class CommandPaletteComponent extends React.Component<
                   suggestions={this.props.items}
                   highlightFirstSuggestion={true}
                   onSuggestionSelected={this.handleSelectSuggestion}
-                  onSuggestionsFetchRequested={e => this.handleSuggestionsFetchRequested(e, this.context)}
+                  onSuggestionsFetchRequested={(e) => this.handleSuggestionsFetchRequested(e, this.context)}
                   onSuggestionsClearRequested={() => this.props.setItems([])}
-                  getSuggestionValue={s => s.primaryText}
+                  getSuggestionValue={(s) => s.primaryText}
                   renderSuggestion={(s, params) => <CommandPaletteSuggestion suggestion={s} params={params} />}
-                  renderSuggestionsContainer={s => (
+                  renderSuggestionsContainer={(s) => (
                     <CommandPaletteHitsContainer
                       {...s}
                       width={(this.containerRef && this.containerRef.scrollWidth) || 100}

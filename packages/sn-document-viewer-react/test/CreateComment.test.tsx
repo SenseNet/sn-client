@@ -63,10 +63,7 @@ describe('Create comment component', () => {
         wrappingComponentProps: { theme: defaultTheme },
       },
     )
-    wrapper
-      .find(Button)
-      .first()
-      .simulate('submit')
+    wrapper.find(Button).first().simulate('submit')
     expect(cc).toBeCalled()
   })
 
@@ -89,10 +86,7 @@ describe('Create comment component', () => {
         wrappingComponentProps: { theme: defaultTheme },
       },
     )
-    wrapper
-      .find(Button)
-      .first()
-      .simulate('submit')
+    wrapper.find(Button).first().simulate('submit')
     expect(cc).toBeCalled()
   })
 
@@ -101,10 +95,7 @@ describe('Create comment component', () => {
       wrappingComponent: ThemeProvider,
       wrappingComponentProps: { theme: defaultTheme },
     })
-    wrapper
-      .find(Button)
-      .last()
-      .simulate('click')
+    wrapper.find(Button).last().simulate('click')
     expect(defaultProps.handleIsActive).toBeCalled()
   })
 
@@ -113,10 +104,7 @@ describe('Create comment component', () => {
       wrappingComponent: ThemeProvider,
       wrappingComponentProps: { theme: defaultTheme },
     })
-    wrapper
-      .find(Button)
-      .first()
-      .simulate('submit')
+    wrapper.find(Button).first().simulate('submit')
     expect(defaultProps.handleIsActive).toBeCalled()
     expect(defaultProps.handleInputValueChange).toBeCalledWith('')
   })
@@ -126,10 +114,7 @@ describe('Create comment component', () => {
       wrappingComponent: ThemeProvider,
       wrappingComponentProps: { theme: defaultTheme },
     })
-    wrapper
-      .find(Button)
-      .last()
-      .simulate('click')
+    wrapper.find(Button).last().simulate('click')
     expect(defaultProps.handleIsActive).toBeCalled()
     expect(defaultProps.handleInputValueChange).toBeCalledWith('')
     expect(wrapper.prop('isPlacingMarker')).toBeFalsy()
@@ -144,10 +129,7 @@ describe('Create comment component', () => {
       .find('textarea')
       .first()
       .simulate('change', { target: { value: 'Hello' } })
-    wrapper
-      .find(Button)
-      .first()
-      .simulate('submit')
+    wrapper.find(Button).first().simulate('submit')
     expect(defaultProps.handleInputValueChange).toBeCalledWith('Hello')
   })
 
@@ -161,10 +143,7 @@ describe('Create comment component', () => {
         wrappingComponentProps: { theme: defaultTheme },
       },
     )
-    wrapper
-      .find(Button)
-      .first()
-      .simulate('submit')
+    wrapper.find(Button).first().simulate('submit')
     expect(wrapper.find(FormHelperText).text()).toEqual(defaultProps.localization!.inputRequiredError)
   })
 
@@ -179,10 +158,7 @@ describe('Create comment component', () => {
       },
     )
     ;(wrapper.find(TextField).prop('onChange') as any)({ target: { value: 'Hello There' } })
-    wrapper
-      .find(Button)
-      .first()
-      .simulate('submit')
+    wrapper.find(Button).first().simulate('submit')
     expect(wrapper.find(FormHelperText).text()).toEqual(defaultProps.localization!.markerRequiredError)
   })
 
@@ -191,10 +167,7 @@ describe('Create comment component', () => {
       wrappingComponent: ThemeProvider,
       wrappingComponentProps: { theme: defaultTheme },
     })
-    wrapper
-      .find(Button)
-      .first()
-      .simulate('submit')
+    wrapper.find(Button).first().simulate('submit')
     expect(wrapper.find(FormHelperText).text()).toEqual(defaultProps.localization!.inputRequiredError)
   })
 })

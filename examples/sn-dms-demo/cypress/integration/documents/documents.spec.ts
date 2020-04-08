@@ -16,7 +16,7 @@ context('The documents page', () => {
   let currentUser = { email: '', password: '' }
 
   const loginOrRegister = (user: { email: string; password: string }) => {
-    cy.login(user.email, user.password).then(isSuccesful => {
+    cy.login(user.email, user.password).then((isSuccesful) => {
       if (!isSuccesful) {
         currentUser = registerNewUser()
         cy.login(currentUser.email, currentUser.password)
@@ -34,7 +34,7 @@ context('The documents page', () => {
     // Save current user locally to reduce user creation
     if (!process.env.CI) {
       cy.task('getCurrentUser', '../fixtures/currentUser.json')
-        .then(user => (currentUser = user))
+        .then((user) => (currentUser = user))
         .then(() => loginOrRegister(currentUser))
     } else {
       loginOrRegister(currentUser)
@@ -58,12 +58,12 @@ context('The documents page', () => {
     it('should contain new document, sheet, slide, text, folder buttons', () => {
       cy.contains('[data-cy=appbar]', 'Document library').should('exist')
       cy.contains(resources.ADD_NEW).click()
-      newMenuItems.forEach(item => cy.contains('li[role=menuitem]', `${resources.ADD_NEW} ${item.name}`))
+      newMenuItems.forEach((item) => cy.contains('li[role=menuitem]', `${resources.ADD_NEW} ${item.name}`))
     })
 
     it(`creating a new item should show succes notification and can be found in the grid`, () => {
       cy.contains('Document library').should('exist')
-      newMenuItems.forEach(item => {
+      newMenuItems.forEach((item) => {
         openNew(item.name)
         const displayName = Chance().word()
         cy.get('#DisplayName').type(`${displayName}{enter}`)
@@ -81,9 +81,7 @@ context('The documents page', () => {
     // wait for input to be focused
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000)
-    cy.get('.rename')
-      .clear()
-      .type(`${newName}{enter}`)
+    cy.get('.rename').clear().type(`${newName}{enter}`)
     cy.contains(newName)
     cy.contains(resources.EDIT_PROPERTIES_SUCCESS_MESSAGE.replace('{contentName}', fileName))
   })
@@ -134,16 +132,13 @@ context('The documents page', () => {
       displayName: { value: Chance().word(), selector: '#DisplayName' },
       watermark: { value: Chance().word(), selector: '#Watermark' },
     }
-    Object.keys(properties).forEach(key =>
-      cy
-        .get(properties[key].selector)
-        .clear()
-        .type(properties[key].value.toString()),
+    Object.keys(properties).forEach((key) =>
+      cy.get(properties[key].selector).clear().type(properties[key].value.toString()),
     )
     cy.contains('div[data-cy="editProperties"] button', 'Submit').click()
     cy.contains(resources.EDIT_PROPERTIES_SUCCESS_MESSAGE.replace('{contentName}', fileName)).should('exist')
     openContextMenuItem(`${properties.displayName.value}.png`, contextMenuItems.editProperties)
-    Object.keys(properties).forEach(key => {
+    Object.keys(properties).forEach((key) => {
       cy.get(properties[key].selector).should(key === 'keywords' ? 'have.text' : 'have.value', properties[key].value)
     })
   })
@@ -154,9 +149,7 @@ context('The documents page', () => {
     cy.contains(resources.CHECKOUT_SUCCESS_MESSAGE.replace('{contentName}', fileName)).should('exist')
     cy.get('div[title="Checked out by: Me"]').should('exist')
     openContextMenuItem(fileName, contextMenuItems.editProperties)
-    cy.get('#Watermark')
-      .clear()
-      .type('sometext')
+    cy.get('#Watermark').clear().type('sometext')
     cy.contains('div[data-cy="editProperties"] button', 'Submit').click()
     openContextMenuItem(fileName, contextMenuItems.undoChanges)
     cy.contains(resources.UNDOCHECKOUT_SUCCESS_MESSAGE.replace('{contentName}', fileName)).should('exist')

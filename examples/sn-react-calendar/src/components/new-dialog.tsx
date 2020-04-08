@@ -5,7 +5,7 @@ import NewDialogBody from './new-dialog-body'
 export const NewDialog: React.FunctionComponent<{
   dialogProps: DialogProps
   parentpath: string
-}> = props => {
+}> = (props) => {
   return (
     <Dialog open={props.dialogProps.open} fullScreen aria-labelledby="event-dialog">
       <NewDialogBody parentpath={props.parentpath} dialogProps={props.dialogProps} />

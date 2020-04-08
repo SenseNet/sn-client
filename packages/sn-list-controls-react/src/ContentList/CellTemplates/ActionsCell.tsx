@@ -66,7 +66,7 @@ export class ActionsCell<T extends GenericContent> extends React.Component<Actio
               }
             : styles.actionMenuButton
         }>
-        <IconButton aria-label="Menu" aria-owns="actionmenu" onClick={event => this.handleActionMenuClick(event)}>
+        <IconButton aria-label="Menu" aria-owns="actionmenu" onClick={(event) => this.handleActionMenuClick(event)}>
           <Icon type={iconType.materialui} iconName="more_vert" />
         </IconButton>
       </TableCell>

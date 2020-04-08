@@ -99,8 +99,9 @@ export function ExecuteActionDialog({ actionValue, uri }: ExecuteActionDialogPro
     } catch (e) {
       setError(e.message)
       logger.error({
-        message: `There was an error executing custom action '${actionValue.action.DisplayName ||
-          actionValue.action.Name}'`,
+        message: `There was an error executing custom action '${
+          actionValue.action.DisplayName || actionValue.action.Name
+        }'`,
         data: {
           isDismissed: true,
           relatedRepository: repo.configuration.repositoryUrl,
@@ -159,7 +160,7 @@ export function ExecuteActionDialog({ actionValue, uri }: ExecuteActionDialogPro
                 width="100%"
                 language="json"
                 value={postBody}
-                onChange={v => setPostBody(v)}
+                onChange={(v) => setPostBody(v)}
                 options={{
                   automaticLayout: true,
                   lineNumbers: 'off',

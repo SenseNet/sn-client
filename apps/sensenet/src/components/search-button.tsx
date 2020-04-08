@@ -34,7 +34,7 @@ export interface SearchButtonProps {
   isOpened?: boolean
 }
 
-export const SearchButton: React.FunctionComponent<SearchButtonProps> = props => {
+export const SearchButton: React.FunctionComponent<SearchButtonProps> = (props) => {
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const theme = useTheme()

@@ -199,7 +199,7 @@ class DashboardDrawer extends Component<
     const { classes, activeItem, chooseMenuItem, chooseSubmenuItem, userActions } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
-        {matches => {
+        {(matches) => {
           return (
             <Drawer
               variant={matches ? 'permanent' : 'temporary'}
@@ -254,7 +254,7 @@ class DashboardDrawer extends Component<
                             ? { root: classes.root, selected: classes.selected }
                             : { root: classes.rootMobile, selected: classes.selectedMobile }
                         }
-                        onClick={event => this.handleMenuItemClick(event, action)}>
+                        onClick={(event) => this.handleMenuItemClick(event, action)}>
                         <ListItemIcon>
                           <Icon
                             type={iconType.materialui}

@@ -144,7 +144,7 @@ class DashboardComponent extends React.Component<
 
     return (
       <MediaQuery minDeviceWidth={700}>
-        {matches => {
+        {(matches) => {
           return (
             <div>
               <div style={matches ? { ...styles.root } : { ...styles.rootMobile }}>

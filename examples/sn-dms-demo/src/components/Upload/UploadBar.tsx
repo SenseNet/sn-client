@@ -73,7 +73,7 @@ export class UploadBar extends React.Component<UploadBarProps, UploadBarState> {
   public render() {
     const innerContent = (
       <MediaQuery minWidth={700}>
-        {matches => (
+        {(matches) => (
           <Paper style={{ maxWidth: '100%', width: matches ? undefined : '100%' }}>
             <List
               dense={matches}
@@ -125,9 +125,14 @@ export class UploadBar extends React.Component<UploadBarProps, UploadBarState> {
               style={{ maxHeight: 400, minWidth: 300, maxWidth: 600, overflowY: 'auto', paddingBottom: 0 }}>
               {this.props.items &&
                 this.props.items
-                  .filter(item => item.visible)
-                  .map(item => (
-                    <UploadBarItem remove={i => this.onRemoveItem(i)} key={item.guid} item={item} isMobile={!matches} />
+                  .filter((item) => item.visible)
+                  .map((item) => (
+                    <UploadBarItem
+                      remove={(i) => this.onRemoveItem(i)}
+                      key={item.guid}
+                      item={item}
+                      isMobile={!matches}
+                    />
                   ))}
             </List>
           </Paper>
@@ -137,7 +142,7 @@ export class UploadBar extends React.Component<UploadBarProps, UploadBarState> {
 
     return (
       <MediaQuery minWidth={700}>
-        {matches =>
+        {(matches) =>
           matches ? (
             <Snackbar
               open={this.props.isOpened}

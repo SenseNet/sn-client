@@ -130,10 +130,7 @@ describe('Tags input field control', () => {
       )
       await sleepAsync(0)
       const updatedWrapper = wrapper.update()
-      updatedWrapper
-        .find(Chip)
-        .find(SvgIcon)
-        .simulate('click')
+      updatedWrapper.find(Chip).find(SvgIcon).simulate('click')
       expect(updatedWrapper.find(Select).prop('value')).toHaveLength(0)
       expect(fieldOnChange).toBeCalled()
     })
@@ -161,12 +158,7 @@ describe('Tags input field control', () => {
         )
       })
 
-      wrapper
-        .update()
-        .find(Chip)
-        .find(SvgIcon)
-        .at(1)
-        .simulate('click')
+      wrapper.update().find(Chip).find(SvgIcon).at(1).simulate('click')
       expect(wrapper.find(Select).prop('value')).toHaveLength(1)
       expect(fieldOnChange).toBeCalledWith(defaultSettings.Name, [fileContent.Id])
     })

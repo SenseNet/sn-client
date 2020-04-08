@@ -19,12 +19,7 @@ describe('Rich text editor field control', () => {
       const value = '<h1>Hello World</h1>'
       const wrapper = shallow(<RichTextEditor fieldValue={value} actionName="browse" settings={defaultSettings} />)
       expect(wrapper.find(Typography).text()).toBe(defaultSettings.DisplayName)
-      expect(
-        wrapper
-          .find('div')
-          .last()
-          .html(),
-      ).toBe(`<div>${value}</div>`)
+      expect(wrapper.find('div').last().html()).toBe(`<div>${value}</div>`)
       expect(wrapper).toMatchSnapshot()
     })
     it('should render null when no fieldValue is provided', () => {

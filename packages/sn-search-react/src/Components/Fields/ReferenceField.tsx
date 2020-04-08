@@ -76,7 +76,7 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
     this.setState({ items })
   }
 
-  public getSuggestionValue: GetSuggestionValue<T> = c => {
+  public getSuggestionValue: GetSuggestionValue<T> = (c) => {
     return c.DisplayName || c.Name
   }
   public onSuggestionSelected: OnSuggestionSelected<T> = (_ev, data) => {
@@ -87,7 +87,7 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
   public async componentDidMount() {
     if (this.props.defaultValueIdOrPath) {
       const items = await this.props.fetchItems(
-        new Query(q =>
+        new Query((q) =>
           isNaN(this.props.defaultValueIdOrPath as number)
             ? q.equals('Path', this.props.defaultValueIdOrPath)
             : q.equals('Id', this.props.defaultValueIdOrPath),
@@ -102,24 +102,19 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
         this.props.onQueryChange &&
           this.props.onQueryChange(
             this.props.fieldKey || this.props.fieldName.toString(),
-            new Query(q => q.equals(this.props.fieldName, item.Id)),
+            new Query((q) => q.equals(this.props.fieldName, item.Id)),
           )
       }
     }
   }
 
   public getQueryFromTerm<TQueryReturns>(term: string) {
-    const query = new Query<TQueryReturns>(q =>
-      q.query(q2 =>
-        q2
-          .equals('Name', term)
-          .or.equals('DisplayName', term)
-          .or.equals('Path', term),
-      ),
+    const query = new Query<TQueryReturns>((q) =>
+      q.query((q2) => q2.equals('Name', term).or.equals('DisplayName', term).or.equals('Path', term)),
     )
 
     if (this.props.fieldSetting.AllowedTypes) {
-      new QueryOperators(query).and.query(q2 => {
+      new QueryOperators(query).and.query((q2) => {
         ;(this.props.fieldSetting.AllowedTypes as string[]).forEach((allowedType, index, array) => {
           new QueryExpression(q2.queryRef).term(`TypeIs:${allowedType}`)
           if (index < array.length - 1) {
@@ -131,7 +126,7 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
     }
 
     if (this.props.fieldSetting.SelectionRoots && this.props.fieldSetting.SelectionRoots.length) {
-      new QueryOperators(query).and.query(q2 => {
+      new QueryOperators(query).and.query((q2) => {
         ;(this.props.fieldSetting.SelectionRoots as string[]).forEach((root, index, array) => {
           new QueryExpression(q2.queryRef).inTree(root)
           if (index < array.length - 1) {
@@ -153,7 +148,7 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
     this.props.onQueryChange &&
       this.props.onQueryChange(
         this.props.fieldKey || this.props.fieldName.toString(),
-        new Query(q => q.equals(this.props.fieldName, item.Id)),
+        new Query((q) => q.equals(this.props.fieldName, item.Id)),
       )
   }
 
@@ -166,7 +161,7 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
     const helperText = this.props.helperText ?? this.props.fieldSetting?.Description ?? ''
     const inputProps: InputProps<T> = {
       value: this.state.inputValue,
-      onChange: ev => this.onChange((ev.target as HTMLInputElement).value),
+      onChange: (ev) => this.onChange((ev.target as HTMLInputElement).value),
       id: 'CommandBoxInput',
     }
 
@@ -181,7 +176,7 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
           },
         }}
         suggestions={this.state.items}
-        onSuggestionsFetchRequested={async req => {
+        onSuggestionsFetchRequested={async (req) => {
           const query = this.getQueryFromTerm<T>(`*${req.value}*`)
           const items = await this.props.fetchItems(query)
           this.setState({ items })
@@ -192,7 +187,7 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
         getSuggestionValue={this.getSuggestionValue}
         renderSuggestion={this.state.renderSuggestion}
         inputProps={inputProps}
-        renderInputComponent={props => (
+        renderInputComponent={(props) => (
           <ReferenceFieldInput
             displayName={displayName}
             description={description}

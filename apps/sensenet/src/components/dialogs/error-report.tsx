@@ -17,7 +17,7 @@ import { useDialog } from '.'
 
 export type ErrorReportProps = { error: Error }
 
-export const ErrorReport: React.FunctionComponent<ErrorReportProps> = props => {
+export const ErrorReport: React.FunctionComponent<ErrorReportProps> = (props) => {
   const localization = useLocalization().errorReport
   const personalSettings = usePersonalSettings()
   const { closeAllDialogs } = useDialog()
@@ -64,14 +64,14 @@ export const ErrorReport: React.FunctionComponent<ErrorReportProps> = props => {
               multiline={true}
               label={localization.descriptionTitle}
               helperText={localization.descriptionHelperText}
-              onChange={ev => setDescription(ev.target.value)}
+              onChange={(ev) => setDescription(ev.target.value)}
             />
             <DialogActions style={{ display: 'flex', justifyContent: 'space-between' }}>
               <FormControlLabel
                 control={
                   <Checkbox
                     defaultChecked={personalSettings.sendLogWithCrashReports}
-                    onChange={ev => setSendLog(ev.target.checked)}
+                    onChange={(ev) => setSendLog(ev.target.checked)}
                   />
                 }
                 label={localization.allowLogSending}

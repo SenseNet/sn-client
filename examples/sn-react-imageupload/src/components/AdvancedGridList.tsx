@@ -15,7 +15,7 @@ interface AdvancedGridprops {
   notificationControll: (IsOpen: boolean) => void
 }
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   root: {
     width: '75%',
     justifyContent: 'space-around',
@@ -50,7 +50,7 @@ export function pickTile(anumber: number) {
 /**
  * Display Images from repository
  */
-export const AdvancedGridList: React.FunctionComponent<AdvancedGridprops> = props => {
+export const AdvancedGridList: React.FunctionComponent<AdvancedGridprops> = (props) => {
   const [isDragOver, setDragOver] = useState(false)
   const classes = useStyles()
   const repo = useRepository()

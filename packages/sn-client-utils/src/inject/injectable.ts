@@ -26,7 +26,7 @@ export const Injectable = (options?: Partial<InjectableOptions>) => {
     const metaValue = {
       dependencies:
         (meta &&
-          (meta as any[]).map(param => {
+          (meta as any[]).map((param) => {
             return param
           })) ||
         [],

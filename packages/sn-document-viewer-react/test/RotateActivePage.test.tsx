@@ -20,10 +20,7 @@ describe('RotateActivePage component', () => {
       </PreviewImageDataContext.Provider>,
     )
 
-    wrapper
-      .find(IconButton)
-      .first()
-      .simulate('click')
+    wrapper.find(IconButton).first().simulate('click')
     expect(rotateImages).toBeCalledWith([examplePreviewImageData.Index], -ROTATION_AMOUNT)
     expect(rotateImages).toBeCalled()
   })
@@ -36,10 +33,7 @@ describe('RotateActivePage component', () => {
       </PreviewImageDataContext.Provider>,
     )
 
-    wrapper
-      .find(IconButton)
-      .last()
-      .simulate('click')
+    wrapper.find(IconButton).last().simulate('click')
     expect(rotateImages).toBeCalledWith([examplePreviewImageData.Index], ROTATION_AMOUNT)
     expect(rotateImages).toBeCalled()
   })

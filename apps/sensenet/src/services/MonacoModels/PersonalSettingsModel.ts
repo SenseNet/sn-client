@@ -31,7 +31,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                   enum: [
                     'Actions',
                     'Type',
-                    ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
+                    ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map((f) => f.Name),
                   ],
                 },
               ],
@@ -403,8 +403,8 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
               items: {
                 enum: [
                   ...Object.entries(LogLevel)
-                    .filter(entry => !isNaN(entry[1] as LogLevel))
-                    .map(entry => entry[0]),
+                    .filter((entry) => !isNaN(entry[1] as LogLevel))
+                    .map((entry) => entry[0]),
                 ],
               },
             },

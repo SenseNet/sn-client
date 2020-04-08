@@ -87,7 +87,7 @@ class Shared extends React.Component<
             onItemDoubleClick={(_ev, content) => {
               this.handleOpenItem(content)
             }}
-            fieldComponent={props => {
+            fieldComponent={(props) => {
               switch (props.field) {
                 case 'DisplayName':
                   if (this.props.editedItemId === props.content.Id) {
@@ -96,7 +96,7 @@ class Shared extends React.Component<
                         icon={props.content.Icon || ''}
                         icons={icons}
                         displayName={props.content.DisplayName || props.content.Name}
-                        onFinish={newName => {
+                        onFinish={(newName) => {
                           this.props.updateContent<GenericContent>(props.content, { DisplayName: newName })
                         }}
                       />

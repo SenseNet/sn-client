@@ -7,7 +7,7 @@ interface DocumentViewerLoadingProps {
   image: string
 }
 
-export const DocumentViewerLoading: React.FC<DocumentViewerLoadingProps> = props => {
+export const DocumentViewerLoading: React.FC<DocumentViewerLoadingProps> = (props) => {
   const localization = useLocalization()
 
   return (

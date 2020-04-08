@@ -22,7 +22,7 @@ describe('CurrentChildren', () => {
         ({
           ok: true,
           json: () =>
-            new Promise(_resolve => {
+            new Promise((_resolve) => {
               resolve = _resolve
             }),
         } as any),
@@ -32,7 +32,7 @@ describe('CurrentChildren', () => {
       <RepositoryContext.Provider value={repo}>
         <CurrentChildrenProvider>
           <CurrentChildrenContext.Consumer>
-            {value => (value.length ? <div>Id: {value[0].Id}</div> : null)}
+            {(value) => (value.length ? <div>Id: {value[0].Id}</div> : null)}
           </CurrentChildrenContext.Consumer>
         </CurrentChildrenProvider>
       </RepositoryContext.Provider>,
@@ -48,12 +48,7 @@ describe('CurrentChildren', () => {
       })
     })
 
-    expect(
-      wrapper
-        .update()
-        .find('div')
-        .text(),
-    ).toBe('Id: 1')
+    expect(wrapper.update().find('div').text()).toBe('Id: 1')
     expect(wrapper).toMatchSnapshot()
   })
 
@@ -83,7 +78,7 @@ describe('CurrentChildren', () => {
           <RepositoryContext.Provider value={repo}>
             <CurrentChildrenProvider>
               <CurrentChildrenContext.Consumer>
-                {value => (value.length ? <div>Id: {value[0].Id}</div> : null)}
+                {(value) => (value.length ? <div>Id: {value[0].Id}</div> : null)}
               </CurrentChildrenContext.Consumer>
             </CurrentChildrenProvider>
           </RepositoryContext.Provider>
@@ -106,7 +101,7 @@ describe('CurrentChildren', () => {
         <RepositoryContext.Provider value={mockRepository as any}>
           <CurrentChildrenProvider>
             <CurrentChildrenContext.Consumer>
-              {value =>
+              {(value) =>
                 value.length ? (
                   <div>
                     Id: {value[0].Id}, Name: {value[0].Name}
@@ -119,23 +114,13 @@ describe('CurrentChildren', () => {
       )
     })
 
-    expect(
-      wrapper
-        .update()
-        .find('div')
-        .text(),
-    ).toBe('Id: 1, Name: name')
+    expect(wrapper.update().find('div').text()).toBe('Id: 1, Name: name')
 
     await act(async () => {
       mockRepository.patch({ Id: 1, Name: 'newName' })
     })
 
-    expect(
-      wrapper
-        .update()
-        .find('div')
-        .text(),
-    ).toBe('Id: 1, Name: newName')
+    expect(wrapper.update().find('div').text()).toBe('Id: 1, Name: newName')
   })
 
   it('reloads when new content is created', async () => {
@@ -146,9 +131,9 @@ describe('CurrentChildren', () => {
         <RepositoryContext.Provider value={mockRepository as any}>
           <CurrentChildrenProvider>
             <CurrentChildrenContext.Consumer>
-              {value =>
+              {(value) =>
                 value.length
-                  ? value.map(c => (
+                  ? value.map((c) => (
                       <div key={c.Id}>
                         Id: {c.Id}, Name: {c.Name}
                       </div>
@@ -178,9 +163,9 @@ describe('CurrentChildren', () => {
         <RepositoryContext.Provider value={mockRepository as any}>
           <CurrentChildrenProvider>
             <CurrentChildrenContext.Consumer>
-              {value =>
+              {(value) =>
                 value.length
-                  ? value.map(c => (
+                  ? value.map((c) => (
                       <div key={c.Id}>
                         Id: {c.Id}, Name: {c.Name}
                       </div>
@@ -210,9 +195,9 @@ describe('CurrentChildren', () => {
         <RepositoryContext.Provider value={mockRepository as any}>
           <CurrentChildrenProvider>
             <CurrentChildrenContext.Consumer>
-              {value =>
+              {(value) =>
                 value.length
-                  ? value.map(c => (
+                  ? value.map((c) => (
                       <div key={c.Id}>
                         Id: {c.Id}, Name: {c.Name}
                       </div>

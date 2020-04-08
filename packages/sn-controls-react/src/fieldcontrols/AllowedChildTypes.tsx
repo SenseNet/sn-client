@@ -208,7 +208,7 @@ export class AllowedChildTypes extends Component<ReactClientFieldSetting, Allowe
 
   public handleRemove = (item: GenericContent) => {
     const { items } = this.state
-    const index = items.findIndex(i => item.Name === i.Name)
+    const index = items.findIndex((i) => item.Name === i.Name)
     if (items.length > 1) {
       this.setState({
         items: [...items.slice(0, index), ...items.slice(index + 1)],
@@ -224,7 +224,7 @@ export class AllowedChildTypes extends Component<ReactClientFieldSetting, Allowe
   public handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
     const term = e.target.value
     this.setState({
-      filteredList: this.state.allCTDs.filter(ctd => {
+      filteredList: this.state.allCTDs.filter((ctd) => {
         return ctd.DisplayName && ctd.DisplayName.toLowerCase().includes(term.toLowerCase())
       }),
       inputValue: term,

@@ -1,5 +1,5 @@
-import { AbstractLogger, colors, LeveledLogEntry, LogLevel } from '.'
 import { Injectable } from '..'
+import { AbstractLogger, colors, LeveledLogEntry, LogLevel } from '.'
 
 /**
  * Resets the console color

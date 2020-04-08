@@ -10,11 +10,9 @@ interface Options {
 }
 
 export function fieldControlStory({ component, markdown, storyName }: Options) {
-  const stories = storiesOf(storyName, module)
-    .addDecorator(withKnobs)
-    .addDecorator(withA11y)
+  const stories = storiesOf(storyName, module).addDecorator(withKnobs).addDecorator(withA11y)
   const actionNames: ActionName[] = ['new', 'edit', 'browse']
-  actionNames.forEach(actionName =>
+  actionNames.forEach((actionName) =>
     stories.add(`${actionName} mode`, () => component(actionName), {
       notes: { markdown },
     }),

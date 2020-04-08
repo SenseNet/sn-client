@@ -290,7 +290,7 @@ export const IconComponent: React.FunctionComponent<{
   item: any
   defaultIcon?: JSX.Element
   style?: React.CSSProperties
-}> = props => {
+}> = (props) => {
   const injector = useInjector()
   const repo = useRepository()
 
@@ -302,7 +302,7 @@ export const IconComponent: React.FunctionComponent<{
     ...defaultNotificationResolvers,
   ]
   const defaultIcon = props.defaultIcon || <WebAssetOutlined style={props.style} /> || null
-  const assignedResolver = resolvers.find(r => (r.get(props.item, options) ? true : false))
+  const assignedResolver = resolvers.find((r) => (r.get(props.item, options) ? true : false))
   if (assignedResolver) {
     return assignedResolver.get(props.item, options) as JSX.Element
   }

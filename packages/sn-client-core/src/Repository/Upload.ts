@@ -239,7 +239,7 @@ export class Upload {
   ) {
     await new Promise((resolve, reject) => {
       fileEntry.file(
-        async f => {
+        async (f) => {
           await this.file({
             file: (f as any) as File,
             ...options,
@@ -247,7 +247,7 @@ export class Upload {
           })
           resolve()
         },
-        err => reject(err),
+        (err) => reject(err),
       )
     })
   }
@@ -269,11 +269,11 @@ export class Upload {
       const dirReader = directory.createReader()
       await new Promise((resolve, reject) => {
         dirReader.readEntries(
-          async items => {
+          async (items) => {
             await this.webkitItemListHandler<T>(items as any, folder.d.Path, true, options)
             resolve()
           },
-          err => reject(err),
+          (err) => reject(err),
         )
       })
     }
@@ -328,11 +328,11 @@ export class Upload {
   public async fromFileList<T extends Content = Content>(options: UploadFromFileListOptions<T>) {
     if (options.createFolders) {
       const directories = new Set(
-        Array.from(options.fileList).map(f =>
+        Array.from(options.fileList).map((f) =>
           PathHelper.getParentPath((f as any).webkitRelativePath || (f as any).fullPath || ''),
         ),
       )
-      const directoriesBySegments = Array.from(directories).map(d => PathHelper.getSegments(d))
+      const directoriesBySegments = Array.from(directories).map((d) => PathHelper.getSegments(d))
       const createdDirectories = new Set<string>()
       for (const directory of directoriesBySegments) {
         let currentPath = options.parentPath
@@ -352,7 +352,7 @@ export class Upload {
       }
 
       await Promise.all(
-        Array.from(options.fileList).map(async file => {
+        Array.from(options.fileList).map(async (file) => {
           await this.file({
             ...(options as UploadOptions<T>),
             parentPath: PathHelper.joinPaths(

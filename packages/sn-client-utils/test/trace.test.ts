@@ -30,13 +30,13 @@ class MockClass {
 
 export const traceTests = describe('Trace tests', () => {
   describe('Static method traces', () => {
-    it('Static Methods call should be traced with args', done => {
+    it('Static Methods call should be traced with args', (done) => {
       const args = [1, 2, 3]
       const observer = Trace.method({
         object: MockClass,
         method: MockClass.addStatic,
         methodName: 'addStatic',
-        onCalled: traceData => {
+        onCalled: (traceData) => {
           expect(args).toEqual(traceData.methodArguments)
           observer.dispose()
           done()
@@ -45,13 +45,13 @@ export const traceTests = describe('Trace tests', () => {
       MockClass.addStatic(...args)
     })
 
-    it('Static Methods call should be traced with args and return value', done => {
+    it('Static Methods call should be traced with args and return value', (done) => {
       const args = [1, 2, 3]
       const observer = Trace.method({
         object: MockClass,
         method: MockClass.addStatic,
         methodName: 'addStatic',
-        onFinished: traceData => {
+        onFinished: (traceData) => {
           expect(args).toEqual(traceData.methodArguments)
           expect(traceData.returned).toBe(1 + 2 + 3)
           observer.dispose()
@@ -61,7 +61,7 @@ export const traceTests = describe('Trace tests', () => {
       MockClass.addStatic(...args)
     })
 
-    it("shouldn't be triggered after observer is disposed", done => {
+    it("shouldn't be triggered after observer is disposed", (done) => {
       const args = [1, 2, 3]
       const observer = Trace.method({
         object: MockClass,
@@ -87,14 +87,14 @@ export const traceTests = describe('Trace tests', () => {
   })
 
   describe('Instance method traces', () => {
-    it('should be traced with arguments', done => {
+    it('should be traced with arguments', (done) => {
       const instance = new MockClass()
       const args = [1, 2, 3]
       const observer = Trace.method({
         object: instance,
         method: instance.addInstance,
         methodName: 'addInstance',
-        onFinished: traceData => {
+        onFinished: (traceData) => {
           expect(args).toEqual(traceData.methodArguments)
           expect(traceData.returned).toBe(1 + 2 + 3)
           observer.dispose()
@@ -104,7 +104,7 @@ export const traceTests = describe('Trace tests', () => {
       instance.addInstance(...args)
     })
 
-    it('should be traced asynchronously', done => {
+    it('should be traced asynchronously', (done) => {
       const instance = new MockClass()
       const args = [1, 2, 3]
       const observer = Trace.method({
@@ -112,7 +112,7 @@ export const traceTests = describe('Trace tests', () => {
         method: instance.addInstanceAsync,
         methodName: 'addInstanceAsync',
         isAsync: true,
-        onFinished: traceData => {
+        onFinished: (traceData) => {
           expect(args).toEqual(traceData.methodArguments)
           const { returned } = traceData
           expect(returned).toBe(1 + 2 + 3)
@@ -123,13 +123,13 @@ export const traceTests = describe('Trace tests', () => {
       instance.addInstanceAsync(...args)
     })
 
-    it("should have a valid 'this' scope", done => {
+    it("should have a valid 'this' scope", (done) => {
       const instance = new MockClass('testValue')
       const observer = Trace.method({
         object: instance,
         method: instance.testScope,
         methodName: 'testScope',
-        onFinished: traceData => {
+        onFinished: (traceData) => {
           if (traceData.returned) {
             expect(traceData.returned).toBe('testValue')
             observer.dispose()
@@ -140,13 +140,13 @@ export const traceTests = describe('Trace tests', () => {
       expect(instance.testScope()).toBe('testValue')
     })
 
-    it('should handle throwing errors', done => {
+    it('should handle throwing errors', (done) => {
       const instance = new MockClass('testValue')
       const observer = Trace.method({
         object: instance,
         method: instance.testError,
         methodName: 'testError',
-        onError: traceData => {
+        onError: (traceData) => {
           if (traceData.error) {
             expect(traceData.error.message).toBe('message')
             observer.dispose()
@@ -159,14 +159,14 @@ export const traceTests = describe('Trace tests', () => {
       }).toThrow()
     })
 
-    it('should handle throwing errors with asyncs', done => {
+    it('should handle throwing errors with asyncs', (done) => {
       const instance = new MockClass('testValue')
       const observer = Trace.method({
         object: instance,
         method: instance.testErrorAsync,
         methodName: 'testErrorAsync',
         isAsync: true,
-        onError: traceData => {
+        onError: (traceData) => {
           if (traceData.error) {
             expect(traceData.error.message).toBe('message')
             observer.dispose()

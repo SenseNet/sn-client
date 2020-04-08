@@ -13,7 +13,7 @@ import { useVersionInfo } from '@sensenet/hooks-react'
 import { Widget } from '../../services/PersonalSettings'
 import { useLocalization, useStringReplace, useTheme } from '../../hooks'
 
-export const UpdatesWidget: React.FunctionComponent<Widget<undefined>> = props => {
+export const UpdatesWidget: React.FunctionComponent<Widget<undefined>> = (props) => {
   const replacedTitle = useStringReplace(props.title)
   const { hasUpdates, versionInfo } = useVersionInfo()
   const localization = useLocalization().dashboard.updates
@@ -32,7 +32,7 @@ export const UpdatesWidget: React.FunctionComponent<Widget<undefined>> = props =
         {hasUpdates ? (
           <List>
             {versionInfo &&
-              versionInfo.Components.filter(v => v.IsUpdateAvailable).map(info => (
+              versionInfo.Components.filter((v) => v.IsUpdateAvailable).map((info) => (
                 <ListItem key={info.ComponentId}>
                   <ListItemAvatar style={{ minWidth: 24 }}>
                     <div style={{ width: 8, height: 8, backgroundColor: theme.palette.text.secondary }} />

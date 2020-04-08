@@ -11,16 +11,12 @@ describe('handleNext', () => {
   }
   it('Handle Next Click', () => {
     const l = mount(<DotsMobileStepper {...mock} />)
-    l.find(Button)
-      .last()
-      .simulate('click')
+    l.find(Button).last().simulate('click')
     expect(mock.steppingFunction).toBeCalledWith(2, false)
   })
   it('Handle Back Click', () => {
     const l = mount(<DotsMobileStepper {...mock} />)
-    l.find(Button)
-      .first()
-      .simulate('click')
+    l.find(Button).first().simulate('click')
     expect(mock.steppingFunction).toBeCalledWith(0, false)
   })
 })

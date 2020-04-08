@@ -66,7 +66,7 @@ export class NavigationCommandProvider implements CommandProvider {
     return (
       options.term != null &&
       this.getRoutes(options).find(
-        r =>
+        (r) =>
           r.primaryText.toLocaleLowerCase().includes(termLowerCase) ||
           r.secondaryText.includes(termLowerCase) ||
           (r.keywords && r.keywords.includes(termLowerCase) ? true : false),
@@ -77,12 +77,12 @@ export class NavigationCommandProvider implements CommandProvider {
   public async getItems(options: SearchOptions): Promise<CommandPaletteItem[]> {
     return this.getRoutes(options)
       .filter(
-        r =>
+        (r) =>
           r.primaryText.includes(options.term) ||
           r.secondaryText.includes(options.term) ||
           (r.keywords && r.keywords.includes(options.term)),
       )
-      .map(r => ({
+      .map((r) => ({
         ...r,
         url: r.url.replace('/:repo/', `/${btoa(options.repository.configuration.repositoryUrl)}/`),
       }))

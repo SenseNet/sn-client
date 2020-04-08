@@ -38,13 +38,13 @@ const PersonalSettingsEditor = lazy(
   async () => await import(/* webpackChunkName: "PersonalSettingsEditor" */ './edit/PersonalSettingsEditor'),
 )
 
-const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
+const MainRouter: React.StatelessComponent<RouteComponentProps> = (props) => {
   const sessionContext = useSession()
   const personalSettings = usePersonalSettings()
   const previousLocation = useRef<string>()
 
   useEffect(() => {
-    const listen = props.history.listen(location => {
+    const listen = props.history.listen((location) => {
       /**
        *  Do not add preview locations to previousLocation
        *  this way the user can go back to the location where she
@@ -90,7 +90,7 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                   />
                   <Route
                     path="/:repo/browse/:browseData?"
-                    render={routeProps => {
+                    render={(routeProps) => {
                       return <ExploreComponent {...routeProps} />
                     }}
                   />
@@ -168,10 +168,10 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                   </Route>
                   <Route
                     path="/:repo/dashboard/:dashboardName?"
-                    render={routeParams => {
+                    render={(routeParams) => {
                       return (
                         <RepositoryContext.Consumer>
-                          {repo => <DashboardComponent repository={repo} {...routeParams} />}
+                          {(repo) => <DashboardComponent repository={repo} {...routeParams} />}
                         </RepositoryContext.Consumer>
                       )
                     }}
@@ -179,10 +179,10 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                   <Route
                     path="/:repo/"
                     exact
-                    render={routeParams => {
+                    render={(routeParams) => {
                       return (
                         <RepositoryContext.Consumer>
-                          {repo => <DashboardComponent repository={repo} {...routeParams} />}
+                          {(repo) => <DashboardComponent repository={repo} {...routeParams} />}
                         </RepositoryContext.Consumer>
                       )
                     }}
@@ -190,7 +190,7 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                   <Route
                     path="/"
                     exact
-                    render={routeParams => {
+                    render={(routeParams) => {
                       return <DashboardComponent {...routeParams} />
                     }}
                   />

@@ -22,7 +22,7 @@ import { ContentList } from '../content-list/content-list'
 import { useGlobalStyles } from '../../globalStyles'
 import { encodeQueryData } from '.'
 
-const Search: React.FunctionComponent<RouteComponentProps> = props => {
+const Search: React.FunctionComponent<RouteComponentProps> = (props) => {
   const repo = useRepository()
   const localization = useLocalization().search
   const injector = useInjector()
@@ -44,7 +44,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
       eventHub.onContentCreated.subscribe(() => requestReload()),
       eventHub.onContentDeleted.subscribe(() => requestReload()),
     ]
-    return () => subscriptions.forEach(s => s.dispose())
+    return () => subscriptions.forEach((s) => s.dispose())
   }, [
     eventHub.onContentCopied,
     eventHub.onContentCreated,
@@ -68,7 +68,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
         } as any,
         body: undefined,
       })
-      .then(result => setQueries(result.d.results))
+      .then((result) => setQueries(result.d.results))
   }, [reloadToken, loadSettingsContext.loadChildrenSettings, repo, onlyPublic])
   return (
     <div style={{ padding: '0 15px', overflow: 'hidden', height: '100%' }}>
@@ -80,7 +80,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
           label={localization.onlyPublic}
           control={
             <Checkbox
-              onChange={ev => {
+              onChange={(ev) => {
                 setOnlyPublic(ev.target.checked)
                 requestReload()
               }}
@@ -103,7 +103,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
                   onParentChange={() => {
                     // ignore, only queries will be listed
                   }}
-                  onActivateItem={p => {
+                  onActivateItem={(p) => {
                     props.history.push(
                       `/${btoa(repo.configuration.repositoryUrl)}/search/${encodeQueryData({
                         term: (p as Query).Query || '',

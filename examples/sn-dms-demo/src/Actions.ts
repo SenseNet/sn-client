@@ -142,7 +142,7 @@ export const trackUploadProgress = async <T extends GenericContent>(
   dispatch: Dispatch,
   api: Repository,
 ) => {
-  let currentUpload = getState().dms.uploads.uploads.find(u => u.guid === currentValue.guid)
+  let currentUpload = getState().dms.uploads.uploads.find((u) => u.guid === currentValue.guid)
   if (currentUpload) {
     dispatch(updateUploadItem(currentValue))
   } else {
@@ -154,7 +154,7 @@ export const trackUploadProgress = async <T extends GenericContent>(
     )
   }
 
-  currentUpload = getState().dms.uploads.uploads.find(u => u.guid === currentValue.guid)
+  currentUpload = getState().dms.uploads.uploads.find((u) => u.guid === currentValue.guid)
   if (currentUpload && currentValue.createdContent && !currentUpload.content) {
     const content = await api.load<T>({
       idOrPath: currentValue.createdContent.Id,
@@ -174,8 +174,8 @@ export const uploadFileList = <T extends SnFile>(
   type: 'DMS_UPLOAD_FILE_LIST_INJECTABLE_ACTION',
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const api = options.getInjectable(Repository)
-    await usingAsync(new ObservableValue<UploadProgressInfo>(), async progress => {
-      progress.subscribe(async currentValue =>
+    await usingAsync(new ObservableValue<UploadProgressInfo>(), async (progress) => {
+      progress.subscribe(async (currentValue) =>
         trackUploadProgress(currentValue, options.getState, options.dispatch, api),
       )
       try {
@@ -199,8 +199,8 @@ export const uploadDataTransfer = <T extends SnFile>(
   type: 'DMS_UPLOAD_DATA_TRANSFER_INJECTABLE_ACTION',
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const api = options.getInjectable(Repository)
-    await usingAsync(new ObservableValue<UploadProgressInfo>(), async progress => {
-      progress.subscribe(async currentValue =>
+    await usingAsync(new ObservableValue<UploadProgressInfo>(), async (progress) => {
+      progress.subscribe(async (currentValue) =>
         trackUploadProgress(currentValue, options.getState, options.dispatch, api),
       )
       try {
@@ -324,7 +324,7 @@ export const loadBreadcrumbActions = (idOrPath: number | string) => ({
       type: 'LOAD_BREADCRUMB_ACTIONS_SUCCESS',
       result: {
         idOrPath,
-        actions: actions.d.Actions.filter(action => action.Name !== 'Browse' && action.Name !== 'SetPermissions'),
+        actions: actions.d.Actions.filter((action) => action.Name !== 'Browse' && action.Name !== 'SetPermissions'),
       },
     })
   },

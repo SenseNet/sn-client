@@ -54,7 +54,7 @@ class WorkspaceSelector extends React.Component<ReturnType<typeof mapStateToProp
     const { open } = this.state
     return (
       <MediaQuery minDeviceWidth={700}>
-        {matches => {
+        {(matches) => {
           const iconStyle = matches
             ? open
               ? { ...styles.button, ...styles.activeButton }

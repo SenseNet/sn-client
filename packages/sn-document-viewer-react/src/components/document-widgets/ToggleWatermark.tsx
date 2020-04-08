@@ -13,7 +13,7 @@ export const ToggleWatermarkWidget: React.FC = () => {
     <ToggleBase
       title={localization.toggleWatermark}
       isVisible={viewerState.showWatermark}
-      setValue={v => viewerState.updateState({ showWatermark: v })}>
+      setValue={(v) => viewerState.updateState({ showWatermark: v })}>
       <BrandingWatermark />
     </ToggleBase>
   )

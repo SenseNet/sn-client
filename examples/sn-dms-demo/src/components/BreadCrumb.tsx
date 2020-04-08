@@ -112,11 +112,11 @@ class BreadCrumb extends React.Component<
   public render() {
     const content = this.props.currentContent || undefined
     const ancestors = this.props.ancestors.filter(
-      a => this.props.typeFilter.indexOf(a.Type) > -1 || (content && a.Id === content.Id),
+      (a) => this.props.typeFilter.indexOf(a.Type) > -1 || (content && a.Id === content.Id),
     )
     return (
       <MediaQuery minDeviceWidth={700}>
-        {matches => {
+        {(matches) => {
           return (
             <div style={matches ? styles.breadCrumb : styles.breadCrumbMobile}>
               {ancestors.map((ancestor, i) => {
@@ -127,7 +127,7 @@ class BreadCrumb extends React.Component<
                       <Button
                         aria-owns="actionmenu"
                         onClick={
-                          !isLast ? () => this.handleClick(ancestor) : e => this.handleActionMenuClick(e, ancestor)
+                          !isLast ? () => this.handleClick(ancestor) : (e) => this.handleActionMenuClick(e, ancestor)
                         }
                         key={ancestor.Id}
                         style={
@@ -141,7 +141,7 @@ class BreadCrumb extends React.Component<
                         ) : (
                           <Icon
                             style={styles.breadCrumbIconLast}
-                            onClick={e => this.handleActionMenuClick(e, ancestor)}
+                            onClick={(e) => this.handleActionMenuClick(e, ancestor)}
                             type={iconType.materialui}
                             iconName={icons.arrowDropDown}
                           />
@@ -150,7 +150,7 @@ class BreadCrumb extends React.Component<
                       {!isLast ? (
                         <Icon
                           style={styles.breadCrumbIcon}
-                          onClick={e => this.handleActionMenuClick(e, ancestor)}
+                          onClick={(e) => this.handleActionMenuClick(e, ancestor)}
                           type={iconType.materialui}
                           iconName={icons.arrowRight}
                         />

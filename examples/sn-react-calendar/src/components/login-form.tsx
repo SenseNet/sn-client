@@ -18,7 +18,7 @@ export interface LoginFormProps {
  * Login component for Sensenet repositories
  * @param props The Props object
  */
-export const LoginForm: React.FunctionComponent<LoginFormProps> = props => {
+export const LoginForm: React.FunctionComponent<LoginFormProps> = (props) => {
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [url, setUrl] = useState(localStorage.getItem(lastRepositoryKey) || '')
@@ -29,7 +29,7 @@ export const LoginForm: React.FunctionComponent<LoginFormProps> = props => {
         style={{ padding: '1em', flexShrink: 0, width: '450px', maxWidth: '90%', alignSelf: 'center', margin: 'auto' }}>
         <Typography variant="h4">Login</Typography>
         <form
-          onSubmit={ev => {
+          onSubmit={(ev) => {
             ev.preventDefault()
             props.onLogin(userName, password, url)
           }}>
@@ -42,7 +42,7 @@ export const LoginForm: React.FunctionComponent<LoginFormProps> = props => {
             fullWidth={true}
             value={userName}
             autoComplete="on"
-            onChange={ev => {
+            onChange={(ev) => {
               setUserName(ev.target.value)
             }}
           />
@@ -53,7 +53,7 @@ export const LoginForm: React.FunctionComponent<LoginFormProps> = props => {
             fullWidth={true}
             type="password"
             helperText={"The user's matching password to log in"}
-            onChange={ev => {
+            onChange={(ev) => {
               setPassword(ev.target.value)
             }}
           />
@@ -66,7 +66,7 @@ export const LoginForm: React.FunctionComponent<LoginFormProps> = props => {
             type="url"
             value={url}
             autoComplete="on"
-            onChange={ev => {
+            onChange={(ev) => {
               setUrl(ev.target.value)
             }}
           />

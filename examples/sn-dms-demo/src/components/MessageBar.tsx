@@ -80,15 +80,15 @@ class MessageBar extends React.Component<
       e.messageEntry && e.messageEntry.bulkMessage && e.messageEntry.bulkMessage
 
     const grouped = groupBy(
-      newProps.entries.filter(e => e.messageEntry),
+      newProps.entries.filter((e) => e.messageEntry),
       getBulkMessageKey,
     )
     const msgSegments = [...lastState.digestedMessageEntries]
     for (const type in grouped) {
       if (grouped[type]) {
         const groupedEntries = grouped[type]
-        const unreadEntries = groupedEntries.filter(e => e.unread)
-        const verbosity = groupedEntries.find(e => (e.messageEntry as any).verbosity === 'error') ? 'error' : 'info'
+        const unreadEntries = groupedEntries.filter((e) => e.unread)
+        const verbosity = groupedEntries.find((e) => (e.messageEntry as any).verbosity === 'error') ? 'error' : 'info'
 
         let newSegment!: MessageSegmentType
 
@@ -110,7 +110,7 @@ class MessageBar extends React.Component<
           }
         }
 
-        const existing = msgSegments.findIndex(msg => msg.key === type)
+        const existing = msgSegments.findIndex((msg) => msg.key === type)
         if (existing > -1) {
           msgSegments[existing] = newSegment
         } else {
@@ -127,7 +127,7 @@ class MessageBar extends React.Component<
     const { classes } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
-        {matches => (
+        {(matches) => (
           <div
             style={{
               display: 'flex',
@@ -139,7 +139,7 @@ class MessageBar extends React.Component<
               zIndex: 1,
               width: matches ? undefined : '100%',
             }}>
-            {this.state.digestedMessageEntries.map(message => (
+            {this.state.digestedMessageEntries.map((message) => (
               <Snackbar
                 key={message.message}
                 style={{

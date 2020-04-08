@@ -14,7 +14,7 @@ export interface DownloadProps {
 /**
  * Component that allows active page rotation
  */
-export const Download: React.FC<DownloadProps> = props => {
+export const Download: React.FC<DownloadProps> = (props) => {
   const localization = useLocalization()
   const { documentData } = useDocumentData()
   return (

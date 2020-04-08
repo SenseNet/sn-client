@@ -16,14 +16,14 @@ export const LocalizationContext = React.createContext({
  * Context provider for Localization values. Update the PersonalSettings.language to load a new language into the context.
  * @param props
  */
-export const LocalizationProvider: React.FunctionComponent = props => {
+export const LocalizationProvider: React.FunctionComponent = (props) => {
   const injector = useInjector()
   const [localizationService] = useState(injector.getInstance(LocalizationService))
   const [currentValues, setCurrentValues] = useState(DefaultLocalization)
   const personalSettings = usePersonalSettings()
 
   useEffect(() => {
-    const observable = localizationService.currentValues.subscribe(v => {
+    const observable = localizationService.currentValues.subscribe((v) => {
       /**
        * This is a temporary solution until we refactor l18n
        * We don't want to set the state if the values are the same.

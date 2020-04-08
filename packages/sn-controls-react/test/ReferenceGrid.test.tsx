@@ -110,10 +110,7 @@ describe('Reference grid field control', () => {
       await sleepAsync(0)
       const updatedWrapper = wrapper.update()
 
-      const remove = updatedWrapper
-        .find(DefaultItemTemplate)
-        .first()
-        .prop('remove')
+      const remove = updatedWrapper.find(DefaultItemTemplate).first().prop('remove')
       remove && remove(4804)
       expect(fieldOnChange).toBeCalled()
       // To have a length 2 means that add reference row is there as well
@@ -134,21 +131,13 @@ describe('Reference grid field control', () => {
         )
       })
 
-      wrapper
-        .find(DefaultItemTemplate)
-        .last()
-        .find(IconButton)
-        .simulate('click')
+      wrapper.find(DefaultItemTemplate).last().find(IconButton).simulate('click')
 
       await act(async () => {
         wrapper.find(ReferencePicker).prop('select')({ Path: '/', Name: 'Jane Doe', Id: 1234, Type: 'User' })
       })
 
-      wrapper
-        .find(Dialog)
-        .find(Button)
-        .first()
-        .simulate('click')
+      wrapper.find(Dialog).find(Button).first().simulate('click')
       expect(fieldOnChange).toBeCalled()
       expect(wrapper.find(DefaultItemTemplate)).toHaveLength(4)
     })
@@ -166,11 +155,7 @@ describe('Reference grid field control', () => {
       await sleepAsync(0)
 
       wrapper.find(ReferencePicker).prop('select')({ Path: '/', Name: 'Jane Doe', Id: 1234, Type: 'User' })
-      wrapper
-        .find(Dialog)
-        .find(Button)
-        .first()
-        .simulate('click')
+      wrapper.find(Dialog).find(Button).first().simulate('click')
       // Jane Doe + add reference
       expect(wrapper.update().find(DefaultItemTemplate)).toHaveLength(2)
     })
@@ -186,12 +171,7 @@ describe('Reference grid field control', () => {
         wrapper = mount(<ReferencePicker repository={repo} select={jest.fn} path="" selected={[]} />)
       })
 
-      expect(
-        wrapper
-          .update()
-          .find(Avatar)
-          .text(),
-      ).toBe('A.M')
+      expect(wrapper.update().find(Avatar).text()).toBe('A.M')
     })
   })
 })

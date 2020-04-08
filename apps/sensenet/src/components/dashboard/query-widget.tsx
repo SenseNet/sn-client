@@ -18,7 +18,7 @@ import { isReferenceField } from '../content-list'
 import { encodeQueryData } from '../search'
 import { ContentList } from '../content-list/content-list'
 
-const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & RouteComponentProps> = props => {
+const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & RouteComponentProps> = (props) => {
   const [items, setItems] = useState<GenericContent[]>([])
   const [loadChildrenSettings, setLoadChildrenSettings] = useState<ODataParams<GenericContent>>({})
   const [error, setError] = useState('')
@@ -36,7 +36,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
       top: props.settings.countOnly ? 1 : props.settings.top,
       inlinecount: 'allpages',
       select: ['Actions', ...props.settings.columns],
-      expand: ['Actions', ...props.settings.columns.filter(f => isReferenceField(f, repo))],
+      expand: ['Actions', ...props.settings.columns.filter((f) => isReferenceField(f, repo))],
     })
   }, [props.settings.columns, props.settings.countOnly, props.settings.query, props.settings.top, repo])
 
@@ -125,7 +125,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
                   loadAncestorsSettings: {},
                   loadSettings: {},
                   loadChildrenSettings,
-                  setLoadChildrenSettings: newSettings => {
+                  setLoadChildrenSettings: (newSettings) => {
                     setLoadChildrenSettings({
                       ...loadChildrenSettings,
                       orderby: newSettings.orderby,
@@ -147,16 +147,16 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
                   onParentChange={() => {
                     // props.history.push(contentRouter.getPrimaryActionUrl(p))
                   }}
-                  onActivateItem={p => {
+                  onActivateItem={(p) => {
                     props.history.push(contentRouter.getPrimaryActionUrl(p))
                   }}
                   onTabRequest={() => {
                     /** */
                   }}
-                  onSelectionChange={sel => {
+                  onSelectionChange={(sel) => {
                     selectionService.selection.setValue(sel)
                   }}
-                  onActiveItemChange={item => {
+                  onActiveItemChange={(item) => {
                     selectionService.activeContent.setValue(item)
                   }}
                 />

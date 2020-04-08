@@ -120,37 +120,37 @@ const UserSearchPanel = () => {
       },
     })
 
-    setSearchdata(prevState => ({ ...prevState, response: result }))
+    setSearchdata((prevState) => ({ ...prevState, response: result }))
   }
 
   // get choice options from fieldsettings
   const fieldSettings = repo.schemas.getSchemaByName('User').FieldSettings
-  const langSetting = fieldSettings.find(f => f.Name === 'Language') as ChoiceFieldSetting
-  const genderSetting = fieldSettings.find(f => f.Name === 'Gender') as ChoiceFieldSetting
-  const maritalSetting = fieldSettings.find(f => f.Name === 'MaritalStatus') as ChoiceFieldSetting
+  const langSetting = fieldSettings.find((f) => f.Name === 'Language') as ChoiceFieldSetting
+  const genderSetting = fieldSettings.find((f) => f.Name === 'Gender') as ChoiceFieldSetting
+  const maritalSetting = fieldSettings.find((f) => f.Name === 'MaritalStatus') as ChoiceFieldSetting
   const languages =
     langSetting !== undefined && langSetting.Options !== undefined
-      ? langSetting.Options.map(l => ({
+      ? langSetting.Options.map((l) => ({
           text: l.Text ? l.Text : '',
-          value: new Query(a => a.term(`Language:${l.Text}`)),
+          value: new Query((a) => a.term(`Language:${l.Text}`)),
         }))
-      : [{ text: 'English', value: new Query(a => a.term(`Language:en`)) }]
+      : [{ text: 'English', value: new Query((a) => a.term(`Language:en`)) }]
 
   const genders =
     genderSetting !== undefined && genderSetting.Options !== undefined
-      ? genderSetting.Options.map(l => ({
+      ? genderSetting.Options.map((l) => ({
           text: l.Text ? l.Text : '',
-          value: l.Value === '...' ? new Query(a => a) : new Query(a => a.term(`Gender:${l.Value}`)),
+          value: l.Value === '...' ? new Query((a) => a) : new Query((a) => a.term(`Gender:${l.Value}`)),
         }))
-      : [{ text: '', value: new Query(a => a.term(`Gender:Female`)) }]
+      : [{ text: '', value: new Query((a) => a.term(`Gender:Female`)) }]
 
   const maritals =
     maritalSetting !== undefined && maritalSetting.Options !== undefined
-      ? maritalSetting.Options.map(l => ({
+      ? maritalSetting.Options.map((l) => ({
           text: l.Text ? l.Text : '',
-          value: l.Value === '...' ? new Query(a => a) : new Query(a => a.term(`MaritalStatus:${l.Value}`)),
+          value: l.Value === '...' ? new Query((a) => a) : new Query((a) => a.term(`MaritalStatus:${l.Value}`)),
         }))
-      : [{ text: '', value: new Query(a => a.term(`MaritalStatus:`)) }]
+      : [{ text: '', value: new Query((a) => a.term(`MaritalStatus:`)) }]
 
   /**
    * Renders the component
@@ -166,11 +166,11 @@ const UserSearchPanel = () => {
         <Grid container justify="center" alignItems="center">
           <AdvancedSearch
             style={{ flexGrow: 1 }}
-            onQueryChanged={q => {
-              setSearchdata(prevState => ({ ...prevState, fullQuery: q.toString() }))
+            onQueryChanged={(q) => {
+              setSearchdata((prevState) => ({ ...prevState, fullQuery: q.toString() }))
             }}
             schema={repo.schemas.getSchemaByName('User')}
-            fields={_options => (
+            fields={(_options) => (
               <Paper style={{ margin: '1em' }}>
                 <Typography variant="h6" style={{ padding: '1em .7em' }}>
                   User search
@@ -182,7 +182,7 @@ const UserSearchPanel = () => {
                     justifyContent: 'space-evenly',
                     flexWrap: 'wrap',
                   }}
-                  onSubmit={ev => {
+                  onSubmit={(ev) => {
                     ev.preventDefault()
                     sendRequest()
                   }}
@@ -193,7 +193,7 @@ const UserSearchPanel = () => {
                       disabled
                       fieldName="TypeIs"
                       onQueryChange={(key, query) => {
-                        setSearchdata(prevState => ({
+                        setSearchdata((prevState) => ({
                           ...prevState,
                           typeFieldQuery: query.toString(),
                         }))
@@ -208,14 +208,14 @@ const UserSearchPanel = () => {
                     <TextField
                       fieldName="LoginName"
                       onQueryChange={(key, query) => {
-                        setSearchdata(prevState => ({
+                        setSearchdata((prevState) => ({
                           ...prevState,
                           loginnameFieldQuery: query.toString(),
                         }))
                         _options.updateQuery(key, query)
                       }}
                       fieldKey=""
-                      fieldSetting={_options.schema.FieldSettings.find(s => s.Name === 'LoginName')}
+                      fieldSetting={_options.schema.FieldSettings.find((s) => s.Name === 'LoginName')}
                       helperText={
                         searchdata.loginnameFieldQuery
                           ? `Field Query: ${searchdata.loginnameFieldQuery}`
@@ -227,13 +227,13 @@ const UserSearchPanel = () => {
                     <TextField
                       fieldName="Email"
                       onQueryChange={(key, query) => {
-                        setSearchdata(prevState => ({
+                        setSearchdata((prevState) => ({
                           ...prevState,
                           emailFieldQuery: query.toString(),
                         }))
                         _options.updateQuery(key, query)
                       }}
-                      fieldSetting={_options.schema.FieldSettings.find(s => s.Name === 'Email')}
+                      fieldSetting={_options.schema.FieldSettings.find((s) => s.Name === 'Email')}
                       helperText={
                         searchdata.emailFieldQuery
                           ? `Field Query: ${searchdata.emailFieldQuery}`
@@ -245,13 +245,13 @@ const UserSearchPanel = () => {
                     <TextField
                       fieldName="FullName"
                       onQueryChange={(key, query) => {
-                        setSearchdata(prevState => ({
+                        setSearchdata((prevState) => ({
                           ...prevState,
                           fullnameFieldQuery: query.toString(),
                         }))
                         _options.updateQuery(key, query)
                       }}
-                      fieldSetting={_options.schema.FieldSettings.find(s => s.Name === 'FullName')}
+                      fieldSetting={_options.schema.FieldSettings.find((s) => s.Name === 'FullName')}
                       helperText={
                         searchdata.fullnameFieldQuery
                           ? `Field Query: ${searchdata.fullnameFieldQuery}`
@@ -263,13 +263,13 @@ const UserSearchPanel = () => {
                     <TextField
                       fieldName="JobTitle"
                       onQueryChange={(key, query) => {
-                        setSearchdata(prevState => ({
+                        setSearchdata((prevState) => ({
                           ...prevState,
                           jobtitleFieldQuery: query.toString(),
                         }))
                         _options.updateQuery(key, query)
                       }}
-                      fieldSetting={_options.schema.FieldSettings.find(s => s.Name === 'JobTitle')}
+                      fieldSetting={_options.schema.FieldSettings.find((s) => s.Name === 'JobTitle')}
                       helperText={
                         searchdata.jobtitleFieldQuery
                           ? `Field Query: ${searchdata.jobtitleFieldQuery}`
@@ -281,7 +281,7 @@ const UserSearchPanel = () => {
                     <ReferenceField
                       fieldName="DisplayName"
                       fieldSetting={{
-                        ...(_options.schema.FieldSettings.find(s => s.Name === 'Manager') as ReferenceFieldSetting),
+                        ...(_options.schema.FieldSettings.find((s) => s.Name === 'Manager') as ReferenceFieldSetting),
                         AllowedTypes: ['User'],
                       }}
                       fetchItems={async (fetchQuery: Query<GenericContent>) => {
@@ -298,7 +298,7 @@ const UserSearchPanel = () => {
                         return response.d.results
                       }}
                       onQueryChange={(key: any, query: any) => {
-                        setSearchdata(prevState => ({
+                        setSearchdata((prevState) => ({
                           ...prevState,
                           managerFieldQuery: query.toString(),
                         }))
@@ -311,13 +311,13 @@ const UserSearchPanel = () => {
                     <TextField
                       fieldName="Department"
                       onQueryChange={(key, query) => {
-                        setSearchdata(prevState => ({
+                        setSearchdata((prevState) => ({
                           ...prevState,
                           departmentFieldQuery: query.toString(),
                         }))
                         _options.updateQuery(key, query)
                       }}
-                      fieldSetting={_options.schema.FieldSettings.find(s => s.Name === 'Department')}
+                      fieldSetting={_options.schema.FieldSettings.find((s) => s.Name === 'Department')}
                       helperText={
                         searchdata.departmentFieldQuery
                           ? `Field Query: ${searchdata.departmentFieldQuery}`
@@ -330,9 +330,9 @@ const UserSearchPanel = () => {
                       <InputLabel htmlFor="type-filter">Language</InputLabel>
                       <PresetField
                         fieldName="Language"
-                        presets={[{ text: '-', value: new Query(a => a) }, ...languages]}
+                        presets={[{ text: '-', value: new Query((a) => a) }, ...languages]}
                         onQueryChange={(key, query) => {
-                          setSearchdata(prevState => ({
+                          setSearchdata((prevState) => ({
                             ...prevState,
                             languagesFieldQuery: query.toString(),
                           }))
@@ -351,7 +351,7 @@ const UserSearchPanel = () => {
                         fieldName="Gender"
                         presets={genders}
                         onQueryChange={(key, query) => {
-                          setSearchdata(prevState => ({
+                          setSearchdata((prevState) => ({
                             ...prevState,
                             genderFieldQuery: query.toString(),
                           }))
@@ -370,7 +370,7 @@ const UserSearchPanel = () => {
                         fieldName="MaritalStatus"
                         presets={maritals}
                         onQueryChange={(key, query) => {
-                          setSearchdata(prevState => ({
+                          setSearchdata((prevState) => ({
                             ...prevState,
                             maritalstatusFieldQuery: query.toString(),
                           }))
@@ -388,13 +388,13 @@ const UserSearchPanel = () => {
                     <TextField
                       fieldName="Phone"
                       onQueryChange={(key, query) => {
-                        setSearchdata(prevState => ({
+                        setSearchdata((prevState) => ({
                           ...prevState,
                           phoneFieldQuery: query.toString(),
                         }))
                         _options.updateQuery(key, query)
                       }}
-                      fieldSetting={_options.schema.FieldSettings.find(s => s.Name === 'Phone')}
+                      fieldSetting={_options.schema.FieldSettings.find((s) => s.Name === 'Phone')}
                       helperText={
                         searchdata.phoneFieldQuery ? `Field Query: ${searchdata.phoneFieldQuery}` : 'Query on the Phone'
                       }
@@ -442,10 +442,12 @@ const UserSearchPanel = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {searchdata.response.d.results.map(r => (
+                {searchdata.response.d.results.map((r) => (
                   <TableRow
                     key={r.Id}
-                    onClick={() => setSearchdata(prevState => ({ ...prevState, selectedUser: r, isProfilOpen: true }))}>
+                    onClick={() =>
+                      setSearchdata((prevState) => ({ ...prevState, selectedUser: r, isProfilOpen: true }))
+                    }>
                     <TableCell>
                       {r.Avatar !== undefined && r.Avatar.Url ? (
                         <Avatar
@@ -468,13 +470,13 @@ const UserSearchPanel = () => {
       </div>
       <Dialog
         open={searchdata.isProfilOpen}
-        onClose={() => setSearchdata(prevState => ({ ...prevState, isProfilOpen: false }))}>
+        onClose={() => setSearchdata((prevState) => ({ ...prevState, isProfilOpen: false }))}>
         <DialogTitle>Profile</DialogTitle>
         <DialogContent>
           {searchdata.selectedUser ? <BrowseView content={searchdata.selectedUser} repository={repo} /> : ''}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setSearchdata(prevState => ({ ...prevState, isProfilOpen: false }))}>Ok</Button>
+          <Button onClick={() => setSearchdata((prevState) => ({ ...prevState, isProfilOpen: false }))}>Ok</Button>
         </DialogActions>
       </Dialog>
     </div>

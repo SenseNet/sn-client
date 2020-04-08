@@ -8,7 +8,7 @@ import { SharedContext } from '../context/shared-context'
 const NewDialogBody: React.FunctionComponent<{
   parentpath: string
   dialogProps: DialogProps
-}> = props => {
+}> = (props) => {
   const repo = useRepository()
   const sharedcontext = useContext(SharedContext)
   const handleClose = () => props.dialogProps.onClose && props.dialogProps.onClose(null as any, 'backdropClick')
@@ -22,7 +22,7 @@ const NewDialogBody: React.FunctionComponent<{
           repository={repo}
           contentTypeName="CalendarEvent"
           path={props.parentpath}
-          onSubmit={async content => {
+          onSubmit={async (content) => {
             try {
               await repo.post({
                 contentType: 'CalendarEvent',

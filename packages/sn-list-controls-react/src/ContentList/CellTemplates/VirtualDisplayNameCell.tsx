@@ -8,7 +8,7 @@ export interface VirtualDisplayNameCellProps<T extends GenericContent = GenericC
   icons?: any
 }
 
-export const VirtualDisplayNameCell: React.FC<VirtualDisplayNameCellProps> = props => {
+export const VirtualDisplayNameCell: React.FC<VirtualDisplayNameCellProps> = (props) => {
   const [icon] = useState(props.rowData.Icon && props.icons && props.icons[props.rowData.Icon.toLowerCase() as any])
   const [type] = useState(
     props.rowData.Icon === 'word' ||

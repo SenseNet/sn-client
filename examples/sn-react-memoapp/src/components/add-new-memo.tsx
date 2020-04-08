@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-export const AddNew: React.FunctionComponent<AddNewprops> = props => {
+export const AddNew: React.FunctionComponent<AddNewprops> = (props) => {
   const classes = useStyles()
   const [displayname, setDisplayname] = useState('')
   const [description, setDescritption] = useState('')
@@ -52,7 +52,7 @@ export const AddNew: React.FunctionComponent<AddNewprops> = props => {
             multiline={true}
             label="Memo title"
             value={displayname}
-            onChange={ev => setDisplayname(ev.target.value)}
+            onChange={(ev) => setDisplayname(ev.target.value)}
             rows={1}
             rowsMax={10}
             id={'DisplayName'}
@@ -65,7 +65,7 @@ export const AddNew: React.FunctionComponent<AddNewprops> = props => {
             multiline={true}
             label="Memo content"
             value={description}
-            onChange={ev => setDescritption(ev.target.value)}
+            onChange={(ev) => setDescritption(ev.target.value)}
             rows={1}
             rowsMax={10}
             id={'Description'}

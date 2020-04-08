@@ -70,8 +70,8 @@ class DisplayNameMobileCell extends React.Component<
   private handleContentSelection(ev: React.MouseEvent) {
     ev.preventDefault()
     ev.stopPropagation()
-    if (this.props.selected.find(c => c.Id === this.props.content.Id)) {
-      this.props.select(this.props.selected.filter(s => s.Id !== this.props.content.Id))
+    if (this.props.selected.find((c) => c.Id === this.props.content.Id)) {
+      this.props.select(this.props.selected.filter((s) => s.Id !== this.props.content.Id))
     } else {
       this.props.select([...this.props.selected, this.props.content])
     }

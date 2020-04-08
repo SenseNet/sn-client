@@ -52,7 +52,7 @@ export interface ContentListProps<T extends GenericContent = GenericContent> ext
   hideHeader?: boolean
 }
 
-export const ContentList: React.FC<ContentListProps<GenericContent>> = props => {
+export const ContentList: React.FC<ContentListProps<GenericContent>> = (props) => {
   const handleSelectAllClick = useCallback(() => {
     props.onRequestSelectionChange &&
       (props.selected && props.selected.length === props.items.length
@@ -65,8 +65,8 @@ export const ContentList: React.FC<ContentListProps<GenericContent>> = props => 
     (content: GenericContent) => {
       const selected = props.selected !== undefined && props.selected.length > 0 ? props.selected : []
       if (props.onRequestSelectionChange) {
-        if (selected.find(c => c.Id === content.Id)) {
-          props.onRequestSelectionChange(selected.filter(s => s.Id !== content.Id))
+        if (selected.find((c) => c.Id === content.Id)) {
+          props.onRequestSelectionChange(selected.filter((s) => s.Id !== content.Id))
         } else {
           props.onRequestSelectionChange([...selected, content])
         }
@@ -77,7 +77,7 @@ export const ContentList: React.FC<ContentListProps<GenericContent>> = props => 
   )
 
   const defaultFieldComponents: React.FC<CellProps<GenericContent, keyof GenericContent>> = useCallback(
-    fieldProps => {
+    (fieldProps) => {
       switch (fieldProps.field) {
         case 'DisplayName':
           return <DisplayNameCell content={fieldProps.content} isSelected={fieldProps.isSelected} icons={props.icons} />
@@ -87,7 +87,7 @@ export const ContentList: React.FC<ContentListProps<GenericContent>> = props => 
               <ActionsCell
                 actions={fieldProps.content.Actions as ActionModel[]}
                 content={fieldProps.content}
-                openActionMenu={ev =>
+                openActionMenu={(ev) =>
                   fieldProps.onRequestActionsMenu && fieldProps.onRequestActionsMenu(ev, fieldProps.content)
                 }
               />
@@ -111,7 +111,7 @@ export const ContentList: React.FC<ContentListProps<GenericContent>> = props => 
   const fieldSchemas = useMemo<{ [key: string]: FieldSetting }>(
     () =>
       props.schema.FieldSettings.reduce((v, field) => {
-        ;(v as any)[field.Name] = props.schema.FieldSettings.find(s => s.Name === field.Name)
+        ;(v as any)[field.Name] = props.schema.FieldSettings.find((s) => s.Name === field.Name)
         return v
       }, {}),
     [props.schema.FieldSettings],
@@ -138,7 +138,7 @@ export const ContentList: React.FC<ContentListProps<GenericContent>> = props => 
                 />
               </TableCell>
             ) : null}
-            {props.fieldsToDisplay.map(field => {
+            {props.fieldsToDisplay.map((field) => {
               const fieldSetting = getSchemaForField(field)
               const isNumeric =
                 fieldSetting &&
@@ -165,25 +165,26 @@ export const ContentList: React.FC<ContentListProps<GenericContent>> = props => 
         </TableHead>
       )}
       <TableBody>
-        {props.items.map(item => {
-          const isSelected = props.selected && props.selected.find(s => s.Id === item.Id) ? true : false
+        {props.items.map((item) => {
+          const isSelected = props.selected && props.selected.find((s) => s.Id === item.Id) ? true : false
           const isActive = props.active && props.active.Id === item.Id ? true : false
           return (
             <TableRow
               key={item.Id}
               hover={true}
-              className={`${isActive ? 'active' : ''} ${isSelected ? 'selected' : ''} ${item.Type &&
-                `type-${item.Type.toLowerCase()}`}`}
+              className={`${isActive ? 'active' : ''} ${isSelected ? 'selected' : ''} ${
+                item.Type && `type-${item.Type.toLowerCase()}`
+              }`}
               selected={isActive}
-              onClick={e => {
+              onClick={(e) => {
                 props.onRequestActiveItemChange && props.onRequestActiveItemChange(item)
                 props.onItemClick && props.onItemClick(e, item)
               }}
-              onDoubleClick={e => {
+              onDoubleClick={(e) => {
                 props.onItemDoubleClick && props.onItemDoubleClick(e, item)
               }}
-              onTouchEnd={e => props.onItemTap && props.onItemTap(e, item)}
-              onContextMenu={e => props.onItemContextMenu && props.onItemContextMenu(e, item)}>
+              onTouchEnd={(e) => props.onItemTap && props.onItemTap(e, item)}
+              onContextMenu={(e) => props.onItemContextMenu && props.onItemContextMenu(e, item)}>
               {props.displayRowCheckbox !== false ? (
                 <TableCell padding="checkbox" key="select">
                   {props.getSelectionControl ? (
@@ -197,7 +198,7 @@ export const ContentList: React.FC<ContentListProps<GenericContent>> = props => 
                   )}
                 </TableCell>
               ) : null}
-              {props.fieldsToDisplay.map(field => {
+              {props.fieldsToDisplay.map((field) => {
                 const fieldSetting = getSchemaForField(field)
                 const cellProps: CellProps = {
                   ...(props as ContentListProps),

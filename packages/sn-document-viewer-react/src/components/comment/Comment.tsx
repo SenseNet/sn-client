@@ -24,7 +24,7 @@ const MAX_TEXT_LENGTH = 160
 /**
  * Represents a single comment component.
  */
-export const Comment: React.FC<CommentProps> = props => {
+export const Comment: React.FC<CommentProps> = (props) => {
   const isLongText = props.comment.text && props.comment.text.length > MAX_TEXT_LENGTH
   const [isOpen, setIsOpen] = useState(!isLongText)
   const localization = useLocalization()

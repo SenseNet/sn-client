@@ -9,7 +9,7 @@ import { ReactClientFieldSetting } from '.'
 /**
  * Represents an autocomplete component
  */
-export const AutoComplete: React.FC<ReactClientFieldSetting<ReferenceFieldSetting>> = props => {
+export const AutoComplete: React.FC<ReactClientFieldSetting<ReferenceFieldSetting>> = (props) => {
   const defaultValue =
     (props.fieldValue && (props.fieldValue as any)[0].Id) || changeJScriptValue(props.settings.DefaultValue)
   const fetchItems = async (fetchQuery: Query<GenericContent>) => {
@@ -18,7 +18,7 @@ export const AutoComplete: React.FC<ReactClientFieldSetting<ReferenceFieldSettin
         throw new Error('You must pass a repository to this control')
       }
 
-      new QueryOperators(fetchQuery).and.query(q2 => {
+      new QueryOperators(fetchQuery).and.query((q2) => {
         props.settings.AllowedTypes &&
           props.settings.AllowedTypes.forEach((allowedType, index, array) => {
             new QueryExpression(q2.queryRef).term(`TypeIs:${allowedType}`)
@@ -29,7 +29,7 @@ export const AutoComplete: React.FC<ReactClientFieldSetting<ReferenceFieldSettin
         return q2
       })
 
-      new QueryOperators(fetchQuery).and.query(q2 => {
+      new QueryOperators(fetchQuery).and.query((q2) => {
         props.settings.SelectionRoots &&
           props.settings.SelectionRoots.forEach((root, index, array) => {
             new QueryExpression(q2.queryRef).inTree(root)
@@ -61,7 +61,7 @@ export const AutoComplete: React.FC<ReactClientFieldSetting<ReferenceFieldSettin
           fieldSetting={props.settings}
           fieldName={props.settings.Name as any}
           defaultValueIdOrPath={defaultValue}
-          onChange={item => props.fieldOnChange && props.fieldOnChange(props.settings.Name, item)}
+          onChange={(item) => props.fieldOnChange && props.fieldOnChange(props.settings.Name, item)}
           fetchItems={fetchItems as any}
         />
       )

@@ -11,7 +11,7 @@ declare module '@sensenet/client-utils/dist/inject/injector' {
   }
 }
 
-Injector.prototype.getRepository = function(url, config) {
+Injector.prototype.getRepository = function (url, config) {
   const manager = this.getInstance(RepositoryManager)
   const repo = manager.getRepository(url, config)
   this.setExplicitInstance(repo)

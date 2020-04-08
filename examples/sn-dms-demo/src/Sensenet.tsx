@@ -52,7 +52,7 @@ class Sensenet extends React.Component<ReturnType<typeof mapStateToProps> & type
                 path="/wopi"
                 authorize={() => this.props.loginState !== LoginState.Unauthenticated}
                 redirectOnUnauthorized="/"
-                render={routerProps => {
+                render={(routerProps) => {
                   const LoadableEditor = Loadable({
                     loader: () => import(/* webpackChunkName: "editor" */ './pages/Editor'),
                     loading: () => <FullScreenLoader />,
@@ -82,7 +82,7 @@ class Sensenet extends React.Component<ReturnType<typeof mapStateToProps> & type
                 path="/"
                 authorize={() => this.props.loginState !== LoginState.Unauthenticated}
                 redirectOnUnauthorized="/"
-                render={routerProps => {
+                render={(routerProps) => {
                   const LoadableDashboard = Loadable({
                     loader: () => import(/* webpackChunkName: "dashboard" */ './pages/Dashboard'),
                     loading: () => <FullScreenLoader />,

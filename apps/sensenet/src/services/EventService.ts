@@ -13,7 +13,7 @@ export class EventService {
 
   public dismiss(entry: EventLogEntry<any>) {
     this.values.setValue(
-      this.values.getValue().map(e => {
+      this.values.getValue().map((e) => {
         if (e.data.guid === entry.data.guid) {
           return { ...e, data: { ...e.data, isDismissed: true } }
         }
@@ -40,7 +40,7 @@ export class EventService {
   public add(...notifications: Array<EventLogEntry<any>>) {
     // const newValues = this.values.getValue().push())
     this.values.setValue([
-      ...notifications.map(n => ({ ...n, data: { ...n.data, guid: v1(), added: new Date().toISOString() } })),
+      ...notifications.map((n) => ({ ...n, data: { ...n.data, guid: v1(), added: new Date().toISOString() } })),
       ...this.values.getValue(),
     ])
     this.updateChanges()
@@ -67,8 +67,8 @@ export class EventService {
     const notFrom = now.toISOString()
     const notificationValues = this.values
       .getValue()
-      .filter(d => !d.data || !d.data.isDismissed)
-      .filter(d => d.data.added > notFrom)
+      .filter((d) => !d.data || !d.data.isDismissed)
+      .filter((d) => d.data.added > notFrom)
       .reverse()
     const returns: { [key: string]: Array<EventLogEntry<any>> } = {}
 

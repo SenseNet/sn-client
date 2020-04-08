@@ -11,7 +11,7 @@ import { FullScreenDialog } from './components/FullScreenDialog'
 import { AdvancedGridList } from './components/AdvancedGridList'
 import { SelectedImage } from './Interface'
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',

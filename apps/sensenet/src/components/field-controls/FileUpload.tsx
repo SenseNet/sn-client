@@ -61,7 +61,7 @@ export const errorMessages = {
 /**
  * Field control that represents a FileUpload field. Available values will be populated from the FieldSettings.
  */
-export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> = props => {
+export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> = (props) => {
   const [fileName, setFileName] = useState('')
   useEffect(() => {
     const ac = new AbortController()

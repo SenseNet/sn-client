@@ -107,11 +107,11 @@ export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFi
    * Removes the chosen item from the grid and the field value
    */
   public removeItem = (id: number) => {
-    const value = this.state.fieldValue.length > 1 ? this.state.fieldValue.filter(item => item.Id !== id) : []
+    const value = this.state.fieldValue.length > 1 ? this.state.fieldValue.filter((item) => item.Id !== id) : []
     this.props.fieldOnChange &&
       this.props.fieldOnChange(
         this.props.settings.Name,
-        value.map(item => item.Id),
+        value.map((item) => item.Id),
       )
     this.setState({
       fieldValue: value,
@@ -157,12 +157,12 @@ export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFi
   public selectItem = (content: GenericContent) => {
     this.state.selected.length > 0 && !this.props.settings.AllowMultiple
       ? this.setState({
-          selected: this.state.selected.findIndex(c => content.Id === c.Id) > -1 ? this.state.selected : [content],
+          selected: this.state.selected.findIndex((c) => content.Id === c.Id) > -1 ? this.state.selected : [content],
         })
       : this.setState({
           selected:
-            this.state.selected.findIndex(c => content.Id === c.Id) > -1
-              ? this.state.selected.filter(c => content.Id !== c.Id)
+            this.state.selected.findIndex((c) => content.Id === c.Id) > -1
+              ? this.state.selected.filter((c) => content.Id !== c.Id)
               : [...this.state.selected, content],
         })
   }
@@ -232,7 +232,7 @@ export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFi
                   path={this.props.settings.SelectionRoots ? this.props.settings.SelectionRoots[0] : '/Root'}
                   allowedTypes={this.props.settings.AllowedTypes}
                   repository={this.props.repository!}
-                  select={content => this.selectItem(content)}
+                  select={(content) => this.selectItem(content)}
                   selected={this.state.selected}
                   renderIcon={this.props.renderIcon}
                 />

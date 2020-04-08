@@ -12,7 +12,7 @@ import { SharedContext } from '../context/shared-context'
 const EditPropertiesDialogBody: React.FunctionComponent<{
   contentId: number
   dialogProps: DialogProps
-}> = props => {
+}> = (props) => {
   const repo = useRepository()
   const sharedcontext = useContext(SharedContext)
 

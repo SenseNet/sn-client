@@ -10,7 +10,7 @@ Cypress.Commands.add('login', (email, password) => {
     },
     message: [`${email} | ${password}`],
   })
-  cy.window().then({ timeout: 10000 }, async win => {
+  cy.window().then({ timeout: 10000 }, async (win) => {
     return await win.repository.authentication.login(email, password)
   })
 })
@@ -24,7 +24,7 @@ Cypress.Commands.add('registerUser', (email, password) => {
     },
     message: [`${email} | ${password}`],
   })
-  cy.window().then(async win => {
+  cy.window().then(async (win) => {
     const user = await win.repository.executeAction<{ email: string; password: string }, User>({
       name: 'RegisterUser',
       idOrPath: `/Root/IMS('Public')`,
@@ -51,7 +51,7 @@ const blobToFile = (theBlob: Blob, fileName: string): File => {
 
 Cypress.Commands.add('uploadWithApi', (options: UploadOptions) => {
   cy.visit('')
-  cy.fixture('logo.png').then(async img => {
+  cy.fixture('logo.png').then(async (img) => {
     Cypress.log({
       name: 'upload',
       consoleProps: () => {
@@ -60,7 +60,7 @@ Cypress.Commands.add('uploadWithApi', (options: UploadOptions) => {
       message: [`Uploading ${options.fileName} to ${options.parentPath}`],
     })
     const blob = await Cypress.Blob.base64StringToBlob(img, 'image/png')
-    cy.window().then(win => {
+    cy.window().then((win) => {
       win.repository.upload.file({
         file: blobToFile(blob, options.fileName),
         ...(options as any),

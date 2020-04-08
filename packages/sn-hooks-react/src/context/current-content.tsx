@@ -30,7 +30,7 @@ export interface CurrentContentProviderProps {
  * Loads a content from the Repository with the given Id or Path.
  * Has to be wrapped with a **RepositoryContext**
  */
-export const CurrentContentProvider: React.FunctionComponent<CurrentContentProviderProps> = props => {
+export const CurrentContentProvider: React.FunctionComponent<CurrentContentProviderProps> = (props) => {
   const [loadLock] = useState(new Semaphore(1))
   const [content, setContent] = useState<GenericContent>(ConstantContent.PORTAL_ROOT)
   const repo = useRepository()
@@ -40,17 +40,17 @@ export const CurrentContentProvider: React.FunctionComponent<CurrentContentProvi
 
   useEffect(() => {
     const subscriptions = [
-      events.onContentModified.subscribe(c => {
+      events.onContentModified.subscribe((c) => {
         if (c.content.Id === content.Id) {
           reload()
         }
       }),
-      events.onContentDeleted.subscribe(async c => {
+      events.onContentDeleted.subscribe(async (c) => {
         const parentContent = await repo.load({ idOrPath: PathHelper.getParentPath(c.contentData.Path) })
         setContent(parentContent.d)
       }),
     ]
-    return () => subscriptions.forEach(s => s.dispose())
+    return () => subscriptions.forEach((s) => s.dispose())
   }, [content.Id, events.onContentDeleted, events.onContentModified, repo])
 
   const [error, setError] = useState<Error | undefined>()

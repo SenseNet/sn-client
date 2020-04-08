@@ -45,10 +45,7 @@ describe('DocumentTitlePager component', () => {
       wrapper.find(Typography).simulate('click')
     })
     act(() => {
-      const onChange = wrapper
-        .update()
-        .find(TextField)
-        .prop('onChange')
+      const onChange = wrapper.update().find(TextField).prop('onChange')
       onChange && onChange({ currentTarget: { value: '3' } } as any)
     })
     expect(updateState).toBeCalledWith({ activePages: [3] })

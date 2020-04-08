@@ -9,7 +9,7 @@ export interface DisplayNameCellProps<T extends GenericContent = GenericContent>
   icons: any
 }
 
-export const DisplayNameCell: React.FC<DisplayNameCellProps> = props => {
+export const DisplayNameCell: React.FC<DisplayNameCellProps> = (props) => {
   const [icon] = useState(props.content.Icon && props.icons[props.content.Icon.toLowerCase() as any])
   const [type] = useState(
     props.content.Icon === 'word' ||

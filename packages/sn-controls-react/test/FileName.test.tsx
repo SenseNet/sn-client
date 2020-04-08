@@ -16,18 +16,8 @@ describe('File name field control', () => {
     it('should show the displayname and fieldValue when fieldValue is provided', () => {
       const value = 'approving_enabled.png'
       const wrapper = shallow(<FileName fieldValue={value} actionName="browse" settings={defaultSettings} />)
-      expect(
-        wrapper
-          .find(Typography)
-          .first()
-          .text(),
-      ).toBe(defaultSettings.DisplayName)
-      expect(
-        wrapper
-          .find(Typography)
-          .last()
-          .text(),
-      ).toBe(value)
+      expect(wrapper.find(Typography).first().text()).toBe(defaultSettings.DisplayName)
+      expect(wrapper.find(Typography).last().text()).toBe(value)
       expect(wrapper).toMatchSnapshot()
     })
 

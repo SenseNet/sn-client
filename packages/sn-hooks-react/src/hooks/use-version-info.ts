@@ -93,7 +93,7 @@ export const useVersionInfo = () => {
         name: 'GetVersionInfo',
       })
 
-      const nugetPromises = result.Components.map(async component => {
+      const nugetPromises = result.Components.map(async (component) => {
         try {
           const response = await fetch(
             `https://api.nuget.org/v3/registration3-gz-semver2/${component.ComponentId.toLowerCase()}/index.json`,
@@ -106,14 +106,14 @@ export const useVersionInfo = () => {
           return {}
         }
       })
-      const loadedManifests = (await Promise.all(nugetPromises)).filter(m => m)
+      const loadedManifests = (await Promise.all(nugetPromises)).filter((m) => m)
       setNugetManifests(loadedManifests)
 
       let hasOneUpdate = false
 
-      result.Components = result.Components.map(component => {
+      result.Components = result.Components.map((component) => {
         const nugetManifest = loadedManifests.find(
-          m =>
+          (m) =>
             m['@id'] ===
             `https://api.nuget.org/v3/registration3-gz-semver2/${component.ComponentId.toLocaleLowerCase()}/index.json`,
         )

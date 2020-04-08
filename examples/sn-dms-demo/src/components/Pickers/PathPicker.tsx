@@ -54,7 +54,7 @@ function PathPicker(props: PathPickerProps & ReturnType<typeof mapStateToProps> 
   }, [props, reload])
 
   const hasChildren = (node: GenericContent & { Children: Array<{ IsFolder: boolean }> }) => {
-    return node.Children && node.Children.some(child => child.IsFolder)
+    return node.Children && node.Children.some((child) => child.IsFolder)
   }
 
   const onClickHandler = (_e: React.MouseEvent, node: GenericContentWithIsParent) => {
@@ -74,10 +74,10 @@ function PathPicker(props: PathPickerProps & ReturnType<typeof mapStateToProps> 
   return (
     <List>
       {items &&
-        items.map(node => (
+        items.map((node) => (
           <ListItem
             key={node.Id}
-            onClick={e => onClickHandler(e, node)}
+            onClick={(e) => onClickHandler(e, node)}
             onDoubleClick={() => navigateTo(node)}
             button={true}
             selected={selectedItem && node.Id === selectedItem.Id}>

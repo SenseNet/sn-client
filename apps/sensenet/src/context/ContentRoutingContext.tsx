@@ -3,7 +3,7 @@ import { useRepository } from '@sensenet/hooks-react'
 import { ContentContextProvider } from '../services/ContentContextProvider'
 
 export const ContentRoutingContext = React.createContext(null as any)
-export const ContentRoutingContextProvider: React.FunctionComponent = props => {
+export const ContentRoutingContextProvider: React.FunctionComponent = (props) => {
   const repo = useRepository()
   const [ctxProvider, setCtxProvider] = useState(new ContentContextProvider(repo))
 

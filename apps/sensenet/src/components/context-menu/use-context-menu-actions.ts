@@ -67,7 +67,7 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
           props: {
             content,
             oDataOptions: contextMenuODataOptions,
-            onActionSuccess: checkInResult => setActions(checkInResult),
+            onActionSuccess: (checkInResult) => setActions(checkInResult),
           },
         })
         break
@@ -107,7 +107,7 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
           props: {
             content,
             oDataOptions: contextMenuODataOptions,
-            onActionSuccess: approveResult => setActions(approveResult),
+            onActionSuccess: (approveResult) => setActions(approveResult),
           },
         })
         break

@@ -54,7 +54,7 @@ export class RepositoryManager {
       select: 'all',
     })
     this.repos.set(repositoryUrl, instance)
-    instance.authentication.state.subscribe(s => {
+    instance.authentication.state.subscribe((s) => {
       if (s === LoginState.Authenticated) {
         instance.reloadSchema()
       }

@@ -23,7 +23,7 @@ context('The documents page with admin', () => {
     })
     cy.contains('div', fileName, { timeout: 10000 }).should('exist')
     openContextMenu(fileName)
-    Object.keys(contextMenuItems).forEach(item => {
+    Object.keys(contextMenuItems).forEach((item) => {
       if (item === 'checkIn' || item === 'undoChanges') {
         return
       }
@@ -52,9 +52,7 @@ context('The documents page with admin', () => {
       uploadNewFileAndOpenContextMenuItem('e2e-admin', fileName, contextMenuItems.shareContent)
       cy.get('form input[type="email"]').type('invalid{enter}')
       cy.contains('invalid').should('not.exist')
-      cy.get('form input[type="email"]')
-        .clear()
-        .type('asd@asd.com{enter}')
+      cy.get('form input[type="email"]').clear().type('asd@asd.com{enter}')
       cy.contains('asd@asd.com').should('exist')
       cy.contains('button', 'Ok').click()
       openContextMenu(fileName)

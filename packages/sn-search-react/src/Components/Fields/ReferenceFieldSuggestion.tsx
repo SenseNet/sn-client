@@ -26,7 +26,7 @@ export const ReferenceFieldSuggestion: React.FunctionComponent<{
   item: GenericContent
   query: string
   isHighlighted: boolean
-}> = props => {
+}> = (props) => {
   const primary = getMatchParts(props.query, props.item.DisplayName || props.item.Name)
   const secondary = getMatchParts(props.query, props.item.Path)
   return (

@@ -85,7 +85,7 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
+const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = (props) => {
   const personalSettings = usePersonalSettings()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()

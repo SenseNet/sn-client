@@ -9,7 +9,7 @@ export const useStringReplace = (content: string) => {
   const personalSettings = usePersonalSettings()
 
   useEffect(() => {
-    const currentRepo = personalSettings.repositories.find(r => r.url === repo.configuration.repositoryUrl)
+    const currentRepo = personalSettings.repositories.find((r) => r.url === repo.configuration.repositoryUrl)
 
     const newReplacedContent = content
       .replace(

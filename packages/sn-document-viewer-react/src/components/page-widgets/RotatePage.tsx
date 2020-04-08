@@ -20,7 +20,7 @@ export interface RotatePageProps {
   zoomRatio: number
 }
 
-export const RotatePageWidget: React.FC<RotatePageProps> = props => {
+export const RotatePageWidget: React.FC<RotatePageProps> = (props) => {
   const localization = useLocalization()
 
   const [pageIndex] = useState(props.page.Index)

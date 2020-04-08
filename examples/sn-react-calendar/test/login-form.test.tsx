@@ -18,34 +18,18 @@ describe('LoginForm', () => {
   it('Username change test', async () => {
     const wrapper = mount(<LoginForm {...testprop} />)
     act(() => {
-      ;(wrapper
-        .find(TextField)
-        .first()
-        .prop('onChange') as any)({ target: { value: 'testusername' } } as any)
+      ;(wrapper.find(TextField).first().prop('onChange') as any)({ target: { value: 'testusername' } } as any)
     })
-    expect(
-      wrapper
-        .update()
-        .find(TextField)
-        .first()
-        .props().value,
-    ).toEqual('testusername')
+    expect(wrapper.update().find(TextField).first().props().value).toEqual('testusername')
   })
 
   it('Repository change test', async () => {
     const wrapper = mount(<LoginForm {...testprop} />)
     act(() => {
-      ;(wrapper
-        .find(TextField)
-        .at(2)
-        .prop('onChange') as any)({ target: { value: 'https://dev.demo.sensenet.com' } } as any)
+      ;(wrapper.find(TextField).at(2).prop('onChange') as any)({
+        target: { value: 'https://dev.demo.sensenet.com' },
+      } as any)
     })
-    expect(
-      wrapper
-        .update()
-        .find(TextField)
-        .at(2)
-        .props().value,
-    ).toEqual('https://dev.demo.sensenet.com')
+    expect(wrapper.update().find(TextField).at(2).props().value).toEqual('https://dev.demo.sensenet.com')
   })
 })
