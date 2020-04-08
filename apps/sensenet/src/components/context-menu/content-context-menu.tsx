@@ -42,13 +42,14 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
         logger.verbose({ message: 'There are no actions in content', data: contentFromCallback })
         return
       }
+      const contentActions = contentFromCallback.Actions.filter(action => !action.Forbidden)
 
       if (isWriteAvailable(contentFromCallback)) {
         // If write is available it means that we have two actions. We want to show only the open edit for the user.
-        const actionsWithoutWopiRead = contentFromCallback.Actions.filter(action => action.Name !== 'WopiOpenView')
+        const actionsWithoutWopiRead = contentActions.filter(action => action.Name !== 'WopiOpenView')
         setActions(actionsWithoutWopiRead)
       } else {
-        setActions(contentFromCallback.Actions)
+        setActions(contentActions)
       }
     },
     [isWriteAvailable, logger],

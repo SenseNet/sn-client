@@ -3,10 +3,11 @@ import { GenericContent, Schema } from '@sensenet/default-content-types'
 import { CurrentContentProvider } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { useState } from 'react'
-import { useHistory, useRouteMatch } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
 import { NewView } from '../view-controls/new-view'
+import { useQuery } from '../../hooks/use-query'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -22,8 +23,8 @@ const useStyles = makeStyles(() => {
 })
 
 export default function NewProperties() {
-  const match = useRouteMatch<{ contentId: string }>()
   const history = useHistory<{ schema: Schema }>()
+  const query = useQuery()
   const selectionService = useSelectionService()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
@@ -33,7 +34,7 @@ export default function NewProperties() {
   return (
     <div className={clsx(globalClasses.full, classes.editWrapper)}>
       <CurrentContentProvider
-        idOrPath={match.params.contentId}
+        idOrPath={query.get('path')!}
         onContentLoaded={c => {
           selectionService.activeContent.setValue(c)
           setCurrentContent(c)
