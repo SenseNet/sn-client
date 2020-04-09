@@ -32,9 +32,7 @@ jobs:
         run: yarn wait-on https://sensenet-sn-deploy-notifier.glitch.me/ -l -t 300000
 
       - name: Publish
-        uses: netlify/actions/cli@master
-        with:
-          args: deploy --dir=./apps/sensenet/build --message ${{ github.event.pull_request.number }}
+        run: npx netlify-cli@v2.41.0 deploy --dir=./apps/sensenet/build --message ${{ github.event.pull_request.number }}
         env:
           NETLIFY_SITE_ID: 94fb346c-b540-40f7-aaaf-21eee2a9c891
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
@@ -66,9 +64,7 @@ jobs:
         run: yarn wait-on https://sensenet-sn-deploy-notifier.glitch.me/ -l -t 300000
 
       - name: Publish
-        uses: netlify/actions/cli@master
-        with:
-          args: deploy --dir=./examples/sn-react-component-docs/storybook-static --message ${{ github.event.pull_request.number }}
+        run: npx netlify-cli@v2.41.0 deploy --dir=./examples/sn-react-component-docs/storybook-static --message ${{ github.event.pull_request.number }}
         env:
           NETLIFY_SITE_ID: 1747b330-27d8-4ddd-bf74-39469c257010
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
