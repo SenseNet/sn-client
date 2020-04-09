@@ -29,7 +29,7 @@ jobs:
           RELATIVE_CI_KEY: ${{ secrets.RELATIVE_CI_KEY }}
 
       - name: wake up deploy notifier
-        run: yarn wait-on https://sensenet-sn-deploy-notifier.glitch.me/ -l -t 300000
+        run: yarn wait-on https://sensenet-sn-deploy-notifier.glitch.me/ -l -t 300000 -i 10000
 
       - name: Publish
         run: npx netlify-cli@v2.41.0 deploy --dir=./apps/sensenet/build --message ${{ github.event.pull_request.number }}
@@ -61,7 +61,7 @@ jobs:
         run: yarn storybook build-storybook
 
       - name: wake up deploy notifier
-        run: yarn wait-on https://sensenet-sn-deploy-notifier.glitch.me/ -l -t 300000
+        run: yarn wait-on https://sensenet-sn-deploy-notifier.glitch.me/ -l -t 300000 -i 10000
 
       - name: Publish
         run: npx netlify-cli@v2.41.0 deploy --dir=./examples/sn-react-component-docs/storybook-static --message ${{ github.event.pull_request.number }}
