@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme: Theme) => {
       boxSizing: 'border-box',
       borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
       paddingLeft: '15px',
+      justifyContent: 'space-between',
     },
     treeAndDatagridWrapper: {
       display: 'flex',

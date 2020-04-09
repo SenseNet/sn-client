@@ -128,6 +128,11 @@ const values: DeepPartial<typeof import('./default').default> = {
   common: {
     loadingContent: 'Tartalom betöltése...',
   },
+  batchActions: {
+    delete: 'Kijelölt elemek törlése',
+    move: 'Kijelölt elemek áthelyezése',
+    copy: 'Kijelölt elemek másolása',
+  },
 }
 
 export default values
