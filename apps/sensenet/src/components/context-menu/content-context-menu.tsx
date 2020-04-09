@@ -43,8 +43,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
         return
       }
       const contentActions = contentFromCallback.Actions.filter((action) => !action.Forbidden)
-
-      if (contentActions.findIndex((action) => action.Name === 'Browse' && props.content.IsFile)) {
+      if (contentActions.some((action) => action.Name === 'Browse') && contentFromCallback.IsFile) {
         contentActions.push({
           Name: 'Download',
           DisplayName: 'Download',
