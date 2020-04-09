@@ -22,7 +22,7 @@ export default function Localization() {
         contentListProps={{
           enableBreadcrumbs: false,
           parentIdOrPath: '/Root/Localization',
-          onActivateItem: p => {
+          onActivateItem: (p) => {
             history.push(contentRouter.getPrimaryActionUrl(p))
           },
         }}

@@ -199,7 +199,7 @@ class BatchActionlist extends React.Component<
     }
     return (
       <MediaQuery minDeviceWidth={700}>
-        {matches => {
+        {(matches) => {
           return matches ? (
             <ul style={this.isHidden() ? { display: 'none', margin: 0 } : { display: 'block', margin: 0 }}>
               {actions.map((action, index) => {
@@ -224,7 +224,7 @@ class BatchActionlist extends React.Component<
                   aria-label="More"
                   aria-owns="actionmenu"
                   aria-haspopup="true"
-                  onClick={e => this.handleClick(e)}
+                  onClick={(e) => this.handleClick(e)}
                   style={{ position: 'relative' }}>
                   <Icon color="primary" type={iconType.materialui} iconName="more_vert" />
                 </IconButton>
@@ -235,7 +235,7 @@ class BatchActionlist extends React.Component<
               aria-label="Actions"
               aria-owns={'batch-actions'}
               aria-haspopup="true"
-              onClick={e => this.handleClickMobile(e)}
+              onClick={(e) => this.handleClickMobile(e)}
               style={{ height: 36 }}>
               <Icon style={styles.menuIcon} type={iconType.materialui} iconName="more_vert" />
             </IconButton>

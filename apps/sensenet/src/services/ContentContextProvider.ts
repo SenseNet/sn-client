@@ -81,7 +81,7 @@ export class ContentContextProvider {
     if (
       content.Actions &&
       (content.Actions as any[]).length > 0 &&
-      (content.Actions as ActionModel[]).find(a => a.Name === 'WopiOpenEdit')
+      (content.Actions as ActionModel[]).find((a) => a.Name === 'WopiOpenEdit')
     ) {
       return 'WopiEdit'
     }
@@ -89,7 +89,7 @@ export class ContentContextProvider {
     if (
       content.Actions &&
       (content.Actions as any[]).length > 0 &&
-      (content.Actions as ActionModel[]).find(a => a.Name === 'WopiOpenView')
+      (content.Actions as ActionModel[]).find((a) => a.Name === 'WopiOpenView')
     ) {
       return 'WopiRead'
     }

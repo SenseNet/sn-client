@@ -25,7 +25,7 @@ export type DeleteContentDialogProps = {
   content: GenericContent[]
 }
 
-export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogProps> = props => {
+export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogProps> = (props) => {
   const device = useContext(ResponsiveContext)
   const { closeLastDialog } = useDialog()
   const [isDeleteInProgress, setIsDeleteInProgress] = useState(false)
@@ -47,7 +47,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
       <DialogContent>
         <Typography>{localization.dialogContent}</Typography>
         <List dense={device === 'mobile'}>
-          {props.content.map(c => (
+          {props.content.map((c) => (
             <ListItem key={c.Id}>
               <ListItemIcon>
                 <Icon item={c} />
@@ -65,7 +65,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
               <FormControlLabel
                 style={{ marginLeft: '1em' }}
                 label={localization.permanentlyLabel}
-                control={<Checkbox disabled={isDeleteInProgress} onChange={ev => setPermanent(ev.target.checked)} />}
+                control={<Checkbox disabled={isDeleteInProgress} onChange={(ev) => setPermanent(ev.target.checked)} />}
               />
             </Tooltip>
           </>
@@ -89,7 +89,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                 selectionService.activeContent.setValue(parentContent.d)
                 selectionService.selection.setValue([])
                 const result = await repo.delete({
-                  idOrPath: props.content.map(c => c.Path),
+                  idOrPath: props.content.map((c) => c.Path),
                   permanent,
                 })
                 if (result.d.results.length) {
@@ -118,9 +118,9 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                         : localization.deleteSingleContentFailedNotification
                             .replace(
                               '{0}',
-                              (props.content.find(c => c.Id === result.d.errors[0].content.Id) as GenericContent)
+                              (props.content.find((c) => c.Id === result.d.errors[0].content.Id) as GenericContent)
                                 .DisplayName ||
-                                (props.content.find(c => c.Id === result.d.errors[0].content.Id) as GenericContent)
+                                (props.content.find((c) => c.Id === result.d.errors[0].content.Id) as GenericContent)
                                   .Name ||
                                 result.d.errors[0].content.Name,
                             )

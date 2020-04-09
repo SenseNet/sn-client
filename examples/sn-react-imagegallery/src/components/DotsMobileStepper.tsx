@@ -13,7 +13,7 @@ interface DottedStepperProps {
 /**
  * Fetches the images from the repository.
  */
-export const DotsMobileStepper: React.FunctionComponent<DottedStepperProps> = props => {
+export const DotsMobileStepper: React.FunctionComponent<DottedStepperProps> = (props) => {
   const useStyles = makeStyles({
     root: {
       maxWidth: '100%',

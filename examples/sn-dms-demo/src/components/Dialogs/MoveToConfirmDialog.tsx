@@ -64,7 +64,7 @@ class MoveToConfirmDialog extends React.Component<ReturnType<typeof mapStateToPr
   }
   public submitCallback = () => {
     this.props.moveContent(
-      this.props.selected.map(item => item.Id),
+      this.props.selected.map((item) => item.Id),
       this.props.target[0].Path,
     )
     this.props.closeDialog()
@@ -73,7 +73,7 @@ class MoveToConfirmDialog extends React.Component<ReturnType<typeof mapStateToPr
   public render() {
     return (
       <MediaQuery minDeviceWidth={700}>
-        {matches => (
+        {(matches) => (
           <div data-cy="moveTo">
             <Typography variant="h5" gutterBottom={true}>
               {resources.MOVE}
@@ -82,7 +82,7 @@ class MoveToConfirmDialog extends React.Component<ReturnType<typeof mapStateToPr
               <div style={{ opacity: 0.54 }}>{resources.ARE_YOU_SURE_YOU_WANT_TO_MOVE}</div>
               <div style={this.props.selected.length > 3 ? styles.longList : styles.normalList}>
                 <ul style={styles.list}>
-                  {this.props.selected.map(content => (
+                  {this.props.selected.map((content) => (
                     <li key={content.Id} style={styles.listItem}>
                       {content.DisplayName}
                     </li>

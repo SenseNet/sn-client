@@ -126,7 +126,7 @@ const groupContent: Group = {
 }
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <div>
       <PleaseLogin>
         <DynamicControl
@@ -144,7 +144,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <div>
       <PleaseLogin>
         <DynamicControl
@@ -162,7 +162,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <div>
       <PleaseLogin>
         <DynamicControl
@@ -180,7 +180,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
@@ -194,7 +194,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
@@ -208,7 +208,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
@@ -222,7 +222,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
@@ -236,7 +236,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
@@ -250,7 +250,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <DynamicControl actionName={actionName} repository={testRepository} content={testContent} fieldName="DisplayName" />
   ),
   markdown: displaynameNotes,
@@ -258,7 +258,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
@@ -272,9 +272,9 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => {
+  component: (actionName) => {
     const schema = reactControlMapper(testRepository).getFullSchemaForContentType('File', actionName)
-    const fieldMapping = schema.fieldMappings.find(a => a.fieldSettings.Name === 'DisplayName')
+    const fieldMapping = schema.fieldMappings.find((a) => a.fieldSettings.Name === 'DisplayName')
     return (
       <FileName
         actionName={actionName}
@@ -291,7 +291,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <div>
       <PleaseLogin>
         <DynamicControl
@@ -309,7 +309,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
@@ -323,7 +323,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
@@ -337,7 +337,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
@@ -351,7 +351,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
@@ -365,7 +365,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
@@ -379,7 +379,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
@@ -393,7 +393,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
@@ -407,7 +407,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <div>
       <PleaseLogin>
         <DynamicControl
@@ -425,7 +425,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
@@ -439,7 +439,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
@@ -453,7 +453,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <div>
       <PleaseLogin>
         <DynamicControl
@@ -471,7 +471,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
@@ -485,7 +485,7 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
+  component: (actionName) => (
     <DynamicControl
       actionName={actionName}
       repository={testRepository}

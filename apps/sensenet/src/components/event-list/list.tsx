@@ -19,7 +19,7 @@ import { EventListFilterContext } from './filter-context'
 export const List: React.FunctionComponent<{
   values: Array<LeveledLogEntry<any>>
   style?: React.CSSProperties
-}> = props => {
+}> = (props) => {
   const { filter } = useContext(EventListFilterContext)
   const [effectiveValues, setEffectiveValues] = useState<Array<LeveledLogEntry<any>>>([])
 
@@ -29,7 +29,7 @@ export const List: React.FunctionComponent<{
 
   useEffect(() => {
     setEffectiveValues(
-      props.values.filter(value => {
+      props.values.filter((value) => {
         return (
           (!filter.term || value.message.indexOf(filter.term) !== -1) &&
           (!filter.scope || (value.scope && value.scope.indexOf(filter.scope) !== -1)) &&
@@ -67,7 +67,7 @@ export const List: React.FunctionComponent<{
                   <RepositoryContext.Provider value={repositoryManager.getRepository(row.data.relatedRepository)}>
                     <ContentRoutingContextProvider>
                       <ContentRoutingContext.Consumer>
-                        {ctx => (
+                        {(ctx) => (
                           <CurrentContentContext.Provider value={row.data.relatedContent}>
                             <Link
                               to={ctx.getPrimaryActionUrl(row.data.relatedContent)}

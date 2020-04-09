@@ -35,7 +35,7 @@ export const SearchBar: React.FC = () => {
           placeholder={localization.search}
           onKeyPress={handleKeyPress}
           onSubmit={evaluateSearch}
-          onChange={ev => setSearchValue(ev.target.value)}
+          onChange={(ev) => setSearchValue(ev.target.value)}
           inputProps={{ style: { color: 'white' } }}
         />
       </Grid>

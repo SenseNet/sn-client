@@ -88,7 +88,7 @@ export const loadItems = async <T extends GenericContentWithIsParent>({
     oDataOptions: itemsODataOptions,
     requestInit: { signal: abortController.signal },
   })
-  const items = itemsResult.d.results.map(item => {
+  const items = itemsResult.d.results.map((item) => {
     return { ...item, isParent: false } as T & { isParent: boolean }
   })
   let parentResult

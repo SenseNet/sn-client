@@ -58,7 +58,7 @@ export interface AddButtonProps {
   path: string
 }
 
-export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
+export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
   const selectionService = useSelectionService()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
@@ -78,7 +78,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   const history = useHistory<{ schema: Schema }>()
 
   useEffect(() => {
-    const activeComponentObserve = selectionService.activeContent.subscribe(newActiveComponent =>
+    const activeComponentObserve = selectionService.activeContent.subscribe((newActiveComponent) =>
       setCurrentComponent(newActiveComponent),
     )
 
@@ -99,7 +99,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
     const getActions = async () => {
       try {
         const actions = await repo.getActions({ idOrPath: parent ? parent.Id : props.path })
-        const isActionFound = actions.d.Actions.some(action => action.Name === 'Add' || action.Name === 'Upload')
+        const isActionFound = actions.d.Actions.some((action) => action.Name === 'Add' || action.Name === 'Upload')
         setAvailable(isActionFound)
       } catch (error) {
         logger.error({
@@ -126,10 +126,10 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
         })
 
         const filteredTypes = allowedChildTypesFromRepo.d.results
-          .filter(type => repo.schemas.getSchemaByName(type.Name).ContentTypeName === type.Name)
-          .map(type => repo.schemas.getSchemaByName(type.Name))
+          .filter((type) => repo.schemas.getSchemaByName(type.Name).ContentTypeName === type.Name)
+          .map((type) => repo.schemas.getSchemaByName(type.Name))
 
-        const tempHasUpload = filteredTypes.some(type => personalSettings.uploadHandlers.includes(type.HandlerName))
+        const tempHasUpload = filteredTypes.some((type) => personalSettings.uploadHandlers.includes(type.HandlerName))
 
         setAllowedChildTypes(filteredTypes)
         setHasUpload(tempHasUpload)
@@ -254,7 +254,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
             </Tooltip>
           ) : null}
 
-          {allowedChildTypes.map(childType => (
+          {allowedChildTypes.map((childType) => (
             <Tooltip key={childType.ContentTypeName} title={childType.DisplayName} placement="right">
               <ListItem
                 button={true}

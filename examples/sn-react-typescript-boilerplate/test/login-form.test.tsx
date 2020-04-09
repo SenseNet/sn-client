@@ -12,7 +12,7 @@ describe('Login Form', () => {
   it('executes onLogin after login', () => {
     const onLogin = jest.fn()
     const l = shallow(<LoginForm onLogin={onLogin} />)
-    l.findWhere(e => e.type() === TextField).map(e =>
+    l.findWhere((e) => e.type() === TextField).map((e) =>
       e.prop('onChange')({
         preventDefault: () => undefined,
         target: { value: 'aaa' },

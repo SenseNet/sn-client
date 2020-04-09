@@ -34,17 +34,13 @@ export class QueryCommandProvider implements CommandProvider {
       },
     })
     return [
-      ...result.d.results.map(content => ({
+      ...result.d.results.map((content) => ({
         primaryText: content.DisplayName || content.Name,
         secondaryText: content.Path,
         url: ctx.getPrimaryActionUrl(content),
         content,
         icon: content.Icon,
-        hits: options.term
-          .substr(1)
-          .replace(/\*/g, ' ')
-          .replace(/\?/g, ' ')
-          .split(' '),
+        hits: options.term.substr(1).replace(/\*/g, ' ').replace(/\?/g, ' ').split(' '),
       })),
       {
         primaryText: this.localization.currentValues.getValue().search.openInSearchTitle,

@@ -37,7 +37,7 @@ export const reactControlMapper = (repository: Repository) => {
     .setupFieldSettingDefault('BinaryFieldSetting', () => {
       return FieldControls.FileUpload
     })
-    .setupFieldSettingDefault('ShortTextFieldSetting', setting => {
+    .setupFieldSettingDefault('ShortTextFieldSetting', (setting) => {
       switch (setting.ControlHint) {
         case 'sn:Name':
           return FieldControls.Name
@@ -55,7 +55,7 @@ export const reactControlMapper = (repository: Repository) => {
     .setupFieldSettingDefault('DateTimeFieldSetting', () => {
       return FieldControls.DatePicker
     })
-    .setupFieldSettingDefault<ChoiceFieldSetting>('ChoiceFieldSetting', setting => {
+    .setupFieldSettingDefault<ChoiceFieldSetting>('ChoiceFieldSetting', (setting) => {
       switch (setting.DisplayChoice) {
         case 2:
           return FieldControls.CheckboxGroup
@@ -71,14 +71,14 @@ export const reactControlMapper = (repository: Repository) => {
           }
       }
     })
-    .setupFieldSettingDefault<ReferenceFieldSetting>('ReferenceFieldSetting', setting => {
+    .setupFieldSettingDefault<ReferenceFieldSetting>('ReferenceFieldSetting', (setting) => {
       if (setting.AllowedTypes && setting.AllowedTypes.indexOf('User') !== -1 && setting.AllowMultiple) {
         return FieldControls.TagsInput
       } else {
         return FieldControls.ReferenceGrid
       }
     })
-    .setupFieldSettingDefault<LongTextFieldSetting>('LongTextFieldSetting', setting => {
+    .setupFieldSettingDefault<LongTextFieldSetting>('LongTextFieldSetting', (setting) => {
       switch (setting.TextType) {
         case 'LongText':
           return FieldControls.Textarea
@@ -93,7 +93,7 @@ export const reactControlMapper = (repository: Repository) => {
           }
       }
     })
-    .setupFieldSettingDefault('NullFieldSetting', setting => {
+    .setupFieldSettingDefault('NullFieldSetting', (setting) => {
       if (setting.Name === 'Avatar') {
         return FieldControls.Avatar
       } else if (

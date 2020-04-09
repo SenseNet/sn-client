@@ -30,9 +30,11 @@ const useStyles = makeStyles(() => {
   })
 })
 
-const DocViewer: React.FunctionComponent<RouteComponentProps<{ documentId: string }> & {
-  previousLocation?: string
-}> = props => {
+const DocViewer: React.FunctionComponent<
+  RouteComponentProps<{ documentId: string }> & {
+    previousLocation?: string
+  }
+> = (props) => {
   const documentId = parseInt(props.match.params.documentId, 10)
   const selectionService = useSelectionService()
   const localization = useLocalization()
@@ -63,7 +65,7 @@ const DocViewer: React.FunctionComponent<RouteComponentProps<{ documentId: strin
 
   return (
     <div className={clsx(globalClasses.full, classes.docViewerWrapper)}>
-      <CurrentContentProvider idOrPath={documentId} onContentLoaded={c => selectionService.activeContent.setValue(c)}>
+      <CurrentContentProvider idOrPath={documentId} onContentLoaded={(c) => selectionService.activeContent.setValue(c)}>
         <DocumentViewer documentIdOrPath={documentId}>
           <LayoutAppBar>
             <div style={{ flexShrink: 0 }}>

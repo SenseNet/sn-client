@@ -10,7 +10,7 @@ export const CurrentContentProvider: React.FunctionComponent<{
   idOrPath: number | string
   onContentLoaded?: (content: GenericContent) => void
   oDataOptions?: ODataParams<GenericContent>
-}> = props => {
+}> = (props) => {
   const [loadLock] = useState(new Semaphore(1))
   const [content, setContent] = useState<GenericContent>(ConstantContent.PORTAL_ROOT)
   const repo = useRepository()
@@ -27,7 +27,7 @@ export const CurrentContentProvider: React.FunctionComponent<{
         }
       }),
     ]
-    return () => subscriptions.forEach(s => s.dispose())
+    return () => subscriptions.forEach((s) => s.dispose())
   }, [repo, content, injector, events.onContentModified])
 
   const [error, setError] = useState<Error | undefined>()

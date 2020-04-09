@@ -14,7 +14,7 @@ export interface ShareProps {
 /**
  * Component that allows active page rotation
  */
-export const Share: React.FC<ShareProps> = props => {
+export const Share: React.FC<ShareProps> = (props) => {
   const localization = useLocalization()
   const { documentData } = useDocumentData()
   return (

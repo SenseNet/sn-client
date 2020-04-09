@@ -36,20 +36,14 @@ describe('Confirmation dialog component', () => {
   it('should give back true when ok is clicked', () => {
     const onClose = jest.fn()
     const wrapper = shallow(<ConfirmationDialog {...defaultProps} onClose={onClose} />)
-    wrapper
-      .find(Button)
-      .last()
-      .simulate('click')
+    wrapper.find(Button).last().simulate('click')
     expect(onClose).toBeCalledWith(true)
   })
 
   it('should give back false when cancel is clicked', () => {
     const onClose = jest.fn()
     const wrapper = shallow(<ConfirmationDialog {...defaultProps} onClose={onClose} />)
-    wrapper
-      .find(Button)
-      .first()
-      .simulate('click')
+    wrapper.find(Button).first().simulate('click')
     expect(onClose).toBeCalledWith(false)
   })
 })

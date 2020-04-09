@@ -51,12 +51,12 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-export const FileList: React.FC<Props> = props => {
+export const FileList: React.FC<Props> = (props) => {
   const classes = useStyles()
 
   return (
     <List className={classes.listRoot}>
-      {[...props.files].map(file => (
+      {[...props.files].map((file) => (
         <ListItem
           key={v1()}
           className={clsx(classes.listItem, { [classes.infoPadding]: file.progress && file.progress.error })}>
@@ -79,7 +79,7 @@ export const FileList: React.FC<Props> = props => {
               disabled={props.isUploadInProgress}
               edge="end"
               aria-label="remove"
-              onClick={ev => {
+              onClick={(ev) => {
                 ev.stopPropagation()
                 props.removeItem(file)
               }}>

@@ -40,13 +40,13 @@ storiesOf('Search', module)
       <AdvancedSearch
         schema={null as any}
         onQueryChanged={action('queryChange')}
-        fields={options => (
+        fields={(options) => (
           <div>
             <button
               onClick={() =>
                 options.updateQuery(
                   'example',
-                  new Query(q => q.equals('Index', parseInt((Math.random() * 100) as any, 10))),
+                  new Query((q) => q.equals('Index', parseInt((Math.random() * 100) as any, 10))),
                 )
               }>
               Update Query
@@ -68,11 +68,11 @@ storiesOf('Search', module)
             <PresetField
               fieldName="CreationDate"
               presets={[
-                { text: '-', value: new Query(a => a) },
-                { text: 'Today', value: new Query(a => a.term('CreationDate:>@@Today@@')) },
+                { text: '-', value: new Query((a) => a) },
+                { text: 'Today', value: new Query((a) => a.term('CreationDate:>@@Today@@')) },
                 {
                   text: 'Yesterday',
-                  value: new Query(a => a.term('CreationDate:>@@Yesterday@@').and.term('CreationDate:<@@Today@@')),
+                  value: new Query((a) => a.term('CreationDate:>@@Yesterday@@').and.term('CreationDate:<@@Today@@')),
                 },
               ]}
               onQueryChange={action('onQueryChange')}

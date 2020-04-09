@@ -29,7 +29,7 @@ const addGuidToShape = <T extends Shape>(shape: T) => {
  * @param {DocumentData} documentData
  */
 function changeCreatedByUrlToCurrent(documentData: DocumentData): (value: CommentData) => CommentData {
-  return comment => {
+  return (comment) => {
     return {
       ...comment,
       createdBy: { ...comment.createdBy, avatarUrl: `${documentData.hostName}${comment.createdBy.avatarUrl}` },
@@ -83,8 +83,8 @@ export const createDefaultApiSettings: (repo: Repository) => DocumentViewerApiSe
       ]),
       PageAttributes: JSON.stringify(
         pages
-          .map(p => (p.Attributes && p.Attributes.degree && { pageNum: p.Index, options: p.Attributes }) || undefined)
-          .filter(p => p !== undefined),
+          .map((p) => (p.Attributes && p.Attributes.degree && { pageNum: p.Index, options: p.Attributes }) || undefined)
+          .filter((p) => p !== undefined),
       ),
     }
     await repo.patch<SnFile>({
@@ -95,7 +95,7 @@ export const createDefaultApiSettings: (repo: Repository) => DocumentViewerApiSe
       },
     })
   },
-  getDocumentData: async settings => {
+  getDocumentData: async (settings) => {
     const documentData = (
       await repo.load<SnFile>({
         idOrPath: settings.idOrPath,
@@ -113,9 +113,10 @@ export const createDefaultApiSettings: (repo: Repository) => DocumentViewerApiSe
       documentName: documentData.DisplayName || '',
       documentType: documentData.Type || 'File',
       shapes: (documentData.Shapes && {
-        redactions: (JSON.parse(documentData.Shapes)[0].redactions as Redaction[]).map(a => addGuidToShape(a)) || [],
-        annotations: (JSON.parse(documentData.Shapes)[2].annotations as Annotation[]).map(a => addGuidToShape(a)) || [],
-        highlights: (JSON.parse(documentData.Shapes)[1].highlights as Highlight[]).map(a => addGuidToShape(a)) || [],
+        redactions: (JSON.parse(documentData.Shapes)[0].redactions as Redaction[]).map((a) => addGuidToShape(a)) || [],
+        annotations:
+          (JSON.parse(documentData.Shapes)[2].annotations as Annotation[]).map((a) => addGuidToShape(a)) || [],
+        highlights: (JSON.parse(documentData.Shapes)[1].highlights as Highlight[]).map((a) => addGuidToShape(a)) || [],
       }) || {
         redactions: [],
         annotations: [],
@@ -183,7 +184,7 @@ export const createDefaultApiSettings: (repo: Repository) => DocumentViewerApiSe
       },
     })
 
-    const availablePreviews = ((await response) as Array<PreviewImageData & { PreviewAvailable?: string }>).map(a => {
+    const availablePreviews = ((await response) as Array<PreviewImageData & { PreviewAvailable?: string }>).map((a) => {
       if (a.PreviewAvailable) {
         a.PreviewImageUrl = `${document.hostName}${a.PreviewAvailable}`
         a.ThumbnailImageUrl = `${document.hostName}${a.PreviewAvailable.replace('preview', 'thumbnail')}`
@@ -194,7 +195,7 @@ export const createDefaultApiSettings: (repo: Repository) => DocumentViewerApiSe
     const allPreviews: PreviewImageData[] = []
     for (let i = 0; i < document.pageCount; i++) {
       allPreviews[i] = availablePreviews[i] || ({ Index: i + 1 } as any)
-      const pageAttributes = document.pageAttributes.find(p => p.pageNum === allPreviews[i].Index)
+      const pageAttributes = document.pageAttributes.find((p) => p.pageNum === allPreviews[i].Index)
       allPreviews[i].Attributes = pageAttributes && pageAttributes.options
     }
     return allPreviews

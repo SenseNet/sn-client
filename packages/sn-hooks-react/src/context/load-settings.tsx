@@ -67,7 +67,7 @@ const setLoadChildrenSettingsReducer = (state: ODataParams<GenericContent>, valu
   return value
 }
 
-export const LoadSettingsContextProvider: React.FunctionComponent = props => {
+export const LoadSettingsContextProvider: React.FunctionComponent = (props) => {
   const [loadSettings, setLoadSettings] = React.useReducer(setLoadSettingsReducer, {})
   const [loadChildrenSettings, setLoadChildrenSettings] = React.useReducer(
     setLoadChildrenSettingsReducer,

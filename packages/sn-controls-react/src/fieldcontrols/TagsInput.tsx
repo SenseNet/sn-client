@@ -83,7 +83,7 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
       this.props.fieldOnChange(
         this.props.settings.Name,
         // eslint-disable-next-line array-callback-return
-        s.map(content => {
+        s.map((content) => {
           if (content) {
             return content.Id
           }
@@ -154,11 +154,11 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
    * returns a content by its id
    */
   public getContentById = (id: number) => {
-    return this.state.dataSource.find(item => item.Id === id)
+    return this.state.dataSource.find((item) => item.Id === id)
   }
 
   public handleDelete = (id: number) => {
-    const newValue = this.state.fieldValue.filter(item => item.Id !== id)
+    const newValue = this.state.fieldValue.filter((item) => item.Id !== id)
     this.setState({
       fieldValue: newValue,
     })
@@ -166,7 +166,7 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
     this.props.fieldOnChange &&
       this.props.fieldOnChange(
         this.props.settings.Name,
-        newValue.map(content => content.Id),
+        newValue.map((content) => content.Id),
       )
   }
 
@@ -175,7 +175,7 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
    */
   public getValue() {
     if (this.props.settings.AllowMultiple) {
-      return this.state.fieldValue.length ? this.state.fieldValue.map(c => c.Id) : []
+      return this.state.fieldValue.length ? this.state.fieldValue.map((c) => c.Id) : []
     }
     return this.state.fieldValue.length ? [this.state.fieldValue[0].Id] : ''
   }
@@ -199,7 +199,7 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
               renderValue={() => (
                 <div style={styles.chips as any}>
                   {this.state.fieldValue &&
-                    this.state.fieldValue.map(content =>
+                    this.state.fieldValue.map((content) =>
                       isUser(content) ? (
                         <Chip
                           avatar={
@@ -233,7 +233,7 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
               )}
               MenuProps={menuProps}>
               {this.state.dataSource &&
-                this.state.dataSource.map(content => (
+                this.state.dataSource.map((content) => (
                   <MenuItem key={content.Id} value={content.Id}>
                     {content.DisplayName}
                   </MenuItem>

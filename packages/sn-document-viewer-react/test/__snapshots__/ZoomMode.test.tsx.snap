@@ -25,7 +25,6 @@ exports[`ZoomMode component should render without crashing 1`] = `
                 aria-hidden="true"
                 class="MuiSvgIcon-root"
                 focusable="false"
-                role="presentation"
                 viewBox="0 0 24 24"
               >
                 <path
@@ -125,7 +124,6 @@ exports[`ZoomMode component should render without crashing 1`] = `
                         aria-hidden="true"
                         className="MuiSvgIcon-root"
                         focusable="false"
-                        role="presentation"
                         viewBox="0 0 24 24"
                       >
                         <path
@@ -137,7 +135,7 @@ exports[`ZoomMode component should render without crashing 1`] = `
                 </ForwardRef>
               </span>
               <NoSsr>
-                <WithStyles(undefined)
+                <WithStyles(memo)
                   center={true}
                 >
                   <ForwardRef(TouchRipple)
@@ -164,7 +162,7 @@ exports[`ZoomMode component should render without crashing 1`] = `
                       />
                     </span>
                   </ForwardRef(TouchRipple)>
-                </WithStyles(undefined)>
+                </WithStyles(memo)>
               </NoSsr>
             </button>
           </ForwardRef(ButtonBase)>
@@ -291,7 +289,6 @@ exports[`ZoomMode component should render without crashing 2`] = `
                 aria-hidden="true"
                 class="MuiSvgIcon-root"
                 focusable="false"
-                role="presentation"
                 viewBox="0 0 24 24"
               >
                 <path
@@ -394,7 +391,6 @@ exports[`ZoomMode component should render without crashing 2`] = `
                         aria-hidden="true"
                         className="MuiSvgIcon-root"
                         focusable="false"
-                        role="presentation"
                         viewBox="0 0 24 24"
                       >
                         <path
@@ -409,7 +405,7 @@ exports[`ZoomMode component should render without crashing 2`] = `
                 </ForwardRef>
               </span>
               <NoSsr>
-                <WithStyles(undefined)
+                <WithStyles(memo)
                   center={true}
                 >
                   <ForwardRef(TouchRipple)
@@ -436,7 +432,7 @@ exports[`ZoomMode component should render without crashing 2`] = `
                       />
                     </span>
                   </ForwardRef(TouchRipple)>
-                </WithStyles(undefined)>
+                </WithStyles(memo)>
               </NoSsr>
             </button>
           </ForwardRef(ButtonBase)>
@@ -563,7 +559,6 @@ exports[`ZoomMode component should render without crashing 3`] = `
                 aria-hidden="true"
                 class="MuiSvgIcon-root"
                 focusable="false"
-                role="presentation"
                 viewBox="0 0 24 24"
               >
                 <path
@@ -663,7 +658,6 @@ exports[`ZoomMode component should render without crashing 3`] = `
                         aria-hidden="true"
                         className="MuiSvgIcon-root"
                         focusable="false"
-                        role="presentation"
                         viewBox="0 0 24 24"
                       >
                         <path
@@ -675,7 +669,7 @@ exports[`ZoomMode component should render without crashing 3`] = `
                 </ForwardRef>
               </span>
               <NoSsr>
-                <WithStyles(undefined)
+                <WithStyles(memo)
                   center={true}
                 >
                   <ForwardRef(TouchRipple)
@@ -702,7 +696,7 @@ exports[`ZoomMode component should render without crashing 3`] = `
                       />
                     </span>
                   </ForwardRef(TouchRipple)>
-                </WithStyles(undefined)>
+                </WithStyles(memo)>
               </NoSsr>
             </button>
           </ForwardRef(ButtonBase)>
@@ -829,7 +823,6 @@ exports[`ZoomMode component should render without crashing 4`] = `
                 aria-hidden="true"
                 class="MuiSvgIcon-root"
                 focusable="false"
-                role="presentation"
                 style="transform: rotate(90deg);"
                 viewBox="0 0 24 24"
               >
@@ -947,7 +940,6 @@ exports[`ZoomMode component should render without crashing 4`] = `
                         aria-hidden="true"
                         className="MuiSvgIcon-root"
                         focusable="false"
-                        role="presentation"
                         style={
                           Object {
                             "transform": "rotate(90deg)",
@@ -964,7 +956,7 @@ exports[`ZoomMode component should render without crashing 4`] = `
                 </ForwardRef>
               </span>
               <NoSsr>
-                <WithStyles(undefined)
+                <WithStyles(memo)
                   center={true}
                 >
                   <ForwardRef(TouchRipple)
@@ -991,7 +983,7 @@ exports[`ZoomMode component should render without crashing 4`] = `
                       />
                     </span>
                   </ForwardRef(TouchRipple)>
-                </WithStyles(undefined)>
+                </WithStyles(memo)>
               </NoSsr>
             </button>
           </ForwardRef(ButtonBase)>
@@ -1118,7 +1110,6 @@ exports[`ZoomMode component should render without crashing 5`] = `
                 aria-hidden="true"
                 class="MuiSvgIcon-root"
                 focusable="false"
-                role="presentation"
                 viewBox="0 0 24 24"
               >
                 <path
@@ -1218,7 +1209,6 @@ exports[`ZoomMode component should render without crashing 5`] = `
                         aria-hidden="true"
                         className="MuiSvgIcon-root"
                         focusable="false"
-                        role="presentation"
                         viewBox="0 0 24 24"
                       >
                         <path
@@ -1230,7 +1220,7 @@ exports[`ZoomMode component should render without crashing 5`] = `
                 </ForwardRef>
               </span>
               <NoSsr>
-                <WithStyles(undefined)
+                <WithStyles(memo)
                   center={true}
                 >
                   <ForwardRef(TouchRipple)
@@ -1257,7 +1247,7 @@ exports[`ZoomMode component should render without crashing 5`] = `
                       />
                     </span>
                   </ForwardRef(TouchRipple)>
-                </WithStyles(undefined)>
+                </WithStyles(memo)>
               </NoSsr>
             </button>
           </ForwardRef(ButtonBase)>
@@ -1384,7 +1374,6 @@ exports[`ZoomMode component should render without crashing 6`] = `
                 aria-hidden="true"
                 class="MuiSvgIcon-root"
                 focusable="false"
-                role="presentation"
                 viewBox="0 0 24 24"
               >
                 <path
@@ -1484,7 +1473,6 @@ exports[`ZoomMode component should render without crashing 6`] = `
                         aria-hidden="true"
                         className="MuiSvgIcon-root"
                         focusable="false"
-                        role="presentation"
                         viewBox="0 0 24 24"
                       >
                         <path
@@ -1496,7 +1484,7 @@ exports[`ZoomMode component should render without crashing 6`] = `
                 </ForwardRef>
               </span>
               <NoSsr>
-                <WithStyles(undefined)
+                <WithStyles(memo)
                   center={true}
                 >
                   <ForwardRef(TouchRipple)
@@ -1523,7 +1511,7 @@ exports[`ZoomMode component should render without crashing 6`] = `
                       />
                     </span>
                   </ForwardRef(TouchRipple)>
-                </WithStyles(undefined)>
+                </WithStyles(memo)>
               </NoSsr>
             </button>
           </ForwardRef(ButtonBase)>
@@ -1650,7 +1638,6 @@ exports[`ZoomMode component should render without crashing 7`] = `
                 aria-hidden="true"
                 class="MuiSvgIcon-root"
                 focusable="false"
-                role="presentation"
                 viewBox="0 0 24 24"
               >
                 <path
@@ -1750,7 +1737,6 @@ exports[`ZoomMode component should render without crashing 7`] = `
                         aria-hidden="true"
                         className="MuiSvgIcon-root"
                         focusable="false"
-                        role="presentation"
                         viewBox="0 0 24 24"
                       >
                         <path
@@ -1762,7 +1748,7 @@ exports[`ZoomMode component should render without crashing 7`] = `
                 </ForwardRef>
               </span>
               <NoSsr>
-                <WithStyles(undefined)
+                <WithStyles(memo)
                   center={true}
                 >
                   <ForwardRef(TouchRipple)
@@ -1789,7 +1775,7 @@ exports[`ZoomMode component should render without crashing 7`] = `
                       />
                     </span>
                   </ForwardRef(TouchRipple)>
-                </WithStyles(undefined)>
+                </WithStyles(memo)>
               </NoSsr>
             </button>
           </ForwardRef(ButtonBase)>

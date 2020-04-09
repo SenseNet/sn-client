@@ -76,7 +76,7 @@ const NewTaskPanel: React.FunctionComponent<NewTaskPanel> = ({ data, setData }) 
       className={classes.container}
       noValidate
       autoComplete="off"
-      onSubmit={ev => {
+      onSubmit={(ev) => {
         ev.preventDefault()
         createTask(newTask).then(() => cleanInput())
       }}>

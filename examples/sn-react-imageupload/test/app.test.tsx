@@ -26,12 +26,7 @@ describe('Get Images from repository', () => {
         </RepositoryContext.Provider>,
       )
     })
-    expect(
-      wrapper
-        .update()
-        .find(AdvancedGridList)
-        .prop('imgList'),
-    ).not.toBe([])
+    expect(wrapper.update().find(AdvancedGridList).prop('imgList')).not.toBe([])
   })
   it('getselectedImage without result', async () => {
     const repository = {
@@ -49,12 +44,7 @@ describe('Get Images from repository', () => {
           <App />
         </RepositoryContext.Provider>,
       )
-      expect(
-        wrapper
-          .update()
-          .find(AdvancedGridList)
-          .prop('imgList'),
-      ).toStrictEqual([])
+      expect(wrapper.update().find(AdvancedGridList).prop('imgList')).toStrictEqual([])
     })
   })
   it('Reload Images', async () => {
@@ -99,17 +89,9 @@ describe('Notification Control', () => {
         </RepositoryContext.Provider>,
       )
       await act(async () => {
-        wrapper
-          .update()
-          .find(AdvancedGridList)
-          .prop('notificationControll')(true)
+        wrapper.update().find(AdvancedGridList).prop('notificationControll')(true)
       })
-      expect(
-        wrapper
-          .update()
-          .find(Snackbar)
-          .prop('open'),
-      ).toBe(true)
+      expect(wrapper.update().find(Snackbar).prop('open')).toBe(true)
     })
   })
   it('should close notification', async () => {
@@ -129,17 +111,9 @@ describe('Notification Control', () => {
         </RepositoryContext.Provider>,
       )
       await act(async () => {
-        wrapper
-          .update()
-          .find(Snackbar)
-          .prop('onClose')()
+        wrapper.update().find(Snackbar).prop('onClose')()
       })
-      expect(
-        wrapper
-          .update()
-          .find(Snackbar)
-          .prop('open'),
-      ).toBe(false)
+      expect(wrapper.update().find(Snackbar).prop('open')).toBe(false)
     })
   })
 })

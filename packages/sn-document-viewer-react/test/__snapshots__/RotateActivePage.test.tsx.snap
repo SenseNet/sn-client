@@ -103,7 +103,6 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
                         aria-hidden="true"
                         className="MuiSvgIcon-root"
                         focusable="false"
-                        role="presentation"
                         viewBox="0 0 24 24"
                       >
                         <path
@@ -115,7 +114,7 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
                 </ForwardRef>
               </span>
               <NoSsr>
-                <WithStyles(undefined)
+                <WithStyles(memo)
                   center={true}
                 >
                   <ForwardRef(TouchRipple)
@@ -142,7 +141,7 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
                       />
                     </span>
                   </ForwardRef(TouchRipple)>
-                </WithStyles(undefined)>
+                </WithStyles(memo)>
               </NoSsr>
             </button>
           </ForwardRef(ButtonBase)>
@@ -243,7 +242,6 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
                         aria-hidden="true"
                         className="MuiSvgIcon-root"
                         focusable="false"
-                        role="presentation"
                         viewBox="0 0 24 24"
                       >
                         <path
@@ -255,7 +253,7 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
                 </ForwardRef>
               </span>
               <NoSsr>
-                <WithStyles(undefined)
+                <WithStyles(memo)
                   center={true}
                 >
                   <ForwardRef(TouchRipple)
@@ -282,7 +280,7 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
                       />
                     </span>
                   </ForwardRef(TouchRipple)>
-                </WithStyles(undefined)>
+                </WithStyles(memo)>
               </NoSsr>
             </button>
           </ForwardRef(ButtonBase)>

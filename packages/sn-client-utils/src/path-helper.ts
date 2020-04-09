@@ -58,7 +58,7 @@ export class PathHelper {
    */
   public static isItemPath(path: string): boolean {
     const segments = this.getSegments(path)
-    const itemSegment = segments.find(s => this.isItemSegment(s))
+    const itemSegment = segments.find((s) => this.isItemSegment(s))
     return itemSegment && itemSegment.length ? true : false
   }
 

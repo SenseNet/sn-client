@@ -30,12 +30,7 @@ describe('List picker component', () => {
       wrapper = mount(<ListPickerComponent repository={repository(genericContentItems) as any} />)
     })
 
-    expect(
-      wrapper
-        .update()
-        .find(ListItem)
-        .exists(),
-    ).toBeTruthy()
+    expect(wrapper.update().find(ListItem).exists()).toBeTruthy()
     expect(wrapper.find(ListItem).length).toBe(4)
   })
 
@@ -107,18 +102,11 @@ describe('List picker component', () => {
     })
 
     await act(async () => {
-      wrapper
-        .update()
-        .find(ListItem)
-        .first()
-        .simulate('dblclick')
+      wrapper.update().find(ListItem).first().simulate('dblclick')
     })
     expect(onNavigation).toBeCalledWith(genericContentItems[0].Path)
     await act(async () => {
-      wrapper
-        .find(ListItem)
-        .first()
-        .simulate('dblclick')
+      wrapper.find(ListItem).first().simulate('dblclick')
     })
     expect(onNavigation).toBeCalledWith(genericContentItems[3].Path)
   })
@@ -134,11 +122,7 @@ describe('List picker component', () => {
         />,
       )
     })
-    wrapper
-      .update()
-      .find(ListItem)
-      .first()
-      .simulate('click')
+    wrapper.update().find(ListItem).first().simulate('click')
     expect(onSelectionChanged).toBeCalled()
   })
 
@@ -147,12 +131,7 @@ describe('List picker component', () => {
     await act(async () => {
       wrapper = mount(<PickerWithoutOptions repository={repository(genericContentItems) as any} />)
     })
-    expect(
-      wrapper
-        .update()
-        .find('li')
-        .exists(),
-    ).toBeTruthy()
+    expect(wrapper.update().find('li').exists()).toBeTruthy()
     expect(wrapper.find('li').length).toBe(4)
   })
 })

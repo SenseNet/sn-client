@@ -74,7 +74,7 @@ class Picker extends React.Component<ReturnType<typeof mapStateToProps>, {}> {
     const { open } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
-        {matches => (
+        {(matches) => (
           <MuiThemeProvider theme={pickerTheme}>
             {matches ? (
               <Dialog open={open} onClose={this.handleClose}>

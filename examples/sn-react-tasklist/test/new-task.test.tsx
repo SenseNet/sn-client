@@ -33,11 +33,7 @@ describe('The app layout instance', () => {
       )
     })
     act(() => {
-      wrapper
-        .update()
-        .find(NewTaskPanel)
-        .find('form')
-        .prop('onSubmit')({
+      wrapper.update().find(NewTaskPanel).find('form').prop('onSubmit')({
         preventDefault: () => undefined,
         createtastkfunction: createtastkfunction('newTaskName'),
       } as any)
@@ -54,16 +50,8 @@ describe('The app layout instance', () => {
       wrapper = shallow(<NewTaskPanel {...(TodoItems as any)} />)
     })
     act(() => {
-      wrapper
-        .update()
-        .find(TextField)
-        .prop('onChange')(testevent)
+      wrapper.update().find(TextField).prop('onChange')(testevent)
     })
-    expect(
-      wrapper
-        .update()
-        .find(TextField)
-        .prop('value'),
-    ).toBe('new test task name')
+    expect(wrapper.update().find(TextField).prop('value')).toBe('new test task name')
   })
 })

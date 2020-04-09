@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) => {
 /**
  * Field control that represents a Date field. Available values will be populated from the FieldSettings.
  */
-export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>> = props => {
+export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>> = (props) => {
   const initialState = props.fieldValue || changeJScriptValue(props.settings.DefaultValue) || moment().toISOString()
   const [value, setValue] = useState(initialState)
   const classes = useStyles()
@@ -115,9 +115,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
           </Typography>
           {props.settings.DateTimeMode === DateTimeMode.Date ? (
             <Typography variant="body1" gutterBottom={true}>
-              {moment(props.fieldValue)
-                .format('LL')
-                .toLocaleString()}
+              {moment(props.fieldValue).format('LL').toLocaleString()}
             </Typography>
           ) : (
             <Typography variant="body1" gutterBottom={true}>

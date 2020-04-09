@@ -23,7 +23,7 @@ export interface CopyMoveDialogProps {
   operation: 'copy' | 'move'
 }
 
-export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = props => {
+export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (props) => {
   const repo = useRepository()
   const { closeLastDialog } = useDialog()
   const list = useListPicker({
@@ -59,7 +59,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
       <DialogContent>
         <List>
           {list.items &&
-            list.items.map(item => (
+            list.items.map((item) => (
               <ListItem
                 key={item.Id}
                 button={true}
@@ -92,7 +92,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
             try {
               if (list.selectedItem) {
                 const action = props.operation === 'copy' ? repo.copy : repo.move
-                const result = await action({ idOrPath: props.content.map(c => c.Id), targetPath: list.path })
+                const result = await action({ idOrPath: props.content.map((c) => c.Id), targetPath: list.path })
 
                 if (result.d.results.length === 1 && result.d.errors.length === 0) {
                   logger.information({

@@ -10,11 +10,11 @@ export const usePreviewImage = (pageNo: number) => {
   const { documentData } = useDocumentData()
   const viewerSettings = useViewerSettings()
   const viewerState = useViewerState()
-  const [previewImage, setPreviewImage] = useState(images.imageData.find(i => i.Index === pageNo))
+  const [previewImage, setPreviewImage] = useState(images.imageData.find((i) => i.Index === pageNo))
   const { imageData, ...context } = { ...images }
 
   useEffect(() => {
-    setPreviewImage(images.imageData.find(i => i.Index === pageNo))
+    setPreviewImage(images.imageData.find((i) => i.Index === pageNo))
   }, [images.imageData, pageNo])
 
   useEffect(() => {

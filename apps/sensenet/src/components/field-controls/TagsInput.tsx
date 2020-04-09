@@ -98,7 +98,7 @@ class TagsInputComponent extends Component<
       this.props.fieldOnChange(
         this.props.settings.Name,
         // eslint-disable-next-line array-callback-return
-        s.map(content => {
+        s.map((content) => {
           if (content) {
             return content.Id
           }
@@ -169,11 +169,11 @@ class TagsInputComponent extends Component<
    * returns a content by its id
    */
   public getContentById = (id: number) => {
-    return this.state.dataSource.find(item => item.Id === id)
+    return this.state.dataSource.find((item) => item.Id === id)
   }
 
   public handleDelete = (id: number) => {
-    const newValue = this.state.fieldValue.filter(item => item.Id !== id)
+    const newValue = this.state.fieldValue.filter((item) => item.Id !== id)
     this.setState({
       fieldValue: newValue,
     })
@@ -181,7 +181,7 @@ class TagsInputComponent extends Component<
     this.props.fieldOnChange &&
       this.props.fieldOnChange(
         this.props.settings.Name,
-        newValue.map(content => content.Id),
+        newValue.map((content) => content.Id),
       )
   }
 
@@ -190,7 +190,7 @@ class TagsInputComponent extends Component<
    */
   public getValue() {
     if (this.props.settings.AllowMultiple) {
-      return this.state.fieldValue.length ? this.state.fieldValue.map(c => c.Id) : []
+      return this.state.fieldValue.length ? this.state.fieldValue.map((c) => c.Id) : []
     }
     return this.state.fieldValue.length ? [this.state.fieldValue[0].Id] : []
   }
@@ -217,7 +217,7 @@ class TagsInputComponent extends Component<
               renderValue={() => (
                 <>
                   {this.state.fieldValue &&
-                    this.state.fieldValue.map(content =>
+                    this.state.fieldValue.map((content) =>
                       isUser(content) ? (
                         <Chip
                           avatar={
@@ -254,7 +254,7 @@ class TagsInputComponent extends Component<
               )}
               MenuProps={menuProps}>
               {this.state.dataSource &&
-                this.state.dataSource.map(content => (
+                this.state.dataSource.map((content) => (
                   <MenuItem key={content.Id} value={content.Id}>
                     {content.DisplayName}
                   </MenuItem>

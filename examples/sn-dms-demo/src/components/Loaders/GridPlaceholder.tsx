@@ -11,9 +11,9 @@ export const GridPlaceholder = (props: {
 }) => {
   return (
     <div style={props.style} data-cy="gridPlaceholder">
-      {(Array.apply(null, { length: props.columns || 10 } as any).map(Number.call, Number) as number[]).map(c => (
+      {(Array.apply(null, { length: props.columns || 10 } as any).map(Number.call, Number) as number[]).map((c) => (
         <div key={c} className="column" style={{ display: 'flex', ...props.columnStyle }}>
-          {(Array.apply(null, { length: props.rows || 5 } as any).map(Number.call, Number) as number[]).map(r => (
+          {(Array.apply(null, { length: props.rows || 5 } as any).map(Number.call, Number) as number[]).map((r) => (
             <div
               key={r}
               className="row animated-background"

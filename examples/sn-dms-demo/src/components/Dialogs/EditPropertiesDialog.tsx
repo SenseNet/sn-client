@@ -70,7 +70,7 @@ class EditPropertiesDialog extends React.Component<
       (newProps.content && (lastState.editedcontent ? lastState.editedcontent.Id !== newProps.content.Id : false))
     ) {
       const schema = dmsInjector.getInstance(Repository).schemas.getSchemaByName(newProps.contentTypeName)
-      const editableFields = schema.FieldSettings.filter(field => field.VisibleEdit).map(field => field.Name)
+      const editableFields = schema.FieldSettings.filter((field) => field.VisibleEdit).map((field) => field.Name)
       editableFields.push('Icon')
       const options = {
         select: editableFields,
@@ -94,7 +94,7 @@ class EditPropertiesDialog extends React.Component<
 
     return (
       <MediaQuery minDeviceWidth={700}>
-        {matches => (
+        {(matches) => (
           <div data-cy="editProperties" style={matches ? { width: 550 } : {}}>
             <Typography variant="h5" gutterBottom={true}>
               {resources.EDIT_PROPERTIES}
@@ -102,7 +102,7 @@ class EditPropertiesDialog extends React.Component<
             <DialogInfo currentContent={editedcontent ? editedcontent : content} repositoryUrl={repositoryUrl} />
             {editedcontent ? (
               <RepositoryContext.Consumer>
-                {repository => (
+                {(repository) => (
                   <LoadableEditView
                     content={editedcontent}
                     repository={repository}

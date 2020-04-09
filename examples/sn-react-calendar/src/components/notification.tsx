@@ -50,7 +50,7 @@ export interface NotificationProps {
   variant: keyof typeof variantIcon
 }
 
-const CalendarNotification: React.FunctionComponent<NotificationProps> = props => {
+const CalendarNotification: React.FunctionComponent<NotificationProps> = (props) => {
   const classes = useStyles1()
   const { className, message, onClose, variant, ...other } = props
   const Icon = variantIcon[variant]

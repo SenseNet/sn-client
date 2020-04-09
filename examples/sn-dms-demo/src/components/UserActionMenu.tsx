@@ -83,12 +83,12 @@ class UserActionMenu extends React.Component<
   public render() {
     return (
       <MediaQuery minDeviceWidth={700}>
-        {matches => {
+        {(matches) => {
           return (
             <div
               style={{ ...(matches ? {} : styles.actionmenuContainer), ...this.props.style }}
               aria-owns="actionmenu"
-              onClick={e => this.handleClick(e)}>
+              onClick={(e) => this.handleClick(e)}>
               <UserPanel />
               <Icon
                 type={iconType.materialui}

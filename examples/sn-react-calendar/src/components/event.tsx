@@ -7,7 +7,7 @@ import CalendarEvent from '../CalendarEvent-type'
 import defavatar from '../assets/avatar-default.png'
 import { SharedContext } from '../context/shared-context'
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     parentlistelement: {
       display: 'flex',
@@ -38,7 +38,7 @@ export interface EventComponentProps {
   event: CalendarEvent[]
 }
 
-const EventComponent: React.FunctionComponent<EventComponentProps> = props => {
+const EventComponent: React.FunctionComponent<EventComponentProps> = (props) => {
   const classes = useStyles()
   const repo = useRepository()
   const sharedcontext = useContext(SharedContext)
@@ -53,7 +53,7 @@ const EventComponent: React.FunctionComponent<EventComponentProps> = props => {
 
   return (
     <List>
-      {props.event.map(event => {
+      {props.event.map((event) => {
         return (
           <div key={event.Id}>
             <ListItem

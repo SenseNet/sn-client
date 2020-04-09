@@ -59,7 +59,7 @@ const WellKnownContentCard: React.FunctionComponent<{
 
   return (
     <Card
-      onContextMenu={ev => {
+      onContextMenu={(ev) => {
         ev.preventDefault()
         onContextMenu(ev)
       }}
@@ -110,15 +110,17 @@ const Setup: React.StatelessComponent = () => {
         path: ConstantContent.PORTAL_ROOT.Path,
         oDataOptions: {
           orderby: [['Index' as any, 'asc']],
-          query: `${new Query(q => q.typeIs(Settings)).toString()} .AUTOFILTERS:OFF`,
+          query: `${new Query((q) => q.typeIs(Settings)).toString()} .AUTOFILTERS:OFF`,
         },
       })
 
       setWellKnownSettings(
-        response.d.results.filter(setting => Object.keys(localization.descriptions).includes(setting.Path)),
+        response.d.results.filter((setting) => Object.keys(localization.descriptions).includes(setting.Path)),
       )
 
-      setSettings(response.d.results.filter(setting => !Object.keys(localization.descriptions).includes(setting.Path)))
+      setSettings(
+        response.d.results.filter((setting) => !Object.keys(localization.descriptions).includes(setting.Path)),
+      )
     })()
   }, [localization.descriptions, repo])
 
@@ -137,15 +139,15 @@ const Setup: React.StatelessComponent = () => {
               anchorEl: contextMenuAnchor,
               BackdropProps: {
                 onClick: () => setIsContextMenuOpened(false),
-                onContextMenu: ev => ev.preventDefault(),
+                onContextMenu: (ev) => ev.preventDefault(),
               },
             }}
           />
-          {wellKnownSettings.map(s => (
+          {wellKnownSettings.map((s) => (
             <WellKnownContentCard
               settings={s}
               key={s.Id}
-              onContextMenu={ev => {
+              onContextMenu={(ev) => {
                 ev.preventDefault()
                 setContextMenuAnchor((ev.currentTarget as HTMLElement) || null)
                 setContextMenuItem(s)
@@ -160,7 +162,7 @@ const Setup: React.StatelessComponent = () => {
         <>
           <Typography variant="h5">{localization.otherSettings}</Typography>
           <List>
-            {settings.map(s => (
+            {settings.map((s) => (
               <Link key={s.Id} to={contentRouter.getPrimaryActionUrl(s)} style={{ textDecoration: 'none' }}>
                 <ListItem button={true}>
                   <ListItemText primary={s.DisplayName || s.Name} secondary={s.Path} />

@@ -38,7 +38,7 @@ export interface TextEditorProps {
   showBreadCrumb: boolean
 }
 
-export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
+export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
   const theme = useTheme()
   const platform = useContext(ResponsiveContext)
   const repo = useRepository()
@@ -139,7 +139,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   return (
     <div
       style={{ width: '100%', height: '100%' }}
-      onKeyDown={async ev => {
+      onKeyDown={async (ev) => {
         if (ev.key.toLowerCase() === 's' && ev.ctrlKey) {
           try {
             ev.preventDefault()
@@ -181,7 +181,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
         width="100%"
         language={language}
         value={textValue}
-        onChange={v => setTextValue(v)}
+        onChange={(v) => setTextValue(v)}
         options={{
           readOnly: platform === 'mobile',
           automaticLayout: true,

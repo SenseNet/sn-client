@@ -139,7 +139,7 @@ export class EventHub implements Disposable {
         methodName: 'post',
         isAsync: true,
         // Post finished to Content Create
-        onFinished: async pushPromise => {
+        onFinished: async (pushPromise) => {
           const response = await pushPromise.returned
           const content = response.d
           this.onContentCreated.setValue({
@@ -147,7 +147,7 @@ export class EventHub implements Disposable {
           })
         },
         // Post errored to content create failed
-        onError: err => {
+        onError: (err) => {
           this.onContentCreateFailed.setValue({
             content: (err.methodArguments[0] as PostOptions<Content>).content as Content,
             error: err.error,
@@ -160,7 +160,7 @@ export class EventHub implements Disposable {
         methodName: 'patch',
         isAsync: true,
         // Patch finished to ContentModified
-        onFinished: async patchPromise => {
+        onFinished: async (patchPromise) => {
           const response = await patchPromise.returned
           this.onContentModified.setValue({
             changes: (patchPromise.methodArguments[0] as PatchOptions<Content>).content as Content,
@@ -168,7 +168,7 @@ export class EventHub implements Disposable {
           })
         },
         // Patch error to ContentModificationFailed
-        onError: error => {
+        onError: (error) => {
           this.onContentModificationFailed.setValue({
             content: (error.methodArguments[0] as PatchOptions<Content>).content as Content,
             error: error.error,
@@ -181,7 +181,7 @@ export class EventHub implements Disposable {
         methodName: 'put',
         isAsync: true,
         // Put finished to ContentModified
-        onFinished: async putPromise => {
+        onFinished: async (putPromise) => {
           const response = await putPromise.returned
           this.onContentModified.setValue({
             changes: (putPromise.methodArguments[0] as PutOptions<Content>).content as Content,
@@ -189,7 +189,7 @@ export class EventHub implements Disposable {
           })
         },
         // Patch error to ContentModificationFailed
-        onError: error => {
+        onError: (error) => {
           this.onContentModificationFailed.setValue({
             content: (error.methodArguments[0] as PutOptions<Content>).content as Content,
             error: error.error,
@@ -202,7 +202,7 @@ export class EventHub implements Disposable {
         methodName: 'delete',
         isAsync: true,
         // handle DeleteBatch finished based on the response value
-        onFinished: async deletePromise => {
+        onFinished: async (deletePromise) => {
           const response = await deletePromise.returned
           if (response.d.results.length) {
             for (const deleted of response.d.results) {
@@ -224,12 +224,12 @@ export class EventHub implements Disposable {
           }
         },
         // Handle DeleteBatch errors
-        onError: error => {
+        onError: (error) => {
           let contentArgs: Array<string | number> = (error.methodArguments[0] as DeleteOptions).idOrPath as any
           if (!(contentArgs instanceof Array)) {
             contentArgs = [contentArgs]
           }
-          const contents = contentArgs.map(v => {
+          const contents = contentArgs.map((v) => {
             return isNaN(v as number) ? { Path: v } : ({ Id: parseInt(v as string, 10) } as Content)
           })
           for (const c of contents) {
@@ -247,7 +247,7 @@ export class EventHub implements Disposable {
         methodName: 'copy',
         isAsync: true,
         // handle CopyBatch finished based on the response value
-        onFinished: async copyPromise => {
+        onFinished: async (copyPromise) => {
           const response = await copyPromise.returned
           if (response.d.results.length) {
             for (const copied of response.d.results) {
@@ -268,12 +268,12 @@ export class EventHub implements Disposable {
           }
         },
         // Handle CopyBatch errors
-        onError: error => {
+        onError: (error) => {
           let contentArgs: Array<string | number> = (error.methodArguments[0] as CopyOptions).idOrPath as any
           if (!(contentArgs instanceof Array)) {
             contentArgs = [contentArgs]
           }
-          const contents = contentArgs.map(v => {
+          const contents = contentArgs.map((v) => {
             return isNaN(v as number) ? { Path: v } : ({ Id: parseInt(v as string, 10) } as Content)
           })
           for (const c of contents) {
@@ -290,7 +290,7 @@ export class EventHub implements Disposable {
         methodName: 'move',
         isAsync: true,
         // handle MoveBatch finished based on the response value
-        onFinished: async movePromise => {
+        onFinished: async (movePromise) => {
           const response = await movePromise.returned
           if (response.d.results.length) {
             for (const copied of response.d.results) {
@@ -310,12 +310,12 @@ export class EventHub implements Disposable {
           }
         },
         // Handle MoveBatch errors
-        onError: error => {
+        onError: (error) => {
           let contentArgs: Array<string | number> = (error.methodArguments[0] as DeleteOptions).idOrPath as any
           if (!(contentArgs instanceof Array)) {
             contentArgs = [contentArgs]
           }
-          const contents = contentArgs.map(v => {
+          const contents = contentArgs.map((v) => {
             return isNaN(v as number) ? { Path: v } : ({ Id: parseInt(v as string, 10) } as Content)
           })
           for (const c of contents) {
@@ -331,7 +331,7 @@ export class EventHub implements Disposable {
         method: this.repository.executeAction,
         methodName: 'executeAction',
         isAsync: true,
-        onFinished: async actionPromise => {
+        onFinished: async (actionPromise) => {
           const result = await actionPromise.returned
           this.onCustomActionExecuted.setValue({
             actionOptions: actionPromise.methodArguments[0],
@@ -339,7 +339,7 @@ export class EventHub implements Disposable {
             result,
           })
         },
-        onError: async error => {
+        onError: async (error) => {
           this.onCustomActionFailed.setValue({
             actionOptions: error.methodArguments[0],
             error: error.error,
@@ -352,11 +352,11 @@ export class EventHub implements Disposable {
         method: this.repository.load,
         methodName: 'load',
         isAsync: true,
-        onFinished: async loadPromise => {
+        onFinished: async (loadPromise) => {
           const value = await loadPromise.returned
           this.onContentLoaded.setValue({ content: value.d })
         },
-        onError: async error => {
+        onError: async (error) => {
           this.onContentLoadFailed.setValue({ payload: error.methodArguments[0], error: error.error })
         },
       }),
@@ -366,11 +366,11 @@ export class EventHub implements Disposable {
         method: this.repository.loadCollection,
         methodName: 'loadCollection',
         isAsync: true,
-        onFinished: async loadPromise => {
+        onFinished: async (loadPromise) => {
           const value = await loadPromise.returned
           this.onContentCollectionLoaded.setValue(value)
         },
-        onError: async error => {
+        onError: async (error) => {
           this.onContentCollectionLoadFailed.setValue({ payload: error.methodArguments[0], error: error.error })
         },
       }),
@@ -379,11 +379,11 @@ export class EventHub implements Disposable {
         object: this.repository.upload,
         methodName: 'uploadChunked',
         method: this.repository.upload.uploadChunked,
-        onFinished: async promise => {
+        onFinished: async (promise) => {
           const returnValue = await promise.returned
           this.onUploadFinished.setValue(returnValue)
         },
-        onError: e => {
+        onError: (e) => {
           this.onUploadFailed.setValue({ error: e.error, options: e.methodArguments[0] })
         },
       }),
@@ -392,11 +392,11 @@ export class EventHub implements Disposable {
         object: this.repository.upload,
         methodName: 'uploadNonChunked',
         method: this.repository.upload.uploadNonChunked,
-        onFinished: async promise => {
+        onFinished: async (promise) => {
           const returnValue = await promise.returned
           this.onUploadFinished.setValue(returnValue)
         },
-        onError: e => {
+        onError: (e) => {
           this.onUploadFailed.setValue({ error: e.error, options: e.methodArguments[0] })
         },
       }),

@@ -22,10 +22,7 @@ describe('RotateDocument component', () => {
         <RotateDocumentWidget />
       </PreviewImageDataContext.Provider>,
     )
-    wrapper
-      .find('#RotateLeft')
-      .first()
-      .simulate('click')
+    wrapper.find('#RotateLeft').first().simulate('click')
     expect(rotateImages).toBeCalledWith([1], -90)
   })
 
@@ -36,10 +33,7 @@ describe('RotateDocument component', () => {
         <RotateDocumentWidget />
       </PreviewImageDataContext.Provider>,
     )
-    wrapper
-      .find('#RotateRight')
-      .first()
-      .simulate('click')
+    wrapper.find('#RotateRight').first().simulate('click')
     expect(rotateImages).toBeCalledWith([1], 90)
   })
 })

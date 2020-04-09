@@ -12,7 +12,7 @@ export const EventListFilterContext = React.createContext<{
   setFilter: Dispatch<SetStateAction<EventListFilter>>
 }>({ filter: {}, setFilter: () => ({} as any) })
 
-export const FilterContextProvider: React.FunctionComponent = props => {
+export const FilterContextProvider: React.FunctionComponent = (props) => {
   const [filter, setFilter] = useState<EventListFilter>({})
 
   return (

@@ -138,7 +138,7 @@ class DocumentLibrary extends React.Component<
       const queryObject = newProps.location.search
         .substring(1)
         .split('&')
-        .map(segment => segment.split('='))
+        .map((segment) => segment.split('='))
         .reduce((acc, val) => {
           acc[val[0]] = decodeURIComponent(val[1])
           return acc
@@ -231,7 +231,7 @@ class DocumentLibrary extends React.Component<
     }
     const { matchesDesktop } = this.props
     return this.props.currentUser.content.Id !== ConstantContent.VISITOR_USER.Id ? (
-      <div onDragOver={ev => ev.preventDefault()} onDrop={this.handleFileDrop}>
+      <div onDragOver={(ev) => ev.preventDefault()} onDrop={this.handleFileDrop}>
         {this.props.childrenOptions.query ? (
           <SearchResultsHeader query={this.props.childrenOptions.query} clearResults={this.handleClearSearchResults} />
         ) : (
@@ -262,7 +262,7 @@ class DocumentLibrary extends React.Component<
           <MuiThemeProvider theme={contentListTheme}>
             <ContentList
               displayRowCheckbox={matchesDesktop && !this.props.childrenOptions.query ? true : false}
-              schema={customSchema.find(s => s.ContentTypeName === 'GenericContent') as any}
+              schema={customSchema.find((s) => s.ContentTypeName === 'GenericContent') as any}
               selected={this.props.selected}
               active={this.props.active}
               items={this.props.items.d.results}
@@ -275,8 +275,8 @@ class DocumentLibrary extends React.Component<
               }
               orderBy={this.props.childrenOptions.orderby && (this.props.childrenOptions.orderby[0][0] as any)}
               orderDirection={this.props.childrenOptions.orderby && (this.props.childrenOptions.orderby[0][1] as any)}
-              onRequestSelectionChange={newSelection => this.props.select(newSelection)}
-              onRequestActiveItemChange={active => this.props.setActive(active)}
+              onRequestSelectionChange={(newSelection) => this.props.select(newSelection)}
+              onRequestActiveItemChange={(active) => this.props.setActive(active)}
               onRequestActionsMenu={(ev, content) => {
                 ev.preventDefault()
                 this.props.closeActionMenu()
@@ -309,17 +309,17 @@ class DocumentLibrary extends React.Component<
               }}
               onItemClick={(ev, content) => {
                 if (ev.ctrlKey) {
-                  if (this.props.selected.find(s => s.Id === content.Id)) {
-                    this.props.select(this.props.selected.filter(s => s.Id !== content.Id))
+                  if (this.props.selected.find((s) => s.Id === content.Id)) {
+                    this.props.select(this.props.selected.filter((s) => s.Id !== content.Id))
                   } else {
                     this.props.select([...this.props.selected, content])
                   }
                 } else if (ev.shiftKey) {
                   const activeIndex =
                     (this.props.active &&
-                      this.props.items.d.results.findIndex(s => s.Id === (this.props.active as Content).Id)) ||
+                      this.props.items.d.results.findIndex((s) => s.Id === (this.props.active as Content).Id)) ||
                     0
-                  const clickedIndex = this.props.items.d.results.findIndex(s => s.Id === content.Id)
+                  const clickedIndex = this.props.items.d.results.findIndex((s) => s.Id === content.Id)
                   const newSelection = Array.from(
                     new Set([
                       ...this.props.selected,
@@ -339,7 +339,7 @@ class DocumentLibrary extends React.Component<
               }}
               onItemDoubleClick={this.handleRowDoubleClick}
               checkboxProps={{ color: 'primary' }}
-              fieldComponent={props => {
+              fieldComponent={(props) => {
                 switch (props.field) {
                   case 'Locked':
                     return <LockedCell content={props.content} fieldName={props.field} />
@@ -350,7 +350,7 @@ class DocumentLibrary extends React.Component<
                           icon={props.content.Icon || ''}
                           icons={icons}
                           displayName={props.content.DisplayName || props.content.Name}
-                          onFinish={newName =>
+                          onFinish={(newName) =>
                             this.props.updateContent<GenericContent>(props.content, { DisplayName: newName })
                           }
                         />

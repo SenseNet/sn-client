@@ -5,7 +5,7 @@ import { ErrorBoundaryProps } from './error-boundary'
 /**
  * This component will not render anything, only make a call to dialog provider to open an error dialog.
  */
-export const ErrorBoundaryWithDialogs: ErrorBoundaryProps['FallbackComponent'] = props => {
+export const ErrorBoundaryWithDialogs: ErrorBoundaryProps['FallbackComponent'] = (props) => {
   const { openDialog } = useDialog()
 
   useEffect(() => {

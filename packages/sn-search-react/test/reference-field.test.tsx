@@ -13,7 +13,7 @@ describe('ReferenceField Component', () => {
   const schemaStore = new SchemaStore()
   schemaStore.setSchemas(defaultSchemas)
   const exampleSchema = schemaStore.getSchemaByName('GenericContent')
-  const exampleFieldSetting = exampleSchema.FieldSettings.find(f => f.Name === 'CreatedBy') as ReferenceFieldSetting
+  const exampleFieldSetting = exampleSchema.FieldSettings.find((f) => f.Name === 'CreatedBy') as ReferenceFieldSetting
 
   it('Should be constructed', () => {
     shallow(
@@ -41,13 +41,13 @@ describe('ReferenceField Component', () => {
     ).unmount()
   })
 
-  it('Should be constructed with default Id', done => {
+  it('Should be constructed with default Id', (done) => {
     shallow(
       <ReferenceField<GenericContent>
         fieldName="CreatedBy"
         fieldSetting={exampleFieldSetting}
         defaultValueIdOrPath={1}
-        fetchItems={async fetchQuery => {
+        fetchItems={async (fetchQuery) => {
           expect(fetchQuery.toString()).toBe("Id:'1'")
           done()
           return [{ Id: 1, Name: 'a', Path: '', Type: 'Document' }]
@@ -57,13 +57,13 @@ describe('ReferenceField Component', () => {
     )
   })
 
-  it('Should be constructed with default Path', done => {
+  it('Should be constructed with default Path', (done) => {
     shallow(
       <ReferenceField<GenericContent>
         fieldName="CreatedBy"
         fieldSetting={exampleFieldSetting}
         defaultValueIdOrPath="Root/Example/A"
-        fetchItems={async fetchQuery => {
+        fetchItems={async (fetchQuery) => {
           expect(fetchQuery.toString()).toBe("Path:'Root/Example/A'")
           done()
           return [{ Id: 1, Name: 'a', Path: '', Type: 'Document' }]
@@ -75,12 +75,12 @@ describe('ReferenceField Component', () => {
     )
   })
 
-  it('Text change should trigger the fetchItems method', done => {
+  it('Text change should trigger the fetchItems method', (done) => {
     const instance = shallow(
       <ReferenceField<GenericContent>
         fieldName="CreatedBy"
         fieldSetting={exampleFieldSetting}
-        fetchItems={async fetchQuery => {
+        fetchItems={async (fetchQuery) => {
           expect(fetchQuery.toString()).toBe("(Name:'*a*' OR DisplayName:'*a*' OR Path:'*a*')")
           done()
           return [{ Id: 123, Name: 'alba', Type: 'User', Path: 'Root/Users/Alba' }]
@@ -172,10 +172,7 @@ describe('ReferenceField Component', () => {
       const onChange = jest.fn()
       const ev = { currentTarget: { value: 'a' } }
       const component = shallow(<ReferenceFieldInput inputProps={{ onChange, value: '' }} />)
-      component
-        .find(TextField)
-        .first()
-        .simulate('change', ev)
+      component.find(TextField).first().simulate('change', ev)
       expect(onChange).toBeCalledWith(ev, { method: 'type', newValue: 'a' })
     })
   })

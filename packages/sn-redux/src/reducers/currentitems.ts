@@ -21,7 +21,7 @@ import {
 export const ids: Reducer<number[], PromiseMiddlewareSucceededAction<any>> = (state = [], action) => {
   switch (action.type) {
     case 'FETCH_CONTENT_SUCCESS':
-      return (action.result as PromiseReturns<typeof requestContent>).d.results.map(content => content.Id)
+      return (action.result as PromiseReturns<typeof requestContent>).d.results.map((content) => content.Id)
     case 'CREATE_CONTENT_SUCCESS':
       return [...state, (action.result as PromiseReturns<typeof createContent>).d.Id]
     case 'UPLOAD_CONTENT_SUCCESS':
@@ -31,14 +31,14 @@ export const ids: Reducer<number[], PromiseMiddlewareSucceededAction<any>> = (st
         return state
       }
     case 'DELETE_CONTENT_SUCCESS': {
-      const deletedIds = (action.result as PromiseReturns<typeof deleteContent>).d.results.map(d => d.Id)
-      return [...state.filter(id => !deletedIds.includes(id))]
+      const deletedIds = (action.result as PromiseReturns<typeof deleteContent>).d.results.map((d) => d.Id)
+      return [...state.filter((id) => !deletedIds.includes(id))]
     }
     case 'DELETE_BATCH_SUCCESS':
     case 'MOVE_BATCH_SUCCESS':
       if (action.result.d.results.length > 0) {
         const newIds = []
-        const movedIds = (action.result as PromiseReturns<typeof moveBatch>).d.results.map(result => result.Id)
+        const movedIds = (action.result as PromiseReturns<typeof moveBatch>).d.results.map((result) => result.Id)
         for (const id of state) {
           if (movedIds.indexOf(id) === -1) {
             newIds.push(id)
@@ -62,11 +62,11 @@ export const entities: Reducer<GenericContent[], PromiseMiddlewareSucceededActio
     case 'DELETE_CONTENT_SUCCESS':
     case 'DELETE_BATCH_SUCCESS':
     case 'MOVE_BATCH_SUCCESS': {
-      const deletedIds = (action.result as PromiseReturns<typeof deleteContent>).d.results.map(i => i.Id)
-      return [...state.filter(item => !deletedIds.includes(item.Id))]
+      const deletedIds = (action.result as PromiseReturns<typeof deleteContent>).d.results.map((i) => i.Id)
+      return [...state.filter((item) => !deletedIds.includes(item.Id))]
     }
     case 'UPDATE_CONTENT_SUCCESS':
-      return state.map(c => {
+      return state.map((c) => {
         if (c.Id === (action.result as PromiseReturns<typeof updateContent>).d.Id) {
           return action.result.d
         }
@@ -76,8 +76,8 @@ export const entities: Reducer<GenericContent[], PromiseMiddlewareSucceededActio
     case 'UPLOAD_CONTENT_SUCCESS': {
       const newContent = (action.result as PromiseReturns<typeof uploadRequest> | PromiseReturns<typeof createContent>)
         .d as GenericContent
-      return state.find(item => item.Id === newContent.Id) !== undefined
-        ? state.map(c => {
+      return state.find((item) => item.Id === newContent.Id) !== undefined
+        ? state.map((c) => {
             if (c.Id === newContent.Id) {
               return newContent
             }

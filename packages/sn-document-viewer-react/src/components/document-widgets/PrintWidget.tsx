@@ -14,7 +14,7 @@ export interface PrintProps {
 /**
  * Component that allows active page rotation
  */
-export const Print: React.FC<PrintProps> = props => {
+export const Print: React.FC<PrintProps> = (props) => {
   const localization = useLocalization()
   const { documentData } = useDocumentData()
   return (

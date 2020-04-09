@@ -9,7 +9,7 @@ import snLogo from './assets/sensenet_logo_transparent.png'
 import { AdvancedGridList } from './components/AdvancedGridList'
 import { SimpleAppBar } from './components/SimpleAppBar'
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',

@@ -30,7 +30,7 @@ const renderIconDefault = (name: string, color: string) => {
 /**
  * Field control that represents a Color field. Available values will be populated from the FieldSettings.
  */
-export const ColorPicker: React.FC<ReactClientFieldSetting<ColorFieldSetting>> = props => {
+export const ColorPicker: React.FC<ReactClientFieldSetting<ColorFieldSetting>> = (props) => {
   const [value, setValue] = useState(props.fieldValue || changeJScriptValue(props.settings.DefaultValue) || '')
   const [isPickerOpen, setIsPickerOpen] = useState(false)
 

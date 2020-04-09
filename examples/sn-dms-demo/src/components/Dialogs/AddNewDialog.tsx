@@ -66,17 +66,17 @@ class AddNewDialog extends React.Component<
     const { parentPath, contentTypeName, createContent, schema, title, extension } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
-        {matches => (
+        {(matches) => (
           <div style={matches ? { width: 500 } : {}}>
             {schema ? (
               <RepositoryContext.Consumer>
-                {repository => (
+                {(repository) => (
                   <LoadableNewView
                     path={parentPath}
                     repository={repository}
                     contentTypeName={contentTypeName}
                     handleCancel={() => this.handleCancel()}
-                    onSubmit={content => createContent(parentPath, content, contentTypeName)}
+                    onSubmit={(content) => createContent(parentPath, content, contentTypeName)}
                     showTitle={!!title}
                     extension={extension}
                     submitCallback={this.submitCallback}

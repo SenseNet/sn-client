@@ -53,10 +53,7 @@ describe('ZoomMode component', () => {
     const setZoomMode = jest.fn()
     const wrapper = getComponentWithProps({ updateState: setZoomMode })
     wrapper.find(IconButton).simulate('click')
-    wrapper
-      .find(MenuItem)
-      .at(0)
-      .simulate('click')
+    wrapper.find(MenuItem).at(0).simulate('click')
     expect(setZoomMode).toBeCalledWith({ zoomMode: 'fit' })
     expect(wrapper.find(Menu).prop('open')).toBeFalsy()
   })
@@ -65,10 +62,7 @@ describe('ZoomMode component', () => {
     const setZoomMode = jest.fn()
     const wrapper = getComponentWithProps({ updateState: setZoomMode, zoomMode: 'originalSize' })
     wrapper.find(IconButton).simulate('click')
-    wrapper
-      .find(MenuItem)
-      .at(1)
-      .simulate('click')
+    wrapper.find(MenuItem).at(1).simulate('click')
     expect(setZoomMode).toBeCalledWith({ zoomMode: 'originalSize' })
     expect(wrapper.find(Menu).prop('open')).toBeFalsy()
   })
@@ -77,10 +71,7 @@ describe('ZoomMode component', () => {
     const setZoomMode = jest.fn()
     const wrapper = getComponentWithProps({ updateState: setZoomMode, zoomMode: 'fitHeight' })
     wrapper.find(IconButton).simulate('click')
-    wrapper
-      .find(MenuItem)
-      .at(2)
-      .simulate('click')
+    wrapper.find(MenuItem).at(2).simulate('click')
     expect(setZoomMode).toBeCalledWith({ zoomMode: 'fitHeight' })
     expect(wrapper.find(Menu).prop('open')).toBeFalsy()
   })
@@ -89,10 +80,7 @@ describe('ZoomMode component', () => {
     const setZoomMode = jest.fn()
     const wrapper = getComponentWithProps({ updateState: setZoomMode, zoomMode: 'fitWidth' })
     wrapper.find(IconButton).simulate('click')
-    wrapper
-      .find(MenuItem)
-      .at(3)
-      .simulate('click')
+    wrapper.find(MenuItem).at(3).simulate('click')
     expect(setZoomMode).toBeCalledWith({ zoomMode: 'fitWidth' })
     expect(wrapper.find(Menu).prop('open')).toBeFalsy()
   })
@@ -105,10 +93,7 @@ describe('ZoomMode component', () => {
       zoomMode: 'custom',
     })
     wrapper.find(IconButton).simulate('click')
-    wrapper
-      .find(SvgIcon)
-      .last()
-      .simulate('click')
+    wrapper.find(SvgIcon).last().simulate('click')
     expect(setZoomLevel).toBeCalledWith({ customZoomLevel: 1 })
   })
 
@@ -121,11 +106,7 @@ describe('ZoomMode component', () => {
     })
 
     wrapper.find(IconButton).simulate('click')
-    wrapper
-      .find(IconButton)
-      .find(SvgIcon)
-      .at(1)
-      .simulate('click')
+    wrapper.find(IconButton).find(SvgIcon).at(1).simulate('click')
     expect(setZoomLevel).toBeCalledWith({ customZoomLevel: 6 })
   })
 })

@@ -179,7 +179,7 @@ class Login extends React.Component<
       <div className="Sensenet">
         <div className="Sensenet-header">
           <MediaQuery minDeviceWidth={700}>
-            {matches => {
+            {(matches) => {
               return (
                 <img
                   src={logo}
@@ -198,7 +198,7 @@ class Login extends React.Component<
 
         <div>
           <form
-            onSubmit={e => {
+            onSubmit={(e) => {
               e.preventDefault()
               this.formSubmit()
             }}>
@@ -211,8 +211,8 @@ class Login extends React.Component<
               style={styles.formControl}>
               <TextField
                 name="username"
-                onBlur={event => this.handleUsernameBlur(event)}
-                onChange={event => this.handleUsernameChange(event)}
+                onBlur={(event) => this.handleUsernameBlur(event)}
+                onChange={(event) => this.handleUsernameChange(event)}
                 fullWidth={true}
                 autoFocus={true}
                 label={resources.USERNAME_INPUT_LABEL}
@@ -228,8 +228,8 @@ class Login extends React.Component<
               <TextField
                 type="password"
                 name="password"
-                onBlur={event => this.handlePasswordBlur(event)}
-                onChange={event => this.handlePasswordChange(event)}
+                onBlur={(event) => this.handlePasswordBlur(event)}
+                onChange={(event) => this.handlePasswordChange(event)}
                 fullWidth={true}
                 label={resources.PASSWORD_INPUT_LABEL}
                 placeholder={resources.PASSWORD_INPUT_PLACEHOLDER}
