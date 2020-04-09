@@ -44,6 +44,13 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
       }
       const contentActions = contentFromCallback.Actions.filter((action) => !action.Forbidden)
 
+      if (contentActions.findIndex((action) => action.Name === 'Browse' && props.content.IsFile)) {
+        contentActions.push({
+          Name: 'Download',
+          DisplayName: 'Download',
+        } as ActionModel)
+      }
+
       if (isWriteAvailable(contentFromCallback)) {
         // If write is available it means that we have two actions. We want to show only the open edit for the user.
         const actionsWithoutWopiRead = contentActions.filter((action) => action.Name !== 'WopiOpenView')
