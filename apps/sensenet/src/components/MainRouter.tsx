@@ -31,7 +31,7 @@ export const MainRouter = () => {
   const history = useHistory()
 
   useEffect(() => {
-    const listen = history.listen(location => {
+    const listen = history.listen((location) => {
       /**
        *  Do not add preview locations to previousLocation
        *  this way the user can go back to the location where she
@@ -103,7 +103,7 @@ export const MainRouter = () => {
             <BrowseProperties />
           </Route>
 
-          <Route path="/:repo/newProperties/:contentId?">
+          <Route path="/:repo/NewProperties">
             <NewProperties />
           </Route>
 

@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => {
 /**
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
-export const Path: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>> = props => {
+export const Path: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>> = (props) => {
   const classes = useStyles()
 
   return (

@@ -14,12 +14,7 @@ describe('AdvancedGridList', () => {
     const wrapper = shallow(<AdvancedGridList {...testprops} />)
     wrapper.find(DropFileArea).prop('setDragOver')(true)
 
-    expect(
-      wrapper
-        .update()
-        .find(DropFileArea)
-        .prop('isDragOver'),
-    ).toBe(true)
+    expect(wrapper.update().find(DropFileArea).prop('isDragOver')).toBe(true)
   })
 })
 describe('pickTile function', () => {

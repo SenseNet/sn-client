@@ -27,7 +27,7 @@ export class JwtService implements AuthenticationService {
   public dispose() {
     this.state.dispose()
     this.currentUser.dispose()
-    this.oauthProviders.forEach(provider => provider.dispose())
+    this.oauthProviders.forEach((provider) => provider.dispose())
   }
 
   /**

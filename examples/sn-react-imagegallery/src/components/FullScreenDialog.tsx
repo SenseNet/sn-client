@@ -15,7 +15,7 @@ interface FullScreenprops {
   imgList: object[]
 }
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -35,7 +35,7 @@ export const useStyles = makeStyles(theme => ({
 /**
  * Display the details view
  */
-export const FullScreenDialog: React.FunctionComponent<FullScreenprops> = props => {
+export const FullScreenDialog: React.FunctionComponent<FullScreenprops> = (props) => {
   const classes = useStyles()
   return (
     <div>

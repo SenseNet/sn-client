@@ -25,7 +25,7 @@ export interface CommanderComponentProps {
   rootPath: string
 }
 
-export const CommanderComponent: React.FunctionComponent<CommanderComponentProps> = props => {
+export const CommanderComponent: React.FunctionComponent<CommanderComponentProps> = (props) => {
   const repo = useRepository()
   const { openDialog } = useDialog()
   const selectionService = useSelectionService()
@@ -52,7 +52,7 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
 
   return (
     <div
-      onKeyDown={async ev => {
+      onKeyDown={async (ev) => {
         if ((ev.key === 'F5' || ev.key === 'F6') && !ev.shiftKey) {
           ev.preventDefault()
           ev.stopPropagation()
@@ -76,7 +76,7 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
         } else if (ev.key === 'F7') {
           ev.preventDefault()
           ev.stopPropagation()
-          history.push(`/${btoa(repo.configuration.repositoryUrl)}/NewProperties/${activeParent.Id}`, {
+          history.push(`/${btoa(repo.configuration.repositoryUrl)}/NewProperties?path=${activeParent.Path}`, {
             schema: repo.schemas.getSchemaByName('Folder'),
           })
         }
@@ -85,7 +85,7 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
       <LoadSettingsContextProvider>
         <CurrentContentProvider idOrPath={props.leftParent}>
           <CurrentContentContext.Consumer>
-            {lp => {
+            {(lp) => {
               setLeftParent(lp)
               return null
             }}
@@ -98,16 +98,16 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
                 }}
                 enableBreadcrumbs={true}
                 onActivateItem={props.onActivateItem}
-                containerRef={r => setLeftPanelRef(r)}
+                containerRef={(r) => setLeftPanelRef(r)}
                 style={{ width: '100%', maxHeight: '100%' }}
                 parentIdOrPath={props.leftParent}
                 onParentChange={props.onNavigateLeft}
-                onSelectionChange={sel => {
+                onSelectionChange={(sel) => {
                   setLeftSelection(sel)
                   selectionService.selection.setValue(sel)
                 }}
                 onTabRequest={() => _rightPanelRef && _rightPanelRef.focus()}
-                onActiveItemChange={item => selectionService.activeContent.setValue(item)}
+                onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
                 fieldsToDisplay={props.fieldsToDisplay}
                 isOpenFrom={'commander'}
               />
@@ -116,7 +116,7 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
         </CurrentContentProvider>
         <CurrentContentProvider idOrPath={props.rightParent}>
           <CurrentContentContext.Consumer>
-            {rp => {
+            {(rp) => {
               setRightParent(rp)
               return null
             }}
@@ -129,16 +129,16 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
                   setActivePanel('right')
                 }}
                 onActivateItem={props.onActivateItem}
-                containerRef={r => setRightPanelRef(r)}
+                containerRef={(r) => setRightPanelRef(r)}
                 parentIdOrPath={props.rightParent}
                 style={{ width: '100%', borderLeft: '1px solid rgba(255,255,255,0.3)', maxHeight: '100%' }}
                 onParentChange={props.onNavigateRight}
-                onSelectionChange={sel => {
+                onSelectionChange={(sel) => {
                   setRightSelection(sel)
                   selectionService.selection.setValue(sel)
                 }}
                 onTabRequest={() => _leftPanelRef && _leftPanelRef.focus()}
-                onActiveItemChange={item => selectionService.activeContent.setValue(item)}
+                onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
                 fieldsToDisplay={props.fieldsToDisplay}
                 isOpenFrom={'commander'}
               />

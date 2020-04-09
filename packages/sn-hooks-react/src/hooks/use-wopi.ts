@@ -13,7 +13,7 @@ export const useWopi = () => {
     (content: GenericContent) =>
       repo.schemas.isContentFromType(content, 'File') &&
       isActionModel(content.Actions) &&
-      content.Actions.some(action => action.Name === 'WopiOpenEdit'),
+      content.Actions.some((action) => action.Name === 'WopiOpenEdit' && !action.Forbidden),
     [repo.schemas],
   )
 
@@ -22,7 +22,7 @@ export const useWopi = () => {
       isWriteAvailable(content) ||
       (repo.schemas.isContentFromType(content, 'File') &&
         isActionModel(content.Actions) &&
-        content.Actions.some(action => action.Name === 'WopiOpenView')),
+        content.Actions.some((action) => action.Name === 'WopiOpenView' && !action.Forbidden)),
     [isWriteAvailable, repo.schemas],
   )
 

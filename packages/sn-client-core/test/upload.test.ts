@@ -85,7 +85,7 @@ describe('Upload', () => {
       expect(answer).toEqual(mockAnswer)
     })
 
-    it('should throw on upload failure', done => {
+    it('should throw on upload failure', (done) => {
       const repository = new Repository(
         {},
         async () =>
@@ -128,7 +128,7 @@ describe('Upload', () => {
       expect(answer).toEqual(mockAnswer)
     })
 
-    it('Should throw on error chunked', done => {
+    it('Should throw on error chunked', (done) => {
       fetchOk = false
       repo.upload
         .file({
@@ -147,7 +147,7 @@ describe('Upload', () => {
         })
     })
 
-    it('Should throw if a chunk has been failed', done => {
+    it('Should throw if a chunk has been failed', (done) => {
       let ok = true
       repo['fetchMethod'] = async () => {
         return {
@@ -178,7 +178,7 @@ describe('Upload', () => {
   })
 
   describe('#fromDropEvent()', () => {
-    it('should trigger an Upload request without webkitRequestFileSystem', done => {
+    it('should trigger an Upload request without webkitRequestFileSystem', (done) => {
       ;(global as any).window.webkitRequestFileSystem = undefined
       const file = new File(['alma.txt'], 'alma')
       Object.assign(file, { type: 'file' })
@@ -206,7 +206,7 @@ describe('Upload', () => {
       })
     })
 
-    it('should trigger an Upload request with webkitRequestFileSystem', done => {
+    it('should trigger an Upload request with webkitRequestFileSystem', (done) => {
       ;(global as any).window.webkitRequestFileSystem = () => {
         /**/
       }
@@ -240,7 +240,7 @@ describe('Upload', () => {
       })
     })
 
-    it('should fail with webkitRequestFileSystem if failed to read a file', done => {
+    it('should fail with webkitRequestFileSystem if failed to read a file', (done) => {
       ;(global as any).window = {
         webkitRequestFileSystem: () => {
           /**/
@@ -270,7 +270,7 @@ describe('Upload', () => {
         })
     })
 
-    it('should trigger a post when the dataTransfer contains folders', done => {
+    it('should trigger a post when the dataTransfer contains folders', (done) => {
       ;(global as any).window = {
         webkitRequestFileSystem: () => {
           /**/
@@ -332,12 +332,12 @@ describe('Upload', () => {
           expect(postHasCalled).toBe(true)
           done()
         })
-        .catch(err => {
+        .catch((err) => {
           done(err)
         })
     })
 
-    it('should fail if there is an error reading folders', done => {
+    it('should fail if there is an error reading folders', (done) => {
       ;(global as any).window = {
         webkitRequestFileSystem: () => {
           /**/
@@ -403,7 +403,7 @@ describe('Upload', () => {
       },
     }
 
-    it('should trigger an Upload request when uploading with folders', done => {
+    it('should trigger an Upload request when uploading with folders', (done) => {
       ;(global as any).window = {
         webkitRequestFileSystem: () => {
           /**/
@@ -429,7 +429,7 @@ describe('Upload', () => {
       })
     })
 
-    it('should trigger an Upload request without folder upload', done => {
+    it('should trigger an Upload request without folder upload', (done) => {
       ;(global as any).window = {
         webkitRequestFileSystem: () => {
           /**/

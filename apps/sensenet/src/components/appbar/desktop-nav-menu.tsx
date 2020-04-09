@@ -70,7 +70,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   const localization = useLocalization()
 
   const handleToggle = () => {
-    setOpen(prevOpen => !prevOpen)
+    setOpen((prevOpen) => !prevOpen)
   }
 
   const handleClose = (event: React.MouseEvent<EventTarget>) => {

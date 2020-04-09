@@ -78,7 +78,7 @@ class WorkspaceSearch extends React.Component<
       <div className={matches ? classes.searchContainer : classes.searchContainerMobile}>
         <FormControl className={matches ? classes.formControl : classes.formControlMobile}>
           <TextField
-            onKeyUp={e => this.handleKeyup(e)}
+            onKeyUp={(e) => this.handleKeyup(e)}
             placeholder="Search"
             InputProps={{
               disableUnderline: true,

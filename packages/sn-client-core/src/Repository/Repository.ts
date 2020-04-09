@@ -490,7 +490,7 @@ export class Repository implements Disposable {
     } else {
       options.body &&
         Object.keys(options.body).forEach(
-          key => (params += `&${key}=${encodeURIComponent((options.body as any)[key])}`),
+          (key) => (params += `&${key}=${encodeURIComponent((options.body as any)[key])}`),
         )
     }
     const response = await this.fetch(`${path}?${params}`, requestOptions)

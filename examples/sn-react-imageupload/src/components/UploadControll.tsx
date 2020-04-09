@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-export const UploadControll: React.FunctionComponent<UploadControllProps> = props => {
+export const UploadControll: React.FunctionComponent<UploadControllProps> = (props) => {
   const repo = useRepository()
   const classes = useStyles()
   /**
@@ -62,7 +62,7 @@ export const UploadControll: React.FunctionComponent<UploadControllProps> = prop
     <div>
       <input
         accept="image/*"
-        onChange={e => pickFile(e)}
+        onChange={(e) => pickFile(e)}
         className={classes.input}
         id="contained-button-file"
         multiple

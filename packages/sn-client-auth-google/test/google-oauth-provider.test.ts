@@ -71,7 +71,7 @@ describe('GoogleOauthProvider', () => {
       expect(sentArgs[0]).toBe('http://example.origin.com/sn-oauth/login?provider=google')
       expect(sentArgs[1].body).toBe('{"token":"testGoogleToken"}')
     })
-    it('should throw on Ajax error', done => {
+    it('should throw on Ajax error', (done) => {
       // ToDo
       repo.fetch = async () => {
         return {
@@ -117,7 +117,7 @@ describe('GoogleOauthProvider', () => {
         .then(() => {
           done('Should have fail')
         })
-        .catch(err => {
+        .catch((err) => {
           expect(err.message).toBe('Getting token already in progress')
           done()
         })
@@ -127,7 +127,7 @@ describe('GoogleOauthProvider', () => {
         .then(() => {
           done('Should have failed')
         })
-        .catch(err => {
+        .catch((err) => {
           expect(err.message).toBe('Token not found')
           done()
         })
@@ -139,7 +139,7 @@ describe('GoogleOauthProvider', () => {
         .then(() => {
           done('Should have failed')
         })
-        .catch(err => {
+        .catch((err) => {
           expect(err.message).toBe('Token not found')
           done()
         })
@@ -153,7 +153,7 @@ describe('GoogleOauthProvider', () => {
           expect(dom.window.document.querySelectorAll('iframe').length).toBe(0)
           done()
         })
-        .catch(err => done(err))
+        .catch((err) => done(err))
       ;(oauth['iframe'] as any).onload({
         srcElement: {
           contentDocument: {
@@ -182,12 +182,12 @@ describe('GoogleOauthProvider', () => {
         }
       }, 200)
       oauth['getTokenFromPrompt'](popupLocationHref)
-        .then(token => {
+        .then((token) => {
           expect(token).toBe('testIdToken')
           expect(dom.window.document.querySelectorAll('iframe').length).toBe(0)
           done()
         })
-        .catch(err => done(err))
+        .catch((err) => done(err))
     })
 
     it('should fail when a popup has been closed before getting the token', (done: jest.DoneCallback) => {

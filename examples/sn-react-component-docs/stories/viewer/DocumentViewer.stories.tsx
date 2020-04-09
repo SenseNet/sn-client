@@ -13,7 +13,7 @@ const createdBy: CreatedByUser = {
   userName: 'some/name',
 }
 
-const centered = story => (
+const centered = (story) => (
   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
     <div style={{ flexBasis: '300px' }}>{story()}</div>
   </div>

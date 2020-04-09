@@ -24,8 +24,8 @@ export const ReferenceFieldInput = (props: ReferenceFieldInputProps) => {
       InputProps={{
         ...(inputProps as any),
       }}
-      onBlur={ev => inputProps.onBlur?.(ev)}
-      onChange={ev => inputProps.onChange(ev, { method: 'type', newValue: ev.currentTarget.value })}
+      onBlur={(ev) => inputProps.onBlur?.(ev)}
+      onChange={(ev) => inputProps.onChange(ev, { method: 'type', newValue: ev.currentTarget.value })}
     />
   )
 }

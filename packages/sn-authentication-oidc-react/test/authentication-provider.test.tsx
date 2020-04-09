@@ -182,10 +182,7 @@ describe('AuthenticationProvider component', () => {
     })
 
     await act(async () => {
-      wrapper
-        .find(SessionLost)
-        .find(Button)
-        .simulate('click')
+      wrapper.find(SessionLost).find(Button).simulate('click')
     })
 
     expect(signinRedirect).toBeCalled()
@@ -198,7 +195,7 @@ describe('AuthenticationProvider component', () => {
     const wrapper = mount(
       <AuthenticationProvider
         configuration={{}}
-        sessionLost={s => (
+        sessionLost={(s) => (
           <p onClick={s.onAuthenticate} id="b">
             b
           </p>

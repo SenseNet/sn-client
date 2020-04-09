@@ -68,7 +68,7 @@ export interface NewViewProps {
  *  <NewView content={content} onSubmit={createSubmitClick} />
  * ```
  */
-export const NewView: React.FC<NewViewProps> = props => {
+export const NewView: React.FC<NewViewProps> = (props) => {
   const repo = useRepository()
   const controlMapper = reactControlMapper(repo)
   const schema = controlMapper.getFullSchemaForContentType(props.contentTypeName, 'new')
@@ -80,7 +80,8 @@ export const NewView: React.FC<NewViewProps> = props => {
   const logger = useLogger('AddDialog')
   const selectionService = useSelectionService()
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
     try {
       const created = await repo.post({
         contentType: props.contentTypeName,
@@ -127,12 +128,12 @@ export const NewView: React.FC<NewViewProps> = props => {
   }
 
   return (
-    <>
-      <form className={classes.form} onSubmit={handleSubmit}>
+    <form style={{ display: 'initial' }} onSubmit={handleSubmit}>
+      <div className={classes.form}>
         <Grid container={true} spacing={2}>
           {schema.fieldMappings
             .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
-            .map(field => {
+            .map((field) => {
               const fieldControl = createElement(
                 controlMapper.getControlForContentField(props.contentTypeName, field.fieldSettings.Name, 'new'),
                 {
@@ -166,17 +167,17 @@ export const NewView: React.FC<NewViewProps> = props => {
               )
             })}
         </Grid>
-      </form>
+      </div>
       <div className={classes.actionButtonWrapper}>
         <MediaQuery minDeviceWidth={700}>
           <Button color="default" className={globalClasses.cancelButton} onClick={handleCancel}>
             {localization.forms.cancel}
           </Button>
         </MediaQuery>
-        <Button variant="contained" color="primary" onClick={() => handleSubmit()}>
+        <Button variant="contained" color="primary" type="submit">
           {localization.forms.submit}
         </Button>
       </div>
-    </>
+    </form>
   )
 }

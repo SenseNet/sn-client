@@ -59,7 +59,7 @@ export interface ExploreComponentProps {
   rootPath?: string
 }
 
-export const Explore: React.FunctionComponent<ExploreComponentProps> = props => {
+export const Explore: React.FunctionComponent<ExploreComponentProps> = (props) => {
   const selectionService = useSelectionService()
   const personalSettings = useContext(ResponsivePersonalSetttings)
   const classes = useStyles()
@@ -85,8 +85,8 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
             <CurrentAncestorsProvider root={props.rootPath}>
               <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
                 <ContentBreadcrumbs
-                  setFormOpen={actionName => setFormOpen(actionName)}
-                  onItemClick={i => {
+                  setFormOpen={(actionName) => setFormOpen(actionName)}
+                  onItemClick={(i) => {
                     props.onNavigate(i.content)
                     setIsFormOpened(false)
                     selectionService.activeContent.setValue(i.content)
@@ -95,14 +95,14 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
               </div>
               <div className={classes.treeAndDatagridWrapper}>
                 <TreeWithData
-                  onItemClick={item => {
+                  onItemClick={(item) => {
                     selectionService.activeContent.setValue(item)
                     setIsFormOpened(false)
                     props.onNavigate(item)
                   }}
                   parentPath={props.rootPath}
                   activeItemIdOrPath={props.parentIdOrPath}
-                  setFormOpen={actionName => setFormOpen(actionName)}
+                  setFormOpen={(actionName) => setFormOpen(actionName)}
                 />
                 <div className={classes.exploreContainer}>
                   {isFormOpened ? (
@@ -133,6 +133,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                           }
                         }}
                         actionName={action}
+                        submitCallback={() => setIsFormOpened(false)}
                       />
                     </>
                   ) : (
@@ -142,13 +143,13 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                       fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields}
                       onParentChange={props.onNavigate}
                       onActivateItem={props.onActivateItem}
-                      onActiveItemChange={item => selectionService.activeContent.setValue(item)}
+                      onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
                       parentIdOrPath={props.parentIdOrPath}
-                      onSelectionChange={sel => {
+                      onSelectionChange={(sel) => {
                         selectionService.selection.setValue(sel)
                       }}
                       isOpenFrom={'explore'}
-                      setFormOpen={actionName => setFormOpen(actionName)}
+                      setFormOpen={(actionName) => setFormOpen(actionName)}
                     />
                   )}
                 </div>

@@ -47,14 +47,14 @@ export const DocumentTitlePager: React.FC = () => {
         </div>
         {isFocused ? (
           <form
-            onSubmit={ev => {
+            onSubmit={(ev) => {
               ev.preventDefault()
             }}>
             <TextField
               style={{ flexShrink: 0 }}
               title={localization.gotoPage}
               value={currentPage}
-              onChange={ev => gotoPage(ev.currentTarget.value)}
+              onChange={(ev) => gotoPage(ev.currentTarget.value)}
               type="number"
               required={true}
               InputLabelProps={{

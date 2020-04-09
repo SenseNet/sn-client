@@ -41,7 +41,7 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
   useEffect(() => {
     dispatch({ type: 'ON_LOADING' })
     addOidcEvents(oidcState.userManager.events, dispatch, oidcState.userManager)
-    oidcState.userManager.getUser().then(user => {
+    oidcState.userManager.getUser().then((user) => {
       if (!user) {
         return
       }

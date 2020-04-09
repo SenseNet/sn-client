@@ -20,7 +20,7 @@ export interface BrowseViewProps {
 /**
  * View Control for browsing a Content, works with a single Content and based on the ReactControlMapper
  */
-export const BrowseView: React.FC<BrowseViewProps> = props => {
+export const BrowseView: React.FC<BrowseViewProps> = (props) => {
   const controlMapper = reactControlMapper(props.repository)
   const schema = controlMapper.getFullSchemaForContentType(props.content.Type, 'browse')
 
@@ -30,7 +30,7 @@ export const BrowseView: React.FC<BrowseViewProps> = props => {
         <Typography variant="h5" gutterBottom={true}>
           {props.content.DisplayName}
         </Typography>
-        {schema.fieldMappings.map(field => {
+        {schema.fieldMappings.map((field) => {
           return (
             <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} key={field.fieldSettings.Name}>
               {createElement(

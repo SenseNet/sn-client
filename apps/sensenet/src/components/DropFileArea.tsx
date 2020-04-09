@@ -41,7 +41,7 @@ type Props = {
   style?: React.CSSProperties
 }
 
-export const DropFileArea: React.FunctionComponent<Props> = props => {
+export const DropFileArea: React.FunctionComponent<Props> = (props) => {
   const [isDragOver, setDragOver] = useState(false)
   const { openDialog } = useDialog()
   const classes = useStyles()
@@ -71,17 +71,17 @@ export const DropFileArea: React.FunctionComponent<Props> = props => {
         style={{
           ...props.style,
         }}
-        onDragEnter={ev => {
+        onDragEnter={(ev) => {
           ev.stopPropagation()
           ev.preventDefault()
           setDragOver(true)
         }}
-        onDragLeave={ev => {
+        onDragLeave={(ev) => {
           ev.stopPropagation()
           ev.preventDefault()
           setDragOver(false)
         }}
-        onDragOver={ev => {
+        onDragOver={(ev) => {
           ev.stopPropagation()
           ev.preventDefault()
           setDragOver(true)

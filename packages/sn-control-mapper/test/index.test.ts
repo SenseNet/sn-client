@@ -48,7 +48,7 @@ export const controlMapperTests = describe('ControlMapper', () => {
   })
 
   it('Should return correct explicit defined Control for FieldSettings', () => {
-    mapper.setupFieldSettingDefault('ChoiceFieldSetting', setting => {
+    mapper.setupFieldSettingDefault('ChoiceFieldSetting', (setting) => {
       if (setting.Compulsory) {
         return ExampleModifiedControl
       }
@@ -97,7 +97,7 @@ export const controlMapperTests = describe('ControlMapper', () => {
   it('GetAllMappingsForContentTye filtered to View should be able to return all mappings', () => {
     const fullMapping = mapper.getFullSchemaForContentType('Task', 'browse').fieldMappings
     expect(fullMapping.length).toBeGreaterThan(0)
-    fullMapping.forEach(m => {
+    fullMapping.forEach((m) => {
       expect(m.fieldSettings.VisibleBrowse).not.toBe(FieldVisibility.Hide)
       expect(m.controlType).toBe(ExampleDefaultFieldControl)
     })
@@ -106,7 +106,7 @@ export const controlMapperTests = describe('ControlMapper', () => {
   it('GetAllMappingsForContentTye filtered to Edit should be able to return all mappings', () => {
     const fullMapping = mapper.getFullSchemaForContentType('Task', 'edit').fieldMappings
     expect(fullMapping.length).toBeGreaterThan(0)
-    fullMapping.forEach(m => {
+    fullMapping.forEach((m) => {
       expect(m.fieldSettings.VisibleEdit).not.toBe(FieldVisibility.Hide)
       expect(m.controlType).toBe(ExampleDefaultFieldControl)
     })
@@ -115,7 +115,7 @@ export const controlMapperTests = describe('ControlMapper', () => {
   it('GetAllMappingsForContentTye filtered to New should be able to return all mappings', () => {
     const fullMapping = mapper.getFullSchemaForContentType('Task', 'new').fieldMappings
     expect(fullMapping.length).toBeGreaterThan(0)
-    fullMapping.forEach(m => {
+    fullMapping.forEach((m) => {
       expect(m.fieldSettings.VisibleNew).not.toBe(FieldVisibility.Hide)
       expect(m.controlType).toBe(ExampleDefaultFieldControl)
     })
@@ -124,7 +124,7 @@ export const controlMapperTests = describe('ControlMapper', () => {
   it('getFullSchemaForContentType with the type Folder should skip AllowedChildTypes', () => {
     const mapping = mapper.getFullSchemaForContentType('Folder', 'new').fieldMappings
     expect(mapping.length).toBeGreaterThan(0)
-    mapping.forEach(m => {
+    mapping.forEach((m) => {
       expect(m.fieldSettings.Name).not.toBe('AllowedChildTypes')
     })
   })
@@ -132,7 +132,7 @@ export const controlMapperTests = describe('ControlMapper', () => {
   it('getFullSchemaForContentType with the type SystemFolder should skip AllowedChildTypes', () => {
     const mapping = mapper.getFullSchemaForContentType('SystemFolder', 'new').fieldMappings
     expect(mapping.length).toBeGreaterThan(0)
-    mapping.forEach(m => {
+    mapping.forEach((m) => {
       expect(m.fieldSettings.Name).not.toBe('AllowedChildTypes')
     })
   })

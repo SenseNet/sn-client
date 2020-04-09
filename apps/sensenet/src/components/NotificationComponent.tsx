@@ -54,7 +54,7 @@ export const NotificationComponent: React.FunctionComponent = () => {
   const device = useContext(ResponsiveContext)
 
   useEffect(() => {
-    const subscription = eventService.notificationValues.subscribe(change =>
+    const subscription = eventService.notificationValues.subscribe((change) =>
       setValues(Array.from(Object.entries(change))),
     )
     return () => subscription.dispose()
@@ -75,7 +75,8 @@ export const NotificationComponent: React.FunctionComponent = () => {
             }}
             style={{
               marginBottom:
-                values.filter(val => val[1][0].data.isDismissed !== true).indexOf(v) * (device === 'mobile' ? 60 : 90),
+                values.filter((val) => val[1][0].data.isDismissed !== true).indexOf(v) *
+                (device === 'mobile' ? 60 : 90),
             }}
             ContentProps={{
               style: {

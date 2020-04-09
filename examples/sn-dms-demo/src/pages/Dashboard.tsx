@@ -138,7 +138,7 @@ class DashboardComponent extends React.Component<
     const { closeDialog, isDialogOpen, dialogContent } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
-        {matches => {
+        {(matches) => {
           return (
             <div>
               <div style={matches ? { ...styles.root } : { ...styles.rootMobile }}>

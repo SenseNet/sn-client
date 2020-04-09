@@ -12,7 +12,7 @@ export interface DeleteButtonProps {
 /**
  * Represents a delete button with confirmation dialog
  */
-export const DeleteButton: React.FC<DeleteButtonProps> = props => {
+export const DeleteButton: React.FC<DeleteButtonProps> = (props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const api = useDocumentViewerApi()
   const { documentData } = useDocumentData()

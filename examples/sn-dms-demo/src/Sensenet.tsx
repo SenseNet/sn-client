@@ -30,7 +30,7 @@ export function Sensenet() {
             </Route>
             <AuthorizedRoute
               path="/wopi"
-              render={routerProps => {
+              render={(routerProps) => {
                 console.log('in path /wopi')
                 const LoadableEditor = Loadable({
                   loader: () => import(/* webpackChunkName: "editor" */ './pages/Editor'),

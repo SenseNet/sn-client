@@ -25,7 +25,7 @@ export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
   return (
     <Breadcrumbs
       items={[
-        ...ancestors.map(content => ({
+        ...ancestors.map((content) => ({
           displayName: content.DisplayName || content.Name,
           title: content.Path,
           url: contentRouter.getPrimaryActionUrl(content),
@@ -41,7 +41,7 @@ export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
       onItemClick={(_ev, item) => {
         props.onItemClick ? props.onItemClick(item) : history.push(contentRouter.getPrimaryActionUrl(item.content))
       }}
-      setFormOpen={actionName => setFormOpen(actionName)}
+      setFormOpen={(actionName) => setFormOpen(actionName)}
     />
   )
 }

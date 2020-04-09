@@ -52,10 +52,7 @@ describe('Page component', () => {
   it('Should handle onClick event', () => {
     const onClick = jest.fn()
     const wrapper = shallow(<Page {...defaultProps} onClick={onClick} />)
-    wrapper
-      .find('div')
-      .first()
-      .simulate('click')
+    wrapper.find('div').first().simulate('click')
     expect(onClick).toBeCalled()
   })
 

@@ -40,10 +40,7 @@ describe('Eventcomponent testing', () => {
       )
     })
 
-    const listitem = wrapper
-      .update()
-      .find(ListItem)
-      .first()
+    const listitem = wrapper.update().find(ListItem).first()
 
     listitem.simulate('click')
     expect(shareobject.setEvent).toBeCalledWith({ ...content })

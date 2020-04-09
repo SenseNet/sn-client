@@ -6,9 +6,7 @@ export const openContextMenu = (name: string | number | RegExp) => {
     .should('exist')
     .get('[data-cy=gridPlaceholder]')
     .should('be.hidden')
-  cy.contains('tr', name)
-    .click()
-    .trigger('contextmenu')
+  cy.contains('tr', name).click().trigger('contextmenu')
 }
 
 export const contextMenuItems = {
@@ -52,9 +50,7 @@ export const registerNewUser = () => {
 }
 
 export const moveToFolderAndCheckIfFileExists = (copyToPath: string, fileName: string) => {
-  cy.contains(copyToPath)
-    .should('be.visible')
-    .dblclick()
+  cy.contains(copyToPath).should('be.visible').dblclick()
   cy.contains('[data-cy=appbar]', copyToPath, { timeout: 10000 }).should('exist')
   cy.contains(fileName).should('exist')
 }
@@ -75,8 +71,6 @@ export const uploadNewFileAndOpenContextMenuItem = (currentUserEmail: string, fi
 
 export const selectPathInListPicker = ({ path, action }: { path: string; action: string }) => {
   cy.contains('h6', `${action} content`).should('be.visible')
-  cy.get('div[role="dialog"]')
-    .contains('span', path)
-    .click()
+  cy.get('div[role="dialog"]').contains('span', path).click()
   cy.contains('button', `${action} content here`).click()
 }

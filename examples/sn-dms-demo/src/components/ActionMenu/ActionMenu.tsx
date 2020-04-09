@@ -347,7 +347,7 @@ class ActionMenu extends React.Component<
     const { actions, open, position, currentContent } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
-        {matches => {
+        {(matches) => {
           return matches ? (
             <Menu
               id="actionmenu"
@@ -357,7 +357,7 @@ class ActionMenu extends React.Component<
               anchorPosition={position}
               TransitionComponent={Fade}>
               {actions
-                .filter(action => action.Name !== 'Browse' && action.Name !== 'SetPermissions')
+                .filter((action) => action.Name !== 'Browse' && action.Name !== 'SetPermissions')
                 .map((action, index) => {
                   const displayName = resources[action.DisplayName.replace(/ /g, '').toUpperCase()]
                   let iconFileType
@@ -373,16 +373,16 @@ class ActionMenu extends React.Component<
                       iconFileType = iconType.materialui
                       break
                   }
-                  return actions.findIndex(a => a.Name === 'WopiOpenEdit') > -1 &&
+                  return actions.findIndex((a) => a.Name === 'WopiOpenEdit') > -1 &&
                     action.Name === 'WopiOpenView' ? null : (
                     <MenuItem
                       key={index}
-                      onClick={event => this.handleMenuItemClick(event, action)}
-                      onMouseEnter={e => {
+                      onClick={(event) => this.handleMenuItemClick(event, action)}
+                      onMouseEnter={(e) => {
                         e.currentTarget.style.color = '#016d9e'
                         e.currentTarget.style.fontWeight = 'bold'
                       }}
-                      onMouseLeave={e => {
+                      onMouseLeave={(e) => {
                         e.currentTarget.style.color = '#000'
                         e.currentTarget.style.fontWeight = 'normal'
                       }}
@@ -437,7 +437,7 @@ class ActionMenu extends React.Component<
                           onClick={this.handleClose}
                           to={`/wopi/${btoa(currentContent ? currentContent.Id.toString() : '')}`}
                           target="_blank"
-                          onMouseOver={e => this.handleMouseEnter(e, 'OpenInEditor')}
+                          onMouseOver={(e) => this.handleMouseEnter(e, 'OpenInEditor')}
                           onMouseLeave={this.handleMouseLeave}
                           style={
                             this.isHovered('OpenInEditor') ? styles.openInEditorLinkHovered : styles.openInEditorLink
@@ -455,7 +455,7 @@ class ActionMenu extends React.Component<
             <Drawer anchor="bottom" open={open} onClose={this.handleClose}>
               <List>
                 {actions
-                  .filter(action => action.Name !== 'Browse' && action.Name !== 'SetPermissions')
+                  .filter((action) => action.Name !== 'Browse' && action.Name !== 'SetPermissions')
                   .map((action, index) => {
                     const displayName = resources[action.DisplayName.replace(/ /g, '').toUpperCase()]
                     if (action.Name === 'uploadFile') {
@@ -486,7 +486,7 @@ class ActionMenu extends React.Component<
                             multiple={true}
                             id={uploadFileButtonId}
                             type="file"
-                            onChange={ev => this.handleUpload(ev)}
+                            onChange={(ev) => this.handleUpload(ev)}
                             style={{ display: 'none' }}
                           />
                         </label>
@@ -521,7 +521,7 @@ class ActionMenu extends React.Component<
                             multiple={true}
                             id={uploadFolderButtonId}
                             type="file"
-                            onChange={ev => this.handleUpload(ev)}
+                            onChange={(ev) => this.handleUpload(ev)}
                             style={{ display: 'none' }}
                             {...({
                               directory: '',
@@ -547,12 +547,12 @@ class ActionMenu extends React.Component<
                     return (
                       <MenuItem
                         key={index}
-                        onClick={event => this.handleMenuItemClick(event, action)}
-                        onMouseEnter={e => {
+                        onClick={(event) => this.handleMenuItemClick(event, action)}
+                        onMouseEnter={(e) => {
                           e.currentTarget.style.color = '#016d9e'
                           e.currentTarget.style.fontWeight = 'bold'
                         }}
-                        onMouseLeave={e => {
+                        onMouseLeave={(e) => {
                           e.currentTarget.style.color = '#000'
                           e.currentTarget.style.fontWeight = 'normal'
                         }}

@@ -25,10 +25,7 @@ describe('Header', () => {
       )
     })
 
-    wrapper
-      .update()
-      .find(IconButton)
-      .simulate('click')
+    wrapper.update().find(IconButton).simulate('click')
     expect(logout).toBeCalled()
   })
 })

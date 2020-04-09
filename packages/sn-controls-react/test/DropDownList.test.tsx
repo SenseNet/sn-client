@@ -34,18 +34,8 @@ describe('Drop down list field control', () => {
         <DropDownList actionName="browse" settings={defaultSettings} fieldValue={['0', '2'] as any} />,
       )
       expect(wrapper.find(FormControlLabel)).toHaveLength(2)
-      expect(
-        wrapper
-          .find(FormControlLabel)
-          .first()
-          .prop('label'),
-      ).toBe(defaultSettings.Options[0].Text)
-      expect(
-        wrapper
-          .find(FormControlLabel)
-          .last()
-          .prop('label'),
-      ).toBe(defaultSettings.Options[2].Text)
+      expect(wrapper.find(FormControlLabel).first().prop('label')).toBe(defaultSettings.Options[0].Text)
+      expect(wrapper.find(FormControlLabel).last().prop('label')).toBe(defaultSettings.Options[2].Text)
     })
 
     it('should show fieldValue when it is passed as a string', () => {

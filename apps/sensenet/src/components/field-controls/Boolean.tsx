@@ -26,7 +26,7 @@ const useStyles = makeStyles(() =>
 /**
  * Field control that represents a Boolean field.
  */
-export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> = props => {
+export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> = (props) => {
   const initialState = props.fieldValue != null ? !!props.fieldValue : !!changeJScriptValue(props.settings.DefaultValue)
   const [value, setValue] = useState(initialState)
   const classes = useStyles()
@@ -42,7 +42,8 @@ export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> =
       return (
         <FormControl
           className={clsx(classes.root, {
-            [classes.alignedCenter]: props.content?.Type === 'User' && props.settings.Name === 'Enabled',
+            [classes.alignedCenter]:
+              props.settings.Name === 'Enabled' && (props.content?.Type === 'User' || props.actionName === 'new'),
           })}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>

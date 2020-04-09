@@ -35,8 +35,8 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, se
 
   const observer = useRef(
     new IntersectionObserver(
-      entries => {
-        if (entries.length && entries.some(entry => entry.isIntersecting)) {
+      (entries) => {
+        if (entries.length && entries.some((entry) => entry.isIntersecting)) {
           const { path, startindex } = (entries[0].target as HTMLElement).dataset
 
           loader.current(parseInt(startindex ?? '0', 10), path)
@@ -48,10 +48,10 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, se
 
   useEffect(() => {
     const currentObserver = observer.current
-    elements?.forEach(element => currentObserver.observe(element))
+    elements?.forEach((element) => currentObserver.observe(element))
 
     return () => {
-      elements?.forEach(element => currentObserver.unobserve(element))
+      elements?.forEach((element) => currentObserver.unobserve(element))
     }
   }, [elements])
 
@@ -106,7 +106,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, se
     const nodeItem = (
       <ListItem
         onClick={onClick}
-        onContextMenu={ev => {
+        onContextMenu={(ev) => {
           ev.preventDefault()
           selectionService.activeContent.setValue(item)
           setContextMenuAnchor(ev.currentTarget)
@@ -200,12 +200,12 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, se
             anchorEl: contextMenuAnchor,
             BackdropProps: {
               onClick: () => setContextMenuAnchor(null),
-              onContextMenu: ev => ev.preventDefault(),
+              onContextMenu: (ev) => ev.preventDefault(),
             },
           }}
           onClose={() => setContextMenuAnchor(null)}
           halfPage={true}
-          setFormOpen={actionName => setFormOpenFunc(actionName)}
+          setFormOpen={(actionName) => setFormOpenFunc(actionName)}
         />
       ) : null}
     </div>

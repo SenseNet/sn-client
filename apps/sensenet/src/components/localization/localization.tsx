@@ -24,7 +24,7 @@ export default function Localization() {
         contentListProps={{
           enableBreadcrumbs: false,
           parentIdOrPath: '/Root/Localization',
-          onActivateItem: p => {
+          onActivateItem: (p) => {
             history.push(new ContentContextService(repository).getPrimaryActionUrl(p))
           },
         }}

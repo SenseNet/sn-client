@@ -31,7 +31,7 @@ export function Login() {
     <div className="Sensenet">
       <div className="Sensenet-header">
         <MediaQuery minDeviceWidth={700}>
-          {matches => {
+          {(matches) => {
             return (
               <img
                 src={logo}
@@ -50,7 +50,7 @@ export function Login() {
       <div>
         <Button
           type="submit"
-          onClick={e => {
+          onClick={(e) => {
             e.preventDefault()
             userManager.signinRedirect()
           }}

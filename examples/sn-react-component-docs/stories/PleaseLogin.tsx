@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-export const PleaseLogin: React.FunctionComponent = props => {
+export const PleaseLogin: React.FunctionComponent = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   useEffect(() => {
     async function checkIsLoggedIn() {

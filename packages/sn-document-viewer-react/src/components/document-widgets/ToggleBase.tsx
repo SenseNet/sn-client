@@ -24,7 +24,7 @@ export interface ToggleBaseProps {
 /**
  * Represents a base toggle component
  */
-export const ToggleBase: React.FunctionComponent<ToggleBaseProps> = props => (
+export const ToggleBase: React.FunctionComponent<ToggleBaseProps> = (props) => (
   <div style={{ display: 'inline-block' }}>
     <IconButton
       color={props.isVisible ? 'primary' : 'inherit'}

@@ -14,7 +14,7 @@ export const ToggleRedactionWidget: React.FC = () => {
     <ToggleBase
       isVisible={viewerState.showRedaction}
       title={localization.toggleRedaction}
-      setValue={v => viewerState.updateState({ showRedaction: v })}>
+      setValue={(v) => viewerState.updateState({ showRedaction: v })}>
       <PictureInPicture />
     </ToggleBase>
   )

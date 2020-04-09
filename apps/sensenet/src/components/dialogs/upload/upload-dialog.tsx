@@ -66,12 +66,12 @@ export function UploadDialog(props: UploadDialogProps) {
   const abortController = useRef(new AbortController())
 
   useEffect(() => {
-    const disposable = progressObservable.current.subscribe(progressInfo => {
-      setFiles(ffiles => {
+    const disposable = progressObservable.current.subscribe((progressInfo) => {
+      setFiles((ffiles) => {
         if (!ffiles) {
           return undefined
         }
-        return ffiles.map(f => {
+        return ffiles.map((f) => {
           if (f.lastModified === progressInfo.file.lastModified) {
             const updated = Object.assign(f, { progress: progressInfo })
             return updated
@@ -107,7 +107,7 @@ export function UploadDialog(props: UploadDialogProps) {
     if (!files) {
       return
     }
-    setFiles(files.filter(f => f !== file))
+    setFiles(files.filter((f) => f !== file))
 
     // it can access to select the same file again after removal. Check: https://github.com/sensenet/sn-client/issues/491
     if (inputFile.current) {
@@ -118,7 +118,7 @@ export function UploadDialog(props: UploadDialogProps) {
   const addFiles = (fileList: FileWithFullPath[]) => {
     const noDuplicateFiles =
       files && files.length
-        ? [...files, ...fileList.filter(file => !files.some(f2 => f2.size === file.size && f2.name === file.name))]
+        ? [...files, ...fileList.filter((file) => !files.some((f2) => f2.size === file.size && f2.name === file.name))]
         : fileList
     setFiles(noDuplicateFiles)
   }
@@ -127,7 +127,7 @@ export function UploadDialog(props: UploadDialogProps) {
     return (
       files &&
       files.length &&
-      files.every(file => {
+      files.every((file) => {
         return file.progress && (file.progress.completed || file.progress.error)
       })
     )
@@ -216,7 +216,7 @@ export function UploadDialog(props: UploadDialogProps) {
         </Grid>
       </DialogContent>
       <input
-        onChange={ev => {
+        onChange={(ev) => {
           ev.target.files && addFiles([...ev.target.files])
         }}
         style={{ display: 'none' }}

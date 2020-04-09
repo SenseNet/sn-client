@@ -9,7 +9,7 @@ export type LogoutButtonProps = {
   buttonStyle?: React.CSSProperties
 }
 
-export const LogoutButton: React.FunctionComponent<LogoutButtonProps> = props => {
+export const LogoutButton: React.FunctionComponent<LogoutButtonProps> = (props) => {
   const theme = useTheme()
   const localization = useLocalization().logout
   const { openDialog } = useDialog()

@@ -42,8 +42,8 @@ export const eventHubTests = describe('EventHub', () => {
   })
 
   describe('Content Created', () => {
-    it('should be triggered after post', done => {
-      eventHub.onContentCreated.subscribe(c => {
+    it('should be triggered after post', (done) => {
+      eventHub.onContentCreated.subscribe((c) => {
         expect(c.content).toEqual(mockContent)
         done()
       })
@@ -63,8 +63,8 @@ export const eventHubTests = describe('EventHub', () => {
       })
     })
 
-    it('fail should be trigger after post failed', done => {
-      eventHub.onContentCreateFailed.subscribe(c => {
+    it('fail should be trigger after post failed', (done) => {
+      eventHub.onContentCreateFailed.subscribe((c) => {
         expect(c.content).toEqual(mockContent)
         done()
       })
@@ -88,8 +88,8 @@ export const eventHubTests = describe('EventHub', () => {
       })()
     })
 
-    it('should be trigger after copy', done => {
-      eventHub.onContentCopied.subscribe(c => {
+    it('should be trigger after copy', (done) => {
+      eventHub.onContentCopied.subscribe((c) => {
         expect(c.content).toEqual(mockContent)
         done()
       })
@@ -113,8 +113,8 @@ export const eventHubTests = describe('EventHub', () => {
       })
     })
 
-    it('should trigger failed after copy failed', done => {
-      eventHub.onContentCopyFailed.subscribe(c => {
+    it('should trigger failed after copy failed', (done) => {
+      eventHub.onContentCopyFailed.subscribe((c) => {
         expect(c.content).toEqual(mockContent)
         done()
       })
@@ -138,8 +138,8 @@ export const eventHubTests = describe('EventHub', () => {
       })
     })
 
-    it('should trigger failed if copyBatch operation has been failed ', done => {
-      eventHub.onContentCopyFailed.subscribe(c => {
+    it('should trigger failed if copyBatch operation has been failed ', (done) => {
+      eventHub.onContentCopyFailed.subscribe((c) => {
         expect(c.content).toEqual({ Id: 321 })
         done()
       })
@@ -159,8 +159,8 @@ export const eventHubTests = describe('EventHub', () => {
       })()
     })
 
-    it('should trigger failed if copyBatch operation has been failed with an array of pathes', done => {
-      eventHub.onContentCopyFailed.subscribe(c => {
+    it('should trigger failed if copyBatch operation has been failed with an array of pathes', (done) => {
+      eventHub.onContentCopyFailed.subscribe((c) => {
         expect(c.content).toEqual({ Path: 'Root/Example/Path1' })
         done()
       })
@@ -182,8 +182,8 @@ export const eventHubTests = describe('EventHub', () => {
   })
 
   describe('Content Modified', () => {
-    it('should be trigger after patch', done => {
-      eventHub.onContentModified.subscribe(c => {
+    it('should be trigger after patch', (done) => {
+      eventHub.onContentModified.subscribe((c) => {
         expect(c.content).toEqual(mockContent)
         done()
       })
@@ -202,8 +202,8 @@ export const eventHubTests = describe('EventHub', () => {
       })
     })
 
-    it('fail should be triggered after patch failed', done => {
-      eventHub.onContentModificationFailed.subscribe(c => {
+    it('fail should be triggered after patch failed', (done) => {
+      eventHub.onContentModificationFailed.subscribe((c) => {
         expect(c.content).toEqual(mockContent)
         done()
       })
@@ -226,8 +226,8 @@ export const eventHubTests = describe('EventHub', () => {
       })()
     })
 
-    it('should be trigger after put', done => {
-      eventHub.onContentModified.subscribe(c => {
+    it('should be trigger after put', (done) => {
+      eventHub.onContentModified.subscribe((c) => {
         expect(c.content).toEqual(mockContent)
         done()
       })
@@ -247,8 +247,8 @@ export const eventHubTests = describe('EventHub', () => {
     })
   })
 
-  it('fail should be triggered after put failed', done => {
-    eventHub.onContentModificationFailed.subscribe(c => {
+  it('fail should be triggered after put failed', (done) => {
+    eventHub.onContentModificationFailed.subscribe((c) => {
       expect(c.content).toEqual(mockContent)
       done()
     })
@@ -272,8 +272,8 @@ export const eventHubTests = describe('EventHub', () => {
   })
 
   describe('Content Deleted', () => {
-    it('should be triggered after delete', done => {
-      eventHub.onContentDeleted.subscribe(c => {
+    it('should be triggered after delete', (done) => {
+      eventHub.onContentDeleted.subscribe((c) => {
         expect(c.contentData).toEqual(mockContent)
         done()
       })
@@ -295,8 +295,8 @@ export const eventHubTests = describe('EventHub', () => {
       })
     })
 
-    it('failed should be triggered after delete succeed with errors', done => {
-      eventHub.onContentDeleteFailed.subscribe(c => {
+    it('failed should be triggered after delete succeed with errors', (done) => {
+      eventHub.onContentDeleteFailed.subscribe((c) => {
         expect(c.content).toEqual(mockContent)
         done()
       })
@@ -323,8 +323,8 @@ export const eventHubTests = describe('EventHub', () => {
       })
     })
 
-    it('failed should be triggered if deleteBatch operation has been failed', done => {
-      eventHub.onContentDeleteFailed.subscribe(c => {
+    it('failed should be triggered if deleteBatch operation has been failed', (done) => {
+      eventHub.onContentDeleteFailed.subscribe((c) => {
         expect(c.content).toEqual({ Id: 123 })
         done()
       })
@@ -343,8 +343,8 @@ export const eventHubTests = describe('EventHub', () => {
       })()
     })
 
-    it('failed should be triggered if deleteBatch operation has been failed with an array of pathes', done => {
-      eventHub.onContentDeleteFailed.subscribe(c => {
+    it('failed should be triggered if deleteBatch operation has been failed with an array of pathes', (done) => {
+      eventHub.onContentDeleteFailed.subscribe((c) => {
         expect(c.content).toEqual({ Path: 'Root/Example/Path1' })
         done()
       })
@@ -365,8 +365,8 @@ export const eventHubTests = describe('EventHub', () => {
   })
 
   describe('Content Move', () => {
-    it('should be triggered after move', done => {
-      eventHub.onContentMoved.subscribe(c => {
+    it('should be triggered after move', (done) => {
+      eventHub.onContentMoved.subscribe((c) => {
         expect(c.content).toEqual(mockContent)
         done()
       })
@@ -389,8 +389,8 @@ export const eventHubTests = describe('EventHub', () => {
       })
     })
 
-    it('failed should be triggered after move succeed with errors', done => {
-      eventHub.onContentMoveFailed.subscribe(c => {
+    it('failed should be triggered after move succeed with errors', (done) => {
+      eventHub.onContentMoveFailed.subscribe((c) => {
         expect(c.content).toEqual(mockContent)
         done()
       })
@@ -418,8 +418,8 @@ export const eventHubTests = describe('EventHub', () => {
       })
     })
 
-    it('failed should be triggered if moveBatch operation has been failed', done => {
-      eventHub.onContentMoveFailed.subscribe(c => {
+    it('failed should be triggered if moveBatch operation has been failed', (done) => {
+      eventHub.onContentMoveFailed.subscribe((c) => {
         expect(c.content).toEqual({ Id: 123 })
         done()
       })
@@ -439,8 +439,8 @@ export const eventHubTests = describe('EventHub', () => {
       })()
     })
 
-    it('failed should be triggered if moveBatch operation has been failed with an array of pathes', done => {
-      eventHub.onContentMoveFailed.subscribe(c => {
+    it('failed should be triggered if moveBatch operation has been failed with an array of pathes', (done) => {
+      eventHub.onContentMoveFailed.subscribe((c) => {
         expect(c.content).toEqual({ Path: 'Root/Example/Path1' })
         done()
       })
@@ -462,8 +462,8 @@ export const eventHubTests = describe('EventHub', () => {
   })
 
   describe('load', () => {
-    it('onContentLoaded() should be triggered after load', done => {
-      eventHub.onContentLoaded.subscribe(c => {
+    it('onContentLoaded() should be triggered after load', (done) => {
+      eventHub.onContentLoaded.subscribe((c) => {
         expect(c.content).toEqual(mockContent)
         done()
       })
@@ -481,12 +481,12 @@ export const eventHubTests = describe('EventHub', () => {
       })
     })
 
-    it('onContentLoadFailed() should be trigger after load failed', done => {
+    it('onContentLoadFailed() should be trigger after load failed', (done) => {
       const payload: LoadOptions<GenericContent> = {
         idOrPath: 1,
       }
 
-      eventHub.onContentLoadFailed.subscribe(c => {
+      eventHub.onContentLoadFailed.subscribe((c) => {
         expect(c.payload).toEqual(payload)
         done()
       })
@@ -508,7 +508,7 @@ export const eventHubTests = describe('EventHub', () => {
   })
 
   describe('loadCollection', () => {
-    it('onContentCollectionLoaded() should be triggered after load', done => {
+    it('onContentCollectionLoaded() should be triggered after load', (done) => {
       const mockResponse: ODataCollectionResponse<Partial<GenericContent>> = {
         d: {
           __count: 3,
@@ -516,7 +516,7 @@ export const eventHubTests = describe('EventHub', () => {
         },
       }
 
-      eventHub.onContentCollectionLoaded.subscribe(c => {
+      eventHub.onContentCollectionLoaded.subscribe((c) => {
         expect(c).toEqual(mockResponse)
         done()
       })
@@ -532,12 +532,12 @@ export const eventHubTests = describe('EventHub', () => {
       })
     })
 
-    it('onContentLoadFailed() should be trigger after load failed', done => {
+    it('onContentLoadFailed() should be trigger after load failed', (done) => {
       const payload: LoadCollectionOptions<GenericContent> = {
         path: 'Root/Content',
       }
 
-      eventHub.onContentCollectionLoadFailed.subscribe(c => {
+      eventHub.onContentCollectionLoadFailed.subscribe((c) => {
         expect(c.payload).toEqual(payload)
         done()
       })
@@ -566,8 +566,8 @@ export const eventHubTests = describe('EventHub', () => {
       Url: '/Root/Sites/Default_Site/Workspace/Document_Library/LICENSE',
     }
 
-    it('onUploadFinished() should be triggered after chuncked upload', done => {
-      eventHub.onUploadFinished.subscribe(response => {
+    it('onUploadFinished() should be triggered after chuncked upload', (done) => {
+      eventHub.onUploadFinished.subscribe((response) => {
         expect(response).toEqual(mockAnswer)
         done()
       })
@@ -617,8 +617,8 @@ export const eventHubTests = describe('EventHub', () => {
       }
     })
 
-    it('onUploadFinished() should be triggered after nonchuncked upload', done => {
-      eventHub.onUploadFinished.subscribe(response => {
+    it('onUploadFinished() should be triggered after nonchuncked upload', (done) => {
+      eventHub.onUploadFinished.subscribe((response) => {
         expect(response).toEqual(mockAnswer)
         done()
       })

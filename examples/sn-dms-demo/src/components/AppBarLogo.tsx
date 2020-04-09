@@ -45,7 +45,7 @@ const styles = {
 
 const appBarLogo = (props: { style?: React.CSSProperties }) => (
   <MediaQuery minDeviceWidth={700}>
-    {matches => {
+    {(matches) => {
       return (
         <Link to="/documents" style={{ ...(matches ? styles.logo : (styles.logoMobile as any)), ...props.style }}>
           <img

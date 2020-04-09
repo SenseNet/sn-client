@@ -73,7 +73,7 @@ export function Approve(props: ApproveProps) {
             multiline={true}
             rowsMax="4"
             value={reason}
-            onChange={event => setReason(event.target.value)}
+            onChange={(event) => setReason(event.target.value)}
             margin="normal"
             fullWidth={true}
           />

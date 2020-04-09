@@ -18,7 +18,7 @@ export interface ShapesWidgetProps {
 /**
  * Page widget component for displaying shapes on a page
  */
-export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
+export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
   const permissions = useDocumentPermissions()
   const viewerState = useViewerState()
   const { documentData, updateDocumentData } = useDocumentData()
@@ -26,16 +26,16 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
   const commentState = useCommentState()
 
   const [visibleShapes, setVisibleShapes] = useState({
-    redactions: documentData.shapes.redactions.filter(r => r.imageIndex === props.page.Index) as Redaction[],
-    highlights: documentData.shapes.highlights.filter(r => r.imageIndex === props.page.Index) as Highlight[],
-    annotations: documentData.shapes.annotations.filter(r => r.imageIndex === props.page.Index) as Annotation[],
+    redactions: documentData.shapes.redactions.filter((r) => r.imageIndex === props.page.Index) as Redaction[],
+    highlights: documentData.shapes.highlights.filter((r) => r.imageIndex === props.page.Index) as Highlight[],
+    annotations: documentData.shapes.annotations.filter((r) => r.imageIndex === props.page.Index) as Annotation[],
   })
 
   useEffect(() => {
     setVisibleShapes({
-      redactions: documentData.shapes.redactions.filter(r => r.imageIndex === props.page.Index) as Redaction[],
-      highlights: documentData.shapes.highlights.filter(r => r.imageIndex === props.page.Index) as Highlight[],
-      annotations: documentData.shapes.annotations.filter(r => r.imageIndex === props.page.Index) as Annotation[],
+      redactions: documentData.shapes.redactions.filter((r) => r.imageIndex === props.page.Index) as Redaction[],
+      highlights: documentData.shapes.highlights.filter((r) => r.imageIndex === props.page.Index) as Highlight[],
+      annotations: documentData.shapes.annotations.filter((r) => r.imageIndex === props.page.Index) as Annotation[],
     })
   }, [
     documentData.shapes.annotations,
@@ -46,7 +46,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
 
   const removeShape = useCallback(
     (shapeType: keyof Shapes, guid: string) => {
-      ;(documentData.shapes as any)[shapeType] = documentData.shapes[shapeType].filter(s => s.guid !== guid)
+      ;(documentData.shapes as any)[shapeType] = documentData.shapes[shapeType].filter((s) => s.guid !== guid)
       updateDocumentData(documentData)
       viewerState.updateState({ hasChanges: true })
     },
@@ -55,7 +55,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
 
   const updateShapeData = useCallback(
     (shapeType: keyof Shapes, guid: string, shapeChange: Shape | Annotation) => {
-      ;(documentData.shapes as any)[shapeType] = (documentData.shapes[shapeType] as Shape[]).map(s => {
+      ;(documentData.shapes as any)[shapeType] = (documentData.shapes[shapeType] as Shape[]).map((s) => {
         if (s.guid === guid) {
           return { ...s, ...shapeChange }
         }
@@ -98,9 +98,9 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
         zIndex: 1,
       }}
       onDrop={onDrop}
-      onDragOver={ev => ev.preventDefault()}>
+      onDragOver={(ev) => ev.preventDefault()}>
       {viewerState.showComments &&
-        [...comments.comments, ...(commentState.draft ? [commentState.draft] : [])].map(marker => (
+        [...comments.comments, ...(commentState.draft ? [commentState.draft] : [])].map((marker) => (
           <CommentMarker
             onClick={() => commentState.setActiveComment(marker.id)}
             isSelected={marker.id === commentState.activeCommentId}

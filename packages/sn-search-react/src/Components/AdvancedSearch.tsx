@@ -69,8 +69,8 @@ export class AdvancedSearch<T extends GenericContent = GenericContent> extends C
   private updateQuery(key: string, newQuery: Query<T>) {
     this.state.fieldQueries.set(key, newQuery)
     const fieldQueryArray = Array.from(this.state.fieldQueries.values())
-    const query = new Query(q => {
-      const filteredQueries = fieldQueryArray.filter(f => f.toString().length > 0)
+    const query = new Query((q) => {
+      const filteredQueries = fieldQueryArray.filter((f) => f.toString().length > 0)
 
       filteredQueries.forEach((fieldQuery, currentIndex) => {
         const { queryRef } = q
@@ -93,7 +93,7 @@ export class AdvancedSearch<T extends GenericContent = GenericContent> extends C
     newProps: AdvancedSearchProps<T>,
     lastState: AdvancedSearchState<T>,
   ) {
-    const query = new Query<T>(q => q)
+    const query = new Query<T>((q) => q)
     return {
       ...lastState,
       onQueryChanged: newProps.onQueryChanged && debounce(newProps.onQueryChanged, 50),

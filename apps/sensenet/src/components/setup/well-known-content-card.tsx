@@ -53,7 +53,7 @@ export const WellKnownContentCard = ({ settings, onContextMenu }: WellKnownConte
 
   return (
     <Card
-      onContextMenu={ev => {
+      onContextMenu={(ev) => {
         ev.preventDefault()
         onContextMenu(ev)
       }}

@@ -118,13 +118,13 @@ class ShareDialog extends React.Component<
       newProps.currentContent.Icon &&
       icons[newProps.currentContent.Icon.toLowerCase() as any]
     const entries = Object.values(newProps.items)
-      .map(item => Object.values(item as any))
+      .map((item) => Object.values(item as any))
       .reduce((acc, val) => acc.concat(val), []) // .flat()
     return {
       icon,
       sharedWithValues: [
         ...entries
-          .filter((e: any) => lastState.sharedWithValues.findIndex(s => s.value === e.Token) === -1)
+          .filter((e: any) => lastState.sharedWithValues.findIndex((s) => s.value === e.Token) === -1)
           .map((entry: any) => ({
             value: entry.Token,
             type: entry.Level,
@@ -144,8 +144,8 @@ class ShareDialog extends React.Component<
     this.props.closeDialog()
     this.props.closeCallback && this.props.closeCallback()
     this.state.sharedWithValues
-      .filter(v => !v.isSaved)
-      .forEach(v => {
+      .filter((v) => !v.isSaved)
+      .forEach((v) => {
         const sharingOptions = {
           identity: v.value,
           content: this.props.currentContent,
@@ -186,7 +186,7 @@ class ShareDialog extends React.Component<
         this.setState({
           addValue: '',
           sharedWithValues: [
-            ...this.state.sharedWithValues.filter(val => val.value !== this.state.addValue),
+            ...this.state.sharedWithValues.filter((val) => val.value !== this.state.addValue),
             { type: this.state.addType, value: this.state.addValue, isSaved: false },
           ],
         })
@@ -234,7 +234,7 @@ class ShareDialog extends React.Component<
     const { currentContent, repositoryUrl } = this.props
     return (
       <MediaQuery minWidth={700}>
-        {matches => (
+        {(matches) => (
           <form onSubmit={this.submitCallback}>
             {matches ? (
               <Typography variant="h5" gutterBottom={true}>
@@ -278,7 +278,7 @@ class ShareDialog extends React.Component<
                     {this.state.sharedWithValues.length ? (
                       <div style={{ margin: '0.3em 0px .3em', padding: '1em 0' }}>
                         <strong>{resources.SHARED_WITH} </strong>
-                        {this.state.sharedWithValues.map(v => v.value).join(', ')}
+                        {this.state.sharedWithValues.map((v) => v.value).join(', ')}
                         <Divider />
                       </div>
                     ) : null}
@@ -299,7 +299,7 @@ class ShareDialog extends React.Component<
                 <div>
                   <div style={{ fontSize: '.85em', margin: '.3em 0 1.5em 0' }}>
                     <strong>{resources.SHARED_WITH} </strong>
-                    {this.state.sharedWithValues.map(v => v.value).join(', ')}
+                    {this.state.sharedWithValues.map((v) => v.value).join(', ')}
                   </div>
                   <Divider />
                 </div>

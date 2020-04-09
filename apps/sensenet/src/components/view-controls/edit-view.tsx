@@ -21,10 +21,14 @@ const useStyles = makeStyles(() => {
       padding: '22px 22px 0 22px',
       overflowY: 'auto',
       width: '100%',
-      height: 'calc(100% - 148px)',
-    },
-    fullpage: {
       height: 'calc(100% - 80px)',
+    },
+    mainForm: {
+      display: 'initial',
+      height: 'calc(100% - 68px)',
+    },
+    mainFormFullpage: {
+      height: '100%',
     },
     grid: {
       display: 'flex',
@@ -72,7 +76,7 @@ export interface EditViewProps {
  *  <EditView content={selectedContent} onSubmit={editSubmitClick} />
  * ```
  */
-export const EditView: React.FC<EditViewProps> = props => {
+export const EditView: React.FC<EditViewProps> = (props) => {
   const repo = useRepository()
   const selectionService = useSelectionService()
   const [content, setContent] = useState(selectionService.activeContent.getValue())
@@ -84,7 +88,7 @@ export const EditView: React.FC<EditViewProps> = props => {
   const logger = useLogger('EditView')
 
   useEffect(() => {
-    const activeComponentObserve = selectionService.activeContent.subscribe(newActiveComponent =>
+    const activeComponentObserve = selectionService.activeContent.subscribe((newActiveComponent) =>
       setContent(newActiveComponent),
     )
     return function cleanup() {
@@ -100,39 +104,40 @@ export const EditView: React.FC<EditViewProps> = props => {
       props.actionName ? props.actionName : 'browse',
     )
 
-    const handleSubmit = () => {
-      repo
-        .patch({
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault()
+      try {
+        const response = repo.patch({
           idOrPath: content.Id,
           content: saveableFields,
         })
-        .then(response => {
-          logger.information({
-            message: localization.editPropertiesDialog.saveSuccessNotification.replace(
-              '{0}',
-              content.DisplayName || content.Name || content.DisplayName || content.Name,
-            ),
-            data: {
-              relatedContent: content,
-              content: response,
-              relatedRepository: repo.configuration.repositoryUrl,
-            },
-          })
+        logger.information({
+          message: localization.editPropertiesDialog.saveSuccessNotification.replace(
+            '{0}',
+            content.DisplayName || content.Name || content.DisplayName || content.Name,
+          ),
+          data: {
+            relatedContent: content,
+            content: response,
+            relatedRepository: repo.configuration.repositoryUrl,
+          },
         })
-        .catch(error => {
-          logger.error({
-            message: localization.editPropertiesDialog.saveFailedNotification.replace(
-              '{0}',
-              content.DisplayName || content.Name || content.DisplayName || content.Name,
-            ),
-            data: {
-              relatedContent: content,
-              content,
-              relatedRepository: repo.configuration.repositoryUrl,
-              error: isExtendedError(error) ? repo.getErrorFromResponse(error.response) : error,
-            },
-          })
+      } catch (error) {
+        logger.error({
+          message: localization.editPropertiesDialog.saveFailedNotification.replace(
+            '{0}',
+            content.DisplayName || content.Name || content.DisplayName || content.Name,
+          ),
+          data: {
+            relatedContent: content,
+            content,
+            relatedRepository: repo.configuration.repositoryUrl,
+            error: isExtendedError(error) ? repo.getErrorFromResponse(error.response) : error,
+          },
         })
+      } finally {
+        props.submitCallback && props.submitCallback()
+      }
     }
 
     const handleInputChange = (field: string, value: unknown) => {
@@ -148,16 +153,16 @@ export const EditView: React.FC<EditViewProps> = props => {
     }
 
     return (
-      <>
-        <form
-          className={clsx(classes.form, {
-            [classes.fullpage]: props.isFullPage,
-          })}
-          onSubmit={handleSubmit}>
+      <form
+        className={clsx(classes.mainForm, {
+          [classes.mainFormFullpage]: props.isFullPage,
+        })}
+        onSubmit={handleSubmit}>
+        <div className={classes.form}>
           <Grid container={true} spacing={2}>
             {schema.fieldMappings
               .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
-              .map(field => {
+              .map((field) => {
                 const fieldControl = createElement(
                   controlMapper.getControlForContentField(
                     content.Type,
@@ -196,7 +201,7 @@ export const EditView: React.FC<EditViewProps> = props => {
                 )
               })}
           </Grid>
-        </form>
+        </div>
         <div className={classes.actionButtonWrapper}>
           <MediaQuery minDeviceWidth={700}>
             <Button
@@ -207,12 +212,12 @@ export const EditView: React.FC<EditViewProps> = props => {
             </Button>
           </MediaQuery>
           {props.actionName !== 'browse' && (
-            <Button variant="contained" color="primary" onClick={() => handleSubmit()}>
+            <Button variant="contained" color="primary" type="submit">
               {localization.forms.submit}
             </Button>
           )}
         </div>
-      </>
+      </form>
     )
   }
 }

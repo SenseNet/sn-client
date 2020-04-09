@@ -47,7 +47,7 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
       <Suspense fallback={<FullScreenLoader loaderText="" />}>
         <LoginPage
           isLoginDisabled={true}
-          inputChangeCallback={url => {
+          inputChangeCallback={(url) => {
             setRepoUrl(url)
           }}
         />

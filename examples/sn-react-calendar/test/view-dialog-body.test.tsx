@@ -63,18 +63,11 @@ describe('ViewDialogBody', () => {
         </RepositoryContext.Provider>,
       )
     })
-    wrapper
-      .update()
-      .find(IconButton)
-      .first()
-      .simulate('click')
+    wrapper.update().find(IconButton).first().simulate('click')
     expect(wrapper.find('div#simple-dialog-title').text()).toEqual('Are you sure you want to delete it?')
 
     await act(async () => {
-      wrapper
-        .find(Button)
-        .first()
-        .simulate('click')
+      wrapper.find(Button).first().simulate('click')
     })
 
     expect(shareobject.setRefreshcalendar).toBeCalledWith(!shareobject.refreshcalendar)

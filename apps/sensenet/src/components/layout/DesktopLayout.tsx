@@ -41,7 +41,7 @@ const useStyles = makeStyles(() => {
   })
 })
 
-export const DesktopLayout: React.FunctionComponent = props => {
+export const DesktopLayout: React.FunctionComponent = (props) => {
   const settings = useContext(ResponsivePersonalSetttings)
   const repo = useRepository()
   const { openDialog, closeLastDialog } = useDialog()
@@ -52,11 +52,11 @@ export const DesktopLayout: React.FunctionComponent = props => {
 
   useEffect(() => {
     const observables = [
-      customActionService.onExecuteAction.subscribe(value => {
+      customActionService.onExecuteAction.subscribe((value) => {
         const uri = getMonacoModelUri(value.content, repo, value.action)
         openDialog({ name: 'execute-action', props: { actionValue: value, uri } })
       }),
-      customActionService.onActionExecuted.subscribe(value => {
+      customActionService.onActionExecuted.subscribe((value) => {
         closeLastDialog()
         const response = JSON.stringify(
           {
@@ -74,7 +74,7 @@ export const DesktopLayout: React.FunctionComponent = props => {
         openDialog({ name: 'custom-action-result', props: { response } })
       }),
     ]
-    return () => observables.forEach(o => o.dispose())
+    return () => observables.forEach((o) => o.dispose())
   }, [closeLastDialog, customActionService.onActionExecuted, customActionService.onExecuteAction, openDialog, repo])
 
   return (

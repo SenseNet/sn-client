@@ -34,7 +34,7 @@ export default function EditProperties() {
     <div className={clsx(globalClasses.full, classes.editWrapper)}>
       <CurrentContentProvider
         idOrPath={match.params.contentId}
-        onContentLoaded={c => {
+        onContentLoaded={(c) => {
           selectionService.activeContent.setValue(c)
         }}
         oDataOptions={{ select: 'all' }}>
@@ -51,6 +51,7 @@ export default function EditProperties() {
           }}
           actionName={'edit'}
           isFullPage={true}
+          submitCallback={history.goBack}
         />
       </CurrentContentProvider>
     </div>

@@ -26,7 +26,7 @@ export default function UsersAndGroups() {
           enableBreadcrumbs: false,
           parentIdOrPath: '/Root/IMS/Public',
           fieldsToDisplay: ['DisplayName', 'ModificationDate', 'ModifiedBy', 'Actions'],
-          onActivateItem: p => {
+          onActivateItem: (p) => {
             history.push(contentRouter.getPrimaryActionUrl(p))
           },
         }}

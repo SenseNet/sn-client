@@ -93,7 +93,7 @@ export const Search = () => {
           oDataOptions: {
             ...loadSettingsContext.loadChildrenSettings,
             select: ['Actions', ...(queryData.fieldsToDisplay || [])],
-            expand: ['Actions', ...(queryData.fieldsToDisplay || []).filter(f => isReferenceField(f, repo))],
+            expand: ['Actions', ...(queryData.fieldsToDisplay || []).filter((f) => isReferenceField(f, repo))],
             query: personalSettings.commandPalette.wrapQuery.replace('{0}', queryData.term),
           },
           requestInit: { signal: ac.signal },
@@ -131,7 +131,7 @@ export const Search = () => {
               helperText={localization.queryHelperText}
               defaultValue={queryData.term}
               fullWidth={true}
-              onChange={ev => {
+              onChange={(ev) => {
                 if (queryData.term !== ev.target.value) {
                   // setQueryData({ ...queryData, term: ev.target.value })
                   requestReload(queryData, ev.target.value)
@@ -169,19 +169,19 @@ export const Search = () => {
               enableBreadcrumbs={false}
               fieldsToDisplay={queryData.fieldsToDisplay}
               parentIdOrPath={0}
-              onParentChange={p => {
+              onParentChange={(p) => {
                 history.push(new ContentContextService(repo).getPrimaryActionUrl(p))
               }}
-              onActivateItem={p => {
+              onActivateItem={(p) => {
                 history.push(new ContentContextService(repo).getPrimaryActionUrl(p))
               }}
               onTabRequest={() => {
                 /** */
               }}
-              onSelectionChange={sel => {
+              onSelectionChange={(sel) => {
                 selectionService.selection.setValue(sel)
               }}
-              onActiveItemChange={item => selectionService.activeContent.setValue(item)}
+              onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
             />
           </CurrentAncestorsContext.Provider>
         </CurrentChildrenContext.Provider>

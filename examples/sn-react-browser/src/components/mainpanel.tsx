@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) =>
 /**
  * Main component
  */
-const MainPanel: React.FunctionComponent<MainPanel> = props => {
+const MainPanel: React.FunctionComponent<MainPanel> = (props) => {
   const classes = useStyles()
   const repo = useRepository()
   const history = useHistory()
@@ -173,7 +173,7 @@ const MainPanel: React.FunctionComponent<MainPanel> = props => {
             items={data}
             icons={icons}
             checkboxProps={{ color: 'primary' }}
-            fieldComponent={fieldOptions => {
+            fieldComponent={(fieldOptions) => {
               switch (fieldOptions.field) {
                 case 'DisplayName':
                   return <TableCell>{fieldOptions.content.DisplayName}</TableCell>

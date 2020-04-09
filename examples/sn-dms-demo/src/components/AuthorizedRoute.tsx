@@ -5,7 +5,7 @@ import { UserState } from 'redux-oidc'
 import { rootStateType } from '../store/rootReducer'
 
 export const AuthorizedRoute = ({ children, ...rest }: PropsWithChildren<RouteProps>) => {
-  const stateAuth = useSelector<rootStateType, UserState>(state => state.auth)
+  const stateAuth = useSelector<rootStateType, UserState>((state) => state.auth)
   const { user } = stateAuth
 
   if (stateAuth.isLoadingUser) {

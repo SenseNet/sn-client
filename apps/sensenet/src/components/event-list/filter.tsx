@@ -14,7 +14,7 @@ import { Icon } from '../Icon'
 import { EventService } from '../../services/EventService'
 import { EventListFilterContext } from './filter-context'
 
-export const Filter: React.FunctionComponent<{ style?: React.CSSProperties }> = props => {
+export const Filter: React.FunctionComponent<{ style?: React.CSSProperties }> = (props) => {
   const f = useContext(EventListFilterContext)
   const service = useInjector().getInstance(EventService)
   const localization = useLocalization().eventList.filter
@@ -32,12 +32,12 @@ export const Filter: React.FunctionComponent<{ style?: React.CSSProperties }> = 
       <TextField
         label={localization.termTitle}
         placeholder={localization.termPlaceholder}
-        onChange={ev => updateTerm(ev.target.value)}
+        onChange={(ev) => updateTerm(ev.target.value)}
       />
       <TextField
         label={localization.scopeTitle}
         placeholder={localization.scopePlaceholder}
-        onChange={ev => updateScope(ev.target.value)}
+        onChange={(ev) => updateScope(ev.target.value)}
       />
       <FormControl style={{ justifyContent: 'flex-end', marginLeft: 15 }}>
         <InputLabel htmlFor="event-log-filter">{localization.levelTitle}</InputLabel>
@@ -53,8 +53,8 @@ export const Filter: React.FunctionComponent<{ style?: React.CSSProperties }> = 
             ) : null
           }
           value={isNaN(f.filter.logLevel as number) ? '' : f.filter.logLevel}
-          renderValue={v => LogLevel[v as any]}
-          onChange={ev =>
+          renderValue={(v) => LogLevel[v as any]}
+          onChange={(ev) =>
             ev.target.value === ''
               ? f.setFilter({ ...f.filter, logLevel: undefined })
               : f.setFilter({ ...f.filter, logLevel: ev.target.value as any })
@@ -63,8 +63,8 @@ export const Filter: React.FunctionComponent<{ style?: React.CSSProperties }> = 
             {localization.levelAll}
           </MenuItem>
           {Object.entries(LogLevel)
-            .filter(entry => !isNaN(entry[1] as LogLevel))
-            .map(entry => (
+            .filter((entry) => !isNaN(entry[1] as LogLevel))
+            .map((entry) => (
               <MenuItem key={entry[1]} value={entry[1]}>
                 {entry[0]}
               </MenuItem>

@@ -89,7 +89,7 @@ class DialogInfo extends React.Component<{ classes: any } & DialogInfoProps, {}>
     const icon = currentContent ? currentContent.Icon || currentContent.Type : ''
     return (
       <MediaQuery minDeviceWidth={700}>
-        {matches => (
+        {(matches) => (
           <div style={styles.inner}>
             <div style={styles.contentName}>
               {currentContent && currentContent.Type === 'User' ? (

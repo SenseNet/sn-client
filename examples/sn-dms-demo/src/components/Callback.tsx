@@ -13,7 +13,7 @@ export const Callback = () => {
         console.log('Success')
         history.push('/')
       }}
-      errorCallback={error => {
+      errorCallback={(error) => {
         history.push('/')
         console.error(error)
       }}>

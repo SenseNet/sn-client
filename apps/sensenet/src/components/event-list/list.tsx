@@ -20,7 +20,7 @@ type ListProps = {
   style?: React.CSSProperties
 }
 
-export const List: React.FunctionComponent<ListProps> = props => {
+export const List: React.FunctionComponent<ListProps> = (props) => {
   const { filter } = useContext(EventListFilterContext)
   const repository = useRepository()
   const contextService = new ContentContextService(repository)
@@ -29,7 +29,7 @@ export const List: React.FunctionComponent<ListProps> = props => {
 
   useEffect(() => {
     setEffectiveValues(
-      props.values.filter(value => {
+      props.values.filter((value) => {
         return (
           (!filter.term || value.message.indexOf(filter.term) !== -1) &&
           (!filter.scope || (value.scope && value.scope.indexOf(filter.scope) !== -1)) &&

@@ -90,7 +90,7 @@ class RestoreVersionDialog extends React.Component<
     const { id, fileName, version } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
-        {matches => (
+        {(matches) => (
           <div>
             <Typography variant="h5" gutterBottom={true}>
               {resources.RESTORE_VERSION}

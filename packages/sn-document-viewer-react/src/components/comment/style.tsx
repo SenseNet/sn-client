@@ -11,13 +11,13 @@ export const StyledForm = styled.form`
 export const StyledSvgIcon = styled(({ isPlacingMarker, ...rest }) => <SvgIcon {...rest} />)<{
   isPlacingMarker: boolean
 }>`
-  color: ${props => (props.isPlacingMarker ? props.theme.palette.primary.light : 'inherit')};
-  transform: ${props => (props.isPlacingMarker ? 'rotate(90deg)' : '')};
+  color: ${(props) => (props.isPlacingMarker ? props.theme.palette.primary.light : 'inherit')};
+  transform: ${(props) => (props.isPlacingMarker ? 'rotate(90deg)' : '')};
 `
 
 export const StyledCard = styled(({ isSelected, ...rest }) => <Card {...rest} />)<{ isSelected: boolean }>`
   && {
-    background-color: ${props => (props.isSelected ? 'rgb(0,0,0,0.1)' : 'rgb(0,0,0,0)')};
+    background-color: ${(props) => (props.isSelected ? 'rgb(0,0,0,0.1)' : 'rgb(0,0,0,0)')};
     width: 100%;
     margin-bottom: 10px;
   }

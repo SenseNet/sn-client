@@ -114,7 +114,7 @@ export class GoogleOauthProvider implements OauthProvider {
       this.iframe.style.display = 'none'
       this.iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts')
 
-      this.iframe.onload = async ev => {
+      this.iframe.onload = async (ev) => {
         let location: Location | null = null
         await Retrier.create(async () => {
           try {
@@ -178,7 +178,7 @@ export class GoogleOauthProvider implements OauthProvider {
    */
   public getGoogleTokenFromUri(uri: Location): string | null {
     const tokenSegmentPrefix = '#id_token='
-    const tokenSegment = uri.hash.split('&').find(segment => segment.indexOf(tokenSegmentPrefix) === 0)
+    const tokenSegment = uri.hash.split('&').find((segment) => segment.indexOf(tokenSegmentPrefix) === 0)
     if (tokenSegment) {
       return tokenSegment.replace(tokenSegmentPrefix, '')
     }

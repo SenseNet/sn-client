@@ -8,7 +8,7 @@ export const UserAvatar: React.StatelessComponent<{
   avatarProps?: AvatarProps
   style?: React.CSSProperties
   repositoryUrl: string
-}> = props => {
+}> = (props) => {
   const avatarUrl = props.user.Avatar && props.user.Avatar.Url
   if (avatarUrl) {
     return (

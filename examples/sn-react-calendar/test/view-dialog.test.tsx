@@ -17,10 +17,7 @@ describe('DialogComponent', () => {
   })
 
   it('Close dialog', () => {
-    wrapper
-      .find(Button)
-      .last()
-      .simulate('click')
+    wrapper.find(Button).last().simulate('click')
     expect(testprops.onClose).toBeCalledWith(false)
   })
 })

@@ -63,7 +63,7 @@ export default function LoginPage(props: LoginPageProps) {
             fullWidth={true}
             type="url"
             value={props.url}
-            onChange={ev => {
+            onChange={(ev) => {
               debounced(ev.target.value)
             }}
           />

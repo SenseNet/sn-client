@@ -8,7 +8,7 @@ import { usePersonalSettings } from '../hooks'
 import { PersonalSettings } from '../services'
 import { ThemeContext } from './ThemeContext'
 
-export const ThemeProvider: React.FunctionComponent = props => {
+export const ThemeProvider: React.FunctionComponent = (props) => {
   const preferredType = useMediaQuery('(prefers-color-scheme: dark)') ? 'dark' : 'light'
   const personalSettings = usePersonalSettings()
   const di = useInjector()

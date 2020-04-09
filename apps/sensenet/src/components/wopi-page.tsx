@@ -6,7 +6,7 @@ import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { useLocalization } from '../hooks'
 import { FullScreenLoader } from './full-screen-loader'
 
-const WopiPage: React.FunctionComponent<RouteComponentProps<{ documentId?: string; action?: string }>> = props => {
+const WopiPage: React.FunctionComponent<RouteComponentProps<{ documentId?: string; action?: string }>> = (props) => {
   const repo = useRepository()
   const formElement = useRef<HTMLFormElement>(null)
   const [wopiData, setWopiData] = useState<ODataWopiResponse | null>(null)

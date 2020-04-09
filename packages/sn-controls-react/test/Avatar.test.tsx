@@ -72,12 +72,7 @@ describe('Avatar field control', () => {
       await act(async () => {
         changeButton.simulate('click')
       })
-      expect(
-        wrapper
-          .update()
-          .find(Dialog)
-          .prop('open'),
-      ).toBeTruthy()
+      expect(wrapper.update().find(Dialog).prop('open')).toBeTruthy()
     })
     it('should remove the avatar when remove avatar is clicked', () => {
       const fieldOnChange = jest.fn()
@@ -93,12 +88,7 @@ describe('Avatar field control', () => {
       expect(removeButton.prop('title')).toBe('Remove avatar')
       removeButton.simulate('click')
       expect(fieldOnChange).toBeCalled()
-      expect(
-        wrapper
-          .update()
-          .find(IconButton)
-          .prop('title'),
-      ).toBe('Add avatar')
+      expect(wrapper.update().find(IconButton).prop('title')).toBe('Add avatar')
     })
 
     it('should handle avatar change', async () => {
@@ -122,17 +112,11 @@ describe('Avatar field control', () => {
           />,
         )
       })
-      wrapper
-        .find(IconButton)
-        .first()
-        .simulate('click')
+      wrapper.find(IconButton).first().simulate('click')
       await act(async () => {
         wrapper.find(AvatarPicker).prop('select')(selectedContent)
       })
-      wrapper
-        .find(Button)
-        .last()
-        .simulate('click')
+      wrapper.find(Button).last().simulate('click')
       expect(fieldOnChange).toBeCalled()
     })
   })

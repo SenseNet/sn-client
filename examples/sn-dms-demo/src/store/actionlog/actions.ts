@@ -39,7 +39,7 @@ export const initLog = createAction(() => ({
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const repository = options.getInjectable(Repository)
     const eventHub = new EventHub(repository)
-    eventHub.onContentCreated.subscribe(ev => {
+    eventHub.onContentCreated.subscribe((ev) => {
       options.dispatch(
         addLogEntry({
           dump: ev,
@@ -51,7 +51,7 @@ export const initLog = createAction(() => ({
         }),
       )
     })
-    eventHub.onContentCreateFailed.subscribe(ev => {
+    eventHub.onContentCreateFailed.subscribe((ev) => {
       options.dispatch(
         addLogEntry({
           dump: ev,
@@ -63,7 +63,7 @@ export const initLog = createAction(() => ({
         }),
       )
     })
-    eventHub.onContentCopied.subscribe(ev => {
+    eventHub.onContentCopied.subscribe((ev) => {
       options.dispatch(
         addLogEntry({
           dump: ev,
@@ -75,7 +75,7 @@ export const initLog = createAction(() => ({
         }),
       )
     })
-    eventHub.onContentCopyFailed.subscribe(ev => {
+    eventHub.onContentCopyFailed.subscribe((ev) => {
       options.dispatch(
         addLogEntry({
           dump: ev,
@@ -87,7 +87,7 @@ export const initLog = createAction(() => ({
         }),
       )
     })
-    eventHub.onContentMoved.subscribe(ev => {
+    eventHub.onContentMoved.subscribe((ev) => {
       options.dispatch(
         addLogEntry({
           dump: ev,
@@ -99,7 +99,7 @@ export const initLog = createAction(() => ({
         }),
       )
     })
-    eventHub.onContentMoveFailed.subscribe(ev => {
+    eventHub.onContentMoveFailed.subscribe((ev) => {
       options.dispatch(
         addLogEntry({
           dump: ev,
@@ -112,7 +112,7 @@ export const initLog = createAction(() => ({
       )
     })
 
-    eventHub.onContentModified.subscribe(ev => {
+    eventHub.onContentModified.subscribe((ev) => {
       const msg = resources.EDIT_PROPERTIES_SUCCESS_MESSAGE.replace('{contentName}', ev.content.Name)
       options.dispatch(
         addLogEntry({
@@ -126,7 +126,7 @@ export const initLog = createAction(() => ({
       )
     })
 
-    eventHub.onContentModificationFailed.subscribe(ev => {
+    eventHub.onContentModificationFailed.subscribe((ev) => {
       const msg = resources.EDIT_PROPERTIES_FAILURE_MESSAGE.replace(
         '{contentName}',
         ev.content.Name ? ev.content.Name : '',
@@ -143,7 +143,7 @@ export const initLog = createAction(() => ({
       )
     })
 
-    eventHub.onContentDeleted.subscribe(ev => {
+    eventHub.onContentDeleted.subscribe((ev) => {
       options.dispatch(
         addLogEntry({
           dump: ev,
@@ -155,7 +155,7 @@ export const initLog = createAction(() => ({
         }),
       )
     })
-    eventHub.onContentDeleteFailed.subscribe(ev => {
+    eventHub.onContentDeleteFailed.subscribe((ev) => {
       options.dispatch(
         addLogEntry({
           dump: ev,
@@ -167,7 +167,7 @@ export const initLog = createAction(() => ({
         }),
       )
     })
-    eventHub.onCustomActionExecuted.subscribe(ev => {
+    eventHub.onCustomActionExecuted.subscribe((ev) => {
       if (logActions.indexOf(ev.actionOptions.name) > -1) {
         const message = (resources[`${ev.actionOptions.name.toUpperCase()}_SUCCESS_MESSAGE`] as string).replace(
           '{contentName}',
@@ -186,7 +186,7 @@ export const initLog = createAction(() => ({
         )
       }
     })
-    eventHub.onCustomActionFailed.subscribe(ev => {
+    eventHub.onCustomActionFailed.subscribe((ev) => {
       if (logActions.indexOf(ev.actionOptions.name) > -1) {
         options.dispatch(
           addLogEntry({
