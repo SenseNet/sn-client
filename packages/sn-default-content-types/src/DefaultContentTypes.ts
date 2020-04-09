@@ -94,6 +94,8 @@ export class GenericContent {
   public Depth?: number
   /* This field is true if content is in a system folder/trash or the content is a system folder/file. */
   public IsSystemContent?: boolean
+  /* This field is true if content the content is a file. */
+  public IsFile?: boolean
   /* This field is true if content can contain other content. */
   public IsFolder?: boolean
   /* Content name. You can set any name you prefer without any restrictions. */
