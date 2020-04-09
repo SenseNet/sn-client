@@ -152,7 +152,7 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                     }}
                   />
                   <Route
-                    path="/:repo/newProperties/:contentId?"
+                    path="/:repo/NewProperties"
                     render={() => {
                       return <NewProperties />
                     }}

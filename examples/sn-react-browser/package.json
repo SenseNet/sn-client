@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/react-browser",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "private": true,
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "contributors": [
@@ -35,11 +35,11 @@
   "dependencies": {
     "@material-ui/core": "^4.9.5",
     "@material-ui/icons": "^4.9.1",
-    "@sensenet/client-core": "^2.4.0",
-    "@sensenet/default-content-types": "^2.0.5",
-    "@sensenet/document-viewer-react": "^2.0.5",
-    "@sensenet/hooks-react": "^1.0.7",
-    "@sensenet/list-controls-react": "^1.4.0",
+    "@sensenet/client-core": "^2.4.1",
+    "@sensenet/default-content-types": "^2.0.6",
+    "@sensenet/document-viewer-react": "^2.0.6",
+    "@sensenet/hooks-react": "^1.0.8",
+    "@sensenet/list-controls-react": "^1.4.1",
     "clsx": "^1.1.0",
     "react-moment": "^0.9.6",
     "react-router": "^5.1.2",
