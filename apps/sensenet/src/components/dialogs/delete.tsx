@@ -140,6 +140,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                   },
                 })
               } finally {
+                selectionService.selection.setValue([])
                 setIsDeleteInProgress(false)
                 closeLastDialog()
               }

@@ -92,6 +92,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = (props) =
                     setIsFormOpened(false)
                     selectionService.activeContent.setValue(i.content)
                   }}
+                  batchActions={true}
                 />
               </div>
               <div className={classes.treeAndDatagridWrapper}>
