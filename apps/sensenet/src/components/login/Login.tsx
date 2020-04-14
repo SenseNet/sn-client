@@ -111,8 +111,7 @@ export const Login = () => {
         })
         if (match.path === '/login') {
           await sleepAsync(1800)
-          const { from } = { from: { pathname: `/${btoa(repoToLogin.configuration.repositoryUrl)}` } }
-          history.replace(from)
+          history.replace(`/${btoa(repoToLogin.configuration.repositoryUrl)}`)
         }
       } else {
         setIsInProgress(false)
