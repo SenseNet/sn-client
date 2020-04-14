@@ -7,7 +7,7 @@ import { ConstantContent, FormsAuthenticationService } from '@sensenet/client-co
 import { Retrier, sleepAsync } from '@sensenet/client-utils'
 import { useInjector, useRepository, useSession } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
-import { useHistory, useLocation, useRouteMatch } from 'react-router'
+import { useHistory, useRouteMatch } from 'react-router'
 import { useLocalization, useTheme } from '../../hooks'
 import { PersonalSettings, PersonalSettingsType } from '../../services/PersonalSettings'
 import { UserAvatar } from '../UserAvatar'
@@ -28,7 +28,6 @@ export const Login = () => {
   const injector = useInjector()
   const history = useHistory()
   const match = useRouteMatch()
-  const location = useLocation<{ from: string }>()
   const repo = useRepository()
   const theme = useTheme()
   const classes = useStyles()
@@ -112,8 +111,7 @@ export const Login = () => {
         })
         if (match.path === '/login') {
           await sleepAsync(1800)
-          const { from } = location.state || { from: { pathname: `/${btoa(repoToLogin.configuration.repositoryUrl)}` } }
-          history.replace(from)
+          history.replace(`/${btoa(repoToLogin.configuration.repositoryUrl)}`)
         }
       } else {
         setIsInProgress(false)

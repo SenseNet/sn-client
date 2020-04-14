@@ -231,12 +231,7 @@ const MainPanel: React.FunctionComponent<MainPanel> = (props) => {
                   if (fieldOptions.content.Type === 'File') {
                     return (
                       <TableCell>
-                        <Tooltip
-                          title={
-                            fieldOptions.content.ModifiedBy
-                              ? (fieldOptions.content.ModifiedBy as GenericContent).DisplayName
-                              : ''
-                          }>
+                        <Tooltip title={(fieldOptions.content.ModifiedBy as GenericContent).DisplayName ?? ''}>
                           <Moment fromNow={true}>{fieldOptions.content.ModificationDate as string}</Moment>
                         </Tooltip>
                       </TableCell>

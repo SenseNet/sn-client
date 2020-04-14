@@ -134,36 +134,34 @@ exports[`ZoomMode component should render without crashing 1`] = `
                   </WithStyles(ForwardRef(SvgIcon))>
                 </ForwardRef>
               </span>
-              <NoSsr>
-                <WithStyles(memo)
+              <WithStyles(memo)
+                center={true}
+              >
+                <ForwardRef(TouchRipple)
                   center={true}
-                >
-                  <ForwardRef(TouchRipple)
-                    center={true}
-                    classes={
-                      Object {
-                        "child": "MuiTouchRipple-child",
-                        "childLeaving": "MuiTouchRipple-childLeaving",
-                        "childPulsate": "MuiTouchRipple-childPulsate",
-                        "ripple": "MuiTouchRipple-ripple",
-                        "ripplePulsate": "MuiTouchRipple-ripplePulsate",
-                        "rippleVisible": "MuiTouchRipple-rippleVisible",
-                        "root": "MuiTouchRipple-root",
-                      }
+                  classes={
+                    Object {
+                      "child": "MuiTouchRipple-child",
+                      "childLeaving": "MuiTouchRipple-childLeaving",
+                      "childPulsate": "MuiTouchRipple-childPulsate",
+                      "ripple": "MuiTouchRipple-ripple",
+                      "ripplePulsate": "MuiTouchRipple-ripplePulsate",
+                      "rippleVisible": "MuiTouchRipple-rippleVisible",
+                      "root": "MuiTouchRipple-root",
                     }
+                  }
+                >
+                  <span
+                    className="MuiTouchRipple-root"
                   >
-                    <span
-                      className="MuiTouchRipple-root"
-                    >
-                      <TransitionGroup
-                        childFactory={[Function]}
-                        component={null}
-                        exit={true}
-                      />
-                    </span>
-                  </ForwardRef(TouchRipple)>
-                </WithStyles(memo)>
-              </NoSsr>
+                    <TransitionGroup
+                      childFactory={[Function]}
+                      component={null}
+                      exit={true}
+                    />
+                  </span>
+                </ForwardRef(TouchRipple)>
+              </WithStyles(memo)>
             </button>
           </ForwardRef(ButtonBase)>
         </WithStyles(ForwardRef(ButtonBase))>
@@ -404,36 +402,34 @@ exports[`ZoomMode component should render without crashing 2`] = `
                   </WithStyles(ForwardRef(SvgIcon))>
                 </ForwardRef>
               </span>
-              <NoSsr>
-                <WithStyles(memo)
+              <WithStyles(memo)
+                center={true}
+              >
+                <ForwardRef(TouchRipple)
                   center={true}
-                >
-                  <ForwardRef(TouchRipple)
-                    center={true}
-                    classes={
-                      Object {
-                        "child": "MuiTouchRipple-child",
-                        "childLeaving": "MuiTouchRipple-childLeaving",
-                        "childPulsate": "MuiTouchRipple-childPulsate",
-                        "ripple": "MuiTouchRipple-ripple",
-                        "ripplePulsate": "MuiTouchRipple-ripplePulsate",
-                        "rippleVisible": "MuiTouchRipple-rippleVisible",
-                        "root": "MuiTouchRipple-root",
-                      }
+                  classes={
+                    Object {
+                      "child": "MuiTouchRipple-child",
+                      "childLeaving": "MuiTouchRipple-childLeaving",
+                      "childPulsate": "MuiTouchRipple-childPulsate",
+                      "ripple": "MuiTouchRipple-ripple",
+                      "ripplePulsate": "MuiTouchRipple-ripplePulsate",
+                      "rippleVisible": "MuiTouchRipple-rippleVisible",
+                      "root": "MuiTouchRipple-root",
                     }
+                  }
+                >
+                  <span
+                    className="MuiTouchRipple-root"
                   >
-                    <span
-                      className="MuiTouchRipple-root"
-                    >
-                      <TransitionGroup
-                        childFactory={[Function]}
-                        component={null}
-                        exit={true}
-                      />
-                    </span>
-                  </ForwardRef(TouchRipple)>
-                </WithStyles(memo)>
-              </NoSsr>
+                    <TransitionGroup
+                      childFactory={[Function]}
+                      component={null}
+                      exit={true}
+                    />
+                  </span>
+                </ForwardRef(TouchRipple)>
+              </WithStyles(memo)>
             </button>
           </ForwardRef(ButtonBase)>
         </WithStyles(ForwardRef(ButtonBase))>
@@ -668,36 +664,34 @@ exports[`ZoomMode component should render without crashing 3`] = `
                   </WithStyles(ForwardRef(SvgIcon))>
                 </ForwardRef>
               </span>
-              <NoSsr>
-                <WithStyles(memo)
+              <WithStyles(memo)
+                center={true}
+              >
+                <ForwardRef(TouchRipple)
                   center={true}
-                >
-                  <ForwardRef(TouchRipple)
-                    center={true}
-                    classes={
-                      Object {
-                        "child": "MuiTouchRipple-child",
-                        "childLeaving": "MuiTouchRipple-childLeaving",
-                        "childPulsate": "MuiTouchRipple-childPulsate",
-                        "ripple": "MuiTouchRipple-ripple",
-                        "ripplePulsate": "MuiTouchRipple-ripplePulsate",
-                        "rippleVisible": "MuiTouchRipple-rippleVisible",
-                        "root": "MuiTouchRipple-root",
-                      }
+                  classes={
+                    Object {
+                      "child": "MuiTouchRipple-child",
+                      "childLeaving": "MuiTouchRipple-childLeaving",
+                      "childPulsate": "MuiTouchRipple-childPulsate",
+                      "ripple": "MuiTouchRipple-ripple",
+                      "ripplePulsate": "MuiTouchRipple-ripplePulsate",
+                      "rippleVisible": "MuiTouchRipple-rippleVisible",
+                      "root": "MuiTouchRipple-root",
                     }
+                  }
+                >
+                  <span
+                    className="MuiTouchRipple-root"
                   >
-                    <span
-                      className="MuiTouchRipple-root"
-                    >
-                      <TransitionGroup
-                        childFactory={[Function]}
-                        component={null}
-                        exit={true}
-                      />
-                    </span>
-                  </ForwardRef(TouchRipple)>
-                </WithStyles(memo)>
-              </NoSsr>
+                    <TransitionGroup
+                      childFactory={[Function]}
+                      component={null}
+                      exit={true}
+                    />
+                  </span>
+                </ForwardRef(TouchRipple)>
+              </WithStyles(memo)>
             </button>
           </ForwardRef(ButtonBase)>
         </WithStyles(ForwardRef(ButtonBase))>
@@ -955,36 +949,34 @@ exports[`ZoomMode component should render without crashing 4`] = `
                   </WithStyles(ForwardRef(SvgIcon))>
                 </ForwardRef>
               </span>
-              <NoSsr>
-                <WithStyles(memo)
+              <WithStyles(memo)
+                center={true}
+              >
+                <ForwardRef(TouchRipple)
                   center={true}
-                >
-                  <ForwardRef(TouchRipple)
-                    center={true}
-                    classes={
-                      Object {
-                        "child": "MuiTouchRipple-child",
-                        "childLeaving": "MuiTouchRipple-childLeaving",
-                        "childPulsate": "MuiTouchRipple-childPulsate",
-                        "ripple": "MuiTouchRipple-ripple",
-                        "ripplePulsate": "MuiTouchRipple-ripplePulsate",
-                        "rippleVisible": "MuiTouchRipple-rippleVisible",
-                        "root": "MuiTouchRipple-root",
-                      }
+                  classes={
+                    Object {
+                      "child": "MuiTouchRipple-child",
+                      "childLeaving": "MuiTouchRipple-childLeaving",
+                      "childPulsate": "MuiTouchRipple-childPulsate",
+                      "ripple": "MuiTouchRipple-ripple",
+                      "ripplePulsate": "MuiTouchRipple-ripplePulsate",
+                      "rippleVisible": "MuiTouchRipple-rippleVisible",
+                      "root": "MuiTouchRipple-root",
                     }
+                  }
+                >
+                  <span
+                    className="MuiTouchRipple-root"
                   >
-                    <span
-                      className="MuiTouchRipple-root"
-                    >
-                      <TransitionGroup
-                        childFactory={[Function]}
-                        component={null}
-                        exit={true}
-                      />
-                    </span>
-                  </ForwardRef(TouchRipple)>
-                </WithStyles(memo)>
-              </NoSsr>
+                    <TransitionGroup
+                      childFactory={[Function]}
+                      component={null}
+                      exit={true}
+                    />
+                  </span>
+                </ForwardRef(TouchRipple)>
+              </WithStyles(memo)>
             </button>
           </ForwardRef(ButtonBase)>
         </WithStyles(ForwardRef(ButtonBase))>
@@ -1219,36 +1211,34 @@ exports[`ZoomMode component should render without crashing 5`] = `
                   </WithStyles(ForwardRef(SvgIcon))>
                 </ForwardRef>
               </span>
-              <NoSsr>
-                <WithStyles(memo)
+              <WithStyles(memo)
+                center={true}
+              >
+                <ForwardRef(TouchRipple)
                   center={true}
-                >
-                  <ForwardRef(TouchRipple)
-                    center={true}
-                    classes={
-                      Object {
-                        "child": "MuiTouchRipple-child",
-                        "childLeaving": "MuiTouchRipple-childLeaving",
-                        "childPulsate": "MuiTouchRipple-childPulsate",
-                        "ripple": "MuiTouchRipple-ripple",
-                        "ripplePulsate": "MuiTouchRipple-ripplePulsate",
-                        "rippleVisible": "MuiTouchRipple-rippleVisible",
-                        "root": "MuiTouchRipple-root",
-                      }
+                  classes={
+                    Object {
+                      "child": "MuiTouchRipple-child",
+                      "childLeaving": "MuiTouchRipple-childLeaving",
+                      "childPulsate": "MuiTouchRipple-childPulsate",
+                      "ripple": "MuiTouchRipple-ripple",
+                      "ripplePulsate": "MuiTouchRipple-ripplePulsate",
+                      "rippleVisible": "MuiTouchRipple-rippleVisible",
+                      "root": "MuiTouchRipple-root",
                     }
+                  }
+                >
+                  <span
+                    className="MuiTouchRipple-root"
                   >
-                    <span
-                      className="MuiTouchRipple-root"
-                    >
-                      <TransitionGroup
-                        childFactory={[Function]}
-                        component={null}
-                        exit={true}
-                      />
-                    </span>
-                  </ForwardRef(TouchRipple)>
-                </WithStyles(memo)>
-              </NoSsr>
+                    <TransitionGroup
+                      childFactory={[Function]}
+                      component={null}
+                      exit={true}
+                    />
+                  </span>
+                </ForwardRef(TouchRipple)>
+              </WithStyles(memo)>
             </button>
           </ForwardRef(ButtonBase)>
         </WithStyles(ForwardRef(ButtonBase))>
@@ -1483,36 +1473,34 @@ exports[`ZoomMode component should render without crashing 6`] = `
                   </WithStyles(ForwardRef(SvgIcon))>
                 </ForwardRef>
               </span>
-              <NoSsr>
-                <WithStyles(memo)
+              <WithStyles(memo)
+                center={true}
+              >
+                <ForwardRef(TouchRipple)
                   center={true}
-                >
-                  <ForwardRef(TouchRipple)
-                    center={true}
-                    classes={
-                      Object {
-                        "child": "MuiTouchRipple-child",
-                        "childLeaving": "MuiTouchRipple-childLeaving",
-                        "childPulsate": "MuiTouchRipple-childPulsate",
-                        "ripple": "MuiTouchRipple-ripple",
-                        "ripplePulsate": "MuiTouchRipple-ripplePulsate",
-                        "rippleVisible": "MuiTouchRipple-rippleVisible",
-                        "root": "MuiTouchRipple-root",
-                      }
+                  classes={
+                    Object {
+                      "child": "MuiTouchRipple-child",
+                      "childLeaving": "MuiTouchRipple-childLeaving",
+                      "childPulsate": "MuiTouchRipple-childPulsate",
+                      "ripple": "MuiTouchRipple-ripple",
+                      "ripplePulsate": "MuiTouchRipple-ripplePulsate",
+                      "rippleVisible": "MuiTouchRipple-rippleVisible",
+                      "root": "MuiTouchRipple-root",
                     }
+                  }
+                >
+                  <span
+                    className="MuiTouchRipple-root"
                   >
-                    <span
-                      className="MuiTouchRipple-root"
-                    >
-                      <TransitionGroup
-                        childFactory={[Function]}
-                        component={null}
-                        exit={true}
-                      />
-                    </span>
-                  </ForwardRef(TouchRipple)>
-                </WithStyles(memo)>
-              </NoSsr>
+                    <TransitionGroup
+                      childFactory={[Function]}
+                      component={null}
+                      exit={true}
+                    />
+                  </span>
+                </ForwardRef(TouchRipple)>
+              </WithStyles(memo)>
             </button>
           </ForwardRef(ButtonBase)>
         </WithStyles(ForwardRef(ButtonBase))>
@@ -1747,36 +1735,34 @@ exports[`ZoomMode component should render without crashing 7`] = `
                   </WithStyles(ForwardRef(SvgIcon))>
                 </ForwardRef>
               </span>
-              <NoSsr>
-                <WithStyles(memo)
+              <WithStyles(memo)
+                center={true}
+              >
+                <ForwardRef(TouchRipple)
                   center={true}
-                >
-                  <ForwardRef(TouchRipple)
-                    center={true}
-                    classes={
-                      Object {
-                        "child": "MuiTouchRipple-child",
-                        "childLeaving": "MuiTouchRipple-childLeaving",
-                        "childPulsate": "MuiTouchRipple-childPulsate",
-                        "ripple": "MuiTouchRipple-ripple",
-                        "ripplePulsate": "MuiTouchRipple-ripplePulsate",
-                        "rippleVisible": "MuiTouchRipple-rippleVisible",
-                        "root": "MuiTouchRipple-root",
-                      }
+                  classes={
+                    Object {
+                      "child": "MuiTouchRipple-child",
+                      "childLeaving": "MuiTouchRipple-childLeaving",
+                      "childPulsate": "MuiTouchRipple-childPulsate",
+                      "ripple": "MuiTouchRipple-ripple",
+                      "ripplePulsate": "MuiTouchRipple-ripplePulsate",
+                      "rippleVisible": "MuiTouchRipple-rippleVisible",
+                      "root": "MuiTouchRipple-root",
                     }
+                  }
+                >
+                  <span
+                    className="MuiTouchRipple-root"
                   >
-                    <span
-                      className="MuiTouchRipple-root"
-                    >
-                      <TransitionGroup
-                        childFactory={[Function]}
-                        component={null}
-                        exit={true}
-                      />
-                    </span>
-                  </ForwardRef(TouchRipple)>
-                </WithStyles(memo)>
-              </NoSsr>
+                    <TransitionGroup
+                      childFactory={[Function]}
+                      component={null}
+                      exit={true}
+                    />
+                  </span>
+                </ForwardRef(TouchRipple)>
+              </WithStyles(memo)>
             </button>
           </ForwardRef(ButtonBase)>
         </WithStyles(ForwardRef(ButtonBase))>
