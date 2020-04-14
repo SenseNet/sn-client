@@ -12,7 +12,7 @@ export const MarkdownWidget: React.FunctionComponent<MarkdownWidgetModel> = (pro
     <>
       <Typography
         variant="h5"
-        title={props.title}
+        title={replacedTitle}
         gutterBottom={true}
         style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
         {replacedTitle}
