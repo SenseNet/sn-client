@@ -22,6 +22,7 @@ export class RepositoryManager {
           'Type',
           'DisplayName',
           'Icon',
+          'IsFile',
           'IsFolder',
           'ParentId',
           'Version',
