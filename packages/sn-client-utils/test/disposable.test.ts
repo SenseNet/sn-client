@@ -6,7 +6,7 @@ import { MockDisposable } from './__Mocks__/MockDisposable'
  */
 export const disposableTests = describe('Disposable', () => {
   it('Can be constructed', () => {
-    using(new MockDisposable(), d => {
+    using(new MockDisposable(), (d) => {
       expect(d).toBeInstanceOf(MockDisposable)
     })
   })
@@ -35,9 +35,9 @@ export const disposableTests = describe('Disposable', () => {
   })
 
   describe('dispose()', () => {
-    it('should be called on error', done => {
+    it('should be called on error', (done) => {
       try {
-        using(new MockDisposable(), d => {
+        using(new MockDisposable(), (d) => {
           d.disposeCallback = () => {
             done()
           }
@@ -49,19 +49,19 @@ export const disposableTests = describe('Disposable', () => {
       }
     })
 
-    it('should be called with usingAsync()', done => {
-      usingAsync(new MockDisposable(), async d => {
+    it('should be called with usingAsync()', (done) => {
+      usingAsync(new MockDisposable(), async (d) => {
         d.disposeCallback = () => {
           done()
         }
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           setTimeout(resolve, 1)
         })
       })
     })
 
-    it('should be called when async fails', done => {
-      usingAsync(new MockDisposable(), async d => {
+    it('should be called when async fails', (done) => {
+      usingAsync(new MockDisposable(), async (d) => {
         d.disposeCallback = () => {
           done()
         }
@@ -79,7 +79,7 @@ export const disposableTests = describe('Disposable', () => {
         public isDisposed = false
         /** set isDisposed with a timeout */
         public async dispose() {
-          await new Promise(resolve =>
+          await new Promise((resolve) =>
             setTimeout(() => {
               this.isDisposed = true
               resolve()

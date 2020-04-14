@@ -85,7 +85,7 @@ const contentColumnStyles: React.CSSProperties = {
   flexGrow: contentWidth,
 }
 
-const SearchRow: React.StatelessComponent<{ title: string }> = props => (
+const SearchRow: React.StatelessComponent<{ title: string }> = (props) => (
   <div style={rowStyles}>
     <Typography style={titleColumnStyles} variant="body1">
       {props.title}
@@ -119,8 +119,8 @@ class SearchDocuments extends React.Component<
   private handleQueryChanged(innerQuery: Query<any>) {
     if (innerQuery.toString()) {
       this.setState({
-        query: new Query(q =>
-          q.query(typeQuery => typeQuery.typeIs(SnFile).or.typeIs(Folder)).and.query(innerQuery),
+        query: new Query((q) =>
+          q.query((typeQuery) => typeQuery.typeIs(SnFile).or.typeIs(Folder)).and.query(innerQuery),
         ).toString(),
       })
     } else {
@@ -159,7 +159,7 @@ class SearchDocuments extends React.Component<
         showAddFolder={false}
         mode="SearchRoot"
         dialogTitle={resources.SEARCH_LOCATION_TITLE}
-        dialogCallback={selectedItems => this.handleSelectTypeRoot(selectedItems[0], options)}
+        dialogCallback={(selectedItems) => this.handleSelectTypeRoot(selectedItems[0], options)}
         currentPath={this.props.parent ? this.props.parent.Path : ''}
       />,
       'selectSearchRoot',
@@ -174,7 +174,7 @@ class SearchDocuments extends React.Component<
     this.setState({
       parent: content,
     })
-    options.updateQuery('InTree', new Query(q => q.inTree(content.Path)))
+    options.updateQuery('InTree', new Query((q) => q.inTree(content.Path)))
     this.props.closePicker()
   }
 
@@ -190,14 +190,14 @@ class SearchDocuments extends React.Component<
   public render() {
     return (
       <RepositoryContext.Consumer>
-        {repository => (
+        {(repository) => (
           <AdvancedSearch
             schema={repository.schemas.getSchemaByName('GenericContent')}
             onQueryChanged={this.handleQueryChanged}
             style={{ width: '100%' }}
-            fields={options => (
+            fields={(options) => (
               <MediaQuery minDeviceWidth={700}>
-                {matches => {
+                {(matches) => {
                   if (matches) {
                     return (
                       <form
@@ -212,22 +212,22 @@ class SearchDocuments extends React.Component<
                           }
                           isOpen={matches ? this.state.isOpen : true}
                           onClick={this.onClick}
-                          startAdornmentRef={r => {
+                          startAdornmentRef={(r) => {
                             this.elementRef = r
                           }}
-                          containerRef={r => (this.searchBoxContainerRef = r)}
+                          containerRef={(r) => (this.searchBoxContainerRef = r)}
                           inputProps={{
                             style: {
                               width: '100%',
                             },
                             value: this.props.searchState.contains,
                             placeholder: resources.SEARCH_DOCUMENTS_PLACEHOLDER,
-                            onChange: ev => {
+                            onChange: (ev) => {
                               const term = ev.currentTarget.value
                               this.props.updateSearchValues({ contains: term })
                               this.handleFieldQueryChanged(
                                 'contains',
-                                new Query(q => (term ? q.equals('_Text', `*${term}*`) : q)),
+                                new Query((q) => (term ? q.equals('_Text', `*${term}*`) : q)),
                                 term,
                                 options.updateQuery,
                               )
@@ -263,24 +263,24 @@ class SearchDocuments extends React.Component<
                                 fieldName="Type"
                                 value={this.props.searchState.type || 'Any'}
                                 presets={[
-                                  { text: 'Any', value: new Query(q => q) },
+                                  { text: 'Any', value: new Query((q) => q) },
                                   {
                                     text: 'Document',
-                                    value: new Query(q => q.typeIs(File).and.equals('Icon' as any, 'word')),
+                                    value: new Query((q) => q.typeIs(File).and.equals('Icon' as any, 'word')),
                                   },
                                   {
                                     text: 'Sheet',
-                                    value: new Query(q => q.typeIs(File).and.equals('Icon' as any, 'excel')),
+                                    value: new Query((q) => q.typeIs(File).and.equals('Icon' as any, 'excel')),
                                   },
                                   {
                                     text: 'Text',
-                                    value: new Query(q => q.typeIs(File).and.equals('Icon' as any, 'document')),
+                                    value: new Query((q) => q.typeIs(File).and.equals('Icon' as any, 'document')),
                                   },
                                   {
                                     text: 'Slide',
-                                    value: new Query(q => q.typeIs(File).and.equals('Icon' as any, 'powerpoint')),
+                                    value: new Query((q) => q.typeIs(File).and.equals('Icon' as any, 'powerpoint')),
                                   },
-                                  { text: 'Folder', value: new Query(q => q.typeIs(Folder)) },
+                                  { text: 'Folder', value: new Query((q) => q.typeIs(Folder)) },
                                 ]}
                                 onQueryChange={(_key, query, name) =>
                                   this.handleFieldQueryChanged('type', query, name, options.updateQuery)
@@ -333,23 +333,23 @@ class SearchDocuments extends React.Component<
                                 fullWidth={true}
                                 fieldName="ModificationDate"
                                 presets={[
-                                  { text: '-', value: new Query(a => a) },
-                                  { text: 'Today', value: new Query(a => a.term('ModificationDate:>@@Today@@')) },
+                                  { text: '-', value: new Query((a) => a) },
+                                  { text: 'Today', value: new Query((a) => a.term('ModificationDate:>@@Today@@')) },
                                   {
                                     text: 'Yesterday',
-                                    value: new Query(a =>
+                                    value: new Query((a) =>
                                       a.term('ModificationDate:>@@Yesterday@@').and.term('ModificationDate:<@@Today@@'),
                                     ),
                                   },
                                   {
                                     text: 'Last 7 days',
-                                    value: new Query(a =>
+                                    value: new Query((a) =>
                                       a.term('ModificationDate:>@@Today-7days@@').and.term('CreationDate:<@@Today@@'),
                                     ),
                                   },
                                   {
                                     text: 'Last 30 days',
-                                    value: new Query(a =>
+                                    value: new Query((a) =>
                                       a
                                         .term('ModificationDate:>@@Today-30days@@')
                                         .and.term('ModificationDate:<@@Today@@'),
@@ -357,7 +357,7 @@ class SearchDocuments extends React.Component<
                                   },
                                   {
                                     text: 'Last 90 days',
-                                    value: new Query(a =>
+                                    value: new Query((a) =>
                                       a
                                         .term('ModificationDate:>@@Today-90days@@')
                                         .and.term('ModificationDate:<@@Today@@'),
@@ -365,7 +365,7 @@ class SearchDocuments extends React.Component<
                                   },
                                   {
                                     text: 'Last 365 days',
-                                    value: new Query(a =>
+                                    value: new Query((a) =>
                                       a
                                         .term('ModificationDate:>@@Today-365days@@')
                                         .and.term('ModificationDate:<@@Today@@'),
@@ -394,7 +394,7 @@ class SearchDocuments extends React.Component<
                                 <Button
                                   style={{ boxShadow: 'none' }}
                                   variant="contained"
-                                  onClick={ev => this.handlePickLocation(ev, options)}>
+                                  onClick={(ev) => this.handlePickLocation(ev, options)}>
                                   {this.props.selectedTypeRoot[0]
                                     ? this.props.selectedTypeRoot[0].DisplayName
                                     : resources.SEARCH_LOCATION_ANYWHERE}

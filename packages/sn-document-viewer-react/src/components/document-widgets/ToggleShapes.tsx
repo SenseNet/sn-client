@@ -14,7 +14,7 @@ export const ToggleShapesWidget: React.FC = () => {
     <ToggleBase
       isVisible={viewerState.showShapes}
       title={localization.toggleShapes}
-      setValue={v => viewerState.updateState({ showShapes: v })}>
+      setValue={(v) => viewerState.updateState({ showShapes: v })}>
       <Dashboard />
     </ToggleBase>
   )

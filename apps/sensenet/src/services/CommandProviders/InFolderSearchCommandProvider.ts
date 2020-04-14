@@ -22,17 +22,17 @@ export class InFolderSearchCommandProvider implements CommandProvider {
     const result = await options.repository.loadCollection<GenericContent>({
       path: ConstantContent.PORTAL_ROOT.Path,
       oDataOptions: {
-        query: new Query(q =>
+        query: new Query((q) =>
           q
             .inFolder(`/${currentPath}`)
-            .or.query(sub => sub.inFolder(`/${parentPath}`).and.equals('Path', `/${currentPath}*`))
+            .or.query((sub) => sub.inFolder(`/${parentPath}`).and.equals('Path', `/${currentPath}*`))
             .sort('Path'),
         ).toString(),
         top: 10,
         select: 'all',
       },
     })
-    return result.d.results.map(content => ({
+    return result.d.results.map((content) => ({
       primaryText: content.DisplayName || content.Name,
       secondaryText: content.Path,
       content,

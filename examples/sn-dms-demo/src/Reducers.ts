@@ -199,15 +199,15 @@ export const breadcrumb: Reducer<BreadcrumbItemType[]> = (state = [], action: An
     case 'LOAD_CONTENT_SUCCESS': {
       const result = action.result as Actions.PromiseReturns<typeof Actions.loadContent>
       if (result) {
-        if (result.d.Path.indexOf('Default_Site') === -1 && state.filter(e => e.id === result.d.Id).length === 0) {
+        if (result.d.Path.indexOf('Default_Site') === -1 && state.filter((e) => e.id === result.d.Id).length === 0) {
           const element: BreadcrumbItemType = {
             name: result.d.DisplayName || result.d.Name,
             id: result.d.Id,
             path: result.d.Path,
           }
           return [...state, element]
-        } else if (state.filter(e => e.id === result.d.Id).length > 0) {
-          const index = state.findIndex(e => e.id === result.d.Id) + 1
+        } else if (state.filter((e) => e.id === result.d.Id).length > 0) {
+          const index = state.findIndex((e) => e.id === result.d.Id) + 1
           return [...state.slice(0, index)]
         }
       }
@@ -342,7 +342,7 @@ export const uploads: Reducer<{ uploads: ExtendedUploadProgressInfo[]; showProgr
     case 'UPLOAD_UPDATE_ITEM':
       return {
         ...state,
-        uploads: state.uploads.map(uploadItem => {
+        uploads: state.uploads.map((uploadItem) => {
           if (uploadItem.guid === action.uploadItem.guid) {
             return {
               ...uploadItem,
@@ -355,7 +355,7 @@ export const uploads: Reducer<{ uploads: ExtendedUploadProgressInfo[]; showProgr
     case 'UPLOAD_HIDE_ITEM':
       return {
         ...state,
-        uploads: state.uploads.map(uploadItem => {
+        uploads: state.uploads.map((uploadItem) => {
           if (uploadItem.guid === action.uploadItem.guid) {
             return {
               ...uploadItem,
@@ -369,7 +369,7 @@ export const uploads: Reducer<{ uploads: ExtendedUploadProgressInfo[]; showProgr
     case 'UPLOAD_REMOVE_ITEM':
       return {
         ...state,
-        uploads: state.uploads.filter(u => u.guid !== action.uploadItem.guid),
+        uploads: state.uploads.filter((u) => u.guid !== action.uploadItem.guid),
       }
     case 'UPLOAD_HIDE_PROGRESS':
       return {

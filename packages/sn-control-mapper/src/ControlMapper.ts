@@ -27,7 +27,7 @@ export class ControlMapper<TControlBaseType, TFieldControlBaseType> {
     const schema = this.repository.schemas.getSchemaByName(contentTypeName)
 
     // eslint-disable-next-line array-callback-return
-    schema.FieldSettings = schema.FieldSettings.filter(s => {
+    schema.FieldSettings = schema.FieldSettings.filter((s) => {
       if (
         (contentTypeName === 'Folder' && s.Name === 'AllowedChildTypes') ||
         (contentTypeName === 'SystemFolder' && s.Name === 'AllowedChildTypes')
@@ -132,7 +132,7 @@ export class ControlMapper<TControlBaseType, TFieldControlBaseType> {
     actionName: ActionName,
   ): TFieldControlBaseType {
     const fieldSetting = this.getTypeSchema(contentTypeName, actionName).FieldSettings.filter(
-      s => s.Name === fieldName,
+      (s) => s.Name === fieldName,
     )[0]
 
     if (this.contentTypeBoundfieldSettings.has(`${contentTypeName}-${fieldName}`)) {
@@ -153,7 +153,7 @@ export class ControlMapper<TControlBaseType, TFieldControlBaseType> {
     actionName: ActionName,
   ): ControlSchema<TControlBaseType, TFieldControlBaseType> {
     const schema = this.getTypeSchema(contentTypeName, actionName)
-    const mappings = schema.FieldSettings.map(f => {
+    const mappings = schema.FieldSettings.map((f) => {
       const control = this.getControlForContentField(contentTypeName, f.Name, actionName)
       return {
         fieldSettings: f,

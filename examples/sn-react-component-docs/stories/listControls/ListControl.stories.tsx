@@ -207,7 +207,7 @@ storiesOf('ListControls', module)
     () => (
       <ContentList
         items={items}
-        schema={customSchema.find(s => s.ContentTypeName === 'GenericContent')!}
+        schema={customSchema.find((s) => s.ContentTypeName === 'GenericContent')!}
         icons={icons}
         fieldsToDisplay={
           array('Fields to display', ['DisplayName', 'Locked', 'ModificationDate', 'Actions']) as Array<
@@ -239,7 +239,7 @@ storiesOf('ListControls', module)
           icons={icons}
           items={rows}
           displayRowCheckbox={true}
-          schema={customSchema.find(s => s.ContentTypeName === 'GenericContent')!}
+          schema={customSchema.find((s) => s.ContentTypeName === 'GenericContent')!}
           selected={null as any}
           tableProps={{
             rowCount: rows.length,

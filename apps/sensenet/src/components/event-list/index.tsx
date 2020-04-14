@@ -12,20 +12,20 @@ import { Filter } from './filter'
 import { FilterContextProvider } from './filter-context'
 import { List } from './list'
 
-const EventList: React.FunctionComponent<RouteComponentProps<{ eventGuid?: string }>> = props => {
+const EventList: React.FunctionComponent<RouteComponentProps<{ eventGuid?: string }>> = (props) => {
   const theme = useTheme()
   const eventService = useEventService()
   const localization = useLocalization().eventList.details
   let currentEvent: LeveledLogEntry<any> | undefined
 
   if (props.match.params.eventGuid) {
-    currentEvent = eventService.values.getValue().find(ev => ev.data.guid === props.match.params.eventGuid)
+    currentEvent = eventService.values.getValue().find((ev) => ev.data.guid === props.match.params.eventGuid)
   }
 
   const [events, setEvents] = useState<Array<LeveledLogEntry<any>>>(eventService.values.getValue())
 
   useEffect(() => {
-    const observable = eventService.values.subscribe(values => setEvents(values))
+    const observable = eventService.values.subscribe((values) => setEvents(values))
     return () => observable.dispose()
   }, [eventService.values])
 

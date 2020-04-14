@@ -4,7 +4,7 @@ import ReactMarkdown from 'react-markdown'
 import { MarkdownWidget as MarkdownWidgetModel } from '../../services/PersonalSettings'
 import { useStringReplace } from '../../hooks'
 
-export const MarkdownWidget: React.FunctionComponent<MarkdownWidgetModel> = props => {
+export const MarkdownWidget: React.FunctionComponent<MarkdownWidgetModel> = (props) => {
   const replacedContent = useStringReplace(props.settings.content)
   const replacedTitle = useStringReplace(props.title)
 

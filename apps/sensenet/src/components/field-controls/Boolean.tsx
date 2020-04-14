@@ -26,7 +26,7 @@ const useStyles = makeStyles(() =>
 /**
  * Field control that represents a Boolean field.
  */
-export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> = props => {
+export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> = (props) => {
   const initialState = props.fieldValue != null ? !!props.fieldValue : !!changeJScriptValue(props.settings.DefaultValue)
   const [value, setValue] = useState(initialState)
   const classes = useStyles()

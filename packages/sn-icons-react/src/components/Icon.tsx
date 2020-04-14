@@ -87,7 +87,7 @@ export class Icon extends React.Component<IconProps, {}> {
             classes={classes}
             iconName={iconName}
             style={style}
-            onClick={onClick ? e => onClick(e) : undefined}
+            onClick={onClick ? (e) => onClick(e) : undefined}
             className={className}>
             {this.props.children ? this.props.children : null}
           </MaterialIcon>
@@ -100,7 +100,7 @@ export class Icon extends React.Component<IconProps, {}> {
             classes={classes}
             iconName={iconName}
             style={style}
-            onClick={onClick ? e => onClick(e) : undefined}>
+            onClick={onClick ? (e) => onClick(e) : undefined}>
             {this.props.children ? this.props.children : null}
           </FlatIcon>
         )
@@ -112,13 +112,13 @@ export class Icon extends React.Component<IconProps, {}> {
             classes={classes}
             iconName={iconName}
             style={style}
-            onClick={onClick ? e => onClick(e) : undefined}>
+            onClick={onClick ? (e) => onClick(e) : undefined}>
             {this.props.children ? this.props.children : null}
           </FontAwesomeIcon>
         )
       case iconType.image:
         return (
-          <ImageIcon iconName={iconName} size={size} style={style} onClick={onClick ? e => onClick(e) : undefined}>
+          <ImageIcon iconName={iconName} size={size} style={style} onClick={onClick ? (e) => onClick(e) : undefined}>
             {this.props.children ? this.props.children : null}
           </ImageIcon>
         )
@@ -130,7 +130,7 @@ export class Icon extends React.Component<IconProps, {}> {
             fontSize={fontSize ? fontSize : 'default'}
             classes={classes ? classes : null}
             className={className}
-            onClick={onClick ? e => onClick(e) : undefined}
+            onClick={onClick ? (e) => onClick(e) : undefined}
             style={style}
           />
         )

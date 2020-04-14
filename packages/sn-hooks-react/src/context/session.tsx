@@ -33,7 +33,7 @@ export const SessionContext = React.createContext<SessionContextProps>({
  * Has to be wrapped with **RepositoryContext** and **LoggerContext**
  * Fills the SessionContext with data from the current repository.
  */
-export const SessionContextProvider: React.FunctionComponent = props => {
+export const SessionContextProvider: React.FunctionComponent = (props) => {
   const repo = useRepository()
   const logger = useLogger('SessionContext')
   const [loadLock] = useState(new Semaphore(1))
@@ -44,10 +44,10 @@ export const SessionContextProvider: React.FunctionComponent = props => {
   useEffect(() => {
     const ac = new AbortController()
     const observables = [
-      repo.authentication.state.subscribe(s => {
+      repo.authentication.state.subscribe((s) => {
         setState(s)
       }, true),
-      repo.authentication.currentUser.subscribe(async usr => {
+      repo.authentication.currentUser.subscribe(async (usr) => {
         logger.debug({
           message: `Current user changed.`,
           data: {
@@ -93,7 +93,7 @@ export const SessionContextProvider: React.FunctionComponent = props => {
     ]
     repo.authentication.checkForUpdate()
     return () => {
-      observables.forEach(o => o.dispose())
+      observables.forEach((o) => o.dispose())
       ac.abort()
     }
   }, [loadLock, logger, repo])

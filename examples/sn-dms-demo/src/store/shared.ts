@@ -89,7 +89,9 @@ export const shared: Reducer<SharedItemsType> = (
   }
   /** todo: auto-generated success action from @sn/redux */
   if (action.type === 'DELETE_CONTENT_SUCCESS') {
-    const deletedIds = (action.result as Actions.PromiseReturns<typeof Actions.deleteContent>).d.results.map(d => d.Id)
+    const deletedIds = (action.result as Actions.PromiseReturns<typeof Actions.deleteContent>).d.results.map(
+      (d) => d.Id,
+    )
     return {
       ...state,
       sharedItems: [...state.sharedItems.filter((c: GenericContent) => !(deletedIds as any).includes(c.Id))],

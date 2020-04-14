@@ -161,7 +161,7 @@ class DocumentsMenu extends React.Component<
     const { active, classes, subactive, item } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
-        {matches => {
+        {(matches) => {
           return (
             <div>
               <ListItem
@@ -199,7 +199,7 @@ class DocumentsMenu extends React.Component<
                           fontSize: '14px',
                         }}
                         multiple={true}
-                        handleUpload={fileList =>
+                        handleUpload={(fileList) =>
                           this.props.uploadFileList({
                             fileList,
                             createFolders: true,

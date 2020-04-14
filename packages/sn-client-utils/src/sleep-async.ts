@@ -3,7 +3,7 @@
  * @param timeout The timeout in millisecs
  */
 export const sleepAsync = (timeout = 250) =>
-  new Promise(resolve =>
+  new Promise((resolve) =>
     setTimeout(() => {
       resolve()
     }, timeout),

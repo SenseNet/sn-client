@@ -63,10 +63,7 @@ describe('Document Viewer Layout component', () => {
       },
     )
 
-    wrapper
-      .find(PageList)
-      .last()
-      .prop('onPageClick')({} as any, 3)
+    wrapper.find(PageList).last().prop('onPageClick')({} as any, 3)
 
     expect(scrollToMock).toBeCalled()
   })

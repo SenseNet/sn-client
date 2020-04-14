@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-export const DialogComponent: React.FunctionComponent<DialogProps> = props => {
+export const DialogComponent: React.FunctionComponent<DialogProps> = (props) => {
   const classes = useStyles()
 
   return (

@@ -34,15 +34,9 @@ describe('App Layout', () => {
       )
     })
     act(() => {
-      wrapper
-        .update()
-        .find(FullScreenDialog)
-        .prop('steppingFunction')(0, true)
+      wrapper.update().find(FullScreenDialog).prop('steppingFunction')(0, true)
     })
-    const obj = wrapper
-      .update()
-      .find(FullScreenDialog)
-      .prop('openedImg')
+    const obj = wrapper.update().find(FullScreenDialog).prop('openedImg')
     expect(obj.imgTitle).toBe(images[0].DisplayName)
     expect(obj.imgPath).toBe(repository.configuration.repositoryUrl + images[0].Path)
     expect(obj.imgAuthorAvatar).toBe(images[0].CreatedBy.Avatar.Url)
@@ -69,15 +63,9 @@ describe('App Layout', () => {
       )
     })
     act(() => {
-      wrapper
-        .update()
-        .find(FullScreenDialog)
-        .prop('steppingFunction')(0, true)
+      wrapper.update().find(FullScreenDialog).prop('steppingFunction')(0, true)
     })
-    const obj = wrapper
-      .update()
-      .find(FullScreenDialog)
-      .prop('openedImg')
+    const obj = wrapper.update().find(FullScreenDialog).prop('openedImg')
     expect(obj.imgTitle).toBe('')
     expect(obj.imgPath).toBe('')
     expect(obj.imgAuthorAvatar).toBe('')
@@ -105,15 +93,9 @@ describe('App Layout', () => {
       )
     })
     act(() => {
-      wrapper
-        .update()
-        .find(FullScreenDialog)
-        .prop('steppingFunction')(0, true)
+      wrapper.update().find(FullScreenDialog).prop('steppingFunction')(0, true)
     })
-    const obj = wrapper
-      .update()
-      .find(FullScreenDialog)
-      .prop('openedImg')
+    const obj = wrapper.update().find(FullScreenDialog).prop('openedImg')
     expect(obj.imgTitle).toBe('')
     expect(obj.imgPath).toBe(repository.configuration.repositoryUrl)
     expect(obj.imgAuthorAvatar).toBe('')

@@ -97,7 +97,7 @@ export const MemoPanel: React.FunctionComponent = () => {
   const deleteMemoContent = async (receivebtn: boolean) => {
     if (receivebtn) {
       // User clicked "Yes"
-      const newdata = data.filter(x => x.Id !== currentmemo.Id)
+      const newdata = data.filter((x) => x.Id !== currentmemo.Id)
       await repo.delete({
         idOrPath: currentmemo.Path,
         permanent: true,
@@ -156,7 +156,7 @@ export const MemoPanel: React.FunctionComponent = () => {
       },
     })
 
-    const newlist = data.map(x => {
+    const newlist = data.map((x) => {
       if (x.Id === memo.Id) {
         return editedMemo.d
       } else {
@@ -188,7 +188,7 @@ export const MemoPanel: React.FunctionComponent = () => {
         }}
         onClose={() => setAddpanelshow(false)}
       />
-      {data.map(memo => (
+      {data.map((memo) => (
         <ExpansionPanel
           key={memo.Id}
           expanded={expanded === memo.Id.toString()}
@@ -273,7 +273,7 @@ export const MemoPanel: React.FunctionComponent = () => {
       <DialogComponent
         open={openmodal}
         title={modaltitle}
-        onClose={receivebtn => {
+        onClose={(receivebtn) => {
           deleteMemoContent(receivebtn)
         }}
       />

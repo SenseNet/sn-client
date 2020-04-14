@@ -106,13 +106,7 @@ describe('Repository Provider', () => {
       await act(async () => {
         wrapper.find(LoginForm).prop('onLogin')('testLogin', 'testPassword', 'repo')
       })
-      expect(
-        wrapper
-          .update()
-          .find(Typography)
-          .at(1)
-          .text(),
-      ).toBe('Failed to log in.')
+      expect(wrapper.update().find(Typography).at(1).text()).toBe('Failed to log in.')
     })
 
     it('should set error when login function throws', async () => {
@@ -136,13 +130,7 @@ describe('Repository Provider', () => {
       await act(async () => {
         wrapper.find(LoginForm).prop('onLogin')('testLogin', 'testPassword', 'repo')
       })
-      expect(
-        wrapper
-          .update()
-          .find(Typography)
-          .at(1)
-          .text(),
-      ).toBe('error')
+      expect(wrapper.update().find(Typography).at(1).text()).toBe('error')
     })
   })
 })

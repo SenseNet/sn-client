@@ -67,10 +67,10 @@ export function ListPickerComponent<T extends GenericContentWithIsParent = Gener
   return (
     <List>
       {items &&
-        items.map(item => (
+        items.map((item) => (
           <div
-            onClick={e => onClickHandler(e, item as any)}
-            onDoubleClick={e => onDoubleClickHandler(e, item as any)}
+            onClick={(e) => onClickHandler(e, item as any)}
+            onDoubleClick={(e) => onDoubleClickHandler(e, item as any)}
             key={item.Id}>
             {renderItem(item as any)}
           </div>

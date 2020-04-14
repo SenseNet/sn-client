@@ -67,7 +67,7 @@ export const ExampleAppWithHook = () => {
       <button onClick={() => reload()}>Reload</button>
       <ul>
         {items &&
-          items.map(node => (
+          items.map((node) => (
             <li
               style={{ color: selectedItem && node.Id === selectedItem.Id ? 'red' : 'inherit', cursor: 'pointer' }}
               onClick={() => setSelectedItem(node)}

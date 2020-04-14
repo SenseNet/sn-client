@@ -35,7 +35,7 @@ function getFieldValue({ actionName, content, component, fieldName }: Options) {
 
 export function DynamicControl({ actionName, repository, content, component, fieldName }: Options) {
   const schema = reactControlMapper(repository).getFullSchemaForContentType(content.Type, actionName)
-  const fieldMapping = schema.fieldMappings.find(a => a.fieldSettings.Name === fieldName)
+  const fieldMapping = schema.fieldMappings.find((a) => a.fieldSettings.Name === fieldName)
   if (!fieldMapping) {
     return <p>{`${actionName} view is not available for this component!`}</p>
   }

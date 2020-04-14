@@ -12,7 +12,7 @@ export type PlatformDependent<T> = { [key in ResponsivePlatforms]?: DeepPartial<
 export const ResponsiveContext = React.createContext<ResponsivePlatforms>('desktop')
 export const ResponsivePersonalSetttings = React.createContext(defaultSettings.default)
 
-export const ResponsiveContextProvider: React.FunctionComponent = props => {
+export const ResponsiveContextProvider: React.FunctionComponent = (props) => {
   const theme = useTheme()
   const personalSettings = usePersonalSettings()
   return (

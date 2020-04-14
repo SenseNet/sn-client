@@ -68,7 +68,7 @@ export interface DocumentViewerProps {
   defaultState?: ViewerState
 }
 
-export const DocumentViewer: React.FC<DocumentViewerProps> = props => {
+export const DocumentViewer: React.FC<DocumentViewerProps> = (props) => {
   return (
     <DocumentViewerApiSettingsProvider options={props.api}>
       <LocalizationContext.Provider value={deepMerge(defaultLocalization, props.localization)}>

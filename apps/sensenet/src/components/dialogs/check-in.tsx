@@ -38,7 +38,7 @@ export function CheckIn({ content, onActionSuccess, oDataOptions }: CheckInProps
         <TextField
           label={localization.inputLabel}
           multiline
-          onChange={event => setComment(event.target.value)}
+          onChange={(event) => setComment(event.target.value)}
           value={comment}
           fullWidth
         />

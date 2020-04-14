@@ -8,7 +8,7 @@ export const DropFileArea: React.FunctionComponent<{
   notificationControll: (isOpen: boolean) => void
   setDragOver: (isOver: boolean) => void
   isDragOver: boolean
-}> = props => {
+}> = (props) => {
   const repo = useRepository()
   const [scrollPosition, setScroll] = useState(0)
 
@@ -22,23 +22,23 @@ export const DropFileArea: React.FunctionComponent<{
         opacity: props.isDragOver ? 0.8 : 1,
         transition: 'opacity 300ms',
       }}
-      onDragEnter={ev => {
+      onDragEnter={(ev) => {
         ev.stopPropagation()
         ev.preventDefault()
         setScroll(window.pageYOffset)
         props.setDragOver(true)
       }}
-      onDragLeave={ev => {
+      onDragLeave={(ev) => {
         ev.stopPropagation()
         ev.preventDefault()
         props.setDragOver(false)
       }}
-      onDragOver={ev => {
+      onDragOver={(ev) => {
         ev.stopPropagation()
         ev.preventDefault()
         props.setDragOver(true)
       }}
-      onDrop={async ev => {
+      onDrop={async (ev) => {
         ev.stopPropagation()
         ev.preventDefault()
         props.setDragOver(false)

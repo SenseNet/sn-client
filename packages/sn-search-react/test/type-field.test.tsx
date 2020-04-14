@@ -35,12 +35,12 @@ describe('TypeField component', () => {
     expect(instance)
   })
 
-  it('Select change should update the query', done => {
+  it('Select change should update the query', (done) => {
     const instance = shallow(
       <TypeField
         types={[User, Task]}
         schemaStore={schemaStore}
-        onQueryChange={q => {
+        onQueryChange={(q) => {
           expect(q.toString()).toBe('TypeIs:User')
           done()
         }}
@@ -50,12 +50,12 @@ describe('TypeField component', () => {
     select.props().onChange!({ target: { value: 'User' } } as any, null)
   })
 
-  it('Selecting multiple values should update the query', done => {
+  it('Selecting multiple values should update the query', (done) => {
     const instance = shallow(
       <TypeField
         types={[User, Task]}
         schemaStore={schemaStore}
-        onQueryChange={q => {
+        onQueryChange={(q) => {
           expect(q.toString()).toBe('TypeIs:User OR TypeIs:Task')
           done()
         }}

@@ -358,7 +358,7 @@ export class PersonalSettings {
       settings.default &&
       settings.default.drawer &&
       settings.default.drawer.items &&
-      settings.default.drawer.items.find(i => typeof i === 'string')
+      settings.default.drawer.items.find((i) => typeof i === 'string')
     ) {
       ;(settings.default.drawer.items as any) = undefined
     }
@@ -367,7 +367,7 @@ export class PersonalSettings {
       settings.desktop &&
       settings.desktop.drawer &&
       settings.desktop.drawer.items &&
-      settings.desktop.drawer.items.find(i => typeof i === 'string')
+      settings.desktop.drawer.items.find((i) => typeof i === 'string')
     ) {
       ;(settings.desktop.drawer.items as any) = undefined
     }
@@ -376,7 +376,7 @@ export class PersonalSettings {
       settings.tablet &&
       settings.tablet.drawer &&
       settings.tablet.drawer.items &&
-      settings.tablet.drawer.items.find(i => typeof i === 'string')
+      settings.tablet.drawer.items.find((i) => typeof i === 'string')
     ) {
       ;(settings.tablet.drawer.items as any) = undefined
     }
@@ -385,7 +385,7 @@ export class PersonalSettings {
       settings.mobile &&
       settings.mobile.drawer &&
       settings.mobile.drawer.items &&
-      settings.mobile.drawer.items.find(i => typeof i === 'string')
+      settings.mobile.drawer.items.find((i) => typeof i === 'string')
     ) {
       ;(settings.mobile.drawer.items as any) = undefined
     }

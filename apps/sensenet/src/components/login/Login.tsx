@@ -40,7 +40,7 @@ export const Login = () => {
 
   const repositories: PersonalSettingsType['repositories'] = personalSettings.repositories || []
 
-  const existingRepo = repositories.find(r => r.url === repo.configuration.repositoryUrl)
+  const existingRepo = repositories.find((r) => r.url === repo.configuration.repositoryUrl)
 
   const [userName, setUserName] = useState((existingRepo && existingRepo.loginName) || '')
   const [password, setPassword] = useState('')
@@ -78,11 +78,11 @@ export const Login = () => {
       setSuccess(result)
       if (result) {
         setError(undefined)
-        const existing = repositories.find(i => i.url === urlParam)
+        const existing = repositories.find((i) => i.url === urlParam)
         if (!existing) {
           repositories.push({ url: urlParam, loginName: userNameParam })
         } else {
-          personalSettings.repositories = repositories.map(r => {
+          personalSettings.repositories = repositories.map((r) => {
             if (r.url === urlParam) {
               r.loginName = userNameParam
             }
@@ -203,7 +203,7 @@ export const Login = () => {
                 fullWidth={true}
                 value={userName}
                 onInvalid={handleInvalid}
-                onChange={ev => {
+                onChange={(ev) => {
                   clearInputError(ev)
                   setUserName(ev.target.value)
                 }}
@@ -223,7 +223,7 @@ export const Login = () => {
                 placeholder={localization.passwordHelperText}
                 onInvalid={handleInvalid}
                 value={password}
-                onChange={ev => {
+                onChange={(ev) => {
                   clearInputError(ev)
                   setPassword(ev.target.value)
                 }}
@@ -242,7 +242,7 @@ export const Login = () => {
                 type="url"
                 value={url}
                 onInvalid={handleInvalid}
-                onChange={ev => {
+                onChange={(ev) => {
                   clearInputError(ev)
                   setUrl(ev.target.value)
                 }}

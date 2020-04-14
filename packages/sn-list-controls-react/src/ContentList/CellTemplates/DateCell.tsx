@@ -7,7 +7,7 @@ interface DateCellProps {
   virtual?: boolean
 }
 
-export const DateCell: React.StatelessComponent<DateCellProps> = props => {
+export const DateCell: React.StatelessComponent<DateCellProps> = (props) => {
   return (
     <TableCell
       style={

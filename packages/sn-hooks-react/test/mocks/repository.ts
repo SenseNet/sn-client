@@ -13,7 +13,7 @@ export class Repository {
     console.log('put')
   }
   delete(content: any) {
-    this.content = this.content.filter(c => c.Id !== content.Id)
+    this.content = this.content.filter((c) => c.Id !== content.Id)
     return { d: { results: [content], errors: [] } }
   }
   copy() {

@@ -30,7 +30,7 @@ const TrashHeader: React.FC<props> = ({ trash, iconClickHandler }) => {
         </IconButton>
       </Grid>
       <div className={globalClasses.centeredVertical}>
-        {infos.map(info => (
+        {infos.map((info) => (
           <Grid item={true} key={info.title}>
             <Typography style={{ marginRight: '15px' }}>
               {info.title} : {info.value} {info.unit}

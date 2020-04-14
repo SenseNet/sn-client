@@ -4,7 +4,7 @@ import { ObservableValue } from '../src'
  * Observable Value tests
  */
 export const observableTests = describe('Observable', () => {
-  it('should be constructed without initial value', done => {
+  it('should be constructed without initial value', (done) => {
     const v = new ObservableValue()
     v.subscribe(() => {
       expect(v.getValue()).toBe(undefined)
@@ -13,7 +13,7 @@ export const observableTests = describe('Observable', () => {
     expect(v).toBeInstanceOf(ObservableValue)
   })
 
-  it('should be constructed with initial value', done => {
+  it('should be constructed with initial value', (done) => {
     const v = new ObservableValue(1)
     v.subscribe(() => {
       expect(v.getValue()).toBe(1)
@@ -22,7 +22,7 @@ export const observableTests = describe('Observable', () => {
   })
 
   describe('Subscription callback', () => {
-    it('should be triggered only when a value is changed', done => {
+    it('should be triggered only when a value is changed', (done) => {
       const v = new ObservableValue(1)
       v.subscribe(() => {
         expect(v.getValue()).toBe(2)
@@ -33,9 +33,9 @@ export const observableTests = describe('Observable', () => {
       v.setValue(2)
     })
 
-    it('should be triggered only on change when getLast is false', done => {
+    it('should be triggered only on change when getLast is false', (done) => {
       const v = new ObservableValue(1)
-      v.subscribe(value => {
+      v.subscribe((value) => {
         expect(value).toBe(2)
         done()
       }, false)
@@ -44,7 +44,7 @@ export const observableTests = describe('Observable', () => {
   })
 
   describe('Unsubscribe', () => {
-    it('should remove the subscription on unsubscribe()', done => {
+    it('should remove the subscription on unsubscribe()', (done) => {
       const callback1 = () => {
         done(Error('Shouldnt be triggered'))
       }
@@ -87,7 +87,7 @@ export const observableTests = describe('Observable', () => {
       expect(v.getObservers().length).toBe(0)
     })
 
-    it('should remove the subscription only from the disposed Observer', done => {
+    it('should remove the subscription only from the disposed Observer', (done) => {
       class Alma {
         /**
          * Example mock class for testing

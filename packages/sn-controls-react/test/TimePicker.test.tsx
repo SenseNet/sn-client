@@ -17,18 +17,8 @@ describe('Time picker field control', () => {
   describe('in browse view', () => {
     it('should show the displayname and fieldValue when fieldValue is provided', () => {
       const wrapper = shallow(<TimePicker fieldValue={value} actionName="browse" settings={defaultSettings} />)
-      expect(
-        wrapper
-          .find(Typography)
-          .first()
-          .text(),
-      ).toBe(defaultSettings.DisplayName)
-      expect(
-        wrapper
-          .find(Typography)
-          .last()
-          .text(),
-      ).toBe(moment(value).format('HH:mm:ss'))
+      expect(wrapper.find(Typography).first().text()).toBe(defaultSettings.DisplayName)
+      expect(wrapper.find(Typography).last().text()).toBe(moment(value).format('HH:mm:ss'))
     })
     it('should render null when no fieldValue is provided', () => {
       const wrapper = shallow(<TimePicker actionName="browse" settings={defaultSettings} />)

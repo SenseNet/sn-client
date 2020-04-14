@@ -12,7 +12,7 @@ interface AdvancedGridprops {
   imgList: Image[]
 }
 
-export const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -50,7 +50,7 @@ export function pickTile(anumber: number) {
 /**
  * Display Images from repository
  */
-export const AdvancedGridList: React.FunctionComponent<AdvancedGridprops> = props => {
+export const AdvancedGridList: React.FunctionComponent<AdvancedGridprops> = (props) => {
   const classes = useStyles()
   const repo = useRepository()
 

@@ -82,8 +82,8 @@ class WorkspaceListItem extends React.Component<
     const { classes, workspace } = this.props
     return (
       <MenuItem
-        onMouseOver={e => this.handleMouseOver(e)}
-        onMouseLeave={e => this.handleMouseLeave(e)}
+        onMouseOver={(e) => this.handleMouseOver(e)}
+        onMouseLeave={(e) => this.handleMouseLeave(e)}
         style={styles.listItem}>
         <ListItemText
           classes={{ primary: classes.primary, root: classes.listItemRoot }}

@@ -24,30 +24,15 @@ describe('Number field control', () => {
     it('should show the displayname and fieldValue when fieldValue is provided', () => {
       const value = '123'
       const wrapper = shallow(<NumberComponent fieldValue={value} actionName="browse" settings={defaultSettings} />)
-      expect(
-        wrapper
-          .find(Typography)
-          .first()
-          .text(),
-      ).toBe(defaultSettings.DisplayName)
-      expect(
-        wrapper
-          .find(Typography)
-          .last()
-          .text(),
-      ).toBe(value)
+      expect(wrapper.find(Typography).first().text()).toBe(defaultSettings.DisplayName)
+      expect(wrapper.find(Typography).last().text()).toBe(value)
       expect(wrapper).toMatchSnapshot()
     })
 
     it('should show fieldValue with currency when fieldValue is provided and is a currency field', () => {
       const value = '123'
       const wrapper = shallow(<NumberComponent fieldValue={value} actionName="browse" settings={currencySettings} />)
-      expect(
-        wrapper
-          .find(Typography)
-          .last()
-          .text(),
-      ).toBe(`${currencySettings.Format}${value}`)
+      expect(wrapper.find(Typography).last().text()).toBe(`${currencySettings.Format}${value}`)
     })
 
     it('should show fieldValue with percentage when fieldValue is provided and ShowPercentage is true', () => {
@@ -59,12 +44,7 @@ describe('Number field control', () => {
           settings={{ ...defaultSettings, ShowAsPercentage: true }}
         />,
       )
-      expect(
-        wrapper
-          .find(Typography)
-          .last()
-          .text(),
-      ).toBe(`${value}%`)
+      expect(wrapper.find(Typography).last().text()).toBe(`${value}%`)
     })
 
     it('should render null when no fieldValue is provided', () => {

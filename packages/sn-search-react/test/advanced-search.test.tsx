@@ -14,18 +14,18 @@ describe('AdvancedSearch component', () => {
     shallow(<AdvancedSearch fields={() => <div />} schema={exampleSchema} />)
   })
 
-  it('updateQuery() should trigger the onQueryChanged callback with the updated query', done => {
+  it('updateQuery() should trigger the onQueryChanged callback with the updated query', (done) => {
     let hasChanged = false
     shallow(
       <AdvancedSearch
-        fields={options => {
+        fields={(options) => {
           if (!hasChanged) {
             hasChanged = true
-            options.updateQuery('DisplayName', new Query(q => q.equals('DisplayName', 'Alma')))
+            options.updateQuery('DisplayName', new Query((q) => q.equals('DisplayName', 'Alma')))
           }
           return <div />
         }}
-        onQueryChanged={q => {
+        onQueryChanged={(q) => {
           expect(q.toString()).toBe("(DisplayName:'Alma')")
           done()
         }}
@@ -34,19 +34,19 @@ describe('AdvancedSearch component', () => {
     )
   })
 
-  it('updateQuery() should trigger the debounced onQueryChanged callback with an aggregated query', done => {
+  it('updateQuery() should trigger the debounced onQueryChanged callback with an aggregated query', (done) => {
     let hasChanged = false
     shallow(
       <AdvancedSearch
-        fields={options => {
+        fields={(options) => {
           if (!hasChanged) {
             hasChanged = true
-            options.updateQuery('DisplayName', new Query(q => q.equals('DisplayName', 'Alma')))
-            options.updateQuery('Name', new Query(q => q.equals('Name', 'Körte')))
+            options.updateQuery('DisplayName', new Query((q) => q.equals('DisplayName', 'Alma')))
+            options.updateQuery('Name', new Query((q) => q.equals('Name', 'Körte')))
           }
           return <div />
         }}
-        onQueryChanged={q => {
+        onQueryChanged={(q) => {
           expect(q.toString()).toBe("(DisplayName:'Alma') AND (Name:'Körte')")
           done()
         }}

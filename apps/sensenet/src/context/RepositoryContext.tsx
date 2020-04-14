@@ -7,7 +7,7 @@ export const lastRepositoryKey = 'sensenet-last-repository'
 
 export const RepositoryContextProviderComponent: React.FunctionComponent<RouteComponentProps<{
   repo?: string
-}>> = props => {
+}>> = (props) => {
   const injector = useInjector()
   const settings = usePersonalSettings()
   const [repo, setRepo] = useState(injector.getRepository(settings.lastRepository))

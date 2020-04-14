@@ -39,7 +39,7 @@ const createTypeFilterString = (allowedTypes: string[]) => {
 /**
  * Represents a reference picker component
  */
-export const ReferencePicker: React.FC<ReferencePickerProps> = props => {
+export const ReferencePicker: React.FC<ReferencePickerProps> = (props) => {
   const pickerItemOptions: ODataParams<Folder> = {
     select: ['DisplayName', 'Path', 'Id', 'Children/IsFolder', 'IsFolder', 'Avatar', 'Icon'] as any,
     expand: ['Children'] as any,
@@ -103,13 +103,13 @@ export const ReferencePicker: React.FC<ReferencePickerProps> = props => {
   return (
     <List>
       {items &&
-        items.map(node => (
+        items.map((node) => (
           <ListItem
             key={node.Id}
             button={true}
-            onClick={e => onClickHandler(e, node)}
+            onClick={(e) => onClickHandler(e, node)}
             onDoubleClick={() => navigateTo(node)}
-            selected={props.selected.some(c => c.Id === node.Id)}>
+            selected={props.selected.some((c) => c.Id === node.Id)}>
             <ListItemIcon style={{ margin: 0 }}>
               {node.Type === 'User' ? (
                 (node as User).Avatar?.Url !== '' ? (
@@ -120,7 +120,7 @@ export const ReferencePicker: React.FC<ReferencePickerProps> = props => {
                 ) : (
                   <Avatar alt={node.DisplayName}>
                     {node.DisplayName?.split(' ')
-                      .map(namePart => namePart[0])
+                      .map((namePart) => namePart[0])
                       .join('.')}
                   </Avatar>
                 )

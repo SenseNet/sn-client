@@ -22,7 +22,7 @@ export interface CurrentAncestorsProviderProps {
  * Provider component for the CurrentAncestorsContext component.
  * Loads an ancestor list from the Repository. Has to be wrapped with a **CurrentContentContext** and a **RepositoryContext**
  */
-export const CurrentAncestorsProvider: React.FunctionComponent<CurrentAncestorsProviderProps> = props => {
+export const CurrentAncestorsProvider: React.FunctionComponent<CurrentAncestorsProviderProps> = (props) => {
   const currentContent = useContext(CurrentContentContext)
   const [loadLock] = useState(new Semaphore(1))
 
@@ -34,24 +34,24 @@ export const CurrentAncestorsProvider: React.FunctionComponent<CurrentAncestorsP
   const logger = useLogger('CurrentAncestorsProvider')
 
   const requestReload = debounce((newId: number) => {
-    if (ancestors.map(a => a.Id).includes(newId)) {
+    if (ancestors.map((a) => a.Id).includes(newId)) {
       setReloadToken(Math.random())
     }
   }, 100)
 
   useEffect(() => {
     const subscriptions = [
-      eventHub.onContentModified.subscribe(mod => {
+      eventHub.onContentModified.subscribe((mod) => {
         requestReload(mod.content.Id)
       }),
-      eventHub.onContentMoved.subscribe(move => {
+      eventHub.onContentMoved.subscribe((move) => {
         requestReload(move.content.Id)
       }),
-      eventHub.onContentDeleted.subscribe(del => {
+      eventHub.onContentDeleted.subscribe((del) => {
         requestReload(del.contentData.Id)
       }),
     ]
-    return () => subscriptions.forEach(s => s.dispose())
+    return () => subscriptions.forEach((s) => s.dispose())
   }, [
     ancestors,
     eventHub.onContentDeleted,
@@ -82,7 +82,7 @@ export const CurrentAncestorsProvider: React.FunctionComponent<CurrentAncestorsP
               orderby: [['Path', 'asc']],
             },
           })
-          const rootIndex = ancestorsResult.d.results.findIndex(a => a.Id === props.root || a.Path === props.root)
+          const rootIndex = ancestorsResult.d.results.findIndex((a) => a.Id === props.root || a.Path === props.root)
           setAncestors(rootIndex > 0 ? ancestorsResult.d.results.slice(rootIndex) : ancestorsResult.d.results)
         }
       } catch (err) {

@@ -38,7 +38,7 @@ describe('CurrentContent', () => {
     const mockContent = { Id: 1, Name: 'Teszt1', Path: '/Root/Content/IT' }
     let currentRepoLoadArgs: any
     const repo = new Repository()
-    repo.load = args => {
+    repo.load = (args) => {
       currentRepoLoadArgs = args
       return { d: mockContent } as any
     }
@@ -75,17 +75,12 @@ describe('CurrentContent', () => {
       wrapper = mount(
         <RepositoryContext.Provider value={repo}>
           <CurrentContentProvider idOrPath={mockContent.Path} onContentLoaded={jest.fn}>
-            <CurrentContentContext.Consumer>{value => <div>Name: {value.Name}</div>}</CurrentContentContext.Consumer>
+            <CurrentContentContext.Consumer>{(value) => <div>Name: {value.Name}</div>}</CurrentContentContext.Consumer>
           </CurrentContentProvider>
         </RepositoryContext.Provider>,
       )
     })
-    expect(
-      wrapper
-        .update()
-        .find('div')
-        .text(),
-    ).toBe('Name: Teszt1')
+    expect(wrapper.update().find('div').text()).toBe('Name: Teszt1')
     await act(async () => {
       repo.patch({
         idOrPath: mockContent.Path,
@@ -93,11 +88,6 @@ describe('CurrentContent', () => {
       })
     })
 
-    expect(
-      wrapper
-        .update()
-        .find('div')
-        .text(),
-    ).toBe('Name: Teszt2')
+    expect(wrapper.update().find('div').text()).toBe('Name: Teszt2')
   })
 })

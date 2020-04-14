@@ -77,7 +77,7 @@ function PathPickerDialog(
       </DialogContent>
 
       <MediaQuery minDeviceWidth={700}>
-        {matches => (
+        {(matches) => (
           <DialogActions className="mobile-picker-buttonRow">
             {props.showAddFolder === false ? null : (
               <div>

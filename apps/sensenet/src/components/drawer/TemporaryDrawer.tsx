@@ -19,11 +19,13 @@ import { useDrawerItems, useLocalization, usePersonalSettings, useTheme } from '
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
 
-const TemporaryDrawer: React.FunctionComponent<RouteComponentProps & {
-  isOpened: boolean
-  onClose: () => void
-  onOpen: () => void
-}> = props => {
+const TemporaryDrawer: React.FunctionComponent<
+  RouteComponentProps & {
+    isOpened: boolean
+    onClose: () => void
+    onOpen: () => void
+  }
+> = (props) => {
   const settings = useContext(ResponsivePersonalSetttings)
   const device = useContext(ResponsiveContext)
   const personalSettings = usePersonalSettings()
@@ -33,7 +35,7 @@ const TemporaryDrawer: React.FunctionComponent<RouteComponentProps & {
   const items = useDrawerItems()
 
   const [currentRepoEntry, setCurrentRepoEntry] = useState(
-    personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
+    personalSettings.repositories.find((r) => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
   )
 
   const localization = useLocalization().drawer
@@ -41,7 +43,7 @@ const TemporaryDrawer: React.FunctionComponent<RouteComponentProps & {
   useEffect(
     () =>
       setCurrentRepoEntry(
-        personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
+        personalSettings.repositories.find((r) => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
       ),
     [personalSettings, repo],
   )

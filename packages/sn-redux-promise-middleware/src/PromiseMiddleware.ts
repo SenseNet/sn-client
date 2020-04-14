@@ -24,11 +24,11 @@ export const suffixes = {
  *  applyMiddleware([promiseMiddleware(repository)]),
  * )
  */
-export const promiseMiddleware: <TService>(service: TService) => Middleware = service => {
-  return ref => {
+export const promiseMiddleware: <TService>(service: TService) => Middleware = (service) => {
+  return (ref) => {
     const { dispatch } = ref
 
-    return next => action => {
+    return (next) => (action) => {
       const actionType = action.type
       if (isPromiseMiddlewareAction(action)) {
         ;(async () => {

@@ -21,7 +21,7 @@ const ITEM_THRESHOLD = 50
 
 const walkTree = (node: ItemType, callBack: (node: ItemType) => void) => {
   if (node.children?.length) {
-    node.children.forEach(child => {
+    node.children.forEach((child) => {
       callBack(child)
       walkTree(child, callBack)
     })
@@ -102,7 +102,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
 
       // load more items under root
       if (path === props.parentPath) {
-        setTreeData(prevItem => {
+        setTreeData((prevItem) => {
           if (prevItem && prevItem.children) {
             return {
               ...prevItem,
@@ -113,7 +113,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
         })
       } else {
         // load more items under tree node
-        walkTree(treeData!, node => {
+        walkTree(treeData!, (node) => {
           if (node.Path === path && node.children) {
             node.children = [...node.children, ...result.d.results]
             node.hasNextPage = result.d.__count > node.children.length
@@ -132,7 +132,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
       if ((c.content as GenericContent).ParentId === treeData?.Id) {
         loadRoot()
       } else {
-        walkTree(treeData!, async node => {
+        walkTree(treeData!, async (node) => {
           if ((c.content as GenericContent).ParentId === node.Id) {
             const result = await loadCollection(node.Path, ITEM_THRESHOLD, 0)
             if (!result) {
@@ -152,13 +152,13 @@ export default function TreeWithData(props: TreeWithDataProps) {
       eventHub.onContentCopied.subscribe(handleCreate),
       eventHub.onContentMoved.subscribe(handleCreate),
       eventHub.onContentModified.subscribe(handleCreate),
-      eventHub.onContentDeleted.subscribe(d => {
-        walkTree(treeData!, node => {
+      eventHub.onContentDeleted.subscribe((d) => {
+        walkTree(treeData!, (node) => {
           if (node.Id === d.contentData.Id && treeData?.children?.length) {
-            treeData.children = treeData.children.filter(n => n.Id !== d.contentData.Id)
-            setItemCount(itemCountTemp => itemCountTemp && itemCountTemp - 1)
+            treeData.children = treeData.children.filter((n) => n.Id !== d.contentData.Id)
+            setItemCount((itemCountTemp) => itemCountTemp && itemCountTemp - 1)
           } else if (PathHelper.trimSlashes(node.Path) === PathHelper.getParentPath(d.contentData.Path)) {
-            node.children = node.children?.filter(n => n.Id !== d.contentData.Id)
+            node.children = node.children?.filter((n) => n.Id !== d.contentData.Id)
             if (selectionService.activeContent.getValue()?.Id === d.contentData.Id) {
               selectionService.activeContent.setValue(node)
             }
@@ -168,7 +168,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
       }),
     ]
 
-    return () => subscriptions.forEach(s => s.dispose())
+    return () => subscriptions.forEach((s) => s.dispose())
   }, [
     treeData,
     eventHub.onContentDeleted,
@@ -238,7 +238,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
       loadMore={loadMoreItems}
       onItemClick={onItemClick}
       isLoading={isLoading}
-      setFormOpen={actionName => setFormOpen(actionName)}
+      setFormOpen={(actionName) => setFormOpen(actionName)}
     />
   )
 }

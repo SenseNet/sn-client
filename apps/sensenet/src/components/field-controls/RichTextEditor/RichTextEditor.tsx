@@ -64,7 +64,7 @@ Quill.register('modules/oembed', QuillOEmbedModule)
 /**
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
-export const RichTextEditor: React.FC<ReactClientFieldSetting> = props => {
+export const RichTextEditor: React.FC<ReactClientFieldSetting> = (props) => {
   const initialState = props.fieldValue || changeJScriptValue(props.settings.DefaultValue) || ''
   const [value, setValue] = useState(initialState)
   const classes = useStyles()

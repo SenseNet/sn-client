@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
 /**
  * Display the header
  */
-export const SimpleAppBar: React.FunctionComponent<SimpleAppBarProps> = props => {
+export const SimpleAppBar: React.FunctionComponent<SimpleAppBarProps> = (props) => {
   const classes = useStyles()
 
   return (

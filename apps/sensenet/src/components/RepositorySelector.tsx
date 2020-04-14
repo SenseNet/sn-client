@@ -38,9 +38,11 @@ const useStyles = makeStyles(() => {
   })
 })
 
-export const RepositorySelectorComponent: React.FunctionComponent<RouteComponentProps & {
-  alwaysOpened?: boolean
-}> = () => {
+export const RepositorySelectorComponent: React.FunctionComponent<
+  RouteComponentProps & {
+    alwaysOpened?: boolean
+  }
+> = () => {
   const settings = usePersonalSettings()
   const repo = useRepository()
   const device = useContext(ResponsiveContext)
@@ -50,7 +52,7 @@ export const RepositorySelectorComponent: React.FunctionComponent<RouteComponent
   const globalClasses = useGlobalStyles()
 
   useEffect(() => {
-    const lastRepo = settings.repositories.find(r => r.url === repo.configuration.repositoryUrl)
+    const lastRepo = settings.repositories.find((r) => r.url === repo.configuration.repositoryUrl)
     if (lastRepo) {
       setLastRepositoryName(lastRepo.displayName || lastRepo.url)
       setLastRepositoryUrl(lastRepo.url)

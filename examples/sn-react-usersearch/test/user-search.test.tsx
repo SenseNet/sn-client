@@ -41,10 +41,7 @@ describe('The user search component instance', () => {
       ;(searchbtn.prop('onClick') as any)()
     })
 
-    const TableRows = wrapper
-      .update()
-      .find(TableBody)
-      .find(TableRow)
+    const TableRows = wrapper.update().find(TableBody).find(TableRow)
 
     expect(TableRows.length).toEqual(TestUserList.length)
   })
@@ -62,10 +59,7 @@ describe('The user search component instance', () => {
       ;(formpanel.prop('onSubmit') as any)({ preventDefault: jest.fn() })
     })
 
-    const TableRows = wrapper
-      .update()
-      .find(TableBody)
-      .find(TableRow)
+    const TableRows = wrapper.update().find(TableBody).find(TableRow)
 
     expect(TableRows.length).toEqual(TestUserList.length)
   })
@@ -84,19 +78,9 @@ describe('The user search component instance', () => {
     })
 
     act(() => {
-      wrapper
-        .update()
-        .find(TableBody)
-        .find(TableRow)
-        .at(1)
-        .prop('onClick')()
+      wrapper.update().find(TableBody).find(TableRow).at(1).prop('onClick')()
     })
-    expect(
-      wrapper
-        .update()
-        .find(Dialog)
-        .prop('open'),
-    ).toBe(true)
+    expect(wrapper.update().find(Dialog).prop('open')).toBe(true)
   })
   it('should close modal window when close button is clicked', async () => {
     await act(async () => {
@@ -111,25 +95,12 @@ describe('The user search component instance', () => {
       ;(formpanel.prop('onSubmit') as any)({ preventDefault: jest.fn() })
     })
     act(() => {
-      wrapper
-        .update()
-        .find(TableBody)
-        .find(TableRow)
-        .at(1)
-        .prop('onClick')()
+      wrapper.update().find(TableBody).find(TableRow).at(1).prop('onClick')()
     })
     act(() => {
-      wrapper
-        .update()
-        .find(Dialog)
-        .prop('onClose')()
+      wrapper.update().find(Dialog).prop('onClose')()
     })
-    expect(
-      wrapper
-        .update()
-        .find(Dialog)
-        .prop('open'),
-    ).toBe(false)
+    expect(wrapper.update().find(Dialog).prop('open')).toBe(false)
   })
   it('should close modal window when OK button is clicked', async () => {
     await act(async () => {
@@ -144,26 +115,12 @@ describe('The user search component instance', () => {
       ;(formpanel.prop('onSubmit') as any)({ preventDefault: jest.fn() })
     })
     act(() => {
-      wrapper
-        .update()
-        .find(TableBody)
-        .find(TableRow)
-        .at(1)
-        .prop('onClick')()
+      wrapper.update().find(TableBody).find(TableRow).at(1).prop('onClick')()
     })
     act(() => {
-      wrapper
-        .update()
-        .find(Dialog)
-        .find(Button)
-        .prop('onClick')()
+      wrapper.update().find(Dialog).find(Button).prop('onClick')()
     })
-    expect(
-      wrapper
-        .update()
-        .find(Dialog)
-        .prop('open'),
-    ).toBe(false)
+    expect(wrapper.update().find(Dialog).prop('open')).toBe(false)
   })
 
   it('should change query on field value change', async () => {
@@ -179,10 +136,7 @@ describe('The user search component instance', () => {
       advsearchpanel.prop('onQueryChanged')("LoginName:'*businesscat*'")
     })
 
-    const querytextfield = wrapper
-      .update()
-      .find(MaterialTextField)
-      .find("[label='Full query']")
+    const querytextfield = wrapper.update().find(MaterialTextField).find("[label='Full query']")
 
     expect(querytextfield.at(1).props().value).toEqual("LoginName:'*businesscat*'")
   })
@@ -201,10 +155,7 @@ describe('The user search component instance', () => {
       dropdownlang.prop('onQueryChanged')('English')
     })
 
-    const querytextfield = wrapper
-      .update()
-      .find(MaterialTextField)
-      .find("[label='Full query']")
+    const querytextfield = wrapper.update().find(MaterialTextField).find("[label='Full query']")
 
     expect(querytextfield.at(1).props().value).toEqual('English')
   })
@@ -224,12 +175,7 @@ describe('The user search component instance', () => {
       langpresetfield.at(0).prop('onChange')({ target: { value: 'English' } })
     })
 
-    const helperText = wrapper
-      .update()
-      .find(FormHelperText)
-      .at(7)
-      .find('p')
-      .text()
+    const helperText = wrapper.update().find(FormHelperText).at(7).find('p').text()
 
     expect(helperText).toEqual('Language:English')
   })
@@ -248,10 +194,7 @@ describe('The user search component instance', () => {
       dropdownlang.prop('onQueryChanged')('Gender:Female')
     })
 
-    const querytextfield = wrapper
-      .update()
-      .find(MaterialTextField)
-      .find("[label='Full query']")
+    const querytextfield = wrapper.update().find(MaterialTextField).find("[label='Full query']")
 
     expect(querytextfield.at(1).props().value).toEqual('Gender:Female')
   })
@@ -271,12 +214,7 @@ describe('The user search component instance', () => {
       langpresetfield.at(1).prop('onChange')({ target: { value: 'Female' } })
     })
 
-    const helperText = wrapper
-      .update()
-      .find(FormHelperText)
-      .at(8)
-      .find('p')
-      .text()
+    const helperText = wrapper.update().find(FormHelperText).at(8).find('p').text()
 
     expect(helperText).toEqual('Gender:Female')
   })
@@ -295,10 +233,7 @@ describe('The user search component instance', () => {
       dropdownlang.prop('onQueryChanged')('MaritalStatus:Single')
     })
 
-    const querytextfield = wrapper
-      .update()
-      .find(MaterialTextField)
-      .find("[label='Full query']")
+    const querytextfield = wrapper.update().find(MaterialTextField).find("[label='Full query']")
 
     expect(querytextfield.at(1).props().value).toEqual('MaritalStatus:Single')
   })
@@ -323,10 +258,7 @@ describe('The user search component instance', () => {
       dropdownlang.prop('onQueryChanged')('MaritalStatus:Single')
     })
 
-    const querytextfield = wrapper
-      .update()
-      .find(MaterialTextField)
-      .find("[label='Full query']")
+    const querytextfield = wrapper.update().find(MaterialTextField).find("[label='Full query']")
 
     expect(querytextfield.at(1).props().value).toEqual('MaritalStatus:Single')
   })
@@ -353,11 +285,7 @@ describe('The user search component instance', () => {
           element.prop('onChange')({ currentTarget: { value: 'test' } })
         })
 
-        const helperText = wrapper
-          .update()
-          .find(TextField)
-          .at(index)
-          .prop('helperText')
+        const helperText = wrapper.update().find(TextField).at(index).prop('helperText')
 
         if (index === 0) {
           expect(helperText).toContain(`Type`)

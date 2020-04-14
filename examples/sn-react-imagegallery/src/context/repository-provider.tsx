@@ -13,10 +13,9 @@ export const lastRepositoryKey = 'sn-boilerplate-last-repository'
  * Container component that will provide a Repository object through a Context
  * @param props The repository settings
  */
-export const RepositoryProvider: React.FunctionComponent<Omit<
-  Partial<RepositoryConfiguration>,
-  'repositoryUrl'
->> = props => {
+export const RepositoryProvider: React.FunctionComponent<Omit<Partial<RepositoryConfiguration>, 'repositoryUrl'>> = (
+  props,
+) => {
   const [currentRepoUrl, setCurrentRepoUrl] = useState(localStorage.getItem(lastRepositoryKey) || '')
   const [currentRepo, setCurrentRepo] = useState(new Repository({ ...props, repositoryUrl: currentRepoUrl }))
   const [loginError, setLoginError] = useState('')
@@ -27,7 +26,7 @@ export const RepositoryProvider: React.FunctionComponent<Omit<
     const repo = new Repository({ ...props, repositoryUrl: currentRepoUrl })
     FormsAuthenticationService.Setup(repo)
     setCurrentRepo(repo)
-    const observable = repo.authentication.state.subscribe(state => setLoginState(state), true)
+    const observable = repo.authentication.state.subscribe((state) => setLoginState(state), true)
     return () => observable.dispose()
   }, [currentRepoUrl, props])
 

@@ -36,7 +36,7 @@ const ShortTextInput = withStyles((theme: Theme) =>
 /**
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
-export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>> = props => {
+export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>> = (props) => {
   const [value, setValue] = useState(props.fieldValue || changeJScriptValue(props.settings.DefaultValue) || '')
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {

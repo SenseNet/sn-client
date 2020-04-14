@@ -13,7 +13,7 @@ export const pageTests = describe('Icon component', () => {
           className="workspace"
           type={iconType.materialui}
           iconName="workspace"
-          onClick={e => console.log(e.target)}
+          onClick={(e) => console.log(e.target)}
         />,
       ).hasClass('workspace'),
     ).toBe(true)
@@ -25,7 +25,7 @@ export const pageTests = describe('Icon component', () => {
           className="workspace"
           type={iconType.fontawesome}
           iconName="workspace"
-          onClick={e => console.log(e.target)}
+          onClick={(e) => console.log(e.target)}
         />,
       ).hasClass('workspace'),
     ).toBe(false)
@@ -37,7 +37,7 @@ export const pageTests = describe('Icon component', () => {
           className="workspace"
           type={iconType.flaticon}
           iconName="workspace"
-          onClick={e => console.log(e.target)}
+          onClick={(e) => console.log(e.target)}
         />,
       ).hasClass('flaticon-workspace'),
     ).toBe(false)
@@ -45,7 +45,7 @@ export const pageTests = describe('Icon component', () => {
   it('Should render without crashing', () => {
     expect(
       shallow(
-        <Icon className="workspace" iconName="workspace" onClick={e => console.log(e.target)}>
+        <Icon className="workspace" iconName="workspace" onClick={(e) => console.log(e.target)}>
           <span>aaa</span>
         </Icon>,
       ).hasClass('workspace'),
@@ -58,7 +58,7 @@ export const pageTests = describe('Icon component', () => {
           className="workspace"
           type={iconType.materialui}
           iconName="workspace"
-          onClick={e => console.log(e.target)}>
+          onClick={(e) => console.log(e.target)}>
           <span>aaa</span>
         </Icon>,
       ).hasClass('workspace'),
@@ -71,7 +71,7 @@ export const pageTests = describe('Icon component', () => {
           className="workspace"
           type={iconType.fontawesome}
           iconName="workspace"
-          onClick={e => console.log(e.target)}>
+          onClick={(e) => console.log(e.target)}>
           <span>aaa</span>
         </Icon>,
       ).hasClass('workspace'),
@@ -80,7 +80,11 @@ export const pageTests = describe('Icon component', () => {
   it('Should render without crashing', () => {
     expect(
       shallow(
-        <Icon className="workspace" type={iconType.flaticon} iconName="workspace" onClick={e => console.log(e.target)}>
+        <Icon
+          className="workspace"
+          type={iconType.flaticon}
+          iconName="workspace"
+          onClick={(e) => console.log(e.target)}>
           <span>aaa</span>
         </Icon>,
       ).hasClass('flaticon-workspace'),
@@ -89,7 +93,7 @@ export const pageTests = describe('Icon component', () => {
   it('Should render without crashing', () => {
     expect(
       shallow(
-        <Icon className="workspace" iconName="workspace" onClick={e => console.log(e.target)}>
+        <Icon className="workspace" iconName="workspace" onClick={(e) => console.log(e.target)}>
           <span>aaa</span>
         </Icon>,
       ).hasClass('workspace'),

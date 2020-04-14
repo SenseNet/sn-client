@@ -15,7 +15,7 @@ describe('FilterAsync', () => {
 
   it('Should return the correct values', async () => {
     const arr = [1, 2, 3, 4, 5]
-    const filtered = await arr.filterAsync(async value => {
+    const filtered = await arr.filterAsync(async (value) => {
       await sleepAsync(1)
       return value % 2 === 0
     })

@@ -22,7 +22,7 @@ export const defaultViewerState: ViewerState & {
 }
 export const ViewerStateContext = React.createContext(defaultViewerState)
 
-export const ViewerStateProvider: React.FC<{ options?: Partial<typeof defaultViewerState> }> = props => {
+export const ViewerStateProvider: React.FC<{ options?: Partial<typeof defaultViewerState> }> = (props) => {
   const [state, setState] = useState<typeof defaultViewerState>(deepMerge({ ...defaultViewerState }, props.options))
 
   useEffect(() => {

@@ -23,7 +23,7 @@ export interface BrowseData {
 export const encodeBrowseData = (data: BrowseData) => encodeURIComponent(btoa(JSON.stringify(data)))
 export const decodeBrowseData = (encoded: string) => JSON.parse(atob(decodeURIComponent(encoded))) as BrowseData
 
-export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: string }>> = props => {
+export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: string }>> = (props) => {
   const repo = useRepository()
   const settings = useContext(ResponsivePersonalSetttings)
   const logger = useLogger('Browse view')

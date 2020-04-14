@@ -30,7 +30,7 @@ export interface EditViewProps {
  *  <EditView content={selectedContent} onSubmit={editSubmitClick} />
  * ```
  */
-export const EditView: React.FC<EditViewProps> = props => {
+export const EditView: React.FC<EditViewProps> = (props) => {
   const controlMapper = reactControlMapper(props.repository)
   const schema = controlMapper.getFullSchemaForContentType(props.content.Type, 'edit')
   const [saveableFields, setSaveableFields] = useState({})
@@ -48,7 +48,7 @@ export const EditView: React.FC<EditViewProps> = props => {
   return (
     <form style={{ margin: '0 auto' }} onSubmit={handleSubmit}>
       <Grid container={true} spacing={2}>
-        {schema.fieldMappings.map(field => {
+        {schema.fieldMappings.map((field) => {
           const fieldControl = createElement(
             controlMapper.getControlForContentField(props.content.Type, field.fieldSettings.Name, 'edit'),
             {

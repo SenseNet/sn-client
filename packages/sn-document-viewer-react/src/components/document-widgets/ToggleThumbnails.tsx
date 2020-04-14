@@ -13,7 +13,7 @@ export const ToggleThumbnailsWidget: React.FC = () => {
     <ToggleBase
       title={localization.toggleThumbnails}
       isVisible={viewerState.showThumbnails}
-      setValue={v => viewerState.updateState({ showThumbnails: v })}>
+      setValue={(v) => viewerState.updateState({ showThumbnails: v })}>
       <svg
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"

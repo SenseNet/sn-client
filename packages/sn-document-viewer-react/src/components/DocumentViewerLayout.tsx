@@ -28,7 +28,7 @@ interface ScrollToOptions {
   smoothScroll: boolean
 }
 
-export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props => {
+export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props) => {
   const viewerState = useViewerState()
   const localization = useLocalization()
   const thumbnailPadding = props.thumbnailPadding != null ? props.thumbnailPadding : THUMBNAIL_PADDING
@@ -96,7 +96,7 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
   )
 
   useEffect(() => {
-    const observer = viewerState.onPageChange.subscribe(p => {
+    const observer = viewerState.onPageChange.subscribe((p) => {
       scrollTo(p)
     })
     return () => observer.dispose()
@@ -194,16 +194,16 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
               <Typography variant="h4">{localization.commentSideBarTitle}</Typography>
               <CreateComment
                 isActive={viewerState.isCreateCommentActive}
-                handleIsActive={isActive => viewerState.updateState({ isCreateCommentActive: isActive })}
+                handleIsActive={(isActive) => viewerState.updateState({ isCreateCommentActive: isActive })}
                 localization={localization}
                 createComment={createComment}
                 inputValue={createCommentValue}
-                handleInputValueChange={value => setCreateCommentValue(value)}
+                handleInputValueChange={(value) => setCreateCommentValue(value)}
               />
 
               <CommentsContext.Consumer>
-                {commentsContext =>
-                  commentsContext.comments.map(comment => <Comment key={comment.id} comment={comment} />)
+                {(commentsContext) =>
+                  commentsContext.comments.map((comment) => <Comment key={comment.id} comment={comment} />)
                 }
               </CommentsContext.Consumer>
             </CommentsContainer>

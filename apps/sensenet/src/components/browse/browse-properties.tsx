@@ -34,7 +34,7 @@ export default function BrowseProperties() {
     <div className={clsx(globalClasses.full, classes.editWrapper)}>
       <CurrentContentProvider
         idOrPath={match.params.contentId}
-        onContentLoaded={c => selectionService.activeContent.setValue(c)}
+        onContentLoaded={(c) => selectionService.activeContent.setValue(c)}
         oDataOptions={{
           select: 'all',
           expand: ['Manager', 'FollowedWorkspaces'] as any,

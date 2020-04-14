@@ -14,7 +14,7 @@ describe('ActionCell component', () => {
     component.unmount()
   })
 
-  it('Should handle on action menu click', done => {
+  it('Should handle on action menu click', (done) => {
     const component = shallow(
       <ActionsCell
         actions={[]}

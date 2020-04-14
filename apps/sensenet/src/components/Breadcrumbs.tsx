@@ -38,12 +38,12 @@ function BreadcrumbsComponent<T extends GenericContent>(props: BreadcrumbProps<T
   return (
     <>
       <Breadcrumbs maxItems={5} aria-label="breadcrumb">
-        {props.items.map(item => (
+        {props.items.map((item) => (
           <DropFileArea key={item.content.Id} parentContent={item.content} style={{ display: 'inline-block' }}>
             <Tooltip title={item.title}>
               <Button
-                onClick={ev => props.onItemClick(ev, item)}
-                onContextMenu={ev => {
+                onClick={(ev) => props.onItemClick(ev, item)}
+                onContextMenu={(ev) => {
                   setContextMenuItem(item.content)
                   setContextMenuAnchor(ev.currentTarget)
                   setIsContextMenuOpened(true)
@@ -64,12 +64,12 @@ function BreadcrumbsComponent<T extends GenericContent>(props: BreadcrumbProps<T
             anchorEl: contextMenuAnchor,
             BackdropProps: {
               onClick: () => setIsContextMenuOpened(false),
-              onContextMenu: ev => ev.preventDefault(),
+              onContextMenu: (ev) => ev.preventDefault(),
             },
           }}
           onClose={() => setIsContextMenuOpened(false)}
           halfPage={true}
-          setFormOpen={actionName => setFormOpen(actionName)}
+          setFormOpen={(actionName) => setFormOpen(actionName)}
         />
       ) : null}
     </>

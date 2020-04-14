@@ -42,7 +42,7 @@ const useStyles = makeStyles(() => {
   })
 })
 
-export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }> = props => {
+export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }> = (props) => {
   const device = useContext(ResponsiveContext)
   const personalSettings = useContext(ResponsivePersonalSetttings)
   const commandPalette = useCommandPalette()

@@ -43,11 +43,11 @@ export interface GroupdByAny {
   id: string
 }
 
-const groupByDay = function(xs: CalendarEvent[], key: keyof Pick<CalendarEvent, 'StartDate'>) {
+const groupByDay = function (xs: CalendarEvent[], key: keyof Pick<CalendarEvent, 'StartDate'>) {
   const resultArray: GroupdByAny[] = []
-  xs.forEach(event => {
+  xs.forEach((event) => {
     const findevent = resultArray.find(
-      c =>
+      (c) =>
         moment(new Date(c.date)).format('YYYY-MM-DD') ===
         moment(new Date(event[key] !== undefined ? (event[key] as string) : '')).format('YYYY-MM-DD'),
     )
@@ -102,7 +102,7 @@ const MainPanel: React.FunctionComponent = () => {
             'EventUrl',
             'OwnerEmail',
           ] as any,
-          query: new Query(q =>
+          query: new Query((q) =>
             q.greatherThan('StartDate', '2019-01-01').and.lessThan('StartDate', '2019.12.31'),
           ).toString(),
           orderby: [['StartDate', 'asc']],
@@ -120,7 +120,7 @@ const MainPanel: React.FunctionComponent = () => {
 
   return (
     <>
-      {data.map(element => {
+      {data.map((element) => {
         return (
           <React.Fragment key={element.id}>
             <List className={classes.root} data-month={moment(new Date(element.date)).format('MMMM')}>

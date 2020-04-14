@@ -20,14 +20,14 @@ export class SchemaStore {
     parentFieldSettings: FieldSetting[],
   ): FieldSetting[] {
     const currentFieldSettingsMap = new Map<string, FieldSetting>()
-    currentFieldSettings.forEach(s => currentFieldSettingsMap.set(s.Name, s))
+    currentFieldSettings.forEach((s) => currentFieldSettingsMap.set(s.Name, s))
 
     const parentFieldSettingsMap = new Map<string, FieldSetting>()
-    parentFieldSettings.forEach(s => parentFieldSettingsMap.set(s.Name, s))
+    parentFieldSettings.forEach((s) => parentFieldSettingsMap.set(s.Name, s))
 
     const keys = new Set([...currentFieldSettingsMap.keys(), ...parentFieldSettingsMap.keys()])
 
-    return Array.from(keys).map(key => {
+    return Array.from(keys).map((key) => {
       return {
         ...parentFieldSettingsMap.get(key),
         ...currentFieldSettingsMap.get(key),
@@ -43,7 +43,7 @@ export class SchemaStore {
     if (this.byNameSchemaCache.has(contentTypeName)) {
       return Object.assign({}, this.byNameSchemaCache.get(contentTypeName)) as Schema
     }
-    let schema = this.schemas.find(s => s.ContentTypeName === contentTypeName) as Schema
+    let schema = this.schemas.find((s) => s.ContentTypeName === contentTypeName) as Schema
     if (!schema) {
       return this.getSchemaByName('GenericContent')
     }

@@ -210,7 +210,7 @@ class VersionsDialog extends React.Component<
     const { expanded } = this.state
     return (
       <MediaQuery minDeviceWidth={700}>
-        {matches => {
+        {(matches) => {
           return (
             <div>
               <Typography variant="h5" gutterBottom={true}>

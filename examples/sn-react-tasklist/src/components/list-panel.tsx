@@ -87,7 +87,7 @@ const ListPanel: React.FunctionComponent<TodoItems> = ({ data, setData }) => {
 
   // Remove current task
   const deleteTask = async (task: Task) => {
-    const newdata = [...data.filter(x => x.Id !== task.Id)]
+    const newdata = [...data.filter((x) => x.Id !== task.Id)]
     await repo.delete({
       idOrPath: task.Path,
       permanent: true,
@@ -95,7 +95,7 @@ const ListPanel: React.FunctionComponent<TodoItems> = ({ data, setData }) => {
     setData(newdata)
   }
 
-  const TodoList = data.map(d => {
+  const TodoList = data.map((d) => {
     const labelId = `checkbox-list-label-${d.Id}`
     const deleteId = `checkbox-list-deletebtn-${d.Id}`
     const classCompleted = d.Status && d.Status[0] === Status.completed ? 'comp' : ''

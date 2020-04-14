@@ -76,7 +76,7 @@ export interface EditViewProps {
  *  <EditView content={selectedContent} onSubmit={editSubmitClick} />
  * ```
  */
-export const EditView: React.FC<EditViewProps> = props => {
+export const EditView: React.FC<EditViewProps> = (props) => {
   const repo = useRepository()
   const selectionService = useSelectionService()
   const [content, setContent] = useState(selectionService.activeContent.getValue())
@@ -88,7 +88,7 @@ export const EditView: React.FC<EditViewProps> = props => {
   const logger = useLogger('EditView')
 
   useEffect(() => {
-    const activeComponentObserve = selectionService.activeContent.subscribe(newActiveComponent =>
+    const activeComponentObserve = selectionService.activeContent.subscribe((newActiveComponent) =>
       setContent(newActiveComponent),
     )
     return function cleanup() {
@@ -162,7 +162,7 @@ export const EditView: React.FC<EditViewProps> = props => {
           <Grid container={true} spacing={2}>
             {schema.fieldMappings
               .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
-              .map(field => {
+              .map((field) => {
                 const fieldControl = createElement(
                   controlMapper.getControlForContentField(
                     content.Type,

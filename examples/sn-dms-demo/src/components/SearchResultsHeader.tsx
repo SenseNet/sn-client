@@ -82,7 +82,7 @@ class SearchResultsHeader extends React.Component<
               margin="dense"
               label={resources.SAVE_QUERY_NAME}
               value={this.state.queryName}
-              onChange={ev => this.setState({ queryName: ev.target.value })}
+              onChange={(ev) => this.setState({ queryName: ev.target.value })}
             />
           </DialogContent>
           <DialogActions>

@@ -63,14 +63,14 @@ export class TypeField extends Component<TypeFieldProps, TypeFieldState> {
     return {
       ...lastState,
       getMenuItem: newProps.getMenuItem || lastState.getMenuItem,
-      schemas: newProps.types.map(contentType => newProps.schemaStore.getSchemaByName(contentType.name)),
+      schemas: newProps.types.map((contentType) => newProps.schemaStore.getSchemaByName(contentType.name)),
     }
   }
 
   private handleChange(ev: React.ChangeEvent<HTMLSelectElement>) {
     const values = (ev.target.value as any) as string[]
-    const selected = this.props.types.filter(typeName => values.indexOf(typeName.name) > -1)
-    const query = new Query(q => {
+    const selected = this.props.types.filter((typeName) => values.indexOf(typeName.name) > -1)
+    const query = new Query((q) => {
       selected.forEach((contentType, currentIndex) => {
         const { queryRef } = q
         new QueryExpression(queryRef).typeIs(contentType)
@@ -89,7 +89,7 @@ export class TypeField extends Component<TypeFieldProps, TypeFieldState> {
   }
 
   public render() {
-    const selectedNames = this.state.selected.map(s => this.props.schemaStore.getSchemaByName(s.name).ContentTypeName)
+    const selectedNames = this.state.selected.map((s) => this.props.schemaStore.getSchemaByName(s.name).ContentTypeName)
     const { getMenuItem, onQueryChange, types, schemaStore, ...selectProps } = { ...this.props }
 
     return (
@@ -100,7 +100,7 @@ export class TypeField extends Component<TypeFieldProps, TypeFieldState> {
         input={<Input id="select-multiple-checkbox" />}
         renderValue={() => selectedNames.join(', ')}
         {...selectProps}>
-        {this.state.schemas.map(contentSchema =>
+        {this.state.schemas.map((contentSchema) =>
           this.state.getMenuItem(contentSchema, selectedNames.indexOf(contentSchema.ContentTypeName) > -1),
         )}
       </Select>

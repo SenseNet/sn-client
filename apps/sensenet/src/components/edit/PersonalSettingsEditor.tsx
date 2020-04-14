@@ -65,7 +65,7 @@ export function SettingsEditor() {
     const rm = injector.getInstance(RepositoryManager)
     const logoutPromises = service.effectiveValue
       .getValue()
-      .repositories.map(repoEntry => rm.getRepository(repoEntry.url).authentication.logout())
+      .repositories.map((repoEntry) => rm.getRepository(repoEntry.url).authentication.logout())
 
     await Promise.all(logoutPromises)
     eventService.dispose() // ???

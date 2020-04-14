@@ -87,7 +87,7 @@ export class RepositoryConfiguration {
   /**
    * An array of schemas
    */
-  public schemas: Schema[] = SchemaStore.map(s => s)
+  public schemas: Schema[] = SchemaStore.map((s) => s)
 
   constructor(config?: Partial<RepositoryConfiguration>) {
     config && Object.assign(this, config)

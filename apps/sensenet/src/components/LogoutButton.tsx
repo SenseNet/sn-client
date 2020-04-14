@@ -12,7 +12,7 @@ export type LogoutButtonProps = {
   onLoggedOut?: () => void
 }
 
-export const LogoutButton: React.FunctionComponent<LogoutButtonProps> = props => {
+export const LogoutButton: React.FunctionComponent<LogoutButtonProps> = (props) => {
   const session = useSession()
   const theme = useTheme()
   const localization = useLocalization().logout

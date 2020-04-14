@@ -16,11 +16,11 @@ describe('Loggers', () => {
       expect(loggers).toBeInstanceOf(LoggerCollection)
     })
 
-    it('Should forward Verbose event', done => {
+    it('Should forward Verbose event', (done) => {
       const loggers = new LoggerCollection()
 
       loggers.attachLogger(
-        new TestLogger(async e => {
+        new TestLogger(async (e) => {
           expect(e.level).toBe(LogLevel.Verbose)
 
           done()
@@ -34,11 +34,11 @@ describe('Loggers', () => {
       })
     })
 
-    it('Should forward Debug event', done => {
+    it('Should forward Debug event', (done) => {
       const loggers = new LoggerCollection()
 
       loggers.attachLogger(
-        new TestLogger(async e => {
+        new TestLogger(async (e) => {
           expect(e.level).toBe(LogLevel.Debug)
 
           done()
@@ -52,11 +52,11 @@ describe('Loggers', () => {
       })
     })
 
-    it('Should forward Information event', done => {
+    it('Should forward Information event', (done) => {
       const loggers = new LoggerCollection()
 
       loggers.attachLogger(
-        new TestLogger(async e => {
+        new TestLogger(async (e) => {
           expect(e.level).toBe(LogLevel.Information)
 
           done()
@@ -70,11 +70,11 @@ describe('Loggers', () => {
       })
     })
 
-    it('Should forward Warning event', done => {
+    it('Should forward Warning event', (done) => {
       const loggers = new LoggerCollection()
 
       loggers.attachLogger(
-        new TestLogger(async e => {
+        new TestLogger(async (e) => {
           expect(e.level).toBe(LogLevel.Warning)
 
           done()
@@ -88,11 +88,11 @@ describe('Loggers', () => {
       })
     })
 
-    it('Should forward Error event', done => {
+    it('Should forward Error event', (done) => {
       const loggers = new LoggerCollection()
 
       loggers.attachLogger(
-        new TestLogger(async e => {
+        new TestLogger(async (e) => {
           expect(e.level).toBe(LogLevel.Error)
 
           done()
@@ -106,11 +106,11 @@ describe('Loggers', () => {
       })
     })
 
-    it('Should raise an Error event if failed to insert below Error', done => {
+    it('Should raise an Error event if failed to insert below Error', (done) => {
       const loggers = new LoggerCollection()
 
       loggers.attachLogger(
-        new TestLogger(async e => {
+        new TestLogger(async (e) => {
           if (e.level < LogLevel.Error) {
             throw new Error('Nooo')
           } else {
@@ -128,11 +128,11 @@ describe('Loggers', () => {
       })
     })
 
-    it('Should raise a Fatal event if failed to insert an Error', done => {
+    it('Should raise a Fatal event if failed to insert an Error', (done) => {
       const loggers = new LoggerCollection()
 
       loggers.attachLogger(
-        new TestLogger(async e => {
+        new TestLogger(async (e) => {
           if (e.level < LogLevel.Fatal) {
             throw new Error('Nooo')
           } else {
@@ -150,11 +150,11 @@ describe('Loggers', () => {
       })
     })
 
-    it('Should forward Fatal event', done => {
+    it('Should forward Fatal event', (done) => {
       const loggers = new LoggerCollection()
 
       loggers.attachLogger(
-        new TestLogger(async e => {
+        new TestLogger(async (e) => {
           expect(e.level).toBe(LogLevel.Fatal)
 
           done()
@@ -168,7 +168,7 @@ describe('Loggers', () => {
       })
     })
 
-    it('Should skip filtered events in a simple logger', done => {
+    it('Should skip filtered events in a simple logger', (done) => {
       const logger = new TestLogger(async (e: any) => {
         expect(e.level).toBe(LogLevel.Error)
 
@@ -188,11 +188,11 @@ describe('Loggers', () => {
       })
     })
 
-    it('Should skip filtered events in a collection', done => {
+    it('Should skip filtered events in a collection', (done) => {
       const loggers = new LoggerCollection()
 
       loggers.attachLogger(
-        new TestLogger(async e => {
+        new TestLogger(async (e) => {
           expect(e.level).toBe(LogLevel.Error)
 
           done()
@@ -312,7 +312,7 @@ describe('Loggers', () => {
         expectation: ['%c[scope]:', 'color: darkorange', 'Example Message'],
       },
     ]
-    tests.forEach(test => {
+    tests.forEach((test) => {
       it(`should print colored log for ${test.methodName}`, () => {
         test.method({ message: 'Example Message' })
         expect(console.log).toBeCalledWith(...test.expectation)

@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => {
   })
 })
 
-const Editor: React.FunctionComponent<RouteComponentProps<{ contentId?: string }>> = props => {
+const Editor: React.FunctionComponent<RouteComponentProps<{ contentId?: string }>> = (props) => {
   const contentId = parseInt(props.match.params.contentId as string, 10)
   const selectionService = useSelectionService()
   const { content } = useLoadContent({ idOrPath: contentId })

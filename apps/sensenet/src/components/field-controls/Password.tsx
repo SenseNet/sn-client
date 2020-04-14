@@ -14,7 +14,7 @@ import { renderIconDefault } from './icon'
 /**
  * Field control that represents a Password field. Available values will be populated from the FieldSettings.
  */
-export const Password: React.FC<ReactClientFieldSetting> = props => {
+export const Password: React.FC<ReactClientFieldSetting> = (props) => {
   const [value, setValue] = useState('')
   const [showPassword, setShowPassword] = useState(false)
 
