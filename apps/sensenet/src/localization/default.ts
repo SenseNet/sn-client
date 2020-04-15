@@ -425,6 +425,11 @@ const values = {
   common: {
     loadingContent: 'Loading content...',
   },
+  batchActions: {
+    delete: 'Delete selected items',
+    move: 'Move selected items',
+    copy: 'Copy selected items',
+  },
 }
 
 export default values
