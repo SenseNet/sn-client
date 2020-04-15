@@ -4,7 +4,7 @@ import CalendarEvent from '../CalendarEvent-type'
 import EditPropertiesDialogBody from './edit-dialog-body'
 
 export const EditPropertiesDialog: React.FunctionComponent<{
-  dialogProps: Partial<DialogProps> // TODO: remove partial once material ui fixes its types
+  dialogProps: DialogProps
   content: CalendarEvent
 }> = (props) => {
   return (

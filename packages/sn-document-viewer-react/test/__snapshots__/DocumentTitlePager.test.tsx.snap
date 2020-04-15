@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DocumentTitlePager component Should render the focused state without crashing 1`] = `
-<ForwardRef(ClickAwayListener)
+<ClickAwayListener
   onClickAway={[Function]}
 >
   <WithStyles(ForwardRef(Typography))
@@ -62,11 +62,11 @@ exports[`DocumentTitlePager component Should render the focused state without cr
       />
     </form>
   </WithStyles(ForwardRef(Typography))>
-</ForwardRef(ClickAwayListener)>
+</ClickAwayListener>
 `;
 
 exports[`DocumentTitlePager component Should render the unfocused state without crashing 1`] = `
-<ForwardRef(ClickAwayListener)
+<ClickAwayListener
   onClickAway={[Function]}
 >
   <WithStyles(ForwardRef(Typography))
@@ -107,5 +107,5 @@ exports[`DocumentTitlePager component Should render the unfocused state without 
       -1
     </div>
   </WithStyles(ForwardRef(Typography))>
-</ForwardRef(ClickAwayListener)>
+</ClickAwayListener>
 `;
