@@ -14,7 +14,6 @@ const useStyles = makeStyles(() => {
       display: 'flex',
       flexDirection: 'column',
       overflow: 'hidden',
-      padding: '.3em 0',
     },
   })
 })
