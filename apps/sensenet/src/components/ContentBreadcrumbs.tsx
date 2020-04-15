@@ -14,7 +14,7 @@ import { ActionNameType } from './react-control-mapper'
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     batchActionWrapper: {
-      marginRight: '140px',
+      marginRight: '125px',
       ' & .MuiIconButton-root': {
         color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
       },
