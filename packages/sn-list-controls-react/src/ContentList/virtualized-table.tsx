@@ -207,6 +207,7 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = (props) => {
             }
             checked={props.selected && props.selected.length === props.items.length ? true : false}
             onChange={handleSelectAllClick}
+            {...props.checkboxProps}
           />
         </TableCell>
       )

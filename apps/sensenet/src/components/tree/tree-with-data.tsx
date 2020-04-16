@@ -3,6 +3,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
 import { Created } from '@sensenet/repository-events'
 import React, { useCallback, useEffect, useState } from 'react'
+import Semaphore from 'semaphore-async-await'
 import { useSelectionService } from '../../hooks'
 import { FullScreenLoader } from '../full-screen-loader'
 import { ActionNameType } from '../react-control-mapper'
@@ -27,6 +28,7 @@ const walkTree = (node: ItemType, callBack: (node: ItemType) => void) => {
     })
   }
 }
+const lock = new Semaphore(1)
 
 export default function TreeWithData(props: TreeWithDataProps) {
   const repo = useRepository()
@@ -152,7 +154,8 @@ export default function TreeWithData(props: TreeWithDataProps) {
       eventHub.onContentCopied.subscribe(handleCreate),
       eventHub.onContentMoved.subscribe(handleCreate),
       eventHub.onContentModified.subscribe(handleCreate),
-      eventHub.onContentDeleted.subscribe((d) => {
+      eventHub.onContentDeleted.subscribe(async (d) => {
+        await lock.acquire()
         walkTree(treeData!, (node) => {
           if (node.Id === d.contentData.Id && treeData?.children?.length) {
             treeData.children = treeData.children.filter((n) => n.Id !== d.contentData.Id)
@@ -165,6 +168,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
           }
         })
         setTreeData({ ...treeData! })
+        lock.release()
       }),
     ]
 

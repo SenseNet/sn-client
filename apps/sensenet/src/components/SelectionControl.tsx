@@ -15,7 +15,12 @@ export const SelectionControl: React.FunctionComponent<SelectionControlProps> = 
   onChangeCallback,
 }) => (
   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 40, height: 40 }}>
-    <Checkbox checked={isSelected} style={{ display: isSelected ? undefined : 'none' }} onChange={onChangeCallback} />
+    <Checkbox
+      checked={isSelected}
+      style={{ display: isSelected ? undefined : 'none' }}
+      onChange={onChangeCallback}
+      color="default"
+    />
     <Icon item={content} style={{ display: isSelected ? 'none' : undefined }} />
   </div>
 )
