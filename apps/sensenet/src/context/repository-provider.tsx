@@ -1,7 +1,7 @@
 import { AuthenticationProvider, useOidcAuthentication, UserManagerSettings } from '@sensenet/authentication-oidc-react'
 import { Repository } from '@sensenet/client-core'
 import { RepositoryContext, useLogger } from '@sensenet/hooks-react'
-import React, { lazy, ReactNode, Suspense, useEffect, useState } from 'react'
+import React, { lazy, ReactNode, Suspense, useEffect, useMemo, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { FullScreenLoader } from '../components/full-screen-loader'
 import { NotificationComponent } from '../components/NotificationComponent'
@@ -37,6 +37,7 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
         window.localStorage.setItem(authConfigKey, JSON.stringify(config))
       } catch (error) {
         logger.warning({ data: error, message: `Couldn't connect to ${repoUrl}` })
+        window.localStorage.removeItem(authConfigKey)
       }
     }
     getConfig()
@@ -65,19 +66,21 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
 
 const RepoProvider = ({ children, repoUrl }: { children: ReactNode; repoUrl: string }) => {
   const { oidcUser, login } = useOidcAuthentication()
+  const repo = useMemo(() => {
+    if (oidcUser) {
+      return new Repository({ repositoryUrl: repoUrl, token: oidcUser.access_token })
+    }
+  }, [oidcUser, repoUrl])
 
-  if (!oidcUser) {
+  if (!oidcUser || oidcUser.expired) {
     return (
-      <Suspense fallback={<FullScreenLoader />}>
+      <Suspense fallback={<FullScreenLoader loaderText="" />}>
         <LoginPage url={repoUrl} isLoginDisabled={false} handleSubmit={login} />
         <NotificationComponent />
       </Suspense>
     )
   }
 
-  return (
-    <RepositoryContext.Provider value={new Repository({ repositoryUrl: repoUrl, token: oidcUser.access_token })}>
-      {children}
-    </RepositoryContext.Provider>
-  )
+  // we will have a repository once we have oidcUser
+  return <RepositoryContext.Provider value={repo!}>{children}</RepositoryContext.Provider>
 }

@@ -303,34 +303,6 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                 },
               },
             },
-            repository: {
-              type: 'object',
-              required: ['url'],
-              properties: {
-                url: {
-                  type: 'string',
-                  description: language.personalSettings.repositoryUrl,
-                },
-                loginName: {
-                  type: 'string',
-                  description: language.personalSettings.repositoryLoginName,
-                },
-                displayName: {
-                  type: 'string',
-                  description: language.personalSettings.repositoryDisplayName,
-                },
-                dashboard: {
-                  type: 'array',
-                  description: 'The customized Dashboard for the Repository',
-                  items: { $ref: '#definitions/dashboardSection' },
-                },
-              },
-            },
-            repositories: {
-              type: 'array',
-              description: language.personalSettings.repositoryTitle,
-              items: { $ref: '#/definitions/repository' },
-            },
             commandPalette: {
               type: 'object',
               description: language.personalSettings.commandPaletteTitle,
@@ -391,11 +363,9 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
             mobile: { $ref: '#/definitions/settings' },
             tablet: { $ref: '#/definitions/settings' },
             desktop: { $ref: '#/definitions/settings' },
-            repositories: { $ref: '#/definitions/repositories' },
             dashboards: {
               $ref: '#/definitions/dashboards',
             },
-            lastRepository: { type: 'string', description: language.personalSettings.lastRepository },
             eventLogSize: { type: 'number', description: language.personalSettings.eventLogSize },
             logLevel: {
               type: 'array',

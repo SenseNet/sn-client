@@ -36,14 +36,13 @@ export const Content = () => {
   useEffect(() => {
     try {
       const data = decodeBrowseData(match.params.browseData)
-      setBrowseData({
-        ...browseData,
-        ...data,
+      setBrowseData((previousData) => {
+        return { ...previousData, ...data }
       })
     } catch (error) {
       logger.warning({ message: 'Wrong link :(' })
     }
-  }, [browseData, logger, match.params.browseData])
+  }, [logger, match.params.browseData])
 
   const refreshUrl = useCallback(
     (data: BrowseData) => {
