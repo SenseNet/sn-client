@@ -47,8 +47,8 @@ export function LogoutDialog() {
             color="primary"
             variant="contained"
             onClick={() => {
-              logout()
               window.localStorage.removeItem(authConfigKey)
+              logout()
             }}
             autoFocus={true}>
             {localization.logoutButtonTitle}
