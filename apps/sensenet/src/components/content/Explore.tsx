@@ -10,7 +10,7 @@ import {
 } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { useContext, useState } from 'react'
-import { ResponsivePersonalSetttings } from '../../context'
+import { ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
 import { ContentList } from '../content-list/content-list'
@@ -62,7 +62,7 @@ export interface ExploreComponentProps {
 
 export const Explore: React.FunctionComponent<ExploreComponentProps> = (props) => {
   const selectionService = useSelectionService()
-  const personalSettings = useContext(ResponsivePersonalSetttings)
+  const personalSettings = useContext(ResponsivePersonalSettings)
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const [isFormOpened, setIsFormOpened] = useState(false)

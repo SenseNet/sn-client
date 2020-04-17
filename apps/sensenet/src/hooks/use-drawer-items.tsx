@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { encodeBrowseData } from '../components/content'
 import { Icon } from '../components/Icon'
 import { encodeQueryData } from '../components/search'
-import { ResponsivePersonalSetttings } from '../context'
+import { ResponsivePersonalSettings } from '../context'
 import DefaultLocalization from '../localization/default'
 import {
   BuiltinDrawerItem,
@@ -28,7 +28,7 @@ export interface DrawerItem {
 type EveryDrawerType = ContentDrawerItem | QueryDrawerItem | BuiltinDrawerItem | DashboardDrawerItem
 
 export const useDrawerItems = () => {
-  const settings = useContext(ResponsivePersonalSetttings)
+  const settings = useContext(ResponsivePersonalSettings)
   const localization = useLocalization().drawer
   const repo = useRepository()
   const logger = useLogger('use-drawer-items')

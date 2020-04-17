@@ -17,7 +17,7 @@ import {
 import clsx from 'clsx'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { generatePath, useHistory, useRouteMatch } from 'react-router'
-import { ResponsivePersonalSetttings } from '../../context'
+import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useSelectionService } from '../../hooks'
 import { ContentContextService } from '../../services'
@@ -63,7 +63,7 @@ export const Search = () => {
   const [result, setResult] = useState<GenericContent[]>([])
   const [error, setError] = useState('')
   const loadSettingsContext = useContext(LoadSettingsContext)
-  const personalSettings = useContext(ResponsivePersonalSetttings)
+  const personalSettings = useContext(ResponsivePersonalSettings)
 
   const requestReload = useCallback(
     debounce((qd: QueryData, term: string) => {

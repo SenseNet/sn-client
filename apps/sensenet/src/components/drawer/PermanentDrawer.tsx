@@ -10,7 +10,7 @@ import { useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { useContext, useState } from 'react'
 import { matchPath, NavLink, useLocation } from 'react-router-dom'
-import { ResponsivePersonalSetttings } from '../../context'
+import { ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
@@ -88,7 +88,7 @@ export const PermanentDrawer = () => {
   const personalSettings = usePersonalSettings()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
-  const settings = useContext(ResponsivePersonalSetttings)
+  const settings = useContext(ResponsivePersonalSettings)
   const theme = useTheme()
   const repo = useRepository()
   const [currentPath, setCurrentPath] = useState('')

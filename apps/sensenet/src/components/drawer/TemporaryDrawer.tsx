@@ -13,7 +13,7 @@ import Settings from '@material-ui/icons/Settings'
 import { useRepository, useSession } from '@sensenet/hooks-react'
 import React, { useContext } from 'react'
 import { Link, matchPath, NavLink, useLocation } from 'react-router-dom'
-import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
+import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { useDrawerItems, useLocalization, useTheme } from '../../hooks'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
@@ -25,7 +25,7 @@ type TemporaryDrawerProps = {
 }
 
 export const TemporaryDrawer = (props: TemporaryDrawerProps) => {
-  const settings = useContext(ResponsivePersonalSetttings)
+  const settings = useContext(ResponsivePersonalSettings)
   const device = useContext(ResponsiveContext)
   const repo = useRepository()
   const location = useLocation()

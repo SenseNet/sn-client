@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@sensenet/client-utils'
 import { Repository } from '@sensenet/client-core'
-import { CommandPaletteItem } from '../hooks'
 import { ResponsivePlatforms } from '../context'
+import { CommandPaletteItem } from '../components/command-palette/CommandPalette'
 
 export interface CommandProvider {
   shouldExec: (options: SearchOptions) => boolean

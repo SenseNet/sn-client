@@ -4,7 +4,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
-import { ResponsivePersonalSetttings } from '../../context'
+import { ResponsivePersonalSettings } from '../../context'
 import { ContentContextService } from '../../services'
 import Commander from './Commander'
 import { Explore } from './Explore'
@@ -27,7 +27,7 @@ export const Content = () => {
   const repo = useRepository()
   const match = useRouteMatch<{ browseData: string }>()
   const history = useHistory()
-  const settings = useContext(ResponsivePersonalSetttings)
+  const settings = useContext(ResponsivePersonalSettings)
   const logger = useLogger('Browse view')
   const [browseData, setBrowseData] = useState<BrowseData>({
     type: settings.content.browseType,

@@ -12,7 +12,7 @@ import {
 import { VirtualCellProps, VirtualDefaultCell, VirtualizedTable } from '@sensenet/list-controls-react'
 import clsx from 'clsx'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
+import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
@@ -88,7 +88,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
   const children = useContext(CurrentChildrenContext)
   const ancestors = useContext(CurrentAncestorsContext)
   const device = useContext(ResponsiveContext)
-  const personalSettings = useContext(ResponsivePersonalSetttings)
+  const personalSettings = useContext(ResponsivePersonalSettings)
   const loadSettings = useContext(LoadSettingsContext)
   const repo = useRepository()
   const classes = useStyles()
