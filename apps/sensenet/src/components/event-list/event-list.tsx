@@ -1,10 +1,9 @@
-import { LeveledLogEntry } from '@sensenet/client-utils'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import KeyboardBackspace from '@material-ui/icons/KeyboardBackspace'
+import { LeveledLogEntry } from '@sensenet/client-utils'
 import React, { useEffect, useState } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router'
-import { Link } from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
 import { useEventService, useLocalization, useTheme } from '../../hooks'
 import { Icon } from '../Icon'
 import { EventDetails } from './details'
@@ -12,14 +11,15 @@ import { Filter } from './filter'
 import { FilterContextProvider } from './filter-context'
 import { List } from './list'
 
-const EventList: React.FunctionComponent<RouteComponentProps<{ eventGuid?: string }>> = (props) => {
+export default function EventList() {
+  const match = useRouteMatch<{ eventGuid?: string }>()
   const theme = useTheme()
   const eventService = useEventService()
   const localization = useLocalization().eventList.details
   let currentEvent: LeveledLogEntry<any> | undefined
 
-  if (props.match.params.eventGuid) {
-    currentEvent = eventService.values.getValue().find((ev) => ev.data.guid === props.match.params.eventGuid)
+  if (match.params.eventGuid) {
+    currentEvent = eventService.values.getValue().find((ev) => ev.data.guid === match.params.eventGuid)
   }
 
   const [events, setEvents] = useState<Array<LeveledLogEntry<any>>>(eventService.values.getValue())
@@ -59,5 +59,3 @@ const EventList: React.FunctionComponent<RouteComponentProps<{ eventGuid?: strin
     </FilterContextProvider>
   )
 }
-
-export default withRouter(EventList)

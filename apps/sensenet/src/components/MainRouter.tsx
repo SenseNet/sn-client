@@ -21,7 +21,7 @@ const BrowseProperties = lazy(() => import(/* webpackChunkName: "browsePropertie
 const NewProperties = lazy(() => import(/* webpackChunkName: "newProperties" */ './new/new-properties'))
 const DocumentViewerComponent = lazy(() => import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 const TrashComponent = lazy(() => import(/* webpackChunkName: "Trash" */ './trash/Trash'))
-const EventListComponent = lazy(() => import(/* webpackChunkName: "EventList" */ './event-list'))
+const EventListComponent = lazy(() => import(/* webpackChunkName: "EventList" */ './event-list/event-list'))
 const PersonalSettingsEditor = lazy(() =>
   import(/* webpackChunkName: "PersonalSettingsEditor" */ './edit/PersonalSettingsEditor'),
 )

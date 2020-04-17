@@ -1,3 +1,5 @@
+import { Button, createStyles, makeStyles } from '@material-ui/core'
+import { Close } from '@material-ui/icons'
 import {
   DocumentTitlePager,
   DocumentViewer,
@@ -9,14 +11,12 @@ import {
   ZoomInOutWidget,
   ZoomModeWidget,
 } from '@sensenet/document-viewer-react'
-import React, { useCallback, useEffect } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router'
-import { Close } from '@material-ui/icons'
-import { Button, createStyles, makeStyles } from '@material-ui/core'
-import { CurrentContentProvider } from '@sensenet/hooks-react'
+import { CurrentContentProvider, useLogger } from '@sensenet/hooks-react'
 import clsx from 'clsx'
-import { useLocalization, useSelectionService, useTheme } from '../hooks'
+import React, { useCallback, useEffect } from 'react'
+import { useHistory, useRouteMatch } from 'react-router-dom'
 import { useGlobalStyles } from '../globalStyles'
+import { useLocalization, useSelectionService, useTheme } from '../hooks'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -30,18 +30,17 @@ const useStyles = makeStyles(() => {
   })
 })
 
-const DocViewer: React.FunctionComponent<
-  RouteComponentProps<{ documentId: string }> & {
-    previousLocation?: string
-  }
-> = (props) => {
-  const documentId = parseInt(props.match.params.documentId, 10)
+export default function DocViewer(props: { previousLocation?: string }) {
+  const match = useRouteMatch<{ documentId: string }>()
+  const history = useHistory()
+  const documentId = parseInt(match.params.documentId, 10)
+  const logger = useLogger('DocViewer')
   const selectionService = useSelectionService()
   const localization = useLocalization()
   const theme = useTheme()
   const closeViewer = useCallback(() => {
-    props.previousLocation ? props.history.push(props.previousLocation) : props.history.goBack()
-  }, [props.history, props.previousLocation])
+    props.previousLocation ? history.push(props.previousLocation) : history.goBack()
+  }, [history, props.previousLocation])
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
 
@@ -60,7 +59,8 @@ const DocViewer: React.FunctionComponent<
   }, [closeViewer, props])
 
   if (isNaN(documentId)) {
-    throw Error(`Invalid document Id: ${documentId}`)
+    logger.error({ message: `Invalid document Id: ${documentId}` })
+    return null
   }
 
   return (
@@ -91,7 +91,3 @@ const DocViewer: React.FunctionComponent<
     </div>
   )
 }
-
-const extendedComponent = withRouter(DocViewer)
-
-export default extendedComponent

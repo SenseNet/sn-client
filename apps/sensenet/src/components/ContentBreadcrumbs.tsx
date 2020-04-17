@@ -8,7 +8,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useLocalization, useSelectionService } from '../hooks'
 import { ContentContextService } from '../services'
-import Breadcrumbs, { BreadcrumbItem } from './Breadcrumbs'
+import { BreadcrumbItem, Breadcrumbs } from './Breadcrumbs'
 import { useDialog } from './dialogs'
 import { ActionNameType } from './react-control-mapper'
 

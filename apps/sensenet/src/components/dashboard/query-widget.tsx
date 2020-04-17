@@ -11,15 +11,16 @@ import {
   useRepository,
 } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router'
+import { useHistory } from 'react-router-dom'
 import { useLocalization, useSelectionService, useStringReplace } from '../../hooks'
 import { ContentContextService } from '../../services'
 import { QueryWidget as QueryWidgetModel } from '../../services/PersonalSettings'
 import { ContentList, isReferenceField } from '../content-list'
 import { encodeQueryData } from '../search'
 
-const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & RouteComponentProps> = (props) => {
+export const QueryWidget = (props: QueryWidgetModel<GenericContent>) => {
   const [items, setItems] = useState<GenericContent[]>([])
+  const history = useHistory()
   const [loadChildrenSettings, setLoadChildrenSettings] = useState<ODataParams<GenericContent>>({})
   const [error, setError] = useState('')
   const [refreshToken, setRefreshToken] = useState(Math.random())
@@ -94,7 +95,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
             <IconButton
               style={{ padding: '0', margin: '0 0 0 1em' }}
               onClick={() =>
-                props.history.push(
+                history.push(
                   `/${btoa(repo.configuration.repositoryUrl)}/search/${encodeQueryData({
                     term: props.settings.query,
                   })}`,
@@ -148,7 +149,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
                     // props.history.push(contentRouter.getPrimaryActionUrl(p))
                   }}
                   onActivateItem={(p) => {
-                    props.history.push(contentContextService.getPrimaryActionUrl(p))
+                    history.push(contentContextService.getPrimaryActionUrl(p))
                   }}
                   onTabRequest={() => {
                     /** */
@@ -180,6 +181,3 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
     </div>
   )
 }
-
-const routed = withRouter(QueryWidget)
-export { routed as QueryWidget }
