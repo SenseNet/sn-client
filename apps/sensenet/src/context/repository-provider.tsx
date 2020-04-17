@@ -1,7 +1,7 @@
 import { AuthenticationProvider, useOidcAuthentication, UserManagerSettings } from '@sensenet/authentication-oidc-react'
 import { Repository } from '@sensenet/client-core'
 import { RepositoryContext, useLogger } from '@sensenet/hooks-react'
-import React, { lazy, ReactNode, Suspense, useEffect, useMemo, useState } from 'react'
+import React, { lazy, ReactNode, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { CssBaseline } from '@material-ui/core'
 import { FullScreenLoader } from '../components/full-screen-loader'
@@ -31,26 +31,27 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
     }
   }, [])
 
-  useEffect(() => {
-    async function getConfig() {
-      if (!repoUrl) {
-        setIsLoginInProgress(false)
-        return
-      }
-      try {
-        setIsLoginInProgress(true)
-        const config = await getAuthConfig(repoUrl)
-        setAuthConfig(config)
-        window.localStorage.setItem(authConfigKey, JSON.stringify(config))
-      } catch (error) {
-        logger.warning({ data: error, message: `Couldn't connect to ${repoUrl}` })
-        window.localStorage.removeItem(authConfigKey)
-      } finally {
-        setIsLoginInProgress(false)
-      }
+  const getConfig = useCallback(async () => {
+    if (!repoUrl) {
+      setIsLoginInProgress(false)
+      return
     }
-    getConfig()
+    try {
+      setIsLoginInProgress(true)
+      const config = await getAuthConfig(repoUrl)
+      setAuthConfig(config)
+      window.localStorage.setItem(authConfigKey, JSON.stringify(config))
+    } catch (error) {
+      logger.warning({ data: error, message: `Couldn't connect to ${repoUrl}` })
+      window.localStorage.removeItem(authConfigKey)
+    } finally {
+      setIsLoginInProgress(false)
+    }
   }, [logger, repoUrl])
+
+  useEffect(() => {
+    getConfig()
+  }, [getConfig])
 
   if (!authConfig || !repoUrl) {
     return (
@@ -61,6 +62,7 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
             isLoginInProgress={isLoginInProgress}
             handleSubmit={(url) => {
               setRepoUrl(url)
+              getConfig()
             }}
           />
           <NotificationComponent />
