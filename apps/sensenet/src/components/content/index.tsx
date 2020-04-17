@@ -1,11 +1,11 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { RouteComponentProps } from 'react-router'
-import { GenericContent } from '@sensenet/default-content-types'
 import { ConstantContent } from '@sensenet/client-core'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { tuple } from '@sensenet/client-utils'
+import { GenericContent } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { useHistory, useRouteMatch } from 'react-router-dom'
 import { ResponsivePersonalSetttings } from '../../context'
-import { useContentRouting } from '../../hooks'
+import { ContentContextService } from '../../services'
 import Commander from './Commander'
 import { Explore } from './Explore'
 import { SimpleList } from './Simple'
@@ -23,35 +23,32 @@ export interface BrowseData {
 export const encodeBrowseData = (data: BrowseData) => encodeURIComponent(btoa(JSON.stringify(data)))
 export const decodeBrowseData = (encoded: string) => JSON.parse(atob(decodeURIComponent(encoded))) as BrowseData
 
-export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: string }>> = (props) => {
+export const Content = () => {
   const repo = useRepository()
+  const match = useRouteMatch<{ browseData: string }>()
+  const history = useHistory()
   const settings = useContext(ResponsivePersonalSetttings)
   const logger = useLogger('Browse view')
-
   const [browseData, setBrowseData] = useState<BrowseData>({
     type: settings.content.browseType,
   })
-  const contentRouter = useContentRouting()
 
   useEffect(() => {
     try {
-      const data = decodeBrowseData(props.match.params.browseData)
-
-      setBrowseData({
-        ...browseData,
-        ...data,
+      const data = decodeBrowseData(match.params.browseData)
+      setBrowseData((previousData) => {
+        return { ...previousData, ...data }
       })
     } catch (error) {
       logger.warning({ message: 'Wrong link :(' })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [logger, props.match.params.browseData])
+  }, [logger, match.params.browseData])
 
   const refreshUrl = useCallback(
     (data: BrowseData) => {
-      props.history.push(`/${btoa(repo.configuration.repositoryUrl)}/browse/${encodeBrowseData(data)}`)
+      history.push(`/${btoa(repo.configuration.repositoryUrl)}/browse/${encodeBrowseData(data)}`)
     },
-    [props.history, repo.configuration.repositoryUrl],
+    [history, repo.configuration.repositoryUrl],
   )
 
   const navigate = useCallback(
@@ -80,9 +77,9 @@ export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: 
 
   const openItem = useCallback(
     (itm: GenericContent) => {
-      props.history.push(contentRouter.getPrimaryActionUrl(itm))
+      history.push(new ContentContextService(repo).getPrimaryActionUrl(itm))
     },
-    [contentRouter, props.history],
+    [history, repo],
   )
 
   return (

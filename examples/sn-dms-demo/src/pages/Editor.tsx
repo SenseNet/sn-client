@@ -1,4 +1,3 @@
-import { LoginState } from '@sensenet/client-core'
 import React from 'react'
 import { connect } from 'react-redux'
 import { Route, RouteComponentProps, Switch } from 'react-router-dom'
@@ -66,10 +65,6 @@ class DashboardComponent extends React.Component<
     }
   }
   public render() {
-    if (this.props.loginState !== LoginState.Unauthenticated && this.props.loggedinUser.userName === 'Visitor') {
-      return null
-    }
-
     return (
       <div>
         <Switch>

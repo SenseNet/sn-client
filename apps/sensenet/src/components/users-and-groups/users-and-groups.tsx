@@ -1,15 +1,18 @@
+import { useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React from 'react'
 import { useHistory } from 'react-router'
 import { useGlobalStyles } from '../../globalStyles'
-import { useContentRouting, useLocalization } from '../../hooks'
+import { useLocalization } from '../../hooks'
+import { ContentContextService } from '../../services'
 import { SimpleList } from '../content/Simple'
 
 export default function UsersAndGroups() {
   const globalClasses = useGlobalStyles()
   const localizationDrawerTitles = useLocalization().drawer.titles
   const history = useHistory()
-  const contentRouter = useContentRouting()
+  const repository = useRepository()
+  const contentRouter = new ContentContextService(repository)
 
   return (
     <div className={globalClasses.contentWrapper}>

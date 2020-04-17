@@ -1,4 +1,4 @@
-import { FormsAuthenticationService, Repository } from '@sensenet/client-core'
+import { Repository } from '@sensenet/client-core'
 import { Injector } from '@sensenet/client-utils'
 import { EventHub } from '@sensenet/repository-events'
 import { customSchema } from './assets/schema'
@@ -20,13 +20,9 @@ export const repository = new Repository({
   ],
   defaultExpand: ['Actions', 'Owner', 'CheckedOutTo'],
   schemas: customSchema,
-  sessionLifetime: 'expiration',
 })
 
 export const dmsInjector = new Injector()
-
-const formsAuthService = FormsAuthenticationService.Setup(repository)
-dmsInjector.setExplicitInstance(formsAuthService)
 const repositoryEvents = new EventHub(repository)
 
 dmsInjector.setExplicitInstance(repository)

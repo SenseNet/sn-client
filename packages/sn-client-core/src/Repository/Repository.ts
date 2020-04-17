@@ -5,6 +5,7 @@ import { BypassAuthentication } from '../Authentication/BypassAuthentication'
 import { Content } from '../Models/Content'
 import { ODataBatchResponse } from '../Models/ODataBatchResponse'
 import { ODataCollectionResponse } from '../Models/ODataCollectionResponse'
+import { ODataParams } from '../Models/ODataParams'
 import { ODataResponse } from '../Models/ODataResponse'
 import { ODataWopiResponse } from '../Models/ODataWopiResponse'
 import {
@@ -21,11 +22,14 @@ import {
   SharingOptions,
 } from '../Models/RequestOptions'
 import { SchemaStore } from '../Schemas/SchemaStore'
-import { ODataParams } from '../Models/ODataParams'
-import { ODataSharingResponse } from '../Models/ODataSharingResponse'
+import { ODataSharingResponse } from '../Models'
 import { ConstantContent } from './ConstantContent'
 import { ODataUrlBuilder } from './ODataUrlBuilder'
-import { RepositoryConfiguration } from './RepositoryConfiguration'
+import {
+  defaultRepositoryConfiguration,
+  RepositoryConfiguration,
+  RepositoryConfigurationWithDefaults,
+} from './RepositoryConfiguration'
 import { Security } from './Security'
 import { Upload } from './Upload'
 import { Versioning } from './Versioning'
@@ -69,7 +73,7 @@ export class Repository implements Disposable {
   /**
    * The configuration for the Repository object
    */
-  public readonly configuration: RepositoryConfiguration
+  public readonly configuration: RepositoryConfigurationWithDefaults
 
   /**
    * Async method that will be resolved when the Repository is ready to make HTTP calls
@@ -83,16 +87,15 @@ export class Repository implements Disposable {
    * @param {RequestInfo} input The RequestInfo object
    * @param {RequestInit} init Optional init parameters
    */
-  public async fetch(info: RequestInfo, init?: RequestInit, awaitReadyState = true): Promise<Response> {
+  public async fetch(input: RequestInfo, init?: RequestInit, awaitReadyState = true): Promise<Response> {
     if (awaitReadyState) {
       await this.awaitReadyState()
     }
-    return await this.fetchMethod(
-      info,
-      init || {
-        credentials: 'include',
-      },
-    )
+    const request = new Request(input, init)
+    if (this.configuration.token) {
+      request.headers.append('Authorization', `Bearer ${this.configuration.token}`)
+    }
+    return await this.fetchMethod(request)
   }
 
   /**
@@ -527,11 +530,11 @@ export class Repository implements Disposable {
   }
 
   constructor(
-    config?: Partial<RepositoryConfiguration>,
+    config?: RepositoryConfiguration,
     private fetchMethod: GlobalFetch['fetch'] = window && window.fetch && window.fetch.bind(window),
     public schemas: SchemaStore = new SchemaStore(),
   ) {
-    this.configuration = new RepositoryConfiguration(config)
+    this.configuration = { ...defaultRepositoryConfiguration, ...config }
     this.schemas.setSchemas(this.configuration.schemas)
   }
 }

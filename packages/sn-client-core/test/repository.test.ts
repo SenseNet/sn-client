@@ -64,6 +64,15 @@ describe('Repository', () => {
       }) as any
       repository.fetch('', undefined, false)
     })
+
+    it('should add authorization header when token is passed', async () => {
+      const token = 'someToken'
+      const myRepository = new Repository({ token }, (input) => {
+        expect((input as Request).headers.get('Authorization')).toBe(`Bearer ${token}`)
+        return Promise.resolve(mockResponse)
+      })
+      await myRepository.fetch('/load')
+    })
   })
 
   describe('Content operations', () => {
@@ -99,8 +108,8 @@ describe('Repository', () => {
     describe('count', () => {
       it('should construct the url to contain /$count', async () => {
         const countRepository = new Repository(undefined, (input) => {
-          const url = input.toString()
-          expect(url).toMatch(/http:\/\/localhost\/odata.svc\/Root\/Content\/\$count/g)
+          const url = (input as any).path
+          expect(url).toMatch(/\/odata.svc\/Root\/Content\/\$count/g)
           return Promise.resolve({ ok: true, json: () => 42 }) as any
         })
         await countRepository.count({ path: '/Root/Content' })
@@ -537,7 +546,6 @@ describe('Repository', () => {
       repository = new Repository({
         repositoryUrl: 'https://my-sensenet-site.com',
         oDataToken: 'OData.svc',
-        sessionLifetime: 'expiration',
         defaultSelect: ['DisplayName', 'Icon'],
         requiredSelect: ['Id', 'Type', 'Path', 'Name'],
         defaultMetadata: 'no',

@@ -30,7 +30,6 @@ import { Repository } from '@sensenet/client-core'
 const repository = new Repository({
   repositoryUrl: 'https://my-sensenet-site.com',
   oDataToken: 'OData.svc',
-  sessionLifetime: 'expiration',
   defaultSelect: ['DisplayName', 'Icon'],
   requiredSelect: ['Id', 'Type', 'Path', 'Name'],
   defaultMetadata: 'no',
@@ -41,9 +40,9 @@ const repository = new Repository({
 ```
 
 - **repositoryURL**: The component will communicate with your repositoy using the following url. This will fall back to your _window.location.href_, if not specified. To enable your external app to send request against your sensenet portal change your `Portal.settings`. For further information about cross-origin resource sharing in sensenet check [this](community.sensenet.com/docs/cors/)
-  article.
-- **oDataToken**: Check your Sense/Net portal's web.config and if the `ODataServiceToken` is set, you can configure it here for the client side.
-- **sessionLifetime** - You can change how user sessions should be persisted on the client, you can use _'session'_, whitch means the user will be logged out when closing a browser, or _'expiration'_, in that case the token expiration property will be used. This behaviour is implemented for JWT Authentication. (See [JWT Token docs](http://community.sensenet.com/docs/web-token-authentication/) for further details)
+  article
+- **oDataToken**: Check your Sense/Net portal's web.config and if the `ODataServiceToken` is set, you can configure it here for the client side
+- **token**: Access token to authorize access to data
 - **defaultSelect** - These fields will be selected by default on each OData request. Can be a field, an array of fields or 'all'
 - **requiredSelect** - These fields will always be included in the OData _\$select_ statement. Also can be a field, an array of fields or 'all'
 - **defaultMetadata** - Default _metadata_ value for OData requests. Can be 'full', 'minimal' or 'no'

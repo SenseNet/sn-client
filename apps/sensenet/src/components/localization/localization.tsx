@@ -1,15 +1,17 @@
-import React from 'react'
+import { useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
+import React from 'react'
 import { useHistory } from 'react-router'
-import { SimpleList } from '../content/Simple'
 import { useGlobalStyles } from '../../globalStyles'
-import { useContentRouting, useLocalization } from '../../hooks'
+import { useLocalization } from '../../hooks'
+import { ContentContextService } from '../../services'
+import { SimpleList } from '../content/Simple'
 
 export default function Localization() {
   const globalClasses = useGlobalStyles()
+  const repository = useRepository()
   const localizationDrawerTitles = useLocalization().drawer.titles
   const history = useHistory()
-  const contentRouter = useContentRouting()
 
   return (
     <div className={globalClasses.contentWrapper}>
@@ -23,7 +25,7 @@ export default function Localization() {
           enableBreadcrumbs: false,
           parentIdOrPath: '/Root/Localization',
           onActivateItem: (p) => {
-            history.push(contentRouter.getPrimaryActionUrl(p))
+            history.push(new ContentContextService(repository).getPrimaryActionUrl(p))
           },
         }}
       />
