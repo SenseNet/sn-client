@@ -1,18 +1,19 @@
+import { createStyles, makeStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
+import { Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { ActionModel, GenericContent, Settings, File as SnFile } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
+import clsx from 'clsx'
 import { Uri } from 'monaco-editor'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 import { Prompt, useHistory } from 'react-router'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { Repository } from '@sensenet/client-core'
-import clsx from 'clsx'
-import { createStyles, makeStyles } from '@material-ui/core'
 import { ResponsiveContext } from '../../context'
-import { useContentRouting, useLocalization, useTheme } from '../../hooks'
-import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { globals, useGlobalStyles } from '../../globalStyles'
+import { useLocalization, useTheme } from '../../hooks'
+import { ContentContextService } from '../../services/content-context-service'
+import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -56,12 +57,10 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
   const theme = useTheme()
   const platform = useContext(ResponsiveContext)
   const repo = useRepository()
-
-  const contentRouter = useContentRouting()
-
+  const contentContextService = useMemo(() => new ContentContextService(repo), [repo])
   const [textValue, setTextValue] = useState('')
   const [savedTextValue, setSavedTextValue] = useState('')
-  const [language, setLanguage] = useState(contentRouter.getMonacoLanguage(props.content))
+  const [language, setLanguage] = useState(contentContextService.getMonacoLanguage(props.content))
   const localization = useLocalization()
   const [uri, setUri] = useState<any>(getMonacoModelUri(props.content, repo))
   const [hasChanges, setHasChanges] = useState(false)
@@ -120,12 +119,12 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
 
   useEffect(() => {
     setUri(getMonacoModelUri(props.content, repo))
-    setLanguage(contentRouter.getMonacoLanguage(props.content))
-  }, [contentRouter, props.content, repo])
+    setLanguage(contentContextService.getMonacoLanguage(props.content))
+  }, [contentContextService, props.content, repo])
 
   useEffect(() => {
     setUri(getMonacoModelUri(props.content, repo))
-    setLanguage(contentRouter.getMonacoLanguage(props.content))
+    setLanguage(contentContextService.getMonacoLanguage(props.content))
     ;(async () => {
       try {
         if (props.loadContent) {
@@ -148,7 +147,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
         setError(err)
       }
     })()
-  }, [contentRouter, savedTextValue, props, repo])
+  }, [savedTextValue, props, repo, contentContextService])
 
   if (error) {
     logger.information({

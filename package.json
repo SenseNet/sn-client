@@ -28,6 +28,7 @@
     "eslint-plugin-react": "^7.19.0",
     "eslint-plugin-react-hooks": "^3.0.0",
     "husky": "^4.2.3",
+    "isomorphic-fetch": "^2.2.1",
     "jest-environment-jsdom-sixteen": "^1.0.3",
     "lerna": "^3.20.2",
     "lint-staged": "^10.1.2",

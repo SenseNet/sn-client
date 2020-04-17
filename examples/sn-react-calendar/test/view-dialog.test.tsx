@@ -16,10 +16,6 @@ describe('DialogComponent', () => {
     wrapper = shallow(<DialogComponent {...testprops} />)
   })
 
-  it('DialogComponent snapshot', () => {
-    expect(wrapper).toMatchSnapshot()
-  })
-
   it('Close dialog', () => {
     wrapper.find(Button).last().simulate('click')
     expect(testprops.onClose).toBeCalledWith(false)

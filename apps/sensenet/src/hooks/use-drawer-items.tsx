@@ -1,7 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
 import { Build, Dashboard, Delete, Language, People, Public, Search, Widgets } from '@material-ui/icons'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
+import React, { useContext, useEffect, useState } from 'react'
+import { encodeBrowseData } from '../components/content'
 import { Icon } from '../components/Icon'
+import { encodeQueryData } from '../components/search'
+import { ResponsivePersonalSetttings } from '../context'
+import DefaultLocalization from '../localization/default'
 import {
   BuiltinDrawerItem,
   ContentDrawerItem,
@@ -9,10 +13,6 @@ import {
   DrawerItem as DrawerItemSetting,
   QueryDrawerItem,
 } from '../services/PersonalSettings'
-import { ResponsivePersonalSetttings } from '../context'
-import { encodeBrowseData } from '../components/content'
-import { encodeQueryData } from '../components/search'
-import DefaultLocalization from '../localization/default'
 import { useLocalization } from '.'
 
 export interface DrawerItem {
@@ -36,13 +36,6 @@ export const useDrawerItems = () => {
   const [drawerItems, setDrawerItems] = useState<DrawerItem[]>([])
 
   useEffect(() => {
-    /**
-     * This can be removed once the routing is fixed.
-     * Right now when you visit '/' it will show the admin page and will try to put drawer items in it.
-     */
-    if (!repo.configuration.repositoryUrl) {
-      return
-    }
     const getItemNameFromSettings = (item: DrawerItemSetting<any>) => {
       return item.settings?.title || localization.titles[item.itemType] || '!NO TITLE!'
     }

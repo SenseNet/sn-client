@@ -1,15 +1,12 @@
+import { AppBar, Button, Toolbar, Typography } from '@material-ui/core'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
+import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
 import React from 'react'
-import { AppBar, Button, Toolbar, Tooltip, Typography } from '@material-ui/core'
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import { useRepository } from '@sensenet/hooks-react'
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
       flexGrow: 1,
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
     },
     title: {
       flexGrow: 1,
@@ -20,8 +17,9 @@ const useStyles = makeStyles((theme: Theme) =>
  * Navbar component
  */
 export const NavBarComponent: React.FunctionComponent = () => {
-  const repo = useRepository()
+  const { logout } = useOidcAuthentication()
   const classes = useStyles()
+
   return (
     <div className={classes.root}>
       <AppBar position="relative">
@@ -29,11 +27,9 @@ export const NavBarComponent: React.FunctionComponent = () => {
           <Typography variant="h6" className={classes.title}>
             Document Browser
           </Typography>
-          <Tooltip title="Return to the Login screen and select another repository">
-            <Button color="inherit" onClick={() => repo.authentication.logout()}>
-              Log out
-            </Button>
-          </Tooltip>
+          <Button color="inherit" onClick={logout}>
+            Log out
+          </Button>
         </Toolbar>
       </AppBar>
     </div>

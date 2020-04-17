@@ -95,7 +95,7 @@ describe('Document Viewer component', () => {
       await sleepAsync(10)
       expect(getDocumentData).lastCalledWith({
         abortController: expect.any(AbortController),
-        hostName: 'http://localhost',
+        hostName: '',
         idOrPath: 2,
         version: 'v2',
       }) // ensure that poll document is called with new props

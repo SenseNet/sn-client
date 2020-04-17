@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react'
 import { IconButton, Tooltip, Typography } from '@material-ui/core'
-import Refresh from '@material-ui/icons/RefreshTwoTone'
 import OpenInNewTwoTone from '@material-ui/icons/OpenInNewTwoTone'
-import { GenericContent } from '@sensenet/default-content-types'
+import Refresh from '@material-ui/icons/RefreshTwoTone'
 import { ConstantContent, ODataParams } from '@sensenet/client-core'
-import { RouteComponentProps, withRouter } from 'react-router'
+import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
@@ -12,11 +10,13 @@ import {
   LoadSettingsContext,
   useRepository,
 } from '@sensenet/hooks-react'
+import React, { useEffect, useState } from 'react'
+import { RouteComponentProps, withRouter } from 'react-router'
+import { useLocalization, useSelectionService, useStringReplace } from '../../hooks'
+import { ContentContextService } from '../../services'
 import { QueryWidget as QueryWidgetModel } from '../../services/PersonalSettings'
-import { useContentRouting, useLocalization, useSelectionService, useStringReplace } from '../../hooks'
-import { isReferenceField } from '../content-list'
+import { ContentList, isReferenceField } from '../content-list'
 import { encodeQueryData } from '../search'
-import { ContentList } from '../content-list/content-list'
 
 const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & RouteComponentProps> = (props) => {
   const [items, setItems] = useState<GenericContent[]>([])
@@ -25,7 +25,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
   const [refreshToken, setRefreshToken] = useState(Math.random())
   const [count, setCount] = useState(0)
   const repo = useRepository()
-  const contentRouter = useContentRouting()
+  const contentContextService = new ContentContextService(repo)
   const replacedTitle = useStringReplace(props.title)
   const localization = useLocalization().dashboard
   const selectionService = useSelectionService()
@@ -148,7 +148,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
                     // props.history.push(contentRouter.getPrimaryActionUrl(p))
                   }}
                   onActivateItem={(p) => {
-                    props.history.push(contentRouter.getPrimaryActionUrl(p))
+                    props.history.push(contentContextService.getPrimaryActionUrl(p))
                   }}
                   onTabRequest={() => {
                     /** */

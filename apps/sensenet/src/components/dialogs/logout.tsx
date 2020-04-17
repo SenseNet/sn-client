@@ -1,30 +1,18 @@
-import React, { useState } from 'react'
-import {
-  Button,
-  CircularProgress,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Typography,
-} from '@material-ui/core'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { User } from '@sensenet/default-content-types'
+import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core'
+import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
+import { useRepository } from '@sensenet/hooks-react'
+import React from 'react'
+import { authConfigKey, useCurrentUser } from '../../context'
+import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { Icon } from '../Icon'
-import { useGlobalStyles } from '../../globalStyles'
 import { useDialog } from './dialog-provider'
 
-export type LogoutDialogProps = {
-  userToLogout: User
-  onLoggedOut?: () => void
-}
-
-export function LogoutDialog({ userToLogout, onLoggedOut }: LogoutDialogProps) {
-  const [isLoggingOut, setIsLoggingOut] = useState(false)
+export function LogoutDialog() {
   const { closeLastDialog } = useDialog()
-  const logger = useLogger('LogoutComponent')
-  const repo = useRepository()
+  const currentUser = useCurrentUser()
+  const { logout } = useOidcAuthentication()
+  const repository = useRepository()
   const localization = useLocalization().logout
   const globalClasses = useGlobalStyles()
 
@@ -35,33 +23,22 @@ export function LogoutDialog({ userToLogout, onLoggedOut }: LogoutDialogProps) {
           <Icon
             style={{
               margin: '0 1em 0 0',
-              filter: isLoggingOut ? 'contrast(0)' : undefined,
-              opacity: isLoggingOut ? 0 : 1,
               transition: 'filter linear 1s, opacity linear 1.5s',
             }}
-            item={userToLogout}
+            item={currentUser}
           />
           {localization.logoutDialogTitle}
         </div>
       </DialogTitle>
-      <DialogContent>
-        {isLoggingOut ? (
-          <div className={globalClasses.centered} style={{ flexDirection: 'column' }}>
-            <CircularProgress size={64} />
-            <Typography style={{ marginTop: '2em', wordBreak: 'break-word' }}>
-              {localization.loggingOutFrom(repo.configuration.repositoryUrl)}
-            </Typography>
-          </div>
-        ) : (
+      <>
+        <DialogContent>
           <DialogContentText style={{ wordBreak: 'break-word' }}>
             {localization.logoutConfirmText(
-              repo.configuration.repositoryUrl,
-              userToLogout.DisplayName ?? userToLogout.Name,
+              repository.configuration.repositoryUrl,
+              currentUser?.DisplayName ?? currentUser?.Name ?? 'Visitor',
             )}
           </DialogContentText>
-        )}
-      </DialogContent>
-      {isLoggingOut ? null : (
+        </DialogContent>
         <DialogActions>
           <Button className={globalClasses.cancelButton} onClick={closeLastDialog}>
             {localization.logoutCancel}
@@ -69,25 +46,15 @@ export function LogoutDialog({ userToLogout, onLoggedOut }: LogoutDialogProps) {
           <Button
             color="primary"
             variant="contained"
-            onClick={async () => {
-              try {
-                setIsLoggingOut(true)
-                await repo.authentication.logout().then(() => {
-                  onLoggedOut?.()
-                })
-              } catch {
-                /** ignore logout response parsing error */
-              }
-              closeLastDialog()
-              logger.information({
-                message: localization.logoutSuccessNotification(repo.configuration.repositoryUrl),
-              })
+            onClick={() => {
+              window.localStorage.removeItem(authConfigKey)
+              logout()
             }}
             autoFocus={true}>
             {localization.logoutButtonTitle}
           </Button>
         </DialogActions>
-      )}
+      </>
     </>
   )
 }

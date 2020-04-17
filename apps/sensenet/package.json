@@ -60,8 +60,7 @@
   "dependencies": {
     "@material-ui/core": "^4.9.5",
     "@material-ui/icons": "^4.9.1",
-    "@sensenet/authentication-google": "^2.0.20",
-    "@sensenet/authentication-jwt": "^1.0.24",
+    "@sensenet/authentication-oidc-react": "^0.0.1",
     "@sensenet/client-core": "^2.4.1",
     "@sensenet/client-utils": "^1.8.1",
     "@sensenet/controls-react": "^3.3.6",
