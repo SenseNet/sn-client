@@ -42,7 +42,7 @@ function dialogRenderer(dialog: DialogWithProps) {
     case 'custom-action-result':
       return <CustomActionResult {...dialog.props} />
     case 'logout':
-      return <Logout {...dialog.props} />
+      return <Logout />
     case 'save-query':
       return <SaveQuery {...dialog.props} />
     default:

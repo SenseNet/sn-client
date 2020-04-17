@@ -3,8 +3,8 @@ import { Injectable, PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
-import { ContentContextProvider } from '../ContentContextProvider'
 import { CommandPaletteItem } from '../../hooks'
+import { ContentContextService } from '../content-context-service'
 
 @Injectable({ lifetime: 'singleton' })
 export class InFolderSearchCommandProvider implements CommandProvider {
@@ -15,7 +15,7 @@ export class InFolderSearchCommandProvider implements CommandProvider {
   public async getItems(options: SearchOptions): Promise<CommandPaletteItem[]> {
     const currentPath = PathHelper.trimSlashes(options.term)
     const segments = currentPath.split('/')
-    const ctx = new ContentContextProvider(options.repository)
+    const ctx = new ContentContextService(options.repository)
     const parentPath = PathHelper.trimSlashes(
       PathHelper.joinPaths(...segments.slice(0, segments.length - 1)) || currentPath,
     )

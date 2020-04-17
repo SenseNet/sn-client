@@ -1,8 +1,8 @@
-import { mount, shallow } from 'enzyme'
-import React from 'react'
 import { Repository } from '@sensenet/client-core'
-import { act } from 'react-dom/test-utils'
 import { RepositoryContext } from '@sensenet/hooks-react'
+import { mount } from 'enzyme'
+import React from 'react'
+import { act } from 'react-dom/test-utils'
 import EditPropertiesDialogBody from '../src/components/edit-dialog-body'
 import { SharedContext } from '../src/context/shared-context'
 import { MaterialDialogProps, mockContent } from './mocks/test-objects'
@@ -26,11 +26,6 @@ describe('EditPropertiesDialogBody', () => {
     setOpennewmodal: jest.fn(),
     setOpennoti: jest.fn(),
   }
-
-  it('EditPropertiesDialogBody snapshot', () => {
-    const l = shallow(<EditPropertiesDialogBody {...(testprops as any)} />)
-    expect(l).toMatchSnapshot()
-  })
 
   it('call onSubmit', async () => {
     const repo = new Repository()

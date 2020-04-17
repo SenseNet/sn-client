@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`The app layout instance should be rendered correctly 1`] = `
-<BrowserRouter>
+<Fragment>
   <WithStyles(CssBaseline) />
   <Component />
   <WithStyles(ForwardRef(Container))
@@ -48,5 +48,5 @@ exports[`The app layout instance should be rendered correctly 1`] = `
       </WithStyles(ForwardRef(Grid))>
     </WithStyles(ForwardRef(Grid))>
   </WithStyles(ForwardRef(Container))>
-</BrowserRouter>
+</Fragment>
 `;

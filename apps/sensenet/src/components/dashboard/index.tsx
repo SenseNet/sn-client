@@ -1,52 +1,42 @@
 import Paper from '@material-ui/core/Paper'
-import React, { useContext, useState } from 'react'
-import { Repository } from '@sensenet/client-core'
-import { RouteComponentProps } from 'react-router-dom'
-import { useTheme } from '@material-ui/core'
-import { useWidgets } from '../../hooks'
+import React, { useContext } from 'react'
+import { useRouteMatch } from 'react-router-dom'
 import { ResponsiveContext } from '../../context'
+import { usePersonalSettings, useTheme } from '../../hooks'
+import { WidgetSection } from '../../services'
 import { globals } from '../../globalStyles'
 import { ErrorWidget } from './error-widget'
-import { QueryWidget } from './query-widget'
 import { MarkdownWidget } from './markdown-widget'
+import { QueryWidget } from './query-widget'
 import { UpdatesWidget } from './updates-widget'
 
-export interface DashboardProps {
-  repository?: Repository
-}
-
-export const getWidgetComponent = (widget: ReturnType<typeof useWidgets>[0], repo?: Repository) => {
+export const getWidgetComponent = (widget: WidgetSection) => {
   switch (widget.widgetType) {
     case 'markdown':
       return <MarkdownWidget {...widget} />
     case 'query':
-      if (!repo) {
-        return <ErrorWidget {...widget} />
-      }
       return <QueryWidget {...widget} />
     case 'updates':
-      if (!repo) {
-        return <ErrorWidget {...widget} />
-      }
       return <UpdatesWidget {...widget} />
     default:
       return <ErrorWidget {...widget} />
   }
 }
+const defaultMinWidth = 250
 
-const Dashboard: React.FunctionComponent<DashboardProps & RouteComponentProps<{ dashboardName?: string }>> = ({
-  repository,
-  match,
-}) => {
-  const widgets = useWidgets(repository, match.params.dashboardName)
+const Dashboard = () => {
+  const match = useRouteMatch<{ dashboardName?: string }>()
+  const personalSettings = usePersonalSettings()
+  const widgets = match.params.dashboardName
+    ? personalSettings.dashboards[match.params.dashboardName]
+    : personalSettings.dashboards.repositoryDefault
   const platform = useContext(ResponsiveContext)
-  const [defaultMinWidth] = useState(250)
   const theme = useTheme()
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%', height: '100%', overflow: 'auto' }}>
       {widgets.map((widget, i) => {
-        const widgetComponent = getWidgetComponent(widget, repository)
+        const widgetComponent = getWidgetComponent(widget)
         const width = widget.minWidth
           ? widget.minWidth[platform] || widget.minWidth.default || defaultMinWidth
           : defaultMinWidth

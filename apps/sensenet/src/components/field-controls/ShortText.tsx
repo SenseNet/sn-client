@@ -8,7 +8,7 @@ import { ShortTextFieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
-const ShortTextInput = withStyles((theme: Theme) =>
+export const ShortTextInput = withStyles((theme: Theme) =>
   createStyles({
     root: {
       'label + &': {

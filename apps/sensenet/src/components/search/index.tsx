@@ -1,3 +1,4 @@
+import { createStyles, makeStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
@@ -5,8 +6,6 @@ import Save from '@material-ui/icons/Save'
 import { ConstantContent } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { generatePath, useHistory, useRouteMatch } from 'react-router'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
@@ -15,24 +14,15 @@ import {
   useLogger,
   useRepository,
 } from '@sensenet/hooks-react'
-import { createStyles, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { generatePath, useHistory, useRouteMatch } from 'react-router'
 import { ResponsivePersonalSetttings } from '../../context'
-import { useContentRouting, useLocalization, useSelectionService } from '../../hooks'
-import { isReferenceField } from '../content-list'
-import { useDialog } from '../dialogs'
-import { ContentList } from '../content-list/content-list'
 import { useGlobalStyles } from '../../globalStyles'
-
-const useStyles = makeStyles(() => {
-  return createStyles({
-    searchBar: {
-      display: 'flex',
-      width: '100%',
-      marginLeft: '1em',
-    },
-  })
-})
+import { useLocalization, useSelectionService } from '../../hooks'
+import { ContentContextService } from '../../services'
+import { ContentList, isReferenceField } from '../content-list'
+import { useDialog } from '../dialogs'
 
 const searchDebounceTime = 400
 export interface QueryData {
@@ -49,9 +39,18 @@ export const encodeQueryData = (data: QueryData) => encodeURIComponent(btoa(JSON
 export const decodeQueryData = (encoded?: string) =>
   encoded ? (JSON.parse(atob(decodeURIComponent(encoded))) as QueryData) : { term: '' }
 
+const useStyles = makeStyles(() => {
+  return createStyles({
+    searchBar: {
+      display: 'flex',
+      width: '100%',
+      marginLeft: '1em',
+    },
+  })
+})
+
 export const Search = () => {
   const repo = useRepository()
-  const contentRouter = useContentRouting()
   const match = useRouteMatch<{ queryData?: string }>()
   const history = useHistory()
   const { openDialog } = useDialog()
@@ -61,6 +60,11 @@ export const Search = () => {
   const localization = useLocalization().search
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
+  const [result, setResult] = useState<GenericContent[]>([])
+  const [error, setError] = useState('')
+  const loadSettingsContext = useContext(LoadSettingsContext)
+  const personalSettings = useContext(ResponsivePersonalSetttings)
+
   const requestReload = useCallback(
     debounce((qd: QueryData, term: string) => {
       setQueryData({ ...qd, term })
@@ -72,16 +76,10 @@ export const Search = () => {
     try {
       const data = decodeQueryData(match.params.queryData || '{}')
       setQueryData(data)
-    } catch (error) {
+    } catch {
       logger.warning({ message: 'Wrong link :(' })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [logger, match.params.queryData])
-
-  const [result, setResult] = useState<GenericContent[]>([])
-  const [error, setError] = useState('')
-  const loadSettingsContext = useContext(LoadSettingsContext)
-  const personalSettings = useContext(ResponsivePersonalSetttings)
 
   useEffect(() => {
     const ac = new AbortController()
@@ -172,10 +170,10 @@ export const Search = () => {
               fieldsToDisplay={queryData.fieldsToDisplay}
               parentIdOrPath={0}
               onParentChange={(p) => {
-                history.push(contentRouter.getPrimaryActionUrl(p))
+                history.push(new ContentContextService(repo).getPrimaryActionUrl(p))
               }}
               onActivateItem={(p) => {
-                history.push(contentRouter.getPrimaryActionUrl(p))
+                history.push(new ContentContextService(repo).getPrimaryActionUrl(p))
               }}
               onTabRequest={() => {
                 /** */
