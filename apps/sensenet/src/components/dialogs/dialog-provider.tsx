@@ -1,5 +1,5 @@
-import React, { createContext, useCallback, useContext, useReducer } from 'react'
 import { DialogProps } from '@material-ui/core/Dialog'
+import React, { createContext, useCallback, useContext, useReducer } from 'react'
 import { ErrorBoundary, ErrorBoundaryState } from '../error-boundary'
 import {
   ApproveProps,
@@ -10,7 +10,6 @@ import {
   DeleteContentDialogProps,
   ErrorReportProps,
   ExecuteActionDialogProps,
-  LogoutDialogProps,
   SaveQueryProps,
   UploadDialogProps,
   VersionsProps,
@@ -28,7 +27,7 @@ export type DialogWithProps = (
   | { name: 'upload'; props: UploadDialogProps }
   | { name: 'execute-action'; props: ExecuteActionDialogProps }
   | { name: 'custom-action-result'; props: CustomActionResultDialogProps }
-  | { name: 'logout'; props: LogoutDialogProps }
+  | { name: 'logout' }
   | { name: 'save-query'; props: SaveQueryProps }
 ) & { dialogProps?: DialogProps }
 

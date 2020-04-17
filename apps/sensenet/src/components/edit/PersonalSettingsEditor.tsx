@@ -1,21 +1,14 @@
-import { deepMerge } from '@sensenet/client-utils'
-import React, { useContext, useEffect, useState } from 'react'
 import { Button, createStyles, FormControlLabel, makeStyles, Switch, Typography, useTheme } from '@material-ui/core'
-import MonacoEditor from 'react-monaco-editor'
-import {
-  CurrentContentContext,
-  useInjector,
-  useLogger,
-  useRepository,
-  useRepositoryEvents,
-} from '@sensenet/hooks-react'
+import { deepMerge } from '@sensenet/client-utils'
+import { CurrentContentContext, useInjector, useLogger, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
+import React, { useContext, useEffect, useState } from 'react'
+import MonacoEditor from 'react-monaco-editor'
 import { LocalizationContext, ResponsiveContext } from '../../context'
+import { globals, useGlobalStyles } from '../../globalStyles'
 import { setupModel } from '../../services/MonacoModels/PersonalSettingsModel'
 import { defaultSettings, PersonalSettings } from '../../services/PersonalSettings'
-import { RepositoryManager } from '../../services/RepositoryManager'
 import { useDialog } from '../dialogs'
-import { globals, useGlobalStyles } from '../../globalStyles'
 import { TextEditor } from './TextEditor'
 
 const editorContent: any = {
@@ -52,7 +45,6 @@ export function SettingsEditor() {
   const repo = useRepository()
   const theme = useTheme()
   const platform = useContext(ResponsiveContext)
-  const eventService = useRepositoryEvents()
   const logger = useLogger('PersonalSettingsEditor')
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
@@ -62,13 +54,6 @@ export function SettingsEditor() {
   }, [localization.values, repo])
 
   const callBack = async () => {
-    const rm = injector.getInstance(RepositoryManager)
-    const logoutPromises = service.effectiveValue
-      .getValue()
-      .repositories.map((repoEntry) => rm.getRepository(repoEntry.url).authentication.logout())
-
-    await Promise.all(logoutPromises)
-    eventService.dispose() // ???
     service.setPersonalSettingsValue({})
     closeLastDialog()
     logger.information({ message: 'The Personal Settings has been restored to defaults.' })

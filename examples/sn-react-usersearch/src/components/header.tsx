@@ -6,14 +6,10 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
-// import AddIcon from '@material-ui/icons/Add'
 import LogoutIcon from '@material-ui/icons/PowerSettingsNew'
 // end of material imports
 
-// start of sensenet imports
-import { useRepository } from '@sensenet/hooks-react'
-import { useCurrentUser } from '../hooks/use-current-user'
-// end of sensenet imports
+import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,8 +35,7 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const HeaderPanel = () => {
-  const usr = useCurrentUser()
-  const repo = useRepository() // Custom hook that will return with a Repository object
+  const { logout, oidcUser } = useOidcAuthentication()
   const classes = useStyles()
 
   return (
@@ -48,14 +43,14 @@ const HeaderPanel = () => {
       <AppBar position="fixed">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            {usr ? usr.DisplayName : ''}
+            {oidcUser?.profile.name}
           </Typography>
           <IconButton
             edge="start"
             className={classes.logoutButton}
             color="inherit"
             aria-label="logout"
-            onClick={() => repo.authentication.logout()}>
+            onClick={logout}>
             <LogoutIcon />
           </IconButton>
         </Toolbar>

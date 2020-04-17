@@ -2,17 +2,15 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './style.css'
 import { App } from './app'
-import { RepositoryProvider } from './context/repository-provider'
+import { AppProviders } from './components/app-providers'
 
 /**
  * Initialize React
  */
 ReactDOM.render(
   /** The RepositoryProvider will display a login form for non-authenticated users */
-  <RepositoryProvider
-    /** You can insert your additional repository settings here */
-    sessionLifetime="expiration">
+  <AppProviders>
     <App />
-  </RepositoryProvider>,
+  </AppProviders>,
   document.getElementById('root'),
 )

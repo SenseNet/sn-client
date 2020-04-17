@@ -1495,7 +1495,7 @@ describe('Actions', () => {
 
     describe('serviceChecks()', () => {
       describe('Given repository.checkAllowedChildTypes() resolves', () => {
-        let data: ODataCollectionResponse<GenericContent>
+        let data: any
         let mockCollectionResponseData: ReturnType<typeof collectionMockResponse['json']>
         beforeEach(async () => {
           data = await Actions.checkAllowedChildTypes(path).payload(repo)
@@ -1520,7 +1520,7 @@ describe('Actions', () => {
 
     describe('serviceChecks()', () => {
       describe('Given repository.udpateListField() resolves', () => {
-        let data: ODataResponse<GenericContent>
+        let data: any
         let mockContentResponseData: ReturnType<typeof contentMockResponse['json']>
         beforeEach(async () => {
           data = await Actions.udpateListField(path, { Name: 'MyCustomField' }).payload(repo)

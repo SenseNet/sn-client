@@ -1,0 +1,50 @@
+{
+  "name": "@sensenet/authentication-oidc-react",
+  "version": "0.0.1",
+  "description": "React components and service for oidc authentication with sensenet",
+  "main": "dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "fix:prettier": "prettier \"{,!(dist|temp)/**/}*.{ts,tsx}\" --write",
+    "build": "tsc -b"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SenseNet/sn-client.git"
+  },
+  "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/SenseNet/sn-client/issues"
+  },
+  "homepage": "https://sensenet.com",
+  "dependencies": {
+    "@material-ui/core": "^4.9.5",
+    "@types/history": "^4.7.5",
+    "oidc-client": "^1.10.1",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "tslib": "^1.11.1"
+  },
+  "devDependencies": {
+    "@types/enzyme": "^3.10.5",
+    "@types/jest": "^25.1.4",
+    "@types/react": "^16.9.23",
+    "@types/react-dom": "^16.9.5",
+    "@types/react-router": "^5.1.2",
+    "@types/react-router-dom": "^5.1.2",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
+    "enzyme-to-json": "^3.4.4",
+    "jest": "^25.1.0",
+    "ts-jest": "^25.2.1",
+    "typescript": "^3.8.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

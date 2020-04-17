@@ -1,17 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './style.css'
 import { App } from './app'
-import { RepositoryProvider } from './context/repository-provider'
+import { AppProviders } from './components/app-providers'
+import './style.css'
 
 /**
  * Initialize React
  */
 ReactDOM.render(
-  <RepositoryProvider
-    /** You can insert your additional repository settings here */
-    sessionLifetime="expiration">
+  <AppProviders>
     <App />
-  </RepositoryProvider>,
+  </AppProviders>,
   document.getElementById('root'),
 )

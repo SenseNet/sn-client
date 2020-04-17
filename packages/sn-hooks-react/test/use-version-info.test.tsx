@@ -10,6 +10,26 @@ const VersionInfoDump = () => {
   return <div>{JSON.stringify(i)}</div>
 }
 
+const VersionInfoDump2 = () => {
+  const { hasUpdates } = useVersionInfo()
+
+  if (hasUpdates) {
+    return <p>Updates available</p>
+  }
+
+  return null
+}
+
+// eslint-disable-next-line require-jsdoc
+function mockFetch(data: any) {
+  return jest.fn().mockImplementation(() =>
+    Promise.resolve({
+      ok: true,
+      json: () => data,
+    }),
+  )
+}
+
 describe('Version Info', () => {
   it('Should match the snapshot', () => {
     expect(shallow(<VersionInfoDump />)).toMatchSnapshot()
@@ -46,34 +66,36 @@ describe('Version Info', () => {
   })
 
   it('Has an outdated component', async () => {
-    const repo = new Repository(
-      {},
-      async () =>
-        ({
-          ok: true,
-          json: async () =>
-            ({
-              Assemblies: {
-                Dynamic: [],
-                GAC: [],
-                Other: [],
-                Plugins: [],
-                SenseNet: [],
-              },
-              Components: [
-                { ComponentId: 'SenseNet.Services', Version: '6.5.4', AcceptableVersion: '6.5.4', Description: '' },
-              ],
-              DatabaseAvailable: true,
-              InstalledPackages: [],
-            } as VersionInfo),
-        } as any),
-    )
+    const repo = new Repository()
+    ;(global as any).fetch = mockFetch({
+      '@id': 'https://api.nuget.org/v3/registration3-gz-semver2/sensenet.services/index.json',
+      items: [{ upper: '7.7.7' }],
+    })
+    repo.executeAction = () => {
+      return Promise.resolve({
+        Assemblies: {
+          Dynamic: [],
+          GAC: [],
+          Other: [],
+          Plugins: [],
+          SenseNet: [],
+        },
+        Components: [
+          { ComponentId: 'SenseNet.Services', Version: '6.5.4', AcceptableVersion: '6.5.4', Description: '' },
+        ],
+        DatabaseAvailable: true,
+        InstalledPackages: [],
+      }) as any
+    }
+    let wrapper: any
     await act(async () => {
-      mount(
+      wrapper = mount(
         <RepositoryContext.Provider value={repo}>
-          <VersionInfoDump />
+          <VersionInfoDump2 />
         </RepositoryContext.Provider>,
       )
     })
+
+    expect(wrapper.update().find('p')).toHaveLength(1)
   })
 })

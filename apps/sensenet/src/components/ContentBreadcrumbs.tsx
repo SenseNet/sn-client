@@ -3,10 +3,11 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import FileCopyIcon from '@material-ui/icons/FileCopy'
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
 import { GenericContent } from '@sensenet/default-content-types'
-import { CurrentAncestorsContext, CurrentContentContext } from '@sensenet/hooks-react'
+import { CurrentAncestorsContext, CurrentContentContext, useRepository } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router'
-import { useContentRouting, useLocalization, useSelectionService } from '../hooks'
+import { useHistory } from 'react-router-dom'
+import { useLocalization, useSelectionService } from '../hooks'
+import { ContentContextService } from '../services'
 import Breadcrumbs, { BreadcrumbItem } from './Breadcrumbs'
 import { useDialog } from './dialogs'
 import { ActionNameType } from './react-control-mapper'
@@ -22,16 +23,18 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-export const ContentBreadcrumbsComponent: React.FunctionComponent<
-  RouteComponentProps & {
-    onItemClick?: (item: BreadcrumbItem<GenericContent>) => void
-    setFormOpen?: (actionName: ActionNameType) => void
-    batchActions?: boolean
-  }
-> = (props) => {
+type ContentBreadcrumbsProps = {
+  onItemClick?: (item: BreadcrumbItem<GenericContent>) => void
+  setFormOpen?: (actionName: ActionNameType) => void
+  batchActions?: boolean
+}
+
+export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
   const ancestors = useContext(CurrentAncestorsContext)
   const parent = useContext(CurrentContentContext)
-  const contentRouter = useContentRouting()
+  const repository = useRepository()
+  const contentRouter = new ContentContextService(repository)
+  const history = useHistory()
   const localization = useLocalization()
   const classes = useStyles()
   const { openDialog } = useDialog()
@@ -70,9 +73,7 @@ export const ContentBreadcrumbsComponent: React.FunctionComponent<
           },
         ]}
         onItemClick={(_ev, item) => {
-          props.onItemClick
-            ? props.onItemClick(item)
-            : props.history.push(contentRouter.getPrimaryActionUrl(item.content))
+          props.onItemClick ? props.onItemClick(item) : history.push(contentRouter.getPrimaryActionUrl(item.content))
         }}
         setFormOpen={(actionName) => setFormOpen(actionName)}
       />
@@ -124,6 +125,3 @@ export const ContentBreadcrumbsComponent: React.FunctionComponent<
     </>
   )
 }
-
-const routed = withRouter(ContentBreadcrumbsComponent)
-export { routed as ContentBreadcrumbs }

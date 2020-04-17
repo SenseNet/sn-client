@@ -47,6 +47,7 @@
     "lodash.groupby": "^4.6.0",
     "moment": "^2.24.0",
     "object-assign": "4.1.1",
+    "oidc-client": "^1.10.1",
     "promise": "^8.1.0",
     "react": "^16.13.0",
     "react-custom-scrollbars": "^4.2.1",
@@ -59,6 +60,7 @@
     "react-router-dom": "^5.1.2",
     "redux": "^4.0.4",
     "redux-di-middleware": "^4.1.0",
+    "redux-oidc": "^4.0.0-beta1",
     "semaphore-async-await": "^1.5.1",
     "uuid": "^7.0.2"
   },
@@ -80,6 +82,7 @@
     "cross-env": "^7.0.2",
     "cypress": "^4.1.0",
     "path-to-regexp": "^6.1.0",
+    "prop-types": "^15.7.2",
     "react-scripts": "^3.4.0"
   },
   "browserslist": {
