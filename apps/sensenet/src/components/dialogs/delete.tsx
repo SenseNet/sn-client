@@ -65,7 +65,13 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
               <FormControlLabel
                 style={{ marginLeft: '1em' }}
                 label={localization.permanentlyLabel}
-                control={<Checkbox disabled={isDeleteInProgress} onChange={(ev) => setPermanent(ev.target.checked)} />}
+                control={
+                  <Checkbox
+                    color="primary"
+                    disabled={isDeleteInProgress}
+                    onChange={(ev) => setPermanent(ev.target.checked)}
+                  />
+                }
               />
             </Tooltip>
           </>
