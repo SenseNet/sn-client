@@ -80,6 +80,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = (props) => {
           label={localization.onlyPublic}
           control={
             <Checkbox
+              color="primary"
               onChange={(ev) => {
                 setOnlyPublic(ev.target.checked)
                 requestReload()
