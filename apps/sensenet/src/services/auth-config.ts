@@ -18,6 +18,7 @@ export const getAuthConfig = async (repoUrl: string) => {
 
   const settings = await response.json()
   const mySettings: UserManagerSettings = {
+    automaticSilentRenew: true,
     redirect_uri: window.location.origin + applicationPaths.loginCallback,
     response_type: 'code',
     scope: 'openid profile sensenet',
