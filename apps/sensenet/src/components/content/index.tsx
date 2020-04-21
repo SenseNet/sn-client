@@ -96,7 +96,7 @@ export const Content = () => {
         />
       ) : browseData.type === 'explorer' ? (
         <Explore
-          rootPath={browseData.root}
+          rootPath={browseData.root || ConstantContent.PORTAL_ROOT.Path}
           onNavigate={navigate}
           onActivateItem={openItem}
           parentIdOrPath={browseData.currentContent || browseData.root || ConstantContent.PORTAL_ROOT.Id}
