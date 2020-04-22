@@ -13,6 +13,7 @@ import {
   DrawerItem as DrawerItemSetting,
   QueryDrawerItem,
 } from '../services/PersonalSettings'
+import { applicationPaths } from '../application-paths'
 import { useLocalization } from '.'
 
 export interface DrawerItem {
@@ -76,7 +77,7 @@ export const useDrawerItems = () => {
     const getUrlFromSetting = (item: EveryDrawerType) => {
       switch (item.itemType) {
         case 'Search':
-          return '/saved-queries'
+          return applicationPaths.savedQueries
         case 'Content':
           return `/browse/${encodeBrowseData({
             type: (item.settings && item.settings.browseType) || settings.content.browseType,
@@ -85,7 +86,7 @@ export const useDrawerItems = () => {
             fieldsToDisplay: (item.settings && item.settings.columns) || settings.content.fields,
           })}`
         case 'Users and groups':
-          return '/usersAndGroups'
+          return applicationPaths.usersAndGroups
         case 'Content Types':
           return `/search/${encodeQueryData({
             title: localization.titles['Content Types'],
@@ -104,19 +105,16 @@ export const useDrawerItems = () => {
             fieldsToDisplay: item.settings && item.settings.columns,
           })}`
         case 'Localization':
-          return '/localization'
+          return applicationPaths.localization
         case 'Trash':
-          return '/trash'
+          return applicationPaths.trash
         case 'Setup':
-          return '/setup'
+          return applicationPaths.setup
         case 'Dashboard':
-          return `/dashboard/${encodeURIComponent(item.settings ? item.settings.dashboardName : '')}`
+          return `${applicationPaths.dashboard}/${encodeURIComponent(item.settings?.dashboardName ?? '')}`
         default:
-          // return ''
-          break
+          return '/'
       }
-
-      return '/'
     }
     const getItemFromSettings = (setting: DrawerItemSetting<any>) => {
       const drawerItem: DrawerItem = {

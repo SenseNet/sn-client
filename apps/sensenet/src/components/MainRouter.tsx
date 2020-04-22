@@ -1,15 +1,16 @@
 import { LoadSettingsContextProvider } from '@sensenet/hooks-react'
 import React, { lazy, Suspense, useEffect, useRef } from 'react'
 import { Route, Switch, useHistory } from 'react-router-dom'
+import { applicationPaths } from '../application-paths'
 import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './full-screen-loader'
-import { WopiPage } from './wopi-page'
 
 const UsersAndGroupsComponent = lazy(() =>
   import(/* webpackChunkName: "UserAndGroup" */ './users-and-groups/users-and-groups'),
 )
 const LocalizationComponent = lazy(() => import(/* webpackChunkName: "Localization" */ './localization/localization'))
+const WopiPage = lazy(() => import(/* webpackChunkName: "wopi" */ './wopi-page'))
 const ExploreComponent = lazy(() => import(/* webpackChunkName: "content" */ './content'))
 const DashboardComponent = lazy(() => import(/* webpackChunkName: "dashboard" */ './dashboard'))
 const SearchComponent = lazy(() => import(/* webpackChunkName: "search" */ './search'))
@@ -37,7 +38,7 @@ export const MainRouter = () => {
        *  this way the user can go back to the location where she
        *  opened the viewer.
        * */
-      if (location.pathname.includes('/Preview')) {
+      if (location.pathname.includes(applicationPaths.preview)) {
         return
       }
       previousLocation.current = location.pathname
@@ -51,71 +52,71 @@ export const MainRouter = () => {
     <ErrorBoundary FallbackComponent={ErrorBoundaryWithDialogs}>
       <Suspense fallback={<FullScreenLoader />}>
         <Switch>
-          <Route path="/personalSettings">
+          <Route path={applicationPaths.personalSettings}>
             <PersonalSettingsEditor />
           </Route>
 
-          <Route path="/events/:eventGuid?">
+          <Route path={`${applicationPaths.events}/:eventGuid?`}>
             <EventListComponent />
           </Route>
 
-          <Route path="/:repo/browse/:browseData?">
+          <Route path="/browse/:browseData?">
             <ExploreComponent />
           </Route>
 
-          <Route path="/:repo/search/:queryData?">
+          <Route path="/search/:queryData?">
             <LoadSettingsContextProvider>
               <SearchComponent />
             </LoadSettingsContextProvider>
           </Route>
 
-          <Route path="/:repo/saved-queries">
+          <Route path={applicationPaths.savedQueries}>
             <LoadSettingsContextProvider>
               <SavedQueriesComponent />
             </LoadSettingsContextProvider>
           </Route>
 
-          <Route path="/:repo/setup">
+          <Route path={applicationPaths.setup}>
             <SetupComponent />
           </Route>
 
-          <Route path="/:repo/trash">
+          <Route path={applicationPaths.trash}>
             <TrashComponent />
           </Route>
 
-          <Route path="/:repo/localization">
+          <Route path={applicationPaths.localization}>
             <LocalizationComponent />
           </Route>
 
-          <Route path="/:repo/usersAndGroups">
+          <Route path={applicationPaths.usersAndGroups}>
             <UsersAndGroupsComponent />
           </Route>
 
-          <Route path="/:repo/editBinary/:contentId?">
+          <Route path={`${applicationPaths.editBinary}/:contentId?`}>
             <EditBinary />
           </Route>
 
-          <Route path="/:repo/editProperties/:contentId?">
+          <Route path={`${applicationPaths.editProperties}/:contentId?`}>
             <EditProperties />
           </Route>
 
-          <Route path="/:repo/browseProperties/:contentId?">
+          <Route path={`${applicationPaths.browseProperties}/:contentId?`}>
             <BrowseProperties />
           </Route>
 
-          <Route path="/:repo/NewProperties">
+          <Route path={applicationPaths.newProperties}>
             <NewProperties />
           </Route>
 
-          <Route path="/:repo/preview/:documentId?">
+          <Route path={`${applicationPaths.preview}/:contentId?`}>
             <DocumentViewerComponent previousLocation={previousLocation.current} />
           </Route>
 
-          <Route path="/:repo/wopi/:documentId/:action?">
+          <Route path={`${applicationPaths.wopi}/:contentId/:action?`}>
             <WopiPage />
           </Route>
 
-          <Route path="/dashboard/:dashboardName?">
+          <Route path={`${applicationPaths.dashboard}/:dashboardName?`}>
             <DashboardComponent />
           </Route>
 

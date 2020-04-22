@@ -2,6 +2,7 @@ import { Injectable } from '@sensenet/client-utils'
 import { CommandPaletteItem } from '../../components/command-palette/CommandPalette'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
 import { LocalizationService } from '../LocalizationService'
+import { applicationPaths } from '../../application-paths'
 
 @Injectable({ lifetime: 'transient' })
 export class NavigationCommandProvider implements CommandProvider {
@@ -14,7 +15,7 @@ export class NavigationCommandProvider implements CommandProvider {
         ? [
             {
               primaryText: this.localizationValues.personalSettingsPrimary,
-              url: '/personalSettings',
+              url: applicationPaths.personalSettings,
               secondaryText: this.localizationValues.personalSettingsSecondary,
               content: { Type: 'Settings' } as any,
               keywords: 'settings setup personal settings language theme',
@@ -41,7 +42,7 @@ export class NavigationCommandProvider implements CommandProvider {
         },
         {
           primaryText: this.localizationValues.savedQueriesPrimary,
-          url: '/:repo/saved-queries/',
+          url: applicationPaths.savedQueries,
           secondaryText: this.localizationValues.savedQueriesSecondaryText,
           content: { Type: 'Search' } as any,
           keywords: 'saved query search find',
@@ -49,7 +50,7 @@ export class NavigationCommandProvider implements CommandProvider {
         },
         {
           primaryText: this.localizationValues.eventsPrimary,
-          url: '/events/',
+          url: applicationPaths.events,
           secondaryText: this.localizationValues.eventsSecondary,
           content: { Type: 'EventLog' } as any,
           keywords: 'event events error warning log logs',

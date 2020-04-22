@@ -31,9 +31,9 @@ const useStyles = makeStyles(() => {
 })
 
 export default function DocViewer(props: { previousLocation?: string }) {
-  const match = useRouteMatch<{ documentId: string }>()
+  const match = useRouteMatch<{ contentId: string }>()
   const history = useHistory()
-  const documentId = parseInt(match.params.documentId, 10)
+  const contentId = parseInt(match.params.contentId, 10)
   const logger = useLogger('DocViewer')
   const selectionService = useSelectionService()
   const localization = useLocalization()
@@ -58,15 +58,15 @@ export default function DocViewer(props: { previousLocation?: string }) {
     }
   }, [closeViewer, props])
 
-  if (isNaN(documentId)) {
-    logger.error({ message: `Invalid document Id: ${documentId}` })
+  if (isNaN(contentId)) {
+    logger.error({ message: `Invalid document Id: ${contentId}` })
     return null
   }
 
   return (
     <div className={clsx(globalClasses.full, classes.docViewerWrapper)}>
-      <CurrentContentProvider idOrPath={documentId} onContentLoaded={(c) => selectionService.activeContent.setValue(c)}>
-        <DocumentViewer documentIdOrPath={documentId}>
+      <CurrentContentProvider idOrPath={contentId} onContentLoaded={(c) => selectionService.activeContent.setValue(c)}>
+        <DocumentViewer documentIdOrPath={contentId}>
           <LayoutAppBar>
             <div style={{ flexShrink: 0 }}>
               <ToggleThumbnailsWidget />

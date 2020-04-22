@@ -17,6 +17,7 @@ import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { useDrawerItems, useLocalization, useTheme } from '../../hooks'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
+import { applicationPaths } from '../../application-paths'
 
 type TemporaryDrawerProps = {
   isOpened: boolean
@@ -109,7 +110,10 @@ export const TemporaryDrawer = (props: TemporaryDrawerProps) => {
             />
             <ListItemSecondaryAction>
               {device === 'mobile' ? null : (
-                <Link to={`/personalSettings`} style={{ textDecoration: 'none' }} onClick={() => props.onClose()}>
+                <Link
+                  to={applicationPaths.personalSettings}
+                  style={{ textDecoration: 'none' }}
+                  onClick={() => props.onClose()}>
                   <IconButton title={localization.personalSettingsTitle}>
                     <Settings />
                   </IconButton>

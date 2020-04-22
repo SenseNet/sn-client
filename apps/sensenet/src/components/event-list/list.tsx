@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom'
 import { useLocalization } from '../../hooks'
 import { ContentContextService } from '../../services'
 import { Icon } from '../Icon'
+import { applicationPaths } from '../../application-paths'
 import { EventListFilterContext } from './filter-context'
 
 type ListProps = {
@@ -76,14 +77,14 @@ export const List: React.FunctionComponent<ListProps> = (props) => {
               <TableCell>{row.data.added}</TableCell>
               <TableCell>
                 {row.data.details ? (
-                  <Link to={`/events/${row.data.guid}`}>
+                  <Link to={`${applicationPaths.events}/${row.data.guid}`}>
                     <IconButton>
                       <OpenInNewTwoTone />
                     </IconButton>
                   </Link>
                 ) : null}
                 {row.data.compare ? (
-                  <Link to={`/events/${row.data.guid}`}>
+                  <Link to={`${applicationPaths.events}/${row.data.guid}`}>
                     <IconButton>
                       <CompareArrows />
                     </IconButton>

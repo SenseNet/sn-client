@@ -1,15 +1,6 @@
 import { Repository } from '@sensenet/client-core'
 import { ActionModel, ContentType, File, GenericContent, Resource, Settings } from '@sensenet/default-content-types'
-import { encodeBrowseData } from '../components/content'
-
-export type RouteType =
-  | 'Browse'
-  | 'EditProperties'
-  | 'EditBinary'
-  | 'Preview'
-  | 'PersonalSettings'
-  | 'WopiEdit'
-  | 'WopiRead'
+import { applicationPaths } from '../application-paths'
 
 export class ContentContextService {
   public getMonacoLanguage(content: GenericContent) {
@@ -55,27 +46,26 @@ export class ContentContextService {
     return ''
   }
 
-  public canEditBinary(content: GenericContent) {
-    return this.getMonacoLanguage(content) ? true : false
-  }
-  public getPrimaryActionRouteType<T extends GenericContent>(content: T): RouteType {
+  public getPrimaryActionUrl(content: GenericContent) {
     if (content.Type === 'PersonalSettings') {
-      return 'PersonalSettings'
+      return applicationPaths.personalSettings
     }
 
     if (content.IsFolder) {
       return 'Browse'
     }
-    if (this.canEditBinary(content)) {
-      return 'EditBinary'
+
+    if (this.getMonacoLanguage(content)) {
+      return `${applicationPaths.editBinary}/${content.Id}`
     }
+
     if (
       (content as any).Binary &&
       (content as any).Binary.__mediaresource.content_type !== 'application/x-javascript' &&
       (content as any).Binary.__mediaresource.content_type !== 'text/css' &&
       (content as any).Binary.__mediaresource.content_type !== 'text/xml'
     ) {
-      return 'Preview'
+      return `${applicationPaths.preview}/${content.Id}`
     }
 
     if (
@@ -83,7 +73,7 @@ export class ContentContextService {
       (content.Actions as any[]).length > 0 &&
       (content.Actions as ActionModel[]).find((a) => a.Name === 'WopiOpenEdit')
     ) {
-      return 'WopiEdit'
+      return `${applicationPaths.wopi}/${content.Id}/edit`
     }
 
     if (
@@ -91,30 +81,10 @@ export class ContentContextService {
       (content.Actions as any[]).length > 0 &&
       (content.Actions as ActionModel[]).find((a) => a.Name === 'WopiOpenView')
     ) {
-      return 'WopiRead'
+      return `${applicationPaths.wopi}/${content.Id}/read`
     }
 
-    return 'EditProperties'
-  }
-
-  public getActionUrl<T extends GenericContent>(content: T, routeType: RouteType) {
-    const repoSegment = btoa(this.repository.configuration.repositoryUrl)
-
-    if (routeType.startsWith('Wopi')) {
-      return `/${repoSegment}/wopi/${content.Id}/${routeType === 'WopiEdit' ? 'edit' : 'read'}`
-    }
-
-    if (routeType === 'Browse') {
-      return `/${repoSegment}/${routeType}/${encodeBrowseData({ currentContent: content.Id })}`
-    }
-    return `/${repoSegment}/${routeType}/${content.Id}`
-  }
-  public getPrimaryActionUrl<T extends GenericContent>(content: T) {
-    const routeType = this.getPrimaryActionRouteType(content)
-    if (routeType === 'PersonalSettings') {
-      return '/personalSettings'
-    }
-    return this.getActionUrl(content, routeType)
+    return `${applicationPaths.editProperties}/${content.Id}`
   }
 
   constructor(private readonly repository: Repository) {}

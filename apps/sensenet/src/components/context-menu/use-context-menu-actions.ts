@@ -1,6 +1,7 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import { useDownload, useLogger, useRepository } from '@sensenet/hooks-react'
 import { useHistory } from 'react-router'
+import { applicationPaths } from '../../application-paths'
 import { useLoadContent } from '../../hooks'
 import { ContentContextService } from '../../services'
 import { useDialog } from '../dialogs'
@@ -23,13 +24,11 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
         openDialog({ name: 'delete', props: { content: [content] } })
         break
       case 'Edit':
-        !halfPage
-          ? history.push(`/${btoa(repo.configuration.repositoryUrl)}/EditProperties/${content.Id}`)
-          : setFormOpen && setFormOpen()
+        !halfPage ? history.push(`${applicationPaths.editProperties}/${content.Id}`) : setFormOpen && setFormOpen()
         break
       case 'Browse':
         if (!halfPage) {
-          history.push(`/${btoa(repo.configuration.repositoryUrl)}/BrowseProperties/${content.Id}`)
+          history.push(`${applicationPaths.browseProperties}/${content.Id}`)
         } else {
           setFormOpen && setFormOpen()
         }
@@ -76,10 +75,10 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
         download.download()
         break
       case 'WopiOpenView':
-        history.push(`/${btoa(repo.configuration.repositoryUrl)}/wopi/${content.Id}/view`)
+        history.push(`${applicationPaths.wopi}/${content.Id}/view`)
         break
       case 'WopiOpenEdit':
-        history.push(`/${btoa(repo.configuration.repositoryUrl)}/wopi/${content.Id}/edit`)
+        history.push(`${applicationPaths.wopi}/${content.Id}/edit`)
         break
       case 'Versions':
         openDialog({ name: 'versions', props: { content }, dialogProps: { maxWidth: 'md', open: true } })

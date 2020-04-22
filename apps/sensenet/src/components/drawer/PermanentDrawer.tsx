@@ -6,7 +6,6 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
 import Tooltip from '@material-ui/core/Tooltip'
 import { Close, Menu } from '@material-ui/icons'
-import { useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { useContext, useState } from 'react'
 import { matchPath, NavLink, useLocation } from 'react-router-dom'
@@ -15,6 +14,7 @@ import { globals, useGlobalStyles } from '../../globalStyles'
 import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
 import { SearchButton } from '../search-button'
+import { applicationPaths } from '../../application-paths'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -90,7 +90,6 @@ export const PermanentDrawer = () => {
   const globalClasses = useGlobalStyles()
   const settings = useContext(ResponsivePersonalSettings)
   const theme = useTheme()
-  const repo = useRepository()
   const [currentPath, setCurrentPath] = useState('')
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const items = useDrawerItems()
@@ -124,10 +123,10 @@ export const PermanentDrawer = () => {
               </ListItem>
             ) : null}
 
-            {matchPath(location.pathname, `/:repositoryId/saved-queries`) === null ? (
+            {matchPath(location.pathname, applicationPaths.savedQueries) === null ? (
               (matchPath(location.pathname, { path: `/:repositoryId/browse` }) !== null ||
-                matchPath(location.pathname, { path: `/:repositoryId/usersAndGroups`, exact: true }) !== null ||
-                matchPath(location.pathname, { path: `/:repositoryId/setup`, exact: true }) !== null) && (
+                matchPath(location.pathname, { path: applicationPaths.usersAndGroups, exact: true }) !== null ||
+                matchPath(location.pathname, { path: applicationPaths.setup, exact: true }) !== null) && (
                 <AddButton isOpened={opened} path={currentPath} />
               )
             ) : (
@@ -137,7 +136,7 @@ export const PermanentDrawer = () => {
             {items.map((item, index) => {
               return (
                 <NavLink
-                  to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
+                  to={item.url}
                   className={classes.navLink}
                   key={index}
                   onClick={() => {

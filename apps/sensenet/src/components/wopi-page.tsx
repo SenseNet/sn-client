@@ -3,12 +3,13 @@ import { isExtendedError, ODataWopiResponse } from '@sensenet/client-core'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
+import { applicationPaths } from '../application-paths'
 import { useLocalization } from '../hooks'
 import { FullScreenLoader } from './full-screen-loader'
 
-export const WopiPage = () => {
+export default function WopiPage() {
   const repo = useRepository()
-  const match = useRouteMatch<{ documentId?: string; action?: string }>()
+  const match = useRouteMatch<{ contentId?: string; action?: string }>()
   const history = useHistory()
   const formElement = useRef<HTMLFormElement>(null)
   const [wopiData, setWopiData] = useState<ODataWopiResponse | null>(null)
@@ -20,13 +21,13 @@ export const WopiPage = () => {
     const ac = new AbortController()
     setError('')
     ;(async () => {
-      if (!match.params.documentId) {
+      if (!match.params.contentId) {
         setError('Invalid url')
         return
       }
       try {
         const response = await repo.getWopiData({
-          idOrPath: parseInt(match.params.documentId, 10),
+          idOrPath: parseInt(match.params.contentId, 10),
           action: match.params.action as 'edit' | 'view',
           requestInit: {
             signal: ac.signal,
@@ -45,7 +46,7 @@ export const WopiPage = () => {
           logger.error({
             message: `Error opening file for online editing`,
             data: {
-              details: { contentId: match.params.documentId, action: match.params.action, e },
+              details: { contentId: match.params.contentId, action: match.params.action, e },
               isDismissed: true,
             },
           })
@@ -53,7 +54,7 @@ export const WopiPage = () => {
       }
     })()
     return () => ac.abort()
-  }, [localization.errorOpeningFileText, logger, match.params.action, match.params.documentId, repo])
+  }, [localization.errorOpeningFileText, logger, match.params.action, match.params.contentId, repo])
 
   if (error) {
     return (
@@ -77,7 +78,7 @@ export const WopiPage = () => {
           {match.params.action !== 'view' ? (
             <Button
               onClick={() => {
-                history.push(`/${btoa(repo.configuration.repositoryUrl)}/wopi/${match.params.documentId}/view`)
+                history.push(`${applicationPaths.wopi}/${match.params.contentId}/view`)
               }}>
               {localization.tryOpenRead}
             </Button>
