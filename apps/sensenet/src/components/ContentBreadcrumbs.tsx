@@ -83,7 +83,11 @@ export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
             <IconButton
               aria-label="delete"
               onClick={() => {
-                openDialog({ name: 'delete', props: { content: selected } })
+                openDialog({
+                  name: 'delete',
+                  props: { content: selected },
+                  dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true, open: false },
+                })
               }}>
               <DeleteIcon />
             </IconButton>
@@ -99,6 +103,7 @@ export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
                     currentParent: parent,
                     operation: 'move',
                   },
+                  dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true, open: false },
                 })
               }}>
               <FileCopyIcon />
@@ -115,6 +120,7 @@ export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
                     currentParent: parent,
                     operation: 'copy',
                   },
+                  dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true, open: false },
                 })
               }}>
               <FileCopyOutlinedIcon />
