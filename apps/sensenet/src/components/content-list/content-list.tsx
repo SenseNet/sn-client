@@ -445,7 +445,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
           onKeyDown={handleKeyDown}>
           <VirtualizedTable
             active={activeContent}
-            checkboxProps={{ color: 'default' }}
+            checkboxProps={{ color: 'primary' }}
             cellRenderer={fieldComponentFunc}
             displayRowCheckbox={!props.disableSelection}
             fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields || displayNameInArray}

@@ -79,6 +79,7 @@ export default function Search() {
           label={localization.onlyPublic}
           control={
             <Checkbox
+              color="primary"
               onChange={(ev) => {
                 setOnlyPublic(ev.target.checked)
                 requestReload()
