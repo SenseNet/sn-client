@@ -20,7 +20,7 @@ import { generatePath, useHistory, useRouteMatch } from 'react-router'
 import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useSelectionService } from '../../hooks'
-import { ContentContextService } from '../../services'
+import { getPrimaryActionUrl } from '../../services'
 import { ContentList, isReferenceField } from '../content-list'
 import { useDialog } from '../dialogs'
 
@@ -170,10 +170,10 @@ export const Search = () => {
               fieldsToDisplay={queryData.fieldsToDisplay}
               parentIdOrPath={0}
               onParentChange={(p) => {
-                history.push(new ContentContextService(repo).getPrimaryActionUrl(p))
+                history.push(getPrimaryActionUrl(p, repo))
               }}
               onActivateItem={(p) => {
-                history.push(new ContentContextService(repo).getPrimaryActionUrl(p))
+                history.push(getPrimaryActionUrl(p, repo))
               }}
               onTabRequest={() => {
                 /** */

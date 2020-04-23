@@ -13,7 +13,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useLocalization, useSelectionService, useStringReplace } from '../../hooks'
-import { ContentContextService } from '../../services'
+import { getPrimaryActionUrl } from '../../services'
 import { QueryWidget as QueryWidgetModel } from '../../services/PersonalSettings'
 import { ContentList, isReferenceField } from '../content-list'
 import { encodeQueryData } from '../search'
@@ -26,7 +26,6 @@ export const QueryWidget = (props: QueryWidgetModel<GenericContent>) => {
   const [refreshToken, setRefreshToken] = useState(Math.random())
   const [count, setCount] = useState(0)
   const repo = useRepository()
-  const contentContextService = new ContentContextService(repo)
   const replacedTitle = useStringReplace(props.title)
   const localization = useLocalization().dashboard
   const selectionService = useSelectionService()
@@ -149,7 +148,7 @@ export const QueryWidget = (props: QueryWidgetModel<GenericContent>) => {
                     // props.history.push(contentRouter.getPrimaryActionUrl(p))
                   }}
                   onActivateItem={(p) => {
-                    history.push(contentContextService.getPrimaryActionUrl(p))
+                    history.push(getPrimaryActionUrl(p, repo))
                   }}
                   onTabRequest={() => {
                     /** */

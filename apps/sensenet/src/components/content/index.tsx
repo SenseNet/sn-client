@@ -5,7 +5,7 @@ import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'
-import { ContentContextService } from '../../services'
+import { getPrimaryActionUrl } from '../../services'
 import Commander from './Commander'
 import { Explore } from './Explore'
 import { SimpleList } from './Simple'
@@ -77,7 +77,7 @@ export const Content = () => {
 
   const openItem = useCallback(
     (itm: GenericContent) => {
-      history.push(new ContentContextService(repo).getPrimaryActionUrl(itm))
+      history.push(getPrimaryActionUrl(itm, repo))
     },
     [history, repo],
   )

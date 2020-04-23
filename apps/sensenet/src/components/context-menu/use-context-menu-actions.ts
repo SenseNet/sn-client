@@ -3,7 +3,7 @@ import { useDownload, useLogger, useRepository } from '@sensenet/hooks-react'
 import { useHistory } from 'react-router'
 import { applicationPaths } from '../../application-paths'
 import { useLoadContent } from '../../hooks'
-import { ContentContextService } from '../../services'
+import { getPrimaryActionUrl } from '../../services'
 import { useDialog } from '../dialogs'
 import { contextMenuODataOptions } from './context-menu-odata-options'
 
@@ -11,7 +11,6 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
   const logger = useLogger('context-menu')
   const history = useHistory()
   const repo = useRepository()
-  const routing = new ContentContextService(repo)
   const download = useDownload(content)
   const currentParent = useLoadContent({ idOrPath: content.ParentId! }).content
   const { openDialog } = useDialog()
@@ -44,7 +43,7 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
         break
       }
       case 'Preview':
-        history.push(routing.getPrimaryActionUrl(content))
+        history.push(getPrimaryActionUrl(content, repo))
         break
       case 'CheckOut': {
         try {

@@ -10,10 +10,10 @@ import { LeveledLogEntry, LogLevel } from '@sensenet/client-utils'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useLocalization } from '../../hooks'
-import { ContentContextService } from '../../services'
-import { Icon } from '../Icon'
 import { applicationPaths } from '../../application-paths'
+import { useLocalization } from '../../hooks'
+import { getPrimaryActionUrl } from '../../services'
+import { Icon } from '../Icon'
 import { EventListFilterContext } from './filter-context'
 
 type ListProps = {
@@ -24,7 +24,6 @@ type ListProps = {
 export const List: React.FunctionComponent<ListProps> = (props) => {
   const { filter } = useContext(EventListFilterContext)
   const repository = useRepository()
-  const contextService = new ContentContextService(repository)
   const [effectiveValues, setEffectiveValues] = useState<Array<LeveledLogEntry<any>>>([])
   const localization = useLocalization().eventList.list
 
@@ -67,7 +66,7 @@ export const List: React.FunctionComponent<ListProps> = (props) => {
               <TableCell>
                 {row.data?.relatedContent && row.data?.relatedRepository ? (
                   <Link
-                    to={contextService.getPrimaryActionUrl(row.data.relatedContent)}
+                    to={getPrimaryActionUrl(row.data.relatedContent, repository)}
                     style={{ display: 'flex', alignItems: 'center' }}>
                     <Icon item={row.data.relatedContent} style={{ marginRight: 5 }} />
                     {row.data.relatedContent.DisplayName || row.data.relatedContent.Name}

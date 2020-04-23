@@ -4,7 +4,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { CommandPaletteItem } from '../../components/command-palette/CommandPalette'
 import { encodeQueryData } from '../../components/search'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
-import { ContentContextService } from '../content-context-service'
+import { getPrimaryActionUrl } from '../content-context-service'
 import { LocalizationService } from '../LocalizationService'
 import { PersonalSettings } from '../PersonalSettings'
 
@@ -21,7 +21,6 @@ export class QueryCommandProvider implements CommandProvider {
   }
 
   public async getItems(options: SearchOptions): Promise<CommandPaletteItem[]> {
-    const ctx = new ContentContextService(options.repository)
     const extendedQuery = this.personalSettings.effectiveValue
       .getValue()
       .default.commandPalette.wrapQuery.replace('{0}', options.term)
@@ -37,7 +36,7 @@ export class QueryCommandProvider implements CommandProvider {
       ...result.d.results.map((content) => ({
         primaryText: content.DisplayName || content.Name,
         secondaryText: content.Path,
-        url: ctx.getPrimaryActionUrl(content),
+        url: getPrimaryActionUrl(content, options.repository),
         content,
         icon: content.Icon,
         hits: options.term.substr(1).replace(/\*/g, ' ').replace(/\?/g, ' ').split(' '),

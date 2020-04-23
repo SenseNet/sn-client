@@ -4,7 +4,7 @@ import React from 'react'
 import { useHistory } from 'react-router'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { ContentContextService } from '../../services'
+import { getPrimaryActionUrl } from '../../services'
 import { SimpleList } from '../content/Simple'
 
 export default function UsersAndGroups() {
@@ -12,7 +12,6 @@ export default function UsersAndGroups() {
   const localizationDrawerTitles = useLocalization().drawer.titles
   const history = useHistory()
   const repository = useRepository()
-  const contentRouter = new ContentContextService(repository)
 
   return (
     <div className={globalClasses.contentWrapper}>
@@ -27,7 +26,7 @@ export default function UsersAndGroups() {
           parentIdOrPath: '/Root/IMS/Public',
           fieldsToDisplay: ['DisplayName', 'ModificationDate', 'ModifiedBy', 'Actions'],
           onActivateItem: (p) => {
-            history.push(contentRouter.getPrimaryActionUrl(p))
+            history.push(getPrimaryActionUrl(p, repository))
           },
         }}
       />
