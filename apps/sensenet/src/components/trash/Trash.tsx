@@ -30,7 +30,7 @@ const Trash = React.memo(() => {
         parent="/Root/Trash"
         contentListProps={{
           enableBreadcrumbs: false,
-          fieldsToDisplay: ['DisplayName', 'ModificationDate', 'ModifiedBy'],
+          fieldsToDisplay: ['DisplayName', 'ModificationDate', 'ModifiedBy', 'Actions'],
         }}
       />
     </div>
