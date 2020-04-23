@@ -6,10 +6,9 @@ import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './full-screen-loader'
 
-const UsersAndGroupsComponent = lazy(() =>
-  import(/* webpackChunkName: "UserAndGroup" */ './users-and-groups/users-and-groups'),
-)
-const LocalizationComponent = lazy(() => import(/* webpackChunkName: "Localization" */ './localization/localization'))
+const UsersAndGroupsComponent = lazy(() => import(/* webpackChunkName: "UserAndGroup" */ './users-and-groups'))
+const LocalizationComponent = lazy(() => import(/* webpackChunkName: "Localization" */ './localization'))
+const ContentTypes = lazy(() => import(/* webpackChunkName: "ContentTypes" */ './content-types'))
 const WopiPage = lazy(() => import(/* webpackChunkName: "wopi" */ './wopi-page'))
 const ExploreComponent = lazy(() => import(/* webpackChunkName: "content" */ './content'))
 const DashboardComponent = lazy(() => import(/* webpackChunkName: "dashboard" */ './dashboard'))
@@ -90,6 +89,10 @@ export const MainRouter = () => {
 
           <Route path={applicationPaths.usersAndGroups}>
             <UsersAndGroupsComponent />
+          </Route>
+
+          <Route path={applicationPaths.contentTypes}>
+            <ContentTypes />
           </Route>
 
           <Route path={`${applicationPaths.editBinary}/:contentId?`}>

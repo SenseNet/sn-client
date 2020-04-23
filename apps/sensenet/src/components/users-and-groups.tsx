@@ -1,11 +1,11 @@
 import { useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React from 'react'
-import { useHistory } from 'react-router'
-import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization } from '../../hooks'
-import { getPrimaryActionUrl } from '../../services'
-import { SimpleList } from '../content/Simple'
+import { useHistory } from 'react-router-dom'
+import { useGlobalStyles } from '../globalStyles'
+import { useLocalization } from '../hooks'
+import { getPrimaryActionUrl } from '../services'
+import { SimpleList } from './content/Simple'
 
 export default function UsersAndGroups() {
   const globalClasses = useGlobalStyles()
@@ -16,7 +16,7 @@ export default function UsersAndGroups() {
   return (
     <div className={globalClasses.contentWrapper}>
       <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}>
-        <span style={{ fontSize: '20px' }}>{localizationDrawerTitles['Users and groups']}</span>
+        <span style={{ fontSize: '20px' }}>{localizationDrawerTitles.UsersAndGroups}</span>
       </div>
       <SimpleList
         parent="/Root/IMS/Public"

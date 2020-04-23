@@ -55,9 +55,9 @@ export const useDrawerItems = () => {
           ) : (
             <Public />
           )
-        case 'Users and groups':
+        case 'UsersAndGroups':
           return <People />
-        case 'Content Types':
+        case 'ContentTypes':
           return <Widgets />
         case 'Localization':
           return <Language />
@@ -85,18 +85,10 @@ export const useDrawerItems = () => {
             secondaryContent: (item.settings && item.settings.root) || '/Root/Content',
             fieldsToDisplay: (item.settings && item.settings.columns) || settings.content.fields,
           })}`
-        case 'Users and groups':
+        case 'UsersAndGroups':
           return applicationPaths.usersAndGroups
-        case 'Content Types':
-          return `/search/${encodeQueryData({
-            title: localization.titles['Content Types'],
-            term: "+TypeIs:'ContentType'",
-            hideSearchBar: true,
-            fieldsToDisplay: ['DisplayName', 'Description', 'ParentTypeName' as any, 'ModificationDate', 'ModifiedBy'],
-            showAddButton: true,
-            parentPath: '/Root/System/Schema/ContentTypes/',
-            allowedTypes: ['ContentType'],
-          })}`
+        case 'ContentTypes':
+          return applicationPaths.contentTypes
         case 'Query':
           return `/search/${encodeQueryData({
             term: (item.settings && item.settings.term) || '',

@@ -17,4 +17,5 @@ export const applicationPaths = {
   preview: '/preview',
   wopi: '/wopi',
   dashboard: '/dashboard',
+  contentTypes: '/content-types',
 }
