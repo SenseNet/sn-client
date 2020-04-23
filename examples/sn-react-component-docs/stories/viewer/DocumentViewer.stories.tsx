@@ -1,5 +1,5 @@
+import { CreatedByUser } from '@sensenet/client-core'
 import { Comment } from '@sensenet/document-viewer-react/src/components'
-import { CreatedByUser } from '@sensenet/document-viewer-react/src/models'
 import { object, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import React from 'react'

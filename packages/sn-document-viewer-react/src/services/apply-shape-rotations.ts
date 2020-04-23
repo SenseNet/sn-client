@@ -1,5 +1,4 @@
-import { Shape } from '../models/Shapes'
-import { PreviewImageData } from '../models'
+import { PreviewImageData, Shape } from '@sensenet/client-core'
 import { ImageUtil } from './image-utils'
 
 /**

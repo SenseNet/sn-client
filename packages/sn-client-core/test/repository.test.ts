@@ -382,7 +382,7 @@ describe('Repository', () => {
             d: { results: [], __count: 0 },
           } as ODataCollectionResponse<ContentType>
         }
-        const response = await repository.getImplicitAllowedChildTypes({
+        const response = await repository.allowedChildTypes.getImplicit({
           idOrPath: 'Root/Sites/Default_Site',
         })
         expect(response.d).toEqual({ results: [], __count: 0 })
@@ -391,8 +391,8 @@ describe('Repository', () => {
       it('should throw on unsuccessfull request', (done) => {
         ;(mockResponse as any).ok = false
         ;(mockResponse as any).statusText = ':('
-        repository
-          .getImplicitAllowedChildTypes({
+        repository.allowedChildTypes
+          .getImplicit({
             idOrPath: 'Root/Sites/Default_Site',
           })
           .then(() => {
@@ -413,7 +413,7 @@ describe('Repository', () => {
             d: { results: [], __count: 0 },
           } as ODataCollectionResponse<ContentType>
         }
-        const response = await repository.getExplicitAllowedChildTypes({
+        const response = await repository.allowedChildTypes.getExplicit({
           idOrPath: 'Root/Sites/Default_Site',
         })
         expect(response.d).toEqual({ results: [], __count: 0 })
@@ -422,8 +422,8 @@ describe('Repository', () => {
       it('should throw on unsuccessfull request', (done) => {
         ;(mockResponse as any).ok = false
         ;(mockResponse as any).statusText = ':('
-        repository
-          .getExplicitAllowedChildTypes({
+        repository.allowedChildTypes
+          .getExplicit({
             idOrPath: 'Root/Sites/Default_Site',
           })
           .then(() => {
@@ -442,7 +442,7 @@ describe('Repository', () => {
         mockResponse.json = async () => {
           return []
         }
-        const response = await repository.getAllowedChildTypes({
+        const response = await repository.allowedChildTypes.get({
           idOrPath: 'Root/Sites/Default_Site',
         })
         expect(response).toEqual({ d: { __count: 0, results: [] } })
@@ -450,8 +450,8 @@ describe('Repository', () => {
       it('should throw on unsuccessfull request', (done) => {
         ;(mockResponse as any).ok = false
         ;(mockResponse as any).statusText = ':('
-        repository
-          .getAllowedChildTypes({
+        repository.allowedChildTypes
+          .get({
             idOrPath: 'Root/Sites/Default_Site',
           })
           .then(() => {

@@ -3,18 +3,8 @@ import { useRepository } from '@sensenet/hooks-react'
 import { File as SnFile } from '@sensenet/default-content-types'
 import { deepMerge, toNumber } from '@sensenet/client-utils'
 import { v1 } from 'uuid'
-import { Repository } from '@sensenet/client-core'
-import {
-  Annotation,
-  CommentData,
-  CommentWithoutCreatedByAndId,
-  DocumentData,
-  DocumentViewerApiSettings,
-  Highlight,
-  PreviewImageData,
-  Redaction,
-  Shape,
-} from '../models'
+import { Annotation, CommentData, DocumentData, Highlight, Redaction, Repository, Shape } from '@sensenet/client-core'
+import { DocumentViewerApiSettings } from '../models'
 
 /**
  * Adds a globally unique ID to the shape
@@ -64,15 +54,7 @@ export const DocumentViewerApiSettingsContext = React.createContext<DocumentView
 
 export const createDefaultApiSettings: (repo: Repository) => DocumentViewerApiSettings = (repo: Repository) => ({
   regeneratePreviews: async ({ document, abortController }) => {
-    repo.executeAction({
-      idOrPath: document.idOrPath,
-      method: 'POST',
-      body: undefined,
-      name: 'RegeneratePreviews',
-      requestInit: {
-        signal: abortController.signal,
-      },
-    })
+    repo.preview.regenerate({ idOrPath: document.idOrPath, abortController })
   },
   saveChanges: async ({ document, pages, abortController }) => {
     const reqBody = {
@@ -126,26 +108,7 @@ export const createDefaultApiSettings: (repo: Repository) => DocumentViewerApiSe
     }
   },
   isPreviewAvailable: async ({ document, version, page, abortController }) => {
-    const responseBody = await repo.executeAction<{ page: number }, PreviewImageData & { PreviewAvailable: string }>({
-      idOrPath: document.idOrPath,
-      method: 'POST',
-      name: `PreviewAvailable?version=${version}`,
-      body: {
-        page,
-      },
-      requestInit: {
-        signal: abortController.signal,
-      },
-    })
-
-    if (responseBody.PreviewAvailable) {
-      responseBody.PreviewImageUrl = `${document.hostName}${responseBody.PreviewAvailable}`
-      responseBody.ThumbnailImageUrl = `${document.hostName}${responseBody.PreviewAvailable.replace(
-        'preview',
-        'thumbnail',
-      )}`
-      return responseBody as PreviewImageData
-    }
+    return await repo.preview.available({ document, version, page, abortController })
   },
   canEditDocument: async ({ document, abortController }) => {
     const response = await repo.security.hasPermission(document.idOrPath, ['Save'], undefined, {
@@ -165,78 +128,18 @@ export const createDefaultApiSettings: (repo: Repository) => DocumentViewerApiSe
       credentials: 'include',
     }),
   getExistingPreviewImages: async ({ document, version, abortController }) => {
-    if (document.pageCount < -1) {
-      throw Error('Preview generation error')
-    }
-
-    const response = await repo.executeAction({
-      idOrPath: document.idOrPath,
-      name: `GetExistingPreviewImages`,
-      method: 'POST',
-      body: {},
-      oDataOptions: {
-        select: 'all',
-        expand: 'all',
-        version,
-      } as any,
-      requestInit: {
-        signal: abortController.signal,
-      },
-    })
-
-    const availablePreviews = ((await response) as Array<PreviewImageData & { PreviewAvailable?: string }>).map((a) => {
-      if (a.PreviewAvailable) {
-        a.PreviewImageUrl = `${document.hostName}${a.PreviewAvailable}`
-        a.ThumbnailImageUrl = `${document.hostName}${a.PreviewAvailable.replace('preview', 'thumbnail')}`
-      }
-      return a
-    })
-
-    const allPreviews: PreviewImageData[] = []
-    for (let i = 0; i < document.pageCount; i++) {
-      allPreviews[i] = availablePreviews[i] || ({ Index: i + 1 } as any)
-      const pageAttributes = document.pageAttributes.find((p) => p.pageNum === allPreviews[i].Index)
-      allPreviews[i].Attributes = pageAttributes && pageAttributes.options
-    }
-    return allPreviews
+    return await repo.preview.getExisting({ document, version, abortController })
   },
   commentActions: {
     addPreviewComment: async ({ document, comment, abortController }) => {
-      const response = await repo.executeAction<CommentWithoutCreatedByAndId, CommentData>({
-        idOrPath: document.idOrPath,
-        body: comment,
-        name: 'AddPreviewComment',
-        method: 'POST',
-        requestInit: {
-          signal: abortController.signal,
-        },
-      })
+      const response = await repo.preview.addComment({ idOrPath: document.idOrPath, comment, abortController })
       return [response].map(changeCreatedByUrlToCurrent(document))[0]
     },
     deletePreviewComment: async ({ document, commentId, abortController }) => {
-      const response = await repo.executeAction<any, { modified: boolean }>({
-        idOrPath: document.idOrPath,
-        body: { id: commentId },
-        name: 'DeletePreviewComment',
-        method: 'POST',
-        requestInit: {
-          signal: abortController.signal,
-        },
-      })
-      return response
+      return await repo.preview.deleteComment({ idOrPath: document.idOrPath, commentId, abortController })
     },
     getPreviewComments: async ({ document, page, abortController }) => {
-      const response = await repo.executeAction<any, CommentData[]>({
-        idOrPath: document.idOrPath,
-        name: 'GetPreviewComments',
-        method: 'GET',
-        oDataOptions: {
-          page,
-        } as any,
-        requestInit: {
-          signal: abortController.signal,
-        },
-      })
+      const response = await repo.preview.getComments({ idOrPath: document.idOrPath, page, abortController })
       return response.map(changeCreatedByUrlToCurrent(document))
     },
   },

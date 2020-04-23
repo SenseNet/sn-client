@@ -1,6 +1,6 @@
 import React from 'react'
+import { PreviewImageData } from '@sensenet/client-core'
 import { PreviewImageDataContext } from '../../src/context/preview-image-data'
-import { PreviewImageData } from '../../src/models'
 import { examplePreviewImageData } from './viewercontext'
 
 type Props = {
