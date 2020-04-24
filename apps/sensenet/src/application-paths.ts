@@ -18,4 +18,5 @@ export const applicationPaths = {
   wopi: '/wopi',
   dashboard: '/dashboard',
   contentTypes: '/content-types',
+  search: '/search',
 }

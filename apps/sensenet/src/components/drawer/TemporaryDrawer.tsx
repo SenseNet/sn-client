@@ -61,7 +61,7 @@ export const TemporaryDrawer = (props: TemporaryDrawerProps) => {
         }}>
         <div style={{ paddingTop: '1em' }}>
           {items.map((item, index) => {
-            const isActive = matchPath(location.pathname, { path: `/:repositoryId${item.url}`, exact: true })
+            const isActive = matchPath(location.pathname, item.url)
             return isActive ? (
               <ListItem button={true} selected key={index}>
                 <Tooltip
@@ -78,7 +78,7 @@ export const TemporaryDrawer = (props: TemporaryDrawerProps) => {
             ) : (
               <NavLink
                 onClick={() => props.onClose()}
-                to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
+                to={item.url}
                 activeStyle={{ opacity: 1 }}
                 style={{ textDecoration: 'none', opacity: 0.54 }}
                 key={index}>

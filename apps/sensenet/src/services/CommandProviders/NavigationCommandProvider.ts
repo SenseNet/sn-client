@@ -34,7 +34,7 @@ export class NavigationCommandProvider implements CommandProvider {
         },
         {
           primaryText: this.localizationValues.searchPrimary,
-          url: '/:repo/search/',
+          url: applicationPaths.search,
           secondaryText: this.localizationValues.searchSecondaryText,
           content: { Type: 'Search' } as any,
           keywords: 'search find content query',
@@ -76,22 +76,14 @@ export class NavigationCommandProvider implements CommandProvider {
   }
 
   public async getItems(options: SearchOptions): Promise<CommandPaletteItem[]> {
-    return this.getRoutes(options)
-      .filter(
-        (r) =>
-          r.primaryText.includes(options.term) ||
-          r.secondaryText.includes(options.term) ||
-          (r.keywords && r.keywords.includes(options.term)),
-      )
-      .map((r) => ({
-        ...r,
-        url: r.url.replace('/:repo/', `/${btoa(options.repository.configuration.repositoryUrl)}/`),
-      }))
+    return this.getRoutes(options).filter(
+      (r) =>
+        r.primaryText.includes(options.term) ||
+        r.secondaryText.includes(options.term) ||
+        (r.keywords && r.keywords.includes(options.term)),
+    )
   }
 
-  /**
-   *
-   */
   constructor(localization: LocalizationService) {
     this.localizationValues = localization.currentValues.getValue().navigationCommandProvider
   }

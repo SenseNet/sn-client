@@ -3,7 +3,6 @@ import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { encodeBrowseData } from '../components/content'
 import { Icon } from '../components/Icon'
-import { encodeQueryData } from '../components/search'
 import { ResponsivePersonalSettings } from '../context'
 import DefaultLocalization from '../localization/default'
 import {
@@ -90,12 +89,7 @@ export const useDrawerItems = () => {
         case 'ContentTypes':
           return applicationPaths.contentTypes
         case 'Query':
-          return `/search/${encodeQueryData({
-            term: (item.settings && item.settings.term) || '',
-            title: item.settings && item.settings.title,
-            hideSearchBar: true,
-            fieldsToDisplay: item.settings && item.settings.columns,
-          })}`
+          return applicationPaths.search + (item.settings ? `?term=${encodeURIComponent(item.settings.term)}` : '')
         case 'Localization':
           return applicationPaths.localization
         case 'Trash':

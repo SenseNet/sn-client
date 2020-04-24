@@ -63,7 +63,7 @@ export const MainRouter = () => {
             <ExploreComponent />
           </Route>
 
-          <Route path="/search/:queryData?">
+          <Route path={applicationPaths.search}>
             <LoadSettingsContextProvider>
               <SearchComponent />
             </LoadSettingsContextProvider>

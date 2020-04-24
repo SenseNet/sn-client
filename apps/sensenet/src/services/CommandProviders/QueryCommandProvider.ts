@@ -2,11 +2,11 @@ import { ConstantContent } from '@sensenet/client-core'
 import { Injectable, Injector } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { CommandPaletteItem } from '../../components/command-palette/CommandPalette'
-import { encodeQueryData } from '../../components/search'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
 import { getPrimaryActionUrl } from '../content-context-service'
 import { LocalizationService } from '../LocalizationService'
 import { PersonalSettings } from '../PersonalSettings'
+import { applicationPaths } from '../../application-paths'
 
 @Injectable({ lifetime: 'singleton' })
 export class QueryCommandProvider implements CommandProvider {
@@ -44,9 +44,7 @@ export class QueryCommandProvider implements CommandProvider {
       {
         primaryText: this.localization.currentValues.getValue().search.openInSearchTitle,
         secondaryText: this.localization.currentValues.getValue().search.openInSearchDescription,
-        url: `/${btoa(options.repository.configuration.repositoryUrl)}/search/${encodeQueryData({
-          term: options.term,
-        })}`,
+        url: `${applicationPaths.search}?term=${encodeURIComponent(options.term)}`,
         content: { Type: 'Search' } as any,
         hits: [],
       },

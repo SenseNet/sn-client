@@ -16,7 +16,7 @@ import { useLocalization, useSelectionService, useStringReplace } from '../../ho
 import { getPrimaryActionUrl } from '../../services'
 import { QueryWidget as QueryWidgetModel } from '../../services/PersonalSettings'
 import { ContentList, isReferenceField } from '../content-list'
-import { encodeQueryData } from '../search'
+import { applicationPaths } from '../../application-paths'
 
 export const QueryWidget = (props: QueryWidgetModel<GenericContent>) => {
   const [items, setItems] = useState<GenericContent[]>([])
@@ -94,11 +94,7 @@ export const QueryWidget = (props: QueryWidgetModel<GenericContent>) => {
             <IconButton
               style={{ padding: '0', margin: '0 0 0 1em' }}
               onClick={() =>
-                history.push(
-                  `/${btoa(repo.configuration.repositoryUrl)}/search/${encodeQueryData({
-                    term: props.settings.query,
-                  })}`,
-                )
+                history.push(`${applicationPaths.search}?term=${encodeURIComponent(props.settings.query)}`)
               }>
               <OpenInNewTwoTone />
             </IconButton>

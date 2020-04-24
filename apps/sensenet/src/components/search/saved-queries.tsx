@@ -19,7 +19,7 @@ import { useHistory } from 'react-router-dom'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { ContentList } from '../content-list/content-list'
-import { encodeQueryData } from '.'
+import { applicationPaths } from '../../application-paths'
 
 export default function Search() {
   const repo = useRepository()
@@ -104,11 +104,7 @@ export default function Search() {
                     // ignore, only queries will be listed
                   }}
                   onActivateItem={(p) => {
-                    history.push(
-                      `/${btoa(repo.configuration.repositoryUrl)}/search/${encodeQueryData({
-                        term: (p as Query).Query || '',
-                      })}`,
-                    )
+                    history.push(`${applicationPaths.search}?term=${(p as Query).Query}`)
                   }}
                 />
               </CurrentAncestorsContext.Provider>
