@@ -5,7 +5,6 @@ import { Created } from '@sensenet/repository-events'
 import React, { useCallback, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { useSelectionService } from '../../hooks'
-import { FullScreenLoader } from '../full-screen-loader'
 import { ActionNameType } from '../react-control-mapper'
 import { ItemType, Tree } from './tree'
 
@@ -14,6 +13,7 @@ type TreeWithDataProps = {
   parentPath: string
   activeItemIdOrPath: string | number
   setFormOpen?: (actionName: ActionNameType) => void
+  onTreeLoadingChange?: (isLoading: boolean) => void
 }
 
 let lastRequest: { path: string; lastIndex: number } | undefined
@@ -42,6 +42,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
   const loadCollection = useCallback(
     async (path: string, top: number, skip: number) => {
       const ac = new AbortController()
+      props.onTreeLoadingChange && props.onTreeLoadingChange(true)
       setIsLoading(true)
       try {
         const result = await repo.loadCollection<GenericContent>({
@@ -59,15 +60,18 @@ export default function TreeWithData(props: TreeWithDataProps) {
             ],
           },
         })
+        props.onTreeLoadingChange && props.onTreeLoadingChange(false)
         setIsLoading(false)
         return result
       } catch (error) {
         if (!ac.signal.aborted) {
           logger.warning({ message: `Couldn't load content for ${path}`, data: error })
         }
+        props.onTreeLoadingChange && props.onTreeLoadingChange(false)
         setIsLoading(false)
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [logger, repo],
   )
 
@@ -228,7 +232,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
   }
 
   if (itemCount == null || !treeData) {
-    return <FullScreenLoader />
+    return null
   }
 
   const setFormOpen = (actionName: ActionNameType) => {
