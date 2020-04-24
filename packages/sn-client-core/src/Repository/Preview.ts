@@ -3,7 +3,7 @@ import { Repository } from './Repository'
 
 export class Preview {
   public regenerate(options: { idOrPath: number | string; abortController?: AbortController }) {
-    this.repository.executeAction({
+    return this.repository.executeAction({
       name: 'RegeneratePreviews',
       idOrPath: options.idOrPath,
       method: 'POST',

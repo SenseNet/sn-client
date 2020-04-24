@@ -16,6 +16,15 @@ export class AllowedChildTypes {
     })
   }
 
+  public update(idOrPath: number | string, contentTypes: string[]) {
+    return this.repository.patch({
+      idOrPath,
+      content: {
+        AllowedChildTypes: contentTypes,
+      } as any,
+    })
+  }
+
   public remove(idOrPath: number | string, contentTypes: string[]) {
     return this.repository.executeAction({
       idOrPath,

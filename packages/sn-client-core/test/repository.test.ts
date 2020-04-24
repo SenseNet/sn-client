@@ -374,96 +374,6 @@ describe('Repository', () => {
       })
     })
 
-    describe('#getImplicitAllowedChildTypes()', () => {
-      it('should resolve on success', async () => {
-        ;(mockResponse as any).ok = true
-        mockResponse.json = async () => {
-          return {
-            d: { results: [], __count: 0 },
-          } as ODataCollectionResponse<ContentType>
-        }
-        const response = await repository.allowedChildTypes.getImplicit({
-          idOrPath: 'Root/Sites/Default_Site',
-        })
-        expect(response.d).toEqual({ results: [], __count: 0 })
-      })
-
-      it('should throw on unsuccessfull request', (done) => {
-        ;(mockResponse as any).ok = false
-        ;(mockResponse as any).statusText = ':('
-        repository.allowedChildTypes
-          .getImplicit({
-            idOrPath: 'Root/Sites/Default_Site',
-          })
-          .then(() => {
-            done('Should throw')
-          })
-          .catch((err) => {
-            expect(err.message).toBe(':(')
-            done()
-          })
-      })
-    })
-
-    describe('#getExplicitAllowedChildTypes()', () => {
-      it('should resolve on success', async () => {
-        ;(mockResponse as any).ok = true
-        mockResponse.json = async () => {
-          return {
-            d: { results: [], __count: 0 },
-          } as ODataCollectionResponse<ContentType>
-        }
-        const response = await repository.allowedChildTypes.getExplicit({
-          idOrPath: 'Root/Sites/Default_Site',
-        })
-        expect(response.d).toEqual({ results: [], __count: 0 })
-      })
-
-      it('should throw on unsuccessfull request', (done) => {
-        ;(mockResponse as any).ok = false
-        ;(mockResponse as any).statusText = ':('
-        repository.allowedChildTypes
-          .getExplicit({
-            idOrPath: 'Root/Sites/Default_Site',
-          })
-          .then(() => {
-            done('Should throw')
-          })
-          .catch((err) => {
-            expect(err.message).toBe(':(')
-            done()
-          })
-      })
-    })
-
-    describe('#getAllowedChildTypes()', () => {
-      it('should resolve on success', async () => {
-        ;(mockResponse as any).ok = true
-        mockResponse.json = async () => {
-          return []
-        }
-        const response = await repository.allowedChildTypes.get({
-          idOrPath: 'Root/Sites/Default_Site',
-        })
-        expect(response).toEqual({ d: { __count: 0, results: [] } })
-      })
-      it('should throw on unsuccessfull request', (done) => {
-        ;(mockResponse as any).ok = false
-        ;(mockResponse as any).statusText = ':('
-        repository.allowedChildTypes
-          .get({
-            idOrPath: 'Root/Sites/Default_Site',
-          })
-          .then(() => {
-            done('Should throw')
-          })
-          .catch((err) => {
-            expect(err.message).toBe(':(')
-            done()
-          })
-      })
-    })
-
     describe('#getWopiData()', () => {
       it('should resolve on success', async () => {
         ;(mockResponse as any).ok = true
@@ -683,6 +593,31 @@ describe('Repository', () => {
       })
 
       expect(response.Token).toEqual('alba@sensenet.com')
+    })
+  })
+
+  describe('metadata', () => {
+    it('execute getMetadata', async () => {
+      mockResponse.json = async () => ({
+        DataServices: { DataServiceVersion: '3.0' },
+        Version: '1.0',
+      })
+
+      const mockMetadataResponseData = await mockResponse.json()
+      const data = await repository.getMetadata()
+
+      expect(data).toEqual(mockMetadataResponseData)
+    })
+  })
+
+  describe('propertyValue', () => {
+    it('execute getMetadata', async () => {
+      mockResponse.text = async () => 'example doc'
+
+      const mockPropertyValueResponseData = await mockResponse.text()
+      const data = await repository.getPropertyValue(1, 'DisplayName')
+
+      expect(data).toEqual(mockPropertyValueResponseData)
     })
   })
 })

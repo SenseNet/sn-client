@@ -1031,7 +1031,7 @@ describe('Actions', () => {
         it('should return a GET_METADATA action', () => {
           expect(Actions.getMetadata(path)).toHaveProperty('type', 'GET_METADATA')
         })
-        it('should return propertyResponse', () => {
+        it('should return metadataResponse', () => {
           expect(data).toEqual(mockMetadataResponseData)
         })
       })
