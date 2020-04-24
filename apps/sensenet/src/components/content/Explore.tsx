@@ -19,6 +19,7 @@ import { editviewFileResolver, Icon } from '../Icon'
 import { ActionNameType } from '../react-control-mapper'
 import TreeWithData from '../tree/tree-with-data'
 import { EditView } from '../view-controls/edit-view'
+import { FullScreenLoader } from '../full-screen-loader'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -68,6 +69,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = (props) =
   const [isFormOpened, setIsFormOpened] = useState(false)
   const [action, setAction] = useState<ActionNameType>(undefined)
   const repo = useRepository()
+  const [isTreeLoading, setIsTreeLoading] = useState(false)
 
   const setFormOpen = (actionName: ActionNameType) => {
     setAction(actionName)
@@ -101,6 +103,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = (props) =
                   parentPath={props.rootPath}
                   activeItemIdOrPath={props.parentIdOrPath}
                   setFormOpen={(actionName) => setFormOpen(actionName)}
+                  onTreeLoadingChange={(isLoading) => setIsTreeLoading(isLoading)}
                 />
                 <div className={classes.exploreContainer}>
                   {isFormOpened ? (
@@ -134,6 +137,8 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = (props) =
                         submitCallback={() => setIsFormOpened(false)}
                       />
                     </>
+                  ) : isTreeLoading ? (
+                    <FullScreenLoader />
                   ) : (
                     <ContentList
                       style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
