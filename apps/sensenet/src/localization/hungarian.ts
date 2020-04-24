@@ -28,6 +28,30 @@ const values: DeepPartial<typeof import('./default').default> = {
     deleteButton: 'Törlés',
     cancelButton: 'Mégsem',
   },
+  copyMoveContentDialog: {
+    copy: {
+      title: `'{0}' másolása ide: '{1}' `,
+      inProgress: 'Másolás folyamatban...',
+      titleMultiple: `{0} content másolása ide: '{1}'`,
+      copyButton: 'Másolás',
+      cancelButton: 'Mégsem',
+      copySucceededNotification: '{0} másolása megtörtént ide: {1}',
+      copyMultipleSucceededNotification: '{0} content másolása megörtént ide: {1}',
+      copyFailedNotification: 'Nem sikerült a {0} másolása ide: {1}',
+      copyMultipleFailedNotification: 'Nem sikerült {0} content másolása ide: {1}',
+    },
+    move: {
+      title: `'{0}' áthelyezése ide: '{1}'`,
+      inProgress: 'Áthelyezés folyamatban...',
+      titleMultiple: `{0} content áthelyezése ide: '{1}'`,
+      copyButton: 'Áthelyezés',
+      cancelButton: 'Mégsem',
+      copySucceededNotification: '{0} áthelyezése megtörtént ide: {1}',
+      copyMultipleSucceededNotification: '{0} content áthelyezése megtörtént ide: {1}',
+      copyFailedNotification: 'Nem sikerült a {0} áthelyezése ide: {1}',
+      copyMultipleFailedNotification: 'Nem sikerült {0} content áthelyezése ide: {1}',
+    },
+  },
   drawer: {
     titles: {
       Content: 'Tartalom',

@@ -90,6 +90,7 @@ const values = {
   copyMoveContentDialog: {
     copy: {
       title: `Copy '{0}' to '{1}'`,
+      inProgress: 'Copy in progress...',
       titleMultiple: `Copy {0} items to '{1}'`,
       copyButton: 'Copy',
       cancelButton: 'Cancel',
@@ -101,6 +102,7 @@ const values = {
     },
     move: {
       title: `Move '{0}' to '{1}'`,
+      inProgress: 'Move in progress...',
       titleMultiple: `Move {0} items to '{1}'`,
       copyButton: 'Move',
       cancelButton: 'Cancel',
