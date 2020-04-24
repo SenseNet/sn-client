@@ -57,7 +57,7 @@ export interface ExploreComponentProps {
   onNavigate: (newParent: GenericContent) => void
   onActivateItem: (item: GenericContent) => void
   fieldsToDisplay?: Array<keyof GenericContent>
-  rootPath?: string
+  rootPath: string
 }
 
 export const Explore: React.FunctionComponent<ExploreComponentProps> = (props) => {
@@ -68,10 +68,6 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = (props) =
   const [isFormOpened, setIsFormOpened] = useState(false)
   const [action, setAction] = useState<ActionNameType>(undefined)
   const repo = useRepository()
-
-  if (!props.rootPath) {
-    return null
-  }
 
   const setFormOpen = (actionName: ActionNameType) => {
     setAction(actionName)
