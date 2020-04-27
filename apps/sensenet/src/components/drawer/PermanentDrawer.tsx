@@ -122,17 +122,14 @@ export const PermanentDrawer = () => {
                 </ListItemIcon>
               </ListItem>
             ) : null}
-
-            {matchPath(location.pathname, applicationPaths.savedQueries) === null ? (
-              (matchPath(location.pathname, { path: `/:repositoryId/browse` }) !== null ||
-                matchPath(location.pathname, { path: applicationPaths.usersAndGroups, exact: true }) !== null ||
-                matchPath(location.pathname, { path: applicationPaths.setup, exact: true }) !== null) && (
-                <AddButton isOpened={opened} path={currentPath} />
-              )
-            ) : (
-              <SearchButton isOpened={opened} />
-            )}
-
+            {matchPath(location.pathname, applicationPaths.savedQueries) ? <SearchButton isOpened={opened} /> : null}{' '}
+            {matchPath(location.pathname, [
+              applicationPaths.explore,
+              applicationPaths.usersAndGroups,
+              applicationPaths.setup,
+            ]) ? (
+              <AddButton isOpened={opened} path={currentPath} />
+            ) : null}
             {items.map((item, index) => {
               return (
                 <NavLink

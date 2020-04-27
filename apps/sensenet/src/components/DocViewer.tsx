@@ -15,6 +15,7 @@ import { CurrentContentProvider, useLogger } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { useCallback, useEffect } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
+import { Location } from 'history'
 import { useGlobalStyles } from '../globalStyles'
 import { useLocalization, useSelectionService, useTheme } from '../hooks'
 
@@ -30,7 +31,7 @@ const useStyles = makeStyles(() => {
   })
 })
 
-export default function DocViewer(props: { previousLocation?: string }) {
+export default function DocViewer(props: { previousLocation?: Location }) {
   const match = useRouteMatch<{ contentId: string }>()
   const history = useHistory()
   const contentId = parseInt(match.params.contentId, 10)

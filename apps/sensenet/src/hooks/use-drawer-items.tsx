@@ -1,7 +1,6 @@
 import { Build, Dashboard, Delete, Language, People, Public, Search, Widgets } from '@material-ui/icons'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
-import { encodeBrowseData } from '../components/content'
 import { Icon } from '../components/Icon'
 import { ResponsivePersonalSettings } from '../context'
 import DefaultLocalization from '../localization/default'
@@ -78,12 +77,10 @@ export const useDrawerItems = () => {
         case 'Search':
           return applicationPaths.savedQueries
         case 'Content':
-          return `/browse/${encodeBrowseData({
-            type: (item.settings && item.settings.browseType) || settings.content.browseType,
-            root: (item.settings && item.settings.root) || '/Root/Content',
-            secondaryContent: (item.settings && item.settings.root) || '/Root/Content',
-            fieldsToDisplay: (item.settings && item.settings.columns) || settings.content.fields,
-          })}`
+          switch (item.settings?.browseType) {
+            default:
+              return applicationPaths.explore + (item.settings ? `?path=${encodeURIComponent(item.settings.root)}` : '')
+          }
         case 'UsersAndGroups':
           return applicationPaths.usersAndGroups
         case 'ContentTypes':

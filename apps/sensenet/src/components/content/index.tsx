@@ -7,7 +7,6 @@ import { useHistory, useRouteMatch } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'
 import { getPrimaryActionUrl } from '../../services'
 import Commander from './Commander'
-import { Explore } from './Explore'
 import { SimpleList } from './Simple'
 
 export const BrowseType = tuple('commander', 'explorer', 'simple')
@@ -92,14 +91,6 @@ export const Content = () => {
           onActivateItem={openItem}
           onNavigateLeft={navigate}
           onNavigateRight={navigateSecondary}
-          fieldsToDisplay={browseData.fieldsToDisplay}
-        />
-      ) : browseData.type === 'explorer' ? (
-        <Explore
-          rootPath={browseData.root || ConstantContent.PORTAL_ROOT.Path}
-          onNavigate={navigate}
-          onActivateItem={openItem}
-          parentIdOrPath={browseData.currentContent || browseData.root || ConstantContent.PORTAL_ROOT.Id}
           fieldsToDisplay={browseData.fieldsToDisplay}
         />
       ) : (

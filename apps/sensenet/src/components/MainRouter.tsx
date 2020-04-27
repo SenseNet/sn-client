@@ -1,4 +1,5 @@
 import { LoadSettingsContextProvider } from '@sensenet/hooks-react'
+import { Location } from 'history'
 import React, { lazy, Suspense, useEffect, useRef } from 'react'
 import { Route, Switch, useHistory } from 'react-router-dom'
 import { applicationPaths } from '../application-paths'
@@ -10,7 +11,7 @@ const UsersAndGroupsComponent = lazy(() => import(/* webpackChunkName: "UserAndG
 const LocalizationComponent = lazy(() => import(/* webpackChunkName: "Localization" */ './localization'))
 const ContentTypes = lazy(() => import(/* webpackChunkName: "ContentTypes" */ './content-types'))
 const WopiPage = lazy(() => import(/* webpackChunkName: "wopi" */ './wopi-page'))
-const ExploreComponent = lazy(() => import(/* webpackChunkName: "content" */ './content'))
+const ExploreComponent = lazy(() => import(/* webpackChunkName: "explore" */ './content/Explore'))
 const DashboardComponent = lazy(() => import(/* webpackChunkName: "dashboard" */ './dashboard'))
 const SearchComponent = lazy(() => import(/* webpackChunkName: "search" */ './search'))
 const SavedQueriesComponent = lazy(() => import(/* webpackChunkName: "saved-queries" */ './search/saved-queries'))
@@ -27,7 +28,7 @@ const PersonalSettingsEditor = lazy(() =>
 )
 
 export const MainRouter = () => {
-  const previousLocation = useRef<string>()
+  const previousLocation = useRef<Location>()
   const history = useHistory()
 
   useEffect(() => {
@@ -40,7 +41,7 @@ export const MainRouter = () => {
       if (location.pathname.includes(applicationPaths.preview)) {
         return
       }
-      previousLocation.current = location.pathname
+      previousLocation.current = location
     })
     return () => {
       listen()
@@ -59,7 +60,7 @@ export const MainRouter = () => {
             <EventListComponent />
           </Route>
 
-          <Route path="/browse/:browseData?">
+          <Route path={applicationPaths.explore}>
             <ExploreComponent />
           </Route>
 
