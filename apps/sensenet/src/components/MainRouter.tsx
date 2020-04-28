@@ -11,7 +11,7 @@ const UsersAndGroupsComponent = lazy(() => import(/* webpackChunkName: "UserAndG
 const LocalizationComponent = lazy(() => import(/* webpackChunkName: "Localization" */ './localization'))
 const ContentTypes = lazy(() => import(/* webpackChunkName: "ContentTypes" */ './content-types'))
 const WopiPage = lazy(() => import(/* webpackChunkName: "wopi" */ './wopi-page'))
-const ExploreComponent = lazy(() => import(/* webpackChunkName: "explore" */ './content/Explore'))
+const ExploreComponent = lazy(() => import(/* webpackChunkName: "explore" */ './content'))
 const DashboardComponent = lazy(() => import(/* webpackChunkName: "dashboard" */ './dashboard'))
 const SearchComponent = lazy(() => import(/* webpackChunkName: "search" */ './search'))
 const SavedQueriesComponent = lazy(() => import(/* webpackChunkName: "saved-queries" */ './search/saved-queries'))
@@ -60,7 +60,7 @@ export const MainRouter = () => {
             <EventListComponent />
           </Route>
 
-          <Route path={applicationPaths.explore}>
+          <Route path={`${applicationPaths.browse}/:browseType?`}>
             <ExploreComponent />
           </Route>
 

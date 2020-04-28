@@ -26,7 +26,7 @@ export class NavigationCommandProvider implements CommandProvider {
       ...[
         {
           primaryText: this.localizationValues.contentPrimary,
-          url: applicationPaths.explore,
+          url: applicationPaths.browse,
           secondaryText: this.localizationValues.contentSecondary,
           content: { Type: 'PortalRoot' } as any,
           keywords: 'explore browse repository',

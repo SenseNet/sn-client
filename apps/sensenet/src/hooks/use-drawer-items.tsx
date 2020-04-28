@@ -77,10 +77,9 @@ export const useDrawerItems = () => {
         case 'Search':
           return applicationPaths.savedQueries
         case 'Content':
-          switch (item.settings?.browseType) {
-            default:
-              return applicationPaths.explore + (item.settings ? `?path=${encodeURIComponent(item.settings.root)}` : '')
-          }
+          return `${applicationPaths.browse}/${settings.content.browseType}${
+            item.settings ? `?path=${encodeURIComponent(settings.content.root)}` : ''
+          }`
         case 'UsersAndGroups':
           return applicationPaths.usersAndGroups
         case 'ContentTypes':
@@ -141,7 +140,7 @@ export const useDrawerItems = () => {
     localization.titles,
     logger,
     repo,
-    settings.content.browseType,
+    settings.content,
     settings.content.fields,
     settings.drawer.items,
   ])

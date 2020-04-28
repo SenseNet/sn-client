@@ -29,7 +29,7 @@ export class CommandProviderManager {
   public async getItems(options: SearchOptions) {
     const promises = this.Providers.filter((p) => p.shouldExec(options)).map((provider) => provider.getItems(options))
     const results = await Promise.all(promises)
-    return results.reduce((acc, val) => acc.concat(val), []) // flattern
+    return results.reduce((acc, val) => acc.concat(val), []) // flatten
   }
 
   constructor(private readonly injector: Injector) {}

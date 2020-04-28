@@ -19,5 +19,5 @@ export const applicationPaths = {
   dashboard: '/dashboard',
   contentTypes: '/content-types',
   search: '/search',
-  explore: '/explore',
+  browse: '/browse',
 }
