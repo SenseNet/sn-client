@@ -137,14 +137,17 @@ export const pathHelperTests = describe('PathHelper', () => {
   describe('#isAncestorOf()', () => {
     it('should return true if content is ancestor', () => {
       expect(PathHelper.isAncestorOf('Root/Example', 'Root/Example/Content1')).toBe(true)
+      expect(PathHelper.isAncestorOf('/Root/Example', '/Root/Example/Content1')).toBe(true)
     })
 
     it('should return true if content is ancestor and ends with a slash', () => {
       expect(PathHelper.isAncestorOf('Root/Example/', 'Root/Example/Content1')).toBe(true)
+      expect(PathHelper.isAncestorOf('/Root/Example/', '/Root/Example/Content1')).toBe(true)
     })
 
     it('should return false if content is not an ancestor', () => {
       expect(PathHelper.isAncestorOf('Root/Example/', 'Root/Example2/Content1')).toBe(false)
+      expect(PathHelper.isAncestorOf('/Root/Example/', '/Root/Example2/Content1')).toBe(false)
     })
   })
 
