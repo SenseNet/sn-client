@@ -1,5 +1,7 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import { Button, Container, createStyles, Grid, makeStyles, Theme, Typography } from '@material-ui/core'
+import { ConstantContent } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
+import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsProvider,
   CurrentChildrenProvider,
@@ -8,13 +10,14 @@ import {
   useRepository,
 } from '@sensenet/hooks-react'
 import clsx from 'clsx'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { ConstantContent } from '@sensenet/client-core'
-import { GenericContent } from '@sensenet/default-content-types'
+import { applicationPaths } from '../../application-paths'
 import { ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
+import { useQuery } from '../../hooks/use-query'
+import { getPrimaryActionUrl } from '../../services'
 import { ContentList } from '../content-list/content-list'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { FullScreenLoader } from '../full-screen-loader'
@@ -22,9 +25,6 @@ import { editviewFileResolver, Icon } from '../Icon'
 import { ActionNameType } from '../react-control-mapper'
 import TreeWithData from '../tree/tree-with-data'
 import { EditView } from '../view-controls/edit-view'
-import { applicationPaths } from '../../application-paths'
-import { getPrimaryActionUrl } from '../../services'
-import { useQuery } from '../../hooks/use-query'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -69,10 +69,15 @@ export default function Explore() {
   const [action, setAction] = useState<ActionNameType>()
   const [isTreeLoading, setIsTreeLoading] = useState(false)
   const repo = useRepository()
+  /**
+   * INFO(Zoli): This is going to find the very first drawer item that has a type Content
+   * it is not going to work if a user has multiple of that type.
+   **/
   const rootPath =
     personalSettings.drawer.items.find((drawerItem) => drawerItem.itemType === 'Content')?.settings.root ??
     ConstantContent.PORTAL_ROOT.Path
   const [currentPath, setCurrentPath] = useState(pathFromQuery ? decodeURIComponent(pathFromQuery) : rootPath)
+  const [isPathValid, setIsPathValid] = useState<boolean>()
 
   const setFormOpen = (actionName: ActionNameType) => {
     setAction(actionName)
@@ -82,6 +87,40 @@ export default function Explore() {
   const onNavigate = (content: GenericContent) => {
     history.push(`${applicationPaths.explore}?path=${encodeURIComponent(content.Path)}`)
     setCurrentPath(content.Path)
+  }
+
+  useEffect(() => {
+    // TODO: this should be refactored when data fetching is united
+    async function checkPath() {
+      if (currentPath === rootPath) {
+        setIsPathValid(true)
+        return
+      }
+      try {
+        await repo.load({ idOrPath: currentPath })
+        setIsPathValid(true)
+      } catch {
+        setIsPathValid(false)
+      }
+    }
+    checkPath()
+  }, [currentPath, repo, rootPath])
+
+  if (isPathValid === undefined) {
+    return null
+  }
+
+  if (!isPathValid) {
+    return (
+      <Container maxWidth="sm">
+        <Grid container direction="column" justify="center">
+          <Typography align="center" variant="h5" component="p">
+            Cannot find path {currentPath}
+          </Typography>
+          <Button onClick={() => onNavigate({ Path: rootPath } as any)}>Go to root</Button>
+        </Grid>
+      </Container>
+    )
   }
 
   return (
@@ -108,7 +147,7 @@ export default function Explore() {
                     setIsFormOpened(false)
                     onNavigate(item)
                   }}
-                  parentPath={rootPath}
+                  parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
                   activeItemPath={currentPath}
                   setFormOpen={(actionName) => setFormOpen(actionName)}
                   onTreeLoadingChange={(isLoading) => setIsTreeLoading(isLoading)}
