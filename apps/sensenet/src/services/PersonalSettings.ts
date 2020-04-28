@@ -24,6 +24,11 @@ export interface Widget<T> {
   widgetType: typeof widgetTypes[number]
   settings: T
   minWidth?: PlatformDependent<number | string>
+  classes?: any
+}
+
+export interface StaticWidget {
+  classes?: any
 }
 
 export interface MarkdownWidget extends Widget<{ content: string }> {
@@ -274,7 +279,7 @@ export const defaultSettings: PersonalSettingsType = {
         widgetType: 'markdown',
         settings: {
           content:
-            "<div style='text-align:center;'>If you need any help or further information, feel free to contact us!<br /><br /><a target='_blank' href='https://www.sensenet.com/contact' style='text-decoration: none;'><button style='margin-bottom: 2em' class='MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-contained MuiButton-containedPrimary'>Contact us</button></a></div>",
+            "<div style='text-align:center;'>If you need any help or further information, feel free to contact us!<br /><br /><a target='_blank' href='https://www.sensenet.com/contact' style='text-decoration: none;'><button class='MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-contained MuiButton-containedPrimary'>Contact us</button></a></div>",
         },
         minWidth: {
           default: '100%',

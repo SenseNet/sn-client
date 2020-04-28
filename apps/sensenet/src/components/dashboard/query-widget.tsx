@@ -1,4 +1,4 @@
-import { IconButton, Tooltip, Typography } from '@material-ui/core'
+import { IconButton, Paper, Tooltip, Typography } from '@material-ui/core'
 import OpenInNewTwoTone from '@material-ui/icons/OpenInNewTwoTone'
 import Refresh from '@material-ui/icons/RefreshTwoTone'
 import { ConstantContent, ODataParams } from '@sensenet/client-core'
@@ -29,6 +29,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
   const replacedTitle = useStringReplace(props.title)
   const localization = useLocalization().dashboard
   const selectionService = useSelectionService()
+  const inheritedClasses = props.classes
 
   useEffect(() => {
     setLoadChildrenSettings({
@@ -67,7 +68,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
   }, [repo, loadChildrenSettings, refreshToken])
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <div className={inheritedClasses.root} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <div
         style={{
           display: 'flex',
@@ -76,7 +77,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
         }}>
         {replacedTitle ? (
           <Tooltip title={replacedTitle}>
-            <Typography variant="h5" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <Typography variant="h2" className={inheritedClasses.title}>
               {replacedTitle}
             </Typography>
           </Tooltip>
@@ -106,16 +107,16 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
         ) : null}
       </div>
       {props.settings.countOnly ? (
-        <div
+        <Paper
+          className={inheritedClasses.container}
           style={{
-            minHeight: 100,
-            height: '100%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-          }}>
+          }}
+          elevation={0}>
           <Typography variant="h2">{count}</Typography>
-        </div>
+        </Paper>
       ) : (
         <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>
           <CurrentChildrenContext.Provider value={items}>
