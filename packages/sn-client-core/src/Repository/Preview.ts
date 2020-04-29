@@ -62,7 +62,7 @@ export class Preview {
       },
     })
 
-    const availablePreviews = (response as Array<PreviewImageData & { PreviewAvailable?: string }>).map((preview) => {
+    const availablePreviews = (response as PreviewImageData[]).map((preview) => {
       if (preview.PreviewAvailable) {
         preview.PreviewImageUrl = `${options.document.hostName}${preview.PreviewAvailable}`
         preview.ThumbnailImageUrl = `${options.document.hostName}${preview.PreviewAvailable.replace(
