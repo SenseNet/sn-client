@@ -1,5 +1,5 @@
 import { using } from '@sensenet/client-utils'
-import { ActionModel, ContentType, User } from '@sensenet/default-content-types'
+import { ActionModel, User } from '@sensenet/default-content-types'
 import { ActionOptions, ODataWopiResponse, Repository, SharingLevel, SharingMode } from '../src'
 import { Content } from '../src/Models/Content'
 import { ODataCollectionResponse } from '../src/Models/ODataCollectionResponse'
@@ -597,14 +597,23 @@ describe('Repository', () => {
   })
 
   describe('metadata', () => {
-    it('execute getMetadata', async () => {
+    beforeEach(() => {
       mockResponse.json = async () => ({
         DataServices: { DataServiceVersion: '3.0' },
         Version: '1.0',
       })
+    })
 
+    it('execute getMetadata', async () => {
       const mockMetadataResponseData = await mockResponse.json()
       const data = await repository.getMetadata()
+
+      expect(data).toEqual(mockMetadataResponseData)
+    })
+
+    it('execute getMetadata with id', async () => {
+      const mockMetadataResponseData = await mockResponse.json()
+      const data = await repository.getMetadata(1)
 
       expect(data).toEqual(mockMetadataResponseData)
     })
