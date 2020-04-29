@@ -8,7 +8,11 @@ import { FullScreenLoader } from '../components/full-screen-loader'
 import { NotificationComponent } from '../components/NotificationComponent'
 import { getAuthConfig } from '../services/auth-config'
 import { useGlobalStyles } from '../globalStyles'
-import NotAuthenticated from '../components/not-authenticated'
+import { AuthenticatingOverride } from '../components/login/authenticating-override'
+import { NotAuthorizedOverride } from '../components/login/not-authorized-override'
+import { SessionLostOverride } from '../components/login/session-lost-override'
+import { CallbackComponentOverride } from '../components/login/callback-component-override'
+import { NotAuthenticatedOverride } from '../components/login/not-authenticated-override'
 
 const LoginPage = lazy(() => import(/* webpackChunkName: "login" */ '../components/login/login-page'))
 
@@ -21,6 +25,8 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
   const globalClasses = useGlobalStyles()
   const history = useHistory()
   const [authConfig, setAuthConfig] = useState<UserManagerSettings>()
+  const searchParams = new URLSearchParams(history.location.search)
+  const repoFromUrl = searchParams.get('repoUrl')
 
   useEffect(() => {
     const configString = window.localStorage.getItem(authConfigKey)
@@ -30,6 +36,12 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
       setRepoUrl(config.extraQueryParams.snrepo)
     }
   }, [])
+
+  useEffect(() => {
+    if (repoFromUrl !== null) {
+      setRepoUrl(repoFromUrl)
+    }
+  }, [repoFromUrl])
 
   const getConfig = useCallback(async () => {
     if (!repoUrl) {
@@ -72,7 +84,16 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
   }
 
   return (
-    <AuthenticationProvider configuration={authConfig} history={history} notAuthenticated={<NotAuthenticated />}>
+    <AuthenticationProvider
+      configuration={authConfig}
+      history={history}
+      authenticating={<AuthenticatingOverride />}
+      notAuthenticated={<NotAuthenticatedOverride />}
+      notAuthorized={<NotAuthorizedOverride />}
+      sessionLost={(props) => {
+        return <SessionLostOverride onAuthenticate={props.onAuthenticate} />
+      }}
+      callbackComponentOverride={<CallbackComponentOverride />}>
       <RepoProvider repoUrl={repoUrl}>{children}</RepoProvider>
     </AuthenticationProvider>
   )
