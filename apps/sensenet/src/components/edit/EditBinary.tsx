@@ -19,9 +19,8 @@ const useStyles = makeStyles(() => {
 })
 
 export default function Editor() {
-  const match = useRouteMatch<{ contentId?: string }>()
-  // TODO check for null
-  const contentId = parseInt(match.params.contentId!, 10)
+  const match = useRouteMatch<{ contentId: string }>()
+  const contentId = parseInt(match.params.contentId, 10)
   const selectionService = useSelectionService()
   const { content } = useLoadContent({ idOrPath: contentId })
   const classes = useStyles()
