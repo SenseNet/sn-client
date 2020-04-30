@@ -42,7 +42,10 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
         logger.verbose({ message: 'There are no actions in content', data: contentFromCallback })
         return
       }
-      const contentActions = contentFromCallback.Actions.filter((action) => !action.Forbidden)
+      const contentActions = contentFromCallback.Actions.filter((action) => !action.Forbidden).filter(
+        (item, i, arr) => arr.findIndex((t) => t.Name === item.Name) === i,
+      )
+
       if (contentActions.some((action) => action.Name === 'Browse') && contentFromCallback.IsFile) {
         contentActions.push({
           Name: 'Download',
