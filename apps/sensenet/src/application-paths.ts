@@ -1,23 +1,47 @@
-const authPrefix = '/authentication'
-
 export const applicationPaths = {
-  loginCallback: `${authPrefix}/login-callback`,
-  silentCallback: `${authPrefix}/silent-callback`,
+  loginCallback: '/authentication/login-callback',
+  silentCallback: '/authentication/silent-callback',
   personalSettings: '/personal-settings',
-  events: '/events',
+  events: '/events/:eventGuid?',
   savedQueries: '/saved-queries',
   setup: '/setup',
   trash: '/trash',
   localization: '/localization',
   usersAndGroups: '/users-and-groups',
-  editBinary: '/edit-binary',
-  editProperties: '/edit-properties',
-  browseProperties: '/browse-properties',
+  editBinary: '/edit-binary/:contentId',
+  editProperties: '/edit-properties/:contentId',
+  browseProperties: '/browse-properties/:contentId',
   newProperties: '/new-properties',
-  preview: '/preview',
-  wopi: '/wopi',
-  dashboard: '/dashboard',
+  preview: '/preview/:contentId',
+  wopi: '/wopi/:contentId/:action',
+  dashboard: '/dashboard/:dashboardName',
   contentTypes: '/content-types',
   search: '/search',
-  browse: '/browse',
+  browse: '/browse/:browseType?',
+} as const
+
+type RoutesWithContentIdParams = keyof Pick<
+  typeof applicationPaths,
+  'editProperties' | 'editBinary' | 'browseProperties' | 'preview'
+>
+
+type Options =
+  | { path: typeof applicationPaths['events']; params?: { eventGuid: string; [index: string]: string } }
+  | { path: typeof applicationPaths['browse']; params?: { browseType: string; [index: string]: string } }
+  | { path: typeof applicationPaths['dashboard']; params: { dashboardName: string; [index: string]: string } }
+  | {
+      path: typeof applicationPaths['wopi']
+      params: { contentId: string; action: string; [index: string]: string }
+    }
+  | { path: typeof applicationPaths[RoutesWithContentIdParams]; params: { contentId: number; [index: string]: number } }
+
+export const resolvePathParams = ({ path, params }: Options) => {
+  let currentPath: string = path
+  if (!params) {
+    return `/${path.split('/')[1]}`
+  }
+  Object.keys(params).forEach((key) => {
+    currentPath = currentPath.replace(`:${key}`, params[key].toString())
+  })
+  return currentPath
 }

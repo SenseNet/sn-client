@@ -1,6 +1,7 @@
 import { Build, Dashboard, Delete, Language, People, Public, Search, Widgets } from '@material-ui/icons'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
+import { applicationPaths, resolvePathParams } from '../application-paths'
 import { Icon } from '../components/Icon'
 import { ResponsivePersonalSettings } from '../context'
 import DefaultLocalization from '../localization/default'
@@ -11,7 +12,6 @@ import {
   DrawerItem as DrawerItemSetting,
   QueryDrawerItem,
 } from '../services/PersonalSettings'
-import { applicationPaths } from '../application-paths'
 import { useLocalization } from '.'
 
 export interface DrawerItem {
@@ -77,9 +77,10 @@ export const useDrawerItems = () => {
         case 'Search':
           return applicationPaths.savedQueries
         case 'Content':
-          return `${applicationPaths.browse}/${settings.content.browseType}${
-            item.settings ? `?path=${encodeURIComponent(settings.content.root)}` : ''
-          }`
+          return `${resolvePathParams({
+            path: applicationPaths.browse,
+            params: { browseType: settings.content.browseType },
+          })}${item.settings ? `?path=${encodeURIComponent(settings.content.root)}` : ''}`
         case 'UsersAndGroups':
           return applicationPaths.usersAndGroups
         case 'ContentTypes':
@@ -93,7 +94,10 @@ export const useDrawerItems = () => {
         case 'Setup':
           return applicationPaths.setup
         case 'Dashboard':
-          return `${applicationPaths.dashboard}/${encodeURIComponent(item.settings?.dashboardName ?? '')}`
+          return resolvePathParams({
+            path: applicationPaths.dashboard,
+            params: { dashboardName: encodeURIComponent(item.settings?.dashboardName ?? '') },
+          })
         default:
           return '/'
       }

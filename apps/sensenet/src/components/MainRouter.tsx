@@ -1,7 +1,7 @@
 import { LoadSettingsContextProvider } from '@sensenet/hooks-react'
 import { Location } from 'history'
 import React, { lazy, Suspense, useEffect, useRef } from 'react'
-import { Route, Switch, useHistory } from 'react-router-dom'
+import { matchPath, Route, Switch, useHistory } from 'react-router-dom'
 import { applicationPaths } from '../application-paths'
 import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
@@ -38,7 +38,7 @@ export const MainRouter = () => {
        *  this way the user can go back to the location where she
        *  opened the viewer.
        * */
-      if (location.pathname.includes(applicationPaths.preview)) {
+      if (matchPath(location.pathname, applicationPaths.preview)) {
         return
       }
       previousLocation.current = location
@@ -56,11 +56,11 @@ export const MainRouter = () => {
             <PersonalSettingsEditor />
           </Route>
 
-          <Route path={`${applicationPaths.events}/:eventGuid?`}>
+          <Route path={applicationPaths.events}>
             <EventListComponent />
           </Route>
 
-          <Route path={`${applicationPaths.browse}/:browseType?`}>
+          <Route path={applicationPaths.browse}>
             <ExploreComponent />
           </Route>
 
@@ -96,15 +96,15 @@ export const MainRouter = () => {
             <ContentTypes />
           </Route>
 
-          <Route path={`${applicationPaths.editBinary}/:contentId?`}>
+          <Route path={applicationPaths.editBinary}>
             <EditBinary />
           </Route>
 
-          <Route path={`${applicationPaths.editProperties}/:contentId?`}>
+          <Route path={applicationPaths.editProperties}>
             <EditProperties />
           </Route>
 
-          <Route path={`${applicationPaths.browseProperties}/:contentId?`}>
+          <Route path={applicationPaths.browseProperties}>
             <BrowseProperties />
           </Route>
 
@@ -112,15 +112,15 @@ export const MainRouter = () => {
             <NewProperties />
           </Route>
 
-          <Route path={`${applicationPaths.preview}/:contentId?`}>
+          <Route path={applicationPaths.preview}>
             <DocumentViewerComponent previousLocation={previousLocation.current} />
           </Route>
 
-          <Route path={`${applicationPaths.wopi}/:contentId/:action?`}>
+          <Route path={applicationPaths.wopi}>
             <WopiPage />
           </Route>
 
-          <Route path={`${applicationPaths.dashboard}/:dashboardName?`}>
+          <Route path={applicationPaths.dashboard}>
             <DashboardComponent />
           </Route>
 

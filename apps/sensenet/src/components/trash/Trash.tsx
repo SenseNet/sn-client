@@ -2,7 +2,7 @@ import { ODataParams } from '@sensenet/client-core'
 import { TrashBin } from '@sensenet/default-content-types'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
-import { applicationPaths } from '../../application-paths'
+import { applicationPaths, resolvePathParams } from '../../application-paths'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLoadContent } from '../../hooks/use-loadContent'
 import { SimpleList } from '../content/Simple'
@@ -19,7 +19,11 @@ const Trash = React.memo(() => {
     <div className={globalClasses.contentWrapper}>
       {content ? (
         <TrashHeader
-          iconClickHandler={() => history.push(`${applicationPaths.editProperties}/${content.Id}`)}
+          iconClickHandler={() =>
+            history.push(
+              resolvePathParams({ path: applicationPaths.editProperties, params: { contentId: content.Id } }),
+            )
+          }
           trash={content}
         />
       ) : null}

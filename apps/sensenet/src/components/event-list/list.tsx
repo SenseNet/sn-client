@@ -10,7 +10,7 @@ import { LeveledLogEntry, LogLevel } from '@sensenet/client-utils'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { applicationPaths } from '../../application-paths'
+import { applicationPaths, resolvePathParams } from '../../application-paths'
 import { useLocalization } from '../../hooks'
 import { getPrimaryActionUrl } from '../../services'
 import { Icon } from '../Icon'
@@ -76,14 +76,14 @@ export const List: React.FunctionComponent<ListProps> = (props) => {
               <TableCell>{row.data.added}</TableCell>
               <TableCell>
                 {row.data.details ? (
-                  <Link to={`${applicationPaths.events}/${row.data.guid}`}>
+                  <Link to={resolvePathParams({ path: applicationPaths.events, params: { eventGuid: row.data.guid } })}>
                     <IconButton>
                       <OpenInNewTwoTone />
                     </IconButton>
                   </Link>
                 ) : null}
                 {row.data.compare ? (
-                  <Link to={`${applicationPaths.events}/${row.data.guid}`}>
+                  <Link to={resolvePathParams({ path: applicationPaths.events, params: { eventGuid: row.data.guid } })}>
                     <IconButton>
                       <CompareArrows />
                     </IconButton>

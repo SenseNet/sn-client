@@ -3,7 +3,7 @@ import { isExtendedError, ODataWopiResponse } from '@sensenet/client-core'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
-import { applicationPaths } from '../application-paths'
+import { applicationPaths, resolvePathParams } from '../application-paths'
 import { useLocalization } from '../hooks'
 import { FullScreenLoader } from './full-screen-loader'
 
@@ -78,7 +78,12 @@ export default function WopiPage() {
           {match.params.action !== 'view' ? (
             <Button
               onClick={() => {
-                history.push(`${applicationPaths.wopi}/${match.params.contentId}/view`)
+                history.push(
+                  resolvePathParams({
+                    path: applicationPaths.wopi,
+                    params: { action: 'view', contentId: match.params.contentId!.toString() },
+                  }),
+                )
               }}>
               {localization.tryOpenRead}
             </Button>

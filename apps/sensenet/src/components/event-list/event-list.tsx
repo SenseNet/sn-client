@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useRouteMatch } from 'react-router-dom'
 import { useEventService, useLocalization, useTheme } from '../../hooks'
 import { Icon } from '../Icon'
-import { applicationPaths } from '../../application-paths'
+import { applicationPaths, resolvePathParams } from '../../application-paths'
 import { EventDetails } from './details'
 import { Filter } from './filter'
 import { FilterContextProvider } from './filter-context'
@@ -42,7 +42,7 @@ export default function EventList() {
             <Typography variant="h4">{currentEvent ? currentEvent.message : 'Event list'} </Typography>
           </div>
           {currentEvent ? (
-            <Link to={applicationPaths.events}>
+            <Link to={resolvePathParams({ path: applicationPaths.events })}>
               <Button style={{ textDecoration: 'none' }}>
                 <KeyboardBackspace /> {localization.back}
               </Button>

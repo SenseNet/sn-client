@@ -1,7 +1,7 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import { useDownload, useLogger, useRepository } from '@sensenet/hooks-react'
 import { useHistory } from 'react-router'
-import { applicationPaths } from '../../application-paths'
+import { applicationPaths, resolvePathParams } from '../../application-paths'
 import { useLoadContent } from '../../hooks'
 import { getPrimaryActionUrl } from '../../services'
 import { useDialog } from '../dialogs'
@@ -23,11 +23,17 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
         openDialog({ name: 'delete', props: { content: [content] } })
         break
       case 'Edit':
-        !halfPage ? history.push(`${applicationPaths.editProperties}/${content.Id}`) : setFormOpen && setFormOpen()
+        !halfPage
+          ? history.push(
+              resolvePathParams({ path: applicationPaths.editProperties, params: { contentId: content.Id } }),
+            )
+          : setFormOpen && setFormOpen()
         break
       case 'Browse':
         if (!halfPage) {
-          history.push(`${applicationPaths.browseProperties}/${content.Id}`)
+          history.push(
+            resolvePathParams({ path: applicationPaths.browseProperties, params: { contentId: content.Id } }),
+          )
         } else {
           setFormOpen && setFormOpen()
         }
@@ -74,10 +80,20 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
         download.download()
         break
       case 'WopiOpenView':
-        history.push(`${applicationPaths.wopi}/${content.Id}/view`)
+        history.push(
+          resolvePathParams({
+            path: applicationPaths.wopi,
+            params: { action: 'view', contentId: content.Id.toString() },
+          }),
+        )
         break
       case 'WopiOpenEdit':
-        history.push(`${applicationPaths.wopi}/${content.Id}/edit`)
+        history.push(
+          resolvePathParams({
+            path: applicationPaths.wopi,
+            params: { action: 'edit', contentId: content.Id.toString() },
+          }),
+        )
         break
       case 'Versions':
         openDialog({ name: 'versions', props: { content }, dialogProps: { maxWidth: 'md', open: true } })

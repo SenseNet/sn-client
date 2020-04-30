@@ -2,7 +2,7 @@ import { Injectable } from '@sensenet/client-utils'
 import { CommandPaletteItem } from '../../components/command-palette/CommandPalette'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
 import { LocalizationService } from '../LocalizationService'
-import { applicationPaths } from '../../application-paths'
+import { applicationPaths, resolvePathParams } from '../../application-paths'
 
 @Injectable({ lifetime: 'transient' })
 export class NavigationCommandProvider implements CommandProvider {
@@ -26,7 +26,7 @@ export class NavigationCommandProvider implements CommandProvider {
       ...[
         {
           primaryText: this.localizationValues.contentPrimary,
-          url: applicationPaths.browse,
+          url: resolvePathParams({ path: applicationPaths.browse }),
           secondaryText: this.localizationValues.contentSecondary,
           content: { Type: 'PortalRoot' } as any,
           keywords: 'explore browse repository',
@@ -50,7 +50,7 @@ export class NavigationCommandProvider implements CommandProvider {
         },
         {
           primaryText: this.localizationValues.eventsPrimary,
-          url: applicationPaths.events,
+          url: resolvePathParams({ path: applicationPaths.events }),
           secondaryText: this.localizationValues.eventsSecondary,
           content: { Type: 'EventLog' } as any,
           keywords: 'event events error warning log logs',

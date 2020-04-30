@@ -1,6 +1,6 @@
 import { Repository } from '@sensenet/client-core'
 import { ActionModel, ContentType, File, GenericContent, Resource, Settings } from '@sensenet/default-content-types'
-import { applicationPaths } from '../application-paths'
+import { applicationPaths, resolvePathParams } from '../application-paths'
 
 export function getMonacoLanguage(content: GenericContent, repository: Repository) {
   if (repository.schemas.isContentFromType<Settings>(content, 'Settings') || content.Type === 'PersonalSettings') {
@@ -51,7 +51,7 @@ export function getPrimaryActionUrl(content: GenericContent, repository: Reposit
   }
 
   if (getMonacoLanguage(content, repository)) {
-    return `${applicationPaths.editBinary}/${content.Id}`
+    return resolvePathParams({ path: applicationPaths.editBinary, params: { contentId: content.Id } })
   }
 
   if (
@@ -60,7 +60,7 @@ export function getPrimaryActionUrl(content: GenericContent, repository: Reposit
     (content as any).Binary.__mediaresource.content_type !== 'text/css' &&
     (content as any).Binary.__mediaresource.content_type !== 'text/xml'
   ) {
-    return `${applicationPaths.preview}/${content.Id}`
+    return resolvePathParams({ path: applicationPaths.preview, params: { contentId: content.Id } })
   }
 
   if (
@@ -68,7 +68,10 @@ export function getPrimaryActionUrl(content: GenericContent, repository: Reposit
     (content.Actions as any[]).length > 0 &&
     (content.Actions as ActionModel[]).find((a) => a.Name === 'WopiOpenEdit')
   ) {
-    return `${applicationPaths.wopi}/${content.Id}/edit`
+    return resolvePathParams({
+      path: applicationPaths.wopi,
+      params: { action: 'edit', contentId: content.Id.toString() },
+    })
   }
 
   if (
@@ -76,8 +79,11 @@ export function getPrimaryActionUrl(content: GenericContent, repository: Reposit
     (content.Actions as any[]).length > 0 &&
     (content.Actions as ActionModel[]).find((a) => a.Name === 'WopiOpenView')
   ) {
-    return `${applicationPaths.wopi}/${content.Id}/read`
+    return resolvePathParams({
+      path: applicationPaths.wopi,
+      params: { action: 'view', contentId: content.Id.toString() },
+    })
   }
 
-  return `${applicationPaths.editProperties}/${content.Id}`
+  return resolvePathParams({ path: applicationPaths.editProperties, params: { contentId: content.Id } })
 }
