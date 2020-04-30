@@ -14,6 +14,8 @@ import MuiPublishIcon from '@material-ui/icons/Publish'
 import HistoryIcon from '@material-ui/icons/History'
 import ReportProblemIcon from '@material-ui/icons/ReportProblem'
 import AppsIcon from '@material-ui/icons/Apps'
+import ShareIcon from '@material-ui/icons/Share'
+import AddIcon from '@material-ui/icons/AddCircleOutline'
 
 export const getIcon = (actionName: string) => {
   switch (actionName) {
@@ -47,6 +49,10 @@ export const getIcon = (actionName: string) => {
       return <UndoIcon />
     case 'versions':
       return <HistoryIcon />
+    case 'share':
+      return <ShareIcon />
+    case 'add':
+      return <AddIcon />
     default:
       return <AppsIcon />
   }
