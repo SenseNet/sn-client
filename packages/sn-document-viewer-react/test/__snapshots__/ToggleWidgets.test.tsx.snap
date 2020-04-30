@@ -11,11 +11,6 @@ exports[`Component ToggleBase should render without crashing 1`] = `
   <WithStyles(ForwardRef(IconButton))
     color="primary"
     onClick={[Function]}
-    style={
-      Object {
-        "opacity": 0.5,
-      }
-    }
     title="Test"
   >
     <span>
@@ -53,7 +48,6 @@ exports[`Component ToggleThumbnails should render without crashing 1`] = `
 >
   <svg
     enableBackground="new 0 0 1000 1000"
-    fill="#ffffff"
     style={
       Object {
         "height": "1em",
