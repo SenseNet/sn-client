@@ -1,12 +1,12 @@
-import React from 'react'
-import { styles } from '../styles'
+import React, { CSSProperties } from 'react'
+//import { styles } from '../styles'
 import { useLocalization, useViewerState } from '../../hooks'
 import { ToggleBase } from './ToggleBase'
 
 /**
  * Document widget component that toggles the thumbnails
  */
-export const ToggleThumbnailsWidget: React.FC = () => {
+export const ToggleThumbnailsWidget: React.FC<{ style?: CSSProperties; activeColor?: string }> = (props) => {
   const localization = useLocalization()
   const viewerState = useViewerState()
   return (
@@ -17,8 +17,11 @@ export const ToggleThumbnailsWidget: React.FC = () => {
       <svg
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ width: '1em', height: '1em' }}
-        fill={viewerState.showThumbnails ? styles.colors.icon.inactive : styles.colors.icon.active}
+        style={
+          viewerState.showThumbnails
+            ? { width: '1em', height: '1em', fill: props.activeColor }
+            : { width: '1em', height: '1em', ...props.style }
+        }
         viewBox="0 0 1000 1000"
         enableBackground="new 0 0 1000 1000">
         <g>

@@ -51,6 +51,10 @@ const useStyles = makeStyles((theme: Theme) =>
     themeSwitcher: {
       color: theme.palette.primary.main,
       fontSize: '14px',
+      '& .MuiButtonBase-root': {
+        padding: '2px',
+        color: theme.palette.type === 'light' ? theme.palette.common.white : theme.palette.common.black,
+      },
     },
   }),
 )
