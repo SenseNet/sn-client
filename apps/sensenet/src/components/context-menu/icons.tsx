@@ -16,6 +16,7 @@ import ReportProblemIcon from '@material-ui/icons/ReportProblem'
 import AppsIcon from '@material-ui/icons/Apps'
 import ShareIcon from '@material-ui/icons/Share'
 import AddIcon from '@material-ui/icons/AddCircleOutline'
+import RestoreIcon from '@material-ui/icons/RestoreFromTrash'
 
 export const getIcon = (actionName: string) => {
   switch (actionName) {
@@ -53,6 +54,8 @@ export const getIcon = (actionName: string) => {
       return <ShareIcon />
     case 'add':
       return <AddIcon />
+    case 'restore':
+      return <RestoreIcon />
     default:
       return <AppsIcon />
   }
