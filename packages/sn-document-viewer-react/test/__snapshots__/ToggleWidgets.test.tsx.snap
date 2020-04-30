@@ -50,6 +50,7 @@ exports[`Component ToggleThumbnails should render without crashing 1`] = `
     enableBackground="new 0 0 1000 1000"
     style={
       Object {
+        "fill": "black",
         "height": "1em",
         "width": "1em",
       }

@@ -30,7 +30,14 @@ describe('Component', () => {
   })
 
   it('ToggleThumbnails should render without crashing', () => {
-    const wrapper = shallow(<ToggleThumbnailsWidget />)
+    const wrapper = shallow(
+      <ToggleThumbnailsWidget
+        style={{
+          fill: 'black',
+        }}
+        activeColor="pink"
+      />,
+    )
     expect(wrapper).toMatchSnapshot()
   })
 
