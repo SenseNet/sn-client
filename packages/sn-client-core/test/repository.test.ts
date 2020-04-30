@@ -25,10 +25,6 @@ describe('Repository', () => {
     repository = new Repository(undefined, fetchMock)
   })
 
-  afterEach(() => {
-    repository.dispose()
-  })
-
   it('Should be constructed', () => {
     expect(repository).toBeInstanceOf(Repository)
   })
@@ -90,7 +86,7 @@ describe('Repository', () => {
         expect(resp.d).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', (done) => {
+      it('should throw on unsuccessful request', (done) => {
         ;(mockResponse as any).ok = false
         repository
           .load({
@@ -115,7 +111,7 @@ describe('Repository', () => {
         await countRepository.count({ path: '/Root/Content' })
       })
 
-      it('should throw on unsuccessfull request', async () => {
+      it('should throw on unsuccessful request', async () => {
         ;(mockResponse as any).ok = false
         await expect(repository.count({ path: 'Root/Content' })).rejects.toThrow()
       })
@@ -138,7 +134,7 @@ describe('Repository', () => {
         expect(resp.d.results[0]).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', (done) => {
+      it('should throw on unsuccessful request', (done) => {
         ;(mockResponse as any).ok = false
         repository
           .loadCollection({
@@ -170,7 +166,7 @@ describe('Repository', () => {
         expect(response.d).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', (done) => {
+      it('should throw on unsuccessful request', (done) => {
         ;(mockResponse as any).ok = false
         repository
           .post({
@@ -203,7 +199,7 @@ describe('Repository', () => {
         expect(response.d).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', (done) => {
+      it('should throw on unsuccessful request', (done) => {
         ;(mockResponse as any).ok = false
         repository
           .patch({
@@ -235,7 +231,7 @@ describe('Repository', () => {
         expect(response.d).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', (done) => {
+      it('should throw on unsuccessful request', (done) => {
         ;(mockResponse as any).ok = false
         repository
           .put({
@@ -357,7 +353,7 @@ describe('Repository', () => {
         expect(response.d).toEqual([{ Name: 'MockAction' }])
       })
 
-      it('should throw on unsuccessfull request', (done) => {
+      it('should throw on unsuccessful request', (done) => {
         ;(mockResponse as any).ok = false
         ;(mockResponse as any).statusText = ':('
         repository
@@ -393,7 +389,7 @@ describe('Repository', () => {
           faviconUrl: 'https://test.com/wv/resources/1033/FavIcon_Word.ico',
         } as ODataWopiResponse)
       })
-      it('should throw on unsuccessfull request', (done) => {
+      it('should throw on unsuccessful request', (done) => {
         ;(mockResponse as any).ok = false
         ;(mockResponse as any).statusText = ':('
         repository
@@ -425,7 +421,7 @@ describe('Repository', () => {
         expect(response.d).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', (done) => {
+      it('should throw on unsuccessful request', (done) => {
         ;(mockResponse as any).ok = false
         repository
           .executeAction<{}, ODataResponse<Content>>({

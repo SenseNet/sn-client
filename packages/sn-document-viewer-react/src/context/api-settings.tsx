@@ -128,7 +128,7 @@ export const createDefaultApiSettings: (repo: Repository) => DocumentViewerApiSe
       credentials: 'include',
     }),
   getExistingPreviewImages: async ({ document, version, abortController }) => {
-    return await repo.preview.getExisting({ document, version, abortController })
+    return await repo.preview.getExistingImages({ document, version, abortController })
   },
   commentActions: {
     addPreviewComment: async ({ document, comment, abortController }) => {

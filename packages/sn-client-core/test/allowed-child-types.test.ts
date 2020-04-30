@@ -2,7 +2,7 @@ import { ContentType } from '@sensenet/default-content-types'
 import { Repository } from '../src/Repository'
 import { ODataCollectionResponse } from '../src/Models'
 
-describe('AllowedChildTyoes', () => {
+describe('AllowedChildTypes', () => {
   let repository: Repository
   const mockResponse = {
     ok: true,
@@ -15,10 +15,6 @@ describe('AllowedChildTyoes', () => {
 
   beforeEach(() => {
     repository = new Repository(undefined, fetchMock)
-  })
-
-  afterEach(() => {
-    repository.dispose()
   })
 
   describe('#getImplicitAllowedChildTypes()', () => {
@@ -35,7 +31,7 @@ describe('AllowedChildTyoes', () => {
       expect(response.d).toEqual({ results: [], __count: 0 })
     })
 
-    it('should throw on unsuccessfull request', (done) => {
+    it('should throw on unsuccessful request', (done) => {
       ;(mockResponse as any).ok = false
       ;(mockResponse as any).statusText = ':('
       repository.allowedChildTypes
@@ -66,7 +62,7 @@ describe('AllowedChildTyoes', () => {
       expect(response.d).toEqual({ results: [], __count: 0 })
     })
 
-    it('should throw on unsuccessfull request', (done) => {
+    it('should throw on unsuccessful request', (done) => {
       ;(mockResponse as any).ok = false
       ;(mockResponse as any).statusText = ':('
       repository.allowedChildTypes
@@ -94,7 +90,7 @@ describe('AllowedChildTyoes', () => {
       })
       expect(response).toEqual({ d: { __count: 0, results: [] } })
     })
-    it('should throw on unsuccessfull request', (done) => {
+    it('should throw on unsuccessful request', (done) => {
       ;(mockResponse as any).ok = false
       ;(mockResponse as any).statusText = ':('
       repository.allowedChildTypes

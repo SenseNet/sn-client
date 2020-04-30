@@ -26,10 +26,6 @@ describe('Preview', () => {
     }
   })
 
-  afterEach(() => {
-    repository.dispose()
-  })
-
   it('Should execute regenerate', () => {
     expect(preview.regenerate({ idOrPath: 1 })).toBeInstanceOf(Promise)
   })
@@ -67,7 +63,7 @@ describe('Preview', () => {
 
     repository.executeAction = async () => Promise.resolve(mockResponse as PreviewImageData[]) as any
 
-    const result = await preview.getExisting({ document: mockDocument, version: '' })
+    const result = await preview.getExistingImages({ document: mockDocument, version: '' })
     expect(result).toEqual([
       mockResponse[0],
       {

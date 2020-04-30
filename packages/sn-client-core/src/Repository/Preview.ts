@@ -42,7 +42,11 @@ export class Preview {
     }
   }
 
-  public async getExisting(options: { document: DocumentData; version: string; abortController?: AbortController }) {
+  public async getExistingImages(options: {
+    document: DocumentData
+    version: string
+    abortController?: AbortController
+  }) {
     if (options.document.pageCount < -1) {
       throw Error('Preview generation error')
     }
