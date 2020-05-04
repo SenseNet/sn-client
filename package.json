@@ -54,6 +54,11 @@
     "clean": "lerna clean",
     "lint": "eslint . --ext .tsx,.ts --cache"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint --ext .tsx,.ts --cache --fix",
