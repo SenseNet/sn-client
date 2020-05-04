@@ -4,13 +4,12 @@ import { Button, DialogActions, DialogContent, DialogTitle, TextField } from '@m
 import { ODataResponse } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLocalization } from '../../hooks'
-import { QueryData } from '../search'
 import { useGlobalStyles } from '../../globalStyles'
 import { useDialog } from './dialog-provider'
 
 export type SaveQueryProps = {
   saveName?: string
-  queryData: QueryData
+  query: string
 }
 
 export function SaveQuery(props: SaveQueryProps) {
@@ -31,7 +30,7 @@ export function SaveQuery(props: SaveQueryProps) {
           select: ['DisplayName', 'Query'],
         },
         body: {
-          query: props.queryData.term,
+          query: props.query,
           displayName: saveName,
           queryType: 'Public',
         },
@@ -53,7 +52,7 @@ export function SaveQuery(props: SaveQueryProps) {
       <DialogContent style={{ minWidth: 450 }}>
         <TextField
           fullWidth={true}
-          defaultValue={localization.saveInputPlaceholder(props.queryData.term)}
+          defaultValue={localization.saveInputPlaceholder(props.query)}
           onChange={(ev) => setSaveName(ev.currentTarget.value)}
         />
       </DialogContent>

@@ -10,7 +10,7 @@ export type PlatformDependent<T> = { [key in ResponsivePlatforms]?: DeepPartial<
   default: T
 }
 export const ResponsiveContext = React.createContext<ResponsivePlatforms>('desktop')
-export const ResponsivePersonalSetttings = React.createContext(defaultSettings.default)
+export const ResponsivePersonalSettings = React.createContext(defaultSettings.default)
 
 export const ResponsiveContextProvider: React.FunctionComponent = (props) => {
   const theme = useTheme()
@@ -18,19 +18,19 @@ export const ResponsiveContextProvider: React.FunctionComponent = (props) => {
   return (
     <>
       <MediaQuery query={theme.breakpoints.up('lg').replace('@media ', '')}>
-        <ResponsivePersonalSetttings.Provider value={deepMerge(personalSettings.default, personalSettings.desktop)}>
+        <ResponsivePersonalSettings.Provider value={deepMerge(personalSettings.default, personalSettings.desktop)}>
           <ResponsiveContext.Provider value="desktop">{props.children}</ResponsiveContext.Provider>
-        </ResponsivePersonalSetttings.Provider>
+        </ResponsivePersonalSettings.Provider>
       </MediaQuery>
       <MediaQuery query={theme.breakpoints.only('md').replace('@media ', '')}>
-        <ResponsivePersonalSetttings.Provider value={deepMerge(personalSettings.default, personalSettings.tablet)}>
+        <ResponsivePersonalSettings.Provider value={deepMerge(personalSettings.default, personalSettings.tablet)}>
           <ResponsiveContext.Provider value="tablet">{props.children}</ResponsiveContext.Provider>
-        </ResponsivePersonalSetttings.Provider>
+        </ResponsivePersonalSettings.Provider>
       </MediaQuery>
       <MediaQuery query={theme.breakpoints.down('sm').replace('@media ', '')}>
-        <ResponsivePersonalSetttings.Provider value={deepMerge(personalSettings.default, personalSettings.mobile)}>
+        <ResponsivePersonalSettings.Provider value={deepMerge(personalSettings.default, personalSettings.mobile)}>
           <ResponsiveContext.Provider value="mobile">{props.children}</ResponsiveContext.Provider>
-        </ResponsivePersonalSetttings.Provider>
+        </ResponsivePersonalSettings.Provider>
       </MediaQuery>
     </>
   )
