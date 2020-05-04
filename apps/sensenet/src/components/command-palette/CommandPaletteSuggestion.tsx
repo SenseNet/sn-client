@@ -1,3 +1,4 @@
+import { Paper, useTheme } from '@material-ui/core'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -5,11 +6,10 @@ import match from 'autosuggest-highlight/match'
 import parse from 'autosuggest-highlight/parse'
 import React, { useContext } from 'react'
 import { RenderSuggestionParams } from 'react-autosuggest'
-import { Paper, useTheme } from '@material-ui/core'
 import { ResponsiveContext } from '../../context'
-import { Icon } from '../Icon'
-import { CommandPaletteItem } from '../../hooks'
 import { globals } from '../../globalStyles'
+import { Icon } from '../Icon'
+import { CommandPaletteItem } from './CommandPalette'
 
 export const getMatchParts = (hits: string[], term: string) => {
   const matchValueArr = match(term, hits.join(' '))

@@ -13,6 +13,7 @@ import { PersonalSettings } from '../../services'
 import { AntSwitch } from '../ant-switch'
 import { useDialog } from '../dialogs'
 import { UserAvatar } from '../UserAvatar'
+import { applicationPaths } from '../../application-paths'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -158,7 +159,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                     primary={`${currentUser.DisplayName || currentUser.Name} user`}
                   />
                 </MenuItem>
-                <NavLink to="/personalSettings" onClick={handleClose}>
+                <NavLink to={applicationPaths.personalSettings} onClick={handleClose}>
                   <MenuItem className={classes.menuItem}>{localization.topMenu.personalSettings}</MenuItem>
                 </NavLink>
                 <MenuItem onClick={logout} className={classes.menuItem}>

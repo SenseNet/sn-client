@@ -221,9 +221,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                             settings: {
                               type: 'object',
                               properties: {
-                                root: { type: 'string', description: language.drawer.contentRootDescription },
                                 title: { type: 'string', description: language.personalSettings.drawerItemTitle },
-                                columns: { $ref: '#/definitions/columns' },
                                 description: {
                                   type: 'string',
                                   description: language.personalSettings.drawerItemDescription,
@@ -232,10 +230,6 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                                   type: 'string',
                                   enum: [...wellKnownIconNames],
                                   description: language.personalSettings.drawerItemDescription,
-                                },
-                                browseType: {
-                                  description: language.personalSettings.contentBrowseType,
-                                  enum: [...BrowseType],
                                 },
                               },
                               required: ['root', 'title', 'icon'],
@@ -323,6 +317,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                   enum: [...BrowseType],
                 },
                 fields: { $ref: '#/definitions/columns' },
+                root: { type: 'string', description: language.drawer.contentRootDescription },
               },
             },
             settings: {

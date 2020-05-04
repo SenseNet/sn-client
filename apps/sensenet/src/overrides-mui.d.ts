@@ -9,7 +9,7 @@ type overridesNameToClassKey = {
 type CustomType = {
   MuiPickersBasePicker: {
     pickerView: {
-      backgorundColor?: string
+      backgroundColor?: string
     }
   }
 }

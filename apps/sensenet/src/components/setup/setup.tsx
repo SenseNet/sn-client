@@ -11,14 +11,13 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { ContentContextService } from '../../services/content-context-service'
+import { getPrimaryActionUrl } from '../../services/content-context-service'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { WellKnownContentCard } from './well-known-content-card'
 
 const Setup = () => {
   const repo = useRepository()
   const localization = useLocalization().settings
-  const contentContextService = new ContentContextService(repo)
   const globalClasses = useGlobalStyles()
   const localizationDrawerTitles = useLocalization().drawer.titles
   const [wellKnownSettings, setWellKnownSettings] = useState<Settings[]>([])
@@ -86,7 +85,7 @@ const Setup = () => {
           <Typography variant="h5">{localization.otherSettings}</Typography>
           <List>
             {settings.map((s) => (
-              <Link key={s.Id} to={contentContextService.getPrimaryActionUrl(s)} style={{ textDecoration: 'none' }}>
+              <Link key={s.Id} to={getPrimaryActionUrl(s, repo)} style={{ textDecoration: 'none' }}>
                 <ListItem button={true}>
                   <ListItemText primary={s.DisplayName || s.Name} secondary={s.Path} />
                 </ListItem>

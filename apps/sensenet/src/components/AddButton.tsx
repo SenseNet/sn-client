@@ -18,6 +18,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import { globals, useGlobalStyles } from '../globalStyles'
 import { useLocalization, usePersonalSettings, useSelectionService } from '../hooks'
+import { applicationPaths } from '../application-paths'
 import { useDialog } from './dialogs'
 import { Icon } from './Icon'
 
@@ -262,7 +263,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
                 onClick={() => {
                   const contentPath = currentComponent ? currentComponent.Path : props.path
                   setShowSelectType(false)
-                  history.push(`/${btoa(repo.configuration.repositoryUrl)}/NewProperties?path=${contentPath}`, {
+                  history.push(`${applicationPaths.newProperties}?path=${contentPath}`, {
                     schema: childType,
                   })
                 }}>
