@@ -1,5 +1,4 @@
 import React, { CSSProperties } from 'react'
-//import { styles } from '../styles'
 import { useLocalization, useViewerState } from '../../hooks'
 import { ToggleBase } from './ToggleBase'
 
