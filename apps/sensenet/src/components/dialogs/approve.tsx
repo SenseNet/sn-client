@@ -80,16 +80,16 @@ export function Approve(props: ApproveProps) {
         </Fade>
       </DialogContent>
 
-      <DialogActions>
+      <DialogActions style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Button onClick={closeLastDialog} className={globalClasses.cancelButton}>
           {localization.cancelButton}
         </Button>
         <div>
-          <Button onClick={approve} color="primary" variant="contained">
-            {localization.approveButton}
-          </Button>
           <Button onClick={reject} className={globalClasses.cancelButton}>
             {localization.rejectButton}
+          </Button>
+          <Button onClick={approve} color="primary" variant="contained">
+            {localization.approveButton}
           </Button>
         </div>
       </DialogActions>

@@ -131,12 +131,7 @@ export function CreateComment(props: CreateCommentProps) {
           <Button style={{ alignSelf: 'flex-end' }} fullWidth={false} color="primary" variant="text" type="submit">
             {localization.submit}
           </Button>
-          <Button
-            onClick={clearState}
-            style={{ alignSelf: 'flex-end' }}
-            fullWidth={false}
-            color="secondary"
-            variant="text">
+          <Button onClick={clearState} style={{ alignSelf: 'flex-end' }} fullWidth={false} variant="text">
             {localization.cancelButton}
           </Button>
         </StyledButtonContainer>

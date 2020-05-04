@@ -190,7 +190,7 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
             },
           }}>
           <CommentsContextProvider page={viewerState.activePages[0]} images="preview">
-            <CommentsContainer ref={commentsContainerRef as any}>
+            <CommentsContainer ref={commentsContainerRef as any} style={{ display: 'flex', flexFlow: 'column' }}>
               <Typography variant="h4">{localization.commentSideBarTitle}</Typography>
               <CreateComment
                 isActive={viewerState.isCreateCommentActive}

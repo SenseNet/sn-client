@@ -1,4 +1,4 @@
-import { Button, createStyles, makeStyles } from '@material-ui/core'
+import { Button, createStyles, makeStyles, Theme } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
 import {
   DocumentTitlePager,
@@ -13,20 +13,24 @@ import {
 } from '@sensenet/document-viewer-react'
 import { CurrentContentProvider, useLogger } from '@sensenet/hooks-react'
 import clsx from 'clsx'
+import { Location } from 'history'
 import React, { useCallback, useEffect } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
-import { Location } from 'history'
-import { useGlobalStyles } from '../globalStyles'
+import { globals, useGlobalStyles } from '../globalStyles'
 import { useLocalization, useSelectionService, useTheme } from '../hooks'
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     docViewerWrapper: {
       overflow: 'hidden',
+      '& .MuiIconButton-root': {
+        color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
+      },
     },
     closeButton: {
       placeSelf: 'flex-end',
       position: 'relative',
+      alignSelf: 'center',
     },
   })
 })
@@ -68,19 +72,29 @@ export default function DocViewer(props: { previousLocation?: Location }) {
     <div className={clsx(globalClasses.full, classes.docViewerWrapper)}>
       <CurrentContentProvider idOrPath={contentId} onContentLoaded={(c) => selectionService.activeContent.setValue(c)}>
         <DocumentViewer documentIdOrPath={contentId}>
-          <LayoutAppBar>
+          <LayoutAppBar
+            style={{
+              backgroundColor:
+                theme.palette.type === 'light' ? globals.light.drawerBackground : globals.dark.drawerBackground,
+              border: theme.palette.type === 'light' ? clsx(globals.light.borderColor, '1px') : 'none',
+              boxShadow: 'none',
+              color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
+            }}>
             <div style={{ flexShrink: 0 }}>
-              <ToggleThumbnailsWidget />
+              <ToggleThumbnailsWidget
+                style={{
+                  fill: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
+                }}
+                activeColor={theme.palette.primary.main}
+              />
               <ZoomInOutWidget />
               <ZoomModeWidget />
               <RotateActivePagesWidget />
               <RotateDocumentWidget />
             </div>
             <DocumentTitlePager />
-            <div style={{ display: 'flex', flexShrink: 0 }}>
-              <ToggleCommentsWidget />
-            </div>
-            <div style={{ display: 'flex', flexShrink: 0 }}>
+            <div>
+              <ToggleCommentsWidget activeColor={theme.palette.primary.main} />
               <Button className={classes.closeButton} onClick={closeViewer}>
                 <Close style={{ marginRight: theme.spacing(1) }} />
                 {localization.customActions.resultsDialog.closeButton}
