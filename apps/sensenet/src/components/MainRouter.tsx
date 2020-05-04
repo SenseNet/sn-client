@@ -1,16 +1,17 @@
 import { LoadSettingsContextProvider } from '@sensenet/hooks-react'
+import { Location } from 'history'
 import React, { lazy, Suspense, useEffect, useRef } from 'react'
-import { Route, Switch, useHistory } from 'react-router-dom'
+import { matchPath, Route, Switch, useHistory } from 'react-router-dom'
+import { applicationPaths } from '../application-paths'
 import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './full-screen-loader'
-import { WopiPage } from './wopi-page'
 
-const UsersAndGroupsComponent = lazy(() =>
-  import(/* webpackChunkName: "UserAndGroup" */ './users-and-groups/users-and-groups'),
-)
-const LocalizationComponent = lazy(() => import(/* webpackChunkName: "Localization" */ './localization/localization'))
-const ExploreComponent = lazy(() => import(/* webpackChunkName: "content" */ './content'))
+const UsersAndGroupsComponent = lazy(() => import(/* webpackChunkName: "UserAndGroup" */ './users-and-groups'))
+const LocalizationComponent = lazy(() => import(/* webpackChunkName: "Localization" */ './localization'))
+const ContentTypes = lazy(() => import(/* webpackChunkName: "ContentTypes" */ './content-types'))
+const WopiPage = lazy(() => import(/* webpackChunkName: "wopi" */ './wopi-page'))
+const ExploreComponent = lazy(() => import(/* webpackChunkName: "explore" */ './content'))
 const DashboardComponent = lazy(() => import(/* webpackChunkName: "dashboard" */ './dashboard'))
 const SearchComponent = lazy(() => import(/* webpackChunkName: "search" */ './search'))
 const SavedQueriesComponent = lazy(() => import(/* webpackChunkName: "saved-queries" */ './search/saved-queries'))
@@ -21,13 +22,13 @@ const BrowseProperties = lazy(() => import(/* webpackChunkName: "browsePropertie
 const NewProperties = lazy(() => import(/* webpackChunkName: "newProperties" */ './new/new-properties'))
 const DocumentViewerComponent = lazy(() => import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 const TrashComponent = lazy(() => import(/* webpackChunkName: "Trash" */ './trash/Trash'))
-const EventListComponent = lazy(() => import(/* webpackChunkName: "EventList" */ './event-list'))
+const EventListComponent = lazy(() => import(/* webpackChunkName: "EventList" */ './event-list/event-list'))
 const PersonalSettingsEditor = lazy(() =>
   import(/* webpackChunkName: "PersonalSettingsEditor" */ './edit/PersonalSettingsEditor'),
 )
 
 export const MainRouter = () => {
-  const previousLocation = useRef<string>()
+  const previousLocation = useRef<Location>()
   const history = useHistory()
 
   useEffect(() => {
@@ -37,10 +38,10 @@ export const MainRouter = () => {
        *  this way the user can go back to the location where she
        *  opened the viewer.
        * */
-      if (location.pathname.includes('/Preview')) {
+      if (matchPath(location.pathname, applicationPaths.preview)) {
         return
       }
-      previousLocation.current = location.pathname
+      previousLocation.current = location
     })
     return () => {
       listen()
@@ -51,71 +52,75 @@ export const MainRouter = () => {
     <ErrorBoundary FallbackComponent={ErrorBoundaryWithDialogs}>
       <Suspense fallback={<FullScreenLoader />}>
         <Switch>
-          <Route path="/personalSettings">
+          <Route path={applicationPaths.personalSettings}>
             <PersonalSettingsEditor />
           </Route>
 
-          <Route path="/events/:eventGuid?">
+          <Route path={applicationPaths.events}>
             <EventListComponent />
           </Route>
 
-          <Route path="/:repo/browse/:browseData?">
+          <Route path={applicationPaths.browse}>
             <ExploreComponent />
           </Route>
 
-          <Route path="/:repo/search/:queryData?">
+          <Route path={applicationPaths.search}>
             <LoadSettingsContextProvider>
               <SearchComponent />
             </LoadSettingsContextProvider>
           </Route>
 
-          <Route path="/:repo/saved-queries">
+          <Route path={applicationPaths.savedQueries}>
             <LoadSettingsContextProvider>
               <SavedQueriesComponent />
             </LoadSettingsContextProvider>
           </Route>
 
-          <Route path="/:repo/setup">
+          <Route path={applicationPaths.setup}>
             <SetupComponent />
           </Route>
 
-          <Route path="/:repo/trash">
+          <Route path={applicationPaths.trash}>
             <TrashComponent />
           </Route>
 
-          <Route path="/:repo/localization">
+          <Route path={applicationPaths.localization}>
             <LocalizationComponent />
           </Route>
 
-          <Route path="/:repo/usersAndGroups">
+          <Route path={applicationPaths.usersAndGroups}>
             <UsersAndGroupsComponent />
           </Route>
 
-          <Route path="/:repo/editBinary/:contentId?">
+          <Route path={applicationPaths.contentTypes}>
+            <ContentTypes />
+          </Route>
+
+          <Route path={applicationPaths.editBinary}>
             <EditBinary />
           </Route>
 
-          <Route path="/:repo/editProperties/:contentId?">
+          <Route path={applicationPaths.editProperties}>
             <EditProperties />
           </Route>
 
-          <Route path="/:repo/browseProperties/:contentId?">
+          <Route path={applicationPaths.browseProperties}>
             <BrowseProperties />
           </Route>
 
-          <Route path="/:repo/NewProperties">
+          <Route path={applicationPaths.newProperties}>
             <NewProperties />
           </Route>
 
-          <Route path="/:repo/preview/:documentId?">
+          <Route path={applicationPaths.preview}>
             <DocumentViewerComponent previousLocation={previousLocation.current} />
           </Route>
 
-          <Route path="/:repo/wopi/:documentId/:action?">
+          <Route path={applicationPaths.wopi}>
             <WopiPage />
           </Route>
 
-          <Route path="/dashboard/:dashboardName?">
+          <Route path={applicationPaths.dashboard}>
             <DashboardComponent />
           </Route>
 

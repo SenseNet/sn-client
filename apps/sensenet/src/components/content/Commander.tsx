@@ -13,6 +13,7 @@ import { useHistory } from 'react-router'
 import { useSelectionService } from '../../hooks'
 import { ContentList } from '../content-list/content-list'
 import { useDialog } from '../dialogs'
+import { applicationPaths } from '../../application-paths'
 
 export interface CommanderComponentProps {
   leftParent: number | string
@@ -76,7 +77,7 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
         } else if (ev.key === 'F7') {
           ev.preventDefault()
           ev.stopPropagation()
-          history.push(`/${btoa(repo.configuration.repositoryUrl)}/NewProperties?path=${activeParent.Path}`, {
+          history.push(`${applicationPaths.newProperties}?path=${activeParent.Path}`, {
             schema: repo.schemas.getSchemaByName('Folder'),
           })
         }

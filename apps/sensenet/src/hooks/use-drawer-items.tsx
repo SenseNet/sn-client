@@ -1,10 +1,9 @@
 import { Build, Dashboard, Delete, Language, People, Public, Search, Widgets } from '@material-ui/icons'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
-import { encodeBrowseData } from '../components/content'
+import { applicationPaths, resolvePathParams } from '../application-paths'
 import { Icon } from '../components/Icon'
-import { encodeQueryData } from '../components/search'
-import { ResponsivePersonalSetttings } from '../context'
+import { ResponsivePersonalSettings } from '../context'
 import DefaultLocalization from '../localization/default'
 import {
   BuiltinDrawerItem,
@@ -28,7 +27,7 @@ export interface DrawerItem {
 type EveryDrawerType = ContentDrawerItem | QueryDrawerItem | BuiltinDrawerItem | DashboardDrawerItem
 
 export const useDrawerItems = () => {
-  const settings = useContext(ResponsivePersonalSetttings)
+  const settings = useContext(ResponsivePersonalSettings)
   const localization = useLocalization().drawer
   const repo = useRepository()
   const logger = useLogger('use-drawer-items')
@@ -54,9 +53,9 @@ export const useDrawerItems = () => {
           ) : (
             <Public />
           )
-        case 'Users and groups':
+        case 'UsersAndGroups':
           return <People />
-        case 'Content Types':
+        case 'ContentTypes':
           return <Widgets />
         case 'Localization':
           return <Language />
@@ -76,47 +75,32 @@ export const useDrawerItems = () => {
     const getUrlFromSetting = (item: EveryDrawerType) => {
       switch (item.itemType) {
         case 'Search':
-          return '/saved-queries'
+          return applicationPaths.savedQueries
         case 'Content':
-          return `/browse/${encodeBrowseData({
-            type: (item.settings && item.settings.browseType) || settings.content.browseType,
-            root: (item.settings && item.settings.root) || '/Root/Content',
-            secondaryContent: (item.settings && item.settings.root) || '/Root/Content',
-            fieldsToDisplay: (item.settings && item.settings.columns) || settings.content.fields,
-          })}`
-        case 'Users and groups':
-          return '/usersAndGroups'
-        case 'Content Types':
-          return `/search/${encodeQueryData({
-            title: localization.titles['Content Types'],
-            term: "+TypeIs:'ContentType'",
-            hideSearchBar: true,
-            fieldsToDisplay: ['DisplayName', 'Description', 'ParentTypeName' as any, 'ModificationDate', 'ModifiedBy'],
-            showAddButton: true,
-            parentPath: '/Root/System/Schema/ContentTypes/',
-            allowedTypes: ['ContentType'],
-          })}`
+          return `${resolvePathParams({
+            path: applicationPaths.browse,
+            params: { browseType: settings.content.browseType },
+          })}${item.settings ? `?path=${encodeURIComponent(settings.content.root)}` : ''}`
+        case 'UsersAndGroups':
+          return applicationPaths.usersAndGroups
+        case 'ContentTypes':
+          return applicationPaths.contentTypes
         case 'Query':
-          return `/search/${encodeQueryData({
-            term: (item.settings && item.settings.term) || '',
-            title: item.settings && item.settings.title,
-            hideSearchBar: true,
-            fieldsToDisplay: item.settings && item.settings.columns,
-          })}`
+          return applicationPaths.search + (item.settings ? `?term=${encodeURIComponent(item.settings.term)}` : '')
         case 'Localization':
-          return '/localization'
+          return applicationPaths.localization
         case 'Trash':
-          return '/trash'
+          return applicationPaths.trash
         case 'Setup':
-          return '/setup'
+          return applicationPaths.setup
         case 'Dashboard':
-          return `/dashboard/${encodeURIComponent(item.settings ? item.settings.dashboardName : '')}`
+          return resolvePathParams({
+            path: applicationPaths.dashboard,
+            params: { dashboardName: encodeURIComponent(item.settings?.dashboardName ?? '') },
+          })
         default:
-          // return ''
-          break
+          return '/'
       }
-
-      return '/'
     }
     const getItemFromSettings = (setting: DrawerItemSetting<any>) => {
       const drawerItem: DrawerItem = {
@@ -160,7 +144,7 @@ export const useDrawerItems = () => {
     localization.titles,
     logger,
     repo,
-    settings.content.browseType,
+    settings.content,
     settings.content.fields,
     settings.drawer.items,
   ])

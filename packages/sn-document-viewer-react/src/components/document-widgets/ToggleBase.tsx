@@ -29,8 +29,7 @@ export const ToggleBase: React.FunctionComponent<ToggleBaseProps> = (props) => (
     <IconButton
       color={props.isVisible ? 'primary' : 'inherit'}
       title={props.title}
-      onClick={() => props.setValue(!props.isVisible)}
-      style={{ opacity: props.isVisible ? 0.5 : 1 }}>
+      onClick={() => props.setValue(!props.isVisible)}>
       {props.children}
     </IconButton>
   </div>

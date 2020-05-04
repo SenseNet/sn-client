@@ -9,17 +9,16 @@ import {
   useRepository,
 } from '@sensenet/hooks-react'
 import clsx from 'clsx'
-import React, { useContext, useState } from 'react'
-import { ResponsivePersonalSetttings } from '../../context'
+import React, { useState } from 'react'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
 import { ContentList } from '../content-list/content-list'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
+import { FullScreenLoader } from '../full-screen-loader'
 import { editviewFileResolver, Icon } from '../Icon'
 import { ActionNameType } from '../react-control-mapper'
 import TreeWithData from '../tree/tree-with-data'
 import { EditView } from '../view-controls/edit-view'
-import { FullScreenLoader } from '../full-screen-loader'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -53,23 +52,22 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-export interface ExploreComponentProps {
-  parentIdOrPath: number | string
-  onNavigate: (newParent: GenericContent) => void
-  onActivateItem: (item: GenericContent) => void
-  fieldsToDisplay?: Array<keyof GenericContent>
+type ExploreProps = {
+  currentPath: string
   rootPath: string
+  onNavigate: (content: GenericContent) => void
+  onActivateItem: (content: GenericContent) => void
+  fieldsToDisplay?: Array<keyof GenericContent>
 }
 
-export const Explore: React.FunctionComponent<ExploreComponentProps> = (props) => {
+export function Explore({ currentPath, onActivateItem, onNavigate, rootPath, fieldsToDisplay }: ExploreProps) {
   const selectionService = useSelectionService()
-  const personalSettings = useContext(ResponsivePersonalSetttings)
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const [isFormOpened, setIsFormOpened] = useState(false)
-  const [action, setAction] = useState<ActionNameType>(undefined)
-  const repo = useRepository()
+  const [action, setAction] = useState<ActionNameType>()
   const [isTreeLoading, setIsTreeLoading] = useState(false)
+  const repo = useRepository()
 
   const setFormOpen = (actionName: ActionNameType) => {
     setAction(actionName)
@@ -79,14 +77,14 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = (props) =
   return (
     <>
       <LoadSettingsContextProvider>
-        <CurrentContentProvider idOrPath={props.parentIdOrPath}>
+        <CurrentContentProvider idOrPath={currentPath}>
           <CurrentChildrenProvider>
-            <CurrentAncestorsProvider root={props.rootPath}>
+            <CurrentAncestorsProvider root={rootPath}>
               <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
                 <ContentBreadcrumbs
                   setFormOpen={(actionName) => setFormOpen(actionName)}
                   onItemClick={(i) => {
-                    props.onNavigate(i.content)
+                    onNavigate(i.content)
                     setIsFormOpened(false)
                     selectionService.activeContent.setValue(i.content)
                   }}
@@ -98,10 +96,10 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = (props) =
                   onItemClick={(item) => {
                     selectionService.activeContent.setValue(item)
                     setIsFormOpened(false)
-                    props.onNavigate(item)
+                    onNavigate(item)
                   }}
-                  parentPath={props.rootPath}
-                  activeItemIdOrPath={props.parentIdOrPath}
+                  parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
+                  activeItemPath={currentPath}
                   setFormOpen={(actionName) => setFormOpen(actionName)}
                   onTreeLoadingChange={(isLoading) => setIsTreeLoading(isLoading)}
                 />
@@ -122,7 +120,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = (props) =
                       ) : null}
 
                       <EditView
-                        uploadFolderpath={'/Root/Content/demoavatars'}
+                        uploadFolderpath="/Root/Content/demoavatars"
                         handleCancel={async () => {
                           setIsFormOpened(false)
                           setAction(undefined)
@@ -143,15 +141,15 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = (props) =
                     <ContentList
                       style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
                       enableBreadcrumbs={false}
-                      fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields}
-                      onParentChange={props.onNavigate}
-                      onActivateItem={props.onActivateItem}
+                      fieldsToDisplay={fieldsToDisplay}
+                      onParentChange={onNavigate}
+                      onActivateItem={onActivateItem}
                       onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
-                      parentIdOrPath={props.parentIdOrPath}
+                      parentIdOrPath={currentPath}
                       onSelectionChange={(sel) => {
                         selectionService.selection.setValue(sel)
                       }}
-                      isOpenFrom={'explore'}
+                      isOpenFrom="explore"
                       setFormOpen={(actionName) => setFormOpen(actionName)}
                     />
                   )}

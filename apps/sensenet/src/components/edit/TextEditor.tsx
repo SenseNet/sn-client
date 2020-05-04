@@ -6,13 +6,13 @@ import { ActionModel, GenericContent, Settings, File as SnFile } from '@sensenet
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import { Uri } from 'monaco-editor'
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 import { Prompt, useHistory } from 'react-router'
 import { ResponsiveContext } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useTheme } from '../../hooks'
-import { ContentContextService } from '../../services/content-context-service'
+import { getMonacoLanguage } from '../../services/content-context-service'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 
 const useStyles = makeStyles(() => {
@@ -57,10 +57,9 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
   const theme = useTheme()
   const platform = useContext(ResponsiveContext)
   const repo = useRepository()
-  const contentContextService = useMemo(() => new ContentContextService(repo), [repo])
   const [textValue, setTextValue] = useState('')
   const [savedTextValue, setSavedTextValue] = useState('')
-  const [language, setLanguage] = useState(contentContextService.getMonacoLanguage(props.content))
+  const [language, setLanguage] = useState(getMonacoLanguage(props.content, repo))
   const localization = useLocalization()
   const [uri, setUri] = useState<any>(getMonacoModelUri(props.content, repo))
   const [hasChanges, setHasChanges] = useState(false)
@@ -119,12 +118,12 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
 
   useEffect(() => {
     setUri(getMonacoModelUri(props.content, repo))
-    setLanguage(contentContextService.getMonacoLanguage(props.content))
-  }, [contentContextService, props.content, repo])
+    setLanguage(getMonacoLanguage(props.content, repo))
+  }, [props.content, repo])
 
   useEffect(() => {
     setUri(getMonacoModelUri(props.content, repo))
-    setLanguage(contentContextService.getMonacoLanguage(props.content))
+    setLanguage(getMonacoLanguage(props.content, repo))
     ;(async () => {
       try {
         if (props.loadContent) {
@@ -147,7 +146,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
         setError(err)
       }
     })()
-  }, [savedTextValue, props, repo, contentContextService])
+  }, [savedTextValue, props, repo])
 
   if (error) {
     logger.information({

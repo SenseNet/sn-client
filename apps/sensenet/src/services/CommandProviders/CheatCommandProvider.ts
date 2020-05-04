@@ -1,6 +1,6 @@
 import { Injectable } from '@sensenet/client-utils'
+import { CommandPaletteItem } from '../../components/command-palette/CommandPalette'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
-import { CommandPaletteItem } from '../../hooks'
 
 @Injectable({ lifetime: 'singleton' })
 export class CheatCommandProvider implements CommandProvider {
