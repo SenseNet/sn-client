@@ -19,7 +19,6 @@ import {
   NavigationCommandProvider,
   QueryCommandProvider,
 } from '../services'
-import '../utils/errorToJson'
 import { DialogProvider } from './dialogs/dialog-provider'
 import { snInjector } from './sn-injector'
 

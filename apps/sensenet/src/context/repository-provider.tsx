@@ -114,6 +114,12 @@ const RepoProvider = ({ children, repoUrl }: { children: ReactNode; repoUrl: str
   }, [oidcUser, repoUrl])
 
   useEffect(() => {
+    if (repo) {
+      repo.reloadSchema()
+    }
+  }, [repo])
+
+  useEffect(() => {
     const configString = window.localStorage.getItem(authConfigKey)
     if ((!oidcUser || oidcUser.expired) && configString) {
       login()

@@ -2,9 +2,9 @@ import { ConstantContent } from '@sensenet/client-core'
 import { Injectable, PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
+import { CommandPaletteItem } from '../../components/command-palette/CommandPalette'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
-import { CommandPaletteItem } from '../../hooks'
-import { ContentContextService } from '../content-context-service'
+import { getPrimaryActionUrl } from '../content-context-service'
 
 @Injectable({ lifetime: 'singleton' })
 export class InFolderSearchCommandProvider implements CommandProvider {
@@ -15,7 +15,6 @@ export class InFolderSearchCommandProvider implements CommandProvider {
   public async getItems(options: SearchOptions): Promise<CommandPaletteItem[]> {
     const currentPath = PathHelper.trimSlashes(options.term)
     const segments = currentPath.split('/')
-    const ctx = new ContentContextService(options.repository)
     const parentPath = PathHelper.trimSlashes(
       PathHelper.joinPaths(...segments.slice(0, segments.length - 1)) || currentPath,
     )
@@ -36,7 +35,7 @@ export class InFolderSearchCommandProvider implements CommandProvider {
       primaryText: content.DisplayName || content.Name,
       secondaryText: content.Path,
       content,
-      url: ctx.getPrimaryActionUrl(content),
+      url: getPrimaryActionUrl(content, options.repository),
       hits: [options.term],
     }))
   }

@@ -22,7 +22,7 @@ export interface LoadSettingsContextProps {
   setLoadSettings: Dispatch<ODataParams<GenericContent>>
 
   /**
-   * Set the current content's childrens load settings
+   * Set the current content's children's load settings
    */
   setLoadChildrenSettings: Dispatch<ODataParams<GenericContent>>
 
@@ -67,11 +67,13 @@ const setLoadChildrenSettingsReducer = (state: ODataParams<GenericContent>, valu
   return value
 }
 
-export const LoadSettingsContextProvider: React.FunctionComponent = (props) => {
+export const LoadSettingsContextProvider: React.FunctionComponent<{
+  loadChildrenSettings?: ODataParams<GenericContent>
+}> = (props) => {
   const [loadSettings, setLoadSettings] = React.useReducer(setLoadSettingsReducer, {})
   const [loadChildrenSettings, setLoadChildrenSettings] = React.useReducer(
     setLoadChildrenSettingsReducer,
-    initialLoadChildrenSettings,
+    props.loadChildrenSettings ?? initialLoadChildrenSettings,
   )
   const [loadAncestorsSettings, setLoadAncestorsSettings] = React.useReducer(setLoadSettingsReducer, {})
 
