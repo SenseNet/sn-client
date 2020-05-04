@@ -1,13 +1,16 @@
 import IconButton from '@material-ui/core/IconButton/IconButton'
-import { shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import React from 'react'
 import {
   ToggleBase,
+  ToggleCommentsWidget,
   ToggleRedactionWidget,
   ToggleShapesWidget,
   ToggleThumbnailsWidget,
   ToggleWatermarkWidget,
 } from '../src/components/document-widgets'
+import { defaultViewerState, ViewerStateContext } from '../src/context'
+import { useViewerState } from '../src/hooks'
 
 describe('Component', () => {
   it('ToggleBase should render without crashing', () => {
@@ -30,7 +33,27 @@ describe('Component', () => {
   })
 
   it('ToggleThumbnails should render without crashing', () => {
-    const wrapper = shallow(<ToggleThumbnailsWidget />)
+    const wrapperWithActiveStyle = mount(
+      <ViewerStateContext.Provider value={{ ...defaultViewerState, showThumbnails: true }}>
+        <ToggleThumbnailsWidget
+          style={{
+            fill: 'black',
+          }}
+          activeColor="pink"
+        />
+      </ViewerStateContext.Provider>,
+    )
+
+    expect(wrapperWithActiveStyle).toMatchSnapshot()
+  })
+
+  it('ToggleComments should render without crashing', () => {
+    const wrapper = mount(
+      <ViewerStateContext.Provider value={{ ...defaultViewerState, showComments: true }}>
+        <ToggleCommentsWidget activeColor="pink" />
+      </ViewerStateContext.Provider>,
+    )
+
     expect(wrapper).toMatchSnapshot()
   })
 
@@ -45,4 +68,38 @@ describe('Component', () => {
     wrapper.find(IconButton).simulate('click')
     expect(setValue).toBeCalledWith(true)
   })
+})
+
+it('Click on toggle should change the state of showThumbnails in viewer-state provider', () => {
+  const updateState = jest.fn()
+
+  const wrapper = mount(
+    <ViewerStateContext.Provider
+      value={{
+        ...defaultViewerState,
+        updateState,
+      }}>
+      <ToggleThumbnailsWidget />
+    </ViewerStateContext.Provider>,
+  )
+  wrapper.find(IconButton).simulate('click')
+
+  expect(updateState).toBeCalledWith({ showThumbnails: true })
+})
+
+it('Click on toggle should change the state of showComments in viewer-state provider', () => {
+  const updateState = jest.fn()
+
+  const wrapper = mount(
+    <ViewerStateContext.Provider
+      value={{
+        ...defaultViewerState,
+        updateState,
+      }}>
+      <ToggleCommentsWidget />
+    </ViewerStateContext.Provider>,
+  )
+  wrapper.find(IconButton).simulate('click')
+
+  expect(updateState).toBeCalledWith({ showComments: true })
 })
