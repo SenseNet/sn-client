@@ -18,7 +18,7 @@ export const ToggleThumbnailsWidget: React.FC<{ style?: CSSProperties; activeCol
         xmlns="http://www.w3.org/2000/svg"
         style={
           viewerState.showThumbnails
-            ? { width: '1em', height: '1em', fill: props.activeColor }
+            ? { width: '1em', height: '1em', ...props.style, fill: props.activeColor }
             : { width: '1em', height: '1em', ...props.style }
         }
         viewBox="0 0 1000 1000"
