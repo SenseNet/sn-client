@@ -34,6 +34,9 @@ const useStyles = makeStyles(() => {
       justifyContent: 'flex-end',
       border: 'none',
       backgroundColor: 'transparent',
+      '& .MuiIconButton-root': {
+        color: globals.common.headerText,
+      },
     },
     buttonWrapperOpened: {
       border: '1px solid #13a5ad',
