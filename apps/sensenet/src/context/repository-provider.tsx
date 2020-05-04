@@ -13,6 +13,11 @@ import { getAuthConfig } from '../services/auth-config'
 const LoginPage = lazy(() => import(/* webpackChunkName: "login" */ '../components/login/login-page'))
 
 export const authConfigKey = 'sn-oidc-config'
+const customEvents = {
+  onUserSignedOut: () => {
+    window.localStorage.removeItem(authConfigKey)
+  },
+}
 
 export function RepositoryProvider({ children }: { children: React.ReactNode }) {
   const [repoUrl, setRepoUrl] = useState<string>()
@@ -21,15 +26,6 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
   const globalClasses = useGlobalStyles()
   const history = useHistory()
   const [authConfig, setAuthConfig] = useState<UserManagerSettings>()
-
-  useEffect(() => {
-    const configString = window.localStorage.getItem(authConfigKey)
-    if (configString) {
-      const config = JSON.parse(configString)
-      setAuthConfig(config)
-      setRepoUrl(config.extraQueryParams.snrepo)
-    }
-  }, [])
 
   const getConfig = useCallback(async () => {
     if (!repoUrl) {
@@ -50,7 +46,14 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
   }, [logger, repoUrl])
 
   useEffect(() => {
-    getConfig()
+    const configString = window.localStorage.getItem(authConfigKey)
+    if (configString) {
+      const config = JSON.parse(configString)
+      setAuthConfig(config)
+      setRepoUrl(config.extraQueryParams.snrepo)
+    } else {
+      getConfig()
+    }
   }, [getConfig])
 
   if (!authConfig || !repoUrl) {
@@ -76,11 +79,7 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
       configuration={authConfig}
       history={history}
       notAuthenticated={<NotAuthenticated />}
-      customEvents={{
-        onUserSignedOut: () => {
-          window.localStorage.removeItem(authConfigKey)
-        },
-      }}>
+      customEvents={customEvents}>
       <RepoProvider repoUrl={repoUrl}>{children}</RepoProvider>
     </AuthenticationProvider>
   )
