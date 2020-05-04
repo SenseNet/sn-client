@@ -1,4 +1,4 @@
-import { AppBar, Container, createStyles, makeStyles, Toolbar, Typography } from '@material-ui/core'
+import { AppBar, Button, Container, createStyles, makeStyles, Toolbar, Typography } from '@material-ui/core'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import logo from '../../assets/sensenet-icon-32.png'
@@ -39,7 +39,12 @@ const useStyles = makeStyles(() =>
   }),
 )
 
-export const NotAuthorizedOverride = () => {
+export const AuthOverrideSkeleton = (props: {
+  primaryText: string
+  secondaryText: string
+  buttonText?: string
+  buttonOnClick?: () => void
+}) => {
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
 
@@ -57,11 +62,27 @@ export const NotAuthorizedOverride = () => {
         </AppBar>
         <Container maxWidth="sm" className={classes.contentSlot}>
           <Typography variant="h4" className={classes.title}>
-            Authorization
+            {props.primaryText}
           </Typography>
           <Typography align="center" variant="subtitle1" component="p">
-            You are not authorized to access this resource.
+            {props.secondaryText}
           </Typography>
+          {props.buttonOnClick ? (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: '1em',
+              }}>
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ width: '100%', backgroundColor: '#26A69A' }}
+                onClick={() => props.buttonOnClick && props.buttonOnClick()}>
+                <Typography variant="button">{props.buttonText}</Typography>
+              </Button>
+            </div>
+          ) : null}
         </Container>
       </div>
       <footer className={classes.footer} />

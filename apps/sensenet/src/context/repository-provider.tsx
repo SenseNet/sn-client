@@ -1,18 +1,16 @@
+import { CssBaseline } from '@material-ui/core'
 import { AuthenticationProvider, useOidcAuthentication, UserManagerSettings } from '@sensenet/authentication-oidc-react'
 import { Repository } from '@sensenet/client-core'
 import { RepositoryContext, useLogger } from '@sensenet/hooks-react'
 import React, { lazy, ReactNode, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { CssBaseline } from '@material-ui/core'
 import { FullScreenLoader } from '../components/full-screen-loader'
-import { NotificationComponent } from '../components/NotificationComponent'
-import { getAuthConfig } from '../services/auth-config'
-import { useGlobalStyles } from '../globalStyles'
-import { AuthenticatingOverride } from '../components/login/authenticating-override'
-import { NotAuthorizedOverride } from '../components/login/not-authorized-override'
-import { SessionLostOverride } from '../components/login/session-lost-override'
-import { CallbackComponentOverride } from '../components/login/callback-component-override'
+import { AuthOverrideSkeleton } from '../components/login/auth-override-skeleton'
 import { NotAuthenticatedOverride } from '../components/login/not-authenticated-override'
+import { SessionLostOverride } from '../components/login/session-lost-override'
+import { NotificationComponent } from '../components/NotificationComponent'
+import { useGlobalStyles } from '../globalStyles'
+import { getAuthConfig } from '../services/auth-config'
 
 const LoginPage = lazy(() => import(/* webpackChunkName: "login" */ '../components/login/login-page'))
 
@@ -87,13 +85,28 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
     <AuthenticationProvider
       configuration={authConfig}
       history={history}
-      authenticating={<AuthenticatingOverride />}
+      authenticating={
+        <AuthOverrideSkeleton
+          primaryText="Authentication is in progress"
+          secondaryText="You will be redirected to the login page"
+        />
+      }
       notAuthenticated={<NotAuthenticatedOverride />}
-      notAuthorized={<NotAuthorizedOverride />}
+      notAuthorized={
+        <AuthOverrideSkeleton
+          primaryText="Authorization"
+          secondaryText="You are not authorized to access this resource."
+        />
+      }
       sessionLost={(props) => {
         return <SessionLostOverride onAuthenticate={props.onAuthenticate} />
       }}
-      callbackComponentOverride={<CallbackComponentOverride />}>
+      callbackComponentOverride={
+        <AuthOverrideSkeleton
+          primaryText="Authentication complete"
+          secondaryText="You will be redirected to your application."
+        />
+      }>
       <RepoProvider repoUrl={repoUrl}>{children}</RepoProvider>
     </AuthenticationProvider>
   )
