@@ -67,7 +67,7 @@ export const AuthOverrideSkeleton = (props: {
           <Typography align="center" variant="subtitle1" component="p">
             {props.secondaryText}
           </Typography>
-          {props.buttonOnClick ? (
+          {props.buttonOnClick && (
             <div
               style={{
                 display: 'flex',
@@ -78,11 +78,11 @@ export const AuthOverrideSkeleton = (props: {
                 variant="contained"
                 color="primary"
                 style={{ width: '100%', backgroundColor: '#26A69A' }}
-                onClick={() => props.buttonOnClick && props.buttonOnClick()}>
+                onClick={() => props.buttonOnClick?.()}>
                 <Typography variant="button">{props.buttonText}</Typography>
               </Button>
             </div>
-          ) : null}
+          )}
         </Container>
       </div>
       <footer className={classes.footer} />

@@ -36,9 +36,7 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
   }, [])
 
   useEffect(() => {
-    if (repoFromUrl !== null) {
-      setRepoUrl(repoFromUrl)
-    }
+    repoFromUrl && setRepoUrl(repoFromUrl)
   }, [repoFromUrl])
 
   const getConfig = useCallback(async () => {
