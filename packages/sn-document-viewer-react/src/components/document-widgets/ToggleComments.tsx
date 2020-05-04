@@ -6,7 +6,7 @@ import { ToggleBase } from './ToggleBase'
 /**
  * Represents a comment toggler component
  */
-export const ToggleCommentsWidget: React.FC = () => {
+export const ToggleCommentsWidget: React.FC<{ activeColor?: string }> = (props) => {
   const localization = useLocalization()
   const viewerState = useViewerState()
   return (
@@ -14,7 +14,7 @@ export const ToggleCommentsWidget: React.FC = () => {
       isVisible={viewerState.showComments}
       title={localization.toggleComments}
       setValue={(v) => viewerState.updateState({ showComments: v })}>
-      <Comment color="action" fill={viewerState.showComments ? '#ffffff' : '#ffffff'} />
+      <Comment style={viewerState.showComments ? { fill: props.activeColor } : {}} />
     </ToggleBase>
   )
 }
