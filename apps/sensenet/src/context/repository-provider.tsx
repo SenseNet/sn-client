@@ -10,6 +10,7 @@ import { NotAuthenticatedOverride } from '../components/login/not-authenticated-
 import { SessionLostOverride } from '../components/login/session-lost-override'
 import { NotificationComponent } from '../components/NotificationComponent'
 import { useGlobalStyles } from '../globalStyles'
+import { useQuery } from '../hooks/use-query'
 import { getAuthConfig } from '../services/auth-config'
 
 const LoginPage = lazy(() => import(/* webpackChunkName: "login" */ '../components/login/login-page'))
@@ -23,8 +24,7 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
   const globalClasses = useGlobalStyles()
   const history = useHistory()
   const [authConfig, setAuthConfig] = useState<UserManagerSettings>()
-  const searchParams = new URLSearchParams(history.location.search)
-  const repoFromUrl = searchParams.get('repoUrl')
+  const repoFromUrl = useQuery().get('repoUrl')
 
   useEffect(() => {
     const configString = window.localStorage.getItem(authConfigKey)
