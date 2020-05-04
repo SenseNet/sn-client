@@ -15,7 +15,7 @@ import { contextMenuODataOptions } from './context-menu-odata-options'
 import { getIcon } from './icons'
 import { useContextMenuActions } from './use-context-menu-actions'
 
-const DISABLED_ACTIONS = ['SetPermissions']
+const DISABLED_ACTIONS = ['SetPermissions', 'Share', 'Restore']
 
 type ContentContextMenuProps = {
   isOpened: boolean
@@ -42,7 +42,10 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
         logger.verbose({ message: 'There are no actions in content', data: contentFromCallback })
         return
       }
-      const contentActions = contentFromCallback.Actions.filter((action) => !action.Forbidden)
+      const contentActions = contentFromCallback.Actions.filter((action) => !action.Forbidden).filter(
+        (item, i, arr) => arr.findIndex((t) => t.Name === item.Name) === i,
+      )
+
       if (contentActions.some((action) => action.Name === 'Browse') && contentFromCallback.IsFile) {
         contentActions.push({
           Name: 'Download',
