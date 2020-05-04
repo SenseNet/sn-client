@@ -7,8 +7,8 @@ import { CurrentAncestorsContext, CurrentContentContext, useRepository } from '@
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useLocalization, useSelectionService } from '../hooks'
-import { ContentContextService } from '../services'
-import Breadcrumbs, { BreadcrumbItem } from './Breadcrumbs'
+import { getPrimaryActionUrl } from '../services'
+import { BreadcrumbItem, Breadcrumbs } from './Breadcrumbs'
 import { useDialog } from './dialogs'
 import { ActionNameType } from './react-control-mapper'
 
@@ -33,7 +33,6 @@ export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
   const ancestors = useContext(CurrentAncestorsContext)
   const parent = useContext(CurrentContentContext)
   const repository = useRepository()
-  const contentRouter = new ContentContextService(repository)
   const history = useHistory()
   const localization = useLocalization()
   const classes = useStyles()
@@ -62,18 +61,18 @@ export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
           ...ancestors.map((content) => ({
             displayName: content.DisplayName || content.Name,
             title: content.Path,
-            url: contentRouter.getPrimaryActionUrl(content),
+            url: getPrimaryActionUrl(content, repository),
             content,
           })),
           {
             displayName: parent.DisplayName || parent.Name,
             title: parent.Path,
-            url: contentRouter.getPrimaryActionUrl(parent),
+            url: getPrimaryActionUrl(parent, repository),
             content: parent,
           },
         ]}
         onItemClick={(_ev, item) => {
-          props.onItemClick ? props.onItemClick(item) : history.push(contentRouter.getPrimaryActionUrl(item.content))
+          props.onItemClick ? props.onItemClick(item) : history.push(getPrimaryActionUrl(item.content, repository))
         }}
         setFormOpen={(actionName) => setFormOpen(actionName)}
       />

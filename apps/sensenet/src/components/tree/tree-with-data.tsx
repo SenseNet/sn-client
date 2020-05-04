@@ -11,7 +11,7 @@ import { ItemType, Tree } from './tree'
 type TreeWithDataProps = {
   onItemClick: (item: GenericContent) => void
   parentPath: string
-  activeItemIdOrPath: string | number
+  activeItemPath: string
   setFormOpen?: (actionName: ActionNameType) => void
   onTreeLoadingChange?: (isLoading: boolean) => void
 }
@@ -192,19 +192,19 @@ export default function TreeWithData(props: TreeWithDataProps) {
 
   useEffect(() => {
     const activeContent = selectionService.activeContent.getValue()
-    if (activeContent?.Id !== props.activeItemIdOrPath) {
+    if (activeContent?.Path !== props.activeItemPath) {
       loadActiveContent()
     }
 
     async function loadActiveContent() {
       try {
-        const newActiveContent = await repo.load({ idOrPath: props.activeItemIdOrPath })
+        const newActiveContent = await repo.load({ idOrPath: props.activeItemPath })
         selectionService.activeContent.setValue(newActiveContent.d)
       } catch (error) {
-        logger.warning({ message: `Couldn't load active content`, data: { idOrPath: props.activeItemIdOrPath } })
+        logger.warning({ message: `Couldn't load active content`, data: { idOrPath: props.activeItemPath } })
       }
     }
-  }, [logger, props.activeItemIdOrPath, repo, selectionService.activeContent])
+  }, [logger, props.activeItemPath, repo, selectionService.activeContent])
 
   useEffect(() => {
     loadRoot()

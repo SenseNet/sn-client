@@ -1,12 +1,9 @@
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Typography from '@material-ui/core/Typography'
-
 import { ConstantContent } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { Query } from '@sensenet/default-content-types'
-import React, { useContext, useEffect, useState } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
@@ -17,16 +14,18 @@ import {
   useRepositoryEvents,
 } from '@sensenet/hooks-react'
 import clsx from 'clsx'
+import React, { useContext, useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { ContentList } from '../content-list/content-list'
-import { useGlobalStyles } from '../../globalStyles'
-import { encodeQueryData } from '.'
+import { applicationPaths } from '../../application-paths'
 
-const Search: React.FunctionComponent<RouteComponentProps> = (props) => {
+export default function Search() {
   const repo = useRepository()
   const localization = useLocalization().search
   const injector = useInjector()
-
+  const history = useHistory()
   const [onlyPublic, setOnlyPublic] = useState(false)
   const [queries, setQueries] = useState<Query[]>([])
 
@@ -105,11 +104,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = (props) => {
                     // ignore, only queries will be listed
                   }}
                   onActivateItem={(p) => {
-                    props.history.push(
-                      `/${btoa(repo.configuration.repositoryUrl)}/search/${encodeQueryData({
-                        term: (p as Query).Query || '',
-                      })}`,
-                    )
+                    history.push(`${applicationPaths.search}?term=${(p as Query).Query}`)
                   }}
                 />
               </CurrentAncestorsContext.Provider>
@@ -124,5 +119,3 @@ const Search: React.FunctionComponent<RouteComponentProps> = (props) => {
     </div>
   )
 }
-
-export default withRouter(Search)

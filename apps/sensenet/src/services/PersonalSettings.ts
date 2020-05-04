@@ -9,6 +9,7 @@ export interface UiSettings {
   content: {
     browseType: typeof BrowseType[number]
     fields: Array<keyof GenericContent>
+    root: string
   }
   commandPalette: { enabled: boolean; wrapQuery: string }
   drawer: {
@@ -54,12 +55,12 @@ export type WidgetSection = MarkdownWidget | QueryWidget<GenericContent> | Updat
 export const DrawerItemType = tuple(
   'Content',
   'Query',
-  'Content Types',
+  'ContentTypes',
   'Localization',
   'Search',
   'Setup',
   'Trash',
-  'Users and groups',
+  'UsersAndGroups',
   'Dashboard',
 )
 
@@ -103,12 +104,9 @@ export interface DrawerItem<T> {
 
 export interface ContentDrawerItem
   extends DrawerItem<{
-    root: string
     title: string
     description?: string
     icon: string
-    columns?: Array<keyof GenericContent>
-    browseType: typeof BrowseType[number]
   }> {
   itemType: 'Content'
 }
@@ -135,7 +133,7 @@ export interface DashboardDrawerItem
 }
 
 export interface BuiltinDrawerItem extends DrawerItem<undefined> {
-  itemType: 'Content Types' | 'Localization' | 'Search' | 'Setup' | 'Trash' | 'Users and groups'
+  itemType: 'ContentTypes' | 'Localization' | 'Search' | 'Setup' | 'Trash' | 'UsersAndGroups'
 }
 
 export type PersonalSettingsType = PlatformDependent<UiSettings> & {
@@ -286,6 +284,7 @@ export const defaultSettings: PersonalSettingsType = {
     content: {
       browseType: 'explorer',
       fields: ['DisplayName', 'Locked', 'CreatedBy', 'Actions'],
+      root: '/Root/Content',
     },
     drawer: {
       enabled: true,
@@ -294,11 +293,10 @@ export const defaultSettings: PersonalSettingsType = {
         { itemType: 'Search', settings: undefined },
         {
           itemType: 'Content',
-          settings: { root: '/Root/Content' },
           permissions: [{ path: '/Root/Content', action: 'Browse' }],
         },
         {
-          itemType: 'Users and groups',
+          itemType: 'UsersAndGroups',
           settings: { root: '/Root/IMS/Public' },
           permissions: [{ path: '/Root/IMS/Public', action: 'Add' }],
         },
@@ -308,7 +306,7 @@ export const defaultSettings: PersonalSettingsType = {
           permissions: [{ path: '/Root/Trash', action: 'Edit' }],
         },
         {
-          itemType: 'Content Types',
+          itemType: 'ContentTypes',
           settings: { root: '/Root/System/Schema/ContentTypes' },
           permissions: [{ path: '/Root/System/Schema/ContentTypes', action: 'Add' }],
         },

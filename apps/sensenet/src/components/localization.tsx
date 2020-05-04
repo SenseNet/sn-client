@@ -2,10 +2,10 @@ import { useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React from 'react'
 import { useHistory } from 'react-router'
-import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization } from '../../hooks'
-import { ContentContextService } from '../../services'
-import { SimpleList } from '../content/Simple'
+import { useGlobalStyles } from '../globalStyles'
+import { useLocalization } from '../hooks'
+import { getPrimaryActionUrl } from '../services'
+import { SimpleList } from './content/Simple'
 
 export default function Localization() {
   const globalClasses = useGlobalStyles()
@@ -25,7 +25,7 @@ export default function Localization() {
           enableBreadcrumbs: false,
           parentIdOrPath: '/Root/Localization',
           onActivateItem: (p) => {
-            history.push(new ContentContextService(repository).getPrimaryActionUrl(p))
+            history.push(getPrimaryActionUrl(p, repository))
           },
         }}
       />
