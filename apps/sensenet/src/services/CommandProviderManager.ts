@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@sensenet/client-utils'
 import { Repository } from '@sensenet/client-core'
-import { CommandPaletteItem } from '../hooks'
 import { ResponsivePlatforms } from '../context'
+import { CommandPaletteItem } from '../components/command-palette/CommandPalette'
 
 export interface CommandProvider {
   shouldExec: (options: SearchOptions) => boolean
@@ -29,7 +29,7 @@ export class CommandProviderManager {
   public async getItems(options: SearchOptions) {
     const promises = this.Providers.filter((p) => p.shouldExec(options)).map((provider) => provider.getItems(options))
     const results = await Promise.all(promises)
-    return results.reduce((acc, val) => acc.concat(val), []) // flattern
+    return results.reduce((acc, val) => acc.concat(val), []) // flatten
   }
 
   constructor(private readonly injector: Injector) {}

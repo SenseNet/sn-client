@@ -10,8 +10,9 @@ import { LeveledLogEntry, LogLevel } from '@sensenet/client-utils'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { applicationPaths, resolvePathParams } from '../../application-paths'
 import { useLocalization } from '../../hooks'
-import { ContentContextService } from '../../services'
+import { getPrimaryActionUrl } from '../../services'
 import { Icon } from '../Icon'
 import { EventListFilterContext } from './filter-context'
 
@@ -23,7 +24,6 @@ type ListProps = {
 export const List: React.FunctionComponent<ListProps> = (props) => {
   const { filter } = useContext(EventListFilterContext)
   const repository = useRepository()
-  const contextService = new ContentContextService(repository)
   const [effectiveValues, setEffectiveValues] = useState<Array<LeveledLogEntry<any>>>([])
   const localization = useLocalization().eventList.list
 
@@ -66,7 +66,7 @@ export const List: React.FunctionComponent<ListProps> = (props) => {
               <TableCell>
                 {row.data?.relatedContent && row.data?.relatedRepository ? (
                   <Link
-                    to={contextService.getPrimaryActionUrl(row.data.relatedContent)}
+                    to={getPrimaryActionUrl(row.data.relatedContent, repository)}
                     style={{ display: 'flex', alignItems: 'center' }}>
                     <Icon item={row.data.relatedContent} style={{ marginRight: 5 }} />
                     {row.data.relatedContent.DisplayName || row.data.relatedContent.Name}
@@ -76,14 +76,14 @@ export const List: React.FunctionComponent<ListProps> = (props) => {
               <TableCell>{row.data.added}</TableCell>
               <TableCell>
                 {row.data.details ? (
-                  <Link to={`/events/${row.data.guid}`}>
+                  <Link to={resolvePathParams({ path: applicationPaths.events, params: { eventGuid: row.data.guid } })}>
                     <IconButton>
                       <OpenInNewTwoTone />
                     </IconButton>
                   </Link>
                 ) : null}
                 {row.data.compare ? (
-                  <Link to={`/events/${row.data.guid}`}>
+                  <Link to={resolvePathParams({ path: applicationPaths.events, params: { eventGuid: row.data.guid } })}>
                     <IconButton>
                       <CompareArrows />
                     </IconButton>

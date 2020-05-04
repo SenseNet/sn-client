@@ -10,7 +10,7 @@ import clsx from 'clsx'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useLocalization } from '../../hooks'
-import { ContentContextService } from '../../services'
+import { getPrimaryActionUrl } from '../../services'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -48,7 +48,6 @@ type WellKnownContentCardProps = {
 export const WellKnownContentCard = ({ settings, onContextMenu }: WellKnownContentCardProps) => {
   const localization = useLocalization().settings
   const repo = useRepository()
-  const contentContextService = new ContentContextService(repo)
   const classes = useStyles()
 
   return (
@@ -65,7 +64,7 @@ export const WellKnownContentCard = ({ settings, onContextMenu }: WellKnownConte
         <Typography color="textSecondary">{(localization.descriptions as any)[settings.Path]}</Typography>
       </CardContent>
       <CardActions style={{ justifyContent: 'flex-end' }}>
-        <Link to={contentContextService.getPrimaryActionUrl(settings)} style={{ textDecoration: 'none' }}>
+        <Link to={getPrimaryActionUrl(settings, repo)} style={{ textDecoration: 'none' }}>
           <Button size="small" className={classes.button} style={{ marginRight: '35px' }}>
             {localization.edit}
           </Button>

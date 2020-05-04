@@ -11,10 +11,11 @@ import {
   ZoomInOutWidget,
   ZoomModeWidget,
 } from '@sensenet/document-viewer-react'
-import { CurrentContentProvider } from '@sensenet/hooks-react'
+import { CurrentContentProvider, useLogger } from '@sensenet/hooks-react'
 import clsx from 'clsx'
+import { Location } from 'history'
 import React, { useCallback, useEffect } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router'
+import { useHistory, useRouteMatch } from 'react-router-dom'
 import { globals, useGlobalStyles } from '../globalStyles'
 import { useLocalization, useSelectionService, useTheme } from '../hooks'
 
@@ -34,18 +35,17 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-const DocViewer: React.FunctionComponent<
-  RouteComponentProps<{ documentId: string }> & {
-    previousLocation?: string
-  }
-> = (props) => {
-  const documentId = parseInt(props.match.params.documentId, 10)
+export default function DocViewer(props: { previousLocation?: Location }) {
+  const match = useRouteMatch<{ contentId: string }>()
+  const history = useHistory()
+  const contentId = parseInt(match.params.contentId, 10)
+  const logger = useLogger('DocViewer')
   const selectionService = useSelectionService()
   const localization = useLocalization()
   const theme = useTheme()
   const closeViewer = useCallback(() => {
-    props.previousLocation ? props.history.push(props.previousLocation) : props.history.goBack()
-  }, [props.history, props.previousLocation])
+    props.previousLocation ? history.push(props.previousLocation) : history.goBack()
+  }, [history, props.previousLocation])
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
 
@@ -63,14 +63,15 @@ const DocViewer: React.FunctionComponent<
     }
   }, [closeViewer, props])
 
-  if (isNaN(documentId)) {
-    throw Error(`Invalid document Id: ${documentId}`)
+  if (isNaN(contentId)) {
+    logger.error({ message: `Invalid document Id: ${contentId}` })
+    return null
   }
 
   return (
     <div className={clsx(globalClasses.full, classes.docViewerWrapper)}>
-      <CurrentContentProvider idOrPath={documentId} onContentLoaded={(c) => selectionService.activeContent.setValue(c)}>
-        <DocumentViewer documentIdOrPath={documentId}>
+      <CurrentContentProvider idOrPath={contentId} onContentLoaded={(c) => selectionService.activeContent.setValue(c)}>
+        <DocumentViewer documentIdOrPath={contentId}>
           <LayoutAppBar
             style={{
               backgroundColor:
@@ -105,7 +106,3 @@ const DocViewer: React.FunctionComponent<
     </div>
   )
 }
-
-const extendedComponent = withRouter(DocViewer)
-
-export default extendedComponent

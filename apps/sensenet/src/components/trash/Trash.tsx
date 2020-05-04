@@ -1,8 +1,8 @@
 import { ODataParams } from '@sensenet/client-core'
 import { TrashBin } from '@sensenet/default-content-types'
-import { useRepository } from '@sensenet/hooks-react'
 import React from 'react'
-import { useHistory } from 'react-router'
+import { useHistory } from 'react-router-dom'
+import { applicationPaths, resolvePathParams } from '../../application-paths'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLoadContent } from '../../hooks/use-loadContent'
 import { SimpleList } from '../content/Simple'
@@ -14,14 +14,15 @@ const Trash = React.memo(() => {
   const { content } = useLoadContent<TrashBin>({ idOrPath: '/Root/Trash', oDataOptions })
   const globalClasses = useGlobalStyles()
   const history = useHistory()
-  const repo = useRepository()
 
   return (
     <div className={globalClasses.contentWrapper}>
       {content ? (
         <TrashHeader
           iconClickHandler={() =>
-            history.push(`/${btoa(repo.configuration.repositoryUrl)}/EditProperties/${content.Id}`)
+            history.push(
+              resolvePathParams({ path: applicationPaths.editProperties, params: { contentId: content.Id } }),
+            )
           }
           trash={content}
         />

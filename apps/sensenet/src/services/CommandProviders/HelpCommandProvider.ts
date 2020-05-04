@@ -1,7 +1,7 @@
 import { Injectable } from '@sensenet/client-utils'
+import { CommandPaletteItem } from '../../components/command-palette/CommandPalette'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
 import { LocalizationService } from '../LocalizationService'
-import { CommandPaletteItem } from '../../hooks'
 
 @Injectable({ lifetime: 'transient' })
 export class HelpCommandProvider implements CommandProvider {

@@ -1,10 +1,12 @@
-import React from 'react'
+import { ODataParams } from '@sensenet/client-core'
+import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsProvider,
   CurrentChildrenProvider,
   CurrentContentProvider,
   LoadSettingsContextProvider,
 } from '@sensenet/hooks-react'
+import React from 'react'
 import { useSelectionService } from '../../hooks'
 import { ContentList, ContentListProps } from '../content-list/content-list'
 
@@ -12,6 +14,7 @@ export interface SimpleListComponentProps {
   parent: number | string
   rootPath?: string
   contentListProps?: Partial<ContentListProps>
+  loadChildrenSettings?: ODataParams<GenericContent>
 }
 
 export const SimpleList: React.FunctionComponent<SimpleListComponentProps> = (props) => {
@@ -19,7 +22,7 @@ export const SimpleList: React.FunctionComponent<SimpleListComponentProps> = (pr
 
   return (
     <>
-      <LoadSettingsContextProvider>
+      <LoadSettingsContextProvider loadChildrenSettings={props.loadChildrenSettings}>
         <CurrentContentProvider idOrPath={props.parent}>
           <CurrentChildrenProvider>
             <CurrentAncestorsProvider root={props.rootPath}>

@@ -6,15 +6,15 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
 import Tooltip from '@material-ui/core/Tooltip'
 import { Close, Menu } from '@material-ui/icons'
-import { useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { useContext, useState } from 'react'
 import { matchPath, NavLink, useLocation } from 'react-router-dom'
-import { ResponsivePersonalSetttings } from '../../context'
+import { ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
 import { SearchButton } from '../search-button'
+import { applicationPaths } from '../../application-paths'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -88,9 +88,8 @@ export const PermanentDrawer = () => {
   const personalSettings = usePersonalSettings()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
-  const settings = useContext(ResponsivePersonalSetttings)
+  const settings = useContext(ResponsivePersonalSettings)
   const theme = useTheme()
-  const repo = useRepository()
   const [currentPath, setCurrentPath] = useState('')
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const items = useDrawerItems()
@@ -123,21 +122,18 @@ export const PermanentDrawer = () => {
                 </ListItemIcon>
               </ListItem>
             ) : null}
-
-            {matchPath(location.pathname, `/:repositoryId/saved-queries`) === null ? (
-              (matchPath(location.pathname, { path: `/:repositoryId/browse` }) !== null ||
-                matchPath(location.pathname, { path: `/:repositoryId/usersAndGroups`, exact: true }) !== null ||
-                matchPath(location.pathname, { path: `/:repositoryId/setup`, exact: true }) !== null) && (
-                <AddButton isOpened={opened} path={currentPath} />
-              )
-            ) : (
-              <SearchButton isOpened={opened} />
-            )}
-
+            {matchPath(location.pathname, applicationPaths.savedQueries) ? <SearchButton isOpened={opened} /> : null}{' '}
+            {matchPath(location.pathname, [
+              applicationPaths.browse,
+              applicationPaths.usersAndGroups,
+              applicationPaths.setup,
+            ]) ? (
+              <AddButton isOpened={opened} path={currentPath} />
+            ) : null}
             {items.map((item, index) => {
               return (
                 <NavLink
-                  to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
+                  to={item.url}
                   className={classes.navLink}
                   key={index}
                   onClick={() => {
@@ -149,7 +145,7 @@ export const PermanentDrawer = () => {
                     className={classes.listButton}
                     button={true}
                     key={index}
-                    selected={matchPath(location.pathname, `/:repositoryId${item.url}`) === null ? false : true}>
+                    selected={!!matchPath(location.pathname, item.url)}>
                     <ListItemIcon
                       className={clsx(classes.listItemIconDark, globalClasses.centered, {
                         [classes.listItemIconLight]: personalSettings.theme === 'light',
