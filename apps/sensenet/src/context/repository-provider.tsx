@@ -1,18 +1,23 @@
+import { CssBaseline } from '@material-ui/core'
 import { AuthenticationProvider, useOidcAuthentication, UserManagerSettings } from '@sensenet/authentication-oidc-react'
 import { Repository } from '@sensenet/client-core'
 import { RepositoryContext, useLogger } from '@sensenet/hooks-react'
 import React, { lazy, ReactNode, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { CssBaseline } from '@material-ui/core'
 import { FullScreenLoader } from '../components/full-screen-loader'
-import { NotificationComponent } from '../components/NotificationComponent'
-import { getAuthConfig } from '../services/auth-config'
-import { useGlobalStyles } from '../globalStyles'
 import NotAuthenticated from '../components/not-authenticated'
+import { NotificationComponent } from '../components/NotificationComponent'
+import { useGlobalStyles } from '../globalStyles'
+import { getAuthConfig } from '../services/auth-config'
 
 const LoginPage = lazy(() => import(/* webpackChunkName: "login" */ '../components/login/login-page'))
 
 export const authConfigKey = 'sn-oidc-config'
+const customEvents = {
+  onUserSignedOut: () => {
+    window.localStorage.removeItem(authConfigKey)
+  },
+}
 
 export function RepositoryProvider({ children }: { children: React.ReactNode }) {
   const [repoUrl, setRepoUrl] = useState<string>()
@@ -21,15 +26,6 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
   const globalClasses = useGlobalStyles()
   const history = useHistory()
   const [authConfig, setAuthConfig] = useState<UserManagerSettings>()
-
-  useEffect(() => {
-    const configString = window.localStorage.getItem(authConfigKey)
-    if (configString) {
-      const config = JSON.parse(configString)
-      setAuthConfig(config)
-      setRepoUrl(config.extraQueryParams.snrepo)
-    }
-  }, [])
 
   const getConfig = useCallback(async () => {
     if (!repoUrl) {
@@ -50,7 +46,14 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
   }, [logger, repoUrl])
 
   useEffect(() => {
-    getConfig()
+    const configString = window.localStorage.getItem(authConfigKey)
+    if (configString) {
+      const config = JSON.parse(configString)
+      setAuthConfig(config)
+      setRepoUrl(config.extraQueryParams.snrepo)
+    } else {
+      getConfig()
+    }
   }, [getConfig])
 
   if (!authConfig || !repoUrl) {
@@ -72,14 +75,18 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
   }
 
   return (
-    <AuthenticationProvider configuration={authConfig} history={history} notAuthenticated={<NotAuthenticated />}>
+    <AuthenticationProvider
+      configuration={authConfig}
+      history={history}
+      notAuthenticated={<NotAuthenticated />}
+      customEvents={customEvents}>
       <RepoProvider repoUrl={repoUrl}>{children}</RepoProvider>
     </AuthenticationProvider>
   )
 }
 
 const RepoProvider = ({ children, repoUrl }: { children: ReactNode; repoUrl: string }) => {
-  const { oidcUser, login, events } = useOidcAuthentication()
+  const { oidcUser, login } = useOidcAuthentication()
   const repo = useMemo(() => {
     if (oidcUser) {
       return new Repository({
@@ -115,12 +122,8 @@ const RepoProvider = ({ children, repoUrl }: { children: ReactNode; repoUrl: str
     const configString = window.localStorage.getItem(authConfigKey)
     if ((!oidcUser || oidcUser.expired) && configString) {
       login()
-    } else {
-      events.addSilentRenewError(() => {
-        login()
-      })
     }
-  }, [events, login, oidcUser])
+  }, [login, oidcUser])
 
   if (!oidcUser || oidcUser.expired) {
     return null
