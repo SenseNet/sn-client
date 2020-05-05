@@ -1,5 +1,5 @@
 import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
-import { ConstantContent } from '@sensenet/client-core/src'
+import { ConstantContent } from '@sensenet/client-core'
 import { User } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react'
