@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/list-controls-react",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -29,8 +29,8 @@
   "homepage": "https://sensenet.com",
   "dependencies": {
     "@material-ui/core": "^4.9.5",
-    "@sensenet/default-content-types": "^2.0.6",
-    "@sensenet/icons-react": "^1.2.17",
+    "@sensenet/default-content-types": "^2.1.0",
+    "@sensenet/icons-react": "^1.2.18",
     "clsx": "^1.1.0",
     "moment": "^2.24.0",
     "react": "^16.13.0",
