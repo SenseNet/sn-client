@@ -36,6 +36,11 @@ const defaultSettings = {
 }
 
 const repository = {
+  allowedChildTypes: {
+    getFromCTD: jest.fn(() => {
+      return { d: { results: [userContent] } }
+    }),
+  },
   executeAction: jest.fn(() => {
     return { d: { results: [userContent] } }
   }),

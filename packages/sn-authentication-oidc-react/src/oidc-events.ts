@@ -1,6 +1,7 @@
 import { History, Location } from 'history'
-import { User, UserManager, UserManagerEvents } from 'oidc-client'
+import { User, UserManager } from 'oidc-client'
 import { Dispatch } from 'react'
+import { CustomEvents } from './components/authentication-provider'
 import { authenticateUser, logoutUser } from './oidc-service'
 
 type Action =
@@ -32,15 +33,11 @@ export function oidcReducer(state: State, action: Action) {
   }
 }
 
-export const onError = (dispatch: Dispatch<Action>) => (error: Error) => {
-  dispatch({ type: 'ON_ERROR', message: error.message })
-}
-
 export const logout = (userManager: UserManager, dispatch: Dispatch<Action>) => async () => {
   try {
     await logoutUser(userManager)
   } catch (error) {
-    onError(dispatch)(error)
+    onError(dispatch, error)
   }
 }
 
@@ -54,31 +51,86 @@ export const login = (
   await authenticateUser(userManager, location, history)()
 }
 
-export const onUserLoaded = (dispatch: Dispatch<Action>) => (user: User) => {
+export const onError = (dispatch: Dispatch<Action>, error: Error) => {
+  dispatch({ type: 'ON_ERROR', message: error.message })
+}
+
+export const onUserLoaded = (dispatch: Dispatch<Action>, user: User) => {
   dispatch({ type: 'ON_LOAD_USER', user })
 }
 
-export const onUserUnloaded = (dispatch: Dispatch<Action>) => () => {
+export const onUserUnloaded = (dispatch: Dispatch<Action>) => {
   dispatch({ type: 'ON_UNLOAD_USER' })
 }
 
-export const onAccessTokenExpired = (dispatch: Dispatch<Action>, userManager: UserManager) => async () => {
+export const onAccessTokenExpired = async (dispatch: Dispatch<Action>, userManager: UserManager) => {
   dispatch({ type: 'ON_UNLOAD_USER' })
   await userManager.signinSilent()
 }
 
-export const addOidcEvents = (events: UserManagerEvents, dispatch: Dispatch<Action>, userManager: UserManager) => {
-  events.addUserLoaded(onUserLoaded(dispatch))
-  events.addSilentRenewError(onError(dispatch))
-  events.addUserUnloaded(onUserUnloaded(dispatch))
-  events.addUserSignedOut(onUserUnloaded(dispatch))
-  events.addAccessTokenExpired(onAccessTokenExpired(dispatch, userManager))
+type oidcEventsOptions = {
+  customEvents?: CustomEvents
+  dispatch: Dispatch<Action>
+  userManager: UserManager
 }
 
-export const removeOidcEvents = (events: UserManagerEvents, dispatch: Dispatch<Action>, userManager: UserManager) => {
-  events.removeUserLoaded(onUserLoaded(dispatch))
-  events.removeSilentRenewError(onError(dispatch))
-  events.removeUserUnloaded(onUserUnloaded(dispatch))
-  events.removeUserSignedOut(onUserUnloaded(dispatch))
-  events.removeAccessTokenExpired(onAccessTokenExpired(dispatch, userManager))
+export const addOidcEvents = ({ dispatch, userManager, customEvents }: oidcEventsOptions) => {
+  userManager.events.addUserLoaded((user) => {
+    customEvents?.onUserLoaded?.(user)
+    onUserLoaded(dispatch, user)
+  })
+  userManager.events.addSilentRenewError((error) => {
+    customEvents?.onSilentRenewError?.(error)
+    onError(dispatch, error)
+  })
+  userManager.events.addUserUnloaded(() => {
+    customEvents?.onUserUnloaded?.()
+    onUserUnloaded(dispatch)
+  })
+  userManager.events.addUserSignedOut(() => {
+    customEvents?.onUserSignedOut?.()
+    onUserUnloaded(dispatch)
+  })
+  userManager.events.addAccessTokenExpired(() => {
+    customEvents?.onAccessTokenExpired?.()
+    onAccessTokenExpired(dispatch, userManager)
+  })
+
+  if (customEvents?.onAccessTokenExpiring) {
+    userManager.events.addAccessTokenExpiring(customEvents.onAccessTokenExpiring)
+  }
+  if (customEvents?.onUserSessionChanged) {
+    userManager.events.addUserSessionChanged(customEvents.onUserSessionChanged)
+  }
+}
+
+export const removeOidcEvents = ({ dispatch, userManager, customEvents }: oidcEventsOptions) => {
+  userManager.events.removeUserLoaded((user) => {
+    customEvents?.onUserLoaded?.(user)
+    onUserLoaded(dispatch, user)
+  })
+  userManager.events.removeSilentRenewError((error) => {
+    customEvents?.onSilentRenewError?.(error)
+    onError(dispatch, error)
+  })
+  userManager.events.removeUserUnloaded(() => {
+    customEvents?.onUserUnloaded?.()
+    onUserUnloaded(dispatch)
+  })
+  userManager.events.removeUserSignedOut(() => {
+    customEvents?.onUserSignedOut?.()
+    onUserUnloaded(dispatch)
+  })
+  userManager.events.removeAccessTokenExpired(() => {
+    customEvents?.onAccessTokenExpired?.()
+    onAccessTokenExpired(dispatch, userManager)
+  })
+
+  if (customEvents?.onAccessTokenExpiring) {
+    userManager.events.removeAccessTokenExpiring(customEvents.onAccessTokenExpiring)
+  }
+
+  if (customEvents?.onUserSessionChanged) {
+    userManager.events.removeUserSessionChanged(customEvents.onUserSessionChanged)
+  }
 }
