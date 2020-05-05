@@ -1,7 +1,7 @@
 import Grid from '@material-ui/core/Grid'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { debounce } from '@sensenet/client-utils'
-import { PreviewImageData } from '../models'
+import { PreviewImageData } from '@sensenet/client-core'
 import { Dimensions, ImageUtil } from '../services'
 import { ZoomMode } from '../models/viewer-state'
 import { usePreviewImages, useViewerState } from '../hooks'

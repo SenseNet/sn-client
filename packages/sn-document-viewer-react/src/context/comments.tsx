@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Trace } from '@sensenet/client-utils'
+import { CommentData } from '@sensenet/client-core'
 import { useDocumentData, useDocumentViewerApi, useViewerState } from '../hooks'
-import { CommentData } from '../models/Comment'
 import { DocumentViewerApiSettings } from '../models'
 
 export type CommentsContextType = {

@@ -1,5 +1,4 @@
-import { CommentData, CommentWithoutCreatedByAndId } from './Comment'
-import { DocumentData, PreviewImageData } from '.'
+import { CommentData, CommentWithoutCreatedByAndId, DocumentData, PreviewImageData } from '@sensenet/client-core'
 
 /**
  * Main settings for the Document Viewer component

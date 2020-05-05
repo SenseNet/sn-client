@@ -155,14 +155,7 @@ export class AllowedChildTypesComponent extends Component<
         return
       }
 
-      const allowedChildTypesFromCTD = (await this.props.repository.executeAction({
-        idOrPath: this.props.content.Id,
-        name: 'GetAllowedChildTypesFromCTD',
-        method: 'GET',
-        body: {
-          select: ['Name', 'DisplayName', 'Icon'],
-        },
-      })) as ODataCollectionResponse<ContentType>
+      const allowedChildTypesFromCTD = await this.props.repository.allowedChildTypes.getFromCTD(this.props.content.Id)
 
       const typeResults = result.d.EffectiveAllowedChildTypes as ContentType[]
 

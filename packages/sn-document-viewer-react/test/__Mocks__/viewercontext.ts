@@ -1,5 +1,5 @@
-import { DocumentData, DocumentViewerApiSettings, PreviewImageData } from '../../src/models'
-import { CommentData } from '../../src/models/Comment'
+import { CommentData, DocumentData, PreviewImageData } from '@sensenet/client-core'
+import { DocumentViewerApiSettings } from '../../src/models'
 
 /**
  * Example document data for document viewer context
@@ -89,8 +89,8 @@ export const examplePreviewComment: CommentData = {
   id: 'someId',
   page: 1,
   text: 'Thats a comment',
-  x: 10,
-  y: 10,
+  x: '10',
+  y: '10',
 }
 
 /**

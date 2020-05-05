@@ -1,5 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Annotation, DraftCommentMarker, Highlight, PreviewImageData, Redaction, Shape, Shapes } from '../../models'
+import {
+  Annotation,
+  DraftCommentMarker,
+  Highlight,
+  PreviewImageData,
+  Redaction,
+  Shape,
+  Shapes,
+} from '@sensenet/client-core'
 import { Dimensions } from '../../services'
 import { useComments, useCommentState, useDocumentData, useDocumentPermissions, useViewerState } from '../../hooks'
 import { ShapeAnnotation, ShapeHighlight, ShapeRedaction } from './Shape'

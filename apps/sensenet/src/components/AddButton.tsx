@@ -122,7 +122,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
   useEffect(() => {
     const getAllowedChildTypes = async () => {
       try {
-        const allowedChildTypesFromRepo = await repo.getAllowedChildTypes({
+        const allowedChildTypesFromRepo = await repo.allowedChildTypes.get({
           idOrPath: currentComponent ? parent.Id : props.path,
         })
 

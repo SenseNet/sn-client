@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { PreviewImageData } from '../models/PreviewImageData'
+import { PreviewImageData } from '@sensenet/client-core'
 import {
   useDocumentData,
   useDocumentPermissions,

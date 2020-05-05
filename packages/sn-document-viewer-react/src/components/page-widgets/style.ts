@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { DraftCommentMarker } from '../../models'
+import { DraftCommentMarker } from '@sensenet/client-core'
 
 export const ShapesContainer = styled.div`
   position: absolute;
