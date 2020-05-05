@@ -5,9 +5,12 @@ import { RepositoryContext, useLogger } from '@sensenet/hooks-react'
 import React, { lazy, ReactNode, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { FullScreenLoader } from '../components/full-screen-loader'
-import NotAuthenticated from '../components/not-authenticated'
+import { AuthOverrideSkeleton } from '../components/login/auth-override-skeleton'
+import { NotAuthenticatedOverride } from '../components/login/not-authenticated-override'
+import { SessionLostOverride } from '../components/login/session-lost-override'
 import { NotificationComponent } from '../components/NotificationComponent'
 import { useGlobalStyles } from '../globalStyles'
+import { useQuery } from '../hooks/use-query'
 import { getAuthConfig } from '../services/auth-config'
 
 const LoginPage = lazy(() => import(/* webpackChunkName: "login" */ '../components/login/login-page'))
@@ -26,6 +29,11 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
   const globalClasses = useGlobalStyles()
   const history = useHistory()
   const [authConfig, setAuthConfig] = useState<UserManagerSettings>()
+  const repoFromUrl = useQuery().get('repoUrl')
+
+  useEffect(() => {
+    repoFromUrl && setRepoUrl(repoFromUrl)
+  }, [repoFromUrl])
 
   const getConfig = useCallback(async () => {
     if (!repoUrl) {
@@ -78,7 +86,28 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
     <AuthenticationProvider
       configuration={authConfig}
       history={history}
-      notAuthenticated={<NotAuthenticated />}
+      authenticating={
+        <AuthOverrideSkeleton
+          primaryText="Authentication is in progress"
+          secondaryText="You will be redirected to the login page"
+        />
+      }
+      notAuthenticated={<NotAuthenticatedOverride />}
+      notAuthorized={
+        <AuthOverrideSkeleton
+          primaryText="Authorization"
+          secondaryText="You are not authorized to access this resource."
+        />
+      }
+      sessionLost={(props) => {
+        return <SessionLostOverride onAuthenticate={props.onAuthenticate} />
+      }}
+      callbackComponentOverride={
+        <AuthOverrideSkeleton
+          primaryText="Authentication complete"
+          secondaryText="You will be redirected to your application."
+        />
+      }
       customEvents={customEvents}>
       <RepoProvider repoUrl={repoUrl}>{children}</RepoProvider>
     </AuthenticationProvider>
