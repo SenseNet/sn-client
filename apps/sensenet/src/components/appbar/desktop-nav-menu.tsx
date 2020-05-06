@@ -160,7 +160,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                       },
                       title: currentUser.DisplayName || currentUser.Name,
                     }}
-                    primary={`${currentUser.DisplayName || currentUser.Name} user`}
+                    primary={`${currentUser.DisplayName || currentUser.Name}`}
                   />
                 </MenuItem>
                 <NavLink to={applicationPaths.personalSettings} onClick={handleClose}>
