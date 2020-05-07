@@ -97,7 +97,6 @@ export const Content = () => {
       return (
         <Explore
           currentPath={currentPath}
-          onActivateItem={onActivateItem}
           onNavigate={onNavigate}
           rootPath={rootPath}
           fieldsToDisplay={settings.content.fields}

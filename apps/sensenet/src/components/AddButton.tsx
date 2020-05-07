@@ -15,10 +15,9 @@ import { Schema } from '@sensenet/default-content-types'
 import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
-import { useHistory } from 'react-router'
 import { globals, useGlobalStyles } from '../globalStyles'
 import { useLocalization, usePersonalSettings, useSelectionService } from '../hooks'
-import { applicationPaths } from '../application-paths'
+import { useDialogActionService } from '../hooks/use-dialogaction-service'
 import { useDialog } from './dialogs'
 import { Icon } from './Icon'
 
@@ -76,7 +75,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
   const [hasUpload, setHasUpload] = useState(false)
   const [currentComponent, setCurrentComponent] = useState(selectionService.activeContent.getValue())
   const personalSettings = usePersonalSettings()
-  const history = useHistory<{ schema: Schema }>()
+  const dialogActionService = useDialogActionService()
 
   useEffect(() => {
     const activeComponentObserve = selectionService.activeContent.subscribe((newActiveComponent) =>
@@ -260,12 +259,13 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
               <ListItem
                 button={true}
                 style={{ padding: '10px 0 10px 10px' }}
-                onClick={() => {
+                onClick={async () => {
                   const contentPath = currentComponent ? currentComponent.Path : props.path
+                  const currentContent = await repo.load({ idOrPath: contentPath })
+                  selectionService.activeContent.setValue(currentContent.d)
                   setShowSelectType(false)
-                  history.push(`${applicationPaths.newProperties}?path=${contentPath}`, {
-                    schema: childType,
-                  })
+                  dialogActionService.contentTypeNameForNewContent.setValue(childType.ContentTypeName)
+                  dialogActionService.activeAction.setValue('new')
                 }}>
                 <ListItemIcon style={{ minWidth: '36px' }}>
                   <Icon item={childType} />

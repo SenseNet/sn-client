@@ -5,14 +5,12 @@ import { Created } from '@sensenet/repository-events'
 import React, { useCallback, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { useSelectionService } from '../../hooks'
-import { ActionNameType } from '../react-control-mapper'
 import { ItemType, Tree } from './tree'
 
 type TreeWithDataProps = {
   onItemClick: (item: GenericContent) => void
   parentPath: string
   activeItemPath: string
-  setFormOpen?: (actionName: ActionNameType) => void
   onTreeLoadingChange?: (isLoading: boolean) => void
 }
 
@@ -235,10 +233,6 @@ export default function TreeWithData(props: TreeWithDataProps) {
     return null
   }
 
-  const setFormOpen = (actionName: ActionNameType) => {
-    props.setFormOpen && props.setFormOpen(actionName)
-  }
-
   return (
     <Tree
       itemCount={itemCount}
@@ -246,7 +240,6 @@ export default function TreeWithData(props: TreeWithDataProps) {
       loadMore={loadMoreItems}
       onItemClick={onItemClick}
       isLoading={isLoading}
-      setFormOpen={(actionName) => setFormOpen(actionName)}
     />
   )
 }

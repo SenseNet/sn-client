@@ -9,9 +9,12 @@ import {
   useRepository,
 } from '@sensenet/hooks-react'
 import clsx from 'clsx'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
+import { useDialogActionService } from '../../hooks/use-dialogaction-service'
+import { getPrimaryActionUrl } from '../../services'
 import { ContentList } from '../content-list/content-list'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { FullScreenLoader } from '../full-screen-loader'
@@ -19,6 +22,7 @@ import { editviewFileResolver, Icon } from '../Icon'
 import { ActionNameType } from '../react-control-mapper'
 import TreeWithData from '../tree/tree-with-data'
 import { EditView } from '../view-controls/edit-view'
+import { NewView } from '../view-controls/new-view'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -56,23 +60,34 @@ type ExploreProps = {
   currentPath: string
   rootPath: string
   onNavigate: (content: GenericContent) => void
-  onActivateItem: (content: GenericContent) => void
   fieldsToDisplay?: Array<keyof GenericContent>
 }
 
-export function Explore({ currentPath, onActivateItem, onNavigate, rootPath, fieldsToDisplay }: ExploreProps) {
+export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: ExploreProps) {
   const selectionService = useSelectionService()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
-  const [isFormOpened, setIsFormOpened] = useState(false)
   const [action, setAction] = useState<ActionNameType>()
   const [isTreeLoading, setIsTreeLoading] = useState(false)
   const repo = useRepository()
+  const history = useHistory()
+  const dialogActionService = useDialogActionService()
 
-  const setFormOpen = (actionName: ActionNameType) => {
-    setAction(actionName)
-    setIsFormOpened(true)
+  const onActivateItemOverride = (activeItem: GenericContent) => {
+    getPrimaryActionUrl(activeItem, repo) === 'openEdit'
+      ? dialogActionService.activeAction.setValue('edit')
+      : history.push(getPrimaryActionUrl(activeItem, repo))
   }
+
+  useEffect(() => {
+    const activeDialogActionObserve = dialogActionService.activeAction.subscribe((newDialogAction) =>
+      setAction(newDialogAction),
+    )
+
+    return function cleanup() {
+      activeDialogActionObserve.dispose()
+    }
+  }, [dialogActionService.activeAction])
 
   return (
     <>
@@ -82,10 +97,9 @@ export function Explore({ currentPath, onActivateItem, onNavigate, rootPath, fie
             <CurrentAncestorsProvider root={rootPath}>
               <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
                 <ContentBreadcrumbs
-                  setFormOpen={(actionName) => setFormOpen(actionName)}
                   onItemClick={(i) => {
                     onNavigate(i.content)
-                    setIsFormOpened(false)
+                    dialogActionService.activeAction.setValue(undefined)
                     selectionService.activeContent.setValue(i.content)
                   }}
                   batchActions={true}
@@ -95,45 +109,54 @@ export function Explore({ currentPath, onActivateItem, onNavigate, rootPath, fie
                 <TreeWithData
                   onItemClick={(item) => {
                     selectionService.activeContent.setValue(item)
-                    setIsFormOpened(false)
+                    dialogActionService.activeAction.setValue(undefined)
                     onNavigate(item)
                   }}
                   parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
                   activeItemPath={currentPath}
-                  setFormOpen={(actionName) => setFormOpen(actionName)}
                   onTreeLoadingChange={(isLoading) => setIsTreeLoading(isLoading)}
                 />
                 <div className={classes.exploreContainer}>
-                  {isFormOpened ? (
+                  {action ? (
                     <>
                       {action === 'edit' || action === 'browse' ? (
-                        <div className={clsx(classes.title, globalClasses.centered)}>
-                          {action === 'edit'
-                            ? `Edit ${selectionService.activeContent.getValue()?.DisplayName}`
-                            : `Info about ${selectionService.activeContent.getValue()?.DisplayName}`}
-                          <Icon
-                            resolvers={editviewFileResolver}
-                            style={{ marginLeft: '9px', height: '24px', width: '24px' }}
-                            item={selectionService.activeContent.getValue()}
+                        <>
+                          <div className={clsx(classes.title, globalClasses.centered)}>
+                            {action === 'edit'
+                              ? `Edit ${selectionService.activeContent.getValue()?.DisplayName}`
+                              : `Info about ${selectionService.activeContent.getValue()?.DisplayName}`}
+                            <Icon
+                              resolvers={editviewFileResolver}
+                              style={{ marginLeft: '9px', height: '24px', width: '24px' }}
+                              item={selectionService.activeContent.getValue()}
+                            />
+                          </div>
+                          <EditView
+                            uploadFolderpath="/Root/Content/demoavatars"
+                            handleCancel={async () => {
+                              dialogActionService.activeAction.setValue(undefined)
+                              setAction(undefined)
+                              if (selectionService.activeContent.getValue() !== undefined) {
+                                const parentContent = await repo.load({
+                                  idOrPath: PathHelper.getParentPath(selectionService.activeContent.getValue()!.Path),
+                                })
+                                selectionService.activeContent.setValue(parentContent.d)
+                              }
+                            }}
+                            actionName={action}
+                            submitCallback={() => dialogActionService.activeAction.setValue(undefined)}
                           />
-                        </div>
-                      ) : null}
-
-                      <EditView
-                        uploadFolderpath="/Root/Content/demoavatars"
-                        handleCancel={async () => {
-                          setIsFormOpened(false)
-                          setAction(undefined)
-                          if (selectionService.activeContent.getValue() !== undefined) {
-                            const parentContent = await repo.load({
-                              idOrPath: PathHelper.getParentPath(selectionService.activeContent.getValue()!.Path),
-                            })
-                            selectionService.activeContent.setValue(parentContent.d)
-                          }
-                        }}
-                        actionName={action}
-                        submitCallback={() => setIsFormOpened(false)}
-                      />
+                        </>
+                      ) : (
+                        action === 'new' &&
+                        dialogActionService.contentTypeNameForNewContent.getValue() && (
+                          <NewView
+                            contentTypeName={dialogActionService.contentTypeNameForNewContent.getValue()!}
+                            currentContent={selectionService.activeContent.getValue()}
+                            uploadFolderpath="/Root/Content/demoavatars"
+                          />
+                        )
+                      )}
                     </>
                   ) : isTreeLoading ? (
                     <FullScreenLoader />
@@ -143,14 +166,12 @@ export function Explore({ currentPath, onActivateItem, onNavigate, rootPath, fie
                       enableBreadcrumbs={false}
                       fieldsToDisplay={fieldsToDisplay}
                       onParentChange={onNavigate}
-                      onActivateItem={onActivateItem}
+                      onActivateItem={(content) => onActivateItemOverride(content)}
                       onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
                       parentIdOrPath={currentPath}
                       onSelectionChange={(sel) => {
                         selectionService.selection.setValue(sel)
                       }}
-                      isOpenFrom="explore"
-                      setFormOpen={(actionName) => setFormOpen(actionName)}
                     />
                   )}
                 </div>

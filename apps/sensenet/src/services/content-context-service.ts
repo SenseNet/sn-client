@@ -85,5 +85,5 @@ export function getPrimaryActionUrl(content: GenericContent, repository: Reposit
     })
   }
 
-  return resolvePathParams({ path: applicationPaths.editProperties, params: { contentId: content.Id } })
+  return 'openEdit'
 }

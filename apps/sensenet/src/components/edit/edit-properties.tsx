@@ -8,6 +8,7 @@ import { PathHelper } from '@sensenet/client-utils'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
 import { EditView } from '../view-controls/edit-view'
+import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -38,6 +39,9 @@ export default function EditProperties() {
           selectionService.activeContent.setValue(c)
         }}
         oDataOptions={{ select: 'all' }}>
+        <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
+          <ContentBreadcrumbs onItemClick={() => {}} />
+        </div>
         <EditView
           uploadFolderpath={'/Root/Content/demoavatars'}
           handleCancel={async () => {

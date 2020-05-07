@@ -19,7 +19,6 @@ import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { useDialog } from '../dialogs'
 import { DropFileArea } from '../DropFileArea'
-import { ActionNameType } from '../react-control-mapper'
 import { SelectionControl } from '../SelectionControl'
 import { ContextMenuWrapper } from './context-menu-wrapper'
 import {
@@ -69,8 +68,6 @@ export interface ContentListProps {
   onSelectionChange?: (sel: GenericContent[]) => void
   onFocus?: () => void
   containerProps?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
-  isOpenFrom?: 'explore' | 'commander' | 'simple'
-  setFormOpen?: (actionName: ActionNameType) => void
 }
 
 export const isReferenceField = (fieldName: string, repo: Repository) => {
@@ -414,18 +411,11 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
 
   const displayNameInArray = ['DisplayName']
 
-  const setFormOpen = (actionName: ActionNameType) => {
-    props.setFormOpen && props.setFormOpen(actionName)
-  }
-
   return (
     <div style={{ ...props.style }} {...props.containerProps}>
       {props.enableBreadcrumbs ? (
         <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
-          <ContentBreadcrumbs
-            setFormOpen={(actionName) => setFormOpen(actionName)}
-            onItemClick={(i) => props.onParentChange(i.content)}
-          />
+          <ContentBreadcrumbs onItemClick={(i) => props.onParentChange(i.content)} />
         </div>
       ) : null}
       <DropFileArea parentContent={parentContent} style={{ height: '100%', overflow: 'hidden' }}>
@@ -477,8 +467,6 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
               menuProps={menuPropsObj}
               onClose={onCloseFunc}
               onOpen={onOpenFunc}
-              halfPage={props.isOpenFrom && props.isOpenFrom === 'explore'}
-              setFormOpen={(actionName) => setFormOpen(actionName)}
             />
           ) : null}
         </div>

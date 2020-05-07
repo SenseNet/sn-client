@@ -110,7 +110,6 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
                 onTabRequest={() => _rightPanelRef && _rightPanelRef.focus()}
                 onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
                 fieldsToDisplay={props.fieldsToDisplay}
-                isOpenFrom={'commander'}
               />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>
@@ -141,7 +140,6 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
                 onTabRequest={() => _leftPanelRef && _leftPanelRef.focus()}
                 onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
                 fieldsToDisplay={props.fieldsToDisplay}
-                isOpenFrom={'commander'}
               />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>

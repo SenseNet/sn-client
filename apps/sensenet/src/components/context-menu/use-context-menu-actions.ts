@@ -3,6 +3,7 @@ import { useDownload, useLogger, useRepository } from '@sensenet/hooks-react'
 import { useHistory } from 'react-router'
 import { applicationPaths, resolvePathParams } from '../../application-paths'
 import { useLoadContent } from '../../hooks'
+import { useDialogActionService } from '../../hooks/use-dialogaction-service'
 import { getPrimaryActionUrl } from '../../services'
 import { useDialog } from '../dialogs'
 import { contextMenuODataOptions } from './context-menu-odata-options'
@@ -14,30 +15,20 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
   const download = useDownload(content)
   const currentParent = useLoadContent({ idOrPath: content.ParentId! }).content
   const { openDialog } = useDialog()
+  const dialogActionService = useDialogActionService()
 
   const getContentName = () => content.DisplayName ?? content.Name
 
-  const runAction = async (actionName: string, halfPage?: boolean, setFormOpen?: () => void) => {
+  const runAction = async (actionName: string) => {
     switch (actionName) {
       case 'Delete':
         openDialog({ name: 'delete', props: { content: [content] } })
         break
       case 'Edit':
-        !halfPage
-          ? history.push(
-              resolvePathParams({ path: applicationPaths.editProperties, params: { contentId: content.Id } }),
-            )
-          : setFormOpen && setFormOpen()
+        dialogActionService.activeAction.setValue('edit')
         break
       case 'Browse':
-        if (!halfPage) {
-          history.push(
-            resolvePathParams({ path: applicationPaths.browseProperties, params: { contentId: content.Id } }),
-          )
-        } else {
-          setFormOpen && setFormOpen()
-        }
-
+        dialogActionService.activeAction.setValue('browse')
         break
       case 'MoveTo':
       case 'CopyTo': {
