@@ -48,7 +48,7 @@
     "lodash.orderby": "^4.6.0",
     "moment": "^2.24.0",
     "striptags": "^3.1.1",
-    "uuid": "^7.0.2"
+    "uuid": "^8.0.0"
   },
   "browserslist": {
     "production": [
