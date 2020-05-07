@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/authentication-oidc-react",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "React components and service for oidc authentication with sensenet",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",

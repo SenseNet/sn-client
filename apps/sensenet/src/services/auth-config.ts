@@ -22,7 +22,7 @@ export const getAuthConfig = async (repoUrl: string) => {
     redirect_uri: window.location.origin + applicationPaths.loginCallback,
     response_type: 'code',
     scope: 'openid profile sensenet',
-    post_logout_redirect_uri: window.location.origin,
+    post_logout_redirect_uri: `${window.location.origin}?repoUrl=${repoUrl}`,
     silent_redirect_uri: window.location.origin + applicationPaths.silentCallback,
     extraQueryParams: { snrepo: trimmedRepoUrl },
   }

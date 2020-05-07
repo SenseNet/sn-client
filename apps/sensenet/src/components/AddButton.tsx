@@ -12,13 +12,13 @@ import {
 import { CloudUploadOutlined } from '@material-ui/icons'
 import Add from '@material-ui/icons/Add'
 import { Schema } from '@sensenet/default-content-types'
-import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
+import { applicationPaths } from '../application-paths'
 import { globals, useGlobalStyles } from '../globalStyles'
 import { useLocalization, usePersonalSettings, useSelectionService } from '../hooks'
-import { applicationPaths } from '../application-paths'
 import { useDialog } from './dialogs'
 import { Icon } from './Icon'
 
@@ -65,8 +65,6 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
   const globalClasses = useGlobalStyles()
   const repo = useRepository()
   const { openDialog } = useDialog()
-  const parentContext = useContext(CurrentContentContext)
-  const [parent, setParent] = useState(parentContext)
   const [showSelectType, setShowSelectType] = useState(false)
   const [allowedChildTypes, setAllowedChildTypes] = useState<Schema[]>([])
   const localization = useLocalization().addButton
@@ -89,17 +87,9 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
   }, [selectionService.activeContent])
 
   useEffect(() => {
-    currentComponent && setParent(currentComponent)
-  }, [currentComponent])
-
-  useEffect(() => {
-    !currentComponent && setParent(parentContext)
-  }, [parentContext, currentComponent])
-
-  useEffect(() => {
     const getActions = async () => {
       try {
-        const actions = await repo.getActions({ idOrPath: parent ? parent.Id : props.path })
+        const actions = await repo.getActions({ idOrPath: currentComponent ? currentComponent.Id : props.path })
         const isActionFound = actions.d.Actions.some((action) => action.Name === 'Add' || action.Name === 'Upload')
         setAvailable(isActionFound)
       } catch (error) {
@@ -112,18 +102,18 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
       }
     }
 
-    if (parent || props.path !== '') {
+    if (currentComponent || props.path !== '') {
       getActions()
     } else {
       setAvailable(false)
     }
-  }, [localization.errorGettingActions, logger, parent, props.path, repo])
+  }, [currentComponent, localization.errorGettingActions, logger, props.path, repo])
 
   useEffect(() => {
     const getAllowedChildTypes = async () => {
       try {
         const allowedChildTypesFromRepo = await repo.allowedChildTypes.get({
-          idOrPath: currentComponent ? parent.Id : props.path,
+          idOrPath: currentComponent ? currentComponent.Id : props.path,
         })
 
         const filteredTypes = allowedChildTypesFromRepo.d.results
@@ -151,7 +141,6 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
     currentComponent,
     localization.errorGettingAllowedContentTypes,
     logger,
-    parent.Id,
     personalSettings.uploadHandlers,
     props.path,
     repo,
@@ -243,7 +232,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
                   setShowSelectType(false)
                   openDialog({
                     name: 'upload',
-                    props: { uploadPath: parent.Path },
+                    props: { uploadPath: currentComponent?.Path || props.path },
                     dialogProps: { open: true, fullScreen: true },
                   })
                 }}>
