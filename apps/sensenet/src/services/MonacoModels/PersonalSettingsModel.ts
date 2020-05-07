@@ -31,7 +31,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                   enum: [
                     'Actions',
                     'Type',
-                    ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
+                    ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map((f) => f.Name),
                   ],
                 },
               ],
@@ -221,9 +221,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                             settings: {
                               type: 'object',
                               properties: {
-                                root: { type: 'string', description: language.drawer.contentRootDescription },
                                 title: { type: 'string', description: language.personalSettings.drawerItemTitle },
-                                columns: { $ref: '#/definitions/columns' },
                                 description: {
                                   type: 'string',
                                   description: language.personalSettings.drawerItemDescription,
@@ -232,10 +230,6 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                                   type: 'string',
                                   enum: [...wellKnownIconNames],
                                   description: language.personalSettings.drawerItemDescription,
-                                },
-                                browseType: {
-                                  description: language.personalSettings.contentBrowseType,
-                                  enum: [...BrowseType],
                                 },
                               },
                               required: ['root', 'title', 'icon'],
@@ -303,34 +297,6 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                 },
               },
             },
-            repository: {
-              type: 'object',
-              required: ['url'],
-              properties: {
-                url: {
-                  type: 'string',
-                  description: language.personalSettings.repositoryUrl,
-                },
-                loginName: {
-                  type: 'string',
-                  description: language.personalSettings.repositoryLoginName,
-                },
-                displayName: {
-                  type: 'string',
-                  description: language.personalSettings.repositoryDisplayName,
-                },
-                dashboard: {
-                  type: 'array',
-                  description: 'The customized Dashboard for the Repository',
-                  items: { $ref: '#definitions/dashboardSection' },
-                },
-              },
-            },
-            repositories: {
-              type: 'array',
-              description: language.personalSettings.repositoryTitle,
-              items: { $ref: '#/definitions/repository' },
-            },
             commandPalette: {
               type: 'object',
               description: language.personalSettings.commandPaletteTitle,
@@ -351,6 +317,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                   enum: [...BrowseType],
                 },
                 fields: { $ref: '#/definitions/columns' },
+                root: { type: 'string', description: language.drawer.contentRootDescription },
               },
             },
             settings: {
@@ -391,11 +358,9 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
             mobile: { $ref: '#/definitions/settings' },
             tablet: { $ref: '#/definitions/settings' },
             desktop: { $ref: '#/definitions/settings' },
-            repositories: { $ref: '#/definitions/repositories' },
             dashboards: {
               $ref: '#/definitions/dashboards',
             },
-            lastRepository: { type: 'string', description: language.personalSettings.lastRepository },
             eventLogSize: { type: 'number', description: language.personalSettings.eventLogSize },
             logLevel: {
               type: 'array',
@@ -403,8 +368,8 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
               items: {
                 enum: [
                   ...Object.entries(LogLevel)
-                    .filter(entry => !isNaN(entry[1] as LogLevel))
-                    .map(entry => entry[0]),
+                    .filter((entry) => !isNaN(entry[1] as LogLevel))
+                    .map((entry) => entry[0]),
                 ],
               },
             },

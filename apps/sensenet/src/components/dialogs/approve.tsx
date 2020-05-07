@@ -73,23 +73,23 @@ export function Approve(props: ApproveProps) {
             multiline={true}
             rowsMax="4"
             value={reason}
-            onChange={event => setReason(event.target.value)}
+            onChange={(event) => setReason(event.target.value)}
             margin="normal"
             fullWidth={true}
           />
         </Fade>
       </DialogContent>
 
-      <DialogActions>
+      <DialogActions style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Button onClick={closeLastDialog} className={globalClasses.cancelButton}>
           {localization.cancelButton}
         </Button>
         <div>
-          <Button onClick={approve} color="primary" variant="contained">
-            {localization.approveButton}
-          </Button>
           <Button onClick={reject} className={globalClasses.cancelButton}>
             {localization.rejectButton}
+          </Button>
+          <Button onClick={approve} color="primary" variant="contained">
+            {localization.approveButton}
           </Button>
         </div>
       </DialogActions>

@@ -17,7 +17,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom'
 /**
  * Document viewer component
  */
-const DocViewer: React.FunctionComponent<RouteComponentProps<{ documentId: string }>> = props => {
+const DocViewer: React.FunctionComponent<RouteComponentProps<{ documentId: string }>> = (props) => {
   const documentId = parseInt(props.match.params.documentId, 10)
 
   if (isNaN(documentId)) {

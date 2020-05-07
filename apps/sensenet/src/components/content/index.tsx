@@ -1,124 +1,122 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { RouteComponentProps } from 'react-router'
-import { GenericContent } from '@sensenet/default-content-types'
+import { Button, Container, Grid, Typography } from '@material-ui/core'
 import { ConstantContent } from '@sensenet/client-core'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { tuple } from '@sensenet/client-utils'
-import { ResponsivePersonalSetttings } from '../../context'
-import { useContentRouting } from '../../hooks'
-import Commander from './Commander'
+import { GenericContent } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
+import React, { useContext, useEffect, useState } from 'react'
+import { useHistory, useRouteMatch } from 'react-router-dom'
+import { ResponsivePersonalSettings } from '../../context'
+import { useQuery } from '../../hooks/use-query'
+import { getPrimaryActionUrl } from '../../services'
+import { CommanderComponent } from './Commander'
 import { Explore } from './Explore'
 import { SimpleList } from './Simple'
 
 export const BrowseType = tuple('commander', 'explorer', 'simple')
 
-export interface BrowseData {
-  type?: typeof BrowseType[number]
-  root?: string
-  currentContent?: number | string
-  secondaryContent?: number | string // right parent
-  fieldsToDisplay?: Array<keyof GenericContent>
-}
-
-export const encodeBrowseData = (data: BrowseData) => encodeURIComponent(btoa(JSON.stringify(data)))
-export const decodeBrowseData = (encoded: string) => JSON.parse(atob(decodeURIComponent(encoded))) as BrowseData
-
-export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: string }>> = props => {
+export const Content = () => {
   const repo = useRepository()
-  const settings = useContext(ResponsivePersonalSetttings)
-  const logger = useLogger('Browse view')
+  const match = useRouteMatch<{ browseType: string }>()
+  const pathFromQuery = useQuery().get('path')
+  const secondaryPathFromQuery = useQuery().get('sPath')
+  const history = useHistory()
+  const settings = useContext(ResponsivePersonalSettings)
+  const rootPath = settings.content.root ?? ConstantContent.PORTAL_ROOT.Path
+  const [currentPath, setCurrentPath] = useState(pathFromQuery ? decodeURIComponent(pathFromQuery) : rootPath)
+  const [secondaryPath, setSecondaryPath] = useState(
+    secondaryPathFromQuery ? decodeURIComponent(secondaryPathFromQuery) : currentPath,
+  )
+  const [isPathValid, setIsPathValid] = useState<boolean>()
 
-  const [browseData, setBrowseData] = useState<BrowseData>({
-    type: settings.content.browseType,
-  })
-  const contentRouter = useContentRouting()
+  const onNavigate = (content: GenericContent, isSecondary = false) => {
+    const searchParams = new URLSearchParams(history.location.search)
+    searchParams.set('path', content.Path)
+    isSecondary && searchParams.set('sPath', secondaryPath)
+    history.push(`${match.url}?${searchParams.toString()}`)
+    setCurrentPath(content.Path)
+  }
+
+  const onNavigateSecondary = (content: GenericContent) => {
+    const searchParams = new URLSearchParams(history.location.search)
+    searchParams.set('path', currentPath)
+    searchParams.set('sPath', content.Path)
+    history.push(`${match.url}?${searchParams}`)
+    setSecondaryPath(content.Path)
+  }
+
+  const onActivateItem = (activeItem: GenericContent) => history.push(getPrimaryActionUrl(activeItem, repo))
 
   useEffect(() => {
-    try {
-      const data = decodeBrowseData(props.match.params.browseData)
-
-      setBrowseData({
-        ...browseData,
-        ...data,
-      })
-    } catch (error) {
-      logger.warning({ message: 'Wrong link :(' })
+    // TODO: this should be refactored when data fetching is united
+    async function checkPath() {
+      if (currentPath === rootPath) {
+        setIsPathValid(true)
+        return
+      }
+      try {
+        await repo.load({ idOrPath: currentPath })
+        setIsPathValid(true)
+      } catch {
+        setIsPathValid(false)
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [logger, props.match.params.browseData])
+    checkPath()
+  }, [currentPath, repo, rootPath])
 
-  const refreshUrl = useCallback(
-    (data: BrowseData) => {
-      props.history.push(`/${btoa(repo.configuration.repositoryUrl)}/browse/${encodeBrowseData(data)}`)
-    },
-    [props.history, repo.configuration.repositoryUrl],
-  )
+  if (isPathValid === undefined) {
+    return null
+  }
 
-  const navigate = useCallback(
-    (itm: GenericContent) => {
-      const newBrowseData = {
-        ...browseData,
-        currentContent: itm.Id,
-      }
-      setBrowseData(newBrowseData)
-      refreshUrl(newBrowseData)
-    },
-    [browseData, refreshUrl],
-  )
+  if (!isPathValid) {
+    return (
+      <Container maxWidth="sm">
+        <Grid container direction="column" justify="center">
+          <Typography align="center" variant="h5" component="p">
+            Cannot find path {currentPath}
+          </Typography>
+          <Button onClick={() => onNavigate({ Path: rootPath } as any)}>Go to root</Button>
+        </Grid>
+      </Container>
+    )
+  }
 
-  const navigateSecondary = useCallback(
-    (itm: GenericContent) => {
-      const newBrowseData = {
-        ...browseData,
-        secondaryContent: itm.Id,
-      }
-      setBrowseData(newBrowseData)
-      refreshUrl(newBrowseData)
-    },
-    [browseData, refreshUrl],
-  )
-
-  const openItem = useCallback(
-    (itm: GenericContent) => {
-      props.history.push(contentRouter.getPrimaryActionUrl(itm))
-    },
-    [contentRouter, props.history],
-  )
-
-  return (
-    <>
-      {browseData.type === 'commander' ? (
-        <Commander
-          rootPath={browseData.root || ConstantContent.PORTAL_ROOT.Path}
-          leftParent={browseData.currentContent || browseData.root || ConstantContent.PORTAL_ROOT.Id}
-          rightParent={browseData.secondaryContent || browseData.root || ConstantContent.PORTAL_ROOT.Id}
-          onActivateItem={openItem}
-          onNavigateLeft={navigate}
-          onNavigateRight={navigateSecondary}
-          fieldsToDisplay={browseData.fieldsToDisplay}
+  switch (match.params.browseType) {
+    case 'commander':
+      return (
+        <CommanderComponent
+          rootPath={rootPath}
+          leftParent={currentPath}
+          rightParent={secondaryPath}
+          onActivateItem={onActivateItem}
+          onNavigateLeft={(c) => onNavigate(c, true)}
+          onNavigateRight={onNavigateSecondary}
+          fieldsToDisplay={settings.content.fields}
         />
-      ) : browseData.type === 'explorer' ? (
+      )
+    case 'explorer':
+      return (
         <Explore
-          rootPath={browseData.root}
-          onNavigate={navigate}
-          onActivateItem={openItem}
-          parentIdOrPath={browseData.currentContent || browseData.root || ConstantContent.PORTAL_ROOT.Id}
-          fieldsToDisplay={browseData.fieldsToDisplay}
+          currentPath={currentPath}
+          onActivateItem={onActivateItem}
+          onNavigate={onNavigate}
+          rootPath={rootPath}
+          fieldsToDisplay={settings.content.fields}
         />
-      ) : (
+      )
+    default:
+      return (
         <SimpleList
-          rootPath={browseData.root || ConstantContent.PORTAL_ROOT.Path}
+          rootPath={rootPath}
           contentListProps={{
-            onActivateItem: openItem,
-            onParentChange: navigate,
-            fieldsToDisplay: browseData.fieldsToDisplay,
-            parentIdOrPath: browseData.currentContent || browseData.root || ConstantContent.PORTAL_ROOT.Id,
+            onActivateItem,
+            onParentChange: onNavigate,
+            fieldsToDisplay: settings.content.fields,
+            parentIdOrPath: currentPath,
           }}
-          parent={browseData.currentContent || browseData.root || ConstantContent.PORTAL_ROOT.Id}
+          parent={currentPath}
         />
-      )}
-    </>
-  )
+      )
+  }
 }
 
 export default Content

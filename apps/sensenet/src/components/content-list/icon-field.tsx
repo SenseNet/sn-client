@@ -5,7 +5,7 @@ import clsx from 'clsx'
 import { Icon } from '../Icon'
 import { useGlobalStyles } from '../../globalStyles'
 
-export const IconField: React.FC<{ content: GenericContent }> = props => {
+export const IconField: React.FC<{ content: GenericContent }> = (props) => {
   const globalClasses = useGlobalStyles()
 
   return (

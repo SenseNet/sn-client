@@ -1,7 +1,7 @@
 import Grid from '@material-ui/core/Grid'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { debounce } from '@sensenet/client-utils'
-import { PreviewImageData } from '../models'
+import { PreviewImageData } from '@sensenet/client-core'
 import { Dimensions, ImageUtil } from '../services'
 import { ZoomMode } from '../models/viewer-state'
 import { usePreviewImages, useViewerState } from '../hooks'
@@ -26,7 +26,7 @@ export interface PageListProps {
   showWidgets: boolean
 }
 
-export const PageList: React.FC<PageListProps> = props => {
+export const PageList: React.FC<PageListProps> = (props) => {
   const [marginTop, setMarginTop] = useState(0)
   const [marginBottom, setMarginBottom] = useState(0)
   const [visiblePages, setVisiblePages] = useState<PreviewImageData[]>([])
@@ -80,7 +80,7 @@ export const PageList: React.FC<PageListProps> = props => {
     let defaultWidth!: number
     let defaultHeight!: number
 
-    const _visiblePages = pages.imageData.map(p => {
+    const _visiblePages = pages.imageData.map((p) => {
       if ((p && !defaultWidth) || !defaultHeight) {
         ;[defaultWidth, defaultHeight] = [p.Width, p.Height]
       }
@@ -178,14 +178,14 @@ export const PageList: React.FC<PageListProps> = props => {
           paddingTop: marginTop || 0,
           paddingBottom: marginBottom || 0,
         }}>
-        {visiblePages.map(page => (
+        {visiblePages.map((page) => (
           <CommentsContextProvider page={page.Index} key={page.Index} images={props.images}>
             <Page
               showWidgets={props.showWidgets}
               viewportWidth={viewport.width}
               viewportHeight={viewport.height}
               imageIndex={page.Index}
-              onClick={ev => props.onPageClick(ev, page.Index)}
+              onClick={(ev) => props.onPageClick(ev, page.Index)}
               zoomMode={props.zoomMode}
               zoomLevel={props.zoomLevel}
               fitRelativeZoomLevel={props.fitRelativeZoomLevel}

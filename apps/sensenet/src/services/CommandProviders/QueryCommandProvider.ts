@@ -1,12 +1,12 @@
-import { Injectable, Injector } from '@sensenet/client-utils'
 import { ConstantContent } from '@sensenet/client-core'
+import { Injectable, Injector } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
+import { CommandPaletteItem } from '../../components/command-palette/CommandPalette'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
-import { ContentContextProvider } from '../ContentContextProvider'
+import { getPrimaryActionUrl } from '../content-context-service'
 import { LocalizationService } from '../LocalizationService'
 import { PersonalSettings } from '../PersonalSettings'
-import { CommandPaletteItem } from '../../hooks'
-import { encodeQueryData } from '../../components/search'
+import { applicationPaths } from '../../application-paths'
 
 @Injectable({ lifetime: 'singleton' })
 export class QueryCommandProvider implements CommandProvider {
@@ -21,7 +21,6 @@ export class QueryCommandProvider implements CommandProvider {
   }
 
   public async getItems(options: SearchOptions): Promise<CommandPaletteItem[]> {
-    const ctx = new ContentContextProvider(options.repository)
     const extendedQuery = this.personalSettings.effectiveValue
       .getValue()
       .default.commandPalette.wrapQuery.replace('{0}', options.term)
@@ -34,24 +33,18 @@ export class QueryCommandProvider implements CommandProvider {
       },
     })
     return [
-      ...result.d.results.map(content => ({
+      ...result.d.results.map((content) => ({
         primaryText: content.DisplayName || content.Name,
         secondaryText: content.Path,
-        url: ctx.getPrimaryActionUrl(content),
+        url: getPrimaryActionUrl(content, options.repository),
         content,
         icon: content.Icon,
-        hits: options.term
-          .substr(1)
-          .replace(/\*/g, ' ')
-          .replace(/\?/g, ' ')
-          .split(' '),
+        hits: options.term.substr(1).replace(/\*/g, ' ').replace(/\?/g, ' ').split(' '),
       })),
       {
         primaryText: this.localization.currentValues.getValue().search.openInSearchTitle,
         secondaryText: this.localization.currentValues.getValue().search.openInSearchDescription,
-        url: `/${btoa(options.repository.configuration.repositoryUrl)}/search/${encodeQueryData({
-          term: options.term,
-        })}`,
+        url: `${applicationPaths.search}?term=${encodeURIComponent(options.term)}`,
         content: { Type: 'Search' } as any,
         hits: [],
       },

@@ -155,14 +155,7 @@ export class AllowedChildTypesComponent extends Component<
         return
       }
 
-      const allowedChildTypesFromCTD = (await this.props.repository.executeAction({
-        idOrPath: this.props.content.Id,
-        name: 'GetAllowedChildTypesFromCTD',
-        method: 'GET',
-        body: {
-          select: ['Name', 'DisplayName', 'Icon'],
-        },
-      })) as ODataCollectionResponse<ContentType>
+      const allowedChildTypesFromCTD = await this.props.repository.allowedChildTypes.getFromCTD(this.props.content.Id)
 
       const typeResults = result.d.EffectiveAllowedChildTypes as ContentType[]
 
@@ -214,7 +207,7 @@ export class AllowedChildTypesComponent extends Component<
 
   public handleRemove = (item: GenericContent) => {
     const { items } = this.state
-    const index = items.findIndex(i => item.Name === i.Name)
+    const index = items.findIndex((i) => item.Name === i.Name)
     if (items.length > 1) {
       this.setState({
         items: [...items.slice(0, index), ...items.slice(index + 1)],
@@ -230,7 +223,7 @@ export class AllowedChildTypesComponent extends Component<
   public handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
     const term = e.target.value
     this.setState({
-      filteredList: this.state.allCTDs.filter(ctd => {
+      filteredList: this.state.allCTDs.filter((ctd) => {
         return ctd.DisplayName && ctd.DisplayName.toLowerCase().includes(term.toLowerCase())
       }),
       inputValue: term,
@@ -291,7 +284,7 @@ export class AllowedChildTypesComponent extends Component<
       case 'edit':
         return (
           <LocalizationContext.Consumer>
-            {localization => (
+            {(localization) => (
               <ClickAwayListener onClickAway={this.handleClickAway}>
                 <>
                   <InputLabel shrink htmlFor={this.props.settings.Name} required={this.props.settings.Compulsory}>

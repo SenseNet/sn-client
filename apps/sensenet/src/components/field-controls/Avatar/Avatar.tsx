@@ -127,7 +127,7 @@ class AvatarComponent extends Component<
       case 'edit':
         return (
           <LocalizationContext.Consumer>
-            {localization => (
+            {(localization) => (
               <FormControl
                 className={this.props.classes.root}
                 key={this.props.settings.Name}

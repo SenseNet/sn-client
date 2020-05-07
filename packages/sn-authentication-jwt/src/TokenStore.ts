@@ -62,8 +62,8 @@ export class TokenStore {
     if (document && document.cookie) {
       const cookieVal = document.cookie
         .split(';')
-        .map(v => v.trim())
-        .find(v => v.trim().indexOf(prefix) === 0)
+        .map((v) => v.trim())
+        .find((v) => v.trim().indexOf(prefix) === 0)
       if (cookieVal) {
         return Token.FromHeadAndPayload(cookieVal.substring(prefix.length))
       }

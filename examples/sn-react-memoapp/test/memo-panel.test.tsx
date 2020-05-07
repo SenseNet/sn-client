@@ -32,10 +32,7 @@ describe('The main memo panel instance', () => {
       )
     })
 
-    const memoListElement = wrapper
-      .update()
-      .find('div.MuiExpansionPanelSummary-content p')
-      .at(0)
+    const memoListElement = wrapper.update().find('div.MuiExpansionPanelSummary-content p').at(0)
     expect(memoListElement.text()).toContain(TestMemoCollection[0].DisplayName)
   })
 
@@ -56,16 +53,10 @@ describe('The main memo panel instance', () => {
     })
 
     await act(async () => {
-      ;(wrapper
-        .update()
-        .find(AddNew)
-        .prop('onCreate') as any)(TestNewMemo)
+      ;(wrapper.update().find(AddNew).prop('onCreate') as any)(TestNewMemo)
     })
 
-    const memoListElement = wrapper
-      .update()
-      .find('div.MuiExpansionPanelSummary-content')
-      .at(0)
+    const memoListElement = wrapper.update().find('div.MuiExpansionPanelSummary-content').at(0)
 
     expect(memoListElement.text()).toContain(TestNewMemo.DisplayName)
   })
@@ -85,17 +76,10 @@ describe('The main memo panel instance', () => {
     })
 
     act(() => {
-      ;(wrapper
-        .update()
-        .find(Fab)
-        .at(3)
-        .prop('onClick') as any)(TestMemoCollection[0])
+      ;(wrapper.update().find(Fab).at(3).prop('onClick') as any)(TestMemoCollection[0])
     })
 
-    const yesbtn = wrapper
-      .update()
-      .find('div.MuiDialogActions-root button')
-      .at(0)
+    const yesbtn = wrapper.update().find('div.MuiDialogActions-root button').at(0)
 
     expect(wrapper.find('div.MuiPaper-root')).toHaveLength(4)
     await act(async () => {
@@ -120,27 +104,14 @@ describe('The main memo panel instance', () => {
     })
 
     act(() => {
-      ;(wrapper
-        .update()
-        .find(ExpansionPanel)
-        .first()
-        .prop('onChange') as any)(TestMemoCollection[0])
+      ;(wrapper.update().find(ExpansionPanel).first().prop('onChange') as any)(TestMemoCollection[0])
     })
 
     act(() => {
-      wrapper
-        .find(`svg[data-icon="edit"]`)
-        .at(0)
-        .simulate('click')
+      wrapper.find(`svg[data-icon="edit"]`).at(0).simulate('click')
     })
 
-    expect(
-      wrapper
-        .update()
-        .find('button')
-        .at(2)
-        .hasClass('makeStyles-hidden-2'),
-    ).toBeTruthy()
+    expect(wrapper.update().find('button').at(2).hasClass('makeStyles-hidden-2')).toBeTruthy()
 
     const textfield = wrapper.find(TextField).at(2)
     act(() => {
@@ -153,12 +124,6 @@ describe('The main memo panel instance', () => {
       savebtn.simulate('click')
     })
 
-    expect(
-      wrapper
-        .update()
-        .find(TextField)
-        .at(2)
-        .text(),
-    ).toEqual('This is a modified memo')
+    expect(wrapper.update().find(TextField).at(2).text()).toEqual('This is a modified memo')
   })
 })

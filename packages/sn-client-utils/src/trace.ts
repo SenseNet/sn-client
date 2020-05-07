@@ -242,7 +242,7 @@ export class Trace {
 
     // Subscribe and return the observer
     return {
-      dispose: () => callbacks.forEach(c => c && c.dispose()),
+      dispose: () => callbacks.forEach((c) => c && c.dispose()),
     }
   }
 }

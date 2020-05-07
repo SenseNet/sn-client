@@ -37,7 +37,7 @@ const pickerItemOptions: ODataParams<Folder> = {
 /**
  * Represents an avatar picker component
  */
-export const AvatarPicker: React.FC<AvatarPickerProps> = props => {
+export const AvatarPicker: React.FC<AvatarPickerProps> = (props) => {
   const { items, selectedItem, setSelectedItem, path, navigateTo, reload, isLoading, error } = useListPicker<User>({
     repository: props.repository,
     currentPath: props.path,
@@ -102,14 +102,14 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = props => {
 
   return (
     <LocalizationContext.Consumer>
-      {localization => (
+      {(localization) => (
         <div>
           <List>
             {items &&
-              items.map(node => (
+              items.map((node) => (
                 <ListItem
                   key={node.Id}
-                  onClick={e => onClickHandler(e, node)}
+                  onClick={(e) => onClickHandler(e, node)}
                   onDoubleClick={() => navigateTo(node)}
                   button={true}
                   selected={selectedItem && node.Id === selectedItem.Id}>

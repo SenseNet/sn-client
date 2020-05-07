@@ -12,6 +12,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { useListPicker } from '@sensenet/pickers-react'
 import React, { useEffect, useState } from 'react'
+import { LinearProgress } from '@material-ui/core'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { Icon } from '../Icon'
@@ -23,7 +24,7 @@ export interface CopyMoveDialogProps {
   operation: 'copy' | 'move'
 }
 
-export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = props => {
+export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (props) => {
   const repo = useRepository()
   const { closeLastDialog } = useDialog()
   const list = useListPicker({
@@ -35,6 +36,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
   const [localization, setLocalization] = useState(localizations[props.operation])
   const logger = useLogger('CopyDialog')
   const globalClasses = useGlobalStyles()
+  const [isExecInProgress, setIsExecInProgress] = useState(false)
 
   useEffect(() => {
     setLocalization(localizations[props.operation])
@@ -47,19 +49,21 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
   return (
     <>
       <DialogTitle>
-        <>
+        <div className={globalClasses.centeredVertical}>
           <Icon item={props.content[0]} style={{ marginRight: '1em' }} />
-          {props.content.length === 1
+          {isExecInProgress
+            ? localization.inProgress
+            : props.content.length === 1
             ? localization.title
                 .replace('{0}', props.content[0].DisplayName || props.content[0].Name)
                 .replace('{1}', list.path)
             : localization.titleMultiple.replace('{0}', props.content.length.toString()).replace('{1}', list.path)}
-        </>
+        </div>
       </DialogTitle>
       <DialogContent>
         <List>
           {list.items &&
-            list.items.map(item => (
+            list.items.map((item) => (
               <ListItem
                 key={item.Id}
                 button={true}
@@ -74,9 +78,10 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
               </ListItem>
             ))}
         </List>
+        {isExecInProgress ? <LinearProgress /> : null}
       </DialogContent>
       <DialogActions>
-        <Button className={globalClasses.cancelButton} onClick={() => closeLastDialog()}>
+        <Button className={globalClasses.cancelButton} onClick={() => closeLastDialog()} disabled={isExecInProgress}>
           {localization.cancelButton}
         </Button>
         <Button
@@ -85,14 +90,15 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
           autoFocus={true}
           disabled={
             (list.selectedItem && list.selectedItem.Path === props.content[0].Path) ||
-            (list.selectedItem && list.selectedItem.Path === `/${PathHelper.getParentPath(props.content[0].Path)}`)
+            (list.selectedItem && list.selectedItem.Path === `/${PathHelper.getParentPath(props.content[0].Path)}`) ||
+            isExecInProgress
           }
           onClick={async () => {
-            closeLastDialog()
             try {
+              setIsExecInProgress(true)
               if (list.selectedItem) {
                 const action = props.operation === 'copy' ? repo.copy : repo.move
-                const result = await action({ idOrPath: props.content.map(c => c.Id), targetPath: list.path })
+                const result = await action({ idOrPath: props.content.map((c) => c.Id), targetPath: list.path })
 
                 if (result.d.results.length === 1 && result.d.errors.length === 0) {
                   logger.information({
@@ -150,6 +156,9 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
               }
             } catch (error) {
               /** */
+            } finally {
+              setIsExecInProgress(false)
+              closeLastDialog()
             }
           }}>
           {localization.copyButton}

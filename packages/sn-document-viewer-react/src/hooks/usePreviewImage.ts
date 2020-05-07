@@ -10,26 +10,26 @@ export const usePreviewImage = (pageNo: number) => {
   const { documentData } = useDocumentData()
   const viewerSettings = useViewerSettings()
   const viewerState = useViewerState()
-  const [previewImage, setPreviewImage] = useState(images.imageData.find(i => i.Index === pageNo))
+  const [previewImage, setPreviewImage] = useState(images.imageData.find((i) => i.Index === pageNo))
   const { imageData, ...context } = { ...images }
 
   useEffect(() => {
-    setPreviewImage(images.imageData.find(i => i.Index === pageNo))
+    setPreviewImage(images.imageData.find((i) => i.Index === pageNo))
   }, [images.imageData, pageNo])
 
   useEffect(() => {
     const abortController = new AbortController()
     const getPreviewImageData = async () => {
       try {
-        const preivewImageData = await api.isPreviewAvailable({
+        const previewImageData = await api.isPreviewAvailable({
           abortController,
           document: documentData,
           page: pageNo,
           showWatermark: viewerState.showWatermark,
           version: viewerSettings.version || '',
         })
-        if (preivewImageData && preivewImageData.PreviewAvailable) {
-          setPreviewImage(preivewImageData)
+        if (previewImageData?.PreviewAvailable) {
+          setPreviewImage(previewImageData)
         } else {
           await sleepAsync(POLLING_INTERVAL)
           getPreviewImageData()

@@ -57,20 +57,20 @@ export class CustomActionCommandProvider implements CommandProvider {
 
     return (contentWithActions.Actions as ActionModel[])
       .filter(
-        a =>
+        (a) =>
           (a.Name.toLowerCase().includes(filteredTerm) && a.IsODataAction) ||
           (a.DisplayName.toLowerCase().includes(filteredTerm) && a.IsODataAction),
       )
-      .map(a => {
+      .map((a) => {
         const actionMetadata =
           contentWithActions.__metadata &&
           contentWithActions.__metadata.actions &&
-          contentWithActions.__metadata.actions.find(action => action.name === a.Name)
+          contentWithActions.__metadata.actions.find((action) => action.name === a.Name)
 
         const functionMetadata =
           contentWithActions.__metadata &&
           contentWithActions.__metadata.functions &&
-          contentWithActions.__metadata.functions.find(fn => fn.name === a.Name)
+          contentWithActions.__metadata.functions.find((fn) => fn.name === a.Name)
 
         // merge custom parameters to function metadata
         const customActionMetadata = functionMetadata && {

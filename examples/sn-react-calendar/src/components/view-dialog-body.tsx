@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-export const ViewDialogBody: React.FunctionComponent<EditDialogBodyDialogProps> = props => {
+export const ViewDialogBody: React.FunctionComponent<EditDialogBodyDialogProps> = (props) => {
   const classes = useStyles()
   const repo = useContext(RepositoryContext)
   const sharedcontext = useContext(SharedContext)
@@ -178,7 +178,7 @@ export const ViewDialogBody: React.FunctionComponent<EditDialogBodyDialogProps> 
       <DialogComponent
         open={openmodal}
         title={props.content.DisplayName ? props.content.DisplayName : ''}
-        onClose={userevent => {
+        onClose={(userevent) => {
           deleteEvent(userevent, props.content)
         }}
       />

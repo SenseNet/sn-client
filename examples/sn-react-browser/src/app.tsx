@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, CssBaseline, Grid } from '@material-ui/core'
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import snLogo from './assets/sensenet_logo_transparent.png'
 import { NavBarComponent } from './components/navbar'
 import MainPanel from './components/mainpanel'
@@ -12,7 +12,7 @@ import { DocumentEditor } from './components/document-editor'
  */
 export const App: React.FunctionComponent = () => {
   return (
-    <Router>
+    <>
       <CssBaseline />
       <NavBarComponent />
       <Container
@@ -41,6 +41,6 @@ export const App: React.FunctionComponent = () => {
           </Grid>
         </Grid>
       </Container>
-    </Router>
+    </>
   )
 }

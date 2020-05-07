@@ -125,7 +125,7 @@ class RestoreVersionDialog extends React.Component<
     const { isRejected } = this.state
     return (
       <MediaQuery minDeviceWidth={700}>
-        {matches => (
+        {(matches) => (
           <div>
             <Typography variant="h5" gutterBottom={true}>
               {resources.APPROVE_OR_REJECT}

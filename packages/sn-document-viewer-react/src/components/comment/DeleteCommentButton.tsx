@@ -1,8 +1,8 @@
 import { Button } from '@material-ui/core'
 import React, { useState } from 'react'
+import { CommentData } from '@sensenet/client-core'
 import { ConfirmationDialog } from '../ConfirmationDialog'
 import { useDocumentData, useDocumentViewerApi, useLocalization } from '../../hooks'
-import { CommentData } from '../../models/Comment'
 
 // type DeleteButtonProps = Pick<CommentPropType, 'deleteComment' | 'id'>
 export interface DeleteButtonProps {
@@ -12,7 +12,7 @@ export interface DeleteButtonProps {
 /**
  * Represents a delete button with confirmation dialog
  */
-export const DeleteButton: React.FC<DeleteButtonProps> = props => {
+export const DeleteButton: React.FC<DeleteButtonProps> = (props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const api = useDocumentViewerApi()
   const { documentData } = useDocumentData()

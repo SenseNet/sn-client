@@ -46,7 +46,7 @@ const quickSearchBox = (props: {
 }) => {
   return (
     <MediaQuery minDeviceWidth={700}>
-      {matches => {
+      {(matches) => {
         if (matches) {
           return (
             <div ref={props.containerRef} {...props.containerProps}>

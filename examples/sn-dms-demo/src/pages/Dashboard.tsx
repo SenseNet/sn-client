@@ -3,14 +3,13 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
 import Drawer from '@material-ui/core/Drawer'
 import IconButton from '@material-ui/core/IconButton'
-import { LoginState } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { Icon, iconType } from '@sensenet/icons-react'
 import React from 'react'
 import Loadable from 'react-loadable'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
-import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom'
+import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom'
 import * as DMSActions from '../Actions'
 import { ContentTemplates } from '../components/ContentTemplates'
 import { ContentTypes } from '../components/ContentTypes'
@@ -137,14 +136,9 @@ class DashboardComponent extends React.Component<
   }
   public render() {
     const { closeDialog, isDialogOpen, dialogContent } = this.props
-
-    if (this.props.loginState !== LoginState.Unauthenticated && this.props.loggedinUser.userName === 'Visitor') {
-      return null
-    }
-
     return (
       <MediaQuery minDeviceWidth={700}>
-        {matches => {
+        {(matches) => {
           return (
             <div>
               <div style={matches ? { ...styles.root } : { ...styles.rootMobile }}>
@@ -266,4 +260,4 @@ class DashboardComponent extends React.Component<
 }
 const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(DashboardComponent)
 
-export default connectedComponent
+export default withRouter(connectedComponent)

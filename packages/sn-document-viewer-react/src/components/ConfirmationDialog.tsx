@@ -15,7 +15,7 @@ export interface ConfirmationDialogProps {
 /**
  * Represents a confirmation dialog
  */
-export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = props => {
+export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = (props) => {
   const handleCancel = () => props.onClose(true)
   const handleOk = () => props.onClose(false)
   return (

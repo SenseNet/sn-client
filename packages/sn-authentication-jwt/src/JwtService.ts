@@ -27,7 +27,7 @@ export class JwtService implements AuthenticationService {
   public dispose() {
     this.state.dispose()
     this.currentUser.dispose()
-    this.oauthProviders.forEach(provider => provider.dispose())
+    this.oauthProviders.forEach((provider) => provider.dispose())
   }
 
   /**
@@ -52,7 +52,7 @@ export class JwtService implements AuthenticationService {
   private tokenStore: TokenStore = new TokenStore(
     this.repository.configuration.repositoryUrl,
     this.jwtTokenKeyTemplate,
-    this.repository.configuration.sessionLifetime === 'session' ? TokenPersist.Session : TokenPersist.Expiration,
+    this.sessionLifetime,
   )
 
   private updateLock = new Semaphore(1)
@@ -141,6 +141,7 @@ export class JwtService implements AuthenticationService {
     public readonly repository: Repository,
     private readonly userLoadOptions: ODataParams<User> = { select: 'all' },
     private readonly latencyCompensationMs: number = 5000,
+    private readonly sessionLifetime: TokenPersist = TokenPersist.Expiration,
   ) {
     this.repository.authentication = this
     this.state.subscribe(() => {

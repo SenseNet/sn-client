@@ -112,7 +112,7 @@ export const queries: Reducer<QueriesType> = (
   if (action.type === 'UPDATE_CONTENT_SUCCESS') {
     return {
       ...state,
-      queries: state.queries.map(c => {
+      queries: state.queries.map((c) => {
         if (c.Id === (action.result as PromiseReturns<typeof updateContent>).d.Id) {
           return action.result.d
         }
@@ -122,10 +122,10 @@ export const queries: Reducer<QueriesType> = (
   }
   /** todo: auto-generated success action from @sn/redux */
   if (action.type === 'DELETE_CONTENT_SUCCESS') {
-    const deletedIds = (action.result as PromiseReturns<typeof deleteContent>).d.results.map(d => d.Id)
+    const deletedIds = (action.result as PromiseReturns<typeof deleteContent>).d.results.map((d) => d.Id)
     return {
       ...state,
-      queries: [...state.queries.filter(q => !(deletedIds as any).includes(q.Id))],
+      queries: [...state.queries.filter((q) => !(deletedIds as any).includes(q.Id))],
     }
   }
   return state

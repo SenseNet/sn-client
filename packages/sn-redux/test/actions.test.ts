@@ -104,7 +104,7 @@ const propertyResponse = {
 const propertyValueResponse = {
   ok: true,
   status: 200,
-  json: async () => {
+  text: async () => {
     return 'Document Workspaces'
   },
 }
@@ -112,7 +112,11 @@ const propertyValueResponse = {
 const metadataResponse = {
   ok: true,
   status: 200,
-  'content-type': 'application/xml; charset=utf-8',
+  'content-type': 'application/json; charset=utf-8',
+  json: async () => ({
+    DataServices: { DataServiceVersion: '3.0' },
+    Version: '1.0',
+  }),
 }
 
 const schemaResponse = {
@@ -994,14 +998,16 @@ describe('Actions', () => {
     describe('serviceChecks()', () => {
       describe('Given repository.fetch() resolves', () => {
         let data: any
+        let mockPropertyValueResponseData: string
         beforeEach(async () => {
           data = await Actions.getPropertyValue(path, 'DisplayName').payload(repo)
+          mockPropertyValueResponseData = await propertyValueResponse.text()
         })
         it('should return a GET_PROPERTY_VALUE action', () => {
           expect(Actions.getPropertyValue(path, 'DisplayName')).toHaveProperty('type', 'GET_PROPERTY_VALUE')
         })
         it('should return propertyResponse', () => {
-          expect(data).toEqual(propertyValueResponse)
+          expect(data).toEqual(mockPropertyValueResponseData)
         })
       })
     })
@@ -1017,14 +1023,16 @@ describe('Actions', () => {
     describe('serviceChecks()', () => {
       describe('Given repository.fetch() resolves', () => {
         let data: any
+        let mockMetadataResponseData: any
         beforeEach(async () => {
           data = await Actions.getMetadata(path).payload(repo)
+          mockMetadataResponseData = await metadataResponse.json()
         })
         it('should return a GET_METADATA action', () => {
           expect(Actions.getMetadata(path)).toHaveProperty('type', 'GET_METADATA')
         })
-        it('should return propertyResponse', () => {
-          expect(data).toEqual(metadataResponse)
+        it('should return metadataResponse', () => {
+          expect(data).toEqual(mockMetadataResponseData)
         })
       })
     })
@@ -1295,7 +1303,7 @@ describe('Actions', () => {
       repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => previewCommentResponse)
     })
     describe('Action types are types', () => {
-      expect(Actions.removePreviewComment(42, 5678).type).toBe('REMOVE_PREVIEW_COMMENT')
+      expect(Actions.removePreviewComment(42, '5678').type).toBe('REMOVE_PREVIEW_COMMENT')
     })
 
     describe('serviceChecks()', () => {
@@ -1310,10 +1318,10 @@ describe('Actions', () => {
           text: 'Lorem ipsum',
         }
         beforeEach(async () => {
-          data = await Actions.removePreviewComment(42, 5678).payload(repo)
+          data = await Actions.removePreviewComment(42, '5678').payload(repo)
         })
         it('should return a REMOVE_PREVIEW_COMMENT action', () => {
-          expect(Actions.removePreviewComment(42, 5678)).toHaveProperty('type', 'REMOVE_PREVIEW_COMMENT')
+          expect(Actions.removePreviewComment(42, '5678')).toHaveProperty('type', 'REMOVE_PREVIEW_COMMENT')
         })
         it('should return mockdata', () => {
           expect(data).toEqual(expectedResult)
@@ -1495,7 +1503,7 @@ describe('Actions', () => {
 
     describe('serviceChecks()', () => {
       describe('Given repository.checkAllowedChildTypes() resolves', () => {
-        let data: ODataCollectionResponse<GenericContent>
+        let data: any
         let mockCollectionResponseData: ReturnType<typeof collectionMockResponse['json']>
         beforeEach(async () => {
           data = await Actions.checkAllowedChildTypes(path).payload(repo)
@@ -1520,7 +1528,7 @@ describe('Actions', () => {
 
     describe('serviceChecks()', () => {
       describe('Given repository.udpateListField() resolves', () => {
-        let data: ODataResponse<GenericContent>
+        let data: any
         let mockContentResponseData: ReturnType<typeof contentMockResponse['json']>
         beforeEach(async () => {
           data = await Actions.udpateListField(path, { Name: 'MyCustomField' }).payload(repo)

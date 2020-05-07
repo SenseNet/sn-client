@@ -117,11 +117,11 @@ class ReferenceGridComponent extends Component<
    * Removes the chosen item from the grid and the field value
    */
   public removeItem = (id: number) => {
-    const value = this.state.fieldValue.length > 1 ? this.state.fieldValue.filter(item => item.Id !== id) : []
+    const value = this.state.fieldValue.length > 1 ? this.state.fieldValue.filter((item) => item.Id !== id) : []
     this.props.fieldOnChange &&
       this.props.fieldOnChange(
         this.props.settings.Name,
-        value.map(item => item.Id),
+        value.map((item) => item.Id),
       )
     this.setState({
       fieldValue: value,
@@ -167,17 +167,17 @@ class ReferenceGridComponent extends Component<
   public selectItem = (content: GenericContent) => {
     this.state.selected.length > 0 && !this.props.settings.AllowMultiple
       ? this.setState({
-          selected: this.state.selected.findIndex(c => content.Id === c.Id) > -1 ? this.state.selected : [content],
+          selected: this.state.selected.findIndex((c) => content.Id === c.Id) > -1 ? this.state.selected : [content],
         })
       : this.setState({
           selected:
-            this.state.selected.findIndex(c => content.Id === c.Id) > -1
-              ? this.state.selected.filter(c => content.Id !== c.Id)
+            this.state.selected.findIndex((c) => content.Id === c.Id) > -1
+              ? this.state.selected.filter((c) => content.Id !== c.Id)
               : [...this.state.selected, content],
         })
   }
 
-  public isObject = function(a: any) {
+  public isObject = function (a: any) {
     return !!a && a.constructor === Object
   }
 
@@ -187,7 +187,7 @@ class ReferenceGridComponent extends Component<
       case 'edit':
         return (
           <LocalizationContext.Consumer>
-            {localization => (
+            {(localization) => (
               <>
                 <div className={this.props.classes.labelWrapper}>
                   <InputLabel
@@ -256,7 +256,7 @@ class ReferenceGridComponent extends Component<
                         path={this.props.settings.SelectionRoots ? this.props.settings.SelectionRoots[0] : '/Root'}
                         allowedTypes={this.props.settings.AllowedTypes}
                         repository={this.props.repository!}
-                        select={content => this.selectItem(content)}
+                        select={(content) => this.selectItem(content)}
                         selected={this.state.selected}
                         renderIcon={this.props.renderIcon}
                       />

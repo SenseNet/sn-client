@@ -20,7 +20,7 @@ export const SharedContext = createContext<{
   setOpennoti: Dispatch<React.SetStateAction<boolean>>
 }>(null as any)
 
-const SharedProvider: React.FunctionComponent<any> = props => {
+const SharedProvider: React.FunctionComponent<any> = (props) => {
   const [opennewmodal, setOpennewmodal] = useState(false)
   const [openeditmodal, setOpeneditmodal] = useState(false)
   const [opennoti, setOpennoti] = useState(false)

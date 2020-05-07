@@ -12,7 +12,7 @@ import {
 import { VirtualCellProps, VirtualDefaultCell, VirtualizedTable } from '@sensenet/list-controls-react'
 import clsx from 'clsx'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
+import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
@@ -75,20 +75,20 @@ export interface ContentListProps {
 
 export const isReferenceField = (fieldName: string, repo: Repository) => {
   const refWhiteList = ['AllowedChildTypes']
-  const setting = repo.schemas.getSchemaByName('GenericContent').FieldSettings.find(f => f.Name === fieldName)
+  const setting = repo.schemas.getSchemaByName('GenericContent').FieldSettings.find((f) => f.Name === fieldName)
   return refWhiteList.indexOf(fieldName) !== -1 || (setting && setting.Type === 'ReferenceFieldSetting') || false
 }
 
 const rowHeightConst = 57
 const headerHeightConst = 42
 
-export const ContentList: React.FunctionComponent<ContentListProps> = props => {
+export const ContentList: React.FunctionComponent<ContentListProps> = (props) => {
   const selectionService = useSelectionService()
   const parentContent = useContext(CurrentContentContext)
   const children = useContext(CurrentChildrenContext)
   const ancestors = useContext(CurrentAncestorsContext)
   const device = useContext(ResponsiveContext)
-  const personalSettings = useContext(ResponsivePersonalSetttings)
+  const personalSettings = useContext(ResponsivePersonalSettings)
   const loadSettings = useContext(LoadSettingsContext)
   const repo = useRepository()
   const classes = useStyles()
@@ -114,7 +114,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
 
   useEffect(() => {
     const activeComponentObserve = selectionService.activeContent.subscribe(
-      newActiveComponent => newActiveComponent !== undefined && setActiveContent(newActiveComponent),
+      (newActiveComponent) => newActiveComponent !== undefined && setActiveContent(newActiveComponent),
     )
 
     return function cleanup() {
@@ -141,7 +141,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
     const fields = props.fieldsToDisplay || personalSettings.content.fields
     loadSettings.setLoadChildrenSettings({
       ...loadSettings.loadChildrenSettings,
-      expand: ['CheckedOutTo', ...fields.filter(fieldName => isReferenceField(fieldName, repo))],
+      expand: ['CheckedOutTo', ...fields.filter((fieldName) => isReferenceField(fieldName, repo))],
       orderby: [[currentOrder as any, currentDirection as any]],
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -159,7 +159,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
   const runSearch = useCallback(
     debounce(() => {
       const child = children.find(
-        c =>
+        (c) =>
           c.Name.toLocaleLowerCase().indexOf(searchString) === 0 ||
           (c.DisplayName && c.DisplayName.toLocaleLowerCase().indexOf(searchString)) === 0,
       )
@@ -184,20 +184,20 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
   )
 
   const handleItemClick = useCallback(
-    rowMouseEventHandlerParams => {
+    (rowMouseEventHandlerParams) => {
       if (device !== 'desktop' && activeContent && activeContent.Id === rowMouseEventHandlerParams.rowData.Id) {
         handleActivateItem(rowMouseEventHandlerParams.rowData)
         return
       }
       if (rowMouseEventHandlerParams.event.ctrlKey) {
-        if (selected.find(s => s.Id === rowMouseEventHandlerParams.rowData.Id)) {
-          setSelected(selected.filter(s => s.Id !== rowMouseEventHandlerParams.rowData.Id))
+        if (selected.find((s) => s.Id === rowMouseEventHandlerParams.rowData.Id)) {
+          setSelected(selected.filter((s) => s.Id !== rowMouseEventHandlerParams.rowData.Id))
         } else {
           setSelected([...selected, rowMouseEventHandlerParams.rowData])
         }
       } else if (rowMouseEventHandlerParams.event.shiftKey) {
-        const activeIndex = (activeContent && children.findIndex(s => s.Id === activeContent.Id)) || 0
-        const clickedIndex = children.findIndex(s => s.Id === rowMouseEventHandlerParams.rowData.Id)
+        const activeIndex = (activeContent && children.findIndex((s) => s.Id === activeContent.Id)) || 0
+        const clickedIndex = children.findIndex((s) => s.Id === rowMouseEventHandlerParams.rowData.Id)
         const newSelection = Array.from(
           new Set([
             ...selected,
@@ -229,29 +229,29 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
           break
         case 'ArrowUp':
           setActiveContent(
-            activeContent && children[Math.max(0, children.findIndex(c => c.Id === activeContent.Id) - 1)],
+            activeContent && children[Math.max(0, children.findIndex((c) => c.Id === activeContent.Id) - 1)],
           )
           break
         case 'ArrowDown':
           setActiveContent(
             activeContent &&
-              children[Math.min(children.findIndex(c => c.Id === activeContent.Id) + 1, children.length - 1)],
+              children[Math.min(children.findIndex((c) => c.Id === activeContent.Id) + 1, children.length - 1)],
           )
           break
         case ' ': {
           ev.preventDefault()
-          activeContent && selected.findIndex(s => s.Id === activeContent.Id) !== -1
-            ? setSelected([...selected.filter(s => s.Id !== activeContent.Id)])
+          activeContent && selected.findIndex((s) => s.Id === activeContent.Id) !== -1
+            ? setSelected([...selected.filter((s) => s.Id !== activeContent.Id)])
             : activeContent && setSelected([...selected, activeContent])
           break
         }
         case 'Insert': {
-          activeContent && selected.findIndex(s => s.Id === activeContent.Id) !== -1
-            ? setSelected([...selected.filter(s => s.Id !== activeContent.Id)])
+          activeContent && selected.findIndex((s) => s.Id === activeContent.Id) !== -1
+            ? setSelected([...selected.filter((s) => s.Id !== activeContent.Id)])
             : activeContent && setSelected([...selected, activeContent])
           activeContent &&
             setActiveContent(
-              children[Math.min(children.findIndex(c => c.Id === activeContent.Id) + 1, children.length)],
+              children[Math.min(children.findIndex((c) => c.Id === activeContent.Id) + 1, children.length)],
             )
           break
         }
@@ -313,31 +313,31 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
     switch (fieldOptions.dataKey) {
       case 'Locked':
         return (
-          <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+          <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
             <LockedField content={fieldOptions.rowData} />
           </ContextMenuWrapper>
         )
       case 'Icon':
         return (
-          <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+          <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
             <IconField content={fieldOptions.rowData} />
           </ContextMenuWrapper>
         )
       case 'Email' as any:
         return (
-          <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+          <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
             <EmailField mail={fieldOptions.rowData[fieldOptions.dataKey] as string} />
           </ContextMenuWrapper>
         )
       case 'Phone' as any:
         return (
-          <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+          <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
             <PhoneField phoneNo={fieldOptions.rowData[fieldOptions.dataKey] as string} />
           </ContextMenuWrapper>
         )
       case 'DisplayName':
         return (
-          <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+          <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
             <DisplayNameComponent
               content={fieldOptions.rowData}
               device={device}
@@ -347,14 +347,14 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
         )
       case 'Description':
         return (
-          <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+          <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
             <DescriptionField text={fieldOptions.rowData[fieldOptions.dataKey] as string} />
           </ContextMenuWrapper>
         )
       case 'Actions':
         return (
-          <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
-            <ActionsField onOpen={ev => openContext(ev, fieldOptions.rowData)} />
+          <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
+            <ActionsField onOpen={(ev) => openContext(ev, fieldOptions.rowData)} />
           </ContextMenuWrapper>
         )
       default:
@@ -362,7 +362,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
     }
     if (fieldSettings && fieldSettings.FieldClassName === 'SenseNet.ContentRepository.Fields.DateTimeField') {
       return (
-        <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+        <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
           <DateField date={fieldOptions.rowData[fieldOptions.dataKey] as string} />
         </ContextMenuWrapper>
       )
@@ -381,7 +381,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
         expectedContent.Path
       ) {
         return (
-          <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+          <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
             <ReferenceField content={expectedContent} />
           </ContextMenuWrapper>
         )
@@ -390,13 +390,13 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
     }
     if (typeof fieldOptions.rowData[fieldOptions.dataKey] === 'boolean') {
       return (
-        <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+        <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
           <BooleanField value={fieldOptions.rowData[fieldOptions.dataKey] as boolean | undefined} />
         </ContextMenuWrapper>
       )
     }
     return (
-      <ContextMenuWrapper onContextMenu={ev => openContext(ev, fieldOptions.rowData)}>
+      <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
         <VirtualDefaultCell cellData={fieldOptions.cellData} />
       </ContextMenuWrapper>
     )
@@ -423,8 +423,8 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
       {props.enableBreadcrumbs ? (
         <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
           <ContentBreadcrumbs
-            setFormOpen={actionName => setFormOpen(actionName)}
-            onItemClick={i => props.onParentChange(i.content)}
+            setFormOpen={(actionName) => setFormOpen(actionName)}
+            onItemClick={(i) => props.onParentChange(i.content)}
           />
         </div>
       ) : null}
@@ -435,7 +435,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
           onClick={() => {
             setIsFocused(true)
           }}
-          onBlur={ev => {
+          onBlur={(ev) => {
             if (!ev.currentTarget.contains((ev as any).relatedTarget)) {
               // Skip blurring on child focus
               setIsFocused(false)
@@ -445,6 +445,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
           onKeyDown={handleKeyDown}>
           <VirtualizedTable
             active={activeContent}
+            checkboxProps={{ color: 'primary' }}
             cellRenderer={fieldComponentFunc}
             displayRowCheckbox={!props.disableSelection}
             fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields || displayNameInArray}
@@ -461,7 +462,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
               rowHeight: rowHeightConst,
               headerHeight: headerHeightConst,
               rowGetter: ({ index }) => children[index],
-              onRowClick: rowMouseEventHandlerParams => {
+              onRowClick: (rowMouseEventHandlerParams) => {
                 setActiveContent(rowMouseEventHandlerParams.rowData)
                 handleItemClick(rowMouseEventHandlerParams)
               },
@@ -477,7 +478,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = props => {
               onClose={onCloseFunc}
               onOpen={onOpenFunc}
               halfPage={props.isOpenFrom && props.isOpenFrom === 'explore'}
-              setFormOpen={actionName => setFormOpen(actionName)}
+              setFormOpen={(actionName) => setFormOpen(actionName)}
             />
           ) : null}
         </div>

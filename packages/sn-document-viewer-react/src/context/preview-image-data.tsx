@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { PreviewImageData } from '../models/PreviewImageData'
+import { PreviewImageData } from '@sensenet/client-core'
 import {
   useDocumentData,
   useDocumentPermissions,
@@ -14,7 +14,7 @@ export const PreviewImageDataContext = React.createContext<{
   rotateImages: (indexes: number[], amount: number) => void
 }>({ imageData: [], rotateImages: () => undefined })
 
-export const PreviewImageDataContextProvider: React.FC = props => {
+export const PreviewImageDataContextProvider: React.FC = (props) => {
   const viewerSettings = useViewerSettings()
   const api = useDocumentViewerApi()
   const { documentData, updateDocumentData } = useDocumentData()
@@ -58,7 +58,7 @@ export const PreviewImageDataContextProvider: React.FC = props => {
         console.warn(`No permission to edit!`)
         return
       }
-      const newImages = previewImages.map(img => {
+      const newImages = previewImages.map((img) => {
         const newImg = { ...img }
         if (imageIndexes.indexOf(newImg.Index) >= 0) {
           const newAngle =

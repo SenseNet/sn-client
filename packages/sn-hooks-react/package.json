@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/hooks-react",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -26,10 +26,10 @@
   "license": "GPL-2.0",
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@sensenet/client-core": "^2.4.1",
-    "@sensenet/client-utils": "^1.8.1",
-    "@sensenet/default-content-types": "^2.0.6",
-    "@sensenet/repository-events": "^1.4.13",
+    "@sensenet/client-core": "^3.0.0",
+    "@sensenet/client-utils": "^1.8.2",
+    "@sensenet/default-content-types": "^2.1.0",
+    "@sensenet/repository-events": "^1.4.14",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "semaphore-async-await": "^1.5.1",

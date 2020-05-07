@@ -1,7 +1,7 @@
 import IconButton from '@material-ui/core/IconButton'
 import Delete from '@material-ui/icons/Delete'
 import React from 'react'
-import { Annotation, Shape, Shapes } from '../../models'
+import { Annotation, Shape, Shapes } from '@sensenet/client-core'
 import { Dimensions } from '../../services'
 import { ZoomMode } from '../../models/viewer-state'
 
@@ -119,7 +119,7 @@ abstract class ShapeComponent<T extends Shape = Shape> extends React.Component<S
   public render() {
     return (
       <div
-        onClickCapture={ev => ev.stopPropagation()}
+        onClickCapture={(ev) => ev.stopPropagation()}
         style={{ filter: this.state.focused ? 'contrast(.9) brightness(1.1)' : '' }}
         onKeyUp={this.state.handleKeyPress}
         onFocus={this.state.onFocus}
@@ -178,7 +178,7 @@ export class ShapeAnnotation extends ShapeComponent<Annotation> {
     return (
       <div>
         <div
-          onKeyUp={ev => this.handleKeyPress(ev)}
+          onKeyUp={(ev) => this.handleKeyPress(ev)}
           tabIndex={0}
           draggable={this.props.canEdit}
           onDragStart={this.state.onDragStart}
@@ -195,8 +195,9 @@ export class ShapeAnnotation extends ShapeComponent<Annotation> {
             fontFamily: this.props.shape.fontFamily,
             fontSize: parseFloat(this.props.shape.fontSize.replace('pt', '')) * this.props.zoomRatio,
             fontStyle: this.props.shape.fontItalic as any,
-            boxShadow: `${5 * this.props.zoomRatio}px ${5 * this.props.zoomRatio}px ${15 *
-              this.props.zoomRatio}px rgba(0,0,0,.3)`,
+            boxShadow: `${5 * this.props.zoomRatio}px ${5 * this.props.zoomRatio}px ${
+              15 * this.props.zoomRatio
+            }px rgba(0,0,0,.3)`,
             padding: `${10 * this.props.zoomRatio}pt`,
             boxSizing: 'border-box',
           }}>

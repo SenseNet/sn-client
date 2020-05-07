@@ -1,3 +1,4 @@
+import { User } from '@sensenet/default-content-types'
 import { Content } from '../Models/Content'
 
 /**
@@ -7,7 +8,7 @@ export class ConstantContent {
   /**
    * Defines a visitor user content
    */
-  public static VISITOR_USER: Content & { DisplayName: any; Domain: any; LoginName: any } = {
+  public static VISITOR_USER: User = {
     Id: 6,
     DisplayName: 'Visitor',
     Domain: 'BuiltIn',

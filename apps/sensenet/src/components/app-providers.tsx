@@ -1,11 +1,11 @@
+import { InjectorContext, LoggerContextProvider } from '@sensenet/hooks-react'
 import React from 'react'
-import { InjectorContext, LoggerContextProvider, SessionContextProvider } from '@sensenet/hooks-react'
 import { BrowserRouter } from 'react-router-dom'
 import {
-  ContentRoutingContextProvider,
+  CurrentUserProvider,
   LocalizationProvider,
   PersonalSettingsContextProvider,
-  RepositoryContextProvider,
+  RepositoryProvider,
   ResponsiveContextProvider,
   ThemeProvider,
 } from '../context'
@@ -19,10 +19,8 @@ import {
   NavigationCommandProvider,
   QueryCommandProvider,
 } from '../services'
-import '../utils/errorToJson'
-import '../utils/InjectorExtensions'
-import { snInjector } from './sn-injector'
 import { DialogProvider } from './dialogs/dialog-provider'
+import { snInjector } from './sn-injector'
 
 export type AppProvidersProps = {
   children: React.ReactNode
@@ -46,17 +44,15 @@ export default function AppProviders({ children }: AppProvidersProps) {
         <PersonalSettingsContextProvider>
           <LocalizationProvider>
             <BrowserRouter>
-              <RepositoryContextProvider>
-                <ContentRoutingContextProvider>
-                  <SessionContextProvider>
-                    <ThemeProvider>
-                      <ResponsiveContextProvider>
-                        <DialogProvider>{children}</DialogProvider>
-                      </ResponsiveContextProvider>
-                    </ThemeProvider>
-                  </SessionContextProvider>
-                </ContentRoutingContextProvider>
-              </RepositoryContextProvider>
+              <ThemeProvider>
+                <RepositoryProvider>
+                  <CurrentUserProvider>
+                    <ResponsiveContextProvider>
+                      <DialogProvider>{children}</DialogProvider>
+                    </ResponsiveContextProvider>
+                  </CurrentUserProvider>
+                </RepositoryProvider>
+              </ThemeProvider>
             </BrowserRouter>
           </LocalizationProvider>
         </PersonalSettingsContextProvider>

@@ -15,7 +15,7 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
-export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>> = props => {
+export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>> = (props) => {
   const getInitialState = () => {
     if (!props.fieldValue) {
       return ''
@@ -45,7 +45,7 @@ export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetti
             value={value}
             onChange={handleChange}>
             {props.settings.Options &&
-              props.settings.Options.map(option => {
+              props.settings.Options.map((option) => {
                 return (
                   <FormControlLabel key={option.Value} value={option.Value} control={<Radio />} label={option.Text} />
                 )
@@ -63,7 +63,9 @@ export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetti
             <FormControl component={'fieldset' as 'div'}>
               <FormControlLabel
                 style={{ marginLeft: 0 }}
-                label={props.settings.Options ? props.settings.Options.find(item => item.Value === value)!.Text : value}
+                label={
+                  props.settings.Options ? props.settings.Options.find((item) => item.Value === value)!.Text : value
+                }
                 control={<span />}
               />
             </FormControl>

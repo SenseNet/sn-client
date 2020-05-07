@@ -4,7 +4,7 @@ import { debounce, sleepAsync } from '../src'
  * Tests for debounce
  */
 export const debounceTests = describe('debounce', () => {
-  it('Simple method execution', done => {
+  it('Simple method execution', (done) => {
     const method = debounce(() => {
       done()
     })

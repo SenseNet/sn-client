@@ -44,18 +44,8 @@ describe('Auto complete field control', () => {
       const wrapper = shallow(
         <AutoComplete fieldValue={[userContent] as any} actionName="browse" settings={defaultSettings} />,
       )
-      expect(
-        wrapper
-          .find(Typography)
-          .first()
-          .text(),
-      ).toBe(defaultSettings.DisplayName)
-      expect(
-        wrapper
-          .find(Typography)
-          .last()
-          .text(),
-      ).toBe(userContent.DisplayName)
+      expect(wrapper.find(Typography).first().text()).toBe(defaultSettings.DisplayName)
+      expect(wrapper.find(Typography).last().text()).toBe(userContent.DisplayName)
       expect(wrapper).toMatchSnapshot()
     })
 

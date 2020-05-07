@@ -36,6 +36,11 @@ const defaultSettings = {
 }
 
 const repository = {
+  allowedChildTypes: {
+    getFromCTD: jest.fn(() => {
+      return { d: { results: [userContent] } }
+    }),
+  },
   executeAction: jest.fn(() => {
     return { d: { results: [userContent] } }
   }),
@@ -65,12 +70,7 @@ describe('Allowed child types control', () => {
     )
     await sleepAsync(0)
 
-    expect(
-      wrapper
-        .update()
-        .find(ListItemText)
-        .text(),
-    ).toBe(userContent.DisplayName)
+    expect(wrapper.update().find(ListItemText).text()).toBe(userContent.DisplayName)
   })
 
   it('should show allowed child types in edit view', async () => {
@@ -114,15 +114,9 @@ describe('Allowed child types control', () => {
     input.simulate('change', { target: { value: 'Alba' } })
     wrapper.update()
     // select list item
-    wrapper
-      .find(ListItem)
-      .last()
-      .simulate('click')
+    wrapper.find(ListItem).last().simulate('click')
     // add it to main list
-    wrapper
-      .find(IconButton)
-      .last()
-      .simulate('click')
+    wrapper.find(IconButton).last().simulate('click')
 
     expect(fieldOnChange).toBeCalled()
   })

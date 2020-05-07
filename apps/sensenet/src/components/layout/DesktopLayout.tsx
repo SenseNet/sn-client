@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useInjector, useRepository } from '@sensenet/hooks-react'
 import { createStyles, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
-import { ResponsivePersonalSetttings } from '../../context'
+import { ResponsivePersonalSettings } from '../../context'
 import { DesktopAppBar } from '../appbar/desktop-app-bar'
 import { PermanentDrawer } from '../drawer/PermanentDrawer'
 import { TemporaryDrawer } from '../drawer/TemporaryDrawer'
@@ -41,8 +41,8 @@ const useStyles = makeStyles(() => {
   })
 })
 
-export const DesktopLayout: React.FunctionComponent = props => {
-  const settings = useContext(ResponsivePersonalSetttings)
+export const DesktopLayout: React.FunctionComponent = (props) => {
+  const settings = useContext(ResponsivePersonalSettings)
   const repo = useRepository()
   const { openDialog, closeLastDialog } = useDialog()
   const customActionService = useInjector().getInstance(CustomActionCommandProvider)
@@ -52,11 +52,11 @@ export const DesktopLayout: React.FunctionComponent = props => {
 
   useEffect(() => {
     const observables = [
-      customActionService.onExecuteAction.subscribe(value => {
+      customActionService.onExecuteAction.subscribe((value) => {
         const uri = getMonacoModelUri(value.content, repo, value.action)
         openDialog({ name: 'execute-action', props: { actionValue: value, uri } })
       }),
-      customActionService.onActionExecuted.subscribe(value => {
+      customActionService.onActionExecuted.subscribe((value) => {
         closeLastDialog()
         const response = JSON.stringify(
           {
@@ -74,7 +74,7 @@ export const DesktopLayout: React.FunctionComponent = props => {
         openDialog({ name: 'custom-action-result', props: { response } })
       }),
     ]
-    return () => observables.forEach(o => o.dispose())
+    return () => observables.forEach((o) => o.dispose())
   }, [closeLastDialog, customActionService.onActionExecuted, customActionService.onExecuteAction, openDialog, repo])
 
   return (

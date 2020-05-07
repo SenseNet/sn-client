@@ -9,7 +9,7 @@ describe('Preset Fields', () => {
     shallow(
       <PresetField
         fieldName="DisplayName"
-        presets={[{ text: 'value1', value: new Query(q => q) }]}
+        presets={[{ text: 'value1', value: new Query((q) => q) }]}
         onQueryChange={() => {
           /** */
         }}
@@ -21,7 +21,7 @@ describe('Preset Fields', () => {
     shallow(
       <PresetField
         fieldName="DisplayName"
-        presets={[{ text: 'value1', value: new Query(q => q) }]}
+        presets={[{ text: 'value1', value: new Query((q) => q) }]}
         defaultValue="value1"
         onQueryChange={() => {
           /** */
@@ -30,11 +30,11 @@ describe('Preset Fields', () => {
     )
   })
 
-  it('onQueryChange should be executed on change', done => {
+  it('onQueryChange should be executed on change', (done) => {
     const instance = shallow(
       <PresetField
         fieldName="DisplayName"
-        presets={[{ text: 'value1', value: new Query(q => q.equals('DisplayName', 'Alma')) }]}
+        presets={[{ text: 'value1', value: new Query((q) => q.equals('DisplayName', 'Alma')) }]}
         onQueryChange={(key, q, name) => {
           expect(key).toBe('DisplayName')
           expect(q.toString()).toBe("DisplayName:'Alma'")
@@ -48,11 +48,11 @@ describe('Preset Fields', () => {
     expect(select)
   })
 
-  it('onQueryChange should not be executed when there is no hit in presets', done => {
+  it('onQueryChange should not be executed when there is no hit in presets', (done) => {
     const instance = shallow(
       <PresetField
         fieldName="DisplayName"
-        presets={[{ text: 'value1', value: new Query(q => q) }]}
+        presets={[{ text: 'value1', value: new Query((q) => q) }]}
         onQueryChange={() => {
           throw Error("Shouldn't be triggered")
         }}

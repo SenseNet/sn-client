@@ -1,13 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router'
-import { isExtendedError, ODataWopiResponse } from '@sensenet/client-core'
 import { Button, Typography } from '@material-ui/core'
+import { isExtendedError, ODataWopiResponse } from '@sensenet/client-core'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
+import React, { useEffect, useRef, useState } from 'react'
+import { useHistory, useRouteMatch } from 'react-router-dom'
+import { applicationPaths, resolvePathParams } from '../application-paths'
 import { useLocalization } from '../hooks'
 import { FullScreenLoader } from './full-screen-loader'
 
-const WopiPage: React.FunctionComponent<RouteComponentProps<{ documentId?: string; action?: string }>> = props => {
+export default function WopiPage() {
   const repo = useRepository()
+  const match = useRouteMatch<{ contentId?: string; action?: string }>()
+  const history = useHistory()
   const formElement = useRef<HTMLFormElement>(null)
   const [wopiData, setWopiData] = useState<ODataWopiResponse | null>(null)
   const [error, setError] = useState('')
@@ -18,14 +21,14 @@ const WopiPage: React.FunctionComponent<RouteComponentProps<{ documentId?: strin
     const ac = new AbortController()
     setError('')
     ;(async () => {
-      if (!props.match.params.documentId && !ac.signal.aborted) {
+      if (!match.params.contentId) {
         setError('Invalid url')
         return
       }
       try {
         const response = await repo.getWopiData({
-          idOrPath: parseInt(props.match.params.documentId as string, 10),
-          action: props.match.params.action as 'edit' | 'view',
+          idOrPath: parseInt(match.params.contentId, 10),
+          action: match.params.action as 'edit' | 'view',
           requestInit: {
             signal: ac.signal,
           },
@@ -43,7 +46,7 @@ const WopiPage: React.FunctionComponent<RouteComponentProps<{ documentId?: strin
           logger.error({
             message: `Error opening file for online editing`,
             data: {
-              details: { contentId: props.match.params.documentId, action: props.match.params.action, e },
+              details: { contentId: match.params.contentId, action: match.params.action, e },
               isDismissed: true,
             },
           })
@@ -51,7 +54,8 @@ const WopiPage: React.FunctionComponent<RouteComponentProps<{ documentId?: strin
       }
     })()
     return () => ac.abort()
-  }, [localization.errorOpeningFileText, logger, props.match.params.action, props.match.params.documentId, repo])
+  }, [localization.errorOpeningFileText, logger, match.params.action, match.params.contentId, repo])
+
   if (error) {
     return (
       <div
@@ -71,18 +75,21 @@ const WopiPage: React.FunctionComponent<RouteComponentProps<{ documentId?: strin
           {error}
         </Typography>
         <>
-          {props.match.params.action !== 'view' ? (
+          {match.params.action !== 'view' ? (
             <Button
               onClick={() => {
-                props.history.push(
-                  `/${btoa(repo.configuration.repositoryUrl)}/wopi/${props.match.params.documentId}/view`,
+                history.push(
+                  resolvePathParams({
+                    path: applicationPaths.wopi,
+                    params: { action: 'view', contentId: match.params.contentId!.toString() },
+                  }),
                 )
               }}>
               {localization.tryOpenRead}
             </Button>
           ) : null}
 
-          <Button onClick={() => props.history.goBack()}>{localization.goBack}</Button>
+          <Button onClick={() => history.goBack()}>{localization.goBack}</Button>
         </>
       </div>
     )
@@ -119,6 +126,3 @@ const WopiPage: React.FunctionComponent<RouteComponentProps<{ documentId?: strin
     </>
   )
 }
-
-const routed = withRouter(WopiPage)
-export { routed as WopiPage }

@@ -60,13 +60,13 @@ export class ODataUrlBuilder {
       const plainValue = (oDataParams as any)[key]
       let parsedValue = plainValue
       if (plainValue instanceof Array && plainValue.length) {
-        parsedValue = plainValue.map(v => v.join?.(' ') ?? v).join(',')
+        parsedValue = plainValue.map((v) => v.join?.(' ') ?? v).join(',')
       }
       if (name && parsedValue && parsedValue.toString().length) {
         segments.push({ name, value: parsedValue })
       }
     }
 
-    return segments.map(s => `${s.name}=${encodeURIComponent(s.value)}`).join('&')
+    return segments.map((s) => `${s.name}=${encodeURIComponent(s.value)}`).join('&')
   }
 }

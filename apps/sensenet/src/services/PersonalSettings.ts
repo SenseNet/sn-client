@@ -9,6 +9,7 @@ export interface UiSettings {
   content: {
     browseType: typeof BrowseType[number]
     fields: Array<keyof GenericContent>
+    root: string
   }
   commandPalette: { enabled: boolean; wrapQuery: string }
   drawer: {
@@ -49,17 +50,17 @@ export interface QueryWidget<T extends GenericContent>
   widgetType: 'query'
 }
 
-export type WidgetSection = Array<MarkdownWidget | QueryWidget<GenericContent> | UpdatesWidget>
+export type WidgetSection = MarkdownWidget | QueryWidget<GenericContent> | UpdatesWidget
 
 export const DrawerItemType = tuple(
   'Content',
   'Query',
-  'Content Types',
+  'ContentTypes',
   'Localization',
   'Search',
   'Setup',
   'Trash',
-  'Users and groups',
+  'UsersAndGroups',
   'Dashboard',
 )
 
@@ -103,12 +104,9 @@ export interface DrawerItem<T> {
 
 export interface ContentDrawerItem
   extends DrawerItem<{
-    root: string
     title: string
     description?: string
     icon: string
-    columns?: Array<keyof GenericContent>
-    browseType: typeof BrowseType[number]
   }> {
   itemType: 'Content'
 }
@@ -135,16 +133,14 @@ export interface DashboardDrawerItem
 }
 
 export interface BuiltinDrawerItem extends DrawerItem<undefined> {
-  itemType: 'Content Types' | 'Localization' | 'Search' | 'Setup' | 'Trash' | 'Users and groups'
+  itemType: 'ContentTypes' | 'Localization' | 'Search' | 'Setup' | 'Trash' | 'UsersAndGroups'
 }
 
 export type PersonalSettingsType = PlatformDependent<UiSettings> & {
-  repositories: Array<{ url: string; loginName?: string; displayName?: string; dashboard?: WidgetSection }>
-  lastRepository: string
   dashboards: {
-    globalDefault: WidgetSection
-    repositoryDefault: WidgetSection
-  } & { [key: string]: WidgetSection }
+    globalDefault: WidgetSection[]
+    repositoryDefault: WidgetSection[]
+  } & { [key: string]: WidgetSection[] }
   eventLogSize: number
   sendLogWithCrashReports: boolean
   logLevel: Array<keyof typeof LogLevel>
@@ -288,6 +284,7 @@ export const defaultSettings: PersonalSettingsType = {
     content: {
       browseType: 'explorer',
       fields: ['DisplayName', 'Locked', 'CreatedBy', 'Actions'],
+      root: '/Root/Content',
     },
     drawer: {
       enabled: true,
@@ -296,11 +293,10 @@ export const defaultSettings: PersonalSettingsType = {
         { itemType: 'Search', settings: undefined },
         {
           itemType: 'Content',
-          settings: { root: '/Root/Content' },
           permissions: [{ path: '/Root/Content', action: 'Browse' }],
         },
         {
-          itemType: 'Users and groups',
+          itemType: 'UsersAndGroups',
           settings: { root: '/Root/IMS/Public' },
           permissions: [{ path: '/Root/IMS/Public', action: 'Add' }],
         },
@@ -310,7 +306,7 @@ export const defaultSettings: PersonalSettingsType = {
           permissions: [{ path: '/Root/Trash', action: 'Edit' }],
         },
         {
-          itemType: 'Content Types',
+          itemType: 'ContentTypes',
           settings: { root: '/Root/System/Schema/ContentTypes' },
           permissions: [{ path: '/Root/System/Schema/ContentTypes', action: 'Add' }],
         },
@@ -337,8 +333,6 @@ export const defaultSettings: PersonalSettingsType = {
       fields: ['DisplayName'],
     },
   },
-  repositories: [],
-  lastRepository: '',
   language: 'default',
   eventLogSize: 500,
   sendLogWithCrashReports: true,
@@ -358,7 +352,7 @@ export class PersonalSettings {
       settings.default &&
       settings.default.drawer &&
       settings.default.drawer.items &&
-      settings.default.drawer.items.find(i => typeof i === 'string')
+      settings.default.drawer.items.find((i) => typeof i === 'string')
     ) {
       ;(settings.default.drawer.items as any) = undefined
     }
@@ -367,7 +361,7 @@ export class PersonalSettings {
       settings.desktop &&
       settings.desktop.drawer &&
       settings.desktop.drawer.items &&
-      settings.desktop.drawer.items.find(i => typeof i === 'string')
+      settings.desktop.drawer.items.find((i) => typeof i === 'string')
     ) {
       ;(settings.desktop.drawer.items as any) = undefined
     }
@@ -376,7 +370,7 @@ export class PersonalSettings {
       settings.tablet &&
       settings.tablet.drawer &&
       settings.tablet.drawer.items &&
-      settings.tablet.drawer.items.find(i => typeof i === 'string')
+      settings.tablet.drawer.items.find((i) => typeof i === 'string')
     ) {
       ;(settings.tablet.drawer.items as any) = undefined
     }
@@ -385,7 +379,7 @@ export class PersonalSettings {
       settings.mobile &&
       settings.mobile.drawer &&
       settings.mobile.drawer.items &&
-      settings.mobile.drawer.items.find(i => typeof i === 'string')
+      settings.mobile.drawer.items.find((i) => typeof i === 'string')
     ) {
       ;(settings.mobile.drawer.items as any) = undefined
     }

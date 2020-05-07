@@ -1,5 +1,5 @@
 import { using } from '@sensenet/client-utils'
-import { ActionModel, ContentType, User } from '@sensenet/default-content-types'
+import { ActionModel, User } from '@sensenet/default-content-types'
 import { ActionOptions, ODataWopiResponse, Repository, SharingLevel, SharingMode } from '../src'
 import { Content } from '../src/Models/Content'
 import { ODataCollectionResponse } from '../src/Models/ODataCollectionResponse'
@@ -25,15 +25,11 @@ describe('Repository', () => {
     repository = new Repository(undefined, fetchMock)
   })
 
-  afterEach(() => {
-    repository.dispose()
-  })
-
   it('Should be constructed', () => {
     expect(repository).toBeInstanceOf(Repository)
   })
 
-  it('Should be constructed with a built-in fetch method', done => {
+  it('Should be constructed with a built-in fetch method', (done) => {
     global.window.fetch = () => {
       done()
     }
@@ -42,20 +38,20 @@ describe('Repository', () => {
   })
 
   it('Should be disposed', () => {
-    using(new Repository(), r => {
+    using(new Repository(), (r) => {
       expect(r).toBeInstanceOf(Repository)
     })
   })
 
   describe('fetch', () => {
-    it('Should await readyState by default', done => {
+    it('Should await readyState by default', (done) => {
       repository.awaitReadyState = async () => {
         done()
       }
       repository.fetch('')
     })
 
-    it('Should be able to skip awaiting readyState', done => {
+    it('Should be able to skip awaiting readyState', (done) => {
       repository.awaitReadyState = async () => {
         done("Shouldn't be called")
       }
@@ -63,6 +59,15 @@ describe('Repository', () => {
         done()
       }) as any
       repository.fetch('', undefined, false)
+    })
+
+    it('should add authorization header when token is passed', async () => {
+      const token = 'someToken'
+      const myRepository = new Repository({ token }, (input) => {
+        expect((input as Request).headers.get('Authorization')).toBe(`Bearer ${token}`)
+        return Promise.resolve(mockResponse)
+      })
+      await myRepository.fetch('/load')
     })
   })
 
@@ -81,7 +86,7 @@ describe('Repository', () => {
         expect(resp.d).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', done => {
+      it('should throw on unsuccessful request', (done) => {
         ;(mockResponse as any).ok = false
         repository
           .load({
@@ -98,15 +103,15 @@ describe('Repository', () => {
 
     describe('count', () => {
       it('should construct the url to contain /$count', async () => {
-        const countRepository = new Repository(undefined, input => {
-          const url = input.toString()
-          expect(url).toMatch(/http:\/\/localhost\/odata.svc\/Root\/Content\/\$count/g)
+        const countRepository = new Repository(undefined, (input) => {
+          const url = (input as any).path
+          expect(url).toMatch(/\/odata.svc\/Root\/Content\/\$count/g)
           return Promise.resolve({ ok: true, json: () => 42 }) as any
         })
         await countRepository.count({ path: '/Root/Content' })
       })
 
-      it('should throw on unsuccessfull request', async () => {
+      it('should throw on unsuccessful request', async () => {
         ;(mockResponse as any).ok = false
         await expect(repository.count({ path: 'Root/Content' })).rejects.toThrow()
       })
@@ -129,7 +134,7 @@ describe('Repository', () => {
         expect(resp.d.results[0]).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', done => {
+      it('should throw on unsuccessful request', (done) => {
         ;(mockResponse as any).ok = false
         repository
           .loadCollection({
@@ -161,7 +166,7 @@ describe('Repository', () => {
         expect(response.d).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', done => {
+      it('should throw on unsuccessful request', (done) => {
         ;(mockResponse as any).ok = false
         repository
           .post({
@@ -194,7 +199,7 @@ describe('Repository', () => {
         expect(response.d).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', done => {
+      it('should throw on unsuccessful request', (done) => {
         ;(mockResponse as any).ok = false
         repository
           .patch({
@@ -226,7 +231,7 @@ describe('Repository', () => {
         expect(response.d).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', done => {
+      it('should throw on unsuccessful request', (done) => {
         ;(mockResponse as any).ok = false
         repository
           .put({
@@ -348,7 +353,7 @@ describe('Repository', () => {
         expect(response.d).toEqual([{ Name: 'MockAction' }])
       })
 
-      it('should throw on unsuccessfull request', done => {
+      it('should throw on unsuccessful request', (done) => {
         ;(mockResponse as any).ok = false
         ;(mockResponse as any).statusText = ':('
         repository
@@ -358,97 +363,7 @@ describe('Repository', () => {
           .then(() => {
             done('Should throw')
           })
-          .catch(err => {
-            expect(err.message).toBe(':(')
-            done()
-          })
-      })
-    })
-
-    describe('#getImplicitAllowedChildTypes()', () => {
-      it('should resolve on success', async () => {
-        ;(mockResponse as any).ok = true
-        mockResponse.json = async () => {
-          return {
-            d: { results: [], __count: 0 },
-          } as ODataCollectionResponse<ContentType>
-        }
-        const response = await repository.getImplicitAllowedChildTypes({
-          idOrPath: 'Root/Sites/Default_Site',
-        })
-        expect(response.d).toEqual({ results: [], __count: 0 })
-      })
-
-      it('should throw on unsuccessfull request', done => {
-        ;(mockResponse as any).ok = false
-        ;(mockResponse as any).statusText = ':('
-        repository
-          .getImplicitAllowedChildTypes({
-            idOrPath: 'Root/Sites/Default_Site',
-          })
-          .then(() => {
-            done('Should throw')
-          })
-          .catch(err => {
-            expect(err.message).toBe(':(')
-            done()
-          })
-      })
-    })
-
-    describe('#getExplicitAllowedChildTypes()', () => {
-      it('should resolve on success', async () => {
-        ;(mockResponse as any).ok = true
-        mockResponse.json = async () => {
-          return {
-            d: { results: [], __count: 0 },
-          } as ODataCollectionResponse<ContentType>
-        }
-        const response = await repository.getExplicitAllowedChildTypes({
-          idOrPath: 'Root/Sites/Default_Site',
-        })
-        expect(response.d).toEqual({ results: [], __count: 0 })
-      })
-
-      it('should throw on unsuccessfull request', done => {
-        ;(mockResponse as any).ok = false
-        ;(mockResponse as any).statusText = ':('
-        repository
-          .getExplicitAllowedChildTypes({
-            idOrPath: 'Root/Sites/Default_Site',
-          })
-          .then(() => {
-            done('Should throw')
-          })
-          .catch(err => {
-            expect(err.message).toBe(':(')
-            done()
-          })
-      })
-    })
-
-    describe('#getAllowedChildTypes()', () => {
-      it('should resolve on success', async () => {
-        ;(mockResponse as any).ok = true
-        mockResponse.json = async () => {
-          return []
-        }
-        const response = await repository.getAllowedChildTypes({
-          idOrPath: 'Root/Sites/Default_Site',
-        })
-        expect(response).toEqual({ d: { __count: 0, results: [] } })
-      })
-      it('should throw on unsuccessfull request', done => {
-        ;(mockResponse as any).ok = false
-        ;(mockResponse as any).statusText = ':('
-        repository
-          .getAllowedChildTypes({
-            idOrPath: 'Root/Sites/Default_Site',
-          })
-          .then(() => {
-            done('Should throw')
-          })
-          .catch(err => {
+          .catch((err) => {
             expect(err.message).toBe(':(')
             done()
           })
@@ -474,7 +389,7 @@ describe('Repository', () => {
           faviconUrl: 'https://test.com/wv/resources/1033/FavIcon_Word.ico',
         } as ODataWopiResponse)
       })
-      it('should throw on unsuccessfull request', done => {
+      it('should throw on unsuccessful request', (done) => {
         ;(mockResponse as any).ok = false
         ;(mockResponse as any).statusText = ':('
         repository
@@ -482,7 +397,7 @@ describe('Repository', () => {
           .then(() => {
             done('Should throw')
           })
-          .catch(err => {
+          .catch((err) => {
             expect(err.message).toBe(':(')
             done()
           })
@@ -506,7 +421,7 @@ describe('Repository', () => {
         expect(response.d).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', done => {
+      it('should throw on unsuccessful request', (done) => {
         ;(mockResponse as any).ok = false
         repository
           .executeAction<{}, ODataResponse<Content>>({
@@ -537,7 +452,6 @@ describe('Repository', () => {
       repository = new Repository({
         repositoryUrl: 'https://my-sensenet-site.com',
         oDataToken: 'OData.svc',
-        sessionLifetime: 'expiration',
         defaultSelect: ['DisplayName', 'Icon'],
         requiredSelect: ['Id', 'Type', 'Path', 'Name'],
         defaultMetadata: 'no',
@@ -621,7 +535,7 @@ describe('Repository', () => {
   })
 
   describe('#reloadSchema', () => {
-    it('Should execute the proper custom action', done => {
+    it('Should execute the proper custom action', (done) => {
       repository.executeAction = async (options: ActionOptions<any, any>) => {
         expect(options.name).toBe('GetSchema')
         expect(options.idOrPath).toBe('Root')
@@ -675,6 +589,40 @@ describe('Repository', () => {
       })
 
       expect(response.Token).toEqual('alba@sensenet.com')
+    })
+  })
+
+  describe('metadata', () => {
+    beforeEach(() => {
+      mockResponse.json = async () => ({
+        DataServices: { DataServiceVersion: '3.0' },
+        Version: '1.0',
+      })
+    })
+
+    it('execute getMetadata', async () => {
+      const mockMetadataResponseData = await mockResponse.json()
+      const data = await repository.getMetadata()
+
+      expect(data).toEqual(mockMetadataResponseData)
+    })
+
+    it('execute getMetadata with id', async () => {
+      const mockMetadataResponseData = await mockResponse.json()
+      const data = await repository.getMetadata(1)
+
+      expect(data).toEqual(mockMetadataResponseData)
+    })
+  })
+
+  describe('propertyValue', () => {
+    it('execute getMetadata', async () => {
+      mockResponse.text = async () => 'example doc'
+
+      const mockPropertyValueResponseData = await mockResponse.text()
+      const data = await repository.getPropertyValue(1, 'DisplayName')
+
+      expect(data).toEqual(mockPropertyValueResponseData)
     })
   })
 })

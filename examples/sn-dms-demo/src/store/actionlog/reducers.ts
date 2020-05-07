@@ -50,8 +50,8 @@ export const logReducer: Reducer<LogStateType> = (state = defaultLogState, actio
   if (isFromAction(action, readLogEntries)) {
     return {
       ...state,
-      entries: state.entries.map(e => {
-        if (action.entries.find(actionEntry => actionEntry.uuid === e.uuid)) {
+      entries: state.entries.map((e) => {
+        if (action.entries.find((actionEntry) => actionEntry.uuid === e.uuid)) {
           return {
             ...e,
             unread: false,

@@ -4,7 +4,7 @@ import ReactMarkdown from 'react-markdown'
 import { MarkdownWidget as MarkdownWidgetModel } from '../../services/PersonalSettings'
 import { useStringReplace } from '../../hooks'
 
-export const MarkdownWidget: React.FunctionComponent<MarkdownWidgetModel> = props => {
+export const MarkdownWidget: React.FunctionComponent<MarkdownWidgetModel> = (props) => {
   const replacedContent = useStringReplace(props.settings.content)
   const replacedTitle = useStringReplace(props.title)
 
@@ -12,7 +12,7 @@ export const MarkdownWidget: React.FunctionComponent<MarkdownWidgetModel> = prop
     <>
       <Typography
         variant="h5"
-        title={props.title}
+        title={replacedTitle}
         gutterBottom={true}
         style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
         {replacedTitle}

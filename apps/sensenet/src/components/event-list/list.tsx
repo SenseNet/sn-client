@@ -1,4 +1,3 @@
-import { LeveledLogEntry, LogLevel } from '@sensenet/client-utils'
 import IconButton from '@material-ui/core/IconButton'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -7,29 +6,30 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import CompareArrows from '@material-ui/icons/CompareArrows'
 import OpenInNewTwoTone from '@material-ui/icons/OpenInNewTwoTone'
+import { LeveledLogEntry, LogLevel } from '@sensenet/client-utils'
+import { useRepository } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { CurrentContentContext, RepositoryContext, useInjector } from '@sensenet/hooks-react'
-import { ContentRoutingContext, ContentRoutingContextProvider } from '../../context'
+import { applicationPaths, resolvePathParams } from '../../application-paths'
 import { useLocalization } from '../../hooks'
-import { RepositoryManager } from '../../services/RepositoryManager'
+import { getPrimaryActionUrl } from '../../services'
 import { Icon } from '../Icon'
 import { EventListFilterContext } from './filter-context'
 
-export const List: React.FunctionComponent<{
+type ListProps = {
   values: Array<LeveledLogEntry<any>>
   style?: React.CSSProperties
-}> = props => {
+}
+
+export const List: React.FunctionComponent<ListProps> = (props) => {
   const { filter } = useContext(EventListFilterContext)
+  const repository = useRepository()
   const [effectiveValues, setEffectiveValues] = useState<Array<LeveledLogEntry<any>>>([])
-
   const localization = useLocalization().eventList.list
-
-  const repositoryManager = useInjector().getInstance(RepositoryManager)
 
   useEffect(() => {
     setEffectiveValues(
-      props.values.filter(value => {
+      props.values.filter((value) => {
         return (
           (!filter.term || value.message.indexOf(filter.term) !== -1) &&
           (!filter.scope || (value.scope && value.scope.indexOf(filter.scope) !== -1)) &&
@@ -38,6 +38,7 @@ export const List: React.FunctionComponent<{
       }),
     )
   }, [filter, props.values])
+
   return (
     <div style={props.style}>
       <Table>
@@ -63,36 +64,26 @@ export const List: React.FunctionComponent<{
               <TableCell>{row.message}</TableCell>
               <TableCell>{row.scope}</TableCell>
               <TableCell>
-                {row.data && row.data.relatedContent && row.data.relatedRepository ? (
-                  <RepositoryContext.Provider value={repositoryManager.getRepository(row.data.relatedRepository)}>
-                    <ContentRoutingContextProvider>
-                      <ContentRoutingContext.Consumer>
-                        {ctx => (
-                          <CurrentContentContext.Provider value={row.data.relatedContent}>
-                            <Link
-                              to={ctx.getPrimaryActionUrl(row.data.relatedContent)}
-                              style={{ display: 'flex', alignItems: 'center' }}>
-                              <Icon item={row.data.relatedContent} style={{ marginRight: 5 }} />
-                              {row.data.relatedContent.DisplayName || row.data.relatedContent.Name}
-                            </Link>
-                          </CurrentContentContext.Provider>
-                        )}
-                      </ContentRoutingContext.Consumer>
-                    </ContentRoutingContextProvider>
-                  </RepositoryContext.Provider>
+                {row.data?.relatedContent && row.data?.relatedRepository ? (
+                  <Link
+                    to={getPrimaryActionUrl(row.data.relatedContent, repository)}
+                    style={{ display: 'flex', alignItems: 'center' }}>
+                    <Icon item={row.data.relatedContent} style={{ marginRight: 5 }} />
+                    {row.data.relatedContent.DisplayName || row.data.relatedContent.Name}
+                  </Link>
                 ) : null}
               </TableCell>
               <TableCell>{row.data.added}</TableCell>
               <TableCell>
                 {row.data.details ? (
-                  <Link to={`/events/${row.data.guid}`}>
+                  <Link to={resolvePathParams({ path: applicationPaths.events, params: { eventGuid: row.data.guid } })}>
                     <IconButton>
                       <OpenInNewTwoTone />
                     </IconButton>
                   </Link>
                 ) : null}
                 {row.data.compare ? (
-                  <Link to={`/events/${row.data.guid}`}>
+                  <Link to={resolvePathParams({ path: applicationPaths.events, params: { eventGuid: row.data.guid } })}>
                     <IconButton>
                       <CompareArrows />
                     </IconButton>

@@ -1,5 +1,5 @@
-import { AbstractLogger, LeveledLogEntry, Logger } from '.'
 import { Injectable } from '..'
+import { AbstractLogger, LeveledLogEntry, Logger } from '.'
 
 /**
  * A specific logger that forwards its messages to a collection of loggers
@@ -7,7 +7,7 @@ import { Injectable } from '..'
 @Injectable({ lifetime: 'singleton' })
 export class LoggerCollection extends AbstractLogger {
   public async addEntry<T>(entry: LeveledLogEntry<T>): Promise<void> {
-    const promises = this.loggers.map(l => l.addEntry(entry))
+    const promises = this.loggers.map((l) => l.addEntry(entry))
     await Promise.all(promises)
   }
 

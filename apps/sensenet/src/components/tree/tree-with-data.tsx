@@ -3,16 +3,17 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
 import { Created } from '@sensenet/repository-events'
 import React, { useCallback, useEffect, useState } from 'react'
+import Semaphore from 'semaphore-async-await'
 import { useSelectionService } from '../../hooks'
-import { FullScreenLoader } from '../full-screen-loader'
 import { ActionNameType } from '../react-control-mapper'
 import { ItemType, Tree } from './tree'
 
 type TreeWithDataProps = {
   onItemClick: (item: GenericContent) => void
   parentPath: string
-  activeItemIdOrPath: string | number
+  activeItemPath: string
   setFormOpen?: (actionName: ActionNameType) => void
+  onTreeLoadingChange?: (isLoading: boolean) => void
 }
 
 let lastRequest: { path: string; lastIndex: number } | undefined
@@ -21,12 +22,13 @@ const ITEM_THRESHOLD = 50
 
 const walkTree = (node: ItemType, callBack: (node: ItemType) => void) => {
   if (node.children?.length) {
-    node.children.forEach(child => {
+    node.children.forEach((child) => {
       callBack(child)
       walkTree(child, callBack)
     })
   }
 }
+const lock = new Semaphore(1)
 
 export default function TreeWithData(props: TreeWithDataProps) {
   const repo = useRepository()
@@ -40,6 +42,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
   const loadCollection = useCallback(
     async (path: string, top: number, skip: number) => {
       const ac = new AbortController()
+      props.onTreeLoadingChange && props.onTreeLoadingChange(true)
       setIsLoading(true)
       try {
         const result = await repo.loadCollection<GenericContent>({
@@ -57,15 +60,18 @@ export default function TreeWithData(props: TreeWithDataProps) {
             ],
           },
         })
+        props.onTreeLoadingChange && props.onTreeLoadingChange(false)
         setIsLoading(false)
         return result
       } catch (error) {
         if (!ac.signal.aborted) {
           logger.warning({ message: `Couldn't load content for ${path}`, data: error })
         }
+        props.onTreeLoadingChange && props.onTreeLoadingChange(false)
         setIsLoading(false)
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [logger, repo],
   )
 
@@ -102,7 +108,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
 
       // load more items under root
       if (path === props.parentPath) {
-        setTreeData(prevItem => {
+        setTreeData((prevItem) => {
           if (prevItem && prevItem.children) {
             return {
               ...prevItem,
@@ -113,7 +119,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
         })
       } else {
         // load more items under tree node
-        walkTree(treeData!, node => {
+        walkTree(treeData!, (node) => {
           if (node.Path === path && node.children) {
             node.children = [...node.children, ...result.d.results]
             node.hasNextPage = result.d.__count > node.children.length
@@ -132,7 +138,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
       if ((c.content as GenericContent).ParentId === treeData?.Id) {
         loadRoot()
       } else {
-        walkTree(treeData!, async node => {
+        walkTree(treeData!, async (node) => {
           if ((c.content as GenericContent).ParentId === node.Id) {
             const result = await loadCollection(node.Path, ITEM_THRESHOLD, 0)
             if (!result) {
@@ -152,23 +158,25 @@ export default function TreeWithData(props: TreeWithDataProps) {
       eventHub.onContentCopied.subscribe(handleCreate),
       eventHub.onContentMoved.subscribe(handleCreate),
       eventHub.onContentModified.subscribe(handleCreate),
-      eventHub.onContentDeleted.subscribe(d => {
-        walkTree(treeData!, node => {
+      eventHub.onContentDeleted.subscribe(async (d) => {
+        await lock.acquire()
+        walkTree(treeData!, (node) => {
           if (node.Id === d.contentData.Id && treeData?.children?.length) {
-            treeData.children = treeData.children.filter(n => n.Id !== d.contentData.Id)
-            setItemCount(itemCountTemp => itemCountTemp && itemCountTemp - 1)
+            treeData.children = treeData.children.filter((n) => n.Id !== d.contentData.Id)
+            setItemCount((itemCountTemp) => itemCountTemp && itemCountTemp - 1)
           } else if (PathHelper.trimSlashes(node.Path) === PathHelper.getParentPath(d.contentData.Path)) {
-            node.children = node.children?.filter(n => n.Id !== d.contentData.Id)
+            node.children = node.children?.filter((n) => n.Id !== d.contentData.Id)
             if (selectionService.activeContent.getValue()?.Id === d.contentData.Id) {
               selectionService.activeContent.setValue(node)
             }
           }
         })
         setTreeData({ ...treeData! })
+        lock.release()
       }),
     ]
 
-    return () => subscriptions.forEach(s => s.dispose())
+    return () => subscriptions.forEach((s) => s.dispose())
   }, [
     treeData,
     eventHub.onContentDeleted,
@@ -184,19 +192,19 @@ export default function TreeWithData(props: TreeWithDataProps) {
 
   useEffect(() => {
     const activeContent = selectionService.activeContent.getValue()
-    if (activeContent?.Id !== props.activeItemIdOrPath) {
+    if (activeContent?.Path !== props.activeItemPath) {
       loadActiveContent()
     }
 
     async function loadActiveContent() {
       try {
-        const newActiveContent = await repo.load({ idOrPath: props.activeItemIdOrPath })
+        const newActiveContent = await repo.load({ idOrPath: props.activeItemPath })
         selectionService.activeContent.setValue(newActiveContent.d)
       } catch (error) {
-        logger.warning({ message: `Couldn't load active content`, data: { idOrPath: props.activeItemIdOrPath } })
+        logger.warning({ message: `Couldn't load active content`, data: { idOrPath: props.activeItemPath } })
       }
     }
-  }, [logger, props.activeItemIdOrPath, repo, selectionService.activeContent])
+  }, [logger, props.activeItemPath, repo, selectionService.activeContent])
 
   useEffect(() => {
     loadRoot()
@@ -224,7 +232,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
   }
 
   if (itemCount == null || !treeData) {
-    return <FullScreenLoader />
+    return null
   }
 
   const setFormOpen = (actionName: ActionNameType) => {
@@ -238,7 +246,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
       loadMore={loadMoreItems}
       onItemClick={onItemClick}
       isLoading={isLoading}
-      setFormOpen={actionName => setFormOpen(actionName)}
+      setFormOpen={(actionName) => setFormOpen(actionName)}
     />
   )
 }

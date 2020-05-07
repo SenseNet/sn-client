@@ -1,4 +1,4 @@
-import { ConstantContent, LoginState, RepositoryConfiguration } from '@sensenet/client-core'
+import { ConstantContent, LoginState, RepositoryConfigurationWithDefaults } from '@sensenet/client-core'
 import { User } from '@sensenet/default-content-types'
 import { combineReducers, Reducer } from 'redux'
 import { loadRepository, userChanged } from '../Actions'
@@ -86,7 +86,7 @@ export const userName: Reducer<string, ReturnType<typeof userChanged>> = (
  * @returns  state. Returns the next state based on the action.
  */
 export const fullName: Reducer<string, ReturnType<typeof userChanged>> = (
-  state = ConstantContent.VISITOR_USER.DisplayName,
+  state = ConstantContent.VISITOR_USER.DisplayName!,
   action,
 ) => {
   switch (action.type) {
@@ -168,7 +168,7 @@ const user = combineReducers<{
  * @param action Represents an action that is called.
  * @returns  state. Returns the next state based on the action.
  */
-export const repository: Reducer<RepositoryConfiguration | null, ReturnType<typeof loadRepository>> = (
+export const repository: Reducer<RepositoryConfigurationWithDefaults | null, ReturnType<typeof loadRepository>> = (
   state = null,
   action: any,
 ) => {

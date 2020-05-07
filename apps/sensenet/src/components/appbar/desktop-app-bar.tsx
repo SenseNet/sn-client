@@ -1,15 +1,12 @@
-import AppBar from '@material-ui/core/AppBar'
-import IconButton from '@material-ui/core/IconButton'
-import Toolbar from '@material-ui/core/Toolbar'
+import { AppBar, createStyles, IconButton, makeStyles, Toolbar } from '@material-ui/core'
 import Menu from '@material-ui/icons/Menu'
-import React, { useContext } from 'react'
-import { createStyles, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
-import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
-import { useCommandPalette } from '../../hooks'
-import { CommandPalette } from '../command-palette/CommandPalette'
-import { RepositorySelector } from '../RepositorySelector'
+import React, { useContext } from 'react'
+import { Link } from 'react-router-dom'
+import logo from '../../assets/sensenet-icon-32.png'
+import { ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
+import { CommandPalette } from '../command-palette/CommandPalette'
 import { DesktopNavMenu } from './desktop-nav-menu'
 
 const useStyles = makeStyles(() => {
@@ -26,14 +23,9 @@ const useStyles = makeStyles(() => {
       paddingLeft: '32px',
       paddingRight: 0,
     },
-    repositorySelectorWrapper: {
-      flexDirection: 'row',
-      textDecoration: 'none',
-      overflow: 'hidden',
-      flexGrow: 1,
-    },
-    flexGrow0: {
-      flexGrow: 0,
+    logo: {
+      marginRight: '39px',
+      filter: 'drop-shadow(0px 0px 3px black)',
     },
     commandPaletteReplacement: {
       flex: 1,
@@ -42,20 +34,18 @@ const useStyles = makeStyles(() => {
   })
 })
 
-export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }> = props => {
-  const device = useContext(ResponsiveContext)
-  const personalSettings = useContext(ResponsivePersonalSetttings)
-  const commandPalette = useCommandPalette()
+export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }> = (props) => {
+  const personalSettings = useContext(ResponsivePersonalSettings)
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
 
   return (
     <AppBar position="sticky" className={clsx(globalClasses.centeredHorizontal, classes.appBar)}>
       <Toolbar className={classes.toolBar}>
-        <div
-          className={clsx(globalClasses.centeredVertical, classes.repositorySelectorWrapper, {
-            [classes.flexGrow0]: commandPalette.isOpened,
-          })}>
+        <div className={globalClasses.centeredVertical}>
+          <Link to="/" className={globalClasses.centeredVertical}>
+            <img src={logo} className={classes.logo} alt="logo" />
+          </Link>
           {personalSettings.drawer.type === 'temporary' ? (
             <IconButton
               onClick={() => {
@@ -64,11 +54,10 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
               <Menu />
             </IconButton>
           ) : null}
-          {device !== 'desktop' && commandPalette.isOpened ? null : <RepositorySelector />}
         </div>
 
         {personalSettings.commandPalette.enabled ? (
-          <CommandPalette {...commandPalette} />
+          <CommandPalette />
         ) : (
           <div className={classes.commandPaletteReplacement} />
         )}

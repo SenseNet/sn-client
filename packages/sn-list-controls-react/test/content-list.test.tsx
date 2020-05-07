@@ -60,7 +60,7 @@ describe('ContentList component', () => {
       )
 
       const selected = component.findWhere(
-        instance =>
+        (instance) =>
           instance.type() === TableRow &&
           typeof instance.props().className === 'string' &&
           instance.props().className.indexOf('selected') > -1,
@@ -87,7 +87,7 @@ describe('ContentList component', () => {
         />,
       )
       const selected = component
-        .findWhere(instance => instance.type() === Checkbox && instance.props().className !== 'select-all')
+        .findWhere((instance) => instance.type() === Checkbox && instance.props().className !== 'select-all')
         .first()
       selected.props().onChange()
       component.unmount()
@@ -107,7 +107,7 @@ describe('ContentList component', () => {
           orderBy="DisplayName"
           orderDirection="asc"
           icons={{}}
-          onRequestSelectionChange={items => {
+          onRequestSelectionChange={(items) => {
             expect(items.length).toBe(1)
             expect(items[0].Id).toBe(1)
             component.unmount()
@@ -116,7 +116,7 @@ describe('ContentList component', () => {
         />,
       )
       const selected = component
-        .findWhere(instance => instance.type() === Checkbox && instance.props().className !== 'select-all')
+        .findWhere((instance) => instance.type() === Checkbox && instance.props().className !== 'select-all')
         .first()
       selected.props().onChange()
     })
@@ -135,7 +135,7 @@ describe('ContentList component', () => {
           orderBy="DisplayName"
           orderDirection="asc"
           icons={{}}
-          onRequestSelectionChange={items => {
+          onRequestSelectionChange={(items) => {
             expect(items.length).toBe(0)
             expect(items).toEqual([])
             component.unmount()
@@ -144,7 +144,7 @@ describe('ContentList component', () => {
         />,
       )
       const selected = component
-        .findWhere(instance => instance.type() === Checkbox && instance.props().className !== 'select-all')
+        .findWhere((instance) => instance.type() === Checkbox && instance.props().className !== 'select-all')
         .first()
       selected.props().onChange()
     })
@@ -164,7 +164,7 @@ describe('ContentList component', () => {
           orderBy="DisplayName"
           orderDirection="asc"
           icons={{}}
-          onRequestSelectionChange={selection => {
+          onRequestSelectionChange={(selection) => {
             expect(selection.length).toBe(2)
             expect(selection).toEqual(selection)
             component.unmount()
@@ -173,7 +173,7 @@ describe('ContentList component', () => {
         />,
       )
       const selected = component
-        .findWhere(instance => instance.type() === Checkbox && instance.props().className === 'select-all')
+        .findWhere((instance) => instance.type() === Checkbox && instance.props().className === 'select-all')
         .first()
       selected.props().onChange()
     })
@@ -193,7 +193,7 @@ describe('ContentList component', () => {
           orderBy="DisplayName"
           orderDirection="asc"
           icons={{}}
-          onRequestSelectionChange={selection => {
+          onRequestSelectionChange={(selection) => {
             expect(selection.length).toBe(0)
             expect(selection).toEqual([])
             component.unmount()
@@ -202,7 +202,7 @@ describe('ContentList component', () => {
         />,
       )
       const selected = component
-        .findWhere(instance => instance.type() === Checkbox && instance.props().className === 'select-all')
+        .findWhere((instance) => instance.type() === Checkbox && instance.props().className === 'select-all')
         .first()
       selected.props().onChange()
     })
@@ -221,7 +221,7 @@ describe('ContentList component', () => {
         />,
       )
       const selected = component.findWhere(
-        instance =>
+        (instance) =>
           instance.type() === TableRow &&
           typeof instance.props().className === 'string' &&
           instance.props().className.indexOf('active') > -1,
@@ -240,7 +240,7 @@ describe('ContentList component', () => {
           orderBy="DisplayName"
           orderDirection="asc"
           icons={{}}
-          onRequestActiveItemChange={item => {
+          onRequestActiveItemChange={(item) => {
             expect(item.Id).toBe(1)
             component.unmount()
             done()
@@ -249,7 +249,7 @@ describe('ContentList component', () => {
       )
       const row = component
         .findWhere(
-          instance =>
+          (instance) =>
             instance.type() === TableRow &&
             instance.props().className &&
             instance.props().className.indexOf('type-folder') !== -1,
@@ -382,7 +382,7 @@ describe('ContentList component', () => {
             orderBy="ModificationDate"
             orderDirection="asc"
             icons={{}}
-            fieldComponent={props => {
+            fieldComponent={(props) => {
               if (props.field === 'Name') {
                 return (
                   <td>
@@ -395,7 +395,7 @@ describe('ContentList component', () => {
           />,
         )
         const actionsComponent = component.findWhere(
-          instance => instance.props().className && instance.props().className === 'custom-field',
+          (instance) => instance.props().className && instance.props().className === 'custom-field',
         )
         expect(actionsComponent.length).toBe(1)
 
@@ -423,7 +423,7 @@ describe('ContentList component', () => {
         )
         const row = component
           .findWhere(
-            instance =>
+            (instance) =>
               instance.type() === TableRow &&
               instance.props().className &&
               instance.props().className.indexOf('type-folder') !== -1,
@@ -451,7 +451,7 @@ describe('ContentList component', () => {
         )
         const row = component
           .findWhere(
-            instance =>
+            (instance) =>
               instance.type() === TableRow &&
               instance.props().className &&
               instance.props().className.indexOf('type-folder') !== -1,
@@ -478,7 +478,7 @@ describe('ContentList component', () => {
         )
         const row = component
           .findWhere(
-            instance =>
+            (instance) =>
               instance.type() === TableRow &&
               instance.props().className &&
               instance.props().className.indexOf('type-folder') !== -1,
@@ -505,7 +505,7 @@ describe('ContentList component', () => {
         )
         const row = component
           .findWhere(
-            instance =>
+            (instance) =>
               instance.type() === TableRow &&
               instance.props().className &&
               instance.props().className.indexOf('type-folder') !== -1,

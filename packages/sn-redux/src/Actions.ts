@@ -113,6 +113,7 @@
  */
 import { GoogleOauthProvider } from '@sensenet/authentication-google'
 import {
+  CommentWithoutCreatedByAndId,
   Content,
   LoginState,
   ODataFieldParameter,
@@ -568,26 +569,20 @@ export const getProperty = (idOrPath: string | number, propertyName: string) => 
  * @param propertyName name of the property
  * @returns Returns the value of the given content property.
  */
-export const getPropertyValue = (idOrPath: string | number, propertyName: string) => {
-  const path = PathHelper.getContentUrl(idOrPath)
-  return {
-    type: 'GET_PROPERTY_VALUE',
-    payload: (repository: Repository) => repository.fetch(`${path}/${propertyName}/$value`),
-  }
-}
+export const getPropertyValue = (idOrPath: string | number, propertyName: string) => ({
+  type: 'GET_PROPERTY_VALUE',
+  payload: (repository: Repository) => repository.getPropertyValue(idOrPath, propertyName),
+})
 
 /**
  * Action creator for requesting a content's metadata from sensenet Content Repository.
  * @param path path of the requested parent item.
  * @returns Returns metadata of the given content.
  */
-export const getMetadata = (idOrPath: string | number) => {
-  const path = PathHelper.getContentUrl(idOrPath)
-  return {
-    type: 'GET_METADATA',
-    payload: (repository: Repository) => repository.fetch(`${path}/$metadata`),
-  }
-}
+export const getMetadata = (idOrPath: string | number) => ({
+  type: 'GET_METADATA',
+  payload: (repository: Repository) => repository.getMetadata(idOrPath),
+})
 
 /**
  * Action creator for loading repository schema
@@ -658,15 +653,7 @@ export const getSharingEntries = (idOrPath: number | string) => ({
  */
 export const checkPreviews = (idOrPath: number | string, generateMissing?: boolean) => ({
   type: 'CHECK_PREVIEWS',
-  payload: (repository: Repository) =>
-    repository.executeAction({
-      idOrPath,
-      name: 'CheckPreviews',
-      method: 'POST',
-      body: {
-        generateMissing,
-      },
-    }),
+  payload: (repository: Repository) => repository.preview.check({ idOrPath, generateMissing }),
 })
 
 /**
@@ -675,12 +662,7 @@ export const checkPreviews = (idOrPath: number | string, generateMissing?: boole
  */
 export const getPageCount = (idOrPath: number | string) => ({
   type: 'GET_PAGE_COUNT',
-  payload: (repository: Repository) =>
-    repository.executeAction({
-      idOrPath,
-      name: 'GetPageCount',
-      method: 'GET',
-    }),
+  payload: (repository: Repository) => repository.preview.getPageCount({ idOrPath }),
 })
 
 /**
@@ -689,12 +671,7 @@ export const getPageCount = (idOrPath: number | string) => ({
  */
 export const regeneratePreviews = (idOrPath: number | string) => ({
   type: 'REGENERATE_PREVIEW_IMAGES',
-  payload: (repository: Repository) =>
-    repository.executeAction({
-      idOrPath,
-      name: 'RegeneratePreviews',
-      method: 'POST',
-    }),
+  payload: (repository: Repository) => repository.preview.regenerate({ idOrPath }),
 })
 
 /**
@@ -707,19 +684,12 @@ export const regeneratePreviews = (idOrPath: number | string) => ({
  */
 export const addPreviewComment = (idOrPath: number | string, page: number, x: number, y: number, text: string) => ({
   type: 'ADD_PREVIEW_COMMENT',
-  payload: (repository: Repository) =>
-    repository.executeAction({
-      idOrPath,
-      name: 'AddPreviewComment',
-      method: 'POST',
-      body: {
-        page,
-        x,
-        y,
-        text,
-      },
-    }),
+  payload: (repository: Repository) => {
+    const comment: CommentWithoutCreatedByAndId = { page, x: x.toString(), y: y.toString(), text }
+    return repository.preview.addComment({ idOrPath, comment })
+  },
 })
+
 /**
  * Action creator for getting comments for a page of a document.
  * @param idOrPath Id or Path of the document
@@ -727,32 +697,17 @@ export const addPreviewComment = (idOrPath: number | string, page: number, x: nu
  */
 export const getPreviewComments = (idOrPath: number | string, page: number) => ({
   type: 'GET_PREVIEW_COMMENTS',
-  payload: (repository: Repository) =>
-    repository.executeAction({
-      idOrPath,
-      name: 'GetPreviewComments',
-      method: 'GET',
-      body: {
-        page,
-      },
-    }),
+  payload: (repository: Repository) => repository.preview.getComments({ idOrPath, page }),
 })
+
 /**
  * Action creator for removing a specified comment.
  * @param idOrPath Id or Path of the document,
  * @param commentId Id of the comment that should be deleted.
  */
-export const removePreviewComment = (idOrPath: number | string, commentId: number) => ({
+export const removePreviewComment = (idOrPath: number | string, commentId: string) => ({
   type: 'REMOVE_PREVIEW_COMMENT',
-  payload: (repository: Repository) =>
-    repository.executeAction({
-      idOrPath,
-      name: 'DeletePreviewComment',
-      method: 'POST',
-      body: {
-        id: commentId,
-      },
-    }),
+  payload: (repository: Repository) => repository.preview.deleteComment({ idOrPath, commentId }),
 })
 /**
  * Action creator for restoring a content from the Trash.
@@ -780,7 +735,7 @@ export const restoreFromTrash = (idOrPath: number | string, destination: string,
 export const getAllowedChildTypes = (idOrPath: number | string) => ({
   type: 'GET_ALLOWED_CHILDTYPES',
   payload: (repository: Repository) =>
-    repository.getImplicitAllowedChildTypes({
+    repository.allowedChildTypes.getImplicit({
       idOrPath,
     }),
 })
@@ -792,7 +747,7 @@ export const getAllowedChildTypes = (idOrPath: number | string) => ({
 export const getEffectiveAllowedChildTypes = (idOrPath: number | string) => ({
   type: 'GET_EFFECTIVE_ALLOWED_CHILDTYPES',
   payload: (repository: Repository) =>
-    repository.getAllowedChildTypes({
+    repository.allowedChildTypes.get({
       idOrPath,
     }),
 })
@@ -804,7 +759,7 @@ export const getEffectiveAllowedChildTypes = (idOrPath: number | string) => ({
 export const getAllowedTypesFromCTD = (idOrPath: number | string) => ({
   type: 'GET_ALLOWED_CHILDTYPES_FROM_CTD',
   payload: (repository: Repository) =>
-    repository.getExplicitAllowedChildTypes({
+    repository.allowedChildTypes.getExplicit({
       idOrPath,
     }),
 })
@@ -815,15 +770,7 @@ export const getAllowedTypesFromCTD = (idOrPath: number | string) => ({
  */
 export const addAllowedChildTypes = (idOrPath: number | string, contentTypes: string[]) => ({
   type: 'ADD_ALLOWED_CHILDTYPES',
-  payload: (repository: Repository) =>
-    repository.executeAction({
-      idOrPath,
-      name: 'AddAllowedChildTypes',
-      method: 'POST',
-      body: {
-        contentTypes,
-      },
-    }),
+  payload: (repository: Repository) => repository.allowedChildTypes.add(idOrPath, contentTypes),
 })
 
 /**
@@ -833,15 +780,7 @@ export const addAllowedChildTypes = (idOrPath: number | string, contentTypes: st
  */
 export const removeAllowedChildTypes = (idOrPath: number | string, contentTypes: string[]) => ({
   type: 'REMOVE_ALLOWED_CHILDTYPES',
-  payload: (repository: Repository) =>
-    repository.executeAction({
-      idOrPath,
-      name: 'RemoveAllowedChildTypes',
-      method: 'POST',
-      body: {
-        contentTypes,
-      },
-    }),
+  payload: (repository: Repository) => repository.allowedChildTypes.remove(idOrPath, contentTypes),
 })
 /**
  * Action creator for getting a list of contents in a subtree where AllowedChildTypes list is empty
@@ -849,12 +788,7 @@ export const removeAllowedChildTypes = (idOrPath: number | string, contentTypes:
  */
 export const checkAllowedChildTypes = (idOrPath: number | string) => ({
   type: 'CHECK_ALLOWED_CHILDTYPES',
-  payload: (repository: Repository) =>
-    repository.executeAction({
-      idOrPath,
-      name: 'CheckAllowedChildTypesOfFolders',
-      method: 'GET',
-    }),
+  payload: (repository: Repository) => repository.allowedChildTypes.listEmpty(idOrPath),
 })
 
 /**

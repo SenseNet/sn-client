@@ -58,7 +58,7 @@ export class PathHelper {
    */
   public static isItemPath(path: string): boolean {
     const segments = this.getSegments(path)
-    const itemSegment = segments.find(s => this.isItemSegment(s))
+    const itemSegment = segments.find((s) => this.isItemSegment(s))
     return itemSegment && itemSegment.length ? true : false
   }
 
@@ -117,7 +117,9 @@ export class PathHelper {
    * @returns {boolean} if the provided path is the ancestor of the descendant
    */
   public static isAncestorOf(ancestorPath: string, descendantPath: string): boolean {
-    return descendantPath.indexOf(`${this.joinPaths(ancestorPath)}/`) === 0
+    const trimmedDescendantPath = this.trimSlashes(descendantPath)
+    const trimmedAncestorPath = this.trimSlashes(ancestorPath)
+    return trimmedDescendantPath.indexOf(`${this.joinPaths(trimmedAncestorPath)}/`) === 0
   }
 
   /**

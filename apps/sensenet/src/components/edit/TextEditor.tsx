@@ -1,17 +1,32 @@
+import { createStyles, makeStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
+import { Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { ActionModel, GenericContent, Settings, File as SnFile } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
+import clsx from 'clsx'
 import { Uri } from 'monaco-editor'
 import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
-import { Prompt } from 'react-router'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { Repository } from '@sensenet/client-core'
-import clsx from 'clsx'
+import { Prompt, useHistory } from 'react-router'
 import { ResponsiveContext } from '../../context'
-import { useContentRouting, useLocalization, useTheme } from '../../hooks'
-import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { globals, useGlobalStyles } from '../../globalStyles'
+import { useLocalization, useTheme } from '../../hooks'
+import { getMonacoLanguage } from '../../services/content-context-service'
+import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    actionButtonWrapper: {
+      height: '80px',
+      width: '100%',
+      position: 'absolute',
+      padding: '20px',
+      bottom: 0,
+      textAlign: 'right',
+    },
+  })
+})
 
 export const getMonacoModelUri = (content: GenericContent, repo: Repository, action?: ActionModel) => {
   if (repo.schemas.isContentFromType<Settings>(content, 'Settings') || content.Type === 'PersonalSettings') {
@@ -38,22 +53,21 @@ export interface TextEditorProps {
   showBreadCrumb: boolean
 }
 
-export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
+export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
   const theme = useTheme()
   const platform = useContext(ResponsiveContext)
   const repo = useRepository()
-
-  const contentRouter = useContentRouting()
-
   const [textValue, setTextValue] = useState('')
   const [savedTextValue, setSavedTextValue] = useState('')
-  const [language, setLanguage] = useState(contentRouter.getMonacoLanguage(props.content))
-  const localization = useLocalization().textEditor
+  const [language, setLanguage] = useState(getMonacoLanguage(props.content, repo))
+  const localization = useLocalization()
   const [uri, setUri] = useState<any>(getMonacoModelUri(props.content, repo))
   const [hasChanges, setHasChanges] = useState(false)
   const logger = useLogger('TextEditor')
   const [error, setError] = useState<Error | undefined>()
   const globalClasses = useGlobalStyles()
+  const classes = useStyles()
+  const history = useHistory()
 
   const saveContent = async () => {
     try {
@@ -70,7 +84,10 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
         })
       }
       logger.information({
-        message: localization.saveSuccessNotification.replace('{0}', props.content.DisplayName || props.content.Name),
+        message: localization.textEditor.saveSuccessNotification.replace(
+          '{0}',
+          props.content.DisplayName || props.content.Name,
+        ),
         data: {
           relatedContent: props.content,
           relatedRepository: repo.configuration.repositoryUrl,
@@ -84,7 +101,10 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
       setSavedTextValue(textValue)
     } catch (err) {
       logger.error({
-        message: localization.saveFailedNotification.replace('{0}', props.content.DisplayName || props.content.Name),
+        message: localization.textEditor.saveFailedNotification.replace(
+          '{0}',
+          props.content.DisplayName || props.content.Name,
+        ),
         data: {
           details: { error: err },
         },
@@ -98,12 +118,12 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
 
   useEffect(() => {
     setUri(getMonacoModelUri(props.content, repo))
-    setLanguage(contentRouter.getMonacoLanguage(props.content))
-  }, [contentRouter, props.content, repo])
+    setLanguage(getMonacoLanguage(props.content, repo))
+  }, [props.content, repo])
 
   useEffect(() => {
     setUri(getMonacoModelUri(props.content, repo))
-    setLanguage(contentRouter.getMonacoLanguage(props.content))
+    setLanguage(getMonacoLanguage(props.content, repo))
     ;(async () => {
       try {
         if (props.loadContent) {
@@ -126,11 +146,11 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
         setError(err)
       }
     })()
-  }, [contentRouter, savedTextValue, props, repo])
+  }, [savedTextValue, props, repo])
 
   if (error) {
     logger.information({
-      message: localization.saveFailedNotification,
+      message: localization.textEditor.saveFailedNotification,
       data: error,
     })
     return null
@@ -139,7 +159,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   return (
     <div
       style={{ width: '100%', height: '100%' }}
-      onKeyDown={async ev => {
+      onKeyDown={async (ev) => {
         if (ev.key.toLowerCase() === 's' && ev.ctrlKey) {
           try {
             ev.preventDefault()
@@ -154,9 +174,10 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
         style={{
           height: globals.common.drawerItemHeight,
           paddingLeft: '15px',
-          justifyContent: props.showBreadCrumb ? 'space-between' : 'flex-end',
+          justifyContent: 'space-between',
         }}>
-        {props.showBreadCrumb && <ContentBreadcrumbs />}
+        {props.showBreadCrumb ? <ContentBreadcrumbs /> : <div style={{ fontSize: '20px' }}>{props.content.Name}</div>}
+
         <div
           style={{
             display: 'flex',
@@ -164,24 +185,17 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
           }}>
           {props.additionalButtons ? props.additionalButtons : null}
           <Button disabled={!hasChanges} onClick={() => setTextValue(savedTextValue)}>
-            {localization.reset}
-          </Button>
-          <Button
-            disabled={!hasChanges}
-            onClick={() => {
-              saveContent()
-            }}>
-            {localization.save}
+            {localization.textEditor.reset}
           </Button>
         </div>
       </div>
-      <Prompt when={textValue !== savedTextValue} message={localization.unsavedChangesWarning} />
+      <Prompt when={textValue !== savedTextValue} message={localization.textEditor.unsavedChangesWarning} />
       <MonacoEditor
         theme={theme.palette.type === 'dark' ? 'vs-dark' : 'vs-light'}
         width="100%"
         language={language}
         value={textValue}
-        onChange={v => setTextValue(v)}
+        onChange={(v) => setTextValue(v)}
         options={{
           readOnly: platform === 'mobile',
           automaticLayout: true,
@@ -198,6 +212,22 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
           }
         }}
       />
+      <div className={classes.actionButtonWrapper}>
+        <Button color="default" className={globalClasses.cancelButton} onClick={history.goBack}>
+          {localization.forms.cancel}
+        </Button>
+
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          disabled={!hasChanges}
+          onClick={() => {
+            saveContent()
+          }}>
+          {localization.forms.submit}
+        </Button>
+      </div>
     </div>
   )
 }

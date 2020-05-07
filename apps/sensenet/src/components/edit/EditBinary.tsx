@@ -2,7 +2,7 @@ import { createStyles, makeStyles } from '@material-ui/core'
 import { CurrentContentProvider } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { useEffect } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router'
+import { useRouteMatch } from 'react-router-dom'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLoadContent, useSelectionService } from '../../hooks'
 import { FullScreenLoader } from '../full-screen-loader'
@@ -14,13 +14,13 @@ const useStyles = makeStyles(() => {
       display: 'flex',
       flexDirection: 'column',
       overflow: 'hidden',
-      padding: '.3em 0',
     },
   })
 })
 
-const Editor: React.FunctionComponent<RouteComponentProps<{ contentId?: string }>> = props => {
-  const contentId = parseInt(props.match.params.contentId as string, 10)
+export default function Editor() {
+  const match = useRouteMatch<{ contentId: string }>()
+  const contentId = parseInt(match.params.contentId, 10)
   const selectionService = useSelectionService()
   const { content } = useLoadContent({ idOrPath: contentId })
   const classes = useStyles()
@@ -42,5 +42,3 @@ const Editor: React.FunctionComponent<RouteComponentProps<{ contentId?: string }
     </div>
   )
 }
-
-export default withRouter(Editor)

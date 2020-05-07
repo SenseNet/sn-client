@@ -1,10 +1,10 @@
-import { mount, shallow } from 'enzyme'
-import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { Repository } from '@sensenet/client-core'
 import { RepositoryContext } from '@sensenet/hooks-react'
-import { SharedContext } from '../src/context/shared-context'
+import { mount } from 'enzyme'
+import React from 'react'
+import { act } from 'react-dom/test-utils'
 import NewDialogBody from '../src/components/new-dialog-body'
+import { SharedContext } from '../src/context/shared-context'
 import { CalendarTestEvent, MaterialDialogProps } from './mocks/test-objects'
 
 describe('NewDialogBody', () => {
@@ -26,11 +26,6 @@ describe('NewDialogBody', () => {
     setOpennewmodal: jest.fn(),
     setOpennoti: jest.fn(),
   }
-
-  it('NewDialogBody snapshot test', () => {
-    const wrapper = shallow(<NewDialogBody {...(testprops as any)} />)
-    expect(wrapper).toMatchSnapshot()
-  })
 
   it('Submit test', async () => {
     window.fetch = function fetchMethod() {

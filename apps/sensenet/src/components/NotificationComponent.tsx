@@ -1,14 +1,13 @@
-import { LogLevel, sleepAsync } from '@sensenet/client-utils'
 import amber from '@material-ui/core/colors/amber'
 import red from '@material-ui/core/colors/red'
 import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
 import Close from '@material-ui/icons/Close'
+import { LogLevel, sleepAsync } from '@sensenet/client-utils'
+import { useInjector } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
-import { RepositoryContext, useInjector } from '@sensenet/hooks-react'
 import { ResponsiveContext } from '../context'
 import { EventLogEntry, EventService } from '../services/EventService'
-import { RepositoryManager } from '../services/RepositoryManager'
 import { Icon } from './Icon'
 
 export const getItemBackgroundColor = (item: EventLogEntry<any>) => {
@@ -49,14 +48,13 @@ export const getAutoHideDuration = (item: EventLogEntry<any>) => {
 
 export const NotificationComponent: React.FunctionComponent = () => {
   const injector = useInjector()
-  const repoManager = injector.getInstance(RepositoryManager)
   const eventService = injector.getInstance(EventService)
   const [values, setValues] = useState<Array<[string, Array<EventLogEntry<any>>]>>([])
   const [dismisses, setDismisses] = useState<string[]>([])
   const device = useContext(ResponsiveContext)
 
   useEffect(() => {
-    const subscription = eventService.notificationValues.subscribe(change =>
+    const subscription = eventService.notificationValues.subscribe((change) =>
       setValues(Array.from(Object.entries(change))),
     )
     return () => subscription.dispose()
@@ -77,7 +75,8 @@ export const NotificationComponent: React.FunctionComponent = () => {
             }}
             style={{
               marginBottom:
-                values.filter(val => val[1][0].data.isDismissed !== true).indexOf(v) * (device === 'mobile' ? 60 : 90),
+                values.filter((val) => val[1][0].data.isDismissed !== true).indexOf(v) *
+                (device === 'mobile' ? 60 : 90),
             }}
             ContentProps={{
               style: {
@@ -92,9 +91,7 @@ export const NotificationComponent: React.FunctionComponent = () => {
             autoHideDuration={(item.data && item.data.autoHideDuration) || getAutoHideDuration(item)}
             message={
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <RepositoryContext.Provider value={repoManager.getRepository(item.data.relatedRepository)}>
-                  <Icon item={item.data.relatedContent || item} style={{ marginRight: '1em' }} />
-                </RepositoryContext.Provider>
+                <Icon item={item.data.relatedContent || item} style={{ marginRight: '1em' }} />
                 <div
                   title={item.message}
                   style={{ overflow: 'hidden', textOverflow: 'ellipsis', wordBreak: 'break-word' }}>

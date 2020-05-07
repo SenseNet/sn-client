@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react'
 import { IconButton, Tooltip, Typography } from '@material-ui/core'
-import Refresh from '@material-ui/icons/RefreshTwoTone'
 import OpenInNewTwoTone from '@material-ui/icons/OpenInNewTwoTone'
-import { GenericContent } from '@sensenet/default-content-types'
+import Refresh from '@material-ui/icons/RefreshTwoTone'
 import { ConstantContent, ODataParams } from '@sensenet/client-core'
-import { RouteComponentProps, withRouter } from 'react-router'
+import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
@@ -12,20 +10,22 @@ import {
   LoadSettingsContext,
   useRepository,
 } from '@sensenet/hooks-react'
+import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { useLocalization, useSelectionService, useStringReplace } from '../../hooks'
+import { getPrimaryActionUrl } from '../../services'
 import { QueryWidget as QueryWidgetModel } from '../../services/PersonalSettings'
-import { useContentRouting, useLocalization, useSelectionService, useStringReplace } from '../../hooks'
-import { isReferenceField } from '../content-list'
-import { encodeQueryData } from '../search'
-import { ContentList } from '../content-list/content-list'
+import { ContentList, isReferenceField } from '../content-list'
+import { applicationPaths } from '../../application-paths'
 
-const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & RouteComponentProps> = props => {
+export const QueryWidget = (props: QueryWidgetModel<GenericContent>) => {
   const [items, setItems] = useState<GenericContent[]>([])
+  const history = useHistory()
   const [loadChildrenSettings, setLoadChildrenSettings] = useState<ODataParams<GenericContent>>({})
   const [error, setError] = useState('')
   const [refreshToken, setRefreshToken] = useState(Math.random())
   const [count, setCount] = useState(0)
   const repo = useRepository()
-  const contentRouter = useContentRouting()
   const replacedTitle = useStringReplace(props.title)
   const localization = useLocalization().dashboard
   const selectionService = useSelectionService()
@@ -36,7 +36,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
       top: props.settings.countOnly ? 1 : props.settings.top,
       inlinecount: 'allpages',
       select: ['Actions', ...props.settings.columns],
-      expand: ['Actions', ...props.settings.columns.filter(f => isReferenceField(f, repo))],
+      expand: ['Actions', ...props.settings.columns.filter((f) => isReferenceField(f, repo))],
     })
   }, [props.settings.columns, props.settings.countOnly, props.settings.query, props.settings.top, repo])
 
@@ -94,11 +94,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
             <IconButton
               style={{ padding: '0', margin: '0 0 0 1em' }}
               onClick={() =>
-                props.history.push(
-                  `/${btoa(repo.configuration.repositoryUrl)}/search/${encodeQueryData({
-                    term: props.settings.query,
-                  })}`,
-                )
+                history.push(`${applicationPaths.search}?term=${encodeURIComponent(props.settings.query)}`)
               }>
               <OpenInNewTwoTone />
             </IconButton>
@@ -125,7 +121,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
                   loadAncestorsSettings: {},
                   loadSettings: {},
                   loadChildrenSettings,
-                  setLoadChildrenSettings: newSettings => {
+                  setLoadChildrenSettings: (newSettings) => {
                     setLoadChildrenSettings({
                       ...loadChildrenSettings,
                       orderby: newSettings.orderby,
@@ -147,16 +143,16 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
                   onParentChange={() => {
                     // props.history.push(contentRouter.getPrimaryActionUrl(p))
                   }}
-                  onActivateItem={p => {
-                    props.history.push(contentRouter.getPrimaryActionUrl(p))
+                  onActivateItem={(p) => {
+                    history.push(getPrimaryActionUrl(p, repo))
                   }}
                   onTabRequest={() => {
                     /** */
                   }}
-                  onSelectionChange={sel => {
+                  onSelectionChange={(sel) => {
                     selectionService.selection.setValue(sel)
                   }}
-                  onActiveItemChange={item => {
+                  onActiveItemChange={(item) => {
                     selectionService.activeContent.setValue(item)
                   }}
                 />
@@ -180,6 +176,3 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
     </div>
   )
 }
-
-const routed = withRouter(QueryWidget)
-export { routed as QueryWidget }

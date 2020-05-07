@@ -1,18 +1,17 @@
-import React, { useContext } from 'react'
 import { DialogContent, DialogTitle } from '@material-ui/core'
-import { EditView } from '@sensenet/controls-react'
 import { DialogProps } from '@material-ui/core/Dialog'
 import { ConstantContent } from '@sensenet/client-core'
-import { useRepository } from '@sensenet/hooks-react'
+import { EditView } from '@sensenet/controls-react'
 import { GenericContent } from '@sensenet/default-content-types'
-import { CurrentContentContext, CurrentContentProvider } from '../context/current-context'
+import { CurrentContentContext, CurrentContentProvider, useRepository } from '@sensenet/hooks-react'
+import React, { useContext } from 'react'
 import CalendarEvent from '../CalendarEvent-type'
 import { SharedContext } from '../context/shared-context'
 
 const EditPropertiesDialogBody: React.FunctionComponent<{
   contentId: number
-  dialogProps: DialogProps
-}> = props => {
+  dialogProps: Partial<DialogProps>
+}> = (props) => {
   const repo = useRepository()
   const sharedcontext = useContext(SharedContext)
 

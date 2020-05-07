@@ -1,50 +1,39 @@
-import IconButton from '@material-ui/core/IconButton'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import ListItemText from '@material-ui/core/ListItemText'
-import Paper from '@material-ui/core/Paper'
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
-import Tooltip from '@material-ui/core/Tooltip'
+import {
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemSecondaryAction,
+  ListItemText,
+  Paper,
+  SwipeableDrawer,
+  Tooltip,
+} from '@material-ui/core'
 import Settings from '@material-ui/icons/Settings'
-import { PathHelper } from '@sensenet/client-utils'
-import React, { useContext, useEffect, useState } from 'react'
-import { withRouter } from 'react-router'
-import { Link, matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
-
 import { useRepository, useSession } from '@sensenet/hooks-react'
-import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
-import { useDrawerItems, useLocalization, usePersonalSettings, useTheme } from '../../hooks'
+import React, { useContext } from 'react'
+import { Link, matchPath, NavLink, useLocation } from 'react-router-dom'
+import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
+import { useDrawerItems, useLocalization, useTheme } from '../../hooks'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
+import { applicationPaths } from '../../application-paths'
 
-const TemporaryDrawer: React.FunctionComponent<RouteComponentProps & {
+type TemporaryDrawerProps = {
   isOpened: boolean
   onClose: () => void
   onOpen: () => void
-}> = props => {
-  const settings = useContext(ResponsivePersonalSetttings)
+}
+
+export const TemporaryDrawer = (props: TemporaryDrawerProps) => {
+  const settings = useContext(ResponsivePersonalSettings)
   const device = useContext(ResponsiveContext)
-  const personalSettings = usePersonalSettings()
   const repo = useRepository()
+  const location = useLocation()
   const theme = useTheme()
   const session = useSession()
   const items = useDrawerItems()
-
-  const [currentRepoEntry, setCurrentRepoEntry] = useState(
-    personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
-  )
-
   const localization = useLocalization().drawer
-
-  useEffect(
-    () =>
-      setCurrentRepoEntry(
-        personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
-      ),
-    [personalSettings, repo],
-  )
 
   if (!settings.drawer.enabled) {
     return null
@@ -59,7 +48,6 @@ const TemporaryDrawer: React.FunctionComponent<RouteComponentProps & {
       <List
         dense={true}
         style={{
-          // width: 270,
           height: '100%',
           flexGrow: 1,
           flexShrink: 0,
@@ -73,7 +61,7 @@ const TemporaryDrawer: React.FunctionComponent<RouteComponentProps & {
         }}>
         <div style={{ paddingTop: '1em' }}>
           {items.map((item, index) => {
-            const isActive = matchPath(props.location.pathname, { path: `/:repositoryId${item.url}`, exact: true })
+            const isActive = matchPath(location.pathname, item.url)
             return isActive ? (
               <ListItem button={true} selected key={index}>
                 <Tooltip
@@ -90,7 +78,7 @@ const TemporaryDrawer: React.FunctionComponent<RouteComponentProps & {
             ) : (
               <NavLink
                 onClick={() => props.onClose()}
-                to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
+                to={item.url}
                 activeStyle={{ opacity: 1 }}
                 style={{ textDecoration: 'none', opacity: 0.54 }}
                 key={index}>
@@ -117,18 +105,21 @@ const TemporaryDrawer: React.FunctionComponent<RouteComponentProps & {
             </ListItemIcon>
             <ListItemText
               primary={session.currentUser.DisplayName || session.currentUser.Name}
-              secondary={(currentRepoEntry && currentRepoEntry.displayName) || repo.configuration.repositoryUrl}
+              secondary={repo.configuration.repositoryUrl}
               secondaryTypographyProps={{ style: { overflow: 'hidden', textOverflow: 'ellipsis' } }}
             />
             <ListItemSecondaryAction>
               {device === 'mobile' ? null : (
-                <Link to={`/personalSettings`} style={{ textDecoration: 'none' }} onClick={() => props.onClose()}>
+                <Link
+                  to={applicationPaths.personalSettings}
+                  style={{ textDecoration: 'none' }}
+                  onClick={() => props.onClose()}>
                   <IconButton title={localization.personalSettingsTitle}>
                     <Settings />
                   </IconButton>
                 </Link>
               )}
-              <LogoutButton onLoggedOut={() => props.onClose()} />
+              <LogoutButton />
             </ListItemSecondaryAction>
           </ListItem>
         </Paper>
@@ -136,6 +127,3 @@ const TemporaryDrawer: React.FunctionComponent<RouteComponentProps & {
     </SwipeableDrawer>
   )
 }
-
-const connectedComponent = withRouter(TemporaryDrawer)
-export { connectedComponent as TemporaryDrawer }

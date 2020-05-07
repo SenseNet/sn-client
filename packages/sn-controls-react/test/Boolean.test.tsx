@@ -55,10 +55,7 @@ describe('Boolean field control', () => {
       const wrapper = mount(
         <BooleanComponent actionName="edit" fieldOnChange={fieldOnChange} settings={defaultSettings} />,
       )
-      const onChange = wrapper
-        .find(Checkbox)
-        .first()
-        .prop('onChange')
+      const onChange = wrapper.find(Checkbox).first().prop('onChange')
       act(() => {
         onChange && onChange({ target: { checked: true } } as any, true)
       })

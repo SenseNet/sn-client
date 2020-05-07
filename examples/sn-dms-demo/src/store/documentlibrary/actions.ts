@@ -6,7 +6,7 @@ import { EventHub } from '@sensenet/repository-events'
 import { Dispatch } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { rootStateType } from '../../store/rootReducer'
-import { DocumentLibraryState, loadChunkSize } from './reducers'
+import { DocumentLibraryState } from './reducers'
 
 const eventObservables: Array<ValueObserver<any>> = []
 
@@ -109,7 +109,7 @@ export const changedContent: GenericContent[] = []
 // eslint-disable-next-line require-jsdoc
 function methodToDebounce(getState: () => rootStateType, dispatch: Dispatch) {
   const currentContent = getState().dms.documentLibrary.parent
-  changedContent.forEach(content => {
+  changedContent.forEach((content) => {
     if (currentContent && currentContent.Id === content.ParentId) {
       dispatch(updateChildrenOptions({}))
       changedContent.length = 0
@@ -119,7 +119,7 @@ function methodToDebounce(getState: () => rootStateType, dispatch: Dispatch) {
 }
 export const debounceReloadOnProgress = debounce(methodToDebounce, 300)
 
-export const loadMore = createAction((count: number = loadChunkSize) => ({
+export const loadMore = createAction((count = 25) => ({
   type: 'DMS_DOCLIB_LOAD_MORE',
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const currentDocLibState = options.getState().dms.documentLibrary
@@ -163,7 +163,7 @@ export const loadParent = createAction(
         return
       }
 
-      eventObservables.forEach(o => o.dispose())
+      eventObservables.forEach((o) => o.dispose())
       eventObservables.length = 0
 
       const eventHub = options.getInjectable(EventHub)
@@ -186,12 +186,12 @@ export const loadParent = createAction(
         }
 
         eventObservables.push(
-          eventHub.onCustomActionExecuted.subscribe(value => {
+          eventHub.onCustomActionExecuted.subscribe((value) => {
             const currentItems = options.getState().dms.documentLibrary.items
             if (
               value.actionOptions.name !== 'GetExistingPreviewImages' &&
-              (currentItems.d.results.filter(a => a.Id === value.actionOptions.idOrPath) ||
-                currentItems.d.results.filter(a => a.Path === value.actionOptions.idOrPath))
+              (currentItems.d.results.filter((a) => a.Id === value.actionOptions.idOrPath) ||
+                currentItems.d.results.filter((a) => a.Path === value.actionOptions.idOrPath))
             ) {
               emitChange({
                 ParentId: newParent.d.Id,
@@ -202,11 +202,11 @@ export const loadParent = createAction(
               })
             }
           }) as any,
-          eventHub.onContentCreated.subscribe(value => emitChange(value.content)) as any,
-          eventHub.onContentModified.subscribe(value => emitChange(value.content)) as any,
-          eventHub.onContentDeleted.subscribe(value => {
+          eventHub.onContentCreated.subscribe((value) => emitChange(value.content)) as any,
+          eventHub.onContentModified.subscribe((value) => emitChange(value.content)) as any,
+          eventHub.onContentDeleted.subscribe((value) => {
             const currentItems = options.getState().dms.documentLibrary.items
-            const filtered = currentItems.d.results.filter(item => item.Id !== value.contentData.Id)
+            const filtered = currentItems.d.results.filter((item) => item.Id !== value.contentData.Id)
             options.dispatch(
               setItems({
                 ...currentItems,
@@ -217,7 +217,7 @@ export const loadParent = createAction(
               }),
             )
           }) as any,
-          eventHub.onContentMoved.subscribe(value => emitChange(value.content)) as any,
+          eventHub.onContentMoved.subscribe((value) => emitChange(value.content)) as any,
         )
         const ancestors = await repository.executeAction<undefined, ODataCollectionResponse<GenericContent>>({
           idOrPath: newParent.d.Id,

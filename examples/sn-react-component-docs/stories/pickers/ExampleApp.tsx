@@ -15,7 +15,6 @@ const testRepository = new Repository({
   repositoryUrl: 'https://dev.demo.sensenet.com',
   requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'DisplayName'],
   schemas: SchemaStore,
-  sessionLifetime: 'expiration',
 })
 
 export const ExampleApp = () => {
@@ -67,7 +66,7 @@ export const ExampleAppWithHook = () => {
       <button onClick={() => reload()}>Reload</button>
       <ul>
         {items &&
-          items.map(node => (
+          items.map((node) => (
             <li
               style={{ color: selectedItem && node.Id === selectedItem.Id ? 'red' : 'inherit', cursor: 'pointer' }}
               onClick={() => setSelectedItem(node)}

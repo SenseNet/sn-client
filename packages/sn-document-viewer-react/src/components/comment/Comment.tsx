@@ -7,7 +7,7 @@ import Collapse from '@material-ui/core/Collapse'
 import Typography from '@material-ui/core/Typography'
 import React, { useEffect, useState } from 'react'
 import { useRepository } from '@sensenet/hooks-react'
-import { CommentData } from '../../models/Comment'
+import { CommentData } from '@sensenet/client-core'
 import { useCommentState, useLocalization } from '../../hooks'
 import { DeleteButton } from './DeleteCommentButton'
 import { StyledCard } from './style'
@@ -24,7 +24,7 @@ const MAX_TEXT_LENGTH = 160
 /**
  * Represents a single comment component.
  */
-export const Comment: React.FC<CommentProps> = props => {
+export const Comment: React.FC<CommentProps> = (props) => {
   const isLongText = props.comment.text && props.comment.text.length > MAX_TEXT_LENGTH
   const [isOpen, setIsOpen] = useState(!isLongText)
   const localization = useLocalization()

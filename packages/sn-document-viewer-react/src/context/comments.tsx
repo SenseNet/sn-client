@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Trace } from '@sensenet/client-utils'
+import { CommentData } from '@sensenet/client-core'
 import { useDocumentData, useDocumentViewerApi, useViewerState } from '../hooks'
-import { CommentData } from '../models/Comment'
 import { DocumentViewerApiSettings } from '../models'
 
 export type CommentsContextType = {
@@ -59,13 +59,13 @@ export const CommentsContextProvider: React.FC<CommentContextProviderProps> = ({
         onFinished: async ({ returned, methodArguments }) => {
           const returnedValue = await returned
           if (returnedValue.modified) {
-            setComments(comments.filter(c => c.id !== methodArguments[0].commentId))
+            setComments(comments.filter((c) => c.id !== methodArguments[0].commentId))
           }
         },
       }),
     ]
 
-    return () => disposables.forEach(d => d.dispose())
+    return () => disposables.forEach((d) => d.dispose())
   }, [api.commentActions, comments, viewerState])
 
   return (

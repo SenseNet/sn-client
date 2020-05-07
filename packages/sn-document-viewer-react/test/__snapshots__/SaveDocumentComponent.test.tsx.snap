@@ -122,7 +122,6 @@ exports[`SaveDocumentComponent component Should render without crashing when the
                         aria-hidden="true"
                         className="MuiSvgIcon-root"
                         focusable="false"
-                        role="presentation"
                         viewBox="0 0 24 24"
                       >
                         <path
@@ -133,7 +132,6 @@ exports[`SaveDocumentComponent component Should render without crashing when the
                   </WithStyles(ForwardRef(SvgIcon))>
                 </ForwardRef>
               </span>
-              <NoSsr />
             </button>
           </ForwardRef(ButtonBase)>
         </WithStyles(ForwardRef(ButtonBase))>

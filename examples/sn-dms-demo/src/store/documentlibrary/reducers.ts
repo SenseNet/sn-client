@@ -99,7 +99,7 @@ export const defaultState: DocumentLibraryState = {
     ],
     filter: "ContentType ne 'SystemFolder'",
     scenario: 'ContextMenu',
-    top: loadChunkSize,
+    top: 25,
   },
   searchState: {
     contains: '',
@@ -158,7 +158,7 @@ export const documentLibrary: Reducer<DocumentLibraryState> = (state = defaultSt
       ...state,
       items: action.items,
       selected: [
-        ...state.selected.filter(s =>
+        ...state.selected.filter((s) =>
           action.items.d.results.find((i: GenericContent) => i.Id === s.Id) ? true : false,
         ),
       ],

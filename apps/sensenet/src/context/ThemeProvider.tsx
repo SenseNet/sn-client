@@ -8,7 +8,7 @@ import { usePersonalSettings } from '../hooks'
 import { PersonalSettings } from '../services'
 import { ThemeContext } from './ThemeContext'
 
-export const ThemeProvider: React.FunctionComponent = props => {
+export const ThemeProvider: React.FunctionComponent = (props) => {
   const preferredType = useMediaQuery('(prefers-color-scheme: dark)') ? 'dark' : 'light'
   const personalSettings = usePersonalSettings()
   const di = useInjector()
@@ -18,6 +18,10 @@ export const ThemeProvider: React.FunctionComponent = props => {
   useEffect(() => {
     setPageTheme(preferredType)
     const userValue = settingsService.userValue.getValue()
+    // We don't want to do an update if the two values are the same
+    if (userValue.theme === preferredType) {
+      return
+    }
     settingsService.setPersonalSettingsValue({ ...userValue, theme: preferredType })
   }, [preferredType, settingsService])
 

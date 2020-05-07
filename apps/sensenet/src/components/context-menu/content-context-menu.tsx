@@ -15,7 +15,7 @@ import { contextMenuODataOptions } from './context-menu-odata-options'
 import { getIcon } from './icons'
 import { useContextMenuActions } from './use-context-menu-actions'
 
-const DISABLED_ACTIONS = ['SetPermissions']
+const DISABLED_ACTIONS = ['SetPermissions', 'Share', 'Restore', 'Preview']
 
 type ContentContextMenuProps = {
   isOpened: boolean
@@ -27,7 +27,7 @@ type ContentContextMenuProps = {
   setFormOpen?: (actionname: ActionNameType) => void
 }
 
-export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps> = props => {
+export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps> = (props) => {
   const [actions, setActions] = useState<ActionModel[]>()
   const logger = useLogger('context-menu')
   const { content } = useLoadContent<GenericContent>({
@@ -42,11 +42,20 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
         logger.verbose({ message: 'There are no actions in content', data: contentFromCallback })
         return
       }
-      const contentActions = contentFromCallback.Actions.filter(action => !action.Forbidden)
+      const contentActions = contentFromCallback.Actions.filter((action) => !action.Forbidden).filter(
+        (item, i, arr) => arr.findIndex((t) => t.Name === item.Name) === i,
+      )
+
+      if (contentActions.some((action) => action.Name === 'Browse') && contentFromCallback.IsFile) {
+        contentActions.push({
+          Name: 'Download',
+          DisplayName: 'Download',
+        } as ActionModel)
+      }
 
       if (isWriteAvailable(contentFromCallback)) {
         // If write is available it means that we have two actions. We want to show only the open edit for the user.
-        const actionsWithoutWopiRead = contentActions.filter(action => action.Name !== 'WopiOpenView')
+        const actionsWithoutWopiRead = contentActions.filter((action) => action.Name !== 'WopiOpenView')
         setActions(actionsWithoutWopiRead)
       } else {
         setActions(contentActions)
@@ -72,7 +81,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
     }
   }, [content, setActionsWopi])
   return !actions?.length ? null : (
-    <div onKeyDown={ev => ev.stopPropagation()} onKeyPress={ev => ev.stopPropagation()}>
+    <div onKeyDown={(ev) => ev.stopPropagation()} onKeyPress={(ev) => ev.stopPropagation()}>
       {device === 'mobile' ? (
         <Drawer
           anchor="bottom"
@@ -81,7 +90,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
           open={props.isOpened}
           PaperProps={{ style: { paddingBottom: '2em' } }}>
           <List>
-            {actions?.map(action => {
+            {actions?.map((action) => {
               return (
                 <ListItem
                   key={action.Name}
@@ -99,7 +108,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
         </Drawer>
       ) : (
         <Menu open={props.isOpened} {...props.menuProps}>
-          {actions?.map(action => {
+          {actions?.map((action) => {
             return (
               <MenuItem
                 key={action.Name}

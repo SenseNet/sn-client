@@ -30,7 +30,7 @@ export class Query<T> {
    * @returns {String} The Query expression as a sensenet Content Query
    */
   public toString(): string {
-    return this.segments.map(s => s.toString()).join('')
+    return this.segments.map((s) => s.toString()).join('')
   }
 
   /**

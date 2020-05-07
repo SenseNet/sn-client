@@ -15,23 +15,13 @@ describe('DialogComponent', () => {
     wrapper = shallow(<DialogComponent {...testprops} />)
   })
 
-  it('DialogComponent snapshot', () => {
-    expect(wrapper).toMatchSnapshot()
-  })
-
   it('Open dialog', () => {
-    wrapper
-      .find(Button)
-      .first()
-      .simulate('click')
+    wrapper.find(Button).first().simulate('click')
     expect(testprops.onClose).toBeCalledWith(true)
   })
 
   it('Close dialog', () => {
-    wrapper
-      .find(Button)
-      .last()
-      .simulate('click')
+    wrapper.find(Button).last().simulate('click')
     expect(testprops.onClose).toBeCalledWith(false)
   })
 })

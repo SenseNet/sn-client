@@ -90,6 +90,7 @@ const values = {
   copyMoveContentDialog: {
     copy: {
       title: `Copy '{0}' to '{1}'`,
+      inProgress: 'Copy in progress...',
       titleMultiple: `Copy {0} items to '{1}'`,
       copyButton: 'Copy',
       cancelButton: 'Cancel',
@@ -101,6 +102,7 @@ const values = {
     },
     move: {
       title: `Move '{0}' to '{1}'`,
+      inProgress: 'Move in progress...',
       titleMultiple: `Move {0} items to '{1}'`,
       copyButton: 'Move',
       cancelButton: 'Cancel',
@@ -114,25 +116,25 @@ const values = {
   drawer: {
     titles: {
       Content: 'Content',
-      'Content Types': 'Content Types',
+      ContentTypes: 'Content Types',
       Dashboard: 'Dashboard',
       Localization: 'Localization',
       Search: 'Search',
       Setup: 'Setup',
       Trash: 'Trash',
       Query: 'Query',
-      'Users and groups': 'Users and groups',
+      UsersAndGroups: 'Users and groups',
     },
     descriptions: {
       Content: 'Explore and manage your content in the repository',
-      'Content Types': 'Manage content types',
+      ContentTypes: 'Manage content types',
       Dashboard: 'Repository overview',
       Localization: 'Manage string resources',
       Search: 'Execute custom searches, build and save queries',
       Setup: 'Configure the sensenet system',
       Trash: 'Manage deleted items here: restore content or purge them permanently',
       Query: 'Open my custom Query',
-      'Users and groups': 'Manage users and groups, roles and identities',
+      UsersAndGroups: 'Manage users and groups, roles and identities',
     },
     personalSettingsTitle: 'Edit personal settings',
     personalSettingsSecondaryText: 'Customize the application behavior',
@@ -424,6 +426,11 @@ const values = {
   },
   common: {
     loadingContent: 'Loading content...',
+  },
+  batchActions: {
+    delete: 'Delete selected items',
+    move: 'Move selected items',
+    copy: 'Copy selected items',
   },
 }
 

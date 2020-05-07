@@ -1,22 +1,23 @@
-import React, { StrictMode } from 'react'
 import { CssBaseline } from '@material-ui/core'
-import { ErrorBoundary } from './error-boundary'
+import React from 'react'
 import AppProviders from './app-providers'
-import { NotificationComponent } from './NotificationComponent'
 import { Dialogs } from './dialogs'
-import { AppNavigator } from './app-navigator'
+import { MainRouter } from './MainRouter'
+import { DesktopLayout } from './layout/DesktopLayout'
+import { ErrorBoundary } from './error-boundary'
+import { NotificationComponent } from './NotificationComponent'
 
 export function App() {
   return (
-    <StrictMode>
-      <ErrorBoundary>
-        <AppProviders>
-          <CssBaseline />
-          <AppNavigator />
-          <NotificationComponent />
-          <Dialogs />
-        </AppProviders>
-      </ErrorBoundary>
-    </StrictMode>
+    <ErrorBoundary>
+      <AppProviders>
+        <CssBaseline />
+        <DesktopLayout>
+          <MainRouter />
+        </DesktopLayout>
+        <NotificationComponent />
+        <Dialogs />
+      </AppProviders>
+    </ErrorBoundary>
   )
 }

@@ -17,7 +17,7 @@ export const CurrentChildrenContext = React.createContext<GenericContent[]>([])
  * Loads the children of the current content.
  * Loads an ancestor list from the Repository. Has to be wrapped with a **CurrentContentContext** and a **RepositoryContext**
  */
-export const CurrentChildrenProvider: React.FunctionComponent = props => {
+export const CurrentChildrenProvider: React.FunctionComponent = (props) => {
   const currentContent = useContext(CurrentContentContext)
   const [children, setChildren] = useState<GenericContent[]>([])
   const [loadLock] = useState(new Semaphore(1))
@@ -67,25 +67,25 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
       eventHub.onContentCreated.subscribe(handleCreate),
       eventHub.onContentCopied.subscribe(handleCreate),
       eventHub.onContentMoved.subscribe(handleCreate),
-      eventHub.onContentModified.subscribe(mod => {
-        if (children.some(c => c.Id === mod.content.Id)) {
+      eventHub.onContentModified.subscribe((mod) => {
+        if (children.some((c) => c.Id === mod.content.Id)) {
           requestReload()
         }
       }),
 
-      eventHub.onUploadFinished.subscribe(data => {
+      eventHub.onUploadFinished.subscribe((data) => {
         if (PathHelper.getParentPath(data.Url) === PathHelper.trimSlashes(currentContent.Path)) {
           requestReload()
         }
       }),
-      eventHub.onContentDeleted.subscribe(d => {
+      eventHub.onContentDeleted.subscribe((d) => {
         if (PathHelper.getParentPath(d.contentData.Path) === PathHelper.trimSlashes(currentContent.Path)) {
           requestReload()
         }
       }),
     ]
 
-    return () => subscriptions.forEach(s => s.dispose())
+    return () => subscriptions.forEach((s) => s.dispose())
   }, [
     currentContent,
     repo,

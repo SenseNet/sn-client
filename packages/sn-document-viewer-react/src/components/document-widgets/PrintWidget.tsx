@@ -1,7 +1,7 @@
 import IconButton from '@material-ui/core/IconButton'
 import PrintIcon from '@material-ui/icons/Print'
 import React from 'react'
-import { DocumentData } from '../../models'
+import { DocumentData } from '@sensenet/client-core'
 import { useDocumentData, useLocalization } from '../../hooks'
 
 /**
@@ -14,7 +14,7 @@ export interface PrintProps {
 /**
  * Component that allows active page rotation
  */
-export const Print: React.FC<PrintProps> = props => {
+export const Print: React.FC<PrintProps> = (props) => {
   const localization = useLocalization()
   const { documentData } = useDocumentData()
   return (

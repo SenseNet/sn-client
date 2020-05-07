@@ -25,10 +25,7 @@ describe('The new memo panel instance', () => {
     expect(getTextFieldAt(0).prop('value')).toEqual(title)
     expect(getTextFieldAt(1).prop('value')).toEqual(description)
 
-    wrapper
-      .find(Fab)
-      .first()
-      .simulate('click')
+    wrapper.find(Fab).first().simulate('click')
 
     expect(addnewprops.onCreate).toBeCalledWith({ DisplayName: title, Description: description })
 

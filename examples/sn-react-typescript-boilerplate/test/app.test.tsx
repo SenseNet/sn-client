@@ -1,50 +1,27 @@
-import { mount } from 'enzyme'
-import React from 'react'
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable react/display-name */
 import { Button } from '@material-ui/core'
-import { RepositoryContext } from '@sensenet/hooks-react'
-import { ObservableValue } from '@sensenet/client-utils'
-import { act } from 'react-dom/test-utils'
+import { mount } from 'enzyme'
+import React, { PropsWithChildren } from 'react'
 import { App } from '../src/app'
+import { AppProviders } from '../src/components/app-providers'
+
+const logout = jest.fn()
+jest.mock('@sensenet/authentication-oidc-react', () => ({
+  useOidcAuthentication: () => ({ oidcUser: { access_token: 'token', profile: { name: 'Joe' } }, logout }),
+  AuthenticationProvider: ({ children }: PropsWithChildren<{}>) => <>{children}</>,
+}))
 
 describe('The App component', () => {
   it('should trigger logout on logout button click', () => {
-    const repo = {
-      authentication: {
-        logout: jest.fn(),
-        currentUser: new ObservableValue({ Name: '' }),
-      },
-    }
-
     const wrapper = mount(
-      <RepositoryContext.Provider value={repo as any}>
+      <AppProviders>
         <App />
-      </RepositoryContext.Provider>,
+      </AppProviders>,
     )
 
     wrapper.find(Button).simulate('click')
 
-    expect(repo.authentication.logout).toBeCalled()
-  })
-
-  it('should show the userName when it is changed', () => {
-    const currentUser = new ObservableValue({ Name: '' })
-    const repo = {
-      authentication: {
-        logout: jest.fn(),
-        currentUser,
-      },
-    }
-
-    const wrapper = mount(
-      <RepositoryContext.Provider value={repo as any}>
-        <App />
-      </RepositoryContext.Provider>,
-    )
-
-    act(() => {
-      currentUser.setValue({ Name: 'John Doe' })
-    })
-    expect(wrapper.find('h3').text()).toBe('Hello, John Doe 😎')
-    wrapper.unmount()
+    expect(logout).toBeCalled()
   })
 })

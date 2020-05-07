@@ -1,26 +1,28 @@
-import { mount, shallow } from 'enzyme'
-import React from 'react'
+/* eslint-disable react/display-name */
+/* eslint-disable @typescript-eslint/camelcase */
+import { mount } from 'enzyme'
+import React, { PropsWithChildren } from 'react'
 import Button from '@material-ui/core/Button'
-import { RepositoryContext } from '@sensenet/hooks-react'
 import { NavBarComponent } from '../src/components/navbar'
+import { AppProviders } from '../src/components/app-providers'
+
+const logout = jest.fn()
+jest.mock('@sensenet/authentication-oidc-react', () => ({
+  useOidcAuthentication: () => ({ oidcUser: { access_token: 'token' }, logout }),
+  AuthenticationProvider: ({ children }: PropsWithChildren<{}>) => <>{children}</>,
+}))
+
+const NavBar = () => (
+  <AppProviders>
+    <NavBarComponent />
+  </AppProviders>
+)
 
 describe('The navbar instance', () => {
-  it('should renders correctly', () => {
-    expect(shallow(<NavBarComponent />)).toMatchSnapshot()
-  })
-
   it('should logout the user correctly', () => {
-    const logoutfn = jest.fn()
-    const wrapper = mount(
-      <RepositoryContext.Provider value={{ authentication: { logout: logoutfn } } as any}>
-        <NavBarComponent />
-      </RepositoryContext.Provider>,
-    )
+    const wrapper = mount(<NavBar />)
 
-    wrapper
-      .update()
-      .find(Button)
-      .simulate('click')
-    expect(logoutfn).toBeCalled()
+    wrapper.find(Button).simulate('click')
+    expect(logout).toBeCalled()
   })
 })

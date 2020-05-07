@@ -150,11 +150,11 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
           }}>
           <AdvancedSearch
             style={{ flexShrink: 0 }}
-            onQueryChanged={q => {
+            onQueryChanged={(q) => {
               this.setState({ fullQuery: q.toString() })
             }}
             schema={repo.schemas.getSchemaByName('GenericContent')}
-            fields={_options => (
+            fields={(_options) => (
               <Paper style={{ margin: '1em' }}>
                 <Typography variant="h6" style={{ padding: '1em .7em' }}>
                   Advanced search in fields
@@ -166,7 +166,7 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
                     justifyContent: 'space-evenly',
                     flexWrap: 'wrap',
                   }}
-                  onSubmit={ev => this.sendRequest(ev)}
+                  onSubmit={(ev) => this.sendRequest(ev)}
                   noValidate={true}
                   autoComplete="off">
                   <TextField
@@ -176,7 +176,7 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
                       _options.updateQuery(key, query)
                     }}
                     fieldKey="alma"
-                    fieldSetting={_options.schema.FieldSettings.find(s => s.Name === 'Name')}
+                    fieldSetting={_options.schema.FieldSettings.find((s) => s.Name === 'Name')}
                     helperText={
                       this.state.nameFieldQuery
                         ? `Field Query: ${this.state.nameFieldQuery}`
@@ -190,7 +190,7 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
                       this.setState({ typeFieldQuery: query.toString() })
                       _options.updateQuery(key, query)
                     }}
-                    fieldSetting={_options.schema.FieldSettings.find(s => s.Name === 'DisplayName')}
+                    fieldSetting={_options.schema.FieldSettings.find((s) => s.Name === 'DisplayName')}
                     helperText={
                       this.state.displayNameFieldQuery
                         ? `Field Query: ${this.state.displayNameFieldQuery}`
@@ -202,11 +202,11 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
                     <PresetField
                       fieldName="CreationDate"
                       presets={[
-                        { text: '-', value: new Query(a => a) },
-                        { text: 'Today', value: new Query(a => a.term('CreationDate:>@@Today@@')) },
+                        { text: '-', value: new Query((a) => a) },
+                        { text: 'Today', value: new Query((a) => a.term('CreationDate:>@@Today@@')) },
                         {
                           text: 'Yesterday',
-                          value: new Query(a =>
+                          value: new Query((a) =>
                             a.term('CreationDate:>@@Yesterday@@').and.term('CreationDate:<@@Today@@'),
                           ),
                         },
@@ -224,7 +224,7 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
                   <FormControl style={{ minWidth: 150 }}>
                     <InputLabel htmlFor="type-filter">Filter by type</InputLabel>
                     <TypeField
-                      onQueryChange={query => {
+                      onQueryChange={(query) => {
                         this.setState({ typeFieldQuery: query.toString() })
                         _options.updateQuery('Type', query)
                       }}
@@ -252,10 +252,10 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
                   <ReferenceField
                     fieldName="CreatedBy"
                     fieldSetting={{
-                      ...(_options.schema.FieldSettings.find(s => s.Name === 'CreatedBy') as ReferenceFieldSetting),
+                      ...(_options.schema.FieldSettings.find((s) => s.Name === 'CreatedBy') as ReferenceFieldSetting),
                       AllowedTypes: ['User'],
                     }}
-                    fetchItems={async q => {
+                    fetchItems={async (q) => {
                       const response = await repo.loadCollection<GenericContent>({
                         path: demoData.idOrPath as string, // ToDo: query by Id in client-core
                         oDataOptions: {
@@ -316,7 +316,7 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {this.state.response.d.results.map(r => (
+                  {this.state.response.d.results.map((r) => (
                     <TableRow key={r.Id}>
                       <TableCell>{r.Id}</TableCell>
                       <TableCell>{r.Path}</TableCell>
@@ -346,7 +346,7 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
               helperText="Enter the full path of your repository, e.g.: 'https://my-sn-repository.my.org'"
               variant="outlined"
               defaultValue={demoData.siteUrl}
-              onChange={ev => {
+              onChange={(ev) => {
                 demoData.siteUrl = ev.target.value
                 repo.configuration.repositoryUrl = demoData.siteUrl
                 localStorage.setItem(localStorageKey, JSON.stringify(demoData))
@@ -361,7 +361,7 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
               helperText="Enter the full path or ID of the content that you want to query (e.g.: '/Root/Sites/MySite')"
               variant="outlined"
               defaultValue={demoData.idOrPath}
-              onChange={ev => {
+              onChange={(ev) => {
                 demoData.idOrPath = isNaN(ev.target.value as any) ? ev.target.value : parseInt(ev.target.value, 10)
                 localStorage.setItem(localStorageKey, JSON.stringify(demoData))
               }}

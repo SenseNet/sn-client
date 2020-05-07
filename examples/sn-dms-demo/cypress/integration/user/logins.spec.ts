@@ -6,9 +6,7 @@ context('The login page', () => {
   })
 
   it('requires email', () => {
-    cy.get('form')
-      .contains(resources.LOGIN_BUTTON_TEXT)
-      .click()
+    cy.get('form').contains(resources.LOGIN_BUTTON_TEXT).click()
     cy.contains(resources.EMAIL_IS_NOT_VALID_MESSAGE).should('exist')
   })
 
@@ -37,9 +35,6 @@ context('The login page', () => {
 
     cy.get('div[aria-label="Business Cat"]').should('exist')
 
-    cy.window()
-      .its('localStorage')
-      .invoke('getItem', 'sn-https://dev.demo.sensenet.com-access')
-      .should('not.be.empty')
+    cy.window().its('localStorage').invoke('getItem', 'sn-https://dev.demo.sensenet.com-access').should('not.be.empty')
   })
 })

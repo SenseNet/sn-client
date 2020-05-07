@@ -34,7 +34,7 @@ export interface NewViewProps {
  *  <NewView content={content} onSubmit={createSubmitClick} />
  * ```
  */
-export const NewView: React.FC<NewViewProps> = props => {
+export const NewView: React.FC<NewViewProps> = (props) => {
   const controlMapper = reactControlMapper(props.repository)
   const schema = controlMapper.getFullSchemaForContentType(props.contentTypeName, 'new')
   const [content, setContent] = useState({})
@@ -57,7 +57,7 @@ export const NewView: React.FC<NewViewProps> = props => {
         </Typography>
       )}
       <Grid container={true} spacing={2}>
-        {schema.fieldMappings.map(field => {
+        {schema.fieldMappings.map((field) => {
           return (
             <Grid
               item={true}

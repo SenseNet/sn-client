@@ -1,3 +1,4 @@
+import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
@@ -5,17 +6,15 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
 import Tooltip from '@material-ui/core/Tooltip'
 import { Close, Menu } from '@material-ui/icons'
-import React, { useContext, useState } from 'react'
-import { withRouter } from 'react-router'
-import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
-import { useRepository } from '@sensenet/hooks-react'
-import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core'
 import clsx from 'clsx'
+import React, { useContext, useState } from 'react'
+import { matchPath, NavLink, useLocation } from 'react-router-dom'
+import { ResponsivePersonalSettings } from '../../context'
+import { globals, useGlobalStyles } from '../../globalStyles'
 import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
-import { ResponsivePersonalSetttings } from '../../context'
 import { AddButton } from '../AddButton'
 import { SearchButton } from '../search-button'
-import { globals, useGlobalStyles } from '../../globalStyles'
+import { applicationPaths } from '../../application-paths'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -85,18 +84,17 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
+export const PermanentDrawer = () => {
   const personalSettings = usePersonalSettings()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
-  const settings = useContext(ResponsivePersonalSetttings)
+  const settings = useContext(ResponsivePersonalSettings)
   const theme = useTheme()
-
-  const repo = useRepository()
   const [currentPath, setCurrentPath] = useState('')
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const items = useDrawerItems()
   const localization = useLocalization().drawer
+  const location = useLocation()
   const selectionService = useSelectionService()
 
   if (!settings.drawer.enabled) {
@@ -124,21 +122,18 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                 </ListItemIcon>
               </ListItem>
             ) : null}
-
-            {matchPath(props.location.pathname, `/:repositoryId/saved-queries`) === null ? (
-              (matchPath(props.location.pathname, { path: `/:repositoryId/browse` }) !== null ||
-                matchPath(props.location.pathname, { path: `/:repositoryId/usersAndGroups`, exact: true }) !== null ||
-                matchPath(props.location.pathname, { path: `/:repositoryId/setup`, exact: true }) !== null) && (
-                <AddButton isOpened={opened} path={currentPath} />
-              )
-            ) : (
-              <SearchButton isOpened={opened} />
-            )}
-
+            {matchPath(location.pathname, applicationPaths.savedQueries) ? <SearchButton isOpened={opened} /> : null}{' '}
+            {matchPath(location.pathname, [
+              applicationPaths.browse,
+              applicationPaths.usersAndGroups,
+              applicationPaths.setup,
+            ]) ? (
+              <AddButton isOpened={opened} path={currentPath} />
+            ) : null}
             {items.map((item, index) => {
               return (
                 <NavLink
-                  to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
+                  to={item.url}
                   className={classes.navLink}
                   key={index}
                   onClick={() => {
@@ -150,7 +145,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                     className={classes.listButton}
                     button={true}
                     key={index}
-                    selected={matchPath(props.location.pathname, `/:repositoryId${item.url}`) === null ? false : true}>
+                    selected={!!matchPath(location.pathname, item.url)}>
                     <ListItemIcon
                       className={clsx(classes.listItemIconDark, globalClasses.centered, {
                         [classes.listItemIconLight]: personalSettings.theme === 'light',
@@ -178,6 +173,3 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
     </Paper>
   )
 }
-
-const connectedComponent = withRouter(PermanentDrawer)
-export { connectedComponent as PermanentDrawer }

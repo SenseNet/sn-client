@@ -70,7 +70,7 @@ describe('ODataUrlBuilder', () => {
         {
           select: ['DisplayName', 'Path'],
           orderby: 'DisplayName',
-          query: new Query(q => q.typeIs<Task>(Task)).toString(),
+          query: new Query((q) => q.typeIs<Task>(Task)).toString(),
         },
       )
       expect(urlParamString).toBe(

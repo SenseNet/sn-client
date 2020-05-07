@@ -30,7 +30,6 @@ export const testRepository = new Repository({
   repositoryUrl: 'https://dev.demo.sensenet.com',
   requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'DisplayName'],
   schemas: schema,
-  sessionLifetime: 'expiration',
 })
 
 export const testFile: GenericContent = {
@@ -83,10 +82,7 @@ describe('New view component', () => {
         path={testFile.Path}
       />,
     )
-    const onChange = wrapper
-      .find(CheckboxGroup)
-      .first()
-      .prop('fieldOnChange')
+    const onChange = wrapper.find(CheckboxGroup).first().prop('fieldOnChange')
     onChange && onChange('VersioningMode', VersioningMode.Option1)
     wrapper.find('form').simulate('submit', { preventDefault: jest.fn() })
     expect(onSubmit).toBeCalledWith({ VersioningMode: '1' }, 'GenericContent')

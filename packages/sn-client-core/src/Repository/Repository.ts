@@ -1,10 +1,11 @@
 import { Disposable, PathHelper } from '@sensenet/client-utils'
-import { ActionModel, ContentType, GenericContent, Schema } from '@sensenet/default-content-types'
+import { ActionModel, GenericContent, Schema } from '@sensenet/default-content-types'
 import { AuthenticationService } from '../Authentication/AuthenticationService'
 import { BypassAuthentication } from '../Authentication/BypassAuthentication'
 import { Content } from '../Models/Content'
 import { ODataBatchResponse } from '../Models/ODataBatchResponse'
 import { ODataCollectionResponse } from '../Models/ODataCollectionResponse'
+import { ODataParams } from '../Models/ODataParams'
 import { ODataResponse } from '../Models/ODataResponse'
 import { ODataWopiResponse } from '../Models/ODataWopiResponse'
 import {
@@ -21,14 +22,19 @@ import {
   SharingOptions,
 } from '../Models/RequestOptions'
 import { SchemaStore } from '../Schemas/SchemaStore'
-import { ODataParams } from '../Models/ODataParams'
-import { ODataSharingResponse } from '../Models/ODataSharingResponse'
+import { ODataSharingResponse } from '../Models'
 import { ConstantContent } from './ConstantContent'
 import { ODataUrlBuilder } from './ODataUrlBuilder'
-import { RepositoryConfiguration } from './RepositoryConfiguration'
+import {
+  defaultRepositoryConfiguration,
+  RepositoryConfiguration,
+  RepositoryConfigurationWithDefaults,
+} from './RepositoryConfiguration'
 import { Security } from './Security'
 import { Upload } from './Upload'
 import { Versioning } from './Versioning'
+import { Preview } from './Preview'
+import { AllowedChildTypes } from './AllowedChildTypes'
 
 /**
  * Defines an extended error message instance that contains an original error instance, a response and a parsed JSON body from the response
@@ -69,7 +75,7 @@ export class Repository implements Disposable {
   /**
    * The configuration for the Repository object
    */
-  public readonly configuration: RepositoryConfiguration
+  public readonly configuration: RepositoryConfigurationWithDefaults
 
   /**
    * Async method that will be resolved when the Repository is ready to make HTTP calls
@@ -83,16 +89,15 @@ export class Repository implements Disposable {
    * @param {RequestInfo} input The RequestInfo object
    * @param {RequestInit} init Optional init parameters
    */
-  public async fetch(info: RequestInfo, init?: RequestInit, awaitReadyState = true): Promise<Response> {
+  public async fetch(input: RequestInfo, init?: RequestInit, awaitReadyState = true): Promise<Response> {
     if (awaitReadyState) {
       await this.awaitReadyState()
     }
-    return await this.fetchMethod(
-      info,
-      init || {
-        credentials: 'include',
-      },
-    )
+    const request = new Request(input, init)
+    if (this.configuration.token) {
+      request.headers.append('Authorization', `Bearer ${this.configuration.token}`)
+    }
+    return await this.fetchMethod(request)
   }
 
   /**
@@ -321,6 +326,39 @@ export class Repository implements Disposable {
     })
   }
 
+  public async getPropertyValue(idOrPath: string | number, propertyName: string): Promise<string> {
+    const path = PathHelper.joinPaths(
+      this.configuration.repositoryUrl,
+      this.configuration.oDataToken,
+      PathHelper.getContentUrl(idOrPath),
+      propertyName,
+      '$value',
+    )
+    const response = await this.fetch(path)
+    if (!response.ok) {
+      throw await this.getErrorFromResponse(response)
+    }
+    return await response.text()
+  }
+
+  public async getMetadata(idOrPath?: string | number): Promise<any> {
+    const path =
+      idOrPath === undefined
+        ? PathHelper.joinPaths(this.configuration.repositoryUrl, this.configuration.oDataToken, '$metadata')
+        : PathHelper.joinPaths(
+            this.configuration.repositoryUrl,
+            this.configuration.oDataToken,
+            PathHelper.getContentUrl(idOrPath),
+            '$metadata',
+          )
+
+    const response = await this.fetch(`${path}?$format=json`)
+    if (!response.ok) {
+      throw await this.getErrorFromResponse(response)
+    }
+    return await response.json()
+  }
+
   /**
    * Shares a content or content collection with a specified
    * @param options Options for the Copy request
@@ -362,86 +400,6 @@ export class Repository implements Disposable {
     return await response.json()
   }
 
-  /**
-   * Retrieves an aggregated list of content types the user can create as children below the given content
-   * @param {LoadOptions<ContentType>} options
-   */
-
-  public async getAllowedChildTypes(options: LoadOptions<ContentType>): Promise<ODataCollectionResponse<ContentType>> {
-    const allowedTypes: ODataCollectionResponse<ContentType> = { d: { __count: 0, results: [] } }
-    let implicitACTs: ODataCollectionResponse<ContentType>
-    let explicitACTs: ODataCollectionResponse<ContentType>
-    await Promise.all([
-      (async () => {
-        implicitACTs = await this.getImplicitAllowedChildTypes(options)
-      })(),
-      (async () => {
-        explicitACTs = await this.getExplicitAllowedChildTypes(options)
-      })(),
-    ]).then(() => {
-      allowedTypes.d.results = implicitACTs.d
-        ? implicitACTs.d.results
-            .filter(
-              (ct: ContentType) =>
-                !explicitACTs.d.results.find((contenttype: ContentType) => ct.Name === contenttype.Name),
-            )
-            .concat(explicitACTs.d.results)
-        : []
-      allowedTypes.d.__count = allowedTypes.d.results.length
-    })
-
-    return allowedTypes
-  }
-
-  /**
-   * Retrieves a list of content types the user can create as children below the given content (allowed on the content)
-   * @param {LoadOptions<ContentType>} options Options for fetching the AllowedChildTypes
-   */
-  public async getImplicitAllowedChildTypes(
-    options: LoadOptions<ContentType>,
-  ): Promise<ODataCollectionResponse<ContentType>> {
-    const contextPath = PathHelper.getContentUrl(options.idOrPath)
-    const params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions)
-    const path = PathHelper.joinPaths(
-      this.configuration.repositoryUrl,
-      this.configuration.oDataToken,
-      contextPath,
-      'AllowedChildTypes',
-    )
-    const response = await this.fetch(`${path}?${params}`, {
-      credentials: 'include',
-      method: 'GET',
-    })
-    if (!response.ok) {
-      throw await this.getErrorFromResponse(response)
-    }
-    return await response.json()
-  }
-
-  /**
-   * Retrieves a list of content types the user can create as children below the given content (allowed in the CTD)
-   * @param {LoadOptions<ContentType>} options Options for fetching the AllowedChildTypes
-   */
-  public async getExplicitAllowedChildTypes(
-    options: LoadOptions<ContentType>,
-  ): Promise<ODataCollectionResponse<ContentType>> {
-    const contextPath = PathHelper.getContentUrl(options.idOrPath)
-    const params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions)
-    const path = PathHelper.joinPaths(
-      this.configuration.repositoryUrl,
-      this.configuration.oDataToken,
-      contextPath,
-      'EffectiveAllowedChildTypes',
-    )
-    const response = await this.fetch(`${path}?${params}`, {
-      credentials: 'include',
-      method: 'GET',
-    })
-    if (!response.ok) {
-      throw await this.getErrorFromResponse(response)
-    }
-    return await response.json()
-  }
   /**
    * Returns data for loading Office document for editing
    * @param idOrPath Id or path of the document
@@ -487,7 +445,7 @@ export class Repository implements Disposable {
     } else {
       options.body &&
         Object.keys(options.body).forEach(
-          key => (params += `&${key}=${encodeURIComponent((options.body as any)[key])}`),
+          (key) => (params += `&${key}=${encodeURIComponent((options.body as any)[key])}`),
         )
     }
     const response = await this.fetch(`${path}?${params}`, requestOptions)
@@ -513,6 +471,16 @@ export class Repository implements Disposable {
   public upload: Upload = new Upload(this)
 
   /**
+   * Shortcut for preview related custom actions
+   */
+  public preview: Preview = new Preview(this)
+
+  /**
+   * Shortcut for allowedChildTypes related custom actions
+   */
+  public allowedChildTypes: AllowedChildTypes = new AllowedChildTypes(this)
+
+  /**
    * Reloads the content schemas from the sensenet backend
    * @returns {Promise<void>} A promise that will be resolved / rejected based on the action success
    */
@@ -527,11 +495,11 @@ export class Repository implements Disposable {
   }
 
   constructor(
-    config?: Partial<RepositoryConfiguration>,
+    config?: RepositoryConfiguration,
     private fetchMethod: GlobalFetch['fetch'] = window && window.fetch && window.fetch.bind(window),
     public schemas: SchemaStore = new SchemaStore(),
   ) {
-    this.configuration = new RepositoryConfiguration(config)
+    this.configuration = { ...defaultRepositoryConfiguration, ...config }
     this.schemas.setSchemas(this.configuration.schemas)
   }
 }

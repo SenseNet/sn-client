@@ -84,7 +84,7 @@ describe('Virtualized Table component', () => {
       )
 
       const selected = component.findWhere(
-        instance =>
+        (instance) =>
           instance.type() === TableRow &&
           typeof instance.props().className === 'string' &&
           instance.props().className.indexOf('selected') > -1,
@@ -128,7 +128,7 @@ describe('Virtualized Table component', () => {
 
       const selected = component
         .update()
-        .findWhere(instance => instance.type() === Checkbox && instance.props().className !== 'select-all')
+        .findWhere((instance) => instance.type() === Checkbox && instance.props().className !== 'select-all')
         .first()
       selected.props().onChange()
       component.unmount()
@@ -152,7 +152,7 @@ describe('Virtualized Table component', () => {
             orderDirection="asc"
             icons={{}}
             displayRowCheckbox={true}
-            onRequestSelectionChange={content => {
+            onRequestSelectionChange={(content) => {
               expect(content.length).toBe(1)
               expect(content[0].Id).toBe(1)
               component.unmount()
@@ -172,7 +172,7 @@ describe('Virtualized Table component', () => {
         </Paper>,
       )
       const selected = component
-        .findWhere(instance => instance.type() === Checkbox && instance.props().className !== 'select-all')
+        .findWhere((instance) => instance.type() === Checkbox && instance.props().className !== 'select-all')
         .first()
       selected.props().onChange()
     })
@@ -195,7 +195,7 @@ describe('Virtualized Table component', () => {
             orderDirection="asc"
             icons={{}}
             displayRowCheckbox={true}
-            onRequestSelectionChange={contents => {
+            onRequestSelectionChange={(contents) => {
               expect(contents.length).toBe(0)
               expect(contents).toEqual([])
               component.unmount()
@@ -215,7 +215,7 @@ describe('Virtualized Table component', () => {
         </Paper>,
       )
       const selected = component
-        .findWhere(instance => instance.type() === Checkbox && instance.props().className !== 'select-all')
+        .findWhere((instance) => instance.type() === Checkbox && instance.props().className !== 'select-all')
         .first()
       selected.props().onChange()
     })
@@ -237,7 +237,7 @@ describe('Virtualized Table component', () => {
             orderDirection="asc"
             icons={{}}
             displayRowCheckbox={true}
-            onRequestSelectionChange={selection => {
+            onRequestSelectionChange={(selection) => {
               expect(selection.length).toBe(2)
               expect(selection).toEqual(selection)
               component.unmount()
@@ -257,7 +257,7 @@ describe('Virtualized Table component', () => {
         </Paper>,
       )
       const selected = component
-        .findWhere(instance => instance.type() === Checkbox && instance.props().className === 'select-all')
+        .findWhere((instance) => instance.type() === Checkbox && instance.props().className === 'select-all')
         .first()
       selected.props().onChange()
     })
@@ -279,7 +279,7 @@ describe('Virtualized Table component', () => {
             orderDirection="asc"
             icons={{}}
             displayRowCheckbox={true}
-            onRequestSelectionChange={selection => {
+            onRequestSelectionChange={(selection) => {
               expect(selection.length).toBe(0)
               expect(selection).toEqual([])
               component.unmount()
@@ -299,7 +299,7 @@ describe('Virtualized Table component', () => {
         </Paper>,
       )
       const selected = component
-        .findWhere(instance => instance.type() === Checkbox && instance.props().className === 'select-all')
+        .findWhere((instance) => instance.type() === Checkbox && instance.props().className === 'select-all')
         .first()
       selected.props().onChange()
     })
@@ -533,7 +533,7 @@ describe('Virtualized Table component', () => {
               orderBy="ModificationDate"
               orderDirection="asc"
               icons={{}}
-              cellRenderer={props => {
+              cellRenderer={(props) => {
                 if (props.tableCellProps.dataKey === 'Name') {
                   return (
                     <span className="custom-field">{props.tableCellProps.rowData[props.tableCellProps.dataKey]}</span>
@@ -555,7 +555,7 @@ describe('Virtualized Table component', () => {
           </Paper>,
         )
         const actionsComponent = component.findWhere(
-          instance => instance.props().className && instance.props().className === 'custom-field',
+          (instance) => instance.props().className && instance.props().className === 'custom-field',
         )
         expect(actionsComponent.length).toBe(1)
 

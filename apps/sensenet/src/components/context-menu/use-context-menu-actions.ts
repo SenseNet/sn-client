@@ -1,7 +1,9 @@
-import { useDownload, useLogger, useRepository } from '@sensenet/hooks-react'
 import { GenericContent } from '@sensenet/default-content-types'
+import { useDownload, useLogger, useRepository } from '@sensenet/hooks-react'
 import { useHistory } from 'react-router'
-import { useContentRouting, useLoadContent } from '../../hooks'
+import { applicationPaths, resolvePathParams } from '../../application-paths'
+import { useLoadContent } from '../../hooks'
+import { getPrimaryActionUrl } from '../../services'
 import { useDialog } from '../dialogs'
 import { contextMenuODataOptions } from './context-menu-odata-options'
 
@@ -9,7 +11,6 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
   const logger = useLogger('context-menu')
   const history = useHistory()
   const repo = useRepository()
-  const routing = useContentRouting()
   const download = useDownload(content)
   const currentParent = useLoadContent({ idOrPath: content.ParentId! }).content
   const { openDialog } = useDialog()
@@ -23,12 +24,16 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
         break
       case 'Edit':
         !halfPage
-          ? history.push(`/${btoa(repo.configuration.repositoryUrl)}/EditProperties/${content.Id}`)
+          ? history.push(
+              resolvePathParams({ path: applicationPaths.editProperties, params: { contentId: content.Id } }),
+            )
           : setFormOpen && setFormOpen()
         break
       case 'Browse':
         if (!halfPage) {
-          history.push(`/${btoa(repo.configuration.repositoryUrl)}/BrowseProperties/${content.Id}`)
+          history.push(
+            resolvePathParams({ path: applicationPaths.browseProperties, params: { contentId: content.Id } }),
+          )
         } else {
           setFormOpen && setFormOpen()
         }
@@ -44,7 +49,7 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
         break
       }
       case 'Preview':
-        history.push(routing.getPrimaryActionUrl(content))
+        history.push(getPrimaryActionUrl(content, repo))
         break
       case 'CheckOut': {
         try {
@@ -67,7 +72,7 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
           props: {
             content,
             oDataOptions: contextMenuODataOptions,
-            onActionSuccess: checkInResult => setActions(checkInResult),
+            onActionSuccess: (checkInResult) => setActions(checkInResult),
           },
         })
         break
@@ -75,10 +80,20 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
         download.download()
         break
       case 'WopiOpenView':
-        history.push(`/${btoa(repo.configuration.repositoryUrl)}/wopi/${content.Id}/view`)
+        history.push(
+          resolvePathParams({
+            path: applicationPaths.wopi,
+            params: { action: 'view', contentId: content.Id.toString() },
+          }),
+        )
         break
       case 'WopiOpenEdit':
-        history.push(`/${btoa(repo.configuration.repositoryUrl)}/wopi/${content.Id}/edit`)
+        history.push(
+          resolvePathParams({
+            path: applicationPaths.wopi,
+            params: { action: 'edit', contentId: content.Id.toString() },
+          }),
+        )
         break
       case 'Versions':
         openDialog({ name: 'versions', props: { content }, dialogProps: { maxWidth: 'md', open: true } })
@@ -107,7 +122,7 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
           props: {
             content,
             oDataOptions: contextMenuODataOptions,
-            onActionSuccess: approveResult => setActions(approveResult),
+            onActionSuccess: (approveResult) => setActions(approveResult),
           },
         })
         break

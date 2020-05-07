@@ -90,7 +90,7 @@ interface VirtualizedTableProps extends ContentListBaseProps {
   }
 }
 
-export const VirtualizedTable: React.FC<VirtualizedTableProps> = props => {
+export const VirtualizedTable: React.FC<VirtualizedTableProps> = (props) => {
   const classes = useStyles()
 
   const handleSelectAllClick = () => {
@@ -103,8 +103,8 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = props => {
   const handleContentSelection = (content: GenericContent) => {
     const tempSelected = props.selected !== undefined && props.selected.length > 0 ? props.selected : []
     if (props.onRequestSelectionChange) {
-      if (tempSelected.find(c => c.Id === content.Id)) {
-        props.onRequestSelectionChange(tempSelected.filter(s => s.Id !== content.Id))
+      if (tempSelected.find((c) => c.Id === content.Id)) {
+        props.onRequestSelectionChange(tempSelected.filter((s) => s.Id !== content.Id))
       } else {
         props.onRequestSelectionChange([...tempSelected, content])
       }
@@ -207,6 +207,7 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = props => {
             }
             checked={props.selected && props.selected.length === props.items.length ? true : false}
             onChange={handleSelectAllClick}
+            {...props.checkboxProps}
           />
         </TableCell>
       )
@@ -267,7 +268,7 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = props => {
           headerHeight={tableProps.headerHeight || 42}
           {...tableProps}
           rowClassName={getRowClassName}>
-          {fieldsToDisplayWithOrWithoutCheckbox.map(field => {
+          {fieldsToDisplayWithOrWithoutCheckbox.map((field) => {
             return (
               <Column
                 flexGrow={props.displayRowCheckbox && field === 'Checkbox' ? 0 : 0}
@@ -276,10 +277,10 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = props => {
                 columnData={{ label: field }}
                 headerRenderer={() => headerRenderer(field, fieldsToDisplayWithOrWithoutCheckbox.length, width)}
                 className={classes.flexContainer}
-                cellRenderer={tableCellProps => {
+                cellRenderer={(tableCellProps) => {
                   if (props.displayRowCheckbox && field === 'Checkbox') {
                     const isSelected =
-                      props.selected && props.selected.find(s => s.Id === tableCellProps.rowData.Id) ? true : false
+                      props.selected && props.selected.find((s) => s.Id === tableCellProps.rowData.Id) ? true : false
                     return checkBoxRenderer(tableCellProps, isSelected)
                   } else {
                     return props.cellRenderer

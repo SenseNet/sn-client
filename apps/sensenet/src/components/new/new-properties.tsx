@@ -35,7 +35,7 @@ export default function NewProperties() {
     <div className={clsx(globalClasses.full, classes.editWrapper)}>
       <CurrentContentProvider
         idOrPath={query.get('path')!}
-        onContentLoaded={c => {
+        onContentLoaded={(c) => {
           selectionService.activeContent.setValue(c)
           setCurrentContent(c)
         }}

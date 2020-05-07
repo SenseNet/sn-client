@@ -20,6 +20,57 @@ export type ContentListReferenceField<T> = ComplexTypes.DeferredObject | T[] | n
 
 export type BinaryField = ComplexTypes.MediaResourceObject
 
+export type AllFieldNames = keyof (ContentType &
+  GenericContent &
+  ContentLink &
+  File &
+  DynamicJsonContent &
+  ExecutableFile &
+  HtmlTemplate &
+  Image &
+  PreviewImage &
+  Settings &
+  IndexingSettings &
+  LoggingSettings &
+  PortalSettings &
+  SystemFile &
+  Resource &
+  Folder &
+  ContentList &
+  Aspect &
+  ItemList &
+  CustomList &
+  MemoList &
+  TaskList &
+  Library &
+  DocumentLibrary &
+  ImageLibrary &
+  Device &
+  Domain &
+  Domains &
+  Email &
+  OrganizationalUnit &
+  PortalRoot &
+  ProfileDomain &
+  Profiles &
+  RuntimeContentContainer &
+  Sites &
+  SmartFolder &
+  SystemFolder &
+  Resources &
+  TrashBag &
+  Workspace &
+  Site &
+  TrashBin &
+  UserProfile &
+  Group &
+  ListItem &
+  CustomListItem &
+  Memo &
+  Task &
+  Query &
+  User)
+
 /**
  * A content type is a reusable set of fields you want to apply to certain content.
  */
@@ -64,6 +115,7 @@ export class ContentType {
   public Actions?: ContentListReferenceField<ActionModel>
   public Type!: string
 }
+
 /**
  * This type is the base content type of the sensenet.
  */
@@ -94,6 +146,8 @@ export class GenericContent {
   public Depth?: number
   /* This field is true if content is in a system folder/trash or the content is a system folder/file. */
   public IsSystemContent?: boolean
+  /* This field is true if the content is a file. */
+  public IsFile?: boolean
   /* This field is true if content can contain other content. */
   public IsFolder?: boolean
   /* Content name. You can set any name you prefer without any restrictions. */
@@ -175,6 +229,7 @@ export class GenericContent {
   public VersionCreatedBy?: ContentReferenceField<User>
   public VersionCreationDate?: Date
 }
+
 /**
  * A content that propagates most of the Fields of another content.
  */
@@ -182,6 +237,7 @@ export class ContentLink extends GenericContent {
   /* Set this reference to the Content to link. */
   public Link?: ContentReferenceField<GenericContent>
 }
+
 /**
  * A type for binary documents, images, etc.
  */
@@ -202,13 +258,16 @@ export class File extends GenericContent {
   /* The text that is displayed as a watermark on the document preview. The format can be set by modifying the Document Preview settings. */
   public Watermark?: string
 }
+
 /**
  */
 export class DynamicJsonContent extends File {}
+
 /**
  * Only content of this type can be executed directly (e.g. aspx files).
  */
 export class ExecutableFile extends File {}
+
 /**
  * HTML file containing a template html fragment for various controls, e.g. action links.
  */
@@ -216,6 +275,7 @@ export class HtmlTemplate extends File {
   /* Shows the contents of the html file as a text. */
   public TemplateText?: string
 }
+
 /**
  * A special Document type for storing images.
  */
@@ -227,10 +287,12 @@ export class Image extends File {
   public Width?: number
   public Height?: number
 }
+
 /**
  * A special content type for storing preview images.
  */
 export class PreviewImage extends Image {}
+
 /**
  * Content type for storing application or module settings in text format or in custom fields.
  */
@@ -238,22 +300,27 @@ export class Settings extends File {
   /* Switching this ON will prevent the creation of local settings with the same name preventing others to gain access to the contents of this settings file through inheritance. */
   public GlobalOnly?: boolean
 }
+
 /**
  */
 export class IndexingSettings extends Settings {
   /* Dynamically generated text extractor instance collection. */
   public TextExtractorInstances?: string
 }
+
 /**
  */
 export class LoggingSettings extends Settings {}
+
 /**
  */
 export class PortalSettings extends Settings {}
+
 /**
  * A special file for internal use in the system.
  */
 export class SystemFile extends File {}
+
 /**
  * String or binary resource used to localize the system. Its format is the same as the internal part of a standard .Net resx file.
  */
@@ -261,10 +328,12 @@ export class Resource extends SystemFile {
   /* The number of downloads. */
   public Downloads?: number
 }
+
 /**
  * Use folders to group content.
  */
 export class Folder extends GenericContent {}
+
 /**
  * Generic Content List type.
  */
@@ -296,6 +365,7 @@ export class ContentList extends Folder {
   /* If a Visitor adds content to this list, this user will be set as the creator instead of the Visitor. This prevents visitors see each others' content. */
   public OwnerWhenVisitor?: ContentReferenceField<User>
 }
+
 /**
  * Aspect base type.
  */
@@ -303,30 +373,37 @@ export class Aspect extends ContentList {
   /* Definition of the extension in XML format. */
   public AspectDefinition?: string
 }
+
 /**
  * Base type for item lists. Choose a type inheriting from this to create list of items.
  */
 export class ItemList extends ContentList {}
+
 /**
  * Use this type to create custom Lists of content with user-defined columns.
  */
 export class CustomList extends ItemList {}
+
 /**
  * A List type for storing Memos.
  */
 export class MemoList extends ItemList {}
+
 /**
  * A List type for storing Tasks.
  */
 export class TaskList extends ItemList {}
+
 /**
  * A base class for special List types for storing documents such as Document Library or Image Library.
  */
 export class Library extends ContentList {}
+
 /**
  * A special List for storing documents.
  */
 export class DocumentLibrary extends Library {}
+
 /**
  * A special List for storing images.
  */
@@ -334,6 +411,7 @@ export class ImageLibrary extends Library {
   /* Select cover image */
   public CoverImage?: ContentReferenceField<Image>
 }
+
 /**
  * This content type is for defining different devices to browse the portal from - e.g. tablet or different phone types.
  */
@@ -341,6 +419,7 @@ export class Device extends Folder {
   /* A regular expression to match the user agent string of the browser. */
   public UserAgentPattern?: string
 }
+
 /**
  * A centrally-managed group of users and/or computers. sensenet has a built-in domain (BuiltIn), but you can syncronyze external LDAP directories as well.
  */
@@ -354,6 +433,7 @@ export class Domain extends Folder {
  * This is the container type for Domains. Only a single instance is allowed at /Root/IMS.
  */
 export class Domains extends Folder {}
+
 /**
  * Email content type containing attachments as children content.
  */
@@ -365,6 +445,7 @@ export class Email extends Folder {
   /* Date of sending. */
   public Sent?: string
 }
+
 /**
  * Organizational Unit (OU) provides a way of classifying objects located in directories.
  */
@@ -374,26 +455,32 @@ export class OrganizationalUnit extends Folder {
   /* Date of last synchronization. */
   public LastSync?: string
 }
+
 /**
  * Sense/Net Content Repository Master node. One installation can have only one Portal Root.
  */
 export class PortalRoot extends Folder {}
+
 /**
  * Container for user profiles.
  */
 export class ProfileDomain extends Folder {}
+
 /**
  * This is the container type for profiles. Only a single instance is allowed at /Root/Profiles.
  */
 export class Profiles extends Folder {}
+
 /**
  * For internal use only.
  */
 export class RuntimeContentContainer extends Folder {}
+
 /**
  * This is the container type for sites. Only a single instance is allowed at /Root/Sites.
  */
 export class Sites extends Folder {}
+
 /**
  * Use smart folders to group information (content) by Repository query.
  */
@@ -405,14 +492,17 @@ export class SmartFolder extends Folder {
   /* If lifespan filter is enabled, only valid content will be in the result. */
   public EnableLifespanFilter?: Enums.EnableLifespanFilter[]
 }
+
 /**
  * System Folders provide a way to store configuration and logic.
  */
 export class SystemFolder extends Folder {}
+
 /**
  * This is the container type for resources. Only a single instance is allowed at /Root/Localization.
  */
 export class Resources extends SystemFolder {}
+
 /**
  * An atomic container for deleted items stored for undeletion.
  */
@@ -428,6 +518,7 @@ export class TrashBag extends Folder {
   /* The actual deleted content inside this trash bag. */
   public DeletedContent?: ContentReferenceField<GenericContent>
 }
+
 /**
  * Collaborative workspace root.
  */
@@ -444,6 +535,7 @@ export class Workspace extends Folder {
   public IsWallContainer?: boolean
   public IsFollowed?: boolean
 }
+
 /**
  * The Site provides a primary entry point to your Portal.
  */
@@ -464,6 +556,7 @@ export class Site extends Workspace {
   /* If set, content under this site can only be accessed via this site and not via other sites using a Root relative path. */
   public DenyCrossSiteAccess?: boolean
 }
+
 /**
  * The system trash bin content type.
  */
@@ -474,12 +567,14 @@ export class TrashBin extends Workspace {
   /* The maximum number of nodes accepted for trash in a single operation. */
   public BagCapacity?: number
 }
+
 /**
  * Workspace for handling all information and data for a user.
  */
 export class UserProfile extends Workspace {
   public User?: ContentReferenceField<User>
 }
+
 /**
  * You can categorize users and groups into groups according to any criteria.
  */
@@ -491,16 +586,19 @@ export class Group extends GenericContent {
   /* Date of last synchronization. */
   public LastSync?: string
 }
+
 /**
  * Base content type for list items.
  */
 export class ListItem extends GenericContent {}
+
 /**
  * Content type for custom listitems.
  */
 export class CustomListItem extends ListItem {
   public WorkflowsRunning?: boolean
 }
+
 /**
  * A content type for short memos or posts on a subject.
  */
@@ -512,6 +610,7 @@ export class Memo extends ListItem {
   /* A list of content this memo pertains to. */
   public SeeAlso?: ContentListReferenceField<GenericContent>
 }
+
 /**
  * A content type for defining tasks.
  */
@@ -530,6 +629,7 @@ export class Task extends ListItem {
   /* Css class */
   public DueCssClass?: string
 }
+
 /**
  * Content Type for storing Content Queries
  */
@@ -539,6 +639,7 @@ export class Query extends GenericContent {
   /* Public queries are stored under the workspace, private queries are stored under the user profile. */
   public QueryType?: Enums.QueryType[]
 }
+
 /**
  * The basic user type of the sensenet. Use it for intranet and extranet users.
  */

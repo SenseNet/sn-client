@@ -94,7 +94,7 @@ class DeleteDialog extends React.Component<
   }
   public submitCallback = () => {
     const permanently = this.state.checked ? true : false
-    const selectedIds = this.props.content.map(content => content.Id)
+    const selectedIds = this.props.content.map((content) => content.Id)
     this.props.deleteContent(selectedIds, permanently)
     this.props.closeDialog()
     this.props.closeCallback()
@@ -103,7 +103,7 @@ class DeleteDialog extends React.Component<
     const { classes, content } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
-        {matches => (
+        {(matches) => (
           <div>
             <Typography variant="h5" gutterBottom={true}>
               {resources.DELETE}
@@ -112,7 +112,7 @@ class DeleteDialog extends React.Component<
               <div style={{ opacity: 0.54 }}>{resources.ARE_YOU_SURE_YOU_WANT_TO_DELETE}</div>
               <div style={content.length > 3 ? styles.longList : styles.normalList}>
                 <ul style={styles.list}>
-                  {content.map(c => (
+                  {content.map((c) => (
                     <li key={c.Id} style={styles.listItem}>
                       {c.DisplayName}
                     </li>

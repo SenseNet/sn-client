@@ -1,7 +1,7 @@
 import IconButton from '@material-ui/core/IconButton'
 import CloudDownload from '@material-ui/icons/CloudDownload'
 import React from 'react'
-import { DocumentData } from '../../models'
+import { DocumentData } from '@sensenet/client-core'
 import { useDocumentData, useLocalization } from '../../hooks'
 
 /**
@@ -14,7 +14,7 @@ export interface DownloadProps {
 /**
  * Component that allows active page rotation
  */
-export const Download: React.FC<DownloadProps> = props => {
+export const Download: React.FC<DownloadProps> = (props) => {
   const localization = useLocalization()
   const { documentData } = useDocumentData()
   return (

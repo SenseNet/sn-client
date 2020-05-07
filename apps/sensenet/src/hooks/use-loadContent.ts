@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useState } from 'react'
-import { GenericContent } from '@sensenet/default-content-types'
 import { ODataParams } from '@sensenet/client-core'
+import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
+import { useCallback, useEffect, useState } from 'react'
 
 type Options = {
   idOrPath: string | number

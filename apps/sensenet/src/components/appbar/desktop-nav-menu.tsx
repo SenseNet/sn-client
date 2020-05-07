@@ -1,17 +1,19 @@
-import React from 'react'
-import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { Grid, IconButton, ListItemIcon, ListItemText, MenuItem, MenuList, Paper, Typography } from '@material-ui/core'
+import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles'
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
-import { useInjector, useRepository, useSession } from '@sensenet/hooks-react'
-import { NavLink } from 'react-router-dom'
+import { useInjector, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
-import { UserAvatar } from '../UserAvatar'
+import React, { useEffect, useRef, useState } from 'react'
+import { NavLink } from 'react-router-dom'
+import { useCurrentUser } from '../../context/current-user-provider'
+import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization, usePersonalSettings } from '../../hooks'
-import { useDialog } from '../dialogs'
 import { PersonalSettings } from '../../services'
 import { AntSwitch } from '../ant-switch'
-import { globals, useGlobalStyles } from '../../globalStyles'
+import { useDialog } from '../dialogs'
+import { UserAvatar } from '../UserAvatar'
+import { applicationPaths } from '../../application-paths'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -50,6 +52,10 @@ const useStyles = makeStyles((theme: Theme) =>
     themeSwitcher: {
       color: theme.palette.primary.main,
       fontSize: '14px',
+      '& .MuiButtonBase-root': {
+        padding: '2px',
+        color: theme.palette.type === 'light' ? theme.palette.common.white : theme.palette.common.black,
+      },
     },
   }),
 )
@@ -62,14 +68,14 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   const theme = useTheme()
   const service = injector.getInstance(PersonalSettings)
   const { openDialog } = useDialog()
-  const [open, setOpen] = React.useState(false)
-  const anchorRef = React.useRef<HTMLButtonElement>(null)
-  const session = useSession()
+  const [open, setOpen] = useState(false)
+  const anchorRef = useRef<HTMLButtonElement>(null)
+  const currentUser = useCurrentUser()
   const repo = useRepository()
   const localization = useLocalization()
 
   const handleToggle = () => {
-    setOpen(prevOpen => !prevOpen)
+    setOpen((prevOpen) => !prevOpen)
   }
 
   const handleClose = (event: React.MouseEvent<EventTarget>) => {
@@ -87,8 +93,8 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
     }
   }
 
-  const prevOpen = React.useRef(open)
-  React.useEffect(() => {
+  const prevOpen = useRef(open)
+  useEffect(() => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current!.focus()
     }
@@ -97,7 +103,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   }, [open])
 
   const logout = (event: React.MouseEvent<EventTarget>) => {
-    openDialog({ name: 'logout', props: { userToLogout: session.currentUser } })
+    openDialog({ name: 'logout' })
     handleClose(event)
   }
 
@@ -109,7 +115,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   return (
     <div className={clsx(globalClasses.centered, classes.navMenu)}>
       <UserAvatar
-        user={session.currentUser}
+        user={currentUser}
         repositoryUrl={repo.configuration.repositoryUrl}
         style={{
           height: '35px',
@@ -140,7 +146,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                         backgroundColor: theme.palette.primary.main,
                         color: globals.common.headerText,
                       }}
-                      user={session.currentUser}
+                      user={currentUser}
                       repositoryUrl={repo.configuration.repositoryUrl}
                     />
                   </ListItemIcon>
@@ -152,12 +158,12 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                         marginLeft: '30px',
                         color: theme.palette.type === 'light' ? globals.light.textColor : globals.dark.textColor,
                       },
-                      title: session.currentUser.DisplayName || session.currentUser.Name,
+                      title: currentUser.DisplayName || currentUser.Name,
                     }}
-                    primary={`${session.currentUser.DisplayName || session.currentUser.Name} user`}
+                    primary={`${currentUser.DisplayName || currentUser.Name}`}
                   />
                 </MenuItem>
-                <NavLink to="/personalSettings" onClick={handleClose}>
+                <NavLink to={applicationPaths.personalSettings} onClick={handleClose}>
                   <MenuItem className={classes.menuItem}>{localization.topMenu.personalSettings}</MenuItem>
                 </NavLink>
                 <MenuItem onClick={logout} className={classes.menuItem}>

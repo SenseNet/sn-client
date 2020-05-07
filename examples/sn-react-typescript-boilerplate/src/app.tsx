@@ -1,15 +1,14 @@
-import React from 'react'
 import { Button, CssBaseline, Tooltip, Typography } from '@material-ui/core'
-import { useRepository } from '@sensenet/hooks-react'
+import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
+import React from 'react'
 import snLogo from './assets/sensenet_logo_transparent.png'
-import { useCurrentUser } from './hooks/use-current-user'
 
 /**
  * The main entry point of your app. You can start h@cking from here ;)
  */
 export const App: React.FunctionComponent = () => {
-  const usr = useCurrentUser()
-  const repo = useRepository()
+  const { logout, oidcUser } = useOidcAuthentication()
+
   return (
     <div
       style={{
@@ -26,13 +25,13 @@ export const App: React.FunctionComponent = () => {
       }}>
       <CssBaseline />
       <Typography variant="h3" gutterBottom>
-        Hello, {usr.Name}{' '}
+        Hello, {oidcUser?.profile.name}{' '}
         <span role="img" aria-label="Smiling Face With Sunglasses">
           😎
         </span>
       </Typography>
       <Tooltip title="Return to the Login screen and select another repository">
-        <Button variant="outlined" color="primary" onClick={() => repo.authentication.logout()}>
+        <Button variant="outlined" color="primary" onClick={logout}>
           Log out{' '}
           <span role="img" aria-label="Door">
             🚪

@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/client-utils",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "description": "General sensenet independent client side utilities",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",

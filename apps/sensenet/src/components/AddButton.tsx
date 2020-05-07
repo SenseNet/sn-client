@@ -12,10 +12,11 @@ import {
 import { CloudUploadOutlined } from '@material-ui/icons'
 import Add from '@material-ui/icons/Add'
 import { Schema } from '@sensenet/default-content-types'
-import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
+import { applicationPaths } from '../application-paths'
 import { globals, useGlobalStyles } from '../globalStyles'
 import { useLocalization, usePersonalSettings, useSelectionService } from '../hooks'
 import { useDialog } from './dialogs'
@@ -58,14 +59,12 @@ export interface AddButtonProps {
   path: string
 }
 
-export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
+export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
   const selectionService = useSelectionService()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const repo = useRepository()
   const { openDialog } = useDialog()
-  const parentContext = useContext(CurrentContentContext)
-  const [parent, setParent] = useState(parentContext)
   const [showSelectType, setShowSelectType] = useState(false)
   const [allowedChildTypes, setAllowedChildTypes] = useState<Schema[]>([])
   const localization = useLocalization().addButton
@@ -78,7 +77,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   const history = useHistory<{ schema: Schema }>()
 
   useEffect(() => {
-    const activeComponentObserve = selectionService.activeContent.subscribe(newActiveComponent =>
+    const activeComponentObserve = selectionService.activeContent.subscribe((newActiveComponent) =>
       setCurrentComponent(newActiveComponent),
     )
 
@@ -88,18 +87,10 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   }, [selectionService.activeContent])
 
   useEffect(() => {
-    currentComponent && setParent(currentComponent)
-  }, [currentComponent])
-
-  useEffect(() => {
-    !currentComponent && setParent(parentContext)
-  }, [parentContext, currentComponent])
-
-  useEffect(() => {
     const getActions = async () => {
       try {
-        const actions = await repo.getActions({ idOrPath: parent ? parent.Id : props.path })
-        const isActionFound = actions.d.Actions.some(action => action.Name === 'Add' || action.Name === 'Upload')
+        const actions = await repo.getActions({ idOrPath: currentComponent ? currentComponent.Id : props.path })
+        const isActionFound = actions.d.Actions.some((action) => action.Name === 'Add' || action.Name === 'Upload')
         setAvailable(isActionFound)
       } catch (error) {
         logger.error({
@@ -111,25 +102,25 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
       }
     }
 
-    if (parent || props.path !== '') {
+    if (currentComponent || props.path !== '') {
       getActions()
     } else {
       setAvailable(false)
     }
-  }, [localization.errorGettingActions, logger, parent, props.path, repo])
+  }, [currentComponent, localization.errorGettingActions, logger, props.path, repo])
 
   useEffect(() => {
     const getAllowedChildTypes = async () => {
       try {
-        const allowedChildTypesFromRepo = await repo.getAllowedChildTypes({
-          idOrPath: currentComponent ? parent.Id : props.path,
+        const allowedChildTypesFromRepo = await repo.allowedChildTypes.get({
+          idOrPath: currentComponent ? currentComponent.Id : props.path,
         })
 
         const filteredTypes = allowedChildTypesFromRepo.d.results
-          .filter(type => repo.schemas.getSchemaByName(type.Name).ContentTypeName === type.Name)
-          .map(type => repo.schemas.getSchemaByName(type.Name))
+          .filter((type) => repo.schemas.getSchemaByName(type.Name).ContentTypeName === type.Name)
+          .map((type) => repo.schemas.getSchemaByName(type.Name))
 
-        const tempHasUpload = filteredTypes.some(type => personalSettings.uploadHandlers.includes(type.HandlerName))
+        const tempHasUpload = filteredTypes.some((type) => personalSettings.uploadHandlers.includes(type.HandlerName))
 
         setAllowedChildTypes(filteredTypes)
         setHasUpload(tempHasUpload)
@@ -150,7 +141,6 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
     currentComponent,
     localization.errorGettingAllowedContentTypes,
     logger,
-    parent.Id,
     personalSettings.uploadHandlers,
     props.path,
     repo,
@@ -242,7 +232,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
                   setShowSelectType(false)
                   openDialog({
                     name: 'upload',
-                    props: { uploadPath: parent.Path },
+                    props: { uploadPath: currentComponent?.Path || props.path },
                     dialogProps: { open: true, fullScreen: true },
                   })
                 }}>
@@ -254,7 +244,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
             </Tooltip>
           ) : null}
 
-          {allowedChildTypes.map(childType => (
+          {allowedChildTypes.map((childType) => (
             <Tooltip key={childType.ContentTypeName} title={childType.DisplayName} placement="right">
               <ListItem
                 button={true}
@@ -262,7 +252,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
                 onClick={() => {
                   const contentPath = currentComponent ? currentComponent.Path : props.path
                   setShowSelectType(false)
-                  history.push(`/${btoa(repo.configuration.repositoryUrl)}/NewProperties?path=${contentPath}`, {
+                  history.push(`${applicationPaths.newProperties}?path=${contentPath}`, {
                     schema: childType,
                   })
                 }}>

@@ -84,17 +84,17 @@ export const ExampleAppLayout: React.FC = () => {
                   <ToggleShapesWidget />
                   <ToggleThumbnailsWidget />
                   <Download
-                    download={doc => {
+                    download={(doc) => {
                       console.log('Download triggered', doc)
                     }}
                   />
                   <Print
-                    print={doc => {
+                    print={(doc) => {
                       console.log('Print triggered', doc)
                     }}
                   />
                   <Share
-                    share={doc => {
+                    share={(doc) => {
                       console.log('Share triggered', doc)
                     }}
                   />
@@ -140,7 +140,7 @@ export const ExampleAppLayout: React.FC = () => {
                 }}>
                 <TextField
                   value={hostName}
-                  onChange={ev => {
+                  onChange={(ev) => {
                     setHostName(ev.currentTarget.value)
                   }}
                   required={true}
@@ -151,7 +151,7 @@ export const ExampleAppLayout: React.FC = () => {
                 />
                 <TextField
                   value={documentIdOrPath}
-                  onChange={ev => {
+                  onChange={(ev) => {
                     setDocumentIdOrPath(ev.currentTarget.value)
                   }}
                   required={true}

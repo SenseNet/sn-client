@@ -21,18 +21,8 @@ describe('Date/Date time field control', () => {
   describe('in browse view', () => {
     it('should show the displayname and fieldValue when fieldValue is provided', () => {
       const wrapper = shallow(<DatePicker fieldValue={value} actionName="browse" settings={defaultSettings} />)
-      expect(
-        wrapper
-          .find(Typography)
-          .first()
-          .text(),
-      ).toBe(defaultSettings.DisplayName)
-      expect(
-        wrapper
-          .find(Typography)
-          .last()
-          .text(),
-      ).toBe(moment(value).toLocaleString())
+      expect(wrapper.find(Typography).first().text()).toBe(defaultSettings.DisplayName)
+      expect(wrapper.find(Typography).last().text()).toBe(moment(value).toLocaleString())
     })
 
     it('should show the displayname and fieldValue as date when fieldValue is provided and set as date', () => {
@@ -43,22 +33,8 @@ describe('Date/Date time field control', () => {
           settings={{ ...defaultSettings, DateTimeMode: DateTimeMode.Date }}
         />,
       )
-      expect(
-        wrapper
-          .find(Typography)
-          .first()
-          .text(),
-      ).toBe(defaultSettings.DisplayName)
-      expect(
-        wrapper
-          .find(Typography)
-          .last()
-          .text(),
-      ).toBe(
-        moment(value)
-          .format('LL')
-          .toLocaleString(),
-      )
+      expect(wrapper.find(Typography).first().text()).toBe(defaultSettings.DisplayName)
+      expect(wrapper.find(Typography).last().text()).toBe(moment(value).format('LL').toLocaleString())
       expect(wrapper).toMatchSnapshot()
     })
 
