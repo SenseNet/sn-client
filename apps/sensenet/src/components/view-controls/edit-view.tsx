@@ -23,12 +23,15 @@ const useStyles = makeStyles(() => {
       width: '100%',
       height: 'calc(100% - 80px)',
     },
+    formFullPage: {
+      height: 'calc(100% - 145px)',
+    },
     mainForm: {
       display: 'initial',
       height: 'calc(100% - 68px)',
     },
     mainFormFullpage: {
-      height: '100%',
+      height: 'calc(100% - 65px)',
     },
     grid: {
       display: 'flex',
@@ -158,7 +161,10 @@ export const EditView: React.FC<EditViewProps> = (props) => {
           [classes.mainFormFullpage]: props.isFullPage,
         })}
         onSubmit={handleSubmit}>
-        <div className={classes.form}>
+        <div
+          className={clsx(classes.form, {
+            [classes.formFullPage]: props.isFullPage,
+          })}>
           <Grid container={true} spacing={2}>
             {schema.fieldMappings
               .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))

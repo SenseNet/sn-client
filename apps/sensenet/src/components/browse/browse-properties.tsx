@@ -8,6 +8,7 @@ import { PathHelper } from '@sensenet/client-utils'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
 import { EditView } from '../view-controls/edit-view'
+import { useDialogActionService } from '../../hooks/use-dialogaction-service'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -29,6 +30,7 @@ export default function BrowseProperties() {
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const repo = useRepository()
+  const dialogActionService = useDialogActionService()
 
   return (
     <div className={clsx(globalClasses.full, classes.editWrapper)}>
@@ -39,6 +41,11 @@ export default function BrowseProperties() {
           select: 'all',
           expand: ['Manager', 'FollowedWorkspaces'] as any,
         }}>
+        <div
+          className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}
+          style={{ marginLeft: '30px' }}>
+          <span style={{ fontSize: '20px' }}>Browse {selectionService.activeContent.getValue()?.DisplayName}</span>
+        </div>
         <EditView
           uploadFolderpath="/Root/Content/demoavatars"
           handleCancel={async () => {
@@ -48,10 +55,15 @@ export default function BrowseProperties() {
               })
               selectionService.activeContent.setValue(parentContent.d)
             }
+            dialogActionService.activeAction.setValue(undefined)
             history.goBack()
           }}
           actionName="browse"
           isFullPage={true}
+          submitCallback={() => {
+            dialogActionService.activeAction.setValue(undefined)
+            history.goBack()
+          }}
         />
       </CurrentContentProvider>
     </div>

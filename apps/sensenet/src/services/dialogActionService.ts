@@ -29,7 +29,7 @@ export class DialogActionService implements Disposable {
 
     this.contentTypeNameForNewContent.subscribe((contentTypeName) =>
       this.logger.verbose({
-        message: contentTypeName ? `Content type name changed to ${contentTypeName}` : `Active action set to None`,
+        message: contentTypeName ? `Content type name changed to ${contentTypeName}` : `Content type name set to None`,
         data: {
           relatedContent: contentTypeName,
         },

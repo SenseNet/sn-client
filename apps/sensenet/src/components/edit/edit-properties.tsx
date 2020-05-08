@@ -1,24 +1,20 @@
 import { createStyles, makeStyles } from '@material-ui/core'
+import { PathHelper } from '@sensenet/client-utils'
 import { Schema } from '@sensenet/default-content-types'
 import { CurrentContentProvider, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React from 'react'
 import { useHistory, useRouteMatch } from 'react-router'
-import { PathHelper } from '@sensenet/client-utils'
-import { globals, useGlobalStyles } from '../../globalStyles'
+import { useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
+import { useDialogActionService } from '../../hooks/use-dialogaction-service'
 import { EditView } from '../view-controls/edit-view'
-import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 
 const useStyles = makeStyles(() => {
   return createStyles({
     editWrapper: {
       padding: '0',
       overflow: 'auto',
-    },
-    breadcrumbsWrapper: {
-      height: globals.common.drawerItemHeight,
-      boxSizing: 'border-box',
     },
   })
 })
@@ -30,6 +26,7 @@ export default function EditProperties() {
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const repo = useRepository()
+  const dialogActionService = useDialogActionService()
 
   return (
     <div className={clsx(globalClasses.full, classes.editWrapper)}>
@@ -39,8 +36,10 @@ export default function EditProperties() {
           selectionService.activeContent.setValue(c)
         }}
         oDataOptions={{ select: 'all' }}>
-        <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
-          <ContentBreadcrumbs onItemClick={() => {}} />
+        <div
+          className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}
+          style={{ marginLeft: '30px' }}>
+          <span style={{ fontSize: '20px' }}>Edit {selectionService.activeContent.getValue()?.DisplayName}</span>
         </div>
         <EditView
           uploadFolderpath={'/Root/Content/demoavatars'}
@@ -51,11 +50,15 @@ export default function EditProperties() {
               })
               selectionService.activeContent.setValue(parentContent.d)
             }
+            dialogActionService.activeAction.setValue(undefined)
             history.goBack()
           }}
           actionName={'edit'}
           isFullPage={true}
-          submitCallback={history.goBack}
+          submitCallback={() => {
+            dialogActionService.activeAction.setValue(undefined)
+            history.goBack()
+          }}
         />
       </CurrentContentProvider>
     </div>

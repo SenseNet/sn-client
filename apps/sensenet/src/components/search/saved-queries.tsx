@@ -17,9 +17,10 @@ import clsx from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization } from '../../hooks'
+import { useLocalization, useSelectionService } from '../../hooks'
 import { ContentList } from '../content-list/content-list'
-import { applicationPaths } from '../../application-paths'
+import { applicationPaths, resolvePathParams } from '../../application-paths'
+import { useDialogActionService } from '../../hooks/use-dialogaction-service'
 
 export default function Search() {
   const repo = useRepository()
@@ -35,6 +36,34 @@ export default function Search() {
 
   const eventHub = useRepositoryEvents()
   const globalClasses = useGlobalStyles()
+  const dialogActionService = useDialogActionService()
+  const selectionService = useSelectionService()
+
+  useEffect(() => {
+    const activeDialogActionObserve = dialogActionService.activeAction.subscribe(
+      (newDialogAction) =>
+        selectionService.activeContent.getValue() &&
+        (newDialogAction === 'edit'
+          ? history.push(
+              resolvePathParams({
+                path: applicationPaths.editProperties,
+                params: { contentId: selectionService.activeContent.getValue()!.Id },
+              }),
+            )
+          : newDialogAction === 'browse' &&
+            history.push(
+              resolvePathParams({
+                path: applicationPaths.browseProperties,
+                params: { contentId: selectionService.activeContent.getValue()!.Id },
+              }),
+            )),
+    )
+
+    return function cleanup() {
+      activeDialogActionObserve.dispose()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dialogActionService.activeAction])
 
   useEffect(() => {
     const subscriptions = [
@@ -105,6 +134,10 @@ export default function Search() {
                   }}
                   onActivateItem={(p) => {
                     history.push(`${applicationPaths.search}?term=${(p as Query).Query}`)
+                  }}
+                  onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
+                  onSelectionChange={(sel) => {
+                    selectionService.selection.setValue(sel)
                   }}
                 />
               </CurrentAncestorsContext.Provider>

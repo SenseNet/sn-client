@@ -135,7 +135,6 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
                             uploadFolderpath="/Root/Content/demoavatars"
                             handleCancel={async () => {
                               dialogActionService.activeAction.setValue(undefined)
-                              setAction(undefined)
                               if (selectionService.activeContent.getValue() !== undefined) {
                                 const parentContent = await repo.load({
                                   idOrPath: PathHelper.getParentPath(selectionService.activeContent.getValue()!.Path),
@@ -150,11 +149,24 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
                       ) : (
                         action === 'new' &&
                         dialogActionService.contentTypeNameForNewContent.getValue() && (
-                          <NewView
-                            contentTypeName={dialogActionService.contentTypeNameForNewContent.getValue()!}
-                            currentContent={selectionService.activeContent.getValue()}
-                            uploadFolderpath="/Root/Content/demoavatars"
-                          />
+                          <>
+                            <div className={clsx(classes.title, globalClasses.centered)}>
+                              New {dialogActionService.contentTypeNameForNewContent.getValue()}
+                            </div>
+                            <NewView
+                              contentTypeName={dialogActionService.contentTypeNameForNewContent.getValue()!}
+                              currentContent={selectionService.activeContent.getValue()}
+                              uploadFolderpath="/Root/Content/demoavatars"
+                              handleCancel={async () => {
+                                dialogActionService.activeAction.setValue(undefined)
+                                dialogActionService.contentTypeNameForNewContent.setValue(undefined)
+                              }}
+                              submitCallback={() => {
+                                dialogActionService.activeAction.setValue(undefined)
+                                dialogActionService.contentTypeNameForNewContent.setValue(undefined)
+                              }}
+                            />
+                          </>
                         )
                       )}
                     </>

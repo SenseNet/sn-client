@@ -15,6 +15,7 @@ import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionServi
 import { AddButton } from '../AddButton'
 import { SearchButton } from '../search-button'
 import { applicationPaths } from '../../application-paths'
+import { useDialogActionService } from '../../hooks/use-dialogaction-service'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -96,6 +97,7 @@ export const PermanentDrawer = () => {
   const localization = useLocalization().drawer
   const location = useLocation()
   const selectionService = useSelectionService()
+  const dialogActionService = useDialogActionService()
 
   if (!settings.drawer.enabled) {
     return null
@@ -138,6 +140,7 @@ export const PermanentDrawer = () => {
                   key={index}
                   onClick={() => {
                     selectionService.activeContent.setValue(undefined)
+                    dialogActionService.activeAction.setValue(undefined)
                     setCurrentPath(item.root ? item.root : '')
                   }}
                   activeClassName={classes.navLinkActive}>
