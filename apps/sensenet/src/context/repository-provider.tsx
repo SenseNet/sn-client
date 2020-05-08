@@ -23,59 +23,73 @@ const customEvents = {
 }
 
 export function RepositoryProvider({ children }: { children: React.ReactNode }) {
-  const [repoUrl, setRepoUrl] = useState<string>()
   const [isLoginInProgress, setIsLoginInProgress] = useState(false)
   const logger = useLogger('repository-provider')
   const globalClasses = useGlobalStyles()
   const history = useHistory()
-  const [authConfig, setAuthConfig] = useState<UserManagerSettings>()
+  const [authState, setAuthState] = useState<{ repoUrl: string; config: UserManagerSettings | null }>({
+    repoUrl: '',
+    config: null,
+  })
   const repoFromUrl = useQuery().get('repoUrl')
 
+  const configString = window.localStorage.getItem(authConfigKey)
+
+  const clearState = useCallback(() => setAuthState({ repoUrl: '', config: null }), [])
+
   useEffect(() => {
-    repoFromUrl && setRepoUrl(repoFromUrl)
-  }, [repoFromUrl])
+    if (configString) {
+      const prevAuthConfig = JSON.parse(configString)
+      setAuthState({
+        repoUrl: prevAuthConfig?.extraQueryParams.snrepo || '',
+        config: null,
+      })
+    } else {
+      repoFromUrl && setAuthState({ repoUrl: repoFromUrl, config: null })
+    }
+  }, [repoFromUrl, configString])
 
   const getConfig = useCallback(async () => {
-    if (!repoUrl) {
+    if (!authState.repoUrl) {
       setIsLoginInProgress(false)
       return
     }
     try {
       setIsLoginInProgress(true)
-      const config = await getAuthConfig(repoUrl)
-      setAuthConfig(config)
+      const config = await getAuthConfig(authState.repoUrl)
       window.localStorage.setItem(authConfigKey, JSON.stringify(config))
+      setAuthState((oldState) => ({ ...oldState, config }))
     } catch (error) {
-      logger.warning({ data: error, message: `Couldn't connect to ${repoUrl}` })
+      logger.warning({ data: error, message: `Couldn't connect to ${authState.repoUrl}` })
       window.localStorage.removeItem(authConfigKey)
+      setAuthState((oldState) => ({ ...oldState, repoUrl: '' }))
     } finally {
       setIsLoginInProgress(false)
     }
-  }, [logger, repoUrl])
+  }, [logger, authState.repoUrl])
 
   useEffect(() => {
-    const configString = window.localStorage.getItem(authConfigKey)
-    if (configString) {
-      const config = JSON.parse(configString)
-      setAuthConfig(config)
-      setRepoUrl(config.extraQueryParams.snrepo)
-    } else {
-      getConfig()
-    }
+    getConfig()
   }, [getConfig])
 
-  if (!authConfig || !repoUrl) {
+  if (!authState.config || !authState.repoUrl) {
     return (
       <div className={globalClasses.full}>
         <CssBaseline />
         <Suspense fallback={<FullScreenLoader loaderText="Loading" />}>
-          <LoginPage
-            isLoginInProgress={isLoginInProgress}
-            handleSubmit={(url) => {
-              setRepoUrl(url)
-              getConfig()
-            }}
-          />
+          {configString || (!configString && repoFromUrl === authState.repoUrl) ? (
+            <FullScreenLoader loaderText="Loading" />
+          ) : (
+            <LoginPage
+              isLoginInProgress={isLoginInProgress}
+              handleSubmit={(url) => {
+                setAuthState({
+                  repoUrl: url,
+                  config: null,
+                })
+              }}
+            />
+          )}
           <NotificationComponent />
         </Suspense>
       </div>
@@ -84,7 +98,8 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
 
   return (
     <AuthenticationProvider
-      configuration={authConfig}
+      configuration={authState.config}
+      forceNew={true}
       history={history}
       authenticating={
         <AuthOverrideSkeleton
@@ -92,7 +107,7 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
           secondaryText="You will be redirected to the login page"
         />
       }
-      notAuthenticated={<NotAuthenticatedOverride />}
+      notAuthenticated={<NotAuthenticatedOverride clearState={clearState} />}
       notAuthorized={
         <AuthOverrideSkeleton
           primaryText="Authorization"
@@ -109,7 +124,7 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
         />
       }
       customEvents={customEvents}>
-      <RepoProvider repoUrl={repoUrl}>{children}</RepoProvider>
+      <RepoProvider repoUrl={authState.repoUrl}>{children}</RepoProvider>
     </AuthenticationProvider>
   )
 }
