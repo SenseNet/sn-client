@@ -5,7 +5,7 @@ import { ComponentType } from 'react'
 import { ReactClientFieldSetting } from '@sensenet/controls-react'
 import * as FieldControls from './field-controls'
 
-export type ActionNameType = 'new' | 'edit' | 'browse' | undefined
+export type ActionNameType = 'new' | 'edit' | 'browse' | 'version' | undefined
 
 /**
  * A static Control Mapper instance, used to create the mapping between sensenet ContentTypes and FieldSettings and React components.

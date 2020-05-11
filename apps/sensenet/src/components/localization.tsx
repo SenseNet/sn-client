@@ -18,24 +18,38 @@ export default function Localization() {
   const selectionService = useSelectionService()
 
   useEffect(() => {
-    const activeDialogActionObserve = dialogActionService.activeAction.subscribe(
-      (newDialogAction) =>
-        selectionService.activeContent.getValue() &&
-        (newDialogAction === 'edit'
-          ? history.push(
+    const activeDialogActionObserve = dialogActionService.activeAction.subscribe((newDialogAction) => {
+      if (selectionService.activeContent.getValue()) {
+        switch (newDialogAction) {
+          case 'edit':
+            history.push(
               resolvePathParams({
                 path: applicationPaths.editProperties,
                 params: { contentId: selectionService.activeContent.getValue()!.Id },
               }),
             )
-          : newDialogAction === 'browse' &&
+            break
+          case 'browse':
             history.push(
               resolvePathParams({
                 path: applicationPaths.browseProperties,
                 params: { contentId: selectionService.activeContent.getValue()!.Id },
               }),
-            )),
-    )
+            )
+            break
+          case 'version':
+            history.push(
+              resolvePathParams({
+                path: applicationPaths.versionProperties,
+                params: { contentId: selectionService.activeContent.getValue()!.Id },
+              }),
+            )
+            break
+          default:
+            break
+        }
+      }
+    })
 
     return function cleanup() {
       activeDialogActionObserve.dispose()

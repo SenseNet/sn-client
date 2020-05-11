@@ -87,7 +87,7 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
         )
         break
       case 'Versions':
-        openDialog({ name: 'versions', props: { content }, dialogProps: { maxWidth: 'md', open: true } })
+        dialogActionService.activeAction.setValue('version')
         break
       case 'Publish':
         try {

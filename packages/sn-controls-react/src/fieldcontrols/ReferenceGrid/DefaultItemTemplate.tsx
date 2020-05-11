@@ -16,7 +16,7 @@ interface DefaultItemTemplateProps {
   content: GenericContent
   remove?: (id: number) => void
   add: () => void
-  actionName?: 'new' | 'edit' | 'browse'
+  actionName?: 'new' | 'edit' | 'browse' | 'version'
   readOnly?: boolean
   repositoryUrl?: string
   multiple: boolean

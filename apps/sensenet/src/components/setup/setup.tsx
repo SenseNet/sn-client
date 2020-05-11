@@ -32,26 +32,38 @@ const Setup = () => {
   const history = useHistory()
 
   useEffect(() => {
-    const activeDialogActionObserve = dialogActionService.activeAction.subscribe(
-      (newDialogAction) =>
-        selectionService.activeContent.getValue() &&
-        (newDialogAction === 'edit'
-          ? history.push(
+    const activeDialogActionObserve = dialogActionService.activeAction.subscribe((newDialogAction) => {
+      if (selectionService.activeContent.getValue()) {
+        switch (newDialogAction) {
+          case 'edit':
+            history.push(
               resolvePathParams({
                 path: applicationPaths.editProperties,
                 params: { contentId: selectionService.activeContent.getValue()!.Id },
               }),
             )
-          : newDialogAction === 'browse'
-          ? history.push(
+            break
+          case 'browse':
+            history.push(
               resolvePathParams({
                 path: applicationPaths.browseProperties,
                 params: { contentId: selectionService.activeContent.getValue()!.Id },
               }),
             )
-          : newDialogAction === 'new' &&
-            history.push(`${applicationPaths.newProperties}?path=${selectionService.activeContent.getValue()!.Path}`)),
-    )
+            break
+          case 'version':
+            history.push(
+              resolvePathParams({
+                path: applicationPaths.versionProperties,
+                params: { contentId: selectionService.activeContent.getValue()!.Id },
+              }),
+            )
+            break
+          default:
+            break
+        }
+      }
+    })
 
     return function cleanup() {
       activeDialogActionObserve.dispose()

@@ -1,5 +1,4 @@
 import { Button, createStyles, makeStyles, Theme } from '@material-ui/core'
-import { Close } from '@material-ui/icons'
 import {
   DocumentTitlePager,
   DocumentViewer,
@@ -22,6 +21,8 @@ import { useLocalization, useSelectionService, useTheme } from '../hooks'
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     docViewerWrapper: {
+      width: '100%',
+      height: 'calc(100% - 80px)',
       overflow: 'hidden',
       '& .MuiIconButton-root': {
         color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
@@ -31,6 +32,14 @@ const useStyles = makeStyles((theme: Theme) => {
       placeSelf: 'flex-end',
       position: 'relative',
       alignSelf: 'center',
+    },
+    actionButtonWrapper: {
+      height: '80px',
+      width: '100%',
+      position: 'absolute',
+      padding: '20px',
+      bottom: 0,
+      textAlign: 'right',
     },
   })
 })
@@ -69,40 +78,45 @@ export default function DocViewer(props: { previousLocation?: Location }) {
   }
 
   return (
-    <div className={clsx(globalClasses.full, classes.docViewerWrapper)}>
-      <CurrentContentProvider idOrPath={contentId} onContentLoaded={(c) => selectionService.activeContent.setValue(c)}>
-        <DocumentViewer documentIdOrPath={contentId}>
-          <LayoutAppBar
-            style={{
-              backgroundColor:
-                theme.palette.type === 'light' ? globals.light.drawerBackground : globals.dark.drawerBackground,
-              border: theme.palette.type === 'light' ? clsx(globals.light.borderColor, '1px') : 'none',
-              boxShadow: 'none',
-              color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
-            }}>
-            <div style={{ flexShrink: 0 }}>
-              <ToggleThumbnailsWidget
-                style={{
-                  fill: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
-                }}
-                activeColor={theme.palette.primary.main}
-              />
-              <ZoomInOutWidget />
-              <ZoomModeWidget />
-              <RotateActivePagesWidget />
-              <RotateDocumentWidget />
-            </div>
-            <DocumentTitlePager />
-            <div>
-              <ToggleCommentsWidget activeColor={theme.palette.primary.main} />
-              <Button className={classes.closeButton} onClick={closeViewer}>
-                <Close style={{ marginRight: theme.spacing(1) }} />
-                {localization.customActions.resultsDialog.closeButton}
-              </Button>
-            </div>
-          </LayoutAppBar>
-        </DocumentViewer>
-      </CurrentContentProvider>
-    </div>
+    <>
+      <div className={classes.docViewerWrapper}>
+        <CurrentContentProvider
+          idOrPath={contentId}
+          onContentLoaded={(c) => selectionService.activeContent.setValue(c)}>
+          <DocumentViewer documentIdOrPath={contentId}>
+            <LayoutAppBar
+              style={{
+                backgroundColor:
+                  theme.palette.type === 'light' ? globals.light.drawerBackground : globals.dark.drawerBackground,
+                border: theme.palette.type === 'light' ? clsx(globals.light.borderColor, '1px') : 'none',
+                boxShadow: 'none',
+                color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
+              }}>
+              <div style={{ flexShrink: 0 }}>
+                <ToggleThumbnailsWidget
+                  style={{
+                    fill: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
+                  }}
+                  activeColor={theme.palette.primary.main}
+                />
+                <ZoomInOutWidget />
+                <ZoomModeWidget />
+                <RotateActivePagesWidget />
+                <RotateDocumentWidget />
+              </div>
+              <DocumentTitlePager />
+              <div>
+                <ToggleCommentsWidget activeColor={theme.palette.primary.main} />
+              </div>
+            </LayoutAppBar>
+          </DocumentViewer>
+        </CurrentContentProvider>
+      </div>
+      <div className={classes.actionButtonWrapper}>
+        <Button color="default" className={globalClasses.cancelButton} onClick={closeViewer}>
+          {localization.customActions.resultsDialog.closeButton}
+        </Button>
+      </div>
+    </>
   )
 }

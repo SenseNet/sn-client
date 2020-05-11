@@ -23,6 +23,7 @@ import { ActionNameType } from '../react-control-mapper'
 import TreeWithData from '../tree/tree-with-data'
 import { EditView } from '../view-controls/edit-view'
 import { NewView } from '../view-controls/new-view'
+import { VersionView } from '../view-controls'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -146,8 +147,7 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
                             submitCallback={() => dialogActionService.activeAction.setValue(undefined)}
                           />
                         </>
-                      ) : (
-                        action === 'new' &&
+                      ) : action === 'new' ? (
                         dialogActionService.contentTypeNameForNewContent.getValue() && (
                           <>
                             <div className={clsx(classes.title, globalClasses.centered)}>
@@ -162,6 +162,20 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
                                 dialogActionService.contentTypeNameForNewContent.setValue(undefined)
                               }}
                               submitCallback={() => {
+                                dialogActionService.activeAction.setValue(undefined)
+                                dialogActionService.contentTypeNameForNewContent.setValue(undefined)
+                              }}
+                            />
+                          </>
+                        )
+                      ) : (
+                        action === 'version' && (
+                          <>
+                            <div className={clsx(classes.title, globalClasses.centered)}>
+                              Versions of {selectionService.activeContent.getValue()?.DisplayName}
+                            </div>
+                            <VersionView
+                              handleCancel={async () => {
                                 dialogActionService.activeAction.setValue(undefined)
                                 dialogActionService.contentTypeNameForNewContent.setValue(undefined)
                               }}
