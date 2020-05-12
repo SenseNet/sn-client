@@ -5,6 +5,7 @@ import { useInjector } from '../hooks'
  * Context for a Logger instance
  */
 export const LoggerContext = React.createContext<Logger>(new LoggerCollection())
+LoggerContext.displayName = 'LoggerContext'
 
 /**
  * Wrapper for the LoggerContext component.

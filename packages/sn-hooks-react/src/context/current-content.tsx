@@ -9,6 +9,7 @@ import { useRepository, useRepositoryEvents } from '../hooks'
  * Returns a given content as current content
  */
 export const CurrentContentContext = React.createContext<GenericContent>(ConstantContent.PORTAL_ROOT)
+CurrentContentContext.displayName = 'CurrentContentContext'
 
 export interface CurrentContentProviderProps {
   /**
@@ -32,7 +33,7 @@ export interface CurrentContentProviderProps {
  */
 export const CurrentContentProvider: React.FunctionComponent<CurrentContentProviderProps> = (props) => {
   const [loadLock] = useState(new Semaphore(1))
-  const [content, setContent] = useState<GenericContent>(ConstantContent.PORTAL_ROOT)
+  const [content, setContent] = useState<GenericContent>(ConstantContent.EMPTY_CONTENT)
   const repo = useRepository()
   const [reloadToken, setReloadToken] = useState(1)
   const reload = () => setReloadToken(Math.random())
