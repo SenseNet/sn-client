@@ -121,7 +121,7 @@ exports[`ZoomMode component should render without crashing 1`] = `
                       }
                     >
                       <svg
-                        aria-hidden="true"
+                        aria-hidden={true}
                         className="MuiSvgIcon-root"
                         focusable="false"
                         viewBox="0 0 24 24"
@@ -386,7 +386,7 @@ exports[`ZoomMode component should render without crashing 2`] = `
                       }
                     >
                       <svg
-                        aria-hidden="true"
+                        aria-hidden={true}
                         className="MuiSvgIcon-root"
                         focusable="false"
                         viewBox="0 0 24 24"
@@ -651,7 +651,7 @@ exports[`ZoomMode component should render without crashing 3`] = `
                       }
                     >
                       <svg
-                        aria-hidden="true"
+                        aria-hidden={true}
                         className="MuiSvgIcon-root"
                         focusable="false"
                         viewBox="0 0 24 24"
@@ -931,7 +931,7 @@ exports[`ZoomMode component should render without crashing 4`] = `
                       }
                     >
                       <svg
-                        aria-hidden="true"
+                        aria-hidden={true}
                         className="MuiSvgIcon-root"
                         focusable="false"
                         style={
@@ -1198,7 +1198,7 @@ exports[`ZoomMode component should render without crashing 5`] = `
                       }
                     >
                       <svg
-                        aria-hidden="true"
+                        aria-hidden={true}
                         className="MuiSvgIcon-root"
                         focusable="false"
                         viewBox="0 0 24 24"
@@ -1460,7 +1460,7 @@ exports[`ZoomMode component should render without crashing 6`] = `
                       }
                     >
                       <svg
-                        aria-hidden="true"
+                        aria-hidden={true}
                         className="MuiSvgIcon-root"
                         focusable="false"
                         viewBox="0 0 24 24"
@@ -1722,7 +1722,7 @@ exports[`ZoomMode component should render without crashing 7`] = `
                       }
                     >
                       <svg
-                        aria-hidden="true"
+                        aria-hidden={true}
                         className="MuiSvgIcon-root"
                         focusable="false"
                         viewBox="0 0 24 24"
