@@ -100,7 +100,7 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
                       }
                     >
                       <svg
-                        aria-hidden="true"
+                        aria-hidden={true}
                         className="MuiSvgIcon-root"
                         focusable="false"
                         viewBox="0 0 24 24"
@@ -237,7 +237,7 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
                       }
                     >
                       <svg
-                        aria-hidden="true"
+                        aria-hidden={true}
                         className="MuiSvgIcon-root"
                         focusable="false"
                         viewBox="0 0 24 24"
