@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from 'react'
 type Options = {
   idOrPath: string | number
   oDataOptions?: ODataParams<GenericContent>
-  isOpened: boolean | undefined
+  isOpened?: boolean
 }
 
 export const useLoadContent = <T extends GenericContent>({ idOrPath, oDataOptions, isOpened }: Options) => {
@@ -20,7 +20,7 @@ export const useLoadContent = <T extends GenericContent>({ idOrPath, oDataOption
 
   useEffect(() => {
     const ac = new AbortController()
-    if (idOrPath && isOpened) {
+    if (idOrPath && idOrPath !== content?.Id && idOrPath !== content?.Path && (isOpened === undefined || isOpened)) {
       ;(async () => {
         try {
           const response = await repo.load<T>({
@@ -37,7 +37,7 @@ export const useLoadContent = <T extends GenericContent>({ idOrPath, oDataOption
       })()
     }
     return () => ac.abort()
-  }, [repo, idOrPath, reloadToken, oDataOptions, isOpened])
+  }, [repo, idOrPath, reloadToken, oDataOptions, isOpened, content])
 
   return { content, error, reload }
 }
