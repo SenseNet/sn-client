@@ -32,7 +32,6 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
     config: null,
   })
   const repoFromUrl = useQuery().get('repoUrl')
-
   const configString = window.localStorage.getItem(authConfigKey)
 
   const clearState = useCallback(() => setAuthState({ repoUrl: '', config: null }), [])
@@ -40,10 +39,10 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
   useEffect(() => {
     if (configString) {
       const prevAuthConfig = JSON.parse(configString)
-      setAuthState({
+      setAuthState((oldState) => ({
         repoUrl: prevAuthConfig?.extraQueryParams.snrepo || '',
-        config: null,
-      })
+        config: prevAuthConfig?.extraQueryParams.snrepo === oldState.repoUrl ? prevAuthConfig : null,
+      }))
     } else {
       repoFromUrl && setAuthState({ repoUrl: repoFromUrl, config: null })
     }
