@@ -402,7 +402,7 @@ const values = {
     modifiedByTableHead: 'Modified by',
     commentTableHead: 'Comment',
     rejectReasonTableHead: 'Reject reason',
-    restoreTableHead: 'Restore to version',
+    restoreTableHead: 'Restore',
     restoreBodyText: (name: string, version?: string) =>
       `Are you sure you want to restore version <strong>${version}</strong> of <strong>${name}</strong>`,
     restoreSubmitText: 'Restore',

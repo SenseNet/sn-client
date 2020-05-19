@@ -39,7 +39,7 @@ export default function BrowseProperties() {
         onContentLoaded={(c) => selectionService.activeContent.setValue(c)}
         oDataOptions={{
           select: 'all',
-          expand: ['Manager', 'FollowedWorkspaces'] as any,
+          expand: ['Manager', 'FollowedWorkspaces', 'ModifiedBy'] as any,
         }}>
         <div
           className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}

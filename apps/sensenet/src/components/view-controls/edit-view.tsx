@@ -91,13 +91,36 @@ export const EditView: React.FC<EditViewProps> = (props) => {
   const logger = useLogger('EditView')
 
   useEffect(() => {
-    const activeComponentObserve = selectionService.activeContent.subscribe((newActiveComponent) =>
-      setContent(newActiveComponent),
-    )
+    async function getExpandedContent() {
+      const expanedContentResponse = await repo.load({
+        idOrPath: selectionService.activeContent.getValue()!.Id,
+        oDataOptions: {
+          select: 'all',
+          expand: ['Manager', 'FollowedWorkspaces', 'ModifiedBy'] as any,
+        },
+      })
+      setContent(expanedContentResponse.d)
+    }
+    selectionService.activeContent.getValue() && getExpandedContent()
+  })
+
+  useEffect(() => {
+    const activeComponentObserve = selectionService.activeContent.subscribe(async (newActiveComponent) => {
+      if (newActiveComponent) {
+        const expandedContent = await repo.load({
+          idOrPath: newActiveComponent?.Id,
+          oDataOptions: {
+            select: 'all',
+            expand: ['Manager', 'FollowedWorkspaces', 'ModifiedBy'] as any,
+          },
+        })
+        setContent(expandedContent.d)
+      }
+    })
     return function cleanup() {
       activeComponentObserve.dispose()
     }
-  }, [selectionService.activeContent])
+  }, [repo, selectionService.activeContent])
 
   if (content === undefined) {
     return null

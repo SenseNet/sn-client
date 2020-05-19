@@ -21,9 +21,9 @@ import { FullScreenLoader } from '../full-screen-loader'
 import { editviewFileResolver, Icon } from '../Icon'
 import { ActionNameType } from '../react-control-mapper'
 import TreeWithData from '../tree/tree-with-data'
+import { VersionView } from '../view-controls'
 import { EditView } from '../view-controls/edit-view'
 import { NewView } from '../view-controls/new-view'
-import { VersionView } from '../view-controls'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -123,9 +123,21 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
                       {action === 'edit' || action === 'browse' ? (
                         <>
                           <div className={clsx(classes.title, globalClasses.centered)}>
-                            {action === 'edit'
-                              ? `Edit ${selectionService.activeContent.getValue()?.DisplayName}`
-                              : `Info about ${selectionService.activeContent.getValue()?.DisplayName}`}
+                            {action === 'edit' ? (
+                              <span>
+                                Edit{' '}
+                                <span style={{ fontWeight: 500 }}>
+                                  {selectionService.activeContent.getValue()?.DisplayName}
+                                </span>
+                              </span>
+                            ) : (
+                              <span>
+                                Info about{' '}
+                                <span style={{ fontWeight: 500 }}>
+                                  {selectionService.activeContent.getValue()?.DisplayName}
+                                </span>
+                              </span>
+                            )}
                             <Icon
                               resolvers={editviewFileResolver}
                               style={{ marginLeft: '9px', height: '24px', width: '24px' }}
@@ -151,7 +163,12 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
                         dialogActionService.contentTypeNameForNewContent.getValue() && (
                           <>
                             <div className={clsx(classes.title, globalClasses.centered)}>
-                              New {dialogActionService.contentTypeNameForNewContent.getValue()}
+                              <span>
+                                New{' '}
+                                <span style={{ fontWeight: 500 }}>
+                                  {dialogActionService.contentTypeNameForNewContent.getValue()}
+                                </span>
+                              </span>
                             </div>
                             <NewView
                               contentTypeName={dialogActionService.contentTypeNameForNewContent.getValue()!}

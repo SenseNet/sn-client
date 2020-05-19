@@ -39,7 +39,9 @@ export default function EditProperties() {
         <div
           className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}
           style={{ marginLeft: '30px' }}>
-          <span style={{ fontSize: '20px' }}>Edit {selectionService.activeContent.getValue()?.DisplayName}</span>
+          <span style={{ fontSize: '20px' }}>
+            Edit <span style={{ fontWeight: 500 }}>{selectionService.activeContent.getValue()?.DisplayName}</span>
+          </span>
         </div>
         <EditView
           uploadFolderpath={'/Root/Content/demoavatars'}
