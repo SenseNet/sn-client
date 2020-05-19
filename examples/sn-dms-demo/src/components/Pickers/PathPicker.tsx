@@ -2,13 +2,13 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import { ODataParams, Repository } from '@sensenet/client-core'
+import { ODataParams } from '@sensenet/client-core'
 import { Folder, GenericContent } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { GenericContentWithIsParent, useListPicker } from '@sensenet/pickers-react'
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { dmsInjector } from '../../DmsRepository'
 import { deselectPickeritem, reloadPickerItems, selectPickerItem } from '../../store/picker/actions'
 import { rootStateType } from '../../store/rootReducer'
 
@@ -38,8 +38,9 @@ const pickerItemOptions: ODataParams<Folder> = {
 
 // eslint-disable-next-line require-jsdoc
 function PathPicker(props: PathPickerProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps) {
+  const repository = useRepository()
   const { items, selectedItem, setSelectedItem, navigateTo, reload } = useListPicker<GenericContentWithIsParent>({
-    repository: dmsInjector.getInstance(Repository),
+    repository,
     currentPath: props.currentPath,
     itemsODataOptions: pickerItemOptions,
   })

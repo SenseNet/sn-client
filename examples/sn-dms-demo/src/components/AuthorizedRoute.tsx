@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { Redirect, Route, RouteProps } from 'react-router-dom'
 import { UserState } from 'redux-oidc'
 import { rootStateType } from '../store/rootReducer'
+import { RepositoryProvider } from './RepositoryProvider'
 
 export const AuthorizedRoute = ({ children, ...rest }: PropsWithChildren<RouteProps>) => {
   const stateAuth = useSelector<rootStateType, UserState>((state) => state.auth)
@@ -17,7 +18,7 @@ export const AuthorizedRoute = ({ children, ...rest }: PropsWithChildren<RoutePr
       {...rest}
       render={({ location }) =>
         user ? (
-          children
+          <RepositoryProvider>{children}</RepositoryProvider>
         ) : (
           <Redirect
             to={{

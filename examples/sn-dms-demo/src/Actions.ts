@@ -67,7 +67,7 @@ export const setListActions = (actions: ActionModel[]) => ({
 
 export const getListActions = (idOrPath: number | string, scenario?: string, customActions?: ActionModel[]) => ({
   type: 'GET_LIST_ACTIONS',
-  async inject(options: IInjectableActionCallbackParams<rootStateType>) {
+  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const actionsState = options.getState().dms.toolbar
     if (!actionsState.isLoading && (actionsState.idOrPath !== idOrPath || actionsState.scenario !== scenario)) {
       options.dispatch(loadListActions(idOrPath, scenario))
@@ -86,7 +86,8 @@ export const getListActions = (idOrPath: number | string, scenario?: string, cus
 
 export const loadUserActions = (idOrPath: number | string, scenario?: string, customActions?: ActionModel[]) => ({
   type: 'LOAD_USER_ACTIONS',
-  async payload(repository: Repository) {
+  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
+    const repository = options.getInjectable(Repository)
     const data: { d: { Actions: ActionModel[] } } = (await repository.getActions({ idOrPath, scenario })) as any
     const actions = customActions ? [...data.d.Actions, ...customActions] : data.d.Actions
     return {
@@ -99,6 +100,11 @@ export const loadUserActions = (idOrPath: number | string, scenario?: string, cu
       },
     }
   },
+})
+
+export const loadAddNewListSuccess = (result: any) => ({
+  type: 'LOAD_TYPES_TO_ADDNEW_LIST_SUCCESS',
+  result,
 })
 
 export type ExtendedUploadProgressInfo = UploadProgressInfo & { content?: GenericContent; visible?: boolean }
@@ -236,12 +242,15 @@ export const closeViewer = () => ({
 
 export const loadTypesToAddNewList = (idOrPath: number | string) => ({
   type: 'LOAD_TYPES_TO_ADDNEW_LIST',
-  async payload(repository: Repository) {
+  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
+    const repository = options.getInjectable(Repository)
     const data: { d: { results: ContentType[] } } = (await repository.executeAction({
       idOrPath,
       method: 'GET',
       name: 'EffectiveAllowedChildTypes',
     })) as any
+
+    options.dispatch(loadAddNewListSuccess(data))
     return data
   },
 })

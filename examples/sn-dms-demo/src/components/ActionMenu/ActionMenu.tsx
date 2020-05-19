@@ -7,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { ActionModel, Query } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { Actions } from '@sensenet/redux'
+import { RepositoryContext } from '@sensenet/hooks-react'
 import { compile } from 'path-to-regexp'
 import React from 'react'
 import { connect } from 'react-redux'
@@ -237,7 +238,15 @@ class ActionMenu extends React.Component<
           this.handleClose()
           content &&
             this.props.openDialog(
-              <EditPropertiesDialog content={content} contentTypeName={content ? content.Type : ''} />,
+              <RepositoryContext.Consumer>
+                {(repository) => (
+                  <EditPropertiesDialog
+                    content={content}
+                    contentTypeName={content ? content.Type : ''}
+                    repository={repository}
+                  />
+                )}
+              </RepositoryContext.Consumer>,
               resources.EDIT_PROPERTIES,
               this.props.closeDialog,
             )

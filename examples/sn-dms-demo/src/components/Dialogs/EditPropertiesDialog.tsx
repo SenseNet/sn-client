@@ -10,7 +10,6 @@ import MediaQuery from 'react-responsive'
 import { RepositoryContext } from '@sensenet/hooks-react'
 import * as DMSActions from '../../Actions'
 import { resources } from '../../assets/resources'
-import { dmsInjector } from '../../DmsRepository'
 import { loadEditedContent } from '../../store/edited/actions'
 import { rootStateType } from '../../store/rootReducer'
 import { FullScreenLoader } from '../FullScreenLoader'
@@ -19,6 +18,7 @@ import DialogInfo from './DialogInfo'
 interface EditPropertiesDialogProps {
   contentTypeName: string
   content: GenericContent
+  repository: Repository
 }
 
 const mapStateToProps = (state: rootStateType) => {
@@ -69,7 +69,7 @@ class EditPropertiesDialog extends React.Component<
       lastState.editedcontent === null ||
       (newProps.content && (lastState.editedcontent ? lastState.editedcontent.Id !== newProps.content.Id : false))
     ) {
-      const schema = dmsInjector.getInstance(Repository).schemas.getSchemaByName(newProps.contentTypeName)
+      const schema = newProps.repository.schemas.getSchemaByName(newProps.contentTypeName)
       const editableFields = schema.FieldSettings.filter((field) => field.VisibleEdit).map((field) => field.Name)
       editableFields.push('Icon')
       const options = {
