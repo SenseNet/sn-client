@@ -408,7 +408,7 @@ export const activeSubmenu: Reducer<string | null, Action & { itemName?: string 
 ) => {
   switch (action.type) {
     case 'CHOOSE_SUBMENUITEM':
-      return action.itemName || state
+      return action.itemName ?? state
     default:
       return state
   }

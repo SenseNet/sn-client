@@ -64,6 +64,10 @@ const RepoProvider: React.FunctionComponent<{ userChanged: Function; loadReposit
     }
   }, [user, props])
 
+  if (!repository?.configuration.token) {
+    return null
+  }
+
   return <RepositoryContext.Provider value={repository!}>{props.children}</RepositoryContext.Provider>
 }
 

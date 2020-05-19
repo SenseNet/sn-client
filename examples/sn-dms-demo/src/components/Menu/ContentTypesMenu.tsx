@@ -151,7 +151,7 @@ class ContentTypesMenu extends React.Component<
         </ListItem>
         <div className={active ? classes.open : classes.closed}>
           <Divider />
-          <AddNewButton contentType="ContentType" onClick={(e) => console.log(e)} />
+          <AddNewButton contentType="ContentType" onClick={(e) => console.log(e)} disabled={subMenu.length === 0} />
           <List className={classes.submenu}>
             {subMenu.map((menuitem, index) => {
               return (

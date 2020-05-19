@@ -111,6 +111,7 @@ const mapStateToProps = (state: rootStateType) => {
     currentContent: state.dms.documentLibrary.parent,
     currentWorkspace: state.sensenet.currentworkspace,
     query: state.dms.documentLibrary.childrenOptions.query,
+    menu: state.dms.menu,
   }
 }
 
@@ -150,6 +151,7 @@ class DocumentsMenu extends React.Component<
       this.props.history.push('/documents/')
     }
     this.props.chooseMenuItem(title)
+    this.props.chooseSubmenuItem('')
     this.props.handleDrawerMenu(false)
   }
   public handleSubmenuItemClick = (title: string) => {
@@ -191,7 +193,7 @@ class DocumentsMenu extends React.Component<
                   !this.props.query ? (
                     <div>
                       <Divider />
-                      <UploadButton
+                      {/* <UploadButton
                         style={{
                           width: '100%',
                           margin: '10px 0 0 0',
@@ -208,8 +210,10 @@ class DocumentsMenu extends React.Component<
                             parentPath: (this.props.currentContent as Content).Path,
                           })
                         }
-                      />
-                      <AddNewMenu currentContent={this.props.currentContent} />
+                      /> */}
+                      {this.props.menu.active === 'documents' && !this.props.menu.activeSubmenu && (
+                        <AddNewMenu currentContent={this.props.currentContent} />
+                      )}
                     </div>
                   ) : null
                 ) : null}
