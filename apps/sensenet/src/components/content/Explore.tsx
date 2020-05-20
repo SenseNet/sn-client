@@ -24,6 +24,7 @@ import TreeWithData from '../tree/tree-with-data'
 import { VersionView } from '../view-controls'
 import { EditView } from '../view-controls/edit-view'
 import { NewView } from '../view-controls/new-view'
+import { applicationPaths, resolvePathParams } from '../../application-paths'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -90,6 +91,16 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
     }
   }, [dialogActionService.activeAction])
 
+  const getContentTypeId = async (contentType: string) => {
+    const result = await repo.loadCollection({
+      path: '/Root/System/Schema/ContentTypes',
+      oDataOptions: {
+        query: `+TypeIs:'ContentType' AND Name:${contentType} .AUTOFILTERS:OFF`,
+      },
+    })
+    return result.d
+  }
+
   return (
     <>
       <LoadSettingsContextProvider>
@@ -138,11 +149,27 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
                                 </span>
                               </span>
                             )}
-                            <Icon
-                              resolvers={editviewFileResolver}
-                              style={{ marginLeft: '9px', height: '24px', width: '24px' }}
-                              item={selectionService.activeContent.getValue()}
-                            />
+                            <span
+                              onClick={async () => {
+                                dialogActionService.activeAction.setValue(undefined)
+                                selectionService.activeContent.getValue() &&
+                                  history.push(
+                                    resolvePathParams({
+                                      path: applicationPaths.editBinary,
+                                      params: {
+                                        contentId: (
+                                          await getContentTypeId(selectionService.activeContent.getValue()!.Type)
+                                        ).results[0].Id,
+                                      },
+                                    }),
+                                  )
+                              }}>
+                              <Icon
+                                resolvers={editviewFileResolver}
+                                style={{ marginLeft: '9px', height: '24px', width: '24px', cursor: 'pointer' }}
+                                item={selectionService.activeContent.getValue()}
+                              />
+                            </span>
                           </div>
                           <EditView
                             uploadFolderpath="/Root/Content/demoavatars"
@@ -192,7 +219,7 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
                               Versions of {selectionService.activeContent.getValue()?.DisplayName}
                             </div>
                             <VersionView
-                              handleCancel={async () => {
+                              handleCancel={() => {
                                 dialogActionService.activeAction.setValue(undefined)
                                 dialogActionService.contentTypeNameForNewContent.setValue(undefined)
                               }}
@@ -209,7 +236,7 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
                       enableBreadcrumbs={false}
                       fieldsToDisplay={fieldsToDisplay}
                       onParentChange={onNavigate}
-                      onActivateItem={(content) => onActivateItemOverride(content)}
+                      onActivateItem={onActivateItemOverride}
                       onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
                       parentIdOrPath={currentPath}
                       onSelectionChange={(sel) => {

@@ -156,9 +156,9 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
   const runSearch = useCallback(
     debounce(() => {
       const child = children.find(
-        (c) =>
-          c.Name.toLocaleLowerCase().indexOf(searchString) === 0 ||
-          (c.DisplayName && c.DisplayName.toLocaleLowerCase().indexOf(searchString)) === 0,
+        (content) =>
+          content.Name.toLocaleLowerCase().indexOf(searchString) === 0 ||
+          (content.DisplayName && content.DisplayName.toLocaleLowerCase().indexOf(searchString)) === 0,
       )
       child && setActiveContent(child)
       setSearchString('')

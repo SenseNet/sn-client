@@ -32,8 +32,8 @@ export default function VersionProperties() {
     <div className={clsx(globalClasses.full, classes.versionsWrapper)}>
       <CurrentContentProvider
         idOrPath={match.params.contentId}
-        onContentLoaded={(c) => {
-          selectionService.activeContent.setValue(c)
+        onContentLoaded={(content) => {
+          selectionService.activeContent.setValue(content)
         }}
         oDataOptions={{ select: 'all' }}>
         <div

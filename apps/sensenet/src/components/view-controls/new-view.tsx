@@ -111,7 +111,7 @@ export const NewView: React.FC<NewViewProps> = (props) => {
         },
       })
     } finally {
-      props.submitCallback && props.submitCallback()
+      props.submitCallback?.()
     }
   }
 

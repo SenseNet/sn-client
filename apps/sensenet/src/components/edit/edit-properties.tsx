@@ -32,8 +32,8 @@ export default function EditProperties() {
     <div className={clsx(globalClasses.full, classes.editWrapper)}>
       <CurrentContentProvider
         idOrPath={match.params.contentId}
-        onContentLoaded={(c) => {
-          selectionService.activeContent.setValue(c)
+        onContentLoaded={(content) => {
+          selectionService.activeContent.setValue(content)
         }}
         oDataOptions={{ select: 'all' }}>
         <div

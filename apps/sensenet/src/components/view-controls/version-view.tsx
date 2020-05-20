@@ -2,6 +2,7 @@
  * @module ViewControls
  */
 import {
+  Button,
   createStyles,
   IconButton,
   makeStyles,
@@ -12,7 +13,6 @@ import {
   TableRow,
   Tooltip,
 } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
 import HistoryIcon from '@material-ui/icons/History'
 import { GenericContent, User } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
@@ -121,91 +121,87 @@ export const VersionView: React.FC<VersionViewProps> = (props) => {
 
   if (content === undefined) {
     return null
-  } else {
-    const restoreVersion = (selectedVersion: GenericContent) => {
-      const name = selectedVersion.DisplayName ?? selectedVersion.Name
-      openDialog({
-        name: 'are-you-sure',
-        props: {
-          submitText: localization.restoreSubmitText,
-          bodyText: localization.restoreBodyText(name, selectedVersion.Version),
-          callBack: async () => {
-            try {
-              await repo.versioning.restoreVersion(selectedVersion.Id, selectedVersion.Version)
-              logger.information({ message: localization.restoreVersionSuccess(name, selectedVersion.Version) })
-              closeAllDialogs()
-            } catch (error) {
-              closeAllDialogs()
-              logger.error({
-                message: localization.restoreVersionError(name, selectedVersion.Version),
-                data: error,
-              })
-            }
-          },
-        },
-      })
-    }
-
-    return (
-      <form
-        className={clsx(classes.mainForm, {
-          [classes.mainFormFullpage]: props.isFullPage,
-        })}>
-        <div
-          className={clsx(classes.form, {
-            [classes.formFullPage]: props.isFullPage,
-          })}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>{localization.versionTableHead}</TableCell>
-                <TableCell>{localization.modifiedByTableHead}</TableCell>
-                <TableCell>{localization.commentTableHead}</TableCell>
-                <TableCell>{localization.rejectReasonTableHead}</TableCell>
-                <TableCell>{localization.restoreTableHead}</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {versions?.map((version, index) => (
-                <TableRow key={index}>
-                  <TableCell>{version.Version}</TableCell>
-                  <TableCell>
-                    {moment(version.VersionModificationDate).fromNow()}
-                    {` (${((version.VersionModifiedBy as any) as User).FullName})`}
-                  </TableCell>
-                  <TableCell>
-                    <Tooltip disableFocusListener={true} title={version.CheckInComments ?? ''}>
-                      <span>{version.CheckInComments ?? ''}</span>
-                    </Tooltip>
-                  </TableCell>
-                  <TableCell>
-                    <Tooltip disableFocusListener={true} title={version.RejectReason ?? ''}>
-                      <span>{version.RejectReason ?? ''}</span>
-                    </Tooltip>
-                  </TableCell>
-                  <TableCell padding="none" style={{ width: '5%' }}>
-                    {index !== versions.length - 1 ? (
-                      <IconButton onClick={() => restoreVersion(version)} title="{localization.restoreButtonTitle}">
-                        <HistoryIcon />
-                      </IconButton>
-                    ) : null}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-        <div className={classes.actionButtonWrapper}>
-          <MediaQuery minDeviceWidth={700}>
-            <Button
-              color="default"
-              className={globalClasses.cancelButton}
-              onClick={() => props.handleCancel && props.handleCancel()}>
-              {formLocalization.cancel}
-            </Button>
-          </MediaQuery>
-        </div>
-      </form>
-    )
   }
+  const restoreVersion = (selectedVersion: GenericContent) => {
+    const name = selectedVersion.DisplayName ?? selectedVersion.Name
+    openDialog({
+      name: 'are-you-sure',
+      props: {
+        submitText: localization.restoreSubmitText,
+        bodyText: localization.restoreBodyText(name, selectedVersion.Version),
+        callBack: async () => {
+          try {
+            await repo.versioning.restoreVersion(selectedVersion.Id, selectedVersion.Version)
+            logger.information({ message: localization.restoreVersionSuccess(name, selectedVersion.Version) })
+            closeAllDialogs()
+          } catch (error) {
+            closeAllDialogs()
+            logger.error({
+              message: localization.restoreVersionError(name, selectedVersion.Version),
+              data: error,
+            })
+          }
+        },
+      },
+    })
+  }
+
+  return (
+    <div
+      className={clsx(classes.mainForm, {
+        [classes.mainFormFullpage]: props.isFullPage,
+      })}>
+      <div
+        className={clsx(classes.form, {
+          [classes.formFullPage]: props.isFullPage,
+        })}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>{localization.versionTableHead}</TableCell>
+              <TableCell>{localization.modifiedByTableHead}</TableCell>
+              <TableCell>{localization.commentTableHead}</TableCell>
+              <TableCell>{localization.rejectReasonTableHead}</TableCell>
+              <TableCell>{localization.restoreTableHead}</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {versions?.map((version, index) => (
+              <TableRow key={index}>
+                <TableCell>{version.Version}</TableCell>
+                <TableCell>
+                  {moment(version.VersionModificationDate).fromNow()}
+                  {` (${((version.VersionModifiedBy as any) as User).FullName})`}
+                </TableCell>
+                <TableCell>
+                  <Tooltip disableFocusListener={true} title={version.CheckInComments ?? ''}>
+                    <span>{version.CheckInComments ?? ''}</span>
+                  </Tooltip>
+                </TableCell>
+                <TableCell>
+                  <Tooltip disableFocusListener={true} title={version.RejectReason ?? ''}>
+                    <span>{version.RejectReason ?? ''}</span>
+                  </Tooltip>
+                </TableCell>
+                <TableCell padding="none" style={{ width: '5%' }}>
+                  {index !== versions.length - 1 ? (
+                    <IconButton onClick={() => restoreVersion(version)} title="{localization.restoreButtonTitle}">
+                      <HistoryIcon />
+                    </IconButton>
+                  ) : null}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+      <div className={classes.actionButtonWrapper}>
+        <MediaQuery minDeviceWidth={700}>
+          <Button color="default" className={globalClasses.cancelButton} onClick={() => props.handleCancel?.()}>
+            {formLocalization.cancel}
+          </Button>
+        </MediaQuery>
+      </div>
+    </div>
+  )
 }

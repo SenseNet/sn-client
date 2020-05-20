@@ -88,7 +88,7 @@ export const Content = () => {
           leftParent={currentPath}
           rightParent={secondaryPath}
           onActivateItem={onActivateItem}
-          onNavigateLeft={(c) => onNavigate(c, true)}
+          onNavigateLeft={(content) => onNavigate(content, true)}
           onNavigateRight={onNavigateSecondary}
           fieldsToDisplay={settings.content.fields}
         />

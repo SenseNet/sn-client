@@ -20,7 +20,7 @@ const EditBinary = lazy(() => import(/* webpackChunkName: "editBinary" */ './edi
 const EditProperties = lazy(() => import(/* webpackChunkName: "editProperties" */ './edit/edit-properties'))
 const BrowseProperties = lazy(() => import(/* webpackChunkName: "browseProperties" */ './browse/browse-properties'))
 const NewProperties = lazy(() => import(/* webpackChunkName: "newProperties" */ './new/new-properties'))
-const VersionProperties = lazy(() => import(/* webpackChunkName: "newProperties" */ './version/version-properties'))
+const VersionProperties = lazy(() => import(/* webpackChunkName: "versionProperties" */ './version/version-properties'))
 const DocumentViewerComponent = lazy(() => import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 const TrashComponent = lazy(() => import(/* webpackChunkName: "Trash" */ './trash/Trash'))
 const EventListComponent = lazy(() => import(/* webpackChunkName: "EventList" */ './event-list/event-list'))

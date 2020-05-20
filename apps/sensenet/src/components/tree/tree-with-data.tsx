@@ -229,7 +229,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
     })
   }
 
-  if (!itemCount || itemCount == null || !treeData) {
+  if (!itemCount || !treeData) {
     return null
   }
 
