@@ -22,7 +22,7 @@ import React, { useEffect, useState } from 'react'
 import MediaQuery from 'react-responsive'
 import { useLocalization, useSelectionService } from '../../hooks'
 import { useDialog } from '../dialogs'
-import { useGlobalStyles } from '../../globalStyles'
+import { globals, useGlobalStyles } from '../../globalStyles'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -31,17 +31,17 @@ const useStyles = makeStyles(() => {
       padding: '22px 22px 0 22px',
       overflowY: 'auto',
       width: '100%',
-      height: 'calc(100% - 80px)',
+      height: `calc(100% - ${globals.common.formActionButtonsHeight}px)`,
     },
     formFullPage: {
-      height: 'calc(100% - 145px)',
+      height: `calc(100% - ${globals.common.formActionButtonsHeight + globals.common.drawerItemHeight}px)`,
     },
     mainForm: {
       display: 'initial',
-      height: 'calc(100% - 68px)',
+      height: `calc(100% - ${globals.common.formTitleHeight}px)`,
     },
     mainFormFullpage: {
-      height: 'calc(100% - 65px)',
+      height: `calc(100% - ${globals.common.drawerItemHeight}px)`,
     },
     grid: {
       display: 'flex',

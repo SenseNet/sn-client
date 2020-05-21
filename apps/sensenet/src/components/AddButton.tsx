@@ -74,6 +74,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
   const [currentComponent, setCurrentComponent] = useState(selectionService.activeContent.getValue())
   const personalSettings = usePersonalSettings()
   const dialogActionService = useDialogActionService()
+  const [activeAction, setActiveAction] = useState(dialogActionService.activeAction.getValue())
 
   useEffect(() => {
     const activeComponentObserve = selectionService.activeContent.subscribe((newActiveComponent) =>
@@ -86,11 +87,21 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
   }, [selectionService.activeContent])
 
   useEffect(() => {
+    const activeActionObserve = dialogActionService.activeAction.subscribe((newActiveAction) =>
+      setActiveAction(newActiveAction),
+    )
+
+    return function cleanup() {
+      activeActionObserve.dispose()
+    }
+  }, [dialogActionService.activeAction])
+
+  useEffect(() => {
     const getActions = async () => {
       try {
         const actions = await repo.getActions({ idOrPath: currentComponent ? currentComponent.Id : props.path })
         const isActionFound = actions.d.Actions.some((action) => action.Name === 'Add' || action.Name === 'Upload')
-        setAvailable(isActionFound)
+        setAvailable(isActionFound && activeAction !== 'new')
       } catch (error) {
         logger.error({
           message: localization.errorGettingActions,
@@ -106,7 +117,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
     } else {
       setAvailable(false)
     }
-  }, [currentComponent, localization.errorGettingActions, logger, props.path, repo])
+  }, [currentComponent, localization.errorGettingActions, logger, props.path, repo, activeAction])
 
   useEffect(() => {
     const getAllowedChildTypes = async () => {

@@ -9,7 +9,7 @@ import { useLogger, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { createElement, ReactElement, useState } from 'react'
 import MediaQuery from 'react-responsive'
-import { useGlobalStyles } from '../../globalStyles'
+import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { reactControlMapper } from '../react-control-mapper'
 
@@ -17,17 +17,17 @@ const useStyles = makeStyles(() => {
   return createStyles({
     mainform: {
       width: '100%',
-      height: 'calc(100% - 68px)',
+      height: `calc(100% - ${globals.common.formTitleHeight}px)`,
     },
     mainformFullPage: {
-      height: 'calc(100% - 65px)',
+      height: `calc(100% - ${globals.common.drawerItemHeight}px)`,
     },
     form: {
       margin: '0 auto',
       padding: '22px 22px 0 22px',
       overflowY: 'auto',
       width: '100%',
-      height: 'calc(100% - 80px)',
+      height: `calc(100% - ${globals.common.formActionButtonsHeight}px)`,
     },
     grid: {
       display: 'flex',
