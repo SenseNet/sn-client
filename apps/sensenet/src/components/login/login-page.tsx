@@ -25,6 +25,9 @@ const useStyles = makeStyles(() =>
       backgroundColor: globals.common.headerBackground,
       boxShadow: 'none',
     },
+    loginSubtitle: {
+      marginBottom: '1em',
+    },
   }),
 )
 
@@ -59,16 +62,33 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
       </AppBar>
       <Container maxWidth="sm">
         <Grid container direction="column">
-          <Grid container direction="column" justify="center" style={{ flexBasis: 300 }}>
+          <Grid container direction="column" justify="center" style={{ flexBasis: 200 }}>
             <Typography align="center" variant="h4" component="p">
               Welcome to admin.sensenet.com
             </Typography>
-            <Typography align="center" variant="subtitle1" component="p">
-              Please type in your repository URL to continue
-            </Typography>
+          </Grid>
+          <Grid direction="column" style={{ flexBasis: 150 }} align="center">
+            <Grid item>
+              <Typography align="center" variant="subtitle1" component="p">
+                {`If you don't have your own repository yet`}
+              </Typography>
+              <br />
+              <Button
+                size="medium"
+                aria-label={localization.loginToDemoButtonTitle}
+                disabled={isLoginInProgress}
+                variant="contained"
+                color="secondary">
+                {localization.loginToDemoButtonTitle}
+                {isLoginInProgress && <CircularProgress size={14} />}
+              </Button>
+            </Grid>
           </Grid>
           <Grid item>
             <form onSubmit={handleOnSubmit}>
+              <Typography align="center" variant="subtitle1" component="p" className={classes.loginSubtitle}>
+                Otherwise please type in your repository URL to continue
+              </Typography>
               <InputLabel shrink htmlFor="repository" required={true}>
                 {localization.repositoryLabel}
               </InputLabel>
