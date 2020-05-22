@@ -8,11 +8,9 @@ import { useRepository } from '@sensenet/hooks-react'
 import { Query } from '@sensenet/query'
 import clsx from 'clsx'
 import React, { useEffect, useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
-import { applicationPaths, resolvePathParams } from '../../application-paths'
+import { Link } from 'react-router-dom'
 import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization, useSelectionService } from '../../hooks'
-import { useDialogActionService } from '../../hooks/use-dialogaction-service'
+import { useDialogActionSubscribe, useLocalization, useSelectionService } from '../../hooks'
 import { getPrimaryActionUrl } from '../../services/content-context-service'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { WellKnownContentCard } from './well-known-content-card'
@@ -27,49 +25,8 @@ const Setup = () => {
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [contextMenuItem, setContextMenuItem] = useState<Settings | null>(null)
-  const dialogActionService = useDialogActionService()
   const selectionService = useSelectionService()
-  const history = useHistory()
-
-  useEffect(() => {
-    const activeDialogActionObserve = dialogActionService.activeAction.subscribe((newDialogAction) => {
-      if (selectionService.activeContent.getValue()) {
-        switch (newDialogAction) {
-          case 'edit':
-            history.push(
-              resolvePathParams({
-                path: applicationPaths.editProperties,
-                params: { contentId: selectionService.activeContent.getValue()!.Id },
-              }),
-            )
-            break
-          case 'browse':
-            history.push(
-              resolvePathParams({
-                path: applicationPaths.browseProperties,
-                params: { contentId: selectionService.activeContent.getValue()!.Id },
-              }),
-            )
-            break
-          case 'version':
-            history.push(
-              resolvePathParams({
-                path: applicationPaths.versionProperties,
-                params: { contentId: selectionService.activeContent.getValue()!.Id },
-              }),
-            )
-            break
-          default:
-            break
-        }
-      }
-    })
-
-    return function cleanup() {
-      activeDialogActionObserve.dispose()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dialogActionService.activeAction])
+  useDialogActionSubscribe()
 
   useEffect(() => {
     ;(async () => {

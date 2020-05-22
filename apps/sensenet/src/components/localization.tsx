@@ -1,11 +1,9 @@
 import { useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useHistory } from 'react-router'
-import { applicationPaths, resolvePathParams } from '../application-paths'
 import { useGlobalStyles } from '../globalStyles'
-import { useLocalization, useSelectionService } from '../hooks'
-import { useDialogActionService } from '../hooks/use-dialogaction-service'
+import { useDialogActionSubscribe, useLocalization } from '../hooks'
 import { getPrimaryActionUrl } from '../services'
 import { SimpleList } from './content/Simple'
 
@@ -14,48 +12,7 @@ export default function Localization() {
   const repository = useRepository()
   const localizationDrawerTitles = useLocalization().drawer.titles
   const history = useHistory()
-  const dialogActionService = useDialogActionService()
-  const selectionService = useSelectionService()
-
-  useEffect(() => {
-    const activeDialogActionObserve = dialogActionService.activeAction.subscribe((newDialogAction) => {
-      if (selectionService.activeContent.getValue()) {
-        switch (newDialogAction) {
-          case 'edit':
-            history.push(
-              resolvePathParams({
-                path: applicationPaths.editProperties,
-                params: { contentId: selectionService.activeContent.getValue()!.Id },
-              }),
-            )
-            break
-          case 'browse':
-            history.push(
-              resolvePathParams({
-                path: applicationPaths.browseProperties,
-                params: { contentId: selectionService.activeContent.getValue()!.Id },
-              }),
-            )
-            break
-          case 'version':
-            history.push(
-              resolvePathParams({
-                path: applicationPaths.versionProperties,
-                params: { contentId: selectionService.activeContent.getValue()!.Id },
-              }),
-            )
-            break
-          default:
-            break
-        }
-      }
-    })
-
-    return function cleanup() {
-      activeDialogActionObserve.dispose()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dialogActionService.activeAction])
+  useDialogActionSubscribe()
 
   return (
     <div className={globalClasses.contentWrapper}>

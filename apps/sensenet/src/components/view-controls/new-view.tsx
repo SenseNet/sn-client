@@ -10,7 +10,7 @@ import clsx from 'clsx'
 import React, { createElement, ReactElement, useState } from 'react'
 import MediaQuery from 'react-responsive'
 import { globals, useGlobalStyles } from '../../globalStyles'
-import { useLocalization } from '../../hooks'
+import { useDialogActionService, useLocalization, useSelectionService } from '../../hooks'
 import { reactControlMapper } from '../react-control-mapper'
 
 const useStyles = makeStyles(() => {
@@ -86,6 +86,8 @@ export const NewView: React.FC<NewViewProps> = (props) => {
   const localization = useLocalization()
   const globalClasses = useGlobalStyles()
   const logger = useLogger('AddDialog')
+  const selectionService = useSelectionService()
+  const dialogActionService = useDialogActionService()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -177,7 +179,14 @@ export const NewView: React.FC<NewViewProps> = (props) => {
           <Button
             color="default"
             className={globalClasses.cancelButton}
-            onClick={() => props.handleCancel && props.handleCancel()}>
+            onClick={() => {
+              if (selectionService.activeContent.getValue() !== undefined) {
+                selectionService.activeContent.setValue(undefined)
+              }
+              dialogActionService.activeAction.setValue(undefined)
+              dialogActionService.contentTypeNameForNewContent.setValue(undefined)
+              props.handleCancel?.()
+            }}>
             {localization.forms.cancel}
           </Button>
         </MediaQuery>

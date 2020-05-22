@@ -14,15 +14,16 @@ import {
   Tooltip,
 } from '@material-ui/core'
 import HistoryIcon from '@material-ui/icons/History'
+import { PathHelper } from '@sensenet/client-utils/src/path-helper'
 import { GenericContent, User } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import MediaQuery from 'react-responsive'
-import { useLocalization, useSelectionService } from '../../hooks'
-import { useDialog } from '../dialogs'
 import { globals, useGlobalStyles } from '../../globalStyles'
+import { useDialogActionService, useLocalization, useSelectionService } from '../../hooks'
+import { useDialog } from '../dialogs'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -85,6 +86,7 @@ export const VersionView: React.FC<VersionViewProps> = (props) => {
   const [versions, setVersions] = useState<GenericContent[]>()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
+  const dialogActionService = useDialogActionService()
 
   useEffect(() => {
     const activeComponentObserve = selectionService.activeContent.subscribe((newActiveComponent) =>
@@ -197,7 +199,19 @@ export const VersionView: React.FC<VersionViewProps> = (props) => {
       </div>
       <div className={classes.actionButtonWrapper}>
         <MediaQuery minDeviceWidth={700}>
-          <Button color="default" className={globalClasses.cancelButton} onClick={() => props.handleCancel?.()}>
+          <Button
+            color="default"
+            className={globalClasses.cancelButton}
+            onClick={async () => {
+              if (selectionService.activeContent.getValue() !== undefined) {
+                const parentContent = await repo.load({
+                  idOrPath: PathHelper.getParentPath(selectionService.activeContent.getValue()!.Path),
+                })
+                selectionService.activeContent.setValue(parentContent.d)
+              }
+              dialogActionService.activeAction.setValue(undefined)
+              props.handleCancel?.()
+            }}>
             {formLocalization.cancel}
           </Button>
         </MediaQuery>

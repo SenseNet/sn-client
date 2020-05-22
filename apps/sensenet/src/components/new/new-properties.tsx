@@ -32,15 +32,6 @@ export default function NewProperties() {
   const dialogActionService = useDialogActionService()
   const history = useHistory()
 
-  const handleCancel = () => {
-    if (selectionService.activeContent.getValue() !== undefined) {
-      selectionService.activeContent.setValue(undefined)
-    }
-    dialogActionService.activeAction.setValue(undefined)
-    dialogActionService.contentTypeNameForNewContent.setValue(undefined)
-    history.goBack()
-  }
-
   return (
     <div className={clsx(globalClasses.full, classes.editWrapper)}>
       <CurrentContentProvider
@@ -60,7 +51,7 @@ export default function NewProperties() {
             contentTypeName={dialogActionService.contentTypeNameForNewContent.getValue()!}
             currentContent={currentContent}
             uploadFolderpath="/Root/Content/demoavatars"
-            handleCancel={handleCancel}
+            handleCancel={history.goBack}
             isFullPage={true}
             submitCallback={() => {
               dialogActionService.activeAction.setValue(undefined)

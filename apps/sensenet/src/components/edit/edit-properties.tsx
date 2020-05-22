@@ -1,7 +1,6 @@
 import { createStyles, makeStyles } from '@material-ui/core'
-import { PathHelper } from '@sensenet/client-utils'
 import { Schema } from '@sensenet/default-content-types'
-import { CurrentContentProvider, useRepository } from '@sensenet/hooks-react'
+import { CurrentContentProvider } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React from 'react'
 import { useHistory, useRouteMatch } from 'react-router'
@@ -25,7 +24,6 @@ export default function EditProperties() {
   const selectionService = useSelectionService()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
-  const repo = useRepository()
   const dialogActionService = useDialogActionService()
 
   return (
@@ -45,16 +43,7 @@ export default function EditProperties() {
         </div>
         <EditView
           uploadFolderpath={'/Root/Content/demoavatars'}
-          handleCancel={async () => {
-            if (selectionService.activeContent.getValue() !== undefined) {
-              const parentContent = await repo.load({
-                idOrPath: PathHelper.getParentPath(selectionService.activeContent.getValue()!.Path),
-              })
-              selectionService.activeContent.setValue(parentContent.d)
-            }
-            dialogActionService.activeAction.setValue(undefined)
-            history.goBack()
-          }}
+          handleCancel={history.goBack}
           actionName={'edit'}
           isFullPage={true}
           submitCallback={() => {

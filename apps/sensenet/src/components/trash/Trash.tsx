@@ -1,11 +1,10 @@
 import { ODataParams } from '@sensenet/client-core'
 import { TrashBin } from '@sensenet/default-content-types'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { applicationPaths, resolvePathParams } from '../../application-paths'
 import { useGlobalStyles } from '../../globalStyles'
-import { useSelectionService } from '../../hooks'
-import { useDialogActionService } from '../../hooks/use-dialogaction-service'
+import { useDialogActionSubscribe } from '../../hooks'
 import { useLoadContent } from '../../hooks/use-loadContent'
 import { SimpleList } from '../content/Simple'
 import TrashHeader from './TrashHeader'
@@ -16,48 +15,7 @@ const Trash = React.memo(() => {
   const { content } = useLoadContent<TrashBin>({ idOrPath: '/Root/Trash', oDataOptions })
   const globalClasses = useGlobalStyles()
   const history = useHistory()
-  const dialogActionService = useDialogActionService()
-  const selectionService = useSelectionService()
-
-  useEffect(() => {
-    const activeDialogActionObserve = dialogActionService.activeAction.subscribe((newDialogAction) => {
-      if (selectionService.activeContent.getValue()) {
-        switch (newDialogAction) {
-          case 'edit':
-            history.push(
-              resolvePathParams({
-                path: applicationPaths.editProperties,
-                params: { contentId: selectionService.activeContent.getValue()!.Id },
-              }),
-            )
-            break
-          case 'browse':
-            history.push(
-              resolvePathParams({
-                path: applicationPaths.browseProperties,
-                params: { contentId: selectionService.activeContent.getValue()!.Id },
-              }),
-            )
-            break
-          case 'version':
-            history.push(
-              resolvePathParams({
-                path: applicationPaths.versionProperties,
-                params: { contentId: selectionService.activeContent.getValue()!.Id },
-              }),
-            )
-            break
-          default:
-            break
-        }
-      }
-    })
-
-    return function cleanup() {
-      activeDialogActionObserve.dispose()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dialogActionService.activeAction])
+  useDialogActionSubscribe()
 
   return (
     <div className={globalClasses.contentWrapper}>

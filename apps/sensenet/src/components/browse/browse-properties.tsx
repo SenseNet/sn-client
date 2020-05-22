@@ -1,14 +1,13 @@
 import { createStyles, makeStyles } from '@material-ui/core'
 import { Schema } from '@sensenet/default-content-types'
-import { CurrentContentProvider, useRepository } from '@sensenet/hooks-react'
+import { CurrentContentProvider } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React from 'react'
 import { useHistory, useRouteMatch } from 'react-router'
-import { PathHelper } from '@sensenet/client-utils'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
-import { EditView } from '../view-controls/edit-view'
 import { useDialogActionService } from '../../hooks/use-dialogaction-service'
+import { EditView } from '../view-controls/edit-view'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -29,7 +28,6 @@ export default function BrowseProperties() {
   const selectionService = useSelectionService()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
-  const repo = useRepository()
   const dialogActionService = useDialogActionService()
 
   return (
@@ -48,16 +46,7 @@ export default function BrowseProperties() {
         </div>
         <EditView
           uploadFolderpath="/Root/Content/demoavatars"
-          handleCancel={async () => {
-            if (selectionService.activeContent.getValue() !== undefined) {
-              const parentContent = await repo.load({
-                idOrPath: PathHelper.getParentPath(selectionService.activeContent.getValue()!.Path),
-              })
-              selectionService.activeContent.setValue(parentContent.d)
-            }
-            dialogActionService.activeAction.setValue(undefined)
-            history.goBack()
-          }}
+          handleCancel={history.goBack}
           actionName="browse"
           isFullPage={true}
           submitCallback={() => {

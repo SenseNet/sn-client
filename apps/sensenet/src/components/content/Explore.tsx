@@ -11,6 +11,7 @@ import {
 import clsx from 'clsx'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
+import { applicationPaths, resolvePathParams } from '../../application-paths'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
 import { useDialogActionService } from '../../hooks/use-dialogaction-service'
@@ -24,7 +25,6 @@ import TreeWithData from '../tree/tree-with-data'
 import { VersionView } from '../view-controls'
 import { EditView } from '../view-controls/edit-view'
 import { NewView } from '../view-controls/new-view'
-import { applicationPaths, resolvePathParams } from '../../application-paths'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -173,15 +173,6 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
                           </div>
                           <EditView
                             uploadFolderpath="/Root/Content/demoavatars"
-                            handleCancel={async () => {
-                              dialogActionService.activeAction.setValue(undefined)
-                              if (selectionService.activeContent.getValue() !== undefined) {
-                                const parentContent = await repo.load({
-                                  idOrPath: PathHelper.getParentPath(selectionService.activeContent.getValue()!.Path),
-                                })
-                                selectionService.activeContent.setValue(parentContent.d)
-                              }
-                            }}
                             actionName={action}
                             submitCallback={() => dialogActionService.activeAction.setValue(undefined)}
                           />
@@ -201,10 +192,6 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
                               contentTypeName={dialogActionService.contentTypeNameForNewContent.getValue()!}
                               currentContent={selectionService.activeContent.getValue()}
                               uploadFolderpath="/Root/Content/demoavatars"
-                              handleCancel={async () => {
-                                dialogActionService.activeAction.setValue(undefined)
-                                dialogActionService.contentTypeNameForNewContent.setValue(undefined)
-                              }}
                               submitCallback={() => {
                                 dialogActionService.activeAction.setValue(undefined)
                                 dialogActionService.contentTypeNameForNewContent.setValue(undefined)
@@ -218,12 +205,7 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
                             <div className={clsx(classes.title, globalClasses.centered)}>
                               Versions of {selectionService.activeContent.getValue()?.DisplayName}
                             </div>
-                            <VersionView
-                              handleCancel={() => {
-                                dialogActionService.activeAction.setValue(undefined)
-                                dialogActionService.contentTypeNameForNewContent.setValue(undefined)
-                              }}
-                            />
+                            <VersionView />
                           </>
                         )
                       )}

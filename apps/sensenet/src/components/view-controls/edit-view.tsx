@@ -5,13 +5,14 @@ import { createStyles, makeStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import { isExtendedError } from '@sensenet/client-core'
+import { PathHelper } from '@sensenet/client-utils/src/path-helper'
 import { FieldSetting } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { createElement, ReactElement, useEffect, useState } from 'react'
 import MediaQuery from 'react-responsive'
 import { globals, useGlobalStyles } from '../../globalStyles'
-import { useLocalization, useSelectionService } from '../../hooks'
+import { useDialogActionService, useLocalization, useSelectionService } from '../../hooks'
 import { ActionNameType, reactControlMapper } from '../react-control-mapper'
 
 const useStyles = makeStyles(() => {
@@ -89,6 +90,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
   const globalClasses = useGlobalStyles()
   const localization = useLocalization()
   const logger = useLogger('EditView')
+  const dialogActionService = useDialogActionService()
 
   useEffect(() => {
     async function getExpandedContent() {
@@ -102,7 +104,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
       setContent(expanedContentResponse.d)
     }
     selectionService.activeContent.getValue() && getExpandedContent()
-  })
+  }, [])
 
   useEffect(() => {
     const activeComponentObserve = selectionService.activeContent.subscribe(async (newActiveComponent) => {
@@ -236,7 +238,16 @@ export const EditView: React.FC<EditViewProps> = (props) => {
             <Button
               color="default"
               className={globalClasses.cancelButton}
-              onClick={() => props.handleCancel && props.handleCancel()}>
+              onClick={async () => {
+                if (selectionService.activeContent.getValue() !== undefined) {
+                  const parentContent = await repo.load({
+                    idOrPath: PathHelper.getParentPath(selectionService.activeContent.getValue()!.Path),
+                  })
+                  selectionService.activeContent.setValue(parentContent.d)
+                }
+                dialogActionService.activeAction.setValue(undefined)
+                props.handleCancel?.()
+              }}>
               {localization.forms.cancel}
             </Button>
           </MediaQuery>
