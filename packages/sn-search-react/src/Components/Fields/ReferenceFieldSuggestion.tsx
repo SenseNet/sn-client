@@ -1,9 +1,9 @@
+import { GenericContent } from '@sensenet/default-content-types'
+import React from 'react'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import { GenericContent } from '@sensenet/default-content-types'
 import match from 'autosuggest-highlight/match'
 import parse from 'autosuggest-highlight/parse'
-import React from 'react'
 
 /**
  * Parses a full text based on a search term and returns the corresponding list of JSX.Elements

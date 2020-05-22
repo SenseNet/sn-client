@@ -1,5 +1,5 @@
-import { Button, DialogActions, DialogContent, DialogTitle } from '@material-ui/core'
 import React from 'react'
+import { Button, DialogActions, DialogContent, DialogTitle } from '@material-ui/core'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { useDialog } from './dialog-provider'

@@ -1,5 +1,5 @@
-import { shallow } from 'enzyme'
 import React from 'react'
+import { shallow } from 'enzyme'
 import { Icon, iconType } from '../src/components/Icon'
 import { ImageIcon } from '../src/components/image/Icon'
 

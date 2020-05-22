@@ -1,6 +1,6 @@
-import { shallow, ShallowWrapper } from 'enzyme'
 import React from 'react'
 import Button from '@material-ui/core/Button'
+import { shallow, ShallowWrapper } from 'enzyme'
 import { DialogComponent, DialogProps } from '../src/components/simple-dialog'
 
 describe('DialogComponent', () => {

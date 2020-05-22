@@ -1,7 +1,7 @@
+import React, { useCallback } from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import RotateLeft from '@material-ui/icons/RotateLeft'
 import RotateRight from '@material-ui/icons/RotateRight'
-import React, { useCallback } from 'react'
 import { useLocalization, usePreviewImages } from '../../hooks'
 import { ROTATION_AMOUNT } from '../page-widgets/RotatePage'
 

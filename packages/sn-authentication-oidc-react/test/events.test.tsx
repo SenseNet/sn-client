@@ -1,5 +1,5 @@
-import { mount, shallow } from 'enzyme'
 import React from 'react'
+import { mount, shallow } from 'enzyme'
 import { act } from 'react-dom/test-utils'
 import { AuthenticationProvider, CustomEvents, useOidcAuthentication } from '../src'
 import { authenticationService } from '../src/authentication-service'

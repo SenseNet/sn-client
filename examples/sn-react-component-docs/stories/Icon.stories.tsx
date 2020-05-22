@@ -1,9 +1,9 @@
 import { FlatIcon, FontAwesomeIcon, Icon, ImageIcon, MaterialIcon } from '@sensenet/icons-react/src'
+import React from 'react'
 import { withA11y } from '@storybook/addon-a11y'
 import { action } from '@storybook/addon-actions'
 import { select, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
-import React from 'react'
 
 import defaultNotes from '../notes/icon/Default.md'
 import materialuiNotes from '../notes/icon/Materialui.md'

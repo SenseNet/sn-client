@@ -1,5 +1,4 @@
 /* eslint-disable react/display-name */
-import React from 'react'
 import { Repository } from '@sensenet/client-core'
 import {
   AllowedChildTypes,
@@ -25,6 +24,7 @@ import {
   TimePicker,
 } from '@sensenet/controls-react/src'
 import { GenericContent, Group, Image, Task, User, VersioningMode } from '@sensenet/default-content-types/src'
+import React from 'react'
 import shorttextNotes from '../notes/fieldcontrols/ShortText.md'
 import displaynameNotes from '../notes/fieldcontrols/DisplayName.md'
 import checkboxgroupNotes from '../notes/fieldcontrols/CheckboxGroup.md'

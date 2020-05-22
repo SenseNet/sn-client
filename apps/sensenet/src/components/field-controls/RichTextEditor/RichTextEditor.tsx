@@ -2,11 +2,11 @@
  * @module FieldControls
  */
 
-import { createStyles, InputLabel, makeStyles, Theme } from '@material-ui/core'
-import Typography from '@material-ui/core/Typography'
 import { changeJScriptValue } from '@sensenet/controls-react'
 import React, { useState } from 'react'
 import ReactQuill, { Quill } from 'react-quill'
+import Typography from '@material-ui/core/Typography'
+import { createStyles, InputLabel, makeStyles, Theme } from '@material-ui/core'
 import 'react-quill/dist/quill.snow.css'
 import { useLocalization } from '../../../hooks'
 import { ReactClientFieldSetting } from '../ClientFieldSetting'

@@ -1,8 +1,8 @@
-import React from 'react'
 import { Repository } from '@sensenet/client-core'
 import { GenericContent, VersioningMode } from '@sensenet/default-content-types'
-import { shallow } from 'enzyme'
+import React from 'react'
 import Typography from '@material-ui/core/Typography'
+import { shallow } from 'enzyme'
 import { NewView } from '../src/viewcontrols'
 import {
   AllowedChildTypes,

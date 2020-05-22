@@ -1,7 +1,7 @@
-import Avatar, { AvatarProps } from '@material-ui/core/Avatar'
 import { PathHelper } from '@sensenet/client-utils'
 import { User } from '@sensenet/default-content-types'
 import React from 'react'
+import Avatar, { AvatarProps } from '@material-ui/core/Avatar'
 
 export const UserAvatar: React.StatelessComponent<{
   user: User

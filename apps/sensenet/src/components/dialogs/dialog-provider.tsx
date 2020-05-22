@@ -1,5 +1,5 @@
-import { DialogProps } from '@material-ui/core/Dialog'
 import React, { createContext, useCallback, useContext, useReducer } from 'react'
+import { DialogProps } from '@material-ui/core/Dialog'
 import { ErrorBoundary, ErrorBoundaryState } from '../error-boundary'
 import {
   ApproveProps,

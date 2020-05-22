@@ -1,7 +1,7 @@
+import { Repository } from '@sensenet/client-core'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { mount, shallow } from 'enzyme'
-import { Repository } from '@sensenet/client-core'
 import { useVersionInfo, VersionInfo } from '../src/hooks'
 import { RepositoryContext } from '../src/context'
 

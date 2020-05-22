@@ -1,5 +1,5 @@
-import BrandingWatermark from '@material-ui/icons/BrandingWatermark'
 import React from 'react'
+import BrandingWatermark from '@material-ui/icons/BrandingWatermark'
 import { useLocalization, useViewerState } from '../../hooks'
 import { ToggleBase } from './ToggleBase'
 

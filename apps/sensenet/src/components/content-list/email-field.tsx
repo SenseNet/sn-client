@@ -1,5 +1,5 @@
-import { TableCell } from '@material-ui/core'
 import React from 'react'
+import { TableCell } from '@material-ui/core'
 import clsx from 'clsx'
 import { useGlobalStyles } from '../../globalStyles'
 

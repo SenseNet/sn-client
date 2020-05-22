@@ -1,3 +1,4 @@
+import { useVersionInfo } from '@sensenet/hooks-react'
 import React from 'react'
 import WbSunnyTwoTone from '@material-ui/icons/WbSunnyTwoTone'
 import {
@@ -9,7 +10,6 @@ import {
   ListItemText,
   Typography,
 } from '@material-ui/core'
-import { useVersionInfo } from '@sensenet/hooks-react'
 import { Widget } from '../../services/PersonalSettings'
 import { useLocalization, useStringReplace, useTheme } from '../../hooks'
 

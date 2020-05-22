@@ -1,6 +1,6 @@
-import { Button } from '@material-ui/core'
-import React, { useState } from 'react'
 import { CommentData } from '@sensenet/client-core'
+import React, { useState } from 'react'
+import { Button } from '@material-ui/core'
 import { ConfirmationDialog } from '../ConfirmationDialog'
 import { useDocumentData, useDocumentViewerApi, useLocalization } from '../../hooks'
 

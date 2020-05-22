@@ -1,6 +1,6 @@
+import React from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import clsx from 'clsx'
-import React from 'react'
 import { useGlobalStyles } from '../globalStyles'
 import { useLocalization } from '../hooks'
 

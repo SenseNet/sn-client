@@ -1,5 +1,5 @@
-import { CssBaseline } from '@material-ui/core'
 import React from 'react'
+import { CssBaseline } from '@material-ui/core'
 import AppProviders from './app-providers'
 import { Dialogs } from './dialogs'
 import { MainRouter } from './MainRouter'

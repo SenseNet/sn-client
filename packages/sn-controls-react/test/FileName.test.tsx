@@ -1,7 +1,7 @@
 import React from 'react'
-import { mount, shallow } from 'enzyme'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
+import { mount, shallow } from 'enzyme'
 import { FileName } from '../src/fieldcontrols/FileName'
 
 const defaultSettings = {

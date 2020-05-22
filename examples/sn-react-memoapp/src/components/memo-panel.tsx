@@ -1,7 +1,9 @@
 /* eslint-disable require-jsdoc */
+import { GenericContent, User } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import moment from 'moment'
 import Fab from '@material-ui/core/Fab'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
@@ -9,7 +11,6 @@ import SaveIcon from '@material-ui/icons/Save'
 import AddIcon from '@material-ui/icons/Add'
 import RedoIcon from '@material-ui/icons/Redo'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import ReactMarkdown from 'react-markdown'
 import {
   ExpansionPanel,
   ExpansionPanelDetails,
@@ -18,8 +19,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core'
-import { GenericContent, User } from '@sensenet/default-content-types'
-import { useRepository } from '@sensenet/hooks-react'
+import moment from 'moment'
 import { NewMemo } from '../interfaces'
 import { DialogComponent } from './dialog'
 import { AddNew } from './add-new-memo'

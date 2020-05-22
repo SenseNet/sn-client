@@ -1,6 +1,6 @@
-import CloudUploadTwoTone from '@material-ui/icons/CloudUploadTwoTone'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
+import CloudUploadTwoTone from '@material-ui/icons/CloudUploadTwoTone'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import clsx from 'clsx'
 import { useGlobalStyles } from '../globalStyles'

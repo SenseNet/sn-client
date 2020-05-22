@@ -1,3 +1,10 @@
+import { ODataCollectionResponse } from '@sensenet/client-core'
+import { ChoiceFieldSetting, GenericContent, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
+import { MaterialIcon } from '@sensenet/icons-react'
+import { Query } from '@sensenet/query'
+import { AdvancedSearch, PresetField, ReferenceField, TextField } from '@sensenet/search-react'
+import { BrowseView } from '@sensenet/controls-react'
+import { useRepository } from '@sensenet/hooks-react'
 import React, { useState } from 'react'
 
 // start of material-ui components
@@ -24,13 +31,6 @@ import { makeStyles } from '@material-ui/styles'
 // end of material-ui components
 
 // start of sensenet components
-import { ODataCollectionResponse } from '@sensenet/client-core'
-import { ChoiceFieldSetting, GenericContent, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
-import { MaterialIcon } from '@sensenet/icons-react'
-import { Query } from '@sensenet/query'
-import { AdvancedSearch, PresetField, ReferenceField, TextField } from '@sensenet/search-react'
-import { BrowseView } from '@sensenet/controls-react'
-import { useRepository } from '@sensenet/hooks-react'
 // end of sensenet components
 
 const localStorageKey = 'sn-advanced-search-demo'

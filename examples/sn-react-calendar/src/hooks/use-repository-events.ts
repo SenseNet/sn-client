@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
 import { EventHub } from '@sensenet/repository-events'
 import { useRepository } from '@sensenet/hooks-react'
+import { useEffect, useState } from 'react'
 
 /**
  * Returns an EventHub instance of the current Repository

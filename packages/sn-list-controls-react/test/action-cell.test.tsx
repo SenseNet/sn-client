@@ -1,6 +1,6 @@
+import React from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import { shallow } from 'enzyme'
-import React from 'react'
 import { ActionsCell } from '../src/ContentList/CellTemplates/ActionsCell'
 
 /**

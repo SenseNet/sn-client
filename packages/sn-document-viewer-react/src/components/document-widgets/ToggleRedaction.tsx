@@ -1,5 +1,5 @@
-import PictureInPicture from '@material-ui/icons/PictureInPicture'
 import React from 'react'
+import PictureInPicture from '@material-ui/icons/PictureInPicture'
 import { useLocalization, useViewerState } from '../../hooks'
 import { ToggleBase } from './ToggleBase'
 

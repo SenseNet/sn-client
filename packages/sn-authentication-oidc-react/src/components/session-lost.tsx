@@ -1,6 +1,6 @@
+import React, { ElementType } from 'react'
 import { Button, Container, Typography } from '@material-ui/core'
 import { History } from 'history'
-import React, { ElementType } from 'react'
 import { getUserManager } from '../authentication-service'
 import { authenticateUser } from '../oidc-service'
 

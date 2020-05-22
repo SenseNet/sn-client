@@ -1,5 +1,5 @@
-import Tooltip from '@material-ui/core/Tooltip'
 import React, { useCallback, useState } from 'react'
+import Tooltip from '@material-ui/core/Tooltip'
 import { Button, FormControl, FormHelperText, IconButton, InputAdornment, TextField } from '@material-ui/core'
 import { LocalizationType } from '../../context/localization-context'
 import { useCommentState, useViewerState } from '../../hooks'

@@ -1,3 +1,7 @@
+import { ODataParams, Repository } from '@sensenet/client-core'
+import { Folder, User } from '@sensenet/default-content-types'
+import { useListPicker } from '@sensenet/pickers-react'
+import React, { useEffect, useRef, useState } from 'react'
 import Avatar from '@material-ui/core/Avatar'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Fade from '@material-ui/core/Fade'
@@ -6,10 +10,6 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import { ODataParams, Repository } from '@sensenet/client-core'
-import { Folder, User } from '@sensenet/default-content-types'
-import { useListPicker } from '@sensenet/pickers-react'
-import React, { useEffect, useRef, useState } from 'react'
 import { LocalizationContext } from '../../../context'
 
 const styles: { [index: string]: React.CSSProperties } = {

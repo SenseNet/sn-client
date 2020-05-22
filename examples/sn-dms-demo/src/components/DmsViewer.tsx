@@ -12,11 +12,11 @@ import {
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
 } from '@sensenet/document-viewer-react'
+import { Icon, iconType } from '@sensenet/icons-react'
 import React, { useCallback, useEffect } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { IconButton, MuiThemeProvider } from '@material-ui/core'
 import MediaQuery from 'react-responsive'
-import { Icon, iconType } from '@sensenet/icons-react'
+import { IconButton, MuiThemeProvider } from '@material-ui/core'
 
 const DocViewer: React.FunctionComponent<
   RouteComponentProps<{ documentId: string }> & {

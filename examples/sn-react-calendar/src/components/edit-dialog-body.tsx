@@ -1,10 +1,10 @@
-import { DialogContent, DialogTitle } from '@material-ui/core'
-import { DialogProps } from '@material-ui/core/Dialog'
 import { ConstantContent } from '@sensenet/client-core'
 import { EditView } from '@sensenet/controls-react'
 import { GenericContent } from '@sensenet/default-content-types'
 import { CurrentContentContext, CurrentContentProvider, useRepository } from '@sensenet/hooks-react'
 import React, { useContext } from 'react'
+import { DialogProps } from '@material-ui/core/Dialog'
+import { DialogContent, DialogTitle } from '@material-ui/core'
 import CalendarEvent from '../CalendarEvent-type'
 import { SharedContext } from '../context/shared-context'
 

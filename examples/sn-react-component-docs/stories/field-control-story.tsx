@@ -1,5 +1,5 @@
-import { storiesOf } from '@storybook/react'
 import { ActionName } from '@sensenet/control-mapper'
+import { storiesOf } from '@storybook/react'
 import { withKnobs } from '@storybook/addon-knobs'
 import { withA11y } from '@storybook/addon-a11y'
 

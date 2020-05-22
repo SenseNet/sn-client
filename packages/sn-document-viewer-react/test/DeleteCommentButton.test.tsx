@@ -1,7 +1,7 @@
+import React from 'react'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import { mount } from 'enzyme'
-import React from 'react'
 import { ConfirmationDialog, DeleteButton, DeleteButtonProps } from '../src/components'
 import { DocumentViewerApiSettingsContext } from '../src/context/api-settings'
 import { DocumentViewerApiSettings } from '../src/models'

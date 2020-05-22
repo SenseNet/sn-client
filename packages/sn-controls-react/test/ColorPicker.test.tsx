@@ -1,7 +1,7 @@
 import React from 'react'
-import { shallow } from 'enzyme'
-import TextField from '@material-ui/core/TextField'
 import { SketchPicker } from 'react-color'
+import TextField from '@material-ui/core/TextField'
+import { shallow } from 'enzyme'
 import { ColorPicker } from '../src/fieldcontrols/ColorPicker'
 
 describe('Color field control', () => {

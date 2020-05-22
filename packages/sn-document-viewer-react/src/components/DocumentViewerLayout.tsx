@@ -1,7 +1,7 @@
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Drawer from '@material-ui/core/Drawer'
 import { SlideProps } from '@material-ui/core/Slide'
 import Typography from '@material-ui/core/Typography'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useCommentState, useDocumentData, useDocumentViewerApi, useLocalization, useViewerState } from '../hooks'
 import { CommentsContext, CommentsContextProvider } from '../context/comments'
 import { Comment } from './comment'

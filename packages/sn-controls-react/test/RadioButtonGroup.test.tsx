@@ -1,10 +1,10 @@
 import React from 'react'
-import { shallow } from 'enzyme'
 import FormLabel from '@material-ui/core/FormLabel'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
+import { shallow } from 'enzyme'
 import { RadioButtonGroup } from '../src/fieldcontrols/RadioButtonGroup'
 
 describe('Radio button group field control', () => {

@@ -1,6 +1,6 @@
+import React from 'react'
 import MaterialTextField from '@material-ui/core/TextField'
 import { shallow } from 'enzyme'
-import React from 'react'
 import { NestedTextField } from '../src/Components/Fields/NestedTextField'
 
 describe('NestedTextField Component', () => {

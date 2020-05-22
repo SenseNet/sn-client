@@ -1,4 +1,3 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
@@ -8,8 +7,9 @@ import {
   LoadSettingsContextProvider,
   useRepository,
 } from '@sensenet/hooks-react'
-import clsx from 'clsx'
 import React, { useState } from 'react'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import clsx from 'clsx'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
 import { ContentList } from '../content-list/content-list'

@@ -1,5 +1,5 @@
-import { shallow } from 'enzyme'
 import React from 'react'
+import { shallow } from 'enzyme'
 import { FlatIcon } from '../src/components/flaticon/Icon'
 import { Icon, iconType } from '../src/components/Icon'
 

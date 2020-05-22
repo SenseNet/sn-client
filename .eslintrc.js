@@ -47,7 +47,29 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
     'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
     'import/no-unresolved': 'off',
-    'import/order': 'error',
+    'import/order': [
+      'error',
+      {
+        pathGroups: [
+          {
+            pattern: '@sensenet/**',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: 'react**',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: '@material-ui/**',
+            group: 'builtin',
+            position: 'before',
+          },
+        ],
+        pathGroupsExcludedImportTypes: ['@sensenet/**'],
+      },
+    ],
     'object-shorthand': 'error',
     'dot-notation': 'error',
     'no-caller': 'error',

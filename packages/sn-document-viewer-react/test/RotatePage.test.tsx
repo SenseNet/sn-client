@@ -1,6 +1,6 @@
-import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { IconButton } from '@material-ui/core'
+import { mount, shallow } from 'enzyme'
 import { RotatePageWidget, ROTATION_AMOUNT } from '../src/components/page-widgets/RotatePage'
 import { PreviewImageDataContext } from '../src/context/preview-image-data'
 import { examplePreviewImageData } from './__Mocks__/viewercontext'

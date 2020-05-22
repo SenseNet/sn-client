@@ -1,6 +1,6 @@
-import CssBaseline from '@material-ui/core/CssBaseline'
-import React, { useContext, useEffect, useState } from 'react'
 import { useInjector, useRepository } from '@sensenet/hooks-react'
+import React, { useContext, useEffect, useState } from 'react'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import { createStyles, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
 import { ResponsivePersonalSettings } from '../../context'

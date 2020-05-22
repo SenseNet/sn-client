@@ -1,8 +1,8 @@
 /* eslint-disable react/display-name */
-import { MuiThemeProvider } from '@material-ui/core/styles'
 import React from 'react'
 import Loadable from 'react-loadable'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { MuiThemeProvider } from '@material-ui/core/styles'
 import { dmsTheme } from './assets/dmstheme'
 import { AuthorizedRoute } from './components/AuthorizedRoute'
 import { Callback } from './components/Callback'

@@ -1,7 +1,7 @@
+import React, { useCallback, useState } from 'react'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import React, { useCallback, useState } from 'react'
 import { useDocumentData, useLocalization, useViewerState } from '../../hooks'
 
 /**

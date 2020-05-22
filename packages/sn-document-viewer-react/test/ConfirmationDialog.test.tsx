@@ -1,6 +1,6 @@
+import React from 'react'
 import Button from '@material-ui/core/Button'
 import { shallow } from 'enzyme'
-import React from 'react'
 import { ConfirmationDialog, ConfirmationDialogProps } from '../src/components'
 
 describe('Confirmation dialog component', () => {

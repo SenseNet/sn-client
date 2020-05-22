@@ -1,8 +1,5 @@
 /* eslint-disable import/named */
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import TableCell from '@material-ui/core/TableCell'
 import { ActionModel, FieldSetting, GenericContent } from '@sensenet/default-content-types'
-import clsx from 'clsx'
 import React, { useCallback, useMemo } from 'react'
 import {
   AutoSizer,
@@ -13,8 +10,11 @@ import {
   TableCellProps,
   TableCellRenderer,
 } from 'react-virtualized'
+import TableCell from '@material-ui/core/TableCell'
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import Checkbox from '@material-ui/core/Checkbox'
 import { TableSortLabel, Tooltip } from '@material-ui/core'
+import clsx from 'clsx'
 import { ContentListBaseProps } from './content-list-base-props'
 import { ActionsCell, DateCell, ReferenceCell, RowCheckbox, VirtualDefaultCell, VirtualDisplayNameCell } from '.'
 

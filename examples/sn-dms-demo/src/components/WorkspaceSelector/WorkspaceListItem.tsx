@@ -1,12 +1,12 @@
-import ListItemText from '@material-ui/core/ListItemText'
-import MenuItem from '@material-ui/core/MenuItem'
-import withStyles from '@material-ui/core/styles/withStyles'
 import { Workspace } from '@sensenet/default-content-types'
 import { Actions } from '@sensenet/redux'
-import { compile } from 'path-to-regexp'
 import React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import withStyles from '@material-ui/core/styles/withStyles'
+import MenuItem from '@material-ui/core/MenuItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import { compile } from 'path-to-regexp'
 import { rootStateType } from '../../store/rootReducer'
 
 const styles = {

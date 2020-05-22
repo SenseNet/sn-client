@@ -1,8 +1,8 @@
 import { CreatedByUser } from '@sensenet/client-core'
 import { Comment } from '@sensenet/document-viewer-react/src/components'
+import React from 'react'
 import { object, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
-import React from 'react'
 import { ViewerExampleApp } from './App'
 
 const createdBy: CreatedByUser = {

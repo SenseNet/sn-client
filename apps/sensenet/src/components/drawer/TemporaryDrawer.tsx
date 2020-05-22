@@ -1,3 +1,7 @@
+import { useRepository, useSession } from '@sensenet/hooks-react'
+import React, { useContext } from 'react'
+import { Link, matchPath, NavLink, useLocation } from 'react-router-dom'
+import Settings from '@material-ui/icons/Settings'
 import {
   IconButton,
   List,
@@ -9,10 +13,6 @@ import {
   SwipeableDrawer,
   Tooltip,
 } from '@material-ui/core'
-import Settings from '@material-ui/icons/Settings'
-import { useRepository, useSession } from '@sensenet/hooks-react'
-import React, { useContext } from 'react'
-import { Link, matchPath, NavLink, useLocation } from 'react-router-dom'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { useDrawerItems, useLocalization, useTheme } from '../../hooks'
 import { LogoutButton } from '../LogoutButton'

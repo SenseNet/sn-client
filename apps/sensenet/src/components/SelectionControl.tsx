@@ -1,6 +1,6 @@
-import Checkbox from '@material-ui/core/Checkbox'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useEffect, useState } from 'react'
+import Checkbox from '@material-ui/core/Checkbox'
 import { useSelectionService } from '../hooks'
 import { Icon } from './Icon'
 

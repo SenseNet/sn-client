@@ -1,5 +1,3 @@
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
 import { Repository } from '@sensenet/client-core'
 import { sleepAsync } from '@sensenet/client-utils'
 import { Folder, PortalSettings, User } from '@sensenet/default-content-types'
@@ -14,12 +12,14 @@ import {
   TypeField,
 } from '@sensenet/search-react/src'
 import { ExampleApp } from '@sensenet/search-react/src/ExampleApp'
+import React from 'react'
+import InputLabel from '@material-ui/core/InputLabel'
+import FormControl from '@material-ui/core/FormControl'
 import { withA11y } from '@storybook/addon-a11y'
 import { action } from '@storybook/addon-actions'
 import { withActions } from '@storybook/addon-actions/dist/preview'
 import { withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
-import React from 'react'
 
 import showcaseNotes from '../notes/search/Showcase.md'
 import advancedSearchNotes from '../notes/search/AdvancedSearch.md'

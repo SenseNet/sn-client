@@ -1,6 +1,6 @@
-import Paper from '@material-ui/core/Paper'
 import React, { useContext } from 'react'
 import { useRouteMatch } from 'react-router-dom'
+import Paper from '@material-ui/core/Paper'
 import { ResponsiveContext } from '../../context'
 import { usePersonalSettings, useTheme } from '../../hooks'
 import { WidgetSection } from '../../services'

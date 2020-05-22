@@ -1,10 +1,10 @@
 import React from 'react'
-import { mount, shallow } from 'enzyme'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import FormControl from '@material-ui/core/FormControl'
+import { mount, shallow } from 'enzyme'
 import { act } from 'react-dom/test-utils'
 import { CheckboxGroup } from '../src/fieldcontrols/CheckboxGroup'
 

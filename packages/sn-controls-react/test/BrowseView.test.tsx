@@ -1,6 +1,6 @@
-import React from 'react'
 import { Repository } from '@sensenet/client-core'
 import { GenericContent, VersioningMode } from '@sensenet/default-content-types'
+import React from 'react'
 import { mount } from 'enzyme'
 import { act } from 'react-dom/test-utils'
 import { BrowseView } from '../src/viewcontrols/BrowseView'

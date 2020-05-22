@@ -1,7 +1,7 @@
-import { AppBar, Button, Toolbar, Typography } from '@material-ui/core'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
 import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
 import React from 'react'
+import { AppBar, Button, Toolbar, Typography } from '@material-ui/core'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(() =>
   createStyles({

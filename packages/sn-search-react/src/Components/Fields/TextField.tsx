@@ -1,7 +1,7 @@
-import MaterialTextField, { TextFieldProps as MaterialTextFieldProps } from '@material-ui/core/TextField'
 import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
 import React from 'react'
+import MaterialTextField, { TextFieldProps as MaterialTextFieldProps } from '@material-ui/core/TextField'
 
 /**
  * Props object for the TextField Component

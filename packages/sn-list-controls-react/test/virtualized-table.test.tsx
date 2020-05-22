@@ -1,10 +1,10 @@
+import { SchemaStore } from '@sensenet/default-content-types'
+import React from 'react'
 import Checkbox from '@material-ui/core/Checkbox'
 import TableRow from '@material-ui/core/TableRow'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
-import { SchemaStore } from '@sensenet/default-content-types'
-import { mount, shallow } from 'enzyme'
-import React from 'react'
 import { Paper } from '@material-ui/core'
+import { mount, shallow } from 'enzyme'
 import { ActionsCell, DateCell, ReferenceCell } from '../src/ContentList/CellTemplates'
 import { VirtualizedTable } from '../src/ContentList/virtualized-table'
 

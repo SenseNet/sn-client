@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/camelcase */
+import React from 'react'
 import { Button } from '@material-ui/core'
 import { mount } from 'enzyme'
 import { UserManager } from 'oidc-client'
-import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { getUserManager } from '../src/authentication-service'
 import { AuthenticationProvider } from '../src/components/authentication-provider'

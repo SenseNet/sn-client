@@ -1,7 +1,7 @@
-import React from 'react'
-import { mount, shallow } from 'enzyme'
-import Typography from '@material-ui/core/Typography'
 import { ReferenceField } from '@sensenet/search-react'
+import React from 'react'
+import Typography from '@material-ui/core/Typography'
+import { mount, shallow } from 'enzyme'
 import { AutoComplete } from '../src/fieldcontrols/AutoComplete'
 
 const userContent = {

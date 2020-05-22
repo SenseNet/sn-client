@@ -1,5 +1,5 @@
-import { shallow } from 'enzyme'
 import React from 'react'
+import { shallow } from 'enzyme'
 import { AdvancedGridList, pickTile } from '../src/components/AdvancedGridList'
 import { images } from './mocks/images'
 

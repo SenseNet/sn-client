@@ -1,5 +1,5 @@
-import Dialog, { DialogProps } from '@material-ui/core/Dialog'
 import React from 'react'
+import Dialog, { DialogProps } from '@material-ui/core/Dialog'
 import NewDialogBody from './new-dialog-body'
 
 export const NewDialog: React.FunctionComponent<{

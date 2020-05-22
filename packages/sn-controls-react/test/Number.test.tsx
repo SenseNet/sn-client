@@ -1,7 +1,7 @@
 import React from 'react'
-import { shallow } from 'enzyme'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
+import { shallow } from 'enzyme'
 import { NumberComponent } from '../src/fieldcontrols/Number'
 
 describe('Number field control', () => {

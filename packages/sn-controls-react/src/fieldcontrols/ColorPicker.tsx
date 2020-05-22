@@ -1,14 +1,14 @@
 /**
  * @module FieldControls
  */
+import { ColorFieldSetting } from '@sensenet/default-content-types'
+import React, { useState } from 'react'
+import { ColorResult, SketchPicker } from 'react-color'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import FormControl from '@material-ui/core/FormControl'
 import Icon from '@material-ui/core/Icon'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
-import React, { useState } from 'react'
-import { ColorResult, SketchPicker } from 'react-color'
-import { ColorFieldSetting } from '@sensenet/default-content-types'
 import { changeJScriptValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 

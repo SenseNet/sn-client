@@ -1,6 +1,6 @@
 import { ObservableValue } from '@sensenet/client-utils'
-import { mount, shallow } from 'enzyme'
 import React from 'react'
+import { mount, shallow } from 'enzyme'
 import { act } from 'react-dom/test-utils'
 import { ThemeProvider } from 'styled-components'
 import { Comment, CommentsContainer, CreateComment, PageList } from '../src/components'

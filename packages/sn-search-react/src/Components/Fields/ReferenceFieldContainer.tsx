@@ -1,7 +1,7 @@
-import List from '@material-ui/core/List'
-import Paper from '@material-ui/core/Paper'
 import React from 'react'
 import { RenderSuggestionsContainerParams } from 'react-autosuggest'
+import List from '@material-ui/core/List'
+import Paper from '@material-ui/core/Paper'
 
 /**
  * Default container for Reference Field suggestion list

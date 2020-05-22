@@ -1,7 +1,7 @@
-import { mount, shallow } from 'enzyme'
-import React from 'react'
-import { act } from 'react-dom/test-utils'
 import { RepositoryContext } from '@sensenet/hooks-react'
+import React from 'react'
+import { mount, shallow } from 'enzyme'
+import { act } from 'react-dom/test-utils'
 import { UploadControll } from '../src/components/UploadControll'
 
 describe('UploadControll', () => {

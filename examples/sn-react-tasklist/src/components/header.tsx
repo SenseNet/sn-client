@@ -1,3 +1,4 @@
+import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
 import React from 'react'
 
 // start of material imports
@@ -10,7 +11,6 @@ import Typography from '@material-ui/core/Typography'
 // end of material imports
 
 // start of sensenet imports
-import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
 // end of sensenet imports
 
 const useStyles = makeStyles((theme: Theme) =>

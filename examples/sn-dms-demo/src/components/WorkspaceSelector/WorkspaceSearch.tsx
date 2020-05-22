@@ -1,10 +1,10 @@
+import { Icon, iconType } from '@sensenet/icons-react'
+import React from 'react'
 import FormControl from '@material-ui/core/FormControl'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import { Theme } from '@material-ui/core/styles/createMuiTheme'
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
 import TextField from '@material-ui/core/TextField'
-import { Icon, iconType } from '@sensenet/icons-react'
-import React from 'react'
 
 const styles = (theme: Theme) => ({
   wsSearchContainer: {

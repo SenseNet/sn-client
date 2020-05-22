@@ -1,6 +1,6 @@
-import { mount, shallow } from 'enzyme'
 import React from 'react'
 import IconButton from '@material-ui/core/IconButton'
+import { mount, shallow } from 'enzyme'
 import { SaveWidget } from '../src/components/document-widgets/SaveWidget'
 import { defaultViewerState, ViewerStateContext } from '../src/context/viewer-state'
 import { DocumentViewerApiSettingsContext } from '../src/context/api-settings'

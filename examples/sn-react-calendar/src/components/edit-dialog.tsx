@@ -1,5 +1,5 @@
-import Dialog, { DialogProps } from '@material-ui/core/Dialog'
 import React from 'react'
+import Dialog, { DialogProps } from '@material-ui/core/Dialog'
 import CalendarEvent from '../CalendarEvent-type'
 import EditPropertiesDialogBody from './edit-dialog-body'
 

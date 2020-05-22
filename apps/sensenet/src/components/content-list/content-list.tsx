@@ -1,4 +1,3 @@
-import { createStyles, makeStyles } from '@material-ui/core'
 import { Repository } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
@@ -10,8 +9,9 @@ import {
   useRepository,
 } from '@sensenet/hooks-react'
 import { VirtualCellProps, VirtualDefaultCell, VirtualizedTable } from '@sensenet/list-controls-react'
-import clsx from 'clsx'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { createStyles, makeStyles } from '@material-ui/core'
+import clsx from 'clsx'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'

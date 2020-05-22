@@ -1,6 +1,6 @@
-import { AppBar, Button, Container, createStyles, makeStyles, Toolbar, Typography } from '@material-ui/core'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import { AppBar, Button, Container, createStyles, makeStyles, Toolbar, Typography } from '@material-ui/core'
 import logo from '../../assets/sensenet-icon-32.png'
 import { globals, useGlobalStyles } from '../../globalStyles'
 

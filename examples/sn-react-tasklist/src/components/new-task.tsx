@@ -1,3 +1,6 @@
+import { ODataResponse } from '@sensenet/client-core'
+import { Task } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
 import React from 'react'
 
 // start of material imports
@@ -6,9 +9,6 @@ import TextField from '@material-ui/core/TextField'
 // end of material imports
 
 // start of sensenet imports
-import { ODataResponse } from '@sensenet/client-core'
-import { Task } from '@sensenet/default-content-types'
-import { useRepository } from '@sensenet/hooks-react'
 // end of sensenet imports
 
 const useStyles = makeStyles((theme: Theme) =>

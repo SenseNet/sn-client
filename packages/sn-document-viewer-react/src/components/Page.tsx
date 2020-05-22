@@ -1,6 +1,6 @@
+import React, { useCallback, useEffect, useState } from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Paper from '@material-ui/core/Paper'
-import React, { useCallback, useEffect, useState } from 'react'
 import { ImageUtil } from '../services'
 import { ZoomMode } from '../models/viewer-state'
 import { useCommentState, usePreviewImage, useViewerState } from '../hooks'

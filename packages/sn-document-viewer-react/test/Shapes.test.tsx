@@ -1,5 +1,5 @@
-import { mount, shallow } from 'enzyme'
 import React from 'react'
+import { mount, shallow } from 'enzyme'
 import { ThemeProvider } from 'styled-components'
 import { ShapeAnnotation, ShapeHighlight, ShapeRedaction } from '../src/components/page-widgets/Shape'
 import { ShapesWidget, ShapesWidgetProps } from '../src/components/page-widgets/Shapes'

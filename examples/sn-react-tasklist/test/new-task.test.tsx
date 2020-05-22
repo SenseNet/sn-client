@@ -1,9 +1,9 @@
-import { mount, shallow } from 'enzyme'
-import React from 'react'
 import { RepositoryContext } from '@sensenet/hooks-react'
-import { act } from 'react-dom/test-utils'
-import { TextField } from '@material-ui/core'
 import { Repository } from '@sensenet/client-core'
+import React from 'react'
+import { TextField } from '@material-ui/core'
+import { mount, shallow } from 'enzyme'
+import { act } from 'react-dom/test-utils'
 import NewTaskPanel from '../src/components/new-task'
 import { TestContentCollection } from './_mocks_/test_contents'
 

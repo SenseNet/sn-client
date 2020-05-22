@@ -1,5 +1,3 @@
-import { Button, createStyles, makeStyles, Theme } from '@material-ui/core'
-import { Close } from '@material-ui/icons'
 import {
   DocumentTitlePager,
   DocumentViewer,
@@ -12,10 +10,12 @@ import {
   ZoomModeWidget,
 } from '@sensenet/document-viewer-react'
 import { CurrentContentProvider, useLogger } from '@sensenet/hooks-react'
-import clsx from 'clsx'
-import { Location } from 'history'
 import React, { useCallback, useEffect } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
+import { Button, createStyles, makeStyles, Theme } from '@material-ui/core'
+import { Close } from '@material-ui/icons'
+import clsx from 'clsx'
+import { Location } from 'history'
 import { globals, useGlobalStyles } from '../globalStyles'
 import { useLocalization, useSelectionService, useTheme } from '../hooks'
 

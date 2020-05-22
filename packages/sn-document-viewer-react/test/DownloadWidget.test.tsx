@@ -1,5 +1,5 @@
-import { shallow } from 'enzyme'
 import React from 'react'
+import { shallow } from 'enzyme'
 import { Download } from '../src/components/document-widgets/DownloadWidget'
 
 describe('DownloadWidget component', () => {

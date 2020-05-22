@@ -1,5 +1,3 @@
-import CircularProgress from '@material-ui/core/CircularProgress'
-import Fade from '@material-ui/core/Fade'
 import { Repository } from '@sensenet/client-core'
 import { SchemaStore } from '@sensenet/default-content-types'
 import {
@@ -9,6 +7,8 @@ import {
   useListPicker,
 } from '@sensenet/pickers-react'
 import React from 'react'
+import Fade from '@material-ui/core/Fade'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const contentPath = '/Root/Content'
 const testRepository = new Repository({

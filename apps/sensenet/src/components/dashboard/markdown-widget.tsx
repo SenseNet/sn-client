@@ -1,6 +1,6 @@
 import React from 'react'
-import { Typography } from '@material-ui/core'
 import ReactMarkdown from 'react-markdown'
+import { Typography } from '@material-ui/core'
 import { MarkdownWidget as MarkdownWidgetModel } from '../../services/PersonalSettings'
 import { useStringReplace } from '../../hooks'
 

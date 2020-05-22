@@ -1,8 +1,3 @@
-import { createStyles, makeStyles } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
-import Save from '@material-ui/icons/Save'
 import { ConstantContent } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
@@ -13,10 +8,15 @@ import {
   useLogger,
   useRepository,
 } from '@sensenet/hooks-react'
-import clsx from 'clsx'
+import { debounce } from '@sensenet/client-utils'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { debounce } from '@sensenet/client-utils'
+import { createStyles, makeStyles } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
+import Save from '@material-ui/icons/Save'
+import clsx from 'clsx'
 import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useSelectionService } from '../../hooks'

@@ -1,15 +1,15 @@
 /**
  * @module FieldControls
  */
-import MomentUtils from '@date-io/moment'
-import { DateTimePicker, DatePicker as MUIDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
-import moment from 'moment'
-import React, { useState } from 'react'
 import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-types'
+import { changeJScriptValue } from '@sensenet/controls-react'
+import React, { useState } from 'react'
 import Typography from '@material-ui/core/Typography'
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
-import { changeJScriptValue } from '@sensenet/controls-react'
+import { DateTimePicker, DatePicker as MUIDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import { createStyles, InputLabel, makeStyles, Theme } from '@material-ui/core'
+import moment from 'moment'
+import MomentUtils from '@date-io/moment'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 const useStyles = makeStyles((theme: Theme) => {

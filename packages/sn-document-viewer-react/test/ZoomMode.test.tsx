@@ -1,9 +1,9 @@
+import React from 'react'
 import { MenuItem } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
 import SvgIcon from '@material-ui/core/SvgIcon'
 import { mount } from 'enzyme'
-import React from 'react'
 import { ZoomModeWidget } from '../src/components/document-widgets/ZoomMode'
 import { defaultViewerState, ViewerStateContext } from '../src/context/viewer-state'
 

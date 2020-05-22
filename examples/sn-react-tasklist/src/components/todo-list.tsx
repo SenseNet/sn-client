@@ -1,3 +1,6 @@
+import { ODataCollectionResponse } from '@sensenet/client-core'
+import { Task } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
 
 // start of material imports
@@ -7,9 +10,6 @@ import List from '@material-ui/core/List'
 // end of material imports
 
 // start of sensenet imports
-import { ODataCollectionResponse } from '@sensenet/client-core'
-import { Task } from '@sensenet/default-content-types'
-import { useRepository } from '@sensenet/hooks-react'
 // end of sensenet imports
 
 // start of component imports

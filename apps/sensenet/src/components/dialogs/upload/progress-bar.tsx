@@ -1,8 +1,8 @@
+import { UploadProgressInfo } from '@sensenet/client-core'
 import React from 'react'
 import { darken, lighten, makeStyles } from '@material-ui/core/styles'
 import { createStyles, Theme } from '@material-ui/core'
 
-import { UploadProgressInfo } from '@sensenet/client-core'
 import clsx from 'clsx'
 import { useLocalization, useTheme } from '../../../hooks'
 

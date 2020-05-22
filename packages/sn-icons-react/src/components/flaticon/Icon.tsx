@@ -1,5 +1,5 @@
-import Icon from '@material-ui/core/Icon'
 import React from 'react'
+import Icon from '@material-ui/core/Icon'
 import '../../../assets/css/flaticon.css'
 
 interface FlatIconProps {

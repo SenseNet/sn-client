@@ -1,5 +1,4 @@
 import React from 'react'
-import clsx from 'clsx'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import ErrorIcon from '@material-ui/icons/Error'
 import InfoIcon from '@material-ui/icons/Info'
@@ -9,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton'
 import SnackbarContent from '@material-ui/core/SnackbarContent'
 import WarningIcon from '@material-ui/icons/Warning'
 import { makeStyles, Theme } from '@material-ui/core/styles'
+import clsx from 'clsx'
 
 const variantIcon = {
   success: CheckCircleIcon,

@@ -1,5 +1,5 @@
-import { mount } from 'enzyme'
 import React from 'react'
+import { mount } from 'enzyme'
 import { DocumentViewerError } from '../src/components/DocumentViewerError'
 import { DocumentDataContext } from '../src/context/document-data'
 import { PreviewState } from '../src/Enums'

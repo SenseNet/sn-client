@@ -1,8 +1,8 @@
-import Avatar from '@material-ui/core/Avatar'
-import TableCell from '@material-ui/core/TableCell'
 import { GenericContent, User } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import React, { Component } from 'react'
+import TableCell from '@material-ui/core/TableCell'
+import Avatar from '@material-ui/core/Avatar'
 
 const styles = {
   avatar: {

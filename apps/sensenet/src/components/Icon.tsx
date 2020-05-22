@@ -1,4 +1,8 @@
-import { Avatar } from '@material-ui/core'
+import { Repository } from '@sensenet/client-core'
+import { Injector, LogLevel, PathHelper, tuple } from '@sensenet/client-utils'
+import { File, GenericContent, User } from '@sensenet/default-content-types'
+import { useInjector, useRepository } from '@sensenet/hooks-react'
+import React from 'react'
 import {
   AllInboxOutlined,
   AssignmentOutlined,
@@ -35,11 +39,7 @@ import {
   WebAssetOutlined,
   Widgets,
 } from '@material-ui/icons'
-import { Repository } from '@sensenet/client-core'
-import { Injector, LogLevel, PathHelper, tuple } from '@sensenet/client-utils'
-import { File, GenericContent, User } from '@sensenet/default-content-types'
-import { useInjector, useRepository } from '@sensenet/hooks-react'
-import React from 'react'
+import { Avatar } from '@material-ui/core'
 import { EventLogEntry } from '../services/EventService'
 import { UserAvatar } from './UserAvatar'
 

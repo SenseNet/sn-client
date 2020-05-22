@@ -1,4 +1,8 @@
+import { useLogger, useRepository } from '@sensenet/hooks-react'
+import { ObservableValue } from '@sensenet/client-utils'
+import { UploadProgressInfo } from '@sensenet/client-core'
 import React, { useEffect, useRef, useState } from 'react'
+import { Prompt } from 'react-router'
 import {
   Button,
   createStyles,
@@ -12,10 +16,6 @@ import {
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import NoteAddSharpIcon from '@material-ui/icons/NoteAddSharp'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { ObservableValue } from '@sensenet/client-utils'
-import { UploadProgressInfo } from '@sensenet/client-core'
-import { Prompt } from 'react-router'
 import { DropFileArea } from '../../DropFileArea'
 import { useLocalization } from '../../../hooks'
 import { useDialog } from '../dialog-provider'

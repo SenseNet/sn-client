@@ -1,9 +1,9 @@
-import TableCell from '@material-ui/core/TableCell'
-import IconButton from '@material-ui/core/IconButton'
-import MoreHoriz from '@material-ui/icons/MoreHoriz'
 import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import React from 'react'
 import { connect } from 'react-redux'
+import TableCell from '@material-ui/core/TableCell'
+import IconButton from '@material-ui/core/IconButton'
+import MoreHoriz from '@material-ui/icons/MoreHoriz'
 import { rootStateType } from '../../../store/rootReducer'
 import * as DMSActions from '../../../Actions'
 

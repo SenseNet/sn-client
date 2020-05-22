@@ -1,3 +1,5 @@
+import { Status, Task } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
 import React from 'react'
 
 // start of material imports
@@ -13,8 +15,6 @@ import ListItemText from '@material-ui/core/ListItemText'
 
 // start of sensenet imports
 
-import { Status, Task } from '@sensenet/default-content-types'
-import { useRepository } from '@sensenet/hooks-react'
 // end of sensenet imports
 
 const useStyles = makeStyles((theme: Theme) =>
