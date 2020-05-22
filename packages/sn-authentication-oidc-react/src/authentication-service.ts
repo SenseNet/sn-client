@@ -6,8 +6,8 @@ export const getUserManager = () => {
   return userManager
 }
 
-export const authenticationService = (configuration: UserManagerSettings) => {
-  if (userManager) {
+export const authenticationService = (configuration: UserManagerSettings, forceNew = false) => {
+  if (userManager && !forceNew) {
     return userManager
   }
   userManager = new UserManager(configuration)
