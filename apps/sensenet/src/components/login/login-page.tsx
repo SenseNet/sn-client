@@ -31,6 +31,8 @@ const useStyles = makeStyles(() =>
   }),
 )
 
+const DEVDEMO_URL = `https://dev.demo.sensenet.com`
+
 type LoginPageProps = {
   handleSubmit: (url: string) => void
   isLoginInProgress: boolean
@@ -45,6 +47,10 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
   const handleOnSubmit = (ev: React.FormEvent) => {
     ev.preventDefault()
     handleSubmit(url)
+  }
+
+  const handleDemoSubmit = () => {
+    handleSubmit(DEVDEMO_URL)
   }
 
   return (
@@ -62,18 +68,20 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
       </AppBar>
       <Container maxWidth="sm">
         <Grid container direction="column">
-          <Grid container direction="column" justify="center" style={{ flexBasis: 200 }}>
+          <Grid container direction="column" justify="center" style={{ flexBasis: 150 }}>
             <Typography align="center" variant="h4" component="p">
               Welcome to admin.sensenet.com
             </Typography>
           </Grid>
-          <Grid direction="column" style={{ flexBasis: 150 }} align="center">
-            <Grid item>
+          <Grid container direction="column" justify="center" alignItems="center" style={{ flexBasis: 150 }}>
+            <Grid item alignContent="center" alignItems="center">
               <Typography align="center" variant="subtitle1" component="p">
                 {`If you don't have your own repository yet`}
               </Typography>
-              <br />
+            </Grid>
+            <Grid item alignContent="center" alignItems="center">
               <Button
+                onClick={handleDemoSubmit}
                 size="medium"
                 aria-label={localization.loginToDemoButtonTitle}
                 disabled={isLoginInProgress}
