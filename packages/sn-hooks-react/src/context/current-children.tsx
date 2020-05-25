@@ -2,7 +2,6 @@ import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
-import Semaphore from 'semaphore-async-await'
 import { useRepository, useRepositoryEvents } from '../hooks'
 import { CurrentContentContext } from './current-content'
 import { LoadSettingsContext } from './load-settings'
@@ -11,6 +10,7 @@ import { LoadSettingsContext } from './load-settings'
  * Context that will return with a list of a current content's children
  */
 export const CurrentChildrenContext = React.createContext<GenericContent[]>([])
+CurrentChildrenContext.displayName = 'CurrentChildrenContext'
 
 /**
  * Provider component for the CurrentChildrenContext component
@@ -20,7 +20,6 @@ export const CurrentChildrenContext = React.createContext<GenericContent[]>([])
 export const CurrentChildrenProvider: React.FunctionComponent = (props) => {
   const currentContent = useContext(CurrentContentContext)
   const [children, setChildren] = useState<GenericContent[]>([])
-  const [loadLock] = useState(new Semaphore(1))
 
   const [reloadToken, setReloadToken] = useState(1)
   const repo = useRepository()
@@ -33,24 +32,23 @@ export const CurrentChildrenProvider: React.FunctionComponent = (props) => {
   useEffect(() => {
     const ac = new AbortController()
     ;(async () => {
-      try {
-        await loadLock.acquire()
-        const childrenResult = await repo.loadCollection<GenericContent>({
-          path: currentContent.Path,
-          requestInit: { signal: ac.signal },
-          oDataOptions: loadSettings.loadChildrenSettings,
-        })
-        setChildren(childrenResult.d.results)
-      } catch (err) {
-        if (!ac.signal.aborted) {
-          setError(err)
+      if (currentContent.Path) {
+        try {
+          const childrenResult = await repo.loadCollection<GenericContent>({
+            path: currentContent.Path,
+            requestInit: { signal: ac.signal },
+            oDataOptions: loadSettings.loadChildrenSettings,
+          })
+          setChildren(childrenResult.d.results)
+        } catch (err) {
+          if (!ac.signal.aborted) {
+            setError(err)
+          }
         }
-      } finally {
-        loadLock.release()
       }
     })()
     return () => ac.abort()
-  }, [currentContent.Path, loadSettings.loadChildrenSettings, repo, reloadToken, loadLock])
+  }, [currentContent.Path, loadSettings.loadChildrenSettings, repo, reloadToken])
 
   useEffect(() => {
     const handleCreate = (c: Created) => {
@@ -63,7 +61,11 @@ export const CurrentChildrenProvider: React.FunctionComponent = (props) => {
     }
 
     const subscriptions = [
-      eventHub.onCustomActionExecuted.subscribe(requestReload),
+      eventHub.onCustomActionExecuted.subscribe((event) => {
+        if (event.actionOptions.method !== 'GET') {
+          requestReload()
+        }
+      }),
       eventHub.onContentCreated.subscribe(handleCreate),
       eventHub.onContentCopied.subscribe(handleCreate),
       eventHub.onContentMoved.subscribe(handleCreate),

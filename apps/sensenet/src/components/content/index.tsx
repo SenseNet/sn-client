@@ -1,9 +1,8 @@
-import { Button, Container, Grid, Typography } from '@material-ui/core'
 import { ConstantContent } from '@sensenet/client-core'
 import { tuple } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'
 import { useQuery } from '../../hooks/use-query'
@@ -26,7 +25,6 @@ export const Content = () => {
   const [secondaryPath, setSecondaryPath] = useState(
     secondaryPathFromQuery ? decodeURIComponent(secondaryPathFromQuery) : currentPath,
   )
-  const [isPathValid, setIsPathValid] = useState<boolean>()
 
   const onNavigate = (content: GenericContent, isSecondary = false) => {
     const searchParams = new URLSearchParams(history.location.search)
@@ -45,40 +43,6 @@ export const Content = () => {
   }
 
   const onActivateItem = (activeItem: GenericContent) => history.push(getPrimaryActionUrl(activeItem, repo))
-
-  useEffect(() => {
-    // TODO: this should be refactored when data fetching is united
-    async function checkPath() {
-      if (currentPath === rootPath) {
-        setIsPathValid(true)
-        return
-      }
-      try {
-        await repo.load({ idOrPath: currentPath })
-        setIsPathValid(true)
-      } catch {
-        setIsPathValid(false)
-      }
-    }
-    checkPath()
-  }, [currentPath, repo, rootPath])
-
-  if (isPathValid === undefined) {
-    return null
-  }
-
-  if (!isPathValid) {
-    return (
-      <Container maxWidth="sm">
-        <Grid container direction="column" justify="center">
-          <Typography align="center" variant="h5" component="p">
-            Cannot find path {currentPath}
-          </Typography>
-          <Button onClick={() => onNavigate({ Path: rootPath } as any)}>Go to root</Button>
-        </Grid>
-      </Container>
-    )
-  }
 
   switch (match.params.browseType) {
     case 'commander':

@@ -7,12 +7,16 @@ import { getPrimaryActionUrl } from '../../services'
 import { useDialog } from '../dialogs'
 import { contextMenuODataOptions } from './context-menu-odata-options'
 
-export function useContextMenuActions(content: GenericContent, setActions: (content: GenericContent) => void) {
+export function useContextMenuActions(
+  content: GenericContent,
+  isOpened: boolean,
+  setActions: (content: GenericContent) => void,
+) {
   const logger = useLogger('context-menu')
   const history = useHistory()
   const repo = useRepository()
   const download = useDownload(content)
-  const currentParent = useLoadContent({ idOrPath: content.ParentId! }).content
+  const currentParent = useLoadContent({ idOrPath: content.ParentId!, isOpened }).content
   const { openDialog } = useDialog()
 
   const getContentName = () => content.DisplayName ?? content.Name
