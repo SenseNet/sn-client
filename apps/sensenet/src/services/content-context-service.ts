@@ -1,6 +1,7 @@
 import { Repository } from '@sensenet/client-core'
 import { ActionModel, ContentType, File, GenericContent, Resource, Settings } from '@sensenet/default-content-types'
 import { applicationPaths, resolvePathParams } from '../application-paths'
+import { pathWithQueryParams } from '.'
 
 export function getMonacoLanguage(content: GenericContent, repository: Repository) {
   if (repository.schemas.isContentFromType<Settings>(content, 'Settings') || content.Type === 'PersonalSettings') {
@@ -47,7 +48,13 @@ export function getPrimaryActionUrl(content: GenericContent, repository: Reposit
   }
 
   if (content.IsFolder) {
-    return 'Browse'
+    return pathWithQueryParams({
+      path: resolvePathParams({
+        path: applicationPaths.browse,
+        params: { browseType: 'explorer' },
+      }),
+      newParams: { path: content.Path },
+    })
   }
 
   if (getMonacoLanguage(content, repository)) {

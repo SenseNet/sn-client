@@ -10,14 +10,11 @@ import {
   ThemeProvider,
 } from '../context'
 import {
-  CheatCommandProvider,
   CommandProviderManager,
   CustomActionCommandProvider,
   HelpCommandProvider,
-  HistoryCommandProvider,
-  InFolderSearchCommandProvider,
   NavigationCommandProvider,
-  QueryCommandProvider,
+  SearchCommandProvider,
 } from '../services'
 import { DialogProvider } from './dialogs/dialog-provider'
 import { snInjector } from './sn-injector'
@@ -30,13 +27,10 @@ export default function AppProviders({ children }: AppProvidersProps) {
   snInjector
     .getInstance(CommandProviderManager)
     .RegisterProviders(
-      CheatCommandProvider,
       CustomActionCommandProvider,
       HelpCommandProvider,
-      HistoryCommandProvider,
-      InFolderSearchCommandProvider,
       NavigationCommandProvider,
-      QueryCommandProvider,
+      SearchCommandProvider,
     )
   return (
     <InjectorContext.Provider value={snInjector}>

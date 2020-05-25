@@ -1,12 +1,11 @@
-import { createStyles, makeStyles } from '@material-ui/core'
-import IconButton from '@material-ui/core/IconButton'
-import Tooltip from '@material-ui/core/Tooltip'
-import KeyboardArrowRightTwoTone from '@material-ui/icons/KeyboardArrowRightTwoTone'
+import { createStyles, IconButton, makeStyles, Tooltip } from '@material-ui/core'
+import Search from '@material-ui/icons/Search'
+import Clear from '@material-ui/icons/Clear'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useInjector, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import Autosuggest, { SuggestionSelectedEventData, SuggestionsFetchRequestedParams } from 'react-autosuggest'
 import { useHistory } from 'react-router-dom'
 import { ResponsiveContext } from '../../context'
@@ -18,7 +17,7 @@ import { CommandPaletteSuggestion } from './CommandPaletteSuggestion'
 
 export interface CommandPaletteItem {
   primaryText: string
-  secondaryText: string
+  secondaryText?: string
   url: string
   hits: string[]
   content?: GenericContent
@@ -41,15 +40,16 @@ const useStyles = makeStyles(() => {
     buttonWrapperOpened: {
       border: '1px solid #13a5ad',
       backgroundColor: 'rgba(255,255,255,.10)',
+      marginRight: '40px',
     },
     iconButton: {
-      padding: undefined,
       color: globals.common.headerText,
       '&:hover': {
         backgroundColor: 'initial',
       },
     },
     comboBox: {
+      position: 'relative',
       overflow: 'visible',
       transition:
         'width cubic-bezier(0.230, 1.000, 0.320, 1.000) 350ms, opacity cubic-bezier(0.230, 1.000, 0.320, 1.000) 250ms',
@@ -76,14 +76,7 @@ export const CommandPalette = () => {
   const device = useContext(ResponsiveContext)
   const injector = useInjector()
   const repository = useRepository()
-
-  useEffect(() => {
-    ;(async () => {
-      const cpm = injector.getInstance(CommandProviderManager)
-      const foundItems = await cpm.getItems({ term: inputValue, repository, device })
-      setItems(foundItems)
-    })()
-  }, [device, injector, inputValue, repository])
+  const cpm = useMemo(() => injector.getInstance(CommandProviderManager), [injector])
 
   useEffect(() => {
     const handleKeyUp = (ev: KeyboardEvent) => {
@@ -132,94 +125,98 @@ export const CommandPalette = () => {
     }
   }, [delayedOpened, isOpened])
 
-  const handleSuggestionsFetchRequested = debounce((options: SuggestionsFetchRequestedParams) => {
-    if (!isOpened) {
-      return
-    }
-    setInputValue(options.value)
-  }, 200)
+  const handleSuggestionsFetchRequested = async (options: SuggestionsFetchRequestedParams) => {
+    const foundItems = await cpm.getItems({ term: options.value, repository, device })
+    setItems(foundItems)
+  }
 
   const handleSelectSuggestion = (
     ev: React.SyntheticEvent,
     suggestion: SuggestionSelectedEventData<CommandPaletteItem>,
   ) => {
     ev.preventDefault()
-    if (suggestion.suggestion.openAction) {
-      suggestion.suggestion.openAction()
-    } else {
-      history.push(suggestion.suggestion.url)
+    suggestion.suggestion.openAction?.() || history.push(suggestion.suggestion.url)
+
+    if (containerRef.current) {
+      const input = containerRef.current.querySelector('input')
+      if (input) {
+        input.blur()
+      }
     }
     setIsOpened(false)
   }
 
   return (
-    <>
-      <div
-        className={clsx(classes.buttonWrapper, {
-          [classes.buttonWrapperOpened]: isOpened,
-        })}>
-        {isOpened ? null : (
-          <Tooltip placeholder="bottom-end" title={localization.title}>
-            <IconButton onClick={() => setIsOpened(true)} className={classes.iconButton}>
-              <KeyboardArrowRightTwoTone />
-              {'_'}
-            </IconButton>
-          </Tooltip>
-        )}
+    <div
+      className={clsx(classes.buttonWrapper, {
+        [classes.buttonWrapperOpened]: isOpened,
+      })}>
+      {isOpened ? null : (
+        <Tooltip placeholder="bottom-end" title={localization.title}>
+          <IconButton onClick={() => setIsOpened(true)} className={classes.iconButton}>
+            <Search />
+          </IconButton>
+        </Tooltip>
+      )}
 
-        <div
-          ref={containerRef}
-          className={clsx(classes.comboBox, {
-            [classes.comboBoxOpened]: isOpened,
-          })}>
-          <Autosuggest<CommandPaletteItem>
-            theme={{
-              suggestionsList: {
-                listStyle: 'none',
-                margin: 0,
-                padding: 0,
-              },
-              input: {
-                width: '100%',
-                padding: '5px',
-                fontFamily: 'monospace',
-                color: theme.palette.common.white,
-                backgroundColor: 'transparent',
-                border: 'none',
-                margin: '.3em 0',
-              },
-              inputFocused: {
-                outlineWidth: 0,
-              },
+      <div
+        ref={containerRef}
+        className={clsx(classes.comboBox, {
+          [classes.comboBoxOpened]: isOpened,
+        })}>
+        <Autosuggest<CommandPaletteItem>
+          theme={{
+            suggestionsList: {
+              listStyle: 'none',
+              margin: 0,
+              padding: 0,
+            },
+            input: {
+              width: '100%',
+              padding: '5px',
+              fontFamily: 'monospace',
+              color: theme.palette.common.white,
+              backgroundColor: 'transparent',
+              border: 'none',
+              margin: '.3em 0',
+            },
+            inputFocused: {
+              outlineWidth: 0,
+            },
+          }}
+          alwaysRenderSuggestions={isOpened}
+          suggestions={items}
+          highlightFirstSuggestion={true}
+          onSuggestionSelected={handleSelectSuggestion}
+          onSuggestionsFetchRequested={handleSuggestionsFetchRequested}
+          onSuggestionsClearRequested={() => setItems([])}
+          getSuggestionValue={(s) => s.primaryText}
+          renderSuggestion={(s, params) => <CommandPaletteSuggestion suggestion={s} params={params} />}
+          renderSuggestionsContainer={(s) => <CommandPaletteHitsContainer {...s} />}
+          inputProps={{
+            value: inputValue,
+            onChange: (_ev, changeEvent) => {
+              setInputValue(changeEvent.newValue)
+            },
+            id: 'CommandBoxInput',
+            spellCheck: false,
+            onBlur: () => setIsOpened(false),
+          }}
+        />
+        {inputValue && (
+          <IconButton
+            title={localization.clear}
+            style={{ position: 'absolute', right: '20px', zIndex: 2, top: '50%', transform: 'translateY(-50%)' }}
+            onClick={() => {
+              setInputValue('')
+              setItems([])
+              handleSuggestionsFetchRequested({ value: '', reason: 'input-changed' })
             }}
-            alwaysRenderSuggestions={delayedOpened}
-            suggestions={items}
-            highlightFirstSuggestion={true}
-            onSuggestionSelected={handleSelectSuggestion}
-            onSuggestionsFetchRequested={(e) => {
-              handleSuggestionsFetchRequested(e)
-            }}
-            onSuggestionsClearRequested={() => setItems([])}
-            getSuggestionValue={(s) => s.primaryText}
-            renderSuggestion={(s, params) => <CommandPaletteSuggestion suggestion={s} params={params} />}
-            renderSuggestionsContainer={(s) => (
-              <CommandPaletteHitsContainer {...s} width={containerRef.current?.scrollWidth || 100} />
-            )}
-            inputProps={{
-              value: inputValue,
-              onChange: (_ev, changeEvent) => {
-                if ((changeEvent.newValue as any).value) {
-                  setInputValue(changeEvent.newValue)
-                }
-              },
-              id: 'CommandBoxInput',
-              autoFocus: true,
-              spellCheck: false,
-              onBlur: () => setIsOpened(false),
-            }}
-          />
-        </div>
+            onMouseDown={(ev) => ev.preventDefault()}>
+            <Clear />
+          </IconButton>
+        )}
       </div>
-    </>
+    </div>
   )
 }

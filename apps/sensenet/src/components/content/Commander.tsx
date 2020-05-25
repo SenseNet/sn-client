@@ -14,6 +14,7 @@ import { useSelectionService } from '../../hooks'
 import { ContentList } from '../content-list/content-list'
 import { useDialog } from '../dialogs'
 import { applicationPaths } from '../../application-paths'
+import { pathWithQueryParams } from '../../services'
 
 export interface CommanderComponentProps {
   leftParent: number | string
@@ -77,9 +78,12 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
         } else if (ev.key === 'F7') {
           ev.preventDefault()
           ev.stopPropagation()
-          history.push(`${applicationPaths.newProperties}?path=${activeParent.Path}`, {
-            schema: repo.schemas.getSchemaByName('Folder'),
-          })
+          history.push(
+            pathWithQueryParams({ path: applicationPaths.newProperties, newParams: { path: activeParent.Path } }),
+            {
+              schema: repo.schemas.getSchemaByName('Folder'),
+            },
+          )
         }
       }}
       style={{ display: 'flex', width: '100%', height: '100%' }}>

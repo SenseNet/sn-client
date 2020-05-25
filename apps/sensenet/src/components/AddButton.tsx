@@ -19,6 +19,7 @@ import { useHistory } from 'react-router'
 import { applicationPaths } from '../application-paths'
 import { globals, useGlobalStyles } from '../globalStyles'
 import { useLocalization, usePersonalSettings, useSelectionService } from '../hooks'
+import { pathWithQueryParams } from '../services'
 import { useDialog } from './dialogs'
 import { Icon } from './Icon'
 
@@ -252,9 +253,12 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
                 onClick={() => {
                   const contentPath = currentComponent ? currentComponent.Path : props.path
                   setShowSelectType(false)
-                  history.push(`${applicationPaths.newProperties}?path=${contentPath}`, {
-                    schema: childType,
-                  })
+                  history.push(
+                    pathWithQueryParams({ path: applicationPaths.newProperties, newParams: { path: contentPath } }),
+                    {
+                      schema: childType,
+                    },
+                  )
                 }}>
                 <ListItemIcon style={{ minWidth: '36px' }}>
                   <Icon item={childType} />

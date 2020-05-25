@@ -277,7 +277,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
         }
         case 'Tab':
           ev.preventDefault()
-          props.onTabRequest && props.onTabRequest()
+          props.onTabRequest?.()
           break
         default:
           if (ev.key.length === 1) {
