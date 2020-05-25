@@ -63,6 +63,12 @@ describe('Store', () => {
     ).toBeInstanceOf(Object)
   })
 
+  it('store should have reloadRepository function', () => {
+    expect(
+      createSensenetStore({ repository, rootReducer, middlewares: middlewareArray, enhancers }).reloadRepository,
+    ).toBeInstanceOf(Function)
+  })
+
   it('default state should be applied', () => {
     const tempStore = createSensenetStore({ repository, rootReducer, middlewares: middlewareArray })
     const state = tempStore.getState()
