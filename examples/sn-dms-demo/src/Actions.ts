@@ -86,8 +86,7 @@ export const getListActions = (idOrPath: number | string, scenario?: string, cus
 
 export const loadUserActions = (idOrPath: number | string, scenario?: string, customActions?: ActionModel[]) => ({
   type: 'LOAD_USER_ACTIONS',
-  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
-    const repository = options.getInjectable(Repository)
+  async payload(repository: Repository) {
     const data: { d: { Actions: ActionModel[] } } = (await repository.getActions({ idOrPath, scenario })) as any
     const actions = customActions ? [...data.d.Actions, ...customActions] : data.d.Actions
     return {
@@ -100,11 +99,6 @@ export const loadUserActions = (idOrPath: number | string, scenario?: string, cu
       },
     }
   },
-})
-
-export const loadAddNewListSuccess = (result: any) => ({
-  type: 'LOAD_TYPES_TO_ADDNEW_LIST_SUCCESS',
-  result,
 })
 
 export type ExtendedUploadProgressInfo = UploadProgressInfo & { content?: GenericContent; visible?: boolean }
@@ -242,15 +236,13 @@ export const closeViewer = () => ({
 
 export const loadTypesToAddNewList = (idOrPath: number | string) => ({
   type: 'LOAD_TYPES_TO_ADDNEW_LIST',
-  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
-    const repository = options.getInjectable(Repository)
+  async payload(repository: Repository) {
     const data: { d: { results: ContentType[] } } = (await repository.executeAction({
       idOrPath,
       method: 'GET',
       name: 'EffectiveAllowedChildTypes',
     })) as any
 
-    options.dispatch(loadAddNewListSuccess(data))
     return data
   },
 })

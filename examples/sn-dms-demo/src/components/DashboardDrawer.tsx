@@ -5,11 +5,11 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import withStyles from '@material-ui/core/styles/withStyles'
+import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
 import { ActionModel } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
-import { Actions } from '@sensenet/redux'
 import { compile } from 'path-to-regexp'
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router'
@@ -150,143 +150,132 @@ const mapStateToProps = (state: rootStateType) => {
 const mapDispatchToProps = {
   chooseMenuItem: DMSActions.chooseMenuItem,
   chooseSubmenuItem: DMSActions.chooseSubmenuItem,
-  logout: Actions.userLogout,
   closeActionMenu: DMSActions.closeActionMenu,
   handleDrawerMenu: DMSActions.handleDrawerMenu,
 }
 
-class DashboardDrawer extends Component<
-  DashboardDrawerProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
-  { currentUser: string }
-> {
-  constructor(props: DashboardDrawer['props']) {
-    super(props)
-    this.state = {
-      currentUser: '',
-    }
-  }
-  public handleClick = (name: string) => {
-    this.props.chooseMenuItem(name)
-    this.props.handleDrawerMenu(false)
-  }
-  public handleMenuItemClick = (_e: React.MouseEvent, action: ActionModel) => {
+const DashboardDrawer: React.FunctionComponent<
+  DashboardDrawerProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
+> = (props) => {
+  const { logout } = useOidcAuthentication()
+
+  const handleMenuItemClick = (_e: React.MouseEvent, action: ActionModel) => {
     if ((action as any).Action) {
       ;(action as any).Action()
     } else {
       switch (action.Name) {
         case 'Logout':
-          this.props.logout()
+          logout()
           break
         case 'Profile': {
-          const { currentContent } = this.props
+          const { currentContent } = props
           const userPath = compile('/users/:folderPath?/:otherActions*')({
-            folderPath: btoa(currentContent && currentContent.ParentId ? currentContent.ParentId.toString() : ''),
-            otherActions: ['user', btoa(currentContent ? currentContent.Id.toString() : '')],
+            folderPath: btoa(currentContent?.ParentId?.toString() || ''),
+            otherActions: ['user', btoa(currentContent?.Id.toString() || '')],
           })
-          this.props.history.push(userPath)
-          this.props.chooseMenuItem('profile')
-          this.props.closeActionMenu()
-          this.props.handleDrawerMenu(false)
+          props.history.push(userPath)
+          props.chooseMenuItem('profile')
+          props.closeActionMenu()
+          props.handleDrawerMenu(false)
           break
         }
         default:
-          this.props.handleDrawerMenu(false)
+          props.handleDrawerMenu(false)
           break
       }
     }
   }
-  public render() {
-    const { classes, activeItem, chooseMenuItem, chooseSubmenuItem, userActions } = this.props
-    return (
-      <MediaQuery minDeviceWidth={700}>
-        {(matches) => {
-          return (
-            <Drawer
-              variant={matches ? 'permanent' : 'temporary'}
-              open={this.props.menuIsOpen}
-              classes={{
-                paper: matches ? classes.drawerPaper : null,
-              }}
-              style={matches ? { paddingTop: '64px' } : {}}
-              PaperProps={{
-                style: {
-                  border: 'none',
-                },
-              }}>
-              <List>
-                {menu.map((item, index) => {
-                  return matches ? (
-                    !item.adminOnly ? (
-                      <div key={index}>
-                        {React.createElement(item.component, {
-                          active: activeItem === item.name,
-                          item,
-                          chooseMenuItem,
-                          chooseSubmenuItem,
-                          matches,
-                        })}
-                        <Divider light={true} />
-                      </div>
-                    ) : null
-                  ) : item.mobile ? (
-                    !item.adminOnly ? (
-                      <div key={index}>
-                        {React.createElement(item.component, {
-                          active: activeItem === item.name,
-                          item,
-                          chooseMenuItem,
-                          chooseSubmenuItem,
-                          matches,
-                        })}
-                        <Divider light={true} />
-                      </div>
-                    ) : null
-                  ) : null
-                })}
-                {userActions.map((action, i) => {
-                  const active = activeItem === action.Name
-                  return matches ? null : (
-                    <div key={i}>
-                      <ListItem
-                        selected={active}
-                        classes={
-                          matches
-                            ? { root: classes.root, selected: classes.selected }
-                            : { root: classes.rootMobile, selected: classes.selectedMobile }
-                        }
-                        onClick={(event) => this.handleMenuItemClick(event, action)}>
-                        <ListItemIcon>
-                          <Icon
-                            type={iconType.materialui}
-                            iconName={icons[action.Icon]}
-                            className={
-                              matches
-                                ? active
-                                  ? classes.iconWhiteActive
-                                  : classes.iconWhite
-                                : active
-                                ? classes.iconWhiteActive
-                                : classes.iconWhiteMobile
-                            }
-                            color="primary"
-                          />
-                        </ListItemIcon>
-                        <ListItemText
-                          classes={{ primary: active ? classes.primaryActive : classes.primary }}
-                          primary={action.DisplayName}
-                        />
-                      </ListItem>
+
+  const { classes, activeItem, chooseMenuItem, chooseSubmenuItem, userActions } = props
+  return (
+    <MediaQuery minDeviceWidth={700}>
+      {(matches) => {
+        return (
+          <Drawer
+            variant={matches ? 'permanent' : 'temporary'}
+            open={props.menuIsOpen}
+            classes={{
+              paper: matches ? classes.drawerPaper : null,
+            }}
+            style={matches ? { paddingTop: '64px' } : {}}
+            PaperProps={{
+              style: {
+                border: 'none',
+              },
+            }}>
+            <List>
+              {menu.map((item, index) => {
+                return matches ? (
+                  !item.adminOnly ? (
+                    <div key={index}>
+                      {React.createElement(item.component, {
+                        active: activeItem === item.name,
+                        item,
+                        chooseMenuItem,
+                        chooseSubmenuItem,
+                        matches,
+                      })}
                       <Divider light={true} />
                     </div>
-                  )
-                })}
-              </List>
-            </Drawer>
-          )
-        }}
-      </MediaQuery>
-    )
-  }
+                  ) : null
+                ) : item.mobile ? (
+                  !item.adminOnly ? (
+                    <div key={index}>
+                      {React.createElement(item.component, {
+                        active: activeItem === item.name,
+                        item,
+                        chooseMenuItem,
+                        chooseSubmenuItem,
+                        matches,
+                      })}
+                      <Divider light={true} />
+                    </div>
+                  ) : null
+                ) : null
+              })}
+              {userActions.map((action, i) => {
+                const active = activeItem === action.Name
+                return matches ? null : (
+                  <div key={i}>
+                    <ListItem
+                      selected={active}
+                      classes={
+                        matches
+                          ? { root: classes.root, selected: classes.selected }
+                          : { root: classes.rootMobile, selected: classes.selectedMobile }
+                      }
+                      onClick={(event) => handleMenuItemClick(event, action)}>
+                      <ListItemIcon>
+                        <Icon
+                          type={iconType.materialui}
+                          iconName={icons[action.Icon]}
+                          className={
+                            matches
+                              ? active
+                                ? classes.iconWhiteActive
+                                : classes.iconWhite
+                              : active
+                              ? classes.iconWhiteActive
+                              : classes.iconWhiteMobile
+                          }
+                          color="primary"
+                        />
+                      </ListItemIcon>
+                      <ListItemText
+                        classes={{ primary: active ? classes.primaryActive : classes.primary }}
+                        primary={action.DisplayName}
+                      />
+                    </ListItem>
+                    <Divider light={true} />
+                  </div>
+                )
+              })}
+            </List>
+          </Drawer>
+        )
+      }}
+    </MediaQuery>
+  )
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(DashboardDrawer)))
