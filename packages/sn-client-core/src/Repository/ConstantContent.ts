@@ -28,4 +28,12 @@ export class ConstantContent {
     DisplayName: 'Root',
     Type: 'PortalRoot',
   }
+
+  public static EMPTY_CONTENT: Content & { DisplayName: string } = {
+    Id: 0,
+    Path: '',
+    Name: '',
+    DisplayName: '',
+    Type: '',
+  }
 }

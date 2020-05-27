@@ -4,11 +4,11 @@ exports[`CurrentContent matches snapshot 1`] = `
 <ContextProvider
   value={
     Object {
-      "DisplayName": "Root",
-      "Id": 2,
-      "Name": "Root",
-      "Path": "/Root",
-      "Type": "PortalRoot",
+      "DisplayName": "",
+      "Id": 0,
+      "Name": "",
+      "Path": "",
+      "Type": "",
     }
   }
 />
