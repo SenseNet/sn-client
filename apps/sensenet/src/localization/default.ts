@@ -184,6 +184,9 @@ const values = {
     loginFailedNotification: `Failed to log in with user '{0}' to repository '{1}'`,
     loginErrorNotification: `There was an error during login with user '{0}' to repository '{1}'`,
     loginToDemoButtonTitle: `Login to a demo repository`,
+    welcome: 'Welcome to admin.sensenet.com',
+    demoTitle: `If you don't have your own repository yet`,
+    repositoryUrl: 'Otherwise please type in your repository URL to continue',
   },
   logout: {
     logoutButtonTitle: 'Log out',

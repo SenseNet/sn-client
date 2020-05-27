@@ -70,13 +70,13 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
         <Grid container direction="column">
           <Grid container direction="column" justify="center" style={{ flexBasis: 150 }}>
             <Typography align="center" variant="h4" component="p">
-              Welcome to admin.sensenet.com
+              {localization.welcome}
             </Typography>
           </Grid>
           <Grid container direction="column" justify="center" alignItems="center" style={{ flexBasis: 150 }}>
             <Grid item alignContent="center" alignItems="center">
               <Typography align="center" variant="subtitle1" component="p">
-                {`If you don't have your own repository yet`}
+                {localization.demoTitle}
               </Typography>
             </Grid>
             <Grid item alignContent="center" alignItems="center">
@@ -95,7 +95,7 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
           <Grid item>
             <form onSubmit={handleOnSubmit}>
               <Typography align="center" variant="subtitle1" component="p" className={classes.loginSubtitle}>
-                Otherwise please type in your repository URL to continue
+                {localization.repositoryUrl}
               </Typography>
               <InputLabel shrink htmlFor="repository" required={true}>
                 {localization.repositoryLabel}
