@@ -1,5 +1,5 @@
-import React from 'react'
 import { Typography } from '@material-ui/core'
+import React from 'react'
 import { useDocumentData, useLocalization } from '../hooks'
 import { LayoutAppBar } from '.'
 

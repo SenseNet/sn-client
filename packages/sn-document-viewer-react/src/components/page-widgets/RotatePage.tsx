@@ -1,10 +1,10 @@
+import { PreviewImageData } from '@sensenet/client-core'
 import IconButton from '@material-ui/core/IconButton'
 import RotateLeft from '@material-ui/icons/RotateLeft'
 import RotateRight from '@material-ui/icons/RotateRight'
 import React, { useCallback, useState } from 'react'
-import { PreviewImageData } from '@sensenet/client-core'
-import { Dimensions } from '../../services'
 import { useLocalization, usePreviewImage } from '../../hooks'
+import { Dimensions } from '../../services'
 
 /**
  * The amount of rotation in degrees

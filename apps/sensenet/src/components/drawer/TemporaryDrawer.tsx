@@ -1,3 +1,4 @@
+import { useRepository, useSession } from '@sensenet/hooks-react'
 import {
   IconButton,
   List,
@@ -10,14 +11,13 @@ import {
   Tooltip,
 } from '@material-ui/core'
 import Settings from '@material-ui/icons/Settings'
-import { useRepository, useSession } from '@sensenet/hooks-react'
 import React, { useContext } from 'react'
 import { Link, matchPath, NavLink, useLocation } from 'react-router-dom'
+import { applicationPaths } from '../../application-paths'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { useDrawerItems, useLocalization, useTheme } from '../../hooks'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
-import { applicationPaths } from '../../application-paths'
 
 type TemporaryDrawerProps = {
   isOpened: boolean

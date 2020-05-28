@@ -1,11 +1,11 @@
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import { act } from 'react-dom/test-utils'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
+import { act } from 'react-dom/test-utils'
 import { DocumentTitlePager } from '../src/components/document-widgets/DocumentTitlePager'
-import { defaultViewerState, ViewerStateContext } from '../src/context/viewer-state'
 import { DocumentDataContext } from '../src/context/document-data'
+import { defaultViewerState, ViewerStateContext } from '../src/context/viewer-state'
 import { exampleDocumentData } from './__Mocks__/viewercontext'
 
 describe('DocumentTitlePager component', () => {

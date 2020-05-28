@@ -1,12 +1,12 @@
 /**
  * @module FieldControls
  */
+import { FieldSetting } from '@sensenet/default-content-types'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import React, { useState } from 'react'
-import { FieldSetting } from '@sensenet/default-content-types'
 import { changeJScriptValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 import { renderIconDefault } from './icon'

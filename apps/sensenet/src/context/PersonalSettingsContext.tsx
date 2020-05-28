@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
 import { useInjector } from '@sensenet/hooks-react'
+import React, { useEffect, useState } from 'react'
 import { defaultSettings, PersonalSettings } from '../services/PersonalSettings'
 
 export const PersonalSettingsContext = React.createContext(defaultSettings)

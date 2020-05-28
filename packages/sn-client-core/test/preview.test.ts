@@ -1,6 +1,6 @@
-import { Repository } from '../src/Repository/Repository'
-import { Preview } from '../src/Repository/Preview'
 import { DocumentData, PreviewImageData } from '../src/Models'
+import { Preview } from '../src/Repository/Preview'
+import { Repository } from '../src/Repository/Repository'
 
 describe('Preview', () => {
   let preview: Preview

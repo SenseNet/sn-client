@@ -1,6 +1,6 @@
+import { GenericContent } from '@sensenet/default-content-types'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import { GenericContent } from '@sensenet/default-content-types'
 import React from 'react'
 import MediaQuery from 'react-responsive'
 import WorkspaceSelector from '../components/WorkspaceSelector/WorkspaceSelector'

@@ -1,6 +1,6 @@
+import { Button } from '@material-ui/core'
 import { mount } from 'enzyme'
 import React from 'react'
-import { Button } from '@material-ui/core'
 import { DotsMobileStepper } from '../src/components/DotsMobileStepper'
 
 describe('handleNext', () => {

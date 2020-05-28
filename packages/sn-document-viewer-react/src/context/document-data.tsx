@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { deepMerge, DeepPartial, sleepAsync } from '@sensenet/client-utils'
-import Semaphore from 'semaphore-async-await'
 import { DocumentData } from '@sensenet/client-core'
+import { deepMerge, DeepPartial, sleepAsync } from '@sensenet/client-utils'
 import { useRepository } from '@sensenet/hooks-react'
+import React, { useCallback, useEffect, useState } from 'react'
+import Semaphore from 'semaphore-async-await'
 import { PreviewState } from '../Enums'
 import { useDocumentViewerApi, useViewerSettings } from '../hooks'
 

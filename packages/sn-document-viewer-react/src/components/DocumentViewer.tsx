@@ -1,11 +1,9 @@
+import { deepMerge } from '@sensenet/client-utils'
 import { SlideProps } from '@material-ui/core/Slide'
 import { Theme } from '@material-ui/core/styles'
 import React from 'react'
 import { ThemeProvider } from 'styled-components'
-import { deepMerge } from '@sensenet/client-utils'
 import loaderImage from '../../assets/loader.gif'
-import { defaultTheme, DocumentViewerApiSettings, ViewerState } from '../models'
-import { PreviewState } from '../Enums'
 import {
   CommentStateProvider,
   defaultLocalization,
@@ -19,6 +17,8 @@ import {
   ViewerSettingsContext,
   ViewerStateProvider,
 } from '../context'
+import { PreviewState } from '../Enums'
+import { defaultTheme, DocumentViewerApiSettings, ViewerState } from '../models'
 import { DocumentViewerError } from './DocumentViewerError'
 import { DocumentViewerLayout } from './DocumentViewerLayout'
 import { DocumentViewerLoading } from './DocumentViewerLoading'

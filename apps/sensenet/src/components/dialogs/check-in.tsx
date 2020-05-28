@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import { Button, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core'
+import { ODataParams } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { ODataParams } from '@sensenet/client-core'
+import { Button, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core'
+import React, { useState } from 'react'
 import { useLocalization } from '../../hooks'
 import { useDialog } from '.'
 

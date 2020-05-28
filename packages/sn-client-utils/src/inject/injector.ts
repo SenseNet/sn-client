@@ -1,7 +1,7 @@
 import { Disposable } from '../disposable'
 import { Logger, LoggerCollection } from '../index'
-import { defaultInjectableOptions } from './injectable'
 import { Constructable } from './constructable'
+import { defaultInjectableOptions } from './injectable'
 
 /**
  * Container for injectable instances

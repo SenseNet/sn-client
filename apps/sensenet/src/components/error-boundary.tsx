@@ -1,7 +1,7 @@
-import React from 'react'
-import { InjectorContext } from '@sensenet/hooks-react'
-import { Injector } from '@sensenet/client-utils'
 import { ExtendedError, isExtendedError, Repository } from '@sensenet/client-core'
+import { Injector } from '@sensenet/client-utils'
+import { InjectorContext } from '@sensenet/hooks-react'
+import React from 'react'
 
 export interface ErrorBoundaryState {
   error?: Error

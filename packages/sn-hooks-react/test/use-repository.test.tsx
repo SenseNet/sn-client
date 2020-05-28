@@ -1,5 +1,5 @@
-import React from 'react'
 import { shallow } from 'enzyme'
+import React from 'react'
 import { useRepository } from '../src/hooks'
 
 const RepoDump = () => {

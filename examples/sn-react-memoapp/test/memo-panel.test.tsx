@@ -1,12 +1,12 @@
+import { Repository } from '@sensenet/client-core'
+import { RepositoryContext } from '@sensenet/hooks-react'
+import { Fab, TextField } from '@material-ui/core'
+import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import { mount } from 'enzyme'
 import React from 'react'
-import { Repository } from '@sensenet/client-core'
 import { act } from 'react-dom/test-utils'
-import ExpansionPanel from '@material-ui/core/ExpansionPanel'
-import { Fab, TextField } from '@material-ui/core'
-import { RepositoryContext } from '@sensenet/hooks-react'
-import { MemoPanel } from '../src/components/memo-panel'
 import { AddNew } from '../src/components/add-new-memo'
+import { MemoPanel } from '../src/components/memo-panel'
 import { TestMemoCollection, TestNewMemo } from './mocks/test-objects'
 
 describe('The main memo panel instance', () => {

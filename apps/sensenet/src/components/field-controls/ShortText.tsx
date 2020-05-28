@@ -1,10 +1,10 @@
 /**
  * @module FieldControls
  */
-import { createStyles, InputBase, InputLabel, Theme, withStyles } from '@material-ui/core'
-import Typography from '@material-ui/core/Typography'
 import { changeJScriptValue } from '@sensenet/controls-react'
 import { ShortTextFieldSetting } from '@sensenet/default-content-types'
+import { createStyles, InputBase, InputLabel, Theme, withStyles } from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 

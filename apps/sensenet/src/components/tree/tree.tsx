@@ -1,6 +1,6 @@
 /* eslint-disable import/named */
-import { ListItem, ListItemIcon, ListItemText, List as MuiList } from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
+import { ListItem, ListItemIcon, ListItemText, List as MuiList } from '@material-ui/core'
 import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import { AutoSizer, Index, List, ListRowProps } from 'react-virtualized'
 import { useSelectionService } from '../../hooks'

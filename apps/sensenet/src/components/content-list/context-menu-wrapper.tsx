@@ -1,5 +1,5 @@
-import React from 'react'
 import clsx from 'clsx'
+import React from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 
 export const ContextMenuWrapper: React.FC<{ onContextMenu: (ev: React.MouseEvent) => void }> = (props) => {
