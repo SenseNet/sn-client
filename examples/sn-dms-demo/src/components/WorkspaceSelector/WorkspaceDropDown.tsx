@@ -1,7 +1,7 @@
-import React from 'react'
 import Collapse from '@material-ui/core/Collapse'
 import Paper from '@material-ui/core/Paper'
 import { withStyles } from '@material-ui/core/styles'
+import React from 'react'
 import WorkspaceList from './WorkspaceList'
 import WorkspaceSelectorToolbar from './WorspaceSelectorToolbar'
 

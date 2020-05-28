@@ -1,16 +1,16 @@
 import { ODataCollectionResponse } from '@sensenet/client-core'
-import { Query } from '@sensenet/query'
 import { useRepository } from '@sensenet/hooks-react'
-import React, { useContext, useEffect, useState } from 'react'
-import { createStyles, makeStyles } from '@material-ui/styles'
+import { Query } from '@sensenet/query'
 import { List, ListItem, ListItemAvatar } from '@material-ui/core'
-import moment from 'moment'
+import { createStyles, makeStyles } from '@material-ui/styles'
 import orderby from 'lodash.orderby'
+import moment from 'moment'
+import React, { useContext, useEffect, useState } from 'react'
 import { v1 } from 'uuid'
 import CalendarEvent from '../CalendarEvent-type'
 import { SharedContext } from '../context/shared-context'
-import EventComponent from './event'
 import AddNewEvent from './add-new-event'
+import EventComponent from './event'
 
 const useStyles = makeStyles(() =>
   createStyles({

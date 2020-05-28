@@ -2,9 +2,9 @@
  * @module FieldControls
  */
 import { changeJScriptValue } from '@sensenet/controls-react'
-import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+import React, { useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 const invalidCharacters = ['%', '\\', '*', '~']

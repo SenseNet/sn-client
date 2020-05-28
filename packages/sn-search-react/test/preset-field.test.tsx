@@ -1,7 +1,7 @@
 import { Query } from '@sensenet/query'
-import React from 'react'
 import Select from '@material-ui/core/Select'
 import { shallow } from 'enzyme'
+import React from 'react'
 import { PresetField } from '../src/Components/Fields/PresetField'
 
 describe('Preset Fields', () => {

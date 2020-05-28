@@ -1,6 +1,6 @@
 import { GenericContent } from '@sensenet/default-content-types'
-import React from 'react'
 import { mount } from 'enzyme'
+import React from 'react'
 import * as downloadHook from '../src/hooks/use-download'
 
 const DownloadDump: React.FC<{ content: GenericContent }> = ({ content }) => {

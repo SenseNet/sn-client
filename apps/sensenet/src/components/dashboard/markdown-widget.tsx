@@ -1,8 +1,8 @@
+import { Typography } from '@material-ui/core'
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
-import { Typography } from '@material-ui/core'
-import { MarkdownWidget as MarkdownWidgetModel } from '../../services/PersonalSettings'
 import { useStringReplace } from '../../hooks'
+import { MarkdownWidget as MarkdownWidgetModel } from '../../services/PersonalSettings'
 
 export const MarkdownWidget: React.FunctionComponent<MarkdownWidgetModel> = (props) => {
   const replacedContent = useStringReplace(props.settings.content)

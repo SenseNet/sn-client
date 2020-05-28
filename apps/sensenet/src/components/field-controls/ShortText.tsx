@@ -3,9 +3,9 @@
  */
 import { changeJScriptValue } from '@sensenet/controls-react'
 import { ShortTextFieldSetting } from '@sensenet/default-content-types'
-import React, { useState } from 'react'
-import Typography from '@material-ui/core/Typography'
 import { createStyles, InputBase, InputLabel, Theme, withStyles } from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
+import React, { useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 export const ShortTextInput = withStyles((theme: Theme) =>

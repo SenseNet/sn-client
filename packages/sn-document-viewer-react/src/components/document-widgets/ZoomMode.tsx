@@ -1,4 +1,3 @@
-import React, { useCallback, useRef, useState } from 'react'
 import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
@@ -12,6 +11,7 @@ import Error from '@material-ui/icons/Error'
 import ZoomIn from '@material-ui/icons/ZoomIn'
 import ZoomOut from '@material-ui/icons/ZoomOut'
 import ZoomOutMap from '@material-ui/icons/ZoomOutMap'
+import React, { useCallback, useRef, useState } from 'react'
 
 import { useLocalization, useViewerState } from '../../hooks'
 import { ZoomMode } from '../../models/viewer-state'

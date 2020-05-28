@@ -1,5 +1,5 @@
-import React from 'react'
 import { mount, shallow } from 'enzyme'
+import React from 'react'
 import { RotateDocumentWidget } from '../src/components/document-widgets/RotateDocument'
 import { PreviewImageDataContext } from '../src/context/preview-image-data'
 import { examplePreviewImageData } from './__Mocks__/viewercontext'

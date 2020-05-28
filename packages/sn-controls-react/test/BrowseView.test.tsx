@@ -1,9 +1,8 @@
 import { Repository } from '@sensenet/client-core'
 import { GenericContent, VersioningMode } from '@sensenet/default-content-types'
-import React from 'react'
 import { mount } from 'enzyme'
+import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { BrowseView } from '../src/viewcontrols/BrowseView'
 import {
   AllowedChildTypes,
   Avatar,
@@ -24,6 +23,7 @@ import {
   TagsInput,
   Textarea,
 } from '../src/fieldcontrols'
+import { BrowseView } from '../src/viewcontrols/BrowseView'
 import { schema } from './__mocks__/schema'
 
 export const testRepository = new Repository(

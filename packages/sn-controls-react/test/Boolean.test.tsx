@@ -1,11 +1,11 @@
-import React from 'react'
-import Icon from '@material-ui/core/Icon'
-import FormControl from '@material-ui/core/FormControl'
-import FormHelperText from '@material-ui/core/FormHelperText'
 import Checkbox from '@material-ui/core/Checkbox'
+import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import { act } from 'react-dom/test-utils'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import Icon from '@material-ui/core/Icon'
 import { mount, shallow } from 'enzyme'
+import React from 'react'
+import { act } from 'react-dom/test-utils'
 import { BooleanComponent } from '../src/fieldcontrols/Boolean'
 
 describe('Boolean field control', () => {

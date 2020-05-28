@@ -6,9 +6,9 @@ import {
   SET_SELECTED_ITEM,
   useListPicker,
 } from '@sensenet/pickers-react'
-import React from 'react'
-import Fade from '@material-ui/core/Fade'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import Fade from '@material-ui/core/Fade'
+import React from 'react'
 
 const contentPath = '/Root/Content'
 const testRepository = new Repository({

@@ -1,14 +1,14 @@
 import { ConstantContent } from '@sensenet/client-core'
 import { Image, User } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import React, { useEffect, useState } from 'react'
 import { CssBaseline, Slide } from '@material-ui/core'
-import { TransitionProps } from '@material-ui/core/transitions'
 import { makeStyles } from '@material-ui/core/styles'
+import { TransitionProps } from '@material-ui/core/transitions'
 import moment from 'moment'
+import React, { useEffect, useState } from 'react'
 import snLogo from './assets/sensenet_logo_transparent.png'
-import { FullScreenDialog } from './components/FullScreenDialog'
 import { AdvancedGridList } from './components/AdvancedGridList'
+import { FullScreenDialog } from './components/FullScreenDialog'
 import { SelectedImage } from './Interface'
 
 export const useStyles = makeStyles((theme) => ({

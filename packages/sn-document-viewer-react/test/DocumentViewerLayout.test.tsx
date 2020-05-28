@@ -1,18 +1,18 @@
 import { ObservableValue } from '@sensenet/client-utils'
-import React from 'react'
 import { mount, shallow } from 'enzyme'
+import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { ThemeProvider } from 'styled-components'
 import { Comment, CommentsContainer, CreateComment, PageList } from '../src/components'
 import { DocumentViewerLayout } from '../src/components/DocumentViewerLayout'
-import { defaultViewerState, ViewerStateContext } from '../src/context/viewer-state'
-import { CommentsContext, defaultCommentsContext } from '../src/context/comments'
 import { DocumentViewerApiSettingsContext } from '../src/context/api-settings'
 import { CommentStateContext, defaultCommentState } from '../src/context/comment-states'
+import { CommentsContext, defaultCommentsContext } from '../src/context/comments'
+import { defaultViewerState, ViewerStateContext } from '../src/context/viewer-state'
 import { defaultTheme } from '../src/models/Theming'
-import { defaultSettings, examplePreviewComment } from './__Mocks__/viewercontext'
-import { ViewerStateContextWrapper } from './__Mocks__/viewer-state-context-wrapper'
 import { PreviewImageDataContextWrapper } from './__Mocks__/preview-image-data-context-wrapper'
+import { ViewerStateContextWrapper } from './__Mocks__/viewer-state-context-wrapper'
+import { defaultSettings, examplePreviewComment } from './__Mocks__/viewercontext'
 
 declare global {
   interface Window {

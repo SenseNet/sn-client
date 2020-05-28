@@ -3,9 +3,9 @@
  */
 import { Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { createElement, ReactElement } from 'react'
-import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
+import React, { createElement, ReactElement } from 'react'
 import { reactControlMapper } from '../ReactControlMapper'
 
 /**

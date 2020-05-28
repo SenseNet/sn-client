@@ -1,8 +1,8 @@
-import React from 'react'
 import Typography from '@material-ui/core/Typography'
 import { TimePicker as MUITimePicker } from '@material-ui/pickers'
 import { shallow } from 'enzyme'
 import moment from 'moment'
+import React from 'react'
 import { TimePicker } from '../src/fieldcontrols/TimePicker'
 
 const value = '2001-09-11T08:46:00.000Z'

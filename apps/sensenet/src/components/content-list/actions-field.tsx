@@ -1,7 +1,7 @@
-import React from 'react'
 import { IconButton, TableCell } from '@material-ui/core'
 import MoreHoriz from '@material-ui/icons/MoreHoriz'
 import clsx from 'clsx'
+import React from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 
 export const ActionsField: React.FC<{

@@ -1,10 +1,10 @@
 import { sleepAsync } from '@sensenet/client-utils'
-import React from 'react'
 import Chip from '@material-ui/core/Chip'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Select from '@material-ui/core/Select'
 import SvgIcon from '@material-ui/core/SvgIcon'
 import { mount, shallow } from 'enzyme'
+import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { TagsInput } from '../src/fieldcontrols/TagsInput'
 

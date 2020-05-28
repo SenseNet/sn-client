@@ -1,7 +1,7 @@
 import { LoadSettingsContextProvider } from '@sensenet/hooks-react'
+import { Location } from 'history'
 import React, { lazy, Suspense, useEffect, useRef } from 'react'
 import { matchPath, Route, Switch, useHistory } from 'react-router-dom'
-import { Location } from 'history'
 import { applicationPaths } from '../application-paths'
 import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'

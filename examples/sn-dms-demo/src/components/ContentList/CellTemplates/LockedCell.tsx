@@ -1,9 +1,9 @@
 import { GenericContent, User } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
+import TableCell from '@material-ui/core/TableCell'
+import Tooltip from '@material-ui/core/Tooltip'
 import React from 'react'
 import { connect } from 'react-redux'
-import Tooltip from '@material-ui/core/Tooltip'
-import TableCell from '@material-ui/core/TableCell'
 import { resources } from '../../../assets/resources'
 import { rootStateType } from '../../../store/rootReducer'
 

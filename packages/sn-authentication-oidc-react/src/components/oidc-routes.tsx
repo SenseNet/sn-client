@@ -1,5 +1,5 @@
-import React, { memo, ReactNode, useEffect, useState } from 'react'
 import { UserManagerSettings } from 'oidc-client'
+import React, { memo, ReactNode, useEffect, useState } from 'react'
 import { getPath } from '../route-utils'
 import { NotAuthenticated } from './not-authenticated'
 import { NotAuthorized } from './not-authorized'

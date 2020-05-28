@@ -1,6 +1,6 @@
 import { GenericContent } from '@sensenet/default-content-types'
-import React from 'react'
 import { shallow } from 'enzyme'
+import React from 'react'
 import { useWopi } from '../src/hooks'
 
 const Wopi = ({ content }: { content: GenericContent }) => {

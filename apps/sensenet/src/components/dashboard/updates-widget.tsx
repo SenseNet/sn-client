@@ -1,6 +1,4 @@
 import { useVersionInfo } from '@sensenet/hooks-react'
-import React from 'react'
-import WbSunnyTwoTone from '@material-ui/icons/WbSunnyTwoTone'
 import {
   Button,
   List,
@@ -10,8 +8,10 @@ import {
   ListItemText,
   Typography,
 } from '@material-ui/core'
-import { Widget } from '../../services/PersonalSettings'
+import WbSunnyTwoTone from '@material-ui/icons/WbSunnyTwoTone'
+import React from 'react'
 import { useLocalization, useStringReplace, useTheme } from '../../hooks'
+import { Widget } from '../../services/PersonalSettings'
 
 export const UpdatesWidget: React.FunctionComponent<Widget<undefined>> = (props) => {
   const replacedTitle = useStringReplace(props.title)

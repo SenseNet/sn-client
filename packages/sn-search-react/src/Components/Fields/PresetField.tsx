@@ -1,9 +1,9 @@
 import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
-import React from 'react'
 import ListItemText from '@material-ui/core/ListItemText'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select, { SelectProps } from '@material-ui/core/Select'
+import React from 'react'
 
 /**
  * Props object for the SelectFieldP Component

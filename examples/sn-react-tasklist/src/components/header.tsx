@@ -1,13 +1,12 @@
-import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
-import React from 'react'
-
 // start of material imports
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
 import AppBar from '@material-ui/core/AppBar'
 import IconButton from '@material-ui/core/IconButton'
-import LogoutIcon from '@material-ui/icons/PowerSettingsNew'
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
+import LogoutIcon from '@material-ui/icons/PowerSettingsNew'
+import React from 'react'
 // end of material imports
 
 // start of sensenet imports

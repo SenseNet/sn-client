@@ -1,6 +1,6 @@
 import { useInjector } from '@sensenet/hooks-react'
-import React, { useEffect, useState } from 'react'
 import moment from 'moment'
+import React, { useEffect, useState } from 'react'
 import { usePersonalSettings } from '../hooks'
 import DefaultLocalization from '../localization/default'
 import { LocalizationService } from '../services/LocalizationService'

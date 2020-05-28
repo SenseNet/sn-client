@@ -1,8 +1,8 @@
 import { SchemaStore } from '@sensenet/client-core'
 import { SchemaStore as defaultSchemas } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
-import React from 'react'
 import { shallow } from 'enzyme'
+import React from 'react'
 import { AdvancedSearch } from '../src/Components/AdvancedSearch'
 
 describe('AdvancedSearch component', () => {

@@ -1,5 +1,5 @@
-import { Trace } from '@sensenet/client-utils'
 import { CommentData } from '@sensenet/client-core'
+import { Trace } from '@sensenet/client-utils'
 import React, { useEffect, useState } from 'react'
 import { useDocumentData, useDocumentViewerApi, useViewerState } from '../hooks'
 import { DocumentViewerApiSettings } from '../models'

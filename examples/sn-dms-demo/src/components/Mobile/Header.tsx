@@ -1,17 +1,17 @@
 import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
+import AppBar from '@material-ui/core/AppBar'
+import IconButton from '@material-ui/core/IconButton'
+import Toolbar from '@material-ui/core/Toolbar'
 import React from 'react'
 import { connect } from 'react-redux'
-import Toolbar from '@material-ui/core/Toolbar'
-import IconButton from '@material-ui/core/IconButton'
-import AppBar from '@material-ui/core/AppBar'
 import * as DMSActions from '../../Actions'
 import { getContentTypeFromUrl, getExtensionFromUrl } from '../../assets/helpers'
 import { rootStateType } from '../../store/rootReducer'
 import AppBarLogo from '../AppBarLogo'
+import { CallableActionModel } from '../CallableAction'
 import AddNewDialog from '../Dialogs/AddNewDialog'
 import { Search } from '../Search/Search'
-import { CallableActionModel } from '../CallableAction'
 
 const styles = {
   appBar: {

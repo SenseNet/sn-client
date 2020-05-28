@@ -1,7 +1,7 @@
 import { GenericContent } from '@sensenet/default-content-types'
-import React from 'react'
 import { TableCell } from '@material-ui/core'
 import clsx from 'clsx'
+import React from 'react'
 import { ResponsivePlatforms } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 

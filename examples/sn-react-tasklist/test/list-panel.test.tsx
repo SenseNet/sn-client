@@ -1,11 +1,11 @@
 import { Repository } from '@sensenet/client-core'
 import { RepositoryContext } from '@sensenet/hooks-react'
-import React from 'react'
 import Checkbox from '@material-ui/core/Checkbox'
 import IconButton from '@material-ui/core/IconButton'
 import ListItem from '@material-ui/core/ListItem'
-import { act } from 'react-dom/test-utils'
 import { mount } from 'enzyme'
+import React from 'react'
+import { act } from 'react-dom/test-utils'
 import ListPanel from '../src/components/list-panel'
 import { removedlist, sortedTodoList, TestContentCollection } from './_mocks_/test_contents'
 

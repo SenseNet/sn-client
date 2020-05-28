@@ -1,6 +1,6 @@
-import React from 'react'
 import ListItem from '@material-ui/core/ListItem'
 import { mount } from 'enzyme'
+import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { ListPickerComponent } from '../src/ListPicker'
 import { genericContentItems } from './mocks/items'

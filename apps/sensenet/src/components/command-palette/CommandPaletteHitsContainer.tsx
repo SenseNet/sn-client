@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
-import { RenderSuggestionsContainerParams } from 'react-autosuggest'
 import List from '@material-ui/core/List'
 import Paper from '@material-ui/core/Paper'
+import React, { useContext } from 'react'
+import { RenderSuggestionsContainerParams } from 'react-autosuggest'
 import { ResponsiveContext } from '../../context'
 
 export const CommandPaletteHitsContainer: React.FunctionComponent<

@@ -1,9 +1,9 @@
 import { Repository } from '@sensenet/client-core'
+import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { mount, shallow } from 'enzyme'
-import { useVersionInfo, VersionInfo } from '../src/hooks'
 import { RepositoryContext } from '../src/context'
+import { useVersionInfo, VersionInfo } from '../src/hooks'
 
 const VersionInfoDump = () => {
   const i = useVersionInfo()

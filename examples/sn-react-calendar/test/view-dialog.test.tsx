@@ -1,6 +1,6 @@
-import React from 'react'
 import Button from '@material-ui/core/Button'
 import { shallow, ShallowWrapper } from 'enzyme'
+import React from 'react'
 import { DialogComponent, DialogProps } from '../src/components/view-dialog'
 import { CalendarTestEvent } from './mocks/test-objects'
 

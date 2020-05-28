@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import Typography from '@material-ui/core/Typography'
 import { Button, CircularProgress } from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
+import React, { useState } from 'react'
 import { useDocumentData, useDocumentViewerApi, useLocalization } from '../hooks'
 import { LayoutAppBar } from './LayoutAppBar'
 

@@ -1,6 +1,6 @@
 import { RepositoryContext } from '@sensenet/hooks-react'
-import React from 'react'
 import { mount, shallow } from 'enzyme'
+import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { App, Transition } from '../src/app'
 import { FullScreenDialog } from '../src/components/FullScreenDialog'

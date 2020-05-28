@@ -1,7 +1,7 @@
 import { GenericContent } from '@sensenet/default-content-types'
-import React from 'react'
-import TableCell from '@material-ui/core/TableCell'
 import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox'
+import TableCell from '@material-ui/core/TableCell'
+import React from 'react'
 
 interface RowCheckboxProps<T = GenericContent> {
   getSelectionControl?: (selected: boolean, content: T, callBack: () => void) => JSX.Element

@@ -1,8 +1,8 @@
 import { Repository } from '@sensenet/client-core'
+import { compile } from 'path-to-regexp'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { compile } from 'path-to-regexp'
 import { rootStateType } from '../../store/rootReducer'
 import { getWopiData } from '../../store/wopi/actions'
 

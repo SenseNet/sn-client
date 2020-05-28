@@ -1,8 +1,8 @@
 import { NewView } from '@sensenet/controls-react'
 import { useRepository } from '@sensenet/hooks-react'
-import React, { useContext } from 'react'
 import { DialogContent, DialogTitle } from '@material-ui/core'
 import { DialogProps } from '@material-ui/core/Dialog'
+import React, { useContext } from 'react'
 import { SharedContext } from '../context/shared-context'
 
 const NewDialogBody: React.FunctionComponent<{

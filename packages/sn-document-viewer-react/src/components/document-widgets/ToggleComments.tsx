@@ -1,5 +1,5 @@
-import React from 'react'
 import Comment from '@material-ui/icons/Comment'
+import React from 'react'
 import { useLocalization, useViewerState } from '../../hooks'
 import { ToggleBase } from './ToggleBase'
 

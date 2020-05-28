@@ -1,7 +1,7 @@
 import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
 import { useRepository } from '@sensenet/hooks-react'
-import React from 'react'
 import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core'
+import React from 'react'
 import { authConfigKey, useCurrentUser } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'

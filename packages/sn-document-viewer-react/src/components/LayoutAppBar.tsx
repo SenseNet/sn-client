@@ -1,6 +1,6 @@
-import React, { CSSProperties } from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
+import React, { CSSProperties } from 'react'
 
 /**
  * Represents a Toolbar component in an AppBar

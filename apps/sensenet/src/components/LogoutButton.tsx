@@ -1,7 +1,7 @@
-import React from 'react'
 import Button from '@material-ui/core/Button'
 import Tooltip from '@material-ui/core/Tooltip'
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
+import React from 'react'
 import { useLocalization, useTheme } from '../hooks'
 import { useDialog } from './dialogs'
 

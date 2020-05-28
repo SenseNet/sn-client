@@ -3,8 +3,8 @@
  */
 import { changeJScriptValue, renderIconDefault } from '@sensenet/controls-react'
 import { ShortTextFieldSetting } from '@sensenet/default-content-types'
-import React from 'react'
 import { createStyles, Icon, Input, InputAdornment, InputLabel, makeStyles } from '@material-ui/core'
+import React from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 const useStyles = makeStyles(() => {

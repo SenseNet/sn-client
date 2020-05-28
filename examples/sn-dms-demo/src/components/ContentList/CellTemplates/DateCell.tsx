@@ -1,7 +1,7 @@
 import { GenericContent } from '@sensenet/default-content-types'
-import React from 'react'
 import TableCell from '@material-ui/core/TableCell'
 import moment from 'moment'
+import React from 'react'
 
 export interface DateCellProps {
   content: GenericContent

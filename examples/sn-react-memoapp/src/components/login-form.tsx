@@ -1,6 +1,6 @@
 import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
-import React from 'react'
 import { Button, Paper, Typography } from '@material-ui/core'
+import React from 'react'
 import { repositoryUrl } from '../configuration'
 
 export const LoginForm = () => {

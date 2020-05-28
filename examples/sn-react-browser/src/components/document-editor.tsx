@@ -1,8 +1,8 @@
-import { useRepository } from '@sensenet/hooks-react'
 import { isExtendedError, ODataWopiResponse } from '@sensenet/client-core'
+import { useRepository } from '@sensenet/hooks-react'
+import { Button, Typography } from '@material-ui/core'
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory, useParams } from 'react-router'
-import { Button, Typography } from '@material-ui/core'
 import { FullScreenLoader } from './full-screen-loader'
 
 export interface DocumentEditorProps {

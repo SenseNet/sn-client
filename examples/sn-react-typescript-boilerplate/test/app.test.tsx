@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable react/display-name */
-import React, { PropsWithChildren } from 'react'
 import { Button } from '@material-ui/core'
 import { mount } from 'enzyme'
+import React, { PropsWithChildren } from 'react'
 import { App } from '../src/app'
 import { AppProviders } from '../src/components/app-providers'
 

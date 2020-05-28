@@ -1,7 +1,7 @@
 import { Repository } from '@sensenet/client-core'
 import { ControlMapper } from '@sensenet/control-mapper'
-import { ChoiceFieldSetting, LongTextFieldSetting, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import { ReactClientFieldSetting } from '@sensenet/controls-react'
+import { ChoiceFieldSetting, LongTextFieldSetting, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import { ComponentType } from 'react'
 import * as FieldControls from './field-controls'
 

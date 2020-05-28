@@ -1,12 +1,12 @@
 import { GenericContent, isUser } from '@sensenet/default-content-types'
 import { useSession } from '@sensenet/hooks-react'
-import React from 'react'
-import Lock from '@material-ui/icons/Lock'
-import AssignmentLateIcon from '@material-ui/icons/AssignmentLate'
 import { TableCell, Tooltip } from '@material-ui/core'
+import AssignmentLateIcon from '@material-ui/icons/AssignmentLate'
+import Lock from '@material-ui/icons/Lock'
 import clsx from 'clsx'
-import { useLocalization } from '../../hooks'
+import React from 'react'
 import { useGlobalStyles } from '../../globalStyles'
+import { useLocalization } from '../../hooks'
 
 type LockedFieldProps = {
   content: GenericContent

@@ -9,9 +9,9 @@ import {
   useRepository,
 } from '@sensenet/hooks-react'
 import { VirtualCellProps, VirtualDefaultCell, VirtualizedTable } from '@sensenet/list-controls-react'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { createStyles, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'

@@ -50,19 +50,18 @@ module.exports = {
     'import/order': [
       'error',
       {
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true,
+        },
         pathGroups: [
           {
-            pattern: '@sensenet/**',
-            group: 'builtin',
-            position: 'before',
-          },
-          {
-            pattern: 'react**',
-            group: 'builtin',
-            position: 'before',
-          },
-          {
             pattern: '@material-ui/**',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: '@sensenet/**',
             group: 'builtin',
             position: 'before',
           },

@@ -1,5 +1,5 @@
-import React from 'react'
 import IconButton from '@material-ui/core/IconButton/IconButton'
+import React from 'react'
 
 /**
  * Properties for Toggle Base component

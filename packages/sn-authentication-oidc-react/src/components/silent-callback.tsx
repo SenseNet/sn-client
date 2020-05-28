@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
 import { UserManager } from 'oidc-client'
+import React, { useEffect } from 'react'
 
 export const SilentCallback = () => {
   useEffect(() => {

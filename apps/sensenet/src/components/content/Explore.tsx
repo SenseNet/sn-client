@@ -7,9 +7,9 @@ import {
   LoadSettingsContextProvider,
   useRepository,
 } from '@sensenet/hooks-react'
-import React, { useState } from 'react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import clsx from 'clsx'
+import React, { useState } from 'react'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
 import { ContentList } from '../content-list/content-list'

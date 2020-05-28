@@ -1,6 +1,6 @@
+import TextField from '@material-ui/core/TextField'
 import React from 'react'
 import { InputProps } from 'react-autosuggest'
-import TextField from '@material-ui/core/TextField'
 
 type ReferenceFieldInputProps = {
   inputProps: InputProps<{}>

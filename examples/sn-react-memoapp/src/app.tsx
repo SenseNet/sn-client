@@ -1,9 +1,9 @@
-import React from 'react'
 import { Container, CssBaseline, Grid } from '@material-ui/core'
 import Toolbar from '@material-ui/core/Toolbar'
+import React from 'react'
 import snLogo from './assets/sensenet_logo_transparent.png'
-import { NavBarComponent } from './components/navbar'
 import { MemoPanel } from './components/memo-panel'
+import { NavBarComponent } from './components/navbar'
 
 /**
  * The main entry point of your app. You can start h@cking from here ;)

@@ -1,13 +1,13 @@
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import { CurrentContentProvider } from '@sensenet/hooks-react'
-import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { createStyles, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
+import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
-import { NewView } from '../view-controls/new-view'
 import { useQuery } from '../../hooks/use-query'
+import { NewView } from '../view-controls/new-view'
 
 const useStyles = makeStyles(() => {
   return createStyles({

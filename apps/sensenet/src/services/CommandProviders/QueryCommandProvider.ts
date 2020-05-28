@@ -1,12 +1,12 @@
 import { ConstantContent } from '@sensenet/client-core'
 import { Injectable, Injector } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
+import { applicationPaths } from '../../application-paths'
 import { CommandPaletteItem } from '../../components/command-palette/CommandPalette'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
 import { getPrimaryActionUrl } from '../content-context-service'
 import { LocalizationService } from '../LocalizationService'
 import { PersonalSettings } from '../PersonalSettings'
-import { applicationPaths } from '../../application-paths'
 
 @Injectable({ lifetime: 'singleton' })
 export class QueryCommandProvider implements CommandProvider {

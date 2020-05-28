@@ -1,5 +1,5 @@
-import React from 'react'
 import Dashboard from '@material-ui/icons/Dashboard'
+import React from 'react'
 import { useLocalization, useViewerState } from '../../hooks'
 import { ToggleBase } from './ToggleBase'
 

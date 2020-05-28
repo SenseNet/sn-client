@@ -1,11 +1,11 @@
+import { Container, CssBaseline, Grid } from '@material-ui/core'
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import { Container, CssBaseline, Grid } from '@material-ui/core'
 import snLogo from './assets/sensenet_logo_transparent.png'
-import { NavBarComponent } from './components/navbar'
-import MainPanel from './components/mainpanel'
-import DocviewerComponent from './components/document-viewer'
 import { DocumentEditor } from './components/document-editor'
+import DocviewerComponent from './components/document-viewer'
+import MainPanel from './components/mainpanel'
+import { NavBarComponent } from './components/navbar'
 
 /**
  * The main entry point of your app. You can start h@cking from here ;)

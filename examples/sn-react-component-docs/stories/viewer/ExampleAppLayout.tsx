@@ -1,3 +1,4 @@
+import { Repository } from '@sensenet/client-core'
 import {
   defaultTheme,
   DocumentTitlePager,
@@ -16,8 +17,6 @@ import {
   ZoomModeWidget,
 } from '@sensenet/document-viewer-react/src'
 import { RepositoryContext } from '@sensenet/hooks-react'
-import { Repository } from '@sensenet/client-core'
-import React, { useEffect, useState } from 'react'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import Dialog from '@material-ui/core/Dialog'
@@ -33,6 +32,7 @@ import Typography from '@material-ui/core/Typography'
 import FolderOpen from '@material-ui/icons/FolderOpen'
 import Help from '@material-ui/icons/Help'
 import Send from '@material-ui/icons/Send'
+import React, { useEffect, useState } from 'react'
 
 const localStorageKey = 'sn-docviewer-example'
 

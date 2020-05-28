@@ -1,6 +1,6 @@
-import React, { createContext, ElementType, ReactNode, useCallback, useEffect, useReducer } from 'react'
 import { History } from 'history'
 import { User, UserManagerSettings } from 'oidc-client'
+import React, { createContext, ElementType, ReactNode, useCallback, useEffect, useReducer } from 'react'
 import { authenticationService } from '../authentication-service'
 import { addOidcEvents, login, logout, oidcReducer, removeOidcEvents } from '../oidc-events'
 import { CallbackContainer } from './callback'

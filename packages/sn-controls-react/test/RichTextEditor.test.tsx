@@ -1,10 +1,10 @@
+import FormControl from '@material-ui/core/FormControl'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import FormLabel from '@material-ui/core/FormLabel'
+import Typography from '@material-ui/core/Typography'
+import { shallow } from 'enzyme'
 import React from 'react'
 import ReactQuill from 'react-quill'
-import Typography from '@material-ui/core/Typography'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import FormControl from '@material-ui/core/FormControl'
-import FormLabel from '@material-ui/core/FormLabel'
-import { shallow } from 'enzyme'
 import { RichTextEditor } from '../src/fieldcontrols'
 
 describe('Rich text editor field control', () => {

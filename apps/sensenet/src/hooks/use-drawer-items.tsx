@@ -1,6 +1,6 @@
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import React, { useContext, useEffect, useState } from 'react'
 import { Build, Dashboard, Delete, Language, People, Public, Search, Widgets } from '@material-ui/icons'
+import React, { useContext, useEffect, useState } from 'react'
 import { applicationPaths, resolvePathParams } from '../application-paths'
 import { Icon } from '../components/Icon'
 import { ResponsivePersonalSettings } from '../context'

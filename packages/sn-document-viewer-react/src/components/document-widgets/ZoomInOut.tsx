@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import ZoomIn from '@material-ui/icons/ZoomIn'
 import ZoomOut from '@material-ui/icons/ZoomOut'
+import React, { useCallback } from 'react'
 import { useViewerState } from '../../hooks'
 
 /**

@@ -1,6 +1,6 @@
 import { GenericContent } from '@sensenet/default-content-types'
-import React from 'react'
 import TableCell from '@material-ui/core/TableCell'
+import React from 'react'
 
 export interface DefaultCellProps {
   content: GenericContent | null

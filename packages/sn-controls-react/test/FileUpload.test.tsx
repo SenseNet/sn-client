@@ -1,9 +1,9 @@
-import { Image } from '@sensenet/default-content-types'
 import { sleepAsync } from '@sensenet/client-utils'
-import React from 'react'
-import Typography from '@material-ui/core/Typography'
+import { Image } from '@sensenet/default-content-types'
 import Input from '@material-ui/core/Input'
+import Typography from '@material-ui/core/Typography'
 import { mount, shallow } from 'enzyme'
+import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { errorMessages, FileUpload } from '../src/fieldcontrols/FileUpload'
 

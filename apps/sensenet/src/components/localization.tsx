@@ -1,7 +1,7 @@
 import { useRepository } from '@sensenet/hooks-react'
+import clsx from 'clsx'
 import React from 'react'
 import { useHistory } from 'react-router'
-import clsx from 'clsx'
 import { useGlobalStyles } from '../globalStyles'
 import { useLocalization } from '../hooks'
 import { getPrimaryActionUrl } from '../services'

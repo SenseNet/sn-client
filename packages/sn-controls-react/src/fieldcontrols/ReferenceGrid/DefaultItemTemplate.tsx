@@ -1,5 +1,4 @@
 import { GenericContent } from '@sensenet/default-content-types'
-import React from 'react'
 import Avatar from '@material-ui/core/Avatar'
 import Icon from '@material-ui/core/Icon'
 import IconButton from '@material-ui/core/IconButton'
@@ -9,6 +8,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
+import React from 'react'
 import { renderIconDefault } from '../icon'
 import { isUser } from '../type-guards'
 

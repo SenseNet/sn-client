@@ -1,6 +1,6 @@
+import Button from '@material-ui/core/Button'
 import React from 'react'
 import MediaQuery from 'react-responsive'
-import Button from '@material-ui/core/Button'
 import logo from '../assets/logo.png'
 import { resources } from '../assets/resources'
 import { WelcomeMessage } from '../components/WelcomeMessage'

@@ -1,8 +1,8 @@
 import { Icon, iconType } from '@sensenet/icons-react'
-import React from 'react'
 import Badge from '@material-ui/core/Badge'
 import Button from '@material-ui/core/Button'
 import withStyles from '@material-ui/core/styles/withStyles'
+import React from 'react'
 
 import { resources } from '../../assets/resources'
 

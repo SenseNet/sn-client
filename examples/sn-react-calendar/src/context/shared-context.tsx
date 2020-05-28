@@ -1,10 +1,10 @@
-import React, { createContext, Dispatch, SyntheticEvent, useState } from 'react'
 import Snackbar from '@material-ui/core/Snackbar'
-import { EditPropertiesDialog } from '../components/edit-dialog'
+import React, { createContext, Dispatch, SyntheticEvent, useState } from 'react'
 import CalendarEvent from '../CalendarEvent-type'
-import { DialogComponent } from '../components/view-dialog'
+import { EditPropertiesDialog } from '../components/edit-dialog'
 import { NewDialog } from '../components/new-dialog'
 import CalendarNotification from '../components/notification'
+import { DialogComponent } from '../components/view-dialog'
 
 export const SharedContext = createContext<{
   openeditmodal: boolean

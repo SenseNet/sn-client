@@ -2,15 +2,15 @@
  * @module FieldControls
  */
 
-import { BinaryFieldSetting } from '@sensenet/default-content-types'
-import { PathHelper } from '@sensenet/client-utils'
 import { ODataResponse } from '@sensenet/client-core'
-import React, { useEffect, useState } from 'react'
+import { PathHelper } from '@sensenet/client-utils'
+import { BinaryFieldSetting } from '@sensenet/default-content-types'
 import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel/InputLabel'
 import Typography from '@material-ui/core/Typography'
+import React, { useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 const styles = {

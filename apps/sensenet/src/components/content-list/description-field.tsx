@@ -1,6 +1,6 @@
-import React from 'react'
 import { createStyles, makeStyles, TableCell, Tooltip } from '@material-ui/core'
 import clsx from 'clsx'
+import React from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 
 const useStyles = makeStyles(() => {

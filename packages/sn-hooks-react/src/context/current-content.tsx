@@ -1,6 +1,6 @@
 import { ConstantContent, ODataParams } from '@sensenet/client-core'
-import { GenericContent } from '@sensenet/default-content-types'
 import { PathHelper } from '@sensenet/client-utils'
+import { GenericContent } from '@sensenet/default-content-types'
 import React, { useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { useRepository, useRepositoryEvents } from '../hooks'

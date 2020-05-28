@@ -3,10 +3,10 @@
  */
 import { changeJScriptValue } from '@sensenet/controls-react'
 import { FieldSetting } from '@sensenet/default-content-types'
-import React, { useState } from 'react'
-import FormControl from '@material-ui/core/FormControl'
 import { createStyles, Grid, makeStyles, Typography } from '@material-ui/core'
+import FormControl from '@material-ui/core/FormControl'
 import clsx from 'clsx'
+import React, { useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 import { Switcher } from './switcher'
 

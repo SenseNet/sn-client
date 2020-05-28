@@ -1,6 +1,6 @@
-import React from 'react'
 import IconButton from '@material-ui/core/IconButton/IconButton'
 import { mount, shallow } from 'enzyme'
+import React from 'react'
 import {
   ToggleBase,
   ToggleCommentsWidget,

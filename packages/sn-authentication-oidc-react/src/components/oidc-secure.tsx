@@ -1,5 +1,5 @@
-import React, { ReactNode, useContext, useEffect } from 'react'
 import { History } from 'history'
+import React, { ReactNode, useContext, useEffect } from 'react'
 import { getUserManager } from '../authentication-service'
 import { authenticateUser } from '../oidc-service'
 import { Authenticating } from './authenticating'

@@ -1,5 +1,5 @@
-import React from 'react'
 import { storiesOf } from '@storybook/react'
+import React from 'react'
 import showCaseAppNotes from '../../notes/pickers/ConnectedToDms.md'
 import { ExampleApp, ExampleAppWithHook } from './ExampleApp'
 

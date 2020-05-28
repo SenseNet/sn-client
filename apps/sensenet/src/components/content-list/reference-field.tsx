@@ -1,9 +1,9 @@
 import { GenericContent } from '@sensenet/default-content-types'
-import React from 'react'
 import { TableCell } from '@material-ui/core'
 import clsx from 'clsx'
-import { Icon } from '../Icon'
+import React from 'react'
 import { useGlobalStyles } from '../../globalStyles'
+import { Icon } from '../Icon'
 
 export const ReferenceField: React.FC<{ content: GenericContent }> = ({ content }) => {
   const globalClasses = useGlobalStyles()

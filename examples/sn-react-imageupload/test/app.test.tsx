@@ -1,11 +1,11 @@
 import { RepositoryContext } from '@sensenet/hooks-react'
-import React from 'react'
 import { Snackbar } from '@material-ui/core'
 import { mount } from 'enzyme'
+import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { App } from '../src/app'
-import { SimpleAppBar } from '../src/components/SimpleAppBar'
 import { AdvancedGridList } from '../src/components/AdvancedGridList'
+import { SimpleAppBar } from '../src/components/SimpleAppBar'
 import { images } from './mocks/images'
 
 describe('Get Images from repository', () => {

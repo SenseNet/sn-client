@@ -1,9 +1,9 @@
 import { useRepository } from '@sensenet/hooks-react'
-import React from 'react'
 import { Container, CssBaseline, Grid } from '@material-ui/core'
+import React from 'react'
 import snLogo from './assets/sensenet_logo_transparent.png'
-import { NavBarComponent } from './components/navbar'
 import MainPanel from './components/mainpanel'
+import { NavBarComponent } from './components/navbar'
 import SharedProvider from './context/shared-context'
 
 /**

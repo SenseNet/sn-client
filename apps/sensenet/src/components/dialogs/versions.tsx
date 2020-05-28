@@ -1,6 +1,5 @@
 import { GenericContent, User } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import React, { useEffect, useState } from 'react'
 import {
   DialogContent,
   DialogTitle,
@@ -14,6 +13,7 @@ import {
 } from '@material-ui/core'
 import HistoryIcon from '@material-ui/icons/History'
 import moment from 'moment'
+import React, { useEffect, useState } from 'react'
 import { useLocalization } from '../../hooks'
 import { useDialog } from './dialog-provider'
 

@@ -1,6 +1,6 @@
-import { Dispatch } from 'react'
 import { History, Location } from 'history'
 import { User, UserManager } from 'oidc-client'
+import { Dispatch } from 'react'
 import { CustomEvents } from './components/authentication-provider'
 import { authenticateUser, logoutUser } from './oidc-service'
 

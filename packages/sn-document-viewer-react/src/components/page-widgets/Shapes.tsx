@@ -8,8 +8,8 @@ import {
   Shapes,
 } from '@sensenet/client-core'
 import React, { useCallback, useEffect, useState } from 'react'
-import { Dimensions } from '../../services'
 import { useComments, useCommentState, useDocumentData, useDocumentPermissions, useViewerState } from '../../hooks'
+import { Dimensions } from '../../services'
 import { ShapeAnnotation, ShapeHighlight, ShapeRedaction } from './Shape'
 import { CommentMarker } from './style'
 

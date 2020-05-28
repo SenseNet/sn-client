@@ -1,6 +1,6 @@
 import { Repository } from '@sensenet/client-core'
-import React from 'react'
 import { mount, shallow } from 'enzyme'
+import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { RepositoryContext } from '../src/context'
 import { CurrentContentContext, CurrentContentProvider } from '../src/context/current-content'

@@ -1,8 +1,8 @@
 /* eslint-disable react/display-name */
 /* eslint-disable @typescript-eslint/camelcase */
-import React, { PropsWithChildren } from 'react'
 import { IconButton } from '@material-ui/core'
 import { mount } from 'enzyme'
+import React, { PropsWithChildren } from 'react'
 import { act } from 'react-dom/test-utils'
 import { AppProviders } from '../src/components/app-providers'
 import HeaderPanel from '../src/components/header'

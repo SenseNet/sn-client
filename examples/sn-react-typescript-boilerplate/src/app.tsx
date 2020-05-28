@@ -1,6 +1,6 @@
 import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
-import React from 'react'
 import { Button, CssBaseline, Tooltip, Typography } from '@material-ui/core'
+import React from 'react'
 import snLogo from './assets/sensenet_logo_transparent.png'
 
 /**

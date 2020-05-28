@@ -1,7 +1,7 @@
-import React from 'react'
 import { TableCell } from '@material-ui/core'
-import moment from 'moment'
 import clsx from 'clsx'
+import moment from 'moment'
+import React from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 
 export const DateField: React.FC<{ date: string | Date }> = ({ date }) => {

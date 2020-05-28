@@ -1,8 +1,8 @@
 import { CommentData } from '@sensenet/client-core'
-import React, { useState } from 'react'
 import { Button } from '@material-ui/core'
-import { ConfirmationDialog } from '../ConfirmationDialog'
+import React, { useState } from 'react'
 import { useDocumentData, useDocumentViewerApi, useLocalization } from '../../hooks'
+import { ConfirmationDialog } from '../ConfirmationDialog'
 
 // type DeleteButtonProps = Pick<CommentPropType, 'deleteComment' | 'id'>
 export interface DeleteButtonProps {

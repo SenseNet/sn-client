@@ -1,11 +1,11 @@
-import React from 'react'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Select from '@material-ui/core/Select'
 import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
 import { shallow } from 'enzyme'
+import React from 'react'
 import { DropDownList } from '../src/fieldcontrols/DropDownList'
 
 const defaultSettings = {

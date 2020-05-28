@@ -1,12 +1,12 @@
-import { Image, User } from '@sensenet/default-content-types'
 import { ConstantContent } from '@sensenet/client-core'
+import { Image, User } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import React, { useState } from 'react'
 import { IconButton } from '@material-ui/core'
 import GridList from '@material-ui/core/GridList'
-import { makeStyles } from '@material-ui/core/styles'
 import GridListTile from '@material-ui/core/GridListTile'
 import GridListTileBar from '@material-ui/core/GridListTileBar'
+import { makeStyles } from '@material-ui/core/styles'
+import React, { useState } from 'react'
 import { DropFileArea } from './DropFileArea'
 
 interface AdvancedGridprops {

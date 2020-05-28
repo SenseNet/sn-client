@@ -1,9 +1,9 @@
 /* eslint-disable require-jsdoc */
-import React from 'react'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { Divider, Drawer, Typography } from '@material-ui/core'
-import Person from '@material-ui/icons/Person'
 import { makeStyles } from '@material-ui/core/styles'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+import Person from '@material-ui/icons/Person'
+import React from 'react'
 import { SelectedImage } from '../Interface'
 import { DotsMobileStepper } from './DotsMobileStepper'
 

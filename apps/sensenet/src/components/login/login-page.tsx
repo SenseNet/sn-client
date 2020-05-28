@@ -1,5 +1,3 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import {
   AppBar,
   Button,
@@ -12,6 +10,8 @@ import {
   Typography,
 } from '@material-ui/core'
 import clsx from 'clsx'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import snLogo from '../../assets/sensenet-icon-32.png'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'

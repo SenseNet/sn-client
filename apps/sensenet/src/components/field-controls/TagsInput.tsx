@@ -3,7 +3,7 @@
  */
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
-import React, { Component } from 'react'
+import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
 import Chip from '@material-ui/core/Chip'
 import FormControl from '@material-ui/core/FormControl'
@@ -14,9 +14,9 @@ import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
-import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core'
-import { renderIconDefault } from './icon'
+import React, { Component } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
+import { renderIconDefault } from './icon'
 import { isUser } from './type-guards'
 
 const ITEM_HEIGHT = 48

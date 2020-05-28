@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import Save from '@material-ui/icons/Save'
+import React, { useCallback } from 'react'
 import {
   useDocumentData,
   useDocumentPermissions,

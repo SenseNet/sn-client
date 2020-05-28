@@ -10,16 +10,16 @@ import {
   useRepository,
   useRepositoryEvents,
 } from '@sensenet/hooks-react'
+import Checkbox from '@material-ui/core/Checkbox'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Typography from '@material-ui/core/Typography'
+import clsx from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import Typography from '@material-ui/core/Typography'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
-import clsx from 'clsx'
+import { applicationPaths } from '../../application-paths'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { ContentList } from '../content-list/content-list'
-import { applicationPaths } from '../../application-paths'
 
 export default function Search() {
   const repo = useRepository()

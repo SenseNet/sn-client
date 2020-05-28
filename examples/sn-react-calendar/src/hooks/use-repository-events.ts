@@ -1,5 +1,5 @@
-import { EventHub } from '@sensenet/repository-events'
 import { useRepository } from '@sensenet/hooks-react'
+import { EventHub } from '@sensenet/repository-events'
 import { useEffect, useState } from 'react'
 
 /**

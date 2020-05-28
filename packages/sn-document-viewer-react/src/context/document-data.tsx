@@ -1,5 +1,5 @@
-import { deepMerge, DeepPartial, sleepAsync } from '@sensenet/client-utils'
 import { DocumentData } from '@sensenet/client-core'
+import { deepMerge, DeepPartial, sleepAsync } from '@sensenet/client-utils'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { useCallback, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'

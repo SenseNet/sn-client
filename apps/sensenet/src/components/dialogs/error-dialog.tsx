@@ -1,6 +1,6 @@
-import React from 'react'
 import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core'
 import { BugReportTwoTone, RefreshTwoTone } from '@material-ui/icons'
+import React from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { ErrorBoundaryState } from '../error-boundary'
