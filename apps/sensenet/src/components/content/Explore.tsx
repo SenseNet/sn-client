@@ -150,6 +150,7 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
                               </span>
                             )}
                             <span
+title={`Open ${selectionService.activeContent.getValue()!.Type} CTD`}
                               onClick={async () => {
                                 dialogActionService.activeAction.setValue(undefined)
                                 selectionService.activeContent.getValue() &&
