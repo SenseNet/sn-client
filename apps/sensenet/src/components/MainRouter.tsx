@@ -6,6 +6,7 @@ import { applicationPaths } from '../application-paths'
 import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './full-screen-loader'
+import { InvalidPathErrorBoundary } from './content/InvalidPathErrorBoundary'
 
 const UsersAndGroupsComponent = lazy(() => import(/* webpackChunkName: "UserAndGroup" */ './users-and-groups'))
 const LocalizationComponent = lazy(() => import(/* webpackChunkName: "Localization" */ './localization'))
@@ -62,7 +63,9 @@ export const MainRouter = () => {
           </Route>
 
           <Route path={applicationPaths.browse}>
-            <ExploreComponent />
+            <InvalidPathErrorBoundary>
+              <ExploreComponent />
+            </InvalidPathErrorBoundary>
           </Route>
 
           <Route path={applicationPaths.search}>

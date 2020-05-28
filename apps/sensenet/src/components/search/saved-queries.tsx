@@ -84,7 +84,6 @@ export default function Search() {
               color="primary"
               onChange={(ev) => {
                 setOnlyPublic(ev.target.checked)
-                requestReload()
               }}
             />
           }

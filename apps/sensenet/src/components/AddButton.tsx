@@ -169,8 +169,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
                   onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => {
                     setAnchorEl(event.currentTarget)
                     setShowSelectType(true)
-                  }}
-                  disabled={!isAvailable}>
+                  }}>
                   <Add className={globalClasses.drawerButtonIcon} />
                 </IconButton>
               </span>
@@ -185,7 +184,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
                   setAnchorEl(event.currentTarget)
                   setShowSelectType(true)
                 }}
-                disabled={!isAvailable}>
+                disabled={true}>
                 <Add className={globalClasses.drawerButtonIcon} />
               </IconButton>
             </span>
