@@ -33,6 +33,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
   const { content } = useLoadContent<GenericContent>({
     idOrPath: props.content.Id,
     oDataOptions: contextMenuODataOptions,
+    isOpened: props.isOpened,
   })
   const { isWriteAvailable } = useWopi()
 
@@ -72,7 +73,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
     return (actionName.toLowerCase() as ActionNameType) || undefined
   }
 
-  const { runAction } = useContextMenuActions(props.content, setActionsWopi)
+  const { runAction } = useContextMenuActions(props.content, props.isOpened, setActionsWopi)
   const device = useContext(ResponsiveContext)
 
   useEffect(() => {

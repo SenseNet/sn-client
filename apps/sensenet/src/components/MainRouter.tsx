@@ -3,6 +3,7 @@ import { Location } from 'history'
 import React, { lazy, Suspense, useEffect, useRef } from 'react'
 import { matchPath, Route, Switch, useHistory } from 'react-router-dom'
 import { applicationPaths } from '../application-paths'
+import { InvalidPathErrorBoundary } from './content/InvalidPathErrorBoundary'
 import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './full-screen-loader'
@@ -61,7 +62,9 @@ export const MainRouter = () => {
           </Route>
 
           <Route path={applicationPaths.browse}>
-            <ExploreComponent />
+            <InvalidPathErrorBoundary>
+              <ExploreComponent />
+            </InvalidPathErrorBoundary>
           </Route>
 
           <Route path={applicationPaths.search}>
