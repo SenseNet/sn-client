@@ -1,6 +1,6 @@
 import { GenericContent } from '@sensenet/default-content-types'
-import { AnyAction, combineReducers, Reducer } from 'redux'
 import { GenericContentWithIsParent } from '@sensenet/pickers-react'
+import { AnyAction, combineReducers, Reducer } from 'redux'
 
 export const pickerIsOpened: Reducer<boolean> = (state = false, action: AnyAction) => {
   switch (action.type) {

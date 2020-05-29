@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react'
-
-// start of material imports
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
-import List from '@material-ui/core/List'
-// end of material imports
-
-// start of sensenet imports
 import { ODataCollectionResponse } from '@sensenet/client-core'
 import { Task } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
+import Grid from '@material-ui/core/Grid'
+import List from '@material-ui/core/List'
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+
+// start of material imports
+import React, { useEffect, useState } from 'react'
+// end of material imports
+
+// start of sensenet imports
 // end of sensenet imports
 
 // start of component imports
-import NewTaskPanel from './new-task'
 import ListPanel from './list-panel'
+import NewTaskPanel from './new-task'
 // end of component imports
 
 const useStyles = makeStyles((theme: Theme) =>

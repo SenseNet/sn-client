@@ -1,6 +1,6 @@
+import { sleepAsync } from '@sensenet/client-utils'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
-import { sleepAsync } from '@sensenet/client-utils'
 import { act } from 'react-dom/test-utils'
 import { DocumentViewer, DocumentViewerProps } from '../src/components/DocumentViewer'
 import { defaultSettings, exampleDocumentData, examplePreviewImageData } from './__Mocks__/viewercontext'

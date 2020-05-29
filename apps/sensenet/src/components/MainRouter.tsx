@@ -3,10 +3,10 @@ import { Location } from 'history'
 import React, { lazy, Suspense, useEffect, useRef } from 'react'
 import { matchPath, Route, Switch, useHistory } from 'react-router-dom'
 import { applicationPaths } from '../application-paths'
+import { InvalidPathErrorBoundary } from './content/InvalidPathErrorBoundary'
 import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './full-screen-loader'
-import { InvalidPathErrorBoundary } from './content/InvalidPathErrorBoundary'
 
 const UsersAndGroupsComponent = lazy(() => import(/* webpackChunkName: "UserAndGroup" */ './users-and-groups'))
 const LocalizationComponent = lazy(() => import(/* webpackChunkName: "Localization" */ './localization'))

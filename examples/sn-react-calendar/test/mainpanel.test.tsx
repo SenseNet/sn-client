@@ -1,11 +1,11 @@
+import { Repository } from '@sensenet/client-core'
+import { RepositoryContext } from '@sensenet/hooks-react'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { Repository } from '@sensenet/client-core'
-import { RepositoryContext } from '@sensenet/hooks-react'
+import EventComponent from '../src/components/event'
 import MainPanel from '../src/components/mainpanel'
 import { SharedContext } from '../src/context/shared-context'
-import EventComponent from '../src/components/event'
 import { CalendarTestEvent } from './mocks/test-objects'
 
 describe('Mainpanel', () => {

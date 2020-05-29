@@ -1,6 +1,6 @@
+import { Button, Container, Grid, Typography } from '@material-ui/core'
 import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import { Button, Container, Grid, Typography } from '@material-ui/core'
 
 export interface InvalidPathErrorBoundaryState {
   error?: Error

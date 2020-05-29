@@ -1,20 +1,19 @@
-import React from 'react'
-
 // start of material imports
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import { Status, Task } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
 import Checkbox from '@material-ui/core/Checkbox'
-import DeleteIcon from '@material-ui/icons/Delete'
 import IconButton from '@material-ui/core/IconButton'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import DeleteIcon from '@material-ui/icons/Delete'
+import React from 'react'
 // end of material imports
 
 // start of sensenet imports
 
-import { Status, Task } from '@sensenet/default-content-types'
-import { useRepository } from '@sensenet/hooks-react'
 // end of sensenet imports
 
 const useStyles = makeStyles((theme: Theme) =>

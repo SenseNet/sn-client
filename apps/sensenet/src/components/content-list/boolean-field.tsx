@@ -1,8 +1,8 @@
-import React from 'react'
 import { TableCell } from '@material-ui/core'
 import Check from '@material-ui/icons/Check'
 import Close from '@material-ui/icons/Close'
 import clsx from 'clsx'
+import React from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 
 export const BooleanField: React.FC<{ value?: boolean }> = ({ value }) => {

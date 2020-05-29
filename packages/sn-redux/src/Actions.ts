@@ -122,9 +122,9 @@ import {
   RepositoryConfiguration,
   SharingOptions,
 } from '@sensenet/client-core'
+import { PathHelper } from '@sensenet/client-utils'
 import { FieldSetting, GenericContent, User } from '@sensenet/default-content-types'
 import { PromiseMiddlewareAction } from '@sensenet/redux-promise-middleware'
-import { PathHelper } from '@sensenet/client-utils'
 
 /**
  * Type alias for getting the result type from a Promise middleware

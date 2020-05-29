@@ -1,9 +1,9 @@
-import React, { ComponentType } from 'react'
-import { ReactClientFieldSetting, reactControlMapper } from '@sensenet/controls-react'
-import { ActionName } from '@sensenet/control-mapper'
 import { Repository } from '@sensenet/client-core'
+import { ActionName } from '@sensenet/control-mapper'
+import { ReactClientFieldSetting, reactControlMapper } from '@sensenet/controls-react'
 import { GenericContent } from '@sensenet/default-content-types'
 import { boolean, number, object, text } from '@storybook/addon-knobs'
+import React, { ComponentType } from 'react'
 
 interface Options {
   actionName: ActionName

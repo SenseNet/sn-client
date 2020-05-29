@@ -1,8 +1,8 @@
-import React from 'react'
 import { mount, shallow } from 'enzyme'
+import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { CurrentAncestorsProvider } from '../src/context/current-ancestors'
 import { CurrentContentContext } from '../src/context'
+import { CurrentAncestorsProvider } from '../src/context/current-ancestors'
 
 describe('CurrentAncestors', () => {
   it('matches snapshot', () => {

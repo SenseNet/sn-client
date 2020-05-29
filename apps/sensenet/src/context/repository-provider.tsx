@@ -1,7 +1,7 @@
-import { CssBaseline } from '@material-ui/core'
 import { AuthenticationProvider, useOidcAuthentication, UserManagerSettings } from '@sensenet/authentication-oidc-react'
 import { Repository } from '@sensenet/client-core'
 import { RepositoryContext, useLogger } from '@sensenet/hooks-react'
+import { CssBaseline } from '@material-ui/core'
 import React, { lazy, ReactNode, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { FullScreenLoader } from '../components/full-screen-loader'

@@ -1,11 +1,11 @@
+import { PreviewImageData } from '@sensenet/client-core'
+import { debounce } from '@sensenet/client-utils'
 import Grid from '@material-ui/core/Grid'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { debounce } from '@sensenet/client-utils'
-import { PreviewImageData } from '@sensenet/client-core'
-import { Dimensions, ImageUtil } from '../services'
-import { ZoomMode } from '../models/viewer-state'
-import { usePreviewImages, useViewerState } from '../hooks'
 import { CommentsContextProvider } from '../context/comments'
+import { usePreviewImages, useViewerState } from '../hooks'
+import { ZoomMode } from '../models/viewer-state'
+import { Dimensions, ImageUtil } from '../services'
 import { Page } from './'
 
 /**

@@ -1,12 +1,12 @@
 /**
  * @module FieldControls
  */
+import { toNumber } from '@sensenet/client-utils'
+import { CurrencyFieldSetting, NumberFieldSetting } from '@sensenet/default-content-types'
+import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
-import { CurrencyFieldSetting, NumberFieldSetting } from '@sensenet/default-content-types'
-import InputAdornment from '@material-ui/core/InputAdornment'
-import { toNumber } from '@sensenet/client-utils'
 import { changeJScriptValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 import { isCurrencyFieldSetting } from './type-guards'

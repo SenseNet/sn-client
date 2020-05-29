@@ -1,6 +1,11 @@
-import React, { useState } from 'react'
-
 // start of material-ui components
+import { ODataCollectionResponse } from '@sensenet/client-core'
+import { BrowseView } from '@sensenet/controls-react'
+import { ChoiceFieldSetting, GenericContent, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
+import { MaterialIcon } from '@sensenet/icons-react'
+import { Query } from '@sensenet/query'
+import { AdvancedSearch, PresetField, ReferenceField, TextField } from '@sensenet/search-react'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -21,16 +26,10 @@ import TableRow from '@material-ui/core/TableRow'
 import MaterialTextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/styles'
+import React, { useState } from 'react'
 // end of material-ui components
 
 // start of sensenet components
-import { ODataCollectionResponse } from '@sensenet/client-core'
-import { ChoiceFieldSetting, GenericContent, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
-import { MaterialIcon } from '@sensenet/icons-react'
-import { Query } from '@sensenet/query'
-import { AdvancedSearch, PresetField, ReferenceField, TextField } from '@sensenet/search-react'
-import { BrowseView } from '@sensenet/controls-react'
-import { useRepository } from '@sensenet/hooks-react'
 // end of sensenet components
 
 const localStorageKey = 'sn-advanced-search-demo'

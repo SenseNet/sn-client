@@ -1,14 +1,14 @@
+import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import { ContentList, VirtualizedTable } from '@sensenet/list-controls-react/src/ContentList'
+import { Paper } from '@material-ui/core'
 import { withA11y } from '@storybook/addon-a11y'
 import { action } from '@storybook/addon-actions'
 import { array, boolean, select, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
-import { ActionModel, GenericContent } from '@sensenet/default-content-types'
-import { Paper } from '@material-ui/core'
+import { icons } from '../../assets/icons'
 import contentListNotes from '../../notes/listcontrols/ContentList.md'
 import virtualizedTableNotes from '../../notes/listcontrols/VirtualizedTable.md'
-import { icons } from '../../assets/icons'
 import { customSchema } from '../custom-schema'
 
 const orderDirectionOptions = {

@@ -1,6 +1,6 @@
 import { ContentType } from '@sensenet/default-content-types'
-import { Repository } from '../src/Repository'
 import { ODataCollectionResponse } from '../src/Models'
+import { Repository } from '../src/Repository'
 
 describe('AllowedChildTypes', () => {
   let repository: Repository

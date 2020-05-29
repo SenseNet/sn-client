@@ -1,10 +1,10 @@
-import React from 'react'
+import { TrashBin } from '@sensenet/default-content-types'
 import { Grid, IconButton, Typography } from '@material-ui/core'
 import { Settings } from '@material-ui/icons'
-import { TrashBin } from '@sensenet/default-content-types'
 import clsx from 'clsx'
-import { useLocalization } from '../../hooks'
+import React from 'react'
 import { useGlobalStyles } from '../../globalStyles'
+import { useLocalization } from '../../hooks'
 
 type props = { trash: TrashBin; iconClickHandler: () => void }
 

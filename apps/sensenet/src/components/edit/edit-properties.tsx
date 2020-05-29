@@ -1,6 +1,6 @@
-import { createStyles, makeStyles } from '@material-ui/core'
 import { Schema } from '@sensenet/default-content-types'
 import { CurrentContentProvider } from '@sensenet/hooks-react'
+import { createStyles, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
 import React from 'react'
 import { useHistory, useRouteMatch } from 'react-router'

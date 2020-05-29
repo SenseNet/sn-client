@@ -1,10 +1,9 @@
-import withStyles from '@material-ui/core/styles/withStyles'
-import Typography from '@material-ui/core/Typography'
-
+import { Actions } from '@sensenet/redux'
 import Button from '@material-ui/core/Button'
 import Fade from '@material-ui/core/Fade'
+import withStyles from '@material-ui/core/styles/withStyles'
 import TextField from '@material-ui/core/TextField'
-import { Actions } from '@sensenet/redux'
+import Typography from '@material-ui/core/Typography'
 import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'

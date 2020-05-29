@@ -1,5 +1,5 @@
-import TableCell from '@material-ui/core/TableCell'
 import { GenericContent } from '@sensenet/default-content-types'
+import TableCell from '@material-ui/core/TableCell'
 import React, { Component } from 'react'
 
 export interface DescriptionCellProps<T extends GenericContent> {

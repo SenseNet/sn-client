@@ -1,8 +1,8 @@
 import { Injectable } from '@sensenet/client-utils'
+import { applicationPaths, resolvePathParams } from '../../application-paths'
 import { CommandPaletteItem } from '../../components/command-palette/CommandPalette'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
 import { LocalizationService } from '../LocalizationService'
-import { applicationPaths, resolvePathParams } from '../../application-paths'
 
 @Injectable({ lifetime: 'transient' })
 export class NavigationCommandProvider implements CommandProvider {

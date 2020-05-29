@@ -1,6 +1,6 @@
+import { Icon, iconType } from '@sensenet/icons-react'
 import Button from '@material-ui/core/Button'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
-import { Icon, iconType } from '@sensenet/icons-react'
 import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'

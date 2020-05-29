@@ -1,3 +1,5 @@
+import { Schema } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import {
   createStyles,
   IconButton,
@@ -11,8 +13,6 @@ import {
 } from '@material-ui/core'
 import { CloudUploadOutlined } from '@material-ui/icons'
 import Add from '@material-ui/icons/Add'
-import { Schema } from '@sensenet/default-content-types'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { useEffect, useState } from 'react'
 import { globals, useGlobalStyles } from '../globalStyles'

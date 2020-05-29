@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { useRepository } from '@sensenet/hooks-react'
-import { File as SnFile } from '@sensenet/default-content-types'
-import { deepMerge, toNumber } from '@sensenet/client-utils'
-import { v1 } from 'uuid'
 import { Annotation, CommentData, DocumentData, Highlight, Redaction, Repository, Shape } from '@sensenet/client-core'
+import { deepMerge, toNumber } from '@sensenet/client-utils'
+import { File as SnFile } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
+import React, { useEffect, useState } from 'react'
+import { v1 } from 'uuid'
 import { DocumentViewerApiSettings } from '../models'
 
 /**

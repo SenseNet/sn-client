@@ -1,10 +1,10 @@
-import React from 'react'
-import { mount } from 'enzyme'
-import ListItemText from '@material-ui/core/ListItemText'
 import { sleepAsync } from '@sensenet/client-utils'
-import ListItem from '@material-ui/core/ListItem'
 import IconButton from '@material-ui/core/IconButton'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
 import TextField from '@material-ui/core/TextField'
+import { mount } from 'enzyme'
+import React from 'react'
 import { AllowedChildTypes } from '../src/fieldcontrols'
 
 const userContent = {
