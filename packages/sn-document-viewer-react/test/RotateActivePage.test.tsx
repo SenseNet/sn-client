@@ -1,6 +1,6 @@
+import IconButton from '@material-ui/core/IconButton'
 import { mount } from 'enzyme'
 import React from 'react'
-import IconButton from '@material-ui/core/IconButton'
 import { RotateActivePagesWidget } from '../src/components/document-widgets/RotateActivePages'
 import { ROTATION_AMOUNT } from '../src/components/page-widgets/RotatePage'
 import { PreviewImageDataContext } from '../src/context/preview-image-data'

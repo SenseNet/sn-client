@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react'
 import { deepMerge, DeepPartial, ObservableValue } from '@sensenet/client-utils'
+import React, { useCallback, useEffect, useState } from 'react'
 import { ViewerState } from '../models/viewer-state'
 
 export const defaultViewerState: ViewerState & {

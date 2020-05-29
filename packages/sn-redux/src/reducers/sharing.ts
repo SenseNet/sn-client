@@ -1,5 +1,5 @@
-import { combineReducers, Reducer } from 'redux'
 import { ODataSharingResponse } from '@sensenet/client-core'
+import { combineReducers, Reducer } from 'redux'
 
 export const sharingEntries: Reducer<ODataSharingResponse[]> = (state = [], action) => {
   switch (action.type) {

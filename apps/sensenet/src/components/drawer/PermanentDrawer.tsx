@@ -9,12 +9,12 @@ import { Close, Menu } from '@material-ui/icons'
 import clsx from 'clsx'
 import React, { useContext, useState } from 'react'
 import { matchPath, NavLink, useLocation } from 'react-router-dom'
+import { applicationPaths } from '../../application-paths'
 import { ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
 import { SearchButton } from '../search-button'
-import { applicationPaths } from '../../application-paths'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({

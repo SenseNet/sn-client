@@ -1,9 +1,9 @@
+import { Annotation, Shape, Shapes } from '@sensenet/client-core'
 import IconButton from '@material-ui/core/IconButton'
 import Delete from '@material-ui/icons/Delete'
 import React from 'react'
-import { Annotation, Shape, Shapes } from '@sensenet/client-core'
-import { Dimensions } from '../../services'
 import { ZoomMode } from '../../models/viewer-state'
+import { Dimensions } from '../../services'
 
 /**
  * Defined the component's own properties

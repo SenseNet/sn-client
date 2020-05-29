@@ -1,5 +1,5 @@
-import Button from '@material-ui/core/Button'
 import { Icon, iconType } from '@sensenet/icons-react'
+import Button from '@material-ui/core/Button'
 import React from 'react'
 import { resources } from '../../assets/resources'
 

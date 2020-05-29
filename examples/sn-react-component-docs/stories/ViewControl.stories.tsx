@@ -5,9 +5,9 @@ import { withA11y } from '@storybook/addon-a11y'
 import { object, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
-import newViewNotes from '../notes/viewcontrols/NewView.md'
-import editViewNotes from '../notes/viewcontrols/EditView.md'
 import browseViewNotes from '../notes/viewcontrols/BrowseView.md'
+import editViewNotes from '../notes/viewcontrols/EditView.md'
+import newViewNotes from '../notes/viewcontrols/NewView.md'
 import { customSchema } from './custom-schema'
 
 export const testRepository = new Repository({

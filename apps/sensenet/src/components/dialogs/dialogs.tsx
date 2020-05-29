@@ -1,5 +1,5 @@
-import React, { Suspense } from 'react'
 import { Dialog } from '@material-ui/core'
+import React, { Suspense } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { DialogWithProps, useDialog } from '.'
 

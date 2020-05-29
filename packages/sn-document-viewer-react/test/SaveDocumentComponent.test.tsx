@@ -1,10 +1,10 @@
+import IconButton from '@material-ui/core/IconButton'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
-import IconButton from '@material-ui/core/IconButton'
 import { SaveWidget } from '../src/components/document-widgets/SaveWidget'
-import { defaultViewerState, ViewerStateContext } from '../src/context/viewer-state'
 import { DocumentViewerApiSettingsContext } from '../src/context/api-settings'
 import { DocumentPermissionsContext } from '../src/context/document-permissions'
+import { defaultViewerState, ViewerStateContext } from '../src/context/viewer-state'
 
 describe('SaveDocumentComponent component', () => {
   it('Should render without crashing when has changes', () => {

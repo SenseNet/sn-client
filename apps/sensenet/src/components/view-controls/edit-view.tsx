@@ -1,12 +1,12 @@
 /**
  * @module ViewControls
  */
-import { createStyles, makeStyles } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
-import Grid from '@material-ui/core/Grid'
 import { isExtendedError } from '@sensenet/client-core'
 import { FieldSetting } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
+import { createStyles, makeStyles } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
 import clsx from 'clsx'
 import React, { createElement, ReactElement, useEffect, useState } from 'react'
 import MediaQuery from 'react-responsive'

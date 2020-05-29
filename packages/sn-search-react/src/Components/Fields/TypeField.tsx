@@ -1,11 +1,11 @@
+import { SchemaStore } from '@sensenet/client-core'
+import { GenericContent, Schema } from '@sensenet/default-content-types'
+import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
 import Checkbox from '@material-ui/core/Checkbox'
 import Input from '@material-ui/core/Input'
 import ListItemText from '@material-ui/core/ListItemText'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select, { SelectProps } from '@material-ui/core/Select'
-import { SchemaStore } from '@sensenet/client-core'
-import { GenericContent, Schema } from '@sensenet/default-content-types'
-import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
 import React, { Component } from 'react'
 
 /**
