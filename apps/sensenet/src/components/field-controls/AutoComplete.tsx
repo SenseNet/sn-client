@@ -1,9 +1,9 @@
-import React from 'react'
-import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
-import { ReferenceField } from '@sensenet/search-react'
-import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
-import Typography from '@material-ui/core/Typography'
 import { changeJScriptValue } from '@sensenet/controls-react'
+import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
+import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
+import { ReferenceField } from '@sensenet/search-react'
+import Typography from '@material-ui/core/Typography'
+import React from 'react'
 import { ReactClientFieldSetting } from '.'
 
 /**

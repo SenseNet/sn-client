@@ -1,6 +1,6 @@
+import { Workspace } from '@sensenet/default-content-types'
 import MenuList from '@material-ui/core/MenuList'
 import withStyles from '@material-ui/core/styles/withStyles'
-import { Workspace } from '@sensenet/default-content-types'
 import React from 'react'
 import Scrollbars from 'react-custom-scrollbars'
 import { connect } from 'react-redux'

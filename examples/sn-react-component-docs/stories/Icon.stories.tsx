@@ -6,10 +6,10 @@ import { storiesOf } from '@storybook/react'
 import React from 'react'
 
 import defaultNotes from '../notes/icon/Default.md'
-import materialuiNotes from '../notes/icon/Materialui.md'
-import fontawesomeNotes from '../notes/icon/FontAwesome.md'
 import flaticonNotes from '../notes/icon/Flaticon.md'
+import fontawesomeNotes from '../notes/icon/FontAwesome.md'
 import imageNotes from '../notes/icon/Image.md'
+import materialuiNotes from '../notes/icon/Materialui.md'
 
 const stories = storiesOf('Icon', module).addDecorator(withKnobs).addDecorator(withA11y)
 

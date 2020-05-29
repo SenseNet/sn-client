@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   createStyles,
   IconButton,
@@ -12,8 +11,9 @@ import {
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import InfoIcon from '@material-ui/icons/Info'
-import filesize from 'filesize'
 import clsx from 'clsx'
+import filesize from 'filesize'
+import React from 'react'
 import { v1 } from 'uuid'
 import { FileWithFullPath } from './helper'
 import { ProgressBar } from './progress-bar'

@@ -1,3 +1,4 @@
+import { ActionModel, FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import Checkbox from '@material-ui/core/Checkbox'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -6,9 +7,8 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
 import Tooltip from '@material-ui/core/Tooltip'
-
-import { ActionModel, FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import React, { useCallback, useMemo } from 'react'
+
 import { ActionsCell, CellProps, DateCell, DefaultCell, DisplayNameCell, ReferenceCell } from './CellTemplates'
 import { ContentListBaseProps } from './content-list-base-props'
 

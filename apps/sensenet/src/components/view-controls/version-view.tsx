@@ -1,6 +1,6 @@
-/**
- * @module ViewControls
- */
+import { PathHelper } from '@sensenet/client-utils/src/path-helper'
+import { GenericContent, User } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import {
   Button,
   createStyles,
@@ -14,9 +14,6 @@ import {
   Tooltip,
 } from '@material-ui/core'
 import HistoryIcon from '@material-ui/icons/History'
-import { PathHelper } from '@sensenet/client-utils/src/path-helper'
-import { GenericContent, User } from '@sensenet/default-content-types'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'

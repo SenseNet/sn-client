@@ -1,4 +1,3 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
@@ -8,6 +7,7 @@ import {
   LoadSettingsContextProvider,
   useRepository,
 } from '@sensenet/hooks-react'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import clsx from 'clsx'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
@@ -150,6 +150,7 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
                               </span>
                             )}
                             <span
+                              title={`Open ${selectionService.activeContent.getValue()!.Type} CTD`}
                               onClick={async () => {
                                 dialogActionService.activeAction.setValue(undefined)
                                 selectionService.activeContent.getValue() &&

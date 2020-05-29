@@ -1,10 +1,10 @@
-import Avatar from '@material-ui/core/Avatar'
 import { Reducers } from '@sensenet/redux'
 import { fullName, userAvatarPath, userContent, userLanguage, userName } from '@sensenet/redux/dist/reducers'
+import Avatar from '@material-ui/core/Avatar'
 import React from 'react'
 import { connect } from 'react-redux'
-import { rootStateType } from '../store/rootReducer'
 import defaultAvatar from '../assets/no-avatar.jpg'
+import { rootStateType } from '../store/rootReducer'
 
 const mapStateToProps = (state: rootStateType) => {
   return {

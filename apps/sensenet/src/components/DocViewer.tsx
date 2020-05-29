@@ -1,4 +1,3 @@
-import { Button, createStyles, makeStyles, Theme } from '@material-ui/core'
 import {
   DocumentTitlePager,
   DocumentViewer,
@@ -11,6 +10,7 @@ import {
   ZoomModeWidget,
 } from '@sensenet/document-viewer-react'
 import { CurrentContentProvider, useLogger } from '@sensenet/hooks-react'
+import { Button, createStyles, makeStyles, Theme } from '@material-ui/core'
 import clsx from 'clsx'
 import { Location } from 'history'
 import React, { useCallback, useEffect } from 'react'

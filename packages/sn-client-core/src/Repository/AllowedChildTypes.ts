@@ -1,8 +1,8 @@
-import { ContentType } from '@sensenet/default-content-types'
 import { PathHelper } from '@sensenet/client-utils'
+import { ContentType } from '@sensenet/default-content-types'
 import { LoadOptions, ODataCollectionResponse } from '../Models'
-import { Repository } from './Repository'
 import { ODataUrlBuilder } from './ODataUrlBuilder'
+import { Repository } from './Repository'
 
 export class AllowedChildTypes {
   public add(idOrPath: number | string, contentTypes: string[]) {

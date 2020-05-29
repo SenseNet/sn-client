@@ -1,9 +1,8 @@
-import React from 'react'
 import { Repository } from '@sensenet/client-core'
 import { GenericContent, VersioningMode } from '@sensenet/default-content-types'
-import { shallow } from 'enzyme'
 import Typography from '@material-ui/core/Typography'
-import { NewView } from '../src/viewcontrols'
+import { shallow } from 'enzyme'
+import React from 'react'
 import {
   AllowedChildTypes,
   Avatar,
@@ -24,6 +23,7 @@ import {
   TagsInput,
   Textarea,
 } from '../src/fieldcontrols'
+import { NewView } from '../src/viewcontrols'
 import { schema } from './__mocks__/schema'
 
 export const testRepository = new Repository({

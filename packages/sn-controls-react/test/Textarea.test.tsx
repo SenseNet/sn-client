@@ -1,7 +1,7 @@
-import React from 'react'
-import { shallow } from 'enzyme'
-import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
+import { shallow } from 'enzyme'
+import React from 'react'
 import { Textarea } from '../src/fieldcontrols/Textarea'
 
 describe('Textarea field control', () => {

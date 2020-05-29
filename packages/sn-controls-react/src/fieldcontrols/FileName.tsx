@@ -1,10 +1,10 @@
 /**
  * @module FieldControls
  */
-import React, { useState } from 'react'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+import React, { useState } from 'react'
 import { changeJScriptValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 

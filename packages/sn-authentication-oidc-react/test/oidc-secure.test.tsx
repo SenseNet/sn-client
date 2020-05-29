@@ -1,11 +1,11 @@
-import React from 'react'
-import { UserManager } from 'oidc-client'
 import { mount, shallow } from 'enzyme'
+import { UserManager } from 'oidc-client'
+import React from 'react'
 import { act } from 'react-dom/test-utils'
+import { getUserManager } from '../src/authentication-service'
+import { Authenticating } from '../src/components/authenticating'
 import { AuthenticationContext } from '../src/components/authentication-provider'
 import { OidcSecure } from '../src/components/oidc-secure'
-import { Authenticating } from '../src/components/authenticating'
-import { getUserManager } from '../src/authentication-service'
 
 jest.mock('../src/authentication-service', () => {
   return {
