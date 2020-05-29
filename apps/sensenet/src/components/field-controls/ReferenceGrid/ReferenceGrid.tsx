@@ -73,10 +73,8 @@ class ReferenceGridComponent extends Component<
       pickerIsOpen: false,
       selected: [],
     }
-  }
 
-  public componentDidMount() {
-    if (this.props.actionName === 'edit') {
+    if (this.props.actionName !== 'new') {
       this.getSelected()
     }
   }
@@ -99,7 +97,6 @@ class ReferenceGridComponent extends Component<
       if (Object.prototype.hasOwnProperty.call(references.d, 'results')) {
         result = (references.d as any).results
       }
-
       this.setState({
         fieldValue: result,
         selected: result,
@@ -277,15 +274,15 @@ class ReferenceGridComponent extends Component<
         )
       case 'browse':
       default: {
-        return this.props.fieldValue ? (
+        return this.state.fieldValue ? (
           <FormControl className={this.props.classes.formControl} style={{ borderBottom: 'none' }}>
             <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
               {this.props.settings.DisplayName}
             </InputLabel>
             <FormGroup>
               <List dense={true} className={this.props.classes.listContainer}>
-                {Array.isArray(this.props.fieldValue) ? (
-                  (this.props.fieldValue as any).map((item: GenericContent) => (
+                {Array.isArray(this.state.fieldValue) ? (
+                  (this.state.fieldValue as any).map((item: GenericContent) => (
                     <DefaultItemTemplate
                       content={item}
                       remove={this.removeItem}
