@@ -25,8 +25,13 @@ const useStyles = makeStyles(() =>
       backgroundColor: globals.common.headerBackground,
       boxShadow: 'none',
     },
+    loginSubtitle: {
+      marginBottom: '1em',
+    },
   }),
 )
+
+const DEVDEMO_URL = `https://dev.demo.sensenet.com`
 
 type LoginPageProps = {
   handleSubmit: (url: string) => void
@@ -44,6 +49,10 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
     handleSubmit(url)
   }
 
+  const handleDemoSubmit = () => {
+    handleSubmit(DEVDEMO_URL)
+  }
+
   return (
     <>
       <AppBar position="sticky" className={clsx(globalClasses.centeredHorizontal, classes.appBar)}>
@@ -59,16 +68,35 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
       </AppBar>
       <Container maxWidth="sm">
         <Grid container direction="column">
-          <Grid container direction="column" justify="center" style={{ flexBasis: 300 }}>
+          <Grid container direction="column" justify="center" style={{ flexBasis: 150 }}>
             <Typography align="center" variant="h4" component="p">
-              Welcome to admin.sensenet.com
+              {localization.welcome}
             </Typography>
-            <Typography align="center" variant="subtitle1" component="p">
-              Please type in your repository URL to continue
-            </Typography>
+          </Grid>
+          <Grid container direction="column" justify="center" alignItems="center" style={{ flexBasis: 150 }}>
+            <Grid item alignContent="center" alignItems="center">
+              <Typography align="center" variant="subtitle1" component="p">
+                {localization.demoTitle}
+              </Typography>
+            </Grid>
+            <Grid item alignContent="center" alignItems="center">
+              <Button
+                onClick={handleDemoSubmit}
+                size="medium"
+                aria-label={localization.loginToDemoButtonTitle}
+                disabled={isLoginInProgress}
+                variant="contained"
+                color="secondary">
+                {localization.loginToDemoButtonTitle}
+                {isLoginInProgress && <CircularProgress size={14} />}
+              </Button>
+            </Grid>
           </Grid>
           <Grid item>
             <form onSubmit={handleOnSubmit}>
+              <Typography align="center" variant="subtitle1" component="p" className={classes.loginSubtitle}>
+                {localization.repositoryUrl}
+              </Typography>
               <InputLabel shrink htmlFor="repository" required={true}>
                 {localization.repositoryLabel}
               </InputLabel>
