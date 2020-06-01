@@ -285,7 +285,7 @@ class ReferenceGridComponent extends Component<
             <FormGroup>
               <List dense={true} className={this.props.classes.listContainer}>
                 {Array.isArray(this.props.fieldValue) ? (
-                  (this.props.fieldValue as any).map((item: GenericContent) => (
+                  (this.props.fieldValue as GenericContent[]).map((item) => (
                     <DefaultItemTemplate
                       content={item}
                       remove={this.removeItem}

@@ -22,9 +22,7 @@ import { FullScreenLoader } from '../full-screen-loader'
 import { editviewFileResolver, Icon } from '../Icon'
 import { ActionNameType } from '../react-control-mapper'
 import TreeWithData from '../tree/tree-with-data'
-import { VersionView } from '../view-controls'
-import { EditView } from '../view-controls/edit-view'
-import { NewView } from '../view-controls/new-view'
+import { EditView, NewView, VersionView } from '../view-controls'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -54,6 +52,9 @@ const useStyles = makeStyles((theme: Theme) => {
       flexFlow: 'column',
       width: '100%',
       position: 'relative',
+    },
+    fontWeight500: {
+      fontWeight: 500,
     },
   })
 })
@@ -98,7 +99,7 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
         query: `+TypeIs:'ContentType' AND Name:${contentType} .AUTOFILTERS:OFF`,
       },
     })
-    return result.d
+    return result.d.results[0].Id
   }
 
   return (
@@ -137,14 +138,14 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
                             {action === 'edit' ? (
                               <span>
                                 Edit{' '}
-                                <span style={{ fontWeight: 500 }}>
+                                <span className={classes.fontWeight500}>
                                   {selectionService.activeContent.getValue()?.DisplayName}
                                 </span>
                               </span>
                             ) : (
                               <span>
                                 Info about{' '}
-                                <span style={{ fontWeight: 500 }}>
+                                <span className={classes.fontWeight500}>
                                   {selectionService.activeContent.getValue()?.DisplayName}
                                 </span>
                               </span>
@@ -158,9 +159,9 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
                                     resolvePathParams({
                                       path: applicationPaths.editBinary,
                                       params: {
-                                        contentId: (
-                                          await getContentTypeId(selectionService.activeContent.getValue()!.Type)
-                                        ).results[0].Id,
+                                        contentId: await getContentTypeId(
+                                          selectionService.activeContent.getValue()!.Type,
+                                        ),
                                       },
                                     }),
                                   )
@@ -184,7 +185,7 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
                             <div className={clsx(classes.title, globalClasses.centered)}>
                               <span>
                                 New{' '}
-                                <span style={{ fontWeight: 500 }}>
+                                <span className={classes.fontWeight500}>
                                   {dialogActionService.contentTypeNameForNewContent.getValue()}
                                 </span>
                               </span>
