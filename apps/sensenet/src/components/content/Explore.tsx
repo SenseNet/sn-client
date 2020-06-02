@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) => {
       width: '100%',
       position: 'relative',
     },
-    fontWeight500: {
+    textBolder: {
       fontWeight: 500,
     },
   })
@@ -138,14 +138,14 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
                             {action === 'edit' ? (
                               <span>
                                 Edit{' '}
-                                <span className={classes.fontWeight500}>
+                                <span className={classes.textBolder}>
                                   {selectionService.activeContent.getValue()?.DisplayName}
                                 </span>
                               </span>
                             ) : (
                               <span>
                                 Info about{' '}
-                                <span className={classes.fontWeight500}>
+                                <span className={classes.textBolder}>
                                   {selectionService.activeContent.getValue()?.DisplayName}
                                 </span>
                               </span>
@@ -185,7 +185,7 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
                             <div className={clsx(classes.title, globalClasses.centered)}>
                               <span>
                                 New{' '}
-                                <span className={classes.fontWeight500}>
+                                <span className={classes.textBolder}>
                                   {dialogActionService.contentTypeNameForNewContent.getValue()}
                                 </span>
                               </span>
