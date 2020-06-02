@@ -15,14 +15,14 @@ export const pathWithQueryParams = ({ path, newParams, currentParams }: PathWith
 
   const keys = Object.keys(newParams)
 
-  keys.forEach(key => {
+  keys.forEach((key) => {
     const value = newParams[key]
 
     if (value === undefined || value === null) return
 
     if (Array.isArray(value) && value.length) {
       currentParams!.delete(key)
-      return value.forEach(current => currentParams!.append(key, current))
+      return value.forEach((current) => currentParams!.append(key, current))
     }
 
     return currentParams!.set(key, value as string)
