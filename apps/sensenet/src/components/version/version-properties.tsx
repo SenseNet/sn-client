@@ -6,28 +6,26 @@ import React from 'react'
 import { useHistory, useRouteMatch } from 'react-router'
 import { useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
-import { useDialogActionService } from '../../hooks/use-dialogaction-service'
-import { EditView } from '../view-controls/edit-view'
+import { VersionView } from '../view-controls'
 
 const useStyles = makeStyles(() => {
   return createStyles({
-    editWrapper: {
+    versionsWrapper: {
       padding: '0',
       overflow: 'auto',
     },
   })
 })
 
-export default function EditProperties() {
+export default function VersionProperties() {
   const match = useRouteMatch<{ contentId: string }>()
   const history = useHistory<{ schema: Schema }>()
   const selectionService = useSelectionService()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
-  const dialogActionService = useDialogActionService()
 
   return (
-    <div className={clsx(globalClasses.full, classes.editWrapper)}>
+    <div className={clsx(globalClasses.full, classes.versionsWrapper)}>
       <CurrentContentProvider
         idOrPath={match.params.contentId}
         onContentLoaded={(content) => {
@@ -37,20 +35,9 @@ export default function EditProperties() {
         <div
           className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}
           style={{ marginLeft: '30px' }}>
-          <span style={{ fontSize: '20px' }}>
-            Edit <span style={{ fontWeight: 500 }}>{selectionService.activeContent.getValue()?.DisplayName}</span>
-          </span>
+          <span style={{ fontSize: '20px' }}>Versions of {selectionService.activeContent.getValue()?.DisplayName}</span>
         </div>
-        <EditView
-          uploadFolderpath={'/Root/Content/demoavatars'}
-          handleCancel={history.goBack}
-          actionName={'edit'}
-          isFullPage={true}
-          submitCallback={() => {
-            dialogActionService.activeAction.setValue(undefined)
-            history.goBack()
-          }}
-        />
+        <VersionView handleCancel={history.goBack} isFullPage={true} />
       </CurrentContentProvider>
     </div>
   )

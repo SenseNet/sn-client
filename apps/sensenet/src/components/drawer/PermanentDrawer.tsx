@@ -13,6 +13,7 @@ import { applicationPaths } from '../../application-paths'
 import { ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
+import { useDialogActionService } from '../../hooks/use-dialogaction-service'
 import { AddButton } from '../AddButton'
 import { SearchButton } from '../search-button'
 
@@ -96,6 +97,7 @@ export const PermanentDrawer = () => {
   const localization = useLocalization().drawer
   const location = useLocation()
   const selectionService = useSelectionService()
+  const dialogActionService = useDialogActionService()
 
   if (!settings.drawer.enabled) {
     return null
@@ -138,6 +140,7 @@ export const PermanentDrawer = () => {
                   key={index}
                   onClick={() => {
                     selectionService.activeContent.setValue(undefined)
+                    dialogActionService.activeAction.setValue(undefined)
                     setCurrentPath(item.root ? item.root : '')
                   }}
                   activeClassName={classes.navLinkActive}>

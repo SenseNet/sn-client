@@ -18,7 +18,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { applicationPaths } from '../../application-paths'
 import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization } from '../../hooks'
+import { useDialogActionSubscribe, useLocalization, useSelectionService } from '../../hooks'
 import { ContentList } from '../content-list/content-list'
 
 export default function Search() {
@@ -35,6 +35,8 @@ export default function Search() {
 
   const eventHub = useRepositoryEvents()
   const globalClasses = useGlobalStyles()
+  const selectionService = useSelectionService()
+  useDialogActionSubscribe()
 
   useEffect(() => {
     const subscriptions = [
@@ -104,6 +106,10 @@ export default function Search() {
                   }}
                   onActivateItem={(p) => {
                     history.push(`${applicationPaths.search}?term=${(p as Query).Query}`)
+                  }}
+                  onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
+                  onSelectionChange={(sel) => {
+                    selectionService.selection.setValue(sel)
                   }}
                 />
               </CurrentAncestorsContext.Provider>

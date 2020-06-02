@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import React from 'react'
 import { useHistory } from 'react-router'
 import { useGlobalStyles } from '../globalStyles'
-import { useLocalization } from '../hooks'
+import { useDialogActionSubscribe, useLocalization } from '../hooks'
 import { getPrimaryActionUrl } from '../services'
 import { SimpleList } from './content/Simple'
 
@@ -12,6 +12,7 @@ export default function Localization() {
   const repository = useRepository()
   const localizationDrawerTitles = useLocalization().drawer.titles
   const history = useHistory()
+  useDialogActionSubscribe()
 
   return (
     <div className={globalClasses.contentWrapper}>

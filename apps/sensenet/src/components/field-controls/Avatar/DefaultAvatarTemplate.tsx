@@ -36,7 +36,7 @@ interface DefaultAvatarTemplateProps {
   add?: () => void
   url?: string
   remove?: () => void
-  actionName?: 'new' | 'edit' | 'browse'
+  actionName?: 'new' | 'edit' | 'browse' | 'version'
   readOnly?: boolean
   renderIcon: (name: string) => JSX.Element
 }
