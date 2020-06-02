@@ -26,7 +26,6 @@ export const getAuthConfig = async (repoUrl: string) => {
     post_logout_redirect_uri: pathWithQueryParams({
       path: window.location.origin,
       newParams: { repoUrl },
-      shouldEncode: false,
     }),
     silent_redirect_uri: window.location.origin + applicationPaths.silentCallback,
     extraQueryParams: { snrepo: trimmedRepoUrl },
