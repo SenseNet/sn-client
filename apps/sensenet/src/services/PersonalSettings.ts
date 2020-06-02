@@ -1,7 +1,7 @@
 import { deepMerge, Injectable, LogLevel, ObservableValue, tuple } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import { PlatformDependent } from '../context'
 import { BrowseType } from '../components/content'
+import { PlatformDependent } from '../context'
 
 const settingsKey = `SN-APP-USER-SETTINGS`
 

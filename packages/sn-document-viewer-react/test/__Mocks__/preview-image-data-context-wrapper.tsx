@@ -1,5 +1,5 @@
-import React from 'react'
 import { PreviewImageData } from '@sensenet/client-core'
+import React from 'react'
 import { PreviewImageDataContext } from '../../src/context/preview-image-data'
 import { examplePreviewImageData } from './viewercontext'
 

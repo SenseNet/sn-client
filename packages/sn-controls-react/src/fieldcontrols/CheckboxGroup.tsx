@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import React, { useState } from 'react'
+import { ChoiceFieldSetting } from '@sensenet/default-content-types'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -9,7 +9,7 @@ import FormGroup from '@material-ui/core/FormGroup'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
-import { ChoiceFieldSetting } from '@sensenet/default-content-types'
+import React, { useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**

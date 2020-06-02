@@ -1,6 +1,6 @@
-import React from 'react'
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import { AppBar, Toolbar, Typography } from '@material-ui/core'
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import React from 'react'
 import { UploadControll } from './UploadControll'
 interface SimpleAppBarProps {
   uploadsetdata: () => void

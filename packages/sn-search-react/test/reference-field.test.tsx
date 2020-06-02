@@ -1,6 +1,6 @@
-import TextField from '@material-ui/core/TextField'
 import { SchemaStore } from '@sensenet/client-core'
 import { SchemaStore as defaultSchemas, GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
+import TextField from '@material-ui/core/TextField'
 import { shallow } from 'enzyme'
 import React from 'react'
 import Autosuggest from 'react-autosuggest'

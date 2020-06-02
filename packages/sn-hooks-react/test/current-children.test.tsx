@@ -1,10 +1,10 @@
-import React from 'react'
-import { mount, shallow } from 'enzyme'
 import { Repository } from '@sensenet/client-core'
 import { sleepAsync } from '@sensenet/client-utils'
+import { mount, shallow } from 'enzyme'
+import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { CurrentChildrenContext, CurrentChildrenProvider } from '../src/context/current-children'
 import { RepositoryContext } from '../src/context'
+import { CurrentChildrenContext, CurrentChildrenProvider } from '../src/context/current-children'
 import { ErrorBoundary } from './mocks/error-boundry'
 import { Repository as MockRepository } from './mocks/repository'
 

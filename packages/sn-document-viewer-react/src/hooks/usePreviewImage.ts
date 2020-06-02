@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react'
 import { sleepAsync } from '@sensenet/client-utils'
+import { useCallback, useEffect, useState } from 'react'
 import { useDocumentData, useDocumentViewerApi, usePreviewImages, useViewerSettings, useViewerState } from '.'
 
 const POLLING_INTERVAL = 3000

@@ -1,7 +1,4 @@
-import React, { useContext, useState } from 'react'
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import moment from 'moment'
-import striptags from 'striptags'
+import { RepositoryContext } from '@sensenet/hooks-react'
 import {
   Avatar,
   Card,
@@ -14,12 +11,15 @@ import {
   ListItemText,
   Typography,
 } from '@material-ui/core'
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import DeleteOutlined from '@material-ui/icons/DeleteOutlined'
+import EditOutlined from '@material-ui/icons/EditOutlined'
+import NotesIcon from '@material-ui/icons/Notes'
 import RoomIcon from '@material-ui/icons/Room'
 import WatchIcon from '@material-ui/icons/Watch'
-import NotesIcon from '@material-ui/icons/Notes'
-import EditOutlined from '@material-ui/icons/EditOutlined'
-import DeleteOutlined from '@material-ui/icons/DeleteOutlined'
-import { RepositoryContext } from '@sensenet/hooks-react'
+import moment from 'moment'
+import React, { useContext, useState } from 'react'
+import striptags from 'striptags'
 import CalendarEvent from '../CalendarEvent-type'
 import { SharedContext } from '../context/shared-context'
 import { DialogComponent } from './simple-dialog'

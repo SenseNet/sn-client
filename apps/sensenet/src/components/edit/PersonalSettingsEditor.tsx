@@ -1,6 +1,6 @@
-import { Button, createStyles, FormControlLabel, makeStyles, Switch, Typography, useTheme } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { CurrentContentContext, useInjector, useLogger, useRepository } from '@sensenet/hooks-react'
+import { Button, createStyles, FormControlLabel, makeStyles, Switch, Typography, useTheme } from '@material-ui/core'
 import clsx from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'

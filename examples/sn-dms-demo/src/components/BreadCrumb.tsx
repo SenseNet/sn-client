@@ -1,6 +1,6 @@
-import Button from '@material-ui/core/Button'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
+import Button from '@material-ui/core/Button'
 import { compile } from 'path-to-regexp'
 import React from 'react'
 import { connect } from 'react-redux'

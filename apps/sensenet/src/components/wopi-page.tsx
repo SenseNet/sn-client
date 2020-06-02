@@ -1,6 +1,6 @@
-import { Button, Typography } from '@material-ui/core'
 import { isExtendedError, ODataWopiResponse } from '@sensenet/client-core'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
+import { Button, Typography } from '@material-ui/core'
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { applicationPaths, resolvePathParams } from '../application-paths'

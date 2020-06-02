@@ -1,12 +1,12 @@
 /**
  * @module ViewControls
  */
-import React, { createElement, ReactElement, useState } from 'react'
+import { Repository } from '@sensenet/client-core'
+import { ContentType } from '@sensenet/default-content-types'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
-import { Repository } from '@sensenet/client-core'
-import { ContentType } from '@sensenet/default-content-types'
+import React, { createElement, ReactElement, useState } from 'react'
 import MediaQuery from 'react-responsive'
 import { reactControlMapper } from '../ReactControlMapper'
 

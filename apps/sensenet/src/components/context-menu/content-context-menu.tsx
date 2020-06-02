@@ -1,3 +1,5 @@
+import { ActionModel, GenericContent, isActionModel } from '@sensenet/default-content-types'
+import { useLogger, useWopi } from '@sensenet/hooks-react'
 import Drawer from '@material-ui/core/Drawer'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -5,8 +7,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Menu, { MenuProps } from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import { ActionModel, GenericContent, isActionModel } from '@sensenet/default-content-types'
-import { useLogger, useWopi } from '@sensenet/hooks-react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { ResponsiveContext } from '../../context'
 import { useLoadContent } from '../../hooks'
@@ -33,6 +33,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
   const { content } = useLoadContent<GenericContent>({
     idOrPath: props.content.Id,
     oDataOptions: contextMenuODataOptions,
+    isOpened: props.isOpened,
   })
   const { isWriteAvailable } = useWopi()
 
@@ -72,7 +73,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
     return (actionName.toLowerCase() as ActionNameType) || undefined
   }
 
-  const { runAction } = useContextMenuActions(props.content, setActionsWopi)
+  const { runAction } = useContextMenuActions(props.content, props.isOpened, setActionsWopi)
   const device = useContext(ResponsiveContext)
 
   useEffect(() => {

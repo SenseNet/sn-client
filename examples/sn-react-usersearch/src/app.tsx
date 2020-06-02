@@ -1,8 +1,7 @@
-import React from 'react'
-
 // start of material imports
 import { Container, CssBaseline, Grid } from '@material-ui/core'
 import Toolbar from '@material-ui/core/Toolbar'
+import React from 'react'
 // end of material imports
 
 // start of sensenet imports

@@ -10,11 +10,11 @@ import {
 } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
+import { applicationPaths } from '../../application-paths'
 import { useSelectionService } from '../../hooks'
+import { pathWithQueryParams } from '../../services'
 import { ContentList } from '../content-list/content-list'
 import { useDialog } from '../dialogs'
-import { applicationPaths } from '../../application-paths'
-import { pathWithQueryParams } from '../../services'
 
 export interface CommanderComponentProps {
   leftParent: number | string

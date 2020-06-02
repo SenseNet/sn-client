@@ -1,11 +1,12 @@
+import { useInjector, useRepository } from '@sensenet/hooks-react'
 import { Grid, IconButton, ListItemIcon, ListItemText, MenuItem, MenuList, Paper, Typography } from '@material-ui/core'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles'
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
-import { useInjector, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { useEffect, useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { applicationPaths } from '../../application-paths'
 import { useCurrentUser } from '../../context/current-user-provider'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization, usePersonalSettings } from '../../hooks'
@@ -13,7 +14,6 @@ import { PersonalSettings } from '../../services'
 import { AntSwitch } from '../ant-switch'
 import { useDialog } from '../dialogs'
 import { UserAvatar } from '../UserAvatar'
-import { applicationPaths } from '../../application-paths'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

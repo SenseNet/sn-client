@@ -1,6 +1,5 @@
-import { Button, createStyles, makeStyles, TextField, Typography } from '@material-ui/core'
-import Save from '@material-ui/icons/Save'
 import { ConstantContent } from '@sensenet/client-core'
+import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsContext,
@@ -10,17 +9,18 @@ import {
   useLogger,
   useRepository,
 } from '@sensenet/hooks-react'
+import { Button, createStyles, makeStyles, TextField, Typography } from '@material-ui/core'
+import Save from '@material-ui/icons/Save'
 import clsx from 'clsx'
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { debounce } from '@sensenet/client-utils'
+import { applicationPaths } from '../../application-paths'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useSelectionService } from '../../hooks'
 import { useQuery } from '../../hooks/use-query'
 import { getPrimaryActionUrl } from '../../services'
 import { ContentList } from '../content-list'
 import { useDialog } from '../dialogs'
-import { applicationPaths } from '../../application-paths'
 
 const searchDebounceTime = 400
 
