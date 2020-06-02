@@ -12,6 +12,7 @@ export const applicationPaths = {
   editProperties: '/edit-properties/:contentId',
   browseProperties: '/browse-properties/:contentId',
   newProperties: '/new-properties',
+  versionProperties: '/version-properties/:contentId',
   preview: '/preview/:contentId',
   wopi: '/wopi/:contentId/:action',
   dashboard: '/dashboard/:dashboardName',
@@ -22,7 +23,7 @@ export const applicationPaths = {
 
 type RoutesWithContentIdParams = keyof Pick<
   typeof applicationPaths,
-  'editProperties' | 'editBinary' | 'browseProperties' | 'preview'
+  'editProperties' | 'editBinary' | 'browseProperties' | 'versionProperties' | 'preview'
 >
 
 type Options =

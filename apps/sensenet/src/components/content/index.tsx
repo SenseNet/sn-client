@@ -56,7 +56,7 @@ export const Content = () => {
           leftParent={currentPath}
           rightParent={secondaryPath}
           onActivateItem={onActivateItem}
-          onNavigateLeft={(c) => onNavigate(c, true)}
+          onNavigateLeft={(content) => onNavigate(content, true)}
           onNavigateRight={onNavigateSecondary}
           fieldsToDisplay={settings.content.fields}
         />
@@ -65,7 +65,6 @@ export const Content = () => {
       return (
         <Explore
           currentPath={currentPath}
-          onActivateItem={onActivateItem}
           onNavigate={onNavigate}
           rootPath={rootPath}
           fieldsToDisplay={settings.content.fields}

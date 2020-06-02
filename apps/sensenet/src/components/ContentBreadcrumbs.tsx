@@ -10,7 +10,6 @@ import { useLocalization, useSelectionService } from '../hooks'
 import { getPrimaryActionUrl } from '../services'
 import { BreadcrumbItem, Breadcrumbs } from './Breadcrumbs'
 import { useDialog } from './dialogs'
-import { ActionNameType } from './react-control-mapper'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -25,7 +24,6 @@ const useStyles = makeStyles((theme: Theme) => {
 
 type ContentBreadcrumbsProps = {
   onItemClick?: (item: BreadcrumbItem<GenericContent>) => void
-  setFormOpen?: (actionName: ActionNameType) => void
   batchActions?: boolean
 }
 
@@ -50,10 +48,6 @@ export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
     }
   }, [selectionService.selection])
 
-  const setFormOpen = (actionName: ActionNameType) => {
-    props.setFormOpen && props.setFormOpen(actionName)
-  }
-
   return (
     <>
       <Breadcrumbs
@@ -74,7 +68,6 @@ export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
         onItemClick={(_ev, item) => {
           props.onItemClick ? props.onItemClick(item) : history.push(getPrimaryActionUrl(item.content, repository))
         }}
-        setFormOpen={(actionName) => setFormOpen(actionName)}
       />
       {props.batchActions && selected.length > 1 ? (
         <div className={classes.batchActionWrapper}>

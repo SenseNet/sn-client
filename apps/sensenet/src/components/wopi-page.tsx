@@ -1,11 +1,34 @@
 import { isExtendedError, ODataWopiResponse } from '@sensenet/client-core'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { Button, Typography } from '@material-ui/core'
+import { Button, createStyles, makeStyles, Typography } from '@material-ui/core'
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { applicationPaths, resolvePathParams } from '../application-paths'
+import { useGlobalStyles } from '../globalStyles'
 import { useLocalization } from '../hooks'
 import { FullScreenLoader } from './full-screen-loader'
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    closeButton: {
+      placeSelf: 'flex-end',
+      position: 'relative',
+      alignSelf: 'center',
+    },
+    actionButtonWrapper: {
+      height: '80px',
+      width: '100%',
+      position: 'absolute',
+      padding: '20px',
+      bottom: 0,
+      textAlign: 'right',
+    },
+    wopiWrapper: {
+      width: '100%',
+      height: 'calc(100% - 80px)',
+    },
+  })
+})
 
 export default function WopiPage() {
   const repo = useRepository()
@@ -16,6 +39,9 @@ export default function WopiPage() {
   const [error, setError] = useState('')
   const logger = useLogger('WopiPage')
   const localization = useLocalization().wopi
+  const classes = useStyles()
+  const globalClasses = useGlobalStyles()
+  const formsLocalization = useLocalization().forms
 
   useEffect(() => {
     const ac = new AbortController()
@@ -98,31 +124,38 @@ export default function WopiPage() {
 
   return (
     <>
-      <form
-        id="office_form"
-        name="office_form"
-        action={wopiData.actionUrl}
-        target="office_frame"
-        method="post"
-        ref={formElement}>
-        <input name="access_token" value={wopiData.accesstoken} type="hidden" />
-        <input name="access_token_ttl" value={wopiData.expiration} type="hidden" />
-      </form>
-      <span id="frameholder">
-        <iframe
-          frameBorder="no"
-          width="100%"
-          height={window.innerHeight - 5}
-          scrolling="no"
-          name="office_frame"
-          id="office_frame"
-          title="Office Online Frame"
-          allowFullScreen={true}
-          sandbox={
-            'allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation allow-popups-to-escape-sandbox'
-          }
-        />
-      </span>
+      <div className={classes.wopiWrapper}>
+        <form
+          id="office_form"
+          name="office_form"
+          action={wopiData.actionUrl}
+          target="office_frame"
+          method="post"
+          ref={formElement}>
+          <input name="access_token" value={wopiData.accesstoken} type="hidden" />
+          <input name="access_token_ttl" value={wopiData.expiration} type="hidden" />
+        </form>
+        <span id="frameholder">
+          <iframe
+            frameBorder="no"
+            width="100%"
+            height={'100%'}
+            scrolling="no"
+            name="office_frame"
+            id="office_frame"
+            title="Office Online Frame"
+            allowFullScreen={true}
+            sandbox={
+              'allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation allow-popups-to-escape-sandbox'
+            }
+          />
+        </span>
+      </div>
+      <div className={classes.actionButtonWrapper}>
+        <Button color="default" className={globalClasses.cancelButton} onClick={history.goBack}>
+          {formsLocalization.cancel}
+        </Button>
+      </div>
     </>
   )
 }

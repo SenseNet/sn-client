@@ -2,6 +2,7 @@
  * @module ViewControls
  */
 import { isExtendedError } from '@sensenet/client-core'
+import { PathHelper } from '@sensenet/client-utils/src/path-helper'
 import { FieldSetting } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { createStyles, makeStyles } from '@material-ui/core'
@@ -10,8 +11,8 @@ import Grid from '@material-ui/core/Grid'
 import clsx from 'clsx'
 import React, { createElement, ReactElement, useEffect, useState } from 'react'
 import MediaQuery from 'react-responsive'
-import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization, useSelectionService } from '../../hooks'
+import { globals, useGlobalStyles } from '../../globalStyles'
+import { useDialogActionService, useLocalization, useSelectionService } from '../../hooks'
 import { ActionNameType, reactControlMapper } from '../react-control-mapper'
 
 const useStyles = makeStyles(() => {
@@ -21,14 +22,17 @@ const useStyles = makeStyles(() => {
       padding: '22px 22px 0 22px',
       overflowY: 'auto',
       width: '100%',
-      height: 'calc(100% - 80px)',
+      height: `calc(100% - ${globals.common.formActionButtonsHeight}px)`,
+    },
+    formFullPage: {
+      height: `calc(100% - ${globals.common.formActionButtonsHeight + globals.common.drawerItemHeight}px)`,
     },
     mainForm: {
       display: 'initial',
-      height: 'calc(100% - 68px)',
+      height: `calc(100% - ${globals.common.formTitleHeight}px)`,
     },
     mainFormFullpage: {
-      height: '100%',
+      height: `calc(100% - ${globals.common.drawerItemHeight}px)`,
     },
     grid: {
       display: 'flex',
@@ -86,15 +90,39 @@ export const EditView: React.FC<EditViewProps> = (props) => {
   const globalClasses = useGlobalStyles()
   const localization = useLocalization()
   const logger = useLogger('EditView')
+  const dialogActionService = useDialogActionService()
 
   useEffect(() => {
-    const activeComponentObserve = selectionService.activeContent.subscribe((newActiveComponent) =>
-      setContent(newActiveComponent),
-    )
+    async function getExpandedContent() {
+      const expanedContentResponse = await repo.load({
+        idOrPath: selectionService.activeContent.getValue()!.Id,
+        oDataOptions: {
+          select: 'all',
+          expand: ['Manager', 'FollowedWorkspaces', 'ModifiedBy'] as any,
+        },
+      })
+      setContent(expanedContentResponse.d)
+    }
+    selectionService.activeContent.getValue() && getExpandedContent()
+  }, [])
+
+  useEffect(() => {
+    const activeComponentObserve = selectionService.activeContent.subscribe(async (newActiveComponent) => {
+      if (newActiveComponent) {
+        const expandedContent = await repo.load({
+          idOrPath: newActiveComponent?.Id,
+          oDataOptions: {
+            select: 'all',
+            expand: ['Manager', 'FollowedWorkspaces', 'ModifiedBy'] as any,
+          },
+        })
+        setContent(expandedContent.d)
+      }
+    })
     return function cleanup() {
       activeComponentObserve.dispose()
     }
-  }, [selectionService.activeContent])
+  }, [repo, selectionService.activeContent])
 
   if (content === undefined) {
     return null
@@ -158,7 +186,10 @@ export const EditView: React.FC<EditViewProps> = (props) => {
           [classes.mainFormFullpage]: props.isFullPage,
         })}
         onSubmit={handleSubmit}>
-        <div className={classes.form}>
+        <div
+          className={clsx(classes.form, {
+            [classes.formFullPage]: props.isFullPage,
+          })}>
           <Grid container={true} spacing={2}>
             {schema.fieldMappings
               .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
@@ -207,7 +238,16 @@ export const EditView: React.FC<EditViewProps> = (props) => {
             <Button
               color="default"
               className={globalClasses.cancelButton}
-              onClick={() => props.handleCancel && props.handleCancel()}>
+              onClick={async () => {
+                if (selectionService.activeContent.getValue() !== undefined) {
+                  const parentContent = await repo.load({
+                    idOrPath: PathHelper.getParentPath(selectionService.activeContent.getValue()!.Path),
+                  })
+                  selectionService.activeContent.setValue(parentContent.d)
+                }
+                dialogActionService.activeAction.setValue(undefined)
+                props.handleCancel?.()
+              }}>
               {localization.forms.cancel}
             </Button>
           </MediaQuery>

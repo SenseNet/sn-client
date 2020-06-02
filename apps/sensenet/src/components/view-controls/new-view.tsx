@@ -1,7 +1,7 @@
 /**
  * @module ViewControls
  */
-import { FieldSetting, GenericContent, Schema } from '@sensenet/default-content-types'
+import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { createStyles, makeStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
@@ -9,19 +9,25 @@ import Grid from '@material-ui/core/Grid'
 import clsx from 'clsx'
 import React, { createElement, ReactElement, useState } from 'react'
 import MediaQuery from 'react-responsive'
-import { useHistory } from 'react-router'
-import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization, useSelectionService } from '../../hooks'
+import { globals, useGlobalStyles } from '../../globalStyles'
+import { useDialogActionService, useLocalization, useSelectionService } from '../../hooks'
 import { reactControlMapper } from '../react-control-mapper'
 
 const useStyles = makeStyles(() => {
   return createStyles({
+    mainform: {
+      width: '100%',
+      height: `calc(100% - ${globals.common.formTitleHeight}px)`,
+    },
+    mainformFullPage: {
+      height: `calc(100% - ${globals.common.drawerItemHeight}px)`,
+    },
     form: {
       margin: '0 auto',
       padding: '22px 22px 0 22px',
       overflowY: 'auto',
       width: '100%',
-      height: 'calc(100% - 80px)',
+      height: `calc(100% - ${globals.common.formActionButtonsHeight}px)`,
     },
     grid: {
       display: 'flex',
@@ -58,6 +64,9 @@ export interface NewViewProps {
   currentContent: GenericContent | undefined
   extension?: string
   uploadFolderpath?: string
+  handleCancel?: () => void
+  submitCallback?: () => void
+  isFullPage?: boolean
 }
 
 /**
@@ -75,10 +84,10 @@ export const NewView: React.FC<NewViewProps> = (props) => {
   const [content, setContent] = useState({})
   const classes = useStyles()
   const localization = useLocalization()
-  const history = useHistory<{ schema: Schema }>()
   const globalClasses = useGlobalStyles()
   const logger = useLogger('AddDialog')
   const selectionService = useSelectionService()
+  const dialogActionService = useDialogActionService()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -104,7 +113,7 @@ export const NewView: React.FC<NewViewProps> = (props) => {
         },
       })
     } finally {
-      history.goBack()
+      props.submitCallback?.()
     }
   }
 
@@ -120,15 +129,12 @@ export const NewView: React.FC<NewViewProps> = (props) => {
     )
   }
 
-  const handleCancel = async () => {
-    if (selectionService.activeContent.getValue() !== undefined) {
-      selectionService.activeContent.setValue(undefined)
-    }
-    history.goBack()
-  }
-
   return (
-    <form style={{ display: 'initial' }} onSubmit={handleSubmit}>
+    <form
+      className={clsx(classes.mainform, {
+        [classes.mainformFullPage]: props.isFullPage,
+      })}
+      onSubmit={handleSubmit}>
       <div className={classes.form}>
         <Grid container={true} spacing={2}>
           {schema.fieldMappings
@@ -170,7 +176,17 @@ export const NewView: React.FC<NewViewProps> = (props) => {
       </div>
       <div className={classes.actionButtonWrapper}>
         <MediaQuery minDeviceWidth={700}>
-          <Button color="default" className={globalClasses.cancelButton} onClick={handleCancel}>
+          <Button
+            color="default"
+            className={globalClasses.cancelButton}
+            onClick={() => {
+              if (selectionService.activeContent.getValue() !== undefined) {
+                selectionService.activeContent.setValue(undefined)
+              }
+              dialogActionService.activeAction.setValue(undefined)
+              dialogActionService.contentTypeNameForNewContent.setValue(undefined)
+              props.handleCancel?.()
+            }}>
             {localization.forms.cancel}
           </Button>
         </MediaQuery>

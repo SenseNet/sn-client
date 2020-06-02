@@ -10,7 +10,7 @@ import clsx from 'clsx'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization } from '../../hooks'
+import { useDialogActionSubscribe, useLocalization, useSelectionService } from '../../hooks'
 import { getPrimaryActionUrl } from '../../services/content-context-service'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { WellKnownContentCard } from './well-known-content-card'
@@ -25,6 +25,8 @@ const Setup = () => {
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [contextMenuItem, setContextMenuItem] = useState<Settings | null>(null)
+  const selectionService = useSelectionService()
+  useDialogActionSubscribe()
 
   useEffect(() => {
     ;(async () => {
@@ -73,6 +75,7 @@ const Setup = () => {
                 ev.preventDefault()
                 setContextMenuAnchor((ev.currentTarget as HTMLElement) || null)
                 setContextMenuItem(s)
+                selectionService.activeContent.setValue(s)
                 setIsContextMenuOpened(true)
               }}
             />
