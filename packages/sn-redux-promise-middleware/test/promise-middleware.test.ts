@@ -23,6 +23,20 @@ export const promiseMiddlewareTest = describe('PromiseMiddleware', () => {
     } as PromiseMiddlewareAction<typeof customApi, any>)
   })
 
+  it('Generic API Endpoint should be overridable', (done) => {
+    const customApi = { call: () => done() }
+    const customApiOverride = { callOverride: () => done() }
+    const m = promiseMiddleware(customApi)
+    const store = createStore((a = {}) => a, {}, applyMiddleware(m))
+    m.reset(customApiOverride)
+    store.dispatch({
+      type: 'EXAMPLE_ACTION',
+      payload: async (api) => {
+        api.callOverride()
+      },
+    } as PromiseMiddlewareAction<typeof customApiOverride, any>)
+  })
+
   it('Success action should be dispatched', (done) => {
     const customApi = { call: () => 1 }
     const m = promiseMiddleware(customApi)

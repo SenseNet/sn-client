@@ -1,9 +1,9 @@
+import { RepositoryContext } from '@sensenet/hooks-react'
 import React from 'react'
 import { connect } from 'react-redux'
 import { Route, RouteComponentProps, Switch } from 'react-router-dom'
 import * as DMSActions from '../Actions'
 import EditorPage from '../components/wopi/EditorPage'
-import { repository } from '../DmsRepository'
 import { rootStateType } from '../store/rootReducer'
 
 const mapStateToProps = (state: rootStateType) => {
@@ -68,7 +68,15 @@ class DashboardComponent extends React.Component<
     return (
       <div>
         <Switch>
-          <Route exact={true} path="/wopi/:documentId?" component={() => <EditorPage repository={repository} />} />
+          <Route
+            exact={true}
+            path="/wopi/:documentId?"
+            component={() => (
+              <RepositoryContext.Consumer>
+                {(repository) => <EditorPage repository={repository} />}
+              </RepositoryContext.Consumer>
+            )}
+          />
         </Switch>
       </div>
     )

@@ -120,8 +120,7 @@ export const queries: Reducer<QueriesType> = (
       }),
     }
   }
-  /** todo: auto-generated success action from @sn/redux */
-  if (action.type === 'DELETE_CONTENT_SUCCESS') {
+  if (action.type === 'DELETE_BATCH_SUCCESS') {
     const deletedIds = (action.result as PromiseReturns<typeof deleteContent>).d.results.map((d) => d.Id)
     return {
       ...state,

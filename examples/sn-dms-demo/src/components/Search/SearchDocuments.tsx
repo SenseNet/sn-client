@@ -192,7 +192,7 @@ class SearchDocuments extends React.Component<
       <RepositoryContext.Consumer>
         {(repository) => (
           <AdvancedSearch
-            schema={repository.schemas.getSchemaByName('GenericContent')}
+            schema={repository?.schemas.getSchemaByName('GenericContent')}
             onQueryChanged={this.handleQueryChanged}
             style={{ width: '100%' }}
             fields={(options) => (
