@@ -77,7 +77,7 @@ describe('Document Viewer component', () => {
 
   it('should fetch the document data and preview images when new documentid is added or when the version changed', async () => {
     await act(async () => {
-      const getDocumentData = jest.fn(async () => exampleDocumentData)
+      const getDocumentData = jest.fn(async ({ idOrPath }) => ({ ...exampleDocumentData, idOrPath }))
       const getExistingPreviewImages = jest.fn(async () => [examplePreviewImageData])
       const wrapper = mount(
         <DocumentViewer
