@@ -1,14 +1,14 @@
+import { ConstantContent, Repository } from '@sensenet/client-core'
+import { User } from '@sensenet/default-content-types'
+import { RepositoryContext } from '@sensenet/hooks-react'
+import { loadRepository, userChanged } from '@sensenet/redux/dist/Actions'
+import { EventHub } from '@sensenet/repository-events'
 import React, { useEffect, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
 import { UserState } from 'redux-oidc'
-import { loadRepository, userChanged } from '@sensenet/redux/dist/Actions'
-import { ConstantContent, Repository } from '@sensenet/client-core'
-import { RepositoryContext } from '@sensenet/hooks-react'
-import { EventHub } from '@sensenet/repository-events'
-import { User } from '@sensenet/default-content-types'
-import { rootStateType } from '../store/rootReducer'
-import { defaultRepositoryConfig, dmsInjector } from '../DmsRepository'
 import { store } from '..'
+import { defaultRepositoryConfig, dmsInjector } from '../DmsRepository'
+import { rootStateType } from '../store/rootReducer'
 
 const RepoProvider: React.FunctionComponent<{ userChanged: Function; loadRepository: Function }> = (props) => {
   const stateAuth = useSelector<rootStateType, UserState>((state) => state.auth)

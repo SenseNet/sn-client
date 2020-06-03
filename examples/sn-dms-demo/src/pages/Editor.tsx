@@ -1,7 +1,7 @@
+import { RepositoryContext } from '@sensenet/hooks-react'
 import React from 'react'
 import { connect } from 'react-redux'
 import { Route, RouteComponentProps, Switch } from 'react-router-dom'
-import { RepositoryContext } from '@sensenet/hooks-react'
 import * as DMSActions from '../Actions'
 import EditorPage from '../components/wopi/EditorPage'
 import { rootStateType } from '../store/rootReducer'
