@@ -6,48 +6,39 @@ import { CommandPaletteItem } from '../../components/command-palette/CommandPale
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
 import { getPrimaryActionUrl } from '../content-context-service'
 import { LocalizationService } from '../LocalizationService'
-import { PersonalSettings } from '../PersonalSettings'
 
 @Injectable({ lifetime: 'singleton' })
-export class QueryCommandProvider implements CommandProvider {
-  constructor(
-    public readonly injector: Injector,
-    private readonly personalSettings: PersonalSettings,
-    private readonly localization: LocalizationService,
-  ) {}
+export class SearchCommandProvider implements CommandProvider {
+  constructor(public readonly injector: Injector, private readonly localization: LocalizationService) {}
 
   public shouldExec({ term }: SearchOptions): boolean {
-    return term != null && term[0] === '+'
+    return !!term && term[0] !== '>' && term[0] !== '?'
   }
 
   public async getItems(options: SearchOptions): Promise<CommandPaletteItem[]> {
-    const extendedQuery = this.personalSettings.effectiveValue
-      .getValue()
-      .default.commandPalette.wrapQuery.replace('{0}', options.term)
+    const extendedQuery = `${options.term.trim()}* .AUTOFILTERS:OFF`
     const result = await options.repository.loadCollection<GenericContent>({
       path: ConstantContent.PORTAL_ROOT.Path,
       oDataOptions: {
         query: extendedQuery,
-        top: 10,
-        select: 'all',
-      },
+        top: 5,
+      } as any,
     })
     return [
+      {
+        primaryText: this.localization.currentValues.getValue().search.openInSearchTitle(options.term),
+        url: `${applicationPaths.search}?term=${encodeURIComponent(options.term)}`,
+        content: { Type: 'Search' } as any,
+        hits: [],
+      },
       ...result.d.results.map((content) => ({
         primaryText: content.DisplayName || content.Name,
         secondaryText: content.Path,
         url: getPrimaryActionUrl(content, options.repository),
         content,
         icon: content.Icon,
-        hits: options.term.substr(1).replace(/\*/g, ' ').replace(/\?/g, ' ').split(' '),
+        hits: options.term.replace(/\*/g, ' ').replace(/\?/g, ' ').split(' '),
       })),
-      {
-        primaryText: this.localization.currentValues.getValue().search.openInSearchTitle,
-        secondaryText: this.localization.currentValues.getValue().search.openInSearchDescription,
-        url: `${applicationPaths.search}?term=${encodeURIComponent(options.term)}`,
-        content: { Type: 'Search' } as any,
-        hits: [],
-      },
     ]
   }
 }

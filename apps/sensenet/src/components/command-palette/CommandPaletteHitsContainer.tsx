@@ -4,20 +4,16 @@ import React, { useContext } from 'react'
 import { RenderSuggestionsContainerParams } from 'react-autosuggest'
 import { ResponsiveContext } from '../../context'
 
-export const CommandPaletteHitsContainer: React.FunctionComponent<
-  RenderSuggestionsContainerParams & {
-    width: number
-  }
-> = (options) => {
+export const CommandPaletteHitsContainer: React.FunctionComponent<RenderSuggestionsContainerParams> = (options) => {
   const device = useContext(ResponsiveContext)
   return (
     <Paper
       square={true}
       style={{
-        position: 'fixed',
+        position: 'absolute',
         zIndex: 1,
         left: device === 'mobile' ? '64px' : undefined,
-        width: device === 'mobile' ? 'calc(100% - 80px)' : options.width,
+        width: device === 'mobile' ? 'calc(100% - 80px)' : '100%',
       }}>
       <List
         dense={device === 'desktop' ? false : true}

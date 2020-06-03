@@ -44,36 +44,46 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     const ac = new AbortController()
-    ;(async () => {
-      try {
-        await loadLock.acquire()
-        setDocumentData(defaultDocumentData)
-        while (documentData.pageCount === PreviewState.Loading && !ac.signal.aborted) {
-          const result = await api.getDocumentData({
-            hostName: repo.configuration.repositoryUrl,
-            idOrPath: doc.documentIdOrPath,
-            version: doc.version,
-            abortController: ac,
-          })
-          setDocumentData(result)
-          if (result.pageCount === PreviewState.Loading) {
-            await sleepAsync(4000)
-          } else {
-            break
+    if (documentData.idOrPath && doc.documentIdOrPath !== documentData.idOrPath) {
+      setDocumentData(defaultDocumentData)
+    } else {
+      ;(async () => {
+        try {
+          await loadLock.acquire()
+          while (documentData.pageCount === PreviewState.Loading && !ac.signal.aborted) {
+            const result = await api.getDocumentData({
+              hostName: repo.configuration.repositoryUrl,
+              idOrPath: doc.documentIdOrPath,
+              version: doc.version,
+              abortController: ac,
+            })
+            setDocumentData(result)
+            if (result.pageCount === PreviewState.Loading) {
+              await sleepAsync(4000)
+            } else {
+              break
+            }
           }
+        } catch (error) {
+          if (!ac.signal.aborted) {
+            setDocumentData({ ...defaultDocumentData, pageCount: PreviewState.ClientFailure, error: error.toString() })
+            throw error
+          }
+        } finally {
+          loadLock.release()
         }
-      } catch (error) {
-        if (!ac.signal.aborted) {
-          setDocumentData({ ...defaultDocumentData, pageCount: PreviewState.ClientFailure, error: error.toString() })
-          throw error
-        }
-      } finally {
-        loadLock.release()
-      }
-    })()
+      })()
+    }
     return () => ac.abort()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [api, doc.documentIdOrPath, repo.configuration.repositoryUrl, doc.version])
+  }, [
+    api,
+    loadLock,
+    repo.configuration.repositoryUrl,
+    doc.documentIdOrPath,
+    doc.version,
+    documentData.idOrPath,
+    documentData.pageCount,
+  ])
 
   const updateDocumentData = useCallback(
     async (newDocData: Partial<DocumentData>) => {

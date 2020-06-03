@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => {
       paddingRight: 0,
     },
     logo: {
-      marginRight: '39px',
+      marginRight: '40px',
       filter: 'drop-shadow(0px 0px 3px black)',
     },
     commandPaletteReplacement: {

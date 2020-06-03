@@ -77,7 +77,7 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay }: 
   const dialogActionService = useDialogActionService()
 
   const onActivateItemOverride = (activeItem: GenericContent) => {
-    getPrimaryActionUrl(activeItem, repo) === 'openEdit'
+    getPrimaryActionUrl(activeItem, repo, true) === 'openEdit'
       ? dialogActionService.activeAction.setValue('edit')
       : history.push(getPrimaryActionUrl(activeItem, repo))
   }

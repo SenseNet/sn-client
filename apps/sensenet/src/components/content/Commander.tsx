@@ -12,6 +12,7 @@ import { useHistory } from 'react-router'
 import { applicationPaths } from '../../application-paths'
 import { useSelectionService } from '../../hooks'
 import { useDialogActionService } from '../../hooks/use-dialogaction-service'
+import { pathWithQueryParams } from '../../services'
 import { ContentList } from '../content-list/content-list'
 import { useDialog } from '../dialogs'
 
@@ -77,8 +78,11 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
         } else if (ev.key === 'F7') {
           ev.preventDefault()
           ev.stopPropagation()
+
           dialogActionService.contentTypeNameForNewContent.setValue('Folder')
-          history.push(`${applicationPaths.newProperties}?path=${activeParent.Path}`)
+          history.push(
+            pathWithQueryParams({ path: applicationPaths.newProperties, newParams: { path: activeParent.Path } }),
+          )
         }
       }}
       style={{ display: 'flex', width: '100%', height: '100%' }}>
