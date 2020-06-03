@@ -5,6 +5,7 @@ import { applicationPaths, resolvePathParams } from '../application-paths'
 import { Icon } from '../components/Icon'
 import { ResponsivePersonalSettings } from '../context'
 import DefaultLocalization from '../localization/default'
+import { pathWithQueryParams } from '../services'
 import {
   BuiltinDrawerItem,
   ContentDrawerItem,
@@ -77,16 +78,19 @@ export const useDrawerItems = () => {
         case 'Search':
           return applicationPaths.savedQueries
         case 'Content':
-          return `${resolvePathParams({
-            path: applicationPaths.browse,
-            params: { browseType: settings.content.browseType },
-          })}${item.settings ? `?path=${encodeURIComponent(settings.content.root)}` : ''}`
+          return pathWithQueryParams({
+            path: resolvePathParams({
+              path: applicationPaths.browse,
+              params: { browseType: settings.content.browseType },
+            }),
+            newParams: { path: settings.content.root },
+          })
         case 'UsersAndGroups':
           return applicationPaths.usersAndGroups
         case 'ContentTypes':
           return applicationPaths.contentTypes
         case 'Query':
-          return applicationPaths.search + (item.settings ? `?term=${encodeURIComponent(item.settings.term)}` : '')
+          return pathWithQueryParams({ path: applicationPaths.search, newParams: { term: item.settings?.term } })
         case 'Localization':
           return applicationPaths.localization
         case 'Trash':

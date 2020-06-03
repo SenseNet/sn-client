@@ -19,10 +19,7 @@ export class CustomActionCommandProvider implements CommandProvider {
   public onActionExecuted = new ObservableValue<{ content: GenericContent; action: ActionModel; response: any }>()
 
   public shouldExec(options: SearchOptions) {
-    return this.selectionService.activeContent.getValue() &&
-      options.term &&
-      options.term.length > 2 &&
-      options.term.startsWith('>')
+    return this.selectionService.activeContent.getValue() && options.term?.length > 2 && options.term.startsWith('>')
       ? true
       : false
   }
@@ -30,7 +27,7 @@ export class CustomActionCommandProvider implements CommandProvider {
   private contentWithActionsAndMetadata: ODataResponse<GenericContent> | undefined
 
   private async getActions(id: number, repository: Repository) {
-    if (this.contentWithActionsAndMetadata && id === this.contentWithActionsAndMetadata.d.Id) {
+    if (id === this.contentWithActionsAndMetadata?.d.Id) {
       return this.contentWithActionsAndMetadata
     }
     const result = await repository.load<GenericContent>({
@@ -58,19 +55,12 @@ export class CustomActionCommandProvider implements CommandProvider {
     return (contentWithActions.Actions as ActionModel[])
       .filter(
         (a) =>
-          (a.Name.toLowerCase().includes(filteredTerm) && a.IsODataAction) ||
-          (a.DisplayName.toLowerCase().includes(filteredTerm) && a.IsODataAction),
+          (a.Name.toLowerCase().includes(filteredTerm) || a.DisplayName.toLowerCase().includes(filteredTerm)) &&
+          a.IsODataAction,
       )
       .map((a) => {
-        const actionMetadata =
-          contentWithActions.__metadata &&
-          contentWithActions.__metadata.actions &&
-          contentWithActions.__metadata.actions.find((action) => action.name === a.Name)
-
-        const functionMetadata =
-          contentWithActions.__metadata &&
-          contentWithActions.__metadata.functions &&
-          contentWithActions.__metadata.functions.find((fn) => fn.name === a.Name)
+        const actionMetadata = contentWithActions.__metadata?.actions?.find((action) => action.name === a.Name)
+        const functionMetadata = contentWithActions.__metadata?.functions?.find((fn) => fn.name === a.Name)
 
         // merge custom parameters to function metadata
         const customActionMetadata = functionMetadata && {

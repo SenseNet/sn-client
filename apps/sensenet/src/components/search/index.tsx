@@ -9,16 +9,12 @@ import {
   useLogger,
   useRepository,
 } from '@sensenet/hooks-react'
-import { createStyles, makeStyles } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
+import { Button, createStyles, makeStyles, TextField, Typography } from '@material-ui/core'
 import Save from '@material-ui/icons/Save'
 import clsx from 'clsx'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { applicationPaths } from '../../application-paths'
-import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useSelectionService } from '../../hooks'
 import { useQuery } from '../../hooks/use-query'
@@ -26,7 +22,7 @@ import { getPrimaryActionUrl } from '../../services'
 import { ContentList } from '../content-list'
 import { useDialog } from '../dialogs'
 
-const searchDebounceTime = 700
+const searchDebounceTime = 400
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -34,6 +30,7 @@ const useStyles = makeStyles(() => {
       display: 'flex',
       width: '100%',
       marginLeft: '1em',
+      marginBottom: '1rem',
     },
   })
 })
@@ -52,12 +49,30 @@ export const Search = () => {
   const [result, setResult] = useState<GenericContent[]>()
   const [error, setError] = useState<string>()
   const loadSettingsContext = useContext(LoadSettingsContext)
-  const personalSettings = useContext(ResponsivePersonalSettings)
+  const searchInputRef = useRef<HTMLInputElement>()
 
   const debouncedQuery = useCallback(
     debounce((a: string) => setQuery(a), searchDebounceTime),
     [],
   )
+
+  useEffect(() => {
+    if (!termFromQuery) {
+      if (searchInputRef.current) {
+        setResult([])
+        searchInputRef.current.value = ''
+        searchInputRef.current.focus()
+      }
+      return
+    }
+
+    const term = decodeURIComponent(termFromQuery)
+
+    if (searchInputRef.current) {
+      searchInputRef.current.value = term
+    }
+    setQuery((currentState) => (currentState !== term ? term : currentState))
+  }, [termFromQuery])
 
   useEffect(() => {
     const ac = new AbortController()
@@ -71,13 +86,13 @@ export const Search = () => {
         setResult([])
         history.push(`${applicationPaths.search}?term=${encodeURIComponent(query)}`)
 
+        const extendedQuery = `${query.trim()}* .AUTOFILTERS:OFF`
         const r = await repo.loadCollection({
           path: ConstantContent.PORTAL_ROOT.Path,
           oDataOptions: {
             ...loadSettingsContext.loadChildrenSettings,
-            select: ['Actions'],
-            expand: ['Actions'],
-            query: personalSettings.commandPalette.wrapQuery.replace('{0}', query),
+            select: undefined,
+            query: extendedQuery,
           },
           requestInit: { signal: ac.signal },
         })
@@ -94,14 +109,7 @@ export const Search = () => {
 
     fetchResult()
     return () => ac.abort()
-  }, [
-    history,
-    loadSettingsContext.loadChildrenSettings,
-    logger,
-    personalSettings.commandPalette.wrapQuery,
-    query,
-    repo,
-  ])
+  }, [history, loadSettingsContext.loadChildrenSettings, logger, query, repo])
 
   return (
     <div className={globalClasses.contentWrapper}>
@@ -111,10 +119,10 @@ export const Search = () => {
       <div className={globalClasses.centeredVertical}>
         <div className={classes.searchBar}>
           <TextField
-            label={localization.queryLabel}
             helperText={localization.queryHelperText}
             defaultValue={query}
             fullWidth={true}
+            inputRef={searchInputRef}
             onChange={(ev) => {
               debouncedQuery(ev.target.value)
             }}
@@ -157,9 +165,6 @@ export const Search = () => {
               }}
               onActivateItem={(p) => {
                 history.push(getPrimaryActionUrl(p, repo))
-              }}
-              onTabRequest={() => {
-                /** */
               }}
               onSelectionChange={(sel) => {
                 selectionService.selection.setValue(sel)

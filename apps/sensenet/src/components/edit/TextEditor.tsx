@@ -137,7 +137,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
           }
           const textFile = await repo.fetch(PathHelper.joinPaths(repo.configuration.repositoryUrl, binaryPath))
           if (textFile.ok) {
-            const text = savedTextValue !== '' ? savedTextValue : await textFile.text()
+            const text = await textFile.text()
             setTextValue(text)
             setSavedTextValue(text)
           }
@@ -146,7 +146,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
         setError(err)
       }
     })()
-  }, [savedTextValue, props, repo])
+  }, [props, repo])
 
   if (error) {
     logger.information({
