@@ -1,16 +1,16 @@
-import CssBaseline from '@material-ui/core/CssBaseline'
-import React, { useContext, useEffect, useState } from 'react'
 import { useInjector, useRepository } from '@sensenet/hooks-react'
 import { createStyles, makeStyles } from '@material-ui/core'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import clsx from 'clsx'
+import React, { useContext, useEffect, useState } from 'react'
 import { ResponsivePersonalSettings } from '../../context'
+import { globals, useGlobalStyles } from '../../globalStyles'
+import { CustomActionCommandProvider } from '../../services/CommandProviders/CustomActionCommandProvider'
 import { DesktopAppBar } from '../appbar/desktop-app-bar'
+import { useDialog } from '../dialogs'
 import { PermanentDrawer } from '../drawer/PermanentDrawer'
 import { TemporaryDrawer } from '../drawer/TemporaryDrawer'
-import { CustomActionCommandProvider } from '../../services/CommandProviders/CustomActionCommandProvider'
-import { useDialog } from '../dialogs'
 import { getMonacoModelUri } from '../edit/TextEditor'
-import { globals, useGlobalStyles } from '../../globalStyles'
 
 const useStyles = makeStyles(() => {
   return createStyles({

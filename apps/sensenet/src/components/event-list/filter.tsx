@@ -1,3 +1,5 @@
+import { debounce, LogLevel } from '@sensenet/client-utils'
+import { useInjector } from '@sensenet/hooks-react'
 import FormControl from '@material-ui/core/FormControl'
 import IconButton from '@material-ui/core/IconButton'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -5,13 +7,11 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
 import Delete from '@material-ui/icons/Delete'
-import { debounce, LogLevel } from '@sensenet/client-utils'
 import React, { useContext } from 'react'
 
-import { useInjector } from '@sensenet/hooks-react'
 import { useLocalization } from '../../hooks'
-import { Icon } from '../Icon'
 import { EventService } from '../../services/EventService'
+import { Icon } from '../Icon'
 import { EventListFilterContext } from './filter-context'
 
 export const Filter: React.FunctionComponent<{ style?: React.CSSProperties }> = (props) => {

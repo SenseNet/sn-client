@@ -3,6 +3,7 @@ import { Location } from 'history'
 import React, { lazy, Suspense, useEffect, useRef } from 'react'
 import { matchPath, Route, Switch, useHistory } from 'react-router-dom'
 import { applicationPaths } from '../application-paths'
+import { InvalidPathErrorBoundary } from './content/InvalidPathErrorBoundary'
 import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './full-screen-loader'
@@ -20,6 +21,7 @@ const EditBinary = lazy(() => import(/* webpackChunkName: "editBinary" */ './edi
 const EditProperties = lazy(() => import(/* webpackChunkName: "editProperties" */ './edit/edit-properties'))
 const BrowseProperties = lazy(() => import(/* webpackChunkName: "browseProperties" */ './browse/browse-properties'))
 const NewProperties = lazy(() => import(/* webpackChunkName: "newProperties" */ './new/new-properties'))
+const VersionProperties = lazy(() => import(/* webpackChunkName: "versionProperties" */ './version/version-properties'))
 const DocumentViewerComponent = lazy(() => import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 const TrashComponent = lazy(() => import(/* webpackChunkName: "Trash" */ './trash/Trash'))
 const EventListComponent = lazy(() => import(/* webpackChunkName: "EventList" */ './event-list/event-list'))
@@ -61,7 +63,9 @@ export const MainRouter = () => {
           </Route>
 
           <Route path={applicationPaths.browse}>
-            <ExploreComponent />
+            <InvalidPathErrorBoundary>
+              <ExploreComponent />
+            </InvalidPathErrorBoundary>
           </Route>
 
           <Route path={applicationPaths.search}>
@@ -110,6 +114,10 @@ export const MainRouter = () => {
 
           <Route path={applicationPaths.newProperties}>
             <NewProperties />
+          </Route>
+
+          <Route path={applicationPaths.versionProperties}>
+            <VersionProperties />
           </Route>
 
           <Route path={applicationPaths.preview}>

@@ -39,7 +39,6 @@ export const SimpleList: React.FunctionComponent<SimpleListComponentProps> = (pr
                 }}
                 onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
                 {...props.contentListProps}
-                isOpenFrom={'simple'}
               />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>

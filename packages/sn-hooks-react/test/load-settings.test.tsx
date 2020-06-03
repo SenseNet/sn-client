@@ -1,5 +1,5 @@
-import React, { useContext } from 'react'
 import { shallow } from 'enzyme'
+import React, { useContext } from 'react'
 import { LoadSettingsContext, LoadSettingsContextProvider } from '../src/context/load-settings'
 
 describe('LoadSettings', () => {

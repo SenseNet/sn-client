@@ -1,10 +1,10 @@
-import { LogLevel } from '@sensenet/client-utils'
 import { Repository } from '@sensenet/client-core'
+import { LogLevel } from '@sensenet/client-utils'
 import { editor, languages, Uri } from 'monaco-editor'
-import defaultLanguage from '../../localization/default'
-import { ActionType, DrawerItemType, widgetTypes } from '../PersonalSettings'
 import { BrowseType } from '../../components/content'
 import { wellKnownIconNames } from '../../components/Icon'
+import defaultLanguage from '../../localization/default'
+import { ActionType, DrawerItemType, widgetTypes } from '../PersonalSettings'
 
 export const setupModel = (language = defaultLanguage, repo: Repository) => {
   const personalSettingsPath = `sensenet://PersonalSettings/PersonalSettings`

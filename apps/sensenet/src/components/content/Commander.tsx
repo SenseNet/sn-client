@@ -6,14 +6,14 @@ import {
   CurrentContentContext,
   CurrentContentProvider,
   LoadSettingsContextProvider,
-  useRepository,
 } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
+import { applicationPaths } from '../../application-paths'
 import { useSelectionService } from '../../hooks'
+import { useDialogActionService } from '../../hooks/use-dialogaction-service'
 import { ContentList } from '../content-list/content-list'
 import { useDialog } from '../dialogs'
-import { applicationPaths } from '../../application-paths'
 
 export interface CommanderComponentProps {
   leftParent: number | string
@@ -27,7 +27,6 @@ export interface CommanderComponentProps {
 }
 
 export const CommanderComponent: React.FunctionComponent<CommanderComponentProps> = (props) => {
-  const repo = useRepository()
   const { openDialog } = useDialog()
   const selectionService = useSelectionService()
   const [_leftPanelRef, setLeftPanelRef] = useState<null | any>(null)
@@ -46,6 +45,7 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
   const [rightSelection, setRightSelection] = useState<GenericContent[]>([])
 
   const history = useHistory()
+  const dialogActionService = useDialogActionService()
 
   useEffect(() => {
     activePanel === 'left' ? setActiveParent(leftParent) : setActiveParent(rightParent)
@@ -77,9 +77,8 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
         } else if (ev.key === 'F7') {
           ev.preventDefault()
           ev.stopPropagation()
-          history.push(`${applicationPaths.newProperties}?path=${activeParent.Path}`, {
-            schema: repo.schemas.getSchemaByName('Folder'),
-          })
+          dialogActionService.contentTypeNameForNewContent.setValue('Folder')
+          history.push(`${applicationPaths.newProperties}?path=${activeParent.Path}`)
         }
       }}
       style={{ display: 'flex', width: '100%', height: '100%' }}>
@@ -110,7 +109,6 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
                 onTabRequest={() => _rightPanelRef && _rightPanelRef.focus()}
                 onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
                 fieldsToDisplay={props.fieldsToDisplay}
-                isOpenFrom={'commander'}
               />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>
@@ -141,7 +139,6 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
                 onTabRequest={() => _leftPanelRef && _leftPanelRef.focus()}
                 onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
                 fieldsToDisplay={props.fieldsToDisplay}
-                isOpenFrom={'commander'}
               />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>

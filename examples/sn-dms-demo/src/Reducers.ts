@@ -15,8 +15,8 @@ import { documentLibrary } from './store/documentlibrary/reducers'
 import { editedContent } from './store/edited/reducers'
 import { picker } from './store/picker/reducers'
 import { queries } from './store/queries'
-import { workspaces } from './store/workspaces/reducers'
 import { shared } from './store/shared'
+import { workspaces } from './store/workspaces/reducers'
 
 export const email: Reducer<string, Action & { email?: string }> = (state = '', action: AnyAction) => {
   switch (action.type) {

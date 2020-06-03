@@ -8,8 +8,8 @@ import { AuthorizedRoute } from './components/AuthorizedRoute'
 import { Callback } from './components/Callback'
 import { FullScreenLoader } from './components/FullScreenLoader'
 import MessageBar from './components/MessageBar'
-import { Login } from './pages/Login'
 import DashboardComponent from './pages/Dashboard'
+import { Login } from './pages/Login'
 import './Sensenet.css'
 
 export function Sensenet() {

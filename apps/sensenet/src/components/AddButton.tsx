@@ -1,3 +1,5 @@
+import { Schema } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import {
   createStyles,
   IconButton,
@@ -11,14 +13,11 @@ import {
 } from '@material-ui/core'
 import { CloudUploadOutlined } from '@material-ui/icons'
 import Add from '@material-ui/icons/Add'
-import { Schema } from '@sensenet/default-content-types'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
 import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router'
-import { applicationPaths } from '../application-paths'
 import { globals, useGlobalStyles } from '../globalStyles'
 import { useLocalization, usePersonalSettings, useSelectionService } from '../hooks'
+import { useDialogActionService } from '../hooks/use-dialogaction-service'
 import { useDialog } from './dialogs'
 import { Icon } from './Icon'
 
@@ -74,7 +73,8 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
   const [hasUpload, setHasUpload] = useState(false)
   const [currentComponent, setCurrentComponent] = useState(selectionService.activeContent.getValue())
   const personalSettings = usePersonalSettings()
-  const history = useHistory<{ schema: Schema }>()
+  const dialogActionService = useDialogActionService()
+  const [activeAction, setActiveAction] = useState(dialogActionService.activeAction.getValue())
 
   useEffect(() => {
     const activeComponentObserve = selectionService.activeContent.subscribe((newActiveComponent) =>
@@ -87,11 +87,21 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
   }, [selectionService.activeContent])
 
   useEffect(() => {
+    const activeActionObserve = dialogActionService.activeAction.subscribe((newActiveAction) =>
+      setActiveAction(newActiveAction),
+    )
+
+    return function cleanup() {
+      activeActionObserve.dispose()
+    }
+  }, [dialogActionService.activeAction])
+
+  useEffect(() => {
     const getActions = async () => {
       try {
         const actions = await repo.getActions({ idOrPath: currentComponent ? currentComponent.Id : props.path })
         const isActionFound = actions.d.Actions.some((action) => action.Name === 'Add' || action.Name === 'Upload')
-        setAvailable(isActionFound)
+        setAvailable(isActionFound && activeAction !== 'new')
       } catch (error) {
         logger.error({
           message: localization.errorGettingActions,
@@ -107,7 +117,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
     } else {
       setAvailable(false)
     }
-  }, [currentComponent, localization.errorGettingActions, logger, props.path, repo])
+  }, [currentComponent, localization.errorGettingActions, logger, props.path, repo, activeAction])
 
   useEffect(() => {
     const getAllowedChildTypes = async () => {
@@ -159,8 +169,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
                   onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => {
                     setAnchorEl(event.currentTarget)
                     setShowSelectType(true)
-                  }}
-                  disabled={!isAvailable}>
+                  }}>
                   <Add className={globalClasses.drawerButtonIcon} />
                 </IconButton>
               </span>
@@ -175,7 +184,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
                   setAnchorEl(event.currentTarget)
                   setShowSelectType(true)
                 }}
-                disabled={!isAvailable}>
+                disabled={true}>
                 <Add className={globalClasses.drawerButtonIcon} />
               </IconButton>
             </span>
@@ -249,12 +258,13 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
               <ListItem
                 button={true}
                 style={{ padding: '10px 0 10px 10px' }}
-                onClick={() => {
+                onClick={async () => {
                   const contentPath = currentComponent ? currentComponent.Path : props.path
+                  const currentContent = await repo.load({ idOrPath: contentPath })
+                  selectionService.activeContent.setValue(currentContent.d)
                   setShowSelectType(false)
-                  history.push(`${applicationPaths.newProperties}?path=${contentPath}`, {
-                    schema: childType,
-                  })
+                  dialogActionService.contentTypeNameForNewContent.setValue(childType.ContentTypeName)
+                  dialogActionService.activeAction.setValue('new')
                 }}>
                 <ListItemIcon style={{ minWidth: '36px' }}>
                   <Icon item={childType} />

@@ -1,18 +1,16 @@
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import { useLogger, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
+import { CurrentContentContext, useLogger, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
 import { Created } from '@sensenet/repository-events'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { useSelectionService } from '../../hooks'
-import { ActionNameType } from '../react-control-mapper'
 import { ItemType, Tree } from './tree'
 
 type TreeWithDataProps = {
   onItemClick: (item: GenericContent) => void
   parentPath: string
   activeItemPath: string
-  setFormOpen?: (actionName: ActionNameType) => void
   onTreeLoadingChange?: (isLoading: boolean) => void
 }
 
@@ -38,6 +36,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
   const selectionService = useSelectionService()
   const eventHub = useRepositoryEvents()
   const logger = useLogger('tree-with-data')
+  const currentContent = useContext(CurrentContentContext)
 
   const loadCollection = useCallback(
     async (path: string, top: number, skip: number) => {
@@ -193,18 +192,9 @@ export default function TreeWithData(props: TreeWithDataProps) {
   useEffect(() => {
     const activeContent = selectionService.activeContent.getValue()
     if (activeContent?.Path !== props.activeItemPath) {
-      loadActiveContent()
+      selectionService.activeContent.setValue(currentContent)
     }
-
-    async function loadActiveContent() {
-      try {
-        const newActiveContent = await repo.load({ idOrPath: props.activeItemPath })
-        selectionService.activeContent.setValue(newActiveContent.d)
-      } catch (error) {
-        logger.warning({ message: `Couldn't load active content`, data: { idOrPath: props.activeItemPath } })
-      }
-    }
-  }, [logger, props.activeItemPath, repo, selectionService.activeContent])
+  }, [logger, props.activeItemPath, repo, selectionService.activeContent, currentContent])
 
   useEffect(() => {
     loadRoot()
@@ -231,12 +221,8 @@ export default function TreeWithData(props: TreeWithDataProps) {
     })
   }
 
-  if (itemCount == null || !treeData) {
+  if (!itemCount || !treeData) {
     return null
-  }
-
-  const setFormOpen = (actionName: ActionNameType) => {
-    props.setFormOpen && props.setFormOpen(actionName)
   }
 
   return (
@@ -246,7 +232,6 @@ export default function TreeWithData(props: TreeWithDataProps) {
       loadMore={loadMoreItems}
       onItemClick={onItemClick}
       isLoading={isLoading}
-      setFormOpen={(actionName) => setFormOpen(actionName)}
     />
   )
 }

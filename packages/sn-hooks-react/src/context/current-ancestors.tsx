@@ -10,6 +10,7 @@ import { CurrentContentContext } from './current-content'
  * Context that will return with the current content's ancestors
  */
 export const CurrentAncestorsContext = React.createContext<GenericContent[]>([])
+CurrentAncestorsContext.displayName = 'CurrentAncestorsContext'
 
 export interface CurrentAncestorsProviderProps {
   /**
@@ -69,7 +70,7 @@ export const CurrentAncestorsProvider: React.FunctionComponent<CurrentAncestorsP
         await loadLock.acquire()
         if ((props.root && currentContent.Id === props.root) || currentContent.Path === props.root) {
           setAncestors([])
-        } else {
+        } else if (currentContent.Id) {
           const ancestorsResult = await repo.executeAction<undefined, ODataCollectionResponse<GenericContent>>({
             idOrPath: currentContent.Id,
             method: 'GET',

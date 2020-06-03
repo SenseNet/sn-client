@@ -1,7 +1,7 @@
+import { Actions } from '@sensenet/redux'
 import Button from '@material-ui/core/Button'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
-import { Actions } from '@sensenet/redux'
 import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'

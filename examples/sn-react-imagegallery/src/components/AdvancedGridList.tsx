@@ -1,11 +1,11 @@
-import React from 'react'
 import { Image, User } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
 import { IconButton } from '@material-ui/core'
 import GridList from '@material-ui/core/GridList'
-import { makeStyles } from '@material-ui/core/styles'
 import GridListTile from '@material-ui/core/GridListTile'
 import GridListTileBar from '@material-ui/core/GridListTileBar'
-import { useRepository } from '@sensenet/hooks-react'
+import { makeStyles } from '@material-ui/core/styles'
+import React from 'react'
 
 interface AdvancedGridprops {
   openFunction: (imageIndex: number, openInfoTab: boolean) => void

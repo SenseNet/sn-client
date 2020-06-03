@@ -1,12 +1,11 @@
 /* eslint-disable import/named */
-import { ListItem, ListItemIcon, ListItemText, List as MuiList } from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
+import { ListItem, ListItemIcon, ListItemText, List as MuiList } from '@material-ui/core'
 import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import { AutoSizer, Index, List, ListRowProps } from 'react-virtualized'
 import { useSelectionService } from '../../hooks'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { Icon } from '../Icon'
-import { ActionNameType } from '../react-control-mapper'
 
 export type ItemType = GenericContent & {
   children?: ItemType[]
@@ -20,13 +19,12 @@ type TreeProps = {
   loadMore: (startIndex: number, path?: string) => Promise<void>
   onItemClick: (item: GenericContent) => void
   treeData: ItemType
-  setFormOpen?: (actionName: ActionNameType) => void
 }
 
 const ROW_HEIGHT = 48
 const LOAD_MORE_CLASS = 'loadMore'
 
-export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, setFormOpen }: TreeProps) {
+export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading }: TreeProps) {
   const listRef = useRef<List>(null)
   const loader = useRef(loadMore)
   const selectionService = useSelectionService()
@@ -158,10 +156,6 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, se
     )
   }
 
-  const setFormOpenFunc = (actionName: ActionNameType) => {
-    setFormOpen && setFormOpen(actionName)
-  }
-
   return (
     <div
       style={{
@@ -204,8 +198,6 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, se
             },
           }}
           onClose={() => setContextMenuAnchor(null)}
-          halfPage={true}
-          setFormOpen={(actionName) => setFormOpenFunc(actionName)}
         />
       ) : null}
     </div>

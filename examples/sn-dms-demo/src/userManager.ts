@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { createUserManager } from 'redux-oidc'
 import { UserManagerSettings } from 'oidc-client'
+import { createUserManager } from 'redux-oidc'
 
 export const repositoryUrl = 'https://dev.demo.sensenet.com/'
 

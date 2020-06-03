@@ -1,9 +1,9 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Paper from '@material-ui/core/Paper'
 import React, { useCallback, useEffect, useState } from 'react'
-import { ImageUtil } from '../services'
-import { ZoomMode } from '../models/viewer-state'
 import { useCommentState, usePreviewImage, useViewerState } from '../hooks'
+import { ZoomMode } from '../models/viewer-state'
+import { ImageUtil } from '../services'
 import { ShapesWidget } from './page-widgets'
 import { MARKER_SIZE } from './page-widgets/style'
 

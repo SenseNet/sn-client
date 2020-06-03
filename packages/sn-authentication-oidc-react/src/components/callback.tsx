@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
+import { Container, Typography } from '@material-ui/core'
 import { History } from 'history'
 import React, { ReactNode, useEffect } from 'react'
-import { Container, Typography } from '@material-ui/core'
 import { getUserManager } from '../authentication-service'
 
 export const Callback = () => (

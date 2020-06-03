@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   defaultTheme,
   DocumentTitlePager,
@@ -12,6 +11,7 @@ import {
   ZoomInOutWidget,
   ZoomModeWidget,
 } from '@sensenet/document-viewer-react'
+import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 
 /**

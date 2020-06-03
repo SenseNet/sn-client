@@ -1,35 +1,28 @@
-import { useRepository } from '@sensenet/hooks-react'
-import clsx from 'clsx'
-import React from 'react'
-import { useHistory } from 'react-router-dom'
-import { useGlobalStyles } from '../globalStyles'
-import { useLocalization } from '../hooks'
-import { getPrimaryActionUrl } from '../services'
-import { SimpleList } from './content/Simple'
+import { GenericContent } from '@sensenet/default-content-types'
+import React, { useState } from 'react'
+import { useHistory, useRouteMatch } from 'react-router'
+import { useQuery } from '../hooks/use-query'
+import { Explore } from './content/Explore'
 
 export default function UsersAndGroups() {
-  const globalClasses = useGlobalStyles()
-  const localizationDrawerTitles = useLocalization().drawer.titles
   const history = useHistory()
-  const repository = useRepository()
+  const match = useRouteMatch<{ browseType: string }>()
+  const pathFromQuery = useQuery().get('path')
+  const [currentPath, setCurrentPath] = useState(pathFromQuery ? decodeURIComponent(pathFromQuery) : '/Root/IMS/Public')
+
+  const onNavigate = (content: GenericContent) => {
+    const searchParams = new URLSearchParams(history.location.search)
+    searchParams.set('path', content.Path)
+    history.push(`${match.url}?${searchParams.toString()}`)
+    setCurrentPath(content.Path)
+  }
 
   return (
-    <div className={globalClasses.contentWrapper}>
-      <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}>
-        <span style={{ fontSize: '20px' }}>{localizationDrawerTitles.UsersAndGroups}</span>
-      </div>
-      <SimpleList
-        parent="/Root/IMS/Public"
-        rootPath="/Root/IMS/Public"
-        contentListProps={{
-          enableBreadcrumbs: false,
-          parentIdOrPath: '/Root/IMS/Public',
-          fieldsToDisplay: ['DisplayName', 'ModificationDate', 'ModifiedBy', 'Actions'],
-          onActivateItem: (p) => {
-            history.push(getPrimaryActionUrl(p, repository))
-          },
-        }}
-      />
-    </div>
+    <Explore
+      currentPath={currentPath}
+      rootPath="/Root/IMS/Public"
+      fieldsToDisplay={['DisplayName', 'ModificationDate', 'ModifiedBy', 'Actions']}
+      onNavigate={onNavigate}
+    />
   )
 }

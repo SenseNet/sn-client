@@ -1,6 +1,3 @@
-import { IconButton, Tooltip, Typography } from '@material-ui/core'
-import OpenInNewTwoTone from '@material-ui/icons/OpenInNewTwoTone'
-import Refresh from '@material-ui/icons/RefreshTwoTone'
 import { ConstantContent, ODataParams } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
@@ -10,13 +7,16 @@ import {
   LoadSettingsContext,
   useRepository,
 } from '@sensenet/hooks-react'
+import { IconButton, Tooltip, Typography } from '@material-ui/core'
+import OpenInNewTwoTone from '@material-ui/icons/OpenInNewTwoTone'
+import Refresh from '@material-ui/icons/RefreshTwoTone'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { applicationPaths } from '../../application-paths'
 import { useLocalization, useSelectionService, useStringReplace } from '../../hooks'
 import { getPrimaryActionUrl } from '../../services'
 import { QueryWidget as QueryWidgetModel } from '../../services/PersonalSettings'
 import { ContentList, isReferenceField } from '../content-list'
-import { applicationPaths } from '../../application-paths'
 
 export const QueryWidget = (props: QueryWidgetModel<GenericContent>) => {
   const [items, setItems] = useState<GenericContent[]>([])

@@ -1,10 +1,10 @@
-import React, { useContext } from 'react'
-import moment from 'moment'
-import { Avatar, createStyles, List, ListItem, ListItemAvatar, ListItemText, makeStyles } from '@material-ui/core'
 import { User } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import CalendarEvent from '../CalendarEvent-type'
+import { Avatar, createStyles, List, ListItem, ListItemAvatar, ListItemText, makeStyles } from '@material-ui/core'
+import moment from 'moment'
+import React, { useContext } from 'react'
 import defavatar from '../assets/avatar-default.png'
+import CalendarEvent from '../CalendarEvent-type'
 import { SharedContext } from '../context/shared-context'
 
 const useStyles = makeStyles((theme) =>
