@@ -1,4 +1,4 @@
-import { Content, UploadProgressInfo } from '@sensenet/client-core'
+import { UploadProgressInfo } from '@sensenet/client-core'
 import { Icon, iconType } from '@sensenet/icons-react'
 import Divider from '@material-ui/core/Divider'
 import List from '@material-ui/core/List'
@@ -14,7 +14,6 @@ import { handleDrawerMenu, removeUploadItem, uploadFileList } from '../../Action
 import { updateChildrenOptions } from '../../store/documentlibrary/actions'
 import { rootStateType } from '../../store/rootReducer'
 import AddNewMenu from '../ActionMenu/AddNewMenu'
-import { UploadButton } from '../Upload/UploadButton'
 
 const styles = () => ({
   primary: {
