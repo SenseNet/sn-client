@@ -190,9 +190,11 @@ export const CommandPalette = () => {
           onSuggestionSelected={handleSelectSuggestion}
           onSuggestionsFetchRequested={handleSuggestionsFetchRequested}
           onSuggestionsClearRequested={() => setItems([])}
-          getSuggestionValue={(s) => s.primaryText}
-          renderSuggestion={(s, params) => <CommandPaletteSuggestion suggestion={s} params={params} />}
-          renderSuggestionsContainer={(s) => <CommandPaletteHitsContainer {...s} />}
+          getSuggestionValue={(suggestion) => suggestion.primaryText}
+          renderSuggestion={(suggestion, params) => (
+            <CommandPaletteSuggestion suggestion={suggestion} params={params} />
+          )}
+          renderSuggestionsContainer={(params) => <CommandPaletteHitsContainer {...params} />}
           inputProps={{
             value: inputValue,
             onChange: (_ev, changeEvent) => {

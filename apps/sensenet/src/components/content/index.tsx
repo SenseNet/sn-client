@@ -2,7 +2,7 @@ import { ConstantContent } from '@sensenet/client-core'
 import { tuple } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'
 import { useQuery } from '../../hooks/use-query'
@@ -47,6 +47,13 @@ export const Content = () => {
   }
 
   const onActivateItem = (activeItem: GenericContent) => history.push(getPrimaryActionUrl(activeItem, repo))
+
+  useEffect(() => {
+    if (!pathFromQuery) return
+
+    const path = decodeURIComponent(pathFromQuery)
+    setCurrentPath((currentState) => (currentState !== path ? path : currentState))
+  }, [pathFromQuery])
 
   switch (match.params.browseType) {
     case 'commander':

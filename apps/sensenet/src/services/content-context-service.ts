@@ -42,7 +42,7 @@ export function getMonacoLanguage(content: GenericContent, repository: Repositor
   }
   return ''
 }
-export function getPrimaryActionUrl(content: GenericContent, repository: Repository) {
+export function getPrimaryActionUrl(content: GenericContent, repository: Repository, editInpage = false) {
   if (content.Type === 'PersonalSettings') {
     return applicationPaths.personalSettings
   }
@@ -92,5 +92,9 @@ export function getPrimaryActionUrl(content: GenericContent, repository: Reposit
     })
   }
 
-  return 'openEdit'
+  if (editInpage) {
+    return 'openEdit'
+  }
+
+  return resolvePathParams({ path: applicationPaths.editProperties, params: { contentId: content.Id } })
 }
