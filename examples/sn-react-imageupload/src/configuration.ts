@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import { UserManagerSettings } from '@sensenet/authentication-oidc-react'
 
 export const repositoryUrl = 'https://dev.demo.sensenet.com'
