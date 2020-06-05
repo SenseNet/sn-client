@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import { UserManagerSettings } from '@sensenet/authentication-oidc-react'
 import { applicationPaths } from '../application-paths'
 import { pathWithQueryParams } from '.'
