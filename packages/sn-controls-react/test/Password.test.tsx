@@ -1,10 +1,10 @@
-import React from 'react'
-import { mount, shallow } from 'enzyme'
-import Typography from '@material-ui/core/Typography'
-import Input from '@material-ui/core/Input'
-import InputLabel from '@material-ui/core/InputLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import IconButton from '@material-ui/core/IconButton'
+import Input from '@material-ui/core/Input'
+import InputLabel from '@material-ui/core/InputLabel'
+import Typography from '@material-ui/core/Typography'
+import { mount, shallow } from 'enzyme'
+import React from 'react'
 import { Password } from '../src/fieldcontrols/Password'
 
 describe('Password field control', () => {

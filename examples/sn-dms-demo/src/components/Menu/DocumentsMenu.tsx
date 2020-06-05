@@ -1,11 +1,11 @@
+import { UploadProgressInfo } from '@sensenet/client-core'
+import { Icon, iconType } from '@sensenet/icons-react'
 import Divider from '@material-ui/core/Divider'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import withStyles from '@material-ui/core/styles/withStyles'
-import { Content, UploadProgressInfo } from '@sensenet/client-core'
-import { Icon, iconType } from '@sensenet/icons-react'
 import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
@@ -14,7 +14,6 @@ import { handleDrawerMenu, removeUploadItem, uploadFileList } from '../../Action
 import { updateChildrenOptions } from '../../store/documentlibrary/actions'
 import { rootStateType } from '../../store/rootReducer'
 import AddNewMenu from '../ActionMenu/AddNewMenu'
-import { UploadButton } from '../Upload/UploadButton'
 
 const styles = () => ({
   primary: {
@@ -111,6 +110,7 @@ const mapStateToProps = (state: rootStateType) => {
     currentContent: state.dms.documentLibrary.parent,
     currentWorkspace: state.sensenet.currentworkspace,
     query: state.dms.documentLibrary.childrenOptions.query,
+    menu: state.dms.menu,
   }
 }
 
@@ -150,6 +150,7 @@ class DocumentsMenu extends React.Component<
       this.props.history.push('/documents/')
     }
     this.props.chooseMenuItem(title)
+    this.props.chooseSubmenuItem('')
     this.props.handleDrawerMenu(false)
   }
   public handleSubmenuItemClick = (title: string) => {
@@ -191,7 +192,7 @@ class DocumentsMenu extends React.Component<
                   !this.props.query ? (
                     <div>
                       <Divider />
-                      <UploadButton
+                      {/* <UploadButton
                         style={{
                           width: '100%',
                           margin: '10px 0 0 0',
@@ -208,8 +209,10 @@ class DocumentsMenu extends React.Component<
                             parentPath: (this.props.currentContent as Content).Path,
                           })
                         }
-                      />
-                      <AddNewMenu currentContent={this.props.currentContent} />
+                      /> */}
+                      {this.props.menu.active === 'documents' && !this.props.menu.activeSubmenu && (
+                        <AddNewMenu currentContent={this.props.currentContent} />
+                      )}
                     </div>
                   ) : null
                 ) : null}

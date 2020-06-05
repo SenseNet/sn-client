@@ -67,7 +67,7 @@ export const setListActions = (actions: ActionModel[]) => ({
 
 export const getListActions = (idOrPath: number | string, scenario?: string, customActions?: ActionModel[]) => ({
   type: 'GET_LIST_ACTIONS',
-  async inject(options: IInjectableActionCallbackParams<rootStateType>) {
+  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const actionsState = options.getState().dms.toolbar
     if (!actionsState.isLoading && (actionsState.idOrPath !== idOrPath || actionsState.scenario !== scenario)) {
       options.dispatch(loadListActions(idOrPath, scenario))
@@ -242,6 +242,7 @@ export const loadTypesToAddNewList = (idOrPath: number | string) => ({
       method: 'GET',
       name: 'EffectiveAllowedChildTypes',
     })) as any
+
     return data
   },
 })

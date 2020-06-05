@@ -12,7 +12,6 @@ import {
   ExecuteActionDialogProps,
   SaveQueryProps,
   UploadDialogProps,
-  VersionsProps,
 } from '.'
 
 export type DialogWithProps = (
@@ -21,7 +20,6 @@ export type DialogWithProps = (
   | { name: 'error'; props: ErrorBoundaryState }
   | { name: 'copy-move'; props: CopyMoveDialogProps }
   | { name: 'check-in'; props: CheckInProps }
-  | { name: 'versions'; props: VersionsProps }
   | { name: 'are-you-sure'; props: AreYouSureProps }
   | { name: 'approve'; props: ApproveProps }
   | { name: 'upload'; props: UploadDialogProps }

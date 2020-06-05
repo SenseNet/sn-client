@@ -1,6 +1,6 @@
+import { Icon, iconType } from '@sensenet/icons-react'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import TableCell from '@material-ui/core/TableCell'
-import { Icon, iconType } from '@sensenet/icons-react'
 import React from 'react'
 import { connect } from 'react-redux'
 import { setEditedContentId } from '../../../Actions'

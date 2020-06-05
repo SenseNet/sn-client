@@ -1,14 +1,15 @@
 import { ConstantContent, ODataParams } from '@sensenet/client-core'
+import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
-import { PathHelper } from '@sensenet/client-utils'
 import { useRepository, useRepositoryEvents } from '../hooks'
 
 /**
  * Returns a given content as current content
  */
 export const CurrentContentContext = React.createContext<GenericContent>(ConstantContent.PORTAL_ROOT)
+CurrentContentContext.displayName = 'CurrentContentContext'
 
 export interface CurrentContentProviderProps {
   /**
@@ -32,10 +33,15 @@ export interface CurrentContentProviderProps {
  */
 export const CurrentContentProvider: React.FunctionComponent<CurrentContentProviderProps> = (props) => {
   const [loadLock] = useState(new Semaphore(1))
-  const [content, setContent] = useState<GenericContent>(ConstantContent.PORTAL_ROOT)
-  const repo = useRepository()
+  const [content, setContent] = useState<GenericContent>(ConstantContent.EMPTY_CONTENT)
+  const [errorState, setErrorState] = useState<{
+    currentPath?: string | number
+    status?: number
+    error?: Error | undefined
+  }>()
   const [reloadToken, setReloadToken] = useState(1)
   const reload = () => setReloadToken(Math.random())
+  const repo = useRepository()
   const events = useRepositoryEvents()
 
   useEffect(() => {
@@ -53,8 +59,6 @@ export const CurrentContentProvider: React.FunctionComponent<CurrentContentProvi
     return () => subscriptions.forEach((s) => s.dispose())
   }, [content.Id, events.onContentDeleted, events.onContentModified, repo])
 
-  const [error, setError] = useState<Error | undefined>()
-
   useEffect(() => {
     const ac = new AbortController()
     if (props.idOrPath) {
@@ -67,9 +71,13 @@ export const CurrentContentProvider: React.FunctionComponent<CurrentContentProvi
           })
           setContent(response.d)
           props.onContentLoaded && props.onContentLoaded(response.d)
-        } catch (err) {
+        } catch (error) {
           if (!ac.signal.aborted) {
-            setError(err)
+            setErrorState({
+              currentPath: props.idOrPath,
+              status: error.response?.status,
+              error,
+            })
           }
         } finally {
           loadLock.release()
@@ -80,8 +88,11 @@ export const CurrentContentProvider: React.FunctionComponent<CurrentContentProvi
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [repo, props.idOrPath, reloadToken, loadLock])
 
-  if (error) {
-    throw error
+  if (errorState?.error) {
+    if (errorState?.status === 404) {
+      throw errorState
+    }
+    throw errorState.error
   }
 
   return (

@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
 import { DraftCommentMarker } from '@sensenet/client-core'
+import React, { useState } from 'react'
 
 export interface CommentState {
   draft?: DraftCommentMarker

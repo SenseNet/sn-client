@@ -1,6 +1,6 @@
-import React from 'react'
-import { shallow } from 'enzyme'
 import { Fab, TextField } from '@material-ui/core'
+import { shallow } from 'enzyme'
+import React from 'react'
 import { AddNew } from '../src/components/add-new-memo'
 
 describe('The new memo panel instance', () => {

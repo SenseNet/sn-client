@@ -1,13 +1,13 @@
-import React from 'react'
-import { mount, shallow } from 'enzyme'
-import InputLabel from '@material-ui/core/InputLabel'
+import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import IconButton from '@material-ui/core/IconButton'
-import Button from '@material-ui/core/Button'
+import InputLabel from '@material-ui/core/InputLabel'
+import { mount, shallow } from 'enzyme'
+import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { Avatar } from '../src/fieldcontrols/Avatar/Avatar'
-import { DefaultAvatarTemplate } from '../src/fieldcontrols/Avatar/DefaultAvatarTemplate'
 import { AvatarPicker } from '../src/fieldcontrols/Avatar/AvatarPicker'
+import { DefaultAvatarTemplate } from '../src/fieldcontrols/Avatar/DefaultAvatarTemplate'
 
 const defaultSettings = {
   Type: 'ReferenceFieldSetting',

@@ -1,11 +1,11 @@
 import { Repository } from '@sensenet/client-core'
 import { ControlMapper } from '@sensenet/control-mapper'
+import { ReactClientFieldSetting } from '@sensenet/controls-react'
 import { ChoiceFieldSetting, LongTextFieldSetting, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import { ComponentType } from 'react'
-import { ReactClientFieldSetting } from '@sensenet/controls-react'
 import * as FieldControls from './field-controls'
 
-export type ActionNameType = 'new' | 'edit' | 'browse' | undefined
+export type ActionNameType = 'new' | 'edit' | 'browse' | 'version' | undefined
 
 /**
  * A static Control Mapper instance, used to create the mapping between sensenet ContentTypes and FieldSettings and React components.

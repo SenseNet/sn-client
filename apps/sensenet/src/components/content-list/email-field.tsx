@@ -1,6 +1,6 @@
 import { TableCell } from '@material-ui/core'
-import React from 'react'
 import clsx from 'clsx'
+import React from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 
 export const EmailField: React.FC<{ mail: string }> = ({ mail }) => {

@@ -1,9 +1,9 @@
-import { createStyles, makeStyles } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
 import { Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { ActionModel, GenericContent, Settings, File as SnFile } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
+import { createStyles, makeStyles } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
 import clsx from 'clsx'
 import { Uri } from 'monaco-editor'
 import React, { useContext, useEffect, useState } from 'react'
@@ -137,7 +137,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
           }
           const textFile = await repo.fetch(PathHelper.joinPaths(repo.configuration.repositoryUrl, binaryPath))
           if (textFile.ok) {
-            const text = savedTextValue !== '' ? savedTextValue : await textFile.text()
+            const text = await textFile.text()
             setTextValue(text)
             setSavedTextValue(text)
           }
@@ -146,7 +146,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
         setError(err)
       }
     })()
-  }, [savedTextValue, props, repo])
+  }, [props, repo])
 
   if (error) {
     logger.information({

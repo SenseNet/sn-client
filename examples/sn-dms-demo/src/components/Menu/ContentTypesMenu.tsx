@@ -1,10 +1,10 @@
+import { Icon, iconType } from '@sensenet/icons-react'
 import Divider from '@material-ui/core/Divider'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import withStyles from '@material-ui/core/styles/withStyles'
-import { Icon, iconType } from '@sensenet/icons-react'
 import React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
@@ -151,7 +151,7 @@ class ContentTypesMenu extends React.Component<
         </ListItem>
         <div className={active ? classes.open : classes.closed}>
           <Divider />
-          <AddNewButton contentType="ContentType" onClick={(e) => console.log(e)} />
+          <AddNewButton contentType="ContentType" onClick={(e) => console.log(e)} disabled={subMenu.length === 0} />
           <List className={classes.submenu}>
             {subMenu.map((menuitem, index) => {
               return (

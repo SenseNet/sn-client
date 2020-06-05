@@ -1,6 +1,6 @@
-import ListItem from '@material-ui/core/ListItem'
 import { Repository } from '@sensenet/client-core'
 import { RepositoryContext } from '@sensenet/hooks-react'
+import ListItem from '@material-ui/core/ListItem'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'

@@ -2,8 +2,8 @@
  * @module FieldControls
  */
 import { Repository } from '@sensenet/client-core'
-import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import { ActionName } from '@sensenet/control-mapper'
+import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import { ReactElement } from 'react'
 
 /**

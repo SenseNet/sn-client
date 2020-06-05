@@ -1,7 +1,7 @@
 import { ODataParams, Repository } from '@sensenet/client-core'
+import { AsyncReturnValue } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Reducer, useCallback, useEffect, useReducer, useState } from 'react'
-import { AsyncReturnValue } from '@sensenet/client-utils'
 import { loadItems } from './loaders'
 import { Action, GenericContentWithIsParent, NAVIGATE_TO, SET_SELECTED_ITEM, State } from './types'
 

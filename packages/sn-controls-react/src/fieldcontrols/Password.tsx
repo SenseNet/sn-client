@@ -1,7 +1,6 @@
 /**
  * @module FieldControls
  */
-import React, { useState } from 'react'
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import IconButton from '@material-ui/core/IconButton'
@@ -9,8 +8,9 @@ import Input from '@material-ui/core/Input'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import InputLabel from '@material-ui/core/InputLabel'
 import Typography from '@material-ui/core/Typography'
-import { renderIconDefault } from './icon'
+import React, { useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
+import { renderIconDefault } from './icon'
 
 /**
  * Field control that represents a Password field. Available values will be populated from the FieldSettings.

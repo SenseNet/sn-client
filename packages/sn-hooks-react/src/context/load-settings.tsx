@@ -43,6 +43,7 @@ export const LoadSettingsContext = React.createContext<LoadSettingsContextProps>
   loadChildrenSettings: {},
   loadSettings: {},
 })
+LoadSettingsContext.displayName = 'LoadSettingsContext'
 
 const initialLoadChildrenSettings: ODataParams<GenericContent> = {
   orderby: [['DisplayName', 'asc']],

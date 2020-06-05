@@ -28,7 +28,7 @@
  */
 import { Repository } from '@sensenet/client-core'
 import { promiseMiddleware } from '@sensenet/redux-promise-middleware'
-import { applyMiddleware, compose, createStore, Middleware, PreloadedState, Reducer, StoreEnhancer } from 'redux'
+import { applyMiddleware, compose, createStore, Middleware, PreloadedState, Reducer, Store, StoreEnhancer } from 'redux'
 import { createLogger } from 'redux-logger'
 import * as Actions from './Actions'
 
@@ -128,11 +128,26 @@ export const createSensenetStore = <T>(options: CreateStoreOptions<T>) => {
       ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
       : compose
 
-  const store = createStore(
-    options.rootReducer,
-    options.persistedState,
-    composeEnhancers(applyMiddleware(...middlewareArray), ...enhancerArray),
-  )
+  const configureStore = () => {
+    const store: Store = createStore(
+      options.rootReducer,
+      options.persistedState,
+      composeEnhancers(applyMiddleware(...middlewareArray), ...enhancerArray),
+    )
+
+    return { ...store, reloadRepository }
+
+    /**
+     * Replaces the repository object used by Redux Promise Middleware
+     * @param repository
+     */
+    function reloadRepository(repository: Repository) {
+      reduxPromiseMiddleware.reset(repository)
+      store.dispatch(Actions.loadRepository(repository.configuration))
+    }
+  }
+
+  const store = configureStore()
 
   const repo = options.repository
   store.dispatch(Actions.loadRepository(repo.configuration))

@@ -1,5 +1,5 @@
-import { Quill } from 'react-quill'
 import { DeltaStatic } from 'quill'
+import { Quill } from 'react-quill'
 
 const BlockEmbed = Quill.import('blots/block/embed')
 

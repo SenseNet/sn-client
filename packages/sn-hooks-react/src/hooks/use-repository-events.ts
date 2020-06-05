@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
 import { EventHub } from '@sensenet/repository-events'
+import { useEffect, useState } from 'react'
 import { useRepository } from './use-repository'
 
 /**

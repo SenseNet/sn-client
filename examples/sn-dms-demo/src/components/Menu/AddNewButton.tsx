@@ -1,9 +1,10 @@
-import Button from '@material-ui/core/Button'
 import { Icon, iconType } from '@sensenet/icons-react'
+import Button from '@material-ui/core/Button'
 import React from 'react'
 import { resources } from '../../assets/resources'
 
 interface AddNewButtonProps {
+  disabled: boolean
   contentType: string
   onClick: (e: React.MouseEvent<HTMLElement>) => void
 }
@@ -36,6 +37,7 @@ export class AddNewButton extends React.Component<AddNewButtonProps, {}> {
           boxShadow:
             '0px 1px 3px 0px rgba(0, 0, 0, 0.2),0px 1px 1px 0px rgba(0, 0, 0, 0.14),0px 2px 1px -1px rgba(0, 0, 0, 0.12)',
         }}
+        disabled={this.props.disabled}
         onClick={this.handleButtonClick}>
         <Icon type={iconType.materialui} iconName="add" style={{ fontSize: 20, marginRight: 5, color: '#fff' }} />
         {this.props.contentType

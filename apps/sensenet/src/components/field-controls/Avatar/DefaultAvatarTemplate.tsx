@@ -1,8 +1,8 @@
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import React from 'react'
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -36,7 +36,7 @@ interface DefaultAvatarTemplateProps {
   add?: () => void
   url?: string
   remove?: () => void
-  actionName?: 'new' | 'edit' | 'browse'
+  actionName?: 'new' | 'edit' | 'browse' | 'version'
   readOnly?: boolean
   renderIcon: (name: string) => JSX.Element
 }

@@ -1,6 +1,7 @@
 import { Repository } from '@sensenet/client-core'
 import { ActionModel, ContentType, File, GenericContent, Resource, Settings } from '@sensenet/default-content-types'
 import { applicationPaths, resolvePathParams } from '../application-paths'
+import { pathWithQueryParams } from '.'
 
 export function getMonacoLanguage(content: GenericContent, repository: Repository) {
   if (repository.schemas.isContentFromType<Settings>(content, 'Settings') || content.Type === 'PersonalSettings') {
@@ -41,13 +42,19 @@ export function getMonacoLanguage(content: GenericContent, repository: Repositor
   }
   return ''
 }
-export function getPrimaryActionUrl(content: GenericContent, repository: Repository) {
+export function getPrimaryActionUrl(content: GenericContent, repository: Repository, editInpage = false) {
   if (content.Type === 'PersonalSettings') {
     return applicationPaths.personalSettings
   }
 
   if (content.IsFolder) {
-    return 'Browse'
+    return pathWithQueryParams({
+      path: resolvePathParams({
+        path: applicationPaths.browse,
+        params: { browseType: 'explorer' },
+      }),
+      newParams: { path: content.Path },
+    })
   }
 
   if (getMonacoLanguage(content, repository)) {
@@ -83,6 +90,10 @@ export function getPrimaryActionUrl(content: GenericContent, repository: Reposit
       path: applicationPaths.wopi,
       params: { action: 'view', contentId: content.Id.toString() },
     })
+  }
+
+  if (editInpage) {
+    return 'openEdit'
   }
 
   return resolvePathParams({ path: applicationPaths.editProperties, params: { contentId: content.Id } })

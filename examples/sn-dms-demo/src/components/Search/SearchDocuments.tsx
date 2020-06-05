@@ -1,16 +1,16 @@
+import { Folder, GenericContent, File as SnFile } from '@sensenet/default-content-types'
+import { RepositoryContext } from '@sensenet/hooks-react'
+import { Icon, iconType } from '@sensenet/icons-react'
+import { Query } from '@sensenet/query'
+import { AdvancedSearch, AdvancedSearchOptions, NestedTextField, PresetField, TextField } from '@sensenet/search-react'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
 import Popover from '@material-ui/core/Popover'
 import Typography from '@material-ui/core/Typography'
-import { Folder, GenericContent, File as SnFile } from '@sensenet/default-content-types'
-import { Icon, iconType } from '@sensenet/icons-react'
-import { Query } from '@sensenet/query'
-import { AdvancedSearch, AdvancedSearchOptions, NestedTextField, PresetField, TextField } from '@sensenet/search-react'
 import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
-import { RepositoryContext } from '@sensenet/hooks-react'
 import { resources } from '../../assets/resources'
 import { loadParent, setChildrenOptions, updateSearchValues } from '../../store/documentlibrary/actions'
 import { DocumentLibraryState } from '../../store/documentlibrary/reducers'
@@ -192,7 +192,7 @@ class SearchDocuments extends React.Component<
       <RepositoryContext.Consumer>
         {(repository) => (
           <AdvancedSearch
-            schema={repository.schemas.getSchemaByName('GenericContent')}
+            schema={repository?.schemas.getSchemaByName('GenericContent')}
             onQueryChanged={this.handleQueryChanged}
             style={{ width: '100%' }}
             fields={(options) => (

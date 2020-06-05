@@ -1,5 +1,5 @@
-import { authenticationService, getUserManager } from '../src/authentication-service'
 import { UserManager } from '../src'
+import { authenticationService, getUserManager } from '../src/authentication-service'
 
 describe('Authentication service', () => {
   let manager: any

@@ -1,5 +1,5 @@
-import { createStyles, Theme, withStyles } from '@material-ui/core/styles'
 import { Switch } from '@material-ui/core'
+import { createStyles, Theme, withStyles } from '@material-ui/core/styles'
 
 export const AntSwitch = withStyles((theme: Theme) =>
   createStyles({

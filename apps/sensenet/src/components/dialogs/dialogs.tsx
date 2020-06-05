@@ -1,5 +1,5 @@
-import React, { Suspense } from 'react'
 import { Dialog } from '@material-ui/core'
+import React, { Suspense } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { DialogWithProps, useDialog } from '.'
 
@@ -15,7 +15,6 @@ const ExecuteAction = React.lazy(() => import('./execute-action'))
 const Logout = React.lazy(() => import('./logout'))
 const SaveQuery = React.lazy(() => import('./save-query'))
 const Upload = React.lazy(() => import('./upload/upload-dialog'))
-const Versions = React.lazy(() => import('./versions'))
 
 function dialogRenderer(dialog: DialogWithProps) {
   switch (dialog.name) {
@@ -29,8 +28,6 @@ function dialogRenderer(dialog: DialogWithProps) {
       return <CopyMove {...dialog.props} />
     case 'check-in':
       return <CheckIn {...dialog.props} />
-    case 'versions':
-      return <Versions {...dialog.props} />
     case 'are-you-sure':
       return <AreYouSure {...dialog.props} />
     case 'approve':

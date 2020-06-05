@@ -1,3 +1,6 @@
+import { ODataParams } from '@sensenet/client-core'
+import { GenericContent } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import {
   Button,
   DialogActions,
@@ -7,9 +10,6 @@ import {
   Fade,
   TextField,
 } from '@material-ui/core'
-import { ODataParams } from '@sensenet/client-core'
-import { GenericContent } from '@sensenet/default-content-types'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'

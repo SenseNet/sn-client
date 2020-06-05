@@ -109,7 +109,13 @@ class AddNewMenu extends React.Component<
       )
   }
   public render() {
-    return <AddNewButton contentType="" onClick={(e) => this.handleButtonClick(e)} />
+    return (
+      <AddNewButton
+        contentType=""
+        onClick={(e) => this.handleButtonClick(e)}
+        disabled={this.state.addNewOptions.length === 0}
+      />
+    )
   }
 }
 

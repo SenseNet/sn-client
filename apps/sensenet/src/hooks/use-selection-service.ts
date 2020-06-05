@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import { useInjector } from '@sensenet/hooks-react'
+import { useState } from 'react'
 import { SelectionService } from '../services/SelectionService'
 
 export const useSelectionService = () => {

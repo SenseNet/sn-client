@@ -1,4 +1,4 @@
-import { Paper, useTheme } from '@material-ui/core'
+import { darken, Paper, useTheme } from '@material-ui/core'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -33,7 +33,10 @@ export const CommandPaletteSuggestion: React.FunctionComponent<{
         button={true}
         selected={params.isHighlighted}
         style={{
-          backgroundColor: theme.palette.type === 'light' ? globals.light.navMenuColor : globals.dark.navMenuColor,
+          backgroundColor:
+            theme.palette.type === 'light'
+              ? darken(globals.light.navMenuColor, params.isHighlighted ? 0.1 : 0)
+              : darken(globals.dark.navMenuColor, params.isHighlighted ? 0.25 : 0),
         }}>
         {suggestion.content ? (
           <ListItemIcon style={device === 'mobile' ? { margin: '0 3px' } : { margin: '0 8px' }}>
@@ -45,7 +48,7 @@ export const CommandPaletteSuggestion: React.FunctionComponent<{
         ) : null}
         <ListItemText
           primary={getMatchParts(suggestion.hits, suggestion.primaryText)}
-          secondary={getMatchParts(suggestion.hits, suggestion.secondaryText)}
+          secondary={suggestion.secondaryText && getMatchParts(suggestion.hits, suggestion.secondaryText)}
           secondaryTypographyProps={{
             style: {
               textOverflow: 'ellipsis',

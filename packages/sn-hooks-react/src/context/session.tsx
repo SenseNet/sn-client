@@ -27,6 +27,7 @@ export const SessionContext = React.createContext<SessionContextProps>({
   currentUser: ConstantContent.VISITOR_USER as User,
   groups: [] as Group[],
 })
+SessionContext.displayName = 'SessionContext'
 
 /**
  * Provider component for the SessionContext.

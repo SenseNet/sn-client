@@ -1,6 +1,6 @@
 {
   "name": "sn-dms-demo",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "Document Management Demo upon sensenet",
   "private": true,
   "repository": {
@@ -31,18 +31,18 @@
   "dependencies": {
     "@material-ui/core": "^4.9.5",
     "@material-ui/icons": "^4.9.1",
-    "@sensenet/client-core": "^3.0.0",
-    "@sensenet/client-utils": "^1.8.2",
-    "@sensenet/controls-react": "^3.3.7",
+    "@sensenet/client-core": "^3.0.1",
+    "@sensenet/client-utils": "^1.8.3",
+    "@sensenet/controls-react": "^3.3.8",
     "@sensenet/default-content-types": "^2.1.0",
-    "@sensenet/document-viewer-react": "^2.1.0",
-    "@sensenet/hooks-react": "^1.0.9",
+    "@sensenet/document-viewer-react": "^2.1.1",
+    "@sensenet/hooks-react": "^1.1.0",
     "@sensenet/icons-react": "^1.2.18",
-    "@sensenet/list-controls-react": "^1.4.2",
-    "@sensenet/pickers-react": "^1.2.13",
-    "@sensenet/redux": "^5.4.0",
-    "@sensenet/repository-events": "^1.4.14",
-    "@sensenet/search-react": "^1.2.18",
+    "@sensenet/list-controls-react": "^1.4.3",
+    "@sensenet/pickers-react": "^1.2.14",
+    "@sensenet/redux": "^5.5.0",
+    "@sensenet/repository-events": "^1.4.15",
+    "@sensenet/search-react": "^1.2.19",
     "history": "^4.10.1",
     "lodash.groupby": "^4.6.0",
     "moment": "^2.24.0",
@@ -62,7 +62,7 @@
     "redux-di-middleware": "^4.1.0",
     "redux-oidc": "^4.0.0-beta1",
     "semaphore-async-await": "^1.5.1",
-    "uuid": "^7.0.2"
+    "uuid": "^8.0.0"
   },
   "devDependencies": {
     "@cypress/webpack-preprocessor": "^5.1.1",

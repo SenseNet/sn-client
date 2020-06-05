@@ -1,5 +1,5 @@
-import React from 'react'
 import { mount } from 'enzyme'
+import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { SessionContextProvider } from '../src/context/session'
 import { useRepository } from '../src/hooks'

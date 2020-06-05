@@ -1,6 +1,6 @@
+import { GenericContent } from '@sensenet/default-content-types'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import { GenericContent } from '@sensenet/default-content-types'
 import match from 'autosuggest-highlight/match'
 import parse from 'autosuggest-highlight/parse'
 import React from 'react'

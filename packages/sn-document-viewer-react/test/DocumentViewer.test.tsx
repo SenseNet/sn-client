@@ -1,6 +1,6 @@
+import { sleepAsync } from '@sensenet/client-utils'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
-import { sleepAsync } from '@sensenet/client-utils'
 import { act } from 'react-dom/test-utils'
 import { DocumentViewer, DocumentViewerProps } from '../src/components/DocumentViewer'
 import { defaultSettings, exampleDocumentData, examplePreviewImageData } from './__Mocks__/viewercontext'
@@ -77,7 +77,7 @@ describe('Document Viewer component', () => {
 
   it('should fetch the document data and preview images when new documentid is added or when the version changed', async () => {
     await act(async () => {
-      const getDocumentData = jest.fn(async () => exampleDocumentData)
+      const getDocumentData = jest.fn(async ({ idOrPath }) => ({ ...exampleDocumentData, idOrPath }))
       const getExistingPreviewImages = jest.fn(async () => [examplePreviewImageData])
       const wrapper = mount(
         <DocumentViewer

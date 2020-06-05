@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/authentication-oidc-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React components and service for oidc authentication with sensenet",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -23,12 +23,12 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@material-ui/core": "^4.9.5",
+    "@material-ui/core": "^4.9.13",
     "@types/history": "^4.7.5",
     "oidc-client": "^1.10.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
-    "tslib": "^1.11.1"
+    "tslib": "^1.11.2"
   },
   "devDependencies": {
     "@types/enzyme": "^3.10.5",
@@ -40,7 +40,7 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "enzyme-to-json": "^3.4.4",
-    "jest": "^25.1.0",
+    "jest": "^26.0.1",
     "ts-jest": "^25.2.1",
     "typescript": "^3.8.3"
   },

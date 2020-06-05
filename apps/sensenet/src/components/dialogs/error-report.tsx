@@ -1,3 +1,4 @@
+import { sleepAsync } from '@sensenet/client-utils'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -9,10 +10,9 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Clear from '@material-ui/icons/Clear'
 import SendTwoTone from '@material-ui/icons/SendTwoTone'
-import { sleepAsync } from '@sensenet/client-utils'
 import React, { useCallback, useEffect, useState } from 'react'
-import { useEventService, useLocalization, usePersonalSettings } from '../../hooks'
 import { useGlobalStyles } from '../../globalStyles'
+import { useEventService, useLocalization, usePersonalSettings } from '../../hooks'
 import { useDialog } from '.'
 
 export type ErrorReportProps = { error: Error }

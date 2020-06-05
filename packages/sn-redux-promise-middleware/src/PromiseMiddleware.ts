@@ -1,4 +1,4 @@
-import { Middleware } from 'redux'
+import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from 'redux'
 import { isPromiseMiddlewareAction } from './IsPromiseMiddlewareAction'
 import { PromiseMiddlewareFailedAction, PromiseMiddlewareSucceededAction } from './Types'
 
@@ -24,11 +24,12 @@ export const suffixes = {
  *  applyMiddleware([promiseMiddleware(repository)]),
  * )
  */
-export const promiseMiddleware: <TService>(service: TService) => Middleware = (service) => {
-  return (ref) => {
+export const promiseMiddleware: <TService>(service: TService) => Middleware & { reset: Function } = (serviceParam) => {
+  let service = serviceParam
+  const middleware = (ref: MiddlewareAPI) => {
     const { dispatch } = ref
 
-    return (next) => (action) => {
+    return (next: Dispatch) => (action: AnyAction) => {
       const actionType = action.type
       if (isPromiseMiddlewareAction(action)) {
         ;(async () => {
@@ -56,4 +57,10 @@ export const promiseMiddleware: <TService>(service: TService) => Middleware = (s
       return next(action)
     }
   }
+
+  middleware.reset = (newService: typeof service) => {
+    service = newService
+  }
+
+  return middleware
 }

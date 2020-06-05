@@ -2,6 +2,7 @@ import { Disposable, PathHelper } from '@sensenet/client-utils'
 import { ActionModel, GenericContent, Schema } from '@sensenet/default-content-types'
 import { AuthenticationService } from '../Authentication/AuthenticationService'
 import { BypassAuthentication } from '../Authentication/BypassAuthentication'
+import { ODataSharingResponse } from '../Models'
 import { Content } from '../Models/Content'
 import { ODataBatchResponse } from '../Models/ODataBatchResponse'
 import { ODataCollectionResponse } from '../Models/ODataCollectionResponse'
@@ -22,9 +23,10 @@ import {
   SharingOptions,
 } from '../Models/RequestOptions'
 import { SchemaStore } from '../Schemas/SchemaStore'
-import { ODataSharingResponse } from '../Models'
+import { AllowedChildTypes } from './AllowedChildTypes'
 import { ConstantContent } from './ConstantContent'
 import { ODataUrlBuilder } from './ODataUrlBuilder'
+import { Preview } from './Preview'
 import {
   defaultRepositoryConfiguration,
   RepositoryConfiguration,
@@ -33,8 +35,6 @@ import {
 import { Security } from './Security'
 import { Upload } from './Upload'
 import { Versioning } from './Versioning'
-import { Preview } from './Preview'
-import { AllowedChildTypes } from './AllowedChildTypes'
 
 /**
  * Defines an extended error message instance that contains an original error instance, a response and a parsed JSON body from the response

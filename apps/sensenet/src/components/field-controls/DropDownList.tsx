@@ -1,7 +1,8 @@
 /**
  * @module FieldControls
  */
-import React, { useState } from 'react'
+import { changeJScriptValue } from '@sensenet/controls-react'
+import { ChoiceFieldSetting } from '@sensenet/default-content-types'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormGroup from '@material-ui/core/FormGroup'
@@ -9,8 +10,7 @@ import FormLabel from '@material-ui/core/FormLabel'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
-import { ChoiceFieldSetting } from '@sensenet/default-content-types'
-import { changeJScriptValue } from '@sensenet/controls-react'
+import React, { useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**

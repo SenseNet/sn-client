@@ -4,6 +4,7 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { applicationPaths, resolvePathParams } from '../../application-paths'
 import { useGlobalStyles } from '../../globalStyles'
+import { useDialogActionSubscribe } from '../../hooks'
 import { useLoadContent } from '../../hooks/use-loadContent'
 import { SimpleList } from '../content/Simple'
 import TrashHeader from './TrashHeader'
@@ -14,6 +15,7 @@ const Trash = React.memo(() => {
   const { content } = useLoadContent<TrashBin>({ idOrPath: '/Root/Trash', oDataOptions })
   const globalClasses = useGlobalStyles()
   const history = useHistory()
+  useDialogActionSubscribe()
 
   return (
     <div className={globalClasses.contentWrapper}>

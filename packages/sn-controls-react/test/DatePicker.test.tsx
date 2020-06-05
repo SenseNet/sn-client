@@ -1,9 +1,9 @@
-import React from 'react'
-import { shallow } from 'enzyme'
+import { DateTimeMode } from '@sensenet/default-content-types'
 import Typography from '@material-ui/core/Typography'
 import { DateTimePicker, DatePicker as MUIDatePicker } from '@material-ui/pickers'
-import { DateTimeMode } from '@sensenet/default-content-types'
+import { shallow } from 'enzyme'
 import moment from 'moment'
+import React from 'react'
 import { DatePicker } from '../src/fieldcontrols/DatePicker'
 
 const defaultSettings = {
