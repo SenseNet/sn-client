@@ -42,7 +42,7 @@ export const resolvePathParams = ({ path, params }: Options) => {
     return `/${path.split('/')[1]}`
   }
   Object.keys(params).forEach((key) => {
-    currentPath = currentPath.replace(`:${key}`, params[key].toString())
+    currentPath = params[key] ? currentPath.replace(`:${key}`, params[key].toString()) : currentPath
   })
   return currentPath
 }
