@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/redux",
-  "version": "5.4.0",
+  "version": "5.5.0",
   "description": "A set of redux actions, reducers and redux-ovbservable epics for sensenet",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -33,12 +33,12 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@sensenet/authentication-google": "^2.0.21",
-    "@sensenet/authentication-jwt": "^1.0.25",
-    "@sensenet/client-core": "^3.0.0",
-    "@sensenet/client-utils": "^1.8.2",
+    "@sensenet/authentication-google": "^2.0.22",
+    "@sensenet/authentication-jwt": "^1.0.26",
+    "@sensenet/client-core": "^3.0.1",
+    "@sensenet/client-utils": "^1.8.3",
     "@sensenet/default-content-types": "^2.1.0",
-    "@sensenet/redux-promise-middleware": "^2.1.14",
+    "@sensenet/redux-promise-middleware": "^2.2.0",
     "redux": "^4.0.4",
     "redux-logger": "^3.0.6",
     "tslib": "^1.11.1"
