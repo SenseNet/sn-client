@@ -45,11 +45,11 @@ const logoutSuccess = await repository.authentication.logout()
 You can subscribe to authentication state and current user changes using the following two observable values:
 
 ```ts
-jwtService.currentUser.subscribe(newUser => {
+jwtService.currentUser.subscribe((newUser) => {
   console.log('User changed. New user: ', newUser.LoginName)
 })
 
-jwtService.state.subscribe(newState => {
+jwtService.state.subscribe((newState) => {
   console.log('Authentication state changed to', newState)
 })
 ```
