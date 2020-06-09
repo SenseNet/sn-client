@@ -53,10 +53,12 @@ module.exports = merge(common, {
         minifyURLs: true,
       },
     }),
-    new CopyPlugin([
-      { from: path.resolve(`${__dirname}/_redirects`), to: path.resolve(`${__dirname}/build`) },
-      { from: path.resolve(`${__dirname}/web.config`), to: path.resolve(`${__dirname}/build`) },
-    ]),
+    new CopyPlugin({
+      patterns: [
+        { from: path.resolve(`${__dirname}/_redirects`), to: path.resolve(`${__dirname}/build`) },
+        { from: path.resolve(`${__dirname}/web.config`), to: path.resolve(`${__dirname}/build`) },
+      ],
+    }),
     new RelativeCiAgentWebpackPlugin({
       enabled: process.env.GITHUB_ACTIONS, // Run this only under GitHub Actions
     }),
