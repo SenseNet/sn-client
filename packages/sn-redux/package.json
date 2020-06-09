@@ -44,9 +44,9 @@
     "tslib": "^1.11.1"
   },
   "devDependencies": {
-    "@types/jest": "^25.1.4",
+    "@types/jest": "^25.2.3",
     "@types/node": "^13.9.0",
-    "@types/redux-logger": "^3.0.7",
+    "@types/redux-logger": "^3.0.8",
     "jest": "^26.0.1",
     "ts-jest": "^25.2.1",
     "typescript": "^3.8.3"
