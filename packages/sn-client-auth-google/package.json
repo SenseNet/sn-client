@@ -40,8 +40,8 @@
     "tslib": "^1.11.1"
   },
   "devDependencies": {
-    "@types/jest": "^25.2.3",
-    "@types/jsdom": "^16.2.3",
+    "@types/jest": "^25.1.4",
+    "@types/jsdom": "^16.1.0",
     "jest": "^26.0.1",
     "jsdom": "16.2.2",
     "ts-jest": "^25.2.1",

@@ -58,7 +58,7 @@
     "@storybook/react": "^5.3.19",
     "@storybook/source-loader": "^5.3.19",
     "@types/node": "^13.9.0",
-    "@types/react": "^16.9.35",
+    "@types/react": "^16.9.23",
     "@types/uuid": "^7.0.0",
     "babel-loader": "^8.0.6",
     "prop-types": "^15.7.2",
