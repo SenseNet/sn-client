@@ -65,8 +65,8 @@
     "uuid": "^8.1.0"
   },
   "devDependencies": {
-    "@cypress/webpack-preprocessor": "^5.4.1",
-    "@types/chance": "^1.1.0",
+    "@cypress/webpack-preprocessor": "^5.1.1",
+    "@types/chance": "^1.0.9",
     "@types/jest": "^25.2.3",
     "@types/lodash.groupby": "^4.6.6",
     "@types/node": "^14.0.11",
@@ -80,7 +80,7 @@
     "@types/uuid": "^8.0.0",
     "chance": "^1.1.6",
     "cross-env": "^7.0.2",
-    "cypress": "^4.7.0",
+    "cypress": "^4.1.0",
     "path-to-regexp": "^6.1.0",
     "prop-types": "^15.7.2",
     "react-scripts": "^3.4.0"
