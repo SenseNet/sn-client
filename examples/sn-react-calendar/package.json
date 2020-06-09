@@ -44,7 +44,7 @@
     "@sensenet/controls-react": "^3.3.8",
     "@sensenet/default-content-types": "^2.1.0",
     "@sensenet/hooks-react": "^1.1.0",
-    "clsx": "^1.1.1",
+    "clsx": "^1.1.0",
     "lodash.orderby": "^4.6.0",
     "moment": "^2.24.0",
     "striptags": "^3.1.1",

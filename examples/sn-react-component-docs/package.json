@@ -64,7 +64,7 @@
     "prop-types": "^15.7.2",
     "react-docgen-typescript-loader": "^3.7.1",
     "regenerator-runtime": "^0.13.3",
-    "ts-loader": "^7.0.5",
+    "ts-loader": "^7.0.3",
     "uuid": "^8.0.0",
     "webpack": "^4.42.0"
   }

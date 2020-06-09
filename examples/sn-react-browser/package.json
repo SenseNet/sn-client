@@ -41,7 +41,7 @@
     "@sensenet/document-viewer-react": "^2.1.1",
     "@sensenet/hooks-react": "^1.1.0",
     "@sensenet/list-controls-react": "^1.4.3",
-    "clsx": "^1.1.1",
+    "clsx": "^1.1.0",
     "react-moment": "^0.9.6",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2"
