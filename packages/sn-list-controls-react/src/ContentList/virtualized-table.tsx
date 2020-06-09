@@ -260,12 +260,10 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = (props) => {
         <Table
           height={height}
           width={width}
-          rowHeight={tableProps.rowHeight}
           gridStyle={{
             direction: 'inherit',
             outline: 'none',
           }}
-          headerHeight={tableProps.headerHeight || 42}
           {...tableProps}
           rowClassName={getRowClassName}>
           {fieldsToDisplayWithOrWithoutCheckbox.map((field) => {
