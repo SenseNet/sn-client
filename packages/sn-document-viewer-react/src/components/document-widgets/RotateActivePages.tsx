@@ -9,7 +9,7 @@ import { ROTATION_AMOUNT, ROTATION_MODE } from '../page-widgets/RotatePage'
 /**
  * Component that allows active page rotation
  */
-export const RotateActivePagesWidget: React.FC<{ mode: ROTATION_MODE }> = (props) => {
+export const RotateActivePagesWidget: React.FC<{ mode?: ROTATION_MODE }> = (props) => {
   const localization = useLocalization()
   const viewerState = useViewerState()
   const images = usePreviewImages()
