@@ -1,6 +1,7 @@
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { RotateDocumentWidget } from '../src/components/document-widgets/RotateDocument'
+import { ROTATION_MODE } from '../src/components/page-widgets/RotatePage'
 import { PreviewImageDataContext } from '../src/context/preview-image-data'
 import { examplePreviewImageData } from './__Mocks__/viewercontext'
 
@@ -10,6 +11,16 @@ describe('RotateDocument component', () => {
     const wrapper = shallow(
       <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData], rotateImages }}>
         <RotateDocumentWidget />
+      </PreviewImageDataContext.Provider>,
+    )
+    expect(wrapper).toMatchSnapshot()
+  })
+
+  it('Should render without crashing with mode param', () => {
+    const rotateImages = jest.fn()
+    const wrapper = shallow(
+      <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData], rotateImages }}>
+        <RotateDocumentWidget mode={ROTATION_MODE.clockwise} />
       </PreviewImageDataContext.Provider>,
     )
     expect(wrapper).toMatchSnapshot()

@@ -2,13 +2,18 @@ import IconButton from '@material-ui/core/IconButton'
 import { mount } from 'enzyme'
 import React from 'react'
 import { RotateActivePagesWidget } from '../src/components/document-widgets/RotateActivePages'
-import { ROTATION_AMOUNT } from '../src/components/page-widgets/RotatePage'
+import { ROTATION_AMOUNT, ROTATION_MODE } from '../src/components/page-widgets/RotatePage'
 import { PreviewImageDataContext } from '../src/context/preview-image-data'
 import { examplePreviewImageData } from './__Mocks__/viewercontext'
 
 describe('RotateActivePage component', () => {
   it('Should render without crashing', () => {
     const wrapper = mount(<RotateActivePagesWidget />)
+    expect(wrapper).toMatchSnapshot()
+  })
+
+  it('Should render without crashing with mode param', () => {
+    const wrapper = mount(<RotateActivePagesWidget mode={ROTATION_MODE.clockwise} />)
     expect(wrapper).toMatchSnapshot()
   })
 
