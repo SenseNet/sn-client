@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/react-usersearch",
-  "version": "1.0.8",
+  "version": "2.0.0",
   "private": true,
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "contributors": [
@@ -38,13 +38,13 @@
   "dependencies": {
     "@material-ui/core": "^4.9.5",
     "@material-ui/icons": "^4.9.1",
-    "@sensenet/authentication-oidc-react": "^1.0.0",
-    "@sensenet/client-core": "^3.0.0",
-    "@sensenet/controls-react": "^3.3.7",
+    "@sensenet/authentication-oidc-react": "^1.0.1",
+    "@sensenet/client-core": "^3.0.1",
+    "@sensenet/controls-react": "^3.3.8",
     "@sensenet/default-content-types": "^2.1.0",
-    "@sensenet/hooks-react": "^1.0.9",
+    "@sensenet/hooks-react": "^1.1.0",
     "@sensenet/icons-react": "^1.2.18",
-    "@sensenet/search-react": "^1.2.18",
+    "@sensenet/search-react": "^1.2.19",
     "moment": "^2.24.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0"
