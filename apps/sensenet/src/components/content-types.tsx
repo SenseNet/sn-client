@@ -1,43 +1,28 @@
-import { useRepository } from '@sensenet/hooks-react'
-import clsx from 'clsx'
 import React from 'react'
-import { useHistory } from 'react-router-dom'
-import { useGlobalStyles } from '../globalStyles'
-import { useDialogActionSubscribe, useLocalization } from '../hooks'
-import { getPrimaryActionUrl } from '../services'
-import { SimpleList } from './content/Simple'
+import { useRouteMatch } from 'react-router'
+import { useTreeNavigation } from '../hooks/use-tree-navigation'
+import { Explore } from './content/Explore'
 
 const contentTypesPath = '/Root/System/Schema/ContentTypes'
 const fieldsToDisplay = ['DisplayName', 'Description', 'ParentTypeName' as any, 'ModificationDate', 'ModifiedBy']
 
 export default function ContentTypes() {
-  const globalClasses = useGlobalStyles()
-  const repository = useRepository()
-  const localizationDrawerTitles = useLocalization().drawer.titles
-  const history = useHistory()
-  useDialogActionSubscribe()
+  const match = useRouteMatch<{ browseType: string }>()
+  const { currentPath, onNavigate } = useTreeNavigation(contentTypesPath)
 
-  return (
-    <div className={globalClasses.contentWrapper}>
-      <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}>
-        <span style={{ fontSize: '20px' }}>{localizationDrawerTitles.ContentTypes}</span>
-      </div>
-      <SimpleList
-        parent={contentTypesPath}
-        rootPath={contentTypesPath}
-        loadChildrenSettings={{
-          select: fieldsToDisplay,
-          query: "+TypeIs:'ContentType' .AUTOFILTERS:OFF",
-        }}
-        contentListProps={{
-          enableBreadcrumbs: false,
-          parentIdOrPath: contentTypesPath,
-          fieldsToDisplay,
-          onActivateItem: (p) => {
-            history.push(getPrimaryActionUrl(p, repository))
-          },
-        }}
-      />
-    </div>
-  )
+  switch (match.params.browseType) {
+    default:
+      return (
+        <Explore
+          currentPath={currentPath}
+          rootPath={contentTypesPath}
+          fieldsToDisplay={fieldsToDisplay}
+          onNavigate={onNavigate}
+          loadChildrenSettings={{
+            select: fieldsToDisplay,
+            query: "+TypeIs:'ContentType' .AUTOFILTERS:OFF",
+          }}
+        />
+      )
+  }
 }

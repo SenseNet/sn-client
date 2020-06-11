@@ -18,7 +18,7 @@ export const applicationPaths = {
   dashboard: '/dashboard/:dashboardName',
   contentTypes: '/content-types',
   search: '/search',
-  browse: '/browse/:browseType?',
+  content: '/content/:browseType?',
 } as const
 
 type RoutesWithContentIdParams = keyof Pick<
@@ -28,7 +28,7 @@ type RoutesWithContentIdParams = keyof Pick<
 
 type Options =
   | { path: typeof applicationPaths['events']; params?: { eventGuid: string; [index: string]: string } }
-  | { path: typeof applicationPaths['browse']; params?: { browseType: string; [index: string]: string } }
+  | { path: typeof applicationPaths['content']; params?: { browseType: string; [index: string]: string } }
   | { path: typeof applicationPaths['dashboard']; params: { dashboardName: string; [index: string]: string } }
   | {
       path: typeof applicationPaths['wopi']

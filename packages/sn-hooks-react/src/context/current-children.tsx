@@ -1,4 +1,5 @@
-import { PathHelper } from '@sensenet/client-utils'
+import { ODataParams } from '@sensenet/client-core'
+import { deepMerge, PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
@@ -12,12 +13,16 @@ import { LoadSettingsContext } from './load-settings'
 export const CurrentChildrenContext = React.createContext<GenericContent[]>([])
 CurrentChildrenContext.displayName = 'CurrentChildrenContext'
 
+export interface CurrentChildrenProviderProps {
+  loadSettings?: ODataParams<GenericContent>
+}
+
 /**
  * Provider component for the CurrentChildrenContext component
  * Loads the children of the current content.
  * Loads an ancestor list from the Repository. Has to be wrapped with a **CurrentContentContext** and a **RepositoryContext**
  */
-export const CurrentChildrenProvider: React.FunctionComponent = (props) => {
+export const CurrentChildrenProvider: React.FunctionComponent<CurrentChildrenProviderProps> = (props) => {
   const currentContent = useContext(CurrentContentContext)
   const [children, setChildren] = useState<GenericContent[]>([])
 
@@ -37,7 +42,7 @@ export const CurrentChildrenProvider: React.FunctionComponent = (props) => {
           const childrenResult = await repo.loadCollection<GenericContent>({
             path: currentContent.Path,
             requestInit: { signal: ac.signal },
-            oDataOptions: loadSettings.loadChildrenSettings,
+            oDataOptions: deepMerge(loadSettings.loadChildrenSettings, props.loadSettings),
           })
           setChildren(childrenResult.d.results)
         } catch (err) {
@@ -48,7 +53,7 @@ export const CurrentChildrenProvider: React.FunctionComponent = (props) => {
       }
     })()
     return () => ac.abort()
-  }, [currentContent.Path, loadSettings.loadChildrenSettings, repo, reloadToken])
+  }, [currentContent.Path, loadSettings.loadChildrenSettings, props.loadSettings, repo, reloadToken])
 
   useEffect(() => {
     const handleCreate = (c: Created) => {

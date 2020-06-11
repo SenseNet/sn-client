@@ -6,7 +6,6 @@ import {
   CurrentChildrenContext,
   CurrentContentContext,
   LoadSettingsContext,
-  useInjector,
   useRepository,
   useRepositoryEvents,
 } from '@sensenet/hooks-react'
@@ -19,12 +18,12 @@ import { useHistory } from 'react-router-dom'
 import { applicationPaths } from '../../application-paths'
 import { useGlobalStyles } from '../../globalStyles'
 import { useDialogActionSubscribe, useLocalization, useSelectionService } from '../../hooks'
+import { pathWithQueryParams } from '../../services/query-string-builder'
 import { ContentList } from '../content-list/content-list'
 
-export default function Search() {
+export default function SavedQueries() {
   const repo = useRepository()
   const localization = useLocalization().search
-  const injector = useInjector()
   const history = useHistory()
   const [onlyPublic, setOnlyPublic] = useState(false)
   const [queries, setQueries] = useState<Query[]>([])
@@ -51,8 +50,6 @@ export default function Search() {
     eventHub.onContentCreated,
     eventHub.onContentDeleted,
     eventHub.onContentModified,
-    injector,
-    repo,
     requestReload,
   ])
 
@@ -71,9 +68,10 @@ export default function Search() {
       })
       .then((result) => setQueries(result.d.results))
   }, [reloadToken, loadSettingsContext.loadChildrenSettings, repo, onlyPublic])
+
   return (
-    <div style={{ padding: '0 15px', overflow: 'hidden', height: '100%' }}>
-      <>
+    <>
+      <div style={{ padding: '0 15px', marginBottom: '2rem' }}>
         <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}>
           <span style={{ fontSize: '20px' }}>{localization.savedQueries}</span>
         </div>
@@ -88,7 +86,7 @@ export default function Search() {
             />
           }
         />
-      </>
+      </div>
       <>
         {queries.length > 0 ? (
           <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>
@@ -104,8 +102,8 @@ export default function Search() {
                   onParentChange={() => {
                     // ignore, only queries will be listed
                   }}
-                  onActivateItem={(p) => {
-                    history.push(`${applicationPaths.search}?term=${(p as Query).Query}`)
+                  onActivateItem={(p: Query) => {
+                    history.push(pathWithQueryParams({ path: applicationPaths.search, newParams: { term: p.Query } }))
                   }}
                   onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
                   onSelectionChange={(sel) => {
@@ -116,11 +114,11 @@ export default function Search() {
             </CurrentChildrenContext.Provider>
           </CurrentContentContext.Provider>
         ) : (
-          <Typography variant="subtitle1" style={{ marginTop: '3em' }}>
+          <Typography variant="subtitle1" style={{ padding: '0 15px' }}>
             {localization.noSavedQuery}
           </Typography>
         )}
       </>
-    </div>
+    </>
   )
 }

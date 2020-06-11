@@ -126,7 +126,7 @@ export const PermanentDrawer = () => {
             ) : null}
             {matchPath(location.pathname, applicationPaths.savedQueries) ? <SearchButton isOpened={opened} /> : null}{' '}
             {matchPath(location.pathname, [
-              applicationPaths.browse,
+              applicationPaths.content,
               applicationPaths.usersAndGroups,
               applicationPaths.setup,
             ]) ? (

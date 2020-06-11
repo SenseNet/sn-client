@@ -10,7 +10,7 @@ export class NavigationCommandProvider implements CommandProvider {
     return [
       {
         primaryText: this.localizationValues.contentPrimary,
-        url: resolvePathParams({ path: applicationPaths.browse }),
+        url: resolvePathParams({ path: applicationPaths.content }),
         secondaryText: this.localizationValues.contentSecondary,
         content: { Type: 'PortalRoot' } as any,
         keywords: 'explore browse repository',

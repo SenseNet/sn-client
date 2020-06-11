@@ -80,7 +80,7 @@ export const useDrawerItems = () => {
         case 'Content':
           return pathWithQueryParams({
             path: resolvePathParams({
-              path: applicationPaths.browse,
+              path: applicationPaths.content,
               params: { browseType: settings.content.browseType },
             }),
             newParams: { path: settings.content.root },
