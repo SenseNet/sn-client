@@ -17,6 +17,16 @@ describe('RotateActivePage component', () => {
     expect(wrapper).toMatchSnapshot()
   })
 
+  it('Should render without crashing with mode param', () => {
+    const wrapper = mount(<RotateActivePagesWidget mode={ROTATION_MODE.anticlockwise} />)
+    expect(wrapper).toMatchSnapshot()
+  })
+
+  it('Should render without crashing with mode param', () => {
+    const wrapper = mount(<RotateActivePagesWidget mode={ROTATION_MODE.all} />)
+    expect(wrapper).toMatchSnapshot()
+  })
+
   it('RotateLeft should trigger a rotate to left', () => {
     const rotateImages = jest.fn()
     const wrapper = mount(

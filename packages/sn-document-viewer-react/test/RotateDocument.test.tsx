@@ -26,6 +26,26 @@ describe('RotateDocument component', () => {
     expect(wrapper).toMatchSnapshot()
   })
 
+  it('Should render without crashing with mode param', () => {
+    const rotateImages = jest.fn()
+    const wrapper = shallow(
+      <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData], rotateImages }}>
+        <RotateDocumentWidget mode={ROTATION_MODE.anticlockwise} />
+      </PreviewImageDataContext.Provider>,
+    )
+    expect(wrapper).toMatchSnapshot()
+  })
+
+  it('Should render without crashing with mode param', () => {
+    const rotateImages = jest.fn()
+    const wrapper = shallow(
+      <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData], rotateImages }}>
+        <RotateDocumentWidget mode={ROTATION_MODE.all} />
+      </PreviewImageDataContext.Provider>,
+    )
+    expect(wrapper).toMatchSnapshot()
+  })
+
   it('RotateLeft should trigger a rotate to left', () => {
     const rotateImages = jest.fn()
     const wrapper = mount(
