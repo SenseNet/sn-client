@@ -4,11 +4,12 @@ import RotateRight from '@material-ui/icons/RotateRight'
 import React, { useCallback } from 'react'
 
 import { useLocalization, usePreviewImages, useViewerState } from '../../hooks'
-import { ROTATION_AMOUNT } from '../page-widgets/RotatePage'
+import { ROTATION_AMOUNT, ROTATION_MODE } from '../page-widgets/RotatePage'
+
 /**
  * Component that allows active page rotation
  */
-export const RotateActivePagesWidget: React.FC = () => {
+export const RotateActivePagesWidget: React.FC<{ mode: ROTATION_MODE }> = (props) => {
   const localization = useLocalization()
   const viewerState = useViewerState()
   const images = usePreviewImages()
@@ -21,11 +22,9 @@ export const RotateActivePagesWidget: React.FC = () => {
     images.rotateImages(viewerState.activePages, ROTATION_AMOUNT)
   }, [images, viewerState.activePages])
 
-  /**
-   * renders the component
-   */
-  return (
-    <div style={{ display: 'inline-block' }}>
+  let buttons
+  if (props.mode === ROTATION_MODE.anticlockwise) {
+    buttons = (
       <IconButton
         color="inherit"
         title={localization.rotatePageLeft}
@@ -33,6 +32,9 @@ export const RotateActivePagesWidget: React.FC = () => {
         id="RotateActiveLeft">
         <RotateLeft />
       </IconButton>
+    )
+  } else if (props.mode === ROTATION_MODE.clockwise) {
+    buttons = (
       <IconButton
         color="inherit"
         title={localization.rotatePageRight}
@@ -40,6 +42,30 @@ export const RotateActivePagesWidget: React.FC = () => {
         id="RotateActiveRight">
         <RotateRight />
       </IconButton>
-    </div>
-  )
+    )
+  } else {
+    buttons = (
+      <>
+        <IconButton
+          color="inherit"
+          title={localization.rotatePageLeft}
+          onClick={() => rotateDocumentLeft()}
+          id="RotateActiveLeft">
+          <RotateLeft />
+        </IconButton>
+        <IconButton
+          color="inherit"
+          title={localization.rotatePageRight}
+          onClick={() => rotateDocumentRight()}
+          id="RotateActiveRight">
+          <RotateRight />
+        </IconButton>
+      </>
+    )
+  }
+
+  /**
+   * renders the component
+   */
+  return <div style={{ display: 'inline-block' }}>{buttons}</div>
 }
