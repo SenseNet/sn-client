@@ -22,50 +22,33 @@ export const RotateActivePagesWidget: React.FC<{ mode?: ROTATION_MODE }> = (prop
     images.rotateImages(viewerState.activePages, ROTATION_AMOUNT)
   }, [images, viewerState.activePages])
 
-  let buttons
-  if (props.mode === ROTATION_MODE.anticlockwise) {
-    buttons = (
+  const button = (direction: ROTATION_MODE) => {
+    const isLeft = direction === ROTATION_MODE.anticlockwise
+    return (
       <IconButton
         color="inherit"
-        title={localization.rotatePageLeft}
-        onClick={() => rotateDocumentLeft()}
-        id="RotateActiveLeft">
-        <RotateLeft />
+        title={isLeft ? localization.rotatePageLeft : localization.rotateDocumentRight}
+        onClick={() => (isLeft ? rotateDocumentLeft() : rotateDocumentRight())}
+        id={isLeft ? 'RotateActiveLeft' : 'RotateActiveRigt'}>
+        {isLeft ? <RotateLeft /> : <RotateRight />}
       </IconButton>
-    )
-  } else if (props.mode === ROTATION_MODE.clockwise) {
-    buttons = (
-      <IconButton
-        color="inherit"
-        title={localization.rotatePageRight}
-        onClick={() => rotateDocumentRight()}
-        id="RotateActiveRight">
-        <RotateRight />
-      </IconButton>
-    )
-  } else {
-    buttons = (
-      <>
-        <IconButton
-          color="inherit"
-          title={localization.rotatePageLeft}
-          onClick={() => rotateDocumentLeft()}
-          id="RotateActiveLeft">
-          <RotateLeft />
-        </IconButton>
-        <IconButton
-          color="inherit"
-          title={localization.rotatePageRight}
-          onClick={() => rotateDocumentRight()}
-          id="RotateActiveRight">
-          <RotateRight />
-        </IconButton>
-      </>
     )
   }
 
   /**
    * renders the component
    */
-  return <div style={{ display: 'inline-block' }}>{buttons}</div>
+  switch (props.mode) {
+    case ROTATION_MODE.anticlockwise:
+      return <div style={{ display: 'inline-block' }}>{button(props.mode)}</div>
+    case ROTATION_MODE.clockwise:
+      return <div style={{ display: 'inline-block' }}>{button(props.mode)}</div>
+    default:
+      return (
+        <div style={{ display: 'inline-block' }}>
+          {button(ROTATION_MODE.anticlockwise)}
+          {button(ROTATION_MODE.clockwise)}
+        </div>
+      )
+  }
 }

@@ -25,31 +25,33 @@ export const RotateDocumentWidget: React.FC<{ mode?: ROTATION_MODE }> = (props) 
     )
   }, [pages])
 
-  let buttons
-  if (props.mode === ROTATION_MODE.anticlockwise) {
-    buttons = (
-      <IconButton title={localization.rotateDocumentLeft} onClick={rotateDocumentLeft} id="RotateLeft">
-        <RotateLeft style={{ border: '2px solid', borderRadius: '5px' }} />
-      </IconButton>
-    )
-  } else if (props.mode === ROTATION_MODE.clockwise) {
-    buttons = (
-      <IconButton title={localization.rotateDocumentRight} onClick={rotateDocumentRight} id="RotateRight">
-        <RotateRight style={{ border: '2px solid', borderRadius: '5px' }} />
-      </IconButton>
-    )
-  } else {
-    buttons = (
-      <>
-        <IconButton title={localization.rotateDocumentLeft} onClick={rotateDocumentLeft} id="RotateLeft">
+  const button = (direction: ROTATION_MODE) => {
+    const isLeft = direction === ROTATION_MODE.anticlockwise
+    return (
+      <IconButton
+        title={isLeft ? localization.rotateDocumentLeft : localization.rotateDocumentRight}
+        onClick={isLeft ? () => rotateDocumentLeft() : () => rotateDocumentRight()}
+        id={isLeft ? 'RotateLeft' : 'RotateRight'}>
+        {isLeft ? (
           <RotateLeft style={{ border: '2px solid', borderRadius: '5px' }} />
-        </IconButton>
-        <IconButton title={localization.rotateDocumentRight} onClick={rotateDocumentRight} id="RotateRight">
+        ) : (
           <RotateRight style={{ border: '2px solid', borderRadius: '5px' }} />
-        </IconButton>
-      </>
+        )}
+      </IconButton>
     )
   }
 
-  return <div style={{ display: 'inline-block' }}>{buttons}</div>
+  switch (props.mode) {
+    case ROTATION_MODE.anticlockwise:
+      return <div style={{ display: 'inline-block' }}>{button(props.mode)}</div>
+    case ROTATION_MODE.clockwise:
+      return <div style={{ display: 'inline-block' }}>{button(props.mode)}</div>
+    default:
+      return (
+        <div style={{ display: 'inline-block' }}>
+          {button(ROTATION_MODE.anticlockwise)}
+          {button(ROTATION_MODE.clockwise)}
+        </div>
+      )
+  }
 }
