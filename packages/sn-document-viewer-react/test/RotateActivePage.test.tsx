@@ -52,4 +52,30 @@ describe('RotateActivePage component', () => {
     expect(rotateImages).toBeCalledWith([examplePreviewImageData.Index], ROTATION_AMOUNT)
     expect(rotateImages).toBeCalled()
   })
+
+  it('RotateLeft should trigger a rotate to left', () => {
+    const rotateImages = jest.fn()
+    const wrapper = mount(
+      <PreviewImageDataContext.Provider value={{ rotateImages } as any}>
+        <RotateActivePagesWidget mode={ROTATION_MODE.anticlockwise} />
+      </PreviewImageDataContext.Provider>,
+    )
+
+    wrapper.find(IconButton).first().simulate('click')
+    expect(rotateImages).toBeCalledWith([examplePreviewImageData.Index], -ROTATION_AMOUNT)
+    expect(rotateImages).toBeCalled()
+  })
+
+  it('RotateRight should trigger a rotate to right', () => {
+    const rotateImages = jest.fn()
+    const wrapper = mount(
+      <PreviewImageDataContext.Provider value={{ rotateImages } as any}>
+        <RotateActivePagesWidget mode={ROTATION_MODE.anticlockwise} />
+      </PreviewImageDataContext.Provider>,
+    )
+
+    wrapper.find(IconButton).last().simulate('click')
+    expect(rotateImages).toBeCalledWith([examplePreviewImageData.Index], ROTATION_AMOUNT)
+    expect(rotateImages).toBeCalled()
+  })
 })

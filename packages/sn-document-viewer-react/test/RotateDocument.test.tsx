@@ -67,4 +67,26 @@ describe('RotateDocument component', () => {
     wrapper.find('#RotateRight').first().simulate('click')
     expect(rotateImages).toBeCalledWith([1], 90)
   })
+
+  it('RotateLeft should trigger a rotate to left', () => {
+    const rotateImages = jest.fn()
+    const wrapper = mount(
+      <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData], rotateImages }}>
+        <RotateDocumentWidget mode={ROTATION_MODE.anticlockwise} />
+      </PreviewImageDataContext.Provider>,
+    )
+    wrapper.find('#RotateLeft').first().simulate('click')
+    expect(rotateImages).toBeCalledWith([1], -90)
+  })
+
+  it('RotateRight should trigger a rotate to right', () => {
+    const rotateImages = jest.fn()
+    const wrapper = mount(
+      <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData], rotateImages }}>
+        <RotateDocumentWidget mode={ROTATION_MODE.clockwise} />
+      </PreviewImageDataContext.Provider>,
+    )
+    wrapper.find('#RotateRight').first().simulate('click')
+    expect(rotateImages).toBeCalledWith([1], 90)
+  })
 })
