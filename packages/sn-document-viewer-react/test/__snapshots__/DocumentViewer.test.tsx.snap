@@ -91,11 +91,13 @@ exports[`Document Viewer component should render a loading component while loadi
         "toggleShapes": "Toggle shapes",
         "toggleThumbnails": "Toggle thumbnails",
         "toggleWatermark": "Toggle watermark",
+        "zoomIn": "Zoom in",
         "zoomMode": "Zoom mode",
         "zoomModeFit": "Fit",
         "zoomModeFitHeight": "Fit height",
         "zoomModeFitWidth": "Fit width",
         "zoomModeOriginalSize": "Original size",
+        "zoomOut": "Zoom out",
         "zooomModeCustom": "Custom",
       }
     }
@@ -220,11 +222,13 @@ exports[`Document Viewer component should render an error component if an error 
         "toggleShapes": "Toggle shapes",
         "toggleThumbnails": "Toggle thumbnails",
         "toggleWatermark": "Toggle watermark",
+        "zoomIn": "Zoom in",
         "zoomMode": "Zoom mode",
         "zoomModeFit": "Fit",
         "zoomModeFitHeight": "Fit height",
         "zoomModeFitWidth": "Fit width",
         "zoomModeOriginalSize": "Original size",
+        "zoomOut": "Zoom out",
         "zooomModeCustom": "Custom",
       }
     }
@@ -349,11 +353,13 @@ exports[`Document Viewer component should render an error component if an error 
         "toggleShapes": "Toggle shapes",
         "toggleThumbnails": "Toggle thumbnails",
         "toggleWatermark": "Toggle watermark",
+        "zoomIn": "Zoom in",
         "zoomMode": "Zoom mode",
         "zoomModeFit": "Fit",
         "zoomModeFitHeight": "Fit height",
         "zoomModeFitWidth": "Fit width",
         "zoomModeOriginalSize": "Original size",
+        "zoomOut": "Zoom out",
         "zooomModeCustom": "Custom",
       }
     }
@@ -478,11 +484,13 @@ exports[`Document Viewer component should render an error component if there wer
         "toggleShapes": "Toggle shapes",
         "toggleThumbnails": "Toggle thumbnails",
         "toggleWatermark": "Toggle watermark",
+        "zoomIn": "Zoom in",
         "zoomMode": "Zoom mode",
         "zoomModeFit": "Fit",
         "zoomModeFitHeight": "Fit height",
         "zoomModeFitWidth": "Fit width",
         "zoomModeOriginalSize": "Original size",
+        "zoomOut": "Zoom out",
         "zooomModeCustom": "Custom",
       }
     }
@@ -601,11 +609,13 @@ exports[`Document Viewer component should render without crashing 1`] = `
         "toggleShapes": "Toggle shapes",
         "toggleThumbnails": "Toggle thumbnails",
         "toggleWatermark": "Toggle watermark",
+        "zoomIn": "Zoom in",
         "zoomMode": "Zoom mode",
         "zoomModeFit": "Fit",
         "zoomModeFitHeight": "Fit height",
         "zoomModeFitWidth": "Fit width",
         "zoomModeOriginalSize": "Original size",
+        "zoomOut": "Zoom out",
         "zooomModeCustom": "Custom",
       }
     }
