@@ -5,8 +5,7 @@ import { useHistory } from 'react-router-dom'
 import { applicationPaths, resolvePathParams } from '../../application-paths'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLoadContent } from '../../hooks/use-loadContent'
-import { useTreeNavigation } from '../../hooks/use-tree-navigation'
-import { Explore } from '../content/Explore'
+import { Content } from '../content'
 import TrashHeader from './TrashHeader'
 
 const oDataOptions: ODataParams<TrashBin> = { select: 'all' }
@@ -15,11 +14,10 @@ const Trash = React.memo(() => {
   const { content } = useLoadContent<TrashBin>({ idOrPath: '/Root/Trash', oDataOptions })
   const globalClasses = useGlobalStyles()
   const history = useHistory()
-  const { currentPath, onNavigate } = useTreeNavigation('/Root/Trash')
 
   return (
     <div className={globalClasses.contentWrapper}>
-      {content ? (
+      {content && (
         <TrashHeader
           iconClickHandler={() =>
             history.push(
@@ -28,13 +26,8 @@ const Trash = React.memo(() => {
           }
           trash={content}
         />
-      ) : null}
-      <Explore
-        currentPath={currentPath}
-        rootPath="/Root/Trash"
-        fieldsToDisplay={['DisplayName', 'ModificationDate', 'ModifiedBy', 'Actions']}
-        onNavigate={onNavigate}
-      />
+      )}
+      <Content rootPath="/Root/Trash" fieldsToDisplay={['DisplayName', 'ModificationDate', 'ModifiedBy', 'Actions']} />
     </div>
   )
 })

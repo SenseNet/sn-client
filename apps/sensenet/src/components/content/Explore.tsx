@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-type ExploreProps = {
+export type ExploreProps = {
   currentPath: string
   rootPath: string
   onNavigate: (content: GenericContent) => void

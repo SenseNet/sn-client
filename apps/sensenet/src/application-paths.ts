@@ -1,3 +1,5 @@
+import { BrowseType } from './components/content'
+
 export const applicationPaths = {
   loginCallback: '/authentication/login-callback',
   silentCallback: '/authentication/silent-callback',
@@ -5,9 +7,9 @@ export const applicationPaths = {
   events: '/events/:eventGuid?',
   savedQueries: '/saved-queries',
   setup: '/setup',
-  trash: '/trash',
-  localization: '/localization',
-  usersAndGroups: '/users-and-groups',
+  trash: '/trash/:browseType',
+  localization: '/localization/:browseType',
+  usersAndGroups: '/users-and-groups/:browseType',
   editBinary: '/edit-binary/:contentId',
   editProperties: '/edit-properties/:contentId',
   browseProperties: '/browse-properties/:contentId',
@@ -16,9 +18,9 @@ export const applicationPaths = {
   preview: '/preview/:contentId',
   wopi: '/wopi/:contentId/:action',
   dashboard: '/dashboard/:dashboardName',
-  contentTypes: '/content-types',
+  contentTypes: '/content-types/:browseType',
   search: '/search',
-  content: '/content/:browseType?',
+  content: '/content/:browseType',
 } as const
 
 type RoutesWithContentIdParams = keyof Pick<
@@ -26,9 +28,17 @@ type RoutesWithContentIdParams = keyof Pick<
   'editProperties' | 'editBinary' | 'browseProperties' | 'versionProperties' | 'preview'
 >
 
+type RoutesWithBrowseTypeParams = keyof Pick<
+  typeof applicationPaths,
+  'content' | 'localization' | 'usersAndGroups' | 'contentTypes' | 'trash'
+>
+
 type Options =
   | { path: typeof applicationPaths['events']; params?: { eventGuid: string; [index: string]: string } }
-  | { path: typeof applicationPaths['content']; params?: { browseType: string; [index: string]: string } }
+  | {
+      path: typeof applicationPaths[RoutesWithBrowseTypeParams]
+      params?: { browseType: typeof BrowseType[number]; [index: string]: string }
+    }
   | { path: typeof applicationPaths['dashboard']; params: { dashboardName: string; [index: string]: string } }
   | {
       path: typeof applicationPaths['wopi']

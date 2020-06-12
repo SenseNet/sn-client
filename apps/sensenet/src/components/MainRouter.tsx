@@ -8,7 +8,6 @@ import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './full-screen-loader'
 
-const ContentTypes = lazy(() => import(/* webpackChunkName: "ContentTypes" */ './content-types'))
 const WopiPage = lazy(() => import(/* webpackChunkName: "wopi" */ './wopi-page'))
 const ContentComponent = lazy(() => import(/* webpackChunkName: "content" */ './content'))
 const DashboardComponent = lazy(() => import(/* webpackChunkName: "dashboard" */ './dashboard'))
@@ -98,7 +97,20 @@ export const MainRouter = () => {
           </Route>
 
           <Route path={applicationPaths.contentTypes}>
-            <ContentTypes />
+            <ContentComponent
+              rootPath="/Root/System/Schema/ContentTypes"
+              fieldsToDisplay={[
+                'DisplayName',
+                'Description',
+                'ParentTypeName' as any,
+                'ModificationDate',
+                'ModifiedBy',
+              ]}
+              loadChildrenSettings={{
+                select: ['DisplayName', 'Description', 'ParentTypeName' as any, 'ModificationDate', 'ModifiedBy'],
+                query: "+TypeIs:'ContentType' .AUTOFILTERS:OFF",
+              }}
+            />
           </Route>
 
           <Route path={applicationPaths.editBinary}>
