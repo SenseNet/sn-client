@@ -70,7 +70,7 @@ describe('RotateActivePage component', () => {
     const rotateImages = jest.fn()
     const wrapper = mount(
       <PreviewImageDataContext.Provider value={{ rotateImages } as any}>
-        <RotateActivePagesWidget mode={ROTATION_MODE.anticlockwise} />
+        <RotateActivePagesWidget mode={ROTATION_MODE.clockwise} />
       </PreviewImageDataContext.Provider>,
     )
 
