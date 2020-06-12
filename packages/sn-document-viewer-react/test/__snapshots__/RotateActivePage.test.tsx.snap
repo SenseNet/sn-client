@@ -291,151 +291,143 @@ exports[`RotateActivePage component Should render without crashing with mode par
 <Component
   mode={0}
 >
-  <div
-    style={
-      Object {
-        "display": "inline-block",
-      }
-    }
+  <WithStyles(ForwardRef(IconButton))
+    color="inherit"
+    id="RotateActiveRigt"
+    onClick={[Function]}
+    title="Rotate document right"
   >
-    <WithStyles(ForwardRef(IconButton))
+    <ForwardRef(IconButton)
+      classes={
+        Object {
+          "colorInherit": "MuiIconButton-colorInherit",
+          "colorPrimary": "MuiIconButton-colorPrimary",
+          "colorSecondary": "MuiIconButton-colorSecondary",
+          "disabled": "Mui-disabled",
+          "edgeEnd": "MuiIconButton-edgeEnd",
+          "edgeStart": "MuiIconButton-edgeStart",
+          "label": "MuiIconButton-label",
+          "root": "MuiIconButton-root",
+          "sizeSmall": "MuiIconButton-sizeSmall",
+        }
+      }
       color="inherit"
       id="RotateActiveRigt"
       onClick={[Function]}
       title="Rotate document right"
     >
-      <ForwardRef(IconButton)
-        classes={
-          Object {
-            "colorInherit": "MuiIconButton-colorInherit",
-            "colorPrimary": "MuiIconButton-colorPrimary",
-            "colorSecondary": "MuiIconButton-colorSecondary",
-            "disabled": "Mui-disabled",
-            "edgeEnd": "MuiIconButton-edgeEnd",
-            "edgeStart": "MuiIconButton-edgeStart",
-            "label": "MuiIconButton-label",
-            "root": "MuiIconButton-root",
-            "sizeSmall": "MuiIconButton-sizeSmall",
-          }
-        }
-        color="inherit"
+      <WithStyles(ForwardRef(ButtonBase))
+        centerRipple={true}
+        className="MuiIconButton-root MuiIconButton-colorInherit"
+        disabled={false}
+        focusRipple={true}
         id="RotateActiveRigt"
         onClick={[Function]}
         title="Rotate document right"
       >
-        <WithStyles(ForwardRef(ButtonBase))
+        <ForwardRef(ButtonBase)
           centerRipple={true}
           className="MuiIconButton-root MuiIconButton-colorInherit"
+          classes={
+            Object {
+              "disabled": "Mui-disabled",
+              "focusVisible": "Mui-focusVisible",
+              "root": "MuiButtonBase-root",
+            }
+          }
           disabled={false}
           focusRipple={true}
           id="RotateActiveRigt"
           onClick={[Function]}
           title="Rotate document right"
         >
-          <ForwardRef(ButtonBase)
-            centerRipple={true}
-            className="MuiIconButton-root MuiIconButton-colorInherit"
-            classes={
-              Object {
-                "disabled": "Mui-disabled",
-                "focusVisible": "Mui-focusVisible",
-                "root": "MuiButtonBase-root",
-              }
-            }
+          <button
+            className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit"
             disabled={false}
-            focusRipple={true}
             id="RotateActiveRigt"
+            onBlur={[Function]}
             onClick={[Function]}
+            onDragLeave={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            onKeyUp={[Function]}
+            onMouseDown={[Function]}
+            onMouseLeave={[Function]}
+            onMouseUp={[Function]}
+            onTouchEnd={[Function]}
+            onTouchMove={[Function]}
+            onTouchStart={[Function]}
+            tabIndex={0}
             title="Rotate document right"
+            type="button"
           >
-            <button
-              className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit"
-              disabled={false}
-              id="RotateActiveRigt"
-              onBlur={[Function]}
-              onClick={[Function]}
-              onDragLeave={[Function]}
-              onFocus={[Function]}
-              onKeyDown={[Function]}
-              onKeyUp={[Function]}
-              onMouseDown={[Function]}
-              onMouseLeave={[Function]}
-              onMouseUp={[Function]}
-              onTouchEnd={[Function]}
-              onTouchMove={[Function]}
-              onTouchStart={[Function]}
-              tabIndex={0}
-              title="Rotate document right"
-              type="button"
+            <span
+              className="MuiIconButton-label"
             >
-              <span
-                className="MuiIconButton-label"
-              >
-                <ForwardRef>
-                  <WithStyles(ForwardRef(SvgIcon))>
-                    <ForwardRef(SvgIcon)
-                      classes={
-                        Object {
-                          "colorAction": "MuiSvgIcon-colorAction",
-                          "colorDisabled": "MuiSvgIcon-colorDisabled",
-                          "colorError": "MuiSvgIcon-colorError",
-                          "colorPrimary": "MuiSvgIcon-colorPrimary",
-                          "colorSecondary": "MuiSvgIcon-colorSecondary",
-                          "fontSizeInherit": "MuiSvgIcon-fontSizeInherit",
-                          "fontSizeLarge": "MuiSvgIcon-fontSizeLarge",
-                          "fontSizeSmall": "MuiSvgIcon-fontSizeSmall",
-                          "root": "MuiSvgIcon-root",
-                        }
+              <ForwardRef>
+                <WithStyles(ForwardRef(SvgIcon))>
+                  <ForwardRef(SvgIcon)
+                    classes={
+                      Object {
+                        "colorAction": "MuiSvgIcon-colorAction",
+                        "colorDisabled": "MuiSvgIcon-colorDisabled",
+                        "colorError": "MuiSvgIcon-colorError",
+                        "colorPrimary": "MuiSvgIcon-colorPrimary",
+                        "colorSecondary": "MuiSvgIcon-colorSecondary",
+                        "fontSizeInherit": "MuiSvgIcon-fontSizeInherit",
+                        "fontSizeLarge": "MuiSvgIcon-fontSizeLarge",
+                        "fontSizeSmall": "MuiSvgIcon-fontSizeSmall",
+                        "root": "MuiSvgIcon-root",
                       }
-                    >
-                      <svg
-                        aria-hidden={true}
-                        className="MuiSvgIcon-root"
-                        focusable="false"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M15.55 5.55L11 1v3.07C7.06 4.56 4 7.92 4 12s3.05 7.44 7 7.93v-2.02c-2.84-.48-5-2.94-5-5.91s2.16-5.43 5-5.91V10l4.55-4.45zM19.93 11c-.17-1.39-.72-2.73-1.62-3.89l-1.42 1.42c.54.75.88 1.6 1.02 2.47h2.02zM13 17.9v2.02c1.39-.17 2.74-.71 3.9-1.61l-1.44-1.44c-.75.54-1.59.89-2.46 1.03zm3.89-2.42l1.42 1.41c.9-1.16 1.45-2.5 1.62-3.89h-2.02c-.14.87-.48 1.72-1.02 2.48z"
-                        />
-                      </svg>
-                    </ForwardRef(SvgIcon)>
-                  </WithStyles(ForwardRef(SvgIcon))>
-                </ForwardRef>
-              </span>
-              <WithStyles(memo)
-                center={true}
-              >
-                <ForwardRef(TouchRipple)
-                  center={true}
-                  classes={
-                    Object {
-                      "child": "MuiTouchRipple-child",
-                      "childLeaving": "MuiTouchRipple-childLeaving",
-                      "childPulsate": "MuiTouchRipple-childPulsate",
-                      "ripple": "MuiTouchRipple-ripple",
-                      "ripplePulsate": "MuiTouchRipple-ripplePulsate",
-                      "rippleVisible": "MuiTouchRipple-rippleVisible",
-                      "root": "MuiTouchRipple-root",
                     }
-                  }
-                >
-                  <span
-                    className="MuiTouchRipple-root"
                   >
-                    <TransitionGroup
-                      childFactory={[Function]}
-                      component={null}
-                      exit={true}
-                    />
-                  </span>
-                </ForwardRef(TouchRipple)>
-              </WithStyles(memo)>
-            </button>
-          </ForwardRef(ButtonBase)>
-        </WithStyles(ForwardRef(ButtonBase))>
-      </ForwardRef(IconButton)>
-    </WithStyles(ForwardRef(IconButton))>
-  </div>
+                    <svg
+                      aria-hidden={true}
+                      className="MuiSvgIcon-root"
+                      focusable="false"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M15.55 5.55L11 1v3.07C7.06 4.56 4 7.92 4 12s3.05 7.44 7 7.93v-2.02c-2.84-.48-5-2.94-5-5.91s2.16-5.43 5-5.91V10l4.55-4.45zM19.93 11c-.17-1.39-.72-2.73-1.62-3.89l-1.42 1.42c.54.75.88 1.6 1.02 2.47h2.02zM13 17.9v2.02c1.39-.17 2.74-.71 3.9-1.61l-1.44-1.44c-.75.54-1.59.89-2.46 1.03zm3.89-2.42l1.42 1.41c.9-1.16 1.45-2.5 1.62-3.89h-2.02c-.14.87-.48 1.72-1.02 2.48z"
+                      />
+                    </svg>
+                  </ForwardRef(SvgIcon)>
+                </WithStyles(ForwardRef(SvgIcon))>
+              </ForwardRef>
+            </span>
+            <WithStyles(memo)
+              center={true}
+            >
+              <ForwardRef(TouchRipple)
+                center={true}
+                classes={
+                  Object {
+                    "child": "MuiTouchRipple-child",
+                    "childLeaving": "MuiTouchRipple-childLeaving",
+                    "childPulsate": "MuiTouchRipple-childPulsate",
+                    "ripple": "MuiTouchRipple-ripple",
+                    "ripplePulsate": "MuiTouchRipple-ripplePulsate",
+                    "rippleVisible": "MuiTouchRipple-rippleVisible",
+                    "root": "MuiTouchRipple-root",
+                  }
+                }
+              >
+                <span
+                  className="MuiTouchRipple-root"
+                >
+                  <TransitionGroup
+                    childFactory={[Function]}
+                    component={null}
+                    exit={true}
+                  />
+                </span>
+              </ForwardRef(TouchRipple)>
+            </WithStyles(memo)>
+          </button>
+        </ForwardRef(ButtonBase)>
+      </WithStyles(ForwardRef(ButtonBase))>
+    </ForwardRef(IconButton)>
+  </WithStyles(ForwardRef(IconButton))>
 </Component>
 `;
 
@@ -443,151 +435,143 @@ exports[`RotateActivePage component Should render without crashing with mode par
 <Component
   mode={1}
 >
-  <div
-    style={
-      Object {
-        "display": "inline-block",
-      }
-    }
+  <WithStyles(ForwardRef(IconButton))
+    color="inherit"
+    id="RotateActiveLeft"
+    onClick={[Function]}
+    title="Rotate page left"
   >
-    <WithStyles(ForwardRef(IconButton))
+    <ForwardRef(IconButton)
+      classes={
+        Object {
+          "colorInherit": "MuiIconButton-colorInherit",
+          "colorPrimary": "MuiIconButton-colorPrimary",
+          "colorSecondary": "MuiIconButton-colorSecondary",
+          "disabled": "Mui-disabled",
+          "edgeEnd": "MuiIconButton-edgeEnd",
+          "edgeStart": "MuiIconButton-edgeStart",
+          "label": "MuiIconButton-label",
+          "root": "MuiIconButton-root",
+          "sizeSmall": "MuiIconButton-sizeSmall",
+        }
+      }
       color="inherit"
       id="RotateActiveLeft"
       onClick={[Function]}
       title="Rotate page left"
     >
-      <ForwardRef(IconButton)
-        classes={
-          Object {
-            "colorInherit": "MuiIconButton-colorInherit",
-            "colorPrimary": "MuiIconButton-colorPrimary",
-            "colorSecondary": "MuiIconButton-colorSecondary",
-            "disabled": "Mui-disabled",
-            "edgeEnd": "MuiIconButton-edgeEnd",
-            "edgeStart": "MuiIconButton-edgeStart",
-            "label": "MuiIconButton-label",
-            "root": "MuiIconButton-root",
-            "sizeSmall": "MuiIconButton-sizeSmall",
-          }
-        }
-        color="inherit"
+      <WithStyles(ForwardRef(ButtonBase))
+        centerRipple={true}
+        className="MuiIconButton-root MuiIconButton-colorInherit"
+        disabled={false}
+        focusRipple={true}
         id="RotateActiveLeft"
         onClick={[Function]}
         title="Rotate page left"
       >
-        <WithStyles(ForwardRef(ButtonBase))
+        <ForwardRef(ButtonBase)
           centerRipple={true}
           className="MuiIconButton-root MuiIconButton-colorInherit"
+          classes={
+            Object {
+              "disabled": "Mui-disabled",
+              "focusVisible": "Mui-focusVisible",
+              "root": "MuiButtonBase-root",
+            }
+          }
           disabled={false}
           focusRipple={true}
           id="RotateActiveLeft"
           onClick={[Function]}
           title="Rotate page left"
         >
-          <ForwardRef(ButtonBase)
-            centerRipple={true}
-            className="MuiIconButton-root MuiIconButton-colorInherit"
-            classes={
-              Object {
-                "disabled": "Mui-disabled",
-                "focusVisible": "Mui-focusVisible",
-                "root": "MuiButtonBase-root",
-              }
-            }
+          <button
+            className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit"
             disabled={false}
-            focusRipple={true}
             id="RotateActiveLeft"
+            onBlur={[Function]}
             onClick={[Function]}
+            onDragLeave={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            onKeyUp={[Function]}
+            onMouseDown={[Function]}
+            onMouseLeave={[Function]}
+            onMouseUp={[Function]}
+            onTouchEnd={[Function]}
+            onTouchMove={[Function]}
+            onTouchStart={[Function]}
+            tabIndex={0}
             title="Rotate page left"
+            type="button"
           >
-            <button
-              className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit"
-              disabled={false}
-              id="RotateActiveLeft"
-              onBlur={[Function]}
-              onClick={[Function]}
-              onDragLeave={[Function]}
-              onFocus={[Function]}
-              onKeyDown={[Function]}
-              onKeyUp={[Function]}
-              onMouseDown={[Function]}
-              onMouseLeave={[Function]}
-              onMouseUp={[Function]}
-              onTouchEnd={[Function]}
-              onTouchMove={[Function]}
-              onTouchStart={[Function]}
-              tabIndex={0}
-              title="Rotate page left"
-              type="button"
+            <span
+              className="MuiIconButton-label"
             >
-              <span
-                className="MuiIconButton-label"
-              >
-                <ForwardRef>
-                  <WithStyles(ForwardRef(SvgIcon))>
-                    <ForwardRef(SvgIcon)
-                      classes={
-                        Object {
-                          "colorAction": "MuiSvgIcon-colorAction",
-                          "colorDisabled": "MuiSvgIcon-colorDisabled",
-                          "colorError": "MuiSvgIcon-colorError",
-                          "colorPrimary": "MuiSvgIcon-colorPrimary",
-                          "colorSecondary": "MuiSvgIcon-colorSecondary",
-                          "fontSizeInherit": "MuiSvgIcon-fontSizeInherit",
-                          "fontSizeLarge": "MuiSvgIcon-fontSizeLarge",
-                          "fontSizeSmall": "MuiSvgIcon-fontSizeSmall",
-                          "root": "MuiSvgIcon-root",
-                        }
+              <ForwardRef>
+                <WithStyles(ForwardRef(SvgIcon))>
+                  <ForwardRef(SvgIcon)
+                    classes={
+                      Object {
+                        "colorAction": "MuiSvgIcon-colorAction",
+                        "colorDisabled": "MuiSvgIcon-colorDisabled",
+                        "colorError": "MuiSvgIcon-colorError",
+                        "colorPrimary": "MuiSvgIcon-colorPrimary",
+                        "colorSecondary": "MuiSvgIcon-colorSecondary",
+                        "fontSizeInherit": "MuiSvgIcon-fontSizeInherit",
+                        "fontSizeLarge": "MuiSvgIcon-fontSizeLarge",
+                        "fontSizeSmall": "MuiSvgIcon-fontSizeSmall",
+                        "root": "MuiSvgIcon-root",
                       }
-                    >
-                      <svg
-                        aria-hidden={true}
-                        className="MuiSvgIcon-root"
-                        focusable="false"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          d="M7.11 8.53L5.7 7.11C4.8 8.27 4.24 9.61 4.07 11h2.02c.14-.87.49-1.72 1.02-2.47zM6.09 13H4.07c.17 1.39.72 2.73 1.62 3.89l1.41-1.42c-.52-.75-.87-1.59-1.01-2.47zm1.01 5.32c1.16.9 2.51 1.44 3.9 1.61V17.9c-.87-.15-1.71-.49-2.46-1.03L7.1 18.32zM13 4.07V1L8.45 5.55 13 10V6.09c2.84.48 5 2.94 5 5.91s-2.16 5.43-5 5.91v2.02c3.95-.49 7-3.85 7-7.93s-3.05-7.44-7-7.93z"
-                        />
-                      </svg>
-                    </ForwardRef(SvgIcon)>
-                  </WithStyles(ForwardRef(SvgIcon))>
-                </ForwardRef>
-              </span>
-              <WithStyles(memo)
-                center={true}
-              >
-                <ForwardRef(TouchRipple)
-                  center={true}
-                  classes={
-                    Object {
-                      "child": "MuiTouchRipple-child",
-                      "childLeaving": "MuiTouchRipple-childLeaving",
-                      "childPulsate": "MuiTouchRipple-childPulsate",
-                      "ripple": "MuiTouchRipple-ripple",
-                      "ripplePulsate": "MuiTouchRipple-ripplePulsate",
-                      "rippleVisible": "MuiTouchRipple-rippleVisible",
-                      "root": "MuiTouchRipple-root",
                     }
-                  }
-                >
-                  <span
-                    className="MuiTouchRipple-root"
                   >
-                    <TransitionGroup
-                      childFactory={[Function]}
-                      component={null}
-                      exit={true}
-                    />
-                  </span>
-                </ForwardRef(TouchRipple)>
-              </WithStyles(memo)>
-            </button>
-          </ForwardRef(ButtonBase)>
-        </WithStyles(ForwardRef(ButtonBase))>
-      </ForwardRef(IconButton)>
-    </WithStyles(ForwardRef(IconButton))>
-  </div>
+                    <svg
+                      aria-hidden={true}
+                      className="MuiSvgIcon-root"
+                      focusable="false"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M7.11 8.53L5.7 7.11C4.8 8.27 4.24 9.61 4.07 11h2.02c.14-.87.49-1.72 1.02-2.47zM6.09 13H4.07c.17 1.39.72 2.73 1.62 3.89l1.41-1.42c-.52-.75-.87-1.59-1.01-2.47zm1.01 5.32c1.16.9 2.51 1.44 3.9 1.61V17.9c-.87-.15-1.71-.49-2.46-1.03L7.1 18.32zM13 4.07V1L8.45 5.55 13 10V6.09c2.84.48 5 2.94 5 5.91s-2.16 5.43-5 5.91v2.02c3.95-.49 7-3.85 7-7.93s-3.05-7.44-7-7.93z"
+                      />
+                    </svg>
+                  </ForwardRef(SvgIcon)>
+                </WithStyles(ForwardRef(SvgIcon))>
+              </ForwardRef>
+            </span>
+            <WithStyles(memo)
+              center={true}
+            >
+              <ForwardRef(TouchRipple)
+                center={true}
+                classes={
+                  Object {
+                    "child": "MuiTouchRipple-child",
+                    "childLeaving": "MuiTouchRipple-childLeaving",
+                    "childPulsate": "MuiTouchRipple-childPulsate",
+                    "ripple": "MuiTouchRipple-ripple",
+                    "ripplePulsate": "MuiTouchRipple-ripplePulsate",
+                    "rippleVisible": "MuiTouchRipple-rippleVisible",
+                    "root": "MuiTouchRipple-root",
+                  }
+                }
+              >
+                <span
+                  className="MuiTouchRipple-root"
+                >
+                  <TransitionGroup
+                    childFactory={[Function]}
+                    component={null}
+                    exit={true}
+                  />
+                </span>
+              </ForwardRef(TouchRipple)>
+            </WithStyles(memo)>
+          </button>
+        </ForwardRef(ButtonBase)>
+      </WithStyles(ForwardRef(ButtonBase))>
+    </ForwardRef(IconButton)>
+  </WithStyles(ForwardRef(IconButton))>
 </Component>
 `;
 

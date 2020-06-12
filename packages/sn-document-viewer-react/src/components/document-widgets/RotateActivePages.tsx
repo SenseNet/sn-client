@@ -40,9 +40,9 @@ export const RotateActivePagesWidget: React.FC<{ mode?: ROTATION_MODE }> = (prop
    */
   switch (props.mode) {
     case ROTATION_MODE.anticlockwise:
-      return <div style={{ display: 'inline-block' }}>{button(props.mode)}</div>
+      return button(props.mode)
     case ROTATION_MODE.clockwise:
-      return <div style={{ display: 'inline-block' }}>{button(props.mode)}</div>
+      return button(props.mode)
     default:
       return (
         <div style={{ display: 'inline-block' }}>

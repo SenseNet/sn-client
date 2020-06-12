@@ -43,9 +43,9 @@ export const RotateDocumentWidget: React.FC<{ mode?: ROTATION_MODE }> = (props) 
 
   switch (props.mode) {
     case ROTATION_MODE.anticlockwise:
-      return <div style={{ display: 'inline-block' }}>{button(props.mode)}</div>
+      return button(props.mode)
     case ROTATION_MODE.clockwise:
-      return <div style={{ display: 'inline-block' }}>{button(props.mode)}</div>
+      return button(props.mode)
     default:
       return (
         <div style={{ display: 'inline-block' }}>
