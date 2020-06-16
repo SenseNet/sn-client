@@ -57,7 +57,7 @@ export interface IconResolver<T> {
 export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   {
     get: (item, options) =>
-      item.Type.includes('User') ? (
+      item.Type && item.Type.includes('User') ? (
         <UserAvatar
           user={item as User}
           style={options.style}
