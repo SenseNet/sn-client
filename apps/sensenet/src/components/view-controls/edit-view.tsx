@@ -174,8 +174,8 @@ export const EditView: React.FC<EditViewProps> = (props) => {
 
     const isFullWidthField = (field: { fieldSettings: FieldSetting }) => {
       return (
-        (field.fieldSettings.Name === 'Avatar' && content.Type === 'User') ||
-        (field.fieldSettings.Name === 'Enabled' && content.Type === 'User') ||
+        (field.fieldSettings.Name === 'Avatar' && content.Type.includes('User')) ||
+        (field.fieldSettings.Name === 'Enabled' && content.Type.includes('User')) ||
         field.fieldSettings.Type === 'LongTextFieldSetting'
       )
     }
