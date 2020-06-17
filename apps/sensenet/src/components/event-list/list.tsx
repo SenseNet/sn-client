@@ -10,7 +10,7 @@ import CompareArrows from '@material-ui/icons/CompareArrows'
 import OpenInNewTwoTone from '@material-ui/icons/OpenInNewTwoTone'
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { applicationPaths, resolvePathParams } from '../../application-paths'
+import { PATHS, resolvePathParams } from '../../application-paths'
 import { useLocalization } from '../../hooks'
 import { getPrimaryActionUrl } from '../../services'
 import { Icon } from '../Icon'
@@ -76,14 +76,22 @@ export const List: React.FunctionComponent<ListProps> = (props) => {
               <TableCell>{row.data.added}</TableCell>
               <TableCell>
                 {row.data.details ? (
-                  <Link to={resolvePathParams({ path: applicationPaths.events, params: { eventGuid: row.data.guid } })}>
+                  <Link
+                    to={resolvePathParams({
+                      path: PATHS.events.appPath,
+                      params: { eventGuid: row.data.guid },
+                    })}>
                     <IconButton>
                       <OpenInNewTwoTone />
                     </IconButton>
                   </Link>
                 ) : null}
                 {row.data.compare ? (
-                  <Link to={resolvePathParams({ path: applicationPaths.events, params: { eventGuid: row.data.guid } })}>
+                  <Link
+                    to={resolvePathParams({
+                      path: PATHS.events.appPath,
+                      params: { eventGuid: row.data.guid },
+                    })}>
                     <IconButton>
                       <CompareArrows />
                     </IconButton>

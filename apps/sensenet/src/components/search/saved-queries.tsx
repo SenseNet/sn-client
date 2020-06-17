@@ -15,7 +15,7 @@ import Typography from '@material-ui/core/Typography'
 import clsx from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { applicationPaths } from '../../application-paths'
+import { PATHS } from '../../application-paths'
 import { useGlobalStyles } from '../../globalStyles'
 import { useDialogActionSubscribe, useLocalization, useSelectionService } from '../../hooks'
 import { pathWithQueryParams } from '../../services/query-string-builder'
@@ -103,7 +103,7 @@ export default function SavedQueries() {
                     // ignore, only queries will be listed
                   }}
                   onActivateItem={(p: Query) => {
-                    history.push(pathWithQueryParams({ path: applicationPaths.search, newParams: { term: p.Query } }))
+                    history.push(pathWithQueryParams({ path: PATHS.search.appPath, newParams: { term: p.Query } }))
                   }}
                   onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
                   onSelectionChange={(sel) => {

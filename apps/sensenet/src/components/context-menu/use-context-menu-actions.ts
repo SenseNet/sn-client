@@ -1,7 +1,7 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import { useDownload, useLogger, useRepository } from '@sensenet/hooks-react'
 import { useHistory } from 'react-router'
-import { applicationPaths, resolvePathParams } from '../../application-paths'
+import { PATHS, resolvePathParams } from '../../application-paths'
 import { useLoadContent } from '../../hooks'
 import { useDialogActionService } from '../../hooks/use-dialogaction-service'
 import { getPrimaryActionUrl } from '../../services'
@@ -77,7 +77,7 @@ export function useContextMenuActions(
       case 'WopiOpenView':
         history.push(
           resolvePathParams({
-            path: applicationPaths.wopi,
+            path: PATHS.wopi.appPath,
             params: { action: 'view', contentId: content.Id.toString() },
           }),
         )
@@ -85,7 +85,7 @@ export function useContextMenuActions(
       case 'WopiOpenEdit':
         history.push(
           resolvePathParams({
-            path: applicationPaths.wopi,
+            path: PATHS.wopi.appPath,
             params: { action: 'edit', contentId: content.Id.toString() },
           }),
         )

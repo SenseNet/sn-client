@@ -1,31 +1,29 @@
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { Build, Dashboard, Delete, Language, People, Public, Search, Widgets } from '@material-ui/icons'
-import React, { useContext, useEffect, useState } from 'react'
-import { applicationPaths, resolvePathParams } from '../application-paths'
+import { Build, Dashboard, Delete, Folder, Language, People, Public, Search, Widgets } from '@material-ui/icons'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
+import { PATHS, resolvePathParams } from '../application-paths'
 import { Icon } from '../components/Icon'
 import { ResponsivePersonalSettings } from '../context'
-import DefaultLocalization from '../localization/default'
 import { pathWithQueryParams } from '../services'
 import {
-  BuiltinDrawerItem,
-  ContentDrawerItem,
+  CustomContentDrawerItem,
   DashboardDrawerItem,
-  DrawerItem as DrawerItemSetting,
+  CustomDrawerItem as DrawerItemSetting,
   QueryDrawerItem,
 } from '../services/PersonalSettings'
 import { useLocalization } from '.'
 
 export interface DrawerItem {
   name: string
-  primaryText: keyof typeof DefaultLocalization.drawer.titles
-  secondaryText: keyof typeof DefaultLocalization.drawer.descriptions
+  primaryText: string
+  secondaryText: string
   url: string
   icon: JSX.Element
   requiredGroupPath: string
   root?: string
 }
 
-type EveryDrawerType = ContentDrawerItem | QueryDrawerItem | BuiltinDrawerItem | DashboardDrawerItem
+type CustomDrawerType = QueryDrawerItem | DashboardDrawerItem | CustomContentDrawerItem
 
 export const useDrawerItems = () => {
   const settings = useContext(ResponsivePersonalSettings)
@@ -34,6 +32,90 @@ export const useDrawerItems = () => {
   const logger = useLogger('use-drawer-items')
 
   const [drawerItems, setDrawerItems] = useState<DrawerItem[]>([])
+
+  const builtInDrawerItems: DrawerItem[] = useMemo(
+    () => [
+      {
+        icon: <Search />,
+        primaryText: localization.titles.Search,
+        secondaryText: localization.descriptions.Search,
+        requiredGroupPath: '',
+        name: 'Search',
+        url: PATHS.savedQueries.appPath,
+        root: PATHS.savedQueries.snPath,
+      },
+      {
+        icon: <Public />,
+        primaryText: localization.titles.Content,
+        secondaryText: localization.descriptions.Content,
+        requiredGroupPath: '',
+        name: 'Content',
+        url: resolvePathParams({
+          path: PATHS.content.appPath,
+          params: { browseType: settings.content.browseType },
+        }),
+        root: PATHS.content.snPath,
+      },
+      {
+        icon: <People />,
+        primaryText: localization.titles.UsersAndGroups,
+        secondaryText: localization.descriptions.UsersAndGroups,
+        requiredGroupPath: '',
+        name: 'UsersAndGroups',
+        url: resolvePathParams({
+          path: PATHS.usersAndGroups.appPath,
+          params: { browseType: settings.content.browseType },
+        }),
+        root: PATHS.usersAndGroups.snPath,
+      },
+      {
+        icon: <Delete />,
+        primaryText: localization.titles.Trash,
+        secondaryText: localization.descriptions.Trash,
+        requiredGroupPath: '',
+        name: 'Trash',
+        url: resolvePathParams({
+          path: PATHS.trash.appPath,
+          params: { browseType: settings.content.browseType },
+        }),
+        root: PATHS.trash.snPath,
+      },
+      {
+        icon: <Widgets />,
+        primaryText: localization.titles.ContentTypes,
+        secondaryText: localization.descriptions.ContentTypes,
+        requiredGroupPath: '',
+        name: 'ContentTypes',
+        url: resolvePathParams({
+          path: PATHS.contentTypes.appPath,
+          params: { browseType: settings.content.browseType },
+        }),
+        root: PATHS.contentTypes.snPath,
+      },
+      {
+        icon: <Language />,
+        primaryText: localization.titles.Localization,
+        secondaryText: localization.descriptions.Localization,
+        requiredGroupPath: '',
+        name: 'Localization',
+        url: resolvePathParams({
+          path: PATHS.localization.appPath,
+          params: { browseType: settings.content.browseType },
+        }),
+        root: PATHS.localization.snPath,
+      },
+      {
+        icon: <Build />,
+        primaryText: localization.titles.Setup,
+        secondaryText: localization.descriptions.Setup,
+        requiredGroupPath: '',
+        name: 'Setup',
+        url: PATHS.setup.appPath,
+        root: PATHS.setup.snPath,
+      },
+    ],
+    [localization, settings.content.browseType],
+  )
 
   useEffect(() => {
     const getItemNameFromSettings = (item: DrawerItemSetting<any>) => {
@@ -44,26 +126,10 @@ export const useDrawerItems = () => {
       return item.settings?.description || localization.descriptions[item.itemType]
     }
 
-    const getIconFromSetting = (item: EveryDrawerType) => {
+    const getIconFromSetting = (item: CustomDrawerType) => {
       switch (item.itemType) {
-        case 'Search':
-          return <Search />
-        case 'Content':
-          return item.settings && item.settings.icon ? (
-            <Icon item={{ ContentTypeName: item.settings.icon }} />
-          ) : (
-            <Public />
-          )
-        case 'UsersAndGroups':
-          return <People />
-        case 'ContentTypes':
-          return <Widgets />
-        case 'Localization':
-          return <Language />
-        case 'Trash':
-          return <Delete />
-        case 'Setup':
-          return <Build />
+        case 'CustomContent':
+          return <Folder />
         case 'Dashboard':
           return <Dashboard />
         default:
@@ -73,51 +139,31 @@ export const useDrawerItems = () => {
       }
     }
 
-    const getUrlFromSetting = (item: EveryDrawerType) => {
+    const getUrlFromSetting = (item: CustomDrawerType) => {
       switch (item.itemType) {
-        case 'Search':
-          return applicationPaths.savedQueries
-        case 'Content':
-          return pathWithQueryParams({
-            path: resolvePathParams({
-              path: applicationPaths.content,
-              params: { browseType: settings.content.browseType },
-            }),
-            newParams: { path: settings.content.root },
-          })
-        case 'UsersAndGroups':
-          return resolvePathParams({
-            path: applicationPaths.usersAndGroups,
-            params: { browseType: settings.content.browseType },
-          })
-        case 'ContentTypes':
-          return resolvePathParams({
-            path: applicationPaths.contentTypes,
-            params: { browseType: settings.content.browseType },
-          })
         case 'Query':
-          return pathWithQueryParams({ path: applicationPaths.search, newParams: { term: item.settings?.term } })
-        case 'Localization':
-          return resolvePathParams({
-            path: applicationPaths.localization,
-            params: { browseType: settings.content.browseType },
+          return pathWithQueryParams({
+            path: PATHS.search.appPath,
+            newParams: { term: item.settings?.term },
           })
-        case 'Trash':
-          return resolvePathParams({
-            path: applicationPaths.trash,
-            params: { browseType: settings.content.browseType },
-          })
-        case 'Setup':
-          return applicationPaths.setup
         case 'Dashboard':
           return resolvePathParams({
-            path: applicationPaths.dashboard,
+            path: PATHS.dashboard.appPath,
             params: { dashboardName: encodeURIComponent(item.settings?.dashboardName ?? '') },
+          })
+        case 'CustomContent':
+          return resolvePathParams({
+            path: PATHS.custom.appPath,
+            params: {
+              browseType: settings.content.browseType,
+              path: (item as CustomContentDrawerItem).settings?.appPath || '',
+            },
           })
         default:
           return '/'
       }
     }
+
     const getItemFromSettings = (setting: DrawerItemSetting<any>) => {
       const drawerItem: DrawerItem = {
         icon: getIconFromSetting(setting),
@@ -130,9 +176,10 @@ export const useDrawerItems = () => {
       }
       return drawerItem
     }
+
     settings.drawer.items
       .filterAsync(async (item) => {
-        if (!item.permissions || !item.permissions.length) {
+        if (!item.permissions?.length) {
           return true
         }
         try {
@@ -154,7 +201,7 @@ export const useDrawerItems = () => {
         }
         return true
       })
-      .then((items) => setDrawerItems(items.map((item) => getItemFromSettings(item))))
+      .then((items) => setDrawerItems([...builtInDrawerItems, ...items.map(getItemFromSettings)]))
   }, [
     localization.descriptions,
     localization.titles,
@@ -163,6 +210,7 @@ export const useDrawerItems = () => {
     settings.content,
     settings.content.fields,
     settings.drawer.items,
+    builtInDrawerItems,
   ])
 
   return drawerItems

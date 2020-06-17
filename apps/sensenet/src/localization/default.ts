@@ -127,6 +127,7 @@ const values = {
       Trash: 'Trash',
       Query: 'Query',
       UsersAndGroups: 'Users and groups',
+      CustomContent: 'Custom content',
     },
     descriptions: {
       Content: 'Explore and manage your content in the repository',
@@ -138,6 +139,7 @@ const values = {
       Trash: 'Manage deleted items here: restore content or purge them permanently',
       Query: 'Open my custom Query',
       UsersAndGroups: 'Manage users and groups, roles and identities',
+      CustomContent: 'Explore and manage your content from the configured path',
     },
     personalSettingsTitle: 'Edit personal settings',
     personalSettingsSecondaryText: 'Customize the application behavior',

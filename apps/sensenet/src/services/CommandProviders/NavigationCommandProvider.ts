@@ -1,5 +1,5 @@
 import { Injectable } from '@sensenet/client-utils'
-import { applicationPaths, resolvePathParams } from '../../application-paths'
+import { PATHS, resolvePathParams } from '../../application-paths'
 import { CommandPaletteItem } from '../../components/command-palette/CommandPalette'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
 import { LocalizationService } from '../LocalizationService'
@@ -10,7 +10,7 @@ export class NavigationCommandProvider implements CommandProvider {
     return [
       {
         primaryText: this.localizationValues.contentPrimary,
-        url: resolvePathParams({ path: applicationPaths.content }),
+        url: resolvePathParams({ path: PATHS.content.appPath }),
         secondaryText: this.localizationValues.contentSecondary,
         content: { Type: 'PortalRoot' } as any,
         keywords: 'explore browse repository',
@@ -18,7 +18,7 @@ export class NavigationCommandProvider implements CommandProvider {
       },
       {
         primaryText: this.localizationValues.searchPrimary,
-        url: applicationPaths.search,
+        url: PATHS.search.appPath,
         secondaryText: this.localizationValues.searchSecondaryText,
         content: { Type: 'Search' } as any,
         keywords: 'search find content query',
@@ -26,7 +26,7 @@ export class NavigationCommandProvider implements CommandProvider {
       },
       {
         primaryText: this.localizationValues.savedQueriesPrimary,
-        url: applicationPaths.savedQueries,
+        url: PATHS.savedQueries.appPath,
         secondaryText: this.localizationValues.savedQueriesSecondaryText,
         content: { Type: 'Search' } as any,
         keywords: 'saved query search find',
@@ -34,7 +34,7 @@ export class NavigationCommandProvider implements CommandProvider {
       },
       {
         primaryText: this.localizationValues.eventsPrimary,
-        url: resolvePathParams({ path: applicationPaths.events }),
+        url: resolvePathParams({ path: PATHS.events.appPath }),
         secondaryText: this.localizationValues.eventsSecondary,
         content: { Type: 'EventLog' } as any,
         keywords: 'event events error warning log logs',

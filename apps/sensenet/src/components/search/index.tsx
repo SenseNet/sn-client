@@ -14,11 +14,11 @@ import Save from '@material-ui/icons/Save'
 import clsx from 'clsx'
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { applicationPaths } from '../../application-paths'
+import { PATHS } from '../../application-paths'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useSelectionService } from '../../hooks'
 import { useQuery } from '../../hooks/use-query'
-import { getPrimaryActionUrl } from '../../services'
+import { getPrimaryActionUrl, pathWithQueryParams } from '../../services'
 import { ContentList } from '../content-list'
 import { useDialog } from '../dialogs'
 
@@ -78,13 +78,13 @@ export const Search = () => {
     const ac = new AbortController()
     const fetchResult = async () => {
       if (!query) {
-        history.push(applicationPaths.search)
+        history.push(PATHS.search.appPath)
         setResult([])
         return
       }
       try {
         setResult([])
-        history.push(`${applicationPaths.search}?term=${encodeURIComponent(query)}`)
+        history.push(pathWithQueryParams({ path: PATHS.search.appPath, newParams: { term: query } }))
 
         const extendedQuery = `${query.trim()}* .AUTOFILTERS:OFF`
         const r = await repo.loadCollection({

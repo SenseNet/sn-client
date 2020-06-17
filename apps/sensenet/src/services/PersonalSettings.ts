@@ -15,7 +15,7 @@ export interface UiSettings {
   drawer: {
     enabled: boolean
     type: 'temporary' | 'permanent' | 'mini-variant'
-    items: Array<DrawerItem<any>>
+    items: Array<CustomDrawerItem<any>>
   }
 }
 
@@ -52,16 +52,16 @@ export interface QueryWidget<T extends GenericContent>
 
 export type WidgetSection = MarkdownWidget | QueryWidget<GenericContent> | UpdatesWidget
 
-export const DrawerItemType = tuple(
+export const CustomDrawerItemType = tuple('CustomContent', 'Query', 'Dashboard')
+
+export const BuiltInDrawerItemType = tuple(
   'Content',
-  'Query',
   'ContentTypes',
   'Localization',
   'Search',
   'Setup',
   'Trash',
   'UsersAndGroups',
-  'Dashboard',
 )
 
 export const ActionType = tuple(
@@ -95,11 +95,23 @@ export const ActionType = tuple(
 
 export interface DrawerItem<T> {
   settings?: T
-  itemType: typeof DrawerItemType[number]
+  itemType: typeof CustomDrawerItemType[number] | typeof BuiltInDrawerItemType[number]
   permissions?: Array<{
     path: string
     action: typeof ActionType[number]
   }>
+}
+
+export interface CustomDrawerItem<T> extends DrawerItem<T> {
+  itemType: typeof CustomDrawerItemType[number]
+}
+
+export interface CustomContentDrawerItem
+  extends DrawerItem<{
+    root: string
+    appPath: string
+  }> {
+  itemType: 'CustomContent'
 }
 
 export interface ContentDrawerItem
@@ -130,10 +142,6 @@ export interface DashboardDrawerItem
     icon: string
   }> {
   itemType: 'Dashboard'
-}
-
-export interface BuiltinDrawerItem extends DrawerItem<undefined> {
-  itemType: 'ContentTypes' | 'Localization' | 'Search' | 'Setup' | 'Trash' | 'UsersAndGroups'
 }
 
 export type PersonalSettingsType = PlatformDependent<UiSettings> & {
@@ -289,48 +297,13 @@ export const defaultSettings: PersonalSettingsType = {
     drawer: {
       enabled: true,
       type: 'mini-variant',
-      items: [
-        { itemType: 'Search', settings: undefined },
-        {
-          itemType: 'Content',
-          permissions: [{ path: '/Root/Content', action: 'Browse' }],
-        },
-        {
-          itemType: 'UsersAndGroups',
-          settings: { root: '/Root/IMS/Public' },
-          permissions: [{ path: '/Root/IMS/Public', action: 'Add' }],
-        },
-        {
-          itemType: 'Trash',
-          settings: { root: '/Root/Trash' },
-          permissions: [{ path: '/Root/Trash', action: 'Edit' }],
-        },
-        {
-          itemType: 'ContentTypes',
-          settings: { root: '/Root/System/Schema/ContentTypes' },
-          permissions: [{ path: '/Root/System/Schema/ContentTypes', action: 'Add' }],
-        },
-        {
-          itemType: 'Localization',
-          settings: { root: '/Root/Localization' },
-          permissions: [{ path: '/Root/Localization', action: 'Add' }],
-        },
-        {
-          itemType: 'Setup',
-          settings: { root: '/Root/System/Settings' },
-          permissions: [{ path: '/Root/System/Settings', action: 'Browse' }],
-        },
-      ],
+      items: [],
     },
     commandPalette: { enabled: true, wrapQuery: '{0} .AUTOFILTERS:OFF' },
   },
   mobile: {
     drawer: {
       type: 'temporary',
-    },
-    content: {
-      browseType: 'explorer',
-      fields: ['DisplayName'],
     },
   },
   language: 'default',
@@ -348,39 +321,19 @@ export const defaultSettings: PersonalSettingsType = {
 @Injectable({ lifetime: 'singleton' })
 export class PersonalSettings {
   private checkDrawerItems(settings: Partial<PersonalSettingsType>): Partial<PersonalSettingsType> {
-    if (
-      settings.default &&
-      settings.default.drawer &&
-      settings.default.drawer.items &&
-      settings.default.drawer.items.find((i) => typeof i === 'string')
-    ) {
+    if (settings.default?.drawer?.items?.find((i) => typeof i === 'string')) {
       ;(settings.default.drawer.items as any) = undefined
     }
 
-    if (
-      settings.desktop &&
-      settings.desktop.drawer &&
-      settings.desktop.drawer.items &&
-      settings.desktop.drawer.items.find((i) => typeof i === 'string')
-    ) {
+    if (settings.desktop?.drawer?.items?.find((i) => typeof i === 'string')) {
       ;(settings.desktop.drawer.items as any) = undefined
     }
 
-    if (
-      settings.tablet &&
-      settings.tablet.drawer &&
-      settings.tablet.drawer.items &&
-      settings.tablet.drawer.items.find((i) => typeof i === 'string')
-    ) {
+    if (settings.tablet?.drawer?.items?.find((i) => typeof i === 'string')) {
       ;(settings.tablet.drawer.items as any) = undefined
     }
 
-    if (
-      settings.mobile &&
-      settings.mobile.drawer &&
-      settings.mobile.drawer.items &&
-      settings.mobile.drawer.items.find((i) => typeof i === 'string')
-    ) {
+    if (settings.mobile?.drawer?.items?.find((i) => typeof i === 'string')) {
       ;(settings.mobile.drawer.items as any) = undefined
     }
 

@@ -1,7 +1,7 @@
 import { ConstantContent } from '@sensenet/client-core'
 import { Injectable, Injector } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import { applicationPaths } from '../../application-paths'
+import { PATHS } from '../../application-paths'
 import { CommandPaletteItem } from '../../components/command-palette/CommandPalette'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
 import { getPrimaryActionUrl } from '../content-context-service'
@@ -27,7 +27,7 @@ export class SearchCommandProvider implements CommandProvider {
     return [
       {
         primaryText: this.localization.currentValues.getValue().search.openInSearchTitle(options.term),
-        url: `${applicationPaths.search}?term=${encodeURIComponent(options.term)}`,
+        url: `${PATHS.search.appPath}?term=${encodeURIComponent(options.term)}`,
         content: { Type: 'Search' } as any,
         hits: [],
       },

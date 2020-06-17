@@ -8,26 +8,31 @@ export const useTreeNavigation = (defaultPath: string) => {
   const history = useHistory()
   const match = useRouteMatch<{ browseType: string }>()
   const pathFromQuery = useQuery().get('path')
-  const [currentPath, setCurrentPath] = useState(pathFromQuery ? decodeURIComponent(pathFromQuery) : defaultPath)
+  const [currentPath, setCurrentPath] = useState(pathFromQuery ? decodeURIComponent(pathFromQuery) : '')
 
   const onNavigate = useCallback(
     (content: GenericContent) => {
       const searchParams = new URLSearchParams(history.location.search)
+      const newPath = content.Path.replace(defaultPath, '')
       history.push(
-        pathWithQueryParams({ path: match.url, newParams: { path: content.Path }, currentParams: searchParams }),
+        pathWithQueryParams({
+          path: match.url,
+          newParams: { path: newPath },
+          currentParams: searchParams,
+        }),
       )
-      setCurrentPath(content.Path)
+      setCurrentPath(newPath)
     },
-    [history, match.url],
+    [history, match.url, defaultPath],
   )
 
   useEffect(() => {
-    const path = pathFromQuery ? decodeURIComponent(pathFromQuery) : defaultPath
+    const path = pathFromQuery ? decodeURIComponent(pathFromQuery) : ''
     setCurrentPath(path)
-  }, [pathFromQuery, defaultPath])
+  }, [pathFromQuery])
 
   return {
-    currentPath,
+    currentPath: `${defaultPath}${currentPath || ''}`,
     onNavigate,
   }
 }

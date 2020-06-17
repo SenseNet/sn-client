@@ -12,9 +12,9 @@ import OpenInNewTwoTone from '@material-ui/icons/OpenInNewTwoTone'
 import Refresh from '@material-ui/icons/RefreshTwoTone'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { applicationPaths } from '../../application-paths'
+import { PATHS } from '../../application-paths'
 import { useLocalization, useSelectionService, useStringReplace } from '../../hooks'
-import { getPrimaryActionUrl } from '../../services'
+import { getPrimaryActionUrl, pathWithQueryParams } from '../../services'
 import { QueryWidget as QueryWidgetModel } from '../../services/PersonalSettings'
 import { ContentList, isReferenceField } from '../content-list'
 
@@ -94,7 +94,9 @@ export const QueryWidget = (props: QueryWidgetModel<GenericContent>) => {
             <IconButton
               style={{ padding: '0', margin: '0 0 0 1em' }}
               onClick={() =>
-                history.push(`${applicationPaths.search}?term=${encodeURIComponent(props.settings.query)}`)
+                history.push(
+                  pathWithQueryParams({ path: PATHS.search.appPath, newParams: { term: props.settings.query } }),
+                )
               }>
               <OpenInNewTwoTone />
             </IconButton>

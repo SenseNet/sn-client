@@ -1,6 +1,6 @@
 import { Repository } from '@sensenet/client-core'
 import { ActionModel, ContentType, File, GenericContent, Resource, Settings } from '@sensenet/default-content-types'
-import { applicationPaths, resolvePathParams } from '../application-paths'
+import { PATHS, resolvePathParams } from '../application-paths'
 import { pathWithQueryParams } from '.'
 
 export function getMonacoLanguage(content: GenericContent, repository: Repository) {
@@ -44,13 +44,13 @@ export function getMonacoLanguage(content: GenericContent, repository: Repositor
 }
 export function getPrimaryActionUrl(content: GenericContent, repository: Repository, editInpage = false) {
   if (content.Type === 'PersonalSettings') {
-    return applicationPaths.personalSettings
+    return PATHS.personalSettings.appPath
   }
 
   if (content.IsFolder) {
     return pathWithQueryParams({
       path: resolvePathParams({
-        path: applicationPaths.content,
+        path: PATHS.content.appPath,
         params: { browseType: 'explorer' },
       }),
       newParams: { path: content.Path },
@@ -58,7 +58,7 @@ export function getPrimaryActionUrl(content: GenericContent, repository: Reposit
   }
 
   if (getMonacoLanguage(content, repository)) {
-    return resolvePathParams({ path: applicationPaths.editBinary, params: { contentId: content.Id } })
+    return resolvePathParams({ path: PATHS.editBinary.appPath, params: { contentId: content.Id } })
   }
 
   if (
@@ -67,7 +67,7 @@ export function getPrimaryActionUrl(content: GenericContent, repository: Reposit
     (content as any).Binary.__mediaresource.content_type !== 'text/css' &&
     (content as any).Binary.__mediaresource.content_type !== 'text/xml'
   ) {
-    return resolvePathParams({ path: applicationPaths.preview, params: { contentId: content.Id } })
+    return resolvePathParams({ path: PATHS.preview.appPath, params: { contentId: content.Id } })
   }
 
   if (
@@ -76,7 +76,7 @@ export function getPrimaryActionUrl(content: GenericContent, repository: Reposit
     (content.Actions as ActionModel[]).find((a) => a.Name === 'WopiOpenEdit')
   ) {
     return resolvePathParams({
-      path: applicationPaths.wopi,
+      path: PATHS.wopi.appPath,
       params: { action: 'edit', contentId: content.Id.toString() },
     })
   }
@@ -87,7 +87,7 @@ export function getPrimaryActionUrl(content: GenericContent, repository: Reposit
     (content.Actions as ActionModel[]).find((a) => a.Name === 'WopiOpenView')
   ) {
     return resolvePathParams({
-      path: applicationPaths.wopi,
+      path: PATHS.wopi.appPath,
       params: { action: 'view', contentId: content.Id.toString() },
     })
   }
@@ -96,5 +96,5 @@ export function getPrimaryActionUrl(content: GenericContent, repository: Reposit
     return 'openEdit'
   }
 
-  return resolvePathParams({ path: applicationPaths.editProperties, params: { contentId: content.Id } })
+  return resolvePathParams({ path: PATHS.editProperties.appPath, params: { contentId: content.Id } })
 }
