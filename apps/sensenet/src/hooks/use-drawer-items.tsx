@@ -14,12 +14,10 @@ import {
 import { useLocalization } from '.'
 
 export interface DrawerItem {
-  name: string
   primaryText: string
   secondaryText: string
   url: string
   icon: JSX.Element
-  requiredGroupPath: string
   root?: string
 }
 
@@ -39,8 +37,6 @@ export const useDrawerItems = () => {
         icon: <Search />,
         primaryText: localization.titles.Search,
         secondaryText: localization.descriptions.Search,
-        requiredGroupPath: '',
-        name: 'Search',
         url: PATHS.savedQueries.appPath,
         root: PATHS.savedQueries.snPath,
       },
@@ -48,8 +44,6 @@ export const useDrawerItems = () => {
         icon: <Public />,
         primaryText: localization.titles.Content,
         secondaryText: localization.descriptions.Content,
-        requiredGroupPath: '',
-        name: 'Content',
         url: resolvePathParams({
           path: PATHS.content.appPath,
           params: { browseType: settings.content.browseType },
@@ -60,8 +54,6 @@ export const useDrawerItems = () => {
         icon: <People />,
         primaryText: localization.titles.UsersAndGroups,
         secondaryText: localization.descriptions.UsersAndGroups,
-        requiredGroupPath: '',
-        name: 'UsersAndGroups',
         url: resolvePathParams({
           path: PATHS.usersAndGroups.appPath,
           params: { browseType: settings.content.browseType },
@@ -72,8 +64,6 @@ export const useDrawerItems = () => {
         icon: <Delete />,
         primaryText: localization.titles.Trash,
         secondaryText: localization.descriptions.Trash,
-        requiredGroupPath: '',
-        name: 'Trash',
         url: resolvePathParams({
           path: PATHS.trash.appPath,
           params: { browseType: settings.content.browseType },
@@ -84,8 +74,6 @@ export const useDrawerItems = () => {
         icon: <Widgets />,
         primaryText: localization.titles.ContentTypes,
         secondaryText: localization.descriptions.ContentTypes,
-        requiredGroupPath: '',
-        name: 'ContentTypes',
         url: resolvePathParams({
           path: PATHS.contentTypes.appPath,
           params: { browseType: settings.content.browseType },
@@ -96,8 +84,6 @@ export const useDrawerItems = () => {
         icon: <Language />,
         primaryText: localization.titles.Localization,
         secondaryText: localization.descriptions.Localization,
-        requiredGroupPath: '',
-        name: 'Localization',
         url: resolvePathParams({
           path: PATHS.localization.appPath,
           params: { browseType: settings.content.browseType },
@@ -108,8 +94,6 @@ export const useDrawerItems = () => {
         icon: <Build />,
         primaryText: localization.titles.Setup,
         secondaryText: localization.descriptions.Setup,
-        requiredGroupPath: '',
-        name: 'Setup',
         url: PATHS.setup.appPath,
         root: PATHS.setup.snPath,
       },
@@ -169,8 +153,6 @@ export const useDrawerItems = () => {
         icon: getIconFromSetting(setting),
         primaryText: getItemNameFromSettings(setting),
         secondaryText: getItemDescriptionFromSettings(setting),
-        name: setting.itemType,
-        requiredGroupPath: '',
         url: getUrlFromSetting(setting),
         root: setting.settings?.root,
       }

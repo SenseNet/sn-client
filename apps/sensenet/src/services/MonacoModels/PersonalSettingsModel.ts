@@ -275,10 +275,13 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                             settings: {
                               type: 'object',
                               properties: {
-                                root: { type: 'string', description: language.personalSettings.drawerItemTitle },
+                                root: {
+                                  type: 'string',
+                                  description: language.personalSettings.drawerCustomContentRoot,
+                                },
                                 appPath: {
                                   type: 'string',
-                                  description: language.personalSettings.drawerItemDescription,
+                                  description: language.personalSettings.drawerCustomContentAppPath,
                                 },
                               },
                               required: ['root', 'appPath'],

@@ -218,6 +218,8 @@ const values = {
     drawerType: 'Drawer type',
     drawerItems: 'Items enabled on the drawer',
     drawerDashboardName: 'A unique identifier for the dashboard',
+    drawerCustomContentAppPath: 'Unique url param for the new menu item',
+    drawerCustomContentRoot: 'SenseNet path of the root item of the custom content view',
     drawerItemTitle: 'Title of the item',
     drawerItemDescription: 'Description of the item',
     drawerItemIcon: 'The icon of the drawer item',
