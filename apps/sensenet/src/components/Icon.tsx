@@ -65,7 +65,6 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
         />
       ) : null,
   },
-  { get: (item, options) => (item.Type === 'Group' ? <GroupOutlined style={options.style} /> : null) },
   {
     get: (item, options) =>
       item.Type === 'File' &&
@@ -102,15 +101,10 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
   {
     get: (item, options) =>
-      item.Type === 'Profiles' || item.Icon === 'Profiles' ? <GroupOutlined style={options.style} /> : null,
-  },
-  {
-    get: (item, options) =>
-      item.Type === 'Folder' || item.Icon === 'Folder' ? <Folder style={options.style} /> : null,
-  },
-  {
-    get: (item, options) =>
-      item.Type === 'SystemFolder' || item.Icon === 'SystemFolder' ? <Folder style={options.style} /> : null,
+      item.Type === ('Folder' || 'SystemFolder' || 'SmartFolder') ||
+      item.Icon === ('Folder' || 'SystemFolder' || 'SmartFolder') ? (
+        <Folder style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
@@ -127,10 +121,6 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   {
     get: (item, options) =>
       item.Type === 'Comment' || item.Icon === 'Comment' ? <CommentOutlined style={options.style} /> : null,
-  },
-  {
-    get: (item, options) =>
-      item.Type === 'EventLog' || item.Icon === 'EventLog' ? <ListAltOutlined style={options.style} /> : null,
   },
   {
     get: (item, options) =>
@@ -172,7 +162,10 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
   {
     get: (item, options) =>
-      item.Type === 'LinkList' || item.Icon === 'LinkList' ? <ListAltOutlined style={options.style} /> : null,
+      item.Type === ('LinkList' || 'MemoList' || 'TaskList' || 'EventLog') ||
+      item.Icon === ('LinkList' || 'MemoList' || 'TaskList' || 'EventLog') ? (
+        <ListAltOutlined style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
@@ -180,15 +173,7 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
   {
     get: (item, options) =>
-      item.Type === 'MemoList' || item.Icon === 'MemoList' ? <ListAltOutlined style={options.style} /> : null,
-  },
-  {
-    get: (item, options) =>
       item.Type === 'Memo' || item.Icon === 'Memo' ? <AssignmentOutlined style={options.style} /> : null,
-  },
-  {
-    get: (item, options) =>
-      item.Type === 'TaskList' || item.Icon === 'TaskList' ? <ListAltOutlined style={options.style} /> : null,
   },
   {
     get: (item, options) =>
@@ -204,11 +189,10 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
   {
     get: (item, options) =>
-      item.Type === 'Group' || item.Icon === 'Group' ? <GroupOutlined style={options.style} /> : null,
-  },
-  {
-    get: (item, options) =>
-      item.Type === 'SystemFolder' || item.Icon === 'SystemFolder' ? <Folder style={options.style} /> : null,
+      item.Type === ('Group' || 'Profiles' || 'OrganizationalUnit') ||
+      item.Icon === ('Group' || 'Profiles' || 'OrganizationalUnit') ? (
+        <GroupOutlined style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
@@ -221,9 +205,6 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   {
     get: (item, options) =>
       item.Type === 'ContentType' || item.Icon === 'ContentType' ? <Widgets style={options.style} /> : null,
-  },
-  {
-    get: (item, options) => (item.Type === 'OrganizationalUnit' ? <GroupOutlined style={options.style} /> : null),
   },
   {
     get: (item, options) =>
