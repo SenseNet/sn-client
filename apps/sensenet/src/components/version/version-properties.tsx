@@ -32,11 +32,6 @@ export default function VersionProperties() {
           selectionService.activeContent.setValue(content)
         }}
         oDataOptions={{ select: 'all' }}>
-        <div
-          className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}
-          style={{ marginLeft: '30px' }}>
-          <span style={{ fontSize: '20px' }}>Versions of {selectionService.activeContent.getValue()?.DisplayName}</span>
-        </div>
         <VersionView handleCancel={history.goBack} isFullPage={true} />
       </CurrentContentProvider>
     </div>

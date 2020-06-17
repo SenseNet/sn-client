@@ -113,8 +113,7 @@ const values: DeepPartial<typeof import('./default').default> = {
     commandPaletteWrapQuery: 'Command palette lekérdezés sablonok beállítása',
     contentTitle: 'Tartalom böngészésére vonatkozó beállítások',
     contentFields: 'Megjelenítendő mezők beállítása',
-    contentBrowseType:
-      'Böngészés típus kiválasztása: simple (egyszerű), explore (lista és fa) vagy commander (dupla paneles)',
+    contentBrowseType: 'Böngészés típus kiválasztása: jelenleg csak az explore (lista és fa) nézet elérhető',
     drawer: 'Oldalsó menüsáv beállításai',
     drawerEnable: 'Menüsáv engedélyezése / tiltása',
     drawerItems: 'Megjelenítendő elemek',
