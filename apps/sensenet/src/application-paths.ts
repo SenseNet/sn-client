@@ -5,7 +5,7 @@ export const PATHS = {
   silentCallback: { appPath: '/authentication/silent-callback' },
   personalSettings: { appPath: '/personal-settings' },
   events: { appPath: '/events/:eventGuid' },
-  savedQueries: { appPath: '/saved-queries', snPath: '/Root/Content/Queries' },
+  savedQueries: { appPath: '/saved-queries' },
   setup: { appPath: '/setup', snPath: '/Root/System/Settings' },
   trash: { appPath: '/trash/:browseType', snPath: '/Root/Trash' },
   localization: { appPath: '/localization/:browseType', snPath: '/Root/Localization' },
