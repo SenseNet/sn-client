@@ -1,16 +1,23 @@
-import { Injectable } from '@sensenet/client-utils'
+import { Injectable, Injector } from '@sensenet/client-utils'
 import { PATHS, resolvePathParams } from '../../application-paths'
 import { CommandPaletteItem } from '../../components/command-palette/CommandPalette'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
 import { LocalizationService } from '../LocalizationService'
+import { PersonalSettings } from '../PersonalSettings'
 
 @Injectable({ lifetime: 'transient' })
 export class NavigationCommandProvider implements CommandProvider {
   public getRoutes: ({ term }: SearchOptions) => Array<CommandPaletteItem & { keywords?: string }> = ({ term }) => {
+    const personalSettingsService = this.injector.getInstance(PersonalSettings)
+    const settings = personalSettingsService.effectiveValue.getValue()
+
     return [
       {
         primaryText: this.localizationValues.contentPrimary,
-        url: resolvePathParams({ path: PATHS.content.appPath }),
+        url: resolvePathParams({
+          path: PATHS.content.appPath,
+          params: { browseType: settings.default.content.browseType },
+        }),
         secondaryText: this.localizationValues.contentSecondary,
         content: { Type: 'PortalRoot' } as any,
         keywords: 'explore browse repository',
@@ -62,7 +69,7 @@ export class NavigationCommandProvider implements CommandProvider {
     return this.getRoutes(options).filter((route) => this.routeIncludesTerm(route, termLowerCase))
   }
 
-  constructor(localization: LocalizationService) {
+  constructor(public readonly injector: Injector, localization: LocalizationService) {
     this.localizationValues = localization.currentValues.getValue().navigationCommandProvider
   }
 }

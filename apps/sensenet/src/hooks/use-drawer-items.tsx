@@ -126,7 +126,7 @@ export const useDrawerItems = () => {
         case 'Setup':
           return <Build />
         case 'CustomContent':
-          return <Folder />
+          return item.settings?.icon ? <Icon item={{ ContentTypeName: item.settings.icon }} /> : <Folder />
         case 'Dashboard':
           return <Dashboard />
         default:
