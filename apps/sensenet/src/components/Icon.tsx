@@ -25,6 +25,7 @@ import {
   LibraryBooksOutlined,
   LinkOutlined,
   ListAltOutlined,
+  LocationCity,
   PersonOutlined,
   PhotoLibrary,
   PhotoOutlined,
@@ -192,6 +193,12 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
       item.Type === ('Group' || 'Profiles' || 'OrganizationalUnit') ||
       item.Icon === ('Group' || 'Profiles' || 'OrganizationalUnit') ? (
         <GroupOutlined style={options.style} />
+      ) : null,
+  },
+  {
+    get: (item, options) =>
+      item.Type === 'OrganizationalUnit' || item.Icon === 'OrganizationalUnit' ? (
+        <LocationCity style={options.style} />
       ) : null,
   },
   {
