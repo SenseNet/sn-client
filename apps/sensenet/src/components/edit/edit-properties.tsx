@@ -34,13 +34,6 @@ export default function EditProperties() {
           selectionService.activeContent.setValue(content)
         }}
         oDataOptions={{ select: 'all' }}>
-        <div
-          className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}
-          style={{ marginLeft: '30px' }}>
-          <span style={{ fontSize: '20px' }}>
-            Edit <span style={{ fontWeight: 500 }}>{selectionService.activeContent.getValue()?.DisplayName}</span>
-          </span>
-        </div>
         <EditView
           uploadFolderpath={'/Root/Content/demoavatars'}
           handleCancel={history.goBack}

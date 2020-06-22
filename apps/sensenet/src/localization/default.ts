@@ -230,8 +230,7 @@ const values = {
     commandPaletteEnable: 'Enable or disable the command palette',
     commandPaletteWrapQuery: 'A wrapper for all queries executed from the command palette',
     contentTitle: 'Content browsing and basic editing functions',
-    contentBrowseType:
-      'Choose between a simple list, a two-panel (commander) or a tree + single panel (explorer) style view',
+    contentBrowseType: 'Browse type selection: currently only the single panel (explorer) style view available',
     contentFields: 'Select fields to display',
     platformDependentTitle: 'Platform dependent setting',
     lastRepository: 'The last visited repository URL',

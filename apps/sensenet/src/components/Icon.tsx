@@ -359,6 +359,5 @@ export const IconComponent: React.FunctionComponent<{
 
   return defaultIcon
 }
-const wrapped = IconComponent
 
-export { wrapped as Icon }
+export { IconComponent as Icon }

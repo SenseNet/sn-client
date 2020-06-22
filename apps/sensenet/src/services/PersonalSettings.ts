@@ -329,7 +329,7 @@ export const defaultSettings: PersonalSettingsType = {
       type: 'temporary',
     },
     content: {
-      browseType: 'simple',
+      browseType: 'explorer',
       fields: ['DisplayName'],
     },
   },
