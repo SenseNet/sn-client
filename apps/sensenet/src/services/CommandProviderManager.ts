@@ -2,6 +2,7 @@ import { Repository } from '@sensenet/client-core'
 import { Injectable, Injector } from '@sensenet/client-utils'
 import { CommandPaletteItem } from '../components/command-palette/CommandPalette'
 import { ResponsivePlatforms } from '../context'
+import { UiSettings } from '.'
 
 export interface CommandProvider {
   shouldExec: (options: SearchOptions) => boolean
@@ -12,6 +13,7 @@ export interface SearchOptions {
   term: string
   repository: Repository
   device: ResponsivePlatforms
+  uiSettings: UiSettings
 }
 
 @Injectable({ lifetime: 'singleton' })

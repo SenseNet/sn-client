@@ -10,9 +10,10 @@ import {
 import { IconButton, Tooltip, Typography } from '@material-ui/core'
 import OpenInNewTwoTone from '@material-ui/icons/OpenInNewTwoTone'
 import Refresh from '@material-ui/icons/RefreshTwoTone'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { PATHS } from '../../application-paths'
+import { ResponsivePersonalSettings } from '../../context'
 import { useLocalization, useSelectionService, useStringReplace } from '../../hooks'
 import { getPrimaryActionUrl, pathWithQueryParams } from '../../services'
 import { QueryWidget as QueryWidgetModel } from '../../services/PersonalSettings'
@@ -25,10 +26,11 @@ export const QueryWidget = (props: QueryWidgetModel<GenericContent>) => {
   const [error, setError] = useState('')
   const [refreshToken, setRefreshToken] = useState(Math.random())
   const [count, setCount] = useState(0)
-  const repo = useRepository()
+  const repository = useRepository()
   const replacedTitle = useStringReplace(props.title)
   const localization = useLocalization().dashboard
   const selectionService = useSelectionService()
+  const uiSettings = useContext(ResponsivePersonalSettings)
 
   useEffect(() => {
     setLoadChildrenSettings({
@@ -36,9 +38,9 @@ export const QueryWidget = (props: QueryWidgetModel<GenericContent>) => {
       top: props.settings.countOnly ? 1 : props.settings.top,
       inlinecount: 'allpages',
       select: ['Actions', ...props.settings.columns],
-      expand: ['Actions', ...props.settings.columns.filter((f) => isReferenceField(f, repo))],
+      expand: ['Actions', ...props.settings.columns.filter((f) => isReferenceField(f, repository))],
     })
-  }, [props.settings.columns, props.settings.countOnly, props.settings.query, props.settings.top, repo])
+  }, [props.settings.columns, props.settings.countOnly, props.settings.query, props.settings.top, repository])
 
   useEffect(() => {
     const ac = new AbortController()
@@ -47,7 +49,7 @@ export const QueryWidget = (props: QueryWidgetModel<GenericContent>) => {
         /** */
         try {
           setError('')
-          const result = await repo.loadCollection({
+          const result = await repository.loadCollection({
             path: ConstantContent.PORTAL_ROOT.Path,
             oDataOptions: loadChildrenSettings,
             requestInit: {
@@ -64,7 +66,7 @@ export const QueryWidget = (props: QueryWidgetModel<GenericContent>) => {
       })()
       return () => ac.abort()
     }
-  }, [repo, loadChildrenSettings, refreshToken])
+  }, [repository, loadChildrenSettings, refreshToken])
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -146,13 +148,7 @@ export const QueryWidget = (props: QueryWidgetModel<GenericContent>) => {
                     // props.history.push(contentRouter.getPrimaryActionUrl(p))
                   }}
                   onActivateItem={(p) => {
-                    history.push(getPrimaryActionUrl(p, repo))
-                  }}
-                  onTabRequest={() => {
-                    /** */
-                  }}
-                  onSelectionChange={(sel) => {
-                    selectionService.selection.setValue(sel)
+                    history.push(getPrimaryActionUrl({ content: p, repository, uiSettings }))
                   }}
                   onActiveItemChange={(item) => {
                     selectionService.activeContent.setValue(item)

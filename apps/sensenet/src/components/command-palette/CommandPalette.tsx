@@ -8,7 +8,7 @@ import clsx from 'clsx'
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import Autosuggest, { SuggestionSelectedEventData, SuggestionsFetchRequestedParams } from 'react-autosuggest'
 import { useHistory } from 'react-router-dom'
-import { ResponsiveContext } from '../../context'
+import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals } from '../../globalStyles'
 import { useLocalization, useTheme } from '../../hooks'
 import { CommandProviderManager } from '../../services'
@@ -74,6 +74,7 @@ export const CommandPalette = () => {
   const history = useHistory()
   const classes = useStyles()
   const device = useContext(ResponsiveContext)
+  const uiSettings = useContext(ResponsivePersonalSettings)
   const injector = useInjector()
   const repository = useRepository()
   const cpm = useMemo(() => injector.getInstance(CommandProviderManager), [injector])
@@ -126,7 +127,7 @@ export const CommandPalette = () => {
   }, [delayedOpened, isOpened])
 
   const handleSuggestionsFetchRequested = async (options: SuggestionsFetchRequestedParams) => {
-    const foundItems = await cpm.getItems({ term: options.value, repository, device })
+    const foundItems = await cpm.getItems({ term: options.value, repository, device, uiSettings })
     setItems(foundItems)
   }
 

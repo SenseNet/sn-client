@@ -11,6 +11,7 @@ import OpenInNewTwoTone from '@material-ui/icons/OpenInNewTwoTone'
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { PATHS, resolvePathParams } from '../../application-paths'
+import { ResponsivePersonalSettings } from '../../context'
 import { useLocalization } from '../../hooks'
 import { getPrimaryActionUrl } from '../../services'
 import { Icon } from '../Icon'
@@ -23,6 +24,7 @@ type ListProps = {
 
 export const List: React.FunctionComponent<ListProps> = (props) => {
   const { filter } = useContext(EventListFilterContext)
+  const uiSettings = useContext(ResponsivePersonalSettings)
   const repository = useRepository()
   const [effectiveValues, setEffectiveValues] = useState<Array<LeveledLogEntry<any>>>([])
   const localization = useLocalization().eventList.list
@@ -66,7 +68,7 @@ export const List: React.FunctionComponent<ListProps> = (props) => {
               <TableCell>
                 {row.data?.relatedContent && row.data?.relatedRepository ? (
                   <Link
-                    to={getPrimaryActionUrl(row.data.relatedContent, repository)}
+                    to={getPrimaryActionUrl({ content: row.data.relatedContent, repository, uiSettings })}
                     style={{ display: 'flex', alignItems: 'center' }}>
                     <Icon item={row.data.relatedContent} style={{ marginRight: 5 }} />
                     {row.data.relatedContent.DisplayName || row.data.relatedContent.Name}

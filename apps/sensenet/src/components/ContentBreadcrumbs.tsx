@@ -6,6 +6,7 @@ import FileCopyIcon from '@material-ui/icons/FileCopy'
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { ResponsivePersonalSettings } from '../context'
 import { useLocalization, useSelectionService } from '../hooks'
 import { getPrimaryActionUrl } from '../services'
 import { BreadcrumbItem, Breadcrumbs } from './Breadcrumbs'
@@ -30,6 +31,7 @@ type ContentBreadcrumbsProps = {
 export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
   const ancestors = useContext(CurrentAncestorsContext)
   const parent = useContext(CurrentContentContext)
+  const uiSettings = useContext(ResponsivePersonalSettings)
   const repository = useRepository()
   const history = useHistory()
   const localization = useLocalization()
@@ -55,18 +57,20 @@ export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
           ...ancestors.map((content) => ({
             displayName: content.DisplayName || content.Name,
             title: content.Path,
-            url: getPrimaryActionUrl(content, repository),
+            url: getPrimaryActionUrl({ content, repository, uiSettings }),
             content,
           })),
           {
             displayName: parent.DisplayName || parent.Name,
             title: parent.Path,
-            url: getPrimaryActionUrl(parent, repository),
+            url: getPrimaryActionUrl({ content: parent, repository, uiSettings }),
             content: parent,
           },
         ]}
         onItemClick={(_ev, item) => {
-          props.onItemClick ? props.onItemClick(item) : history.push(getPrimaryActionUrl(item.content, repository))
+          props.onItemClick
+            ? props.onItemClick(item)
+            : history.push(getPrimaryActionUrl({ content: item.content, repository, uiSettings }))
         }}
       />
       {props.batchActions && selected.length > 1 ? (

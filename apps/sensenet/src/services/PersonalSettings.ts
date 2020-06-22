@@ -114,15 +114,6 @@ export interface CustomContentDrawerItem
   itemType: 'CustomContent'
 }
 
-export interface ContentDrawerItem
-  extends DrawerItem<{
-    title: string
-    description?: string
-    icon: string
-  }> {
-  itemType: 'Content'
-}
-
 export interface QueryDrawerItem
   extends DrawerItem<{
     title: string

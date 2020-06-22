@@ -1,7 +1,8 @@
 import { Repository } from '@sensenet/client-core'
 import { ActionModel, ContentType, File, GenericContent, Resource, Settings } from '@sensenet/default-content-types'
 import { PATHS, resolvePathParams } from '../application-paths'
-import { pathWithQueryParams } from '.'
+import { CustomContentDrawerItem } from './PersonalSettings'
+import { pathWithQueryParams, UiSettings } from '.'
 
 export function getMonacoLanguage(content: GenericContent, repository: Repository) {
   if (repository.schemas.isContentFromType<Settings>(content, 'Settings') || content.Type === 'PersonalSettings') {
@@ -42,20 +43,52 @@ export function getMonacoLanguage(content: GenericContent, repository: Repositor
   }
   return ''
 }
-export function getPrimaryActionUrl(content: GenericContent, repository: Repository, editInpage = false) {
+
+export function getPrimaryActionUrl({
+  content,
+  repository,
+  uiSettings,
+  editInpage = false,
+}: {
+  content: GenericContent
+  repository: Repository
+  uiSettings: UiSettings
+  editInpage?: boolean
+}) {
   if (content.Type === 'PersonalSettings') {
     return PATHS.personalSettings.appPath
   }
 
   if (content.IsFolder) {
-    const newPath = content.Path.replace(PATHS.content.snPath, '')
-    return pathWithQueryParams({
-      path: resolvePathParams({
-        path: PATHS.content.appPath,
-        params: { browseType: 'explorer' },
-      }),
-      newParams: newPath ? { path: newPath } : {},
-    })
+    const pathOfContent: any = Object.values(PATHS).find((path: any) =>
+      path.snPath ? content.Path.startsWith(path.snPath) : false,
+    )
+
+    if (!pathOfContent) {
+      const customDrawerItem = uiSettings.drawer.items
+        .filter((item) => item.itemType === 'CustomContent')
+        .find((item: CustomContentDrawerItem) => content.Path.startsWith(item.settings!.root))
+
+      if (customDrawerItem) {
+        const newPath = content.Path.replace(customDrawerItem.settings!.root, '')
+        return pathWithQueryParams({
+          path: resolvePathParams({
+            path: PATHS.custom.appPath,
+            params: { browseType: uiSettings.content.browseType, path: customDrawerItem.settings!.appPath },
+          }),
+          newParams: newPath ? { path: newPath } : {},
+        })
+      }
+    } else {
+      const newPath = content.Path.replace(pathOfContent.snPath, '')
+      return pathWithQueryParams({
+        path: resolvePathParams({
+          path: pathOfContent.appPath,
+          params: { browseType: uiSettings.content.browseType },
+        }),
+        newParams: newPath ? { path: newPath } : {},
+      })
+    }
   }
 
   if (getMonacoLanguage(content, repository)) {

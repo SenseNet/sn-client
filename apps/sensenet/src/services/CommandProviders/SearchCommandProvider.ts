@@ -34,7 +34,7 @@ export class SearchCommandProvider implements CommandProvider {
       ...result.d.results.map((content) => ({
         primaryText: content.DisplayName || content.Name,
         secondaryText: content.Path,
-        url: getPrimaryActionUrl(content, options.repository),
+        url: getPrimaryActionUrl({ content, repository: options.repository, uiSettings: options.uiSettings }),
         content,
         icon: content.Icon,
         hits: options.term.replace(/\*/g, ' ').replace(/\?/g, ' ').split(' '),
