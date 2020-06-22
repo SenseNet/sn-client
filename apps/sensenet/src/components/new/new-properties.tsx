@@ -41,11 +41,6 @@ export default function NewProperties() {
           setCurrentContent(content)
         }}
         oDataOptions={{ select: 'all' }}>
-        <div
-          className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}
-          style={{ marginLeft: '30px' }}>
-          <span style={{ fontSize: '20px' }}>New {dialogActionService.contentTypeNameForNewContent.getValue()}</span>
-        </div>
         {dialogActionService.contentTypeNameForNewContent.getValue() && (
           <NewView
             contentTypeName={dialogActionService.contentTypeNameForNewContent.getValue()!}

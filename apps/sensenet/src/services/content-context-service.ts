@@ -50,7 +50,7 @@ export function getPrimaryActionUrl(content: GenericContent, repository: Reposit
   if (content.IsFolder) {
     return pathWithQueryParams({
       path: resolvePathParams({
-        path: applicationPaths.browse,
+        path: applicationPaths.content,
         params: { browseType: 'explorer' },
       }),
       newParams: { path: content.Path },
