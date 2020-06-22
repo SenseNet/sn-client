@@ -48,12 +48,13 @@ export function getPrimaryActionUrl(content: GenericContent, repository: Reposit
   }
 
   if (content.IsFolder) {
+    const newPath = content.Path.replace(PATHS.content.snPath, '')
     return pathWithQueryParams({
       path: resolvePathParams({
         path: PATHS.content.appPath,
         params: { browseType: 'explorer' },
       }),
-      newParams: { path: content.Path },
+      newParams: newPath ? { path: newPath } : {},
     })
   }
 
