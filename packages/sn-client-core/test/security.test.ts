@@ -21,10 +21,12 @@ describe('Security', () => {
 
   it('Should execute setPermissions', () => {
     expect(
-      security.setPermissions(1, {
-        AddNew: PermissionValues.allow,
-        identity: 'root/users/user1',
-      }),
+      security.setPermissions(1, [
+        {
+          AddNew: PermissionValues.allow,
+          identity: 'root/users/user1',
+        },
+      ]),
     ).toBeInstanceOf(Promise)
   })
 

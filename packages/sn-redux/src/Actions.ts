@@ -906,7 +906,7 @@ export const getPermissions = (idOrPath: string | number, identity?: string) => 
  * @param permissions permission request body
  */
 
-export const setPermissions = (idOrPath: string | number, permissions: PermissionRequestBody) => ({
+export const setPermissions = (idOrPath: string | number, permissions: PermissionRequestBody[]) => ({
   type: 'SET_PERMISSIONS',
   payload: (repository: Repository) => repository.security.setPermissions(idOrPath, permissions),
 })

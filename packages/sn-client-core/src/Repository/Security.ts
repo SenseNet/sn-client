@@ -226,13 +226,13 @@ export class Security {
    * @param {PermissionRequestBody} permissionRequestBody inheritance: break or unbreak
    * @returns {Promise<PermissionResponseModel>} A promise with a response model
    */
-  public setPermissions = (idOrPath: string | number, permissionRequestBody: PermissionRequestBody) =>
-    this.repository.executeAction<{ r: PermissionRequestBody }, void>({
+  public setPermissions = (idOrPath: string | number, permissionRequestBody: PermissionRequestBody[]) =>
+    this.repository.executeAction<{ r: PermissionRequestBody[] }, void>({
       name: 'SetPermissions',
       idOrPath,
       method: 'POST',
       body: {
-        r: permissionRequestBody as PermissionRequestBody,
+        r: permissionRequestBody as PermissionRequestBody[],
       },
     })
 
