@@ -250,6 +250,181 @@ const hasPermissionMockResponse = {
   text: async () => 'true',
 } as Response
 
+const getPermissionsMockResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return {
+      content: {
+        Id: 1225,
+        Path: '/Root/Content/Marketing',
+        Name: 'Marketing',
+      },
+      action: 'GetPermissions',
+      response: {
+        id: 1225,
+        path: '/Root/Content/Marketing',
+        inherits: true,
+        entries: [
+          {
+            identity: {
+              id: 7,
+              path: '/Root/IMS/BuiltIn/Portal/Administrators',
+              name: 'Administrators',
+              displayName: 'Administrators',
+              domain: null,
+              kind: 'group',
+            },
+            propagates: true,
+            permissions: {
+              See: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              Preview: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              PreviewWithoutWatermark: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              PreviewWithoutRedaction: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              Open: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              OpenMinor: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              Save: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              Publish: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              ForceCheckin: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              AddNew: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              Approve: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              Delete: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              RecallOldVersion: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              DeleteOldVersion: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              SeePermissions: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              SetPermissions: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              RunApplication: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              ManageListsAndWorkspaces: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              TakeOwnership: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              Unused13: null,
+              Unused12: null,
+              Unused11: null,
+              Unused10: null,
+              Unused09: null,
+              Unused08: null,
+              Unused07: null,
+              Unused06: null,
+              Unused05: null,
+              Unused04: null,
+              Unused03: null,
+              Unused02: null,
+              Unused01: null,
+              Custom01: null,
+              Custom02: null,
+              Custom03: null,
+              Custom04: null,
+              Custom05: null,
+              Custom06: null,
+              Custom07: null,
+              Custom08: null,
+              Custom09: null,
+              Custom10: null,
+              Custom11: null,
+              Custom12: null,
+              Custom13: null,
+              Custom14: null,
+              Custom15: null,
+              Custom16: null,
+              Custom17: null,
+              Custom18: null,
+              Custom19: null,
+              Custom20: null,
+              Custom21: null,
+              Custom22: null,
+              Custom23: null,
+              Custom24: null,
+              Custom25: null,
+              Custom26: null,
+              Custom27: null,
+              Custom28: null,
+              Custom29: null,
+              Custom30: null,
+              Custom31: null,
+              Custom32: null,
+            },
+          },
+        ],
+      },
+    }
+  },
+} as Response
+
 describe('Actions', () => {
   const path = '/workspaces/project'
   let repo: Repository
@@ -1603,6 +1778,37 @@ describe('Actions', () => {
         })
         it('should return mockdata', () => {
           expect(data).toBeTruthy()
+        })
+      })
+    })
+  })
+  describe('getPermission', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => getPermissionsMockResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getPermissions(path).type).toBe('GET_PERMISSIONS')
+    })
+
+    describe('serviceChecks()', () => {
+      let data: any
+      beforeEach(async () => {
+        data = await Actions.getPermissions(path).payload(repo)
+      })
+      describe('Given repository.getPermissions() resolves', () => {
+        it('should return a GET_PERMISSIONS action', () => {
+          expect(Actions.getPermissions(path)).toHaveProperty('type', 'GET_PERMISSIONS')
+        })
+        it('should return mockdata', () => {
+          expect(data.response.entries.length).toBeGreaterThan(0)
+        })
+      })
+      describe('Given repository.getPermissions() resolves with identity', () => {
+        it('should return a GET_PERMISSIONS action', () => {
+          expect(Actions.getPermissions(path, '/Root/IMS/Public/devdog')).toHaveProperty('type', 'GET_PERMISSIONS')
+        })
+        it('should return mockdata', () => {
+          expect(data.response.entries.length).toBeGreaterThan(0)
         })
       })
     })
