@@ -115,6 +115,13 @@ import { GoogleOauthProvider } from '@sensenet/authentication-google'
 import {
   CommentWithoutCreatedByAndId,
   Content,
+  GetAllowedUsersOptions,
+  GetParentGroupsOptions,
+  GetRelatedIdentities,
+  GetRelatedIdentitiesByPermissions,
+  GetRelatedItemsOneLevel,
+  GetRelatedItemsOptions,
+  GetRelatedPermissionsOptions,
   LoginState,
   ODataFieldParameter,
   ODataParams,
@@ -123,7 +130,7 @@ import {
   SharingOptions,
 } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
-import { FieldSetting, GenericContent, PermissionRequestBody, User } from '@sensenet/default-content-types'
+import { FieldSetting, GenericContent, Group, PermissionRequestBody, User } from '@sensenet/default-content-types'
 import { PromiseMiddlewareAction } from '@sensenet/redux-promise-middleware'
 
 /**
@@ -909,4 +916,67 @@ export const getPermissions = (idOrPath: string | number, identity?: string) => 
 export const setPermissions = (idOrPath: string | number, permissions: PermissionRequestBody[]) => ({
   type: 'SET_PERMISSIONS',
   payload: (repository: Repository) => repository.security.setPermissions(idOrPath, permissions),
+})
+
+/**
+ * Action creator for get allowed users on a content
+ * @param options user and permission options
+ */
+export const getAllowedUsers = (options: GetAllowedUsersOptions<User>) => ({
+  type: 'GET_ALLOWED_USERS',
+  payload: (repository: Repository) => repository.security.getAllowedUsers(options),
+})
+
+/**
+ * Action creator for get parent groups of a content
+ * @param options user and permission options
+ */
+export const getParentGroups = (options: GetParentGroupsOptions<Group>) => ({
+  type: 'GET_PARENT_GROUPS',
+  payload: (repository: Repository) => repository.security.getParentGroups(options),
+})
+
+/**
+ * Action creator for get related identites
+ * @param options user or group options
+ */
+export const getRelatedIdentities = (options: GetRelatedIdentities<User | Group>) => ({
+  type: 'GET_RELATED_IDENTITIES',
+  payload: (repository: Repository) => repository.security.getRelatedIdentities(options),
+})
+
+/**
+ * Action creator for get related identites by permissions
+ * @param options user or group options
+ */
+export const getRelatedIdentitiesByPermissions = (options: GetRelatedIdentitiesByPermissions<User | Group>) => ({
+  type: 'GET_RELATED_IDENTITIES_BY_PERMISSONS',
+  payload: (repository: Repository) => repository.security.getRelatedIdentitiesByPermissions(options),
+})
+
+/**
+ * Action creator for get related items
+ * @param options content options
+ */
+export const getRelatedItems = (options: GetRelatedItemsOptions<GenericContent>) => ({
+  type: 'GET_RELATED_ITEMS',
+  payload: (repository: Repository) => repository.security.getRelatedItems(options),
+})
+
+/**
+ * Action creator for get related items one level
+ * @param options content options
+ */
+export const getRelatedItemsOneLevel = (options: GetRelatedItemsOneLevel<GenericContent>) => ({
+  type: 'GET_RELATED_ITEMS_ONE_LEVEL',
+  payload: (repository: Repository) => repository.security.getRelatedItemsOneLevel(options),
+})
+
+/**
+ * Action creator for get related permissions
+ * @param options content options
+ */
+export const getRelatedPermissions = (options: GetRelatedPermissionsOptions<GenericContent>) => ({
+  type: 'GET_RELATED_PERMISSIONS',
+  payload: (repository: Repository) => repository.security.getRelatedPermissions(options),
 })
