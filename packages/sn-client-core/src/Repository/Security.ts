@@ -1,12 +1,5 @@
 import { PathHelper } from '@sensenet/client-utils'
-import {
-  Group,
-  IdentityKind,
-  Inheritance,
-  PermissionLevel,
-  PermissionRequestBody,
-  User,
-} from '@sensenet/default-content-types'
+import { Group, IdentityKind, PermissionLevel, PermissionRequestBody, User } from '@sensenet/default-content-types'
 import { Content, PermissionEntry } from '../index'
 import { ODataCollectionResponse } from '../Models/ODataCollectionResponse'
 import { ODataParams } from '../Models/ODataParams'
@@ -202,22 +195,6 @@ export interface GetParentGroupsOptions<T> {
  */
 export class Security {
   constructor(private readonly repository: Repository) {}
-
-  /**
-   * Sets permission inheritance on the requested content.
-   * @param {string | number} idOrPath A content id or path
-   * @param {Inheritance} inheritance inheritance: break or unbreak
-   * @returns {Promise<PermissionResponseModel>} A promise with a response model
-   */
-  public setPermissionInheritance = (idOrPath: string | number, inheritance: Inheritance) =>
-    this.repository.executeAction<{ r: Inheritance }, void>({
-      name: 'SetPermissions',
-      idOrPath,
-      method: 'POST',
-      body: {
-        r: inheritance as Inheritance,
-      },
-    })
 
   /**
    * Sets permissions on the requested content.
