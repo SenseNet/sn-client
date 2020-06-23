@@ -11,7 +11,14 @@ import {
   SharingLevel,
   SharingMode,
 } from '@sensenet/client-core'
-import { ActionModel, GenericContent, Task, User } from '@sensenet/default-content-types'
+import {
+  ActionModel,
+  GenericContent,
+  PermissionRequestBody,
+  PermissionValues,
+  Task,
+  User,
+} from '@sensenet/default-content-types'
 import * as Actions from '../src/Actions'
 
 const jwtMockResponse = {
@@ -1809,6 +1816,37 @@ describe('Actions', () => {
         })
         it('should return mockdata', () => {
           expect(data.response.entries.length).toBeGreaterThan(0)
+        })
+      })
+    })
+  })
+  describe('setPermissions', () => {
+    const permissions = [
+      {
+        identity: '/Root/IMS/Public/Editors',
+        localOnly: true,
+        AddNew: PermissionValues.allow,
+      } as PermissionRequestBody,
+    ]
+
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => emptyResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.setPermissions(path, permissions).type).toBe('SET_PERMISSIONS')
+    })
+
+    describe('serviceChecks()', () => {
+      let data: any
+      beforeEach(async () => {
+        data = await Actions.setPermissions(path, permissions).payload(repo)
+      })
+      describe('Given repository.setPermissions() resolves', () => {
+        it('should return a SET_PERMISSION action', () => {
+          expect(Actions.setPermissions(path, permissions)).toHaveProperty('type', 'SET_PERMISSIONS')
+        })
+        it('should return mockdata', () => {
+          expect(data).toBeUndefined()
         })
       })
     })
