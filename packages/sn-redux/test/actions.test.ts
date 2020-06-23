@@ -243,6 +243,13 @@ const contentTypeCollectionMockResponse = {
   },
 } as Response
 
+const hasPermissionMockResponse = {
+  ok: true,
+  status: 200,
+  json: async () => true,
+  text: async () => 'true',
+} as Response
+
 describe('Actions', () => {
   const path = '/workspaces/project'
   let repo: Repository
@@ -1562,6 +1569,40 @@ describe('Actions', () => {
         })
         it('should return mockdata', () => {
           expect(data).toBeUndefined()
+        })
+      })
+    })
+  })
+  describe('hasPermission', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => hasPermissionMockResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.hasPermission(path, ['Open']).type).toBe('HAS_PERMISSION')
+    })
+
+    describe('serviceChecks()', () => {
+      let data: any
+      beforeEach(async () => {
+        data = await Actions.hasPermission(path, ['Open']).payload(repo)
+      })
+      describe('Given repository.hasPermission() resolves', () => {
+        it('should return a HAS_PERMISSION action', () => {
+          expect(Actions.hasPermission(path, ['Open'])).toHaveProperty('type', 'HAS_PERMISSION')
+        })
+        it('should return mockdata', () => {
+          expect(data).toBeTruthy()
+        })
+      })
+      describe('Given repository.hasPermission() resolves with identity', () => {
+        it('should return a HAS_PERMISSION action', () => {
+          expect(Actions.hasPermission(path, ['Open'], '/Root/IMS/Public/devdog')).toHaveProperty(
+            'type',
+            'HAS_PERMISSION',
+          )
+        })
+        it('should return mockdata', () => {
+          expect(data).toBeTruthy()
         })
       })
     })
