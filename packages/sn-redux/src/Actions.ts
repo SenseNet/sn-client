@@ -819,3 +819,83 @@ export const deleteListField = (idOrPath: number | string) => ({
       method: 'POST',
     }),
 })
+
+/**
+ * Action creator for check whether the given identity has the given permissions
+ * @param idOrPath Id or Path of the content
+ * @param permissions List of permissions that should be checked
+ * @param identityPath Path of the identity
+ */
+export const hasPermission = (
+  idOrPath: number | string,
+  permissions: Array<
+    | 'See'
+    | 'Preview'
+    | 'PreviewWithoutWatermark'
+    | 'PreviewWithoutRedaction'
+    | 'Open'
+    | 'OpenMinor'
+    | 'Save'
+    | 'Publish'
+    | 'ForceCheckin'
+    | 'AddNew'
+    | 'Approve'
+    | 'Delete'
+    | 'RecallOldVersion'
+    | 'DeleteOldVersion'
+    | 'SeePermissions'
+    | 'SetPermissions'
+    | 'RunApplication'
+    | 'ManageListsAndWorkspaces'
+    | 'TakeOwnership'
+    | 'Custom01'
+    | 'Custom02'
+    | 'Custom03'
+    | 'Custom04'
+    | 'Custom05'
+    | 'Custom06'
+    | 'Custom07'
+    | 'Custom08'
+    | 'Custom09'
+    | 'Custom10'
+    | 'Custom11'
+    | 'Custom12'
+    | 'Custom13'
+    | 'Custom14'
+    | 'Custom15'
+    | 'Custom16'
+    | 'Custom17'
+    | 'Custom18'
+    | 'Custom19'
+    | 'Custom20'
+    | 'Custom21'
+    | 'Custom22'
+    | 'Custom23'
+    | 'Custom24'
+    | 'Custom25'
+    | 'Custom26'
+    | 'Custom27'
+    | 'Custom28'
+    | 'Custom29'
+    | 'Custom30'
+    | 'Custom31'
+    | 'Custom32'
+  >,
+  identityPath?: string,
+) => ({
+  type: 'HAS_PERMISSION',
+  payload: (repository: Repository) => repository.security.hasPermission(idOrPath, permissions, identityPath),
+})
+
+/**
+ * Action creator for get all permission settings for a content
+ * @param idOrPath Id or Path of the content
+ * @param identity Path of the identity
+ */
+export const getPermissions = (idOrPath: string | number, identity?: string) => ({
+  type: 'GET_PERMISSIONS',
+  payload: (repository: Repository) =>
+    identity
+      ? repository.security.getPermissionsForIdentity(idOrPath, identity)
+      : repository.security.getAllPermissions(idOrPath),
+})
