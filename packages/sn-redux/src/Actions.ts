@@ -123,7 +123,7 @@ import {
   SharingOptions,
 } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
-import { FieldSetting, GenericContent, User } from '@sensenet/default-content-types'
+import { FieldSetting, GenericContent, PermissionRequestBody, User } from '@sensenet/default-content-types'
 import { PromiseMiddlewareAction } from '@sensenet/redux-promise-middleware'
 
 /**
@@ -898,4 +898,15 @@ export const getPermissions = (idOrPath: string | number, identity?: string) => 
     identity
       ? repository.security.getPermissionsForIdentity(idOrPath, identity)
       : repository.security.getAllPermissions(idOrPath),
+})
+
+/**
+ * Action creator for set permissions on a content
+ * @param idOrPath Id or Path of the content
+ * @param permissions permission request body
+ */
+
+export const setPermissions = (idOrPath: string | number, permissions: PermissionRequestBody) => ({
+  type: 'SET_PERMISSIONS',
+  payload: (repository: Repository) => repository.security.setPermissions(idOrPath, permissions),
 })
