@@ -340,8 +340,8 @@ export class Security {
       idOrPath: options.contentIdOrPath,
       method: 'POST',
       body: {
-        level: options.level,
-        kind: options.kind,
+        permissionLevel: options.level,
+        indentityKind: options.kind,
       },
       oDataOptions: options.oDataOptions,
     })
@@ -359,9 +359,9 @@ export class Security {
       idOrPath: options.contentIdOrPath,
       method: 'POST',
       body: {
-        level: options.level,
+        permissionLevel: options.level,
         explicitOnly: options.explicitOnly,
-        member: options.memberPath,
+        memberPath: options.memberPath,
         includedTypes: options.includedTypes,
       },
       oDataOptions: options.oDataOptions,
@@ -378,9 +378,9 @@ export class Security {
       idOrPath: options.contentIdOrPath,
       method: 'POST',
       body: {
-        level: options.level,
+        permissionLevel: options.level,
         explicitOnly: options.explicitOnly,
-        member: options.member,
+        memberPath: options.member,
         permissions: options.permissions,
       },
       oDataOptions: options.oDataOptions,
@@ -400,8 +400,8 @@ export class Security {
       idOrPath: options.contentIdOrPath,
       method: 'POST',
       body: {
-        level: options.level,
-        kind: options.kind,
+        permissionLevel: options.level,
+        identityKind: options.kind,
         permissions: options.permissions,
       },
       oDataOptions: options.oDataOptions,
@@ -418,8 +418,8 @@ export class Security {
       idOrPath: options.contentIdOrPath,
       method: 'POST',
       body: {
-        level: options.level,
-        member: options.member,
+        permissionLevel: options.level,
+        memberPath: options.member,
         permissions: options.permissions,
       },
       oDataOptions: options.oDataOptions,
