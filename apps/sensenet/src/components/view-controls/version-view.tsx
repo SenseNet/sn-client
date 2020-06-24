@@ -21,6 +21,7 @@ import MediaQuery from 'react-responsive'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useDialogActionService, useLocalization, useSelectionService } from '../../hooks'
 import { useDialog } from '../dialogs'
+import { ViewTitle } from './view-title'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -146,73 +147,76 @@ export const VersionView: React.FC<VersionViewProps> = (props) => {
   }
 
   return (
-    <div
-      className={clsx(classes.mainForm, {
-        [classes.mainFormFullpage]: props.isFullPage,
-      })}>
+    <>
+      <ViewTitle title={'Versions of'} titleBold={selectionService.activeContent.getValue()?.DisplayName} />
       <div
-        className={clsx(classes.form, {
-          [classes.formFullPage]: props.isFullPage,
+        className={clsx(classes.mainForm, {
+          [classes.mainFormFullpage]: props.isFullPage,
         })}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>{localization.versionTableHead}</TableCell>
-              <TableCell>{localization.modifiedByTableHead}</TableCell>
-              <TableCell>{localization.commentTableHead}</TableCell>
-              <TableCell>{localization.rejectReasonTableHead}</TableCell>
-              <TableCell>{localization.restoreTableHead}</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {versions?.map((version, index) => (
-              <TableRow key={index}>
-                <TableCell>{version.Version}</TableCell>
-                <TableCell>
-                  {moment(version.VersionModificationDate).fromNow()}
-                  {` (${((version.VersionModifiedBy as any) as User).FullName})`}
-                </TableCell>
-                <TableCell>
-                  <Tooltip disableFocusListener={true} title={version.CheckInComments ?? ''}>
-                    <span>{version.CheckInComments ?? ''}</span>
-                  </Tooltip>
-                </TableCell>
-                <TableCell>
-                  <Tooltip disableFocusListener={true} title={version.RejectReason ?? ''}>
-                    <span>{version.RejectReason ?? ''}</span>
-                  </Tooltip>
-                </TableCell>
-                <TableCell padding="none" style={{ width: '5%' }}>
-                  {index !== versions.length - 1 ? (
-                    <IconButton onClick={() => restoreVersion(version)} title="{localization.restoreButtonTitle}">
-                      <HistoryIcon />
-                    </IconButton>
-                  ) : null}
-                </TableCell>
+        <div
+          className={clsx(classes.form, {
+            [classes.formFullPage]: props.isFullPage,
+          })}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>{localization.versionTableHead}</TableCell>
+                <TableCell>{localization.modifiedByTableHead}</TableCell>
+                <TableCell>{localization.commentTableHead}</TableCell>
+                <TableCell>{localization.rejectReasonTableHead}</TableCell>
+                <TableCell>{localization.restoreTableHead}</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHead>
+            <TableBody>
+              {versions?.map((version, index) => (
+                <TableRow key={index}>
+                  <TableCell>{version.Version}</TableCell>
+                  <TableCell>
+                    {moment(version.VersionModificationDate).fromNow()}
+                    {` (${((version.VersionModifiedBy as any) as User).FullName})`}
+                  </TableCell>
+                  <TableCell>
+                    <Tooltip disableFocusListener={true} title={version.CheckInComments ?? ''}>
+                      <span>{version.CheckInComments ?? ''}</span>
+                    </Tooltip>
+                  </TableCell>
+                  <TableCell>
+                    <Tooltip disableFocusListener={true} title={version.RejectReason ?? ''}>
+                      <span>{version.RejectReason ?? ''}</span>
+                    </Tooltip>
+                  </TableCell>
+                  <TableCell padding="none" style={{ width: '5%' }}>
+                    {index !== versions.length - 1 ? (
+                      <IconButton onClick={() => restoreVersion(version)} title="{localization.restoreButtonTitle}">
+                        <HistoryIcon />
+                      </IconButton>
+                    ) : null}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+        <div className={classes.actionButtonWrapper}>
+          <MediaQuery minDeviceWidth={700}>
+            <Button
+              color="default"
+              className={globalClasses.cancelButton}
+              onClick={async () => {
+                if (selectionService.activeContent.getValue() !== undefined) {
+                  const parentContent = await repo.load({
+                    idOrPath: PathHelper.getParentPath(selectionService.activeContent.getValue()!.Path),
+                  })
+                  selectionService.activeContent.setValue(parentContent.d)
+                }
+                dialogActionService.activeAction.setValue(undefined)
+                props.handleCancel?.()
+              }}>
+              {formLocalization.cancel}
+            </Button>
+          </MediaQuery>
+        </div>
       </div>
-      <div className={classes.actionButtonWrapper}>
-        <MediaQuery minDeviceWidth={700}>
-          <Button
-            color="default"
-            className={globalClasses.cancelButton}
-            onClick={async () => {
-              if (selectionService.activeContent.getValue() !== undefined) {
-                const parentContent = await repo.load({
-                  idOrPath: PathHelper.getParentPath(selectionService.activeContent.getValue()!.Path),
-                })
-                selectionService.activeContent.setValue(parentContent.d)
-              }
-              dialogActionService.activeAction.setValue(undefined)
-              props.handleCancel?.()
-            }}>
-            {formLocalization.cancel}
-          </Button>
-        </MediaQuery>
-      </div>
-    </div>
+    </>
   )
 }

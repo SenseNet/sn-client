@@ -14,6 +14,7 @@ import MediaQuery from 'react-responsive'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useDialogActionService, useLocalization, useSelectionService } from '../../hooks'
 import { ActionNameType, reactControlMapper } from '../react-control-mapper'
+import { ViewTitle } from './view-title'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -104,7 +105,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
       setContent(expanedContentResponse.d)
     }
     selectionService.activeContent.getValue() && getExpandedContent()
-  }, [])
+  }, [repo, selectionService.activeContent])
 
   useEffect(() => {
     const activeComponentObserve = selectionService.activeContent.subscribe(async (newActiveComponent) => {
@@ -174,90 +175,96 @@ export const EditView: React.FC<EditViewProps> = (props) => {
 
     const isFullWidthField = (field: { fieldSettings: FieldSetting }) => {
       return (
-        (field.fieldSettings.Name === 'Avatar' && content.Type === 'User') ||
-        (field.fieldSettings.Name === 'Enabled' && content.Type === 'User') ||
+        (field.fieldSettings.Name === 'Avatar' && content.Type.includes('User')) ||
+        (field.fieldSettings.Name === 'Enabled' && content.Type.includes('User')) ||
         field.fieldSettings.Type === 'LongTextFieldSetting'
       )
     }
 
     return (
-      <form
-        className={clsx(classes.mainForm, {
-          [classes.mainFormFullpage]: props.isFullPage,
-        })}
-        onSubmit={handleSubmit}>
-        <div
-          className={clsx(classes.form, {
-            [classes.formFullPage]: props.isFullPage,
-          })}>
-          <Grid container={true} spacing={2}>
-            {schema.fieldMappings
-              .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
-              .map((field) => {
-                const fieldControl = createElement(
-                  controlMapper.getControlForContentField(
-                    content.Type,
-                    field.fieldSettings.Name,
-                    props.actionName ? props.actionName : 'browse',
-                  ),
-                  {
-                    repository: repo,
-                    settings: field.fieldSettings,
-                    content,
-                    fieldValue: (content as any)[field.fieldSettings.Name],
-                    actionName: props.actionName,
-                    renderIcon: props.renderIcon,
-                    fieldOnChange: handleInputChange,
-                    uploadFolderPath: props.uploadFolderpath,
-                  },
-                )
+      <>
+        <ViewTitle
+          title={props.actionName === 'browse' ? 'Info about' : 'Edit'}
+          titleBold={selectionService.activeContent.getValue()?.DisplayName}
+        />
+        <form
+          className={clsx(classes.mainForm, {
+            [classes.mainFormFullpage]: props.isFullPage,
+          })}
+          onSubmit={handleSubmit}>
+          <div
+            className={clsx(classes.form, {
+              [classes.formFullPage]: props.isFullPage,
+            })}>
+            <Grid container={true} spacing={2}>
+              {schema.fieldMappings
+                .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
+                .map((field) => {
+                  const fieldControl = createElement(
+                    controlMapper.getControlForContentField(
+                      content.Type,
+                      field.fieldSettings.Name,
+                      props.actionName ? props.actionName : 'browse',
+                    ),
+                    {
+                      repository: repo,
+                      settings: field.fieldSettings,
+                      content,
+                      fieldValue: (content as any)[field.fieldSettings.Name],
+                      actionName: props.actionName,
+                      renderIcon: props.renderIcon,
+                      fieldOnChange: handleInputChange,
+                      uploadFolderPath: props.uploadFolderpath,
+                    },
+                  )
 
-                return (
-                  <Grid
-                    item={true}
-                    xs={12}
-                    sm={12}
-                    md={isFullWidthField(field) ? 12 : 6}
-                    lg={isFullWidthField(field) ? 12 : 6}
-                    xl={isFullWidthField(field) ? 12 : 6}
-                    key={field.fieldSettings.Name + content.Id}
-                    className={classes.grid}>
-                    <div
-                      className={clsx(classes.wrapper, {
-                        [classes.wrapperFullWidth]: isFullWidthField(field),
-                      })}>
-                      {fieldControl}
-                    </div>
-                  </Grid>
-                )
-              })}
-          </Grid>
-        </div>
-        <div className={classes.actionButtonWrapper}>
-          <MediaQuery minDeviceWidth={700}>
-            <Button
-              color="default"
-              className={globalClasses.cancelButton}
-              onClick={async () => {
-                if (selectionService.activeContent.getValue() !== undefined) {
-                  const parentContent = await repo.load({
-                    idOrPath: PathHelper.getParentPath(selectionService.activeContent.getValue()!.Path),
-                  })
-                  selectionService.activeContent.setValue(parentContent.d)
-                }
-                dialogActionService.activeAction.setValue(undefined)
-                props.handleCancel?.()
-              }}>
-              {localization.forms.cancel}
-            </Button>
-          </MediaQuery>
-          {props.actionName !== 'browse' && (
-            <Button variant="contained" color="primary" type="submit">
-              {localization.forms.submit}
-            </Button>
-          )}
-        </div>
-      </form>
+                  return (
+                    <Grid
+                      item={true}
+                      xs={12}
+                      sm={12}
+                      md={isFullWidthField(field) ? 12 : 6}
+                      lg={isFullWidthField(field) ? 12 : 6}
+                      xl={isFullWidthField(field) ? 12 : 6}
+                      key={field.fieldSettings.Name + content.Id}
+                      className={classes.grid}>
+                      <div
+                        className={clsx(classes.wrapper, {
+                          [classes.wrapperFullWidth]: isFullWidthField(field),
+                        })}>
+                        {fieldControl}
+                      </div>
+                    </Grid>
+                  )
+                })}
+            </Grid>
+          </div>
+          <div className={classes.actionButtonWrapper}>
+            <MediaQuery minDeviceWidth={700}>
+              <Button
+                color="default"
+                className={globalClasses.cancelButton}
+                onClick={async () => {
+                  if (selectionService.activeContent.getValue() !== undefined) {
+                    const parentContent = await repo.load({
+                      idOrPath: PathHelper.getParentPath(selectionService.activeContent.getValue()!.Path),
+                    })
+                    selectionService.activeContent.setValue(parentContent.d)
+                  }
+                  dialogActionService.activeAction.setValue(undefined)
+                  props.handleCancel?.()
+                }}>
+                {localization.forms.cancel}
+              </Button>
+            </MediaQuery>
+            {props.actionName !== 'browse' && (
+              <Button variant="contained" color="primary" type="submit">
+                {localization.forms.submit}
+              </Button>
+            )}
+          </div>
+        </form>
+      </>
     )
   }
 }

@@ -80,21 +80,33 @@ export const useDrawerItems = () => {
         case 'Content':
           return pathWithQueryParams({
             path: resolvePathParams({
-              path: applicationPaths.browse,
+              path: applicationPaths.content,
               params: { browseType: settings.content.browseType },
             }),
             newParams: { path: settings.content.root },
           })
         case 'UsersAndGroups':
-          return applicationPaths.usersAndGroups
+          return resolvePathParams({
+            path: applicationPaths.usersAndGroups,
+            params: { browseType: settings.content.browseType },
+          })
         case 'ContentTypes':
-          return applicationPaths.contentTypes
+          return resolvePathParams({
+            path: applicationPaths.contentTypes,
+            params: { browseType: settings.content.browseType },
+          })
         case 'Query':
           return pathWithQueryParams({ path: applicationPaths.search, newParams: { term: item.settings?.term } })
         case 'Localization':
-          return applicationPaths.localization
+          return resolvePathParams({
+            path: applicationPaths.localization,
+            params: { browseType: settings.content.browseType },
+          })
         case 'Trash':
-          return applicationPaths.trash
+          return resolvePathParams({
+            path: applicationPaths.trash,
+            params: { browseType: settings.content.browseType },
+          })
         case 'Setup':
           return applicationPaths.setup
         case 'Dashboard':

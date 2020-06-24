@@ -50,6 +50,10 @@ const styles = ({ palette }: Theme) =>
       marginTop: '11px',
       color: palette.primary.main,
     },
+    cancelButton: {
+      border: '2px solid #505050',
+      marginRight: '38px',
+    },
   })
 
 /**
@@ -78,7 +82,6 @@ class ReferenceGridComponent extends Component<
       this.getSelected()
     }
   }
-
   public async getSelected() {
     try {
       if (!this.props.repository) {
@@ -258,11 +261,14 @@ class ReferenceGridComponent extends Component<
                         renderIcon={this.props.renderIcon}
                       />
                       <DialogActions>
+                        <Button
+                          onClick={this.handleCancelClick}
+                          color="default"
+                          className={this.props.classes.cancelButton}>
+                          {localization.values.forms.cancel}
+                        </Button>
                         <Button variant="contained" onClick={this.handleOkClick} color="primary">
                           {localization.values.forms.ok}
-                        </Button>
-                        <Button variant="contained" onClick={this.handleCancelClick} color="secondary">
-                          {localization.values.forms.cancel}
                         </Button>
                       </DialogActions>
                     </div>

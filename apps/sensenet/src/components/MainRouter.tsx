@@ -8,11 +8,8 @@ import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './full-screen-loader'
 
-const UsersAndGroupsComponent = lazy(() => import(/* webpackChunkName: "UserAndGroup" */ './users-and-groups'))
-const LocalizationComponent = lazy(() => import(/* webpackChunkName: "Localization" */ './localization'))
-const ContentTypes = lazy(() => import(/* webpackChunkName: "ContentTypes" */ './content-types'))
 const WopiPage = lazy(() => import(/* webpackChunkName: "wopi" */ './wopi-page'))
-const ExploreComponent = lazy(() => import(/* webpackChunkName: "explore" */ './content'))
+const ContentComponent = lazy(() => import(/* webpackChunkName: "content" */ './content'))
 const DashboardComponent = lazy(() => import(/* webpackChunkName: "dashboard" */ './dashboard'))
 const SearchComponent = lazy(() => import(/* webpackChunkName: "search" */ './search'))
 const SavedQueriesComponent = lazy(() => import(/* webpackChunkName: "saved-queries" */ './search/saved-queries'))
@@ -62,9 +59,9 @@ export const MainRouter = () => {
             <EventListComponent />
           </Route>
 
-          <Route path={applicationPaths.browse}>
+          <Route path={applicationPaths.content}>
             <InvalidPathErrorBoundary>
-              <ExploreComponent />
+              <ContentComponent />
             </InvalidPathErrorBoundary>
           </Route>
 
@@ -89,15 +86,31 @@ export const MainRouter = () => {
           </Route>
 
           <Route path={applicationPaths.localization}>
-            <LocalizationComponent />
+            <ContentComponent rootPath="/Root/Localization" />
           </Route>
 
           <Route path={applicationPaths.usersAndGroups}>
-            <UsersAndGroupsComponent />
+            <ContentComponent
+              rootPath="/Root/IMS/Public"
+              fieldsToDisplay={['DisplayName', 'ModificationDate', 'ModifiedBy', 'Actions']}
+            />
           </Route>
 
           <Route path={applicationPaths.contentTypes}>
-            <ContentTypes />
+            <ContentComponent
+              rootPath="/Root/System/Schema/ContentTypes"
+              fieldsToDisplay={[
+                'DisplayName',
+                'Description',
+                'ParentTypeName' as any,
+                'ModificationDate',
+                'ModifiedBy',
+              ]}
+              loadChildrenSettings={{
+                select: ['DisplayName', 'Description', 'ParentTypeName' as any, 'ModificationDate', 'ModifiedBy'],
+                query: "+TypeIs:'ContentType' .AUTOFILTERS:OFF",
+              }}
+            />
           </Route>
 
           <Route path={applicationPaths.editBinary}>

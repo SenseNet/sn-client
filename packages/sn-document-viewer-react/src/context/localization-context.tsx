@@ -6,6 +6,8 @@ export const defaultLocalization = {
   rotateDocumentRight: 'Rotate document right',
   rotatePageLeft: 'Rotate page left',
   rotatePageRight: 'Rotate page right',
+  zoomIn: 'Zoom in',
+  zoomOut: 'Zoom out',
   zoomMode: 'Zoom mode',
   zoomModeFit: 'Fit',
   zoomModeOriginalSize: 'Original size',
