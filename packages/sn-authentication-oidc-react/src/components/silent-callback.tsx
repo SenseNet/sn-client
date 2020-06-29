@@ -1,10 +1,10 @@
-import { UserManager } from 'oidc-client'
 import React, { useEffect } from 'react'
+import { getUserManager } from '../authentication-service'
 
 export const SilentCallback = () => {
   useEffect(() => {
-    new UserManager({}).signinSilentCallback()
-  })
+    getUserManager()!.signinSilentCallback()
+  }, [])
 
   return <div />
 }

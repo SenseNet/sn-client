@@ -12,7 +12,7 @@ export const NotAuthenticatedOverride = (props: { clearState: Function }) => {
     if (message === 'access_denied') {
       window.localStorage.removeItem(authConfigKey)
       props.clearState()
-      history.push('/')
+      window.location.replace('/')
     }
   }, [history, message, props])
 

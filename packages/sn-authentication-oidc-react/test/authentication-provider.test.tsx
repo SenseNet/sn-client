@@ -100,6 +100,10 @@ describe('AuthenticationProvider component', () => {
   it('should show SilentCallback component when path equals to silent_redirect_uri', () => {
     delete window.location
     window.location = new URL('https://localhost:3000/auth/silentcallback') as any
+    const signinSilentCallback = jest.fn()
+    ;(getUserManager as any).mockImplementationOnce(() => {
+      return { signinSilentCallback }
+    })
 
     const wrapper = mount(
       <AuthenticationProvider
