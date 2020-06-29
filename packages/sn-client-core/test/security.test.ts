@@ -15,16 +15,38 @@ describe('Security', () => {
     repository.dispose()
   })
 
-  it('Should execute setPermissionInheritance', () => {
-    expect(security.setPermissionInheritance(1, Inheritance.Break)).toBeInstanceOf(Promise)
-  })
-
   it('Should execute setPermissions', () => {
     expect(
-      security.setPermissions(1, {
-        AddNew: PermissionValues.allow,
-        identity: 'root/users/user1',
-      }),
+      security.setPermissions(1, [
+        {
+          AddNew: PermissionValues.allow,
+          identity: 'root/users/user1',
+        },
+      ]),
+    ).toBeInstanceOf(Promise)
+  })
+
+  it('Should execute setPermissions with break', () => {
+    expect(
+      security.setPermissions(1, [
+        {
+          AddNew: PermissionValues.allow,
+          identity: 'root/users/user1',
+          inheritance: Inheritance.Break,
+        },
+      ]),
+    ).toBeInstanceOf(Promise)
+  })
+
+  it('Should execute setPermissions locally', () => {
+    expect(
+      security.setPermissions(1, [
+        {
+          AddNew: PermissionValues.allow,
+          identity: 'root/users/user1',
+          localOnly: true,
+        },
+      ]),
     ).toBeInstanceOf(Promise)
   })
 
