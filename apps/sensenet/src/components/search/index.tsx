@@ -14,11 +14,12 @@ import Save from '@material-ui/icons/Save'
 import clsx from 'clsx'
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { applicationPaths } from '../../application-paths'
+import { PATHS } from '../../application-paths'
+import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useSelectionService } from '../../hooks'
 import { useQuery } from '../../hooks/use-query'
-import { getPrimaryActionUrl } from '../../services'
+import { getPrimaryActionUrl, pathWithQueryParams } from '../../services'
 import { ContentList } from '../content-list'
 import { useDialog } from '../dialogs'
 
@@ -36,7 +37,7 @@ const useStyles = makeStyles(() => {
 })
 
 export const Search = () => {
-  const repo = useRepository()
+  const repository = useRepository()
   const termFromQuery = useQuery().get('term')
   const history = useHistory()
   const { openDialog } = useDialog()
@@ -49,6 +50,7 @@ export const Search = () => {
   const [result, setResult] = useState<GenericContent[]>()
   const [error, setError] = useState<string>()
   const loadSettingsContext = useContext(LoadSettingsContext)
+  const uiSettings = useContext(ResponsivePersonalSettings)
   const searchInputRef = useRef<HTMLInputElement>()
 
   const debouncedQuery = useCallback(
@@ -78,16 +80,16 @@ export const Search = () => {
     const ac = new AbortController()
     const fetchResult = async () => {
       if (!query) {
-        history.push(applicationPaths.search)
+        history.push(PATHS.search.appPath)
         setResult([])
         return
       }
       try {
         setResult([])
-        history.push(`${applicationPaths.search}?term=${encodeURIComponent(query)}`)
+        history.push(pathWithQueryParams({ path: PATHS.search.appPath, newParams: { term: query } }))
 
         const extendedQuery = `${query.trim()}* .AUTOFILTERS:OFF`
-        const r = await repo.loadCollection({
+        const r = await repository.loadCollection({
           path: ConstantContent.PORTAL_ROOT.Path,
           oDataOptions: {
             ...loadSettingsContext.loadChildrenSettings,
@@ -109,7 +111,7 @@ export const Search = () => {
 
     fetchResult()
     return () => ac.abort()
-  }, [history, loadSettingsContext.loadChildrenSettings, logger, query, repo])
+  }, [history, loadSettingsContext.loadChildrenSettings, logger, query, repository])
 
   return (
     <div className={globalClasses.contentWrapper}>
@@ -161,10 +163,10 @@ export const Search = () => {
               enableBreadcrumbs={false}
               parentIdOrPath={0}
               onParentChange={(p) => {
-                history.push(getPrimaryActionUrl(p, repo))
+                history.push(getPrimaryActionUrl({ content: p, repository, uiSettings }))
               }}
               onActivateItem={(p) => {
-                history.push(getPrimaryActionUrl(p, repo))
+                history.push(getPrimaryActionUrl({ content: p, repository, uiSettings }))
               }}
               onSelectionChange={(sel) => {
                 selectionService.selection.setValue(sel)

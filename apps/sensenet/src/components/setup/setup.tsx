@@ -7,8 +7,9 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import clsx from 'clsx'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useDialogActionSubscribe, useLocalization, useSelectionService } from '../../hooks'
 import { getPrimaryActionUrl } from '../../services/content-context-service'
@@ -16,8 +17,9 @@ import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { WellKnownContentCard } from './well-known-content-card'
 
 const Setup = () => {
-  const repo = useRepository()
+  const repository = useRepository()
   const localization = useLocalization().settings
+  const uiSettings = useContext(ResponsivePersonalSettings)
   const globalClasses = useGlobalStyles()
   const localizationDrawerTitles = useLocalization().drawer.titles
   const [wellKnownSettings, setWellKnownSettings] = useState<Settings[]>([])
@@ -30,7 +32,7 @@ const Setup = () => {
 
   useEffect(() => {
     ;(async () => {
-      const response = await repo.loadCollection({
+      const response = await repository.loadCollection({
         path: ConstantContent.PORTAL_ROOT.Path,
         oDataOptions: {
           orderby: [['Index' as any, 'asc']],
@@ -46,7 +48,7 @@ const Setup = () => {
         response.d.results.filter((setting) => !Object.keys(localization.descriptions).includes(setting.Path)),
       )
     })()
-  }, [localization.descriptions, repo])
+  }, [localization.descriptions, repository])
 
   return (
     <div className={globalClasses.contentWrapper}>
@@ -88,7 +90,10 @@ const Setup = () => {
           <Typography variant="h5">{localization.otherSettings}</Typography>
           <List>
             {settings.map((s) => (
-              <Link key={s.Id} to={getPrimaryActionUrl(s, repo)} style={{ textDecoration: 'none' }}>
+              <Link
+                key={s.Id}
+                to={getPrimaryActionUrl({ content: s, repository, uiSettings })}
+                style={{ textDecoration: 'none' }}>
                 <ListItem button={true}>
                   <ListItemText primary={s.DisplayName || s.Name} secondary={s.Path} />
                 </ListItem>

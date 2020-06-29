@@ -10,7 +10,8 @@ import CompareArrows from '@material-ui/icons/CompareArrows'
 import OpenInNewTwoTone from '@material-ui/icons/OpenInNewTwoTone'
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { applicationPaths, resolvePathParams } from '../../application-paths'
+import { PATHS, resolvePathParams } from '../../application-paths'
+import { ResponsivePersonalSettings } from '../../context'
 import { useLocalization } from '../../hooks'
 import { getPrimaryActionUrl } from '../../services'
 import { Icon } from '../Icon'
@@ -23,6 +24,7 @@ type ListProps = {
 
 export const List: React.FunctionComponent<ListProps> = (props) => {
   const { filter } = useContext(EventListFilterContext)
+  const uiSettings = useContext(ResponsivePersonalSettings)
   const repository = useRepository()
   const [effectiveValues, setEffectiveValues] = useState<Array<LeveledLogEntry<any>>>([])
   const localization = useLocalization().eventList.list
@@ -66,7 +68,7 @@ export const List: React.FunctionComponent<ListProps> = (props) => {
               <TableCell>
                 {row.data?.relatedContent && row.data?.relatedRepository ? (
                   <Link
-                    to={getPrimaryActionUrl(row.data.relatedContent, repository)}
+                    to={getPrimaryActionUrl({ content: row.data.relatedContent, repository, uiSettings })}
                     style={{ display: 'flex', alignItems: 'center' }}>
                     <Icon item={row.data.relatedContent} style={{ marginRight: 5 }} />
                     {row.data.relatedContent.DisplayName || row.data.relatedContent.Name}
@@ -76,14 +78,22 @@ export const List: React.FunctionComponent<ListProps> = (props) => {
               <TableCell>{row.data.added}</TableCell>
               <TableCell>
                 {row.data.details ? (
-                  <Link to={resolvePathParams({ path: applicationPaths.events, params: { eventGuid: row.data.guid } })}>
+                  <Link
+                    to={resolvePathParams({
+                      path: PATHS.events.appPath,
+                      params: { eventGuid: row.data.guid },
+                    })}>
                     <IconButton>
                       <OpenInNewTwoTone />
                     </IconButton>
                   </Link>
                 ) : null}
                 {row.data.compare ? (
-                  <Link to={resolvePathParams({ path: applicationPaths.events, params: { eventGuid: row.data.guid } })}>
+                  <Link
+                    to={resolvePathParams({
+                      path: PATHS.events.appPath,
+                      params: { eventGuid: row.data.guid },
+                    })}>
                     <IconButton>
                       <CompareArrows />
                     </IconButton>

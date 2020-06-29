@@ -10,8 +10,9 @@ import {
 } from '@sensenet/hooks-react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import clsx from 'clsx'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
+import { ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useSelectionService } from '../../hooks'
 import { useDialogActionService } from '../../hooks/use-dialogaction-service'
@@ -65,14 +66,15 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay, lo
   const globalClasses = useGlobalStyles()
   const [action, setAction] = useState<ActionNameType>()
   const [isTreeLoading, setIsTreeLoading] = useState(false)
-  const repo = useRepository()
+  const repository = useRepository()
   const history = useHistory()
   const dialogActionService = useDialogActionService()
+  const uiSettings = useContext(ResponsivePersonalSettings)
 
   const onActivateItemOverride = (activeItem: GenericContent) => {
-    getPrimaryActionUrl(activeItem, repo, true) === 'openEdit'
+    getPrimaryActionUrl({ content: activeItem, repository, uiSettings, editInpage: true }) === 'openEdit'
       ? dialogActionService.activeAction.setValue('edit')
-      : history.push(getPrimaryActionUrl(activeItem, repo))
+      : history.push(getPrimaryActionUrl({ content: activeItem, repository, uiSettings }))
   }
 
   useEffect(() => {

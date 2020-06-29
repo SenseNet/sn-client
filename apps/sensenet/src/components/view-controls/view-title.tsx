@@ -3,7 +3,7 @@ import { createStyles, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router'
-import { applicationPaths, resolvePathParams } from '../../application-paths'
+import { PATHS, resolvePathParams } from '../../application-paths'
 import { useGlobalStyles } from '../../globalStyles'
 import { useDialogActionService, useSelectionService } from '../../hooks'
 import { editviewFileResolver, Icon } from '../Icon'
@@ -58,7 +58,7 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
           selectionService.activeContent.getValue() &&
             history.push(
               resolvePathParams({
-                path: applicationPaths.editBinary,
+                path: PATHS.editBinary.appPath,
                 params: {
                   contentId: await getContentTypeId(selectionService.activeContent.getValue()!.Type),
                 },

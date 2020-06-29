@@ -9,7 +9,7 @@ import { Close, Menu } from '@material-ui/icons'
 import clsx from 'clsx'
 import React, { useContext, useState } from 'react'
 import { matchPath, NavLink, useLocation } from 'react-router-dom'
-import { applicationPaths } from '../../application-paths'
+import { PATHS } from '../../application-paths'
 import { ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
@@ -124,11 +124,11 @@ export const PermanentDrawer = () => {
                 </ListItemIcon>
               </ListItem>
             ) : null}
-            {matchPath(location.pathname, applicationPaths.savedQueries) ? <SearchButton isOpened={opened} /> : null}{' '}
+            {matchPath(location.pathname, PATHS.savedQueries.appPath) ? <SearchButton isOpened={opened} /> : null}{' '}
             {matchPath(location.pathname, [
-              applicationPaths.content,
-              applicationPaths.usersAndGroups,
-              applicationPaths.setup,
+              PATHS.content.appPath,
+              PATHS.usersAndGroups.appPath,
+              PATHS.setup.appPath,
             ]) ? (
               <AddButton isOpened={opened} path={currentPath} />
             ) : null}
@@ -141,7 +141,7 @@ export const PermanentDrawer = () => {
                   onClick={() => {
                     selectionService.activeContent.setValue(undefined)
                     dialogActionService.activeAction.setValue(undefined)
-                    setCurrentPath(item.root ? item.root : '')
+                    setCurrentPath(item.root || '')
                   }}
                   activeClassName={classes.navLinkActive}>
                   <ListItem
@@ -157,7 +157,7 @@ export const PermanentDrawer = () => {
                         {item.icon}
                       </Tooltip>
                     </ListItemIcon>
-                    {opened ? (
+                    {opened && (
                       <ListItemText
                         primary={item.primaryText}
                         style={{
@@ -165,7 +165,7 @@ export const PermanentDrawer = () => {
                             theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
                         }}
                       />
-                    ) : null}
+                    )}
                   </ListItem>
                 </NavLink>
               )

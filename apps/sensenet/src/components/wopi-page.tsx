@@ -3,7 +3,7 @@ import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { Button, createStyles, makeStyles, Typography } from '@material-ui/core'
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
-import { applicationPaths, resolvePathParams } from '../application-paths'
+import { PATHS, resolvePathParams } from '../application-paths'
 import { useGlobalStyles } from '../globalStyles'
 import { useLocalization } from '../hooks'
 import { FullScreenLoader } from './full-screen-loader'
@@ -106,7 +106,7 @@ export default function WopiPage() {
               onClick={() => {
                 history.push(
                   resolvePathParams({
-                    path: applicationPaths.wopi,
+                    path: PATHS.wopi.appPath,
                     params: { action: 'view', contentId: match.params.contentId!.toString() },
                   }),
                 )

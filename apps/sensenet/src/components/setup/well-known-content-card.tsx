@@ -7,8 +7,9 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import clsx from 'clsx'
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { ResponsivePersonalSettings } from '../../context'
 import { useLocalization } from '../../hooks'
 import { getPrimaryActionUrl } from '../../services'
 
@@ -47,7 +48,8 @@ type WellKnownContentCardProps = {
 
 export const WellKnownContentCard = ({ settings, onContextMenu }: WellKnownContentCardProps) => {
   const localization = useLocalization().settings
-  const repo = useRepository()
+  const repository = useRepository()
+  const uiSettings = useContext(ResponsivePersonalSettings)
   const classes = useStyles()
 
   return (
@@ -64,7 +66,9 @@ export const WellKnownContentCard = ({ settings, onContextMenu }: WellKnownConte
         <Typography color="textSecondary">{(localization.descriptions as any)[settings.Path]}</Typography>
       </CardContent>
       <CardActions style={{ justifyContent: 'flex-end' }}>
-        <Link to={getPrimaryActionUrl(settings, repo)} style={{ textDecoration: 'none' }}>
+        <Link
+          to={getPrimaryActionUrl({ content: settings, repository, uiSettings })}
+          style={{ textDecoration: 'none' }}>
           <Button size="small" className={classes.button} style={{ marginRight: '35px' }}>
             {localization.edit}
           </Button>
