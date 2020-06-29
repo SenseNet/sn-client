@@ -130,6 +130,7 @@ export const Search = () => {
             }}
           />
           <Button
+            aria-label={localization.saveQuery}
             style={{ flexShrink: 0 }}
             title={localization.saveQuery}
             onClick={() => {

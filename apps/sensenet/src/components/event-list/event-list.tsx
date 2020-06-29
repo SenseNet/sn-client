@@ -43,7 +43,7 @@ export default function EventList() {
           </div>
           {currentEvent ? (
             <Link to={resolvePathParams({ path: PATHS.events.appPath })}>
-              <Button style={{ textDecoration: 'none' }}>
+              <Button aria-label={localization.back} style={{ textDecoration: 'none' }}>
                 <KeyboardBackspace /> {localization.back}
               </Button>
             </Link>

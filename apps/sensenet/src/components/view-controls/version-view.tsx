@@ -200,6 +200,7 @@ export const VersionView: React.FC<VersionViewProps> = (props) => {
         <div className={classes.actionButtonWrapper}>
           <MediaQuery minDeviceWidth={700}>
             <Button
+              aria-label={formLocalization.cancel}
               color="default"
               className={globalClasses.cancelButton}
               onClick={async () => {

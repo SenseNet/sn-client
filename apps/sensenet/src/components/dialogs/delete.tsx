@@ -78,12 +78,14 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
         ) : null}
         <div>
           <Button
+            aria-label={localization.cancelButton}
             className={globalClasses.cancelButton}
             disabled={isDeleteInProgress}
             onClick={() => closeLastDialog()}>
             {localization.cancelButton}
           </Button>
           <Button
+            aria-label={isTrashBag ? localization.deletePermanently : localization.deleteButton}
             color="primary"
             variant="contained"
             autoFocus={true}
