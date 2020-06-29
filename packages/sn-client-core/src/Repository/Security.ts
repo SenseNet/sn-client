@@ -1,12 +1,5 @@
 import { PathHelper } from '@sensenet/client-utils'
-import {
-  Group,
-  IdentityKind,
-  Inheritance,
-  PermissionLevel,
-  PermissionRequestBody,
-  User,
-} from '@sensenet/default-content-types'
+import { Group, IdentityKind, PermissionLevel, PermissionRequestBody, User } from '@sensenet/default-content-types'
 import { Content, PermissionEntry } from '../index'
 import { ODataCollectionResponse } from '../Models/ODataCollectionResponse'
 import { ODataParams } from '../Models/ODataParams'
@@ -61,7 +54,7 @@ export interface GetRelatedPermissionsOptions<TMemberType> {
    * Null means filtering off. If the array is empty, there is no element that increases the counters.
    * This filter can reduce the execution speed dramatically so do not use if it is possible.
    */
-  includedTypes?: string[]
+  includedTypes: string[] | null
   /**
    * Optional OData parameters
    */
@@ -204,35 +197,19 @@ export class Security {
   constructor(private readonly repository: Repository) {}
 
   /**
-   * Sets permission inheritance on the requested content.
-   * @param {string | number} idOrPath A content id or path
-   * @param {Inheritance} inheritance inheritance: break or unbreak
-   * @returns {Promise<PermissionResponseModel>} A promise with a response model
-   */
-  public setPermissionInheritance = (idOrPath: string | number, inheritance: Inheritance) =>
-    this.repository.executeAction<{ r: Inheritance }, void>({
-      name: 'SetPermissions',
-      idOrPath,
-      method: 'POST',
-      body: {
-        r: inheritance as Inheritance,
-      },
-    })
-
-  /**
    * Sets permissions on the requested content.
    * You can add or remove permissions for one ore more users or groups using this action.
    * @param {string | number} idOrPath A content id or path
    * @param {PermissionRequestBody} permissionRequestBody inheritance: break or unbreak
    * @returns {Promise<PermissionResponseModel>} A promise with a response model
    */
-  public setPermissions = (idOrPath: string | number, permissionRequestBody: PermissionRequestBody) =>
-    this.repository.executeAction<{ r: PermissionRequestBody }, void>({
+  public setPermissions = (idOrPath: string | number, permissionRequestBody: PermissionRequestBody[]) =>
+    this.repository.executeAction<{ r: PermissionRequestBody[] }, void>({
       name: 'SetPermissions',
       idOrPath,
       method: 'POST',
       body: {
-        r: permissionRequestBody as PermissionRequestBody,
+        r: permissionRequestBody as PermissionRequestBody[],
       },
     })
 
@@ -363,8 +340,8 @@ export class Security {
       idOrPath: options.contentIdOrPath,
       method: 'POST',
       body: {
-        level: options.level,
-        kind: options.kind,
+        permissionLevel: options.level,
+        indentityKind: options.kind,
       },
       oDataOptions: options.oDataOptions,
     })
@@ -382,9 +359,9 @@ export class Security {
       idOrPath: options.contentIdOrPath,
       method: 'POST',
       body: {
-        level: options.level,
+        permissionLevel: options.level,
         explicitOnly: options.explicitOnly,
-        member: options.memberPath,
+        memberPath: options.memberPath,
         includedTypes: options.includedTypes,
       },
       oDataOptions: options.oDataOptions,
@@ -401,9 +378,9 @@ export class Security {
       idOrPath: options.contentIdOrPath,
       method: 'POST',
       body: {
-        level: options.level,
+        permissionLevel: options.level,
         explicitOnly: options.explicitOnly,
-        member: options.member,
+        memberPath: options.member,
         permissions: options.permissions,
       },
       oDataOptions: options.oDataOptions,
@@ -423,8 +400,8 @@ export class Security {
       idOrPath: options.contentIdOrPath,
       method: 'POST',
       body: {
-        level: options.level,
-        kind: options.kind,
+        permissionLevel: options.level,
+        identityKind: options.kind,
         permissions: options.permissions,
       },
       oDataOptions: options.oDataOptions,
@@ -441,8 +418,8 @@ export class Security {
       idOrPath: options.contentIdOrPath,
       method: 'POST',
       body: {
-        level: options.level,
-        member: options.member,
+        permissionLevel: options.level,
+        memberPath: options.member,
         permissions: options.permissions,
       },
       oDataOptions: options.oDataOptions,

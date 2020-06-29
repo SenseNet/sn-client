@@ -11,7 +11,16 @@ import {
   SharingLevel,
   SharingMode,
 } from '@sensenet/client-core'
-import { ActionModel, GenericContent, Task, User } from '@sensenet/default-content-types'
+import {
+  ActionModel,
+  GenericContent,
+  IdentityKind,
+  PermissionLevel,
+  PermissionRequestBody,
+  PermissionValues,
+  Task,
+  User,
+} from '@sensenet/default-content-types'
 import * as Actions from '../src/Actions'
 
 const jwtMockResponse = {
@@ -239,6 +248,661 @@ const contentTypeCollectionMockResponse = {
         __count: 0,
         results: [],
       },
+    }
+  },
+} as Response
+
+const hasPermissionMockResponse = {
+  ok: true,
+  status: 200,
+  json: async () => true,
+  text: async () => 'true',
+} as Response
+
+const getPermissionsMockResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return {
+      response: {
+        id: 1225,
+        path: '/Root/Content/Marketing',
+        inherits: true,
+        entries: [
+          {
+            identity: {
+              id: 7,
+              path: '/Root/IMS/BuiltIn/Portal/Administrators',
+              name: 'Administrators',
+              displayName: 'Administrators',
+              domain: null,
+              kind: 'group',
+            },
+            propagates: true,
+            permissions: {
+              See: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              Preview: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              PreviewWithoutWatermark: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              PreviewWithoutRedaction: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              Open: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              OpenMinor: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              Save: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              Publish: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              ForceCheckin: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              AddNew: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              Approve: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              Delete: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              RecallOldVersion: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              DeleteOldVersion: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              SeePermissions: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              SetPermissions: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              RunApplication: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              ManageListsAndWorkspaces: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              TakeOwnership: {
+                value: 'allow',
+                from: '/Root/Content',
+                identity: '/Root/IMS/BuiltIn/Portal/Administrators',
+              },
+              Unused13: null,
+              Unused12: null,
+              Unused11: null,
+              Unused10: null,
+              Unused09: null,
+              Unused08: null,
+              Unused07: null,
+              Unused06: null,
+              Unused05: null,
+              Unused04: null,
+              Unused03: null,
+              Unused02: null,
+              Unused01: null,
+              Custom01: null,
+              Custom02: null,
+              Custom03: null,
+              Custom04: null,
+              Custom05: null,
+              Custom06: null,
+              Custom07: null,
+              Custom08: null,
+              Custom09: null,
+              Custom10: null,
+              Custom11: null,
+              Custom12: null,
+              Custom13: null,
+              Custom14: null,
+              Custom15: null,
+              Custom16: null,
+              Custom17: null,
+              Custom18: null,
+              Custom19: null,
+              Custom20: null,
+              Custom21: null,
+              Custom22: null,
+              Custom23: null,
+              Custom24: null,
+              Custom25: null,
+              Custom26: null,
+              Custom27: null,
+              Custom28: null,
+              Custom29: null,
+              Custom30: null,
+              Custom31: null,
+              Custom32: null,
+            },
+          },
+        ],
+      },
+    }
+  },
+} as Response
+
+const allowedUsersResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return {
+      d: {
+        __count: 4,
+        results: [
+          {
+            Id: 1,
+            Path: '/Root/IMS/BuiltIn/Portal/Admin',
+            Name: 'Admin',
+            Type: 'User',
+            DisplayName: 'Admin',
+            Icon: 'User',
+            IsFile: false,
+            IsFolder: false,
+            ParentId: 5,
+            Version: 'V1.0.A',
+            PageCount: null,
+            Binary: null,
+            CreationDate: '2020-06-23T01:03:21.5405437Z',
+            Avatar: {
+              Url: '',
+            },
+            Description: null,
+          },
+          {
+            Id: 1141,
+            Path: '/Root/IMS/BuiltIn/Portal/previewadmin',
+            Name: 'previewadmin',
+            Type: 'User',
+            DisplayName: 'Preview Admin',
+            Icon: 'User',
+            IsFile: false,
+            IsFolder: false,
+            ParentId: 5,
+            Version: 'V1.0.A',
+            PageCount: null,
+            Binary: null,
+            CreationDate: '2020-06-23T01:03:43.05Z',
+            Avatar: {
+              Url: '',
+            },
+            Description: null,
+          },
+          {
+            Id: 1154,
+            Path: '/Root/IMS/Public/businesscat',
+            Name: 'businesscat',
+            Type: 'User',
+            DisplayName: 'Business Cat',
+            Icon: 'User',
+            IsFile: false,
+            IsFolder: false,
+            ParentId: 1109,
+            Version: 'V1.0.A',
+            PageCount: null,
+            Binary: null,
+            CreationDate: '2020-06-23T01:03:49.42Z',
+            Avatar: {
+              Url: '/Root/Content/demoavatars/businesscat.jpeg',
+            },
+            Description: null,
+          },
+          {
+            Id: 1157,
+            Path: '/Root/IMS/Public/editormanatee',
+            Name: 'editormanatee',
+            Type: 'User',
+            DisplayName: 'Editor Manatee',
+            Icon: 'User',
+            IsFile: false,
+            IsFolder: false,
+            ParentId: 1109,
+            Version: 'V1.0.A',
+            PageCount: null,
+            Binary: null,
+            CreationDate: '2020-06-23T01:03:50.6Z',
+            Avatar: {
+              Url: '/Root/Content/demoavatars/editormanatee.jpg',
+            },
+            Description: null,
+          },
+        ],
+      },
+    }
+  },
+} as Response
+
+const parentGroupResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return {
+      d: {
+        __count: 1,
+        results: [
+          {
+            Id: 1152,
+            Path: '/Root/IMS/Public/Administrators',
+            Name: 'Administrators',
+            Type: 'Group',
+            DisplayName: 'Administrators',
+            Icon: 'Group',
+            IsFile: false,
+            IsFolder: false,
+            ParentId: 1109,
+            Version: 'V1.0.A',
+            PageCount: null,
+            Binary: null,
+            CreationDate: '2020-06-23T01:03:48.81Z',
+            Avatar: null,
+            Description: 'Members of this group have full access.',
+          },
+        ],
+      },
+    }
+  },
+} as Response
+
+const relatedIdentitiesResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return {
+      d: {
+        __count: 8,
+        results: [
+          {
+            Id: 1178,
+            Path: '/Root/Content/IT/Groups/Members',
+            Name: 'Members',
+            Type: 'Group',
+            DisplayName: 'Members',
+            Icon: 'Group',
+            IsFile: false,
+            IsFolder: false,
+            ParentId: 1177,
+            Version: 'V1.0.A',
+            PageCount: null,
+            Binary: null,
+            CreationDate: '2012-10-25T16:44:17.143Z',
+            Avatar: null,
+            Description: '',
+          },
+          {
+            Id: 1179,
+            Path: '/Root/Content/IT/Groups/Owners',
+            Name: 'Owners',
+            Type: 'Group',
+            DisplayName: 'Owners',
+            Icon: 'Group',
+            IsFile: false,
+            IsFolder: false,
+            ParentId: 1177,
+            Version: 'V1.0.A',
+            PageCount: null,
+            Binary: null,
+            CreationDate: '2020-06-23T01:03:59.94Z',
+            Avatar: null,
+            Description: null,
+          },
+          {
+            Id: 1180,
+            Path: '/Root/Content/IT/Groups/Visitors',
+            Name: 'Visitors',
+            Type: 'Group',
+            DisplayName: 'Visitors',
+            Icon: 'Group',
+            IsFile: false,
+            IsFolder: false,
+            ParentId: 1177,
+            Version: 'V1.0.A',
+            PageCount: null,
+            Binary: null,
+            CreationDate: '2012-10-25T16:44:17.19Z',
+            Avatar: null,
+            Description: '',
+          },
+          {
+            Id: 6,
+            Path: '/Root/IMS/BuiltIn/Portal/Visitor',
+            Name: 'Visitor',
+            Type: 'User',
+            DisplayName: 'Visitor',
+            Icon: 'User',
+            IsFile: false,
+            IsFolder: false,
+            ParentId: 5,
+            Version: 'V1.0.A',
+            PageCount: null,
+            Binary: null,
+            CreationDate: '2020-06-23T01:03:21.5405437Z',
+            Avatar: {
+              Url: '',
+            },
+            Description: null,
+          },
+          {
+            Id: 7,
+            Path: '/Root/IMS/BuiltIn/Portal/Administrators',
+            Name: 'Administrators',
+            Type: 'Group',
+            DisplayName: 'Administrators',
+            Icon: 'Group',
+            IsFile: false,
+            IsFolder: false,
+            ParentId: 5,
+            Version: 'V1.0.A',
+            PageCount: null,
+            Binary: null,
+            CreationDate: '2020-06-23T01:03:21.5405437Z',
+            Avatar: null,
+            Description: null,
+          },
+          {
+            Id: 1152,
+            Path: '/Root/IMS/Public/Administrators',
+            Name: 'Administrators',
+            Type: 'Group',
+            DisplayName: 'Administrators',
+            Icon: 'Group',
+            IsFile: false,
+            IsFolder: false,
+            ParentId: 1109,
+            Version: 'V1.0.A',
+            PageCount: null,
+            Binary: null,
+            CreationDate: '2020-06-23T01:03:48.81Z',
+            Avatar: null,
+            Description: 'Members of this group have full access.',
+          },
+          {
+            Id: 1158,
+            Path: '/Root/IMS/Public/Editors',
+            Name: 'Editors',
+            Type: 'Group',
+            DisplayName: 'Editors',
+            Icon: 'Group',
+            IsFile: false,
+            IsFolder: false,
+            ParentId: 1109,
+            Version: 'V1.0.A',
+            PageCount: null,
+            Binary: null,
+            CreationDate: '2020-06-23T01:03:51.18Z',
+            Avatar: null,
+            Description: 'Members of this groups can manage content items, build and save custom search queries.',
+          },
+          {
+            Id: 8,
+            Path: '/Root/IMS/BuiltIn/Portal/Everyone',
+            Name: 'Everyone',
+            Type: 'Group',
+            DisplayName: 'Everyone',
+            Icon: 'Group',
+            IsFile: false,
+            IsFolder: false,
+            ParentId: 5,
+            Version: 'V1.0.A',
+            PageCount: null,
+            Binary: null,
+            CreationDate: '2020-06-23T01:03:21.5405437Z',
+            Avatar: null,
+            Description: null,
+          },
+        ],
+      },
+    }
+  },
+} as Response
+
+const relatedItemsResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return {
+      d: {
+        __count: 7,
+        results: [
+          {
+            Id: 1178,
+            Path: '/Root/Content/IT/Groups/Members',
+            Name: 'Members',
+            Type: 'Group',
+            DisplayName: 'Members',
+            Icon: 'Group',
+            IsFile: false,
+            IsFolder: false,
+            ParentId: 1177,
+            Version: 'V1.0.A',
+            PageCount: null,
+            Binary: null,
+            CreationDate: '2012-10-25T16:44:17.143Z',
+            Avatar: null,
+            Description: '',
+          },
+          {
+            Id: 1179,
+            Path: '/Root/Content/IT/Groups/Owners',
+            Name: 'Owners',
+            Type: 'Group',
+            DisplayName: 'Owners',
+            Icon: 'Group',
+            IsFile: false,
+            IsFolder: false,
+            ParentId: 1177,
+            Version: 'V1.0.A',
+            PageCount: null,
+            Binary: null,
+            CreationDate: '2020-06-23T01:03:59.94Z',
+            Avatar: null,
+            Description: null,
+          },
+          {
+            Id: 1180,
+            Path: '/Root/Content/IT/Groups/Visitors',
+            Name: 'Visitors',
+            Type: 'Group',
+            DisplayName: 'Visitors',
+            Icon: 'Group',
+            IsFile: false,
+            IsFolder: false,
+            ParentId: 1177,
+            Version: 'V1.0.A',
+            PageCount: null,
+            Binary: null,
+            CreationDate: '2012-10-25T16:44:17.19Z',
+            Avatar: null,
+            Description: '',
+          },
+          {
+            Id: 7,
+            Path: '/Root/IMS/BuiltIn/Portal/Administrators',
+            Name: 'Administrators',
+            Type: 'Group',
+            DisplayName: 'Administrators',
+            Icon: 'Group',
+            IsFile: false,
+            IsFolder: false,
+            ParentId: 5,
+            Version: 'V1.0.A',
+            PageCount: null,
+            Binary: null,
+            CreationDate: '2020-06-23T01:03:21.5405437Z',
+            Avatar: null,
+            Description: null,
+          },
+          {
+            Id: 1152,
+            Path: '/Root/IMS/Public/Administrators',
+            Name: 'Administrators',
+            Type: 'Group',
+            DisplayName: 'Administrators',
+            Icon: 'Group',
+            IsFile: false,
+            IsFolder: false,
+            ParentId: 1109,
+            Version: 'V1.0.A',
+            PageCount: null,
+            Binary: null,
+            CreationDate: '2020-06-23T01:03:48.81Z',
+            Avatar: null,
+            Description: 'Members of this group have full access.',
+          },
+          {
+            Id: 1158,
+            Path: '/Root/IMS/Public/Editors',
+            Name: 'Editors',
+            Type: 'Group',
+            DisplayName: 'Editors',
+            Icon: 'Group',
+            IsFile: false,
+            IsFolder: false,
+            ParentId: 1109,
+            Version: 'V1.0.A',
+            PageCount: null,
+            Binary: null,
+            CreationDate: '2020-06-23T01:03:51.18Z',
+            Avatar: null,
+            Description: 'Members of this groups can manage content items, build and save custom search queries.',
+          },
+          {
+            Id: 8,
+            Path: '/Root/IMS/BuiltIn/Portal/Everyone',
+            Name: 'Everyone',
+            Type: 'Group',
+            DisplayName: 'Everyone',
+            Icon: 'Group',
+            IsFile: false,
+            IsFolder: false,
+            ParentId: 5,
+            Version: 'V1.0.A',
+            PageCount: null,
+            Binary: null,
+            CreationDate: '2020-06-23T01:03:21.5405437Z',
+            Avatar: null,
+            Description: null,
+          },
+        ],
+      },
+    }
+  },
+} as Response
+
+const relatedPermissionsResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return {
+      See: 0,
+      Preview: 0,
+      PreviewWithoutWatermark: 0,
+      PreviewWithoutRedaction: 0,
+      Open: 0,
+      OpenMinor: 0,
+      Save: 0,
+      Publish: 0,
+      ForceCheckin: 0,
+      AddNew: 0,
+      Approve: 0,
+      Delete: 0,
+      RecallOldVersion: 0,
+      DeleteOldVersion: 0,
+      SeePermissions: 0,
+      SetPermissions: 0,
+      RunApplication: 0,
+      ManageListsAndWorkspaces: 0,
+      TakeOwnership: 0,
+      Unused13: 0,
+      Unused12: 0,
+      Unused11: 0,
+      Unused10: 0,
+      Unused09: 0,
+      Unused08: 0,
+      Unused07: 0,
+      Unused06: 0,
+      Unused05: 0,
+      Unused04: 0,
+      Unused03: 0,
+      Unused02: 0,
+      Unused01: 0,
+      Custom01: 0,
+      Custom02: 0,
+      Custom03: 0,
+      Custom04: 0,
+      Custom05: 0,
+      Custom06: 0,
+      Custom07: 0,
+      Custom08: 0,
+      Custom09: 0,
+      Custom10: 0,
+      Custom11: 0,
+      Custom12: 0,
+      Custom13: 0,
+      Custom14: 0,
+      Custom15: 0,
+      Custom16: 0,
+      Custom17: 0,
+      Custom18: 0,
+      Custom19: 0,
+      Custom20: 0,
+      Custom21: 0,
+      Custom22: 0,
+      Custom23: 0,
+      Custom24: 0,
+      Custom25: 0,
+      Custom26: 0,
+      Custom27: 0,
+      Custom28: 0,
+      Custom29: 0,
+      Custom30: 0,
+      Custom31: 0,
+      Custom32: 0,
     }
   },
 } as Response
@@ -1562,6 +2226,362 @@ describe('Actions', () => {
         })
         it('should return mockdata', () => {
           expect(data).toBeUndefined()
+        })
+      })
+    })
+  })
+  describe('hasPermission', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => hasPermissionMockResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.hasPermission(path, ['Open']).type).toBe('HAS_PERMISSION')
+    })
+
+    describe('serviceChecks()', () => {
+      let data: any
+      beforeEach(async () => {
+        data = await Actions.hasPermission(path, ['Open']).payload(repo)
+      })
+      describe('Given repository.hasPermission() resolves', () => {
+        it('should return a HAS_PERMISSION action', () => {
+          expect(Actions.hasPermission(path, ['Open'])).toHaveProperty('type', 'HAS_PERMISSION')
+        })
+        it('should return mockdata', () => {
+          expect(data).toBeTruthy()
+        })
+      })
+      describe('Given repository.hasPermission() resolves with identity', () => {
+        it('should return a HAS_PERMISSION action', () => {
+          expect(Actions.hasPermission(path, ['Open'], '/Root/IMS/Public/devdog')).toHaveProperty(
+            'type',
+            'HAS_PERMISSION',
+          )
+        })
+        it('should return mockdata', () => {
+          expect(data).toBeTruthy()
+        })
+      })
+    })
+  })
+  describe('getPermission', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => getPermissionsMockResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getPermissions(path).type).toBe('GET_PERMISSIONS')
+    })
+
+    describe('serviceChecks()', () => {
+      let data: any
+      beforeEach(async () => {
+        data = await Actions.getPermissions(path).payload(repo)
+      })
+      describe('Given repository.getPermissions() resolves', () => {
+        it('should return a GET_PERMISSIONS action', () => {
+          expect(Actions.getPermissions(path)).toHaveProperty('type', 'GET_PERMISSIONS')
+        })
+        it('should return mockdata', () => {
+          expect(data.response.entries.length).toBeGreaterThan(0)
+        })
+      })
+      describe('Given repository.getPermissions() resolves with identity', () => {
+        it('should return a GET_PERMISSIONS action', () => {
+          expect(Actions.getPermissions(path, '/Root/IMS/Public/devdog')).toHaveProperty('type', 'GET_PERMISSIONS')
+        })
+        it('should return mockdata', () => {
+          expect(data.response.entries.length).toBeGreaterThan(0)
+        })
+      })
+    })
+  })
+  describe('setPermissions', () => {
+    const permissions = [
+      {
+        identity: '/Root/IMS/Public/Editors',
+        localOnly: true,
+        AddNew: PermissionValues.allow,
+      } as PermissionRequestBody,
+    ]
+
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => emptyResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.setPermissions(path, permissions).type).toBe('SET_PERMISSIONS')
+    })
+
+    describe('serviceChecks()', () => {
+      let data: any
+      beforeEach(async () => {
+        data = await Actions.setPermissions(path, permissions).payload(repo)
+      })
+      describe('Given repository.setPermissions() resolves', () => {
+        it('should return a SET_PERMISSION action', () => {
+          expect(Actions.setPermissions(path, permissions)).toHaveProperty('type', 'SET_PERMISSIONS')
+        })
+        it('should return mockdata', () => {
+          expect(data).toBeUndefined()
+        })
+      })
+    })
+  })
+  describe('getAllowedUsers', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => allowedUsersResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getAllowedUsers({ contentIdOrPath: 1, permissions: ['Open'] }).type).toBe('GET_ALLOWED_USERS')
+    })
+
+    describe('serviceChecks()', () => {
+      let data: any
+      beforeEach(async () => {
+        data = await Actions.getAllowedUsers({ contentIdOrPath: 1, permissions: ['Open'] }).payload(repo)
+      })
+      describe('Given repository.getAllowedUsers() resolves', () => {
+        it('should return a GET_ALLOWED_USERS action', () => {
+          expect(Actions.getAllowedUsers({ contentIdOrPath: 1, permissions: ['Open'] })).toHaveProperty(
+            'type',
+            'GET_ALLOWED_USERS',
+          )
+        })
+        it('should return mockdata', () => {
+          expect(data.d.__count).toBe(4)
+        })
+      })
+    })
+  })
+  describe('getParentGroups', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => parentGroupResponse)
+    })
+    describe('Action types are types', () => {
+      expect(Actions.getParentGroups({ contentIdOrPath: 1, directOnly: true }).type).toBe('GET_PARENT_GROUPS')
+    })
+
+    describe('serviceChecks()', () => {
+      let data: any
+      beforeEach(async () => {
+        data = await Actions.getParentGroups({ contentIdOrPath: 1, directOnly: true }).payload(repo)
+      })
+      describe('Given repository.getParentGroups() resolves', () => {
+        it('should return a GET_PARENT_GROUPS action', () => {
+          expect(Actions.getParentGroups({ contentIdOrPath: 1, directOnly: true })).toHaveProperty(
+            'type',
+            'GET_PARENT_GROUPS',
+          )
+        })
+        it('should return mockdata', () => {
+          expect(data.d.__count).toBe(1)
+        })
+      })
+    })
+  })
+
+  describe('getRelatedIdentities', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => relatedIdentitiesResponse)
+    })
+    describe('Action types are types', () => {
+      expect(
+        Actions.getRelatedIdentities({ contentIdOrPath: 1, kind: IdentityKind.All, level: PermissionLevel.Allowed })
+          .type,
+      ).toBe('GET_RELATED_IDENTITIES')
+    })
+
+    describe('serviceChecks()', () => {
+      let data: any
+      beforeEach(async () => {
+        data = await Actions.getRelatedIdentities({
+          contentIdOrPath: 1,
+          kind: IdentityKind.All,
+          level: PermissionLevel.Allowed,
+        }).payload(repo)
+      })
+      describe('Given repository.getRelatedIdentities() resolves', () => {
+        it('should return a GET_RELATED_IDENTITIES action', () => {
+          expect(
+            Actions.getRelatedIdentities({
+              contentIdOrPath: 1,
+              kind: IdentityKind.All,
+              level: PermissionLevel.Allowed,
+            }),
+          ).toHaveProperty('type', 'GET_RELATED_IDENTITIES')
+        })
+        it('should return mockdata', () => {
+          expect(data.d.__count).toBe(8)
+        })
+      })
+    })
+  })
+  describe('getRelatedIdentitiesByPermissions', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => relatedIdentitiesResponse)
+    })
+    describe('Action types are types', () => {
+      expect(
+        Actions.getRelatedIdentitiesByPermissions({
+          contentIdOrPath: 1,
+          kind: IdentityKind.All,
+          level: PermissionLevel.Allowed,
+          permissions: ['Save'],
+        }).type,
+      ).toBe('GET_RELATED_IDENTITIES_BY_PERMISSONS')
+    })
+
+    describe('serviceChecks()', () => {
+      let data: any
+      beforeEach(async () => {
+        data = await Actions.getRelatedIdentitiesByPermissions({
+          contentIdOrPath: 1,
+          kind: IdentityKind.All,
+          level: PermissionLevel.Allowed,
+          permissions: ['Save'],
+        }).payload(repo)
+      })
+      describe('Given repository.getRelatedIdentitiesByPermissions() resolves', () => {
+        it('should return a GET_RELATED_IDENTITIES_BY_PERMISSONS action', () => {
+          expect(
+            Actions.getRelatedIdentitiesByPermissions({
+              contentIdOrPath: 1,
+              kind: IdentityKind.All,
+              level: PermissionLevel.Allowed,
+              permissions: ['Save'],
+            }),
+          ).toHaveProperty('type', 'GET_RELATED_IDENTITIES_BY_PERMISSONS')
+        })
+        it('should return mockdata', () => {
+          expect(data.d.__count).toBe(8)
+        })
+      })
+    })
+  })
+  describe('getRelatedItems', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => relatedItemsResponse)
+    })
+    describe('Action types are types', () => {
+      expect(
+        Actions.getRelatedItems({
+          contentIdOrPath: 1,
+          level: PermissionLevel.Allowed,
+          permissions: ['Save'],
+          explicitOnly: true,
+          member: '/Root/IMS/Public/Editors',
+        }).type,
+      ).toBe('GET_RELATED_ITEMS')
+    })
+
+    describe('serviceChecks()', () => {
+      let data: any
+      beforeEach(async () => {
+        data = await Actions.getRelatedItems({
+          contentIdOrPath: 1,
+          level: PermissionLevel.Allowed,
+          permissions: ['Save'],
+          explicitOnly: true,
+          member: '/Root/IMS/Public/Editors',
+        }).payload(repo)
+      })
+      describe('Given repository.getRelatedItems() resolves', () => {
+        it('should return a GET_RELATED_ITEMS action', () => {
+          expect(
+            Actions.getRelatedItems({
+              contentIdOrPath: 1,
+              level: PermissionLevel.Allowed,
+              permissions: ['Save'],
+              explicitOnly: true,
+              member: '/Root/IMS/Public/Editors',
+            }),
+          ).toHaveProperty('type', 'GET_RELATED_ITEMS')
+        })
+        it('should return mockdata', () => {
+          expect(data.d.__count).toBe(7)
+        })
+      })
+    })
+  })
+  describe('getRelatedItemsOneLevel', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => relatedItemsResponse)
+    })
+    describe('Action types are types', () => {
+      expect(
+        Actions.getRelatedItemsOneLevel({
+          contentIdOrPath: 1,
+          level: PermissionLevel.Allowed,
+          permissions: ['Save'],
+          member: '/Root/IMS/Public/Editors',
+        }).type,
+      ).toBe('GET_RELATED_ITEMS_ONE_LEVEL')
+    })
+
+    describe('serviceChecks()', () => {
+      let data: any
+      beforeEach(async () => {
+        data = await Actions.getRelatedItemsOneLevel({
+          contentIdOrPath: 1,
+          level: PermissionLevel.Allowed,
+          permissions: ['Save'],
+          member: '/Root/IMS/Public/Editors',
+        }).payload(repo)
+      })
+      describe('Given repository.getRelatedItemsOneLevel() resolves', () => {
+        it('should return a GET_RELATED_ITEMS_ONE_LEVEL action', () => {
+          expect(
+            Actions.getRelatedItemsOneLevel({
+              contentIdOrPath: 1,
+              level: PermissionLevel.Allowed,
+              permissions: ['Save'],
+              member: '/Root/IMS/Public/Editors',
+            }),
+          ).toHaveProperty('type', 'GET_RELATED_ITEMS_ONE_LEVEL')
+        })
+        it('should return mockdata', () => {
+          expect(data.d.__count).toBe(7)
+        })
+      })
+    })
+  })
+  describe('getRelatedPermissions', () => {
+    beforeEach(() => {
+      repo = new Repository({ repositoryUrl: 'https://dev.demo.sensenet.com/' }, async () => relatedPermissionsResponse)
+    })
+    describe('Action types are types', () => {
+      expect(
+        Actions.getRelatedPermissions({
+          contentIdOrPath: 1,
+          level: PermissionLevel.Allowed,
+          explicitOnly: true,
+          memberPath: '/Root/IMS/Public/Editors',
+        }).type,
+      ).toBe('GET_RELATED_PERMISSIONS')
+    })
+
+    describe('serviceChecks()', () => {
+      let data: any
+      beforeEach(async () => {
+        data = await Actions.getRelatedPermissions({
+          contentIdOrPath: 1,
+          level: PermissionLevel.Allowed,
+          explicitOnly: true,
+          memberPath: '/Root/IMS/Public/Editors',
+        }).payload(repo)
+      })
+      describe('Given repository.getRelatedPermissions() resolves', () => {
+        it('should return a GET_RELATED_PERMISSIONS action', () => {
+          expect(
+            Actions.getRelatedPermissions({
+              contentIdOrPath: 1,
+              level: PermissionLevel.Allowed,
+              explicitOnly: true,
+              memberPath: '/Root/IMS/Public/Editors',
+            }),
+          ).toHaveProperty('type', 'GET_RELATED_PERMISSIONS')
+        })
+        it('should return mockdata', () => {
+          expect(data.See).toBe(0)
         })
       })
     })
