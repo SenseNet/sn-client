@@ -10,7 +10,7 @@ export const configuration: UserManagerSettings = {
   response_type: 'code',
   post_logout_redirect_uri: `${window.location.origin}/`,
   scope: 'openid profile sensenet',
-  authority: 'https://is.sensenet.com/',
+  authority: 'https://is.demo.sensenet.com/',
   silent_redirect_uri: `${window.location.origin}/authentication/silent_callback`,
   extraQueryParams: { snrepo: repositoryUrl.replace(/\/\s*$/, '') },
   monitorSession: false,
