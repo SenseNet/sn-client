@@ -6,7 +6,7 @@ interface PathWithQueryParams {
 
 export const pathWithQueryParams = ({ path, newParams, currentParams }: PathWithQueryParams) => {
   if (!newParams) {
-    return path
+    return currentParams ? `${path}${path.slice(-1) === '?' ? '' : '?'}${currentParams.toString()}` : path
   }
 
   if (!currentParams) {

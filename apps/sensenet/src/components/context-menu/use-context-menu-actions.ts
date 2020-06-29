@@ -1,7 +1,9 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import { useDownload, useLogger, useRepository } from '@sensenet/hooks-react'
+import { useContext } from 'react'
 import { useHistory } from 'react-router'
-import { applicationPaths, resolvePathParams } from '../../application-paths'
+import { PATHS, resolvePathParams } from '../../application-paths'
+import { ResponsivePersonalSettings } from '../../context'
 import { useLoadContent } from '../../hooks'
 import { useDialogActionService } from '../../hooks/use-dialogaction-service'
 import { getPrimaryActionUrl } from '../../services'
@@ -15,11 +17,12 @@ export function useContextMenuActions(
 ) {
   const logger = useLogger('context-menu')
   const history = useHistory()
-  const repo = useRepository()
+  const repository = useRepository()
   const download = useDownload(content)
   const currentParent = useLoadContent({ idOrPath: content.ParentId!, isOpened }).content
   const { openDialog } = useDialog()
   const dialogActionService = useDialogActionService()
+  const uiSettings = useContext(ResponsivePersonalSettings)
 
   const getContentName = () => content.DisplayName ?? content.Name
 
@@ -44,11 +47,11 @@ export function useContextMenuActions(
         break
       }
       case 'Preview':
-        history.push(getPrimaryActionUrl(content, repo))
+        history.push(getPrimaryActionUrl({ content, repository, uiSettings }))
         break
       case 'CheckOut': {
         try {
-          const checkOutresult = await repo.versioning.checkOut(content.Id, contextMenuODataOptions)
+          const checkOutresult = await repository.versioning.checkOut(content.Id, contextMenuODataOptions)
           logger.information({
             message: `${getContentName()} checked out successfully.`,
           })
@@ -77,7 +80,7 @@ export function useContextMenuActions(
       case 'WopiOpenView':
         history.push(
           resolvePathParams({
-            path: applicationPaths.wopi,
+            path: PATHS.wopi.appPath,
             params: { action: 'view', contentId: content.Id.toString() },
           }),
         )
@@ -85,7 +88,7 @@ export function useContextMenuActions(
       case 'WopiOpenEdit':
         history.push(
           resolvePathParams({
-            path: applicationPaths.wopi,
+            path: PATHS.wopi.appPath,
             params: { action: 'edit', contentId: content.Id.toString() },
           }),
         )
@@ -95,7 +98,7 @@ export function useContextMenuActions(
         break
       case 'Publish':
         try {
-          const publishResult = await repo.versioning.publish(content.Id, contextMenuODataOptions)
+          const publishResult = await repository.versioning.publish(content.Id, contextMenuODataOptions)
           logger.information({ message: `${getContentName()} published successfully.` })
           setActions(publishResult.d)
         } catch (error) {
@@ -104,7 +107,7 @@ export function useContextMenuActions(
         break
       case 'UndoCheckOut':
         try {
-          const undoCheckOutResult = await repo.versioning.undoCheckOut(content.Id, contextMenuODataOptions)
+          const undoCheckOutResult = await repository.versioning.undoCheckOut(content.Id, contextMenuODataOptions)
           logger.information({ message: `${getContentName()} reverted successfully.` })
           setActions(undoCheckOutResult.d)
         } catch (error) {

@@ -5,8 +5,6 @@ import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/sty
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
 import clsx from 'clsx'
 import React, { useEffect, useRef, useState } from 'react'
-import { NavLink } from 'react-router-dom'
-import { applicationPaths } from '../../application-paths'
 import { useCurrentUser } from '../../context/current-user-provider'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization, usePersonalSettings } from '../../hooks'
@@ -163,9 +161,6 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                     primary={`${currentUser.DisplayName || currentUser.Name}`}
                   />
                 </MenuItem>
-                <NavLink to={applicationPaths.personalSettings} onClick={handleClose}>
-                  <MenuItem className={classes.menuItem}>{localization.topMenu.personalSettings}</MenuItem>
-                </NavLink>
                 <MenuItem onClick={logout} className={classes.menuItem}>
                   {localization.topMenu.logout}
                 </MenuItem>

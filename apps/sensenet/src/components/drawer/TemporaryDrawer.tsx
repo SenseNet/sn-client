@@ -13,7 +13,7 @@ import {
 import Settings from '@material-ui/icons/Settings'
 import React, { useContext } from 'react'
 import { Link, matchPath, NavLink, useLocation } from 'react-router-dom'
-import { applicationPaths } from '../../application-paths'
+import { PATHS } from '../../application-paths'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { useDrawerItems, useLocalization, useTheme } from '../../hooks'
 import { LogoutButton } from '../LogoutButton'
@@ -111,7 +111,7 @@ export const TemporaryDrawer = (props: TemporaryDrawerProps) => {
             <ListItemSecondaryAction>
               {device === 'mobile' ? null : (
                 <Link
-                  to={applicationPaths.personalSettings}
+                  to={PATHS.personalSettings.appPath}
                   style={{ textDecoration: 'none' }}
                   onClick={() => props.onClose()}>
                   <IconButton title={localization.personalSettingsTitle}>
