@@ -45,16 +45,15 @@ export interface AuthenticationProviderProps {
   callbackComponentOverride?: ReactNode
   configuration: UserManagerSettings
   customEvents?: CustomEvents
-  forceNew?: boolean
 }
 
-const setDefaultState = (configuration: UserManagerSettings, forceNew = false) => ({
-  userManager: authenticationService(configuration, forceNew),
+const setDefaultState = (configuration: UserManagerSettings) => ({
+  userManager: authenticationService(configuration),
   isLoading: false,
 })
 
 export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
-  const [oidcState, dispatch] = useReducer(oidcReducer, setDefaultState(props.configuration, props?.forceNew))
+  const [oidcState, dispatch] = useReducer(oidcReducer, setDefaultState(props.configuration))
 
   useEffect(() => {
     dispatch({ type: 'ON_LOADING' })
