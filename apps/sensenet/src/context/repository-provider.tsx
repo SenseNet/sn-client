@@ -98,7 +98,6 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
   return (
     <AuthenticationProvider
       configuration={authState.config}
-      forceNew={true}
       history={history}
       authenticating={
         <AuthOverrideSkeleton
