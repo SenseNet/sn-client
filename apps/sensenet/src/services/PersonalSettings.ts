@@ -110,6 +110,7 @@ export interface CustomContentDrawerItem
   extends DrawerItem<{
     root: string
     appPath: string
+    columns?: Array<keyof GenericContent>
   }> {
   itemType: 'CustomContent'
 }

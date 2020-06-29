@@ -283,6 +283,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                                   type: 'string',
                                   description: language.personalSettings.drawerCustomContentAppPath,
                                 },
+                                columns: { $ref: '#/definitions/columns' },
                               },
                               required: ['root', 'appPath'],
                             },

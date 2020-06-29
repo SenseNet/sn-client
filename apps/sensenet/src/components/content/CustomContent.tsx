@@ -17,7 +17,14 @@ export const CustomContent: React.FunctionComponent<ContentProps> = () => {
 
   switch (match.params.browseType) {
     default:
-      return <Explore currentPath={currentPath} onNavigate={onNavigate} rootPath={path} />
+      return (
+        <Explore
+          currentPath={currentPath}
+          onNavigate={onNavigate}
+          rootPath={path}
+          fieldsToDisplay={customDrawer?.settings.columns}
+        />
+      )
   }
 }
 
