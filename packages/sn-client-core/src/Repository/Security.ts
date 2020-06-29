@@ -54,7 +54,7 @@ export interface GetRelatedPermissionsOptions<TMemberType> {
    * Null means filtering off. If the array is empty, there is no element that increases the counters.
    * This filter can reduce the execution speed dramatically so do not use if it is possible.
    */
-  includedTypes?: string[]
+  includedTypes: string[] | null
   /**
    * Optional OData parameters
    */
