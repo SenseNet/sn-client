@@ -261,7 +261,7 @@ export const defaultSettings: PersonalSettingsType = {
         widgetType: 'markdown',
         settings: {
           content:
-            '<div>Discover capabilites of the API</div><br /><a style="color: #26a69a; line-height: 2rem" rel="noopener noreferrer" target="_blank" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">REST API</a><br /><a style="color: #26a69a; line-height: 2rem" rel="noopener noreferrer" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">Content Management API</a><br /><a rel="noopener noreferrer" target="_blank" href="https://community.sensenet.com/docs/built-in-odata-actions-and-functions/" style="color: #26a69a; line-height: 2rem">Document Preview API</a><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">User Management API</a>',
+            '<div>Discover capabilites of the API</div><br /><a style="color: #26a69a; line-height: 2rem" rel="noopener noreferrer" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">REST API</a><br /><a style="color: #26a69a; line-height: 2rem" rel="noopener noreferrer" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">Content Management API</a><br /><a rel="noopener noreferrer" target="_blank" href="https://community.sensenet.com/docs/built-in-odata-actions-and-functions/" style="color: #26a69a; line-height: 2rem">Document Preview API</a><br /><a style="color: #26a69a; line-height: 2rem" rel="noopener norefferrer" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">User Management API</a>',
         },
         minWidth: {
           default: '45%',
