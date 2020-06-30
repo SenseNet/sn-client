@@ -96,7 +96,7 @@ export const useVersionInfo = () => {
       const nugetPromises = result.Components.filter(
         (component) =>
           !component.ComponentId.toLocaleLowerCase().includes('demo') &&
-          component.ComponentId.toLocaleLowerCase().includes('aspose'),
+          !component.ComponentId.toLocaleLowerCase().includes('aspose'),
       ).map(async (component) => {
         try {
           const response = await fetch(
