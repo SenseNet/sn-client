@@ -93,7 +93,11 @@ export const useVersionInfo = () => {
         name: 'GetVersionInfo',
       })
 
-      const nugetPromises = result.Components.map(async (component) => {
+      const nugetPromises = result.Components.filter(
+        (component) =>
+          !component.ComponentId.toLocaleLowerCase().includes('demo') &&
+          !component.ComponentId.toLocaleLowerCase().includes('aspose'),
+      ).map(async (component) => {
         try {
           const response = await fetch(
             `https://api.nuget.org/v3/registration3-gz-semver2/${component.ComponentId.toLowerCase()}/index.json`,

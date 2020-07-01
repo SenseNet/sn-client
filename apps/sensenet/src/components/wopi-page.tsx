@@ -103,6 +103,7 @@ export default function WopiPage() {
         <>
           {match.params.action !== 'view' ? (
             <Button
+              aria-label={localization.tryOpenRead}
               onClick={() => {
                 history.push(
                   resolvePathParams({
@@ -115,7 +116,9 @@ export default function WopiPage() {
             </Button>
           ) : null}
 
-          <Button onClick={() => history.goBack()}>{localization.goBack}</Button>
+          <Button aria-label={localization.goBack} onClick={() => history.goBack()}>
+            {localization.goBack}
+          </Button>
         </>
       </div>
     )
@@ -152,7 +155,11 @@ export default function WopiPage() {
         </span>
       </div>
       <div className={classes.actionButtonWrapper}>
-        <Button color="default" className={globalClasses.cancelButton} onClick={history.goBack}>
+        <Button
+          aria-label={formsLocalization.cancel}
+          color="default"
+          className={globalClasses.cancelButton}
+          onClick={history.goBack}>
           {formsLocalization.cancel}
         </Button>
       </div>

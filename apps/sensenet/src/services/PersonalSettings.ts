@@ -250,7 +250,7 @@ export const defaultSettings: PersonalSettingsType = {
         widgetType: 'markdown',
         settings: {
           content:
-            '<div>To get started with sensenet</div><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" href="https://www.sensenet.com/try-it/snaas-overview">Overview</a><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" href="https://community.sensenet.com/docs/getting-started">Getting started</a><br /><a target="_blank" href="https://community.sensenet.com/tutorials" style="color: #26a69a; line-height: 2rem">Tutorials</a><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" href="/">Example apps</a>',
+            '<div>To get started with sensenet</div><br /><a style="color: #26a69a; line-height: 2rem" rel="noopener noreferrer" target="_blank" href="https://www.sensenet.com/try-it/snaas-overview">Overview</a><br /><a style="color: #26a69a; line-height: 2rem" rel="noopener noreferrer" target="_blank" href="https://community.sensenet.com/docs/getting-started">Getting started</a><br /><a rel="noopener noreferrer" target="_blank" href="https://community.sensenet.com/tutorials" style="color: #26a69a; line-height: 2rem">Tutorials</a><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" href="/">Example apps</a>',
         },
         minWidth: {
           default: '45%',
@@ -261,7 +261,7 @@ export const defaultSettings: PersonalSettingsType = {
         widgetType: 'markdown',
         settings: {
           content:
-            '<div>Discover capabilites of the API</div><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">REST API</a><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">Content Management API</a><br /><a target="_blank" href="https://community.sensenet.com/docs/built-in-odata-actions-and-functions/" style="color: #26a69a; line-height: 2rem">Document Preview API</a><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">User Management API</a>',
+            '<div>Discover capabilites of the API</div><br /><a style="color: #26a69a; line-height: 2rem" rel="noopener noreferrer" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">REST API</a><br /><a style="color: #26a69a; line-height: 2rem" rel="noopener noreferrer" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">Content Management API</a><br /><a rel="noopener noreferrer" target="_blank" href="https://community.sensenet.com/docs/built-in-odata-actions-and-functions/" style="color: #26a69a; line-height: 2rem">Document Preview API</a><br /><a style="color: #26a69a; line-height: 2rem" rel="noopener norefferrer" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">User Management API</a>',
         },
         minWidth: {
           default: '45%',
@@ -272,7 +272,7 @@ export const defaultSettings: PersonalSettingsType = {
         widgetType: 'markdown',
         settings: {
           content:
-            "<div style='text-align:center;'>If you need any help or further information, feel free to contact us!<br /><br /><a target='_blank' href='https://www.sensenet.com/contact' style='text-decoration: none;'><button style='margin-bottom: 2em' class='MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-contained MuiButton-containedPrimary'>Contact us</button></a></div>",
+            "<div style='text-align:center;'>If you need any help or further information, feel free to contact us!<br /><br /><a rel='noopener noreferrer' target='_blank' href='https://www.sensenet.com/contact' style='text-decoration: none;'><button style='margin-bottom: 2em' class='MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-contained MuiButton-containedPrimary'>Contact us</button></a></div>",
         },
         minWidth: {
           default: '100%',

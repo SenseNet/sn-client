@@ -209,7 +209,12 @@ export function UploadDialog(props: UploadDialogProps) {
         </DropFileArea>
         <Grid container justify="flex-end">
           {isUploadCompleted() ? null : (
-            <Button color="primary" disabled={isUploadInProgress} variant="contained" onClick={() => upload()}>
+            <Button
+              aria-label={localization.uploadButton}
+              color="primary"
+              disabled={isUploadInProgress}
+              variant="contained"
+              onClick={() => upload()}>
               {localization.uploadButton}
             </Button>
           )}

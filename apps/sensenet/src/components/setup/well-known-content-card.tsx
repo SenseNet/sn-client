@@ -69,7 +69,11 @@ export const WellKnownContentCard = ({ settings, onContextMenu }: WellKnownConte
         <Link
           to={getPrimaryActionUrl({ content: settings, repository, uiSettings })}
           style={{ textDecoration: 'none' }}>
-          <Button size="small" className={classes.button} style={{ marginRight: '35px' }}>
+          <Button
+            aria-label={localization.edit}
+            size="small"
+            className={classes.button}
+            style={{ marginRight: '35px' }}>
             {localization.edit}
           </Button>
         </Link>
@@ -78,7 +82,7 @@ export const WellKnownContentCard = ({ settings, onContextMenu }: WellKnownConte
           rel="noopener noreferrer"
           href={`${SETUP_DOCS_URL}${createAnchorFromName(settings.DisplayName ? settings.DisplayName : '')}`}
           style={{ textDecoration: 'none' }}>
-          <Button size="small" className={classes.button}>
+          <Button aria-label={localization.learnMore} size="small" className={classes.button}>
             {localization.learnMore}
           </Button>
         </a>

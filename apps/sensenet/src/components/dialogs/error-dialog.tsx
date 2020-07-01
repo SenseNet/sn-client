@@ -34,12 +34,16 @@ export function ErrorDialog(props: ErrorBoundaryState) {
           ) : null}
         </DialogContentText>
         <DialogActions>
-          <Button className={globalClasses.cancelButton} onClick={() => window.location.reload()}>
+          <Button
+            aria-label={localization.reload}
+            className={globalClasses.cancelButton}
+            onClick={() => window.location.reload()}>
             <RefreshTwoTone />
             {localization.reload}
           </Button>
 
           <Button
+            aria-label={localization.reportError}
             className={globalClasses.cancelButton}
             onClick={() => {
               openErrorReportingDialog()

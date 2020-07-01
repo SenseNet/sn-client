@@ -81,14 +81,14 @@ export function Approve(props: ApproveProps) {
       </DialogContent>
 
       <DialogActions style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Button onClick={closeLastDialog} className={globalClasses.cancelButton}>
+        <Button aria-label={localization.cancelButton} onClick={closeLastDialog} className={globalClasses.cancelButton}>
           {localization.cancelButton}
         </Button>
         <div>
-          <Button onClick={reject} className={globalClasses.cancelButton}>
+          <Button aria-label={localization.rejectButton} onClick={reject} className={globalClasses.cancelButton}>
             {localization.rejectButton}
           </Button>
-          <Button onClick={approve} color="primary" variant="contained">
+          <Button aria-label={localization.approveButton} onClick={approve} color="primary" variant="contained">
             {localization.approveButton}
           </Button>
         </div>

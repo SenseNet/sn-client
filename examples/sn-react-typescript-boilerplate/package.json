@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/react-typescript-boilerplate",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "license": "GPL-2.0",
@@ -34,10 +34,10 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.9.5",
-    "@sensenet/authentication-oidc-react": "^1.0.1",
-    "@sensenet/client-core": "^3.0.1",
-    "@sensenet/default-content-types": "^2.1.0",
-    "@sensenet/hooks-react": "^1.1.0"
+    "@sensenet/authentication-oidc-react": "^1.0.2",
+    "@sensenet/client-core": "^3.1.0",
+    "@sensenet/default-content-types": "^2.2.0",
+    "@sensenet/hooks-react": "^1.2.0"
   },
   "browserslist": {
     "production": [

@@ -75,6 +75,7 @@ export const AuthOverrideSkeleton = (props: {
                 marginTop: '1em',
               }}>
               <Button
+                aria-label={props.buttonText}
                 variant="contained"
                 color="primary"
                 style={{ width: '100%', backgroundColor: '#26A69A' }}

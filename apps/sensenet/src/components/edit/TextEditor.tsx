@@ -184,7 +184,10 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
             marginRight: '1em',
           }}>
           {props.additionalButtons ? props.additionalButtons : null}
-          <Button disabled={!hasChanges} onClick={() => setTextValue(savedTextValue)}>
+          <Button
+            aria-label={localization.textEditor.reset}
+            disabled={!hasChanges}
+            onClick={() => setTextValue(savedTextValue)}>
             {localization.textEditor.reset}
           </Button>
         </div>
@@ -213,11 +216,16 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
         }}
       />
       <div className={classes.actionButtonWrapper}>
-        <Button color="default" className={globalClasses.cancelButton} onClick={history.goBack}>
+        <Button
+          aria-label={localization.forms.cancel}
+          color="default"
+          className={globalClasses.cancelButton}
+          onClick={history.goBack}>
           {localization.forms.cancel}
         </Button>
 
         <Button
+          aria-label={localization.forms.submit}
           variant="contained"
           color="primary"
           type="submit"

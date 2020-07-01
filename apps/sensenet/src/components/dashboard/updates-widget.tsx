@@ -47,7 +47,9 @@ export const UpdatesWidget: React.FunctionComponent<Widget<undefined>> = (props)
                       rel="noopener noreferrer"
                       style={{ textDecoration: 'none' }}
                       href={`https://www.nuget.org/packages/${info.ComponentId}`}>
-                      <Button variant="contained">{localization.view}</Button>
+                      <Button aria-label={localization.view} variant="contained">
+                        {localization.view}
+                      </Button>
                     </a>
                   </ListItemSecondaryAction>
                 </ListItem>

@@ -112,7 +112,11 @@ export default function DocViewer(props: { previousLocation?: Location }) {
         </CurrentContentProvider>
       </div>
       <div className={classes.actionButtonWrapper}>
-        <Button color="default" className={globalClasses.cancelButton} onClick={closeViewer}>
+        <Button
+          color="default"
+          className={globalClasses.cancelButton}
+          onClick={closeViewer}
+          aria-label={localization.customActions.resultsDialog.closeButton}>
           {localization.customActions.resultsDialog.closeButton}
         </Button>
       </div>

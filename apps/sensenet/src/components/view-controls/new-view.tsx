@@ -180,6 +180,7 @@ export const NewView: React.FC<NewViewProps> = (props) => {
         <div className={classes.actionButtonWrapper}>
           <MediaQuery minDeviceWidth={700}>
             <Button
+              aria-label={localization.forms.cancel}
               color="default"
               className={globalClasses.cancelButton}
               onClick={() => {
@@ -193,7 +194,7 @@ export const NewView: React.FC<NewViewProps> = (props) => {
               {localization.forms.cancel}
             </Button>
           </MediaQuery>
-          <Button variant="contained" color="primary" type="submit">
+          <Button aria-label={localization.forms.submit} variant="contained" color="primary" type="submit">
             {localization.forms.submit}
           </Button>
         </div>

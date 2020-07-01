@@ -262,12 +262,17 @@ class ReferenceGridComponent extends Component<
                       />
                       <DialogActions>
                         <Button
+                          aria-label={localization.values.forms.cancel}
                           onClick={this.handleCancelClick}
                           color="default"
                           className={this.props.classes.cancelButton}>
                           {localization.values.forms.cancel}
                         </Button>
-                        <Button variant="contained" onClick={this.handleOkClick} color="primary">
+                        <Button
+                          aria-label={localization.values.forms.ok}
+                          variant="contained"
+                          onClick={this.handleOkClick}
+                          color="primary">
                           {localization.values.forms.ok}
                         </Button>
                       </DialogActions>

@@ -82,10 +82,15 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
         {isExecInProgress && <LinearProgress />}
       </DialogContent>
       <DialogActions>
-        <Button className={globalClasses.cancelButton} onClick={() => closeLastDialog()} disabled={isExecInProgress}>
+        <Button
+          aria-label={localization.cancelButton}
+          className={globalClasses.cancelButton}
+          onClick={() => closeLastDialog()}
+          disabled={isExecInProgress}>
           {localization.cancelButton}
         </Button>
         <Button
+          aria-label={localization.copyButton}
           color="primary"
           variant="contained"
           autoFocus={true}

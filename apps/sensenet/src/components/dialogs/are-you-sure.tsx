@@ -29,10 +29,10 @@ export function AreYouSure(props: AreYouSureProps) {
       <DialogTitle>{titleText}</DialogTitle>
       <DialogContent dangerouslySetInnerHTML={{ __html: bodyText }} />
       <DialogActions>
-        <Button color="primary" variant="contained" onClick={() => callBack()}>
+        <Button aria-label={submitText} color="primary" variant="contained" onClick={() => callBack()}>
           {submitText}
         </Button>
-        <Button className={globalClasses.cancelButton} onClick={() => closeLastDialog()}>
+        <Button aria-label={cancelText} className={globalClasses.cancelButton} onClick={() => closeLastDialog()}>
           {cancelText}
         </Button>
       </DialogActions>
