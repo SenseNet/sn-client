@@ -144,7 +144,7 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
           <div style={{ display: 'table-row' }}>
             <div style={{ position: 'relative', display: 'table-cell', minWidth: 100 }}>
               <InputLabel htmlFor="raised-button-file" style={{ transform: 'translate(0, 4px) scale(1)' }}>
-                <Button variant="contained" component="span" color="primary">
+                <Button aria-label="Upload" variant="contained" component="span" color="primary">
                   Upload
                 </Button>
               </InputLabel>

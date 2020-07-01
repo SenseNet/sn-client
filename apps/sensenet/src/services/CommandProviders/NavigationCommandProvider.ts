@@ -1,16 +1,23 @@
-import { Injectable } from '@sensenet/client-utils'
-import { applicationPaths, resolvePathParams } from '../../application-paths'
+import { Injectable, Injector } from '@sensenet/client-utils'
+import { PATHS, resolvePathParams } from '../../application-paths'
 import { CommandPaletteItem } from '../../components/command-palette/CommandPalette'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
 import { LocalizationService } from '../LocalizationService'
+import { PersonalSettings } from '../PersonalSettings'
 
 @Injectable({ lifetime: 'transient' })
 export class NavigationCommandProvider implements CommandProvider {
   public getRoutes: ({ term }: SearchOptions) => Array<CommandPaletteItem & { keywords?: string }> = ({ term }) => {
+    const personalSettingsService = this.injector.getInstance(PersonalSettings)
+    const settings = personalSettingsService.effectiveValue.getValue()
+
     return [
       {
         primaryText: this.localizationValues.contentPrimary,
-        url: resolvePathParams({ path: applicationPaths.browse }),
+        url: resolvePathParams({
+          path: PATHS.content.appPath,
+          params: { browseType: settings.default.content.browseType },
+        }),
         secondaryText: this.localizationValues.contentSecondary,
         content: { Type: 'PortalRoot' } as any,
         keywords: 'explore browse repository',
@@ -18,7 +25,7 @@ export class NavigationCommandProvider implements CommandProvider {
       },
       {
         primaryText: this.localizationValues.searchPrimary,
-        url: applicationPaths.search,
+        url: PATHS.search.appPath,
         secondaryText: this.localizationValues.searchSecondaryText,
         content: { Type: 'Search' } as any,
         keywords: 'search find content query',
@@ -26,7 +33,7 @@ export class NavigationCommandProvider implements CommandProvider {
       },
       {
         primaryText: this.localizationValues.savedQueriesPrimary,
-        url: applicationPaths.savedQueries,
+        url: PATHS.savedQueries.appPath,
         secondaryText: this.localizationValues.savedQueriesSecondaryText,
         content: { Type: 'Search' } as any,
         keywords: 'saved query search find',
@@ -34,7 +41,7 @@ export class NavigationCommandProvider implements CommandProvider {
       },
       {
         primaryText: this.localizationValues.eventsPrimary,
-        url: resolvePathParams({ path: applicationPaths.events }),
+        url: resolvePathParams({ path: PATHS.events.appPath }),
         secondaryText: this.localizationValues.eventsSecondary,
         content: { Type: 'EventLog' } as any,
         keywords: 'event events error warning log logs',
@@ -62,7 +69,7 @@ export class NavigationCommandProvider implements CommandProvider {
     return this.getRoutes(options).filter((route) => this.routeIncludesTerm(route, termLowerCase))
   }
 
-  constructor(localization: LocalizationService) {
+  constructor(public readonly injector: Injector, localization: LocalizationService) {
     this.localizationValues = localization.currentValues.getValue().navigationCommandProvider
   }
 }

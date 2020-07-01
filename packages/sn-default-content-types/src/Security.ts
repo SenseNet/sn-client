@@ -24,6 +24,7 @@ export enum PermissionLevel {
 export class PermissionRequestBody {
   public identity!: string
   public localOnly?: boolean
+  public inheritance?: Inheritance
   public RestrictedPreview?: PermissionValues
   public PreviewWithoutWatermakr?: PermissionValues
   public PreviewWithoutRedaction?: PermissionValues

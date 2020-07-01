@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography'
 import KeyboardBackspace from '@material-ui/icons/KeyboardBackspace'
 import React, { useEffect, useState } from 'react'
 import { Link, useRouteMatch } from 'react-router-dom'
-import { applicationPaths, resolvePathParams } from '../../application-paths'
+import { PATHS, resolvePathParams } from '../../application-paths'
 import { useEventService, useLocalization, useTheme } from '../../hooks'
 import { Icon } from '../Icon'
 import { EventDetails } from './details'
@@ -42,8 +42,8 @@ export default function EventList() {
             <Typography variant="h4">{currentEvent ? currentEvent.message : 'Event list'} </Typography>
           </div>
           {currentEvent ? (
-            <Link to={resolvePathParams({ path: applicationPaths.events })}>
-              <Button style={{ textDecoration: 'none' }}>
+            <Link to={resolvePathParams({ path: PATHS.events.appPath })}>
+              <Button aria-label={localization.back} style={{ textDecoration: 'none' }}>
                 <KeyboardBackspace /> {localization.back}
               </Button>
             </Link>

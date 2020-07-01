@@ -39,11 +39,6 @@ export default function BrowseProperties() {
           select: 'all',
           expand: ['Manager', 'FollowedWorkspaces', 'ModifiedBy'] as any,
         }}>
-        <div
-          className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}
-          style={{ marginLeft: '30px' }}>
-          <span style={{ fontSize: '20px' }}>Browse {selectionService.activeContent.getValue()?.DisplayName}</span>
-        </div>
         <EditView
           uploadFolderpath="/Root/Content/demoavatars"
           handleCancel={history.goBack}

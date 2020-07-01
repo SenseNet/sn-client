@@ -187,10 +187,11 @@ export function ExecuteActionDialog({ actionValue, uri }: ExecuteActionDialogPro
         <div style={{ flex: 1, marginLeft: '1.5em' }}>
           {error ? <Typography color="error">{error}</Typography> : null}
         </div>
-        <Button className={globalClasses.cancelButton} onClick={closeLastDialog}>
+        <Button aria-label={localization.cancelButton} className={globalClasses.cancelButton} onClick={closeLastDialog}>
           {localization.cancelButton}
         </Button>
         <Button
+          aria-label={localization.executeButton}
           color="primary"
           variant="contained"
           autoFocus={!actionValue?.metadata?.parameters?.length}

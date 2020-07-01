@@ -114,7 +114,11 @@ export function SettingsEditor() {
                     control={<Switch onClick={() => setShowDefaults(!showDefaults)} />}
                     label={localization.values.personalSettings.showDefaults}
                   />
-                  <Button onClick={openAreYouSureDialog}>{localization.values.personalSettings.restoreDefaults}</Button>
+                  <Button
+                    aria-label={localization.values.personalSettings.restoreDefaults}
+                    onClick={openAreYouSureDialog}>
+                    {localization.values.personalSettings.restoreDefaults}
+                  </Button>
                 </>
               }
               saveContent={async (_c, v) => {

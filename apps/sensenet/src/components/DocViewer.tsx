@@ -4,10 +4,10 @@ import {
   LayoutAppBar,
   RotateActivePagesWidget,
   RotateDocumentWidget,
+  ROTATION_MODE,
   ToggleCommentsWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
-  ZoomModeWidget,
 } from '@sensenet/document-viewer-react'
 import { CurrentContentProvider, useLogger } from '@sensenet/hooks-react'
 import { Button, createStyles, makeStyles, Theme } from '@material-ui/core'
@@ -100,9 +100,8 @@ export default function DocViewer(props: { previousLocation?: Location }) {
                   activeColor={theme.palette.primary.main}
                 />
                 <ZoomInOutWidget />
-                <ZoomModeWidget />
-                <RotateActivePagesWidget />
-                <RotateDocumentWidget />
+                <RotateActivePagesWidget mode={ROTATION_MODE.clockwise} />
+                <RotateDocumentWidget mode={ROTATION_MODE.clockwise} />
               </div>
               <DocumentTitlePager />
               <div>
@@ -113,7 +112,11 @@ export default function DocViewer(props: { previousLocation?: Location }) {
         </CurrentContentProvider>
       </div>
       <div className={classes.actionButtonWrapper}>
-        <Button color="default" className={globalClasses.cancelButton} onClick={closeViewer}>
+        <Button
+          color="default"
+          className={globalClasses.cancelButton}
+          onClick={closeViewer}
+          aria-label={localization.customActions.resultsDialog.closeButton}>
           {localization.customActions.resultsDialog.closeButton}
         </Button>
       </div>

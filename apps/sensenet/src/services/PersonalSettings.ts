@@ -15,7 +15,7 @@ export interface UiSettings {
   drawer: {
     enabled: boolean
     type: 'temporary' | 'permanent' | 'mini-variant'
-    items: Array<DrawerItem<any>>
+    items: Array<CustomDrawerItem<any>>
   }
 }
 
@@ -52,16 +52,16 @@ export interface QueryWidget<T extends GenericContent>
 
 export type WidgetSection = MarkdownWidget | QueryWidget<GenericContent> | UpdatesWidget
 
-export const DrawerItemType = tuple(
+export const CustomDrawerItemType = tuple('CustomContent', 'Query', 'Dashboard')
+
+export const BuiltInDrawerItemType = tuple(
   'Content',
-  'Query',
   'ContentTypes',
   'Localization',
   'Search',
   'Setup',
   'Trash',
   'UsersAndGroups',
-  'Dashboard',
 )
 
 export const ActionType = tuple(
@@ -95,20 +95,24 @@ export const ActionType = tuple(
 
 export interface DrawerItem<T> {
   settings?: T
-  itemType: typeof DrawerItemType[number]
+  itemType: typeof CustomDrawerItemType[number] | typeof BuiltInDrawerItemType[number]
   permissions?: Array<{
     path: string
     action: typeof ActionType[number]
   }>
 }
 
-export interface ContentDrawerItem
+export interface CustomDrawerItem<T> extends DrawerItem<T> {
+  itemType: typeof CustomDrawerItemType[number]
+}
+
+export interface CustomContentDrawerItem
   extends DrawerItem<{
-    title: string
-    description?: string
-    icon: string
+    root: string
+    appPath: string
+    columns?: Array<keyof GenericContent>
   }> {
-  itemType: 'Content'
+  itemType: 'CustomContent'
 }
 
 export interface QueryDrawerItem
@@ -130,10 +134,6 @@ export interface DashboardDrawerItem
     icon: string
   }> {
   itemType: 'Dashboard'
-}
-
-export interface BuiltinDrawerItem extends DrawerItem<undefined> {
-  itemType: 'ContentTypes' | 'Localization' | 'Search' | 'Setup' | 'Trash' | 'UsersAndGroups'
 }
 
 export type PersonalSettingsType = PlatformDependent<UiSettings> & {
@@ -250,7 +250,7 @@ export const defaultSettings: PersonalSettingsType = {
         widgetType: 'markdown',
         settings: {
           content:
-            '<div>To get started with sensenet</div><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" href="https://www.sensenet.com/try-it/snaas-overview">Overview</a><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" href="https://community.sensenet.com/docs/getting-started">Getting started</a><br /><a target="_blank" href="https://community.sensenet.com/tutorials" style="color: #26a69a; line-height: 2rem">Tutorials</a><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" href="/">Example apps</a>',
+            '<div>To get started with sensenet</div><br /><a style="color: #26a69a; line-height: 2rem" rel="noopener noreferrer" target="_blank" href="https://www.sensenet.com/try-it/snaas-overview">Overview</a><br /><a style="color: #26a69a; line-height: 2rem" rel="noopener noreferrer" target="_blank" href="https://community.sensenet.com/docs/getting-started">Getting started</a><br /><a rel="noopener noreferrer" target="_blank" href="https://community.sensenet.com/tutorials" style="color: #26a69a; line-height: 2rem">Tutorials</a><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" href="/">Example apps</a>',
         },
         minWidth: {
           default: '45%',
@@ -261,7 +261,7 @@ export const defaultSettings: PersonalSettingsType = {
         widgetType: 'markdown',
         settings: {
           content:
-            '<div>Discover capabilites of the API</div><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">REST API</a><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">Content Management API</a><br /><a target="_blank" href="https://community.sensenet.com/docs/built-in-odata-actions-and-functions/" style="color: #26a69a; line-height: 2rem">Document Preview API</a><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">User Management API</a>',
+            '<div>Discover capabilites of the API</div><br /><a style="color: #26a69a; line-height: 2rem" rel="noopener noreferrer" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">REST API</a><br /><a style="color: #26a69a; line-height: 2rem" rel="noopener noreferrer" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">Content Management API</a><br /><a rel="noopener noreferrer" target="_blank" href="https://community.sensenet.com/docs/built-in-odata-actions-and-functions/" style="color: #26a69a; line-height: 2rem">Document Preview API</a><br /><a style="color: #26a69a; line-height: 2rem" rel="noopener norefferrer" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">User Management API</a>',
         },
         minWidth: {
           default: '45%',
@@ -272,7 +272,7 @@ export const defaultSettings: PersonalSettingsType = {
         widgetType: 'markdown',
         settings: {
           content:
-            "<div style='text-align:center;'>If you need any help or further information, feel free to contact us!<br /><br /><a target='_blank' href='https://www.sensenet.com/contact' style='text-decoration: none;'><button style='margin-bottom: 2em' class='MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-contained MuiButton-containedPrimary'>Contact us</button></a></div>",
+            "<div style='text-align:center;'>If you need any help or further information, feel free to contact us!<br /><br /><a rel='noopener noreferrer' target='_blank' href='https://www.sensenet.com/contact' style='text-decoration: none;'><button style='margin-bottom: 2em' class='MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-contained MuiButton-containedPrimary'>Contact us</button></a></div>",
         },
         minWidth: {
           default: '100%',
@@ -289,48 +289,13 @@ export const defaultSettings: PersonalSettingsType = {
     drawer: {
       enabled: true,
       type: 'mini-variant',
-      items: [
-        { itemType: 'Search', settings: undefined },
-        {
-          itemType: 'Content',
-          permissions: [{ path: '/Root/Content', action: 'Browse' }],
-        },
-        {
-          itemType: 'UsersAndGroups',
-          settings: { root: '/Root/IMS/Public' },
-          permissions: [{ path: '/Root/IMS/Public', action: 'Add' }],
-        },
-        {
-          itemType: 'Trash',
-          settings: { root: '/Root/Trash' },
-          permissions: [{ path: '/Root/Trash', action: 'Edit' }],
-        },
-        {
-          itemType: 'ContentTypes',
-          settings: { root: '/Root/System/Schema/ContentTypes' },
-          permissions: [{ path: '/Root/System/Schema/ContentTypes', action: 'Add' }],
-        },
-        {
-          itemType: 'Localization',
-          settings: { root: '/Root/Localization' },
-          permissions: [{ path: '/Root/Localization', action: 'Add' }],
-        },
-        {
-          itemType: 'Setup',
-          settings: { root: '/Root/System/Settings' },
-          permissions: [{ path: '/Root/System/Settings', action: 'Browse' }],
-        },
-      ],
+      items: [],
     },
     commandPalette: { enabled: true, wrapQuery: '{0} .AUTOFILTERS:OFF' },
   },
   mobile: {
     drawer: {
       type: 'temporary',
-    },
-    content: {
-      browseType: 'simple',
-      fields: ['DisplayName'],
     },
   },
   language: 'default',
@@ -348,39 +313,19 @@ export const defaultSettings: PersonalSettingsType = {
 @Injectable({ lifetime: 'singleton' })
 export class PersonalSettings {
   private checkDrawerItems(settings: Partial<PersonalSettingsType>): Partial<PersonalSettingsType> {
-    if (
-      settings.default &&
-      settings.default.drawer &&
-      settings.default.drawer.items &&
-      settings.default.drawer.items.find((i) => typeof i === 'string')
-    ) {
+    if (settings.default?.drawer?.items?.find((i) => typeof i === 'string')) {
       ;(settings.default.drawer.items as any) = undefined
     }
 
-    if (
-      settings.desktop &&
-      settings.desktop.drawer &&
-      settings.desktop.drawer.items &&
-      settings.desktop.drawer.items.find((i) => typeof i === 'string')
-    ) {
+    if (settings.desktop?.drawer?.items?.find((i) => typeof i === 'string')) {
       ;(settings.desktop.drawer.items as any) = undefined
     }
 
-    if (
-      settings.tablet &&
-      settings.tablet.drawer &&
-      settings.tablet.drawer.items &&
-      settings.tablet.drawer.items.find((i) => typeof i === 'string')
-    ) {
+    if (settings.tablet?.drawer?.items?.find((i) => typeof i === 'string')) {
       ;(settings.tablet.drawer.items as any) = undefined
     }
 
-    if (
-      settings.mobile &&
-      settings.mobile.drawer &&
-      settings.mobile.drawer.items &&
-      settings.mobile.drawer.items.find((i) => typeof i === 'string')
-    ) {
+    if (settings.mobile?.drawer?.items?.find((i) => typeof i === 'string')) {
       ;(settings.mobile.drawer.items as any) = undefined
     }
 

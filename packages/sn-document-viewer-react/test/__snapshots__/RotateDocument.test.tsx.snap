@@ -1,3 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RotateDocument component Should render without crashing 1`] = `<Component />`;
+
+exports[`RotateDocument component Should render without crashing with mode param 1`] = `
+<Component
+  mode={0}
+/>
+`;
+
+exports[`RotateDocument component Should render without crashing with mode param 2`] = `
+<Component
+  mode={1}
+/>
+`;
+
+exports[`RotateDocument component Should render without crashing with mode param 3`] = `
+<Component
+  mode={2}
+/>
+`;

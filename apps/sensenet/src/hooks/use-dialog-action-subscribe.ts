@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useHistory } from 'react-router'
-import { applicationPaths, resolvePathParams } from '../application-paths'
+import { PATHS, resolvePathParams } from '../application-paths'
 import { useDialogActionService } from './use-dialogaction-service'
 import { useSelectionService } from './use-selection-service'
 
@@ -16,7 +16,7 @@ export const useDialogActionSubscribe = () => {
           case 'edit':
             history.push(
               resolvePathParams({
-                path: applicationPaths.editProperties,
+                path: PATHS.editProperties.appPath,
                 params: { contentId: selectionService.activeContent.getValue()!.Id },
               }),
             )
@@ -24,7 +24,7 @@ export const useDialogActionSubscribe = () => {
           case 'browse':
             history.push(
               resolvePathParams({
-                path: applicationPaths.browseProperties,
+                path: PATHS.browseProperties.appPath,
                 params: { contentId: selectionService.activeContent.getValue()!.Id },
               }),
             )
@@ -32,7 +32,7 @@ export const useDialogActionSubscribe = () => {
           case 'version':
             history.push(
               resolvePathParams({
-                path: applicationPaths.versionProperties,
+                path: PATHS.versionProperties.appPath,
                 params: { contentId: selectionService.activeContent.getValue()!.Id },
               }),
             )

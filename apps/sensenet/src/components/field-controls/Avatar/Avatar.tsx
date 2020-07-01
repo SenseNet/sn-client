@@ -44,6 +44,9 @@ const styles = ({ palette }: Theme) =>
       flexFlow: 'column',
       alignItems: 'center',
     },
+    cancelButton: {
+      border: '2px solid #505050',
+    },
   })
 
 const DEFAULT_AVATAR_PATH = '/Root/Sites/Default_Site/demoavatars/Admin.png'
@@ -162,8 +165,18 @@ class AvatarComponent extends Component<
                       remove={this.removeItem}
                     />
                     <DialogActions>
-                      <Button onClick={this.handleCancelClick}>{localization.values.forms.cancel}</Button>
-                      <Button variant="contained" onClick={this.handleOkClick} color="secondary">
+                      <Button
+                        aria-label={localization.values.forms.cancel}
+                        onClick={this.handleCancelClick}
+                        color="default"
+                        className={this.props.classes.cancelButton}>
+                        {localization.values.forms.cancel}
+                      </Button>
+                      <Button
+                        aria-label={localization.values.forms.ok}
+                        variant="contained"
+                        onClick={this.handleOkClick}
+                        color="primary">
                         {localization.values.forms.ok}
                       </Button>
                     </DialogActions>

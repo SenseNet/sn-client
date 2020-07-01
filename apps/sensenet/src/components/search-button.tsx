@@ -12,7 +12,7 @@ import Add from '@material-ui/icons/Add'
 import clsx from 'clsx'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { applicationPaths } from '../application-paths'
+import { PATHS } from '../application-paths'
 import { globals, useGlobalStyles } from '../globalStyles'
 import { useLocalization } from '../hooks'
 
@@ -44,7 +44,7 @@ export const SearchButton: React.FunctionComponent<SearchButtonProps> = (props) 
       {!props.isOpened ? (
         <div className={globalClasses.drawerIconButtonWrapper}>
           <Tooltip title={localization.newSearch} placement="right">
-            <Link style={{ textDecoration: 'none' }} to={applicationPaths.search}>
+            <Link style={{ textDecoration: 'none' }} to={PATHS.search.appPath}>
               <IconButton className={globalClasses.drawerButton}>
                 <Add className={globalClasses.drawerButtonIcon} />
               </IconButton>
@@ -52,7 +52,7 @@ export const SearchButton: React.FunctionComponent<SearchButtonProps> = (props) 
           </Tooltip>
         </div>
       ) : (
-        <Link className={classes.navLinkListItem} to={applicationPaths.search}>
+        <Link className={classes.navLinkListItem} to={PATHS.search.appPath}>
           <ListItem button={true} style={{ height: globals.common.drawerItemHeight }}>
             <ListItemIcon className={globalClasses.centeredHorizontal}>
               <Tooltip title={localization.newSearch} placement="right">

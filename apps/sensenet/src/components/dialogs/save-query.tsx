@@ -57,10 +57,10 @@ export function SaveQuery(props: SaveQueryProps) {
         />
       </DialogContent>
       <DialogActions>
-        <Button className={globalClasses.cancelButton} onClick={closeLastDialog}>
+        <Button aria-label={localization.cancel} className={globalClasses.cancelButton} onClick={closeLastDialog}>
           {localization.cancel}
         </Button>
-        <Button color="primary" variant="contained" onClick={onClick}>
+        <Button aria-label={localization.save} color="primary" variant="contained" onClick={onClick}>
           {localization.save}
         </Button>
       </DialogActions>

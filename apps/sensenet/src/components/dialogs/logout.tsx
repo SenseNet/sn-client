@@ -40,10 +40,14 @@ export function LogoutDialog() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button className={globalClasses.cancelButton} onClick={closeLastDialog}>
+          <Button
+            aria-label={localization.logoutCancel}
+            className={globalClasses.cancelButton}
+            onClick={closeLastDialog}>
             {localization.logoutCancel}
           </Button>
           <Button
+            aria-label={localization.logoutButtonTitle}
             color="primary"
             variant="contained"
             onClick={() => {

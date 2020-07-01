@@ -40,6 +40,7 @@ class InvalidPath extends React.Component<RouteComponentProps, InvalidPathErrorB
               Cannot find path {currentPath}
             </Typography>
             <Button
+              aria-label="Go to root"
               onClick={() => {
                 this.setState({
                   error: undefined,

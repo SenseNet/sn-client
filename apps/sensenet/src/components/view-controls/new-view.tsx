@@ -12,6 +12,7 @@ import MediaQuery from 'react-responsive'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useDialogActionService, useLocalization, useSelectionService } from '../../hooks'
 import { reactControlMapper } from '../react-control-mapper'
+import { ViewTitle } from './view-title'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -130,70 +131,74 @@ export const NewView: React.FC<NewViewProps> = (props) => {
   }
 
   return (
-    <form
-      className={clsx(classes.mainform, {
-        [classes.mainformFullPage]: props.isFullPage,
-      })}
-      onSubmit={handleSubmit}>
-      <div className={classes.form}>
-        <Grid container={true} spacing={2}>
-          {schema.fieldMappings
-            .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
-            .map((field) => {
-              const fieldControl = createElement(
-                controlMapper.getControlForContentField(props.contentTypeName, field.fieldSettings.Name, 'new'),
-                {
-                  actionName: 'new',
-                  settings: field.fieldSettings,
-                  repository: repo,
-                  renderIcon: props.renderIcon,
-                  fieldOnChange: handleInputChange,
-                  extension: props.extension,
-                  uploadFolderPath: props.uploadFolderpath,
-                },
-              )
+    <>
+      <ViewTitle title={'New'} titleBold={dialogActionService.contentTypeNameForNewContent.getValue()} />
+      <form
+        className={clsx(classes.mainform, {
+          [classes.mainformFullPage]: props.isFullPage,
+        })}
+        onSubmit={handleSubmit}>
+        <div className={classes.form}>
+          <Grid container={true} spacing={2}>
+            {schema.fieldMappings
+              .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
+              .map((field) => {
+                const fieldControl = createElement(
+                  controlMapper.getControlForContentField(props.contentTypeName, field.fieldSettings.Name, 'new'),
+                  {
+                    actionName: 'new',
+                    settings: field.fieldSettings,
+                    repository: repo,
+                    renderIcon: props.renderIcon,
+                    fieldOnChange: handleInputChange,
+                    extension: props.extension,
+                    uploadFolderPath: props.uploadFolderpath,
+                  },
+                )
 
-              return (
-                <Grid
-                  item={true}
-                  xs={12}
-                  sm={12}
-                  md={isFullWidthField(field) ? 12 : 6}
-                  lg={isFullWidthField(field) ? 12 : 6}
-                  xl={isFullWidthField(field) ? 12 : 6}
-                  key={field.fieldSettings.Name}
-                  className={classes.grid}>
-                  <div
-                    className={clsx(classes.wrapper, {
-                      [classes.wrapperFullWidth]: isFullWidthField(field),
-                    })}>
-                    {fieldControl}
-                  </div>
-                </Grid>
-              )
-            })}
-        </Grid>
-      </div>
-      <div className={classes.actionButtonWrapper}>
-        <MediaQuery minDeviceWidth={700}>
-          <Button
-            color="default"
-            className={globalClasses.cancelButton}
-            onClick={() => {
-              if (selectionService.activeContent.getValue() !== undefined) {
-                selectionService.activeContent.setValue(undefined)
-              }
-              dialogActionService.activeAction.setValue(undefined)
-              dialogActionService.contentTypeNameForNewContent.setValue(undefined)
-              props.handleCancel?.()
-            }}>
-            {localization.forms.cancel}
+                return (
+                  <Grid
+                    item={true}
+                    xs={12}
+                    sm={12}
+                    md={isFullWidthField(field) ? 12 : 6}
+                    lg={isFullWidthField(field) ? 12 : 6}
+                    xl={isFullWidthField(field) ? 12 : 6}
+                    key={field.fieldSettings.Name}
+                    className={classes.grid}>
+                    <div
+                      className={clsx(classes.wrapper, {
+                        [classes.wrapperFullWidth]: isFullWidthField(field),
+                      })}>
+                      {fieldControl}
+                    </div>
+                  </Grid>
+                )
+              })}
+          </Grid>
+        </div>
+        <div className={classes.actionButtonWrapper}>
+          <MediaQuery minDeviceWidth={700}>
+            <Button
+              aria-label={localization.forms.cancel}
+              color="default"
+              className={globalClasses.cancelButton}
+              onClick={() => {
+                if (selectionService.activeContent.getValue() !== undefined) {
+                  selectionService.activeContent.setValue(undefined)
+                }
+                dialogActionService.activeAction.setValue(undefined)
+                dialogActionService.contentTypeNameForNewContent.setValue(undefined)
+                props.handleCancel?.()
+              }}>
+              {localization.forms.cancel}
+            </Button>
+          </MediaQuery>
+          <Button aria-label={localization.forms.submit} variant="contained" color="primary" type="submit">
+            {localization.forms.submit}
           </Button>
-        </MediaQuery>
-        <Button variant="contained" color="primary" type="submit">
-          {localization.forms.submit}
-        </Button>
-      </div>
-    </form>
+        </div>
+      </form>
+    </>
   )
 }

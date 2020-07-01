@@ -3,7 +3,7 @@ import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { Button, createStyles, makeStyles, Typography } from '@material-ui/core'
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
-import { applicationPaths, resolvePathParams } from '../application-paths'
+import { PATHS, resolvePathParams } from '../application-paths'
 import { useGlobalStyles } from '../globalStyles'
 import { useLocalization } from '../hooks'
 import { FullScreenLoader } from './full-screen-loader'
@@ -103,10 +103,11 @@ export default function WopiPage() {
         <>
           {match.params.action !== 'view' ? (
             <Button
+              aria-label={localization.tryOpenRead}
               onClick={() => {
                 history.push(
                   resolvePathParams({
-                    path: applicationPaths.wopi,
+                    path: PATHS.wopi.appPath,
                     params: { action: 'view', contentId: match.params.contentId!.toString() },
                   }),
                 )
@@ -115,7 +116,9 @@ export default function WopiPage() {
             </Button>
           ) : null}
 
-          <Button onClick={() => history.goBack()}>{localization.goBack}</Button>
+          <Button aria-label={localization.goBack} onClick={() => history.goBack()}>
+            {localization.goBack}
+          </Button>
         </>
       </div>
     )
@@ -152,7 +155,11 @@ export default function WopiPage() {
         </span>
       </div>
       <div className={classes.actionButtonWrapper}>
-        <Button color="default" className={globalClasses.cancelButton} onClick={history.goBack}>
+        <Button
+          aria-label={formsLocalization.cancel}
+          color="default"
+          className={globalClasses.cancelButton}
+          onClick={history.goBack}>
           {formsLocalization.cancel}
         </Button>
       </div>

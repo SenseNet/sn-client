@@ -2,17 +2,14 @@ import { LoadSettingsContextProvider } from '@sensenet/hooks-react'
 import { Location } from 'history'
 import React, { lazy, Suspense, useEffect, useRef } from 'react'
 import { matchPath, Route, Switch, useHistory } from 'react-router-dom'
-import { applicationPaths } from '../application-paths'
+import { PATHS } from '../application-paths'
 import { InvalidPathErrorBoundary } from './content/InvalidPathErrorBoundary'
 import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './full-screen-loader'
 
-const UsersAndGroupsComponent = lazy(() => import(/* webpackChunkName: "UserAndGroup" */ './users-and-groups'))
-const LocalizationComponent = lazy(() => import(/* webpackChunkName: "Localization" */ './localization'))
-const ContentTypes = lazy(() => import(/* webpackChunkName: "ContentTypes" */ './content-types'))
 const WopiPage = lazy(() => import(/* webpackChunkName: "wopi" */ './wopi-page'))
-const ExploreComponent = lazy(() => import(/* webpackChunkName: "explore" */ './content'))
+const ContentComponent = lazy(() => import(/* webpackChunkName: "content" */ './content'))
 const DashboardComponent = lazy(() => import(/* webpackChunkName: "dashboard" */ './dashboard'))
 const SearchComponent = lazy(() => import(/* webpackChunkName: "search" */ './search'))
 const SavedQueriesComponent = lazy(() => import(/* webpackChunkName: "saved-queries" */ './search/saved-queries'))
@@ -25,6 +22,7 @@ const VersionProperties = lazy(() => import(/* webpackChunkName: "versionPropert
 const DocumentViewerComponent = lazy(() => import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 const TrashComponent = lazy(() => import(/* webpackChunkName: "Trash" */ './trash/Trash'))
 const EventListComponent = lazy(() => import(/* webpackChunkName: "EventList" */ './event-list/event-list'))
+const CustomContent = lazy(() => import(/* webpackChunkName: "CustomContent" */ './content/CustomContent'))
 const PersonalSettingsEditor = lazy(() =>
   import(/* webpackChunkName: "PersonalSettingsEditor" */ './edit/PersonalSettingsEditor'),
 )
@@ -40,7 +38,7 @@ export const MainRouter = () => {
        *  this way the user can go back to the location where she
        *  opened the viewer.
        * */
-      if (matchPath(location.pathname, applicationPaths.preview)) {
+      if (matchPath(location.pathname, PATHS.preview.appPath)) {
         return
       }
       previousLocation.current = location
@@ -54,82 +52,102 @@ export const MainRouter = () => {
     <ErrorBoundary FallbackComponent={ErrorBoundaryWithDialogs}>
       <Suspense fallback={<FullScreenLoader />}>
         <Switch>
-          <Route path={applicationPaths.personalSettings}>
+          <Route path={PATHS.personalSettings.appPath}>
             <PersonalSettingsEditor />
           </Route>
 
-          <Route path={applicationPaths.events}>
+          <Route path={PATHS.events.appPath}>
             <EventListComponent />
           </Route>
 
-          <Route path={applicationPaths.browse}>
+          <Route path={PATHS.content.appPath}>
             <InvalidPathErrorBoundary>
-              <ExploreComponent />
+              <ContentComponent />
             </InvalidPathErrorBoundary>
           </Route>
 
-          <Route path={applicationPaths.search}>
+          <Route path={PATHS.search.appPath}>
             <LoadSettingsContextProvider>
               <SearchComponent />
             </LoadSettingsContextProvider>
           </Route>
 
-          <Route path={applicationPaths.savedQueries}>
+          <Route path={PATHS.savedQueries.appPath}>
             <LoadSettingsContextProvider>
               <SavedQueriesComponent />
             </LoadSettingsContextProvider>
           </Route>
 
-          <Route path={applicationPaths.setup}>
+          <Route path={PATHS.setup.appPath}>
             <SetupComponent />
           </Route>
 
-          <Route path={applicationPaths.trash}>
+          <Route path={PATHS.trash.appPath}>
             <TrashComponent />
           </Route>
 
-          <Route path={applicationPaths.localization}>
-            <LocalizationComponent />
+          <Route path={PATHS.localization.appPath}>
+            <ContentComponent rootPath={PATHS.localization.snPath} />
           </Route>
 
-          <Route path={applicationPaths.usersAndGroups}>
-            <UsersAndGroupsComponent />
+          <Route path={PATHS.usersAndGroups.appPath}>
+            <ContentComponent
+              rootPath={PATHS.usersAndGroups.snPath}
+              fieldsToDisplay={['DisplayName', 'ModificationDate', 'ModifiedBy', 'Actions']}
+            />
           </Route>
 
-          <Route path={applicationPaths.contentTypes}>
-            <ContentTypes />
+          <Route path={PATHS.contentTypes.appPath}>
+            <ContentComponent
+              rootPath={PATHS.contentTypes.snPath}
+              fieldsToDisplay={[
+                'DisplayName',
+                'Description',
+                'ParentTypeName' as any,
+                'ModificationDate',
+                'ModifiedBy',
+              ]}
+              loadChildrenSettings={{
+                select: ['DisplayName', 'Description', 'ParentTypeName' as any, 'ModificationDate', 'ModifiedBy'],
+                query: "+TypeIs:'ContentType' .AUTOFILTERS:OFF",
+              }}
+            />
           </Route>
 
-          <Route path={applicationPaths.editBinary}>
+          <Route path={PATHS.editBinary.appPath}>
             <EditBinary />
           </Route>
 
-          <Route path={applicationPaths.editProperties}>
+          <Route path={PATHS.editProperties.appPath}>
             <EditProperties />
           </Route>
 
-          <Route path={applicationPaths.browseProperties}>
+          <Route path={PATHS.browseProperties.appPath}>
             <BrowseProperties />
           </Route>
 
-          <Route path={applicationPaths.newProperties}>
+          <Route path={PATHS.newProperties.appPath}>
             <NewProperties />
           </Route>
 
-          <Route path={applicationPaths.versionProperties}>
+          <Route path={PATHS.versionProperties.appPath}>
             <VersionProperties />
           </Route>
 
-          <Route path={applicationPaths.preview}>
+          <Route path={PATHS.preview.appPath}>
             <DocumentViewerComponent previousLocation={previousLocation.current} />
           </Route>
 
-          <Route path={applicationPaths.wopi}>
+          <Route path={PATHS.wopi.appPath}>
             <WopiPage />
           </Route>
 
-          <Route path={applicationPaths.dashboard}>
+          <Route path={PATHS.dashboard.appPath}>
             <DashboardComponent />
+          </Route>
+
+          <Route path={PATHS.custom.appPath}>
+            <CustomContent />
           </Route>
 
           <Route path="/" exact>

@@ -36,6 +36,7 @@ function reducer<T extends GenericContent>(state: State<T>, action: Action<T>) {
 export const useListPicker = <T extends GenericContentWithIsParent = GenericContent>(options: {
   repository: Repository
   currentPath?: string
+  rootPath?: string
   itemsODataOptions?: ODataParams<T>
   parentODataOptions?: ODataParams<T>
   stateReducer?: Reducer<State<T>, Action<T> & { changes: State<T> }>
@@ -70,6 +71,7 @@ export const useListPicker = <T extends GenericContentWithIsParent = GenericCont
         setIsLoading(true)
         const result = await loadItems({
           path,
+          loadParent: path !== options.rootPath,
           repository,
           parentId,
           itemsODataOptions: options.itemsODataOptions,

@@ -37,7 +37,7 @@ export function CustomActionResultDialog({ response = '{}' }: CustomActionResult
         />
       </DialogContent>
       <DialogActions>
-        <Button className={globalClasses.cancelButton} onClick={closeLastDialog}>
+        <Button aria-label={localization.closeButton} className={globalClasses.cancelButton} onClick={closeLastDialog}>
           {localization.closeButton}
         </Button>
       </DialogActions>

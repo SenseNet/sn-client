@@ -4,7 +4,7 @@ import { editor, languages, Uri } from 'monaco-editor'
 import { BrowseType } from '../../components/content'
 import { wellKnownIconNames } from '../../components/Icon'
 import defaultLanguage from '../../localization/default'
-import { ActionType, DrawerItemType, widgetTypes } from '../PersonalSettings'
+import { ActionType, CustomDrawerItemType, widgetTypes } from '../PersonalSettings'
 
 export const setupModel = (language = defaultLanguage, repo: Repository) => {
   const personalSettingsPath = `sensenet://PersonalSettings/PersonalSettings`
@@ -194,7 +194,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                     properties: {
                       itemType: {
                         type: 'string',
-                        enum: [...DrawerItemType],
+                        enum: [...CustomDrawerItemType],
                       },
                       permissions: {
                         type: 'array',
@@ -214,30 +214,6 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                       },
                     },
                     allOf: [
-                      {
-                        if: { properties: { itemType: { const: 'Content' } } },
-                        then: {
-                          properties: {
-                            settings: {
-                              type: 'object',
-                              properties: {
-                                title: { type: 'string', description: language.personalSettings.drawerItemTitle },
-                                description: {
-                                  type: 'string',
-                                  description: language.personalSettings.drawerItemDescription,
-                                },
-                                icon: {
-                                  type: 'string',
-                                  enum: [...wellKnownIconNames],
-                                  description: language.personalSettings.drawerItemDescription,
-                                },
-                              },
-                              required: ['root', 'title', 'icon'],
-                            },
-                          },
-                          required: ['settings'],
-                        },
-                      },
                       {
                         if: { properties: { itemType: { const: 'Query' } } },
                         then: {
@@ -287,6 +263,29 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                                 },
                               },
                               required: ['dashboardName', 'title', 'icon'],
+                            },
+                          },
+                          required: ['settings'],
+                        },
+                      },
+                      {
+                        if: { properties: { itemType: { const: 'CustomContent' } } },
+                        then: {
+                          properties: {
+                            settings: {
+                              type: 'object',
+                              properties: {
+                                root: {
+                                  type: 'string',
+                                  description: language.personalSettings.drawerCustomContentRoot,
+                                },
+                                appPath: {
+                                  type: 'string',
+                                  description: language.personalSettings.drawerCustomContentAppPath,
+                                },
+                                columns: { $ref: '#/definitions/columns' },
+                              },
+                              required: ['root', 'appPath'],
                             },
                           },
                           required: ['settings'],

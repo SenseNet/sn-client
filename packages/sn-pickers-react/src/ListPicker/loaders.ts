@@ -4,6 +4,7 @@ import { GenericContentWithIsParent } from './types'
 
 interface LoadItemsOptions<T> {
   path: string
+  loadParent?: boolean
   parentId?: number
   repository: Repository
   itemsODataOptions?: ODataParams<T>
@@ -76,6 +77,7 @@ async function getParent<T extends GenericContent>(
  */
 export const loadItems = async <T extends GenericContentWithIsParent>({
   path,
+  loadParent = true,
   repository,
   itemsODataOptions: itemsODataOptionsArgs,
   parentODataOptions,
@@ -91,6 +93,11 @@ export const loadItems = async <T extends GenericContentWithIsParent>({
   const items = itemsResult.d.results.map((item) => {
     return { ...item, isParent: false } as T & { isParent: boolean }
   })
+
+  if (!loadParent) {
+    return items
+  }
+
   let parentResult
   try {
     parentResult = await getParent<T>(items[0], repository, parentODataOptions, parentId)
