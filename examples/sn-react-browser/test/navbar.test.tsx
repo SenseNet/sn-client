@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-/* eslint-disable @typescript-eslint/camelcase */
+
 import Button from '@material-ui/core/Button'
 import { mount } from 'enzyme'
 import React, { PropsWithChildren } from 'react'

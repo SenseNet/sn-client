@@ -6,11 +6,11 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
-import ReactQuill, { Quill } from 'react-quill'
+import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { changeJScriptValue } from '../../helpers'
 import { ReactClientFieldSetting } from '../ClientFieldSetting'
-import QuillOEmbedModule from './QuillOEmbedModule'
+import { quillRegister } from './QuillRegister'
 
 const modules = {
   toolbar: [
@@ -35,7 +35,7 @@ const modules = {
   oembed: true,
 }
 
-Quill.register('modules/oembed', QuillOEmbedModule)
+quillRegister()
 
 /**
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.

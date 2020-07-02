@@ -1,11 +1,11 @@
 import { RepositoryContext } from '@sensenet/hooks-react'
 import { mount, shallow } from 'enzyme'
+import moment from 'moment'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { App, Transition } from '../src/app'
 import { FullScreenDialog } from '../src/components/FullScreenDialog'
 import { emptyimages, images } from './mocks/images'
-import moment = require('moment')
 
 describe('App Layout', () => {
   it('Matches snapshot', () => {

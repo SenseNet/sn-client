@@ -3,14 +3,14 @@
  */
 
 import { changeJScriptValue } from '@sensenet/controls-react'
+import { quillRegister } from '@sensenet/controls-react/dist/fieldcontrols/RichTextEditor/QuillRegister'
 import { createStyles, InputLabel, makeStyles, Theme } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
-import ReactQuill, { Quill } from 'react-quill'
+import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { useLocalization } from '../../../hooks'
 import { ReactClientFieldSetting } from '../ClientFieldSetting'
-import QuillOEmbedModule from './QuillOEmbedModule'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -59,7 +59,7 @@ const modules = {
   oembed: true,
 }
 
-Quill.register('modules/oembed', QuillOEmbedModule)
+quillRegister()
 
 /**
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
