@@ -165,7 +165,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                   {localization.topMenu.logout}
                 </MenuItem>
                 <MenuItem>
-                  <Typography component="div" className={classes.themeSwitcher}>
+                  <Typography component={'div' as any} className={classes.themeSwitcher}>
                     <Grid component="label" container alignItems="center" spacing={1}>
                       <Grid item style={{ paddingRight: '32px' }}>
                         {personalSettings.theme === 'dark' ? 'Light theme' : 'Dark theme'}

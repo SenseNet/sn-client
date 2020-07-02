@@ -1,3 +1,4 @@
+import Chance from 'chance'
 import { resources } from '../../../src/assets/resources'
 import {
   contextMenuItems,
@@ -10,7 +11,6 @@ import {
   selectPathInListPicker,
   uploadNewFileAndOpenContextMenuItem,
 } from '../../support/documents'
-import Chance = require('chance')
 
 context('The documents page', () => {
   let currentUser = { email: '', password: '' }

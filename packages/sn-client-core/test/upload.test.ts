@@ -31,7 +31,6 @@ describe('Upload', () => {
       Id: 4037,
       Length: 18431,
       Name: 'LICENSE',
-      // eslint-disable-next-line @typescript-eslint/camelcase
       Thumbnail_url: '/Root/Sites/Default_Site/Workspace/Document_Library/LICENSE',
       Type: 'File',
       Url: '/Root/Sites/Default_Site/Workspace/Document_Library/LICENSE',

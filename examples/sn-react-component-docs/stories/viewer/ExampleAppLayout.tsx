@@ -184,7 +184,7 @@ export const ExampleAppLayout: React.FC = () => {
               <Dialog open={isHelpOpened || false}>
                 <DialogTitle>Help</DialogTitle>
                 <DialogContent>
-                  <Typography component="div">
+                  <Typography component={'div' as any}>
                     If you have trouble opening a file be sure that
                     <ul>
                       <li>

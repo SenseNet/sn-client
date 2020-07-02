@@ -7,7 +7,9 @@ export const EmailField: React.FC<{ mail: string }> = ({ mail }) => {
   const globalClasses = useGlobalStyles()
 
   return (
-    <TableCell className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)} component="div">
+    <TableCell
+      className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)}
+      component={'div' as any}>
       <a href={`mailto:${mail}`}>{mail}</a>
     </TableCell>
   )

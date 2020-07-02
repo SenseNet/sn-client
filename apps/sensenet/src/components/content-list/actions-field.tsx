@@ -9,7 +9,7 @@ export const ActionsField: React.FC<{
 }> = ({ onOpen }) => {
   const globalClasses = useGlobalStyles()
   return (
-    <TableCell component="div" className={clsx(globalClasses.centered, globalClasses.virtualizedCellStyle)}>
+    <TableCell component={'div' as any} className={clsx(globalClasses.centered, globalClasses.virtualizedCellStyle)}>
       <IconButton onClick={onOpen}>
         <MoreHoriz />
       </IconButton>

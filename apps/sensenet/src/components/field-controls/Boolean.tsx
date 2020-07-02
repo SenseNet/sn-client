@@ -47,7 +47,7 @@ export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> =
           })}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>
-          <Typography component="div">
+          <Typography component={'div' as any}>
             <Grid component="label" container alignItems="center" spacing={1}>
               <Grid item style={{ paddingRight: '30px' }}>
                 {props.settings.DisplayName}
@@ -68,7 +68,7 @@ export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> =
           })}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>
-          <Typography component="div">
+          <Typography component={'div' as any}>
             <Grid component="label" container alignItems="center" spacing={1}>
               <Grid item style={{ paddingRight: '30px' }}>
                 {props.settings.DisplayName}

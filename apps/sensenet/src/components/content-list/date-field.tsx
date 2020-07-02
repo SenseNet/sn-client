@@ -8,7 +8,9 @@ export const DateField: React.FC<{ date: string | Date }> = ({ date }) => {
   const globalClasses = useGlobalStyles()
 
   return (
-    <TableCell component="div" className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)}>
+    <TableCell
+      component={'div' as any}
+      className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)}>
       <>{moment(date).fromNow()}</>
     </TableCell>
   )

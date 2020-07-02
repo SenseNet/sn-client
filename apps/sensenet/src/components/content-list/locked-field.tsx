@@ -28,12 +28,12 @@ export function LockedField({ content }: LockedFieldProps) {
 
   if (!content.Locked && !content.Approvable) {
     // We need to return an empty TableCell so the Table remains aligned.
-    return <TableCell component="div" className={globalClasses.virtualizedCellStyle} />
+    return <TableCell component={'div' as any} className={globalClasses.virtualizedCellStyle} />
   }
 
   return (
     <TableCell
-      component="div"
+      component={'div' as any}
       className={clsx(globalClasses.centered, globalClasses.virtualizedCellStyle)}
       style={{ justifyContent: 'left', paddingLeft: '9px' }}>
       <Tooltip title={content.Approvable ? localization.actionNeeded : localization.checkedOutTo(lockedByName())}>
