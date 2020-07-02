@@ -49,7 +49,7 @@ const quickSearchBox = (props: {
       {(matches) => {
         if (matches) {
           return (
-            <div ref={props.containerRef} {...props.containerProps}>
+            <div ref={props.containerRef} {...(props.containerProps as any)}>
               <Input
                 {...props.inputProps}
                 name="search"
@@ -77,7 +77,7 @@ const quickSearchBox = (props: {
           )
         } else {
           return (
-            <div ref={props.containerRef} {...props.containerProps}>
+            <div ref={props.containerRef} {...(props.containerProps as any)}>
               <Input name="search" placeholder="search" style={styles.textStyle} disableUnderline={true} />
             </div>
           )
