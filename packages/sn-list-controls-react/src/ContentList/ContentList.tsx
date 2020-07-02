@@ -183,7 +183,7 @@ export const ContentList: React.FC<ContentListProps<GenericContent>> = (props) =
               onDoubleClick={(e) => {
                 props.onItemDoubleClick && props.onItemDoubleClick(e, item)
               }}
-              onTouchEnd={(e) => props.onItemTap && props.onItemTap(e, item)}
+              onTouchEnd={(e) => props.onItemTap && props.onItemTap(e as any, item)}
               onContextMenu={(e) => props.onItemContextMenu && props.onItemContextMenu(e, item)}>
               {props.displayRowCheckbox !== false ? (
                 <TableCell padding="checkbox" key="select">
