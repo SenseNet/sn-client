@@ -79,5 +79,4 @@ module.exports = merge(common, {
       },
     ],
   },
-  cache: false,
 })
