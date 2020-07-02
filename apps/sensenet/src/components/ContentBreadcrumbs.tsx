@@ -34,6 +34,7 @@ export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
   const uiSettings = useContext(ResponsivePersonalSettings)
   const repository = useRepository()
   const history = useHistory()
+  const { location } = history
   const localization = useLocalization()
   const classes = useStyles()
   const { openDialog } = useDialog()
@@ -57,20 +58,21 @@ export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
           ...ancestors.map((content) => ({
             displayName: content.DisplayName || content.Name,
             title: content.Path,
-            url: getPrimaryActionUrl({ content, repository, uiSettings }),
+            url: getPrimaryActionUrl({ content, repository, uiSettings, location }),
             content,
           })),
           {
             displayName: parent.DisplayName || parent.Name,
             title: parent.Path,
-            url: getPrimaryActionUrl({ content: parent, repository, uiSettings }),
+            url: getPrimaryActionUrl({ content: parent, repository, uiSettings, location }),
             content: parent,
           },
         ]}
         onItemClick={(_ev, item) => {
+          selectionService.activeContent.setValue(item.content)
           props.onItemClick
             ? props.onItemClick(item)
-            : history.push(getPrimaryActionUrl({ content: item.content, repository, uiSettings }))
+            : history.push(getPrimaryActionUrl({ content: item.content, repository, uiSettings, location }))
         }}
       />
       {props.batchActions && selected.length > 1 ? (

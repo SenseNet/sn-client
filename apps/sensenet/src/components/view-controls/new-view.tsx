@@ -1,7 +1,7 @@
 /**
  * @module ViewControls
  */
-import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
+import { FieldSetting } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { createStyles, makeStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
@@ -9,8 +9,10 @@ import Grid from '@material-ui/core/Grid'
 import clsx from 'clsx'
 import React, { createElement, ReactElement, useState } from 'react'
 import MediaQuery from 'react-responsive'
+import { useHistory, useRouteMatch } from 'react-router-dom'
 import { globals, useGlobalStyles } from '../../globalStyles'
-import { useDialogActionService, useLocalization, useSelectionService } from '../../hooks'
+import { useLocalization } from '../../hooks'
+import { navigateToAction } from '../../services'
 import { reactControlMapper } from '../react-control-mapper'
 import { ViewTitle } from './view-title'
 
@@ -62,7 +64,7 @@ const useStyles = makeStyles(() => {
 export interface NewViewProps {
   renderIcon?: (name: string) => ReactElement
   contentTypeName: string
-  currentContent: GenericContent | undefined
+  currentContentPath: string
   extension?: string
   uploadFolderpath?: string
   handleCancel?: () => void
@@ -75,7 +77,7 @@ export interface NewViewProps {
  *
  * Usage:
  * ```html
- *  <NewView content={content} onSubmit={createSubmitClick} />
+ *  <NewView currentContentPath={content.Path} onSubmit={createSubmitClick} />
  * ```
  */
 export const NewView: React.FC<NewViewProps> = (props) => {
@@ -87,15 +89,15 @@ export const NewView: React.FC<NewViewProps> = (props) => {
   const localization = useLocalization()
   const globalClasses = useGlobalStyles()
   const logger = useLogger('AddDialog')
-  const selectionService = useSelectionService()
-  const dialogActionService = useDialogActionService()
+  const history = useHistory()
+  const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     try {
       const created = await repo.post({
         contentType: props.contentTypeName,
-        parentPath: props.currentContent!.Path,
+        parentPath: props.currentContentPath,
         content,
         contentTemplate: props.contentTypeName,
       })
@@ -132,7 +134,7 @@ export const NewView: React.FC<NewViewProps> = (props) => {
 
   return (
     <>
-      <ViewTitle title={'New'} titleBold={dialogActionService.contentTypeNameForNewContent.getValue()} />
+      <ViewTitle title={'New'} titleBold={props.contentTypeName} />
       <form
         className={clsx(classes.mainform, {
           [classes.mainformFullPage]: props.isFullPage,
@@ -184,11 +186,7 @@ export const NewView: React.FC<NewViewProps> = (props) => {
               color="default"
               className={globalClasses.cancelButton}
               onClick={() => {
-                if (selectionService.activeContent.getValue() !== undefined) {
-                  selectionService.activeContent.setValue(undefined)
-                }
-                dialogActionService.activeAction.setValue(undefined)
-                dialogActionService.contentTypeNameForNewContent.setValue(undefined)
+                navigateToAction({ history, routeMatch })
                 props.handleCancel?.()
               }}>
               {localization.forms.cancel}

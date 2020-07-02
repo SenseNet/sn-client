@@ -3,7 +3,6 @@ import MUIBreadcrumbs from '@material-ui/core/Breadcrumbs'
 import Button from '@material-ui/core/Button'
 import Tooltip from '@material-ui/core/Tooltip'
 import React, { useState } from 'react'
-import { useSelectionService } from '../hooks'
 import { ContentContextMenu } from './context-menu/content-context-menu'
 import { DropFileArea } from './DropFileArea'
 
@@ -23,7 +22,6 @@ export function Breadcrumbs<T extends GenericContent>(props: BreadcrumbProps<T>)
   const [contextMenuItem, setContextMenuItem] = useState<GenericContent | null>(null)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
-  const selectionService = useSelectionService()
 
   return (
     <>
@@ -38,7 +36,6 @@ export function Breadcrumbs<T extends GenericContent>(props: BreadcrumbProps<T>)
                   setContextMenuItem(item.content)
                   setContextMenuAnchor(ev.currentTarget)
                   setIsContextMenuOpened(true)
-                  selectionService.activeContent.setValue(item.content)
                   ev.preventDefault()
                 }}>
                 <span style={{ textTransform: 'none', fontSize: '16px' }}>{item.displayName}</span>

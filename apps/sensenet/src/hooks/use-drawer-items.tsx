@@ -139,7 +139,7 @@ export const useDrawerItems = () => {
     const getUrlFromSetting = (item: DrawerType) => {
       switch (item.itemType) {
         case 'Search':
-          return PATHS.savedQueries.appPath
+          return resolvePathParams({ path: PATHS.savedQueries.appPath })
         case 'Content':
           return resolvePathParams({
             path: PATHS.content.appPath,
@@ -166,7 +166,7 @@ export const useDrawerItems = () => {
             params: { browseType: settings.content.browseType },
           })
         case 'Setup':
-          return PATHS.setup.appPath
+          return resolvePathParams({ path: PATHS.setup.appPath })
         case 'Query':
           return pathWithQueryParams({
             path: PATHS.search.appPath,

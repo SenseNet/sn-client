@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow'
 import CompareArrows from '@material-ui/icons/CompareArrows'
 import OpenInNewTwoTone from '@material-ui/icons/OpenInNewTwoTone'
 import React, { useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { PATHS, resolvePathParams } from '../../application-paths'
 import { ResponsivePersonalSettings } from '../../context'
 import { useLocalization } from '../../hooks'
@@ -26,6 +26,7 @@ export const List: React.FunctionComponent<ListProps> = (props) => {
   const { filter } = useContext(EventListFilterContext)
   const uiSettings = useContext(ResponsivePersonalSettings)
   const repository = useRepository()
+  const history = useHistory()
   const [effectiveValues, setEffectiveValues] = useState<Array<LeveledLogEntry<any>>>([])
   const localization = useLocalization().eventList.list
 
@@ -67,12 +68,20 @@ export const List: React.FunctionComponent<ListProps> = (props) => {
               <TableCell>{row.scope}</TableCell>
               <TableCell>
                 {row.data?.relatedContent && row.data?.relatedRepository ? (
-                  <Link
-                    to={getPrimaryActionUrl({ content: row.data.relatedContent, repository, uiSettings })}
-                    style={{ display: 'flex', alignItems: 'center' }}>
-                    <Icon item={row.data.relatedContent} style={{ marginRight: 5 }} />
-                    {row.data.relatedContent.DisplayName || row.data.relatedContent.Name}
-                  </Link>
+                  <>
+                    {console.log(row.data?.relatedContent)}
+                    <Link
+                      to={getPrimaryActionUrl({
+                        content: row.data.relatedContent.d ?? row.data.relatedContent,
+                        repository,
+                        uiSettings,
+                        location: history.location,
+                      })}
+                      style={{ display: 'flex', alignItems: 'center' }}>
+                      <Icon item={row.data.relatedContent} style={{ marginRight: 5 }} />
+                      {row.data.relatedContent.DisplayName || row.data.relatedContent.Name}
+                    </Link>
+                  </>
                 ) : null}
               </TableCell>
               <TableCell>{row.data.added}</TableCell>
