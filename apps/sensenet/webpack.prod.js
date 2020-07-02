@@ -32,9 +32,7 @@ module.exports = merge(common, {
     new CleanWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin({
       async: false,
-      typescript: {
-        memoryLimit: 4096,
-      },
+      typescript: false,
     }),
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
