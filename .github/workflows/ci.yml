@@ -52,6 +52,6 @@ jobs:
           RELATIVE_CI_KEY: ${{ secrets.RELATIVE_CI_KEY }}
 
       - name: test
-        run: NODE_OPTIONS='--max-old-space-size=4096' yarn test --coverage
+        run: NODE_OPTIONS='--max-old-space-size=4096' yarn test --coverage --logHeapUsage
 
       - uses: codecov/codecov-action@v1
