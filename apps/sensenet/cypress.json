@@ -1,0 +1,29 @@
+{
+  "baseUrl": "http://localhost:8080",
+  "env": {
+    "repoUrl": "https://netcore-dev.service.sn.hu",
+    "identityServer": "https://is.dev.sn.hu",
+    "users": {
+      "superadmin": {
+        "clientId": "client",
+        "clientSecret": "secret",
+        "id": "/Root/IMS/BuiltIn/Portal('Admin')"
+      },
+      "admin": {
+        "clientId": "kitty",
+        "clientSecret": "secret",
+        "id": "/Root/IMS/Public('businesscat')"
+      },
+      "developer": {
+        "clientId": "devdov",
+        "clientSecret": "secret",
+        "id": "/Root/IMS/Public('devdog')"
+      },
+      "editor": {
+        "clientId": "eddie",
+        "clientSecret": "secret",
+        "id": "/Root/IMS/Public('editormanatee')"
+      }
+    }
+  }
+}
