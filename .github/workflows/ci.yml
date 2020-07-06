@@ -52,6 +52,6 @@ jobs:
           RELATIVE_CI_KEY: ${{ secrets.RELATIVE_CI_KEY }}
 
       - name: test
-        run: yarn test --coverage
+        run: yarn test --coverage --logHeapUsage
 
       - uses: codecov/codecov-action@v1
