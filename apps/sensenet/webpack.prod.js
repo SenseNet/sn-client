@@ -33,7 +33,7 @@ module.exports = merge(common, {
     new ForkTsCheckerWebpackPlugin({
       async: false,
       typescript: {
-        memoryLimit: 8192,
+        memoryLimit: 4096,
       },
     }),
     new MiniCssExtractPlugin(),

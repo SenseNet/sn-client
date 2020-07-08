@@ -2,8 +2,7 @@
  * @module FieldControls
  */
 
-import { changeJScriptValue } from '@sensenet/controls-react'
-import { quillRegister } from '@sensenet/controls-react/dist/fieldcontrols/RichTextEditor/QuillRegister'
+import { changeJScriptValue, quillRegister } from '@sensenet/controls-react'
 import { createStyles, InputLabel, makeStyles, Theme } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
