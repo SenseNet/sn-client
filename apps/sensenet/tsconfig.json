@@ -8,7 +8,8 @@
     "rootDir": "./src",
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "importsNotUsedAsValues": "preserve"
   },
   "include": ["src", "../../typings"],
   "references": [

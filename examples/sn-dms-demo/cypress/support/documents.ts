@@ -1,5 +1,5 @@
+import { Chance } from 'chance'
 import { resources } from '../../src/assets/resources'
-import Chance = require('chance')
 
 export const openContextMenu = (name: string | number | RegExp) => {
   cy.contains('[data-cy=appbar]', 'Document library', { timeout: 10000 })
