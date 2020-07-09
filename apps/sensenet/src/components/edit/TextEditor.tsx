@@ -194,7 +194,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
       </div>
       <Prompt when={textValue !== savedTextValue} message={localization.textEditor.unsavedChangesWarning} />
       <MonacoEditor
-        theme={theme.palette.type === 'dark' ? 'vs-dark' : 'vs-light'}
+        theme={theme.palette.type === 'dark' ? 'admin-ui-dark' : 'vs-light'}
         width="100%"
         language={language}
         value={textValue}
@@ -213,6 +213,16 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
           } else {
             editor.setModel(monaco.editor.getModel(uri))
           }
+        }}
+        editorWillMount={(monaco) => {
+          monaco.editor.defineTheme('admin-ui-dark', {
+            base: 'vs-dark',
+            inherit: true,
+            rules: [],
+            colors: {
+              'editor.background': '#121212',
+            },
+          })
         }}
       />
       <div className={classes.actionButtonWrapper}>
