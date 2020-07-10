@@ -64,14 +64,15 @@ export interface ContentListProps {
   style?: React.CSSProperties
   containerRef?: (r: HTMLDivElement | null) => void
   fieldsToDisplay?: Array<keyof GenericContent>
+  schema?: string
   onSelectionChange?: (sel: GenericContent[]) => void
   onFocus?: () => void
   containerProps?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 }
 
-export const isReferenceField = (fieldName: string, repo: Repository) => {
+export const isReferenceField = (fieldName: string, repo: Repository, schema = 'GenericContent') => {
   const refWhiteList = ['AllowedChildTypes']
-  const setting = repo.schemas.getSchemaByName('GenericContent').FieldSettings.find((f) => f.Name === fieldName)
+  const setting = repo.schemas.getSchemaByName(schema).FieldSettings.find((f) => f.Name === fieldName)
   return refWhiteList.indexOf(fieldName) !== -1 || (setting && setting.Type === 'ReferenceFieldSetting') || false
 }
 
@@ -125,7 +126,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
     const fields = props.fieldsToDisplay || personalSettings.content.fields
     loadSettings.setLoadChildrenSettings({
       ...loadSettings.loadChildrenSettings,
-      expand: ['CheckedOutTo', ...fields.filter((fieldName) => isReferenceField(fieldName, repo))],
+      expand: ['CheckedOutTo', ...fields.filter((fieldName) => isReferenceField(fieldName, repo, props.schema))],
       orderby: [[currentOrder as any, currentDirection as any]],
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -337,7 +338,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
 
     if (
       typeof fieldOptions.rowData[fieldOptions.dataKey] === 'object' &&
-      isReferenceField(fieldOptions.dataKey, repo)
+      isReferenceField(fieldOptions.dataKey, repo, props.schema)
     ) {
       const expectedContent = fieldOptions.rowData[fieldOptions.dataKey] as GenericContent
       if (
@@ -415,7 +416,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
             onRequestSelectionChange={setSelected}
             orderBy={currentOrder}
             orderDirection={currentDirection}
-            schema={repo.schemas.getSchemaByName('GenericContent')}
+            schema={repo.schemas.getSchemaByName(props.schema || 'GenericContent')}
             selected={selected}
             tableProps={{
               rowCount: children.length,

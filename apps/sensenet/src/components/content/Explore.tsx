@@ -59,10 +59,20 @@ export type ExploreProps = {
   rootPath: string
   onNavigate: (content: GenericContent) => void
   fieldsToDisplay?: Array<keyof GenericContent>
+  schema?: string
   loadChildrenSettings?: ODataParams<GenericContent>
+  renderBeforeGrid?: () => JSX.Element
 }
 
-export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay, loadChildrenSettings }: ExploreProps) {
+export function Explore({
+  currentPath,
+  onNavigate,
+  rootPath,
+  fieldsToDisplay,
+  schema,
+  loadChildrenSettings,
+  renderBeforeGrid,
+}: ExploreProps) {
   const selectionService = useSelectionService()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
@@ -122,15 +132,19 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay, lo
     }
 
     return (
-      <ContentList
-        style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
-        enableBreadcrumbs={false}
-        fieldsToDisplay={fieldsToDisplay}
-        onParentChange={onNavigate}
-        onActivateItem={onActivateItemOverride}
-        onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
-        parentIdOrPath={currentPath}
-      />
+      <>
+        {renderBeforeGrid?.()}
+        <ContentList
+          style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
+          enableBreadcrumbs={false}
+          fieldsToDisplay={fieldsToDisplay}
+          schema={schema}
+          onParentChange={onNavigate}
+          onActivateItem={onActivateItemOverride}
+          onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
+          parentIdOrPath={currentPath}
+        />
+      </>
     )
   }
 

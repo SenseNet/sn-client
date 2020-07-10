@@ -1,5 +1,6 @@
 export * from './use-drawer-items'
 export * from './use-event-service'
+export * from './use-grid-switcher'
 export * from './use-loadContent'
 export * from './use-localization'
 export * from './use-personal-settings'
