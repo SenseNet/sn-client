@@ -1,8 +1,8 @@
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import { CurrentContentContext, useLogger, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
+import { useLogger, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
 import { Created } from '@sensenet/repository-events'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { useSelectionService } from '../../hooks'
 import { ItemType, Tree } from './tree'
@@ -36,7 +36,6 @@ export default function TreeWithData(props: TreeWithDataProps) {
   const selectionService = useSelectionService()
   const eventHub = useRepositoryEvents()
   const logger = useLogger('tree-with-data')
-  const currentContent = useContext(CurrentContentContext)
 
   const loadCollection = useCallback(
     async (path: string, top: number, skip: number) => {
@@ -165,9 +164,6 @@ export default function TreeWithData(props: TreeWithDataProps) {
             setItemCount((itemCountTemp) => itemCountTemp && itemCountTemp - 1)
           } else if (PathHelper.trimSlashes(node.Path) === PathHelper.getParentPath(d.contentData.Path)) {
             node.children = node.children?.filter((n) => n.Id !== d.contentData.Id)
-            if (selectionService.activeContent.getValue()?.Id === d.contentData.Id) {
-              selectionService.activeContent.setValue(node)
-            }
           }
         })
         setTreeData({ ...treeData! })
@@ -179,7 +175,6 @@ export default function TreeWithData(props: TreeWithDataProps) {
   }, [
     treeData,
     eventHub.onContentDeleted,
-    selectionService.activeContent,
     eventHub.onContentCreated,
     eventHub.onContentCopied,
     eventHub.onContentMoved,
@@ -188,13 +183,6 @@ export default function TreeWithData(props: TreeWithDataProps) {
     loadCollection,
     logger,
   ])
-
-  useEffect(() => {
-    const activeContent = selectionService.activeContent.getValue()
-    if (activeContent?.Path !== props.activeItemPath) {
-      selectionService.activeContent.setValue(currentContent)
-    }
-  }, [logger, props.activeItemPath, repo, selectionService.activeContent, currentContent])
 
   useEffect(() => {
     loadRoot()
@@ -215,6 +203,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
           }
         }
         node.expanded = !node.expanded
+        selectionService.activeContent.setValue(item)
         props.onItemClick(item)
         setTreeData({ ...treeData })
       }
@@ -227,6 +216,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
 
   return (
     <Tree
+      activeItemPath={props.activeItemPath}
       itemCount={itemCount}
       treeData={treeData}
       loadMore={loadMoreItems}

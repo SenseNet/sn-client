@@ -1,5 +1,6 @@
 import { Repository } from '@sensenet/client-core'
 import { Injectable, Injector } from '@sensenet/client-utils'
+import { Location } from 'history'
 import { CommandPaletteItem } from '../components/command-palette/CommandPalette'
 import { ResponsivePlatforms } from '../context'
 import { UiSettings } from '.'
@@ -14,6 +15,8 @@ export interface SearchOptions {
   repository: Repository
   device: ResponsivePlatforms
   uiSettings: UiSettings
+  location: Location
+  snRoute: any
 }
 
 @Injectable({ lifetime: 'singleton' })

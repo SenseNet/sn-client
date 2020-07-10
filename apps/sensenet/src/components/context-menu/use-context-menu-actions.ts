@@ -1,12 +1,10 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import { useDownload, useLogger, useRepository } from '@sensenet/hooks-react'
 import { useContext } from 'react'
-import { useHistory } from 'react-router'
-import { PATHS, resolvePathParams } from '../../application-paths'
+import { useHistory } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'
-import { useLoadContent } from '../../hooks'
-import { useDialogActionService } from '../../hooks/use-dialogaction-service'
-import { getPrimaryActionUrl } from '../../services'
+import { useLoadContent, useSnRoute } from '../../hooks'
+import { getUrlForContent, navigateToAction } from '../../services'
 import { useDialog } from '../dialogs'
 import { contextMenuODataOptions } from './context-menu-odata-options'
 
@@ -21,8 +19,8 @@ export function useContextMenuActions(
   const download = useDownload(content)
   const currentParent = useLoadContent({ idOrPath: content.ParentId!, isOpened }).content
   const { openDialog } = useDialog()
-  const dialogActionService = useDialogActionService()
   const uiSettings = useContext(ResponsivePersonalSettings)
+  const snRoute = useSnRoute()
 
   const getContentName = () => content.DisplayName ?? content.Name
 
@@ -32,10 +30,28 @@ export function useContextMenuActions(
         openDialog({ name: 'delete', props: { content: [content] } })
         break
       case 'Edit':
-        dialogActionService.activeAction.setValue('edit')
+        if (snRoute.path && content.Path.startsWith(snRoute.path)) {
+          navigateToAction({
+            history,
+            routeMatch: snRoute.match!,
+            action: 'edit',
+            queryParams: { content: content.Path.replace(snRoute.path, '') },
+          })
+        } else {
+          history.push(getUrlForContent({ content, uiSettings, location: history.location, action: 'edit' }))
+        }
         break
       case 'Browse':
-        dialogActionService.activeAction.setValue('browse')
+        if (snRoute.path && content.Path.startsWith(snRoute.path)) {
+          navigateToAction({
+            history,
+            routeMatch: snRoute.match!,
+            action: 'browse',
+            queryParams: { content: content.Path.replace(snRoute.path, '') },
+          })
+        } else {
+          history.push(getUrlForContent({ content, uiSettings, location: history.location, action: 'browse' }))
+        }
         break
       case 'MoveTo':
       case 'CopyTo': {
@@ -47,7 +63,16 @@ export function useContextMenuActions(
         break
       }
       case 'Preview':
-        history.push(getPrimaryActionUrl({ content, repository, uiSettings }))
+        if (snRoute.path && content.Path.startsWith(snRoute.path)) {
+          navigateToAction({
+            history,
+            routeMatch: snRoute.match!,
+            action: 'preview',
+            queryParams: { content: content.Path.replace(snRoute.path, '') },
+          })
+        } else {
+          history.push(getUrlForContent({ content, uiSettings, location: history.location, action: 'preview' }))
+        }
         break
       case 'CheckOut': {
         try {
@@ -78,23 +103,42 @@ export function useContextMenuActions(
         download.download()
         break
       case 'WopiOpenView':
-        history.push(
-          resolvePathParams({
-            path: PATHS.wopi.appPath,
-            params: { action: 'view', contentId: content.Id.toString() },
-          }),
-        )
+        if (snRoute.path && content.Path.startsWith(snRoute.path)) {
+          navigateToAction({
+            history,
+            routeMatch: snRoute.match!,
+            action: 'wopi-view',
+            queryParams: { content: content.Path.replace(snRoute.path, '') },
+          })
+        } else {
+          history.push(getUrlForContent({ content, uiSettings, location: history.location, action: 'wopi-view' }))
+        }
+
         break
       case 'WopiOpenEdit':
-        history.push(
-          resolvePathParams({
-            path: PATHS.wopi.appPath,
-            params: { action: 'edit', contentId: content.Id.toString() },
-          }),
-        )
+        if (snRoute.path && content.Path.startsWith(snRoute.path)) {
+          navigateToAction({
+            history,
+            routeMatch: snRoute.match!,
+            action: 'wopi-edit',
+            queryParams: { content: content.Path.replace(snRoute.path, '') },
+          })
+        } else {
+          history.push(getUrlForContent({ content, uiSettings, location: history.location, action: 'wopi-edit' }))
+        }
         break
       case 'Versions':
-        dialogActionService.activeAction.setValue('version')
+        if (snRoute.path && content.Path.startsWith(snRoute.path)) {
+          navigateToAction({
+            history,
+            routeMatch: snRoute.match!,
+            action: 'version',
+            queryParams: { content: content.Path.replace(snRoute.path, '') },
+          })
+        } else {
+          history.push(getUrlForContent({ content, uiSettings, location: history.location, action: 'version' }))
+        }
+
         break
       case 'Publish':
         try {

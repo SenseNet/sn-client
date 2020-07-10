@@ -8,7 +8,7 @@ import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import clsx from 'clsx'
 import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'
 import { useLocalization } from '../../hooks'
 import { getPrimaryActionUrl } from '../../services'
@@ -50,6 +50,7 @@ export const WellKnownContentCard = ({ settings, onContextMenu }: WellKnownConte
   const localization = useLocalization().settings
   const repository = useRepository()
   const uiSettings = useContext(ResponsivePersonalSettings)
+  const history = useHistory()
   const classes = useStyles()
 
   return (
@@ -67,7 +68,7 @@ export const WellKnownContentCard = ({ settings, onContextMenu }: WellKnownConte
       </CardContent>
       <CardActions style={{ justifyContent: 'flex-end' }}>
         <Link
-          to={getPrimaryActionUrl({ content: settings, repository, uiSettings })}
+          to={getPrimaryActionUrl({ content: settings, repository, uiSettings, location: history.location })}
           style={{ textDecoration: 'none' }}>
           <Button
             aria-label={localization.edit}
