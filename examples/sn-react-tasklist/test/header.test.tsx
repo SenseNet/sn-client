@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-/* eslint-disable @typescript-eslint/camelcase */
+
 import { IconButton } from '@material-ui/core'
 import { mount } from 'enzyme'
 import React, { PropsWithChildren } from 'react'
