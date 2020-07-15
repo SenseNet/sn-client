@@ -2,7 +2,7 @@ import { PATHS } from '../../../src/application-paths'
 import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
 describe('Search', () => {
-  it.only('should search available', () => {
+  it('should search available', () => {
     cy.login()
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
       .get('[data-test="search-button"]')

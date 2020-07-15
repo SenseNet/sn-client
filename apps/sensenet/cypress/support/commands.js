@@ -28,7 +28,7 @@
 
 Cypress.Commands.add('login', (userType = 'admin') => {
   const user = Cypress.env('users')[userType]
-  console.log(user)
+
   const configuration = {
     client_id: user.clientId,
     client_secret: user.clientSecret,

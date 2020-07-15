@@ -1,8 +1,9 @@
 {
   "baseUrl": "http://localhost:8080",
+  "chromeWebSecurity": false,
   "env": {
-    "repoUrl": "https://netcore-dev.service.sn.hu",
-    "identityServer": "https://is.dev.sn.hu",
+    "repoUrl": "https://netcore-service.test.sensenet.com",
+    "identityServer": "https://is.test.sensenet.com",
     "users": {
       "superadmin": {
         "clientId": "client",
@@ -15,7 +16,7 @@
         "id": "/Root/IMS/Public('businesscat')"
       },
       "developer": {
-        "clientId": "devdov",
+        "clientId": "devdog",
         "clientSecret": "secret",
         "id": "/Root/IMS/Public('devdog')"
       },
