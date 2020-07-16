@@ -148,7 +148,9 @@ export const QueryWidget = (props: QueryWidgetModel<GenericContent>) => {
                     // props.history.push(contentRouter.getPrimaryActionUrl(p))
                   }}
                   onActivateItem={(p) => {
-                    history.push(getPrimaryActionUrl({ content: p, repository, uiSettings }))
+                    history.push(
+                      getPrimaryActionUrl({ content: p, repository, uiSettings, location: history.location }),
+                    )
                   }}
                   onActiveItemChange={(item) => {
                     selectionService.activeContent.setValue(item)

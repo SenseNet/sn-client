@@ -3,9 +3,9 @@ import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { Button, createStyles, makeStyles, Typography } from '@material-ui/core'
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
-import { PATHS, resolvePathParams } from '../application-paths'
 import { useGlobalStyles } from '../globalStyles'
-import { useLocalization } from '../hooks'
+import { useLocalization, useQuery } from '../hooks'
+import { navigateToAction } from '../services'
 import { FullScreenLoader } from './full-screen-loader'
 
 const useStyles = makeStyles(() => {
@@ -30,9 +30,9 @@ const useStyles = makeStyles(() => {
   })
 })
 
-export default function WopiPage() {
+export default function WopiPage({ contentPath }: { contentPath?: string }) {
   const repo = useRepository()
-  const match = useRouteMatch<{ contentId?: string; action?: string }>()
+  const routeMatch = useRouteMatch<{ browseType?: string; action?: string }>()
   const history = useHistory()
   const formElement = useRef<HTMLFormElement>(null)
   const [wopiData, setWopiData] = useState<ODataWopiResponse | null>(null)
@@ -42,19 +42,20 @@ export default function WopiPage() {
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const formsLocalization = useLocalization().forms
+  const contentFromQuery = useQuery().get('content')
 
   useEffect(() => {
     const ac = new AbortController()
     setError('')
     ;(async () => {
-      if (!match.params.contentId) {
+      if (!contentPath) {
         setError('Invalid url')
         return
       }
       try {
         const response = await repo.getWopiData({
-          idOrPath: parseInt(match.params.contentId, 10),
-          action: match.params.action as 'edit' | 'view',
+          idOrPath: contentPath,
+          action: routeMatch.params.action!.replace('wopi-', '') as 'edit' | 'view',
           requestInit: {
             signal: ac.signal,
           },
@@ -72,7 +73,7 @@ export default function WopiPage() {
           logger.error({
             message: `Error opening file for online editing`,
             data: {
-              details: { contentId: match.params.contentId, action: match.params.action, e },
+              details: { contentPath, action: routeMatch.params.action, e },
               isDismissed: true,
             },
           })
@@ -80,7 +81,7 @@ export default function WopiPage() {
       }
     })()
     return () => ac.abort()
-  }, [localization.errorOpeningFileText, logger, match.params.action, match.params.contentId, repo])
+  }, [localization.errorOpeningFileText, logger, routeMatch.params.action, repo, contentPath])
 
   if (error) {
     return (
@@ -101,22 +102,22 @@ export default function WopiPage() {
           {error}
         </Typography>
         <>
-          {match.params.action !== 'view' ? (
+          {routeMatch.params.action !== 'wopi-view' ? (
             <Button
               aria-label={localization.tryOpenRead}
-              onClick={() => {
-                history.push(
-                  resolvePathParams({
-                    path: PATHS.wopi.appPath,
-                    params: { action: 'view', contentId: match.params.contentId!.toString() },
-                  }),
-                )
-              }}>
+              onClick={() =>
+                navigateToAction({
+                  history,
+                  routeMatch,
+                  action: 'wopi-view',
+                  queryParams: { content: contentFromQuery },
+                })
+              }>
               {localization.tryOpenRead}
             </Button>
           ) : null}
 
-          <Button aria-label={localization.goBack} onClick={() => history.goBack()}>
+          <Button aria-label={localization.goBack} onClick={() => navigateToAction({ history, routeMatch })}>
             {localization.goBack}
           </Button>
         </>
@@ -159,7 +160,7 @@ export default function WopiPage() {
           aria-label={formsLocalization.cancel}
           color="default"
           className={globalClasses.cancelButton}
-          onClick={history.goBack}>
+          onClick={() => navigateToAction({ history, routeMatch })}>
           {formsLocalization.cancel}
         </Button>
       </div>

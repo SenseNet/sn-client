@@ -17,7 +17,7 @@ import { useHistory } from 'react-router-dom'
 import { PATHS } from '../../application-paths'
 import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization, useSelectionService } from '../../hooks'
+import { useLocalization, useSelectionService, useSnRoute } from '../../hooks'
 import { useQuery } from '../../hooks/use-query'
 import { getPrimaryActionUrl, pathWithQueryParams } from '../../services'
 import { ContentList } from '../content-list'
@@ -40,6 +40,7 @@ export const Search = () => {
   const repository = useRepository()
   const termFromQuery = useQuery().get('term')
   const history = useHistory()
+  const { location } = history
   const { openDialog } = useDialog()
   const logger = useLogger('Search')
   const [query, setQuery] = useState(termFromQuery ? decodeURIComponent(termFromQuery) : undefined)
@@ -52,6 +53,7 @@ export const Search = () => {
   const loadSettingsContext = useContext(LoadSettingsContext)
   const uiSettings = useContext(ResponsivePersonalSettings)
   const searchInputRef = useRef<HTMLInputElement>()
+  const snRoute = useSnRoute()
 
   const debouncedQuery = useCallback(
     debounce((a: string) => setQuery(a), searchDebounceTime),
@@ -164,13 +166,10 @@ export const Search = () => {
               enableBreadcrumbs={false}
               parentIdOrPath={0}
               onParentChange={(p) => {
-                history.push(getPrimaryActionUrl({ content: p, repository, uiSettings }))
+                history.push(getPrimaryActionUrl({ content: p, repository, uiSettings, location, snRoute }))
               }}
               onActivateItem={(p) => {
-                history.push(getPrimaryActionUrl({ content: p, repository, uiSettings }))
-              }}
-              onSelectionChange={(sel) => {
-                selectionService.selection.setValue(sel)
+                history.push(getPrimaryActionUrl({ content: p, repository, uiSettings, location, snRoute }))
               }}
               onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
             />

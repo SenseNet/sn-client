@@ -51,6 +51,7 @@ export interface TextEditorProps {
   saveContent?: (content: SnFile, value: string) => Promise<void>
   additionalButtons?: JSX.Element
   showBreadCrumb: boolean
+  handleCancel?: () => void
 }
 
 export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
@@ -230,7 +231,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
           aria-label={localization.forms.cancel}
           color="default"
           className={globalClasses.cancelButton}
-          onClick={history.goBack}>
+          onClick={props.handleCancel || history.goBack}>
           {localization.forms.cancel}
         </Button>
 

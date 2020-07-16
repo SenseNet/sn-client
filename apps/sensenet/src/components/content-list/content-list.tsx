@@ -1,5 +1,4 @@
 import { Repository } from '@sensenet/client-core'
-import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsContext,
@@ -92,9 +91,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
   const globalClasses = useGlobalStyles()
   const { openDialog } = useDialog()
   const [selected, setSelected] = useState<GenericContent[]>([])
-  const [activeContent, setActiveContent] = useState<GenericContent>(
-    selectionService.activeContent.getValue() || children[0],
-  )
+  const [activeContent, setActiveContent] = useState<GenericContent>(children[0])
   const [isFocused, setIsFocused] = useState(true)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<{ top: number; left: number }>({
@@ -110,17 +107,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
   )
 
   useEffect(() => {
-    const activeComponentObserve = selectionService.activeContent.subscribe(
-      (newActiveComponent) => newActiveComponent !== undefined && setActiveContent(newActiveComponent),
-    )
-
-    return function cleanup() {
-      activeComponentObserve.dispose()
-    }
-  }, [selectionService.activeContent])
-
-  useEffect(() => {
-    props.onActiveItemChange && props.onActiveItemChange(activeContent)
+    props.onActiveItemChange?.(activeContent)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeContent])
 
@@ -130,7 +117,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
   }, [isFocused])
 
   useEffect(() => {
-    props.onSelectionChange && props.onSelectionChange(selected)
+    props.onSelectionChange?.(selected)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected])
 
@@ -151,20 +138,6 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
   useEffect(() => {
     selectionService.selection.setValue(selected)
   }, [selected, selectionService.selection])
-
-  const [searchString, setSearchString] = useState('')
-  const runSearch = useCallback(
-    debounce(() => {
-      const child = children.find(
-        (content) =>
-          content.Name.toLocaleLowerCase().indexOf(searchString) === 0 ||
-          (content.DisplayName && content.DisplayName.toLocaleLowerCase().indexOf(searchString)) === 0,
-      )
-      child && setActiveContent(child)
-      setSearchString('')
-    }, 500),
-    [],
-  )
 
   const onCloseFunc = () => setIsContextMenuOpened(false)
   const onOpenFunc = () => setIsContextMenuOpened(true)
@@ -277,13 +250,10 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
           props.onTabRequest?.()
           break
         default:
-          if (ev.key.length === 1) {
-            setSearchString(searchString + ev.key)
-            runSearch()
-          }
+          return true
       }
     },
-    [activeContent, children, props, selected, handleActivateItem, ancestors, openDialog, searchString, runSearch],
+    [activeContent, children, props, selected, handleActivateItem, ancestors, openDialog],
   )
 
   const onRequestOrderChangeFunc = (field: keyof GenericContent, dir: 'asc' | 'desc') => {

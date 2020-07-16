@@ -5,65 +5,57 @@ export const PATHS = {
   silentCallback: { appPath: '/authentication/silent-callback' },
   personalSettings: { appPath: '/personal-settings' },
   events: { appPath: '/events/:eventGuid?' },
-  savedQueries: { appPath: '/saved-queries' },
-  setup: { appPath: '/setup', snPath: '/Root/System/Settings' },
-  trash: { appPath: '/trash/:browseType', snPath: '/Root/Trash' },
-  localization: { appPath: '/localization/:browseType', snPath: '/Root/Localization' },
-  usersAndGroups: { appPath: '/users-and-groups/:browseType', snPath: '/Root/IMS/Public' },
-  editBinary: { appPath: '/edit-binary/:contentId' },
-  editProperties: { appPath: '/edit-properties/:contentId' },
-  browseProperties: { appPath: '/browse-properties/:contentId' },
-  newProperties: { appPath: '/new-properties' },
-  versionProperties: { appPath: '/version-properties/:contentId' },
-  preview: { appPath: '/preview/:contentId' },
-  wopi: { appPath: '/wopi/:contentId/:action' },
+  savedQueries: { appPath: '/saved-queries/:action?', snPath: '/Root/Content/Queries' },
+  setup: { appPath: '/setup/:action?', snPath: '/Root/System/Settings' },
+  trash: { appPath: '/trash/:browseType/:action?', snPath: '/Root/Trash' },
+  localization: { appPath: '/localization/:browseType/:action?', snPath: '/Root/Localization' },
+  usersAndGroups: { appPath: '/users-and-groups/:browseType/:action?', snPath: '/Root/IMS/Public' },
   dashboard: { appPath: '/dashboard/:dashboardName' },
-  contentTypes: { appPath: '/content-types/:browseType', snPath: '/Root/System/Schema/ContentTypes' },
+  contentTypes: { appPath: '/content-types/:browseType/:action?', snPath: '/Root/System/Schema/ContentTypes' },
   search: { appPath: '/search' },
-  content: { appPath: '/content/:browseType', snPath: '/Root/Content' },
-  custom: { appPath: '/custom/:browseType/:path' },
+  content: { appPath: '/content/:browseType/:action?', snPath: '/Root/Content' },
+  custom: { appPath: '/custom/:browseType/:path/:action?' },
 } as const
 
-type RoutesWithContentIdParams = keyof Pick<
-  typeof PATHS,
-  'editProperties' | 'editBinary' | 'browseProperties' | 'versionProperties' | 'preview'
->
-
-type RoutesWithBrowseTypeParams = keyof Pick<
+type RoutesWithContentBrowser = keyof Pick<
   typeof PATHS,
   'content' | 'localization' | 'usersAndGroups' | 'contentTypes' | 'trash'
 >
 
+type RoutesWithActionParam = keyof Pick<typeof PATHS, 'setup' | 'savedQueries'>
+
 type Options =
   | { path: typeof PATHS['events']['appPath']; params?: { eventGuid: string; [index: string]: string } }
   | {
-      path: typeof PATHS[RoutesWithBrowseTypeParams]['appPath']
-      params?: { browseType: typeof BrowseType[number]; [index: string]: string }
+      path: typeof PATHS[RoutesWithContentBrowser]['appPath']
+      params: { browseType: typeof BrowseType[number]; action?: string; [index: string]: string | undefined }
     }
   | {
       path: typeof PATHS['dashboard']['appPath']
       params: { dashboardName: string; [index: string]: string }
     }
   | {
-      path: typeof PATHS['wopi']['appPath']
-      params: { contentId: string; action: string; [index: string]: string }
-    }
-  | {
       path: typeof PATHS['custom']['appPath']
-      params: { browseType: typeof BrowseType[number]; path: string; [index: string]: string }
+      params: {
+        browseType: typeof BrowseType[number]
+        path: string
+        action?: string
+        [index: string]: string | undefined
+      }
     }
   | {
-      path: typeof PATHS[RoutesWithContentIdParams]['appPath']
-      params: { contentId: number; [index: string]: number }
+      path: typeof PATHS[RoutesWithActionParam]['appPath']
+      params?: { action: string; [index: string]: string }
     }
 
 export const resolvePathParams = ({ path, params }: Options) => {
   let currentPath: string = path
-  if (!params) {
-    return `/${path.split('/')[1]}`
-  }
-  Object.keys(params).forEach((key) => {
-    currentPath = params[key] ? currentPath.replace(`:${key}`, params[key].toString()) : currentPath
-  })
+  params &&
+    Object.keys(params).forEach((key) => {
+      const paramRegex = new RegExp(`:${key}\\??`)
+      currentPath = params[key] ? currentPath.replace(paramRegex, params[key]!.toString()) : currentPath
+    })
+
+  currentPath = currentPath.replace(/:[^>:"|?*./\\]+\?/, '') // remove not used optional path params
   return currentPath
 }
