@@ -1,5 +1,5 @@
 import { UploadProgressInfo } from '@sensenet/client-core'
-import { ObservableValue } from '@sensenet/client-utils'
+import { ObservableValue, PathHelper } from '@sensenet/client-utils'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import {
   Button,
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize: '4rem',
     },
     grid: {
-      height: '85vh',
+      height: '65vh',
       border: 'dashed',
       borderColor: theme.palette.grey[500],
       marginBottom: theme.spacing(2),
@@ -51,6 +51,8 @@ const useStyles = makeStyles((theme: Theme) =>
 export type UploadDialogProps = {
   files?: File[]
   uploadPath: string
+  uploadAvatar?: boolean
+  fileName?: string
 }
 
 export function UploadDialog(props: UploadDialogProps) {
@@ -164,6 +166,27 @@ export function UploadDialog(props: UploadDialogProps) {
     }
   }
 
+  const uploadAvatar = async () => {
+    if (!files) {
+      return
+    }
+    setIsUploadInProgress(true)
+
+    try {
+      await repository.upload.file({
+        file: files[files.length - 1],
+        parentPath: PathHelper.getParentPath(props.uploadPath),
+        fileName: props.fileName || '',
+        overwrite: true,
+        binaryPropertyName: 'ImageData',
+      })
+    } catch (error) {
+      logger.error({ message: 'Upload failed', data: error })
+    } finally {
+      setIsUploadInProgress(false)
+    }
+  }
+
   return (
     <>
       <DialogTitle disableTypography>
@@ -214,7 +237,9 @@ export function UploadDialog(props: UploadDialogProps) {
               color="primary"
               disabled={isUploadInProgress}
               variant="contained"
-              onClick={() => upload()}>
+              onClick={() => {
+                props.uploadAvatar === true ? uploadAvatar() : upload()
+              }}>
               {localization.uploadButton}
             </Button>
           )}

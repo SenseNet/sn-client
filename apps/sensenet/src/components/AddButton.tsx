@@ -223,7 +223,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
                   openDialog({
                     name: 'upload',
                     props: { uploadPath: currentPath },
-                    dialogProps: { open: true, fullScreen: true },
+                    dialogProps: { open: true, fullScreen: false },
                   })
                 }}>
                 <ListItemIcon style={{ minWidth: '36px' }}>
