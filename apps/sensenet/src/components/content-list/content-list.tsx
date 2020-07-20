@@ -348,7 +348,10 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
         if (Array.isArray(fieldOptions.rowData[fieldOptions.dataKey])) {
           return (
             <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
-              <RolesField roles={fieldOptions.rowData[fieldOptions.dataKey] as GenericContent[]} />
+              <RolesField
+                roles={fieldOptions.rowData[fieldOptions.dataKey] as GenericContent[]}
+                directRoles={fieldOptions.rowData.DirectRoles}
+              />
             </ContextMenuWrapper>
           )
         }

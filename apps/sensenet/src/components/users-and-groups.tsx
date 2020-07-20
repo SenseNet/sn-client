@@ -12,7 +12,7 @@ const gridSwitcherConfig = [
     name: 'users',
     schema: 'User',
     fieldsToDisplay: ['DisplayName', 'Email', 'AllRoles', 'Enabled', 'Actions'],
-    loadSettings: { filter: "isOf('User')" },
+    loadSettings: { filter: "isOf('User')", expand: ['DirectRoles', 'AllRoles', 'CheckedOutTo'] as any },
   },
   {
     icon: <People />,

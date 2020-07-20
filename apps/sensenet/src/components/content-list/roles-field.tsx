@@ -1,6 +1,7 @@
 import { GenericContent, Group, User } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import { Button, Menu, MenuItem, TableCell } from '@material-ui/core'
+import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
 import clsx from 'clsx'
 import React, { FunctionComponent, useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
@@ -8,9 +9,10 @@ import { useDialog } from '../dialogs'
 
 interface RolesFieldProps {
   roles: GenericContent[]
+  directRoles?: GenericContent[]
 }
 
-export const RolesField: FunctionComponent<RolesFieldProps> = ({ roles }) => {
+export const RolesField: FunctionComponent<RolesFieldProps> = ({ roles, directRoles }) => {
   const globalClasses = useGlobalStyles()
   const repository = useRepository()
   const { openDialog } = useDialog()
@@ -38,6 +40,14 @@ export const RolesField: FunctionComponent<RolesFieldProps> = ({ roles }) => {
     })
   }
 
+  const isIndirect = (role: GenericContent) => {
+    if (!directRoles) {
+      return false
+    }
+
+    return !directRoles.some((directRole) => directRole.Id === role.Id)
+  }
+
   return (
     <TableCell className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)} component="div">
       {listed.map((role) => (
@@ -47,6 +57,7 @@ export const RolesField: FunctionComponent<RolesFieldProps> = ({ roles }) => {
           color="primary"
           size="small"
           style={{ marginRight: '0.5rem' }}
+          endIcon={isIndirect(role) ? <SwapHorizIcon /> : undefined}
           onClick={async (event) => openGroupDialog(event, role)}>
           {role.DisplayName}
         </Button>
@@ -75,6 +86,11 @@ export const RolesField: FunctionComponent<RolesFieldProps> = ({ roles }) => {
                   setAnchorEl(null)
                 }}>
                 {role.DisplayName}
+                {isIndirect(role) && (
+                  <div style={{ display: 'flex', paddingLeft: '6px' }}>
+                    <SwapHorizIcon />
+                  </div>
+                )}
               </MenuItem>
             ))}
           </Menu>
