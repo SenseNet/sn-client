@@ -85,6 +85,10 @@ export interface PatchOptions<TContentType> extends WithOdataOptions<TContentTyp
    * The content data to update
    */
   content: Partial<TContentType>
+  /**
+   * Force content list refresh
+   */
+  forceRefresh?: boolean
 }
 
 /**
@@ -99,6 +103,10 @@ export interface PutOptions<TContentType> extends WithOdataOptions<TContentType>
    * The new content data
    */
   content: Partial<TContentType>
+  /**
+   * Force content list refresh
+   */
+  forceRefresh?: boolean
 }
 
 /**

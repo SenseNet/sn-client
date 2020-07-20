@@ -441,6 +441,9 @@ const values = {
     move: 'Move selected items',
     copy: 'Copy selected items',
   },
+  referenceContentListDialog: {
+    errorAlreadyInList: 'The selected item is already in the list',
+  },
 }
 
 export default values

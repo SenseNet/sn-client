@@ -1,8 +1,8 @@
-import { Button, DialogActions, DialogContent, DialogTitle } from '@material-ui/core'
+import { Button, DialogActions, DialogContent } from '@material-ui/core'
 import React from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { useDialog } from './dialog-provider'
+import { DialogTitle, useDialog } from '.'
 
 export type AreYouSureProps = {
   bodyText?: string

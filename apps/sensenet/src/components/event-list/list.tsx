@@ -69,7 +69,6 @@ export const List: React.FunctionComponent<ListProps> = (props) => {
               <TableCell>
                 {row.data?.relatedContent && row.data?.relatedRepository ? (
                   <>
-                    {console.log(row.data?.relatedContent)}
                     <Link
                       to={getPrimaryActionUrl({
                         content: row.data.relatedContent.d ?? row.data.relatedContent,

@@ -27,10 +27,12 @@ import {
   DescriptionField,
   DisplayNameComponent,
   EmailField,
+  EnabledField,
   IconField,
   LockedField,
   PhoneField,
   ReferenceField,
+  RolesField,
 } from '.'
 
 const useStyles = makeStyles(() => {
@@ -71,7 +73,7 @@ export interface ContentListProps {
 }
 
 export const isReferenceField = (fieldName: string, repo: Repository, schema = 'GenericContent') => {
-  const refWhiteList = ['AllowedChildTypes']
+  const refWhiteList = ['AllowedChildTypes', 'AllRoles']
   const setting = repo.schemas.getSchemaByName(schema).FieldSettings.find((f) => f.Name === fieldName)
   return refWhiteList.indexOf(fieldName) !== -1 || (setting && setting.Type === 'ReferenceFieldSetting') || false
 }
@@ -325,6 +327,32 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
             <ActionsField onOpen={(ev) => openContext(ev, fieldOptions.rowData)} />
           </ContextMenuWrapper>
         )
+      case 'Enabled':
+        if (fieldOptions.rowData[fieldOptions.dataKey] !== undefined) {
+          return (
+            <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
+              <EnabledField
+                enabled={fieldOptions.rowData[fieldOptions.dataKey] as boolean}
+                onChange={(value: boolean) =>
+                  repo.patch({
+                    idOrPath: fieldOptions.rowData.Id,
+                    content: { [fieldOptions.dataKey]: value },
+                  })
+                }
+              />
+            </ContextMenuWrapper>
+          )
+        }
+        return null
+      case 'AllRoles':
+        if (Array.isArray(fieldOptions.rowData[fieldOptions.dataKey])) {
+          return (
+            <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
+              <RolesField roles={fieldOptions.rowData[fieldOptions.dataKey] as GenericContent[]} />
+            </ContextMenuWrapper>
+          )
+        }
+        return null
       default:
         break
     }
@@ -342,15 +370,16 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
     ) {
       const expectedContent = fieldOptions.rowData[fieldOptions.dataKey] as GenericContent
       if (
-        expectedContent &&
-        expectedContent.Id &&
-        expectedContent.Type &&
-        expectedContent.Name &&
-        expectedContent.Path
+        (expectedContent &&
+          expectedContent.Id &&
+          expectedContent.Type &&
+          expectedContent.Name &&
+          expectedContent.Path) ||
+        Array.isArray(expectedContent)
       ) {
         return (
           <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
-            <ReferenceField content={expectedContent} />
+            <ReferenceField content={expectedContent} fieldName={fieldOptions.dataKey} parent={fieldOptions.rowData} />
           </ContextMenuWrapper>
         )
       }
