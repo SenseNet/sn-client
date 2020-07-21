@@ -1,0 +1,23 @@
+name: AdminUI end-to-end tests
+on: [workflow_dispatch]
+jobs:
+  cypress-run:
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: install
+        run: yarn install
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+
+      - name: Cypress run
+        run: yarn snapp cypress:all

@@ -1,8 +1,8 @@
 {
-  "baseUrl": "http://localhost:8080",
+  "baseUrl": "http://admin.test.sensenet.com",
   "chromeWebSecurity": false,
   "env": {
-    "repoUrl": "https://netcore-service.test.sensenet.com",
+    "repoUrl": "https://e2e-service.test.sensenet.com",
     "identityServer": "https://is.test.sensenet.com",
     "users": {
       "superadmin": {
