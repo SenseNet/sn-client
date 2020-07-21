@@ -7,22 +7,18 @@
     "users": {
       "superadmin": {
         "clientId": "client",
-        "clientSecret": "secret",
         "id": "/Root/IMS/BuiltIn/Portal('Admin')"
       },
       "admin": {
         "clientId": "kitty",
-        "clientSecret": "secret",
         "id": "/Root/IMS/Public('businesscat')"
       },
       "developer": {
         "clientId": "devdog",
-        "clientSecret": "secret",
         "id": "/Root/IMS/Public('devdog')"
       },
       "editor": {
         "clientId": "eddie",
-        "clientSecret": "secret",
         "id": "/Root/IMS/Public('editormanatee')"
       }
     }

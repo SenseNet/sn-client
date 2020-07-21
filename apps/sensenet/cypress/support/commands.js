@@ -24,14 +24,12 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-/* eslint-disable @typescript-eslint/camelcase */
-
 Cypress.Commands.add('login', (userType = 'admin') => {
   const user = Cypress.env('users')[userType]
 
   const configuration = {
     client_id: user.clientId,
-    client_secret: user.clientSecret,
+    client_secret: Cypress.env(`secret_${userType}`) || user.clientSecret,
     grant_type: 'client_credentials',
     scope: encodeURIComponent('sensenet'),
   }

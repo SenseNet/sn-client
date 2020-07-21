@@ -7,17 +7,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - uses: actions/cache@v2
-        with:
-          path: ~/.cache/yarn
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: install
-        run: yarn install
-        env:
-          CYPRESS_INSTALL_BINARY: 0
-
       - name: Cypress run
-        run: yarn snapp cypress:all
+        uses: cypress-io/github-action@v2
+        with:
+          env: secret_superadmin=${{ secrets.AUTH_SECRET_SUPERADMIN }},secret_admin=${{ secrets.AUTH_SECRET_ADMIN }},secret_developer=${{ secrets.AUTH_SECRET_DEVELOPER }},secret_editor=${{ secrets.AUTH_SECRET_EDITOR }}
