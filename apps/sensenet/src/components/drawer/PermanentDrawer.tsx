@@ -13,7 +13,6 @@ import { PATHS } from '../../application-paths'
 import { ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
-import { useDialogActionService } from '../../hooks/use-dialogaction-service'
 import { AddButton } from '../AddButton'
 import { SearchButton } from '../search-button'
 
@@ -91,13 +90,11 @@ export const PermanentDrawer = () => {
   const globalClasses = useGlobalStyles()
   const settings = useContext(ResponsivePersonalSettings)
   const theme = useTheme()
-  const [currentPath, setCurrentPath] = useState('')
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const items = useDrawerItems()
   const localization = useLocalization().drawer
   const location = useLocation()
   const selectionService = useSelectionService()
-  const dialogActionService = useDialogActionService()
 
   if (!settings.drawer.enabled) {
     return null
@@ -130,7 +127,7 @@ export const PermanentDrawer = () => {
               PATHS.usersAndGroups.appPath,
               PATHS.setup.appPath,
             ]) ? (
-              <AddButton isOpened={opened} path={currentPath} />
+              <AddButton isOpened={opened} />
             ) : null}
             {items.map((item, index) => {
               return (
@@ -140,8 +137,6 @@ export const PermanentDrawer = () => {
                   key={index}
                   onClick={() => {
                     selectionService.activeContent.setValue(undefined)
-                    dialogActionService.activeAction.setValue(undefined)
-                    setCurrentPath(item.root || '')
                   }}
                   activeClassName={classes.navLinkActive}>
                   <ListItem

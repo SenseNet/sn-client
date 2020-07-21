@@ -159,9 +159,7 @@ describe('QuillOEmbedModule', () => {
         json: () => {
           return {
             type: 'video',
-            // eslint-disable-next-line @typescript-eslint/camelcase
             thumbnail_width: 41,
-            // eslint-disable-next-line @typescript-eslint/camelcase
             thumbnail_height: 41,
             html: richHtml,
           }

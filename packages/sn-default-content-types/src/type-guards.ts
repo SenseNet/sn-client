@@ -16,5 +16,5 @@ export function isUser(content: any): content is User {
   if ('Type' in content) {
     return content.Type === 'User'
   }
-  throw new Error(`There is no Type field in ${JSON.stringify(content)}`)
+  return false
 }

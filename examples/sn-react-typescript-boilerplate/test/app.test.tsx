@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable react/display-name */
 import { Button } from '@material-ui/core'
 import { mount } from 'enzyme'

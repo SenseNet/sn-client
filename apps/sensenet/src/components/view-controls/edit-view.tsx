@@ -2,8 +2,7 @@
  * @module ViewControls
  */
 import { isExtendedError } from '@sensenet/client-core'
-import { PathHelper } from '@sensenet/client-utils/src/path-helper'
-import { FieldSetting } from '@sensenet/default-content-types'
+import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { createStyles, makeStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
@@ -11,8 +10,10 @@ import Grid from '@material-ui/core/Grid'
 import clsx from 'clsx'
 import React, { createElement, ReactElement, useEffect, useState } from 'react'
 import MediaQuery from 'react-responsive'
+import { useHistory, useRouteMatch } from 'react-router-dom'
 import { globals, useGlobalStyles } from '../../globalStyles'
-import { useDialogActionService, useLocalization, useSelectionService } from '../../hooks'
+import { useLocalization, useSelectionService } from '../../hooks'
+import { navigateToAction } from '../../services'
 import { ActionNameType, reactControlMapper } from '../react-control-mapper'
 import { ViewTitle } from './view-title'
 
@@ -71,6 +72,7 @@ export interface EditViewProps {
   uploadFolderpath?: string
   actionName?: ActionNameType
   isFullPage?: boolean
+  contentPath: string
 }
 
 /**
@@ -78,52 +80,36 @@ export interface EditViewProps {
  *
  * Usage:
  * ```html
- *  <EditView content={selectedContent} onSubmit={editSubmitClick} />
+ *  <EditView contentPath={selectedContentPath} submitCallback={editSubmitClick} />
  * ```
  */
 export const EditView: React.FC<EditViewProps> = (props) => {
   const repo = useRepository()
   const selectionService = useSelectionService()
-  const [content, setContent] = useState(selectionService.activeContent.getValue())
+  const [content, setContent] = useState<GenericContent>()
   const controlMapper = reactControlMapper(repo)
   const [saveableFields, setSaveableFields] = useState({})
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const localization = useLocalization()
   const logger = useLogger('EditView')
-  const dialogActionService = useDialogActionService()
+  const history = useHistory()
+  const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
 
   useEffect(() => {
     async function getExpandedContent() {
       const expanedContentResponse = await repo.load({
-        idOrPath: selectionService.activeContent.getValue()!.Id,
+        idOrPath: props.contentPath,
         oDataOptions: {
           select: 'all',
           expand: ['Manager', 'FollowedWorkspaces', 'ModifiedBy'] as any,
         },
       })
       setContent(expanedContentResponse.d)
+      selectionService.activeContent.setValue(expanedContentResponse.d)
     }
-    selectionService.activeContent.getValue() && getExpandedContent()
-  }, [repo, selectionService.activeContent])
-
-  useEffect(() => {
-    const activeComponentObserve = selectionService.activeContent.subscribe(async (newActiveComponent) => {
-      if (newActiveComponent) {
-        const expandedContent = await repo.load({
-          idOrPath: newActiveComponent?.Id,
-          oDataOptions: {
-            select: 'all',
-            expand: ['Manager', 'FollowedWorkspaces', 'ModifiedBy'] as any,
-          },
-        })
-        setContent(expandedContent.d)
-      }
-    })
-    return function cleanup() {
-      activeComponentObserve.dispose()
-    }
-  }, [repo, selectionService.activeContent])
+    getExpandedContent()
+  }, [repo, props.contentPath, selectionService.activeContent])
 
   if (content === undefined) {
     return null
@@ -185,7 +171,8 @@ export const EditView: React.FC<EditViewProps> = (props) => {
       <>
         <ViewTitle
           title={props.actionName === 'browse' ? 'Info about' : 'Edit'}
-          titleBold={selectionService.activeContent.getValue()?.DisplayName}
+          titleBold={content?.DisplayName}
+          content={content}
         />
         <form
           className={clsx(classes.mainForm, {
@@ -246,13 +233,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
                 color="default"
                 className={globalClasses.cancelButton}
                 onClick={async () => {
-                  if (selectionService.activeContent.getValue() !== undefined) {
-                    const parentContent = await repo.load({
-                      idOrPath: PathHelper.getParentPath(selectionService.activeContent.getValue()!.Path),
-                    })
-                    selectionService.activeContent.setValue(parentContent.d)
-                  }
-                  dialogActionService.activeAction.setValue(undefined)
+                  navigateToAction({ history, routeMatch })
                   props.handleCancel?.()
                 }}>
                 {localization.forms.cancel}

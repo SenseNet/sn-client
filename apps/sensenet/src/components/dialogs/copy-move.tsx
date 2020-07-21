@@ -14,7 +14,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import React, { useEffect, useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization, useSnPath } from '../../hooks'
+import { useLocalization, useSnRoute } from '../../hooks'
 import { Icon } from '../Icon'
 import { useDialog } from './dialog-provider'
 
@@ -25,13 +25,13 @@ export interface CopyMoveDialogProps {
 }
 
 export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (props) => {
-  const snPath = useSnPath()
+  const snRoute = useSnRoute()
   const repo = useRepository()
   const { closeLastDialog } = useDialog()
   const list = useListPicker({
     repository: repo,
     currentPath: props.currentParent.Path,
-    rootPath: snPath,
+    rootPath: snRoute.path,
     itemsODataOptions: { filter: '' },
   })
   const localizations = useLocalization().copyMoveContentDialog

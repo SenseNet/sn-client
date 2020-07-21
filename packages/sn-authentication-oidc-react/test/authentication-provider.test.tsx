@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import { Button } from '@material-ui/core'
 import { mount } from 'enzyme'
 import { UserManager } from 'oidc-client'

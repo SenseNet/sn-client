@@ -1,16 +1,19 @@
+import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import { createStyles, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
-import React, { useCallback } from 'react'
+import React, { useCallback, useContext } from 'react'
 import { useHistory } from 'react-router'
-import { PATHS, resolvePathParams } from '../../application-paths'
+import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
-import { useDialogActionService, useSelectionService } from '../../hooks'
+import { useSnRoute } from '../../hooks'
+import { getPrimaryActionUrl } from '../../services'
 import { editviewFileResolver, Icon } from '../Icon'
 
 interface ViewTitleProps {
   title: string
   titleBold?: string
+  content?: GenericContent
 }
 
 const useStyles = makeStyles(() => {
@@ -27,11 +30,11 @@ const useStyles = makeStyles(() => {
 
 export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
   const globalClasses = useGlobalStyles()
-  const selectionService = useSelectionService()
-  const dialogActionService = useDialogActionService()
   const history = useHistory()
   const repository = useRepository()
   const classes = useStyles()
+  const uiSettings = useContext(ResponsivePersonalSettings)
+  const snRoute = useSnRoute()
 
   const getContentTypeId = useCallback(
     async (contentType: string) => {
@@ -41,7 +44,7 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
           query: `+TypeIs:'ContentType' AND Name:${contentType} .AUTOFILTERS:OFF`,
         },
       })
-      return result.d.results[0].Id
+      return result.d.results[0]
     },
     [repository],
   )
@@ -51,31 +54,34 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
       <span>
         {props.title} <span className={classes.textBolder}>{props.titleBold}</span>
       </span>
-      <span
-        title={`Open ${selectionService.activeContent.getValue()!.Type} CTD`}
-        onClick={async () => {
-          dialogActionService.activeAction.setValue(undefined)
-          selectionService.activeContent.getValue() &&
+      {props.content && (
+        <span
+          title={`Open ${props.content.Type} CTD`}
+          onClick={async () => {
+            const content = await getContentTypeId(props.content!.Type)
             history.push(
-              resolvePathParams({
-                path: PATHS.editBinary.appPath,
-                params: {
-                  contentId: await getContentTypeId(selectionService.activeContent.getValue()!.Type),
-                },
+              getPrimaryActionUrl({
+                content,
+                repository,
+                location: history.location,
+                uiSettings,
+                snRoute,
+                removePath: true,
               }),
             )
-        }}>
-        <Icon
-          resolvers={editviewFileResolver}
-          style={{
-            marginLeft: '9px',
-            height: '24px',
-            width: '24px',
-            cursor: 'pointer',
-          }}
-          item={selectionService.activeContent.getValue()}
-        />
-      </span>
+          }}>
+          <Icon
+            resolvers={editviewFileResolver}
+            style={{
+              marginLeft: '9px',
+              height: '24px',
+              width: '24px',
+              cursor: 'pointer',
+            }}
+            item={props.content}
+          />
+        </span>
+      )}
     </div>
   )
 }

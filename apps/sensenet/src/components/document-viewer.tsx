@@ -1,22 +1,22 @@
 import {
   DocumentTitlePager,
-  DocumentViewer,
   LayoutAppBar,
   RotateActivePagesWidget,
   RotateDocumentWidget,
   ROTATION_MODE,
+  DocumentViewer as SnDocumentViewer,
   ToggleCommentsWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
 } from '@sensenet/document-viewer-react'
-import { CurrentContentProvider, useLogger } from '@sensenet/hooks-react'
+import { CurrentContentProvider } from '@sensenet/hooks-react'
 import { Button, createStyles, makeStyles, Theme } from '@material-ui/core'
 import clsx from 'clsx'
-import { Location } from 'history'
 import React, { useCallback, useEffect } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { globals, useGlobalStyles } from '../globalStyles'
 import { useLocalization, useSelectionService, useTheme } from '../hooks'
+import { navigateToAction } from '../services'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -44,17 +44,13 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-export default function DocViewer(props: { previousLocation?: Location }) {
-  const match = useRouteMatch<{ contentId: string }>()
+export function DocumentViewer(props: { contentPath: string }) {
+  const routeMatch = useRouteMatch<{ browseType: string; action: string }>()
   const history = useHistory()
-  const contentId = parseInt(match.params.contentId, 10)
-  const logger = useLogger('DocViewer')
   const selectionService = useSelectionService()
   const localization = useLocalization()
   const theme = useTheme()
-  const closeViewer = useCallback(() => {
-    props.previousLocation ? history.push(props.previousLocation) : history.goBack()
-  }, [history, props.previousLocation])
+  const closeViewer = useCallback(() => navigateToAction({ history, routeMatch }), [history, routeMatch])
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
 
@@ -72,18 +68,13 @@ export default function DocViewer(props: { previousLocation?: Location }) {
     }
   }, [closeViewer, props])
 
-  if (isNaN(contentId)) {
-    logger.error({ message: `Invalid document Id: ${contentId}` })
-    return null
-  }
-
   return (
     <>
       <div className={classes.docViewerWrapper}>
         <CurrentContentProvider
-          idOrPath={contentId}
+          idOrPath={props.contentPath}
           onContentLoaded={(c) => selectionService.activeContent.setValue(c)}>
-          <DocumentViewer documentIdOrPath={contentId}>
+          <SnDocumentViewer documentIdOrPath={props.contentPath}>
             <LayoutAppBar
               style={{
                 backgroundColor:
@@ -108,7 +99,7 @@ export default function DocViewer(props: { previousLocation?: Location }) {
                 <ToggleCommentsWidget activeColor={theme.palette.primary.main} />
               </div>
             </LayoutAppBar>
-          </DocumentViewer>
+          </SnDocumentViewer>
         </CurrentContentProvider>
       </div>
       <div className={classes.actionButtonWrapper}>

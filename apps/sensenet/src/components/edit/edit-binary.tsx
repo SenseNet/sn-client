@@ -2,9 +2,10 @@ import { CurrentContentProvider } from '@sensenet/hooks-react'
 import { createStyles, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
 import React, { useEffect } from 'react'
-import { useRouteMatch } from 'react-router-dom'
+import { useHistory, useRouteMatch } from 'react-router-dom'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLoadContent, useSelectionService } from '../../hooks'
+import { navigateToAction } from '../../services'
 import { FullScreenLoader } from '../full-screen-loader'
 import { TextEditor } from './TextEditor'
 
@@ -18,13 +19,17 @@ const useStyles = makeStyles(() => {
   })
 })
 
-export default function Editor() {
-  const match = useRouteMatch<{ contentId: string }>()
-  const contentId = parseInt(match.params.contentId, 10)
+interface EditBinaryProps {
+  contentPath: string
+}
+
+export function EditBinary({ contentPath }: EditBinaryProps) {
+  const routeMatch = useRouteMatch<{ browseType: string; action: string }>()
   const selectionService = useSelectionService()
-  const { content } = useLoadContent({ idOrPath: contentId })
+  const { content } = useLoadContent({ idOrPath: contentPath })
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
+  const history = useHistory()
 
   useEffect(() => {
     selectionService.activeContent.setValue(content)
@@ -33,8 +38,14 @@ export default function Editor() {
   return (
     <div className={clsx(globalClasses.full, classes.editBinaryWrapper)}>
       {content ? (
-        <CurrentContentProvider idOrPath={contentId}>
-          <TextEditor content={content} showBreadCrumb={false} />
+        <CurrentContentProvider idOrPath={contentPath}>
+          <TextEditor
+            content={content}
+            showBreadCrumb={false}
+            handleCancel={() => {
+              navigateToAction({ history, routeMatch })
+            }}
+          />
         </CurrentContentProvider>
       ) : (
         <FullScreenLoader />

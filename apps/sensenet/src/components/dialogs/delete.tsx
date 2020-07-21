@@ -15,9 +15,11 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import React, { useContext, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { ResponsiveContext } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization, useSelectionService } from '../../hooks'
+import { useLocalization, useQuery, useSelectionService, useSnRoute } from '../../hooks'
+import { navigateToAction } from '../../services'
 import { Icon } from '../Icon'
 import { useDialog } from '.'
 
@@ -31,11 +33,14 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
   const [isDeleteInProgress, setIsDeleteInProgress] = useState(false)
   const [permanent, setPermanent] = useState(false)
   const repo = useRepository()
+  const history = useHistory()
   const localization = useLocalization().deleteContentDialog
   const logger = useLogger('DeleteContentDialog')
   const isTrashBag = !!props.content.length && repo.schemas.isContentFromType(props.content[0], 'TrashBag')
   const globalClasses = useGlobalStyles()
   const selectionService = useSelectionService()
+  const snRoute = useSnRoute()
+  const currentPath = useQuery().get('path')
 
   return (
     <>
@@ -93,9 +98,6 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
             onClick={async () => {
               try {
                 setIsDeleteInProgress(true)
-                const parentContent = await repo.load({ idOrPath: PathHelper.getParentPath(props.content[0].Path) })
-                selectionService.activeContent.setValue(parentContent.d)
-                selectionService.selection.setValue([])
                 const result = await repo.delete({
                   idOrPath: props.content.map((c) => c.Path),
                   permanent,
@@ -139,6 +141,22 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                       relatedRepository: repo.configuration.repositoryUrl,
                     },
                   })
+                } else {
+                  const deletedCurrentContent =
+                    snRoute.path &&
+                    props.content.find((currentContent) =>
+                      `${snRoute.path}${currentPath}`.startsWith(currentContent.Path),
+                    )
+
+                  if (deletedCurrentContent) {
+                    navigateToAction({
+                      history,
+                      routeMatch: snRoute.match,
+                      queryParams: {
+                        path: `/${PathHelper.getParentPath(deletedCurrentContent.Path)}`.replace(snRoute.path, ''),
+                      },
+                    })
+                  }
                 }
               } catch (error) {
                 logger.error({

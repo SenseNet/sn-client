@@ -51,6 +51,7 @@ export interface TextEditorProps {
   saveContent?: (content: SnFile, value: string) => Promise<void>
   additionalButtons?: JSX.Element
   showBreadCrumb: boolean
+  handleCancel?: () => void
 }
 
 export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
@@ -194,7 +195,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
       </div>
       <Prompt when={textValue !== savedTextValue} message={localization.textEditor.unsavedChangesWarning} />
       <MonacoEditor
-        theme={theme.palette.type === 'dark' ? 'vs-dark' : 'vs-light'}
+        theme={theme.palette.type === 'dark' ? 'admin-ui-dark' : 'vs-light'}
         width="100%"
         language={language}
         value={textValue}
@@ -214,13 +215,23 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
             editor.setModel(monaco.editor.getModel(uri))
           }
         }}
+        editorWillMount={(monaco) => {
+          monaco.editor.defineTheme('admin-ui-dark', {
+            base: 'vs-dark',
+            inherit: true,
+            rules: [],
+            colors: {
+              'editor.background': '#121212',
+            },
+          })
+        }}
       />
       <div className={classes.actionButtonWrapper}>
         <Button
           aria-label={localization.forms.cancel}
           color="default"
           className={globalClasses.cancelButton}
-          onClick={history.goBack}>
+          onClick={props.handleCancel || history.goBack}>
           {localization.forms.cancel}
         </Button>
 

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
 import { UserManagerSettings } from 'oidc-client'
 import { createUserManager } from 'redux-oidc'
 
