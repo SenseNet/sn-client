@@ -12,10 +12,10 @@ assignees: ''
 
 # Test case 1
 
-## 😎 User
+## 😎 Role
 
-<!-- Add the demo user on whose behalf the following tests should be running  -->
-<!-- [e.g.: businesscat, devdog or editormanatee ] -->
+<!-- Add the role of the user on whose behalf the following tests should be running  -->
+<!-- [e.g.: admin (default), superadmin, developer, editor ] -->
 
 ## 🧫 Purpose of the test
 
@@ -32,10 +32,10 @@ assignees: ''
 
 # Test case 2
 
-## 😎 User
+## 😎 Role
 
-<!-- Add the demo user on whose behalf the following tests should be running  -->
-<!-- [e.g.: businesscat, devdog or editormanatee ] -->
+<!-- Add the role of the user on whose behalf the following tests should be running  -->
+<!-- [e.g.: admin (default), superadmin, developer, editor ] -->
 
 ## 🧫 Purpose of the test
 
