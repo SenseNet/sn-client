@@ -1,5 +1,5 @@
 {
-  "baseUrl": "http://admin.test.sensenet.com",
+  "baseUrl": "https://admin.test.sensenet.com",
   "chromeWebSecurity": false,
   "env": {
     "repoUrl": "https://e2e-service.test.sensenet.com",
@@ -7,18 +7,22 @@
     "users": {
       "superadmin": {
         "clientId": "client",
+        "clientSecret": "",
         "id": "/Root/IMS/BuiltIn/Portal('Admin')"
       },
       "admin": {
         "clientId": "kitty",
+        "clientSecret": "",
         "id": "/Root/IMS/Public('businesscat')"
       },
       "developer": {
         "clientId": "devdog",
+        "clientSecret": "",
         "id": "/Root/IMS/Public('devdog')"
       },
       "editor": {
         "clientId": "eddie",
+        "clientSecret": "",
         "id": "/Root/IMS/Public('editormanatee')"
       }
     }
