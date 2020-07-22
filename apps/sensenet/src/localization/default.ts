@@ -444,6 +444,9 @@ const values = {
   referenceContentListDialog: {
     errorAlreadyInList: 'The selected item is already in the list',
   },
+  contentList: {
+    errorContentModification: 'There was an error during content modification',
+  },
 }
 
 export default values

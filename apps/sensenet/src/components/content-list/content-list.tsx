@@ -5,6 +5,7 @@ import {
   CurrentChildrenContext,
   CurrentContentContext,
   LoadSettingsContext,
+  useLogger,
   useRepository,
 } from '@sensenet/hooks-react'
 import { VirtualCellProps, VirtualDefaultCell, VirtualizedTable } from '@sensenet/list-controls-react'
@@ -13,7 +14,7 @@ import clsx from 'clsx'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
-import { useSelectionService } from '../../hooks'
+import { useLocalization, useSelectionService } from '../../hooks'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { useDialog } from '../dialogs'
@@ -93,6 +94,8 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const { openDialog } = useDialog()
+  const logger = useLogger('ContentList')
+  const localization = useLocalization()
   const [selected, setSelected] = useState<GenericContent[]>([])
   const [activeContent, setActiveContent] = useState<GenericContent>(children[0])
   const [isFocused, setIsFocused] = useState(true)
@@ -333,12 +336,25 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
             <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
               <EnabledField
                 enabled={fieldOptions.rowData[fieldOptions.dataKey] as boolean}
-                onChange={(value: boolean) =>
-                  repo.patch({
-                    idOrPath: fieldOptions.rowData.Id,
-                    content: { [fieldOptions.dataKey]: value },
-                  })
-                }
+                onChange={async (value: boolean) => {
+                  try {
+                    await repo.patch({
+                      idOrPath: fieldOptions.rowData.Id,
+                      content: { [fieldOptions.dataKey]: value },
+                    })
+                  } catch (error) {
+                    logger.error({
+                      message: localization.contentList.errorContentModification,
+                      data: {
+                        relatedContent: fieldOptions.rowData,
+                        details: { error },
+                      },
+                    })
+                    return false
+                  }
+
+                  return true
+                }}
               />
             </ContextMenuWrapper>
           )

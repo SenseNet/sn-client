@@ -6,7 +6,7 @@ import { Switcher } from '../field-controls'
 
 interface EnabledFieldProps {
   enabled: boolean
-  onChange?: (value: boolean) => void
+  onChange?: (value: boolean) => Promise<boolean>
 }
 
 export const EnabledField: FunctionComponent<EnabledFieldProps> = ({ enabled, onChange }) => {
@@ -22,11 +22,14 @@ export const EnabledField: FunctionComponent<EnabledFieldProps> = ({ enabled, on
       <Switcher
         checked={checked}
         size="small"
-        onClick={(event) => {
+        onClick={async (event) => {
           const newValue = !checked
           event.stopPropagation()
-          onChange?.(newValue)
-          setChecked(newValue)
+          const isValueChanged = await onChange?.(newValue)
+
+          if (isValueChanged || isValueChanged === undefined) {
+            setChecked(newValue)
+          }
         }}
       />
     </TableCell>
