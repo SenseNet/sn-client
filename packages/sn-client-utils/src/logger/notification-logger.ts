@@ -4,8 +4,14 @@ import { AbstractLogger, LeveledLogEntry, LogLevel } from '.'
 
 @Injectable({ lifetime: 'scoped' })
 export class NotificationLogger extends AbstractLogger {
+  private logLevels = ['Information', 'Warning', 'Error', 'Fatal']
+
+  public useLogLevels(loglevels: string[]) {
+    this.logLevels = loglevels
+  }
+
   public async addEntry<T>(entry: LeveledLogEntry<T>) {
-    if (['Information', 'Warning', 'Error', 'Fatal'].includes(LogLevel[entry.level] as keyof typeof LogLevel)) {
+    if (this.logLevels.includes(LogLevel[entry.level] as keyof typeof LogLevel)) {
       this.notificationService.add(entry)
     }
   }
