@@ -162,7 +162,7 @@ export const CommandPalette = () => {
       })}>
       {isOpened ? null : (
         <Tooltip placeholder="bottom-end" title={localization.title}>
-          <IconButton onClick={() => setIsOpened(true)} className={classes.iconButton}>
+          <IconButton onClick={() => setIsOpened(true)} className={classes.iconButton} data-test="search-button">
             <Search />
           </IconButton>
         </Tooltip>
@@ -172,7 +172,8 @@ export const CommandPalette = () => {
         ref={containerRef}
         className={clsx(classes.comboBox, {
           [classes.comboBoxOpened]: isOpened,
-        })}>
+        })}
+        data-test="command-box">
         <Autosuggest<CommandPaletteItem>
           theme={{
             suggestionsList: {

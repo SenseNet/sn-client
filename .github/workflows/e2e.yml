@@ -1,0 +1,13 @@
+name: AdminUI end-to-end tests
+on: [workflow_dispatch]
+jobs:
+  cypress-run:
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          env: secret_superadmin=${{ secrets.AUTH_SECRET_SUPERADMIN }},secret_admin=${{ secrets.AUTH_SECRET_ADMIN }},secret_developer=${{ secrets.AUTH_SECRET_DEVELOPER }},secret_editor=${{ secrets.AUTH_SECRET_EDITOR }}
