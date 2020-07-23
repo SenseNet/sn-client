@@ -23,6 +23,7 @@ import { EditBinary } from '../edit/edit-binary'
 import { FullScreenLoader } from '../full-screen-loader'
 import TreeWithData from '../tree/tree-with-data'
 import { EditView, NewView, VersionView } from '../view-controls'
+import { PermissionView } from '../view-controls/permission-view'
 import WopiPage from '../wopi-page'
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -116,6 +117,9 @@ export function Explore({
         break
       case 'version':
         return <VersionView contentPath={`${rootPath}${activeContent}`} />
+
+      case 'permission':
+        return <PermissionView />
       case 'preview':
         return <DocumentViewer contentPath={`${rootPath}${activeContent}`} />
 

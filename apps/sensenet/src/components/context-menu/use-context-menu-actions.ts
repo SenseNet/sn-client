@@ -168,6 +168,18 @@ export function useContextMenuActions(
           },
         })
         break
+      case 'SetPermissions':
+        if (snRoute.path && content.Path.startsWith(snRoute.path)) {
+          navigateToAction({
+            history,
+            routeMatch: snRoute.match!,
+            action: 'permission',
+            queryParams: { content: content.Path.replace(snRoute.path, '') },
+          })
+        } else {
+          history.push(getUrlForContent({ content, uiSettings, location: history.location, action: 'permission' }))
+        }
+        break
       default:
         logger.warning({ message: `${actionName} is not implemented yet. Try to use it from command palette.` })
     }
