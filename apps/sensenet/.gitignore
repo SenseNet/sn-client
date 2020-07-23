@@ -61,3 +61,7 @@ dist
 temp
 build
 stats.json
+
+# Cypress related videos and screenshots
+cypress/videos
+cypress/screenshots
