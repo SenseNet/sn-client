@@ -62,6 +62,6 @@ temp
 build
 stats.json
 
-# Cypress realted videos and screenshots
+# Cypress related videos and screenshots
 cypress/videos
 cypress/screenshots
