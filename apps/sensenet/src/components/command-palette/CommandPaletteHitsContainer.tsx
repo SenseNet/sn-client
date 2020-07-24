@@ -18,6 +18,7 @@ export const CommandPaletteHitsContainer: React.FunctionComponent<RenderSuggesti
       <List
         dense={device === 'desktop' ? false : true}
         component="nav"
+        data-test="search-suggestion-list"
         {...options.containerProps}
         style={{ padding: 0 }}>
         {options.children}
