@@ -10,5 +10,4 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          command: yarn snapp cypress:all
-          env: secret_superadmin=${{ secrets.AUTH_SECRET_SUPERADMIN }},secret_admin=${{ secrets.AUTH_SECRET_ADMIN }},secret_developer=${{ secrets.AUTH_SECRET_DEVELOPER }},secret_editor=${{ secrets.AUTH_SECRET_EDITOR }}
+          command: yarn snapp cypress:all --env secret_superadmin=${{ secrets.AUTH_SECRET_SUPERADMIN }},secret_admin=${{ secrets.AUTH_SECRET_ADMIN }},secret_developer=${{ secrets.AUTH_SECRET_DEVELOPER }},secret_editor=${{ secrets.AUTH_SECRET_EDITOR }}
