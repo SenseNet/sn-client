@@ -118,8 +118,8 @@ export function Explore({
       case 'version':
         return <VersionView contentPath={`${rootPath}${activeContent}`} />
 
-      case 'permission':
-        return <PermissionView />
+      case 'setpermissions':
+        return <PermissionView contentPath={`${rootPath}${activeContent}`} />
       case 'preview':
         return <DocumentViewer contentPath={`${rootPath}${activeContent}`} />
 

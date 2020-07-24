@@ -156,6 +156,10 @@ const values: DeepPartial<typeof import('./default').default> = {
     move: 'Kijelölt elemek áthelyezése',
     copy: 'Kijelölt elemek másolása',
   },
+  permissionEditor: {
+    assign: 'Új jogosultság hozzáadása',
+    setPermissons: 'Jogosultságállítás a következőn: ',
+  },
 }
 
 export default values

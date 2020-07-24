@@ -173,11 +173,11 @@ export function useContextMenuActions(
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
-            action: 'permission',
+            action: 'setpermissions',
             queryParams: { content: content.Path.replace(snRoute.path, '') },
           })
         } else {
-          history.push(getUrlForContent({ content, uiSettings, location: history.location, action: 'permission' }))
+          history.push(getUrlForContent({ content, uiSettings, location: history.location, action: 'setpermissions' }))
         }
         break
       default:

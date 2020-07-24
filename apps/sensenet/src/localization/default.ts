@@ -441,6 +441,10 @@ const values = {
     move: 'Move selected items',
     copy: 'Copy selected items',
   },
+  permissionEditor: {
+    assign: 'Assing new permisson',
+    setPermissons: 'Set permissions for ',
+  },
 }
 
 export default values
