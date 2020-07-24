@@ -336,6 +336,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
             <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
               <EnabledField
                 enabled={fieldOptions.rowData[fieldOptions.dataKey] as boolean}
+                description={fieldSettings.Description}
                 onChange={async (value: boolean) => {
                   try {
                     await repo.patch({

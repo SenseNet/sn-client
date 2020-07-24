@@ -19,14 +19,15 @@ export const usePagination = ({ items, itemsPerPage, ...muiProps }: PaginationPr
   }, [items, currentPage, perPage])
 
   const render = useCallback(
-    () => (
-      <MuiPagination
-        count={Math.ceil(items.length / perPage)}
-        page={currentPage}
-        onChange={(_, page) => setCurrentPage(page)}
-        {...muiProps}
-      />
-    ),
+    () =>
+      items.length > perPage ? (
+        <MuiPagination
+          count={Math.ceil(items.length / perPage)}
+          page={currentPage}
+          onChange={(_, page) => setCurrentPage(page)}
+          {...muiProps}
+        />
+      ) : null,
     [items, perPage, muiProps, currentPage],
   )
 
