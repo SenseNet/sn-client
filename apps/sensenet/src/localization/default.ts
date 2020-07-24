@@ -383,6 +383,8 @@ const values = {
         'When the Task Management module is installed, this is the place where you can configure the connection to the central task management service. ',
       '/Root/System/Settings/UserProfile.settings':
         'When a user is created, and the profile feature is enabled (in the app configuration), they automatically get a profile – a workspace dedicated to the user’s personal documents and tasks. In this setting section you can customize the content type and the place of this profile. ',
+      '/Root/System/Settings/Permission.settings':
+        'In this section you can manage and customize permission groups, add custom permissions that can be displayed and used in the permission editor.',
     },
   },
   customActions: {
