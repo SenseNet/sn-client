@@ -145,7 +145,7 @@ export function ExecuteActionDialog({ actionValue, uri }: ExecuteActionDialogPro
           .replace('{0}', (actionValue && (actionValue.action.DisplayName || actionValue.action.Name)) || '')
           .replace('{1}', (actionValue && (actionValue.content.DisplayName || actionValue.content.Name)) || '')}
       </DialogTitle>
-      <DialogContent>
+      <DialogContent style={{ overflow: 'hidden' }}>
         {isExecuting ? (
           <div style={{ height: 750 }}>
             <Typography>{localization.executingAction}</Typography>
@@ -155,7 +155,7 @@ export function ExecuteActionDialog({ actionValue, uri }: ExecuteActionDialogPro
           <>
             {actionValue?.metadata?.parameters?.length ? (
               <MonacoEditor
-                height={750}
+                height={'100%'}
                 theme={theme.palette.type === 'dark' ? 'vs-dark' : 'vs-light'}
                 width="100%"
                 language="json"
