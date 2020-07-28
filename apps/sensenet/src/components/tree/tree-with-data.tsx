@@ -75,11 +75,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
   )
 
   useEffect(() => {
-    if (
-      prevActiveItemPath &&
-      prevActiveItemPath !== props.activeItemPath &&
-      PathHelper.isAncestorOf(prevActiveItemPath, props.activeItemPath)
-    ) {
+    if (prevActiveItemPath && prevActiveItemPath !== props.activeItemPath) {
       walkTree(treeData!, async (node: ItemType) => {
         if (node.Path === props.activeItemPath || PathHelper.isAncestorOf(node.Path, props.activeItemPath)) {
           if (!node.expanded && !node.children?.length) {
