@@ -144,7 +144,7 @@ export const CommandPalette = () => {
     suggestion: SuggestionSelectedEventData<CommandPaletteItem>,
   ) => {
     ev.preventDefault()
-    suggestion.suggestion.openAction?.() || history.push(suggestion.suggestion.url)
+    suggestion.suggestion.openAction ? suggestion.suggestion.openAction() : history.push(suggestion.suggestion.url)
 
     if (containerRef.current) {
       const input = containerRef.current.querySelector('input')
