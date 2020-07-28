@@ -147,7 +147,7 @@ export function ExecuteActionDialog({ actionValue, uri }: ExecuteActionDialogPro
       </DialogTitle>
       <DialogContent style={{ overflow: 'hidden' }}>
         {isExecuting ? (
-          <div style={{ height: 750 }}>
+          <div>
             <Typography>{localization.executingAction}</Typography>
             <LinearProgress />
           </div>
