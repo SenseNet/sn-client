@@ -46,7 +46,7 @@ export const testFile: GenericContent = {
 
 describe('Edit view component', () => {
   it('should render all components', () => {
-    const wrapper = shallow(<EditView repository={testRepository} content={testFile} />)
+    const wrapper = shallow(<EditView repository={testRepository} content={testFile} contentTypeName={testFile.Type} />)
     expect(wrapper.find(FileName)).toHaveLength(1)
     expect(wrapper.find(TagsInput)).toHaveLength(1)
     expect(wrapper.find(ReferenceGrid)).toHaveLength(1)
@@ -70,12 +70,11 @@ describe('Edit view component', () => {
     const submitCallback = jest.fn()
     const onSubmit = jest.fn()
     const wrapper = shallow(
-      <EditView repository={testRepository} submitCallback={submitCallback} onSubmit={onSubmit} content={testFile} />,
+      <EditView repository={testRepository} onSubmit={onSubmit} content={testFile} contentTypeName={testFile.Type} />,
     )
     const onChange = wrapper.find(CheckboxGroup).first().prop('fieldOnChange')
-    onChange && onChange('VersioningMode', VersioningMode.Option1)
-    wrapper.find('form').simulate('submit', { preventDefault: jest.fn() })
-    expect(onSubmit).toBeCalledWith(testFile, { VersioningMode: '1' })
-    expect(submitCallback).toBeCalled()
+    onChange?.('VersioningMode', VersioningMode.Option1)
+    wrapper.find('[component="form"]').simulate('submit', { preventDefault: jest.fn() })
+    expect(onSubmit).toBeCalledWith({ VersioningMode: '1' }, 'GenericContent')
   })
 })

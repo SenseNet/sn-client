@@ -42,6 +42,7 @@ const EditPropertiesDialogBody: React.FunctionComponent<{
               <DialogContent>
                 <EditView
                   content={content}
+                  contentTypeName={content.Type}
                   repository={repo}
                   handleCancel={() =>
                     props.dialogProps.onClose && props.dialogProps.onClose(null as any, 'backdropClick')

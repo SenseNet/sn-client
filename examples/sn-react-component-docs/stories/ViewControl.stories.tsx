@@ -37,7 +37,6 @@ storiesOf('ViewControls', module)
     'new view',
     () => (
       <NewView
-        path="/Root/Profiles/MyProfile/DocumentLibrary"
         repository={testRepository}
         contentTypeName="File"
         showTitle={true}
@@ -46,9 +45,13 @@ storiesOf('ViewControls', module)
     ),
     { notes: { markdown: newViewNotes } },
   )
-  .add('edit view', () => <EditView content={object('Content', testFile)} repository={testRepository} />, {
-    notes: { markdown: editViewNotes },
-  })
+  .add(
+    'edit view',
+    () => <EditView content={object('Content', testFile)} contentTypeName={'File'} repository={testRepository} />,
+    {
+      notes: { markdown: editViewNotes },
+    },
+  )
   .add('browse view', () => <BrowseView content={object('Content', testFile)} repository={testRepository} />, {
     notes: { markdown: browseViewNotes },
   })
