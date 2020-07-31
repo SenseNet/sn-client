@@ -20,7 +20,7 @@ export interface EditViewProps {
   actionName?: ActionName
   content?: GenericContent
   contentTypeName: string
-  onSubmit?: (content: GenericContent, contentTypeName?: string) => void
+  onSubmit?: (content: Partial<GenericContent>, contentTypeName?: string) => void
   renderIcon?: (name: string) => ReactElement
   renderTitle?: () => ReactElement
   handleCancel?: () => void
@@ -75,7 +75,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    props.onSubmit?.(content as any, schema.schema.ContentTypeName)
+    props.onSubmit?.(content, schema.schema.ContentTypeName)
   }
 
   const handleInputChange = (field: string, value: unknown) => {
