@@ -15,10 +15,10 @@ const EditPropertiesDialogBody: React.FunctionComponent<{
   const repo = useRepository()
   const sharedcontext = useContext(SharedContext)
 
-  const onSubmit = async (content: GenericContent) => {
+  const onSubmit = async (content: Partial<GenericContent>) => {
     try {
       const response = await repo.patch({
-        idOrPath: content.Id,
+        idOrPath: props.contentId,
         content,
         oDataOptions: {
           select: 'all' as any,

@@ -73,7 +73,7 @@ class AddNewDialog extends React.Component<
                     contentTypeName={contentTypeName}
                     handleCancel={() => this.handleCancel()}
                     onSubmit={(content) => {
-                      createContent(parentPath, content, contentTypeName)
+                      createContent(parentPath, content as any, contentTypeName)
                       this.props.closeCallback()
                       this.props.closeDialog()
                     }}
