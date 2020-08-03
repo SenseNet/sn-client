@@ -19,7 +19,7 @@ describe('Search', () => {
         .get('[data-test="search-button"]')
         .click()
         .get('[data-test="command-box"] input')
-        .type(term)
+        .type(term, { delay: 200 })
         .get('[data-test="search-suggestion-list"] ul')
         .children()
         .as('search')
