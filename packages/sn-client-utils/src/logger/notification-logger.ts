@@ -18,6 +18,5 @@ export class NotificationLogger extends AbstractLogger {
 
   constructor(private readonly notificationService: NotificationService) {
     super()
-    ;(window as any).addEvent = this.addEntry.bind(this)
   }
 }
