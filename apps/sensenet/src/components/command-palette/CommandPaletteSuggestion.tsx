@@ -32,6 +32,7 @@ export const CommandPaletteSuggestion: React.FunctionComponent<{
       <ListItem
         button={true}
         selected={params.isHighlighted}
+        data-test="search-suggestion-item"
         style={{
           backgroundColor:
             theme.palette.type === 'light'

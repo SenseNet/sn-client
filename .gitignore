@@ -59,6 +59,3 @@ jspm_packages/
 
 # Misc
 .DS_Store
-
-# Cypress realted videos
-cypress/videos

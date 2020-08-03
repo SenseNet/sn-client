@@ -17,7 +17,9 @@
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "build": "webpack --config webpack.prod.js",
     "build:stats": "webpack --config webpack.prod.js --profile --json > stats.json",
-    "start": "webpack-dev-server --open --progress --config webpack.dev.js"
+    "start": "webpack-dev-server --open --progress --config webpack.dev.js",
+    "cypress": "cypress open",
+    "cypress:all": "cypress run"
   },
   "private": true,
   "publishConfig": {
@@ -40,6 +42,8 @@
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^6.0.3",
     "css-loader": "^3.6.0",
+    "cypress": "^4.11.0",
+    "cypress-xpath": "^1.4.0",
     "file-loader": "^6.0.0",
     "fork-ts-checker-webpack-plugin": "^5.0.5",
     "html-webpack-plugin": "^4.0.4",
