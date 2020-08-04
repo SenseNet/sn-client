@@ -1,6 +1,6 @@
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import { useRepository } from '@sensenet/hooks-react'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import {
   Avatar,
   Button,
@@ -71,6 +71,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
   const repo = useRepository()
   const localization = useLocalization()
   const history = useHistory()
+  const logger = useLogger('PermissionEditor')
   const uiSettings = useContext(ResponsivePersonalSettings)
   const [permissions, setPermissions] = useState<AclResponseType | undefined>(undefined)
   const [currentContent, setCurrentContent] = useState<GenericContent | undefined>()
@@ -89,16 +90,24 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
 
   useEffect(() => {
     async function getAllPermissions() {
-      const result = await repo.executeAction<any, AclResponseType>({
-        idOrPath: props.contentPath,
-        name: 'GetAcl',
-        method: 'GET',
-      })
-
-      setPermissions(result)
+      try {
+        const result = await repo.executeAction<any, AclResponseType>({
+          idOrPath: props.contentPath,
+          name: 'GetAcl',
+          method: 'GET',
+        })
+        setPermissions(result)
+      } catch (error) {
+        logger.error({
+          message: localization.permissionEditor.errorGetAcl,
+          data: {
+            details: { error },
+          },
+        })
+      }
     }
     getAllPermissions()
-  }, [props.contentPath, repo])
+  }, [localization.permissionEditor.errorGetAcl, logger, props.contentPath, repo])
 
   return (
     <div className={classes.permissionEditorContainer}>

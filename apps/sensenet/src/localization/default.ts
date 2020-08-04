@@ -446,6 +446,7 @@ const values = {
   permissionEditor: {
     assign: 'Assing new permisson',
     setPermissons: 'Set permissions for ',
+    errorGetAcl: 'Something went wrong during getting permissions',
   },
 }
 

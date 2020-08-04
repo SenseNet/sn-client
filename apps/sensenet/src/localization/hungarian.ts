@@ -159,6 +159,7 @@ const values: DeepPartial<typeof import('./default').default> = {
   permissionEditor: {
     assign: 'Új jogosultság hozzáadása',
     setPermissons: 'Jogosultságállítás a következőn: ',
+    errorGetAcl: 'Hiba történt a jogosultságok lekérdezése során',
   },
 }
 
