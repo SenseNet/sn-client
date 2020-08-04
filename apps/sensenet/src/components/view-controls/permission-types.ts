@@ -19,13 +19,17 @@ export class IdentityType {
   public domain?: null | string
   /* Kind */
   public kind!: string
+  /* Avatar */
+  public avatar?: string
 }
 
 export class EntryType {
   /* Identity */
   public identity!: IdentityType
   /* Inherited */
-  public inherited?: boolean //TODO: It should be mandatory later (with getAcl action)
+  public inherited!: boolean
+  /* Ancestor */
+  public ancestor!: string | null
   /* Propagates */
   public propagates!: boolean
   /* Permissions */

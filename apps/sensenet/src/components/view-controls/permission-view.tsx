@@ -1,23 +1,32 @@
+import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import {
+  Avatar,
   Button,
   Collapse,
   createStyles,
+  Link,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   makeStyles,
+  Theme,
 } from '@material-ui/core'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import GroupOutlined from '@material-ui/icons/GroupOutlined'
-import React, { useEffect, useState } from 'react'
+import clsx from 'clsx'
+import React, { useContext, useEffect, useState } from 'react'
+import { useHistory } from 'react-router'
+import { ResponsivePersonalSettings } from '../../context'
+import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+import { getUrlForContent } from '../../services'
 import { AclResponseType } from './permission-types'
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     permissionEditorContainer: {
       margin: '0px 80px',
@@ -33,6 +42,22 @@ const useStyles = makeStyles(() => {
     listTitle: {
       marginLeft: '16px',
     },
+    iconWrapper: {
+      height: '40px',
+      width: '40px',
+    },
+    collapseWrapper: {
+      paddingLeft: '30px',
+    },
+    anchor: {
+      fontSize: '14px',
+      color: theme.palette.primary.main,
+      paddingLeft: '15px',
+      cursor: 'pointer',
+      '&:hover': {
+        textDecoration: 'underline',
+      },
+    },
   })
 })
 
@@ -42,8 +67,11 @@ export interface PermissionViewProps {
 
 export const PermissionView: React.FC<PermissionViewProps> = (props) => {
   const classes = useStyles()
+  const globalClasses = useGlobalStyles()
   const repo = useRepository()
   const localization = useLocalization()
+  const history = useHistory()
+  const uiSettings = useContext(ResponsivePersonalSettings)
   const [permissions, setPermissions] = useState<AclResponseType | undefined>(undefined)
   const [currentContent, setCurrentContent] = useState<GenericContent | undefined>()
   const [openInheritedList, setOpenInheritedList] = useState<boolean>(false)
@@ -63,20 +91,10 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
     async function getAllPermissions() {
       const result = await repo.executeAction<any, AclResponseType>({
         idOrPath: props.contentPath,
-        name: 'GetPermissions',
+        name: 'GetAcl',
         method: 'GET',
       })
 
-      //TODO: this part can be removed cause the getAcl action will contains this info
-      result.entries.forEach((entry) => {
-        let isInherited = false
-        for (const permissionName in entry.permissions) {
-          if (entry.permissions[permissionName]?.from) {
-            isInherited = true
-          }
-        }
-        entry.inherited = isInherited
-      })
       setPermissions(result)
     }
     getAllPermissions()
@@ -85,7 +103,9 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
   return (
     <div className={classes.permissionEditorContainer}>
       <div className={classes.titleContainer}>
-        <div className={classes.title}> {currentContent?.DisplayName}</div>
+        <div className={classes.title}>
+          {localization.permissionEditor.setPermissons} {currentContent?.DisplayName}
+        </div>
         <Button aria-label={localization.permissionEditor.assign} color="primary" variant="contained">
           {localization.permissionEditor.assign}
         </Button>
@@ -93,21 +113,50 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
       <List component="nav">
         <ListItem button onClick={() => setOpenInheritedList(!openInheritedList)}>
           {openInheritedList ? <ExpandLess /> : <ExpandMore />}
-          <ListItemText primary="Inherited from ancestors" className={classes.listTitle} />
+          <ListItemText primary="Inherited from ancestor" className={classes.listTitle} />
         </ListItem>
-        <Collapse in={openInheritedList} timeout="auto" unmountOnExit>
+        <Collapse className={classes.collapseWrapper} in={openInheritedList} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             {permissions?.entries
               .filter((entry) => entry.inherited === true)
               .map((inheritedEntry) => {
                 return (
                   <ListItem button key={inheritedEntry.identity.id}>
-                    {inheritedEntry.identity.kind === 'group' && (
-                      <ListItemIcon>
+                    {inheritedEntry.identity.kind === 'group' ? (
+                      <div className={clsx(classes.iconWrapper, globalClasses.centered)}>
                         <GroupOutlined />
-                      </ListItemIcon>
-                    )}
-                    <ListItemText primary={inheritedEntry.identity.displayName} />
+                      </div>
+                    ) : inheritedEntry.identity.kind === 'user' && inheritedEntry.identity.avatar ? (
+                      <Avatar
+                        src={PathHelper.joinPaths(repo.configuration.repositoryUrl, inheritedEntry.identity.avatar)}
+                      />
+                    ) : null}
+                    <ListItemText
+                      primary={
+                        <div>
+                          {inheritedEntry.identity.displayName}
+                          <Link
+                            component="button"
+                            onClick={async () => {
+                              const response = await repo.load({
+                                idOrPath: inheritedEntry.ancestor!,
+                                oDataOptions: { select: 'all' },
+                              })
+                              history.push(
+                                getUrlForContent({
+                                  content: response.d,
+                                  uiSettings,
+                                  location: history.location,
+                                  action: 'setpermissions',
+                                }),
+                              )
+                            }}
+                            className={classes.anchor}>
+                            ({inheritedEntry.ancestor})
+                          </Link>
+                        </div>
+                      }
+                    />
                   </ListItem>
                 )
               })}
@@ -117,18 +166,25 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
           {openSetOnThisList ? <ExpandLess /> : <ExpandMore />}
           <ListItemText primary="Set on this content" className={classes.listTitle} />
         </ListItem>
-        <Collapse in={openSetOnThisList} timeout="auto" unmountOnExit>
+        <Collapse className={classes.collapseWrapper} in={openSetOnThisList} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             {permissions?.entries
               .filter((entry) => entry.inherited === false)
               .map((setOnThisEntry) => {
                 return (
                   <ListItem button key={setOnThisEntry.identity.id}>
-                    {setOnThisEntry.identity.kind === 'group' && (
-                      <ListItemIcon>
-                        <GroupOutlined />
-                      </ListItemIcon>
-                    )}
+                    <ListItemIcon>
+                      {setOnThisEntry.identity.kind === 'group' ? (
+                        <div className={clsx(classes.iconWrapper, globalClasses.centered)}>
+                          <GroupOutlined />
+                        </div>
+                      ) : setOnThisEntry.identity.kind === 'user' && setOnThisEntry.identity.avatar ? (
+                        <Avatar
+                          src={PathHelper.joinPaths(repo.configuration.repositoryUrl, setOnThisEntry.identity.avatar)}
+                        />
+                      ) : null}
+                    </ListItemIcon>
+
                     <ListItemText primary={setOnThisEntry.identity.displayName} />
                   </ListItem>
                 )
