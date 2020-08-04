@@ -61,7 +61,7 @@ export const contenterror: Reducer<object | null> = (state = null, action) => {
 export const contentactions: Reducer<ActionModel[]> = (state = [], action) => {
   switch (action.type) {
     case 'LOAD_CONTENT_ACTIONS_SUCCESS':
-      return (action.result as PromiseReturns<typeof loadContentActions>).d.Actions
+      return (action.result as PromiseReturns<typeof loadContentActions>).d.results
     default:
       return state
   }
