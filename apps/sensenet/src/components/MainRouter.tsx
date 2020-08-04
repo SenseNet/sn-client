@@ -81,6 +81,7 @@ export const MainRouter = () => {
                 select: ['DisplayName', 'Description', 'ParentTypeName' as any, 'ModificationDate', 'ModifiedBy'],
                 query: "+TypeIs:'ContentType' .AUTOFILTERS:OFF",
               }}
+              hasTree={false}
             />
           </Route>
 
