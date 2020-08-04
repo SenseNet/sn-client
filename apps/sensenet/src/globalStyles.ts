@@ -25,7 +25,7 @@ export const globals = {
     navMenuColor: 'rgba(255, 255, 255, 0.16)',
     drawerBackground: 'rgba(255,255,255, 0.05)',
     textColor: 'rgba(255,255,255,0.87)',
-    dialogBackground: 'rgba(255, 255, 255, 0.12)',
+    dialogBackground: '#2F2F2F',
   },
 }
 
