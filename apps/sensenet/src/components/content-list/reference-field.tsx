@@ -47,7 +47,7 @@ export const ReferenceField: FunctionComponent<ReferenceFieldProps> = ({ content
             onClick={async (event) => {
               event.stopPropagation()
               const actions = await repository.getActions({ idOrPath: parent.Path })
-              const canEdit = actions.d.Actions.some((action) => action.Name === 'Edit')
+              const canEdit = actions.d.results.some((action) => action.Name === 'Edit')
 
               openDialog({
                 name: 'reference-content-list',

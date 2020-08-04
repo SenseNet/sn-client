@@ -31,7 +31,7 @@ export const RolesField: FunctionComponent<RolesFieldProps> = ({ roles, directRo
         expand: ['Members'],
       },
     })
-    const canEdit = actions.d.Actions.some((action) => action.Name === 'Edit')
+    const canEdit = actions.d.results.some((action) => action.Name === 'Edit')
 
     openDialog({
       name: 'reference-content-list',
