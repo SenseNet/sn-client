@@ -1,9 +1,10 @@
 import { SchemaStore } from '@sensenet/client-core'
 import { SchemaStore as defaultSchemas, GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import TextField from '@material-ui/core/TextField'
-import { shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import React from 'react'
 import Autosuggest from 'react-autosuggest'
+import { act } from 'react-dom/test-utils'
 import { ReferenceField } from '../src/Components/Fields/ReferenceField'
 import { ReferenceFieldContainer } from '../src/Components/Fields/ReferenceFieldContainer'
 import { ReferenceFieldInput } from '../src/Components/Fields/ReferenceFieldInput'
@@ -26,7 +27,7 @@ describe('ReferenceField Component', () => {
     ).unmount()
   })
 
-  it('Should be constructed with additional autoSuggest parameters', () => {
+  it('Should be constructed with additional autoSuggest parameters', async () => {
     shallow(
       <ReferenceField<GenericContent>
         autoSuggestProps={{
@@ -41,37 +42,41 @@ describe('ReferenceField Component', () => {
     ).unmount()
   })
 
-  it('Should be constructed with default Id', (done) => {
-    shallow(
-      <ReferenceField<GenericContent>
-        fieldName="CreatedBy"
-        fieldSetting={exampleFieldSetting}
-        defaultValueIdOrPath={1}
-        fetchItems={async (fetchQuery) => {
-          expect(fetchQuery.toString()).toBe("Id:'1'")
-          done()
-          return [{ Id: 1, Name: 'a', Path: '', Type: 'Document' }]
-        }}
-        onQueryChange={jest.fn()}
-      />,
+  it('Should be constructed with default Id', async (done) => {
+    await act(async () =>
+      mount(
+        <ReferenceField<GenericContent>
+          fieldName="CreatedBy"
+          fieldSetting={exampleFieldSetting}
+          defaultValueIdOrPath={1}
+          fetchItems={async (fetchQuery) => {
+            expect(fetchQuery.toString()).toBe("Id:'1'")
+            done()
+            return [{ Id: 1, Name: 'a', Path: '', Type: 'Document' }]
+          }}
+          onQueryChange={jest.fn()}
+        />,
+      ),
     )
   })
 
-  it('Should be constructed with default Path', (done) => {
-    shallow(
-      <ReferenceField<GenericContent>
-        fieldName="CreatedBy"
-        fieldSetting={exampleFieldSetting}
-        defaultValueIdOrPath="Root/Example/A"
-        fetchItems={async (fetchQuery) => {
-          expect(fetchQuery.toString()).toBe("Path:'Root/Example/A'")
-          done()
-          return [{ Id: 1, Name: 'a', Path: '', Type: 'Document' }]
-        }}
-        onQueryChange={() => {
-          /** */
-        }}
-      />,
+  it('Should be constructed with default Path', async (done) => {
+    await act(async () =>
+      mount(
+        <ReferenceField<GenericContent>
+          fieldName="CreatedBy"
+          fieldSetting={exampleFieldSetting}
+          defaultValueIdOrPath="Root/Example/A"
+          fetchItems={async (fetchQuery) => {
+            expect(fetchQuery.toString()).toBe("Path:'Root/Example/A'")
+            done()
+            return [{ Id: 1, Name: 'a', Path: '', Type: 'Document' }]
+          }}
+          onQueryChange={() => {
+            /** */
+          }}
+        />,
+      ),
     )
   })
 
@@ -99,51 +104,43 @@ describe('ReferenceField Component', () => {
       )
   })
 
-  it('Should get DisplayName or Name as a content value', () => {
-    const mockComponent = new ReferenceField({} as any)
-
-    const valueName = mockComponent.getSuggestionValue({ Id: 123, Name: 'c', Type: 'User', Path: 'Root/Content' })
-    expect(valueName).toBe('c')
-
-    const valueDisplayName = mockComponent.getSuggestionValue({
-      Id: 123,
-      Name: 'c',
-      DisplayName: 'content',
-      Type: 'User',
-      Path: 'Root/Content',
-    })
-    expect(valueDisplayName).toBe('content')
-  })
-
   describe('Queries', () => {
-    it('Text change query should include the allowed types', () => {
+    let wrapper: any
+
+    it('Text change query should include the allowed types', async () => {
+      const fieldOnChange = jest.fn(async (_) => [])
       const fieldSetting = { ...exampleFieldSetting }
       fieldSetting.AllowedTypes = ['User', 'Task']
 
-      const mockComponent = new ReferenceField<GenericContent>({
-        fieldName: 'CreatedBy',
-        fieldSetting,
-        fetchItems: async () => [],
-        onQueryChange: () => undefined,
+      await act(async () => {
+        wrapper = mount(<ReferenceField fieldName="CreatedBy" fieldSetting={fieldSetting} fetchItems={fieldOnChange} />)
       })
 
-      expect(mockComponent.getQueryFromTerm('*a*').toString()).toBe(
+      await act(async () => {
+        wrapper.find('input').simulate('change', { target: { value: 'a' } })
+      })
+
+      const call = fieldOnChange.mock.calls[0]
+      expect(call[0].toString()).toBe(
         "(Name:'*a*' OR DisplayName:'*a*' OR Path:'*a*') AND (TypeIs:User OR TypeIs:Task)",
       )
     })
 
-    it('Text change query should include the selection roots', () => {
+    it('Text change query should include the selection roots', async () => {
+      const fieldOnChange = jest.fn(async (_) => [])
       const fieldSetting = { ...exampleFieldSetting }
       fieldSetting.SelectionRoots = ['Root/A', 'Root/B']
-      const mockComponent = new ReferenceField<GenericContent>({
-        fieldName: 'CreatedBy',
-        fieldSetting,
-        fetchItems: async () => {
-          return []
-        },
-        onQueryChange: jest.fn(),
+
+      await act(async () => {
+        wrapper = mount(<ReferenceField fieldName="CreatedBy" fieldSetting={fieldSetting} fetchItems={fieldOnChange} />)
       })
-      expect(mockComponent.getQueryFromTerm('*a*').toString()).toBe(
+
+      await act(async () => {
+        wrapper.find('input').simulate('change', { target: { value: 'a' } })
+      })
+
+      const call = fieldOnChange.mock.calls[0]
+      expect(call[0].toString()).toBe(
         "(Name:'*a*' OR DisplayName:'*a*' OR Path:'*a*') AND (InTree:\"Root/A\" OR InTree:\"Root/B\")",
       )
     })

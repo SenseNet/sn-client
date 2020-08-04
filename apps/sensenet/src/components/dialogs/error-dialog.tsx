@@ -1,10 +1,10 @@
-import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core'
+import { Button, DialogActions, DialogContent, DialogContentText } from '@material-ui/core'
 import { BugReportTwoTone, RefreshTwoTone } from '@material-ui/icons'
 import React from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { ErrorBoundaryState } from '../error-boundary'
-import { useDialog } from '.'
+import { DialogTitle, useDialog } from '.'
 
 export function ErrorDialog(props: ErrorBoundaryState) {
   const { openDialog } = useDialog()

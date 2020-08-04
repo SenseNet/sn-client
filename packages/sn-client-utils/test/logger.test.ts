@@ -5,6 +5,8 @@ import {
   defaultFormatter,
   LoggerCollection,
   LogLevel,
+  NotificationLogger,
+  NotificationService,
 } from '../src'
 import { TestLogger } from './__Mocks__/test-logger'
 
@@ -355,6 +357,68 @@ describe('Loggers', () => {
           message: 'message',
         }),
       ).toEqual(['message'])
+    })
+  })
+
+  const testEntry1 = {
+    level: 2,
+    data: {},
+    message: '1',
+    scope: '1',
+  }
+
+  const testEntry2 = {
+    level: 0,
+    data: {},
+    message: '2',
+    scope: '2',
+  }
+
+  describe('NotificationService', () => {
+    const notificationService = new NotificationService()
+    it('should be init with empty array', () => {
+      expect(notificationService.activeMessages.getValue()).toStrictEqual([])
+    })
+
+    it('should store the entires', () => {
+      notificationService.add(testEntry1)
+      expect(notificationService.activeMessages.getValue()).toStrictEqual([testEntry1])
+
+      notificationService.add(testEntry2)
+      expect(notificationService.activeMessages.getValue()).toStrictEqual([testEntry1, testEntry2])
+    })
+
+    it('should remove the selected entry', () => {
+      notificationService.dismiss(testEntry1)
+      expect(notificationService.activeMessages.getValue()).toStrictEqual([testEntry2])
+
+      notificationService.dismiss(testEntry2)
+      expect(notificationService.activeMessages.getValue()).toStrictEqual([])
+    })
+  })
+
+  describe('NotificationLogger', () => {
+    const notificationService = new NotificationService()
+    const notificationLogger = new NotificationLogger(notificationService)
+
+    beforeEach(() => {
+      notificationService.add = jest.fn()
+    })
+
+    it('should call the add function of NotificationService cause testEntry1 is in the default Loglevel ', () => {
+      notificationLogger.addEntry(testEntry1)
+      expect(notificationService.add).toHaveBeenCalledTimes(1)
+    })
+
+    it('should not call the add function of NotificationService cause testEntry2 is not in the default Loglevel ', () => {
+      notificationLogger.addEntry(testEntry2)
+      expect(notificationService.add).toHaveBeenCalledTimes(0)
+    })
+
+    it('should call the add function of NotificationService cause testEntry2 is added to Loglevels ', () => {
+      notificationLogger.useLogLevels(['Verbose'])
+      notificationLogger.addEntry(testEntry2)
+      expect(notificationService.add).toHaveBeenCalledTimes(1)
     })
   })
 })

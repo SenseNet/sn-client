@@ -10,7 +10,7 @@ import {
 } from '@sensenet/hooks-react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import clsx from 'clsx'
-import React, { useContext, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import { useHistory } from 'react-router'
 import { ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
@@ -63,6 +63,7 @@ export type ExploreProps = {
   schema?: string
   loadChildrenSettings?: ODataParams<GenericContent>
   renderBeforeGrid?: () => JSX.Element
+  hasTree?: boolean
 }
 
 export function Explore({
@@ -73,6 +74,7 @@ export function Explore({
   schema,
   loadChildrenSettings,
   renderBeforeGrid,
+  hasTree = true,
 }: ExploreProps) {
   const selectionService = useSelectionService()
   const classes = useStyles()
@@ -90,6 +92,8 @@ export function Explore({
     const { location } = history
     history.push(getPrimaryActionUrl({ content: activeItem, repository, uiSettings, location, snRoute }))
   }
+
+  const onTreeLoadingChange = useCallback((isLoading) => setIsTreeLoading(isLoading), [])
 
   const renderContent = () => {
     switch (activeAction) {
@@ -166,14 +170,16 @@ export function Explore({
               />
             </div>
             <div className={classes.treeAndDatagridWrapper}>
-              <TreeWithData
-                onItemClick={(item) => {
-                  onNavigate(item)
-                }}
-                parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
-                activeItemPath={currentPath}
-                onTreeLoadingChange={(isLoading) => setIsTreeLoading(isLoading)}
-              />
+              {hasTree && (
+                <TreeWithData
+                  onItemClick={(item) => {
+                    onNavigate(item)
+                  }}
+                  parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
+                  activeItemPath={currentPath}
+                  onTreeLoadingChange={onTreeLoadingChange}
+                />
+              )}
               <div className={classes.exploreContainer}>{renderContent()}</div>
             </div>
           </CurrentAncestorsProvider>

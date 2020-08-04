@@ -443,6 +443,12 @@ const values = {
     move: 'Move selected items',
     copy: 'Copy selected items',
   },
+  referenceContentListDialog: {
+    errorAlreadyInList: 'The selected item is already in the list',
+  },
+  contentList: {
+    errorContentModification: 'There was an error during content modification',
+  },
   permissionEditor: {
     assign: 'Assing new permisson',
     setPermissons: 'Set permissions for ',

@@ -73,7 +73,7 @@ describe('actions reducer', () => {
   it('should return the actionlist from the response', () => {
     const payload = {
       d: {
-        Actions: ['Move', 'Copy'] as any[],
+        results: ['Move', 'Copy'] as any[],
       },
     }
     expect(

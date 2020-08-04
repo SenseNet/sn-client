@@ -53,7 +53,7 @@ export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> =
                 {props.settings.DisplayName}
               </Grid>
               <Grid item>
-                <Switcher checked={value} onChange={handleChange} />
+                <Switcher size="small" checked={value} onChange={handleChange} />
               </Grid>
             </Grid>
           </Typography>
@@ -74,7 +74,7 @@ export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> =
                 {props.settings.DisplayName}
               </Grid>
               <Grid item>
-                <Switcher disabled checked={value} onChange={handleChange} />
+                <Switcher size="small" disabled checked={value} onChange={handleChange} />
               </Grid>
             </Grid>
           </Typography>
