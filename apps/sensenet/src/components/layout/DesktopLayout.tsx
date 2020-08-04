@@ -1,5 +1,5 @@
 import { useInjector, useRepository } from '@sensenet/hooks-react'
-import { createStyles, makeStyles } from '@material-ui/core'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import clsx from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
@@ -12,7 +12,7 @@ import { PermanentDrawer } from '../drawer/PermanentDrawer'
 import { TemporaryDrawer } from '../drawer/TemporaryDrawer'
 import { getMonacoModelUri } from '../edit/TextEditor'
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     desktopLayoutWrapper: {
       display: 'flex',
@@ -38,6 +38,11 @@ const useStyles = makeStyles(() => {
       overflow: 'hidden',
       height: '100%',
     },
+    executeActionPaper: {
+      height: '100%',
+      backgroundColor: theme.palette.type === 'light' ? globals.light.dialogBackground : globals.dark.dialogBackground,
+      border: theme.palette.type === 'light' ? clsx(globals.light.borderColor, '1px') : 'none',
+    },
   })
 })
 
@@ -54,7 +59,13 @@ export const DesktopLayout: React.FunctionComponent = (props) => {
     const observables = [
       customActionService.onExecuteAction.subscribe((value) => {
         const uri = getMonacoModelUri(value.content, repo, value.action)
-        openDialog({ name: 'execute-action', props: { actionValue: value, uri } })
+        openDialog({
+          name: 'execute-action',
+          props: { actionValue: value, uri },
+          dialogProps: value.metadata?.parameters?.length
+            ? { classes: { paper: classes.executeActionPaper } }
+            : undefined,
+        })
       }),
       customActionService.onActionExecuted.subscribe((value) => {
         closeLastDialog()
@@ -75,7 +86,14 @@ export const DesktopLayout: React.FunctionComponent = (props) => {
       }),
     ]
     return () => observables.forEach((o) => o.dispose())
-  }, [closeLastDialog, customActionService.onActionExecuted, customActionService.onExecuteAction, openDialog, repo])
+  }, [
+    closeLastDialog,
+    customActionService.onActionExecuted,
+    customActionService.onExecuteAction,
+    openDialog,
+    repo,
+    classes.executeActionPaper,
+  ])
 
   return (
     <div className={clsx(globalClasses.full, classes.desktopLayoutWrapper)}>

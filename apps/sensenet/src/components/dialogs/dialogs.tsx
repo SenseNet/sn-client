@@ -58,6 +58,7 @@ export function Dialogs() {
     <Suspense fallback="Loading">
       {dialogs.map((dialog, index) => (
         <Dialog
+          classes={{ paper: globalClasses.dialog }}
           fullWidth
           key={index}
           open={true}
@@ -67,7 +68,7 @@ export function Dialogs() {
             dialog.dialogProps?.onClose?.(event, reason)
             closeLastDialog()
           }}>
-          <div className={globalClasses.dialog}>{dialogRenderer(dialog)}</div>
+          {dialogRenderer(dialog)}
         </Dialog>
       ))}
     </Suspense>
