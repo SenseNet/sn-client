@@ -209,8 +209,8 @@ export const useDrawerItems = () => {
         try {
           for (const permission of item.permissions) {
             const actions = await repo.getActions({ idOrPath: permission.path })
-            const actionIndex = actions.d.Actions.findIndex((action) => action.Name === permission.action)
-            if (actionIndex === -1 || actions.d.Actions[actionIndex].Forbidden) {
+            const actionIndex = actions.d.results.findIndex((action) => action.Name === permission.action)
+            if (actionIndex === -1 || actions.d.results[actionIndex].Forbidden) {
               return false
             }
           }

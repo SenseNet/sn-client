@@ -940,7 +940,7 @@ describe('Reducers', () => {
       type: 'LOAD_CONTENT_ACTIONS_SUCCESS',
       result: {
         d: {
-          Actions: [{ Name: 'aaa' } as ActionModel, { Name: 'bbb' } as ActionModel] as ActionModel[],
+          results: [{ Name: 'aaa' } as ActionModel, { Name: 'bbb' } as ActionModel] as ActionModel[],
         },
       },
     }
