@@ -9,6 +9,7 @@ import { FullScreenLoader } from './full-screen-loader'
 
 const ContentComponent = lazy(() => import(/* webpackChunkName: "content" */ './content'))
 const DashboardComponent = lazy(() => import(/* webpackChunkName: "dashboard" */ './dashboard'))
+const UsersAndGroupsComponent = lazy(() => import(/* webpackChunkName: "users-and-groups" */ './users-and-groups'))
 const SearchComponent = lazy(() => import(/* webpackChunkName: "search" */ './search'))
 const SavedQueriesComponent = lazy(() => import(/* webpackChunkName: "saved-queries" */ './search/saved-queries'))
 const SetupComponent = lazy(() => import(/* webpackChunkName: "setup" */ './setup/setup'))
@@ -63,10 +64,7 @@ export const MainRouter = () => {
           </Route>
 
           <Route path={PATHS.usersAndGroups.appPath}>
-            <ContentComponent
-              rootPath={PATHS.usersAndGroups.snPath}
-              fieldsToDisplay={['DisplayName', 'ModificationDate', 'ModifiedBy', 'Actions']}
-            />
+            <UsersAndGroupsComponent />
           </Route>
 
           <Route path={PATHS.contentTypes.appPath}>
@@ -83,6 +81,7 @@ export const MainRouter = () => {
                 select: ['DisplayName', 'Description', 'ParentTypeName' as any, 'ModificationDate', 'ModifiedBy'],
                 query: "+TypeIs:'ContentType' .AUTOFILTERS:OFF",
               }}
+              hasTree={false}
             />
           </Route>
 

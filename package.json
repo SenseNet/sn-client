@@ -15,8 +15,6 @@
     "@typescript-eslint/eslint-plugin": "^3.5.0",
     "@typescript-eslint/parser": "^3.5.0",
     "babel-eslint": "10.1.0",
-    "cypress": "^4.9.0",
-    "cypress-xpath": "^1.6.0",
     "cz-conventional-changelog": "^3.1.0",
     "eslint": "^7.3.1",
     "eslint-config-prettier": "^6.10.1",
@@ -54,9 +52,7 @@
     "clean:packages": "yarn build --clean",
     "test": "jest",
     "clean": "lerna clean",
-    "lint": "eslint . --ext .tsx,.ts --cache",
-    "cypress": "cypress open",
-    "cypress:all": "cypress run"
+    "lint": "eslint . --ext .tsx,.ts --cache"
   },
   "husky": {
     "hooks": {

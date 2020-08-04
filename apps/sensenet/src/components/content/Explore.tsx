@@ -10,7 +10,7 @@ import {
 } from '@sensenet/hooks-react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import clsx from 'clsx'
-import React, { useContext, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import { useHistory } from 'react-router'
 import { ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
@@ -59,10 +59,22 @@ export type ExploreProps = {
   rootPath: string
   onNavigate: (content: GenericContent) => void
   fieldsToDisplay?: Array<keyof GenericContent>
+  schema?: string
   loadChildrenSettings?: ODataParams<GenericContent>
+  renderBeforeGrid?: () => JSX.Element
+  hasTree?: boolean
 }
 
-export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay, loadChildrenSettings }: ExploreProps) {
+export function Explore({
+  currentPath,
+  onNavigate,
+  rootPath,
+  fieldsToDisplay,
+  schema,
+  loadChildrenSettings,
+  renderBeforeGrid,
+  hasTree = true,
+}: ExploreProps) {
   const selectionService = useSelectionService()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
@@ -79,6 +91,8 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay, lo
     const { location } = history
     history.push(getPrimaryActionUrl({ content: activeItem, repository, uiSettings, location, snRoute }))
   }
+
+  const onTreeLoadingChange = useCallback((isLoading) => setIsTreeLoading(isLoading), [])
 
   const renderContent = () => {
     switch (activeAction) {
@@ -122,15 +136,19 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay, lo
     }
 
     return (
-      <ContentList
-        style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
-        enableBreadcrumbs={false}
-        fieldsToDisplay={fieldsToDisplay}
-        onParentChange={onNavigate}
-        onActivateItem={onActivateItemOverride}
-        onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
-        parentIdOrPath={currentPath}
-      />
+      <>
+        {renderBeforeGrid?.()}
+        <ContentList
+          style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
+          enableBreadcrumbs={false}
+          fieldsToDisplay={fieldsToDisplay}
+          schema={schema}
+          onParentChange={onNavigate}
+          onActivateItem={onActivateItemOverride}
+          onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
+          parentIdOrPath={currentPath}
+        />
+      </>
     )
   }
 
@@ -148,14 +166,16 @@ export function Explore({ currentPath, onNavigate, rootPath, fieldsToDisplay, lo
               />
             </div>
             <div className={classes.treeAndDatagridWrapper}>
-              <TreeWithData
-                onItemClick={(item) => {
-                  onNavigate(item)
-                }}
-                parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
-                activeItemPath={currentPath}
-                onTreeLoadingChange={(isLoading) => setIsTreeLoading(isLoading)}
-              />
+              {hasTree && (
+                <TreeWithData
+                  onItemClick={(item) => {
+                    onNavigate(item)
+                  }}
+                  parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
+                  activeItemPath={currentPath}
+                  onTreeLoadingChange={onTreeLoadingChange}
+                />
+              )}
               <div className={classes.exploreContainer}>{renderContent()}</div>
             </div>
           </CurrentAncestorsProvider>

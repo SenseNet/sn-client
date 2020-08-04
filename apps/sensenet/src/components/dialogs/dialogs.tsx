@@ -15,6 +15,7 @@ const ExecuteAction = React.lazy(() => import('./execute-action'))
 const Logout = React.lazy(() => import('./logout'))
 const SaveQuery = React.lazy(() => import('./save-query'))
 const Upload = React.lazy(() => import('./upload/upload-dialog'))
+const ReferenceContentList = React.lazy(() => import('./reference-content-list'))
 
 function dialogRenderer(dialog: DialogWithProps) {
   switch (dialog.name) {
@@ -42,6 +43,8 @@ function dialogRenderer(dialog: DialogWithProps) {
       return <Logout />
     case 'save-query':
       return <SaveQuery {...dialog.props} />
+    case 'reference-content-list':
+      return <ReferenceContentList {...dialog.props} />
     default:
       return null
   }
@@ -55,16 +58,17 @@ export function Dialogs() {
     <Suspense fallback="Loading">
       {dialogs.map((dialog, index) => (
         <Dialog
-          {...dialog.dialogProps}
+          classes={{ paper: globalClasses.dialog }}
           fullWidth
+          key={index}
+          open={true}
+          maxWidth="md"
+          {...dialog.dialogProps}
           onClose={(event, reason) => {
             dialog.dialogProps?.onClose?.(event, reason)
             closeLastDialog()
-          }}
-          key={index}
-          open={true}
-          maxWidth="md">
-          <div className={globalClasses.dialog}>{dialogRenderer(dialog)}</div>
+          }}>
+          {dialogRenderer(dialog)}
         </Dialog>
       ))}
     </Suspense>

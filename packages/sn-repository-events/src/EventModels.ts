@@ -44,6 +44,11 @@ export interface Modified {
    * The Change data
    */
   changes: Content
+
+  /**
+   * Force the refresh of the content list
+   */
+  forceRefresh?: boolean
 }
 
 /**

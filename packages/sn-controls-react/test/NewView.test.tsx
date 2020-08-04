@@ -5,6 +5,7 @@ import { shallow } from 'enzyme'
 import React from 'react'
 import {
   AllowedChildTypes,
+  AutoComplete,
   Avatar,
   BooleanComponent,
   CheckboxGroup,
@@ -20,7 +21,6 @@ import {
   ReferenceGrid,
   RichTextEditor,
   ShortText,
-  TagsInput,
   Textarea,
 } from '../src/fieldcontrols'
 import { NewView } from '../src/viewcontrols'
@@ -52,7 +52,7 @@ describe('New view component', () => {
     )
     expect(wrapper.find(Typography).text()).toBe('New $Ctd-GenericContent,DisplayName')
     expect(wrapper.find(FileName)).toHaveLength(1)
-    expect(wrapper.find(TagsInput)).toHaveLength(1)
+    expect(wrapper.find(AutoComplete)).toHaveLength(1)
     expect(wrapper.find(ReferenceGrid)).toHaveLength(1)
     expect(wrapper.find(Name)).toHaveLength(1)
     expect(wrapper.find(ShortText)).toHaveLength(2)

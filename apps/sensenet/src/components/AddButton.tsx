@@ -82,7 +82,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
     const getActions = async () => {
       try {
         const actions = await repo.getActions({ idOrPath: currentPath })
-        const isActionFound = actions.d.Actions.some((action) => action.Name === 'Add' || action.Name === 'Upload')
+        const isActionFound = actions.d.results.some((action) => action.Name === 'Add' || action.Name === 'Upload')
         setAvailable(isActionFound && !activeAction)
       } catch (error) {
         logger.error({

@@ -1,5 +1,4 @@
-import { LogLevel, sleepAsync } from '@sensenet/client-utils'
-import { useInjector } from '@sensenet/hooks-react'
+import { LeveledLogEntry, LogLevel, sleepAsync } from '@sensenet/client-utils'
 import amber from '@material-ui/core/colors/amber'
 import red from '@material-ui/core/colors/red'
 import IconButton from '@material-ui/core/IconButton'
@@ -7,10 +6,10 @@ import Snackbar from '@material-ui/core/Snackbar'
 import Close from '@material-ui/icons/Close'
 import React, { useContext, useEffect, useState } from 'react'
 import { ResponsiveContext } from '../context'
-import { EventLogEntry, EventService } from '../services/EventService'
+import { useNotificationService } from '../hooks/use-notification-service'
 import { Icon } from './Icon'
 
-export const getItemBackgroundColor = (item: EventLogEntry<any>) => {
+export const getItemBackgroundColor = (item: LeveledLogEntry<any>) => {
   switch (item.level) {
     case LogLevel.Error:
     case LogLevel.Fatal:
@@ -22,7 +21,7 @@ export const getItemBackgroundColor = (item: EventLogEntry<any>) => {
   }
 }
 
-export const getItemTextColor = (item: EventLogEntry<any>) => {
+export const getItemTextColor = (item: LeveledLogEntry<any>) => {
   switch (item.level) {
     case LogLevel.Error:
     case LogLevel.Fatal:
@@ -34,7 +33,7 @@ export const getItemTextColor = (item: EventLogEntry<any>) => {
   }
 }
 
-export const getAutoHideDuration = (item: EventLogEntry<any>) => {
+export const getAutoHideDuration = (item: LeveledLogEntry<any>) => {
   switch (item.level) {
     case LogLevel.Error:
     case LogLevel.Fatal:
@@ -47,72 +46,70 @@ export const getAutoHideDuration = (item: EventLogEntry<any>) => {
 }
 
 export const NotificationComponent: React.FunctionComponent = () => {
-  const injector = useInjector()
-  const eventService = injector.getInstance(EventService)
-  const [values, setValues] = useState<Array<[string, Array<EventLogEntry<any>>]>>([])
+  const notificationService = useNotificationService()
+  const [values, setValues] = useState<Array<LeveledLogEntry<any>>>([])
   const [dismisses, setDismisses] = useState<string[]>([])
   const device = useContext(ResponsiveContext)
 
   useEffect(() => {
-    const subscription = eventService.notificationValues.subscribe((change) =>
-      setValues(Array.from(Object.entries(change))),
-    )
-    return () => subscription.dispose()
-  }, [eventService.notificationValues])
+    const notificationServiceObserve = notificationService.activeMessages.subscribe((change) => {
+      setValues(change)
+    })
+    return function cleanup() {
+      notificationServiceObserve.dispose()
+    }
+  }, [notificationService.activeMessages])
 
   return (
     <>
-      {values.map((v, i) => {
-        const item = v[1][0]
-        const count = v[1].length
+      {values.map((value, index) => {
+        const count = values.length
         return (
           <Snackbar
-            key={i}
-            open={item.data.isDismissed !== true && dismisses.indexOf(item.data.guid) === -1}
+            key={index}
+            open={true}
             anchorOrigin={{
               vertical: 'bottom',
               horizontal: 'center',
             }}
             style={{
-              marginBottom:
-                values.filter((val) => val[1][0].data.isDismissed !== true).indexOf(v) *
-                (device === 'mobile' ? 60 : 90),
+              marginBottom: values.indexOf(value) * (device === 'mobile' ? 60 : 90),
             }}
             ContentProps={{
               style: {
-                backgroundColor: getItemBackgroundColor(item),
-                color: getItemTextColor(item),
+                backgroundColor: getItemBackgroundColor(value),
+                color: getItemTextColor(value),
                 display: 'flex',
                 flexDirection: 'row',
                 flexWrap: 'nowrap',
               },
             }}
             TransitionProps={{ direction: 'left' } as any}
-            autoHideDuration={(item.data && item.data.autoHideDuration) || getAutoHideDuration(item)}
+            autoHideDuration={value.data?.autoHideDuration || getAutoHideDuration(value)}
             message={
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Icon item={item.data.relatedContent || item} style={{ marginRight: '1em' }} />
+                <Icon item={value} style={{ marginRight: '1em' }} />
                 <div
-                  title={item.message}
+                  title={value.message}
                   style={{ overflow: 'hidden', textOverflow: 'ellipsis', wordBreak: 'break-word' }}>
-                  {(count > 1 && item.data.digestMessage && item.data.digestMessage.replace('{count}', count)) ||
-                    item.message}
+                  {(count > 1 && value.data?.digestMessage && value.data.digestMessage.replace('{count}', count)) ||
+                    value.message}
                 </div>
               </div>
             }
             onClose={(_ev, reason) => {
               if (reason === 'timeout') {
-                setDismisses([...dismisses, item.data.guid])
-                eventService.dismiss(item)
+                setDismisses([...dismisses, value.data?.guid])
+                notificationService.dismiss(value)
               }
             }}
             action={
               <IconButton
                 color="inherit"
                 onClick={async () => {
-                  setDismisses([...dismisses, item.data.guid])
+                  setDismisses([...dismisses, value.data?.guid])
                   await sleepAsync(500)
-                  eventService.dismiss(item)
+                  notificationService.dismiss(value)
                 }}
                 aria-label="Close button">
                 <Close />

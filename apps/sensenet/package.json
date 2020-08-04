@@ -17,7 +17,9 @@
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "build": "webpack --config webpack.prod.js",
     "build:stats": "webpack --config webpack.prod.js --profile --json > stats.json",
-    "start": "webpack-dev-server --open --progress --config webpack.dev.js"
+    "start": "webpack-dev-server --open --progress --config webpack.dev.js",
+    "cypress": "cypress open",
+    "cypress:all": "cypress run"
   },
   "private": true,
   "publishConfig": {
@@ -40,6 +42,8 @@
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^6.0.3",
     "css-loader": "^3.6.0",
+    "cypress": "^4.11.0",
+    "cypress-xpath": "^1.4.0",
     "file-loader": "^6.0.0",
     "fork-ts-checker-webpack-plugin": "^5.0.5",
     "html-webpack-plugin": "^4.0.4",
@@ -60,6 +64,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
     "@sensenet/authentication-oidc-react": "^1.0.2",
     "@sensenet/client-core": "^3.1.0",
     "@sensenet/client-utils": "^1.8.4",

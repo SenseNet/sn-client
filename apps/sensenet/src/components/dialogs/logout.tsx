@@ -1,12 +1,12 @@
 import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
 import { useRepository } from '@sensenet/hooks-react'
-import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core'
+import { Button, DialogActions, DialogContent, DialogContentText } from '@material-ui/core'
 import React from 'react'
 import { authConfigKey, useCurrentUser } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { Icon } from '../Icon'
-import { useDialog } from './dialog-provider'
+import { DialogTitle, useDialog } from '.'
 
 export function LogoutDialog() {
   const { closeLastDialog } = useDialog()
@@ -19,7 +19,7 @@ export function LogoutDialog() {
   return (
     <>
       <DialogTitle>
-        <div className={globalClasses.centeredVertical}>
+        <div className={globalClasses.centered}>
           <Icon
             style={{
               margin: '0 1em 0 0',

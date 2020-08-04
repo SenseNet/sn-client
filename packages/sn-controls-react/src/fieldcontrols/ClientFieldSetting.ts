@@ -51,4 +51,9 @@ export interface ReactClientFieldSetting<T = FieldSetting, S = GenericContent> {
    * @example '/Root/Sites/Default_Site/demoavatars'
    */
   uploadFolderPath?: string
+
+  /**
+   * Input is cleared when this value changes
+   */
+  triggerClear?: number
 }

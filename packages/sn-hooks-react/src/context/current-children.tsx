@@ -75,7 +75,7 @@ export const CurrentChildrenProvider: React.FunctionComponent<CurrentChildrenPro
       eventHub.onContentCopied.subscribe(handleCreate),
       eventHub.onContentMoved.subscribe(handleCreate),
       eventHub.onContentModified.subscribe((mod) => {
-        if (children.some((c) => c.Id === mod.content.Id)) {
+        if (mod.forceRefresh || children.some((c) => c.Id === mod.content.Id)) {
           requestReload()
         }
       }),
