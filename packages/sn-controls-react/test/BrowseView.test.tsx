@@ -5,6 +5,7 @@ import React from 'react'
 import { act } from 'react-dom/test-utils'
 import {
   AllowedChildTypes,
+  AutoComplete,
   Avatar,
   BooleanComponent,
   CheckboxGroup,
@@ -20,7 +21,6 @@ import {
   ReferenceGrid,
   RichTextEditor,
   ShortText,
-  TagsInput,
   Textarea,
 } from '../src/fieldcontrols'
 import { BrowseView } from '../src/viewcontrols/BrowseView'
@@ -66,7 +66,7 @@ describe('Browse view component', () => {
       wrapper = mount(<BrowseView content={testFile} repository={testRepository} />)
     })
     expect(wrapper.find(FileName)).toHaveLength(1)
-    expect(wrapper.find(TagsInput)).toHaveLength(1)
+    expect(wrapper.find(AutoComplete)).toHaveLength(1)
     expect(wrapper.find(ReferenceGrid)).toHaveLength(1)
     expect(wrapper.find(Name)).toHaveLength(1)
     expect(wrapper.find(ShortText)).toHaveLength(2)

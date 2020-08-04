@@ -73,7 +73,7 @@ export const reactControlMapper = (repository: Repository) => {
     })
     .setupFieldSettingDefault<ReferenceFieldSetting>('ReferenceFieldSetting', (setting) => {
       if (setting.AllowedTypes && setting.AllowedTypes.indexOf('User') !== -1 && setting.AllowMultiple) {
-        return FieldControls.TagsInput
+        return FieldControls.AutoComplete
       } else {
         return FieldControls.ReferenceGrid
       }
