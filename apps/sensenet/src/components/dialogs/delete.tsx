@@ -5,7 +5,6 @@ import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import List from '@material-ui/core/List'
@@ -21,7 +20,7 @@ import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useQuery, useSelectionService, useSnRoute } from '../../hooks'
 import { navigateToAction } from '../../services'
 import { Icon } from '../Icon'
-import { useDialog } from '.'
+import { DialogTitle, useDialog } from '.'
 
 export type DeleteContentDialogProps = {
   content: GenericContent[]

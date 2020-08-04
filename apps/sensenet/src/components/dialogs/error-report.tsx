@@ -4,7 +4,6 @@ import Checkbox from '@material-ui/core/Checkbox'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
@@ -13,7 +12,7 @@ import SendTwoTone from '@material-ui/icons/SendTwoTone'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useEventService, useLocalization, usePersonalSettings } from '../../hooks'
-import { useDialog } from '.'
+import { DialogTitle, useDialog } from '.'
 
 export type ErrorReportProps = { error: Error }
 

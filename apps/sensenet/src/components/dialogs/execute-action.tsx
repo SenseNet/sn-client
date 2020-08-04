@@ -3,7 +3,6 @@ import { useInjector, useLogger, useRepository } from '@sensenet/hooks-react'
 import Button from '@material-ui/core/Button'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import Typography from '@material-ui/core/Typography'
 import React, { useEffect, useState } from 'react'
@@ -15,7 +14,7 @@ import {
   OnExecuteActionPayload,
 } from '../../services/CommandProviders/CustomActionCommandProvider'
 import { createCustomActionModel } from '../../services/MonacoModels/create-custom-action-model'
-import { useDialog } from './dialog-provider'
+import { DialogTitle, useDialog } from '.'
 
 const postBodyCache = new Map<string, string>()
 const EDITOR_INITIAL_VALUE = `{

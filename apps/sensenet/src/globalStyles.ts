@@ -47,6 +47,11 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
       justifyContent: 'left',
       alignItems: 'center',
     },
+    centeredRight: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+    },
     centeredHorizontal: {
       display: 'flex',
       justifyContent: 'center',
