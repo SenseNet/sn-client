@@ -165,6 +165,7 @@ export class EventHub implements Disposable {
           this.onContentModified.setValue({
             changes: (patchPromise.methodArguments[0] as PatchOptions<Content>).content as Content,
             content: response.d as Content,
+            forceRefresh: patchPromise.methodArguments[0].forceRefresh,
           })
         },
         // Patch error to ContentModificationFailed
@@ -186,6 +187,7 @@ export class EventHub implements Disposable {
           this.onContentModified.setValue({
             changes: (putPromise.methodArguments[0] as PutOptions<Content>).content as Content,
             content: response.d as Content,
+            forceRefresh: putPromise.methodArguments[0].forceRefresh,
           })
         },
         // Patch error to ContentModificationFailed
