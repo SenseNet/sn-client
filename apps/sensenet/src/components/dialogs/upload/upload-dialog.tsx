@@ -1,5 +1,5 @@
 import { UploadProgressInfo } from '@sensenet/client-core'
-import { ObservableValue, PathHelper } from '@sensenet/client-utils'
+import { ObservableValue } from '@sensenet/client-utils'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import {
   Button,
@@ -51,8 +51,8 @@ const useStyles = makeStyles((theme: Theme) =>
 export type UploadDialogProps = {
   files?: File[]
   uploadPath: string
-  uploadAvatar?: boolean
-  fileName?: string
+  disableMultiUpload?: boolean
+  customUploadFunction?: (files: FileWithFullPath[] | undefined, progressObservable: any) => any
 }
 
 export function UploadDialog(props: UploadDialogProps) {
@@ -166,20 +166,10 @@ export function UploadDialog(props: UploadDialogProps) {
     }
   }
 
-  const uploadAvatar = async () => {
-    if (!files) {
-      return
-    }
+  const customUpload = async () => {
     setIsUploadInProgress(true)
-
     try {
-      await repository.upload.file({
-        file: files[files.length - 1],
-        parentPath: PathHelper.getParentPath(props.uploadPath),
-        fileName: props.fileName || '',
-        overwrite: true,
-        binaryPropertyName: 'ImageData',
-      })
+      await props.customUploadFunction?.(files, progressObservable)
     } catch (error) {
       logger.error({ message: 'Upload failed', data: error })
     } finally {
@@ -238,7 +228,7 @@ export function UploadDialog(props: UploadDialogProps) {
               disabled={isUploadInProgress}
               variant="contained"
               onClick={() => {
-                props.uploadAvatar === true ? uploadAvatar() : upload()
+                props.customUploadFunction ? customUpload() : upload()
               }}>
               {localization.uploadButton}
             </Button>
@@ -250,9 +240,10 @@ export function UploadDialog(props: UploadDialogProps) {
           ev.target.files && addFiles([...ev.target.files])
         }}
         style={{ display: 'none' }}
+        disabled={props.disableMultiUpload && files && files.length > 0}
         ref={inputFile}
         type="file"
-        multiple={true}
+        multiple={!props.disableMultiUpload}
       />
       <Prompt when={isUploadInProgress} message={localization.blockNavigation} />
     </>

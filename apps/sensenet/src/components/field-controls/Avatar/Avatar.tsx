@@ -1,11 +1,13 @@
+import { PathHelper } from '@sensenet/client-utils'
 import { changeJScriptValue } from '@sensenet/controls-react'
 import { ReferenceFieldSetting, User } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 import List from '@material-ui/core/List'
 import React from 'react'
-import { useDialog } from '../../dialogs'
+import { FileWithFullPath, useDialog } from '../../dialogs'
 import { ReactClientFieldSetting } from '../ClientFieldSetting'
 import { renderIconDefault } from '../icon'
 import { DefaultAvatarTemplate } from './DefaultAvatarTemplate'
@@ -48,6 +50,8 @@ const useStyles = makeStyles((theme: Theme) => {
 export const Avatar: React.FunctionComponent<ReactClientFieldSetting<ReferenceFieldSetting, User>> = (props) => {
   const classes = useStyles()
 
+  const repo = useRepository()
+  const logger = useLogger('Avatar')
   const { openDialog } = useDialog()
 
   const [fieldValue] = React.useState(
@@ -59,11 +63,31 @@ export const Avatar: React.FunctionComponent<ReactClientFieldSetting<ReferenceFi
       name: 'upload',
       props: {
         uploadPath: props.content?.Path || '',
-        uploadAvatar: true,
-        fileName: props.content?.Name,
+        disableMultiUpload: true,
+        customUploadFunction: (files: FileWithFullPath[] | undefined, progressObservable: any) =>
+          uploadAvatar(files, progressObservable),
       },
       dialogProps: { open: true, fullScreen: false },
     })
+  }
+
+  const uploadAvatar = async (files: FileWithFullPath[] | undefined, progressObservable: { current: any }) => {
+    if (!files) {
+      return
+    }
+
+    try {
+      await repo.upload.file({
+        file: files[files.length - 1],
+        parentPath: PathHelper.getParentPath(props.content?.Path || ''),
+        fileName: props.content?.Name || '',
+        overwrite: true,
+        binaryPropertyName: 'ImageData',
+        progressObservable: progressObservable.current,
+      })
+    } catch (error) {
+      logger.error({ message: 'Upload failed', data: error })
+    }
   }
 
   return (
