@@ -289,7 +289,21 @@ export const defaultSettings: PersonalSettingsType = {
     drawer: {
       enabled: true,
       type: 'mini-variant',
-      items: [],
+      items: [
+        {
+          itemType: CustomDrawerItemType[0],
+          settings: {
+            root: '/Root',
+            appPath: 'root',
+          },
+          permissions: [
+            {
+              path: '/Root',
+              action: 'Browse',
+            },
+          ],
+        },
+      ],
     },
     commandPalette: { enabled: true, wrapQuery: '{0} .AUTOFILTERS:OFF' },
   },

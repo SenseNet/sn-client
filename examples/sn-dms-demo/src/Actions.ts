@@ -72,8 +72,8 @@ export const getListActions = (idOrPath: number | string, scenario?: string, cus
     if (!actionsState.isLoading && (actionsState.idOrPath !== idOrPath || actionsState.scenario !== scenario)) {
       options.dispatch(loadListActions(idOrPath, scenario))
       const repository = options.getInjectable(Repository)
-      const data: { d: { Actions: ActionModel[] } } = (await repository.getActions({ idOrPath, scenario })) as any
-      const actions = customActions ? [...data.d.Actions, ...customActions] : data.d.Actions
+      const data: { d: { results: ActionModel[] } } = (await repository.getActions({ idOrPath, scenario })) as any
+      const actions = customActions ? [...data.d.results, ...customActions] : data.d.results
       const ordered = actions.sort((a, b) => {
         const x = a.Index
         const y = b.Index
@@ -87,11 +87,11 @@ export const getListActions = (idOrPath: number | string, scenario?: string, cus
 export const loadUserActions = (idOrPath: number | string, scenario?: string, customActions?: ActionModel[]) => ({
   type: 'LOAD_USER_ACTIONS',
   async payload(repository: Repository) {
-    const data: { d: { Actions: ActionModel[] } } = (await repository.getActions({ idOrPath, scenario })) as any
-    const actions = customActions ? [...data.d.Actions, ...customActions] : data.d.Actions
+    const data: { d: { results: ActionModel[] } } = (await repository.getActions({ idOrPath, scenario })) as any
+    const actions = customActions ? [...data.d.results, ...customActions] : data.d.results
     return {
       d: {
-        Actions: actions.sort((a: ActionModel, b: ActionModel) => {
+        results: actions.sort((a: ActionModel, b: ActionModel) => {
           const x = a.Index
           const y = b.Index
           return x < y ? -1 : x > y ? 1 : 0
@@ -296,7 +296,7 @@ export const loadBreadcrumbActions = (idOrPath: number | string) => ({
       return
     }
     const repository = options.getInjectable(Repository)
-    const actions: { d: { Actions: ActionModel[] } } = (await repository.getActions({
+    const actions: { d: { results: ActionModel[] } } = (await repository.getActions({
       idOrPath,
       scenario: 'ContextMenu',
     })) as any
@@ -304,7 +304,7 @@ export const loadBreadcrumbActions = (idOrPath: number | string) => ({
       type: 'LOAD_BREADCRUMB_ACTIONS_SUCCESS',
       result: {
         idOrPath,
-        actions: actions.d.Actions.filter((action) => action.Name !== 'Browse' && action.Name !== 'SetPermissions'),
+        actions: actions.d.results.filter((action) => action.Name !== 'Browse' && action.Name !== 'SetPermissions'),
       },
     })
   },

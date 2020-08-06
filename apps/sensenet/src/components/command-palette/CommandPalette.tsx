@@ -10,7 +10,7 @@ import Autosuggest, { SuggestionSelectedEventData, SuggestionsFetchRequestedPara
 import { useHistory } from 'react-router-dom'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals } from '../../globalStyles'
-import { useLocalization, useTheme } from '../../hooks'
+import { useLocalization, useSnRoute, useTheme } from '../../hooks'
 import { CommandProviderManager } from '../../services'
 import { CommandPaletteHitsContainer } from './CommandPaletteHitsContainer'
 import { CommandPaletteSuggestion } from './CommandPaletteSuggestion'
@@ -78,6 +78,7 @@ export const CommandPalette = () => {
   const injector = useInjector()
   const repository = useRepository()
   const cpm = useMemo(() => injector.getInstance(CommandProviderManager), [injector])
+  const snRoute = useSnRoute()
 
   useEffect(() => {
     const handleKeyUp = (ev: KeyboardEvent) => {
@@ -127,7 +128,14 @@ export const CommandPalette = () => {
   }, [delayedOpened, isOpened])
 
   const handleSuggestionsFetchRequested = async (options: SuggestionsFetchRequestedParams) => {
-    const foundItems = await cpm.getItems({ term: options.value, repository, device, uiSettings })
+    const foundItems = await cpm.getItems({
+      term: options.value,
+      repository,
+      device,
+      uiSettings,
+      location: history.location,
+      snRoute,
+    })
     setItems(foundItems)
   }
 
@@ -136,7 +144,7 @@ export const CommandPalette = () => {
     suggestion: SuggestionSelectedEventData<CommandPaletteItem>,
   ) => {
     ev.preventDefault()
-    suggestion.suggestion.openAction?.() || history.push(suggestion.suggestion.url)
+    suggestion.suggestion.openAction ? suggestion.suggestion.openAction() : history.push(suggestion.suggestion.url)
 
     if (containerRef.current) {
       const input = containerRef.current.querySelector('input')
@@ -154,7 +162,7 @@ export const CommandPalette = () => {
       })}>
       {isOpened ? null : (
         <Tooltip placeholder="bottom-end" title={localization.title}>
-          <IconButton onClick={() => setIsOpened(true)} className={classes.iconButton}>
+          <IconButton onClick={() => setIsOpened(true)} className={classes.iconButton} data-test="search-button">
             <Search />
           </IconButton>
         </Tooltip>
@@ -164,7 +172,8 @@ export const CommandPalette = () => {
         ref={containerRef}
         className={clsx(classes.comboBox, {
           [classes.comboBoxOpened]: isOpened,
-        })}>
+        })}
+        data-test="command-box">
         <Autosuggest<CommandPaletteItem>
           theme={{
             suggestionsList: {

@@ -382,7 +382,7 @@ export class Repository implements Disposable {
    * Retrieves a list of content actions for a specified content
    * @param options Options for fetching the Custom Actions
    */
-  public async getActions(options: GetActionOptions): Promise<{ d: { Actions: ActionModel[] } }> {
+  public async getActions(options: GetActionOptions): Promise<{ d: { results: ActionModel[] } }> {
     const contextPath = PathHelper.getContentUrl(options.idOrPath)
     const path = PathHelper.joinPaths(
       this.configuration.repositoryUrl,

@@ -15,9 +15,10 @@ import { CloudUploadOutlined } from '@material-ui/icons'
 import Add from '@material-ui/icons/Add'
 import clsx from 'clsx'
 import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { globals, useGlobalStyles } from '../globalStyles'
-import { useLocalization, usePersonalSettings, useSelectionService } from '../hooks'
-import { useDialogActionService } from '../hooks/use-dialogaction-service'
+import { useLocalization, usePersonalSettings, useQuery, useSnRoute } from '../hooks'
+import { navigateToAction } from '../services'
 import { useDialog } from './dialogs'
 import { Icon } from './Icon'
 
@@ -55,14 +56,13 @@ const useStyles = makeStyles(() => {
 })
 export interface AddButtonProps {
   isOpened?: boolean
-  path: string
 }
 
 export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
-  const selectionService = useSelectionService()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const repo = useRepository()
+  const history = useHistory()
   const { openDialog } = useDialog()
   const [showSelectType, setShowSelectType] = useState(false)
   const [allowedChildTypes, setAllowedChildTypes] = useState<Schema[]>([])
@@ -71,37 +71,19 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
   const [isAvailable, setAvailable] = useState(true)
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
   const [hasUpload, setHasUpload] = useState(false)
-  const [currentComponent, setCurrentComponent] = useState(selectionService.activeContent.getValue())
   const personalSettings = usePersonalSettings()
-  const dialogActionService = useDialogActionService()
-  const [activeAction, setActiveAction] = useState(dialogActionService.activeAction.getValue())
 
-  useEffect(() => {
-    const activeComponentObserve = selectionService.activeContent.subscribe((newActiveComponent) =>
-      setCurrentComponent(newActiveComponent),
-    )
-
-    return function cleanup() {
-      activeComponentObserve.dispose()
-    }
-  }, [selectionService.activeContent])
-
-  useEffect(() => {
-    const activeActionObserve = dialogActionService.activeAction.subscribe((newActiveAction) =>
-      setActiveAction(newActiveAction),
-    )
-
-    return function cleanup() {
-      activeActionObserve.dispose()
-    }
-  }, [dialogActionService.activeAction])
+  const snRoute = useSnRoute()
+  const pathQuery = useQuery().get('path')
+  const currentPath = `${snRoute.path ?? ''}${pathQuery ?? ''}`
+  const activeAction = snRoute.match?.params.action
 
   useEffect(() => {
     const getActions = async () => {
       try {
-        const actions = await repo.getActions({ idOrPath: currentComponent ? currentComponent.Id : props.path })
-        const isActionFound = actions.d.Actions.some((action) => action.Name === 'Add' || action.Name === 'Upload')
-        setAvailable(isActionFound && activeAction !== 'new')
+        const actions = await repo.getActions({ idOrPath: currentPath })
+        const isActionFound = actions.d.results.some((action) => action.Name === 'Add' || action.Name === 'Upload')
+        setAvailable(isActionFound && !activeAction)
       } catch (error) {
         logger.error({
           message: localization.errorGettingActions,
@@ -112,18 +94,18 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
       }
     }
 
-    if (currentComponent || props.path !== '') {
+    if (currentPath) {
       getActions()
     } else {
       setAvailable(false)
     }
-  }, [currentComponent, localization.errorGettingActions, logger, props.path, repo, activeAction])
+  }, [localization.errorGettingActions, logger, repo, currentPath, activeAction])
 
   useEffect(() => {
     const getAllowedChildTypes = async () => {
       try {
         const allowedChildTypesFromRepo = await repo.allowedChildTypes.get({
-          idOrPath: currentComponent ? currentComponent.Id : props.path,
+          idOrPath: currentPath,
         })
 
         const filteredTypes = allowedChildTypesFromRepo.d.results
@@ -145,16 +127,15 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
     }
 
     if (showSelectType) {
-      currentComponent || props.path !== '' ? getAllowedChildTypes() : setAllowedChildTypes([])
+      currentPath ? getAllowedChildTypes() : setAllowedChildTypes([])
     }
   }, [
-    currentComponent,
     localization.errorGettingAllowedContentTypes,
     logger,
     personalSettings.uploadHandlers,
-    props.path,
     repo,
     showSelectType,
+    currentPath,
   ])
 
   return (
@@ -241,7 +222,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
                   setShowSelectType(false)
                   openDialog({
                     name: 'upload',
-                    props: { uploadPath: currentComponent?.Path || props.path },
+                    props: { uploadPath: currentPath },
                     dialogProps: { open: true, fullScreen: true },
                   })
                 }}>
@@ -259,12 +240,13 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
                 button={true}
                 style={{ padding: '10px 0 10px 10px' }}
                 onClick={async () => {
-                  const contentPath = currentComponent ? currentComponent.Path : props.path
-                  const currentContent = await repo.load({ idOrPath: contentPath })
-                  selectionService.activeContent.setValue(currentContent.d)
                   setShowSelectType(false)
-                  dialogActionService.contentTypeNameForNewContent.setValue(childType.ContentTypeName)
-                  dialogActionService.activeAction.setValue('new')
+                  navigateToAction({
+                    history,
+                    routeMatch: snRoute.match,
+                    action: 'new',
+                    queryParams: { 'content-type': childType.ContentTypeName },
+                  })
                 }}>
                 <ListItemIcon style={{ minWidth: '36px' }}>
                   <Icon item={childType} />

@@ -9,8 +9,8 @@ import { useCurrentUser } from '../../context/current-user-provider'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization, usePersonalSettings } from '../../hooks'
 import { PersonalSettings } from '../../services'
-import { AntSwitch } from '../ant-switch'
 import { useDialog } from '../dialogs'
+import { Switcher } from '../field-controls/switcher'
 import { UserAvatar } from '../UserAvatar'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -171,7 +171,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                         {personalSettings.theme === 'dark' ? 'Light theme' : 'Dark theme'}
                       </Grid>
                       <Grid item>
-                        <AntSwitch checked={personalSettings.theme === 'dark'} onChange={switchTheme()} />
+                        <Switcher checked={personalSettings.theme === 'dark'} onChange={switchTheme()} />
                       </Grid>
                     </Grid>
                   </Typography>

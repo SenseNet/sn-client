@@ -11,12 +11,12 @@ export const BrowseType = tuple('explorer')
 type ContentProps = Partial<ExploreProps>
 
 export const Content: React.FunctionComponent<ContentProps> = ({ rootPath, ...props }) => {
-  const match = useRouteMatch<{ browseType: string }>()
+  const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
   const settings = useContext(ResponsivePersonalSettings)
   const path = rootPath || settings.content.root || ConstantContent.PORTAL_ROOT.Path
   const { currentPath, onNavigate } = useTreeNavigation(path)
 
-  switch (match.params.browseType) {
+  switch (routeMatch.params.browseType) {
     default:
       return <Explore currentPath={currentPath} onNavigate={onNavigate} rootPath={path} {...props} />
   }

@@ -1,6 +1,7 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import { useCallback, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router'
+import { resolvePathParams } from '../application-paths'
 import { useQuery } from '../hooks/use-query'
 import { pathWithQueryParams } from '../services/query-string-builder'
 
@@ -13,17 +14,19 @@ export const useTreeNavigation = (defaultPath: string) => {
   const onNavigate = useCallback(
     (content: GenericContent) => {
       const searchParams = new URLSearchParams(history.location.search)
+      searchParams.delete('content')
       const newPath = content.Path.replace(defaultPath, '')
+      const newPathParams = { ...match.params, action: undefined }
       history.push(
         pathWithQueryParams({
-          path: match.url,
+          path: resolvePathParams({ path: match.path as any, params: newPathParams as any }),
           newParams: { path: newPath },
           currentParams: searchParams,
         }),
       )
       setCurrentPath(newPath)
     },
-    [history, match.url, defaultPath],
+    [history, match.path, match.params, defaultPath],
   )
 
   useEffect(() => {

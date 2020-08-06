@@ -3,7 +3,6 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { ListItem, ListItemIcon, ListItemText, List as MuiList } from '@material-ui/core'
 import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import { AutoSizer, Index, List, ListRowProps } from 'react-virtualized'
-import { useSelectionService } from '../../hooks'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { Icon } from '../Icon'
 
@@ -14,6 +13,7 @@ export type ItemType = GenericContent & {
 }
 
 type TreeProps = {
+  activeItemPath: string
   itemCount: number
   isLoading: boolean
   loadMore: (startIndex: number, path?: string) => Promise<void>
@@ -24,10 +24,10 @@ type TreeProps = {
 const ROW_HEIGHT = 48
 const LOAD_MORE_CLASS = 'loadMore'
 
-export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading }: TreeProps) {
+export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, activeItemPath }: TreeProps) {
   const listRef = useRef<List>(null)
   const loader = useRef(loadMore)
-  const selectionService = useSelectionService()
+  const [activeContent, setActiveContent] = useState<GenericContent>()
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [elements, setElements] = useState<Element[]>()
 
@@ -87,7 +87,6 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading }: 
   function renderItem(item: ItemType, keyPrefix: string, paddingLeft: number) {
     const onClick = async (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       event.stopPropagation()
-      selectionService.activeContent.setValue(item)
       onItemClick(item)
       listRef.current?.recomputeRowHeights()
       listRef.current?.forceUpdate()
@@ -106,10 +105,10 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading }: 
         onClick={onClick}
         onContextMenu={(ev) => {
           ev.preventDefault()
-          selectionService.activeContent.setValue(item)
           setContextMenuAnchor(ev.currentTarget)
+          setActiveContent(item)
         }}
-        selected={selectionService.activeContent.getValue()?.Id === item.Id}
+        selected={activeItemPath === item.Path}
         key={keyPrefix}
         style={{ paddingLeft }}
         button>
@@ -186,10 +185,10 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading }: 
           />
         )}
       </AutoSizer>
-      {selectionService.activeContent.getValue() ? (
+      {activeContent ? (
         <ContentContextMenu
           isOpened={!!contextMenuAnchor}
-          content={selectionService.activeContent.getValue()!}
+          content={activeContent}
           menuProps={{
             anchorEl: contextMenuAnchor,
             BackdropProps: {

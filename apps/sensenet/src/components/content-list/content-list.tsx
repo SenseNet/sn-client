@@ -1,11 +1,11 @@
 import { Repository } from '@sensenet/client-core'
-import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
   CurrentContentContext,
   LoadSettingsContext,
+  useLogger,
   useRepository,
 } from '@sensenet/hooks-react'
 import { VirtualCellProps, VirtualDefaultCell, VirtualizedTable } from '@sensenet/list-controls-react'
@@ -14,7 +14,7 @@ import clsx from 'clsx'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
-import { useSelectionService } from '../../hooks'
+import { useLocalization, useSelectionService } from '../../hooks'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { useDialog } from '../dialogs'
@@ -28,10 +28,12 @@ import {
   DescriptionField,
   DisplayNameComponent,
   EmailField,
+  EnabledField,
   IconField,
   LockedField,
   PhoneField,
   ReferenceField,
+  RolesField,
 } from '.'
 
 const useStyles = makeStyles(() => {
@@ -65,14 +67,15 @@ export interface ContentListProps {
   style?: React.CSSProperties
   containerRef?: (r: HTMLDivElement | null) => void
   fieldsToDisplay?: Array<keyof GenericContent>
+  schema?: string
   onSelectionChange?: (sel: GenericContent[]) => void
   onFocus?: () => void
   containerProps?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 }
 
-export const isReferenceField = (fieldName: string, repo: Repository) => {
-  const refWhiteList = ['AllowedChildTypes']
-  const setting = repo.schemas.getSchemaByName('GenericContent').FieldSettings.find((f) => f.Name === fieldName)
+export const isReferenceField = (fieldName: string, repo: Repository, schema = 'GenericContent') => {
+  const refWhiteList = ['AllowedChildTypes', 'AllRoles']
+  const setting = repo.schemas.getSchemaByName(schema).FieldSettings.find((f) => f.Name === fieldName)
   return refWhiteList.indexOf(fieldName) !== -1 || (setting && setting.Type === 'ReferenceFieldSetting') || false
 }
 
@@ -91,10 +94,10 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const { openDialog } = useDialog()
+  const logger = useLogger('ContentList')
+  const localization = useLocalization()
   const [selected, setSelected] = useState<GenericContent[]>([])
-  const [activeContent, setActiveContent] = useState<GenericContent>(
-    selectionService.activeContent.getValue() || children[0],
-  )
+  const [activeContent, setActiveContent] = useState<GenericContent>(children[0])
   const [isFocused, setIsFocused] = useState(true)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<{ top: number; left: number }>({
@@ -110,17 +113,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
   )
 
   useEffect(() => {
-    const activeComponentObserve = selectionService.activeContent.subscribe(
-      (newActiveComponent) => newActiveComponent !== undefined && setActiveContent(newActiveComponent),
-    )
-
-    return function cleanup() {
-      activeComponentObserve.dispose()
-    }
-  }, [selectionService.activeContent])
-
-  useEffect(() => {
-    props.onActiveItemChange && props.onActiveItemChange(activeContent)
+    props.onActiveItemChange?.(activeContent)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeContent])
 
@@ -130,7 +123,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
   }, [isFocused])
 
   useEffect(() => {
-    props.onSelectionChange && props.onSelectionChange(selected)
+    props.onSelectionChange?.(selected)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selected])
 
@@ -138,7 +131,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
     const fields = props.fieldsToDisplay || personalSettings.content.fields
     loadSettings.setLoadChildrenSettings({
       ...loadSettings.loadChildrenSettings,
-      expand: ['CheckedOutTo', ...fields.filter((fieldName) => isReferenceField(fieldName, repo))],
+      expand: ['CheckedOutTo', ...fields.filter((fieldName) => isReferenceField(fieldName, repo, props.schema))],
       orderby: [[currentOrder as any, currentDirection as any]],
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -151,20 +144,6 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
   useEffect(() => {
     selectionService.selection.setValue(selected)
   }, [selected, selectionService.selection])
-
-  const [searchString, setSearchString] = useState('')
-  const runSearch = useCallback(
-    debounce(() => {
-      const child = children.find(
-        (content) =>
-          content.Name.toLocaleLowerCase().indexOf(searchString) === 0 ||
-          (content.DisplayName && content.DisplayName.toLocaleLowerCase().indexOf(searchString)) === 0,
-      )
-      child && setActiveContent(child)
-      setSearchString('')
-    }, 500),
-    [],
-  )
 
   const onCloseFunc = () => setIsContextMenuOpened(false)
   const onOpenFunc = () => setIsContextMenuOpened(true)
@@ -277,13 +256,10 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
           props.onTabRequest?.()
           break
         default:
-          if (ev.key.length === 1) {
-            setSearchString(searchString + ev.key)
-            runSearch()
-          }
+          return true
       }
     },
-    [activeContent, children, props, selected, handleActivateItem, ancestors, openDialog, searchString, runSearch],
+    [activeContent, children, props, selected, handleActivateItem, ancestors, openDialog],
   )
 
   const onRequestOrderChangeFunc = (field: keyof GenericContent, dir: 'asc' | 'desc') => {
@@ -354,6 +330,49 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
             <ActionsField onOpen={(ev) => openContext(ev, fieldOptions.rowData)} />
           </ContextMenuWrapper>
         )
+      case 'Enabled':
+        if (fieldOptions.rowData[fieldOptions.dataKey] !== undefined) {
+          return (
+            <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
+              <EnabledField
+                enabled={fieldOptions.rowData[fieldOptions.dataKey] as boolean}
+                description={fieldSettings.Description ?? ''}
+                onChange={async (value: boolean) => {
+                  try {
+                    await repo.patch({
+                      idOrPath: fieldOptions.rowData.Id,
+                      content: { [fieldOptions.dataKey]: value },
+                    })
+                  } catch (error) {
+                    logger.error({
+                      message: localization.contentList.errorContentModification,
+                      data: {
+                        relatedContent: fieldOptions.rowData,
+                        details: { error },
+                      },
+                    })
+                    return false
+                  }
+
+                  return true
+                }}
+              />
+            </ContextMenuWrapper>
+          )
+        }
+        return null
+      case 'AllRoles':
+        if (Array.isArray(fieldOptions.rowData[fieldOptions.dataKey])) {
+          return (
+            <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
+              <RolesField
+                roles={fieldOptions.rowData[fieldOptions.dataKey] as GenericContent[]}
+                directRoles={fieldOptions.rowData.DirectRoles}
+              />
+            </ContextMenuWrapper>
+          )
+        }
+        return null
       default:
         break
     }
@@ -367,19 +386,20 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
 
     if (
       typeof fieldOptions.rowData[fieldOptions.dataKey] === 'object' &&
-      isReferenceField(fieldOptions.dataKey, repo)
+      isReferenceField(fieldOptions.dataKey, repo, props.schema)
     ) {
       const expectedContent = fieldOptions.rowData[fieldOptions.dataKey] as GenericContent
       if (
-        expectedContent &&
-        expectedContent.Id &&
-        expectedContent.Type &&
-        expectedContent.Name &&
-        expectedContent.Path
+        (expectedContent &&
+          expectedContent.Id &&
+          expectedContent.Type &&
+          expectedContent.Name &&
+          expectedContent.Path) ||
+        Array.isArray(expectedContent)
       ) {
         return (
           <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
-            <ReferenceField content={expectedContent} />
+            <ReferenceField content={expectedContent} fieldName={fieldOptions.dataKey} parent={fieldOptions.rowData} />
           </ContextMenuWrapper>
         )
       }
@@ -445,7 +465,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
             onRequestSelectionChange={setSelected}
             orderBy={currentOrder}
             orderDirection={currentDirection}
-            schema={repo.schemas.getSchemaByName('GenericContent')}
+            schema={repo.schemas.getSchemaByName(props.schema || 'GenericContent')}
             selected={selected}
             tableProps={{
               rowCount: children.length,

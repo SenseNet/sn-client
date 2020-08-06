@@ -15,7 +15,7 @@ module.exports = merge(common, {
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin({
-      eslint: true,
+      eslint: { enabled: true, files: './src/**/*.{ts,tsx,js,jsx}' },
     }),
     new HtmlWebpackPlugin({
       template: './index.html',

@@ -8,12 +8,15 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import clsx from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory, useRouteMatch } from 'react-router-dom'
+import { PATHS } from '../../application-paths'
 import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
-import { useDialogActionSubscribe, useLocalization, useSelectionService } from '../../hooks'
-import { getPrimaryActionUrl } from '../../services/content-context-service'
+import { useLocalization, useQuery } from '../../hooks'
+import { getPrimaryActionUrl, navigateToAction } from '../../services/content-context-service'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
+import { EditBinary } from '../edit/edit-binary'
+import { EditView, NewView, VersionView } from '../view-controls'
 import { WellKnownContentCard } from './well-known-content-card'
 
 const Setup = () => {
@@ -21,14 +24,18 @@ const Setup = () => {
   const localization = useLocalization().settings
   const uiSettings = useContext(ResponsivePersonalSettings)
   const globalClasses = useGlobalStyles()
+  const history = useHistory()
   const localizationDrawerTitles = useLocalization().drawer.titles
   const [wellKnownSettings, setWellKnownSettings] = useState<Settings[]>([])
   const [settings, setSettings] = useState<Settings[]>([])
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [contextMenuItem, setContextMenuItem] = useState<Settings | null>(null)
-  const selectionService = useSelectionService()
-  useDialogActionSubscribe()
+
+  const activeContent = useQuery().get('content') ?? ''
+  const contentTypeName = useQuery().get('content-type')
+  const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
+  const activeAction = routeMatch.params.action
 
   useEffect(() => {
     ;(async () => {
@@ -50,58 +57,91 @@ const Setup = () => {
     })()
   }, [localization.descriptions, repository])
 
+  const renderContent = () => {
+    switch (activeAction) {
+      case 'edit':
+      case 'browse':
+        return (
+          <EditView
+            uploadFolderpath="/Root/Content/demoavatars"
+            actionName={activeAction}
+            contentPath={`${PATHS.setup.snPath}${activeContent}`}
+            submitCallback={() => navigateToAction({ history, routeMatch })}
+          />
+        )
+      case 'new':
+        return (
+          <NewView
+            contentTypeName={contentTypeName!}
+            currentContentPath={PATHS.setup.snPath}
+            uploadFolderpath="/Root/Content/demoavatars"
+            submitCallback={() => navigateToAction({ history, routeMatch })}
+          />
+        )
+      case 'version':
+        return <VersionView contentPath={`${PATHS.setup.snPath}${activeContent}`} />
+      case 'edit-binary':
+        return <EditBinary contentPath={`${PATHS.setup.snPath}${activeContent}`} />
+      default:
+        return (
+          <>
+            {wellKnownSettings.length ? (
+              <div className={globalClasses.centered} style={{ flexWrap: 'wrap' }}>
+                <ContentContextMenu
+                  isOpened={isContextMenuOpened}
+                  content={contextMenuItem ?? wellKnownSettings[0]}
+                  onClose={() => setIsContextMenuOpened(false)}
+                  menuProps={{
+                    anchorEl: contextMenuAnchor,
+                    BackdropProps: {
+                      onClick: () => setIsContextMenuOpened(false),
+                      onContextMenu: (ev) => ev.preventDefault(),
+                    },
+                  }}
+                />
+                {wellKnownSettings.map((s) => (
+                  <WellKnownContentCard
+                    settings={s}
+                    key={s.Id}
+                    onContextMenu={(ev) => {
+                      ev.preventDefault()
+                      setContextMenuAnchor((ev.currentTarget as HTMLElement) || null)
+                      setContextMenuItem(s)
+                      setIsContextMenuOpened(true)
+                    }}
+                  />
+                ))}
+              </div>
+            ) : null}
+            <br />
+            {settings && settings.length ? (
+              <>
+                <Typography variant="h5">{localization.otherSettings}</Typography>
+                <List>
+                  {settings.map((s) => (
+                    <Link
+                      key={s.Id}
+                      to={getPrimaryActionUrl({ content: s, repository, uiSettings, location: history.location })}
+                      style={{ textDecoration: 'none' }}>
+                      <ListItem button={true}>
+                        <ListItemText primary={s.DisplayName || s.Name} secondary={s.Path} />
+                      </ListItem>
+                    </Link>
+                  ))}
+                </List>
+              </>
+            ) : null}
+          </>
+        )
+    }
+  }
+
   return (
-    <div className={globalClasses.contentWrapper}>
+    <div className={globalClasses.contentWrapper} style={{ paddingLeft: 0 }}>
       <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)} style={{ display: 'grid' }}>
         <span style={{ fontSize: '20px' }}>{localizationDrawerTitles.Setup}</span>
       </div>
-      {wellKnownSettings.length ? (
-        <div className={globalClasses.centered} style={{ flexWrap: 'wrap' }}>
-          <ContentContextMenu
-            isOpened={isContextMenuOpened}
-            content={contextMenuItem ?? wellKnownSettings[0]}
-            onClose={() => setIsContextMenuOpened(false)}
-            menuProps={{
-              anchorEl: contextMenuAnchor,
-              BackdropProps: {
-                onClick: () => setIsContextMenuOpened(false),
-                onContextMenu: (ev) => ev.preventDefault(),
-              },
-            }}
-          />
-          {wellKnownSettings.map((s) => (
-            <WellKnownContentCard
-              settings={s}
-              key={s.Id}
-              onContextMenu={(ev) => {
-                ev.preventDefault()
-                setContextMenuAnchor((ev.currentTarget as HTMLElement) || null)
-                setContextMenuItem(s)
-                selectionService.activeContent.setValue(s)
-                setIsContextMenuOpened(true)
-              }}
-            />
-          ))}
-        </div>
-      ) : null}
-      <br />
-      {settings && settings.length ? (
-        <>
-          <Typography variant="h5">{localization.otherSettings}</Typography>
-          <List>
-            {settings.map((s) => (
-              <Link
-                key={s.Id}
-                to={getPrimaryActionUrl({ content: s, repository, uiSettings })}
-                style={{ textDecoration: 'none' }}>
-                <ListItem button={true}>
-                  <ListItemText primary={s.DisplayName || s.Name} secondary={s.Path} />
-                </ListItem>
-              </Link>
-            ))}
-          </List>
-        </>
-      ) : null}
+      {renderContent()}
     </div>
   )
 }

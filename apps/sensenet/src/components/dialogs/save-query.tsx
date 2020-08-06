@@ -1,11 +1,11 @@
 import { ODataResponse } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { Button, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core'
+import { Button, DialogActions, DialogContent, TextField } from '@material-ui/core'
 import React, { useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { useDialog } from './dialog-provider'
+import { DialogTitle, useDialog } from '.'
 
 export type SaveQueryProps = {
   saveName?: string

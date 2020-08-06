@@ -99,7 +99,7 @@ export function UploadDialog(props: UploadDialogProps) {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeunload)
     }
-  }, [isUploadInProgress, localization.blockNavigation])
+  }, [isUploadInProgress, localization])
 
   const isFileAdded = files && !!files.length
 

@@ -6,7 +6,6 @@ import { LinearProgress } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
@@ -14,9 +13,9 @@ import ListItemText from '@material-ui/core/ListItemText'
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import React, { useEffect, useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization, useSnPath } from '../../hooks'
+import { useLocalization, useSnRoute } from '../../hooks'
 import { Icon } from '../Icon'
-import { useDialog } from './dialog-provider'
+import { DialogTitle, useDialog } from '.'
 
 export interface CopyMoveDialogProps {
   currentParent: GenericContent
@@ -25,13 +24,13 @@ export interface CopyMoveDialogProps {
 }
 
 export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (props) => {
-  const snPath = useSnPath()
+  const snRoute = useSnRoute()
   const repo = useRepository()
   const { closeLastDialog } = useDialog()
   const list = useListPicker({
     repository: repo,
     currentPath: props.currentParent.Path,
-    rootPath: snPath,
+    rootPath: snRoute.path,
     itemsODataOptions: { filter: '' },
   })
   const localizations = useLocalization().copyMoveContentDialog
