@@ -24,6 +24,7 @@ import {
   LanguageOutlined,
   LibraryBooksOutlined,
   LinkOutlined,
+  ListAlt,
   ListAltOutlined,
   LocationCity,
   PersonOutlined,
@@ -141,9 +142,16 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
   {
     get: (item, options) =>
-      item.Type === 'DocumentLibrary' || item.Icon === 'DocumentLibrary' ? (
+      item.Type === 'DocumentLibrary' ||
+      item.Icon === 'DocumentLibrary' ||
+      item.Type === 'ContentList' ||
+      item.Icon === 'ContentList' ? (
         <LibraryBooksOutlined style={options.style} />
       ) : null,
+  },
+  {
+    get: (item, options) =>
+      item.Type === 'TaskList' || item.Icon === 'TaskList' ? <ListAlt style={options.style} /> : null,
   },
   {
     get: (item, options) =>
@@ -174,7 +182,9 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
   {
     get: (item, options) =>
-      item.Type === 'Memo' || item.Icon === 'Memo' ? <AssignmentOutlined style={options.style} /> : null,
+      item.Type === 'Memo' || item.Icon === 'Memo' || item.Type === 'Plan' || item.Icon === 'Plan' ? (
+        <AssignmentOutlined style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
@@ -215,7 +225,9 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
   {
     get: (item, options) =>
-      item.Type && item.Type.indexOf('Workspace') > -1 ? <AllInboxOutlined style={options.style} /> : null,
+      (item.Type && item.Type.indexOf('Workspace') > -1) || item.Icon === 'Box' ? (
+        <AllInboxOutlined style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
