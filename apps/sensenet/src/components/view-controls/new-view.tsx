@@ -7,12 +7,15 @@ import { createStyles, makeStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import clsx from 'clsx'
-import React, { createElement, ReactElement, useState } from 'react'
+import React, { createElement, ReactElement, useCallback, useState } from 'react'
 import MediaQuery from 'react-responsive'
 import { useHistory, useRouteMatch } from 'react-router-dom'
+import { PATHS } from '../../application-paths'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { navigateToAction } from '../../services'
+import { defaultContentType } from '../edit/default-content-type'
+import { NewTextFile } from '../edit/new-text-file'
 import { reactControlMapper } from '../react-control-mapper'
 import { ViewTitle } from './view-title'
 
@@ -129,6 +132,41 @@ export const NewView: React.FC<NewViewProps> = (props) => {
       field.fieldSettings.Name === 'Avatar' ||
       field.fieldSettings.Name === 'Enabled' ||
       field.fieldSettings.Type === 'LongTextFieldSetting'
+    )
+  }
+
+  const loadDefaultContentType = useCallback(async () => {
+    return defaultContentType
+  }, [])
+
+  if (props.contentTypeName === 'ContentType') {
+    return (
+      <NewTextFile
+        contentTypeName={props.contentTypeName}
+        routeMatch={routeMatch}
+        savePath={PATHS.contentTypes.snPath}
+        loadContent={loadDefaultContentType}
+        getFileNameFromText={(text) => text.match(/<ContentType.*name="([^"]*)".*>/m)?.[1] || ''}
+      />
+    )
+  } else if (props.contentTypeName === 'Resource') {
+    return (
+      <NewTextFile
+        contentTypeName={props.contentTypeName}
+        routeMatch={routeMatch}
+        savePath={PATHS.localization.snPath}
+        isFileNameEditable={true}
+      />
+    )
+  } else if (props.contentTypeName === 'Settings') {
+    return (
+      <NewTextFile
+        contentTypeName={props.contentTypeName}
+        routeMatch={routeMatch}
+        savePath={PATHS.setup.snPath}
+        defaultFileName={'.settings'}
+        isFileNameEditable={true}
+      />
     )
   }
 
