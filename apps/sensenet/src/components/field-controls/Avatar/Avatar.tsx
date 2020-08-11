@@ -1,4 +1,3 @@
-import { PathHelper } from '@sensenet/client-utils'
 import { changeJScriptValue } from '@sensenet/controls-react'
 import { ReferenceFieldSetting, User } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
@@ -77,16 +76,32 @@ export const Avatar: React.FunctionComponent<ReactClientFieldSetting<ReferenceFi
     }
 
     try {
-      await repo.upload.file({
+      const previousAvatarPath = props.content?.Avatar?.Url!
+      //Upload the actual avatar file under the User content
+      const response = await repo.upload.file({
         file: files[files.length - 1],
-        parentPath: PathHelper.getParentPath(props.content?.Path || ''),
-        fileName: props.content?.Name || '',
+        parentPath: props.content?.Path!,
+        fileName: files[files.length - 1].name,
         overwrite: true,
-        binaryPropertyName: 'ImageData',
+        binaryPropertyName: 'Binary',
         progressObservable: progressObservable.current,
       })
+      //Replace the ImageRef field of the user with the new avatar
+      await repo.patch<User>({
+        idOrPath: props.content?.Id!,
+        content: {
+          ImageRef: response.Id,
+        },
+      })
+      //Remove the previous avatar image from the User
+      if (props.content?.Avatar?.Url && !props.content?.Avatar?.Url.startsWith('/binaryhandler')) {
+        await repo.delete({
+          idOrPath: previousAvatarPath,
+          permanent: true,
+        })
+      }
     } catch (error) {
-      logger.error({ message: 'Upload failed', data: error })
+      logger.error({ message: 'Something went wrong', data: error })
     }
   }
 
