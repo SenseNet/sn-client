@@ -3,9 +3,11 @@ import { Injector, LogLevel, PathHelper, tuple } from '@sensenet/client-utils'
 import { File, GenericContent, User } from '@sensenet/default-content-types'
 import { useInjector, useRepository } from '@sensenet/hooks-react'
 import {
+  AddAlert,
   AllInboxOutlined,
   AssignmentOutlined,
   BallotOutlined,
+  Block,
   BugReport,
   CalendarTodayOutlined,
   CodeOutlined,
@@ -15,10 +17,13 @@ import {
   DomainOutlined,
   ErrorOutlined,
   EventOutlined,
+  FiberNew,
   Folder,
+  FolderSpecial,
   FormatPaintOutlined,
   GridOnOutlined,
   GroupOutlined,
+  HourglassEmpty,
   Info,
   InsertDriveFileOutlined,
   LanguageOutlined,
@@ -27,15 +32,21 @@ import {
   ListAlt,
   ListAltOutlined,
   LocationCity,
+  LockOpen,
+  MoneyOff,
   PersonOutlined,
   PhotoLibrary,
   PhotoOutlined,
   PictureAsPdfOutlined,
   PresentToAllOutlined,
   PublicOutlined,
+  Receipt,
   SearchOutlined,
   SettingsOutlined,
   TextFormat,
+  TrendingDown,
+  Update,
+  VisibilityOff,
   Warning,
   WebAssetOutlined,
   Widgets,
@@ -103,14 +114,19 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
   {
     get: (item, options) =>
-      item.Type === ('Folder' || 'SystemFolder' || 'SmartFolder') ||
-      item.Icon === ('Folder' || 'SystemFolder' || 'SmartFolder') ? (
+      item.Type === ('Folder' || 'SystemFolder') || item.Icon === ('Folder' || 'SystemFolder') ? (
         <Folder style={options.style} />
       ) : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'TrashBin' || item.Icon === 'TrashBin' ? <DeleteOutlined style={options.style} /> : null,
+      item.Type === 'SmartFolder' || item.Icon === 'SmartFolder' ? <FolderSpecial style={options.style} /> : null,
+  },
+  {
+    get: (item, options) =>
+      item.Type === 'TrashBin' || item.Icon === 'TrashBin' || item.Icon === 'DeleteOutlined' ? (
+        <DeleteOutlined style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
@@ -224,6 +240,36 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
       item.Type === 'ContentType' || item.Icon === 'ContentType' ? <Widgets style={options.style} /> : null,
   },
   {
+    get: (item, options) => (item.Icon === 'AddAlert' ? <AddAlert style={options.style} /> : null),
+  },
+  {
+    get: (item, options) => (item.Icon === 'VisibilityOff' ? <VisibilityOff style={options.style} /> : null),
+  },
+  {
+    get: (item, options) => (item.Icon === 'MoneyOff' ? <MoneyOff style={options.style} /> : null),
+  },
+  {
+    get: (item, options) => (item.Icon === 'Update' ? <Update style={options.style} /> : null),
+  },
+  {
+    get: (item, options) => (item.Icon === 'Receipt' ? <Receipt style={options.style} /> : null),
+  },
+  {
+    get: (item, options) => (item.Icon === 'HourglassEmpty' ? <HourglassEmpty style={options.style} /> : null),
+  },
+  {
+    get: (item, options) => (item.Icon === 'FiberNew' ? <FiberNew style={options.style} /> : null),
+  },
+  {
+    get: (item, options) => (item.Icon === 'TrendingDown' ? <TrendingDown style={options.style} /> : null),
+  },
+  {
+    get: (item, options) => (item.Icon === 'Block' ? <Block style={options.style} /> : null),
+  },
+  {
+    get: (item, options) => (item.Icon === 'LockOpen' ? <LockOpen style={options.style} /> : null),
+  },
+  {
     get: (item, options) =>
       (item.Type && item.Type.indexOf('Workspace') > -1) || item.Icon === 'Box' ? (
         <AllInboxOutlined style={options.style} />
@@ -237,24 +283,35 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
 ]
 
 export const wellKnownIconNames = tuple(
+  'AddAlert',
+  'Block',
   'Folder',
   'File',
   'ImageLibrary',
   'EventList',
+  'FiberNew',
   'CalendarEvent',
+  'DeleteOutlined',
   'DocumentLibrary',
+  'HourglassEmpty',
   'LinkList',
   'Link',
+  'LockOpen',
   'MemoList',
   'Memo',
+  'MoneyOff',
+  'Receipt',
   'TaskList',
   'Task',
+  'TrendingDown',
   'User',
   'Group',
   'ContentType',
   'SystemFolder',
   'Resource',
   'OrganizationalUnit',
+  'Update',
+  'VisibilityOff',
   'Workspace',
 )
 
@@ -264,6 +321,8 @@ export const defaultSchemaResolvers: Array<IconResolver<{ ContentTypeName: typeo
       switch (item.ContentTypeName) {
         case 'Folder':
           return <Folder style={{ ...options.style }} />
+        case 'SmartFolder':
+          return <FolderSpecial style={{ ...options.style }} />
         case 'File':
           return <InsertDriveFileOutlined style={{ ...options.style }} />
         case 'ImageLibrary':
@@ -298,6 +357,28 @@ export const defaultSchemaResolvers: Array<IconResolver<{ ContentTypeName: typeo
           return <TextFormat style={options.style} />
         case 'OrganizationalUnit':
           return <GroupOutlined style={options.style} />
+        case 'AddAlert':
+          return <AddAlert style={options.style} />
+        case 'VisibilityOff':
+          return <VisibilityOff style={options.style} />
+        case 'MoneyOff':
+          return <MoneyOff style={options.style} />
+        case 'Update':
+          return <Update style={options.style} />
+        case 'Receipt':
+          return <Receipt style={options.style} />
+        case 'HourglassEmpty':
+          return <HourglassEmpty style={options.style} />
+        case 'FiberNew':
+          return <FiberNew style={options.style} />
+        case 'TrendingDown':
+          return <TrendingDown style={options.style} />
+        case 'DeleteOutlined':
+          return <DeleteOutlined style={options.style} />
+        case 'Block':
+          return <Block style={options.style} />
+        case 'LockOpen':
+          return <LockOpen style={options.style} />
         default:
           return null
       }
