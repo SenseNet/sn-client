@@ -39,11 +39,12 @@ export default function TreeWithData(props: TreeWithDataProps) {
   const logger = useLogger('tree-with-data')
 
   const prevActiveItemPath = usePreviousValue(props.activeItemPath)
+  const { onTreeLoadingChange } = props
 
   const loadCollection = useCallback(
     async (path: string, top: number, skip: number) => {
       const ac = new AbortController()
-      props.onTreeLoadingChange?.(true)
+      onTreeLoadingChange?.(true)
       setIsLoading(true)
       try {
         const result = await repo.loadCollection<GenericContent>({
@@ -67,11 +68,11 @@ export default function TreeWithData(props: TreeWithDataProps) {
           logger.warning({ message: `Couldn't load content for ${path}`, data: error })
         }
       } finally {
-        props.onTreeLoadingChange?.(false)
+        onTreeLoadingChange?.(false)
         setIsLoading(false)
       }
     },
-    [logger, repo, props.onTreeLoadingChange],
+    [logger, repo, onTreeLoadingChange],
   )
 
   useEffect(() => {
