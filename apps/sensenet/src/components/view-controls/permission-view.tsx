@@ -37,7 +37,10 @@ const useStyles = makeStyles((theme: Theme) => {
       marginTop: '30px',
     },
     title: {
-      fontSize: '16px',
+      fontSize: '20px',
+    },
+    textBolder: {
+      fontWeight: 500,
     },
     listTitle: {
       marginLeft: '16px',
@@ -76,7 +79,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
   const [permissions, setPermissions] = useState<AclResponseType | undefined>(undefined)
   const [currentContent, setCurrentContent] = useState<GenericContent | undefined>()
   const [openInheritedList, setOpenInheritedList] = useState<boolean>(false)
-  const [openSetOnThisList, setOpenSetOnThisList] = useState<boolean>(false)
+  const [openSetOnThisList, setOpenSetOnThisList] = useState<boolean>(true)
 
   useEffect(() => {
     async function getCurrentContent() {
@@ -113,7 +116,8 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
     <div className={classes.permissionEditorContainer}>
       <div className={classes.titleContainer}>
         <div className={classes.title}>
-          {localization.permissionEditor.setPermissons} {currentContent?.DisplayName}
+          {localization.permissionEditor.setPermissons}{' '}
+          <span className={classes.textBolder}>{currentContent?.DisplayName}</span>
         </div>
         <Button aria-label={localization.permissionEditor.assign} color="primary" variant="contained">
           {localization.permissionEditor.assign}
@@ -176,29 +180,35 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
           <ListItemText primary="Set on this content" className={classes.listTitle} />
         </ListItem>
         <Collapse className={classes.collapseWrapper} in={openSetOnThisList} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            {permissions?.entries
-              .filter((entry) => entry.inherited === false)
-              .map((setOnThisEntry) => {
-                return (
-                  <ListItem button key={setOnThisEntry.identity.id}>
-                    <ListItemIcon>
-                      {setOnThisEntry.identity.kind === 'group' ? (
-                        <div className={clsx(classes.iconWrapper, globalClasses.centered)}>
-                          <GroupOutlined />
-                        </div>
-                      ) : setOnThisEntry.identity.kind === 'user' && setOnThisEntry.identity.avatar ? (
-                        <Avatar
-                          src={PathHelper.joinPaths(repo.configuration.repositoryUrl, setOnThisEntry.identity.avatar)}
-                        />
-                      ) : null}
-                    </ListItemIcon>
+          {permissions?.entries.filter((entry) => entry.inherited === false).length === 0 ? (
+            <ListItem>
+              <ListItemText primary={localization.permissionEditor.noContent} />
+            </ListItem>
+          ) : (
+            <List component="div" disablePadding>
+              {permissions?.entries
+                .filter((entry) => entry.inherited === false)
+                .map((setOnThisEntry) => {
+                  return (
+                    <ListItem button key={setOnThisEntry.identity.id}>
+                      <ListItemIcon>
+                        {setOnThisEntry.identity.kind === 'group' ? (
+                          <div className={clsx(classes.iconWrapper, globalClasses.centered)}>
+                            <GroupOutlined />
+                          </div>
+                        ) : setOnThisEntry.identity.kind === 'user' && setOnThisEntry.identity.avatar ? (
+                          <Avatar
+                            src={PathHelper.joinPaths(repo.configuration.repositoryUrl, setOnThisEntry.identity.avatar)}
+                          />
+                        ) : null}
+                      </ListItemIcon>
 
-                    <ListItemText primary={setOnThisEntry.identity.displayName} />
-                  </ListItem>
-                )
-              })}
-          </List>
+                      <ListItemText primary={setOnThisEntry.identity.displayName} />
+                    </ListItem>
+                  )
+                })}
+            </List>
+          )}
         </Collapse>
       </List>
     </div>

@@ -160,6 +160,7 @@ const values: DeepPartial<typeof import('./default').default> = {
     assign: 'Új jogosultság hozzáadása',
     setPermissons: 'Jogosultságállítás a következőn: ',
     errorGetAcl: 'Hiba történt a jogosultságok lekérdezése során',
+    noContent: 'Ennek a tartalomnak nincs közvetlen jogosultság beállítása',
   },
 }
 

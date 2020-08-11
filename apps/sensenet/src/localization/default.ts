@@ -453,6 +453,7 @@ const values = {
     assign: 'Assing new permisson',
     setPermissons: 'Set permissions for ',
     errorGetAcl: 'Something went wrong during getting permissions',
+    noContent: 'There is no direct permission setting on this content',
   },
 }
 
