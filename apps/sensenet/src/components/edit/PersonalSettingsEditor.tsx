@@ -9,7 +9,7 @@ import { globals, useGlobalStyles } from '../../globalStyles'
 import { setupModel } from '../../services/MonacoModels/PersonalSettingsModel'
 import { defaultSettings, PersonalSettings } from '../../services/PersonalSettings'
 import { useDialog } from '../dialogs'
-import { TextEditor } from './TextEditor'
+import { TextEditor } from '../editor/text-editor'
 
 const editorContent: any = {
   Type: 'PersonalSettings',

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { match, useHistory } from 'react-router-dom'
 import { navigateToAction } from '../../services'
-import { NewFileTextEditor, NewFileTextEditorProps } from './NewFileTextEditor'
+import { NewFileTextEditor, NewFileTextEditorProps } from '../editor/new-file-text-editor'
 
 export type NewTextFileProps = Pick<NewFileTextEditorProps, 'savePath' | 'loadContent' | 'getFileNameFromText'> & {
   contentTypeName: string
