@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/authentication-jwt",
-  "version": "1.0.27",
+  "version": "1.0.28",
   "description": "JWT Authentication service for sensenet",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -35,17 +35,17 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@sensenet/client-core": "^3.1.0",
-    "@sensenet/client-utils": "^1.8.4",
-    "@sensenet/default-content-types": "^2.2.0",
+    "@sensenet/client-core": "^3.2.0",
+    "@sensenet/client-utils": "^1.9.0",
+    "@sensenet/default-content-types": "^2.2.1",
     "semaphore-async-await": "^1.5.1",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.1"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.3",
-    "@types/node": "^14.0.14",
-    "jest": "^26.1.0",
-    "ts-jest": "^26.1.1",
-    "typescript": "^3.9.5"
+    "@types/jest": "^26.0.9",
+    "@types/node": "^14.0.27",
+    "jest": "^26.2.2",
+    "ts-jest": "^26.1.4",
+    "typescript": "^3.9.7"
   }
 }
