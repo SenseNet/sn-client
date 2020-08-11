@@ -307,6 +307,7 @@ export const wellKnownIconNames = tuple(
   'User',
   'Group',
   'ContentType',
+  'SmartFolder',
   'SystemFolder',
   'Resource',
   'OrganizationalUnit',
