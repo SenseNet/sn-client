@@ -1,16 +1,10 @@
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { Build, Dashboard, Delete, Folder, Language, People, Public, Search, Widgets } from '@material-ui/icons'
+import { Build, Delete, Folder, Language, People, Public, Search, Widgets } from '@material-ui/icons'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { PATHS, resolvePathParams } from '../application-paths'
 import { Icon } from '../components/Icon'
 import { ResponsivePersonalSettings } from '../context'
-import { pathWithQueryParams } from '../services'
-import {
-  CustomContentDrawerItem,
-  DashboardDrawerItem,
-  DrawerItem as DrawerItemSetting,
-  QueryDrawerItem,
-} from '../services/PersonalSettings'
+import { CustomContentDrawerItem, DrawerItem as DrawerItemSetting } from '../services/PersonalSettings'
 import { useLocalization } from '.'
 
 export interface DrawerItem {
@@ -21,7 +15,7 @@ export interface DrawerItem {
   root?: string
 }
 
-type DrawerType = QueryDrawerItem | DashboardDrawerItem | CustomContentDrawerItem | DrawerItemSetting<any>
+type DrawerType = CustomContentDrawerItem | DrawerItemSetting<any>
 
 export const useDrawerItems = () => {
   const settings = useContext(ResponsivePersonalSettings)
@@ -127,8 +121,6 @@ export const useDrawerItems = () => {
           return <Build />
         case 'CustomContent':
           return item.settings?.icon ? <Icon item={{ ContentTypeName: item.settings.icon }} /> : <Folder />
-        case 'Dashboard':
-          return <Dashboard />
         default:
           return (
             <Icon item={item.settings && item.settings.icon ? { ContentTypeName: item.settings.icon } : { item }} />
@@ -167,16 +159,6 @@ export const useDrawerItems = () => {
           })
         case 'Setup':
           return resolvePathParams({ path: PATHS.setup.appPath })
-        case 'Query':
-          return pathWithQueryParams({
-            path: PATHS.search.appPath,
-            newParams: { term: item.settings?.term },
-          })
-        case 'Dashboard':
-          return resolvePathParams({
-            path: PATHS.dashboard.appPath,
-            params: { dashboardName: encodeURIComponent(item.settings?.dashboardName ?? '') },
-          })
         case 'CustomContent':
           return resolvePathParams({
             path: PATHS.custom.appPath,
