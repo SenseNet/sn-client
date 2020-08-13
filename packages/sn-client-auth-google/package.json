@@ -37,14 +37,14 @@
   "dependencies": {
     "@sensenet/authentication-jwt": "^1.0.28",
     "@sensenet/client-utils": "^1.9.0",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.1"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.3",
+    "@types/jest": "^26.0.9",
     "@types/jsdom": "^16.2.3",
-    "jest": "^26.1.0",
-    "jsdom": "16.2.2",
-    "ts-jest": "^26.1.1",
-    "typescript": "^3.9.5"
+    "jest": "^26.2.2",
+    "jsdom": "16.3.0",
+    "ts-jest": "^26.1.4",
+    "typescript": "^3.9.7"
   }
 }
