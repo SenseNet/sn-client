@@ -151,7 +151,7 @@ const values = {
     usage: 'Current usage',
     Users: 'Users',
     Content: 'Content',
-    StorageSpace: 'StorageSpace',
+    StorageSpace: 'Storage space',
     used: (current: string | number, limit: string | number) => `${current} of ${limit} used`,
     yourProject: 'Your project',
     getStarted: 'Get started with your new project.',
