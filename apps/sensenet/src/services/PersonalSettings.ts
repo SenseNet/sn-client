@@ -19,7 +19,7 @@ export interface UiSettings {
   }
 }
 
-export const CustomDrawerItemType = 'CustomContent'
+export const CustomDrawerItemType = tuple('CustomContent')
 
 export const BuiltInDrawerItemType = tuple(
   'Content',
