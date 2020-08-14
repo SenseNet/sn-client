@@ -1,10 +1,11 @@
+import { ODataResponse } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
 import { Created } from '@sensenet/repository-events'
 import React, { useCallback, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
-import { useSelectionService } from '../../hooks'
+import { usePreviousValue, useSelectionService } from '../../hooks'
 import { ItemType, Tree } from './tree'
 
 type TreeWithDataProps = {
@@ -37,10 +38,13 @@ export default function TreeWithData(props: TreeWithDataProps) {
   const eventHub = useRepositoryEvents()
   const logger = useLogger('tree-with-data')
 
+  const prevActiveItemPath = usePreviousValue(props.activeItemPath)
+  const { onTreeLoadingChange } = props
+
   const loadCollection = useCallback(
     async (path: string, top: number, skip: number) => {
       const ac = new AbortController()
-      props.onTreeLoadingChange && props.onTreeLoadingChange(true)
+      onTreeLoadingChange?.(true)
       setIsLoading(true)
       try {
         const result = await repo.loadCollection<GenericContent>({
@@ -58,37 +62,69 @@ export default function TreeWithData(props: TreeWithDataProps) {
             ],
           },
         })
-        props.onTreeLoadingChange && props.onTreeLoadingChange(false)
-        setIsLoading(false)
         return result
       } catch (error) {
         if (!ac.signal.aborted) {
           logger.warning({ message: `Couldn't load content for ${path}`, data: error })
         }
-        props.onTreeLoadingChange && props.onTreeLoadingChange(false)
+      } finally {
+        onTreeLoadingChange?.(false)
         setIsLoading(false)
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [logger, repo],
+    [logger, repo, onTreeLoadingChange],
   )
 
-  const loadRoot = useCallback(async () => {
-    const root = await repo.load({ idOrPath: props.parentPath })
-    const result = await loadCollection(props.parentPath, ITEM_THRESHOLD, 0)
-
-    if (!result) {
-      logger.debug({ message: `loadCollection failed to load from ${props.parentPath}` })
-      return
+  useEffect(() => {
+    if (prevActiveItemPath && prevActiveItemPath !== props.activeItemPath) {
+      walkTree(treeData!, async (node: ItemType) => {
+        if (node.Path === props.activeItemPath || PathHelper.isAncestorOf(node.Path, props.activeItemPath)) {
+          if (!node.expanded && !node.children?.length) {
+            const children = await loadCollection(node.Path, ITEM_THRESHOLD, 0)
+            if (children) {
+              node.children = children.d.results
+              node.hasNextPage = children.d.__count > node.children.length
+            }
+          }
+          node.expanded = true
+          setTreeData({ ...treeData! })
+        }
+      })
     }
-    setItemCount(result.d.__count)
-    setTreeData({
-      ...root.d,
-      children: result.d.results,
-      hasNextPage: result.d.__count > result.d.results.length,
-      expanded: true,
+  }, [props.activeItemPath, loadCollection, treeData, prevActiveItemPath])
+
+  const openTree = useCallback(async () => {
+    if (treeData && treeData.Path === props.parentPath) return
+
+    const buildTree = (items: GenericContent[], id?: number): any => {
+      if (!id) {
+        return { ...items[0], children: buildTree(items, items[0].Id), hasNextPage: false, expanded: true }
+      }
+
+      return items
+        .filter((item) => item.ParentId === id)
+        .map((item) => ({
+          ...item,
+          children: buildTree(items, item.Id),
+          hasNextPage: false,
+          expanded: items.some((treeNode) => treeNode.ParentId === item.Id) || props.activeItemPath === item.Path,
+        }))
+    }
+
+    const treeResponse = await repo.executeAction<any, ODataResponse<{ results: GenericContent[] }>>({
+      idOrPath: props.activeItemPath,
+      name: 'OpenTree',
+      method: 'GET',
+      body: {
+        rootPath: props.parentPath,
+        withSystem: true,
+      },
     })
-  }, [loadCollection, logger, props.parentPath, repo])
+
+    const tree = buildTree(treeResponse.d.results)
+    setItemCount(tree.children.length)
+    setTreeData(tree)
+  }, [props.activeItemPath, props.parentPath, repo, treeData])
 
   const loadMoreItems = useCallback(
     async (startIndex: number, path = props.parentPath) => {
@@ -134,7 +170,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
       // we need to reset the lastRequest object so we can make the same request again to get updated data
       lastRequest = undefined
       if ((c.content as GenericContent).ParentId === treeData?.Id) {
-        loadRoot()
+        openTree()
       } else {
         walkTree(treeData!, async (node) => {
           if ((c.content as GenericContent).ParentId === node.Id) {
@@ -179,14 +215,14 @@ export default function TreeWithData(props: TreeWithDataProps) {
     eventHub.onContentCopied,
     eventHub.onContentMoved,
     eventHub.onContentModified,
-    loadRoot,
+    openTree,
     loadCollection,
     logger,
   ])
 
   useEffect(() => {
-    loadRoot()
-  }, [loadRoot])
+    openTree()
+  }, [openTree])
 
   const onItemClick = async (item: ItemType) => {
     if (!treeData) {

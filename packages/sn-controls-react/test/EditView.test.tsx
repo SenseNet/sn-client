@@ -4,6 +4,7 @@ import { shallow } from 'enzyme'
 import React from 'react'
 import {
   AllowedChildTypes,
+  AutoComplete,
   Avatar,
   BooleanComponent,
   CheckboxGroup,
@@ -19,7 +20,6 @@ import {
   ReferenceGrid,
   RichTextEditor,
   ShortText,
-  TagsInput,
   Textarea,
 } from '../src/fieldcontrols'
 import { EditView } from '../src/viewcontrols'
@@ -48,7 +48,7 @@ describe('Edit view component', () => {
   it('should render all components', () => {
     const wrapper = shallow(<EditView repository={testRepository} content={testFile} contentTypeName={testFile.Type} />)
     expect(wrapper.find(FileName)).toHaveLength(1)
-    expect(wrapper.find(TagsInput)).toHaveLength(1)
+    expect(wrapper.find(AutoComplete)).toHaveLength(1)
     expect(wrapper.find(ReferenceGrid)).toHaveLength(1)
     expect(wrapper.find(Name)).toHaveLength(1)
     expect(wrapper.find(ShortText)).toHaveLength(2)

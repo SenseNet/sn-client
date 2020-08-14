@@ -10,6 +10,7 @@ import {
   DeleteContentDialogProps,
   ErrorReportProps,
   ExecuteActionDialogProps,
+  ReferenceContentListProps,
   SaveQueryProps,
   UploadDialogProps,
 } from '.'
@@ -27,7 +28,8 @@ export type DialogWithProps = (
   | { name: 'custom-action-result'; props: CustomActionResultDialogProps }
   | { name: 'logout' }
   | { name: 'save-query'; props: SaveQueryProps }
-) & { dialogProps?: DialogProps }
+  | { name: 'reference-content-list'; props: ReferenceContentListProps }
+) & { dialogProps?: Partial<DialogProps> }
 
 type Action = { type: 'PUSH_DIALOG'; dialog: DialogWithProps } | { type: 'POP_DIALOG' } | { type: 'CLOSE_ALL_DIALOGS' }
 

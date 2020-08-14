@@ -136,7 +136,7 @@ const Setup = () => {
   }
 
   return (
-    <div className={globalClasses.contentWrapper}>
+    <div className={globalClasses.contentWrapper} style={{ paddingLeft: 0 }}>
       <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)} style={{ display: 'grid' }}>
         <span style={{ fontSize: '20px' }}>{localizationDrawerTitles.Setup}</span>
       </div>
