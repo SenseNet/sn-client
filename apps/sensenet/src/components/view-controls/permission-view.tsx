@@ -126,7 +126,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
       <List component="nav">
         <ListItem button onClick={() => setOpenInheritedList(!openInheritedList)}>
           {openInheritedList ? <ExpandLess /> : <ExpandMore />}
-          <ListItemText primary="Inherited from ancestor" className={classes.listTitle} />
+          <ListItemText primary={localization.permissionEditor.inherited} className={classes.listTitle} />
         </ListItem>
         <Collapse className={classes.collapseWrapper} in={openInheritedList} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
@@ -177,7 +177,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
         </Collapse>
         <ListItem button onClick={() => setOpenSetOnThisList(!openSetOnThisList)}>
           {openSetOnThisList ? <ExpandLess /> : <ExpandMore />}
-          <ListItemText primary="Set on this content" className={classes.listTitle} />
+          <ListItemText primary={localization.permissionEditor.setOnThis} className={classes.listTitle} />
         </ListItem>
         <Collapse className={classes.collapseWrapper} in={openSetOnThisList} timeout="auto" unmountOnExit>
           {permissions?.entries.filter((entry) => entry.inherited === false).length === 0 ? (
