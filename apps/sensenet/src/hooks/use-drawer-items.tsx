@@ -121,10 +121,7 @@ export const useDrawerItems = () => {
           return <Build />
         case 'CustomContent':
           return item.settings?.icon ? <Icon item={{ ContentTypeName: item.settings.icon }} /> : <Folder />
-        default:
-          return (
-            <Icon item={item.settings && item.settings.icon ? { ContentTypeName: item.settings.icon } : { item }} />
-          )
+        // no default
       }
     }
 

@@ -103,7 +103,7 @@ export const defaultSettings: PersonalSettingsType = {
       type: 'mini-variant',
       items: [
         {
-          itemType: CustomDrawerItemType,
+          itemType: CustomDrawerItemType[0],
           settings: {
             root: '/Root',
             appPath: 'root',
