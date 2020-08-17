@@ -1,22 +1,18 @@
 import { changeJScriptValue } from '@sensenet/controls-react'
 import { ReferenceFieldSetting, User } from '@sensenet/default-content-types'
-import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 import List from '@material-ui/core/List'
-import Typography from '@material-ui/core/Typography'
-import React, { Component } from 'react'
-import { LocalizationContext } from '../../../context'
+import React from 'react'
+import { FileWithFullPath, useDialog } from '../../dialogs'
 import { ReactClientFieldSetting } from '../ClientFieldSetting'
 import { renderIconDefault } from '../icon'
-import { AvatarPicker } from './AvatarPicker'
 import { DefaultAvatarTemplate } from './DefaultAvatarTemplate'
 
-const styles = ({ palette }: Theme) =>
-  createStyles({
+const useStyles = makeStyles((theme: Theme) => {
+  return createStyles({
     root: {
       display: 'flex',
       flexWrap: 'wrap',
@@ -25,7 +21,7 @@ const styles = ({ palette }: Theme) =>
       padding: 20,
       minWidth: 250,
       '& .MuiDialogActions-root': {
-        backgroundColor: palette.type === 'light' ? '#FFFFFF' : '#121212',
+        backgroundColor: theme.palette.type === 'light' ? '#FFFFFF' : '#121212',
       },
     },
     listContainer: {
@@ -48,166 +44,105 @@ const styles = ({ palette }: Theme) =>
       border: '2px solid #505050',
     },
   })
+})
 
-const DEFAULT_AVATAR_PATH = '/Root/Sites/Default_Site/demoavatars/Admin.png'
+export const Avatar: React.FunctionComponent<ReactClientFieldSetting<ReferenceFieldSetting, User>> = (props) => {
+  const classes = useStyles()
 
-/**
- * Interface for Avatar state
- */
-export interface AvatarState {
-  fieldValue: any
-  pickerIsOpen: boolean
-  selected?: User
-}
+  const repo = useRepository()
+  const logger = useLogger('Avatar')
+  const { openDialog } = useDialog()
 
-class AvatarComponent extends Component<
-  ReactClientFieldSetting<ReferenceFieldSetting, User> & WithStyles<typeof styles>,
-  AvatarState
-> {
-  state: AvatarState = {
-    fieldValue:
-      (this.props.fieldValue && (this.props.fieldValue as any).Url) ||
-      changeJScriptValue(this.props.settings.DefaultValue) ||
-      '',
-    pickerIsOpen: false,
-    selected: undefined,
-  }
+  const [fieldValue] = React.useState(
+    (props.fieldValue && (props.fieldValue as any).Url) || changeJScriptValue(props.settings.DefaultValue) || '',
+  )
 
-  /**
-   * Removes the item and clears the field value
-   */
-  public removeItem = () => {
-    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, DEFAULT_AVATAR_PATH)
-    this.setState({
-      fieldValue: '',
-    })
-    this.handleDialogClose()
-  }
-
-  public handleDialogClose = () => {
-    this.setState({
-      pickerIsOpen: false,
+  const addItem = () => {
+    openDialog({
+      name: 'upload',
+      props: {
+        uploadPath: props.content?.Path || '',
+        disableMultiUpload: true,
+        customUploadFunction: (files: FileWithFullPath[] | undefined, progressObservable: any) =>
+          uploadAvatar(files, progressObservable),
+      },
+      dialogProps: { open: true, fullScreen: false },
     })
   }
 
-  public handleCancelClick = () => {
-    this.setState({
-      selected: undefined,
-    })
-    this.handleDialogClose()
-  }
+  const uploadAvatar = async (files: FileWithFullPath[] | undefined, progressObservable: { current: any }) => {
+    if (!files) {
+      return
+    }
 
-  public handleOkClick = () => {
-    const content = this.state.selected
-    if (content && content.Path && this.state.fieldValue !== content.Path) {
-      this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, content.Path)
-
-      this.setState({
-        fieldValue: content.Path,
-        selected: undefined,
+    try {
+      const previousAvatarPath = props.content?.Avatar?.Url!
+      //Upload the actual avatar file under the User content
+      const response = await repo.upload.file({
+        file: files[files.length - 1],
+        parentPath: props.content?.Path!,
+        fileName: files[files.length - 1].name,
+        overwrite: true,
+        binaryPropertyName: 'Binary',
+        progressObservable: progressObservable.current,
       })
+      //Replace the ImageRef field of the user with the new avatar
+      await repo.patch<User>({
+        idOrPath: props.content?.Id!,
+        content: {
+          ImageRef: response.Id,
+        },
+      })
+      //Remove the previous avatar image from the User
+      if (props.content?.Avatar?.Url && !props.content?.Avatar?.Url.startsWith('/binaryhandler')) {
+        await repo.delete({
+          idOrPath: previousAvatarPath,
+          permanent: true,
+        })
+      }
+    } catch (error) {
+      logger.error({ message: 'Something went wrong', data: error })
     }
-    this.handleDialogClose()
   }
 
-  public selectItem = (content: User) => {
-    this.setState({
-      selected: content,
-    })
-  }
-  /**
-   * Opens a picker to choose an item
-   */
-  public addItem = () => {
-    this.setState({
-      pickerIsOpen: true,
-    })
-  }
-
-  public render() {
-    switch (this.props.actionName) {
-      case 'new':
-      case 'edit':
-        return (
-          <LocalizationContext.Consumer>
-            {(localization) => (
-              <FormControl
-                className={this.props.classes.root}
-                key={this.props.settings.Name}
-                component={'fieldset' as 'div'}
-                required={this.props.settings.Compulsory}>
-                <List dense={true} className={this.props.classes.listContainer}>
-                  <DefaultAvatarTemplate
-                    repositoryUrl={this.props.repository && this.props.repository.configuration.repositoryUrl}
-                    add={this.addItem}
-                    actionName={this.props.actionName}
-                    readOnly={this.props.settings.ReadOnly}
-                    url={this.state.fieldValue}
-                    renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}
-                  />
-                </List>
-
-                <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen}>
-                  <div className={this.props.classes.dialog}>
-                    <Typography variant="h5" gutterBottom={true}>
-                      {localization.values.forms.avatarPicker}
-                    </Typography>
-                    <AvatarPicker
-                      path={
-                        this.props.uploadFolderPath ||
-                        (this.props.settings.SelectionRoots && this.props.settings.SelectionRoots[0]) ||
-                        this.state.fieldValue.substring(0, this.state.fieldValue.lastIndexOf('/')) ||
-                        ''
-                      }
-                      repository={this.props.repository!}
-                      select={this.selectItem}
-                      renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}
-                      remove={this.removeItem}
-                    />
-                    <DialogActions>
-                      <Button
-                        aria-label={localization.values.forms.cancel}
-                        onClick={this.handleCancelClick}
-                        color="default"
-                        className={this.props.classes.cancelButton}>
-                        {localization.values.forms.cancel}
-                      </Button>
-                      <Button
-                        aria-label={localization.values.forms.ok}
-                        variant="contained"
-                        onClick={this.handleOkClick}
-                        color="primary">
-                        {localization.values.forms.ok}
-                      </Button>
-                    </DialogActions>
-                  </div>
-                </Dialog>
-              </FormControl>
-            )}
-          </LocalizationContext.Consumer>
-        )
-      case 'browse':
-      default:
-        return this.props.fieldValue ? (
-          <div className={this.props.classes.centeredVertical}>
-            <List dense={true} className={this.props.classes.listContainer}>
-              <DefaultAvatarTemplate
-                repositoryUrl={this.props.repository && this.props.repository.configuration.repositoryUrl}
-                url={(this.props.fieldValue as any).Url}
-                actionName="browse"
-                renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}
-              />
-            </List>
-            <InputLabel shrink={true} htmlFor={this.props.settings.Name} style={{ paddingTop: '9px' }}>
-              {this.props.settings.DisplayName}
-            </InputLabel>
-          </div>
-        ) : (
-          <InputLabel shrink={true} htmlFor={this.props.settings.Name} style={{ paddingTop: '9px' }}>
-            {this.props.settings.DisplayName}
+  return (
+    <>
+      {props.actionName === 'new' || props.actionName === 'edit' ? (
+        <FormControl
+          className={classes.root}
+          key={props.settings.Name}
+          component={'fieldset' as 'div'}
+          required={props.settings.Compulsory}>
+          <List dense={true} className={classes.listContainer}>
+            <DefaultAvatarTemplate
+              repositoryUrl={props.repository && props.repository.configuration.repositoryUrl}
+              add={() => addItem()}
+              actionName={props.actionName}
+              readOnly={props.settings.ReadOnly}
+              url={fieldValue}
+              renderIcon={props.renderIcon ? props.renderIcon : renderIconDefault}
+            />
+          </List>
+        </FormControl>
+      ) : props.fieldValue ? (
+        <div className={classes.centeredVertical}>
+          <List dense={true} className={classes.listContainer}>
+            <DefaultAvatarTemplate
+              repositoryUrl={props.repository && props.repository.configuration.repositoryUrl}
+              url={(props.fieldValue as any).Url}
+              actionName="browse"
+              renderIcon={props.renderIcon ? props.renderIcon : renderIconDefault}
+            />
+          </List>
+          <InputLabel shrink={true} htmlFor={props.settings.Name} style={{ paddingTop: '9px' }}>
+            {props.settings.DisplayName}
           </InputLabel>
-        )
-    }
-  }
+        </div>
+      ) : (
+        <InputLabel shrink={true} htmlFor={props.settings.Name} style={{ paddingTop: '9px' }}>
+          {props.settings.DisplayName}
+        </InputLabel>
+      )}
+    </>
+  )
 }
-export const Avatar = withStyles(styles)(AvatarComponent)

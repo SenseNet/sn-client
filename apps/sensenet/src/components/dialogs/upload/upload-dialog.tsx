@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize: '4rem',
     },
     grid: {
-      height: '85vh',
+      height: '65vh',
       border: 'dashed',
       borderColor: theme.palette.grey[500],
       marginBottom: theme.spacing(2),
@@ -51,6 +51,8 @@ const useStyles = makeStyles((theme: Theme) =>
 export type UploadDialogProps = {
   files?: File[]
   uploadPath: string
+  disableMultiUpload?: boolean
+  customUploadFunction?: (files: FileWithFullPath[] | undefined, progressObservable: any) => any
 }
 
 export function UploadDialog(props: UploadDialogProps) {
@@ -164,6 +166,17 @@ export function UploadDialog(props: UploadDialogProps) {
     }
   }
 
+  const customUpload = async () => {
+    setIsUploadInProgress(true)
+    try {
+      await props.customUploadFunction?.(files, progressObservable)
+    } catch (error) {
+      logger.error({ message: 'Upload failed', data: error })
+    } finally {
+      setIsUploadInProgress(false)
+    }
+  }
+
   return (
     <>
       <DialogTitle disableTypography>
@@ -214,7 +227,9 @@ export function UploadDialog(props: UploadDialogProps) {
               color="primary"
               disabled={isUploadInProgress}
               variant="contained"
-              onClick={() => upload()}>
+              onClick={() => {
+                props.customUploadFunction ? customUpload() : upload()
+              }}>
               {localization.uploadButton}
             </Button>
           )}
@@ -225,9 +240,10 @@ export function UploadDialog(props: UploadDialogProps) {
           ev.target.files && addFiles([...ev.target.files])
         }}
         style={{ display: 'none' }}
+        disabled={props.disableMultiUpload && files && files.length > 0}
         ref={inputFile}
         type="file"
-        multiple={true}
+        multiple={!props.disableMultiUpload}
       />
       <Prompt when={isUploadInProgress} message={localization.blockNavigation} />
     </>
