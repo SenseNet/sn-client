@@ -25,11 +25,13 @@ const defaultDocumentData: DocumentData = {
 export interface DocumentDataContextType {
   documentData: DocumentData
   updateDocumentData: (data: DeepPartial<DocumentData>) => void
+  isInProgress: boolean
 }
 
 export const defaultDocumentDataContextValue: DocumentDataContextType = {
   documentData: defaultDocumentData,
   updateDocumentData: () => undefined,
+  isInProgress: false,
 }
 
 export const DocumentDataContext = React.createContext<DocumentDataContextType>(defaultDocumentDataContextValue)
@@ -41,39 +43,39 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
 
   const [documentData, setDocumentData] = useState<DocumentData>(defaultDocumentData)
   const [loadLock] = useState(new Semaphore(1))
+  const [isInProgress, setIsInProgress] = useState(false)
 
   useEffect(() => {
     const ac = new AbortController()
-    if (documentData.idOrPath && doc.documentIdOrPath !== documentData.idOrPath) {
-      setDocumentData(defaultDocumentData)
-    } else {
-      ;(async () => {
-        try {
-          await loadLock.acquire()
-          while (documentData.pageCount === PreviewState.Loading && !ac.signal.aborted) {
-            const result = await api.getDocumentData({
-              hostName: repo.configuration.repositoryUrl,
-              idOrPath: doc.documentIdOrPath,
-              version: doc.version,
-              abortController: ac,
-            })
-            setDocumentData(result)
-            if (result.pageCount === PreviewState.Loading) {
-              await sleepAsync(4000)
-            } else {
-              break
-            }
+    ;(async () => {
+      try {
+        setIsInProgress(true)
+        await loadLock.acquire()
+        while (documentData.pageCount === PreviewState.Loading && !ac.signal.aborted) {
+          const result = await api.getDocumentData({
+            hostName: repo.configuration.repositoryUrl,
+            idOrPath: doc.documentIdOrPath,
+            version: doc.version,
+            abortController: ac,
+          })
+          setDocumentData(result)
+          if (result.pageCount === PreviewState.Loading) {
+            await sleepAsync(4000)
+          } else {
+            break
           }
-        } catch (error) {
-          if (!ac.signal.aborted) {
-            setDocumentData({ ...defaultDocumentData, pageCount: PreviewState.ClientFailure, error: error.toString() })
-            throw error
-          }
-        } finally {
-          loadLock.release()
         }
-      })()
-    }
+      } catch (error) {
+        if (!ac.signal.aborted) {
+          setDocumentData({ ...defaultDocumentData, pageCount: PreviewState.ClientFailure, error: error.toString() })
+          throw error
+        }
+      } finally {
+        setIsInProgress(false)
+        loadLock.release()
+      }
+    })()
+
     return () => ac.abort()
   }, [
     api,
@@ -90,7 +92,9 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
       const merged = deepMerge(documentData, newDocData)
       if (JSON.stringify(documentData) !== JSON.stringify(merged)) {
         try {
+          setIsInProgress(true)
           await loadLock.acquire()
+
           setDocumentData(merged)
         } finally {
           loadLock.release()
@@ -105,6 +109,8 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
   }
 
   return (
-    <DocumentDataContext.Provider value={{ documentData, updateDocumentData }}>{children}</DocumentDataContext.Provider>
+    <DocumentDataContext.Provider value={{ documentData, updateDocumentData, isInProgress }}>
+      {children}
+    </DocumentDataContext.Provider>
   )
 }
