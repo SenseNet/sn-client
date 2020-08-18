@@ -449,6 +449,18 @@ const values = {
   contentList: {
     errorContentModification: 'There was an error during content modification',
   },
+  restore: {
+    description: (contentName: string) =>
+      `You are about to restore <strong>${contentName}</strong> from the Trash to the following destination:`,
+    selectTarget: 'Select target',
+    title: 'Restore',
+    cancel: 'Cancel',
+  },
+  contentPickerDialog: {
+    title: 'Select a target',
+    cancelButton: 'Cancel',
+    selectButton: 'Select',
+  },
 }
 
 export default values

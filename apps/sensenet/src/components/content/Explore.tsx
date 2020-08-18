@@ -60,6 +60,7 @@ export type ExploreProps = {
   onNavigate: (content: GenericContent) => void
   fieldsToDisplay?: Array<keyof GenericContent>
   schema?: string
+  loadTreeSettings?: ODataParams<GenericContent>
   loadChildrenSettings?: ODataParams<GenericContent>
   renderBeforeGrid?: () => JSX.Element
   hasTree?: boolean
@@ -72,6 +73,7 @@ export function Explore({
   fieldsToDisplay,
   schema,
   loadChildrenSettings,
+  loadTreeSettings,
   renderBeforeGrid,
   hasTree = true,
 }: ExploreProps) {
@@ -174,6 +176,7 @@ export function Explore({
                   parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
                   activeItemPath={currentPath}
                   onTreeLoadingChange={onTreeLoadingChange}
+                  loadSettings={loadTreeSettings}
                 />
               )}
               <div className={classes.exploreContainer}>{renderContent()}</div>

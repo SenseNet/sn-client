@@ -1,4 +1,4 @@
-import { ODataResponse } from '@sensenet/client-core'
+import { ODataParams, ODataResponse } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
@@ -12,6 +12,7 @@ type TreeWithDataProps = {
   onItemClick: (item: GenericContent) => void
   parentPath: string
   activeItemPath: string
+  loadSettings?: ODataParams<GenericContent>
   onTreeLoadingChange?: (isLoading: boolean) => void
 }
 
@@ -115,6 +116,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
       idOrPath: props.activeItemPath,
       name: 'OpenTree',
       method: 'GET',
+      oDataOptions: props.loadSettings,
       body: {
         rootPath: props.parentPath,
         withSystem: true,
@@ -124,7 +126,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
     const tree = buildTree(treeResponse.d.results)
     setItemCount(tree.children.length)
     setTreeData(tree)
-  }, [props.activeItemPath, props.parentPath, repo, treeData])
+  }, [props.activeItemPath, props.parentPath, repo, treeData, props.loadSettings])
 
   const loadMoreItems = useCallback(
     async (startIndex: number, path = props.parentPath) => {
