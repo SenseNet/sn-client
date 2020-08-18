@@ -1,3 +1,4 @@
+import { AclResponseModel } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
@@ -24,7 +25,6 @@ import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { getUrlForContent } from '../../services'
-import { AclResponseType } from './permission-types'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -76,7 +76,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
   const history = useHistory()
   const logger = useLogger('PermissionEditor')
   const uiSettings = useContext(ResponsivePersonalSettings)
-  const [permissions, setPermissions] = useState<AclResponseType | undefined>(undefined)
+  const [permissions, setPermissions] = useState<AclResponseModel | undefined>(undefined)
   const [currentContent, setCurrentContent] = useState<GenericContent | undefined>()
   const [openInheritedList, setOpenInheritedList] = useState<boolean>(false)
   const [openSetOnThisList, setOpenSetOnThisList] = useState<boolean>(true)
@@ -94,11 +94,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
   useEffect(() => {
     async function getAllPermissions() {
       try {
-        const result = await repo.executeAction<any, AclResponseType>({
-          idOrPath: props.contentPath,
-          name: 'GetAcl',
-          method: 'GET',
-        })
+        const result = await repo.security.getAcl(props.contentPath)
         setPermissions(result)
       } catch (error) {
         logger.error({
