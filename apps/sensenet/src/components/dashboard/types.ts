@@ -17,6 +17,7 @@ export interface DashboardSubscription {
 }
 export interface DashboardPlan {
   name: string
+  baseprice: number
   limitations: DashboardLimitations
 }
 export interface DashboardLimitations {

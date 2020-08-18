@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import React from 'react'
 import { useLocalization } from '../../hooks'
 import { DashboardLimitations } from './types'
-import { useWidgetStyles } from '.'
+import { round, useWidgetStyles } from '.'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -109,8 +109,8 @@ export const UsageWidget: React.FunctionComponent<UsageWidgetProps> = (props) =>
             />
             <div className={classes.progressCaption}>
               {localization.used(
-                numberFormatter.format(Math.round((used.storage + Number.EPSILON) * 10) / 10),
-                `${numberFormatter.format(limitations.storage)} MB`,
+                numberFormatter.format(round(used.storage / 1024)),
+                `${numberFormatter.format(round(limitations.storage / 1024))} GB`,
               )}
             </div>
           </Grid>

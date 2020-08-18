@@ -3,7 +3,7 @@ import React from 'react'
 import logo from '../../assets/sensenet-icon-32.png'
 import { useLocalization } from '../../hooks'
 import { DashboardSubscription, DashboardVersion } from './types'
-import { useWidgetStyles } from '.'
+import { round, useWidgetStyles } from '.'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -21,6 +21,7 @@ const useStyles = makeStyles(() => {
 interface SubscriptionWidgetProps {
   subscription: DashboardSubscription
   version: DashboardVersion
+  isAdmin: boolean
 }
 
 export const SubscriptionWidget: React.FunctionComponent<SubscriptionWidgetProps> = (props) => {
@@ -39,7 +40,13 @@ export const SubscriptionWidget: React.FunctionComponent<SubscriptionWidgetProps
       <Grid container justify="space-between" component={Paper} elevation={0} className={widgetClasses.container}>
         <Grid item xs={12} lg="auto" className={classes.statusBox}>
           <img src={logo} alt="logo" />
-          <div className={widgetClasses.subtitle}>{props.subscription.plan.name}</div>(Free)
+          <div className={widgetClasses.subtitle}>{props.subscription.plan.name}</div>(
+          {props.subscription.plan.baseprice !== 0
+            ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                props.subscription.plan.baseprice,
+              )
+            : localization.free}
+          )
         </Grid>
         <Grid item xs={12} lg="auto">
           <p className={widgetClasses.subtitle}>{localization.features}</p>
@@ -50,7 +57,7 @@ export const SubscriptionWidget: React.FunctionComponent<SubscriptionWidgetProps
             {numberFormatter.format(limitations.content)} {localization.content}
           </p>
           <p style={{ marginBottom: 0 }}>
-            {numberFormatter.format(limitations.storage)} {localization.storageSpace}
+            {numberFormatter.format(round(limitations.storage / 1024))} {localization.storageSpace}
           </p>
         </Grid>
         <Grid item xs={12} lg="auto">
@@ -62,16 +69,18 @@ export const SubscriptionWidget: React.FunctionComponent<SubscriptionWidgetProps
             </Link>
           </p>
         </Grid>
-        <Grid item xs={12} lg="auto">
-          <p className={widgetClasses.subtitle}>{localization.getMore}</p>
-          <div style={{ textAlign: 'center' }}>
-            <Link href="https://snaas-profile.test.sensenet.com/" target="_blank" underline="none">
-              <Button color="primary" variant="contained">
-                {localization.upgrade}
-              </Button>
-            </Link>
-          </div>
-        </Grid>
+        {props.isAdmin && (
+          <Grid item xs={12} lg="auto">
+            <p className={widgetClasses.subtitle}>{localization.getMore}</p>
+            <div style={{ textAlign: 'center' }}>
+              <Link href="https://snaas-profile.test.sensenet.com/" target="_blank" underline="none">
+                <Button color="primary" variant="contained">
+                  {localization.upgrade}
+                </Button>
+              </Link>
+            </div>
+          </Grid>
+        )}
       </Grid>
     </div>
   )
