@@ -1,9 +1,9 @@
 import { useLogger, useRepository } from '@sensenet/hooks-react'
+import { Input, InputAdornment } from '@material-ui/core'
 import { Uri } from 'monaco-editor'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useLocalization } from '../../hooks'
 import { getMonacoLanguage } from '../../services/content-context-service'
-import { ShortTextInput } from '../field-controls/ShortText'
 import { SnMonacoEditor, SnMonacoEditorProps } from './sn-monaco-editor'
 
 export type NewFileTextEditorProps = Pick<SnMonacoEditorProps, 'handleCancel'> & {
@@ -14,6 +14,7 @@ export type NewFileTextEditorProps = Pick<SnMonacoEditorProps, 'handleCancel'> &
   getFileNameFromText?: (text: string) => string
   fileName: string
   setFileName?: Dispatch<SetStateAction<string>>
+  fileNamePostfix?: string
   saveCallback?: Function
 }
 
@@ -35,7 +36,7 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
       await repo.upload.textAsFile({
         text: textValue,
         parentPath: props.savePath,
-        fileName,
+        fileName: `${fileName}${props.fileNamePostfix ?? ''}`,
         overwrite: false,
         contentTypeName: props.contentType,
         binaryPropertyName: 'Binary',
@@ -105,15 +106,20 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
       handleCancel={props.handleCancel}
       renderTitle={() =>
         props.setFileName ? (
-          <ShortTextInput
+          <Input
             required={true}
             name={props.contentType}
-            fullWidth={true}
+            // fullWidth={true}
             type="text"
             value={props.fileName}
             onChange={(ev) => {
               props.setFileName!(ev.target.value)
             }}
+            endAdornment={
+              props.fileNamePostfix ? (
+                <InputAdornment position="end">{props.fileNamePostfix}</InputAdornment>
+              ) : undefined
+            }
           />
         ) : (
           <>New {props.contentType}</>

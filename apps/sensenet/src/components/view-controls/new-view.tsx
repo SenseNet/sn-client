@@ -155,6 +155,7 @@ export const NewView: React.FC<NewViewProps> = (props) => {
         contentTypeName={props.contentTypeName}
         routeMatch={routeMatch}
         savePath={PATHS.localization.snPath}
+        fileExtension={'.xml'}
         isFileNameEditable={true}
       />
     )
@@ -164,7 +165,7 @@ export const NewView: React.FC<NewViewProps> = (props) => {
         contentTypeName={props.contentTypeName}
         routeMatch={routeMatch}
         savePath={PATHS.setup.snPath}
-        defaultFileName={'.settings'}
+        fileExtension={'.settings'}
         isFileNameEditable={true}
       />
     )

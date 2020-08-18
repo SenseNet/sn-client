@@ -6,13 +6,13 @@ import { NewFileTextEditor, NewFileTextEditorProps } from '../editor/new-file-te
 export type NewTextFileProps = Pick<NewFileTextEditorProps, 'savePath' | 'loadContent' | 'getFileNameFromText'> & {
   contentTypeName: string
   routeMatch: match<any>
-  defaultFileName?: string
+  fileExtension?: string
   isFileNameEditable?: boolean
 }
 
 export const NewTextFile: React.FunctionComponent<NewTextFileProps> = (props) => {
   const history = useHistory()
-  const [fileName, setFileName] = useState(props.defaultFileName || '')
+  const [fileName, setFileName] = useState('')
 
   return (
     <>
@@ -27,6 +27,7 @@ export const NewTextFile: React.FunctionComponent<NewTextFileProps> = (props) =>
         }}
         fileName={fileName}
         setFileName={props.isFileNameEditable ? setFileName : undefined}
+        fileNamePostfix={props.fileExtension}
         loadContent={props.loadContent}
         getFileNameFromText={props.getFileNameFromText}
       />
