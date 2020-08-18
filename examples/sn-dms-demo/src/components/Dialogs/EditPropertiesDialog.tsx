@@ -105,10 +105,13 @@ class EditPropertiesDialog extends React.Component<
                 {(repository) => (
                   <LoadableEditView
                     content={editedcontent}
+                    contentTypeName={editedcontent.Type}
                     repository={repository}
-                    onSubmit={editContent}
+                    onSubmit={(saveableFields) => {
+                      editContent(editedcontent, saveableFields)
+                      this.submitCallback()
+                    }}
                     handleCancel={() => this.handleCancel()}
-                    submitCallback={this.submitCallback}
                   />
                 )}
               </RepositoryContext.Consumer>
