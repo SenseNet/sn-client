@@ -2,9 +2,12 @@
  * @module ViewControls
  */
 import { Repository } from '@sensenet/client-core'
-import { ContentType, GenericContent } from '@sensenet/default-content-types'
+import { ActionName, ControlMapper } from '@sensenet/control-mapper'
+import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
 import React, { createElement, ReactElement, useState } from 'react'
 import MediaQuery from 'react-responsive'
 import { reactControlMapper } from '../ReactControlMapper'
@@ -13,83 +16,151 @@ import { reactControlMapper } from '../ReactControlMapper'
  * Interface for EditView properties
  */
 export interface EditViewProps {
-  content: ContentType
-  onSubmit?: (content: GenericContent, saveableFields: Partial<GenericContent>) => void
   repository: Repository
+  actionName?: ActionName
+  content?: GenericContent
+  contentTypeName: string
+  onSubmit?: (content: Partial<GenericContent>, contentTypeName?: string) => void
   renderIcon?: (name: string) => ReactElement
+  renderTitle?: () => ReactElement
   handleCancel?: () => void
-  submitCallback?: () => void
+  showTitle?: boolean
+  extension?: string
   uploadFolderpath?: string
+  localization?: {
+    cancel?: string
+    submit?: string
+  }
+  classes?: {
+    grid?: string
+    fieldWrapper?: string
+    field?: string
+    fieldFullWidth?: string
+    actionButtonWrapper?: string
+    cancel?: string
+  }
+  controlMapper?: ControlMapper<any, any>
 }
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    grid: {
+      margin: '0 auto',
+    },
+    actionButtonWrapper: {
+      textAlign: 'right',
+    },
+    cancel: {
+      marginRight: 20,
+    },
+  })
+})
 
 /**
  * View Control for editing a Content, works with a single Content and based on the ReactControlMapper
  *
  * Usage:
  * ```html
- *  <EditView content={selectedContent} onSubmit={editSubmitClick} />
+ *  <EditView content={selectedContent} contentTypeName={selectedContent.Type} onSubmit={editSubmitClick} />
  * ```
  */
 export const EditView: React.FC<EditViewProps> = (props) => {
-  const controlMapper = reactControlMapper(props.repository)
-  const schema = controlMapper.getFullSchemaForContentType(props.content.Type, 'edit')
-  const [saveableFields, setSaveableFields] = useState({})
+  const actionName = props.actionName || 'edit'
+  const controlMapper = props.controlMapper || reactControlMapper(props.repository)
+  const schema = controlMapper.getFullSchemaForContentType(props.contentTypeName, actionName)
+  const [content, setContent] = useState({})
+  const defaultClasses = useStyles()
+
+  const uniqueId = Date.now()
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    props.onSubmit?.(props.content, saveableFields as any)
-    props.submitCallback?.()
+    props.onSubmit?.(content, schema.schema.ContentTypeName)
   }
 
   const handleInputChange = (field: string, value: unknown) => {
-    setSaveableFields({ ...saveableFields, [field]: value })
+    setContent({ ...content, [field]: value })
+  }
+
+  const isFullWidthField = (field: { fieldSettings: FieldSetting }) => {
+    return (
+      (field.fieldSettings.Name === 'Avatar' && props.contentTypeName.includes('User')) ||
+      (field.fieldSettings.Name === 'Enabled' && props.contentTypeName.includes('User')) ||
+      field.fieldSettings.Type === 'LongTextFieldSetting'
+    )
   }
 
   return (
-    <form style={{ margin: '0 auto' }} onSubmit={handleSubmit}>
-      <Grid container={true} spacing={2}>
-        {schema.fieldMappings.map((field) => {
-          const fieldControl = createElement(
-            controlMapper.getControlForContentField(props.content.Type, field.fieldSettings.Name, 'edit'),
-            {
-              repository: props.repository,
-              settings: field.fieldSettings,
-              content: props.content,
-              fieldValue: (props.content as any)[field.fieldSettings.Name],
-              actionName: 'edit',
-              renderIcon: props.renderIcon,
-              fieldOnChange: handleInputChange,
-              uploadFolderPath: props.uploadFolderpath,
-            },
-          )
+    <>
+      {props.showTitle &&
+        (props.renderTitle ? (
+          props.renderTitle()
+        ) : (
+          <Typography variant="h5" gutterBottom={true}>
+            {`${actionName.charAt(0).toUpperCase()}${actionName.slice(1)} ${schema.schema.DisplayName}`}
+          </Typography>
+        ))}
+      <Grid
+        container={true}
+        component={'form'}
+        id={`edit-form-${uniqueId}`}
+        onSubmit={handleSubmit}
+        spacing={2}
+        className={props.classes?.grid || defaultClasses.grid}>
+        {schema.fieldMappings
+          .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
+          .map((field) => {
+            const fieldControl = createElement(
+              controlMapper.getControlForContentField(props.contentTypeName, field.fieldSettings.Name, actionName),
+              {
+                actionName,
+                settings: field.fieldSettings,
+                repository: props.repository,
+                content: props.content,
+                fieldValue: props.content ? (props.content as any)[field.fieldSettings.Name] : undefined, //tuti?!
+                renderIcon: props.renderIcon,
+                fieldOnChange: handleInputChange,
+                extension: props.extension,
+                uploadFolderPath: props.uploadFolderpath,
+              },
+            )
 
-          return (
-            <Grid
-              item={true}
-              xs={12}
-              sm={12}
-              md={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
-              lg={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
-              xl={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
-              key={field.fieldSettings.Name}>
-              {fieldControl}
-            </Grid>
-          )
-        })}
-        <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: 'right' }}>
-          <MediaQuery minDeviceWidth={700}>
-            <Button
-              color="default"
-              style={{ marginRight: 20 }}
-              onClick={() => props.handleCancel && props.handleCancel()}>
-              Cancel
-            </Button>
-          </MediaQuery>
-          <Button type="submit" variant="contained" color="secondary">
-            Submit
-          </Button>
-        </Grid>
+            const isFullWidth = isFullWidthField(field)
+
+            return (
+              <Grid
+                item={true}
+                xs={12}
+                sm={12}
+                md={isFullWidth ? 12 : 6}
+                lg={isFullWidth ? 12 : 6}
+                xl={isFullWidth ? 12 : 6}
+                key={field.fieldSettings.Name}
+                className={props.classes?.fieldWrapper}>
+                <div className={isFullWidth ? props.classes?.fieldFullWidth : props.classes?.field}>{fieldControl}</div>
+              </Grid>
+            )
+          })}
       </Grid>
-    </form>
+      <div className={props.classes?.actionButtonWrapper || defaultClasses.actionButtonWrapper}>
+        <MediaQuery minDeviceWidth={700}>
+          <Button
+            aria-label={props.localization?.cancel || 'Cancel'}
+            color="default"
+            className={props.classes?.cancel || defaultClasses.cancel}
+            onClick={() => props.handleCancel?.()}>
+            {props.localization?.cancel || 'Cancel'}
+          </Button>
+        </MediaQuery>
+        <Button
+          aria-label={props.localization?.submit || 'Submit'}
+          type="submit"
+          form={`edit-form-${uniqueId}`}
+          variant="contained"
+          color="primary">
+          {props.localization?.submit || 'Submit'}
+        </Button>
+      </div>
+    </>
   )
 }

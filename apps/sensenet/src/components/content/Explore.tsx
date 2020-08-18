@@ -22,8 +22,7 @@ import { DocumentViewer } from '../document-viewer'
 import { EditBinary } from '../edit/edit-binary'
 import { FullScreenLoader } from '../full-screen-loader'
 import TreeWithData from '../tree/tree-with-data'
-import { EditView, NewView, VersionView } from '../view-controls'
-import { PermissionView } from '../view-controls/permission-view'
+import { BrowseView, EditView, NewView, PermissionView, VersionView } from '../view-controls'
 import WopiPage from '../wopi-page'
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -97,11 +96,11 @@ export function Explore({
 
   const renderContent = () => {
     switch (activeAction) {
-      case 'edit':
       case 'browse':
+        return <BrowseView contentPath={`${rootPath}${activeContent}`} />
+      case 'edit':
         return (
           <EditView
-            uploadFolderpath="/Root/Content/demoavatars"
             actionName={activeAction}
             contentPath={`${rootPath}${activeContent}`}
             submitCallback={() => navigateToAction({ history, routeMatch: snRoute.match })}
@@ -113,7 +112,6 @@ export function Explore({
             <NewView
               contentTypeName={contentTypeName!}
               currentContentPath={currentPath}
-              uploadFolderpath="/Root/Content/demoavatars"
               submitCallback={() => navigateToAction({ history, routeMatch: snRoute.match })}
             />
           )
