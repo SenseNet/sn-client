@@ -25,6 +25,7 @@ import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { getUrlForContent } from '../../services'
+import { useDialog } from '../dialogs'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -76,6 +77,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
   const history = useHistory()
   const logger = useLogger('PermissionEditor')
   const uiSettings = useContext(ResponsivePersonalSettings)
+  const { openDialog } = useDialog()
   const [permissions, setPermissions] = useState<AclResponseModel | undefined>(undefined)
   const [currentContent, setCurrentContent] = useState<GenericContent | undefined>()
   const [openInheritedList, setOpenInheritedList] = useState<boolean>(false)
@@ -130,7 +132,16 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
               .filter((entry) => entry.inherited === true)
               .map((inheritedEntry) => {
                 return (
-                  <ListItem button key={inheritedEntry.identity.id}>
+                  <ListItem
+                    button
+                    key={inheritedEntry.identity.id}
+                    onClick={() =>
+                      openDialog({
+                        name: 'permission-editor',
+                        props: { entry: inheritedEntry },
+                        dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
+                      })
+                    }>
                     {inheritedEntry.identity.kind === 'group' ? (
                       <div className={clsx(classes.iconWrapper, globalClasses.centered)}>
                         <GroupOutlined />
@@ -186,7 +197,16 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                 .filter((entry) => entry.inherited === false)
                 .map((setOnThisEntry) => {
                   return (
-                    <ListItem button key={setOnThisEntry.identity.id}>
+                    <ListItem
+                      button
+                      key={setOnThisEntry.identity.id}
+                      onClick={() =>
+                        openDialog({
+                          name: 'permission-editor',
+                          props: { entry: setOnThisEntry },
+                          dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
+                        })
+                      }>
                       <ListItemIcon>
                         {setOnThisEntry.identity.kind === 'group' ? (
                           <div className={clsx(classes.iconWrapper, globalClasses.centered)}>

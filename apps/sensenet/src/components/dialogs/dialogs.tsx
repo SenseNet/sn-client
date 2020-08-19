@@ -16,6 +16,7 @@ const Logout = React.lazy(() => import('./logout'))
 const SaveQuery = React.lazy(() => import('./save-query'))
 const Upload = React.lazy(() => import('./upload/upload-dialog'))
 const ReferenceContentList = React.lazy(() => import('./reference-content-list'))
+const PermissionEditorDialog = React.lazy(() => import('./permission-editor-dialog'))
 
 function dialogRenderer(dialog: DialogWithProps) {
   switch (dialog.name) {
@@ -45,6 +46,8 @@ function dialogRenderer(dialog: DialogWithProps) {
       return <SaveQuery {...dialog.props} />
     case 'reference-content-list':
       return <ReferenceContentList {...dialog.props} />
+    case 'permission-editor':
+      return <PermissionEditorDialog {...dialog.props} />
     default:
       return null
   }

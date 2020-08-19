@@ -456,6 +456,7 @@ const values = {
     noContent: 'There is no direct permission setting on this content',
     inherited: 'Inherited from ancestor',
     setOnThis: 'Set on this content',
+    errorGetPermissionSetting: 'Something went wrong during getting permission settings',
   },
 }
 

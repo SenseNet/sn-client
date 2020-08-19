@@ -10,6 +10,7 @@ import {
   DeleteContentDialogProps,
   ErrorReportProps,
   ExecuteActionDialogProps,
+  PermissionEditorDialogProps,
   ReferenceContentListProps,
   SaveQueryProps,
   UploadDialogProps,
@@ -29,6 +30,7 @@ export type DialogWithProps = (
   | { name: 'logout' }
   | { name: 'save-query'; props: SaveQueryProps }
   | { name: 'reference-content-list'; props: ReferenceContentListProps }
+  | { name: 'permission-editor'; props: PermissionEditorDialogProps }
 ) & { dialogProps?: Partial<DialogProps> }
 
 type Action = { type: 'PUSH_DIALOG'; dialog: DialogWithProps } | { type: 'POP_DIALOG' } | { type: 'CLOSE_ALL_DIALOGS' }
