@@ -1,7 +1,6 @@
 import { Button, CircularProgress } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
-import { PreviewState } from '../Enums'
 import { useDocumentData, useDocumentViewerApi, useLocalization } from '../hooks'
 import { LayoutAppBar } from './LayoutAppBar'
 
@@ -45,8 +44,11 @@ export const DocumentViewerRegeneratePreviews: React.FC = () => {
           disabled={isRegenerating || isInProgress}
           onClick={async () => {
             setIsRegenerating(true)
-            api.regeneratePreviews({ document: documentData, abortController: new AbortController() })
-            updateDocumentData({ ...documentData, pageCount: PreviewState.Loading })
+            const result = await api.regeneratePreviews({
+              document: documentData,
+              abortController: new AbortController(),
+            })
+            updateDocumentData({ ...documentData, pageCount: result.PageCount })
           }}>
           {isRegenerating && <CircularProgress size={24} style={{ marginRight: '1em' }} />}
           {localization.regenerateButton}

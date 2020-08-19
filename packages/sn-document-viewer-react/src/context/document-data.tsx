@@ -51,7 +51,7 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
       try {
         setIsInProgress(true)
         await loadLock.acquire()
-        while (documentData.pageCount === PreviewState.Loading && !ac.signal.aborted) {
+        do {
           const result = await api.getDocumentData({
             hostName: repo.configuration.repositoryUrl,
             idOrPath: doc.documentIdOrPath,
@@ -64,7 +64,7 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
           } else {
             break
           }
-        }
+        } while (documentData.pageCount === PreviewState.Loading && !ac.signal.aborted)
       } catch (error) {
         if (!ac.signal.aborted) {
           setDocumentData({ ...defaultDocumentData, pageCount: PreviewState.ClientFailure, error: error.toString() })
