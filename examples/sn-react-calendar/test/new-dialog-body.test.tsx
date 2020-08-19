@@ -47,7 +47,7 @@ describe('NewDialogBody', () => {
       )
     })
 
-    const form = wrapper.update().find('button[type="submit"]')
+    const form = wrapper.update().find('form')
     await act(async () => {
       form.simulate('submit')
     })

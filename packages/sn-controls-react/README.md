@@ -38,11 +38,13 @@ View Controls are almost the same as the .ascx [Content Views](http://wiki.sense
 ```tsx
 import { NewView } from '@sensenet/controls-react'
 
-// content: Content | required  | empty Content Object
+// repository: Repository | required  | Repository instance
+// contentTypeName: string | required  | Type of the new content
 // onSubmit: Function | optional | called on submit event
 
 <NewView
-content={content}
+repository={repository}
+contentTypeName="Folder"
 onSubmit={() => {})} />
 ```
 
@@ -51,11 +53,15 @@ onSubmit={() => {})} />
 ```tsx
 import { EditView } from '@sensenet/controls-react'
 
+// repository: Repository | required  | Repository instance
 // content: Content | required  | empty Content Object
+// contentTypeName: string | required | Type of edited content
 // onSubmit: Function | optional | called on submit event
 
 <EditView
+repository={repository}
 content={content}
+contentTypeName={content.Type}
 onSubmit={() => {})} />
 ```
 
