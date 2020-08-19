@@ -2,8 +2,8 @@
 name: 🧪E2E test cases
 about: Add E2E test cases
 title: '🧪 [E2E test]'
-labels: test, e2e-test
-assignees: ''
+labels: test, hacktoberfest, e2e-test
+project: 'Hacktoberfest 2020'
 ---
 
 # 🧪E2E test cases
