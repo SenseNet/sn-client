@@ -54,7 +54,7 @@ export const Avatar: React.FunctionComponent<ReactClientFieldSetting<ReferenceFi
   const { openDialog } = useDialog()
 
   const [fieldValue] = React.useState(
-    (props.fieldValue && (props.fieldValue as any).Url) || changeJScriptValue(props.settings.DefaultValue) || '',
+    (props.fieldValue as any)?.Url || changeJScriptValue(props.settings.DefaultValue) || '',
   )
 
   const addItem = () => {
@@ -94,7 +94,7 @@ export const Avatar: React.FunctionComponent<ReactClientFieldSetting<ReferenceFi
         },
       })
       //Remove the previous avatar image from the User
-      if (props.content?.Avatar?.Url && !props.content?.Avatar?.Url.startsWith('/binaryhandler')) {
+      if (!props.content?.Avatar?.Url?.startsWith('/binaryhandler')) {
         await repo.delete({
           idOrPath: previousAvatarPath,
           permanent: true,

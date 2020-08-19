@@ -150,26 +150,17 @@ export function UploadDialog(props: UploadDialogProps) {
     setIsUploadInProgress(true)
 
     try {
-      await repository.upload.fromFileList({
-        parentPath: props.uploadPath,
-        fileList: files as any,
-        createFolders: true,
-        binaryPropertyName: 'Binary',
-        overwrite: false,
-        progressObservable: progressObservable.current,
-        requestInit: { signal: abortController.current.signal },
-      })
-    } catch (error) {
-      logger.error({ message: 'Upload failed', data: error })
-    } finally {
-      setIsUploadInProgress(false)
-    }
-  }
-
-  const customUpload = async () => {
-    setIsUploadInProgress(true)
-    try {
-      await props.customUploadFunction?.(files, progressObservable)
+      props.customUploadFunction
+        ? props.customUploadFunction(files, progressObservable)
+        : await repository.upload.fromFileList({
+            parentPath: props.uploadPath,
+            fileList: files as any,
+            createFolders: true,
+            binaryPropertyName: 'Binary',
+            overwrite: false,
+            progressObservable: progressObservable.current,
+            requestInit: { signal: abortController.current.signal },
+          })
     } catch (error) {
       logger.error({ message: 'Upload failed', data: error })
     } finally {
@@ -227,9 +218,7 @@ export function UploadDialog(props: UploadDialogProps) {
               color="primary"
               disabled={isUploadInProgress}
               variant="contained"
-              onClick={() => {
-                props.customUploadFunction ? customUpload() : upload()
-              }}>
+              onClick={() => upload()}>
               {localization.uploadButton}
             </Button>
           )}
