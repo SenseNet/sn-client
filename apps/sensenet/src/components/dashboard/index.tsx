@@ -1,4 +1,4 @@
-import { Group, User } from '@sensenet/default-content-types'
+import { Group } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { Container, createStyles, makeStyles, Theme, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
