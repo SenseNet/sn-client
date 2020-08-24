@@ -34,7 +34,7 @@ import {
   LocationCity,
   LockOpen,
   MoneyOff,
-  PersonOutlined,
+  PersonOutline,
   PhotoLibrary,
   PhotoOutlined,
   PictureAsPdfOutlined,
@@ -70,7 +70,7 @@ export interface IconResolver<T> {
 export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   {
     get: (item, options) =>
-      item.Type && item.Type.includes('User') ? (
+      options.repo.schemas.isContentFromType<User>(item, 'User') ? (
         <UserAvatar
           user={item as User}
           style={options.style}
@@ -212,7 +212,7 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
   {
     get: (item, options) =>
-      item.Type === 'User' || item.Icon === 'User' ? <PersonOutlined style={options.style} /> : null,
+      item.Type === 'User' || item.Icon === 'User' ? <PersonOutline style={options.style} /> : null,
   },
   {
     get: (item, options) =>
@@ -347,7 +347,7 @@ export const defaultSchemaResolvers: Array<IconResolver<{ ContentTypeName: typeo
         case 'Task':
           return <BallotOutlined style={options.style} />
         case 'User':
-          return <PersonOutlined style={options.style} />
+          return <PersonOutline style={options.style} />
         case 'Group':
           return <GroupOutlined style={options.style} />
         case 'ContentType':
