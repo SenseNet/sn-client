@@ -48,28 +48,38 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
   useEffect(() => {
     const ac = new AbortController()
     ;(async () => {
-      setIsInProgress(true)
-      do {
-        const result = await api.getDocumentData({
-          hostName: repo.configuration.repositoryUrl,
-          idOrPath: doc.documentIdOrPath,
-          version: doc.version,
-          abortController: ac,
-        })
-        setDocumentData(result)
-        if (result.pageCount === PreviewState.Loading) {
-          await sleepAsync(4000)
-        } else {
-          break
+      try {
+        setIsInProgress(true)
+        await loadLock.acquire()
+        do {
+          const result = await api.getDocumentData({
+            hostName: repo.configuration.repositoryUrl,
+            idOrPath: doc.documentIdOrPath,
+            version: doc.version,
+            abortController: ac,
+          })
+          setDocumentData(result)
+          if (result.pageCount === PreviewState.Loading) {
+            await sleepAsync(4000)
+          } else {
+            break
+          }
+        } while (documentData.pageCount === PreviewState.Loading && !ac.signal.aborted)
+      } catch (error) {
+        if (!ac.signal.aborted) {
+          setDocumentData({ ...defaultDocumentData, pageCount: PreviewState.ClientFailure, error: error.toString() })
+          throw error
         }
-      } while (documentData.pageCount === PreviewState.Loading && !ac.signal.aborted)
-
-      setIsInProgress(false)
+      } finally {
+        setIsInProgress(false)
+        loadLock.release()
+      }
     })()
 
     return () => ac.abort()
   }, [
     api,
+    loadLock,
     repo.configuration.repositoryUrl,
     doc.documentIdOrPath,
     doc.version,
@@ -81,17 +91,12 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
     async (newDocData: Partial<DocumentData>) => {
       const merged = deepMerge(documentData, newDocData)
       if (JSON.stringify(documentData) !== JSON.stringify(merged)) {
-        try {
-          setIsInProgress(true)
-          await loadLock.acquire()
+        setIsInProgress(true)
 
-          setDocumentData(merged)
-        } finally {
-          loadLock.release()
-        }
+        setDocumentData(merged)
       }
     },
-    [documentData, loadLock],
+    [documentData],
   )
 
   if (!documentData.idOrPath) {
