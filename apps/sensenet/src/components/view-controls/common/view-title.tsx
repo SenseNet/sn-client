@@ -4,11 +4,11 @@ import { createStyles, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
 import React, { useCallback, useContext } from 'react'
 import { useHistory } from 'react-router'
-import { ResponsivePersonalSettings } from '../../context'
-import { useGlobalStyles } from '../../globalStyles'
-import { useSnRoute } from '../../hooks'
-import { getPrimaryActionUrl } from '../../services'
-import { editviewFileResolver, Icon } from '../Icon'
+import { ResponsivePersonalSettings } from '../../../context'
+import { useGlobalStyles } from '../../../globalStyles'
+import { useSnRoute } from '../../../hooks'
+import { getPrimaryActionUrl } from '../../../services'
+import { editviewFileResolver, Icon } from '../../Icon'
 
 interface ViewTitleProps {
   title: string
@@ -21,6 +21,7 @@ const useStyles = makeStyles(() => {
     title: {
       height: '68px',
       fontSize: '20px',
+      flexShrink: 0,
     },
     textBolder: {
       fontWeight: 500,
