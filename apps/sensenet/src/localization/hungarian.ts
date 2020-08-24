@@ -55,26 +55,23 @@ const values: DeepPartial<typeof import('./default').default> = {
   drawer: {
     titles: {
       Content: 'Tartalom',
-      Dashboard: 'Irányítópult',
       Search: 'Keresés',
       Setup: 'Beállítás',
       UsersAndGroups: 'Felhasználók és csoportok',
       ContentTypes: 'Tartalom típusok',
       Localization: 'Nyelvi fájlok',
-      Query: 'Saját lekérdezésem',
       Trash: 'Kuka',
+      CustomContent: 'Egyedi tartalom',
     },
     descriptions: {
       Content: 'Tartalom böngészése',
-      Dashboard:
-        'Olyan egyoldalas vizuális felület, amelynek segítségével a felhasználó első ránézésre monitorozhatja legfontosabb céljainak vagy elvárásainak megvalósulását',
       Search: 'Testreszabott keresések futtatása és mentése későbbi használatra',
       Setup: 'A rendszer beállításai',
       UsersAndGroups: 'Felhasználó és csoport kezelése, szerkesztése',
       ContentTypes: 'Tartalom típusok kezelése',
       Localization: 'Nyelvi fájlok kezelése',
-      Query: 'Saját lekérdezésem megjelenítése',
       Trash: 'Törölt elemek kezelése',
+      CustomContent: 'Egyedi tartalmak böngészése',
     },
 
     personalSettingsTitle: 'Személyes beállítások',
