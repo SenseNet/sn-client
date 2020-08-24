@@ -94,7 +94,7 @@ export const Avatar: React.FunctionComponent<ReactClientFieldSetting<ReferenceFi
         },
       })
       //Remove the previous avatar image from the User
-      if (!props.content?.Avatar?.Url?.startsWith('/binaryhandler')) {
+      if (props.content?.Avatar?.Url && !props.content?.Avatar?.Url.startsWith('/binaryhandler')) {
         await repo.delete({
           idOrPath: previousAvatarPath,
           permanent: true,
