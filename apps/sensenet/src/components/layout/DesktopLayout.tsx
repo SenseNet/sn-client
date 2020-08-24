@@ -10,7 +10,7 @@ import { DesktopAppBar } from '../appbar/desktop-app-bar'
 import { useDialog } from '../dialogs'
 import { PermanentDrawer } from '../drawer/PermanentDrawer'
 import { TemporaryDrawer } from '../drawer/TemporaryDrawer'
-import { getMonacoModelUri } from '../edit/TextEditor'
+import { getMonacoModelUri } from '../editor/text-editor'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
