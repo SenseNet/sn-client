@@ -49,6 +49,7 @@ export const DocumentViewerRegeneratePreviews: React.FC = () => {
               abortController: new AbortController(),
             })
             updateDocumentData({ ...documentData, pageCount: result.PageCount })
+            setIsRegenerating(false)
           }}>
           {isRegenerating && <CircularProgress size={24} style={{ marginRight: '1em' }} />}
           {localization.regenerateButton}
