@@ -88,11 +88,10 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
   ])
 
   const updateDocumentData = useCallback(
-    async (newDocData: Partial<DocumentData>) => {
+    (newDocData: Partial<DocumentData>) => {
       const merged = deepMerge(documentData, newDocData)
       if (JSON.stringify(documentData) !== JSON.stringify(merged)) {
         setIsInProgress(true)
-
         setDocumentData(merged)
       }
     },
