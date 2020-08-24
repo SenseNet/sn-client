@@ -103,12 +103,10 @@ export interface PermissionResponseModel {
 }
 
 export class PermissionType {
-  /* Id */
-  public value!: number
+  /* Value */
+  public value!: string
   /* From */
   public from!: string | null
-  /* Identity */
-  public identity?: string
 }
 export class IdentityType {
   /* Id */
@@ -137,7 +135,7 @@ export class EntryType {
   /* Propagates */
   public propagates!: boolean
   /* Permissions */
-  public permissions!: { [permissionName: string]: PermissionType }
+  public permissions!: { [permissionName: string]: PermissionType | null }
 }
 
 export class AclResponseModel {

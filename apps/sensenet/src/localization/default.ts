@@ -457,6 +457,9 @@ const values = {
     inherited: 'Inherited from ancestor',
     setOnThis: 'Set on this content',
     errorGetPermissionSetting: 'Something went wrong during getting permission settings',
+    permissions: 'Permissions',
+    grantFullAccess: 'Grant full access',
+    localOnly: 'Local only',
   },
 }
 

@@ -164,6 +164,9 @@ const values: DeepPartial<typeof import('./default').default> = {
     inherited: 'Öröklött jogosultságok',
     setOnThis: 'Ezen a kontenten beállított jogosultságok',
     errorGetPermissionSetting: 'Hiba történt a beállítások lekérdezése során',
+    permissions: 'Jogosultságok',
+    grantFullAccess: 'Teljes hozzáférés',
+    localOnly: 'Helyi módosítás',
   },
 }
 

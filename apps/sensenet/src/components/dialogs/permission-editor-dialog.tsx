@@ -2,19 +2,32 @@ import { EntryType } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { Settings } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { Button, createStyles, DialogActions, DialogContent, makeStyles } from '@material-ui/core'
+import {
+  Button,
+  createStyles,
+  DialogActions,
+  DialogContent,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  makeStyles,
+  Theme,
+} from '@material-ui/core'
 import clsx from 'clsx'
 import React, { useEffect, useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+import { Switcher } from '../field-controls'
 import { DialogTitle, useDialog } from '.'
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     contentWrapper: {
       display: 'flex',
       flexDirection: 'row',
       width: '100%',
+      padding: 0,
     },
     column: {
       display: 'flex',
@@ -23,9 +36,24 @@ const useStyles = makeStyles(() => {
     },
     leftColumn: {
       flex: 1,
+      padding: 0,
+      borderRight: `1px solid ${theme.palette.divider}`,
     },
     rightColumn: {
       flex: 2,
+      position: 'relative',
+    },
+    dialogActions: {
+      padding: '16px',
+    },
+    secondaryListItem: {
+      paddingLeft: '40px',
+    },
+    permissionContainer: {
+      padding: '60px',
+    },
+    disabled: {
+      color: theme.palette.grey[500],
     },
   })
 })
@@ -56,6 +84,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
   const { closeLastDialog } = useDialog()
 
   const [permissionSettingJSON, setPermissionSettingJSON] = useState<PermissionSettingType>()
+  const [actualGroup, setActualGroup] = useState<string>('Read')
 
   useEffect(() => {
     async function getPermissionSettingJSON() {
@@ -89,22 +118,90 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
     <>
       <DialogTitle>{props.entry.identity.displayName}</DialogTitle>
       <DialogContent className={classes.contentWrapper}>
-        <div className={clsx(classes.column, classes.leftColumn)}>
-          <div>Permissions</div>
-          {permissionSettingJSON?.groups.map((group: Object) => (
-            <div key={group.toString()}>{Object.keys(group)}</div>
-          ))}
+        <List
+          className={clsx(classes.column, classes.leftColumn)}
+          component="nav"
+          aria-label={localization.permissionEditor.permissions}>
+          <ListItem>
+            <ListItemText primary={localization.permissionEditor.permissions} />
+          </ListItem>
+          <Divider />
+
+          {permissionSettingJSON?.groups.map((group: PermissionGroupType) =>
+            Object.entries(group).map(([groupname]) => {
+              return (
+                <ListItem
+                  key={groupname}
+                  button
+                  className={classes.secondaryListItem}
+                  onClick={() => setActualGroup(groupname)}>
+                  <ListItemText disableTypography primary={groupname} />
+                  <Switcher checked={true} size="small" onClick={() => {}} />
+                </ListItem>
+              )
+            }),
+          )}
+          <Divider />
+          <ListItem className={classes.secondaryListItem}>
+            <ListItemText disableTypography primary={localization.permissionEditor.grantFullAccess} />
+            <Switcher checked={true} size="small" onClick={() => {}} />
+          </ListItem>
+          <Divider />
+          <ListItem>
+            <ListItemText primary={localization.permissionEditor.localOnly} />
+            <Switcher checked={true} size="small" onClick={() => {}} />
+          </ListItem>
+        </List>
+        <div className={clsx(classes.column, classes.rightColumn)}>
+          <div className={classes.permissionContainer}>
+            <List>
+              {permissionSettingJSON?.groups.map((group: PermissionGroupType) =>
+                Object.entries(group)
+                  .filter(([groupname]) => actualGroup === groupname)
+                  .map(([, groupItem]) => {
+                    return groupItem.map((permission: string) => {
+                      return (
+                        <ListItem key={permission} onClick={() => {}}>
+                          <ListItemText
+                            disableTypography
+                            primary={permission}
+                            className={clsx({
+                              [classes.disabled]:
+                                props.entry.permissions[permission] !== null &&
+                                props.entry.permissions[permission] !== undefined &&
+                                props.entry.permissions[permission]?.from !== null,
+                            })}
+                          />
+                          <Switcher
+                            checked={props.entry.permissions[permission]?.value === 'allow'}
+                            disabled={
+                              props.entry.permissions[permission] !== null &&
+                              props.entry.permissions[permission] !== undefined &&
+                              props.entry.permissions[permission]?.from !== null
+                            }
+                            size="small"
+                            onClick={() => {}}
+                          />
+                        </ListItem>
+                      )
+                    })
+                  }),
+              )}
+            </List>
+          </div>
+          <DialogActions className={classes.dialogActions}>
+            <Button
+              aria-label={localization.forms.cancel}
+              className={globalClasses.cancelButton}
+              onClick={closeLastDialog}>
+              {localization.forms.cancel}
+            </Button>
+            <Button aria-label={localization.forms.submit} color="primary" variant="contained" autoFocus={true}>
+              {localization.forms.submit}
+            </Button>
+          </DialogActions>
         </div>
-        <div className={clsx(classes.column, classes.rightColumn)}>blasd23f</div>
       </DialogContent>
-      <DialogActions>
-        <Button aria-label={localization.forms.cancel} className={globalClasses.cancelButton} onClick={closeLastDialog}>
-          {localization.forms.cancel}
-        </Button>
-        <Button aria-label={localization.forms.submit} color="primary" variant="contained" autoFocus={true}>
-          {localization.forms.submit}
-        </Button>
-      </DialogActions>
     </>
   )
 }

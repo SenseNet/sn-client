@@ -7,7 +7,7 @@ import { Switcher } from '../field-controls'
 interface EnabledFieldProps {
   enabled: boolean
   description: string
-  onChange?: (value: boolean) => Promise<boolean>
+  onChange?: (value: boolean) => Promise<boolean> | void
 }
 
 export const EnabledField: FunctionComponent<EnabledFieldProps> = ({ enabled, description, onChange }) => {
