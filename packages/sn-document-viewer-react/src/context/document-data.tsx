@@ -91,7 +91,6 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
     (newDocData: Partial<DocumentData>) => {
       const merged = deepMerge(documentData, newDocData)
       if (JSON.stringify(documentData) !== JSON.stringify(merged)) {
-        setIsInProgress(true)
         setDocumentData(merged)
       }
     },
