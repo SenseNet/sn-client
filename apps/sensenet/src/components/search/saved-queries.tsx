@@ -21,7 +21,7 @@ import { useLocalization, useQuery, useSelectionService } from '../../hooks'
 import { navigateToAction } from '../../services'
 import { pathWithQueryParams } from '../../services/query-string-builder'
 import { ContentList } from '../content-list/content-list'
-import { EditView, VersionView } from '../view-controls'
+import { BrowseView, EditView, VersionView } from '../view-controls'
 
 export default function SavedQueries() {
   const repo = useRepository()
@@ -76,11 +76,11 @@ export default function SavedQueries() {
 
   const renderContent = () => {
     switch (activeAction) {
-      case 'edit':
       case 'browse':
+        return <BrowseView contentPath={`${PATHS.savedQueries.snPath}${activeContent}`} />
+      case 'edit':
         return (
           <EditView
-            uploadFolderpath="/Root/Content/demoavatars"
             actionName={activeAction}
             contentPath={`${PATHS.savedQueries.snPath}${activeContent}`}
             submitCallback={() => navigateToAction({ history, routeMatch })}
