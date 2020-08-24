@@ -16,7 +16,7 @@ import { useLocalization, useQuery } from '../../hooks'
 import { getPrimaryActionUrl, navigateToAction } from '../../services/content-context-service'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { EditBinary } from '../edit/edit-binary'
-import { EditView, NewView, VersionView } from '../view-controls'
+import { BrowseView, EditView, NewView, VersionView } from '../view-controls'
 import { WellKnownContentCard } from './well-known-content-card'
 
 const Setup = () => {
@@ -79,11 +79,11 @@ const Setup = () => {
 
   const renderContent = () => {
     switch (activeAction) {
-      case 'edit':
       case 'browse':
+        return <BrowseView contentPath={`${PATHS.setup.snPath}${activeContent}`} />
+      case 'edit':
         return (
           <EditView
-            uploadFolderpath="/Root/Content/demoavatars"
             actionName={activeAction}
             contentPath={`${PATHS.setup.snPath}${activeContent}`}
             submitCallback={() => navigateToAction({ history, routeMatch })}
@@ -95,7 +95,6 @@ const Setup = () => {
             <NewView
               contentTypeName={contentTypeName!}
               currentContentPath={PATHS.setup.snPath}
-              uploadFolderpath="/Root/Content/demoavatars"
               submitCallback={() => navigateToAction({ history, routeMatch })}
             />
           </div>
