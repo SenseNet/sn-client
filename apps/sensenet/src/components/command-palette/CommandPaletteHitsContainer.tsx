@@ -16,6 +16,7 @@ export const CommandPaletteHitsContainer: React.FunctionComponent<RenderSuggesti
         width: device === 'mobile' ? 'calc(100% - 80px)' : '100%',
       }}>
       <List
+        aria-label="search-suggestion-list"
         dense={device === 'desktop' ? false : true}
         component="nav"
         data-test="search-suggestion-list"
