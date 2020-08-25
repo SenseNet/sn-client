@@ -5,12 +5,14 @@ import {
   ApproveProps,
   AreYouSureProps,
   CheckInProps,
+  ContentPickerDialogProps,
   CopyMoveDialogProps,
   CustomActionResultDialogProps,
   DeleteContentDialogProps,
   ErrorReportProps,
   ExecuteActionDialogProps,
   ReferenceContentListProps,
+  RestoreProps,
   SaveQueryProps,
   UploadDialogProps,
 } from '.'
@@ -23,12 +25,14 @@ export type DialogWithProps = (
   | { name: 'check-in'; props: CheckInProps }
   | { name: 'are-you-sure'; props: AreYouSureProps }
   | { name: 'approve'; props: ApproveProps }
+  | { name: 'restore'; props: RestoreProps }
   | { name: 'upload'; props: UploadDialogProps }
   | { name: 'execute-action'; props: ExecuteActionDialogProps }
   | { name: 'custom-action-result'; props: CustomActionResultDialogProps }
   | { name: 'logout' }
   | { name: 'save-query'; props: SaveQueryProps }
   | { name: 'reference-content-list'; props: ReferenceContentListProps }
+  | { name: 'content-picker'; props: ContentPickerDialogProps }
 ) & { dialogProps?: Partial<DialogProps> }
 
 type Action = { type: 'PUSH_DIALOG'; dialog: DialogWithProps } | { type: 'POP_DIALOG' } | { type: 'CLOSE_ALL_DIALOGS' }
