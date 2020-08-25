@@ -120,7 +120,7 @@ const Dashboard = () => {
       <Container fixed className={classes.container}>
         <div className={classes.welcome}>
           <Typography variant="h1" className={classes.title}>
-            {localization.title(data.name || data.host)}
+            {localization.title(data.displayName || data.host)}
           </Typography>
           {localization.descriptionFirstLine}
           <br />

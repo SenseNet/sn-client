@@ -1,5 +1,6 @@
 export interface DashboardData {
   name?: string
+  displayName?: string
   host: string
   pending: boolean
   version: DashboardVersion
@@ -16,6 +17,7 @@ export interface DashboardSubscription {
   expirationDate: string
 }
 export interface DashboardPlan {
+  displayName: string
   name: string
   baseprice?: number
   limitations: DashboardLimitations
