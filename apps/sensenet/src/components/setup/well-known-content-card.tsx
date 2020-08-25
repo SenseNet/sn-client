@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-export const SETUP_DOCS_URL = 'https://community.sensenet.com/docs/admin-ui/setup/'
+export const SETUP_DOCS_URL = 'https://docs.sensenet.com/concepts/basics/07-settings'
 
 export const createAnchorFromName = (displayName: string) => `#${displayName.replace('.', '-').toLocaleLowerCase()}`
 
