@@ -15,3 +15,8 @@ export interface PreviewImageData {
   PreviewAvailable?: string
   Attributes?: PageAttribute['options']
 }
+
+export interface PreviewRegenerateData {
+  PageCount: number
+  PreviewCount: number
+}

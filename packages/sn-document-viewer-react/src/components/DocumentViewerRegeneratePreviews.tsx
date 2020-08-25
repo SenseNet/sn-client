@@ -9,7 +9,8 @@ export const DocumentViewerRegeneratePreviews: React.FC = () => {
   const localization = useLocalization()
 
   const api = useDocumentViewerApi()
-  const { documentData } = useDocumentData()
+
+  const { documentData, updateDocumentData, isInProgress } = useDocumentData()
 
   /**
    * renders the component
@@ -40,10 +41,15 @@ export const DocumentViewerRegeneratePreviews: React.FC = () => {
         </Typography>
         <Button
           variant="contained"
-          disabled={isRegenerating}
-          onClick={() => {
+          disabled={isRegenerating || isInProgress}
+          onClick={async () => {
             setIsRegenerating(true)
-            api.regeneratePreviews({ document: documentData, abortController: new AbortController() })
+            const result = await api.regeneratePreviews({
+              document: documentData,
+              abortController: new AbortController(),
+            })
+            updateDocumentData({ ...documentData, pageCount: result.PageCount })
+            setIsRegenerating(false)
           }}>
           {isRegenerating && <CircularProgress size={24} style={{ marginRight: '1em' }} />}
           {localization.regenerateButton}
