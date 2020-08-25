@@ -194,6 +194,21 @@ export default function TreeWithData(props: TreeWithDataProps) {
       eventHub.onContentCopied.subscribe(handleCreate),
       eventHub.onContentMoved.subscribe(handleCreate),
       eventHub.onContentModified.subscribe(handleCreate),
+      eventHub.onCustomActionExecuted.subscribe(async (event) => {
+        if (event.actionOptions.name === 'Restore') {
+          await lock.acquire()
+          walkTree(treeData!, (node) => {
+            if (node.Path === event.actionOptions.idOrPath && treeData?.children?.length) {
+              treeData.children = treeData.children.filter((n) => n.Path !== event.actionOptions.idOrPath)
+              setItemCount((itemCountTemp) => itemCountTemp && itemCountTemp - 1)
+            } else if (PathHelper.trimSlashes(node.Path) === PathHelper.getParentPath(event.actionOptions.idOrPath)) {
+              node.children = node.children?.filter((n) => n.Path !== event.actionOptions.idOrPath)
+            }
+          })
+          setTreeData({ ...treeData! })
+          lock.release()
+        }
+      }),
       eventHub.onContentDeleted.subscribe(async (d) => {
         await lock.acquire()
         walkTree(treeData!, (node) => {
@@ -217,6 +232,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
     eventHub.onContentCopied,
     eventHub.onContentMoved,
     eventHub.onContentModified,
+    eventHub.onCustomActionExecuted,
     openTree,
     loadCollection,
     logger,
