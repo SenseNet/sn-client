@@ -40,13 +40,15 @@ export const SubscriptionWidget: React.FunctionComponent<SubscriptionWidgetProps
       <Grid container justify="space-between" component={Paper} elevation={0} className={widgetClasses.container}>
         <Grid item xs={12} lg="auto" className={classes.statusBox}>
           <img src={logo} alt="logo" />
-          <div className={widgetClasses.subtitle}>{props.subscription.plan.name}</div>(
-          {props.subscription.plan.baseprice !== 0
-            ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
-                props.subscription.plan.baseprice,
-              )
-            : localization.free}
-          )
+          <div className={widgetClasses.subtitle}>{props.subscription.plan.name}</div>
+          {props.subscription.plan.baseprice !== undefined &&
+            `(${
+              props.subscription.plan.baseprice !== 0
+                ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+                    props.subscription.plan.baseprice!,
+                  )
+                : localization.free
+            })`}
         </Grid>
         <Grid item xs={12} lg="auto">
           <p className={widgetClasses.subtitle}>{localization.features}</p>
