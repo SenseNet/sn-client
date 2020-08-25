@@ -1,9 +1,15 @@
-import { CommentData, CommentWithoutCreatedByAndId, DocumentData, PreviewImageData } from '../Models'
+import {
+  CommentData,
+  CommentWithoutCreatedByAndId,
+  DocumentData,
+  PreviewImageData,
+  PreviewRegenerateData,
+} from '../Models'
 import { Repository } from './Repository'
 
 export class Preview {
   public regenerate(options: { idOrPath: number | string; abortController?: AbortController }) {
-    return this.repository.executeAction({
+    return this.repository.executeAction<any, PreviewRegenerateData>({
       name: 'RegeneratePreviews',
       idOrPath: options.idOrPath,
       method: 'POST',

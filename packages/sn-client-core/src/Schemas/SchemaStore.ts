@@ -68,6 +68,11 @@ export class SchemaStore {
     }
 
     let currentSchema = this.getSchemaByName(content.Type)
+
+    if (currentSchema.HandlerName === this.getSchemaByName(contentTypeName).HandlerName) {
+      return true
+    }
+
     do {
       if (currentSchema.ContentTypeName === contentTypeName) {
         return true

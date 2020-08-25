@@ -126,6 +126,8 @@ export const PermanentDrawer = () => {
               PATHS.content.appPath,
               PATHS.usersAndGroups.appPath,
               PATHS.setup.appPath,
+              PATHS.contentTypes.appPath,
+              PATHS.localization.appPath,
             ]) ? (
               <AddButton isOpened={opened} />
             ) : null}

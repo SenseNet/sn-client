@@ -1,13 +1,13 @@
 import { ConstantContent } from '@sensenet/client-core'
 import { Settings } from '@sensenet/default-content-types'
-import { useRepository } from '@sensenet/hooks-react'
+import { useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
 import { Query } from '@sensenet/query'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import clsx from 'clsx'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Link, useHistory, useRouteMatch } from 'react-router-dom'
 import { PATHS } from '../../application-paths'
 import { ResponsivePersonalSettings } from '../../context'
@@ -26,11 +26,14 @@ const Setup = () => {
   const globalClasses = useGlobalStyles()
   const history = useHistory()
   const localizationDrawerTitles = useLocalization().drawer.titles
+  const eventHub = useRepositoryEvents()
+  const [reloadToken, setReloadToken] = useState(Date.now())
   const [wellKnownSettings, setWellKnownSettings] = useState<Settings[]>([])
   const [settings, setSettings] = useState<Settings[]>([])
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [contextMenuItem, setContextMenuItem] = useState<Settings | null>(null)
+  const requestReload = useCallback(() => setReloadToken(Date.now()), [])
 
   const activeContent = useQuery().get('content') ?? ''
   const contentTypeName = useQuery().get('content-type')
@@ -55,7 +58,24 @@ const Setup = () => {
         response.d.results.filter((setting) => !Object.keys(localization.descriptions).includes(setting.Path)),
       )
     })()
-  }, [localization.descriptions, repository])
+  }, [localization.descriptions, repository, reloadToken])
+
+  useEffect(() => {
+    const subscriptions = [
+      eventHub.onContentModified.subscribe(requestReload),
+      eventHub.onContentCopied.subscribe(requestReload),
+      eventHub.onUploadFinished.subscribe(requestReload),
+      eventHub.onContentDeleted.subscribe(requestReload),
+    ]
+    return () => subscriptions.forEach((s) => s.dispose())
+  }, [
+    eventHub.onUploadFinished,
+    eventHub.onContentModified,
+    eventHub.onContentDeleted,
+    eventHub.onContentCopied,
+    eventHub.onContentMoved,
+    requestReload,
+  ])
 
   const renderContent = () => {
     switch (activeAction) {
@@ -71,11 +91,13 @@ const Setup = () => {
         )
       case 'new':
         return (
-          <NewView
-            contentTypeName={contentTypeName!}
-            currentContentPath={PATHS.setup.snPath}
-            submitCallback={() => navigateToAction({ history, routeMatch })}
-          />
+          <div style={{ overflow: 'hidden' }}>
+            <NewView
+              contentTypeName={contentTypeName!}
+              currentContentPath={PATHS.setup.snPath}
+              submitCallback={() => navigateToAction({ history, routeMatch })}
+            />
+          </div>
         )
       case 'version':
         return <VersionView contentPath={`${PATHS.setup.snPath}${activeContent}`} />
@@ -113,7 +135,7 @@ const Setup = () => {
               </div>
             ) : null}
             <br />
-            {settings && settings.length ? (
+            {settings?.length ? (
               <>
                 <Typography variant="h5">{localization.otherSettings}</Typography>
                 <List>
