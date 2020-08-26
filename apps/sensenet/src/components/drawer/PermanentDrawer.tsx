@@ -104,9 +104,10 @@ export const PermanentDrawer = () => {
     <Paper className={clsx(classes.paper, { [classes.opened]: opened })}>
       <div className={classes.backgroundDiv}>
         <List className={classes.list}>
-          <div className={classes.listWrapper}>
+          <li className={classes.listWrapper}>
             {settings.drawer.type === 'mini-variant' ? (
               <ListItem
+                aria-label="expandcollapse"
                 className={classes.listButton}
                 button={true}
                 onClick={() => setOpened(!opened)}
@@ -129,11 +130,12 @@ export const PermanentDrawer = () => {
               PATHS.contentTypes.appPath,
               PATHS.localization.appPath,
             ]) ? (
-              <AddButton isOpened={opened} />
+              <AddButton aria-label={localization.add} isOpened={opened} />
             ) : null}
             {items.map((item, index) => {
               return (
                 <NavLink
+                  aria-label={item.url}
                   to={item.url}
                   className={classes.navLink}
                   key={index}
@@ -142,6 +144,7 @@ export const PermanentDrawer = () => {
                   }}
                   activeClassName={classes.navLinkActive}>
                   <ListItem
+                    aria-label={item.primaryText}
                     className={classes.listButton}
                     button={true}
                     key={index}
@@ -167,7 +170,7 @@ export const PermanentDrawer = () => {
                 </NavLink>
               )
             })}
-          </div>
+          </li>
         </List>
       </div>
     </Paper>
