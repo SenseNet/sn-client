@@ -10,6 +10,7 @@ const values: DeepPartial<typeof import('./default').default> = {
   },
   commandPalette: {
     title: 'Command palette megnyitása',
+    searchSuggestionList: 'Keresési javaslatok listája',
   },
   contentInfoDialog: {
     dialogTitle: '{0} tulajdonságai',
@@ -77,6 +78,7 @@ const values: DeepPartial<typeof import('./default').default> = {
     personalSettingsTitle: 'Személyes beállítások',
     personalSettingsSecondaryText: 'Az alkalmazás testreszabása',
     newSearch: 'Új keresés indítása',
+    add: 'Hozzáadás',
   },
   editPropertiesDialog: {
     dialogTitle: '{0} tulajdonságainak szerkesztése',
@@ -131,6 +133,7 @@ const values: DeepPartial<typeof import('./default').default> = {
   topMenu: {
     personalSettings: 'Személyes beállítások',
     logout: 'Kijelentkezés',
+    openMenu: 'Menü kinyitása',
   },
   forms: {
     referencePicker: 'Referencia választó',
