@@ -48,8 +48,8 @@ export const testFile: GenericContent = {
 describe('New view component', () => {
   it('should render all components', () => {
     const wrapper = shallow(
-      <NewView repository={testRepository} showTitle={true} contentTypeName="GenericContent" path={testFile.Path} />,
-    )
+      <NewView repository={testRepository} showTitle={true} contentTypeName="GenericContent" />,
+    ).dive()
     expect(wrapper.find(Typography).text()).toBe('New $Ctd-GenericContent,DisplayName')
     expect(wrapper.find(FileName)).toHaveLength(1)
     expect(wrapper.find(AutoComplete)).toHaveLength(1)
@@ -71,21 +71,13 @@ describe('New view component', () => {
     expect(wrapper.find(ColorPicker)).toHaveLength(2)
   })
   it('should handle change', () => {
-    const submitCallback = jest.fn()
     const onSubmit = jest.fn()
     const wrapper = shallow(
-      <NewView
-        repository={testRepository}
-        submitCallback={submitCallback}
-        onSubmit={onSubmit}
-        contentTypeName="GenericContent"
-        path={testFile.Path}
-      />,
-    )
+      <NewView repository={testRepository} onSubmit={onSubmit} contentTypeName="GenericContent" />,
+    ).dive()
     const onChange = wrapper.find(CheckboxGroup).first().prop('fieldOnChange')
-    onChange && onChange('VersioningMode', VersioningMode.Option1)
-    wrapper.find('form').simulate('submit', { preventDefault: jest.fn() })
+    onChange?.('VersioningMode', VersioningMode.Option1)
+    wrapper.find('[component="form"]').simulate('submit', { preventDefault: jest.fn() })
     expect(onSubmit).toBeCalledWith({ VersioningMode: '1' }, 'GenericContent')
-    expect(submitCallback).toBeCalled()
   })
 })

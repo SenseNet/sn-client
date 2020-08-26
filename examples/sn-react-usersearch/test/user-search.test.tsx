@@ -117,8 +117,9 @@ describe('The user search component instance', () => {
     act(() => {
       wrapper.update().find(TableBody).find(TableRow).at(1).prop('onClick')()
     })
+
     act(() => {
-      wrapper.update().find(Dialog).find(Button).prop('onClick')()
+      wrapper.update().find(Dialog).find(Button).at(1).prop('onClick')()
     })
     expect(wrapper.update().find(Dialog).prop('open')).toBe(false)
   })

@@ -1,4 +1,5 @@
 import { ODataParams, Repository } from '@sensenet/client-core'
+import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { GenericContentWithIsParent } from './types'
 
@@ -43,7 +44,7 @@ async function getParent<T extends GenericContent>(
   item: T,
   repository: Repository,
   parentODataOptionsArgs?: ODataParams<T>,
-  parentId?: number,
+  parentId?: number | string,
 ) {
   // We don't want to query with 0
   if (parentId === 0) {
@@ -100,7 +101,12 @@ export const loadItems = async <T extends GenericContentWithIsParent>({
 
   let parentResult
   try {
-    parentResult = await getParent<T>(items[0], repository, parentODataOptions, parentId)
+    parentResult = await getParent<T>(
+      items?.[0],
+      repository,
+      parentODataOptions,
+      parentId ?? (items?.[0] ? undefined : PathHelper.getParentPath(path)),
+    )
     if (!parentResult) {
       return items
     }

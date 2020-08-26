@@ -21,7 +21,6 @@ const NewDialogBody: React.FunctionComponent<{
           handleCancel={handleClose}
           repository={repo}
           contentTypeName="CalendarEvent"
-          path={props.parentpath}
           onSubmit={async (content) => {
             try {
               await repo.post({

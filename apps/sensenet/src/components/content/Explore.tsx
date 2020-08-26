@@ -22,7 +22,7 @@ import { DocumentViewer } from '../document-viewer'
 import { EditBinary } from '../edit/edit-binary'
 import { FullScreenLoader } from '../full-screen-loader'
 import TreeWithData from '../tree/tree-with-data'
-import { EditView, NewView, VersionView } from '../view-controls'
+import { BrowseView, EditView, NewView, VersionView } from '../view-controls'
 import WopiPage from '../wopi-page'
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -60,6 +60,7 @@ export type ExploreProps = {
   onNavigate: (content: GenericContent) => void
   fieldsToDisplay?: Array<keyof GenericContent>
   schema?: string
+  loadTreeSettings?: ODataParams<GenericContent>
   loadChildrenSettings?: ODataParams<GenericContent>
   renderBeforeGrid?: () => JSX.Element
   hasTree?: boolean
@@ -72,6 +73,7 @@ export function Explore({
   fieldsToDisplay,
   schema,
   loadChildrenSettings,
+  loadTreeSettings,
   renderBeforeGrid,
   hasTree = true,
 }: ExploreProps) {
@@ -96,11 +98,11 @@ export function Explore({
 
   const renderContent = () => {
     switch (activeAction) {
-      case 'edit':
       case 'browse':
+        return <BrowseView contentPath={`${rootPath}${activeContent}`} />
+      case 'edit':
         return (
           <EditView
-            uploadFolderpath="/Root/Content/demoavatars"
             actionName={activeAction}
             contentPath={`${rootPath}${activeContent}`}
             submitCallback={() => navigateToAction({ history, routeMatch: snRoute.match })}
@@ -112,7 +114,6 @@ export function Explore({
             <NewView
               contentTypeName={contentTypeName!}
               currentContentPath={currentPath}
-              uploadFolderpath="/Root/Content/demoavatars"
               submitCallback={() => navigateToAction({ history, routeMatch: snRoute.match })}
             />
           )
@@ -174,6 +175,7 @@ export function Explore({
                   parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
                   activeItemPath={currentPath}
                   onTreeLoadingChange={onTreeLoadingChange}
+                  loadSettings={loadTreeSettings}
                 />
               )}
               <div className={classes.exploreContainer}>{renderContent()}</div>

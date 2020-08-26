@@ -168,6 +168,14 @@ export function useContextMenuActions(
           },
         })
         break
+      case 'Restore':
+        openDialog({
+          name: 'restore',
+          props: {
+            content,
+          },
+        })
+        break
       default:
         logger.warning({ message: `${actionName} is not implemented yet. Try to use it from command palette.` })
     }

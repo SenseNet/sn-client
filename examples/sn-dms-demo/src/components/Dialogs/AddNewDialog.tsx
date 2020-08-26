@@ -58,10 +58,7 @@ class AddNewDialog extends React.Component<
   public handleCancel = () => {
     this.props.closeDialog()
   }
-  public submitCallback = () => {
-    this.props.closeCallback()
-    this.props.closeDialog()
-  }
+
   public render() {
     const { parentPath, contentTypeName, createContent, schema, title, extension } = this.props
     return (
@@ -72,14 +69,16 @@ class AddNewDialog extends React.Component<
               <RepositoryContext.Consumer>
                 {(repository) => (
                   <LoadableNewView
-                    path={parentPath}
                     repository={repository}
                     contentTypeName={contentTypeName}
                     handleCancel={() => this.handleCancel()}
-                    onSubmit={(content) => createContent(parentPath, content, contentTypeName)}
+                    onSubmit={(content) => {
+                      createContent(parentPath, content as any, contentTypeName)
+                      this.props.closeCallback()
+                      this.props.closeDialog()
+                    }}
                     showTitle={!!title}
                     extension={extension}
-                    submitCallback={this.submitCallback}
                   />
                 )}
               </RepositoryContext.Consumer>
