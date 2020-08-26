@@ -130,7 +130,7 @@ export const PermanentDrawer = () => {
               PATHS.contentTypes.appPath,
               PATHS.localization.appPath,
             ]) ? (
-              <AddButton aria-label="Add" isOpened={opened} />
+              <AddButton aria-label={localization.add} isOpened={opened} />
             ) : null}
             {items.map((item, index) => {
               return (
