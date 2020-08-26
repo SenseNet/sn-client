@@ -114,6 +114,44 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
     getPermissionSettingJSON()
   }, [localization.permissionEditor.errorGetPermissionSetting, logger, repo])
 
+  const isPermissionDisabled = (permission: string) => {
+    return (
+      props.entry.permissions[permission] !== null &&
+      props.entry.permissions[permission] !== undefined &&
+      props.entry.permissions[permission]?.from !== null
+    )
+  }
+
+  const isGroupDisabled = (selectedGroup: string) => {
+    let disabledFlag = false
+    permissionSettingJSON?.groups.map((group: PermissionGroupType) =>
+      Object.entries(group)
+        .filter(([groupname]) => selectedGroup === groupname)
+        .forEach(([, groupItem]) => {
+          disabledFlag = true
+          groupItem.forEach((permission: string) => {
+            disabledFlag = disabledFlag && isPermissionDisabled(permission)
+          })
+        }),
+    )
+    return disabledFlag
+  }
+
+  const isGroupChecked = (selectedGroup: string) => {
+    let checkedFlag = false
+    permissionSettingJSON?.groups.map((group: PermissionGroupType) =>
+      Object.entries(group)
+        .filter(([groupname]) => selectedGroup === groupname)
+        .forEach(([, groupItem]) => {
+          checkedFlag = true
+          groupItem.forEach((permission: string) => {
+            checkedFlag = checkedFlag && props.entry.permissions[permission]?.value === 'allow'
+          })
+        }),
+    )
+    return checkedFlag
+  }
+
   return (
     <>
       <DialogTitle>{props.entry.identity.displayName}</DialogTitle>
@@ -136,7 +174,12 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                   className={classes.secondaryListItem}
                   onClick={() => setActualGroup(groupname)}>
                   <ListItemText disableTypography primary={groupname} />
-                  <Switcher checked={true} size="small" onClick={() => {}} />
+                  <Switcher
+                    checked={isGroupChecked(groupname)}
+                    disabled={isGroupDisabled(groupname)}
+                    size="small"
+                    onClick={() => {}}
+                  />
                 </ListItem>
               )
             }),
@@ -166,19 +209,12 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                             disableTypography
                             primary={permission}
                             className={clsx({
-                              [classes.disabled]:
-                                props.entry.permissions[permission] !== null &&
-                                props.entry.permissions[permission] !== undefined &&
-                                props.entry.permissions[permission]?.from !== null,
+                              [classes.disabled]: isPermissionDisabled(permission),
                             })}
                           />
                           <Switcher
                             checked={props.entry.permissions[permission]?.value === 'allow'}
-                            disabled={
-                              props.entry.permissions[permission] !== null &&
-                              props.entry.permissions[permission] !== undefined &&
-                              props.entry.permissions[permission]?.from !== null
-                            }
+                            disabled={isPermissionDisabled(permission)}
                             size="small"
                             onClick={() => {}}
                           />
