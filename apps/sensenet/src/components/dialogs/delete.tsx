@@ -62,7 +62,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
         </List>
         {isDeleteInProgress ? <LinearProgress /> : null}
       </DialogContent>
-      <DialogActions style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <DialogActions style={{ display: 'flex', justifyContent: isTrashBag ? 'flex-end' : 'space-between' }}>
         {!isTrashBag ? (
           <>
             <Tooltip title={localization.permanentlyHint}>

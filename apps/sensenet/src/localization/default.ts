@@ -27,6 +27,7 @@ const values = {
       executePrimaryText: '{0} 👉 {1}',
       executeSecondaryText: "Execute custom action '{1}' on content '{0}'",
     },
+    searchSuggestionList: 'Search suggestion list',
   },
   lockedCell: {
     checkedOutTo: (name: string) => `Checked out to ${name}`,
@@ -134,6 +135,7 @@ const values = {
     expand: 'Expand',
     collapse: 'Collapse',
     newSearch: 'New search',
+    add: 'Add',
   },
   dashboard: {
     title: (projectName: string) => `Welcome to your ${projectName} project`,
@@ -276,6 +278,7 @@ const values = {
   topMenu: {
     personalSettings: 'Personal settings',
     logout: 'Log out',
+    openMenu: 'Open menu',
   },
   navigationCommandProvider: {
     personalSettingsPrimary: 'Personal Settings',
@@ -418,6 +421,18 @@ const values = {
   },
   contentList: {
     errorContentModification: 'There was an error during content modification',
+  },
+  restore: {
+    description: (contentName: string) =>
+      `You are about to restore <strong>${contentName}</strong> from the Trash to the following destination:`,
+    selectTarget: 'Select target',
+    title: 'Restore',
+    cancel: 'Cancel',
+  },
+  contentPickerDialog: {
+    title: 'Select a target',
+    cancelButton: 'Cancel',
+    selectButton: 'Select',
   },
 }
 

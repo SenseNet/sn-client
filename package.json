@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "2020.8.0",
+  "version": "2020.8.1",
   "workspaces": [
     "packages/*",
     "examples/*",

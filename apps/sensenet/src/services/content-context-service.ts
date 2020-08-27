@@ -47,6 +47,21 @@ export function getMonacoLanguage(content: GenericContent, repository: Repositor
   return ''
 }
 
+export function getPathForContentPath({ path, uiSettings }: { path: string; uiSettings: UiSettings }) {
+  const pathOfContent: any = Object.values(PATHS).find((pathConfigElement: any) =>
+    pathConfigElement.snPath ? path.startsWith(pathConfigElement.snPath) : false,
+  )
+
+  if (!pathOfContent) {
+    const customDrawerItem = uiSettings.drawer.items
+      .filter((item) => item.itemType === 'CustomContent')
+      .find((item: CustomContentDrawerItem) => path.startsWith(item.settings!.root))
+    return { snPath: customDrawerItem?.settings?.root, appPath: customDrawerItem?.settings?.appPath, isCustom: true }
+  }
+
+  return { ...pathOfContent, isCustom: false }
+}
+
 interface GetUrlForContentParams {
   content: GenericContent
   uiSettings: UiSettings
@@ -82,49 +97,20 @@ export function getUrlForContent({
     })
   }
 
-  const pathOfContent: any = Object.values(PATHS).find((path: any) =>
-    path.snPath ? content.Path.startsWith(path.snPath) : false,
-  )
+  const pathOfContent = getPathForContentPath({ path: content.Path, uiSettings })
 
-  if (!pathOfContent) {
-    const customDrawerItem = uiSettings.drawer.items
-      .filter((item) => item.itemType === 'CustomContent')
-      .find((item: CustomContentDrawerItem) => content.Path.startsWith(item.settings!.root))
-
-    if (customDrawerItem) {
-      const contentPath = content.Path.replace(customDrawerItem.settings!.root, '')
-      const searchParams = new URLSearchParams(location.search)
-
-      return pathWithQueryParams({
-        path: resolvePathParams({
-          path: PATHS.custom.appPath,
-          params: {
-            browseType: uiSettings.content.browseType,
-            path: customDrawerItem.settings!.appPath,
-            action,
-          },
-        }),
-        newParams: {
-          path: action
-            ? removePath
-              ? undefined
-              : snRoute?.match
-              ? `/${PathHelper.getParentPath(content.Path)}`.replace(customDrawerItem.settings!.root, '')
-              : searchParams.get('path')
-            : contentPath,
-          content: action ? contentPath : undefined,
-        },
-      })
-    }
-
-    return `${location.pathname}${location.search}`
-  } else {
+  if (pathOfContent.snPath && pathOfContent.appPath) {
     const contentPath = content.Path.replace(pathOfContent.snPath, '')
     const searchParams = new URLSearchParams(location.search)
+
     return pathWithQueryParams({
       path: resolvePathParams({
-        path: pathOfContent.appPath,
-        params: { browseType: uiSettings.content.browseType, action },
+        path: pathOfContent.isCustom ? PATHS.custom.appPath : pathOfContent.appPath,
+        params: {
+          browseType: uiSettings.content.browseType,
+          path: pathOfContent.isCustom ? pathOfContent.appPath : undefined,
+          action,
+        },
       }),
       newParams: {
         path: action
@@ -138,6 +124,8 @@ export function getUrlForContent({
       },
     })
   }
+
+  return `${location.pathname}${location.search}`
 }
 
 interface NavigateToActionParams {
