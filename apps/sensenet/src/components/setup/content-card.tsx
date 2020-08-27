@@ -41,12 +41,12 @@ export const SETUP_DOCS_URL = 'https://docs.sensenet.com/concepts/basics/07-sett
 
 export const createAnchorFromName = (displayName: string) => `#${displayName.replace('.', '-').toLocaleLowerCase()}`
 
-type WellKnownContentCardProps = {
+type ContentCardProps = {
   settings: Settings
   onContextMenu: (ev: React.MouseEvent) => void
 }
 
-export const WellKnownContentCard = ({ settings, onContextMenu }: WellKnownContentCardProps) => {
+export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
   const localization = useLocalization().settings
   const repository = useRepository()
   const uiSettings = useContext(ResponsivePersonalSettings)
@@ -64,7 +64,11 @@ export const WellKnownContentCard = ({ settings, onContextMenu }: WellKnownConte
         <Typography variant="h5" gutterBottom={true}>
           {settings.DisplayName || settings.Name}
         </Typography>
-        <Typography color="textSecondary">{(localization.descriptions as any)[settings.Path]}</Typography>
+        <Typography
+          color="textSecondary"
+          style={{ wordWrap: 'break-word' }}
+          dangerouslySetInnerHTML={{ __html: settings.Description || '' }}
+        />
       </CardContent>
       <CardActions style={{ justifyContent: 'flex-end' }}>
         <Link
