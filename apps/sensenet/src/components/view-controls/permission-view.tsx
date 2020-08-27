@@ -82,6 +82,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
   const [currentContent, setCurrentContent] = useState<GenericContent | undefined>()
   const [openInheritedList, setOpenInheritedList] = useState<boolean>(false)
   const [openSetOnThisList, setOpenSetOnThisList] = useState<boolean>(true)
+  const [refreshFlag, setRefreshFlag] = useState<boolean>(false)
 
   useEffect(() => {
     async function getCurrentContent() {
@@ -108,7 +109,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
       }
     }
     getAllPermissions()
-  }, [localization.permissionEditor.errorGetAcl, logger, props.contentPath, repo])
+  }, [localization.permissionEditor.errorGetAcl, logger, props.contentPath, repo, refreshFlag])
 
   return (
     <div className={classes.permissionEditorContainer}>
@@ -138,7 +139,13 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                     onClick={() =>
                       openDialog({
                         name: 'permission-editor',
-                        props: { entry: inheritedEntry },
+                        props: {
+                          entry: inheritedEntry,
+                          path: currentContent?.Path,
+                          callBackFunction: () => {
+                            setRefreshFlag(!refreshFlag)
+                          },
+                        },
                         dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
                       })
                     }>
@@ -203,7 +210,13 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                       onClick={() =>
                         openDialog({
                           name: 'permission-editor',
-                          props: { entry: setOnThisEntry },
+                          props: {
+                            entry: setOnThisEntry,
+                            path: currentContent?.Path,
+                            callBackFunction: () => {
+                              setRefreshFlag(!refreshFlag)
+                            },
+                          },
                           dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
                         })
                       }>

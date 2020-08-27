@@ -1,6 +1,6 @@
 import { EntryType } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
-import { Settings } from '@sensenet/default-content-types'
+import { PermissionValues, Settings } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import {
   Button,
@@ -69,7 +69,9 @@ export class PermissionSettingType {
 }
 
 export type PermissionEditorDialogProps = {
+  path: string | undefined
   entry: EntryType
+  callBackFunction?: () => void
 }
 
 const PERMISSION_SETTING_PATH = '/Root/System/Settings/Permission.settings'
@@ -85,6 +87,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
 
   const [permissionSettingJSON, setPermissionSettingJSON] = useState<PermissionSettingType>()
   const [actualGroup, setActualGroup] = useState<string>('Read')
+  const [responseBody, setResponseBody] = useState<any>({ identity: props.entry.identity.path }) //TODO: should be PermissionRequestBody
 
   useEffect(() => {
     async function getPermissionSettingJSON() {
@@ -114,6 +117,26 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
     getPermissionSettingJSON()
   }, [localization.permissionEditor.errorGetPermissionSetting, logger, repo])
 
+  useEffect(() => {
+    const localResponseBody = { identity: props.entry.identity.path }
+    Object.entries(props.entry.permissions).forEach(([permissionFromAcl, permissionValueFromAcl]) => {
+      if (permissionValueFromAcl !== null) {
+        permissionValueFromAcl.from === null &&
+          Object.assign(localResponseBody, {
+            [permissionFromAcl]:
+              permissionValueFromAcl.value === 'allow'
+                ? PermissionValues.allow
+                : permissionValueFromAcl.value === 'deny'
+                ? PermissionValues.deny
+                : PermissionValues.undefined,
+          })
+      } else {
+        Object.assign(localResponseBody, { [permissionFromAcl]: PermissionValues.undefined })
+      }
+    })
+    setResponseBody(localResponseBody)
+  }, [props.entry.identity.path, props.entry.permissions])
+
   const isPermissionDisabled = (permission: string) => {
     return (
       props.entry.permissions[permission] !== null &&
@@ -122,34 +145,70 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
     )
   }
 
-  const isGroupDisabled = (selectedGroup: string) => {
-    let disabledFlag = false
-    permissionSettingJSON?.groups.map((group: PermissionGroupType) =>
-      Object.entries(group)
-        .filter(([groupname]) => selectedGroup === groupname)
-        .forEach(([, groupItem]) => {
-          disabledFlag = true
-          groupItem.forEach((permission: string) => {
-            disabledFlag = disabledFlag && isPermissionDisabled(permission)
-          })
+  const getPermissionsFromGroupName = (selectedGroup: string): string[] => {
+    let permissionsFromSettings
+    permissionSettingJSON?.groups.forEach((groupsFromSettings: PermissionGroupType) =>
+      Object.entries(groupsFromSettings)
+        .filter(([groupNameFromSettings]) => selectedGroup === groupNameFromSettings)
+        .forEach(([, selectedGroupPermissionsFromSettings]) => {
+          permissionsFromSettings = selectedGroupPermissionsFromSettings
         }),
     )
+    return permissionsFromSettings || []
+  }
+
+  const isGroupDisabled = (selectedGroup: string) => {
+    let disabledFlag = true
+
+    getPermissionsFromGroupName(selectedGroup).forEach((selectedGroupPermission: string) => {
+      disabledFlag = disabledFlag && isPermissionDisabled(selectedGroupPermission)
+    })
+
     return disabledFlag
   }
 
   const isGroupChecked = (selectedGroup: string) => {
-    let checkedFlag = false
-    permissionSettingJSON?.groups.map((group: PermissionGroupType) =>
-      Object.entries(group)
-        .filter(([groupname]) => selectedGroup === groupname)
-        .forEach(([, groupItem]) => {
-          checkedFlag = true
-          groupItem.forEach((permission: string) => {
-            checkedFlag = checkedFlag && props.entry.permissions[permission]?.value === 'allow'
-          })
-        }),
-    )
+    let checkedFlag = true
+
+    if (isGroupDisabled(selectedGroup)) {
+      getPermissionsFromGroupName(selectedGroup).forEach((selectedGroupPermission: string) => {
+        checkedFlag = checkedFlag && props.entry.permissions[selectedGroupPermission]?.value === 'allow'
+      })
+    } else {
+      getPermissionsFromGroupName(selectedGroup).forEach((selectedGroupPermission: string) => {
+        checkedFlag =
+          checkedFlag &&
+          (responseBody[selectedGroupPermission] === undefined ||
+            (responseBody[selectedGroupPermission] !== undefined &&
+              responseBody[selectedGroupPermission] === PermissionValues.allow))
+      })
+    }
+
     return checkedFlag
+  }
+
+  const isFullAccessChecked = () => {
+    let checkedFlag = true
+
+    permissionSettingJSON?.groups.forEach((groupsFromSettings: PermissionGroupType) =>
+      Object.entries(groupsFromSettings).forEach(([groupName]) => {
+        checkedFlag = checkedFlag && isGroupChecked(groupName)
+      }),
+    )
+
+    return checkedFlag
+  }
+
+  const isFullAccessDisabled = () => {
+    let disabledFlag = true
+
+    permissionSettingJSON?.groups.forEach((groupsFromSettings: PermissionGroupType) =>
+      Object.entries(groupsFromSettings).forEach(([groupName]) => {
+        disabledFlag = disabledFlag && isGroupDisabled(groupName)
+      }),
+    )
+
+    return disabledFlag
   }
 
   return (
@@ -165,20 +224,42 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
           </ListItem>
           <Divider />
 
-          {permissionSettingJSON?.groups.map((group: PermissionGroupType) =>
-            Object.entries(group).map(([groupname]) => {
+          {permissionSettingJSON?.groups.map((groupsFromSettings: PermissionGroupType) =>
+            Object.entries(groupsFromSettings).map(([groupNameFromSettings]) => {
               return (
                 <ListItem
-                  key={groupname}
+                  key={groupNameFromSettings}
                   button
                   className={classes.secondaryListItem}
-                  onClick={() => setActualGroup(groupname)}>
-                  <ListItemText disableTypography primary={groupname} />
+                  onClick={() => setActualGroup(groupNameFromSettings)}>
+                  <ListItemText
+                    disableTypography
+                    primary={groupNameFromSettings}
+                    className={clsx({
+                      [classes.disabled]: isGroupDisabled(groupNameFromSettings),
+                    })}
+                  />
                   <Switcher
-                    checked={isGroupChecked(groupname)}
-                    disabled={isGroupDisabled(groupname)}
+                    checked={isGroupChecked(groupNameFromSettings)}
+                    disabled={isGroupDisabled(groupNameFromSettings)}
                     size="small"
-                    onClick={() => {}}
+                    onClick={() => {
+                      const localResponseBody = { ...responseBody }
+                      getPermissionsFromGroupName(groupNameFromSettings).forEach((selectedGroupPermission: string) => {
+                        if (responseBody[selectedGroupPermission] !== undefined) {
+                          if (isGroupChecked(groupNameFromSettings)) {
+                            Object.assign(localResponseBody, {
+                              [selectedGroupPermission]: PermissionValues.undefined,
+                            })
+                          } else {
+                            Object.assign(localResponseBody, {
+                              [selectedGroupPermission]: PermissionValues.allow,
+                            })
+                          }
+                        }
+                      })
+                      setResponseBody(localResponseBody)
+                    }}
                   />
                 </ListItem>
               )
@@ -186,43 +267,86 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
           )}
           <Divider />
           <ListItem className={classes.secondaryListItem}>
-            <ListItemText disableTypography primary={localization.permissionEditor.grantFullAccess} />
-            <Switcher checked={true} size="small" onClick={() => {}} />
+            <ListItemText
+              disableTypography
+              primary={localization.permissionEditor.grantFullAccess}
+              className={clsx({
+                [classes.disabled]: isFullAccessDisabled(),
+              })}
+            />
+            <Switcher
+              checked={isFullAccessChecked()}
+              disabled={isFullAccessDisabled()}
+              size="small"
+              onClick={() => {
+                const localResponseBody = { ...responseBody }
+                permissionSettingJSON?.groups.forEach((groupsFromSettings: PermissionGroupType) =>
+                  Object.entries(groupsFromSettings).forEach(([groupName]) => {
+                    getPermissionsFromGroupName(groupName).forEach((selectedGroupPermission: string) => {
+                      if (responseBody[selectedGroupPermission] !== undefined) {
+                        if (isFullAccessChecked()) {
+                          Object.assign(localResponseBody, {
+                            [selectedGroupPermission]: PermissionValues.undefined,
+                          })
+                        } else {
+                          Object.assign(localResponseBody, {
+                            [selectedGroupPermission]: PermissionValues.allow,
+                          })
+                        }
+                      }
+                    })
+                  }),
+                )
+
+                setResponseBody(localResponseBody)
+              }}
+            />
           </ListItem>
           <Divider />
           <ListItem>
-            <ListItemText primary={localization.permissionEditor.localOnly} />
-            <Switcher checked={true} size="small" onClick={() => {}} />
+            <ListItemText primary={localization.permissionEditor.localOnly} className={classes.disabled} />
+            <Switcher checked={false} size="small" disabled onClick={() => {}} />
           </ListItem>
         </List>
         <div className={clsx(classes.column, classes.rightColumn)}>
           <div className={classes.permissionContainer}>
             <List>
-              {permissionSettingJSON?.groups.map((group: PermissionGroupType) =>
-                Object.entries(group)
-                  .filter(([groupname]) => actualGroup === groupname)
-                  .map(([, groupItem]) => {
-                    return groupItem.map((permission: string) => {
-                      return (
-                        <ListItem key={permission} onClick={() => {}}>
-                          <ListItemText
-                            disableTypography
-                            primary={permission}
-                            className={clsx({
-                              [classes.disabled]: isPermissionDisabled(permission),
-                            })}
-                          />
-                          <Switcher
-                            checked={props.entry.permissions[permission]?.value === 'allow'}
-                            disabled={isPermissionDisabled(permission)}
-                            size="small"
-                            onClick={() => {}}
-                          />
-                        </ListItem>
-                      )
-                    })
-                  }),
-              )}
+              {getPermissionsFromGroupName(actualGroup).map((selectedGroupPermission: string) => {
+                return (
+                  <ListItem key={selectedGroupPermission} onClick={() => {}}>
+                    <ListItemText
+                      disableTypography
+                      primary={selectedGroupPermission}
+                      className={clsx({
+                        [classes.disabled]: isPermissionDisabled(selectedGroupPermission),
+                      })}
+                    />
+                    <Switcher
+                      checked={
+                        (responseBody[selectedGroupPermission] !== undefined &&
+                          responseBody[selectedGroupPermission] === PermissionValues.allow) ||
+                        (responseBody[selectedGroupPermission] === undefined &&
+                          props.entry.permissions[selectedGroupPermission]?.value === 'allow')
+                      }
+                      disabled={isPermissionDisabled(selectedGroupPermission)}
+                      size="small"
+                      onClick={() => {
+                        const localResponseBody = { ...responseBody }
+                        if (responseBody[selectedGroupPermission] === PermissionValues.allow) {
+                          Object.assign(localResponseBody, {
+                            [selectedGroupPermission]: PermissionValues.undefined,
+                          })
+                        } else {
+                          Object.assign(localResponseBody, {
+                            [selectedGroupPermission]: PermissionValues.allow,
+                          })
+                        }
+                        setResponseBody(localResponseBody)
+                      }}
+                    />
+                  </ListItem>
+                )
+              })}
             </List>
           </div>
           <DialogActions className={classes.dialogActions}>
@@ -232,7 +356,30 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
               onClick={closeLastDialog}>
               {localization.forms.cancel}
             </Button>
-            <Button aria-label={localization.forms.submit} color="primary" variant="contained" autoFocus={true}>
+            <Button
+              aria-label={localization.forms.submit}
+              color="primary"
+              variant="contained"
+              autoFocus={true}
+              onClick={async () => {
+                if (props.path) {
+                  //TODO: rewrite this when it will has a return value (JSON)
+                  try {
+                    await repo.security.setPermissions(props.path, [responseBody])
+                  } catch (error) {
+                    logger.error({
+                      message: error.message,
+                      data: {
+                        details: { error },
+                      },
+                    })
+                    return false
+                  } finally {
+                    props.callBackFunction?.()
+                    closeLastDialog()
+                  }
+                }
+              }}>
               {localization.forms.submit}
             </Button>
           </DialogActions>
