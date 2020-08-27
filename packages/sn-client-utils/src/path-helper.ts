@@ -122,6 +122,11 @@ export class PathHelper {
     return trimmedDescendantPath.indexOf(`${this.joinPaths(trimmedAncestorPath)}/`) === 0
   }
 
+  public static isInSubTree(currentPath: string, treeRoot: string): boolean {
+    const regexp = new RegExp(`^${treeRoot}(/|$)`)
+    return regexp.test(currentPath)
+  }
+
   /**
    * Returns the parent path from a specified path.
    * e.g. "/Root/Example/Content" will return "/Root/Example"
