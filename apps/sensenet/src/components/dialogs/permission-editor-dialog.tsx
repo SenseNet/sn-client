@@ -58,14 +58,14 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-export class PermissionGroupType {
+export interface PermissionGroupType {
   /* Permission elements */
-  public groupObject!: { [permissionName: string]: string[] }
+  groupObject: { [permissionName: string]: string[] }
 }
 
-export class PermissionSettingType {
+export interface PermissionSettingType {
   /* Groups of permissions */
-  public groups!: PermissionGroupType[]
+  groups: PermissionGroupType[]
 }
 
 export type PermissionEditorDialogProps = {

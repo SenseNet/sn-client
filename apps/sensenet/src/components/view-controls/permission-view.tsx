@@ -164,7 +164,8 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                           {inheritedEntry.identity.displayName}
                           <Link
                             component="button"
-                            onClick={async () => {
+                            onClick={async (event: React.MouseEvent<HTMLElement>) => {
+                              event.stopPropagation()
                               const response = await repo.load({
                                 idOrPath: inheritedEntry.ancestor!,
                                 oDataOptions: { select: 'all' },
