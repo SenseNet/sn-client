@@ -1,7 +1,8 @@
 const DocgenPlugin = require('./docgen-plugin')
 
 module.exports = {
-  webpackFinal: async config => {
+  addons: ['@storybook/addon-a11y'],
+  webpackFinal: async (config) => {
     config.module.rules.push({
       test: /\.(ts|tsx)$/,
       use: [
