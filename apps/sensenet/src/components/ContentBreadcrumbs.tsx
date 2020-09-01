@@ -84,7 +84,7 @@ export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
                 openDialog({
                   name: 'delete',
                   props: { content: selected },
-                  dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true, open: false },
+                  dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true },
                 })
               }}>
               <DeleteIcon />
@@ -101,7 +101,7 @@ export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
                     currentParent: parent,
                     operation: 'move',
                   },
-                  dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true, open: false },
+                  dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true },
                 })
               }}>
               <FileCopyIcon />
@@ -118,7 +118,7 @@ export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
                     currentParent: parent,
                     operation: 'copy',
                   },
-                  dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true, open: false },
+                  dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true },
                 })
               }}>
               <FileCopyOutlinedIcon />

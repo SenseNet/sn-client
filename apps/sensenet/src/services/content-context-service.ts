@@ -48,14 +48,14 @@ export function getMonacoLanguage(content: GenericContent, repository: Repositor
 }
 
 export function getPathForContentPath({ path, uiSettings }: { path: string; uiSettings: UiSettings }) {
-  const pathOfContent: any = Object.values(PATHS).find((pathConfigElement: any) =>
-    pathConfigElement.snPath ? path.startsWith(pathConfigElement.snPath) : false,
-  )
+  const pathOfContent: any = Object.values(PATHS).find((pathConfigElement: any) => {
+    return pathConfigElement.snPath ? PathHelper.isInSubTree(path, pathConfigElement.snPath) : false
+  })
 
   if (!pathOfContent) {
     const customDrawerItem = uiSettings.drawer.items
       .filter((item) => item.itemType === 'CustomContent')
-      .find((item: CustomContentDrawerItem) => path.startsWith(item.settings!.root))
+      .find((item: CustomContentDrawerItem) => PathHelper.isInSubTree(path, item.settings!.root))
     return { snPath: customDrawerItem?.settings?.root, appPath: customDrawerItem?.settings?.appPath, isCustom: true }
   }
 
@@ -79,7 +79,7 @@ export function getUrlForContent({
   snRoute,
   removePath = false,
 }: GetUrlForContentParams) {
-  if (snRoute?.path && content.Path.startsWith(snRoute.path)) {
+  if (snRoute?.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
     const contentPath = content.Path.replace(snRoute.path, '')
     const searchParams = new URLSearchParams(location.search)
     return pathWithQueryParams({

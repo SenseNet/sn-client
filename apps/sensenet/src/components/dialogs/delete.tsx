@@ -144,7 +144,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                   const deletedCurrentContent =
                     snRoute.path &&
                     props.content.find((currentContent) =>
-                      `${snRoute.path}${currentPath}`.startsWith(currentContent.Path),
+                      PathHelper.isInSubTree(`${snRoute.path}${currentPath}`, currentContent.Path),
                     )
 
                   if (deletedCurrentContent) {
