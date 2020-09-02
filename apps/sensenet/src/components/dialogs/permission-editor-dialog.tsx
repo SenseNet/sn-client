@@ -88,6 +88,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
   const [permissionSettingJSON, setPermissionSettingJSON] = useState<PermissionSettingType>()
   const [actualGroup, setActualGroup] = useState<string>('Read')
   const [responseBody, setResponseBody] = useState<PermissionRequestBody>({ identity: props.entry.identity.path })
+  const [isLocalOnly, setIsLocalOnly] = useState<boolean>(!props.entry.propagates)
 
   useEffect(() => {
     async function getPermissionSettingJSON() {
@@ -308,8 +309,14 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
           </ListItem>
           <Divider />
           <ListItem>
-            <ListItemText primary={localization.permissionEditor.localOnly} className={classes.disabled} />
-            <Switcher checked={false} size="small" disabled onClick={() => {}} />
+            <ListItemText primary={localization.permissionEditor.localOnly} />
+            <Switcher
+              checked={isLocalOnly}
+              size="small"
+              onClick={() => {
+                setIsLocalOnly(!isLocalOnly)
+              }}
+            />
           </ListItem>
         </List>
         <div className={clsx(classes.column, classes.rightColumn)}>
@@ -369,7 +376,11 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                 if (props.path) {
                   //TODO: rewrite this when it will has a return value (JSON)
                   try {
-                    await repo.security.setPermissions(props.path, [responseBody])
+                    const localResponseBody = responseBody
+                    if (isLocalOnly) {
+                      Object.assign(localResponseBody, { localOnly: true })
+                    }
+                    await repo.security.setPermissions(props.path, [localResponseBody])
                   } catch (error) {
                     logger.error({
                       message: error.message,

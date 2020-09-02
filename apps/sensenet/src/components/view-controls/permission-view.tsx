@@ -62,6 +62,10 @@ const useStyles = makeStyles((theme: Theme) => {
         textDecoration: 'underline',
       },
     },
+    localOnly: {
+      fontSize: '14px',
+      paddingLeft: '15px',
+    },
   })
 })
 
@@ -233,7 +237,16 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                         ) : null}
                       </ListItemIcon>
 
-                      <ListItemText primary={setOnThisEntry.identity.displayName} />
+                      <ListItemText
+                        primary={
+                          <div>
+                            {setOnThisEntry.identity.displayName}
+                            {!setOnThisEntry.propagates && (
+                              <span className={classes.localOnly}>({localization.permissionEditor.localOnly})</span>
+                            )}
+                          </div>
+                        }
+                      />
                     </ListItem>
                   )
                 })}
