@@ -2,33 +2,25 @@ import { ConstantContent } from '@sensenet/client-core'
 import { Settings } from '@sensenet/default-content-types'
 import { useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
 import { Query } from '@sensenet/query'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import Typography from '@material-ui/core/Typography'
 import clsx from 'clsx'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { Link, useHistory, useRouteMatch } from 'react-router-dom'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useHistory, useRouteMatch } from 'react-router-dom'
 import { PATHS } from '../../application-paths'
-import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useQuery } from '../../hooks'
-import { getPrimaryActionUrl, navigateToAction } from '../../services/content-context-service'
+import { navigateToAction } from '../../services/content-context-service'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { EditBinary } from '../edit/edit-binary'
 import { BrowseView, EditView, NewView, VersionView } from '../view-controls'
-import { WellKnownContentCard } from './well-known-content-card'
+import { ContentCard } from './content-card'
 
 const Setup = () => {
   const repository = useRepository()
-  const localization = useLocalization().settings
-  const uiSettings = useContext(ResponsivePersonalSettings)
   const globalClasses = useGlobalStyles()
   const history = useHistory()
   const localizationDrawerTitles = useLocalization().drawer.titles
   const eventHub = useRepositoryEvents()
   const [reloadToken, setReloadToken] = useState(Date.now())
-  const [wellKnownSettings, setWellKnownSettings] = useState<Settings[]>([])
   const [settings, setSettings] = useState<Settings[]>([])
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
@@ -49,16 +41,9 @@ const Setup = () => {
           query: `${new Query((q) => q.typeIs(Settings)).toString()} .AUTOFILTERS:OFF`,
         },
       })
-
-      setWellKnownSettings(
-        response.d.results.filter((setting) => Object.keys(localization.descriptions).includes(setting.Path)),
-      )
-
-      setSettings(
-        response.d.results.filter((setting) => !Object.keys(localization.descriptions).includes(setting.Path)),
-      )
+      setSettings(response.d.results)
     })()
-  }, [localization.descriptions, repository, reloadToken])
+  }, [repository, reloadToken])
 
   useEffect(() => {
     const subscriptions = [
@@ -106,11 +91,11 @@ const Setup = () => {
       default:
         return (
           <>
-            {wellKnownSettings.length ? (
+            {settings.length ? (
               <div className={globalClasses.centered} style={{ flexWrap: 'wrap' }}>
                 <ContentContextMenu
                   isOpened={isContextMenuOpened}
-                  content={contextMenuItem ?? wellKnownSettings[0]}
+                  content={contextMenuItem ?? settings[0]}
                   onClose={() => setIsContextMenuOpened(false)}
                   menuProps={{
                     anchorEl: contextMenuAnchor,
@@ -120,37 +105,21 @@ const Setup = () => {
                     },
                   }}
                 />
-                {wellKnownSettings.map((s) => (
-                  <WellKnownContentCard
-                    settings={s}
-                    key={s.Id}
-                    onContextMenu={(ev) => {
-                      ev.preventDefault()
-                      setContextMenuAnchor((ev.currentTarget as HTMLElement) || null)
-                      setContextMenuItem(s)
-                      setIsContextMenuOpened(true)
-                    }}
-                  />
-                ))}
-              </div>
-            ) : null}
-            <br />
-            {settings?.length ? (
-              <>
-                <Typography variant="h5">{localization.otherSettings}</Typography>
-                <List>
-                  {settings.map((s) => (
-                    <Link
+                {settings.map((s) => {
+                  return (
+                    <ContentCard
+                      settings={s}
                       key={s.Id}
-                      to={getPrimaryActionUrl({ content: s, repository, uiSettings, location: history.location })}
-                      style={{ textDecoration: 'none' }}>
-                      <ListItem button={true}>
-                        <ListItemText primary={s.DisplayName || s.Name} secondary={s.Path} />
-                      </ListItem>
-                    </Link>
-                  ))}
-                </List>
-              </>
+                      onContextMenu={(ev) => {
+                        ev.preventDefault()
+                        setContextMenuAnchor((ev.currentTarget as HTMLElement) || null)
+                        setContextMenuItem(s)
+                        setIsContextMenuOpened(true)
+                      }}
+                    />
+                  )
+                })}
+              </div>
             ) : null}
           </>
         )
