@@ -32,7 +32,6 @@ export const testFile: File = {
 
 storiesOf('ViewControls', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11y)
   .add(
     'new view',
     () => (
