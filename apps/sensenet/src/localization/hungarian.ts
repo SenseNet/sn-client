@@ -167,6 +167,8 @@ const values: DeepPartial<typeof import('./default').default> = {
     permissions: 'Jogosultságok',
     grantFullAccess: 'Teljes hozzáférés',
     localOnly: 'Helyi módosítás',
+    makePublic: 'Tartalom nyilvánossá tétele',
+    makePrivate: 'Tartalom priváttá tétele',
   },
 }
 
