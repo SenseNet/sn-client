@@ -460,6 +460,9 @@ const values = {
     permissions: 'Permissions',
     grantFullAccess: 'Grant full access',
     localOnly: 'Local only',
+    members: 'Members',
+    errorGetMembersInfo: 'Something went wrong during getting info about group members',
+    addNewMember: '+ Add new member',
   },
 }
 

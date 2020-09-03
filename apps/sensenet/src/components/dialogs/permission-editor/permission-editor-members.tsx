@@ -1,45 +1,54 @@
 import { reactControlMapper } from '@sensenet/controls-react'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { Button, createStyles, DialogContent, IconButton, makeStyles, Theme } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
-import CloseIcon from '@material-ui/icons/Close'
+import { Button, createStyles, makeStyles, Theme } from '@material-ui/core'
+
+import clsx from 'clsx'
 import React, { createElement, useState } from 'react'
-import { globals, useGlobalStyles } from '../../globalStyles'
-import { useLocalization, usePagination } from '../../hooks'
-import { ReferenceList } from './reference-content-list/reference-list'
-import { DialogTitle, useDialog } from '.'
+import { useGlobalStyles } from '../../../globalStyles'
+import { useLocalization, usePagination } from '../../../hooks'
+import { ReferenceList } from '../reference-content-list/reference-list'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
-    closeButton: {
-      position: 'absolute',
-      right: theme.spacing(3),
-      top: 0,
-      color: globals.common.headerText,
-
+    anchor: {
+      fontSize: '14px',
+      color: theme.palette.primary.main,
+      cursor: 'pointer',
       '&:hover': {
-        backgroundColor: '#3c4359',
+        textDecoration: 'underline',
       },
+    },
+    form: {
+      justifyContent: 'space-between',
+      padding: '10px 20px',
+    },
+    listWrapper: {
+      padding: '0 30px',
+      minHeight: '270px',
+    },
+    addNewButton: {
+      border: 'none !important',
+      textDecoration: 'underline',
+      textTransform: 'none',
     },
   })
 })
 
-export type ReferenceContentListProps = {
+export type PermissionEditorMembersProps = {
   items: GenericContent[]
   parent: GenericContent
   fieldName: string
   canEdit: boolean
 }
 
-export function ReferenceContentList(props: ReferenceContentListProps) {
+export function PermissionEditorMembers(props: PermissionEditorMembersProps) {
   const [references, setReferences] = useState(props.items)
   const [newReference, setNewReference] = useState<GenericContent>()
   const [requestClearToken, setRequestClearToken] = useState<number>()
 
-  const { closeLastDialog } = useDialog()
-  const globalClasses = useGlobalStyles()
   const classes = useStyles()
+  const globalClasses = useGlobalStyles()
   const repository = useRepository()
   const pagination = usePagination({ items: references, color: 'primary' })
   const controlMapper = reactControlMapper(repository)
@@ -89,28 +98,21 @@ export function ReferenceContentList(props: ReferenceContentListProps) {
 
   return (
     <>
-      <DialogTitle>
-        {props.parent.DisplayName}
-        <IconButton aria-label="close" className={classes.closeButton} onClick={closeLastDialog}>
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
-      <DialogContent>
-        {props.canEdit && (
-          <form className={globalClasses.centeredVertical} onSubmit={handleAddMembers}>
-            {fieldControl}
-            <Button
-              variant="contained"
-              color="primary"
-              startIcon={<AddIcon />}
-              style={{ marginLeft: '0.5rem' }}
-              disabled={!newReference}
-              type="submit">
-              Add
-            </Button>
-          </form>
-        )}
+      {props.canEdit && (
+        <form className={clsx(globalClasses.centeredVertical, classes.form)} onSubmit={handleAddMembers}>
+          {fieldControl}
+          <Button
+            variant="outlined"
+            color="primary"
+            disabled={!newReference}
+            type="submit"
+            className={classes.addNewButton}>
+            {localization.permissionEditor.addNewMember}
+          </Button>
+        </form>
+      )}
 
+      <div className={classes.listWrapper}>
         <ReferenceList
           pagination={pagination}
           canEdit={props.canEdit}
@@ -119,9 +121,7 @@ export function ReferenceContentList(props: ReferenceContentListProps) {
           parent={props.parent}
           fieldName={props.fieldName}
         />
-      </DialogContent>
+      </div>
     </>
   )
 }
-
-export default ReferenceContentList

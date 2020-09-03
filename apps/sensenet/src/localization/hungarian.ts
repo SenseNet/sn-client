@@ -167,6 +167,9 @@ const values: DeepPartial<typeof import('./default').default> = {
     permissions: 'Jogosultságok',
     grantFullAccess: 'Teljes hozzáférés',
     localOnly: 'Helyi módosítás',
+    members: 'Csoporttagok',
+    errorGetMembersInfo: 'Hiba történt a csoporttagok lekérdezése során',
+    addNewMember: '+ Új tag hozzáadása',
   },
 }
 
