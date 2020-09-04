@@ -460,6 +460,8 @@ const values = {
     permissions: 'Permissions',
     grantFullAccess: 'Grant full access',
     localOnly: 'Local only',
+    newEntry: 'New permission entry',
+    add: 'Add',
   },
 }
 

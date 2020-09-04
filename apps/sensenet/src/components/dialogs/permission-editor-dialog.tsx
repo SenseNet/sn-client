@@ -357,7 +357,10 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
             <Button
               aria-label={localization.forms.cancel}
               className={globalClasses.cancelButton}
-              onClick={closeLastDialog}>
+              onClick={() => {
+                closeLastDialog()
+                props.callBackFunction?.()
+              }}>
               {localization.forms.cancel}
             </Button>
             <Button

@@ -17,6 +17,7 @@ const SaveQuery = React.lazy(() => import('./save-query'))
 const Upload = React.lazy(() => import('./upload/upload-dialog'))
 const ReferenceContentList = React.lazy(() => import('./reference-content-list'))
 const PermissionEditorDialog = React.lazy(() => import('./permission-editor-dialog'))
+const MemberSelect = React.lazy(() => import('./member-select-dialog'))
 
 function dialogRenderer(dialog: DialogWithProps) {
   switch (dialog.name) {
@@ -48,6 +49,8 @@ function dialogRenderer(dialog: DialogWithProps) {
       return <ReferenceContentList {...dialog.props} />
     case 'permission-editor':
       return <PermissionEditorDialog {...dialog.props} />
+    case 'member-select':
+      return <MemberSelect {...dialog.props} />
     default:
       return null
   }

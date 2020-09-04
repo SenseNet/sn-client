@@ -1,4 +1,4 @@
-import { AclResponseModel } from '@sensenet/client-core'
+import { AclResponseModel, EntryType } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
@@ -83,6 +83,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
   const [openInheritedList, setOpenInheritedList] = useState<boolean>(false)
   const [openSetOnThisList, setOpenSetOnThisList] = useState<boolean>(true)
   const [refreshFlag, setRefreshFlag] = useState<boolean>(false)
+  const [selectedListItem, setSelectedListItem] = useState<number>()
 
   useEffect(() => {
     async function getCurrentContent() {
@@ -111,6 +112,25 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
     getAllPermissions()
   }, [localization.permissionEditor.errorGetAcl, logger, props.contentPath, repo, refreshFlag])
 
+  const selectMemberFunction = (newEntry: EntryType) => {
+    if (permissions) {
+      const localPermissions = { ...permissions }
+      localPermissions.entries.push(newEntry)
+    }
+    setSelectedListItem(newEntry.identity.id)
+    openDialog({
+      name: 'permission-editor',
+      props: {
+        entry: newEntry,
+        path: currentContent?.Path,
+        callBackFunction: () => {
+          setRefreshFlag(!refreshFlag)
+        },
+      },
+      dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
+    })
+  }
+
   return (
     <div className={classes.permissionEditorContainer}>
       <div className={classes.titleContainer}>
@@ -118,7 +138,23 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
           {localization.permissionEditor.setPermissons}{' '}
           <span className={classes.textBolder}>{currentContent?.DisplayName}</span>
         </div>
-        <Button aria-label={localization.permissionEditor.assign} color="primary" variant="contained">
+        <Button
+          aria-label={localization.permissionEditor.assign}
+          color="primary"
+          variant="contained"
+          onClick={() => {
+            setSelectedListItem(undefined)
+            openDialog({
+              name: 'member-select',
+              props: {
+                currentContentPath: currentContent?.Path,
+                callbackAfterSelect: (newEntry) => {
+                  selectMemberFunction(newEntry)
+                },
+              },
+              dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
+            })
+          }}>
           {localization.permissionEditor.assign}
         </Button>
       </div>
@@ -134,9 +170,11 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
               .map((inheritedEntry) => {
                 return (
                   <ListItem
+                    selected={selectedListItem === inheritedEntry.identity.id}
                     button
                     key={inheritedEntry.identity.id}
-                    onClick={() =>
+                    onClick={() => {
+                      setSelectedListItem(inheritedEntry.identity.id)
                       openDialog({
                         name: 'permission-editor',
                         props: {
@@ -148,7 +186,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                         },
                         dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
                       })
-                    }>
+                    }}>
                     {inheritedEntry.identity.kind === 'group' ? (
                       <div className={clsx(classes.iconWrapper, globalClasses.centered)}>
                         <GroupOutlined />
@@ -200,15 +238,17 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
               <ListItemText primary={localization.permissionEditor.noContent} />
             </ListItem>
           ) : (
-            <List component="div" disablePadding>
+            <List id="setOnThisList" component="div" disablePadding>
               {permissions?.entries
                 .filter((entry) => entry.inherited === false)
                 .map((setOnThisEntry) => {
                   return (
                     <ListItem
+                      selected={selectedListItem === setOnThisEntry.identity.id}
                       button
                       key={setOnThisEntry.identity.id}
-                      onClick={() =>
+                      onClick={() => {
+                        setSelectedListItem(setOnThisEntry.identity.id)
                         openDialog({
                           name: 'permission-editor',
                           props: {
@@ -220,7 +260,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                           },
                           dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
                         })
-                      }>
+                      }}>
                       <ListItemIcon>
                         {setOnThisEntry.identity.kind === 'group' ? (
                           <div className={clsx(classes.iconWrapper, globalClasses.centered)}>

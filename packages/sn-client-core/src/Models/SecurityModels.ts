@@ -116,7 +116,7 @@ export class IdentityType {
   /* Name */
   public name!: string
   /* DisplayName */
-  public displayName!: string
+  public displayName?: string
   /* Domain */
   public domain?: null | string
   /* Kind */
