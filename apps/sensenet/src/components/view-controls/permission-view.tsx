@@ -14,7 +14,9 @@ import {
   ListItemText,
   makeStyles,
   Theme,
+  Tooltip,
 } from '@material-ui/core'
+import DesktopMac from '@material-ui/icons/DesktopMac'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import GroupOutlined from '@material-ui/icons/GroupOutlined'
@@ -62,9 +64,8 @@ const useStyles = makeStyles((theme: Theme) => {
         textDecoration: 'underline',
       },
     },
-    localOnly: {
-      fontSize: '14px',
-      paddingLeft: '15px',
+    localOnlyIcon: {
+      marginLeft: '20px',
     },
   })
 })
@@ -239,10 +240,12 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
 
                       <ListItemText
                         primary={
-                          <div>
+                          <div className={globalClasses.centeredVertical}>
                             {setOnThisEntry.identity.displayName}
                             {!setOnThisEntry.propagates && (
-                              <span className={classes.localOnly}>({localization.permissionEditor.localOnly})</span>
+                              <Tooltip title={localization.permissionEditor.localOnly} placement="top">
+                                <DesktopMac className={classes.localOnlyIcon} />
+                              </Tooltip>
                             )}
                           </div>
                         }
