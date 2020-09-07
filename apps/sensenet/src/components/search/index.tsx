@@ -43,7 +43,7 @@ export const Search = () => {
   const { location } = history
   const { openDialog } = useDialog()
   const logger = useLogger('Search')
-  const [query, setQuery] = useState(termFromQuery ? decodeURIComponent(termFromQuery) : undefined)
+  const [query, setQuery] = useState(termFromQuery || undefined)
   const selectionService = useSelectionService()
   const localization = useLocalization().search
   const classes = useStyles()
@@ -70,12 +70,10 @@ export const Search = () => {
       return
     }
 
-    const term = decodeURIComponent(termFromQuery)
-
     if (searchInputRef.current) {
-      searchInputRef.current.value = term
+      searchInputRef.current.value = termFromQuery
     }
-    setQuery((currentState) => (currentState !== term ? term : currentState))
+    setQuery((currentState) => (currentState !== termFromQuery ? termFromQuery : currentState))
   }, [termFromQuery])
 
   useEffect(() => {

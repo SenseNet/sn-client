@@ -113,6 +113,10 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
   )
 
   useEffect(() => {
+    setSelected([])
+  }, [children])
+
+  useEffect(() => {
     props.onActiveItemChange?.(activeContent)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeContent])

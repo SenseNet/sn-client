@@ -52,7 +52,7 @@ const modules = {
     [{ color: [] }, { background: [] }], // dropdown with defaults from theme
     [{ font: [] }],
     [{ align: [] }],
-
+    ['image', 'link'],
     ['clean'], // remove formatting button
   ],
   oembed: true,
