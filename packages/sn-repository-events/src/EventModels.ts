@@ -118,6 +118,20 @@ export interface Deleted {
 }
 
 /**
+ * Model for more Contents Deleted event
+ */
+export interface BatchDeleted {
+  /**
+   * The Content datas have been deleted
+   */
+  contentDatas: Content[]
+  /**
+   * Indicates if the Content was deleted permanently or just moved to Trash
+   */
+  permanently: boolean
+}
+
+/**
  * Model for Content Delete failed event
  */
 export interface DeleteFailed {
@@ -134,6 +148,29 @@ export interface DeleteFailed {
    * The Error that caused the failure
    */
   error: any
+}
+
+export interface BatchDeleteFailedData {
+  /**
+   * The Content that you've tried to delete
+   */
+  content: Content
+  /**
+   * The Error that caused the failure
+   */
+  error: any
+}
+
+/**
+ * Model for more Contents Delete failed event
+ */
+export interface BatchDeleteFailed {
+  /**
+   * Indicates if you've tried to delete the Contents permanently or just tried to move it to the Trash
+   */
+  permanently: boolean
+
+  data: BatchDeleteFailedData[]
 }
 
 /**

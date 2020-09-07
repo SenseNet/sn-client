@@ -155,6 +155,20 @@ export const initLog = createAction(() => ({
         }),
       )
     })
+    eventHub.onBatchDelete.subscribe((ev) => {
+      ev.contentDatas.forEach((contentData) => {
+        options.dispatch(
+          addLogEntry({
+            dump: ev,
+            messageEntry: {
+              message: `${contentData.Name} ${resources.DELETE_BATCH_SUCCESS_MESSAGE}`,
+              bulkMessage: `{count} ${resources.ITEMS} ${resources.DELETE_BATCH_SUCCESS_MULTIPLE_MESSAGE}`,
+              verbosity: 'info',
+            },
+          }),
+        )
+      })
+    })
     eventHub.onContentDeleteFailed.subscribe((ev) => {
       options.dispatch(
         addLogEntry({
@@ -166,6 +180,20 @@ export const initLog = createAction(() => ({
           },
         }),
       )
+    })
+    eventHub.onBatchDeleteFailed.subscribe((deletedDatas) => {
+      deletedDatas.data.forEach((data) => {
+        options.dispatch(
+          addLogEntry({
+            dump: data,
+            messageEntry: {
+              message: data.error.message.value,
+              bulkMessage: resources.DELETE_BATCH_SUCCESS_FAILED_MESSAGE,
+              verbosity: 'error',
+            },
+          }),
+        )
+      })
     })
     eventHub.onCustomActionExecuted.subscribe((ev) => {
       if (logActions.indexOf(ev.actionOptions.name) > -1) {

@@ -217,6 +217,21 @@ export const loadParent = createAction(
               }),
             )
           }) as any,
+          eventHub.onBatchDelete.subscribe((deletedDatas) => {
+            deletedDatas.contentDatas.forEach((contentData) => {
+              const currentItems = options.getState().dms.documentLibrary.items
+              const filtered = currentItems.d.results.filter((item) => item.Id !== contentData.Id)
+              options.dispatch(
+                setItems({
+                  ...currentItems,
+                  d: {
+                    __count: filtered.length,
+                    results: filtered,
+                  },
+                }),
+              )
+            })
+          }) as any,
           eventHub.onContentMoved.subscribe((value) => emitChange(value.content)) as any,
         )
         const ancestors = await repository.executeAction<undefined, ODataCollectionResponse<GenericContent>>({

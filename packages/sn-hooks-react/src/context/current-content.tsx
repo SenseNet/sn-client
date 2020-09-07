@@ -55,9 +55,15 @@ export const CurrentContentProvider: React.FunctionComponent<CurrentContentProvi
         const parentContent = await repo.load({ idOrPath: PathHelper.getParentPath(c.contentData.Path) })
         setContent(parentContent.d)
       }),
+      events.onBatchDelete.subscribe(async (deletedDatas) => {
+        const parentContent = await repo.load({
+          idOrPath: PathHelper.getParentPath(deletedDatas.contentDatas[deletedDatas.contentDatas.length - 1].Path),
+        })
+        setContent(parentContent.d)
+      }),
     ]
     return () => subscriptions.forEach((s) => s.dispose())
-  }, [content.Id, events.onContentDeleted, events.onContentModified, repo])
+  }, [content.Id, events.onBatchDelete, events.onContentDeleted, events.onContentModified, repo])
 
   useEffect(() => {
     const ac = new AbortController()

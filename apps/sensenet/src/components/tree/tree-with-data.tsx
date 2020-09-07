@@ -222,11 +222,27 @@ export default function TreeWithData(props: TreeWithDataProps) {
         setTreeData({ ...treeData! })
         lock.release()
       }),
+      eventHub.onBatchDelete.subscribe((deletedDatas) => {
+        deletedDatas.contentDatas.forEach(async (d) => {
+          await lock.acquire()
+          walkTree(treeData!, (node) => {
+            if (node.Id === d.Id && treeData?.children?.length) {
+              treeData.children = treeData.children.filter((n) => n.Id !== d.Id)
+              setItemCount((itemCountTemp) => itemCountTemp && itemCountTemp - 1)
+            } else if (PathHelper.trimSlashes(node.Path) === PathHelper.getParentPath(d.Path)) {
+              node.children = node.children?.filter((n) => n.Id !== d.Id)
+            }
+          })
+          setTreeData({ ...treeData! })
+          lock.release()
+        })
+      }),
     ]
 
     return () => subscriptions.forEach((s) => s.dispose())
   }, [
     treeData,
+    eventHub.onBatchDelete,
     eventHub.onContentDeleted,
     eventHub.onContentCreated,
     eventHub.onContentCopied,
