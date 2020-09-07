@@ -19,6 +19,20 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
 export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>> = (props) => {
   const getInitialstate = () => {
     if (!props.fieldValue) {
+      if (props.settings.DefaultValue) {
+        return changeJScriptValue(props.settings.DefaultValue)
+      }
+
+      if (props.settings.Options?.length) {
+        return props.settings.AllowMultiple
+          ? props.settings.Options.reduce<string[]>((selection, option) => {
+              if (option.Selected) {
+                selection.push(option.Value)
+              }
+              return selection
+            }, [])
+          : props.settings.Options.find((option) => option.Selected)?.Value ?? ''
+      }
       return props.settings.AllowMultiple ? [''] : ''
     }
     if (!Array.isArray(props.fieldValue)) {
@@ -54,11 +68,10 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
             name={props.settings.Name}
             multiple={props.settings.AllowMultiple}
             autoWidth={true}
-            defaultValue={changeJScriptValue(props.settings.DefaultValue)}
             fullWidth={true}>
             {props.settings.Options?.map((option) => {
               return (
-                <MenuItem key={option.Value} value={option.Value}>
+                <MenuItem key={option.Value} value={option.Value} selected={option.Selected}>
                   {option.Text}
                 </MenuItem>
               )
