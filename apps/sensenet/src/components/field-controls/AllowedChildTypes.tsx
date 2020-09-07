@@ -209,14 +209,17 @@ export class AllowedChildTypesComponent extends Component<
     const { items } = this.state
     const index = items.findIndex((i) => item.Name === i.Name)
     if (items.length > 1) {
+      const newItems = [...items.slice(0, index), ...items.slice(index + 1)]
       this.setState({
-        items: [...items.slice(0, index), ...items.slice(index + 1)],
+        items: newItems,
       })
+      this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, newItems)
     } else {
       this.setState({
         items: this.state.allowedTypesOnCTD,
         removeable: false,
       })
+      this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, this.state.allowedTypesOnCTD)
     }
   }
 
