@@ -9,7 +9,6 @@ import {
   CopyMoveDialogProps,
   CustomActionResultDialogProps,
   DeleteContentDialogProps,
-  ErrorReportProps,
   ExecuteActionDialogProps,
   ReferenceContentListProps,
   RestoreProps,
@@ -19,7 +18,6 @@ import {
 
 export type DialogWithProps = (
   | { name: 'delete'; props: DeleteContentDialogProps }
-  | { name: 'error-report'; props: ErrorReportProps }
   | { name: 'error'; props: ErrorBoundaryState }
   | { name: 'copy-move'; props: CopyMoveDialogProps }
   | { name: 'check-in'; props: CheckInProps }

@@ -136,7 +136,16 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
     const fields = props.fieldsToDisplay || personalSettings.content.fields
     loadSettings.setLoadChildrenSettings({
       ...loadSettings.loadChildrenSettings,
-      expand: ['CheckedOutTo', ...fields.filter((fieldName) => isReferenceField(fieldName, repo, props.schema))],
+      expand: [
+        'CheckedOutTo',
+        ...fields.filter((fieldName) => isReferenceField(fieldName, repo, props.schema)),
+        ...fields.reduce<any[]>((referenceFields, fieldName) => {
+          if (fieldName.includes('/')) {
+            referenceFields.push(fieldName.split('/')[0])
+          }
+          return referenceFields
+        }, []),
+      ],
       orderby: [[currentOrder as any, currentDirection as any]],
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -398,7 +407,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
 
     if (
       typeof fieldOptions.rowData[fieldOptions.dataKey] === 'object' &&
-      isReferenceField(fieldOptions.dataKey, repo, props.schema)
+      isReferenceField(fieldOptions.dataKey, repo, props.schema || fieldOptions.rowData.Type)
     ) {
       const expectedContent = fieldOptions.rowData[fieldOptions.dataKey] as GenericContent
       if (
@@ -470,7 +479,11 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
             checkboxProps={{ color: 'primary' }}
             cellRenderer={fieldComponentFunc}
             displayRowCheckbox={!props.disableSelection}
-            fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields || displayNameInArray}
+            fieldsToDisplay={
+              (props.fieldsToDisplay?.map((field) => field.split('/')[0]) ||
+                personalSettings.content.fields ||
+                displayNameInArray) as any
+            }
             getSelectionControl={getSelectionControl}
             items={children}
             onRequestOrderChange={onRequestOrderChangeFunc}
