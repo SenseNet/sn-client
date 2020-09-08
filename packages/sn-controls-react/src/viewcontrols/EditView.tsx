@@ -87,7 +87,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
 
   useEffect(() => {
     const schemaObservable = repository.schemas.subscribeToSchemas(() => {
-      controlMapper.getFullSchemaForContentType(props.contentTypeName, actionName)
+      setSchema(() => controlMapper.getFullSchemaForContentType(props.contentTypeName, actionName))
     })
     return () => schemaObservable.dispose()
   }, [repository.schemas, actionName, controlMapper, props.contentTypeName])
