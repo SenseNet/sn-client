@@ -20,7 +20,9 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
   const getInitialstate = () => {
     if (!props.fieldValue) {
       if (props.settings.DefaultValue) {
-        return changeJScriptValue(props.settings.DefaultValue)
+        return props.settings.AllowMultiple
+          ? changeJScriptValue(props.settings.DefaultValue)!.split(/,|;/)
+          : changeJScriptValue(props.settings.DefaultValue)
       }
 
       if (props.settings.Options?.length) {
