@@ -9,7 +9,6 @@ const CheckIn = React.lazy(() => import('./check-in'))
 const CopyMove = React.lazy(() => import('./copy-move'))
 const CustomActionResult = React.lazy(() => import('./custom-action-result'))
 const Delete = React.lazy(() => import('./delete'))
-const ErrorReport = React.lazy(() => import('./error-report'))
 const Error = React.lazy(() => import('./error-dialog'))
 const ExecuteAction = React.lazy(() => import('./execute-action'))
 const Logout = React.lazy(() => import('./logout'))
@@ -23,8 +22,6 @@ function dialogRenderer(dialog: DialogWithProps) {
   switch (dialog.name) {
     case 'delete':
       return <Delete {...dialog.props} />
-    case 'error-report':
-      return <ErrorReport {...dialog.props} />
     case 'error':
       return <Error {...dialog.props} />
     case 'copy-move':
