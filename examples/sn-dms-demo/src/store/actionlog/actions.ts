@@ -181,20 +181,6 @@ export const initLog = createAction(() => ({
         }),
       )
     })
-    eventHub.onBatchDeleteFailed.subscribe((deletedDatas) => {
-      deletedDatas.data.forEach((data) => {
-        options.dispatch(
-          addLogEntry({
-            dump: data,
-            messageEntry: {
-              message: data.error.message.value,
-              bulkMessage: resources.DELETE_BATCH_SUCCESS_FAILED_MESSAGE,
-              verbosity: 'error',
-            },
-          }),
-        )
-      })
-    })
     eventHub.onCustomActionExecuted.subscribe((ev) => {
       if (logActions.indexOf(ev.actionOptions.name) > -1) {
         const message = (resources[`${ev.actionOptions.name.toUpperCase()}_SUCCESS_MESSAGE`] as string).replace(

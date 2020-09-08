@@ -150,29 +150,6 @@ export interface DeleteFailed {
   error: any
 }
 
-export interface BatchDeleteFailedData {
-  /**
-   * The Content that you've tried to delete
-   */
-  content: Content
-  /**
-   * The Error that caused the failure
-   */
-  error: any
-}
-
-/**
- * Model for more Contents Delete failed event
- */
-export interface BatchDeleteFailed {
-  /**
-   * Indicates if you've tried to delete the Contents permanently or just tried to move it to the Trash
-   */
-  permanently: boolean
-
-  data: BatchDeleteFailedData[]
-}
-
 /**
  * Model for Custom Action executed event
  */
