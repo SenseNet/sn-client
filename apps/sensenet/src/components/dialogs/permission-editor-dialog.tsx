@@ -19,6 +19,7 @@ import React, { useEffect, useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { Switcher } from '../field-controls'
+import { forcePermissionActions } from './permission-editor/forcePermissionActions'
 import { DialogTitle, useDialog } from '.'
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -211,6 +212,30 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
     return disabledFlag
   }
 
+  const setForcePermissionsAllowed = (localResponseBody: PermissionRequestBody, permissionNameParam: string) => {
+    forcePermissionActions.forEach((forcePermObject) => {
+      Object.entries(forcePermObject).forEach(([permissionName, toBeSetArray]) => {
+        if (permissionName === permissionNameParam && toBeSetArray && toBeSetArray.length > 0) {
+          toBeSetArray.forEach((toBeSetPermission: keyof PermissionRequestBody) => {
+            Object.assign(localResponseBody, { [toBeSetPermission]: PermissionValues.allow })
+            setForcePermissionsAllowed(localResponseBody, toBeSetPermission)
+          })
+        }
+      })
+    })
+  }
+
+  const setForcePermissionsUndefined = (localResponseBody: PermissionRequestBody, permissionNameParam: string) => {
+    forcePermissionActions.forEach((forcePermObject) => {
+      Object.entries(forcePermObject).forEach(([permissionName, toBeSetArray]) => {
+        if (toBeSetArray && toBeSetArray.length > 0 && toBeSetArray.includes(permissionNameParam)) {
+          Object.assign(localResponseBody, { [permissionName]: PermissionValues.undefined })
+          setForcePermissionsUndefined(localResponseBody, permissionName)
+        }
+      })
+    })
+  }
+
   return (
     <>
       <DialogTitle>{props.entry.identity.displayName}</DialogTitle>
@@ -252,10 +277,12 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                               Object.assign(localResponseBody, {
                                 [selectedGroupPermission]: PermissionValues.undefined,
                               })
+                              setForcePermissionsUndefined(localResponseBody, selectedGroupPermission)
                             } else {
                               Object.assign(localResponseBody, {
                                 [selectedGroupPermission]: PermissionValues.allow,
                               })
+                              setForcePermissionsAllowed(localResponseBody, selectedGroupPermission)
                             }
                           }
                         },
@@ -291,10 +318,12 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                             Object.assign(localResponseBody, {
                               [selectedGroupPermission]: PermissionValues.undefined,
                             })
+                            setForcePermissionsUndefined(localResponseBody, selectedGroupPermission)
                           } else {
                             Object.assign(localResponseBody, {
                               [selectedGroupPermission]: PermissionValues.allow,
                             })
+                            setForcePermissionsAllowed(localResponseBody, selectedGroupPermission)
                           }
                         }
                       },
@@ -340,10 +369,12 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                           Object.assign(localResponseBody, {
                             [selectedGroupPermission]: PermissionValues.undefined,
                           })
+                          setForcePermissionsUndefined(localResponseBody, selectedGroupPermission)
                         } else {
                           Object.assign(localResponseBody, {
                             [selectedGroupPermission]: PermissionValues.allow,
                           })
+                          setForcePermissionsAllowed(localResponseBody, selectedGroupPermission)
                         }
                         setResponseBody(localResponseBody)
                       }}
