@@ -214,6 +214,7 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = (props) => {
     }
 
     const fieldSetting = getSchemaForField(columnName)
+    const displayName = (fieldSetting && fieldSetting.DisplayName) || columnName
     const description = (fieldSetting && fieldSetting.Description) || columnName
 
     return (
@@ -242,7 +243,7 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = (props) => {
                 props.orderDirection === 'asc' ? 'desc' : 'asc',
               )
             }>
-            {columnName}
+            {displayName}
           </TableSortLabel>
         </Tooltip>
       </TableCell>
