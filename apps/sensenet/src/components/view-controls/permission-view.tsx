@@ -83,7 +83,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
   const [openInheritedList, setOpenInheritedList] = useState<boolean>(false)
   const [openSetOnThisList, setOpenSetOnThisList] = useState<boolean>(true)
   const [refreshFlag, setRefreshFlag] = useState<boolean>(false)
-  const [selectedListItem, setSelectedListItem] = useState<number>()
+  const [selectedListItem, setSelectedListItem] = useState<string>()
 
   useEffect(() => {
     async function getCurrentContent() {
@@ -117,7 +117,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
       const localPermissions = { ...permissions }
       localPermissions.entries.push(newEntry)
     }
-    setSelectedListItem(newEntry.identity.id)
+    setSelectedListItem(`${newEntry.identity.id}${newEntry.propagates}`)
     openDialog({
       name: 'permission-editor',
       props: {
@@ -170,11 +170,11 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
               .map((inheritedEntry) => {
                 return (
                   <ListItem
-                    selected={selectedListItem === inheritedEntry.identity.id}
+                    selected={selectedListItem === `${inheritedEntry.identity.id}${inheritedEntry.propagates}`}
                     button
-                    key={inheritedEntry.identity.id}
+                    key={`${inheritedEntry.identity.id}${inheritedEntry.propagates}`}
                     onClick={() => {
-                      setSelectedListItem(inheritedEntry.identity.id)
+                      setSelectedListItem(`${inheritedEntry.identity.id}${inheritedEntry.propagates}`)
                       openDialog({
                         name: 'permission-editor',
                         props: {
@@ -244,11 +244,11 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                 .map((setOnThisEntry) => {
                   return (
                     <ListItem
-                      selected={selectedListItem === setOnThisEntry.identity.id}
+                      selected={selectedListItem === `${setOnThisEntry.identity.id}${setOnThisEntry.propagates}`}
                       button
-                      key={setOnThisEntry.identity.id}
+                      key={`${setOnThisEntry.identity.id}${setOnThisEntry.propagates}`}
                       onClick={() => {
-                        setSelectedListItem(setOnThisEntry.identity.id)
+                        setSelectedListItem(`${setOnThisEntry.identity.id}${setOnThisEntry.propagates}`)
                         openDialog({
                           name: 'permission-editor',
                           props: {
