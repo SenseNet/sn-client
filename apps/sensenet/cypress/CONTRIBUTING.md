@@ -1,6 +1,6 @@
 # Contribution guide for End-to-End testing
 
-This guide is about how to write and run End-to-End (E2E) tests for a feature or a component in sensenet's admin ui. We We are using Cypress for E2E testing, if you are not familiar with it, check the following docs to get started:
+This guide is about how to write and run End-to-End (E2E) tests for a feature or a component in sensenet's admin ui. We are using Cypress for E2E testing, if you are not familiar with it, check the following docs to get started:
 
 - [Developer Guide](https://docs.cypress.io/guides/overview/why-cypress.html)
 - [API Reference](https://docs.cypress.io/api/api/table-of-contents.html)
