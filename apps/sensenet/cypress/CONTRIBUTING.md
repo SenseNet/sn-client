@@ -48,7 +48,7 @@ The folder structure is based on Cypress' initials:
 
 Tests should be placed in the cypress/integration folder. Cypress is configured to look for and run tests that match the pattern of \*\.spec.ts, so if you are creating a new test make sure to name it something like my_new_test.spec.ts to ensure that it gets picked up.
 
-Before creating a new \*\_spec.js file, look to see if there is already one for testing the same or similar feature what you are testing, it can be very likely that you can add additional tests to a pre-existing file.
+Before creating a new \*\.spec.ts file, look to see if there is already one for testing the same or similar feature what you are testing, it can be very likely that you can add additional tests to a pre-existing file.
 
 ## Writing specs
 
