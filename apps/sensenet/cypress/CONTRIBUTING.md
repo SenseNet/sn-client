@@ -25,7 +25,7 @@ The folder structure is based on Cypress' initials:
    Fixtures are used as external pieces of static data that can be used by tests.
    You would typically use them with the `cy.fixture()` command and most often when you’re stubbing Network Requests.
 2. /cypress/integration is for [test files](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests.html#Test-files):
-   To start writing tests, simply create a new file (e.g. login_spec.js) within /e2e/cypress/integration folder and;
+   To start writing tests, simply create a new file (e.g. login.spec.ts) within /e2e/cypress/integration folder and;
    refresh tests list in the Cypress Test Runner and a new file should have appeared in the list.
 3. /cypress/plugins is for [plugin files](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests.html#Plugin-files)
 4. /cypress/support is for [support files](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests.html#Support-file)
