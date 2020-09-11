@@ -1,4 +1,4 @@
-import { ODataParams, ODataResponse } from '@sensenet/client-core'
+import { Content, ODataParams, ODataResponse } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
@@ -167,6 +167,23 @@ export default function TreeWithData(props: TreeWithDataProps) {
     [loadCollection, logger, props.parentPath, treeData],
   )
 
+  const onDeleteContent = useCallback(
+    async (content: Content) => {
+      await lock.acquire()
+      walkTree(treeData!, (node) => {
+        if (node.Id === content.Id && treeData?.children?.length) {
+          treeData.children = treeData.children.filter((n) => n.Id !== content.Id)
+          setItemCount((itemCountTemp) => itemCountTemp && itemCountTemp - 1)
+        } else if (PathHelper.trimSlashes(node.Path) === PathHelper.getParentPath(content.Path)) {
+          node.children = node.children?.filter((n) => n.Id !== content.Id)
+        }
+      })
+      setTreeData({ ...treeData! })
+      lock.release()
+    },
+    [treeData],
+  )
+
   useEffect(() => {
     const handleCreate = (c: Created) => {
       // we need to reset the lastRequest object so we can make the same request again to get updated data
@@ -210,31 +227,11 @@ export default function TreeWithData(props: TreeWithDataProps) {
         }
       }),
       eventHub.onContentDeleted.subscribe(async (d) => {
-        await lock.acquire()
-        walkTree(treeData!, (node) => {
-          if (node.Id === d.contentData.Id && treeData?.children?.length) {
-            treeData.children = treeData.children.filter((n) => n.Id !== d.contentData.Id)
-            setItemCount((itemCountTemp) => itemCountTemp && itemCountTemp - 1)
-          } else if (PathHelper.trimSlashes(node.Path) === PathHelper.getParentPath(d.contentData.Path)) {
-            node.children = node.children?.filter((n) => n.Id !== d.contentData.Id)
-          }
-        })
-        setTreeData({ ...treeData! })
-        lock.release()
+        onDeleteContent(d.contentData)
       }),
       eventHub.onBatchDelete.subscribe((deletedDatas) => {
         deletedDatas.contentDatas.forEach(async (d) => {
-          await lock.acquire()
-          walkTree(treeData!, (node) => {
-            if (node.Id === d.Id && treeData?.children?.length) {
-              treeData.children = treeData.children.filter((n) => n.Id !== d.Id)
-              setItemCount((itemCountTemp) => itemCountTemp && itemCountTemp - 1)
-            } else if (PathHelper.trimSlashes(node.Path) === PathHelper.getParentPath(d.Path)) {
-              node.children = node.children?.filter((n) => n.Id !== d.Id)
-            }
-          })
-          setTreeData({ ...treeData! })
-          lock.release()
+          onDeleteContent(d)
         })
       }),
     ]
@@ -252,6 +249,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
     openTree,
     loadCollection,
     logger,
+    onDeleteContent,
   ])
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
+import { Content, ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
 import { debounce, ValueObserver } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { createAction } from '@sensenet/redux'
@@ -154,6 +154,20 @@ export const loadMore = createAction((count = 25) => ({
   },
 }))
 
+const onDeleteFunc = (options: IInjectableActionCallbackParams<rootStateType>, content: Content) => {
+  const currentItems = options.getState().dms.documentLibrary.items
+  const filtered = currentItems.d.results.filter((item) => item.Id !== content.Id)
+  options.dispatch(
+    setItems({
+      ...currentItems,
+      d: {
+        __count: filtered.length,
+        results: filtered,
+      },
+    }),
+  )
+}
+
 export const loadParent = createAction(
   <T extends GenericContent = GenericContent>(idOrPath: number | string, loadParentOptions?: ODataParams<T>) => ({
     type: 'DMS_DOCLIB_LOAD_PARENT',
@@ -205,31 +219,11 @@ export const loadParent = createAction(
           eventHub.onContentCreated.subscribe((value) => emitChange(value.content)) as any,
           eventHub.onContentModified.subscribe((value) => emitChange(value.content)) as any,
           eventHub.onContentDeleted.subscribe((value) => {
-            const currentItems = options.getState().dms.documentLibrary.items
-            const filtered = currentItems.d.results.filter((item) => item.Id !== value.contentData.Id)
-            options.dispatch(
-              setItems({
-                ...currentItems,
-                d: {
-                  __count: filtered.length,
-                  results: filtered,
-                },
-              }),
-            )
+            onDeleteFunc(options, value.contentData)
           }) as any,
           eventHub.onBatchDelete.subscribe((deletedDatas) => {
             deletedDatas.contentDatas.forEach((contentData) => {
-              const currentItems = options.getState().dms.documentLibrary.items
-              const filtered = currentItems.d.results.filter((item) => item.Id !== contentData.Id)
-              options.dispatch(
-                setItems({
-                  ...currentItems,
-                  d: {
-                    __count: filtered.length,
-                    results: filtered,
-                  },
-                }),
-              )
+              onDeleteFunc(options, contentData)
             })
           }) as any,
           eventHub.onContentMoved.subscribe((value) => emitChange(value.content)) as any,

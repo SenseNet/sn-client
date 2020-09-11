@@ -1,6 +1,6 @@
-import { isExtendedError, Repository } from '@sensenet/client-core'
+import { Content, isExtendedError, Repository } from '@sensenet/client-core'
 import { createAction } from '@sensenet/redux'
-import { EventHub } from '@sensenet/repository-events'
+import { BatchDeleted, Deleted, EventHub } from '@sensenet/repository-events'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { resources } from '../../assets/resources'
 import { rootStateType } from '../../store/rootReducer'
@@ -33,6 +33,23 @@ export const readLogEntries = createAction((entries: LogEntry[]) => ({
   type: 'SN_DMS_READ_LOG_ENTRIES',
   entries,
 }))
+
+const deleteFunc = (
+  options: IInjectableActionCallbackParams<rootStateType>,
+  ev: Deleted | BatchDeleted,
+  content: Content,
+) => {
+  options.dispatch(
+    addLogEntry({
+      dump: ev,
+      messageEntry: {
+        message: `${content.Name} ${resources.DELETE_BATCH_SUCCESS_MESSAGE}`,
+        bulkMessage: `{count} ${resources.ITEMS} ${resources.DELETE_BATCH_SUCCESS_MULTIPLE_MESSAGE}`,
+        verbosity: 'info',
+      },
+    }),
+  )
+}
 
 export const initLog = createAction(() => ({
   type: 'SN_DMS_INIT_LOG',
@@ -144,29 +161,11 @@ export const initLog = createAction(() => ({
     })
 
     eventHub.onContentDeleted.subscribe((ev) => {
-      options.dispatch(
-        addLogEntry({
-          dump: ev,
-          messageEntry: {
-            message: `${ev.contentData.Name} ${resources.DELETE_BATCH_SUCCESS_MESSAGE}`,
-            bulkMessage: `{count} ${resources.ITEMS} ${resources.DELETE_BATCH_SUCCESS_MULTIPLE_MESSAGE}`,
-            verbosity: 'info',
-          },
-        }),
-      )
+      deleteFunc(options, ev, ev.contentData)
     })
     eventHub.onBatchDelete.subscribe((ev) => {
       ev.contentDatas.forEach((contentData) => {
-        options.dispatch(
-          addLogEntry({
-            dump: ev,
-            messageEntry: {
-              message: `${contentData.Name} ${resources.DELETE_BATCH_SUCCESS_MESSAGE}`,
-              bulkMessage: `{count} ${resources.ITEMS} ${resources.DELETE_BATCH_SUCCESS_MULTIPLE_MESSAGE}`,
-              verbosity: 'info',
-            },
-          }),
-        )
+        deleteFunc(options, ev, contentData)
       })
     })
     eventHub.onContentDeleteFailed.subscribe((ev) => {
