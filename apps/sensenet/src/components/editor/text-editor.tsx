@@ -46,6 +46,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
 
   const saveContent = async () => {
     try {
+      setHasChanges(false)
       if (props.saveContent) {
         await props.saveContent(props.content, textValue)
       } else {
