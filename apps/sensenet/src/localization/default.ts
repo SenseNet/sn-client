@@ -318,7 +318,6 @@ const values = {
     title: 'Something went wrong :(',
     text: `An error occured and your request couldn't be completed. `,
     reload: 'Reload page',
-    reportError: 'Report error',
   },
   errorReport: {
     title: 'Send error report',
