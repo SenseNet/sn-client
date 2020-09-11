@@ -71,13 +71,9 @@ export const ReferenceField: FunctionComponent<ReferenceFieldProps> = ({ content
               style={{ marginLeft: '1em', color: '#ffffff' }}
               component="button"
               onClick={async () => {
-                const response = await repository.load({
-                  idOrPath: content.Id,
-                  oDataOptions: { select: 'all' },
-                })
                 history.push(
                   getUrlForContent({
-                    content: response.d,
+                    content,
                     uiSettings,
                     location: history.location,
                     action: 'edit',
