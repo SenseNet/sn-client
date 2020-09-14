@@ -451,7 +451,9 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
           <ContentBreadcrumbs onItemClick={(i) => props.onParentChange(i.content)} />
         </div>
       ) : null}
-      <DropFileArea parentContent={parentContent} style={{ height: '100%', overflow: 'hidden' }}>
+      <DropFileArea
+        parentContent={parentContent}
+        style={{ height: '500px', overflow: 'hidden', border: 'solid 1px red' }}>
         <div
           className={classes.tableWrapper}
           tabIndex={0}
