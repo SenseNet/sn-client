@@ -453,7 +453,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
       ) : null}
       <DropFileArea
         parentContent={parentContent}
-        style={{ height: '500px', overflow: 'hidden', border: 'solid 1px red' }}>
+        style={{ height: '100%', overflow: 'hidden', border: 'solid 1px red' }}>
         <div
           className={classes.tableWrapper}
           tabIndex={0}
