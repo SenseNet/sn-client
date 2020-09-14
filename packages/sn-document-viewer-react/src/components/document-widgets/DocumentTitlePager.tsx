@@ -1,7 +1,7 @@
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDocumentData, useLocalization, useViewerState } from '../../hooks'
 
 /**
@@ -13,6 +13,10 @@ export const DocumentTitlePager: React.FC = () => {
   const { documentData } = useDocumentData()
   const viewerState = useViewerState()
   const localization = useLocalization()
+
+  useEffect(() => {
+    setCurrentPage(viewerState.activePages[0])
+  }, [viewerState])
 
   const setPage = useCallback(
     (index: number) => {
