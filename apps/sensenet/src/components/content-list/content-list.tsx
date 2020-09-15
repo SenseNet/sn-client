@@ -40,9 +40,8 @@ const useStyles = makeStyles(() => {
   return createStyles({
     tableWrapper: {
       display: 'flex',
-      flex: 1,
+      flex: '1 0 auto',
       height: '100%',
-      width: '100%',
       userSelect: 'none',
       outline: 'none',
       position: 'relative',
@@ -452,7 +451,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
           <ContentBreadcrumbs onItemClick={(i) => props.onParentChange(i.content)} />
         </div>
       ) : null}
-      <DropFileArea parentContent={parentContent} style={{ height: '100%', width: '100%', overflow: 'hidden' }}>
+      <DropFileArea parentContent={parentContent} style={{ height: '100%', overflow: 'hidden' }}>
         <div
           className={classes.tableWrapper}
           tabIndex={0}
