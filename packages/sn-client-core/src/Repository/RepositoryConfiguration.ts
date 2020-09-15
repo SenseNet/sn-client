@@ -86,7 +86,7 @@ export type RepositoryConfigurationWithDefaults = Required<Omit<RepositoryConfig
   Pick<RepositoryConfiguration, 'token' | 'defaultExpand'>
 
 export const defaultRepositoryConfiguration: RepositoryConfigurationWithDefaults = {
-  chunkSize: 500000,
+  chunkSize: 1000000,
   defaultEnableAutofilters: false,
   defaultEnableLifespanfilter: false,
   defaultInlineCount: 'allpages',
