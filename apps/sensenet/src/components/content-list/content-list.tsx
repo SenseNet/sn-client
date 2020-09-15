@@ -41,6 +41,7 @@ const useStyles = makeStyles(() => {
     tableWrapper: {
       display: 'flex',
       flex: '1 0 auto',
+      minHeight: 100,
       height: '100%',
       userSelect: 'none',
       outline: 'none',
