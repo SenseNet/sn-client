@@ -39,10 +39,8 @@ import {
 const useStyles = makeStyles(() => {
   return createStyles({
     tableWrapper: {
-      display: 'flex',
-      flex: '1 0 auto',
-      minHeight: 100,
       height: '100%',
+      display: 'block',
       userSelect: 'none',
       outline: 'none',
       position: 'relative',
