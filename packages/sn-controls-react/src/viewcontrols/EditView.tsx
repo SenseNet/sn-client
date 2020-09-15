@@ -117,7 +117,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
                 settings: field.fieldSettings,
                 repository: props.repository,
                 content: props.content,
-                fieldValue: props.content ? (props.content as any)[field.fieldSettings.Name] : undefined, //tuti?!
+                fieldValue: props.content ? (props.content as any)[field.fieldSettings.Name] : undefined,
                 renderIcon: props.renderIcon,
                 fieldOnChange: handleInputChange,
                 extension: props.extension,
