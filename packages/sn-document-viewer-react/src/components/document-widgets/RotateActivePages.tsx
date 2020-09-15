@@ -27,7 +27,7 @@ export const RotateActivePagesWidget: React.FC<{ mode?: ROTATION_MODE }> = (prop
     return (
       <IconButton
         color="inherit"
-        title={isLeft ? localization.rotatePageLeft : localization.rotateDocumentRight}
+        title={isLeft ? localization.rotatePageLeft : localization.rotatePageRight}
         onClick={() => (isLeft ? rotateDocumentLeft() : rotateDocumentRight())}
         id={isLeft ? 'RotateActiveLeft' : 'RotateActiveRigt'}>
         {isLeft ? <RotateLeft /> : <RotateRight />}
