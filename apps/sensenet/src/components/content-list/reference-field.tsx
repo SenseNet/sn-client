@@ -81,6 +81,7 @@ export const ReferenceField: FunctionComponent<ReferenceFieldProps> = ({ content
                     uiSettings,
                     location: history.location,
                     action: 'edit',
+                    removePath: true,
                   }),
                 )
               }}>
