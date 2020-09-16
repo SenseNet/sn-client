@@ -1,6 +1,6 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import { Button, createStyles, Link, makeStyles, TableCell, Tooltip } from '@material-ui/core'
+import { Button, createStyles, Link, makeStyles, TableCell, Theme, Tooltip } from '@material-ui/core'
 import clsx from 'clsx'
 import React, { FunctionComponent, useContext } from 'react'
 import { useHistory } from 'react-router'
@@ -10,7 +10,7 @@ import { getUrlForContent } from '../../services'
 import { useDialog } from '../dialogs'
 import { Icon } from '../Icon'
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     fieldCell: {
       '& > div:not(:last-child)': {
@@ -20,6 +20,10 @@ const useStyles = makeStyles(() => {
     button: {
       marginLeft: '1em',
       textTransform: 'lowercase',
+    },
+    link: {
+      marginLeft: '1em',
+      color: theme.palette.type === 'light' ? '#333333' : '#ffffff',
     },
   })
 })
@@ -68,7 +72,7 @@ export const ReferenceField: FunctionComponent<ReferenceFieldProps> = ({ content
           {content.Type === 'User' ? <Icon item={content} /> : null}
           <Tooltip title={`Open ${content.DisplayName || content.Name} for edit`}>
             <Link
-              style={{ marginLeft: '1em', color: '#ffffff' }}
+              className={classes.link}
               component="button"
               onClick={async () => {
                 history.push(
