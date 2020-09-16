@@ -6,17 +6,10 @@
   },
   "include": ["src"],
   "references": [
-    {
-      "path": "../sn-client-core"
-    },
-    {
-      "path": "../sn-pickers-react"
-    },
-    {
-      "path": "../sn-control-mapper"
-    },
-    {
-      "path": "../sn-search-react"
-    }
+    { "path": "../sn-client-core" },
+    { "path": "../sn-pickers-react" },
+    { "path": "../sn-control-mapper" },
+    { "path": "../sn-search-react" },
+    { "path": "../sn-hooks-react" }
   ]
 }
