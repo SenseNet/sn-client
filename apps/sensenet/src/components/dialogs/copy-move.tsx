@@ -101,63 +101,76 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
           onClick={async () => {
             try {
               setIsExecInProgress(true)
-              if (list.selectedItem) {
-                const action = props.operation === 'copy' ? repo.copy : repo.move
-                const result = await action({ idOrPath: props.content.map((c) => c.Id), targetPath: list.path })
+              const parentItem = list.items.find((item) => item.isParent)
 
-                if (result.d.results.length === 1 && result.d.errors.length === 0) {
-                  logger.information({
-                    message: localization.copySucceededNotification
-                      .replace('{0}', result.d.results[0].Name)
-                      .replace('{1}', list.path),
-                    data: {
-                      details: result,
-                      ...(props.content.length === 1
-                        ? {
-                            relatedRepository: repo.configuration.repositoryUrl,
-                            relatedContent: props.content[0],
-                          }
-                        : {}),
-                    },
-                  })
-                } else if (result.d.results.length > 1) {
-                  logger.information({
-                    message: localization.copyMultipleSucceededNotification
-                      .replace('{0}', result.d.results.length.toString())
-                      .replace('{1}', list.selectedItem.DisplayName || list.selectedItem.Name),
-                    data: {
-                      result,
-                    },
-                  })
-                }
+              const action = props.operation === 'copy' ? repo.copy : repo.move
+              const result = await action({ idOrPath: props.content.map((c) => c.Id), targetPath: list.path })
 
-                if (result.d.errors.length === 1) {
-                  logger.warning({
-                    message: `${localization.copyFailedNotification
-                      .replace('{0}', result.d.errors[0].content.Name)
-                      .replace('{1}', list.selectedItem.DisplayName || list.selectedItem.Name)}\r\n${
-                      result.d.errors[0].error.message.value
-                    }`,
-                    data: {
-                      details: result,
-                      ...(props.content.length === 1
-                        ? {
-                            relatedRepository: repo.configuration.repositoryUrl,
-                            relatedContent: props.content[0],
-                          }
-                        : {}),
-                    },
-                  })
-                } else if (result.d.errors.length > 1) {
-                  logger.warning({
-                    message: localization.copyMultipleFailedNotification
-                      .replace('{0}', result.d.errors.length.toString())
-                      .replace('{1}', list.selectedItem.DisplayName || list.selectedItem.Name),
-                    data: {
-                      details: result,
-                    },
-                  })
-                }
+              if (result.d.results.length === 1 && result.d.errors.length === 0) {
+                logger.information({
+                  message: localization.copySucceededNotification
+                    .replace('{0}', result.d.results[0].Name)
+                    .replace('{1}', list.path),
+                  data: {
+                    details: result,
+                    ...(props.content.length === 1
+                      ? {
+                          relatedRepository: repo.configuration.repositoryUrl,
+                          relatedContent: props.content[0],
+                        }
+                      : {}),
+                  },
+                })
+              } else if (result.d.results.length > 1) {
+                logger.information({
+                  message: localization.copyMultipleSucceededNotification
+                    .replace('{0}', result.d.results.length.toString())
+                    .replace(
+                      '{1}',
+                      list.selectedItem
+                        ? list.selectedItem.DisplayName || list.selectedItem.Name
+                        : parentItem?.DisplayName || parentItem?.Name!,
+                    ),
+                  data: {
+                    result,
+                  },
+                })
+              }
+
+              if (result.d.errors.length === 1) {
+                logger.warning({
+                  message: `${localization.copyFailedNotification
+                    .replace('{0}', result.d.errors[0].content.Name)
+                    .replace(
+                      '{1}',
+                      list.selectedItem
+                        ? list.selectedItem.DisplayName || list.selectedItem.Name
+                        : parentItem?.DisplayName || parentItem?.Name!,
+                    )}\r\n${result.d.errors[0].error.message.value}`,
+                  data: {
+                    details: result,
+                    ...(props.content.length === 1
+                      ? {
+                          relatedRepository: repo.configuration.repositoryUrl,
+                          relatedContent: props.content[0],
+                        }
+                      : {}),
+                  },
+                })
+              } else if (result.d.errors.length > 1) {
+                logger.warning({
+                  message: localization.copyMultipleFailedNotification
+                    .replace('{0}', result.d.errors.length.toString())
+                    .replace(
+                      '{1}',
+                      list.selectedItem
+                        ? list.selectedItem.DisplayName || list.selectedItem.Name
+                        : parentItem?.DisplayName || parentItem?.Name!,
+                    ),
+                  data: {
+                    details: result,
+                  },
+                })
               }
             } catch (error) {
               /** */
