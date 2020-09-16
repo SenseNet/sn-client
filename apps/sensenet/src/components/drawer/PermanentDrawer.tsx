@@ -123,12 +123,16 @@ export const PermanentDrawer = () => {
               </ListItem>
             ) : null}
             {matchPath(location.pathname, PATHS.savedQueries.appPath) ? <SearchButton isOpened={opened} /> : null}{' '}
+            {console.log(location.pathname)}
+            {console.log(PATHS.localization.appPath)}
+            {console.log(PATHS.root.appPath)}
             {matchPath(location.pathname, [
               PATHS.content.appPath,
               PATHS.usersAndGroups.appPath,
               PATHS.setup.appPath,
               PATHS.contentTypes.appPath,
               PATHS.localization.appPath,
+              PATHS.root.appPath,
             ]) ? (
               <AddButton aria-label={localization.add} isOpened={opened} />
             ) : null}

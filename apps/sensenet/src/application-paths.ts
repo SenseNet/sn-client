@@ -15,6 +15,7 @@ export const PATHS = {
   search: { appPath: '/search' },
   content: { appPath: '/content/:browseType/:action?', snPath: '/Root/Content' },
   custom: { appPath: '/custom/:browseType/:path/:action?' },
+  root: { appPath: '/custom/explorer/root/' },
 } as const
 
 type RoutesWithContentBrowser = keyof Pick<
