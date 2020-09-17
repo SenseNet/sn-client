@@ -170,7 +170,7 @@ export function useContextMenuActions(
         })
         break
       case 'SetPermissions':
-        if (snRoute.path && content.Path.startsWith(snRoute.path)) {
+        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,

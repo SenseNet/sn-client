@@ -163,6 +163,7 @@ const values: DeepPartial<typeof import('./default').default> = {
     noContent: 'Ennek a tartalomnak nincs közvetlen jogosultság beállítása',
     inherited: 'Öröklött jogosultságok',
     setOnThis: 'Ezen a kontenten beállított jogosultságok',
+    cancel: 'Cancel',
   },
 }
 

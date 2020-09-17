@@ -238,7 +238,6 @@ export class Security {
       idOrPath: contentIdOrPath,
       name: 'GetAcl',
       method: 'GET',
-      body: undefined,
     })
 
   /**

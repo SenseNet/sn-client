@@ -428,6 +428,7 @@ const values = {
     noContent: 'There is no direct permission setting on this content',
     inherited: 'Inherited from ancestor',
     setOnThis: 'Set on this content',
+    cancel: 'Cancel',
   },
   restore: {
     description: (contentName: string) =>

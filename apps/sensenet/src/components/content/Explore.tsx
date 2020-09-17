@@ -121,12 +121,10 @@ export function Explore({
         break
       case 'version':
         return <VersionView contentPath={`${rootPath}${activeContent}`} />
-
       case 'setpermissions':
         return <PermissionView contentPath={`${rootPath}${activeContent}`} />
       case 'preview':
         return <DocumentViewer contentPath={`${rootPath}${activeContent}`} />
-
       case 'edit-binary':
         return <EditBinary contentPath={`${rootPath}${activeContent}`} />
       case 'wopi-edit':
