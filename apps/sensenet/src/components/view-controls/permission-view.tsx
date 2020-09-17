@@ -140,7 +140,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                         name: 'permission-editor',
                         props: {
                           entry: inheritedEntry,
-                          path: currentContent?.Path,
+                          path: currentContent?.Path!,
                           callBackFunction: () => {
                             setRefreshFlag(!refreshFlag)
                           },

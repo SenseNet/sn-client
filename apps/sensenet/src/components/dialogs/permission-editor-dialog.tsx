@@ -68,7 +68,7 @@ export interface PermissionSettingType {
 }
 
 export type PermissionEditorDialogProps = {
-  path?: string
+  path: string
   entry: EntryType
   callBackFunction?: () => void
 }
@@ -365,22 +365,19 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
               variant="contained"
               autoFocus={true}
               onClick={async () => {
-                if (props.path) {
-                  //TODO: rewrite this when it will has a return value (JSON)
-                  try {
-                    await repo.security.setPermissions(props.path, [responseBody])
-                  } catch (error) {
-                    logger.error({
-                      message: error.message,
-                      data: {
-                        details: { error },
-                      },
-                    })
-                    return false
-                  } finally {
-                    props.callBackFunction?.()
-                    closeLastDialog()
-                  }
+                try {
+                  await repo.security.setPermissions(props.path, [responseBody])
+                } catch (error) {
+                  logger.error({
+                    message: error.message,
+                    data: {
+                      details: { error },
+                    },
+                  })
+                  return false
+                } finally {
+                  props.callBackFunction?.()
+                  closeLastDialog()
                 }
               }}>
               {localization.forms.submit}
