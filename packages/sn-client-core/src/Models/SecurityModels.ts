@@ -103,8 +103,8 @@ export interface PermissionResponseModel {
 }
 
 export interface PermissionType {
-  /* Id */
-  value: number
+  /* Value */
+  value: string
   /* From */
   from: string | null
 }
