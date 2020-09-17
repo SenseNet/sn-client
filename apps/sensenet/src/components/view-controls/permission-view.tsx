@@ -13,21 +13,21 @@ import {
   ListItemIcon,
   ListItemText,
   makeStyles,
-  Theme,
 } from '@material-ui/core'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import GroupOutlined from '@material-ui/icons/GroupOutlined'
 import clsx from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
-import { useHistory } from 'react-router'
+import { useHistory, useRouteMatch } from 'react-router'
 import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { getUrlForContent } from '../../services'
+import { getUrlForContent, navigateToAction } from '../../services'
 import { useDialog } from '../dialogs'
+import { useViewControlStyles } from './common/styles'
 
-const useStyles = makeStyles((theme: Theme) => {
+const useStyles = makeStyles(() => {
   return createStyles({
     permissionEditorContainer: {
       margin: '0px 80px',
@@ -55,12 +55,7 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     anchor: {
       fontSize: '14px',
-      color: theme.palette.primary.main,
       paddingLeft: '15px',
-      cursor: 'pointer',
-      '&:hover': {
-        textDecoration: 'underline',
-      },
     },
   })
 })
@@ -72,17 +67,22 @@ export interface PermissionViewProps {
 export const PermissionView: React.FC<PermissionViewProps> = (props) => {
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
+  const controlClasses = useViewControlStyles()
   const repo = useRepository()
   const localization = useLocalization()
   const history = useHistory()
   const logger = useLogger('PermissionEditor')
   const uiSettings = useContext(ResponsivePersonalSettings)
   const { openDialog } = useDialog()
-  const [permissions, setPermissions] = useState<AclResponseModel | undefined>(undefined)
-  const [currentContent, setCurrentContent] = useState<GenericContent | undefined>()
+  const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
+  const [permissions, setPermissions] = useState<AclResponseModel>()
+  const [currentContent, setCurrentContent] = useState<GenericContent>()
   const [openInheritedList, setOpenInheritedList] = useState<boolean>(false)
   const [openSetOnThisList, setOpenSetOnThisList] = useState<boolean>(true)
   const [refreshFlag, setRefreshFlag] = useState<boolean>(false)
+
+  const setOnThisArray = permissions?.entries.filter((entry) => entry.inherited === false)
+  const inheritedArray = permissions?.entries.filter((entry) => entry.inherited === true)
 
   useEffect(() => {
     async function getCurrentContent() {
@@ -112,26 +112,25 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
   }, [localization.permissionEditor.errorGetAcl, logger, props.contentPath, repo, refreshFlag])
 
   return (
-    <div className={classes.permissionEditorContainer}>
-      <div className={classes.titleContainer}>
-        <div className={classes.title}>
-          {localization.permissionEditor.setPermissons}{' '}
-          <span className={classes.textBolder}>{currentContent?.DisplayName}</span>
+    <>
+      <div className={classes.permissionEditorContainer}>
+        <div className={classes.titleContainer}>
+          <div className={classes.title}>
+            {localization.permissionEditor.setPermissons}{' '}
+            <span className={classes.textBolder}>{currentContent?.DisplayName}</span>
+          </div>
+          <Button aria-label={localization.permissionEditor.assign} color="primary" variant="contained">
+            {localization.permissionEditor.assign}
+          </Button>
         </div>
-        <Button aria-label={localization.permissionEditor.assign} color="primary" variant="contained">
-          {localization.permissionEditor.assign}
-        </Button>
-      </div>
-      <List component="nav">
-        <ListItem button onClick={() => setOpenInheritedList(!openInheritedList)}>
-          {openInheritedList ? <ExpandLess /> : <ExpandMore />}
-          <ListItemText primary={localization.permissionEditor.inherited} className={classes.listTitle} />
-        </ListItem>
-        <Collapse className={classes.collapseWrapper} in={openInheritedList} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            {permissions?.entries
-              .filter((entry) => entry.inherited === true)
-              .map((inheritedEntry) => {
+        <List component="nav">
+          <ListItem button onClick={() => setOpenInheritedList(!openInheritedList)}>
+            {openInheritedList ? <ExpandLess /> : <ExpandMore />}
+            <ListItemText primary={localization.permissionEditor.inherited} className={classes.listTitle} />
+          </ListItem>
+          <Collapse className={classes.collapseWrapper} in={openInheritedList} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              {inheritedArray?.map((inheritedEntry) => {
                 return (
                   <ListItem
                     button
@@ -188,59 +187,59 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                   </ListItem>
                 )
               })}
-          </List>
-        </Collapse>
-        <ListItem button onClick={() => setOpenSetOnThisList(!openSetOnThisList)}>
-          {openSetOnThisList ? <ExpandLess /> : <ExpandMore />}
-          <ListItemText primary={localization.permissionEditor.setOnThis} className={classes.listTitle} />
-        </ListItem>
-        <Collapse className={classes.collapseWrapper} in={openSetOnThisList} timeout="auto" unmountOnExit>
-          {permissions?.entries.filter((entry) => entry.inherited === false).length === 0 ? (
-            <ListItem>
-              <ListItemText primary={localization.permissionEditor.noContent} />
-            </ListItem>
-          ) : (
-            <List component="div" disablePadding>
-              {permissions?.entries
-                .filter((entry) => entry.inherited === false)
-                .map((setOnThisEntry) => {
-                  return (
-                    <ListItem
-                      button
-                      key={setOnThisEntry.identity.id}
-                      onClick={() =>
-                        openDialog({
-                          name: 'permission-editor',
-                          props: {
-                            entry: setOnThisEntry,
-                            path: currentContent?.Path,
-                            callBackFunction: () => {
-                              setRefreshFlag(!refreshFlag)
-                            },
-                          },
-                          dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
-                        })
-                      }>
-                      <ListItemIcon>
-                        {setOnThisEntry.identity.kind === 'group' ? (
-                          <div className={clsx(classes.iconWrapper, globalClasses.centered)}>
-                            <GroupOutlined />
-                          </div>
-                        ) : setOnThisEntry.identity.kind === 'user' && setOnThisEntry.identity.avatar ? (
-                          <Avatar
-                            src={PathHelper.joinPaths(repo.configuration.repositoryUrl, setOnThisEntry.identity.avatar)}
-                          />
-                        ) : null}
-                      </ListItemIcon>
-
-                      <ListItemText primary={setOnThisEntry.identity.displayName} />
-                    </ListItem>
-                  )
-                })}
             </List>
-          )}
-        </Collapse>
-      </List>
-    </div>
+          </Collapse>
+          <ListItem button onClick={() => setOpenSetOnThisList(!openSetOnThisList)}>
+            {openSetOnThisList ? <ExpandLess /> : <ExpandMore />}
+            <ListItemText primary={localization.permissionEditor.setOnThis} className={classes.listTitle} />
+          </ListItem>
+          <Collapse className={classes.collapseWrapper} in={openSetOnThisList} timeout="auto" unmountOnExit>
+            {setOnThisArray?.length === 0 ? (
+              <ListItem>
+                <ListItemText primary={localization.permissionEditor.noContent} />
+              </ListItem>
+            ) : (
+              <List component="div" disablePadding>
+                {permissions?.entries
+                  .filter((entry) => entry.inherited === false)
+                  .map((setOnThisEntry) => {
+                    return (
+                      <ListItem button key={setOnThisEntry.identity.id}>
+                        <ListItemIcon>
+                          {setOnThisEntry.identity.kind === 'group' ? (
+                            <div className={clsx(classes.iconWrapper, globalClasses.centered)}>
+                              <GroupOutlined />
+                            </div>
+                          ) : setOnThisEntry.identity.kind === 'user' && setOnThisEntry.identity.avatar ? (
+                            <Avatar
+                              src={PathHelper.joinPaths(
+                                repo.configuration.repositoryUrl,
+                                setOnThisEntry.identity.avatar,
+                              )}
+                            />
+                          ) : null}
+                        </ListItemIcon>
+
+                        <ListItemText primary={setOnThisEntry.identity.displayName} />
+                      </ListItem>
+                    )
+                  })}
+              </List>
+            )}
+          </Collapse>
+        </List>
+      </div>
+      <div className={controlClasses.actionButtonWrapper}>
+        <Button
+          aria-label={localization.permissionEditor.cancel}
+          color="default"
+          className={globalClasses.cancelButton}
+          onClick={() => {
+            navigateToAction({ history, routeMatch })
+          }}>
+          {localization.permissionEditor.cancel}
+        </Button>
+      </div>
+    </>
   )
 }

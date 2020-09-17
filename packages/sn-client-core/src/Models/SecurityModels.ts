@@ -102,11 +102,11 @@ export interface PermissionResponseModel {
   entries: PermissionEntry[]
 }
 
-export class PermissionType {
-  /* Value */
-  public value!: string
+export interface PermissionType {
+  /* Id */
+  value: number
   /* From */
-  public from!: string | null
+  from: string | null
 }
 export class IdentityType {
   /* Id */

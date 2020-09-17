@@ -151,6 +151,23 @@ export const pathHelperTests = describe('PathHelper', () => {
     })
   })
 
+  describe('#isInSubTree', () => {
+    it('should return true if content is in subtree', () => {
+      expect(PathHelper.isInSubTree('Root/Example/Content1', 'Root/Example')).toBe(true)
+      expect(PathHelper.isInSubTree('/Root/Example/Content1', '/Root/Example')).toBe(true)
+    })
+
+    it('should return true if content is equal to subtree root', () => {
+      expect(PathHelper.isInSubTree('Root/Example', 'Root/Example')).toBe(true)
+      expect(PathHelper.isInSubTree('/Root/Example', '/Root/Example')).toBe(true)
+    })
+
+    it('should return false if content is not in subtree', () => {
+      expect(PathHelper.isInSubTree('Root/Example2/Content1', 'Root/Example')).toBe(false)
+      expect(PathHelper.isInSubTree('/Root/Example2/Content1', '/Root/Example')).toBe(false)
+    })
+  })
+
   describe('#getSegments()', () => {
     it('Should split the path to segments', () => {
       expect(PathHelper.getSegments("/Root/Example('Content1')")).toEqual(['Root', 'Example', "('Content1')"])

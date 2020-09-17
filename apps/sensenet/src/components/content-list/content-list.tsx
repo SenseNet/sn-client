@@ -100,6 +100,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
   const [activeContent, setActiveContent] = useState<GenericContent>(children[0])
   const [isFocused, setIsFocused] = useState(true)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
+  const [schema, setSchema] = useState(repo.schemas.getSchemaByName(props.schema || 'GenericContent'))
   const [contextMenuAnchor, setContextMenuAnchor] = useState<{ top: number; left: number }>({
     top: 0,
     left: 0,
@@ -111,6 +112,10 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
   const [currentDirection, setCurrentDirection] = useState<'asc' | 'desc'>(
     (loadChildrenSettingsOrderBy && (loadChildrenSettingsOrderBy[0][1] as any)) || 'asc',
   )
+
+  useEffect(() => {
+    setSelected([])
+  }, [children])
 
   useEffect(() => {
     props.onActiveItemChange?.(activeContent)
@@ -131,7 +136,16 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
     const fields = props.fieldsToDisplay || personalSettings.content.fields
     loadSettings.setLoadChildrenSettings({
       ...loadSettings.loadChildrenSettings,
-      expand: ['CheckedOutTo', ...fields.filter((fieldName) => isReferenceField(fieldName, repo, props.schema))],
+      expand: [
+        'CheckedOutTo',
+        ...fields.filter((fieldName) => isReferenceField(fieldName, repo, props.schema)),
+        ...fields.reduce<any[]>((referenceFields, fieldName) => {
+          if (fieldName.includes('/')) {
+            referenceFields.push(fieldName.split('/')[0])
+          }
+          return referenceFields
+        }, []),
+      ],
       orderby: [[currentOrder as any, currentDirection as any]],
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -144,6 +158,13 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
   useEffect(() => {
     selectionService.selection.setValue(selected)
   }, [selected, selectionService.selection])
+
+  useEffect(() => {
+    const schemaObservable = repo.schemas.subscribeToSchemas(() => {
+      setSchema(repo.schemas.getSchemaByName(props.schema || 'GenericContent'))
+    })
+    return () => schemaObservable.dispose()
+  }, [repo.schemas, props.schema])
 
   const onCloseFunc = () => setIsContextMenuOpened(false)
   const onOpenFunc = () => setIsContextMenuOpened(true)
@@ -386,7 +407,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
 
     if (
       typeof fieldOptions.rowData[fieldOptions.dataKey] === 'object' &&
-      isReferenceField(fieldOptions.dataKey, repo, props.schema)
+      isReferenceField(fieldOptions.dataKey, repo, props.schema || fieldOptions.rowData.Type)
     ) {
       const expectedContent = fieldOptions.rowData[fieldOptions.dataKey] as GenericContent
       if (
@@ -458,14 +479,18 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
             checkboxProps={{ color: 'primary' }}
             cellRenderer={fieldComponentFunc}
             displayRowCheckbox={!props.disableSelection}
-            fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields || displayNameInArray}
+            fieldsToDisplay={
+              (props.fieldsToDisplay?.map((field) => field.split('/')[0]) ||
+                personalSettings.content.fields ||
+                displayNameInArray) as any
+            }
             getSelectionControl={getSelectionControl}
             items={children}
             onRequestOrderChange={onRequestOrderChangeFunc}
             onRequestSelectionChange={setSelected}
             orderBy={currentOrder}
             orderDirection={currentDirection}
-            schema={repo.schemas.getSchemaByName(props.schema || 'GenericContent')}
+            schema={schema}
             selected={selected}
             tableProps={{
               rowCount: children.length,

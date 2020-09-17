@@ -1,7 +1,7 @@
 {
   "baseUrl": "https://admin.test.sensenet.com",
   "chromeWebSecurity": false,
-  "defaultCommandTimeout": 10000,
+  "defaultCommandTimeout": 12000,
   "env": {
     "repoUrl": "https://e2e-service.test.sensenet.com",
     "identityServer": "https://is.test.sensenet.com",
