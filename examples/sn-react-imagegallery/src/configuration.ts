@@ -1,6 +1,6 @@
 import { UserManagerSettings } from '@sensenet/authentication-oidc-react'
 
-export const repositoryUrl = 'https://dev.demo.sensenet.com/'
+export const repositoryUrl = 'https://dev.demo.sensenet.com'
 
 export const configuration: UserManagerSettings = {
   client_id: 'spa',

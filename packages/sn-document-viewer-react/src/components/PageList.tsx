@@ -65,9 +65,11 @@ export const PageList: React.FC<PageListProps> = (props) => {
 
   useEffect(() => {
     if (viewportElement && viewportElement.current) {
+      const newHeight = viewportElement.current.clientHeight - props.padding * 2
+      const newWidth = viewportElement.current.clientWidth - props.padding * 2
       setViewport({
-        height: viewportElement.current.clientHeight - props.padding * 2,
-        width: viewportElement.current.clientWidth - props.padding * 2,
+        height: newHeight >= 0 ? newHeight : 0,
+        width: newWidth >= 0 ? newWidth : 0,
       })
     }
   }, [props.padding, resizeToken, viewportElement])
@@ -166,7 +168,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
   return (
     <Grid
       item={true}
-      style={{ ...props.style, flexGrow: 1, flexShrink: 1, overflow: 'auto', height: '100%' }}
+      style={{ ...props.style, flexGrow: 1, flexShrink: 1, overflow: 'auto' }}
       id={props.id}
       innerRef={viewportElement}>
       <div

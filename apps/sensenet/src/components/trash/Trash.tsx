@@ -10,6 +10,7 @@ import { Content } from '../content'
 import TrashHeader from './TrashHeader'
 
 const oDataOptions: ODataParams<TrashBin> = { select: 'all' }
+const loadTreeSettings = { select: ['OriginalPath'] as any }
 
 const Trash = React.memo(() => {
   const { content } = useLoadContent<TrashBin>({ idOrPath: PATHS.trash.snPath, oDataOptions })
@@ -40,6 +41,7 @@ const Trash = React.memo(() => {
       <Content
         rootPath={PATHS.trash.snPath}
         fieldsToDisplay={['DisplayName', 'ModificationDate', 'ModifiedBy', 'Actions']}
+        loadTreeSettings={loadTreeSettings}
       />
     </>
   )

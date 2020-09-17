@@ -1,3 +1,4 @@
+import { useRepository } from '@sensenet/hooks-react'
 import { AppBar, createStyles, IconButton, makeStyles, Toolbar } from '@material-ui/core'
 import Menu from '@material-ui/icons/Menu'
 import clsx from 'clsx'
@@ -38,6 +39,7 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
   const personalSettings = useContext(ResponsivePersonalSettings)
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
+  const repository = useRepository()
 
   return (
     <AppBar position="sticky" className={clsx(globalClasses.centeredHorizontal, classes.appBar)}>
@@ -54,6 +56,7 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
               <Menu />
             </IconButton>
           ) : null}
+          <div style={{ marginRight: '2rem' }}>{repository.configuration.repositoryUrl}</div>
         </div>
 
         {personalSettings.commandPalette.enabled ? (
