@@ -87,6 +87,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
   const [permissionSetting, setPermissionSetting] = useState<PermissionSettingType>()
   const [actualGroup, setActualGroup] = useState<string>('Read')
   const [responseBody, setResponseBody] = useState<PermissionRequestBody>({ identity: props.entry.identity.path })
+  const [resetFlag, setResetFlag] = useState<boolean>(false)
 
   useEffect(() => {
     async function getPermissionSettingJSON() {
@@ -134,7 +135,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
       }
     })
     setResponseBody(localResponseBody)
-  }, [props.entry.identity.path, props.entry.permissions])
+  }, [props.entry.identity.path, props.entry.permissions, resetFlag])
 
   const isPermissionDisabled = (permission: string) => {
     return (
@@ -287,6 +288,11 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
             <ListItemText primary={localization.permissionEditor.localOnly} className={classes.disabled} />
             <Switcher checked={false} size="small" disabled onClick={() => {}} />
           </ListItem>
+          <Divider />
+          <ListItem button onClick={() => setResetFlag(!resetFlag)}>
+            <ListItemText primary={localization.permissionEditor.reset} />
+          </ListItem>
+          <Divider />
         </List>
         <div className={clsx(classes.column, classes.rightColumn)}>
           <List className={classes.permissionContainer}>

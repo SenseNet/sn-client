@@ -433,6 +433,7 @@ const values = {
     grantFullAccess: 'Grant full access',
     localOnly: 'Local only',
     cancel: 'Cancel',
+    reset: 'Reset',
   },
   restore: {
     description: (contentName: string) =>

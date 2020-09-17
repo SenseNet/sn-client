@@ -167,7 +167,8 @@ const values: DeepPartial<typeof import('./default').default> = {
     permissions: 'Jogosultságok',
     grantFullAccess: 'Teljes hozzáférés',
     localOnly: 'Helyi módosítás',
-    cancel: 'Cancel',
+    cancel: 'Vissza',
+    reset: 'Visszaállítás',
   },
 }
 
