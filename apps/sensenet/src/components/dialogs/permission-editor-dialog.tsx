@@ -41,7 +41,6 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     rightColumn: {
       flex: 2,
-      position: 'relative',
     },
     dialogActions: {
       padding: '16px',
@@ -69,7 +68,7 @@ export interface PermissionSettingType {
 }
 
 export type PermissionEditorDialogProps = {
-  path: string | undefined
+  path?: string
   entry: EntryType
   callBackFunction?: () => void
 }
@@ -85,7 +84,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
   const localization = useLocalization()
   const { closeLastDialog } = useDialog()
 
-  const [permissionSettingJSON, setPermissionSettingJSON] = useState<PermissionSettingType>()
+  const [permissionSetting, setPermissionSetting] = useState<PermissionSettingType>()
   const [actualGroup, setActualGroup] = useState<string>('Read')
   const [responseBody, setResponseBody] = useState<PermissionRequestBody>({ identity: props.entry.identity.path })
 
@@ -96,14 +95,14 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
           idOrPath: PERMISSION_SETTING_PATH,
         })
 
-        const binaryPath = result.d.Binary && result.d.Binary.__mediaresource.media_src
+        const binaryPath = result.d.Binary?.__mediaresource.media_src
         if (!binaryPath) {
           return
         }
         const textFile = await repo.fetch(PathHelper.joinPaths(repo.configuration.repositoryUrl, binaryPath))
         if (textFile.ok) {
-          const text = await textFile.text()
-          setPermissionSettingJSON(JSON.parse(text))
+          const setting = await textFile.json()
+          setPermissionSetting(setting)
         }
       } catch (error) {
         logger.error({
@@ -147,7 +146,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
 
   const getPermissionsFromGroupName = (selectedGroup: string): string[] => {
     let permissionsFromSettings
-    permissionSettingJSON?.groups.forEach((groupsFromSettings: PermissionGroupType) =>
+    permissionSetting?.groups.forEach((groupsFromSettings: PermissionGroupType) =>
       Object.entries(groupsFromSettings)
         .filter(([groupNameFromSettings]) => selectedGroup === groupNameFromSettings)
         .forEach(([, selectedGroupPermissionsFromSettings]) => {
@@ -190,7 +189,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
   const isFullAccessChecked = () => {
     let checkedFlag = true
 
-    permissionSettingJSON?.groups.forEach((groupsFromSettings: PermissionGroupType) =>
+    permissionSetting?.groups.forEach((groupsFromSettings: PermissionGroupType) =>
       Object.entries(groupsFromSettings).forEach(([groupName]) => {
         checkedFlag = checkedFlag && isGroupChecked(groupName)
       }),
@@ -202,7 +201,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
   const isFullAccessDisabled = () => {
     let disabledFlag = true
 
-    permissionSettingJSON?.groups.forEach((groupsFromSettings: PermissionGroupType) =>
+    permissionSetting?.groups.forEach((groupsFromSettings: PermissionGroupType) =>
       Object.entries(groupsFromSettings).forEach(([groupName]) => {
         disabledFlag = disabledFlag && isGroupDisabled(groupName)
       }),
@@ -224,7 +223,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
           </ListItem>
           <Divider />
 
-          {permissionSettingJSON?.groups.map((groupsFromSettings: PermissionGroupType) =>
+          {permissionSetting?.groups.map((groupsFromSettings: PermissionGroupType) =>
             Object.entries(groupsFromSettings).map(([groupNameFromSettings]) => {
               return (
                 <ListItem
@@ -282,7 +281,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
               size="small"
               onClick={() => {
                 const localResponseBody = { ...responseBody }
-                permissionSettingJSON?.groups.forEach((groupsFromSettings: PermissionGroupType) =>
+                permissionSetting?.groups.forEach((groupsFromSettings: PermissionGroupType) =>
                   Object.entries(groupsFromSettings).forEach(([groupName]) => {
                     getPermissionsFromGroupName(groupName).forEach(
                       (selectedGroupPermission: keyof PermissionRequestBody) => {
