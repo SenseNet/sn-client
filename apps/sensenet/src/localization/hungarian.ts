@@ -163,7 +163,14 @@ const values: DeepPartial<typeof import('./default').default> = {
     noContent: 'Ennek a tartalomnak nincs közvetlen jogosultság beállítása',
     inherited: 'Öröklött jogosultságok',
     setOnThis: 'Ezen a kontenten beállított jogosultságok',
-    cancel: 'Cancel',
+    errorGetPermissionSetting: 'Hiba történt a beállítások lekérdezése során',
+    permissions: 'Jogosultságok',
+    grantFullAccess: 'Teljes hozzáférés',
+    localOnly: 'Helyi módosítás',
+    makePublic: 'Tartalom nyilvánossá tétele',
+    makePrivate: 'Tartalom priváttá tétele',
+    cancel: 'Vissza',
+    reset: 'Visszaállítás',
   },
 }
 
