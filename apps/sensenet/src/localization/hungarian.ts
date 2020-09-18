@@ -156,6 +156,22 @@ const values: DeepPartial<typeof import('./default').default> = {
     move: 'Kijelölt elemek áthelyezése',
     copy: 'Kijelölt elemek másolása',
   },
+  permissionEditor: {
+    assign: 'Új jogosultság hozzáadása',
+    setPermissons: 'Jogosultságállítás a következőn: ',
+    errorGetAcl: 'Hiba történt a jogosultságok lekérdezése során',
+    noContent: 'Ennek a tartalomnak nincs közvetlen jogosultság beállítása',
+    inherited: 'Öröklött jogosultságok',
+    setOnThis: 'Ezen a kontenten beállított jogosultságok',
+    errorGetPermissionSetting: 'Hiba történt a beállítások lekérdezése során',
+    permissions: 'Jogosultságok',
+    grantFullAccess: 'Teljes hozzáférés',
+    localOnly: 'Helyi módosítás',
+    makePublic: 'Tartalom nyilvánossá tétele',
+    makePrivate: 'Tartalom priváttá tétele',
+    cancel: 'Vissza',
+    reset: 'Visszaállítás',
+  },
 }
 
 export default values

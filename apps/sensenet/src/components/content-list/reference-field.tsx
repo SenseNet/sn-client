@@ -1,9 +1,12 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import { Button, createStyles, makeStyles, TableCell } from '@material-ui/core'
+import { Button, createStyles, Link, makeStyles, TableCell, Tooltip } from '@material-ui/core'
 import clsx from 'clsx'
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useContext } from 'react'
+import { useHistory } from 'react-router'
+import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
+import { getUrlForContent } from '../../services'
 import { useDialog } from '../dialogs'
 import { Icon } from '../Icon'
 
@@ -32,6 +35,8 @@ export const ReferenceField: FunctionComponent<ReferenceFieldProps> = ({ content
   const classes = useStyles()
   const { openDialog } = useDialog()
   const repository = useRepository()
+  const uiSettings = useContext(ResponsivePersonalSettings)
+  const history = useHistory()
 
   return (
     <TableCell
@@ -60,8 +65,24 @@ export const ReferenceField: FunctionComponent<ReferenceFieldProps> = ({ content
         </div>
       ) : content.Name !== 'Somebody' ? (
         <div className={globalClasses.centeredVertical}>
-          <Icon item={content} />
-          <div style={{ marginLeft: '1em' }}>{content.DisplayName || content.Name}</div>
+          {content.Type === 'User' ? <Icon item={content} /> : null}
+          <Tooltip title={`Open ${content.DisplayName || content.Name} for edit`}>
+            <Link
+              style={{ marginLeft: '1em', color: '#ffffff' }}
+              component="button"
+              onClick={async () => {
+                history.push(
+                  getUrlForContent({
+                    content,
+                    uiSettings,
+                    location: history.location,
+                    action: 'edit',
+                  }),
+                )
+              }}>
+              {content.DisplayName || content.Name}
+            </Link>
+          </Tooltip>
         </div>
       ) : null}
     </TableCell>

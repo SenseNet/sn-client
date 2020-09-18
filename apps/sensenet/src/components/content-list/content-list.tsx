@@ -100,6 +100,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
   const [activeContent, setActiveContent] = useState<GenericContent>(children[0])
   const [isFocused, setIsFocused] = useState(true)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
+  const [schema, setSchema] = useState(repo.schemas.getSchemaByName(props.schema || 'GenericContent'))
   const [contextMenuAnchor, setContextMenuAnchor] = useState<{ top: number; left: number }>({
     top: 0,
     left: 0,
@@ -157,6 +158,13 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
   useEffect(() => {
     selectionService.selection.setValue(selected)
   }, [selected, selectionService.selection])
+
+  useEffect(() => {
+    const schemaObservable = repo.schemas.subscribeToSchemas(() => {
+      setSchema(repo.schemas.getSchemaByName(props.schema || 'GenericContent'))
+    })
+    return () => schemaObservable.dispose()
+  }, [repo.schemas, props.schema])
 
   const onCloseFunc = () => setIsContextMenuOpened(false)
   const onOpenFunc = () => setIsContextMenuOpened(true)
@@ -482,7 +490,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
             onRequestSelectionChange={setSelected}
             orderBy={currentOrder}
             orderDirection={currentDirection}
-            schema={repo.schemas.getSchemaByName(props.schema || 'GenericContent')}
+            schema={schema}
             selected={selected}
             tableProps={{
               rowCount: children.length,
