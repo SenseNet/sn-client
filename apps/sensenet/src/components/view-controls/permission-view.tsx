@@ -1,4 +1,4 @@
-import { AclResponseModel } from '@sensenet/client-core'
+import { AclResponseModel, ConstantContent } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent, PermissionValues } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
@@ -72,8 +72,6 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-const VISITOR_PATH = '/Root/IMS/BuiltIn/Portal/Visitor'
-
 export interface PermissionViewProps {
   contentPath: string
 }
@@ -128,7 +126,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
 
   useEffect(() => {
     const visitorEntries = permissions?.entries.filter(
-      (entry) => entry.identity.path === VISITOR_PATH && entry.permissions.Open?.value === 'allow',
+      (entry) => entry.identity.path === ConstantContent.VISITOR_USER.Path && entry.permissions.Open?.value === 'allow',
     )
     visitorEntries && visitorEntries.length > 0 ? setIsPrivate(false) : setIsPrivate(true)
   }, [permissions])
@@ -160,11 +158,11 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                     try {
                       if (isPrivate) {
                         await repo.security.setPermissions(permissions.path, [
-                          { identity: VISITOR_PATH, Open: PermissionValues.allow },
+                          { identity: ConstantContent.VISITOR_USER.Path, Open: PermissionValues.allow },
                         ])
                       } else {
                         await repo.security.setPermissions(permissions.path, [
-                          { identity: VISITOR_PATH, See: PermissionValues.undefined },
+                          { identity: ConstantContent.VISITOR_USER.Path, See: PermissionValues.undefined },
                         ])
                       }
                     } catch (error) {
