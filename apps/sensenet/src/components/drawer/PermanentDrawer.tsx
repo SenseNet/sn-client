@@ -154,7 +154,7 @@ export const PermanentDrawer = () => {
                         [classes.listItemIconLight]: personalSettings.theme === 'light',
                       })}>
                       <Tooltip title={item.secondaryText} placement="right">
-                        {item.icon}
+                        <div>{item.icon}</div>
                       </Tooltip>
                     </ListItemIcon>
                     {opened && (
