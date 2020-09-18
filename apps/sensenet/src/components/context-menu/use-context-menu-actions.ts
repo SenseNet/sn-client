@@ -169,6 +169,18 @@ export function useContextMenuActions(
           },
         })
         break
+      case 'SetPermissions':
+        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+          navigateToAction({
+            history,
+            routeMatch: snRoute.match!,
+            action: 'setpermissions',
+            queryParams: { content: content.Path.replace(snRoute.path, '') },
+          })
+        } else {
+          history.push(getUrlForContent({ content, uiSettings, location: history.location, action: 'setpermissions' }))
+        }
+        break
       case 'Restore':
         openDialog({
           name: 'restore',
