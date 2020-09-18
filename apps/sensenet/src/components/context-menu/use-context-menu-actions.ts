@@ -1,3 +1,4 @@
+import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useDownload, useLogger, useRepository } from '@sensenet/hooks-react'
 import { useContext } from 'react'
@@ -30,7 +31,7 @@ export function useContextMenuActions(
         openDialog({ name: 'delete', props: { content: [content] } })
         break
       case 'Edit':
-        if (snRoute.path && content.Path.startsWith(snRoute.path)) {
+        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -42,7 +43,7 @@ export function useContextMenuActions(
         }
         break
       case 'Browse':
-        if (snRoute.path && content.Path.startsWith(snRoute.path)) {
+        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -63,7 +64,7 @@ export function useContextMenuActions(
         break
       }
       case 'Preview':
-        if (snRoute.path && content.Path.startsWith(snRoute.path)) {
+        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -103,7 +104,7 @@ export function useContextMenuActions(
         download.download()
         break
       case 'WopiOpenView':
-        if (snRoute.path && content.Path.startsWith(snRoute.path)) {
+        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -116,7 +117,7 @@ export function useContextMenuActions(
 
         break
       case 'WopiOpenEdit':
-        if (snRoute.path && content.Path.startsWith(snRoute.path)) {
+        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -128,7 +129,7 @@ export function useContextMenuActions(
         }
         break
       case 'Versions':
-        if (snRoute.path && content.Path.startsWith(snRoute.path)) {
+        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -169,7 +170,7 @@ export function useContextMenuActions(
         })
         break
       case 'SetPermissions':
-        if (snRoute.path && content.Path.startsWith(snRoute.path)) {
+        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -179,6 +180,14 @@ export function useContextMenuActions(
         } else {
           history.push(getUrlForContent({ content, uiSettings, location: history.location, action: 'setpermissions' }))
         }
+        break
+      case 'Restore':
+        openDialog({
+          name: 'restore',
+          props: {
+            content,
+          },
+        })
         break
       default:
         logger.warning({ message: `${actionName} is not implemented yet. Try to use it from command palette.` })

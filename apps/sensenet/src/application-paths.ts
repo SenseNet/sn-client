@@ -10,7 +10,7 @@ export const PATHS = {
   trash: { appPath: '/trash/:browseType/:action?', snPath: '/Root/Trash' },
   localization: { appPath: '/localization/:browseType/:action?', snPath: '/Root/Localization' },
   usersAndGroups: { appPath: '/users-and-groups/:browseType/:action?', snPath: '/Root/IMS/Public' },
-  dashboard: { appPath: '/dashboard/:dashboardName' },
+  dashboard: { appPath: '/dashboard' },
   contentTypes: { appPath: '/content-types/:browseType/:action?', snPath: '/Root/System/Schema/ContentTypes' },
   search: { appPath: '/search' },
   content: { appPath: '/content/:browseType/:action?', snPath: '/Root/Content' },
@@ -29,10 +29,6 @@ type Options =
   | {
       path: typeof PATHS[RoutesWithContentBrowser]['appPath']
       params: { browseType: typeof BrowseType[number]; action?: string; [index: string]: string | undefined }
-    }
-  | {
-      path: typeof PATHS['dashboard']['appPath']
-      params: { dashboardName: string; [index: string]: string }
     }
   | {
       path: typeof PATHS['custom']['appPath']

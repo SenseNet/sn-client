@@ -6,8 +6,8 @@ import { useHistory, useRouteMatch } from 'react-router-dom'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLoadContent, useSelectionService } from '../../hooks'
 import { navigateToAction } from '../../services'
+import { TextEditor } from '../editor/text-editor'
 import { FullScreenLoader } from '../full-screen-loader'
-import { TextEditor } from './TextEditor'
 
 const useStyles = makeStyles(() => {
   return createStyles({

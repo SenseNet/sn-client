@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize: '4rem',
     },
     grid: {
-      height: '85vh',
+      height: '65vh',
       border: 'dashed',
       borderColor: theme.palette.grey[500],
       marginBottom: theme.spacing(2),
@@ -51,6 +51,8 @@ const useStyles = makeStyles((theme: Theme) =>
 export type UploadDialogProps = {
   files?: File[]
   uploadPath: string
+  disableMultiUpload?: boolean
+  customUploadFunction?: (files: FileWithFullPath[] | undefined, progressObservable: any) => any
 }
 
 export function UploadDialog(props: UploadDialogProps) {
@@ -148,15 +150,17 @@ export function UploadDialog(props: UploadDialogProps) {
     setIsUploadInProgress(true)
 
     try {
-      await repository.upload.fromFileList({
-        parentPath: props.uploadPath,
-        fileList: files as any,
-        createFolders: true,
-        binaryPropertyName: 'Binary',
-        overwrite: false,
-        progressObservable: progressObservable.current,
-        requestInit: { signal: abortController.current.signal },
-      })
+      props.customUploadFunction
+        ? props.customUploadFunction(files, progressObservable)
+        : await repository.upload.fromFileList({
+            parentPath: props.uploadPath,
+            fileList: files as any,
+            createFolders: true,
+            binaryPropertyName: 'Binary',
+            overwrite: false,
+            progressObservable: progressObservable.current,
+            requestInit: { signal: abortController.current.signal },
+          })
     } catch (error) {
       logger.error({ message: 'Upload failed', data: error })
     } finally {
@@ -225,9 +229,10 @@ export function UploadDialog(props: UploadDialogProps) {
           ev.target.files && addFiles([...ev.target.files])
         }}
         style={{ display: 'none' }}
+        disabled={props.disableMultiUpload && files && files.length > 0}
         ref={inputFile}
         type="file"
-        multiple={true}
+        multiple={!props.disableMultiUpload}
       />
       <Prompt when={isUploadInProgress} message={localization.blockNavigation} />
     </>

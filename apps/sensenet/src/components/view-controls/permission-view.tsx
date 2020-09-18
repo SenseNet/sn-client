@@ -21,12 +21,13 @@ import ExpandMore from '@material-ui/icons/ExpandMore'
 import GroupOutlined from '@material-ui/icons/GroupOutlined'
 import clsx from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
-import { useHistory } from 'react-router'
+import { useHistory, useRouteMatch } from 'react-router'
 import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { getUrlForContent } from '../../services'
+import { getUrlForContent, navigateToAction } from '../../services'
 import { useDialog } from '../dialogs'
+import { useViewControlStyles } from './common/styles'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -56,12 +57,7 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     anchor: {
       fontSize: '14px',
-      color: theme.palette.primary.main,
       paddingLeft: '15px',
-      cursor: 'pointer',
-      '&:hover': {
-        textDecoration: 'underline',
-      },
     },
     assignButton: {
       marginLeft: '20px',
@@ -85,18 +81,23 @@ export interface PermissionViewProps {
 export const PermissionView: React.FC<PermissionViewProps> = (props) => {
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
+  const controlClasses = useViewControlStyles()
   const repo = useRepository()
   const localization = useLocalization()
   const history = useHistory()
   const logger = useLogger('PermissionEditor')
   const uiSettings = useContext(ResponsivePersonalSettings)
   const { openDialog } = useDialog()
-  const [permissions, setPermissions] = useState<AclResponseModel | undefined>(undefined)
-  const [currentContent, setCurrentContent] = useState<GenericContent | undefined>()
+  const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
+  const [permissions, setPermissions] = useState<AclResponseModel>()
+  const [currentContent, setCurrentContent] = useState<GenericContent>()
   const [openInheritedList, setOpenInheritedList] = useState<boolean>(false)
   const [openSetOnThisList, setOpenSetOnThisList] = useState<boolean>(true)
   const [refreshFlag, setRefreshFlag] = useState<boolean>(false)
   const [isPrivate, setIsPrivate] = useState<boolean>(false)
+
+  const setOnThisArray = permissions?.entries.filter((entry) => entry.inherited === false)
+  const inheritedArray = permissions?.entries.filter((entry) => entry.inherited === true)
 
   useEffect(() => {
     async function getCurrentContent() {
@@ -133,73 +134,72 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
   }, [permissions])
 
   return (
-    <div className={classes.permissionEditorContainer}>
-      <div className={classes.titleContainer}>
-        <div className={classes.title}>
-          {localization.permissionEditor.setPermissons}{' '}
-          <span className={classes.textBolder}>{currentContent?.DisplayName}</span>
-        </div>
-        <div>
-          <Tooltip
-            title={
-              isPrivate
-                ? localization.permissionEditor.makePublicTooltip
-                : localization.permissionEditor.makePrivateTooltip
-            }
-            placement="right">
-            <Button
-              aria-label={
-                isPrivate ? localization.permissionEditor.makePublic : localization.permissionEditor.makePrivate
+    <>
+      <div className={classes.permissionEditorContainer}>
+        <div className={classes.titleContainer}>
+          <div className={classes.title}>
+            {localization.permissionEditor.setPermissons}{' '}
+            <span className={classes.textBolder}>{currentContent?.DisplayName}</span>
+          </div>
+          <div>
+            <Tooltip
+              title={
+                isPrivate
+                  ? localization.permissionEditor.makePublicTooltip
+                  : localization.permissionEditor.makePrivateTooltip
               }
-              className={classes.publicButton}
-              variant="contained"
-              onClick={async () => {
-                if (permissions) {
-                  try {
-                    if (isPrivate) {
-                      await repo.security.setPermissions(permissions.path, [
-                        { identity: VISITOR_PATH, Open: PermissionValues.allow },
-                      ])
-                    } else {
-                      await repo.security.setPermissions(permissions.path, [
-                        { identity: VISITOR_PATH, See: PermissionValues.undefined },
-                      ])
-                    }
-                  } catch (error) {
-                    logger.error({
-                      message: error.message,
-                      data: {
-                        details: { error },
-                      },
-                    })
-                    return false
-                  } finally {
-                    setRefreshFlag(!refreshFlag)
-                  }
+              placement="right">
+              <Button
+                aria-label={
+                  isPrivate ? localization.permissionEditor.makePublic : localization.permissionEditor.makePrivate
                 }
-              }}>
-              {isPrivate ? localization.permissionEditor.makePublic : localization.permissionEditor.makePrivate}
+                className={classes.publicButton}
+                variant="contained"
+                onClick={async () => {
+                  if (permissions) {
+                    try {
+                      if (isPrivate) {
+                        await repo.security.setPermissions(permissions.path, [
+                          { identity: VISITOR_PATH, Open: PermissionValues.allow },
+                        ])
+                      } else {
+                        await repo.security.setPermissions(permissions.path, [
+                          { identity: VISITOR_PATH, See: PermissionValues.undefined },
+                        ])
+                      }
+                    } catch (error) {
+                      logger.error({
+                        message: error.message,
+                        data: {
+                          details: { error },
+                        },
+                      })
+                      return false
+                    } finally {
+                      setRefreshFlag(!refreshFlag)
+                    }
+                  }
+                }}>
+                {isPrivate ? localization.permissionEditor.makePublic : localization.permissionEditor.makePrivate}
+              </Button>
+            </Tooltip>
+            <Button
+              aria-label={localization.permissionEditor.assign}
+              className={classes.assignButton}
+              color="primary"
+              variant="contained">
+              {localization.permissionEditor.assign}
             </Button>
-          </Tooltip>
-          <Button
-            aria-label={localization.permissionEditor.assign}
-            className={classes.assignButton}
-            color="primary"
-            variant="contained">
-            {localization.permissionEditor.assign}
-          </Button>
+          </div>
         </div>
-      </div>
-      <List component="nav">
-        <ListItem button onClick={() => setOpenInheritedList(!openInheritedList)}>
-          {openInheritedList ? <ExpandLess /> : <ExpandMore />}
-          <ListItemText primary={localization.permissionEditor.inherited} className={classes.listTitle} />
-        </ListItem>
-        <Collapse className={classes.collapseWrapper} in={openInheritedList} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            {permissions?.entries
-              .filter((entry) => entry.inherited === true)
-              .map((inheritedEntry) => {
+        <List component="nav">
+          <ListItem button onClick={() => setOpenInheritedList(!openInheritedList)}>
+            {openInheritedList ? <ExpandLess /> : <ExpandMore />}
+            <ListItemText primary={localization.permissionEditor.inherited} className={classes.listTitle} />
+          </ListItem>
+          <Collapse className={classes.collapseWrapper} in={openInheritedList} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              {inheritedArray?.map((inheritedEntry) => {
                 return (
                   <ListItem
                     button
@@ -209,7 +209,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                         name: 'permission-editor',
                         props: {
                           entry: inheritedEntry,
-                          path: currentContent?.Path,
+                          path: currentContent!.Path,
                           callBackFunction: () => {
                             setRefreshFlag(!refreshFlag)
                           },
@@ -256,39 +256,22 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                   </ListItem>
                 )
               })}
-          </List>
-        </Collapse>
-        <ListItem button onClick={() => setOpenSetOnThisList(!openSetOnThisList)}>
-          {openSetOnThisList ? <ExpandLess /> : <ExpandMore />}
-          <ListItemText primary={localization.permissionEditor.setOnThis} className={classes.listTitle} />
-        </ListItem>
-        <Collapse className={classes.collapseWrapper} in={openSetOnThisList} timeout="auto" unmountOnExit>
-          {permissions?.entries.filter((entry) => entry.inherited === false).length === 0 ? (
-            <ListItem>
-              <ListItemText primary={localization.permissionEditor.noContent} />
-            </ListItem>
-          ) : (
-            <List component="div" disablePadding>
-              {permissions?.entries
-                .filter((entry) => entry.inherited === false)
-                .map((setOnThisEntry) => {
+            </List>
+          </Collapse>
+          <ListItem button onClick={() => setOpenSetOnThisList(!openSetOnThisList)}>
+            {openSetOnThisList ? <ExpandLess /> : <ExpandMore />}
+            <ListItemText primary={localization.permissionEditor.setOnThis} className={classes.listTitle} />
+          </ListItem>
+          <Collapse className={classes.collapseWrapper} in={openSetOnThisList} timeout="auto" unmountOnExit>
+            {setOnThisArray?.length === 0 ? (
+              <ListItem>
+                <ListItemText primary={localization.permissionEditor.noContent} />
+              </ListItem>
+            ) : (
+              <List component="div" disablePadding>
+                {setOnThisArray?.map((setOnThisEntry) => {
                   return (
-                    <ListItem
-                      button
-                      key={setOnThisEntry.identity.id}
-                      onClick={() =>
-                        openDialog({
-                          name: 'permission-editor',
-                          props: {
-                            entry: setOnThisEntry,
-                            path: currentContent?.Path,
-                            callBackFunction: () => {
-                              setRefreshFlag(!refreshFlag)
-                            },
-                          },
-                          dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
-                        })
-                      }>
+                    <ListItem button key={setOnThisEntry.identity.id}>
                       <ListItemIcon>
                         {setOnThisEntry.identity.kind === 'group' ? (
                           <div className={clsx(classes.iconWrapper, globalClasses.centered)}>
@@ -305,10 +288,22 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                     </ListItem>
                   )
                 })}
-            </List>
-          )}
-        </Collapse>
-      </List>
-    </div>
+              </List>
+            )}
+          </Collapse>
+        </List>
+      </div>
+      <div className={controlClasses.actionButtonWrapper}>
+        <Button
+          aria-label={localization.permissionEditor.cancel}
+          color="default"
+          className={globalClasses.cancelButton}
+          onClick={() => {
+            navigateToAction({ history, routeMatch })
+          }}>
+          {localization.permissionEditor.cancel}
+        </Button>
+      </div>
+    </>
   )
 }
