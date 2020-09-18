@@ -123,6 +123,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
         }}
       />
       <IconButton
+        aria-label={localization.topMenu.openMenu}
         ref={anchorRef}
         aria-controls={open ? 'menu-list-grow' : undefined}
         aria-haspopup="true"

@@ -102,49 +102,49 @@ export interface PermissionResponseModel {
   entries: PermissionEntry[]
 }
 
-export class PermissionType {
+export interface PermissionType {
   /* Value */
-  public value!: string
+  value: string
   /* From */
-  public from!: string | null
+  from: string | null
 }
-export class IdentityType {
+export interface IdentityType {
   /* Id */
-  public id!: number
+  id: number
   /* Path */
-  public path!: string
+  path: string
   /* Name */
-  public name!: string
+  name: string
   /* DisplayName */
-  public displayName!: string
+  displayName: string
   /* Domain */
-  public domain?: null | string
+  domain?: null | string
   /* Kind */
-  public kind!: string
+  kind: string
   /* Avatar */
-  public avatar?: string
+  avatar?: string
 }
 
-export class EntryType {
+export interface EntryType {
   /* Identity */
-  public identity!: IdentityType
+  identity: IdentityType
   /* Inherited */
-  public inherited!: boolean
+  inherited: boolean
   /* Ancestor */
-  public ancestor!: string | null
+  ancestor: string | null
   /* Propagates */
-  public propagates!: boolean
+  propagates: boolean
   /* Permissions */
-  public permissions!: { [permissionName: string]: PermissionType | null }
+  permissions: { [permissionName: string]: PermissionType | null }
 }
 
-export class AclResponseModel {
+export interface AclResponseModel {
   /* Id */
-  public id!: number
+  id: number
   /* Path */
-  public path!: string
+  path: string
   /* Inherits */
-  public inherits!: boolean
+  inherits: boolean
   /* Entries */
-  public entries!: EntryType[]
+  entries: EntryType[]
 }

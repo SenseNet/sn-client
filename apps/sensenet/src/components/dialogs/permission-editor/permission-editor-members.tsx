@@ -37,7 +37,7 @@ export function PermissionEditorMembers(props: PermissionEditorMembersProps) {
         </Button>
       )}
       formStyle={{ justifyContent: 'space-between', padding: '10px 20px' }}
-      listStyle={{ padding: '0 30px', minHeight: '270px' }}
+      listStyle={{ padding: '0 30px', minHeight: '310px' }}
     />
   )
 }
