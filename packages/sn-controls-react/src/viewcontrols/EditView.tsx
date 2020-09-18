@@ -3,13 +3,15 @@
  */
 import { Repository } from '@sensenet/client-core'
 import { ActionName, ControlMapper } from '@sensenet/control-mapper'
-import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
+import { GenericContent } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import React, { createElement, ReactElement, useState } from 'react'
+import React, { createElement, ReactElement, useEffect, useState } from 'react'
 import MediaQuery from 'react-responsive'
+import { isFullWidthField } from '../helpers'
 import { reactControlMapper } from '../ReactControlMapper'
 
 /**
@@ -67,9 +69,10 @@ const useStyles = makeStyles(() => {
 export const EditView: React.FC<EditViewProps> = (props) => {
   const actionName = props.actionName || 'edit'
   const controlMapper = props.controlMapper || reactControlMapper(props.repository)
-  const schema = controlMapper.getFullSchemaForContentType(props.contentTypeName, actionName)
+  const [schema, setSchema] = useState(controlMapper.getFullSchemaForContentType(props.contentTypeName, actionName))
   const [content, setContent] = useState({})
   const defaultClasses = useStyles()
+  const repository = useRepository()
 
   const uniqueId = Date.now()
 
@@ -82,13 +85,12 @@ export const EditView: React.FC<EditViewProps> = (props) => {
     setContent({ ...content, [field]: value })
   }
 
-  const isFullWidthField = (field: { fieldSettings: FieldSetting }) => {
-    return (
-      (field.fieldSettings.Name === 'Avatar' && props.contentTypeName.includes('User')) ||
-      (field.fieldSettings.Name === 'Enabled' && props.contentTypeName.includes('User')) ||
-      field.fieldSettings.Type === 'LongTextFieldSetting'
-    )
-  }
+  useEffect(() => {
+    const schemaObservable = repository.schemas.subscribeToSchemas(() => {
+      setSchema(() => controlMapper.getFullSchemaForContentType(props.contentTypeName, actionName))
+    })
+    return () => schemaObservable.dispose()
+  }, [repository.schemas, actionName, controlMapper, props.contentTypeName])
 
   return (
     <>
@@ -117,7 +119,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
                 settings: field.fieldSettings,
                 repository: props.repository,
                 content: props.content,
-                fieldValue: props.content ? (props.content as any)[field.fieldSettings.Name] : undefined, //tuti?!
+                fieldValue: props.content ? (props.content as any)[field.fieldSettings.Name] : undefined,
                 renderIcon: props.renderIcon,
                 fieldOnChange: handleInputChange,
                 extension: props.extension,
@@ -125,7 +127,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
               },
             )
 
-            const isFullWidth = isFullWidthField(field)
+            const isFullWidth = isFullWidthField(field, props.contentTypeName)
 
             return (
               <Grid

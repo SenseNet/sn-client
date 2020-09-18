@@ -101,3 +101,50 @@ export interface PermissionResponseModel {
   inherits: boolean
   entries: PermissionEntry[]
 }
+
+export interface PermissionType {
+  /* Value */
+  value: string
+  /* From */
+  from: string | null
+}
+export interface IdentityType {
+  /* Id */
+  id: number
+  /* Path */
+  path: string
+  /* Name */
+  name: string
+  /* DisplayName */
+  displayName: string
+  /* Domain */
+  domain?: null | string
+  /* Kind */
+  kind: string
+  /* Avatar */
+  avatar?: string
+}
+
+export interface EntryType {
+  /* Identity */
+  identity: IdentityType
+  /* Inherited */
+  inherited: boolean
+  /* Ancestor */
+  ancestor: string | null
+  /* Propagates */
+  propagates: boolean
+  /* Permissions */
+  permissions: { [permissionName: string]: PermissionType | null }
+}
+
+export interface AclResponseModel {
+  /* Id */
+  id: number
+  /* Path */
+  path: string
+  /* Inherits */
+  inherits: boolean
+  /* Entries */
+  entries: EntryType[]
+}
