@@ -10,6 +10,7 @@ import {
   CustomActionResultDialogProps,
   DeleteContentDialogProps,
   ExecuteActionDialogProps,
+  PermissionEditorDialogProps,
   ReferenceContentListProps,
   RestoreProps,
   SaveQueryProps,
@@ -30,6 +31,7 @@ export type DialogWithProps = (
   | { name: 'logout' }
   | { name: 'save-query'; props: SaveQueryProps }
   | { name: 'reference-content-list'; props: ReferenceContentListProps }
+  | { name: 'permission-editor'; props: PermissionEditorDialogProps }
   | { name: 'content-picker'; props: ContentPickerDialogProps }
 ) & { dialogProps?: Partial<DialogProps> }
 

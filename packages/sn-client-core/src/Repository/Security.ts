@@ -3,7 +3,7 @@ import { Group, IdentityKind, PermissionLevel, PermissionRequestBody, User } fro
 import { Content, PermissionEntry } from '../index'
 import { ODataCollectionResponse } from '../Models/ODataCollectionResponse'
 import { ODataParams } from '../Models/ODataParams'
-import { PermissionResponseModel } from '../Models/SecurityModels'
+import { AclResponseModel, PermissionResponseModel } from '../Models/SecurityModels'
 import { Repository } from './Repository'
 
 /**
@@ -225,6 +225,19 @@ export class Security {
       name: 'GetPermissions',
       method: 'GET',
       body: undefined,
+    })
+
+  /**
+   * Gets all permissions, ancestor and inherited flag for the requested content.
+   * Required permissions to call this action: See permissions.
+   * @param {string | number} contentIdOrPath The path or id for the content
+   * @returns {Promise<PermissionResponseModel>} A promise with the permission response
+   */
+  public getAcl = (contentIdOrPath: string | number) =>
+    this.repository.executeAction<any, AclResponseModel>({
+      idOrPath: contentIdOrPath,
+      name: 'GetAcl',
+      method: 'GET',
     })
 
   /**
