@@ -436,10 +436,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                 if (props.path) {
                   //TODO: rewrite this when it will has a return value (JSON)
                   try {
-                    const localResponseBody = responseBody
-                    if (isLocalOnly) {
-                      Object.assign(localResponseBody, { localOnly: true })
-                    }
+                    const localResponseBody = isLocalOnly ? { ...responseBody, localOnly: true } : responseBody
                     await repo.security.setPermissions(props.path, [localResponseBody])
                   } catch (error) {
                     logger.error({
