@@ -48,4 +48,14 @@ export const Switcher = withStyles((theme: Theme) => ({
     backgroundColor: theme.palette.type === 'light' ? theme.palette.grey[700] : theme.palette.grey[200],
   },
   checked: {},
+  disabled: {
+    '&$checked': {
+      color: theme.palette.grey[500],
+      '& + $track': {
+        opacity: 1,
+        backgroundColor: theme.palette.grey[200],
+        borderColor: theme.palette.grey[700],
+      },
+    },
+  },
 }))(Switch)
