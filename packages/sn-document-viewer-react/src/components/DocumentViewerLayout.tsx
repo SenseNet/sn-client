@@ -124,12 +124,13 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
+        flexGrow: 1,
       }}>
       {props.children}
       <div
         style={{
           display: 'flex',
-          height: '100%',
+          flexGrow: 1,
           width: '100%',
           overflow: 'hidden',
           zIndex: 0,

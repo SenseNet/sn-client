@@ -1,5 +1,5 @@
 import { deepMerge } from '@sensenet/client-utils'
-import { CurrentContentContext, useInjector, useLogger, useRepository } from '@sensenet/hooks-react'
+import { CurrentContentContext, useInjector, useLogger } from '@sensenet/hooks-react'
 import { Button, createStyles, FormControlLabel, makeStyles, Switch, Typography, useTheme } from '@material-ui/core'
 import clsx from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
@@ -9,7 +9,7 @@ import { globals, useGlobalStyles } from '../../globalStyles'
 import { setupModel } from '../../services/MonacoModels/PersonalSettingsModel'
 import { defaultSettings, PersonalSettings } from '../../services/PersonalSettings'
 import { useDialog } from '../dialogs'
-import { TextEditor } from './TextEditor'
+import { TextEditor } from '../editor/text-editor'
 
 const editorContent: any = {
   Type: 'PersonalSettings',
@@ -42,7 +42,6 @@ export function SettingsEditor() {
   const service = injector.getInstance(PersonalSettings)
   const settings = service.userValue.getValue()
   const localization = useContext(LocalizationContext)
-  const repo = useRepository()
   const theme = useTheme()
   const platform = useContext(ResponsiveContext)
   const logger = useLogger('PersonalSettingsEditor')
@@ -50,8 +49,8 @@ export function SettingsEditor() {
   const globalClasses = useGlobalStyles()
 
   useEffect(() => {
-    setupModel(localization.values, repo)
-  }, [localization.values, repo])
+    setupModel(localization.values)
+  }, [localization.values])
 
   const callBack = async () => {
     service.setPersonalSettingsValue({})

@@ -1,5 +1,6 @@
 import { PreviewImageData } from '@sensenet/client-core'
 import React, { useCallback, useEffect, useState } from 'react'
+import { PreviewState } from '..'
 import {
   useDocumentData,
   useDocumentPermissions,
@@ -23,6 +24,9 @@ export const PreviewImageDataContextProvider: React.FC = (props) => {
   const [previewImages, setPreviewImages] = useState<PreviewImageData[]>([])
 
   useEffect(() => {
+    if (documentData.pageCount <= PreviewState.Empty) {
+      return
+    }
     const abortController = new AbortController()
     ;(async () => {
       try {
@@ -47,6 +51,7 @@ export const PreviewImageDataContextProvider: React.FC = (props) => {
     api,
     documentData.idOrPath,
     documentData.hostName,
+    documentData.pageCount,
     viewerSettings.documentIdOrPath,
     viewerSettings.version,
     viewerState.showWatermark,

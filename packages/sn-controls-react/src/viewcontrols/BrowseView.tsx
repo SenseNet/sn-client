@@ -3,12 +3,14 @@
  */
 import { Repository } from '@sensenet/client-core'
 import { ControlMapper } from '@sensenet/control-mapper'
-import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
+import { GenericContent } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import React, { createElement, ReactElement } from 'react'
+import React, { createElement, ReactElement, useEffect, useState } from 'react'
+import { isFullWidthField } from '../helpers'
 import { reactControlMapper } from '../ReactControlMapper'
 
 /**
@@ -47,16 +49,16 @@ const useStyles = makeStyles(() => {
  */
 export const BrowseView: React.FC<BrowseViewProps> = (props) => {
   const controlMapper = props.controlMapper || reactControlMapper(props.repository)
-  const schema = controlMapper.getFullSchemaForContentType(props.content.Type, 'browse')
+  const [schema, setSchema] = useState(controlMapper.getFullSchemaForContentType(props.content.Type, 'browse'))
   const defaultClasses = useStyles()
+  const repository = useRepository()
 
-  const isFullWidthField = (field: { fieldSettings: FieldSetting }) => {
-    return (
-      (field.fieldSettings.Name === 'Avatar' && props.content.Type.includes('User')) ||
-      (field.fieldSettings.Name === 'Enabled' && props.content.Type.includes('User')) ||
-      field.fieldSettings.Type === 'LongTextFieldSetting'
-    )
-  }
+  useEffect(() => {
+    const schemaObservable = repository.schemas.subscribeToSchemas(() => {
+      setSchema(() => controlMapper.getFullSchemaForContentType(props.content.Type, 'browse'))
+    })
+    return () => schemaObservable.dispose()
+  }, [repository.schemas, props.content.Type, controlMapper])
 
   return (
     <>
@@ -71,7 +73,7 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
         {schema.fieldMappings
           .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
           .map((field) => {
-            const isFullWidth = isFullWidthField(field)
+            const isFullWidth = isFullWidthField(field, props.content.Type)
 
             return (
               <Grid

@@ -1,14 +1,4 @@
 const values = {
-  dashboard: {
-    errorLoadingWidget: 'Error loading widget :(',
-    refresh: 'Refresh',
-    openInSearch: 'Open in Search',
-    updates: {
-      title: 'Packages to update',
-      allUpToDate: 'All packages are up to date',
-      view: 'View',
-    },
-  },
   addButton: {
     tooltip: 'Create or upload content',
     new: 'New...',
@@ -37,6 +27,7 @@ const values = {
       executePrimaryText: '{0} 👉 {1}',
       executeSecondaryText: "Execute custom action '{1}' on content '{0}'",
     },
+    searchSuggestionList: 'Search suggestion list',
   },
   lockedCell: {
     checkedOutTo: (name: string) => `Checked out to ${name}`,
@@ -120,35 +111,63 @@ const values = {
     titles: {
       Content: 'Content',
       ContentTypes: 'Content Types',
-      Dashboard: 'Dashboard',
       Localization: 'Localization',
       Search: 'Search',
       Setup: 'Setup',
       Trash: 'Trash',
-      Query: 'Query',
       UsersAndGroups: 'Users and groups',
       CustomContent: 'Custom content',
     },
     descriptions: {
       Content: 'Explore and manage your content in the repository',
       ContentTypes: 'Manage content types',
-      Dashboard: 'Repository overview',
       Localization: 'Manage string resources',
       Search: 'Execute custom searches, build and save queries',
       Setup: 'Configure the sensenet system',
       Trash: 'Manage deleted items here: restore content or purge them permanently',
-      Query: 'Open my custom Query',
       UsersAndGroups: 'Manage users and groups, roles and identities',
       CustomContent: 'Explore and manage your content from the configured path',
     },
     personalSettingsTitle: 'Edit personal settings',
     personalSettingsSecondaryText: 'Customize the application behavior',
     contentRootDescription: 'The root path. Content will be displayed below this level.',
-    queryTerm: 'Content query see https://community.sensenet.com/docs/content-query/',
     columns: 'Array of columns to display',
     expand: 'Expand',
     collapse: 'Collapse',
     newSearch: 'New search',
+    add: 'Add',
+  },
+  dashboard: {
+    title: (projectName: string) => `Welcome to your ${projectName} project`,
+    descriptionFirstLine: 'Here you can Explore the Admin UI with sample content',
+    descriptionSecondLine: 'Feel free to look around!',
+    subscriptionPlan: 'Your subscription plan',
+    free: 'Free',
+    features: 'Features',
+    users: 'users',
+    content: 'content',
+    storageSpace: 'GB storage space',
+    version: 'Version number',
+    releaseNotes: 'View release notes',
+    getMore: 'Want to get more?',
+    upgrade: 'Upgrade',
+    usage: 'Current usage',
+    Users: 'Users',
+    Content: 'Content',
+    StorageSpace: 'Storage space',
+    used: (current: string | number, limit: string | number) => `${current} of ${limit} used`,
+    yourProject: 'Your project',
+    getStarted: 'Get started with your new project.',
+    learnMore: 'Learn more about Sensenet',
+    learnBasics: 'Learn the basics',
+    learnBasicsDescription: 'Get step-by-step guides and learn what you can achieve only working on the admin-ui.',
+    beExpert: 'Be a content management expert',
+    beExpertDescription: 'Master the concept of sensenet with its special terms and abstractions.',
+    buildApp: 'Build your first app',
+    buildAppDescription: 'Let us help you to begin your sensenet journey!',
+    viewUserGuides: 'View User Guides',
+    viewConceptDocs: 'View Concept Docs',
+    viewDevManual: 'View the Developer manual',
   },
   trash: {
     title: 'Trash',
@@ -217,7 +236,6 @@ const values = {
     drawerEnable: 'Enable or disable the drawer',
     drawerType: 'Drawer type',
     drawerItems: 'Items enabled on the drawer',
-    drawerDashboardName: 'A unique identifier for the dashboard',
     drawerCustomContentAppPath: 'Unique url param for the new menu item',
     drawerCustomContentRoot: 'SenseNet path of the root item of the custom content view',
     drawerItemTitle: 'Title of the item',
@@ -243,28 +261,6 @@ const values = {
     uploadHandlerTitle: 'Select which handlertype(s) has/have upload permission',
     eventLogSize: 'Number of entries to store in the Event Log',
     sendLogWithCrashReports: 'Send log data with crash reports by default',
-    dashboard: {
-      widgetName: 'Widget',
-      minWidth: 'The minimum width of the widget in pixels',
-      widgetType: 'Type of the widget',
-      title: 'Widget title',
-      queryWidget: {
-        settings: 'Settings for the Query widget',
-        query: 'The content query expression',
-        emptyPlaceholderText: 'The text that will be displayed if the query has no hits',
-        showColumnNames: 'Show or hide column names',
-        top: 'Limits the number of hits',
-        showOpenInSearch: 'Option for a button to open the query in the Search view',
-        showRefresh: 'Option for a refresh button',
-        enableSelection: 'Enable content selection',
-        countOnly: 'Displays only the hits count instead of a content list',
-        columns: 'Array of columns to display',
-      },
-      markdownWidget: {
-        settings: 'Settings for the Markdown Widget',
-        content: 'The Markdown content to display',
-      },
-    },
   },
   repositorySelector: {
     loggedInAs: 'You are currently logged in as {0}',
@@ -282,6 +278,7 @@ const values = {
   topMenu: {
     personalSettings: 'Personal settings',
     logout: 'Log out',
+    openMenu: 'Open menu',
   },
   navigationCommandProvider: {
     personalSettingsPrimary: 'Personal Settings',
@@ -321,7 +318,6 @@ const values = {
     title: 'Something went wrong :(',
     text: `An error occured and your request couldn't be completed. `,
     reload: 'Reload page',
-    reportError: 'Report error',
   },
   errorReport: {
     title: 'Send error report',
@@ -362,30 +358,6 @@ const values = {
   settings: {
     edit: 'Edit',
     learnMore: 'Learn more',
-    otherSettings: 'Other settings',
-    descriptions: {
-      '/Root/System/Settings/DocumentPreview.settings':
-        'In this section you can customize the behavior of the Document Preview feature – for example the font style of the watermark displayed on documents or the number of the initially generated preview images. ',
-      '/Root/System/Settings/Indexing.settings':
-        'In this section you can customize the indexing behavior (for example the text extractor used in case of different file types) of the system. ',
-      '/Root/System/Settings/Logging.settings':
-        'Contains logging-related settings, for example which events are sent to the trace. You can control tracing by category: switch on or off writing messages in certain categories to the trace channel. ',
-      '/Root/System/Settings/MailProcessor.settings':
-        'The content list Inbox feature requires an Exchange or POP3 server configuration and other settings related to connecting libraries to a mailbox. ',
-      '/Root/System/Settings/OAuth.settings':
-        'When users log in using one of the configured OAuth providers (like Google or Facebook), these settings control the type and place of the newly created users. ',
-      '/Root/System/Settings/OfficeOnline.settings':
-        'To open or edit Office documents in the browser, the system needs to know the address of the Office Online Server that provides the user interface for the feature. In this section you can configure that and other OOS-related settings. ',
-      '/Root/System/Settings/Portal.settings':
-        'All settings related to the surface and behavior of the web application can be found here, from the cache header settings of different file types to the default content type of uploaded images and the allowed origin values. ',
-      '/Root/System/Settings/Sharing.settings': 'Content sharing related options. ',
-      '/Root/System/Settings/TaskManagement.settings':
-        'When the Task Management module is installed, this is the place where you can configure the connection to the central task management service. ',
-      '/Root/System/Settings/UserProfile.settings':
-        'When a user is created, and the profile feature is enabled (in the app configuration), they automatically get a profile – a workspace dedicated to the user’s personal documents and tasks. In this setting section you can customize the content type and the place of this profile. ',
-      '/Root/System/Settings/Permission.settings':
-        'In this section you can manage and customize permission groups, add custom permissions that can be displayed and used in the permission editor.',
-    },
   },
   customActions: {
     executeCustomActionDialog: {
@@ -460,6 +432,26 @@ const values = {
     permissions: 'Permissions',
     grantFullAccess: 'Grant full access',
     localOnly: 'Local only',
+    makePublic: 'Make content public',
+    makePrivate: 'Make content private',
+    makePublicTooltip:
+      'Clicking this button makes the content and the below sub-tree public for non-authenticated (Visitor) users',
+    makePrivateTooltip:
+      'Clicking this button makes the content and the below sub-tree hidden for non-authenticated (Visitor) users',
+    cancel: 'Cancel',
+    reset: 'Reset',
+  },
+  restore: {
+    description: (contentName: string) =>
+      `You are about to restore <strong>${contentName}</strong> from the Trash to the following destination:`,
+    selectTarget: 'Select target',
+    title: 'Restore',
+    cancel: 'Cancel',
+  },
+  contentPickerDialog: {
+    title: 'Select a target',
+    cancelButton: 'Cancel',
+    selectButton: 'Select',
   },
 }
 
