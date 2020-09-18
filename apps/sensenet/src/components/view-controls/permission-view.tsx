@@ -200,30 +200,25 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
               </ListItem>
             ) : (
               <List component="div" disablePadding>
-                {permissions?.entries
-                  .filter((entry) => entry.inherited === false)
-                  .map((setOnThisEntry) => {
-                    return (
-                      <ListItem button key={setOnThisEntry.identity.id}>
-                        <ListItemIcon>
-                          {setOnThisEntry.identity.kind === 'group' ? (
-                            <div className={clsx(classes.iconWrapper, globalClasses.centered)}>
-                              <GroupOutlined />
-                            </div>
-                          ) : setOnThisEntry.identity.kind === 'user' && setOnThisEntry.identity.avatar ? (
-                            <Avatar
-                              src={PathHelper.joinPaths(
-                                repo.configuration.repositoryUrl,
-                                setOnThisEntry.identity.avatar,
-                              )}
-                            />
-                          ) : null}
-                        </ListItemIcon>
+                {setOnThisArray?.map((setOnThisEntry) => {
+                  return (
+                    <ListItem button key={setOnThisEntry.identity.id}>
+                      <ListItemIcon>
+                        {setOnThisEntry.identity.kind === 'group' ? (
+                          <div className={clsx(classes.iconWrapper, globalClasses.centered)}>
+                            <GroupOutlined />
+                          </div>
+                        ) : setOnThisEntry.identity.kind === 'user' && setOnThisEntry.identity.avatar ? (
+                          <Avatar
+                            src={PathHelper.joinPaths(repo.configuration.repositoryUrl, setOnThisEntry.identity.avatar)}
+                          />
+                        ) : null}
+                      </ListItemIcon>
 
-                        <ListItemText primary={setOnThisEntry.identity.displayName} />
-                      </ListItem>
-                    )
-                  })}
+                      <ListItemText primary={setOnThisEntry.identity.displayName} />
+                    </ListItem>
+                  )
+                })}
               </List>
             )}
           </Collapse>
