@@ -22,7 +22,7 @@ describe('SchemaStore', () => {
     const store = new SchemaStore()
     const newSchemaArray: Schema[] = []
     store.setSchemas(newSchemaArray)
-    expect(store['schemas']).toBe(newSchemaArray)
+    expect(store['schemas'].getValue()).toBe(newSchemaArray)
   })
 
   it('Schemas can be retrieved by name', () => {
