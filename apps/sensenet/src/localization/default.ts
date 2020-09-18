@@ -318,7 +318,6 @@ const values = {
     title: 'Something went wrong :(',
     text: `An error occured and your request couldn't be completed. `,
     reload: 'Reload page',
-    reportError: 'Report error',
   },
   errorReport: {
     title: 'Send error report',
@@ -421,6 +420,26 @@ const values = {
   },
   contentList: {
     errorContentModification: 'There was an error during content modification',
+  },
+  permissionEditor: {
+    assign: 'Assing new permisson',
+    setPermissons: 'Set permissions for ',
+    errorGetAcl: 'Something went wrong during getting permissions',
+    noContent: 'There is no direct permission setting on this content',
+    inherited: 'Inherited from ancestor',
+    setOnThis: 'Set on this content',
+    errorGetPermissionSetting: 'Something went wrong during getting permission settings',
+    permissions: 'Permissions',
+    grantFullAccess: 'Grant full access',
+    localOnly: 'Local only',
+    makePublic: 'Make content public',
+    makePrivate: 'Make content private',
+    makePublicTooltip:
+      'Clicking this button makes the content and the below sub-tree public for non-authenticated (Visitor) users',
+    makePrivateTooltip:
+      'Clicking this button makes the content and the below sub-tree hidden for non-authenticated (Visitor) users',
+    cancel: 'Cancel',
+    reset: 'Reset',
   },
   restore: {
     description: (contentName: string) =>
