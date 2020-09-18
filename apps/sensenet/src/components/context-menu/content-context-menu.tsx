@@ -14,7 +14,7 @@ import { contextMenuODataOptions } from './context-menu-odata-options'
 import { getIcon } from './icons'
 import { useContextMenuActions } from './use-context-menu-actions'
 
-const DISABLED_ACTIONS = ['Share', 'Restore', 'Preview']
+const DISABLED_ACTIONS = ['Share', 'Preview']
 
 type ContentContextMenuProps = {
   isOpened: boolean

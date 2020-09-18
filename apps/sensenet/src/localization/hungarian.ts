@@ -10,6 +10,7 @@ const values: DeepPartial<typeof import('./default').default> = {
   },
   commandPalette: {
     title: 'Command palette megnyitása',
+    searchSuggestionList: 'Keresési javaslatok listája',
   },
   contentInfoDialog: {
     dialogTitle: '{0} tulajdonságai',
@@ -55,31 +56,29 @@ const values: DeepPartial<typeof import('./default').default> = {
   drawer: {
     titles: {
       Content: 'Tartalom',
-      Dashboard: 'Irányítópult',
       Search: 'Keresés',
       Setup: 'Beállítás',
       UsersAndGroups: 'Felhasználók és csoportok',
       ContentTypes: 'Tartalom típusok',
       Localization: 'Nyelvi fájlok',
-      Query: 'Saját lekérdezésem',
       Trash: 'Kuka',
+      CustomContent: 'Egyedi tartalom',
     },
     descriptions: {
       Content: 'Tartalom böngészése',
-      Dashboard:
-        'Olyan egyoldalas vizuális felület, amelynek segítségével a felhasználó első ránézésre monitorozhatja legfontosabb céljainak vagy elvárásainak megvalósulását',
       Search: 'Testreszabott keresések futtatása és mentése későbbi használatra',
       Setup: 'A rendszer beállításai',
       UsersAndGroups: 'Felhasználó és csoport kezelése, szerkesztése',
       ContentTypes: 'Tartalom típusok kezelése',
       Localization: 'Nyelvi fájlok kezelése',
-      Query: 'Saját lekérdezésem megjelenítése',
       Trash: 'Törölt elemek kezelése',
+      CustomContent: 'Egyedi tartalmak böngészése',
     },
 
     personalSettingsTitle: 'Személyes beállítások',
     personalSettingsSecondaryText: 'Az alkalmazás testreszabása',
     newSearch: 'Új keresés indítása',
+    add: 'Hozzáadás',
   },
   editPropertiesDialog: {
     dialogTitle: '{0} tulajdonságainak szerkesztése',
@@ -134,6 +133,7 @@ const values: DeepPartial<typeof import('./default').default> = {
   topMenu: {
     personalSettings: 'Személyes beállítások',
     logout: 'Kijelentkezés',
+    openMenu: 'Menü kinyitása',
   },
   forms: {
     referencePicker: 'Referencia választó',
@@ -169,6 +169,10 @@ const values: DeepPartial<typeof import('./default').default> = {
     localOnly: 'Helyi módosítás',
     newEntry: 'Új engedélybejegyzés',
     add: 'Hozzáadás',
+    makePublic: 'Tartalom nyilvánossá tétele',
+    makePrivate: 'Tartalom priváttá tétele',
+    cancel: 'Vissza',
+    reset: 'Visszaállítás',
   },
 }
 

@@ -81,7 +81,7 @@ export const CurrentChildrenProvider: React.FunctionComponent<CurrentChildrenPro
       }),
 
       eventHub.onUploadFinished.subscribe((data) => {
-        if (PathHelper.getParentPath(data.Url) === PathHelper.trimSlashes(currentContent.Path)) {
+        if (PathHelper.isAncestorOf(currentContent.Path, data.Url)) {
           requestReload()
         }
       }),

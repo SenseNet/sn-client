@@ -1,4 +1,10 @@
-import { CommentData, CommentWithoutCreatedByAndId, DocumentData, PreviewImageData } from '@sensenet/client-core'
+import {
+  CommentData,
+  CommentWithoutCreatedByAndId,
+  DocumentData,
+  PreviewImageData,
+  PreviewRegenerateData,
+} from '@sensenet/client-core'
 
 /**
  * Main settings for the Document Viewer component
@@ -81,5 +87,8 @@ export interface DocumentViewerApiSettings {
     }) => Promise<{ modified: boolean }>
   }
 
-  regeneratePreviews: (options: { document: DocumentData; abortController: AbortController }) => Promise<void>
+  regeneratePreviews: (options: {
+    document: DocumentData
+    abortController: AbortController
+  }) => Promise<PreviewRegenerateData>
 }

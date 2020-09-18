@@ -6,25 +6,26 @@ import {
   ApproveProps,
   AreYouSureProps,
   CheckInProps,
+  ContentPickerDialogProps,
   CopyMoveDialogProps,
   CustomActionResultDialogProps,
   DeleteContentDialogProps,
-  ErrorReportProps,
   ExecuteActionDialogProps,
   PermissionEditorDialogProps,
   ReferenceContentListProps,
+  RestoreProps,
   SaveQueryProps,
   UploadDialogProps,
 } from '.'
 
 export type DialogWithProps = (
   | { name: 'delete'; props: DeleteContentDialogProps }
-  | { name: 'error-report'; props: ErrorReportProps }
   | { name: 'error'; props: ErrorBoundaryState }
   | { name: 'copy-move'; props: CopyMoveDialogProps }
   | { name: 'check-in'; props: CheckInProps }
   | { name: 'are-you-sure'; props: AreYouSureProps }
   | { name: 'approve'; props: ApproveProps }
+  | { name: 'restore'; props: RestoreProps }
   | { name: 'upload'; props: UploadDialogProps }
   | { name: 'execute-action'; props: ExecuteActionDialogProps }
   | { name: 'custom-action-result'; props: CustomActionResultDialogProps }
@@ -33,6 +34,7 @@ export type DialogWithProps = (
   | { name: 'reference-content-list'; props: ReferenceContentListProps }
   | { name: 'permission-editor'; props: PermissionEditorDialogProps }
   | { name: 'member-select'; props: MemberSelectProps }
+  | { name: 'content-picker'; props: ContentPickerDialogProps }
 ) & { dialogProps?: Partial<DialogProps> }
 
 type Action = { type: 'PUSH_DIALOG'; dialog: DialogWithProps } | { type: 'POP_DIALOG' } | { type: 'CLOSE_ALL_DIALOGS' }

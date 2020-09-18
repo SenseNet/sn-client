@@ -24,6 +24,7 @@ export function CurrentUserProvider({ children }: PropsWithChildren<{}>) {
           idOrPath: oidcUser.profile.sub,
           oDataOptions: {
             select: 'all',
+            expand: ['AllRoles'] as any,
           },
           requestInit: {
             signal: ac.signal,

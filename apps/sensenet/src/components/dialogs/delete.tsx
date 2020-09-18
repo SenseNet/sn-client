@@ -62,7 +62,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
         </List>
         {isDeleteInProgress ? <LinearProgress /> : null}
       </DialogContent>
-      <DialogActions style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <DialogActions style={{ display: 'flex', justifyContent: isTrashBag ? 'flex-end' : 'space-between' }}>
         {!isTrashBag ? (
           <>
             <Tooltip title={localization.permanentlyHint}>
@@ -144,7 +144,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                   const deletedCurrentContent =
                     snRoute.path &&
                     props.content.find((currentContent) =>
-                      `${snRoute.path}${currentPath}`.startsWith(currentContent.Path),
+                      PathHelper.isInSubTree(`${snRoute.path}${currentPath}`, currentContent.Path),
                     )
 
                   if (deletedCurrentContent) {

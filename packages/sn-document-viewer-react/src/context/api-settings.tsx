@@ -48,13 +48,13 @@ export const DocumentViewerApiSettingsContext = React.createContext<DocumentView
   }),
   getExistingPreviewImages: async () => [],
   isPreviewAvailable: async () => ({ Height: 0, Width: 0, Index: 0, Attributes: { degree: 0 } }),
-  regeneratePreviews: async () => undefined,
+  regeneratePreviews: async () => ({ PageCount: -1, PreviewCount: 0 }),
   saveChanges: async () => undefined,
 })
 
 export const createDefaultApiSettings: (repo: Repository) => DocumentViewerApiSettings = (repo: Repository) => ({
   regeneratePreviews: async ({ document, abortController }) => {
-    repo.preview.regenerate({ idOrPath: document.idOrPath, abortController })
+    return await repo.preview.regenerate({ idOrPath: document.idOrPath, abortController })
   },
   saveChanges: async ({ document, pages, abortController }) => {
     const reqBody = {

@@ -1,18 +1,23 @@
+import { ObservableValue, ValueChangeCallback } from '@sensenet/client-utils'
 import { FieldSetting, Schema } from '@sensenet/default-content-types'
 
 /**
  * Class that stores schema information
  */
 export class SchemaStore {
-  private schemas: Schema[] = []
+  public schemas: ObservableValue<Schema[]> = new ObservableValue([])
   private byNameSchemaCache: Map<string, Schema> = new Map()
+
+  public subscribeToSchemas(callback: ValueChangeCallback<Schema[]>) {
+    return this.schemas.subscribe(callback)
+  }
 
   /**
    * Updates the schema information in the store and inv
    */
   public setSchemas(newSchemas: Schema[]) {
-    this.schemas = newSchemas
-    this.byNameSchemaCache = new Map<string, Schema>()
+    this.byNameSchemaCache.clear()
+    this.schemas.setValue(newSchemas)
   }
 
   private mergeFieldSettings(
@@ -43,18 +48,18 @@ export class SchemaStore {
     if (this.byNameSchemaCache.has(contentTypeName)) {
       return Object.assign({}, this.byNameSchemaCache.get(contentTypeName)) as Schema
     }
-    let schema = this.schemas.find((s) => s.ContentTypeName === contentTypeName) as Schema
+    const schema = this.schemas.getValue().find((s) => s.ContentTypeName === contentTypeName) as Schema
+
     if (!schema) {
       return this.getSchemaByName('GenericContent')
     }
-    schema = Object.assign({}, schema)
     const parentSchema = schema.ParentTypeName && this.getSchemaByName(schema.ParentTypeName)
 
     if (parentSchema) {
       schema.FieldSettings = this.mergeFieldSettings(schema.FieldSettings, parentSchema.FieldSettings)
     }
     this.byNameSchemaCache.set(contentTypeName, schema)
-    return Object.assign({}, schema)
+    return schema
   }
 
   /**
@@ -68,6 +73,11 @@ export class SchemaStore {
     }
 
     let currentSchema = this.getSchemaByName(content.Type)
+
+    if (currentSchema.HandlerName === this.getSchemaByName(contentTypeName).HandlerName) {
+      return true
+    }
+
     do {
       if (currentSchema.ContentTypeName === contentTypeName) {
         return true

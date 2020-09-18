@@ -12,7 +12,7 @@ addDecorator(
   }),
 )
 
-addDecorator(storyFn => (
+addDecorator((storyFn) => (
   <ThemeProvider theme={convert(themes.light)}>
     <Global styles={createReset} />
     {storyFn()}
@@ -33,7 +33,7 @@ addParameters({
 function loadStories() {
   require('./welcomeStory')
   const req = require.context('../stories', true, /\.stories\.tsx$/)
-  req.keys().forEach(filename => req(filename))
+  req.keys().forEach((filename) => req(filename))
 }
 
 configure(loadStories, module)
