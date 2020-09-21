@@ -167,10 +167,17 @@ const values: DeepPartial<typeof import('./default').default> = {
     permissions: 'Jogosultságok',
     grantFullAccess: 'Teljes hozzáférés',
     localOnly: 'Helyi módosítás',
+    newEntry: 'Új engedélybejegyzés',
+    add: 'Hozzáadás',
+    members: 'Csoporttagok',
+    errorGetMembersInfo: 'Hiba történt a csoporttagok lekérdezése során',
+    addNewMember: '+ Új tag hozzáadása',
     makePublic: 'Tartalom nyilvánossá tétele',
     makePrivate: 'Tartalom priváttá tétele',
     cancel: 'Vissza',
     reset: 'Visszaállítás',
+    name: 'Név',
+    typeIn: 'Írj be egy nevet',
   },
 }
 
