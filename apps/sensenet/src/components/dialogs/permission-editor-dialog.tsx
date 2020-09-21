@@ -75,7 +75,8 @@ export interface PermissionSettingType {
 export type PermissionEditorDialogProps = {
   path: string
   entry: EntryType
-  callBackFunction?: () => void
+  submitCallback?: () => void
+  cancelCallback?: () => void
 }
 
 const PERMISSION_SETTING_PATH = '/Root/System/Settings/Permission.settings'
@@ -401,7 +402,10 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
             <Button
               aria-label={localization.forms.cancel}
               className={globalClasses.cancelButton}
-              onClick={closeLastDialog}>
+              onClick={() => {
+                closeLastDialog()
+                props.cancelCallback?.()
+              }}>
               {localization.forms.cancel}
             </Button>
             <Button
@@ -422,7 +426,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                   })
                   return false
                 } finally {
-                  props.callBackFunction?.()
+                  props.submitCallback?.()
                   closeLastDialog()
                 }
               }}>

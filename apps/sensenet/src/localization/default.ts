@@ -432,6 +432,8 @@ const values = {
     permissions: 'Permissions',
     grantFullAccess: 'Grant full access',
     localOnly: 'Local only',
+    newEntry: 'New permission entry',
+    add: 'Add',
     members: 'Members',
     errorGetMembersInfo: 'Something went wrong during getting info about group members',
     addNewMember: '+ Add new member',
@@ -443,6 +445,8 @@ const values = {
       'Clicking this button makes the content and the below sub-tree hidden for non-authenticated (Visitor) users',
     cancel: 'Cancel',
     reset: 'Reset',
+    name: 'Name',
+    typeIn: 'Type in a name',
   },
   restore: {
     description: (contentName: string) =>
