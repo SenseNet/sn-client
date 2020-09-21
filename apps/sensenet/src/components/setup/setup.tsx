@@ -51,6 +51,7 @@ const Setup = () => {
       eventHub.onContentCopied.subscribe(requestReload),
       eventHub.onUploadFinished.subscribe(requestReload),
       eventHub.onContentDeleted.subscribe(requestReload),
+      eventHub.onBatchDelete.subscribe(requestReload),
     ]
     return () => subscriptions.forEach((s) => s.dispose())
   }, [
@@ -60,6 +61,7 @@ const Setup = () => {
     eventHub.onContentCopied,
     eventHub.onContentMoved,
     requestReload,
+    eventHub.onBatchDelete,
   ])
 
   const renderContent = () => {
