@@ -1,7 +1,7 @@
-import { ConstantContent, ODataParams } from '@sensenet/client-core'
+import { ConstantContent, Content, ODataParams } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { useRepository, useRepositoryEvents } from '../hooks'
 
@@ -44,6 +44,14 @@ export const CurrentContentProvider: React.FunctionComponent<CurrentContentProvi
   const repo = useRepository()
   const events = useRepositoryEvents()
 
+  const onDeleteContent = useCallback(
+    async (contentParam: Content) => {
+      const parentContent = await repo.load({ idOrPath: PathHelper.getParentPath(contentParam.Path) })
+      setContent(parentContent.d)
+    },
+    [repo],
+  )
+
   useEffect(() => {
     const subscriptions = [
       events.onContentModified.subscribe((c) => {
@@ -52,12 +60,14 @@ export const CurrentContentProvider: React.FunctionComponent<CurrentContentProvi
         }
       }),
       events.onContentDeleted.subscribe(async (c) => {
-        const parentContent = await repo.load({ idOrPath: PathHelper.getParentPath(c.contentData.Path) })
-        setContent(parentContent.d)
+        onDeleteContent(c.contentData)
+      }),
+      events.onBatchDelete.subscribe(async (deletedDatas) => {
+        onDeleteContent(deletedDatas.contentDatas[deletedDatas.contentDatas.length - 1])
       }),
     ]
     return () => subscriptions.forEach((s) => s.dispose())
-  }, [content.Id, events.onContentDeleted, events.onContentModified, repo])
+  }, [content.Id, onDeleteContent, events.onBatchDelete, events.onContentDeleted, events.onContentModified, repo])
 
   useEffect(() => {
     const ac = new AbortController()
