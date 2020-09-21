@@ -434,6 +434,9 @@ const values = {
     localOnly: 'Local only',
     newEntry: 'New permission entry',
     add: 'Add',
+    members: 'Members',
+    errorGetMembersInfo: 'Something went wrong during getting info about group members',
+    addNewMember: '+ Add new member',
     makePublic: 'Make content public',
     makePrivate: 'Make content private',
     makePublicTooltip:

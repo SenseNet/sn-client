@@ -1,6 +1,6 @@
 import { EntryType } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
-import { PermissionRequestBody, PermissionValues, Settings } from '@sensenet/default-content-types'
+import { Group, PermissionRequestBody, PermissionValues, Settings, User } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import {
   Button,
@@ -19,6 +19,7 @@ import React, { useEffect, useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { Switcher } from '../field-controls'
+import { PermissionEditorMembers } from './permission-editor/permission-editor-members'
 import { DialogTitle, useDialog } from '.'
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -50,9 +51,13 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     permissionContainer: {
       padding: '60px',
+      minHeight: '400px',
     },
     disabled: {
       color: theme.palette.grey[500],
+    },
+    selected: {
+      backgroundColor: theme.palette.primary.main,
     },
   })
 })
@@ -88,6 +93,9 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
   const [permissionSetting, setPermissionSetting] = useState<PermissionSettingType>()
   const [actualGroup, setActualGroup] = useState<string>('Read')
   const [responseBody, setResponseBody] = useState<PermissionRequestBody>({ identity: props.entry.identity.path })
+  const [isLocalOnly, setIsLocalOnly] = useState<boolean>(!props.entry.propagates)
+  const [groupContent, setGroupContent] = useState<Group>()
+  const [canEdit, setCanEdit] = useState<boolean>(false)
   const [resetFlag, setResetFlag] = useState<boolean>(false)
 
   useEffect(() => {
@@ -137,6 +145,32 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
     })
     setResponseBody(localResponseBody)
   }, [props.entry.identity.path, props.entry.permissions, resetFlag])
+
+  useEffect(() => {
+    async function getMembersInfo() {
+      try {
+        const actions = await repo.getActions({ idOrPath: props.entry.identity.path })
+        const content = await repo.load<Group>({
+          idOrPath: props.entry.identity.path,
+          oDataOptions: {
+            select: ['Members'],
+            expand: ['Members'],
+          },
+        })
+        setGroupContent(content.d)
+        const localCanEdit = actions.d.results.some((action) => action.Name === 'Edit')
+        setCanEdit(localCanEdit)
+      } catch (error) {
+        logger.error({
+          message: localization.permissionEditor.errorGetMembersInfo,
+          data: {
+            details: { error },
+          },
+        })
+      }
+    }
+    props.entry.identity.kind === 'group' && getMembersInfo()
+  }, [localization.permissionEditor.errorGetMembersInfo, logger, props.entry, repo])
 
   const isPermissionDisabled = (permission: string) => {
     return (
@@ -208,7 +242,9 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                 <ListItem
                   key={groupNameFromSettings}
                   button
-                  className={classes.secondaryListItem}
+                  className={clsx(classes.secondaryListItem, {
+                    [classes.selected]: actualGroup === groupNameFromSettings,
+                  })}
                   onClick={() => setActualGroup(groupNameFromSettings)}>
                   <ListItemText
                     disableTypography
@@ -286,9 +322,28 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
           </ListItem>
           <Divider />
           <ListItem>
-            <ListItemText primary={localization.permissionEditor.localOnly} className={classes.disabled} />
-            <Switcher checked={false} size="small" disabled onClick={() => {}} />
+            <ListItemText primary={localization.permissionEditor.localOnly} />
+            <Switcher
+              checked={isLocalOnly}
+              size="small"
+              onClick={() => {
+                setIsLocalOnly(!isLocalOnly)
+              }}
+            />
           </ListItem>
+          {props.entry.identity.kind === 'group' && (
+            <>
+              <Divider />
+              <ListItem
+                button
+                className={clsx({ [classes.selected]: actualGroup === 'Members' })}
+                onClick={() => {
+                  setActualGroup('Members')
+                }}>
+                <ListItemText primary={localization.permissionEditor.members} />
+              </ListItem>
+            </>
+          )}
           <Divider />
           <ListItem button onClick={() => setResetFlag(!resetFlag)}>
             <ListItemText primary={localization.permissionEditor.reset} />
@@ -296,44 +351,53 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
           <Divider />
         </List>
         <div className={clsx(classes.column, classes.rightColumn)}>
-          <List className={classes.permissionContainer}>
-            {getPermissionsFromGroupName(actualGroup).map((selectedGroupPermission: keyof PermissionRequestBody) => {
-              return (
-                <ListItem key={selectedGroupPermission} onClick={() => {}}>
-                  <ListItemText
-                    disableTypography
-                    primary={selectedGroupPermission}
-                    className={clsx({
-                      [classes.disabled]: isPermissionDisabled(selectedGroupPermission),
-                    })}
-                  />
-                  <Switcher
-                    checked={
-                      (responseBody[selectedGroupPermission] !== undefined &&
-                        responseBody[selectedGroupPermission] === PermissionValues.allow) ||
-                      (responseBody[selectedGroupPermission] === undefined &&
-                        props.entry.permissions[selectedGroupPermission]?.value === 'allow')
-                    }
-                    disabled={isPermissionDisabled(selectedGroupPermission)}
-                    size="small"
-                    onClick={() => {
-                      const localResponseBody = { ...responseBody }
-                      if (responseBody[selectedGroupPermission] === PermissionValues.allow) {
-                        Object.assign(localResponseBody, {
-                          [selectedGroupPermission]: PermissionValues.undefined,
-                        })
-                      } else {
-                        Object.assign(localResponseBody, {
-                          [selectedGroupPermission]: PermissionValues.allow,
-                        })
+          {actualGroup === 'Members' ? (
+            <PermissionEditorMembers
+              items={groupContent?.Members as User[]}
+              parent={groupContent!}
+              fieldName="Members"
+              canEdit={canEdit}
+            />
+          ) : (
+            <List className={classes.permissionContainer}>
+              {getPermissionsFromGroupName(actualGroup).map((selectedGroupPermission: keyof PermissionRequestBody) => {
+                return (
+                  <ListItem key={selectedGroupPermission} onClick={() => {}}>
+                    <ListItemText
+                      disableTypography
+                      primary={selectedGroupPermission}
+                      className={clsx({
+                        [classes.disabled]: isPermissionDisabled(selectedGroupPermission),
+                      })}
+                    />
+                    <Switcher
+                      checked={
+                        (responseBody[selectedGroupPermission] !== undefined &&
+                          responseBody[selectedGroupPermission] === PermissionValues.allow) ||
+                        (responseBody[selectedGroupPermission] === undefined &&
+                          props.entry.permissions[selectedGroupPermission]?.value === 'allow')
                       }
-                      setResponseBody(localResponseBody)
-                    }}
-                  />
-                </ListItem>
-              )
-            })}
-          </List>
+                      disabled={isPermissionDisabled(selectedGroupPermission)}
+                      size="small"
+                      onClick={() => {
+                        const localResponseBody = { ...responseBody }
+                        if (responseBody[selectedGroupPermission] === PermissionValues.allow) {
+                          Object.assign(localResponseBody, {
+                            [selectedGroupPermission]: PermissionValues.undefined,
+                          })
+                        } else {
+                          Object.assign(localResponseBody, {
+                            [selectedGroupPermission]: PermissionValues.allow,
+                          })
+                        }
+                        setResponseBody(localResponseBody)
+                      }}
+                    />
+                  </ListItem>
+                )
+              })}
+            </List>
+          )}
           <DialogActions className={classes.dialogActions}>
             <Button
               aria-label={localization.forms.cancel}
@@ -351,7 +415,8 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
               autoFocus={true}
               onClick={async () => {
                 try {
-                  await repo.security.setPermissions(props.path, [responseBody])
+                  const localResponseBody = isLocalOnly ? { ...responseBody, localOnly: true } : responseBody
+                  await repo.security.setPermissions(props.path, [localResponseBody])
                 } catch (error) {
                   logger.error({
                     message: error.message,
