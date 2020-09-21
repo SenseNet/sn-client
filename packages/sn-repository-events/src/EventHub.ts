@@ -13,6 +13,7 @@ import {
 import { Disposable, ObservableValue, Trace } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
+  BatchDeleted,
   ContentCopied,
   ContentCopyFailed,
   ContentMoved,
@@ -89,6 +90,11 @@ export class EventHub implements Disposable {
    * Triggered after deleting a Content
    */
   public readonly onContentDeleted = new ObservableValue<Deleted>()
+
+  /**
+   * Triggered after deleting more Contents
+   */
+  public readonly onBatchDelete = new ObservableValue<BatchDeleted>()
 
   /**
    * Triggered after deleting a content has been failed
@@ -206,13 +212,16 @@ export class EventHub implements Disposable {
         // handle DeleteBatch finished based on the response value
         onFinished: async (deletePromise) => {
           const response = await deletePromise.returned
-          if (response.d.results.length) {
-            for (const deleted of response.d.results) {
-              this.onContentDeleted.setValue({
-                permanently: (deletePromise.methodArguments[0] as DeleteOptions).permanent || false,
-                contentData: deleted as Content,
-              })
-            }
+          if (response.d.results.length && response.d.results.length > 1) {
+            this.onBatchDelete.setValue({
+              permanently: (deletePromise.methodArguments[0] as DeleteOptions).permanent || false,
+              contentDatas: response.d.results,
+            })
+          } else {
+            this.onContentDeleted.setValue({
+              permanently: (deletePromise.methodArguments[0] as DeleteOptions).permanent || false,
+              contentData: response.d.results[0] as Content,
+            })
           }
 
           if (response.d.errors.length) {
