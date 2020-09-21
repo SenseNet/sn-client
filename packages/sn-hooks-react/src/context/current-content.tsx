@@ -44,7 +44,7 @@ export const CurrentContentProvider: React.FunctionComponent<CurrentContentProvi
   const repo = useRepository()
   const events = useRepositoryEvents()
 
-  const deleteFunc = useCallback(
+  const onDeleteContent = useCallback(
     async (contentParam: Content) => {
       const parentContent = await repo.load({ idOrPath: PathHelper.getParentPath(contentParam.Path) })
       setContent(parentContent.d)
@@ -60,14 +60,14 @@ export const CurrentContentProvider: React.FunctionComponent<CurrentContentProvi
         }
       }),
       events.onContentDeleted.subscribe(async (c) => {
-        deleteFunc(c.contentData)
+        onDeleteContent(c.contentData)
       }),
       events.onBatchDelete.subscribe(async (deletedDatas) => {
-        deleteFunc(deletedDatas.contentDatas[deletedDatas.contentDatas.length - 1])
+        onDeleteContent(deletedDatas.contentDatas[deletedDatas.contentDatas.length - 1])
       }),
     ]
     return () => subscriptions.forEach((s) => s.dispose())
-  }, [content.Id, deleteFunc, events.onBatchDelete, events.onContentDeleted, events.onContentModified, repo])
+  }, [content.Id, onDeleteContent, events.onBatchDelete, events.onContentDeleted, events.onContentModified, repo])
 
   useEffect(() => {
     const ac = new AbortController()

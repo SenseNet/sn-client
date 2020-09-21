@@ -34,7 +34,7 @@ export const readLogEntries = createAction((entries: LogEntry[]) => ({
   entries,
 }))
 
-const deleteFunc = (
+const onDeleteContent = (
   options: IInjectableActionCallbackParams<rootStateType>,
   ev: Deleted | BatchDeleted,
   content: Content,
@@ -161,11 +161,11 @@ export const initLog = createAction(() => ({
     })
 
     eventHub.onContentDeleted.subscribe((ev) => {
-      deleteFunc(options, ev, ev.contentData)
+      onDeleteContent(options, ev, ev.contentData)
     })
     eventHub.onBatchDelete.subscribe((ev) => {
       ev.contentDatas.forEach((contentData) => {
-        deleteFunc(options, ev, contentData)
+        onDeleteContent(options, ev, contentData)
       })
     })
     eventHub.onContentDeleteFailed.subscribe((ev) => {

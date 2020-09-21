@@ -154,7 +154,7 @@ export const loadMore = createAction((count = 25) => ({
   },
 }))
 
-const onDeleteFunc = (options: IInjectableActionCallbackParams<rootStateType>, content: Content) => {
+const onDeleteContent = (options: IInjectableActionCallbackParams<rootStateType>, content: Content) => {
   const currentItems = options.getState().dms.documentLibrary.items
   const filtered = currentItems.d.results.filter((item) => item.Id !== content.Id)
   options.dispatch(
@@ -219,11 +219,11 @@ export const loadParent = createAction(
           eventHub.onContentCreated.subscribe((value) => emitChange(value.content)) as any,
           eventHub.onContentModified.subscribe((value) => emitChange(value.content)) as any,
           eventHub.onContentDeleted.subscribe((value) => {
-            onDeleteFunc(options, value.contentData)
+            onDeleteContent(options, value.contentData)
           }) as any,
           eventHub.onBatchDelete.subscribe((deletedDatas) => {
             deletedDatas.contentDatas.forEach((contentData) => {
-              onDeleteFunc(options, contentData)
+              onDeleteContent(options, contentData)
             })
           }) as any,
           eventHub.onContentMoved.subscribe((value) => emitChange(value.content)) as any,
