@@ -116,7 +116,7 @@ export interface IdentityType {
   /* Name */
   name: string
   /* DisplayName */
-  displayName: string
+  displayName?: string
   /* Domain */
   domain?: null | string
   /* Kind */
