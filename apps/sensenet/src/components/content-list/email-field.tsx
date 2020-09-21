@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => {
       textOverflow: 'ellipsis',
     },
     cell: {
-      padding: '0 3px',
+      paddingRight: '3px',
     },
   })
 })
