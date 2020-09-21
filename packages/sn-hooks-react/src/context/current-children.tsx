@@ -90,6 +90,12 @@ export const CurrentChildrenProvider: React.FunctionComponent<CurrentChildrenPro
           requestReload()
         }
       }),
+      eventHub.onBatchDelete.subscribe((deletedDatas) => {
+        const current = deletedDatas.contentDatas.find(
+          (contentData) => PathHelper.getParentPath(contentData.Path) === PathHelper.trimSlashes(currentContent.Path),
+        )
+        current && requestReload()
+      }),
     ]
 
     return () => subscriptions.forEach((s) => s.dispose())
@@ -104,6 +110,7 @@ export const CurrentChildrenProvider: React.FunctionComponent<CurrentChildrenPro
     eventHub.onContentModified,
     eventHub.onContentDeleted,
     eventHub.onUploadFinished,
+    eventHub.onBatchDelete,
   ])
 
   if (error) {
