@@ -442,6 +442,8 @@ const values = {
       'Clicking this button makes the content and the below sub-tree hidden for non-authenticated (Visitor) users',
     cancel: 'Cancel',
     reset: 'Reset',
+    name: 'Name',
+    typeIn: 'Type in a name',
   },
   restore: {
     description: (contentName: string) =>

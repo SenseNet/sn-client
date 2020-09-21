@@ -134,8 +134,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
 
   const selectMemberFunction = (newEntry: EntryType) => {
     if (permissions) {
-      const localPermissions = { ...permissions }
-      localPermissions.entries.push(newEntry)
+      permissions.entries.push(newEntry)
     }
     setSelectedListItem(`${newEntry.identity.id}${newEntry.propagates}`)
     openDialog({
@@ -143,8 +142,11 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
       props: {
         entry: newEntry,
         path: currentContent!.Path,
-        callBackFunction: () => {
+        submitCallback: () => {
           setRefreshFlag(!refreshFlag)
+        },
+        cancelCallback: () => {
+          permissions?.entries.pop()
         },
       },
       dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
@@ -243,7 +245,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                         props: {
                           entry: inheritedEntry,
                           path: currentContent!.Path,
-                          callBackFunction: () => {
+                          submitCallback: () => {
                             setRefreshFlag(!refreshFlag)
                           },
                         },
@@ -315,7 +317,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                           props: {
                             entry: setOnThisEntry,
                             path: currentContent!.Path,
-                            callBackFunction: () => {
+                            submitCallback: () => {
                               setRefreshFlag(!refreshFlag)
                             },
                           },

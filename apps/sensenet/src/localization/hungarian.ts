@@ -173,6 +173,8 @@ const values: DeepPartial<typeof import('./default').default> = {
     makePrivate: 'Tartalom priváttá tétele',
     cancel: 'Vissza',
     reset: 'Visszaállítás',
+    name: 'Név',
+    typeIn: 'Írj be egy nevet',
   },
 }
 

@@ -73,9 +73,9 @@ export function MemberSelect(props: MemberSelectProps) {
             {
               AllowedTypes: ['User', 'Group'],
               SelectionRoots: ['/Root/IMS/Public'],
-              Name: 'Name',
-              DisplayName: 'Name',
-              Description: 'Type in a name',
+              Name: localization.permissionEditor.name,
+              DisplayName: localization.permissionEditor.name,
+              Description: localization.permissionEditor.typeIn,
             } as ReferenceFieldSetting
           }
         />
