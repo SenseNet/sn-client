@@ -23,6 +23,12 @@ export const eventHubTests = describe('EventHub', () => {
     Path: 'Root/Example',
   } as Content
 
+  const mockContent2 = {
+    Id: 321,
+    Name: 'mook2',
+    Path: 'Root/Content',
+  } as Content
+
   beforeEach(() => {
     repository = new Repository({}, async () => ({ ok: true } as any))
     eventHub = new EventHub(repository)
@@ -245,30 +251,30 @@ export const eventHubTests = describe('EventHub', () => {
         content: mockContent,
       })
     })
-  })
 
-  it('fail should be triggered after put failed', (done) => {
-    eventHub.onContentModificationFailed.subscribe((c) => {
-      expect(c.content).toEqual(mockContent)
-      done()
+    it('fail should be triggered after put failed', (done) => {
+      eventHub.onContentModificationFailed.subscribe((c) => {
+        expect(c.content).toEqual(mockContent)
+        done()
+      })
+      repository['fetch'] = async () =>
+        ({
+          ok: false,
+          json: async () => {
+            return { content: mockContent }
+          },
+        } as any)
+      ;(async () => {
+        try {
+          await repository.put({
+            content: mockContent,
+            idOrPath: 123,
+          })
+        } catch {
+          // ignore...
+        }
+      })()
     })
-    repository['fetch'] = async () =>
-      ({
-        ok: false,
-        json: async () => {
-          return { content: mockContent }
-        },
-      } as any)
-    ;(async () => {
-      try {
-        await repository.put({
-          content: mockContent,
-          idOrPath: 123,
-        })
-      } catch {
-        // ignore...
-      }
-    })()
   })
 
   describe('Content Deleted', () => {
@@ -285,6 +291,30 @@ export const eventHubTests = describe('EventHub', () => {
               d: {
                 __count: 1,
                 results: [mockContent],
+                errors: [],
+              },
+            } as ODataBatchResponse<Content>
+          },
+        } as any)
+      repository.delete({
+        idOrPath: 123,
+      })
+    })
+
+    it('should be triggered after delete more contents', (done) => {
+      eventHub.onBatchDelete.subscribe((c) => {
+        expect(c.contentDatas[0]).toEqual(mockContent)
+        expect(c.contentDatas[1]).toEqual(mockContent2)
+        done()
+      })
+      repository['fetch'] = async () =>
+        ({
+          ok: true,
+          json: async () => {
+            return {
+              d: {
+                __count: 1,
+                results: [mockContent, mockContent2],
                 errors: [],
               },
             } as ODataBatchResponse<Content>
@@ -319,7 +349,7 @@ export const eventHubTests = describe('EventHub', () => {
           },
         } as any)
       repository.delete({
-        idOrPath: 123,
+        idOrPath: [123, 321],
       })
     })
 

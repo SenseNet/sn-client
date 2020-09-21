@@ -51,10 +51,14 @@ export const CurrentAncestorsProvider: React.FunctionComponent<CurrentAncestorsP
       eventHub.onContentDeleted.subscribe((del) => {
         requestReload(del.contentData.Id)
       }),
+      eventHub.onBatchDelete.subscribe((deletedDatas) => {
+        requestReload(deletedDatas.contentDatas[deletedDatas.contentDatas.length - 1].Id)
+      }),
     ]
     return () => subscriptions.forEach((s) => s.dispose())
   }, [
     ancestors,
+    eventHub.onBatchDelete,
     eventHub.onContentDeleted,
     eventHub.onContentModified,
     eventHub.onContentMoved,
