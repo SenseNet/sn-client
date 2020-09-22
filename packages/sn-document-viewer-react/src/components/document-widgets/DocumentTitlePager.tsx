@@ -20,8 +20,13 @@ export const DocumentTitlePager: React.FC = () => {
 
   const setPage = useCallback(
     (index: number) => {
-      viewerState.updateState({ activePages: [index] })
-      viewerState.onPageChange.setValue(index)
+      const container = document.getElementById('sn-document-viewer-pages')
+      const item = document.querySelector(`.Page`)
+      container!.scrollTo({
+        top: (item!.clientHeight + 8 * 4) * (index - 1),
+        behavior: 'smooth',
+      })
+      viewerState.updateState({ visiblePages: [index] })
     },
     [viewerState],
   )
