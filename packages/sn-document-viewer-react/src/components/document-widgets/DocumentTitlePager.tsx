@@ -28,7 +28,7 @@ export const DocumentTitlePager: React.FC = () => {
           behavior: 'smooth',
         })
       }
-      viewerState.updateState({ activePages: [index] })
+      viewerState.updateState({ visiblePages: [index] })
     },
     [viewerState],
   )
