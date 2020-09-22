@@ -22,11 +22,13 @@ export const DocumentTitlePager: React.FC = () => {
     (index: number) => {
       const container = document.getElementById('sn-document-viewer-pages')
       const item = document.querySelector(`.Page`)
-      container!.scrollTo({
-        top: (item!.clientHeight + 8 * 4) * (index - 1),
-        behavior: 'smooth',
-      })
-      viewerState.updateState({ visiblePages: [index] })
+      if (container && container.scrollTo && item) {
+        container!.scrollTo({
+          top: (item!.clientHeight + 8 * 4) * (index - 1),
+          behavior: 'smooth',
+        })
+      }
+      viewerState.updateState({ activePages: [index] })
     },
     [viewerState],
   )
@@ -39,7 +41,6 @@ export const DocumentTitlePager: React.FC = () => {
       pageInt = Math.max(pageInt, 1)
       pageInt = Math.min(pageInt, documentData.pageCount)
       setCurrentPage(pageInt)
-      setPage(pageInt)
     }
   }
 
@@ -64,6 +65,7 @@ export const DocumentTitlePager: React.FC = () => {
               title={localization.gotoPage}
               value={currentPage}
               onChange={(ev) => gotoPage(ev.currentTarget.value)}
+              onBlur={() => setPage(currentPage)}
               type="number"
               required={true}
               InputLabelProps={{
