@@ -1,0 +1,18 @@
+export const forcePermissionActions = [
+  { Preview: ['See'] },
+  { PreviewWithoutWatermark: ['Preview'] },
+  { PreviewWithoutRedaction: ['Preview'] },
+  { Open: ['PreviewWithoutWatermark', 'PreviewWithoutRedaction'] },
+  { OpenMinor: ['Open'] },
+  { Save: ['OpenMinor'] },
+  { Publish: ['OpenMinor'] },
+  { ForceCheckin: ['OpenMinor'] },
+  { AddNew: ['OpenMinor'] },
+  { Approve: ['OpenMinor'] },
+  { Delete: ['OpenMinor'] },
+  { RecallOldVersion: ['OpenMinor'] },
+  { DeleteOldVersion: ['OpenMinor'] },
+  { SetPermissions: ['SeePermissions'] },
+  { ManageListsAndWorkspaces: ['Save', 'AddNew', 'DeleteOldVersion'] },
+  { TakeOwnership: ['See'] },
+]
