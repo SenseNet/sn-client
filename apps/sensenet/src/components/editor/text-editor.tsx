@@ -46,6 +46,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
 
   const saveContent = async () => {
     try {
+      setHasChanges(false)
       if (props.saveContent) {
         await props.saveContent(props.content, textValue)
       } else {
@@ -75,6 +76,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
       await repo.reloadSchema()
       setSavedTextValue(textValue)
     } catch (err) {
+      setHasChanges(true)
       logger.error({
         message: localization.textEditor.saveFailedNotification.replace(
           '{0}',
