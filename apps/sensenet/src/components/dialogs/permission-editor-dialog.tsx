@@ -249,12 +249,12 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
    * @param permissionNameParam Permission, which we examine as a condition for other permissions.
    */
 
-  const setForcePermissionsToUndefined = (localResponseBody: PermissionRequestBody, permissionNameParam: string) => {
+  const setForcedPermissionsToUndefined = (localResponseBody: PermissionRequestBody, permissionNameParam: string) => {
     forcePermissionActions.forEach((forcePermObject) => {
       Object.entries(forcePermObject).forEach(([permissionName, forcedPermissions]) => {
         if (forcedPermissions && forcedPermissions.length > 0 && forcedPermissions.includes(permissionNameParam)) {
           Object.assign(localResponseBody, { [permissionName]: PermissionValues.undefined })
-          setForcePermissionsToUndefined(localResponseBody, permissionName)
+          setForcedPermissionsToUndefined(localResponseBody, permissionName)
         }
       })
     })
@@ -303,7 +303,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                               Object.assign(localResponseBody, {
                                 [selectedGroupPermission]: PermissionValues.undefined,
                               })
-                              setForcePermissionsToUndefined(localResponseBody, selectedGroupPermission)
+                              setForcedPermissionsToUndefined(localResponseBody, selectedGroupPermission)
                             } else {
                               Object.assign(localResponseBody, {
                                 [selectedGroupPermission]: PermissionValues.allow,
@@ -344,7 +344,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                             Object.assign(localResponseBody, {
                               [selectedGroupPermission]: PermissionValues.undefined,
                             })
-                            setForcePermissionsToUndefined(localResponseBody, selectedGroupPermission)
+                            setForcedPermissionsToUndefined(localResponseBody, selectedGroupPermission)
                           } else {
                             Object.assign(localResponseBody, {
                               [selectedGroupPermission]: PermissionValues.allow,
@@ -426,7 +426,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                           Object.assign(localResponseBody, {
                             [selectedGroupPermission]: PermissionValues.undefined,
                           })
-                          setForcePermissionsToUndefined(localResponseBody, selectedGroupPermission)
+                          setForcedPermissionsToUndefined(localResponseBody, selectedGroupPermission)
                         } else {
                           Object.assign(localResponseBody, {
                             [selectedGroupPermission]: PermissionValues.allow,
