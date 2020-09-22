@@ -19,6 +19,7 @@ import React, { useEffect, useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { Switcher } from '../field-controls'
+import { forcePermissionActions } from './permission-editor/forcePermissionActions'
 import { PermissionEditorMembers } from './permission-editor/permission-editor-members'
 import { DialogTitle, useDialog } from '.'
 
@@ -223,6 +224,42 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
     )
   }
 
+  /**
+   * Enable permissions required for the permission specified in the parameter and saved to localResponseBody
+   * @param localResponseBody The local copy of the actual permission request body.
+   * @param permissionNameParam Permission, for which we examine the required permissions
+   */
+
+  const setForcedPermissionsToAllowed = (localResponseBody: PermissionRequestBody, permissionNameParam: string) => {
+    forcePermissionActions.forEach((forcePermObject) => {
+      Object.entries(forcePermObject).forEach(([permissionName, forcedPermissions]) => {
+        if (permissionName === permissionNameParam && forcedPermissions && forcedPermissions.length > 0) {
+          forcedPermissions.forEach((forcedPermission: keyof PermissionRequestBody) => {
+            Object.assign(localResponseBody, { [forcedPermission]: PermissionValues.allow })
+            setForcedPermissionsToAllowed(localResponseBody, forcedPermission)
+          })
+        }
+      })
+    })
+  }
+
+  /**
+   * Disable permissions for which the permission specified in the parameter is a condition and saved to localResponseBody
+   * @param localResponseBody The local copy of the actual permission request body.
+   * @param permissionNameParam Permission, which we examine as a condition for other permissions.
+   */
+
+  const setForcedPermissionsToUndefined = (localResponseBody: PermissionRequestBody, permissionNameParam: string) => {
+    forcePermissionActions.forEach((forcePermObject) => {
+      Object.entries(forcePermObject).forEach(([permissionName, forcedPermissions]) => {
+        if (forcedPermissions && forcedPermissions.length > 0 && forcedPermissions.includes(permissionNameParam)) {
+          Object.assign(localResponseBody, { [permissionName]: PermissionValues.undefined })
+          setForcedPermissionsToUndefined(localResponseBody, permissionName)
+        }
+      })
+    })
+  }
+
   return (
     <>
       <DialogTitle>{props.entry.identity.displayName}</DialogTitle>
@@ -266,10 +303,12 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                               Object.assign(localResponseBody, {
                                 [selectedGroupPermission]: PermissionValues.undefined,
                               })
+                              setForcedPermissionsToUndefined(localResponseBody, selectedGroupPermission)
                             } else {
                               Object.assign(localResponseBody, {
                                 [selectedGroupPermission]: PermissionValues.allow,
                               })
+                              setForcedPermissionsToAllowed(localResponseBody, selectedGroupPermission)
                             }
                           }
                         },
@@ -305,10 +344,12 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                             Object.assign(localResponseBody, {
                               [selectedGroupPermission]: PermissionValues.undefined,
                             })
+                            setForcedPermissionsToUndefined(localResponseBody, selectedGroupPermission)
                           } else {
                             Object.assign(localResponseBody, {
                               [selectedGroupPermission]: PermissionValues.allow,
                             })
+                            setForcedPermissionsToAllowed(localResponseBody, selectedGroupPermission)
                           }
                         }
                       },
@@ -385,10 +426,12 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                           Object.assign(localResponseBody, {
                             [selectedGroupPermission]: PermissionValues.undefined,
                           })
+                          setForcedPermissionsToUndefined(localResponseBody, selectedGroupPermission)
                         } else {
                           Object.assign(localResponseBody, {
                             [selectedGroupPermission]: PermissionValues.allow,
                           })
+                          setForcedPermissionsToAllowed(localResponseBody, selectedGroupPermission)
                         }
                         setResponseBody(localResponseBody)
                       }}
