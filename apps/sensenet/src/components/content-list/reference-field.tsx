@@ -21,9 +21,6 @@ const useStyles = makeStyles((theme: Theme) => {
       marginLeft: '1em',
       textTransform: 'lowercase',
     },
-    icon: {
-      marginRight: '1em' as any,
-    },
     link: {
       color: theme.palette.type === 'light' ? '#333333' : '#ffffff',
     },
@@ -71,7 +68,7 @@ export const ReferenceField: FunctionComponent<ReferenceFieldProps> = ({ content
         </div>
       ) : content.Name !== 'Somebody' ? (
         <div className={globalClasses.centeredVertical}>
-          {content.Type === 'User' ? <Icon item={content} style={classes.icon} /> : null}
+          {content.Type === 'User' ? <Icon item={content} style={{ marginRight: '0.5rem' }} /> : null}
           <Tooltip title={`Open ${content.DisplayName || content.Name} for edit`}>
             <Link
               className={classes.link}
