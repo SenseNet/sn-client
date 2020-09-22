@@ -129,7 +129,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
                       '{1}',
                       list.selectedItem
                         ? list.selectedItem.DisplayName || list.selectedItem.Name
-                        : parentItem?.DisplayName || parentItem?.Name!,
+                        : parentItem!.DisplayName || parentItem!.Name,
                     ),
                   data: {
                     result,
@@ -145,7 +145,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
                       '{1}',
                       list.selectedItem
                         ? list.selectedItem.DisplayName || list.selectedItem.Name
-                        : parentItem?.DisplayName || parentItem?.Name!,
+                        : parentItem!.DisplayName || parentItem!.Name,
                     )}\r\n${result.d.errors[0].error.message.value}`,
                   data: {
                     details: result,
@@ -165,7 +165,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
                       '{1}',
                       list.selectedItem
                         ? list.selectedItem.DisplayName || list.selectedItem.Name
-                        : parentItem?.DisplayName || parentItem?.Name!,
+                        : parentItem!.DisplayName || parentItem!.Name,
                     ),
                   data: {
                     details: result,
