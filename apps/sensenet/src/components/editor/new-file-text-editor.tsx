@@ -33,6 +33,7 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
   const saveContent = async () => {
     const fileName = props.getFileNameFromText?.(textValue) ?? props.fileName
     try {
+      setHasChanges(false)
       await repo.upload.textAsFile({
         text: textValue,
         parentPath: props.savePath,
@@ -55,6 +56,7 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
       setSavedTextValue(textValue)
       props.saveCallback?.()
     } catch (err) {
+      setHasChanges(true)
       logger.error({
         message: localization.textEditor.saveFailedNotification.replace('{0}', fileName),
         data: {
