@@ -28,6 +28,7 @@ export class PermissionRequestBody {
   public RestrictedPreview?: PermissionValues
   public PreviewWithoutWatermakr?: PermissionValues
   public PreviewWithoutRedaction?: PermissionValues
+  public See?: PermissionValues
   public Open?: PermissionValues
   public OpenMinor?: PermissionValues
   public Save?: PermissionValues

@@ -1,6 +1,7 @@
 import { DialogProps } from '@material-ui/core/Dialog'
 import React, { createContext, useCallback, useContext, useReducer } from 'react'
 import { ErrorBoundary, ErrorBoundaryState } from '../error-boundary'
+import { MemberSelectProps } from './member-select-dialog'
 import {
   ApproveProps,
   AreYouSureProps,
@@ -10,6 +11,7 @@ import {
   CustomActionResultDialogProps,
   DeleteContentDialogProps,
   ExecuteActionDialogProps,
+  PermissionEditorDialogProps,
   ReferenceContentListProps,
   RestoreProps,
   SaveQueryProps,
@@ -30,6 +32,8 @@ export type DialogWithProps = (
   | { name: 'logout' }
   | { name: 'save-query'; props: SaveQueryProps }
   | { name: 'reference-content-list'; props: ReferenceContentListProps }
+  | { name: 'permission-editor'; props: PermissionEditorDialogProps }
+  | { name: 'member-select'; props: MemberSelectProps }
   | { name: 'content-picker'; props: ContentPickerDialogProps }
 ) & { dialogProps?: Partial<DialogProps> }
 

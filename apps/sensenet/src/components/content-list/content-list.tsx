@@ -39,9 +39,8 @@ import {
 const useStyles = makeStyles(() => {
   return createStyles({
     tableWrapper: {
-      display: 'flex',
-      flex: 1,
       height: '100%',
+      display: 'block',
       userSelect: 'none',
       outline: 'none',
       position: 'relative',
@@ -453,7 +452,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
   const displayNameInArray = ['DisplayName']
 
   return (
-    <div style={{ ...props.style }} {...props.containerProps}>
+    <div style={{ ...props.style, ...{ height: '100%' } }} {...props.containerProps}>
       {props.enableBreadcrumbs ? (
         <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
           <ContentBreadcrumbs onItemClick={(i) => props.onParentChange(i.content)} />

@@ -421,6 +421,33 @@ const values = {
   contentList: {
     errorContentModification: 'There was an error during content modification',
   },
+  permissionEditor: {
+    assign: 'Assing new permisson',
+    setPermissons: 'Set permissions for ',
+    errorGetAcl: 'Something went wrong during getting permissions',
+    noContent: 'There is no direct permission setting on this content',
+    inherited: 'Inherited from ancestor',
+    setOnThis: 'Set on this content',
+    errorGetPermissionSetting: 'Something went wrong during getting permission settings',
+    permissions: 'Permissions',
+    grantFullAccess: 'Grant full access',
+    localOnly: 'Local only',
+    newEntry: 'New permission entry',
+    add: 'Add',
+    members: 'Members',
+    errorGetMembersInfo: 'Something went wrong during getting info about group members',
+    addNewMember: '+ Add new member',
+    makePublic: 'Make content public',
+    makePrivate: 'Make content private',
+    makePublicTooltip:
+      'Clicking this button makes the content and the below sub-tree public for non-authenticated (Visitor) users',
+    makePrivateTooltip:
+      'Clicking this button makes the content and the below sub-tree hidden for non-authenticated (Visitor) users',
+    cancel: 'Cancel',
+    reset: 'Reset',
+    name: 'Name',
+    typeIn: 'Type in a name',
+  },
   restore: {
     description: (contentName: string) =>
       `You are about to restore <strong>${contentName}</strong> from the Trash to the following destination:`,
