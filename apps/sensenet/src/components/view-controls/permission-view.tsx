@@ -256,15 +256,17 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                         dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
                       })
                     }}>
-                    {inheritedEntry.identity.kind === 'group' ? (
-                      <div className={clsx(classes.iconWrapper, globalClasses.centered)}>
-                        <GroupOutlined />
-                      </div>
-                    ) : inheritedEntry.identity.kind === 'user' && inheritedEntry.identity.avatar ? (
-                      <Avatar
-                        src={PathHelper.joinPaths(repo.configuration.repositoryUrl, inheritedEntry.identity.avatar)}
-                      />
-                    ) : null}
+                    <ListItemIcon>
+                      {inheritedEntry.identity.kind === 'group' ? (
+                        <div className={clsx(classes.iconWrapper, globalClasses.centered)}>
+                          <GroupOutlined />
+                        </div>
+                      ) : inheritedEntry.identity.kind === 'user' && inheritedEntry.identity.avatar ? (
+                        <Avatar
+                          src={PathHelper.joinPaths(repo.configuration.repositoryUrl, inheritedEntry.identity.avatar)}
+                        />
+                      ) : null}
+                    </ListItemIcon>
                     <ListItemText
                       primary={
                         <div>
