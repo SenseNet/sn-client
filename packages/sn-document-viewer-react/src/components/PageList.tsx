@@ -138,7 +138,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
     }
 
     setMarginTop(_marginTop)
-    setMarginBottom(_marginBottom === 0 ? 20 : _marginBottom)
+    setMarginBottom(_marginBottom < 20 ? 20 : _marginBottom)
     const newVisiblePages = _visiblePages.slice(_pagesToSkip, _pagesToSkip + _pagesToTake)
     setVisiblePages(newVisiblePages)
     const newIndexes = newVisiblePages.map((newValue) => newValue.Index)
@@ -160,7 +160,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
   const updateScrollState = useCallback(
     debounce(() => {
       if (props.images === 'preview' && props.showWidgets)
-        viewerState.updateState({ activePages: [viewerState.visiblePages[0] ? viewerState.visiblePages[0] : 1] })
+        viewerState.updateState({ activePages: [viewerState.visiblePages[0] || 1] })
     }, 100),
     [viewerState, visiblePages],
   )
