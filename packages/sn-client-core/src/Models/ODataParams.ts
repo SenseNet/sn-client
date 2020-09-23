@@ -26,7 +26,7 @@ export type ODataFormatType = 'json' | 'verbosejson'
 export type ODataInlineCountType = 'none' | 'allpages'
 
 /**
- * Model class to define specific OData Request parameters. See http://wiki.sensenet.com/OData_REST_API
+ * Model class to define specific OData Request parameters. See https://docs.sensenet.com/api-docs/basic-concepts
  */
 export interface ODataParams<T> {
   /**

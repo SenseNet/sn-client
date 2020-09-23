@@ -1,6 +1,6 @@
 # @sensenet/controls-react
 
-> Collection of [React](https://facebook.github.io/react/) components for [sensenet](https://www.sensenet.com/) with [Material-UI](https://github.com/mui-org/material-ui)
+> Collection of [React](https://facebook.github.io/react/) components for [sensenet](https://sensenet.com/) with [Material-UI](https://github.com/mui-org/material-ui)
 
 [![Sense/Net Services](https://img.shields.io/badge/sensenet-7.0.0--beta3%20tested-green.svg)](https://github.com/SenseNet/sensenet/releases/tag/v7.0.0-beta3)
 [![NPM version](https://img.shields.io/npm/v/@sensenet/controls-react.svg?style=flat)](https://www.npmjs.com/package/@sensenet/controls-react)
@@ -31,7 +31,7 @@ import { NewView, EditView, CommandButtons } '@sensenet/controls-react';
 
 ## View Controls
 
-View Controls are almost the same as the .ascx [Content Views](http://wiki.sensenet.com/Content_View) in [sensenet Webpages](https://github.com/SenseNet/sn-webpages). This components define how the given Content will be rendered. As a Content is built up of Fields the View Control displays the Content using Field Controls to provide a surface to display/modify the Field values of the Content. View Control therefore depends on the Content Type of the specific Content.
+View Controls are almost the same as the old .ascx Content Views were in [sensenet Webpages](https://github.com/SenseNet/sn-webpages). This components define how the given Content will be rendered. As a Content is built up of Fields the View Control displays the Content using Field Controls to provide a surface to display/modify the Field values of the Content. View Control therefore depends on the Content Type of the specific Content.
 
 ### Content creation form (NewView)
 

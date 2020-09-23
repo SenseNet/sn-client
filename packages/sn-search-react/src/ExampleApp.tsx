@@ -386,7 +386,10 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
               check that
               <li>
                 Your{' '}
-                <a href="https://community.sensenet.com/docs/cors/" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://docs.sensenet.com/guides/setup#portal.settings"
+                  target="_blank"
+                  rel="noopener noreferrer">
                   CORS
                 </a>{' '}
                 settings are correct
