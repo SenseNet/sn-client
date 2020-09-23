@@ -164,6 +164,7 @@ export class AllowedChildTypesComponent extends Component<
       this.setState({
         effectiveAllowedChildTypes: typeResults,
         items: types,
+        allowedTypesOnCTD: allowedChildTypesFromCTD.d.results,
         removeable: typeResults.length === 0 || this.props.actionName !== 'new',
         value: types.map((t: ContentType) => t.Name),
       })
@@ -209,17 +210,20 @@ export class AllowedChildTypesComponent extends Component<
     const { items } = this.state
     const index = items.findIndex((i) => item.Name === i.Name)
     if (items.length > 1) {
-      const newItems = [...items.slice(0, index), ...items.slice(index + 1)]
+      const newItems: ContentType[] = [...items.slice(0, index), ...items.slice(index + 1)]
+      const newValue = newItems.map((newItem) => newItem.Name)
       this.setState({
         items: newItems,
+        value: newValue,
       })
-      this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, newItems)
+      this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, newValue)
     } else {
+      const valuesOnCTD = this.state.allowedTypesOnCTD.map((allowedType) => allowedType.Name)
       this.setState({
         items: this.state.allowedTypesOnCTD,
-        removeable: false,
+        value: valuesOnCTD,
       })
-      this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, this.state.allowedTypesOnCTD)
+      this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, valuesOnCTD)
     }
   }
 
