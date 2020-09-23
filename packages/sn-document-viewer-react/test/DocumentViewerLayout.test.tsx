@@ -48,7 +48,7 @@ describe('Document Viewer Layout component', () => {
     expect(scrollToMock).toBeCalled()
   })
 
-  it('click on a page / thumbnail should scroll to the selected page', async () => {
+  it('click on a page should scroll to the selected page', async () => {
     const scrollToMock = jest.fn()
     ;(window as any).HTMLElement.prototype.scrollTo = scrollToMock
     const wrapper = mount(
@@ -66,6 +66,34 @@ describe('Document Viewer Layout component', () => {
     wrapper.find(PageList).last().prop('onPageClick')({} as any, 3)
 
     expect(scrollToMock).toBeCalled()
+  })
+
+  it('click on a thumbnail should scroll to the selected page and change viewerState', async () => {
+    const scrollToMock = jest.fn()
+    const updateState = jest.fn()
+    ;(window as any).HTMLElement.prototype.scrollTo = scrollToMock
+    const wrapper = mount(
+      <ViewerStateContext.Provider
+        value={{
+          ...defaultViewerState,
+          updateState,
+        }}>
+        <PreviewImageDataContextWrapper>
+          <DocumentViewerLayout pagePadding={0} thumbnailPadding={0}>
+            {'some children'}
+          </DocumentViewerLayout>
+        </PreviewImageDataContextWrapper>
+      </ViewerStateContext.Provider>,
+      {
+        wrappingComponent: ViewerStateContextWrapper,
+        attachTo: window.domNode,
+      },
+    )
+
+    wrapper.find(PageList).first().prop('onPageClick')({} as any, 3)
+
+    expect(scrollToMock).toBeCalled()
+    expect(updateState).toBeCalledWith({ visiblePages: [3] })
   })
 
   it('should show comments', async () => {
