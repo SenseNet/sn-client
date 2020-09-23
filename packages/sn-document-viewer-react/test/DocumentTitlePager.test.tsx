@@ -21,7 +21,7 @@ describe('DocumentTitlePager component', () => {
     expect(wrapper).toMatchSnapshot()
   })
 
-  it('Should set the default value of the textfield when changed', async () => {
+  it('Should set visiblePages on blur action', async () => {
     const updateState = jest.fn()
     const wrapper = mount(
       <ViewerStateContext.Provider
@@ -36,6 +36,7 @@ describe('DocumentTitlePager component', () => {
               pageCount: 100,
             },
             updateDocumentData: async () => undefined,
+            isInProgress: false,
           }}>
           <DocumentTitlePager />
         </DocumentDataContext.Provider>
@@ -45,9 +46,9 @@ describe('DocumentTitlePager component', () => {
       wrapper.find(Typography).simulate('click')
     })
     act(() => {
-      const onChange = wrapper.update().find(TextField).prop('onChange')
-      onChange && onChange({ currentTarget: { value: '3' } } as any)
+      const onBlur = wrapper.update().find(TextField).prop('onBlur')
+      onBlur && onBlur({} as any)
     })
-    expect(updateState).toBeCalledWith({ activePages: [3] })
+    expect(updateState).toBeCalledWith({ visiblePages: [1] })
   })
 })

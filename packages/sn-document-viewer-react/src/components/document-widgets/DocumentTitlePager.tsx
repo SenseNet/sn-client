@@ -1,7 +1,7 @@
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDocumentData, useLocalization, useViewerState } from '../../hooks'
 
 /**
@@ -14,10 +14,21 @@ export const DocumentTitlePager: React.FC = () => {
   const viewerState = useViewerState()
   const localization = useLocalization()
 
+  useEffect(() => {
+    setCurrentPage(viewerState.activePages[0])
+  }, [viewerState])
+
   const setPage = useCallback(
     (index: number) => {
-      viewerState.updateState({ activePages: [index] })
-      viewerState.onPageChange.setValue(index)
+      const container = document.getElementById('sn-document-viewer-pages')
+      const item = document.querySelector(`.Page`)
+      if (container && container.scrollTo && item) {
+        container!.scrollTo({
+          top: (item!.clientHeight + 8 * 4) * (index - 1),
+          behavior: 'smooth',
+        })
+      }
+      viewerState.updateState({ visiblePages: [index] })
     },
     [viewerState],
   )
@@ -30,7 +41,6 @@ export const DocumentTitlePager: React.FC = () => {
       pageInt = Math.max(pageInt, 1)
       pageInt = Math.min(pageInt, documentData.pageCount)
       setCurrentPage(pageInt)
-      setPage(pageInt)
     }
   }
 
@@ -55,6 +65,7 @@ export const DocumentTitlePager: React.FC = () => {
               title={localization.gotoPage}
               value={currentPage}
               onChange={(ev) => gotoPage(ev.currentTarget.value)}
+              onBlur={() => setPage(currentPage)}
               type="number"
               required={true}
               InputLabelProps={{
