@@ -49,6 +49,7 @@ exports[`DocumentTitlePager component Should render the focused state without cr
           }
         }
         margin="dense"
+        onBlur={[Function]}
         onChange={[Function]}
         required={true}
         style={

@@ -129,6 +129,7 @@ export const PermanentDrawer = () => {
               PATHS.setup.appPath,
               PATHS.contentTypes.appPath,
               PATHS.localization.appPath,
+              PATHS.custom.appPath.replace(':path', 'root'),
             ]) ? (
               <AddButton aria-label={localization.add} isOpened={opened} />
             ) : null}
