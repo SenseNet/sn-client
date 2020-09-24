@@ -187,17 +187,12 @@ export const ExampleAppLayout: React.FC = () => {
                   <Typography component="div">
                     If you have trouble opening a file be sure that
                     <ul>
+                      <li>you are using sensenet 7.0+</li>
                       <li>
-                        you are using sensenet{' '}
                         <a
-                          href="https://community.sensenet.com/docs/install-sn-from-nuget/"
+                          href="https://docs.sensenet.com/guides/setup#portal.settings"
                           target="_blank"
                           rel="noopener noreferrer">
-                          7.0+
-                        </a>
-                      </li>
-                      <li>
-                        <a href="https://community.sensenet.com/docs/cors/" target="_blank" rel="noopener noreferrer">
                           CORS
                         </a>{' '}
                         is allowed for the current host

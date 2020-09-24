@@ -21,14 +21,6 @@ export class HelpCommandProvider implements CommandProvider {
         hits: [term],
       },
       {
-        primaryText: commandPaletteHelpLocalization.communitySiteTitle,
-        secondaryText: commandPaletteHelpLocalization.communitySiteDescription,
-        url: '',
-        content: { Type: 'Group' } as any,
-        openAction: () => window.open('https://community.sensenet.com'),
-        hits: [term],
-      },
-      {
         primaryText: commandPaletteHelpLocalization.docsSiteTitle,
         secondaryText: commandPaletteHelpLocalization.docsSiteDescription,
         url: '',
