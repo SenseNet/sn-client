@@ -7,6 +7,8 @@ This guide is about how to write and run End-to-End (E2E) tests for a feature or
 
 ## How to run E2E tests on your local machine
 
+---> TODO <---
+
 ## Folder and file structure
 
 The folder structure is based on Cypress' initials:
@@ -32,6 +34,30 @@ The folder structure is based on Cypress' initials:
    The support file is a great place to put reusable behavior such as custom commands or global overrides that you want applied and available to all of your spec files.
 5. /cypress.json is for Cypress configuration.
 
+## Configurations
+
+As it is mentioned above the Cypress related configurations are stored in the cypress.json file. Let's check the settings that are sensenet specifics.
+
+- `baseUrl`: This one is to set the url of the site or app that should be tested, in our case it is by default set to the test version of the admin surface (built from the develop branch of sn-client repository so it is not a stable and released version, should be used only for test purposes) ([admin.test.sensenet.com](https://admin.test.sensenet.com)).
+
+- `env`: Things grouped into this object specifies the test environments (repository and Identity Server) and test users.
+
+- `repoUrl`: Url of the connected repository (e2e-service.test.sensenet.com), which is a separate enviroment made for testing purposes only.
+
+- `identityServer`: Url of the connected Identity Server (is.test.sensenet.com), which is a separate enviroment made for testing purposes only.
+
+- `users`:
+
+```
+"superadmin": {
+        "clientId": "client",
+        "clientSecret": "",
+        "id": "/Root/IMS/BuiltIn/Portal('Admin')"
+      },
+```
+
+---> TODO <---
+
 ## What requires an E2E Test?
 
 - Test case issues in [sn-client Github repository](https://github.com/SenseNet/sn-client) marked with the **labels** test and **hacktoberfest**. There's also a dedicated board for Hacktoberfest issues [here](https://github.com/orgs/SenseNet/projects/7).
@@ -52,4 +78,41 @@ Before creating a new \*\.spec.ts file, look to see if there is already one for 
 
 ## Writing specs
 
+1. Check the steps of the test case in the chosen issue these will be the base of your specs since they're containing the prerequsities, acceptances and everything else you need to start wit writing an e2e test for sensenet admin ui.
+
+2. Check the existing specs in the folders under integration and try to write yours the similar way.
+
+```javascript
+describe('User handling', () => {
+  before(() => cy.clearCookies({ domain: null } as any))
+
+  it('should login with test user', () => {
+    cy.visit('/')
+    cy.get('input[name="repository"]').type(`${Cypress.env('repoUrl')}{enter}`)
+
+    cy.get('[data-test="demo-button"]').click()
+  })
+
+  it('should logout', () => {
+    cy.login()
+    cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
+      .get('.MuiToolbar-root .MuiAvatar-root+.MuiButtonBase-root.MuiIconButton-root')
+      .click()
+      .get('.MuiList-root li[role="menuitem"]')
+      .contains('Log out')
+      .click()
+
+    cy.get('.MuiDialog-container .MuiDialogActions-root .MuiButton-containedPrimary').click()
+  })
+})
+```
+
+3. If you stucked somewhere, feel free to ask questions on the issue that you're assigned to or in sensenet's [dedicated gitter channel](https://gitter.im/SenseNet/SNaaS).
+
 ## Reusable tools and snippets
+
+---> TODO <---
+
+- login
+- logout
+- etc
