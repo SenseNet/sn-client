@@ -16,8 +16,6 @@ const values = {
     help: {
       readMeTitle: 'ReadMe',
       readMeDescription: 'Opens the latest readme.md file from GitHub in a new window',
-      communitySiteTitle: 'Visit the Community Site',
-      communitySiteDescription: 'Opens https://community.sensenet.com in a new window',
       docsSiteTitle: 'Visit the Documentation Site',
       docsSiteDescription: 'Opens https://docs.sensenet.com in a new window',
       gitterTitle: 'Chat on Gitter',
