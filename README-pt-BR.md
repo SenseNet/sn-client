@@ -1,6 +1,6 @@
 <p>
   <a href="https://sensenet.com/" target="_blank">
-    <img alt="sensenet" src="https://www.sensenet.com/Root/Skins/sncom/images/logo.png">
+    <img alt="sensenet" src="https://github.com/SenseNet/sn-resources/blob/master/images/sn-icon/sensenet-icon-128.png">
   </a>
 </p>
 
