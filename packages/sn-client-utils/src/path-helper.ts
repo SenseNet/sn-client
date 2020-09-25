@@ -48,7 +48,7 @@ export class PathHelper {
    * @param segment The segment to be examined
    */
   public static isItemSegment(segment: string): boolean {
-    return RegExp(/\('+[\s\S]+'\)$/).test(segment) || RegExp(/\(+\d+\)$/).test(segment)
+    return RegExp(/\('+[\s\S]+'\)$/).test(segment)
   }
 
   /**
