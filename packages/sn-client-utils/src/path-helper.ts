@@ -34,7 +34,7 @@ export class PathHelper {
       throw new Error(`Couldn't get the segments for ${path}`)
     }
     // Match if last item is Root/content(123) or Root/Example('content')
-    const matches = lastItem.match(/(\('\w+'\)|\(\d+\)$)/g)
+    const matches = lastItem.match(/(\('\w+'\)$)/g)
     if (!matches) {
       return [...splitted, lastItem]
     }
