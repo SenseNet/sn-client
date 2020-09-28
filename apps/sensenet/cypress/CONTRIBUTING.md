@@ -11,9 +11,9 @@ Check out and pull the actual develop branch to your local machine (If you didn'
 
 If you would like to [create new test or modify an existing one](https://github.com/SenseNet/sensenet/blob/master/CONTRIBUTING.md#making-a-change) please always create a new branch. (command: `git checkout -b <new_branch_name>`)
 
-Install all necessary dependencies (command: `yarn install`)
-
 Go to apps/sensenet folder (command: `cd apps/sensenet`)
+
+Install all necessary dependencies (command: `yarn install`)
 
 Change the apps/sensenet/cypress.json env configuration to yours. (You can read more about in the Configuration chapter)
 
