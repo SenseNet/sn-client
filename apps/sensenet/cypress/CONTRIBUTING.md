@@ -7,7 +7,23 @@ This guide is about how to write and run End-to-End (E2E) tests for a feature or
 
 ## How to run E2E tests on your local machine
 
----> TODO <---
+Check out and pull the actual develop branch to your local machine (If you didn't clone sn-client repository yet than you should do it first) (command: `git checkout develop && git pull`)
+
+If you would like to [create new test or modify an existing one](https://github.com/SenseNet/sensenet/blob/master/CONTRIBUTING.md#making-a-change) please always create a new branch. (command: `git checkout -b <new_branch_name>`)
+
+Go to apps/sensenet folder (command: `cd apps/sensenet`)
+
+Change the apps/sensenet/cypress.json env configuration to yours. (You can read more about in the Configuration chapter)
+
+There are two possible ways to run end-to-end tests:
+
+- **Running in the background: //eq.: cypress run** (command: `yarn cypress:all`)
+
+  This command will run the tests with a headless browser (Electron). You can use any [run options](https://docs.cypress.io/guides/guides/command-line.html#cypress-run) what cypress supports.
+
+- **Open with Cypress Test Runner: //eq.: cypress open** (command: `yarn cypress`)
+
+  This command will open the [Cypress Test Runner](https://docs.cypress.io/guides/core-concepts/test-runner.html#Overview) where you can easily select test what you would like to run and follow the result of the test runs. Here you can also use [run options](https://docs.cypress.io/guides/guides/command-line.html#cypress-open) if you want.
 
 ## Folder and file structure
 
@@ -42,21 +58,32 @@ As it is mentioned above the Cypress related configurations are stored in the cy
 
 - `env`: Things grouped into this object specifies the test environments (repository and Identity Server) and test users.
 
-- `repoUrl`: Url of the connected repository (e2e-service.test.sensenet.com), which is a separate enviroment made for testing purposes only.
+  - `repoUrl`: Url of the connected repository (e2e-service.test.sensenet.com), which is a separate enviroment made for testing purposes only. You should change this url to your repository url.
 
-- `identityServer`: Url of the connected Identity Server (is.test.sensenet.com), which is a separate enviroment made for testing purposes only.
+  - `identityServer`: Url of the connected Identity Server (is.demo.sensenet.com), which is a separate enviroment made for testing purposes only.
+    You should change this url to your dedicated identity server url.
 
-- `users`:
+  - `users`:
 
-```
-"superadmin": {
-        "clientId": "client",
-        "clientSecret": "",
-        "id": "/Root/IMS/BuiltIn/Portal('Admin')"
+    ```
+      "admin": {
+        "clientId": "kitty",
+        "clientSecret": "<your secret key for admin role>",
+        "id": "/Root/IMS/Public('businesscat')"
       },
-```
+      "developer": {
+        "clientId": "devdog",
+        "clientSecret": "<your secret key for developer role>",
+        "id": "/Root/IMS/Public('devdog')"
+      },
+      "editor": {
+        "clientId": "eddie",
+        "clientSecret": "<your secret key for editor role>",
+        "id": "/Root/IMS/Public('editormanatee')"
+      }
+    ```
 
----> TODO <---
+    These are the rolse what you can use for testing pusposes. In every test case we indicated in what role the particular test should be run. You can find the secret keys for the roles on your [profile page](https://profile.sensenet.com/) after login.
 
 ## What requires an E2E Test?
 
@@ -78,7 +105,7 @@ Before creating a new \*\.spec.ts file, look to see if there is already one for 
 
 ## Writing specs
 
-1. Check the steps of the test case in the chosen issue these will be the base of your specs since they're containing the prerequsities, acceptances and everything else you need to start wit writing an e2e test for sensenet admin ui.
+1. Check the steps of the test case in the chosen issue these will be the base of your specs since they're containing the prerequsities, acceptances and everything else you need to start with writing an e2e test for sensenet admin ui.
 
 2. Check the existing specs in the folders under integration and try to write yours the similar way.
 
@@ -111,8 +138,12 @@ describe('User handling', () => {
 
 ## Reusable tools and snippets
 
----> TODO <---
+As of now we implemented the login command for you to make implementing tests easier. You can find this command under apps/sensenet/cypress/support/commands.js file but feel free to extend the list of [reuseable commands](https://docs.cypress.io/api/cypress-api/custom-commands.html).
 
-- login
-- logout
-- etc
+You can use the login command in your tests with an argument as your role you want to use:
+
+```javascript
+cy.login('developer')
+```
+
+If no argument added then login will be done with admin role.

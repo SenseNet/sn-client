@@ -6,6 +6,6 @@ declare namespace Cypress {
     /**
      * Custom command to log in programmatically.
      */
-    login(): void
+    login(userType?: string): void
   }
 }
