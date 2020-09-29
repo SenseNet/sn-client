@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import React, { createElement, ReactElement, useEffect, useState } from 'react'
+import React, { createElement, ReactElement, useEffect, useRef, useState } from 'react'
 import MediaQuery from 'react-responsive'
 import { isFullWidthField } from '../helpers'
 import { reactControlMapper } from '../ReactControlMapper'
@@ -73,8 +73,13 @@ export const EditView: React.FC<EditViewProps> = (props) => {
   const [content, setContent] = useState({})
   const defaultClasses = useStyles()
   const repository = useRepository()
+  const firstInputRef = useRef<HTMLDivElement>(null)
 
   const uniqueId = Date.now()
+
+  const sortedFieldMappings = schema.fieldMappings.sort(
+    (item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0),
+  )
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -84,6 +89,11 @@ export const EditView: React.FC<EditViewProps> = (props) => {
   const handleInputChange = (field: string, value: unknown) => {
     setContent({ ...content, [field]: value })
   }
+
+  useEffect(() => {
+    const firstInputField = firstInputRef.current?.querySelector('.MuiInputBase-input') as HTMLInputElement
+    firstInputField?.focus()
+  }, [firstInputRef])
 
   useEffect(() => {
     const schemaObservable = repository.schemas.subscribeToSchemas(() => {
@@ -109,40 +119,44 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         onSubmit={handleSubmit}
         spacing={2}
         className={props.classes?.grid || defaultClasses.grid}>
-        {schema.fieldMappings
-          .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
-          .map((field) => {
-            const fieldControl = createElement(
-              controlMapper.getControlForContentField(props.contentTypeName, field.fieldSettings.Name, actionName),
-              {
-                actionName,
-                settings: field.fieldSettings,
-                repository: props.repository,
-                content: props.content,
-                fieldValue: props.content ? (props.content as any)[field.fieldSettings.Name] : undefined,
-                renderIcon: props.renderIcon,
-                fieldOnChange: handleInputChange,
-                extension: props.extension,
-                uploadFolderPath: props.uploadFolderpath,
-              },
-            )
+        {sortedFieldMappings.map((field) => {
+          const fieldControl = createElement(
+            controlMapper.getControlForContentField(props.contentTypeName, field.fieldSettings.Name, actionName),
+            {
+              actionName,
+              settings: field.fieldSettings,
+              repository: props.repository,
+              content: props.content,
+              fieldValue: props.content ? (props.content as any)[field.fieldSettings.Name] : undefined,
+              renderIcon: props.renderIcon,
+              fieldOnChange: handleInputChange,
+              extension: props.extension,
+              uploadFolderPath: props.uploadFolderpath,
+            },
+          )
 
-            const isFullWidth = isFullWidthField(field, props.contentTypeName)
+          const isFullWidth = isFullWidthField(field, props.contentTypeName)
 
-            return (
-              <Grid
-                item={true}
-                xs={12}
-                sm={12}
-                md={isFullWidth ? 12 : 6}
-                lg={isFullWidth ? 12 : 6}
-                xl={isFullWidth ? 12 : 6}
-                key={field.fieldSettings.Name}
-                className={props.classes?.fieldWrapper}>
+          return (
+            <Grid
+              item={true}
+              xs={12}
+              sm={12}
+              md={isFullWidth ? 12 : 6}
+              lg={isFullWidth ? 12 : 6}
+              xl={isFullWidth ? 12 : 6}
+              key={field.fieldSettings.Name}
+              className={props.classes?.fieldWrapper}>
+              {sortedFieldMappings[0] === field ? (
+                <div className={isFullWidth ? props.classes?.fieldFullWidth : props.classes?.field} ref={firstInputRef}>
+                  {fieldControl}
+                </div>
+              ) : (
                 <div className={isFullWidth ? props.classes?.fieldFullWidth : props.classes?.field}>{fieldControl}</div>
-              </Grid>
-            )
-          })}
+              )}
+            </Grid>
+          )
+        })}
       </Grid>
       <div className={props.classes?.actionButtonWrapper || defaultClasses.actionButtonWrapper}>
         <MediaQuery minDeviceWidth={700}>
