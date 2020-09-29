@@ -63,7 +63,7 @@ describe('AuthenticationProvider component', () => {
     const wrapper = mount(
       <AuthenticationProvider
         history={history}
-        callbackComponentOverride={<p id="b">b</p>}
+        callbackComponentOverride={() => <p id="b">b</p>}
         configuration={{ redirect_uri: 'https://localhost:3000/auth/callback' }}>
         <p id="a">a</p>
       </AuthenticationProvider>,
