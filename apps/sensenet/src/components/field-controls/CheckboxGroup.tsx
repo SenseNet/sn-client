@@ -41,7 +41,7 @@ export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>
     setState(newState)
     props.fieldOnChange?.(
       props.settings.Name,
-      newState.filter((item) => item.Selected),
+      newState.filter((item) => item.Selected).map((item) => item.Value),
     )
   }
 
@@ -75,7 +75,9 @@ export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>
     default: {
       return props.fieldValue ? (
         <FormControl component={'fieldset' as 'div'}>
-          <FormLabel component={'legend' as 'label'}>{props.settings.DisplayName}</FormLabel>
+          <FormLabel component={'legend' as 'label'} style={{ marginBottom: '10px' }}>
+            {props.settings.DisplayName}
+          </FormLabel>
           <FormGroup>
             {Array.isArray(props.fieldValue) ? (
               props.fieldValue.map((val: any, index: number) => (
