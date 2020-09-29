@@ -31,7 +31,6 @@ import typeFieldNotes from '../notes/search/TypeField.md'
 
 storiesOf('Search', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11y)
   .addDecorator(withActions('queryChange', 'fetchItems'))
   .add('Showcase', () => <ExampleApp />, { notes: { markdown: showcaseNotes } })
   .add(

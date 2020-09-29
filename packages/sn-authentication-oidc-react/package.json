@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/authentication-oidc-react",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "React components and service for oidc authentication with sensenet",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -42,7 +42,7 @@
     "enzyme-to-json": "^3.5.0",
     "jest": "^26.2.2",
     "ts-jest": "^26.1.4",
-    "typescript": "^3.9.7"
+    "typescript": "^4.0.2"
   },
   "publishConfig": {
     "access": "public"

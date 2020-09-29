@@ -62,11 +62,11 @@ export const DocumentViewerError: React.FC = () => {
             </g>
           </g>
         </svg>
-        <Typography variant="h5" color="textSecondary" align="center" style={{ fontWeight: 'bolder' }}>
-          {localization.errorLoadingDocument.find((e) => e.code === documentData.pageCount)}
-        </Typography>
         <Typography variant="subtitle1" color="textSecondary" align="center" style={{ whiteSpace: 'pre-wrap' }}>
           {localization.errorLoadingDetails}
+        </Typography>
+        <Typography variant="h5" color="textSecondary" align="center" style={{ fontWeight: 'bolder' }}>
+          {localization.errorLoadingDocument.find((e) => e.state === documentData.pageCount)?.message}
         </Typography>
       </div>
     </div>

@@ -1,13 +1,6 @@
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
 import { theme } from './theme'
 
-export const defaultCell: React.CSSProperties = {
-  color: '#666',
-  fontSize: '16px',
-  fontFamily: 'Raleway Light',
-  cursor: 'pointer',
-}
-
 export const selectedCell: React.CSSProperties = {
   color: '#016D9E',
   fontWeight: 'bold',
@@ -36,7 +29,10 @@ export const contentListTheme = createMuiTheme({
         color: '#999',
       },
       hover: {
-        ...defaultCell,
+        color: '#666',
+        fontSize: '16px',
+        fontFamily: 'Raleway Light',
+        cursor: 'pointer',
         '&:hover': { ...hoveredCell },
         '&.selected': {
           color: '#016D9E !important',

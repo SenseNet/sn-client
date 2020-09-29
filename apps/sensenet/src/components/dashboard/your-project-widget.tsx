@@ -50,7 +50,7 @@ export const YourProjectWidget: React.FunctionComponent = () => {
               })}>
               {' '}
               add more users
-            </Link>
+            </Link>{' '}
             to manage them and don&apos;t forget to{' '}
             <Link
               component={RouterLink}

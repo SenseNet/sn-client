@@ -1,7 +1,7 @@
 # @sensenet/client-core
 
 > This component lets you work with the [sensenet](https://github.com/SenseNet/sensenet) Content Repository (create or manage content, execute queries, etc.) by providing a JavaScript client API for the main content operations.
-> The library connects to a sensenet's [REST API](https://community.sensenet.com/docs/odata-rest-api/), but hides the underlying HTTP requests. You can work with simple load or create Content operations in JavaScript, instead of having to construct ajax requests yourself.
+> The library connects to a sensenet's [REST API](https://docs.sensenet.com/api-docs/basic-concepts), but hides the underlying HTTP requests. You can work with simple load or create Content operations in JavaScript, instead of having to construct ajax requests yourself.
 
 [![NPM version](https://img.shields.io/npm/v/@sensenet/client-core.svg?style=flat)](https://www.npmjs.com/package/@sensenet/client-core)
 [![NPM downloads](https://img.shields.io/npm/dt/@sensenet/client-core.svg?style=flat)](https://www.npmjs.com/package/@sensenet/client-core)
@@ -39,7 +39,7 @@ const repository = new Repository({
 })
 ```
 
-- **repositoryURL**: The component will communicate with your repositoy using the following url. This will fall back to your _window.location.href_, if not specified. To enable your external app to send request against your sensenet portal change your `Portal.settings`. For further information about cross-origin resource sharing in sensenet check [this](community.sensenet.com/docs/cors/)
+- **repositoryURL**: The component will communicate with your repositoy using the following url. This will fall back to your _window.location.href_, if not specified. To enable your external app to send request against your sensenet portal change your `Portal.settings`. For further information about cross-origin resource sharing in sensenet check [this](https://docs.sensenet.com/guides/setup)
   article
 - **oDataToken**: Check your Sense/Net portal's web.config and if the `ODataServiceToken` is set, you can configure it here for the client side
 - **token**: Access token to authorize access to data

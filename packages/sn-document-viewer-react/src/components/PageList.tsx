@@ -65,9 +65,11 @@ export const PageList: React.FC<PageListProps> = (props) => {
 
   useEffect(() => {
     if (viewportElement && viewportElement.current) {
+      const newHeight = viewportElement.current.clientHeight - props.padding * 2
+      const newWidth = viewportElement.current.clientWidth - props.padding * 2
       setViewport({
-        height: viewportElement.current.clientHeight - props.padding * 2,
-        width: viewportElement.current.clientWidth - props.padding * 2,
+        height: newHeight >= 0 ? newHeight : 0,
+        width: newWidth >= 0 ? newWidth : 0,
       })
     }
   }, [props.padding, resizeToken, viewportElement])
@@ -136,9 +138,11 @@ export const PageList: React.FC<PageListProps> = (props) => {
     }
 
     setMarginTop(_marginTop)
-    setMarginBottom(_marginBottom)
+    setMarginBottom(_marginBottom < 20 ? 20 : _marginBottom)
     const newVisiblePages = _visiblePages.slice(_pagesToSkip, _pagesToSkip + _pagesToTake)
     setVisiblePages(newVisiblePages)
+    const newIndexes = newVisiblePages.map((newValue) => newValue.Index)
+    viewerState.updateState({ visiblePages: newIndexes })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     pages.imageData,
@@ -155,8 +159,8 @@ export const PageList: React.FC<PageListProps> = (props) => {
 
   const updateScrollState = useCallback(
     debounce(() => {
-      if (props.images === 'preview')
-        viewerState.updateState({ activePages: [(visiblePages[0] && visiblePages[0].Index) || 1] })
+      if (props.images === 'preview' && props.showWidgets)
+        viewerState.updateState({ activePages: [viewerState.visiblePages[0] || 1] })
     }, 100),
     [viewerState, visiblePages],
   )
@@ -166,7 +170,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
   return (
     <Grid
       item={true}
-      style={{ ...props.style, flexGrow: 1, flexShrink: 1, overflow: 'auto', height: '100%' }}
+      style={{ ...props.style, flexGrow: 1, flexShrink: 1, overflow: 'auto' }}
       id={props.id}
       innerRef={viewportElement}>
       <div

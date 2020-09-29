@@ -2,7 +2,7 @@ import { AuthenticationProvider, useOidcAuthentication, UserManagerSettings } fr
 import { Repository } from '@sensenet/client-core'
 import { RepositoryContext, useLogger } from '@sensenet/hooks-react'
 import { CssBaseline } from '@material-ui/core'
-import React, { lazy, ReactNode, Suspense, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { lazy, ReactNode, Suspense, useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { FullScreenLoader } from '../components/full-screen-loader'
 import { AuthOverrideSkeleton } from '../components/login/auth-override-skeleton'
@@ -10,7 +10,7 @@ import { NotAuthenticatedOverride } from '../components/login/not-authenticated-
 import { SessionLostOverride } from '../components/login/session-lost-override'
 import { NotificationComponent } from '../components/NotificationComponent'
 import { useGlobalStyles } from '../globalStyles'
-import { useQuery } from '../hooks/use-query'
+import { useQuery } from '../hooks'
 import { getAuthConfig } from '../services/auth-config'
 
 const LoginPage = lazy(() => import(/* webpackChunkName: "login" */ '../components/login/login-page'))
@@ -99,28 +99,28 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
     <AuthenticationProvider
       configuration={authState.config}
       history={history}
-      authenticating={
+      authenticating={() => (
         <AuthOverrideSkeleton
           primaryText="Authentication is in progress"
           secondaryText="You will be redirected to the login page"
         />
-      }
-      notAuthenticated={<NotAuthenticatedOverride clearState={clearState} />}
-      notAuthorized={
+      )}
+      notAuthenticated={() => <NotAuthenticatedOverride clearState={clearState} />}
+      notAuthorized={() => (
         <AuthOverrideSkeleton
           primaryText="Authorization"
           secondaryText="You are not authorized to access this resource."
         />
-      }
+      )}
       sessionLost={(props) => {
         return <SessionLostOverride onAuthenticate={props.onAuthenticate} />
       }}
-      callbackComponentOverride={
+      callbackComponentOverride={() => (
         <AuthOverrideSkeleton
           primaryText="Authentication complete"
           secondaryText="You will be redirected to your application."
         />
-      }
+      )}
       customEvents={customEvents}>
       <RepoProvider repoUrl={authState.repoUrl}>{children}</RepoProvider>
     </AuthenticationProvider>
@@ -129,30 +129,38 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
 
 const RepoProvider = ({ children, repoUrl }: { children: ReactNode; repoUrl: string }) => {
   const { oidcUser, login } = useOidcAuthentication()
-  const repo = useMemo(() => {
-    if (oidcUser) {
-      return new Repository({
-        repositoryUrl: repoUrl,
-        token: oidcUser.access_token,
-        requiredSelect: [
-          'Id',
-          'Path',
-          'Name',
-          'Type',
-          'DisplayName',
-          'Icon',
-          'IsFile',
-          'IsFolder',
-          'ParentId',
-          'Version',
-          'PageCount',
-          'Binary',
-          'CreationDate',
-          'Avatar',
-        ],
-      })
-    }
-  }, [oidcUser, repoUrl])
+  const [repo, setRepo] = useState<Repository>()
+
+  useEffect(() => {
+    setRepo((prevRepo) => {
+      if (oidcUser && !prevRepo) {
+        return new Repository({
+          repositoryUrl: repoUrl,
+          token: oidcUser.access_token,
+          requiredSelect: [
+            'Id',
+            'Path',
+            'Name',
+            'Type',
+            'DisplayName',
+            'Icon',
+            'IsFile',
+            'IsFolder',
+            'ParentId',
+            'Version',
+            'PageCount',
+            'Binary',
+            'CreationDate',
+            'Avatar',
+          ],
+        })
+      } else if (oidcUser && prevRepo) {
+        prevRepo.configuration.token = oidcUser?.access_token
+      }
+
+      return prevRepo
+    })
+  }, [repoUrl, oidcUser])
 
   useEffect(() => {
     if (repo) {
@@ -167,10 +175,9 @@ const RepoProvider = ({ children, repoUrl }: { children: ReactNode; repoUrl: str
     }
   }, [login, oidcUser])
 
-  if (!oidcUser || oidcUser.expired) {
+  if (!oidcUser || oidcUser.expired || !repo) {
     return null
   }
 
-  // we will have a repository once we have oidcUser
   return <RepositoryContext.Provider value={repo!}>{children}</RepositoryContext.Provider>
 }

@@ -16,8 +16,6 @@ const values = {
     help: {
       readMeTitle: 'ReadMe',
       readMeDescription: 'Opens the latest readme.md file from GitHub in a new window',
-      communitySiteTitle: 'Visit the Community Site',
-      communitySiteDescription: 'Opens https://community.sensenet.com in a new window',
       docsSiteTitle: 'Visit the Documentation Site',
       docsSiteDescription: 'Opens https://docs.sensenet.com in a new window',
       gitterTitle: 'Chat on Gitter',
@@ -318,7 +316,6 @@ const values = {
     title: 'Something went wrong :(',
     text: `An error occured and your request couldn't be completed. `,
     reload: 'Reload page',
-    reportError: 'Report error',
   },
   errorReport: {
     title: 'Send error report',
@@ -359,30 +356,6 @@ const values = {
   settings: {
     edit: 'Edit',
     learnMore: 'Learn more',
-    otherSettings: 'Other settings',
-    descriptions: {
-      '/Root/System/Settings/DocumentPreview.settings':
-        'In this section you can customize the behavior of the Document Preview feature – for example the font style of the watermark displayed on documents or the number of the initially generated preview images. ',
-      '/Root/System/Settings/Indexing.settings':
-        'In this section you can customize the indexing behavior (for example the text extractor used in case of different file types) of the system. ',
-      '/Root/System/Settings/Logging.settings':
-        'Contains logging-related settings, for example which events are sent to the trace. You can control tracing by category: switch on or off writing messages in certain categories to the trace channel. ',
-      '/Root/System/Settings/MailProcessor.settings':
-        'The content list Inbox feature requires an Exchange or POP3 server configuration and other settings related to connecting libraries to a mailbox. ',
-      '/Root/System/Settings/OAuth.settings':
-        'When users log in using one of the configured OAuth providers (like Google or Facebook), these settings control the type and place of the newly created users. ',
-      '/Root/System/Settings/OfficeOnline.settings':
-        'To open or edit Office documents in the browser, the system needs to know the address of the Office Online Server that provides the user interface for the feature. In this section you can configure that and other OOS-related settings. ',
-      '/Root/System/Settings/Portal.settings':
-        'All settings related to the surface and behavior of the web application can be found here, from the cache header settings of different file types to the default content type of uploaded images and the allowed origin values. ',
-      '/Root/System/Settings/Sharing.settings': 'Content sharing related options. ',
-      '/Root/System/Settings/TaskManagement.settings':
-        'When the Task Management module is installed, this is the place where you can configure the connection to the central task management service. ',
-      '/Root/System/Settings/UserProfile.settings':
-        'When a user is created, and the profile feature is enabled (in the app configuration), they automatically get a profile – a workspace dedicated to the user’s personal documents and tasks. In this setting section you can customize the content type and the place of this profile. ',
-      '/Root/System/Settings/Permission.settings':
-        'In this section you can manage and customize permission groups, add custom permissions that can be displayed and used in the permission editor.',
-    },
   },
   customActions: {
     executeCustomActionDialog: {
@@ -445,6 +418,33 @@ const values = {
   },
   contentList: {
     errorContentModification: 'There was an error during content modification',
+  },
+  permissionEditor: {
+    assign: 'Assing new permisson',
+    setPermissons: 'Set permissions for ',
+    errorGetAcl: 'Something went wrong during getting permissions',
+    noContent: 'There is no direct permission setting on this content',
+    inherited: 'Inherited from ancestor',
+    setOnThis: 'Set on this content',
+    errorGetPermissionSetting: 'Something went wrong during getting permission settings',
+    permissions: 'Permissions',
+    grantFullAccess: 'Grant full access',
+    localOnly: 'Local only',
+    newEntry: 'New permission entry',
+    add: 'Add',
+    members: 'Members',
+    errorGetMembersInfo: 'Something went wrong during getting info about group members',
+    addNewMember: '+ Add new member',
+    makePublic: 'Make content public',
+    makePrivate: 'Make content private',
+    makePublicTooltip:
+      'Clicking this button makes the content and the below sub-tree public for non-authenticated (Visitor) users',
+    makePrivateTooltip:
+      'Clicking this button makes the content and the below sub-tree hidden for non-authenticated (Visitor) users',
+    cancel: 'Cancel',
+    reset: 'Reset',
+    name: 'Name',
+    typeIn: 'Type in a name',
   },
   restore: {
     description: (contentName: string) =>

@@ -18,9 +18,9 @@ npm install @sensenet/authentication-jwt
 
 ## Setup and usage
 
-You can use JWT authentication with a [preconfigured](https://community.sensenet.com/docs/web-token-authentication/) sensenet >7.0.0 backend.
+You can use JWT authentication with a preconfigured sensenet >7.0.0 backend.
 
-- **sessionLifetime** - You can change how user sessions should be persisted on the client, you can use _'session'_, which means the user will be logged out when the browser is closed, or _'expiration'_, in that case the token expiration property will be used. This behavior is implemented for JWT Authentication. (See [JWT Token docs](http://community.sensenet.com/docs/web-token-authentication/) for further details)
+- **sessionLifetime** - You can change how user sessions should be persisted on the client, you can use _'session'_, which means the user will be logged out when the browser is closed, or _'expiration'_, in that case the token expiration property will be used. This behavior is implemented for JWT Authentication.
 
 Service setup:
 
@@ -45,11 +45,11 @@ const logoutSuccess = await repository.authentication.logout()
 You can subscribe to authentication state and current user changes using the following two observable values:
 
 ```ts
-jwtService.currentUser.subscribe(newUser => {
+jwtService.currentUser.subscribe((newUser) => {
   console.log('User changed. New user: ', newUser.LoginName)
 })
 
-jwtService.state.subscribe(newState => {
+jwtService.state.subscribe((newState) => {
   console.log('Authentication state changed to', newState)
 })
 ```
