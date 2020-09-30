@@ -30,13 +30,13 @@ For `AuthenticationProvider` to work properly you must pass a configuration obje
 | ------------------------- | ------------------------------------------- | :------: | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | history                   | History from 'history'                      |    ✔     | history object from react-router or history package. Needed for navigation.                                                                        |
 | configuration             | UserManagerSettings from 'oidc-client'      |    ✔     | configuration object for oidc-client. These properties are required: client_id, redirect_uri, response_type, scope, authority, silent_redirect_uri |
-| children                  | ReactNode                                   |    ✔     | You can only use AuthenticationProvider as a wrapper.                                                                                              |
+| children                  | () => ReactNode                             |    ✔     | You can only use AuthenticationProvider as a wrapper.                                                                                              |
 | customEvents              | CustomEvents                                |          | You can subscribe to oidc events like userLoaded. Be aware that this object should not change during rerender. Eg.: you should wrap it in useMemo. |
-| authenticating            | ReactNode                                   |          | Component shown when OidcSecure is used and login is required.                                                                                     |
-| notAuthenticated          | ReactNode                                   |          | Component shown on route /authentication/not-authenticated                                                                                         |
-| notAuthorized             | ReactNode                                   |          | Component shown on route /authentication/not-authorized                                                                                            |
+| authenticating            | () => ReactNode                             |          | Component shown when OidcSecure is used and login is required.                                                                                     |
+| notAuthenticated          | () => ReactNode                             |          | Component shown on route /authentication/not-authenticated                                                                                         |
+| notAuthorized             | ({ login }) => ReactNode                    |          | Component shown on route /authentication/not-authorized                                                                                            |
 | sessionLost               | ElementType<{ onAuthenticate: () => void }> |          | Component shown on route /authentication/session-lost                                                                                              |
-| callbackComponentOverride | ReactNode                                   |          | Component shown when login is redirecting back.                                                                                                    |
+| callbackComponentOverride | () => ReactNode                             |          | Component shown when login is redirecting back.                                                                                                    |
 
 **Example**
 
