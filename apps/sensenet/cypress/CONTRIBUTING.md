@@ -69,7 +69,7 @@ As it is mentioned above the Cypress related configurations are stored in the cy
 
     ```
       "admin": {
-        "clientId": "kitty",
+        "clientId": "businesscat",
         "clientSecret": "<your secret key for admin role>",
         "id": "/Root/IMS/Public('businesscat')"
       },
@@ -77,11 +77,6 @@ As it is mentioned above the Cypress related configurations are stored in the cy
         "clientId": "devdog",
         "clientSecret": "<your secret key for developer role>",
         "id": "/Root/IMS/Public('devdog')"
-      },
-      "editor": {
-        "clientId": "eddie",
-        "clientSecret": "<your secret key for editor role>",
-        "id": "/Root/IMS/Public('editormanatee')"
       }
     ```
 
