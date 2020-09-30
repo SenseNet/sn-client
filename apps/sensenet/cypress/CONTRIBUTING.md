@@ -11,9 +11,9 @@ Check out and pull the actual develop branch to your local machine (If you didn'
 
 If you would like to [create new test or modify an existing one](https://github.com/SenseNet/sensenet/blob/master/CONTRIBUTING.md#making-a-change) please always create a new branch. (command: `git checkout -b <new_branch_name>`)
 
-Go to apps/sensenet folder (command: `cd apps/sensenet`)
-
 Install all necessary dependencies (command: `yarn install`)
+
+Go to apps/sensenet folder (command: `cd apps/sensenet`)
 
 Change the apps/sensenet/cypress.json env configuration to yours. (You can read more about in the Configuration chapter)
 
@@ -85,7 +85,7 @@ As it is mentioned above the Cypress related configurations are stored in the cy
       }
     ```
 
-    These are the rolse what you can use for testing pusposes. In every test case we indicated in what role the particular test should be run. You can find the secret keys for the roles on your [profile page](https://profile.sensenet.com/) after login.
+    These are the roles what you can use for testing pusposes. In every test case we indicated in what role the particular test should running. You can find the secret keys for the roles on your [profile page](https://profile.sensenet.com/) after login.
 
 ## What requires an E2E Test?
 
