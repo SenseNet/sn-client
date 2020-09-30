@@ -99,28 +99,28 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
     <AuthenticationProvider
       configuration={authState.config}
       history={history}
-      authenticating={
+      authenticating={() => (
         <AuthOverrideSkeleton
           primaryText="Authentication is in progress"
           secondaryText="You will be redirected to the login page"
         />
-      }
-      notAuthenticated={<NotAuthenticatedOverride clearState={clearState} />}
-      notAuthorized={
+      )}
+      notAuthenticated={() => <NotAuthenticatedOverride clearState={clearState} />}
+      notAuthorized={() => (
         <AuthOverrideSkeleton
           primaryText="Authorization"
           secondaryText="You are not authorized to access this resource."
         />
-      }
+      )}
       sessionLost={(props) => {
         return <SessionLostOverride onAuthenticate={props.onAuthenticate} />
       }}
-      callbackComponentOverride={
+      callbackComponentOverride={() => (
         <AuthOverrideSkeleton
           primaryText="Authentication complete"
           secondaryText="You will be redirected to your application."
         />
-      }
+      )}
       customEvents={customEvents}>
       <RepoProvider repoUrl={authState.repoUrl}>{children}</RepoProvider>
     </AuthenticationProvider>

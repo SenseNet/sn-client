@@ -63,7 +63,7 @@ export const LearnMoreWidget: React.FunctionComponent = () => {
             <div>{localization.learnBasicsDescription}</div>
           </div>
           <div className={classes.link}>
-            <Link href="https://docs.sensenet.com/guides/getting-started" target="_blank">
+            <Link href="https://docs.sensenet.com/guides/getting-started" target="_blank" rel="noopener">
               {localization.viewUserGuides}
             </Link>
           </div>
@@ -77,7 +77,7 @@ export const LearnMoreWidget: React.FunctionComponent = () => {
             <div>{localization.beExpertDescription}</div>
           </div>
           <div className={classes.link}>
-            <Link href="https://docs.sensenet.com/concepts/introduction" target="_blank">
+            <Link href="https://docs.sensenet.com/concepts/introduction" target="_blank" rel="noopener">
               {localization.viewConceptDocs}
             </Link>
           </div>
@@ -91,7 +91,7 @@ export const LearnMoreWidget: React.FunctionComponent = () => {
             <div>{localization.buildAppDescription}</div>
           </div>
           <div className={classes.link}>
-            <Link href="https://docs.sensenet.com/api-docs/basic-concepts" target="_blank">
+            <Link href="https://docs.sensenet.com/api-docs/basic-concepts" target="_blank" rel="noopener">
               {localization.viewDevManual}
             </Link>
           </div>
