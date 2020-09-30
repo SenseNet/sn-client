@@ -1,11 +1,19 @@
 import { GenericContent, Group, User } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import { Button, Menu, MenuItem, TableCell } from '@material-ui/core'
+import { Button, createStyles, makeStyles, Menu, MenuItem, TableCell } from '@material-ui/core'
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
 import clsx from 'clsx'
 import React, { FunctionComponent, useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useDialog } from '../dialogs'
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    label: {
+      wordBreak: 'break-all',
+    },
+  })
+})
 
 interface RolesFieldProps {
   roles: GenericContent[]
@@ -13,6 +21,7 @@ interface RolesFieldProps {
 }
 
 export const RolesField: FunctionComponent<RolesFieldProps> = ({ roles, directRoles }) => {
+  const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const repository = useRepository()
   const { openDialog } = useDialog()
@@ -52,6 +61,9 @@ export const RolesField: FunctionComponent<RolesFieldProps> = ({ roles, directRo
     <TableCell className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)} component="div">
       {listed.map((role) => (
         <Button
+          classes={{
+            label: classes.label,
+          }}
           key={role.Id}
           variant="contained"
           color="primary"
