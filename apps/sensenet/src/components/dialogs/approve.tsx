@@ -1,19 +1,12 @@
 import { ODataParams } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Fade,
-  TextField,
-} from '@material-ui/core'
+import { Button, DialogActions, DialogContent, DialogContentText, Fade, TextField } from '@material-ui/core'
 import React, { useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { useDialog } from './dialog-provider'
+import { DialogTitle } from '.'
 
 export type ApproveProps = {
   content: GenericContent
