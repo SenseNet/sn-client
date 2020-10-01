@@ -39,7 +39,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
               value={value}
               onChange={handleDateChange}
               name={props.settings.Name}
-              defaultValue={changeJScriptValue(props.settings.DefaultValue)}
+              defaultValue={changeTemplateValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue)}
               label={props.settings.DisplayName}
               id={props.settings.Name}
               disabled={props.settings.ReadOnly}
@@ -53,7 +53,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
               onChange={handleDateChange}
               label={props.settings.DisplayName}
               name={props.settings.Name}
-              defaultValue={changeJScriptValue(props.settings.DefaultValue)}
+              defaultValue={changeTemplateValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue)}
               id={props.settings.Name}
               disabled={props.settings.ReadOnly}
               placeholder={props.settings.DisplayName}
