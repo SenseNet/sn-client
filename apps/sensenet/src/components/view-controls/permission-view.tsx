@@ -42,9 +42,11 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     title: {
       fontSize: '20px',
+      paddingRight: '10px',
     },
-    textBolder: {
+    contentName: {
       fontWeight: 500,
+      wordBreak: 'break-word',
     },
     listTitle: {
       marginLeft: '16px',
@@ -72,6 +74,9 @@ const useStyles = makeStyles((theme: Theme) => {
       '&:hover': {
         backgroundColor: '#00838f',
       },
+    },
+    actionButtonContainer: {
+      display: 'flex',
     },
   })
 })
@@ -163,9 +168,9 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
         <div className={classes.titleContainer}>
           <div className={classes.title}>
             {localization.permissionEditor.setPermissons}{' '}
-            <span className={classes.textBolder}>{currentContent?.DisplayName}</span>
+            <span className={classes.contentName}>{currentContent?.DisplayName}</span>
           </div>
-          <div>
+          <div className={classes.actionButtonContainer}>
             <Tooltip
               title={
                 isPrivate
