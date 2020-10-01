@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { changeTemplateValue } from '@sensenet/controls-react'
+import { changeTemplatedValue } from '@sensenet/controls-react'
 import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-types'
 import { createStyles, InputLabel, makeStyles, Theme } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) => {
 export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>> = (props) => {
   const initialState =
     props.fieldValue ||
-    changeTemplateValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue) ||
+    changeTemplatedValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue) ||
     moment().toISOString()
   const [value, setValue] = useState(initialState)
   const classes = useStyles()

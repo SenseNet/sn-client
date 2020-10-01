@@ -9,7 +9,7 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import React, { useState } from 'react'
 import { ColorResult, SketchPicker } from 'react-color'
-import { changeJScriptValue } from '../helpers'
+import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 const style = {
@@ -31,7 +31,7 @@ const renderIconDefault = (name: string, color: string) => {
  * Field control that represents a Color field. Available values will be populated from the FieldSettings.
  */
 export const ColorPicker: React.FC<ReactClientFieldSetting<ColorFieldSetting>> = (props) => {
-  const [value, setValue] = useState(props.fieldValue || changeJScriptValue(props.settings.DefaultValue) || '')
+  const [value, setValue] = useState(props.fieldValue || changeTemplatedValue(props.settings.DefaultValue) || '')
   const [isPickerOpen, setIsPickerOpen] = useState(false)
 
   const handleChange = (color: ColorResult) => {

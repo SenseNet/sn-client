@@ -8,7 +8,7 @@ import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import MomentUtils from '@date-io/moment'
 import moment from 'moment'
 import React, { useState } from 'react'
-import { changeTemplateValue } from '../helpers'
+import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
@@ -17,7 +17,7 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
 export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>> = (props) => {
   const initialState =
     props.fieldValue ||
-    changeTemplateValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue) ||
+    changeTemplatedValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue) ||
     moment().toISOString()
   const [value, setValue] = useState(initialState)
 
@@ -39,7 +39,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
               value={value}
               onChange={handleDateChange}
               name={props.settings.Name}
-              defaultValue={changeTemplateValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue)}
+              defaultValue={changeTemplatedValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue)}
               label={props.settings.DisplayName}
               id={props.settings.Name}
               disabled={props.settings.ReadOnly}
@@ -53,7 +53,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
               onChange={handleDateChange}
               label={props.settings.DisplayName}
               name={props.settings.Name}
-              defaultValue={changeTemplateValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue)}
+              defaultValue={changeTemplatedValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue)}
               id={props.settings.Name}
               disabled={props.settings.ReadOnly}
               placeholder={props.settings.DisplayName}

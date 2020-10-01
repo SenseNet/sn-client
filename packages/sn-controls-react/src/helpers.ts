@@ -4,7 +4,7 @@ import { FieldSetting } from '@sensenet/default-content-types'
  * Search for '[Script:jScript]' tag in string and returns empty string when found
  */
 
-export const changeTemplateValue = (value: string | undefined, evaluatedValue: string | undefined) => {
+export const changeTemplatedValue = (value: string | undefined, evaluatedValue?: string | undefined) => {
   if (value && value.includes('@@')) {
     return evaluatedValue
   } else if (value && value.includes('[Script:jScript]')) {
