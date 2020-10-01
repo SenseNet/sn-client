@@ -45,11 +45,12 @@
     "@types/react": "^16.9.49",
     "@types/react-dom": "^16.9.8",
     "@types/react-virtualized": "^9.21.10",
-    "autoprefixer": "^9.8.6",
+    "autoprefixer": "^10.0.1",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "enzyme-to-json": "^3.6.1",
     "jest": "^26.2.2",
+    "postcss": "^8.1.1",
     "prop-types": "^15.7.2",
     "ts-jest": "^26.4.1",
     "typescript": "^4.0.3"
