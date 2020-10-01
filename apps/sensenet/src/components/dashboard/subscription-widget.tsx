@@ -66,7 +66,7 @@ export const SubscriptionWidget: React.FunctionComponent<SubscriptionWidgetProps
           <p className={widgetClasses.subtitle}>{localization.version}</p>
           <p>{props.version.title}</p>
           <p>
-            <Link href="https://community.sensenet.com/updates/" target="_blank">
+            <Link href="https://sensenet.com/backend-updates" target="_blank" rel="noopener">
               {localization.releaseNotes}
             </Link>
           </p>
@@ -75,7 +75,7 @@ export const SubscriptionWidget: React.FunctionComponent<SubscriptionWidgetProps
           <Grid item xs={12} lg="auto">
             <p className={widgetClasses.subtitle}>{localization.getMore}</p>
             <div style={{ textAlign: 'center' }}>
-              <Link href="https://snaas-profile.test.sensenet.com/" target="_blank" underline="none">
+              <Link href="https://profile.sensenet.com/" target="_blank" underline="none" rel="noopener">
                 <Button color="primary" variant="contained">
                   {localization.upgrade}
                 </Button>

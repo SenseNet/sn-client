@@ -2,7 +2,7 @@ import { History } from 'history'
 import { User, UserManagerSettings } from 'oidc-client'
 import React, { createContext, ElementType, ReactNode, useCallback, useEffect, useReducer } from 'react'
 import { authenticationService } from '../authentication-service'
-import { addOidcEvents, login, logout, oidcReducer, removeOidcEvents } from '../oidc-events'
+import { addOidcEvents, logout, login as oidcLogin, oidcReducer, removeOidcEvents } from '../oidc-events'
 import { CallbackContainer } from './callback'
 import { OidcRoutes } from './oidc-routes'
 import { SessionLostContainer, SessionLostProps } from './session-lost'
@@ -38,11 +38,11 @@ export interface CustomEvents {
 export interface AuthenticationProviderProps {
   children: ReactNode
   history: History
-  authenticating?: ReactNode
-  notAuthenticated?: ReactNode
-  notAuthorized?: ReactNode
+  authenticating?: () => ReactNode
+  notAuthenticated?: ({ login }: { login: () => Promise<void> }) => ReactNode
+  notAuthorized?: () => ReactNode
   sessionLost?: ElementType<SessionLostProps>
-  callbackComponentOverride?: ReactNode
+  callbackComponentOverride?: () => ReactNode
   configuration: UserManagerSettings
   customEvents?: CustomEvents
 }
@@ -79,24 +79,26 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
     history,
   } = props
 
+  const login = useCallback(() => oidcLogin(oidcState.userManager, dispatch, history.location, history)(), [
+    history,
+    oidcState.userManager,
+  ])
+
   return (
     <AuthenticationContext.Provider
       value={{
         isLoading,
         oidcUser,
         error,
-        authenticating,
-        login: useCallback(() => login(oidcState.userManager, dispatch, history.location, history)(), [
-          history,
-          oidcState.userManager,
-        ]),
+        authenticating: authenticating?.(),
+        login,
         logout: useCallback(() => logout(oidcState.userManager, dispatch)(), [oidcState.userManager]),
       }}>
       <OidcRoutes
-        notAuthenticated={notAuthenticated}
-        notAuthorized={notAuthorized}
+        notAuthenticated={notAuthenticated?.({ login })}
+        notAuthorized={notAuthorized?.()}
         callbackComponent={
-          <CallbackContainer callbackComponentOverride={callbackComponentOverride} history={history} />
+          <CallbackContainer callbackComponentOverride={callbackComponentOverride?.()} history={history} />
         }
         sessionLost={<SessionLostContainer SessionLostComponentOverride={sessionLost} history={history} />}
         configuration={configuration}>

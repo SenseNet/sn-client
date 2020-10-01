@@ -1,6 +1,6 @@
 # @sensenet/redux
 
-> sn-redux is a convention driven way of building sensenet applications using Redux. It contains all the action types, actions and reducers for [built-in sensenet Actions and Functions](https://community.sensenet.com/docs/built-in-odata-actions-and-functions/).
+> sn-redux is a convention driven way of building sensenet applications using Redux. It contains all the action types, actions and reducers for [built-in sensenet Actions and Functions](https://docs.sensenet.com/api-docs/basic-concepts).
 
 [![NPM version](https://img.shields.io/npm/v/@sensenet/redux.svg?style=flat)](https://www.npmjs.com/package/@sensenet/redux)
 [![NPM downloads](https://img.shields.io/npm/dt/@sensenet/redux.svg?style=flat)](https://www.npmjs.com/package/@sensenet/redux)
@@ -53,7 +53,7 @@ const options: Store.CreateStoreOptions = {
 const store = Store.createSensenetStore(options)
 ```
 
-To enable your external app to send request against your sensenet portal change your `Portal.settings`. For further information about cross-origin resource sharing in sensenet check [this](http://wiki.sensenet.com/Cross-origin_resource_sharing#Origin_check) article.
+To enable your external app to send request against your sensenet portal change your `Portal.settings`. For further information about cross-origin resource sharing in sensenet check [this]https://docs.sensenet.com/guides/setup#portal.settings) article.
 
 Check your sensenet portal's web.config and if the `ODataServiceToken` is set, you can pass to your Repository as a config value on client side.
 
@@ -131,12 +131,7 @@ dispatch(Actions.CreateContent(parentPath, content, 'Task'))
 
 ## Documentation
 
-- [sn-redux API Reference](https://community.sensenet.com/api/sn-redux/)
-- [sn-client-core API reference](https://community.sensenet.com/api/@sensenet/client-core/)
-- [sn-redux-promise-middleware API reference](https://community.sensenet.com/api/sn-redux-promise-middleware/)
-- [About OData REST API in sensenet](https://community.sensenet.com/docs/odata-rest-api/)
-- [About Built-in OData Actions and Function in sensenet](https://community.sensenet.com/docs/built-in-odata-actions-and-functions/)
-- [Todo App with React, Redux and sensenet](https://github.com/SenseNet/sn-client/tree/master/examples/sn-react-redux-todo-app)
+- [About OData REST API in sensenet](https://docs.sensenet.com/api-docs/basic-concepts)
 
 ## Influences
 

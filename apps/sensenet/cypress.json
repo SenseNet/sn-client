@@ -4,15 +4,10 @@
   "defaultCommandTimeout": 12000,
   "env": {
     "repoUrl": "https://e2e-service.test.sensenet.com",
-    "identityServer": "https://is.test.sensenet.com",
+    "identityServer": "https://is.demo.sensenet.com",
     "users": {
-      "superadmin": {
-        "clientId": "client",
-        "clientSecret": "",
-        "id": "/Root/IMS/BuiltIn/Portal('Admin')"
-      },
       "admin": {
-        "clientId": "kitty",
+        "clientId": "businesscat",
         "clientSecret": "",
         "id": "/Root/IMS/Public('businesscat')"
       },
@@ -20,11 +15,6 @@
         "clientId": "devdog",
         "clientSecret": "",
         "id": "/Root/IMS/Public('devdog')"
-      },
-      "editor": {
-        "clientId": "eddie",
-        "clientSecret": "",
-        "id": "/Root/IMS/Public('editormanatee')"
       }
     }
   }
