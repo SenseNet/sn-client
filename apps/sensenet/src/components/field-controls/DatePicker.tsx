@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { changeJScriptValue } from '@sensenet/controls-react'
+import { changeTemplateValue } from '@sensenet/controls-react'
 import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-types'
 import { createStyles, InputLabel, makeStyles, Theme } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
@@ -39,11 +39,16 @@ const useStyles = makeStyles((theme: Theme) => {
  * Field control that represents a Date field. Available values will be populated from the FieldSettings.
  */
 export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>> = (props) => {
-  const initialState = props.fieldValue || changeJScriptValue(props.settings.DefaultValue) || moment().toISOString()
+  const initialState =
+    props.fieldValue ||
+    changeTemplateValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue) ||
+    moment().toISOString()
   const [value, setValue] = useState(initialState)
   const classes = useStyles()
 
   const handleDateChange = (date: MaterialUiPickersDate) => {
+    console.log(initialState)
+    console.log(moment.utc(date).toISOString())
     if (!date) {
       return
     }
