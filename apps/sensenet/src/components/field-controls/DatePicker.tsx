@@ -47,8 +47,6 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
   const classes = useStyles()
 
   const handleDateChange = (date: MaterialUiPickersDate) => {
-    console.log(initialState)
-    console.log(moment.utc(date).toISOString())
     if (!date) {
       return
     }
