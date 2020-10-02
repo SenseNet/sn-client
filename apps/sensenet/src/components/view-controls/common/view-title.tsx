@@ -70,7 +70,8 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
                 removePath: true,
               }),
             )
-          }}>
+          }}
+          className={globalClasses.centered}>
           <Icon
             resolvers={editviewFileResolver}
             style={{
