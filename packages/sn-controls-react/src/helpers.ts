@@ -5,9 +5,9 @@ import { FieldSetting } from '@sensenet/default-content-types'
  */
 
 export const changeTemplatedValue = (value: string | undefined, evaluatedValue?: string | undefined) => {
-  if (value && value.includes('@@')) {
+  if (value?.includes('@@')) {
     return evaluatedValue
-  } else if (value && value.includes('[Script:jScript]')) {
+  } else if (value?.includes('[Script:jScript]')) {
     return ''
   } else {
     return value
