@@ -172,6 +172,7 @@ export const PermanentDrawer = () => {
               )
             })}
           </li>
+          <li style={{ fontWeight: 'bold', textAlign: 'center' }}>BETA</li>
         </List>
       </div>
     </Paper>
