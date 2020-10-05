@@ -2,6 +2,7 @@
  * @module FieldControls
  */
 import { ChoiceFieldSetting } from '@sensenet/default-content-types'
+import { Typography } from '@material-ui/core'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -41,7 +42,7 @@ export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>
     setState(newState)
     props.fieldOnChange?.(
       props.settings.Name,
-      newState.filter((item) => item.Selected),
+      newState.filter((item) => item.Selected).map((item) => item.Value),
     )
   }
 
@@ -75,7 +76,9 @@ export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>
     default: {
       return props.fieldValue ? (
         <FormControl component={'fieldset' as 'div'}>
-          <FormLabel component={'legend' as 'label'}>{props.settings.DisplayName}</FormLabel>
+          <Typography variant="caption" gutterBottom={true}>
+            {props.settings.DisplayName}
+          </Typography>
           <FormGroup>
             {Array.isArray(props.fieldValue) ? (
               props.fieldValue.map((val: any, index: number) => (
