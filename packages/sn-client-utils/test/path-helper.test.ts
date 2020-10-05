@@ -179,7 +179,7 @@ export const pathHelperTests = describe('PathHelper', () => {
       expect(PathHelper.getSegments('/Root/Example/100pages(3).pdf')).toEqual(['Root', 'Example', '100pages(3).pdf'])
     })
     it('Should split the path to segments', () => {
-      expect(PathHelper.getSegments('/content(123)')).toEqual(['content(123)'])
+      expect(PathHelper.getSegments('/content(123)')).toEqual([])
     })
     it('should throw an error if the path is /', () => {
       expect(() => PathHelper.getSegments('/')).toThrow()
@@ -204,6 +204,14 @@ export const pathHelperTests = describe('PathHelper', () => {
 
     it('Should return the path in case of 1 segments', () => {
       expect(PathHelper.getParentPath('Root')).toBe('Root')
+    })
+
+    it('Should return the path in case of 1 segments', () => {
+      expect(PathHelper.getParentPath('content(123)')).toBe('')
+    })
+
+    it('Should return the path in case of 1 segments', () => {
+      expect(PathHelper.getParentPath('/content(123)')).toBe('')
     })
   })
 })

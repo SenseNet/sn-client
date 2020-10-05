@@ -24,7 +24,7 @@ export class PathHelper {
    * @param path The path to be splitted
    */
   public static getSegments(path: string) {
-    if (!path) {
+    if (!path || path.startsWith('content') || path.startsWith('/content')) {
       return []
     }
     // Split path at / and remove empty strings
