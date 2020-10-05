@@ -234,27 +234,31 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
             </Tooltip>
           ) : null}
 
-          {allowedChildTypes.map((childType) => (
-            <Tooltip key={childType.ContentTypeName} title={childType.DisplayName} placement="right">
-              <ListItem
-                button={true}
-                style={{ padding: '10px 0 10px 10px' }}
-                onClick={async () => {
-                  setShowSelectType(false)
-                  navigateToAction({
-                    history,
-                    routeMatch: snRoute.match,
-                    action: 'new',
-                    queryParams: { 'content-type': childType.ContentTypeName },
-                  })
-                }}>
-                <ListItemIcon style={{ minWidth: '36px' }}>
-                  <Icon item={childType} />
-                </ListItemIcon>
-                <ListItemText primary={childType.DisplayName} className={classes.listItemTextDropdown} />
-              </ListItem>
-            </Tooltip>
-          ))}
+          {allowedChildTypes.length === 0 && !hasUpload ? (
+            <div>{localization.noItems}</div>
+          ) : (
+            allowedChildTypes.map((childType) => (
+              <Tooltip key={childType.ContentTypeName} title={childType.DisplayName} placement="right">
+                <ListItem
+                  button={true}
+                  style={{ padding: '10px 0 10px 10px' }}
+                  onClick={async () => {
+                    setShowSelectType(false)
+                    navigateToAction({
+                      history,
+                      routeMatch: snRoute.match,
+                      action: 'new',
+                      queryParams: { 'content-type': childType.ContentTypeName },
+                    })
+                  }}>
+                  <ListItemIcon style={{ minWidth: '36px' }}>
+                    <Icon item={childType} />
+                  </ListItemIcon>
+                  <ListItemText primary={childType.DisplayName} className={classes.listItemTextDropdown} />
+                </ListItem>
+              </Tooltip>
+            ))
+          )}
         </List>
       </Popover>
     </div>
