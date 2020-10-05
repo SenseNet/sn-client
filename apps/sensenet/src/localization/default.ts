@@ -9,6 +9,7 @@ const values = {
     contentCreatedNotification: `The content '{0}' has been created succesfully.`,
     errorPostingContentNotification: 'There was an error during content creation',
     errorGettingActions: 'There was an error while fetching the actions.',
+    noItems: 'No items to add',
   },
   commandPalette: {
     title: 'Search',
