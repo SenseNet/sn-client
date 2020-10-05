@@ -2,7 +2,7 @@
 /// <reference types="cypress-xpath/src" />
 
 declare namespace Cypress {
-  type UserTypes = 'developer' | 'editor' | 'admin'
+  type UserTypes = 'developer' | 'admin'
 
   interface Chainable {
     /**
