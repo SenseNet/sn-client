@@ -30,6 +30,8 @@ import { getUrlForContent, navigateToAction } from '../../services'
 import { useDialog } from '../dialogs'
 import { useViewControlStyles } from './common/styles'
 
+const permissionActionbuttonsWidth = 421
+
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     permissionEditorContainer: {
@@ -43,10 +45,14 @@ const useStyles = makeStyles((theme: Theme) => {
     title: {
       fontSize: '20px',
       paddingRight: '10px',
+      width: `calc(100% - ${permissionActionbuttonsWidth}px)`,
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      margin: 'auto',
     },
     contentName: {
       fontWeight: 500,
-      wordBreak: 'break-word',
     },
     listTitle: {
       marginLeft: '16px',
@@ -74,9 +80,6 @@ const useStyles = makeStyles((theme: Theme) => {
       '&:hover': {
         backgroundColor: '#00838f',
       },
-    },
-    actionButtonContainer: {
-      display: 'flex',
     },
   })
 })
@@ -166,11 +169,13 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
     <>
       <div className={classes.permissionEditorContainer}>
         <div className={classes.titleContainer}>
-          <div className={classes.title}>
-            {localization.permissionEditor.setPermissons}{' '}
-            <span className={classes.contentName}>{currentContent?.DisplayName}</span>
-          </div>
-          <div className={classes.actionButtonContainer}>
+          <Tooltip title={localization.permissionEditor.setPermissons + currentContent?.DisplayName} placement="top">
+            <div className={classes.title}>
+              <span>{localization.permissionEditor.setPermissons} </span>
+              <span className={classes.contentName}>{currentContent?.DisplayName}</span>
+            </div>
+          </Tooltip>
+          <div>
             <Tooltip
               title={
                 isPrivate
