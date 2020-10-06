@@ -84,6 +84,8 @@ As it is mentioned above the Cypress related configurations are stored in the cy
 
     These are the roles what you can use for testing pusposes. In every test case we indicated in what role the particular test should running. You can find the secret keys for the roles on your [profile page](https://profile.sensenet.com/) after login.
 
+![configurations](./config.png)
+
 ## What requires an E2E Test?
 
 - Test case issues in [sn-client Github repository](https://github.com/SenseNet/sn-client) marked with the **labels** test and **hacktoberfest**. There's also a dedicated board for Hacktoberfest issues [here](https://github.com/orgs/SenseNet/projects/7).
