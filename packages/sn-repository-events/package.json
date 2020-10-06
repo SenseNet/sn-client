@@ -41,9 +41,9 @@
     "tslib": "^2.0.1"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.9",
+    "@types/jest": "^26.0.14",
     "jest": "^26.2.2",
-    "ts-jest": "^26.1.4",
-    "typescript": "^4.0.2"
+    "ts-jest": "^26.4.1",
+    "typescript": "^4.0.3"
   }
 }

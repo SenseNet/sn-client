@@ -8,14 +8,17 @@ import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import MomentUtils from '@date-io/moment'
 import moment from 'moment'
 import React, { useState } from 'react'
-import { changeJScriptValue } from '../helpers'
+import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Field control that represents a DateTime field. Available values will be populated from the FieldSettings.
  */
 export const TimePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>> = (props) => {
-  const initialState = props.fieldValue || changeJScriptValue(props.settings.DefaultValue) || moment().toISOString()
+  const initialState =
+    props.fieldValue ||
+    changeTemplatedValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue) ||
+    moment().toISOString()
   const [value, setValue] = useState(initialState)
 
   const handleDateChange = (date: MaterialUiPickersDate) => {
@@ -34,7 +37,7 @@ export const TimePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
           <MUITimePicker
             value={value}
             name={props.settings.Name}
-            defaultValue={changeJScriptValue(props.settings.DefaultValue)}
+            defaultValue={changeTemplatedValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue)}
             onChange={handleDateChange}
             label={props.settings.DisplayName}
             id={props.settings.Name}
