@@ -36,6 +36,9 @@ const useStyles = makeStyles((theme: Theme) => {
 })
 
 const modules = {
+  clipboard: {
+    matchVisual: false,
+  },
   toolbar: [
     ['bold', 'italic', 'underline', 'strike'], // toggled buttons
     ['blockquote', 'code-block'],
