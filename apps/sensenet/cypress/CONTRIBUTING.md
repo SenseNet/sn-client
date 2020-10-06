@@ -1,3 +1,7 @@
+> If you are here because of Hacktoberfest, please check [hacktoberfest.sensenet.com](https://hacktoberfest.sensenet.com/) first.
+
+ <br />
+
 # Contribution guide for End-to-End testing
 
 This guide is about how to write and run End-to-End (E2E) tests for a feature or a component in sensenet's admin ui. We are using Cypress for E2E testing, if you are not familiar with it, check the following docs to get started:
