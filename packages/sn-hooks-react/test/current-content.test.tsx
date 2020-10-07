@@ -60,7 +60,7 @@ describe('CurrentContent', () => {
   })
 
   it('should load the parent on batch delete', async () => {
-    const mockContent = { Id: 1, Name: 'Teszt1', Path: '/Root/Content/IT' }
+    const mockContent = { Id: 1, Name: 'Teszt1', Path: '/Root/Content/Marketing/Hacktoberfest' }
     const mockContent2 = { Id: 2, Name: 'Teszt2', Path: '/Root/Content/Marketing' }
     let currentRepoLoadArgs: any
     const repo = new Repository()
@@ -69,18 +69,18 @@ describe('CurrentContent', () => {
       return { d: mockContent } as any
     }
     repo.delete = () => {
-      return { d: { results: [mockContent, mockContent2], errors: [] } } as any
+      return { d: { results: [mockContent2], errors: [] } } as any
     }
     await act(async () => {
       mount(
         <RepositoryContext.Provider value={repo}>
-          <CurrentContentProvider idOrPath={mockContent2.Path} />
+          <CurrentContentProvider idOrPath={mockContent.Path} />
         </RepositoryContext.Provider>,
       )
     })
-    expect(currentRepoLoadArgs.idOrPath).toBe(mockContent2.Path)
+    expect(currentRepoLoadArgs.idOrPath).toBe(mockContent.Path)
     await act(async () => {
-      repo.delete({ idOrPath: [mockContent.Id, mockContent2.Id] })
+      repo.delete({ idOrPath: [mockContent2.Id] })
     })
     expect(currentRepoLoadArgs.idOrPath).toBe('Root/Content')
   })
