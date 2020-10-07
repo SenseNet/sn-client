@@ -86,6 +86,7 @@ export const NumberComponent: React.FC<ReactClientFieldSetting<NumberFieldSettin
             {props.settings.DisplayName}
           </InputLabel>
           <NumberTextInput
+            autoFocus={props.autoFocus}
             name={props.settings.Name}
             type="number"
             value={value}

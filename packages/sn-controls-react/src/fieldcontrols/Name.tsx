@@ -34,6 +34,7 @@ export const Name: React.FC<ReactClientFieldSetting> = (props) => {
     case 'new':
       return (
         <TextField
+          autoFocus={props.autoFocus}
           name={props.settings.Name}
           id={props.settings.Name}
           label={props.settings.DisplayName}

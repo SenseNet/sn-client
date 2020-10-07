@@ -44,6 +44,7 @@ export const FileName: React.FC<ReactClientFieldSetting> = (props) => {
     case 'edit':
       return (
         <TextField
+          autoFocus={props.autoFocus}
           name={props.settings.Name}
           id={props.settings.Name}
           label={props.settings.DisplayName}
@@ -58,7 +59,6 @@ export const FileName: React.FC<ReactClientFieldSetting> = (props) => {
               </InputAdornment>
             ),
           }}
-          autoFocus={true}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}
           fullWidth={true}

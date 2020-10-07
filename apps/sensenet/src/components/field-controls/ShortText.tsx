@@ -53,6 +53,7 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
             {props.settings.DisplayName}
           </InputLabel>
           <ShortTextInput
+            autoFocus={props.autoFocus}
             autoComplete="off"
             name={props.settings.Name}
             id={props.settings.Name}

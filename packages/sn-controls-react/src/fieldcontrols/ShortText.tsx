@@ -24,6 +24,7 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
     case 'new':
       return (
         <TextField
+          autoFocus={props.autoFocus}
           name={props.settings.Name}
           id={props.settings.Name}
           label={props.settings.DisplayName}
