@@ -32,7 +32,7 @@ const lock = new Semaphore(1)
 
 export default function TreeWithData(props: TreeWithDataProps) {
   const repo = useRepository()
-  const [itemCount, setItemCount] = useState<number>()
+  const [itemCount, setItemCount] = useState(0)
   const [treeData, setTreeData] = useState<ItemType>()
   const [isLoading, setIsLoading] = useState(false)
   const selectionService = useSelectionService()
@@ -80,7 +80,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
     if (prevActiveItemPath && prevActiveItemPath !== props.activeItemPath) {
       walkTree(treeData!, async (node: ItemType) => {
         if (node.Path === props.activeItemPath || PathHelper.isAncestorOf(node.Path, props.activeItemPath)) {
-          if (!node.expanded && !node.children?.length) {
+          if (!node.expanded && !node.children?.length && node.Type !== 'SmartFolder') {
             const children = await loadCollection(node.Path, ITEM_THRESHOLD, 0)
             if (children) {
               node.children = children.d.results
@@ -94,39 +94,42 @@ export default function TreeWithData(props: TreeWithDataProps) {
     }
   }, [props.activeItemPath, loadCollection, treeData, prevActiveItemPath])
 
-  const openTree = useCallback(async () => {
-    if (treeData && treeData.Path === props.parentPath) return
+  const openTree = useCallback(
+    async (forced = false) => {
+      if (!forced && treeData && treeData.Path === props.parentPath) return
 
-    const buildTree = (items: GenericContent[], id?: number): any => {
-      if (!id) {
-        return { ...items[0], children: buildTree(items, items[0].Id), hasNextPage: false, expanded: true }
+      const buildTree = (items: GenericContent[], id?: number): any => {
+        if (!id) {
+          return { ...items[0], children: buildTree(items, items[0].Id), hasNextPage: false, expanded: true }
+        }
+
+        return items
+          .filter((item) => item.ParentId === id)
+          .map((item) => ({
+            ...item,
+            children: buildTree(items, item.Id),
+            hasNextPage: false,
+            expanded: items.some((treeNode) => treeNode.ParentId === item.Id) || props.activeItemPath === item.Path,
+          }))
       }
 
-      return items
-        .filter((item) => item.ParentId === id)
-        .map((item) => ({
-          ...item,
-          children: buildTree(items, item.Id),
-          hasNextPage: false,
-          expanded: items.some((treeNode) => treeNode.ParentId === item.Id) || props.activeItemPath === item.Path,
-        }))
-    }
+      const treeResponse = await repo.executeAction<any, ODataResponse<{ results: GenericContent[] }>>({
+        idOrPath: props.activeItemPath,
+        name: 'OpenTree',
+        method: 'GET',
+        oDataOptions: props.loadSettings,
+        body: {
+          rootPath: props.parentPath,
+          withSystem: true,
+        },
+      })
 
-    const treeResponse = await repo.executeAction<any, ODataResponse<{ results: GenericContent[] }>>({
-      idOrPath: props.activeItemPath,
-      name: 'OpenTree',
-      method: 'GET',
-      oDataOptions: props.loadSettings,
-      body: {
-        rootPath: props.parentPath,
-        withSystem: true,
-      },
-    })
-
-    const tree = buildTree(treeResponse.d.results)
-    setItemCount(tree.children.length)
-    setTreeData(tree)
-  }, [props.activeItemPath, props.parentPath, repo, treeData, props.loadSettings])
+      const tree = buildTree(treeResponse.d.results)
+      setItemCount(tree.children.length)
+      setTreeData(tree)
+    },
+    [props.activeItemPath, props.parentPath, repo, treeData, props.loadSettings],
+  )
 
   const loadMoreItems = useCallback(
     async (startIndex: number, path = props.parentPath) => {
@@ -173,7 +176,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
       walkTree(treeData!, (node) => {
         if (node.Id === content.Id && treeData?.children?.length) {
           treeData.children = treeData.children.filter((n) => n.Id !== content.Id)
-          setItemCount((itemCountTemp) => itemCountTemp && itemCountTemp - 1)
+          setItemCount((itemCountTemp) => (itemCountTemp > 0 ? itemCountTemp - 1 : 0))
         } else if (PathHelper.trimSlashes(node.Path) === PathHelper.getParentPath(content.Path)) {
           node.children = node.children?.filter((n) => n.Id !== content.Id)
         }
@@ -188,11 +191,18 @@ export default function TreeWithData(props: TreeWithDataProps) {
     const handleCreate = (c: Created) => {
       // we need to reset the lastRequest object so we can make the same request again to get updated data
       lastRequest = undefined
-      if ((c.content as GenericContent).ParentId === treeData?.Id) {
-        openTree()
+      if (
+        treeData &&
+        ((c.content as GenericContent).ParentId === treeData?.Id ||
+          PathHelper.getParentPath(c.content.Path) === PathHelper.trimSlashes(treeData.Path))
+      ) {
+        openTree(true)
       } else {
         walkTree(treeData!, async (node) => {
-          if ((c.content as GenericContent).ParentId === node.Id) {
+          if (
+            (c.content as GenericContent).ParentId === node.Id ||
+            PathHelper.getParentPath(c.content.Path) === PathHelper.trimSlashes(node.Path)
+          ) {
             const result = await loadCollection(node.Path, ITEM_THRESHOLD, 0)
             if (!result) {
               logger.debug({ message: `loadCollection failed to load from ${node.Path}` })
@@ -217,7 +227,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
           walkTree(treeData!, (node) => {
             if (node.Path === event.actionOptions.idOrPath && treeData?.children?.length) {
               treeData.children = treeData.children.filter((n) => n.Path !== event.actionOptions.idOrPath)
-              setItemCount((itemCountTemp) => itemCountTemp && itemCountTemp - 1)
+              setItemCount((itemCountTemp) => (itemCountTemp > 0 ? itemCountTemp - 1 : 0))
             } else if (PathHelper.trimSlashes(node.Path) === PathHelper.getParentPath(event.actionOptions.idOrPath)) {
               node.children = node.children?.filter((n) => n.Path !== event.actionOptions.idOrPath)
             }
@@ -263,7 +273,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
 
     walkTree(treeData, async (node: ItemType) => {
       if (node.Id === item.Id) {
-        if (!node.expanded && !node.children?.length) {
+        if (!node.expanded && !node.children?.length && node.Type !== 'SmartFolder') {
           const children = await loadCollection(node.Path, ITEM_THRESHOLD, 0)
           if (children) {
             node.children = children.d.results

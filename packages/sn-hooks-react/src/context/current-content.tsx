@@ -46,10 +46,12 @@ export const CurrentContentProvider: React.FunctionComponent<CurrentContentProvi
 
   const onDeleteContent = useCallback(
     async (contentParam: Content) => {
-      const parentContent = await repo.load({ idOrPath: PathHelper.getParentPath(contentParam.Path) })
-      setContent(parentContent.d)
+      if (PathHelper.isInSubTree(content.Path, contentParam.Path)) {
+        const parentContent = await repo.load({ idOrPath: PathHelper.getParentPath(contentParam.Path) })
+        setContent(parentContent.d)
+      }
     },
-    [repo],
+    [repo, content],
   )
 
   useEffect(() => {

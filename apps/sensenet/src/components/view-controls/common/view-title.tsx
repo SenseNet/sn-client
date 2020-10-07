@@ -80,7 +80,7 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
               width: '24px',
               cursor: 'pointer',
             }}
-            item={props.content}
+            item={{ ...props.content, Type: '' }}
           />
         </span>
       )}

@@ -15,6 +15,7 @@ CurrentChildrenContext.displayName = 'CurrentChildrenContext'
 
 export interface CurrentChildrenProviderProps {
   loadSettings?: ODataParams<GenericContent>
+  alwaysRefresh?: boolean
 }
 
 /**
@@ -25,6 +26,8 @@ export interface CurrentChildrenProviderProps {
 export const CurrentChildrenProvider: React.FunctionComponent<CurrentChildrenProviderProps> = (props) => {
   const currentContent = useContext(CurrentContentContext)
   const [children, setChildren] = useState<GenericContent[]>([])
+
+  const alwaysRefresh = props.alwaysRefresh || currentContent.Type === 'SmartFolder'
 
   const [reloadToken, setReloadToken] = useState(1)
   const repo = useRepository()
@@ -57,7 +60,7 @@ export const CurrentChildrenProvider: React.FunctionComponent<CurrentChildrenPro
 
   useEffect(() => {
     const handleCreate = (c: Created) => {
-      if ((c.content as GenericContent).ParentId === currentContent.Id) {
+      if (alwaysRefresh || (c.content as GenericContent).ParentId === currentContent.Id) {
         return requestReload()
       }
       if (PathHelper.isAncestorOf(currentContent.Path, c.content.Path)) {
@@ -68,25 +71,43 @@ export const CurrentChildrenProvider: React.FunctionComponent<CurrentChildrenPro
     const subscriptions = [
       eventHub.onCustomActionExecuted.subscribe((event) => {
         if (event.actionOptions.method !== 'GET') {
-          requestReload()
+          switch (event.actionOptions.name) {
+            case 'DeleteBatch':
+            case 'MoveBatch':
+            case 'CopyBatch':
+              return
+            case 'Restore':
+              if (
+                alwaysRefresh ||
+                PathHelper.getParentPath(event.actionOptions.idOrPath) === PathHelper.trimSlashes(currentContent.Path)
+              ) {
+                return requestReload()
+              }
+              break
+            default:
+              requestReload()
+          }
         }
       }),
       eventHub.onContentCreated.subscribe(handleCreate),
       eventHub.onContentCopied.subscribe(handleCreate),
       eventHub.onContentMoved.subscribe(handleCreate),
       eventHub.onContentModified.subscribe((mod) => {
-        if (mod.forceRefresh || children.some((c) => c.Id === mod.content.Id)) {
+        if (alwaysRefresh || mod.forceRefresh || children.some((c) => c.Id === mod.content.Id)) {
           requestReload()
         }
       }),
 
       eventHub.onUploadFinished.subscribe((data) => {
-        if (PathHelper.isAncestorOf(currentContent.Path, data.Url)) {
+        if (alwaysRefresh || PathHelper.isAncestorOf(currentContent.Path, data.Url)) {
           requestReload()
         }
       }),
       eventHub.onContentDeleted.subscribe((d) => {
-        if (PathHelper.getParentPath(d.contentData.Path) === PathHelper.trimSlashes(currentContent.Path)) {
+        if (
+          alwaysRefresh ||
+          PathHelper.getParentPath(d.contentData.Path) === PathHelper.trimSlashes(currentContent.Path)
+        ) {
           requestReload()
         }
       }),
@@ -94,7 +115,10 @@ export const CurrentChildrenProvider: React.FunctionComponent<CurrentChildrenPro
         const current = deletedDatas.contentDatas.find(
           (contentData) => PathHelper.getParentPath(contentData.Path) === PathHelper.trimSlashes(currentContent.Path),
         )
-        current && requestReload()
+
+        if (alwaysRefresh || current) {
+          requestReload()
+        }
       }),
     ]
 
@@ -111,6 +135,7 @@ export const CurrentChildrenProvider: React.FunctionComponent<CurrentChildrenPro
     eventHub.onContentDeleted,
     eventHub.onUploadFinished,
     eventHub.onBatchDelete,
+    alwaysRefresh,
   ])
 
   if (error) {

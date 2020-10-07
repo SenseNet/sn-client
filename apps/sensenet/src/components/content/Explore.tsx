@@ -64,6 +64,7 @@ export type ExploreProps = {
   loadChildrenSettings?: ODataParams<GenericContent>
   renderBeforeGrid?: () => JSX.Element
   hasTree?: boolean
+  alwaysRefreshChildren?: boolean
 }
 
 export function Explore({
@@ -76,6 +77,7 @@ export function Explore({
   loadTreeSettings,
   renderBeforeGrid,
   hasTree = true,
+  alwaysRefreshChildren,
 }: ExploreProps) {
   const selectionService = useSelectionService()
   const classes = useStyles()
@@ -157,7 +159,7 @@ export function Explore({
   return (
     <LoadSettingsContextProvider>
       <CurrentContentProvider idOrPath={currentPath}>
-        <CurrentChildrenProvider loadSettings={loadChildrenSettings}>
+        <CurrentChildrenProvider loadSettings={loadChildrenSettings} alwaysRefresh={alwaysRefreshChildren}>
           <CurrentAncestorsProvider root={rootPath}>
             <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
               <ContentBreadcrumbs

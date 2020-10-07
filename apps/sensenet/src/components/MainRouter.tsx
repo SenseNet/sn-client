@@ -82,6 +82,7 @@ export const MainRouter = () => {
                 query: "+TypeIs:'ContentType' .AUTOFILTERS:OFF",
               }}
               hasTree={false}
+              alwaysRefreshChildren={true}
             />
           </Route>
 

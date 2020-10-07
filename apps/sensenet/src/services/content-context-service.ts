@@ -101,7 +101,6 @@ export function getUrlForContent({
 
   if (pathOfContent.snPath && pathOfContent.appPath) {
     const contentPath = content.Path.replace(pathOfContent.snPath, '')
-    const searchParams = new URLSearchParams(location.search)
 
     return pathWithQueryParams({
       path: resolvePathParams({
@@ -116,9 +115,7 @@ export function getUrlForContent({
         path: action
           ? removePath
             ? undefined
-            : snRoute?.match
-            ? `/${PathHelper.getParentPath(content.Path)}`.replace(pathOfContent.snPath, '')
-            : searchParams.get('path')
+            : `/${PathHelper.getParentPath(content.Path)}`.replace(pathOfContent.snPath, '')
           : contentPath,
         content: action ? contentPath : undefined,
       },

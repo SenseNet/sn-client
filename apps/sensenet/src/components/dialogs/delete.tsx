@@ -141,18 +141,16 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                     },
                   })
                 } else {
-                  const deletedCurrentContent =
-                    snRoute.path &&
-                    props.content.find((currentContent) =>
+                  if (
+                    props.content.some((currentContent) =>
                       PathHelper.isInSubTree(`${snRoute.path}${currentPath}`, currentContent.Path),
                     )
-
-                  if (deletedCurrentContent) {
+                  ) {
                     navigateToAction({
                       history,
                       routeMatch: snRoute.match,
                       queryParams: {
-                        path: `/${PathHelper.getParentPath(deletedCurrentContent.Path)}`.replace(snRoute.path, ''),
+                        path: `/${PathHelper.getParentPath(props.content[0].Path)}`.replace(snRoute.path, ''),
                       },
                     })
                   }
