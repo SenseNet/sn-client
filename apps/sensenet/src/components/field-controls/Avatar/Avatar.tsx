@@ -1,4 +1,4 @@
-import { changeJScriptValue } from '@sensenet/controls-react'
+import { changeTemplatedValue } from '@sensenet/controls-react'
 import { ReferenceFieldSetting, User } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
@@ -54,7 +54,7 @@ export const Avatar: React.FunctionComponent<ReactClientFieldSetting<ReferenceFi
   const { openDialog } = useDialog()
 
   const [fieldValue] = React.useState(
-    (props.fieldValue as any)?.Url || changeJScriptValue(props.settings.DefaultValue) || '',
+    (props.fieldValue as any)?.Url || changeTemplatedValue(props.settings.DefaultValue) || '',
   )
 
   const addItem = () => {

@@ -1,4 +1,4 @@
-import { changeJScriptValue } from '@sensenet/controls-react'
+import { changeTemplatedValue } from '@sensenet/controls-react'
 import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
 import { ReferenceField } from '@sensenet/search-react'
@@ -11,7 +11,7 @@ import { ReactClientFieldSetting } from '.'
  */
 export const AutoComplete: React.FC<ReactClientFieldSetting<ReferenceFieldSetting>> = (props) => {
   const defaultValue =
-    (props.fieldValue && (props.fieldValue as any)[0].Id) || changeJScriptValue(props.settings.DefaultValue)
+    (props.fieldValue && (props.fieldValue as any)[0].Id) || changeTemplatedValue(props.settings.DefaultValue)
   const fetchItems = async (fetchQuery: Query<GenericContent>) => {
     try {
       if (!props.repository) {

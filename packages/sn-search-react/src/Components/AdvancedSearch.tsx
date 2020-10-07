@@ -89,11 +89,11 @@ export class AdvancedSearch<T extends GenericContent = GenericContent> extends C
    * @param newProps The new props
    * @param lastState The last component state
    */
-  public static getDerivedStateFromProps<T extends GenericContent>(
-    newProps: AdvancedSearchProps<T>,
-    lastState: AdvancedSearchState<T>,
+  public static getDerivedStateFromProps<G extends GenericContent>(
+    newProps: AdvancedSearchProps<G>,
+    lastState: AdvancedSearchState<G>,
   ) {
-    const query = new Query<T>((q) => q)
+    const query = new Query<G>((q) => q)
     return {
       ...lastState,
       onQueryChanged: newProps.onQueryChanged && debounce(newProps.onQueryChanged, 50),

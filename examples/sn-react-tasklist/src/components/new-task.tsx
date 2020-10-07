@@ -3,13 +3,7 @@ import { Task } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
-
-// start of material imports
 import React from 'react'
-// end of material imports
-
-// start of sensenet imports
-// end of sensenet imports
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-interface NewTaskPanel {
+interface NewTaskPanelProps {
   data: Task[]
   setData: React.Dispatch<React.SetStateAction<Task[]>>
 }
@@ -36,7 +30,7 @@ interface NewTaskPanel {
 /**
  * New task panel
  */
-const NewTaskPanel: React.FunctionComponent<NewTaskPanel> = ({ data, setData }) => {
+const NewTaskPanel: React.FunctionComponent<NewTaskPanelProps> = ({ data, setData }) => {
   const repo = useRepository() // Custom hook that will return with a Repository object
   const classes = useStyles()
   const [newTask, setNewTask] = React.useState<string>('')

@@ -149,6 +149,7 @@ export class ReferenceFieldSetting extends FieldSetting {
 export class DateTimeFieldSetting extends FieldSetting {
   public DateTimeMode?: DateTimeMode
   public Precision?: DateTimePrecision
+  public EvaluatedDefaultValue?: string
 }
 
 // Used in GenericContent, ContentList, SmartFolder, Site, Memo, Task, Query, User
