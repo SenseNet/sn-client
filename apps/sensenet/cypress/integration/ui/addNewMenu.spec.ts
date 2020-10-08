@@ -1,4 +1,4 @@
-import { pathWithQueryParams } from '../../../../../apps/sensenet/src/services/query-string-builder'
+import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
 context('AddNew Menu', () => {
   before(() => cy.clearCookies({ domain: null } as any))
