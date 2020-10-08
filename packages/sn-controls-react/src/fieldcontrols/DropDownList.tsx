@@ -10,7 +10,7 @@ import FormLabel from '@material-ui/core/FormLabel'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
@@ -18,7 +18,7 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
 export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>> = (props) => {
-  const getInitialstate = () => {
+  const getInitialstate = useCallback(() => {
     if (!props.fieldValue) {
       return props.settings.AllowMultiple ? [''] : ''
     }
@@ -26,8 +26,13 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
       return props.settings.AllowMultiple ? [props.fieldValue] : props.fieldValue
     }
     return props.fieldValue
-  }
+  }, [props.fieldValue, props.settings.AllowMultiple])
+
   const [value, setValue] = useState(getInitialstate)
+
+  useEffect(() => {
+    setValue(getInitialstate)
+  }, [getInitialstate])
 
   const handleChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>) => {
     setValue(event.target.value as any)

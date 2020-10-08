@@ -9,7 +9,7 @@ import { DateTimePicker, DatePicker as MUIDatePicker, MuiPickersUtilsProvider } 
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import MomentUtils from '@date-io/moment'
 import moment from 'moment'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -45,6 +45,10 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
     moment().toISOString()
   const [value, setValue] = useState(initialState)
   const classes = useStyles()
+
+  useEffect(() => {
+    setValue(initialState)
+  }, [initialState])
 
   const handleDateChange = (date: MaterialUiPickersDate) => {
     if (!date) {

@@ -8,7 +8,7 @@ import FormControl from '@material-ui/core/FormControl'
 import Icon from '@material-ui/core/Icon'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ColorResult, SketchPicker } from 'react-color'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
@@ -33,6 +33,10 @@ const renderIconDefault = (name: string, color: string) => {
 export const ColorPicker: React.FC<ReactClientFieldSetting<ColorFieldSetting>> = (props) => {
   const [value, setValue] = useState(props.fieldValue || changeTemplatedValue(props.settings.DefaultValue) || '')
   const [isPickerOpen, setIsPickerOpen] = useState(false)
+
+  useEffect(() => {
+    setValue(props.fieldValue || changeTemplatedValue(props.settings.DefaultValue) || '')
+  }, [props.fieldValue, props.settings.DefaultValue])
 
   const handleChange = (color: ColorResult) => {
     props.fieldOnChange && props.fieldOnChange(props.settings.Name, color.hex)

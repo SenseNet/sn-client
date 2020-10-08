@@ -9,20 +9,25 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
 export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>> = (props) => {
-  const getInitialState = () => {
+  const getInitialState = useCallback(() => {
     if (!props.fieldValue) {
       return ''
     }
     return Array.isArray(props.fieldValue) ? props.fieldValue[0] : props.fieldValue
-  }
+  }, [props.fieldValue])
+
   const [value, setValue] = useState(getInitialState)
+
+  useEffect(() => {
+    setValue(getInitialState)
+  }, [getInitialState])
 
   const handleChange = (_event: React.ChangeEvent<{}>, changedValue: string) => {
     setValue(changedValue)

@@ -53,9 +53,13 @@ export const Avatar: React.FunctionComponent<ReactClientFieldSetting<ReferenceFi
   const logger = useLogger('Avatar')
   const { openDialog } = useDialog()
 
-  const [fieldValue] = React.useState(
+  const [fieldValue, setFieldValue] = React.useState(
     (props.fieldValue as any)?.Url || changeTemplatedValue(props.settings.DefaultValue) || '',
   )
+
+  React.useEffect(() => {
+    setFieldValue((props.fieldValue as any)?.Url || changeTemplatedValue(props.settings.DefaultValue) || '')
+  }, [props.fieldValue, props.settings.DefaultValue])
 
   const addItem = () => {
     openDialog({

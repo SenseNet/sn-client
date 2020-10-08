@@ -4,7 +4,7 @@
 import { ShortTextFieldSetting } from '@sensenet/default-content-types'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
@@ -13,6 +13,10 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
  */
 export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>> = (props) => {
   const [value, setValue] = useState(props.fieldValue || changeTemplatedValue(props.settings.DefaultValue) || '')
+
+  useEffect(() => {
+    setValue(props.fieldValue || changeTemplatedValue(props.settings.DefaultValue) || '')
+  }, [props.fieldValue, props.settings.DefaultValue])
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
     setValue(e.target.value)

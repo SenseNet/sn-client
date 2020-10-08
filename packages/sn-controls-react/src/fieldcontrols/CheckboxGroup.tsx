@@ -9,7 +9,7 @@ import FormGroup from '@material-ui/core/FormGroup'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
@@ -28,6 +28,10 @@ export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>
         : { ...item, Selected: false },
     )
   const [state, setState] = useState(initialState || [])
+
+  useEffect(() => {
+    setState(initialState || [])
+  }, [initialState, props])
 
   const handleChange = (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     const newState = [...state]

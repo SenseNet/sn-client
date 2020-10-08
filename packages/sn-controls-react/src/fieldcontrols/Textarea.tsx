@@ -4,7 +4,7 @@
 import { LongTextFieldSetting } from '@sensenet/default-content-types'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
@@ -17,6 +17,10 @@ export const Textarea: React.FC<ReactClientFieldSetting<LongTextFieldSetting>> =
     changeTemplatedValue(props.settings.DefaultValue) ||
     ''
   const [value, setValue] = useState(initialState)
+
+  useEffect(() => {
+    setValue(initialState)
+  }, [initialState])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setValue(event.target.value)

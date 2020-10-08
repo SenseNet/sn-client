@@ -86,6 +86,10 @@ export const EditView: React.FC<EditViewProps> = (props) => {
   }
 
   useEffect(() => {
+    setSchema(controlMapper.getFullSchemaForContentType(props.contentTypeName, actionName))
+  }, [actionName, controlMapper, props.contentTypeName])
+
+  useEffect(() => {
     const schemaObservable = repository.schemas.subscribeToSchemas(() => {
       setSchema(() => controlMapper.getFullSchemaForContentType(props.contentTypeName, actionName))
     })
@@ -113,7 +117,11 @@ export const EditView: React.FC<EditViewProps> = (props) => {
           .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
           .map((field) => {
             const fieldControl = createElement(
-              controlMapper.getControlForContentField(props.contentTypeName, field.fieldSettings.Name, actionName),
+              controlMapper.getControlForContentField(
+                schema.schema.ContentTypeName,
+                field.fieldSettings.Name,
+                actionName,
+              ),
               {
                 actionName,
                 settings: field.fieldSettings,

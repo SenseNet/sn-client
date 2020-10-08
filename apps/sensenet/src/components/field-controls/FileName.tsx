@@ -5,7 +5,7 @@ import { changeTemplatedValue } from '@sensenet/controls-react'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
@@ -22,6 +22,10 @@ export const FileName: React.FC<ReactClientFieldSetting> = (props) => {
     changeTemplatedValue(props.settings.DefaultValue) ||
     ''
   const [value, setValue] = useState(valueInitialState)
+
+  useEffect(() => {
+    setValue(valueInitialState)
+  }, [valueInitialState])
 
   const getExtension = () => {
     if (props.fieldValue && props.fieldValue.indexOf('.') > -1) {

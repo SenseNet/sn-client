@@ -7,7 +7,7 @@ import { CurrencyFieldSetting, NumberFieldSetting } from '@sensenet/default-cont
 import { createStyles, InputLabel, TextField, Theme, withStyles } from '@material-ui/core'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import Typography from '@material-ui/core/Typography'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 import { isCurrencyFieldSetting } from './type-guards'
 
@@ -48,6 +48,10 @@ export const NumberComponent: React.FC<ReactClientFieldSetting<NumberFieldSettin
       ? props.fieldValue
       : Number.parseInt(changeTemplatedValue(props.settings.DefaultValue)!, 10) || ''
   const [value, setValue] = useState(initialState)
+
+  useEffect(() => {
+    setValue(initialState)
+  }, [initialState])
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
     setValue(e.target.value)

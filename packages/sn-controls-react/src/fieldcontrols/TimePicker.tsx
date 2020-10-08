@@ -7,7 +7,7 @@ import { MuiPickersUtilsProvider, TimePicker as MUITimePicker } from '@material-
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import MomentUtils from '@date-io/moment'
 import moment from 'moment'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
@@ -19,7 +19,12 @@ export const TimePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
     props.fieldValue ||
     changeTemplatedValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue) ||
     moment().toISOString()
+
   const [value, setValue] = useState(initialState)
+
+  useEffect(() => {
+    setValue(initialState)
+  }, [initialState])
 
   const handleDateChange = (date: MaterialUiPickersDate) => {
     if (!date) {

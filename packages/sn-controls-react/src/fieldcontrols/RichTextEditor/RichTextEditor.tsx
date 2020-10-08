@@ -5,7 +5,7 @@ import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import Typography from '@material-ui/core/Typography'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { changeTemplatedValue } from '../../helpers'
@@ -43,6 +43,10 @@ quillRegister()
 export const RichTextEditor: React.FC<ReactClientFieldSetting> = (props) => {
   const initialState = props.fieldValue || changeTemplatedValue(props.settings.DefaultValue) || ''
   const [value, setValue] = useState(initialState)
+
+  useEffect(() => {
+    setValue(props.fieldValue || changeTemplatedValue(props.settings.DefaultValue) || '')
+  }, [props.fieldValue, props.settings.DefaultValue])
 
   const handleChange = (changedValue: string) => {
     setValue(changedValue)

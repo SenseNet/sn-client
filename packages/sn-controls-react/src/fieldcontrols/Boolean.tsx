@@ -6,7 +6,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 import { renderIconDefault } from './icon'
@@ -18,6 +18,10 @@ export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> =
   const initialState =
     props.fieldValue != null ? !!props.fieldValue : !!changeTemplatedValue(props.settings.DefaultValue)
   const [value, setValue] = useState(initialState)
+
+  useEffect(() => {
+    setValue(props.fieldValue != null ? !!props.fieldValue : !!changeTemplatedValue(props.settings.DefaultValue))
+  }, [props.fieldValue, props.settings.DefaultValue])
 
   const handleChange = () => {
     setValue(!value)

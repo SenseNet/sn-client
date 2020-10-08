@@ -6,7 +6,7 @@ import { FieldSetting } from '@sensenet/default-content-types'
 import { createStyles, Grid, makeStyles, Typography } from '@material-ui/core'
 import FormControl from '@material-ui/core/FormControl'
 import clsx from 'clsx'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 import { Switcher } from './switcher'
 
@@ -31,6 +31,10 @@ export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> =
     props.fieldValue != null ? !!props.fieldValue : !!changeTemplatedValue(props.settings.DefaultValue)
   const [value, setValue] = useState(initialState)
   const classes = useStyles()
+
+  useEffect(() => {
+    setValue(props.fieldValue != null ? !!props.fieldValue : !!changeTemplatedValue(props.settings.DefaultValue))
+  }, [props.fieldValue, props.settings.DefaultValue])
 
   const handleChange = () => {
     setValue(!value)

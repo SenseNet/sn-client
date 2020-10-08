@@ -4,7 +4,7 @@
 import { changeTemplatedValue } from '@sensenet/controls-react'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 const invalidCharacters = ['%', '\\', '*', '~']
@@ -18,6 +18,10 @@ export const Name: React.FC<ReactClientFieldSetting> = (props) => {
     ''
   const [value, setValue] = useState(initialState)
   const [isValid, setIsValid] = useState(true)
+
+  useEffect(() => {
+    setValue(initialState)
+  }, [initialState])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setIsValid(true)
