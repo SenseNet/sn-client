@@ -22,20 +22,22 @@ context('AddNew Menu', () => {
       'Demo Workspace',
     ]
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
-      .get('a.Content')
+      .get('a[href="/content/explorer/"]')
       .click()
       .get('span[title="Add new"]')
       .click()
       .get('ul.MuiList-root > div.MuiListItem-root > span.MuiListItemText-primary')
-      .each(($span, index, $list) => {
+      .each(($span) => {
         const text = $span.text()
-        expect(dropdownItems).to.include(text)
+        if (text) {
+          expect(dropdownItems).to.include(text)
+        }
       })
   })
 
   it('should display an editor of new content and AddNew button should be disabled after selection', () => {
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
-      .get('a.Content')
+      .get('a[href="/content/explorer/"]')
       .click()
       .get('span[title="Add new"]')
       .click()
