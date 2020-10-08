@@ -4,7 +4,7 @@ context('AddNew Menu', () => {
   before(() => cy.clearCookies({ domain: null } as any))
 
   beforeEach(() => {
-    cy.login('e2e.admin@sensenet.com', 'e2eadmin')
+    cy.login()
   })
 
   it('should open a dropdown with the list of allowed child types', () => {
