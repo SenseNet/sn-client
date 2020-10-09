@@ -24,7 +24,7 @@ export class PathHelper {
    * @param path The path to be splitted
    */
   public static getSegments(path: string) {
-    if (!path) {
+    if (!path || path.startsWith('content') || path.startsWith('/content')) {
       return []
     }
     // Split path at / and remove empty strings
@@ -34,7 +34,7 @@ export class PathHelper {
       throw new Error(`Couldn't get the segments for ${path}`)
     }
     // Match if last item is Root/content(123) or Root/Example('content')
-    const matches = lastItem.match(/(\('\w+'\)|\(\d+\)$)/g)
+    const matches = lastItem.match(/(\('\w+'\)$)/g)
     if (!matches) {
       return [...splitted, lastItem]
     }
@@ -44,11 +44,11 @@ export class PathHelper {
   }
 
   /**
-   * Checks if a specific segment is an Item segment or not (like "('Content1')"" or "(654)")
+   * Checks if a specific segment is an Item segment or not (like "('Content1')" or "Test(1)")
    * @param segment The segment to be examined
    */
   public static isItemSegment(segment: string): boolean {
-    return RegExp(/\('+[\s\S]+'\)$/).test(segment) || RegExp(/\(+\d+\)$/).test(segment)
+    return RegExp(/\('+[\s\S]+'\)$/).test(segment) || RegExp(/\(+\w+\d+\)$/).test(segment)
   }
 
   /**

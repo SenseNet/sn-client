@@ -104,7 +104,7 @@ describe('Repository', () => {
     describe('count', () => {
       it('should construct the url to contain /$count', async () => {
         const countRepository = new Repository(undefined, (input) => {
-          const url = (input as any).path
+          const { url } = input as Request
           expect(url).toMatch(/\/odata.svc\/Root\/Content\/\$count/g)
           return Promise.resolve({ ok: true, json: () => 42 }) as any
         })

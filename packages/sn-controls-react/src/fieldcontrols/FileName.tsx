@@ -5,7 +5,7 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
-import { changeJScriptValue } from '../helpers'
+import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
@@ -19,7 +19,7 @@ export const FileName: React.FC<ReactClientFieldSetting> = (props) => {
         .split('.')
         .slice(0, -1)
         .join('.')) ||
-    changeJScriptValue(props.settings.DefaultValue) ||
+    changeTemplatedValue(props.settings.DefaultValue) ||
     ''
   const [value, setValue] = useState(valueInitialState)
 
@@ -49,7 +49,7 @@ export const FileName: React.FC<ReactClientFieldSetting> = (props) => {
           label={props.settings.DisplayName}
           placeholder={props.settings.DisplayName}
           value={value}
-          defaultValue={changeJScriptValue(props.settings.DefaultValue)}
+          defaultValue={changeTemplatedValue(props.settings.DefaultValue)}
           onChange={handleChange}
           InputProps={{
             endAdornment: (

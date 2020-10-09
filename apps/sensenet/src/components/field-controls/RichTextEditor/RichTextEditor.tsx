@@ -2,7 +2,7 @@
  * @module FieldControls
  */
 
-import { changeJScriptValue, quillRegister } from '@sensenet/controls-react'
+import { changeTemplatedValue, quillRegister } from '@sensenet/controls-react'
 import { createStyles, InputLabel, makeStyles, Theme } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
@@ -67,7 +67,7 @@ quillRegister()
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
 export const RichTextEditor: React.FC<ReactClientFieldSetting> = (props) => {
-  const initialState = props.fieldValue || changeJScriptValue(props.settings.DefaultValue) || ''
+  const initialState = props.fieldValue || changeTemplatedValue(props.settings.DefaultValue) || ''
   const [value, setValue] = useState(initialState)
   const classes = useStyles()
   const localization = useLocalization().forms
@@ -87,7 +87,7 @@ export const RichTextEditor: React.FC<ReactClientFieldSetting> = (props) => {
           </InputLabel>
           <ReactQuill
             style={{ background: '#fff', marginTop: 10, color: '#000' }}
-            defaultValue={changeJScriptValue(props.settings.DefaultValue)}
+            defaultValue={changeTemplatedValue(props.settings.DefaultValue)}
             placeholder={props.settings.DisplayName}
             readOnly={props.settings.ReadOnly}
             modules={modules}
