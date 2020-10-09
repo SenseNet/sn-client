@@ -277,7 +277,11 @@ const values = {
   topMenu: {
     personalSettings: 'Personal settings',
     logout: 'Log out',
-    openMenu: 'Open menu',
+    openLogoutMenu: 'Open logout menu',
+    openHelpMenu: 'Open help menu',
+    documentation: 'Documentation',
+    reportBug: 'Report bug',
+    feedback: 'Feedback',
   },
   navigationCommandProvider: {
     personalSettingsPrimary: 'Personal Settings',
@@ -458,6 +462,15 @@ const values = {
     title: 'Select a target',
     cancelButton: 'Cancel',
     selectButton: 'Select',
+  },
+  feedback: {
+    title: 'Give us feedback or suggest new idea',
+    feedbackText1: (link: string) => `We are using a public ${link} to collect customer feedback and ideas.`,
+    feedbackText2:
+      'To add a new feedback, just send an email to the address below describing your suggestion. </br> (email subject - feedback title; email body - feedback description)',
+    feedbackText3: (link: string) => `You can check existing feedbacks and statuses on the public ${link} anytime.`,
+    feedbackText4: 'Thanks for your feedback',
+    cancel: 'Cancel',
   },
 }
 

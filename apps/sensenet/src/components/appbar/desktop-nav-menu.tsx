@@ -1,7 +1,21 @@
 import { useInjector, useRepository } from '@sensenet/hooks-react'
-import { Grid, IconButton, ListItemIcon, ListItemText, MenuItem, MenuList, Paper, Typography } from '@material-ui/core'
+import {
+  Grid,
+  IconButton,
+  Link,
+  ListItemIcon,
+  ListItemText,
+  MenuItem,
+  MenuList,
+  Paper,
+  Typography,
+} from '@material-ui/core'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles'
+import BugReport from '@material-ui/icons/BugReport'
+import Feedback from '@material-ui/icons/Feedback'
+import HelpOutline from '@material-ui/icons/HelpOutline'
+import Info from '@material-ui/icons/Info'
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
 import clsx from 'clsx'
 import React, { useEffect, useRef, useState } from 'react'
@@ -23,15 +37,25 @@ const useStyles = makeStyles((theme: Theme) =>
     paper: {
       marginRight: theme.spacing(2),
     },
-    arrowDownIcon: {
+    icon: {
       opacity: '87%',
     },
-    popperWrapper: {
+    iconButton: {
+      padding: '0',
+    },
+    popperLogoutWrapper: {
       position: 'absolute',
       top: globals.common.headerHeight,
       right: '1px',
       height: 'fit-content',
       width: '216px',
+    },
+    popperHelpWrapper: {
+      position: 'absolute',
+      top: globals.common.headerHeight,
+      right: '88px',
+      height: 'fit-content',
+      width: 'fit-content',
     },
     popper: {
       backgroundColor: theme.palette.type === 'light' ? globals.light.navMenuColor : globals.dark.navMenuColor,
@@ -42,10 +66,13 @@ const useStyles = makeStyles((theme: Theme) =>
       height: '35px',
       minWidth: '35px',
     },
-    menuItem: {
+    logoutMenuItem: {
       textDecoration: 'underline',
       color: theme.palette.primary.main,
       fontSize: '14px',
+    },
+    helpMenuItem: {
+      color: theme.palette.primary.main,
     },
     themeSwitcher: {
       color: theme.palette.primary.main,
@@ -65,44 +92,66 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   const globalClasses = useGlobalStyles()
   const theme = useTheme()
   const service = injector.getInstance(PersonalSettings)
-  const { openDialog } = useDialog()
-  const [open, setOpen] = useState(false)
-  const anchorRef = useRef<HTMLButtonElement>(null)
   const currentUser = useCurrentUser()
   const repo = useRepository()
   const localization = useLocalization()
+  const { openDialog } = useDialog()
+  const [openLogoutMenu, setOpenLogoutMenu] = useState(false)
+  const [openHelpMenu, setOpenHelpMenu] = useState(false)
+  const logoutRef = useRef<HTMLButtonElement>(null)
+  const helpRef = useRef<HTMLButtonElement>(null)
 
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen)
+  const handleToggle = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
+    setter((prevState) => !prevState)
   }
 
-  const handleClose = (event: React.MouseEvent<EventTarget>) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
+  const handleClose = (
+    event: React.MouseEvent<EventTarget>,
+    ref: React.RefObject<HTMLButtonElement>,
+    setter: React.Dispatch<React.SetStateAction<boolean>>,
+  ) => {
+    if (ref.current && ref.current.contains(event.target as HTMLElement)) {
       return
     }
 
-    setOpen(false)
+    setter(false)
   }
 
   function handleListKeyDown(event: React.KeyboardEvent) {
     if (event.key === 'Tab') {
       event.preventDefault()
-      setOpen(false)
+      setOpenLogoutMenu(false)
+      setOpenHelpMenu(false)
     }
   }
 
-  const prevOpen = useRef(open)
+  const prevLogoutOpen = useRef(openLogoutMenu)
+  const prevHelpOpen = useRef(openHelpMenu)
+
   useEffect(() => {
-    if (prevOpen.current === true && open === false) {
-      anchorRef.current!.focus()
+    if (prevLogoutOpen.current === true && openLogoutMenu === false) {
+      logoutRef.current!.focus()
     }
 
-    prevOpen.current = open
-  }, [open])
+    prevLogoutOpen.current = openLogoutMenu
+  }, [openLogoutMenu])
+
+  useEffect(() => {
+    if (prevHelpOpen.current === true && openHelpMenu === false) {
+      helpRef.current!.focus()
+    }
+
+    prevHelpOpen.current = openHelpMenu
+  }, [openHelpMenu])
 
   const logout = (event: React.MouseEvent<EventTarget>) => {
     openDialog({ name: 'logout' })
-    handleClose(event)
+    handleClose(event, logoutRef, setOpenLogoutMenu)
+  }
+
+  const feedback = (event: React.MouseEvent<EventTarget>) => {
+    openDialog({ name: 'feedback' })
+    handleClose(event, helpRef, setOpenHelpMenu)
   }
 
   const switchTheme = () => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,31 +161,43 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
 
   return (
     <div className={clsx(globalClasses.centered, classes.navMenu)}>
-      <UserAvatar
-        user={currentUser}
-        repositoryUrl={repo.configuration.repositoryUrl}
-        style={{
-          height: '35px',
-          width: '35px',
-          backgroundColor: theme.palette.primary.main,
-          color: globals.common.headerText,
-        }}
-      />
       <IconButton
-        aria-label={localization.topMenu.openMenu}
-        ref={anchorRef}
-        aria-controls={open ? 'menu-list-grow' : undefined}
+        aria-label={localization.topMenu.openHelpMenu}
+        ref={helpRef}
+        aria-controls={openLogoutMenu ? 'menu-list-grow' : undefined}
         aria-haspopup="true"
-        onClick={handleToggle}
-        style={{ padding: 0 }}>
-        <KeyboardArrowDown className={classes.arrowDownIcon} />
+        onClick={() => handleToggle(setOpenHelpMenu)}
+        className={classes.iconButton}
+        style={{ marginRight: '16px' }}>
+        <HelpOutline className={classes.icon} />
       </IconButton>
-      {open ? (
-        <Paper className={classes.popperWrapper}>
+      <>
+        <UserAvatar
+          user={currentUser}
+          repositoryUrl={repo.configuration.repositoryUrl}
+          style={{
+            height: '35px',
+            width: '35px',
+            backgroundColor: theme.palette.primary.main,
+            color: globals.common.headerText,
+          }}
+        />
+        <IconButton
+          aria-label={localization.topMenu.openLogoutMenu}
+          ref={logoutRef}
+          aria-controls={openLogoutMenu ? 'menu-list-grow' : undefined}
+          aria-haspopup="true"
+          onClick={() => handleToggle(setOpenLogoutMenu)}
+          className={classes.iconButton}>
+          <KeyboardArrowDown className={classes.icon} />
+        </IconButton>
+      </>
+      {openLogoutMenu ? (
+        <Paper className={classes.popperLogoutWrapper}>
           <div className={classes.popper}>
-            <ClickAwayListener onClickAway={handleClose}>
-              <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                <MenuItem onClick={handleClose}>
+            <ClickAwayListener onClickAway={(event) => handleClose(event, logoutRef, setOpenLogoutMenu)}>
+              <MenuList autoFocusItem={openLogoutMenu} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                <MenuItem onClick={(event) => handleClose(event, logoutRef, setOpenLogoutMenu)}>
                   <ListItemIcon className={classes.listItemIcon}>
                     <UserAvatar
                       style={{
@@ -162,7 +223,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                     primary={`${currentUser.DisplayName || currentUser.Name}`}
                   />
                 </MenuItem>
-                <MenuItem onClick={logout} className={classes.menuItem}>
+                <MenuItem onClick={logout} className={classes.logoutMenuItem}>
                   {localization.topMenu.logout}
                 </MenuItem>
                 <MenuItem>
@@ -176,6 +237,44 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                       </Grid>
                     </Grid>
                   </Typography>
+                </MenuItem>
+              </MenuList>
+            </ClickAwayListener>
+          </div>
+        </Paper>
+      ) : null}
+      {openHelpMenu ? (
+        <Paper className={classes.popperHelpWrapper}>
+          <div className={classes.popper}>
+            <ClickAwayListener onClickAway={(event) => handleClose(event, helpRef, setOpenHelpMenu)}>
+              <MenuList autoFocusItem={openHelpMenu} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                <Link href="https://docs.sensenet.com/" target="_blank">
+                  <MenuItem
+                    onClick={(event) => handleClose(event, helpRef, setOpenHelpMenu)}
+                    className={classes.helpMenuItem}>
+                    <ListItemIcon>
+                      <Info />
+                    </ListItemIcon>
+                    <ListItemText primary={localization.topMenu.documentation} />
+                  </MenuItem>
+                </Link>
+                <Link
+                  href="https://github.com/SenseNet/sn-client/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D"
+                  target="_blank">
+                  <MenuItem
+                    onClick={(event) => handleClose(event, helpRef, setOpenHelpMenu)}
+                    className={classes.helpMenuItem}>
+                    <ListItemIcon>
+                      <BugReport />
+                    </ListItemIcon>
+                    <ListItemText primary={localization.topMenu.reportBug} />
+                  </MenuItem>
+                </Link>
+                <MenuItem onClick={feedback} className={classes.helpMenuItem}>
+                  <ListItemIcon>
+                    <Feedback />
+                  </ListItemIcon>
+                  <ListItemText primary={localization.topMenu.feedback} />
                 </MenuItem>
               </MenuList>
             </ClickAwayListener>

@@ -35,6 +35,7 @@ export type DialogWithProps = (
   | { name: 'permission-editor'; props: PermissionEditorDialogProps }
   | { name: 'member-select'; props: MemberSelectProps }
   | { name: 'content-picker'; props: ContentPickerDialogProps }
+  | { name: 'feedback' }
 ) & { dialogProps?: Partial<DialogProps> }
 
 type Action = { type: 'PUSH_DIALOG'; dialog: DialogWithProps } | { type: 'POP_DIALOG' } | { type: 'CLOSE_ALL_DIALOGS' }
