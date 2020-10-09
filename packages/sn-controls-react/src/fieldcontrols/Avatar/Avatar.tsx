@@ -110,7 +110,7 @@ export class Avatar extends Component<ReactClientFieldSetting<ReferenceFieldSett
     })
   }
 
-  static getDerivedStateFromProps(props: any) {
+  static componentDidUpdate(props: any) {
     return {
       fieldValue:
         (props.fieldValue && (props.fieldValue as any).Url) || changeTemplatedValue(props.settings.DefaultValue) || '',

@@ -30,10 +30,6 @@ export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>
     )
   const [state, setState] = useState(initialState || [])
 
-  useEffect(() => {
-    setState(initialState || [])
-  }, [initialState, props])
-
   const handleChange = (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     const newState = [...state]
     const index = newState.findIndex((item) => item.Value === name)
