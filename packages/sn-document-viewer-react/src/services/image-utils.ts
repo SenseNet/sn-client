@@ -52,8 +52,8 @@ export class ImageUtil {
     const boundingBox = this.getRotatedBoundingBoxSize(image, image.rotation)
     const [width, height] = [boundingBox.width, boundingBox.height]
 
-    const zoomWidth = viewPort.width / width
-    const zoomHeight = viewPort.height / height
+    const zoomWidth = viewPort.width || width ? viewPort.width / width : 0
+    const zoomHeight = viewPort.height || height ? viewPort.height / height : 0
 
     switch (zoomMode) {
       case 'fitWidth':

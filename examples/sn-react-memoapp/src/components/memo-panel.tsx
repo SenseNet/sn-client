@@ -1,14 +1,7 @@
 /* eslint-disable require-jsdoc */
 import { GenericContent, User } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import {
-  ExpansionPanel,
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
-  Grid,
-  TextField,
-  Typography,
-} from '@material-ui/core'
+import { Accordion, AccordionDetails, AccordionSummary, Grid, TextField, Typography } from '@material-ui/core'
 import Fab from '@material-ui/core/Fab'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import AddIcon from '@material-ui/icons/Add'
@@ -189,11 +182,11 @@ export const MemoPanel: React.FunctionComponent = () => {
         onClose={() => setAddpanelshow(false)}
       />
       {data.map((memo) => (
-        <ExpansionPanel
+        <Accordion
           key={memo.Id}
           expanded={expanded === memo.Id.toString()}
           onChange={handleChangeExpand(memo.Id.toString())}>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1bh-content" id="panel1bh-header">
+          <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1bh-content" id="panel1bh-header">
             <Typography className={classes.heading}>{memo.DisplayName}</Typography>
             <Typography className={classes.secondaryHeading}>
               Created by: {memo.CreatedBy ? (memo.CreatedBy as User).FullName : ''}{' '}
@@ -203,8 +196,8 @@ export const MemoPanel: React.FunctionComponent = () => {
                 {moment(new Date(memo.ModificationDate ? memo.ModificationDate : '')).format('DD-MM-YYYY HH:mm:ss')})
               </span>
             </Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
+          </AccordionSummary>
+          <AccordionDetails>
             <Grid container>
               <Grid item xs={12}>
                 <ReactMarkdown
@@ -255,8 +248,8 @@ export const MemoPanel: React.FunctionComponent = () => {
                 </Fab>
               </Grid>
             </Grid>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+          </AccordionDetails>
+        </Accordion>
       ))}
       <Fab
         color="secondary"
