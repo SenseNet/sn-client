@@ -101,7 +101,7 @@ export const PermanentDrawer = () => {
   }
 
   return (
-    <Paper className={clsx(classes.paper, { [classes.opened]: opened })}>
+    <Paper className={clsx(classes.paper, { [classes.opened]: opened })} data-test="drawer">
       <div className={classes.backgroundDiv}>
         <List className={classes.list}>
           <li className={classes.listWrapper}>
@@ -111,7 +111,8 @@ export const PermanentDrawer = () => {
                 className={classes.listButton}
                 button={true}
                 onClick={() => setOpened(!opened)}
-                key="expandcollapse">
+                key="expandcollapse"
+                data-test="drawer-expandcollapse-button">
                 <ListItemIcon className={globalClasses.centered}>
                   <Tooltip
                     className={globalClasses.centered}
