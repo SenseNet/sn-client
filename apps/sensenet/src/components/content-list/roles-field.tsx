@@ -1,6 +1,6 @@
 import { GenericContent, Group, User } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import { Button, createStyles, makeStyles, Menu, MenuItem, TableCell } from '@material-ui/core'
+import { Button, createStyles, makeStyles, Menu, MenuItem, TableCell, Tooltip } from '@material-ui/core'
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
 import clsx from 'clsx'
 import React, { FunctionComponent, useState } from 'react'
@@ -10,7 +10,10 @@ import { useDialog } from '../dialogs'
 const useStyles = makeStyles(() => {
   return createStyles({
     label: {
-      wordBreak: 'break-all',
+      display: 'block',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
     },
   })
 })
@@ -26,9 +29,6 @@ export const RolesField: FunctionComponent<RolesFieldProps> = ({ roles, directRo
   const repository = useRepository()
   const { openDialog } = useDialog()
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
-
-  const listed = roles.slice(0, 2)
-  const rest = roles.slice(2)
 
   const openGroupDialog = async (event: React.MouseEvent, group: Group) => {
     event.stopPropagation()
@@ -59,38 +59,43 @@ export const RolesField: FunctionComponent<RolesFieldProps> = ({ roles, directRo
 
   return (
     <TableCell className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)} component="div">
-      {listed.map((role) => (
-        <Button
-          classes={{
-            label: classes.label,
-          }}
-          key={role.Id}
-          variant="contained"
-          color="primary"
-          size="small"
-          style={{ marginRight: '0.5rem' }}
-          endIcon={isIndirect(role) ? <SwapHorizIcon /> : undefined}
-          onClick={async (event) => openGroupDialog(event, role)}>
-          {role.DisplayName}
-        </Button>
-      ))}
-
-      {rest.length > 0 && (
-        <>
+      {roles.length === 1 ? (
+        <Tooltip className={globalClasses.centered} title={roles[0].DisplayName!} placement="top">
           <Button
-            aria-controls="more-roles"
-            aria-haspopup="true"
+            classes={{
+              label: classes.label,
+            }}
+            key={roles[0].Id}
             variant="contained"
             color="primary"
             size="small"
-            onClick={(event) => {
-              event.stopPropagation()
-              setAnchorEl(event.currentTarget)
-            }}>
-            {rest.length} more
+            style={{ marginRight: '0.5rem' }}
+            endIcon={isIndirect(roles[0]) ? <SwapHorizIcon /> : undefined}
+            onClick={async (event) => openGroupDialog(event, roles[0])}>
+            {roles[0].DisplayName}
           </Button>
+        </Tooltip>
+      ) : (
+        <>
+          <Tooltip className={globalClasses.centered} title={`${roles.length} roles`} placement="top">
+            <Button
+              classes={{
+                label: classes.label,
+              }}
+              aria-controls="more-roles"
+              aria-haspopup="true"
+              variant="contained"
+              color="primary"
+              size="small"
+              onClick={(event) => {
+                event.stopPropagation()
+                setAnchorEl(event.currentTarget)
+              }}>
+              {roles.length} roles
+            </Button>
+          </Tooltip>
           <Menu id="simple-roles" keepMounted anchorEl={anchorEl} open={!!anchorEl} onClose={() => setAnchorEl(null)}>
-            {rest.map((role) => (
+            {roles.map((role) => (
               <MenuItem
                 key={role.Id}
                 onClick={async (event) => {
