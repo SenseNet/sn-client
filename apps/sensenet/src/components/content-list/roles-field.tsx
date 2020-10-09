@@ -65,7 +65,6 @@ export const RolesField: FunctionComponent<RolesFieldProps> = ({ roles, directRo
             classes={{
               label: classes.label,
             }}
-            key={roles[0].Id}
             variant="contained"
             color="primary"
             size="small"
