@@ -113,7 +113,6 @@ export function Explore({
         if (contentTypeName) {
           return (
             <NewView
-              key={activeContent}
               contentTypeName={contentTypeName!}
               currentContentPath={currentPath}
               submitCallback={() => navigateToAction({ history, routeMatch: snRoute.match })}
