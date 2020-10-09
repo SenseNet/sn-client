@@ -116,6 +116,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         {schema.fieldMappings
           .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
           .map((field) => {
+            const autoFocus = hasInputField.includes(field.controlType.name) && !isAutofocusSet
             const fieldControl = createElement(
               controlMapper.getControlForContentField(props.contentTypeName, field.fieldSettings.Name, actionName),
               {
@@ -128,13 +129,13 @@ export const EditView: React.FC<EditViewProps> = (props) => {
                 fieldOnChange: handleInputChange,
                 extension: props.extension,
                 uploadFolderPath: props.uploadFolderpath,
-                autoFocus: hasInputField.includes(field.controlType.name) && !isAutofocusSet ? true : false,
+                autoFocus,
               },
             )
 
             const isFullWidth = isFullWidthField(field, props.contentTypeName)
 
-            if (hasInputField.includes(field.controlType.name) && !isAutofocusSet) {
+            if (autoFocus) {
               isAutofocusSet = true
             }
 
