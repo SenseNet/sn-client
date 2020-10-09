@@ -99,10 +99,11 @@ export function Explore({
   const renderContent = () => {
     switch (activeAction) {
       case 'browse':
-        return <BrowseView contentPath={`${rootPath}${activeContent}`} />
+        return <BrowseView key={activeContent} contentPath={`${rootPath}${activeContent}`} />
       case 'edit':
         return (
           <EditView
+            key={activeContent}
             actionName={activeAction}
             contentPath={`${rootPath}${activeContent}`}
             submitCallback={() => navigateToAction({ history, routeMatch: snRoute.match })}
@@ -112,6 +113,7 @@ export function Explore({
         if (contentTypeName) {
           return (
             <NewView
+              key={activeContent}
               contentTypeName={contentTypeName!}
               currentContentPath={currentPath}
               submitCallback={() => navigateToAction({ history, routeMatch: snRoute.match })}
@@ -120,16 +122,16 @@ export function Explore({
         }
         break
       case 'version':
-        return <VersionView contentPath={`${rootPath}${activeContent}`} />
+        return <VersionView key={activeContent} contentPath={`${rootPath}${activeContent}`} />
       case 'setpermissions':
-        return <PermissionView contentPath={`${rootPath}${activeContent}`} />
+        return <PermissionView key={activeContent} contentPath={`${rootPath}${activeContent}`} />
       case 'preview':
-        return <DocumentViewer contentPath={`${rootPath}${activeContent}`} />
+        return <DocumentViewer key={activeContent} contentPath={`${rootPath}${activeContent}`} />
       case 'edit-binary':
-        return <EditBinary contentPath={`${rootPath}${activeContent}`} />
+        return <EditBinary key={activeContent} contentPath={`${rootPath}${activeContent}`} />
       case 'wopi-edit':
       case 'wopi-view':
-        return <WopiPage contentPath={`${rootPath}${activeContent}`} />
+        return <WopiPage key={activeContent} contentPath={`${rootPath}${activeContent}`} />
       default:
     }
 
