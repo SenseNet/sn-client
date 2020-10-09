@@ -1,15 +1,16 @@
-import { LeveledLogEntry, LogLevel, sleepAsync } from '@sensenet/client-utils'
+import { LeveledLogEntry, LogLevel } from '@sensenet/client-utils'
 import amber from '@material-ui/core/colors/amber'
 import red from '@material-ui/core/colors/red'
 import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
+import { Theme, useTheme } from '@material-ui/core/styles'
 import Close from '@material-ui/icons/Close'
 import React, { useContext, useEffect, useState } from 'react'
 import { ResponsiveContext } from '../context'
 import { useNotificationService } from '../hooks/use-notification-service'
 import { Icon } from './Icon'
 
-export const getItemBackgroundColor = (item: LeveledLogEntry<any>) => {
+export const getItemBackgroundColor = (item: LeveledLogEntry<any>, theme: Theme) => {
   switch (item.level) {
     case LogLevel.Error:
     case LogLevel.Fatal:
@@ -17,7 +18,7 @@ export const getItemBackgroundColor = (item: LeveledLogEntry<any>) => {
     case LogLevel.Warning:
       return amber[200]
     default:
-      return undefined
+      return theme.palette.primary.main
   }
 }
 
@@ -39,9 +40,9 @@ export const getAutoHideDuration = (item: LeveledLogEntry<any>) => {
     case LogLevel.Fatal:
       return undefined
     case LogLevel.Warning:
-      return 15000
+      return 5000
     default:
-      return 10000
+      return 5000
   }
 }
 
@@ -50,6 +51,7 @@ export const NotificationComponent: React.FunctionComponent = () => {
   const [values, setValues] = useState<Array<LeveledLogEntry<any>>>([])
   const [dismisses, setDismisses] = useState<string[]>([])
   const device = useContext(ResponsiveContext)
+  const theme = useTheme()
 
   useEffect(() => {
     const notificationServiceObserve = notificationService.activeMessages.subscribe((change) => {
@@ -77,7 +79,7 @@ export const NotificationComponent: React.FunctionComponent = () => {
             }}
             ContentProps={{
               style: {
-                backgroundColor: getItemBackgroundColor(value),
+                backgroundColor: getItemBackgroundColor(value, theme),
                 color: getItemTextColor(value),
                 display: 'flex',
                 flexDirection: 'row',
@@ -108,7 +110,6 @@ export const NotificationComponent: React.FunctionComponent = () => {
                 color="inherit"
                 onClick={async () => {
                   setDismisses([...dismisses, value.data?.guid])
-                  await sleepAsync(500)
                   notificationService.dismiss(value)
                 }}
                 aria-label="Close button">
