@@ -16,6 +16,7 @@ const useStyles = makeStyles(() => {
       position: 'absolute',
       padding: '20px',
       bottom: 0,
+      left: 0,
       textAlign: 'right',
     },
     form: {

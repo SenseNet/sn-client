@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { changeJScriptValue } from '@sensenet/controls-react'
+import { changeTemplatedValue } from '@sensenet/controls-react'
 import { FieldSetting } from '@sensenet/default-content-types'
 import { createStyles, Grid, makeStyles, Typography } from '@material-ui/core'
 import FormControl from '@material-ui/core/FormControl'
@@ -27,7 +27,8 @@ const useStyles = makeStyles(() =>
  * Field control that represents a Boolean field.
  */
 export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> = (props) => {
-  const initialState = props.fieldValue != null ? !!props.fieldValue : !!changeJScriptValue(props.settings.DefaultValue)
+  const initialState =
+    props.fieldValue != null ? !!props.fieldValue : !!changeTemplatedValue(props.settings.DefaultValue)
   const [value, setValue] = useState(initialState)
   const classes = useStyles()
 
