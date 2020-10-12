@@ -20,6 +20,7 @@ context('AddNew Menu', () => {
       'Workspace',
       'System Folder',
       'Demo Workspace',
+      'Image'
     ]
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
       .get('a[href="/content/explorer/"]')
