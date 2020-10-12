@@ -4,6 +4,7 @@ import { BrowseType } from '../components/content'
 import { PlatformDependent } from '../context'
 
 const settingsKey = `SN-APP-USER-SETTINGS`
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
 
 export interface UiSettings {
   content: {
@@ -128,7 +129,7 @@ export const defaultSettings: PersonalSettingsType = {
   eventLogSize: 500,
   sendLogWithCrashReports: true,
   logLevel: ['Information', 'Warning', 'Error', 'Fatal'],
-  theme: 'light',
+  theme: prefersDark ? 'dark' : 'light',
   uploadHandlers: [
     'SenseNet.ContentRepository.File',
     'SenseNet.ContentRepository.Image',

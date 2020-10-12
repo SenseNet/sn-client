@@ -150,7 +150,8 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
                   onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => {
                     setAnchorEl(event.currentTarget)
                     setShowSelectType(true)
-                  }}>
+                  }}
+                  data-test="add-button">
                   <Add className={globalClasses.drawerButtonIcon} />
                 </IconButton>
               </span>
@@ -165,6 +166,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
                   setAnchorEl(event.currentTarget)
                   setShowSelectType(true)
                 }}
+                data-test="add-button"
                 disabled={true}>
                 <Add className={globalClasses.drawerButtonIcon} />
               </IconButton>
@@ -181,13 +183,14 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
           }}
           disabled={!isAvailable}>
           <ListItemIcon className={globalClasses.centeredHorizontal}>
-            <Tooltip title={localization.addNew} placement="right">
+            <Tooltip title={localization.addNew} placement="right" data-test="add-button">
               <span>
                 <IconButton
                   className={clsx(globalClasses.drawerButtonExpanded, {
                     [classes.addButtonDisabled]: !isAvailable,
                   })}
-                  disabled={!isAvailable}>
+                  disabled={!isAvailable}
+                  data-test="add-button">
                   <Add className={globalClasses.drawerButtonIcon} />
                 </IconButton>
               </span>
@@ -250,7 +253,8 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
                       action: 'new',
                       queryParams: { 'content-type': childType.ContentTypeName },
                     })
-                  }}>
+                  }}
+                  data-test="listitem">
                   <ListItemIcon style={{ minWidth: '36px' }}>
                     <Icon item={childType} />
                   </ListItemIcon>
