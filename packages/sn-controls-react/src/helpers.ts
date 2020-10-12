@@ -3,8 +3,16 @@ import { FieldSetting } from '@sensenet/default-content-types'
 /**
  * Search for '[Script:jScript]' tag in string and returns empty string when found
  */
-export const changeJScriptValue = (value: string | undefined) =>
-  value && (value.includes('[Script:jScript]') ? '' : value)
+
+export const changeTemplatedValue = (value: string | undefined, evaluatedValue?: string | undefined) => {
+  if (value?.includes('@@')) {
+    return evaluatedValue
+  } else if (value?.includes('[Script:jScript]')) {
+    return ''
+  } else {
+    return value
+  }
+}
 
 export const isFullWidthField = (field: { fieldSettings: FieldSetting }, contentType: string) => {
   return (

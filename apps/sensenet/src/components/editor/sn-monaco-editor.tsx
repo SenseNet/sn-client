@@ -16,6 +16,7 @@ const useStyles = makeStyles(() => {
       position: 'absolute',
       padding: '20px',
       bottom: 0,
+      left: 0,
       textAlign: 'right',
     },
     form: {
@@ -106,6 +107,7 @@ export const SnMonacoEditor: React.FunctionComponent<SnMonacoEditorProps> = (pro
         editorDidMount={(editor, monaco) => {
           if (!monaco.editor.getModel(props.uri)) {
             const m = monaco.editor.createModel(props.textValue, props.language, props.uri)
+            m.setEOL(0)
             editor.setModel(m)
           } else {
             editor.setModel(monaco.editor.getModel(props.uri))
