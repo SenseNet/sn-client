@@ -15,7 +15,7 @@ context('AddNew Menu', () => {
       'Event List',
       'Memo List',
       'Link List',
-      'Task List',
+      'Task list',
       'Custom List',
       'Workspace',
       'System Folder',
