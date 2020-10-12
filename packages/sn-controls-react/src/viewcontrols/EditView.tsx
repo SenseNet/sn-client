@@ -14,7 +14,7 @@ import MediaQuery from 'react-responsive'
 import { isFullWidthField } from '../helpers'
 import { reactControlMapper } from '../ReactControlMapper'
 
-const hasInputField = ['Name', 'FileName', 'ShortText', 'Autocomplete', 'Textarea', 'NumberComponent']
+const hasInputField = ['Name', 'FileName', 'ShortText', 'Autocomplete', 'Textarea', 'NumberComponent', 'RichTextEditor']
 
 /**
  * Interface for EditView properties
