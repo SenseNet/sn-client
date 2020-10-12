@@ -30,8 +30,6 @@ import { getUrlForContent, navigateToAction } from '../../services'
 import { useDialog } from '../dialogs'
 import { useViewControlStyles } from './common/styles'
 
-const permissionActionbuttonsWidth = 421
-
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     permissionEditorContainer: {
@@ -41,15 +39,14 @@ const useStyles = makeStyles((theme: Theme) => {
       display: 'flex',
       justifyContent: 'space-between',
       marginTop: '30px',
+      alignItems: 'center',
     },
     title: {
       fontSize: '20px',
       paddingRight: '10px',
-      width: `calc(100% - ${permissionActionbuttonsWidth}px)`,
       whiteSpace: 'nowrap',
       overflow: 'hidden',
       textOverflow: 'ellipsis',
-      margin: 'auto',
     },
     contentName: {
       fontWeight: 500,
@@ -80,6 +77,10 @@ const useStyles = makeStyles((theme: Theme) => {
       '&:hover': {
         backgroundColor: '#00838f',
       },
+    },
+    buttonWrapper: {
+      display: 'inline-flex',
+      whiteSpace: 'nowrap',
     },
   })
 })
@@ -175,7 +176,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
               <span className={classes.contentName}>{currentContent?.DisplayName}</span>
             </div>
           </Tooltip>
-          <div>
+          <div className={classes.buttonWrapper}>
             <Tooltip
               title={
                 isPrivate
