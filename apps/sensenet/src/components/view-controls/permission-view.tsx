@@ -39,11 +39,16 @@ const useStyles = makeStyles((theme: Theme) => {
       display: 'flex',
       justifyContent: 'space-between',
       marginTop: '30px',
+      alignItems: 'center',
     },
     title: {
       fontSize: '20px',
+      paddingRight: '10px',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
     },
-    textBolder: {
+    contentName: {
       fontWeight: 500,
     },
     listTitle: {
@@ -72,6 +77,10 @@ const useStyles = makeStyles((theme: Theme) => {
       '&:hover': {
         backgroundColor: '#00838f',
       },
+    },
+    buttonWrapper: {
+      display: 'inline-flex',
+      whiteSpace: 'nowrap',
     },
   })
 })
@@ -161,11 +170,13 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
     <>
       <div className={classes.permissionEditorContainer}>
         <div className={classes.titleContainer}>
-          <div className={classes.title}>
-            {localization.permissionEditor.setPermissons}{' '}
-            <span className={classes.textBolder}>{currentContent?.DisplayName}</span>
-          </div>
-          <div>
+          <Tooltip title={localization.permissionEditor.setPermissons + currentContent?.DisplayName} placement="top">
+            <div className={classes.title}>
+              <span>{localization.permissionEditor.setPermissons} </span>
+              <span className={classes.contentName}>{currentContent?.DisplayName}</span>
+            </div>
+          </Tooltip>
+          <div className={classes.buttonWrapper}>
             <Tooltip
               title={
                 isPrivate
