@@ -3,7 +3,7 @@
  */
 /** */
 
-import { Content, LoadCollectionOptions, LoadOptions, ODataParams } from '@sensenet/client-core'
+import { Content, LoadCollectionOptions, LoadOptions, MovedContent, ODataParams } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 
 /**
@@ -193,7 +193,7 @@ export interface ContentMoved {
   /**
    * The moved Content instance
    */
-  content: Content
+  content: MovedContent
 }
 
 /**

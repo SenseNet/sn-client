@@ -91,7 +91,15 @@ export const CurrentChildrenProvider: React.FunctionComponent<CurrentChildrenPro
       }),
       eventHub.onContentCreated.subscribe(handleCreate),
       eventHub.onContentCopied.subscribe(handleCreate),
-      eventHub.onContentMoved.subscribe(handleCreate),
+      eventHub.onContentMoved.subscribe((d) => {
+        if (
+          alwaysRefresh ||
+          PathHelper.isAncestorOf(currentContent.Path, d.content.Path) ||
+          PathHelper.getParentPath(d.content.OriginalPath) === PathHelper.trimSlashes(currentContent.Path)
+        ) {
+          requestReload()
+        }
+      }),
       eventHub.onContentModified.subscribe((mod) => {
         if (alwaysRefresh || mod.forceRefresh || children.some((c) => c.Id === mod.content.Id)) {
           requestReload()

@@ -143,7 +143,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                 } else {
                   if (
                     props.content.some((currentContent) =>
-                      PathHelper.isInSubTree(`${snRoute.path}${currentPath}`, currentContent.Path),
+                      PathHelper.isInSubTree(`${snRoute.path}${currentPath || ''}`, currentContent.Path),
                     )
                   ) {
                     navigateToAction({

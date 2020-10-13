@@ -171,13 +171,16 @@ export default function TreeWithData(props: TreeWithDataProps) {
   )
 
   const onDeleteContent = useCallback(
-    async (content: Content) => {
+    async (content: Content, pathInObject = 'Path') => {
       await lock.acquire()
       walkTree(treeData!, (node) => {
         if (node.Id === content.Id && treeData?.children?.length) {
           treeData.children = treeData.children.filter((n) => n.Id !== content.Id)
           setItemCount((itemCountTemp) => (itemCountTemp > 0 ? itemCountTemp - 1 : 0))
-        } else if (PathHelper.trimSlashes(node.Path) === PathHelper.getParentPath(content.Path)) {
+        } else if (
+          PathHelper.trimSlashes(node.Path) ===
+          PathHelper.getParentPath(content[pathInObject as keyof Content] as string)
+        ) {
           node.children = node.children?.filter((n) => n.Id !== content.Id)
         }
       })
@@ -219,7 +222,10 @@ export default function TreeWithData(props: TreeWithDataProps) {
     const subscriptions = [
       eventHub.onContentCreated.subscribe(handleCreate),
       eventHub.onContentCopied.subscribe(handleCreate),
-      eventHub.onContentMoved.subscribe(handleCreate),
+      eventHub.onContentMoved.subscribe((d) => {
+        handleCreate(d)
+        onDeleteContent(d.content, 'OriginalPath')
+      }),
       eventHub.onContentModified.subscribe(handleCreate),
       eventHub.onCustomActionExecuted.subscribe(async (event) => {
         if (event.actionOptions.name === 'Restore') {

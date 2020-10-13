@@ -306,7 +306,7 @@ export class EventHub implements Disposable {
           if (response.d.results.length) {
             for (const copied of response.d.results) {
               this.onContentMoved.setValue({
-                content: copied as Content,
+                content: copied,
               })
             }
           }
@@ -314,7 +314,7 @@ export class EventHub implements Disposable {
           if (response.d.errors.length) {
             for (const failed of response.d.errors) {
               this.onContentMoveFailed.setValue({
-                content: failed.content as Content,
+                content: failed.content,
                 error: failed.error,
               })
             }
