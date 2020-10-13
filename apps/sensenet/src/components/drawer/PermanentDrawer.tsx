@@ -150,7 +150,8 @@ export const PermanentDrawer = () => {
                     className={classes.listButton}
                     button={true}
                     key={index}
-                    selected={!!matchPath(location.pathname, item.url)}>
+                    selected={!!matchPath(location.pathname, item.url)}
+                    data-test={item.primaryText}>
                     <ListItemIcon
                       className={clsx(classes.listItemIconDark, globalClasses.centered, {
                         [classes.listItemIconLight]: personalSettings.theme === 'light',
