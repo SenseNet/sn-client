@@ -71,7 +71,7 @@ export default function WopiPage({ contentPath }: { contentPath?: string }) {
           }
           setError(errorMessage)
           logger.error({
-            message: `Error opening file for online editing`,
+            message: errorMessage,
             data: {
               details: { contentPath, action: routeMatch.params.action, e },
               isDismissed: true,
@@ -97,10 +97,7 @@ export default function WopiPage({ contentPath }: { contentPath?: string }) {
         <Typography variant="h4" gutterBottom={true}>
           {localization.errorOpeningFileTitle}
         </Typography>
-        <Typography gutterBottom={true}>
-          {localization.errorOpeningFileText} <br />
-          {error}
-        </Typography>
+        <Typography gutterBottom={true}>{error}</Typography>
         <>
           {routeMatch.params.action !== 'wopi-view' ? (
             <Button

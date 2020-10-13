@@ -68,7 +68,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
   const [allowedChildTypes, setAllowedChildTypes] = useState<Schema[]>([])
   const localization = useLocalization().addButton
   const logger = useLogger('AddButton')
-  const [isAvailable, setAvailable] = useState(true)
+  const [isAvailable, setAvailable] = useState(false)
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
   const [hasUpload, setHasUpload] = useState(false)
   const personalSettings = usePersonalSettings()

@@ -37,7 +37,7 @@ export function Approve(props: ApproveProps) {
       onActionSuccess?.(result.d)
       logger.information({ message: localization.rejectSuccess(name), data: result })
     } catch (error) {
-      logger.warning({ message: localization.rejectError, data: error })
+      logger.warning({ message: localization.rejectError, data: { details: { error } } })
     } finally {
       closeLastDialog()
     }
@@ -49,7 +49,7 @@ export function Approve(props: ApproveProps) {
       onActionSuccess?.(result.d)
       logger.information({ message: localization.approveSuccess(name), data: result })
     } catch (error) {
-      logger.warning({ message: localization.approveError, data: error })
+      logger.warning({ message: localization.approveError, data: { details: { error } } })
     } finally {
       closeLastDialog()
     }

@@ -46,10 +46,7 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
         message: localization.textEditor.saveSuccessNotification.replace('{0}', fileName),
         data: {
           relatedRepository: repo.configuration.repositoryUrl,
-          compare: {
-            old: savedTextValue,
-            new: textValue,
-          },
+          text: textValue,
         },
       })
       await repo.reloadSchema()

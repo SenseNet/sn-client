@@ -64,11 +64,11 @@ export const NotificationComponent: React.FunctionComponent = () => {
 
   return (
     <>
-      {values.map((value, index) => {
+      {values.map((value) => {
         const count = values.length
         return (
           <Snackbar
-            key={index}
+            key={JSON.stringify(value)}
             open={true}
             anchorOrigin={{
               vertical: 'bottom',

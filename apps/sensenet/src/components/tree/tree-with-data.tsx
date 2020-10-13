@@ -66,7 +66,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
         return result
       } catch (error) {
         if (!ac.signal.aborted) {
-          logger.warning({ message: `Couldn't load content for ${path}`, data: error })
+          logger.warning({ message: `Couldn't load containers for ${path}`, data: error })
         }
       } finally {
         onTreeLoadingChange?.(false)

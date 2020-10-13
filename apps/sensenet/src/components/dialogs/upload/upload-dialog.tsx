@@ -162,7 +162,7 @@ export function UploadDialog(props: UploadDialogProps) {
             requestInit: { signal: abortController.current.signal },
           })
     } catch (error) {
-      logger.error({ message: 'Upload failed', data: error })
+      logger.error({ message: 'Upload failed', data: { details: { error } } })
     } finally {
       setIsUploadInProgress(false)
     }

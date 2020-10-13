@@ -101,7 +101,7 @@ export const Avatar: React.FunctionComponent<ReactClientFieldSetting<ReferenceFi
         })
       }
     } catch (error) {
-      logger.error({ message: 'Something went wrong', data: error })
+      logger.error({ message: 'Something went wrong', data: { details: { error } } })
     }
   }
 

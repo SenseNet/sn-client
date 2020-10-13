@@ -52,7 +52,6 @@ export const VersionView: React.FC<VersionViewProps> = (props) => {
         selectionService.activeContent.setValue(orderedVersions[0])
         logger.verbose({ message: 'getVersions returned with', data: result })
       } catch (error) {
-        closeAllDialogs()
         logger.error({ message: localization.getVersionsError(props.contentPath!), data: error })
       }
     }
@@ -73,7 +72,7 @@ export const VersionView: React.FC<VersionViewProps> = (props) => {
           } catch (error) {
             logger.error({
               message: localization.restoreVersionError(name, selectedVersion.Version),
-              data: error,
+              data: { details: { error } },
             })
           } finally {
             closeAllDialogs()

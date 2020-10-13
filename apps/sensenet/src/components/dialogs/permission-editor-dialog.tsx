@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme: Theme) => {
       flex: 2,
     },
     dialogActions: {
+      marginTop: 'auto',
       padding: '16px',
     },
     secondaryListItem: {
@@ -393,12 +394,14 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
         </List>
         <div className={clsx(classes.column, classes.rightColumn)}>
           {actualGroup === 'Members' ? (
-            <PermissionEditorMembers
-              items={groupContent?.Members as User[]}
-              parent={groupContent!}
-              fieldName="Members"
-              canEdit={canEdit}
-            />
+            groupContent && (
+              <PermissionEditorMembers
+                items={groupContent.Members as User[]}
+                parent={groupContent}
+                fieldName="Members"
+                canEdit={canEdit}
+              />
+            )
           ) : (
             <List className={classes.permissionContainer}>
               {getPermissionsFromGroupName(actualGroup).map((selectedGroupPermission: keyof PermissionRequestBody) => {

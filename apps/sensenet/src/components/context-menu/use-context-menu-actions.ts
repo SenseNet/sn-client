@@ -85,7 +85,7 @@ export function useContextMenuActions(
         } catch (error) {
           logger.warning({
             message: `Couldn't check out ${getContentName()}`,
-            data: error,
+            data: { details: { error } },
           })
         }
         break
@@ -147,7 +147,7 @@ export function useContextMenuActions(
           logger.information({ message: `${getContentName()} published successfully.` })
           setActions(publishResult.d)
         } catch (error) {
-          logger.warning({ message: `Couldn't publish ${getContentName()}`, data: error })
+          logger.warning({ message: `Couldn't publish ${getContentName()}`, data: { details: { error } } })
         }
         break
       case 'UndoCheckOut':
@@ -156,7 +156,7 @@ export function useContextMenuActions(
           logger.information({ message: `${getContentName()} reverted successfully.` })
           setActions(undoCheckOutResult.d)
         } catch (error) {
-          logger.warning({ message: `Couldn't undo checkout for ${getContentName()}`, data: error })
+          logger.warning({ message: `Couldn't undo checkout for ${getContentName()}`, data: { details: { error } } })
         }
         break
       case 'Approve':

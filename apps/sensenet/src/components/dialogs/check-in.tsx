@@ -25,7 +25,7 @@ export function CheckIn({ content, onActionSuccess, oDataOptions }: CheckInProps
       onActionSuccess?.(result.d)
       logger.information({ message: localization.successMessage })
     } catch (error) {
-      logger.warning({ message: localization.errorMessage, data: error })
+      logger.warning({ message: localization.errorMessage, data: { details: { error } } })
     } finally {
       closeLastDialog()
     }
