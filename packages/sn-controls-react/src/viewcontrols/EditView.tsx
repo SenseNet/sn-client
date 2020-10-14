@@ -158,6 +158,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         <MediaQuery minDeviceWidth={700}>
           <Button
             aria-label={props.localization?.cancel || 'Cancel'}
+            data-test="cancel"
             color="default"
             className={props.classes?.cancel || defaultClasses.cancel}
             onClick={() => props.handleCancel?.()}>
