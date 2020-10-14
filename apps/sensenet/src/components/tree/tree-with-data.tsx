@@ -2,7 +2,6 @@ import { Content, ODataParams, ODataResponse } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
-import { Created } from '@sensenet/repository-events'
 import React, { useCallback, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { usePreviousValue, useSelectionService } from '../../hooks'
@@ -191,20 +190,26 @@ export default function TreeWithData(props: TreeWithDataProps) {
   )
 
   useEffect(() => {
-    const handleCreate = (c: Created) => {
+    const handleCreate = async (contents: Content[]) => {
       // we need to reset the lastRequest object so we can make the same request again to get updated data
       lastRequest = undefined
       if (
         treeData &&
-        ((c.content as GenericContent).ParentId === treeData?.Id ||
-          PathHelper.getParentPath(c.content.Path) === PathHelper.trimSlashes(treeData.Path))
+        contents.some(
+          (createdContent) =>
+            (createdContent as GenericContent).ParentId === treeData?.Id ||
+            PathHelper.getParentPath(createdContent.Path) === PathHelper.trimSlashes(treeData.Path),
+        )
       ) {
         openTree(true)
       } else {
         walkTree(treeData!, async (node) => {
           if (
-            (c.content as GenericContent).ParentId === node.Id ||
-            PathHelper.getParentPath(c.content.Path) === PathHelper.trimSlashes(node.Path)
+            contents.some(
+              (createdContent) =>
+                (createdContent as GenericContent).ParentId === node.Id ||
+                PathHelper.getParentPath(createdContent.Path) === PathHelper.trimSlashes(node.Path),
+            )
           ) {
             const result = await loadCollection(node.Path, ITEM_THRESHOLD, 0)
             if (!result) {
@@ -220,13 +225,15 @@ export default function TreeWithData(props: TreeWithDataProps) {
     }
 
     const subscriptions = [
-      eventHub.onContentCreated.subscribe(handleCreate),
-      eventHub.onContentCopied.subscribe(handleCreate),
-      eventHub.onContentMoved.subscribe((d) => {
-        handleCreate(d)
-        onDeleteContent(d.content, 'OriginalPath')
+      eventHub.onContentCreated.subscribe((created) => handleCreate([created.content])),
+      eventHub.onContentCopied.subscribe((copied) => handleCreate(copied.content)),
+      eventHub.onContentMoved.subscribe((moved) => {
+        handleCreate(moved.content)
+        moved.content.forEach((movedContent) => {
+          onDeleteContent(movedContent, 'OriginalPath')
+        })
       }),
-      eventHub.onContentModified.subscribe(handleCreate),
+      eventHub.onContentModified.subscribe((mod) => handleCreate([mod.content])),
       eventHub.onCustomActionExecuted.subscribe(async (event) => {
         if (event.actionOptions.name === 'Restore') {
           await lock.acquire()
@@ -242,20 +249,14 @@ export default function TreeWithData(props: TreeWithDataProps) {
           lock.release()
         }
       }),
-      eventHub.onContentDeleted.subscribe(async (d) => {
-        onDeleteContent(d.contentData)
-      }),
-      eventHub.onBatchDelete.subscribe((deletedDatas) => {
-        deletedDatas.contentDatas.forEach(async (d) => {
-          onDeleteContent(d)
-        })
+      eventHub.onContentDeleted.subscribe((del) => {
+        del.contentData.forEach((deletedContent) => onDeleteContent(deletedContent))
       }),
     ]
 
     return () => subscriptions.forEach((s) => s.dispose())
   }, [
     treeData,
-    eventHub.onBatchDelete,
     eventHub.onContentDeleted,
     eventHub.onContentCreated,
     eventHub.onContentCopied,

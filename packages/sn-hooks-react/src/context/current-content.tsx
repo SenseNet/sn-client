@@ -45,9 +45,9 @@ export const CurrentContentProvider: React.FunctionComponent<CurrentContentProvi
   const events = useRepositoryEvents()
 
   const onDeleteContent = useCallback(
-    async (contentParam: Content) => {
-      if (PathHelper.isInSubTree(content.Path, contentParam.Path)) {
-        const parentContent = await repo.load({ idOrPath: PathHelper.getParentPath(contentParam.Path) })
+    async (deleted: Content[]) => {
+      if (deleted.some((deletedContent) => PathHelper.isInSubTree(content.Path, deletedContent.Path))) {
+        const parentContent = await repo.load({ idOrPath: PathHelper.getParentPath(deleted[0].Path) })
         setContent(parentContent.d)
       }
     },
@@ -64,12 +64,9 @@ export const CurrentContentProvider: React.FunctionComponent<CurrentContentProvi
       events.onContentDeleted.subscribe(async (c) => {
         onDeleteContent(c.contentData)
       }),
-      events.onBatchDelete.subscribe(async (deletedDatas) => {
-        onDeleteContent(deletedDatas.contentDatas[deletedDatas.contentDatas.length - 1])
-      }),
     ]
     return () => subscriptions.forEach((s) => s.dispose())
-  }, [content.Id, onDeleteContent, events.onBatchDelete, events.onContentDeleted, events.onContentModified, repo])
+  }, [content.Id, onDeleteContent, events.onContentDeleted, events.onContentModified, repo])
 
   useEffect(() => {
     const ac = new AbortController()

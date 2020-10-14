@@ -13,7 +13,6 @@ import {
 import { Disposable, ObservableValue, Trace } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
-  BatchDeleted,
   ContentCopied,
   ContentCopyFailed,
   ContentMoved,
@@ -90,11 +89,6 @@ export class EventHub implements Disposable {
    * Triggered after deleting a Content
    */
   public readonly onContentDeleted = new ObservableValue<Deleted>()
-
-  /**
-   * Triggered after deleting more Contents
-   */
-  public readonly onBatchDelete = new ObservableValue<BatchDeleted>()
 
   /**
    * Triggered after deleting a content has been failed
@@ -212,15 +206,10 @@ export class EventHub implements Disposable {
         // handle DeleteBatch finished based on the response value
         onFinished: async (deletePromise) => {
           const response = await deletePromise.returned
-          if (response.d.results.length && response.d.results.length > 1) {
-            this.onBatchDelete.setValue({
-              permanently: (deletePromise.methodArguments[0] as DeleteOptions).permanent || false,
-              contentDatas: response.d.results,
-            })
-          } else {
+          if (response.d.results.length) {
             this.onContentDeleted.setValue({
               permanently: (deletePromise.methodArguments[0] as DeleteOptions).permanent || false,
-              contentData: response.d.results[0] as Content,
+              contentData: response.d.results,
             })
           }
 
@@ -261,12 +250,9 @@ export class EventHub implements Disposable {
         onFinished: async (copyPromise) => {
           const response = await copyPromise.returned
           if (response.d.results.length) {
-            for (const copied of response.d.results) {
-              this.onContentCopied.setValue({
-                content: copied as Content,
-                originalContent: copyPromise.methodArguments[0].idOrPath,
-              })
-            }
+            this.onContentCopied.setValue({
+              content: response.d.results,
+            })
           }
 
           if (response.d.errors.length) {
@@ -304,11 +290,7 @@ export class EventHub implements Disposable {
         onFinished: async (movePromise) => {
           const response = await movePromise.returned
           if (response.d.results.length) {
-            for (const copied of response.d.results) {
-              this.onContentMoved.setValue({
-                content: copied,
-              })
-            }
+            this.onContentMoved.setValue({ content: response.d.results })
           }
 
           if (response.d.errors.length) {

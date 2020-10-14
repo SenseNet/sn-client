@@ -20,10 +20,13 @@ export class Repository {
     console.log('copy')
   }
   move() {
-    console.log('move')
+    return this.content.map((c) => ({ ...c, OriginalPath: '/Root/Content' }))
   }
-  executeAction() {
-    console.log('executeAction')
+  executeAction(options: any) {
+    const restored = { Id: 2, Name: 'restored' }
+    if (options.name === 'Restore') {
+      this.content = [...this.content, restored]
+    }
   }
   load() {
     return { d: this.content[0] }
