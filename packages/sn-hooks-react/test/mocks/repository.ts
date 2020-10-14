@@ -19,8 +19,9 @@ export class Repository {
   copy() {
     console.log('copy')
   }
-  move() {
-    return this.content.map((c) => ({ ...c, OriginalPath: '/Root/Content' }))
+  move(content: any) {
+    this.content = this.content.filter((c) => c.Id !== content.Id)
+    return { d: { results: [content], errors: [] } }
   }
   executeAction(options: any) {
     const restored = { Id: 2, Name: 'restored' }
