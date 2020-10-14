@@ -1,4 +1,5 @@
 import { Repository } from '@sensenet/client-core'
+import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsContext,
@@ -73,7 +74,7 @@ export interface ContentListProps {
 }
 
 export const isReferenceField = (fieldName: string, repo: Repository, schema = 'GenericContent') => {
-  const refWhiteList = ['AllowedChildTypes', 'AllRoles']
+  const refWhiteList = ['AllowedChildTypes', 'AllRoles', 'Manager']
   const setting = repo.schemas.getSchemaByName(schema).FieldSettings.find((f) => f.Name === fieldName)
   return refWhiteList.indexOf(fieldName) !== -1 || (setting && setting.Type === 'ReferenceFieldSetting') || false
 }
@@ -140,7 +141,13 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
         ...fields.filter((fieldName) => isReferenceField(fieldName, repo, props.schema)),
         ...fields.reduce<any[]>((referenceFields, fieldName) => {
           if (fieldName.includes('/')) {
-            referenceFields.push(fieldName.split('/')[0])
+            const splittedFieldName = fieldName.split('/')
+            if (isReferenceField(splittedFieldName[splittedFieldName.length - 1], repo, props.schema)) {
+              referenceFields.findIndex((ref) => ref === fieldName) === -1 && referenceFields.push(fieldName)
+            } else {
+              referenceFields.findIndex((ref) => ref === PathHelper.getParentPath(fieldName)) === -1 &&
+                referenceFields.push(PathHelper.getParentPath(fieldName))
+            }
           }
           return referenceFields
         }, []),
@@ -356,7 +363,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
             <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
               <EnabledField
                 enabled={fieldOptions.rowData[fieldOptions.dataKey] as boolean}
-                description={fieldSettings.Description ?? ''}
+                description={(fieldSettings && fieldSettings.Description) ?? ''}
                 onChange={async (value: boolean) => {
                   try {
                     await repo.patch({
@@ -439,6 +446,48 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
     )
   }
 
+  const fieldReferenceFunc = ({ tableCellProps: fieldOptions, fieldSettings }: VirtualCellProps) => {
+    const splittedDatakey = fieldOptions.dataKey.split('/')
+    let displayField = fieldOptions.rowData[splittedDatakey[0]]
+
+    for (let i = 1; i < splittedDatakey.length - 1; i++) {
+      const newAttribute = splittedDatakey[i]
+      displayField = displayField[newAttribute as any]
+    }
+
+    const lastInReference = splittedDatakey[splittedDatakey.length - 1]
+    const cellData = isReferenceField(lastInReference, repo, props.schema)
+      ? displayField[lastInReference].DisplayName
+      : displayField[lastInReference]
+
+    const createdFieldOptions = {
+      columnIndex: fieldOptions.columnIndex,
+      dataKey: lastInReference,
+      isScrolling: fieldOptions.isScrolling,
+      rowData: {
+        [lastInReference]: cellData,
+        Id: displayField.Id,
+        Name: displayField.Name,
+        Type: displayField.Type,
+      },
+      cellData,
+      rowIndex: fieldOptions.rowIndex,
+    }
+
+    /*Object.assign(createdFieldOptions.rowData, {
+      [lastInReference]: cellData,
+    })*/
+
+    return fieldComponentFunc({
+      tableCellProps: createdFieldOptions,
+      fieldSettings: fieldSettings
+        ? repo.schemas
+            .getSchemaByName(lastInReference)
+            .FieldSettings.find((setting) => setting.Name === lastInReference)!
+        : fieldSettings,
+    })
+  }
+
   const menuPropsObj = {
     disablePortal: true,
     anchorReference: 'anchorPosition' as 'anchorPosition',
@@ -477,12 +526,9 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
             active={activeContent}
             checkboxProps={{ color: 'primary' }}
             cellRenderer={fieldComponentFunc}
+            referenceCellRenderer={fieldReferenceFunc}
             displayRowCheckbox={!props.disableSelection}
-            fieldsToDisplay={
-              (props.fieldsToDisplay?.map((field) => field.split('/')[0]) ||
-                personalSettings.content.fields ||
-                displayNameInArray) as any
-            }
+            fieldsToDisplay={(props.fieldsToDisplay || personalSettings.content.fields || displayNameInArray) as any}
             getSelectionControl={getSelectionControl}
             items={children}
             onRequestOrderChange={onRequestOrderChangeFunc}
