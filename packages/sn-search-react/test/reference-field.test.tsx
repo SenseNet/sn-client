@@ -80,8 +80,8 @@ describe('ReferenceField Component', () => {
     )
   })
 
-  it('Text change should trigger the fetchItems method', (done) => {
-    const instance = shallow(
+  it('Text change should trigger the fetchItems method', async (done) => {
+    const instance = mount(
       <ReferenceField<GenericContent>
         fieldName="CreatedBy"
         fieldSetting={exampleFieldSetting}
@@ -93,15 +93,10 @@ describe('ReferenceField Component', () => {
         onQueryChange={jest.fn()}
       />,
     )
-    instance
-      .find(Autosuggest)
-      .props()
-      .inputProps.onChange(
-        {
-          target: { value: 'a' },
-        } as any,
-        { method: 'type', newValue: 'a' },
-      )
+
+    await act(async () => {
+      instance.find('input').simulate('change', { target: { value: 'a' } })
+    })
   })
 
   describe('Queries', () => {
