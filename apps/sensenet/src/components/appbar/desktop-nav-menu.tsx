@@ -117,33 +117,6 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
     setter(false)
   }
 
-  function handleListKeyDown(event: React.KeyboardEvent) {
-    if (event.key === 'Tab') {
-      event.preventDefault()
-      setOpenUserMenu(false)
-      setOpenHelpMenu(false)
-    }
-  }
-
-  const prevUserOpen = useRef(openUserMenu)
-  const prevHelpOpen = useRef(openHelpMenu)
-
-  useEffect(() => {
-    if (prevUserOpen.current === true && openUserMenu === false) {
-      userMenuRef.current!.focus()
-    }
-
-    prevUserOpen.current = openUserMenu
-  }, [openUserMenu])
-
-  useEffect(() => {
-    if (prevHelpOpen.current === true && openHelpMenu === false) {
-      helpRef.current!.focus()
-    }
-
-    prevHelpOpen.current = openHelpMenu
-  }, [openHelpMenu])
-
   const logout = (event: React.MouseEvent<EventTarget>) => {
     openDialog({ name: 'logout' })
     handleClose(event, userMenuRef, setOpenUserMenu)
@@ -196,7 +169,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
         <Paper className={classes.popperUserWrapper}>
           <div className={classes.popper}>
             <ClickAwayListener onClickAway={(event) => handleClose(event, userMenuRef, setOpenUserMenu)}>
-              <MenuList autoFocusItem={openUserMenu} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+              <MenuList autoFocusItem={openUserMenu} id="menu-list-grow">
                 <MenuItem onClick={(event) => handleClose(event, userMenuRef, setOpenUserMenu)}>
                   <ListItemIcon className={classes.listItemIcon}>
                     <UserAvatar
@@ -247,7 +220,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
         <Paper className={classes.popperHelpWrapper}>
           <div className={classes.popper}>
             <ClickAwayListener onClickAway={(event) => handleClose(event, helpRef, setOpenHelpMenu)}>
-              <MenuList autoFocusItem={openHelpMenu} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+              <MenuList autoFocusItem={openHelpMenu} id="menu-list-grow">
                 <Link href="https://docs.sensenet.com/" target="_blank">
                   <MenuItem
                     onClick={(event) => handleClose(event, helpRef, setOpenHelpMenu)}
