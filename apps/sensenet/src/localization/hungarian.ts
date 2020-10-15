@@ -185,7 +185,7 @@ const values: DeepPartial<typeof import('./default').default> = {
     typeIn: 'Írj be egy nevet',
   },
   feedback: {
-    title: 'Küldjön visszajelzést vagy javasoljon új ötletet',
+    title: 'Küldj nekünk visszajelzést vagy új ötletet',
     feedbackText1: (link: string) =>
       `Mi egy publikus ${link}-ot használunk a visszajelzések és az új ötletek menedzselésére.`,
     feedbackText2:
