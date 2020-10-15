@@ -5,7 +5,7 @@
 import { changeTemplatedValue, quillRegister } from '@sensenet/controls-react'
 import { createStyles, InputLabel, makeStyles, Theme } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { useLocalization } from '../../../hooks'
@@ -71,11 +71,16 @@ export const RichTextEditor: React.FC<ReactClientFieldSetting> = (props) => {
   const [value, setValue] = useState(initialState)
   const classes = useStyles()
   const localization = useLocalization().forms
+  const quillRef = useRef<ReactQuill>(null)
 
   const handleChange = (changedValue: string) => {
     setValue(changedValue)
     props.fieldOnChange && props.fieldOnChange(props.settings.Name, changedValue)
   }
+
+  useEffect(() => {
+    props.autoFocus && quillRef.current?.focus()
+  }, [props.autoFocus])
 
   switch (props.actionName) {
     case 'new':
@@ -94,6 +99,7 @@ export const RichTextEditor: React.FC<ReactClientFieldSetting> = (props) => {
             onChange={handleChange}
             value={value}
             theme="snow"
+            ref={quillRef}
           />
         </div>
       )

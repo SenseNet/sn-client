@@ -56,6 +56,7 @@ export const NumberComponent: React.FC<ReactClientFieldSetting<NumberFieldSettin
     case 'new':
       return (
         <TextField
+          autoFocus={props.autoFocus}
           name={props.settings.Name}
           type="number"
           label={props.settings.DisplayName}
