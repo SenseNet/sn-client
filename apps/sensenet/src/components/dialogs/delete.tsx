@@ -40,6 +40,8 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
   const selectionService = useSelectionService()
   const snRoute = useSnRoute()
   const currentPath = useQuery().get('path')
+  const hasUserOrGroupContent =
+    props.content.findIndex((content) => content.Type === 'User' || content.Type === 'Group') !== -1
 
   return (
     <>
@@ -60,10 +62,15 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
             </ListItem>
           ))}
         </List>
+        {hasUserOrGroupContent && <Typography>{localization.additionalTextForUsers}</Typography>}
         {isDeleteInProgress ? <LinearProgress /> : null}
       </DialogContent>
-      <DialogActions style={{ display: 'flex', justifyContent: isTrashBag ? 'flex-end' : 'space-between' }}>
-        {!isTrashBag ? (
+      <DialogActions
+        style={{
+          display: 'flex',
+          justifyContent: isTrashBag || hasUserOrGroupContent ? 'flex-end' : 'space-between',
+        }}>
+        {!isTrashBag && !hasUserOrGroupContent ? (
           <>
             <Tooltip title={localization.permanentlyHint}>
               <FormControlLabel

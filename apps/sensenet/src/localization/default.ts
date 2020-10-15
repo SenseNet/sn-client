@@ -79,6 +79,8 @@ const values = {
     deleteSingleContentFailedNotification: `There was an error deleting content '{0}': {1}`,
     deleteMultipleContentFailedNotification: `There was an error deleting {0} content.`,
     deleteFailedNotification: `There was an error during content deletion.`,
+    additionalTextForUsers:
+      'Users and groups cannot be moved to the trash, they are always permanently deleted from the system. For "soft deleting" users go to Users & groups and use the enable/disable switch.',
   },
   copyMoveContentDialog: {
     copy: {
