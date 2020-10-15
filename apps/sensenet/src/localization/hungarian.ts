@@ -187,7 +187,7 @@ const values: DeepPartial<typeof import('./default').default> = {
   feedback: {
     title: 'Küldj nekünk visszajelzést vagy új ötletet',
     feedbackText1: (link: string) =>
-      `Mi egy publikus ${link}-ot használunk a visszajelzések és az új ötletek menedzselésére.`,
+      `A visszajelzések és ötletek menedzselésére egy publikus ${link}-ot használunk.`,
     feedbackText2:
       'Új visszajelzés hozzáadásához egyszerűen küldjön egy e-mailt az alábbi címre, amelyben leírja javaslatát. </br> (email tárgya - a visszajelzés tárgya; email tartalma - visszajelzés leírása)',
     feedbackText3: (link: string) =>
