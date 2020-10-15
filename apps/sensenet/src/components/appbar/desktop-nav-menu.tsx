@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
     iconButton: {
       padding: '0',
     },
-    popperLogoutWrapper: {
+    popperUserWrapper: {
       position: 'absolute',
       top: globals.common.headerHeight,
       right: '1px',
@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme: Theme) =>
       height: '35px',
       minWidth: '35px',
     },
-    logoutMenuItem: {
+    userMenuItem: {
       textDecoration: 'underline',
       color: theme.palette.primary.main,
       fontSize: '14px',
@@ -96,9 +96,9 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   const repo = useRepository()
   const localization = useLocalization()
   const { openDialog } = useDialog()
-  const [openLogoutMenu, setOpenLogoutMenu] = useState(false)
+  const [openUserMenu, setOpenUserMenu] = useState(false)
   const [openHelpMenu, setOpenHelpMenu] = useState(false)
-  const logoutRef = useRef<HTMLButtonElement>(null)
+  const userMenuRef = useRef<HTMLButtonElement>(null)
   const helpRef = useRef<HTMLButtonElement>(null)
 
   const handleToggle = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
@@ -120,21 +120,21 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   function handleListKeyDown(event: React.KeyboardEvent) {
     if (event.key === 'Tab') {
       event.preventDefault()
-      setOpenLogoutMenu(false)
+      setOpenUserMenu(false)
       setOpenHelpMenu(false)
     }
   }
 
-  const prevLogoutOpen = useRef(openLogoutMenu)
+  const prevUserOpen = useRef(openUserMenu)
   const prevHelpOpen = useRef(openHelpMenu)
 
   useEffect(() => {
-    if (prevLogoutOpen.current === true && openLogoutMenu === false) {
-      logoutRef.current!.focus()
+    if (prevUserOpen.current === true && openUserMenu === false) {
+      userMenuRef.current!.focus()
     }
 
-    prevLogoutOpen.current = openLogoutMenu
-  }, [openLogoutMenu])
+    prevUserOpen.current = openUserMenu
+  }, [openUserMenu])
 
   useEffect(() => {
     if (prevHelpOpen.current === true && openHelpMenu === false) {
@@ -146,7 +146,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
 
   const logout = (event: React.MouseEvent<EventTarget>) => {
     openDialog({ name: 'logout' })
-    handleClose(event, logoutRef, setOpenLogoutMenu)
+    handleClose(event, userMenuRef, setOpenUserMenu)
   }
 
   const feedback = (event: React.MouseEvent<EventTarget>) => {
@@ -164,7 +164,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
       <IconButton
         aria-label={localization.topMenu.openHelpMenu}
         ref={helpRef}
-        aria-controls={openLogoutMenu ? 'menu-list-grow' : undefined}
+        aria-controls={openUserMenu ? 'menu-list-grow' : undefined}
         aria-haspopup="true"
         onClick={() => handleToggle(setOpenHelpMenu)}
         className={classes.iconButton}
@@ -183,21 +183,21 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
           }}
         />
         <IconButton
-          aria-label={localization.topMenu.openLogoutMenu}
-          ref={logoutRef}
-          aria-controls={openLogoutMenu ? 'menu-list-grow' : undefined}
+          aria-label={localization.topMenu.openUserMenu}
+          ref={userMenuRef}
+          aria-controls={openUserMenu ? 'menu-list-grow' : undefined}
           aria-haspopup="true"
-          onClick={() => handleToggle(setOpenLogoutMenu)}
+          onClick={() => handleToggle(setOpenUserMenu)}
           className={classes.iconButton}>
           <KeyboardArrowDown className={classes.icon} />
         </IconButton>
       </>
-      {openLogoutMenu ? (
-        <Paper className={classes.popperLogoutWrapper}>
+      {openUserMenu ? (
+        <Paper className={classes.popperUserWrapper}>
           <div className={classes.popper}>
-            <ClickAwayListener onClickAway={(event) => handleClose(event, logoutRef, setOpenLogoutMenu)}>
-              <MenuList autoFocusItem={openLogoutMenu} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                <MenuItem onClick={(event) => handleClose(event, logoutRef, setOpenLogoutMenu)}>
+            <ClickAwayListener onClickAway={(event) => handleClose(event, userMenuRef, setOpenUserMenu)}>
+              <MenuList autoFocusItem={openUserMenu} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                <MenuItem onClick={(event) => handleClose(event, userMenuRef, setOpenUserMenu)}>
                   <ListItemIcon className={classes.listItemIcon}>
                     <UserAvatar
                       style={{
@@ -223,7 +223,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                     primary={`${currentUser.DisplayName || currentUser.Name}`}
                   />
                 </MenuItem>
-                <MenuItem onClick={logout} className={classes.logoutMenuItem}>
+                <MenuItem onClick={logout} className={classes.userMenuItem}>
                   {localization.topMenu.logout}
                 </MenuItem>
                 <MenuItem>
