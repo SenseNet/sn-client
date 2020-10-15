@@ -88,7 +88,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
         logger.error({
           message: localization.errorGettingActions,
           data: {
-            details: { error },
+            error,
           },
         })
       }
@@ -120,7 +120,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
         logger.error({
           message: localization.errorGettingAllowedContentTypes,
           data: {
-            details: { error },
+            error,
           },
         })
       }

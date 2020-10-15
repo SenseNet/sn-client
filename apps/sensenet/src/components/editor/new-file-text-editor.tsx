@@ -46,7 +46,9 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
         message: localization.textEditor.saveSuccessNotification.replace('{0}', fileName),
         data: {
           relatedRepository: repo.configuration.repositoryUrl,
-          text: textValue,
+          details: {
+            text: textValue,
+          },
         },
       })
       await repo.reloadSchema()
@@ -57,7 +59,7 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
       logger.error({
         message: localization.textEditor.saveFailedNotification.replace('{0}', fileName),
         data: {
-          details: { error: err },
+          error: err,
         },
       })
     }

@@ -66,8 +66,10 @@ export const EditView: React.FC<EditViewProps> = (props) => {
           ),
           data: {
             relatedContent: content,
-            content: response,
             relatedRepository: repository.configuration.repositoryUrl,
+            details: {
+              edited: response,
+            },
           },
         })
         props.submitCallback?.()
@@ -80,9 +82,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
           data: {
             relatedContent: content,
             relatedRepository: repository.configuration.repositoryUrl,
-            details: {
-              error: isExtendedError(error) ? repository.getErrorFromResponse(error.response) : error,
-            },
+            error: isExtendedError(error) ? repository.getErrorFromResponse(error.response) : error,
           },
         })
       }

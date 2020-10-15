@@ -73,7 +73,8 @@ export default function WopiPage({ contentPath }: { contentPath?: string }) {
           logger.error({
             message: errorMessage,
             data: {
-              details: { contentPath, action: routeMatch.params.action, e },
+              error: e,
+              details: { contentPath, action: routeMatch.params.action },
               isDismissed: true,
             },
           })

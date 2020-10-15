@@ -72,7 +72,7 @@ export const VersionView: React.FC<VersionViewProps> = (props) => {
           } catch (error) {
             logger.error({
               message: localization.restoreVersionError(name, selectedVersion.Version),
-              data: { details: { error } },
+              data: { error },
             })
           } finally {
             closeAllDialogs()

@@ -121,7 +121,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
         logger.error({
           message: localization.permissionEditor.errorGetAcl,
           data: {
-            details: { error },
+            error,
           },
         })
       }
@@ -195,7 +195,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                       logger.error({
                         message: error.message,
                         data: {
-                          details: { error },
+                          error,
                         },
                       })
                       return false

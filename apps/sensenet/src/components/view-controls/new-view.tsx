@@ -50,7 +50,7 @@ export const NewView: React.FC<NewViewProps> = (props) => {
       logger.error({
         message: localization.addButton.errorPostingContentNotification,
         data: {
-          details: { error },
+          error,
         },
       })
     }

@@ -71,6 +71,7 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
         message: localization.referenceContentListDialog.errorAlreadyInList,
         data: {
           relatedContent: newReference,
+          relatedRepository: repository.configuration.repositoryUrl,
         },
       })
     }

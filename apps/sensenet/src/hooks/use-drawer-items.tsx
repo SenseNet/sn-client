@@ -197,7 +197,7 @@ export const useDrawerItems = () => {
           logger.debug({
             message: error.message,
             data: {
-              details: { error },
+              error,
             },
           })
           return false

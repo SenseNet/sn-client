@@ -120,7 +120,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
         logger.error({
           message: localization.permissionEditor.errorGetPermissionSetting,
           data: {
-            details: { error },
+            error,
           },
         })
       }
@@ -166,7 +166,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
         logger.error({
           message: localization.permissionEditor.errorGetMembersInfo,
           data: {
-            details: { error },
+            error,
           },
         })
       }
@@ -467,7 +467,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                   logger.error({
                     message: error.message,
                     data: {
-                      details: { error },
+                      error,
                     },
                   })
                   return false
