@@ -41,19 +41,18 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
   const [requestClearToken, setRequestClearToken] = useState<number>()
   const pagination = usePagination({ items: references, color: 'primary' })
 
-  const fieldControl = createElement(
-    controlMapper.getControlForContentField(props.parent.Type, props.fieldName, 'new'),
-    {
-      repository,
-      settings: field!.fieldSettings,
-      content: props.parent,
-      actionName: 'new',
-      fieldOnChange: (_, value: GenericContent) => {
-        setNewReference(value)
-      },
-      triggerClear: requestClearToken,
-    },
-  )
+  const fieldControl = field
+    ? createElement(controlMapper.getControlForContentField(props.parent.Type, props.fieldName, 'edit'), {
+        repository,
+        settings: field.fieldSettings,
+        content: props.parent,
+        actionName: 'new',
+        fieldOnChange: (_, value: GenericContent) => {
+          setNewReference(value)
+        },
+        triggerClear: requestClearToken,
+      })
+    : null
 
   const handleAddMembers = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -81,7 +80,7 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
 
   return (
     <>
-      {props.canEdit && (
+      {props.canEdit && fieldControl && (
         <form
           className={globalClasses.centeredVertical}
           style={{
@@ -119,7 +118,7 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText primary={item.DisplayName} />
-                  {props.canEdit && (
+                  {props.canEdit && fieldControl && (
                     <ListItemSecondaryAction>
                       <IconButton
                         edge="end"
