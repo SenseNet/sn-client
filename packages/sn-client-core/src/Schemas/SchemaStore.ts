@@ -63,6 +63,24 @@ export class SchemaStore {
   }
 
   /**
+   * Returns the Field Type for the provided content field name
+   * @param {string} fieldName The name of field you search for
+   */
+  public getFieldSettingByFieldName(fieldName: string): FieldSetting | undefined {
+    let selectedFieldSetting
+
+    this.schemas.getValue().forEach((schema) => {
+      schema.FieldSettings.forEach((fieldSetting) => {
+        if (fieldSetting.Name === fieldName) {
+          selectedFieldSetting = fieldSetting
+        }
+      })
+    })
+
+    return selectedFieldSetting
+  }
+
+  /**
    * Returns a boolean value that indicates if the specified content is an instance or descendant of a given content type
    * @param content The given content to check
    * @param contentTypeName The name of content type

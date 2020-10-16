@@ -73,9 +73,9 @@ export interface ContentListProps {
   containerProps?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 }
 
-export const isReferenceField = (fieldName: string, repo: Repository, schema = 'GenericContent') => {
-  const refWhiteList = ['AllowedChildTypes', 'AllRoles', 'Manager']
-  const setting = repo.schemas.getSchemaByName(schema).FieldSettings.find((f) => f.Name === fieldName)
+export const isReferenceField = (fieldName: string, repo: Repository) => {
+  const refWhiteList = ['AllowedChildTypes', 'AllRoles']
+  const setting = repo.schemas.getFieldSettingByFieldName(fieldName)
   return (
     refWhiteList.some((field) => field === fieldName) || (setting && setting.Type === 'ReferenceFieldSetting') || false
   )
@@ -140,12 +140,12 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
       ...loadSettings.loadChildrenSettings,
       expand: [
         'CheckedOutTo',
-        ...fields.filter((fieldName) => isReferenceField(fieldName, repo, props.schema)),
+        ...fields.filter((fieldName) => isReferenceField(fieldName, repo)),
         ...fields.reduce<any[]>((referenceFields, fieldName) => {
           if (fieldName.includes('/')) {
             const splittedFieldName = fieldName.split('/')
-            //TODO: If the backend can ingore expanding "not expandable fields" than should push the field instead in every cases"
-            if (isReferenceField(splittedFieldName[splittedFieldName.length - 1], repo, props.schema)) {
+            repo.schemas.getFieldSettingByFieldName(splittedFieldName[splittedFieldName.length - 1])
+            if (isReferenceField(splittedFieldName[splittedFieldName.length - 1], repo)) {
               !referenceFields.find((ref) => ref === fieldName) && referenceFields.push(fieldName)
             } else {
               !referenceFields.find((ref) => ref === PathHelper.getParentPath(fieldName)) &&
@@ -416,7 +416,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
 
     if (
       typeof fieldOptions.rowData[fieldOptions.dataKey] === 'object' &&
-      isReferenceField(fieldOptions.dataKey, repo, props.schema || fieldOptions.rowData.Type)
+      isReferenceField(fieldOptions.dataKey, repo)
     ) {
       const expectedContent = fieldOptions.rowData[fieldOptions.dataKey] as GenericContent
       if (
@@ -456,7 +456,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
       if (!acc[curr]) {
         arr.length = 0
         return null
-      } else if (!isReferenceField(curr, repo, acc.Type)) {
+      } else if (!isReferenceField(curr, repo)) {
         arr.length = 0
         return acc
       }
@@ -464,7 +464,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
     }, fieldOptions.rowData)
 
     const cellData = displayField
-      ? isReferenceField(lastInReference, repo, displayField.Type)
+      ? isReferenceField(lastInReference, repo)
         ? displayField.DisplayName
         : displayField[lastInReference]
       : displayField
@@ -485,11 +485,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
 
     return fieldComponentFunc({
       tableCellProps: createdFieldOptions,
-      fieldSettings: fieldSettings
-        ? repo.schemas
-            .getSchemaByName(lastInReference)
-            .FieldSettings.find((setting) => setting.Name === lastInReference)!
-        : fieldSettings,
+      fieldSettings: fieldSettings ? repo.schemas.getFieldSettingByFieldName(lastInReference)! : fieldSettings,
     })
   }
 
