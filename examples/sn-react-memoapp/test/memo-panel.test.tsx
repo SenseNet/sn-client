@@ -1,7 +1,7 @@
 import { Repository } from '@sensenet/client-core'
 import { RepositoryContext } from '@sensenet/hooks-react'
 import { Fab, TextField } from '@material-ui/core'
-import ExpansionPanel from '@material-ui/core/ExpansionPanel'
+import Accordion from '@material-ui/core/Accordion'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
@@ -32,7 +32,7 @@ describe('The main memo panel instance', () => {
       )
     })
 
-    const memoListElement = wrapper.update().find('div.MuiExpansionPanelSummary-content p').at(0)
+    const memoListElement = wrapper.update().find('div.MuiAccordionSummary-content p').at(0)
     expect(memoListElement.text()).toContain(TestMemoCollection[0].DisplayName)
   })
 
@@ -56,7 +56,7 @@ describe('The main memo panel instance', () => {
       ;(wrapper.update().find(AddNew).prop('onCreate') as any)(TestNewMemo)
     })
 
-    const memoListElement = wrapper.update().find('div.MuiExpansionPanelSummary-content').at(0)
+    const memoListElement = wrapper.update().find('div.MuiAccordionSummary-content').at(0)
 
     expect(memoListElement.text()).toContain(TestNewMemo.DisplayName)
   })
@@ -104,7 +104,7 @@ describe('The main memo panel instance', () => {
     })
 
     act(() => {
-      ;(wrapper.update().find(ExpansionPanel).first().prop('onChange') as any)(TestMemoCollection[0])
+      ;(wrapper.update().find(Accordion).first().prop('onChange') as any)(TestMemoCollection[0])
     })
 
     act(() => {

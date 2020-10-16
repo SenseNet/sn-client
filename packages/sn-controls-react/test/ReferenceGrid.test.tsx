@@ -40,8 +40,8 @@ const userContent = {
 }
 
 const repository: any = {
-  load: jest.fn(() => {
-    return { d: { results: [userContent, { Id: 2123, Name: 'Jon Doe', Type: 'User', Path: '/' }] } }
+  load: jest.fn((props) => {
+    return { d: userContent }
   }),
   loadCollection: () => {
     return { d: { results: [] } }
@@ -93,8 +93,8 @@ describe('Reference grid field control', () => {
         <ReferenceGrid actionName="edit" repository={repository} settings={{ ...defaultSettings, ReadOnly: true }} />,
       )
       await sleepAsync(0)
-      // if readonly were false then the length would be 3 because of the add reference row
-      expect(wrapper.find(DefaultItemTemplate)).toHaveLength(2)
+      // if readonly were false then the length would be 2 because of the add reference row
+      expect(wrapper.find(DefaultItemTemplate)).toHaveLength(1)
     })
 
     it('should handle item deletion from the list', async () => {
@@ -113,8 +113,8 @@ describe('Reference grid field control', () => {
       const remove = updatedWrapper.find(DefaultItemTemplate).first().prop('remove')
       remove && remove(4804)
       expect(fieldOnChange).toBeCalled()
-      // To have a length 2 means that add reference row is there as well
-      expect(updatedWrapper.update().find(DefaultItemTemplate)).toHaveLength(2)
+      // To have a length 1 means that add reference row is remained there
+      expect(updatedWrapper.update().find(DefaultItemTemplate)).toHaveLength(1)
     })
 
     it('should allow user to add a new row, when allow multiple is true', async () => {
@@ -139,7 +139,7 @@ describe('Reference grid field control', () => {
 
       wrapper.find(Dialog).find(Button).first().simulate('click')
       expect(fieldOnChange).toBeCalled()
-      expect(wrapper.find(DefaultItemTemplate)).toHaveLength(4)
+      expect(wrapper.find(DefaultItemTemplate)).toHaveLength(3)
     })
 
     it('should remove all the items when a new item is selected with allow multiple false', async () => {
