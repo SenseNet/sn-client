@@ -173,10 +173,13 @@ export const pathHelperTests = describe('PathHelper', () => {
       expect(PathHelper.getSegments("/Root/Example('Content1')")).toEqual(['Root', 'Example', "('Content1')"])
     })
     it('Should split the path to segments', () => {
-      expect(PathHelper.getSegments('/Root/Example(123)')).toEqual(['Root', 'Example', '(123)'])
+      expect(PathHelper.getSegments('/Root/Example(123)')).toEqual(['Root', 'Example(123)'])
     })
     it('Should split the path to segments', () => {
       expect(PathHelper.getSegments('/Root/Example/100pages(3).pdf')).toEqual(['Root', 'Example', '100pages(3).pdf'])
+    })
+    it('Should split the path to segments', () => {
+      expect(PathHelper.getSegments('/content(123)')).toEqual([])
     })
     it('should throw an error if the path is /', () => {
       expect(() => PathHelper.getSegments('/')).toThrow()
@@ -195,8 +198,20 @@ export const pathHelperTests = describe('PathHelper', () => {
       expect(PathHelper.getParentPath("Root/Example('Content')")).toBe('Root/Example')
     })
 
+    it('Should return the parent path in case of more than 1 segments with item path', () => {
+      expect(PathHelper.getParentPath('Root/Memo/Test(1)')).toBe('Root/Memo')
+    })
+
     it('Should return the path in case of 1 segments', () => {
       expect(PathHelper.getParentPath('Root')).toBe('Root')
+    })
+
+    it('Should return the path in case of 1 segments', () => {
+      expect(PathHelper.getParentPath('content(123)')).toBe('')
+    })
+
+    it('Should return the path in case of 1 segments', () => {
+      expect(PathHelper.getParentPath('/content(123)')).toBe('')
     })
   })
 })

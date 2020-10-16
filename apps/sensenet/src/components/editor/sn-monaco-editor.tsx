@@ -107,6 +107,7 @@ export const SnMonacoEditor: React.FunctionComponent<SnMonacoEditorProps> = (pro
         editorDidMount={(editor, monaco) => {
           if (!monaco.editor.getModel(props.uri)) {
             const m = monaco.editor.createModel(props.textValue, props.language, props.uri)
+            m.setEOL(0)
             editor.setModel(m)
           } else {
             editor.setModel(monaco.editor.getModel(props.uri))

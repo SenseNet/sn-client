@@ -39,6 +39,11 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
   useEffect(() => {
     if (configString) {
       const prevAuthConfig = JSON.parse(configString)
+
+      if (repoFromUrl && prevAuthConfig.extraQueryParams.snrepo !== repoFromUrl) {
+        return setAuthState({ repoUrl: repoFromUrl, config: null })
+      }
+
       setAuthState((oldState) => ({
         repoUrl: prevAuthConfig?.extraQueryParams.snrepo || '',
         config: prevAuthConfig?.extraQueryParams.snrepo === oldState.repoUrl ? prevAuthConfig : null,
