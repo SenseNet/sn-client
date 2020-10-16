@@ -28,6 +28,7 @@ export interface ReferenceFieldProps<T> {
   renderSuggestion?: RenderSuggestion<T>
   autoSuggestProps?: Partial<AutosuggestPropsSingleSection<T>>
   triggerClear?: number
+  autoFocus?: boolean
 }
 
 /**
@@ -177,6 +178,7 @@ export function ReferenceField<T extends GenericContent>(props: ReferenceFieldPr
           description={description}
           helperText={helperText}
           inputProps={inputComponentProps}
+          autoFocus={props.autoFocus}
         />
       )}
       renderSuggestionsContainer={ReferenceFieldContainer}

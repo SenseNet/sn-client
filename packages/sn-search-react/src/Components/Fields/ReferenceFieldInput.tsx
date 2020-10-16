@@ -7,6 +7,7 @@ type ReferenceFieldInputProps = {
   displayName?: string
   helperText?: string
   description?: string
+  autoFocus?: boolean
 }
 /**
  * Default Input field for Reference picker
@@ -15,6 +16,7 @@ export const ReferenceFieldInput = (props: ReferenceFieldInputProps) => {
   const { description, displayName, helperText, inputProps } = props
   return (
     <TextField
+      autoFocus={props.autoFocus}
       type="text"
       label={displayName}
       placeholder={displayName}

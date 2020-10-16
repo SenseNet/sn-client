@@ -2,28 +2,32 @@ import { useInjector } from '@sensenet/hooks-react'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
 import zIndex from '@material-ui/core/styles/zIndex'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
 import React, { useEffect, useMemo, useState } from 'react'
 import { usePersonalSettings } from '../hooks'
 import { PersonalSettings } from '../services'
 import { ThemeContext } from './ThemeContext'
 
 export const ThemeProvider: React.FunctionComponent = (props) => {
-  const preferredType = useMediaQuery('(prefers-color-scheme: dark)') ? 'dark' : 'light'
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
   const personalSettings = usePersonalSettings()
   const di = useInjector()
   const settingsService = di.getInstance(PersonalSettings)
-  const [pageTheme, setPageTheme] = useState<'light' | 'dark'>(preferredType)
+  const [pageTheme, setPageTheme] = useState<'light' | 'dark'>(prefersDark ? 'dark' : 'light')
 
   useEffect(() => {
-    setPageTheme(preferredType)
     const userValue = settingsService.userValue.getValue()
-    // We don't want to do an update if the two values are the same
-    if (userValue.theme === preferredType) {
-      return
+    if (!userValue.theme) {
+      settingsService.setPersonalSettingsValue({ ...userValue, theme: prefersDark ? 'dark' : 'light' })
+      setPageTheme(prefersDark ? 'dark' : 'light')
+    } else {
+      // We don't want to do an update if the two values are the same
+      if ((userValue.theme === 'dark' && prefersDark) || (userValue.theme === 'light' && !prefersDark)) {
+        return
+      }
+      settingsService.setPersonalSettingsValue({ ...userValue, theme: userValue.theme })
+      setPageTheme(userValue.theme)
     }
-    settingsService.setPersonalSettingsValue({ ...userValue, theme: preferredType })
-  }, [preferredType, settingsService])
+  }, [prefersDark, settingsService])
 
   const theme = useMemo(() => {
     const nextTheme = createMuiTheme({

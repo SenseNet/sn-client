@@ -56,4 +56,9 @@ export interface ReactClientFieldSetting<T = FieldSetting, S = GenericContent> {
    * Input is cleared when this value changes
    */
   triggerClear?: number
+
+  /**
+   * Property to handle focus on input fields
+   */
+  autoFocus?: boolean
 }
