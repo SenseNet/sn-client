@@ -233,7 +233,7 @@ exports[`Document Regenerate Previews component Should trigger regeneration on b
         </ForwardRef(Typography)>
       </WithStyles(ForwardRef(Typography))>
       <WithStyles(ForwardRef(Button))
-        disabled={true}
+        disabled={false}
         onClick={[Function]}
         variant="contained"
       >
@@ -271,21 +271,21 @@ exports[`Document Regenerate Previews component Should trigger regeneration on b
               "textSizeSmall": "MuiButton-textSizeSmall",
             }
           }
-          disabled={true}
+          disabled={false}
           onClick={[Function]}
           variant="contained"
         >
           <WithStyles(ForwardRef(ButtonBase))
-            className="MuiButton-root MuiButton-contained Mui-disabled"
+            className="MuiButton-root MuiButton-contained"
             component="button"
-            disabled={true}
+            disabled={false}
             focusRipple={true}
             focusVisibleClassName="Mui-focusVisible"
             onClick={[Function]}
             type="button"
           >
             <ForwardRef(ButtonBase)
-              className="MuiButton-root MuiButton-contained Mui-disabled"
+              className="MuiButton-root MuiButton-contained"
               classes={
                 Object {
                   "disabled": "Mui-disabled",
@@ -294,15 +294,15 @@ exports[`Document Regenerate Previews component Should trigger regeneration on b
                 }
               }
               component="button"
-              disabled={true}
+              disabled={false}
               focusRipple={true}
               focusVisibleClassName="Mui-focusVisible"
               onClick={[Function]}
               type="button"
             >
               <button
-                className="MuiButtonBase-root MuiButton-root MuiButton-contained Mui-disabled Mui-disabled"
-                disabled={true}
+                className="MuiButtonBase-root MuiButton-root MuiButton-contained"
+                disabled={false}
                 onBlur={[Function]}
                 onClick={[Function]}
                 onDragLeave={[Function]}
@@ -315,72 +315,42 @@ exports[`Document Regenerate Previews component Should trigger regeneration on b
                 onTouchEnd={[Function]}
                 onTouchMove={[Function]}
                 onTouchStart={[Function]}
-                tabIndex={-1}
+                tabIndex={0}
                 type="button"
               >
                 <span
                   className="MuiButton-label"
                 >
-                  <WithStyles(ForwardRef(CircularProgress))
-                    size={24}
-                    style={
+                  Generate
+                </span>
+                <WithStyles(memo)
+                  center={false}
+                >
+                  <ForwardRef(TouchRipple)
+                    center={false}
+                    classes={
                       Object {
-                        "marginRight": "1em",
+                        "child": "MuiTouchRipple-child",
+                        "childLeaving": "MuiTouchRipple-childLeaving",
+                        "childPulsate": "MuiTouchRipple-childPulsate",
+                        "ripple": "MuiTouchRipple-ripple",
+                        "ripplePulsate": "MuiTouchRipple-ripplePulsate",
+                        "rippleVisible": "MuiTouchRipple-rippleVisible",
+                        "root": "MuiTouchRipple-root",
                       }
                     }
                   >
-                    <ForwardRef(CircularProgress)
-                      classes={
-                        Object {
-                          "circle": "MuiCircularProgress-circle",
-                          "circleDisableShrink": "MuiCircularProgress-circleDisableShrink",
-                          "circleIndeterminate": "MuiCircularProgress-circleIndeterminate",
-                          "circleStatic": "MuiCircularProgress-circleStatic",
-                          "colorPrimary": "MuiCircularProgress-colorPrimary",
-                          "colorSecondary": "MuiCircularProgress-colorSecondary",
-                          "indeterminate": "MuiCircularProgress-indeterminate",
-                          "root": "MuiCircularProgress-root",
-                          "static": "MuiCircularProgress-static",
-                          "svg": "MuiCircularProgress-svg",
-                        }
-                      }
-                      size={24}
-                      style={
-                        Object {
-                          "marginRight": "1em",
-                        }
-                      }
+                    <span
+                      className="MuiTouchRipple-root"
                     >
-                      <div
-                        className="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
-                        role="progressbar"
-                        style={
-                          Object {
-                            "height": 24,
-                            "marginRight": "1em",
-                            "width": 24,
-                          }
-                        }
-                      >
-                        <svg
-                          className="MuiCircularProgress-svg"
-                          viewBox="22 22 44 44"
-                        >
-                          <circle
-                            className="MuiCircularProgress-circle MuiCircularProgress-circleIndeterminate"
-                            cx={44}
-                            cy={44}
-                            fill="none"
-                            r={20.2}
-                            strokeWidth={3.6}
-                            style={Object {}}
-                          />
-                        </svg>
-                      </div>
-                    </ForwardRef(CircularProgress)>
-                  </WithStyles(ForwardRef(CircularProgress))>
-                  Generate
-                </span>
+                      <TransitionGroup
+                        childFactory={[Function]}
+                        component={null}
+                        exit={true}
+                      />
+                    </span>
+                  </ForwardRef(TouchRipple)>
+                </WithStyles(memo)>
               </button>
             </ForwardRef(ButtonBase)>
           </WithStyles(ForwardRef(ButtonBase))>
