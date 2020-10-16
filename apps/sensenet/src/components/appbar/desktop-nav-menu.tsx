@@ -18,7 +18,7 @@ import HelpOutline from '@material-ui/icons/HelpOutline'
 import Info from '@material-ui/icons/Info'
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
 import clsx from 'clsx'
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { useCurrentUser } from '../../context/current-user-provider'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization, usePersonalSettings } from '../../hooks'
@@ -98,33 +98,23 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   const { openDialog } = useDialog()
   const [openUserMenu, setOpenUserMenu] = useState(false)
   const [openHelpMenu, setOpenHelpMenu] = useState(false)
-  const userMenuRef = useRef<HTMLButtonElement>(null)
-  const helpRef = useRef<HTMLButtonElement>(null)
 
   const handleToggle = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
     setter((prevState) => !prevState)
   }
 
-  const handleClose = (
-    event: React.MouseEvent<EventTarget>,
-    ref: React.RefObject<HTMLButtonElement>,
-    setter: React.Dispatch<React.SetStateAction<boolean>>,
-  ) => {
-    if (ref.current && ref.current.contains(event.target as HTMLElement)) {
-      return
-    }
-
+  const handleClose = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
     setter(false)
   }
 
-  const logout = (event: React.MouseEvent<EventTarget>) => {
+  const logout = () => {
     openDialog({ name: 'logout' })
-    handleClose(event, userMenuRef, setOpenUserMenu)
+    handleClose(setOpenUserMenu)
   }
 
-  const feedback = (event: React.MouseEvent<EventTarget>) => {
+  const feedback = () => {
     openDialog({ name: 'feedback' })
-    handleClose(event, helpRef, setOpenHelpMenu)
+    handleClose(setOpenHelpMenu)
   }
 
   const switchTheme = () => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,7 +126,6 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
     <div className={clsx(globalClasses.centered, classes.navMenu)}>
       <IconButton
         aria-label={localization.topMenu.openHelpMenu}
-        ref={helpRef}
         aria-controls={openUserMenu ? 'menu-list-grow' : undefined}
         aria-haspopup="true"
         onClick={() => handleToggle(setOpenHelpMenu)}
@@ -157,7 +146,6 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
         />
         <IconButton
           aria-label={localization.topMenu.openUserMenu}
-          ref={userMenuRef}
           aria-controls={openUserMenu ? 'menu-list-grow' : undefined}
           aria-haspopup="true"
           onClick={() => handleToggle(setOpenUserMenu)}
@@ -168,9 +156,9 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
       {openUserMenu ? (
         <Paper className={classes.popperUserWrapper}>
           <div className={classes.popper}>
-            <ClickAwayListener onClickAway={(event) => handleClose(event, userMenuRef, setOpenUserMenu)}>
+            <ClickAwayListener onClickAway={() => handleClose(setOpenUserMenu)}>
               <MenuList autoFocusItem={openUserMenu} id="menu-list-grow">
-                <MenuItem onClick={(event) => handleClose(event, userMenuRef, setOpenUserMenu)}>
+                <MenuItem onClick={() => handleClose(setOpenUserMenu)}>
                   <ListItemIcon className={classes.listItemIcon}>
                     <UserAvatar
                       style={{
@@ -219,12 +207,10 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
       {openHelpMenu ? (
         <Paper className={classes.popperHelpWrapper}>
           <div className={classes.popper}>
-            <ClickAwayListener onClickAway={(event) => handleClose(event, helpRef, setOpenHelpMenu)}>
+            <ClickAwayListener onClickAway={() => handleClose(setOpenHelpMenu)}>
               <MenuList autoFocusItem={openHelpMenu} id="menu-list-grow">
                 <Link href="https://docs.sensenet.com/" target="_blank">
-                  <MenuItem
-                    onClick={(event) => handleClose(event, helpRef, setOpenHelpMenu)}
-                    className={classes.helpMenuItem}>
+                  <MenuItem onClick={() => handleClose(setOpenHelpMenu)} className={classes.helpMenuItem}>
                     <ListItemIcon>
                       <Info />
                     </ListItemIcon>
@@ -234,9 +220,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                 <Link
                   href="https://github.com/SenseNet/sn-client/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D"
                   target="_blank">
-                  <MenuItem
-                    onClick={(event) => handleClose(event, helpRef, setOpenHelpMenu)}
-                    className={classes.helpMenuItem}>
+                  <MenuItem onClick={() => handleClose(setOpenHelpMenu)} className={classes.helpMenuItem}>
                     <ListItemIcon>
                       <BugReport />
                     </ListItemIcon>
