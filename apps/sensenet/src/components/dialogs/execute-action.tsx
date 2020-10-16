@@ -16,7 +16,6 @@ import {
 import { createCustomActionModel } from '../../services/MonacoModels/create-custom-action-model'
 import { DialogTitle, useDialog } from '.'
 
-const postBodyCache = new Map<string, string>()
 const EDITOR_INITIAL_VALUE = `{
 
 }`
@@ -38,20 +37,6 @@ export function ExecuteActionDialog({ actionValue, uri }: ExecuteActionDialogPro
   const [postBody, setPostBody] = useState(EDITOR_INITIAL_VALUE)
   const [isExecuting, setIsExecuting] = useState(false)
   const [error, setError] = useState('')
-
-  useEffect(() => {
-    uri && postBodyCache.set(uri.toString(), postBody)
-  }, [postBody, uri])
-
-  useEffect(() => {
-    const stored = uri && postBodyCache.get(uri.toString())
-    if (stored) {
-      setPostBody(stored)
-    } else {
-      setPostBody(EDITOR_INITIAL_VALUE)
-    }
-    setError('')
-  }, [uri])
 
   useEffect(() => {
     if (uri && actionValue && actionValue.metadata) {
@@ -168,11 +153,13 @@ export function ExecuteActionDialog({ actionValue, uri }: ExecuteActionDialogPro
                   if (!uri) {
                     return
                   }
-                  if (!monaco.editor.getModel(uri)) {
+                  const model = monaco.editor.getModel(uri)
+                  if (!model) {
                     const m = monaco.editor.createModel(postBody, 'json', uri)
                     editor.setModel(m)
                   } else {
-                    editor.setModel(monaco.editor.getModel(uri))
+                    editor.setModel(model)
+                    setPostBody(model.getValue())
                   }
                 }}
               />

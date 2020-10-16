@@ -14,6 +14,8 @@ import MediaQuery from 'react-responsive'
 import { isFullWidthField } from '../helpers'
 import { reactControlMapper } from '../ReactControlMapper'
 
+const hasInputField = ['Name', 'FileName', 'ShortText', 'Autocomplete', 'Textarea', 'NumberComponent', 'RichTextEditor']
+
 /**
  * Interface for EditView properties
  */
@@ -76,6 +78,8 @@ export const EditView: React.FC<EditViewProps> = (props) => {
 
   const uniqueId = Date.now()
 
+  let isAutofocusSet = false
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     props.onSubmit?.(content, schema.schema.ContentTypeName)
@@ -112,6 +116,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         {schema.fieldMappings
           .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
           .map((field) => {
+            const autoFocus = hasInputField.includes(field.controlType.name) && !isAutofocusSet
             const fieldControl = createElement(
               controlMapper.getControlForContentField(props.contentTypeName, field.fieldSettings.Name, actionName),
               {
@@ -124,10 +129,15 @@ export const EditView: React.FC<EditViewProps> = (props) => {
                 fieldOnChange: handleInputChange,
                 extension: props.extension,
                 uploadFolderPath: props.uploadFolderpath,
+                autoFocus,
               },
             )
 
             const isFullWidth = isFullWidthField(field, props.contentTypeName)
+
+            if (autoFocus) {
+              isAutofocusSet = true
+            }
 
             return (
               <Grid
@@ -148,6 +158,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         <MediaQuery minDeviceWidth={700}>
           <Button
             aria-label={props.localization?.cancel || 'Cancel'}
+            data-test="cancel"
             color="default"
             className={props.classes?.cancel || defaultClasses.cancel}
             onClick={() => props.handleCancel?.()}>
