@@ -76,7 +76,9 @@ export interface ContentListProps {
 export const isReferenceField = (fieldName: string, repo: Repository, schema = 'GenericContent') => {
   const refWhiteList = ['AllowedChildTypes', 'AllRoles', 'Manager']
   const setting = repo.schemas.getSchemaByName(schema).FieldSettings.find((f) => f.Name === fieldName)
-  return refWhiteList.indexOf(fieldName) !== -1 || (setting && setting.Type === 'ReferenceFieldSetting') || false
+  return (
+    refWhiteList.some((field) => field === fieldName) || (setting && setting.Type === 'ReferenceFieldSetting') || false
+  )
 }
 
 const rowHeightConst = 57
@@ -142,10 +144,11 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
         ...fields.reduce<any[]>((referenceFields, fieldName) => {
           if (fieldName.includes('/')) {
             const splittedFieldName = fieldName.split('/')
+            //TODO: If the backend can ingore expanding "not expandable fields" than should push the field instead in every cases"
             if (isReferenceField(splittedFieldName[splittedFieldName.length - 1], repo, props.schema)) {
-              referenceFields.findIndex((ref) => ref === fieldName) === -1 && referenceFields.push(fieldName)
+              !referenceFields.find((ref) => ref === fieldName) && referenceFields.push(fieldName)
             } else {
-              referenceFields.findIndex((ref) => ref === PathHelper.getParentPath(fieldName)) === -1 &&
+              !referenceFields.find((ref) => ref === PathHelper.getParentPath(fieldName)) &&
                 referenceFields.push(PathHelper.getParentPath(fieldName))
             }
           }
@@ -363,7 +366,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
             <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
               <EnabledField
                 enabled={fieldOptions.rowData[fieldOptions.dataKey] as boolean}
-                description={(fieldSettings && fieldSettings.Description) ?? ''}
+                description={fieldSettings?.Description ?? ''}
                 onChange={async (value: boolean) => {
                   try {
                     await repo.patch({
@@ -448,17 +451,23 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
 
   const fieldReferenceFunc = ({ tableCellProps: fieldOptions, fieldSettings }: VirtualCellProps) => {
     const splittedDatakey = fieldOptions.dataKey.split('/')
-    let displayField = fieldOptions.rowData[splittedDatakey[0]]
-
-    for (let i = 1; i < splittedDatakey.length - 1; i++) {
-      const newAttribute = splittedDatakey[i]
-      displayField = displayField[newAttribute as any]
-    }
-
     const lastInReference = splittedDatakey[splittedDatakey.length - 1]
-    const cellData = isReferenceField(lastInReference, repo, props.schema)
-      ? displayField[lastInReference].DisplayName
-      : displayField[lastInReference]
+    const displayField = splittedDatakey.reduce((acc, curr, _index, arr) => {
+      if (!acc[curr]) {
+        arr.length = 0
+        return null
+      } else if (!isReferenceField(curr, repo, acc.Type)) {
+        arr.length = 0
+        return acc
+      }
+      return acc[curr]
+    }, fieldOptions.rowData)
+
+    const cellData = displayField
+      ? isReferenceField(lastInReference, repo, displayField.Type)
+        ? displayField.DisplayName
+        : displayField[lastInReference]
+      : displayField
 
     const createdFieldOptions = {
       columnIndex: fieldOptions.columnIndex,
@@ -466,17 +475,13 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
       isScrolling: fieldOptions.isScrolling,
       rowData: {
         [lastInReference]: cellData,
-        Id: displayField.Id,
-        Name: displayField.Name,
-        Type: displayField.Type,
+        Id: displayField?.Id,
+        Name: displayField?.Name,
+        Type: displayField?.Type,
       },
       cellData,
       rowIndex: fieldOptions.rowIndex,
     }
-
-    /*Object.assign(createdFieldOptions.rowData, {
-      [lastInReference]: cellData,
-    })*/
 
     return fieldComponentFunc({
       tableCellProps: createdFieldOptions,
