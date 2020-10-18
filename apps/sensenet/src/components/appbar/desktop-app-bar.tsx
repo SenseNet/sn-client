@@ -56,7 +56,9 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
               <Menu />
             </IconButton>
           ) : null}
-          <div style={{ marginRight: '2rem' }}>{repository.configuration.repositoryUrl}</div>
+          <div style={{ marginRight: '2rem' }} data-test="sensenet-header">
+            {repository.configuration.repositoryUrl}
+          </div>
         </div>
 
         {personalSettings.commandPalette.enabled ? (
