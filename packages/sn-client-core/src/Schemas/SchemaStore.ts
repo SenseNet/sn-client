@@ -67,17 +67,15 @@ export class SchemaStore {
    * @param {string} fieldName The name of field you search for
    */
   public getFieldSettingByFieldName(fieldName: string): FieldSetting | undefined {
-    let selectedFieldSetting
-
-    this.schemas.getValue().forEach((schema) => {
-      schema.FieldSettings.forEach((fieldSetting) => {
-        if (fieldSetting.Name === fieldName) {
-          selectedFieldSetting = fieldSetting
-        }
-      })
-    })
-
-    return selectedFieldSetting
+    const tempSchemas = [...this.schemas.getValue()]
+    const selected = tempSchemas.reduce((_, schema: Schema) => {
+      const field = schema.FieldSettings.find((fieldSetting: FieldSetting) => fieldSetting.Name === fieldName)
+      if (field) {
+        tempSchemas.length = 0
+      }
+      return field
+    }, undefined)
+    return selected
   }
 
   /**
