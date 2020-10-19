@@ -3,7 +3,7 @@
  */
 /** */
 
-import { Content, LoadCollectionOptions, LoadOptions, ODataParams } from '@sensenet/client-core'
+import { Content, LoadCollectionOptions, LoadOptions, MovedContent, ODataParams } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 
 /**
@@ -110,21 +110,7 @@ export interface Deleted {
   /**
    * The Content data that has been deleted
    */
-  contentData: Content
-  /**
-   * Indicates if the Content was deleted permanently or just moved to Trash
-   */
-  permanently: boolean
-}
-
-/**
- * Model for more Contents Deleted event
- */
-export interface BatchDeleted {
-  /**
-   * The Content datas have been deleted
-   */
-  contentDatas: Content[]
+  contentData: Content[]
   /**
    * Indicates if the Content was deleted permanently or just moved to Trash
    */
@@ -193,7 +179,7 @@ export interface ContentMoved {
   /**
    * The moved Content instance
    */
-  content: Content
+  content: MovedContent[]
 }
 
 /**
@@ -217,11 +203,7 @@ export interface ContentCopied {
   /**
    * The copied Content instance
    */
-  content: Content
-  /**
-   * The original Content instance
-   */
-  originalContent: string | number | Array<string | number>
+  content: Content[]
 }
 
 /**

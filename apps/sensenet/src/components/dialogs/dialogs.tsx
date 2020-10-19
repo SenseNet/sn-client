@@ -19,6 +19,7 @@ const PermissionEditorDialog = React.lazy(() => import('./permission-editor-dial
 const MemberSelect = React.lazy(() => import('./member-select-dialog'))
 const Restore = React.lazy(() => import('./restore'))
 const ContentPicker = React.lazy(() => import('./content-picker'))
+const Feedback = React.lazy(() => import('./feedback'))
 
 function dialogRenderer(dialog: DialogWithProps) {
   switch (dialog.name) {
@@ -54,6 +55,8 @@ function dialogRenderer(dialog: DialogWithProps) {
       return <MemberSelect {...dialog.props} />
     case 'content-picker':
       return <ContentPicker {...dialog.props} />
+    case 'feedback':
+      return <Feedback />
     default:
       return null
   }

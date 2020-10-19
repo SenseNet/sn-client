@@ -154,20 +154,6 @@ export const loadMore = createAction((count = 25) => ({
   },
 }))
 
-const onDeleteContent = (options: IInjectableActionCallbackParams<rootStateType>, content: Content) => {
-  const currentItems = options.getState().dms.documentLibrary.items
-  const filtered = currentItems.d.results.filter((item) => item.Id !== content.Id)
-  options.dispatch(
-    setItems({
-      ...currentItems,
-      d: {
-        __count: filtered.length,
-        results: filtered,
-      },
-    }),
-  )
-}
-
 export const loadParent = createAction(
   <T extends GenericContent = GenericContent>(idOrPath: number | string, loadParentOptions?: ODataParams<T>) => ({
     type: 'DMS_DOCLIB_LOAD_PARENT',
@@ -218,15 +204,26 @@ export const loadParent = createAction(
           }) as any,
           eventHub.onContentCreated.subscribe((value) => emitChange(value.content)) as any,
           eventHub.onContentModified.subscribe((value) => emitChange(value.content)) as any,
-          eventHub.onContentDeleted.subscribe((value) => {
-            onDeleteContent(options, value.contentData)
-          }) as any,
-          eventHub.onBatchDelete.subscribe((deletedDatas) => {
-            deletedDatas.contentDatas.forEach((contentData) => {
-              onDeleteContent(options, contentData)
+          eventHub.onContentDeleted.subscribe((deleted) => {
+            deleted.contentData.forEach((deletedContent) => {
+              const currentItems = options.getState().dms.documentLibrary.items
+              const filtered = currentItems.d.results.filter((item) => item.Id !== deletedContent.Id)
+              options.dispatch(
+                setItems({
+                  ...currentItems,
+                  d: {
+                    __count: filtered.length,
+                    results: filtered,
+                  },
+                }),
+              )
             })
           }) as any,
-          eventHub.onContentMoved.subscribe((value) => emitChange(value.content)) as any,
+          eventHub.onContentMoved.subscribe((moved) => {
+            moved.content.forEach((movedContent) => {
+              emitChange(movedContent)
+            })
+          }),
         )
         const ancestors = await repository.executeAction<undefined, ODataCollectionResponse<GenericContent>>({
           idOrPath: newParent.d.Id,
