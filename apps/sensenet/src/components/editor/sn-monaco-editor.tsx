@@ -79,7 +79,9 @@ export const SnMonacoEditor: React.FunctionComponent<SnMonacoEditorProps> = (pro
         }
       }}>
       <div className={clsx([globalClasses.centeredVertical, classes.header])}>
-        <div className={classes.title}>{props.renderTitle()}</div>
+        <div className={classes.title} data-test="editor-title">
+          {props.renderTitle()}
+        </div>
         <div className={classes.headerButtonWrapper}>
           {props.additionalButtons ? props.additionalButtons : null}
           <Button
