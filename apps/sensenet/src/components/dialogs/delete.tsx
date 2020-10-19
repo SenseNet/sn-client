@@ -40,8 +40,9 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
   const selectionService = useSelectionService()
   const snRoute = useSnRoute()
   const currentPath = useQuery().get('path')
-  const hasUserOrGroupContent =
-    props.content.findIndex((content) => content.Type === 'User' || content.Type === 'Group') !== -1
+  const hasUserOrGroupContent = props.content.some(
+    (content) => repo.schemas.isContentFromType(content, 'User') || repo.schemas.isContentFromType(content, 'Group'),
+  )
 
   return (
     <>
