@@ -134,7 +134,11 @@ const values: DeepPartial<typeof import('./default').default> = {
   topMenu: {
     personalSettings: 'Személyes beállítások',
     logout: 'Kijelentkezés',
-    openMenu: 'Menü kinyitása',
+    openUserMenu: 'Felhasználói menü kinyitása',
+    openHelpMenu: 'Segítség menü kinyitása',
+    documentation: 'Dokumentáció',
+    reportBug: 'Hibabejelentés',
+    feedback: 'Visszajelzés',
   },
   forms: {
     referencePicker: 'Referencia választó',
@@ -179,6 +183,16 @@ const values: DeepPartial<typeof import('./default').default> = {
     reset: 'Visszaállítás',
     name: 'Név',
     typeIn: 'Írj be egy nevet',
+  },
+  feedback: {
+    title: 'Küldj nekünk visszajelzést vagy új ötletet',
+    feedbackText1: (link: string) => `A visszajelzések és ötletek menedzselésére egy publikus ${link}-ot használunk.`,
+    feedbackText2:
+      'Új visszajelzés hozzáadásához küldj egy e-mailt az alábbi címre, amelyben leírod a javaslatod. </br> (email tárgya - a visszajelzés tárgya; email tartalma - visszajelzés leírása)',
+    feedbackText3: (link: string) =>
+      `A meglévő visszajelzéseket és azok állapotát bármikor ellenőrizheted a nyilvános ${link}-on.`,
+    feedbackText4: 'Köszönjük a visszajelzést!',
+    cancel: 'Vissza',
   },
 }
 
