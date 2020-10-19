@@ -3,7 +3,6 @@ import { SchemaStore as defaultSchemas, GenericContent, ReferenceFieldSetting } 
 import TextField from '@material-ui/core/TextField'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
-import Autosuggest from 'react-autosuggest'
 import { act } from 'react-dom/test-utils'
 import { ReferenceField } from '../src/Components/Fields/ReferenceField'
 import { ReferenceFieldContainer } from '../src/Components/Fields/ReferenceFieldContainer'
@@ -15,6 +14,7 @@ describe('ReferenceField Component', () => {
   schemaStore.setSchemas(defaultSchemas)
   const exampleSchema = schemaStore.getSchemaByName('GenericContent')
   const exampleFieldSetting = exampleSchema.FieldSettings.find((f) => f.Name === 'CreatedBy') as ReferenceFieldSetting
+  const flushPromises = () => new Promise(setImmediate)
 
   it('Should be constructed', () => {
     shallow(
@@ -42,52 +42,48 @@ describe('ReferenceField Component', () => {
     ).unmount()
   })
 
-  it('Should be constructed with default Id', async (done) => {
-    await act(async () =>
-      mount(
-        <ReferenceField<GenericContent>
-          fieldName="CreatedBy"
-          fieldSetting={exampleFieldSetting}
-          defaultValueIdOrPath={1}
-          fetchItems={async (fetchQuery) => {
-            expect(fetchQuery.toString()).toBe("Id:'1'")
-            done()
-            return [{ Id: 1, Name: 'a', Path: '', Type: 'Document' }]
-          }}
-          onQueryChange={jest.fn()}
-        />,
-      ),
+  it('Should be constructed with default Id', async () => {
+    mount(
+      <ReferenceField<GenericContent>
+        fieldName="CreatedBy"
+        fieldSetting={exampleFieldSetting}
+        defaultValueIdOrPath={1}
+        fetchItems={async (fetchQuery) => {
+          Promise.resolve()
+          expect(fetchQuery.toString()).toBe("Id:'1'")
+          return [{ Id: 1, Name: 'a', Path: '', Type: 'Document' }]
+        }}
+        onQueryChange={jest.fn()}
+      />,
     )
+    await act(flushPromises)
   })
 
-  it('Should be constructed with default Path', async (done) => {
-    await act(async () =>
-      mount(
-        <ReferenceField<GenericContent>
-          fieldName="CreatedBy"
-          fieldSetting={exampleFieldSetting}
-          defaultValueIdOrPath="Root/Example/A"
-          fetchItems={async (fetchQuery) => {
-            expect(fetchQuery.toString()).toBe("Path:'Root/Example/A'")
-            done()
-            return [{ Id: 1, Name: 'a', Path: '', Type: 'Document' }]
-          }}
-          onQueryChange={() => {
-            /** */
-          }}
-        />,
-      ),
+  it('Should be constructed with default Path', async () => {
+    mount(
+      <ReferenceField<GenericContent>
+        fieldName="CreatedBy"
+        fieldSetting={exampleFieldSetting}
+        defaultValueIdOrPath="Root/Example/A"
+        fetchItems={async (fetchQuery) => {
+          expect(fetchQuery.toString()).toBe("Path:'Root/Example/A'")
+          return [{ Id: 1, Name: 'a', Path: '', Type: 'Document' }]
+        }}
+        onQueryChange={() => {
+          /** */
+        }}
+      />,
     )
+    await act(flushPromises)
   })
 
-  it('Text change should trigger the fetchItems method', async (done) => {
+  it('Text change should trigger the fetchItems method', async () => {
     const instance = mount(
       <ReferenceField<GenericContent>
         fieldName="CreatedBy"
         fieldSetting={exampleFieldSetting}
         fetchItems={async (fetchQuery) => {
           expect(fetchQuery.toString()).toBe("(Name:'*a*' OR DisplayName:'*a*' OR Path:'*a*')")
-          done()
           return [{ Id: 123, Name: 'alba', Type: 'User', Path: 'Root/Users/Alba' }]
         }}
         onQueryChange={jest.fn()}
@@ -97,6 +93,8 @@ describe('ReferenceField Component', () => {
     await act(async () => {
       instance.find('input').simulate('change', { target: { value: 'a' } })
     })
+
+    await act(flushPromises)
   })
 
   describe('Queries', () => {
