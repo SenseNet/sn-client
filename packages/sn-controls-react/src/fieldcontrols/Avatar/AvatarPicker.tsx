@@ -77,7 +77,7 @@ export const AvatarPicker: React.FC<AvatarPickerProps> = (props) => {
 
   const onClickHandler = (_e: React.MouseEvent, node: User) => {
     setSelectedItem(node)
-    if (node.Type === 'Image') {
+    if (props.repository.schemas.isContentFromType(node, 'Image')) {
       props.select(node)
     }
   }

@@ -1,4 +1,5 @@
-import { GenericContent } from '@sensenet/default-content-types'
+import { Repository } from '@sensenet/client-core'
+import { GenericContent, User } from '@sensenet/default-content-types'
 import Avatar from '@material-ui/core/Avatar'
 import Icon from '@material-ui/core/Icon'
 import IconButton from '@material-ui/core/IconButton'
@@ -10,7 +11,6 @@ import ListItemText from '@material-ui/core/ListItemText'
 import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
 import React from 'react'
 import { renderIconDefault } from '../icon'
-import { isUser } from '../type-guards'
 
 interface DefaultItemTemplateProps {
   content: GenericContent
@@ -18,7 +18,7 @@ interface DefaultItemTemplateProps {
   add: () => void
   actionName?: 'new' | 'edit' | 'browse' | 'version'
   readOnly?: boolean
-  repositoryUrl?: string
+  repository?: Repository
   multiple: boolean
   renderIcon?: (name: string) => JSX.Element
 }
@@ -27,17 +27,19 @@ interface DefaultItemTemplateProps {
  * Represents a default renderer for reference grid row
  */
 export const DefaultItemTemplate: React.FC<DefaultItemTemplateProps> = (props) => {
-  const { content, repositoryUrl } = props
+  const { content, repository } = props
   return (
     <ListItem key={content.Id} button={false}>
       {content.Type ? (
-        isUser(content) ? (
+        repository?.schemas.isContentFromType<User>(content, 'User') ? (
           <ListItemAvatar>
             {
               <Avatar
                 alt={content.FullName}
                 src={
-                  content.Avatar && content.Avatar.Url && repositoryUrl ? `${repositoryUrl}${content.Avatar.Url}` : ''
+                  content.Avatar && content.Avatar.Url && repository?.configuration.repositoryUrl
+                    ? `${repository.configuration.repositoryUrl}${content.Avatar.Url}`
+                    : ''
                 }
               />
             }
