@@ -1,12 +1,14 @@
+import { PathHelper } from '@sensenet/client-utils'
 import { TrashBag } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { Button, DialogActions, DialogContent, InputAdornment, TextField } from '@material-ui/core'
 import RestoreIcon from '@material-ui/icons/RestoreFromTrash'
 import React, { useContext, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization } from '../../hooks'
-import { getPathForContentPath } from '../../services'
+import { useLocalization, useQuery, useSnRoute } from '../../hooks'
+import { getPathForContentPath, navigateToAction } from '../../services'
 import { DialogTitle, useDialog } from '.'
 
 export type RestoreProps = {
@@ -21,6 +23,9 @@ export function Restore(props: RestoreProps) {
   const [destination, setDestination] = useState(props.content.OriginalPath)
   const globalClasses = useGlobalStyles()
   const uiSettings = useContext(ResponsivePersonalSettings)
+  const history = useHistory()
+  const snRoute = useSnRoute()
+  const currentPath = useQuery().get('path')
 
   const rootPath = getPathForContentPath({ path: props.content.OriginalPath!, uiSettings }).snPath
 
@@ -40,6 +45,17 @@ export function Restore(props: RestoreProps) {
         message: `${props.content.DisplayName || props.content.Name}' is restored to ${destination}`,
         data: { relatedContent: props.content },
       })
+
+      if (PathHelper.isInSubTree(`${snRoute.path}${currentPath}`, props.content.Path)) {
+        navigateToAction({
+          history,
+          routeMatch: snRoute.match,
+          queryParams: {
+            path: `/${PathHelper.getParentPath(props.content.Path)}`.replace(snRoute.path, ''),
+          },
+        })
+      }
+
       closeLastDialog()
     } catch (error) {
       logger.warning({ message: error.message })
