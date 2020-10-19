@@ -80,7 +80,7 @@ const values = {
     deleteMultipleContentFailedNotification: `There was an error deleting {0} content.`,
     deleteFailedNotification: `There was an error during content deletion.`,
     additionalTextForUsers:
-      'Users/Groups cannot be moved to the trash, they are always permanently deleted from the system. For "soft deleting" users/groups go to Users & groups menu and use the enable/disable switch.',
+      'Users and groups cannot be moved to the trash, they are always permanently deleted from the repository. For "soft deleting" users and groups go to 'Users & groups' menu and use the enable/disable switch.',
   },
   copyMoveContentDialog: {
     copy: {
