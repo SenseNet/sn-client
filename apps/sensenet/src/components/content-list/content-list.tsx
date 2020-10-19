@@ -73,9 +73,9 @@ export interface ContentListProps {
   containerProps?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 }
 
-export const isReferenceField = (fieldName: string, repo: Repository) => {
+export const isReferenceField = (fieldName: string, repo: Repository, schema = 'GenericContent') => {
   const refWhiteList = ['AllowedChildTypes', 'AllRoles']
-  const setting = repo.schemas.getFieldSettingByFieldName(fieldName)
+  const setting = repo.schemas.getSchemaByName(schema).FieldSettings.find((f) => f.Name === fieldName)
   return (
     refWhiteList.some((field) => field === fieldName) || (setting && setting.Type === 'ReferenceFieldSetting') || false
   )
@@ -144,8 +144,11 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
         ...fields.reduce<any[]>((referenceFields, fieldName) => {
           if (fieldName.includes('/')) {
             const splittedFieldName = fieldName.split('/')
-            repo.schemas.getFieldSettingByFieldName(splittedFieldName[splittedFieldName.length - 1])
-            if (isReferenceField(splittedFieldName[splittedFieldName.length - 1], repo)) {
+
+            if (
+              repo.schemas.getContentTypeByName(splittedFieldName[splittedFieldName.length - 1]) ===
+              'ReferenceFieldSetting'
+            ) {
               !referenceFields.find((ref) => ref === fieldName) && referenceFields.push(fieldName)
             } else {
               !referenceFields.find((ref) => ref === PathHelper.getParentPath(fieldName)) &&
@@ -416,7 +419,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
 
     if (
       typeof fieldOptions.rowData[fieldOptions.dataKey] === 'object' &&
-      isReferenceField(fieldOptions.dataKey, repo)
+      isReferenceField(fieldOptions.dataKey, repo, props.schema || fieldOptions.rowData.Type)
     ) {
       const expectedContent = fieldOptions.rowData[fieldOptions.dataKey] as GenericContent
       if (
@@ -456,7 +459,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
       if (!acc[curr]) {
         arr.length = 0
         return null
-      } else if (!isReferenceField(curr, repo)) {
+      } else if (!isReferenceField(curr, repo, acc.Type)) {
         arr.length = 0
         return acc
       }
@@ -464,7 +467,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
     }, fieldOptions.rowData)
 
     const cellData = displayField
-      ? isReferenceField(lastInReference, repo)
+      ? isReferenceField(lastInReference, repo, displayField.Type)
         ? displayField.DisplayName
         : displayField[lastInReference]
       : displayField
@@ -483,9 +486,13 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
       rowIndex: fieldOptions.rowIndex,
     }
 
+    const tempFieldSettings = repo.schemas
+      .getSchemaByName(displayField.Type)
+      .FieldSettings.find((setting) => setting.Name === lastInReference)
+
     return fieldComponentFunc({
       tableCellProps: createdFieldOptions,
-      fieldSettings: fieldSettings ? repo.schemas.getFieldSettingByFieldName(lastInReference)! : fieldSettings,
+      fieldSettings: tempFieldSettings!,
     })
   }
 
