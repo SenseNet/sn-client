@@ -2,7 +2,6 @@ import { Content, ODataParams, ODataResponse } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
-import { Created } from '@sensenet/repository-events'
 import React, { useCallback, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { usePreviousValue, useSelectionService } from '../../hooks'
@@ -32,7 +31,7 @@ const lock = new Semaphore(1)
 
 export default function TreeWithData(props: TreeWithDataProps) {
   const repo = useRepository()
-  const [itemCount, setItemCount] = useState<number>()
+  const [itemCount, setItemCount] = useState(0)
   const [treeData, setTreeData] = useState<ItemType>()
   const [isLoading, setIsLoading] = useState(false)
   const selectionService = useSelectionService()
@@ -80,7 +79,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
     if (prevActiveItemPath && prevActiveItemPath !== props.activeItemPath) {
       walkTree(treeData!, async (node: ItemType) => {
         if (node.Path === props.activeItemPath || PathHelper.isAncestorOf(node.Path, props.activeItemPath)) {
-          if (!node.expanded && !node.children?.length) {
+          if (!node.expanded && !node.children?.length && node.Type !== 'SmartFolder') {
             const children = await loadCollection(node.Path, ITEM_THRESHOLD, 0)
             if (children) {
               node.children = children.d.results
@@ -94,39 +93,42 @@ export default function TreeWithData(props: TreeWithDataProps) {
     }
   }, [props.activeItemPath, loadCollection, treeData, prevActiveItemPath])
 
-  const openTree = useCallback(async () => {
-    if (treeData && treeData.Path === props.parentPath) return
+  const openTree = useCallback(
+    async (forced = false) => {
+      if (!forced && treeData && treeData.Path === props.parentPath) return
 
-    const buildTree = (items: GenericContent[], id?: number): any => {
-      if (!id) {
-        return { ...items[0], children: buildTree(items, items[0].Id), hasNextPage: false, expanded: true }
+      const buildTree = (items: GenericContent[], id?: number): any => {
+        if (!id) {
+          return { ...items[0], children: buildTree(items, items[0].Id), hasNextPage: false, expanded: true }
+        }
+
+        return items
+          .filter((item) => item.ParentId === id)
+          .map((item) => ({
+            ...item,
+            children: buildTree(items, item.Id),
+            hasNextPage: false,
+            expanded: items.some((treeNode) => treeNode.ParentId === item.Id) || props.activeItemPath === item.Path,
+          }))
       }
 
-      return items
-        .filter((item) => item.ParentId === id)
-        .map((item) => ({
-          ...item,
-          children: buildTree(items, item.Id),
-          hasNextPage: false,
-          expanded: items.some((treeNode) => treeNode.ParentId === item.Id) || props.activeItemPath === item.Path,
-        }))
-    }
+      const treeResponse = await repo.executeAction<any, ODataResponse<{ results: GenericContent[] }>>({
+        idOrPath: props.activeItemPath,
+        name: 'OpenTree',
+        method: 'GET',
+        oDataOptions: props.loadSettings,
+        body: {
+          rootPath: props.parentPath,
+          withSystem: true,
+        },
+      })
 
-    const treeResponse = await repo.executeAction<any, ODataResponse<{ results: GenericContent[] }>>({
-      idOrPath: props.activeItemPath,
-      name: 'OpenTree',
-      method: 'GET',
-      oDataOptions: props.loadSettings,
-      body: {
-        rootPath: props.parentPath,
-        withSystem: true,
-      },
-    })
-
-    const tree = buildTree(treeResponse.d.results)
-    setItemCount(tree.children.length)
-    setTreeData(tree)
-  }, [props.activeItemPath, props.parentPath, repo, treeData, props.loadSettings])
+      const tree = buildTree(treeResponse.d.results)
+      setItemCount(tree.children.length)
+      setTreeData(tree)
+    },
+    [props.activeItemPath, props.parentPath, repo, treeData, props.loadSettings],
+  )
 
   const loadMoreItems = useCallback(
     async (startIndex: number, path = props.parentPath) => {
@@ -168,13 +170,16 @@ export default function TreeWithData(props: TreeWithDataProps) {
   )
 
   const onDeleteContent = useCallback(
-    async (content: Content) => {
+    async (content: Content, pathInObject = 'Path') => {
       await lock.acquire()
       walkTree(treeData!, (node) => {
         if (node.Id === content.Id && treeData?.children?.length) {
           treeData.children = treeData.children.filter((n) => n.Id !== content.Id)
-          setItemCount((itemCountTemp) => itemCountTemp && itemCountTemp - 1)
-        } else if (PathHelper.trimSlashes(node.Path) === PathHelper.getParentPath(content.Path)) {
+          setItemCount((itemCountTemp) => (itemCountTemp > 0 ? itemCountTemp - 1 : 0))
+        } else if (
+          PathHelper.trimSlashes(node.Path) ===
+          PathHelper.getParentPath(content[pathInObject as keyof Content] as string)
+        ) {
           node.children = node.children?.filter((n) => n.Id !== content.Id)
         }
       })
@@ -185,14 +190,27 @@ export default function TreeWithData(props: TreeWithDataProps) {
   )
 
   useEffect(() => {
-    const handleCreate = (c: Created) => {
+    const handleCreate = async (contents: Content[]) => {
       // we need to reset the lastRequest object so we can make the same request again to get updated data
       lastRequest = undefined
-      if ((c.content as GenericContent).ParentId === treeData?.Id) {
-        openTree()
+      if (
+        treeData &&
+        contents.some(
+          (createdContent) =>
+            (createdContent as GenericContent).ParentId === treeData?.Id ||
+            PathHelper.getParentPath(createdContent.Path) === PathHelper.trimSlashes(treeData.Path),
+        )
+      ) {
+        openTree(true)
       } else {
         walkTree(treeData!, async (node) => {
-          if ((c.content as GenericContent).ParentId === node.Id) {
+          if (
+            contents.some(
+              (createdContent) =>
+                (createdContent as GenericContent).ParentId === node.Id ||
+                PathHelper.getParentPath(createdContent.Path) === PathHelper.trimSlashes(node.Path),
+            )
+          ) {
             const result = await loadCollection(node.Path, ITEM_THRESHOLD, 0)
             if (!result) {
               logger.debug({ message: `loadCollection failed to load from ${node.Path}` })
@@ -207,17 +225,22 @@ export default function TreeWithData(props: TreeWithDataProps) {
     }
 
     const subscriptions = [
-      eventHub.onContentCreated.subscribe(handleCreate),
-      eventHub.onContentCopied.subscribe(handleCreate),
-      eventHub.onContentMoved.subscribe(handleCreate),
-      eventHub.onContentModified.subscribe(handleCreate),
+      eventHub.onContentCreated.subscribe((created) => handleCreate([created.content])),
+      eventHub.onContentCopied.subscribe((copied) => handleCreate(copied.content)),
+      eventHub.onContentMoved.subscribe((moved) => {
+        handleCreate(moved.content)
+        moved.content.forEach((movedContent) => {
+          onDeleteContent(movedContent, 'OriginalPath')
+        })
+      }),
+      eventHub.onContentModified.subscribe((mod) => handleCreate([mod.content])),
       eventHub.onCustomActionExecuted.subscribe(async (event) => {
         if (event.actionOptions.name === 'Restore') {
           await lock.acquire()
           walkTree(treeData!, (node) => {
             if (node.Path === event.actionOptions.idOrPath && treeData?.children?.length) {
               treeData.children = treeData.children.filter((n) => n.Path !== event.actionOptions.idOrPath)
-              setItemCount((itemCountTemp) => itemCountTemp && itemCountTemp - 1)
+              setItemCount((itemCountTemp) => (itemCountTemp > 0 ? itemCountTemp - 1 : 0))
             } else if (PathHelper.trimSlashes(node.Path) === PathHelper.getParentPath(event.actionOptions.idOrPath)) {
               node.children = node.children?.filter((n) => n.Path !== event.actionOptions.idOrPath)
             }
@@ -226,20 +249,14 @@ export default function TreeWithData(props: TreeWithDataProps) {
           lock.release()
         }
       }),
-      eventHub.onContentDeleted.subscribe(async (d) => {
-        onDeleteContent(d.contentData)
-      }),
-      eventHub.onBatchDelete.subscribe((deletedDatas) => {
-        deletedDatas.contentDatas.forEach(async (d) => {
-          onDeleteContent(d)
-        })
+      eventHub.onContentDeleted.subscribe((del) => {
+        del.contentData.forEach((deletedContent) => onDeleteContent(deletedContent))
       }),
     ]
 
     return () => subscriptions.forEach((s) => s.dispose())
   }, [
     treeData,
-    eventHub.onBatchDelete,
     eventHub.onContentDeleted,
     eventHub.onContentCreated,
     eventHub.onContentCopied,
@@ -263,7 +280,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
 
     walkTree(treeData, async (node: ItemType) => {
       if (node.Id === item.Id) {
-        if (!node.expanded && !node.children?.length) {
+        if (!node.expanded && !node.children?.length && node.Type !== 'SmartFolder') {
           const children = await loadCollection(node.Path, ITEM_THRESHOLD, 0)
           if (children) {
             node.children = children.d.results

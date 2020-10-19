@@ -15,6 +15,40 @@ exports[`CurrentChildren matches snapshot 1`] = `
 />
 `;
 
+exports[`CurrentChildren reloads when content is restored 1`] = `
+<Component>
+  <div
+    key="1"
+  >
+    Id: 
+    1
+    , Name: 
+    name
+  </div>
+</Component>
+`;
+
+exports[`CurrentChildren reloads when content is restored 2`] = `
+<Component>
+  <div
+    key="1"
+  >
+    Id: 
+    1
+    , Name: 
+    name
+  </div>
+  <div
+    key="2"
+  >
+    Id: 
+    2
+    , Name: 
+    restored
+  </div>
+</Component>
+`;
+
 exports[`CurrentChildren reloads when new content is created 1`] = `
 <Component>
   <div
@@ -63,6 +97,21 @@ exports[`CurrentChildren reloads when new content is deleted 1`] = `
 `;
 
 exports[`CurrentChildren reloads when new content is deleted 2`] = `<Component />`;
+
+exports[`CurrentChildren reloads when new content is moved 1`] = `
+<Component>
+  <div
+    key="1"
+  >
+    Id: 
+    1
+    , Name: 
+    name
+  </div>
+</Component>
+`;
+
+exports[`CurrentChildren reloads when new content is moved 2`] = `<Component />`;
 
 exports[`CurrentChildren reloads when new content is uploaded under current content 1`] = `
 <Component>
