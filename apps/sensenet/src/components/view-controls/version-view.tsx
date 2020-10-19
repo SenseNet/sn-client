@@ -27,6 +27,7 @@ export const VersionView: React.FC<VersionViewProps> = (props) => {
   const { openDialog, closeAllDialogs } = useDialog()
   const logger = useLogger('VersionsDialog')
   const [versions, setVersions] = useState<GenericContent[]>()
+  const [reloadToken, setReloadToken] = useState(0)
   const classes = useViewControlStyles()
   const globalClasses = useGlobalStyles()
   const history = useHistory()
@@ -57,7 +58,7 @@ export const VersionView: React.FC<VersionViewProps> = (props) => {
       }
     }
     props.contentPath && getVersions()
-  }, [closeAllDialogs, props.contentPath, localization, logger, repo, selectionService.activeContent])
+  }, [closeAllDialogs, props.contentPath, localization, logger, repo, selectionService.activeContent, reloadToken])
 
   const restoreVersion = (selectedVersion: GenericContent) => {
     const name = selectedVersion.DisplayName ?? selectedVersion.Name
@@ -70,6 +71,7 @@ export const VersionView: React.FC<VersionViewProps> = (props) => {
           try {
             await repo.versioning.restoreVersion(selectedVersion.Id, selectedVersion.Version)
             logger.information({ message: localization.restoreVersionSuccess(name, selectedVersion.Version) })
+            setReloadToken((prevValue) => prevValue + 1)
           } catch (error) {
             logger.error({
               message: localization.restoreVersionError(name, selectedVersion.Version),

@@ -28,7 +28,9 @@ const useStyles = makeStyles(() =>
  */
 export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> = (props) => {
   const initialState =
-    props.fieldValue != null ? !!props.fieldValue : !!changeTemplatedValue(props.settings.DefaultValue)
+    props.fieldValue != null
+      ? !!props.fieldValue
+      : changeTemplatedValue(props.settings.DefaultValue)?.toLowerCase() === 'true'
   const [value, setValue] = useState(initialState)
   const classes = useStyles()
 

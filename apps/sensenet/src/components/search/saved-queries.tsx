@@ -48,11 +48,9 @@ export default function SavedQueries() {
       eventHub.onContentCopied.subscribe(() => requestReload()),
       eventHub.onContentCreated.subscribe(() => requestReload()),
       eventHub.onContentDeleted.subscribe(() => requestReload()),
-      eventHub.onBatchDelete.subscribe(() => requestReload()),
     ]
     return () => subscriptions.forEach((s) => s.dispose())
   }, [
-    eventHub.onBatchDelete,
     eventHub.onContentCopied,
     eventHub.onContentCreated,
     eventHub.onContentDeleted,
