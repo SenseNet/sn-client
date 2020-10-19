@@ -486,9 +486,11 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
       rowIndex: fieldOptions.rowIndex,
     }
 
-    const tempFieldSettings = repo.schemas
-      .getSchemaByName(displayField.Type)
-      .FieldSettings.find((setting) => setting.Name === lastInReference)
+    const tempFieldSettings = fieldSettings
+      ? fieldSettings
+      : repo.schemas
+          .getSchemaByName(displayField.Type)
+          .FieldSettings.find((setting) => setting.Name === lastInReference)
 
     return fieldComponentFunc({
       tableCellProps: createdFieldOptions,
