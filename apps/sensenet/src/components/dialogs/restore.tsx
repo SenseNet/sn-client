@@ -43,7 +43,7 @@ export function Restore(props: RestoreProps) {
       })
       logger.information({
         message: `${props.content.DisplayName || props.content.Name}' is restored to ${destination}`,
-        data: { relatedContent: props.content },
+        data: { relatedContent: props.content, relatedRepository: repo.configuration.repositoryUrl },
       })
 
       if (PathHelper.isInSubTree(`${snRoute.path}${currentPath}`, props.content.Path)) {

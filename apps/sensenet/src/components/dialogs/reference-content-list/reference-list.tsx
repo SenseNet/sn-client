@@ -55,7 +55,7 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
     },
   )
 
-  const handleAddMembers = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleAddReference = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     if (!references.find((reference) => reference.Id === newReference?.Id)) {
@@ -67,10 +67,11 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
       })
       setReferences(newReferences)
     } else {
-      logger.error({
+      logger.warning({
         message: localization.referenceContentListDialog.errorAlreadyInList,
         data: {
           relatedContent: newReference,
+          relatedRepository: repository.configuration.repositoryUrl,
         },
       })
     }
@@ -87,7 +88,7 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
           style={{
             ...props.formStyle,
           }}
-          onSubmit={handleAddMembers}>
+          onSubmit={handleAddReference}>
           {fieldControl}
           {props.renderButton ? (
             props.renderButton(newReference)
