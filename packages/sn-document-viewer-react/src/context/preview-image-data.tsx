@@ -46,16 +46,7 @@ export const PreviewImageDataContextProvider: React.FC = (props) => {
     })()
 
     return () => abortController.abort()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    api,
-    documentData.idOrPath,
-    documentData.hostName,
-    documentData.pageCount,
-    viewerSettings.documentIdOrPath,
-    viewerSettings.version,
-    viewerState.showWatermark,
-  ])
+  }, [api, documentData, viewerSettings.version, viewerState.showWatermark])
 
   const rotateImages = useCallback(
     (imageIndexes: number[], amount: number) => {

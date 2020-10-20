@@ -51,20 +51,23 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
       try {
         setIsInProgress(true)
         await loadLock.acquire()
+        let getDocData = null
         do {
-          const result = await api.getDocumentData({
+          getDocData = await api.getDocumentData({
             hostName: repo.configuration.repositoryUrl,
             idOrPath: doc.documentIdOrPath,
             version: doc.version,
             abortController: ac,
           })
-          setDocumentData(result)
-          if (result.pageCount === PreviewState.Loading) {
+
+          setDocumentData(getDocData)
+
+          if (getDocData.pageCount === PreviewState.Loading) {
             await sleepAsync(4000)
           } else {
             break
           }
-        } while (documentData.pageCount === PreviewState.Loading && !ac.signal.aborted)
+        } while (getDocData.pageCount === PreviewState.Loading && !ac.signal.aborted)
       } catch (error) {
         if (!ac.signal.aborted) {
           setDocumentData({ ...defaultDocumentData, pageCount: PreviewState.ClientFailure, error: error.toString() })
@@ -77,15 +80,7 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
     })()
 
     return () => ac.abort()
-  }, [
-    api,
-    loadLock,
-    repo.configuration.repositoryUrl,
-    doc.documentIdOrPath,
-    doc.version,
-    documentData.idOrPath,
-    documentData.pageCount,
-  ])
+  }, [api, doc.documentIdOrPath, doc.version, loadLock, repo.configuration.repositoryUrl])
 
   const updateDocumentData = useCallback(
     (newDocData: Partial<DocumentData>) => {

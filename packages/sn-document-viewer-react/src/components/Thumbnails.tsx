@@ -4,27 +4,23 @@ import Grid from '@material-ui/core/Grid'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { CommentsContextProvider } from '../context/comments'
 import { usePreviewImages, useViewerState } from '../hooks'
-import { ZoomMode } from '../models/viewer-state'
 import { Dimensions, ImageUtil } from '../services'
 import { Page } from './'
 
 /**
- * Defines the own properties for the PageList component
+ * Defines the own properties for the Thumbnails component
  */
-export interface PageListProps {
+export interface ThumbnailsProps {
   tolerance: number
   padding: number
   id: string
   elementName: string
-  zoomMode: ZoomMode
-  zoomLevel: number
-  fitRelativeZoomLevel: number
   images: 'preview' | 'thumbnail'
   activePage?: number
   onPageClick: (ev: React.MouseEvent<HTMLElement>, pageIndex: number) => void
 }
 
-export const PageList: React.FC<PageListProps> = (props) => {
+export const Thumbnails: React.FC<ThumbnailsProps> = (props) => {
   const [marginTop, setMarginTop] = useState(0)
   const [marginBottom, setMarginBottom] = useState(0)
   const [visiblePages, setVisiblePages] = useState<PreviewImageData[]>([])
@@ -33,7 +29,12 @@ export const PageList: React.FC<PageListProps> = (props) => {
   const viewerState = useViewerState()
   const [resizeToken, setResizeToken] = useState(0)
   const [viewport, setViewport] = useState<Dimensions>({ width: 0, height: 0 })
+
   const pages = usePreviewImages()
+
+  const zoomMode = 'fit'
+  const zoomLevel = 1
+  const fitRelativeZoomLevel = 0
 
   const requestResize = useCallback(
     debounce(() => {
@@ -98,9 +99,9 @@ export const PageList: React.FC<PageListProps> = (props) => {
           height: p.Height,
           rotation: (p.Attributes && p.Attributes.degree) || 0,
         },
-        props.zoomMode,
-        props.zoomLevel,
-        props.fitRelativeZoomLevel,
+        zoomMode,
+        zoomLevel,
+        fitRelativeZoomLevel,
       )
 
       return {
@@ -143,28 +144,23 @@ export const PageList: React.FC<PageListProps> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     pages.imageData,
-    props.fitRelativeZoomLevel,
+    fitRelativeZoomLevel,
     props.padding,
     props.tolerance,
-    props.zoomLevel,
-    props.zoomMode,
+    zoomLevel,
+    zoomMode,
     scrollState,
     viewerState.activePages,
     viewport.height,
     viewport.width,
   ])
 
-  const updateScrollState = useCallback(
-    debounce(() => {
-      if (props.images === 'preview') viewerState.updateState({ activePages: [viewerState.visiblePages[0] || 1] })
-    }, 100),
-    [viewerState, visiblePages],
-  )
-
-  useEffect(updateScrollState, [scrollState])
-
   return (
-    <Grid item={true} style={{ flexGrow: 1, flexShrink: 1, overflow: 'auto' }} id={props.id} innerRef={viewportElement}>
+    <Grid
+      item={true}
+      style={{ minWidth: 200, marginRight: '-16px', paddingRight: 0, flexGrow: 1, flexShrink: 1, overflow: 'auto' }}
+      id={props.id}
+      innerRef={viewportElement}>
       <div
         style={{
           display: 'flex',
@@ -177,14 +173,14 @@ export const PageList: React.FC<PageListProps> = (props) => {
         {visiblePages.map((page) => (
           <CommentsContextProvider page={page.Index} key={page.Index} images={props.images}>
             <Page
-              showWidgets={true}
+              showWidgets={false}
               viewportWidth={viewport.width}
               viewportHeight={viewport.height}
               imageIndex={page.Index}
               onClick={(ev) => props.onPageClick(ev, page.Index)}
-              zoomMode={props.zoomMode}
-              zoomLevel={props.zoomLevel}
-              fitRelativeZoomLevel={props.fitRelativeZoomLevel}
+              zoomMode={zoomMode}
+              zoomLevel={zoomLevel}
+              fitRelativeZoomLevel={fitRelativeZoomLevel}
               elementName={props.elementName}
               image={props.images}
               margin={props.padding}

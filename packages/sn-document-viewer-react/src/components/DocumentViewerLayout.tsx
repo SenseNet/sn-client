@@ -6,7 +6,7 @@ import { CommentsContext, CommentsContextProvider } from '../context/comments'
 import { useCommentState, useDocumentData, useDocumentViewerApi, useLocalization, useViewerState } from '../hooks'
 import { Comment } from './comment'
 import { CreateComment } from './comment/CreateComment'
-import { CommentsContainer, PageList } from './'
+import { CommentsContainer, PageList, Thumbnails } from './'
 
 /** Props definition for the Document Viewer layout */
 export interface DocumentViewerLayoutProps {
@@ -149,13 +149,8 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
               overflow: 'hidden',
             },
           }}>
-          <PageList
-            showWidgets={false}
-            style={{ minWidth: 200, marginRight: '-16px', paddingRight: 0 }}
+          <Thumbnails
             id="sn-document-viewer-thumbnails"
-            zoomMode="fit"
-            fitRelativeZoomLevel={0}
-            zoomLevel={1}
             onPageClick={(_ev, index) => {
               scrollTo(index)
               viewerState.updateState({ visiblePages: [index] })
@@ -168,7 +163,6 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
           />
         </Drawer>
         <PageList
-          showWidgets={true}
           id="sn-document-viewer-pages"
           zoomMode={viewerState.zoomMode}
           zoomLevel={viewerState.customZoomLevel}
