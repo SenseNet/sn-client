@@ -144,8 +144,8 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                             .replace('{1}', result.d.errors[0].error.message.value),
                     data: {
                       relatedContent: props.content.length > 1 ? undefined : props.content[0],
-                      details: result.d.errors,
                       relatedRepository: repo.configuration.repositoryUrl,
+                      error: result.d.errors.length > 1 ? result.d.errors : result.d.errors[0],
                     },
                   })
                 } else {
@@ -167,7 +167,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                 logger.error({
                   message: localization.deleteFailedNotification,
                   data: {
-                    details: { error },
+                    error,
                   },
                 })
               } finally {

@@ -90,7 +90,8 @@ export function ExecuteActionDialog({ actionValue, uri }: ExecuteActionDialogPro
           isDismissed: true,
           relatedRepository: repo.configuration.repositoryUrl,
           relatedContent: actionValue.content,
-          details: { actionValue, error },
+          error,
+          details: { actionValue },
         },
       })
     } finally {
