@@ -52,13 +52,13 @@ export const SubscriptionWidget: React.FunctionComponent<SubscriptionWidgetProps
         </Grid>
         <Grid item xs={12} lg="auto">
           <p className={widgetClasses.subtitle}>{localization.features}</p>
-          <p>
+          <p data-test="feature-users">
             {numberFormatter.format(limitations.user)} {localization.users}
           </p>
-          <p>
+          <p data-test="feature-content">
             {numberFormatter.format(limitations.content)} {localization.content}
           </p>
-          <p style={{ marginBottom: 0 }}>
+          <p style={{ marginBottom: 0 }} data-test="feature-storage-space">
             {numberFormatter.format(round(limitations.storage / 1024))} {localization.storageSpace}
           </p>
         </Grid>
