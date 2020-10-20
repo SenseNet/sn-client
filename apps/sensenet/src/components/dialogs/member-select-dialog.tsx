@@ -48,10 +48,10 @@ export function MemberSelect(props: MemberSelectProps) {
     localEntryTemplate.identity.path = selectedMember!.Path
     localEntryTemplate.identity.name = selectedMember!.Name
     localEntryTemplate.identity.displayName = selectedMember!.DisplayName
-    localEntryTemplate.identity.kind = selectedMember!.Type === 'User' ? 'user' : 'group'
-    if (selectedMember!.Type === 'User') {
-      localEntryTemplate.identity.domain = (selectedMember as User).Domain
-      localEntryTemplate.identity.avatar = (selectedMember as User).Avatar?.Url
+    localEntryTemplate.identity.kind = repository.schemas.isContentFromType(selectedMember, 'User') ? 'user' : 'group'
+    if (repository.schemas.isContentFromType<User>(selectedMember, 'User')) {
+      localEntryTemplate.identity.domain = selectedMember.Domain
+      localEntryTemplate.identity.avatar = selectedMember.Avatar?.Url
     }
     return localEntryTemplate
   }

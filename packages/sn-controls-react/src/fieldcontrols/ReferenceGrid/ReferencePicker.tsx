@@ -111,8 +111,8 @@ export const ReferencePicker: React.FC<ReferencePickerProps> = (props) => {
             onDoubleClick={() => navigateTo(node)}
             selected={props.selected.some((c) => c.Id === node.Id)}>
             <ListItemIcon style={{ margin: 0 }}>
-              {node.Type === 'User' ? (
-                (node as User).Avatar?.Url !== '' ? (
+              {props.repository.schemas.isContentFromType<User>(node, 'User') ? (
+                (node as User).Avatar?.Url ? (
                   <Avatar
                     alt={node.DisplayName}
                     src={`${props.repository.configuration.repositoryUrl}${(node as User).Avatar!.Url}`}
