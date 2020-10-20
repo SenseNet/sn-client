@@ -384,7 +384,8 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
                       message: localization.contentList.errorContentModification,
                       data: {
                         relatedContent: fieldOptions.rowData,
-                        details: { error },
+                        relatedRepository: repo.configuration.repositoryUrl,
+                        error,
                       },
                     })
                     return false
