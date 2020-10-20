@@ -65,7 +65,7 @@ interface VirtualizedTableProps extends ContentListBaseProps {
   /**
    * Contains custom reference cell template components
    */
-  referenceCellRenderer?: (props: VirtualCellProps) => React.ReactNode
+  referenceCellRenderer?: (tableCellProps: TableCellProps) => React.ReactNode
 
   tableProps: {
     /**
@@ -295,13 +295,8 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = (props) => {
                     return checkBoxRenderer(tableCellProps, isSelected)
                   } else {
                     if (tableCellProps.dataKey.includes('/')) {
-                      const splittedDatakey = tableCellProps.dataKey.split('/')
-                      const lastReference = splittedDatakey[splittedDatakey.length - 1]
                       return props.referenceCellRenderer
-                        ? props.referenceCellRenderer({
-                            tableCellProps,
-                            fieldSettings: getSchemaForField(lastReference),
-                          })
+                        ? props.referenceCellRenderer(tableCellProps)
                         : defaultCellRenderer(tableCellProps)
                     } else {
                       return props.cellRenderer

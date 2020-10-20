@@ -66,16 +66,15 @@ export class SchemaStore {
    * Returns the Field Type for the provided content field name
    * @param {string} fieldName The name of field you search for
    */
-  public getContentTypeByName(fieldName: string): string | undefined {
-    const tempSchemas = [...this.schemas.getValue()]
-    const selected = tempSchemas.reduce((_, schema: Schema) => {
-      const field = schema.FieldSettings.find((fieldSetting: FieldSetting) => fieldSetting.Name === fieldName)?.Type
-      if (field) {
-        tempSchemas.length = 0
+  public getFieldTypeByName(fieldName: string): string | undefined {
+    const schemasCopy = [...this.schemas.getValue()]
+    return schemasCopy.reduce((_, schema: Schema) => {
+      const fieldType = schema.FieldSettings.find((fieldSetting: FieldSetting) => fieldSetting.Name === fieldName)?.Type
+      if (fieldType) {
+        schemasCopy.length = 0
       }
-      return field
+      return fieldType
     }, undefined)
-    return selected
   }
 
   /**

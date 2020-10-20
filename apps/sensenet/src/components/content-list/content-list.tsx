@@ -13,6 +13,7 @@ import { VirtualCellProps, VirtualDefaultCell, VirtualizedTable } from '@sensene
 import { createStyles, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { TableCellProps } from 'react-virtualized'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useSelectionService } from '../../hooks'
@@ -76,9 +77,7 @@ export interface ContentListProps {
 export const isReferenceField = (fieldName: string, repo: Repository, schema = 'GenericContent') => {
   const refWhiteList = ['AllowedChildTypes', 'AllRoles']
   const setting = repo.schemas.getSchemaByName(schema).FieldSettings.find((f) => f.Name === fieldName)
-  return (
-    refWhiteList.some((field) => field === fieldName) || (setting && setting.Type === 'ReferenceFieldSetting') || false
-  )
+  return refWhiteList.some((field) => field === fieldName) || setting?.Type === 'ReferenceFieldSetting'
 }
 
 const rowHeightConst = 57
@@ -140,13 +139,15 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
       ...loadSettings.loadChildrenSettings,
       expand: [
         'CheckedOutTo',
-        ...fields.filter((fieldName) => isReferenceField(fieldName, repo)),
         ...fields.reduce<any[]>((referenceFields, fieldName) => {
           if (fieldName.includes('/')) {
             const splittedFieldName = fieldName.split('/')
-
-            if (
-              repo.schemas.getContentTypeByName(splittedFieldName[splittedFieldName.length - 1]) ===
+            if (splittedFieldName.length === 2 && splittedFieldName[1] === '') {
+              if (isReferenceField(fieldName.split('/')[0], repo, props.schema)) {
+                referenceFields.push(fieldName.split('/')[0])
+              }
+            } else if (
+              repo.schemas.getFieldTypeByName(splittedFieldName[splittedFieldName.length - 1]) ===
               'ReferenceFieldSetting'
             ) {
               !referenceFields.find((ref) => ref === fieldName) && referenceFields.push(fieldName)
@@ -154,6 +155,8 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
               !referenceFields.find((ref) => ref === PathHelper.getParentPath(fieldName)) &&
                 referenceFields.push(PathHelper.getParentPath(fieldName))
             }
+          } else if (repo.schemas.getFieldTypeByName(fieldName) === 'ReferenceFieldSetting') {
+            referenceFields.push(fieldName)
           }
           return referenceFields
         }, []),
@@ -452,8 +455,12 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
     )
   }
 
-  const fieldReferenceFunc = ({ tableCellProps: fieldOptions, fieldSettings }: VirtualCellProps) => {
+  const fieldReferenceFunc = (fieldOptions: TableCellProps) => {
     const splittedDatakey = fieldOptions.dataKey.split('/')
+
+    if (splittedDatakey[splittedDatakey.length - 1] === '') {
+      splittedDatakey.pop()
+    }
     const lastInReference = splittedDatakey[splittedDatakey.length - 1]
     const displayField = splittedDatakey.reduce((acc, curr, _index, arr) => {
       if (!acc[curr]) {
@@ -486,15 +493,11 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
       rowIndex: fieldOptions.rowIndex,
     }
 
-    const tempFieldSettings = fieldSettings
-      ? fieldSettings
-      : repo.schemas
-          .getSchemaByName(displayField.Type)
-          .FieldSettings.find((setting) => setting.Name === lastInReference)
-
     return fieldComponentFunc({
       tableCellProps: createdFieldOptions,
-      fieldSettings: tempFieldSettings!,
+      fieldSettings: repo.schemas
+        .getSchemaByName(displayField?.Type)
+        .FieldSettings.find((setting) => setting.Name === lastInReference)!,
     })
   }
 
@@ -538,7 +541,18 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
             cellRenderer={fieldComponentFunc}
             referenceCellRenderer={fieldReferenceFunc}
             displayRowCheckbox={!props.disableSelection}
-            fieldsToDisplay={(props.fieldsToDisplay || personalSettings.content.fields || displayNameInArray) as any}
+            fieldsToDisplay={
+              (props.fieldsToDisplay?.map((field) => {
+                const splittedField = field.split('/')
+                if (splittedField.length === 2 && splittedField[1] === '') {
+                  return splittedField[0]
+                } else {
+                  return field
+                }
+              }) ||
+                personalSettings.content.fields ||
+                displayNameInArray) as any
+            }
             getSelectionControl={getSelectionControl}
             items={children}
             onRequestOrderChange={onRequestOrderChangeFunc}
