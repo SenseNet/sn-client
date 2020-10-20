@@ -1,4 +1,3 @@
-import { debounce } from '@sensenet/client-utils'
 import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
 import React, { useEffect, useState } from 'react'
@@ -29,6 +28,7 @@ export interface ReferenceFieldProps<T> {
   renderSuggestion?: RenderSuggestion<T>
   autoSuggestProps?: Partial<AutosuggestPropsSingleSection<T>>
   triggerClear?: number
+  autoFocus?: boolean
 }
 
 /**
@@ -90,13 +90,7 @@ export function ReferenceField<T extends GenericContent>(props: ReferenceFieldPr
   const onChange = (value: string) => {
     setInputValue(value)
     props.onChange?.(null)
-    fetchItems(getQueryFromTerm(`*${value}*`))
   }
-
-  const fetchItems = debounce(async (query: Query<T>) => {
-    const fetchedItems = await props.fetchItems(query)
-    setItems(fetchedItems)
-  }, 500)
 
   const getSuggestionValue: GetSuggestionValue<T> = (c) => {
     return c.DisplayName || c.Name
@@ -184,6 +178,7 @@ export function ReferenceField<T extends GenericContent>(props: ReferenceFieldPr
           description={description}
           helperText={helperText}
           inputProps={inputComponentProps}
+          autoFocus={props.autoFocus}
         />
       )}
       renderSuggestionsContainer={ReferenceFieldContainer}

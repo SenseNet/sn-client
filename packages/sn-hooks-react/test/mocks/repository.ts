@@ -19,11 +19,15 @@ export class Repository {
   copy() {
     console.log('copy')
   }
-  move() {
-    console.log('move')
+  move(content: any) {
+    this.content = this.content.filter((c) => c.Id !== content.Id)
+    return { d: { results: [content], errors: [] } }
   }
-  executeAction() {
-    console.log('executeAction')
+  executeAction(options: any) {
+    const restored = { Id: 2, Name: 'restored' }
+    if (options.name === 'Restore') {
+      this.content = [...this.content, restored]
+    }
   }
   load() {
     return { d: this.content[0] }

@@ -197,7 +197,7 @@ export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFi
                       key={item.Id}
                       actionName={this.props.actionName}
                       readOnly={this.props.settings.ReadOnly}
-                      repositoryUrl={this.props.repository ? this.props.repository.configuration.repositoryUrl : ''}
+                      repository={this.props.repository}
                       multiple={this.props.settings.AllowMultiple ? this.props.settings.AllowMultiple : false}
                       renderIcon={this.props.renderIcon}
                     />
@@ -215,7 +215,7 @@ export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFi
                   }
                   add={this.addItem}
                   actionName={this.props.actionName}
-                  repositoryUrl={this.props.repository ? this.props.repository.configuration.repositoryUrl : ''}
+                  repository={this.props.repository}
                   multiple={this.props.settings.AllowMultiple ? this.props.settings.AllowMultiple : false}
                   renderIcon={this.props.renderIcon}
                 />
@@ -265,7 +265,7 @@ export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFi
                         add={this.addItem}
                         key={item.Id}
                         actionName="browse"
-                        repositoryUrl={this.props.repository ? this.props.repository.configuration.repositoryUrl : ''}
+                        repository={this.props.repository}
                         multiple={this.props.settings.AllowMultiple ? this.props.settings.AllowMultiple : false}
                         renderIcon={this.props.renderIcon}
                       />

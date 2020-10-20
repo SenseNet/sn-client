@@ -119,7 +119,7 @@ const Dashboard = () => {
     <div style={{ overflow: 'auto' }}>
       <Container fixed className={classes.container}>
         <div className={classes.welcome}>
-          <Typography variant="h1" className={classes.title}>
+          <Typography variant="h1" className={classes.title} data-test="app-header">
             {localization.title(data.displayName || data.host)}
           </Typography>
           {localization.descriptionFirstLine}

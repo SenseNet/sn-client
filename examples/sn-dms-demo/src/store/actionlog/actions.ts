@@ -1,6 +1,6 @@
-import { Content, isExtendedError, Repository } from '@sensenet/client-core'
+import { isExtendedError, Repository } from '@sensenet/client-core'
 import { createAction } from '@sensenet/redux'
-import { BatchDeleted, Deleted, EventHub } from '@sensenet/repository-events'
+import { EventHub } from '@sensenet/repository-events'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { resources } from '../../assets/resources'
 import { rootStateType } from '../../store/rootReducer'
@@ -34,23 +34,6 @@ export const readLogEntries = createAction((entries: LogEntry[]) => ({
   entries,
 }))
 
-const onDeleteContent = (
-  options: IInjectableActionCallbackParams<rootStateType>,
-  ev: Deleted | BatchDeleted,
-  content: Content,
-) => {
-  options.dispatch(
-    addLogEntry({
-      dump: ev,
-      messageEntry: {
-        message: `${content.Name} ${resources.DELETE_BATCH_SUCCESS_MESSAGE}`,
-        bulkMessage: `{count} ${resources.ITEMS} ${resources.DELETE_BATCH_SUCCESS_MULTIPLE_MESSAGE}`,
-        verbosity: 'info',
-      },
-    }),
-  )
-}
-
 export const initLog = createAction(() => ({
   type: 'SN_DMS_INIT_LOG',
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
@@ -81,16 +64,18 @@ export const initLog = createAction(() => ({
       )
     })
     eventHub.onContentCopied.subscribe((ev) => {
-      options.dispatch(
-        addLogEntry({
-          dump: ev,
-          messageEntry: {
-            message: `${ev.content.Name} ${resources.COPY_BATCH_SUCCESS_MESSAGE}`,
-            bulkMessage: `{count} ${resources.ITEMS} ${resources.COPY_BATCH_SUCCESS_MULTIPLE_MESSAGE}`,
-            verbosity: 'info',
-          },
-        }),
-      )
+      ev.content.forEach((copiedContent) => {
+        options.dispatch(
+          addLogEntry({
+            dump: copiedContent,
+            messageEntry: {
+              message: `${copiedContent.Name} ${resources.COPY_BATCH_SUCCESS_MESSAGE}`,
+              bulkMessage: `{count} ${resources.ITEMS} ${resources.COPY_BATCH_SUCCESS_MULTIPLE_MESSAGE}`,
+              verbosity: 'info',
+            },
+          }),
+        )
+      })
     })
     eventHub.onContentCopyFailed.subscribe((ev) => {
       options.dispatch(
@@ -105,16 +90,18 @@ export const initLog = createAction(() => ({
       )
     })
     eventHub.onContentMoved.subscribe((ev) => {
-      options.dispatch(
-        addLogEntry({
-          dump: ev,
-          messageEntry: {
-            message: `${ev.content.Name} ${resources.MOVE_BATCH_SUCCESS_MESSAGE}`,
-            bulkMessage: `{count} ${resources.ITEMS} ${resources.MOVE_BATCH_SUCCESS_MULTIPLE_MESSAGE}`,
-            verbosity: 'info',
-          },
-        }),
-      )
+      ev.content.forEach((movedContent) => {
+        options.dispatch(
+          addLogEntry({
+            dump: movedContent,
+            messageEntry: {
+              message: `${movedContent.Name} ${resources.MOVE_BATCH_SUCCESS_MESSAGE}`,
+              bulkMessage: `{count} ${resources.ITEMS} ${resources.MOVE_BATCH_SUCCESS_MULTIPLE_MESSAGE}`,
+              verbosity: 'info',
+            },
+          }),
+        )
+      })
     })
     eventHub.onContentMoveFailed.subscribe((ev) => {
       options.dispatch(
@@ -161,11 +148,17 @@ export const initLog = createAction(() => ({
     })
 
     eventHub.onContentDeleted.subscribe((ev) => {
-      onDeleteContent(options, ev, ev.contentData)
-    })
-    eventHub.onBatchDelete.subscribe((ev) => {
-      ev.contentDatas.forEach((contentData) => {
-        onDeleteContent(options, ev, contentData)
+      ev.contentData.forEach((deletedContent) => {
+        options.dispatch(
+          addLogEntry({
+            dump: deletedContent,
+            messageEntry: {
+              message: `${deletedContent.Name} ${resources.DELETE_BATCH_SUCCESS_MESSAGE}`,
+              bulkMessage: `{count} ${resources.ITEMS} ${resources.DELETE_BATCH_SUCCESS_MULTIPLE_MESSAGE}`,
+              verbosity: 'info',
+            },
+          }),
+        )
       })
     })
     eventHub.onContentDeleteFailed.subscribe((ev) => {

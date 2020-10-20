@@ -28,7 +28,9 @@ const useStyles = makeStyles(() =>
  */
 export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> = (props) => {
   const initialState =
-    props.fieldValue != null ? !!props.fieldValue : !!changeTemplatedValue(props.settings.DefaultValue)
+    props.fieldValue != null
+      ? !!props.fieldValue
+      : changeTemplatedValue(props.settings.DefaultValue)?.toLowerCase() === 'true'
   const [value, setValue] = useState(initialState)
   const classes = useStyles()
 
@@ -44,7 +46,8 @@ export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> =
         <FormControl
           className={clsx(classes.root, {
             [classes.alignedCenter]:
-              props.settings.Name === 'Enabled' && (props.content?.Type === 'User' || props.actionName === 'new'),
+              props.settings.Name === 'Enabled' &&
+              (props.repository?.schemas.isContentFromType(props.content, 'User') || props.actionName === 'new'),
           })}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>
@@ -65,7 +68,8 @@ export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> =
       return props.fieldValue != null ? (
         <FormControl
           className={clsx(classes.root, {
-            [classes.alignedCenter]: props.content?.Type === 'User' && props.settings.Name === 'Enabled',
+            [classes.alignedCenter]:
+              props.repository?.schemas.isContentFromType(props.content, 'User') && props.settings.Name === 'Enabled',
           })}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>

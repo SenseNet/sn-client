@@ -28,6 +28,7 @@ export const Textarea: React.FC<ReactClientFieldSetting<LongTextFieldSetting>> =
     case 'new':
       return (
         <TextField
+          autoFocus={props.autoFocus}
           onChange={handleChange}
           name={props.settings.Name}
           id={props.settings.Name}

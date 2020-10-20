@@ -40,6 +40,9 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
   const selectionService = useSelectionService()
   const snRoute = useSnRoute()
   const currentPath = useQuery().get('path')
+  const hasUserOrGroupContent = props.content.some(
+    (content) => repo.schemas.isContentFromType(content, 'User') || repo.schemas.isContentFromType(content, 'Group'),
+  )
 
   return (
     <>
@@ -60,10 +63,15 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
             </ListItem>
           ))}
         </List>
+        {hasUserOrGroupContent && <Typography>{localization.additionalTextForUsers}</Typography>}
         {isDeleteInProgress ? <LinearProgress /> : null}
       </DialogContent>
-      <DialogActions style={{ display: 'flex', justifyContent: isTrashBag ? 'flex-end' : 'space-between' }}>
-        {!isTrashBag ? (
+      <DialogActions
+        style={{
+          display: 'flex',
+          justifyContent: isTrashBag || hasUserOrGroupContent ? 'flex-end' : 'space-between',
+        }}>
+        {!isTrashBag && !hasUserOrGroupContent ? (
           <>
             <Tooltip title={localization.permanentlyHint}>
               <FormControlLabel
@@ -136,23 +144,21 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                             .replace('{1}', result.d.errors[0].error.message.value),
                     data: {
                       relatedContent: props.content.length > 1 ? undefined : props.content[0],
-                      details: result.d.errors,
                       relatedRepository: repo.configuration.repositoryUrl,
+                      error: result.d.errors.length > 1 ? result.d.errors : result.d.errors[0],
                     },
                   })
                 } else {
-                  const deletedCurrentContent =
-                    snRoute.path &&
-                    props.content.find((currentContent) =>
-                      PathHelper.isInSubTree(`${snRoute.path}${currentPath}`, currentContent.Path),
+                  if (
+                    props.content.some((currentContent) =>
+                      PathHelper.isInSubTree(`${snRoute.path}${currentPath || ''}`, currentContent.Path),
                     )
-
-                  if (deletedCurrentContent) {
+                  ) {
                     navigateToAction({
                       history,
                       routeMatch: snRoute.match,
                       queryParams: {
-                        path: `/${PathHelper.getParentPath(deletedCurrentContent.Path)}`.replace(snRoute.path, ''),
+                        path: `/${PathHelper.getParentPath(props.content[0].Path)}`.replace(snRoute.path, ''),
                       },
                     })
                   }
@@ -161,7 +167,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                 logger.error({
                   message: localization.deleteFailedNotification,
                   data: {
-                    details: { error },
+                    error,
                   },
                 })
               } finally {
