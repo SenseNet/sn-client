@@ -22,14 +22,14 @@ export class Preview {
 
   public async available(options: {
     document: DocumentData
-    version: string
+    version?: string
     page: number
     abortController?: AbortController
   }) {
     const responseBody = await this.repository.executeAction<{ page: number }, PreviewImageData>({
       idOrPath: options.document.idOrPath,
       method: 'POST',
-      name: `PreviewAvailable?version=${options.version}`,
+      name: options.version ? `PreviewAvailable?version=${options.version}` : 'PreviewAvailable',
       body: {
         page: options.page,
       } as any,

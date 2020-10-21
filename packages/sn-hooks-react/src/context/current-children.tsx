@@ -78,6 +78,7 @@ export const CurrentChildrenProvider: React.FunctionComponent<CurrentChildrenPro
             case 'DeleteBatch':
             case 'MoveBatch':
             case 'CopyBatch':
+            case 'PreviewAvailable':
               return
             case 'Restore':
               if (

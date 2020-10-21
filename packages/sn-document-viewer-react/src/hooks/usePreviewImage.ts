@@ -2,7 +2,7 @@ import { sleepAsync } from '@sensenet/client-utils'
 import { useCallback, useEffect, useState } from 'react'
 import { useDocumentData, useDocumentViewerApi, usePreviewImages, useViewerSettings, useViewerState } from '.'
 
-const POLLING_INTERVAL = 4000
+const POLLING_INTERVAL = 5000
 
 export const usePreviewImage = (pageNo: number) => {
   const images = usePreviewImages()
@@ -26,7 +26,7 @@ export const usePreviewImage = (pageNo: number) => {
           document: documentData,
           page: pageNo,
           showWatermark: viewerState.showWatermark,
-          version: viewerSettings.version || '',
+          version: viewerSettings.version,
         })
         if (previewImageData?.PreviewAvailable) {
           setPreviewImage(previewImageData)

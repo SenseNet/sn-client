@@ -139,9 +139,6 @@ export const Thumbnails: React.FC<ThumbnailsProps> = (props) => {
     setMarginBottom(_marginBottom < 20 ? 20 : _marginBottom)
     const newVisiblePages = _visiblePages.slice(_pagesToSkip, _pagesToSkip + _pagesToTake)
     setVisiblePages(newVisiblePages)
-    const newIndexes = newVisiblePages.map((newValue) => newValue.Index)
-    viewerState.updateState({ visiblePages: newIndexes })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     pages.imageData,
     fitRelativeZoomLevel,

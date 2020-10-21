@@ -92,7 +92,7 @@ describe('Document Viewer component', () => {
         </DocumentViewer>,
       )
       wrapper.setProps({ documentIdOrPath: 2, hostName: 'host2', version: 'v2' })
-      await sleepAsync(4000)
+      await sleepAsync(5000)
       expect(getDocumentData).lastCalledWith({
         abortController: expect.any(AbortController),
         hostName: '',

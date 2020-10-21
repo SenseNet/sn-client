@@ -60,7 +60,7 @@ export interface DocumentViewerApiSettings {
    */
   isPreviewAvailable: (options: {
     document: DocumentData
-    version: string
+    version?: string
     page: number
     showWatermark: boolean
     abortController: AbortController

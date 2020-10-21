@@ -63,7 +63,7 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
           setDocumentData(getDocData)
 
           if (getDocData.pageCount === PreviewState.Loading) {
-            await sleepAsync(4000)
+            await sleepAsync(5000)
           } else {
             break
           }
