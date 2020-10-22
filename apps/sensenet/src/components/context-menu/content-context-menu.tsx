@@ -102,6 +102,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
             return (
               <MenuItem
                 key={action.Name}
+                data-test={`contextmenu-${action.Name.toLowerCase()}`}
                 disableRipple={true}
                 disabled={DISABLED_ACTIONS.includes(action.Name)}
                 data-test={`content-context-menu-${action.Name.toLowerCase()}`}
