@@ -153,7 +153,7 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
             id="sn-document-viewer-thumbnails"
             onPageClick={(_ev, index) => {
               scrollTo(index)
-              viewerState.updateState({ visiblePages: [index] })
+              viewerState.updateState({ activePages: [index] })
             }}
             elementName={THUMBNAIL_NAME}
             images="thumbnail"

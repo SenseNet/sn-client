@@ -68,9 +68,4 @@ export interface ViewerState {
    *
    */
   onPageChange: ObservableValue<number>
-
-  /**
-   *
-   */
-  visiblePages: number[]
 }

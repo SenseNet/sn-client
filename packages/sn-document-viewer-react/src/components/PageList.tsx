@@ -138,9 +138,6 @@ export const PageList: React.FC<PageListProps> = (props) => {
     setMarginBottom(_marginBottom < 20 ? 20 : _marginBottom)
     const newVisiblePages = _visiblePages.slice(_pagesToSkip, _pagesToSkip + _pagesToTake)
     setVisiblePages(newVisiblePages)
-    const newIndexes = newVisiblePages.map((newValue) => newValue.Index)
-    viewerState.updateState({ visiblePages: newIndexes })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     pages.imageData,
     props.fitRelativeZoomLevel,
@@ -156,7 +153,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
 
   const updateScrollState = useCallback(
     debounce(() => {
-      if (props.images === 'preview') viewerState.updateState({ activePages: [viewerState.visiblePages[0] || 1] })
+      viewerState.updateState({ activePages: [(visiblePages[0] && visiblePages[0].Index) || 1] })
     }, 100),
     [viewerState, visiblePages],
   )
