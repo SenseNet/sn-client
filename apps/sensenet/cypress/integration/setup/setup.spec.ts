@@ -2,51 +2,43 @@ import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
 describe('Setup', () => {
 
-  it('should open the context menu if a "settings item" is clicked with the right mouse button', () => {
+  beforeEach(() => {
     cy.login()
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
       .get('[data-test="Setup"]')
       .click()
-      .get('.MuiCardContent-root')
+  })
+
+  it('should open the context menu if a "settings item" is clicked with the right mouse button', () => {
+    cy.get('[data-test="content-card"]')
       .first()
       .rightclick()
-      .get('ul.MuiList-root.MuiMenu-list.MuiList-padding').within(()=>{
-        cy.xpath('//div[text()="Browse"]')
-        cy.xpath('//div[text()="Copy to"]')
-        cy.xpath('//div[text()="Edit"]')
-        cy.xpath('//div[text()="Move to"]')
-        cy.xpath('//div[text()="Check out"]')
-        cy.xpath('//div[text()="Download"]')
-      })
-      .get('.MuiPopover-root')
+      .get('[data-test="content-context-menu-root"]').should('be.visible')
+      .get('[data-test="content-context-menu-browse"]').should('be.visible')
+      .get('[data-test="content-context-menu-copyto"]').should('be.visible')
+      .get('[data-test="content-context-menu-edit"]').should('be.visible')
+      .get('[data-test="content-context-menu-moveto"]').should('be.visible')
+      .get('[data-test="content-context-menu-checkout"]').should('be.visible')
+      .get('[data-test="content-context-menu-download"]').should('be.visible')
+      .get('[data-test="content-context-menu-root"]')
       .click()
   })
 
   it('should open a binary editor with the content of the "settings item" if Edit button is clicked', () => {
-    cy.login()
-    cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
-      .get('[data-test="Setup"]')
-      .click()
-      .get('.MuiPaper-root.MuiCard-root')
-      .first().within(()=>{
-        cy.get('[type="Button"]')
-        .first()
-        .click()
+    cy.get('[data-test="content-card"]')
+      .first().within(() => {
+        cy.get('[data-test="content-card-edit-button"]')
+          .click()
       })
-      .get('[data-test="editor-title"]').should('have.text',"DocumentPreview.settings")
+      .get('[data-test="editor-title"]').should('have.text', 'DocumentPreview.settings')
   })
 
   it('should open the document of the selected "settings item" if "Learn more" button is clicked', () => {
-    cy.login()
-    cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
-      .get('[data-test="Setup"]')
-      .click()
-      .get('.MuiPaper-root.MuiCard-root')
-      .first().within(()=>{
-        cy.get('[type="Button"]')
-        .eq(1)
-        .get('a[href="https://docs.sensenet.com/concepts/basics/07-settings#documentpreview-settings"]').should('have.attr', 'target', '_blank')
+    cy.get('[data-test="content-card"]')
+      .first().within(() => {
+        cy.get('[data-test="content-card-learnmore-button"]')
+          .get('a[href="https://docs.sensenet.com/concepts/basics/07-settings#documentpreview-settings"]')
+          .should('have.attr', 'target', '_blank')
       })
   })
-
 })
