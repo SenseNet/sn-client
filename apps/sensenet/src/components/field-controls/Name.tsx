@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { changeJScriptValue } from '@sensenet/controls-react'
+import { changeTemplatedValue } from '@sensenet/controls-react'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
@@ -14,7 +14,7 @@ const invalidCharacters = ['%', '\\', '*', '~']
 export const Name: React.FC<ReactClientFieldSetting> = (props) => {
   const initialState =
     (props.fieldValue && props.fieldValue.replace(/<[^>]*>/g, '')) ||
-    changeJScriptValue(props.settings.DefaultValue) ||
+    changeTemplatedValue(props.settings.DefaultValue) ||
     ''
   const [value, setValue] = useState(initialState)
   const [isValid, setIsValid] = useState(true)
@@ -34,12 +34,13 @@ export const Name: React.FC<ReactClientFieldSetting> = (props) => {
     case 'edit':
       return (
         <TextField
+          autoFocus={props.autoFocus}
           autoComplete="off"
           name={props.settings.Name}
           id={props.settings.Name}
           label={props.settings.DisplayName}
           placeholder={props.settings.DisplayName}
-          defaultValue={changeJScriptValue(props.settings.DefaultValue)}
+          defaultValue={changeTemplatedValue(props.settings.DefaultValue)}
           value={value}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}

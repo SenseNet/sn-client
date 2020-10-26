@@ -17,18 +17,8 @@ export interface WebKitDirectoryEntry extends WebKitEntry {
   createReader(): WebKitDirectoryReader
 }
 
-declare const WebKitDirectoryEntry: {
-  prototype: WebKitDirectoryEntry
-  new (): WebKitDirectoryEntry
-}
-
 export interface WebKitDirectoryReader {
   readEntries(successCallback: WebKitEntriesCallback, errorCallback?: WebKitErrorCallback): void
-}
-
-export declare const WebKitDirectoryReader: {
-  prototype: WebKitDirectoryReader
-  new (): WebKitDirectoryReader
 }
 
 export interface WebKitEntry {
@@ -37,9 +27,4 @@ export interface WebKitEntry {
   readonly isDirectory: boolean
   readonly isFile: boolean
   readonly name: string
-}
-
-declare const WebKitEntry: {
-  prototype: WebKitEntry
-  new (): WebKitEntry
 }

@@ -9,6 +9,7 @@ const values = {
     contentCreatedNotification: `The content '{0}' has been created succesfully.`,
     errorPostingContentNotification: 'There was an error during content creation',
     errorGettingActions: 'There was an error while fetching the actions.',
+    noItems: 'No items to add',
   },
   commandPalette: {
     title: 'Search',
@@ -78,6 +79,8 @@ const values = {
     deleteSingleContentFailedNotification: `There was an error deleting content '{0}': {1}`,
     deleteMultipleContentFailedNotification: `There was an error deleting {0} content.`,
     deleteFailedNotification: `There was an error during content deletion.`,
+    additionalTextForUsers:
+      'Users and groups cannot be moved to the trash, they are always permanently deleted from the repository. For "soft deleting" users and groups go to "Users & groups" menu and use the enable/disable switch.',
   },
   copyMoveContentDialog: {
     copy: {
@@ -276,7 +279,11 @@ const values = {
   topMenu: {
     personalSettings: 'Personal settings',
     logout: 'Log out',
-    openMenu: 'Open menu',
+    openUserMenu: 'Open user menu',
+    openHelpMenu: 'Open help menu',
+    documentation: 'Documentation',
+    reportBug: 'Report bug',
+    feedback: 'Feedback',
   },
   navigationCommandProvider: {
     personalSettingsPrimary: 'Personal Settings',
@@ -457,6 +464,15 @@ const values = {
     title: 'Select a target',
     cancelButton: 'Cancel',
     selectButton: 'Select',
+  },
+  feedback: {
+    title: 'Give us feedback or suggest new idea',
+    feedbackText1: (link: string) => `We are using a public ${link} to collect customer feedback and ideas.`,
+    feedbackText2:
+      'To add a new feedback, just send an email to the address below describing your suggestion. </br> (email subject - feedback title; email body - feedback description)',
+    feedbackText3: (link: string) => `You can check existing feedbacks and statuses on the public ${link} anytime.`,
+    feedbackText4: 'Thanks for your feedback',
+    cancel: 'Cancel',
   },
 }
 

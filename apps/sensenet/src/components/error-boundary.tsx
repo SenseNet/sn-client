@@ -39,8 +39,8 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
       scope: 'ErrorBoundary',
       message,
       data: {
+        error: msg || error,
         details: {
-          error: msg || error,
           info: this.state.info,
         },
       },

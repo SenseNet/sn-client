@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { changeJScriptValue } from '@sensenet/controls-react'
+import { changeTemplatedValue } from '@sensenet/controls-react'
 import { ColorFieldSetting } from '@sensenet/default-content-types'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import FormControl from '@material-ui/core/FormControl'
@@ -31,7 +31,7 @@ const renderIconDefault = (name: string, color: string) => {
  * Field control that represents a Color field. Available values will be populated from the FieldSettings.
  */
 export const ColorPicker: React.FC<ReactClientFieldSetting<ColorFieldSetting>> = (props) => {
-  const [value, setValue] = useState(props.fieldValue || changeJScriptValue(props.settings.DefaultValue) || '')
+  const [value, setValue] = useState(props.fieldValue || changeTemplatedValue(props.settings.DefaultValue) || '')
   const [isPickerOpen, setIsPickerOpen] = useState(false)
 
   const handleChange = (color: ColorResult) => {

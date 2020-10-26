@@ -113,7 +113,7 @@ exports[`Document Viewer component should render a loading component while loadi
         }
       }
     >
-      <ThemeProvider
+      <Component
         theme={Object {}}
       >
         <Component>
@@ -125,7 +125,7 @@ exports[`Document Viewer component should render a loading component while loadi
             </Component>
           </Component>
         </Component>
-      </ThemeProvider>
+      </Component>
     </ContextProvider>
   </ContextProvider>
 </Component>
@@ -244,7 +244,7 @@ exports[`Document Viewer component should render an error component if an error 
         }
       }
     >
-      <ThemeProvider
+      <Component
         theme={Object {}}
       >
         <Component>
@@ -256,7 +256,7 @@ exports[`Document Viewer component should render an error component if an error 
             </Component>
           </Component>
         </Component>
-      </ThemeProvider>
+      </Component>
     </ContextProvider>
   </ContextProvider>
 </Component>
@@ -375,7 +375,7 @@ exports[`Document Viewer component should render an error component if an error 
         }
       }
     >
-      <ThemeProvider
+      <Component
         theme={Object {}}
       >
         <Component>
@@ -387,7 +387,7 @@ exports[`Document Viewer component should render an error component if an error 
             </Component>
           </Component>
         </Component>
-      </ThemeProvider>
+      </Component>
     </ContextProvider>
   </ContextProvider>
 </Component>
@@ -506,7 +506,7 @@ exports[`Document Viewer component should render an error component if there wer
         }
       }
     >
-      <ThemeProvider
+      <Component
         theme={Object {}}
       >
         <Component>
@@ -518,7 +518,7 @@ exports[`Document Viewer component should render an error component if there wer
             </Component>
           </Component>
         </Component>
-      </ThemeProvider>
+      </Component>
     </ContextProvider>
   </ContextProvider>
 </Component>
@@ -629,7 +629,7 @@ exports[`Document Viewer component should render without crashing 1`] = `
         }
       }
     >
-      <ThemeProvider
+      <Component
         theme={Object {}}
       >
         <Component>
@@ -641,7 +641,7 @@ exports[`Document Viewer component should render without crashing 1`] = `
             </Component>
           </Component>
         </Component>
-      </ThemeProvider>
+      </Component>
     </ContextProvider>
   </ContextProvider>
 </Component>

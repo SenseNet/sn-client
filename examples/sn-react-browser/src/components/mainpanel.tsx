@@ -18,7 +18,7 @@ export interface ContentListDocState extends ContentListProps<File> {
   isEditing: boolean
 }
 
-interface MainPanel {
+interface MainPanelProps {
   width: Breakpoint
 }
 
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) =>
 /**
  * Main component
  */
-const MainPanel: React.FunctionComponent<MainPanel> = (props) => {
+const MainPanel: React.FunctionComponent<MainPanelProps> = (props) => {
   const classes = useStyles()
   const repo = useRepository()
   const history = useHistory()

@@ -1,3 +1,7 @@
+> If you are here because of Hacktoberfest, please check [hacktoberfest.sensenet.com](https://hacktoberfest.sensenet.com/) first.
+
+ <br />
+
 # Contribution guide for End-to-End testing
 
 This guide is about how to write and run End-to-End (E2E) tests for a feature or a component in sensenet's admin ui. We are using Cypress for E2E testing, if you are not familiar with it, check the following docs to get started:
@@ -83,6 +87,8 @@ As it is mentioned above the Cypress related configurations are stored in the cy
     ```
 
     These are the roles what you can use for testing pusposes. In every test case we indicated in what role the particular test should running. You can find the secret keys for the roles on your [profile page](https://profile.sensenet.com/) after login.
+
+![configurations](./config.png)
 
 ## What requires an E2E Test?
 

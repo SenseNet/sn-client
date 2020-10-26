@@ -11,7 +11,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import React, { useState } from 'react'
-import { changeJScriptValue } from '../helpers'
+import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
@@ -55,7 +55,7 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
             name={props.settings.Name}
             multiple={props.settings.AllowMultiple}
             autoWidth={true}
-            defaultValue={changeJScriptValue(props.settings.DefaultValue)}
+            defaultValue={changeTemplatedValue(props.settings.DefaultValue)}
             fullWidth={true}>
             {props.settings.Options?.map((option) => {
               return (

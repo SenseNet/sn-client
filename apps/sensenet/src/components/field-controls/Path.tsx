@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { changeJScriptValue, renderIconDefault } from '@sensenet/controls-react'
+import { changeTemplatedValue, renderIconDefault } from '@sensenet/controls-react'
 import { ShortTextFieldSetting } from '@sensenet/default-content-types'
 import { createStyles, Icon, Input, InputAdornment, InputLabel, makeStyles } from '@material-ui/core'
 import React from 'react'
@@ -37,8 +37,8 @@ export const Path: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>> = (p
         placeholder={props.settings.DisplayName}
         required={props.settings.Compulsory}
         disabled
-        value={props.fieldValue || changeJScriptValue(props.settings.DefaultValue) || ''}
-        defaultValue={changeJScriptValue(props.settings.DefaultValue)}
+        value={props.fieldValue || changeTemplatedValue(props.settings.DefaultValue) || ''}
+        defaultValue={changeTemplatedValue(props.settings.DefaultValue)}
         fullWidth={true}
         endAdornment={
           <InputAdornment position="end">

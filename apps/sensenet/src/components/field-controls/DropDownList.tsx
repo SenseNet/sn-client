@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { changeJScriptValue } from '@sensenet/controls-react'
+import { changeTemplatedValue } from '@sensenet/controls-react'
 import { ChoiceFieldSetting } from '@sensenet/default-content-types'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -21,8 +21,8 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
     if (!props.fieldValue) {
       if (props.settings.DefaultValue) {
         return props.settings.AllowMultiple
-          ? changeJScriptValue(props.settings.DefaultValue)!.split(/,|;/)
-          : changeJScriptValue(props.settings.DefaultValue)
+          ? changeTemplatedValue(props.settings.DefaultValue)!.split(/,|;/)
+          : changeTemplatedValue(props.settings.DefaultValue)
       }
 
       if (props.settings.Options?.length) {

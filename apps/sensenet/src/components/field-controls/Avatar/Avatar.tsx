@@ -1,4 +1,4 @@
-import { changeJScriptValue } from '@sensenet/controls-react'
+import { changeTemplatedValue } from '@sensenet/controls-react'
 import { ReferenceFieldSetting, User } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
@@ -53,8 +53,8 @@ export const Avatar: React.FunctionComponent<ReactClientFieldSetting<ReferenceFi
   const logger = useLogger('Avatar')
   const { openDialog } = useDialog()
 
-  const [fieldValue] = React.useState(
-    (props.fieldValue as any)?.Url || changeJScriptValue(props.settings.DefaultValue) || '',
+  const [fieldValue, setFieldValue] = React.useState(
+    (props.fieldValue as any)?.Url || changeTemplatedValue(props.settings.DefaultValue) || '',
   )
 
   const addItem = () => {
@@ -93,6 +93,9 @@ export const Avatar: React.FunctionComponent<ReactClientFieldSetting<ReferenceFi
           ImageRef: response.Id,
         },
       })
+
+      setFieldValue(response.Url)
+
       //Remove the previous avatar image from the User
       if (props.content?.Avatar?.Url && !props.content?.Avatar?.Url.startsWith('/binaryhandler')) {
         await repo.delete({
@@ -101,7 +104,7 @@ export const Avatar: React.FunctionComponent<ReactClientFieldSetting<ReferenceFi
         })
       }
     } catch (error) {
-      logger.error({ message: 'Something went wrong', data: error })
+      logger.error({ message: 'Something went wrong', data: { error } })
     }
   }
 
@@ -115,7 +118,7 @@ export const Avatar: React.FunctionComponent<ReactClientFieldSetting<ReferenceFi
           required={props.settings.Compulsory}>
           <List dense={true} className={classes.listContainer}>
             <DefaultAvatarTemplate
-              repositoryUrl={props.repository && props.repository.configuration.repositoryUrl}
+              repositoryUrl={props.repository?.configuration.repositoryUrl}
               add={() => addItem()}
               actionName={props.actionName}
               readOnly={props.settings.ReadOnly}

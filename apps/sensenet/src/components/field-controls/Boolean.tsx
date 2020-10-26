@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { changeJScriptValue } from '@sensenet/controls-react'
+import { changeTemplatedValue } from '@sensenet/controls-react'
 import { FieldSetting } from '@sensenet/default-content-types'
 import { createStyles, Grid, makeStyles, Typography } from '@material-ui/core'
 import FormControl from '@material-ui/core/FormControl'
@@ -27,7 +27,10 @@ const useStyles = makeStyles(() =>
  * Field control that represents a Boolean field.
  */
 export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> = (props) => {
-  const initialState = props.fieldValue != null ? !!props.fieldValue : !!changeJScriptValue(props.settings.DefaultValue)
+  const initialState =
+    props.fieldValue != null
+      ? !!props.fieldValue
+      : changeTemplatedValue(props.settings.DefaultValue)?.toLowerCase() === 'true'
   const [value, setValue] = useState(initialState)
   const classes = useStyles()
 
@@ -43,7 +46,8 @@ export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> =
         <FormControl
           className={clsx(classes.root, {
             [classes.alignedCenter]:
-              props.settings.Name === 'Enabled' && (props.content?.Type === 'User' || props.actionName === 'new'),
+              props.settings.Name === 'Enabled' &&
+              (props.repository?.schemas.isContentFromType(props.content, 'User') || props.actionName === 'new'),
           })}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>
@@ -64,7 +68,8 @@ export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> =
       return props.fieldValue != null ? (
         <FormControl
           className={clsx(classes.root, {
-            [classes.alignedCenter]: props.content?.Type === 'User' && props.settings.Name === 'Enabled',
+            [classes.alignedCenter]:
+              props.repository?.schemas.isContentFromType(props.content, 'User') && props.settings.Name === 'Enabled',
           })}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>

@@ -46,7 +46,7 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
       <Toolbar className={classes.toolBar}>
         <div className={globalClasses.centeredVertical}>
           <Link to="/" className={globalClasses.centeredVertical}>
-            <img src={logo} className={classes.logo} alt="logo" />
+            <img src={logo} className={classes.logo} alt="logo" data-test="sensenet-logo" />
           </Link>
           {personalSettings.drawer.type === 'temporary' ? (
             <IconButton
@@ -56,7 +56,9 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
               <Menu />
             </IconButton>
           ) : null}
-          <div style={{ marginRight: '2rem' }}>{repository.configuration.repositoryUrl}</div>
+          <div style={{ marginRight: '2rem' }} data-test="sensenet-header">
+            {repository.configuration.repositoryUrl}
+          </div>
         </div>
 
         {personalSettings.commandPalette.enabled ? (

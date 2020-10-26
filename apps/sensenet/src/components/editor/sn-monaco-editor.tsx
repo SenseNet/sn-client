@@ -16,6 +16,7 @@ const useStyles = makeStyles(() => {
       position: 'absolute',
       padding: '20px',
       bottom: 0,
+      left: 0,
       textAlign: 'right',
     },
     form: {
@@ -78,7 +79,9 @@ export const SnMonacoEditor: React.FunctionComponent<SnMonacoEditorProps> = (pro
         }
       }}>
       <div className={clsx([globalClasses.centeredVertical, classes.header])}>
-        <div className={classes.title}>{props.renderTitle()}</div>
+        <div className={classes.title} data-test="editor-title">
+          {props.renderTitle()}
+        </div>
         <div className={classes.headerButtonWrapper}>
           {props.additionalButtons ? props.additionalButtons : null}
           <Button
@@ -106,6 +109,7 @@ export const SnMonacoEditor: React.FunctionComponent<SnMonacoEditorProps> = (pro
         editorDidMount={(editor, monaco) => {
           if (!monaco.editor.getModel(props.uri)) {
             const m = monaco.editor.createModel(props.textValue, props.language, props.uri)
+            m.setEOL(0)
             editor.setModel(m)
           } else {
             editor.setModel(monaco.editor.getModel(props.uri))

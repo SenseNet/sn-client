@@ -3,7 +3,7 @@ import { ActionModel, GenericContent, Schema } from '@sensenet/default-content-t
 import { AuthenticationService } from '../Authentication/AuthenticationService'
 import { BypassAuthentication } from '../Authentication/BypassAuthentication'
 import { ODataSharingResponse } from '../Models'
-import { Content } from '../Models/Content'
+import { Content, MovedContent } from '../Models/Content'
 import { ODataBatchResponse } from '../Models/ODataBatchResponse'
 import { ODataCollectionResponse } from '../Models/ODataCollectionResponse'
 import { ODataParams } from '../Models/ODataParams'
@@ -296,8 +296,8 @@ export class Repository implements Disposable {
    * Moves a content or content collection to a specified location
    * @param options Options for the Move request
    */
-  public async move(options: MoveOptions): Promise<ODataBatchResponse<Content>> {
-    return await this.executeAction<{}, ODataBatchResponse<Content>>({
+  public async move(options: MoveOptions): Promise<ODataBatchResponse<MovedContent>> {
+    return await this.executeAction<{}, ODataBatchResponse<MovedContent>>({
       idOrPath: ConstantContent.PORTAL_ROOT.Path,
       method: 'POST',
       name: 'MoveBatch',

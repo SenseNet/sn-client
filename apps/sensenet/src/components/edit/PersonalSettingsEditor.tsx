@@ -25,6 +25,8 @@ const useStyles = makeStyles(() => {
     },
     monacoWrapper: {
       height: '100%',
+    },
+    monacoAnimated: {
       transition: 'width 200ms cubic-bezier(0.215, 0.610, 0.355, 1.000)',
     },
     typography: {
@@ -76,7 +78,7 @@ export function SettingsEditor() {
       <div style={{ position: 'relative', width: '100%', height: '100%', boxSizing: 'border-box' }}>
         <div className={clsx(globalClasses.full, classes.personalSettingsWrapper)}>
           <div
-            className={classes.monacoWrapper}
+            className={clsx(classes.monacoWrapper, classes.monacoAnimated)}
             style={{
               width: showDefaults ? '50%' : '0',
               minWidth: showDefaults ? '50%' : '0',

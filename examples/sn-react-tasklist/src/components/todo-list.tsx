@@ -4,13 +4,7 @@ import { useRepository } from '@sensenet/hooks-react'
 import Grid from '@material-ui/core/Grid'
 import List from '@material-ui/core/List'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-
-// start of material imports
 import React, { useEffect, useState } from 'react'
-// end of material imports
-
-// start of sensenet imports
-// end of sensenet imports
 
 // start of component imports
 import ListPanel from './list-panel'

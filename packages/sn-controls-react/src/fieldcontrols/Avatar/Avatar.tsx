@@ -8,7 +8,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
 import React, { Component } from 'react'
-import { changeJScriptValue } from '../../helpers'
+import { changeTemplatedValue } from '../../helpers'
 import { ReactClientFieldSetting } from '../ClientFieldSetting'
 import { renderIconDefault } from '../icon'
 import { AvatarPicker } from './AvatarPicker'
@@ -54,7 +54,7 @@ export class Avatar extends Component<ReactClientFieldSetting<ReferenceFieldSett
   state: AvatarState = {
     fieldValue:
       (this.props.fieldValue && (this.props.fieldValue as any).Url) ||
-      changeJScriptValue(this.props.settings.DefaultValue) ||
+      changeTemplatedValue(this.props.settings.DefaultValue) ||
       '',
     pickerIsOpen: false,
     selected: undefined,

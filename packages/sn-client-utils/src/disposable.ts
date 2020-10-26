@@ -54,7 +54,7 @@ export const using = <T extends Disposable, TReturns>(resource: T, callback: (re
  */
 export const usingAsync = async <T extends Disposable, TReturns>(
   resource: T,
-  callback: (resource: T) => Promise<TReturns>,
+  callback: (disposeableResource: T) => Promise<TReturns>,
 ) => {
   try {
     return await callback(resource)

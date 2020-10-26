@@ -83,7 +83,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
           props.content.DisplayName || props.content.Name,
         ),
         data: {
-          details: { error: err },
+          error: err,
         },
       })
     }

@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme: Theme) => {
       flex: 2,
     },
     dialogActions: {
+      marginTop: 'auto',
       padding: '16px',
     },
     secondaryListItem: {
@@ -119,7 +120,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
         logger.error({
           message: localization.permissionEditor.errorGetPermissionSetting,
           data: {
-            details: { error },
+            error,
           },
         })
       }
@@ -165,7 +166,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
         logger.error({
           message: localization.permissionEditor.errorGetMembersInfo,
           data: {
-            details: { error },
+            error,
           },
         })
       }
@@ -393,12 +394,14 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
         </List>
         <div className={clsx(classes.column, classes.rightColumn)}>
           {actualGroup === 'Members' ? (
-            <PermissionEditorMembers
-              items={groupContent?.Members as User[]}
-              parent={groupContent!}
-              fieldName="Members"
-              canEdit={canEdit}
-            />
+            groupContent && (
+              <PermissionEditorMembers
+                items={groupContent.Members as User[]}
+                parent={groupContent}
+                fieldName="Members"
+                canEdit={canEdit}
+              />
+            )
           ) : (
             <List className={classes.permissionContainer}>
               {getPermissionsFromGroupName(actualGroup).map((selectedGroupPermission: keyof PermissionRequestBody) => {
@@ -464,7 +467,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                   logger.error({
                     message: error.message,
                     data: {
-                      details: { error },
+                      error,
                     },
                   })
                   return false

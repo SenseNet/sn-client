@@ -7,7 +7,7 @@ import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import React, { useState } from 'react'
-import { changeJScriptValue } from '../helpers'
+import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 import { renderIconDefault } from './icon'
 
@@ -15,7 +15,8 @@ import { renderIconDefault } from './icon'
  * Field control that represents a Boolean field.
  */
 export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> = (props) => {
-  const initialState = props.fieldValue != null ? !!props.fieldValue : !!changeJScriptValue(props.settings.DefaultValue)
+  const initialState =
+    props.fieldValue != null ? !!props.fieldValue : !!changeTemplatedValue(props.settings.DefaultValue)
   const [value, setValue] = useState(initialState)
 
   const handleChange = () => {
