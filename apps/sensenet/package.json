@@ -17,7 +17,7 @@
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "build": "webpack --config webpack.prod.js",
     "build:stats": "webpack --config webpack.prod.js --profile --json > stats.json",
-    "start": "webpack serve --open --progress --config webpack.dev.js",
+    "start": "webpack-dev-server --open --progress --config webpack.dev.js",
     "cypress": "cypress open",
     "cypress:all": "cypress run"
   },
@@ -55,9 +55,10 @@
     "terser-webpack-plugin": "^5.0.1",
     "ts-loader": "^8.0.7",
     "url-loader": "^4.1.1",
-    "webpack": "^5.2.0",
+    "webpack": "^4.44.2",
     "webpack-bundle-analyzer": "^3.9.0",
-    "webpack-cli": "^4.1.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0",
     "webpack-merge": "^5.2.0"
   },
   "dependencies": {

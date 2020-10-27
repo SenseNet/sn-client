@@ -66,6 +66,6 @@
     "regenerator-runtime": "^0.13.7",
     "ts-loader": "^8.0.7",
     "uuid": "^8.3.1",
-    "webpack": "^5.2.0"
+    "webpack": "^4.44.2"
   }
 }
