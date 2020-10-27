@@ -23,7 +23,7 @@
   },
   "private": true,
   "publishConfig": {
-    "access": "restricted"
+    "access": "private"
   },
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "license": "GPL-2.0",
