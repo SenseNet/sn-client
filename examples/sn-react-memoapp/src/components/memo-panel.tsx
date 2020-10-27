@@ -201,7 +201,7 @@ export const MemoPanel: React.FunctionComponent = () => {
             <Grid container>
               <Grid item xs={12}>
                 <ReactMarkdown
-                  source={memo.Description}
+                  source={memo.Description || ''}
                   className={editmode === memo.Id.toString() ? classes.hidden : ''}
                 />
                 <TextField
