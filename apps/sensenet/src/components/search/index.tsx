@@ -104,7 +104,7 @@ export const Search = () => {
         if (!ac.signal.aborted) {
           setError(e.message)
           setResult([])
-          logger.warning({ message: 'Error executing search', data: { details: { error: e }, isDismissed: true } })
+          logger.warning({ message: 'Error executing search', data: { error: e, isDismissed: true } })
         }
       }
     }

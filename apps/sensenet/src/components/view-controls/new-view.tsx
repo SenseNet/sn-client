@@ -45,15 +45,14 @@ export const NewView: React.FC<NewViewProps> = (props) => {
           relatedRepository: repository.configuration.repositoryUrl,
         },
       })
+      props.submitCallback?.()
     } catch (error) {
       logger.error({
         message: localization.addButton.errorPostingContentNotification,
         data: {
-          details: { error },
+          error,
         },
       })
-    } finally {
-      props.submitCallback?.()
     }
   }
 

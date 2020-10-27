@@ -19,3 +19,7 @@ export interface Content {
    */
   Type: string
 }
+
+export interface MovedContent extends Content {
+  OriginalPath: string
+}

@@ -96,7 +96,7 @@ export const eventHubTests = describe('EventHub', () => {
 
     it('should be trigger after copy', (done) => {
       eventHub.onContentCopied.subscribe((c) => {
-        expect(c.content).toEqual(mockContent)
+        expect(c.content[0]).toEqual(mockContent)
         done()
       })
       repository['fetch'] = async () =>
@@ -280,7 +280,7 @@ export const eventHubTests = describe('EventHub', () => {
   describe('Content Deleted', () => {
     it('should be triggered after delete', (done) => {
       eventHub.onContentDeleted.subscribe((c) => {
-        expect(c.contentData).toEqual(mockContent)
+        expect(c.contentData[0]).toEqual(mockContent)
         done()
       })
       repository['fetch'] = async () =>
@@ -302,9 +302,9 @@ export const eventHubTests = describe('EventHub', () => {
     })
 
     it('should be triggered after delete more contents', (done) => {
-      eventHub.onBatchDelete.subscribe((c) => {
-        expect(c.contentDatas[0]).toEqual(mockContent)
-        expect(c.contentDatas[1]).toEqual(mockContent2)
+      eventHub.onContentDeleted.subscribe((c) => {
+        expect(c.contentData[0]).toEqual(mockContent)
+        expect(c.contentData[1]).toEqual(mockContent2)
         done()
       })
       repository['fetch'] = async () =>
@@ -397,7 +397,7 @@ export const eventHubTests = describe('EventHub', () => {
   describe('Content Move', () => {
     it('should be triggered after move', (done) => {
       eventHub.onContentMoved.subscribe((c) => {
-        expect(c.content).toEqual(mockContent)
+        expect(c.content[0]).toEqual(mockContent)
         done()
       })
       repository['fetch'] = async () =>

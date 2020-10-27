@@ -55,10 +55,11 @@ export const EditView: React.FC<EditViewProps> = (props) => {
   } else {
     const handleSubmit = async (saveableFields: GenericContent) => {
       try {
-        const response = repository.patch({
+        const response = await repository.patch({
           idOrPath: content.Id,
           content: saveableFields,
         })
+
         logger.information({
           message: localization.editPropertiesDialog.saveSuccessNotification.replace(
             '{0}',
@@ -66,10 +67,13 @@ export const EditView: React.FC<EditViewProps> = (props) => {
           ),
           data: {
             relatedContent: content,
-            content: response,
             relatedRepository: repository.configuration.repositoryUrl,
+            details: {
+              edited: response,
+            },
           },
         })
+        props.submitCallback?.()
       } catch (error) {
         logger.error({
           message: localization.editPropertiesDialog.saveFailedNotification.replace(
@@ -78,13 +82,12 @@ export const EditView: React.FC<EditViewProps> = (props) => {
           ),
           data: {
             relatedContent: content,
-            content,
             relatedRepository: repository.configuration.repositoryUrl,
-            error: isExtendedError(error) ? repository.getErrorFromResponse(error.response) : error,
+            details: {
+              error: isExtendedError(error) ? repository.getErrorFromResponse(error.response) : error,
+            },
           },
         })
-      } finally {
-        props.submitCallback?.()
       }
     }
 

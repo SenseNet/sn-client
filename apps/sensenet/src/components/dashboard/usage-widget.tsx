@@ -69,7 +69,7 @@ export const UsageWidget: React.FunctionComponent<UsageWidgetProps> = (props) =>
                 [classes.danger]: userPercentage >= limits.danger,
               })}
             />
-            <div className={classes.progressCaption}>
+            <div className={classes.progressCaption} data-test="usage-users">
               {localization.used(numberFormatter.format(used.user), numberFormatter.format(limitations.user))}
             </div>
           </Grid>
@@ -88,7 +88,7 @@ export const UsageWidget: React.FunctionComponent<UsageWidgetProps> = (props) =>
                 [classes.danger]: contentPercentage >= limits.danger,
               })}
             />
-            <div className={classes.progressCaption}>
+            <div className={classes.progressCaption} data-test="usage-contents">
               {localization.used(numberFormatter.format(used.content), numberFormatter.format(limitations.content))}
             </div>
           </Grid>
@@ -107,7 +107,7 @@ export const UsageWidget: React.FunctionComponent<UsageWidgetProps> = (props) =>
                 [classes.danger]: storagePercentage >= limits.danger,
               })}
             />
-            <div className={classes.progressCaption}>
+            <div className={classes.progressCaption} data-test="usage-storage-space">
               {localization.used(
                 numberFormatter.format(round(used.storage / 1024)),
                 `${numberFormatter.format(round(limitations.storage / 1024))} GB`,

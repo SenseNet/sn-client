@@ -155,6 +155,75 @@ describe('CurrentChildren', () => {
     expect(wrapper.update()).toMatchSnapshot()
   })
 
+  it('reloads when new content is moved', async () => {
+    const mockRepository = new MockRepository()
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(
+        <RepositoryContext.Provider value={mockRepository as any}>
+          <CurrentChildrenProvider>
+            <CurrentChildrenContext.Consumer>
+              {(value) =>
+                value.length
+                  ? value.map((c) => (
+                      <div key={c.Id}>
+                        Id: {c.Id}, Name: {c.Name}
+                      </div>
+                    ))
+                  : null
+              }
+            </CurrentChildrenContext.Consumer>
+          </CurrentChildrenProvider>
+        </RepositoryContext.Provider>,
+      )
+    })
+
+    expect(wrapper.update()).toMatchSnapshot()
+
+    await act(async () => {
+      mockRepository.move({ Id: 1, Path: '/Root/Path' })
+    })
+
+    expect(wrapper.update()).toMatchSnapshot()
+  })
+
+  it('reloads when content is restored', async () => {
+    const mockRepository = new MockRepository()
+
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(
+        <RepositoryContext.Provider value={mockRepository as any}>
+          <CurrentChildrenProvider>
+            <CurrentChildrenContext.Consumer>
+              {(value) =>
+                value.length
+                  ? value.map((c) => (
+                      <div key={c.Id}>
+                        Id: {c.Id}, Name: {c.Name}
+                      </div>
+                    ))
+                  : null
+              }
+            </CurrentChildrenContext.Consumer>
+          </CurrentChildrenProvider>
+        </RepositoryContext.Provider>,
+      )
+    })
+
+    expect(wrapper.update()).toMatchSnapshot()
+
+    await act(async () => {
+      mockRepository.executeAction({
+        idOrPath: '/Root/Content',
+        name: 'Restore',
+        method: 'POST',
+      })
+    })
+
+    expect(wrapper.update()).toMatchSnapshot()
+  })
+
   it('reloads when new content is deleted', async () => {
     const mockRepository = new MockRepository()
     let wrapper: any

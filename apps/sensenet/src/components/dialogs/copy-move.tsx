@@ -12,8 +12,10 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization, useSnRoute } from '../../hooks'
+import { useLocalization, useQuery, useSnRoute } from '../../hooks'
+import { navigateToAction } from '../../services'
 import { Icon } from '../Icon'
 import { DialogTitle, useDialog } from '.'
 
@@ -27,6 +29,8 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
   const snRoute = useSnRoute()
   const repo = useRepository()
   const { closeLastDialog } = useDialog()
+  const history = useHistory()
+  const currentPath = useQuery().get('path')
   const list = useListPicker({
     repository: repo,
     currentPath: props.currentParent.Path,
@@ -106,39 +110,8 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
               const action = props.operation === 'copy' ? repo.copy : repo.move
               const result = await action({ idOrPath: props.content.map((c) => c.Id), targetPath: list.path })
 
-              if (result.d.results.length === 1 && result.d.errors.length === 0) {
-                logger.information({
-                  message: localization.copySucceededNotification
-                    .replace('{0}', result.d.results[0].Name)
-                    .replace('{1}', list.path),
-                  data: {
-                    details: result,
-                    ...(props.content.length === 1
-                      ? {
-                          relatedRepository: repo.configuration.repositoryUrl,
-                          relatedContent: props.content[0],
-                        }
-                      : {}),
-                  },
-                })
-              } else if (result.d.results.length > 1) {
-                logger.information({
-                  message: localization.copyMultipleSucceededNotification
-                    .replace('{0}', result.d.results.length.toString())
-                    .replace(
-                      '{1}',
-                      list.selectedItem
-                        ? list.selectedItem.DisplayName || list.selectedItem.Name
-                        : parentItem!.DisplayName || parentItem!.Name,
-                    ),
-                  data: {
-                    result,
-                  },
-                })
-              }
-
               if (result.d.errors.length === 1) {
-                logger.warning({
+                return logger.warning({
                   message: `${localization.copyFailedNotification
                     .replace('{0}', result.d.errors[0].content.Name)
                     .replace(
@@ -158,7 +131,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
                   },
                 })
               } else if (result.d.errors.length > 1) {
-                logger.warning({
+                return logger.warning({
                   message: localization.copyMultipleFailedNotification
                     .replace('{0}', result.d.errors.length.toString())
                     .replace(
@@ -169,6 +142,51 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
                     ),
                   data: {
                     details: result,
+                  },
+                })
+              }
+
+              if (result.d.results.length === 1) {
+                logger.information({
+                  message: localization.copySucceededNotification
+                    .replace('{0}', result.d.results[0].Name)
+                    .replace('{1}', list.path),
+                  data: {
+                    error: result.d.errors[0],
+                    ...(props.content.length === 1
+                      ? {
+                          relatedRepository: repo.configuration.repositoryUrl,
+                          relatedContent: props.content[0],
+                        }
+                      : {}),
+                  },
+                })
+              } else if (result.d.results.length > 1) {
+                logger.information({
+                  message: localization.copyMultipleSucceededNotification
+                    .replace('{0}', result.d.results.length.toString())
+                    .replace(
+                      '{1}',
+                      list.selectedItem
+                        ? list.selectedItem.DisplayName || list.selectedItem.Name
+                        : parentItem!.DisplayName || parentItem!.Name,
+                    ),
+                  data: {
+                    error: result.d.errors,
+                  },
+                })
+              }
+
+              if (
+                props.content.some((currentContent) =>
+                  PathHelper.isInSubTree(`${snRoute.path}${currentPath || ''}`, currentContent.Path),
+                )
+              ) {
+                navigateToAction({
+                  history,
+                  routeMatch: snRoute.match,
+                  queryParams: {
+                    path: `/${PathHelper.getParentPath(props.content[0].Path)}`.replace(snRoute.path, ''),
                   },
                 })
               }
