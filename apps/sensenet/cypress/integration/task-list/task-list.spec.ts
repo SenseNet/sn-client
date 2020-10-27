@@ -18,6 +18,18 @@ describe('Task-List', () => {
         cy.get('#Name').type(taskName)
         cy.contains('Submit').click()
         cy.get(`[data-test="table-cell-${taskName}"]`).should('have.text', taskName)
+
+        cy.get(`[data-test=menu-item-${taskName}]`).click()
+        cy.get('[data-test="add-button"')
+          .click()
+          .then(() => {
+            const expectedMenuItems = ['Task']
+            cy.get('[role="presentation"] li')
+              .should('have.length', expectedMenuItems.length)
+              .each(($el) => {
+                expect(expectedMenuItems).to.include($el.text())
+              })
+          })
       })
   })
 
@@ -30,9 +42,9 @@ describe('Task-List', () => {
       .click()
       .then(() => {
         cy.get('#DisplayName').type('-edited')
-        cy.get('#Name').type('-edited')
         cy.contains('Submit').click()
         cy.get(`[data-test="table-cell-${newTaskName}"]`).should('have.text', newTaskName)
+        cy.get(`[data-test="table-cell-${taskName}"]`).should('not.have.text', taskName)
       })
   })
   it('Task should be deleted', () => {
@@ -43,6 +55,7 @@ describe('Task-List', () => {
     cy.get('[data-test="contextmenu-delete"]')
       .click()
       .then(() => {
+        cy.get('[data-test="delete-permanently"]').click()
         cy.get('button[aria-label="Delete"]').click()
         cy.get(`[data-test="table-cell-${taskToBeDeleted}"]`).should('not.exist')
       })
