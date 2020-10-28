@@ -10,7 +10,7 @@ import {
 import React, { useCallback, useEffect, useState } from 'react'
 import { useComments, useCommentState, useDocumentData, useDocumentPermissions, useViewerState } from '../../hooks'
 import { Dimensions } from '../../services'
-import { ShapeAnnotation, ShapeHighlight, ShapeRedaction } from './Shape'
+import { ShapeSkeleton } from '../shapes/ShapeSkeleton'
 import { CommentMarker } from './style'
 
 /**
@@ -122,16 +122,13 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
           viewerState.showRedaction &&
           visibleShapes.redactions.map((redaction, index) => {
             return (
-              <ShapeRedaction
-                customZoomLevel={viewerState.customZoomLevel}
+              <ShapeSkeleton
+                key={index}
+                shape={redaction}
+                shapeType="redactions"
+                zoomRatio={props.zoomRatio}
                 updateShapeData={updateShapeData}
                 removeShape={removeShape}
-                zoomMode={viewerState.zoomMode}
-                shapeType="redactions"
-                shape={redaction}
-                canEdit={permissions.canEdit}
-                zoomRatio={props.zoomRatio}
-                key={index}
               />
             )
           })}
@@ -139,16 +136,13 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
         {viewerState.showShapes &&
           visibleShapes.annotations.map((annotation, index) => {
             return (
-              <ShapeAnnotation
-                customZoomLevel={viewerState.customZoomLevel}
+              <ShapeSkeleton
+                key={index}
+                shape={annotation}
+                shapeType="annotations"
+                zoomRatio={props.zoomRatio}
                 updateShapeData={updateShapeData}
                 removeShape={removeShape}
-                zoomMode={viewerState.zoomMode}
-                shapeType="annotations"
-                shape={annotation}
-                canEdit={permissions.canEdit}
-                zoomRatio={props.zoomRatio}
-                key={index}
               />
             )
           })}
@@ -156,16 +150,13 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
         {viewerState.showShapes &&
           visibleShapes.highlights.map((highlight, index) => {
             return (
-              <ShapeHighlight
-                customZoomLevel={viewerState.customZoomLevel}
+              <ShapeSkeleton
+                key={index}
+                shape={highlight}
+                shapeType="highlights"
+                zoomRatio={props.zoomRatio}
                 updateShapeData={updateShapeData}
                 removeShape={removeShape}
-                zoomMode={viewerState.zoomMode}
-                shapeType="highlights"
-                shape={highlight}
-                canEdit={permissions.canEdit}
-                zoomRatio={props.zoomRatio}
-                key={index}
               />
             )
           })}

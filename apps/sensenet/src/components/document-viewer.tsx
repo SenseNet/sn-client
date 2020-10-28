@@ -1,13 +1,22 @@
 import {
   DocumentTitlePager,
+  Download,
   LayoutAppBar,
+  Print,
   RotateActivePagesWidget,
   RotateDocumentWidget,
   ROTATION_MODE,
+  SaveWidget,
+  SearchBar,
+  Share,
   DocumentViewer as SnDocumentViewer,
   ToggleCommentsWidget,
+  ToggleRedactionWidget,
+  ToggleShapesWidget,
   ToggleThumbnailsWidget,
+  ToggleWatermarkWidget,
   ZoomInOutWidget,
+  ZoomModeWidget,
 } from '@sensenet/document-viewer-react'
 import { CurrentContentProvider } from '@sensenet/hooks-react'
 import { Button, createStyles, makeStyles, Theme } from '@material-ui/core'
@@ -94,7 +103,18 @@ export function DocumentViewer(props: { contentPath: string }) {
                 <RotateActivePagesWidget mode={ROTATION_MODE.clockwise} />
                 <RotateDocumentWidget mode={ROTATION_MODE.clockwise} />
               </div>
+
               <DocumentTitlePager />
+              <Download download={() => console.log('download')} />
+              <Print print={() => console.log('print')} />
+              <SaveWidget />
+              <SearchBar />
+              <Share share={() => console.log('share')} />
+              <ToggleRedactionWidget />
+              <ToggleShapesWidget />
+              <ToggleWatermarkWidget />
+              <ZoomModeWidget />
+
               <div>
                 <ToggleCommentsWidget activeColor={theme.palette.primary.main} />
               </div>

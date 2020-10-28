@@ -1,9 +1,9 @@
 import { PreviewImageData } from '@sensenet/client-core'
-import { debounce } from '@sensenet/client-utils'
+import { Button } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { CommentsContextProvider } from '../context/comments'
-import { usePreviewImages, useViewerState } from '../hooks'
+import { useDocumentData, usePreviewImages, useViewerState } from '../hooks'
 import { ZoomMode } from '../models/viewer-state'
 import { Dimensions, ImageUtil } from '../services'
 import { Page } from './'
@@ -35,12 +35,11 @@ export const PageList: React.FC<PageListProps> = (props) => {
   const [viewport, setViewport] = useState<Dimensions>({ width: 0, height: 0 })
   const pages = usePreviewImages()
 
-  const requestResize = useCallback(
-    debounce(() => {
-      setResizeToken(Math.random())
-    }, 100),
-    [],
-  )
+  const { documentData, updateDocumentData } = useDocumentData()
+
+  const requestResize = useCallback(() => {
+    setResizeToken(Math.random())
+  }, [])
 
   const onScroll = useCallback(() => {
     requestResize()
@@ -146,20 +145,39 @@ export const PageList: React.FC<PageListProps> = (props) => {
     props.zoomLevel,
     props.zoomMode,
     scrollState,
-    viewerState.activePages,
     viewport.height,
     viewport.width,
   ])
 
-  const updateScrollState = useCallback(
-    debounce(() => {
-      viewerState.updateState({ activePages: [(visiblePages[0] && visiblePages[0].Index) || 1] })
-    }, 100),
-    [viewerState, visiblePages],
-  )
+  const updateScrollState = useCallback(() => {
+    viewerState.updateState({ activePages: [(visiblePages[0] && visiblePages[0].Index) || 1] })
+  }, [visiblePages])
 
-  useEffect(updateScrollState, [scrollState])
+  useEffect(updateScrollState, [updateScrollState])
 
+  const addshape = () => {
+    documentData.shapes.redactions.push({ h: 100, w: 300, x: 10, y: 10, imageIndex: 1, guid: '1012' })
+    documentData.shapes.highlights.push({ h: 100, w: 300, x: 10, y: 120, imageIndex: 1, guid: '1013' })
+    documentData.shapes.annotations.push({
+      h: 100,
+      w: 300,
+      x: 10,
+      y: 240,
+      imageIndex: 1,
+      guid: '1014',
+      index: 1,
+      lineHeight: 17,
+      text: 'balbal',
+      fontBold: 'none',
+      fontColor: 'black',
+      fontFamily: 'Ariel',
+      fontItalic: 'none',
+      fontSize: '12px',
+    })
+
+    updateDocumentData(documentData)
+    viewerState.updateState({ hasChanges: true })
+  }
   return (
     <Grid item={true} style={{ flexGrow: 1, flexShrink: 1, overflow: 'auto' }} id={props.id} innerRef={viewportElement}>
       <div
@@ -173,6 +191,9 @@ export const PageList: React.FC<PageListProps> = (props) => {
         }}>
         {visiblePages.map((page) => (
           <CommentsContextProvider page={page.Index} key={page.Index} images={props.images}>
+            <Button aria-label={'test'} onClick={addshape}>
+              <span style={{ textTransform: 'none', fontSize: '32px' }}>VALAMI</span>
+            </Button>
             <Page
               showWidgets={true}
               viewportWidth={viewport.width}
