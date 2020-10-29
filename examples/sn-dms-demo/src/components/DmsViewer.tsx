@@ -6,7 +6,6 @@ import {
   LayoutAppBar,
   Print,
   RotateActivePagesWidget,
-  SearchBar,
   Share,
   ToggleCommentsWidget,
   ToggleThumbnailsWidget,
@@ -105,7 +104,6 @@ const DocViewer: React.FunctionComponent<
                       <DocumentTitlePager />
                       <div style={{ display: 'flex', flexShrink: 0 }}>
                         <ToggleCommentsWidget />
-                        <SearchBar />
                         <IconButton color="inherit" onClick={() => closeViewer()}>
                           <Icon iconName="close" type={iconType.materialui} />
                         </IconButton>

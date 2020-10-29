@@ -4,7 +4,6 @@ import {
   DocumentViewer,
   LayoutAppBar,
   SaveWidget,
-  SearchBar,
   ToggleCommentsWidget,
   ToggleShapesWidget,
   ToggleThumbnailsWidget,
@@ -38,7 +37,6 @@ const DocViewer: React.FunctionComponent<RouteComponentProps<{ documentId: strin
           <DocumentTitlePager />
           <div style={{ display: 'flex', flexShrink: 0 }}>
             <ToggleCommentsWidget />
-            <SearchBar />
           </div>
         </LayoutAppBar>
       </DocumentViewer>

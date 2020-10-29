@@ -1,13 +1,5 @@
-import {
-  Annotation,
-  DraftCommentMarker,
-  Highlight,
-  PreviewImageData,
-  Redaction,
-  Shape,
-  Shapes,
-} from '@sensenet/client-core'
-import React, { useCallback, useEffect, useState } from 'react'
+import { Annotation, Highlight, PreviewImageData, Redaction, Shape, Shapes } from '@sensenet/client-core'
+import React, { useCallback, useState } from 'react'
 import { useComments, useCommentState, useDocumentData, useDocumentPermissions, useViewerState } from '../../hooks'
 import { Dimensions } from '../../services'
 import { ShapeSkeleton } from '../shapes/ShapeSkeleton'
@@ -17,10 +9,8 @@ import { CommentMarker } from './style'
  * Defined the component's own properties
  */
 export interface ShapesWidgetProps {
-  viewPort: Dimensions
   page: PreviewImageData
   zoomRatio: number
-  draftCommentMarker?: DraftCommentMarker
 }
 
 /**
@@ -33,24 +23,11 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
   const comments = useComments()
   const commentState = useCommentState()
 
-  const [visibleShapes, setVisibleShapes] = useState({
+  const [visibleShapes] = useState({
     redactions: documentData.shapes.redactions.filter((r) => r.imageIndex === props.page.Index) as Redaction[],
     highlights: documentData.shapes.highlights.filter((r) => r.imageIndex === props.page.Index) as Highlight[],
     annotations: documentData.shapes.annotations.filter((r) => r.imageIndex === props.page.Index) as Annotation[],
   })
-
-  useEffect(() => {
-    setVisibleShapes({
-      redactions: documentData.shapes.redactions.filter((r) => r.imageIndex === props.page.Index) as Redaction[],
-      highlights: documentData.shapes.highlights.filter((r) => r.imageIndex === props.page.Index) as Highlight[],
-      annotations: documentData.shapes.annotations.filter((r) => r.imageIndex === props.page.Index) as Annotation[],
-    })
-  }, [
-    documentData.shapes.annotations,
-    documentData.shapes.highlights,
-    documentData.shapes.redactions,
-    props.page.Index,
-  ])
 
   const removeShape = useCallback(
     (shapeType: keyof Shapes, guid: string) => {

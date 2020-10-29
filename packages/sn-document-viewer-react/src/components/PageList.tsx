@@ -4,7 +4,6 @@ import Grid from '@material-ui/core/Grid'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { CommentsContextProvider } from '../context/comments'
 import { useDocumentData, usePreviewImages, useViewerState } from '../hooks'
-import { ZoomMode } from '../models/viewer-state'
 import { Dimensions, ImageUtil } from '../services'
 import { Page } from './'
 
@@ -12,13 +11,9 @@ import { Page } from './'
  * Defines the own properties for the PageList component
  */
 export interface PageListProps {
-  tolerance: number
   padding: number
   id: string
   elementName: string
-  zoomMode: ZoomMode
-  zoomLevel: number
-  fitRelativeZoomLevel: number
   images: 'preview' | 'thumbnail'
   activePage?: number
   onPageClick: (ev: React.MouseEvent<HTMLElement>, pageIndex: number) => void
@@ -97,9 +92,9 @@ export const PageList: React.FC<PageListProps> = (props) => {
           height: p.Height,
           rotation: (p.Attributes && p.Attributes.degree) || 0,
         },
-        props.zoomMode,
-        props.zoomLevel,
-        props.fitRelativeZoomLevel,
+        viewerState.zoomMode,
+        viewerState.customZoomLevel,
+        viewerState.fitRelativeZoomLevel,
       )
 
       return {
@@ -112,10 +107,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
     let _marginTop = 0
     let _pagesToSkip = 0
 
-    while (
-      _visiblePages[_pagesToSkip] &&
-      _marginTop + _visiblePages[_pagesToSkip].Height + props.tolerance < scrollState
-    ) {
+    while (_visiblePages[_pagesToSkip] && _marginTop + _visiblePages[_pagesToSkip].Height < scrollState) {
       _marginTop += _visiblePages[_pagesToSkip].Height + props.padding * 2
       _pagesToSkip++
     }
@@ -123,7 +115,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
     let _pagesToTake = 1
     let _pagesHeight = 0
 
-    while (_visiblePages[_pagesToSkip + _pagesToTake] && _pagesHeight < viewport.height + props.tolerance) {
+    while (_visiblePages[_pagesToSkip + _pagesToTake] && _pagesHeight < viewport.height) {
       _pagesHeight += _visiblePages[_pagesToSkip + _pagesToTake].Height + props.padding * 2
       _pagesToTake++
     }
@@ -139,12 +131,11 @@ export const PageList: React.FC<PageListProps> = (props) => {
     setVisiblePages(newVisiblePages)
   }, [
     pages.imageData,
-    props.fitRelativeZoomLevel,
     props.padding,
-    props.tolerance,
-    props.zoomLevel,
-    props.zoomMode,
     scrollState,
+    viewerState.customZoomLevel,
+    viewerState.fitRelativeZoomLevel,
+    viewerState.zoomMode,
     viewport.height,
     viewport.width,
   ])
@@ -195,17 +186,13 @@ export const PageList: React.FC<PageListProps> = (props) => {
               <span style={{ textTransform: 'none', fontSize: '32px' }}>VALAMI</span>
             </Button>
             <Page
-              showWidgets={true}
               viewportWidth={viewport.width}
               viewportHeight={viewport.height}
               imageIndex={page.Index}
               onClick={(ev) => props.onPageClick(ev, page.Index)}
-              zoomMode={props.zoomMode}
-              zoomLevel={props.zoomLevel}
-              fitRelativeZoomLevel={props.fitRelativeZoomLevel}
               elementName={props.elementName}
-              image={props.images}
               margin={props.padding}
+              isThumbnail={false}
             />
           </CommentsContextProvider>
         ))}

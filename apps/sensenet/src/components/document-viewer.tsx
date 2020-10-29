@@ -7,7 +7,6 @@ import {
   RotateDocumentWidget,
   ROTATION_MODE,
   SaveWidget,
-  SearchBar,
   Share,
   DocumentViewer as SnDocumentViewer,
   ToggleCommentsWidget,
@@ -108,7 +107,6 @@ export function DocumentViewer(props: { contentPath: string }) {
               <Download download={() => console.log('download')} />
               <Print print={() => console.log('print')} />
               <SaveWidget />
-              <SearchBar />
               <Share share={() => console.log('share')} />
               <ToggleRedactionWidget />
               <ToggleShapesWidget />

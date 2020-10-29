@@ -1,8 +1,7 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Paper from '@material-ui/core/Paper'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useCommentState, usePreviewImage, useViewerState } from '../hooks'
-import { ZoomMode } from '../models/viewer-state'
 import { ImageUtil } from '../services'
 import { ShapesWidget } from './page-widgets'
 import { MARKER_SIZE } from './page-widgets/style'
@@ -11,17 +10,13 @@ import { MARKER_SIZE } from './page-widgets/style'
  * Defined the component's own properties
  */
 export interface PageProps {
-  showWidgets: boolean
+  isThumbnail: boolean
   imageIndex: number
   viewportHeight: number
   viewportWidth: number
   elementName: string
-  zoomMode: ZoomMode
-  zoomLevel: number
-  fitRelativeZoomLevel: number
   onClick: (ev: React.MouseEvent<HTMLElement>) => any
   margin: number
-  image: 'preview' | 'thumbnail'
 }
 
 export const Page: React.FC<PageProps> = (props) => {
@@ -29,35 +24,19 @@ export const Page: React.FC<PageProps> = (props) => {
   const page = usePreviewImage(props.imageIndex)
   const commentState = useCommentState()
 
-  const [isActive, setIsActive] = React.useState(page.image && viewerState.activePages.includes(page.image.Index))
-  useEffect(() => {
-    setIsActive(page.image && viewerState.activePages.includes(page.image.Index))
-  }, [page.image, viewerState.activePages])
+  const [isActive] = React.useState(page.image && viewerState.activePages.includes(page.image.Index))
 
-  const [imgUrl, setImgUrl] = useState(
-    (page.image && (props.image === 'preview' ? page.image.PreviewImageUrl : page.image.ThumbnailImageUrl)) || '',
+  const [imgUrl] = useState(
+    (page.image && (!props.isThumbnail ? page.image.PreviewImageUrl : page.image.ThumbnailImageUrl)) || '',
   )
-  useEffect(() => {
-    setImgUrl(
-      (page.image && (props.image === 'preview' ? page.image.PreviewImageUrl : page.image.ThumbnailImageUrl)) || '',
-    )
-  }, [page.image, props.image])
 
-  const [imageRotation, setImageRotation] = useState(
+  const [imageRotation] = useState(
     ImageUtil.normalizeDegrees((page.image && page.image.Attributes && page.image.Attributes.degree) || 0),
   )
 
-  const [imageRotationRads, setImageRotationRads] = useState(((imageRotation % 180) * Math.PI) / 180)
+  const [imageRotationRads] = useState(((imageRotation % 180) * Math.PI) / 180)
 
-  useEffect(() => {
-    const newRotation = ImageUtil.normalizeDegrees(
-      (page.image && page.image.Attributes && page.image.Attributes.degree) || 0,
-    )
-    setImageRotation(newRotation)
-    setImageRotationRads(((newRotation % 180) * Math.PI) / 180)
-  }, [page.image])
-
-  const [relativeImageSize, setRelativeImageSize] = useState(
+  const [relativeImageSize] = useState(
     ImageUtil.getImageSize(
       {
         width: props.viewportWidth,
@@ -68,39 +47,13 @@ export const Page: React.FC<PageProps> = (props) => {
         height: (page.image && page.image.Height) || 0,
         rotation: (page.image && page.image.Attributes && page.image.Attributes.degree) || 0,
       },
-      props.zoomMode,
-      props.zoomLevel,
-      props.fitRelativeZoomLevel,
+      viewerState.zoomMode,
+      viewerState.customZoomLevel,
+      viewerState.fitRelativeZoomLevel,
     ),
   )
 
-  useEffect(() => {
-    setRelativeImageSize(
-      ImageUtil.getImageSize(
-        {
-          width: props.viewportWidth,
-          height: props.viewportHeight,
-        },
-        {
-          width: (page.image && page.image.Width) || 0,
-          height: (page.image && page.image.Height) || 0,
-          rotation: (page.image && page.image.Attributes && page.image.Attributes.degree) || 0,
-        },
-        props.zoomMode,
-        props.zoomLevel,
-        props.fitRelativeZoomLevel,
-      ),
-    )
-  }, [
-    page.image,
-    props.fitRelativeZoomLevel,
-    props.viewportHeight,
-    props.viewportWidth,
-    props.zoomLevel,
-    props.zoomMode,
-  ])
-
-  const [boundingBox, setBoundingBox] = useState(
+  const [boundingBox] = useState(
     ImageUtil.getRotatedBoundingBoxSize(
       {
         width: (page.image && page.image.Width) || 0,
@@ -110,31 +63,11 @@ export const Page: React.FC<PageProps> = (props) => {
     ),
   )
 
-  useEffect(() => {
-    setBoundingBox(
-      ImageUtil.getRotatedBoundingBoxSize(
-        {
-          width: (page.image && page.image.Width) || 0,
-          height: (page.image && page.image.Height) || 0,
-        },
-        imageRotation,
-      ),
-    )
-  }, [imageRotation, page.image])
-
-  const [diffHeight, setDiffHeight] = useState(
+  const [diffHeight] = useState(
     Math.sin(imageRotationRads) * ((relativeImageSize.height - relativeImageSize.width) / 2),
   )
 
-  useEffect(() => {
-    setDiffHeight(Math.sin(imageRotationRads) * ((relativeImageSize.height - relativeImageSize.width) / 2) || 0)
-  }, [imageRotationRads, relativeImageSize.height, relativeImageSize.width])
-
-  const [imageTransform, setImageTransform] = useState(`translateY(${diffHeight}px) rotate(${imageRotation}deg)`)
-
-  useEffect(() => {
-    setImageTransform(`translateY(${diffHeight}px) rotate(${imageRotation}deg)`)
-  }, [diffHeight, imageRotation])
+  const [imageTransform] = useState(`translateY(${diffHeight}px) rotate(${imageRotation}deg)`)
 
   const handleMarkerPlacement = useCallback(
     (event: React.MouseEvent) => {
@@ -171,14 +104,9 @@ export const Page: React.FC<PageProps> = (props) => {
           props.onClick(ev)
           handleMarkerPlacement(ev)
         }}>
-        {page.image && props.showWidgets ? (
+        {page.image && !props.isThumbnail ? (
           <div>
-            <ShapesWidget
-              draftCommentMarker={commentState.draft}
-              zoomRatio={relativeImageSize.height / page.image.Height}
-              page={page.image}
-              viewPort={{ height: relativeImageSize.height, width: relativeImageSize.width }}
-            />
+            <ShapesWidget zoomRatio={relativeImageSize.height / page.image.Height} page={page.image} />
           </div>
         ) : null}
         <span style={{ display: 'flex', justifyContent: 'center' }}>

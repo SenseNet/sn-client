@@ -139,13 +139,9 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
         }}>
         <PageList
           id="sn-document-viewer-pages"
-          zoomMode={viewerState.zoomMode}
-          zoomLevel={viewerState.customZoomLevel}
-          fitRelativeZoomLevel={viewerState.fitRelativeZoomLevel}
           onPageClick={(_ev, index) => scrollTo(index)}
           elementName={PAGE_NAME}
           images="preview"
-          tolerance={0}
           padding={pagePadding}
           activePage={viewerState.activePages[0]}
         />

@@ -8,7 +8,6 @@ import {
   Print,
   RotateActivePagesWidget,
   SaveWidget,
-  SearchBar,
   Share,
   ToggleCommentsWidget,
   ToggleShapesWidget,
@@ -106,7 +105,6 @@ export const ExampleAppLayout: React.FC = () => {
                 <DocumentTitlePager />
                 <div style={{ display: 'flex', flexShrink: 0 }}>
                   <ToggleCommentsWidget />
-                  <SearchBar />
                 </div>
               </LayoutAppBar>
             </DocumentViewer>
