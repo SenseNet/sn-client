@@ -1,5 +1,5 @@
 import { sleepAsync } from '@sensenet/client-utils'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDocumentData, useDocumentViewerApi, usePreviewImages, useViewerSettings, useViewerState } from '.'
 
 const POLLING_INTERVAL = 5000
@@ -47,11 +47,8 @@ export const usePreviewImage = (pageNo: number) => {
     return () => abortController.abort()
   }, [api, documentData, pageNo, previewImage, viewerSettings.version, viewerState.showWatermark])
 
-  const rotate = useCallback((amount: number) => images.rotateImages([pageNo], amount), [images, pageNo])
-
   return {
     ...context,
     image: previewImage,
-    rotate,
   }
 }

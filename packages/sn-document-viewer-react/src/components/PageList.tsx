@@ -90,7 +90,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
         {
           width: p.Width,
           height: p.Height,
-          rotation: (p.Attributes && p.Attributes.degree) || 0,
+          rotation: viewerState.rotation?.find((rotation) => rotation.pageNum === p.Index)?.degree || 0,
         },
         viewerState.zoomMode,
         viewerState.customZoomLevel,
@@ -135,6 +135,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
     scrollState,
     viewerState.customZoomLevel,
     viewerState.fitRelativeZoomLevel,
+    viewerState.rotation,
     viewerState.zoomMode,
     viewport.height,
     viewport.width,

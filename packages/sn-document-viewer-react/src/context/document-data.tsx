@@ -12,7 +12,6 @@ const defaultDocumentData: DocumentData = {
   fileSizekB: 0,
   hostName: '',
   idOrPath: 0,
-  pageAttributes: [],
   pageCount: PreviewState.Loading,
   shapes: {
     annotations: [],

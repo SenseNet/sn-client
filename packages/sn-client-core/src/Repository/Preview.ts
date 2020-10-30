@@ -86,8 +86,6 @@ export class Preview {
     const allPreviews: PreviewImageData[] = []
     for (let i = 0; i < options.document.pageCount; i++) {
       allPreviews[i] = availablePreviews[i] || ({ Index: i + 1 } as any)
-      const pageAttributes = options.document.pageAttributes.find((p) => p.pageNum === allPreviews[i].Index)
-      allPreviews[i].Attributes = pageAttributes && pageAttributes.options
     }
     return allPreviews
   }

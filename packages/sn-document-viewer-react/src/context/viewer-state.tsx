@@ -13,6 +13,7 @@ export const defaultViewerState: ViewerState & {
   showShapes: true,
   showThumbnails: false,
   fitRelativeZoomLevel: 0,
+  rotation: undefined,
   showComments: false,
   hasChanges: false,
   isPlacingCommentMarker: false,

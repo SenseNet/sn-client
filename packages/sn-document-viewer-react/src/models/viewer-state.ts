@@ -6,6 +6,21 @@ import { ObservableValue } from '@sensenet/client-utils'
 export type ZoomMode = 'originalSize' | 'fit' | 'fitHeight' | 'fitWidth' | 'custom'
 
 /**
+ * Rotation model
+ */
+export interface RotationModel {
+  /**
+   * The index of the page
+   */
+  pageNum: number
+
+  /**
+   * Rotation in degrees
+   */
+  degree: number
+}
+
+/**
  * Type model for the Viewer state
  */
 export interface ViewerState {
@@ -43,6 +58,11 @@ export interface ViewerState {
    * Zoom level relative to the fitted image size
    */
   fitRelativeZoomLevel: number
+
+  /**
+   * Rotation
+   */
+  rotation?: RotationModel[]
 
   /**
    * Determines if comments are shown

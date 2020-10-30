@@ -1,26 +1,18 @@
 import { PreviewImageData } from '@sensenet/client-core'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { Dispatch, useEffect, useState } from 'react'
 import { PreviewState } from '..'
-import {
-  useDocumentData,
-  useDocumentPermissions,
-  useDocumentViewerApi,
-  useViewerSettings,
-  useViewerState,
-} from '../hooks'
-import { applyShapeRotations, ImageUtil } from '../services'
+import { useDocumentData, useDocumentViewerApi, useViewerSettings, useViewerState } from '../hooks'
 
 export const PreviewImageDataContext = React.createContext<{
   imageData: PreviewImageData[]
-  rotateImages: (indexes: number[], amount: number) => void
-}>({ imageData: [], rotateImages: () => undefined })
+  setImageData: Dispatch<React.SetStateAction<PreviewImageData[]>>
+}>({ imageData: [], setImageData: () => ({} as any) })
 
 export const PreviewImageDataContextProvider: React.FC = (props) => {
   const viewerSettings = useViewerSettings()
   const api = useDocumentViewerApi()
-  const { documentData, updateDocumentData } = useDocumentData()
+  const { documentData } = useDocumentData()
   const viewerState = useViewerState()
-  const permissions = useDocumentPermissions()
   const [previewImages, setPreviewImages] = useState<PreviewImageData[]>([])
 
   useEffect(() => {
@@ -48,44 +40,11 @@ export const PreviewImageDataContextProvider: React.FC = (props) => {
     return () => abortController.abort()
   }, [api, documentData, viewerSettings.version, viewerState.showWatermark])
 
-  const rotateImages = useCallback(
-    (imageIndexes: number[], amount: number) => {
-      if (!permissions.canEdit) {
-        console.warn(`No permission to edit!`)
-        return
-      }
-      const newImages = previewImages.map((img) => {
-        const newImg = { ...img }
-        if (imageIndexes.indexOf(newImg.Index) >= 0) {
-          const newAngle =
-            ImageUtil.normalizeDegrees(((newImg.Attributes && newImg.Attributes.degree) || 0) + (amount % 360)) % 360
-          newImg.Attributes = {
-            ...newImg.Attributes,
-            degree: newAngle,
-          }
-        }
-
-        updateDocumentData({
-          shapes: {
-            annotations: applyShapeRotations(documentData.shapes.annotations, amount, img),
-            highlights: applyShapeRotations(documentData.shapes.highlights, amount, img),
-            redactions: applyShapeRotations(documentData.shapes.redactions, amount, img),
-          },
-        })
-
-        return newImg
-      })
-      setPreviewImages(newImages)
-      viewerState.updateState({ hasChanges: true })
-    },
-    [documentData, updateDocumentData, permissions.canEdit, previewImages, viewerState],
-  )
-
   return (
     <PreviewImageDataContext.Provider
       value={{
         imageData: previewImages,
-        rotateImages,
+        setImageData: setPreviewImages,
       }}>
       {props.children}
     </PreviewImageDataContext.Provider>

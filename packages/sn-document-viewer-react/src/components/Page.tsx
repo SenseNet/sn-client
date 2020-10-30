@@ -31,7 +31,9 @@ export const Page: React.FC<PageProps> = (props) => {
   )
 
   const [imageRotation] = useState(
-    ImageUtil.normalizeDegrees((page.image && page.image.Attributes && page.image.Attributes.degree) || 0),
+    ImageUtil.normalizeDegrees(
+      viewerState.rotation?.find((rotation) => rotation.pageNum === props.imageIndex)?.degree || 0,
+    ),
   )
 
   const [imageRotationRads] = useState(((imageRotation % 180) * Math.PI) / 180)
@@ -45,7 +47,7 @@ export const Page: React.FC<PageProps> = (props) => {
       {
         width: (page.image && page.image.Width) || 0,
         height: (page.image && page.image.Height) || 0,
-        rotation: (page.image && page.image.Attributes && page.image.Attributes.degree) || 0,
+        rotation: viewerState.rotation?.find((rotation) => rotation.pageNum === props.imageIndex)?.degree || 0,
       },
       viewerState.zoomMode,
       viewerState.customZoomLevel,
