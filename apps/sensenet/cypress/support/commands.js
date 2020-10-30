@@ -50,6 +50,6 @@ Cypress.Commands.add('login', (userType = 'admin') => {
       sub: user.id,
     }
 
-    window.sessionStorage.setItem(`oidc.user:${Cypress.env('identityServer')}:spa`, JSON.stringify(oidcUser))
+    window.sessionStorage.setItem(`oidc.user:${Cypress.env('identityServer')}:adminui`, JSON.stringify(oidcUser))
   })
 })
