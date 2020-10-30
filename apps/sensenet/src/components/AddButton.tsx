@@ -254,7 +254,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
                       queryParams: { 'content-type': childType.ContentTypeName },
                     })
                   }}
-                  data-test={`listitem-${childType.DisplayName}`}>
+                  data-test={`${childType.DisplayName}`}>
                   <ListItemIcon style={{ minWidth: '36px' }}>
                     <Icon item={childType} />
                   </ListItemIcon>
