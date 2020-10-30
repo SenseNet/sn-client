@@ -10,27 +10,33 @@ describe('Task-List', () => {
   it('Task should be created', () => {
     cy.get('[data-test="drawer-menu-item-Content"]').click()
     cy.get('[data-test="menu-item-IT Workspace"]').click()
-    cy.get('[data-test="add-button"').click()
-    cy.get('[data-test="listitem-Task list"')
+    cy.get('[data-test="add-button"]').click()
+    cy.get('[data-test="listitem-Task list"]')
       .click()
       .then(() => {
         cy.get('#DisplayName').type(taskName)
         cy.get('#Name').type(taskName)
         cy.contains('Submit').click()
         cy.get(`[data-test="table-cell-${taskName}"]`).should('have.text', taskName)
+        cy.get('[data-test="snackbar-close"]').click()
 
-        cy.get(`[data-test=menu-item-${taskName}]`).click()
-        cy.get('[data-test="add-button"')
+        cy.get(`[data-test="table-cell-${taskName}"]`).dblclick()
+
+        cy.get('[data-test="add-button"]')
           .click()
           .then(() => {
-            const expectedMenuItems = ['Task']
-            cy.get('[role="presentation"] li')
-              .should('have.length', expectedMenuItems.length)
-              .each(($el) => {
-                expect(expectedMenuItems).to.include($el.text())
+            const expetcedMenuItems = ['Task']
+            cy.get('[data-test="list-items"]')
+              .should('have.length', expetcedMenuItems.length)
+              .each(($span) => {
+                const text = $span.text()
+                if (text) {
+                  expect(expetcedMenuItems).to.include(text)
+                }
               })
           })
       })
+    cy.get('[data-test="list-items"]').first().click()
   })
 
   it('Task should be edited', () => {
@@ -47,6 +53,7 @@ describe('Task-List', () => {
         cy.get(`[data-test="table-cell-${taskName}"]`).should('not.have.text', taskName)
       })
   })
+
   it('Task should be deleted', () => {
     const taskToBeDeleted = `${taskName}-edited`
     cy.get('[data-test="drawer-menu-item-Content"]').click()
