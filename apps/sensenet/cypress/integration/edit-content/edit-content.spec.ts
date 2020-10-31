@@ -5,7 +5,7 @@ describe('Edit Content', () => {
     cy.login()
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
   })
-  it('Test case 1: edit content should works properly.', () => {
+  it('Test case 1: edit content should work properly.', () => {
     cy.get('[data-test="Content"]').click()
     cy.get('[data-test="menu-item-IT Workspace"]')
       .rightclick()
@@ -19,12 +19,11 @@ describe('Edit Content', () => {
         cy.get('[data-test="Content"]').click()
         cy.get('[data-test="menu-item-IT Workspace Test"]').click()
         cy.get('nav[aria-label="breadcrumb"] li').each(($el) => {
-          console.log($el.text())
           expect(expectedBreadcrumbItems).to.include($el.text())
         })
       })
   })
-  it('Test case 2: edit content should works properly.', () => {
+  it('Test case 2: edit content should work properly.', () => {
     cy.get('[data-test="Content"]').click()
     cy.get('[data-test="menu-item-IT Workspace Test"]')
       .rightclick()
