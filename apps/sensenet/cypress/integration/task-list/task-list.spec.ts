@@ -44,7 +44,7 @@ describe('Task-List', () => {
     cy.get('[data-test="drawer-menu-item-Content"]').click()
     cy.get('[data-test="menu-item-IT Workspace"]').click()
     cy.get(`[data-test="table-cell-${taskName}"]`).rightclick()
-    cy.get('[data-test="contextmenu-edit"]')
+    cy.get('[data-test="content-context-menu-edit"]')
       .click()
       .then(() => {
         cy.get('#DisplayName').type('-edited')
@@ -59,7 +59,7 @@ describe('Task-List', () => {
     cy.get('[data-test="drawer-menu-item-Content"]').click()
     cy.get('[data-test="menu-item-IT Workspace"]').click()
     cy.get(`[data-test="table-cell-${taskToBeDeleted}"]`).rightclick()
-    cy.get('[data-test="contextmenu-delete"]')
+    cy.get('[data-test="content-context-menu--delete"]')
       .click()
       .then(() => {
         cy.get('[data-test="delete-permanently"]').click()
