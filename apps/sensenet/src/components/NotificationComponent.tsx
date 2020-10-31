@@ -112,7 +112,8 @@ export const NotificationComponent: React.FunctionComponent = () => {
                   setDismisses([...dismisses, value.data?.guid])
                   notificationService.dismiss(value)
                 }}
-                aria-label="Close button">
+                aria-label="Close button"
+                data-test="snackbar-close">
                 <Close />
               </IconButton>
             }

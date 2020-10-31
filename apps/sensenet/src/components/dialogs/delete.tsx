@@ -80,6 +80,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                 control={
                   <Checkbox
                     color="primary"
+                    data-test="delete-permanently"
                     disabled={isDeleteInProgress}
                     onChange={(ev) => setPermanent(ev.target.checked)}
                   />

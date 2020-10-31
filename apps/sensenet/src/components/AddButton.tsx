@@ -214,7 +214,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
           vertical: 'top',
           horizontal: 'left',
         }}>
-        <List className={classes.listDropdown}>
+        <List className={classes.listDropdown} data-test="list-items">
           {hasUpload ? (
             <Tooltip title={localization.upload} placement="right">
               <ListItem
@@ -254,7 +254,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
                       queryParams: { 'content-type': childType.ContentTypeName },
                     })
                   }}
-                  data-test="listitem">
+                  data-test={`listitem-${childType.DisplayName}`}>
                   <ListItemIcon style={{ minWidth: '36px' }}>
                     <Icon item={childType} />
                   </ListItemIcon>
