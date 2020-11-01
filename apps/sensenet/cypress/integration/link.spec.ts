@@ -53,7 +53,7 @@ describe('Users menu', () => {
         })
     })
 
-    it('Ensure that delete a link content works properly', () => {
+    it('Ensure that deleting a link works properly', () => {
         //Select link and choose delete
         cy.get('div[class="ReactVirtualized__Grid ReactVirtualized__Table__Grid"]').within(() => {
             cy.contains('Changed Test_Link').rightclick()
