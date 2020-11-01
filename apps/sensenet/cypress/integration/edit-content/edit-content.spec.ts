@@ -6,7 +6,7 @@ describe('Edit Content', () => {
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
   })
   it('Test case 1: edit content should work properly.', () => {
-    cy.get('[data-test="Content"]').click()
+    cy.get('[data-test="drawer-menu-item-Content"]').click()
     cy.get('[data-test="menu-item-IT Workspace"]')
       .rightclick()
       .then(() => {
@@ -16,7 +16,7 @@ describe('Edit Content', () => {
         cy.get(`[data-test="table-cell-IT Workspace Test"]`).should('have.text', 'IT Workspace Test')
         //  breadcrumb test
         const expectedBreadcrumbItems = ['Content', '/', 'IT Workspace Test']
-        cy.get('[data-test="Content"]').click()
+        cy.get('[data-test="drawer-menu-item-Content"]').click()
         cy.get('[data-test="menu-item-IT Workspace Test"]').click()
         cy.get('nav[aria-label="breadcrumb"] li').each(($el) => {
           expect(expectedBreadcrumbItems).to.include($el.text())
@@ -24,7 +24,7 @@ describe('Edit Content', () => {
       })
   })
   it('Test case 2: edit content should work properly.', () => {
-    cy.get('[data-test="Content"]').click()
+    cy.get('[data-test="drawer-menu-item-Content"]').click()
     cy.get('[data-test="menu-item-IT Workspace Test"]')
       .rightclick()
       .then(() => {
@@ -34,7 +34,7 @@ describe('Edit Content', () => {
           .click()
           .then(() => {
             const expectedBreadcrumbItems = ['Content', '/', 'IT Workspace']
-            cy.get('[data-test="Content"]').click()
+            cy.get('[data-test="drawer-menu-item-Content"]').click()
             cy.get('[data-test="menu-item-IT Workspace"]').click()
             cy.get('nav[aria-label="breadcrumb"] li').each(($el) => {
               expect(expectedBreadcrumbItems).to.include($el.text())
