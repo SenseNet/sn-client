@@ -9,7 +9,7 @@ describe('Tree', () => {
   })
   it('Tree item should open with the list of its children.', () => {
     cy.get('[data-test="Content"]').click()
-    cy.get('[data-test="menu-item-Sample workspace"]')
+    cy.get('[data-test="menu-item-IT Workspace"]')
       .click()
       .then(() => {
         items.forEach(($el) => {
@@ -19,10 +19,10 @@ describe('Tree', () => {
   })
   it('Click on the Tree item when it is open should close it and make its children invisible.', () => {
     cy.get('[data-test="Content"]').click()
-    cy.get('[data-test="menu-item-Sample workspace"]')
-      .rightclick()
+    cy.get('[data-test="menu-item-IT Workspace"]')
+      .click()
       .then(() => {
-        cy.get('[data-test="menu-item-Sample workspace"]')
+        cy.get('[data-test="menu-item-IT Workspace"]')
           .click()
           .then(() => {
             items.forEach(($el) => {
