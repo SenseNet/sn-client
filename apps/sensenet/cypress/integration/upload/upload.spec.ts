@@ -10,7 +10,7 @@ describe('Upload', () => {
     const fileToBeUploaded = 'data.json'
     cy.get('[data-test="Content"]').click()
     cy.get('[data-test="IT Workspace"]').click()
-    cy.get('[data-test="Document Library"]').click()
+    cy.get('[data-test="Document library"]').click({ force: true })
     cy.get('[data-test="add-button"]')
       .click()
       .then(() => {
