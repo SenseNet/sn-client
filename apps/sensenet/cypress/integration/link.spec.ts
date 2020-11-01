@@ -1,6 +1,6 @@
 import { pathWithQueryParams } from '../../src/services/query-string-builder'
 
-describe('Users menu', () => {
+describe('Links', () => {
   beforeEach(() => {
     cy.login()
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
