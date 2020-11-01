@@ -31,6 +31,6 @@ describe('Groups', () => {
     cy.get('[data-test="groups"]').click()
     cy.get('[data-test="table-cell-Editors"]').dblclick()
     cy.get('[data-test="viewtitle"').should('have.text', 'Edit Editors')
-    cy.get('button[aria-label="Cancel"]').click()
+    cy.get('[data-test="cancel"]').click()
   })
 })
