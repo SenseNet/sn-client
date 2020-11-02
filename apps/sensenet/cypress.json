@@ -1,16 +1,20 @@
 {
-  "baseUrl": "http://localhost:8080/",
+  "baseUrl": "https://admin.test.sensenet.com",
   "chromeWebSecurity": false,
   "defaultCommandTimeout": 12000,
-  "modifyObstructiveCode": false,
   "env": {
-    "repoUrl": "https://dev.demo.sensenet.com",
+    "repoUrl": "https://e2e-service.test.sensenet.com",
     "identityServer": "https://is.demo.sensenet.com",
     "users": {
       "admin": {
         "clientId": "businesscat",
-        "clientSecret": "secret",
+        "clientSecret": "",
         "id": "/Root/IMS/Public('businesscat')"
+      },
+      "developer": {
+        "clientId": "devdog",
+        "clientSecret": "",
+        "id": "/Root/IMS/Public('devdog')"
       }
     }
   }
