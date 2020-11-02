@@ -8,7 +8,7 @@ describe('Tree', () => {
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
   })
   it('Tree item should open with the list of its children.', () => {
-    cy.get('[data-test="Content"]').click()
+    cy.get('[data-test="drawer-menu-item-Content"]').click()
     cy.get('[data-test="menu-item-IT Workspace"]')
       .click()
       .then(() => {
@@ -18,7 +18,7 @@ describe('Tree', () => {
       })
   })
   it('Click on the Tree item when it is open should close it and make its children invisible.', () => {
-    cy.get('[data-test="Content"]').click()
+    cy.get('[data-test="drawer-menu-item-Content"]').click()
     cy.get('[data-test="menu-item-IT Workspace"]')
       .click()
       .then(() => {
@@ -34,7 +34,7 @@ describe('Tree', () => {
   })
   it('Right click on the Tree item should make context-menu open.', () => {
     const contextMenuItems = ['Browse', 'Copy to', 'Edit', 'Move to', 'Versions', 'Share', 'Delete', 'Set permissions']
-    cy.get('[data-test="Content"]').click()
+    cy.get('[data-test="drawer-menu-item-Content"]').click()
     cy.get('[data-test="menu-item-IT Workspace"]')
       .rightclick()
       .then(() => {

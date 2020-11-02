@@ -27,6 +27,7 @@ describe('Task-List', () => {
           .then(() => {
             const expetcedMenuItems = ['Task']
             cy.get('[data-test="list-items"]')
+              .children()
               .should('have.length', expetcedMenuItems.length)
               .each(($span) => {
                 const text = $span.text()
@@ -59,7 +60,7 @@ describe('Task-List', () => {
     cy.get('[data-test="drawer-menu-item-Content"]').click()
     cy.get('[data-test="menu-item-IT Workspace"]').click()
     cy.get(`[data-test="table-cell-${taskToBeDeleted}"]`).rightclick()
-    cy.get('[data-test="content-context-menu--delete"]')
+    cy.get('[data-test="content-context-menu-delete"]')
       .click()
       .then(() => {
         cy.get('[data-test="delete-permanently"]').click()

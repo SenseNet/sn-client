@@ -4,7 +4,7 @@ describe('Localization', () => {
   beforeEach(() => {
     cy.login()
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
-      .get('[data-test="Localization"]')
+      .get('[data-test="drawer-menu-item-Localization"]')
       .click()
   })
 
@@ -21,7 +21,7 @@ describe('Localization', () => {
   it('should have the correct items in the right click menu', () => {
     cy.get('.MuiTableCell-root div').contains('ActionResources.xml').rightclick({ force: true })
 
-    const expectedMenuItems = ['Download', 'Browse']
+    const expectedMenuItems = ['Browse', 'Copy to', 'Edit', 'Move to', 'Check out', 'Download']
 
     cy.get('[role="presentation"] li')
       .should('have.length', expectedMenuItems.length)
