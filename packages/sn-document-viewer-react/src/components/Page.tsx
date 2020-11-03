@@ -1,6 +1,6 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Paper from '@material-ui/core/Paper'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import { useCommentState, usePreviewImage, useViewerState } from '../hooks'
 import { ImageUtil } from '../services'
 import { ShapesWidget } from './page-widgets'
@@ -24,52 +24,42 @@ export const Page: React.FC<PageProps> = (props) => {
   const page = usePreviewImage(props.imageIndex)
   const commentState = useCommentState()
 
-  const [isActive] = React.useState(page.image && viewerState.activePages.includes(page.image.Index))
+  const isActive = page.image && viewerState.activePages.includes(page.image.Index)
 
-  const [imgUrl] = useState(
-    (page.image && (!props.isThumbnail ? page.image.PreviewImageUrl : page.image.ThumbnailImageUrl)) || '',
+  const imgUrl = (page.image && (!props.isThumbnail ? page.image.PreviewImageUrl : page.image.ThumbnailImageUrl)) || ''
+
+  const imageRotation = ImageUtil.normalizeDegrees(
+    viewerState.rotation?.find((rotation) => rotation.pageNum === props.imageIndex)?.degree || 0,
   )
 
-  const [imageRotation] = useState(
-    ImageUtil.normalizeDegrees(
-      viewerState.rotation?.find((rotation) => rotation.pageNum === props.imageIndex)?.degree || 0,
-    ),
+  const imageRotationRads = ((imageRotation % 180) * Math.PI) / 180
+
+  const relativeImageSize = ImageUtil.getImageSize(
+    {
+      width: props.viewportWidth,
+      height: props.viewportHeight,
+    },
+    {
+      width: (page.image && page.image.Width) || 0,
+      height: (page.image && page.image.Height) || 0,
+      rotation: viewerState.rotation?.find((rotation) => rotation.pageNum === props.imageIndex)?.degree || 0,
+    },
+    viewerState.zoomMode,
+    viewerState.customZoomLevel,
+    viewerState.fitRelativeZoomLevel,
   )
 
-  const [imageRotationRads] = useState(((imageRotation % 180) * Math.PI) / 180)
-
-  const [relativeImageSize] = useState(
-    ImageUtil.getImageSize(
-      {
-        width: props.viewportWidth,
-        height: props.viewportHeight,
-      },
-      {
-        width: (page.image && page.image.Width) || 0,
-        height: (page.image && page.image.Height) || 0,
-        rotation: viewerState.rotation?.find((rotation) => rotation.pageNum === props.imageIndex)?.degree || 0,
-      },
-      viewerState.zoomMode,
-      viewerState.customZoomLevel,
-      viewerState.fitRelativeZoomLevel,
-    ),
+  const boundingBox = ImageUtil.getRotatedBoundingBoxSize(
+    {
+      width: (page.image && page.image.Width) || 0,
+      height: (page.image && page.image.Height) || 0,
+    },
+    imageRotation,
   )
 
-  const [boundingBox] = useState(
-    ImageUtil.getRotatedBoundingBoxSize(
-      {
-        width: (page.image && page.image.Width) || 0,
-        height: (page.image && page.image.Height) || 0,
-      },
-      imageRotation,
-    ),
-  )
+  const diffHeight = Math.sin(imageRotationRads) * ((relativeImageSize.height - relativeImageSize.width) / 2)
 
-  const [diffHeight] = useState(
-    Math.sin(imageRotationRads) * ((relativeImageSize.height - relativeImageSize.width) / 2),
-  )
-
-  const [imageTransform] = useState(`translateY(${diffHeight}px) rotate(${imageRotation}deg)`)
+  const imageTransform = `translateY(${diffHeight}px) rotate(${imageRotation}deg)`
 
   const handleMarkerPlacement = useCallback(
     (event: React.MouseEvent) => {
