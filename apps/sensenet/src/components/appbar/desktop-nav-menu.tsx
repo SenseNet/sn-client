@@ -1,3 +1,4 @@
+import { Switcher } from '@sensenet/controls-react'
 import { useInjector, useRepository } from '@sensenet/hooks-react'
 import {
   Grid,
@@ -24,7 +25,6 @@ import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization, usePersonalSettings } from '../../hooks'
 import { PersonalSettings } from '../../services'
 import { useDialog } from '../dialogs'
-import { Switcher } from '../field-controls/switcher'
 import { UserAvatar } from '../UserAvatar'
 
 const useStyles = makeStyles((theme: Theme) =>

@@ -1,3 +1,4 @@
+import { DefaultAvatarTemplateProps } from '@sensenet/controls-react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
 import ListItem from '@material-ui/core/ListItem'
@@ -17,6 +18,7 @@ const useStyles = makeStyles((theme: Theme) => {
     avatar: {
       width: 80,
       height: 80,
+      fontSize: '2.5rem',
     },
     change: {
       cursor: 'pointer',
@@ -27,19 +29,8 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-const DEFAULT_AVATAR_PATH = '/demoavatars/Admin.png'
 const CHANGE_AVATAR = 'Change avatar'
 const ADD_AVATAR = 'Add avatar'
-
-interface DefaultAvatarTemplateProps {
-  repositoryUrl?: string
-  add?: () => void
-  url?: string
-  remove?: () => void
-  actionName?: 'new' | 'edit' | 'browse' | 'version'
-  readOnly?: boolean
-  renderIcon: (name: string) => JSX.Element
-}
 
 /**
  * Represents a default component for Avatar control.
@@ -47,13 +38,17 @@ interface DefaultAvatarTemplateProps {
 export const DefaultAvatarTemplate: React.FC<DefaultAvatarTemplateProps> = (props) => {
   const { actionName, readOnly, repositoryUrl, url } = props
   const classes = useStyles()
+
   return (
     <ListItem className={classes.listItem}>
       <ListItemAvatar>
-        <Avatar
-          src={url ? `${repositoryUrl}${url}` : `${repositoryUrl}${DEFAULT_AVATAR_PATH}`}
-          className={classes.avatar}
-        />
+        {repositoryUrl && url ? (
+          <Avatar src={`${repositoryUrl}${url}`} className={classes.avatar} />
+        ) : (
+          <Avatar className={classes.avatar}>
+            {props.content?.DisplayName?.[0] || props.content?.Name?.[0] || 'U'}
+          </Avatar>
+        )}
       </ListItemAvatar>
       {actionName && actionName !== 'browse' && !readOnly ? (
         <div className={classes.change} onClick={props.add}>

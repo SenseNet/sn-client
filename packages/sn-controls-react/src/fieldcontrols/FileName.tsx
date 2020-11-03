@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
-import { ReactClientFieldSetting } from './ClientFieldSetting'
+import { ReactClientFieldSetting } from '.'
 
 /**
  * Field control that represents a FileName field. Available values will be populated from the FieldSettings.
@@ -62,20 +62,20 @@ export const FileName: React.FC<ReactClientFieldSetting> = (props) => {
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}
           fullWidth={true}
-          helperText={props.settings.Description}
+          helperText={props.hideDescription ? undefined : props.settings.Description}
         />
       )
     case 'browse':
     default:
-      return props.fieldValue ? (
+      return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
-            {props.fieldValue}
+            {props.fieldValue || 'No value set'}
           </Typography>
         </div>
-      ) : null
+      )
   }
 }

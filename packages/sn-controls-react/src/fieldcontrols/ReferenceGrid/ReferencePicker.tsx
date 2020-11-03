@@ -59,7 +59,7 @@ export const ReferencePicker: React.FC<ReferencePickerProps> = (props) => {
 
   const onClickHandler = (_e: React.MouseEvent, node: GenericContent) => {
     setSelectedItem(node)
-    if (props.allowedTypes && props.allowedTypes.indexOf(node.Type) > -1) {
+    if (!props.allowedTypes || props.allowedTypes.some((type) => type === node.Type)) {
       props.select(node)
     }
   }

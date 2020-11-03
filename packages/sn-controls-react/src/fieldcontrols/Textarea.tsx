@@ -40,20 +40,20 @@ export const Textarea: React.FC<ReactClientFieldSetting<LongTextFieldSetting>> =
           disabled={props.settings.ReadOnly}
           multiline={true}
           fullWidth={true}
-          helperText={props.settings.Description}
+          helperText={props.hideDescription ? undefined : props.settings.Description}
         />
       )
     case 'browse':
     default:
-      return props.fieldValue ? (
+      return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
-            {props.fieldValue}
+            {props.fieldValue || 'No value set'}
           </Typography>
         </div>
-      ) : null
+      )
   }
 }

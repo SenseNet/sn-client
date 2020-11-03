@@ -26,7 +26,7 @@ export const Name: React.FC<ReactClientFieldSetting> = (props) => {
       setIsValid(false)
       return
     }
-    props.fieldOnChange && props.fieldOnChange(props.settings.Name, event.target.value)
+    props.fieldOnChange?.(props.settings.Name, event.target.value)
   }
 
   switch (props.actionName) {
@@ -35,6 +35,7 @@ export const Name: React.FC<ReactClientFieldSetting> = (props) => {
       return (
         <TextField
           autoFocus={props.autoFocus}
+          autoComplete="off"
           name={props.settings.Name}
           id={props.settings.Name}
           label={props.settings.DisplayName}
@@ -48,22 +49,24 @@ export const Name: React.FC<ReactClientFieldSetting> = (props) => {
           error={!isValid}
           helperText={
             isValid
-              ? props.settings.Description
+              ? props.hideDescription
+                ? undefined
+                : props.settings.Description
               : `The Name field can't contain these characters: ${invalidCharacters.join(',')}`
           }
         />
       )
     case 'browse':
     default:
-      return props.fieldValue ? (
+      return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
-            {props.fieldValue}
+            {props.fieldValue || 'No value set'}
           </Typography>
         </div>
-      ) : null
+      )
   }
 }

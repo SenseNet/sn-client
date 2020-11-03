@@ -1,20 +1,21 @@
 import { ConstantContent, ODataCollectionResponse } from '@sensenet/client-core'
 import { ContentType, GenericContent } from '@sensenet/default-content-types'
-import CircularProgress from '@material-ui/core/CircularProgress'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
-import FormControl from '@material-ui/core/FormControl'
+import FormGroup from '@material-ui/core/FormGroup'
 import FormHelperText from '@material-ui/core/FormHelperText'
-import FormLabel from '@material-ui/core/FormLabel'
 import IconButton from '@material-ui/core/IconButton'
-import InputAdornment from '@material-ui/core/InputAdornment'
+import InputLabel from '@material-ui/core/InputLabel'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import TextField from '@material-ui/core/TextField'
-import React, { Component } from 'react'
+import Typography from '@material-ui/core/Typography'
+import React, { useCallback, useEffect, useState } from 'react'
 import { typeicons } from '../assets/icons'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 import { renderIconDefault } from './icon'
@@ -22,35 +23,45 @@ import { renderIconDefault } from './icon'
 const INPUT_PLACEHOLDER = 'Start typing to add another type'
 const ITEM_HEIGHT = 48
 
-const styles = {
-  inputContainer: {
-    padding: '2px 4px',
-    display: 'flex',
-    alignItems: 'center',
-    boxShadow: 'none',
-    position: 'relative',
-  },
-  input: {
-    marginLeft: 8,
-    flex: 1,
-  },
-  button: {
-    padding: 10,
-  },
-  listContainer: {
-    position: 'absolute',
-    top: '40px',
-    maxHeight: ITEM_HEIGHT * 2.5,
-    overflow: 'auto',
-    zIndex: 10,
-  },
-  ddIsOpened: {
-    display: 'block',
-  },
-  ddIsClosed: {
-    display: 'none',
-  },
-}
+const useStyles = makeStyles(() => {
+  return createStyles({
+    inputContainer: {
+      padding: '2px 4px',
+      alignItems: 'center',
+      boxShadow: 'none',
+      position: 'relative',
+    },
+    input: {
+      marginLeft: 8,
+      flex: 1,
+    },
+    button: {
+      padding: 10,
+    },
+    listContainer: {
+      position: 'absolute',
+      top: '40px',
+      maxHeight: ITEM_HEIGHT * 2.5,
+      overflow: 'auto',
+      zIndex: 10,
+    },
+    list: {},
+    listItem: {
+      margin: 0,
+    },
+    remove: {
+      marginLeft: '8px',
+    },
+    ddIsOpened: {
+      display: 'block',
+    },
+    ddIsClosed: {
+      display: 'none',
+    },
+  })
+})
+
+type AllowedChildTypesClassKey = Partial<ReturnType<typeof useStyles>>
 
 const compare = (a: GenericContent, b: GenericContent) => {
   if (a.Name < b.Name) {
@@ -63,303 +74,231 @@ const compare = (a: GenericContent, b: GenericContent) => {
 }
 
 /**
- * Interface for AllowedChildTypes state
- */
-export interface AllowedChildTypesState {
-  value: string[]
-  effectiveAllowedChildTypes: ContentType[]
-  allowedTypesOnCTD: ContentType[]
-  items: ContentType[]
-  removeable: boolean
-  allCTDs: ContentType[]
-  isLoading: boolean
-  inputValue: string
-  isOpened: boolean
-  anchorEl: HTMLElement
-  getMenuItem: (item: ContentType, select: (item: ContentType) => void) => JSX.Element
-  filteredList: ContentType[]
-  selected: ContentType | null
-}
-/**
  * Field control that represents an AllowedChildTypes field. Available values will be populated from the FieldSettings.
  */
-export class AllowedChildTypes extends Component<ReactClientFieldSetting, AllowedChildTypesState> {
-  constructor(props: AllowedChildTypes['props']) {
-    super(props)
-    this.state = {
-      value: [],
-      effectiveAllowedChildTypes: [],
-      allowedTypesOnCTD: [],
-      items: [],
-      removeable: true,
-      allCTDs: [],
-      isLoading: false,
-      inputValue: '',
-      isOpened: false,
-      anchorEl: null as any,
-      getMenuItem: (item: ContentType, select: (item: ContentType) => void) => (
-        <ListItem key={item.Id} value={item.Id} onClick={() => select(item)} style={{ margin: 0 }}>
-          <ListItemIcon style={{ margin: 0 }}>
-            {this.props.renderIcon
-              ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-              : renderIconDefault(
-                  item.Icon && typeicons[item.Icon.toLowerCase()]
-                    ? typeicons[item.Icon.toLowerCase()]
-                    : typeicons.contenttype,
-                )}
-          </ListItemIcon>
-          <ListItemText primary={item.DisplayName} />
-        </ListItem>
-      ),
-      filteredList: [],
-      selected: null,
-    }
-    this.handleSelect = this.handleSelect.bind(this)
-    this.handleClickAway = this.handleClickAway.bind(this)
-    this.getAllowedChildTypes()
-    this.getAllContentTypes()
-  }
+export const AllowedChildTypes: React.FC<ReactClientFieldSetting & { classes?: AllowedChildTypesClassKey }> = (
+  props,
+) => {
+  const classes = useStyles(props)
 
-  /**
-   * component will unmount
-   */
-  public componentWillUnmount() {
-    this.willUnmount = true
-  }
+  const [isOpened, setIsOpened] = useState(false)
+  const [inputValue, setInputValue] = useState('')
+  const [selected, setSelected] = useState<ContentType[]>([])
+  const [allowedTypesOnCTD, setAllowedTypesOnCTD] = useState<ContentType[]>([])
+  const [allCTDs, setAllCTDs] = useState<ContentType[]>([])
+  const [currentSelected, setCurrentSelected] = useState<ContentType>()
 
-  private willUnmount = false
+  const filteredList = allCTDs.filter((ctd) => ctd.DisplayName?.toLowerCase().includes(inputValue.toLowerCase()))
 
-  private async getAllowedChildTypes() {
-    try {
-      if (!this.props.repository) {
-        throw new Error('You must pass a repository to this control')
+  const getTypes = useCallback(
+    (typeResults: ContentType[], allowedChildTypesFromCTD: ODataCollectionResponse<ContentType>) => {
+      if (props.actionName === 'new') {
+        return (allowedChildTypesFromCTD.d.results.length && allowedChildTypesFromCTD.d.results) || []
       }
-      if (!this.props.content) {
-        return
+      return typeResults.length ? typeResults : allowedChildTypesFromCTD.d.results
+    },
+    [props.actionName],
+  )
+
+  useEffect(() => {
+    ;(async () => {
+      try {
+        if (!props.repository) {
+          throw new Error('You must pass a repository to this control')
+        }
+        if (!props.content) {
+          return
+        }
+
+        const result = await props.repository.load<GenericContent>({
+          idOrPath: props.content.Path,
+          oDataOptions: {
+            select: ['EffectiveAllowedChildTypes'],
+            expand: ['EffectiveAllowedChildTypes'],
+          },
+        })
+
+        const allowedChildTypesFromCTD = await props.repository.allowedChildTypes.getFromCTD(props.content.Path)
+
+        const typeResults = result.d.EffectiveAllowedChildTypes as ContentType[]
+        const types = getTypes(typeResults, allowedChildTypesFromCTD)
+
+        setSelected(types)
+        setAllowedTypesOnCTD(allowedChildTypesFromCTD.d.results)
+      } catch (error) {
+        console.error(error.message)
       }
+    })()
+  }, [props.actionName, props.content, props.repository, getTypes])
 
-      const result = await this.props.repository.load<GenericContent>({
-        idOrPath: this.props.content.Id,
-        oDataOptions: {
-          select: ['EffectiveAllowedChildTypes'],
-          expand: ['EffectiveAllowedChildTypes'],
-        },
-      })
-      if (this.willUnmount) {
-        return
+  useEffect(() => {
+    ;(async () => {
+      try {
+        if (!props.repository) {
+          throw new Error('You must pass a repository to this control')
+        }
+
+        const result = (await props.repository.executeAction({
+          idOrPath: ConstantContent.PORTAL_ROOT.Id,
+          name: 'GetAllContentTypes',
+          method: 'GET',
+          oDataOptions: {
+            select: ['Name', 'DisplayName', 'Icon'],
+          },
+        })) as ODataCollectionResponse<ContentType>
+
+        setAllCTDs(result.d.results.sort(compare))
+      } catch (error) {
+        console.error(error.message)
       }
+    })()
+  }, [props.repository])
 
-      const allowedChildTypesFromCTD = await this.props.repository.allowedChildTypes.getFromCTD(this.props.content.Id)
-
-      const typeResults = result.d.EffectiveAllowedChildTypes as ContentType[]
-
-      const types = this.getTypes(typeResults, allowedChildTypesFromCTD)
-
-      this.setState({
-        effectiveAllowedChildTypes: typeResults,
-        items: types,
-        removeable: typeResults.length === 0 || this.props.actionName !== 'new',
-        value: types.map((t: ContentType) => t.Name),
-      })
-    } catch (error) {
-      console.error(error.message)
-    }
-  }
-
-  private getTypes(typeResults: ContentType[], allowedChildTypesFromCTD: ODataCollectionResponse<ContentType>) {
-    if (this.props.actionName === 'new') {
-      return (allowedChildTypesFromCTD.d.results.length && allowedChildTypesFromCTD.d.results) || []
-    }
-    return typeResults.length ? typeResults : allowedChildTypesFromCTD.d.results
-  }
-
-  private async getAllContentTypes() {
-    try {
-      if (!this.props.repository) {
-        throw new Error('You must pass a repository to this control')
-      }
-
-      const result = (await this.props.repository.executeAction({
-        idOrPath: ConstantContent.PORTAL_ROOT.Id,
-        name: 'GetAllContentTypes',
-        method: 'GET',
-        oDataOptions: {
-          select: ['Name', 'DisplayName', 'Icon'],
-        },
-      })) as ODataCollectionResponse<ContentType>
-      if (this.willUnmount) {
-        return
-      }
-      this.setState({
-        allCTDs: result.d.results.sort(compare),
-        filteredList: result.d.results.sort(compare),
-      })
-    } catch (error) {
-      console.error(error.message)
-    }
-  }
-
-  public handleRemove = (item: GenericContent) => {
-    const { items } = this.state
-    const index = items.findIndex((i) => item.Name === i.Name)
-    if (items.length > 1) {
-      this.setState({
-        items: [...items.slice(0, index), ...items.slice(index + 1)],
-      })
+  const handleRemove = (item: GenericContent) => {
+    if (selected.length > 1) {
+      const newSelected = selected.filter((i) => item.Name !== i.Name)
+      setSelected(newSelected)
+      props.fieldOnChange?.(
+        props.settings.Name,
+        newSelected.map((newItem) => newItem.Name),
+      )
     } else {
-      this.setState({
-        items: this.state.allowedTypesOnCTD,
-        removeable: false,
-      })
+      const valuesOnCTD = allowedTypesOnCTD.map((allowedType) => allowedType.Name)
+      setSelected(allowedTypesOnCTD)
+      props.fieldOnChange?.(props.settings.Name, valuesOnCTD)
     }
   }
 
-  public handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
     const term = e.target.value
-    this.setState({
-      filteredList: this.state.allCTDs.filter((ctd) => {
-        return ctd.DisplayName && ctd.DisplayName.toLowerCase().includes(term.toLowerCase())
-      }),
-      inputValue: term,
-    })
+
+    setInputValue(term)
+
     if (term.length === 0) {
-      this.setState({
-        selected: null,
-      })
+      setCurrentSelected(undefined)
     }
   }
 
-  private handleClickAway() {
-    this.setState({ isOpened: false })
+  const handleClickAway = () => {
+    setIsOpened(false)
   }
 
-  public handleSelect(item: ContentType) {
-    this.setState({
-      inputValue: item.DisplayName || '',
-      isOpened: false,
-      isLoading: false,
-      selected: item,
-    })
+  const handleSelect = (item: ContentType) => {
+    setCurrentSelected(item)
+    setInputValue(item.DisplayName || '')
+    setIsOpened(false)
   }
 
-  public handleOnClick = () => {
-    this.setState({
-      isOpened: true,
-    })
+  const handleOnClick = () => {
+    setIsOpened(true)
   }
 
-  public handleAddClick = () => {
-    const { items, selected, value } = this.state
-    const newValue = selected ? [...value, selected.Name] : value
-    if (this.state.removeable) {
-      this.setState({
-        items: selected ? [...items, selected] : items,
-        value: newValue,
-        selected: null,
-        inputValue: '',
-        filteredList: this.state.allCTDs,
-      })
-    } else {
-      this.setState({
-        items: selected ? [selected] : [],
-        value: selected ? [selected.Name] : [],
-        selected: null,
-        inputValue: '',
-        filteredList: this.state.allCTDs,
-        removeable: true,
-      })
-    }
-    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, newValue)
+  const handleAddClick = () => {
+    const newSelection = currentSelected ? [...selected, currentSelected] : selected
+    setSelected(newSelection)
+    props.fieldOnChange?.(
+      props.settings.Name,
+      newSelection.map((item) => item.Name),
+    )
+
+    setCurrentSelected(undefined)
+    setInputValue('')
   }
 
-  public render() {
-    switch (this.props.actionName) {
-      case 'edit':
-      case 'new':
-        return (
-          <ClickAwayListener onClickAway={this.handleClickAway}>
-            <FormControl>
-              <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
-              <List dense={true}>
-                {this.state.items.map((item, index) => (
-                  <ListItem key={index}>
-                    <ListItemIcon style={{ margin: 0 }}>
-                      {this.props.renderIcon
-                        ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                        : renderIconDefault(
-                            item.Icon && typeicons[item.Icon.toLowerCase()]
-                              ? typeicons[item.Icon.toLowerCase()]
-                              : typeicons.contenttype,
-                          )}
-                    </ListItemIcon>
-                    <ListItemText primary={item.DisplayName} />
-                    {this.state.removeable ? (
-                      <ListItemSecondaryAction>
-                        <IconButton aria-label="Remove" onClick={() => this.handleRemove(item)}>
-                          {this.props.renderIcon ? this.props.renderIcon('delete') : renderIconDefault('delete')}
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    ) : null}
-                  </ListItem>
-                ))}
-              </List>
-              <div
-                ref={(ref: HTMLDivElement) => ref && this.state.anchorEl !== ref && this.setState({ anchorEl: ref })}
-                style={{ position: 'relative' }}>
-                <div style={styles.inputContainer as any}>
-                  <TextField
-                    type="text"
-                    onClick={this.handleOnClick}
-                    onChange={this.handleInputChange}
-                    placeholder={INPUT_PLACEHOLDER}
-                    InputProps={{
-                      endAdornment: this.state.isLoading ? (
-                        <InputAdornment position="end">
-                          <CircularProgress size={16} />
-                        </InputAdornment>
-                      ) : null,
-                    }}
-                    fullWidth={true}
-                    value={this.state.inputValue}
-                    style={styles.input}
-                  />
-                  <IconButton
-                    style={styles.button}
-                    disabled={this.state.selected && this.state.selected.Name.length > 0 ? false : true}
-                    onClick={this.handleAddClick}>
-                    {this.props.renderIcon ? this.props.renderIcon('add') : renderIconDefault('add')}
-                  </IconButton>
-                </div>
-                <Paper
-                  style={
-                    this.state.isOpened
-                      ? { ...styles.ddIsOpened, ...(styles.listContainer as any) }
-                      : { ...styles.ddIsClosed, ...(styles.listContainer as any) }
-                  }>
-                  <List>
-                    {this.state.filteredList.length > 0 ? (
-                      this.state.filteredList.map((item: any) => this.state.getMenuItem(item, this.handleSelect))
-                    ) : (
-                      <ListItem>No hits</ListItem>
-                    )}
-                  </List>
-                </Paper>
-                <FormHelperText>{this.props.settings.Description}</FormHelperText>
-              </div>
-            </FormControl>
-          </ClickAwayListener>
-        )
-      case 'browse':
-      default:
-        return this.state.items.length ? (
-          <FormControl>
-            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
+  const renderMenuItem = (item: ContentType, select: (item: ContentType) => void) => (
+    <ListItem key={item.Id} value={item.Id} onClick={() => select(item)}>
+      <ListItemIcon style={{ margin: 0 }}>
+        {props.renderIcon
+          ? props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+          : renderIconDefault(
+              item.Icon && typeicons[item.Icon.toLowerCase()]
+                ? typeicons[item.Icon.toLowerCase()]
+                : typeicons.contenttype,
+            )}
+      </ListItemIcon>
+      <ListItemText primary={item.DisplayName} />
+    </ListItem>
+  )
+
+  switch (props.actionName) {
+    case 'edit':
+    case 'new':
+      return (
+        <ClickAwayListener onClickAway={handleClickAway}>
+          <div>
+            <InputLabel shrink htmlFor={props.settings.Name} required={props.settings.Compulsory}>
+              {props.settings.DisplayName}
+            </InputLabel>
+            <List dense={true} className={classes.list}>
+              {selected.map((item, index) => (
+                <ListItem key={index} className={classes.listItem}>
+                  <ListItemIcon style={{ margin: 0 }}>
+                    {props.renderIcon
+                      ? props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                      : renderIconDefault(
+                          item.Icon && typeicons[item.Icon.toLowerCase()]
+                            ? typeicons[item.Icon.toLowerCase()]
+                            : typeicons.contenttype,
+                        )}
+                  </ListItemIcon>
+                  <ListItemText primary={item.DisplayName} />
+                  <ListItemSecondaryAction className={classes.remove}>
+                    <IconButton aria-label="Remove" onClick={() => handleRemove(item)}>
+                      {props.renderIcon ? props.renderIcon('delete') : renderIconDefault('delete')}
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))}
+            </List>
+            <div style={{ position: 'relative' }}>
+              <FormGroup row className={classes.inputContainer}>
+                <TextField
+                  id={props.settings.Name}
+                  autoComplete="off"
+                  type="search"
+                  onClick={handleOnClick}
+                  onChange={handleInputChange}
+                  placeholder={INPUT_PLACEHOLDER}
+                  fullWidth={true}
+                  value={inputValue}
+                  className={classes.input}
+                />
+                <IconButton
+                  color="primary"
+                  className={classes.button}
+                  disabled={currentSelected && currentSelected.Name.length > 0 ? false : true}
+                  onClick={handleAddClick}>
+                  {props.renderIcon ? props.renderIcon('add_circle') : renderIconDefault('add_circle')}
+                </IconButton>
+              </FormGroup>
+              <Paper className={`${classes.listContainer} ${isOpened ? classes.ddIsOpened : classes.ddIsClosed}`}>
+                <List>
+                  {filteredList.length > 0 ? (
+                    filteredList.map((item: any) => renderMenuItem(item, handleSelect))
+                  ) : (
+                    <ListItem>No hits</ListItem>
+                  )}
+                </List>
+              </Paper>
+              {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
+            </div>
+          </div>
+        </ClickAwayListener>
+      )
+    case 'browse':
+    default:
+      return (
+        <>
+          <Typography variant="caption" gutterBottom={true}>
+            {props.settings.DisplayName}
+          </Typography>
+          {selected.length ? (
             <List dense={true}>
-              {this.state.items.map((item, index) => (
+              {selected.map((item, index) => (
                 <ListItem key={index}>
                   <ListItemIcon style={{ margin: 0 }}>
-                    {this.props.renderIcon
-                      ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                    {props.renderIcon
+                      ? props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
                       : renderIconDefault(
                           item.Icon && typeicons[item.Icon.toLowerCase()]
                             ? typeicons[item.Icon.toLowerCase()]
@@ -370,8 +309,12 @@ export class AllowedChildTypes extends Component<ReactClientFieldSetting, Allowe
                 </ListItem>
               ))}
             </List>
-          </FormControl>
-        ) : null
-    }
+          ) : (
+            <Typography variant="body1" gutterBottom={true}>
+              No value set
+            </Typography>
+          )}
+        </>
+      )
   }
 }

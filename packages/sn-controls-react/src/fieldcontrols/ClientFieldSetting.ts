@@ -61,4 +61,9 @@ export interface ReactClientFieldSetting<T = FieldSetting, S = GenericContent> {
    * Property to handle focus on input fields
    */
   autoFocus?: boolean
+
+  /**
+   * If true, the description should not be rendered
+   */
+  hideDescription?: boolean
 }

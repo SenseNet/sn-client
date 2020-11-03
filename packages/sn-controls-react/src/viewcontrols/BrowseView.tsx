@@ -7,7 +7,8 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import Typography from '@material-ui/core/Typography'
 import React, { createElement, ReactElement, useEffect, useState } from 'react'
 import { isFullWidthField } from '../helpers'
@@ -26,23 +27,23 @@ export interface BrowseViewProps {
   localization?: {
     cancel?: string
   }
-  classes?: {
-    grid?: string
-    fieldWrapper?: string
-    field?: string
-    fieldFullWidth?: string
-    actionButtonWrapper?: string
-    cancel?: string
-  }
+  classes?: BrowseViewClassKey
 }
 
 const useStyles = makeStyles(() => {
   return createStyles({
+    grid: {},
+    fieldWrapper: {},
+    field: {},
+    fieldFullWidth: {},
     actionButtonWrapper: {
       textAlign: 'right',
     },
+    cancel: {},
   })
 })
+
+type BrowseViewClassKey = Partial<ReturnType<typeof useStyles>>
 
 /**
  * View Control for browsing a Content, works with a single Content and based on the ReactControlMapper
@@ -50,7 +51,7 @@ const useStyles = makeStyles(() => {
 export const BrowseView: React.FC<BrowseViewProps> = (props) => {
   const controlMapper = props.controlMapper || reactControlMapper(props.repository)
   const [schema, setSchema] = useState(controlMapper.getFullSchemaForContentType(props.content.Type, 'browse'))
-  const defaultClasses = useStyles()
+  const classes = useStyles(props)
   const repository = useRepository()
 
   useEffect(() => {
@@ -69,7 +70,7 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
           {schema.schema.DisplayName}
         </Typography>
       )}
-      <Grid container={true} spacing={2} className={props.classes?.grid}>
+      <Grid container={true} spacing={2} className={classes.grid}>
         {schema.fieldMappings
           .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
           .map((field) => {
@@ -84,8 +85,8 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
                 lg={isFullWidth ? 12 : 6}
                 xl={isFullWidth ? 12 : 6}
                 key={field.fieldSettings.Name}
-                className={props.classes?.fieldWrapper}>
-                <div className={isFullWidth ? props.classes?.fieldFullWidth : props.classes?.field}>
+                className={classes.fieldWrapper}>
+                <div className={isFullWidth ? classes.fieldFullWidth : classes.field}>
                   {createElement(
                     controlMapper.getControlForContentField(props.content.Type, field.fieldSettings.Name, 'browse'),
                     {
@@ -102,11 +103,11 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
             )
           })}
       </Grid>
-      <div className={props.classes?.actionButtonWrapper || defaultClasses.actionButtonWrapper}>
+      <div className={classes.actionButtonWrapper}>
         <Button
           aria-label={props.localization?.cancel || 'Cancel'}
           color="default"
-          className={props.classes?.cancel}
+          className={classes.cancel}
           onClick={() => props.handleCancel?.()}>
           {props.localization?.cancel || 'Cancel'}
         </Button>

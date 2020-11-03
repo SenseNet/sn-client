@@ -9,6 +9,7 @@ import FormGroup from '@material-ui/core/FormGroup'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
@@ -41,19 +42,21 @@ export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>
     setState(newState)
     props.fieldOnChange?.(
       props.settings.Name,
-      newState.filter((item) => item.Selected),
+      newState.filter((item) => item.Selected).map((item) => item.Value),
     )
   }
 
   switch (props.actionName) {
-    case 'edit':
     case 'new':
+    case 'edit':
       return (
         <FormControl
           disabled={props.settings.ReadOnly}
           component={'fieldset' as 'div'}
           required={props.settings.Compulsory}>
-          <FormLabel component={'legend' as 'label'}>{props.settings.DisplayName}</FormLabel>
+          <FormLabel style={{ transform: 'translate(0, 1.5px) scale(0.75)', transformOrigin: 'top left' }}>
+            {props.settings.DisplayName}
+          </FormLabel>
           <FormGroup>
             {state.map((option) => {
               return (
@@ -68,38 +71,43 @@ export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>
             })}
           </FormGroup>
           {props.settings.AllowExtraValue ? <TextField placeholder="Extra value" /> : null}
-          <FormHelperText>{props.settings.Description}</FormHelperText>
+          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </FormControl>
       )
     case 'browse':
     default: {
-      return props.fieldValue ? (
-        <FormControl component={'fieldset' as 'div'}>
-          <FormLabel component={'legend' as 'label'}>{props.settings.DisplayName}</FormLabel>
+      return (
+        <>
+          <Typography variant="caption" gutterBottom={true}>
+            {props.settings.DisplayName}
+          </Typography>
           <FormGroup>
-            {Array.isArray(props.fieldValue) ? (
-              props.fieldValue.map((val: any, index: number) => (
-                <FormControl component={'fieldset' as 'div'} key={index}>
-                  <FormControlLabel
-                    style={{ marginLeft: 0 }}
-                    label={props.settings.Options!.find((item) => item.Value === val)!.Text}
-                    control={<span />}
-                    key={val}
-                  />
-                </FormControl>
-              ))
+            {props.fieldValue ? (
+              Array.isArray(props.fieldValue) ? (
+                props.fieldValue.length ? (
+                  props.fieldValue.map((val: any, index: number) => (
+                    <Typography variant="body1" gutterBottom={index === props.fieldValue!.length - 1} key={index}>
+                      {props.settings.Options?.find((item) => item.Value === val)?.Text ?? ''}
+                    </Typography>
+                  ))
+                ) : (
+                  <Typography variant="body1" gutterBottom={true}>
+                    No value set
+                  </Typography>
+                )
+              ) : (
+                <Typography variant="body1" gutterBottom={true}>
+                  {props.settings.Options?.find((item) => item.Value === (props.fieldValue as string))?.Text ?? ''}
+                </Typography>
+              )
             ) : (
-              <FormControl component={'fieldset' as 'div'}>
-                <FormControlLabel
-                  style={{ marginLeft: 0 }}
-                  label={props.settings.Options!.find((item) => item.Value === (props.fieldValue as string))!.Text}
-                  control={<span />}
-                />
-              </FormControl>
+              <Typography variant="body1" gutterBottom={true}>
+                No value set
+              </Typography>
             )}
           </FormGroup>
-        </FormControl>
-      ) : null
+        </>
+      )
     }
   }
 }

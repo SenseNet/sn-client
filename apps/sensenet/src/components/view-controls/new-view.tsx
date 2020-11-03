@@ -102,12 +102,9 @@ export const NewView: React.FC<NewViewProps> = (props) => {
       uploadFolderpath="/Root/Content/demoavatars"
       controlMapper={controlMapper}
       localization={{ submit: localization.forms.submit, cancel: localization.forms.cancel }}
+      hideDescription
       classes={{
-        grid: classes.grid,
-        fieldWrapper: classes.fieldWrapper,
-        field: classes.field,
-        fieldFullWidth: classes.fieldFullWidth,
-        actionButtonWrapper: classes.actionButtonWrapper,
+        ...classes,
         cancel: globalClasses.cancelButton,
       }}
       renderTitle={() => <ViewTitle title={'New'} titleBold={props.contentTypeName} />}

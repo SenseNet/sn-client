@@ -9,6 +9,8 @@ import { ComponentType } from 'react'
 import * as FieldControls from './fieldcontrols'
 import { ReactClientFieldSetting } from './fieldcontrols/ClientFieldSetting'
 
+export type ActionNameType = 'new' | 'edit' | 'browse' | undefined
+
 /**
  * A static Control Mapper instance, used to create the mapping between sensenet ContentTypes and FieldSettings and React components.
  */
@@ -107,13 +109,23 @@ export const reactControlMapper = (repository: Repository) => {
       } else if (setting.Name === 'UrlList') {
         return FieldControls.Textarea
       } else if (setting.FieldClassName.indexOf('BooleanField') > -1) {
-        return FieldControls.BooleanComponent
+        switch (setting.ControlHint) {
+          case 'sn:Switcher':
+            return FieldControls.SwitcherControl
+          default:
+            return FieldControls.Checkbox
+        }
       } else {
         return FieldControls.ShortText
       }
     })
-    .setupFieldSettingDefault('BooleanFieldSetting', () => {
-      return FieldControls.BooleanComponent
+    .setupFieldSettingDefault('BooleanFieldSetting', (setting) => {
+      switch (setting.ControlHint) {
+        case 'sn:Switcher':
+          return FieldControls.SwitcherControl
+        default:
+          return FieldControls.Checkbox
+      }
     })
 
   return controlMapper

@@ -7,6 +7,7 @@ import { PathHelper } from '@sensenet/client-utils'
 import { BinaryFieldSetting } from '@sensenet/default-content-types'
 import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
+import FormHelperText from '@material-ui/core/FormHelperText'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel/InputLabel'
 import Typography from '@material-ui/core/Typography'
@@ -65,8 +66,8 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
   const [fileName, setFileName] = useState('')
   useEffect(() => {
     const ac = new AbortController()
-    // eslint-disable-next-line require-jsdoc
-    async function fetchData() {
+
+    ;(async () => {
       try {
         if (!props.repository) {
           throw new Error(errorMessages.repository)
@@ -85,8 +86,7 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
       } catch (error) {
         console.error(error.message)
       }
-    }
-    fetchData()
+    })()
     return () => ac.abort()
   }, [props.content, props.repository, props.settings.Name])
 
@@ -128,6 +128,7 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
 
   switch (props.actionName) {
     case 'edit':
+    case 'new':
       return (
         <FormControl
           style={styles.root as any}
@@ -140,15 +141,12 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
           <Typography variant="body1" gutterBottom={true}>
             {fileName}
           </Typography>
-          <div style={{ display: 'table-row' }}>
-            <div style={{ position: 'relative', display: 'table-cell', minWidth: 100 }}>
-              <InputLabel htmlFor="raised-button-file" style={{ transform: 'translate(0, 4px) scale(1)' }}>
-                <Button variant="contained" component="span" color="primary">
-                  Upload
-                </Button>
-              </InputLabel>
-            </div>
-          </div>
+          <InputLabel htmlFor="raised-button-file">
+            <Button aria-label="Upload" variant="contained" component="span" color="primary">
+              Upload
+            </Button>
+          </InputLabel>
+          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
           <Input style={{ display: 'none' }} id="raised-button-file" type="file" onChange={handleUpload} />
         </FormControl>
       )
@@ -160,7 +158,7 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
             {props.settings.DisplayName}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
-            {fileName}
+            {fileName || 'No value set'}
           </Typography>
         </div>
       )

@@ -1,194 +1,95 @@
 import { ReferenceFieldSetting, User } from '@sensenet/default-content-types'
-import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import InputLabel from '@material-ui/core/InputLabel'
 import List from '@material-ui/core/List'
-import Typography from '@material-ui/core/Typography'
-import React, { Component } from 'react'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
+import React from 'react'
 import { changeTemplatedValue } from '../../helpers'
 import { ReactClientFieldSetting } from '../ClientFieldSetting'
 import { renderIconDefault } from '../icon'
-import { AvatarPicker } from './AvatarPicker'
-import { DefaultAvatarTemplate } from './DefaultAvatarTemplate'
+import { DefaultAvatarTemplate, DefaultAvatarTemplateProps } from './DefaultAvatarTemplate'
 
-const styles = {
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  dialog: {
-    padding: 20,
-    minWidth: 250,
-  },
-  listContainer: {
-    display: 'block',
-    marginTop: 10,
-  },
-  closeButton: {
-    position: 'absolute',
-    right: 0,
-  },
-  icon: {
-    marginRight: 0,
-  },
+const useStyles = makeStyles(() => {
+  return createStyles({
+    root: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    label: {
+      position: 'static',
+      marginBottom: '4px',
+    },
+    listContainer: {
+      display: 'block',
+      padding: 0,
+    },
+    centeredVertical: {
+      display: 'flex',
+      flexFlow: 'column',
+      alignItems: 'center',
+    },
+  })
+})
+
+interface AvatarProps extends ReactClientFieldSetting<ReferenceFieldSetting, User> {
+  handleAdd: ({ setAvatar }: { setAvatar: React.Dispatch<any> }) => void
+  avatarTemplateOverride?: React.FC<DefaultAvatarTemplateProps>
+  hideLabel?: boolean
 }
 
-const AVATAR_PICKER_TITLE = 'Avatar picker'
-const OK = 'Ok'
-const CANCEL = 'Cancel'
-const DEFAULT_AVATAR_PATH = '/Root/Sites/Default_Site/demoavatars/Admin.png'
+export const Avatar: React.FunctionComponent<AvatarProps> = (props) => {
+  const classes = useStyles()
 
-/**
- * Interface for Avatar state
- */
-export interface AvatarState {
-  fieldValue: any
-  pickerIsOpen: boolean
-  selected?: User
-}
+  const [fieldValue, setFieldValue] = React.useState(
+    (props.fieldValue as any)?.Url || changeTemplatedValue(props.settings.DefaultValue) || '',
+  )
 
-export class Avatar extends Component<ReactClientFieldSetting<ReferenceFieldSetting, User>, AvatarState> {
-  state: AvatarState = {
-    fieldValue:
-      (this.props.fieldValue && (this.props.fieldValue as any).Url) ||
-      changeTemplatedValue(this.props.settings.DefaultValue) ||
-      '',
-    pickerIsOpen: false,
-    selected: undefined,
-  }
+  const AvatarTemplate = props.avatarTemplateOverride || DefaultAvatarTemplate
 
-  /**
-   * Removes the item and clears the field value
-   */
-  public removeItem = () => {
-    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, DEFAULT_AVATAR_PATH)
-    this.setState({
-      fieldValue: '',
-    })
-  }
+  return props.actionName === 'new' || props.actionName === 'edit' ? (
+    <FormControl
+      className={classes.root}
+      key={props.settings.Name}
+      component={'fieldset' as 'div'}
+      required={props.settings.Compulsory}>
+      {!props.hideLabel && (
+        <InputLabel shrink={true} htmlFor={props.settings.Name} className={classes.label}>
+          {props.settings.DisplayName}
+        </InputLabel>
+      )}
 
-  public handleDialogClose = () => {
-    this.setState({
-      pickerIsOpen: false,
-    })
-  }
-
-  public handleCancelClick = () => {
-    this.setState({
-      selected: undefined,
-    })
-    this.handleDialogClose()
-  }
-
-  public handleOkClick = () => {
-    const content = this.state.selected
-    if (content && content.Path && this.state.fieldValue !== content.Path) {
-      this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, content.Path)
-
-      this.setState({
-        fieldValue: content.Path,
-        selected: undefined,
-      })
-    }
-    this.handleDialogClose()
-  }
-
-  public selectItem = (content: User) => {
-    this.setState({
-      selected: content,
-    })
-  }
-  /**
-   * Opens a picker to choose an item
-   */
-  public addItem = () => {
-    this.setState({
-      pickerIsOpen: true,
-    })
-  }
-
-  public render() {
-    switch (this.props.actionName) {
-      case 'edit':
-      case 'new':
-        return (
-          <FormControl
-            style={styles.root as any}
-            key={this.props.settings.Name}
-            component={'fieldset' as 'div'}
-            required={this.props.settings.Compulsory}>
-            <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
-              {this.props.settings.DisplayName}
-            </InputLabel>
-            <List
-              dense={true}
-              style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
-              {
-                <DefaultAvatarTemplate
-                  repositoryUrl={this.props.repository && this.props.repository.configuration.repositoryUrl}
-                  add={this.addItem}
-                  actionName={this.props.actionName}
-                  readOnly={this.props.settings.ReadOnly}
-                  url={this.state.fieldValue}
-                  remove={this.removeItem}
-                  renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}
-                />
-              }
-            </List>
-            {this.props.settings.Description ? (
-              <FormHelperText>{this.props.settings.Description}</FormHelperText>
-            ) : null}
-
-            <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen}>
-              <div style={styles.dialog}>
-                <Typography variant="h5" gutterBottom={true}>
-                  {AVATAR_PICKER_TITLE}
-                </Typography>
-                <AvatarPicker
-                  path={
-                    this.props.uploadFolderPath ||
-                    (this.props.settings.SelectionRoots && this.props.settings.SelectionRoots[0]) ||
-                    this.state.fieldValue.substring(0, this.state.fieldValue.lastIndexOf('/')) ||
-                    ''
-                  }
-                  repository={this.props.repository!}
-                  select={this.selectItem}
-                  renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}
-                />
-                <DialogActions>
-                  <Button onClick={this.handleCancelClick}>{CANCEL}</Button>
-                  <Button variant="contained" onClick={this.handleOkClick} color="secondary">
-                    {OK}
-                  </Button>
-                </DialogActions>
-              </div>
-            </Dialog>
-          </FormControl>
-        )
-      case 'browse':
-      default:
-        return this.props.fieldValue ? (
-          <FormControl style={styles.root as any}>
-            <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
-              {this.props.settings.DisplayName}
-            </InputLabel>
-            <List
-              dense={true}
-              style={
-                (this.props.fieldValue as any).Url ? styles.listContainer : { ...styles.listContainer, width: 200 }
-              }>
-              <DefaultAvatarTemplate
-                repositoryUrl={this.props.repository && this.props.repository.configuration.repositoryUrl}
-                url={(this.props.fieldValue as any).Url}
-                actionName="browse"
-                renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}
-              />
-            </List>
-          </FormControl>
-        ) : null
-    }
-  }
+      <List dense={true} className={classes.listContainer}>
+        <AvatarTemplate
+          repositoryUrl={props.repository?.configuration.repositoryUrl}
+          add={() => props.handleAdd({ setAvatar: setFieldValue })}
+          actionName={props.actionName}
+          readOnly={props.settings.ReadOnly}
+          url={fieldValue}
+          content={props.content}
+          renderIcon={props.renderIcon ? props.renderIcon : renderIconDefault}
+        />
+      </List>
+      {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
+    </FormControl>
+  ) : (
+    <div className={classes.centeredVertical}>
+      <List dense={true} className={classes.listContainer}>
+        <AvatarTemplate
+          repositoryUrl={props.repository?.configuration.repositoryUrl}
+          url={(props.fieldValue as any)?.Url}
+          content={props.content}
+          actionName="browse"
+          renderIcon={props.renderIcon ? props.renderIcon : renderIconDefault}
+        />
+      </List>
+      <InputLabel
+        shrink={true}
+        htmlFor={props.settings.Name}
+        style={{ paddingTop: '9px', transformOrigin: 'top center' }}>
+        {props.settings.DisplayName}
+      </InputLabel>
+    </div>
+  )
 }

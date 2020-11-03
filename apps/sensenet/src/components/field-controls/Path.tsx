@@ -1,11 +1,10 @@
 /**
  * @module FieldControls
  */
-import { changeTemplatedValue, renderIconDefault } from '@sensenet/controls-react'
+import { changeTemplatedValue, ReactClientFieldSetting, renderIconDefault } from '@sensenet/controls-react'
 import { ShortTextFieldSetting } from '@sensenet/default-content-types'
 import { createStyles, Icon, Input, InputAdornment, InputLabel, makeStyles } from '@material-ui/core'
 import React from 'react'
-import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 const useStyles = makeStyles(() => {
   return createStyles({

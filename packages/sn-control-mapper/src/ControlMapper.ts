@@ -5,7 +5,7 @@ import { ControlSchema } from './ControlSchema'
 /**
  * Type that defines an action name for control schema generation
  */
-export type ActionName = 'new' | 'edit' | 'browse' | 'version'
+export type ActionName = 'new' | 'edit' | 'browse'
 
 /**
  * Class that handles control mappings between a sensenet Repository schemas and a generic control set

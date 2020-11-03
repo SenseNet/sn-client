@@ -69,16 +69,16 @@ export const AutoComplete: React.FC<ReactClientFieldSetting<ReferenceFieldSettin
       )
     case 'browse':
     default: {
-      return props.fieldValue ? (
+      return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
-            {(props.fieldValue as any)[0].DisplayName}
+            {props.fieldValue ? (props.fieldValue as any)[0].DisplayName : 'No value set'}
           </Typography>
         </div>
-      ) : null
+      )
     }
   }
 }

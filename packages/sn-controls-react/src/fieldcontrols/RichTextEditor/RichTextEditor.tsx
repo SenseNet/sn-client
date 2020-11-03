@@ -1,18 +1,30 @@
 /**
  * @module FieldControls
  */
-import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
-import FormLabel from '@material-ui/core/FormLabel'
+import InputLabel from '@material-ui/core/InputLabel'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import Typography from '@material-ui/core/Typography'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { changeTemplatedValue } from '../../helpers'
 import { ReactClientFieldSetting } from '../ClientFieldSetting'
 import { quillRegister } from './QuillRegister'
 
+const useStyles = makeStyles(() =>
+  createStyles({
+    richTextEditor: {},
+  }),
+)
+
+type RichTextEditorClassKey = Partial<ReturnType<typeof useStyles>>
+
 const modules = {
+  clipboard: {
+    matchVisual: false,
+  },
   toolbar: [
     ['bold', 'italic', 'underline', 'strike'], // toggled buttons
     ['blockquote', 'code-block'],
@@ -29,7 +41,7 @@ const modules = {
     [{ color: [] }, { background: [] }], // dropdown with defaults from theme
     [{ font: [] }],
     [{ align: [] }],
-
+    ['image', 'link'],
     ['clean'], // remove formatting button
   ],
   oembed: true,
@@ -40,21 +52,29 @@ quillRegister()
 /**
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
-export const RichTextEditor: React.FC<ReactClientFieldSetting> = (props) => {
+export const RichTextEditor: React.FC<ReactClientFieldSetting & { classes?: RichTextEditorClassKey }> = (props) => {
   const initialState = props.fieldValue || changeTemplatedValue(props.settings.DefaultValue) || ''
   const [value, setValue] = useState(initialState)
+  const quillRef = useRef<ReactQuill>(null)
+  const classes = useStyles(props)
 
   const handleChange = (changedValue: string) => {
     setValue(changedValue)
     props.fieldOnChange && props.fieldOnChange(props.settings.Name, changedValue)
   }
 
+  useEffect(() => {
+    props.autoFocus && quillRef.current?.focus()
+  }, [props.autoFocus])
+
   switch (props.actionName) {
     case 'edit':
     case 'new':
       return (
-        <FormControl component={'fieldset' as 'div'} fullWidth={true} required={props.settings.Compulsory}>
-          <FormLabel component={'legend' as 'label'}>{props.settings.DisplayName}</FormLabel>
+        <div className={classes.richTextEditor}>
+          <InputLabel shrink htmlFor={props.settings.Name} required={props.settings.Compulsory}>
+            {props.settings.DisplayName}
+          </InputLabel>
           <ReactQuill
             style={{ background: '#fff', marginTop: 10, color: '#000' }}
             defaultValue={changeTemplatedValue(props.settings.DefaultValue)}
@@ -64,19 +84,20 @@ export const RichTextEditor: React.FC<ReactClientFieldSetting> = (props) => {
             onChange={handleChange}
             value={value}
             theme="snow"
+            ref={quillRef}
           />
-          <FormHelperText>{props.settings.Description}</FormHelperText>
-        </FormControl>
+          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
+        </div>
       )
     case 'browse':
     default:
-      return props.fieldValue ? (
+      return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
-          <div dangerouslySetInnerHTML={{ __html: props.fieldValue }} />
+          <div dangerouslySetInnerHTML={{ __html: props.fieldValue ?? 'No value set' }} />
         </div>
-      ) : null
+      )
   }
 }

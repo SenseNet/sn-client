@@ -2,6 +2,7 @@
  * @module FieldControls
  */
 import { ShortTextFieldSetting } from '@sensenet/default-content-types'
+import FormHelperText from '@material-ui/core/FormHelperText'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
@@ -23,37 +24,40 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
     case 'edit':
     case 'new':
       return (
-        <TextField
-          autoFocus={props.autoFocus}
-          name={props.settings.Name}
-          id={props.settings.Name}
-          label={props.settings.DisplayName}
-          placeholder={props.settings.DisplayName}
-          value={value}
-          required={props.settings.Compulsory}
-          disabled={props.settings.ReadOnly}
-          defaultValue={changeTemplatedValue(props.settings.DefaultValue)}
-          inputProps={{
-            minLength: props.settings.MinLength,
-            maxLength: props.settings.MaxLength,
-            pattern: props.settings.Regex,
-          }}
-          fullWidth={true}
-          onChange={handleChange}
-          helperText={props.settings.Description}
-        />
+        <>
+          <TextField
+            autoFocus={props.autoFocus}
+            autoComplete="off"
+            name={props.settings.Name}
+            id={props.settings.Name}
+            label={props.settings.DisplayName}
+            placeholder={props.settings.DisplayName}
+            value={value}
+            required={props.settings.Compulsory}
+            disabled={props.settings.ReadOnly}
+            defaultValue={changeTemplatedValue(props.settings.DefaultValue)}
+            inputProps={{
+              minLength: props.settings.MinLength,
+              maxLength: props.settings.MaxLength,
+              pattern: props.settings.Regex,
+            }}
+            fullWidth={true}
+            onChange={handleChange}
+          />
+          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
+        </>
       )
     case 'browse':
     default:
-      return props.fieldValue ? (
+      return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
-            {props.fieldValue}
+            {props.fieldValue || 'No value set'}
           </Typography>
         </div>
-      ) : null
+      )
   }
 }

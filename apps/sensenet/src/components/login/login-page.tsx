@@ -7,6 +7,7 @@ import {
   Grid,
   InputLabel,
   makeStyles,
+  TextField,
   Typography,
 } from '@material-ui/core'
 import clsx from 'clsx'
@@ -15,7 +16,6 @@ import { Link } from 'react-router-dom'
 import snLogo from '../../assets/sensenet-icon-32.png'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { ShortTextInput } from '../field-controls/ShortText'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -100,7 +100,7 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
               <InputLabel shrink htmlFor="repository" required={true}>
                 {localization.repositoryLabel}
               </InputLabel>
-              <ShortTextInput
+              <TextField
                 required={true}
                 name="repository"
                 disabled={isLoginInProgress}

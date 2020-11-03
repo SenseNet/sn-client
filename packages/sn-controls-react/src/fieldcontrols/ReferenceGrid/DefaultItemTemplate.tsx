@@ -16,7 +16,7 @@ interface DefaultItemTemplateProps {
   content: GenericContent
   remove?: (id: number) => void
   add: () => void
-  actionName?: 'new' | 'edit' | 'browse' | 'version'
+  actionName?: 'new' | 'edit' | 'browse'
   readOnly?: boolean
   repository?: Repository
   multiple: boolean
@@ -58,19 +58,17 @@ export const DefaultItemTemplate: React.FC<DefaultItemTemplateProps> = (props) =
       />
       {props.actionName && props.actionName !== 'browse' && !props.readOnly ? (
         <ListItemSecondaryAction>
-          {content ? (
-            content.Id > 0 && props.multiple ? (
-              <IconButton onClick={() => props.remove && props.remove(content.Id)}>
-                {props.renderIcon ? props.renderIcon('remove_circle') : renderIconDefault('remove_circle')}
-              </IconButton>
-            ) : (
-              <IconButton onClick={() => props.add()}>
-                {props.renderIcon
-                  ? props.renderIcon(content.Id === -1 ? 'add_circle' : 'refresh')
-                  : renderIconDefault(content.Id === -1 ? 'add_circle' : 'refresh')}
-              </IconButton>
-            )
-          ) : null}
+          {content.Id > 0 ? (
+            <IconButton onClick={() => props.remove && props.remove(content.Id)}>
+              {props.renderIcon ? props.renderIcon('remove_circle') : renderIconDefault('remove_circle')}
+            </IconButton>
+          ) : (
+            <IconButton onClick={() => props.add()}>
+              {props.renderIcon
+                ? props.renderIcon(content.Id === -1 ? 'add_circle' : 'refresh')
+                : renderIconDefault(content.Id === -1 ? 'add_circle' : 'refresh')}
+            </IconButton>
+          )}
         </ListItemSecondaryAction>
       ) : null}
     </ListItem>

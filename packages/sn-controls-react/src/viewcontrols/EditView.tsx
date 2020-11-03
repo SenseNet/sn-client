@@ -7,7 +7,8 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import Typography from '@material-ui/core/Typography'
 import React, { createElement, ReactElement, useEffect, useState } from 'react'
 import MediaQuery from 'react-responsive'
@@ -35,14 +36,8 @@ export interface EditViewProps {
     cancel?: string
     submit?: string
   }
-  classes?: {
-    grid?: string
-    fieldWrapper?: string
-    field?: string
-    fieldFullWidth?: string
-    actionButtonWrapper?: string
-    cancel?: string
-  }
+  hideDescription?: boolean
+  classes?: EditViewClassKey
   controlMapper?: ControlMapper<any, any>
 }
 
@@ -51,6 +46,9 @@ const useStyles = makeStyles(() => {
     grid: {
       margin: '0 auto',
     },
+    fieldWrapper: {},
+    field: {},
+    fieldFullWidth: {},
     actionButtonWrapper: {
       textAlign: 'right',
     },
@@ -59,6 +57,8 @@ const useStyles = makeStyles(() => {
     },
   })
 })
+
+type EditViewClassKey = Partial<ReturnType<typeof useStyles>>
 
 /**
  * View Control for editing a Content, works with a single Content and based on the ReactControlMapper
@@ -73,7 +73,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
   const controlMapper = props.controlMapper || reactControlMapper(props.repository)
   const [schema, setSchema] = useState(controlMapper.getFullSchemaForContentType(props.contentTypeName, actionName))
   const [content, setContent] = useState({})
-  const defaultClasses = useStyles()
+  const classes = useStyles(props)
   const repository = useRepository()
 
   const uniqueId = Date.now()
@@ -112,7 +112,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         id={`edit-form-${uniqueId}`}
         onSubmit={handleSubmit}
         spacing={2}
-        className={props.classes?.grid || defaultClasses.grid}>
+        className={classes.grid}>
         {schema.fieldMappings
           .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
           .map((field) => {
@@ -128,6 +128,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
                 renderIcon: props.renderIcon,
                 fieldOnChange: handleInputChange,
                 extension: props.extension,
+                hideDescription: props.hideDescription,
                 uploadFolderPath: props.uploadFolderpath,
                 autoFocus,
               },
@@ -148,19 +149,19 @@ export const EditView: React.FC<EditViewProps> = (props) => {
                 lg={isFullWidth ? 12 : 6}
                 xl={isFullWidth ? 12 : 6}
                 key={field.fieldSettings.Name}
-                className={props.classes?.fieldWrapper}>
-                <div className={isFullWidth ? props.classes?.fieldFullWidth : props.classes?.field}>{fieldControl}</div>
+                className={classes.fieldWrapper}>
+                <div className={isFullWidth ? classes.fieldFullWidth : classes.field}>{fieldControl}</div>
               </Grid>
             )
           })}
       </Grid>
-      <div className={props.classes?.actionButtonWrapper || defaultClasses.actionButtonWrapper}>
+      <div className={classes.actionButtonWrapper}>
         <MediaQuery minDeviceWidth={700}>
           <Button
             aria-label={props.localization?.cancel || 'Cancel'}
             data-test="cancel"
             color="default"
-            className={props.classes?.cancel || defaultClasses.cancel}
+            className={classes.cancel}
             onClick={() => props.handleCancel?.()}>
             {props.localization?.cancel || 'Cancel'}
           </Button>

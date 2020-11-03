@@ -2,6 +2,7 @@
  * @module FieldControls
  */
 import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-types'
+import FormHelperText from '@material-ui/core/FormHelperText'
 import Typography from '@material-ui/core/Typography'
 import { DateTimePicker, DatePicker as MUIDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
@@ -61,24 +62,23 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
               fullWidth={true}
             />
           )}
+          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </MuiPickersUtilsProvider>
       )
     default:
-      return props.fieldValue ? (
+      return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
-          {props.settings.DateTimeMode === DateTimeMode.Date ? (
-            <Typography variant="body1" gutterBottom={true}>
-              {moment(props.fieldValue).format('LL').toLocaleString()}
-            </Typography>
-          ) : (
-            <Typography variant="body1" gutterBottom={true}>
-              {moment(props.fieldValue).toLocaleString()}
-            </Typography>
-          )}
+          <Typography variant="body1" gutterBottom={true}>
+            {props.fieldValue
+              ? props.settings.DateTimeMode === DateTimeMode.Date
+                ? moment(props.fieldValue).format('LL').toLocaleString()
+                : moment(props.fieldValue).toLocaleString()
+              : 'No value set'}
+          </Typography>
         </div>
-      ) : null
+      )
   }
 }

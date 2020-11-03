@@ -3,6 +3,7 @@
  */
 import { toNumber } from '@sensenet/client-utils'
 import { CurrencyFieldSetting, NumberFieldSetting } from '@sensenet/default-content-types'
+import FormHelperText from '@material-ui/core/FormHelperText'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
@@ -55,43 +56,51 @@ export const NumberComponent: React.FC<ReactClientFieldSetting<NumberFieldSettin
     case 'edit':
     case 'new':
       return (
-        <TextField
-          autoFocus={props.autoFocus}
-          name={props.settings.Name}
-          type="number"
-          label={props.settings.DisplayName}
-          value={value}
-          required={props.settings.Compulsory}
-          disabled={props.settings.ReadOnly}
-          placeholder={props.settings.DisplayName}
-          InputProps={{
-            startAdornment: defineCurrency(),
-            endAdornment: props.settings.ShowAsPercentage ? <InputAdornment position="end">%</InputAdornment> : null,
-          }}
-          inputProps={{
-            step: defineStepValue(),
-            max: props.settings.MaxValue,
-            min: props.settings.MinValue,
-          }}
-          id={props.settings.Name}
-          fullWidth={true}
-          onChange={handleChange}
-          helperText={props.settings.Description}
-        />
+        <>
+          <TextField
+            autoFocus={props.autoFocus}
+            name={props.settings.Name}
+            type="number"
+            label={props.settings.DisplayName}
+            value={value}
+            required={props.settings.Compulsory}
+            disabled={props.settings.ReadOnly}
+            placeholder={props.settings.DisplayName}
+            InputProps={{
+              startAdornment: defineCurrency(),
+              endAdornment: props.settings.ShowAsPercentage ? <InputAdornment position="end">%</InputAdornment> : null,
+            }}
+            inputProps={{
+              step: defineStepValue(),
+              max: props.settings.MaxValue,
+              min: props.settings.MinValue,
+            }}
+            id={props.settings.Name}
+            fullWidth={true}
+            onChange={handleChange}
+          />
+          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
+        </>
       )
     case 'browse':
     default:
-      return props.fieldValue ? (
+      return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
-            {isCurrencyFieldSetting(props.settings) ? (props.settings.Format ? props.settings.Format : '$') : null}
-            {props.fieldValue}
-            {props.settings.ShowAsPercentage ? '%' : null}
+            {props.fieldValue != null ? (
+              <>
+                {isCurrencyFieldSetting(props.settings) ? props.settings.Format || '$' : null}
+                {props.fieldValue}
+                {props.settings.ShowAsPercentage ? '%' : null}
+              </>
+            ) : (
+              'No value set'
+            )}
           </Typography>
         </div>
-      ) : null
+      )
   }
 }

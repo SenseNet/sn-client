@@ -1,91 +1,45 @@
 import { Repository } from '@sensenet/client-core'
-import { ControlMapper } from '@sensenet/control-mapper'
-import { ReactClientFieldSetting } from '@sensenet/controls-react'
-import { ChoiceFieldSetting, LongTextFieldSetting, ReferenceFieldSetting } from '@sensenet/default-content-types'
-import { ComponentType } from 'react'
+import { reactControlMapper as snReactControlMapper } from '@sensenet/controls-react'
+import * as SnFieldControls from '@sensenet/controls-react/src/fieldcontrols'
+import { LongTextFieldSetting, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import * as FieldControls from './field-controls'
-
-export type ActionNameType = 'new' | 'edit' | 'browse' | 'version' | undefined
 
 /**
  * A static Control Mapper instance, used to create the mapping between sensenet ContentTypes and FieldSettings and React components.
  */
 export const reactControlMapper = (repository: Repository) => {
-  const controlMapper: ControlMapper<ComponentType, ComponentType<ReactClientFieldSetting>> = new ControlMapper<
-    ComponentType,
-    ComponentType<ReactClientFieldSetting>
-  >(
-    repository,
-    () => null,
-    () => null,
-  )
+  const controlMapper = snReactControlMapper(repository)
+
   controlMapper
-    .setupFieldSettingDefault('NumberFieldSetting', () => {
-      return FieldControls.NumberComponent
-    })
-    .setupFieldSettingDefault('CurrencyFieldSetting', () => {
-      return FieldControls.NumberComponent
-    })
-    .setupFieldSettingDefault('IntegerFieldSetting', () => {
-      return FieldControls.NumberComponent
-    })
-    .setupFieldSettingDefault('ColorFieldSetting', () => {
-      return FieldControls.ColorPicker
-    })
-    .setupFieldSettingDefault('BinaryFieldSetting', () => {
-      return FieldControls.FileUpload
-    })
     .setupFieldSettingDefault('ShortTextFieldSetting', (setting) => {
       switch (setting.ControlHint) {
         case 'sn:FileName':
-          return FieldControls.FileName
+          return SnFieldControls.FileName
         case 'sn:ColorPicker':
-          return FieldControls.ColorPicker
+          return SnFieldControls.ColorPicker
         case 'sn:Path':
           return FieldControls.Path
         default:
-          return FieldControls.ShortText
-      }
-    })
-    .setupFieldSettingDefault('PasswordFieldSetting', () => {
-      return FieldControls.Password
-    })
-    .setupFieldSettingDefault('DateTimeFieldSetting', () => {
-      return FieldControls.DatePicker
-    })
-    .setupFieldSettingDefault<ChoiceFieldSetting>('ChoiceFieldSetting', (setting) => {
-      switch (setting.DisplayChoice) {
-        case 2:
-          return FieldControls.CheckboxGroup
-        case 0:
-          return FieldControls.DropDownList
-        case 1:
-          return FieldControls.RadioButtonGroup
-        default:
-          if (setting.AllowMultiple) {
-            return FieldControls.CheckboxGroup
-          } else {
-            return FieldControls.DropDownList
-          }
+          return SnFieldControls.ShortText
       }
     })
     .setupFieldSettingDefault<ReferenceFieldSetting>('ReferenceFieldSetting', (setting) => {
       if (setting.AllowedTypes && setting.AllowedTypes.indexOf('User') !== -1 && setting.AllowMultiple) {
-        return FieldControls.TagsInput
+        return SnFieldControls.TagsInput
       } else {
-        return FieldControls.ReferenceGrid
+        return SnFieldControls.ReferenceGrid
       }
     })
     .setupFieldSettingDefault<LongTextFieldSetting>('LongTextFieldSetting', (setting) => {
       switch (setting.TextType) {
         case 'LongText':
-          return FieldControls.Textarea
+          return SnFieldControls.Textarea
         case 'RichText':
         case 'AdvancedRichText':
           return FieldControls.RichTextEditor
         default:
           if (setting.ControlHint === 'sn:QueryBuilder') {
-            return FieldControls.Textarea
+            return SnFieldControls.Textarea
           } else {
             return FieldControls.RichTextEditor
           }
@@ -99,19 +53,29 @@ export const reactControlMapper = (repository: Repository) => {
           setting.Name,
         ) > -1
       ) {
-        return FieldControls.EmptyFieldControl
+        return SnFieldControls.EmptyFieldControl
       } else if (setting.Name === 'AllowedChildTypes') {
         return FieldControls.AllowedChildTypes
       } else if (setting.Name === 'UrlList') {
-        return FieldControls.Textarea
+        return SnFieldControls.Textarea
       } else if (setting.FieldClassName.indexOf('BooleanField') > -1) {
-        return FieldControls.BooleanComponent
+        switch (setting.ControlHint) {
+          case 'sn:Checkbox':
+            return SnFieldControls.Checkbox
+          default:
+            return SnFieldControls.SwitcherControl
+        }
       } else {
-        return FieldControls.ShortText
+        return SnFieldControls.ShortText
       }
     })
-    .setupFieldSettingDefault('BooleanFieldSetting', () => {
-      return FieldControls.BooleanComponent
+    .setupFieldSettingDefault('BooleanFieldSetting', (setting) => {
+      switch (setting.ControlHint) {
+        case 'sn:Checkbox':
+          return SnFieldControls.Checkbox
+        default:
+          return SnFieldControls.SwitcherControl
+      }
     })
 
   return controlMapper

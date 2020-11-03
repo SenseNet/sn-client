@@ -1,4 +1,5 @@
 import { EntryType } from '@sensenet/client-core'
+import { AutoComplete } from '@sensenet/controls-react'
 import { Group, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import { Button, createStyles, DialogActions, DialogContent, IconButton, makeStyles, Theme } from '@material-ui/core'
@@ -6,7 +7,6 @@ import CloseIcon from '@material-ui/icons/Close'
 import React, { useState } from 'react'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { AutoComplete } from '../field-controls/AutoComplete'
 import { entryTemplate } from './member-select/entryTemplate'
 import { DialogTitle, useDialog } from '.'
 

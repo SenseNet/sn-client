@@ -4,11 +4,10 @@
 import { ChoiceFieldSetting } from '@sensenet/default-content-types'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormGroup from '@material-ui/core/FormGroup'
 import FormHelperText from '@material-ui/core/FormHelperText'
-import FormLabel from '@material-ui/core/FormLabel'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
+import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
@@ -38,7 +37,9 @@ export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetti
           fullWidth={true}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>
-          <FormLabel component={'legend' as 'label'}>{props.settings.DisplayName}</FormLabel>
+          <Typography variant="caption" gutterBottom={true}>
+            {props.settings.DisplayName}
+          </Typography>
           <RadioGroup
             aria-label={props.settings.DisplayName}
             name={props.settings.Name}
@@ -51,27 +52,21 @@ export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetti
                 )
               })}
           </RadioGroup>
-          <FormHelperText>{props.settings.Description}</FormHelperText>
+          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </FormControl>
       )
     case 'browse':
     default: {
-      return value ? (
-        <FormControl component={'fieldset' as 'div'}>
-          <FormLabel component={'legend' as 'label'}>{props.settings.DisplayName}</FormLabel>
-          <FormGroup>
-            <FormControl component={'fieldset' as 'div'}>
-              <FormControlLabel
-                style={{ marginLeft: 0 }}
-                label={
-                  props.settings.Options ? props.settings.Options.find((item) => item.Value === value)!.Text : value
-                }
-                control={<span />}
-              />
-            </FormControl>
-          </FormGroup>
-        </FormControl>
-      ) : null
+      return (
+        <>
+          <Typography variant="caption" gutterBottom={true}>
+            {props.settings.DisplayName}
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            {value ? props.settings.Options?.find((item) => item.Value === value)?.Text ?? value : 'No value set'}
+          </Typography>
+        </>
+      )
     }
   }
 }

@@ -6,7 +6,6 @@ import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { Avatar } from '../src/fieldcontrols/Avatar/Avatar'
-import { AvatarPicker } from '../src/fieldcontrols/Avatar/AvatarPicker'
 import { DefaultAvatarTemplate } from '../src/fieldcontrols/Avatar/DefaultAvatarTemplate'
 
 const defaultSettings = {
@@ -93,18 +92,13 @@ describe('Avatar field control', () => {
 
     it('should handle avatar change', async () => {
       const fieldOnChange = jest.fn()
-      const selectedContent = {
-        Path: '/',
-        Name: 'Jane Doe',
-        Id: 1234,
-        Type: 'User',
-        Avatar: { Url: 'asd' },
-      }
+      const handleAdd = jest.fn()
       let wrapper: any
       await act(async () => {
         wrapper = mount(
           <Avatar
             actionName="edit"
+            handleAdd={handleAdd}
             fieldOnChange={fieldOnChange}
             repository={repository}
             fieldValue={userContent.Avatar as any}
@@ -113,11 +107,7 @@ describe('Avatar field control', () => {
         )
       })
       wrapper.find(IconButton).first().simulate('click')
-      await act(async () => {
-        wrapper.find(AvatarPicker).prop('select')(selectedContent)
-      })
-      wrapper.find(Button).last().simulate('click')
-      expect(fieldOnChange).toBeCalled()
+      expect(handleAdd).toBeCalled()
     })
   })
 })

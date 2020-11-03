@@ -1,3 +1,4 @@
+import { GenericContent } from '@sensenet/default-content-types'
 import Avatar from '@material-ui/core/Avatar'
 import IconButton from '@material-ui/core/IconButton'
 import ListItem from '@material-ui/core/ListItem'
@@ -15,15 +16,15 @@ const styles = {
   },
 }
 
-const DEFAULT_AVATAR_PATH = '/demoavatars/Admin.png'
 const ADD_AVATAR = 'Add avatar'
 const CHANGE_AVATAR = 'Change avatar'
 const REMOVE_AVATAR = 'Remove avatar'
 
-interface DefaultAvatarTemplateProps {
+export interface DefaultAvatarTemplateProps {
   repositoryUrl?: string
   add?: () => void
-  url?: string
+  url?: GenericContent
+  content?: GenericContent
   remove?: () => void
   actionName?: 'new' | 'edit' | 'browse'
   readOnly?: boolean
@@ -38,12 +39,7 @@ export const DefaultAvatarTemplate: React.FC<DefaultAvatarTemplateProps> = (prop
   return (
     <ListItem button={true} style={styles.listItem}>
       <ListItemAvatar>
-        {
-          <Avatar
-            src={url ? `${repositoryUrl}${url}` : `${repositoryUrl}${DEFAULT_AVATAR_PATH}`}
-            style={styles.avatar}
-          />
-        }
+        <Avatar src={repositoryUrl && url ? `${repositoryUrl}${url}` : undefined} style={styles.avatar} />
       </ListItemAvatar>
       {actionName && actionName !== 'browse' && !readOnly ? (
         <ListItemSecondaryAction>

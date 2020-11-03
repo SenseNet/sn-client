@@ -2,6 +2,7 @@
  * @module FieldControls
  */
 import { DateTimeFieldSetting } from '@sensenet/default-content-types'
+import FormHelperText from '@material-ui/core/FormHelperText'
 import Typography from '@material-ui/core/Typography'
 import { MuiPickersUtilsProvider, TimePicker as MUITimePicker } from '@material-ui/pickers'
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
@@ -46,19 +47,20 @@ export const TimePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
             required={props.settings.Compulsory}
             fullWidth={true}
           />
+          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </MuiPickersUtilsProvider>
       )
     case 'browse':
     default:
-      return props.fieldValue ? (
+      return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
-            {moment(props.fieldValue).format('HH:mm:ss')}
+            {props.fieldValue ? moment(props.fieldValue).format('HH:mm:ss') : 'No value set'}
           </Typography>
         </div>
-      ) : null
+      )
   }
 }
