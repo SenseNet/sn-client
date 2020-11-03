@@ -10,9 +10,8 @@ describe('Saved queries', () => {
     cy.get('[data-test="drawer-menu-item-Search"]').click()
     cy.get('a[title="New search"]').click()
     cy.get('[data-test="input-search"]').type(inputText)
-    cy.get('[data-test="table-cell-IT Workspace"]').should('be.visible')
-    cy.get('[data-test="table-cell-Queries"]').should('be.visible')
-    cy.get('[data-test="table-cell-Sample workspace"]').should('be.visible')
+    cy.get('[data-test="table-cell-Chicago"]').should('be.visible')
+    cy.get('[data-test="table-cell-Munich"]').should('be.visible')
     cy.get('button[aria-label="Save Query"]')
       .click()
       .then(() => {
