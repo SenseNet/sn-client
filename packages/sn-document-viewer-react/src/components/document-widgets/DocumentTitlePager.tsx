@@ -8,26 +8,23 @@ import { useDocumentData, useLocalization, useViewerState } from '../../hooks'
  * Document widget component for paging
  */
 export const DocumentTitlePager: React.FC = () => {
-  const [isFocused, setIsFocused] = useState(false)
-
   const { documentData } = useDocumentData()
   const viewerState = useViewerState()
   const localization = useLocalization()
+  const [isFocused, setIsFocused] = useState(false)
 
   useEffect(() => {
-    setCurrentPage(viewerState.activePages[0])
+    setCurrentPage(viewerState.activePage)
   }, [viewerState])
 
   const setPage = useCallback(
     (index: number) => {
-      viewerState.updateState({ activePages: [index] })
       viewerState.onPageChange.setValue(index)
     },
     [viewerState],
   )
 
-  const [currentPage, setCurrentPage] = useState(viewerState.activePages[0])
-
+  const [currentPage, setCurrentPage] = useState(viewerState.activePage)
   const gotoPage = (page: string | number) => {
     let pageInt = typeof page === 'string' ? parseInt(page, 10) : page
     if (!isNaN(pageInt)) {

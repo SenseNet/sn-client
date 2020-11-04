@@ -19,22 +19,21 @@ export const RotateActivePagesWidget: React.FC<{ mode?: ROTATION_MODE }> = (prop
   const rotateDocument = useCallback(
     (direction: string) => {
       const newRotation = viewerState.rotation ? viewerState.rotation : []
-      viewerState.activePages.forEach((page) => {
-        const existingObjIndex = newRotation.findIndex((rotation) => rotation.pageNum === page)
-        if (newRotation.length > 0 && existingObjIndex !== -1) {
-          const prevValue = newRotation[existingObjIndex].degree || 0
-          newRotation[existingObjIndex].degree = ImageUtil.normalizeDegrees(
-            (prevValue + ((direction === 'left' ? -ROTATION_AMOUNT : ROTATION_AMOUNT) % 360)) % 360,
-          )
-        } else {
-          newRotation.push({
-            pageNum: page,
-            degree: ImageUtil.normalizeDegrees(
-              (0 + ((direction === 'left' ? -ROTATION_AMOUNT : ROTATION_AMOUNT) % 360)) % 360,
-            ),
-          })
-        }
-      })
+
+      const existingObjIndex = newRotation.findIndex((rotation) => rotation.pageNum === viewerState.activePage)
+      if (newRotation.length > 0 && existingObjIndex !== -1) {
+        const prevValue = newRotation[existingObjIndex].degree || 0
+        newRotation[existingObjIndex].degree = ImageUtil.normalizeDegrees(
+          (prevValue + ((direction === 'left' ? -ROTATION_AMOUNT : ROTATION_AMOUNT) % 360)) % 360,
+        )
+      } else {
+        newRotation.push({
+          pageNum: viewerState.activePage,
+          degree: ImageUtil.normalizeDegrees(
+            (0 + ((direction === 'left' ? -ROTATION_AMOUNT : ROTATION_AMOUNT) % 360)) % 360,
+          ),
+        })
+      }
 
       viewerState.updateState({
         rotation: newRotation,

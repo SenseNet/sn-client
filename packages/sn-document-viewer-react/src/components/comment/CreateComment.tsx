@@ -2,7 +2,7 @@ import { Button, FormControl, FormHelperText, IconButton, InputAdornment, TextFi
 import Tooltip from '@material-ui/core/Tooltip'
 import React, { useCallback, useState } from 'react'
 import { LocalizationType } from '../../context/localization-context'
-import { useCommentState, useViewerState } from '../../hooks'
+import { useCommentState, useDocumentData, useDocumentViewerApi, useViewerState } from '../../hooks'
 import { StyledButtonContainer, StyledForm, StyledSvgIcon } from './style'
 
 /**
@@ -23,12 +23,7 @@ export type CreateCommentLocalization = Pick<
  * Create comment component properties
  */
 export interface CreateCommentProps {
-  createComment: (text: string) => void
   localization?: CreateCommentLocalization
-  isActive: boolean
-  handleIsActive: (isActive: boolean) => void
-  inputValue: string
-  handleInputValueChange: (value: string) => void
 }
 
 const defaultLocalization: CreateCommentLocalization = {
@@ -46,27 +41,45 @@ const defaultLocalization: CreateCommentLocalization = {
  */
 export function CreateComment(props: CreateCommentProps) {
   const [errorMessage, setErrorMessage] = useState<string | undefined>()
+  const [createCommentValue, setCreateCommentValue] = useState('')
   const localization = { ...defaultLocalization, ...props.localization }
   const commentState = useCommentState()
   const viewerState = useViewerState()
+  const api = useDocumentViewerApi()
+  const { documentData } = useDocumentData()
+
+  const createComment = useCallback(
+    (text: string) => {
+      if (!commentState.draft) {
+        return
+      }
+      api.commentActions.addPreviewComment({
+        document: documentData,
+        comment: { ...commentState.draft, text, page: viewerState.activePage },
+        abortController: new AbortController(),
+      })
+      viewerState.updateState({ isPlacingCommentMarker: false })
+    },
+    [api.commentActions, commentState.draft, documentData, viewerState],
+  )
 
   const clearState = useCallback(() => {
     commentState.setDraft(undefined)
     viewerState.updateState({ isPlacingCommentMarker: false })
-    props.handleInputValueChange('')
+    setCreateCommentValue('')
     setErrorMessage(undefined)
-    props.handleIsActive(!props.isActive)
-  }, [commentState, props, viewerState])
+    viewerState.updateState({ isCreateCommentActive: !viewerState.isCreateCommentActive })
+  }, [commentState, viewerState])
 
   const validate = useCallback(() => {
-    if (!props.inputValue) {
+    if (!createCommentValue) {
       return localization.inputRequiredError
     }
     if (!commentState.draft) {
       return localization.markerRequiredError
     }
     return undefined
-  }, [commentState.draft, localization.inputRequiredError, localization.markerRequiredError, props.inputValue])
+  }, [commentState.draft, createCommentValue, localization.inputRequiredError, localization.markerRequiredError])
 
   const handleSubmit = useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
@@ -76,14 +89,14 @@ export function CreateComment(props: CreateCommentProps) {
         setErrorMessage(errorText)
         return
       }
-      props.createComment(props.inputValue)
+      createComment(createCommentValue)
       clearState()
     },
-    [clearState, props, validate],
+    [clearState, createComment, createCommentValue, validate],
   )
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    props.handleInputValueChange(e.target.value)
+    setCreateCommentValue(e.target.value)
     setErrorMessage(undefined)
   }
 
@@ -91,9 +104,11 @@ export function CreateComment(props: CreateCommentProps) {
     return !!errorMessage || (!!errorMessage && !commentState.draft)
   }
 
-  if (!props.isActive) {
+  if (!viewerState.isCreateCommentActive) {
     return (
-      <Button color="primary" onClick={() => props.handleIsActive(!props.isActive)}>
+      <Button
+        color="primary"
+        onClick={() => viewerState.updateState({ isCreateCommentActive: !viewerState.isCreateCommentActive })}>
         {localization.addComment}
       </Button>
     )
@@ -108,7 +123,7 @@ export function CreateComment(props: CreateCommentProps) {
           label={localization.commentInputPlaceholder}
           margin="normal"
           variant="filled"
-          value={props.inputValue}
+          value={createCommentValue}
           onChange={handleOnChange}
           InputProps={{
             endAdornment: (

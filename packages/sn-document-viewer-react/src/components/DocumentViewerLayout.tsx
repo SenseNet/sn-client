@@ -1,9 +1,9 @@
 import Drawer from '@material-ui/core/Drawer'
 import { SlideProps } from '@material-ui/core/Slide'
 import Typography from '@material-ui/core/Typography'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { CommentsContext, CommentsContextProvider } from '../context/comments'
-import { useCommentState, useDocumentData, useDocumentViewerApi, useLocalization, useViewerState } from '../hooks'
+import { useLocalization, useViewerState } from '../hooks'
 import { Comment } from './comment'
 import { CreateComment } from './comment/CreateComment'
 import { CommentsContainer, PageList } from './'
@@ -29,40 +29,13 @@ interface ScrollToOptions {
 }
 
 export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props) => {
-  const api = useDocumentViewerApi()
-  const { documentData } = useDocumentData()
   const viewerState = useViewerState()
   const localization = useLocalization()
 
   const thumbnailPadding = props.thumbnailPadding != null ? props.thumbnailPadding : THUMBNAIL_PADDING
   const pagePadding = props.pagePadding != null ? props.pagePadding : PAGE_PADDING
 
-  const [createCommentValue, setCreateCommentValue] = useState('')
-
   const commentsContainerRef = useRef<HTMLDivElement>()
-  const commentState = useCommentState()
-
-  const handleKeyUp = useCallback(
-    (ev: KeyboardEvent) => {
-      if (ev.key !== 'Escape') {
-        return
-      }
-      if (viewerState.isPlacingCommentMarker) {
-        return viewerState.updateState({ isPlacingCommentMarker: false })
-      }
-      if (viewerState.isCreateCommentActive) {
-        viewerState.updateState({ isCreateCommentActive: false })
-      }
-      commentState.setActiveComment(undefined)
-      setCreateCommentValue('')
-    },
-    [commentState, viewerState],
-  )
-
-  useEffect(() => {
-    document.addEventListener('keyup', handleKeyUp)
-    return () => document.removeEventListener('keyup', handleKeyUp)
-  }, [handleKeyUp])
 
   const scrollToImage = useCallback(({ containerId, index, itemName, padding, smoothScroll }: ScrollToOptions) => {
     const container = document.getElementById(containerId)
@@ -103,21 +76,6 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
     return () => observer.dispose()
   }, [scrollTo, viewerState.onPageChange])
 
-  const createComment = useCallback(
-    (text: string) => {
-      if (!commentState.draft || !viewerState.activePages[0] || !viewerState.activePages[0]) {
-        return
-      }
-      api.commentActions.addPreviewComment({
-        document: documentData,
-        comment: { ...commentState.draft, text, page: viewerState.activePages[0] },
-        abortController: new AbortController(),
-      })
-      viewerState.updateState({ isPlacingCommentMarker: false })
-    },
-    [api.commentActions, commentState.draft, documentData, viewerState],
-  )
-
   return (
     <div
       style={{
@@ -139,11 +97,10 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
         }}>
         <PageList
           id="sn-document-viewer-pages"
-          onPageClick={(_ev, index) => scrollTo(index)}
+          onPageClick={(index) => scrollTo(index)}
           elementName={PAGE_NAME}
           images="preview"
           padding={pagePadding}
-          activePage={viewerState.activePages[0]}
         />
         <Drawer
           variant={'persistent'}
@@ -158,18 +115,10 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
               overflow: 'hidden',
             },
           }}>
-          <CommentsContextProvider page={viewerState.activePages[0]} images="preview">
+          <CommentsContextProvider page={viewerState.activePage} images="preview">
             <CommentsContainer ref={commentsContainerRef as any} style={{ display: 'flex', flexFlow: 'column' }}>
               <Typography variant="h4">{localization.commentSideBarTitle}</Typography>
-              <CreateComment
-                isActive={viewerState.isCreateCommentActive}
-                handleIsActive={(isActive) => viewerState.updateState({ isCreateCommentActive: isActive })}
-                localization={localization}
-                createComment={createComment}
-                inputValue={createCommentValue}
-                handleInputValueChange={(value) => setCreateCommentValue(value)}
-              />
-
+              <CreateComment localization={localization} />
               <CommentsContext.Consumer>
                 {(commentsContext) =>
                   commentsContext.comments.map((comment) => <Comment key={comment.id} comment={comment} />)

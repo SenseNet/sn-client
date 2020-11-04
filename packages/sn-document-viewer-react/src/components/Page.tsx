@@ -24,7 +24,7 @@ export const Page: React.FC<PageProps> = (props) => {
   const page = usePreviewImage(props.imageIndex)
   const commentState = useCommentState()
 
-  const isActive = page.image && viewerState.activePages.includes(page.image.Index)
+  const isActive = page.image && viewerState.activePage === page.image.Index
 
   const imgUrl = (page.image && (!props.isThumbnail ? page.image.PreviewImageUrl : page.image.ThumbnailImageUrl)) || ''
 

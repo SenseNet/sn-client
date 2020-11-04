@@ -1,8 +1,8 @@
 import { Annotation, Highlight, PreviewImageData, Redaction, Shape, Shapes } from '@sensenet/client-core'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import { useComments, useCommentState, useDocumentData, useDocumentPermissions, useViewerState } from '../../hooks'
 import { Dimensions } from '../../services'
-import { ShapeSkeleton } from '../shapes/ShapeSkeleton'
+import { ShapeSkeleton } from '../shapes'
 import { CommentMarker } from './style'
 
 /**
@@ -23,11 +23,11 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
   const comments = useComments()
   const commentState = useCommentState()
 
-  const [visibleShapes] = useState({
+  const visibleShapes = {
     redactions: documentData.shapes.redactions.filter((r) => r.imageIndex === props.page.Index) as Redaction[],
     highlights: documentData.shapes.highlights.filter((r) => r.imageIndex === props.page.Index) as Highlight[],
     annotations: documentData.shapes.annotations.filter((r) => r.imageIndex === props.page.Index) as Annotation[],
-  })
+  }
 
   const removeShape = useCallback(
     (shapeType: keyof Shapes, guid: string) => {

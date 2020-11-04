@@ -5,7 +5,7 @@ import { ViewerState } from '../models/viewer-state'
 export const defaultViewerState: ViewerState & {
   updateState: (newState: DeepPartial<ViewerState>) => void
 } = {
-  activePages: [1],
+  activePage: 1,
   zoomMode: 'fit',
   customZoomLevel: 3,
   showWatermark: false,

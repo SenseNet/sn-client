@@ -25,9 +25,9 @@ export interface RotationModel {
  */
 export interface ViewerState {
   /**
-   * The active page(s)
+   * The active page
    */
-  activePages: number[]
+  activePage: number
   /**
    * The current zoom mode
    */

@@ -15,8 +15,7 @@ export interface PageListProps {
   id: string
   elementName: string
   images: 'preview' | 'thumbnail'
-  activePage?: number
-  onPageClick: (ev: React.MouseEvent<HTMLElement>, pageIndex: number) => void
+  onPageClick: (pageIndex: number) => void
 }
 
 export const PageList: React.FC<PageListProps> = (props) => {
@@ -129,23 +128,10 @@ export const PageList: React.FC<PageListProps> = (props) => {
     setMarginBottom(_marginBottom < 20 ? 20 : _marginBottom)
     const newVisiblePages = _visiblePages.slice(_pagesToSkip, _pagesToSkip + _pagesToTake)
     setVisiblePages(newVisiblePages)
-  }, [
-    pages.imageData,
-    props.padding,
-    scrollState,
-    viewerState.customZoomLevel,
-    viewerState.fitRelativeZoomLevel,
-    viewerState.rotation,
-    viewerState.zoomMode,
-    viewport.height,
-    viewport.width,
-  ])
-
-  const updateScrollState = useCallback(() => {
-    viewerState.updateState({ activePages: [(visiblePages[0] && visiblePages[0].Index) || 1] })
-  }, [visiblePages])
-
-  useEffect(updateScrollState, [updateScrollState])
+    if (viewerState.activePage !== newVisiblePages[0]?.Index) {
+      viewerState.updateState({ activePage: newVisiblePages[0]?.Index || 1 })
+    }
+  }, [pages.imageData, props.padding, scrollState, viewerState, viewport.height, viewport.width])
 
   const addshape = () => {
     documentData.shapes.redactions.push({ h: 100, w: 300, x: 10, y: 10, imageIndex: 1, guid: '1012' })
@@ -190,7 +176,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
               viewportWidth={viewport.width}
               viewportHeight={viewport.height}
               imageIndex={page.Index}
-              onClick={(ev) => props.onPageClick(ev, page.Index)}
+              onClick={() => props.onPageClick(page.Index)}
               elementName={props.elementName}
               margin={props.padding}
               isThumbnail={false}
