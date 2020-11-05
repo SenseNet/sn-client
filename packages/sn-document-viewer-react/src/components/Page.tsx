@@ -40,8 +40,8 @@ export const Page: React.FC<PageProps> = (props) => {
       height: props.viewportHeight,
     },
     {
-      width: (page.image && page.image.Width) || 0,
-      height: (page.image && page.image.Height) || 0,
+      width: page.image?.Width || 0,
+      height: page.image?.Height || 0,
       rotation: viewerState.rotation?.find((rotation) => rotation.pageNum === props.imageIndex)?.degree || 0,
     },
     viewerState.zoomMode,

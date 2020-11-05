@@ -1,9 +1,8 @@
 import { PreviewImageData } from '@sensenet/client-core'
-import { Button } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { CommentsContextProvider } from '../context/comments'
-import { useDocumentData, usePreviewImages, useViewerState } from '../hooks'
+import { usePreviewImages, useViewerState } from '../hooks'
 import { Dimensions, ImageUtil } from '../services'
 import { Page } from './'
 
@@ -28,8 +27,6 @@ export const PageList: React.FC<PageListProps> = (props) => {
   const [resizeToken, setResizeToken] = useState(0)
   const [viewport, setViewport] = useState<Dimensions>({ width: 0, height: 0 })
   const pages = usePreviewImages()
-
-  const { documentData, updateDocumentData } = useDocumentData()
 
   const requestResize = useCallback(() => {
     setResizeToken(Math.random())
@@ -125,37 +122,16 @@ export const PageList: React.FC<PageListProps> = (props) => {
     }
 
     setMarginTop(_marginTop)
-    setMarginBottom(_marginBottom < 20 ? 20 : _marginBottom)
+    setMarginBottom(_marginBottom)
     const newVisiblePages = _visiblePages.slice(_pagesToSkip, _pagesToSkip + _pagesToTake)
     setVisiblePages(newVisiblePages)
-    if (viewerState.activePage !== newVisiblePages[0]?.Index) {
-      viewerState.updateState({ activePage: newVisiblePages[0]?.Index || 1 })
+    const newActivePage =
+      scrollState - _marginTop > newVisiblePages[0].Height / 2 ? newVisiblePages[1].Index : newVisiblePages[0].Index
+    if (props.elementName !== 'Thumbnail' && viewerState.activePage !== newActivePage) {
+      viewerState.updateState({ activePage: newActivePage || 1 })
     }
-  }, [pages.imageData, props.padding, scrollState, viewerState, viewport.height, viewport.width])
+  }, [pages.imageData, props.elementName, props.padding, scrollState, viewerState, viewport.height, viewport.width])
 
-  const addshape = () => {
-    documentData.shapes.redactions.push({ h: 100, w: 300, x: 10, y: 10, imageIndex: 1, guid: '1012' })
-    documentData.shapes.highlights.push({ h: 100, w: 300, x: 10, y: 120, imageIndex: 1, guid: '1013' })
-    documentData.shapes.annotations.push({
-      h: 100,
-      w: 300,
-      x: 10,
-      y: 240,
-      imageIndex: 1,
-      guid: '1014',
-      index: 1,
-      lineHeight: 17,
-      text: 'balbal',
-      fontBold: 'none',
-      fontColor: 'black',
-      fontFamily: 'Ariel',
-      fontItalic: 'none',
-      fontSize: '12px',
-    })
-
-    updateDocumentData(documentData)
-    viewerState.updateState({ hasChanges: true })
-  }
   return (
     <Grid item={true} style={{ flexGrow: 1, flexShrink: 1, overflow: 'auto' }} id={props.id} innerRef={viewportElement}>
       <div
@@ -169,9 +145,6 @@ export const PageList: React.FC<PageListProps> = (props) => {
         }}>
         {visiblePages.map((page) => (
           <CommentsContextProvider page={page.Index} key={page.Index} images={props.images}>
-            <Button aria-label={'test'} onClick={addshape}>
-              <span style={{ textTransform: 'none', fontSize: '32px' }}>VALAMI</span>
-            </Button>
             <Page
               viewportWidth={viewport.width}
               viewportHeight={viewport.height}
@@ -179,7 +152,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
               onClick={() => props.onPageClick(page.Index)}
               elementName={props.elementName}
               margin={props.padding}
-              isThumbnail={false}
+              isThumbnail={props.elementName === 'Thumbnail'}
             />
           </CommentsContextProvider>
         ))}
