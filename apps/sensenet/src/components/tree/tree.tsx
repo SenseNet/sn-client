@@ -102,7 +102,6 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
 
     const nodeItem = (
       <ListItem
-        data-test={`menu-item-${item.DisplayName}`}
         onClick={onClick}
         data-test={`${item.DisplayName}`}
         onContextMenu={(ev) => {
