@@ -43,12 +43,6 @@ export class ImageUtil {
     relativeZoomLevel = 1,
     fitRelativeZoomLevel = 0,
   ): Dimensions {
-    if (zoomMode === 'custom') {
-      relativeZoomLevel = (relativeZoomLevel + 1) / 4
-    } else {
-      relativeZoomLevel = 1
-    }
-
     const boundingBox = this.getRotatedBoundingBoxSize(image, image.rotation)
     const [width, height] = [boundingBox.width, boundingBox.height]
 
@@ -66,7 +60,7 @@ export class ImageUtil {
           width: width * zoomHeight * relativeZoomLevel,
           height: height * zoomHeight * relativeZoomLevel,
         }
-      case 'fit': {
+      case 'custom': {
         const zoom = Math.min(zoomWidth, zoomHeight)
         return {
           width: width * zoom + fitRelativeZoomLevel * width * zoom * fitRelativeZoomLevelScale,

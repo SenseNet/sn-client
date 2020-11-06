@@ -18,6 +18,45 @@ npm install @sensenet/document-viewer-react
 
 ## Usage
 
-For the example application check [our storybook](https://sn-react-component-docs-dev.netlify.com/?path=/story/documentviewer--showcase-app)
+```
+import {
+  DocumentTitlePager,
+  Download,
+  LayoutAppBar,
+  Print,
+  RotateActivePagesWidget,
+  RotateDocumentWidget,
+  ROTATION_MODE,
+  SaveWidget,
+  Share,
+  DocumentViewer as SnDocumentViewer,
+  ToggleCommentsWidget,
+  ToggleRedactionWidget,
+  ToggleShapesWidget,
+  ToggleThumbnailsWidget,
+  ToggleWatermarkWidget,
+  ZoomInOutWidget,
+  ZoomModeWidget,
+} from '@sensenet/document-viewer-react'
 
-You can check out our [sn-dms-demo](https://github.com/SenseNet/sn-dms-demo) application for an example how to use the Document Viewer component in your React application.
+<SnDocumentViewer documentIdOrPath={<The document's Id or Path to preview>}>
+  <LayoutAppBar>
+    <ToggleThumbnailsWidget />
+    <ZoomInOutWidget />
+    <RotateActivePagesWidget mode={ROTATION_MODE.clockwise OR ROTATION_MODE.anticlockwise} />
+    <RotateDocumentWidget mode={ROTATION_MODE.clockwise OR ROTATION_MODE.anticlockwise} />
+    <DocumentTitlePager />
+    <Download download={<function triggered on clicking download button>/>
+    <Print print={function triggered on clicking print button/>
+    <Share share={function triggered on clicking share button/>
+    <SaveWidget /> --> this is under construction
+    <ToggleRedactionWidget /> --> this is under construction
+    <ToggleShapesWidget /> --> this is under construction
+    <ToggleWatermarkWidget /> --> this is under construction
+    <ZoomModeWidget />
+    <ToggleCommentsWidget/>
+  </LayoutAppBar>
+</SnDocumentViewer>
+```
+
+The main component is SnDocumentViewer, but you can extend functionality with any widgets from the example

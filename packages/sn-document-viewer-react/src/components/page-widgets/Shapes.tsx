@@ -29,6 +29,11 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
     annotations: documentData.shapes.annotations.filter((r) => r.imageIndex === props.page.Index) as Annotation[],
   }
 
+  const visibleComments = [
+    ...comments.comments.filter((comment) => comment.page === props.page.Index),
+    ...(props.page.Index !== undefined && commentState.draft?.page === props.page?.Index ? [commentState.draft] : []),
+  ]
+
   const removeShape = useCallback(
     (shapeType: keyof Shapes, guid: string) => {
       ;(documentData.shapes as any)[shapeType] = documentData.shapes[shapeType].filter((s) => s.guid !== guid)
@@ -85,7 +90,8 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
       onDrop={onDrop}
       onDragOver={(ev) => ev.preventDefault()}>
       {viewerState.showComments &&
-        [...comments.comments, ...(commentState.draft ? [commentState.draft] : [])].map((marker) => (
+        visibleComments.length > 0 &&
+        visibleComments.map((marker) => (
           <CommentMarker
             onClick={() => commentState.setActiveComment(marker.id)}
             isSelected={marker.id === commentState.activeCommentId}

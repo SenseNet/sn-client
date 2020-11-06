@@ -89,7 +89,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
           rotation: viewerState.rotation?.find((rotation) => rotation.pageNum === p.Index)?.degree || 0,
         },
         viewerState.zoomMode,
-        viewerState.customZoomLevel,
+        1,
         viewerState.fitRelativeZoomLevel,
       )
 
@@ -125,10 +125,12 @@ export const PageList: React.FC<PageListProps> = (props) => {
     setMarginBottom(_marginBottom)
     const newVisiblePages = _visiblePages.slice(_pagesToSkip, _pagesToSkip + _pagesToTake)
     setVisiblePages(newVisiblePages)
-    const newActivePage =
-      scrollState - _marginTop > newVisiblePages[0].Height / 2 ? newVisiblePages[1].Index : newVisiblePages[0].Index
-    if (props.elementName !== 'Thumbnail' && viewerState.activePage !== newActivePage) {
-      viewerState.updateState({ activePage: newActivePage || 1 })
+    if (newVisiblePages.length > 1) {
+      const newActivePage =
+        scrollState - _marginTop > newVisiblePages[0].Height / 2 ? newVisiblePages[1].Index : newVisiblePages[0].Index
+      if (props.elementName !== 'Thumbnail' && viewerState.activePage !== newActivePage) {
+        viewerState.updateState({ activePage: newActivePage || 1 })
+      }
     }
   }, [pages.imageData, props.elementName, props.padding, scrollState, viewerState, viewport.height, viewport.width])
 

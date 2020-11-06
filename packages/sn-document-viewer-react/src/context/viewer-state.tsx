@@ -6,8 +6,7 @@ export const defaultViewerState: ViewerState & {
   updateState: (newState: DeepPartial<ViewerState>) => void
 } = {
   activePage: 1,
-  zoomMode: 'fit',
-  customZoomLevel: 3,
+  zoomMode: 'custom',
   showWatermark: false,
   showRedaction: true,
   showShapes: true,

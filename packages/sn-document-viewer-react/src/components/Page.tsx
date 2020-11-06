@@ -45,7 +45,7 @@ export const Page: React.FC<PageProps> = (props) => {
       rotation: viewerState.rotation?.find((rotation) => rotation.pageNum === props.imageIndex)?.degree || 0,
     },
     viewerState.zoomMode,
-    viewerState.customZoomLevel,
+    1,
     viewerState.fitRelativeZoomLevel,
   )
 
@@ -76,10 +76,11 @@ export const Page: React.FC<PageProps> = (props) => {
           MARKER_SIZE
         }`,
         id: 'draft',
+        page: viewerState.activePage,
       }
       commentState.setDraft(newCommentMarker)
     },
-    [commentState, page.image, relativeImageSize.height, viewerState.isPlacingCommentMarker],
+    [commentState, page.image, relativeImageSize.height, viewerState.activePage, viewerState.isPlacingCommentMarker],
   )
 
   return (
