@@ -1,6 +1,6 @@
 import { Settings } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import { createStyles, makeStyles, Theme, Tooltip } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
@@ -34,6 +34,11 @@ const useStyles = makeStyles((theme: Theme) => {
       border: clsx('1px solid', theme.palette.primary.main),
       margin: '7px',
     },
+    title: {
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+    },
   })
 })
 
@@ -62,9 +67,11 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
       className={classes.card}
       data-test="content-card">
       <CardContent>
-        <Typography variant="h5" gutterBottom={true}>
-          {settings.DisplayName || settings.Name}
-        </Typography>
+        <Tooltip placement="top" title={settings.DisplayName || settings.Name}>
+          <Typography variant="h5" gutterBottom={true} className={classes.title}>
+            {settings.DisplayName || settings.Name}
+          </Typography>
+        </Tooltip>
         <Typography
           color="textSecondary"
           style={{ wordWrap: 'break-word' }}
