@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) => {
       justifyContent: 'space-between',
       flexDirection: 'column',
       width: 339,
-      height: 374,
+      minHeight: 374,
       margin: '0.5em',
       marginRight: '49px',
       marginBottom: '49px',
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) => {
       boxShadow: theme.palette.type === 'light' ? '4px 4px 8px #0000001A' : 'none',
     },
     button: {
-      width: '110px',
+      minWidth: '110px',
       height: '36px',
       border: clsx('1px solid', theme.palette.primary.main),
       margin: '7px',
