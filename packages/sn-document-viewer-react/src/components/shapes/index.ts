@@ -1,4 +1,6 @@
 export * from './ShapeAnnotation'
 export * from './ShapeHighlight'
 export * from './ShapeRedaction'
+export * from './Shapes'
 export * from './ShapeSkeleton'
+export * from './style'

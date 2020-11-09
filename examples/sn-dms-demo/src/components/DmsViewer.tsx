@@ -94,7 +94,7 @@ const DocViewer: React.FunctionComponent<
                         />
                         <Share
                           share={() => {
-                            // console.log('Share triggered', doc)
+                            console.log('Share triggered')
                             // props.openDialog(<ShareDialog currentContent={props.currentContent || null} />)
                           }}
                         />

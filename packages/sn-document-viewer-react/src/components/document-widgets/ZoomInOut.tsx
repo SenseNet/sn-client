@@ -13,30 +13,22 @@ export const ZoomInOutWidget: React.FC = () => {
 
   const zoomIn = useCallback(() => {
     viewerState.updateState({
-      fitRelativeZoomLevel: viewerState.fitRelativeZoomLevel + 1,
+      zoomLevel: viewerState.zoomLevel + 1,
     })
   }, [viewerState])
 
   const zoomOut = useCallback(() => {
     viewerState.updateState({
-      fitRelativeZoomLevel: viewerState.fitRelativeZoomLevel - 1,
+      zoomLevel: viewerState.zoomLevel - 1,
     })
   }, [viewerState])
 
   return (
     <div style={{ display: 'inline-block' }}>
-      <IconButton
-        color="inherit"
-        onClick={zoomIn}
-        title={localization.zoomIn}
-        disabled={viewerState.zoomMode !== 'custom'}>
+      <IconButton color="inherit" onClick={zoomIn} title={localization.zoomIn}>
         <ZoomIn />
       </IconButton>
-      <IconButton
-        color="inherit"
-        onClick={zoomOut}
-        title={localization.zoomOut}
-        disabled={viewerState.zoomMode !== 'custom'}>
+      <IconButton color="inherit" onClick={zoomOut} title={localization.zoomOut}>
         <ZoomOut />
       </IconButton>
     </div>

@@ -1,20 +1,20 @@
 import { PreviewImageData } from '@sensenet/client-core'
 import Grid from '@material-ui/core/Grid'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { DEFAULT_ZOOM_LEVEL } from '..'
 import { CommentsContextProvider } from '../context/comments'
 import { usePreviewImages, useViewerState } from '../hooks'
 import { Dimensions, ImageUtil } from '../services'
-import { PAGE_CONTAINER_ID, PAGE_PADDING } from './DocumentViewerLayout'
-import { Page } from './'
+import { THUMBNAIL_CONTAINER_ID, THUMBNAIL_PADDING, ThumbnailPage } from './'
 
 /**
  * Defines the own properties for the PageList component
  */
-export interface PageListProps {
+export interface ThumbnailsProps {
   onPageClick: (pageIndex: number) => void
 }
 
-export const PageList: React.FC<PageListProps> = (props) => {
+export const Thumbnails: React.FC<ThumbnailsProps> = (props) => {
   const [marginTop, setMarginTop] = useState(0)
   const [marginBottom, setMarginBottom] = useState(0)
   const [visiblePages, setVisiblePages] = useState<PreviewImageData[]>([])
@@ -49,8 +49,8 @@ export const PageList: React.FC<PageListProps> = (props) => {
 
   useEffect(() => {
     if (viewportElement && viewportElement.current) {
-      const newHeight = viewportElement.current.clientHeight - PAGE_PADDING * 2
-      const newWidth = viewportElement.current.clientWidth - PAGE_PADDING * 2
+      const newHeight = viewportElement.current.clientHeight - THUMBNAIL_PADDING * 2
+      const newWidth = viewportElement.current.clientWidth - THUMBNAIL_PADDING * 2
       setViewport({
         height: newHeight >= 0 ? newHeight : 0,
         width: newWidth >= 0 ? newWidth : 0,
@@ -85,8 +85,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
           height: p.Height,
           rotation: viewerState.rotation?.find((rotation) => rotation.pageNum === p.Index)?.degree || 0,
         },
-
-        viewerState.zoomLevel,
+        DEFAULT_ZOOM_LEVEL,
       )
 
       return {
@@ -100,7 +99,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
     let _pagesToSkip = 0
 
     while (_visiblePages[_pagesToSkip] && _marginTop + _visiblePages[_pagesToSkip].Height < scrollState) {
-      _marginTop += _visiblePages[_pagesToSkip].Height + PAGE_PADDING * 2
+      _marginTop += _visiblePages[_pagesToSkip].Height + THUMBNAIL_PADDING * 2
       _pagesToSkip++
     }
 
@@ -108,41 +107,26 @@ export const PageList: React.FC<PageListProps> = (props) => {
     let _pagesHeight = 0
 
     while (_visiblePages[_pagesToSkip + _pagesToTake] && _pagesHeight < viewport.height) {
-      _pagesHeight += _visiblePages[_pagesToSkip + _pagesToTake].Height + PAGE_PADDING * 2
+      _pagesHeight += _visiblePages[_pagesToSkip + _pagesToTake].Height + THUMBNAIL_PADDING * 2
       _pagesToTake++
     }
 
     let _marginBottom = 0
     for (let i = _pagesToSkip + _pagesToTake - 1; i < _visiblePages.length - 1; i++) {
-      _marginBottom += _visiblePages[i].Height + PAGE_PADDING * 2
+      _marginBottom += _visiblePages[i].Height + THUMBNAIL_PADDING * 2
     }
 
     setMarginTop(_marginTop)
     setMarginBottom(_marginBottom)
     const newVisiblePages = _visiblePages.slice(_pagesToSkip, _pagesToSkip + _pagesToTake)
     setVisiblePages(newVisiblePages)
-
-    if (newVisiblePages.length > 0) {
-      let newActivePage
-      if (newVisiblePages.length === 1) {
-        newActivePage = newVisiblePages[0].Index
-      } else {
-        newActivePage =
-          scrollState - _marginTop >= 0 && scrollState - _marginTop > newVisiblePages[0].Height / 2
-            ? newVisiblePages[1].Index
-            : newVisiblePages[0].Index
-      }
-      if (viewerState.activePage !== newActivePage) {
-        viewerState.updateState({ activePage: newActivePage })
-      }
-    }
   }, [pages.imageData, scrollState, viewerState, viewport.height, viewport.width])
 
   return (
     <Grid
       item={true}
       style={{ flexGrow: 1, flexShrink: 1, overflow: 'auto' }}
-      id={PAGE_CONTAINER_ID}
+      id={THUMBNAIL_CONTAINER_ID}
       innerRef={viewportElement}>
       <div
         style={{
@@ -154,8 +138,8 @@ export const PageList: React.FC<PageListProps> = (props) => {
           paddingBottom: marginBottom || 0,
         }}>
         {visiblePages.map((page) => (
-          <CommentsContextProvider page={page.Index} key={page.Index} images={'preview'}>
-            <Page
+          <CommentsContextProvider page={page.Index} key={page.Index} images={'thumbnail'}>
+            <ThumbnailPage
               viewportWidth={viewport.width}
               viewportHeight={viewport.height}
               imageIndex={page.Index}

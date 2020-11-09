@@ -1,11 +1,6 @@
 import { ObservableValue } from '@sensenet/client-utils'
 
 /**
- * The zoom type definitions
- */
-export type ZoomMode = 'originalSize' | 'custom' | 'fitHeight' | 'fitWidth'
-
-/**
  * Rotation model
  */
 export interface RotationModel {
@@ -29,10 +24,6 @@ export interface ViewerState {
    */
   activePage: number
   /**
-   * The current zoom mode
-   */
-  zoomMode: ZoomMode
-  /**
    * Watermark is on / off
    */
   showWatermark: boolean
@@ -53,7 +44,7 @@ export interface ViewerState {
   /**
    * Zoom level relative to the fitted image size
    */
-  fitRelativeZoomLevel: number
+  zoomLevel: number
 
   /**
    * Rotation

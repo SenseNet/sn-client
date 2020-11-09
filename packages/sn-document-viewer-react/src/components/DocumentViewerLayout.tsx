@@ -6,19 +6,19 @@ import { CommentsContext, CommentsContextProvider } from '../context/comments'
 import { useLocalization, useViewerState } from '../hooks'
 import { Comment } from './comment'
 import { CreateComment } from './comment/CreateComment'
-import { CommentsContainer, PageList } from './'
+import { CommentsContainer, PageList, Thumbnails } from './'
 
 /** Props definition for the Document Viewer layout */
 export interface DocumentViewerLayoutProps {
   drawerSlideProps?: Partial<SlideProps>
-  thumbnailPadding?: number
-  pagePadding?: number
 }
 
-const THUMBNAIL_PADDING = 16
-const THUMBNAIL_NAME = 'Thumbnail'
-const PAGE_PADDING = 8
-const PAGE_NAME = 'Page'
+export const THUMBNAIL_PADDING = 16
+export const THUMBNAIL_NAME = 'Thumbnail'
+export const THUMBNAIL_CONTAINER_ID = 'sn-document-viewer-thumbnails'
+export const PAGE_PADDING = 8
+export const PAGE_NAME = 'Page'
+export const PAGE_CONTAINER_ID = 'sn-document-viewer-pages'
 
 interface ScrollToOptions {
   containerId: string
@@ -31,9 +31,6 @@ interface ScrollToOptions {
 export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props) => {
   const viewerState = useViewerState()
   const localization = useLocalization()
-
-  const thumbnailPadding = props.thumbnailPadding != null ? props.thumbnailPadding : THUMBNAIL_PADDING
-  const pagePadding = props.pagePadding != null ? props.pagePadding : PAGE_PADDING
 
   const commentsContainerRef = useRef<HTMLDivElement>()
 
@@ -51,22 +48,23 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
   const scrollTo = useCallback(
     (index: number, smoothScroll = true) => {
       scrollToImage({
-        containerId: 'sn-document-viewer-pages',
+        containerId: PAGE_CONTAINER_ID,
         itemName: PAGE_NAME,
-        padding: pagePadding,
+        padding: PAGE_PADDING,
         index,
         smoothScroll,
       })
 
       scrollToImage({
-        containerId: 'sn-document-viewer-thumbnails',
+        containerId: THUMBNAIL_CONTAINER_ID,
         itemName: THUMBNAIL_NAME,
-        padding: thumbnailPadding,
+        padding: THUMBNAIL_PADDING,
         index,
         smoothScroll,
       })
     },
-    [pagePadding, scrollToImage, thumbnailPadding],
+
+    [scrollToImage],
   )
 
   useEffect(() => {
@@ -108,21 +106,9 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
               overflow: 'hidden',
             },
           }}>
-          <PageList
-            id="sn-document-viewer-thumbnails"
-            onPageClick={(index) => scrollTo(index)}
-            elementName={THUMBNAIL_NAME}
-            images="thumbnail"
-            padding={thumbnailPadding}
-          />
+          <Thumbnails onPageClick={(index) => scrollTo(index)} />
         </Drawer>
-        <PageList
-          id="sn-document-viewer-pages"
-          onPageClick={(index) => scrollTo(index)}
-          elementName={PAGE_NAME}
-          images="preview"
-          padding={pagePadding}
-        />
+        <PageList onPageClick={(index) => scrollTo(index)} />
         <Drawer
           variant={'persistent'}
           open={viewerState.showComments}

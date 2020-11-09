@@ -35,8 +35,7 @@ import {
   ToggleShapesWidget,
   ToggleThumbnailsWidget,
   ToggleWatermarkWidget,
-  ZoomInOutWidget,
-  ZoomModeWidget,
+  ZoomInOutWidget
 } from '@sensenet/document-viewer-react'
 
 <SnDocumentViewer documentIdOrPath={<The document's Id or Path to preview>}>
@@ -53,7 +52,6 @@ import {
     <ToggleRedactionWidget /> --> this is under construction
     <ToggleShapesWidget /> --> this is under construction
     <ToggleWatermarkWidget /> --> this is under construction
-    <ZoomModeWidget />
     <ToggleCommentsWidget/>
   </LayoutAppBar>
 </SnDocumentViewer>

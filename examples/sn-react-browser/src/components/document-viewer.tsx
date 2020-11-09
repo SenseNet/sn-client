@@ -8,7 +8,6 @@ import {
   ToggleShapesWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
-  ZoomModeWidget,
 } from '@sensenet/document-viewer-react'
 import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
@@ -31,7 +30,6 @@ const DocViewer: React.FunctionComponent<RouteComponentProps<{ documentId: strin
             <ToggleShapesWidget />
             <ToggleThumbnailsWidget />
             <ZoomInOutWidget />
-            <ZoomModeWidget />
             <SaveWidget />
           </div>
           <DocumentTitlePager />

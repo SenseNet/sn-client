@@ -3,20 +3,17 @@ import Paper from '@material-ui/core/Paper'
 import React, { useCallback } from 'react'
 import { useCommentState, usePreviewImage, useViewerState } from '../hooks'
 import { ImageUtil } from '../services'
-import { ShapesWidget } from './page-widgets'
-import { MARKER_SIZE } from './page-widgets/style'
+import { PAGE_NAME, PAGE_PADDING } from './DocumentViewerLayout'
+import { MARKER_SIZE, ShapesWidget } from './shapes'
 
 /**
  * Defined the component's own properties
  */
 export interface PageProps {
-  isThumbnail: boolean
   imageIndex: number
   viewportHeight: number
   viewportWidth: number
-  elementName: string
   onClick: (ev: React.MouseEvent<HTMLElement>) => any
-  margin: number
 }
 
 export const Page: React.FC<PageProps> = (props) => {
@@ -26,7 +23,7 @@ export const Page: React.FC<PageProps> = (props) => {
 
   const isActive = page.image && viewerState.activePage === page.image.Index
 
-  const imgUrl = (page.image && (!props.isThumbnail ? page.image.PreviewImageUrl : page.image.ThumbnailImageUrl)) || ''
+  const imgUrl = (page.image && page.image?.PreviewImageUrl) || ''
 
   const imageRotation = ImageUtil.normalizeDegrees(
     viewerState.rotation?.find((rotation) => rotation.pageNum === props.imageIndex)?.degree || 0,
@@ -44,9 +41,7 @@ export const Page: React.FC<PageProps> = (props) => {
       height: page.image?.Height || 0,
       rotation: viewerState.rotation?.find((rotation) => rotation.pageNum === props.imageIndex)?.degree || 0,
     },
-    viewerState.zoomMode,
-    1,
-    viewerState.fitRelativeZoomLevel,
+    viewerState.zoomLevel,
   )
 
   const boundingBox = ImageUtil.getRotatedBoundingBoxSize(
@@ -84,24 +79,24 @@ export const Page: React.FC<PageProps> = (props) => {
   )
 
   return (
-    <Paper elevation={isActive ? 8 : 2} className={props.elementName} style={{ margin: props.margin }}>
+    <Paper elevation={isActive ? 8 : 2} className={PAGE_NAME} style={{ margin: PAGE_PADDING }}>
       <div
         style={{
           padding: 0,
           overflow: 'hidden',
-          width: relativeImageSize.width - 2 * props.margin,
-          height: relativeImageSize.height - 2 * props.margin,
+          width: relativeImageSize.width - 2 * PAGE_PADDING,
+          height: relativeImageSize.height - 2 * PAGE_PADDING,
           position: 'relative',
         }}
         onClick={(ev) => {
           props.onClick(ev)
           handleMarkerPlacement(ev)
         }}>
-        {page.image && !props.isThumbnail ? (
+        {page.image && (
           <div>
             <ShapesWidget zoomRatio={relativeImageSize.height / page.image.Height} page={page.image} />
           </div>
-        ) : null}
+        )}
         <span style={{ display: 'flex', justifyContent: 'center' }}>
           {imgUrl ? (
             <img
