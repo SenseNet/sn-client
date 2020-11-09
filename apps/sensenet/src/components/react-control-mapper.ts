@@ -63,7 +63,7 @@ export const reactControlMapper = (repository: Repository) => {
           case 'sn:Checkbox':
             return SnFieldControls.Checkbox
           default:
-            return SnFieldControls.SwitcherControl
+            return SnFieldControls.Switcher
         }
       } else {
         return SnFieldControls.ShortText
@@ -74,7 +74,7 @@ export const reactControlMapper = (repository: Repository) => {
         case 'sn:Checkbox':
           return SnFieldControls.Checkbox
         default:
-          return SnFieldControls.SwitcherControl
+          return SnFieldControls.Switcher
       }
     })
 

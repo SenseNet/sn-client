@@ -12,14 +12,14 @@ import {
   FileName,
   FileUpload,
   Name,
-  NumberComponent,
+  NumberField,
   Password,
   RadioButtonGroup,
   reactControlMapper,
   ReferenceGrid,
   RichTextEditor,
   ShortText,
-  SwitcherControl,
+  Switcher,
   TagsInput,
   Textarea,
   TimePicker,
@@ -169,7 +169,7 @@ fieldControlStory({
           actionName={actionName}
           repository={testRepository}
           content={userContent}
-          component={Avatar}
+          component={(props) => <Avatar handleAdd={() => null} {...props} />}
           fieldName="Avatar"
         />
       </Login>
@@ -199,7 +199,7 @@ fieldControlStory({
       actionName={actionName}
       repository={testRepository}
       content={userContent}
-      component={SwitcherControl}
+      component={Switcher}
       fieldName="Enabled"
     />
   ),
@@ -342,7 +342,7 @@ fieldControlStory({
       actionName={actionName}
       repository={testRepository}
       content={testContent}
-      component={NumberComponent}
+      component={NumberField}
       fieldName="Index"
     />
   ),
@@ -356,7 +356,7 @@ fieldControlStory({
       actionName={actionName}
       repository={testRepository}
       content={taskContent}
-      component={NumberComponent}
+      component={NumberField}
       fieldName="TaskCompletion"
     />
   ),
@@ -370,7 +370,7 @@ fieldControlStory({
       actionName={actionName}
       repository={testRepository}
       content={testContent}
-      component={NumberComponent}
+      component={NumberField}
       fieldName="ExpectedRevenue"
     />
   ),
@@ -384,7 +384,7 @@ fieldControlStory({
       actionName={actionName}
       repository={testRepository}
       content={fileContent}
-      component={NumberComponent}
+      component={NumberField}
       fieldName="RateAvg"
     />
   ),

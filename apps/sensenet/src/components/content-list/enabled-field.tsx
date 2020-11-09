@@ -1,4 +1,4 @@
-import { Switcher } from '@sensenet/controls-react'
+import { Switch } from '@sensenet/controls-react'
 import { TableCell, Tooltip } from '@material-ui/core'
 import clsx from 'clsx'
 import React, { FunctionComponent, useEffect, useState } from 'react'
@@ -21,7 +21,7 @@ export const EnabledField: FunctionComponent<EnabledFieldProps> = ({ enabled, de
   return (
     <TableCell className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)} component="div">
       <Tooltip placeholder="bottom-end" title={description}>
-        <Switcher
+        <Switch
           checked={checked}
           size="small"
           onClick={async (event) => {

@@ -1,6 +1,6 @@
 import { EntryType } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
-import { Switcher } from '@sensenet/controls-react'
+import { Switch } from '@sensenet/controls-react'
 import { Group, PermissionRequestBody, PermissionValues, Settings, User } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import {
@@ -291,7 +291,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                       [classes.disabled]: isGroupDisabled(groupNameFromSettings),
                     })}
                   />
-                  <Switcher
+                  <Switch
                     checked={isGroupChecked(groupNameFromSettings)}
                     disabled={isGroupDisabled(groupNameFromSettings)}
                     size="small"
@@ -330,7 +330,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                 [classes.disabled]: isFullAccessDisabled(),
               })}
             />
-            <Switcher
+            <Switch
               checked={isFullAccessChecked()}
               disabled={isFullAccessDisabled()}
               size="small"
@@ -365,7 +365,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
           <Divider />
           <ListItem>
             <ListItemText primary={localization.permissionEditor.localOnly} />
-            <Switcher
+            <Switch
               checked={isLocalOnly}
               size="small"
               onClick={() => {
@@ -414,7 +414,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                         [classes.disabled]: isPermissionDisabled(selectedGroupPermission),
                       })}
                     />
-                    <Switcher
+                    <Switch
                       checked={
                         (responseBody[selectedGroupPermission] !== undefined &&
                           responseBody[selectedGroupPermission] === PermissionValues.allow) ||

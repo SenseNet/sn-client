@@ -1,4 +1,4 @@
-import { Switcher } from '@sensenet/controls-react'
+import { Switch } from '@sensenet/controls-react'
 import { useInjector, useRepository } from '@sensenet/hooks-react'
 import {
   Grid,
@@ -194,7 +194,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                         {personalSettings.theme === 'dark' ? 'Light theme' : 'Dark theme'}
                       </Grid>
                       <Grid item>
-                        <Switcher checked={personalSettings.theme === 'dark'} onChange={switchTheme()} />
+                        <Switch checked={personalSettings.theme === 'dark'} onChange={switchTheme()} />
                       </Grid>
                     </Grid>
                   </Typography>
