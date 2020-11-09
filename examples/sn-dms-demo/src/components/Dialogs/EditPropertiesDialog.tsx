@@ -46,7 +46,7 @@ interface EditPropertiesDialogState {
 const LoadableEditView = Loadable({
   loader: async () => {
     const module = await import(
-      /* webpackChunkName: "controls-react" */ '@sensenet/controls-react/dist/viewcontrols/EditView'
+      /* webpackChunkName: "controls-react" */ '@sensenet/controls-react/dist/viewcontrols/edit-view'
     )
     return module.EditView
   },
