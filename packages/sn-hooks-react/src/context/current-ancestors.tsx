@@ -100,7 +100,7 @@ export const CurrentAncestorsProvider: React.FunctionComponent<CurrentAncestorsP
   if (error) {
     logger.warning({
       message: `Error loading ancestors. ${error.message}`,
-      data: { details: { error }, relatedContent: currentContent, relatedRepository: repo.configuration.repositoryUrl },
+      data: { error, relatedContent: currentContent, relatedRepository: repo.configuration.repositoryUrl },
     })
   }
   return <CurrentAncestorsContext.Provider value={ancestors}>{props.children}</CurrentAncestorsContext.Provider>

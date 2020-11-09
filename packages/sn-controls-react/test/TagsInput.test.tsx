@@ -47,6 +47,9 @@ const repository: any = {
   loadCollection: jest.fn(() => {
     return { d: { results: [userContent] } }
   }),
+  schemas: {
+    isContentFromType: jest.fn(() => true),
+  },
   configuration: {
     repositoryUrl: 'url',
   },
@@ -121,6 +124,7 @@ describe('Tags input field control', () => {
               loadCollection: () => {
                 return { d: { results: [{ ...userContent, Avatar: {} }] } }
               },
+              schemas: repository.schemas,
               configuration: {
                 repositoryUrl: 'url',
               },
@@ -141,6 +145,9 @@ describe('Tags input field control', () => {
         loadCollection: jest.fn(() => {
           return { d: { results: [fileContent, { ...fileContent, Id: 311 }] } }
         }),
+        schemas: {
+          isContentFromType: jest.fn(() => false),
+        },
         configuration: {
           repositoryUrl: 'url',
         },

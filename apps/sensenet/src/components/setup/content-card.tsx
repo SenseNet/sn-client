@@ -59,7 +59,8 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
         ev.preventDefault()
         onContextMenu(ev)
       }}
-      className={classes.card}>
+      className={classes.card}
+      data-test="content-card">
       <CardContent>
         <Typography variant="h5" gutterBottom={true}>
           {settings.DisplayName || settings.Name}
@@ -78,7 +79,8 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
             aria-label={localization.edit}
             size="small"
             className={classes.button}
-            style={{ marginRight: '35px' }}>
+            style={{ marginRight: '35px' }}
+            data-test="content-card-edit-button">
             {localization.edit}
           </Button>
         </Link>
@@ -87,7 +89,11 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
           rel="noopener noreferrer"
           href={`${SETUP_DOCS_URL}${createAnchorFromName(settings.DisplayName ? settings.DisplayName : '')}`}
           style={{ textDecoration: 'none' }}>
-          <Button aria-label={localization.learnMore} size="small" className={classes.button}>
+          <Button
+            aria-label={localization.learnMore}
+            size="small"
+            className={classes.button}
+            data-test="content-card-learnmore-button">
             {localization.learnMore}
           </Button>
         </a>

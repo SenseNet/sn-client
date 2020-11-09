@@ -152,7 +152,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
                     .replace('{0}', result.d.results[0].Name)
                     .replace('{1}', list.path),
                   data: {
-                    details: result,
+                    error: result.d.errors[0],
                     ...(props.content.length === 1
                       ? {
                           relatedRepository: repo.configuration.repositoryUrl,
@@ -172,7 +172,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
                         : parentItem!.DisplayName || parentItem!.Name,
                     ),
                   data: {
-                    result,
+                    error: result.d.errors,
                   },
                 })
               }

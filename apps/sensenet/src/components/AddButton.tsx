@@ -68,7 +68,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
   const [allowedChildTypes, setAllowedChildTypes] = useState<Schema[]>([])
   const localization = useLocalization().addButton
   const logger = useLogger('AddButton')
-  const [isAvailable, setAvailable] = useState(true)
+  const [isAvailable, setAvailable] = useState(false)
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
   const [hasUpload, setHasUpload] = useState(false)
   const personalSettings = usePersonalSettings()
@@ -88,7 +88,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
         logger.error({
           message: localization.errorGettingActions,
           data: {
-            details: { error },
+            error,
           },
         })
       }
@@ -120,7 +120,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
         logger.error({
           message: localization.errorGettingAllowedContentTypes,
           data: {
-            details: { error },
+            error,
           },
         })
       }
@@ -214,7 +214,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
           vertical: 'top',
           horizontal: 'left',
         }}>
-        <List className={classes.listDropdown}>
+        <List className={classes.listDropdown} data-test="list-items">
           {hasUpload ? (
             <Tooltip title={localization.upload} placement="right">
               <ListItem
