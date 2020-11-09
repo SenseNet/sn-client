@@ -74,5 +74,5 @@ export interface ViewerState {
   /**
    *
    */
-  onPageChange: ObservableValue<number>
+  onPageChange: ObservableValue<{ page: number }>
 }

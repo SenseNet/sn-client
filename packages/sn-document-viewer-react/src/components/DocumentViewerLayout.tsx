@@ -69,7 +69,7 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
 
   useEffect(() => {
     const observer = viewerState.onPageChange.subscribe((p) => {
-      scrollTo(p)
+      scrollTo(p.page)
     })
     return () => observer.dispose()
   }, [scrollTo, viewerState.onPageChange])
