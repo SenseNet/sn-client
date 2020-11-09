@@ -30,7 +30,7 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
       }
 
       if (props.settings.Options?.length) {
-        return props.settings.AllowMultiple
+        const selectedOnCtd = props.settings.AllowMultiple
           ? props.settings.Options.reduce<string[]>((selection, option) => {
               if (option.Selected) {
                 selection.push(option.Value)
@@ -38,6 +38,8 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
               return selection
             }, [])
           : props.settings.Options.find((option) => option.Selected)?.Value ?? ''
+        props.fieldOnChange?.(props.settings.Name, selectedOnCtd)
+        return selectedOnCtd
       }
       return props.settings.AllowMultiple ? [''] : ''
     }
