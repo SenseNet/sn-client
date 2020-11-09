@@ -94,7 +94,7 @@ const useStyles = makeStyles(() =>
 /**
  * Field control that represents a Switcher field.
  */
-export const Switcher: React.FC<ReactClientFieldSetting<FieldSetting> & { fieldValue?: boolean }> = (props) => {
+export const Switcher: React.FC<ReactClientFieldSetting<FieldSetting>> = (props) => {
   const localization = deepMerge(defaultLocalization.switcher, props.localization?.switcher)
 
   const initialState =
