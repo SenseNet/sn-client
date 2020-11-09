@@ -13,7 +13,6 @@ import {
   ToggleShapesWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
-  ZoomModeWidget,
 } from '@sensenet/document-viewer-react/src'
 import { RepositoryContext } from '@sensenet/hooks-react'
 import Button from '@material-ui/core/Button'
@@ -98,7 +97,6 @@ export const ExampleAppLayout: React.FC = () => {
                     }}
                   />
                   <ZoomInOutWidget />
-                  <ZoomModeWidget />
                   <RotateActivePagesWidget />
                   <SaveWidget />
                 </div>
