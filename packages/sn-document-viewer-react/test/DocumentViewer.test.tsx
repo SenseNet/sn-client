@@ -2,6 +2,7 @@ import { sleepAsync } from '@sensenet/client-utils'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
+import { DocumentViewerError, DocumentViewerLoading, DocumentViewerRegeneratePreviews } from '../src'
 import { DocumentViewer, DocumentViewerProps } from '../src/components/DocumentViewer'
 import { defaultSettings, exampleDocumentData, examplePreviewImageData } from './__Mocks__/viewercontext'
 
@@ -19,35 +20,73 @@ describe('Document Viewer component', () => {
     expect(wrapper).toMatchSnapshot()
   })
 
-  it('should render a loading component while loading', () => {
-    const wrapper = shallow(
-      <DocumentViewer
-        {...defaultProps}
-        api={{
-          getDocumentData: async () => ({
-            ...exampleDocumentData,
-            pageCount: -1,
-          }),
-        }}
-      />,
-    )
+  it('should render a DocumentViewerLoading  component if pageCount=-1', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(
+        <DocumentViewer
+          documentIdOrPath={1}
+          api={{
+            getDocumentData: async () => ({
+              ...exampleDocumentData,
+              pageCount: -1,
+            }),
+            canEditDocument: async () => true,
+            canHideRedaction: async () => true,
+            canHideWatermark: async () => true,
+          }}
+        />,
+      )
+    })
+
     expect(wrapper).toMatchSnapshot()
+    expect(wrapper.update().containsMatchingElement(<DocumentViewerLoading image="loader.gif" />)).toEqual(true)
   })
 
-  describe('should render an error component', () => {
-    it('if there were errors while preview generation', () => {
-      const wrapper = shallow(
+  it('should render a DocumentViewerRegeneratePreviews component if pageCount =-4', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(
         <DocumentViewer
           {...defaultProps}
           api={{
             getDocumentData: async () => ({
               ...exampleDocumentData,
-              pageCount: -2,
+              pageCount: -4,
             }),
+            canEditDocument: async () => true,
+            canHideRedaction: async () => true,
+            canHideWatermark: async () => true,
           }}
         />,
       )
+    })
+
+    expect(wrapper).toMatchSnapshot()
+    expect(wrapper.update().containsMatchingElement(<DocumentViewerRegeneratePreviews />)).toEqual(true)
+  })
+
+  describe('should render DocumentViewerError component', () => {
+    it('if there were errors while preview generation and pageCount < 0', async () => {
+      let wrapper: any
+      await act(async () => {
+        wrapper = mount(
+          <DocumentViewer
+            {...defaultProps}
+            api={{
+              getDocumentData: async () => ({
+                ...exampleDocumentData,
+                pageCount: -2,
+              }),
+              canEditDocument: async () => true,
+              canHideRedaction: async () => true,
+              canHideWatermark: async () => true,
+            }}
+          />,
+        )
+      })
       expect(wrapper).toMatchSnapshot()
+      expect(wrapper.update().containsMatchingElement(<DocumentViewerError />)).toEqual(true)
     })
 
     it('if an error happens during fetching the document data', () => {
@@ -79,26 +118,31 @@ describe('Document Viewer component', () => {
     await act(async () => {
       const getDocumentData = jest.fn(async ({ idOrPath }) => ({ ...exampleDocumentData, idOrPath }))
       const getExistingPreviewImages = jest.fn(async () => [examplePreviewImageData])
-      const wrapper = mount(
-        <DocumentViewer
-          {...defaultProps}
-          api={{
-            ...defaultSettings,
-            ...defaultProps.api,
-            getDocumentData,
-            getExistingPreviewImages,
-          }}>
-          {'some children'}
-        </DocumentViewer>,
-      )
-      wrapper.setProps({ documentIdOrPath: 2, hostName: 'host2', version: 'v2' })
+      let wrapper: any
+      act(() => {
+        wrapper = mount(
+          <DocumentViewer
+            {...defaultProps}
+            api={{
+              ...defaultSettings,
+              ...defaultProps.api,
+              getDocumentData,
+              getExistingPreviewImages,
+            }}>
+            {'some children'}
+          </DocumentViewer>,
+        )
+      })
+      act(() => {
+        wrapper.setProps({ documentIdOrPath: 2, hostName: 'host2', version: 'v2' })
+      })
       await sleepAsync(5000)
       expect(getDocumentData).lastCalledWith({
         abortController: expect.any(AbortController),
         hostName: '',
         idOrPath: 2,
         version: 'v2',
-      }) // ensure that poll document is called with new props
+      })
       expect(getExistingPreviewImages).toBeCalled()
     })
   })

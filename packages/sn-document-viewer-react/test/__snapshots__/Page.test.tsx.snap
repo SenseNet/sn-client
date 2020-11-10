@@ -18,7 +18,7 @@ exports[`Page component Should render thumbnails without crashing 1`] = `
 
 exports[`Page component Should render without crashing 1`] = `
 <WithStyles(ForwardRef(Paper))
-  className="EL"
+  className="Page"
   elevation={2}
   style={
     Object {

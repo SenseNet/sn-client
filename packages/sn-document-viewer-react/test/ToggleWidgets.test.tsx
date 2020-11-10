@@ -10,7 +10,6 @@ import {
   ToggleWatermarkWidget,
 } from '../src/components/document-widgets'
 import { defaultViewerState, ViewerStateContext } from '../src/context'
-import { useViewerState } from '../src/hooks'
 
 describe('Component', () => {
   it('ToggleBase should render without crashing', () => {
@@ -70,6 +69,40 @@ describe('Component', () => {
   })
 })
 
+it('Click on toggle should change the state of showRedaction in viewer-state provider', () => {
+  const updateState = jest.fn()
+
+  const wrapper = mount(
+    <ViewerStateContext.Provider
+      value={{
+        ...defaultViewerState,
+        updateState,
+      }}>
+      <ToggleRedactionWidget />
+    </ViewerStateContext.Provider>,
+  )
+  wrapper.find(IconButton).simulate('click')
+
+  expect(updateState).toBeCalledWith({ showRedaction: true })
+})
+
+it('Click on toggle should change the state of showShapes in viewer-state provider', () => {
+  const updateState = jest.fn()
+
+  const wrapper = mount(
+    <ViewerStateContext.Provider
+      value={{
+        ...defaultViewerState,
+        updateState,
+      }}>
+      <ToggleShapesWidget />
+    </ViewerStateContext.Provider>,
+  )
+  wrapper.find(IconButton).simulate('click')
+
+  expect(updateState).toBeCalledWith({ showShapes: true })
+})
+
 it('Click on toggle should change the state of showThumbnails in viewer-state provider', () => {
   const updateState = jest.fn()
 
@@ -102,4 +135,21 @@ it('Click on toggle should change the state of showComments in viewer-state prov
   wrapper.find(IconButton).simulate('click')
 
   expect(updateState).toBeCalledWith({ showComments: true })
+})
+
+it('Click on toggle should change the state of showWatermark in viewer-state provider', () => {
+  const updateState = jest.fn()
+
+  const wrapper = mount(
+    <ViewerStateContext.Provider
+      value={{
+        ...defaultViewerState,
+        updateState,
+      }}>
+      <ToggleWatermarkWidget />
+    </ViewerStateContext.Provider>,
+  )
+  wrapper.find(IconButton).simulate('click')
+
+  expect(updateState).toBeCalledWith({ showWatermark: true })
 })

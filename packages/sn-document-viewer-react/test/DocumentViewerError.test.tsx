@@ -6,7 +6,7 @@ import { PreviewState } from '../src/Enums'
 import { exampleDocumentData } from './__Mocks__/viewercontext'
 
 describe('Document Viewer Error component', () => {
-  it('matches snapshot wihtout provided context', () => {
+  it('matches snapshot without provided context', () => {
     const wrapper = mount(<DocumentViewerError />)
     expect(wrapper).toMatchSnapshot()
   })
@@ -15,6 +15,7 @@ describe('Document Viewer Error component', () => {
     const wrapper = mount(
       <DocumentDataContext.Provider
         value={{
+          isInProgress: false,
           documentData: { ...exampleDocumentData, pageCount: PreviewState.UploadFailure, error: ':(' },
           updateDocumentData: async () => undefined,
         }}>

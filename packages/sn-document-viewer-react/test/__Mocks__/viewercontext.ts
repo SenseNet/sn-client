@@ -1,4 +1,4 @@
-import { CommentData, DocumentData, PreviewImageData } from '@sensenet/client-core'
+import { CommentData, DocumentData, PreviewImageData, PreviewRegenerateData } from '@sensenet/client-core'
 import { DocumentViewerApiSettings } from '../../src/models'
 
 /**
@@ -82,13 +82,16 @@ export const examplePreviewComment: CommentData = {
   y: '10',
 }
 
+export const examplePreviewRegenerateData: PreviewRegenerateData = {
+  PageCount: 0,
+  PreviewCount: 0,
+}
+
 /**
  * Default settings for document viewer context
  */
 export const defaultSettings: DocumentViewerApiSettings = {
-  regeneratePreviews: async () => {
-    /** */
-  },
+  regeneratePreviews: async () => examplePreviewRegenerateData,
   canEditDocument: async () => true,
   canHideRedaction: async () => true,
   canHideWatermark: async () => true,
