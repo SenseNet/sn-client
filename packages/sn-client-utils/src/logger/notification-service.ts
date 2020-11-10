@@ -9,7 +9,10 @@ export class NotificationService {
   public activeMessages = new ObservableValue<Array<LeveledLogEntry<any>>>([])
 
   public add(newMessage: LeveledLogEntry<any>) {
-    this.activeMessages.setValue([...this.activeMessages.getValue(), newMessage])
+    this.activeMessages.setValue([
+      ...this.activeMessages.getValue().filter((message) => message.level !== newMessage.level),
+      newMessage,
+    ])
   }
 
   public dismiss(oldItem: LeveledLogEntry<any>) {

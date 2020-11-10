@@ -2,7 +2,7 @@
  * @module FieldControls
  */
 import { PathHelper } from '@sensenet/client-utils'
-import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
+import { GenericContent, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
 import Chip from '@material-ui/core/Chip'
@@ -17,7 +17,6 @@ import Select from '@material-ui/core/Select'
 import React, { Component } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 import { renderIconDefault } from './icon'
-import { isUser } from './type-guards'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -218,7 +217,7 @@ class TagsInputComponent extends Component<
                 <>
                   {this.state.fieldValue &&
                     this.state.fieldValue.map((content) =>
-                      isUser(content) ? (
+                      this.props.repository?.schemas.isContentFromType<User>(content, 'User') ? (
                         <Chip
                           avatar={
                             <Avatar
@@ -226,8 +225,8 @@ class TagsInputComponent extends Component<
                               alt={content.DisplayName}
                               src={
                                 content.Avatar && content.Avatar.Url
-                                  ? `${this.props.repository!.configuration.repositoryUrl}${content.Avatar.Url}`
-                                  : `${this.props.repository!.configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
+                                  ? `${this.props.repository.configuration.repositoryUrl}${content.Avatar.Url}`
+                                  : `${this.props.repository.configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
                               }
                             />
                           }

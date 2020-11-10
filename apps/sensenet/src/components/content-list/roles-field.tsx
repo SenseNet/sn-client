@@ -88,7 +88,7 @@ export const RolesField: FunctionComponent<RolesFieldProps> = ({ roles, directRo
               size="small"
               onClick={(event) => {
                 event.stopPropagation()
-                setAnchorEl(event.currentTarget)
+                roles.length && setAnchorEl(event.currentTarget)
               }}>
               {roles.length} roles
             </Button>

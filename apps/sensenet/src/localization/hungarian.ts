@@ -29,6 +29,8 @@ const values: DeepPartial<typeof import('./default').default> = {
     deletingContent: 'Törlés folyamatban...',
     deleteButton: 'Törlés',
     cancelButton: 'Mégsem',
+    additionalTextForUsers:
+      'A felhasználókat és a csoportokat nem lehet kukába helyezni, mindig véglegesen törlődnek a rendszerből. Ha nem szeretné véglegesen törölni a felhasználót vagy csoportot lépjen át "Felhasználók és csoportok" menüpontba, és használja az engedélyezés/letiltás kapcsolót.',
   },
   copyMoveContentDialog: {
     copy: {

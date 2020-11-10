@@ -67,10 +67,13 @@ export const EditView: React.FC<EditViewProps> = (props) => {
           ),
           data: {
             relatedContent: content,
-            content: response,
             relatedRepository: repository.configuration.repositoryUrl,
+            details: {
+              edited: response,
+            },
           },
         })
+        props.submitCallback?.()
       } catch (error) {
         logger.error({
           message: localization.editPropertiesDialog.saveFailedNotification.replace(
@@ -85,8 +88,6 @@ export const EditView: React.FC<EditViewProps> = (props) => {
             },
           },
         })
-      } finally {
-        props.submitCallback?.()
       }
     }
 

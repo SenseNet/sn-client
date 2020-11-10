@@ -103,6 +103,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
     const nodeItem = (
       <ListItem
         onClick={onClick}
+        data-test={`${item.DisplayName}`}
         onContextMenu={(ev) => {
           ev.preventDefault()
           setContextMenuAnchor(ev.currentTarget)

@@ -165,6 +165,7 @@ class MobileHeader extends React.Component<
           <div>
             <Search />
             <IconButton
+              data-testid="add-new"
               onClick={(e) => this.handleAddNewClick(e)}
               style={styles.plusButton}
               color="inherit"

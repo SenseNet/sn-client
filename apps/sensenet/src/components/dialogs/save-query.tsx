@@ -37,7 +37,7 @@ export function SaveQuery(props: SaveQueryProps) {
       })
       logger.information({
         message: `Query '${result.d.DisplayName || result.d.Name}' saved`,
-        data: { relatedContent: result.d, details: result },
+        data: { relatedContent: result.d, relatedRepository: repo.configuration.repositoryUrl, details: { result } },
       })
     } catch (error) {
       logger.warning({ message: error.message })

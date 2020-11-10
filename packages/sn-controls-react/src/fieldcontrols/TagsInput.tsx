@@ -2,7 +2,7 @@
  * @module FieldControls
  */
 import { PathHelper } from '@sensenet/client-utils'
-import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
+import { GenericContent, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
 import Avatar from '@material-ui/core/Avatar'
 import Chip from '@material-ui/core/Chip'
 import FormControl from '@material-ui/core/FormControl'
@@ -17,7 +17,6 @@ import Select from '@material-ui/core/Select'
 import React, { Component } from 'react'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 import { renderIconDefault } from './icon'
-import { isUser } from './type-guards'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -200,7 +199,7 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
                 <div style={styles.chips as any}>
                   {this.state.fieldValue &&
                     this.state.fieldValue.map((content) =>
-                      isUser(content) ? (
+                      this.props.repository?.schemas.isContentFromType<User>(content, 'User') ? (
                         <Chip
                           avatar={
                             <Avatar
