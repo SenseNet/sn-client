@@ -1,6 +1,6 @@
 import { PathHelper } from '@sensenet/client-utils'
 import { renderIconDefault } from '@sensenet/controls-react'
-import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
+import { GenericContent, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
 import { Avatar, Chip, createStyles, IconButton, Theme, withStyles, WithStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -14,7 +14,6 @@ import { InsertDriveFile } from '@material-ui/icons'
 import React, { Component } from 'react'
 import { LocalizationContext } from '../../../context'
 import { ReactClientFieldSetting } from '../ClientFieldSetting'
-import { isUser } from '../type-guards'
 import { DefaultItemTemplate } from './DefaultItemTemplate'
 import { ReferencePicker } from './ReferencePicker'
 
@@ -208,7 +207,7 @@ class ReferenceGridComponent extends Component<
                   {this.state.fieldValue.map((item: GenericContent) => {
                     const repositoryUrl = this.props.repository ? this.props.repository.configuration.repositoryUrl : ''
                     return item.Type ? (
-                      isUser(item) ? (
+                      this.props.repository?.schemas.isContentFromType<User>(item, 'User') ? (
                         <>
                           <Chip
                             className={this.props.classes.chip}
@@ -300,7 +299,7 @@ class ReferenceGridComponent extends Component<
                       add={this.addItem}
                       key={item.Id}
                       actionName="browse"
-                      repositoryUrl={this.props.repository ? this.props.repository.configuration.repositoryUrl : ''}
+                      repository={this.props.repository}
                       multiple={this.props.settings.AllowMultiple ? this.props.settings.AllowMultiple : false}
                       renderIcon={this.props.renderIcon}
                     />

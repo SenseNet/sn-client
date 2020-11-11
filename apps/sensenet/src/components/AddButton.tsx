@@ -214,7 +214,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
           vertical: 'top',
           horizontal: 'left',
         }}>
-        <List className={classes.listDropdown}>
+        <List className={classes.listDropdown} data-test="list-items">
           {hasUpload ? (
             <Tooltip title={localization.upload} placement="right">
               <ListItem

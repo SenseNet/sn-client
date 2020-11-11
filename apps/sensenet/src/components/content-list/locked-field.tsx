@@ -1,5 +1,5 @@
-import { GenericContent, isUser } from '@sensenet/default-content-types'
-import { useSession } from '@sensenet/hooks-react'
+import { GenericContent, User } from '@sensenet/default-content-types'
+import { useRepository, useSession } from '@sensenet/hooks-react'
 import { TableCell, Tooltip } from '@material-ui/core'
 import AssignmentLateIcon from '@material-ui/icons/AssignmentLate'
 import Lock from '@material-ui/icons/Lock'
@@ -14,12 +14,13 @@ type LockedFieldProps = {
 
 export function LockedField({ content }: LockedFieldProps) {
   const session = useSession()
+  const repository = useRepository()
   const localization = useLocalization().lockedCell
   const globalClasses = useGlobalStyles()
 
   const lockedByName = () => {
     const checkedOutTo = content?.CheckedOutTo
-    if (!isUser(checkedOutTo)) {
+    if (!repository.schemas.isContentFromType<User>(checkedOutTo, 'User')) {
       return 'Someone'
     }
 

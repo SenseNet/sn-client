@@ -121,6 +121,7 @@ export const Search = () => {
       <div className={globalClasses.centeredVertical}>
         <div className={classes.searchBar}>
           <TextField
+            data-test="input-search"
             helperText={localization.queryHelperText}
             defaultValue={query}
             fullWidth={true}

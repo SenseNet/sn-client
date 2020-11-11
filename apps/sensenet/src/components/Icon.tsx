@@ -80,17 +80,15 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
   {
     get: (item, options) =>
-      item.Type === 'File' &&
-      (item as any).Binary &&
-      (item as any).Binary.__mediaresource.content_type === 'application/x-javascript' ? (
+      options.repo.schemas.isContentFromType<File>(item, 'File') &&
+      item.Binary?.__mediaresource.content_type === 'application/x-javascript' ? (
         <CodeOutlined style={options.style} />
       ) : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'File' &&
-      (item as any).Binary &&
-      (item as any).Binary.__mediaresource.content_type === 'text/css' ? (
+      options.repo.schemas.isContentFromType<File>(item, 'File') &&
+      item.Binary?.__mediaresource.content_type === 'text/css' ? (
         <FormatPaintOutlined style={options.style} />
       ) : null,
   },
@@ -120,11 +118,15 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
   {
     get: (item, options) =>
-      item.Type === 'SmartFolder' || item.Icon === 'SmartFolder' ? <FolderSpecial style={options.style} /> : null,
+      item.Icon === 'SmartFolder' || options.repo.schemas.isContentFromType(item, 'SmartFolder') ? (
+        <FolderSpecial style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'TrashBin' || item.Icon === 'TrashBin' || item.Icon === 'DeleteOutlined' ? (
+      item.Icon === 'TrashBin' ||
+      item.Icon === 'DeleteOutlined' ||
+      options.repo.schemas.isContentFromType(item, 'TrashBin') ? (
         <DeleteOutlined style={options.style} />
       ) : null,
   },
@@ -134,27 +136,39 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
   {
     get: (item, options) =>
-      item.Type === 'Search' || item.Icon === 'Search' ? <SearchOutlined style={options.style} /> : null,
+      item.Icon === 'Search' || options.repo.schemas.isContentFromType(item, 'Search') ? (
+        <SearchOutlined style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'Comment' || item.Icon === 'Comment' ? <CommentOutlined style={options.style} /> : null,
+      item.Icon === 'Comment' || options.repo.schemas.isContentFromType(item, 'Comment') ? (
+        <CommentOutlined style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'ImageLibrary' || item.Icon === 'ImageLibrary' ? <PhotoLibrary style={options.style} /> : null,
+      item.Icon === 'ImageLibrary' || options.repo.schemas.isContentFromType(item, 'ImageLibrary') ? (
+        <PhotoLibrary style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'Image' || item.Icon === 'Image' ? <PhotoOutlined style={options.style} /> : null,
+      item.Icon === 'Image' || options.repo.schemas.isContentFromType(item, 'Image') ? (
+        <PhotoOutlined style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'EventList' || item.Icon === 'EventList' ? <CalendarTodayOutlined style={options.style} /> : null,
+      item.Icon === 'EventList' || options.repo.schemas.isContentFromType(item, 'EventList') ? (
+        <CalendarTodayOutlined style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'CalendarEvent' || item.Icon === 'CalendarEvent' ? <EventOutlined style={options.style} /> : null,
+      item.Icon === 'CalendarEvent' || options.repo.schemas.isContentFromType(item, 'CalendarEvent') ? (
+        <EventOutlined style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
@@ -167,63 +181,88 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
   {
     get: (item, options) =>
-      item.Type === 'TaskList' || item.Icon === 'TaskList' ? <ListAlt style={options.style} /> : null,
+      item.Icon === 'TaskList' || options.repo.schemas.isContentFromType(item, 'TaskList') ? (
+        <ListAlt style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'File' && item.Icon === 'excel' ? <GridOnOutlined style={options.style} /> : null,
+      options.repo.schemas.isContentFromType(item, 'File') && item.Icon === 'excel' ? (
+        <GridOnOutlined style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'File' && item.Icon === 'word' ? <DescriptionOutlined style={options.style} /> : null,
+      options.repo.schemas.isContentFromType(item, 'File') && item.Icon === 'word' ? (
+        <DescriptionOutlined style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'File' && item.Icon === 'powerpoint' ? <PresentToAllOutlined style={options.style} /> : null,
+      options.repo.schemas.isContentFromType(item, 'File') && item.Icon === 'powerpoint' ? (
+        <PresentToAllOutlined style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'File' && item.Icon === 'adobe' ? <PictureAsPdfOutlined style={options.style} /> : null,
+      options.repo.schemas.isContentFromType(item, 'File') && item.Icon === 'adobe' ? (
+        <PictureAsPdfOutlined style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
-      item.Type === ('LinkList' || 'MemoList' || 'TaskList' || 'EventLog') ||
-      item.Icon === ('LinkList' || 'MemoList' || 'TaskList' || 'EventLog') ? (
+      item.Icon === ('LinkList' || 'MemoList' || 'TaskList' || 'EventLog') ||
+      options.repo.schemas.isContentFromType(item, 'LinkList') ||
+      options.repo.schemas.isContentFromType(item, 'MemoList') ||
+      options.repo.schemas.isContentFromType(item, 'TaskList') ||
+      options.repo.schemas.isContentFromType(item, 'EventLog') ? (
         <ListAltOutlined style={options.style} />
       ) : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'Link' || item.Icon === 'Link' ? <LinkOutlined style={options.style} /> : null,
+      item.Icon === 'Link' || options.repo.schemas.isContentFromType(item, 'Link') ? (
+        <LinkOutlined style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'Memo' || item.Icon === 'Memo' || item.Type === 'Plan' || item.Icon === 'Plan' ? (
+      item.Icon === 'Memo' ||
+      item.Icon === 'Plan' ||
+      options.repo.schemas.isContentFromType(item, 'Memo') ||
+      options.repo.schemas.isContentFromType(item, 'Plan') ? (
         <AssignmentOutlined style={options.style} />
       ) : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'Task' || item.Icon === 'Task' ? <BallotOutlined style={options.style} /> : null,
+      item.Icon === 'Task' || options.repo.schemas.isContentFromType(item, 'Task') ? (
+        <BallotOutlined style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'Domain' || item.Icon === 'Domain' ? <DomainOutlined style={options.style} /> : null,
+      item.Icon === 'Domain' || options.repo.schemas.isContentFromType(item, 'Domain') ? (
+        <DomainOutlined style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'User' || item.Icon === 'User' ? <PersonOutline style={options.style} /> : null,
+      item.Icon === 'User' || options.repo.schemas.isContentFromType(item, 'User') ? (
+        <PersonOutline style={options.style} />
+      ) : null,
   },
   {
     get: (item, options) =>
-      item.Type === ('Group' || 'Profiles' || 'OrganizationalUnit') ||
-      item.Icon === ('Group' || 'Profiles' || 'OrganizationalUnit') ? (
+      item.Icon === ('Group' || 'Profiles') ||
+      options.repo.schemas.isContentFromType(item, 'Group') ||
+      options.repo.schemas.isContentFromType(item, 'Profiles') ? (
         <GroupOutlined style={options.style} />
       ) : null,
   },
   {
     get: (item, options) =>
-      item.Type === 'OrganizationalUnit' || item.Icon === 'OrganizationalUnit' ? (
+      item.Icon === 'OrganizationalUnit' || options.repo.schemas.isContentFromType(item, 'OrganizationalUnit') ? (
         <LocationCity style={options.style} />
       ) : null,
   },
@@ -271,13 +310,13 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
   {
     get: (item, options) =>
-      (item.Type && item.Type.indexOf('Workspace') > -1) || item.Icon === 'Box' ? (
+      item.Icon === 'Box' || options.repo.schemas.isContentFromType(item, 'Workspace') ? (
         <AllInboxOutlined style={options.style} />
       ) : null,
   },
   {
     get: (item, options) =>
-      item.Type && item.Type.indexOf('Settings') !== -1 ? <SettingsOutlined style={options.style} /> : null,
+      options.repo.schemas.isContentFromType(item, 'Settings') ? <SettingsOutlined style={options.style} /> : null,
   },
   { get: (item, options) => (item.Icon === '' ? <GroupOutlined style={options.style} /> : null) },
 ]
@@ -357,7 +396,7 @@ export const defaultSchemaResolvers: Array<IconResolver<{ ContentTypeName: typeo
         case 'Resource':
           return <TextFormat style={options.style} />
         case 'OrganizationalUnit':
-          return <GroupOutlined style={options.style} />
+          return <LocationCity style={options.style} />
         case 'AddAlert':
           return <AddAlert style={options.style} />
         case 'VisibilityOff':

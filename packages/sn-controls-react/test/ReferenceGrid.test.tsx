@@ -46,6 +46,9 @@ const repository: any = {
   loadCollection: () => {
     return { d: { results: [] } }
   },
+  schemas: {
+    isContentFromType: jest.fn(() => true),
+  },
   configuration: {
     repositoryUrl: 'url',
   },
@@ -165,6 +168,7 @@ describe('Reference grid field control', () => {
         loadCollection: jest.fn(() => {
           return { d: { results: [{ ...userContent, Avatar: { Url: '' } }] } }
         }),
+        schemas: repository.schemas,
       } as any
       let wrapper: any
       await act(async () => {

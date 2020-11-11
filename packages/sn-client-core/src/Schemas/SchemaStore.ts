@@ -83,15 +83,13 @@ export class SchemaStore {
    * @param contentTypeName The name of content type
    */
   public isContentFromType<T>(content: any, contentTypeName: string): content is T {
-    if (content.Type === contentTypeName) {
+    if (!content) {
+      return false
+    } else if (content.Type === contentTypeName) {
       return true
     }
 
     let currentSchema = this.getSchemaByName(content.Type)
-
-    if (currentSchema.HandlerName === this.getSchemaByName(contentTypeName).HandlerName) {
-      return true
-    }
 
     do {
       if (currentSchema.ContentTypeName === contentTypeName) {
