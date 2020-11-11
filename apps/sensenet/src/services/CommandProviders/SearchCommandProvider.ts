@@ -17,13 +17,21 @@ export class SearchCommandProvider implements CommandProvider {
 
   public async getItems(options: SearchOptions): Promise<CommandPaletteItem[]> {
     const extendedQuery = `${options.term.trim()}* .AUTOFILTERS:OFF`
-    const result = await options.repository.loadCollection<GenericContent>({
-      path: ConstantContent.PORTAL_ROOT.Path,
-      oDataOptions: {
-        query: extendedQuery,
-        top: 5,
-      } as any,
-    })
+    let results: GenericContent[] = []
+
+    try {
+      const response = await options.repository.loadCollection<GenericContent>({
+        path: ConstantContent.PORTAL_ROOT.Path,
+        oDataOptions: {
+          query: extendedQuery,
+          top: 5,
+        } as any,
+      })
+      results = [...response.d.results]
+    } catch (_) {
+      results = []
+    }
+
     return [
       {
         primaryText: this.localization.currentValues.getValue().search.openInSearchTitle(options.term),
@@ -31,7 +39,7 @@ export class SearchCommandProvider implements CommandProvider {
         content: { Type: 'Search' } as any,
         hits: [],
       },
-      ...result.d.results.map((content) => ({
+      ...results.map((content) => ({
         primaryText: content.DisplayName || content.Name,
         secondaryText: content.Path,
         url: getPrimaryActionUrl({
