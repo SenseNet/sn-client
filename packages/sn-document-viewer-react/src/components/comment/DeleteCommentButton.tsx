@@ -36,7 +36,7 @@ export const DeleteButton: React.FC<DeleteButtonProps> = (props) => {
   return (
     <>
       <Button color="primary" size="small" onClick={handleClick}>
-        {localization.delete || 'delete'}
+        {localization.delete}
       </Button>
       <ConfirmationDialog
         dialogTitle={localization.deleteCommentDialogTitle}

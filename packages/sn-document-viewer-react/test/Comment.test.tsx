@@ -41,6 +41,7 @@ describe('Comment component', () => {
     expect(wrapper.find(Button).length).toBe(2) // Should show delete button as well
     expect(button.text()).toBe('+ Show less')
   })
+
   it('should show delete button when text is short', () => {
     const wrapper = mount(<Comment {...defaultProps} />)
     expect(wrapper.find(Button).text()).toBe('Delete')

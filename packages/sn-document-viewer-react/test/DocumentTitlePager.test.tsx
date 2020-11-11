@@ -1,3 +1,4 @@
+import { ObservableValue } from '@sensenet/client-utils'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { mount, shallow } from 'enzyme'
@@ -21,13 +22,13 @@ describe('DocumentTitlePager component', () => {
     expect(wrapper).toMatchSnapshot()
   })
 
-  it('Should set visiblePages on blur action', async () => {
-    const updateState = jest.fn()
+  it('Should set onPageChange on blur action', async () => {
+    const onPageChange = new ObservableValue({ page: 1 })
     const wrapper = mount(
       <ViewerStateContext.Provider
         value={{
           ...defaultViewerState,
-          updateState,
+          onPageChange,
         }}>
         <DocumentDataContext.Provider
           value={{
@@ -49,6 +50,90 @@ describe('DocumentTitlePager component', () => {
       const onBlur = wrapper.update().find(TextField).prop('onBlur')
       onBlur && onBlur({} as any)
     })
-    expect(updateState).toBeCalledWith({ visiblePages: [1] })
+    expect(onPageChange.getValue()).toStrictEqual({ page: 1 })
+  })
+
+  it('Should set the currentPage with the input number and set onPageChange on blur', async () => {
+    const onPageChange = new ObservableValue({ page: 1 })
+
+    const wrapper = mount(
+      <ViewerStateContext.Provider
+        value={{
+          ...defaultViewerState,
+          onPageChange,
+        }}>
+        <DocumentDataContext.Provider
+          value={{
+            documentData: {
+              ...exampleDocumentData,
+              pageCount: 100,
+            },
+            updateDocumentData: async () => undefined,
+            isInProgress: false,
+          }}>
+          <DocumentTitlePager />
+        </DocumentDataContext.Provider>
+      </ViewerStateContext.Provider>,
+    )
+
+    act(() => {
+      wrapper.find(Typography).simulate('click')
+    })
+
+    act(() => {
+      wrapper
+        .update()
+        .find(TextField)
+        .props()
+        .onChange({ currentTarget: { value: 2 } } as any)
+    })
+
+    act(() => {
+      const onBlur = wrapper.update().find(TextField).prop('onBlur')
+      onBlur && onBlur({} as any)
+    })
+    expect(onPageChange.getValue()).toStrictEqual({ page: 2 })
+  })
+
+  it('Should set the currentPage with the input string and set onPageChange on blur ', async () => {
+    const onPageChange = new ObservableValue({ page: 1 })
+
+    const wrapper = mount(
+      <ViewerStateContext.Provider
+        value={{
+          ...defaultViewerState,
+          onPageChange,
+        }}>
+        <DocumentDataContext.Provider
+          value={{
+            documentData: {
+              ...exampleDocumentData,
+              pageCount: 100,
+            },
+            updateDocumentData: async () => undefined,
+            isInProgress: false,
+          }}>
+          <DocumentTitlePager />
+        </DocumentDataContext.Provider>
+      </ViewerStateContext.Provider>,
+    )
+
+    act(() => {
+      wrapper.find(Typography).simulate('click')
+    })
+
+    act(() => {
+      wrapper
+        .update()
+        .find(TextField)
+        .props()
+        .onChange({ currentTarget: { value: '3' } } as any)
+    })
+
+    act(() => {
+      const onBlur = wrapper.update().find(TextField).prop('onBlur')
+      onBlur && onBlur({} as any)
+    })
+    expect(onPageChange.getValue()).toStrictEqual({ page: 3 })
   })
 })

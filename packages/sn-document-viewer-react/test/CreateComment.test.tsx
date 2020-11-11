@@ -1,16 +1,33 @@
-import { TextField } from '@material-ui/core'
+import { IconButton, TextField } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import { mount } from 'enzyme'
 import React from 'react'
+import { act } from 'react-dom/test-utils'
 import { ThemeProvider } from 'styled-components'
+import { defaultViewerState, DocumentDataProvider, DocumentViewerApiSettingsContext, ViewerStateContext } from '../src'
 import { CreateComment, CreateCommentProps } from '../src/components'
 import { CommentStateContext, CommentStateProvider, defaultCommentState } from '../src/context/comment-states'
 import { defaultTheme } from '../src/models'
+import { defaultSettings, examplePreviewComment } from './__Mocks__/viewercontext'
+
+const emptyDocumentData = {
+  documentName: '',
+  documentType: '',
+  error: undefined,
+  fileSizekB: 0,
+  hostName: '',
+  idOrPath: 0,
+  pageCount: -1,
+  shapes: {
+    annotations: [],
+    highlights: [],
+    redactions: [],
+  },
+}
 
 describe('Create comment component', () => {
   const defaultProps: CreateCommentProps = {
-    createComment: jest.fn(),
     localization: {
       addComment: 'addComment',
       commentInputPlaceholder: 'commentInputPlaceholder',
@@ -20,154 +37,230 @@ describe('Create comment component', () => {
       markerTooltip: 'markerTooltip',
       cancelButton: 'cancel',
     },
-    isActive: true,
-    handleIsActive: jest.fn(),
-    handleInputValueChange: jest.fn(),
-    inputValue: '',
   }
 
   it('should show add comment button when not active', () => {
-    const wrapper = mount(<CreateComment {...defaultProps} isActive={false} />, {
+    const wrapper = mount(<CreateComment {...defaultProps} />, {
       wrappingComponent: ThemeProvider,
       wrappingComponentProps: { theme: defaultTheme },
     })
     expect(wrapper.find(Button).exists()).toBeTruthy()
     expect(wrapper.find(Button).length).toBe(1)
+    expect(wrapper.find(Button).text()).toBe('addComment')
   })
 
-  it('should handle isActive when add comment button is clicked', () => {
-    const wrapper = mount(<CreateComment {...defaultProps} isActive={false} />, {
-      wrappingComponent: ThemeProvider,
-      wrappingComponentProps: { theme: defaultTheme },
-    })
+  it('should change the state of isCreateCommentActive in viewer-state provider when add comment button is clicked', () => {
+    const updateState = jest.fn()
+    const wrapper = mount(
+      <ViewerStateContext.Provider
+        value={{
+          ...defaultViewerState,
+          updateState,
+        }}>
+        <CreateComment {...defaultProps} />
+      </ViewerStateContext.Provider>,
+      {
+        wrappingComponent: ThemeProvider,
+        wrappingComponentProps: { theme: defaultTheme },
+      },
+    )
     wrapper.find(Button).simulate('click')
-    expect(defaultProps.handleIsActive).toBeCalled()
+    expect(updateState).toBeCalledWith({ isCreateCommentActive: true })
   })
 
   it('should add comment when submit button is clicked', () => {
-    const cc = jest.fn()
+    const updateState = jest.fn()
+    const addPreviewComment = jest.fn()
     const wrapper = mount(
-      <CommentStateContext.Provider
+      <DocumentViewerApiSettingsContext.Provider
         value={{
-          ...defaultCommentState,
-          draft: {
-            id: 'asd',
-            x: 1,
-            y: 2,
+          ...defaultSettings,
+          commentActions: {
+            addPreviewComment,
+            deletePreviewComment: async () => {
+              return { modified: true }
+            },
+            getPreviewComments: async () => [examplePreviewComment],
           },
         }}>
-        <CreateComment {...defaultProps} inputValue="Hello" createComment={cc} />
-      </CommentStateContext.Provider>,
-      {
-        wrappingComponent: ThemeProvider,
-        wrappingComponentProps: { theme: defaultTheme },
-      },
+        <ViewerStateContext.Provider
+          value={{
+            ...defaultViewerState,
+            isCreateCommentActive: true,
+            updateState,
+          }}>
+          <CommentStateContext.Provider
+            value={{
+              ...defaultCommentState,
+              draft: {
+                id: 'asd',
+                x: '1',
+                y: '2',
+                page: 1,
+              },
+            }}>
+            <CreateComment {...defaultProps} />
+          </CommentStateContext.Provider>
+        </ViewerStateContext.Provider>
+      </DocumentViewerApiSettingsContext.Provider>,
     )
+
+    expect(wrapper.find(Button).first().text()).toBe('submit')
+
+    act(() => {
+      wrapper
+        .find(TextField)
+        .props()
+        .onChange({ target: { value: 'Hello' } } as any)
+    })
     wrapper.find(Button).first().simulate('submit')
-    expect(cc).toBeCalled()
+
+    expect(updateState).toBeCalledWith({ isPlacingCommentMarker: false })
+    expect(addPreviewComment).toBeCalledWith({
+      abortController: new AbortController(),
+      comment: {
+        id: 'asd',
+        x: '1',
+        y: '2',
+        page: 1,
+        text: 'Hello',
+      },
+      document: emptyDocumentData,
+    })
   })
 
-  it('should add comment when form is submitted', () => {
-    const cc = jest.fn()
+  it('should clear everything after submitted', () => {
+    const updateState = jest.fn()
+    const setDraft = jest.fn()
+
     const wrapper = mount(
-      <CommentStateContext.Provider
+      <DocumentViewerApiSettingsContext.Provider
         value={{
-          ...defaultCommentState,
-          draft: {
-            id: 'asd',
-            x: 1,
-            y: 2,
-          },
+          ...defaultSettings,
         }}>
-        <CreateComment {...defaultProps} inputValue="Hello" createComment={cc} />
-      </CommentStateContext.Provider>,
-      {
-        wrappingComponent: ThemeProvider,
-        wrappingComponentProps: { theme: defaultTheme },
-      },
+        <ViewerStateContext.Provider
+          value={{
+            ...defaultViewerState,
+            isCreateCommentActive: true,
+            updateState,
+          }}>
+          <CommentStateContext.Provider
+            value={{
+              ...defaultCommentState,
+              draft: {
+                id: 'asd',
+                x: '1',
+                y: '2',
+                page: 1,
+              },
+              setDraft,
+            }}>
+            <CreateComment {...defaultProps} />
+          </CommentStateContext.Provider>
+        </ViewerStateContext.Provider>
+      </DocumentViewerApiSettingsContext.Provider>,
     )
-    wrapper.find(Button).first().simulate('submit')
-    expect(cc).toBeCalled()
-  })
 
-  it('should handle cancel button click', () => {
-    const wrapper = mount(<CreateComment {...defaultProps} />, {
-      wrappingComponent: ThemeProvider,
-      wrappingComponentProps: { theme: defaultTheme },
-    })
-    wrapper.find(Button).last().simulate('click')
-    expect(defaultProps.handleIsActive).toBeCalled()
-  })
-
-  it('should clear input value after submitted', () => {
-    const wrapper = mount(<CreateComment {...defaultProps} inputValue="Hello" />, {
-      wrappingComponent: ThemeProvider,
-      wrappingComponentProps: { theme: defaultTheme },
+    act(() => {
+      wrapper
+        .find(TextField)
+        .props()
+        .onChange({ target: { value: 'Hello' } } as any)
     })
     wrapper.find(Button).first().simulate('submit')
-    expect(defaultProps.handleIsActive).toBeCalled()
-    expect(defaultProps.handleInputValueChange).toBeCalledWith('')
+
+    expect(updateState).toBeCalledWith({ isCreateCommentActive: false })
+    expect(setDraft).toBeCalledWith(undefined)
   })
 
   it('should clear input value when cancel clicked', () => {
-    const wrapper = mount(<CreateComment {...defaultProps} inputValue="Hello" />, {
-      wrappingComponent: ThemeProvider,
-      wrappingComponentProps: { theme: defaultTheme },
-    })
-    wrapper.find(Button).last().simulate('click')
-    expect(defaultProps.handleIsActive).toBeCalled()
-    expect(defaultProps.handleInputValueChange).toBeCalledWith('')
-    expect(wrapper.prop('isPlacingMarker')).toBeFalsy()
-  })
+    const updateState = jest.fn()
+    const setDraft = jest.fn()
 
-  it('should handle input change', () => {
-    const wrapper = mount(<CreateComment {...defaultProps} />, {
-      wrappingComponent: ThemeProvider,
-      wrappingComponentProps: { theme: defaultTheme },
-    })
-    wrapper
-      .find('textarea')
-      .first()
-      .simulate('change', { target: { value: 'Hello' } })
-    wrapper.find(Button).first().simulate('submit')
-    expect(defaultProps.handleInputValueChange).toBeCalledWith('Hello')
+    const wrapper = mount(
+      <DocumentViewerApiSettingsContext.Provider
+        value={{
+          ...defaultSettings,
+        }}>
+        <ViewerStateContext.Provider
+          value={{
+            ...defaultViewerState,
+            isCreateCommentActive: true,
+            updateState,
+          }}>
+          <CommentStateContext.Provider
+            value={{
+              ...defaultCommentState,
+              setDraft,
+            }}>
+            <CreateComment {...defaultProps} />
+          </CommentStateContext.Provider>
+        </ViewerStateContext.Provider>
+      </DocumentViewerApiSettingsContext.Provider>,
+    )
+
+    expect(wrapper.find(Button).last().text()).toBe('cancel')
+    wrapper.find(Button).last().simulate('click')
+
+    expect(updateState).toBeCalledWith({ isCreateCommentActive: false })
+    expect(setDraft).toBeCalledWith(undefined)
   })
 
   it('should give an error message when input is empty', () => {
     const wrapper = mount(
-      <CommentStateProvider>
+      <ViewerStateContext.Provider
+        value={{
+          ...defaultViewerState,
+          isCreateCommentActive: true,
+        }}>
         <CreateComment {...defaultProps} />
-      </CommentStateProvider>,
-      {
-        wrappingComponent: ThemeProvider,
-        wrappingComponentProps: { theme: defaultTheme },
-      },
+      </ViewerStateContext.Provider>,
     )
     wrapper.find(Button).first().simulate('submit')
-    expect(wrapper.find(FormHelperText).text()).toEqual(defaultProps.localization!.inputRequiredError)
+    expect(wrapper.find(FormHelperText).text()).toEqual(defaultProps.localization.inputRequiredError)
   })
 
   it('should give an error message when input is filled but draftCommentMarker is undefined', () => {
     const wrapper = mount(
-      <CommentStateContext.Provider value={{ ...defaultCommentState }}>
-        <CreateComment {...defaultProps} inputValue="Hello There" />
-      </CommentStateContext.Provider>,
-      {
-        wrappingComponent: ThemeProvider,
-        wrappingComponentProps: { theme: defaultTheme },
-      },
+      <ViewerStateContext.Provider
+        value={{
+          ...defaultViewerState,
+          isCreateCommentActive: true,
+        }}>
+        <CreateComment {...defaultProps} />
+      </ViewerStateContext.Provider>,
     )
-    ;(wrapper.find(TextField).prop('onChange') as any)({ target: { value: 'Hello There' } })
-    wrapper.find(Button).first().simulate('submit')
-    expect(wrapper.find(FormHelperText).text()).toEqual(defaultProps.localization!.markerRequiredError)
-  })
 
-  it('should give an error message when draftCommentMarker is set but input is empty', () => {
-    const wrapper = mount(<CreateComment {...defaultProps} />, {
-      wrappingComponent: ThemeProvider,
-      wrappingComponentProps: { theme: defaultTheme },
+    act(() => {
+      wrapper
+        .find(TextField)
+        .props()
+        .onChange({ target: { value: 'Hello' } } as any)
     })
     wrapper.find(Button).first().simulate('submit')
-    expect(wrapper.find(FormHelperText).text()).toEqual(defaultProps.localization!.inputRequiredError)
+    expect(wrapper.find(FormHelperText).text()).toEqual(defaultProps.localization.markerRequiredError)
+  })
+
+  it('should change the state of isPlacingCommentMarker in viewer-state provider when marker button is clicked', () => {
+    const updateState = jest.fn()
+
+    const wrapper = mount(
+      <ViewerStateContext.Provider
+        value={{
+          ...defaultViewerState,
+          isCreateCommentActive: true,
+          updateState,
+        }}>
+        <CommentStateContext.Provider
+          value={{
+            ...defaultCommentState,
+          }}>
+          <CreateComment {...defaultProps} />
+        </CommentStateContext.Provider>
+      </ViewerStateContext.Provider>,
+    )
+
+    wrapper.find(IconButton).simulate('click')
+    expect(updateState).toBeCalledWith({ isPlacingCommentMarker: true })
   })
 })

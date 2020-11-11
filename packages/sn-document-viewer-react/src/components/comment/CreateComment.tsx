@@ -41,7 +41,7 @@ const defaultLocalization: CreateCommentLocalization = {
  */
 export function CreateComment(props: CreateCommentProps) {
   const [errorMessage, setErrorMessage] = useState<string | undefined>()
-  const [createCommentValue, setCreateCommentValue] = useState('')
+  const [createCommentValue, setCreateCommentValue] = useState<string>('')
   const localization = { ...defaultLocalization, ...props.localization }
   const commentState = useCommentState()
   const viewerState = useViewerState()

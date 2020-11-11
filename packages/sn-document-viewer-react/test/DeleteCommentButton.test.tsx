@@ -20,8 +20,8 @@ describe('Delete comment button component', () => {
       id: '1',
       page: 1,
       text: 'alma',
-      x: 0,
-      y: 0,
+      x: '0',
+      y: '0',
     },
   }
 

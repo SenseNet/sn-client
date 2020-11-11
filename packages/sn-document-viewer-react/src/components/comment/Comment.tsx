@@ -62,7 +62,7 @@ export const Comment: React.FC<CommentProps> = (props) => {
         {isLongText ? (
           <>
             <Button size="small" onClick={() => setIsOpen(!isOpen)}>
-              {isOpen ? localization.showLess || 'Show less' : localization.showMore || 'Show more'}
+              {isOpen ? localization.showLess : localization.showMore}
             </Button>
             {isOpen ? <DeleteButton comment={props.comment} /> : null}
           </>
