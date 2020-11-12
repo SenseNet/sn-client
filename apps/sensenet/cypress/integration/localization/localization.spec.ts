@@ -4,7 +4,7 @@ describe('Localization', () => {
   beforeEach(() => {
     cy.login()
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
-      .get('[data-test="drawer-menu-item-Localization"]')
+      .get('[data-test="drawer-menu-item-localization"]')
       .click()
   })
 

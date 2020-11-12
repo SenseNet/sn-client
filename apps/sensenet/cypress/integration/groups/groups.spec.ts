@@ -8,28 +8,28 @@ describe('Groups', () => {
   })
   it('Groups list should have the appropriate data', () => {
     const items = ['Administrators', 'Developers', 'Editors']
-    cy.get('[data-test="drawer-menu-item-Users and groups"]').click()
+    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
     cy.get('[data-test="groups"]').click()
     items.forEach((item) => {
-      cy.get(`[data-test="table-cell-${item}"]`).should('be.visible')
+      cy.get(`[data-test="table-cell-${item.replace(/\s+/g, '-').toLowerCase()}"]`).should('be.visible')
     })
   })
   it('right click on a group should open context-menu', () => {
-    cy.get('[data-test="drawer-menu-item-Users and groups"]').click()
+    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
     cy.get('[data-test="groups"]').click()
-    cy.get('[data-test="table-cell-Editors"]')
+    cy.get('[data-test="table-cell-editors"]')
       .rightclick()
       .then(() => {
         contextMenuItems.forEach((item) => {
-          cy.get(`[data-test="content-context-menu-${item}"]`).should('be.visible')
+          cy.get(`[data-test="content-context-menu-${item.replace(/\s+/g, '-').toLowerCase()}"]`).should('be.visible')
         })
         cy.get('body').click()
       })
   })
   it('Double click on group should open a edit form of the content', () => {
-    cy.get('[data-test="drawer-menu-item-Users and groups"]').click()
+    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
     cy.get('[data-test="groups"]').click()
-    cy.get('[data-test="table-cell-Editors"]').dblclick()
+    cy.get('[data-test="table-cell-editors"]').dblclick()
     cy.get('[data-test="viewtitle"').should('have.text', 'Edit Editors')
     cy.get('[data-test="cancel"]').click()
   })

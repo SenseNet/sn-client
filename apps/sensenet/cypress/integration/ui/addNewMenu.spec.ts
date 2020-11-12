@@ -20,8 +20,9 @@ describe('AddNew Menu', () => {
       'Demo Workspace',
     ]
 
-    cy.get('[data-test="drawer-menu-item-Content"]').click()
-    //cy.wait(2000) -> it will fail without waiting
+    cy.get('[data-test="drawer-menu-item-content"]').click()
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(2000)
     cy.get('[data-test="add-button"]')
       .click()
       .then(() => {
@@ -38,7 +39,7 @@ describe('AddNew Menu', () => {
   })
 
   it('should display an editor of new content and AddNew button should be disabled after selection', () => {
-    cy.get('[data-test="listitem-Folder"]').click()
+    cy.get('[data-test="listitem-folder"]').click()
     cy.get('span[data-test="viewtitle"]').should('have.text', 'New Folder')
     cy.get('[data-test="add-button"][disabled]').should('exist')
   })

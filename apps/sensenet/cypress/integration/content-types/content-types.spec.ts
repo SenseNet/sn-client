@@ -4,7 +4,7 @@ describe('Content types', () => {
   beforeEach(() => {
     cy.login()
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
-      .get('[data-test="drawer-menu-item-Content Types"]')
+      .get('[data-test="drawer-menu-item-content-types"]')
       .click()
     cy.get('.ReactVirtualized__Table__Grid').scrollTo('bottom')
     cy.xpath('//div[text()="Article"]').scrollIntoView({ duration: 500 }).as('articleRow')

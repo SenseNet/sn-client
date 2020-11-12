@@ -102,7 +102,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
 
     const nodeItem = (
       <ListItem
-        data-test={`menu-item-${item.DisplayName}`}
+        data-test={`menu-item-${item.DisplayName?.replace(/\s+/g, '-').toLowerCase()}`}
         onClick={onClick}
         onContextMenu={(ev) => {
           ev.preventDefault()
