@@ -35,12 +35,10 @@ describe('Time picker field control', () => {
             ...defaultSettings,
             ReadOnly: true,
             Compulsory: true,
-            DefaultValue: 'defaultValue',
           }}
         />,
       )
       expect(wrapper.find(MUITimePicker).prop('value')).toBe(value)
-      expect(wrapper.find(MUITimePicker).prop('defaultValue')).toBe('defaultValue')
       expect(wrapper.find(MUITimePicker).prop('name')).toBe(defaultSettings.Name)
       expect(wrapper.find(MUITimePicker).prop('id')).toBe(defaultSettings.Name)
       expect(wrapper.find(MUITimePicker).prop('label')).toBe(defaultSettings.DisplayName)
@@ -49,6 +47,21 @@ describe('Time picker field control', () => {
       expect(wrapper.find(MUITimePicker).prop('disabled')).toBeTruthy()
       expect(wrapper).toMatchSnapshot()
     })
+
+    it('should set default value', () => {
+      const wrapper = shallow(
+        <TimePicker
+          actionName="new"
+          settings={{
+            ...defaultSettings,
+            DefaultValue: 'defaultValue',
+          }}
+        />,
+      )
+
+      expect(wrapper.find(MUITimePicker).prop('value')).toBe('defaultValue')
+    })
+
     it('should call on change when input changes', () => {
       const fieldOnChange = jest.fn()
       const wrapper = shallow(<TimePicker actionName="edit" fieldOnChange={fieldOnChange} settings={defaultSettings} />)

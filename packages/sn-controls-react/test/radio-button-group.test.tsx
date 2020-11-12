@@ -54,7 +54,6 @@ describe('Radio button group field control', () => {
             ...defaultSettings,
             ReadOnly: true,
             Compulsory: true,
-            DefaultValue: '0',
           }}
         />,
       )
@@ -67,6 +66,21 @@ describe('Radio button group field control', () => {
       expect(wrapper.find(FormHelperText).text()).toBe(defaultSettings.Description)
       expect(wrapper.find(FormControlLabel).length).toBe(4)
     })
+
+    it('should set default value', () => {
+      const wrapper = shallow(
+        <RadioButtonGroup
+          actionName="new"
+          settings={{
+            ...defaultSettings,
+            DefaultValue: '2',
+          }}
+        />,
+      )
+
+      expect(wrapper.find(RadioGroup).prop('value')).toBe('2')
+    })
+
     it('should call on change when radio button is selected', () => {
       const fieldOnChange = jest.fn()
       const wrapper = shallow(

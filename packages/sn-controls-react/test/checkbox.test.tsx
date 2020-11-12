@@ -48,6 +48,20 @@ describe('Checkbox field control', () => {
       expect(wrapper).toMatchSnapshot()
     })
 
+    it('should set default value', () => {
+      const wrapper = mount(
+        <Checkbox
+          actionName="new"
+          settings={{
+            ...defaultSettings,
+            DefaultValue: 'true',
+          }}
+        />,
+      )
+
+      expect(wrapper.find(MuiCheckbox).props().checked).toBe(true)
+    })
+
     it('should call on change when input changes', () => {
       const fieldOnChange = jest.fn()
       const wrapper = mount(<Checkbox actionName="edit" fieldOnChange={fieldOnChange} settings={defaultSettings} />)

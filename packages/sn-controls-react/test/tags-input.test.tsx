@@ -11,7 +11,7 @@ import { defaultLocalization, TagsInput } from '../src/fieldcontrols'
 
 const userContent = {
   Name: 'Alba Monday',
-  Path: 'Root/IMS/Public/alba',
+  Path: '/Root/IMS/Public/alba',
   DisplayName: 'Alba Monday',
   Id: 4804,
   Type: 'User',
@@ -20,7 +20,7 @@ const userContent = {
   Enabled: true,
   Manager: {
     Name: 'Business Cat',
-    Path: 'Root/IMS/Public/businesscat',
+    Path: '/Root/IMS/Public/businesscat',
     DisplayName: 'Business Cat',
     Id: 4810,
     Type: 'User',
@@ -29,7 +29,7 @@ const userContent = {
 
 const fileContent = {
   Name: 'SomeFile',
-  Path: 'Root/Sites/SomeFile',
+  Path: '/Root/Sites/SomeFile',
   DisplayName: 'Some File',
   Id: 415,
   Type: 'File',
@@ -47,6 +47,9 @@ const defaultSettings = {
 const repository: any = {
   loadCollection: jest.fn(() => {
     return { d: { results: [userContent] } }
+  }),
+  load: jest.fn(() => {
+    return { d: userContent }
   }),
   schemas: {
     isContentFromType: jest.fn(() => true),
@@ -100,6 +103,21 @@ describe('Tags input field control', () => {
       expect(updatedWrapper.find(Select).prop('value')).toHaveLength(0)
     })
 
+    it('should set default value', async () => {
+      const wrapper = mount(
+        <TagsInput
+          actionName="new"
+          settings={{ ...defaultSettings, DefaultValue: userContent.Path }}
+          repository={repository}
+        />,
+      )
+      await act(async () => {
+        await sleepAsync(0)
+      })
+      wrapper.update()
+      expect(wrapper.find(Select).prop('value')).toBe(userContent.Id)
+    })
+
     it('should show the value of the field when content is passed', async () => {
       const consoleSpy = jest.spyOn(console, 'error')
       const wrapper = mount(
@@ -131,6 +149,9 @@ describe('Tags input field control', () => {
               loadCollection: () => {
                 return { d: { results: [{ ...userContent, Avatar: {} }] } }
               },
+              load: () => {
+                return { d: { ...userContent, Avatar: {} } }
+              },
               schemas: repository.schemas,
               configuration: {
                 repositoryUrl: 'url',
@@ -157,6 +178,9 @@ describe('Tags input field control', () => {
         loadCollection: jest.fn(() => {
           return { d: { results: [fileContent, { ...fileContent, Id: 311 }] } }
         }),
+        load: () => {
+          return { d: { results: [fileContent, { ...fileContent, Id: 311 }] } }
+        },
         schemas: {
           isContentFromType: jest.fn(() => false),
         },
@@ -185,7 +209,12 @@ describe('Tags input field control', () => {
     it('should handle selection change', async () => {
       const fieldOnChange = jest.fn()
       const wrapper = mount(
-        <TagsInput actionName="new" settings={defaultSettings} fieldOnChange={fieldOnChange} repository={repository} />,
+        <TagsInput
+          actionName="new"
+          settings={{ ...defaultSettings, AllowMultiple: true }}
+          fieldOnChange={fieldOnChange}
+          repository={repository}
+        />,
       )
       await act(async () => {
         await sleepAsync(0)

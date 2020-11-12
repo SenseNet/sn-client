@@ -25,7 +25,7 @@ const defaultSettings = {
 
 const userContent = {
   Name: 'Alba Monday',
-  Path: 'Root/IMS/Public/alba',
+  Path: '/Root/IMS/Public/alba',
   DisplayName: 'Alba Monday',
   Id: 4804,
   Type: 'User',
@@ -34,7 +34,7 @@ const userContent = {
   Enabled: true,
   Manager: {
     Name: 'Business Cat',
-    Path: 'Root/IMS/Public/businesscat',
+    Path: '/Root/IMS/Public/businesscat',
     DisplayName: 'Business Cat',
     Id: 4810,
     Type: 'User',
@@ -96,6 +96,21 @@ describe('Reference grid field control', () => {
       const wrapper = shallow(<ReferenceGrid actionName="new" settings={defaultSettings} repository={repository} />)
       expect(wrapper.find(DefaultItemTemplate)).toHaveLength(1)
       expect(wrapper.find(DefaultItemTemplate).prop('content').DisplayName).toBe('Add reference')
+    })
+
+    it('should set default value', async () => {
+      const wrapper = mount(
+        <ReferenceGrid
+          actionName="new"
+          settings={{ ...defaultSettings, DefaultValue: userContent.Path }}
+          repository={repository}
+        />,
+      )
+      await act(async () => {
+        await sleepAsync(0)
+      })
+      wrapper.update()
+      expect(wrapper.find(DefaultItemTemplate).first().prop('content').DisplayName).toBe(userContent.DisplayName)
     })
 
     it('should open dialog when empty content is clicked', () => {

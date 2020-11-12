@@ -36,7 +36,6 @@ describe('Short text field control', () => {
             ...defaultSettings,
             ReadOnly: true,
             Compulsory: true,
-            DefaultValue: 'defaultValue',
             MinLength: 2,
             MaxLength: 12,
             Description: 'description',
@@ -45,7 +44,6 @@ describe('Short text field control', () => {
         />,
       )
       expect(wrapper.find(TextField).prop('value')).toBe(value)
-      expect(wrapper.find(TextField).prop('defaultValue')).toBe('defaultValue')
       expect(wrapper.find(TextField).prop('name')).toBe(defaultSettings.Name)
       expect(wrapper.find(TextField).prop('id')).toBe(defaultSettings.Name)
       expect(wrapper.find(TextField).prop('label')).toBe(defaultSettings.DisplayName)
@@ -55,6 +53,21 @@ describe('Short text field control', () => {
       expect(wrapper.find(FormHelperText).text()).toEqual('description')
       expect(wrapper).toMatchSnapshot()
     })
+
+    it('should set default value', () => {
+      const wrapper = shallow(
+        <ShortText
+          actionName="new"
+          settings={{
+            ...defaultSettings,
+            DefaultValue: 'defaultValue',
+          }}
+        />,
+      )
+
+      expect(wrapper.find(TextField).prop('value')).toEqual('defaultValue')
+    })
+
     it('should call on change when input changes', () => {
       const fieldOnChange = jest.fn()
       const wrapper = shallow(<ShortText actionName="edit" fieldOnChange={fieldOnChange} settings={defaultSettings} />)

@@ -17,13 +17,12 @@ export const FileName: React.FC<ReactClientFieldSetting> = (props) => {
   const localization = deepMerge(defaultLocalization.fileName, props.localization?.fileName)
 
   const valueInitialState =
-    (props.fieldValue &&
-      props.fieldValue
-        .replace(/<[^>]*>/g, '')
-        .split('.')
-        .slice(0, -1)
-        .join('.')) ||
-    changeTemplatedValue(props.settings.DefaultValue) ||
+    props.fieldValue
+      ?.replace(/<[^>]*>/g, '')
+      .split('.')
+      .slice(0, -1)
+      .join('.') ||
+    (props.actionName === 'new' && changeTemplatedValue(props.settings.DefaultValue)) ||
     ''
   const [value, setValue] = useState(valueInitialState)
 
@@ -54,7 +53,6 @@ export const FileName: React.FC<ReactClientFieldSetting> = (props) => {
           label={props.settings.DisplayName}
           placeholder={props.settings.DisplayName}
           value={value}
-          defaultValue={changeTemplatedValue(props.settings.DefaultValue)}
           onChange={handleChange}
           InputProps={{
             endAdornment: (

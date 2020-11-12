@@ -98,9 +98,9 @@ export const Switcher: React.FC<ReactClientFieldSetting<FieldSetting>> = (props)
   const localization = deepMerge(defaultLocalization.switcher, props.localization?.switcher)
 
   const initialState =
-    props.fieldValue != null
-      ? !!props.fieldValue
-      : changeTemplatedValue(props.settings.DefaultValue)?.toLowerCase() === 'true'
+    props.fieldValue == null && props.actionName === 'new'
+      ? changeTemplatedValue(props.settings.DefaultValue)?.toLowerCase() === 'true'
+      : !!props.fieldValue
   const [value, setValue] = useState(initialState)
   const classes = useStyles()
 

@@ -53,12 +53,10 @@ describe('Date/Date time field control', () => {
             ...defaultSettings,
             ReadOnly: true,
             Compulsory: true,
-            DefaultValue: 'defaultValue',
           }}
         />,
       )
       expect(wrapper.find(DateTimePicker).prop('value')).toBe(value)
-      expect(wrapper.find(DateTimePicker).prop('defaultValue')).toBe('defaultValue')
       expect(wrapper.find(DateTimePicker).prop('name')).toBe(defaultSettings.Name)
       expect(wrapper.find(DateTimePicker).prop('id')).toBe(defaultSettings.Name)
       expect(wrapper.find(DateTimePicker).prop('label')).toBe(defaultSettings.DisplayName)
@@ -66,6 +64,20 @@ describe('Date/Date time field control', () => {
       expect(wrapper.find(DateTimePicker).prop('required')).toBeTruthy()
       expect(wrapper.find(DateTimePicker).prop('disabled')).toBeTruthy()
       expect(wrapper).toMatchSnapshot()
+    })
+
+    it('should set default value', () => {
+      const wrapper = shallow(
+        <DatePicker
+          actionName="new"
+          settings={{
+            ...defaultSettings,
+            DefaultValue: 'defaultValue',
+          }}
+        />,
+      )
+
+      expect(wrapper.find(DateTimePicker).prop('value')).toBe('defaultValue')
     })
 
     it('should set all the props for date', () => {
@@ -77,13 +89,11 @@ describe('Date/Date time field control', () => {
             ...defaultSettings,
             ReadOnly: true,
             Compulsory: true,
-            DefaultValue: 'defaultValue',
             DateTimeMode: DateTimeMode.Date,
           }}
         />,
       )
       expect(wrapper.find(MUIDatePicker).prop('value')).toBe(value)
-      expect(wrapper.find(MUIDatePicker).prop('defaultValue')).toBe('defaultValue')
       expect(wrapper.find(MUIDatePicker).prop('name')).toBe(defaultSettings.Name)
       expect(wrapper.find(MUIDatePicker).prop('id')).toBe(defaultSettings.Name)
       expect(wrapper.find(MUIDatePicker).prop('label')).toBe(defaultSettings.DisplayName)
@@ -91,6 +101,21 @@ describe('Date/Date time field control', () => {
       expect(wrapper.find(MUIDatePicker).prop('required')).toBeTruthy()
       expect(wrapper.find(MUIDatePicker).prop('disabled')).toBeTruthy()
       expect(wrapper).toMatchSnapshot()
+    })
+
+    it('should set default value for date', () => {
+      const wrapper = shallow(
+        <DatePicker
+          actionName="new"
+          settings={{
+            ...defaultSettings,
+            DefaultValue: 'defaultValue',
+            DateTimeMode: DateTimeMode.Date,
+          }}
+        />,
+      )
+
+      expect(wrapper.find(MUIDatePicker).prop('value')).toBe('defaultValue')
     })
 
     it('should call on change when input changes', () => {

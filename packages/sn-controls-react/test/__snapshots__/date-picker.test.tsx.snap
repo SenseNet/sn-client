@@ -24,7 +24,6 @@ exports[`Date/Date time field control in edit/new view should set all the props 
   <PickerWithState
     allowKeyboardControl={true}
     ampm={true}
-    defaultValue="defaultValue"
     disabled={true}
     fullWidth={true}
     id="ModificationDate"
@@ -64,7 +63,6 @@ exports[`Date/Date time field control in edit/new view should set all the props 
 >
   <PickerWithState
     allowKeyboardControl={true}
-    defaultValue="defaultValue"
     disabled={true}
     fullWidth={true}
     id="ModificationDate"

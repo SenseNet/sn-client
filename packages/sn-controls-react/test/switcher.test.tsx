@@ -48,6 +48,20 @@ describe('Switcher field control', () => {
       expect(wrapper).toMatchSnapshot()
     })
 
+    it('should set default value', () => {
+      const wrapper = mount(
+        <Switcher
+          actionName="new"
+          settings={{
+            ...defaultSettings,
+            DefaultValue: 'true',
+          }}
+        />,
+      )
+
+      expect(wrapper.find(Switch).props().checked).toBe(true)
+    })
+
     it('should call on change when input changes', () => {
       const fieldOnChange = jest.fn()
       const wrapper = mount(<Switcher actionName="edit" fieldOnChange={fieldOnChange} settings={defaultSettings} />)

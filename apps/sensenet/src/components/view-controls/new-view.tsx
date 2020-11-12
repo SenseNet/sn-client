@@ -48,7 +48,7 @@ export const NewView: React.FC<NewViewProps> = (props) => {
       props.submitCallback?.()
     } catch (error) {
       logger.error({
-        message: localization.addButton.errorPostingContentNotification,
+        message: error.message || localization.addButton.errorPostingContentNotification,
         data: {
           error,
         },

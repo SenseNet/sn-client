@@ -44,7 +44,9 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props) => {
   const classes = useStyles()
 
   const [fieldValue, setFieldValue] = React.useState(
-    (props.fieldValue as any)?.Url || changeTemplatedValue(props.settings.DefaultValue) || '',
+    (props.fieldValue as any)?.Url ||
+      (props.actionName === 'new' && changeTemplatedValue(props.settings.DefaultValue)) ||
+      '',
   )
 
   const AvatarTemplate = props.avatarTemplateOverride || DefaultAvatarTemplate

@@ -30,7 +30,6 @@ exports[`Rich text editor field control in edit/new view should set all the prop
     Description of the field
   </WithStyles(ForwardRef(InputLabel))>
   <Quill
-    defaultValue="defaultValue"
     modules={
       Object {
         "clipboard": Object {

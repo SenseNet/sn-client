@@ -23,28 +23,28 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
 
   const getInitialstate = () => {
     if (!props.fieldValue) {
-      if (props.settings.DefaultValue) {
-        return props.settings.AllowMultiple
-          ? changeTemplatedValue(props.settings.DefaultValue)!.split(/,|;/)
-          : changeTemplatedValue(props.settings.DefaultValue)
-      }
+      if (props.actionName === 'new') {
+        if (props.settings.DefaultValue) {
+          const defaultValue = changeTemplatedValue(props.settings.DefaultValue)!.split(/,|;/)
+          return props.settings.AllowMultiple ? defaultValue : defaultValue.slice(0, 1)
+        }
 
-      if (props.settings.Options?.length) {
-        const selectedOnCtd = props.settings.AllowMultiple
-          ? props.settings.Options.reduce<string[]>((selection, option) => {
-              if (option.Selected) {
-                selection.push(option.Value)
-              }
-              return selection
-            }, [])
-          : props.settings.Options.find((option) => option.Selected)?.Value ?? ''
-        props.fieldOnChange?.(props.settings.Name, selectedOnCtd)
-        return selectedOnCtd
+        if (props.settings.Options?.length) {
+          const selectedOnCtd = props.settings.Options.reduce<string[]>((selection, option) => {
+            if (option.Selected) {
+              selection.push(option.Value)
+            }
+            return selection
+          }, [])
+          const fieldValue = props.settings.AllowMultiple ? selectedOnCtd : selectedOnCtd.slice(0, 1)
+          props.fieldOnChange?.(props.settings.Name, fieldValue)
+          return fieldValue
+        }
       }
-      return props.settings.AllowMultiple ? [''] : ''
+      return ['']
     }
     if (!Array.isArray(props.fieldValue)) {
-      return props.settings.AllowMultiple ? [props.fieldValue] : props.fieldValue
+      return [props.fieldValue]
     }
     return props.fieldValue
   }

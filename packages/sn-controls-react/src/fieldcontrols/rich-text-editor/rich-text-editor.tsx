@@ -57,7 +57,8 @@ quillRegister()
 export const RichTextEditor: React.FC<ReactClientFieldSetting & { classes?: RichTextEditorClassKey }> = (props) => {
   const localization = deepMerge(defaultLocalization.richTextEditor, props.localization?.richTextEditor)
 
-  const initialState = props.fieldValue || changeTemplatedValue(props.settings.DefaultValue) || ''
+  const initialState =
+    props.fieldValue || (props.actionName === 'new' && changeTemplatedValue(props.settings.DefaultValue)) || ''
   const [value, setValue] = useState(initialState)
   const quillRef = useRef<ReactQuill>(null)
   const classes = useStyles(props)
@@ -81,7 +82,6 @@ export const RichTextEditor: React.FC<ReactClientFieldSetting & { classes?: Rich
           </InputLabel>
           <ReactQuill
             style={{ background: '#fff', marginTop: 10, color: '#000' }}
-            defaultValue={changeTemplatedValue(props.settings.DefaultValue)}
             placeholder={props.settings.DisplayName}
             readOnly={props.settings.ReadOnly}
             modules={modules}

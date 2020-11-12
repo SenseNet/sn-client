@@ -35,13 +35,11 @@ describe('Textarea field control', () => {
             ...defaultSettings,
             ReadOnly: true,
             Compulsory: true,
-            DefaultValue: 'defaultValue',
             Description: 'description',
           }}
         />,
       )
       expect(wrapper.find(TextField).prop('value')).toBe(value)
-      expect(wrapper.find(TextField).prop('defaultValue')).toBe('defaultValue')
       expect(wrapper.find(TextField).prop('name')).toBe(defaultSettings.Name)
       expect(wrapper.find(TextField).prop('id')).toBe(defaultSettings.Name)
       expect(wrapper.find(TextField).prop('label')).toBe(defaultSettings.DisplayName)
@@ -51,6 +49,19 @@ describe('Textarea field control', () => {
       expect(wrapper.find(TextField).prop('multiline')).toBeTruthy()
       expect(wrapper.find(TextField).prop('helperText')).toBe('description')
       expect(wrapper).toMatchSnapshot()
+    })
+    it('should set default value', () => {
+      const wrapper = shallow(
+        <Textarea
+          actionName="new"
+          settings={{
+            ...defaultSettings,
+            DefaultValue: 'defaultValue',
+          }}
+        />,
+      )
+
+      expect(wrapper.find(TextField).prop('value')).toBe('defaultValue')
     })
     it('should call on change when input changes', () => {
       const fieldOnChange = jest.fn()

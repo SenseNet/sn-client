@@ -22,7 +22,10 @@ export const NumberField: React.FC<ReactClientFieldSetting<NumberFieldSetting | 
   const initialState =
     props.fieldValue != null
       ? props.fieldValue
-      : Number.parseInt(changeTemplatedValue(props.settings.DefaultValue)!, 10) || ''
+      : (props.actionName === 'new' &&
+          props.settings.DefaultValue !== undefined &&
+          Number.parseInt(changeTemplatedValue(props.settings.DefaultValue)!, 10)) ||
+        undefined
   const [value, setValue] = useState(initialState)
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {

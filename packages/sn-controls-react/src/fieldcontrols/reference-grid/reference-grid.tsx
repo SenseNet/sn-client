@@ -136,6 +136,46 @@ export const ReferenceGrid: React.FC<ReactClientFieldSetting<ReferenceFieldSetti
         )
   }
 
+  const getDefaultValue = useCallback(async () => {
+    if (!props.settings.DefaultValue || !props.repository) {
+      return
+    }
+
+    const defaultValue = props.settings.DefaultValue.split(/,|;/)
+      .filter((value) =>
+        props.settings.SelectionRoots?.length
+          ? props.settings.SelectionRoots.some((root) => PathHelper.isInSubTree(value, root))
+          : true,
+      )
+      .slice(0, props.settings.AllowMultiple ? undefined : 1)
+
+    try {
+      const responses = await Promise.all(
+        defaultValue.map(
+          async (contentPath) =>
+            await props.repository!.load({
+              idOrPath: contentPath,
+              oDataOptions: {
+                select: 'all',
+              },
+            }),
+        ),
+      )
+      const defaultContent = responses.map((response) => response.d)
+
+      setSelected(defaultContent)
+      setFieldValue(defaultContent)
+    } catch (error) {
+      console.error('At least one request for default reference value has failed.')
+    }
+  }, [props.repository, props.settings.DefaultValue, props.settings.SelectionRoots, props.settings.AllowMultiple])
+
+  useEffect(() => {
+    if (props.actionName === 'new') {
+      getDefaultValue()
+    }
+  }, [props.actionName, getDefaultValue])
+
   useEffect(() => {
     if (props.actionName !== 'new') {
       getSelected()

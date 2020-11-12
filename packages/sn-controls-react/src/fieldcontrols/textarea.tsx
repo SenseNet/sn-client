@@ -17,8 +17,8 @@ export const Textarea: React.FC<ReactClientFieldSetting<LongTextFieldSetting>> =
   const localization = deepMerge(defaultLocalization.textarea, props.localization?.textarea)
 
   const initialState =
-    (props.fieldValue && props.fieldValue.replace(/<[^>]*>/g, '')) ||
-    changeTemplatedValue(props.settings.DefaultValue) ||
+    props.fieldValue?.replace(/<[^>]*>/g, '') ||
+    (props.actionName === 'new' && changeTemplatedValue(props.settings.DefaultValue)) ||
     ''
   const [value, setValue] = useState(initialState)
 
@@ -37,7 +37,6 @@ export const Textarea: React.FC<ReactClientFieldSetting<LongTextFieldSetting>> =
           name={props.settings.Name}
           id={props.settings.Name}
           label={props.settings.DisplayName}
-          defaultValue={changeTemplatedValue(props.settings.DefaultValue)}
           placeholder={props.settings.DisplayName}
           value={value}
           required={props.settings.Compulsory}

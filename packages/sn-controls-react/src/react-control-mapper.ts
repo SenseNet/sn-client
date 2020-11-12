@@ -4,7 +4,12 @@
 
 import { Repository } from '@sensenet/client-core'
 import { ControlMapper } from '@sensenet/control-mapper'
-import { ChoiceFieldSetting, LongTextFieldSetting, ReferenceFieldSetting } from '@sensenet/default-content-types'
+import {
+  ChoiceFieldSetting,
+  DisplayChoice,
+  LongTextFieldSetting,
+  ReferenceFieldSetting,
+} from '@sensenet/default-content-types'
 import { ComponentType } from 'react'
 import * as FieldControls from './fieldcontrols'
 import { ReactClientFieldSetting } from './fieldcontrols/client-field-setting'
@@ -59,11 +64,11 @@ export const reactControlMapper = (repository: Repository) => {
     })
     .setupFieldSettingDefault<ChoiceFieldSetting>('ChoiceFieldSetting', (setting) => {
       switch (setting.DisplayChoice) {
-        case 2:
+        case DisplayChoice.CheckBoxes:
           return FieldControls.CheckboxGroup
-        case 0:
+        case DisplayChoice.DropDown:
           return FieldControls.DropDownList
-        case 1:
+        case DisplayChoice.RadioButtons:
           return FieldControls.RadioButtonGroup
         default:
           if (setting.AllowMultiple) {

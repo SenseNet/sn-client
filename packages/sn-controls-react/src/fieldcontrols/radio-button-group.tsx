@@ -22,7 +22,7 @@ export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetti
 
   const getInitialState = () => {
     if (!props.fieldValue) {
-      return ''
+      return props.actionName === 'new' ? props.settings.DefaultValue ?? '' : ''
     }
     return Array.isArray(props.fieldValue) ? props.fieldValue[0] : props.fieldValue
   }

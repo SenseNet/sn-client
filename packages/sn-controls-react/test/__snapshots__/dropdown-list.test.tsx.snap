@@ -22,7 +22,11 @@ exports[`Drop down list field control in edit/new view should set all the props 
     }
     name="VersioningMode"
     onChange={[Function]}
-    value="0"
+    value={
+      Array [
+        "0",
+      ]
+    }
   >
     <WithStyles(ForwardRef(MenuItem))
       key="0"

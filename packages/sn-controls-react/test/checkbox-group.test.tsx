@@ -56,7 +56,6 @@ describe('Check box group field control', () => {
             ...defaultSettings,
             ReadOnly: true,
             Compulsory: false,
-            DefaultValue: '0',
           }}
         />,
       )
@@ -66,6 +65,21 @@ describe('Check box group field control', () => {
       expect(wrapper.find(FormLabel).text()).toBe(defaultSettings.DisplayName)
       expect(wrapper.find(FormHelperText).text()).toBe(defaultSettings.Description)
       expect(wrapper.find(Checkbox)).toHaveLength(4)
+    })
+
+    it('should set default value', () => {
+      const wrapper = shallow(
+        <CheckboxGroup
+          actionName="new"
+          settings={{
+            ...defaultSettings,
+            DefaultValue: '1',
+          }}
+        />,
+      )
+      wrapper.find(Checkbox).forEach((checkbox, index) => {
+        expect(checkbox.props().checked).toBe(index === 1 ? true : false)
+      })
     })
 
     it('should call on change when a checkbox is selected', () => {

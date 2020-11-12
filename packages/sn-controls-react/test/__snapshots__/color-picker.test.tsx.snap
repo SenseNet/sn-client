@@ -59,7 +59,6 @@ exports[`Color field control in edit/new view should set all the props 1`] = `
         </WithStyles(ForwardRef(InputAdornment))>,
       }
     }
-    defaultValue="defaultValue"
     disabled={true}
     helperText="Color"
     id="Color"

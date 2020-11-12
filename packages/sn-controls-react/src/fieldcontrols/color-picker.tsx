@@ -36,8 +36,9 @@ const renderIconDefault = (name: string, color: string) => {
  */
 export const ColorPicker: React.FC<ReactClientFieldSetting<ColorFieldSetting>> = (props) => {
   const localization = deepMerge(defaultLocalization.colorPicker, props.localization?.colorPicker)
-
-  const [value, setValue] = useState(props.fieldValue || changeTemplatedValue(props.settings.DefaultValue) || '')
+  const [value, setValue] = useState(
+    props.fieldValue ?? (props.actionName === 'new' ? changeTemplatedValue(props.settings.DefaultValue) || '' : ''),
+  )
   const [isPickerOpen, setIsPickerOpen] = useState(false)
 
   const handleChange = (color: ColorResult) => {
@@ -56,7 +57,6 @@ export const ColorPicker: React.FC<ReactClientFieldSetting<ColorFieldSetting>> =
             name={props.settings.Name}
             id={props.settings.Name}
             placeholder={props.settings.DisplayName}
-            defaultValue={props.settings.DefaultValue}
             required={props.settings.Compulsory}
             disabled={props.settings.ReadOnly}
             value={value}
@@ -65,7 +65,7 @@ export const ColorPicker: React.FC<ReactClientFieldSetting<ColorFieldSetting>> =
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  {props.renderIcon ? props.renderIcon('lens') : renderIconDefault('lens', value)}
+                  {props.renderIcon ? props.renderIcon('lens') : renderIconDefault('lens', value || 'transparent')}
                 </InputAdornment>
               ),
             }}

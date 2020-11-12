@@ -12,6 +12,7 @@ import FormLabel from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
+import { changeTemplatedValue } from '..'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { defaultLocalization } from './localization'
 
@@ -21,33 +22,47 @@ import { defaultLocalization } from './localization'
 export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>> = (props) => {
   const localization = deepMerge(defaultLocalization.checkboxGroup, props.localization?.checkboxGroup)
 
-  const initialState =
-    props.settings.Options &&
-    props.settings.Options.map((item) =>
-      props.fieldValue && Array.isArray(props.fieldValue)
-        ? props.fieldValue.some((val: string) => val === item.Value)
-          ? { ...item, Selected: true }
-          : { ...item, Selected: false }
-        : item.Value === props.fieldValue
-        ? { ...item, Selected: true }
-        : { ...item, Selected: false },
-    )
-  const [state, setState] = useState(initialState || [])
+  const getInitialstate = () => {
+    if (!props.fieldValue) {
+      if (props.actionName === 'new') {
+        if (props.settings.DefaultValue) {
+          const defaultValue = changeTemplatedValue(props.settings.DefaultValue)!.split(/,|;/)
+          return props.settings.AllowMultiple ? defaultValue : defaultValue.slice(0, 1)
+        }
+
+        if (props.settings.Options?.length) {
+          const selectedOnCtd = props.settings.Options.reduce<string[]>((selection, option) => {
+            if (option.Selected) {
+              selection.push(option.Value)
+            }
+            return selection
+          }, [])
+          const fieldValue = props.settings.AllowMultiple ? selectedOnCtd : selectedOnCtd.slice(0, 1)
+          props.fieldOnChange?.(props.settings.Name, fieldValue)
+          return fieldValue
+        }
+      }
+      return ['']
+    }
+    if (!Array.isArray(props.fieldValue)) {
+      return [props.fieldValue]
+    }
+    return props.fieldValue
+  }
+
+  const [value, setValue] = useState(getInitialstate)
 
   const handleChange = (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newState = [...state]
-    const index = newState.findIndex((item) => item.Value === name)
-    if (props.settings.AllowMultiple) {
-      newState[index].Selected = event.target.checked
-    } else {
-      newState.forEach((item) => (item.Selected = false))
-      newState[index].Selected = event.target.checked
-    }
-    setState(newState)
-    props.fieldOnChange?.(
-      props.settings.Name,
-      newState.filter((item) => item.Selected).map((item) => item.Value),
-    )
+    const newValue = props.settings.AllowMultiple
+      ? event.target.checked
+        ? [...value, name]
+        : value.filter((item) => item !== value)
+      : event.target.checked
+      ? [name]
+      : []
+
+    setValue(newValue)
+    props.fieldOnChange?.(props.settings.Name, newValue)
   }
 
   switch (props.actionName) {
@@ -62,12 +77,16 @@ export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>
             {props.settings.DisplayName}
           </FormLabel>
           <FormGroup>
-            {state.map((option) => {
+            {props.settings.Options?.map((option) => {
               return (
                 <FormControlLabel
                   key={option.Value}
                   control={
-                    <Checkbox checked={option.Selected} onChange={handleChange(option.Value)} value={option.Value} />
+                    <Checkbox
+                      checked={value.includes(option.Value)}
+                      onChange={handleChange(option.Value)}
+                      value={option.Value}
+                    />
                   }
                   label={option.Text}
                 />

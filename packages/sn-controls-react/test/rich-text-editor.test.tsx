@@ -38,7 +38,6 @@ describe('Rich text editor field control', () => {
             ...defaultSettings,
             ReadOnly: true,
             Compulsory: true,
-            DefaultValue: 'defaultValue',
             Description: 'description',
           }}
         />,
@@ -46,13 +45,26 @@ describe('Rich text editor field control', () => {
 
       expect(wrapper.find(ReactQuill).prop('value')).toBe(value)
       expect(wrapper.find(ReactQuill).prop('placeholder')).toBe(defaultSettings.DisplayName)
-      expect(wrapper.find(ReactQuill).prop('defaultValue')).toBe('defaultValue')
       expect(wrapper.find(ReactQuill).prop('readOnly')).toBeTruthy()
       expect(wrapper.find(InputLabel).text()).toBe(defaultSettings.DisplayName)
       expect(wrapper.find(InputLabel).prop('required')).toBeTruthy()
       expect(wrapper.find(FormHelperText).text()).toBe('description')
       expect(wrapper).toMatchSnapshot()
     })
+
+    it('should set default value', () => {
+      const wrapper = shallow(
+        <RichTextEditor
+          actionName="new"
+          settings={{
+            ...defaultSettings,
+            DefaultValue: 'defaultValue',
+          }}
+        />,
+      )
+      expect(wrapper.find(ReactQuill).prop('value')).toBe('defaultValue')
+    })
+
     it('should call on change when input changes', () => {
       const fieldOnChange = jest.fn()
       const wrapper = shallow(

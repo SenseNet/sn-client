@@ -76,10 +76,12 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         props.submitCallback?.()
       } catch (error) {
         logger.error({
-          message: localization.editPropertiesDialog.saveFailedNotification.replace(
-            '{0}',
-            saveableFields.DisplayName || saveableFields.Name || content.DisplayName || content.Name,
-          ),
+          message:
+            error.message ||
+            localization.editPropertiesDialog.saveFailedNotification.replace(
+              '{0}',
+              saveableFields.DisplayName || saveableFields.Name || content.DisplayName || content.Name,
+            ),
           data: {
             relatedContent: content,
             relatedRepository: repository.configuration.repositoryUrl,

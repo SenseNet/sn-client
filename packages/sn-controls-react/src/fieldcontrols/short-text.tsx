@@ -17,7 +17,9 @@ import { defaultLocalization } from './localization'
 export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>> = (props) => {
   const localization = deepMerge(defaultLocalization.shortText, props.localization?.shortText)
 
-  const [value, setValue] = useState(props.fieldValue || changeTemplatedValue(props.settings.DefaultValue) || '')
+  const [value, setValue] = useState(
+    props.fieldValue || (props.actionName === 'new' && changeTemplatedValue(props.settings.DefaultValue)) || '',
+  )
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
     setValue(e.target.value)
@@ -39,7 +41,6 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
             value={value}
             required={props.settings.Compulsory}
             disabled={props.settings.ReadOnly}
-            defaultValue={changeTemplatedValue(props.settings.DefaultValue)}
             inputProps={{
               minLength: props.settings.MinLength,
               maxLength: props.settings.MaxLength,

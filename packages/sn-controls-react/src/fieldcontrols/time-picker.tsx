@@ -22,8 +22,9 @@ export const TimePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
 
   const initialState =
     props.fieldValue ||
-    changeTemplatedValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue) ||
-    moment().toISOString()
+    (props.actionName === 'new' &&
+      changeTemplatedValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue)) ||
+    null
   const [value, setValue] = useState(initialState)
 
   const handleDateChange = (date: MaterialUiPickersDate) => {
@@ -42,7 +43,6 @@ export const TimePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
           <MUITimePicker
             value={value}
             name={props.settings.Name}
-            defaultValue={changeTemplatedValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue)}
             onChange={handleDateChange}
             label={props.settings.DisplayName}
             id={props.settings.Name}

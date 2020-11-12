@@ -18,7 +18,7 @@ export const Name: React.FC<ReactClientFieldSetting> = (props) => {
 
   const initialState =
     (props.fieldValue && props.fieldValue.replace(/<[^>]*>/g, '')) ||
-    changeTemplatedValue(props.settings.DefaultValue) ||
+    (props.actionName === 'new' && changeTemplatedValue(props.settings.DefaultValue)) ||
     ''
   const [value, setValue] = useState(initialState)
   const [isValid, setIsValid] = useState(true)
@@ -44,7 +44,6 @@ export const Name: React.FC<ReactClientFieldSetting> = (props) => {
           id={props.settings.Name}
           label={props.settings.DisplayName}
           placeholder={props.settings.DisplayName}
-          defaultValue={changeTemplatedValue(props.settings.DefaultValue)}
           value={value}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}

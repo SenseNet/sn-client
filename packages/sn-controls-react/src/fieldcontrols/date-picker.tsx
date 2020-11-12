@@ -22,8 +22,9 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
 
   const initialState =
     props.fieldValue ||
-    changeTemplatedValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue) ||
-    moment().toISOString()
+    (props.actionName === 'new' &&
+      changeTemplatedValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue)) ||
+    null
   const [value, setValue] = useState(initialState)
 
   const handleDateChange = (date: MaterialUiPickersDate) => {
@@ -44,7 +45,6 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
               value={value}
               onChange={handleDateChange}
               name={props.settings.Name}
-              defaultValue={changeTemplatedValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue)}
               label={props.settings.DisplayName}
               id={props.settings.Name}
               disabled={props.settings.ReadOnly}
@@ -58,7 +58,6 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
               onChange={handleDateChange}
               label={props.settings.DisplayName}
               name={props.settings.Name}
-              defaultValue={changeTemplatedValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue)}
               id={props.settings.Name}
               disabled={props.settings.ReadOnly}
               placeholder={props.settings.DisplayName}

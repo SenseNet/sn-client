@@ -38,12 +38,10 @@ describe('Color field control', () => {
             ...defaultSettings,
             ReadOnly: true,
             Compulsory: true,
-            DefaultValue: 'defaultValue',
           }}
         />,
       )
       expect(wrapper.find(TextField).prop('value')).toBe(value)
-      expect(wrapper.find(TextField).prop('defaultValue')).toBe('defaultValue')
       expect(wrapper.find(TextField).prop('name')).toBe(defaultSettings.Name)
       expect(wrapper.find(TextField).prop('id')).toBe(defaultSettings.Name)
       expect(wrapper.find(TextField).prop('label')).toBe(defaultSettings.DisplayName)
@@ -52,6 +50,20 @@ describe('Color field control', () => {
       expect(wrapper.find(TextField).prop('disabled')).toBeTruthy()
       expect(wrapper.find(TextField).prop('helperText')).toBe(defaultSettings.Description)
       expect(wrapper).toMatchSnapshot()
+    })
+
+    it('should set default value', () => {
+      const wrapper = shallow(
+        <ColorPicker
+          actionName="new"
+          settings={{
+            ...defaultSettings,
+            DefaultValue: 'defaultValue',
+          }}
+        />,
+      )
+
+      expect(wrapper.find(TextField).prop('value')).toBe('defaultValue')
     })
     it('should open color picker when input is clicked', () => {
       const wrapper = shallow(<ColorPicker actionName="edit" settings={defaultSettings} />)

@@ -66,7 +66,7 @@ describe('Drop down list field control', () => {
         />,
       )
 
-      expect(wrapper.find(Select).prop('value')).toEqual('0')
+      expect(wrapper.find(Select).prop('value')).toEqual(['0'])
       expect(wrapper.find(Select).prop('name')).toBe(defaultSettings.Name)
       expect(wrapper.find(FormControl).prop('disabled')).toBeTruthy()
       expect(wrapper.find(FormControl).prop('required')).toBeTruthy()
@@ -79,7 +79,7 @@ describe('Drop down list field control', () => {
     it('should set default value', () => {
       const wrapper = shallow(
         <DropDownList
-          actionName="edit"
+          actionName="new"
           settings={{
             ...defaultSettings,
             DefaultValue: '1',
@@ -87,7 +87,7 @@ describe('Drop down list field control', () => {
         />,
       )
 
-      expect(wrapper.find(Select).prop('value')).toEqual('1')
+      expect(wrapper.find(Select).prop('value')).toEqual(['1'])
     })
 
     it('should call on change when radio button is selected', () => {

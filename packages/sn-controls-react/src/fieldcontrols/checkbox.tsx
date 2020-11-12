@@ -20,9 +20,9 @@ export const Checkbox: React.FC<ReactClientFieldSetting<FieldSetting>> = (props)
   const localization = deepMerge(defaultLocalization.checkbox, props.localization?.checkbox)
 
   const initialState =
-    props.fieldValue != null
-      ? !!props.fieldValue
-      : changeTemplatedValue(props.settings.DefaultValue)?.toLowerCase() === 'true'
+    props.fieldValue == null && props.actionName === 'new'
+      ? changeTemplatedValue(props.settings.DefaultValue)?.toLowerCase() === 'true'
+      : !!props.fieldValue
   const [value, setValue] = useState(initialState)
 
   const handleChange = () => {

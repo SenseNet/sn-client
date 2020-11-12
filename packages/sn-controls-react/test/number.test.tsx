@@ -57,12 +57,12 @@ describe('Number field control', () => {
     it('should set all the props', () => {
       const wrapper = shallow(
         <NumberField
+          fieldValue={7 as any}
           actionName="edit"
           settings={{
             ...defaultSettings,
             ReadOnly: true,
             Compulsory: true,
-            DefaultValue: '7',
             Step: 1,
             ShowAsPercentage: true,
             MaxValue: 50,
@@ -81,6 +81,21 @@ describe('Number field control', () => {
       expect(wrapper.find(FormHelperText).text()).toBe(defaultSettings.Description)
       expect(wrapper).toMatchSnapshot()
     })
+
+    it('should set default value', () => {
+      const wrapper = shallow(
+        <NumberField
+          actionName="new"
+          settings={{
+            ...defaultSettings,
+            DefaultValue: '7',
+          }}
+        />,
+      )
+
+      expect(wrapper.find(TextField).prop('value')).toEqual(7)
+    })
+
     it('should call on change when input changes', () => {
       const fieldOnChange = jest.fn()
       const wrapper = shallow(

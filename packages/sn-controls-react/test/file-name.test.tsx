@@ -37,13 +37,11 @@ describe('File name field control', () => {
             ...defaultSettings,
             ReadOnly: true,
             Compulsory: true,
-            DefaultValue: 'defaultValue',
             Description: 'description',
           }}
         />,
       )
       expect(wrapper.find(TextField).prop('value')).toBe('approving_enabled')
-      expect(wrapper.find(TextField).prop('defaultValue')).toBe('defaultValue')
       expect(wrapper.find(TextField).prop('name')).toBe(defaultSettings.Name)
       expect(wrapper.find(TextField).prop('id')).toBe(defaultSettings.Name)
       expect(wrapper.find(TextField).prop('label')).toBe(defaultSettings.DisplayName)
@@ -52,6 +50,19 @@ describe('File name field control', () => {
       expect(wrapper.find(TextField).prop('disabled')).toBeTruthy()
       expect(wrapper.find(TextField).prop('helperText')).toBe('description')
       expect(wrapper).toMatchSnapshot()
+    })
+
+    it('should set default value', () => {
+      const wrapper = shallow(
+        <FileName
+          actionName="new"
+          settings={{
+            ...defaultSettings,
+            DefaultValue: 'defaultValue',
+          }}
+        />,
+      )
+      expect(wrapper.find(TextField).prop('value')).toBe('defaultValue')
     })
 
     it('should call on change when input changes', () => {

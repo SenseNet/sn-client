@@ -74,11 +74,17 @@ export const TagsInput: React.FC<ReactClientFieldSetting<ReferenceFieldSetting>>
 
   const classes = useStyles(props)
 
-  const handleChange = (event: React.ChangeEvent<{ name?: string; value: number[] }>) => {
+  const handleChange = (event: React.ChangeEvent<{ name?: string; value: number | number[] }>) => {
     let s: GenericContent[] = []
-    props.settings.AllowMultiple
-      ? (s = event.target.value.map((c: number) => getContentById(c) as GenericContent))
-      : (s = [getContentById(event.target.value[1]) as GenericContent])
+    props.settings.AllowMultiple && Array.isArray(event.target.value)
+      ? (s = event.target.value.reduce<GenericContent[]>((value, c: number) => {
+          const content = getContentById(c)
+          if (content) {
+            value.push(content)
+          }
+          return value
+        }, []))
+      : (s = [getContentById(event.target.value as number)!])
 
     setFieldValue(s)
 
@@ -93,6 +99,39 @@ export const TagsInput: React.FC<ReactClientFieldSetting<ReferenceFieldSetting>>
     )
   }
 
+  const getDefaultValue = useCallback(async () => {
+    if (!props.settings.DefaultValue || !props.repository) {
+      return
+    }
+
+    const defaultValue = props.settings.DefaultValue.split(/,|;/)
+      .filter((value) =>
+        props.settings.SelectionRoots?.length
+          ? props.settings.SelectionRoots.some((root) => PathHelper.isInSubTree(value, root))
+          : true,
+      )
+      .slice(0, props.settings.AllowMultiple ? undefined : 1)
+
+    try {
+      const responses = await Promise.all(
+        defaultValue.map(
+          async (contentPath) =>
+            await props.repository!.load({
+              idOrPath: contentPath,
+              oDataOptions: {
+                select: 'all',
+              },
+            }),
+        ),
+      )
+      const defaultContent = responses.map((response) => response.d)
+
+      setFieldValue(defaultContent)
+    } catch (error) {
+      console.error('At least one request for default reference value has failed.')
+    }
+  }, [props.repository, props.settings.DefaultValue, props.settings.SelectionRoots, props.settings.AllowMultiple])
+
   const getSelected = useCallback(async () => {
     try {
       if (!props.repository) {
@@ -101,15 +140,19 @@ export const TagsInput: React.FC<ReactClientFieldSetting<ReferenceFieldSetting>>
       const loadPath = props.content
         ? PathHelper.joinPaths('/', PathHelper.getContentUrl(props.content.Path), props.settings.Name)
         : ''
-      const references = await props.repository.loadCollection<GenericContent>({
-        path: loadPath,
+      const references = await props.repository.load({
+        idOrPath: loadPath,
         oDataOptions: {
           select: 'all',
         },
       })
+      let result = [references.d]
+      if (Object.prototype.hasOwnProperty.call(references.d, 'results')) {
+        result = (references.d as any).results
+      }
 
-      setFieldValue(references.d.results || [])
-      return references.d.results
+      setFieldValue(result)
+      return result
     } catch (error) {
       console.error(error.message)
     }
@@ -171,7 +214,6 @@ export const TagsInput: React.FC<ReactClientFieldSetting<ReferenceFieldSetting>>
    * Get proper value for the Select component
    */
   const getValue = () => {
-    // debugger
     if (props.settings.AllowMultiple) {
       return fieldValue.length ? fieldValue.map((c) => c.Id) : []
     }
@@ -183,6 +225,12 @@ export const TagsInput: React.FC<ReactClientFieldSetting<ReferenceFieldSetting>>
       getSelected()
     }
   }, [getSelected, props.actionName])
+
+  useEffect(() => {
+    if (props.actionName === 'new') {
+      getDefaultValue()
+    }
+  }, [props.actionName, getDefaultValue])
 
   useEffect(() => {
     if (props.actionName !== 'browse') {
