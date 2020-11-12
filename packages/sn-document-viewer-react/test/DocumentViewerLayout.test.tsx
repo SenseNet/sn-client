@@ -3,7 +3,7 @@ import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { ThemeProvider } from 'styled-components'
-import { Comment, CommentsContainer, CreateComment, PageList } from '../src/components'
+import { Comment, CommentsContainer, CreateComment, PageList, Thumbnails } from '../src/components'
 import { DocumentViewerLayout } from '../src/components/DocumentViewerLayout'
 import { DocumentViewerApiSettingsContext } from '../src/context/api-settings'
 import { CommentStateContext, defaultCommentState } from '../src/context/comment-states'
@@ -28,14 +28,12 @@ describe('Document Viewer Layout component', () => {
   })
 
   it('should scroll to page when page changed', () => {
-    const onPageChange = new ObservableValue(1)
+    const onPageChange = new ObservableValue({ page: 1 })
     const scrollToMock = jest.fn()
     ;(window as any).HTMLElement.prototype.scrollTo = scrollToMock
     mount(
       <PreviewImageDataContextWrapper>
-        <DocumentViewerLayout pagePadding={0} thumbnailPadding={0}>
-          {'some children'}
-        </DocumentViewerLayout>
+        <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
       </PreviewImageDataContextWrapper>,
       {
         wrappingComponent: ViewerStateContextWrapper,
@@ -44,7 +42,7 @@ describe('Document Viewer Layout component', () => {
       },
     )
 
-    onPageChange.setValue(3)
+    onPageChange.setValue({ page: 3 })
     expect(scrollToMock).toBeCalled()
   })
 
@@ -53,9 +51,7 @@ describe('Document Viewer Layout component', () => {
     ;(window as any).HTMLElement.prototype.scrollTo = scrollToMock
     const wrapper = mount(
       <PreviewImageDataContextWrapper>
-        <DocumentViewerLayout pagePadding={0} thumbnailPadding={0}>
-          {'some children'}
-        </DocumentViewerLayout>
+        <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
       </PreviewImageDataContextWrapper>,
       {
         wrappingComponent: ViewerStateContextWrapper,
@@ -63,7 +59,7 @@ describe('Document Viewer Layout component', () => {
       },
     )
 
-    wrapper.find(PageList).last().prop('onPageClick')({} as any, 3)
+    wrapper.find(PageList).prop('onPageClick')(4)
 
     expect(scrollToMock).toBeCalled()
   })
@@ -79,9 +75,7 @@ describe('Document Viewer Layout component', () => {
           updateState,
         }}>
         <PreviewImageDataContextWrapper>
-          <DocumentViewerLayout pagePadding={0} thumbnailPadding={0}>
-            {'some children'}
-          </DocumentViewerLayout>
+          <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
         </PreviewImageDataContextWrapper>
       </ViewerStateContext.Provider>,
       {
@@ -90,158 +84,34 @@ describe('Document Viewer Layout component', () => {
       },
     )
 
-    wrapper.find(PageList).first().prop('onPageClick')({} as any, 3)
+    wrapper.find(Thumbnails).prop('onPageClick')(6)
 
     expect(scrollToMock).toBeCalled()
-    expect(updateState).toBeCalledWith({ visiblePages: [3] })
   })
 
   it('should show comments', async () => {
     let wrapper: any
     await act(async () => {
       wrapper = mount(
-        <CommentsContext.Provider value={{ ...defaultCommentsContext, comments: [examplePreviewComment] }}>
-          <ViewerStateContext.Provider value={{ ...defaultViewerState, showComments: true }}>
-            <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
-          </ViewerStateContext.Provider>
-        </CommentsContext.Provider>,
-      )
-    })
-    expect(wrapper.find(CommentsContainer).exists()).toBeTruthy()
-  })
-
-  it('should handle comment creation', async () => {
-    const addPreviewComment = function addPreviewComment() {
-      return { id: 'someId2', page: 2, text: 'Thats a comment2', x: 20, y: 20, createdBy: {} }
-    }
-    let wrapper: any
-    await act(async () => {
-      wrapper = mount(
         <DocumentViewerApiSettingsContext.Provider
           value={{
             ...defaultSettings,
-            commentActions: { ...defaultSettings.commentActions, addPreviewComment: addPreviewComment as any },
+            commentActions: {
+              addPreviewComment: async () => examplePreviewComment,
+              deletePreviewComment: async () => {
+                return { modified: true }
+              },
+              getPreviewComments: async () => [examplePreviewComment],
+            },
           }}>
-          <CommentStateContext.Provider value={{ draft: { id: 'id', x: 10, y: 10 } } as any}>
+          <CommentsContext.Provider value={{ ...defaultCommentsContext, comments: [examplePreviewComment] }}>
             <ViewerStateContext.Provider value={{ ...defaultViewerState, showComments: true }}>
-              <DocumentViewerLayout />
+              <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
             </ViewerStateContext.Provider>
-          </CommentStateContext.Provider>
+          </CommentsContext.Provider>
         </DocumentViewerApiSettingsContext.Provider>,
       )
     })
-
-    const text = 'this is the comment'
-    await act(async () => {
-      wrapper.find(CreateComment).prop('createComment')(text)
-    })
-
-    // There is already a comment this is why length should be 2
-    expect(wrapper.update().find(Comment)).toHaveLength(2)
-  })
-
-  it.skip('should handle comment input value change', async () => {
-    const wrapper = shallow(
-      <ViewerStateContext.Provider value={{ ...defaultViewerState, showComments: true }}>
-        <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
-      </ViewerStateContext.Provider>,
-    )
-
-    const text = 'this is the comment'
-    wrapper.find(CreateComment).prop('handleInputValueChange')(text)
-    expect(wrapper.state('createCommentValue')).toBe(text)
-  })
-
-  it('should handle create comment isActive', () => {
-    const updateState = jest.fn()
-    const wrapper = mount(<DocumentViewerLayout />, {
-      wrappingComponent: ViewerStateContextWrapper,
-      wrappingComponentProps: { updateState },
-    })
-
-    wrapper.find(CreateComment).prop('handleIsActive')(true)
-    expect(updateState).toBeCalledTimes(1)
-    expect(updateState).toBeCalledWith({ isCreateCommentActive: true })
-  })
-
-  const events: any = {}
-  document.addEventListener = jest.fn((event, cb) => {
-    events[event] = cb
-  })
-
-  it('should handle esc keyup', async () => {
-    const setActiveComment = jest.fn()
-
-    mount(
-      <ViewerStateContext.Provider value={{ ...defaultViewerState, showComments: true }}>
-        <CommentStateContext.Provider value={{ ...defaultCommentState, setActiveComment }}>
-          <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
-        </CommentStateContext.Provider>
-      </ViewerStateContext.Provider>,
-    )
-
-    events.keyup({ key: 'a' })
-    expect(setActiveComment).toBeCalledTimes(0)
-    await act(async () => {
-      events.keyup({ key: 'Escape' })
-    })
-
-    expect(setActiveComment).toBeCalledTimes(1)
-    expect(setActiveComment).toBeCalledWith(undefined)
-  })
-
-  it('should abort commenting when esc was pushed', async () => {
-    const updateState = jest.fn()
-    mount(
-      <ThemeProvider theme={defaultTheme}>
-        <ViewerStateContext.Provider
-          value={{ ...defaultViewerState, showComments: true, isCreateCommentActive: true, updateState }}>
-          <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
-        </ViewerStateContext.Provider>
-      </ThemeProvider>,
-    )
-    await act(async () => {
-      events.keyup({ key: 'Escape' })
-    })
-
-    expect(updateState).toBeCalledWith({ isCreateCommentActive: false })
-  })
-
-  it('should abort marker placement but not commenting when esc was pushed', async () => {
-    const updateState = jest.fn()
-    mount(
-      <ThemeProvider theme={defaultTheme}>
-        <ViewerStateContext.Provider
-          value={{
-            ...defaultViewerState,
-            showComments: true,
-            isCreateCommentActive: true,
-            isPlacingCommentMarker: true,
-            updateState,
-          }}>
-          <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
-        </ViewerStateContext.Provider>
-      </ThemeProvider>,
-    )
-    await act(async () => {
-      events.keyup({ key: 'Escape' })
-    })
-    expect(updateState).toBeCalledWith({ isPlacingCommentMarker: false })
-    expect(updateState).not.toBeCalledWith({ isCreateCommentActive: false })
-  })
-
-  it.skip('should scroll to comment when selectedCommentId is changed', async () => {
-    const scrollToMock = jest.fn()
-    ;(window as any).HTMLElement.prototype.scrollTo = scrollToMock
-    mount(<DocumentViewerLayout />, { attachTo: window.domNode })
-    expect(scrollToMock).toBeCalled()
-  })
-
-  it.skip('should not scroll to comment when comment is not found', async () => {
-    const scrollToMock = jest.fn()
-    ;(window as any).HTMLElement.prototype.scrollTo = scrollToMock
-    mount(<DocumentViewerLayout />, { attachTo: window.domNode })
-
-    expect(scrollToMock).not.toBeCalled()
+    expect(wrapper.find(CommentsContainer).exists()).toBeTruthy()
   })
 })

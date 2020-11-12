@@ -1,23 +1,12 @@
-import { shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import React from 'react'
+import { defaultViewerState, Page, PreviewImageDataContext, ViewerStateContext } from '../src'
 import { PageList } from '../src/components/PageList'
+import { examplePreviewImageData } from './__Mocks__/viewercontext'
 
 describe('PageList component', () => {
   it('should match snapshot with one page', () => {
-    const wrapper = shallow(
-      <PageList
-        showWidgets={true}
-        id="sn-document-viewer-pages"
-        zoomMode="originalSize"
-        zoomLevel={1}
-        fitRelativeZoomLevel={1}
-        onPageClick={() => jest.fn}
-        elementName="Page"
-        images="preview"
-        tolerance={0}
-        padding={8}
-      />,
-    )
+    const wrapper = shallow(<PageList onPageClick={() => jest.fn} />)
     expect(wrapper).toMatchSnapshot()
   })
 })

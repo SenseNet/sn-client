@@ -1,18 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Page component Should render thumbnails without crashing 1`] = `
+exports[`Page component Should render page without crashing 1`] = `
 <Component
-  elementName="EL"
-  fitRelativeZoomLevel={0}
-  image="thumbnail"
   imageIndex={1}
-  margin={8}
   onClick={[MockFunction]}
-  showWidgets={false}
   viewportHeight={768}
   viewportWidth={1024}
-  zoomLevel={0}
-  zoomMode="fit"
 />
 `;
 

@@ -11,15 +11,8 @@ describe('Page component', () => {
   const defaultProps: PageProps = {
     onClick: jest.fn(),
     imageIndex: 1,
-    image: 'preview',
-    elementName: 'EL',
-    zoomMode: 'fit',
-    zoomLevel: 0,
-    viewportWidth: 1024,
-    viewportHeight: 768,
-    showWidgets: true,
-    margin: 8,
-    fitRelativeZoomLevel: 0,
+    viewportWidth: 768,
+    viewportHeight: 1024,
   }
 
   it('Should render without crashing', () => {
@@ -27,10 +20,10 @@ describe('Page component', () => {
     expect(wrapper).toMatchSnapshot()
   })
 
-  it('Should render thumbnails without crashing', () => {
+  it('Should render page without crashing', () => {
     const wrapper = shallow(
       <ViewerStateContext.Provider value={{ ...defaultViewerState, showWatermark: false }}>
-        <Page {...defaultProps} image="thumbnail" showWidgets={false} />
+        <Page {...defaultProps} />
       </ViewerStateContext.Provider>,
     )
     expect(wrapper).toMatchSnapshot()
@@ -41,7 +34,7 @@ describe('Page component', () => {
       <PreviewImageDataContext.Provider
         value={{
           imageData: [{ ...examplePreviewImageData, PreviewImageUrl: undefined }],
-          rotateImages: () => undefined,
+          setImageData: () => {},
         }}>
         <Page {...defaultProps} />,
       </PreviewImageDataContext.Provider>,
@@ -63,6 +56,7 @@ describe('Page component', () => {
         value={{
           ...defaultViewerState,
           isPlacingCommentMarker: true,
+          zoomLevel: 0,
         }}>
         <CommentStateContext.Provider value={{ setDraft } as any}>
           <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData] } as any}>
@@ -75,7 +69,32 @@ describe('Page component', () => {
     wrapper
       .find('div')
       .at(1)
-      .simulate('click', { nativeEvent: { offsetX: 3, offsetY: 3 } })
-    expect(setDraft).toBeCalledWith({ id: 'draft', x: '-6', y: '-6' })
+      .simulate('click', { nativeEvent: { offsetX: 20, offsetY: 20 } })
+    expect(setDraft).toBeCalledWith({ id: 'draft', page: 1, x: '10', y: '10' })
+  })
+
+  it('should handle marker placement with rotation', () => {
+    const setDraft = jest.fn()
+    const wrapper = mount(
+      <ViewerStateContext.Provider
+        value={{
+          ...defaultViewerState,
+          isPlacingCommentMarker: true,
+          zoomLevel: 0,
+          rotation: [{ pageNum: 1, degree: 90 }],
+        }}>
+        <CommentStateContext.Provider value={{ setDraft } as any}>
+          <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData] } as any}>
+            <Page {...defaultProps} />
+          </PreviewImageDataContext.Provider>
+        </CommentStateContext.Provider>
+      </ViewerStateContext.Provider>,
+    )
+
+    wrapper
+      .find('div')
+      .at(1)
+      .simulate('click', { nativeEvent: { offsetX: 0.5625, offsetY: 0.5625 } })
+    expect(setDraft).toBeCalledWith({ id: 'draft', page: 1, x: '-9', y: '-9' })
   })
 })
