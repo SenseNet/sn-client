@@ -93,7 +93,7 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
     if (props.shapeType === 'annotations') {
       props.updateShapeData('annotations', props.shape.guid, {
         ...props.shape,
-        text: ev.currentTarget.innerText.trim(),
+        text: ev.currentTarget.innerText?.trim(),
       })
     }
   }

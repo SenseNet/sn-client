@@ -127,12 +127,21 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
                         aria-label="delete"
                         onClick={async () => {
                           const remainedReferences = references.filter((content) => item.Id !== content.Id)
-                          await repository.patch({
-                            idOrPath: props.parent.Id,
-                            content: { [props.fieldName]: remainedReferences.map((content) => content.Id) },
-                            forceRefresh: true,
-                          })
-                          setReferences(remainedReferences)
+                          try {
+                            await repository.patch({
+                              idOrPath: props.parent.Id,
+                              content: { [props.fieldName]: remainedReferences.map((content) => content.Id) },
+                              forceRefresh: true,
+                            })
+                            setReferences(remainedReferences)
+                          } catch (error) {
+                            logger.error({
+                              message: error.message,
+                              data: {
+                                error,
+                              },
+                            })
+                          }
                         }}>
                         <ClearIcon />
                       </IconButton>

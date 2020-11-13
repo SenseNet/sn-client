@@ -44,6 +44,7 @@ export const ShapeAnnotation: React.FC<ShapeAnnotationProps> = (props) => {
         boxSizing: 'border-box',
       }}>
       <div
+        id="annotation-input"
         style={{ width: '100%', height: '100%', overflow: 'auto' }}
         contentEditable={permissions.canEdit ? ('plaintext-only' as any) : false}
         suppressContentEditableWarning={true}>

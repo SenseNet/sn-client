@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ShapesSkeleton component should render without crashing 1`] = `
+<Component
+  removeShape={[Function]}
+  shape={
+    Object {
+      "guid": "testRedaction",
+      "h": 1,
+      "imageIndex": 1,
+      "w": 1,
+      "x": 10,
+      "y": 10,
+    }
+  }
+  shapeType="redactions"
+  updateShapeData={[Function]}
+  zoomRatio={1}
+>
+  <div
+    onBlur={[Function]}
+    onClickCapture={[Function]}
+    onFocus={[Function]}
+    onKeyUp={[Function]}
+    style={
+      Object {
+        "filter": "",
+      }
+    }
+  >
+    <Component
+      getShapeDimensions={[Function]}
+      onDragStart={[Function]}
+      onResized={[Function]}
+      shape={
+        Object {
+          "guid": "testRedaction",
+          "h": 1,
+          "imageIndex": 1,
+          "w": 1,
+          "x": 10,
+          "y": 10,
+        }
+      }
+    >
+      <div
+        draggable={false}
+        key="r-1-1"
+        onDragStart={[Function]}
+        onMouseUp={[Function]}
+        style={
+          Object {
+            "backgroundColor": "black",
+            "height": 1,
+            "left": 10,
+            "overflow": "auto",
+            "position": "absolute",
+            "resize": "none",
+            "top": 10,
+            "width": 1,
+          }
+        }
+        tabIndex={0}
+      />
+    </Component>
+  </div>
+</Component>
+`;

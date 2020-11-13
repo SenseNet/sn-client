@@ -85,7 +85,6 @@ export const Search = () => {
         return
       }
       try {
-        setResult([])
         history.push(pathWithQueryParams({ path: PATHS.search.appPath, newParams: { term: query } }))
 
         const extendedQuery = `${query.trim()}* .AUTOFILTERS:OFF`
@@ -104,7 +103,6 @@ export const Search = () => {
         if (!ac.signal.aborted) {
           setError(e.message)
           setResult([])
-          logger.warning({ message: 'Error executing search', data: { error: e, isDismissed: true } })
         }
       }
     }
@@ -150,7 +148,7 @@ export const Search = () => {
         </div>
       </div>
       {error ? (
-        <Typography color="error" variant="subtitle1" style={{ margin: '1em' }}>
+        <Typography color="error" variant="caption" style={{ margin: '0 1rem 1rem' }}>
           {error}
         </Typography>
       ) : null}
