@@ -76,6 +76,7 @@ it('Click on toggle should change the state of showRedaction in viewer-state pro
     <ViewerStateContext.Provider
       value={{
         ...defaultViewerState,
+        showRedaction: false,
         updateState,
       }}>
       <ToggleRedactionWidget />
@@ -93,6 +94,7 @@ it('Click on toggle should change the state of showShapes in viewer-state provid
     <ViewerStateContext.Provider
       value={{
         ...defaultViewerState,
+        showShapes: false,
         updateState,
       }}>
       <ToggleShapesWidget />

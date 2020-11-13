@@ -1,10 +1,15 @@
 import IconButton from '@material-ui/core/IconButton'
 import { mount } from 'enzyme'
 import React from 'react'
+import {
+  defaultViewerState,
+  DocumentDataContext,
+  PreviewImageDataContext,
+  ROTATION_MODE,
+  ViewerStateContext,
+} from '../src'
 import { RotateActivePagesWidget } from '../src/components/document-widgets/RotateActivePages'
-import { ROTATION_AMOUNT, ROTATION_MODE } from '../src/components/page-widgets/RotatePage'
-import { PreviewImageDataContext } from '../src/context/preview-image-data'
-import { examplePreviewImageData } from './__Mocks__/viewercontext'
+import { exampleDocumentData, examplePreviewImageData } from './__Mocks__/viewercontext'
 
 describe('RotateActivePage component', () => {
   it('Should render without crashing', () => {
@@ -28,54 +33,126 @@ describe('RotateActivePage component', () => {
   })
 
   it('RotateLeft should trigger a rotate to left', () => {
-    const rotateImages = jest.fn()
+    const updateState = jest.fn()
     const wrapper = mount(
-      <PreviewImageDataContext.Provider value={{ rotateImages } as any}>
+      <ViewerStateContext.Provider
+        value={{
+          ...defaultViewerState,
+          updateState,
+        }}>
         <RotateActivePagesWidget />
+      </ViewerStateContext.Provider>,
+    )
+
+    wrapper.find(IconButton).first().simulate('click')
+    expect(updateState).toBeCalledWith({ rotation: [{ degree: 270, pageNum: 1 }] })
+  })
+
+  it('RotateRight should trigger a rotate to right', () => {
+    const updateState = jest.fn()
+    const wrapper = mount(
+      <ViewerStateContext.Provider
+        value={{
+          ...defaultViewerState,
+          updateState,
+        }}>
+        <RotateActivePagesWidget />
+      </ViewerStateContext.Provider>,
+    )
+
+    wrapper.find(IconButton).last().simulate('click')
+    expect(updateState).toBeCalledWith({ rotation: [{ degree: 90, pageNum: 1 }] })
+  })
+
+  it('RotateRight should trigger a rotate to right even if viewerState has already rotation value', () => {
+    const updateState = jest.fn()
+    const wrapper = mount(
+      <ViewerStateContext.Provider
+        value={{
+          ...defaultViewerState,
+          rotation: [{ degree: 270, pageNum: 3 }],
+          updateState,
+        }}>
+        <RotateActivePagesWidget />
+      </ViewerStateContext.Provider>,
+    )
+
+    wrapper.find(IconButton).last().simulate('click')
+    expect(updateState).toBeCalledWith({
+      rotation: [
+        { degree: 270, pageNum: 3 },
+        { degree: 90, pageNum: 1 },
+      ],
+    })
+  })
+
+  it('RotateRight/RotateLeft should trigger a rotate to right/left even if viewerState has already rotation value on the same page', () => {
+    const updateState = jest.fn()
+    const wrapper = mount(
+      <ViewerStateContext.Provider
+        value={{
+          ...defaultViewerState,
+          rotation: [{ degree: 90, pageNum: 1 }],
+          updateState,
+        }}>
+        <RotateActivePagesWidget />
+      </ViewerStateContext.Provider>,
+    )
+
+    wrapper.find(IconButton).last().simulate('click')
+    expect(updateState).toBeCalledWith({
+      rotation: [{ degree: 180, pageNum: 1 }],
+    })
+
+    wrapper.find(IconButton).first().simulate('click')
+    expect(updateState).toBeCalledWith({
+      rotation: [{ degree: 90, pageNum: 1 }],
+    })
+  })
+
+  it('Rotaion should rotate shapes as well', () => {
+    const updateDocumentData = jest.fn()
+    const setImageData = jest.fn()
+
+    const wrapper = mount(
+      <PreviewImageDataContext.Provider
+        value={{
+          imageData: [{ ...examplePreviewImageData, Height: 1000, Width: 500 }],
+          setImageData,
+        }}>
+        <DocumentDataContext.Provider
+          value={{
+            documentData: {
+              ...exampleDocumentData,
+              shapes: {
+                redactions: [
+                  {
+                    guid: 'testRedaction',
+                    imageIndex: 1,
+                    h: 1,
+                    w: 1,
+                    x: 10,
+                    y: 10,
+                  },
+                ],
+                annotations: [],
+                highlights: [],
+              },
+            },
+            updateDocumentData,
+            isInProgress: false,
+          }}>
+          <RotateActivePagesWidget />
+        </DocumentDataContext.Provider>
       </PreviewImageDataContext.Provider>,
     )
 
     wrapper.find(IconButton).first().simulate('click')
-    expect(rotateImages).toBeCalledWith([examplePreviewImageData.Index], -ROTATION_AMOUNT)
-    expect(rotateImages).toBeCalled()
-  })
-
-  it('RotateRight should trigger a rotate to right', () => {
-    const rotateImages = jest.fn()
-    const wrapper = mount(
-      <PreviewImageDataContext.Provider value={{ rotateImages } as any}>
-        <RotateActivePagesWidget />
-      </PreviewImageDataContext.Provider>,
-    )
+    expect(updateDocumentData).toBeCalled()
+    expect(setImageData).toBeCalled()
 
     wrapper.find(IconButton).last().simulate('click')
-    expect(rotateImages).toBeCalledWith([examplePreviewImageData.Index], ROTATION_AMOUNT)
-    expect(rotateImages).toBeCalled()
-  })
-
-  it('RotateLeft should trigger a rotate to left', () => {
-    const rotateImages = jest.fn()
-    const wrapper = mount(
-      <PreviewImageDataContext.Provider value={{ rotateImages } as any}>
-        <RotateActivePagesWidget mode={ROTATION_MODE.anticlockwise} />
-      </PreviewImageDataContext.Provider>,
-    )
-
-    wrapper.find(IconButton).first().simulate('click')
-    expect(rotateImages).toBeCalledWith([examplePreviewImageData.Index], -ROTATION_AMOUNT)
-    expect(rotateImages).toBeCalled()
-  })
-
-  it('RotateRight should trigger a rotate to right', () => {
-    const rotateImages = jest.fn()
-    const wrapper = mount(
-      <PreviewImageDataContext.Provider value={{ rotateImages } as any}>
-        <RotateActivePagesWidget mode={ROTATION_MODE.clockwise} />
-      </PreviewImageDataContext.Provider>,
-    )
-
-    wrapper.find(IconButton).last().simulate('click')
-    expect(rotateImages).toBeCalledWith([examplePreviewImageData.Index], ROTATION_AMOUNT)
-    expect(rotateImages).toBeCalled()
+    expect(updateDocumentData).toBeCalled()
+    expect(setImageData).toBeCalled()
   })
 })

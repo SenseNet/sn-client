@@ -1,9 +1,7 @@
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { ThemeProvider } from 'styled-components'
-import { ShapeAnnotation, ShapeHighlight, ShapeRedaction } from '../src/components/page-widgets/Shape'
-import { ShapesWidget, ShapesWidgetProps } from '../src/components/page-widgets/Shapes'
-import { CommentMarker } from '../src/components/page-widgets/style'
+import { CommentMarker, ShapeAnnotation, ShapeHighlight, ShapeRedaction, ShapesWidget, ShapesWidgetProps } from '../src'
 import { CommentsContext } from '../src/context/comments'
 import { DocumentDataContext } from '../src/context/document-data'
 import { DocumentPermissionsContext } from '../src/context/document-permissions'
@@ -15,7 +13,6 @@ describe('Shapes component', () => {
   const defaultProps: ShapesWidgetProps = {
     page: examplePreviewImageData,
     zoomRatio: 1,
-    viewPort: { width: 1024, height: 768 },
   }
 
   it('should render all the shapes', () => {
@@ -62,8 +59,8 @@ describe('Shapes component', () => {
           <CommentsContext.Provider
             value={{
               comments: [
-                { x: 10, y: 10, id: 'a', page: 1, text: 'a', createdBy: {} as any },
-                { x: 20, y: 20, id: 'b', page: 1, text: 'b', createdBy: {} as any },
+                { x: '10', y: '10', id: 'a', page: 1, text: 'a', createdBy: {} as any },
+                { x: '20', y: '20', id: 'b', page: 1, text: 'b', createdBy: {} as any },
               ],
               addPreviewComment: jest.fn(),
               deletePreviewComment: jest.fn(),

@@ -113,37 +113,4 @@ describe('Document Viewer component', () => {
       expect(wrapper).toMatchSnapshot()
     })
   })
-
-  it('should fetch the document data and preview images when new documentid is added or when the version changed', async () => {
-    await act(async () => {
-      const getDocumentData = jest.fn(async ({ idOrPath }) => ({ ...exampleDocumentData, idOrPath }))
-      const getExistingPreviewImages = jest.fn(async () => [examplePreviewImageData])
-      let wrapper: any
-      act(() => {
-        wrapper = mount(
-          <DocumentViewer
-            {...defaultProps}
-            api={{
-              ...defaultSettings,
-              ...defaultProps.api,
-              getDocumentData,
-              getExistingPreviewImages,
-            }}>
-            {'some children'}
-          </DocumentViewer>,
-        )
-      })
-      act(() => {
-        wrapper.setProps({ documentIdOrPath: 2, hostName: 'host2', version: 'v2' })
-      })
-      await sleepAsync(5000)
-      expect(getDocumentData).lastCalledWith({
-        abortController: expect.any(AbortController),
-        hostName: '',
-        idOrPath: 2,
-        version: 'v2',
-      })
-      expect(getExistingPreviewImages).toBeCalled()
-    })
-  })
 })
