@@ -92,7 +92,7 @@ const Setup = () => {
         return (
           <>
             {settings.length ? (
-              <div className={globalClasses.centered} style={{ flexWrap: 'wrap' }}>
+              <div className={globalClasses.centeredHorizontal} style={{ flexWrap: 'wrap' }}>
                 <ContentContextMenu
                   isOpened={isContextMenuOpened}
                   content={contextMenuItem ?? settings[0]}
