@@ -1,7 +1,7 @@
 /* eslint-disable import/named */
 import { GenericContent } from '@sensenet/default-content-types'
 import { ListItem, ListItemIcon, ListItemText, List as MuiList } from '@material-ui/core'
-import React, { ReactNode, useEffect, useRef, useState } from 'react'
+import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import { AutoSizer, Index, List, ListRowProps } from 'react-virtualized'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { Icon } from '../Icon'
@@ -30,6 +30,15 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
   const [activeContent, setActiveContent] = useState<GenericContent>()
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [elements, setElements] = useState<Element[]>()
+  const [rowHeight, setRowHeight] = useState(ROW_HEIGHT)
+
+  const listItemRef = useCallback((node) => {
+    if (node) {
+      node.offsetHeight && setRowHeight(node.offsetHeight)
+      listRef.current?.recomputeRowHeights()
+      listRef.current?.forceUpdate()
+    }
+  }, [])
 
   const observer = useRef(
     new IntersectionObserver(
@@ -62,11 +71,11 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
     loader.current = loadMore
   }, [loadMore])
 
-  const rowHeight = ({ index }: Index) => {
+  const rowHeightFunc = ({ index }: Index) => {
     if (!treeData.children?.[index]) {
-      return ROW_HEIGHT
+      return rowHeight
     }
-    return getExpandedItemCount(treeData.children[index]) * ROW_HEIGHT
+    return getExpandedItemCount(treeData.children[index]) * rowHeight
   }
 
   const getExpandedItemCount = (item: ItemType) => {
@@ -172,7 +181,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
             width={width}
             overscanRowCount={10}
             ref={listRef}
-            rowHeight={rowHeight}
+            rowHeight={rowHeightFunc}
             onRowsRendered={() => {
               const loadMoreElements = document.getElementsByClassName(LOAD_MORE_CLASS)
               if (!loadMoreElements.length && !elements) {
