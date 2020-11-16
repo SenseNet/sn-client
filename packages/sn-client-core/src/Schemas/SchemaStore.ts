@@ -63,6 +63,21 @@ export class SchemaStore {
   }
 
   /**
+   * Returns the Field Type for the provided content field name
+   * @param {string} fieldName The name of field you search for
+   */
+  public getFieldTypeByName(fieldName: string): string | undefined {
+    const schemasCopy = [...this.schemas.getValue()]
+    return schemasCopy.reduce((_, schema: Schema) => {
+      const fieldType = schema.FieldSettings.find((fieldSetting: FieldSetting) => fieldSetting.Name === fieldName)?.Type
+      if (fieldType) {
+        schemasCopy.length = 0
+      }
+      return fieldType
+    }, undefined)
+  }
+
+  /**
    * Returns a boolean value that indicates if the specified content is an instance or descendant of a given content type
    * @param content The given content to check
    * @param contentTypeName The name of content type
