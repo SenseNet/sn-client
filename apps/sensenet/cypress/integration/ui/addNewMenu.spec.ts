@@ -1,10 +1,9 @@
 import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
-context('AddNew Menu', () => {
-  before(() => cy.clearCookies({ domain: null } as any))
-
-  beforeEach(() => {
+describe('AddNew Menu', () => {
+  before(() => {
     cy.login()
+    cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
   })
 
   it('should open a dropdown with the list of allowed child types', () => {
@@ -18,36 +17,30 @@ context('AddNew Menu', () => {
       'Task list',
       'Custom List',
       'Workspace',
-      'System Folder',
       'Demo Workspace',
-      'Image',
     ]
-    cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
-      .get('a[href="/content/explorer/"]')
+
+    cy.get('[data-test="drawer-menu-item-content"]').click()
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(2000)
+    cy.get('[data-test="add-button"]')
       .click()
-      .get('button[data-test="add-button"]')
-      .click()
-      .get('[data-test="listitem"]')
-      .each(($span) => {
-        const text = $span.text()
-        if (text) {
-          expect(dropdownItems).to.include(text)
-        }
+      .then(() => {
+        cy.get('[data-test="list-items"]')
+          .children()
+          .should('have.length', dropdownItems.length)
+          .each(($span) => {
+            const text = $span.text()
+            if (text) {
+              expect(dropdownItems).to.include(text)
+            }
+          })
       })
   })
 
   it('should display an editor of new content and AddNew button should be disabled after selection', () => {
-    cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
-      .get('a[href="/content/explorer/"]')
-      .click()
-      .get('button[data-test="add-button"]')
-      .click()
-      .get('[data-test="listitem"]')
-      .first()
-      .click()
-      .get('span[data-test="viewtitle"]')
-      .should('have.text', 'New Folder')
-
-    cy.get('button[data-test="add-button"][disabled]').should('exist')
+    cy.get('[data-test="listitem-folder"]').click()
+    cy.get('span[data-test="viewtitle"]').should('have.text', 'New Folder')
+    cy.get('[data-test="add-button"][disabled]').should('exist')
   })
 })

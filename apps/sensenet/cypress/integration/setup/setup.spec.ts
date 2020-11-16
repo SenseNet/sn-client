@@ -4,7 +4,7 @@ describe('Setup', () => {
   beforeEach(() => {
     cy.login()
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
-      .get('[data-test="Setup"]')
+      .get('[data-test="drawer-menu-item-setup"]')
       .click()
   })
 
