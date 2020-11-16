@@ -56,7 +56,7 @@ export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>
     const newValue = props.settings.AllowMultiple
       ? event.target.checked
         ? [...value, name]
-        : value.filter((item) => item !== value)
+        : value.filter((item) => item !== name)
       : event.target.checked
       ? [name]
       : []
