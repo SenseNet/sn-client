@@ -82,6 +82,20 @@ describe('Check box group field control', () => {
       })
     })
 
+    it('should handle selected property on options', () => {
+      const wrapper = shallow(
+        <CheckboxGroup
+          actionName="new"
+          settings={{
+            ...defaultSettings,
+          }}
+        />,
+      )
+      wrapper.find(Checkbox).forEach((checkbox, index) => {
+        expect(checkbox.props().checked).toBe(index === 0 ? true : false)
+      })
+    })
+
     it('should call on change when a checkbox is selected', () => {
       const fieldOnChange = jest.fn()
       const wrapper = mount(

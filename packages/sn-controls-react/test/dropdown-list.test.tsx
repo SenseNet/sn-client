@@ -90,6 +90,18 @@ describe('Drop down list field control', () => {
       expect(wrapper.find(Select).prop('value')).toEqual(['1'])
     })
 
+    it('should handle selected property on options', () => {
+      const wrapper = shallow(
+        <DropDownList
+          actionName="new"
+          settings={{
+            ...defaultSettings,
+          }}
+        />,
+      )
+      expect(wrapper.find(Select).prop('value')).toEqual(['0'])
+    })
+
     it('should call on change when radio button is selected', () => {
       const fieldOnChange = jest.fn()
       const wrapper = shallow(
