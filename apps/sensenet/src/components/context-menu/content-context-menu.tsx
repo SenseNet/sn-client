@@ -104,7 +104,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
                 key={action.Name}
                 disableRipple={true}
                 disabled={DISABLED_ACTIONS.includes(action.Name)}
-                data-test={`content-context-menu-${action.Name.toLowerCase()}`}
+                data-test={`content-context-menu-${action.Name.replace(/\s+/g, '-').toLowerCase()}`}
                 onClick={() => {
                   props.onClose?.()
                   runAction(action.Name)

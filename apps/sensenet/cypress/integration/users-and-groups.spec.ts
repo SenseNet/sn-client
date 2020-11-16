@@ -7,7 +7,7 @@ describe('Users menu', () => {
   })
 
   it('ensures that users list has the appropriate data', () => {
-    cy.get('[data-test="drawer-menu-item-Users and groups"]').as('UsersAndGroupsIcon')
+    cy.get('[data-test="drawer-menu-item-users-and-groups"]').as('UsersAndGroupsIcon')
     cy.get('@UsersAndGroupsIcon').click()
     cy.get('.ReactVirtualized__Table>.ReactVirtualized__Table__headerRow>.ReactVirtualized__Table__headerColumn').as(
       'ColumnHeaders',
@@ -27,7 +27,7 @@ describe('Users menu', () => {
   })
 
   it('ensures that right click on a user opens context-menu', () => {
-    cy.get('[data-test="drawer-menu-item-Users and groups"]').as('UsersAndGroupsIcon')
+    cy.get('[data-test="drawer-menu-item-users-and-groups"]').as('UsersAndGroupsIcon')
     cy.get('@UsersAndGroupsIcon').click()
 
     // Checks for users
@@ -48,7 +48,7 @@ describe('Users menu', () => {
   })
 
   it('ensures that double click on a user opens an edit form of the content', () => {
-    cy.get('[data-test="drawer-menu-item-Users and groups"]').as('UsersAndGroupsIcon')
+    cy.get('[data-test="drawer-menu-item-users-and-groups"]').as('UsersAndGroupsIcon')
     cy.get('@UsersAndGroupsIcon').click()
 
     // Checks for users
