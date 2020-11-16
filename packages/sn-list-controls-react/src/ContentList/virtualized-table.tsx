@@ -42,6 +42,12 @@ const useStyles = makeStyles((theme: Theme) =>
     selected: {
       backgroundColor: theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)',
     },
+    label: {
+      display: 'block',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+    },
   }),
 )
 
@@ -55,6 +61,11 @@ interface VirtualizedTableProps extends ContentListBaseProps {
    * Contains custom cell template components
    */
   cellRenderer?: (props: VirtualCellProps) => React.ReactNode
+
+  /**
+   * Contains custom reference cell template components
+   */
+  referenceCellRenderer?: (tableCellProps: TableCellProps) => React.ReactNode
 
   tableProps: {
     /**
@@ -234,6 +245,7 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = (props) => {
         className={columnName as string}>
         <Tooltip title={description}>
           <TableSortLabel
+            className={classes.label}
             active={props.orderBy === columnName}
             direction={props.orderDirection}
             onClick={() =>
@@ -282,9 +294,18 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = (props) => {
                       props.selected && props.selected.find((s) => s.Id === tableCellProps.rowData.Id) ? true : false
                     return checkBoxRenderer(tableCellProps, isSelected)
                   } else {
-                    return props.cellRenderer
-                      ? props.cellRenderer({ tableCellProps, fieldSettings: getSchemaForField(tableCellProps.dataKey) })
-                      : defaultCellRenderer(tableCellProps)
+                    if (tableCellProps.dataKey.includes('/')) {
+                      return props.referenceCellRenderer
+                        ? props.referenceCellRenderer(tableCellProps)
+                        : defaultCellRenderer(tableCellProps)
+                    } else {
+                      return props.cellRenderer
+                        ? props.cellRenderer({
+                            tableCellProps,
+                            fieldSettings: getSchemaForField(tableCellProps.dataKey),
+                          })
+                        : defaultCellRenderer(tableCellProps)
+                    }
                   }
                 }}
                 dataKey={field}

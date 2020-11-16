@@ -517,6 +517,58 @@ describe('Virtualized Table component', () => {
 
         component.unmount()
       })
+
+      it('Should be able to display reference chain', () => {
+        const items = [
+          {
+            Id: 1,
+            Name: '1',
+            Path: '1',
+            DisplayName: 'A',
+            Type: 'Folder',
+            CreatedBy: {
+              Id: 3,
+              Path: '/',
+              Type: 'User',
+              Name: 'Batman',
+              DisplayName: 'Batman',
+              ModificationDate: '2020-10-14T11:39:15.81Z',
+            },
+          },
+        ]
+
+        const fieldRefFunc = (fieldOptions) => {
+          if (fieldOptions.dataKey === 'CreatedBy/ModificationDate') {
+            return <DateCell date={fieldOptions.rowData[fieldOptions.dataKey] as string} />
+          }
+        }
+
+        const component = mount(
+          <Paper style={{ height: 400, width: '100%' }}>
+            <VirtualizedTable
+              items={items}
+              schema={genericSchema}
+              fieldsToDisplay={['CreatedBy/ModificationDate'] as any}
+              selected={[]}
+              icons={{}}
+              tableProps={
+                {
+                  rowCount: items.length,
+                  rowHeight: 57,
+                  headerHeight: 42,
+                  height: 400,
+                  width: 800,
+                  rowGetter: ({ index }: any) => items[index],
+                } as any
+              }
+              referenceCellRenderer={fieldRefFunc}
+            />
+          </Paper>,
+        )
+
+        const actionsComponent = component.find(DateCell)
+        expect(actionsComponent.length).toBe(1)
+      })
     })
 
     describe('Field with a custom field component', () => {

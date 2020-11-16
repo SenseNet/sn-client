@@ -24,11 +24,13 @@ export const EmailField: React.FC<{ mail: string }> = ({ mail }) => {
     <TableCell
       className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle, classes.cell)}
       component="div">
-      <Tooltip placement="top" title={mail}>
-        <a href={`mailto:${mail}`} className={classes.anchor}>
-          {mail}
-        </a>
-      </Tooltip>
+      {mail ? (
+        <Tooltip placement="top" title={mail}>
+          <a href={`mailto:${mail}`} className={classes.anchor}>
+            {mail}
+          </a>
+        </Tooltip>
+      ) : null}
     </TableCell>
   )
 }
