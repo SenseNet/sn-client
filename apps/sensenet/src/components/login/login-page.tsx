@@ -97,17 +97,24 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
               <Typography align="center" variant="subtitle1" component="p" className={classes.loginSubtitle}>
                 {localization.repositoryUrl}
               </Typography>
-              <InputLabel shrink htmlFor="repository" required={true}>
+              <InputLabel shrink htmlFor="repository" required={true} style={{ marginBottom: '0.5rem' }}>
                 {localization.repositoryLabel}
               </InputLabel>
               <TextField
                 required={true}
                 name="repository"
                 disabled={isLoginInProgress}
+                variant="outlined"
                 placeholder={localization.repositoryHelperText}
                 fullWidth={true}
                 type="url"
                 value={url}
+                inputProps={{
+                  style: {
+                    paddingTop: '10px',
+                    paddingBottom: '10px',
+                  },
+                }}
                 onChange={(ev) => {
                   setUrl(ev.target.value)
                 }}
