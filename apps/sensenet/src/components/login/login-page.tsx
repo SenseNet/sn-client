@@ -28,6 +28,16 @@ const useStyles = makeStyles(() =>
     loginSubtitle: {
       marginBottom: '1em',
     },
+    input: {
+      paddingTop: '10px',
+      paddingBottom: '10px',
+
+      '&:-webkit-autofill': {
+        WebkitBoxShadow: 'unset',
+        WebkitTextFillColor: 'unset',
+        caretColor: 'unset',
+      },
+    },
   }),
 )
 
@@ -110,10 +120,7 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
                 type="url"
                 value={url}
                 inputProps={{
-                  style: {
-                    paddingTop: '10px',
-                    paddingBottom: '10px',
-                  },
+                  className: classes.input,
                 }}
                 onChange={(ev) => {
                   setUrl(ev.target.value)
