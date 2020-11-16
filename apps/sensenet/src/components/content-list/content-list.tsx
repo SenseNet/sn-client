@@ -143,16 +143,16 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
           if (fieldName.includes('/')) {
             const splittedFieldName = fieldName.split('/')
             if (splittedFieldName.length === 2 && splittedFieldName[1] === '') {
-              if (isReferenceField(fieldName.split('/')[0], repo, props.schema)) {
-                referenceFields.push(fieldName.split('/')[0])
+              if (isReferenceField(splittedFieldName[0], repo, props.schema)) {
+                referenceFields.push(splittedFieldName[0])
               }
             } else if (
               repo.schemas.getFieldTypeByName(splittedFieldName[splittedFieldName.length - 1]) ===
               'ReferenceFieldSetting'
             ) {
-              !referenceFields.find((ref) => ref === fieldName) && referenceFields.push(fieldName)
+              !referenceFields.includes(fieldName) && referenceFields.push(fieldName)
             } else {
-              !referenceFields.find((ref) => ref === PathHelper.getParentPath(fieldName)) &&
+              !referenceFields.includes(PathHelper.getParentPath(fieldName)) &&
                 referenceFields.push(PathHelper.getParentPath(fieldName))
             }
           } else if (repo.schemas.getFieldTypeByName(fieldName) === 'ReferenceFieldSetting') {
@@ -497,7 +497,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
     return fieldComponentFunc({
       tableCellProps: createdFieldOptions,
       fieldSettings: repo.schemas
-        .getSchemaByName(displayField?.Type)
+        .getSchemaByName(displayField ? displayField.Type : '')
         .FieldSettings.find((setting) => setting.Name === lastInReference)!,
     })
   }

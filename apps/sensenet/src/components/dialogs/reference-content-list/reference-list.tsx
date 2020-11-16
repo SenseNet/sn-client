@@ -46,7 +46,7 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
         repository,
         settings: field.fieldSettings,
         content: props.parent,
-        actionName: 'new',
+        actionName: 'edit',
         fieldOnChange: (_, value: GenericContent) => {
           setNewReference(value)
         },
