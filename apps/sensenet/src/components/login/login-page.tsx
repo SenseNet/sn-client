@@ -7,6 +7,7 @@ import {
   Grid,
   InputLabel,
   makeStyles,
+  TextField,
   Typography,
 } from '@material-ui/core'
 import clsx from 'clsx'
@@ -15,7 +16,6 @@ import { Link } from 'react-router-dom'
 import snLogo from '../../assets/sensenet-icon-32.png'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { ShortTextInput } from '../field-controls/ShortText'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -27,6 +27,16 @@ const useStyles = makeStyles(() =>
     },
     loginSubtitle: {
       marginBottom: '1em',
+    },
+    input: {
+      paddingTop: '10px',
+      paddingBottom: '10px',
+
+      '&:-webkit-autofill': {
+        WebkitBoxShadow: 'unset',
+        WebkitTextFillColor: 'unset',
+        caretColor: 'unset',
+      },
     },
   }),
 )
@@ -97,17 +107,21 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
               <Typography align="center" variant="subtitle1" component="p" className={classes.loginSubtitle}>
                 {localization.repositoryUrl}
               </Typography>
-              <InputLabel shrink htmlFor="repository" required={true}>
+              <InputLabel shrink htmlFor="repository" required={true} style={{ marginBottom: '0.5rem' }}>
                 {localization.repositoryLabel}
               </InputLabel>
-              <ShortTextInput
+              <TextField
                 required={true}
                 name="repository"
                 disabled={isLoginInProgress}
+                variant="outlined"
                 placeholder={localization.repositoryHelperText}
                 fullWidth={true}
                 type="url"
                 value={url}
+                inputProps={{
+                  className: classes.input,
+                }}
                 onChange={(ev) => {
                   setUrl(ev.target.value)
                 }}

@@ -4,7 +4,6 @@ import { globals } from '../../../globalStyles'
 const useStyles = makeStyles(() => {
   return createStyles({
     grid: {
-      margin: '0 auto',
       padding: '14px 14px 0 14px',
       overflowY: 'auto',
       width: '100%',
@@ -33,7 +32,6 @@ const useStyles = makeStyles(() => {
       padding: '20px',
       bottom: 0,
       right: 0,
-      textAlign: 'right',
     },
   })
 })
