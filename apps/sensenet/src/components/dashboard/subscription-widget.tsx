@@ -39,7 +39,7 @@ export const SubscriptionWidget: React.FunctionComponent<SubscriptionWidgetProps
       </Typography>
       <Grid container justify="space-between" component={Paper} elevation={0} className={widgetClasses.container}>
         <Grid item xs={12} lg="auto" className={classes.statusBox}>
-          <img src={logo} alt="logo" />
+          <img src={logo} alt="logo" width="29" height="32" />
           <div className={widgetClasses.subtitle}>{props.subscription.plan.displayName}</div>
           {props.subscription.plan.baseprice !== undefined &&
             `(${
