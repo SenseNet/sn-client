@@ -2,7 +2,7 @@
  * @module FieldControls
  */
 import { deepMerge, toNumber } from '@sensenet/client-utils'
-import { CurrencyFieldSetting, NumberFieldSetting } from '@sensenet/default-content-types'
+import { CurrencyFieldSetting, isCurrencyFieldSetting, NumberFieldSetting } from '@sensenet/default-content-types'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
@@ -11,7 +11,6 @@ import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { defaultLocalization } from './localization'
-import { isCurrencyFieldSetting } from './type-guards'
 
 /**
  * Field control that represents a Number field. Available values will be populated from the FieldSettings.
