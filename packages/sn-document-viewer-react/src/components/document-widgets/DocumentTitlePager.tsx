@@ -19,7 +19,7 @@ export const DocumentTitlePager: React.FC = () => {
 
   const setPage = useCallback(
     (index: number) => {
-      viewerState.onPageChange.setValue({ page: index })
+      viewerState.pageToGo.setValue({ page: index })
     },
     [viewerState],
   )

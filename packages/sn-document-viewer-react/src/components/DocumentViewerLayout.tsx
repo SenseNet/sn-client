@@ -1,7 +1,7 @@
 import Drawer from '@material-ui/core/Drawer'
 import { SlideProps } from '@material-ui/core/Slide'
 import Typography from '@material-ui/core/Typography'
-import React, { useCallback, useEffect, useRef } from 'react'
+import React, { ReactNode, useCallback, useEffect } from 'react'
 import { CommentsContext, CommentsContextProvider } from '../context/comments'
 import { useLocalization, useViewerState } from '../hooks'
 import { Comment } from './comment'
@@ -11,6 +11,7 @@ import { CommentsContainer, PageList, Thumbnails } from './'
 /** Props definition for the Document Viewer layout */
 export interface DocumentViewerLayoutProps {
   drawerSlideProps?: Partial<SlideProps>
+  renderAppBar: () => JSX.Element | ReactNode
 }
 
 export const THUMBNAIL_PADDING = 16
@@ -31,8 +32,6 @@ interface ScrollToOptions {
 export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props) => {
   const viewerState = useViewerState()
   const localization = useLocalization()
-
-  const commentsContainerRef = useRef<HTMLDivElement>()
 
   const scrollToImage = useCallback(({ containerId, index, itemName, padding, smoothScroll }: ScrollToOptions) => {
     const container = document.getElementById(containerId)
@@ -68,11 +67,11 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
   )
 
   useEffect(() => {
-    const observer = viewerState.onPageChange.subscribe((p) => {
+    const observer = viewerState.pageToGo.subscribe((p) => {
       scrollTo(p.page)
     })
     return () => observer.dispose()
-  }, [scrollTo, viewerState.onPageChange])
+  }, [scrollTo, viewerState.pageToGo])
 
   return (
     <div
@@ -83,7 +82,7 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
         flexDirection: 'column',
         flexGrow: 1,
       }}>
-      {props.children}
+      {props.renderAppBar()}
       <div
         style={{
           display: 'flex',
@@ -122,8 +121,8 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
               overflow: 'hidden',
             },
           }}>
-          <CommentsContextProvider page={viewerState.activePage} images="preview">
-            <CommentsContainer ref={commentsContainerRef as any} style={{ display: 'flex', flexFlow: 'column' }}>
+          <CommentsContextProvider images="preview">
+            <CommentsContainer style={{ display: 'flex', flexFlow: 'column' }}>
               <Typography variant="h4">{localization.commentSideBarTitle}</Typography>
               <CreateComment localization={localization} />
               <CommentsContext.Consumer>

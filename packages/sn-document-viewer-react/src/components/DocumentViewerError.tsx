@@ -1,7 +1,6 @@
 import { Typography } from '@material-ui/core'
 import React from 'react'
 import { useDocumentData, useLocalization } from '../hooks'
-import { LayoutAppBar } from '.'
 
 /**
  * Component to display viewer related errors
@@ -19,9 +18,6 @@ export const DocumentViewerError: React.FC = () => {
         alignItems: 'center',
         height: '100%',
       }}>
-      <LayoutAppBar style={{ position: 'fixed', top: 0 }}>
-        <span />
-      </LayoutAppBar>
       <div
         style={{
           display: 'flex',
@@ -66,7 +62,8 @@ export const DocumentViewerError: React.FC = () => {
           {localization.errorLoadingDetails}
         </Typography>
         <Typography variant="h5" color="textSecondary" align="center" style={{ fontWeight: 'bolder' }}>
-          {localization.errorLoadingDocument.find((e) => e.state === documentData.pageCount)?.message}
+          {localization.errorLoadingDocument.find((e) => e.state === documentData.pageCount)?.message ||
+            localization.unknownError}
         </Typography>
       </div>
     </div>

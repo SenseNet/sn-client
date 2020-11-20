@@ -18,7 +18,7 @@ export const defaultViewerState: ViewerState & {
   hasChanges: false,
   isPlacingCommentMarker: false,
   isCreateCommentActive: false,
-  onPageChange: new ObservableValue({ page: 1 }),
+  pageToGo: new ObservableValue({ page: 1 }),
   updateState: () => {},
 }
 export const ViewerStateContext = React.createContext(defaultViewerState)

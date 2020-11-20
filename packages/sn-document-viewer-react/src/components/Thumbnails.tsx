@@ -138,7 +138,7 @@ export const Thumbnails: React.FC<ThumbnailsProps> = (props) => {
           paddingBottom: marginBottom || 0,
         }}>
         {visiblePages.map((page) => (
-          <CommentsContextProvider page={page.Index} key={page.Index} images={'thumbnail'}>
+          <CommentsContextProvider key={page.Index} images={'thumbnail'}>
             <ThumbnailPage
               viewportWidth={viewport.width}
               viewportHeight={viewport.height}

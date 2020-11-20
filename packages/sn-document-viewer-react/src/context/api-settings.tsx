@@ -2,7 +2,7 @@ import { Annotation, CommentData, DocumentData, Highlight, Redaction, Repository
 import { deepMerge, toNumber } from '@sensenet/client-utils'
 import { File as SnFile } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import React, { useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import { v1 } from 'uuid'
 import { DocumentViewerApiSettings } from '../models'
 
@@ -144,10 +144,7 @@ export const DocumentViewerApiSettingsProvider: React.FC<{ options?: Partial<Doc
   options,
 }) => {
   const repo = useRepository()
-  const [settings, setSettings] = useState(deepMerge(createDefaultApiSettings(repo), options))
-  useMemo(() => {
-    setSettings(deepMerge(createDefaultApiSettings(repo), options))
-  }, [repo, options])
+  const settings = useMemo(() => deepMerge(createDefaultApiSettings(repo), options), [repo, options])
 
   return (
     <DocumentViewerApiSettingsContext.Provider value={settings}>{children}</DocumentViewerApiSettingsContext.Provider>

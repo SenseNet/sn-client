@@ -16,12 +16,12 @@ export const RotateDocumentWidget: React.FC<{ mode?: ROTATION_MODE }> = (props) 
 
   const rotateDocument = useCallback(
     (direction: string) => {
-      const newRotation = viewerState.rotation ? viewerState.rotation : []
+      const newRotation = viewerState.rotation ?? []
       previewImages.imageData.forEach((page) => {
-        const existingObjIndex = newRotation.findIndex((rotation) => rotation.pageNum === page.Index)
-        if (newRotation.length > 0 && existingObjIndex !== -1) {
-          const prevValue = newRotation[existingObjIndex].degree || 0
-          newRotation[existingObjIndex].degree = ImageUtil.normalizeDegrees(
+        const existingObj = newRotation.find((rotation) => rotation.pageNum === page.Index)
+        if (newRotation.length > 0 && existingObj) {
+          const prevValue = existingObj.degree || 0
+          existingObj.degree = ImageUtil.normalizeDegrees(
             (prevValue + ((direction === 'left' ? -ROTATION_AMOUNT : ROTATION_AMOUNT) % 360)) % 360,
           )
         } else {
@@ -40,8 +40,6 @@ export const RotateDocumentWidget: React.FC<{ mode?: ROTATION_MODE }> = (props) 
 
       //update shapes as well
       const newImages = previewImages.imageData.map((img) => {
-        const newImg = { ...img }
-
         updateDocumentData({
           shapes: {
             annotations: applyShapeRotations(
@@ -62,7 +60,7 @@ export const RotateDocumentWidget: React.FC<{ mode?: ROTATION_MODE }> = (props) 
           },
         })
 
-        return newImg
+        return img
       })
       previewImages.setImageData(newImages)
     },
@@ -94,7 +92,6 @@ export const RotateDocumentWidget: React.FC<{ mode?: ROTATION_MODE }> = (props) 
 
   switch (props.mode) {
     case ROTATION_MODE.anticlockwise:
-      return button(props.mode)
     case ROTATION_MODE.clockwise:
       return button(props.mode)
     default:

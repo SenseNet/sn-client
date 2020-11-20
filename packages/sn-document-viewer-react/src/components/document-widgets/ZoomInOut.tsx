@@ -25,10 +25,10 @@ export const ZoomInOutWidget: React.FC = () => {
 
   return (
     <div style={{ display: 'inline-block' }}>
-      <IconButton color="inherit" onClick={zoomIn} title={localization.zoomIn}>
+      <IconButton color="inherit" onClick={zoomIn} title={localization.zoomIn} disabled={viewerState.zoomLevel >= 13}>
         <ZoomIn />
       </IconButton>
-      <IconButton color="inherit" onClick={zoomOut} title={localization.zoomOut}>
+      <IconButton color="inherit" onClick={zoomOut} title={localization.zoomOut} disabled={viewerState.zoomLevel <= -7}>
         <ZoomOut />
       </IconButton>
     </div>

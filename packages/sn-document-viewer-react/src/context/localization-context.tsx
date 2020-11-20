@@ -55,6 +55,7 @@ export const defaultLocalization = {
     { state: PreviewState.NoPreviewProviderEnabled, message: 'There is no preview provider enabled', details: '' },
   ],
   errorLoadingDetails: 'The following error occured during opening a document: ',
+  unknownError: 'Unknown error',
   reloadPage: 'Reload page',
   search: 'Search',
   share: 'Share',

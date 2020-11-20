@@ -18,12 +18,11 @@ export const RotateActivePagesWidget: React.FC<{ mode?: ROTATION_MODE }> = (prop
 
   const rotateDocument = useCallback(
     (direction: string) => {
-      const newRotation = viewerState.rotation ? viewerState.rotation : []
-
-      const existingObjIndex = newRotation.findIndex((rotation) => rotation.pageNum === viewerState.activePage)
-      if (newRotation.length > 0 && existingObjIndex !== -1) {
-        const prevValue = newRotation[existingObjIndex].degree || 0
-        newRotation[existingObjIndex].degree = ImageUtil.normalizeDegrees(
+      const newRotation = viewerState.rotation ?? []
+      const existingObj = newRotation.find((rotation) => rotation.pageNum === viewerState.activePage)
+      if (newRotation.length > 0 && existingObj) {
+        const prevValue = existingObj.degree || 0
+        existingObj.degree = ImageUtil.normalizeDegrees(
           (prevValue + ((direction === 'left' ? -ROTATION_AMOUNT : ROTATION_AMOUNT) % 360)) % 360,
         )
       } else {
@@ -41,8 +40,6 @@ export const RotateActivePagesWidget: React.FC<{ mode?: ROTATION_MODE }> = (prop
 
       //update shapes as well
       const newImages = previewImages.imageData.map((img) => {
-        const newImg = { ...img }
-
         updateDocumentData({
           shapes: {
             annotations: applyShapeRotations(
@@ -63,7 +60,7 @@ export const RotateActivePagesWidget: React.FC<{ mode?: ROTATION_MODE }> = (prop
           },
         })
 
-        return newImg
+        return img
       })
       previewImages.setImageData(newImages)
     },
@@ -83,8 +80,7 @@ export const RotateActivePagesWidget: React.FC<{ mode?: ROTATION_MODE }> = (prop
       <IconButton
         color="inherit"
         title={isLeft ? localization.rotatePageLeft : localization.rotatePageRight}
-        onClick={() => (isLeft ? rotateDocument('left') : rotateDocument('right'))}
-        id={isLeft ? 'RotateActiveLeft' : 'RotateActiveRigt'}>
+        onClick={() => (isLeft ? rotateDocument('left') : rotateDocument('right'))}>
         {isLeft ? <RotateLeft /> : <RotateRight />}
       </IconButton>
     )
@@ -95,7 +91,6 @@ export const RotateActivePagesWidget: React.FC<{ mode?: ROTATION_MODE }> = (prop
    */
   switch (props.mode) {
     case ROTATION_MODE.anticlockwise:
-      return button(props.mode)
     case ROTATION_MODE.clockwise:
       return button(props.mode)
     default:

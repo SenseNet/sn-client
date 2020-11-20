@@ -1,7 +1,7 @@
 import { deepMerge } from '@sensenet/client-utils'
 import { SlideProps } from '@material-ui/core/Slide'
 import { Theme } from '@material-ui/core/styles'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { ThemeProvider } from 'styled-components'
 import loaderImage from '../../assets/loader.gif'
 import {
@@ -23,6 +23,8 @@ import { DocumentViewerError } from './DocumentViewerError'
 import { DocumentViewerLayout } from './DocumentViewerLayout'
 import { DocumentViewerLoading } from './DocumentViewerLoading'
 import { DocumentViewerRegeneratePreviews } from './DocumentViewerRegeneratePreviews'
+
+export const POLLING_INTERVAL = 5000
 
 /**
  * Defined the component's own properties
@@ -66,6 +68,11 @@ export interface DocumentViewerProps {
    * The default state of the Document Viewer
    */
   defaultState?: ViewerState
+
+  /**
+   * Toolbar to be rendered
+   */
+  renderAppBar: () => JSX.Element | ReactNode
 }
 
 export const DocumentViewer: React.FC<DocumentViewerProps> = (props) => {
@@ -89,9 +96,10 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = (props) => {
                       return (
                         <ViewerStateProvider options={props.defaultState}>
                           <CommentStateProvider>
-                            <DocumentViewerLayout drawerSlideProps={props.drawerSlideProps}>
-                              {props.children}
-                            </DocumentViewerLayout>
+                            <DocumentViewerLayout
+                              drawerSlideProps={props.drawerSlideProps}
+                              renderAppBar={props.renderAppBar}
+                            />
                           </CommentStateProvider>
                         </ViewerStateProvider>
                       )

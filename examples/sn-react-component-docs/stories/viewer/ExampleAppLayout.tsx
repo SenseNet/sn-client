@@ -76,36 +76,40 @@ export const ExampleAppLayout: React.FC = () => {
       <div style={{ height: '100%' }}>
         {isViewerOpened ? (
           <RepositoryContext.Provider value={repository}>
-            <DocumentViewer theme={defaultTheme} documentIdOrPath={documentIdOrPath}>
-              <LayoutAppBar>
-                <div style={{ flexShrink: 0 }}>
-                  <ToggleShapesWidget />
-                  <ToggleThumbnailsWidget />
-                  <Download
-                    download={(doc) => {
-                      console.log('Download triggered', doc)
-                    }}
-                  />
-                  <Print
-                    print={(doc) => {
-                      console.log('Print triggered', doc)
-                    }}
-                  />
-                  <Share
-                    share={(doc) => {
-                      console.log('Share triggered', doc)
-                    }}
-                  />
-                  <ZoomInOutWidget />
-                  <RotateActivePagesWidget />
-                  <SaveWidget />
-                </div>
-                <DocumentTitlePager />
-                <div style={{ display: 'flex', flexShrink: 0 }}>
-                  <ToggleCommentsWidget />
-                </div>
-              </LayoutAppBar>
-            </DocumentViewer>
+            <DocumentViewer
+              theme={defaultTheme}
+              documentIdOrPath={documentIdOrPath}
+              renderAppBar={() => (
+                <LayoutAppBar>
+                  <div style={{ flexShrink: 0 }}>
+                    <ToggleShapesWidget />
+                    <ToggleThumbnailsWidget />
+                    <Download
+                      download={(doc) => {
+                        console.log('Download triggered', doc)
+                      }}
+                    />
+                    <Print
+                      print={(doc) => {
+                        console.log('Print triggered', doc)
+                      }}
+                    />
+                    <Share
+                      share={(doc) => {
+                        console.log('Share triggered', doc)
+                      }}
+                    />
+                    <ZoomInOutWidget />
+                    <RotateActivePagesWidget />
+                    <SaveWidget />
+                  </div>
+                  <DocumentTitlePager />
+                  <div style={{ display: 'flex', flexShrink: 0 }}>
+                    <ToggleCommentsWidget />
+                  </div>
+                </LayoutAppBar>
+              )}
+            />
           </RepositoryContext.Provider>
         ) : (
           <div

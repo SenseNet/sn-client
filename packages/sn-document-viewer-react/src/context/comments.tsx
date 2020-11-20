@@ -18,11 +18,10 @@ export const defaultCommentsContext: CommentsContextType = {
 export const CommentsContext = React.createContext<CommentsContextType>(defaultCommentsContext)
 
 export interface CommentContextProviderProps {
-  page: number
   images: 'preview' | 'thumbnail'
 }
 
-export const CommentsContextProvider: React.FC<CommentContextProviderProps> = ({ page, children, images }) => {
+export const CommentsContextProvider: React.FC<CommentContextProviderProps> = (props) => {
   const api = useDocumentViewerApi()
   const { documentData } = useDocumentData()
   const viewerState = useViewerState()
@@ -30,13 +29,17 @@ export const CommentsContextProvider: React.FC<CommentContextProviderProps> = ({
   useEffect(() => {
     const abortController = new AbortController()
     ;(async () => {
-      if (viewerState.showComments && images === 'preview') {
-        const result = await api.commentActions.getPreviewComments({ document: documentData, page, abortController })
+      if (viewerState.showComments && props.images === 'preview') {
+        const result = await api.commentActions.getPreviewComments({
+          document: documentData,
+          page: viewerState.activePage,
+          abortController,
+        })
         setComments(result)
       }
     })()
     return () => abortController.abort()
-  }, [api.commentActions, documentData, images, page, viewerState.showComments])
+  }, [api.commentActions, documentData, props.images, viewerState.activePage, viewerState.showComments])
 
   useEffect(() => {
     const disposables = [
@@ -74,7 +77,7 @@ export const CommentsContextProvider: React.FC<CommentContextProviderProps> = ({
         ...api.commentActions,
         comments,
       }}>
-      {children}
+      {props.children}
     </CommentsContext.Provider>
   )
 }

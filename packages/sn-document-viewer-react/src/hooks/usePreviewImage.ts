@@ -1,8 +1,7 @@
 import { sleepAsync } from '@sensenet/client-utils'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { POLLING_INTERVAL } from '..'
 import { useDocumentData, useDocumentViewerApi, usePreviewImages, useViewerSettings, useViewerState } from '.'
-
-const POLLING_INTERVAL = 5000
 
 export const usePreviewImage = (pageNo: number) => {
   const images = usePreviewImages()
@@ -10,12 +9,7 @@ export const usePreviewImage = (pageNo: number) => {
   const { documentData } = useDocumentData()
   const viewerSettings = useViewerSettings()
   const viewerState = useViewerState()
-  const [previewImage, setPreviewImage] = useState(images.imageData.find((i) => i.Index === pageNo))
   const { imageData, ...context } = { ...images }
-
-  useEffect(() => {
-    setPreviewImage(images.imageData.find((i) => i.Index === pageNo))
-  }, [images.imageData, pageNo])
 
   useEffect(() => {
     const abortController = new AbortController()
@@ -29,7 +23,16 @@ export const usePreviewImage = (pageNo: number) => {
           version: viewerSettings.version,
         })
         if (previewImageData?.PreviewAvailable) {
-          setPreviewImage(previewImageData)
+          if (previewImageData.PreviewImageUrl) {
+            const newImages = [...images.imageData]
+            const oldValueIndex = newImages.findIndex((image) => image.Index === pageNo)
+            if (oldValueIndex !== -1) {
+              newImages[oldValueIndex] = { ...previewImageData, Index: pageNo }
+              context.setImageData(newImages)
+            } else {
+              context.setImageData([...newImages, { ...previewImageData, Index: pageNo }])
+            }
+          }
         } else {
           await sleepAsync(POLLING_INTERVAL)
           getPreviewImageData()
@@ -41,14 +44,17 @@ export const usePreviewImage = (pageNo: number) => {
       }
     }
 
-    if (previewImage && !previewImage.PreviewImageUrl) {
+    if (
+      images.imageData.find((i) => i.Index === pageNo) &&
+      !images.imageData.find((i) => i.Index === pageNo)?.PreviewImageUrl
+    ) {
       getPreviewImageData()
     }
     return () => abortController.abort()
-  }, [api, documentData, pageNo, previewImage, viewerSettings.version, viewerState.showWatermark])
+  }, [api, context, documentData, images.imageData, pageNo, viewerSettings.version, viewerState.showWatermark])
 
   return {
     ...context,
-    image: previewImage,
+    image: images.imageData.find((i) => i.Index === pageNo),
   }
 }
