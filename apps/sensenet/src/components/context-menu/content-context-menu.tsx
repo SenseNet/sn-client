@@ -97,13 +97,14 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
           </List>
         </Drawer>
       ) : (
-        <Menu open={props.isOpened} {...props.menuProps}>
+        <Menu open={props.isOpened} {...props.menuProps} data-test="content-context-menu-root">
           {actions?.map((action) => {
             return (
               <MenuItem
                 key={action.Name}
                 disableRipple={true}
                 disabled={DISABLED_ACTIONS.includes(action.Name)}
+                data-test={`content-context-menu-${action.Name.replace(/\s+/g, '-').toLowerCase()}`}
                 onClick={() => {
                   props.onClose?.()
                   runAction(action.Name)

@@ -56,11 +56,7 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
         controlMapper={controlMapper}
         localization={{ cancel: localization.forms.cancel }}
         classes={{
-          grid: classes.grid,
-          fieldWrapper: classes.fieldWrapper,
-          field: classes.field,
-          fieldFullWidth: classes.fieldFullWidth,
-          actionButtonWrapper: classes.actionButtonWrapper,
+          ...classes,
           cancel: globalClasses.cancelButton,
         }}
         renderTitle={() => <ViewTitle title={'Info about'} titleBold={content?.DisplayName} content={content} />}

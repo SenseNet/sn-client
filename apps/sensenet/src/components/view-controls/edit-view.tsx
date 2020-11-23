@@ -2,7 +2,7 @@
  * @module ViewControls
  */
 import { isExtendedError } from '@sensenet/client-core'
-import { EditView as SnEditView } from '@sensenet/controls-react'
+import { ActionNameType, EditView as SnEditView } from '@sensenet/controls-react'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { ReactElement, useEffect, useState } from 'react'
@@ -10,7 +10,7 @@ import { useHistory, useRouteMatch } from 'react-router-dom'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useSelectionService } from '../../hooks'
 import { navigateToAction } from '../../services'
-import { ActionNameType, reactControlMapper } from '../react-control-mapper'
+import { reactControlMapper } from '../react-control-mapper'
 import { useViewControlStyles } from './common/styles'
 import { ViewTitle } from './common/view-title'
 
@@ -76,10 +76,12 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         props.submitCallback?.()
       } catch (error) {
         logger.error({
-          message: localization.editPropertiesDialog.saveFailedNotification.replace(
-            '{0}',
-            saveableFields.DisplayName || saveableFields.Name || content.DisplayName || content.Name,
-          ),
+          message:
+            error.message ||
+            localization.editPropertiesDialog.saveFailedNotification.replace(
+              '{0}',
+              saveableFields.DisplayName || saveableFields.Name || content.DisplayName || content.Name,
+            ),
           data: {
             relatedContent: content,
             relatedRepository: repository.configuration.repositoryUrl,
@@ -103,12 +105,9 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         uploadFolderpath="/Root/Content/demoavatars"
         controlMapper={controlMapper}
         localization={{ submit: localization.forms.submit, cancel: localization.forms.cancel }}
+        hideDescription
         classes={{
-          grid: classes.grid,
-          fieldWrapper: classes.fieldWrapper,
-          field: classes.field,
-          fieldFullWidth: classes.fieldFullWidth,
-          actionButtonWrapper: classes.actionButtonWrapper,
+          ...classes,
           cancel: globalClasses.cancelButton,
         }}
         renderTitle={() => (

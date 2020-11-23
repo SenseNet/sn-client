@@ -57,6 +57,8 @@ export const LearnMoreWidget: React.FunctionComponent = () => {
                 srcSet={`${plutoOrderCompleted} 1x, ${plutoOrderCompleted2x} 2x`}
                 src={plutoOrderCompleted}
                 alt="logo"
+                height="148"
+                width="205"
               />
             </div>
             <p className={clsx(widgetClasses.subtitle, classes.subtitle)}>{localization.learnBasics}</p>
@@ -71,7 +73,13 @@ export const LearnMoreWidget: React.FunctionComponent = () => {
         <Grid item xs={12} lg={4} className={classes.item}>
           <div>
             <div className={classes.imageWrapper}>
-              <img srcSet={`${plutoComeBack} 1x, ${plutoComeBack2x} 2x`} src={plutoComeBack} alt="logo" />
+              <img
+                srcSet={`${plutoComeBack} 1x, ${plutoComeBack2x} 2x`}
+                src={plutoComeBack}
+                alt="logo"
+                height="148"
+                width="249.5"
+              />
             </div>
             <p className={clsx(widgetClasses.subtitle, classes.subtitle)}>{localization.beExpert}</p>
             <div>{localization.beExpertDescription}</div>
@@ -85,7 +93,13 @@ export const LearnMoreWidget: React.FunctionComponent = () => {
         <Grid item xs={12} lg={4} className={classes.item}>
           <div>
             <div className={classes.imageWrapper}>
-              <img srcSet={`${plutoWelcome} 1x, ${plutoWelcome2x} 2x`} src={plutoWelcome} alt="logo" />
+              <img
+                srcSet={`${plutoWelcome} 1x, ${plutoWelcome2x} 2x`}
+                src={plutoWelcome}
+                alt="logo"
+                height="148"
+                width="208.5"
+              />
             </div>
             <p className={clsx(widgetClasses.subtitle, classes.subtitle)}>{localization.buildApp}</p>
             <div>{localization.buildAppDescription}</div>

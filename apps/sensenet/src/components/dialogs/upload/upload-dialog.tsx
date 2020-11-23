@@ -177,6 +177,7 @@ export function UploadDialog(props: UploadDialogProps) {
         <IconButton
           disabled={isUploadInProgress}
           aria-label="close"
+          data-test="dialog-close"
           className={classes.closeButton}
           onClick={closeLastDialog}>
           <CloseIcon />
@@ -214,6 +215,7 @@ export function UploadDialog(props: UploadDialogProps) {
         <Grid container justify="flex-end">
           {isUploadCompleted() ? null : (
             <Button
+              data-test="btn-upload"
               aria-label={localization.uploadButton}
               color="primary"
               disabled={isUploadInProgress}
@@ -232,6 +234,7 @@ export function UploadDialog(props: UploadDialogProps) {
         disabled={props.disableMultiUpload && files && files.length > 0}
         ref={inputFile}
         type="file"
+        data-test="input-file"
         multiple={!props.disableMultiUpload}
       />
       <Prompt when={isUploadInProgress} message={localization.blockNavigation} />

@@ -26,6 +26,7 @@ export const useGridSwitcher = ({ config, defaultItem }: GridSwitcherProps) => {
         {config.map((item) => (
           <Button
             key={item.name}
+            data-test={`${item.name.replace(/\s+/g, '-').toLowerCase()}`}
             startIcon={item.icon}
             onClick={() => setActiveItem(item)}
             style={activeItem.name !== item.name ? { backgroundColor: '#929292' } : {}}>

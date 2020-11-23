@@ -46,7 +46,7 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
       <Toolbar className={classes.toolBar}>
         <div className={globalClasses.centeredVertical}>
           <Link to="/" className={globalClasses.centeredVertical}>
-            <img src={logo} className={classes.logo} alt="logo" data-test="sensenet-logo" />
+            <img src={logo} className={classes.logo} alt="logo" data-test="sensenet-logo" width="29" height="32" />
           </Link>
           {personalSettings.drawer.type === 'temporary' ? (
             <IconButton

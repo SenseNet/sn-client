@@ -21,6 +21,7 @@ export const DisplayNameComponent: React.FunctionComponent<DisplayNameProps> = (
       style={{ justifyContent: 'left' }}>
       <div
         className={globalClasses.centeredVertical}
+        data-test={`table-cell-${content.DisplayName?.replace(/\s+/g, '-').toLowerCase()}`}
         style={{
           justifyContent: 'space-between',
         }}>

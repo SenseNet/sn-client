@@ -41,19 +41,18 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
   const [requestClearToken, setRequestClearToken] = useState<number>()
   const pagination = usePagination({ items: references, color: 'primary' })
 
-  const fieldControl = createElement(
-    controlMapper.getControlForContentField(props.parent.Type, props.fieldName, 'new'),
-    {
-      repository,
-      settings: field!.fieldSettings,
-      content: props.parent,
-      actionName: 'new',
-      fieldOnChange: (_, value: GenericContent) => {
-        setNewReference(value)
-      },
-      triggerClear: requestClearToken,
-    },
-  )
+  const fieldControl = field
+    ? createElement(controlMapper.getControlForContentField(props.parent.Type, props.fieldName, 'edit'), {
+        repository,
+        settings: field.fieldSettings,
+        content: props.parent,
+        actionName: 'edit',
+        fieldOnChange: (_, value: GenericContent) => {
+          setNewReference(value)
+        },
+        triggerClear: requestClearToken,
+      })
+    : null
 
   const handleAddReference = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -82,7 +81,7 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
 
   return (
     <>
-      {props.canEdit && (
+      {props.canEdit && fieldControl && (
         <form
           className={globalClasses.centeredVertical}
           style={{
@@ -120,19 +119,28 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText primary={item.DisplayName} />
-                  {props.canEdit && (
+                  {props.canEdit && fieldControl && (
                     <ListItemSecondaryAction>
                       <IconButton
                         edge="end"
                         aria-label="delete"
                         onClick={async () => {
                           const remainedReferences = references.filter((content) => item.Id !== content.Id)
-                          await repository.patch({
-                            idOrPath: props.parent.Id,
-                            content: { [props.fieldName]: remainedReferences.map((content) => content.Id) },
-                            forceRefresh: true,
-                          })
-                          setReferences(remainedReferences)
+                          try {
+                            await repository.patch({
+                              idOrPath: props.parent.Id,
+                              content: { [props.fieldName]: remainedReferences.map((content) => content.Id) },
+                              forceRefresh: true,
+                            })
+                            setReferences(remainedReferences)
+                          } catch (error) {
+                            logger.error({
+                              message: error.message,
+                              data: {
+                                error,
+                              },
+                            })
+                          }
                         }}>
                         <ClearIcon />
                       </IconButton>

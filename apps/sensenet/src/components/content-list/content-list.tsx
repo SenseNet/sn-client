@@ -1,4 +1,5 @@
 import { Repository } from '@sensenet/client-core'
+import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsContext,
@@ -12,6 +13,7 @@ import { VirtualCellProps, VirtualDefaultCell, VirtualizedTable } from '@sensene
 import { createStyles, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { TableCellProps } from 'react-virtualized'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useSelectionService } from '../../hooks'
@@ -75,7 +77,7 @@ export interface ContentListProps {
 export const isReferenceField = (fieldName: string, repo: Repository, schema = 'GenericContent') => {
   const refWhiteList = ['AllowedChildTypes', 'AllRoles']
   const setting = repo.schemas.getSchemaByName(schema).FieldSettings.find((f) => f.Name === fieldName)
-  return refWhiteList.indexOf(fieldName) !== -1 || (setting && setting.Type === 'ReferenceFieldSetting') || false
+  return refWhiteList.some((field) => field === fieldName) || setting?.Type === 'ReferenceFieldSetting'
 }
 
 const rowHeightConst = 57
@@ -137,10 +139,24 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
       ...loadSettings.loadChildrenSettings,
       expand: [
         'CheckedOutTo',
-        ...fields.filter((fieldName) => isReferenceField(fieldName, repo, props.schema)),
         ...fields.reduce<any[]>((referenceFields, fieldName) => {
           if (fieldName.includes('/')) {
-            referenceFields.push(fieldName.split('/')[0])
+            const splittedFieldName = fieldName.split('/')
+            if (splittedFieldName.length === 2 && splittedFieldName[1] === '') {
+              if (isReferenceField(splittedFieldName[0], repo, props.schema)) {
+                referenceFields.push(splittedFieldName[0])
+              }
+            } else if (
+              repo.schemas.getFieldTypeByName(splittedFieldName[splittedFieldName.length - 1]) ===
+              'ReferenceFieldSetting'
+            ) {
+              !referenceFields.includes(fieldName) && referenceFields.push(fieldName)
+            } else {
+              !referenceFields.includes(PathHelper.getParentPath(fieldName)) &&
+                referenceFields.push(PathHelper.getParentPath(fieldName))
+            }
+          } else if (repo.schemas.getFieldTypeByName(fieldName) === 'ReferenceFieldSetting') {
+            referenceFields.push(fieldName)
           }
           return referenceFields
         }, []),
@@ -356,7 +372,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
             <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
               <EnabledField
                 enabled={fieldOptions.rowData[fieldOptions.dataKey] as boolean}
-                description={fieldSettings.Description ?? ''}
+                description={fieldSettings?.Description ?? ''}
                 onChange={async (value: boolean) => {
                   try {
                     await repo.patch({
@@ -440,6 +456,52 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
     )
   }
 
+  const fieldReferenceFunc = (fieldOptions: TableCellProps) => {
+    const splittedDatakey = fieldOptions.dataKey.split('/')
+
+    if (splittedDatakey[splittedDatakey.length - 1] === '') {
+      splittedDatakey.pop()
+    }
+    const lastInReference = splittedDatakey[splittedDatakey.length - 1]
+    const displayField = splittedDatakey.reduce((acc, curr, _index, arr) => {
+      if (!acc[curr]) {
+        arr.length = 0
+        return null
+      } else if (!isReferenceField(curr, repo, acc.Type)) {
+        arr.length = 0
+        return acc
+      }
+      return acc[curr]
+    }, fieldOptions.rowData)
+
+    const cellData = displayField
+      ? isReferenceField(lastInReference, repo, displayField.Type)
+        ? displayField.DisplayName
+        : displayField[lastInReference]
+      : displayField
+
+    const createdFieldOptions = {
+      columnIndex: fieldOptions.columnIndex,
+      dataKey: lastInReference,
+      isScrolling: fieldOptions.isScrolling,
+      rowData: {
+        [lastInReference]: cellData,
+        Id: displayField?.Id,
+        Name: displayField?.Name,
+        Type: displayField?.Type,
+      },
+      cellData,
+      rowIndex: fieldOptions.rowIndex,
+    }
+
+    return fieldComponentFunc({
+      tableCellProps: createdFieldOptions,
+      fieldSettings: repo.schemas
+        .getSchemaByName(displayField ? displayField.Type : '')
+        .FieldSettings.find((setting) => setting.Name === lastInReference)!,
+    })
+  }
+
   const menuPropsObj = {
     disablePortal: true,
     anchorReference: 'anchorPosition' as 'anchorPosition',
@@ -478,9 +540,17 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
             active={activeContent}
             checkboxProps={{ color: 'primary' }}
             cellRenderer={fieldComponentFunc}
+            referenceCellRenderer={fieldReferenceFunc}
             displayRowCheckbox={!props.disableSelection}
             fieldsToDisplay={
-              (props.fieldsToDisplay?.map((field) => field.split('/')[0]) ||
+              (props.fieldsToDisplay?.map((field) => {
+                const splittedField = field.split('/')
+                if (splittedField.length === 2 && splittedField[1] === '') {
+                  return splittedField[0]
+                } else {
+                  return field
+                }
+              }) ||
                 personalSettings.content.fields ||
                 displayNameInArray) as any
             }

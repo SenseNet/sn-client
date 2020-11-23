@@ -4,7 +4,7 @@ import {
   AllowedChildTypes,
   AutoComplete,
   Avatar,
-  BooleanComponent,
+  Checkbox,
   CheckboxGroup,
   ColorPicker,
   DatePicker,
@@ -12,13 +12,14 @@ import {
   FileName,
   FileUpload,
   Name,
-  NumberComponent,
+  NumberField,
   Password,
   RadioButtonGroup,
   reactControlMapper,
   ReferenceGrid,
   RichTextEditor,
   ShortText,
+  Switcher,
   TagsInput,
   Textarea,
   TimePicker,
@@ -52,7 +53,7 @@ import timepickerNotes from '../notes/fieldcontrols/TimePicker.md'
 import { customSchema } from './custom-schema'
 import { DynamicControl } from './dynamic-control'
 import { fieldControlStory } from './field-control-story'
-import { PleaseLogin } from './PleaseLogin'
+import { Login } from './Login'
 
 export const testRepository = new Repository({
   repositoryUrl: 'https://dev.demo.sensenet.com',
@@ -127,7 +128,7 @@ const groupContent: Group = {
 fieldControlStory({
   component: (actionName) => (
     <div>
-      <PleaseLogin>
+      <Login>
         <DynamicControl
           actionName={actionName}
           repository={testRepository}
@@ -135,17 +136,17 @@ fieldControlStory({
           component={AllowedChildTypes}
           fieldName="AllowedChildTypes"
         />
-      </PleaseLogin>
+      </Login>
     </div>
   ),
   markdown: allowedTypeNotes,
-  storyName: 'FieldControls.AllowedChildTypes',
+  storyName: '/FieldControls/AllowedChildTypes',
 })
 
 fieldControlStory({
   component: (actionName) => (
     <div>
-      <PleaseLogin>
+      <Login>
         <DynamicControl
           actionName={actionName}
           repository={testRepository}
@@ -153,29 +154,29 @@ fieldControlStory({
           component={AutoComplete}
           fieldName="Members"
         />
-      </PleaseLogin>
+      </Login>
     </div>
   ),
   markdown: autocompleteNotes,
-  storyName: 'FieldControls.AutoComplete',
+  storyName: '/FieldControls/AutoComplete',
 })
 
 fieldControlStory({
   component: (actionName) => (
     <div>
-      <PleaseLogin>
+      <Login>
         <DynamicControl
           actionName={actionName}
           repository={testRepository}
           content={userContent}
-          component={Avatar}
+          component={(props) => <Avatar handleAdd={() => null} {...props} />}
           fieldName="Avatar"
         />
-      </PleaseLogin>
+      </Login>
     </div>
   ),
   markdown: avatarNotes,
-  storyName: 'FieldControls.Avatar',
+  storyName: '/FieldControls/Avatar',
 })
 
 fieldControlStory({
@@ -184,12 +185,26 @@ fieldControlStory({
       actionName={actionName}
       repository={testRepository}
       content={userContent}
-      component={BooleanComponent}
+      component={Checkbox}
       fieldName="Enabled"
     />
   ),
   markdown: '',
-  storyName: 'FieldControls.Boolean',
+  storyName: '/FieldControls/Checkbox',
+})
+
+fieldControlStory({
+  component: (actionName) => (
+    <DynamicControl
+      actionName={actionName}
+      repository={testRepository}
+      content={userContent}
+      component={Switcher}
+      fieldName="Enabled"
+    />
+  ),
+  markdown: '',
+  storyName: '/FieldControls/Switcher',
 })
 
 fieldControlStory({
@@ -203,7 +218,7 @@ fieldControlStory({
     />
   ),
   markdown: checkboxgroupNotes,
-  storyName: 'FieldControls.CheckboxGroup',
+  storyName: '/FieldControls/CheckboxGroup',
 })
 
 fieldControlStory({
@@ -217,7 +232,7 @@ fieldControlStory({
     />
   ),
   markdown: colorPickerNotes,
-  storyName: 'FieldControls.ColorPicker',
+  storyName: '/FieldControls/ColorPicker',
 })
 
 fieldControlStory({
@@ -231,7 +246,7 @@ fieldControlStory({
     />
   ),
   markdown: datepickerNotes,
-  storyName: 'FieldControls.DatePicker',
+  storyName: '/FieldControls/DatePicker',
 })
 
 fieldControlStory({
@@ -245,7 +260,7 @@ fieldControlStory({
     />
   ),
   markdown: datetimepickerNotes,
-  storyName: 'FieldControls.DateTimePicker',
+  storyName: '/FieldControls/DateTimePicker',
 })
 
 fieldControlStory({
@@ -253,7 +268,7 @@ fieldControlStory({
     <DynamicControl actionName={actionName} repository={testRepository} content={testContent} fieldName="DisplayName" />
   ),
   markdown: displaynameNotes,
-  storyName: 'FieldControls.DisplayName',
+  storyName: '/FieldControls/DisplayName',
 })
 
 fieldControlStory({
@@ -267,7 +282,7 @@ fieldControlStory({
     />
   ),
   markdown: dropdownlistNotes,
-  storyName: 'FieldControls.DropDownList',
+  storyName: '/FieldControls/DropDownList',
 })
 
 fieldControlStory({
@@ -286,13 +301,13 @@ fieldControlStory({
     )
   },
   markdown: filenameNotes,
-  storyName: 'FieldControls.FileName',
+  storyName: '/FieldControls/FileName',
 })
 
 fieldControlStory({
   component: (actionName) => (
     <div>
-      <PleaseLogin>
+      <Login>
         <DynamicControl
           actionName={actionName}
           repository={testRepository}
@@ -300,11 +315,11 @@ fieldControlStory({
           component={FileUpload}
           fieldName="Binary"
         />
-      </PleaseLogin>
+      </Login>
     </div>
   ),
   markdown: fileUploadNotes,
-  storyName: 'FieldControls.FileUpload',
+  storyName: '/FieldControls/FileUpload',
 })
 
 fieldControlStory({
@@ -318,7 +333,7 @@ fieldControlStory({
     />
   ),
   markdown: nameNotes,
-  storyName: 'FieldControls.Name',
+  storyName: '/FieldControls/Name',
 })
 
 fieldControlStory({
@@ -327,12 +342,12 @@ fieldControlStory({
       actionName={actionName}
       repository={testRepository}
       content={testContent}
-      component={NumberComponent}
+      component={NumberField}
       fieldName="Index"
     />
   ),
   markdown: numberNotes,
-  storyName: 'FieldControls.Number',
+  storyName: '/FieldControls/Number',
 })
 
 fieldControlStory({
@@ -341,12 +356,12 @@ fieldControlStory({
       actionName={actionName}
       repository={testRepository}
       content={taskContent}
-      component={NumberComponent}
+      component={NumberField}
       fieldName="TaskCompletion"
     />
   ),
   markdown: numberNotes,
-  storyName: 'FieldControls.Number.Percantage',
+  storyName: '/FieldControls/Number.Percantage',
 })
 
 fieldControlStory({
@@ -355,12 +370,12 @@ fieldControlStory({
       actionName={actionName}
       repository={testRepository}
       content={testContent}
-      component={NumberComponent}
+      component={NumberField}
       fieldName="ExpectedRevenue"
     />
   ),
   markdown: numberNotes,
-  storyName: 'FieldControls.Number.Currency',
+  storyName: '/FieldControls/Number.Currency',
 })
 
 fieldControlStory({
@@ -369,12 +384,12 @@ fieldControlStory({
       actionName={actionName}
       repository={testRepository}
       content={fileContent}
-      component={NumberComponent}
+      component={NumberField}
       fieldName="RateAvg"
     />
   ),
   markdown: numberNotes,
-  storyName: 'FieldControls.Number.Double',
+  storyName: '/FieldControls/Number.Double',
 })
 
 fieldControlStory({
@@ -382,13 +397,13 @@ fieldControlStory({
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
-      content={testContent}
+      content={userContent}
       component={Password}
       fieldName="Password"
     />
   ),
   markdown: passwordNotes,
-  storyName: 'FieldControls.Password',
+  storyName: '/FieldControls/Password',
 })
 
 fieldControlStory({
@@ -402,13 +417,13 @@ fieldControlStory({
     />
   ),
   markdown: radiobuttongroupNotes,
-  storyName: 'FieldControls.RadioButtonGroup',
+  storyName: '/FieldControls/RadioButtonGroup',
 })
 
 fieldControlStory({
   component: (actionName) => (
     <div>
-      <PleaseLogin>
+      <Login>
         <DynamicControl
           actionName={actionName}
           repository={testRepository}
@@ -416,11 +431,11 @@ fieldControlStory({
           component={ReferenceGrid}
           fieldName="Members"
         />
-      </PleaseLogin>
+      </Login>
     </div>
   ),
   markdown: referenceGridNotes,
-  storyName: 'FieldControls.ReferenceGrid',
+  storyName: '/FieldControls/ReferenceGrid',
 })
 
 fieldControlStory({
@@ -434,7 +449,7 @@ fieldControlStory({
     />
   ),
   markdown: richtextNotes,
-  storyName: 'FieldControls.RichTextEditor',
+  storyName: '/FieldControls/RichTextEditor',
 })
 
 fieldControlStory({
@@ -448,13 +463,13 @@ fieldControlStory({
     />
   ),
   markdown: shorttextNotes,
-  storyName: 'FieldControls.ShortText',
+  storyName: '/FieldControls/ShortText',
 })
 
 fieldControlStory({
   component: (actionName) => (
     <div>
-      <PleaseLogin>
+      <Login>
         <DynamicControl
           actionName={actionName}
           repository={testRepository}
@@ -462,11 +477,11 @@ fieldControlStory({
           component={TagsInput}
           fieldName="Members"
         />
-      </PleaseLogin>
+      </Login>
     </div>
   ),
   markdown: tagsInputNotes,
-  storyName: 'FieldControls.TagsInput',
+  storyName: '/FieldControls/TagsInput',
 })
 
 fieldControlStory({
@@ -480,7 +495,7 @@ fieldControlStory({
     />
   ),
   markdown: textareasNotes,
-  storyName: 'FieldControls.Textarea',
+  storyName: '/FieldControls/Textarea',
 })
 
 fieldControlStory({
@@ -494,5 +509,5 @@ fieldControlStory({
     />
   ),
   markdown: timepickerNotes,
-  storyName: 'FieldControls.TimePicker',
+  storyName: '/FieldControls/TimePicker',
 })

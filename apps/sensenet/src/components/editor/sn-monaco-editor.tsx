@@ -129,6 +129,7 @@ export const SnMonacoEditor: React.FunctionComponent<SnMonacoEditorProps> = (pro
       />
       <div className={classes.actionButtonWrapper}>
         <Button
+          data-test="monaco-editor-cancel"
           aria-label={localization.forms.cancel}
           color="default"
           className={globalClasses.cancelButton}

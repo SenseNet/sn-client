@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Color field control in browse view should show the displayname and fieldValue when fieldValue is provided 1`] = `
+<Fragment>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="caption"
+  >
+    Color
+  </WithStyles(ForwardRef(Typography))>
+  <div
+    style={
+      Object {
+        "display": "flex",
+      }
+    }
+  >
+    <WithStyles(ForwardRef(Icon))
+      style={
+        Object {
+          "color": "#016d9e",
+        }
+      }
+    >
+      lens
+    </WithStyles(ForwardRef(Icon))>
+    <WithStyles(ForwardRef(Typography))
+      gutterBottom={true}
+      style={
+        Object {
+          "marginLeft": "0.5rem",
+        }
+      }
+      variant="body1"
+    >
+      #016d9e
+    </WithStyles(ForwardRef(Typography))>
+  </div>
+</Fragment>
+`;
+
+exports[`Color field control in edit/new view should set all the props 1`] = `
+<WithStyles(ForwardRef(FormControl))>
+  <WithStyles(ForwardRef(TextField))
+    InputProps={
+      Object {
+        "startAdornment": <WithStyles(ForwardRef(InputAdornment))
+          position="start"
+        >
+          <WithStyles(ForwardRef(Icon))
+            style={
+              Object {
+                "color": "#016d9e",
+              }
+            }
+          >
+            lens
+          </WithStyles(ForwardRef(Icon))>
+        </WithStyles(ForwardRef(InputAdornment))>,
+      }
+    }
+    disabled={true}
+    helperText="Color"
+    id="Color"
+    label="Color"
+    name="Color"
+    onClick={[Function]}
+    placeholder="Color"
+    required={true}
+    type="text"
+    value="#016d9e"
+  />
+</WithStyles(ForwardRef(FormControl))>
+`;

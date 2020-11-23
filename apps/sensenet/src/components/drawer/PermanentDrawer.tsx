@@ -151,7 +151,7 @@ export const PermanentDrawer = () => {
                     button={true}
                     key={index}
                     selected={!!matchPath(location.pathname, item.url)}
-                    data-test={item.primaryText}>
+                    data-test={`drawer-menu-item-${item.primaryText.replace(/\s+/g, '-').toLowerCase()}`}>
                     <ListItemIcon
                       className={clsx(classes.listItemIconDark, globalClasses.centered, {
                         [classes.listItemIconLight]: personalSettings.theme === 'light',
@@ -162,7 +162,7 @@ export const PermanentDrawer = () => {
                     </ListItemIcon>
                     {opened && (
                       <ListItemText
-                        primary={item.primaryText}
+                        primary={`${item.primaryText}`}
                         style={{
                           color:
                             theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,

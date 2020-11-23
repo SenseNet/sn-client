@@ -3,7 +3,7 @@
  * @description General classes, modules and methods for sn-controls-react package
  */
 
-export * from './ReactControlMapper'
+export * from './react-control-mapper'
 export * from './fieldcontrols'
 export * from './viewcontrols'
 export * from './assets'
