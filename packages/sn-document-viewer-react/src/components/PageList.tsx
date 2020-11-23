@@ -1,7 +1,6 @@
 import { PreviewImageData } from '@sensenet/client-core'
 import Grid from '@material-ui/core/Grid'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { CommentsContextProvider } from '../context/comments'
 import { usePreviewImages, useViewerState } from '../hooks'
 import { Dimensions, ImageUtil } from '../services'
 import { PAGE_CONTAINER_ID, PAGE_PADDING } from './DocumentViewerLayout'
@@ -154,14 +153,13 @@ export const PageList: React.FC<PageListProps> = (props) => {
           paddingBottom: marginBottom || 0,
         }}>
         {visiblePages.map((page) => (
-          <CommentsContextProvider key={page.Index} images={'preview'}>
-            <Page
-              viewportWidth={viewport.width}
-              viewportHeight={viewport.height}
-              imageIndex={page.Index}
-              onClick={() => props.onPageClick(page.Index)}
-            />
-          </CommentsContextProvider>
+          <Page
+            key={page.Index}
+            viewportWidth={viewport.width}
+            viewportHeight={viewport.height}
+            imageIndex={page.Index}
+            onClick={() => props.onPageClick(page.Index)}
+          />
         ))}
       </div>
     </Grid>

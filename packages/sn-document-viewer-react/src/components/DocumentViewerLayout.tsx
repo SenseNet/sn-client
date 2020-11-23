@@ -2,7 +2,7 @@ import Drawer from '@material-ui/core/Drawer'
 import { SlideProps } from '@material-ui/core/Slide'
 import Typography from '@material-ui/core/Typography'
 import React, { ReactNode, useCallback, useEffect } from 'react'
-import { CommentsContext, CommentsContextProvider } from '../context/comments'
+import { CommentsContext } from '../context/comments'
 import { useLocalization, useViewerState } from '../hooks'
 import { Comment } from './comment'
 import { CreateComment } from './comment/CreateComment'
@@ -121,17 +121,15 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
               overflow: 'hidden',
             },
           }}>
-          <CommentsContextProvider images="preview">
-            <CommentsContainer style={{ display: 'flex', flexFlow: 'column' }}>
-              <Typography variant="h4">{localization.commentSideBarTitle}</Typography>
-              <CreateComment localization={localization} />
-              <CommentsContext.Consumer>
-                {(commentsContext) =>
-                  commentsContext.comments.map((comment) => <Comment key={comment.id} comment={comment} />)
-                }
-              </CommentsContext.Consumer>
-            </CommentsContainer>
-          </CommentsContextProvider>
+          <CommentsContainer style={{ display: 'flex', flexFlow: 'column' }}>
+            <Typography variant="h4">{localization.commentSideBarTitle}</Typography>
+            <CreateComment localization={localization} />
+            <CommentsContext.Consumer>
+              {(commentsContext) =>
+                commentsContext.comments.map((comment) => <Comment key={comment.id} comment={comment} />)
+              }
+            </CommentsContext.Consumer>
+          </CommentsContainer>
         </Drawer>
       </div>
     </div>

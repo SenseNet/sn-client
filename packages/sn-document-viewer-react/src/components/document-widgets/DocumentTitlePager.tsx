@@ -1,7 +1,7 @@
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDocumentData, useLocalization, useViewerState } from '../../hooks'
 
 /**
@@ -13,24 +13,12 @@ export const DocumentTitlePager: React.FC = () => {
   const localization = useLocalization()
   const [isFocused, setIsFocused] = useState(false)
 
-  useEffect(() => {
-    setCurrentPage(viewerState.activePage)
-  }, [viewerState])
-
-  const setPage = useCallback(
-    (index: number) => {
-      viewerState.pageToGo.setValue({ page: index })
-    },
-    [viewerState],
-  )
-
-  const [currentPage, setCurrentPage] = useState(viewerState.activePage)
   const gotoPage = (page: string | number) => {
     let pageInt = typeof page === 'string' ? parseInt(page, 10) : page
     if (!isNaN(pageInt)) {
       pageInt = Math.max(pageInt, 1)
       pageInt = Math.min(pageInt, documentData.pageCount)
-      setCurrentPage(pageInt)
+      viewerState.pageToGo.setValue({ page: pageInt })
     }
   }
 
@@ -53,9 +41,8 @@ export const DocumentTitlePager: React.FC = () => {
             <TextField
               style={{ flexShrink: 0 }}
               title={localization.gotoPage}
-              value={currentPage}
-              onChange={(ev) => gotoPage(ev.currentTarget.value)}
-              onBlur={() => setPage(currentPage)}
+              onBlur={(ev) => gotoPage(ev.currentTarget.value)}
+              defaultValue={viewerState.activePage}
               type="number"
               required={true}
               InputLabelProps={{
@@ -71,7 +58,7 @@ export const DocumentTitlePager: React.FC = () => {
           </form>
         ) : (
           <div style={{ flexShrink: 0 }}>
-            {currentPage} / {documentData.pageCount}
+            {viewerState.activePage} / {documentData.pageCount}
           </div>
         )}
       </Typography>

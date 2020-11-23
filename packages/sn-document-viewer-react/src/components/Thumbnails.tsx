@@ -2,7 +2,6 @@ import { PreviewImageData } from '@sensenet/client-core'
 import Grid from '@material-ui/core/Grid'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { DEFAULT_ZOOM_LEVEL } from '..'
-import { CommentsContextProvider } from '../context/comments'
 import { usePreviewImages, useViewerState } from '../hooks'
 import { Dimensions, ImageUtil } from '../services'
 import { THUMBNAIL_CONTAINER_ID, THUMBNAIL_PADDING, ThumbnailPage } from './'
@@ -138,14 +137,13 @@ export const Thumbnails: React.FC<ThumbnailsProps> = (props) => {
           paddingBottom: marginBottom || 0,
         }}>
         {visiblePages.map((page) => (
-          <CommentsContextProvider key={page.Index} images={'thumbnail'}>
-            <ThumbnailPage
-              viewportWidth={viewport.width}
-              viewportHeight={viewport.height}
-              imageIndex={page.Index}
-              onClick={() => props.onPageClick(page.Index)}
-            />
-          </CommentsContextProvider>
+          <ThumbnailPage
+            key={page.Index}
+            viewportWidth={viewport.width}
+            viewportHeight={viewport.height}
+            imageIndex={page.Index}
+            onClick={() => props.onPageClick(page.Index)}
+          />
         ))}
       </div>
     </Grid>

@@ -5,6 +5,7 @@ import React, { ReactNode } from 'react'
 import { ThemeProvider } from 'styled-components'
 import loaderImage from '../../assets/loader.gif'
 import {
+  CommentsContextProvider,
   CommentStateProvider,
   defaultLocalization,
   DocumentDataContext,
@@ -96,10 +97,12 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = (props) => {
                       return (
                         <ViewerStateProvider options={props.defaultState}>
                           <CommentStateProvider>
-                            <DocumentViewerLayout
-                              drawerSlideProps={props.drawerSlideProps}
-                              renderAppBar={props.renderAppBar}
-                            />
+                            <CommentsContextProvider>
+                              <DocumentViewerLayout
+                                drawerSlideProps={props.drawerSlideProps}
+                                renderAppBar={props.renderAppBar}
+                              />
+                            </CommentsContextProvider>
                           </CommentStateProvider>
                         </ViewerStateProvider>
                       )
