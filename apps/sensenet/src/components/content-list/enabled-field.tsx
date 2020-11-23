@@ -19,7 +19,7 @@ export const EnabledField: FunctionComponent<EnabledFieldProps> = ({ enabled, de
   }, [enabled])
 
   return (
-    <TableCell className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)} component="div">
+    <TableCell className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)}>
       <Tooltip placeholder="bottom-end" title={description}>
         <Switch
           checked={checked}

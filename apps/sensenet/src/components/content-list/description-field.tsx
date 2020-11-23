@@ -21,7 +21,6 @@ export const DescriptionField: React.FC<{ text: string }> = ({ text }) => {
 
   return (
     <TableCell
-      component="div"
       className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)}
       style={{ justifyContent: 'left' }}>
       <Tooltip title={text ? text.replace(/<(.|\n)*?>/g, '') : ''} placement="top">

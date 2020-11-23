@@ -16,7 +16,6 @@ export const DisplayNameComponent: React.FunctionComponent<DisplayNameProps> = (
 
   return (
     <TableCell
-      component="div"
       className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)}
       style={{ justifyContent: 'left' }}>
       <div
