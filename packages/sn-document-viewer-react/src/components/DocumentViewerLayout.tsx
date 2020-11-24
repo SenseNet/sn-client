@@ -62,13 +62,12 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
         smoothScroll,
       })
     },
-
     [scrollToImage],
   )
 
   useEffect(() => {
-    const observer = viewerState.pageToGo.subscribe((p) => {
-      scrollTo(p.page)
+    const observer = viewerState.pageToGo.subscribe(({ page }) => {
+      scrollTo(page)
     })
     return () => observer.dispose()
   }, [scrollTo, viewerState.pageToGo])
