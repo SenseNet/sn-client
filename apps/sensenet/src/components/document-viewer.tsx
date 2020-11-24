@@ -97,7 +97,6 @@ export function DocumentViewer(props: { contentPath: string }) {
                   <RotateDocumentWidget mode={ROTATION_MODE.clockwise} />
                 </div>
                 <DocumentTitlePager />
-
                 <ToggleCommentsWidget activeColor={theme.palette.primary.main} />
               </LayoutAppBar>
             )}

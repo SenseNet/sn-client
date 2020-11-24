@@ -139,6 +139,8 @@ export const Thumbnails: React.FC<ThumbnailsProps> = (props) => {
         {visiblePages.map((page) => (
           <ThumbnailPage
             key={page.Index}
+            relativeHeight={page.Height}
+            relativeWidth={page.Width}
             viewportWidth={viewport.width}
             viewportHeight={viewport.height}
             imageIndex={page.Index}

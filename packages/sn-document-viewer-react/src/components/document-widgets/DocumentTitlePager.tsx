@@ -12,6 +12,7 @@ export const DocumentTitlePager: React.FC = () => {
   const viewerState = useViewerState()
   const localization = useLocalization()
   const [isFocused, setIsFocused] = useState(false)
+  const [currentValue, setCurrentValue] = useState<number | string>(viewerState.activePage)
 
   const gotoPage = (page: string | number) => {
     let pageInt = typeof page === 'string' ? parseInt(page, 10) : page
@@ -36,11 +37,13 @@ export const DocumentTitlePager: React.FC = () => {
         {isFocused ? (
           <form
             onSubmit={(ev) => {
+              gotoPage(currentValue)
               ev.preventDefault()
             }}>
             <TextField
               style={{ flexShrink: 0 }}
               title={localization.gotoPage}
+              onChange={(ev) => setCurrentValue(ev.currentTarget.value)}
               onBlur={(ev) => gotoPage(ev.currentTarget.value)}
               defaultValue={viewerState.activePage}
               type="number"

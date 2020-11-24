@@ -13,6 +13,8 @@ export interface PageProps {
   imageIndex: number
   viewportHeight: number
   viewportWidth: number
+  relativeHeight: number
+  relativeWidth: number
   onClick: (ev: React.MouseEvent<HTMLElement>) => any
 }
 
@@ -31,19 +33,6 @@ export const Page: React.FC<PageProps> = (props) => {
 
   const imageRotationRads = ((imageRotation % 180) * Math.PI) / 180
 
-  const relativeImageSize = ImageUtil.getImageSize(
-    {
-      width: props.viewportWidth,
-      height: props.viewportHeight,
-    },
-    {
-      width: page.image?.Width || 0,
-      height: page.image?.Height || 0,
-      rotation: viewerState.rotation?.find((rotation) => rotation.pageNum === props.imageIndex)?.degree || 0,
-    },
-    viewerState.zoomLevel,
-  )
-
   const boundingBox = ImageUtil.getRotatedBoundingBoxSize(
     {
       width: (page.image && page.image.Width) || 0,
@@ -52,30 +41,34 @@ export const Page: React.FC<PageProps> = (props) => {
     imageRotation,
   )
 
-  const diffHeight = Math.sin(imageRotationRads) * ((relativeImageSize.height - relativeImageSize.width) / 2)
+  const diffHeight = Math.sin(imageRotationRads) * ((props.relativeHeight - props.relativeWidth) / 2)
 
   const imageTransform = `translateY(${diffHeight}px) rotate(${imageRotation}deg)`
 
   const handleMarkerPlacement = useCallback(
     (event: React.MouseEvent) => {
-      if (!viewerState.isPlacingCommentMarker) {
+      const xCoord = event.nativeEvent.offsetX / (props.relativeHeight / ((page.image && page.image.Height) || 1))
+      const yCoord = event.nativeEvent.offsetY / (props.relativeWidth / ((page.image && page.image.Width) || 1))
+
+      if (!viewerState.isPlacingCommentMarker || xCoord <= MARKER_SIZE || yCoord <= MARKER_SIZE) {
         return
       }
       const newCommentMarker = {
-        x: `${
-          event.nativeEvent.offsetX / (relativeImageSize.height / ((page.image && page.image.Height) || 1)) -
-          MARKER_SIZE
-        }`,
-        y: `${
-          event.nativeEvent.offsetY / (relativeImageSize.height / ((page.image && page.image.Height) || 1)) -
-          MARKER_SIZE
-        }`,
+        x: `${xCoord - MARKER_SIZE}`,
+        y: `${yCoord - MARKER_SIZE}`,
         id: 'draft',
         page: viewerState.activePage,
       }
       commentState.setDraft(newCommentMarker)
     },
-    [commentState, page.image, relativeImageSize.height, viewerState.activePage, viewerState.isPlacingCommentMarker],
+    [
+      commentState,
+      page.image,
+      props.relativeHeight,
+      props.relativeWidth,
+      viewerState.activePage,
+      viewerState.isPlacingCommentMarker,
+    ],
   )
 
   return (
@@ -84,17 +77,16 @@ export const Page: React.FC<PageProps> = (props) => {
         style={{
           padding: 0,
           overflow: 'hidden',
-          width: relativeImageSize.width - 2 * PAGE_PADDING,
-          height: relativeImageSize.height - 2 * PAGE_PADDING,
+          width: props.relativeWidth - 2 * PAGE_PADDING,
+          height: props.relativeHeight - 2 * PAGE_PADDING,
           position: 'relative',
         }}
         onClick={(ev) => {
-          props.onClick(ev)
-          handleMarkerPlacement(ev)
+          viewerState.isPlacingCommentMarker ? handleMarkerPlacement(ev) : props.onClick(ev)
         }}>
         {page.image && (
           <div>
-            <ShapesWidget zoomRatio={relativeImageSize.height / page.image.Height} page={page.image} />
+            <ShapesWidget zoomRatio={props.relativeHeight / page.image.Height} page={page.image} />
           </div>
         )}
         <span style={{ display: 'flex', justifyContent: 'center' }}>

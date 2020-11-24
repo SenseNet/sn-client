@@ -93,7 +93,11 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
         visibleComments.length > 0 &&
         visibleComments.map((marker) => (
           <CommentMarker
-            onClick={() => commentState.setActiveComment(marker.id)}
+            onClick={(ev) => {
+              ev.stopPropagation()
+              ev.nativeEvent.stopImmediatePropagation()
+              !viewerState.isPlacingCommentMarker && commentState.setActiveComment(marker.id)
+            }}
             isSelected={marker.id === commentState.activeCommentId}
             zoomRatio={props.zoomRatio}
             marker={marker}

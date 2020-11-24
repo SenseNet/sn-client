@@ -79,6 +79,8 @@ export const CurrentChildrenProvider: React.FunctionComponent<CurrentChildrenPro
             case 'MoveBatch':
             case 'CopyBatch':
             case 'PreviewAvailable':
+            case 'RegeneratePreviews':
+            case 'GetExistingPreviewImages':
               return
             case 'Restore':
               if (

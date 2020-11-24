@@ -84,7 +84,6 @@ export const PageList: React.FC<PageListProps> = (props) => {
           height: p.Height,
           rotation: viewerState.rotation?.find((rotation) => rotation.pageNum === p.Index)?.degree || 0,
         },
-
         viewerState.zoomLevel,
       )
 
@@ -155,6 +154,8 @@ export const PageList: React.FC<PageListProps> = (props) => {
         {visiblePages.map((page) => (
           <Page
             key={page.Index}
+            relativeHeight={page.Height}
+            relativeWidth={page.Width}
             viewportWidth={viewport.width}
             viewportHeight={viewport.height}
             imageIndex={page.Index}

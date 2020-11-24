@@ -39,6 +39,7 @@ export const Comment: React.FC<CommentProps> = (props) => {
 
   return (
     <StyledCard
+      style={{ overflow: 'visible' }}
       id={props.comment.id}
       isSelected={isSelected}
       raised={isSelected}

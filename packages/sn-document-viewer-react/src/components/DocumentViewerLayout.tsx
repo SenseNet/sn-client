@@ -123,7 +123,7 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
           }}>
           <CommentsContainer style={{ display: 'flex', flexFlow: 'column' }}>
             <Typography variant="h4">{localization.commentSideBarTitle}</Typography>
-            <CreateComment localization={localization} />
+            <CreateComment />
             <CommentsContext.Consumer>
               {(commentsContext) =>
                 commentsContext.comments.map((comment) => <Comment key={comment.id} comment={comment} />)
