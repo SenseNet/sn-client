@@ -21,6 +21,7 @@ describe('The user search component instance', () => {
     repo.loadCollection = function fetchMethod() {
       return Promise.resolve({ d: { results: TestUserList } } as any)
     }
+    repo.load = () => Promise.resolve({ d: TestUserList[0] })
   })
 
   it('should be rendered correctly', () => {
@@ -77,7 +78,7 @@ describe('The user search component instance', () => {
       ;(formpanel.prop('onSubmit') as any)({ preventDefault: jest.fn() })
     })
 
-    act(() => {
+    await act(async () => {
       wrapper.update().find(TableBody).find(TableRow).at(1).prop('onClick')()
     })
     expect(wrapper.update().find(Dialog).prop('open')).toBe(true)
@@ -94,7 +95,7 @@ describe('The user search component instance', () => {
     await act(async () => {
       ;(formpanel.prop('onSubmit') as any)({ preventDefault: jest.fn() })
     })
-    act(() => {
+    await act(async () => {
       wrapper.update().find(TableBody).find(TableRow).at(1).prop('onClick')()
     })
     act(() => {
@@ -114,7 +115,7 @@ describe('The user search component instance', () => {
     await act(async () => {
       ;(formpanel.prop('onSubmit') as any)({ preventDefault: jest.fn() })
     })
-    act(() => {
+    await act(async () => {
       wrapper.update().find(TableBody).find(TableRow).at(1).prop('onClick')()
     })
 

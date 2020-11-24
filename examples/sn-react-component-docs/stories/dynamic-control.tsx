@@ -8,12 +8,13 @@ import React, { ComponentType } from 'react'
 interface Options {
   actionName: ActionName
   repository: Repository
+  token?: string
   content: GenericContent
   component?: ComponentType<ReactClientFieldSetting>
   fieldName: string
 }
 
-function getFieldValue({ actionName, content, component, fieldName }: Options) {
+function getFieldValue({ actionName, content, component, fieldName }: Omit<Options, 'token'>) {
   if (actionName === 'new') {
     return undefined
   }
@@ -33,7 +34,9 @@ function getFieldValue({ actionName, content, component, fieldName }: Options) {
   return text('fieldValue', content[fieldName])
 }
 
-export function DynamicControl({ actionName, repository, content, component, fieldName }: Options) {
+export function DynamicControl({ actionName, repository, content, component, fieldName, token }: Options) {
+  console.log(token)
+  repository.configuration.token = token
   const schema = reactControlMapper(repository).getFullSchemaForContentType(content.Type, actionName)
   const fieldMapping = schema.fieldMappings.find((a) => a.fieldSettings.Name === fieldName)
   if (!fieldMapping) {

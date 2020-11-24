@@ -3,21 +3,16 @@ import { User } from '@sensenet/default-content-types'
 import Avatar, { AvatarProps } from '@material-ui/core/Avatar'
 import React from 'react'
 
-export const UserAvatar: React.StatelessComponent<{
+export const UserAvatar: React.FC<{
   user: User
   avatarProps?: AvatarProps
   style?: React.CSSProperties
   repositoryUrl: string
 }> = (props) => {
-  const avatarUrl = props.user.Avatar && props.user.Avatar.Url
+  const avatarUrl = props.user.Avatar?.Url
   if (avatarUrl) {
     return (
-      <Avatar
-        src={PathHelper.joinPaths(props.repositoryUrl, avatarUrl)}
-        // imgProps={{ crossorigin: 'use-credentials' } as any}
-        {...props.avatarProps}
-        style={props.style}
-      />
+      <Avatar src={PathHelper.joinPaths(props.repositoryUrl, avatarUrl)} {...props.avatarProps} style={props.style} />
     )
   }
   return (

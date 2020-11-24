@@ -3,7 +3,6 @@ import { FieldSetting } from '@sensenet/default-content-types'
 /**
  * Search for '[Script:jScript]' tag in string and returns empty string when found
  */
-
 export const changeTemplatedValue = (value: string | undefined, evaluatedValue?: string | undefined) => {
   if (value?.includes('@@')) {
     return evaluatedValue
