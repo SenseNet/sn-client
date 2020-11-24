@@ -22,7 +22,7 @@
     { "path": "../../packages/sn-hooks-react" },
     { "path": "../../packages/sn-icons-react" },
     { "path": "../../packages/sn-list-controls-react" },
-    { "path": "../../packages/sn-pickers-react"}
+    { "path": "../../packages/sn-pickers-react"},
     { "path": "../../packages/sn-query" },
     { "path": "../../packages/sn-repository-events" }
   ]
