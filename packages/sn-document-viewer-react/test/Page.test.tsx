@@ -13,6 +13,8 @@ describe('Page component', () => {
     imageIndex: 1,
     viewportWidth: 768,
     viewportHeight: 1024,
+    relativeWidth: 768,
+    relativeHeight: 1024,
   }
 
   it('Should render without crashing', () => {
@@ -94,7 +96,7 @@ describe('Page component', () => {
     wrapper
       .find('div')
       .at(1)
-      .simulate('click', { nativeEvent: { offsetX: 0.5625, offsetY: 0.5625 } })
-    expect(setDraft).toBeCalledWith({ id: 'draft', page: 1, x: '-9', y: '-9' })
+      .simulate('click', { nativeEvent: { offsetX: 11, offsetY: 11 } })
+    expect(setDraft).toBeCalledWith({ id: 'draft', page: 1, x: '1', y: '1' })
   })
 })

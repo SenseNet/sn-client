@@ -5,9 +5,9 @@ import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { ThemeProvider } from 'styled-components'
-import { defaultViewerState, DocumentDataProvider, DocumentViewerApiSettingsContext, ViewerStateContext } from '../src'
-import { CreateComment, CreateCommentProps } from '../src/components'
-import { CommentStateContext, CommentStateProvider, defaultCommentState } from '../src/context/comment-states'
+import { defaultLocalization, defaultViewerState, DocumentViewerApiSettingsContext, ViewerStateContext } from '../src'
+import { CreateComment } from '../src/components'
+import { CommentStateContext, defaultCommentState } from '../src/context/comment-states'
 import { defaultTheme } from '../src/models'
 import { defaultSettings, examplePreviewComment } from './__Mocks__/viewercontext'
 
@@ -27,26 +27,14 @@ const emptyDocumentData = {
 }
 
 describe('Create comment component', () => {
-  const defaultProps: CreateCommentProps = {
-    localization: {
-      addComment: 'addComment',
-      commentInputPlaceholder: 'commentInputPlaceholder',
-      submit: 'submit',
-      inputRequiredError: 'inputRequiredError',
-      markerRequiredError: 'markerRequiredError',
-      markerTooltip: 'markerTooltip',
-      cancelButton: 'cancel',
-    },
-  }
-
   it('should show add comment button when not active', () => {
-    const wrapper = mount(<CreateComment {...defaultProps} />, {
+    const wrapper = mount(<CreateComment />, {
       wrappingComponent: ThemeProvider,
       wrappingComponentProps: { theme: defaultTheme },
     })
     expect(wrapper.find(Button).exists()).toBeTruthy()
     expect(wrapper.find(Button).length).toBe(1)
-    expect(wrapper.find(Button).text()).toBe('addComment')
+    expect(wrapper.find(Button).text()).toBe('+ Add Comment')
   })
 
   it('should change the state of isCreateCommentActive in viewer-state provider when add comment button is clicked', () => {
@@ -57,7 +45,7 @@ describe('Create comment component', () => {
           ...defaultViewerState,
           updateState,
         }}>
-        <CreateComment {...defaultProps} />
+        <CreateComment />
       </ViewerStateContext.Provider>,
       {
         wrappingComponent: ThemeProvider,
@@ -99,13 +87,13 @@ describe('Create comment component', () => {
                 page: 1,
               },
             }}>
-            <CreateComment {...defaultProps} />
+            <CreateComment />
           </CommentStateContext.Provider>
         </ViewerStateContext.Provider>
       </DocumentViewerApiSettingsContext.Provider>,
     )
 
-    expect(wrapper.find(Button).first().text()).toBe('submit')
+    expect(wrapper.find(Button).first().text()).toBe('Submit')
 
     act(() => {
       wrapper
@@ -115,7 +103,7 @@ describe('Create comment component', () => {
     })
     wrapper.find(Button).first().simulate('submit')
 
-    expect(updateState).toBeCalledWith({ isPlacingCommentMarker: false })
+    expect(updateState).toBeCalledWith({ isCreateCommentActive: false, isPlacingCommentMarker: false })
     expect(addPreviewComment).toBeCalledWith({
       abortController: new AbortController(),
       comment: {
@@ -155,7 +143,7 @@ describe('Create comment component', () => {
               },
               setDraft,
             }}>
-            <CreateComment {...defaultProps} />
+            <CreateComment />
           </CommentStateContext.Provider>
         </ViewerStateContext.Provider>
       </DocumentViewerApiSettingsContext.Provider>,
@@ -169,7 +157,7 @@ describe('Create comment component', () => {
     })
     wrapper.find(Button).first().simulate('submit')
 
-    expect(updateState).toBeCalledWith({ isCreateCommentActive: false })
+    expect(updateState).toBeCalledWith({ isCreateCommentActive: false, isPlacingCommentMarker: false })
     expect(setDraft).toBeCalledWith(undefined)
   })
 
@@ -193,16 +181,16 @@ describe('Create comment component', () => {
               ...defaultCommentState,
               setDraft,
             }}>
-            <CreateComment {...defaultProps} />
+            <CreateComment />
           </CommentStateContext.Provider>
         </ViewerStateContext.Provider>
       </DocumentViewerApiSettingsContext.Provider>,
     )
 
-    expect(wrapper.find(Button).last().text()).toBe('cancel')
+    expect(wrapper.find(Button).last().text()).toBe('Cancel')
     wrapper.find(Button).last().simulate('click')
 
-    expect(updateState).toBeCalledWith({ isCreateCommentActive: false })
+    expect(updateState).toBeCalledWith({ isCreateCommentActive: false, isPlacingCommentMarker: false })
     expect(setDraft).toBeCalledWith(undefined)
   })
 
@@ -213,11 +201,11 @@ describe('Create comment component', () => {
           ...defaultViewerState,
           isCreateCommentActive: true,
         }}>
-        <CreateComment {...defaultProps} />
+        <CreateComment />
       </ViewerStateContext.Provider>,
     )
     wrapper.find(Button).first().simulate('submit')
-    expect(wrapper.find(FormHelperText).text()).toEqual(defaultProps.localization.inputRequiredError)
+    expect(wrapper.find(FormHelperText).text()).toEqual(defaultLocalization.inputRequiredError)
   })
 
   it('should give an error message when input is filled but draftCommentMarker is undefined', () => {
@@ -227,7 +215,7 @@ describe('Create comment component', () => {
           ...defaultViewerState,
           isCreateCommentActive: true,
         }}>
-        <CreateComment {...defaultProps} />
+        <CreateComment />
       </ViewerStateContext.Provider>,
     )
 
@@ -238,7 +226,7 @@ describe('Create comment component', () => {
         .onChange({ target: { value: 'Hello' } } as any)
     })
     wrapper.find(Button).first().simulate('submit')
-    expect(wrapper.find(FormHelperText).text()).toEqual(defaultProps.localization.markerRequiredError)
+    expect(wrapper.find(FormHelperText).text()).toEqual(defaultLocalization.markerRequiredError)
   })
 
   it('should change the state of isPlacingCommentMarker in viewer-state provider when marker button is clicked', () => {
@@ -255,7 +243,7 @@ describe('Create comment component', () => {
           value={{
             ...defaultCommentState,
           }}>
-          <CreateComment {...defaultProps} />
+          <CreateComment />
         </CommentStateContext.Provider>
       </ViewerStateContext.Provider>,
     )

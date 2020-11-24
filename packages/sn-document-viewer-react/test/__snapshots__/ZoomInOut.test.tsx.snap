@@ -11,6 +11,7 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
   >
     <WithStyles(ForwardRef(IconButton))
       color="inherit"
+      disabled={false}
       onClick={[Function]}
       title="Zoom in"
     >
@@ -29,6 +30,7 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
           }
         }
         color="inherit"
+        disabled={false}
         onClick={[Function]}
         title="Zoom in"
       >
@@ -146,6 +148,7 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
     </WithStyles(ForwardRef(IconButton))>
     <WithStyles(ForwardRef(IconButton))
       color="inherit"
+      disabled={false}
       onClick={[Function]}
       title="Zoom out"
     >
@@ -164,6 +167,7 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
           }
         }
         color="inherit"
+        disabled={false}
         onClick={[Function]}
         title="Zoom out"
       >

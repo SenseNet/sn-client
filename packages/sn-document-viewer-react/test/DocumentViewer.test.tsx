@@ -2,7 +2,7 @@ import { sleepAsync } from '@sensenet/client-utils'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { DocumentViewerError, DocumentViewerLoading, DocumentViewerRegeneratePreviews } from '../src'
+import { DocumentViewerError, DocumentViewerLoading, DocumentViewerRegeneratePreviews, LayoutAppBar } from '../src'
 import { DocumentViewer, DocumentViewerProps } from '../src/components/DocumentViewer'
 import { defaultSettings, exampleDocumentData, examplePreviewImageData } from './__Mocks__/viewercontext'
 
@@ -13,34 +13,12 @@ describe('Document Viewer component', () => {
   const defaultProps: DocumentViewerProps = {
     documentIdOrPath: 1,
     theme: {} as any,
+    renderAppBar: () => null,
   }
 
   it('should render without crashing', () => {
     const wrapper = shallow(<DocumentViewer {...defaultProps}>{'some children'}</DocumentViewer>)
     expect(wrapper).toMatchSnapshot()
-  })
-
-  it('should render a DocumentViewerLoading  component if pageCount=-1', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = mount(
-        <DocumentViewer
-          documentIdOrPath={1}
-          api={{
-            getDocumentData: async () => ({
-              ...exampleDocumentData,
-              pageCount: -1,
-            }),
-            canEditDocument: async () => true,
-            canHideRedaction: async () => true,
-            canHideWatermark: async () => true,
-          }}
-        />,
-      )
-    })
-
-    expect(wrapper).toMatchSnapshot()
-    expect(wrapper.update().containsMatchingElement(<DocumentViewerLoading image="loader.gif" />)).toEqual(true)
   })
 
   it('should render a DocumentViewerRegeneratePreviews component if pageCount =-4', async () => {

@@ -25,21 +25,21 @@ describe('Document Viewer Layout component', () => {
   })
 
   it('should scroll to page when page changed', () => {
-    const onPageChange = new ObservableValue({ page: 1 })
+    const pageToGo = new ObservableValue({ page: 1 })
     const scrollToMock = jest.fn()
     ;(window as any).HTMLElement.prototype.scrollTo = scrollToMock
     mount(
       <PreviewImageDataContextWrapper>
-        <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
+        <DocumentViewerLayout renderAppBar={() => null}>{'some children'}</DocumentViewerLayout>
       </PreviewImageDataContextWrapper>,
       {
         wrappingComponent: ViewerStateContextWrapper,
-        wrappingComponentProps: { onPageChange, showThumbnails: true },
+        wrappingComponentProps: { pageToGo, showThumbnails: true },
         attachTo: window.domNode,
       },
     )
 
-    onPageChange.setValue({ page: 3 })
+    pageToGo.setValue({ page: 3 })
     expect(scrollToMock).toBeCalled()
   })
 
@@ -48,7 +48,7 @@ describe('Document Viewer Layout component', () => {
     ;(window as any).HTMLElement.prototype.scrollTo = scrollToMock
     const wrapper = mount(
       <PreviewImageDataContextWrapper>
-        <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
+        <DocumentViewerLayout renderAppBar={() => null}>{'some children'}</DocumentViewerLayout>
       </PreviewImageDataContextWrapper>,
       {
         wrappingComponent: ViewerStateContextWrapper,
@@ -72,7 +72,7 @@ describe('Document Viewer Layout component', () => {
           updateState,
         }}>
         <PreviewImageDataContextWrapper>
-          <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
+          <DocumentViewerLayout renderAppBar={() => null}>{'some children'}</DocumentViewerLayout>
         </PreviewImageDataContextWrapper>
       </ViewerStateContext.Provider>,
       {
@@ -103,7 +103,7 @@ describe('Document Viewer Layout component', () => {
           }}>
           <CommentsContext.Provider value={{ ...defaultCommentsContext, comments: [examplePreviewComment] }}>
             <ViewerStateContext.Provider value={{ ...defaultViewerState, showComments: true }}>
-              <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
+              <DocumentViewerLayout renderAppBar={() => null}>{'some children'}</DocumentViewerLayout>
             </ViewerStateContext.Provider>
           </CommentsContext.Provider>
         </DocumentViewerApiSettingsContext.Provider>,

@@ -22,13 +22,13 @@ describe('DocumentTitlePager component', () => {
     expect(wrapper).toMatchSnapshot()
   })
 
-  it('Should set onPageChange on blur action', async () => {
-    const onPageChange = new ObservableValue({ page: 1 })
+  it('Should set pageToGo on blur action', async () => {
+    const pageToGo = new ObservableValue({ page: 1 })
     const wrapper = mount(
       <ViewerStateContext.Provider
         value={{
           ...defaultViewerState,
-          onPageChange,
+          pageToGo,
         }}>
         <DocumentDataContext.Provider
           value={{
@@ -38,6 +38,7 @@ describe('DocumentTitlePager component', () => {
             },
             updateDocumentData: async () => undefined,
             isInProgress: false,
+            triggerReload: () => {},
           }}>
           <DocumentTitlePager />
         </DocumentDataContext.Provider>
@@ -50,17 +51,17 @@ describe('DocumentTitlePager component', () => {
       const onBlur = wrapper.update().find(TextField).prop('onBlur')
       onBlur && onBlur({} as any)
     })
-    expect(onPageChange.getValue()).toStrictEqual({ page: 1 })
+    expect(pageToGo.getValue()).toStrictEqual({ page: 1 })
   })
 
-  it('Should set the currentPage with the input number and set onPageChange on blur', async () => {
-    const onPageChange = new ObservableValue({ page: 1 })
+  it('Should set the currentPage with the input number and set pageToGo on blur', async () => {
+    const pageToGo = new ObservableValue({ page: 1 })
 
     const wrapper = mount(
       <ViewerStateContext.Provider
         value={{
           ...defaultViewerState,
-          onPageChange,
+          pageToGo,
         }}>
         <DocumentDataContext.Provider
           value={{
@@ -70,6 +71,7 @@ describe('DocumentTitlePager component', () => {
             },
             updateDocumentData: async () => undefined,
             isInProgress: false,
+            triggerReload: () => {},
           }}>
           <DocumentTitlePager />
         </DocumentDataContext.Provider>
@@ -92,17 +94,17 @@ describe('DocumentTitlePager component', () => {
       const onBlur = wrapper.update().find(TextField).prop('onBlur')
       onBlur && onBlur({} as any)
     })
-    expect(onPageChange.getValue()).toStrictEqual({ page: 2 })
+    expect(pageToGo.getValue()).toStrictEqual({ page: 2 })
   })
 
-  it('Should set the currentPage with the input string and set onPageChange on blur ', async () => {
-    const onPageChange = new ObservableValue({ page: 1 })
+  it('Should set the currentPage with the input string and set pageToGo on blur ', async () => {
+    const pageToGo = new ObservableValue({ page: 1 })
 
     const wrapper = mount(
       <ViewerStateContext.Provider
         value={{
           ...defaultViewerState,
-          onPageChange,
+          pageToGo,
         }}>
         <DocumentDataContext.Provider
           value={{
@@ -112,6 +114,7 @@ describe('DocumentTitlePager component', () => {
             },
             updateDocumentData: async () => undefined,
             isInProgress: false,
+            triggerReload: () => {},
           }}>
           <DocumentTitlePager />
         </DocumentDataContext.Provider>
@@ -134,6 +137,6 @@ describe('DocumentTitlePager component', () => {
       const onBlur = wrapper.update().find(TextField).prop('onBlur')
       onBlur && onBlur({} as any)
     })
-    expect(onPageChange.getValue()).toStrictEqual({ page: 3 })
+    expect(pageToGo.getValue()).toStrictEqual({ page: 3 })
   })
 })

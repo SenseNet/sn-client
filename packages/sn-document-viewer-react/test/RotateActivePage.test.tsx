@@ -141,6 +141,7 @@ describe('RotateActivePage component', () => {
             },
             updateDocumentData,
             isInProgress: false,
+            triggerReload: () => {},
           }}>
           <RotateActivePagesWidget />
         </DocumentDataContext.Provider>

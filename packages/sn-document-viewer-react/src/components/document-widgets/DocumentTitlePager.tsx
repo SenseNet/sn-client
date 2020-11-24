@@ -44,7 +44,7 @@ export const DocumentTitlePager: React.FC = () => {
               style={{ flexShrink: 0 }}
               title={localization.gotoPage}
               onChange={(ev) => setCurrentValue(ev.currentTarget.value)}
-              onBlur={(ev) => gotoPage(ev.currentTarget.value)}
+              onBlur={() => gotoPage(currentValue)}
               defaultValue={viewerState.activePage}
               type="number"
               required={true}

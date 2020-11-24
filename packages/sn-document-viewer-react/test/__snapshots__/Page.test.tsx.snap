@@ -4,6 +4,8 @@ exports[`Page component Should render page without crashing 1`] = `
 <Component
   imageIndex={1}
   onClick={[MockFunction]}
+  relativeHeight={1024}
+  relativeWidth={768}
   viewportHeight={1024}
   viewportWidth={768}
 />
@@ -23,11 +25,11 @@ exports[`Page component Should render without crashing 1`] = `
     onClick={[Function]}
     style={
       Object {
-        "height": NaN,
+        "height": 1008,
         "overflow": "hidden",
         "padding": 0,
         "position": "relative",
-        "width": NaN,
+        "width": 752,
       }
     }
   >

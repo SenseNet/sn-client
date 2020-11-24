@@ -18,6 +18,7 @@ describe('Document Viewer Error component', () => {
           isInProgress: false,
           documentData: { ...exampleDocumentData, pageCount: PreviewState.UploadFailure, error: ':(' },
           updateDocumentData: async () => undefined,
+          triggerReload: () => {},
         }}>
         <DocumentViewerError />
       </DocumentDataContext.Provider>,

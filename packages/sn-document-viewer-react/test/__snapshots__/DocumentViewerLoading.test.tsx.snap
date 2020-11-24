@@ -12,16 +12,6 @@ exports[`Document Viewer Loading component should render without crashing 1`] = 
     }
   }
 >
-  <Component
-    style={
-      Object {
-        "position": "fixed",
-        "top": 0,
-      }
-    }
-  >
-    <span />
-  </Component>
   <div
     style={
       Object {
@@ -44,6 +34,7 @@ exports[`Document Viewer Loading component should render without crashing 1`] = 
       style={
         Object {
           "fontWeight": "bolder",
+          "marginTop": "1rem",
         }
       }
       variant="h5"
