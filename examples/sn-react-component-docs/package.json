@@ -30,6 +30,7 @@
   "dependencies": {
     "@sensenet/client-core": "^3.6.0",
     "@sensenet/client-utils": "^2.0.0",
+    "@sensenet/control-mapper": "^2.1.10",
     "@sensenet/controls-react": "^6.0.0",
     "@sensenet/default-content-types": "^3.1.0",
     "@sensenet/document-viewer-react": "^2.4.2",
