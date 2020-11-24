@@ -21,8 +21,7 @@ export const DateCell: React.StatelessComponent<DateCellProps> = (props) => {
               padding: 0,
             }
           : {}
-      }
-      component={props.virtual ? 'div' : 'td'}>
+      }>
       <Moment fromNow={true}>{props.date}</Moment>
     </TableCell>
   )

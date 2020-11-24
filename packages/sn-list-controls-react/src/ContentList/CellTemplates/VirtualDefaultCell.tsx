@@ -15,8 +15,7 @@ export const VirtualDefaultCell = <T extends GenericContent>(props: VirtualDefau
       alignItems: 'center',
       justifyContent: 'left',
       padding: 0,
-    }}
-    component="div">
+    }}>
     {props.cellData?.toString()}
   </TableCell>
 )

@@ -209,8 +209,7 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = (props) => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-          }}
-          component="div">
+          }}>
           <Checkbox
             className="select-all"
             indeterminate={
@@ -230,7 +229,6 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = (props) => {
 
     return (
       <TableCell
-        component="div"
         variant="head"
         style={{
           height: headerHeight || 42,

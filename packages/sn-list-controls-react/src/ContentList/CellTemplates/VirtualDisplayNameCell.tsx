@@ -28,7 +28,6 @@ export const VirtualDisplayNameCell: React.FC<VirtualDisplayNameCellProps> = (pr
         alignItems: 'center',
         padding: 0,
       }}
-      component="div"
       className="display-name">
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {icon ? <Icon type={type} iconName={icon} style={{ marginRight: '.5em' }} /> : null}
