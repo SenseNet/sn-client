@@ -21,10 +21,10 @@ exports[`Component ToggleBase should render without crashing 1`] = `
 `;
 
 exports[`Component ToggleComments should render without crashing 1`] = `
-<ToggleCommentsWidget
+<Component
   activeColor="pink"
 >
-  <ToggleBase
+  <Component
     isVisible={true}
     setValue={[Function]}
     title="Toggle comments"
@@ -191,32 +191,32 @@ exports[`Component ToggleComments should render without crashing 1`] = `
         </ForwardRef(IconButton)>
       </WithStyles(ForwardRef(IconButton))>
     </div>
-  </ToggleBase>
-</ToggleCommentsWidget>
+  </Component>
+</Component>
 `;
 
 exports[`Component ToggleRedaction should render without crashing 1`] = `
-<ToggleBase
+<Component
   isVisible={true}
   setValue={[Function]}
   title="Toggle redaction"
 >
   <PictureInPictureIcon />
-</ToggleBase>
+</Component>
 `;
 
 exports[`Component ToggleShapes should render without crashing 1`] = `
-<ToggleBase
+<Component
   isVisible={true}
   setValue={[Function]}
   title="Toggle shapes"
 >
   <DashboardIcon />
-</ToggleBase>
+</Component>
 `;
 
 exports[`Component ToggleThumbnails should render without crashing 1`] = `
-<ToggleThumbnailsWidget
+<Component
   activeColor="pink"
   style={
     Object {
@@ -224,7 +224,7 @@ exports[`Component ToggleThumbnails should render without crashing 1`] = `
     }
   }
 >
-  <ToggleBase
+  <Component
     isVisible={true}
     setValue={[Function]}
     title="Toggle thumbnails"
@@ -367,16 +367,16 @@ exports[`Component ToggleThumbnails should render without crashing 1`] = `
         </ForwardRef(IconButton)>
       </WithStyles(ForwardRef(IconButton))>
     </div>
-  </ToggleBase>
-</ToggleThumbnailsWidget>
+  </Component>
+</Component>
 `;
 
 exports[`Component ToggleWatermark should render without crashing 1`] = `
-<ToggleBase
+<Component
   isVisible={false}
   setValue={[Function]}
   title="Toggle watermark"
 >
   <BrandingWatermarkIcon />
-</ToggleBase>
+</Component>
 `;

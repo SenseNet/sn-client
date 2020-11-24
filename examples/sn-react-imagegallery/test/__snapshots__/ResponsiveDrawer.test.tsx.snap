@@ -16,7 +16,7 @@ exports[`ResponsiveDrawer Matches snapshot 1`] = `
         src="Path"
       />
     </div>
-    <DotsMobileStepper
+    <Component
       imageIndex={1}
       imageListLenght={10}
       steppingFunction={[MockFunction]}

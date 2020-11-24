@@ -41,7 +41,7 @@ exports[`FullScreenDialog Matches snapshot 1`] = `
         </WithStyles(ForwardRef(IconButton))>
       </WithStyles(ForwardRef(Toolbar))>
     </WithStyles(ForwardRef(AppBar))>
-    <ResponsiveDrawer
+    <Component
       imageInfo={
         Object {
           "imgAuthor": "Test Elek",
