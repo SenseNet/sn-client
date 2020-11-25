@@ -200,6 +200,7 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = (props) => {
     if (columnName === 'Checkbox') {
       return (
         <TableCell
+          component={'div' as any}
           padding="checkbox"
           key="selectAll"
           style={{
@@ -229,6 +230,7 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = (props) => {
 
     return (
       <TableCell
+        component={'div' as any}
         variant="head"
         style={{
           height: headerHeight || 42,

@@ -10,6 +10,7 @@ interface DateCellProps {
 export const DateCell: React.StatelessComponent<DateCellProps> = (props) => {
   return (
     <TableCell
+      component={props.virtual ? ('div' as any) : 'td'}
       style={
         props.virtual
           ? {

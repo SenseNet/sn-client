@@ -21,6 +21,7 @@ export const VirtualDisplayNameCell: React.FC<VirtualDisplayNameCellProps> = (pr
 
   return (
     <TableCell
+      component={'div' as any}
       style={{
         height: '57px',
         width: '100%',

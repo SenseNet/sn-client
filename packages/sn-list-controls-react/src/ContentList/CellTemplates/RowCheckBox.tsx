@@ -14,6 +14,7 @@ interface RowCheckboxProps<T = GenericContent> {
 export const RowCheckbox: React.StatelessComponent<RowCheckboxProps> = (props) => {
   return (
     <TableCell
+      component={'div' as any}
       style={{ height: '57px', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 0 }}
       padding="checkbox"
       key="select">

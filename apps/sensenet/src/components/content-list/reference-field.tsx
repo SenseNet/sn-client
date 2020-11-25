@@ -42,7 +42,9 @@ export const ReferenceField: FunctionComponent<ReferenceFieldProps> = ({ content
   const history = useHistory()
 
   return (
-    <TableCell className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle, classes.fieldCell)}>
+    <TableCell
+      component={'div' as any}
+      className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle, classes.fieldCell)}>
       {Array.isArray(content) ? (
         <div className={globalClasses.centeredVertical}>
           <Button

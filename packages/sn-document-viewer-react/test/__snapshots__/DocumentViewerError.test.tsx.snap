@@ -13,7 +13,7 @@ exports[`Document Viewer Error component matches snapshot wihtout provided conte
       }
     }
   >
-    <LayoutAppBar
+    <Component
       style={
         Object {
           "position": "fixed",
@@ -166,7 +166,7 @@ exports[`Document Viewer Error component matches snapshot wihtout provided conte
           </WithStyles(ForwardRef(Paper))>
         </ForwardRef(AppBar)>
       </WithStyles(ForwardRef(AppBar))>
-    </LayoutAppBar>
+    </Component>
     <div
       style={
         Object {
@@ -397,7 +397,7 @@ exports[`Document Viewer Error component matches snapshot with provided context 
       }
     }
   >
-    <LayoutAppBar
+    <Component
       style={
         Object {
           "position": "fixed",
@@ -550,7 +550,7 @@ exports[`Document Viewer Error component matches snapshot with provided context 
           </WithStyles(ForwardRef(Paper))>
         </ForwardRef(AppBar)>
       </WithStyles(ForwardRef(AppBar))>
-    </LayoutAppBar>
+    </Component>
     <div
       style={
         Object {

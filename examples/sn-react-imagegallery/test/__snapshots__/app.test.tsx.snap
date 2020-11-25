@@ -18,11 +18,11 @@ exports[`App Layout Matches snapshot 1`] = `
   }
 >
   <WithStyles(CssBaseline) />
-  <AdvancedGridList
+  <Component
     imgList={Array []}
     openFunction={[Function]}
   />
-  <FullScreenDialog
+  <Component
     closeFunction={[Function]}
     imgList={Array []}
     isopen={false}

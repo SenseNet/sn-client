@@ -14,7 +14,7 @@ exports[`SimpleAppBar Matches snapshot 1`] = `
       >
         Photos
       </WithStyles(ForwardRef(Typography))>
-      <UploadControll
+      <Component
         notificationControll={[MockFunction]}
         uploadsetdata={[MockFunction]}
       />

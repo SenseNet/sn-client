@@ -8,6 +8,7 @@ export interface VirtualDefaultCellProps<T extends GenericContent> {
 
 export const VirtualDefaultCell = <T extends GenericContent>(props: VirtualDefaultCellProps<T>) => (
   <TableCell
+    component={'div' as any}
     style={{
       height: '57px',
       width: '100%',
