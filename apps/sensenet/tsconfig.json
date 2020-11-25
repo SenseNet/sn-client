@@ -6,7 +6,7 @@
     "composite": false,
     "jsx": "react",
     "rootDir": "./src",
-    "forceConsistentCasingInFileNames": false,
+    "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "importsNotUsedAsValues": "preserve"
