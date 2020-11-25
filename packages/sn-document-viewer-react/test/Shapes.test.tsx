@@ -3,6 +3,7 @@ import React from 'react'
 import { ThemeProvider } from 'styled-components'
 import {
   CommentMarker,
+  CommentStateContext,
   ShapeAnnotation,
   ShapeHighlight,
   ShapeRedaction,
@@ -83,13 +84,43 @@ describe('Shapes component', () => {
     expect(wrapper.find(CommentMarker).length).toBe(2)
   })
 
+  it('should set active comment click on marker', () => {
+    const setActiveComment = jest.fn()
+    const wrapper = mount(
+      <ThemeProvider theme={defaultTheme}>
+        <ViewerStateContext.Provider value={{ ...defaultViewerState, showComments: true }}>
+          <CommentStateContext.Provider
+            value={{ draft: undefined, setDraft: () => {}, activeCommentId: 'k', setActiveComment }}>
+            <CommentsContext.Provider
+              value={{
+                comments: [
+                  { x: '10', y: '10', id: 'a', page: 1, text: 'a', createdBy: {} as any },
+                  { x: '20', y: '20', id: 'b', page: 1, text: 'b', createdBy: {} as any },
+                ],
+                addPreviewComment: jest.fn(),
+                deletePreviewComment: jest.fn(),
+                getPreviewComments: jest.fn(),
+              }}>
+              <ShapesWidget {...defaultProps} />
+            </CommentsContext.Provider>
+          </CommentStateContext.Provider>
+        </ViewerStateContext.Provider>
+      </ThemeProvider>,
+    )
+    wrapper
+      .find(CommentMarker)
+      .first()
+      .simulate('click', { nativeEvent: { stopImmediatePropagation: () => {} } })
+    expect(setActiveComment).toBeCalledWith('a')
+  })
+
   it('should handle keyup/mouseUp events', () => {
     const updateState = jest.fn()
     const updateDocumentData = jest.fn()
 
     const wrapper = mount(
       <DocumentDataContext.Provider
-        value={{ documentData: exampleDocumentData, updateDocumentData, isInProgress: false }}>
+        value={{ documentData: exampleDocumentData, updateDocumentData, isInProgress: false, triggerReload: () => {} }}>
         <DocumentPermissionsContext.Provider value={{ canEdit: true, canHideRedaction: true, canHideWatermark: true }}>
           <ViewerStateContext.Provider
             value={{ ...defaultViewerState, showRedaction: true, showShapes: true, updateState }}>
@@ -109,7 +140,7 @@ describe('Shapes component', () => {
 
     const wrapper = mount(
       <DocumentDataContext.Provider
-        value={{ documentData: exampleDocumentData, updateDocumentData, isInProgress: false }}>
+        value={{ documentData: exampleDocumentData, updateDocumentData, isInProgress: false, triggerReload: () => {} }}>
         <DocumentPermissionsContext.Provider value={{ canEdit: true, canHideRedaction: true, canHideWatermark: true }}>
           <ViewerStateContext.Provider
             value={{ ...defaultViewerState, showRedaction: true, showShapes: true, updateState }}>
@@ -131,7 +162,7 @@ describe('Shapes component', () => {
 
     const wrapper = mount(
       <DocumentDataContext.Provider
-        value={{ documentData: exampleDocumentData, updateDocumentData, isInProgress: false }}>
+        value={{ documentData: exampleDocumentData, updateDocumentData, isInProgress: false, triggerReload: () => {} }}>
         <DocumentPermissionsContext.Provider value={{ canEdit: true, canHideRedaction: true, canHideWatermark: true }}>
           <ViewerStateContext.Provider
             value={{ ...defaultViewerState, showRedaction: true, showShapes: true, updateState }}>

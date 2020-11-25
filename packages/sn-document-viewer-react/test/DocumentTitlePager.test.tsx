@@ -139,4 +139,46 @@ describe('DocumentTitlePager component', () => {
     })
     expect(pageToGo.getValue()).toStrictEqual({ page: 3 })
   })
+
+  it('Should set the currentPage with the input number and set pageToGo on submit', async () => {
+    const pageToGo = new ObservableValue({ page: 1 })
+
+    const wrapper = mount(
+      <ViewerStateContext.Provider
+        value={{
+          ...defaultViewerState,
+          pageToGo,
+        }}>
+        <DocumentDataContext.Provider
+          value={{
+            documentData: {
+              ...exampleDocumentData,
+              pageCount: 100,
+            },
+            updateDocumentData: async () => undefined,
+            isInProgress: false,
+            triggerReload: () => {},
+          }}>
+          <DocumentTitlePager />
+        </DocumentDataContext.Provider>
+      </ViewerStateContext.Provider>,
+    )
+
+    act(() => {
+      wrapper.find(Typography).simulate('click')
+    })
+
+    act(() => {
+      wrapper
+        .update()
+        .find(TextField)
+        .props()
+        .onChange({ currentTarget: { value: 4 } } as any)
+    })
+
+    act(() => {
+      wrapper.update().find(TextField).simulate('submit')
+    })
+    expect(pageToGo.getValue()).toStrictEqual({ page: 4 })
+  })
 })
