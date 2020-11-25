@@ -19,7 +19,8 @@
     "build:stats": "webpack --config webpack.prod.js --profile --json > stats.json",
     "start": "webpack-dev-server --open --progress --config webpack.dev.js",
     "cypress": "cypress open",
-    "cypress:all": "cypress run"
+    "cypress:all": "cypress run",
+    "instrument": "nyc instrument --compact=false --complete-copy --delete src instrumented && yarn start --env.coverage"
   },
   "private": true,
   "publishConfig": {
@@ -28,7 +29,12 @@
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "license": "GPL-2.0",
   "homepage": "https://sensenet.com",
+  "nyc": {
+    "extends": "nyc-config-tsx",
+    "all": true
+  },
   "devDependencies": {
+    "@cypress/code-coverage": "^3.8.5",
     "@relative-ci/agent": "^1.4.0",
     "@types/autosuggest-highlight": "^3.1.0",
     "@types/react": "^16.9.53",
@@ -50,11 +56,15 @@
     "html-webpack-plugin": "^4.5.0",
     "mini-css-extract-plugin": "^1.2.0",
     "monaco-editor-webpack-plugin": "^2.0.0",
+    "nyc": "^15.1.0",
+    "nyc-config-tsx": "^0.1.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
+    "source-map-support": "^0.5.19",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^4.2.2",
     "ts-loader": "^8.0.7",
+    "ts-node": "^9.0.0",
     "url-loader": "^4.1.1",
     "webpack": "^4.44.2",
     "webpack-bundle-analyzer": "^3.9.0",
