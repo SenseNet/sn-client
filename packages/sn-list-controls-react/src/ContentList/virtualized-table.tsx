@@ -200,7 +200,6 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = (props) => {
     if (columnName === 'Checkbox') {
       return (
         <TableCell
-          component={'div' as any}
           padding="checkbox"
           key="selectAll"
           style={{
@@ -210,7 +209,8 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = (props) => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-          }}>
+          }}
+          component="div">
           <Checkbox
             className="select-all"
             indeterminate={
@@ -230,7 +230,7 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = (props) => {
 
     return (
       <TableCell
-        component={'div' as any}
+        component="div"
         variant="head"
         style={{
           height: headerHeight || 42,
