@@ -29,7 +29,10 @@ export class Preview {
     const responseBody = await this.repository.executeAction<{ page: number }, PreviewImageData>({
       idOrPath: options.document.idOrPath,
       method: 'POST',
-      name: options.version ? `PreviewAvailable?version=${options.version}` : 'PreviewAvailable',
+      name: 'PreviewAvailable',
+      oDataOptions: {
+        version: options.version && options.version,
+      } as any,
       body: {
         page: options.page,
       } as any,
