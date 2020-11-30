@@ -381,7 +381,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
                     })
                   } catch (error) {
                     logger.error({
-                      message: localization.contentList.errorContentModification,
+                      message: error.message || localization.contentList.errorContentModification,
                       data: {
                         relatedContent: fieldOptions.rowData,
                         relatedRepository: repo.configuration.repositoryUrl,
