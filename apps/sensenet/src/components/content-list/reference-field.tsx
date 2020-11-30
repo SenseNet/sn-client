@@ -43,7 +43,7 @@ export const ReferenceField: FunctionComponent<ReferenceFieldProps> = ({ content
 
   return (
     <TableCell
-      component={'div' as any}
+      component="div"
       className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle, classes.fieldCell)}>
       {Array.isArray(content) ? (
         <div className={globalClasses.centeredVertical}>

@@ -9,9 +9,7 @@ export const IconField: React.FC<{ content: GenericContent }> = (props) => {
   const globalClasses = useGlobalStyles()
 
   return (
-    <TableCell
-      component={'div' as any}
-      className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)}>
+    <TableCell component="div" className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)}>
       <Icon item={props.content} />
     </TableCell>
   )

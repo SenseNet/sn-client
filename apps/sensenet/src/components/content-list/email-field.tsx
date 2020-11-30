@@ -22,7 +22,7 @@ export const EmailField: React.FC<{ mail: string }> = ({ mail }) => {
 
   return (
     <TableCell
-      component={'div' as any}
+      component="div"
       className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle, classes.cell)}>
       {mail ? (
         <Tooltip placement="top" title={mail}>
