@@ -1,18 +1,11 @@
 import Drawer from '@material-ui/core/Drawer'
-import { SlideProps } from '@material-ui/core/Slide'
 import Typography from '@material-ui/core/Typography'
-import React, { ReactNode, useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { CommentsContext } from '../context/comments'
-import { useLocalization, useViewerState } from '../hooks'
+import { useLocalization, useViewerSettings, useViewerState } from '../hooks'
 import { Comment } from './comment'
 import { CreateComment } from './comment/CreateComment'
 import { CommentsContainer, PageList, Thumbnails } from './'
-
-/** Props definition for the Document Viewer layout */
-export interface DocumentViewerLayoutProps {
-  drawerSlideProps?: Partial<SlideProps>
-  renderAppBar: () => JSX.Element | ReactNode
-}
 
 export const THUMBNAIL_PADDING = 16
 export const THUMBNAIL_NAME = 'Thumbnail'
@@ -29,9 +22,10 @@ interface ScrollToOptions {
   smoothScroll: boolean
 }
 
-export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props) => {
+export const DocumentViewerLayout: React.FC = () => {
   const viewerState = useViewerState()
   const localization = useLocalization()
+  const viewerSettings = useViewerSettings()
 
   const scrollToImage = useCallback(({ containerId, index, itemName, padding, smoothScroll }: ScrollToOptions) => {
     const container = document.getElementById(containerId)
@@ -81,7 +75,7 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
         flexDirection: 'column',
         flexGrow: 1,
       }}>
-      {props.renderAppBar()}
+      {viewerSettings.renderAppBar()}
       <div
         style={{
           display: 'flex',
@@ -95,7 +89,7 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
           variant={'persistent'}
           open={viewerState.showThumbnails}
           anchor="left"
-          SlideProps={props.drawerSlideProps}
+          SlideProps={viewerSettings.drawerSlideProps}
           PaperProps={{
             style: {
               position: 'relative',
@@ -111,7 +105,7 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = (props)
           variant={'persistent'}
           open={viewerState.showComments}
           anchor="right"
-          SlideProps={props.drawerSlideProps}
+          SlideProps={viewerSettings.drawerSlideProps}
           PaperProps={{
             style: {
               position: 'relative',

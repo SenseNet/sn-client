@@ -1,3 +1,4 @@
+import { PreviewImageData } from '@sensenet/client-core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Paper from '@material-ui/core/Paper'
 import React, { useCallback } from 'react'
@@ -10,17 +11,15 @@ import { MARKER_SIZE, ShapesWidget } from './shapes'
  * Defined the component's own properties
  */
 export interface PageProps {
-  imageIndex: number
   viewportHeight: number
   viewportWidth: number
-  relativeHeight: number
-  relativeWidth: number
+  page: PreviewImageData
   onClick: (ev: React.MouseEvent<HTMLElement>) => any
 }
 
 export const Page: React.FC<PageProps> = (props) => {
   const viewerState = useViewerState()
-  const page = usePreviewImage(props.imageIndex)
+  const page = usePreviewImage(props.page.Index)
   const commentState = useCommentState()
 
   const isActive = page.image && viewerState.activePage === page.image.Index
@@ -28,7 +27,7 @@ export const Page: React.FC<PageProps> = (props) => {
   const imgUrl = (page.image && page.image?.PreviewImageUrl) || ''
 
   const imageRotation = ImageUtil.normalizeDegrees(
-    viewerState.rotation?.find((rotation) => rotation.pageNum === props.imageIndex)?.degree || 0,
+    viewerState.rotation?.find((rotation) => rotation.pageNum === props.page.Index)?.degree || 0,
   )
 
   const imageRotationRads = ((imageRotation % 180) * Math.PI) / 180
@@ -41,14 +40,14 @@ export const Page: React.FC<PageProps> = (props) => {
     imageRotation,
   )
 
-  const diffHeight = Math.sin(imageRotationRads) * ((props.relativeHeight - props.relativeWidth) / 2)
+  const diffHeight = Math.sin(imageRotationRads) * ((props.page.Height - props.page.Width) / 2)
 
   const imageTransform = `translateY(${diffHeight}px) rotate(${imageRotation}deg)`
 
   const handleMarkerPlacement = useCallback(
     (event: React.MouseEvent) => {
-      const xCoord = event.nativeEvent.offsetX / (props.relativeHeight / ((page.image && page.image.Height) || 1))
-      const yCoord = event.nativeEvent.offsetY / (props.relativeWidth / ((page.image && page.image.Width) || 1))
+      const xCoord = event.nativeEvent.offsetX / (props.page.Height / ((page.image && page.image.Height) || 1))
+      const yCoord = event.nativeEvent.offsetY / (props.page.Width / ((page.image && page.image.Width) || 1))
 
       if (!viewerState.isPlacingCommentMarker || xCoord <= MARKER_SIZE || yCoord <= MARKER_SIZE) {
         return
@@ -64,8 +63,8 @@ export const Page: React.FC<PageProps> = (props) => {
     [
       commentState,
       page.image,
-      props.relativeHeight,
-      props.relativeWidth,
+      props.page.Height,
+      props.page.Width,
       viewerState.activePage,
       viewerState.isPlacingCommentMarker,
     ],
@@ -77,8 +76,8 @@ export const Page: React.FC<PageProps> = (props) => {
         style={{
           padding: 0,
           overflow: 'hidden',
-          width: props.relativeWidth - 2 * PAGE_PADDING,
-          height: props.relativeHeight - 2 * PAGE_PADDING,
+          width: props.page.Width - 2 * PAGE_PADDING,
+          height: props.page.Height - 2 * PAGE_PADDING,
           position: 'relative',
         }}
         onClick={(ev) => {
@@ -86,7 +85,7 @@ export const Page: React.FC<PageProps> = (props) => {
         }}>
         {page.image && (
           <div>
-            <ShapesWidget zoomRatio={props.relativeHeight / page.image.Height} page={page.image} />
+            <ShapesWidget zoomRatio={props.page.Height / page.image.Height} page={page.image} />
           </div>
         )}
         <span style={{ display: 'flex', justifyContent: 'center' }}>

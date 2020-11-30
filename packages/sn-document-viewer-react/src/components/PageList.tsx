@@ -154,11 +154,9 @@ export const PageList: React.FC<PageListProps> = (props) => {
         {visiblePages.map((page) => (
           <Page
             key={page.Index}
-            relativeHeight={page.Height}
-            relativeWidth={page.Width}
+            page={page}
             viewportWidth={viewport.width}
             viewportHeight={viewport.height}
-            imageIndex={page.Index}
             onClick={() => props.onPageClick(page.Index)}
           />
         ))}

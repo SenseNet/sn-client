@@ -98,10 +98,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = (props) => {
                         <ViewerStateProvider options={props.defaultState}>
                           <CommentStateProvider>
                             <CommentsContextProvider>
-                              <DocumentViewerLayout
-                                drawerSlideProps={props.drawerSlideProps}
-                                renderAppBar={props.renderAppBar}
-                              />
+                              <DocumentViewerLayout />
                             </CommentsContextProvider>
                           </CommentStateProvider>
                         </ViewerStateProvider>

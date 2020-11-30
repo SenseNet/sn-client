@@ -31,7 +31,7 @@ export class Preview {
       method: 'POST',
       name: 'PreviewAvailable',
       oDataOptions: {
-        version: options.version && options.version,
+        version: options.version,
       } as any,
       body: {
         page: options.page,

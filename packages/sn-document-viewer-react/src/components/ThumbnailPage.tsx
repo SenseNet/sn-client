@@ -1,3 +1,4 @@
+import { PreviewImageData } from '@sensenet/client-core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Paper from '@material-ui/core/Paper'
 import React from 'react'
@@ -9,17 +10,15 @@ import { THUMBNAIL_PADDING } from './DocumentViewerLayout'
  * Defined the component's own properties
  */
 export interface ThumbnailPageProps {
-  imageIndex: number
+  page: PreviewImageData
   viewportHeight: number
   viewportWidth: number
-  relativeHeight: number
-  relativeWidth: number
   onClick: (ev: React.MouseEvent<HTMLElement>) => any
 }
 
 export const ThumbnailPage: React.FC<ThumbnailPageProps> = (props) => {
   const viewerState = useViewerState()
-  const page = usePreviewImage(props.imageIndex)
+  const page = usePreviewImage(props.page.Index)
 
   const isActive = page.image && viewerState.activePage === page.image.Index
 
@@ -31,8 +30,8 @@ export const ThumbnailPage: React.FC<ThumbnailPageProps> = (props) => {
         style={{
           padding: 0,
           overflow: 'hidden',
-          width: props.relativeWidth - 2 * THUMBNAIL_PADDING,
-          height: props.relativeHeight - 2 * THUMBNAIL_PADDING,
+          width: props.page.Width - 2 * THUMBNAIL_PADDING,
+          height: props.page.Height - 2 * THUMBNAIL_PADDING,
           position: 'relative',
         }}
         onClick={(ev) => {

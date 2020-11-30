@@ -11,6 +11,8 @@ export const usePreviewImage = (pageNo: number) => {
   const viewerState = useViewerState()
   const { imageData, ...context } = { ...images }
 
+  const currentPageData = images.imageData.find((i) => i.Index === pageNo)
+
   useEffect(() => {
     const abortController = new AbortController()
     const getPreviewImageData = async () => {
@@ -44,17 +46,23 @@ export const usePreviewImage = (pageNo: number) => {
       }
     }
 
-    if (
-      images.imageData.find((i) => i.Index === pageNo) &&
-      !images.imageData.find((i) => i.Index === pageNo)?.PreviewImageUrl
-    ) {
+    if (currentPageData && !currentPageData.PreviewImageUrl) {
       getPreviewImageData()
     }
     return () => abortController.abort()
-  }, [api, context, documentData, images.imageData, pageNo, viewerSettings.version, viewerState.showWatermark])
+  }, [
+    api,
+    context,
+    currentPageData,
+    documentData,
+    images.imageData,
+    pageNo,
+    viewerSettings.version,
+    viewerState.showWatermark,
+  ])
 
   return {
     ...context,
-    image: images.imageData.find((i) => i.Index === pageNo),
+    image: currentPageData,
   }
 }
