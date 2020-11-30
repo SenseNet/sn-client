@@ -22,8 +22,8 @@ export const EmailField: React.FC<{ mail: string }> = ({ mail }) => {
 
   return (
     <TableCell
-      component="div"
-      className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle, classes.cell)}>
+      className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle, classes.cell)}
+      component="div">
       {mail ? (
         <Tooltip placement="top" title={mail}>
           <a href={`mailto:${mail}`} className={classes.anchor}>

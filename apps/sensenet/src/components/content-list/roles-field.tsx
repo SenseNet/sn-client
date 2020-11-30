@@ -58,7 +58,7 @@ export const RolesField: FunctionComponent<RolesFieldProps> = ({ roles, directRo
   }
 
   return (
-    <TableCell component="div" className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)}>
+    <TableCell className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)} component="div">
       {roles.length === 1 ? (
         <Tooltip className={globalClasses.centered} title={roles[0].DisplayName!} placement="top">
           <Button
