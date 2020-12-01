@@ -7,9 +7,12 @@
   "include": ["src"],
   "references": [
     { "path": "../sn-client-core" },
-    { "path": "../sn-pickers-react" },
+    { "path": "../sn-client-utils" },
     { "path": "../sn-control-mapper" },
-    { "path": "../sn-search-react" },
-    { "path": "../sn-hooks-react" }
+    { "path": "../sn-default-content-types" },
+    { "path": "../sn-hooks-react" },
+    { "path": "../sn-pickers-react" },
+    { "path": "../sn-query"},
+    { "path": "../sn-search-react" }
   ]
 }

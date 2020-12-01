@@ -2805,6 +2805,42 @@
   dependencies:
     any-observable "^0.3.0"
 
+"@sensenet/client-core@^3.6.0":
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/@sensenet/client-core/-/client-core-3.6.0.tgz#1e0f835829956a45217844d2f5de7b8f05b39f64"
+  integrity sha512-pYJVoBWnp9yJhRcEvj4o+fN1gasna3GwFcKXbJgMRRmbzXUo75WRZgxB8MC2wm0MNl9i51AbxG77DoDJJmL75Q==
+  dependencies:
+    "@sensenet/client-utils" "^2.0.0"
+    "@sensenet/default-content-types" "^3.1.0"
+    "@sensenet/query" "^1.1.15"
+    semaphore-async-await "^1.5.1"
+    tslib "^2.0.3"
+    uuid "^8.3.1"
+
+"@sensenet/control-mapper@^2.1.10":
+  version "2.1.10"
+  resolved "https://registry.yarnpkg.com/@sensenet/control-mapper/-/control-mapper-2.1.10.tgz#ce55d141bf83a90260a18394d9586683787396f7"
+  integrity sha512-IEw5DKHVWpXy5qj7w4mshudeljs6VhC6XHmubSL+qstYZxXyDRWKhuWt1BplhKU1FlocNjgX3D6R4TsrmTgMtQ==
+  dependencies:
+    "@sensenet/client-core" "^3.6.0"
+    "@sensenet/default-content-types" "^3.1.0"
+    tslib "^2.0.3"
+
+"@sensenet/default-content-types@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@sensenet/default-content-types/-/default-content-types-3.1.0.tgz#d442cc49bedb7183d5ae4caf3f4117f53a78a6c5"
+  integrity sha512-UeaFq/CHC44HnLr2EHiyKArIGZGvhhgGZIKDH39B5We2QKFeAKoD4aOQZ/Q2NYac/IYGH/yXSP6KkkTuJwrBxg==
+
+"@sensenet/repository-events@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@sensenet/repository-events/-/repository-events-2.0.1.tgz#564d1c50455fca934144194fd6f6d7396a9a02c8"
+  integrity sha512-R3HQPfNI4i2z3u4YzSM9FRYNlVE+pSvGr0dq0GCh/FZ3pPPI1Q/V+B5wIo1lt8l13vzUVGVIp8V5m2M6pmc7dg==
+  dependencies:
+    "@sensenet/client-core" "^3.6.0"
+    "@sensenet/client-utils" "^2.0.0"
+    "@sensenet/default-content-types" "^3.1.0"
+    tslib "^2.0.3"
+
 "@sideway/address@^4.1.0":
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/@sideway/address/-/address-4.1.0.tgz#0b301ada10ac4e0e3fa525c90615e0b61a72b78d"
