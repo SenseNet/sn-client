@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Document Viewer component should render DocumentViewerError component if an error happens during fetching the document data 1`] = `
-<Component
+<DocumentViewerApiSettingsProvider
   options={
     Object {
       "getDocumentData": [Function],
@@ -112,23 +112,23 @@ exports[`Document Viewer component should render DocumentViewerError component i
       <Component
         theme={Object {}}
       >
-        <Component>
-          <Component>
-            <Component>
+        <DocumentDataProvider>
+          <DocumentPermissionsContextProvider>
+            <PreviewImageDataContextProvider>
               <ContextConsumer>
                 <Component />
               </ContextConsumer>
-            </Component>
-          </Component>
-        </Component>
+            </PreviewImageDataContextProvider>
+          </DocumentPermissionsContextProvider>
+        </DocumentDataProvider>
       </Component>
     </ContextProvider>
   </ContextProvider>
-</Component>
+</DocumentViewerApiSettingsProvider>
 `;
 
 exports[`Document Viewer component should render DocumentViewerError component if an error happens during fetching the preview image data 1`] = `
-<Component
+<DocumentViewerApiSettingsProvider
   options={
     Object {
       "getExistingPreviewImages": [Function],
@@ -239,23 +239,23 @@ exports[`Document Viewer component should render DocumentViewerError component i
       <Component
         theme={Object {}}
       >
-        <Component>
-          <Component>
-            <Component>
+        <DocumentDataProvider>
+          <DocumentPermissionsContextProvider>
+            <PreviewImageDataContextProvider>
               <ContextConsumer>
                 <Component />
               </ContextConsumer>
-            </Component>
-          </Component>
-        </Component>
+            </PreviewImageDataContextProvider>
+          </DocumentPermissionsContextProvider>
+        </DocumentDataProvider>
       </Component>
     </ContextProvider>
   </ContextProvider>
-</Component>
+</DocumentViewerApiSettingsProvider>
 `;
 
 exports[`Document Viewer component should render DocumentViewerError component if there were errors while preview generation and pageCount < 0 1`] = `
-<Component
+<DocumentViewer
   api={
     Object {
       "canEditDocument": [Function],
@@ -268,7 +268,7 @@ exports[`Document Viewer component should render DocumentViewerError component i
   renderAppBar={[Function]}
   theme={Object {}}
 >
-  <Component
+  <DocumentViewerApiSettingsProvider
     options={
       Object {
         "canEditDocument": [Function],
@@ -281,14 +281,14 @@ exports[`Document Viewer component should render DocumentViewerError component i
     <Component
       theme={Object {}}
     >
-      <Component />
+      <DocumentDataProvider />
     </Component>
-  </Component>
-</Component>
+  </DocumentViewerApiSettingsProvider>
+</DocumentViewer>
 `;
 
 exports[`Document Viewer component should render a DocumentViewerRegeneratePreviews component if pageCount =-4 1`] = `
-<Component
+<DocumentViewer
   api={
     Object {
       "canEditDocument": [Function],
@@ -301,7 +301,7 @@ exports[`Document Viewer component should render a DocumentViewerRegeneratePrevi
   renderAppBar={[Function]}
   theme={Object {}}
 >
-  <Component
+  <DocumentViewerApiSettingsProvider
     options={
       Object {
         "canEditDocument": [Function],
@@ -314,14 +314,14 @@ exports[`Document Viewer component should render a DocumentViewerRegeneratePrevi
     <Component
       theme={Object {}}
     >
-      <Component />
+      <DocumentDataProvider />
     </Component>
-  </Component>
-</Component>
+  </DocumentViewerApiSettingsProvider>
+</DocumentViewer>
 `;
 
 exports[`Document Viewer component should render without crashing 1`] = `
-<Component>
+<DocumentViewerApiSettingsProvider>
   <ContextProvider
     value={
       Object {
@@ -424,17 +424,17 @@ exports[`Document Viewer component should render without crashing 1`] = `
       <Component
         theme={Object {}}
       >
-        <Component>
-          <Component>
-            <Component>
+        <DocumentDataProvider>
+          <DocumentPermissionsContextProvider>
+            <PreviewImageDataContextProvider>
               <ContextConsumer>
                 <Component />
               </ContextConsumer>
-            </Component>
-          </Component>
-        </Component>
+            </PreviewImageDataContextProvider>
+          </DocumentPermissionsContextProvider>
+        </DocumentDataProvider>
       </Component>
     </ContextProvider>
   </ContextProvider>
-</Component>
+</DocumentViewerApiSettingsProvider>
 `;

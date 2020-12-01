@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Document Regenerate Previews component Should trigger regeneration on button click 1`] = `
-<Component>
+<DocumentViewerRegeneratePreviews>
   <div
     style={
       Object {
@@ -204,7 +204,7 @@ exports[`Document Regenerate Previews component Should trigger regeneration on b
       </WithStyles(ForwardRef(Button))>
     </div>
   </div>
-</Component>
+</DocumentViewerRegeneratePreviews>
 `;
 
 exports[`Document Regenerate Previews component should render without crashing 1`] = `

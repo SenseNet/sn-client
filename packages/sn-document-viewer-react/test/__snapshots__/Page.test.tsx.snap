@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Page component Should render page without crashing 1`] = `
-<Component
+<Page
   onClick={[MockFunction]}
   page={
     Object {

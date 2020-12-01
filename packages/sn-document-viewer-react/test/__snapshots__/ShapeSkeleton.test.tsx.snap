@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ShapesSkeleton component should render without crashing 1`] = `
-<Component
+<ShapeSkeleton
   removeShape={[Function]}
   shape={
     Object {
@@ -28,7 +28,7 @@ exports[`ShapesSkeleton component should render without crashing 1`] = `
       }
     }
   >
-    <Component
+    <ShapeRedaction
       getShapeDimensions={[Function]}
       onDragStart={[Function]}
       onResized={[Function]}
@@ -62,7 +62,7 @@ exports[`ShapesSkeleton component should render without crashing 1`] = `
         }
         tabIndex={0}
       />
-    </Component>
+    </ShapeRedaction>
   </div>
-</Component>
+</ShapeSkeleton>
 `;

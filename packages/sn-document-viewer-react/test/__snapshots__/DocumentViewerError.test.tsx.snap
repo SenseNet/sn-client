@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Document Viewer Error component matches snapshot with provided context 1`] = `
-<Component>
+<DocumentViewerError>
   <div
     style={
       Object {
@@ -229,11 +229,11 @@ exports[`Document Viewer Error component matches snapshot with provided context 
       </WithStyles(ForwardRef(Typography))>
     </div>
   </div>
-</Component>
+</DocumentViewerError>
 `;
 
 exports[`Document Viewer Error component matches snapshot without provided context 1`] = `
-<Component>
+<DocumentViewerError>
   <div
     style={
       Object {
@@ -461,5 +461,5 @@ exports[`Document Viewer Error component matches snapshot without provided conte
       </WithStyles(ForwardRef(Typography))>
     </div>
   </div>
-</Component>
+</DocumentViewerError>
 `;

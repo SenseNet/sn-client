@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RotateActivePage component Should render without crashing 1`] = `
-<Component>
-  <Component
+<RotateActivePagesWidget>
+  <RotateWidget
     pages="active"
     renderButton={[Function]}
   >
@@ -278,15 +278,15 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
         </ForwardRef(IconButton)>
       </WithStyles(ForwardRef(IconButton))>
     </div>
-  </Component>
-</Component>
+  </RotateWidget>
+</RotateActivePagesWidget>
 `;
 
 exports[`RotateActivePage component Should render without crashing with mode param 1`] = `
-<Component
+<RotateActivePagesWidget
   mode={0}
 >
-  <Component
+  <RotateWidget
     mode={0}
     pages="active"
     renderButton={[Function]}
@@ -423,15 +423,15 @@ exports[`RotateActivePage component Should render without crashing with mode par
         </WithStyles(ForwardRef(ButtonBase))>
       </ForwardRef(IconButton)>
     </WithStyles(ForwardRef(IconButton))>
-  </Component>
-</Component>
+  </RotateWidget>
+</RotateActivePagesWidget>
 `;
 
 exports[`RotateActivePage component Should render without crashing with mode param 2`] = `
-<Component
+<RotateActivePagesWidget
   mode={1}
 >
-  <Component
+  <RotateWidget
     mode={1}
     pages="active"
     renderButton={[Function]}
@@ -568,15 +568,15 @@ exports[`RotateActivePage component Should render without crashing with mode par
         </WithStyles(ForwardRef(ButtonBase))>
       </ForwardRef(IconButton)>
     </WithStyles(ForwardRef(IconButton))>
-  </Component>
-</Component>
+  </RotateWidget>
+</RotateActivePagesWidget>
 `;
 
 exports[`RotateActivePage component Should render without crashing with mode param 3`] = `
-<Component
+<RotateActivePagesWidget
   mode={2}
 >
-  <Component
+  <RotateWidget
     mode={2}
     pages="active"
     renderButton={[Function]}
@@ -853,6 +853,6 @@ exports[`RotateActivePage component Should render without crashing with mode par
         </ForwardRef(IconButton)>
       </WithStyles(ForwardRef(IconButton))>
     </div>
-  </Component>
-</Component>
+  </RotateWidget>
+</RotateActivePagesWidget>
 `;
