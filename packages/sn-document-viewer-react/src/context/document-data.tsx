@@ -60,6 +60,7 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
         abortController: ac,
       })
       if (result.pageCount === PreviewState.Loading) {
+        setDocumentData(result)
         await sleepAsync(POLLING_INTERVAL)
         getData()
       } else {

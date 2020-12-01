@@ -30,7 +30,7 @@ describe('Document Viewer Layout component', () => {
     ;(window as any).HTMLElement.prototype.scrollTo = scrollToMock
     mount(
       <PreviewImageDataContextWrapper>
-        <DocumentViewerLayout renderAppBar={() => null}>{'some children'}</DocumentViewerLayout>
+        <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
       </PreviewImageDataContextWrapper>,
       {
         wrappingComponent: ViewerStateContextWrapper,
@@ -48,7 +48,7 @@ describe('Document Viewer Layout component', () => {
     ;(window as any).HTMLElement.prototype.scrollTo = scrollToMock
     const wrapper = mount(
       <PreviewImageDataContextWrapper>
-        <DocumentViewerLayout renderAppBar={() => null}>{'some children'}</DocumentViewerLayout>
+        <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
       </PreviewImageDataContextWrapper>,
       {
         wrappingComponent: ViewerStateContextWrapper,
@@ -69,10 +69,11 @@ describe('Document Viewer Layout component', () => {
       <ViewerStateContext.Provider
         value={{
           ...defaultViewerState,
+          showThumbnails: true,
           updateState,
         }}>
         <PreviewImageDataContextWrapper>
-          <DocumentViewerLayout renderAppBar={() => null}>{'some children'}</DocumentViewerLayout>
+          <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
         </PreviewImageDataContextWrapper>
       </ViewerStateContext.Provider>,
       {
@@ -103,7 +104,7 @@ describe('Document Viewer Layout component', () => {
           }}>
           <CommentsContext.Provider value={{ ...defaultCommentsContext, comments: [examplePreviewComment] }}>
             <ViewerStateContext.Provider value={{ ...defaultViewerState, showComments: true }}>
-              <DocumentViewerLayout renderAppBar={() => null}>{'some children'}</DocumentViewerLayout>
+              <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
             </ViewerStateContext.Provider>
           </CommentsContext.Provider>
         </DocumentViewerApiSettingsContext.Provider>,

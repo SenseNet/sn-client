@@ -41,14 +41,13 @@ describe('Thumbnails component', () => {
         <ViewerStateContext.Provider
           value={{
             ...defaultViewerState,
+            showThumbnails: true,
           }}>
           <Thumbnails onPageClick={onPageClick} />
         </ViewerStateContext.Provider>
       </PreviewImageDataContext.Provider>,
     )
     expect(wrapper.find(ThumbnailPage).first().props().viewportHeight).toBe(468)
-    expect(wrapper.find(ThumbnailPage).first().props().imageIndex).toBe(1)
-    expect(wrapper.find(ThumbnailPage).last().props().imageIndex).toBe(2)
 
     act(() => {
       resize(200, 200)
@@ -74,6 +73,7 @@ describe('Thumbnails component', () => {
             ...defaultViewerState,
             rotation: [{ degree: 90, pageNum: 1 }],
             activePage: 2,
+            showThumbnails: true,
           }}>
           <Thumbnails onPageClick={onPageClick} />
         </ViewerStateContext.Provider>

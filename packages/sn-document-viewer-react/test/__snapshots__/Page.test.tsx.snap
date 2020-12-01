@@ -2,10 +2,14 @@
 
 exports[`Page component Should render page without crashing 1`] = `
 <Component
-  imageIndex={1}
   onClick={[MockFunction]}
-  relativeHeight={1024}
-  relativeWidth={768}
+  page={
+    Object {
+      "Height": 1024,
+      "Index": 1,
+      "Width": 768,
+    }
+  }
   viewportHeight={1024}
   viewportWidth={768}
 />

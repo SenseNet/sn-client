@@ -98,7 +98,7 @@ export const DocumentViewerLayout: React.FC = () => {
               overflow: 'hidden',
             },
           }}>
-          <Thumbnails onPageClick={(index) => scrollTo(index)} />
+          {viewerState.showThumbnails && <Thumbnails onPageClick={(index) => scrollTo(index)} />}
         </Drawer>
         <PageList onPageClick={(index) => scrollTo(index)} />
         <Drawer

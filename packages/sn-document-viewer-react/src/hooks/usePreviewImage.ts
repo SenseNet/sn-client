@@ -4,14 +4,13 @@ import { POLLING_INTERVAL } from '..'
 import { useDocumentData, useDocumentViewerApi, usePreviewImages, useViewerSettings, useViewerState } from '.'
 
 export const usePreviewImage = (pageNo: number) => {
-  const images = usePreviewImages()
   const api = useDocumentViewerApi()
   const { documentData } = useDocumentData()
   const viewerSettings = useViewerSettings()
   const viewerState = useViewerState()
-  const { imageData, ...context } = { ...images }
+  const { imageData, setImageData } = usePreviewImages()
 
-  const currentPageData = images.imageData.find((i) => i.Index === pageNo)
+  const currentPageData = imageData.find((i) => i.Index === pageNo)
 
   useEffect(() => {
     const abortController = new AbortController()
@@ -26,14 +25,15 @@ export const usePreviewImage = (pageNo: number) => {
         })
         if (previewImageData?.PreviewAvailable) {
           if (previewImageData.PreviewImageUrl) {
-            const newImages = [...images.imageData]
-            const oldValueIndex = newImages.findIndex((image) => image.Index === pageNo)
-            if (oldValueIndex !== -1) {
-              newImages[oldValueIndex] = { ...previewImageData, Index: pageNo }
-              context.setImageData(newImages)
-            } else {
-              context.setImageData([...newImages, { ...previewImageData, Index: pageNo }])
-            }
+            setImageData((previousValue) => {
+              const oldValueIndex = previousValue.findIndex((image) => image.Index === pageNo)
+              if (oldValueIndex !== -1) {
+                previousValue[oldValueIndex] = { ...previewImageData, Index: pageNo }
+                return previousValue
+              } else {
+                return [...previousValue, { ...previewImageData, Index: pageNo }]
+              }
+            })
           }
         } else {
           await sleepAsync(POLLING_INTERVAL)
@@ -50,19 +50,10 @@ export const usePreviewImage = (pageNo: number) => {
       getPreviewImageData()
     }
     return () => abortController.abort()
-  }, [
-    api,
-    context,
-    currentPageData,
-    documentData,
-    images.imageData,
-    pageNo,
-    viewerSettings.version,
-    viewerState.showWatermark,
-  ])
+  }, [api, currentPageData, documentData, pageNo, setImageData, viewerSettings.version, viewerState.showWatermark])
 
   return {
-    ...context,
+    context: setImageData,
     image: currentPageData,
   }
 }

@@ -48,8 +48,6 @@ describe('PageList component', () => {
       </PreviewImageDataContext.Provider>,
     )
     expect(wrapper.find(Page).first().props().viewportHeight).toBe(484)
-    expect(wrapper.find(Page).first().props().imageIndex).toBe(1)
-    expect(wrapper.find(Page).last().props().imageIndex).toBe(2)
 
     act(() => {
       resize(200, 200)

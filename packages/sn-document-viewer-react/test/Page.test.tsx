@@ -10,11 +10,13 @@ import { examplePreviewImageData } from './__Mocks__/viewercontext'
 describe('Page component', () => {
   const defaultProps: PageProps = {
     onClick: jest.fn(),
-    imageIndex: 1,
+    page: {
+      Index: 1,
+      Width: 768,
+      Height: 1024,
+    },
     viewportWidth: 768,
     viewportHeight: 1024,
-    relativeWidth: 768,
-    relativeHeight: 1024,
   }
 
   it('Should render without crashing', () => {

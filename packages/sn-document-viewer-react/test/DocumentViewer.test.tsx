@@ -2,9 +2,9 @@ import { sleepAsync } from '@sensenet/client-utils'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { DocumentViewerError, DocumentViewerLoading, DocumentViewerRegeneratePreviews, LayoutAppBar } from '../src'
+import { DocumentViewerError, DocumentViewerRegeneratePreviews } from '../src'
 import { DocumentViewer, DocumentViewerProps } from '../src/components/DocumentViewer'
-import { defaultSettings, exampleDocumentData, examplePreviewImageData } from './__Mocks__/viewercontext'
+import { exampleDocumentData } from './__Mocks__/viewercontext'
 
 /**
  * Tests for the Document Viewer main component
