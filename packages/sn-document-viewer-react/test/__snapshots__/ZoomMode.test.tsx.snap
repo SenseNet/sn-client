@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ZoomMode component should render without crashing 1`] = `
-<Component>
+<ZoomModeWidget>
   <div
     style={
       Object {
@@ -259,11 +259,11 @@ exports[`ZoomMode component should render without crashing 1`] = `
       </ForwardRef(Menu)>
     </WithStyles(ForwardRef(Menu))>
   </div>
-</Component>
+</ZoomModeWidget>
 `;
 
 exports[`ZoomMode component should render without crashing 2`] = `
-<Component>
+<ZoomModeWidget>
   <div
     style={
       Object {
@@ -527,11 +527,11 @@ exports[`ZoomMode component should render without crashing 2`] = `
       </ForwardRef(Menu)>
     </WithStyles(ForwardRef(Menu))>
   </div>
-</Component>
+</ZoomModeWidget>
 `;
 
 exports[`ZoomMode component should render without crashing 3`] = `
-<Component>
+<ZoomModeWidget>
   <div
     style={
       Object {
@@ -789,11 +789,11 @@ exports[`ZoomMode component should render without crashing 3`] = `
       </ForwardRef(Menu)>
     </WithStyles(ForwardRef(Menu))>
   </div>
-</Component>
+</ZoomModeWidget>
 `;
 
 exports[`ZoomMode component should render without crashing 4`] = `
-<Component>
+<ZoomModeWidget>
   <div
     style={
       Object {
@@ -1074,11 +1074,11 @@ exports[`ZoomMode component should render without crashing 4`] = `
       </ForwardRef(Menu)>
     </WithStyles(ForwardRef(Menu))>
   </div>
-</Component>
+</ZoomModeWidget>
 `;
 
 exports[`ZoomMode component should render without crashing 5`] = `
-<Component>
+<ZoomModeWidget>
   <div
     style={
       Object {
@@ -1336,11 +1336,11 @@ exports[`ZoomMode component should render without crashing 5`] = `
       </ForwardRef(Menu)>
     </WithStyles(ForwardRef(Menu))>
   </div>
-</Component>
+</ZoomModeWidget>
 `;
 
 exports[`ZoomMode component should render without crashing 6`] = `
-<Component>
+<ZoomModeWidget>
   <div
     style={
       Object {
@@ -1598,11 +1598,11 @@ exports[`ZoomMode component should render without crashing 6`] = `
       </ForwardRef(Menu)>
     </WithStyles(ForwardRef(Menu))>
   </div>
-</Component>
+</ZoomModeWidget>
 `;
 
 exports[`ZoomMode component should render without crashing 7`] = `
-<Component>
+<ZoomModeWidget>
   <div
     style={
       Object {
@@ -1860,5 +1860,5 @@ exports[`ZoomMode component should render without crashing 7`] = `
       </ForwardRef(Menu)>
     </WithStyles(ForwardRef(Menu))>
   </div>
-</Component>
+</ZoomModeWidget>
 `;

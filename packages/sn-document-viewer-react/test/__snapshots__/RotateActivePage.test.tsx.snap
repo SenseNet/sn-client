@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RotateActivePage component Should render without crashing 1`] = `
-<Component>
+<RotateActivePagesWidget>
   <div
     style={
       Object {
@@ -284,11 +284,11 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
       </ForwardRef(IconButton)>
     </WithStyles(ForwardRef(IconButton))>
   </div>
-</Component>
+</RotateActivePagesWidget>
 `;
 
 exports[`RotateActivePage component Should render without crashing with mode param 1`] = `
-<Component
+<RotateActivePagesWidget
   mode={0}
 >
   <WithStyles(ForwardRef(IconButton))
@@ -428,11 +428,11 @@ exports[`RotateActivePage component Should render without crashing with mode par
       </WithStyles(ForwardRef(ButtonBase))>
     </ForwardRef(IconButton)>
   </WithStyles(ForwardRef(IconButton))>
-</Component>
+</RotateActivePagesWidget>
 `;
 
 exports[`RotateActivePage component Should render without crashing with mode param 2`] = `
-<Component
+<RotateActivePagesWidget
   mode={1}
 >
   <WithStyles(ForwardRef(IconButton))
@@ -572,11 +572,11 @@ exports[`RotateActivePage component Should render without crashing with mode par
       </WithStyles(ForwardRef(ButtonBase))>
     </ForwardRef(IconButton)>
   </WithStyles(ForwardRef(IconButton))>
-</Component>
+</RotateActivePagesWidget>
 `;
 
 exports[`RotateActivePage component Should render without crashing with mode param 3`] = `
-<Component
+<RotateActivePagesWidget
   mode={2}
 >
   <div
@@ -861,5 +861,5 @@ exports[`RotateActivePage component Should render without crashing with mode par
       </ForwardRef(IconButton)>
     </WithStyles(ForwardRef(IconButton))>
   </div>
-</Component>
+</RotateActivePagesWidget>
 `;

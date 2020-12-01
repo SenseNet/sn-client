@@ -3,7 +3,7 @@
 exports[`The app layout instance should be rendered correctly 1`] = `
 <Fragment>
   <WithStyles(CssBaseline) />
-  <Component />
+  <NavBarComponent />
   <WithStyles(ForwardRef(Container))
     maxWidth="lg"
     style={
