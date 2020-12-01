@@ -7,7 +7,6 @@
   "include": ["src/ContentList"],
   "references": [
     { "path": "../sn-default-content-types" },
-    { "path": "../sn-icons-react" },
-    { "path": "../sn-repository-events" }
+    { "path": "../sn-icons-react" }
   ]
 }

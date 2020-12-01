@@ -8,7 +8,6 @@
   "references": [
     { "path": "../sn-client-auth-google" },
     { "path": "../sn-authentication-jwt" },
-    { "path": "../sn-icons-react" },
     { "path": "../sn-client-core" },
     { "path": "../sn-default-content-types" },
     { "path": "../sn-redux-promise-middleware" },
