@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Document Viewer Error component matches snapshot wihtout provided context 1`] = `
-<Component>
+<DocumentViewerError>
   <div
     style={
       Object {
@@ -13,7 +13,7 @@ exports[`Document Viewer Error component matches snapshot wihtout provided conte
       }
     }
   >
-    <Component
+    <LayoutAppBar
       style={
         Object {
           "position": "fixed",
@@ -166,7 +166,7 @@ exports[`Document Viewer Error component matches snapshot wihtout provided conte
           </WithStyles(ForwardRef(Paper))>
         </ForwardRef(AppBar)>
       </WithStyles(ForwardRef(AppBar))>
-    </Component>
+    </LayoutAppBar>
     <div
       style={
         Object {
@@ -381,11 +381,11 @@ exports[`Document Viewer Error component matches snapshot wihtout provided conte
       </WithStyles(ForwardRef(Typography))>
     </div>
   </div>
-</Component>
+</DocumentViewerError>
 `;
 
 exports[`Document Viewer Error component matches snapshot with provided context 1`] = `
-<Component>
+<DocumentViewerError>
   <div
     style={
       Object {
@@ -397,7 +397,7 @@ exports[`Document Viewer Error component matches snapshot with provided context 
       }
     }
   >
-    <Component
+    <LayoutAppBar
       style={
         Object {
           "position": "fixed",
@@ -550,7 +550,7 @@ exports[`Document Viewer Error component matches snapshot with provided context 
           </WithStyles(ForwardRef(Paper))>
         </ForwardRef(AppBar)>
       </WithStyles(ForwardRef(AppBar))>
-    </Component>
+    </LayoutAppBar>
     <div
       style={
         Object {
@@ -767,5 +767,5 @@ exports[`Document Viewer Error component matches snapshot with provided context 
       </WithStyles(ForwardRef(Typography))>
     </div>
   </div>
-</Component>
+</DocumentViewerError>
 `;
