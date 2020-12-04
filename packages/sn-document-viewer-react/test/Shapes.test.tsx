@@ -21,7 +21,8 @@ import { exampleDocumentData, examplePreviewImageData } from './__Mocks__/viewer
 describe('Shapes component', () => {
   const defaultProps: ShapesWidgetProps = {
     page: examplePreviewImageData,
-    zoomRatio: 1,
+    zoomRatioStanding: 1,
+    zoomRatioLying: 1,
   }
 
   it('should render all the shapes', () => {
@@ -82,6 +83,105 @@ describe('Shapes component', () => {
     )
     expect(wrapper.find(CommentMarker).exists()).toBeTruthy()
     expect(wrapper.find(CommentMarker).length).toBe(2)
+  })
+
+  it('should rotate comment marker on rotation degree(90)', () => {
+    const wrapper = mount(
+      <ThemeProvider theme={defaultTheme}>
+        <ViewerStateContext.Provider
+          value={{
+            ...defaultViewerState,
+            rotation: [{ degree: 90, pageNum: 1 }],
+            showComments: true,
+          }}>
+          <CommentsContext.Provider
+            value={{
+              comments: [{ x: '10', y: '30', id: 'a', page: 1, text: 'a', createdBy: {} as any }],
+              addPreviewComment: jest.fn(),
+              deletePreviewComment: jest.fn(),
+              getPreviewComments: jest.fn(),
+            }}>
+            <ShapesWidget {...defaultProps} />
+          </CommentsContext.Provider>
+        </ViewerStateContext.Provider>
+      </ThemeProvider>,
+    )
+
+    const domNode = wrapper.find(CommentMarker).getDOMNode()
+    const top = getComputedStyle(domNode).getPropertyValue('top')
+    expect(top).toBe('10px')
+    const right = getComputedStyle(domNode).getPropertyValue('right')
+    expect(right).toBe('30px')
+    const bottom = getComputedStyle(domNode).getPropertyValue('bottom')
+    expect(bottom).toBe('')
+    const left = getComputedStyle(domNode).getPropertyValue('left')
+    expect(left).toBe('')
+  })
+
+  it('should rotate comment marker on rotation degree(180)', () => {
+    const wrapper = mount(
+      <ThemeProvider theme={defaultTheme}>
+        <ViewerStateContext.Provider
+          value={{
+            ...defaultViewerState,
+            rotation: [{ degree: 180, pageNum: 1 }],
+            showComments: true,
+          }}>
+          <CommentsContext.Provider
+            value={{
+              comments: [{ x: '10', y: '30', id: 'a', page: 1, text: 'a', createdBy: {} as any }],
+              addPreviewComment: jest.fn(),
+              deletePreviewComment: jest.fn(),
+              getPreviewComments: jest.fn(),
+            }}>
+            <ShapesWidget {...defaultProps} />
+          </CommentsContext.Provider>
+        </ViewerStateContext.Provider>
+      </ThemeProvider>,
+    )
+
+    const domNode = wrapper.find(CommentMarker).getDOMNode()
+    const top = getComputedStyle(domNode).getPropertyValue('top')
+    expect(top).toBe('')
+    const right = getComputedStyle(domNode).getPropertyValue('right')
+    expect(right).toBe('10px')
+    const bottom = getComputedStyle(domNode).getPropertyValue('bottom')
+    expect(bottom).toBe('30px')
+    const left = getComputedStyle(domNode).getPropertyValue('left')
+    expect(left).toBe('')
+  })
+
+  it('should rotate comment marker on rotation degree(270)', () => {
+    const wrapper = mount(
+      <ThemeProvider theme={defaultTheme}>
+        <ViewerStateContext.Provider
+          value={{
+            ...defaultViewerState,
+            rotation: [{ degree: 270, pageNum: 1 }],
+            showComments: true,
+          }}>
+          <CommentsContext.Provider
+            value={{
+              comments: [{ x: '10', y: '30', id: 'a', page: 1, text: 'a', createdBy: {} as any }],
+              addPreviewComment: jest.fn(),
+              deletePreviewComment: jest.fn(),
+              getPreviewComments: jest.fn(),
+            }}>
+            <ShapesWidget {...defaultProps} />
+          </CommentsContext.Provider>
+        </ViewerStateContext.Provider>
+      </ThemeProvider>,
+    )
+
+    const domNode = wrapper.find(CommentMarker).getDOMNode()
+    const top = getComputedStyle(domNode).getPropertyValue('top')
+    expect(top).toBe('')
+    const right = getComputedStyle(domNode).getPropertyValue('right')
+    expect(right).toBe('')
+    const bottom = getComputedStyle(domNode).getPropertyValue('bottom')
+    expect(bottom).toBe('10px')
+    const left = getComputedStyle(domNode).getPropertyValue('left')
+    expect(left).toBe('30px')
   })
 
   it('should set active comment click on marker', () => {
