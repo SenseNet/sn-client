@@ -76,8 +76,8 @@ export const Page: React.FC<PageProps> = (props) => {
         style={{
           padding: 0,
           overflow: 'hidden',
-          width: props.page.Width - 2 * PAGE_PADDING,
-          height: props.page.Height - 2 * PAGE_PADDING,
+          width: props.page.Width,
+          height: props.page.Height,
           position: 'relative',
         }}
         onClick={(ev) => {
@@ -85,7 +85,11 @@ export const Page: React.FC<PageProps> = (props) => {
         }}>
         {page.image && (
           <div>
-            <ShapesWidget zoomRatio={props.page.Height / page.image.Height} page={page.image} />
+            <ShapesWidget
+              zoomRatioStanding={props.page.Height / page.image.Height}
+              zoomRatioLying={props.page.Width / page.image.Height}
+              page={props.page}
+            />
           </div>
         )}
         <span style={{ display: 'flex', justifyContent: 'center' }}>

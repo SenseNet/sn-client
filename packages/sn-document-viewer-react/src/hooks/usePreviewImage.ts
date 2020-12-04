@@ -1,5 +1,5 @@
 import { sleepAsync } from '@sensenet/client-utils'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { POLLING_INTERVAL } from '..'
 import { useDocumentData, useDocumentViewerApi, usePreviewImages, useViewerSettings, useViewerState } from '.'
 
@@ -10,7 +10,7 @@ export const usePreviewImage = (pageNo: number) => {
   const viewerState = useViewerState()
   const { imageData, setImageData } = usePreviewImages()
 
-  const currentPageData = imageData.find((i) => i.Index === pageNo)
+  const currentPageData = useMemo(() => imageData.find((i) => i.Index === pageNo), [imageData, pageNo])
 
   useEffect(() => {
     const abortController = new AbortController()
@@ -26,12 +26,14 @@ export const usePreviewImage = (pageNo: number) => {
         if (previewImageData?.PreviewAvailable) {
           if (previewImageData.PreviewImageUrl) {
             setImageData((previousValue) => {
-              const oldValueIndex = previousValue.findIndex((image) => image.Index === pageNo)
+              const newImages = [...previousValue]
+              const oldValueIndex = newImages.findIndex((image) => image.Index === pageNo)
               if (oldValueIndex !== -1) {
-                previousValue[oldValueIndex] = { ...previewImageData, Index: pageNo }
-                return previousValue
+                newImages[oldValueIndex] = { ...previewImageData, Index: pageNo }
+                return newImages
               } else {
-                return [...previousValue, { ...previewImageData, Index: pageNo }]
+                newImages.push({ ...previewImageData, Index: pageNo })
+                return newImages
               }
             })
           }

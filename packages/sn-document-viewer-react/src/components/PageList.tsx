@@ -1,4 +1,5 @@
 import { PreviewImageData } from '@sensenet/client-core'
+import { debounce } from '@sensenet/client-utils'
 import Grid from '@material-ui/core/Grid'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { usePreviewImages, useViewerState } from '../hooks'
@@ -24,9 +25,12 @@ export const PageList: React.FC<PageListProps> = (props) => {
   const [viewport, setViewport] = useState<Dimensions>({ width: 0, height: 0 })
   const pages = usePreviewImages()
 
-  const requestResize = useCallback(() => {
-    setResizeToken(Math.random())
-  }, [])
+  const requestResize = useCallback(
+    debounce(() => {
+      setResizeToken(Math.random())
+    }, 300),
+    [],
+  )
 
   const onScroll = useCallback(() => {
     requestResize()

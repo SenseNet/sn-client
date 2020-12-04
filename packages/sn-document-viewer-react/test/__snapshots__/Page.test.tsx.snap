@@ -29,11 +29,11 @@ exports[`Page component Should render without crashing 1`] = `
     onClick={[Function]}
     style={
       Object {
-        "height": 1008,
+        "height": 1024,
         "overflow": "hidden",
         "padding": 0,
         "position": "relative",
-        "width": 752,
+        "width": 768,
       }
     }
   >

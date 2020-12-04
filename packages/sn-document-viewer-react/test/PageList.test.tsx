@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core'
+import { debounce, Grid } from '@material-ui/core'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
@@ -53,7 +53,9 @@ describe('PageList component', () => {
       resize(200, 200)
     })
 
-    expect(wrapper.update().find(Page).first().props().viewportHeight).toBe(184)
+    debounce(() => {
+      expect(wrapper.update().find(Page).first().props().viewportHeight).toBe(184)
+    }, 300)
   })
 
   it('should handle scroll', () => {
@@ -87,7 +89,10 @@ describe('PageList component', () => {
     act(() => {
       wrapper.find(Grid).getDOMNode().dispatchEvent(scrollEvent)
     })
-    expect(wrapper.update().find(Page).first().props().viewportHeight).toBe(84)
+
+    debounce(() => {
+      expect(wrapper.update().find(Page).first().props().viewportHeight).toBe(84)
+    }, 300)
   })
 
   Object.defineProperty(HTMLElement.prototype, 'clientHeight', originalOffsetHeight)

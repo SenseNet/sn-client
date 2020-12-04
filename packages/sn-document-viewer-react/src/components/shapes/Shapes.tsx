@@ -1,7 +1,7 @@
 import { Annotation, Highlight, PreviewImageData, Redaction, Shape, Shapes } from '@sensenet/client-core'
 import React, { useCallback } from 'react'
 import { useComments, useCommentState, useDocumentData, useDocumentPermissions, useViewerState } from '../../hooks'
-import { Dimensions } from '../../services'
+import { Dimensions, ImageUtil } from '../../services'
 import { ShapeSkeleton } from '../shapes'
 import { CommentMarker } from './style'
 
@@ -10,7 +10,8 @@ import { CommentMarker } from './style'
  */
 export interface ShapesWidgetProps {
   page: PreviewImageData
-  zoomRatio: number
+  zoomRatioStanding: number
+  zoomRatioLying: number
 }
 
 /**
@@ -70,12 +71,12 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
         updateShapeData(shapeData.type, shapeData.shape.guid, {
           ...shapeData.shape,
           imageIndex: props.page.Index,
-          x: (ev.clientX - boundingBox.left - shapeData.offset.width) * (1 / props.zoomRatio),
-          y: (ev.clientY - boundingBox.top - shapeData.offset.height) * (1 / props.zoomRatio),
+          x: (ev.clientX - boundingBox.left - shapeData.offset.width) * (1 / props.zoomRatioStanding),
+          y: (ev.clientY - boundingBox.top - shapeData.offset.height) * (1 / props.zoomRatioStanding),
         })
       }
     },
-    [permissions.canEdit, props.page.Index, props.zoomRatio, updateShapeData],
+    [permissions.canEdit, props.page.Index, props.zoomRatioStanding, updateShapeData],
   )
   return (
     <div
@@ -99,9 +100,13 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
               !viewerState.isPlacingCommentMarker && commentState.setActiveComment(marker.id)
             }}
             isSelected={marker.id === commentState.activeCommentId}
-            zoomRatio={props.zoomRatio}
+            zoomRatioStanding={props.zoomRatioStanding}
+            zoomRatioLying={props.zoomRatioLying}
             marker={marker}
             key={marker.id}
+            rotation={ImageUtil.normalizeDegrees(
+              viewerState.rotation?.find((rotation) => rotation.pageNum === props.page.Index)?.degree || 0,
+            )}
           />
         ))}
       <div>
@@ -113,7 +118,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
                 key={index}
                 shape={redaction}
                 shapeType="redactions"
-                zoomRatio={props.zoomRatio}
+                zoomRatio={props.zoomRatioStanding}
                 updateShapeData={updateShapeData}
                 removeShape={removeShape}
               />
@@ -127,7 +132,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
                 key={index}
                 shape={annotation}
                 shapeType="annotations"
-                zoomRatio={props.zoomRatio}
+                zoomRatio={props.zoomRatioStanding}
                 updateShapeData={updateShapeData}
                 removeShape={removeShape}
               />
@@ -141,7 +146,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
                 key={index}
                 shape={highlight}
                 shapeType="highlights"
-                zoomRatio={props.zoomRatio}
+                zoomRatio={props.zoomRatioStanding}
                 updateShapeData={updateShapeData}
                 removeShape={removeShape}
               />
