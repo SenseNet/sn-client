@@ -2,23 +2,23 @@ import { deepMerge, DeepPartial, ObservableValue } from '@sensenet/client-utils'
 import React, { useCallback, useEffect, useState } from 'react'
 import { ViewerState } from '../models/viewer-state'
 
+export const DEFAULT_ZOOM_LEVEL = 3
+
 export const defaultViewerState: ViewerState & {
   updateState: (newState: DeepPartial<ViewerState>) => void
 } = {
-  activePages: [1],
-  zoomMode: 'fit',
-  customZoomLevel: 3,
+  activePage: 1,
   showWatermark: false,
   showRedaction: true,
   showShapes: true,
   showThumbnails: false,
-  fitRelativeZoomLevel: 0,
+  zoomLevel: DEFAULT_ZOOM_LEVEL,
+  rotation: undefined,
   showComments: false,
   hasChanges: false,
   isPlacingCommentMarker: false,
   isCreateCommentActive: false,
-  visiblePages: [1, 2],
-  onPageChange: new ObservableValue(1),
+  pageToGo: new ObservableValue({ page: 1 }),
   updateState: () => {},
 }
 export const ViewerStateContext = React.createContext(defaultViewerState)

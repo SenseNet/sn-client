@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Page component Should render page without crashing 1`] = `
+<Page
+  onClick={[MockFunction]}
+  page={
+    Object {
+      "Height": 1024,
+      "Index": 1,
+      "Width": 768,
+    }
+  }
+  viewportHeight={1024}
+  viewportWidth={768}
+/>
+`;
+
+exports[`Page component Should render without crashing 1`] = `
+<WithStyles(ForwardRef(Paper))
+  className="Page"
+  elevation={2}
+  style={
+    Object {
+      "margin": 8,
+    }
+  }
+>
+  <div
+    onClick={[Function]}
+    style={
+      Object {
+        "height": 1024,
+        "overflow": "hidden",
+        "padding": 0,
+        "position": "relative",
+        "width": 768,
+      }
+    }
+  >
+    <span
+      style={
+        Object {
+          "display": "flex",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <WithStyles(ForwardRef(CircularProgress))
+        style={
+          Object {
+            "marginTop": "50%",
+          }
+        }
+      />
+    </span>
+  </div>
+</WithStyles(ForwardRef(Paper))>
+`;

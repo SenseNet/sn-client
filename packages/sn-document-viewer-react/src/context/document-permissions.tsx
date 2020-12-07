@@ -11,7 +11,7 @@ export const DocumentPermissionsContextProvider: React.FC = ({ children }) => {
   const { documentData } = useDocumentData()
   const api = useDocumentViewerApi()
   const [canEdit, setcanEdit] = useState(false)
-  const [canHideRedaction, setcancanHideRedaction] = useState(false)
+  const [canHideRedaction, setcanHideRedaction] = useState(false)
   const [canHideWatermark, setcanHideWatermark] = useState(false)
 
   useEffect(() => {
@@ -22,13 +22,13 @@ export const DocumentPermissionsContextProvider: React.FC = ({ children }) => {
         const cancanHideRedactionPromise = api.canHideRedaction({ document: documentData, abortController })
         const canHideWatermarkPromise = api.canHideWatermark({ document: documentData, abortController })
 
-        const [canEditValue, cancanHideRedactionValue, canHideWatermarkValue] = await Promise.all([
+        const [canEditValue, canHideRedactionValue, canHideWatermarkValue] = await Promise.all([
           canEditPromise,
           cancanHideRedactionPromise,
           canHideWatermarkPromise,
         ])
         setcanEdit(canEditValue)
-        setcancanHideRedaction(cancanHideRedactionValue)
+        setcanHideRedaction(canHideRedactionValue)
         setcanHideWatermark(canHideWatermarkValue)
       } catch (error) {
         if (!abortController.signal.aborted) {
