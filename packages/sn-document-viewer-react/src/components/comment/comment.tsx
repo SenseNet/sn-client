@@ -9,8 +9,8 @@ import Collapse from '@material-ui/core/Collapse'
 import Typography from '@material-ui/core/Typography'
 import React, { useEffect, useState } from 'react'
 import { useCommentState, useLocalization } from '../../hooks'
-import { DeleteButton } from './DeleteCommentButton'
 import { StyledCard } from './style'
+import { DeleteButton } from '.'
 
 /**
  * Comment prop type

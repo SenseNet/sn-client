@@ -1,7 +1,6 @@
 import { shallow } from 'enzyme'
 import React from 'react'
-
-import { LayoutAppBar } from '../src/components/LayoutAppBar'
+import { LayoutAppBar } from '../src/components/layout-app-bar'
 
 describe('Layout AppBar component', () => {
   it('should match snapshot with children', () => {

@@ -1,7 +1,7 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
-import { Page, PageProps } from '../src/components/Page'
+import { Page, PageProps } from '../src/components/page'
 import { CommentStateContext } from '../src/context/comment-states'
 import { PreviewImageDataContext } from '../src/context/preview-image-data'
 import { defaultViewerState, ViewerStateContext } from '../src/context/viewer-state'

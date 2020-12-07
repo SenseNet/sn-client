@@ -18,12 +18,12 @@ import {
   ViewerSettingsContext,
   ViewerStateProvider,
 } from '../context'
-import { PreviewState } from '../Enums'
+import { PreviewState } from '../enums'
 import { defaultTheme, DocumentViewerApiSettings, ViewerState } from '../models'
-import { DocumentViewerError } from './DocumentViewerError'
-import { DocumentViewerLayout } from './DocumentViewerLayout'
-import { DocumentViewerLoading } from './DocumentViewerLoading'
-import { DocumentViewerRegeneratePreviews } from './DocumentViewerRegeneratePreviews'
+import { DocumentViewerError } from './document-viewer-error'
+import { DocumentViewerLayout } from './document-viewer-layout'
+import { DocumentViewerLoading } from './document-viewer-loading'
+import { DocumentViewerRegeneratePreviews } from './document-viewer-regenerate-previews'
 
 export const POLLING_INTERVAL = 5000
 

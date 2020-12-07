@@ -4,8 +4,7 @@ import Grid from '@material-ui/core/Grid'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { usePreviewImages, useViewerState } from '../hooks'
 import { Dimensions, ImageUtil } from '../services'
-import { PAGE_CONTAINER_ID, PAGE_PADDING } from './DocumentViewerLayout'
-import { Page } from './'
+import { Page, PAGE_CONTAINER_ID, PAGE_PADDING } from './'
 
 /**
  * Defines the own properties for the PageList component

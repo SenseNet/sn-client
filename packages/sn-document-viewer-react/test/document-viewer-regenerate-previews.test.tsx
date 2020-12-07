@@ -2,7 +2,7 @@ import { Button } from '@material-ui/core'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { DocumentViewerRegeneratePreviews } from '../src/components/DocumentViewerRegeneratePreviews'
+import { DocumentViewerRegeneratePreviews } from '../src/components/document-viewer-regenerate-previews'
 import { DocumentViewerApiSettingsContext } from '../src/context/api-settings'
 import { defaultSettings } from './__Mocks__/viewercontext'
 

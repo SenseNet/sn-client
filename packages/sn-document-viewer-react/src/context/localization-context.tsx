@@ -1,5 +1,5 @@
 import React from 'react'
-import { PreviewState } from '../Enums'
+import { PreviewState } from '../enums'
 
 export const defaultLocalization = {
   rotateDocumentLeft: 'Rotate document left',

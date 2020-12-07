@@ -1,7 +1,7 @@
 import Dashboard from '@material-ui/icons/Dashboard'
 import React from 'react'
 import { useLocalization, useViewerState } from '../../hooks'
-import { ToggleBase } from './ToggleBase'
+import { ToggleBase } from './toggle-base'
 
 /**
  * Document widget component that toggles the displaying of the shapes

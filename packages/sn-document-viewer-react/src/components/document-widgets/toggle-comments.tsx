@@ -1,7 +1,7 @@
 import Comment from '@material-ui/icons/Comment'
 import React from 'react'
 import { useLocalization, useViewerState } from '../../hooks'
-import { ToggleBase } from './ToggleBase'
+import { ToggleBase } from './toggle-base'
 
 /**
  * Represents a comment toggler component

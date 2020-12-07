@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme'
 import React from 'react'
-import { Print } from '../src/components/document-widgets/PrintWidget'
+import { Print } from '../src/components/document-widgets/print-widget'
 
 describe('Print component', () => {
   it('Should render without crashing', () => {

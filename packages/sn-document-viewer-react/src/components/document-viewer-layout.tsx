@@ -3,8 +3,7 @@ import Typography from '@material-ui/core/Typography'
 import React, { useCallback, useEffect } from 'react'
 import { CommentsContext } from '../context/comments'
 import { useLocalization, useViewerSettings, useViewerState } from '../hooks'
-import { Comment } from './comment'
-import { CreateComment } from './comment/CreateComment'
+import { Comment, CreateComment } from './comment'
 import { CommentsContainer, PageList, Thumbnails } from './'
 
 export const THUMBNAIL_PADDING = 16

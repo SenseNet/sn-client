@@ -2,8 +2,7 @@ import { debounce, Grid } from '@material-ui/core'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { defaultViewerState, Page, PreviewImageDataContext, ViewerStateContext } from '../src'
-import { PageList } from '../src/components/PageList'
+import { defaultViewerState, Page, PageList, PreviewImageDataContext, ViewerStateContext } from '../src'
 import { examplePreviewImageData } from './__Mocks__/viewercontext'
 
 /**
