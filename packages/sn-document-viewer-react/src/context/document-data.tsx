@@ -4,7 +4,7 @@ import { useRepository } from '@sensenet/hooks-react'
 import React, { useCallback, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { POLLING_INTERVAL } from '../components'
-import { PreviewState } from '../Enums'
+import { PreviewState } from '../enums'
 import { useDocumentViewerApi, useViewerSettings } from '../hooks'
 
 const defaultDocumentData: DocumentData = {
