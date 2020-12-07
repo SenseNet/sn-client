@@ -18,7 +18,7 @@ import {
   ViewerSettingsContext,
   ViewerStateProvider,
 } from '../context'
-import { PreviewState } from '../Enums'
+import { PreviewState } from '../enums'
 import { defaultTheme, DocumentViewerApiSettings, ViewerState } from '../models'
 import { DocumentViewerError } from './document-viewer-error'
 import { DocumentViewerLayout } from './document-viewer-layout'
