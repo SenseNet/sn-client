@@ -1,3 +1,4 @@
-export * from './Comment'
-export * from './CreateComment'
-export * from './DeleteCommentButton'
+export * from './comment'
+export * from './create-comment'
+export * from './delete-comment-button'
+export * from './style'

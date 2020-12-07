@@ -3,8 +3,8 @@ import RotateLeft from '@material-ui/icons/RotateLeft'
 import RotateRight from '@material-ui/icons/RotateRight'
 import React from 'react'
 import { useLocalization } from '../../hooks'
-import { ROTATION_MODE } from '../../models/RotationModel'
-import { RotateWidget } from './RotateWidget'
+import { ROTATION_MODE } from '../../models/rotation-model'
+import { RotateWidget } from './rotate-widget'
 
 export interface RotateActivePagesWidgetProps {
   mode?: ROTATION_MODE

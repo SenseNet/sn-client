@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper'
 import React, { useCallback } from 'react'
 import { useCommentState, usePreviewImage, useViewerState } from '../hooks'
 import { ImageUtil } from '../services'
-import { PAGE_NAME, PAGE_PADDING } from './DocumentViewerLayout'
+import { PAGE_NAME, PAGE_PADDING } from './document-viewer-layout'
 import { MARKER_SIZE, ShapesWidget } from './shapes'
 
 /**

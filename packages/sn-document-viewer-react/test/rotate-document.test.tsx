@@ -1,7 +1,6 @@
 import { mount, shallow } from 'enzyme'
 import React from 'react'
-import { defaultViewerState, ROTATION_MODE, ViewerStateContext } from '../src'
-import { RotateDocumentWidget } from '../src/components/document-widgets/RotateDocument'
+import { defaultViewerState, RotateDocumentWidget, ROTATION_MODE, ViewerStateContext } from '../src'
 import { PreviewImageDataContext } from '../src/context/preview-image-data'
 import { examplePreviewImageData } from './__Mocks__/viewercontext'
 

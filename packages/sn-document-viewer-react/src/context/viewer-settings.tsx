@@ -1,5 +1,5 @@
 import React from 'react'
-import { DocumentViewerProps } from '../components/DocumentViewer'
+import { DocumentViewerProps } from '../components/document-viewer'
 
 export const defaultViewerProps: DocumentViewerProps = {
   documentIdOrPath: '',

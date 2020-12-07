@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme'
 import React from 'react'
-import { DocumentViewerLoading } from '../src/components/DocumentViewerLoading'
+import { DocumentViewerLoading } from '../src/components/document-viewer-loading'
 
 describe('Document Viewer Loading component', () => {
   it('should render without crashing', () => {

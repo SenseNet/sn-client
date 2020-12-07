@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react'
-import { applyShapeRotations, ImageUtil, RotationModel } from '../..'
+import { applyShapeRotations, ImageUtil, ROTATION_AMOUNT, ROTATION_MODE, RotationModel } from '../..'
 import { useDocumentData, usePreviewImages, useViewerState } from '../../hooks'
-import { ROTATION_AMOUNT, ROTATION_MODE } from '../../models/RotationModel'
 
 export interface RotateWidgetProps {
   mode?: ROTATION_MODE

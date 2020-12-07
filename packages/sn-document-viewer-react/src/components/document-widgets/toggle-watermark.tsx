@@ -1,7 +1,7 @@
 import BrandingWatermark from '@material-ui/icons/BrandingWatermark'
 import React from 'react'
 import { useLocalization, useViewerState } from '../../hooks'
-import { ToggleBase } from './ToggleBase'
+import { ToggleBase } from './toggle-base'
 
 /**
  * Document widget component that toggles the displaying of the watermark

@@ -1,9 +1,6 @@
 import { Annotation, Highlight, Redaction, Shapes } from '@sensenet/client-core'
 import React, { useState } from 'react'
-import { useDocumentPermissions } from '../..'
-import { ShapeAnnotation } from './ShapeAnnotation'
-import { ShapeHighlight } from './ShapeHighlight'
-import { ShapeRedaction } from './ShapeRedaction'
+import { ShapeAnnotation, ShapeHighlight, ShapeRedaction, useDocumentPermissions } from '../..'
 
 /**
  * Defined the component's own properties

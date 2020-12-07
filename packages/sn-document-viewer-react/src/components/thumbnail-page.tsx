@@ -2,9 +2,8 @@ import { PreviewImageData } from '@sensenet/client-core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Paper from '@material-ui/core/Paper'
 import React from 'react'
-import { THUMBNAIL_NAME } from '..'
+import { THUMBNAIL_NAME, THUMBNAIL_PADDING } from '..'
 import { usePreviewImage, useViewerState } from '../hooks'
-import { THUMBNAIL_PADDING } from './DocumentViewerLayout'
 
 /**
  * Defined the component's own properties

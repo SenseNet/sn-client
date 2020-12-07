@@ -1,6 +1,6 @@
 import React, { CSSProperties } from 'react'
 import { useLocalization, useViewerState } from '../../hooks'
-import { ToggleBase } from './ToggleBase'
+import { ToggleBase } from './toggle-base'
 
 /**
  * Document widget component that toggles the thumbnails

@@ -5,10 +5,10 @@ import {
   defaultViewerState,
   DocumentDataContext,
   PreviewImageDataContext,
+  RotateActivePagesWidget,
   ROTATION_MODE,
   ViewerStateContext,
 } from '../src'
-import { RotateActivePagesWidget } from '../src/components/document-widgets/RotateActivePages'
 import { exampleDocumentData, examplePreviewImageData } from './__Mocks__/viewercontext'
 
 describe('RotateActivePage component', () => {

@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme'
 import React from 'react'
-import { Download } from '../src/components/document-widgets/DownloadWidget'
+import { Download } from '../src/components/document-widgets/download-widget'
 
 describe('DownloadWidget component', () => {
   it('Should render without crashing', () => {
