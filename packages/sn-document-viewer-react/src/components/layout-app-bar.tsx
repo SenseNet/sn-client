@@ -1,12 +1,31 @@
+import { createStyles, makeStyles } from '@material-ui/core'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import React, { CSSProperties } from 'react'
+import React from 'react'
 
+const useStyles = makeStyles(() => {
+  return createStyles({
+    appBar: {
+      position: 'relative',
+      zIndex: 1,
+    },
+    toolBar: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+  })
+})
+
+type LayoutAppBarClassKey = Partial<ReturnType<typeof useStyles>>
 /**
  * Represents a Toolbar component in an AppBar
  */
-export const LayoutAppBar: React.FunctionComponent<{ style?: CSSProperties }> = (props) => (
-  <AppBar position="sticky" style={{ position: 'relative', zIndex: 1, ...props.style }}>
-    <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>{props.children}</Toolbar>
-  </AppBar>
-)
+export const LayoutAppBar: React.FunctionComponent<{ classes?: LayoutAppBarClassKey }> = (props) => {
+  const classes = useStyles(props)
+
+  return (
+    <AppBar position="sticky" className={classes.appBar}>
+      <Toolbar className={classes.toolBar}>{props.children}</Toolbar>
+    </AppBar>
+  )
+}

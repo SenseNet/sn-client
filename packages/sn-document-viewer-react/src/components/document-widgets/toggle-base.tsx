@@ -1,5 +1,14 @@
+import { createStyles, makeStyles } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton/IconButton'
 import React from 'react'
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    iconButton: {},
+  })
+})
+
+type ToggleBaseClassKey = Partial<ReturnType<typeof useStyles>>
 
 /**
  * Properties for Toggle Base component
@@ -24,13 +33,17 @@ export interface ToggleBaseProps {
 /**
  * Represents a base toggle component
  */
-export const ToggleBase: React.FunctionComponent<ToggleBaseProps> = (props) => (
-  <div style={{ display: 'inline-block' }}>
-    <IconButton
-      color={props.isVisible ? 'primary' : 'inherit'}
-      title={props.title}
-      onClick={() => props.setValue(!props.isVisible)}>
-      {props.children}
-    </IconButton>
-  </div>
-)
+export const ToggleBase: React.FunctionComponent<ToggleBaseProps & { classes?: ToggleBaseClassKey }> = (props) => {
+  const classes = useStyles(props)
+  return (
+    <div style={{ display: 'inline-block' }}>
+      <IconButton
+        className={classes.iconButton}
+        color={props.isVisible ? 'primary' : 'inherit'}
+        title={props.title}
+        onClick={() => props.setValue(!props.isVisible)}>
+        {props.children}
+      </IconButton>
+    </div>
+  )
+}

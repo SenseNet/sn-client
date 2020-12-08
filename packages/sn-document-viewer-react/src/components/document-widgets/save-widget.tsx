@@ -1,3 +1,4 @@
+import { createStyles, makeStyles } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
 import Save from '@material-ui/icons/Save'
 import React, { useCallback } from 'react'
@@ -10,10 +11,20 @@ import {
   useViewerState,
 } from '../../hooks'
 
+const useStyles = makeStyles(() => {
+  return createStyles({
+    iconButton: {},
+    icon: {},
+  })
+})
+
+type SaveClassKey = Partial<ReturnType<typeof useStyles>>
+
 /**
  * Document widget component for saving document state
  */
-export const SaveWidget: React.FC = () => {
+export const SaveWidget: React.FC<{ classes?: SaveClassKey }> = (props) => {
+  const classes = useStyles(props)
   const api = useDocumentViewerApi()
   const { documentData } = useDocumentData()
   const permissions = useDocumentPermissions()
@@ -33,11 +44,12 @@ export const SaveWidget: React.FC = () => {
   return (
     <div style={{ display: 'inline-block' }}>
       <IconButton
+        className={classes.iconButton}
         disabled={!viewerState.hasChanges || !permissions.canEdit}
         title={localization.saveChanges}
         onClick={save}
         id="Save">
-        <Save />
+        <Save className={classes.icon} />
       </IconButton>
     </div>
   )

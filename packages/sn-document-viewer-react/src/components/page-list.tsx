@@ -119,7 +119,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
     }
 
     setMarginTop(_marginTop)
-    setMarginBottom(_marginBottom)
+    setMarginBottom(_marginBottom + _visiblePages[0].Height / 4)
     const newVisiblePages = _visiblePages.slice(_pagesToSkip, _pagesToSkip + _pagesToTake)
     setVisiblePages(newVisiblePages)
 
