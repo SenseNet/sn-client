@@ -9,8 +9,7 @@ import Collapse from '@material-ui/core/Collapse'
 import Typography from '@material-ui/core/Typography'
 import React, { useEffect, useState } from 'react'
 import { useCommentState, useLocalization } from '../../hooks'
-import { StyledCard } from './style'
-import { DeleteButton } from '.'
+import { CommentCard, DeleteButton } from '.'
 
 /**
  * Comment prop type
@@ -38,39 +37,41 @@ export const Comment: React.FC<CommentProps> = (props) => {
   }, [commentState.activeCommentId, props.comment.id])
 
   return (
-    <StyledCard
-      style={{ overflow: 'visible' }}
+    <CommentCard
       id={props.comment.id}
       isSelected={isSelected}
-      raised={isSelected}
-      onClick={() => commentState.setActiveComment(props.comment.id)}>
-      <CardHeader
-        avatar={
-          repo.configuration.repositoryUrl === props.comment.createdBy.avatarUrl ? (
-            <Avatar />
-          ) : (
-            <Avatar src={props.comment.createdBy.avatarUrl} alt={localization.avatarAlt} />
-          )
-        }
-        title={props.comment.createdBy.displayName}
-      />
-      <Collapse in={isOpen} timeout="auto" collapsedHeight={isOpen ? '0px' : '78px'}>
-        <CardContent>
-          <Typography style={{ wordBreak: 'break-word' }}>{props.comment.text}</Typography>
-        </CardContent>
-      </Collapse>
-      <CardActions>
-        {isLongText ? (
-          <>
-            <Button size="small" onClick={() => setIsOpen(!isOpen)}>
-              {isOpen ? localization.showLess : localization.showMore}
-            </Button>
-            {isOpen ? <DeleteButton comment={props.comment} /> : null}
-          </>
-        ) : (
-          <DeleteButton comment={props.comment} />
-        )}
-      </CardActions>
-    </StyledCard>
+      onClick={() => commentState.setActiveComment(props.comment.id)}
+      renderChildren={() => (
+        <>
+          <CardHeader
+            avatar={
+              repo.configuration.repositoryUrl === props.comment.createdBy.avatarUrl ? (
+                <Avatar />
+              ) : (
+                <Avatar src={props.comment.createdBy.avatarUrl} alt={localization.avatarAlt} />
+              )
+            }
+            title={props.comment.createdBy.displayName}
+          />
+          <Collapse in={isOpen} timeout="auto" collapsedHeight={isOpen ? '0px' : '78px'}>
+            <CardContent>
+              <Typography style={{ wordBreak: 'break-word' }}>{props.comment.text}</Typography>
+            </CardContent>
+          </Collapse>
+          <CardActions>
+            {isLongText ? (
+              <>
+                <Button size="small" onClick={() => setIsOpen(!isOpen)}>
+                  {isOpen ? localization.showLess : localization.showMore}
+                </Button>
+                {isOpen ? <DeleteButton comment={props.comment} /> : null}
+              </>
+            ) : (
+              <DeleteButton comment={props.comment} />
+            )}
+          </CardActions>
+        </>
+      )}
+    />
   )
 }

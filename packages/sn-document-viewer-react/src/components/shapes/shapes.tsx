@@ -1,10 +1,23 @@
 import { Annotation, Highlight, PreviewImageData, Redaction, Shape, Shapes } from '@sensenet/client-core'
+import { createStyles, makeStyles } from '@material-ui/core'
 import React, { useCallback } from 'react'
 import { useComments, useCommentState, useDocumentData, useDocumentPermissions, useViewerState } from '../../hooks'
 import { Dimensions, ImageUtil } from '../../services'
 import { ShapeSkeleton } from '../shapes'
-import { CommentMarker } from './style'
+import { CommentMarker } from './comment-marker'
 
+const useStyles = makeStyles(() => {
+  return createStyles({
+    shapesContainer: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      zIndex: 1,
+    },
+  })
+})
 /**
  * Defined the component's own properties
  */
@@ -18,6 +31,7 @@ export interface ShapesWidgetProps {
  * Page widget component for displaying shapes on a page
  */
 export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
+  const classes = useStyles()
   const permissions = useDocumentPermissions()
   const viewerState = useViewerState()
   const { documentData, updateDocumentData } = useDocumentData()
@@ -79,26 +93,11 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
     [permissions.canEdit, props.page.Index, props.zoomRatioStanding, updateShapeData],
   )
   return (
-    <div
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        zIndex: 1,
-      }}
-      onDrop={onDrop}
-      onDragOver={(ev) => ev.preventDefault()}>
+    <div className={classes.shapesContainer} onDrop={onDrop} onDragOver={(ev) => ev.preventDefault()}>
       {viewerState.showComments &&
         visibleComments.length > 0 &&
         visibleComments.map((marker) => (
           <CommentMarker
-            onClick={(ev) => {
-              ev.stopPropagation()
-              ev.nativeEvent.stopImmediatePropagation()
-              !viewerState.isPlacingCommentMarker && commentState.setActiveComment(marker.id)
-            }}
             isSelected={marker.id === commentState.activeCommentId}
             zoomRatioStanding={props.zoomRatioStanding}
             zoomRatioLying={props.zoomRatioLying}

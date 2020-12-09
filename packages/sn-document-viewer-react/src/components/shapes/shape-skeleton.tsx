@@ -118,14 +118,16 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
           shape={props.shape}
           onDragStart={onDragStart}
           onResized={onResized}
-          getShapeDimensions={getShapeDimensions}
+          permissions={permissions}
+          dimensions={getShapeDimensions(props.shape) as any}
         />
       ) : (
         <ShapeHighlight
           shape={props.shape}
           onDragStart={onDragStart}
           onResized={onResized}
-          getShapeDimensions={getShapeDimensions}
+          permissions={permissions}
+          dimensions={getShapeDimensions(props.shape) as any}
         />
       )}
     </div>
