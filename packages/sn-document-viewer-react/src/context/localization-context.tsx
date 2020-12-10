@@ -1,5 +1,5 @@
 import React from 'react'
-import { PreviewState } from '../Enums'
+import { PreviewState } from '../enums'
 
 export const defaultLocalization = {
   rotateDocumentLeft: 'Rotate document left',
@@ -8,12 +8,6 @@ export const defaultLocalization = {
   rotatePageRight: 'Rotate page right',
   zoomIn: 'Zoom in',
   zoomOut: 'Zoom out',
-  zoomMode: 'Zoom mode',
-  zoomModeFit: 'Fit',
-  zoomModeOriginalSize: 'Original size',
-  zoomModeFitHeight: 'Fit height',
-  zoomModeFitWidth: 'Fit width',
-  zooomModeCustom: 'Custom',
   toggleRedaction: 'Toggle redaction',
   toggleWatermark: 'Toggle watermark',
   toggleShapes: 'Toggle shapes',
@@ -61,6 +55,7 @@ export const defaultLocalization = {
     { state: PreviewState.NoPreviewProviderEnabled, message: 'There is no preview provider enabled', details: '' },
   ],
   errorLoadingDetails: 'The following error occured during opening a document: ',
+  unknownError: 'Unknown error',
   reloadPage: 'Reload page',
   search: 'Search',
   share: 'Share',

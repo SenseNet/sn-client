@@ -8,7 +8,7 @@ export function isActionModel(actions: any): actions is ActionModel[] {
 }
 
 /**
- * Typeguard to check if the setting is a CurrencyFieldSetting
+ * Type guard to check if the setting is a CurrencyFieldSetting
  * @param {FieldSetting} fieldSetting
  * @returns {fieldSetting is CurrencyFieldSetting}
  */

@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RotateDocument component Should render without crashing 1`] = `
+<RotateWidget
+  pages="all"
+  renderButton={[Function]}
+/>
+`;
+
+exports[`RotateDocument component Should render without crashing with mode param 1`] = `
+<RotateWidget
+  mode={0}
+  pages="all"
+  renderButton={[Function]}
+/>
+`;
+
+exports[`RotateDocument component Should render without crashing with mode param 2`] = `
+<RotateWidget
+  mode={1}
+  pages="all"
+  renderButton={[Function]}
+/>
+`;
+
+exports[`RotateDocument component Should render without crashing with mode param 3`] = `
+<RotateWidget
+  mode={2}
+  pages="all"
+  renderButton={[Function]}
+/>
+`;

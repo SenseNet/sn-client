@@ -1,16 +1,12 @@
-import { ZoomMode } from '../models/viewer-state'
-
 /** Dimensions model that defines a specified width and height */
 export interface Dimensions {
   width: number
   height: number
 }
-
 /**
  * Default scale value per step. Adjust this to increase / decrease fit relative zoom per clicks
  */
-export const fitRelativeZoomLevelScale = 0.05
-
+export const zoomLevelScale = 0.05
 /**
  * Helper class for image manipulation
  */
@@ -32,49 +28,24 @@ export class ImageUtil {
    * Helper method that calculates a resized image size
    * @param viewPort The viewport dimensions
    * @param image The image dimensions and the rotation amount
-   * @param zoomMode The specified zoom mode
    * @param relativeZoomLevel The relative zoom level if provided
    * @returns The relative image size
    */
   public static getImageSize(
     viewPort: Dimensions,
     image: Dimensions & { rotation: number },
-    zoomMode: ZoomMode,
-    relativeZoomLevel = 1,
-    fitRelativeZoomLevel = 0,
+    zoomLevel = 0,
   ): Dimensions {
-    if (zoomMode === 'custom') {
-      relativeZoomLevel = (relativeZoomLevel + 1) / 4
-    } else {
-      relativeZoomLevel = 1
-    }
-
     const boundingBox = this.getRotatedBoundingBoxSize(image, image.rotation)
     const [width, height] = [boundingBox.width, boundingBox.height]
 
     const zoomWidth = viewPort.width || width ? viewPort.width / width : 0
     const zoomHeight = viewPort.height || height ? viewPort.height / height : 0
 
-    switch (zoomMode) {
-      case 'fitWidth':
-        return {
-          width: width * zoomWidth * relativeZoomLevel,
-          height: height * zoomWidth * relativeZoomLevel,
-        }
-      case 'fitHeight':
-        return {
-          width: width * zoomHeight * relativeZoomLevel,
-          height: height * zoomHeight * relativeZoomLevel,
-        }
-      case 'fit': {
-        const zoom = Math.min(zoomWidth, zoomHeight)
-        return {
-          width: width * zoom + fitRelativeZoomLevel * width * zoom * fitRelativeZoomLevelScale,
-          height: height * zoom + fitRelativeZoomLevel * height * zoom * fitRelativeZoomLevelScale,
-        }
-      }
-      default:
-        return { width: width * relativeZoomLevel, height: height * relativeZoomLevel }
+    const zoom = Math.min(zoomWidth, zoomHeight)
+    return {
+      width: width * zoom + zoomLevel * width * zoom * zoomLevelScale,
+      height: height * zoom + zoomLevel * height * zoom * zoomLevelScale,
     }
   }
 

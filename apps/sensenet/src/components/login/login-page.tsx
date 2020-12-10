@@ -13,7 +13,7 @@ import {
 import clsx from 'clsx'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import snLogo from '../../assets/sensenet-icon-32.png'
+import snLogo from '../../assets/sensenet-icon-32_hat.png'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 
