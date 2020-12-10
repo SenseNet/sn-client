@@ -18,9 +18,10 @@
     "build": "webpack --config webpack.prod.js",
     "build:stats": "webpack --config webpack.prod.js --profile --json > stats.json",
     "start": "webpack-dev-server --open --progress --config webpack.dev.js",
-    "cypress": "cypress open",
-    "cypress:all": "cypress run",
-    "instrument": "nyc instrument --compact=false --complete-copy --delete src instrumented && yarn start --env.coverage"
+    "cypress": "cypress open --env coverage=false",
+    "cypress:all": "cypress run --env coverage=false",
+    "cypress:coverage": "cypress run && nyc report --reporter=text-summary",
+    "instrument": "nyc instrument --compct=false --complete-copy --delete src instrumented && yarn start --env.coverage"
   },
   "private": true,
   "publishConfig": {
