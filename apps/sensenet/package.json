@@ -32,7 +32,10 @@
   "homepage": "https://sensenet.com",
   "nyc": {
     "extends": "nyc-config-tsx",
-    "all": true
+    "all": true,
+    "reporter": [
+      "html"
+    ]
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.8.5",
