@@ -1,5 +1,5 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
-import Forum from '@material-ui/icons/Forum'
+import ChatSharp from '@material-ui/icons/ChatSharp'
 import clsx from 'clsx'
 import React from 'react'
 import { useLocalization, useViewerState } from '../../hooks'
@@ -15,22 +15,23 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-type ToggleCommentsClassKey = Partial<ReturnType<typeof useStyles>>
+type AddAnnnotationClassKey = Partial<ReturnType<typeof useStyles>>
 
 /**
- * Represents a comment toggler component
+ * Document widget component to toggleing redaction
  */
-export const ToggleCommentsWidget: React.FC<{ classes?: ToggleCommentsClassKey }> = (props) => {
+export const AddAnnotationWidget: React.FC<{ classes?: AddAnnnotationClassKey }> = (props) => {
   const classes = useStyles(props)
   const localization = useLocalization()
   const viewerState = useViewerState()
+
   return (
     <ToggleBase
       classes={classes}
-      isVisible={viewerState.showComments}
-      title={localization.toggleComments}
-      setValue={(v) => viewerState.updateState({ showComments: v })}>
-      <Forum className={clsx(classes.icon, { [classes.iconActive]: viewerState.showComments })} />
+      isVisible={viewerState.isPlacingAnnotation}
+      title={localization.addAnnotation}
+      setValue={(v) => viewerState.updateState({ isPlacingAnnotation: v })}>
+      <ChatSharp className={clsx(classes.icon, { [classes.iconActive]: viewerState.isPlacingAnnotation })} />
     </ToggleBase>
   )
 }

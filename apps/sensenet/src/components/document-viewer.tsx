@@ -1,11 +1,17 @@
 import {
+  AddAnnotationWidget,
+  AddHighlightWidget,
+  AddRedactionWidget,
   DocumentTitlePager,
   LayoutAppBar,
   RotateActivePagesWidget,
   RotateDocumentWidget,
   ROTATION_MODE,
+  SaveWidget,
   DocumentViewer as SnDocumentViewer,
   ToggleCommentsWidget,
+  ToggleRedactionWidget,
+  ToggleShapesWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
 } from '@sensenet/document-viewer-react'
@@ -65,6 +71,16 @@ const useZoomInOutStyles = makeStyles(() =>
   }),
 )
 
+const useSaveStyles = makeStyles(() =>
+  createStyles({
+    iconButton: {
+      '&:disabled': {
+        opacity: 0.26,
+      },
+    },
+  }),
+)
+
 export function DocumentViewer(props: { contentPath: string }) {
   const routeMatch = useRouteMatch<{ browseType: string; action: string }>()
   const history = useHistory()
@@ -75,6 +91,7 @@ export function DocumentViewer(props: { contentPath: string }) {
   const globalClasses = useGlobalStyles()
   const layoutAppBarStyle = useAppBarStyles()
   const zoomInOutStyle = useZoomInOutStyles()
+  const saveStyle = useSaveStyles()
 
   useEffect(() => {
     const keyboardHandler = (event: KeyboardEvent) => {
@@ -105,9 +122,17 @@ export function DocumentViewer(props: { contentPath: string }) {
                   <ZoomInOutWidget classes={zoomInOutStyle} />
                   <RotateActivePagesWidget mode={ROTATION_MODE.clockwise} />
                   <RotateDocumentWidget mode={ROTATION_MODE.clockwise} />
+                  <SaveWidget classes={saveStyle} />
                 </div>
                 <DocumentTitlePager />
-                <ToggleCommentsWidget />
+                <div style={{ flexShrink: 0 }}>
+                  <ToggleRedactionWidget />
+                  <ToggleShapesWidget />
+                  <AddRedactionWidget />
+                  <AddHighlightWidget />
+                  <AddAnnotationWidget />
+                  <ToggleCommentsWidget />
+                </div>
               </LayoutAppBar>
             )}
           />

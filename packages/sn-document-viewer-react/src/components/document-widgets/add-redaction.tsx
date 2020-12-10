@@ -1,5 +1,5 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
-import Forum from '@material-ui/icons/Forum'
+import ChatBubbleSharp from '@material-ui/icons/ChatBubbleSharp'
 import clsx from 'clsx'
 import React from 'react'
 import { useLocalization, useViewerState } from '../../hooks'
@@ -15,22 +15,23 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-type ToggleCommentsClassKey = Partial<ReturnType<typeof useStyles>>
+type AddRedactionClassKey = Partial<ReturnType<typeof useStyles>>
 
 /**
- * Represents a comment toggler component
+ * Document widget component to toggleing redaction
  */
-export const ToggleCommentsWidget: React.FC<{ classes?: ToggleCommentsClassKey }> = (props) => {
+export const AddRedactionWidget: React.FC<{ classes?: AddRedactionClassKey }> = (props) => {
   const classes = useStyles(props)
   const localization = useLocalization()
   const viewerState = useViewerState()
+
   return (
     <ToggleBase
       classes={classes}
-      isVisible={viewerState.showComments}
-      title={localization.toggleComments}
-      setValue={(v) => viewerState.updateState({ showComments: v })}>
-      <Forum className={clsx(classes.icon, { [classes.iconActive]: viewerState.showComments })} />
+      isVisible={viewerState.isPlacingRedaction}
+      title={localization.addRedaction}
+      setValue={(v) => viewerState.updateState({ isPlacingRedaction: v })}>
+      <ChatBubbleSharp className={clsx(classes.icon, { [classes.iconActive]: viewerState.isPlacingRedaction })} />
     </ToggleBase>
   )
 }

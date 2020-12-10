@@ -67,6 +67,21 @@ export interface ViewerState {
   isPlacingCommentMarker: boolean
 
   /**
+   * Variable that indicates if a redaction placing is in progress
+   */
+  isPlacingRedaction: boolean
+
+  /**
+   * Variable that indicates if a annotation placing is in progress
+   */
+  isPlacingAnnotation: boolean
+
+  /**
+   * Variable that indicates if a highlight placing is in progress
+   */
+  isPlacingHighlight: boolean
+
+  /**
    * Indicates if the user is creating a comment at the moment
    */
   isCreateCommentActive: boolean
