@@ -1,10 +1,34 @@
 import { PreviewImageData } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { usePreviewImages, useViewerState } from '../hooks'
 import { Dimensions, ImageUtil } from '../services'
 import { Page, PAGE_CONTAINER_ID, PAGE_PADDING } from './'
+
+type Props = {
+  marginTop: number
+  marginBottom: number
+}
+
+const useStyles = makeStyles<Theme, Props>(() => {
+  return createStyles({
+    grid: {
+      flexGrow: 1,
+      flexShrink: 1,
+      overflow: 'auto',
+    },
+    pagesWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingTop: ({ marginTop }) => marginTop || 0,
+      paddingBottom: ({ marginBottom }) => marginBottom || 0,
+    },
+  })
+})
 
 /**
  * Defines the own properties for the PageList component
@@ -23,6 +47,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
   const [resizeToken, setResizeToken] = useState(0)
   const [viewport, setViewport] = useState<Dimensions>({ width: 0, height: 0 })
   const pages = usePreviewImages()
+  const classes = useStyles({ marginTop, marginBottom })
 
   const requestResize = useCallback(
     debounce(() => {
@@ -140,20 +165,8 @@ export const PageList: React.FC<PageListProps> = (props) => {
   }, [pages.imageData, scrollState, viewerState, viewport.height, viewport.width])
 
   return (
-    <Grid
-      item={true}
-      style={{ flexGrow: 1, flexShrink: 1, overflow: 'auto' }}
-      id={PAGE_CONTAINER_ID}
-      innerRef={viewportElement}>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          paddingTop: marginTop || 0,
-          paddingBottom: marginBottom || 0,
-        }}>
+    <Grid item={true} className={classes.grid} id={PAGE_CONTAINER_ID} innerRef={viewportElement}>
+      <div className={classes.pagesWrapper}>
         {visiblePages.map((page) => (
           <Page
             key={page.Index}

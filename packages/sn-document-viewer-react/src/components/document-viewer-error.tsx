@@ -1,32 +1,38 @@
-import { Typography } from '@material-ui/core'
+import { createStyles, makeStyles, Typography } from '@material-ui/core'
 import React from 'react'
 import { useDocumentData, useLocalization } from '../hooks'
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    mainWrapper: {
+      display: 'flex',
+      justifyContent: 'space-around',
+      alignContent: 'center',
+      alignItems: 'center',
+      height: '100%',
+    },
+    errorWrapper: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      flexDirection: 'column',
+      maxWidth: 500,
+      margin: '.5em 0 .6em 0',
+    },
+  })
+})
 
 /**
  * Component to display viewer related errors
  */
 export const DocumentViewerError: React.FC = () => {
+  const classes = useStyles()
   const { documentData } = useDocumentData()
   const localization = useLocalization()
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'space-around',
-        alignContent: 'center',
-        alignItems: 'center',
-        height: '100%',
-      }}>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexDirection: 'column',
-          maxWidth: 500,
-          margin: '.5em 0 .6em 0',
-        }}>
+    <div className={classes.mainWrapper}>
+      <div className={classes.errorWrapper}>
         <svg width="442px" height="290px" viewBox="0 0 442 240" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
             <g id="No-provider" transform="translate(-9.000000, 5.000000)">

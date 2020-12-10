@@ -1,4 +1,5 @@
 import { PreviewImageData } from '@sensenet/client-core'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Paper from '@material-ui/core/Paper'
 import React, { useCallback } from 'react'
@@ -6,6 +7,22 @@ import { useCommentState, usePreviewImage, useViewerState } from '../hooks'
 import { ImageUtil } from '../services'
 import { PAGE_NAME, PAGE_PADDING } from './document-viewer-layout'
 import { MARKER_SIZE, ShapesWidget } from './shapes'
+
+const useStyles = makeStyles<Theme, PageProps>(() => {
+  return createStyles({
+    page: {
+      padding: 0,
+      overflow: 'hidden',
+      width: ({ page }) => page.Width,
+      height: ({ page }) => page.Height,
+      position: 'relative',
+    },
+    image: {
+      display: 'flex',
+      justifyContent: 'center',
+    },
+  })
+})
 
 /**
  * Defined the component's own properties
@@ -18,6 +35,7 @@ export interface PageProps {
 }
 
 export const Page: React.FC<PageProps> = (props) => {
+  const classes = useStyles(props)
   const viewerState = useViewerState()
   const page = usePreviewImage(props.page.Index)
   const commentState = useCommentState()
@@ -73,13 +91,7 @@ export const Page: React.FC<PageProps> = (props) => {
   return (
     <Paper elevation={isActive ? 8 : 2} className={PAGE_NAME} style={{ margin: PAGE_PADDING }}>
       <div
-        style={{
-          padding: 0,
-          overflow: 'hidden',
-          width: props.page.Width,
-          height: props.page.Height,
-          position: 'relative',
-        }}
+        className={classes.page}
         onClick={(ev) => {
           viewerState.isPlacingCommentMarker ? handleMarkerPlacement(ev) : props.onClick(ev)
         }}>
@@ -92,7 +104,7 @@ export const Page: React.FC<PageProps> = (props) => {
             />
           </div>
         )}
-        <span style={{ display: 'flex', justifyContent: 'center' }}>
+        <span className={classes.image}>
           {imgUrl ? (
             <img
               src={`${imgUrl}${viewerState.showWatermark ? '?watermark=true' : ''}`}

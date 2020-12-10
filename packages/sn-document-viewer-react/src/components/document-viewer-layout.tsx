@@ -1,10 +1,11 @@
+import { createStyles, makeStyles } from '@material-ui/core'
 import Drawer from '@material-ui/core/Drawer'
 import Typography from '@material-ui/core/Typography'
 import React, { useCallback, useEffect } from 'react'
 import { CommentsContext } from '../context/comments'
 import { useLocalization, useViewerSettings, useViewerState } from '../hooks'
 import { Comment, CreateComment } from './comment'
-import { CommentsContainer, PageList, Thumbnails } from './'
+import { PageList, Thumbnails } from './'
 
 export const THUMBNAIL_PADDING = 16
 export const THUMBNAIL_NAME = 'Thumbnail'
@@ -12,6 +13,35 @@ export const THUMBNAIL_CONTAINER_ID = 'sn-document-viewer-thumbnails'
 export const PAGE_PADDING = 8
 export const PAGE_NAME = 'Page'
 export const PAGE_CONTAINER_ID = 'sn-document-viewer-pages'
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    mainWrapper: {
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      flexGrow: 1,
+    },
+    layout: {
+      display: 'flex',
+      flexGrow: 1,
+      width: '100%',
+      overflow: 'hidden',
+      zIndex: 0,
+      position: 'relative',
+    },
+    commentContainer: {
+      display: 'flex',
+      flexFlow: 'column',
+      padding: '15px',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      overflow: 'auto',
+    },
+  })
+})
 
 interface ScrollToOptions {
   containerId: string
@@ -22,6 +52,7 @@ interface ScrollToOptions {
 }
 
 export const DocumentViewerLayout: React.FC = () => {
+  const classes = useStyles()
   const viewerState = useViewerState()
   const localization = useLocalization()
   const viewerSettings = useViewerSettings()
@@ -66,24 +97,9 @@ export const DocumentViewerLayout: React.FC = () => {
   }, [scrollTo, viewerState.pageToGo])
 
   return (
-    <div
-      style={{
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        flexGrow: 1,
-      }}>
+    <div className={classes.mainWrapper}>
       {viewerSettings.renderAppBar()}
-      <div
-        style={{
-          display: 'flex',
-          flexGrow: 1,
-          width: '100%',
-          overflow: 'hidden',
-          zIndex: 0,
-          position: 'relative',
-        }}>
+      <div className={classes.layout}>
         <Drawer
           variant={'persistent'}
           open={viewerState.showThumbnails}
@@ -113,7 +129,7 @@ export const DocumentViewerLayout: React.FC = () => {
               overflow: 'hidden',
             },
           }}>
-          <CommentsContainer style={{ display: 'flex', flexFlow: 'column' }}>
+          <div className={classes.commentContainer}>
             <Typography variant="h4">{localization.commentSideBarTitle}</Typography>
             <CreateComment />
             <CommentsContext.Consumer>
@@ -121,7 +137,7 @@ export const DocumentViewerLayout: React.FC = () => {
                 commentsContext.comments.map((comment) => <Comment key={comment.id} comment={comment} />)
               }
             </CommentsContext.Consumer>
-          </CommentsContainer>
+          </div>
         </Drawer>
       </div>
     </div>
