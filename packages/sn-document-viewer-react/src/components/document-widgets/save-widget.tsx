@@ -39,7 +39,8 @@ export const SaveWidget: React.FC<{ classes?: SaveClassKey }> = (props) => {
         pages: pages.imageData,
         abortController: new AbortController(),
       })
-  }, [api, documentData, pages, permissions.canEdit])
+    viewerState.updateState({ hasChanges: false })
+  }, [api, documentData, pages.imageData, permissions.canEdit, viewerState])
 
   return (
     <div style={{ display: 'inline-block' }}>

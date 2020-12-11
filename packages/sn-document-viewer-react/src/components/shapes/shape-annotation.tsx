@@ -23,6 +23,7 @@ export interface ShapeAnnotationProps {
   focused: boolean
   onDragStart: (ev: React.DragEvent<HTMLElement>) => void
   onResized: (ev: React.MouseEvent<HTMLElement>) => void
+  onRightClick: (ev: React.MouseEvent<HTMLElement>) => void
   getShapeDimensions: (shape: Annotation) => React.CSSProperties
   updateShapeData: (shapeType: keyof Shapes, guid: string, shape: Annotation) => void
   removeShape: (shapeType: keyof Shapes, guid: string) => void
@@ -64,6 +65,7 @@ export const ShapeAnnotation: React.FC<ShapeAnnotationProps> = (props) => {
           </div>
         </>
       )}
+      onRightClick={props.onRightClick}
       onDragStart={props.onDragStart}
       onResized={props.onResized}
     />

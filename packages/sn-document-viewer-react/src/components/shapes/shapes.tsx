@@ -108,7 +108,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
             )}
           />
         ))}
-      <div>
+      <>
         {permissions.canHideRedaction &&
           viewerState.showRedaction &&
           visibleShapes.redactions.map((redaction, index) => {
@@ -151,7 +151,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
               />
             )
           })}
-      </div>
+      </>
     </div>
   )
 }

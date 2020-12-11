@@ -19,6 +19,7 @@ type Props = {
 
   onDragStart: (ev: React.DragEvent<HTMLElement>) => void
   onResized: (ev: React.MouseEvent<HTMLElement>) => void
+  onRightClick: (ev: React.MouseEvent<HTMLElement>) => void
   renderChildren: () => JSX.Element
 }
 
@@ -64,9 +65,19 @@ export function AnnotationWrapper({
   dimensions,
   onDragStart,
   onResized,
+  onRightClick,
   renderChildren,
 }: Props) {
-  const classes = useStyles({ permissions, shape, zoomRatio, dimensions, onDragStart, onResized, renderChildren })
+  const classes = useStyles({
+    permissions,
+    shape,
+    zoomRatio,
+    dimensions,
+    onDragStart,
+    onResized,
+    renderChildren,
+    onRightClick,
+  })
 
   return (
     <div
@@ -74,7 +85,8 @@ export function AnnotationWrapper({
       tabIndex={0}
       draggable={permissions.canEdit}
       onDragStart={onDragStart}
-      onMouseUp={onResized}>
+      onMouseUp={onResized}
+      onContextMenu={onRightClick}>
       {renderChildren()}
     </div>
   )

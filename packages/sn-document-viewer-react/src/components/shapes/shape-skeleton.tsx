@@ -1,6 +1,26 @@
 import { Annotation, Highlight, Redaction, Shapes } from '@sensenet/client-core'
+import { Button, createStyles, makeStyles, Paper, Popper, TextField } from '@material-ui/core'
 import React, { useState } from 'react'
 import { ShapeAnnotation, ShapeHighlight, ShapeRedaction, useDocumentPermissions } from '../..'
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    title: {
+      fontSize: '12px',
+      marginRight: '6px',
+    },
+    textBox: {
+      display: 'flex',
+      alignItems: 'center',
+      marginBottom: '6px',
+    },
+    paper: {
+      padding: '10px',
+      marginLeft: '10px',
+      backgroundColor: 'grey',
+    },
+  })
+})
 
 /**
  * Defined the component's own properties
@@ -14,8 +34,19 @@ export interface ShapeProps {
 }
 
 export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
+  const classes = useStyles()
   const permissions = useDocumentPermissions()
   const [focused, setFocused] = useState(false)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+  const [saveableFields, setSaveableFields] = useState({})
+
+  const handleInputChange = (field: string, value: any) => {
+    setSaveableFields({ ...saveableFields, [field]: value })
+  }
+
+  const open = Boolean(anchorEl)
+  const id = open ? 'annotation-settings' : undefined
 
   /**
    * Method that returns the shape dimensions as CSS properties
@@ -95,6 +126,16 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
     }
   }
 
+  /** onRightClick event handler that opens a popper */
+  const onRightClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault()
+    setAnchorEl(anchorEl ? null : event.currentTarget)
+  }
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+  }
+
   return (
     <div
       onClickCapture={(ev) => ev.stopPropagation()}
@@ -103,16 +144,92 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
       onFocus={onFocus}
       onBlur={onBlur}>
       {props.shapeType === 'annotations' ? (
-        <ShapeAnnotation
-          shape={props.shape as Annotation}
-          zoomRatio={props.zoomRatio}
-          focused={focused}
-          onDragStart={onDragStart}
-          onResized={onResized}
-          getShapeDimensions={getShapeDimensions}
-          updateShapeData={props.updateShapeData}
-          removeShape={props.removeShape}
-        />
+        <>
+          <ShapeAnnotation
+            shape={props.shape as Annotation}
+            zoomRatio={props.zoomRatio}
+            focused={focused}
+            onDragStart={onDragStart}
+            onResized={onResized}
+            onRightClick={onRightClick}
+            getShapeDimensions={getShapeDimensions}
+            updateShapeData={props.updateShapeData}
+            removeShape={props.removeShape}
+          />
+          <Popper id={id} open={open} anchorEl={anchorEl} placement="right-start">
+            <Paper className={classes.paper}>
+              <form onSubmit={handleSubmit}>
+                <div className={classes.textBox}>
+                  <div className={classes.title}>Line height:</div>
+                  <TextField
+                    defaultValue={(props.shape as Annotation).lineHeight}
+                    variant="outlined"
+                    size="small"
+                    placeholder="Line height"
+                    type="number"
+                    onChange={(event) => handleInputChange('lineHeight', event.target.value)}
+                  />
+                </div>
+                <div className={classes.textBox}>
+                  <div className={classes.title}>Font bold:</div>
+                  <TextField
+                    defaultValue={(props.shape as Annotation).fontBold}
+                    variant="outlined"
+                    size="small"
+                    placeholder="Font bold"
+                    onChange={(event) => handleInputChange('fontBold', event.target.value)}
+                  />
+                </div>
+                <div className={classes.textBox}>
+                  <div className={classes.title}>Font color:</div>
+                  <TextField
+                    defaultValue={(props.shape as Annotation).fontColor}
+                    variant="outlined"
+                    size="small"
+                    placeholder="Font color"
+                    onChange={(event) => handleInputChange('fontColor', event.target.value)}
+                  />
+                </div>
+                <div className={classes.textBox}>
+                  <div className={classes.title}>Font family:</div>
+                  <TextField
+                    defaultValue={(props.shape as Annotation).fontFamily}
+                    variant="outlined"
+                    size="small"
+                    placeholder="Font family"
+                    onChange={(event) => handleInputChange('fontFamily', event.target.value)}
+                  />
+                </div>
+                <div className={classes.textBox}>
+                  <div className={classes.title}>Font italic:</div>
+                  <TextField
+                    defaultValue={(props.shape as Annotation).fontItalic}
+                    variant="outlined"
+                    size="small"
+                    placeholder="Font italic"
+                    onChange={(event) => handleInputChange('fontItalic', event.target.value)}
+                  />
+                </div>
+                <div className={classes.textBox}>
+                  <div className={classes.title}>Font size:</div>
+                  <TextField
+                    defaultValue={(props.shape as Annotation).fontSize}
+                    variant="outlined"
+                    size="small"
+                    placeholder="Font size"
+                    onChange={(event) => handleInputChange('fontSize', event.target.value)}
+                  />
+                </div>
+                <Button type="submit" color="primary" variant="contained">
+                  Submit
+                </Button>
+                <Button variant="outlined" onClick={() => setAnchorEl(null)}>
+                  Cancel
+                </Button>
+              </form>
+            </Paper>
+          </Popper>
+        </>
       ) : props.shapeType === 'redactions' ? (
         <ShapeRedaction
           shape={props.shape}

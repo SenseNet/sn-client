@@ -2,11 +2,23 @@ import { PreviewImageData } from '@sensenet/client-core'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Paper from '@material-ui/core/Paper'
-import React, { useCallback } from 'react'
-import { useCommentState, usePreviewImage, useViewerState } from '../hooks'
+import clsx from 'clsx'
+import React, { useCallback, useState } from 'react'
+import { useCommentState, useDocumentData, usePreviewImage, useViewerState } from '../hooks'
 import { ImageUtil } from '../services'
 import { PAGE_NAME, PAGE_PADDING } from './document-viewer-layout'
 import { MARKER_SIZE, ShapesWidget } from './shapes'
+
+const ANNOTATION_EXTRA_VALUES = {
+  text: 'Example Text',
+  lineHeight: 15,
+  fontBold: '34',
+  imageIndex: 1,
+  fontColor: 'red',
+  fontFamily: 'arial',
+  fontItalic: 'false',
+  fontSize: '16px',
+}
 
 const useStyles = makeStyles<Theme, PageProps>(() => {
   return createStyles({
@@ -20,6 +32,9 @@ const useStyles = makeStyles<Theme, PageProps>(() => {
     image: {
       display: 'flex',
       justifyContent: 'center',
+    },
+    isPlacingShape: {
+      cursor: 'crosshair',
     },
   })
 })
@@ -39,6 +54,10 @@ export const Page: React.FC<PageProps> = (props) => {
   const viewerState = useViewerState()
   const page = usePreviewImage(props.page.Index)
   const commentState = useCommentState()
+  const [mouseIsDown, setMouseIsDown] = useState<boolean>(false)
+  const [startX, setStartX] = useState<number>(0)
+  const [startY, setStartY] = useState<number>(0)
+  const { documentData, updateDocumentData } = useDocumentData()
 
   const isActive = page.image && viewerState.activePage === page.image.Index
 
@@ -87,13 +106,91 @@ export const Page: React.FC<PageProps> = (props) => {
       viewerState.isPlacingCommentMarker,
     ],
   )
+  const handleMouseDown = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (
+      viewerState.isPlacingRedaction ||
+      viewerState.isPlacingAnnotation ||
+      (viewerState.isPlacingHighlight && !mouseIsDown)
+    ) {
+      setMouseIsDown(true)
+      setStartX(ev.nativeEvent.offsetX / (props.page.Height / ((page.image && page.image.Height) || 1)))
+      setStartY(ev.nativeEvent.offsetY / (props.page.Width / ((page.image && page.image.Width) || 1)))
+    }
+  }
+
+  const handleMouseUp = (
+    ev: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    shapeType: 'annotation' | 'highlight' | 'redaction',
+  ) => {
+    setMouseIsDown(false)
+    const endX = ev.nativeEvent.offsetX / (props.page.Height / ((page.image && page.image.Height) || 1))
+    const endY = ev.nativeEvent.offsetY / (props.page.Width / ((page.image && page.image.Width) || 1))
+
+    if (endY - startY && endX - startX) {
+      switch (shapeType) {
+        case 'annotation':
+          documentData.shapes.annotations.push({
+            h: endY - startY,
+            w: endX - startX,
+            x: startX,
+            y: startY,
+            index: 1,
+            guid: `a-${startX}-${startY}`,
+            ...ANNOTATION_EXTRA_VALUES,
+          })
+          updateDocumentData(documentData)
+          viewerState.updateState({ hasChanges: true, isPlacingAnnotation: false })
+          break
+        case 'highlight':
+          documentData.shapes.highlights.push({
+            h: endY - startY,
+            w: endX - startX,
+            x: startX,
+            y: startY,
+            imageIndex: 1,
+            guid: `h-${startX}-${startY}`,
+          })
+          updateDocumentData(documentData)
+          viewerState.updateState({ hasChanges: true, isPlacingHighlight: false })
+          break
+        case 'redaction':
+          documentData.shapes.redactions.push({
+            h: endY - startY,
+            w: endX - startX,
+            x: startX,
+            y: startY,
+            imageIndex: 1,
+            guid: `r-${startX}-${startY}`,
+          })
+          updateDocumentData(documentData)
+          viewerState.updateState({ hasChanges: true, isPlacingRedaction: false })
+          break
+        default:
+          break
+      }
+    }
+  }
 
   return (
     <Paper elevation={isActive ? 8 : 2} className={PAGE_NAME} style={{ margin: PAGE_PADDING }}>
       <div
-        className={classes.page}
+        className={clsx(classes.page, { [classes.isPlacingShape]: viewerState.isPlacingRedaction })}
         onClick={(ev) => {
           viewerState.isPlacingCommentMarker ? handleMarkerPlacement(ev) : props.onClick(ev)
+        }}
+        onMouseDown={(ev) => {
+          handleMouseDown(ev)
+        }}
+        onMouseUp={(ev) => {
+          if (viewerState.isPlacingRedaction && mouseIsDown) {
+            handleMouseUp(ev, 'redaction')
+          }
+          if (viewerState.isPlacingHighlight && mouseIsDown) {
+            handleMouseUp(ev, 'highlight')
+          }
+          if (viewerState.isPlacingAnnotation && mouseIsDown) {
+            handleMouseUp(ev, 'annotation')
+          }
         }}>
         {page.image && (
           <div>
