@@ -74,32 +74,33 @@ export function DocumentViewer(props: { contentPath: string }) {
         <CurrentContentProvider
           idOrPath={props.contentPath}
           onContentLoaded={(c) => selectionService.activeContent.setValue(c)}>
-          <SnDocumentViewer documentIdOrPath={props.contentPath}>
-            <LayoutAppBar
-              style={{
-                backgroundColor:
-                  theme.palette.type === 'light' ? globals.light.drawerBackground : globals.dark.drawerBackground,
-                border: theme.palette.type === 'light' ? clsx(globals.light.borderColor, '1px') : 'none',
-                boxShadow: 'none',
-                color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
-              }}>
-              <div style={{ flexShrink: 0 }}>
-                <ToggleThumbnailsWidget
-                  style={{
-                    fill: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
-                  }}
-                  activeColor={theme.palette.primary.main}
-                />
-                <ZoomInOutWidget />
-                <RotateActivePagesWidget mode={ROTATION_MODE.clockwise} />
-                <RotateDocumentWidget mode={ROTATION_MODE.clockwise} />
-              </div>
-              <DocumentTitlePager />
-              <div>
+          <SnDocumentViewer
+            documentIdOrPath={props.contentPath}
+            renderAppBar={() => (
+              <LayoutAppBar
+                style={{
+                  backgroundColor:
+                    theme.palette.type === 'light' ? globals.light.drawerBackground : globals.dark.drawerBackground,
+                  border: theme.palette.type === 'light' ? clsx(globals.light.borderColor, '1px') : 'none',
+                  boxShadow: 'none',
+                  color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
+                }}>
+                <div style={{ flexShrink: 0 }}>
+                  <ToggleThumbnailsWidget
+                    style={{
+                      fill: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
+                    }}
+                    activeColor={theme.palette.primary.main}
+                  />
+                  <ZoomInOutWidget />
+                  <RotateActivePagesWidget mode={ROTATION_MODE.clockwise} />
+                  <RotateDocumentWidget mode={ROTATION_MODE.clockwise} />
+                </div>
+                <DocumentTitlePager />
                 <ToggleCommentsWidget activeColor={theme.palette.primary.main} />
-              </div>
-            </LayoutAppBar>
-          </SnDocumentViewer>
+              </LayoutAppBar>
+            )}
+          />
         </CurrentContentProvider>
       </div>
       <div className={classes.actionButtonWrapper}>

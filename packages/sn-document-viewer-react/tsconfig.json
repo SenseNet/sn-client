@@ -8,7 +8,6 @@
   "references": [
     { "path": "../sn-client-core" },
     { "path": "../sn-client-utils" },
-    { "path": "../sn-control-mapper" },
     { "path": "../sn-default-content-types" },
     { "path": "../sn-hooks-react" }
   ]

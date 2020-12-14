@@ -237,7 +237,7 @@ export class Upload {
     contentPath: string,
     options: UploadOptions<T>,
   ) {
-    await new Promise((resolve, reject) => {
+    await new Promise<void>((resolve, reject) => {
       fileEntry.file(
         async (f) => {
           await this.file({
@@ -267,7 +267,7 @@ export class Upload {
     })
     if (readEntries) {
       const dirReader = directory.createReader()
-      await new Promise((resolve, reject) => {
+      await new Promise<void>((resolve, reject) => {
         dirReader.readEntries(
           async (items) => {
             await this.webkitItemListHandler<T>(items as any, folder.d.Path, true, options)

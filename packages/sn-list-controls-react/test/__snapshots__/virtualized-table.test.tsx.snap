@@ -41,7 +41,7 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     }
   }
 >
-  <Component
+  <VirtualizedTable
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [
@@ -117,7 +117,7 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     }
   }
 >
-  <Component
+  <VirtualizedTable
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [
@@ -204,7 +204,7 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     }
   }
 >
-  <Component
+  <VirtualizedTable
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [
@@ -279,7 +279,7 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     }
   }
 >
-  <Component
+  <VirtualizedTable
     displayRowCheckbox={false}
     fieldsToDisplay={
       Array [
@@ -355,7 +355,7 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     }
   }
 >
-  <Component
+  <VirtualizedTable
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [
@@ -430,7 +430,7 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     }
   }
 >
-  <Component
+  <VirtualizedTable
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [
@@ -505,7 +505,7 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     }
   }
 >
-  <Component
+  <VirtualizedTable
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [
@@ -580,7 +580,7 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     }
   }
 >
-  <Component
+  <VirtualizedTable
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [

@@ -22,14 +22,17 @@ export class Preview {
 
   public async available(options: {
     document: DocumentData
-    version: string
+    version?: string
     page: number
     abortController?: AbortController
   }) {
     const responseBody = await this.repository.executeAction<{ page: number }, PreviewImageData>({
       idOrPath: options.document.idOrPath,
       method: 'POST',
-      name: `PreviewAvailable?version=${options.version}`,
+      name: 'PreviewAvailable',
+      oDataOptions: {
+        version: options.version,
+      } as any,
       body: {
         page: options.page,
       } as any,
@@ -86,8 +89,6 @@ export class Preview {
     const allPreviews: PreviewImageData[] = []
     for (let i = 0; i < options.document.pageCount; i++) {
       allPreviews[i] = availablePreviews[i] || ({ Index: i + 1 } as any)
-      const pageAttributes = options.document.pageAttributes.find((p) => p.pageNum === allPreviews[i].Index)
-      allPreviews[i].Attributes = pageAttributes && pageAttributes.options
     }
     return allPreviews
   }
