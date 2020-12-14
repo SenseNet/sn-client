@@ -2,7 +2,7 @@ import { ObservableValue } from '@sensenet/client-utils'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { CommentsContainer, DocumentViewerLayout, PageList, Thumbnails } from '../src/components'
+import { CommentsContainer, DocumentViewerLayout, PageList, THUMBNAIL_PADDING, Thumbnails } from '../src/components'
 import { DocumentViewerApiSettingsContext } from '../src/context/api-settings'
 import { CommentsContext, defaultCommentsContext } from '../src/context/comments'
 import { defaultViewerState, ViewerStateContext } from '../src/context/viewer-state'
@@ -15,6 +15,12 @@ declare global {
     domNode: HTMLDivElement
   }
 }
+
+jest.mock('../src', () => ({
+  get THUMBNAIL_PADDING() {
+    return THUMBNAIL_PADDING
+  },
+}))
 
 describe('Document Viewer Layout component', () => {
   beforeEach(() => {
