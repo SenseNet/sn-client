@@ -11,13 +11,13 @@ import { MARKER_SIZE, ShapesWidget } from './shapes'
 
 const ANNOTATION_EXTRA_VALUES = {
   text: 'Example Text',
-  lineHeight: 15,
-  fontBold: '34',
+  lineHeight: 40,
+  fontBold: 400,
   imageIndex: 1,
-  fontColor: 'red',
+  fontColor: '#FF0000',
   fontFamily: 'arial',
-  fontItalic: 'false',
-  fontSize: '16px',
+  fontItalic: true,
+  fontSize: 40,
 }
 
 const useStyles = makeStyles<Theme, PageProps>(() => {
