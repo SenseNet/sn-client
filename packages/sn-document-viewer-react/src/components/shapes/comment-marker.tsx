@@ -7,8 +7,7 @@ export const MARKER_SIZE = 10
 
 type Props = {
   marker: DraftCommentMarker
-  zoomRatioStanding: number
-  zoomRatioLying: number
+  zoomRatio: number
   isSelected: boolean
   rotation: number
 }
@@ -17,52 +16,52 @@ const useStyles = makeStyles<Theme, Props>((theme) =>
   createStyles({
     root: {
       position: 'absolute',
-      top: ({ rotation, marker, zoomRatioLying, zoomRatioStanding }) => {
+      top: ({ rotation, marker, zoomRatio }) => {
         switch (rotation) {
           case 90:
-            return `${parseFloat(marker.x) * zoomRatioLying}px`
+            return `${parseFloat(marker.x) * zoomRatio}px`
           case 180:
             return 'unset'
           case 270:
             return 'unset'
           default:
-            return `${parseFloat(marker.y) * zoomRatioStanding}px`
+            return `${parseFloat(marker.y) * zoomRatio}px`
         }
       },
-      right: ({ rotation, marker, zoomRatioLying, zoomRatioStanding }) => {
+      right: ({ rotation, marker, zoomRatio }) => {
         switch (rotation) {
           case 90:
-            return `${parseFloat(marker.y) * zoomRatioLying}px`
+            return `${parseFloat(marker.y) * zoomRatio}px`
           case 180:
-            return `${parseFloat(marker.x) * zoomRatioStanding}px`
+            return `${parseFloat(marker.x) * zoomRatio}px`
           case 270:
             return 'unset'
-          default:
-            return 'unset'
-        }
-      },
-      bottom: ({ rotation, marker, zoomRatioLying, zoomRatioStanding }) => {
-        switch (rotation) {
-          case 90:
-            return 'unset'
-          case 180:
-            return `${parseFloat(marker.y) * zoomRatioStanding}px`
-          case 270:
-            return `${parseFloat(marker.x) * zoomRatioLying}px`
           default:
             return 'unset'
         }
       },
-      left: ({ rotation, marker, zoomRatioLying, zoomRatioStanding }) => {
+      bottom: ({ rotation, marker, zoomRatio }) => {
+        switch (rotation) {
+          case 90:
+            return 'unset'
+          case 180:
+            return `${parseFloat(marker.y) * zoomRatio}px`
+          case 270:
+            return `${parseFloat(marker.x) * zoomRatio}px`
+          default:
+            return 'unset'
+        }
+      },
+      left: ({ rotation, marker, zoomRatio }) => {
         switch (rotation) {
           case 90:
             return 'unset'
           case 180:
             return 'unset'
           case 270:
-            return `${parseFloat(marker.y) * zoomRatioLying}px`
+            return `${parseFloat(marker.y) * zoomRatio}px`
           default:
-            return `${parseFloat(marker.x) * zoomRatioStanding}px`
+            return `${parseFloat(marker.x) * zoomRatio}px`
         }
       },
       width: `${MARKER_SIZE}px`,
@@ -77,14 +76,13 @@ const useStyles = makeStyles<Theme, Props>((theme) =>
 /**
  * Return a styled comment marker component
  * @param marker Attributes of the marker
- * @param zoomRatioStanding Zoomratio if the page is standing
- * @param zoomRatioLying Zoomratio if the page is lying
+ * @param zoomRatio Zoom ratio
  * @param isSelected Flag to store is marker is selected or not
  * @param rotation Page rotation degree
  * @returns styled comment marker component
  */
-export function CommentMarker({ marker, zoomRatioStanding, zoomRatioLying, isSelected, rotation }: Props) {
-  const classes = useStyles({ marker, zoomRatioStanding, zoomRatioLying, isSelected, rotation })
+export function CommentMarker({ marker, zoomRatio, isSelected, rotation }: Props) {
+  const classes = useStyles({ marker, zoomRatio, isSelected, rotation })
   const viewerState = useViewerState()
   const commentState = useCommentState()
 

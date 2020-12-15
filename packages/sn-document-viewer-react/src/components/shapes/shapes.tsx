@@ -25,6 +25,7 @@ export interface ShapesWidgetProps {
   page: PreviewImageData
   zoomRatioStanding: number
   zoomRatioLying: number
+  imageRotation: number
 }
 
 /**
@@ -37,6 +38,8 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
   const { documentData, updateDocumentData } = useDocumentData()
   const comments = useComments()
   const commentState = useCommentState()
+  const zoomRatio =
+    props.imageRotation === 90 || props.imageRotation === 270 ? props.zoomRatioLying : props.zoomRatioStanding
 
   const visibleShapes = {
     redactions: documentData.shapes.redactions.filter((r) => r.imageIndex === props.page.Index) as Redaction[],
@@ -85,12 +88,12 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
         updateShapeData(shapeData.type, shapeData.shape.guid, {
           ...shapeData.shape,
           imageIndex: props.page.Index,
-          x: (ev.clientX - boundingBox.left - shapeData.offset.width) * (1 / props.zoomRatioStanding),
-          y: (ev.clientY - boundingBox.top - shapeData.offset.height) * (1 / props.zoomRatioStanding),
+          x: (ev.clientX - boundingBox.left - shapeData.offset.width) * (1 / zoomRatio),
+          y: (ev.clientY - boundingBox.top - shapeData.offset.height) * (1 / zoomRatio),
         })
       }
     },
-    [permissions.canEdit, props.page.Index, props.zoomRatioStanding, updateShapeData],
+    [permissions.canEdit, props.page.Index, updateShapeData, zoomRatio],
   )
   return (
     <div className={classes.shapesContainer} onDrop={onDrop} onDragOver={(ev) => ev.preventDefault()}>
@@ -99,8 +102,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
         visibleComments.map((marker) => (
           <CommentMarker
             isSelected={marker.id === commentState.activeCommentId}
-            zoomRatioStanding={props.zoomRatioStanding}
-            zoomRatioLying={props.zoomRatioLying}
+            zoomRatio={zoomRatio}
             marker={marker}
             key={marker.id}
             rotation={ImageUtil.normalizeDegrees(
@@ -117,7 +119,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
                 key={index}
                 shape={redaction}
                 shapeType="redactions"
-                zoomRatio={props.zoomRatioStanding}
+                zoomRatio={zoomRatio}
                 updateShapeData={updateShapeData}
                 removeShape={removeShape}
               />
@@ -131,7 +133,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
                 key={index}
                 shape={annotation}
                 shapeType="annotations"
-                zoomRatio={props.zoomRatioStanding}
+                zoomRatio={zoomRatio}
                 updateShapeData={updateShapeData}
                 removeShape={removeShape}
               />
@@ -145,7 +147,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
                 key={index}
                 shape={highlight}
                 shapeType="highlights"
-                zoomRatio={props.zoomRatioStanding}
+                zoomRatio={zoomRatio}
                 updateShapeData={updateShapeData}
                 removeShape={removeShape}
               />

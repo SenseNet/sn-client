@@ -219,6 +219,7 @@ export const Page: React.FC<PageProps> = (props) => {
           <>
             <div>
               <ShapesWidget
+                imageRotation={imageRotation}
                 zoomRatioStanding={props.page.Height / page.image.Height}
                 zoomRatioLying={props.page.Width / page.image.Height}
                 page={props.page}

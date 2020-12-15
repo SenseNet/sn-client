@@ -1,6 +1,8 @@
+import { Annotation, Highlight, Redaction } from '@sensenet/client-core'
 import React, { useCallback } from 'react'
-import { applyShapeRotations, ImageUtil, ROTATION_AMOUNT, ROTATION_MODE, RotationModel } from '../..'
+import { ImageUtil, ROTATION_AMOUNT, ROTATION_MODE, RotationModel } from '../..'
 import { useDocumentData, usePreviewImages, useViewerState } from '../../hooks'
+import { applyShapeRotations } from '../../services'
 
 export interface RotateWidgetProps {
   mode?: ROTATION_MODE
@@ -11,7 +13,7 @@ export interface RotateWidgetProps {
 export const RotateWidget: React.FC<RotateWidgetProps> = (props) => {
   const viewerState = useViewerState()
   const previewImages = usePreviewImages()
-  const { documentData, updateDocumentData } = useDocumentData()
+  const { origDocData, updateDocumentData } = useDocumentData()
 
   const rotateFunc = (newRotation: RotationModel[], direction: string, pageIndex: number) => {
     const existingObj = newRotation.find((rotation) => rotation.pageNum === pageIndex)
@@ -46,37 +48,36 @@ export const RotateWidget: React.FC<RotateWidgetProps> = (props) => {
         rotation: newRotation,
       })
 
+      let newAnnotations: Annotation[] = []
+      let newHighlights: Highlight[] = []
+      let newRedactions: Redaction[] = []
       //update shapes as well
-      const newImages = previewImages.imageData.map((img) => {
-        updateDocumentData({
-          shapes: {
-            annotations: applyShapeRotations(
-              documentData.shapes.annotations,
-              direction === 'left' ? -ROTATION_AMOUNT : ROTATION_AMOUNT,
-              img,
-            ),
-            highlights: applyShapeRotations(
-              documentData.shapes.highlights,
-              direction === 'left' ? -ROTATION_AMOUNT : ROTATION_AMOUNT,
-              img,
-            ),
-            redactions: applyShapeRotations(
-              documentData.shapes.redactions,
-              direction === 'left' ? -ROTATION_AMOUNT : ROTATION_AMOUNT,
-              img,
-            ),
-          },
-        })
+      previewImages.imageData.forEach((img) => {
+        const newDegree = newRotation.find((rotation) => rotation.pageNum === img.Index)?.degree || 0
 
-        return img
+        const localAnnotations = applyShapeRotations(origDocData.shapes.annotations, newDegree, img)
+        const localHighlights = applyShapeRotations(origDocData.shapes.highlights, newDegree, img)
+        const localRedactions = applyShapeRotations(origDocData.shapes.redactions, newDegree, img)
+
+        newAnnotations = newAnnotations.concat(localAnnotations)
+        newHighlights = newHighlights.concat(localHighlights)
+        newRedactions = newRedactions.concat(localRedactions)
       })
-      previewImages.setImageData(newImages)
+
+      updateDocumentData({
+        shapes: {
+          annotations: newAnnotations,
+          highlights: newHighlights,
+          redactions: newRedactions,
+        },
+      })
+      //previewImages.setImageData(newImages)
     },
     [
-      documentData.shapes.annotations,
-      documentData.shapes.highlights,
-      documentData.shapes.redactions,
-      previewImages,
+      origDocData.shapes.annotations,
+      origDocData.shapes.highlights,
+      origDocData.shapes.redactions,
+      previewImages.imageData,
       props.pages,
       updateDocumentData,
       viewerState,

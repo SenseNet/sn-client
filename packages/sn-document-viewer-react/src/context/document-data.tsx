@@ -24,12 +24,14 @@ const defaultDocumentData: DocumentData = {
 
 export interface DocumentDataContextType {
   documentData: DocumentData
+  origDocData: DocumentData
   updateDocumentData: (data: DeepPartial<DocumentData>) => void
   isInProgress: boolean
   triggerReload: () => void
 }
 
 export const defaultDocumentDataContextValue: DocumentDataContextType = {
+  origDocData: defaultDocumentData,
   documentData: defaultDocumentData,
   updateDocumentData: () => undefined,
   isInProgress: false,
@@ -47,6 +49,7 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
   const [loadLock] = useState(new Semaphore(1))
   const [isInProgress, setIsInProgress] = useState(false)
   const [reloadToken, setReloadToken] = useState(0)
+  const [origDocData, setOrigDocData] = useState<DocumentData>(defaultDocumentData)
 
   const triggerReload = () => setReloadToken((prevValue) => prevValue + 1)
 
@@ -61,10 +64,12 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
       })
       if (result.pageCount === PreviewState.Loading) {
         setDocumentData(result)
+        setOrigDocData(result)
         await sleepAsync(POLLING_INTERVAL)
         getData()
       } else {
         setDocumentData(result)
+        setOrigDocData(result)
       }
     }
     ;(async () => {
@@ -100,7 +105,8 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
   }
 
   return (
-    <DocumentDataContext.Provider value={{ documentData, updateDocumentData, isInProgress, triggerReload }}>
+    <DocumentDataContext.Provider
+      value={{ origDocData, documentData, updateDocumentData, isInProgress, triggerReload }}>
       {children}
     </DocumentDataContext.Provider>
   )
