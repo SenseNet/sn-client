@@ -99,14 +99,13 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
     <div
       onClickCapture={(ev) => ev.stopPropagation()}
       style={{ filter: focused ? 'contrast(.9) brightness(1.1)' : '' }}
-      onKeyUp={handleKeyPress}
       onFocus={onFocus}
+      onKeyUp={(ev) => props.shapeType !== 'annotations' && handleKeyPress(ev)}
       onBlur={onBlur}>
       {props.shapeType === 'annotations' ? (
         <ShapeAnnotation
           shape={props.shape as Annotation}
           zoomRatio={props.zoomRatio}
-          focused={focused}
           onDragStart={onDragStart}
           onResized={onResized}
           getShapeDimensions={getShapeDimensions}
@@ -115,6 +114,8 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
         />
       ) : props.shapeType === 'redactions' ? (
         <ShapeRedaction
+          zoomRatio={props.zoomRatio}
+          removeShape={props.removeShape}
           shape={props.shape}
           onDragStart={onDragStart}
           onResized={onResized}
@@ -123,6 +124,8 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
         />
       ) : (
         <ShapeHighlight
+          zoomRatio={props.zoomRatio}
+          removeShape={props.removeShape}
           shape={props.shape}
           onDragStart={onDragStart}
           onResized={onResized}

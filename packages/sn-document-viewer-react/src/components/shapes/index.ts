@@ -1,6 +1,7 @@
 export * from './annotation-wrapper'
 export * from './comment-marker'
 export * from './shape-annotation'
+export * from './shape-draft'
 export * from './shape-highlight'
 export * from './shape-redaction'
 export * from './shape-skeleton'

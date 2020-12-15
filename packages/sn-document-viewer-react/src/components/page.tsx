@@ -7,13 +7,12 @@ import React, { useCallback, useState } from 'react'
 import { useCommentState, useDocumentData, usePreviewImage, useViewerState } from '../hooks'
 import { ImageUtil } from '../services'
 import { PAGE_NAME, PAGE_PADDING } from './document-viewer-layout'
-import { MARKER_SIZE, ShapesWidget } from './shapes'
+import { MARKER_SIZE, ShapeDraft, ShapesWidget } from './shapes'
 
 const ANNOTATION_EXTRA_VALUES = {
   text: 'Example Text',
   lineHeight: 40,
   fontBold: 400,
-  imageIndex: 1,
   fontColor: '#FF0000',
   fontFamily: 'arial',
   fontItalic: true,
@@ -36,6 +35,14 @@ const useStyles = makeStyles<Theme, PageProps>(() => {
     isPlacingShape: {
       cursor: 'crosshair',
     },
+    draftShapeContainer: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      zIndex: 1,
+    },
   })
 })
 
@@ -57,6 +64,8 @@ export const Page: React.FC<PageProps> = (props) => {
   const [mouseIsDown, setMouseIsDown] = useState<boolean>(false)
   const [startX, setStartX] = useState<number>(0)
   const [startY, setStartY] = useState<number>(0)
+  const [draftWidth, setdraftWidth] = useState<number>(0)
+  const [draftHeight, setdraftHeight] = useState<number>(0)
   const { documentData, updateDocumentData } = useDocumentData()
 
   const isActive = page.image && viewerState.activePage === page.image.Index
@@ -118,15 +127,24 @@ export const Page: React.FC<PageProps> = (props) => {
     }
   }
 
+  const handleMouseMove = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const endX = ev.nativeEvent.offsetX / (props.page.Height / ((page.image && page.image.Height) || 1))
+    const endY = ev.nativeEvent.offsetY / (props.page.Width / ((page.image && page.image.Width) || 1))
+    setdraftHeight(endY - startY)
+    setdraftWidth(endX - startX)
+  }
+
   const handleMouseUp = (
     ev: React.MouseEvent<HTMLDivElement, MouseEvent>,
     shapeType: 'annotation' | 'highlight' | 'redaction',
   ) => {
     setMouseIsDown(false)
+    setdraftHeight(0)
+    setdraftWidth(0)
     const endX = ev.nativeEvent.offsetX / (props.page.Height / ((page.image && page.image.Height) || 1))
     const endY = ev.nativeEvent.offsetY / (props.page.Width / ((page.image && page.image.Width) || 1))
 
-    if (endY - startY && endX - startX) {
+    if (endY - startY > 0 && endX - startX > 0) {
       switch (shapeType) {
         case 'annotation':
           documentData.shapes.annotations.push({
@@ -134,7 +152,7 @@ export const Page: React.FC<PageProps> = (props) => {
             w: endX - startX,
             x: startX,
             y: startY,
-            index: 1,
+            imageIndex: viewerState.activePage,
             guid: `a-${startX}-${startY}`,
             ...ANNOTATION_EXTRA_VALUES,
           })
@@ -147,7 +165,7 @@ export const Page: React.FC<PageProps> = (props) => {
             w: endX - startX,
             x: startX,
             y: startY,
-            imageIndex: 1,
+            imageIndex: viewerState.activePage,
             guid: `h-${startX}-${startY}`,
           })
           updateDocumentData(documentData)
@@ -159,7 +177,7 @@ export const Page: React.FC<PageProps> = (props) => {
             w: endX - startX,
             x: startX,
             y: startY,
-            imageIndex: 1,
+            imageIndex: viewerState.activePage,
             guid: `r-${startX}-${startY}`,
           })
           updateDocumentData(documentData)
@@ -169,6 +187,8 @@ export const Page: React.FC<PageProps> = (props) => {
           break
       }
     }
+    setStartX(0)
+    setStartY(0)
   }
 
   return (
@@ -180,6 +200,9 @@ export const Page: React.FC<PageProps> = (props) => {
         }}
         onMouseDown={(ev) => {
           handleMouseDown(ev)
+        }}
+        onMouseMove={(ev) => {
+          mouseIsDown && handleMouseMove(ev)
         }}
         onMouseUp={(ev) => {
           if (viewerState.isPlacingRedaction && mouseIsDown) {
@@ -193,13 +216,28 @@ export const Page: React.FC<PageProps> = (props) => {
           }
         }}>
         {page.image && (
-          <div>
-            <ShapesWidget
-              zoomRatioStanding={props.page.Height / page.image.Height}
-              zoomRatioLying={props.page.Width / page.image.Height}
-              page={props.page}
-            />
-          </div>
+          <>
+            <div>
+              <ShapesWidget
+                zoomRatioStanding={props.page.Height / page.image.Height}
+                zoomRatioLying={props.page.Width / page.image.Height}
+                page={props.page}
+              />
+            </div>
+
+            {mouseIsDown && (
+              <div className={classes.draftShapeContainer}>
+                <ShapeDraft
+                  dimensions={{
+                    top: startY * (props.page.Height / page.image.Height),
+                    left: startX * (props.page.Height / page.image.Height),
+                    height: draftHeight * (props.page.Height / page.image.Height),
+                    width: draftWidth * (props.page.Height / page.image.Height),
+                  }}
+                />
+              </div>
+            )}
+          </>
         )}
         <span className={classes.image}>
           {imgUrl ? (

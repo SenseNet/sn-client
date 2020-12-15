@@ -1,6 +1,7 @@
-import { Highlight } from '@sensenet/client-core'
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
-import React from 'react'
+import { Highlight, Shapes } from '@sensenet/client-core'
+import { Button, ClickAwayListener, createStyles, makeStyles, Popper, Theme } from '@material-ui/core'
+import { Delete } from '@material-ui/icons'
+import React, { useState } from 'react'
 
 type Props = {
   shape: Highlight
@@ -17,9 +18,11 @@ type Props = {
     width: string | number | (string & {}) | undefined
     height: string | number | (string & {}) | undefined
   }
+  zoomRatio: number
+  removeShape: (shapeType: keyof Shapes, guid: string) => void
 }
 
-const useStyles = makeStyles<Theme, Props>(() =>
+const useStyles = makeStyles<Theme, Props>((theme: Theme) =>
   createStyles({
     root: {
       top: ({ dimensions }) => dimensions.top,
@@ -30,6 +33,9 @@ const useStyles = makeStyles<Theme, Props>(() =>
       resize: ({ permissions }) => (permissions.canEdit ? 'both' : 'none'),
       overflow: 'auto',
       backgroundColor: 'black',
+    },
+    button: {
+      backgroundColor: theme.palette.error.light,
     },
   }),
 )
@@ -44,17 +50,47 @@ const useStyles = makeStyles<Theme, Props>(() =>
  * @param getShapeDimensions Function returns with shape dimensions
  * @returns styled redaction component
  */
-export function ShapeRedaction({ shape, onDragStart, onResized, permissions, dimensions }: Props) {
-  const classes = useStyles({ shape, onDragStart, onResized, permissions, dimensions })
+export function ShapeRedaction({
+  shape,
+  onDragStart,
+  onResized,
+  permissions,
+  dimensions,
+  zoomRatio,
+  removeShape,
+}: Props) {
+  const classes = useStyles({ shape, onDragStart, onResized, permissions, dimensions, zoomRatio, removeShape })
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
+  const id = open ? 'redaction-delete' : undefined
+
+  const onRightClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault()
+    setAnchorEl(anchorEl ? null : event.currentTarget)
+  }
 
   return (
-    <div
-      className={classes.root}
-      tabIndex={0}
-      key={`r-${shape.h}-${shape.w}`}
-      draggable={permissions.canEdit}
-      onDragStart={onDragStart}
-      onMouseUp={onResized}
-    />
+    <>
+      <div
+        className={classes.root}
+        tabIndex={0}
+        key={`r-${shape.h}-${shape.w}`}
+        draggable={permissions.canEdit}
+        onDragStart={onDragStart}
+        onMouseUp={onResized}
+        onContextMenu={onRightClick}
+      />
+      <Popper id={id} open={open} anchorEl={anchorEl} placement="right-start">
+        <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
+          <Button
+            variant="contained"
+            className={classes.button}
+            onMouseUp={() => removeShape('redactions', shape.guid)}
+            startIcon={<Delete scale={zoomRatio} />}>
+            Delete
+          </Button>
+        </ClickAwayListener>
+      </Popper>
+    </>
   )
 }

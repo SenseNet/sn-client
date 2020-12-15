@@ -5,6 +5,8 @@ import React from 'react'
 const useStyles = makeStyles(() => {
   return createStyles({
     iconButton: {},
+    iconActive: {},
+    icon: {},
   })
 })
 
