@@ -17,9 +17,7 @@
   ],
   "scripts": {
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
-    "build": "tsc -b",
-    "build:webpack": "rimraf bundle && webpack",
-    "start": "webpack serve"
+    "build": "tsc -b"
   },
   "publishConfig": {
     "access": "public"
