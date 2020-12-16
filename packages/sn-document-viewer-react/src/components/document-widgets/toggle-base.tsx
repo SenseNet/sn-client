@@ -30,6 +30,11 @@ export interface ToggleBaseProps {
    * Function to set the isVisible's value
    */
   setValue: (isVisible: boolean) => void
+
+  /**
+   * Flag to store if the user has the required permisison for the action
+   */
+  disabled?: boolean
 }
 
 /**
@@ -40,6 +45,7 @@ export const ToggleBase: React.FunctionComponent<ToggleBaseProps & { classes?: T
   return (
     <div style={{ display: 'inline-block' }}>
       <IconButton
+        disabled={props.disabled}
         className={classes.iconButton}
         color={props.isVisible ? 'primary' : 'inherit'}
         title={props.title}

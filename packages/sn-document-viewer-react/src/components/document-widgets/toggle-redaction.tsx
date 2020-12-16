@@ -2,7 +2,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import PictureInPicture from '@material-ui/icons/PictureInPicture'
 import clsx from 'clsx'
 import React from 'react'
-import { useLocalization, useViewerState } from '../../hooks'
+import { useDocumentPermissions, useLocalization, useViewerState } from '../../hooks'
 import { ToggleBase } from './toggle-base'
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -24,9 +24,11 @@ export const ToggleRedactionWidget: React.FC<{ classes?: ToggleRedactionClassKey
   const classes = useStyles(props)
   const localization = useLocalization()
   const viewerState = useViewerState()
+  const permissions = useDocumentPermissions()
 
   return (
     <ToggleBase
+      disabled={!permissions.canHideRedaction}
       classes={classes}
       isVisible={viewerState.showRedaction}
       title={localization.toggleRedaction}

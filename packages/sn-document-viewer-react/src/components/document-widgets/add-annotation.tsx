@@ -2,7 +2,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import ChatSharp from '@material-ui/icons/ChatSharp'
 import clsx from 'clsx'
 import React from 'react'
-import { useLocalization, useViewerState } from '../../hooks'
+import { useDocumentPermissions, useLocalization, useViewerState } from '../../hooks'
 import { ToggleBase } from './toggle-base'
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -24,9 +24,11 @@ export const AddAnnotationWidget: React.FC<{ classes?: AddAnnnotationClassKey }>
   const classes = useStyles(props)
   const localization = useLocalization()
   const viewerState = useViewerState()
+  const permissions = useDocumentPermissions()
 
   return (
     <ToggleBase
+      disabled={!permissions.canEdit}
       classes={classes}
       isVisible={viewerState.isPlacingAnnotation}
       title={localization.addAnnotation}

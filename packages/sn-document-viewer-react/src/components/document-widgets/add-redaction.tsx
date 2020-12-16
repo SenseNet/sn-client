@@ -2,7 +2,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import ChatBubbleSharp from '@material-ui/icons/ChatBubbleSharp'
 import clsx from 'clsx'
 import React from 'react'
-import { useLocalization, useViewerState } from '../../hooks'
+import { useDocumentPermissions, useLocalization, useViewerState } from '../../hooks'
 import { ToggleBase } from './toggle-base'
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -24,9 +24,11 @@ export const AddRedactionWidget: React.FC<{ classes?: AddRedactionClassKey }> = 
   const classes = useStyles(props)
   const localization = useLocalization()
   const viewerState = useViewerState()
+  const permissions = useDocumentPermissions()
 
   return (
     <ToggleBase
+      disabled={!permissions.canEdit}
       classes={classes}
       isVisible={viewerState.isPlacingRedaction}
       title={localization.addRedaction}
