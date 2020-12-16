@@ -104,7 +104,7 @@ exports[`Component ToggleComments should render without crashing 1`] = `
                 <span
                   className="MuiIconButton-label"
                 >
-                  <ForwardRef
+                  <ForwardRef(CommentIcon)
                     style={
                       Object {
                         "fill": "pink",
@@ -155,7 +155,7 @@ exports[`Component ToggleComments should render without crashing 1`] = `
                         </svg>
                       </ForwardRef(SvgIcon)>
                     </WithStyles(ForwardRef(SvgIcon))>
-                  </ForwardRef>
+                  </ForwardRef(CommentIcon)>
                 </span>
                 <WithStyles(memo)
                   center={true}
@@ -201,7 +201,7 @@ exports[`Component ToggleRedaction should render without crashing 1`] = `
   setValue={[Function]}
   title="Toggle redaction"
 >
-  <PictureInPictureIcon />
+  <Memo([object Object]) />
 </ToggleBase>
 `;
 
@@ -211,7 +211,7 @@ exports[`Component ToggleShapes should render without crashing 1`] = `
   setValue={[Function]}
   title="Toggle shapes"
 >
-  <DashboardIcon />
+  <Memo([object Object]) />
 </ToggleBase>
 `;
 
@@ -377,6 +377,6 @@ exports[`Component ToggleWatermark should render without crashing 1`] = `
   setValue={[Function]}
   title="Toggle watermark"
 >
-  <BrandingWatermarkIcon />
+  <Memo([object Object]) />
 </ToggleBase>
 `;

@@ -14,7 +14,7 @@ exports[`DownloadWidget component Should render without crashing 1`] = `
     onClick={[Function]}
     title="Share"
   >
-    <ShareIcon />
+    <Memo([object Object]) />
   </WithStyles(ForwardRef(IconButton))>
 </div>
 `;

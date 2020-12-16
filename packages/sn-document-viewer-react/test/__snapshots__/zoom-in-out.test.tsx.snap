@@ -79,7 +79,7 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
               <span
                 className="MuiIconButton-label"
               >
-                <ForwardRef>
+                <ForwardRef(ZoomInIcon)>
                   <WithStyles(ForwardRef(SvgIcon))>
                     <ForwardRef(SvgIcon)
                       classes={
@@ -111,7 +111,7 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
                       </svg>
                     </ForwardRef(SvgIcon)>
                   </WithStyles(ForwardRef(SvgIcon))>
-                </ForwardRef>
+                </ForwardRef(ZoomInIcon)>
               </span>
               <WithStyles(memo)
                 center={true}
@@ -216,7 +216,7 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
               <span
                 className="MuiIconButton-label"
               >
-                <ForwardRef>
+                <ForwardRef(ZoomOutIcon)>
                   <WithStyles(ForwardRef(SvgIcon))>
                     <ForwardRef(SvgIcon)
                       classes={
@@ -245,7 +245,7 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
                       </svg>
                     </ForwardRef(SvgIcon)>
                   </WithStyles(ForwardRef(SvgIcon))>
-                </ForwardRef>
+                </ForwardRef(ZoomOutIcon)>
               </span>
               <WithStyles(memo)
                 center={true}

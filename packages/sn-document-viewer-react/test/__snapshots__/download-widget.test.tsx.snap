@@ -14,7 +14,7 @@ exports[`DownloadWidget component Should render without crashing 1`] = `
     onClick={[Function]}
     title="Download"
   >
-    <CloudDownloadIcon />
+    <Memo([object Object]) />
   </WithStyles(ForwardRef(IconButton))>
 </div>
 `;
