@@ -81,7 +81,7 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
                 <span
                   className="MuiIconButton-label"
                 >
-                  <ForwardRef>
+                  <ForwardRef(RotateLeftIcon)>
                     <WithStyles(ForwardRef(SvgIcon))>
                       <ForwardRef(SvgIcon)
                         classes={
@@ -110,7 +110,7 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
                         </svg>
                       </ForwardRef(SvgIcon)>
                     </WithStyles(ForwardRef(SvgIcon))>
-                  </ForwardRef>
+                  </ForwardRef(RotateLeftIcon)>
                 </span>
                 <WithStyles(memo)
                   center={true}
@@ -213,7 +213,7 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
                 <span
                   className="MuiIconButton-label"
                 >
-                  <ForwardRef>
+                  <ForwardRef(RotateRightIcon)>
                     <WithStyles(ForwardRef(SvgIcon))>
                       <ForwardRef(SvgIcon)
                         classes={
@@ -242,7 +242,7 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
                         </svg>
                       </ForwardRef(SvgIcon)>
                     </WithStyles(ForwardRef(SvgIcon))>
-                  </ForwardRef>
+                  </ForwardRef(RotateRightIcon)>
                 </span>
                 <WithStyles(memo)
                   center={true}
@@ -359,7 +359,7 @@ exports[`RotateActivePage component Should render without crashing with mode par
               <span
                 className="MuiIconButton-label"
               >
-                <ForwardRef>
+                <ForwardRef(RotateRightIcon)>
                   <WithStyles(ForwardRef(SvgIcon))>
                     <ForwardRef(SvgIcon)
                       classes={
@@ -388,7 +388,7 @@ exports[`RotateActivePage component Should render without crashing with mode par
                       </svg>
                     </ForwardRef(SvgIcon)>
                   </WithStyles(ForwardRef(SvgIcon))>
-                </ForwardRef>
+                </ForwardRef(RotateRightIcon)>
               </span>
               <WithStyles(memo)
                 center={true}
@@ -504,7 +504,7 @@ exports[`RotateActivePage component Should render without crashing with mode par
               <span
                 className="MuiIconButton-label"
               >
-                <ForwardRef>
+                <ForwardRef(RotateLeftIcon)>
                   <WithStyles(ForwardRef(SvgIcon))>
                     <ForwardRef(SvgIcon)
                       classes={
@@ -533,7 +533,7 @@ exports[`RotateActivePage component Should render without crashing with mode par
                       </svg>
                     </ForwardRef(SvgIcon)>
                   </WithStyles(ForwardRef(SvgIcon))>
-                </ForwardRef>
+                </ForwardRef(RotateLeftIcon)>
               </span>
               <WithStyles(memo)
                 center={true}
@@ -656,7 +656,7 @@ exports[`RotateActivePage component Should render without crashing with mode par
                 <span
                   className="MuiIconButton-label"
                 >
-                  <ForwardRef>
+                  <ForwardRef(RotateLeftIcon)>
                     <WithStyles(ForwardRef(SvgIcon))>
                       <ForwardRef(SvgIcon)
                         classes={
@@ -685,7 +685,7 @@ exports[`RotateActivePage component Should render without crashing with mode par
                         </svg>
                       </ForwardRef(SvgIcon)>
                     </WithStyles(ForwardRef(SvgIcon))>
-                  </ForwardRef>
+                  </ForwardRef(RotateLeftIcon)>
                 </span>
                 <WithStyles(memo)
                   center={true}
@@ -788,7 +788,7 @@ exports[`RotateActivePage component Should render without crashing with mode par
                 <span
                   className="MuiIconButton-label"
                 >
-                  <ForwardRef>
+                  <ForwardRef(RotateRightIcon)>
                     <WithStyles(ForwardRef(SvgIcon))>
                       <ForwardRef(SvgIcon)
                         classes={
@@ -817,7 +817,7 @@ exports[`RotateActivePage component Should render without crashing with mode par
                         </svg>
                       </ForwardRef(SvgIcon)>
                     </WithStyles(ForwardRef(SvgIcon))>
-                  </ForwardRef>
+                  </ForwardRef(RotateRightIcon)>
                 </span>
                 <WithStyles(memo)
                   center={true}

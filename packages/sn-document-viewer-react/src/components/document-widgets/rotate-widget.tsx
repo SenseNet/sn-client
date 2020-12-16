@@ -71,7 +71,6 @@ export const RotateWidget: React.FC<RotateWidgetProps> = (props) => {
           redactions: newRedactions,
         },
       })
-      //previewImages.setImageData(newImages)
     },
     [
       origDocData.shapes.annotations,

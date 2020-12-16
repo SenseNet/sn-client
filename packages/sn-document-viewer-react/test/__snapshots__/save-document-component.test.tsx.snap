@@ -14,7 +14,7 @@ exports[`SaveDocumentComponent component Should render without crashing when has
     onClick={[Function]}
     title="Save changes"
   >
-    <SaveIcon />
+    <Memo([object Object]) />
   </WithStyles(ForwardRef(IconButton))>
 </div>
 `;
@@ -101,7 +101,7 @@ exports[`SaveDocumentComponent component Should render without crashing when the
               <span
                 className="MuiIconButton-label"
               >
-                <ForwardRef>
+                <ForwardRef(SaveIcon)>
                   <WithStyles(ForwardRef(SvgIcon))>
                     <ForwardRef(SvgIcon)
                       classes={
@@ -130,7 +130,7 @@ exports[`SaveDocumentComponent component Should render without crashing when the
                       </svg>
                     </ForwardRef(SvgIcon)>
                   </WithStyles(ForwardRef(SvgIcon))>
-                </ForwardRef>
+                </ForwardRef(SaveIcon)>
               </span>
             </button>
           </ForwardRef(ButtonBase)>

@@ -11,6 +11,9 @@ module.exports = {
     publicPath: '/assets/',
     path: path.resolve(__dirname + '/bundle/assets'),
   },
+  devServer: {
+    publicPath: '/assets/',
+  },
   optimization: {
     splitChunks: {
       cacheGroups: {
@@ -31,22 +34,23 @@ module.exports = {
   },
   plugins: [
     // new BundleAnalyzerPlugin(),
-    new CopyWebpackPlugin([
-      {
-        from: 'index.html',
-        to: './../',
-      },
-      // {
-      //     from: "assets",
-      //     to: "./assets"
-
-      // }
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: 'index.html',
+          to: './../',
+        },
+        // {
+        //     from: "assets",
+        //     to: "./assets"
+        // }
+      ],
+    }),
   ],
   module: {
     rules: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-      { test: /\.tsx?$/, loader: 'awesome-typescript-loader' },
+      { test: /\.tsx?$/, loader: 'ts-loader' },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
       { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
@@ -63,10 +67,9 @@ module.exports = {
           {
             loader: require.resolve('postcss-loader'),
             options: {
-              // Necessary for external CSS imports to work
-              // https://github.com/facebookincubator/create-react-app/issues/2677
-              ident: 'postcss',
-              plugins: () => [require('postcss-flexbugs-fixes')],
+              postcssOptions: {
+                plugins: ['postcss-flexbugs-fixes'],
+              },
             },
           },
         ],
