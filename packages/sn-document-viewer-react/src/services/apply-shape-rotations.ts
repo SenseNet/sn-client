@@ -7,37 +7,35 @@ import { PreviewImageData, Shape } from '@sensenet/client-core'
  * @param pages the page info
  */
 export const applyShapeRotations = <T extends Shape>(shapes: T[], degree: number, page: PreviewImageData) => [
-  ...shapes
-    .filter((shape) => shape.imageIndex === page.Index)
-    .map((shape) => {
-      const origShape = shape
-      switch (degree) {
-        case 90:
-          return {
-            ...origShape,
-            x: page.Height - (origShape.y + origShape.h),
-            y: origShape.x,
-            h: origShape.w,
-            w: origShape.h,
-          }
-        case 180:
-          return {
-            ...origShape,
-            x: page.Width - (origShape.x + origShape.w),
-            y: page.Height - (origShape.y + origShape.h),
-          }
-        case 270:
-          return {
-            ...origShape,
-            x: origShape.y,
-            y: page.Width - (origShape.x + origShape.w),
-            h: origShape.w,
-            w: origShape.h,
-          }
-        default:
-          return {
-            ...origShape,
-          }
-      }
-    }),
+  ...shapes.map((shape) => {
+    const origShape = shape
+    switch (degree) {
+      case 90:
+        return {
+          ...origShape,
+          x: page.Height - (origShape.y + origShape.h),
+          y: origShape.x,
+          h: origShape.w,
+          w: origShape.h,
+        }
+      case 180:
+        return {
+          ...origShape,
+          x: page.Width - (origShape.x + origShape.w),
+          y: page.Height - (origShape.y + origShape.h),
+        }
+      case 270:
+        return {
+          ...origShape,
+          x: origShape.y,
+          y: page.Width - (origShape.x + origShape.w),
+          h: origShape.w,
+          w: origShape.h,
+        }
+      default:
+        return {
+          ...origShape,
+        }
+    }
+  }),
 ]

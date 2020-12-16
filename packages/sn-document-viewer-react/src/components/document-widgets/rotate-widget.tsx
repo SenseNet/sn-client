@@ -1,8 +1,6 @@
-import { Annotation, Highlight, Redaction } from '@sensenet/client-core'
 import React, { useCallback } from 'react'
 import { ImageUtil, ROTATION_AMOUNT, ROTATION_MODE, RotationModel } from '../..'
-import { useDocumentData, usePreviewImages, useViewerState } from '../../hooks'
-import { applyShapeRotations } from '../../services'
+import { usePreviewImages, useViewerState } from '../../hooks'
 
 export interface RotateWidgetProps {
   mode?: ROTATION_MODE
@@ -13,7 +11,6 @@ export interface RotateWidgetProps {
 export const RotateWidget: React.FC<RotateWidgetProps> = (props) => {
   const viewerState = useViewerState()
   const previewImages = usePreviewImages()
-  const { origDocData, updateDocumentData } = useDocumentData()
 
   const rotateFunc = (newRotation: RotationModel[], direction: string, pageIndex: number) => {
     const existingObj = newRotation.find((rotation) => rotation.pageNum === pageIndex)
@@ -47,40 +44,8 @@ export const RotateWidget: React.FC<RotateWidgetProps> = (props) => {
       viewerState.updateState({
         rotation: newRotation,
       })
-
-      let newAnnotations: Annotation[] = []
-      let newHighlights: Highlight[] = []
-      let newRedactions: Redaction[] = []
-      //update shapes as well
-      previewImages.imageData.forEach((img) => {
-        const newDegree = newRotation.find((rotation) => rotation.pageNum === img.Index)?.degree || 0
-
-        const localAnnotations = applyShapeRotations(origDocData.shapes.annotations, newDegree, img)
-        const localHighlights = applyShapeRotations(origDocData.shapes.highlights, newDegree, img)
-        const localRedactions = applyShapeRotations(origDocData.shapes.redactions, newDegree, img)
-
-        newAnnotations = newAnnotations.concat(localAnnotations)
-        newHighlights = newHighlights.concat(localHighlights)
-        newRedactions = newRedactions.concat(localRedactions)
-      })
-
-      updateDocumentData({
-        shapes: {
-          annotations: newAnnotations,
-          highlights: newHighlights,
-          redactions: newRedactions,
-        },
-      })
     },
-    [
-      origDocData.shapes.annotations,
-      origDocData.shapes.highlights,
-      origDocData.shapes.redactions,
-      previewImages.imageData,
-      props.pages,
-      updateDocumentData,
-      viewerState,
-    ],
+    [previewImages.imageData, props.pages, viewerState],
   )
 
   switch (props.mode) {

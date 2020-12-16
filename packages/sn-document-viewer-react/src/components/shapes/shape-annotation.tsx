@@ -13,8 +13,13 @@ import {
 import { Delete } from '@material-ui/icons'
 import React, { useState } from 'react'
 import { AnnotationWrapper, useDocumentPermissions } from '../..'
+import { useViewerState } from '../../hooks'
 
-const useStyles = makeStyles((theme: Theme) => {
+type Props = {
+  rotationDegree: number
+}
+
+const useStyles = makeStyles<Theme, Props>((theme: Theme) => {
   return createStyles({
     annotationInput: {
       width: '100%',
@@ -23,6 +28,8 @@ const useStyles = makeStyles((theme: Theme) => {
       '&:focus': {
         outline: 'none',
       },
+      writingMode: ({ rotationDegree }) => (rotationDegree === 0 || rotationDegree === 180 ? 'unset' : 'vertical-rl'),
+      transform: ({ rotationDegree }) => (rotationDegree === 180 || rotationDegree === 270 ? 'rotate(180deg)' : 'none'),
     },
     title: {
       fontSize: '12px',
@@ -62,7 +69,10 @@ export interface ShapeAnnotationProps {
 }
 
 export const ShapeAnnotation: React.FC<ShapeAnnotationProps> = (props) => {
-  const classes = useStyles()
+  const viewerState = useViewerState()
+  const rotationDegree =
+    viewerState.rotation?.find((rotation) => rotation.pageNum === props.shape.imageIndex)?.degree || 0
+  const classes = useStyles({ rotationDegree })
   const permissions = useDocumentPermissions()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -90,7 +100,7 @@ export const ShapeAnnotation: React.FC<ShapeAnnotationProps> = (props) => {
           <div
             id="annotation-input"
             className={classes.annotationInput}
-            contentEditable={permissions.canEdit ? ('plaintext-only' as any) : false}
+            contentEditable={permissions.canEdit && rotationDegree === 0 ? ('plaintext-only' as any) : false}
             suppressContentEditableWarning={true}>
             {props.shape.text}
           </div>

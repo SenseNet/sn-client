@@ -116,15 +116,9 @@ export const Page: React.FC<PageProps> = (props) => {
     ],
   )
   const handleMouseDown = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (
-      viewerState.isPlacingRedaction ||
-      viewerState.isPlacingAnnotation ||
-      (viewerState.isPlacingHighlight && !mouseIsDown)
-    ) {
-      setMouseIsDown(true)
-      setStartX(ev.nativeEvent.offsetX / (props.page.Height / ((page.image && page.image.Height) || 1)))
-      setStartY(ev.nativeEvent.offsetY / (props.page.Width / ((page.image && page.image.Width) || 1)))
-    }
+    setMouseIsDown(true)
+    setStartX(ev.nativeEvent.offsetX / (props.page.Height / ((page.image && page.image.Height) || 1)))
+    setStartY(ev.nativeEvent.offsetY / (props.page.Width / ((page.image && page.image.Width) || 1)))
   }
 
   const handleMouseMove = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -152,7 +146,7 @@ export const Page: React.FC<PageProps> = (props) => {
             w: endX - startX,
             x: startX,
             y: startY,
-            imageIndex: viewerState.activePage,
+            imageIndex: props.page.Index,
             guid: `a-${startX}-${startY}`,
             ...ANNOTATION_EXTRA_VALUES,
           })
@@ -165,7 +159,7 @@ export const Page: React.FC<PageProps> = (props) => {
             w: endX - startX,
             x: startX,
             y: startY,
-            imageIndex: viewerState.activePage,
+            imageIndex: props.page.Index,
             guid: `h-${startX}-${startY}`,
           })
           updateDocumentData(documentData)
@@ -177,7 +171,7 @@ export const Page: React.FC<PageProps> = (props) => {
             w: endX - startX,
             x: startX,
             y: startY,
-            imageIndex: viewerState.activePage,
+            imageIndex: props.page.Index,
             guid: `r-${startX}-${startY}`,
           })
           updateDocumentData(documentData)
@@ -194,15 +188,22 @@ export const Page: React.FC<PageProps> = (props) => {
   return (
     <Paper elevation={isActive ? 8 : 2} className={PAGE_NAME} style={{ margin: PAGE_PADDING }}>
       <div
-        className={clsx(classes.page, { [classes.isPlacingShape]: viewerState.isPlacingRedaction })}
+        className={clsx(classes.page, {
+          [classes.isPlacingShape]:
+            viewerState.isPlacingRedaction || viewerState.isPlacingAnnotation || viewerState.isPlacingHighlight,
+        })}
         onClick={(ev) => {
           viewerState.isPlacingCommentMarker ? handleMarkerPlacement(ev) : props.onClick(ev)
         }}
         onMouseDown={(ev) => {
-          handleMouseDown(ev)
+          ;(viewerState.isPlacingRedaction || viewerState.isPlacingHighlight || viewerState.isPlacingAnnotation) &&
+            !mouseIsDown &&
+            handleMouseDown(ev)
         }}
         onMouseMove={(ev) => {
-          mouseIsDown && handleMouseMove(ev)
+          ;(viewerState.isPlacingRedaction || viewerState.isPlacingHighlight || viewerState.isPlacingAnnotation) &&
+            mouseIsDown &&
+            handleMouseMove(ev)
         }}
         onMouseUp={(ev) => {
           if (viewerState.isPlacingRedaction && mouseIsDown) {
@@ -222,7 +223,7 @@ export const Page: React.FC<PageProps> = (props) => {
                 imageRotation={imageRotation}
                 zoomRatioStanding={props.page.Height / page.image.Height}
                 zoomRatioLying={props.page.Width / page.image.Height}
-                page={props.page}
+                page={page.image}
               />
             </div>
 

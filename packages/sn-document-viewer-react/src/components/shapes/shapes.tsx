@@ -2,7 +2,7 @@ import { Annotation, Highlight, PreviewImageData, Redaction, Shape, Shapes } fro
 import { createStyles, makeStyles } from '@material-ui/core'
 import React, { useCallback } from 'react'
 import { useComments, useCommentState, useDocumentData, useDocumentPermissions, useViewerState } from '../../hooks'
-import { Dimensions, ImageUtil } from '../../services'
+import { applyShapeRotations, Dimensions, ImageUtil } from '../../services'
 import { ShapeSkeleton } from '../shapes'
 import { CommentMarker } from './comment-marker'
 
@@ -41,10 +41,24 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
   const zoomRatio =
     props.imageRotation === 90 || props.imageRotation === 270 ? props.zoomRatioLying : props.zoomRatioStanding
 
+  const rotationDegree = viewerState.rotation?.find((rotation) => rotation.pageNum === props.page.Index)?.degree || 0
+
   const visibleShapes = {
-    redactions: documentData.shapes.redactions.filter((r) => r.imageIndex === props.page.Index) as Redaction[],
-    highlights: documentData.shapes.highlights.filter((r) => r.imageIndex === props.page.Index) as Highlight[],
-    annotations: documentData.shapes.annotations.filter((r) => r.imageIndex === props.page.Index) as Annotation[],
+    redactions: applyShapeRotations(
+      documentData.shapes.redactions.filter((r) => r.imageIndex === props.page.Index) as Redaction[],
+      rotationDegree,
+      props.page,
+    ),
+    highlights: applyShapeRotations(
+      documentData.shapes.highlights.filter((r) => r.imageIndex === props.page.Index) as Highlight[],
+      rotationDegree,
+      props.page,
+    ),
+    annotations: applyShapeRotations(
+      documentData.shapes.annotations.filter((r) => r.imageIndex === props.page.Index) as Annotation[],
+      rotationDegree,
+      props.page,
+    ),
   }
 
   const visibleComments = [
@@ -122,6 +136,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
                 zoomRatio={zoomRatio}
                 updateShapeData={updateShapeData}
                 removeShape={removeShape}
+                rotationDegree={rotationDegree}
               />
             )
           })}
@@ -136,6 +151,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
                 zoomRatio={zoomRatio}
                 updateShapeData={updateShapeData}
                 removeShape={removeShape}
+                rotationDegree={rotationDegree}
               />
             )
           })}
@@ -150,6 +166,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
                 zoomRatio={zoomRatio}
                 updateShapeData={updateShapeData}
                 removeShape={removeShape}
+                rotationDegree={rotationDegree}
               />
             )
           })}

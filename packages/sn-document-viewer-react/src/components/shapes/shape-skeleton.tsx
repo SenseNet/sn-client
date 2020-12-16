@@ -11,6 +11,7 @@ export interface ShapeProps {
   zoomRatio: number
   updateShapeData: (shapeType: keyof Shapes, guid: string, shape: Redaction | Highlight | Annotation) => void
   removeShape: (shapeType: keyof Shapes, guid: string) => void
+  rotationDegree: number
 }
 
 export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
@@ -101,13 +102,13 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
       style={{ filter: focused ? 'contrast(.9) brightness(1.1)' : '' }}
       onFocus={onFocus}
       onKeyUp={(ev) => props.shapeType !== 'annotations' && handleKeyPress(ev)}
-      onBlur={onBlur}>
+      onBlur={(ev) => props.rotationDegree === 0 && onBlur(ev)}>
       {props.shapeType === 'annotations' ? (
         <ShapeAnnotation
           shape={props.shape as Annotation}
           zoomRatio={props.zoomRatio}
-          onDragStart={onDragStart}
-          onResized={onResized}
+          onDragStart={(ev) => props.rotationDegree === 0 && onDragStart(ev)}
+          onResized={(ev) => props.rotationDegree === 0 && onResized(ev)}
           getShapeDimensions={getShapeDimensions}
           updateShapeData={props.updateShapeData}
           removeShape={props.removeShape}
@@ -117,8 +118,8 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
           zoomRatio={props.zoomRatio}
           removeShape={props.removeShape}
           shape={props.shape}
-          onDragStart={onDragStart}
-          onResized={onResized}
+          onDragStart={(ev) => props.rotationDegree === 0 && onDragStart(ev)}
+          onResized={(ev) => props.rotationDegree === 0 && onResized(ev)}
           permissions={permissions}
           dimensions={getShapeDimensions(props.shape) as any}
         />
@@ -127,8 +128,8 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
           zoomRatio={props.zoomRatio}
           removeShape={props.removeShape}
           shape={props.shape}
-          onDragStart={onDragStart}
-          onResized={onResized}
+          onDragStart={(ev) => props.rotationDegree === 0 && onDragStart(ev)}
+          onResized={(ev) => props.rotationDegree === 0 && onResized(ev)}
           permissions={permissions}
           dimensions={getShapeDimensions(props.shape) as any}
         />
