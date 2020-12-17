@@ -9,7 +9,7 @@ import { ImageUtil } from '../services'
 import { PAGE_NAME, PAGE_PADDING } from './document-viewer-layout'
 import { MARKER_SIZE, ShapeDraft, ShapesWidget } from './shapes'
 
-const ANNOTATION_EXTRA_VALUES = {
+export const ANNOTATION_EXTRA_VALUES = {
   text: 'Example Text',
   lineHeight: 40,
   fontBold: 400,

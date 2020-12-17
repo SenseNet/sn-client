@@ -6,6 +6,7 @@ describe('ShapesSkeleton component', () => {
   it('should render without crashing', () => {
     const wrapper = mount(
       <ShapeSkeleton
+        rotationDegree={0}
         shapeType="redactions"
         zoomRatio={1}
         shape={{
@@ -30,23 +31,16 @@ describe('ShapesSkeleton component', () => {
     const wrapper = mount(
       <DocumentPermissionsContext.Provider value={{ canEdit: true, canHideRedaction: true, canHideWatermark: true }}>
         <ShapeSkeleton
-          shapeType="annotations"
+          rotationDegree={0}
+          shapeType="highlights"
           zoomRatio={1}
           shape={{
-            index: 1,
             h: 100,
             w: 100,
             x: 10,
             y: 10,
-            text: 'Example Text',
-            guid: '9a324f30-1423-11e9-bcb9-d719ddfb5f43',
-            lineHeight: 15,
-            fontBold: '34',
             imageIndex: 1,
-            fontColor: 'red',
-            fontFamily: 'arial',
-            fontItalic: 'false',
-            fontSize: '12pt',
+            guid: '9a324f30-1423-11e9-bcb9-d719ddfb5f43',
           }}
           removeShape={removeShape}
           updateShapeData={updateShapeData}
@@ -59,10 +53,6 @@ describe('ShapesSkeleton component', () => {
 
     wrapper.simulate('keyUp', { key: 'Backspace' })
     expect(removeShape).toBeCalled()
-
-    wrapper.find('#annotation-input').simulate('focus')
-    wrapper.find(Delete).simulate('mouseUp')
-    expect(removeShape).toBeCalled()
   })
 
   it('should handle onBlur event', () => {
@@ -72,10 +62,10 @@ describe('ShapesSkeleton component', () => {
     const wrapper = mount(
       <DocumentPermissionsContext.Provider value={{ canEdit: true, canHideRedaction: true, canHideWatermark: true }}>
         <ShapeSkeleton
+          rotationDegree={0}
           shapeType="annotations"
           zoomRatio={1}
           shape={{
-            index: 1,
             h: 100,
             w: 100,
             x: 10,
@@ -83,12 +73,12 @@ describe('ShapesSkeleton component', () => {
             text: 'Example Text',
             guid: '9a324f30-1423-11e9-bcb9-d719ddfb5f43',
             lineHeight: 15,
-            fontBold: '34',
+            fontBold: 34,
             imageIndex: 1,
             fontColor: 'red',
             fontFamily: 'arial',
-            fontItalic: 'false',
-            fontSize: '12pt',
+            fontItalic: false,
+            fontSize: 12,
           }}
           removeShape={removeShape}
           updateShapeData={updateShapeData}

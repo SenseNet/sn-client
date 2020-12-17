@@ -1,8 +1,9 @@
 import { ObservableValue } from '@sensenet/client-utils'
+import { Typography } from '@material-ui/core'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { CommentsContainer, DocumentViewerLayout, PageList, THUMBNAIL_PADDING, Thumbnails } from '../src/components'
+import { DocumentViewerLayout, PageList, THUMBNAIL_PADDING, Thumbnails } from '../src/components'
 import { DocumentViewerApiSettingsContext } from '../src/context/api-settings'
 import { CommentsContext, defaultCommentsContext } from '../src/context/comments'
 import { defaultViewerState, ViewerStateContext } from '../src/context/viewer-state'
@@ -115,6 +116,6 @@ describe('Document Viewer Layout component', () => {
         </DocumentViewerApiSettingsContext.Provider>,
       )
     })
-    expect(wrapper.find(CommentsContainer).exists()).toBeTruthy()
+    expect(wrapper.find(Typography).exists()).toBeTruthy()
   })
 })

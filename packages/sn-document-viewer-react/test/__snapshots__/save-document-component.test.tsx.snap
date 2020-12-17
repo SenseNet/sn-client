@@ -9,12 +9,15 @@ exports[`SaveDocumentComponent component Should render without crashing when has
   }
 >
   <WithStyles(ForwardRef(IconButton))
+    className="makeStyles-iconButton-1"
     disabled={true}
     id="Save"
     onClick={[Function]}
     title="Save changes"
   >
-    <Memo([object Object]) />
+    <Memo([object Object])
+      className="makeStyles-icon-2"
+    />
   </WithStyles(ForwardRef(IconButton))>
 </div>
 `;
@@ -29,12 +32,14 @@ exports[`SaveDocumentComponent component Should render without crashing when the
     }
   >
     <WithStyles(ForwardRef(IconButton))
+      className="makeStyles-iconButton-1"
       disabled={true}
       id="Save"
       onClick={[Function]}
       title="Save changes"
     >
       <ForwardRef(IconButton)
+        className="makeStyles-iconButton-1"
         classes={
           Object {
             "colorInherit": "MuiIconButton-colorInherit",
@@ -55,7 +60,7 @@ exports[`SaveDocumentComponent component Should render without crashing when the
       >
         <WithStyles(ForwardRef(ButtonBase))
           centerRipple={true}
-          className="MuiIconButton-root Mui-disabled"
+          className="MuiIconButton-root makeStyles-iconButton-1 Mui-disabled"
           disabled={true}
           focusRipple={true}
           id="Save"
@@ -64,7 +69,7 @@ exports[`SaveDocumentComponent component Should render without crashing when the
         >
           <ForwardRef(ButtonBase)
             centerRipple={true}
-            className="MuiIconButton-root Mui-disabled"
+            className="MuiIconButton-root makeStyles-iconButton-1 Mui-disabled"
             classes={
               Object {
                 "disabled": "Mui-disabled",
@@ -79,7 +84,7 @@ exports[`SaveDocumentComponent component Should render without crashing when the
             title="Save changes"
           >
             <button
-              className="MuiButtonBase-root MuiIconButton-root Mui-disabled Mui-disabled"
+              className="MuiButtonBase-root MuiIconButton-root makeStyles-iconButton-1 Mui-disabled Mui-disabled"
               disabled={true}
               id="Save"
               onBlur={[Function]}
@@ -101,9 +106,14 @@ exports[`SaveDocumentComponent component Should render without crashing when the
               <span
                 className="MuiIconButton-label"
               >
-                <ForwardRef(SaveIcon)>
-                  <WithStyles(ForwardRef(SvgIcon))>
+                <ForwardRef(SaveIcon)
+                  className="makeStyles-icon-2"
+                >
+                  <WithStyles(ForwardRef(SvgIcon))
+                    className="makeStyles-icon-2"
+                  >
                     <ForwardRef(SvgIcon)
+                      className="makeStyles-icon-2"
                       classes={
                         Object {
                           "colorAction": "MuiSvgIcon-colorAction",
@@ -120,7 +130,7 @@ exports[`SaveDocumentComponent component Should render without crashing when the
                     >
                       <svg
                         aria-hidden={true}
-                        className="MuiSvgIcon-root"
+                        className="MuiSvgIcon-root makeStyles-icon-2"
                         focusable="false"
                         viewBox="0 0 24 24"
                       >

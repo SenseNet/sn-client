@@ -3,7 +3,7 @@ import { mount } from 'enzyme'
 import React from 'react'
 import { defaultViewerState, ViewerStateContext, ZoomInOutWidget } from '../src'
 
-describe('ZoomInOUt component', () => {
+describe('ZoomInOut component', () => {
   it('should render without crashing', () => {
     const wrapper = mount(<ZoomInOutWidget />)
     expect(wrapper).toMatchSnapshot()

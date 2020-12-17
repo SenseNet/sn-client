@@ -82,6 +82,7 @@ export function AnnotationWrapper({
 
   return (
     <div
+      id="annotation-wrapper"
       className={classes.root}
       tabIndex={0}
       draggable={permissions.canEdit}

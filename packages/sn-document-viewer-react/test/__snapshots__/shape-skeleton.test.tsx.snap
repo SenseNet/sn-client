@@ -3,6 +3,7 @@
 exports[`ShapesSkeleton component should render without crashing 1`] = `
 <ShapeSkeleton
   removeShape={[Function]}
+  rotationDegree={0}
   shape={
     Object {
       "guid": "testRedaction",
@@ -29,9 +30,24 @@ exports[`ShapesSkeleton component should render without crashing 1`] = `
     }
   >
     <ShapeRedaction
-      getShapeDimensions={[Function]}
+      dimensions={
+        Object {
+          "height": 1,
+          "left": 10,
+          "top": 10,
+          "width": 1,
+        }
+      }
       onDragStart={[Function]}
       onResized={[Function]}
+      permissions={
+        Object {
+          "canEdit": false,
+          "canHideRedaction": false,
+          "canHideWatermark": false,
+        }
+      }
+      removeShape={[Function]}
       shape={
         Object {
           "guid": "testRedaction",
@@ -42,25 +58,21 @@ exports[`ShapesSkeleton component should render without crashing 1`] = `
           "y": 10,
         }
       }
+      zoomRatio={1}
     >
       <div
+        className="makeStyles-root-1 makeStyles-root-3"
         draggable={false}
         key="r-1-1"
+        onContextMenu={[Function]}
         onDragStart={[Function]}
         onMouseUp={[Function]}
-        style={
-          Object {
-            "backgroundColor": "black",
-            "height": 1,
-            "left": 10,
-            "overflow": "auto",
-            "position": "absolute",
-            "resize": "none",
-            "top": 10,
-            "width": 1,
-          }
-        }
         tabIndex={0}
+      />
+      <ForwardRef(Popper)
+        anchorEl={null}
+        open={false}
+        placement="right-start"
       />
     </ShapeRedaction>
   </div>
