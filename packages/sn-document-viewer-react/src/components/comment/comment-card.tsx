@@ -23,7 +23,7 @@ const useStyles = makeStyles<Theme, Props>(() =>
  * Return a styled comment card component
  * @param isSelected A flag for store if comment is selected or not
  * @param onClick Function triggered on click event
- * @param id Id of the comment
+ * @param id The id of the comment
  * @param renderChildren Function what returns the wrapped components
  * @returns styled comment card component
  */

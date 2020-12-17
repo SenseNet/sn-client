@@ -20,41 +20,46 @@ npm install @sensenet/document-viewer-react
 
 ```
 import {
+  AddAnnotationWidget,
+  AddHighlightWidget,
+  AddRedactionWidget,
   DocumentTitlePager,
-  Download,
   LayoutAppBar,
-  Print,
   RotateActivePagesWidget,
   RotateDocumentWidget,
   ROTATION_MODE,
   SaveWidget,
-  Share,
   DocumentViewer as SnDocumentViewer,
   ToggleCommentsWidget,
   ToggleRedactionWidget,
   ToggleShapesWidget,
   ToggleThumbnailsWidget,
-  ToggleWatermarkWidget,
-  ZoomInOutWidget
+  ZoomInOutWidget,
 } from '@sensenet/document-viewer-react'
 
-<SnDocumentViewer documentIdOrPath={<The document's Id or Path to preview>}>
-  <LayoutAppBar>
-    <ToggleThumbnailsWidget />
-    <ZoomInOutWidget />
-    <RotateActivePagesWidget mode={ROTATION_MODE.clockwise OR ROTATION_MODE.anticlockwise} />
-    <RotateDocumentWidget mode={ROTATION_MODE.clockwise OR ROTATION_MODE.anticlockwise} />
-    <DocumentTitlePager />
-    <Download download={<function triggered on clicking download button>/>
-    <Print print={function triggered on clicking print button/>
-    <Share share={function triggered on clicking share button/>
-    <SaveWidget /> --> this is under construction
-    <ToggleRedactionWidget /> --> this is under construction
-    <ToggleShapesWidget /> --> this is under construction
-    <ToggleWatermarkWidget /> --> this is under construction
-    <ToggleCommentsWidget/>
-  </LayoutAppBar>
-</SnDocumentViewer>
+<SnDocumentViewer
+  documentIdOrPath={<an id or path of the document>}
+  renderAppBar={() => (
+    <LayoutAppBar>
+      <div style={{ flexShrink: 0 }}>
+        <ToggleThumbnailsWidget />
+        <ZoomInOutWidget />
+        <RotateActivePagesWidget mode={ROTATION_MODE.clockwise} />
+        <RotateDocumentWidget mode={ROTATION_MODE.clockwise} />
+        <SaveWidget />
+      </div>
+      <DocumentTitlePager />
+      <div style={{ flexShrink: 0 }}>
+        <ToggleRedactionWidget />
+        <ToggleShapesWidget />
+        <AddRedactionWidget />
+        <AddHighlightWidget />
+        <AddAnnotationWidget />
+        <ToggleCommentsWidget />
+      </div>
+    </LayoutAppBar>
+  )}
+/>
 ```
 
 The main component is SnDocumentViewer, but you can extend functionality with any widgets from the example

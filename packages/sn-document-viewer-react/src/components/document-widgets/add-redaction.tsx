@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) => {
 type AddRedactionClassKey = Partial<ReturnType<typeof useStyles>>
 
 /**
- * Document widget component to toggleing redaction
+ * Document widget component to draw Redaction
  */
 export const AddRedactionWidget: React.FC<{ classes?: AddRedactionClassKey }> = (props) => {
   const classes = useStyles(props)
@@ -32,7 +32,7 @@ export const AddRedactionWidget: React.FC<{ classes?: AddRedactionClassKey }> = 
       classes={classes}
       isVisible={viewerState.isPlacingRedaction}
       title={localization.addRedaction}
-      setValue={(v) => viewerState.updateState({ isPlacingRedaction: v })}>
+      setValue={(value) => viewerState.updateState({ isPlacingRedaction: value })}>
       <ChatBubbleSharp className={clsx(classes.icon, { [classes.iconActive]: viewerState.isPlacingRedaction })} />
     </ToggleBase>
   )

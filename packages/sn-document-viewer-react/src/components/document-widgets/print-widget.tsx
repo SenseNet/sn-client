@@ -22,7 +22,7 @@ export interface PrintProps {
 }
 
 /**
- * Component that allows active page rotation
+ * Component that allows print
  */
 export const Print: React.FC<PrintProps & { classes?: PrintClassKey }> = (props) => {
   const classes = useStyles(props)

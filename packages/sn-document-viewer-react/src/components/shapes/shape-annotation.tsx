@@ -13,7 +13,7 @@ import {
 import { Delete } from '@material-ui/icons'
 import React, { useState } from 'react'
 import { AnnotationWrapper, useDocumentPermissions } from '../..'
-import { useViewerState } from '../../hooks'
+import { useLocalization, useViewerState } from '../../hooks'
 
 type Props = {
   rotationDegree: number
@@ -73,6 +73,7 @@ export const ShapeAnnotation: React.FC<ShapeAnnotationProps> = (props) => {
   const rotationDegree =
     viewerState.rotation?.find((rotation) => rotation.pageNum === props.shape.imageIndex)?.degree || 0
   const classes = useStyles({ rotationDegree })
+  const localization = useLocalization()
   const permissions = useDocumentPermissions()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -197,7 +198,7 @@ export const ShapeAnnotation: React.FC<ShapeAnnotationProps> = (props) => {
                 className={classes.button}
                 onMouseUp={() => props.removeShape('annotations', props.shape.guid)}
                 startIcon={<Delete scale={props.zoomRatio} />}>
-                Delete
+                {localization.delete}
               </Button>
             </div>
           </Paper>

@@ -25,8 +25,9 @@ const useStyles = makeStyles<Theme, Props>(() =>
 )
 
 /**
- * Return a styled redaction component
+ * Return a styled shape
  * @param dimensions Shape dimensions
+ * @returns styled shape
  */
 export function ShapeDraft({ dimensions }: Props) {
   const classes = useStyles({ dimensions })

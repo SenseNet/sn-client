@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) => {
 type AddAnnnotationClassKey = Partial<ReturnType<typeof useStyles>>
 
 /**
- * Document widget component to toggleing redaction
+ * Document widget component to draw Annotation
  */
 export const AddAnnotationWidget: React.FC<{ classes?: AddAnnnotationClassKey }> = (props) => {
   const classes = useStyles(props)
@@ -32,7 +32,7 @@ export const AddAnnotationWidget: React.FC<{ classes?: AddAnnnotationClassKey }>
       classes={classes}
       isVisible={viewerState.isPlacingAnnotation}
       title={localization.addAnnotation}
-      setValue={(v) => viewerState.updateState({ isPlacingAnnotation: v })}>
+      setValue={(value) => viewerState.updateState({ isPlacingAnnotation: value })}>
       <ChatSharp className={clsx(classes.icon, { [classes.iconActive]: viewerState.isPlacingAnnotation })} />
     </ToggleBase>
   )

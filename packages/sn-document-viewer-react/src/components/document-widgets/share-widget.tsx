@@ -22,7 +22,7 @@ export interface ShareProps {
 }
 
 /**
- * Component that allows active page rotation
+ * Component that allows sharing
  */
 export const Share: React.FC<ShareProps & { classes?: ShareClassKey }> = (props) => {
   const classes = useStyles(props)

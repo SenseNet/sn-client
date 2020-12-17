@@ -17,7 +17,7 @@ const useStyles = makeStyles<Theme, Props>((theme) =>
 
 /**
  * Return a styled pushpin icon
- * @param isPlacingMarker A flag for store if placing marker is in progress or not
+ * @param isPlacingMarker A flag to store if placing marker is in progress or not
  * @param viewBox Viewbox property
  * @returns styled pushpin icon
  */

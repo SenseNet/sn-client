@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) => {
 type AddRHightlightClassKey = Partial<ReturnType<typeof useStyles>>
 
 /**
- * Document widget component to toggleing redaction
+ * Document widget component to draw Hihgligh
  */
 export const AddHighlightWidget: React.FC<{ classes?: AddRHightlightClassKey }> = (props) => {
   const classes = useStyles(props)
@@ -32,13 +32,9 @@ export const AddHighlightWidget: React.FC<{ classes?: AddRHightlightClassKey }> 
       classes={classes}
       isVisible={viewerState.isPlacingHighlight}
       title={localization.addHighlight}
-      setValue={(v) => viewerState.updateState({ isPlacingHighlight: v })}>
+      setValue={(value) => viewerState.updateState({ isPlacingHighlight: value })}>
       <ChatBubbleOutlineSharp
-        className={clsx(
-          classes.icon,
-          { [classes.iconActive]: viewerState.isPlacingHighlight },
-          'material-icons-two-tone',
-        )}
+        className={clsx(classes.icon, { [classes.iconActive]: viewerState.isPlacingHighlight })}
       />
     </ToggleBase>
   )

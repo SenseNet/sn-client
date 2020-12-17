@@ -51,10 +51,11 @@ const useStyles = makeStyles<Theme, Props>(() =>
  * Return a styled annotation wrapper component
  * @param permissions The permissions of the user
  * @param shape The arguments of the annotation
- * @param zoomRatio The arguments of the annotation
+ * @param zoomRatio The ratio of the origina and virtual page
  * @param dimensions The dimensions of the annotation
  * @param onDragStart Function triggered on drag event
  * @param onResized Function triggered on resize event
+ * @param onRightClick Function triggered on right click
  * @param renderChildren Function what returns the wrapped components
  * @returns styled annotation wrapper component
  */

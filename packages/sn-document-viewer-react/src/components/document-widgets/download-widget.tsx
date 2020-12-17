@@ -15,14 +15,14 @@ const useStyles = makeStyles(() => {
 type DownloadClassKey = Partial<ReturnType<typeof useStyles>>
 
 /**
- * Own properties for the Share component
+ * Own properties for the Download component
  */
 export interface DownloadProps {
   download: (document: DocumentData) => void
 }
 
 /**
- * Component that allows active page rotation
+ * Component that allows download
  */
 export const Download: React.FC<DownloadProps & { classes?: DownloadClassKey }> = (props) => {
   const classes = useStyles(props)

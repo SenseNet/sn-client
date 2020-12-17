@@ -2,6 +2,7 @@ import { Highlight, Shapes } from '@sensenet/client-core'
 import { Button, ClickAwayListener, createStyles, makeStyles, Popper, Theme } from '@material-ui/core'
 import { Delete } from '@material-ui/icons'
 import React, { useState } from 'react'
+import { useLocalization } from '../../hooks'
 
 type Props = {
   shape: Highlight
@@ -45,21 +46,23 @@ const useStyles = makeStyles<Theme, Props>((theme: Theme) =>
  * @param shape Shape attributes
  * @param permissions Permissions of the current user
  * @param dimensions Shape dimensions
+ * @param zoomRatio Zoom ratio
  * @param onDragStart Function triggered on drag event
  * @param onResized Function triggered on resized event
- * @param getShapeDimensions Function returns with shape dimensions
+ * @param removeShape Function triggered on delete
  * @returns styled redaction component
  */
 export function ShapeRedaction({
   shape,
-  onDragStart,
-  onResized,
   permissions,
   dimensions,
   zoomRatio,
+  onDragStart,
+  onResized,
   removeShape,
 }: Props) {
-  const classes = useStyles({ shape, onDragStart, onResized, permissions, dimensions, zoomRatio, removeShape })
+  const classes = useStyles({ shape, permissions, dimensions, zoomRatio, onDragStart, onResized, removeShape })
+  const localization = useLocalization()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const id = open ? 'redaction-delete' : undefined
@@ -87,7 +90,7 @@ export function ShapeRedaction({
             className={classes.button}
             onMouseUp={() => removeShape('redactions', shape.guid)}
             startIcon={<Delete scale={zoomRatio} />}>
-            Delete
+            {localization.delete}
           </Button>
         </ClickAwayListener>
       </Popper>
