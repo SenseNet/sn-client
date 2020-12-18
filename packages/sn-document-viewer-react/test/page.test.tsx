@@ -1,11 +1,12 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
+import { DocumentDataContext } from '../src'
 import { Page, PageProps } from '../src/components/page'
 import { CommentStateContext } from '../src/context/comment-states'
 import { PreviewImageDataContext } from '../src/context/preview-image-data'
 import { defaultViewerState, ViewerStateContext } from '../src/context/viewer-state'
-import { examplePreviewImageData } from './__Mocks__/viewercontext'
+import { exampleDocumentData, examplePreviewImageData } from './__Mocks__/viewercontext'
 
 describe('Page component', () => {
   const defaultProps: PageProps = {
@@ -100,5 +101,131 @@ describe('Page component', () => {
       .at(1)
       .simulate('click', { nativeEvent: { offsetX: 11, offsetY: 11 } })
     expect(setDraft).toBeCalledWith({ id: 'draft', page: 1, x: '1', y: '1' })
+  })
+
+  it('should handle drawing a highlight', () => {
+    const updateDocumentData = jest.fn()
+    const wrapper = mount(
+      <DocumentDataContext.Provider
+        value={{
+          documentData: {
+            ...exampleDocumentData,
+            pageCount: 6,
+          },
+          updateDocumentData,
+          isInProgress: false,
+          triggerReload: () => {},
+        }}>
+        <ViewerStateContext.Provider
+          value={{
+            ...defaultViewerState,
+            isPlacingHighlight: true,
+            zoomLevel: 0,
+          }}>
+          <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData] } as any}>
+            <Page {...defaultProps} />
+          </PreviewImageDataContext.Provider>
+        </ViewerStateContext.Provider>
+      </DocumentDataContext.Provider>,
+    )
+
+    wrapper
+      .find('div')
+      .at(1)
+      .simulate('mouseDown', { nativeEvent: { offsetX: 1, offsetY: 1 } })
+    wrapper
+      .find('div')
+      .at(1)
+      .simulate('mouseMove', { nativeEvent: { offsetX: 20, offsetY: 20 } })
+    wrapper
+      .find('div')
+      .at(1)
+      .simulate('mouseUp', { nativeEvent: { offsetX: 11, offsetY: 11 } })
+
+    expect(updateDocumentData).toBeCalled()
+  })
+
+  it('should handle drawing a redaction', () => {
+    const updateDocumentData = jest.fn()
+    const wrapper = mount(
+      <DocumentDataContext.Provider
+        value={{
+          documentData: {
+            ...exampleDocumentData,
+            pageCount: 6,
+          },
+          updateDocumentData,
+          isInProgress: false,
+          triggerReload: () => {},
+        }}>
+        <ViewerStateContext.Provider
+          value={{
+            ...defaultViewerState,
+            isPlacingRedaction: true,
+            zoomLevel: 0,
+          }}>
+          <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData] } as any}>
+            <Page {...defaultProps} />
+          </PreviewImageDataContext.Provider>
+        </ViewerStateContext.Provider>
+      </DocumentDataContext.Provider>,
+    )
+
+    wrapper
+      .find('div')
+      .at(1)
+      .simulate('mouseDown', { nativeEvent: { offsetX: 1, offsetY: 1 } })
+    wrapper
+      .find('div')
+      .at(1)
+      .simulate('mouseMove', { nativeEvent: { offsetX: 20, offsetY: 20 } })
+    wrapper
+      .find('div')
+      .at(1)
+      .simulate('mouseUp', { nativeEvent: { offsetX: 11, offsetY: 11 } })
+
+    expect(updateDocumentData).toBeCalled()
+  })
+
+  it('should handle drawing a annotation', () => {
+    const updateDocumentData = jest.fn()
+    const wrapper = mount(
+      <DocumentDataContext.Provider
+        value={{
+          documentData: {
+            ...exampleDocumentData,
+            pageCount: 6,
+          },
+          updateDocumentData,
+          isInProgress: false,
+          triggerReload: () => {},
+        }}>
+        <ViewerStateContext.Provider
+          value={{
+            ...defaultViewerState,
+            isPlacingAnnotation: true,
+            zoomLevel: 0,
+          }}>
+          <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData] } as any}>
+            <Page {...defaultProps} />
+          </PreviewImageDataContext.Provider>
+        </ViewerStateContext.Provider>
+      </DocumentDataContext.Provider>,
+    )
+
+    wrapper
+      .find('div')
+      .at(1)
+      .simulate('mouseDown', { nativeEvent: { offsetX: 1, offsetY: 1 } })
+    wrapper
+      .find('div')
+      .at(1)
+      .simulate('mouseMove', { nativeEvent: { offsetX: 20, offsetY: 20 } })
+    wrapper
+      .find('div')
+      .at(1)
+      .simulate('mouseUp', { nativeEvent: { offsetX: 11, offsetY: 11 } })
+
+    expect(updateDocumentData).toBeCalled()
   })
 })
