@@ -14,7 +14,7 @@ exports[`Print component Should render without crashing 1`] = `
     onClick={[Function]}
     title="Print"
   >
-    <PrintIcon />
+    <Memo([object Object]) />
   </WithStyles(ForwardRef(IconButton))>
 </div>
 `;

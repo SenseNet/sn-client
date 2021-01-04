@@ -85,7 +85,7 @@ exports[`The new memo panel instance should be rendered correctly 1`] = `
           }
         }
       >
-        <SaveIcon />
+        <Memo([object Object]) />
       </WithStyles(ForwardRef(Fab))>
       <WithStyles(ForwardRef(Fab))
         aria-label="Cancel"
@@ -93,7 +93,7 @@ exports[`The new memo panel instance should be rendered correctly 1`] = `
         onClick={[MockFunction]}
         size="small"
       >
-        <ClearIcon />
+        <Memo([object Object]) />
       </WithStyles(ForwardRef(Fab))>
     </WithStyles(ForwardRef(Grid))>
   </WithStyles(ForwardRef(Grid))>

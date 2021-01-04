@@ -14,6 +14,7 @@ module.exports = (env) => {
     devtool: 'cheap-module-eval-source-map',
     devServer: {
       historyApiFallback: true,
+      open: true,
     },
     output: {
       filename: 'static/js/bundle.js',

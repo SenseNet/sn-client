@@ -29,7 +29,7 @@ exports[`DropFileArea Matches snapshot 1`] = `
       }
     }
   >
-    <CloudUploadTwoToneIcon
+    <Memo([object Object])
       style={
         Object {
           "height": "250px",
