@@ -279,6 +279,7 @@ const values = {
   topMenu: {
     personalSettings: 'Personal settings',
     logout: 'Log out',
+    changePassword: 'Change password',
     openUserMenu: 'Open user menu',
     openHelpMenu: 'Open help menu',
     documentation: 'Documentation',

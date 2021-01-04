@@ -1,5 +1,5 @@
 import { Switch } from '@sensenet/controls-react'
-import { useInjector, useRepository } from '@sensenet/hooks-react'
+import { useInjector, useLogger, useRepository } from '@sensenet/hooks-react'
 import {
   Grid,
   IconButton,
@@ -96,6 +96,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   const repo = useRepository()
   const localization = useLocalization()
   const { openDialog } = useDialog()
+  const logger = useLogger('desktop-nav-menu')
   const [openUserMenu, setOpenUserMenu] = useState(false)
   const [openHelpMenu, setOpenHelpMenu] = useState(false)
 
@@ -110,6 +111,23 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   const logout = () => {
     openDialog({ name: 'logout' })
     handleClose(setOpenUserMenu)
+  }
+
+  const changePw = async () => {
+    try {
+      await repo.executeAction({
+        idOrPath: '/Root',
+        name: 'SendChangePasswordMail',
+        method: 'POST',
+        body: {
+          returnUrl: 'https://admin.sensenet.com',
+        },
+      })
+    } catch (error) {
+      logger.warning({ message: error.message })
+    } finally {
+      handleClose(setOpenUserMenu)
+    }
   }
 
   const feedback = () => {
@@ -183,6 +201,9 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                     }}
                     primary={`${currentUser.DisplayName || currentUser.Name}`}
                   />
+                </MenuItem>
+                <MenuItem onClick={changePw} className={classes.userMenuItem}>
+                  {localization.topMenu.changePassword}
                 </MenuItem>
                 <MenuItem onClick={logout} className={classes.userMenuItem}>
                   {localization.topMenu.logout}
