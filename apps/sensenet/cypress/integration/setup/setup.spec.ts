@@ -34,7 +34,7 @@ describe('Setup', () => {
     cy.get('[data-test="content-card"]')
       .first()
       .within(() => {
-        cy.get('[data-test="content-card-edit-button"]').click()
+        cy.get('[data-test="documentpreview.settings-edit-button"]').click()
       })
       .get('[data-test="editor-title"]')
       .should('have.text', 'DocumentPreview.settings')
