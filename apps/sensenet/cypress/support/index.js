@@ -13,5 +13,6 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 import 'cypress-xpath'
+import '@cypress/code-coverage/support'
 
 import './commands'
