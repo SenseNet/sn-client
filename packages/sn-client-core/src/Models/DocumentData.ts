@@ -1,4 +1,4 @@
-import { PageAttribute, Shapes } from '.'
+import { Shapes } from '.'
 
 /**
  * Generic document properties
@@ -11,6 +11,5 @@ export interface DocumentData {
   fileSizekB: number
   shapes: Shapes
   pageCount: number
-  pageAttributes: PageAttribute[]
   error?: string
 }

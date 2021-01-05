@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DownloadWidget component Should render without crashing 1`] = `
+<div
+  style={
+    Object {
+      "display": "inline-block",
+    }
+  }
+>
+  <WithStyles(ForwardRef(IconButton))
+    color="inherit"
+    id="Share"
+    onClick={[Function]}
+    title="Share"
+  >
+    <Memo([object Object]) />
+  </WithStyles(ForwardRef(IconButton))>
+</div>
+`;

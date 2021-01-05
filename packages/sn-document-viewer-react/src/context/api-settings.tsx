@@ -2,7 +2,7 @@ import { Annotation, CommentData, DocumentData, Highlight, Redaction, Repository
 import { deepMerge, toNumber } from '@sensenet/client-utils'
 import { File as SnFile } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import React, { useEffect, useState } from 'react'
+import React, { useMemo } from 'react'
 import { v1 } from 'uuid'
 import { DocumentViewerApiSettings } from '../models'
 
@@ -42,12 +42,12 @@ export const DocumentViewerApiSettingsContext = React.createContext<DocumentView
     fileSizekB: 3,
     hostName: '',
     idOrPath: 1,
-    pageAttributes: [],
+    pageNum: 1,
     pageCount: 0,
     shapes: { annotations: [], highlights: [], redactions: [] },
   }),
   getExistingPreviewImages: async () => [],
-  isPreviewAvailable: async () => ({ Height: 0, Width: 0, Index: 0, Attributes: { degree: 0 } }),
+  isPreviewAvailable: async () => ({ Height: 0, Width: 0, Index: 0 }),
   regeneratePreviews: async () => ({ PageCount: -1, PreviewCount: 0 }),
   saveChanges: async () => undefined,
 })
@@ -56,18 +56,13 @@ export const createDefaultApiSettings: (repo: Repository) => DocumentViewerApiSe
   regeneratePreviews: async ({ document, abortController }) => {
     return await repo.preview.regenerate({ idOrPath: document.idOrPath, abortController })
   },
-  saveChanges: async ({ document, pages, abortController }) => {
+  saveChanges: async ({ document, abortController }) => {
     const reqBody = {
       Shapes: JSON.stringify([
         { redactions: document.shapes.redactions },
         { highlights: document.shapes.highlights },
         { annotations: document.shapes.annotations },
       ]),
-      PageAttributes: JSON.stringify(
-        pages
-          .map((p) => (p.Attributes && p.Attributes.degree && { pageNum: p.Index, options: p.Attributes }) || undefined)
-          .filter((p) => p !== undefined),
-      ),
     }
     await repo.patch<SnFile>({
       idOrPath: document.idOrPath,
@@ -104,7 +99,6 @@ export const createDefaultApiSettings: (repo: Repository) => DocumentViewerApiSe
         annotations: [],
         highlights: [],
       },
-      pageAttributes: (documentData.PageAttributes && JSON.parse(documentData.PageAttributes)) || [],
     }
   },
   isPreviewAvailable: async ({ document, version, page, abortController }) => {
@@ -150,10 +144,7 @@ export const DocumentViewerApiSettingsProvider: React.FC<{ options?: Partial<Doc
   options,
 }) => {
   const repo = useRepository()
-  const [settings, setSettings] = useState(deepMerge(createDefaultApiSettings(repo), options))
-  useEffect(() => {
-    setSettings(deepMerge(createDefaultApiSettings(repo), options))
-  }, [repo, options])
+  const settings = useMemo(() => deepMerge(createDefaultApiSettings(repo), options), [repo, options])
 
   return (
     <DocumentViewerApiSettingsContext.Provider value={settings}>{children}</DocumentViewerApiSettingsContext.Provider>

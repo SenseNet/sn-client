@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CurrentChildren Can be mounted 1`] = `
-<Component>
+<CurrentChildrenProvider>
   <div>
     Id: 
     1
   </div>
-</Component>
+</CurrentChildrenProvider>
 `;
 
 exports[`CurrentChildren matches snapshot 1`] = `
@@ -16,7 +16,7 @@ exports[`CurrentChildren matches snapshot 1`] = `
 `;
 
 exports[`CurrentChildren reloads when content is restored 1`] = `
-<Component>
+<CurrentChildrenProvider>
   <div
     key="1"
   >
@@ -25,11 +25,11 @@ exports[`CurrentChildren reloads when content is restored 1`] = `
     , Name: 
     name
   </div>
-</Component>
+</CurrentChildrenProvider>
 `;
 
 exports[`CurrentChildren reloads when content is restored 2`] = `
-<Component>
+<CurrentChildrenProvider>
   <div
     key="1"
   >
@@ -46,11 +46,11 @@ exports[`CurrentChildren reloads when content is restored 2`] = `
     , Name: 
     restored
   </div>
-</Component>
+</CurrentChildrenProvider>
 `;
 
 exports[`CurrentChildren reloads when new content is created 1`] = `
-<Component>
+<CurrentChildrenProvider>
   <div
     key="1"
   >
@@ -59,11 +59,11 @@ exports[`CurrentChildren reloads when new content is created 1`] = `
     , Name: 
     name
   </div>
-</Component>
+</CurrentChildrenProvider>
 `;
 
 exports[`CurrentChildren reloads when new content is created 2`] = `
-<Component>
+<CurrentChildrenProvider>
   <div
     key="1"
   >
@@ -80,11 +80,11 @@ exports[`CurrentChildren reloads when new content is created 2`] = `
     , Name: 
     something
   </div>
-</Component>
+</CurrentChildrenProvider>
 `;
 
 exports[`CurrentChildren reloads when new content is deleted 1`] = `
-<Component>
+<CurrentChildrenProvider>
   <div
     key="1"
   >
@@ -93,13 +93,13 @@ exports[`CurrentChildren reloads when new content is deleted 1`] = `
     , Name: 
     name
   </div>
-</Component>
+</CurrentChildrenProvider>
 `;
 
-exports[`CurrentChildren reloads when new content is deleted 2`] = `<Component />`;
+exports[`CurrentChildren reloads when new content is deleted 2`] = `<CurrentChildrenProvider />`;
 
 exports[`CurrentChildren reloads when new content is moved 1`] = `
-<Component>
+<CurrentChildrenProvider>
   <div
     key="1"
   >
@@ -108,13 +108,13 @@ exports[`CurrentChildren reloads when new content is moved 1`] = `
     , Name: 
     name
   </div>
-</Component>
+</CurrentChildrenProvider>
 `;
 
-exports[`CurrentChildren reloads when new content is moved 2`] = `<Component />`;
+exports[`CurrentChildren reloads when new content is moved 2`] = `<CurrentChildrenProvider />`;
 
 exports[`CurrentChildren reloads when new content is uploaded under current content 1`] = `
-<Component>
+<CurrentChildrenProvider>
   <div
     key="1"
   >
@@ -123,11 +123,11 @@ exports[`CurrentChildren reloads when new content is uploaded under current cont
     , Name: 
     name
   </div>
-</Component>
+</CurrentChildrenProvider>
 `;
 
 exports[`CurrentChildren reloads when new content is uploaded under current content 2`] = `
-<Component>
+<CurrentChildrenProvider>
   <div
     key="1"
   >
@@ -136,5 +136,5 @@ exports[`CurrentChildren reloads when new content is uploaded under current cont
     , Name: 
     name
   </div>
-</Component>
+</CurrentChildrenProvider>
 `;

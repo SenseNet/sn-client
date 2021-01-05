@@ -23,7 +23,7 @@ exports[`FullScreenDialog Matches snapshot 1`] = `
           edge="start"
           onClick={[MockFunction]}
         >
-          <CloseIcon />
+          <Memo([object Object]) />
         </WithStyles(ForwardRef(IconButton))>
         <WithStyles(ForwardRef(Typography))
           className="makeStyles-title-2"
@@ -37,11 +37,11 @@ exports[`FullScreenDialog Matches snapshot 1`] = `
           edge="start"
           href="Download Path"
         >
-          <SaveAltIcon />
+          <Memo([object Object]) />
         </WithStyles(ForwardRef(IconButton))>
       </WithStyles(ForwardRef(Toolbar))>
     </WithStyles(ForwardRef(AppBar))>
-    <Component
+    <ResponsiveDrawer
       imageInfo={
         Object {
           "imgAuthor": "Test Elek",

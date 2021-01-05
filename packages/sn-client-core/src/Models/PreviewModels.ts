@@ -1,5 +1,3 @@
-import { PageAttribute } from '.'
-
 /**
  * Model definitions for preview image data
  */
@@ -13,7 +11,6 @@ export interface PreviewImageData {
   PreviewImageUrl?: string
   ThumbnailImageUrl?: string
   PreviewAvailable?: string
-  Attributes?: PageAttribute['options']
 }
 
 export interface PreviewRegenerateData {

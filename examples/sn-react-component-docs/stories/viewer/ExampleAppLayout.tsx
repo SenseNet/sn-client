@@ -8,13 +8,11 @@ import {
   Print,
   RotateActivePagesWidget,
   SaveWidget,
-  SearchBar,
   Share,
   ToggleCommentsWidget,
   ToggleShapesWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
-  ZoomModeWidget,
 } from '@sensenet/document-viewer-react/src'
 import { RepositoryContext } from '@sensenet/hooks-react'
 import Button from '@material-ui/core/Button'
@@ -78,38 +76,40 @@ export const ExampleAppLayout: React.FC = () => {
       <div style={{ height: '100%' }}>
         {isViewerOpened ? (
           <RepositoryContext.Provider value={repository}>
-            <DocumentViewer theme={defaultTheme} documentIdOrPath={documentIdOrPath}>
-              <LayoutAppBar>
-                <div style={{ flexShrink: 0 }}>
-                  <ToggleShapesWidget />
-                  <ToggleThumbnailsWidget />
-                  <Download
-                    download={(doc) => {
-                      console.log('Download triggered', doc)
-                    }}
-                  />
-                  <Print
-                    print={(doc) => {
-                      console.log('Print triggered', doc)
-                    }}
-                  />
-                  <Share
-                    share={(doc) => {
-                      console.log('Share triggered', doc)
-                    }}
-                  />
-                  <ZoomInOutWidget />
-                  <ZoomModeWidget />
-                  <RotateActivePagesWidget />
-                  <SaveWidget />
-                </div>
-                <DocumentTitlePager />
-                <div style={{ display: 'flex', flexShrink: 0 }}>
-                  <ToggleCommentsWidget />
-                  <SearchBar />
-                </div>
-              </LayoutAppBar>
-            </DocumentViewer>
+            <DocumentViewer
+              theme={defaultTheme}
+              documentIdOrPath={documentIdOrPath}
+              renderAppBar={() => (
+                <LayoutAppBar>
+                  <div style={{ flexShrink: 0 }}>
+                    <ToggleShapesWidget />
+                    <ToggleThumbnailsWidget />
+                    <Download
+                      download={(doc) => {
+                        console.log('Download triggered', doc)
+                      }}
+                    />
+                    <Print
+                      print={(doc) => {
+                        console.log('Print triggered', doc)
+                      }}
+                    />
+                    <Share
+                      share={(doc) => {
+                        console.log('Share triggered', doc)
+                      }}
+                    />
+                    <ZoomInOutWidget />
+                    <RotateActivePagesWidget />
+                    <SaveWidget />
+                  </div>
+                  <DocumentTitlePager />
+                  <div style={{ display: 'flex', flexShrink: 0 }}>
+                    <ToggleCommentsWidget />
+                  </div>
+                </LayoutAppBar>
+              )}
+            />
           </RepositoryContext.Provider>
         ) : (
           <div

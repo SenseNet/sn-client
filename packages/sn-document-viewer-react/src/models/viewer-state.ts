@@ -1,26 +1,28 @@
 import { ObservableValue } from '@sensenet/client-utils'
 
 /**
- * The zoom type definitions
+ * Rotation model
  */
-export type ZoomMode = 'originalSize' | 'fit' | 'fitHeight' | 'fitWidth' | 'custom'
+export interface RotationModel {
+  /**
+   * The index of the page
+   */
+  pageNum: number
+
+  /**
+   * Rotation in degrees
+   */
+  degree: number
+}
 
 /**
  * Type model for the Viewer state
  */
 export interface ViewerState {
   /**
-   * The active page(s)
+   * The active page
    */
-  activePages: number[]
-  /**
-   * The current zoom mode
-   */
-  zoomMode: ZoomMode
-  /**
-   * The current zoom level
-   */
-  customZoomLevel: number
+  activePage: number
   /**
    * Watermark is on / off
    */
@@ -42,7 +44,12 @@ export interface ViewerState {
   /**
    * Zoom level relative to the fitted image size
    */
-  fitRelativeZoomLevel: number
+  zoomLevel: number
+
+  /**
+   * Rotation
+   */
+  rotation?: RotationModel[]
 
   /**
    * Determines if comments are shown
@@ -67,10 +74,5 @@ export interface ViewerState {
   /**
    *
    */
-  onPageChange: ObservableValue<number>
-
-  /**
-   *
-   */
-  visiblePages: number[]
+  pageToGo: ObservableValue<{ page: number }>
 }
