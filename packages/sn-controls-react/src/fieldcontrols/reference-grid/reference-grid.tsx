@@ -1,15 +1,14 @@
 import { deepMerge, PathHelper } from '@sensenet/client-utils'
 import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
-import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
+import { DialogTitle } from '@material-ui/core'
+import Dialog, { DialogProps } from '@material-ui/core/Dialog'
 import FormControl from '@material-ui/core/FormControl'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import InputLabel from '@material-ui/core/InputLabel'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { ElementType, useCallback, useEffect, useMemo, useState } from 'react'
 import { ReactClientFieldSetting } from '../client-field-setting'
 import { defaultLocalization } from '../localization'
 import { DefaultItemTemplate } from './default-item-template'
@@ -20,17 +19,20 @@ const styles = {
     display: 'flex',
     flexWrap: 'wrap',
   },
-  dialog: {
-    padding: 20,
-  },
   listContainer: {
     display: 'block',
     marginTop: 10,
   },
 }
 
-export const ReferenceGrid: React.FC<ReactClientFieldSetting<ReferenceFieldSetting>> = (props) => {
+interface ReferenceGridProps extends ReactClientFieldSetting<ReferenceFieldSetting> {
+  dialogProps?: Partial<DialogProps>
+  dialogTitleComponent?: ElementType
+}
+
+export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
   const localization = deepMerge(defaultLocalization.referenceGrid, props.localization?.referenceGrid)
+  const DialogTitleComponent = props.dialogTitleComponent ?? DialogTitle
 
   const emptyContent = useMemo(
     () => ({
@@ -58,7 +60,6 @@ export const ReferenceGrid: React.FC<ReactClientFieldSetting<ReferenceFieldSetti
 
   const [isPickerOpen, setIsPickerOpen] = useState(false)
   const [fieldValue, setFieldValue] = useState<GenericContent[]>([])
-  const [selected, setSelected] = useState<GenericContent[]>([])
 
   const getSelected = useCallback(async () => {
     try {
@@ -80,7 +81,6 @@ export const ReferenceGrid: React.FC<ReactClientFieldSetting<ReferenceFieldSetti
       }
 
       setFieldValue(result)
-      setSelected(result)
     } catch (error) {
       console.error(error.message)
     }
@@ -97,7 +97,6 @@ export const ReferenceGrid: React.FC<ReactClientFieldSetting<ReferenceFieldSetti
     )
 
     setFieldValue(value)
-    setSelected(value)
   }
 
   /**
@@ -112,28 +111,17 @@ export const ReferenceGrid: React.FC<ReactClientFieldSetting<ReferenceFieldSetti
   }
 
   const handleCancelClick = () => {
-    setSelected(fieldValue)
     handleDialogClose()
   }
 
-  const handleOkClick = () => {
+  const handleOkClick = (newSelection: GenericContent[]) => {
     props.fieldOnChange?.(
       props.settings.Name,
-      selected.map((item: GenericContent) => item.Id),
+      newSelection.map((item) => item.Id),
     )
 
-    setFieldValue(selected)
+    setFieldValue(newSelection)
     handleDialogClose()
-  }
-
-  const selectItem = (content: GenericContent) => {
-    selected.length > 0 && !props.settings.AllowMultiple
-      ? setSelected((previous) => (previous.some((c) => content.Id === c.Id) ? previous : [content]))
-      : setSelected((previous) =>
-          previous.some((c) => content.Id === c.Id)
-            ? previous.filter((c) => content.Id !== c.Id)
-            : [...previous, content],
-        )
   }
 
   const getDefaultValue = useCallback(async () => {
@@ -163,7 +151,6 @@ export const ReferenceGrid: React.FC<ReactClientFieldSetting<ReferenceFieldSetti
       )
       const defaultContent = responses.map((response) => response.d)
 
-      setSelected(defaultContent)
       setFieldValue(defaultContent)
     } catch (error) {
       console.error('At least one request for default reference value has failed.')
@@ -219,32 +206,18 @@ export const ReferenceGrid: React.FC<ReactClientFieldSetting<ReferenceFieldSetti
           </List>
           {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
 
-          <Dialog onClose={handleDialogClose} open={isPickerOpen}>
-            <div style={styles.dialog}>
-              <Typography variant="h5" gutterBottom={true}>
-                {localization.referencePickerTitle}
-              </Typography>
-              <ReferencePicker
-                path={props.settings.SelectionRoots?.[0] || '/Root'}
-                allowedTypes={props.settings.AllowedTypes}
-                repository={props.repository!}
-                select={(content) => selectItem(content)}
-                selected={selected}
-                renderIcon={props.renderIcon}
-              />
-              <DialogActions>
-                <Button aria-label={localization.okButton} variant="contained" onClick={handleOkClick} color="primary">
-                  {localization.okButton}
-                </Button>
-                <Button
-                  aria-label={localization.cancelButton}
-                  variant="contained"
-                  onClick={handleCancelClick}
-                  color="default">
-                  {localization.cancelButton}
-                </Button>
-              </DialogActions>
-            </div>
+          <Dialog fullWidth maxWidth="md" onClose={handleDialogClose} open={isPickerOpen} {...props.dialogProps}>
+            <DialogTitleComponent>{localization.referencePickerTitle}</DialogTitleComponent>
+            <ReferencePicker
+              defaultValue={fieldValue}
+              path={props.settings.SelectionRoots?.[0] || '/Root'}
+              repository={props.repository!}
+              renderIcon={props.renderIcon}
+              handleSubmit={handleOkClick}
+              handleCancel={handleCancelClick}
+              fieldSettings={props.settings}
+              localization={{ cancelButton: localization.cancelButton, submitButton: localization.okButton }}
+            />
           </Dialog>
         </FormControl>
       )

@@ -1,6 +1,7 @@
 import { Repository } from '@sensenet/client-core'
 import React from 'react'
-import { GenericContentWithIsParent, useListPicker } from '../../src/ListPicker'
+import { useListPicker } from '../../src/hooks'
+import { GenericContentWithIsParent } from '../../src/types'
 
 export const PickerWithoutOptions = (props: { repository: Repository }) => {
   const { items } = useListPicker<GenericContentWithIsParent>({ repository: props.repository })

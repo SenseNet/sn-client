@@ -1,12 +1,21 @@
 import { ODataParams, Repository } from '@sensenet/client-core'
+import { GenericContent } from '@sensenet/default-content-types'
 import { ReactElement } from 'react'
 
+export interface PickerLocalization {
+  searchPlaceholder?: string
+  showSelected?: string
+  treeViewButton?: string
+  submitButton?: string
+  cancelButton?: string
+}
+
 /**
- * Properties for list picker component.
- * @interface ListPickerProps
+ * Properties for picker component.
+ * @interface PickerProps
  * @template T
  */
-export interface ListPickerProps<T> {
+export interface PickerProps<T> {
   /**
    * Repositry to load contents from.
    * To use the default load options you need to provide a repository.
@@ -41,15 +50,33 @@ export interface ListPickerProps<T> {
   currentPath?: string
 
   /**
+   * Roots of subtrees where selection is enabled
+   * @type {string}
+   */
+  selectionRoots?: string[]
+
+  /**
+   * List of items which selection are disabled
+   * @type {string[]}
+   */
+  selectionBlacklist?: string[]
+
+  /**
+   * Is selection of multiple items enabled?
+   * @type {boolean}
+   */
+  allowMultiple?: boolean
+
+  /**
    * Called on navigation. Can be used to clear the selected state and to know the path
    * of the navigation.
    */
-  onNavigation?: (path: string) => void
+  onTreeNavigation?: (path: string) => void
 
   /**
    * Called on click with the current item.
    */
-  onSelectionChanged?: (node: T) => void
+  onSelectionChanged?: (nodes: T[]) => void
 
   /**
    * Render a loading component when loadItems called.
@@ -78,4 +105,54 @@ export interface ListPickerProps<T> {
    * ```
    */
   renderItem?: (props: T) => ReactElement<T>
+
+  /**
+   * Function to render the icon of items.
+   */
+  renderIcon?: (props: T) => ReactElement<T>
+
+  /**
+   * Function to render the action buttons.
+   */
+  renderActions?: (currentSelection: T[]) => ReactElement<T>
+
+  /**
+   * Function which called is on the Cancel button click.
+   */
+  handleCancel?: () => void
+
+  /**
+   * Function which is called on the Submit button click.
+   */
+  handleSubmit?: (selection: T[]) => void
+
+  /**
+   * Is submit execution in progress?
+   * @type {boolean}
+   */
+  isExecInProgress?: boolean
+
+  /**
+   * Container element of the picker
+   * @default div
+   */
+  pickerContainer?: React.ElementType
+
+  /**
+   * Container element of the action buttons
+   * @default div
+   */
+  actionsContainer?: React.ElementType
+
+  /**
+   * Localization object for UI labels and texts
+   * @type {PickerLocalization}
+   */
+  localization?: PickerLocalization
+
+  /**
+   * Default selection
+   * @type {GenericContent[]}
+   */
+  defaultValue?: GenericContent[]
 }

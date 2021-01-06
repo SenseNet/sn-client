@@ -93,7 +93,7 @@ export function Restore(props: RestoreProps) {
                 props: {
                   content: props.content,
                   currentPath: props.content.OriginalPath || '/Root',
-                  rootPath,
+                  selectionRoot: rootPath,
                   handleSubmit: (path: string) => setDestination(path),
                 },
                 dialogProps: { disableBackdropClick: true, open: true },

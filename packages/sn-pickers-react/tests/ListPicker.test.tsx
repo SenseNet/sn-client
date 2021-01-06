@@ -2,7 +2,7 @@ import ListItem from '@material-ui/core/ListItem'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { ListPickerComponent } from '../src/ListPicker'
+import { ListPicker } from '../src/ListPicker'
 import { genericContentItems } from './mocks/items'
 import { PickerWithoutOptions } from './mocks/Pickers'
 
@@ -27,7 +27,7 @@ describe('List picker component', () => {
   it('should render list items', async () => {
     let wrapper: any
     await act(async () => {
-      wrapper = mount(<ListPickerComponent repository={repository(genericContentItems) as any} />)
+      wrapper = mount(<ListPicker repository={repository(genericContentItems) as any} />)
     })
 
     expect(wrapper.update().find(ListItem).exists()).toBeTruthy()
@@ -38,7 +38,7 @@ describe('List picker component', () => {
     const loadingRenderer = jest.fn(() => null)
     let wrapper: any
     await act(async () => {
-      wrapper = mount(<ListPickerComponent renderLoading={loadingRenderer as any} repository={repository() as any} />)
+      wrapper = mount(<ListPicker renderLoading={loadingRenderer as any} repository={repository() as any} />)
     })
     expect(wrapper.find(ListItem).exists()).toBeFalsy()
     expect(loadingRenderer).toBeCalled()
@@ -47,7 +47,7 @@ describe('List picker component', () => {
   it('should render nothing when no renderLoading and loading is true', async () => {
     let wrapper: any
     await act(async () => {
-      wrapper = mount(<ListPickerComponent repository={repository() as any} />)
+      wrapper = mount(<ListPicker repository={repository() as any} />)
     })
     expect(wrapper.find(ListItem).exists()).toBeFalsy()
   })
@@ -57,7 +57,7 @@ describe('List picker component', () => {
     let wrapper: any
     await act(async () => {
       wrapper = mount(
-        <ListPickerComponent
+        <ListPicker
           renderError={errorRenderer as any}
           repository={
             {
@@ -77,7 +77,7 @@ describe('List picker component', () => {
     let wrapper: any
     await act(async () => {
       wrapper = mount(
-        <ListPickerComponent
+        <ListPicker
           repository={
             {
               loadCollection: () => {
@@ -96,9 +96,7 @@ describe('List picker component', () => {
     const onNavigation = jest.fn()
     let wrapper: any
     await act(async () => {
-      wrapper = mount(
-        <ListPickerComponent onNavigation={onNavigation} repository={repository(genericContentItems) as any} />,
-      )
+      wrapper = mount(<ListPicker onNavigation={onNavigation} repository={repository(genericContentItems) as any} />)
     })
 
     await act(async () => {
@@ -116,10 +114,7 @@ describe('List picker component', () => {
     let wrapper: any
     await act(async () => {
       wrapper = mount(
-        <ListPickerComponent
-          onSelectionChanged={onSelectionChanged}
-          repository={repository(genericContentItems) as any}
-        />,
+        <ListPicker onSelectionChanged={onSelectionChanged} repository={repository(genericContentItems) as any} />,
       )
     })
     wrapper.update().find(ListItem).first().simulate('click')

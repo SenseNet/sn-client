@@ -1,14 +1,9 @@
 import { Repository } from '@sensenet/client-core'
 import { SchemaStore } from '@sensenet/default-content-types'
-import {
-  GenericContentWithIsParent,
-  ListPickerComponent,
-  SET_SELECTED_ITEM,
-  useListPicker,
-} from '@sensenet/pickers-react'
+import { GenericContentWithIsParent, ListPicker, useListPicker } from '@sensenet/pickers-react'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Fade from '@material-ui/core/Fade'
-import React from 'react'
+import React, { useState } from 'react'
 
 const contentPath = '/Root/Content'
 const testRepository = new Repository({
@@ -38,7 +33,7 @@ export const ExampleApp = () => {
     </Fade>
   )
   return (
-    <ListPickerComponent
+    <ListPicker
       renderError={renderError}
       renderLoading={renderLoading}
       repository={testRepository}
@@ -48,16 +43,10 @@ export const ExampleApp = () => {
 }
 
 export const ExampleAppWithHook = () => {
-  const { items, selectedItem, setSelectedItem, path, navigateTo, reload } = useListPicker<GenericContentWithIsParent>({
+  const [selectedItem, setSelectedItem] = useState<GenericContentWithIsParent>()
+  const { items, path, navigateTo, reload } = useListPicker<GenericContentWithIsParent>({
     currentPath: contentPath,
     repository: testRepository,
-    stateReducer: (_state, action) => {
-      if (action.type === SET_SELECTED_ITEM && action.payload && action.payload.isParent) {
-        return { ...action.changes, selectedItem: undefined }
-      } else {
-        return action.changes
-      }
-    },
   })
   console.log({ selectedItem, path })
 
@@ -69,7 +58,7 @@ export const ExampleAppWithHook = () => {
           items.map((node) => (
             <li
               style={{ color: selectedItem && node.Id === selectedItem.Id ? 'red' : 'inherit', cursor: 'pointer' }}
-              onClick={() => setSelectedItem(node)}
+              onClick={() => setSelectedItem(node.isParent ? undefined : node)}
               onDoubleClick={() => navigateTo(node)}
               key={node.Id}>
               {node.isParent ? '..' : node.DisplayName}
