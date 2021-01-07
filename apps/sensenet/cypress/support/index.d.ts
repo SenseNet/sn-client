@@ -9,5 +9,6 @@ declare namespace Cypress {
      * Custom command to log in programmatically.
      */
     login(userType?: UserTypes): void
+    checkReadPermissionGroup(enabled?: boolean): void
   }
 }
