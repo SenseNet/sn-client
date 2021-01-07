@@ -10,7 +10,7 @@ interface State {
   parentId: number | undefined
 }
 
-const virtualRootPath = '/VirtualRoot'
+const virtualRootPath = '!VirtualRoot!'
 
 const setParentIdAndPath = <T extends GenericContent>(node: T, parent?: T) => {
   return parent && parent.Id === node.Id

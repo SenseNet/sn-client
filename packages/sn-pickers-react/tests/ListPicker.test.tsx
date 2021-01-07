@@ -106,30 +106,12 @@ describe('List picker component', () => {
       wrapper.update().find(ListItem).first().simulate('dblclick')
     })
     expect(onNavigation).toBeCalledWith(genericContentItems[0].Path)
+
     await act(async () => {
-      wrapper.find(ListItem).first().simulate('dblclick')
+      wrapper.update().find(ListItem).at(2).simulate('dblclick')
     })
-    expect(onNavigation).toBeCalledWith(genericContentItems[3].Path)
+    expect(onNavigation).toBeCalledWith(genericContentItems[2].Path)
   })
-
-  // it('should handle selection', async () => {
-  //   const onSelectionChanged = jest.fn()
-  //   let wrapper: any
-  //   await act(async () => {
-  //     wrapper = mount(
-  //       <ListPicker onSelectionChanged={onSelectionChanged} repository={repository(genericContentItems) as any} />,
-  //     )
-  //   })
-
-  //   const onChange = wrapper.update().find(ListItem).first().find(Checkbox).prop('onChange')
-  //   act(() => {
-  //     onChange?.({ target: { checked: true } } as any, true)
-  //   })
-  //   wrapper.update()
-
-  //   // console.log(wrapper.debug())
-  //   expect(onSelectionChanged).toBeCalled()
-  // })
 
   it('render list items when no options passed to useListPicker', async () => {
     let wrapper: any
