@@ -115,14 +115,15 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
 
   const changePw = async () => {
     try {
-      await repo.executeAction({
+      const result = await repo.executeAction({
         idOrPath: currentUser.Path,
         name: 'SendChangePasswordMail',
         method: 'POST',
         body: {
-          returnUrl: 'https://admin.sensenet.com',
+          returnUrl: window.location.origin,
         },
       })
+      result && logger.information({ message: localization.topMenu.changePwMessage })
     } catch (error) {
       logger.warning({ message: error.message })
     } finally {

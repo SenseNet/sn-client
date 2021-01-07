@@ -142,6 +142,7 @@ const values: DeepPartial<typeof import('./default').default> = {
     documentation: 'Dokumentáció',
     reportBug: 'Hibabejelentés',
     feedback: 'Visszajelzés',
+    changePwMessage: 'Email küldése sikeresen megtörtént',
   },
   forms: {
     referencePicker: 'Referencia választó',

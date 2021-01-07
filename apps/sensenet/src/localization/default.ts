@@ -285,6 +285,7 @@ const values = {
     documentation: 'Documentation',
     reportBug: 'Report bug',
     feedback: 'Feedback',
+    changePwMessage: 'Email has sent to your address!',
   },
   navigationCommandProvider: {
     personalSettingsPrimary: 'Personal Settings',
