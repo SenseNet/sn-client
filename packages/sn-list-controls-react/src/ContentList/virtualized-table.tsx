@@ -230,6 +230,7 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = (props) => {
 
     return (
       <TableCell
+        data-test={`table-header-${displayName?.replace(/\s+/g, '-').toLowerCase()}`}
         component="div"
         variant="head"
         style={{
