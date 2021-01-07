@@ -5,6 +5,7 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
+import Typography from '@material-ui/core/Typography'
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import React, { useCallback } from 'react'
 import { useListPicker, useSelection } from '../../hooks'
@@ -103,7 +104,13 @@ export function ListPicker<T extends GenericContentWithIsParent = GenericContent
   }
 
   if (error) {
-    return props.renderError?.(error.message) || null
+    return (
+      props.renderError?.(error.message) || (
+        <Typography color="error" variant="caption">
+          {error.message}
+        </Typography>
+      )
+    )
   }
 
   return (

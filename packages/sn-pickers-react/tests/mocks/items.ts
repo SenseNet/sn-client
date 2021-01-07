@@ -9,6 +9,7 @@ export const genericContentItems: Array<GenericContent & { isParent?: boolean }>
     Path: 'path',
     Name: 'Content1',
     DisplayName: 'Content 1',
+    IsFolder: true,
     isParent: true,
   },
   {

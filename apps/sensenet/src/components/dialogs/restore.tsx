@@ -96,7 +96,7 @@ export function Restore(props: RestoreProps) {
                   selectionRoot: rootPath,
                   handleSubmit: (path: string) => setDestination(path),
                 },
-                dialogProps: { disableBackdropClick: true, open: true },
+                dialogProps: { disableBackdropClick: true, open: true, classes: { paper: globalClasses.pickerDialog } },
               })
             }
             style={{ marginLeft: '8px', padding: '6px 0' }}>

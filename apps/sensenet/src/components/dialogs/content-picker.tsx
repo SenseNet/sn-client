@@ -41,7 +41,7 @@ export const ContentPickerDialog: React.FunctionComponent<ContentPickerDialogPro
       <DialogTitle>
         <div className={globalClasses.centeredVertical}>
           <Icon item={props.content} style={{ marginRight: '1em' }} />
-          {localization.title.replace('{0}', props.content.DisplayName || props.content.Name).replace('{1}', '')}
+          {localization.title}
         </div>
       </DialogTitle>
 
@@ -57,6 +57,7 @@ export const ContentPickerDialog: React.FunctionComponent<ContentPickerDialogPro
         handleCancel={closeLastDialog}
         handleSubmit={handleSubmit}
         localization={{ cancelButton: localization.cancelButton, submitButton: localization.selectButton }}
+        required={1}
       />
     </>
   )

@@ -1,14 +1,13 @@
 import { Repository } from '@sensenet/client-core'
 import { SchemaStore } from '@sensenet/default-content-types'
-import { GenericContentWithIsParent, ListPicker, useListPicker } from '@sensenet/pickers-react'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import Fade from '@material-ui/core/Fade'
+import { GenericContentWithIsParent, Picker, useListPicker } from '@sensenet/pickers-react'
+import LinearProgress from '@material-ui/core/LinearProgress'
 import React, { useState } from 'react'
 
 const contentPath = '/Root/Content'
 const testRepository = new Repository({
   repositoryUrl: 'https://dev.demo.sensenet.com',
-  requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'DisplayName'],
+  requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'DisplayName', 'IsFolder'],
   schemas: SchemaStore,
 })
 
@@ -27,17 +26,14 @@ export const ExampleApp = () => {
     }
     return <p>{message}</p>
   }
-  const renderLoading = () => (
-    <Fade in={true} unmountOnExit={true}>
-      <CircularProgress />
-    </Fade>
-  )
+
   return (
-    <ListPicker
+    <Picker
       renderError={renderError}
-      renderLoading={renderLoading}
+      renderLoading={() => <LinearProgress style={{ marginBottom: '2rem' }} />}
       repository={testRepository}
       currentPath={contentPath}
+      required={1}
     />
   )
 }

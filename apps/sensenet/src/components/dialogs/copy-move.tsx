@@ -133,10 +133,8 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
           {isExecInProgress
             ? localization.inProgress
             : props.content.length === 1
-            ? localization.title
-                .replace('{0}', props.content[0].DisplayName || props.content[0].Name)
-                .replace('{1}', '')
-            : localization.titleMultiple.replace('{0}', props.content.length.toString()).replace('{1}', '')}
+            ? localization.title.replace('{0}', props.content[0].DisplayName || props.content[0].Name)
+            : localization.titleMultiple.replace('{0}', props.content.length.toString())}
         </div>
       </DialogTitle>
       <Picker
@@ -152,6 +150,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
         handleSubmit={handleSubmit}
         selectionBlacklist={[props.content[0].Path, `/${PathHelper.getParentPath(props.content[0].Path)}`]}
         isExecInProgress={isExecInProgress}
+        required={1}
       />
     </>
   )

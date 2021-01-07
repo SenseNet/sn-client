@@ -155,4 +155,9 @@ export interface PickerProps<T> {
    * @type {GenericContent[]}
    */
   defaultValue?: GenericContent[]
+
+  /**
+   * Minimum number of items for a valid selection
+   */
+  required?: number
 }

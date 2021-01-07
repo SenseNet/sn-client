@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) => {
 export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (props) => {
   const [term, setTerm] = useState<string>()
   const [result, setResult] = useState<GenericContent[]>([])
-  const [, setError] = useState<string>()
+  const [searchError, setSearchError] = useState<string>()
   const [mode, setMode] = useState(PickerModes.TREE)
   const classes = useStyles()
 
@@ -82,6 +82,8 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
           return query
         }
 
+        setSearchError('')
+
         const response = await props.repository.loadCollection({
           path: ConstantContent.PORTAL_ROOT.Path,
           oDataOptions: {
@@ -89,11 +91,10 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
           },
           requestInit: { signal: ac.signal },
         })
-        setError('')
         setResult(response.d.results)
       } catch (e) {
         if (!ac.signal.aborted) {
-          setError(e.message)
+          setSearchError(e.message)
           setResult([])
         }
       }
@@ -131,7 +132,7 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
           localization={{ label: props.localization?.showSelected ?? 'Show selected' }}
         />
         {mode === PickerModes.SELECTION && <SelectionList {...props} />}
-        {mode === PickerModes.SEARCH && <SearchPicker {...props} items={result} />}
+        {mode === PickerModes.SEARCH && <SearchPicker {...props} items={result} error={searchError} />}
         {mode === PickerModes.TREE && <ListPicker {...props} />}
       </PickerContainer>
       <SelectionContext.Consumer>
@@ -148,7 +149,7 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
                 {props.localization?.cancelButton ?? 'Cancel'}
               </Button>
               <SaveButton
-                disabled={!!props.isExecInProgress}
+                disabled={(props.required && selection.length < props.required) || !!props.isExecInProgress}
                 localization={{ label: props.localization?.submitButton ?? 'Submit' }}
                 onClick={() => props.handleSubmit?.(selection)}
               />

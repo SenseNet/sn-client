@@ -4,6 +4,7 @@ import { useDownload, useLogger, useRepository } from '@sensenet/hooks-react'
 import { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'
+import { useGlobalStyles } from '../../globalStyles'
 import { useLoadContent, useSnRoute } from '../../hooks'
 import { getUrlForContent, navigateToAction } from '../../services'
 import { useDialog } from '../dialogs'
@@ -18,6 +19,7 @@ export function useContextMenuActions(
   const history = useHistory()
   const repository = useRepository()
   const download = useDownload(content)
+  const globalClasses = useGlobalStyles()
   const currentParent = useLoadContent({ idOrPath: content.ParentId!, isOpened }).content
   const { openDialog } = useDialog()
   const uiSettings = useContext(ResponsivePersonalSettings)
@@ -59,7 +61,12 @@ export function useContextMenuActions(
         const operation = actionName === 'CopyTo' ? 'copy' : 'move'
         openDialog({
           name: 'copy-move',
-          props: { content: [content], currentParent: currentParent!, operation },
+          props: {
+            content: [content],
+            currentParent: currentParent!,
+            operation,
+          },
+          dialogProps: { classes: { paper: globalClasses.pickerDialog } },
         })
         break
       }

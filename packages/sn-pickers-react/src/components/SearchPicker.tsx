@@ -5,6 +5,7 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
+import Typography from '@material-ui/core/Typography'
 import React, { useCallback } from 'react'
 import { GenericContentWithIsParent } from '..'
 import { useSelection } from '../hooks/useSelection'
@@ -14,7 +15,7 @@ import { PickerProps } from './Picker'
  * Represents a list picker component.
  */
 export function SearchPicker<T extends GenericContentWithIsParent = GenericContent>(
-  props: PickerProps<T> & { items: T[] },
+  props: PickerProps<T> & { items: T[]; error?: string },
 ) {
   const { selection, setSelection, allowMultiple } = useSelection()
 
@@ -68,9 +69,15 @@ export function SearchPicker<T extends GenericContentWithIsParent = GenericConte
 
   const renderItem = props.renderItem || defaultRenderer
 
-  // if (error) {
-  //   return props.renderError ? props.renderError(error.message) : null
-  // }
+  if (props.error) {
+    return (
+      props.renderError?.(props.error) || (
+        <Typography color="error" variant="caption">
+          {props.error}
+        </Typography>
+      )
+    )
+  }
 
   return <List>{props.items.map((item) => renderItem(item as any))}</List>
 }
