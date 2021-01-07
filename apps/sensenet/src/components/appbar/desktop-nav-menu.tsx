@@ -116,7 +116,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   const changePw = async () => {
     try {
       await repo.executeAction({
-        idOrPath: '/Root',
+        idOrPath: currentUser.Path,
         name: 'SendChangePasswordMail',
         method: 'POST',
         body: {
