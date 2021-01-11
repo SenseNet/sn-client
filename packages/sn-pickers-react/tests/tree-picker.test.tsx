@@ -1,13 +1,12 @@
-import Checkbox from '@material-ui/core/Checkbox'
 import ListItem from '@material-ui/core/ListItem'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { ListPicker } from '../src/components/ListPicker'
+import { TreePicker } from '../src/components/tree-picker'
 import { genericContentItems } from './mocks/items'
-import { PickerWithoutOptions } from './mocks/Pickers'
+import { PickerWithoutOptions } from './mocks/pickers'
 
-describe('List picker component', () => {
+describe('Tree picker component', () => {
   const repository = (loadCollectionValue?: unknown, loadValue?: unknown) => {
     return {
       loadCollection: () => {
@@ -28,7 +27,7 @@ describe('List picker component', () => {
   it('should render list items', async () => {
     let wrapper: any
     await act(async () => {
-      wrapper = mount(<ListPicker repository={repository(genericContentItems) as any} />)
+      wrapper = mount(<TreePicker repository={repository(genericContentItems) as any} />)
     })
 
     expect(wrapper.update().find(ListItem).exists()).toBeTruthy()
@@ -39,7 +38,7 @@ describe('List picker component', () => {
     const loadingRenderer = jest.fn(() => null)
     let wrapper: any
     await act(async () => {
-      wrapper = mount(<ListPicker renderLoading={loadingRenderer as any} repository={repository() as any} />)
+      wrapper = mount(<TreePicker renderLoading={loadingRenderer as any} repository={repository() as any} />)
     })
     expect(wrapper.find(ListItem).exists()).toBeFalsy()
     expect(loadingRenderer).toBeCalled()
@@ -48,7 +47,7 @@ describe('List picker component', () => {
   it('should render nothing when no renderLoading and loading is true', async () => {
     let wrapper: any
     await act(async () => {
-      wrapper = mount(<ListPicker repository={repository() as any} />)
+      wrapper = mount(<TreePicker repository={repository() as any} />)
     })
     expect(wrapper.find(ListItem).exists()).toBeFalsy()
   })
@@ -58,7 +57,7 @@ describe('List picker component', () => {
     let wrapper: any
     await act(async () => {
       wrapper = mount(
-        <ListPicker
+        <TreePicker
           renderError={errorRenderer as any}
           repository={
             {
@@ -78,7 +77,7 @@ describe('List picker component', () => {
     let wrapper: any
     await act(async () => {
       wrapper = mount(
-        <ListPicker
+        <TreePicker
           repository={
             {
               loadCollection: () => {
@@ -98,7 +97,7 @@ describe('List picker component', () => {
     let wrapper: any
     await act(async () => {
       wrapper = mount(
-        <ListPicker onTreeNavigation={onNavigation} repository={repository(genericContentItems) as any} />,
+        <TreePicker onTreeNavigation={onNavigation} repository={repository(genericContentItems) as any} />,
       )
     })
 
@@ -113,7 +112,7 @@ describe('List picker component', () => {
     expect(onNavigation).toBeCalledWith(genericContentItems[2].Path)
   })
 
-  it('render list items when no options passed to useListPicker', async () => {
+  it('render list items when no options passed to useTreePicker', async () => {
     let wrapper: any
     await act(async () => {
       wrapper = mount(<PickerWithoutOptions repository={repository(genericContentItems) as any} />)

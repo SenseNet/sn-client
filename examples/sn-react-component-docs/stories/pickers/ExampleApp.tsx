@@ -1,6 +1,6 @@
 import { Repository } from '@sensenet/client-core'
 import { SchemaStore } from '@sensenet/default-content-types'
-import { GenericContentWithIsParent, Picker, useListPicker } from '@sensenet/pickers-react'
+import { GenericContentWithIsParent, Picker, useTreePicker } from '@sensenet/pickers-react'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import React, { useState } from 'react'
 
@@ -40,7 +40,7 @@ export const ExampleApp = () => {
 
 export const ExampleAppWithHook = () => {
   const [selectedItem, setSelectedItem] = useState<GenericContentWithIsParent>()
-  const { items, path, navigateTo, reload } = useListPicker<GenericContentWithIsParent>({
+  const { items, path, navigateTo, reload } = useTreePicker<GenericContentWithIsParent>({
     currentPath: contentPath,
     repository: testRepository,
   })

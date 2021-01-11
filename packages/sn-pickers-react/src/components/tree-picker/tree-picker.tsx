@@ -8,16 +8,16 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import React, { useCallback } from 'react'
-import { useListPicker, useSelection } from '../../hooks'
+import { useSelection, useTreePicker } from '../../hooks'
 import { GenericContentWithIsParent } from '../../types'
-import { PickerProps } from '../Picker'
+import { PickerProps } from '../picker'
 
 /**
  * Represents a list picker component.
  */
-export function ListPicker<T extends GenericContentWithIsParent = GenericContent>(props: PickerProps<T>) {
+export function TreePicker<T extends GenericContentWithIsParent = GenericContent>(props: PickerProps<T>) {
   const { selection, setSelection } = useSelection()
-  const { items, navigateTo, isLoading, error } = useListPicker<T>({
+  const { items, navigateTo, isLoading, error } = useTreePicker<T>({
     repository: props.repository,
     currentPath: props.currentPath,
     selectionRoots: props.selectionRoots,
@@ -69,6 +69,7 @@ export function ListPicker<T extends GenericContentWithIsParent = GenericContent
           <ListItemIcon>
             {!props.selectionBlacklist?.includes(item.Path) && (
               <Checkbox
+                color="primary"
                 edge="start"
                 checked={selection.some((selected) => selected.Id === item.Id)}
                 onChange={(e) => onCheckedChangeHandler(e, item as any)}
@@ -87,9 +88,7 @@ export function ListPicker<T extends GenericContentWithIsParent = GenericContent
           <ListItemText
             id={labelId}
             primary={item.DisplayName}
-            secondary={
-              props.selectionRoots ? item.Path.replace(new RegExp(`^${props.selectionRoots}`, 'g'), '') : item.Path
-            }
+            secondary={item.Path.replace(new RegExp('^/Root', 'g'), '')}
           />
         </ListItem>
       )

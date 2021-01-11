@@ -1,5 +1,6 @@
 import { deepMerge, PathHelper } from '@sensenet/client-utils'
 import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
+import { PickerClassKey } from '@sensenet/pickers-react'
 import { DialogTitle } from '@material-ui/core'
 import Dialog, { DialogProps } from '@material-ui/core/Dialog'
 import FormControl from '@material-ui/core/FormControl'
@@ -28,6 +29,8 @@ const styles = {
 interface ReferenceGridProps extends ReactClientFieldSetting<ReferenceFieldSetting> {
   dialogProps?: Partial<DialogProps>
   dialogTitleComponent?: ElementType
+  renderPickerIcon?: (item: any) => JSX.Element
+  pickerClasses?: PickerClassKey
 }
 
 export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
@@ -212,11 +215,12 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
               defaultValue={fieldValue}
               path={props.settings.SelectionRoots?.[0] || '/Root'}
               repository={props.repository!}
-              renderIcon={props.renderIcon}
+              renderIcon={props.renderPickerIcon}
               handleSubmit={handleOkClick}
               handleCancel={handleCancelClick}
               fieldSettings={props.settings}
               localization={{ cancelButton: localization.cancelButton, submitButton: localization.okButton }}
+              classes={props.pickerClasses}
             />
           </Dialog>
         </FormControl>

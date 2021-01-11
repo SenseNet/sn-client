@@ -8,8 +8,8 @@ import TextField from '@material-ui/core/TextField'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { ListPicker, SearchPicker, SelectionList } from '../src'
-import { Picker } from '../src/components/Picker'
+import { SearchPicker, SelectionList, TreePicker } from '../src'
+import { Picker } from '../src/components/picker'
 import { genericContentItems } from './mocks/items'
 
 describe('Picker component', () => {
@@ -139,7 +139,7 @@ describe('Picker component', () => {
 
     wrapper.update()
 
-    expect(wrapper.update().find(ListPicker).exists()).toBeFalsy()
+    expect(wrapper.update().find(TreePicker).exists()).toBeFalsy()
 
     // navigate back to tree view
     await act(async () => {
@@ -147,7 +147,7 @@ describe('Picker component', () => {
       wrapper.update()
     })
 
-    expect(wrapper.update().find(ListPicker).exists()).toBeTruthy()
+    expect(wrapper.update().find(TreePicker).exists()).toBeTruthy()
   })
 
   it('should enter search mode after input getting focus', async () => {

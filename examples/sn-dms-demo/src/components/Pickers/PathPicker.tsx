@@ -2,7 +2,7 @@ import { ODataParams } from '@sensenet/client-core'
 import { Folder, GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import { Icon, iconType } from '@sensenet/icons-react'
-import { GenericContentWithIsParent, useListPicker } from '@sensenet/pickers-react'
+import { GenericContentWithIsParent, useTreePicker } from '@sensenet/pickers-react'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
@@ -40,7 +40,7 @@ const pickerItemOptions: ODataParams<Folder> = {
 function PathPicker(props: PathPickerProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps) {
   const repository = useRepository()
   const [selectedItem, setSelectedItem] = useState<GenericContentWithIsParent>()
-  const { items, navigateTo, reload } = useListPicker<GenericContentWithIsParent>({
+  const { items, navigateTo, reload } = useTreePicker<GenericContentWithIsParent>({
     repository,
     currentPath: props.currentPath,
     itemsODataOptions: pickerItemOptions,

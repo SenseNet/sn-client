@@ -1,7 +1,7 @@
 import Box from '@material-ui/core/Box'
 import Link from '@material-ui/core/Link'
 import React from 'react'
-import { useSelection } from '../hooks/useSelection'
+import { useSelection } from '../hooks/use-selection'
 
 interface ShowSelectedButtonProps {
   localization: {

@@ -1,4 +1,4 @@
-import { defaultLoadItemsODataOptions, loadItems } from '../src/components/ListPicker/loaders'
+import { defaultLoadItemsODataOptions, loadItems } from '../src/components/tree-picker/loaders'
 import { mockContent } from './mocks/items'
 
 const repository = {

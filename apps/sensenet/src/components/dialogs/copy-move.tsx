@@ -151,6 +151,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
         selectionBlacklist={[props.content[0].Path, `/${PathHelper.getParentPath(props.content[0].Path)}`]}
         isExecInProgress={isExecInProgress}
         required={1}
+        classes={{ cancelButton: globalClasses.cancelButton }}
       />
     </>
   )

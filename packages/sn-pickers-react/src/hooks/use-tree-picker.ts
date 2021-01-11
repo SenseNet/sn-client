@@ -2,7 +2,7 @@ import { ConstantContent, ODataParams, Repository } from '@sensenet/client-core'
 import { AsyncReturnValue, PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { loadItems } from '../components/ListPicker/loaders'
+import { loadItems } from '../components/tree-picker/loaders'
 import { GenericContentWithIsParent } from '../types'
 
 interface State {
@@ -19,9 +19,9 @@ const setParentIdAndPath = <T extends GenericContent>(node: T, parent?: T) => {
 }
 
 /**
- * useListPicker let you select and navigate in the repository with built in defaults
+ * useTreePicker let you select and navigate in the repository with built in defaults
  */
-export const useListPicker = <T extends GenericContentWithIsParent = GenericContent>(options: {
+export const useTreePicker = <T extends GenericContentWithIsParent = GenericContent>(options: {
   repository: Repository
   currentPath?: string
   selectionRoots?: string[]

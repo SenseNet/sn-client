@@ -9,10 +9,10 @@ import React, { useMemo } from 'react'
 import { renderIconDefault } from '../icon'
 
 interface ReferencePickerProps<T>
-  extends Pick<PickerProps<T>, 'handleSubmit' | 'handleCancel' | 'localization' | 'defaultValue'> {
+  extends Pick<PickerProps<T>, 'handleSubmit' | 'handleCancel' | 'localization' | 'defaultValue' | 'classes'> {
   repository: Repository
   path: string
-  renderIcon?: (name: string) => JSX.Element
+  renderIcon?: (name: T) => JSX.Element
   fieldSettings: ReferenceFieldSetting
 }
 
@@ -65,7 +65,7 @@ export const ReferencePicker: React.FC<ReferencePickerProps<GenericContentWithIs
         </Avatar>
       )
     ) : props.renderIcon ? (
-      props.renderIcon(iconName(item.IsFolder))
+      props.renderIcon(item)
     ) : (
       renderIconDefault(iconName(item.IsFolder))
     )
@@ -84,6 +84,7 @@ export const ReferencePicker: React.FC<ReferencePickerProps<GenericContentWithIs
       actionsContainer={DialogActions}
       handleCancel={props.handleCancel}
       handleSubmit={props.handleSubmit}
+      classes={props.classes}
     />
   )
 }

@@ -8,8 +8,8 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import React, { useCallback } from 'react'
 import { GenericContentWithIsParent } from '..'
-import { useSelection } from '../hooks/useSelection'
-import { PickerProps } from './Picker'
+import { useSelection } from '../hooks'
+import { PickerProps } from './picker'
 
 /**
  * Represents a list picker component.
@@ -39,6 +39,7 @@ export function SearchPicker<T extends GenericContentWithIsParent = GenericConte
           <ListItemIcon>
             {!props.selectionBlacklist?.includes(item.Path) && (
               <Checkbox
+                color="primary"
                 edge="start"
                 checked={selection.some((selected) => selected.Id === item.Id)}
                 onChange={(e) => onCheckedChangeHandler(e, item as any)}
@@ -57,9 +58,7 @@ export function SearchPicker<T extends GenericContentWithIsParent = GenericConte
           <ListItemText
             id={labelId}
             primary={item.DisplayName}
-            secondary={
-              props.selectionRoots ? item.Path.replace(new RegExp(`^${props.selectionRoots}`, 'g'), '') : item.Path
-            }
+            secondary={item.Path.replace(new RegExp('^/Root', 'g'), '')}
           />
         </ListItem>
       )

@@ -10,12 +10,12 @@ import TextField from '@material-ui/core/TextField'
 import AccountTree from '@material-ui/icons/AccountTree'
 import React, { useCallback, useEffect, useState } from 'react'
 import { SelectionContext, SelectionProvider } from '../../context/selection'
-import { ListPicker } from '../ListPicker'
-import { SaveButton } from '../SaveButton'
-import { SearchPicker } from '../SearchPicker'
-import { SelectionList } from '../SelectionList'
-import { ShowSelectedButton } from '../ShowSelectedButton'
-import { PickerProps } from './PickerProps'
+import { SaveButton } from '../save-button'
+import { SearchPicker } from '../search-picker'
+import { SelectionList } from '../selection-list'
+import { ShowSelectedButton } from '../show-selected-button'
+import { TreePicker } from '../tree-picker'
+import { PickerProps } from './picker-props'
 
 enum PickerModes {
   TREE,
@@ -25,8 +25,11 @@ enum PickerModes {
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
-    treeActive: {
-      color: theme.palette.common.black,
+    treeIcon: {
+      color: theme.palette.type === 'dark' ? 'rgba(255,255,255,0.5)' : undefined,
+    },
+    treeActiveIcon: {
+      color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
     },
     showSelected: {
       marginTop: '0.5rem',
@@ -36,15 +39,18 @@ const useStyles = makeStyles((theme: Theme) => {
       display: 'flex',
       alignItems: 'center',
     },
+    cancelButton: {},
   })
 })
+
+export type PickerClassKey = Partial<ReturnType<typeof useStyles>>
 
 export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (props) => {
   const [term, setTerm] = useState<string>()
   const [result, setResult] = useState<GenericContent[]>([])
   const [searchError, setSearchError] = useState<string>()
   const [mode, setMode] = useState(PickerModes.TREE)
-  const classes = useStyles()
+  const classes = useStyles(props)
 
   const PickerContainer = props.pickerContainer || 'div'
   const ActionsContainer = props.actionsContainer || 'div'
@@ -114,7 +120,7 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
           <IconButton
             title={props.localization?.treeViewButton ?? 'Tree view'}
             onClick={() => setMode(PickerModes.TREE)}
-            className={mode === PickerModes.TREE ? classes.treeActive : ''}>
+            className={`${classes.treeIcon} ${mode === PickerModes.TREE ? classes.treeActiveIcon : ''}`}>
             <AccountTree />
           </IconButton>
           <TextField
@@ -133,7 +139,7 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
         />
         {mode === PickerModes.SELECTION && <SelectionList {...props} />}
         {mode === PickerModes.SEARCH && <SearchPicker {...props} items={result} error={searchError} />}
-        {mode === PickerModes.TREE && <ListPicker {...props} />}
+        {mode === PickerModes.TREE && <TreePicker {...props} />}
       </PickerContainer>
       <SelectionContext.Consumer>
         {({ selection }) =>
@@ -143,7 +149,7 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
             <ActionsContainer>
               <Button
                 aria-label={props.localization?.cancelButton ?? 'Cancel'}
-                // className={props.classes.cancelButton}
+                className={classes.cancelButton}
                 disabled={!!props.isExecInProgress}
                 onClick={() => props.handleCancel?.()}>
                 {props.localization?.cancelButton ?? 'Cancel'}

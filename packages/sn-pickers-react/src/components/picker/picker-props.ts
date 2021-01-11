@@ -1,6 +1,7 @@
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ReactElement } from 'react'
+import { PickerClassKey } from './picker'
 
 export interface PickerLocalization {
   searchPlaceholder?: string
@@ -160,4 +161,6 @@ export interface PickerProps<T> {
    * Minimum number of items for a valid selection
    */
   required?: number
+
+  classes?: PickerClassKey
 }

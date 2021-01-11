@@ -56,8 +56,9 @@ export const ContentPickerDialog: React.FunctionComponent<ContentPickerDialogPro
         actionsContainer={DialogActions}
         handleCancel={closeLastDialog}
         handleSubmit={handleSubmit}
-        localization={{ cancelButton: localization.cancelButton, submitButton: localization.selectButton }}
         required={1}
+        localization={{ cancelButton: localization.cancelButton, submitButton: localization.selectButton }}
+        classes={{ cancelButton: globalClasses.cancelButton }}
       />
     </>
   )
