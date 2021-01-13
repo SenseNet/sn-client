@@ -54,10 +54,10 @@ export const RotateWidget: React.FC<RotateWidgetProps> = (props) => {
       return props.renderButton(props.mode, rotateDocument)
     default:
       return (
-        <div style={{ display: 'inline-block' }}>
+        <>
           {props.renderButton(ROTATION_MODE.anticlockwise, rotateDocument)}
           {props.renderButton(ROTATION_MODE.clockwise, rotateDocument)}
-        </div>
+        </>
       )
   }
 }

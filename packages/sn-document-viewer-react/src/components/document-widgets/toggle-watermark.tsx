@@ -1,4 +1,6 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import BrandingWatermark from '@material-ui/icons/BrandingWatermark'
 import clsx from 'clsx'
 import React from 'react'

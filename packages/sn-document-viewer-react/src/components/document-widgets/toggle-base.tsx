@@ -1,10 +1,11 @@
-import { createStyles, makeStyles } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton/IconButton'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import React from 'react'
 
 const useStyles = makeStyles(() => {
   return createStyles({
-    iconButton: {},
+    iconButton: { display: 'inline-block' },
     iconActive: {},
     icon: {},
   })
@@ -35,23 +36,26 @@ export interface ToggleBaseProps {
    * Flag to store if the user has the required permisison for the action
    */
   disabled?: boolean
+
+  /**
+   * Styles to override
+   */
+  classes?: ToggleBaseClassKey
 }
 
 /**
  * Represents a base toggle component
  */
-export const ToggleBase: React.FunctionComponent<ToggleBaseProps & { classes?: ToggleBaseClassKey }> = (props) => {
+export const ToggleBase: React.FunctionComponent<ToggleBaseProps> = (props) => {
   const classes = useStyles(props)
   return (
-    <div style={{ display: 'inline-block' }}>
-      <IconButton
-        disabled={props.disabled}
-        className={classes.iconButton}
-        color={props.isVisible ? 'primary' : 'inherit'}
-        title={props.title}
-        onClick={() => props.setValue(!props.isVisible)}>
-        {props.children}
-      </IconButton>
-    </div>
+    <IconButton
+      disabled={props.disabled}
+      className={classes.iconButton}
+      color={props.isVisible ? 'primary' : 'inherit'}
+      title={props.title}
+      onClick={() => props.setValue(!props.isVisible)}>
+      {props.children}
+    </IconButton>
   )
 }

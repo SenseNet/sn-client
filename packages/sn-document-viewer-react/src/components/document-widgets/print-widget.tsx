@@ -1,13 +1,14 @@
 import { DocumentData } from '@sensenet/client-core'
-import { createStyles, makeStyles } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import PrintIcon from '@material-ui/icons/Print'
 import React from 'react'
 import { useDocumentData, useLocalization } from '../../hooks'
 
 const useStyles = makeStyles(() => {
   return createStyles({
-    iconButton: {},
+    iconButton: { display: 'inline-block' },
     icon: {},
   })
 })
@@ -19,25 +20,24 @@ type PrintClassKey = Partial<ReturnType<typeof useStyles>>
  */
 export interface PrintProps {
   print: (document: DocumentData) => void
+  classes?: PrintClassKey
 }
 
 /**
  * Component that allows print
  */
-export const Print: React.FC<PrintProps & { classes?: PrintClassKey }> = (props) => {
+export const Print: React.FC<PrintProps> = (props) => {
   const classes = useStyles(props)
   const localization = useLocalization()
   const { documentData } = useDocumentData()
   return (
-    <div style={{ display: 'inline-block' }}>
-      <IconButton
-        className={classes.iconButton}
-        color="inherit"
-        title={localization.print}
-        onClick={() => props.print(documentData)}
-        id="Print">
-        <PrintIcon className={classes.icon} />
-      </IconButton>
-    </div>
+    <IconButton
+      className={classes.iconButton}
+      color="inherit"
+      title={localization.print}
+      onClick={() => props.print(documentData)}
+      id="Print">
+      <PrintIcon className={classes.icon} />
+    </IconButton>
   )
 }

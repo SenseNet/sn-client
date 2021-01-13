@@ -1,5 +1,6 @@
-import { createStyles, makeStyles } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import RotateLeft from '@material-ui/icons/RotateLeft'
 import RotateRight from '@material-ui/icons/RotateRight'
 import React from 'react'
@@ -18,11 +19,10 @@ type RotateActivePagesClassKey = Partial<ReturnType<typeof useStyles>>
 
 export interface RotateActivePagesWidgetProps {
   mode?: ROTATION_MODE
+  classes?: RotateActivePagesClassKey
 }
 
-export const RotateActivePagesWidget: React.FC<
-  RotateActivePagesWidgetProps & { classes?: RotateActivePagesClassKey }
-> = (props) => {
+export const RotateActivePagesWidget: React.FC<RotateActivePagesWidgetProps> = (props) => {
   const localization = useLocalization()
   const classes = useStyles(props)
 

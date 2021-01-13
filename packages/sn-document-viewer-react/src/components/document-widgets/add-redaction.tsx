@@ -1,4 +1,6 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import ChatBubbleSharp from '@material-ui/icons/ChatBubbleSharp'
 import clsx from 'clsx'
 import React from 'react'
@@ -30,10 +32,12 @@ export const AddRedactionWidget: React.FC<{ classes?: AddRedactionClassKey }> = 
     <ToggleBase
       disabled={!permissions.canEdit}
       classes={classes}
-      isVisible={viewerState.isPlacingRedaction}
+      isVisible={viewerState.activeShapePlacing === 'redaction'}
       title={localization.addRedaction}
-      setValue={(value) => viewerState.updateState({ isPlacingRedaction: value })}>
-      <ChatBubbleSharp className={clsx(classes.icon, { [classes.iconActive]: viewerState.isPlacingRedaction })} />
+      setValue={(value) => viewerState.updateState({ activeShapePlacing: value ? 'redaction' : 'none' })}>
+      <ChatBubbleSharp
+        className={clsx(classes.icon, { [classes.iconActive]: viewerState.activeShapePlacing === 'redaction' })}
+      />
     </ToggleBase>
   )
 }

@@ -1,5 +1,6 @@
-import { createStyles, makeStyles } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import RotateLeft from '@material-ui/icons/RotateLeft'
 import RotateRight from '@material-ui/icons/RotateRight'
 import React from 'react'
@@ -9,7 +10,7 @@ import { RotateWidget } from './rotate-widget'
 
 const useStyles = makeStyles(() => {
   return createStyles({
-    iconButton: {},
+    iconButton: { display: 'inline-block' },
     icon: {
       border: '2px solid',
       borderRadius: '5px',
@@ -19,12 +20,15 @@ const useStyles = makeStyles(() => {
 
 type RotateDocumentClassKey = Partial<ReturnType<typeof useStyles>>
 
+export interface RotateDocumentWidgetProps {
+  mode?: ROTATION_MODE
+  classes?: RotateDocumentClassKey
+}
+
 /**
  * Component that allows document rotation
  */
-export const RotateDocumentWidget: React.FC<{ mode?: ROTATION_MODE & { classes?: RotateDocumentClassKey } }> = (
-  props,
-) => {
+export const RotateDocumentWidget: React.FC<RotateDocumentWidgetProps> = (props) => {
   const localization = useLocalization()
   const classes = useStyles(props)
 

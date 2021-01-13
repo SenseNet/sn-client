@@ -1,5 +1,6 @@
-import { createStyles, makeStyles } from '@material-ui/core'
 import Drawer from '@material-ui/core/Drawer'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import Typography from '@material-ui/core/Typography'
 import React, { useCallback, useEffect } from 'react'
 import { CommentsContext } from '../context/comments'

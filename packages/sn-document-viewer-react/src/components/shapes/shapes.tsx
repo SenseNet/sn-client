@@ -1,5 +1,6 @@
 import { Annotation, Highlight, PreviewImageData, Redaction, Shape, Shapes } from '@sensenet/client-core'
-import { createStyles, makeStyles } from '@material-ui/core'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import React, { useCallback } from 'react'
 import { useComments, useCommentState, useDocumentData, useDocumentPermissions, useViewerState } from '../../hooks'
 import { applyShapeRotations, Dimensions, ImageUtil } from '../../services'

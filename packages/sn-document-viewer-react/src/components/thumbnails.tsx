@@ -1,6 +1,7 @@
 import { PreviewImageData } from '@sensenet/client-core'
-import { createStyles, makeStyles } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { DEFAULT_ZOOM_LEVEL } from '..'
 import { usePreviewImages, useViewerState } from '../hooks'

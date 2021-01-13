@@ -1,6 +1,12 @@
 import { ObservableValue } from '@sensenet/client-utils'
 
 /**
+ * Active shape to draw
+ */
+
+export type ActiveShapPlacingOptions = 'redaction' | 'highlight' | 'annotation' | 'none'
+
+/**
  * Rotation model
  */
 export interface RotationModel {
@@ -67,19 +73,9 @@ export interface ViewerState {
   isPlacingCommentMarker: boolean
 
   /**
-   * Variable that indicates if a redaction placing is in progress
+   * Variable that indicates if a shape placing is in progress
    */
-  isPlacingRedaction: boolean
-
-  /**
-   * Variable that indicates if a annotation placing is in progress
-   */
-  isPlacingAnnotation: boolean
-
-  /**
-   * Variable that indicates if a highlight placing is in progress
-   */
-  isPlacingHighlight: boolean
+  activeShapePlacing: ActiveShapPlacingOptions
 
   /**
    * Indicates if the user is creating a comment at the moment

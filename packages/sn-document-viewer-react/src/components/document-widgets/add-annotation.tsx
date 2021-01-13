@@ -1,4 +1,6 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import ChatSharp from '@material-ui/icons/ChatSharp'
 import clsx from 'clsx'
 import React from 'react'
@@ -30,10 +32,12 @@ export const AddAnnotationWidget: React.FC<{ classes?: AddAnnnotationClassKey }>
     <ToggleBase
       disabled={!permissions.canEdit}
       classes={classes}
-      isVisible={viewerState.isPlacingAnnotation}
+      isVisible={viewerState.activeShapePlacing === 'annotation'}
       title={localization.addAnnotation}
-      setValue={(value) => viewerState.updateState({ isPlacingAnnotation: value })}>
-      <ChatSharp className={clsx(classes.icon, { [classes.iconActive]: viewerState.isPlacingAnnotation })} />
+      setValue={(value) => viewerState.updateState({ activeShapePlacing: value ? 'annotation' : 'none' })}>
+      <ChatSharp
+        className={clsx(classes.icon, { [classes.iconActive]: viewerState.activeShapePlacing === 'annotation' })}
+      />
     </ToggleBase>
   )
 }

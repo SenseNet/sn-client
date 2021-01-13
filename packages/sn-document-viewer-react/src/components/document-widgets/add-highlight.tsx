@@ -1,4 +1,6 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import ChatBubbleOutlineSharp from '@material-ui/icons/ChatBubbleOutlineSharp'
 import clsx from 'clsx'
 import React from 'react'
@@ -30,11 +32,11 @@ export const AddHighlightWidget: React.FC<{ classes?: AddRHightlightClassKey }> 
     <ToggleBase
       disabled={!permissions.canEdit}
       classes={classes}
-      isVisible={viewerState.isPlacingHighlight}
+      isVisible={viewerState.activeShapePlacing === 'highlight'}
       title={localization.addHighlight}
-      setValue={(value) => viewerState.updateState({ isPlacingHighlight: value })}>
+      setValue={(value) => viewerState.updateState({ activeShapePlacing: value ? 'highlight' : 'none' })}>
       <ChatBubbleOutlineSharp
-        className={clsx(classes.icon, { [classes.iconActive]: viewerState.isPlacingHighlight })}
+        className={clsx(classes.icon, { [classes.iconActive]: viewerState.activeShapePlacing === 'highlight' })}
       />
     </ToggleBase>
   )

@@ -1,7 +1,9 @@
 import { PreviewImageData } from '@sensenet/client-core'
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Paper from '@material-ui/core/Paper'
+import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import clsx from 'clsx'
 import React, { useCallback, useState } from 'react'
 import { useCommentState, useDocumentData, usePreviewImage, useViewerState } from '../hooks'
@@ -151,7 +153,7 @@ export const Page: React.FC<PageProps> = (props) => {
             ...ANNOTATION_EXTRA_VALUES,
           })
           updateDocumentData(documentData)
-          viewerState.updateState({ hasChanges: true, isPlacingAnnotation: false })
+          viewerState.updateState({ hasChanges: true, activeShapePlacing: 'none' })
           break
         case 'highlight':
           documentData.shapes.highlights.push({
@@ -163,7 +165,7 @@ export const Page: React.FC<PageProps> = (props) => {
             guid: `h-${startX}-${startY}`,
           })
           updateDocumentData(documentData)
-          viewerState.updateState({ hasChanges: true, isPlacingHighlight: false })
+          viewerState.updateState({ hasChanges: true, activeShapePlacing: 'none' })
           break
         case 'redaction':
           documentData.shapes.redactions.push({
@@ -175,7 +177,7 @@ export const Page: React.FC<PageProps> = (props) => {
             guid: `r-${startX}-${startY}`,
           })
           updateDocumentData(documentData)
-          viewerState.updateState({ hasChanges: true, isPlacingRedaction: false })
+          viewerState.updateState({ hasChanges: true, activeShapePlacing: 'none' })
           break
         default:
           break
@@ -189,30 +191,25 @@ export const Page: React.FC<PageProps> = (props) => {
     <Paper elevation={isActive ? 8 : 2} className={PAGE_NAME} style={{ margin: PAGE_PADDING }}>
       <div
         className={clsx(classes.page, {
-          [classes.isPlacingShape]:
-            viewerState.isPlacingRedaction || viewerState.isPlacingAnnotation || viewerState.isPlacingHighlight,
+          [classes.isPlacingShape]: viewerState.activeShapePlacing !== 'none',
         })}
         onClick={(ev) => {
           viewerState.isPlacingCommentMarker ? handleMarkerPlacement(ev) : props.onClick(ev)
         }}
         onMouseDown={(ev) => {
-          ;(viewerState.isPlacingRedaction || viewerState.isPlacingHighlight || viewerState.isPlacingAnnotation) &&
-            !mouseIsDown &&
-            handleMouseDown(ev)
+          viewerState.activeShapePlacing !== 'none' && !mouseIsDown && handleMouseDown(ev)
         }}
         onMouseMove={(ev) => {
-          ;(viewerState.isPlacingRedaction || viewerState.isPlacingHighlight || viewerState.isPlacingAnnotation) &&
-            mouseIsDown &&
-            handleMouseMove(ev)
+          viewerState.activeShapePlacing !== 'none' && mouseIsDown && handleMouseMove(ev)
         }}
         onMouseUp={(ev) => {
-          if (viewerState.isPlacingRedaction && mouseIsDown) {
+          if (viewerState.activeShapePlacing === 'redaction' && mouseIsDown) {
             handleMouseUp(ev, 'redaction')
           }
-          if (viewerState.isPlacingHighlight && mouseIsDown) {
+          if (viewerState.activeShapePlacing === 'highlight' && mouseIsDown) {
             handleMouseUp(ev, 'highlight')
           }
-          if (viewerState.isPlacingAnnotation && mouseIsDown) {
+          if (viewerState.activeShapePlacing === 'annotation' && mouseIsDown) {
             handleMouseUp(ev, 'annotation')
           }
         }}>

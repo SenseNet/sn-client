@@ -1,23 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Print component Should render without crashing 1`] = `
-<div
-  style={
-    Object {
-      "display": "inline-block",
-    }
-  }
+<WithStyles(ForwardRef(IconButton))
+  className="makeStyles-iconButton-1"
+  color="inherit"
+  id="Print"
+  onClick={[Function]}
+  title="Print"
 >
-  <WithStyles(ForwardRef(IconButton))
-    className="makeStyles-iconButton-1"
-    color="inherit"
-    id="Print"
-    onClick={[Function]}
-    title="Print"
-  >
-    <Memo([object Object])
-      className="makeStyles-icon-2"
-    />
-  </WithStyles(ForwardRef(IconButton))>
-</div>
+  <Memo([object Object])
+    className="makeStyles-icon-2"
+  />
+</WithStyles(ForwardRef(IconButton))>
 `;

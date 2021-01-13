@@ -119,7 +119,7 @@ describe('Page component', () => {
         <ViewerStateContext.Provider
           value={{
             ...defaultViewerState,
-            isPlacingHighlight: true,
+            activeShapePlacing: 'highlight',
             zoomLevel: 0,
           }}>
           <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData] } as any}>
@@ -161,7 +161,7 @@ describe('Page component', () => {
         <ViewerStateContext.Provider
           value={{
             ...defaultViewerState,
-            isPlacingRedaction: true,
+            activeShapePlacing: 'redaction',
             zoomLevel: 0,
           }}>
           <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData] } as any}>
@@ -203,7 +203,7 @@ describe('Page component', () => {
         <ViewerStateContext.Provider
           value={{
             ...defaultViewerState,
-            isPlacingAnnotation: true,
+            activeShapePlacing: 'annotation',
             zoomLevel: 0,
           }}>
           <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData] } as any}>

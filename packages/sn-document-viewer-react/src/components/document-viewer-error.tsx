@@ -1,4 +1,6 @@
-import { createStyles, makeStyles, Typography } from '@material-ui/core'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
+import Typography from '@material-ui/core/Typography/Typography'
 import React from 'react'
 import { useDocumentData, useLocalization } from '../hooks'
 

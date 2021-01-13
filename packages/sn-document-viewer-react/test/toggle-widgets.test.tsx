@@ -115,7 +115,7 @@ describe('Component', () => {
     expect(updateState).toBeCalledWith({ showWatermark: true })
   })
 
-  it('Click on toggle should change the state of isPlacingAnnotation in viewer-state provider', () => {
+  it('Click on toggle should change the state of activeShapePlacing in viewer-state provider', () => {
     const updateState = jest.fn()
 
     const wrapper = mount(
@@ -132,10 +132,10 @@ describe('Component', () => {
     )
     wrapper.find(IconButton).simulate('click')
 
-    expect(updateState).toBeCalledWith({ isPlacingAnnotation: true })
+    expect(updateState).toBeCalledWith({ activeShapePlacing: 'annotation' })
   })
 
-  it('Click on toggle should change the state of isPlacingHighlight  in viewer-state provider', () => {
+  it('Click on toggle should change the state of activeShapePlacing in viewer-state provider', () => {
     const updateState = jest.fn()
 
     const wrapper = mount(
@@ -152,10 +152,10 @@ describe('Component', () => {
     )
     wrapper.find(IconButton).simulate('click')
 
-    expect(updateState).toBeCalledWith({ isPlacingHighlight: true })
+    expect(updateState).toBeCalledWith({ activeShapePlacing: 'highlight' })
   })
 
-  it('Click on toggle should change the state of isPlacingRedaction in viewer-state provider', () => {
+  it('Click on toggle should change the state of activeShapePlacing in viewer-state provider', () => {
     const updateState = jest.fn()
 
     const wrapper = mount(
@@ -172,6 +172,6 @@ describe('Component', () => {
     )
     wrapper.find(IconButton).simulate('click')
 
-    expect(updateState).toBeCalledWith({ isPlacingRedaction: true })
+    expect(updateState).toBeCalledWith({ activeShapePlacing: 'redaction' })
   })
 })

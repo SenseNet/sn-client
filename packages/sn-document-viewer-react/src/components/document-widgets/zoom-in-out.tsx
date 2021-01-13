@@ -1,5 +1,6 @@
-import { createStyles, makeStyles } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import ZoomIn from '@material-ui/icons/ZoomIn'
 import ZoomOut from '@material-ui/icons/ZoomOut'
 import React, { useCallback } from 'react'

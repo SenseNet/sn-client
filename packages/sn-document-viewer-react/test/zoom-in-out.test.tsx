@@ -1,4 +1,4 @@
-import { IconButton } from '@material-ui/core'
+import IconButton from '@material-ui/core/IconButton/IconButton'
 import { mount } from 'enzyme'
 import React from 'react'
 import { defaultViewerState, ViewerStateContext, ZoomInOutWidget } from '../src'
