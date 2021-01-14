@@ -31,7 +31,7 @@ export const ToggleThumbnailsWidget: React.FC<{ classes?: ToggleThumbnailsClassK
     <ToggleBase
       classes={classes}
       title={localization.toggleThumbnails}
-      isVisible={viewerState.showThumbnails}
+      active={viewerState.showThumbnails}
       setValue={(v) => viewerState.updateState({ showThumbnails: v })}>
       <VerticalSplit className={clsx(classes.icon, { [classes.iconActive]: viewerState.showThumbnails })} />
     </ToggleBase>

@@ -33,7 +33,7 @@ export const ToggleWatermarkWidget: React.FC<{ classes?: ToggleWatermarkClassKey
       disabled={!permissions.canHideWatermark}
       classes={classes}
       title={localization.toggleWatermark}
-      isVisible={viewerState.showWatermark}
+      active={viewerState.showWatermark}
       setValue={(v) => viewerState.updateState({ showWatermark: v })}>
       <BrandingWatermark className={clsx(classes.icon, { [classes.iconActive]: viewerState.showWatermark })} />
     </ToggleBase>

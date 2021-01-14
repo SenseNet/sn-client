@@ -48,6 +48,7 @@ exports[`ShapesSkeleton component should render without crashing 1`] = `
         }
       }
       removeShape={[Function]}
+      rotationDegree={0}
       shape={
         Object {
           "guid": "9a324f30-1423-11e9-bcb9-d719ddfb5f43",

@@ -17,7 +17,6 @@ import {
 } from '@sensenet/document-viewer-react'
 import { CurrentContentProvider } from '@sensenet/hooks-react'
 import { Button, createStyles, makeStyles, Theme } from '@material-ui/core'
-import clsx from 'clsx'
 import React, { useCallback, useEffect } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { globals, useGlobalStyles } from '../globalStyles'
@@ -54,8 +53,6 @@ const useAppBarStyles = makeStyles((theme: Theme) =>
   createStyles({
     appBar: {
       backgroundColor: theme.palette.type === 'light' ? globals.light.drawerBackground : globals.dark.drawerBackground,
-      border: theme.palette.type === 'light' ? clsx(globals.light.borderColor, '1px') : 'none',
-      boxShadow: 'none',
       color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
     },
   }),

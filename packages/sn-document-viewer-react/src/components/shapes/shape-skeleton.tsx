@@ -112,6 +112,7 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
           getShapeDimensions={getShapeDimensions}
           updateShapeData={props.updateShapeData}
           removeShape={props.removeShape}
+          rotationDegree={props.rotationDegree}
         />
       ) : props.shapeType === 'redactions' ? (
         <ShapeRedaction
@@ -122,6 +123,7 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
           onResized={(ev) => props.rotationDegree === 0 && onResized(ev)}
           permissions={permissions}
           dimensions={getShapeDimensions(props.shape) as any}
+          rotationDegree={props.rotationDegree}
         />
       ) : (
         <ShapeHighlight
@@ -130,8 +132,8 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
           shape={props.shape}
           onDragStart={(ev) => props.rotationDegree === 0 && onDragStart(ev)}
           onResized={(ev) => props.rotationDegree === 0 && onResized(ev)}
-          permissions={permissions}
           dimensions={getShapeDimensions(props.shape) as any}
+          rotationDegree={props.rotationDegree}
         />
       )}
     </div>

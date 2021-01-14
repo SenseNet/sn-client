@@ -20,7 +20,7 @@ export interface ToggleBaseProps {
   /**
    * Determines if the button is toggled
    */
-  isVisible: boolean
+  active: boolean
 
   /**
    * The title property of the button
@@ -33,7 +33,7 @@ export interface ToggleBaseProps {
   setValue: (isVisible: boolean) => void
 
   /**
-   * Flag to store if the user has the required permisison for the action
+   * Determines if the button is disabled
    */
   disabled?: boolean
 
@@ -52,9 +52,9 @@ export const ToggleBase: React.FunctionComponent<ToggleBaseProps> = (props) => {
     <IconButton
       disabled={props.disabled}
       className={classes.iconButton}
-      color={props.isVisible ? 'primary' : 'inherit'}
+      color={props.active ? 'primary' : 'inherit'}
       title={props.title}
-      onClick={() => props.setValue(!props.isVisible)}>
+      onClick={() => props.setValue(!props.active)}>
       {props.children}
     </IconButton>
   )

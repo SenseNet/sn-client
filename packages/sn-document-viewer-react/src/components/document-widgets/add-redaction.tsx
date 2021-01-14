@@ -28,11 +28,14 @@ export const AddRedactionWidget: React.FC<{ classes?: AddRedactionClassKey }> = 
   const viewerState = useViewerState()
   const permissions = useDocumentPermissions()
 
+  const pageRotation =
+    viewerState.rotation?.find((rotation) => rotation.pageNum === viewerState.activePage)?.degree || 0
+
   return (
     <ToggleBase
-      disabled={!permissions.canEdit}
+      disabled={!permissions.canEdit || pageRotation !== 0}
       classes={classes}
-      isVisible={viewerState.activeShapePlacing === 'redaction'}
+      active={viewerState.activeShapePlacing === 'redaction'}
       title={localization.addRedaction}
       setValue={(value) => viewerState.updateState({ activeShapePlacing: value ? 'redaction' : 'none' })}>
       <ChatBubbleSharp

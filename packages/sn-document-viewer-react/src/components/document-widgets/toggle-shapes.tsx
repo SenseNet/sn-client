@@ -32,7 +32,7 @@ export const ToggleShapesWidget: React.FC<{ classes?: ToggleShapesClassKey }> = 
     <ToggleBase
       disabled={!permissions.canEdit}
       classes={classes}
-      isVisible={viewerState.showShapes}
+      active={viewerState.showShapes}
       title={localization.toggleShapes}
       setValue={(v) => viewerState.updateState({ showShapes: v })}>
       <Dashboard className={clsx(classes.icon, { [classes.iconActive]: viewerState.showShapes })} />

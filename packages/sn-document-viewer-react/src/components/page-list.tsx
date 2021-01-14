@@ -9,12 +9,7 @@ import { usePreviewImages, useViewerState } from '../hooks'
 import { Dimensions, ImageUtil } from '../services'
 import { Page, PAGE_CONTAINER_ID, PAGE_PADDING } from './'
 
-type Props = {
-  marginTop: number
-  marginBottom: number
-}
-
-const useStyles = makeStyles<Theme, Props>(() => {
+const useStyles = makeStyles<Theme>(() => {
   return createStyles({
     grid: {
       flexGrow: 1,
@@ -26,8 +21,6 @@ const useStyles = makeStyles<Theme, Props>(() => {
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      paddingTop: ({ marginTop }) => marginTop || 0,
-      paddingBottom: ({ marginBottom }) => marginBottom || 0,
     },
   })
 })
@@ -49,7 +42,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
   const [resizeToken, setResizeToken] = useState(0)
   const [viewport, setViewport] = useState<Dimensions>({ width: 0, height: 0 })
   const pages = usePreviewImages()
-  const classes = useStyles({ marginTop, marginBottom })
+  const classes = useStyles()
 
   const requestResize = useCallback(
     debounce(() => {
@@ -168,7 +161,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
 
   return (
     <Grid item={true} className={classes.grid} id={PAGE_CONTAINER_ID} innerRef={viewportElement}>
-      <div className={classes.pagesWrapper}>
+      <div className={classes.pagesWrapper} style={{ paddingTop: marginTop || 0, paddingBottom: marginBottom || 0 }}>
         {visiblePages.map((page) => (
           <Page
             key={page.Index}

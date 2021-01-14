@@ -3,13 +3,9 @@ import { Theme } from '@material-ui/core/styles/createMuiTheme'
 import createStyles from '@material-ui/core/styles/createStyles'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import React from 'react'
+import { useDocumentPermissions } from '../../hooks'
 
 type Props = {
-  permissions: {
-    canEdit: boolean
-    canHideRedaction: boolean
-    canHideWatermark: boolean
-  }
   shape: Annotation
   zoomRatio: number
   dimensions: {
@@ -18,14 +14,22 @@ type Props = {
     width: string | number | (string & {}) | undefined
     height: string | number | (string & {}) | undefined
   }
-
   onDragStart: (ev: React.DragEvent<HTMLElement>) => void
   onResized: (ev: React.MouseEvent<HTMLElement>) => void
   onRightClick: (ev: React.MouseEvent<HTMLElement>) => void
-  renderChildren: () => JSX.Element
+  rotationDegree: number
 }
 
-const useStyles = makeStyles<Theme, Props>(() =>
+const useStyles = makeStyles<
+  Theme,
+  Props & {
+    permissions: {
+      canEdit: boolean
+      canHideRedaction: boolean
+      canHideWatermark: boolean
+    }
+  }
+>(() =>
   createStyles({
     root: {
       top: ({ dimensions }) => dimensions.top,
@@ -33,7 +37,8 @@ const useStyles = makeStyles<Theme, Props>(() =>
       width: ({ dimensions }) => dimensions.width,
       height: ({ dimensions }) => dimensions.height,
       position: 'absolute',
-      resize: ({ permissions }) => `${permissions.canEdit ? 'both' : 'none'}` as any,
+      resize: ({ permissions, rotationDegree }) =>
+        `${permissions.canEdit && rotationDegree === 0 ? 'both' : 'none'}` as any,
       overflow: 'hidden',
       backgroundColor: 'blanchedalmond',
       lineHeight: ({ shape, zoomRatio }) => `${shape.lineHeight * zoomRatio}px`,
@@ -61,26 +66,11 @@ const useStyles = makeStyles<Theme, Props>(() =>
  * @param renderChildren Function what returns the wrapped components
  * @returns styled annotation wrapper component
  */
-export function AnnotationWrapper({
-  permissions,
-  shape,
-  zoomRatio,
-  dimensions,
-  onDragStart,
-  onResized,
-  onRightClick,
-  renderChildren,
-}: Props) {
-  const classes = useStyles({
-    permissions,
-    shape,
-    zoomRatio,
-    dimensions,
-    onDragStart,
-    onResized,
-    renderChildren,
-    onRightClick,
-  })
+
+export const AnnotationWrapper: React.FC<Props> = (props) => {
+  const permissions = useDocumentPermissions()
+
+  const classes = useStyles({ ...props, permissions })
 
   return (
     <div
@@ -88,10 +78,10 @@ export function AnnotationWrapper({
       className={classes.root}
       tabIndex={0}
       draggable={permissions.canEdit}
-      onDragStart={onDragStart}
-      onMouseUp={onResized}
-      onContextMenu={onRightClick}>
-      {renderChildren()}
+      onDragStart={props.onDragStart}
+      onMouseUp={props.onResized}
+      onContextMenu={props.onRightClick}>
+      {props.children}
     </div>
   )
 }

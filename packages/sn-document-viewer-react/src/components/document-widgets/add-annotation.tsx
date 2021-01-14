@@ -28,11 +28,14 @@ export const AddAnnotationWidget: React.FC<{ classes?: AddAnnnotationClassKey }>
   const viewerState = useViewerState()
   const permissions = useDocumentPermissions()
 
+  const pageRotation =
+    viewerState.rotation?.find((rotation) => rotation.pageNum === viewerState.activePage)?.degree || 0
+
   return (
     <ToggleBase
-      disabled={!permissions.canEdit}
+      disabled={!permissions.canEdit || pageRotation !== 0}
       classes={classes}
-      isVisible={viewerState.activeShapePlacing === 'annotation'}
+      active={viewerState.activeShapePlacing === 'annotation'}
       title={localization.addAnnotation}
       setValue={(value) => viewerState.updateState({ activeShapePlacing: value ? 'annotation' : 'none' })}>
       <ChatSharp

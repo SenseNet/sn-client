@@ -13,7 +13,7 @@ const useStyles = makeStyles<Theme, Props>((theme) =>
   createStyles({
     root: {
       color: ({ isPlacingMarker }) => `${isPlacingMarker ? theme.palette.primary.light : 'inherit'}`,
-      transform: ({ isPlacingMarker }) => `${isPlacingMarker ? 'rotate(90deg)' : ''}`,
+      transform: ({ isPlacingMarker }) => `${isPlacingMarker ? 'rotate(90deg)' : 'none'}`,
     },
   }),
 )

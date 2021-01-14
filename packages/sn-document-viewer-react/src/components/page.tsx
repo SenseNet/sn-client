@@ -7,17 +7,18 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import clsx from 'clsx'
 import React, { useCallback, useState } from 'react'
 import { useCommentState, useDocumentData, usePreviewImage, useViewerState } from '../hooks'
+import { ActiveShapPlacingOptions } from '../models'
 import { ImageUtil } from '../services'
 import { PAGE_NAME, PAGE_PADDING } from './document-viewer-layout'
 import { MARKER_SIZE, ShapeDraft, ShapesWidget } from './shapes'
 
 export const ANNOTATION_EXTRA_VALUES = {
-  text: 'Example Text',
+  text: '',
   lineHeight: 40,
   fontBold: 400,
-  fontColor: '#FF0000',
+  fontColor: '#000000',
   fontFamily: 'arial',
-  fontItalic: true,
+  fontItalic: false,
   fontSize: 40,
 }
 
@@ -82,8 +83,8 @@ export const Page: React.FC<PageProps> = (props) => {
 
   const boundingBox = ImageUtil.getRotatedBoundingBoxSize(
     {
-      width: (page.image && page.image.Width) || 0,
-      height: (page.image && page.image.Height) || 0,
+      width: page.image?.Width || 0,
+      height: page.image?.Height || 0,
     },
     imageRotation,
   )
@@ -94,8 +95,8 @@ export const Page: React.FC<PageProps> = (props) => {
 
   const handleMarkerPlacement = useCallback(
     (event: React.MouseEvent) => {
-      const xCoord = event.nativeEvent.offsetX / (props.page.Height / ((page.image && page.image.Height) || 1))
-      const yCoord = event.nativeEvent.offsetY / (props.page.Width / ((page.image && page.image.Width) || 1))
+      const xCoord = event.nativeEvent.offsetX / (props.page.Height / (page.image?.Height || 1))
+      const yCoord = event.nativeEvent.offsetY / (props.page.Width / (page.image?.Width || 1))
 
       if (!viewerState.isPlacingCommentMarker || xCoord <= MARKER_SIZE || yCoord <= MARKER_SIZE) {
         return
@@ -119,26 +120,23 @@ export const Page: React.FC<PageProps> = (props) => {
   )
   const handleMouseDown = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     setMouseIsDown(true)
-    setStartX(ev.nativeEvent.offsetX / (props.page.Height / ((page.image && page.image.Height) || 1)))
-    setStartY(ev.nativeEvent.offsetY / (props.page.Width / ((page.image && page.image.Width) || 1)))
+    setStartX(ev.nativeEvent.offsetX / (props.page.Height / (page.image?.Height || 1)))
+    setStartY(ev.nativeEvent.offsetY / (props.page.Width / (page.image?.Width || 1)))
   }
 
   const handleMouseMove = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const endX = ev.nativeEvent.offsetX / (props.page.Height / ((page.image && page.image.Height) || 1))
-    const endY = ev.nativeEvent.offsetY / (props.page.Width / ((page.image && page.image.Width) || 1))
+    const endX = ev.nativeEvent.offsetX / (props.page.Height / (page.image?.Height || 1))
+    const endY = ev.nativeEvent.offsetY / (props.page.Width / (page.image?.Width || 1))
     setdraftHeight(endY - startY)
     setdraftWidth(endX - startX)
   }
 
-  const handleMouseUp = (
-    ev: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    shapeType: 'annotation' | 'highlight' | 'redaction',
-  ) => {
+  const handleMouseUp = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>, shapeType: ActiveShapPlacingOptions) => {
     setMouseIsDown(false)
     setdraftHeight(0)
     setdraftWidth(0)
-    const endX = ev.nativeEvent.offsetX / (props.page.Height / ((page.image && page.image.Height) || 1))
-    const endY = ev.nativeEvent.offsetY / (props.page.Width / ((page.image && page.image.Width) || 1))
+    const endX = ev.nativeEvent.offsetX / (props.page.Height / (page.image?.Height || 1))
+    const endY = ev.nativeEvent.offsetY / (props.page.Width / (page.image?.Width || 1))
 
     if (endY - startY > 0 && endX - startX > 0) {
       switch (shapeType) {
@@ -203,26 +201,16 @@ export const Page: React.FC<PageProps> = (props) => {
           viewerState.activeShapePlacing !== 'none' && mouseIsDown && handleMouseMove(ev)
         }}
         onMouseUp={(ev) => {
-          if (viewerState.activeShapePlacing === 'redaction' && mouseIsDown) {
-            handleMouseUp(ev, 'redaction')
-          }
-          if (viewerState.activeShapePlacing === 'highlight' && mouseIsDown) {
-            handleMouseUp(ev, 'highlight')
-          }
-          if (viewerState.activeShapePlacing === 'annotation' && mouseIsDown) {
-            handleMouseUp(ev, 'annotation')
-          }
+          mouseIsDown && handleMouseUp(ev, viewerState.activeShapePlacing)
         }}>
         {page.image && (
           <>
-            <div>
-              <ShapesWidget
-                imageRotation={imageRotation}
-                zoomRatioStanding={props.page.Height / page.image.Height}
-                zoomRatioLying={props.page.Width / page.image.Height}
-                page={page.image}
-              />
-            </div>
+            <ShapesWidget
+              imageRotation={imageRotation}
+              zoomRatioStanding={props.page.Height / page.image.Height}
+              zoomRatioLying={props.page.Width / page.image.Height}
+              page={page.image}
+            />
 
             {mouseIsDown && (
               <div className={classes.draftShapeContainer}>

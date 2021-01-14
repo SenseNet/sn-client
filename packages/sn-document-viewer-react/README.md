@@ -38,7 +38,7 @@ import {
 } from '@sensenet/document-viewer-react'
 
 <SnDocumentViewer
-  documentIdOrPath={<an id or path of the document>}
+  documentIdOrPath={<id or path of the document>}
   renderAppBar={() => (
     <LayoutAppBar>
       <div style={{ flexShrink: 0 }}>

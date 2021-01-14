@@ -32,7 +32,7 @@ export const ToggleRedactionWidget: React.FC<{ classes?: ToggleRedactionClassKey
     <ToggleBase
       disabled={!permissions.canHideRedaction}
       classes={classes}
-      isVisible={viewerState.showRedaction}
+      active={viewerState.showRedaction}
       title={localization.toggleRedaction}
       setValue={(value) => viewerState.updateState({ showRedaction: value })}>
       <PictureInPicture className={clsx(classes.icon, { [classes.iconActive]: viewerState.showRedaction })} />

@@ -29,7 +29,7 @@ export const ToggleCommentsWidget: React.FC<{ classes?: ToggleCommentsClassKey }
   return (
     <ToggleBase
       classes={classes}
-      isVisible={viewerState.showComments}
+      active={viewerState.showComments}
       title={localization.toggleComments}
       setValue={(v) => viewerState.updateState({ showComments: v })}>
       <Forum className={clsx(classes.icon, { [classes.iconActive]: viewerState.showComments })} />

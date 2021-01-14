@@ -1,3 +1,4 @@
+import grey from '@material-ui/core/colors/grey'
 import { Theme } from '@material-ui/core/styles/createMuiTheme'
 import createStyles from '@material-ui/core/styles/createStyles'
 import makeStyles from '@material-ui/core/styles/makeStyles'
@@ -20,7 +21,7 @@ const useStyles = makeStyles<Theme, Props>(() =>
       width: ({ dimensions }) => dimensions.width,
       height: ({ dimensions }) => dimensions.height,
       position: 'absolute',
-      backgroundColor: 'grey',
+      backgroundColor: grey[600],
       opacity: 0.2,
     },
   }),

@@ -2,6 +2,7 @@ import { Annotation, Shapes } from '@sensenet/client-core'
 import Button from '@material-ui/core/Button/Button'
 import Checkbox from '@material-ui/core/Checkbox/Checkbox'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener/ClickAwayListener'
+import grey from '@material-ui/core/colors/grey'
 import Paper from '@material-ui/core/Paper/Paper'
 import Popper from '@material-ui/core/Popper/Popper'
 import { Theme } from '@material-ui/core/styles/createMuiTheme'
@@ -45,7 +46,7 @@ const useStyles = makeStyles<Theme, Props>((theme: Theme) => {
     paper: {
       padding: '10px',
       marginLeft: '10px',
-      border: 'solid grey 2px',
+      border: `solid ${grey[600]} 2px`,
     },
     button: {
       backgroundColor: theme.palette.error.light,
@@ -64,6 +65,7 @@ export interface ShapeAnnotationProps {
   getShapeDimensions: (shape: Annotation) => React.CSSProperties
   updateShapeData: (shapeType: keyof Shapes, guid: string, shape: Annotation) => void
   removeShape: (shapeType: keyof Shapes, guid: string) => void
+  rotationDegree: number
 }
 
 export const ShapeAnnotation: React.FC<ShapeAnnotationProps> = (props) => {
@@ -90,23 +92,21 @@ export const ShapeAnnotation: React.FC<ShapeAnnotationProps> = (props) => {
   return (
     <>
       <AnnotationWrapper
-        permissions={permissions}
         shape={props.shape}
         zoomRatio={props.zoomRatio}
         dimensions={getDimensions()}
         onRightClick={onRightClick}
-        renderChildren={() => (
-          <div
-            id="annotation-input"
-            className={classes.annotationInput}
-            contentEditable={permissions.canEdit && rotationDegree === 0 ? ('plaintext-only' as any) : false}
-            suppressContentEditableWarning={true}>
-            {props.shape.text}
-          </div>
-        )}
         onDragStart={props.onDragStart}
         onResized={props.onResized}
-      />
+        rotationDegree={props.rotationDegree}>
+        <div
+          id="annotation-input"
+          className={classes.annotationInput}
+          contentEditable={permissions.canEdit && rotationDegree === 0 ? ('plaintext-only' as any) : false}
+          suppressContentEditableWarning={true}>
+          {props.shape.text}
+        </div>
+      </AnnotationWrapper>
       <Popper id={id} open={open} anchorEl={anchorEl} placement="right-start">
         <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
           <Paper className={classes.paper}>

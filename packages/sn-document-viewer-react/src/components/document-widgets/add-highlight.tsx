@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) => {
 type AddRHightlightClassKey = Partial<ReturnType<typeof useStyles>>
 
 /**
- * Document widget component to draw Hihgligh
+ * Document widget component to draw Highlight
  */
 export const AddHighlightWidget: React.FC<{ classes?: AddRHightlightClassKey }> = (props) => {
   const classes = useStyles(props)
@@ -28,11 +28,14 @@ export const AddHighlightWidget: React.FC<{ classes?: AddRHightlightClassKey }> 
   const viewerState = useViewerState()
   const permissions = useDocumentPermissions()
 
+  const pageRotation =
+    viewerState.rotation?.find((rotation) => rotation.pageNum === viewerState.activePage)?.degree || 0
+
   return (
     <ToggleBase
-      disabled={!permissions.canEdit}
+      disabled={!permissions.canEdit || pageRotation !== 0}
       classes={classes}
-      isVisible={viewerState.activeShapePlacing === 'highlight'}
+      active={viewerState.activeShapePlacing === 'highlight'}
       title={localization.addHighlight}
       setValue={(value) => viewerState.updateState({ activeShapePlacing: value ? 'highlight' : 'none' })}>
       <ChatBubbleOutlineSharp

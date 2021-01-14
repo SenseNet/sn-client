@@ -26,6 +26,7 @@ type Props = {
   }
   zoomRatio: number
   removeShape: (shapeType: keyof Shapes, guid: string) => void
+  rotationDegree: number
 }
 
 const useStyles = makeStyles<Theme, Props>((theme: Theme) =>
@@ -36,7 +37,7 @@ const useStyles = makeStyles<Theme, Props>((theme: Theme) =>
       width: ({ dimensions }) => dimensions.width,
       height: ({ dimensions }) => dimensions.height,
       position: 'absolute',
-      resize: ({ permissions }) => (permissions.canEdit ? 'both' : 'none'),
+      resize: ({ permissions, rotationDegree }) => (permissions.canEdit && rotationDegree === 0 ? 'both' : 'none'),
       overflow: 'auto',
       backgroundColor: 'black',
     },
@@ -65,8 +66,18 @@ export function ShapeRedaction({
   onDragStart,
   onResized,
   removeShape,
+  rotationDegree,
 }: Props) {
-  const classes = useStyles({ shape, permissions, dimensions, zoomRatio, onDragStart, onResized, removeShape })
+  const classes = useStyles({
+    shape,
+    permissions,
+    dimensions,
+    zoomRatio,
+    onDragStart,
+    onResized,
+    removeShape,
+    rotationDegree,
+  })
   const localization = useLocalization()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
