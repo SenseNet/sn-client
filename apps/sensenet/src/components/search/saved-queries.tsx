@@ -114,7 +114,6 @@ export default function SavedQueries() {
                           height: 'calc(100% - 107px)',
                           overflow: 'auto',
                         }}
-                        fieldsToDisplay={['DisplayName', 'Query']}
                         enableBreadcrumbs={false}
                         parentIdOrPath={0}
                         onParentChange={() => {
