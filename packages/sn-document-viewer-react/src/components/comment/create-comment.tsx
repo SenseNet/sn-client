@@ -41,6 +41,9 @@ export function CreateComment() {
   const api = useDocumentViewerApi()
   const { documentData } = useDocumentData()
 
+  const pageRotation =
+    viewerState.rotation?.find((rotation) => rotation.pageNum === viewerState.activePage)?.degree || 0
+
   const createComment = useCallback(
     (text: string) => {
       if (!commentState.draft) {
@@ -101,6 +104,7 @@ export function CreateComment() {
   if (!viewerState.isCreateCommentActive) {
     return (
       <Button
+        disabled={pageRotation !== 0}
         color="primary"
         onClick={() => viewerState.updateState({ isCreateCommentActive: !viewerState.isCreateCommentActive })}>
         {localization.addComment}

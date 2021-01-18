@@ -33,8 +33,8 @@ export interface PageListProps {
 }
 
 export const PageList: React.FC<PageListProps> = (props) => {
-  const [marginTop, setMarginTop] = useState(0)
-  const [marginBottom, setMarginBottom] = useState(0)
+  const [paddingTop, setPaddingTop] = useState(0)
+  const [paddingBottom, setPaddingBottom] = useState(0)
   const [visiblePages, setVisiblePages] = useState<PreviewImageData[]>([])
   const [scrollState, setScrollState] = useState(0)
   const viewportElement = useRef<HTMLElement>()
@@ -117,11 +117,11 @@ export const PageList: React.FC<PageListProps> = (props) => {
       }
     })
 
-    let _marginTop = 0
+    let _paddingTop = 0
     let _pagesToSkip = 0
 
-    while (_visiblePages[_pagesToSkip] && _marginTop + _visiblePages[_pagesToSkip].Height < scrollState) {
-      _marginTop += _visiblePages[_pagesToSkip].Height + PAGE_PADDING * 2
+    while (_visiblePages[_pagesToSkip] && _paddingTop + _visiblePages[_pagesToSkip].Height < scrollState) {
+      _paddingTop += _visiblePages[_pagesToSkip].Height + PAGE_PADDING * 2
       _pagesToSkip++
     }
 
@@ -133,13 +133,13 @@ export const PageList: React.FC<PageListProps> = (props) => {
       _pagesToTake++
     }
 
-    let _marginBottom = 0
+    let _paddingBottom = 0
     for (let i = _pagesToSkip + _pagesToTake - 1; i < _visiblePages.length - 1; i++) {
-      _marginBottom += _visiblePages[i].Height + PAGE_PADDING * 2
+      _paddingBottom += _visiblePages[i].Height + PAGE_PADDING * 2
     }
 
-    setMarginTop(_marginTop)
-    setMarginBottom(_marginBottom + _visiblePages[0].Height / 4)
+    setPaddingTop(_paddingTop)
+    setPaddingBottom(_paddingBottom + _visiblePages[0].Height / 4)
     const newVisiblePages = _visiblePages.slice(_pagesToSkip, _pagesToSkip + _pagesToTake)
     setVisiblePages(newVisiblePages)
 
@@ -149,7 +149,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
         newActivePage = newVisiblePages[0].Index
       } else {
         newActivePage =
-          scrollState - _marginTop >= 0 && scrollState - _marginTop > newVisiblePages[0].Height / 2
+          scrollState - _paddingTop >= 0 && scrollState - _paddingTop > newVisiblePages[0].Height / 2
             ? newVisiblePages[1].Index
             : newVisiblePages[0].Index
       }
@@ -161,7 +161,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
 
   return (
     <Grid item={true} className={classes.grid} id={PAGE_CONTAINER_ID} innerRef={viewportElement}>
-      <div className={classes.pagesWrapper} style={{ paddingTop: marginTop || 0, paddingBottom: marginBottom || 0 }}>
+      <div className={classes.pagesWrapper} style={{ paddingTop: paddingTop || 0, paddingBottom: paddingBottom || 0 }}>
         {visiblePages.map((page) => (
           <Page
             key={page.Index}

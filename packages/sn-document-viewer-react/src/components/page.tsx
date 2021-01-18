@@ -150,8 +150,13 @@ export const Page: React.FC<PageProps> = (props) => {
             guid: `a-${startX}-${startY}`,
             ...ANNOTATION_EXTRA_VALUES,
           })
+
           updateDocumentData(documentData)
-          viewerState.updateState({ hasChanges: true, activeShapePlacing: 'none' })
+          viewerState.updateState({
+            hasChanges: true,
+            activeShapePlacing: 'none',
+            showShapes: true,
+          })
           break
         case 'highlight':
           documentData.shapes.highlights.push({
@@ -163,7 +168,11 @@ export const Page: React.FC<PageProps> = (props) => {
             guid: `h-${startX}-${startY}`,
           })
           updateDocumentData(documentData)
-          viewerState.updateState({ hasChanges: true, activeShapePlacing: 'none' })
+          viewerState.updateState({
+            hasChanges: true,
+            activeShapePlacing: 'none',
+            showShapes: true,
+          })
           break
         case 'redaction':
           documentData.shapes.redactions.push({
@@ -175,7 +184,11 @@ export const Page: React.FC<PageProps> = (props) => {
             guid: `r-${startX}-${startY}`,
           })
           updateDocumentData(documentData)
-          viewerState.updateState({ hasChanges: true, activeShapePlacing: 'none' })
+          viewerState.updateState({
+            hasChanges: true,
+            activeShapePlacing: 'none',
+            showRedaction: true,
+          })
           break
         default:
           break
