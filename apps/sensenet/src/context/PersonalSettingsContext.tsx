@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { defaultSettings, PersonalSettings } from '../services/PersonalSettings'
 
 export const PersonalSettingsContext = React.createContext(defaultSettings)
-export const PersonalSettingsContextProvider: React.StatelessComponent = (props) => {
+
+export const PersonalSettingsContextProvider: React.FunctionComponent = (props) => {
   const di = useInjector()
   const settingsService = di.getInstance(PersonalSettings)
   const [settings, setSettings] = useState(settingsService.effectiveValue.getValue())

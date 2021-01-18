@@ -56,7 +56,7 @@ export interface VirtualCellProps {
   fieldSettings: FieldSetting
 }
 
-interface VirtualizedTableProps extends ContentListBaseProps {
+interface VirtualizedTableProps<T extends GenericContent> extends ContentListBaseProps<T> {
   /**
    * Contains custom cell template components
    */
@@ -101,7 +101,7 @@ interface VirtualizedTableProps extends ContentListBaseProps {
   }
 }
 
-export const VirtualizedTable: React.FC<VirtualizedTableProps> = (props) => {
+export const VirtualizedTable = <T extends GenericContent = GenericContent>(props: VirtualizedTableProps<T>) => {
   const classes = useStyles()
 
   const handleSelectAllClick = () => {
@@ -111,7 +111,7 @@ export const VirtualizedTable: React.FC<VirtualizedTableProps> = (props) => {
         : props.onRequestSelectionChange(props.items))
   }
 
-  const handleContentSelection = (content: GenericContent) => {
+  const handleContentSelection = (content: T) => {
     const tempSelected = props.selected !== undefined && props.selected.length > 0 ? props.selected : []
     if (props.onRequestSelectionChange) {
       if (tempSelected.find((c) => c.Id === content.Id)) {
