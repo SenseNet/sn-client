@@ -23,14 +23,14 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-type ContentBreadcrumbsProps = {
-  onItemClick?: (item: BreadcrumbItem<GenericContent>) => void
+type ContentBreadcrumbsProps<T extends GenericContent> = {
+  onItemClick?: (item: BreadcrumbItem<T>) => void
   batchActions?: boolean
 }
 
-export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
-  const ancestors = useContext(CurrentAncestorsContext)
-  const parent = useContext(CurrentContentContext)
+export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(props: ContentBreadcrumbsProps<T>) => {
+  const ancestors = useContext(CurrentAncestorsContext) as T[]
+  const parent = useContext(CurrentContentContext) as T
   const uiSettings = useContext(ResponsivePersonalSettings)
   const repository = useRepository()
   const history = useHistory()
@@ -53,7 +53,7 @@ export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
 
   return (
     <>
-      <Breadcrumbs
+      <Breadcrumbs<T>
         items={[
           ...ancestors.map((content) => ({
             displayName: content.DisplayName || content.Name,
