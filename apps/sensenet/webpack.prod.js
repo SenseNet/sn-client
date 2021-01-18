@@ -3,6 +3,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const { RelativeCiAgentWebpackPlugin } = require('@relative-ci/agent')
 const CopyPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
@@ -26,6 +27,7 @@ module.exports = merge(common, {
           keep_fnames: true,
         },
       }),
+      new CssMinimizerPlugin(),
     ],
   },
   plugins: [

@@ -52,6 +52,7 @@
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^6.2.1",
     "css-loader": "^5.0.0",
+    "css-minimizer-webpack-plugin": "^1.2.0",
     "cypress": "^6.1.0",
     "cypress-file-upload": "^4.1.1",
     "cypress-xpath": "^1.4.0",
