@@ -109,7 +109,7 @@ export default function SavedQueries() {
                 <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>
                   <CurrentChildrenContext.Provider value={queries}>
                     <CurrentAncestorsContext.Provider value={[]}>
-                      <ContentList
+                      <ContentList<Query>
                         style={{
                           height: 'calc(100% - 107px)',
                           overflow: 'auto',
@@ -119,7 +119,7 @@ export default function SavedQueries() {
                         onParentChange={() => {
                           // ignore, only queries will be listed
                         }}
-                        onActivateItem={(p: Query) => {
+                        onActivateItem={(p) => {
                           history.push(
                             pathWithQueryParams({ path: PATHS.search.appPath, newParams: { term: p.Query } }),
                           )
