@@ -285,7 +285,6 @@ const values = {
     documentation: 'Documentation',
     reportBug: 'Report bug',
     feedback: 'Feedback',
-    changePwMessage: 'Email has sent to your address!',
   },
   navigationCommandProvider: {
     personalSettingsPrimary: 'Personal Settings',
@@ -475,6 +474,16 @@ const values = {
     feedbackText3: (link: string) => `You can check existing feedbacks and statuses on the public ${link} anytime.`,
     feedbackText4: 'Thanks for your feedback',
     cancel: 'Cancel',
+  },
+  changePassword: {
+    changeYourPassword: 'Change your password',
+    cancel: 'Cancel',
+    update: 'Update',
+    oldPassword: 'Old password',
+    newPassword: 'New password',
+    confirmNew: 'Confirm new password',
+    changePasswordSuccess: 'Password has changed successfully',
+    passwordsDontMatch: 'The passwords do not match',
   },
 }
 

@@ -142,7 +142,6 @@ const values: DeepPartial<typeof import('./default').default> = {
     documentation: 'Dokumentáció',
     reportBug: 'Hibabejelentés',
     feedback: 'Visszajelzés',
-    changePwMessage: 'Email küldése sikeresen megtörtént',
   },
   forms: {
     referencePicker: 'Referencia választó',
@@ -197,6 +196,16 @@ const values: DeepPartial<typeof import('./default').default> = {
       `A meglévő visszajelzéseket és azok állapotát bármikor ellenőrizheted a nyilvános ${link}-on.`,
     feedbackText4: 'Köszönjük a visszajelzést!',
     cancel: 'Vissza',
+  },
+  changePassword: {
+    changeYourPassword: 'Jelszómódosítás',
+    cancel: 'Cancel',
+    update: 'Küldés',
+    oldPassword: 'Régi jelszó',
+    newPassword: 'Új jelszó',
+    confirmNew: 'Új jelszó megerősítése',
+    changePasswordSuccess: 'A jelszóváltoztatás sikeres',
+    passwordsDontMatch: 'A beírt jelszavak nem egyeznek!',
   },
 }
 
