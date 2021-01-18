@@ -6,6 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CompressionPlugin = require('compression-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const { merge } = require('webpack-merge')
 const common = require('./webpack.common.js')
@@ -55,6 +56,7 @@ module.exports = merge(common, {
         minifyURLs: true,
       },
     }),
+    new CompressionPlugin(),
     new CopyPlugin({
       patterns: [
         { from: path.resolve(`${__dirname}/_redirects`), to: path.resolve(`${__dirname}/build`) },
