@@ -222,7 +222,7 @@ export class Repository implements Disposable {
       throw await this.getErrorFromResponse(response)
     }
     if (response.status === 204) {
-      return Promise.resolve({} as ODataResponse<TContentType>)
+      return Promise.resolve({ d: null as any })
     }
     return await response.json()
   }
