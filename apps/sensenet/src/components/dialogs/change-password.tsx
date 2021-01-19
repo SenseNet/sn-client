@@ -7,6 +7,8 @@ import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { DialogTitle, useDialog } from '.'
 
+type PasswordFieldKeys = 'oldPassword' | 'newPassword' | 'confirmPassword'
+
 export function ChangePasswordDialog() {
   const { closeLastDialog } = useDialog()
   const localization = useLocalization().changePassword
@@ -14,28 +16,28 @@ export function ChangePasswordDialog() {
   const globalClasses = useGlobalStyles()
   const repo = useRepository()
   const currentUser = useCurrentUser()
-  const [passwordFields, setPasswordFields] = useState<{
-    oldPassword?: string
-    newPassword?: string
-    confirmPassword?: string
-  }>({
-    oldPassword: undefined,
-    newPassword: undefined,
-    confirmPassword: undefined,
-  })
+  const [passwordFields, setPasswordFields] = useState<
+    {
+      [K in PasswordFieldKeys]?: string
+    }
+  >({})
   const [match, setMatch] = useState<boolean>(true)
-  const [dirtyFlags, setDirtyFlags] = useState<{
-    oldPassword?: boolean
-    newPassword?: boolean
-    confirmPassword?: boolean
-  }>({
+  const [dirtyFlags, setDirtyFlags] = useState<
+    {
+      [K in PasswordFieldKeys]: boolean
+    }
+  >({
     oldPassword: false,
     newPassword: false,
     confirmPassword: false,
   })
 
   const onSubmit = async () => {
-    validate()
+    if (!validate()) {
+      setMatch(false)
+      return false
+    }
+
     try {
       await repo.executeAction({
         idOrPath: currentUser.Path,
@@ -59,10 +61,9 @@ export function ChangePasswordDialog() {
       (dirtyFlags.newPassword || dirtyFlags.confirmPassword) &&
       passwordFields.newPassword !== passwordFields.confirmPassword
     ) {
-      setMatch(false)
-    } else {
-      setMatch(true)
+      return false
     }
+    return true
   }
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -97,7 +98,7 @@ export function ChangePasswordDialog() {
             rowsMax="4"
             value={passwordFields.newPassword}
             onChange={(event) => handleInputChange(event)}
-            onBlur={() => validate()}
+            onBlur={() => setMatch(validate())}
             margin="normal"
             fullWidth={true}
             placeholder={localization.newPassword}
@@ -111,7 +112,7 @@ export function ChangePasswordDialog() {
             rowsMax="4"
             value={passwordFields.confirmPassword}
             onChange={(event) => handleInputChange(event)}
-            onBlur={() => validate()}
+            onBlur={() => setMatch(validate())}
             margin="normal"
             fullWidth={true}
             placeholder={localization.confirmNew}
