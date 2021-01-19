@@ -11,6 +11,7 @@ describe('Permission editor group switcher and force relations', () => {
     cy.get('[data-test="menu-item-it-workspace"]').rightclick()
     cy.get('[data-test="content-context-menu-setpermissions"]').click()
     cy.get('[data-test="set-on-this-visitors"]').click()
+    cy.get('[data-test="switcher-read"]').should('be.visible')
     cy.get('[data-test="switcher-read"]').click()
 
     cy.checkReadPermissionGroup(false)
@@ -26,6 +27,7 @@ describe('Permission editor group switcher and force relations', () => {
 
     cy.checkReadPermissionGroup(false)
 
+    cy.get('[data-test="switcher-open"]').should('be.visible')
     cy.get('[data-test="switcher-open"]').click()
 
     cy.checkReadPermissionGroup(true)
