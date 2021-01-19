@@ -14,20 +14,36 @@ export function ChangePasswordDialog() {
   const globalClasses = useGlobalStyles()
   const repo = useRepository()
   const currentUser = useCurrentUser()
-  const [oldPassword, setOldPassword] = useState<string>()
-  const [newPassword, setNewPassword] = useState<string>()
-  const [confirmPassword, setConfirmPassword] = useState<string>()
-  const [match, setMatch] = useState<boolean>()
+  const [passwordFields, setPasswordFields] = useState<{
+    oldPassword?: string
+    newPassword?: string
+    confirmPassword?: string
+  }>({
+    oldPassword: undefined,
+    newPassword: undefined,
+    confirmPassword: undefined,
+  })
+  const [match, setMatch] = useState<boolean>(true)
+  const [dirtyFlags, setDirtyFlags] = useState<{
+    oldPassword?: boolean
+    newPassword?: boolean
+    confirmPassword?: boolean
+  }>({
+    oldPassword: false,
+    newPassword: false,
+    confirmPassword: false,
+  })
 
   const onSubmit = async () => {
+    validate()
     try {
       await repo.executeAction({
         idOrPath: currentUser.Path,
         name: 'ChangePassword',
         method: 'POST',
         body: {
-          oldPassword,
-          password: newPassword,
+          oldPassword: passwordFields.oldPassword,
+          password: passwordFields.newPassword,
         },
       })
       logger.information({ message: localization.changePasswordSuccess })
@@ -39,13 +55,19 @@ export function ChangePasswordDialog() {
   }
 
   const validate = () => {
-    if (typeof newPassword !== 'undefined' && typeof confirmPassword !== 'undefined') {
-      if (newPassword !== confirmPassword) {
-        setMatch(false)
-      } else {
-        setMatch(true)
-      }
+    if (
+      (dirtyFlags.newPassword || dirtyFlags.confirmPassword) &&
+      passwordFields.newPassword !== passwordFields.confirmPassword
+    ) {
+      setMatch(false)
+    } else {
+      setMatch(true)
     }
+  }
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    setPasswordFields({ ...passwordFields, [event.target.name]: event.target.value })
+    setDirtyFlags({ ...dirtyFlags, [event.target.name]: true })
   }
 
   return (
@@ -56,11 +78,12 @@ export function ChangePasswordDialog() {
       <>
         <DialogContent>
           <TextField
+            name="oldPassword"
             label={localization.oldPassword}
             multiline={false}
             rowsMax="4"
-            value={oldPassword}
-            onChange={(event) => setOldPassword(event.target.value)}
+            value={passwordFields.oldPassword}
+            onChange={(event) => handleInputChange(event)}
             margin="normal"
             fullWidth={true}
             placeholder={localization.oldPassword}
@@ -68,11 +91,12 @@ export function ChangePasswordDialog() {
             required
           />
           <TextField
+            name="newPassword"
             label={localization.newPassword}
             multiline={false}
             rowsMax="4"
-            value={newPassword}
-            onChange={(event) => setNewPassword(event.target.value)}
+            value={passwordFields.newPassword}
+            onChange={(event) => handleInputChange(event)}
             onBlur={() => validate()}
             margin="normal"
             fullWidth={true}
@@ -81,11 +105,12 @@ export function ChangePasswordDialog() {
             required
           />
           <TextField
+            name="confirmPassword"
             label={localization.confirmNew}
             multiline={false}
             rowsMax="4"
-            value={confirmPassword}
-            onChange={(event) => setConfirmPassword(event.target.value)}
+            value={passwordFields.confirmPassword}
+            onChange={(event) => handleInputChange(event)}
             onBlur={() => validate()}
             margin="normal"
             fullWidth={true}
@@ -105,7 +130,9 @@ export function ChangePasswordDialog() {
             color="primary"
             variant="contained"
             onClick={onSubmit}
-            disabled={!oldPassword || !newPassword || !confirmPassword || !match}
+            disabled={
+              !passwordFields.oldPassword || !passwordFields.newPassword || !passwordFields.confirmPassword || !match
+            }
             autoFocus={true}>
             {localization.update}
           </Button>
