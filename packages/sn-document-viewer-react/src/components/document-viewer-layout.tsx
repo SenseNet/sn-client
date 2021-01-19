@@ -38,7 +38,6 @@ const useStyles = makeStyles(() => {
       padding: '15px',
       justifyContent: 'space-between',
       alignItems: 'center',
-      flexWrap: 'wrap',
       overflow: 'auto',
     },
   })

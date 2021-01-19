@@ -95,6 +95,9 @@ export const Page: React.FC<PageProps> = (props) => {
 
   const handleMarkerPlacement = useCallback(
     (event: React.MouseEvent) => {
+      if (imageRotation !== 0) {
+        viewerState.updateState({ isPlacingCommentMarker: false })
+      }
       const xCoord = event.nativeEvent.offsetX / (props.page.Height / (page.image?.Height || 1))
       const yCoord = event.nativeEvent.offsetY / (props.page.Width / (page.image?.Width || 1))
 
@@ -111,14 +114,18 @@ export const Page: React.FC<PageProps> = (props) => {
     },
     [
       commentState,
-      page.image,
+      imageRotation,
+      page.image?.Height,
+      page.image?.Width,
       props.page.Height,
       props.page.Width,
-      viewerState.activePage,
-      viewerState.isPlacingCommentMarker,
+      viewerState,
     ],
   )
   const handleMouseDown = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (imageRotation !== 0) {
+      viewerState.updateState({ activeShapePlacing: 'none' })
+    }
     setMouseIsDown(true)
     setStartX(ev.nativeEvent.offsetX / (props.page.Height / (page.image?.Height || 1)))
     setStartY(ev.nativeEvent.offsetY / (props.page.Width / (page.image?.Width || 1)))
