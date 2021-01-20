@@ -10,8 +10,7 @@ describe('Content types', () => {
 
   it('clicking on the content types menu item should show article', () => {
     cy.get('.ReactVirtualized__Table__Grid').should('be.visible').scrollTo('bottom')
-    cy.get('[data-test="table-cell-article"]').as('article')
-    cy.get('@article').scrollIntoView().should('be.visible')
+    cy.get('[data-test="table-cell-article"]').scrollIntoView().should('be.visible')
   })
 
   it('double clicking on article should open binary editor', () => {
