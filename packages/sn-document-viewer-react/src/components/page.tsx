@@ -1,11 +1,53 @@
 import { PreviewImageData } from '@sensenet/client-core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Paper from '@material-ui/core/Paper'
-import React, { useCallback } from 'react'
-import { useCommentState, usePreviewImage, useViewerState } from '../hooks'
+import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
+import clsx from 'clsx'
+import React, { useCallback, useState } from 'react'
+import { useCommentState, useDocumentData, usePreviewImage, useViewerState } from '../hooks'
+import { ActiveShapPlacingOptions } from '../models'
 import { ImageUtil } from '../services'
 import { PAGE_NAME, PAGE_PADDING } from './document-viewer-layout'
-import { MARKER_SIZE, ShapesWidget } from './shapes'
+import { MARKER_SIZE, ShapeDraft, ShapesWidget } from './shapes'
+
+export const ANNOTATION_EXTRA_VALUES = {
+  text: '',
+  lineHeight: 40,
+  fontBold: 400,
+  fontColor: '#000000',
+  fontFamily: 'arial',
+  fontItalic: false,
+  fontSize: 40,
+}
+
+const useStyles = makeStyles<Theme, PageProps>(() => {
+  return createStyles({
+    page: {
+      padding: 0,
+      overflow: 'hidden',
+      width: ({ page }) => page.Width,
+      height: ({ page }) => page.Height,
+      position: 'relative',
+    },
+    image: {
+      display: 'flex',
+      justifyContent: 'center',
+    },
+    isPlacingShape: {
+      cursor: 'crosshair',
+    },
+    draftShapeContainer: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      zIndex: 1,
+    },
+  })
+})
 
 /**
  * Defined the component's own properties
@@ -18,9 +60,16 @@ export interface PageProps {
 }
 
 export const Page: React.FC<PageProps> = (props) => {
+  const classes = useStyles(props)
   const viewerState = useViewerState()
   const page = usePreviewImage(props.page.Index)
   const commentState = useCommentState()
+  const [mouseIsDown, setMouseIsDown] = useState<boolean>(false)
+  const [startX, setStartX] = useState<number>(0)
+  const [startY, setStartY] = useState<number>(0)
+  const [draftWidth, setdraftWidth] = useState<number>(0)
+  const [draftHeight, setdraftHeight] = useState<number>(0)
+  const { documentData, updateDocumentData } = useDocumentData()
 
   const isActive = page.image && viewerState.activePage === page.image.Index
 
@@ -34,8 +83,8 @@ export const Page: React.FC<PageProps> = (props) => {
 
   const boundingBox = ImageUtil.getRotatedBoundingBoxSize(
     {
-      width: (page.image && page.image.Width) || 0,
-      height: (page.image && page.image.Height) || 0,
+      width: page.image?.Width || 0,
+      height: page.image?.Height || 0,
     },
     imageRotation,
   )
@@ -46,8 +95,11 @@ export const Page: React.FC<PageProps> = (props) => {
 
   const handleMarkerPlacement = useCallback(
     (event: React.MouseEvent) => {
-      const xCoord = event.nativeEvent.offsetX / (props.page.Height / ((page.image && page.image.Height) || 1))
-      const yCoord = event.nativeEvent.offsetY / (props.page.Width / ((page.image && page.image.Width) || 1))
+      if (imageRotation !== 0) {
+        viewerState.updateState({ isPlacingCommentMarker: false })
+      }
+      const xCoord = event.nativeEvent.offsetX / (props.page.Height / (page.image?.Height || 1))
+      const yCoord = event.nativeEvent.offsetY / (props.page.Width / (page.image?.Width || 1))
 
       if (!viewerState.isPlacingCommentMarker || xCoord <= MARKER_SIZE || yCoord <= MARKER_SIZE) {
         return
@@ -62,37 +114,139 @@ export const Page: React.FC<PageProps> = (props) => {
     },
     [
       commentState,
-      page.image,
+      imageRotation,
+      page.image?.Height,
+      page.image?.Width,
       props.page.Height,
       props.page.Width,
-      viewerState.activePage,
-      viewerState.isPlacingCommentMarker,
+      viewerState,
     ],
   )
+  const handleMouseDown = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (imageRotation !== 0) {
+      viewerState.updateState({ activeShapePlacing: 'none' })
+    }
+    setMouseIsDown(true)
+    setStartX(ev.nativeEvent.offsetX / (props.page.Height / (page.image?.Height || 1)))
+    setStartY(ev.nativeEvent.offsetY / (props.page.Width / (page.image?.Width || 1)))
+  }
+
+  const handleMouseMove = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const endX = ev.nativeEvent.offsetX / (props.page.Height / (page.image?.Height || 1))
+    const endY = ev.nativeEvent.offsetY / (props.page.Width / (page.image?.Width || 1))
+    setdraftHeight(endY - startY)
+    setdraftWidth(endX - startX)
+  }
+
+  const handleMouseUp = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>, shapeType: ActiveShapPlacingOptions) => {
+    setMouseIsDown(false)
+    setdraftHeight(0)
+    setdraftWidth(0)
+    const endX = ev.nativeEvent.offsetX / (props.page.Height / (page.image?.Height || 1))
+    const endY = ev.nativeEvent.offsetY / (props.page.Width / (page.image?.Width || 1))
+
+    if (endY - startY > 0 && endX - startX > 0) {
+      switch (shapeType) {
+        case 'annotation':
+          documentData.shapes.annotations.push({
+            h: endY - startY,
+            w: endX - startX,
+            x: startX,
+            y: startY,
+            imageIndex: props.page.Index,
+            guid: `a-${startX}-${startY}`,
+            ...ANNOTATION_EXTRA_VALUES,
+          })
+
+          updateDocumentData(documentData)
+          viewerState.updateState({
+            hasChanges: true,
+            activeShapePlacing: 'none',
+            showShapes: true,
+          })
+          break
+        case 'highlight':
+          documentData.shapes.highlights.push({
+            h: endY - startY,
+            w: endX - startX,
+            x: startX,
+            y: startY,
+            imageIndex: props.page.Index,
+            guid: `h-${startX}-${startY}`,
+          })
+          updateDocumentData(documentData)
+          viewerState.updateState({
+            hasChanges: true,
+            activeShapePlacing: 'none',
+            showShapes: true,
+          })
+          break
+        case 'redaction':
+          documentData.shapes.redactions.push({
+            h: endY - startY,
+            w: endX - startX,
+            x: startX,
+            y: startY,
+            imageIndex: props.page.Index,
+            guid: `r-${startX}-${startY}`,
+          })
+          updateDocumentData(documentData)
+          viewerState.updateState({
+            hasChanges: true,
+            activeShapePlacing: 'none',
+            showRedaction: true,
+          })
+          break
+        default:
+          break
+      }
+    }
+    setStartX(0)
+    setStartY(0)
+  }
 
   return (
     <Paper elevation={isActive ? 8 : 2} className={PAGE_NAME} style={{ margin: PAGE_PADDING }}>
       <div
-        style={{
-          padding: 0,
-          overflow: 'hidden',
-          width: props.page.Width,
-          height: props.page.Height,
-          position: 'relative',
-        }}
+        className={clsx(classes.page, {
+          [classes.isPlacingShape]: viewerState.activeShapePlacing !== 'none',
+        })}
         onClick={(ev) => {
           viewerState.isPlacingCommentMarker ? handleMarkerPlacement(ev) : props.onClick(ev)
+        }}
+        onMouseDown={(ev) => {
+          viewerState.activeShapePlacing !== 'none' && !mouseIsDown && handleMouseDown(ev)
+        }}
+        onMouseMove={(ev) => {
+          viewerState.activeShapePlacing !== 'none' && mouseIsDown && handleMouseMove(ev)
+        }}
+        onMouseUp={(ev) => {
+          mouseIsDown && handleMouseUp(ev, viewerState.activeShapePlacing)
         }}>
         {page.image && (
-          <div>
+          <>
             <ShapesWidget
+              imageRotation={imageRotation}
               zoomRatioStanding={props.page.Height / page.image.Height}
               zoomRatioLying={props.page.Width / page.image.Height}
-              page={props.page}
+              page={page.image}
             />
-          </div>
+
+            {mouseIsDown && (
+              <div className={classes.draftShapeContainer}>
+                <ShapeDraft
+                  dimensions={{
+                    top: startY * (props.page.Height / page.image.Height),
+                    left: startX * (props.page.Height / page.image.Height),
+                    height: draftHeight * (props.page.Height / page.image.Height),
+                    width: draftWidth * (props.page.Height / page.image.Height),
+                  }}
+                />
+              </div>
+            )}
+          </>
         )}
-        <span style={{ display: 'flex', justifyContent: 'center' }}>
+        <span className={classes.image}>
           {imgUrl ? (
             <img
               src={`${imgUrl}${viewerState.showWatermark ? '?watermark=true' : ''}`}

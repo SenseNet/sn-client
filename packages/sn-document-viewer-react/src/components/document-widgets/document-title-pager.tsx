@@ -1,13 +1,41 @@
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
 import { useDocumentData, useLocalization, useViewerState } from '../../hooks'
 
+const useStyles = makeStyles(() => {
+  return createStyles({
+    typography: {
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      overflow: 'hidden',
+      margin: '0 2.5em',
+    },
+    nameWrapper: {
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+    },
+    textField: {
+      flexShrink: 0,
+    },
+    notFocusedText: {
+      flexShrink: 0,
+    },
+  })
+})
+
+type DocumentTitlePagerClassKey = Partial<ReturnType<typeof useStyles>>
+
 /**
  * Document widget component for paging
  */
-export const DocumentTitlePager: React.FC = () => {
+export const DocumentTitlePager: React.FunctionComponent<{ classes?: DocumentTitlePagerClassKey }> = (props) => {
+  const classes = useStyles(props)
   const { documentData } = useDocumentData()
   const viewerState = useViewerState()
   const localization = useLocalization()
@@ -29,11 +57,9 @@ export const DocumentTitlePager: React.FC = () => {
         onClick={() => setIsFocused(true)}
         variant="h6"
         color="inherit"
-        style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', overflow: 'hidden', margin: '0 2.5em' }}
-        title={documentData.documentName}>
-        <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          {documentData.documentName}&nbsp;
-        </div>
+        title={documentData.documentName}
+        className={classes.typography}>
+        <div className={classes.nameWrapper}>{documentData.documentName}&nbsp;</div>
         {isFocused ? (
           <form
             onSubmit={(ev) => {
@@ -41,7 +67,7 @@ export const DocumentTitlePager: React.FC = () => {
               ev.preventDefault()
             }}>
             <TextField
-              style={{ flexShrink: 0 }}
+              className={classes.textField}
               title={localization.gotoPage}
               onChange={(ev) => setCurrentValue(ev.currentTarget.value)}
               onBlur={() => gotoPage(currentValue)}
@@ -60,7 +86,7 @@ export const DocumentTitlePager: React.FC = () => {
             />
           </form>
         ) : (
-          <div style={{ flexShrink: 0 }}>
+          <div className={classes.notFocusedText}>
             {viewerState.activePage} / {documentData.pageCount}
           </div>
         )}

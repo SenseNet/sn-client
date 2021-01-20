@@ -13,7 +13,7 @@ export interface DocumentViewerApiSettings {
   /**
    * Callback that will retrieve if the current user has permission for document editing
    */
-  canEditDocument: (options: { document: DocumentData; abortController: AbortController }) => Promise<boolean>
+  canEditDocument: (options: { idOrPath: string | number; abortController: AbortController }) => Promise<boolean>
 
   /**
    * Callback for saving changes to the document
@@ -27,12 +27,12 @@ export interface DocumentViewerApiSettings {
   /**
    * Callback for checking if the current user can hide the watermark
    */
-  canHideWatermark: (options: { document: DocumentData; abortController: AbortController }) => Promise<boolean>
+  canHideWatermark: (options: { idOrPath: string | number; abortController: AbortController }) => Promise<boolean>
 
   /**
    * Callback for checking if the current user can hide the redaction
    */
-  canHideRedaction: (options: { document: DocumentData; abortController: AbortController }) => Promise<boolean>
+  canHideRedaction: (options: { idOrPath: string | number; abortController: AbortController }) => Promise<boolean>
 
   /**
    * Callback that will return with the retrieved DocumentData (if available)

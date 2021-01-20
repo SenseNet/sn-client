@@ -3,12 +3,13 @@
 exports[`ShapesSkeleton component should render without crashing 1`] = `
 <ShapeSkeleton
   removeShape={[Function]}
+  rotationDegree={0}
   shape={
     Object {
-      "guid": "testRedaction",
-      "h": 1,
+      "guid": "9a324f30-1423-11e9-bcb9-d719ddfb5f43",
+      "h": 100,
       "imageIndex": 1,
-      "w": 1,
+      "w": 200,
       "x": 10,
       "y": 10,
     }
@@ -29,38 +30,50 @@ exports[`ShapesSkeleton component should render without crashing 1`] = `
     }
   >
     <ShapeRedaction
-      getShapeDimensions={[Function]}
+      dimensions={
+        Object {
+          "height": 100,
+          "left": 10,
+          "top": 10,
+          "width": 200,
+        }
+      }
       onDragStart={[Function]}
       onResized={[Function]}
+      permissions={
+        Object {
+          "canEdit": false,
+          "canHideRedaction": false,
+          "canHideWatermark": false,
+        }
+      }
+      removeShape={[Function]}
+      rotationDegree={0}
       shape={
         Object {
-          "guid": "testRedaction",
-          "h": 1,
+          "guid": "9a324f30-1423-11e9-bcb9-d719ddfb5f43",
+          "h": 100,
           "imageIndex": 1,
-          "w": 1,
+          "w": 200,
           "x": 10,
           "y": 10,
         }
       }
+      zoomRatio={1}
     >
       <div
+        className="makeStyles-root-1 makeStyles-root-3"
         draggable={false}
-        key="r-1-1"
+        key="r-100-200"
+        onContextMenu={[Function]}
         onDragStart={[Function]}
         onMouseUp={[Function]}
-        style={
-          Object {
-            "backgroundColor": "black",
-            "height": 1,
-            "left": 10,
-            "overflow": "auto",
-            "position": "absolute",
-            "resize": "none",
-            "top": 10,
-            "width": 1,
-          }
-        }
         tabIndex={0}
+      />
+      <ForwardRef(Popper)
+        anchorEl={null}
+        open={false}
+        placement="right-start"
       />
     </ShapeRedaction>
   </div>

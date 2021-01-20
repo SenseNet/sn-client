@@ -104,20 +104,20 @@ export const createDefaultApiSettings: (repo: Repository) => DocumentViewerApiSe
   isPreviewAvailable: async ({ document, version, page, abortController }) => {
     return await repo.preview.available({ document, version, page, abortController })
   },
-  canEditDocument: async ({ document, abortController }) => {
-    const response = await repo.security.hasPermission(document.idOrPath, ['Save'], undefined, {
+  canEditDocument: async ({ idOrPath, abortController }) => {
+    const response = await repo.security.hasPermission(idOrPath, ['Save'], undefined, {
       signal: abortController.signal,
       credentials: 'include',
     })
     return response
   },
-  canHideRedaction: async ({ document, abortController }) =>
-    await repo.security.hasPermission(document.idOrPath, ['PreviewWithoutRedaction'], undefined, {
+  canHideRedaction: async ({ idOrPath, abortController }) =>
+    await repo.security.hasPermission(idOrPath, ['PreviewWithoutRedaction'], undefined, {
       signal: abortController.signal,
       credentials: 'include',
     }),
-  canHideWatermark: async ({ document, abortController }) =>
-    await repo.security.hasPermission(document.idOrPath, ['PreviewWithoutWatermark'], undefined, {
+  canHideWatermark: async ({ idOrPath, abortController }) =>
+    await repo.security.hasPermission(idOrPath, ['PreviewWithoutWatermark'], undefined, {
       signal: abortController.signal,
       credentials: 'include',
     }),

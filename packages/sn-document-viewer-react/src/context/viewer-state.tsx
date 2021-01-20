@@ -17,6 +17,7 @@ export const defaultViewerState: ViewerState & {
   showComments: false,
   hasChanges: false,
   isPlacingCommentMarker: false,
+  activeShapePlacing: 'none',
   isCreateCommentActive: false,
   pageToGo: new ObservableValue({ page: 1 }),
   updateState: () => {},

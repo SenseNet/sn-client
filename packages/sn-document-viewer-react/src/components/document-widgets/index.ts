@@ -1,3 +1,6 @@
+export * from './add-annotation'
+export * from './add-highlight'
+export * from './add-redaction'
 export * from './document-title-pager'
 export * from './download-widget'
 export * from './print-widget'
