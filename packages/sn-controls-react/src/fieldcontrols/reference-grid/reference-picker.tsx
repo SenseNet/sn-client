@@ -1,29 +1,19 @@
 import { ODataParams, Repository } from '@sensenet/client-core'
-import { Folder, GenericContent, User } from '@sensenet/default-content-types'
-import { useListPicker } from '@sensenet/pickers-react'
+import { Folder, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
+import { GenericContentWithIsParent, Picker, PickerProps } from '@sensenet/pickers-react'
 import Avatar from '@material-ui/core/Avatar'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import Fade from '@material-ui/core/Fade'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import React, { useEffect, useState } from 'react'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import LinearProgress from '@material-ui/core/LinearProgress'
+import React, { useMemo } from 'react'
 import { renderIconDefault } from '../icon'
 
-const styles: { [index: string]: React.CSSProperties } = {
-  uploadContainer: { minHeight: 50, position: 'relative' },
-  loaderContainer: { display: 'flex', alignItems: 'center', justifyContent: 'center' },
-}
-
-interface ReferencePickerProps {
-  change?: () => void
-  select: (content: GenericContent) => void
+interface ReferencePickerProps<T>
+  extends Pick<PickerProps<T>, 'handleSubmit' | 'handleCancel' | 'localization' | 'defaultValue' | 'classes'> {
   repository: Repository
   path: string
-  allowedTypes?: string[]
-  selected: GenericContent[]
-  renderIcon?: (name: string) => JSX.Element
+  renderIcon?: (name: T) => JSX.Element
+  fieldSettings: ReferenceFieldSetting
 }
 
 const createTypeFilterString = (allowedTypes: string[]) => {
@@ -39,40 +29,19 @@ const createTypeFilterString = (allowedTypes: string[]) => {
 /**
  * Represents a reference picker component
  */
-export const ReferencePicker: React.FC<ReferencePickerProps> = (props) => {
-  const pickerItemOptions: ODataParams<Folder> = {
-    select: ['DisplayName', 'Path', 'Id', 'Children/IsFolder', 'IsFolder', 'Avatar', 'Icon'] as any,
-    expand: ['Children'] as any,
-    filter: props.allowedTypes
-      ? createTypeFilterString(props.allowedTypes)
-      : "(isOf('GenericContent') and not isOf('SystemFolder'))",
-    metadata: 'no',
-    orderby: 'DisplayName',
-  }
-
-  const { items, setSelectedItem, navigateTo, isLoading, error } = useListPicker<GenericContent>({
-    repository: props.repository,
-    currentPath: props.path,
-    itemsODataOptions: pickerItemOptions,
-  })
-  const [showLoading, setShowLoading] = useState(false)
-
-  const onClickHandler = (_e: React.MouseEvent, node: GenericContent) => {
-    setSelectedItem(node)
-    if (!props.allowedTypes || props.allowedTypes.some((type) => type === node.Type)) {
-      props.select(node)
-    }
-  }
-
-  // Wait to show spinner to prevent content jumping
-  useEffect(() => {
-    const timer = window.setTimeout(() => {
-      setShowLoading(isLoading)
-    }, 800)
-    return () => {
-      window.clearTimeout(timer)
-    }
-  }, [isLoading])
+export const ReferencePicker: React.FC<ReferencePickerProps<GenericContentWithIsParent>> = (props) => {
+  const pickerItemOptions: ODataParams<Folder> = useMemo(
+    () => ({
+      select: ['DisplayName', 'Path', 'Id', 'Children/IsFolder', 'IsFolder', 'Avatar', 'Icon'] as any,
+      expand: ['Children'] as any,
+      filter: props.fieldSettings.AllowedTypes
+        ? createTypeFilterString(props.fieldSettings.AllowedTypes)
+        : "(isOf('GenericContent') and not isOf('SystemFolder'))",
+      metadata: 'no',
+      orderby: 'DisplayName',
+    }),
+    [props.fieldSettings.AllowedTypes],
+  )
 
   const iconName = (isFolder?: boolean) => {
     if (isFolder == null) {
@@ -81,58 +50,41 @@ export const ReferencePicker: React.FC<ReferencePickerProps> = (props) => {
     return isFolder ? 'folder' : 'insert_drive_file'
   }
 
-  if (showLoading) {
-    return (
-      <div style={styles.loaderContainer}>
-        <Fade
-          in={showLoading}
-          style={{
-            transitionDelay: showLoading ? '800ms' : '0ms',
-          }}
-          unmountOnExit={true}>
-          <CircularProgress />
-        </Fade>
-      </div>
+  const renderIcon = (item: GenericContentWithIsParent) =>
+    props.repository.schemas.isContentFromType<User>(item, 'User') ? (
+      (item as User).Avatar?.Url ? (
+        <Avatar
+          alt={item.DisplayName}
+          src={`${props.repository.configuration.repositoryUrl}${(item as User).Avatar!.Url}`}
+        />
+      ) : (
+        <Avatar alt={item.DisplayName}>
+          {item.DisplayName?.split(' ')
+            .map((namePart) => namePart[0])
+            .join('.')}
+        </Avatar>
+      )
+    ) : props.renderIcon ? (
+      props.renderIcon(item)
+    ) : (
+      renderIconDefault(iconName(item.IsFolder))
     )
-  }
-
-  if (error) {
-    return <p>{error.message}</p>
-  }
 
   return (
-    <List>
-      {items &&
-        items.map((node) => (
-          <ListItem
-            key={node.Id}
-            button={true}
-            onClick={(e) => onClickHandler(e, node)}
-            onDoubleClick={() => navigateTo(node)}
-            selected={props.selected.some((c) => c.Id === node.Id)}>
-            <ListItemIcon style={{ margin: 0 }}>
-              {props.repository.schemas.isContentFromType<User>(node, 'User') ? (
-                (node as User).Avatar?.Url ? (
-                  <Avatar
-                    alt={node.DisplayName}
-                    src={`${props.repository.configuration.repositoryUrl}${(node as User).Avatar!.Url}`}
-                  />
-                ) : (
-                  <Avatar alt={node.DisplayName}>
-                    {node.DisplayName?.split(' ')
-                      .map((namePart) => namePart[0])
-                      .join('.')}
-                  </Avatar>
-                )
-              ) : props.renderIcon ? (
-                props.renderIcon(iconName(node.IsFolder))
-              ) : (
-                renderIconDefault(iconName(node.IsFolder))
-              )}
-            </ListItemIcon>
-            <ListItemText primary={node.DisplayName} />
-          </ListItem>
-        ))}
-    </List>
+    <Picker
+      defaultValue={props.defaultValue}
+      repository={props.repository}
+      currentPath={props.path}
+      selectionRoots={props.fieldSettings.SelectionRoots}
+      itemsODataOptions={pickerItemOptions}
+      renderIcon={renderIcon}
+      renderLoading={() => <LinearProgress />}
+      allowMultiple={props.fieldSettings.AllowMultiple}
+      pickerContainer={DialogContent}
+      actionsContainer={DialogActions}
+      handleCancel={props.handleCancel}
+      handleSubmit={props.handleSubmit}
+      classes={props.classes}
+    />
   )
 }

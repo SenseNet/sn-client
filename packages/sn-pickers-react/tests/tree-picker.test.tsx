@@ -2,11 +2,11 @@ import ListItem from '@material-ui/core/ListItem'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { ListPickerComponent } from '../src/ListPicker'
+import { TreePicker } from '../src/components/tree-picker'
 import { genericContentItems } from './mocks/items'
-import { PickerWithoutOptions } from './mocks/Pickers'
+import { PickerWithoutOptions } from './mocks/pickers'
 
-describe('List picker component', () => {
+describe('Tree picker component', () => {
   const repository = (loadCollectionValue?: unknown, loadValue?: unknown) => {
     return {
       loadCollection: () => {
@@ -27,7 +27,7 @@ describe('List picker component', () => {
   it('should render list items', async () => {
     let wrapper: any
     await act(async () => {
-      wrapper = mount(<ListPickerComponent repository={repository(genericContentItems) as any} />)
+      wrapper = mount(<TreePicker repository={repository(genericContentItems) as any} />)
     })
 
     expect(wrapper.update().find(ListItem).exists()).toBeTruthy()
@@ -38,7 +38,7 @@ describe('List picker component', () => {
     const loadingRenderer = jest.fn(() => null)
     let wrapper: any
     await act(async () => {
-      wrapper = mount(<ListPickerComponent renderLoading={loadingRenderer as any} repository={repository() as any} />)
+      wrapper = mount(<TreePicker renderLoading={loadingRenderer as any} repository={repository() as any} />)
     })
     expect(wrapper.find(ListItem).exists()).toBeFalsy()
     expect(loadingRenderer).toBeCalled()
@@ -47,7 +47,7 @@ describe('List picker component', () => {
   it('should render nothing when no renderLoading and loading is true', async () => {
     let wrapper: any
     await act(async () => {
-      wrapper = mount(<ListPickerComponent repository={repository() as any} />)
+      wrapper = mount(<TreePicker repository={repository() as any} />)
     })
     expect(wrapper.find(ListItem).exists()).toBeFalsy()
   })
@@ -57,7 +57,7 @@ describe('List picker component', () => {
     let wrapper: any
     await act(async () => {
       wrapper = mount(
-        <ListPickerComponent
+        <TreePicker
           renderError={errorRenderer as any}
           repository={
             {
@@ -77,7 +77,7 @@ describe('List picker component', () => {
     let wrapper: any
     await act(async () => {
       wrapper = mount(
-        <ListPickerComponent
+        <TreePicker
           repository={
             {
               loadCollection: () => {
@@ -97,7 +97,7 @@ describe('List picker component', () => {
     let wrapper: any
     await act(async () => {
       wrapper = mount(
-        <ListPickerComponent onNavigation={onNavigation} repository={repository(genericContentItems) as any} />,
+        <TreePicker onTreeNavigation={onNavigation} repository={repository(genericContentItems) as any} />,
       )
     })
 
@@ -105,28 +105,14 @@ describe('List picker component', () => {
       wrapper.update().find(ListItem).first().simulate('dblclick')
     })
     expect(onNavigation).toBeCalledWith(genericContentItems[0].Path)
+
     await act(async () => {
-      wrapper.find(ListItem).first().simulate('dblclick')
+      wrapper.update().find(ListItem).at(2).simulate('dblclick')
     })
-    expect(onNavigation).toBeCalledWith(genericContentItems[3].Path)
+    expect(onNavigation).toBeCalledWith(genericContentItems[2].Path)
   })
 
-  it('should handle selection', async () => {
-    const onSelectionChanged = jest.fn()
-    let wrapper: any
-    await act(async () => {
-      wrapper = mount(
-        <ListPickerComponent
-          onSelectionChanged={onSelectionChanged}
-          repository={repository(genericContentItems) as any}
-        />,
-      )
-    })
-    wrapper.update().find(ListItem).first().simulate('click')
-    expect(onSelectionChanged).toBeCalled()
-  })
-
-  it('render list items when no options passed to useListPicker', async () => {
+  it('render list items when no options passed to useTreePicker', async () => {
     let wrapper: any
     await act(async () => {
       wrapper = mount(<PickerWithoutOptions repository={repository(genericContentItems) as any} />)
