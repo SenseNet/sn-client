@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
-import { applyShapeRotations, ImageUtil, ROTATION_AMOUNT, ROTATION_MODE, RotationModel } from '../..'
-import { useDocumentData, usePreviewImages, useViewerState } from '../../hooks'
+import { ImageUtil, ROTATION_AMOUNT, ROTATION_MODE, RotationModel } from '../..'
+import { usePreviewImages, useViewerState } from '../../hooks'
 
 export interface RotateWidgetProps {
   mode?: ROTATION_MODE
@@ -11,7 +11,6 @@ export interface RotateWidgetProps {
 export const RotateWidget: React.FC<RotateWidgetProps> = (props) => {
   const viewerState = useViewerState()
   const previewImages = usePreviewImages()
-  const { documentData, updateDocumentData } = useDocumentData()
 
   const rotateFunc = (newRotation: RotationModel[], direction: string, pageIndex: number) => {
     const existingObj = newRotation.find((rotation) => rotation.pageNum === pageIndex)
@@ -45,42 +44,8 @@ export const RotateWidget: React.FC<RotateWidgetProps> = (props) => {
       viewerState.updateState({
         rotation: newRotation,
       })
-
-      //update shapes as well
-      const newImages = previewImages.imageData.map((img) => {
-        updateDocumentData({
-          shapes: {
-            annotations: applyShapeRotations(
-              documentData.shapes.annotations,
-              direction === 'left' ? -ROTATION_AMOUNT : ROTATION_AMOUNT,
-              img,
-            ),
-            highlights: applyShapeRotations(
-              documentData.shapes.highlights,
-              direction === 'left' ? -ROTATION_AMOUNT : ROTATION_AMOUNT,
-              img,
-            ),
-            redactions: applyShapeRotations(
-              documentData.shapes.redactions,
-              direction === 'left' ? -ROTATION_AMOUNT : ROTATION_AMOUNT,
-              img,
-            ),
-          },
-        })
-
-        return img
-      })
-      previewImages.setImageData(newImages)
     },
-    [
-      documentData.shapes.annotations,
-      documentData.shapes.highlights,
-      documentData.shapes.redactions,
-      previewImages,
-      props.pages,
-      updateDocumentData,
-      viewerState,
-    ],
+    [previewImages.imageData, props.pages, viewerState],
   )
 
   switch (props.mode) {
@@ -89,10 +54,10 @@ export const RotateWidget: React.FC<RotateWidgetProps> = (props) => {
       return props.renderButton(props.mode, rotateDocument)
     default:
       return (
-        <div style={{ display: 'inline-block' }}>
+        <>
           {props.renderButton(ROTATION_MODE.anticlockwise, rotateDocument)}
           {props.renderButton(ROTATION_MODE.clockwise, rotateDocument)}
-        </div>
+        </>
       )
   }
 }

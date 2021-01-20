@@ -9,6 +9,7 @@
     { "path": "../sn-client-core" },
     { "path": "../sn-default-content-types" },
     { "path": "../sn-icons-react" },
-    { "path": "../sn-client-utils" }
+    { "path": "../sn-client-utils" },
+    { "path": "../sn-query" }
   ]
 }

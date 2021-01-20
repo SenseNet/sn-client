@@ -221,6 +221,9 @@ export class Repository implements Disposable {
     if (!response.ok) {
       throw await this.getErrorFromResponse(response)
     }
+    if (response.status === 204) {
+      return Promise.resolve({ d: null as any })
+    }
     return await response.json()
   }
 
@@ -451,6 +454,9 @@ export class Repository implements Disposable {
     const response = await this.fetch(`${path}?${params}`, requestOptions)
     if (!response.ok) {
       throw await this.getErrorFromResponse(response)
+    }
+    if (response.status === 204) {
+      return Promise.resolve({} as TReturns)
     }
     return await response.json()
   }

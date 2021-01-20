@@ -109,7 +109,7 @@ export function ReferenceField<T extends GenericContent>(props: ReferenceFieldPr
       q.query((q2) => q2.equals('Name', term).or.equals('DisplayName', term).or.equals('Path', term)),
     )
 
-    if (props.fieldSetting.AllowedTypes) {
+    if (props.fieldSetting.AllowedTypes?.length) {
       new QueryOperators(query).and.query((q2) => {
         ;(props.fieldSetting.AllowedTypes as string[]).forEach((allowedType, index, array) => {
           new QueryExpression(q2.queryRef).term(`TypeIs:${allowedType}`)

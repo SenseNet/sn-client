@@ -7,6 +7,7 @@ import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../context'
+import { useGlobalStyles } from '../globalStyles'
 import { useLocalization, useSelectionService } from '../hooks'
 import { getPrimaryActionUrl } from '../services'
 import { BreadcrumbItem, Breadcrumbs } from './Breadcrumbs'
@@ -23,19 +24,20 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-type ContentBreadcrumbsProps = {
-  onItemClick?: (item: BreadcrumbItem<GenericContent>) => void
+type ContentBreadcrumbsProps<T extends GenericContent> = {
+  onItemClick?: (item: BreadcrumbItem<T>) => void
   batchActions?: boolean
 }
 
-export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
-  const ancestors = useContext(CurrentAncestorsContext)
-  const parent = useContext(CurrentContentContext)
+export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(props: ContentBreadcrumbsProps<T>) => {
+  const ancestors = useContext(CurrentAncestorsContext) as T[]
+  const parent = useContext(CurrentContentContext) as T
   const uiSettings = useContext(ResponsivePersonalSettings)
   const repository = useRepository()
   const history = useHistory()
   const { location } = history
   const localization = useLocalization()
+  const globalClasses = useGlobalStyles()
   const classes = useStyles()
   const { openDialog } = useDialog()
   const selectionService = useSelectionService()
@@ -53,7 +55,7 @@ export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
 
   return (
     <>
-      <Breadcrumbs
+      <Breadcrumbs<T>
         items={[
           ...ancestors.map((content) => ({
             displayName: content.DisplayName || content.Name,
@@ -101,7 +103,11 @@ export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
                     currentParent: parent,
                     operation: 'move',
                   },
-                  dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true },
+                  dialogProps: {
+                    disableBackdropClick: true,
+                    disableEscapeKeyDown: true,
+                    classes: { paper: globalClasses.pickerDialog },
+                  },
                 })
               }}>
               <FileCopyIcon />
@@ -118,7 +124,11 @@ export const ContentBreadcrumbs = (props: ContentBreadcrumbsProps) => {
                     currentParent: parent,
                     operation: 'copy',
                   },
-                  dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true },
+                  dialogProps: {
+                    disableBackdropClick: true,
+                    disableEscapeKeyDown: true,
+                    classes: { paper: globalClasses.pickerDialog },
+                  },
                 })
               }}>
               <FileCopyOutlinedIcon />

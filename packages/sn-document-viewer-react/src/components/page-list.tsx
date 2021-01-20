@@ -1,10 +1,29 @@
 import { PreviewImageData } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import Grid from '@material-ui/core/Grid'
+import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { usePreviewImages, useViewerState } from '../hooks'
 import { Dimensions, ImageUtil } from '../services'
 import { Page, PAGE_CONTAINER_ID, PAGE_PADDING } from './'
+
+const useStyles = makeStyles<Theme>(() => {
+  return createStyles({
+    grid: {
+      flexGrow: 1,
+      flexShrink: 1,
+      overflow: 'auto',
+    },
+    pagesWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+  })
+})
 
 /**
  * Defines the own properties for the PageList component
@@ -14,8 +33,8 @@ export interface PageListProps {
 }
 
 export const PageList: React.FC<PageListProps> = (props) => {
-  const [marginTop, setMarginTop] = useState(0)
-  const [marginBottom, setMarginBottom] = useState(0)
+  const [paddingTop, setPaddingTop] = useState(0)
+  const [paddingBottom, setPaddingBottom] = useState(0)
   const [visiblePages, setVisiblePages] = useState<PreviewImageData[]>([])
   const [scrollState, setScrollState] = useState(0)
   const viewportElement = useRef<HTMLElement>()
@@ -23,6 +42,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
   const [resizeToken, setResizeToken] = useState(0)
   const [viewport, setViewport] = useState<Dimensions>({ width: 0, height: 0 })
   const pages = usePreviewImages()
+  const classes = useStyles()
 
   const requestResize = useCallback(
     debounce(() => {
@@ -97,11 +117,11 @@ export const PageList: React.FC<PageListProps> = (props) => {
       }
     })
 
-    let _marginTop = 0
+    let _paddingTop = 0
     let _pagesToSkip = 0
 
-    while (_visiblePages[_pagesToSkip] && _marginTop + _visiblePages[_pagesToSkip].Height < scrollState) {
-      _marginTop += _visiblePages[_pagesToSkip].Height + PAGE_PADDING * 2
+    while (_visiblePages[_pagesToSkip] && _paddingTop + _visiblePages[_pagesToSkip].Height < scrollState) {
+      _paddingTop += _visiblePages[_pagesToSkip].Height + PAGE_PADDING * 2
       _pagesToSkip++
     }
 
@@ -113,13 +133,13 @@ export const PageList: React.FC<PageListProps> = (props) => {
       _pagesToTake++
     }
 
-    let _marginBottom = 0
+    let _paddingBottom = 0
     for (let i = _pagesToSkip + _pagesToTake - 1; i < _visiblePages.length - 1; i++) {
-      _marginBottom += _visiblePages[i].Height + PAGE_PADDING * 2
+      _paddingBottom += _visiblePages[i].Height + PAGE_PADDING * 2
     }
 
-    setMarginTop(_marginTop)
-    setMarginBottom(_marginBottom)
+    setPaddingTop(_paddingTop)
+    setPaddingBottom(_paddingBottom + _visiblePages[0].Height / 4)
     const newVisiblePages = _visiblePages.slice(_pagesToSkip, _pagesToSkip + _pagesToTake)
     setVisiblePages(newVisiblePages)
 
@@ -129,7 +149,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
         newActivePage = newVisiblePages[0].Index
       } else {
         newActivePage =
-          scrollState - _marginTop >= 0 && scrollState - _marginTop > newVisiblePages[0].Height / 2
+          scrollState - _paddingTop >= 0 && scrollState - _paddingTop > newVisiblePages[0].Height / 2
             ? newVisiblePages[1].Index
             : newVisiblePages[0].Index
       }
@@ -140,20 +160,8 @@ export const PageList: React.FC<PageListProps> = (props) => {
   }, [pages.imageData, scrollState, viewerState, viewport.height, viewport.width])
 
   return (
-    <Grid
-      item={true}
-      style={{ flexGrow: 1, flexShrink: 1, overflow: 'auto' }}
-      id={PAGE_CONTAINER_ID}
-      innerRef={viewportElement}>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          paddingTop: marginTop || 0,
-          paddingBottom: marginBottom || 0,
-        }}>
+    <Grid item={true} className={classes.grid} id={PAGE_CONTAINER_ID} innerRef={viewportElement}>
+      <div className={classes.pagesWrapper} style={{ paddingTop: paddingTop || 0, paddingBottom: paddingBottom || 0 }}>
         {visiblePages.map((page) => (
           <Page
             key={page.Index}

@@ -37,7 +37,7 @@ export interface ContentListBaseProps<T extends GenericContent = GenericContent>
   /**
    * Array of fields that should be displayed
    */
-  fieldsToDisplay: Array<keyof T>
+  fieldsToDisplay: Array<Extract<keyof T, string>>
   /**
    * Defines wheter a checkbox per row should be displayed or not
    */

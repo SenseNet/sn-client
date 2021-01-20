@@ -1,21 +1,26 @@
 import {
+  AddAnnotationWidget,
+  AddHighlightWidget,
+  AddRedactionWidget,
   DocumentTitlePager,
   LayoutAppBar,
   RotateActivePagesWidget,
   RotateDocumentWidget,
   ROTATION_MODE,
+  SaveWidget,
   DocumentViewer as SnDocumentViewer,
   ToggleCommentsWidget,
+  ToggleRedactionWidget,
+  ToggleShapesWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
 } from '@sensenet/document-viewer-react'
 import { CurrentContentProvider } from '@sensenet/hooks-react'
 import { Button, createStyles, makeStyles, Theme } from '@material-ui/core'
-import clsx from 'clsx'
 import React, { useCallback, useEffect } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { globals, useGlobalStyles } from '../globalStyles'
-import { useLocalization, useSelectionService, useTheme } from '../hooks'
+import { useLocalization, useSelectionService } from '../hooks'
 import { navigateToAction } from '../services'
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -44,15 +49,35 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
+const useAppBarStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    appBar: {
+      backgroundColor: theme.palette.type === 'light' ? globals.light.drawerBackground : globals.dark.drawerBackground,
+      color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
+    },
+  }),
+)
+
+const useZoomInOutStyles = makeStyles(() =>
+  createStyles({
+    iconButton: {
+      '&:disabled': {
+        opacity: 0.26,
+      },
+    },
+  }),
+)
+
 export function DocumentViewer(props: { contentPath: string }) {
   const routeMatch = useRouteMatch<{ browseType: string; action: string }>()
   const history = useHistory()
   const selectionService = useSelectionService()
   const localization = useLocalization()
-  const theme = useTheme()
   const closeViewer = useCallback(() => navigateToAction({ history, routeMatch }), [history, routeMatch])
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
+  const layoutAppBarStyle = useAppBarStyles()
+  const disabledStyle = useZoomInOutStyles()
 
   useEffect(() => {
     const keyboardHandler = (event: KeyboardEvent) => {
@@ -77,27 +102,23 @@ export function DocumentViewer(props: { contentPath: string }) {
           <SnDocumentViewer
             documentIdOrPath={props.contentPath}
             renderAppBar={() => (
-              <LayoutAppBar
-                style={{
-                  backgroundColor:
-                    theme.palette.type === 'light' ? globals.light.drawerBackground : globals.dark.drawerBackground,
-                  border: theme.palette.type === 'light' ? clsx(globals.light.borderColor, '1px') : 'none',
-                  boxShadow: 'none',
-                  color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
-                }}>
+              <LayoutAppBar classes={layoutAppBarStyle}>
                 <div style={{ flexShrink: 0 }}>
-                  <ToggleThumbnailsWidget
-                    style={{
-                      fill: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
-                    }}
-                    activeColor={theme.palette.primary.main}
-                  />
-                  <ZoomInOutWidget />
+                  <ToggleThumbnailsWidget />
+                  <ZoomInOutWidget classes={disabledStyle} />
                   <RotateActivePagesWidget mode={ROTATION_MODE.clockwise} />
                   <RotateDocumentWidget mode={ROTATION_MODE.clockwise} />
+                  <SaveWidget classes={disabledStyle} />
                 </div>
                 <DocumentTitlePager />
-                <ToggleCommentsWidget activeColor={theme.palette.primary.main} />
+                <div style={{ flexShrink: 0 }}>
+                  <ToggleRedactionWidget classes={disabledStyle} />
+                  <ToggleShapesWidget classes={disabledStyle} />
+                  <AddRedactionWidget classes={disabledStyle} />
+                  <AddHighlightWidget classes={disabledStyle} />
+                  <AddAnnotationWidget classes={disabledStyle} />
+                  <ToggleCommentsWidget />
+                </div>
               </LayoutAppBar>
             )}
           />

@@ -56,20 +56,20 @@ const useStyles = makeStyles(() => {
   })
 })
 
-export interface ContentListProps {
+export interface ContentListProps<T extends GenericContent> {
   enableBreadcrumbs?: boolean
   hideHeader?: boolean
   disableSelection?: boolean
   parentIdOrPath: number | string
-  onParentChange: (newParent: GenericContent) => void
+  onParentChange: (newParent: T) => void
   onTabRequest?: () => void
-  onActiveItemChange?: (item: GenericContent) => void
-  onActivateItem: (item: GenericContent) => void
+  onActiveItemChange?: (item: T) => void
+  onActivateItem: (item: T) => void
   style?: React.CSSProperties
   containerRef?: (r: HTMLDivElement | null) => void
-  fieldsToDisplay?: Array<keyof GenericContent>
+  fieldsToDisplay?: Array<Extract<keyof T, string>>
   schema?: string
-  onSelectionChange?: (sel: GenericContent[]) => void
+  onSelectionChange?: (sel: T[]) => void
   onFocus?: () => void
   containerProps?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 }
@@ -83,11 +83,11 @@ export const isReferenceField = (fieldName: string, repo: Repository, schema = '
 const rowHeightConst = 57
 const headerHeightConst = 42
 
-export const ContentList: React.FunctionComponent<ContentListProps> = (props) => {
+export const ContentList = <T extends GenericContent = GenericContent>(props: ContentListProps<T>) => {
   const selectionService = useSelectionService()
   const parentContent = useContext(CurrentContentContext)
-  const children = useContext(CurrentChildrenContext)
-  const ancestors = useContext(CurrentAncestorsContext)
+  const children = useContext(CurrentChildrenContext) as T[]
+  const ancestors = useContext(CurrentAncestorsContext) as T[]
   const device = useContext(ResponsiveContext)
   const personalSettings = useContext(ResponsivePersonalSettings)
   const loadSettings = useContext(LoadSettingsContext)
@@ -97,8 +97,8 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
   const { openDialog } = useDialog()
   const logger = useLogger('ContentList')
   const localization = useLocalization()
-  const [selected, setSelected] = useState<GenericContent[]>([])
-  const [activeContent, setActiveContent] = useState<GenericContent>(children[0])
+  const [selected, setSelected] = useState<T[]>([])
+  const [activeContent, setActiveContent] = useState<T>(children[0])
   const [isFocused, setIsFocused] = useState(true)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
   const [schema, setSchema] = useState(repo.schemas.getSchemaByName(props.schema || 'GenericContent'))
@@ -107,11 +107,11 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
     left: 0,
   })
   const loadChildrenSettingsOrderBy = loadSettings?.loadChildrenSettings.orderby
-  const [currentOrder, setCurrentOrder] = useState<keyof GenericContent>(
-    ((loadChildrenSettingsOrderBy && loadChildrenSettingsOrderBy[0][0]) as keyof GenericContent) || 'DisplayName',
+  const [currentOrder, setCurrentOrder] = useState<keyof T>(
+    (loadChildrenSettingsOrderBy?.[0][0] as keyof T) || 'DisplayName',
   )
   const [currentDirection, setCurrentDirection] = useState<'asc' | 'desc'>(
-    (loadChildrenSettingsOrderBy && (loadChildrenSettingsOrderBy[0][1] as any)) || 'asc',
+    (loadChildrenSettingsOrderBy?.[0][1] as 'asc' | 'desc') || 'asc',
   )
 
   useEffect(() => {
@@ -139,7 +139,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
       ...loadSettings.loadChildrenSettings,
       expand: [
         'CheckedOutTo',
-        ...fields.reduce<any[]>((referenceFields, fieldName) => {
+        ...(fields as string[]).reduce<any[]>((referenceFields, fieldName) => {
           if (fieldName.includes('/')) {
             const splittedFieldName = fieldName.split('/')
             if (splittedFieldName.length === 2 && splittedFieldName[1] === '') {
@@ -185,7 +185,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
   const onOpenFunc = () => setIsContextMenuOpened(true)
 
   const handleActivateItem = useCallback(
-    (item: GenericContent) => {
+    (item: T) => {
       if (item.IsFolder) {
         props.onParentChange(item)
       } else {
@@ -303,14 +303,14 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
     setCurrentDirection(dir)
   }
 
-  const onItemDoubleClickFunc = (rowMouseEventHandlerParams: { rowData: GenericContent }) =>
+  const onItemDoubleClickFunc = (rowMouseEventHandlerParams: { rowData: T }) =>
     handleActivateItem(rowMouseEventHandlerParams.rowData)
 
   const getSelectionControl = (isSelected: any, content: any, onChangeCallback: any) => (
     <SelectionControl {...{ isSelected, content, onChangeCallback }} />
   )
 
-  const openContext = (ev: React.MouseEvent, rowData: GenericContent) => {
+  const openContext = (ev: React.MouseEvent, rowData: T) => {
     ev.preventDefault()
     ev.stopPropagation()
     setActiveContent(rowData)
@@ -519,7 +519,7 @@ export const ContentList: React.FunctionComponent<ContentListProps> = (props) =>
     <div style={{ ...props.style, ...{ height: '100%' } }} {...props.containerProps}>
       {props.enableBreadcrumbs ? (
         <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
-          <ContentBreadcrumbs onItemClick={(i) => props.onParentChange(i.content)} />
+          <ContentBreadcrumbs<T> onItemClick={(i) => props.onParentChange(i.content)} />
         </div>
       ) : null}
       <DropFileArea parentContent={parentContent} style={{ height: '100%', overflow: 'hidden' }}>

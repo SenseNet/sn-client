@@ -15,11 +15,11 @@ import { ContentListBaseProps } from './content-list-base-props'
 /**
  * Interface for ContentList properties
  */
-export interface ContentListProps<T extends GenericContent = GenericContent> extends ContentListBaseProps {
+export interface ContentListProps<T extends GenericContent = GenericContent> extends ContentListBaseProps<T> {
   /**
    * Contains custom cell template components
    */
-  fieldComponent?: React.StatelessComponent<CellProps<T, keyof T>>
+  fieldComponent?: React.FunctionComponent<CellProps<T, keyof T>>
   /**
    * Called when a content item is clicked
    */
@@ -52,7 +52,7 @@ export interface ContentListProps<T extends GenericContent = GenericContent> ext
   hideHeader?: boolean
 }
 
-export const ContentList: React.FC<ContentListProps<GenericContent>> = (props) => {
+export const ContentList = <T extends GenericContent = GenericContent>(props: ContentListProps<T>) => {
   const handleSelectAllClick = useCallback(() => {
     props.onRequestSelectionChange &&
       (props.selected && props.selected.length === props.items.length
@@ -62,7 +62,7 @@ export const ContentList: React.FC<ContentListProps<GenericContent>> = (props) =
   }, [props.onRequestSelectionChange, props.selected, props.items])
 
   const handleContentSelection = useCallback(
-    (content: GenericContent) => {
+    (content: T) => {
       const selected = props.selected !== undefined && props.selected.length > 0 ? props.selected : []
       if (props.onRequestSelectionChange) {
         if (selected.find((c) => c.Id === content.Id)) {
@@ -76,7 +76,7 @@ export const ContentList: React.FC<ContentListProps<GenericContent>> = (props) =
     [props.onRequestSelectionChange, props.selected, props.items],
   )
 
-  const defaultFieldComponents: React.FC<CellProps<GenericContent, keyof GenericContent>> = useCallback(
+  const defaultFieldComponents: React.FC<CellProps<T, keyof T>> = useCallback(
     (fieldProps) => {
       switch (fieldProps.field) {
         case 'DisplayName':
@@ -200,8 +200,8 @@ export const ContentList: React.FC<ContentListProps<GenericContent>> = (props) =
               ) : null}
               {props.fieldsToDisplay.map((field) => {
                 const fieldSetting = getSchemaForField(field)
-                const cellProps: CellProps = {
-                  ...(props as ContentListProps),
+                const cellProps: CellProps<T> = {
+                  ...props,
                   field,
                   content: item,
                   fieldSetting,
@@ -209,7 +209,7 @@ export const ContentList: React.FC<ContentListProps<GenericContent>> = (props) =
                 }
 
                 const FieldComponent = props.fieldComponent || defaultFieldComponents
-                return <FieldComponent key={cellProps.field} {...cellProps} />
+                return <FieldComponent key={cellProps.field as string} {...cellProps} />
               })}
             </TableRow>
           )

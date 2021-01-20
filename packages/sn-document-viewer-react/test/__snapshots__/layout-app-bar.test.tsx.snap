@@ -2,21 +2,11 @@
 
 exports[`Layout AppBar component should match snapshot with children 1`] = `
 <WithStyles(ForwardRef(AppBar))
+  className="makeStyles-appBar-1"
   position="sticky"
-  style={
-    Object {
-      "position": "relative",
-      "zIndex": 1,
-    }
-  }
 >
   <WithStyles(ForwardRef(Toolbar))
-    style={
-      Object {
-        "display": "flex",
-        "justifyContent": "space-between",
-      }
-    }
+    className="makeStyles-toolBar-2"
   >
     <span>
       test

@@ -1,7 +1,7 @@
 import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import { ContentListProps } from '../ContentList'
 
-export interface CellProps<T extends GenericContent = GenericContent, K extends keyof T = keyof GenericContent>
+export interface CellProps<T extends GenericContent = GenericContent, K extends keyof T = keyof T>
   extends ContentListProps<T> {
   content: T
   field: K
