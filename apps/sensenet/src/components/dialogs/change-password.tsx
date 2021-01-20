@@ -58,7 +58,8 @@ export function ChangePasswordDialog() {
 
   const validate = () => {
     if (
-      (dirtyFlags.newPassword || dirtyFlags.confirmPassword) &&
+      dirtyFlags.newPassword &&
+      dirtyFlags.confirmPassword &&
       passwordFields.newPassword !== passwordFields.confirmPassword
     ) {
       return false
