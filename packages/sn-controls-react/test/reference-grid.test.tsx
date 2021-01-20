@@ -173,12 +173,14 @@ describe('Reference grid field control', () => {
       wrapper.find(DefaultItemTemplate).last().find(IconButton).simulate('click')
 
       await act(async () => {
-        wrapper.find(ReferencePicker).prop('select')({ Path: '/', Name: 'Jane Doe', Id: 1234, Type: 'User' })
+        wrapper.find(ReferencePicker).prop('handleSubmit')([
+          userContent,
+          { Path: '/', Name: 'Jane Doe', Id: 1234, Type: 'User' },
+        ])
       })
 
-      wrapper.find(Dialog).find(Button).first().simulate('click')
       expect(fieldOnChange).toBeCalled()
-      expect(wrapper.find(DefaultItemTemplate)).toHaveLength(3)
+      expect(wrapper.update().find(DefaultItemTemplate)).toHaveLength(3)
     })
 
     it('should remove all the items when a new item is selected with allow multiple false', async () => {
@@ -193,8 +195,8 @@ describe('Reference grid field control', () => {
       )
       await sleepAsync(0)
 
-      wrapper.find(ReferencePicker).prop('select')({ Path: '/', Name: 'Jane Doe', Id: 1234, Type: 'User' })
-      wrapper.find(Dialog).find(Button).first().simulate('click')
+      wrapper.find(ReferencePicker).prop('handleSubmit')([{ Path: '/', Name: 'Jane Doe', Id: 1234, Type: 'User' }])
+
       // Jane Doe + add reference
       expect(wrapper.update().find(DefaultItemTemplate)).toHaveLength(2)
     })
@@ -208,7 +210,7 @@ describe('Reference grid field control', () => {
       } as any
       let wrapper: any
       await act(async () => {
-        wrapper = mount(<ReferencePicker repository={repo} select={jest.fn} path="" selected={[]} />)
+        wrapper = mount(<ReferencePicker repository={repo} fieldSettings={defaultSettings} path="" defaultValue={[]} />)
       })
 
       expect(wrapper.update().find(Avatar).text()).toBe('A.M')
