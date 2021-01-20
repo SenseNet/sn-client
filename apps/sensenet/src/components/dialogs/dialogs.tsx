@@ -20,6 +20,7 @@ const MemberSelect = React.lazy(() => import('./member-select-dialog'))
 const Restore = React.lazy(() => import('./restore'))
 const ContentPicker = React.lazy(() => import('./content-picker'))
 const Feedback = React.lazy(() => import('./feedback'))
+const ChangePasswordDialog = React.lazy(() => import('./change-password'))
 
 function dialogRenderer(dialog: DialogWithProps) {
   switch (dialog.name) {
@@ -57,6 +58,8 @@ function dialogRenderer(dialog: DialogWithProps) {
       return <ContentPicker {...dialog.props} />
     case 'feedback':
       return <Feedback />
+    case 'change-password':
+      return <ChangePasswordDialog />
     default:
       return null
   }

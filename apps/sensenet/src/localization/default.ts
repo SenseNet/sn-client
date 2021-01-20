@@ -279,6 +279,7 @@ const values = {
   topMenu: {
     personalSettings: 'Personal settings',
     logout: 'Log out',
+    changePassword: 'Change password',
     openUserMenu: 'Open user menu',
     openHelpMenu: 'Open help menu',
     documentation: 'Documentation',
@@ -473,6 +474,16 @@ const values = {
     feedbackText3: (link: string) => `You can check existing feedbacks and statuses on the public ${link} anytime.`,
     feedbackText4: 'Thanks for your feedback',
     cancel: 'Cancel',
+  },
+  changePassword: {
+    changeYourPassword: 'Change your password',
+    cancel: 'Cancel',
+    update: 'Update',
+    oldPassword: 'Old password',
+    newPassword: 'New password',
+    confirmNew: 'Confirm new password',
+    changePasswordSuccess: 'Password has changed successfully',
+    passwordsDontMatch: 'The passwords do not match',
   },
 }
 

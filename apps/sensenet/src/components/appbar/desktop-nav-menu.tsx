@@ -112,6 +112,11 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
     handleClose(setOpenUserMenu)
   }
 
+  const changePassword = async () => {
+    openDialog({ name: 'change-password' })
+    handleClose(setOpenUserMenu)
+  }
+
   const feedback = () => {
     openDialog({ name: 'feedback' })
     handleClose(setOpenHelpMenu)
@@ -183,6 +188,9 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                     }}
                     primary={`${currentUser.DisplayName || currentUser.Name}`}
                   />
+                </MenuItem>
+                <MenuItem onClick={changePassword} className={classes.userMenuItem}>
+                  {localization.topMenu.changePassword}
                 </MenuItem>
                 <MenuItem onClick={logout} className={classes.userMenuItem}>
                   {localization.topMenu.logout}
