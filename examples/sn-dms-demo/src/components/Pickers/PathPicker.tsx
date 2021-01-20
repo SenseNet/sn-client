@@ -2,12 +2,12 @@ import { ODataParams } from '@sensenet/client-core'
 import { Folder, GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import { Icon, iconType } from '@sensenet/icons-react'
-import { GenericContentWithIsParent, useListPicker } from '@sensenet/pickers-react'
+import { GenericContentWithIsParent, useTreePicker } from '@sensenet/pickers-react'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { deselectPickeritem, reloadPickerItems, selectPickerItem } from '../../store/picker/actions'
 import { rootStateType } from '../../store/rootReducer'
@@ -39,7 +39,8 @@ const pickerItemOptions: ODataParams<Folder> = {
 // eslint-disable-next-line require-jsdoc
 function PathPicker(props: PathPickerProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps) {
   const repository = useRepository()
-  const { items, selectedItem, setSelectedItem, navigateTo, reload } = useListPicker<GenericContentWithIsParent>({
+  const [selectedItem, setSelectedItem] = useState<GenericContentWithIsParent>()
+  const { items, navigateTo, reload } = useTreePicker<GenericContentWithIsParent>({
     repository,
     currentPath: props.currentPath,
     itemsODataOptions: pickerItemOptions,
@@ -74,21 +75,20 @@ function PathPicker(props: PathPickerProps & ReturnType<typeof mapStateToProps> 
 
   return (
     <List>
-      {items &&
-        items.map((node) => (
-          <ListItem
-            key={node.Id}
-            onClick={(e) => onClickHandler(e, node)}
-            onDoubleClick={() => navigateTo(node)}
-            button={true}
-            selected={selectedItem && node.Id === selectedItem.Id}>
-            <ListItemIcon>
-              <Icon type={iconType.materialui} iconName="folder" />
-            </ListItemIcon>
-            <ListItemText primary={node.isParent ? '..' : node.DisplayName} />
-            {hasChildren(node as any) ? <Icon type={iconType.materialui} iconName="keyboard_arrow_right" /> : null}
-          </ListItem>
-        ))}
+      {items?.map((node) => (
+        <ListItem
+          key={node.Id}
+          onClick={(e) => onClickHandler(e, node)}
+          onDoubleClick={() => navigateTo(node)}
+          button={true}
+          selected={selectedItem && node.Id === selectedItem.Id}>
+          <ListItemIcon>
+            <Icon type={iconType.materialui} iconName="folder" />
+          </ListItemIcon>
+          <ListItemText primary={node.isParent ? '..' : node.DisplayName} />
+          {hasChildren(node as any) ? <Icon type={iconType.materialui} iconName="keyboard_arrow_right" /> : null}
+        </ListItem>
+      ))}
     </List>
   )
 }

@@ -27,7 +27,7 @@ export const reactControlMapper = (repository: Repository) => {
       if (setting.AllowedTypes && setting.AllowedTypes.indexOf('User') !== -1 && setting.AllowMultiple) {
         return SnFieldControls.TagsInput
       } else {
-        return SnFieldControls.ReferenceGrid
+        return FieldControls.ReferenceGrid
       }
     })
     .setupFieldSettingDefault<LongTextFieldSetting>('LongTextFieldSetting', (setting) => {
