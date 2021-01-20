@@ -26,24 +26,14 @@ exports[`Page component Should render without crashing 1`] = `
   }
 >
   <div
+    className="makeStyles-page-1 makeStyles-page-5"
     onClick={[Function]}
-    style={
-      Object {
-        "height": 1024,
-        "overflow": "hidden",
-        "padding": 0,
-        "position": "relative",
-        "width": 768,
-      }
-    }
+    onMouseDown={[Function]}
+    onMouseMove={[Function]}
+    onMouseUp={[Function]}
   >
     <span
-      style={
-        Object {
-          "display": "flex",
-          "justifyContent": "center",
-        }
-      }
+      className="makeStyles-image-2"
     >
       <WithStyles(ForwardRef(CircularProgress))
         style={

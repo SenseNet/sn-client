@@ -91,9 +91,13 @@ export function Explore({
   const snRoute = useSnRoute()
   const activeAction = snRoute.match!.params.action
 
-  const onActivateItemOverride = (activeItem: GenericContent) => {
+  const onActivateItemOverride = async (activeItem: GenericContent) => {
+    const expandedItem = await repository.load({
+      idOrPath: activeItem.Id,
+      oDataOptions: { select: 'all', expand: ['Actions'] as any },
+    })
     const { location } = history
-    history.push(getPrimaryActionUrl({ content: activeItem, repository, uiSettings, location, snRoute }))
+    history.push(getPrimaryActionUrl({ content: expandedItem.d, repository, uiSettings, location, snRoute }))
   }
 
   const onTreeLoadingChange = useCallback((isLoading) => setIsTreeLoading(isLoading), [])

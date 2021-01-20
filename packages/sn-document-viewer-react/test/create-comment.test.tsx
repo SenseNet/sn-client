@@ -1,6 +1,7 @@
-import { IconButton, TextField } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import FormHelperText from '@material-ui/core/FormHelperText'
+import IconButton from '@material-ui/core/IconButton/IconButton'
+import TextField from '@material-ui/core/TextField/TextField'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
