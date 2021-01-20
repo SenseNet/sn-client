@@ -5,28 +5,14 @@ exports[`DocumentTitlePager component Should render the focused state without cr
   onClickAway={[Function]}
 >
   <WithStyles(ForwardRef(Typography))
+    className="makeStyles-typography-1"
     color="inherit"
     onClick={[Function]}
-    style={
-      Object {
-        "alignItems": "center",
-        "cursor": "pointer",
-        "display": "flex",
-        "margin": "0 2.5em",
-        "overflow": "hidden",
-      }
-    }
     title=""
     variant="h6"
   >
     <div
-      style={
-        Object {
-          "overflow": "hidden",
-          "textOverflow": "ellipsis",
-          "whiteSpace": "nowrap",
-        }
-      }
+      className="makeStyles-nameWrapper-2"
     >
        
     </div>
@@ -39,6 +25,7 @@ exports[`DocumentTitlePager component Should render the focused state without cr
             "shrink": true,
           }
         }
+        className="makeStyles-textField-3"
         defaultValue={1}
         inputProps={
           Object {
@@ -53,11 +40,6 @@ exports[`DocumentTitlePager component Should render the focused state without cr
         onBlur={[Function]}
         onChange={[Function]}
         required={true}
-        style={
-          Object {
-            "flexShrink": 0,
-          }
-        }
         title="Goto page"
         type="number"
       />
@@ -71,37 +53,19 @@ exports[`DocumentTitlePager component Should render the unfocused state without 
   onClickAway={[Function]}
 >
   <WithStyles(ForwardRef(Typography))
+    className="makeStyles-typography-1"
     color="inherit"
     onClick={[Function]}
-    style={
-      Object {
-        "alignItems": "center",
-        "cursor": "pointer",
-        "display": "flex",
-        "margin": "0 2.5em",
-        "overflow": "hidden",
-      }
-    }
     title=""
     variant="h6"
   >
     <div
-      style={
-        Object {
-          "overflow": "hidden",
-          "textOverflow": "ellipsis",
-          "whiteSpace": "nowrap",
-        }
-      }
+      className="makeStyles-nameWrapper-2"
     >
        
     </div>
     <div
-      style={
-        Object {
-          "flexShrink": 0,
-        }
-      }
+      className="makeStyles-notFocusedText-4"
     >
       1
        / 

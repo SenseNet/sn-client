@@ -45,14 +45,13 @@ export type Highlight = Shape
  * Model definition for an Annotation shape
  */
 export interface Annotation extends Shape {
-  index: number
   lineHeight: number
   text: string
-  fontBold: string
+  fontBold: number
   fontColor: string
   fontFamily: string
-  fontItalic: string
-  fontSize: string
+  fontItalic: boolean
+  fontSize: number
 }
 
 /**

@@ -186,6 +186,14 @@ export function getPrimaryActionUrl({
   if (
     content.Actions &&
     (content.Actions as any[]).length > 0 &&
+    (content.Actions as ActionModel[]).find((a) => a.Name === 'CheckPreviews')
+  ) {
+    return getUrlForContent({ content, uiSettings, location, action: 'preview', snRoute, removePath })
+  }
+
+  if (
+    content.Actions &&
+    (content.Actions as any[]).length > 0 &&
     (content.Actions as ActionModel[]).find((a) => a.Name === 'WopiOpenEdit')
   ) {
     return getUrlForContent({ content, uiSettings, location, action: 'wopi-edit', snRoute, removePath })
