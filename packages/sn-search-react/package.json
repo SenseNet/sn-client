@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/search-react",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "Search component in react with sensenet",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -29,7 +29,7 @@
   "homepage": "https://sensenet.com",
   "dependencies": {
     "@material-ui/core": "^4.11.2",
-    "@sensenet/client-core": "^3.7.0",
+    "@sensenet/client-core": "^3.8.0",
     "@sensenet/client-utils": "^2.0.1",
     "@sensenet/default-content-types": "^3.1.1",
     "@sensenet/icons-react": "^1.2.19",
