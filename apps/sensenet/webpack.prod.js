@@ -83,4 +83,7 @@ module.exports = merge(common, {
       },
     ],
   },
+  stats: {
+    excludeAssets: [(assetName) => assetName.endsWith('.gz')],
+  },
 })
