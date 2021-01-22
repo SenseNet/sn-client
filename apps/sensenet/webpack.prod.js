@@ -65,6 +65,9 @@ module.exports = merge(common, {
     }),
     new RelativeCiAgentWebpackPlugin({
       enabled: process.env.GITHUB_ACTIONS, // Run this only under GitHub Actions
+      stats: {
+        excludeAssets: [(assetName) => assetName.endsWith('.gz')],
+      },
     }),
   ],
   module: {
@@ -82,8 +85,5 @@ module.exports = merge(common, {
         ],
       },
     ],
-  },
-  stats: {
-    excludeAssets: [(assetName) => assetName.endsWith('.gz')],
   },
 })
