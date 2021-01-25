@@ -84,9 +84,9 @@ const values = {
   },
   copyMoveContentDialog: {
     copy: {
-      title: `Copy '{0}' to '{1}'`,
+      title: `Copy '{0}'`,
       inProgress: 'Copy in progress...',
-      titleMultiple: `Copy {0} items to '{1}'`,
+      titleMultiple: `Copy {0} items`,
       copyButton: 'Copy',
       cancelButton: 'Cancel',
       details: 'Copy {0} content to {1}',
@@ -96,9 +96,9 @@ const values = {
       copyMultipleFailedNotification: 'Failed to copy {0} items to {1}',
     },
     move: {
-      title: `Move '{0}' to '{1}'`,
+      title: `Move '{0}''`,
       inProgress: 'Move in progress...',
-      titleMultiple: `Move {0} items to '{1}'`,
+      titleMultiple: `Move {0} items`,
       copyButton: 'Move',
       cancelButton: 'Cancel',
       details: 'Move {0} content to {1}',
@@ -279,6 +279,7 @@ const values = {
   topMenu: {
     personalSettings: 'Personal settings',
     logout: 'Log out',
+    changePassword: 'Change password',
     openUserMenu: 'Open user menu',
     openHelpMenu: 'Open help menu',
     documentation: 'Documentation',
@@ -473,6 +474,16 @@ const values = {
     feedbackText3: (link: string) => `You can check existing feedbacks and statuses on the public ${link} anytime.`,
     feedbackText4: 'Thanks for your feedback',
     cancel: 'Cancel',
+  },
+  changePassword: {
+    changeYourPassword: 'Change your password',
+    cancel: 'Cancel',
+    update: 'Update',
+    oldPassword: 'Old password',
+    newPassword: 'New password',
+    confirmNew: 'Confirm new password',
+    changePasswordSuccess: 'Password has changed successfully',
+    passwordsDontMatch: 'The passwords do not match',
   },
 }
 

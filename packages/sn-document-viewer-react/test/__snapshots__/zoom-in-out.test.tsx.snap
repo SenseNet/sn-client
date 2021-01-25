@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ZoomInOUt component should render without crashing 1`] = `
+exports[`ZoomInOut component should render without crashing 1`] = `
 <ZoomInOutWidget>
   <div
     style={
@@ -10,12 +10,14 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
     }
   >
     <WithStyles(ForwardRef(IconButton))
+      className="makeStyles-iconButton-1"
       color="inherit"
       disabled={false}
       onClick={[Function]}
       title="Zoom in"
     >
       <ForwardRef(IconButton)
+        className="makeStyles-iconButton-1"
         classes={
           Object {
             "colorInherit": "MuiIconButton-colorInherit",
@@ -36,7 +38,7 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
       >
         <WithStyles(ForwardRef(ButtonBase))
           centerRipple={true}
-          className="MuiIconButton-root MuiIconButton-colorInherit"
+          className="MuiIconButton-root makeStyles-iconButton-1 MuiIconButton-colorInherit"
           disabled={false}
           focusRipple={true}
           onClick={[Function]}
@@ -44,7 +46,7 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
         >
           <ForwardRef(ButtonBase)
             centerRipple={true}
-            className="MuiIconButton-root MuiIconButton-colorInherit"
+            className="MuiIconButton-root makeStyles-iconButton-1 MuiIconButton-colorInherit"
             classes={
               Object {
                 "disabled": "Mui-disabled",
@@ -58,7 +60,7 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
             title="Zoom in"
           >
             <button
-              className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit"
+              className="MuiButtonBase-root MuiIconButton-root makeStyles-iconButton-1 MuiIconButton-colorInherit"
               disabled={false}
               onBlur={[Function]}
               onClick={[Function]}
@@ -79,9 +81,14 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
               <span
                 className="MuiIconButton-label"
               >
-                <ForwardRef>
-                  <WithStyles(ForwardRef(SvgIcon))>
+                <ForwardRef(ZoomInIcon)
+                  className="makeStyles-icon-2"
+                >
+                  <WithStyles(ForwardRef(SvgIcon))
+                    className="makeStyles-icon-2"
+                  >
                     <ForwardRef(SvgIcon)
+                      className="makeStyles-icon-2"
                       classes={
                         Object {
                           "colorAction": "MuiSvgIcon-colorAction",
@@ -98,7 +105,7 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
                     >
                       <svg
                         aria-hidden={true}
-                        className="MuiSvgIcon-root"
+                        className="MuiSvgIcon-root makeStyles-icon-2"
                         focusable="false"
                         viewBox="0 0 24 24"
                       >
@@ -111,7 +118,7 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
                       </svg>
                     </ForwardRef(SvgIcon)>
                   </WithStyles(ForwardRef(SvgIcon))>
-                </ForwardRef>
+                </ForwardRef(ZoomInIcon)>
               </span>
               <WithStyles(memo)
                 center={true}
@@ -147,12 +154,14 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
       </ForwardRef(IconButton)>
     </WithStyles(ForwardRef(IconButton))>
     <WithStyles(ForwardRef(IconButton))
+      className="makeStyles-iconButton-1"
       color="inherit"
       disabled={false}
       onClick={[Function]}
       title="Zoom out"
     >
       <ForwardRef(IconButton)
+        className="makeStyles-iconButton-1"
         classes={
           Object {
             "colorInherit": "MuiIconButton-colorInherit",
@@ -173,7 +182,7 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
       >
         <WithStyles(ForwardRef(ButtonBase))
           centerRipple={true}
-          className="MuiIconButton-root MuiIconButton-colorInherit"
+          className="MuiIconButton-root makeStyles-iconButton-1 MuiIconButton-colorInherit"
           disabled={false}
           focusRipple={true}
           onClick={[Function]}
@@ -181,7 +190,7 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
         >
           <ForwardRef(ButtonBase)
             centerRipple={true}
-            className="MuiIconButton-root MuiIconButton-colorInherit"
+            className="MuiIconButton-root makeStyles-iconButton-1 MuiIconButton-colorInherit"
             classes={
               Object {
                 "disabled": "Mui-disabled",
@@ -195,7 +204,7 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
             title="Zoom out"
           >
             <button
-              className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit"
+              className="MuiButtonBase-root MuiIconButton-root makeStyles-iconButton-1 MuiIconButton-colorInherit"
               disabled={false}
               onBlur={[Function]}
               onClick={[Function]}
@@ -216,9 +225,14 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
               <span
                 className="MuiIconButton-label"
               >
-                <ForwardRef>
-                  <WithStyles(ForwardRef(SvgIcon))>
+                <ForwardRef(ZoomOutIcon)
+                  className="makeStyles-icon-2"
+                >
+                  <WithStyles(ForwardRef(SvgIcon))
+                    className="makeStyles-icon-2"
+                  >
                     <ForwardRef(SvgIcon)
+                      className="makeStyles-icon-2"
                       classes={
                         Object {
                           "colorAction": "MuiSvgIcon-colorAction",
@@ -235,7 +249,7 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
                     >
                       <svg
                         aria-hidden={true}
-                        className="MuiSvgIcon-root"
+                        className="MuiSvgIcon-root makeStyles-icon-2"
                         focusable="false"
                         viewBox="0 0 24 24"
                       >
@@ -245,7 +259,7 @@ exports[`ZoomInOUt component should render without crashing 1`] = `
                       </svg>
                     </ForwardRef(SvgIcon)>
                   </WithStyles(ForwardRef(SvgIcon))>
-                </ForwardRef>
+                </ForwardRef(ZoomOutIcon)>
               </span>
               <WithStyles(memo)
                 center={true}

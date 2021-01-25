@@ -1,5 +1,8 @@
 import { Repository } from '@sensenet/client-core'
 import {
+  AddAnnotationWidget,
+  AddHighlightWidget,
+  AddRedactionWidget,
   defaultTheme,
   DocumentTitlePager,
   DocumentViewer,
@@ -10,10 +13,11 @@ import {
   SaveWidget,
   Share,
   ToggleCommentsWidget,
+  ToggleRedactionWidget,
   ToggleShapesWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
-} from '@sensenet/document-viewer-react/src'
+} from '@sensenet/document-viewer-react'
 import { RepositoryContext } from '@sensenet/hooks-react'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -82,7 +86,6 @@ export const ExampleAppLayout: React.FC = () => {
               renderAppBar={() => (
                 <LayoutAppBar>
                   <div style={{ flexShrink: 0 }}>
-                    <ToggleShapesWidget />
                     <ToggleThumbnailsWidget />
                     <Download
                       download={(doc) => {
@@ -105,6 +108,11 @@ export const ExampleAppLayout: React.FC = () => {
                   </div>
                   <DocumentTitlePager />
                   <div style={{ display: 'flex', flexShrink: 0 }}>
+                    <ToggleRedactionWidget />
+                    <ToggleShapesWidget />
+                    <AddRedactionWidget />
+                    <AddHighlightWidget />
+                    <AddAnnotationWidget />
                     <ToggleCommentsWidget />
                   </div>
                 </LayoutAppBar>

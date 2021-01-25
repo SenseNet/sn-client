@@ -11,7 +11,10 @@ exports[`Document Viewer component should render DocumentViewerError component i
   <ContextProvider
     value={
       Object {
+        "addAnnotation": "Add annotation",
         "addComment": "+ Add Comment",
+        "addHighlight": "Add highlight",
+        "addRedaction": "Add redaction",
         "avatarAlt": "Picture of the commenter",
         "cancelButton": "Cancel",
         "commentInputPlaceholder": "Make a comment",
@@ -138,7 +141,10 @@ exports[`Document Viewer component should render DocumentViewerError component i
   <ContextProvider
     value={
       Object {
+        "addAnnotation": "Add annotation",
         "addComment": "+ Add Comment",
+        "addHighlight": "Add highlight",
+        "addRedaction": "Add redaction",
         "avatarAlt": "Picture of the commenter",
         "cancelButton": "Cancel",
         "commentInputPlaceholder": "Make a comment",
@@ -325,7 +331,10 @@ exports[`Document Viewer component should render without crashing 1`] = `
   <ContextProvider
     value={
       Object {
+        "addAnnotation": "Add annotation",
         "addComment": "+ Add Comment",
+        "addHighlight": "Add highlight",
+        "addRedaction": "Add redaction",
         "avatarAlt": "Picture of the commenter",
         "cancelButton": "Cancel",
         "commentInputPlaceholder": "Make a comment",

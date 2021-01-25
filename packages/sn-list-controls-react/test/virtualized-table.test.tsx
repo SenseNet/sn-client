@@ -539,7 +539,7 @@ describe('Virtualized Table component', () => {
 
         const fieldRefFunc = (fieldOptions) => {
           if (fieldOptions.dataKey === 'CreatedBy/ModificationDate') {
-            return <DateCell date={fieldOptions.rowData[fieldOptions.dataKey] as string} />
+            return <DateCell date={fieldOptions.rowData[fieldOptions.dataKey] as string} virtual={true} />
           }
         }
 
