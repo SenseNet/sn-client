@@ -12,13 +12,13 @@ const DashboardComponent = lazy(() => import(/* webpackChunkName: "dashboard" */
 const UsersAndGroupsComponent = lazy(() => import(/* webpackChunkName: "users-and-groups" */ './users-and-groups'))
 const SearchComponent = lazy(() => import(/* webpackChunkName: "search" */ './search'))
 const SavedQueriesComponent = lazy(() => import(/* webpackChunkName: "saved-queries" */ './search/saved-queries'))
-const SetupComponent = lazy(() => import(/* webpackChunkName: "setup" */ './setup/setup'))
 const TrashComponent = lazy(() => import(/* webpackChunkName: "Trash" */ './trash/Trash'))
 const EventListComponent = lazy(() => import(/* webpackChunkName: "EventList" */ './event-list/event-list'))
 const CustomContent = lazy(() => import(/* webpackChunkName: "CustomContent" */ './content/CustomContent'))
 const PersonalSettingsEditor = lazy(
   () => import(/* webpackChunkName: "PersonalSettingsEditor" */ './edit/PersonalSettingsEditor'),
 )
+const SettingsComponent = lazy(() => import(/* webpackChunkName: "setup" */ './settings'))
 
 export const MainRouter = () => {
   return (
@@ -51,20 +51,16 @@ export const MainRouter = () => {
             </LoadSettingsContextProvider>
           </Route>
 
-          <Route path={PATHS.setup.appPath}>
-            <SetupComponent />
-          </Route>
-
           <Route path={PATHS.trash.appPath}>
             <TrashComponent />
           </Route>
 
-          <Route path={PATHS.localization.appPath}>
-            <ContentComponent rootPath={PATHS.localization.snPath} />
-          </Route>
-
           <Route path={PATHS.usersAndGroups.appPath}>
             <UsersAndGroupsComponent />
+          </Route>
+
+          <Route path={PATHS.settings.appPath}>
+            <SettingsComponent />
           </Route>
 
           <Route path={PATHS.contentTypes.appPath}>

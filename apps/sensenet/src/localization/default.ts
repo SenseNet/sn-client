@@ -118,6 +118,7 @@ const values = {
       Trash: 'Trash',
       UsersAndGroups: 'Users and groups',
       CustomContent: 'Custom content',
+      Settings: 'Settings',
     },
     descriptions: {
       Content: 'Explore and manage your content in the repository',
@@ -128,6 +129,7 @@ const values = {
       Trash: 'Manage deleted items here: restore content or purge them permanently',
       UsersAndGroups: 'Manage users and groups, roles and identities',
       CustomContent: 'Explore and manage your content from the configured path',
+      Settings: 'Configure the sensenet system',
     },
     personalSettingsTitle: 'Edit personal settings',
     personalSettingsSecondaryText: 'Customize the application behavior',

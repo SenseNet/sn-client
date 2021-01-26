@@ -66,6 +66,7 @@ const values: DeepPartial<typeof import('./default').default> = {
       Localization: 'Nyelvi fájlok',
       Trash: 'Kuka',
       CustomContent: 'Egyedi tartalom',
+      Settings: 'Beállítások',
     },
     descriptions: {
       Content: 'Tartalom böngészése',
@@ -76,6 +77,7 @@ const values: DeepPartial<typeof import('./default').default> = {
       Localization: 'Nyelvi fájlok kezelése',
       Trash: 'Törölt elemek kezelése',
       CustomContent: 'Egyedi tartalmak böngészése',
+      Settings: 'A rendszer beállításai',
     },
 
     personalSettingsTitle: 'Személyes beállítások',

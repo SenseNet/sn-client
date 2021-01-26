@@ -96,6 +96,8 @@ export const PermanentDrawer = () => {
   const location = useLocation()
   const selectionService = useSelectionService()
 
+  const settingsItem = items.find((item) => item.primaryText === 'Settings')
+
   if (!settings.drawer.enabled) {
     return null
   }
@@ -127,54 +129,91 @@ export const PermanentDrawer = () => {
             {matchPath(location.pathname, [
               PATHS.content.appPath,
               PATHS.usersAndGroups.appPath,
-              PATHS.setup.appPath,
               PATHS.contentTypes.appPath,
-              PATHS.localization.appPath,
+              PATHS.settings.appPath,
               PATHS.custom.appPath.replace(':path', 'root'),
             ]) ? (
               <AddButton aria-label={localization.add} isOpened={opened} />
             ) : null}
             {items.map((item, index) => {
               return (
-                <NavLink
-                  aria-label={item.url}
-                  to={item.url}
-                  className={classes.navLink}
-                  key={index}
-                  onClick={() => {
-                    selectionService.activeContent.setValue(undefined)
-                  }}
-                  activeClassName={classes.navLinkActive}>
-                  <ListItem
-                    aria-label={item.primaryText}
-                    className={classes.listButton}
-                    button={true}
+                item.primaryText !== 'Settings' && (
+                  <NavLink
+                    aria-label={item.url}
+                    to={item.url}
+                    className={classes.navLink}
                     key={index}
-                    selected={!!matchPath(location.pathname, item.url)}
-                    data-test={`drawer-menu-item-${item.primaryText.replace(/\s+/g, '-').toLowerCase()}`}>
-                    <ListItemIcon
-                      className={clsx(classes.listItemIconDark, globalClasses.centered, {
-                        [classes.listItemIconLight]: personalSettings.theme === 'light',
-                      })}>
-                      <Tooltip title={item.secondaryText} placement="right">
-                        <div>{item.icon}</div>
-                      </Tooltip>
-                    </ListItemIcon>
-                    {opened && (
-                      <ListItemText
-                        primary={`${item.primaryText}`}
-                        style={{
-                          color:
-                            theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
-                        }}
-                      />
-                    )}
-                  </ListItem>
-                </NavLink>
+                    onClick={() => {
+                      selectionService.activeContent.setValue(undefined)
+                    }}
+                    activeClassName={classes.navLinkActive}>
+                    <ListItem
+                      aria-label={item.primaryText}
+                      className={classes.listButton}
+                      button={true}
+                      key={index}
+                      selected={!!matchPath(location.pathname, item.url)}
+                      data-test={`drawer-menu-item-${item.primaryText.replace(/\s+/g, '-').toLowerCase()}`}>
+                      <ListItemIcon
+                        className={clsx(classes.listItemIconDark, globalClasses.centered, {
+                          [classes.listItemIconLight]: personalSettings.theme === 'light',
+                        })}>
+                        <Tooltip title={item.secondaryText} placement="right">
+                          <div>{item.icon}</div>
+                        </Tooltip>
+                      </ListItemIcon>
+                      {opened && (
+                        <ListItemText
+                          primary={`${item.primaryText}`}
+                          style={{
+                            color:
+                              theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
+                          }}
+                        />
+                      )}
+                    </ListItem>
+                  </NavLink>
+                )
               )
             })}
           </li>
-          <li style={{ fontWeight: 'bold', textAlign: 'center' }}>BETA</li>
+          <li>
+            {settingsItem && (
+              <NavLink
+                aria-label={settingsItem.url}
+                to={settingsItem.url}
+                className={classes.navLink}
+                onClick={() => {
+                  selectionService.activeContent.setValue(undefined)
+                }}
+                activeClassName={classes.navLinkActive}>
+                <ListItem
+                  aria-label={settingsItem.primaryText}
+                  className={classes.listButton}
+                  button={true}
+                  selected={!!matchPath(location.pathname, settingsItem.url)}
+                  data-test={`drawer-menu-item-${settingsItem.primaryText.replace(/\s+/g, '-').toLowerCase()}`}>
+                  <ListItemIcon
+                    className={clsx(classes.listItemIconDark, globalClasses.centered, {
+                      [classes.listItemIconLight]: personalSettings.theme === 'light',
+                    })}>
+                    <Tooltip title={settingsItem.secondaryText} placement="right">
+                      <div>{settingsItem.icon}</div>
+                    </Tooltip>
+                  </ListItemIcon>
+                  {opened && (
+                    <ListItemText
+                      primary={`${settingsItem!.primaryText}`}
+                      style={{
+                        color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
+                      }}
+                    />
+                  )}
+                </ListItem>
+              </NavLink>
+            )}
+            <div style={{ fontWeight: 'bold', textAlign: 'center' }}>BETA</div>
+          </li>
         </List>
       </div>
     </Paper>

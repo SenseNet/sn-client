@@ -10,6 +10,7 @@ export const globals = {
     drawerItemHeight: 65,
     formTitleHeight: 68,
     formActionButtonsHeight: 80,
+    settingsDrawerWidth: 250,
     //Colors
     headerBackground: '#353B4E',
     headerText: 'rgba(255,255,255,0.87)',

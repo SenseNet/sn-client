@@ -5,7 +5,6 @@ import { Query } from '@sensenet/query'
 import clsx from 'clsx'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
-import { PATHS } from '../../application-paths'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useQuery } from '../../hooks'
 import { navigateToAction } from '../../services/content-context-service'
@@ -65,12 +64,12 @@ const Setup = () => {
   const renderContent = () => {
     switch (activeAction) {
       case 'browse':
-        return <BrowseView contentPath={`${PATHS.setup.snPath}${activeContent}`} />
+        return <BrowseView contentPath={`/Root/System/Settings${activeContent}`} /> //TODO: átirni snpathra
       case 'edit':
         return (
           <EditView
             actionName={activeAction}
-            contentPath={`${PATHS.setup.snPath}${activeContent}`}
+            contentPath={`/Root/System/Settings${activeContent}`} //TODO: átirni snpathra
             submitCallback={() => navigateToAction({ history, routeMatch })}
           />
         )
@@ -79,15 +78,15 @@ const Setup = () => {
           <div style={{ overflow: 'hidden' }}>
             <NewView
               contentTypeName={contentTypeName!}
-              currentContentPath={PATHS.setup.snPath}
+              currentContentPath="/Root/System/Settings" //TODO: átirni snpathra
               submitCallback={() => navigateToAction({ history, routeMatch })}
             />
           </div>
         )
       case 'version':
-        return <VersionView contentPath={`${PATHS.setup.snPath}${activeContent}`} />
+        return <VersionView contentPath={`/Root/System/Settings${activeContent}`} /> //TODO: átirni snpathra
       case 'edit-binary':
-        return <EditBinary contentPath={`${PATHS.setup.snPath}${activeContent}`} />
+        return <EditBinary contentPath={`/Root/System/Settings${activeContent}`} /> //TODO: átirni snpathra
       default:
         return (
           <>
