@@ -3,7 +3,6 @@ import { BrowseType } from './components/content'
 export const PATHS = {
   loginCallback: { appPath: '/authentication/login-callback' },
   silentCallback: { appPath: '/authentication/silent-callback' },
-  personalSettings: { appPath: '/personal-settings' },
   events: { appPath: '/events/:eventGuid?' },
   savedQueries: { appPath: '/saved-queries/:action?', snPath: '/Root/Content/Queries' },
   trash: { appPath: '/trash/:browseType/:action?', snPath: '/Root/Trash' },
@@ -18,7 +17,7 @@ export const PATHS = {
   settings: { appPath: '/settings/:submenu?' },
 } as const
 
-type SettingsItemType = ['stats', 'apiKeys']
+type SettingsItemType = 'stats' | 'apiKeys' | 'webHooks' | 'adminui'
 
 type RoutesWithContentBrowser = keyof Pick<typeof PATHS, 'content' | 'usersAndGroups' | 'contentTypes' | 'trash'>
 

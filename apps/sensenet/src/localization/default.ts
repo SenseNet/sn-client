@@ -235,7 +235,7 @@ const values = {
     cancel: 'Cancel',
     restore: 'Restore',
     restoringDefaultsProgress: 'Restoring the default settings...',
-    title: 'Personal settings',
+    title: 'Admin-ui customization',
     drawer: 'Options for the left drawer',
     drawerEnable: 'Enable or disable the drawer',
     drawerType: 'Drawer type',
