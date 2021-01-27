@@ -502,7 +502,7 @@ export class Repository implements Disposable {
 
   constructor(
     config?: RepositoryConfiguration,
-    private fetchMethod: GlobalFetch['fetch'] = window && window.fetch && window.fetch.bind(window),
+    private fetchMethod: WindowOrWorkerGlobalScope['fetch'] = window && window.fetch && window.fetch.bind(window),
     public schemas: SchemaStore = new SchemaStore(),
   ) {
     this.configuration = { ...defaultRepositoryConfiguration, ...config }

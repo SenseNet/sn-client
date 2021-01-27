@@ -14,7 +14,7 @@ import { CommandPaletteItem } from './CommandPalette'
 export const getMatchParts = (hits: string[], term: string) => {
   const matchValueArr = match(term, hits.join(' '))
 
-  const parseValue = parse(term, matchValueArr as number[] | number[][])
+  const parseValue = parse(term, matchValueArr as Array<[number, number]>)
 
   return parseValue.map((part, index) =>
     part.highlight ? <strong key={String(index)}>{part.text}</strong> : <span key={String(index)}>{part.text}</span>,
