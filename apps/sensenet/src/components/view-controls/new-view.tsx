@@ -75,7 +75,7 @@ export const NewView: React.FC<NewViewProps> = (props) => {
       <NewTextFile
         contentTypeName={props.contentTypeName}
         routeMatch={routeMatch}
-        savePath="/Root/Localization" //TODO: átirni snpathra
+        savePath={PATHS.localization.snPath}
         fileExtension={'.xml'}
         isFileNameEditable={true}
       />
@@ -85,7 +85,7 @@ export const NewView: React.FC<NewViewProps> = (props) => {
       <NewTextFile
         contentTypeName={props.contentTypeName}
         routeMatch={routeMatch}
-        savePath="/Root/System/Settings" //TODO: átirni snpathra
+        savePath={PATHS.configuration.snPath}
         fileExtension={'.settings'}
         isFileNameEditable={true}
       />

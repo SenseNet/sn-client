@@ -181,7 +181,7 @@ export const PermanentDrawer = () => {
             {settingsItem && (
               <NavLink
                 aria-label={settingsItem.url}
-                to={settingsItem.url}
+                to={`${settingsItem.url}stats`}
                 className={classes.navLink}
                 onClick={() => {
                   selectionService.activeContent.setValue(undefined)

@@ -119,6 +119,7 @@ const values = {
       UsersAndGroups: 'Users and groups',
       CustomContent: 'Custom content',
       Settings: 'Settings',
+      Configuration: 'Configuration',
     },
     descriptions: {
       Content: 'Explore and manage your content in the repository',

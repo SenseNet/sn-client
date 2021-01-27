@@ -13,12 +13,16 @@ export const PATHS = {
   search: { appPath: '/search' },
   content: { appPath: '/content/:browseType/:action?', snPath: '/Root/Content' },
   custom: { appPath: '/custom/:browseType/:path/:action?' },
+  configuration: { appPath: '/settings/configuration/:action?', snPath: '/Root/System/Settings' },
+  localization: { appPath: '/settings/localization/:action?', snPath: '/Root/Localization' },
   settings: { appPath: '/settings/:submenu?' },
 } as const
 
+type SettingsItemType = ['stats', 'apiKeys']
+
 type RoutesWithContentBrowser = keyof Pick<typeof PATHS, 'content' | 'usersAndGroups' | 'contentTypes' | 'trash'>
 
-type RoutesWithActionParam = keyof Pick<typeof PATHS, 'savedQueries'>
+type RoutesWithActionParam = keyof Pick<typeof PATHS, 'savedQueries' | 'localization' | 'configuration'>
 
 type Options =
   | { path: typeof PATHS['events']['appPath']; params?: { eventGuid: string; [index: string]: string } }
@@ -41,7 +45,7 @@ type Options =
     }
   | {
       path: typeof PATHS['settings']['appPath']
-      params?: { submenu: string; [index: string]: string } //TODO: kibővíteni a stringet
+      params?: { submenu: SettingsItemType; [index: string]: string | SettingsItemType }
     }
 
 export const resolvePathParams = ({ path, params }: Options) => {

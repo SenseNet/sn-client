@@ -1,12 +1,17 @@
 import { createStyles, ListItem, ListItemText, makeStyles, Theme } from '@material-ui/core'
+import SettingsIcon from '@material-ui/icons/Settings'
 import clsx from 'clsx'
 import React, { lazy } from 'react'
-import { NavLink, useRouteMatch } from 'react-router-dom'
+import { matchPath, NavLink, useLocation, useRouteMatch } from 'react-router-dom'
+import { PATHS, resolvePathParams } from '../../application-paths'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 
 const ContentComponent = lazy(() => import(/* webpackChunkName: "content" */ '../content'))
-const SetupComponent = lazy(() => import(/* webpackChunkName: "setup" */ '../setup/setup'))
+const SetupComponent = lazy(() => import(/* webpackChunkName: "setup" */ './setup'))
+const PersonalSettingsEditor = lazy(
+  () => import(/* webpackChunkName: "PersonalSettingsEditor" */ './PersonalSettingsEditor'),
+)
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -25,14 +30,22 @@ const useStyles = makeStyles((theme: Theme) =>
     settingsContent: {
       width: `calc(100% - ${globals.common.settingsDrawerWidth}px)`,
     },
+    underConstructionWrapper: {
+      flexFlow: 'column',
+      height: '100%',
+    },
+    underConstructionIcon: {
+      fontSize: '74px',
+      margin: '10px',
+    },
   }),
 )
 
-const items = [
+export const settingsItems = [
   {
     name: 'configuration',
     displayName: 'Configuration',
-    url: '/settings/configuration',
+    url: resolvePathParams({ path: PATHS.configuration.appPath }),
   },
   {
     name: 'stats',
@@ -41,13 +54,23 @@ const items = [
   },
   {
     name: 'apiKeys',
-    displayName: 'Api keys',
+    displayName: 'Api and security',
     url: '/settings/apikeys',
   },
   {
     name: 'localization',
     displayName: 'Localization',
-    url: '/settings/localization',
+    url: resolvePathParams({ path: PATHS.localization.appPath }),
+  },
+  {
+    name: 'webHooks',
+    displayName: 'Webhooks',
+    url: '/settings/webhooks',
+  },
+  {
+    name: 'adminui',
+    displayName: 'Admin-ui customization',
+    url: '/settings/adminui',
   },
 ]
 
@@ -56,15 +79,23 @@ export const Settings: React.FunctionComponent = () => {
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const localizationDrawerTitles = useLocalization().drawer.titles
+  const location = useLocation()
 
   const renderContent = () => {
     switch (routeMatch.params.submenu) {
       case 'localization':
-        return <ContentComponent rootPath={'/Root/Localization'} /> //TODO:snpathra átirni majd
+        return <ContentComponent rootPath={PATHS.localization.snPath} />
       case 'configuration':
         return <SetupComponent />
+      case 'adminui':
+        return <PersonalSettingsEditor />
       default:
-        return <div>Under construction</div>
+        return (
+          <div className={clsx(globalClasses.centered, classes.underConstructionWrapper)}>
+            <SettingsIcon className={classes.underConstructionIcon} />
+            <div>Under construction</div>
+          </div>
+        )
     }
   }
 
@@ -75,13 +106,14 @@ export const Settings: React.FunctionComponent = () => {
       </div>
       <div className={classes.settingsContainer}>
         <div className={classes.settingsDrawer}>
-          {items.map((item, index) => {
+          {settingsItems.map((item, index) => {
             return (
               <NavLink aria-label={item.url} to={item.url} key={index}>
                 <ListItem
                   aria-label={item.name}
                   button={true}
                   key={index}
+                  selected={!!matchPath(location.pathname, item.url)}
                   data-test={`drawer-menu-item-${item.name.replace(/\s+/g, '-').toLowerCase()}`}>
                   <ListItemText primary={`${item.displayName}`} />
                 </ListItem>

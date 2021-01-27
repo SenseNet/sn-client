@@ -15,9 +15,6 @@ const SavedQueriesComponent = lazy(() => import(/* webpackChunkName: "saved-quer
 const TrashComponent = lazy(() => import(/* webpackChunkName: "Trash" */ './trash/Trash'))
 const EventListComponent = lazy(() => import(/* webpackChunkName: "EventList" */ './event-list/event-list'))
 const CustomContent = lazy(() => import(/* webpackChunkName: "CustomContent" */ './content/CustomContent'))
-const PersonalSettingsEditor = lazy(
-  () => import(/* webpackChunkName: "PersonalSettingsEditor" */ './edit/PersonalSettingsEditor'),
-)
 const SettingsComponent = lazy(() => import(/* webpackChunkName: "setup" */ './settings'))
 
 export const MainRouter = () => {
@@ -25,10 +22,6 @@ export const MainRouter = () => {
     <ErrorBoundary FallbackComponent={ErrorBoundaryWithDialogs}>
       <Suspense fallback={<FullScreenLoader />}>
         <Switch>
-          <Route path={PATHS.personalSettings.appPath}>
-            <PersonalSettingsEditor />
-          </Route>
-
           <Route path={PATHS.events.appPath}>
             <EventListComponent />
           </Route>

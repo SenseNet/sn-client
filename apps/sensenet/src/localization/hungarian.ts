@@ -67,6 +67,7 @@ const values: DeepPartial<typeof import('./default').default> = {
       Trash: 'Kuka',
       CustomContent: 'Egyedi tartalom',
       Settings: 'Beállítások',
+      Configuration: 'Konfiguráció',
     },
     descriptions: {
       Content: 'Tartalom böngészése',
