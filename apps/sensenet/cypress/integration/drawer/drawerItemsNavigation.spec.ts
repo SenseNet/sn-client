@@ -1,4 +1,3 @@
-import { globals } from '../../../src/globalStyles'
 import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
 describe('Drawer items navigation', () => {

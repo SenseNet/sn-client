@@ -25,6 +25,7 @@ export interface DashboardPlan {
 export interface DashboardLimitations {
   content: number
   user: number
+  group: number
   storage: number
   workspace: number
   contentType: number

@@ -6,11 +6,12 @@ import { matchPath, NavLink, useLocation, useRouteMatch } from 'react-router-dom
 import { PATHS, resolvePathParams } from '../../application-paths'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+import { Stats } from './stats'
 
 const ContentComponent = lazy(() => import(/* webpackChunkName: "content" */ '../content'))
 const SetupComponent = lazy(() => import(/* webpackChunkName: "setup" */ './setup'))
 const PersonalSettingsEditor = lazy(
-  () => import(/* webpackChunkName: "PersonalSettingsEditor" */ './PersonalSettingsEditor'),
+  () => import(/* webpackChunkName: "PersonalSettingsEditor" */ './personal-settings-editor'),
 )
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -89,6 +90,8 @@ export const Settings: React.FunctionComponent = () => {
         return <SetupComponent />
       case 'adminui':
         return <PersonalSettingsEditor />
+      case 'stats':
+        return <Stats />
       default:
         return (
           <div className={clsx(globalClasses.centered, classes.underConstructionWrapper)}>
