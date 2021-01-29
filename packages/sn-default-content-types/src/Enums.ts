@@ -97,3 +97,8 @@ export enum MaritalStatus {
   Single = 'Single',
   Married = 'Married',
 }
+export enum EventType {
+  Deadline = 'Deadline',
+  Meeting = 'Meeting',
+  Demo = 'Demo',
+}
