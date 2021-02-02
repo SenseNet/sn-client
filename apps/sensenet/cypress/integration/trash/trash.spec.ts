@@ -66,6 +66,11 @@ describe('Trash', () => {
   })
 
   it('permanently deleted content should not be in the trash', () => {
+    cy.intercept({
+      method: 'GET',
+      url: '/Root/Trash',
+    }).as('getTrashChildren')
+
     cy.visit(
       pathWithQueryParams({
         path: resolvePathParams({ path: PATHS.content.appPath, params: { browseType: 'explorer' } }),
@@ -83,7 +88,10 @@ describe('Trash', () => {
         cy.get('[data-test="table-cell-test"]').should('not.exist')
 
         cy.get('[data-test="drawer-menu-item-trash"]').click()
-        cy.get('[data-test="table-cell-test"]').should('not.exist')
+
+        cy.wait('@getTrashChildren').then((_interception) => {
+          cy.get('[data-test="table-cell-test"]').should('not.exist')
+        })
       })
   })
 })
