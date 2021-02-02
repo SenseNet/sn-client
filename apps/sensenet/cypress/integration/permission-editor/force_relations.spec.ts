@@ -1,7 +1,7 @@
 import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
 describe('Permission editor group switcher and force relations', () => {
-  beforeEach(() => {
+  before(() => {
     cy.login()
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
   })

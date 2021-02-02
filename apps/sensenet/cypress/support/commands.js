@@ -61,6 +61,7 @@ Cypress.Commands.add('login', (userType = 'admin') => {
 //All permissions should be enabled/disabled on Read tab
 Cypress.Commands.add('checkReadPermissionGroup', (enabled = true) => {
   cy.get('[data-test="switcher-see"]')
+    .should('be.visible')
     .parent()
     .find('.MuiSwitch-input')
     .should(enabled ? 'be.checked' : 'not.be.checked')
@@ -76,6 +77,7 @@ Cypress.Commands.add('checkReadPermissionGroup', (enabled = true) => {
     .parent()
     .find('.MuiSwitch-input')
     .should(enabled ? 'be.checked' : 'not.be.checked')
+  cy.get('[data-test="switcher-open"]')
     .parent()
     .find('.MuiSwitch-input')
     .should(enabled ? 'be.checked' : 'not.be.checked')
