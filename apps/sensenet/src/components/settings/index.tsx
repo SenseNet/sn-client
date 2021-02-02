@@ -6,6 +6,7 @@ import { matchPath, NavLink, useLocation, useRouteMatch } from 'react-router-dom
 import { PATHS, resolvePathParams } from '../../application-paths'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+import { ApiKeys } from './api-keys'
 
 const ContentComponent = lazy(() => import(/* webpackChunkName: "content" */ '../content'))
 const SetupComponent = lazy(() => import(/* webpackChunkName: "setup" */ './setup'))
@@ -89,6 +90,8 @@ export const Settings: React.FunctionComponent = () => {
         return <SetupComponent />
       case 'adminui':
         return <PersonalSettingsEditor />
+      case 'apikeys':
+        return <ApiKeys />
       default:
         return (
           <div className={clsx(globalClasses.centered, classes.underConstructionWrapper)}>
