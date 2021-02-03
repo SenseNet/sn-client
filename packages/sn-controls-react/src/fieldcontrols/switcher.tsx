@@ -127,7 +127,7 @@ export const Switcher: React.FC<ReactClientFieldSetting<FieldSetting>> = (props)
                 {props.settings.DisplayName}
               </Grid>
               <Grid item>
-                <Switch size="small" checked={value} onChange={handleChange} />
+                <Switch data-test="edit-switch" size="small" checked={value} onChange={handleChange} />
               </Grid>
             </Grid>
           </Typography>

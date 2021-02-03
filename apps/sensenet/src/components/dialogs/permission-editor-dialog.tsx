@@ -278,6 +278,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
             Object.entries(groupsFromSettings).map(([groupNameFromSettings]) => {
               return (
                 <ListItem
+                  data-test={`permission-group-${groupNameFromSettings.replace(/\s+/g, '-').toLowerCase()}`}
                   key={groupNameFromSettings}
                   button
                   className={clsx(classes.secondaryListItem, {
@@ -292,6 +293,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                     })}
                   />
                   <Switch
+                    data-test={`switcher-${groupNameFromSettings.replace(/\s+/g, '-').toLowerCase()}`}
                     checked={isGroupChecked(groupNameFromSettings)}
                     disabled={isGroupDisabled(groupNameFromSettings)}
                     size="small"
@@ -406,7 +408,10 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
             <List className={classes.permissionContainer}>
               {getPermissionsFromGroupName(actualGroup).map((selectedGroupPermission: keyof PermissionRequestBody) => {
                 return (
-                  <ListItem key={selectedGroupPermission} onClick={() => {}}>
+                  <ListItem
+                    data-test={`permission-item-${selectedGroupPermission.replace(/\s+/g, '-').toLowerCase()}`}
+                    key={selectedGroupPermission}
+                    onClick={() => {}}>
                     <ListItemText
                       disableTypography
                       primary={selectedGroupPermission}
@@ -415,6 +420,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                       })}
                     />
                     <Switch
+                      data-test={`switcher-${selectedGroupPermission.replace(/\s+/g, '-').toLowerCase()}`}
                       checked={
                         (responseBody[selectedGroupPermission] !== undefined &&
                           responseBody[selectedGroupPermission] === PermissionValues.allow) ||
@@ -455,6 +461,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
               {localization.forms.cancel}
             </Button>
             <Button
+              data-test="permission-editor-submit"
               aria-label={localization.forms.submit}
               color="primary"
               variant="contained"
