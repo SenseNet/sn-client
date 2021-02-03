@@ -23,7 +23,7 @@ exports[`FullScreenDialog Matches snapshot 1`] = `
           edge="start"
           onClick={[MockFunction]}
         >
-          <Memo([object Object]) />
+          <Memo(ForwardRef(CloseIcon)) />
         </WithStyles(ForwardRef(IconButton))>
         <WithStyles(ForwardRef(Typography))
           className="makeStyles-title-2"
@@ -37,7 +37,7 @@ exports[`FullScreenDialog Matches snapshot 1`] = `
           edge="start"
           href="Download Path"
         >
-          <Memo([object Object]) />
+          <Memo(ForwardRef(SaveAltIcon)) />
         </WithStyles(ForwardRef(IconButton))>
       </WithStyles(ForwardRef(Toolbar))>
     </WithStyles(ForwardRef(AppBar))>
