@@ -14,14 +14,15 @@ export const PATHS = {
   custom: { appPath: '/custom/:browseType/:path/:action?' },
   configuration: { appPath: '/settings/configuration/:action?', snPath: '/Root/System/Settings' },
   localization: { appPath: '/settings/localization/:action?', snPath: '/Root/Localization' },
+  webhooks: { appPath: '/settings/webhooks/:action?', snPath: '/Root/System/WebHooks' },
   settings: { appPath: '/settings/:submenu?' },
 } as const
 
-type SettingsItemType = 'stats' | 'apiKeys' | 'webHooks' | 'adminui'
+type SettingsItemType = 'stats' | 'apiKeys' | 'adminui'
 
 type RoutesWithContentBrowser = keyof Pick<typeof PATHS, 'content' | 'usersAndGroups' | 'contentTypes' | 'trash'>
 
-type RoutesWithActionParam = keyof Pick<typeof PATHS, 'savedQueries' | 'localization' | 'configuration'>
+type RoutesWithActionParam = keyof Pick<typeof PATHS, 'savedQueries' | 'localization' | 'configuration' | 'webhooks'>
 
 type Options =
   | { path: typeof PATHS['events']['appPath']; params?: { eventGuid: string; [index: string]: string } }

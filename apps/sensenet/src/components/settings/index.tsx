@@ -63,9 +63,9 @@ export const settingsItems = [
     url: resolvePathParams({ path: PATHS.localization.appPath }),
   },
   {
-    name: 'webHooks',
+    name: 'webhooks',
     displayName: 'Webhooks',
-    url: '/settings/webhooks',
+    url: resolvePathParams({ path: PATHS.webhooks.appPath }),
   },
   {
     name: 'adminui',
@@ -89,6 +89,14 @@ export const Settings: React.FunctionComponent = () => {
         return <SetupComponent />
       case 'adminui':
         return <PersonalSettingsEditor />
+      case 'webhooks':
+        return (
+          <ContentComponent
+            rootPath={PATHS.webhooks.snPath}
+            fieldsToDisplay={['DisplayName', 'WebHookUrl' as any, 'Enabled' as any, 'SuccessfulCalls' as any]}
+            schema={'WebHookSubscription'}
+          />
+        )
       default:
         return (
           <div className={clsx(globalClasses.centered, classes.underConstructionWrapper)}>
