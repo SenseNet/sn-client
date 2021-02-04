@@ -352,6 +352,7 @@ const values = {
     savedQueries: 'Saved queries',
     queryHelperText: 'Enter a keyword or a content query expression',
     autoFilters: 'AutoFilters',
+    clearTerm: 'Clear term input',
     openInSearchTitle: (term: string) => `See all results for '${term}'`,
     openInSearchDescription: 'Opens the query expression in the Search view',
     saveQuery: 'Save Query',

@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => {
       paddingRight: 30,
     },
     inputButton: {
-      color: theme.palette.common.black,
+      color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
     },
     searchBar: {
       display: 'flex',
@@ -151,7 +151,7 @@ export const Search = () => {
                   {query && (
                     <IconButton
                       className={classes.inputButton}
-                      aria-label="toggle password visibility"
+                      aria-label={localization.clearTerm}
                       onClick={() => null}>
                       <Cancel onClick={() => setQuery(undefined)} />
                     </IconButton>
@@ -203,10 +203,9 @@ export const Search = () => {
                   idOrPath: item.Id,
                   oDataOptions: {
                     select: Array.isArray(repository.configuration.requiredSelect)
-                      ? ([
-                          ...repository.configuration.requiredSelect,
-                          'Actions/Name',
-                        ] as ODataFieldParameter<GenericContent>)
+                      ? ([...repository.configuration.requiredSelect, 'Actions/Name'] as ODataFieldParameter<
+                          GenericContent
+                        >)
                       : repository.configuration.requiredSelect,
                     expand: ['Actions'] as ODataFieldParameter<GenericContent>,
                   },
