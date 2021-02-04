@@ -203,9 +203,10 @@ export const Search = () => {
                   idOrPath: item.Id,
                   oDataOptions: {
                     select: Array.isArray(repository.configuration.requiredSelect)
-                      ? ([...repository.configuration.requiredSelect, 'Actions/Name'] as ODataFieldParameter<
-                          GenericContent
-                        >)
+                      ? ([
+                          ...repository.configuration.requiredSelect,
+                          'Actions/Name',
+                        ] as ODataFieldParameter<GenericContent>)
                       : repository.configuration.requiredSelect,
                     expand: ['Actions'] as ODataFieldParameter<GenericContent>,
                   },
