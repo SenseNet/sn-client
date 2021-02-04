@@ -89,16 +89,16 @@ export const ApiEndpointWidget: React.FunctionComponent = () => {
               {localization.clientLink}
             </Link>
             <div>
-              <Link target="_blank" href="https://docs.sensenet.com/api-docs/basic-concepts">
+              <Link target="_blank" href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=js">
                 <img className={classes.logo} src={jslogo} alt="js-logo" width="35" height="35" />
               </Link>
-              <Link target="_blank" href="https://docs.sensenet.com/api-docs/basic-concepts">
+              <Link target="_blank" href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=dotnet">
                 <img className={classes.logo} src={dotnetlogo} alt="dotnet-logo" width="35" height="35" />
               </Link>
-              <Link target="_blank" href="https://docs.sensenet.com/api-docs/basic-concepts">
+              <Link target="_blank" href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=react">
                 <img className={classes.logo} src={reactlogo} alt="react-logo" width="35" height="35" />
               </Link>
-              <Link target="_blank" href="https://docs.sensenet.com/api-docs/basic-concepts">
+              <Link target="_blank" href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=redux">
                 <img className={classes.logo} src={reduxlogo} alt="reduc-logo" width="35" height="35" />
               </Link>
             </div>
