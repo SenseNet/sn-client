@@ -8,10 +8,14 @@ describe('Groups', () => {
   })
   it('Groups list should have the appropriate data', () => {
     const items = ['Administrators', 'Developers', 'Editors']
+    const columns = ['Display Name', 'Description', 'Members', 'Actions']
     cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
     cy.get('[data-test="groups"]').click()
     items.forEach((item) => {
       cy.get(`[data-test="table-cell-${item.replace(/\s+/g, '-').toLowerCase()}"]`).should('be.visible')
+    })
+    columns.forEach((column) => {
+      cy.get(`[data-test="table-header-${column.replace(/\s+/g, '-').toLowerCase()}"]`).should('be.visible')
     })
   })
   it('right click on a group should open context-menu', () => {

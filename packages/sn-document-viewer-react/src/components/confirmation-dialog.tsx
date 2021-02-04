@@ -1,4 +1,9 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core'
+import Button from '@material-ui/core/Button/Button'
+import Dialog from '@material-ui/core/Dialog/Dialog'
+import DialogActions from '@material-ui/core/DialogActions/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle'
 import React from 'react'
 
 /**

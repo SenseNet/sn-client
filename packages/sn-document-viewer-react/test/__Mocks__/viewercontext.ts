@@ -12,7 +12,6 @@ export const exampleDocumentData: DocumentData = {
   shapes: {
     annotations: [
       {
-        index: 1,
         h: 100,
         w: 100,
         x: 10,
@@ -20,12 +19,12 @@ export const exampleDocumentData: DocumentData = {
         text: 'Example Text',
         guid: '9a324f30-1423-11e9-bcb9-d719ddfb5f43',
         lineHeight: 15,
-        fontBold: '34',
+        fontBold: 34,
         imageIndex: 1,
         fontColor: 'red',
         fontFamily: 'arial',
-        fontItalic: 'false',
-        fontSize: '12pt',
+        fontItalic: false,
+        fontSize: 12,
       },
     ],
     highlights: [

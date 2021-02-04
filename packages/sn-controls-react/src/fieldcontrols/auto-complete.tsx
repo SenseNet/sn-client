@@ -1,6 +1,6 @@
 import { deepMerge } from '@sensenet/client-utils'
 import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
-import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
+import { Query } from '@sensenet/query'
 import { ReferenceField } from '@sensenet/search-react'
 import Typography from '@material-ui/core/Typography'
 import React from 'react'
@@ -21,28 +21,6 @@ export const AutoComplete: React.FC<ReactClientFieldSetting<ReferenceFieldSettin
       if (!props.repository) {
         throw new Error('You must pass a repository to this control')
       }
-
-      new QueryOperators(fetchQuery).and.query((q2) => {
-        props.settings.AllowedTypes &&
-          props.settings.AllowedTypes.forEach((allowedType, index, array) => {
-            new QueryExpression(q2.queryRef).term(`TypeIs:${allowedType}`)
-            if (index < array.length - 1) {
-              return new QueryOperators(q2.queryRef).or
-            }
-          })
-        return q2
-      })
-
-      new QueryOperators(fetchQuery).and.query((q2) => {
-        props.settings.SelectionRoots &&
-          props.settings.SelectionRoots.forEach((root, index, array) => {
-            new QueryExpression(q2.queryRef).inTree(root)
-            if (index < array.length - 1) {
-              return new QueryOperators(q2.queryRef).or
-            }
-          })
-        return q2
-      })
 
       const result = await props.repository.loadCollection<GenericContent>({
         path: '/Root',

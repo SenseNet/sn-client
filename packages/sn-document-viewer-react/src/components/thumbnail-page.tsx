@@ -1,9 +1,28 @@
 import { PreviewImageData } from '@sensenet/client-core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Paper from '@material-ui/core/Paper'
+import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import React from 'react'
-import { THUMBNAIL_NAME, THUMBNAIL_PADDING } from '..'
+import { PageProps, THUMBNAIL_NAME, THUMBNAIL_PADDING } from '..'
 import { usePreviewImage, useViewerState } from '../hooks'
+
+const useStyles = makeStyles<Theme, PageProps>(() => {
+  return createStyles({
+    thumbnailPage: {
+      padding: 0,
+      overflow: 'hidden',
+      width: ({ page }) => page.Width - 2 * THUMBNAIL_PADDING,
+      height: ({ page }) => page.Height - 2 * THUMBNAIL_PADDING,
+      position: 'relative',
+    },
+    image: {
+      display: 'flex',
+      justifyContent: 'center',
+    },
+  })
+})
 
 /**
  * Defined the component's own properties
@@ -16,6 +35,7 @@ export interface ThumbnailPageProps {
 }
 
 export const ThumbnailPage: React.FC<ThumbnailPageProps> = (props) => {
+  const classes = useStyles(props)
   const viewerState = useViewerState()
   const page = usePreviewImage(props.page.Index)
 
@@ -26,17 +46,11 @@ export const ThumbnailPage: React.FC<ThumbnailPageProps> = (props) => {
   return (
     <Paper elevation={isActive ? 8 : 2} className={THUMBNAIL_NAME} style={{ margin: THUMBNAIL_PADDING }}>
       <div
-        style={{
-          padding: 0,
-          overflow: 'hidden',
-          width: props.page.Width - 2 * THUMBNAIL_PADDING,
-          height: props.page.Height - 2 * THUMBNAIL_PADDING,
-          position: 'relative',
-        }}
+        className={classes.thumbnailPage}
         onClick={(ev) => {
           props.onClick(ev)
         }}>
-        <span style={{ display: 'flex', justifyContent: 'center' }}>
+        <span className={classes.image}>
           {imgUrl ? (
             <img
               src={`${imgUrl}${viewerState.showWatermark ? '?watermark=true' : ''}`}

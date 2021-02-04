@@ -5,6 +5,7 @@ import {
   CommentMarker,
   CommentStateContext,
   ShapeAnnotation,
+  ShapeDraft,
   ShapeHighlight,
   ShapeRedaction,
   ShapeSkeleton,
@@ -20,6 +21,7 @@ import { exampleDocumentData, examplePreviewImageData } from './__Mocks__/viewer
 
 describe('Shapes component', () => {
   const defaultProps: ShapesWidgetProps = {
+    imageRotation: 0,
     page: examplePreviewImageData,
     zoomRatioStanding: 1,
     zoomRatioLying: 1,
@@ -299,5 +301,10 @@ describe('Shapes component', () => {
 
     expect(updateDocumentData).toBeCalled()
     expect(updateState).toBeCalledWith({ hasChanges: true })
+  })
+
+  it('should render ShapeDraft without crashing', () => {
+    const wrapper = shallow(<ShapeDraft dimensions={{ top: 10, left: 20, height: 30, width: 40 }} />)
+    expect(wrapper).toMatchSnapshot()
   })
 })

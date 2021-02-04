@@ -12,7 +12,12 @@ export const UserAvatar: React.FC<{
   const avatarUrl = props.user.Avatar?.Url
   if (avatarUrl) {
     return (
-      <Avatar src={PathHelper.joinPaths(props.repositoryUrl, avatarUrl)} {...props.avatarProps} style={props.style} />
+      <Avatar
+        src={PathHelper.joinPaths(props.repositoryUrl, avatarUrl)}
+        alt={props.user.DisplayName}
+        {...props.avatarProps}
+        style={props.style}
+      />
     )
   }
   return (

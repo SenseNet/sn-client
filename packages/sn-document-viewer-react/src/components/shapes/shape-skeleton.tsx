@@ -11,6 +11,7 @@ export interface ShapeProps {
   zoomRatio: number
   updateShapeData: (shapeType: keyof Shapes, guid: string, shape: Redaction | Highlight | Annotation) => void
   removeShape: (shapeType: keyof Shapes, guid: string) => void
+  rotationDegree: number
 }
 
 export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
@@ -99,33 +100,40 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
     <div
       onClickCapture={(ev) => ev.stopPropagation()}
       style={{ filter: focused ? 'contrast(.9) brightness(1.1)' : '' }}
-      onKeyUp={handleKeyPress}
       onFocus={onFocus}
-      onBlur={onBlur}>
+      onKeyUp={(ev) => props.shapeType !== 'annotations' && handleKeyPress(ev)}
+      onBlur={(ev) => props.rotationDegree === 0 && onBlur(ev)}>
       {props.shapeType === 'annotations' ? (
         <ShapeAnnotation
           shape={props.shape as Annotation}
           zoomRatio={props.zoomRatio}
-          focused={focused}
-          onDragStart={onDragStart}
-          onResized={onResized}
+          onDragStart={(ev) => props.rotationDegree === 0 && onDragStart(ev)}
+          onResized={(ev) => props.rotationDegree === 0 && onResized(ev)}
           getShapeDimensions={getShapeDimensions}
           updateShapeData={props.updateShapeData}
           removeShape={props.removeShape}
+          rotationDegree={props.rotationDegree}
         />
       ) : props.shapeType === 'redactions' ? (
         <ShapeRedaction
+          zoomRatio={props.zoomRatio}
+          removeShape={props.removeShape}
           shape={props.shape}
-          onDragStart={onDragStart}
-          onResized={onResized}
-          getShapeDimensions={getShapeDimensions}
+          onDragStart={(ev) => props.rotationDegree === 0 && onDragStart(ev)}
+          onResized={(ev) => props.rotationDegree === 0 && onResized(ev)}
+          permissions={permissions}
+          dimensions={getShapeDimensions(props.shape) as any}
+          rotationDegree={props.rotationDegree}
         />
       ) : (
         <ShapeHighlight
+          zoomRatio={props.zoomRatio}
+          removeShape={props.removeShape}
           shape={props.shape}
-          onDragStart={onDragStart}
-          onResized={onResized}
-          getShapeDimensions={getShapeDimensions}
+          onDragStart={(ev) => props.rotationDegree === 0 && onDragStart(ev)}
+          onResized={(ev) => props.rotationDegree === 0 && onResized(ev)}
+          dimensions={getShapeDimensions(props.shape) as any}
+          rotationDegree={props.rotationDegree}
         />
       )}
     </div>
