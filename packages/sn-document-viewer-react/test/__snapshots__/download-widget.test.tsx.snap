@@ -1,20 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DownloadWidget component Should render without crashing 1`] = `
-<div
-  style={
-    Object {
-      "display": "inline-block",
-    }
-  }
+<WithStyles(ForwardRef(IconButton))
+  className="makeStyles-iconButton-1"
+  color="inherit"
+  id="CloudDownload"
+  onClick={[Function]}
+  title="Download"
 >
-  <WithStyles(ForwardRef(IconButton))
-    color="inherit"
-    id="CloudDownload"
-    onClick={[Function]}
-    title="Download"
-  >
-    <Memo([object Object]) />
-  </WithStyles(ForwardRef(IconButton))>
-</div>
+  <Memo(ForwardRef(CloudDownloadIcon))
+    className="makeStyles-icon-2"
+  />
+</WithStyles(ForwardRef(IconButton))>
 `;

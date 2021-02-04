@@ -3,27 +3,10 @@
 exports[`Document Viewer Error component matches snapshot with provided context 1`] = `
 <DocumentViewerError>
   <div
-    style={
-      Object {
-        "alignContent": "center",
-        "alignItems": "center",
-        "display": "flex",
-        "height": "100%",
-        "justifyContent": "space-around",
-      }
-    }
+    className="makeStyles-mainWrapper-1"
   >
     <div
-      style={
-        Object {
-          "alignItems": "center",
-          "display": "flex",
-          "flexDirection": "column",
-          "justifyContent": "space-between",
-          "margin": ".5em 0 .6em 0",
-          "maxWidth": 500,
-        }
-      }
+      className="makeStyles-errorWrapper-2"
     >
       <svg
         height="290px"
@@ -235,27 +218,10 @@ exports[`Document Viewer Error component matches snapshot with provided context 
 exports[`Document Viewer Error component matches snapshot without provided context 1`] = `
 <DocumentViewerError>
   <div
-    style={
-      Object {
-        "alignContent": "center",
-        "alignItems": "center",
-        "display": "flex",
-        "height": "100%",
-        "justifyContent": "space-around",
-      }
-    }
+    className="makeStyles-mainWrapper-1"
   >
     <div
-      style={
-        Object {
-          "alignItems": "center",
-          "display": "flex",
-          "flexDirection": "column",
-          "justifyContent": "space-between",
-          "margin": ".5em 0 .6em 0",
-          "maxWidth": 500,
-        }
-      }
+      className="makeStyles-errorWrapper-2"
     >
       <svg
         height="290px"

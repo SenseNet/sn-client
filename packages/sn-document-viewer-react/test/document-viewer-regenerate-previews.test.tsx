@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core'
+import Button from '@material-ui/core/Button/Button'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'

@@ -78,6 +78,7 @@ export function Restore(props: RestoreProps) {
           <TextField
             fullWidth={true}
             value={editableDestination}
+            data-test="restore-destination"
             onChange={(ev) => setDestination(`${rootPath}${ev.currentTarget.value}`)}
             InputProps={{
               startAdornment: <InputAdornment position="start">{rootPath}</InputAdornment>,
@@ -93,10 +94,10 @@ export function Restore(props: RestoreProps) {
                 props: {
                   content: props.content,
                   currentPath: props.content.OriginalPath || '/Root',
-                  rootPath,
+                  selectionRoot: rootPath,
                   handleSubmit: (path: string) => setDestination(path),
                 },
-                dialogProps: { disableBackdropClick: true, open: true },
+                dialogProps: { disableBackdropClick: true, open: true, classes: { paper: globalClasses.pickerDialog } },
               })
             }
             style={{ marginLeft: '8px', padding: '6px 0' }}>
@@ -108,7 +109,12 @@ export function Restore(props: RestoreProps) {
         <Button aria-label={localization.cancel} className={globalClasses.cancelButton} onClick={closeLastDialog}>
           {localization.cancel}
         </Button>
-        <Button aria-label={localization.title} color="primary" variant="contained" onClick={onClick}>
+        <Button
+          aria-label={localization.title}
+          color="primary"
+          variant="contained"
+          onClick={onClick}
+          data-test="restore-button">
           {localization.title}
         </Button>
       </DialogActions>

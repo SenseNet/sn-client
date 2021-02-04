@@ -36,6 +36,7 @@ export type DialogWithProps = (
   | { name: 'member-select'; props: MemberSelectProps }
   | { name: 'content-picker'; props: ContentPickerDialogProps }
   | { name: 'feedback' }
+  | { name: 'change-password' }
 ) & { dialogProps?: Partial<DialogProps> }
 
 type Action = { type: 'PUSH_DIALOG'; dialog: DialogWithProps } | { type: 'POP_DIALOG' } | { type: 'CLOSE_ALL_DIALOGS' }

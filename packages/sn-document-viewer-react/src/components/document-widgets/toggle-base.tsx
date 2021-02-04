@@ -1,5 +1,17 @@
 import IconButton from '@material-ui/core/IconButton/IconButton'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import React from 'react'
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    iconButton: { display: 'inline-block' },
+    iconActive: {},
+    icon: {},
+  })
+})
+
+type ToggleBaseClassKey = Partial<ReturnType<typeof useStyles>>
 
 /**
  * Properties for Toggle Base component
@@ -8,7 +20,7 @@ export interface ToggleBaseProps {
   /**
    * Determines if the button is toggled
    */
-  isVisible: boolean
+  active: boolean
 
   /**
    * The title property of the button
@@ -19,18 +31,31 @@ export interface ToggleBaseProps {
    * Function to set the isVisible's value
    */
   setValue: (isVisible: boolean) => void
+
+  /**
+   * Determines if the button is disabled
+   */
+  disabled?: boolean
+
+  /**
+   * Styles to override
+   */
+  classes?: ToggleBaseClassKey
 }
 
 /**
  * Represents a base toggle component
  */
-export const ToggleBase: React.FunctionComponent<ToggleBaseProps> = (props) => (
-  <div style={{ display: 'inline-block' }}>
+export const ToggleBase: React.FunctionComponent<ToggleBaseProps> = (props) => {
+  const classes = useStyles(props)
+  return (
     <IconButton
-      color={props.isVisible ? 'primary' : 'inherit'}
+      disabled={props.disabled}
+      className={classes.iconButton}
+      color={props.active ? 'primary' : 'inherit'}
       title={props.title}
-      onClick={() => props.setValue(!props.isVisible)}>
+      onClick={() => props.setValue(!props.active)}>
       {props.children}
     </IconButton>
-  </div>
-)
+  )
+}

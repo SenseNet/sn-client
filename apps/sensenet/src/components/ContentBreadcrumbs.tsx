@@ -7,6 +7,7 @@ import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../context'
+import { useGlobalStyles } from '../globalStyles'
 import { useLocalization, useSelectionService } from '../hooks'
 import { getPrimaryActionUrl } from '../services'
 import { BreadcrumbItem, Breadcrumbs } from './Breadcrumbs'
@@ -36,6 +37,7 @@ export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(pr
   const history = useHistory()
   const { location } = history
   const localization = useLocalization()
+  const globalClasses = useGlobalStyles()
   const classes = useStyles()
   const { openDialog } = useDialog()
   const selectionService = useSelectionService()
@@ -101,7 +103,11 @@ export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(pr
                     currentParent: parent,
                     operation: 'move',
                   },
-                  dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true },
+                  dialogProps: {
+                    disableBackdropClick: true,
+                    disableEscapeKeyDown: true,
+                    classes: { paper: globalClasses.pickerDialog },
+                  },
                 })
               }}>
               <FileCopyIcon />
@@ -118,7 +124,11 @@ export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(pr
                     currentParent: parent,
                     operation: 'copy',
                   },
-                  dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true },
+                  dialogProps: {
+                    disableBackdropClick: true,
+                    disableEscapeKeyDown: true,
+                    classes: { paper: globalClasses.pickerDialog },
+                  },
                 })
               }}>
               <FileCopyOutlinedIcon />

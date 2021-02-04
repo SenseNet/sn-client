@@ -221,6 +221,9 @@ export class Repository implements Disposable {
     if (!response.ok) {
       throw await this.getErrorFromResponse(response)
     }
+    if (response.status === 204) {
+      return Promise.resolve({ d: null as any })
+    }
     return await response.json()
   }
 
@@ -452,6 +455,9 @@ export class Repository implements Disposable {
     if (!response.ok) {
       throw await this.getErrorFromResponse(response)
     }
+    if (response.status === 204) {
+      return Promise.resolve({} as TReturns)
+    }
     return await response.json()
   }
 
@@ -496,7 +502,7 @@ export class Repository implements Disposable {
 
   constructor(
     config?: RepositoryConfiguration,
-    private fetchMethod: GlobalFetch['fetch'] = window && window.fetch && window.fetch.bind(window),
+    private fetchMethod: WindowOrWorkerGlobalScope['fetch'] = window && window.fetch && window.fetch.bind(window),
     public schemas: SchemaStore = new SchemaStore(),
   ) {
     this.configuration = { ...defaultRepositoryConfiguration, ...config }

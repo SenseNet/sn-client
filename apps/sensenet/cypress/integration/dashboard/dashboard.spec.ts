@@ -15,15 +15,19 @@ describe('Dashboard', () => {
     cy.get('[data-test="app-header"]').contains(/Welcome to your (.)+ project/)
   })
 
-  it('Subscription section should have the Developer plan text and features list', () => {
-    cy.get('[data-test="feature-users"]').contains(/[0-3] users/)
-    cy.get('[data-test="feature-content"]').contains(/([0-9]|[1-8][0-9]|9[0-9]|[1-4][0-9]{2}|500) content/)
-    cy.get('[data-test="feature-storage-space"]').contains(/[0-1] GB storage space/)
+  it('Subscription section should have the Business plan text and features list', () => {
+    cy.get('[data-test="feature-users"]').contains(/25 users/)
+    cy.get('[data-test="feature-content"]').contains(/25,000 content/)
+    cy.get('[data-test="feature-storage-space"]').contains(/25 GB storage space/)
   })
 
   it('Current usage section should have correct usage info.', () => {
-    cy.get('[data-test="usage-users"]').contains(/[0-3] of 3 used/)
-    cy.get('[data-test="usage-contents"]').contains(/[0-9]|[1-8][0-9]|9[0-9]|[1-4][0-9]{2}|500 of 500 used/)
-    cy.get('[data-test="usage-storage-space"]').contains(/0.[0-9]*|1 of 1 GB used/)
+    cy.get('[data-test="usage-users"]').contains(/(1?[0-9]|2[0-5]) of 25 used/)
+    cy.get('[data-test="usage-contents"]').contains(
+      /([0-9]{0,4}|1[0-9],[0-9]{3}|2[0-4],[0-9]{3}|25,000) of 25,000 used/,
+    )
+    cy.get('[data-test="usage-storage-space"]').contains(
+      /[0-9](.[0-9])?|1[0-9](.[0-9])?|2[0-4](.[0-9])?|25 of 25 GB used/,
+    )
   })
 })

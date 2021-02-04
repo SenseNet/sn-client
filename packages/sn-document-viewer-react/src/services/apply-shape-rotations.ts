@@ -1,5 +1,4 @@
 import { PreviewImageData, Shape } from '@sensenet/client-core'
-import { ImageUtil } from './image-utils'
 
 /**
  * helper method to apply shape rotations
@@ -8,17 +7,35 @@ import { ImageUtil } from './image-utils'
  * @param pages the page info
  */
 export const applyShapeRotations = <T extends Shape>(shapes: T[], degree: number, page: PreviewImageData) => [
-  ...shapes.map((s) => {
-    const angle = (Math.PI / 180) * ImageUtil.normalizeDegrees(degree)
-    const [sin, cos] = [Math.sin(angle), Math.cos(angle)]
-    const oldX = s.x - page.Height / 2
-    const oldY = s.y - page.Width / 2
-    const newX = oldX * cos - oldY * sin
-    const newY = oldY * cos + oldX * sin
-    return {
-      ...s,
-      x: newX + page.Height / 2,
-      y: newY + page.Width / 2,
+  ...shapes.map((shape) => {
+    const origShape = shape
+    switch (degree) {
+      case 90:
+        return {
+          ...origShape,
+          x: page.Height - (origShape.y + origShape.h),
+          y: origShape.x,
+          h: origShape.w,
+          w: origShape.h,
+        }
+      case 180:
+        return {
+          ...origShape,
+          x: page.Width - (origShape.x + origShape.w),
+          y: page.Height - (origShape.y + origShape.h),
+        }
+      case 270:
+        return {
+          ...origShape,
+          x: origShape.y,
+          y: page.Width - (origShape.x + origShape.w),
+          h: origShape.w,
+          w: origShape.h,
+        }
+      default:
+        return {
+          ...origShape,
+        }
     }
   }),
 ]

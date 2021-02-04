@@ -1,10 +1,28 @@
 import { PreviewImageData } from '@sensenet/client-core'
 import Grid from '@material-ui/core/Grid'
+import createStyles from '@material-ui/core/styles/createStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { DEFAULT_ZOOM_LEVEL } from '..'
 import { usePreviewImages, useViewerState } from '../hooks'
 import { Dimensions, ImageUtil } from '../services'
 import { THUMBNAIL_CONTAINER_ID, THUMBNAIL_PADDING, ThumbnailPage } from './'
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    grid: {
+      flexGrow: 1,
+      flexShrink: 1,
+      overflow: 'auto',
+    },
+    thumbnailsWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+  })
+})
 
 /**
  * Defines the own properties for the PageList component
@@ -14,6 +32,7 @@ export interface ThumbnailsProps {
 }
 
 export const Thumbnails: React.FC<ThumbnailsProps> = (props) => {
+  const classes = useStyles()
   const [marginTop, setMarginTop] = useState(0)
   const [marginBottom, setMarginBottom] = useState(0)
   const [visiblePages, setVisiblePages] = useState<PreviewImageData[]>([])
@@ -122,17 +141,10 @@ export const Thumbnails: React.FC<ThumbnailsProps> = (props) => {
   }, [pages.imageData, scrollState, viewerState, viewport.height, viewport.width])
 
   return (
-    <Grid
-      item={true}
-      style={{ flexGrow: 1, flexShrink: 1, overflow: 'auto' }}
-      id={THUMBNAIL_CONTAINER_ID}
-      innerRef={viewportElement}>
+    <Grid item={true} className={classes.grid} id={THUMBNAIL_CONTAINER_ID} innerRef={viewportElement}>
       <div
+        className={classes.thumbnailsWrapper}
         style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
           paddingTop: marginTop || 0,
           paddingBottom: marginBottom || 0,
         }}>

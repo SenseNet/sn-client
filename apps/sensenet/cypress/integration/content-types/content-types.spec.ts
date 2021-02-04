@@ -1,21 +1,20 @@
 import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
 describe('Content types', () => {
-  beforeEach(() => {
+  before(() => {
     cy.login()
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
       .get('[data-test="drawer-menu-item-content-types"]')
       .click()
-    cy.get('.ReactVirtualized__Table__Grid').scrollTo('bottom')
-    cy.xpath('//div[text()="Article"]').scrollIntoView({ duration: 500 }).as('articleRow')
   })
 
   it('clicking on the content types menu item should show article', () => {
-    cy.get('@articleRow').should('be.visible')
+    cy.get('.ReactVirtualized__Table__Grid').should('be.visible').scrollTo('bottom')
+    cy.get('[data-test="table-cell-article"]').scrollIntoView().should('be.visible')
   })
 
   it('double clicking on article should open binary editor', () => {
-    cy.get('@articleRow').dblclick()
+    cy.get('[data-test="table-cell-article"]').dblclick({ force: true })
     cy.get('div').contains('Article').should('be.visible')
     cy.get('.monaco-editor').should('be.visible')
     cy.get('[data-test="monaco-editor-cancel"]').click()

@@ -230,6 +230,7 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
 
     return (
       <TableCell
+        data-test={`table-header-${displayName?.replace(/\s+/g, '-').toLowerCase()}`}
         component="div"
         variant="head"
         style={{

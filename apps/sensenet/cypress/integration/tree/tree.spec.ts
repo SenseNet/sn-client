@@ -26,7 +26,7 @@ describe('Tree', () => {
           .click()
           .then(() => {
             items.forEach(($el) => {
-              cy.get(`[data-test="menu-item-${$el.replace(/\s+/g, '-').toLowerCase()}"]`).should('not.be.visible')
+              cy.get(`[data-test="menu-item-${$el.replace(/\s+/g, '-').toLowerCase()}"]`).should('not.exist')
             })
             cy.get('body').click()
           })

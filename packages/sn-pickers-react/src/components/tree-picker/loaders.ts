@@ -1,7 +1,7 @@
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import { GenericContentWithIsParent } from './types'
+import { GenericContentWithIsParent } from '../../types'
 
 interface LoadItemsOptions<T> {
   path: string
