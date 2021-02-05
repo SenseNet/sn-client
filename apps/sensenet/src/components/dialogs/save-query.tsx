@@ -5,11 +5,13 @@ import { Button, DialogActions, DialogContent, TextField } from '@material-ui/co
 import React, { useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+import { SearchFilters } from '../search'
 import { DialogTitle, useDialog } from '.'
 
 export type SaveQueryProps = {
   saveName?: string
   query: string
+  filters: SearchFilters
 }
 
 export function SaveQuery(props: SaveQueryProps) {
@@ -33,6 +35,7 @@ export function SaveQuery(props: SaveQueryProps) {
           query: props.query,
           displayName: saveName,
           queryType: 'Public',
+          uiFilters: JSON.stringify(props.filters),
         },
       })
       logger.information({

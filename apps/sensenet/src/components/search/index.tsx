@@ -1,179 +1,84 @@
-import { ConstantContent } from '@sensenet/client-core'
-import { debounce } from '@sensenet/client-utils'
-import { GenericContent } from '@sensenet/default-content-types'
-import {
-  CurrentAncestorsContext,
-  CurrentChildrenContext,
-  CurrentContentContext,
-  LoadSettingsContext,
-  useLogger,
-  useRepository,
-} from '@sensenet/hooks-react'
-import { Button, createStyles, makeStyles, TextField, Typography } from '@material-ui/core'
-import Save from '@material-ui/icons/Save'
+import { Query } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import clsx from 'clsx'
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { PATHS } from '../../application-paths'
-import { ResponsivePersonalSettings } from '../../context'
+import { Filters as FiltersInterface, SearchProvider } from '../../context/search'
 import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization, useSelectionService, useSnRoute } from '../../hooks'
+import { useLocalization } from '../../hooks'
 import { useQuery } from '../../hooks/use-query'
-import { getPrimaryActionUrl, pathWithQueryParams } from '../../services'
-import { ContentList } from '../content-list'
-import { useDialog } from '../dialogs'
+import { FullScreenLoader } from '../full-screen-loader'
+import { Filters } from './filters'
+import { SearchBar } from './search-bar'
+import { SearchResults } from './search-results'
 
-const searchDebounceTime = 400
-
-const useStyles = makeStyles(() => {
-  return createStyles({
-    searchBar: {
-      display: 'flex',
-      width: '100%',
-      marginLeft: '1em',
-      marginBottom: '1rem',
-    },
-  })
-})
+export interface SearchFilters {
+  term: string
+  filters: FiltersInterface
+}
 
 export const Search = () => {
-  const repository = useRepository()
-  const termFromQuery = useQuery().get('term')
+  const queryFromUrl = useQuery().get('query') ?? undefined
+  const termFromUrl = useQuery().get('term') ?? undefined
+  const logger = useLogger('search')
   const history = useHistory()
-  const { location } = history
-  const { openDialog } = useDialog()
-  const logger = useLogger('Search')
-  const [query, setQuery] = useState(termFromQuery || undefined)
-  const selectionService = useSelectionService()
   const localization = useLocalization().search
-  const classes = useStyles()
   const globalClasses = useGlobalStyles()
-  const [result, setResult] = useState<GenericContent[]>()
-  const [error, setError] = useState<string>()
-  const loadSettingsContext = useContext(LoadSettingsContext)
-  const uiSettings = useContext(ResponsivePersonalSettings)
-  const searchInputRef = useRef<HTMLInputElement>()
-  const snRoute = useSnRoute()
-
-  const debouncedQuery = useCallback(
-    debounce((a: string) => setQuery(a), searchDebounceTime),
-    [],
-  )
+  const repository = useRepository()
+  const [searchFilters, setSearchFilters] = useState<SearchFilters>()
 
   useEffect(() => {
-    if (!termFromQuery) {
-      if (searchInputRef.current) {
-        setResult([])
-        searchInputRef.current.value = ''
-        searchInputRef.current.focus()
-      }
-      return
-    }
-
-    if (searchInputRef.current) {
-      searchInputRef.current.value = termFromQuery
-    }
-    setQuery((currentState) => (currentState !== termFromQuery ? termFromQuery : currentState))
-  }, [termFromQuery])
-
-  useEffect(() => {
-    const ac = new AbortController()
-    const fetchResult = async () => {
-      if (!query) {
-        history.push(PATHS.search.appPath)
-        setResult([])
+    ;(async () => {
+      if (!queryFromUrl) {
         return
       }
+
       try {
-        history.push(pathWithQueryParams({ path: PATHS.search.appPath, newParams: { term: query } }))
-
-        const extendedQuery = `${query.trim()}* .AUTOFILTERS:OFF`
-        const r = await repository.loadCollection({
-          path: ConstantContent.PORTAL_ROOT.Path,
+        const response = await repository.load<Query>({
+          idOrPath: queryFromUrl,
           oDataOptions: {
-            ...loadSettingsContext.loadChildrenSettings,
-            select: undefined,
-            query: extendedQuery,
+            select: ['Query', 'UiFilters'] as any,
           },
-          requestInit: { signal: ac.signal },
         })
-        setError('')
-        setResult(r.d.results)
-      } catch (e) {
-        if (!ac.signal.aborted) {
-          setError(e.message)
-          setResult([])
-        }
-      }
-    }
 
-    fetchResult()
-    return () => ac.abort()
-  }, [history, loadSettingsContext.loadChildrenSettings, logger, query, repository])
+        const filters = response.d.UiFilters
+          ? JSON.parse(response.d.UiFilters)
+          : { term: undefined, filters: undefined }
+        setSearchFilters(filters)
+      } catch (error) {
+        history.push(PATHS.search.appPath)
+        logger.error({
+          message: error.message || localization.errorGetQuery,
+          data: {
+            error,
+          },
+        })
+        return false
+      }
+    })()
+  }, [repository, queryFromUrl, history, logger, localization.errorGetQuery])
+
+  if (queryFromUrl && !searchFilters) {
+    return <FullScreenLoader />
+  }
 
   return (
-    <div className={globalClasses.contentWrapper}>
-      <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}>
-        <span style={{ fontSize: '20px' }}>{localization.title}</span>
-      </div>
-      <div className={globalClasses.centeredVertical}>
-        <div className={classes.searchBar}>
-          <TextField
-            data-test="input-search"
-            helperText={localization.queryHelperText}
-            defaultValue={query}
-            fullWidth={true}
-            inputRef={searchInputRef}
-            onChange={(ev) => {
-              debouncedQuery(ev.target.value)
-            }}
-          />
-          <Button
-            aria-label={localization.saveQuery}
-            style={{ flexShrink: 0 }}
-            title={localization.saveQuery}
-            onClick={() => {
-              // We don't want to save empty queries
-              if (!query) {
-                return
-              }
-              openDialog({
-                name: 'save-query',
-                props: { query, saveName: `Search results for '${query}'` },
-              })
-            }}>
-            <Save style={{ marginRight: 8 }} />
-            {localization.saveQuery}
-          </Button>
+    <SearchProvider
+      defaultTerm={queryFromUrl ? searchFilters?.term ?? '' : termFromUrl}
+      defaultFilters={searchFilters?.filters}>
+      <div className={globalClasses.contentWrapper}>
+        <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}>
+          <span style={{ fontSize: '20px' }}>{localization.title}</span>
         </div>
+
+        <SearchBar />
+
+        <Filters />
+
+        <SearchResults />
       </div>
-      {error ? (
-        <Typography color="error" variant="caption" style={{ margin: '0 1rem 1rem' }}>
-          {error}
-        </Typography>
-      ) : null}
-      <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>
-        <CurrentChildrenContext.Provider value={result || []}>
-          <CurrentAncestorsContext.Provider value={[]}>
-            <ContentList
-              style={{
-                height: '100%',
-                overflow: 'auto',
-              }}
-              enableBreadcrumbs={false}
-              parentIdOrPath={0}
-              onParentChange={(p) => {
-                history.push(getPrimaryActionUrl({ content: p, repository, uiSettings, location, snRoute }))
-              }}
-              onActivateItem={(p) => {
-                history.push(getPrimaryActionUrl({ content: p, repository, uiSettings, location, snRoute }))
-              }}
-              onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
-            />
-          </CurrentAncestorsContext.Provider>
-        </CurrentChildrenContext.Provider>
-      </CurrentContentContext.Provider>
-    </div>
+    </SearchProvider>
   )
 }
 

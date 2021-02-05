@@ -350,7 +350,7 @@ const values = {
     onlyPublic: 'Show public queries only',
     saveInputPlaceholder: (term: string) => `Search results for '${term}'`,
     savedQueries: 'Saved queries',
-    queryHelperText: 'Enter a keyword or a content query expression',
+    queryHelperText: 'Enter a keyword',
     autoFilters: 'AutoFilters',
     openInSearchTitle: (term: string) => `See all results for '${term}'`,
     openInSearchDescription: 'Opens the query expression in the Search view',
@@ -360,6 +360,7 @@ const values = {
     cancel: 'Cancel',
     public: 'Public',
     confirmDeleteQuery: `Are you sure that you want to delete the query '{0}'?`,
+    errorGetQuery: 'Loading query content has failed.',
   },
   settings: {
     edit: 'Edit',

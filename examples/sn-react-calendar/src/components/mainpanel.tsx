@@ -103,7 +103,7 @@ const MainPanel: React.FunctionComponent = () => {
             'OwnerEmail',
           ] as any,
           query: new Query((q) =>
-            q.greatherThan('StartDate', '2019-01-01').and.lessThan('StartDate', '2019.12.31'),
+            q.greaterThan('StartDate', '2019-01-01').and.lessThan('StartDate', '2019.12.31'),
           ).toString(),
           orderby: [['StartDate', 'asc']],
           expand: ['CreatedBy', 'ModifiedBy'],

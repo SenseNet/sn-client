@@ -34,7 +34,7 @@ describe('Query', () => {
     )
 
     expect(query.toString()).toBe(
-      "TypeIs:Task AND DisplayName:'Unicorn' AND ModificationDate:{'2017-01-01T00\\:00\\:00' TO '2017-02-01T00\\:00\\:00'} OR (NOT(Approvable:'true') AND NOT(Description:'*alma*')) .SORT:DisplayName .TOP:5 .SKIP:10",
+      "TypeIs:Task AND DisplayName:'Unicorn' AND ModificationDate:{'2017-01-01T00:00:00' TO '2017-02-01T00:00:00'} OR (NOT(Approvable:'true') AND NOT(Description:'*alma*')) .SORT:DisplayName .TOP:5 .SKIP:10",
     )
   })
 
@@ -90,13 +90,13 @@ describe('Query', () => {
       expect(queryInstance.toString()).toBe("Index:['10' TO '50']")
     })
 
-    it('GreatherThan exclusive', () => {
-      const queryInstance = new Query((q) => q.greatherThan('Index', 10))
+    it('GreaterThan exclusive', () => {
+      const queryInstance = new Query((q) => q.greaterThan('Index', 10))
       expect(queryInstance.toString()).toBe("Index:>'10'")
     })
 
-    it('GreatherThan inclusive', () => {
-      const queryInstance = new Query((q) => q.greatherThan('Index', 10, true))
+    it('GreaterThan inclusive', () => {
+      const queryInstance = new Query((q) => q.greaterThan('Index', 10, true))
       expect(queryInstance.toString()).toBe("Index:>='10'")
     })
 
