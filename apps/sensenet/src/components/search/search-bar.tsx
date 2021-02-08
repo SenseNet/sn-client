@@ -59,7 +59,6 @@ export const SearchBar = () => {
             openDialog({
               name: 'save-query',
               props: {
-                query: searchState.term,
                 saveName: `Search results for '${searchState.term}'`,
                 filters: { term: searchState.term, filters: searchState.filters },
               },

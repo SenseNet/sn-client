@@ -1,7 +1,9 @@
 import { Button, createStyles, DialogActions, DialogContent, makeStyles, Theme } from '@material-ui/core'
 import React, { useState } from 'react'
 import DayPicker, { DateUtils, Modifier } from 'react-day-picker'
+import MomentLocaleUtils from 'react-day-picker/moment'
 import { useGlobalStyles } from '../../globalStyles'
+import { useLocalization, usePersonalSettings } from '../../hooks'
 import { useDialog } from '.'
 
 import 'react-day-picker/lib/style.css'
@@ -34,6 +36,9 @@ export const DateRangePicker: React.FunctionComponent<DateRangePickerProps> = (p
   const { closeLastDialog } = useDialog()
   const globalClasses = useGlobalStyles()
   const classes = useStyles()
+  const localization = useLocalization().dateRangePicker
+  const personalSettings = usePersonalSettings()
+  const langCode = personalSettings.language === 'hungarian' ? 'hu' : 'en'
 
   const [from, setFrom] = useState<Date | undefined>(props.defaultValue?.from)
   const [to, setTo] = useState<Date | undefined>(props.defaultValue?.to)
@@ -91,34 +96,31 @@ export const DateRangePicker: React.FunctionComponent<DateRangePickerProps> = (p
           modifiers={modifiers}
           onDayClick={handleDayClick}
           onDayMouseEnter={handleDayMouseEnter}
+          localeUtils={MomentLocaleUtils}
+          locale={langCode}
         />
-        <div>
-          {!from && !to && 'Please select the first day.'}
-          {from && !to && 'Please select the last day.'}
-          {from &&
-            to &&
-            `Selected from ${from.toLocaleDateString()} to
-                ${to.toLocaleDateString()}`}
-        </div>
       </DialogContent>
       <DialogActions>
         <Button
-          aria-label={'Reset'}
+          aria-label={localization.resetButton}
           disabled={!from || !to}
           color="secondary"
           variant="contained"
           onClick={handleResetClick}>
-          Reset
+          {localization.resetButton}
         </Button>
         <Button
-          aria-label={'Submit'}
+          aria-label={localization.submitButton}
           color="primary"
           variant="contained"
           onClick={() => props.handleSubmit({ from, to })}>
-          Submit
+          {localization.submitButton}
         </Button>
-        <Button aria-label={'Cancel'} className={globalClasses.cancelButton} onClick={() => closeLastDialog()}>
-          Cancel
+        <Button
+          aria-label={localization.cancelButton}
+          className={globalClasses.cancelButton}
+          onClick={() => closeLastDialog()}>
+          {localization.cancelButton}
         </Button>
       </DialogActions>
     </>

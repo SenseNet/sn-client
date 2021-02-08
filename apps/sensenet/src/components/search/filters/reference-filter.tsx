@@ -3,37 +3,32 @@ import ExpandMore from '@material-ui/icons/ExpandMore'
 import Person from '@material-ui/icons/Person'
 import React, { useState } from 'react'
 import { useSearch } from '../../../context/search'
+import { useLocalization } from '../../../hooks'
 
 export type Filter = typeof options[number]
 
 export const options = [
   {
-    displayName: 'anybody',
     name: 'anybody',
   },
   {
-    displayName: 'created by me',
-    name: 'created-by-me',
+    name: 'createdByMe',
     query: 'CreatedBy',
   },
   {
-    displayName: 'modified by me',
-    name: 'modified-by-me',
+    name: 'modifiedByMe',
     query: 'ModifiedBy',
   },
   {
-    displayName: 'shared with me',
-    name: 'shared-with-me',
+    name: 'sharedWithMe',
     query: 'SharedWith',
   },
   {
-    displayName: 'assigned to me',
-    name: 'assigned-to-me',
+    name: 'assignedToMe',
     query: 'AssignedTo',
   },
   {
-    displayName: 'owned by me',
-    name: 'owned-by-me',
+    name: 'ownedByMe',
     query: 'Owner',
   },
 ]
@@ -42,6 +37,7 @@ export const defaultReferenceFilter = options[0]
 
 export const ReferenceFilter = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
+  const localization = useLocalization().search.filters.reference
   const searchState = useSearch()
 
   return (
@@ -54,7 +50,7 @@ export const ReferenceFilter = () => {
         onClick={(event) => {
           setAnchorEl(event.currentTarget)
         }}>
-        {searchState.filters.reference.displayName}
+        {localization[searchState.filters.reference.name as keyof typeof localization]}
       </Button>
       <Menu
         id="reference-filter"
@@ -77,9 +73,11 @@ export const ReferenceFilter = () => {
             selected={filter.name === searchState.filters.reference.name}
             onClick={() => {
               setAnchorEl(null)
-              searchState.setFilters((filters) => ({ ...filters, reference: filter }))
+              searchState.setFilters((filters) =>
+                filters.reference.name === filter.name ? filters : { ...filters, reference: filter },
+              )
             }}>
-            {filter.displayName}
+            {localization[filter.name as keyof typeof localization]}
           </MenuItem>
         ))}
       </Menu>

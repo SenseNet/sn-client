@@ -19,6 +19,7 @@ import Person from '@material-ui/icons/Person'
 import Search from '@material-ui/icons/Search'
 import React, { useState } from 'react'
 import { useSearch } from '../../../context/search'
+import { useLocalization } from '../../../hooks'
 
 export type Filter = typeof options[number] | typeof moreOptions[number]
 
@@ -88,6 +89,7 @@ const useStyles = makeStyles(() => {
 
 export const TypeFilter = () => {
   const classes = useStyles()
+  const localization = useLocalization().search.filters.type
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
 
   const searchState = useSearch()
@@ -108,8 +110,12 @@ export const TypeFilter = () => {
           color={filter.name === searchState.filters.type.name ? 'primary' : 'default'}
           startIcon={filter.icon}
           className={classes.filter}
-          onClick={() => searchState.setFilters((filters) => ({ ...filters, type: filter }))}>
-          {filter.name}
+          onClick={() =>
+            searchState.setFilters((filters) =>
+              filters.type.name === filter.name ? filters : { ...filters, type: filter },
+            )
+          }>
+          {localization[filter.name as keyof typeof localization]}
         </Button>
       ))}
 
@@ -122,7 +128,7 @@ export const TypeFilter = () => {
         onClick={(event) => {
           setAnchorEl(event.currentTarget)
         }}>
-        {activeFromMore ? activeFromMore.name : 'more'}
+        {activeFromMore ? localization[activeFromMore.name as keyof typeof localization] : localization.more}
       </Button>
       <Menu
         id="more-type-filter"
@@ -144,9 +150,11 @@ export const TypeFilter = () => {
             key={filter.name}
             onClick={() => {
               setAnchorEl(null)
-              searchState.setFilters((filters) => ({ ...filters, type: filter }))
+              searchState.setFilters((filters) =>
+                filters.type.name === filter.name ? filters : { ...filters, type: filter },
+              )
             }}>
-            {filter.name}
+            {localization[filter.name as keyof typeof localization]}
           </MenuItem>
         ))}
       </Menu>

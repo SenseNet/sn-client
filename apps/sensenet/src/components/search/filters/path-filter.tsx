@@ -1,3 +1,4 @@
+import { ConstantContent } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Button, Tooltip } from '@material-ui/core'
 import ExpandMore from '@material-ui/icons/ExpandMore'
@@ -5,11 +6,13 @@ import Person from '@material-ui/icons/Person'
 import React from 'react'
 import { useSearch } from '../../../context/search'
 import { useGlobalStyles } from '../../../globalStyles'
+import { useLocalization } from '../../../hooks'
 import { useDialog } from '../../dialogs'
 
 export const PathFilter = () => {
   const searchState = useSearch()
   const { openDialog } = useDialog()
+  const localization = useLocalization().search.filters.path
   const globalClasses = useGlobalStyles()
 
   return (
@@ -23,14 +26,19 @@ export const PathFilter = () => {
           openDialog({
             name: 'content-picker',
             props: {
-              currentPath: '/Root',
+              currentPath: ConstantContent.PORTAL_ROOT.Path,
               defaultValue: searchState.filters.path,
-              handleSubmit: (path: GenericContent) => searchState.setFilters((filters) => ({ ...filters, path })),
+              handleSubmit: (selected?: GenericContent) =>
+                searchState.setFilters((filters) =>
+                  filters.path?.Path === selected?.Path ? filters : { ...filters, path: selected },
+                ),
             },
             dialogProps: { disableBackdropClick: true, open: true, classes: { paper: globalClasses.pickerDialog } },
           })
         }}>
-        {searchState.filters.path ? searchState.filters.path.DisplayName || searchState.filters.path.Name : 'anywhere'}
+        {searchState.filters.path
+          ? searchState.filters.path.DisplayName || searchState.filters.path.Name
+          : localization.anywhere}
       </Button>
     </Tooltip>
   )

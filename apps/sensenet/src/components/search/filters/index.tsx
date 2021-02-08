@@ -1,11 +1,13 @@
 import { Button } from '@material-ui/core'
 import FilterList from '@material-ui/icons/FilterList'
 import React, { useState } from 'react'
+import { useLocalization } from '../../../hooks'
 import { MoreFilters } from './more-filters'
 import { TypeFilter } from './type-filter'
 
 export const Filters = () => {
   const [showMoreFilters, setShowMoreFilters] = useState(false)
+  const localization = useLocalization().search.filters
 
   return (
     <>
@@ -16,7 +18,7 @@ export const Filters = () => {
           variant="outlined"
           startIcon={<FilterList />}
           onClick={() => setShowMoreFilters((previous) => !previous)}>
-          more filters
+          {localization.more}
         </Button>
       </div>
 

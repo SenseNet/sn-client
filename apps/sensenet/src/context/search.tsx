@@ -1,7 +1,6 @@
 import { ConstantContent } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
 import React, { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import { PATHS } from '../application-paths'
@@ -12,6 +11,7 @@ import {
 } from '../components/search/filters/reference-filter'
 import { defaultTypeFilter, Filter as TypeFilterInterface } from '../components/search/filters/type-filter'
 import { pathWithQueryParams } from '../services'
+import { createSearchQuery } from '../services/search-query-builder'
 
 export interface Filters {
   type: TypeFilterInterface
@@ -72,64 +72,10 @@ export function SearchProvider({
       }
 
       try {
-        const getQueryFromTerm = () => {
-          const query = new Query((q) =>
-            q.query((q2) => q2.equals('Name', `${term}*`).or.equals('DisplayName', `${term}*`)),
-          )
-
-          if (filters.type.type) {
-            new QueryOperators(query).and.query((q2) => {
-              new QueryExpression(q2.queryRef).typeIs(filters.type.type!)
-              return q2
-            })
-          }
-
-          if (filters.reference.query) {
-            new QueryOperators(query).and.query((q2) => {
-              new QueryExpression(q2.queryRef).equals(filters.reference.query!, '@@CurrentUser@@')
-              return q2
-            })
-          }
-
-          if (filters.date.query) {
-            if (filters.date.name.includes('custom-range')) {
-              if (filters.date.query.from && filters.date.query.to) {
-                new QueryOperators(query).and.query((q2) => {
-                  new QueryExpression(q2.queryRef).between(
-                    filters.date.query!.field,
-                    filters.date.query!.from,
-                    filters.date.query!.to,
-                  )
-                  return q2
-                })
-              } else {
-                new QueryOperators(query).and.query((q2) => {
-                  new QueryExpression(q2.queryRef).equals(filters.date.query!.field, filters.date.query!.value)
-                  return q2
-                })
-              }
-            } else {
-              new QueryOperators(query).and.query((q2) => {
-                new QueryExpression(q2.queryRef).greaterThan(filters.date.query!.field, filters.date.query!.value, true)
-                return q2
-              })
-            }
-          }
-
-          if (filters.path) {
-            new QueryOperators(query).and.query((q2) => {
-              new QueryExpression(q2.queryRef).inTree(filters.path!.Path)
-              return q2
-            })
-          }
-
-          return query
-        }
-
         const response = await repository.loadCollection({
           path: ConstantContent.PORTAL_ROOT.Path,
           oDataOptions: {
-            query: getQueryFromTerm().toString(),
+            query: createSearchQuery({ term, filters }).toString(),
           },
           requestInit: { signal: ac.signal },
         })
@@ -146,7 +92,7 @@ export function SearchProvider({
 
     fetchResult()
     return () => ac.abort()
-  }, [term, repository, history, filters.type, filters.reference.query, filters.date, filters.path])
+  }, [term, repository, history, filters])
 
   return (
     <SearchContext.Provider value={{ term, setTerm, filters, setFilters, result, error }}>
