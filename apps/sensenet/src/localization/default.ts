@@ -493,6 +493,15 @@ const values = {
     startTyping: 'Start typing to add another type',
     errorMessageOnLoad: 'Something went wrong during loading container content',
   },
+  webhooksHeader: {
+    key: 'Pick a container',
+    startTyping: 'Start typing to add another type',
+    errorMessageOnLoad: 'Something went wrong during loading container content',
+    headers: 'Headers',
+    keyPlaceHolder: 'Key of this header',
+    valuPlaceHolder: 'Value of this header',
+    addCustomHeader: 'Add custom header',
+  },
 }
 
 export default values

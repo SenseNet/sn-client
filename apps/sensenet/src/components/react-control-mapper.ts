@@ -31,9 +31,14 @@ export const reactControlMapper = (repository: Repository) => {
       }
     })
     .setupFieldSettingDefault<LongTextFieldSetting>('LongTextFieldSetting', (setting) => {
-      if (setting.ControlHint === 'sn:WebhookFilter') {
-        return FieldControls.WebhookFilter
+      switch (setting.ControlHint) {
+        case 'sn:WebhookFilter':
+          return FieldControls.WebhookFilter
+        case 'sn:WebhookHeaders':
+          return FieldControls.WebhookHeaders
+        default:
       }
+
       switch (setting.TextType) {
         case 'LongText':
           return SnFieldControls.Textarea
