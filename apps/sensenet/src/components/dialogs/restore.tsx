@@ -78,6 +78,7 @@ export function Restore(props: RestoreProps) {
           <TextField
             fullWidth={true}
             value={editableDestination}
+            data-test="restore-destination"
             onChange={(ev) => setDestination(`${rootPath}${ev.currentTarget.value}`)}
             InputProps={{
               startAdornment: <InputAdornment position="start">{rootPath}</InputAdornment>,
@@ -108,7 +109,12 @@ export function Restore(props: RestoreProps) {
         <Button aria-label={localization.cancel} className={globalClasses.cancelButton} onClick={closeLastDialog}>
           {localization.cancel}
         </Button>
-        <Button aria-label={localization.title} color="primary" variant="contained" onClick={onClick}>
+        <Button
+          aria-label={localization.title}
+          color="primary"
+          variant="contained"
+          onClick={onClick}
+          data-test="restore-button">
           {localization.title}
         </Button>
       </DialogActions>
