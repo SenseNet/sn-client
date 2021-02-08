@@ -488,6 +488,11 @@ const values = {
     changePasswordSuccess: 'Password has changed successfully',
     passwordsDontMatch: 'The passwords do not match',
   },
+  webhooksFilter: {
+    pickAContainer: 'Pick a container',
+    startTyping: 'Start typing to add another type',
+    errorMessageOnLoad: 'Something went wrong during loading container content',
+  },
 }
 
 export default values
