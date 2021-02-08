@@ -8,9 +8,10 @@ interface EnabledFieldProps {
   enabled: boolean
   description: string
   onChange?: (value: boolean) => Promise<boolean> | void
+  displayName: string
 }
 
-export const EnabledField: FunctionComponent<EnabledFieldProps> = ({ enabled, description, onChange }) => {
+export const EnabledField: FunctionComponent<EnabledFieldProps> = ({ enabled, description, onChange, displayName }) => {
   const globalClasses = useGlobalStyles()
   const [checked, setChecked] = useState(enabled)
 
@@ -22,6 +23,7 @@ export const EnabledField: FunctionComponent<EnabledFieldProps> = ({ enabled, de
     <TableCell className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)} component="div">
       <Tooltip placeholder="bottom-end" title={description}>
         <Switch
+          data-test={`switcher-${displayName.replace(/\s+/g, '-').toLowerCase()}`}
           checked={checked}
           size="small"
           onClick={async (event) => {

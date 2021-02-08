@@ -8,7 +8,7 @@ exports[`SaveDocumentComponent component Should render without crashing when has
   onClick={[Function]}
   title="Save changes"
 >
-  <Memo([object Object])
+  <Memo(ForwardRef(SaveIcon))
     className="makeStyles-icon-2"
   />
 </WithStyles(ForwardRef(IconButton))>

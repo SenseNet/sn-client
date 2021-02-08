@@ -13,10 +13,13 @@ describe('Search', () => {
 
   context('suggestion list', () => {
     const term = 'busi'
-    beforeEach(() => {
+    before(() => {
       cy.login()
       cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
-        .get('[data-test="search-button"]')
+    })
+    beforeEach(() => {
+      cy.get('[data-test="sensenet-logo"]').click()
+      cy.get('[data-test="search-button"]')
         .click()
         .get('[data-test="command-box"] input')
         .type(term, { delay: 250 })
