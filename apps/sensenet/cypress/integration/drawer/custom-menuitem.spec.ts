@@ -4,13 +4,9 @@ import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 describe('Custom menu item', () => {
   beforeEach(() => {
     cy.login()
-
-    cy.visit(
-      pathWithQueryParams({ path: PATHS.personalSettings.appPath, newParams: { repoUrl: Cypress.env('repoUrl') } }),
-    )
   })
 
-  it('adding a new custom menu', () => {
+  it('should create a new custom menu', () => {
     const settings = {
       theme: 'dark',
       default: {
@@ -44,6 +40,10 @@ describe('Custom menu item', () => {
       'Tech Call with Thorwell Group',
       'Upgrade',
     ]
+
+    cy.visit(
+      pathWithQueryParams({ path: PATHS.personalSettings.appPath, newParams: { repoUrl: Cypress.env('repoUrl') } }),
+    )
 
     cy.get('.monaco-editor textarea')
       .eq(1)
@@ -85,6 +85,15 @@ describe('Custom menu item', () => {
       },
     }
 
+    cy.intercept({
+      method: 'GET',
+      url: '/Root/Content/IT/Calendar',
+    }).as('getCalendar')
+
+    cy.visit(
+      pathWithQueryParams({ path: PATHS.personalSettings.appPath, newParams: { repoUrl: Cypress.env('repoUrl') } }),
+    )
+
     cy.get('.monaco-editor textarea')
       .eq(1)
       .click()
@@ -100,9 +109,11 @@ describe('Custom menu item', () => {
 
     cy.saveLocalStorage()
 
-    settings.default.drawer.items[0].settings.columns.forEach((column) =>
-      cy.get(`[data-test="table-header-${column.replace(/\s+/g, '-').toLowerCase()}"]`).should('exist'),
-    )
+    cy.wait('@getCalendar').then((_interception) => {
+      settings.default.drawer.items[0].settings.columns.forEach((column) =>
+        cy.get(`[data-test="table-header-${column.replace(/\s+/g, '-').toLowerCase()}"]`).should('exist'),
+      )
+    })
   })
 
   it('custom menu should disappear after removing from settings', () => {
@@ -112,7 +123,9 @@ describe('Custom menu item', () => {
 
     cy.restoreLocalStorage()
 
-    cy.reload()
+    cy.visit(
+      pathWithQueryParams({ path: PATHS.personalSettings.appPath, newParams: { repoUrl: Cypress.env('repoUrl') } }),
+    )
 
     cy.get('[data-test="drawer-menu-item-test"]').should('exist')
 
