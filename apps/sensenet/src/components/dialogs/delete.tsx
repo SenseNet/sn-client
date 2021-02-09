@@ -103,6 +103,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
             variant="contained"
             autoFocus={true}
             disabled={isDeleteInProgress}
+            data-test="button-delete-confirm"
             onClick={async () => {
               try {
                 setIsDeleteInProgress(true)

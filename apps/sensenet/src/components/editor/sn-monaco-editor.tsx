@@ -138,6 +138,7 @@ export const SnMonacoEditor: React.FunctionComponent<SnMonacoEditorProps> = (pro
         </Button>
 
         <Button
+          data-test="monaco-editor-submit"
           aria-label={localization.forms.submit}
           variant="contained"
           color="primary"

@@ -230,9 +230,9 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
 
     return (
       <TableCell
+        data-test={`table-header-${displayName?.replace(/\s+/g, '-').toLowerCase()}`}
         component="div"
         variant="head"
-        data-test={`column-${columnName.replace(/\s+/g, '-').toLowerCase()}`}
         style={{
           height: headerHeight || 42,
           width: props.displayRowCheckbox

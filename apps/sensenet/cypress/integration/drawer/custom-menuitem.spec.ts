@@ -101,7 +101,7 @@ describe('Custom menu item', () => {
     cy.saveLocalStorage()
 
     settings.default.drawer.items[0].settings.columns.forEach((column) =>
-      cy.get(`[data-test="column-${column.replace(/\s+/g, '-').toLowerCase()}"]`).should('exist'),
+      cy.get(`[data-test="table-header-${column.replace(/\s+/g, '-').toLowerCase()}"]`).should('exist'),
     )
   })
 

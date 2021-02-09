@@ -384,6 +384,7 @@ exports[`Switcher field control in edit/new view should set all the props 1`] = 
       >
         <WithStyles(WithStyles(ForwardRef(Switch)))
           checked={true}
+          data-test="edit-switch"
           onChange={[Function]}
           size="small"
         />

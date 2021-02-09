@@ -19,5 +19,7 @@ declare namespace Cypress {
      * Restore a previously saved local storage value from memory
      */
     restoreLocalStorage(): void
+
+    checkReadPermissionGroup(enabled?: boolean): void
   }
 }
