@@ -197,7 +197,10 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
       setTypesSelected(newSelected)
 
       setValue({ ...value, ContentTypes: value.ContentTypes?.filter((type) => item !== type.Name) })
-      props.fieldOnChange?.(props.settings.Name, JSON.stringify(value))
+      props.fieldOnChange?.(
+        props.settings.Name,
+        JSON.stringify({ ...value, ContentTypes: value.ContentTypes?.filter((type) => item !== type.Name) }),
+      )
     }
   }
 
