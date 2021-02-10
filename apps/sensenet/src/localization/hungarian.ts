@@ -68,6 +68,10 @@ const values: DeepPartial<typeof import('./default').default> = {
       CustomContent: 'Egyedi tartalom',
       Settings: 'Beállítások',
       Configuration: 'Konfiguráció',
+      Stats: 'Statisztika',
+      ApiAndSecurity: 'Api és biztonság',
+      Webhooks: 'Webhooks',
+      AdminUiCustomization: 'Admin-ui tesztreszabás',
     },
     descriptions: {
       Content: 'Tartalom böngészése',
@@ -85,6 +89,7 @@ const values: DeepPartial<typeof import('./default').default> = {
     personalSettingsSecondaryText: 'Az alkalmazás testreszabása',
     newSearch: 'Új keresés indítása',
     add: 'Hozzáadás',
+    underConstruction: 'Fejlesztés alatt',
   },
   editPropertiesDialog: {
     dialogTitle: '{0} tulajdonságainak szerkesztése',

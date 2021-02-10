@@ -158,18 +158,22 @@ export const PermanentDrawer = () => {
                         className={clsx(classes.listItemIconDark, globalClasses.centered, {
                           [classes.listItemIconLight]: personalSettings.theme === 'light',
                         })}>
-                        <Tooltip title={item.secondaryText} placement="right">
+                        <Tooltip title={item.primaryText} placement="right">
                           <div>{item.icon}</div>
                         </Tooltip>
                       </ListItemIcon>
                       {opened && (
-                        <ListItemText
-                          primary={`${item.primaryText}`}
-                          style={{
-                            color:
-                              theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
-                          }}
-                        />
+                        <Tooltip title={item.secondaryText} placement="right">
+                          <ListItemText
+                            primary={`${item.primaryText}`}
+                            style={{
+                              color:
+                                theme.palette.type === 'light'
+                                  ? theme.palette.common.black
+                                  : theme.palette.common.white,
+                            }}
+                          />
+                        </Tooltip>
                       )}
                     </ListItem>
                   </NavLink>
@@ -197,17 +201,20 @@ export const PermanentDrawer = () => {
                     className={clsx(classes.listItemIconDark, globalClasses.centered, {
                       [classes.listItemIconLight]: personalSettings.theme === 'light',
                     })}>
-                    <Tooltip title={settingsItem.secondaryText} placement="right">
+                    <Tooltip title={settingsItem.primaryText} placement="right">
                       <div>{settingsItem.icon}</div>
                     </Tooltip>
                   </ListItemIcon>
                   {opened && (
-                    <ListItemText
-                      primary={`${settingsItem!.primaryText}`}
-                      style={{
-                        color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
-                      }}
-                    />
+                    <Tooltip title={settingsItem.secondaryText} placement="right">
+                      <ListItemText
+                        primary={`${settingsItem!.primaryText}`}
+                        style={{
+                          color:
+                            theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
+                        }}
+                      />
+                    </Tooltip>
                   )}
                 </ListItem>
               </NavLink>

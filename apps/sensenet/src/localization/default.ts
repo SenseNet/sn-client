@@ -120,6 +120,10 @@ const values = {
       CustomContent: 'Custom content',
       Settings: 'Settings',
       Configuration: 'Configuration',
+      Stats: 'Stats',
+      ApiAndSecurity: 'Api and security',
+      Webhooks: 'Webhooks',
+      AdminUiCustomization: 'Admin-ui customization',
     },
     descriptions: {
       Content: 'Explore and manage your content in the repository',
@@ -140,6 +144,7 @@ const values = {
     collapse: 'Collapse',
     newSearch: 'New search',
     add: 'Add',
+    underConstruction: 'Under construction',
   },
   dashboard: {
     title: (projectName: string) => `Welcome to your ${projectName} project`,
