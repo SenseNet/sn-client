@@ -372,7 +372,6 @@ const values = {
   settings: {
     edit: 'Edit',
     learnMore: 'Learn more',
-    underConstruction: 'Under construction',
   },
   customActions: {
     executeCustomActionDialog: {
