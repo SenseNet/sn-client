@@ -1,3 +1,4 @@
+import { PathHelper } from '@sensenet/client-utils'
 import {
   AppBar,
   Button,
@@ -56,7 +57,7 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
 
   const handleOnSubmit = (ev: React.FormEvent) => {
     ev.preventDefault()
-    handleSubmit(url)
+    handleSubmit(PathHelper.trimSlashes(url))
   }
 
   const handleDemoSubmit = () => {
