@@ -50,14 +50,12 @@ describe('Task-List', () => {
       .then(() => {
         cy.get('#DisplayName').type('-edited')
         cy.contains('Submit').click()
+        cy.get('[data-test="snackbar-close"]').click()
         cy.get(`[data-test="table-cell-${newTaskName.replace(/\s+/g, '-').toLowerCase()}"]`).should(
           'have.text',
           newTaskName,
         )
-        cy.get(`[data-test="table-cell-${taskName.replace(/\s+/g, '-').toLowerCase()}"]`).should(
-          'not.have.text',
-          taskName,
-        )
+        cy.get(`[data-test="table-cell-${taskName.replace(/\s+/g, '-').toLowerCase()}"]`).should('not.exist')
       })
   })
 

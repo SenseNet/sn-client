@@ -32,7 +32,7 @@ describe('Breadcrumb', () => {
     cy.get('[data-test="menu-item-document-library"]')
       .click({ force: true })
       .then(() => {
-        cy.get('[data-test="table-cell-calendar"]').should('not.be.visible')
+        cy.get('[data-test="table-cell-calendar"]').should('not.exist')
       })
     cy.get('nav[aria-label="breadcrumb"] li')
       .find('button[aria-label="IT Workspace"]')

@@ -87,7 +87,7 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
             size="small"
             className={classes.button}
             style={{ marginRight: '35px' }}
-            data-test="content-card-edit-button">
+            data-test={`${settings.Name.replace(/\s+/g, '-').toLowerCase()}-edit-button`}>
             {localization.edit}
           </Button>
         </Link>
