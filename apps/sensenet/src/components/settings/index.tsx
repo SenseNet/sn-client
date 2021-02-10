@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     settingsContainer: {
       display: 'flex',
-      height: `calc(100% - ${globals.common.drawerItemHeight}px)`,
+      minHeight: `calc(100% - ${globals.common.drawerItemHeight}px)`,
       borderTop: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
     },
     settingsDrawer: {
