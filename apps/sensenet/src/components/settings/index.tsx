@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRight: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
     },
     settingsContent: {
+      overflow: 'auto',
       width: `calc(100% - ${globals.common.settingsDrawerWidth}px)`,
     },
     underConstructionWrapper: {
