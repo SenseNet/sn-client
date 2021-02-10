@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     settingsContainer: {
       display: 'flex',
-      height: `calc(100% - ${globals.common.drawerItemHeight}px)`,
+      minHeight: `calc(100% - ${globals.common.drawerItemHeight}px)`,
       borderTop: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
     },
     settingsDrawer: {
@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRight: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
     },
     settingsContent: {
+      overflow: 'auto',
       width: `calc(100% - ${globals.common.settingsDrawerWidth}px)`,
     },
     underConstructionWrapper: {
@@ -42,45 +43,45 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-export const settingsItems = [
-  {
-    name: 'configuration',
-    displayName: 'Configuration',
-    url: resolvePathParams({ path: PATHS.configuration.appPath }),
-  },
-  {
-    name: 'stats',
-    displayName: 'Stats',
-    url: '/settings/stats',
-  },
-  {
-    name: 'apiKeys',
-    displayName: 'Api and security',
-    url: '/settings/apikeys',
-  },
-  {
-    name: 'localization',
-    displayName: 'Localization',
-    url: resolvePathParams({ path: PATHS.localization.appPath }),
-  },
-  {
-    name: 'webHooks',
-    displayName: 'Webhooks',
-    url: '/settings/webhooks',
-  },
-  {
-    name: 'adminui',
-    displayName: 'Admin-ui customization',
-    url: '/settings/adminui',
-  },
-]
-
 export const Settings: React.FunctionComponent = () => {
   const routeMatch = useRouteMatch<{ submenu?: string }>()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
-  const localizationDrawerTitles = useLocalization().drawer.titles
+  const localizationDrawer = useLocalization().drawer
   const location = useLocation()
+
+  const settingsItems = [
+    {
+      name: 'configuration',
+      displayName: localizationDrawer.titles.Configuration,
+      url: resolvePathParams({ path: PATHS.configuration.appPath }),
+    },
+    {
+      name: 'stats',
+      displayName: localizationDrawer.titles.Stats,
+      url: '/settings/stats',
+    },
+    {
+      name: 'apiKeys',
+      displayName: localizationDrawer.titles.ApiAndSecurity,
+      url: '/settings/apikeys',
+    },
+    {
+      name: 'localization',
+      displayName: localizationDrawer.titles.Localization,
+      url: resolvePathParams({ path: PATHS.localization.appPath }),
+    },
+    {
+      name: 'webHooks',
+      displayName: localizationDrawer.titles.Webhooks,
+      url: '/settings/webhooks',
+    },
+    {
+      name: 'adminui',
+      displayName: localizationDrawer.titles.AdminUiCustomization,
+      url: '/settings/adminui',
+    },
+  ]
 
   const renderContent = () => {
     switch (routeMatch.params.submenu) {
@@ -96,7 +97,7 @@ export const Settings: React.FunctionComponent = () => {
         return (
           <div className={clsx(globalClasses.centered, classes.underConstructionWrapper)}>
             <SettingsIcon className={classes.underConstructionIcon} />
-            <div>Under construction</div>
+            <div>{localizationDrawer.underConstruction}</div>
           </div>
         )
     }
@@ -105,7 +106,7 @@ export const Settings: React.FunctionComponent = () => {
   return (
     <div className={clsx(globalClasses.contentWrapper, classes.settingsWrapper)} style={{ paddingLeft: 0 }}>
       <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)} style={{ display: 'grid' }}>
-        <span style={{ fontSize: '20px' }}>{localizationDrawerTitles.Settings}</span>
+        <span style={{ fontSize: '20px' }}>{localizationDrawer.titles.Settings}</span>
       </div>
       <div className={classes.settingsContainer}>
         <div className={classes.settingsDrawer}>

@@ -21,8 +21,7 @@ describe('AddNew Menu', () => {
     ]
 
     cy.get('[data-test="drawer-menu-item-content"]').click()
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(2000)
+    cy.get('[data-test="add-button"]').should('not.be.disabled')
     cy.get('[data-test="add-button"]')
       .click()
       .then(() => {

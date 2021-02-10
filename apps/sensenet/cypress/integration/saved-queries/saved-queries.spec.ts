@@ -40,7 +40,7 @@ describe('Saved queries', () => {
             cy.get('[data-test="delete-permanently"]').click()
             cy.get('button[aria-label="Delete"]').click()
             cy.get('h6').should('have.text', 'There is no query saved yet.')
-            cy.get('[data-test="table-cell-test-query-for-it-doclib"]').should('not.be.visible')
+            cy.get('[data-test="table-cell-test-query-for-it-doclib"]').should('not.exist')
           })
       })
   })
