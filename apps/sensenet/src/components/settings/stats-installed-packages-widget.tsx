@@ -24,6 +24,9 @@ const useStyles = makeStyles(() => {
       justifyContent: 'space-between',
       padding: '10px 0',
     },
+    icon: {
+      marginLeft: '12px',
+    },
   })
 })
 
@@ -63,9 +66,9 @@ export const InstalledPackagesWidget: React.FunctionComponent<InstalledPackagesW
                   <TableCell align="left" className={globalClasses.centeredHorizontal}>
                     <span>{formatDate(row.ExecutionDate, 'dd/MM/yyyy')}</span>
                     {row.ExecutionResult === 'Successful' ? (
-                      <Done style={{ color: green[500] }} />
+                      <Done className={classes.icon} style={{ color: green[500] }} />
                     ) : (
-                      <Close style={{ color: red[500] }} />
+                      <Close className={classes.icon} style={{ color: red[500] }} />
                     )}
                   </TableCell>
                   <TableCell align="left">{row.ComponentVersion}</TableCell>
