@@ -1,6 +1,7 @@
 import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
 const fileName = `TestFile`
+const newFileName = `Changed${fileName}`
 
 describe('Create/Delete content', () => {
   before(() => {
@@ -21,8 +22,6 @@ describe('Create/Delete content', () => {
         cy.get(`[data-test="table-cell-${fileName.replace(/\s+/g, '-').toLowerCase()}"]`).should('have.text', fileName)
       })
   })
-
-  const newFileName = `Changed${fileName}`
 
   it('File should be edited', () => {
     cy.get('[data-test="drawer-menu-item-content"]').click()
