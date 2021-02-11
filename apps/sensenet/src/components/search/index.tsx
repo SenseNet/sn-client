@@ -36,7 +36,7 @@ export const Search = () => {
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const repository = useRepository()
-  const [searchFilters, setSearchFilters] = useState<SearchFilters>()
+  const [searchFilters, setSearchFilters] = useState<Partial<SearchFilters>>()
 
   useEffect(() => {
     ;(async () => {
