@@ -86,7 +86,7 @@ export const ApiEndpointWidget: React.FunctionComponent = () => {
               {localization.clientLink}
             </Link>
             <div>
-              <Link target="_blank" href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=js">
+              <Link target="_blank" href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=jsclient">
                 <img className={classes.logo} src={jslogo} alt="js-logo" width="35" height="35" />
               </Link>
               <Link target="_blank" href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=dotnet">
