@@ -1,4 +1,3 @@
-import { authenticationService } from '@sensenet/authentication-oidc-react/src/authentication-service'
 import { useRepository } from '@sensenet/hooks-react'
 import { createStyles, Divider, Grid, Link, makeStyles, Paper, TextField, Theme } from '@material-ui/core'
 import React from 'react'
@@ -42,8 +41,6 @@ export const ApiEndpointWidget: React.FunctionComponent = () => {
   const localization = useLocalization().settings
   const repository = useRepository()
 
-  console.log(authenticationService)
-
   return (
     <div className={widgetClasses.root}>
       <Paper elevation={0} className={widgetClasses.container} style={{ padding: 0 }}>
@@ -69,7 +66,7 @@ export const ApiEndpointWidget: React.FunctionComponent = () => {
               name="endpoint"
               variant="outlined"
               fullWidth
-              value={authenticationService} //TODO: change this
+              value={repository.configuration.identityServerUrl}
               inputProps={{
                 readOnly: true,
                 className: classes.input,

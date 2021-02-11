@@ -33,12 +33,14 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
   })
   const repoFromUrl = useQuery().get('repoUrl')
   const configString = window.localStorage.getItem(authConfigKey)
+  const [identityServerUrl, setIdentityServerUrl] = useState()
 
   const clearState = useCallback(() => setAuthState({ repoUrl: '', config: null }), [])
 
   useEffect(() => {
     if (configString) {
       const prevAuthConfig = JSON.parse(configString)
+      setIdentityServerUrl(prevAuthConfig.authority)
 
       if (repoFromUrl && prevAuthConfig.extraQueryParams.snrepo !== repoFromUrl) {
         return setAuthState({ repoUrl: repoFromUrl, config: null })
@@ -127,12 +129,22 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
         />
       )}
       customEvents={customEvents}>
-      <RepoProvider repoUrl={authState.repoUrl}>{children}</RepoProvider>
+      <RepoProvider repoUrl={authState.repoUrl} identityServerUrl={identityServerUrl}>
+        {children}
+      </RepoProvider>
     </AuthenticationProvider>
   )
 }
 
-const RepoProvider = ({ children, repoUrl }: { children: ReactNode; repoUrl: string }) => {
+const RepoProvider = ({
+  children,
+  repoUrl,
+  identityServerUrl,
+}: {
+  children: ReactNode
+  repoUrl: string
+  identityServerUrl?: string
+}) => {
   const { oidcUser, login } = useOidcAuthentication()
   const [repo, setRepo] = useState<Repository>()
 
@@ -141,6 +153,7 @@ const RepoProvider = ({ children, repoUrl }: { children: ReactNode; repoUrl: str
       if (oidcUser && !prevRepo) {
         return new Repository({
           repositoryUrl: repoUrl,
+          identityServerUrl,
           token: oidcUser.access_token,
           requiredSelect: [
             'Id',
@@ -165,7 +178,7 @@ const RepoProvider = ({ children, repoUrl }: { children: ReactNode; repoUrl: str
 
       return prevRepo
     })
-  }, [repoUrl, oidcUser])
+  }, [repoUrl, oidcUser, identityServerUrl])
 
   useEffect(() => {
     if (repo) {
