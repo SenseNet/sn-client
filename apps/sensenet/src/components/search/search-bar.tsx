@@ -1,19 +1,23 @@
 import { debounce } from '@sensenet/client-utils'
-import { Button, createStyles, makeStyles, TextField } from '@material-ui/core'
-import Save from '@material-ui/icons/Save'
+import { createStyles, IconButton, InputAdornment, makeStyles, TextField, Theme } from '@material-ui/core'
+import Bookmark from '@material-ui/icons/Bookmark'
+import Cancel from '@material-ui/icons/Cancel'
 import React, { useCallback, useRef } from 'react'
 import { useSearch } from '../../context/search'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { useDialog } from '../dialogs'
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     root: {
       display: 'flex',
       width: '100%',
       marginLeft: '1em',
       marginBottom: '1rem',
+    },
+    inputButton: {
+      color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
     },
   })
 })
@@ -46,27 +50,37 @@ export const SearchBar = () => {
           onChange={(ev) => {
             debouncedQuery(ev.target.value)
           }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                {searchState.term && (
+                  <IconButton className={classes.inputButton} aria-label={localization.clearTerm} onClick={() => null}>
+                    <Cancel onClick={() => searchState.setTerm('')} />
+                  </IconButton>
+                )}
+                <IconButton
+                  className={classes.inputButton}
+                  aria-label={localization.saveQuery}
+                  title={localization.saveQuery}
+                  onClick={() => {
+                    // We don't want to save empty queries
+                    if (!searchState.term) {
+                      return
+                    }
+                    openDialog({
+                      name: 'save-query',
+                      props: {
+                        saveName: `Search results for '${searchState.term}'`,
+                        filters: { term: searchState.term, filters: searchState.filters },
+                      },
+                    })
+                  }}>
+                  <Bookmark />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
-        <Button
-          aria-label={localization.saveQuery}
-          style={{ flexShrink: 0 }}
-          title={localization.saveQuery}
-          onClick={() => {
-            // We don't want to save empty queries
-            if (!searchState.term) {
-              return
-            }
-            openDialog({
-              name: 'save-query',
-              props: {
-                saveName: `Search results for '${searchState.term}'`,
-                filters: { term: searchState.term, filters: searchState.filters },
-              },
-            })
-          }}>
-          <Save style={{ marginRight: 8 }} />
-          {localization.saveQuery}
-        </Button>
       </div>
     </div>
   )

@@ -1,5 +1,6 @@
 import { Query } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
+import { createStyles, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
@@ -18,12 +19,21 @@ export interface SearchFilters {
   filters: FiltersInterface
 }
 
+const useStyles = makeStyles(() => {
+  return createStyles({
+    contentWrapper: {
+      paddingRight: 30,
+    },
+  })
+})
+
 export const Search = () => {
   const queryFromUrl = useQuery().get('query') ?? undefined
   const termFromUrl = useQuery().get('term') ?? undefined
   const logger = useLogger('search')
   const history = useHistory()
   const localization = useLocalization().search
+  const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const repository = useRepository()
   const [searchFilters, setSearchFilters] = useState<SearchFilters>()
@@ -67,7 +77,7 @@ export const Search = () => {
     <SearchProvider
       defaultTerm={queryFromUrl ? searchFilters?.term ?? '' : termFromUrl}
       defaultFilters={searchFilters?.filters}>
-      <div className={globalClasses.contentWrapper}>
+      <div className={clsx(globalClasses.contentWrapper, classes.contentWrapper)}>
         <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}>
           <span style={{ fontSize: '20px' }}>{localization.title}</span>
         </div>

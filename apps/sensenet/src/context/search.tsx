@@ -1,5 +1,5 @@
 import { ConstantContent } from '@sensenet/client-core'
-import { GenericContent } from '@sensenet/default-content-types'
+import { AllFieldNames, GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
@@ -26,6 +26,7 @@ const SearchContext = createContext<{
   filters: Filters
   setFilters: React.Dispatch<React.SetStateAction<Filters>>
   result: GenericContent[]
+  resultCount: number
   error: string
 }>({
   term: '',
@@ -38,6 +39,7 @@ const SearchContext = createContext<{
   },
   setFilters: () => null,
   result: [],
+  resultCount: 0,
   error: '',
 })
 
@@ -51,6 +53,7 @@ export function SearchProvider({
 
   const [term, setTerm] = useState(defaultTerm ?? '')
   const [result, setResult] = useState<GenericContent[]>([])
+  const [resultCount, setResultCount] = useState(0)
   const [error, setError] = useState('')
 
   const [filters, setFilters] = useState<Filters>(
@@ -67,25 +70,36 @@ export function SearchProvider({
     const fetchResult = async () => {
       if (!term) {
         setResult([])
+        setResultCount(0)
         history.push(PATHS.search.appPath)
         return
       }
 
       try {
-        const response = await repository.loadCollection({
+        const response = await repository.loadCollection<GenericContent>({
           path: ConstantContent.PORTAL_ROOT.Path,
           oDataOptions: {
             query: createSearchQuery({ term, filters }).toString(),
+            select: Array.isArray(repository.configuration.requiredSelect)
+              ? ([
+                  'DisplayName',
+                  'Path',
+                  ...(repository.configuration.requiredSelect as AllFieldNames[]).map((field) => `ModifiedBy/${field}`),
+                ] as Array<keyof GenericContent>)
+              : repository.configuration.requiredSelect,
+            expand: ['ModifiedBy'],
           },
           requestInit: { signal: ac.signal },
         })
         setError('')
         setResult(response.d.results)
+        setResultCount(response.d.__count)
         history.push(pathWithQueryParams({ path: PATHS.search.appPath, newParams: { term } }))
       } catch (e) {
         if (!ac.signal.aborted) {
           setError(e.message)
           setResult([])
+          setResultCount(0)
         }
       }
     }
@@ -95,7 +109,7 @@ export function SearchProvider({
   }, [term, repository, history, filters])
 
   return (
-    <SearchContext.Provider value={{ term, setTerm, filters, setFilters, result, error }}>
+    <SearchContext.Provider value={{ term, setTerm, filters, setFilters, result, resultCount, error }}>
       {children}
     </SearchContext.Provider>
   )

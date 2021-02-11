@@ -1,4 +1,5 @@
-import { ConstantContent } from '@sensenet/client-core'
+import { ConstantContent, ODataFieldParameter } from '@sensenet/client-core'
+import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
@@ -10,12 +11,13 @@ import React, { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'
 import { useSearch } from '../../context/search'
-import { useSelectionService, useSnRoute } from '../../hooks'
+import { useLocalization, useSelectionService, useSnRoute } from '../../hooks'
 import { getPrimaryActionUrl } from '../../services'
 import { ContentList } from '../content-list'
 
 export const SearchResults = () => {
   const repository = useRepository()
+  const localization = useLocalization().search
   const history = useHistory()
   const { location } = history
   const selectionService = useSelectionService()
@@ -32,6 +34,8 @@ export const SearchResults = () => {
         </Typography>
       ) : null}
 
+      <Typography style={{ margin: '1rem' }}>{localization.resultCount(searchState.resultCount)}</Typography>
+
       <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>
         <CurrentChildrenContext.Provider value={searchState.result}>
           <CurrentAncestorsContext.Provider value={[]}>
@@ -40,13 +44,28 @@ export const SearchResults = () => {
                 height: '100%',
                 overflow: 'auto',
               }}
+              fieldsToDisplay={['DisplayName', 'Path', 'ModifiedBy', 'Actions']}
               enableBreadcrumbs={false}
               parentIdOrPath={0}
               onParentChange={(p) => {
                 history.push(getPrimaryActionUrl({ content: p, repository, uiSettings, location, snRoute }))
               }}
-              onActivateItem={(p) => {
-                history.push(getPrimaryActionUrl({ content: p, repository, uiSettings, location, snRoute }))
+              onActivateItem={async (item) => {
+                const expandedItem = await repository.load({
+                  idOrPath: item.Id,
+                  oDataOptions: {
+                    select: Array.isArray(repository.configuration.requiredSelect)
+                      ? ([
+                          ...repository.configuration.requiredSelect,
+                          'Actions/Name',
+                        ] as ODataFieldParameter<GenericContent>)
+                      : repository.configuration.requiredSelect,
+                    expand: ['Actions'] as ODataFieldParameter<GenericContent>,
+                  },
+                })
+                history.push(
+                  getPrimaryActionUrl({ content: expandedItem.d, repository, uiSettings, location, snRoute }),
+                )
               }}
               onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
             />
