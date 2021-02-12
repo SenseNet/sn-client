@@ -12,11 +12,13 @@ import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { defaultLocalization } from './localization'
 
+const units = ['byte', 'KB', 'MB', 'GB', 'TB']
+
 /**
  * Field control that represents a Number field. Available values will be populated from the FieldSettings.
  */
 export const FileSizeField: React.FC<ReactClientFieldSetting<NumberFieldSetting>> = (props) => {
-  const localization = deepMerge(defaultLocalization.number, props.localization?.number)
+  const localization = deepMerge(defaultLocalization.fileSize, props.localization?.fileSize)
 
   const initialState =
     props.fieldValue != null
@@ -50,22 +52,12 @@ export const FileSizeField: React.FC<ReactClientFieldSetting<NumberFieldSetting>
     return Math.round((num + Number.EPSILON) * multiplier) / multiplier
   }
 
-  const returnValueWithUnit = (fieldValueNumber: number) => {
-    const inKiloBytes = round(fieldValueNumber / 1024)
-    if (inKiloBytes > 1) {
-      const inMegaBytes = round(inKiloBytes / 1024)
-      if (inMegaBytes > 1) {
-        const inGigaBytes = round(inMegaBytes / 1024)
-        if (inGigaBytes > 1) {
-          return `${inGigaBytes} GB`
-        } else {
-          return `${inMegaBytes} MB`
-        }
-      } else {
-        return `${inKiloBytes} KB`
-      }
+  const returnValueWithUnit = (fieldValueNumber: number, index = 0): string => {
+    const inHigherUnit = round(fieldValueNumber / 1024)
+    if (inHigherUnit >= 1 && units.length > index + 1) {
+      return returnValueWithUnit(inHigherUnit, index + 1)
     } else {
-      return `${fieldValueNumber} byte`
+      return `${fieldValueNumber} ${units[index]}`
     }
   }
 
@@ -106,8 +98,8 @@ export const FileSizeField: React.FC<ReactClientFieldSetting<NumberFieldSetting>
             {props.settings.DisplayName}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
-            {props.fieldValue != null ? (
-              <>{props.fieldValue && returnValueWithUnit(toNumber(props.fieldValue)!)}</>
+            {props.fieldValue && props.fieldValue !== '0' ? (
+              <>{returnValueWithUnit(toNumber(props.fieldValue)!, 0)}</>
             ) : (
               localization.noValue
             )}
