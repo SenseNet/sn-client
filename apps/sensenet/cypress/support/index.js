@@ -16,3 +16,4 @@ import 'cypress-xpath'
 import '@cypress/code-coverage/support'
 
 import './commands'
+import './local-storage'
