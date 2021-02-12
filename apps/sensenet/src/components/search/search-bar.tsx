@@ -54,19 +54,27 @@ export const SearchBar = () => {
             endAdornment: (
               <InputAdornment position="end">
                 {searchState.term && (
-                  <IconButton className={classes.inputButton} aria-label={localization.clearTerm} onClick={() => null}>
-                    <Cancel onClick={() => searchState.setTerm('')} />
+                  <IconButton
+                    className={classes.inputButton}
+                    aria-label={localization.clearTerm}
+                    title={localization.clearTerm}
+                    onClick={() => null}>
+                    <Cancel
+                      onClick={() => {
+                        if (searchInputRef.current) {
+                          searchInputRef.current.value = ''
+                        }
+                        searchState.setTerm('')
+                      }}
+                    />
                   </IconButton>
                 )}
                 <IconButton
                   className={classes.inputButton}
                   aria-label={localization.saveQuery}
                   title={localization.saveQuery}
+                  disabled={!searchState.term}
                   onClick={() => {
-                    // We don't want to save empty queries
-                    if (!searchState.term) {
-                      return
-                    }
                     openDialog({
                       name: 'save-query',
                       props: {

@@ -351,7 +351,7 @@ const values = {
     saveInputPlaceholder: (term: string) => `Search results for '${term}'`,
     savedQueries: 'Saved queries',
     queryHelperText: 'Enter a keyword',
-    clearTerm: 'Clear term input',
+    clearTerm: 'Clear input',
     resultCount: (count: number) => `${count} results`,
     openInSearchTitle: (term: string) => `See all results for '${term}'`,
     openInSearchDescription: 'Opens the query expression in the Search view',
