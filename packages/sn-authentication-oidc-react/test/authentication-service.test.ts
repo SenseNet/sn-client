@@ -1,5 +1,5 @@
 import { UserManager } from '../src'
-import { authenticationService, getUserManager } from '../src/authentication-service'
+import { authenticationService, getUserManager, removeUserManager } from '../src/authentication-service'
 
 describe('Authentication service', () => {
   let manager: any
@@ -20,5 +20,10 @@ describe('Authentication service', () => {
   it('should give back the same instace for getUserManager', () => {
     const managerFromGetUserManager = getUserManager()
     expect(manager).toEqual(managerFromGetUserManager)
+  })
+
+  it('should remove userManager', () => {
+    removeUserManager()
+    expect(getUserManager()).toEqual(undefined)
   })
 })

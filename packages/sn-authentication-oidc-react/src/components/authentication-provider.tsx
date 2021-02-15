@@ -79,7 +79,7 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
     history,
   } = props
 
-  const login = useCallback(() => oidcLogin(oidcState.userManager, dispatch, history.location, history)(), [
+  const login = useCallback(async () => await oidcLogin(oidcState.userManager, dispatch, history.location, history)(), [
     history,
     oidcState.userManager,
   ])
