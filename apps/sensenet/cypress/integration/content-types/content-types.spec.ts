@@ -8,7 +8,7 @@ describe('Content types', () => {
       .click()
   })
 
-  it('clicking on the content types menu item should show article', () => {
+  beforeEach((done) => {
     cy.get('.ReactVirtualized__Table__Grid').then((grid) => {
       let scroll = 0
 
@@ -17,16 +17,26 @@ describe('Content types', () => {
           scroll = scroll + 200
           grid.scrollTop(scroll)
 
-          if (!grid.find('[data-test="table-cell-article"]').length) {
+          const article = grid.find('[data-test="table-cell-article"]')
+          if (!article.length) {
             timeout()
+          } else {
+            article[0].scrollIntoView()
+            done()
           }
         }, 100)
       }
 
       timeout()
     })
+  })
 
-    cy.get('[data-test="table-cell-article"]').scrollIntoView().should('be.visible')
+  afterEach(() => {
+    cy.get('.ReactVirtualized__Table__Grid').then((grid) => grid.scrollTop(0))
+  })
+
+  it('clicking on the content types menu item should show article', () => {
+    cy.get('[data-test="table-cell-article"]').should('be.visible')
   })
 
   it('double clicking on article should open binary editor', () => {
