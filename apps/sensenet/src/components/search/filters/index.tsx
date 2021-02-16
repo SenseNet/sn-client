@@ -5,8 +5,12 @@ import { useLocalization } from '../../../hooks'
 import { MoreFilters } from './more-filters'
 import { TypeFilter } from './type-filter'
 
-export const Filters = () => {
-  const [showMoreFilters, setShowMoreFilters] = useState(false)
+interface FiltersProps {
+  defaultFilterVisibility?: boolean
+}
+
+export const Filters: React.FunctionComponent<FiltersProps> = ({ defaultFilterVisibility }) => {
+  const [showMoreFilters, setShowMoreFilters] = useState(defaultFilterVisibility ?? false)
   const localization = useLocalization().search.filters
 
   return (

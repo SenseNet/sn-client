@@ -6,7 +6,7 @@ import {
   CurrentContentContext,
   useRepository,
 } from '@sensenet/hooks-react'
-import { Typography } from '@material-ui/core'
+import { LinearProgress, Typography } from '@material-ui/core'
 import React, { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'
@@ -33,6 +33,8 @@ export const SearchResults = () => {
           {searchState.error}
         </Typography>
       ) : null}
+
+      {searchState.isLoading && <LinearProgress style={{ margin: '15px 15px 0' }} />}
 
       <Typography style={{ margin: '1rem' }}>{localization.resultCount(searchState.resultCount)}</Typography>
 

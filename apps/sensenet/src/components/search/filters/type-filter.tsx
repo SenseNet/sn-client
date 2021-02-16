@@ -1,15 +1,3 @@
-import {
-  Article,
-  CalendarEvent,
-  File,
-  Folder,
-  Group,
-  Image as ImageType,
-  Memo,
-  Task,
-  User,
-  Workspace,
-} from '@sensenet/default-content-types'
 import { Button, createStyles, makeStyles, Menu, MenuItem } from '@material-ui/core'
 import AccessTime from '@material-ui/icons/AccessTime'
 import ExpandMore from '@material-ui/icons/ExpandMore'
@@ -31,49 +19,49 @@ const options = [
   {
     name: 'documents',
     icon: <InsertDriveFile />,
-    type: File,
+    type: 'File',
   },
   {
     name: 'images',
     icon: <Image />,
-    type: ImageType,
+    type: 'Image',
   },
   {
     name: 'event',
     icon: <AccessTime />,
-    type: CalendarEvent,
+    type: 'CalendarEvent',
   },
   {
     name: 'user',
     icon: <Person />,
-    type: User,
+    type: 'User',
   },
 ]
 
 const moreOptions = [
   {
     name: 'article',
-    type: Article,
+    type: 'Article',
   },
   {
     name: 'workspace',
-    type: Workspace,
+    type: 'Workspace',
   },
   {
     name: 'folder',
-    type: Folder,
+    type: 'Folder',
   },
   {
     name: 'task',
-    type: Task,
+    type: 'Task',
   },
   {
     name: 'memo',
-    type: Memo,
+    type: 'Memo',
   },
   {
     name: 'group',
-    type: Group,
+    type: 'Group',
   },
 ]
 

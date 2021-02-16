@@ -9,8 +9,11 @@ import { Filters as FiltersInterface, SearchProvider } from '../../context/searc
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { useQuery } from '../../hooks/use-query'
+import { createSearchQuery } from '../../services/search-query-builder'
 import { FullScreenLoader } from '../full-screen-loader'
 import { Filters } from './filters'
+import { defaultDateFilter } from './filters/date-filter'
+import { defaultReferenceFilter } from './filters/reference-filter'
 import { SearchBar } from './search-bar'
 import { SearchResults } from './search-results'
 
@@ -52,10 +55,16 @@ export const Search = () => {
           },
         })
 
-        const filters = response.d.UiFilters
-          ? JSON.parse(response.d.UiFilters)
-          : { term: undefined, filters: undefined }
-        setSearchFilters(filters)
+        if (response.d.UiFilters) {
+          const filters = JSON.parse(response.d.UiFilters)
+
+          if (response.d.Query !== createSearchQuery(filters).toString()) {
+            throw new Error(localization.invalidSavedQuery)
+          }
+          setSearchFilters(filters)
+        } else {
+          setSearchFilters({ term: undefined, filters: undefined })
+        }
       } catch (error) {
         history.push(PATHS.search.appPath)
         logger.error({
@@ -67,7 +76,7 @@ export const Search = () => {
         return false
       }
     })()
-  }, [repository, queryFromUrl, history, logger, localization.errorGetQuery])
+  }, [repository, queryFromUrl, history, logger, localization.errorGetQuery, localization.invalidSavedQuery])
 
   if (queryFromUrl && !searchFilters) {
     return <FullScreenLoader />
@@ -84,7 +93,15 @@ export const Search = () => {
 
         <SearchBar />
 
-        <Filters />
+        <Filters
+          defaultFilterVisibility={
+            queryFromUrl
+              ? !!searchFilters?.filters?.path ||
+                searchFilters?.filters?.date.name !== defaultDateFilter.name ||
+                searchFilters?.filters?.reference.name !== defaultReferenceFilter.name
+              : false
+          }
+        />
 
         <SearchResults />
       </div>

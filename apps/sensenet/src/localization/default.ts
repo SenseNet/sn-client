@@ -362,6 +362,7 @@ const values = {
     public: 'Public',
     confirmDeleteQuery: `Are you sure that you want to delete the query '{0}'?`,
     errorGetQuery: 'Loading query content has failed.',
+    invalidSavedQuery: 'Invalid saved query',
     filters: {
       date: {
         anytime: 'anytime',

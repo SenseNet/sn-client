@@ -28,6 +28,7 @@ const SearchContext = createContext<{
   result: GenericContent[]
   resultCount: number
   error: string
+  isLoading: boolean
 }>({
   term: '',
   setTerm: () => null,
@@ -41,6 +42,7 @@ const SearchContext = createContext<{
   result: [],
   resultCount: 0,
   error: '',
+  isLoading: false,
 })
 
 export function SearchProvider({
@@ -55,6 +57,7 @@ export function SearchProvider({
   const [result, setResult] = useState<GenericContent[]>([])
   const [resultCount, setResultCount] = useState(0)
   const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const [filters, setFilters] = useState<Filters>(
     defaultFilters ?? {
@@ -76,6 +79,8 @@ export function SearchProvider({
       }
 
       try {
+        setIsLoading(true)
+
         const response = await repository.loadCollection<GenericContent>({
           path: ConstantContent.PORTAL_ROOT.Path,
           oDataOptions: {
@@ -101,6 +106,8 @@ export function SearchProvider({
           setResult([])
           setResultCount(0)
         }
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -109,7 +116,7 @@ export function SearchProvider({
   }, [term, repository, history, filters])
 
   return (
-    <SearchContext.Provider value={{ term, setTerm, filters, setFilters, result, resultCount, error }}>
+    <SearchContext.Provider value={{ term, setTerm, filters, setFilters, result, resultCount, error, isLoading }}>
       {children}
     </SearchContext.Provider>
   )

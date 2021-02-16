@@ -1,3 +1,4 @@
+import * as DefaultContentTypes from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
 import { Filters } from '../context/search'
 
@@ -7,11 +8,11 @@ interface CreateSearchQuery {
 }
 
 export const createSearchQuery = ({ term, filters }: CreateSearchQuery) => {
-  const query = new Query((q) => q.query((q2) => q2.equals('Name', `${term}*`).or.equals('DisplayName', `${term}*`)))
+  const query = new Query((q) => q.query((q2) => q2.equals('Name', `*${term}*`).or.equals('DisplayName', `*${term}*`)))
 
   if (filters.type.type) {
     new QueryOperators(query).and.query((q2) => {
-      new QueryExpression(q2.queryRef).typeIs(filters.type.type!)
+      new QueryExpression(q2.queryRef).typeIs((DefaultContentTypes as any)[filters.type.type!])
       return q2
     })
   }
