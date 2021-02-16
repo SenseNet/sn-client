@@ -1,11 +1,8 @@
 import { useInjector } from '@sensenet/hooks-react'
-import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { usePersonalSettings } from '../hooks'
 import DefaultLocalization from '../localization/default'
 import { LocalizationService } from '../services/LocalizationService'
-
-import 'moment/locale/hu'
 
 /**
  * Context that can be used for getting localization values
@@ -42,7 +39,6 @@ export const LocalizationProvider: React.FunctionComponent = (props) => {
   useEffect(() => {
     const langCode = personalSettings.language === 'hungarian' ? 'hu' : 'en'
     localizationService.load(personalSettings.language)
-    moment.locale(langCode)
     document.documentElement.lang = langCode
   }, [localizationService, personalSettings.language])
 

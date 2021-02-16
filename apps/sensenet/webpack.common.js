@@ -35,7 +35,6 @@ module.exports = {
     new MonacoWebpackPlugin({
       languages: ['javascript', 'json'],
     }),
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
   ],
   optimization: {
     splitChunks: {
