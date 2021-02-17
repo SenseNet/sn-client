@@ -8,7 +8,7 @@ describe('Groups', () => {
   })
   it('Groups list should have the appropriate data', () => {
     const items = ['Administrators', 'Developers', 'Editors']
-    const columns = ['Display Name', 'Description', 'Members', 'Actions']
+    const columns = ['DisplayName', 'Description', 'Members', 'Actions']
     cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
     cy.get('[data-test="groups"]').click()
     items.forEach((item) => {
