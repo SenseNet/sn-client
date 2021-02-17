@@ -10,7 +10,7 @@ export const DateField: React.FC<{ date: string | Date }> = ({ date }) => {
 
   return (
     <TableCell component="div" className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)}>
-      <Tooltip title={moment(new Date(date)).format('YYYY-MM-DD')} placement="top">
+      <Tooltip title={moment(new Date(date)).format('YYYY-MM-DD HH:mm a')} placement="top">
         <div>{moment(date).fromNow()}</div>
       </Tooltip>
     </TableCell>
