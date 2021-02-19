@@ -5,10 +5,12 @@ import { isExtendedError } from '@sensenet/client-core'
 import { ActionNameType, EditView as SnEditView } from '@sensenet/controls-react'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
+import enUS from 'date-fns/locale/en-US'
+import hu from 'date-fns/locale/hu'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization, useSelectionService } from '../../hooks'
+import { useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { navigateToAction } from '../../services'
 import { reactControlMapper } from '../react-control-mapper'
 import { useViewControlStyles } from './common/styles'
@@ -34,6 +36,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
   const logger = useLogger('EditView')
   const history = useHistory()
   const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
+  const personalSettings = usePersonalSettings()
 
   useEffect(() => {
     async function getExpandedContent() {
@@ -106,6 +109,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         controlMapper={controlMapper}
         localization={{ submit: localization.forms.submit, cancel: localization.forms.cancel }}
         hideDescription
+        locale={personalSettings.language === 'hungarian' ? hu : enUS}
         classes={{
           ...classes,
           cancel: globalClasses.cancelButton,

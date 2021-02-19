@@ -1,8 +1,8 @@
 import { DateTimeMode } from '@sensenet/default-content-types'
 import Typography from '@material-ui/core/Typography'
 import { DateTimePicker, DatePicker as MUIDatePicker } from '@material-ui/pickers'
+import format from 'date-fns/format'
 import { shallow } from 'enzyme'
-import moment from 'moment'
 import React from 'react'
 import { DatePicker, defaultLocalization } from '../src/fieldcontrols'
 
@@ -22,7 +22,7 @@ describe('Date/Date time field control', () => {
     it('should show the displayname and fieldValue when fieldValue is provided', () => {
       const wrapper = shallow(<DatePicker fieldValue={value} actionName="browse" settings={defaultSettings} />)
       expect(wrapper.find(Typography).first().text()).toBe(defaultSettings.DisplayName)
-      expect(wrapper.find(Typography).last().text()).toBe(moment(value).toLocaleString())
+      expect(wrapper.find(Typography).last().text()).toBe(format(new Date(value), 'PPPppp').toLocaleString())
     })
 
     it('should show the displayname and fieldValue as date when fieldValue is provided and set as date', () => {
@@ -34,7 +34,7 @@ describe('Date/Date time field control', () => {
         />,
       )
       expect(wrapper.find(Typography).first().text()).toBe(defaultSettings.DisplayName)
-      expect(wrapper.find(Typography).last().text()).toBe(moment(value).format('LL').toLocaleString())
+      expect(wrapper.find(Typography).last().text()).toBe(format(new Date(value), 'PPPppp').toLocaleString())
       expect(wrapper).toMatchSnapshot()
     })
 
@@ -89,7 +89,7 @@ describe('Date/Date time field control', () => {
             ...defaultSettings,
             ReadOnly: true,
             Compulsory: true,
-            DateTimeMode: DateTimeMode.Date,
+            DateTimeMode: DateTimeMode[1] as any,
           }}
         />,
       )
@@ -110,7 +110,7 @@ describe('Date/Date time field control', () => {
           settings={{
             ...defaultSettings,
             DefaultValue: 'defaultValue',
-            DateTimeMode: DateTimeMode.Date,
+            DateTimeMode: DateTimeMode[1] as any,
           }}
         />,
       )

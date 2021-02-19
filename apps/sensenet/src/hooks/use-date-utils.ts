@@ -1,6 +1,6 @@
 import format from 'date-fns/format'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
-import { enUS } from 'date-fns/locale'
+import enUS from 'date-fns/locale/en-US'
 import hu from 'date-fns/locale/hu'
 import parseISO from 'date-fns/parseISO'
 import { usePersonalSettings } from '.'
