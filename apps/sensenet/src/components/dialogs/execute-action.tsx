@@ -5,8 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import Typography from '@material-ui/core/Typography'
-import React, { useEffect, useState } from 'react'
-import MonacoEditor from 'react-monaco-editor'
+import React, { lazy, useEffect, useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useTheme } from '../../hooks'
 import {
@@ -15,6 +14,7 @@ import {
 } from '../../services/CommandProviders/CustomActionCommandProvider'
 import { createCustomActionModel } from '../../services/MonacoModels/create-custom-action-model'
 import { DialogTitle, useDialog } from '.'
+const MonacoEditor = lazy(() => import('react-monaco-editor'))
 
 const EDITOR_INITIAL_VALUE = `{
 
@@ -22,7 +22,7 @@ const EDITOR_INITIAL_VALUE = `{
 
 export type ExecuteActionDialogProps = {
   actionValue: OnExecuteActionPayload
-  uri: import('monaco-editor').Uri
+  uri: import('react-monaco-editor').monaco.Uri
 }
 
 export function ExecuteActionDialog({ actionValue, uri }: ExecuteActionDialogProps) {

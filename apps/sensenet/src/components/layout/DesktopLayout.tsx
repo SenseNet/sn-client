@@ -57,8 +57,8 @@ export const DesktopLayout: React.FunctionComponent = (props) => {
 
   useEffect(() => {
     const observables = [
-      customActionService.onExecuteAction.subscribe((value) => {
-        const uri = getMonacoModelUri(value.content, repo, value.action)
+      customActionService.onExecuteAction.subscribe(async (value) => {
+        const uri = await getMonacoModelUri(value.content, repo, value.action)
         openDialog({
           name: 'execute-action',
           props: { actionValue: value, uri },

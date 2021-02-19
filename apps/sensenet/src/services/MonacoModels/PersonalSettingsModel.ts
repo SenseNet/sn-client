@@ -1,15 +1,16 @@
 import { LogLevel } from '@sensenet/client-utils'
-import { editor, languages, Uri } from 'monaco-editor'
 import { BrowseType } from '../../components/content'
 import defaultLanguage from '../../localization/default'
 import { ActionType, CustomDrawerItemType } from '../PersonalSettings'
 
-export const setupModel = (language = defaultLanguage) => {
+export const setupModel = async (language = defaultLanguage) => {
+  const { monaco } = await import('react-monaco-editor')
+
   const personalSettingsPath = `sensenet://PersonalSettings/PersonalSettings`
-  const uri = Uri.parse(personalSettingsPath)
+  const uri = monaco.Uri.parse(personalSettingsPath)
   const uriString = uri.toString()
 
-  languages.json.jsonDefaults.setDiagnosticsOptions({
+  monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
     validate: true,
     enableSchemaRequest: false,
     schemas: [
@@ -149,8 +150,9 @@ export const setupModel = (language = defaultLanguage) => {
       },
     ],
   })
-  const existingModel = editor.getModel(uri)
+
+  const existingModel = monaco.editor.getModel(uri)
   if (!existingModel) {
-    return editor.createModel('', 'json', Uri.parse(personalSettingsPath))
+    return monaco.editor.createModel('', 'json', monaco.Uri.parse(personalSettingsPath))
   }
 }
