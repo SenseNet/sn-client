@@ -101,6 +101,7 @@
     "monaco-editor": "0.21.3",
     "react": "^16.13.0",
     "react-autosuggest": "^10.1.0",
+    "react-day-picker": "^7.4.8",
     "react-dom": "^16.13.0",
     "react-markdown": "^5.0.3",
     "react-monaco-editor": "0.41.2",
