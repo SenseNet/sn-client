@@ -25,13 +25,15 @@
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "license": "GPL-2.0",
   "homepage": "https://sensenet.com",
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
   "dependencies": {
     "@sensenet/client-core": "^3.8.1",
     "@sensenet/client-utils": "^2.0.2",
     "@sensenet/default-content-types": "^3.2.0",
     "@sensenet/repository-events": "^2.0.4",
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0",
     "semaphore-async-await": "^1.5.1",
     "tslib": "^2.1.0"
   },
@@ -44,6 +46,8 @@
     "enzyme-adapter-react-16": "^1.15.6",
     "enzyme-to-json": "^3.6.1",
     "jest": "^26.6.1",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
     "ts-jest": "^26.4.2",
     "typescript": "^4.1.3"
   }
