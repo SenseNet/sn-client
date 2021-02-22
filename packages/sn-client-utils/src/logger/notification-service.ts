@@ -17,7 +17,9 @@ export class NotificationService {
 
   public dismiss(oldItem: LeveledLogEntry<any>) {
     this.activeMessages.setValue(
-      [...this.activeMessages.getValue()].filter((message) => JSON.stringify(message) !== JSON.stringify(oldItem)),
+      [...this.activeMessages.getValue()].filter(
+        (message) => message && JSON.stringify(message) !== JSON.stringify(oldItem),
+      ),
     )
   }
 }

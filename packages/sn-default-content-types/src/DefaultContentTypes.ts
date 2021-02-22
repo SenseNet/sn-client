@@ -69,7 +69,13 @@ export type AllFieldNames = keyof (ContentType &
   Memo &
   Task &
   Query &
-  User)
+  User &
+  Article &
+  ArticleSection &
+  CalendarEvent &
+  EventList &
+  Link &
+  LinkList)
 
 /**
  * A content type is a reusable set of fields you want to apply to certain content.
@@ -610,7 +616,6 @@ export class Memo extends ListItem {
   /* A list of content this memo pertains to. */
   public SeeAlso?: ContentListReferenceField<GenericContent>
 }
-
 /**
  * A content type for defining tasks.
  */
@@ -638,6 +643,8 @@ export class Query extends GenericContent {
   public Query?: string
   /* Public queries are stored under the workspace, private queries are stored under the user profile. */
   public QueryType?: Enums.QueryType[]
+  /* Filters object used by search query builder */
+  public UiFilters?: string
 }
 
 /**
@@ -696,3 +703,59 @@ export class User extends GenericContent {
   /* Date and time of when the user logged out from all devices. */
   public LastLoggedOut?: string
 }
+
+/**
+ * The basic text based content type of the sensenet.
+ */
+export class Article extends GenericContent {
+  /* Subtitle of article */
+  public Subtitle?: string
+  /* Name of the author */
+  public Author?: string
+  /* Lead text of article */
+  public Lead?: string
+  /* Body text of article. */
+  public Body?: string
+  /* This field is true if content is a highlighted article */
+  public Pinned?: boolean
+  /* Keywords describing the article. */
+  public Keywords?: string
+  public ImageRef?: ContentReferenceField<GenericContent>
+  public ImageData?: ComplexTypes.MediaResourceObject
+  /* Article lead image. */
+  public Image?: { Url: string }
+}
+
+/**
+ * Content type for group articles.
+ */
+export class ArticleSection extends Folder {}
+
+/* Content type for calendar events */
+export class CalendarEvent extends ListItem {
+  /* Location of an event */
+  public Location?: string
+  /* Starting date of an event */
+  public StartDate?: string
+  /* End date of an event */
+  public EndDate?: string
+  /* This field is true if content is an all day event */
+  public AllDay?: boolean
+  /* Type of event */
+  public EventType?: Enums.EventType[]
+}
+
+/**
+ * Content list type for grouping calendar events
+ */
+export class EventList extends ContentList {}
+
+/* Content type for external links  */
+export class Link extends ListItem {
+  public Url?: string
+}
+
+/**
+ * Content list type for grouping external links
+ */
+export class LinkList extends ContentList {}

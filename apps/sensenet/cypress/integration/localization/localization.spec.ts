@@ -9,19 +9,13 @@ describe('Localization', () => {
   })
 
   it('should contain a row with ActionResources.xml', () => {
-    cy.get('.MuiTableCell-root div')
-      .contains('ActionResources.xml')
-      .should('have.text', 'ActionResources.xml')
-      .click({ force: true })
-      .parents('[role="row"]')
-      .get('.MuiCheckbox-root')
-      .should('have.class', 'Mui-checked')
+    cy.get('.MuiTableCell-root div').contains('ActionResources.xml').should('have.text', 'ActionResources.xml')
   })
 
   it('should have the correct items in the right click menu', () => {
     cy.get('.MuiTableCell-root div').contains('ActionResources.xml').rightclick({ force: true })
 
-    const expectedMenuItems = ['Browse', 'Copy to', 'Edit', 'Move to', 'Check out', 'Download']
+    const expectedMenuItems = ['Details', 'Copy to', 'Edit', 'Move to', 'Check out', 'Download']
 
     cy.get('[role="presentation"] li')
       .should('have.length', expectedMenuItems.length)

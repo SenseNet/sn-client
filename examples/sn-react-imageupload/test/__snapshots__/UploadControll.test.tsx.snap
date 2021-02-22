@@ -19,7 +19,7 @@ exports[`UploadControll Matches snapshot 1`] = `
       title="Upload"
       variant="extended"
     >
-      <Memo([object Object]) />
+      <Memo(ForwardRef(CloudUploadIcon)) />
     </WithStyles(ForwardRef(Fab))>
   </label>
 </div>

@@ -1,5 +1,5 @@
 import { PathHelper } from '@sensenet/client-utils'
-import { TrashBag } from '@sensenet/default-content-types'
+import { GenericContent, TrashBag } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { Button, DialogActions, DialogContent, InputAdornment, TextField } from '@material-ui/core'
 import RestoreIcon from '@material-ui/icons/RestoreFromTrash'
@@ -78,6 +78,7 @@ export function Restore(props: RestoreProps) {
           <TextField
             fullWidth={true}
             value={editableDestination}
+            data-test="restore-destination"
             onChange={(ev) => setDestination(`${rootPath}${ev.currentTarget.value}`)}
             InputProps={{
               startAdornment: <InputAdornment position="start">{rootPath}</InputAdornment>,
@@ -94,7 +95,8 @@ export function Restore(props: RestoreProps) {
                   content: props.content,
                   currentPath: props.content.OriginalPath || '/Root',
                   selectionRoot: rootPath,
-                  handleSubmit: (path: string) => setDestination(path),
+                  handleSubmit: (content: GenericContent) => setDestination(content.Path),
+                  required: true,
                 },
                 dialogProps: { disableBackdropClick: true, open: true, classes: { paper: globalClasses.pickerDialog } },
               })
@@ -108,7 +110,12 @@ export function Restore(props: RestoreProps) {
         <Button aria-label={localization.cancel} className={globalClasses.cancelButton} onClick={closeLastDialog}>
           {localization.cancel}
         </Button>
-        <Button aria-label={localization.title} color="primary" variant="contained" onClick={onClick}>
+        <Button
+          aria-label={localization.title}
+          color="primary"
+          variant="contained"
+          onClick={onClick}
+          data-test="restore-button">
           {localization.title}
         </Button>
       </DialogActions>

@@ -26,14 +26,14 @@ describe('Tree', () => {
           .click()
           .then(() => {
             items.forEach(($el) => {
-              cy.get(`[data-test="menu-item-${$el.replace(/\s+/g, '-').toLowerCase()}"]`).should('not.be.visible')
+              cy.get(`[data-test="menu-item-${$el.replace(/\s+/g, '-').toLowerCase()}"]`).should('not.exist')
             })
             cy.get('body').click()
           })
       })
   })
   it('Right click on the Tree item should make context-menu open.', () => {
-    const contextMenuItems = ['Browse', 'Copy to', 'Edit', 'Move to', 'Versions', 'Share', 'Delete', 'Set permissions']
+    const contextMenuItems = ['Details', 'Copy to', 'Edit', 'Move to', 'Versions', 'Share', 'Delete', 'Set permissions']
     cy.get('[data-test="drawer-menu-item-content"]').click()
     cy.get('[data-test="menu-item-it-workspace"]')
       .rightclick()

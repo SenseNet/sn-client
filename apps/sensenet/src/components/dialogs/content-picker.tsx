@@ -12,10 +12,12 @@ import { Icon } from '../Icon'
 import { DialogTitle, useDialog } from '.'
 
 export interface ContentPickerDialogProps {
+  defaultValue?: GenericContentWithIsParent
   currentPath: string
   selectionRoot?: string
-  content: GenericContent
-  handleSubmit?: (path: string) => void
+  required?: boolean
+  content?: GenericContent
+  handleSubmit?: (content: GenericContentWithIsParent) => void
 }
 
 export const ContentPickerDialog: React.FunctionComponent<ContentPickerDialogProps> = (props) => {
@@ -32,7 +34,7 @@ export const ContentPickerDialog: React.FunctionComponent<ContentPickerDialogPro
   const itemsODataOptions = useMemo(() => ({ filter: '' }), [])
 
   const handleSubmit = async (selection: GenericContentWithIsParent[]) => {
-    props.handleSubmit?.(selection[0].Path)
+    props.handleSubmit?.(selection[0])
     closeLastDialog()
   }
 
@@ -40,13 +42,14 @@ export const ContentPickerDialog: React.FunctionComponent<ContentPickerDialogPro
     <>
       <DialogTitle>
         <div className={globalClasses.centeredVertical}>
-          <Icon item={props.content} style={{ marginRight: '1em' }} />
+          {props.content && <Icon item={props.content} style={{ marginRight: '1em' }} />}
           {localization.title}
         </div>
       </DialogTitle>
 
       <Picker
         repository={repository}
+        defaultValue={props.defaultValue ? [props.defaultValue] : undefined}
         currentPath={props.currentPath}
         selectionRoots={selectionRoots}
         itemsODataOptions={itemsODataOptions}
@@ -56,7 +59,7 @@ export const ContentPickerDialog: React.FunctionComponent<ContentPickerDialogPro
         actionsContainer={DialogActions}
         handleCancel={closeLastDialog}
         handleSubmit={handleSubmit}
-        required={1}
+        required={props.required ? 1 : 0}
         localization={{ cancelButton: localization.cancelButton, submitButton: localization.selectButton }}
         classes={{ cancelButton: globalClasses.cancelButton }}
       />
