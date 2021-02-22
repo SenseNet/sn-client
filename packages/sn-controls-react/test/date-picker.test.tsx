@@ -34,7 +34,7 @@ describe('Date/Date time field control', () => {
         />,
       )
       expect(wrapper.find(Typography).first().text()).toBe(defaultSettings.DisplayName)
-      expect(wrapper.find(Typography).last().text()).toBe(format(new Date(value), 'PPPppp').toLocaleString())
+      expect(wrapper.find(Typography).last().text()).toBe(format(new Date(value), 'PPP').toLocaleString())
       expect(wrapper).toMatchSnapshot()
     })
 
@@ -89,7 +89,7 @@ describe('Date/Date time field control', () => {
             ...defaultSettings,
             ReadOnly: true,
             Compulsory: true,
-            DateTimeMode: DateTimeMode[1] as any,
+            DateTimeMode: DateTimeMode.Date,
           }}
         />,
       )
@@ -110,7 +110,7 @@ describe('Date/Date time field control', () => {
           settings={{
             ...defaultSettings,
             DefaultValue: 'defaultValue',
-            DateTimeMode: DateTimeMode[1] as any,
+            DateTimeMode: DateTimeMode.Date,
           }}
         />,
       )

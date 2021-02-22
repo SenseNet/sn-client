@@ -40,7 +40,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
     case 'new':
       return (
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={props.locale}>
-          {props.settings.DateTimeMode === (DateTimeMode[1] as any) ? (
+          {props.settings.DateTimeMode === DateTimeMode.Date ? (
             <MUIDatePicker
               value={value}
               onChange={handleDateChange}
@@ -76,7 +76,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
             {props.fieldValue
-              ? props.settings.DateTimeMode === (DateTimeMode[1] as any)
+              ? props.settings.DateTimeMode === DateTimeMode.Date
                 ? format(new Date(props.fieldValue), 'PPP', { locale: props.locale }).toLocaleString()
                 : format(new Date(props.fieldValue), 'PPPppp', { locale: props.locale }).toLocaleString()
               : localization.noValue}

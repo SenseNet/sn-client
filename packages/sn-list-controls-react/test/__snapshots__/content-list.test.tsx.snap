@@ -388,7 +388,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "This content will appear on the date you set if lifespan handling is enabled for this content.",
                 "DisplayName": "Valid From",
@@ -403,7 +403,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "This content will disappear on the date you set if lifespan handling is enabled for this content.",
                 "DisplayName": "Valid Till",
@@ -549,7 +549,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Content creation date.",
                 "DisplayName": "Creation date",
@@ -578,7 +578,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Content was last modified on this date.",
                 "DisplayName": "Modification Date",
@@ -1007,7 +1007,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Version was last modified on this date.",
                 "DisplayName": "Versions Modification Date",
@@ -1038,7 +1038,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Version was created on this date.",
                 "DisplayName": "Versions Creation Date",
@@ -1451,7 +1451,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "This content will appear on the date you set if lifespan handling is enabled for this content.",
                 "DisplayName": "Valid From",
@@ -1466,7 +1466,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "This content will disappear on the date you set if lifespan handling is enabled for this content.",
                 "DisplayName": "Valid Till",
@@ -1612,7 +1612,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Content creation date.",
                 "DisplayName": "Creation date",
@@ -1641,7 +1641,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Content was last modified on this date.",
                 "DisplayName": "Modification Date",
@@ -2070,7 +2070,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Version was last modified on this date.",
                 "DisplayName": "Versions Modification Date",
@@ -2101,7 +2101,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Version was created on this date.",
                 "DisplayName": "Versions Creation Date",
@@ -2501,7 +2501,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "This content will appear on the date you set if lifespan handling is enabled for this content.",
                 "DisplayName": "Valid From",
@@ -2516,7 +2516,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "This content will disappear on the date you set if lifespan handling is enabled for this content.",
                 "DisplayName": "Valid Till",
@@ -2662,7 +2662,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Content creation date.",
                 "DisplayName": "Creation date",
@@ -2691,7 +2691,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Content was last modified on this date.",
                 "DisplayName": "Modification Date",
@@ -3120,7 +3120,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Version was last modified on this date.",
                 "DisplayName": "Versions Modification Date",
@@ -3151,7 +3151,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Version was created on this date.",
                 "DisplayName": "Versions Creation Date",
@@ -3566,7 +3566,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "This content will appear on the date you set if lifespan handling is enabled for this content.",
                 "DisplayName": "Valid From",
@@ -3581,7 +3581,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "This content will disappear on the date you set if lifespan handling is enabled for this content.",
                 "DisplayName": "Valid Till",
@@ -3727,7 +3727,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Content creation date.",
                 "DisplayName": "Creation date",
@@ -3756,7 +3756,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Content was last modified on this date.",
                 "DisplayName": "Modification Date",
@@ -4185,7 +4185,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Version was last modified on this date.",
                 "DisplayName": "Versions Modification Date",
@@ -4216,7 +4216,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Version was created on this date.",
                 "DisplayName": "Versions Creation Date",
@@ -4631,7 +4631,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "This content will appear on the date you set if lifespan handling is enabled for this content.",
                 "DisplayName": "Valid From",
@@ -4646,7 +4646,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "This content will disappear on the date you set if lifespan handling is enabled for this content.",
                 "DisplayName": "Valid Till",
@@ -4792,7 +4792,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Content creation date.",
                 "DisplayName": "Creation date",
@@ -4821,7 +4821,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Content was last modified on this date.",
                 "DisplayName": "Modification Date",
@@ -5250,7 +5250,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Version was last modified on this date.",
                 "DisplayName": "Versions Modification Date",
@@ -5281,7 +5281,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Version was created on this date.",
                 "DisplayName": "Versions Creation Date",
@@ -5695,7 +5695,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "This content will appear on the date you set if lifespan handling is enabled for this content.",
                 "DisplayName": "Valid From",
@@ -5710,7 +5710,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "This content will disappear on the date you set if lifespan handling is enabled for this content.",
                 "DisplayName": "Valid Till",
@@ -5856,7 +5856,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Content creation date.",
                 "DisplayName": "Creation date",
@@ -5885,7 +5885,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Content was last modified on this date.",
                 "DisplayName": "Modification Date",
@@ -6314,7 +6314,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Version was last modified on this date.",
                 "DisplayName": "Versions Modification Date",
@@ -6345,7 +6345,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Version was created on this date.",
                 "DisplayName": "Versions Creation Date",
@@ -6761,7 +6761,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "This content will appear on the date you set if lifespan handling is enabled for this content.",
                 "DisplayName": "Valid From",
@@ -6776,7 +6776,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "This content will disappear on the date you set if lifespan handling is enabled for this content.",
                 "DisplayName": "Valid Till",
@@ -6922,7 +6922,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Content creation date.",
                 "DisplayName": "Creation date",
@@ -6951,7 +6951,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Content was last modified on this date.",
                 "DisplayName": "Modification Date",
@@ -7380,7 +7380,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Version was last modified on this date.",
                 "DisplayName": "Versions Modification Date",
@@ -7411,7 +7411,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Version was created on this date.",
                 "DisplayName": "Versions Creation Date",
@@ -7826,7 +7826,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "This content will appear on the date you set if lifespan handling is enabled for this content.",
                 "DisplayName": "Valid From",
@@ -7841,7 +7841,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "This content will disappear on the date you set if lifespan handling is enabled for this content.",
                 "DisplayName": "Valid Till",
@@ -7987,7 +7987,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Content creation date.",
                 "DisplayName": "Creation date",
@@ -8016,7 +8016,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Content was last modified on this date.",
                 "DisplayName": "Modification Date",
@@ -8445,7 +8445,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Version was last modified on this date.",
                 "DisplayName": "Versions Modification Date",
@@ -8476,7 +8476,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "DefaultOrder": 0,
                 "Description": "Version was created on this date.",
                 "DisplayName": "Versions Creation Date",

@@ -191,11 +191,11 @@ export const MemoPanel: React.FunctionComponent = () => {
             <Typography className={classes.heading}>{memo.DisplayName}</Typography>
             <Typography className={classes.secondaryHeading}>
               Created by: {memo.CreatedBy ? (memo.CreatedBy as User).FullName : ''}{' '}
-              {memo.CreationDate ? format(parseISO(memo.CreationDate), "d 'on' dd-MM-yyyy") : 'Invalid date'}{' '}
+              {memo.CreationDate ? format(new Date(memo.CreationDate), "d 'on' dd-MM-yyyy") : 'Invalid date'}{' '}
               <span style={{ fontStyle: 'italic' }}>
                 (Modified:{' '}
                 {memo.ModificationDate
-                  ? format(parseISO(memo.ModificationDate), 'dd-MM-yyyy HH:mm:ss')
+                  ? format(new Date(memo.ModificationDate), 'dd-MM-yyyy HH:mm:ss')
                   : 'Invalid date'}
               </span>
             </Typography>

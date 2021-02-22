@@ -12,7 +12,7 @@ exports[`Date/Date time field control in browse view should show the displayname
     gutterBottom={true}
     variant="body1"
   >
-    April 15th, 1912 at 3:10:00 AM GMT+1
+    April 15th, 1912
   </WithStyles(ForwardRef(Typography))>
 </div>
 `;

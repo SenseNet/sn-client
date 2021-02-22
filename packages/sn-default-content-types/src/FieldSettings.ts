@@ -43,19 +43,19 @@ export enum DisplayChoice {
  * Enum for DateTime Field mode values.
  */
 export enum DateTimeMode {
-  None,
-  Date,
-  DateAndTime,
+  None = 'None',
+  Date = 'Date',
+  DateAndTime = 'DateAndTime',
 }
 /**
  * Enum for DateTime Field precision values.
  */
 export enum DateTimePrecision {
-  Millisecond,
-  Second,
-  Minute,
-  Hour,
-  Day,
+  Millisecond = 'Millisecond',
+  Second = 'Second',
+  Minute = 'Minute',
+  Hour = 'Hour',
+  Day = 'Day',
 }
 /**
  * Type for LongText field editor values.
