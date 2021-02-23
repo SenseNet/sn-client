@@ -6,7 +6,6 @@ export const customSchema = [
     DisplayName: 'Content',
     Description: 'This type is the base content type of the sensenet.',
     Icon: 'Content',
-    AllowIndexing: true,
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
@@ -1061,7 +1060,6 @@ export const customSchema = [
     Description: 'A type for binary documents, images, etc.',
     Icon: 'File',
     ParentTypeName: 'GenericContent',
-    AllowIndexing: true,
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
@@ -1338,7 +1336,6 @@ export const customSchema = [
     Description: 'A special Document type for storing images.',
     Icon: 'Image',
     ParentTypeName: 'File',
-    AllowIndexing: true,
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
@@ -1440,7 +1437,6 @@ export const customSchema = [
     Description: 'A special content type for storing preview images.',
     Icon: 'Image',
     ParentTypeName: 'Image',
-    AllowIndexing: false,
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
@@ -1452,7 +1448,6 @@ export const customSchema = [
     Description: 'Use folders to group content.',
     Icon: 'Folder',
     ParentTypeName: 'GenericContent',
-    AllowIndexing: true,
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
@@ -1543,7 +1538,6 @@ export const customSchema = [
     DisplayName: '$Ctd-User,DisplayName',
     Description: '$Ctd-User,Description',
     Icon: 'User',
-    AllowIndexing: true,
     AllowIncrementalNaming: false,
     AllowedChildTypes: ['Image'],
     FieldSettings: [
@@ -1991,7 +1985,6 @@ export const customSchema = [
     DisplayName: '$Ctd-Group,DisplayName',
     Description: '$Ctd-Group,Description',
     Icon: 'Group',
-    AllowIndexing: true,
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
@@ -2050,7 +2043,6 @@ export const customSchema = [
     DisplayName: '$Ctd-Task,DisplayName',
     Description: '$Ctd-Task,Description',
     Icon: 'FormItem',
-    AllowIndexing: true,
     AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [

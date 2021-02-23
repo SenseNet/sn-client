@@ -28,7 +28,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
         schema={
           Object {
             "AllowIncrementalNaming": false,
-            "AllowIndexing": true,
             "AllowedChildTypes": Array [
               "Image",
             ],

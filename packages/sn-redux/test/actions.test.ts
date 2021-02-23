@@ -137,7 +137,6 @@ const schemaResponse = {
         DisplayName: 'Content Type',
         Description: 'A content type is a reusable set of fields you want to apply to certain content.',
         Icon: 'ContentType',
-        AllowIndexing: true,
         AllowIncrementalNaming: false,
         AllowedChildTypes: [],
         HandlerName: 'SenseNet.ContentRepository.Schema.ContentType',
