@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/search-react",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Search component in react with sensenet",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -27,20 +27,23 @@
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "license": "GPL-2.0",
   "homepage": "https://sensenet.com",
+  "peerDependencies": {
+    "@material-ui/core": "^4.0.0",
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
   "dependencies": {
-    "@material-ui/core": "^4.11.3",
-    "@sensenet/client-core": "^3.8.0",
-    "@sensenet/client-utils": "^2.0.1",
-    "@sensenet/default-content-types": "^3.1.1",
+    "@sensenet/client-core": "^3.8.1",
+    "@sensenet/client-utils": "^2.0.2",
+    "@sensenet/default-content-types": "^3.2.0",
     "@sensenet/icons-react": "^1.2.19",
-    "@sensenet/query": "^1.1.15",
+    "@sensenet/query": "^1.2.0",
     "autosuggest-highlight": "^3.1.1",
-    "react": "^16.13.0",
     "react-autosuggest": "^10.1.0",
-    "react-dom": "^16.13.0",
     "tslib": "^2.1.0"
   },
   "devDependencies": {
+    "@material-ui/core": "^4.11.3",
     "@types/autosuggest-highlight": "3.1.1",
     "@types/enzyme": "^3.10.7",
     "@types/jest": "^26.0.20",
@@ -58,6 +61,8 @@
     "postcss": "^8.2.4",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-loader": "^4.2.0",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
     "source-map-loader": "^2.0.0",
     "style-loader": "^2.0.0",
     "ts-jest": "^26.4.2",
