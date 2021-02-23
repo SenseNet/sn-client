@@ -91,7 +91,6 @@ export class FieldSetting {
   public Compulsory?: boolean
   public DefaultValue?: string
   public OutputMethod?: OutputMethod
-  public Visible?: boolean
   public VisibleBrowse?: FieldVisibility
   public VisibleNew?: FieldVisibility
   public VisibleEdit?: FieldVisibility

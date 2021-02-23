@@ -149,7 +149,6 @@ const schemaResponse = {
             ReadOnly: true,
             Compulsory: false,
             OutputMethod: 0,
-            Visible: false,
             VisibleBrowse: 1,
             VisibleEdit: 1,
             VisibleNew: 1,
