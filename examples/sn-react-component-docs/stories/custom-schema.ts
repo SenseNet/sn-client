@@ -6,7 +6,6 @@ export const customSchema = [
     DisplayName: 'Content',
     Description: 'This type is the base content type of the sensenet.',
     Icon: 'Content',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1060,7 +1059,6 @@ export const customSchema = [
     Description: 'A type for binary documents, images, etc.',
     Icon: 'File',
     ParentTypeName: 'GenericContent',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1336,7 +1334,6 @@ export const customSchema = [
     Description: 'A special Document type for storing images.',
     Icon: 'Image',
     ParentTypeName: 'File',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1437,7 +1434,6 @@ export const customSchema = [
     Description: 'A special content type for storing preview images.',
     Icon: 'Image',
     ParentTypeName: 'Image',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.Image',
@@ -1448,7 +1444,6 @@ export const customSchema = [
     Description: 'Use folders to group content.',
     Icon: 'Folder',
     ParentTypeName: 'GenericContent',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1538,7 +1533,6 @@ export const customSchema = [
     DisplayName: '$Ctd-User,DisplayName',
     Description: '$Ctd-User,Description',
     Icon: 'User',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['Image'],
     FieldSettings: [
       {
@@ -1985,7 +1979,6 @@ export const customSchema = [
     DisplayName: '$Ctd-Group,DisplayName',
     Description: '$Ctd-Group,Description',
     Icon: 'Group',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -2043,7 +2036,6 @@ export const customSchema = [
     DisplayName: '$Ctd-Task,DisplayName',
     Description: '$Ctd-Task,Description',
     Icon: 'FormItem',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {

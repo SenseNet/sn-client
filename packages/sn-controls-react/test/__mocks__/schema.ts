@@ -6,7 +6,6 @@ export const schema = [
     DisplayName: '$Ctd-GenericContent,DisplayName',
     Description: '$Ctd-GenericContent,Description',
     Icon: 'Content',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     HandlerName: 'a',
     FieldSettings: [

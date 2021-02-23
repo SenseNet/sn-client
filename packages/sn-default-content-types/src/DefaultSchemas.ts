@@ -25,7 +25,6 @@ export class Schema {
   public Icon!: string
   public DisplayName!: string
   public Description!: string
-  public AllowIncrementalNaming!: boolean
   public AllowedChildTypes!: string[]
   public FieldSettings!: FieldSettings.FieldSetting[]
   public HandlerName!: string
@@ -37,7 +36,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-ContentType,DisplayName',
     Description: '$Ctd-ContentType,Description',
     Icon: 'ContentType',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -337,7 +335,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-GenericContent,DisplayName',
     Description: '$Ctd-GenericContent,Description',
     Icon: 'Content',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1200,7 +1197,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-ContentLink,DisplayName',
     Description: '$Ctd-ContentLink,Description',
     Icon: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1227,7 +1223,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-File,DisplayName',
     Description: '$Ctd-File,Description',
     Icon: 'File',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1355,7 +1350,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: 'Dynamic JSON content',
     Description: '',
     Icon: 'Settings',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
     HandlerName: 'SenseNet.Portal.Handlers.DynamicJsonContent',
@@ -1366,7 +1360,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-ExecutableFile,DisplayName',
     Description: '$Ctd-ExecutableFile,Description',
     Icon: 'Application',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.File',
@@ -1377,7 +1370,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-HtmlTemplate,DisplayName',
     Description: '$Ctd-HtmlTemplate,Description',
     Icon: 'File',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1403,7 +1395,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-Image,DisplayName',
     Description: '$Ctd-Image,Description',
     Icon: 'Image',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1470,7 +1461,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-PreviewImage,DisplayName',
     Description: '$Ctd-PreviewImage,Description',
     Icon: 'Image',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.Image',
@@ -1481,7 +1471,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-Settings,DisplayName',
     Description: '$Ctd-Settings,Description',
     Icon: 'Settings',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1508,7 +1497,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-IndexingSettings,DisplayName',
     Description: '$Ctd-IndexingSettings,Description',
     Icon: 'Settings',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1534,7 +1522,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-LoggingSettings,DisplayName',
     Description: '$Ctd-LoggingSettings,Description',
     Icon: 'Settings',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.LoggingSettings',
@@ -1545,7 +1532,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-PortalSettings,DisplayName',
     Description: '$Ctd-PortalSettings,Description',
     Icon: 'Settings',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
     HandlerName: 'SenseNet.Portal.PortalSettings',
@@ -1556,7 +1542,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-SystemFile,DisplayName',
     Description: '$Ctd-SystemFile,Description',
     Icon: 'File',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.File',
@@ -1567,7 +1552,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-Resource,DisplayName',
     Description: '$Ctd-Resource,Description',
     Icon: 'Resource',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1593,7 +1577,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-Folder,DisplayName',
     Description: '$Ctd-Folder,Description',
     Icon: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.Folder',
@@ -1604,7 +1587,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-ContentList,DisplayName',
     Description: '$Ctd-ContentList,Description',
     Icon: 'ContentList',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1850,7 +1832,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-Aspect,DisplayName',
     Description: '$Ctd-Aspect,Description',
     Icon: 'Aspect',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1876,7 +1857,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-ItemList,DisplayName',
     Description: '$Ctd-ItemList,Description',
     Icon: 'ContentList',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.ContentList',
@@ -1887,7 +1867,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-CustomList,DisplayName',
     Description: '$Ctd-CustomList,Description',
     Icon: 'ContentList',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['ListItem'],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.ContentList',
@@ -1898,7 +1877,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-MemoList,DisplayName',
     Description: '$Ctd-MemoList,Description',
     Icon: 'ContentList',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['Memo'],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.ContentList',
@@ -1909,7 +1887,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-TaskList,DisplayName',
     Description: '$Ctd-TaskList,Description',
     Icon: 'ContentList',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['Task'],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.ContentList',
@@ -1920,7 +1897,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-Library,DisplayName',
     Description: '$Ctd-Library,Description',
     Icon: 'ContentList',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.ContentList',
@@ -1931,7 +1907,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-DocumentLibrary,DisplayName',
     Description: '$Ctd-DocumentLibrary,Description',
     Icon: 'ContentList',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['Folder', 'File'],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.ContentList',
@@ -1942,7 +1917,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-ImageLibrary,DisplayName',
     Description: '$Ctd-ImageLibrary,Description',
     Icon: 'ContentList',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['Folder', 'Image'],
     FieldSettings: [
       {
@@ -1970,7 +1944,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-Device,DisplayName',
     Description: '$Ctd-Device,Description',
     Icon: 'Device',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1996,7 +1969,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-Domain,DisplayName',
     Description: '$Ctd-Domain,Description',
     Icon: 'Domain',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['User', 'Group', 'OrganizationalUnit'],
     FieldSettings: [
       {
@@ -2037,7 +2009,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-Domains,DisplayName',
     Description: '$Ctd-Domains,Description',
     Icon: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['Domain'],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.Folder',
@@ -2048,7 +2019,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-Email,DisplayName',
     Description: '$Ctd-Email,Description',
     Icon: 'Document',
-    AllowIncrementalNaming: true,
     AllowedChildTypes: ['File'],
     FieldSettings: [
       {
@@ -2105,7 +2075,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-OrganizationalUnit,DisplayName',
     Description: '$Ctd-OrganizationalUnit,Description',
     Icon: 'OrgUnit',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['User', 'Group', 'OrganizationalUnit'],
     FieldSettings: [
       {
@@ -2146,7 +2115,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-PortalRoot,DisplayName',
     Description: '$Ctd-PortalRoot,Description',
     Icon: 'PortalRoot',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [
       'Folder',
       'SystemFolder',
@@ -2168,7 +2136,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-ProfileDomain,DisplayName',
     Description: '$Ctd-ProfileDomain,Description',
     Icon: 'Domain',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['UserProfile'],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.Folder',
@@ -2179,7 +2146,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-Profiles,DisplayName',
     Description: '$Ctd-Profiles,Description',
     Icon: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['ProfileDomain'],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.Folder',
@@ -2190,7 +2156,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-RuntimeContentContainer,DisplayName',
     Description: '$Ctd-RuntimeContentContainer,Description',
     Icon: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.RuntimeContentContainer',
@@ -2201,7 +2166,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-Sites,DisplayName',
     Description: '$Ctd-Sites,Description',
     Icon: 'Site',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['Site'],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.Folder',
@@ -2212,7 +2176,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-SmartFolder,DisplayName',
     Description: '$Ctd-SmartFolder,Description',
     Icon: 'SmartFolder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -2285,7 +2248,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-SystemFolder,DisplayName',
     Description: '$Ctd-SystemFolder,Description',
     Icon: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.SystemFolder',
@@ -2296,7 +2258,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-Resources,DisplayName',
     Description: '$Ctd-Resources,Description',
     Icon: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['Resource'],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.SystemFolder',
@@ -2307,7 +2268,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-TrashBag,DisplayName',
     Description: '$Ctd-TrashBag,Description',
     Icon: 'Folder',
-    AllowIncrementalNaming: true,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -2390,7 +2350,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-Workspace,DisplayName',
     Description: '$Ctd-Workspace,Description',
     Icon: 'Workspace',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['Folder', 'DocumentLibrary', 'ImageLibrary', 'MemoList', 'TaskList', 'CustomList', 'Workspace'],
     FieldSettings: [
       {
@@ -2505,7 +2464,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-Site,DisplayName',
     Description: '$Ctd-Site,Description',
     Icon: 'Site',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [
       'Folder',
       'Workspace',
@@ -2657,7 +2615,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-TrashBin,DisplayName',
     Description: '$Ctd-TrashBin,Description',
     Icon: 'trash',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['TrashBag'],
     FieldSettings: [
       {
@@ -2715,7 +2672,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-UserProfile,DisplayName',
     Description: '$Ctd-UserProfile,Description',
     Icon: 'UserProfile',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['DocumentLibrary', 'MemoList', 'TaskList', 'ImageLibrary', 'CustomList'],
     FieldSettings: [
       {
@@ -2743,7 +2699,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-Group,DisplayName',
     Description: '$Ctd-Group,Description',
     Icon: 'Group',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -2802,7 +2757,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-ListItem,DisplayName',
     Description: '$Ctd-ListItem,Description',
     Icon: 'FormItem',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.GenericContent',
@@ -2813,7 +2767,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-CustomListItem,DisplayName',
     Description: '$Ctd-CustomListItem,Description',
     Icon: 'FormItem',
-    AllowIncrementalNaming: true,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -2837,7 +2790,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-Memo,DisplayName',
     Description: '$Ctd-Memo,Description',
     Icon: 'Document',
-    AllowIncrementalNaming: true,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -2903,7 +2855,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-Task,DisplayName',
     Description: '$Ctd-Task,Description',
     Icon: 'FormItem',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -3064,7 +3015,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-Query,DisplayName',
     Description: '$Ctd-Query,Description',
     Icon: 'Query',
-    AllowIncrementalNaming: true,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -3114,7 +3064,6 @@ export const SchemaStore: Schema[] = [
     DisplayName: '$Ctd-User,DisplayName',
     Description: '$Ctd-User,Description',
     Icon: 'User',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['Image'],
     FieldSettings: [
       {

@@ -110,7 +110,6 @@ exports[`ContentList component Selection and active item changes Event bindings 
         orderDirection="asc"
         schema={
           Object {
-            "AllowIncrementalNaming": false,
             "AllowedChildTypes": Array [],
             "ContentTypeName": "GenericContent",
             "Description": "$Ctd-GenericContent,Description",
@@ -1172,7 +1171,6 @@ exports[`ContentList component Selection and active item changes Event bindings 
         orderDirection="asc"
         schema={
           Object {
-            "AllowIncrementalNaming": false,
             "AllowedChildTypes": Array [],
             "ContentTypeName": "GenericContent",
             "Description": "$Ctd-GenericContent,Description",
@@ -2221,7 +2219,6 @@ exports[`ContentList component Selection and active item changes Event bindings 
         orderDirection="asc"
         schema={
           Object {
-            "AllowIncrementalNaming": false,
             "AllowedChildTypes": Array [],
             "ContentTypeName": "GenericContent",
             "Description": "$Ctd-GenericContent,Description",
@@ -3285,7 +3282,6 @@ exports[`ContentList component Selection and active item changes Event bindings 
         orderDirection="asc"
         schema={
           Object {
-            "AllowIncrementalNaming": false,
             "AllowedChildTypes": Array [],
             "ContentTypeName": "GenericContent",
             "Description": "$Ctd-GenericContent,Description",
@@ -4349,7 +4345,6 @@ exports[`ContentList component Selection and active item changes Event bindings 
         orderDirection="asc"
         schema={
           Object {
-            "AllowIncrementalNaming": false,
             "AllowedChildTypes": Array [],
             "ContentTypeName": "GenericContent",
             "Description": "$Ctd-GenericContent,Description",
@@ -5412,7 +5407,6 @@ exports[`ContentList component Selection and active item changes Event bindings 
         orderBy="DisplayName"
         schema={
           Object {
-            "AllowIncrementalNaming": false,
             "AllowedChildTypes": Array [],
             "ContentTypeName": "GenericContent",
             "Description": "$Ctd-GenericContent,Description",
@@ -6477,7 +6471,6 @@ exports[`ContentList component Selection and active item changes Event bindings 
         orderDirection="asc"
         schema={
           Object {
-            "AllowIncrementalNaming": false,
             "AllowedChildTypes": Array [],
             "ContentTypeName": "GenericContent",
             "Description": "$Ctd-GenericContent,Description",
@@ -7541,7 +7534,6 @@ exports[`ContentList component Selection and active item changes Event bindings 
         orderDirection="asc"
         schema={
           Object {
-            "AllowIncrementalNaming": false,
             "AllowedChildTypes": Array [],
             "ContentTypeName": "GenericContent",
             "Description": "$Ctd-GenericContent,Description",

@@ -4,7 +4,6 @@ export const customSchema = [
     DisplayName: 'Content',
     Description: 'This type is the base content type of the sensenet.',
     Icon: 'Content',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1024,7 +1023,6 @@ export const customSchema = [
     Description: 'A type for binary documents, images, etc.',
     Icon: 'File',
     ParentTypeName: 'GenericContent',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1300,7 +1298,6 @@ export const customSchema = [
     Description: 'A type for Content Views.',
     Icon: 'ContentView',
     ParentTypeName: 'File',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1328,7 +1325,6 @@ export const customSchema = [
     Description: 'Description',
     Icon: 'Document',
     ParentTypeName: 'File',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1502,7 +1498,6 @@ export const customSchema = [
     Description: 'A content type is a reusable set of fields you want to apply to certain content.',
     Icon: 'Settings',
     ParentTypeName: 'File',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
     HandlerName: 'SenseNet.Portal.Handlers.DynamicJsonContent',
@@ -1513,7 +1508,6 @@ export const customSchema = [
     Description: 'A type for FieldControl templates.',
     Icon: 'Content',
     ParentTypeName: 'File',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1541,7 +1535,6 @@ export const customSchema = [
     Description: 'HTML file containing a template html fragment for various controls, e.g. action links.',
     Icon: 'File',
     ParentTypeName: 'File',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1568,7 +1561,6 @@ export const customSchema = [
     Description: 'A special Document type for storing images.',
     Icon: 'Image',
     ParentTypeName: 'File',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1669,7 +1661,6 @@ export const customSchema = [
     Description: 'A special content type for storing preview images.',
     Icon: 'Image',
     ParentTypeName: 'Image',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.Image',
@@ -1680,7 +1671,6 @@ export const customSchema = [
     Description: 'Ctd-OrderFormen-USDescription',
     Icon: 'Document',
     ParentTypeName: 'File',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1776,7 +1766,6 @@ export const customSchema = [
     Description: 'Content type for storing application or module settings in text format or in custom fields.',
     Icon: 'Settings',
     ParentTypeName: 'File',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1883,7 +1872,6 @@ export const customSchema = [
     Description: 'A content type is a reusable set of fields you want to apply to certain content.',
     Icon: 'Settings',
     ParentTypeName: 'Settings',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1910,7 +1898,6 @@ export const customSchema = [
     Description: 'A content type is a reusable set of fields you want to apply to certain content.',
     Icon: 'Settings',
     ParentTypeName: 'Settings',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.LoggingSettings',
@@ -1921,7 +1908,6 @@ export const customSchema = [
     Description: 'A content type is a reusable set of fields you want to apply to certain content.',
     Icon: 'Settings',
     ParentTypeName: 'Settings',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
     HandlerName: 'SenseNet.Portal.PortalSettings',
@@ -1932,7 +1918,6 @@ export const customSchema = [
     Description: 'A special file for internal use in the system.',
     Icon: 'File',
     ParentTypeName: 'File',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -1960,7 +1945,6 @@ export const customSchema = [
     Description: 'This type is for internal use only.',
     Icon: 'MasterPage',
     ParentTypeName: 'SystemFile',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
     HandlerName: '',
@@ -1971,7 +1955,6 @@ export const customSchema = [
     Description: 'Page Templates define the design and layout of Portlet pages.',
     Icon: 'PageTemplate',
     ParentTypeName: 'SystemFile',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -2016,7 +1999,6 @@ export const customSchema = [
       'String or binary resource used to localize the system. Its format is the same as the internal part of a standard .Net resx file.',
     Icon: 'Resource',
     ParentTypeName: 'SystemFile',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -2089,7 +2071,6 @@ export const customSchema = [
     Description: 'A type for storing ASP.NET user controls.',
     Icon: 'File',
     ParentTypeName: 'File',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -2117,7 +2098,6 @@ export const customSchema = [
     Description: 'An abstract type for ContentList views.',
     Icon: 'File',
     ParentTypeName: 'UserControl',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -2338,7 +2318,6 @@ export const customSchema = [
     Description: 'A generic view for Lists.',
     Icon: 'File',
     ParentTypeName: 'ViewBase',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -2480,7 +2459,6 @@ export const customSchema = [
     Description: 'A type for storing XAML workflow definitions.',
     Icon: 'workflowdef',
     ParentTypeName: 'File',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -2644,7 +2622,6 @@ export const customSchema = [
     Description: 'Use folders to group content.',
     Icon: 'Folder',
     ParentTypeName: 'GenericContent',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -2735,7 +2712,6 @@ export const customSchema = [
       'An Article Section is a kind folder that can contain articles and other Article Sections with a default presentation.',
     Icon: 'Folder',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['ArticleSection', 'Article'],
     FieldSettings: [
       {
@@ -2903,7 +2879,6 @@ export const customSchema = [
     Description: 'Generic Content List type.',
     Icon: 'ContentList',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -3297,7 +3272,6 @@ export const customSchema = [
     Description: 'Aspect base type.',
     Icon: 'Aspect',
     ParentTypeName: 'ContentList',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -3641,7 +3615,6 @@ export const customSchema = [
     Description: 'Base type for item lists. Choose a type inheriting from this to create list of items.',
     Icon: 'ContentList',
     ParentTypeName: 'ContentList',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -3765,7 +3738,6 @@ export const customSchema = [
     Description: 'Use this type to create custom Lists of content with user-defined columns.',
     Icon: 'ContentList',
     ParentTypeName: 'ItemList',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['ListItem'],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.ContentList',
@@ -3776,7 +3748,6 @@ export const customSchema = [
     Description: 'A special List type to store schedule Events.',
     Icon: 'ContentList',
     ParentTypeName: 'ItemList',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['CalendarEvent'],
     FieldSettings: [
       {
@@ -3959,7 +3930,6 @@ export const customSchema = [
     Description: 'A List type for storing Links.',
     Icon: 'ContentList',
     ParentTypeName: 'ItemList',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['Link'],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.ContentList',
@@ -3970,7 +3940,6 @@ export const customSchema = [
     Description: 'A List type for storing Memos.',
     Icon: 'ContentList',
     ParentTypeName: 'ItemList',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['Memo'],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.ContentList',
@@ -3981,7 +3950,6 @@ export const customSchema = [
     Description: 'A List type for storing Tasks.',
     Icon: 'ContentList',
     ParentTypeName: 'ItemList',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['Task', 'ApprovalWorkflowTask'],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.ContentList',
@@ -3992,7 +3960,6 @@ export const customSchema = [
     Description: 'A base class for special List types for storing documents such as Document Library or Image Library.',
     Icon: 'ContentList',
     ParentTypeName: 'ContentList',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -4096,7 +4063,6 @@ export const customSchema = [
     Description: 'A special List for storing documents.',
     Icon: 'ContentList',
     ParentTypeName: 'Library',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['Folder', 'File', 'SmartFolder'],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.ContentList',
@@ -4107,7 +4073,6 @@ export const customSchema = [
     Description: 'A special List for storing images.',
     Icon: 'ContentList',
     ParentTypeName: 'Library',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['Folder', 'Image'],
     FieldSettings: [
       {
@@ -4153,7 +4118,6 @@ export const customSchema = [
       'This is the container type for ContentViews. Instances are only allowed at /Root/Global/contentviews.',
     Icon: 'Folder',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['ContentView', 'ContentViews'],
     FieldSettings: [],
     HandlerName: '',
@@ -4165,7 +4129,6 @@ export const customSchema = [
       'This content type is for defining different devices to browse the portal from - e.g. tablet or different phone types.',
     Icon: 'Device',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -4192,7 +4155,6 @@ export const customSchema = [
     Description: 'This is the container type for Document Workspace.',
     Icon: 'Folder',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['DocumentWorkspace', 'DocumentWorkspaceFolder'],
     FieldSettings: [],
     HandlerName: '',
@@ -4204,7 +4166,6 @@ export const customSchema = [
       'A centrally-managed group of users and/or computers. sensenet has a built-in domain (BuiltIn), but you can syncronyze external LDAP directories as well.',
     Icon: 'Domain',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['User', 'Group', 'OrganizationalUnit'],
     FieldSettings: [
       {
@@ -4295,7 +4256,6 @@ export const customSchema = [
     Description: 'This is the container type for Domains. Only a single instance is allowed at /Root/IMS.',
     Icon: 'Folder',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['Domain'],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.Folder',
@@ -4306,7 +4266,6 @@ export const customSchema = [
     Description: 'Email content type containing attachments as children content.',
     Icon: 'Document',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: true,
     AllowedChildTypes: ['File'],
     FieldSettings: [
       {
@@ -4383,7 +4342,6 @@ export const customSchema = [
       'This is the container type for ContentViews. Instances are allowed only at /Root/Global/fieldcontroltemplates.',
     Icon: 'Folder',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['FieldControlTemplates', 'FieldControlTemplate'],
     FieldSettings: [],
     HandlerName: '',
@@ -4394,7 +4352,6 @@ export const customSchema = [
     Description: 'Organizational Unit (OU) provides a way of classifying objects located in directories.',
     Icon: 'OrgUnit',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['User', 'Group', 'OrganizationalUnit'],
     FieldSettings: [
       {
@@ -4485,7 +4442,6 @@ export const customSchema = [
     Description: 'Sense/Net Content Repository Master node. One installation can have only one Portal Root.',
     Icon: 'PortalRoot',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [
       'Folder',
       'SystemFolder',
@@ -4533,7 +4489,6 @@ export const customSchema = [
     Description: 'Organize portlets under categories.',
     Icon: 'Folder',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['Portlet', 'Image'],
     FieldSettings: [
       {
@@ -4608,7 +4563,6 @@ export const customSchema = [
     Description: 'Container for user profiles.',
     Icon: 'Domain',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['UserProfile'],
     FieldSettings: [
       {
@@ -4668,7 +4622,6 @@ export const customSchema = [
     Description: 'This is the container type for profiles. Only a single instance is allowed at /Root/Profiles.',
     Icon: 'Folder',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['ProfileDomain'],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.Folder',
@@ -4679,7 +4632,6 @@ export const customSchema = [
     Description: 'This is the container type for Project Workspace.',
     Icon: 'Folder',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['ProjectWorkspace', 'ProjectWorkspaceFolder'],
     FieldSettings: [],
     HandlerName: '',
@@ -4690,7 +4642,6 @@ export const customSchema = [
     Description: 'For internal use only.',
     Icon: 'Folder',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.RuntimeContentContainer',
@@ -4701,7 +4652,6 @@ export const customSchema = [
     Description: 'This is the container type for Sales Workspace.',
     Icon: 'Folder',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['SalesWorkspace', 'SalesWorkspaceFolder'],
     FieldSettings: [],
     HandlerName: '',
@@ -4712,7 +4662,6 @@ export const customSchema = [
     Description: 'This is the container type for sites. Only a single instance is allowed at /Root/Sites.',
     Icon: 'Site',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['Site'],
     FieldSettings: [],
     HandlerName: 'SenseNet.ContentRepository.Folder',
@@ -4723,7 +4672,6 @@ export const customSchema = [
     Description: 'Use smart folders to group information (content) by Repository query.',
     Icon: 'SmartFolder',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -4835,7 +4783,6 @@ export const customSchema = [
     Description: 'An atomic container for deleted items stored for undeletion.',
     Icon: 'Folder',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: true,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -4939,7 +4886,6 @@ export const customSchema = [
     Description: 'Collaborative workspace root.',
     Icon: 'Workspace',
     ParentTypeName: 'Folder',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [
       'Page',
       'Folder',
@@ -5199,7 +5145,6 @@ export const customSchema = [
     Description: 'A workspace for document-based cooperation.',
     Icon: 'workspace-document',
     ParentTypeName: 'Workspace',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [
       'Folder',
       'DocumentLibrary',
@@ -5219,7 +5164,6 @@ export const customSchema = [
     Description: 'A workspace for project-oriented cooperation.',
     Icon: 'workspace-project',
     ParentTypeName: 'Workspace',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [
       'Folder',
       'DocumentLibrary',
@@ -5258,7 +5202,6 @@ export const customSchema = [
     Description: 'A workspace for sales-oriented cooperation.',
     Icon: 'workspace-sales',
     ParentTypeName: 'Workspace',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [
       'Folder',
       'DocumentLibrary',
@@ -5469,7 +5412,6 @@ export const customSchema = [
     Description: 'The Site provides a primary entry point to your Portal.',
     Icon: 'Site',
     ParentTypeName: 'Workspace',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [
       'Folder',
       'Workspace',
@@ -5849,7 +5791,6 @@ export const customSchema = [
     Description: 'The system trash bin content type.',
     Icon: 'trash',
     ParentTypeName: 'Workspace',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['TrashBag'],
     FieldSettings: [
       {
@@ -6194,7 +6135,6 @@ export const customSchema = [
     Description: 'Workspace for handling all information and data for a user.',
     Icon: 'UserProfile',
     ParentTypeName: 'Workspace',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [
       'DocumentLibrary',
       'EventList',
@@ -6312,7 +6252,6 @@ export const customSchema = [
     Description: 'Base content type for list items.',
     Icon: 'FormItem',
     ParentTypeName: 'GenericContent',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -6371,7 +6310,6 @@ export const customSchema = [
     Description: 'A content type for defining calendar events.',
     Icon: 'CalendarEvent',
     ParentTypeName: 'ListItem',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -6791,7 +6729,6 @@ export const customSchema = [
     Description: 'A content placeholder for delayed confirmation of a workflow operation.',
     Icon: 'FormItem',
     ParentTypeName: 'ListItem',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -6834,7 +6771,6 @@ export const customSchema = [
     Description: 'Content type for custom listitems.',
     Icon: 'FormItem',
     ParentTypeName: 'ListItem',
-    AllowIncrementalNaming: true,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -6968,7 +6904,6 @@ export const customSchema = [
     Description: 'A link that navigates to an URL.',
     Icon: 'link',
     ParentTypeName: 'ListItem',
-    AllowIncrementalNaming: true,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -7123,7 +7058,6 @@ export const customSchema = [
     Description: 'A content type for short memos or posts on a subject.',
     Icon: 'Document',
     ParentTypeName: 'ListItem',
-    AllowIncrementalNaming: true,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -7226,7 +7160,6 @@ export const customSchema = [
     Description: "Portlet that can be selected in the 'Add new portlet' dialog.",
     Icon: 'FormItem',
     ParentTypeName: 'ListItem',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -7327,7 +7260,6 @@ export const customSchema = [
     Description: 'A content type for defining tasks.',
     Icon: 'FormItem',
     ParentTypeName: 'ListItem',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -7561,7 +7493,6 @@ export const customSchema = [
     Description: 'A content representation for a delayed user interaction in a Workflow.',
     Icon: 'FormItem',
     ParentTypeName: 'Task',
-    AllowIncrementalNaming: true,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -7655,7 +7586,6 @@ export const customSchema = [
     Description: 'Web Content is the base type for structured web content.',
     Icon: 'WebContent',
     ParentTypeName: 'ListItem',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -7779,7 +7709,6 @@ export const customSchema = [
     Description: 'You can store and display textual information on the site.',
     Icon: 'WebContent',
     ParentTypeName: 'WebContent',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -7943,7 +7872,6 @@ export const customSchema = [
     Description: 'This content can store an unstructured single html fragment.',
     Icon: 'WebContent',
     ParentTypeName: 'WebContent',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {
@@ -7970,7 +7898,6 @@ export const customSchema = [
     DisplayName: 'User',
     Description: '$Ctd-User,Description',
     Icon: 'User',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: ['Image'],
     FieldSettings: [
       {
@@ -8480,7 +8407,6 @@ export const customSchema = [
     DisplayName: '$Ctd-Group,DisplayName',
     Description: '$Ctd-Group,Description',
     Icon: 'Group',
-    AllowIncrementalNaming: false,
     AllowedChildTypes: [],
     FieldSettings: [
       {

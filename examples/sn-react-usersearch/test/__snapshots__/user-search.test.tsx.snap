@@ -27,7 +27,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
         onQueryChanged={[Function]}
         schema={
           Object {
-            "AllowIncrementalNaming": false,
             "AllowedChildTypes": Array [
               "Image",
             ],
