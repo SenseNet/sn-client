@@ -20,7 +20,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
         ControlHint: 'sn:FileName',
         Type: 'ShortTextFieldSetting',
       },
@@ -38,7 +37,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -51,7 +49,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -64,7 +61,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
         ControlHint: 'sn:Name',
       } as FieldSettings.ShortTextFieldSetting,
       {
@@ -78,7 +74,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Advanced,
         VisibleEdit: FieldSettings.FieldVisibility.Advanced,
         VisibleNew: FieldSettings.FieldVisibility.Advanced,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -91,7 +86,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Name: 'CheckInComments',
@@ -105,7 +99,6 @@ export const schema = [
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
         TextType: 'RichText',
-        DefaultOrder: 0,
         Type: 'LongTextFieldSetting',
       },
       {
@@ -119,7 +112,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
         ControlHint: 'sn:RichText',
       } as FieldSettings.LongTextFieldSetting,
       {
@@ -136,7 +128,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.PasswordFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -149,7 +140,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -162,7 +152,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Advanced,
         VisibleEdit: FieldSettings.FieldVisibility.Advanced,
         VisibleNew: FieldSettings.FieldVisibility.Advanced,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'BooleanFieldSetting',
@@ -175,7 +164,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.BooleanFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -189,7 +177,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -213,7 +200,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
         ControlHint: 'sn:VersioningModeChoice',
       } as FieldSettings.ChoiceFieldSetting,
       {
@@ -228,7 +214,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -250,7 +235,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -273,7 +257,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
         ControlHint: 'sn:ApprovingModeChoice',
       } as FieldSettings.ChoiceFieldSetting,
       {
@@ -297,7 +280,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -319,7 +301,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
       {
         Type: 'LongTextFieldSetting',
@@ -333,7 +314,6 @@ export const schema = [
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
         TextType: 'LongText',
-        DefaultOrder: 0,
       } as FieldSettings.LongTextFieldSetting,
       {
         Type: 'LongTextFieldSetting',
@@ -347,7 +327,6 @@ export const schema = [
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
         ControlHint: 'sn:QueryBuilder',
-        DefaultOrder: 0,
       } as FieldSettings.LongTextFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -361,7 +340,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
         ControlHint: 'sn:Image',
       } as FieldSettings.NullFieldSetting,
       {
@@ -375,7 +353,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.NumberFieldSetting,
       {
         Format: 'en-US',
@@ -390,7 +367,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
         Type: 'CurrencyFieldSetting',
       },
       {
@@ -404,7 +380,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
         ControlHint: 'Color',
         Type: 'ColorFieldSetting',
       },
@@ -419,7 +394,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
         Type: 'BinaryFieldSetting',
       },
       {
@@ -432,7 +406,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
         Type: 'ShortTextFieldSetting',
       },
       {
@@ -446,7 +419,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
         ControlHint: 'sn:ColorPicker',
       } as FieldSettings.ShortTextFieldSetting,
       {

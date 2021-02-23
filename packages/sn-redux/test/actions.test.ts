@@ -152,7 +152,6 @@ const schemaResponse = {
             VisibleBrowse: 1,
             VisibleEdit: 1,
             VisibleNew: 1,
-            DefaultOrder: 0,
           },
         ],
       },

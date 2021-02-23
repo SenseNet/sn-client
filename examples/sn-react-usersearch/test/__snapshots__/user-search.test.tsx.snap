@@ -36,7 +36,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
             "FieldSettings": Array [
               Object {
                 "Compulsory": true,
-                "DefaultOrder": 0,
                 "Description": "The name that the user has to type in on login forms (in some cases along with the domain name). It has to be unique under a domain.",
                 "DisplayName": "Login name",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ShortTextField",
@@ -50,7 +49,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "",
                 "DisplayName": "Job title",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ShortTextField",
@@ -63,7 +61,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "User account is enabled.",
                 "DisplayName": "Enabled",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.BooleanField",
@@ -76,7 +73,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "The domain of the user.",
                 "DisplayName": "Domain",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ShortTextField",
@@ -89,7 +85,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": true,
-                "DefaultOrder": 0,
                 "Description": "The e-mail of the user.",
                 "DisplayName": "E-mail",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ShortTextField",
@@ -103,7 +98,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": true,
-                "DefaultOrder": 0,
                 "Description": "Full name of the user (e.g. John Smith).",
                 "DisplayName": "Full name",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ShortTextField",
@@ -118,7 +112,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               Object {
                 "AllowMultiple": false,
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "DisplayName": "Cover image (reference)",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ReferenceField",
                 "Name": "ImageRef",
@@ -130,7 +123,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "DisplayName": "Cover image (binarydata)",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.BinaryField",
                 "Name": "ImageData",
@@ -143,7 +135,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               Object {
                 "Compulsory": false,
                 "ControlHint": "sn:Image",
-                "DefaultOrder": 0,
                 "Description": "Avatar image of user.",
                 "DisplayName": "Avatar",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ImageField",
@@ -156,7 +147,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": true,
-                "DefaultOrder": 0,
                 "Description": "User password.",
                 "DisplayName": "Password",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.PasswordField",
@@ -172,7 +162,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "GUID of corresponding AD object.",
                 "DisplayName": "SyncGuid",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ShortTextField",
@@ -186,7 +175,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               Object {
                 "Compulsory": false,
                 "DateTimeMode": 2,
-                "DefaultOrder": 0,
                 "Description": "Date of last synchronization.",
                 "DisplayName": "LastSync",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.DateTimeField",
@@ -199,7 +187,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Captcha text entered by the user.",
                 "DisplayName": "Captcha text",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.CaptchaField",
@@ -216,7 +203,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
                   "User",
                 ],
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Manager of the user.",
                 "DisplayName": "Manager",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ReferenceField",
@@ -232,7 +218,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Department of employee.",
                 "DisplayName": "Department",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ShortTextField",
@@ -245,7 +230,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Spoken languages.",
                 "DisplayName": "Languages",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ShortTextField",
@@ -258,7 +242,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Phone number. (e.g. +123456789 or 1234).",
                 "DisplayName": "Phone",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ShortTextField",
@@ -274,7 +257,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
                 "AllowExtraValue": false,
                 "AllowMultiple": false,
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Select one.",
                 "DisplayChoice": 0,
                 "DisplayName": "Gender",
@@ -311,7 +293,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
                 "AllowExtraValue": false,
                 "AllowMultiple": false,
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Select one.",
                 "DisplayChoice": 0,
                 "DisplayName": "Marital status",
@@ -347,7 +328,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               Object {
                 "Compulsory": false,
                 "DateTimeMode": 1,
-                "DefaultOrder": 0,
                 "DisplayName": "Birth date",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.DateTimeField",
                 "Name": "BirthDate",
@@ -360,7 +340,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               Object {
                 "Compulsory": false,
                 "ControlHint": "sn:EducationEditor",
-                "DefaultOrder": 0,
                 "Description": "List of educations - e.g. high school, university.",
                 "DisplayName": "Education",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.LongTextField",
@@ -374,7 +353,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "DisplayName": "Twitter account",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ShortTextField",
                 "Name": "TwitterAccount",
@@ -386,7 +364,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "http://www.facebook.com/USERNAME.",
                 "DisplayName": "Facebook URL",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ShortTextField",
@@ -399,7 +376,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "http://www.linkedin.com/USERNAME.",
                 "DisplayName": "LinkedIn URL",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ShortTextField",
@@ -414,7 +390,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
                 "AllowExtraValue": false,
                 "AllowMultiple": false,
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Language used to display texts on the site, if it is available.",
                 "DisplayChoice": 0,
                 "DisplayName": "Selected language",
@@ -447,7 +422,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
                   "Workspace",
                 ],
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "List of workspaces followed by the user.",
                 "DisplayName": "Followed workspaces",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ReferenceField",
@@ -460,7 +434,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Path of the user's personal workspace.",
                 "DisplayName": "Profile path",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ShortTextField",
@@ -474,7 +447,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               Object {
                 "Compulsory": false,
                 "DateTimeMode": 2,
-                "DefaultOrder": 0,
                 "Description": "Date and time of when the user logged out from all devices.",
                 "DisplayName": "Last logout date",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.DateTimeField",
@@ -487,7 +459,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Unique Id for the content.",
                 "DisplayName": "Id",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.IntegerField",
@@ -500,7 +471,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Id of the parent content.",
                 "DisplayName": "Parent Id",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.IntegerField",
@@ -513,7 +483,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Id of the owner.",
                 "DisplayName": "Owner Id",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.IntegerField",
@@ -526,7 +495,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Content owner.",
                 "DisplayName": "Owner",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ReferenceField",
@@ -539,7 +507,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Database row Id of current version.",
                 "DisplayName": "Version Id",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.IntegerField",
@@ -552,7 +519,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Icon",
                 "DisplayName": "Icon",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ShortTextField",
@@ -566,7 +532,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               Object {
                 "Compulsory": true,
                 "ControlHint": "sn:Name",
-                "DefaultOrder": 0,
                 "Description": "Specify a name that will appear in the address bar of the browser.",
                 "DisplayName": "Name",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ShortTextField",
@@ -579,7 +544,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Id of creator.",
                 "DisplayName": "Created By (Id)",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.IntegerField",
@@ -592,7 +556,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Id of last modifier.",
                 "DisplayName": "Last Modified By (Id)",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.IntegerField",
@@ -605,7 +568,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Version number.",
                 "DisplayName": "Version",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.VersionField",
@@ -618,7 +580,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Content path in the repository.",
                 "DisplayName": "Path",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ShortTextField",
@@ -631,7 +592,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Content level in the tree. Root level is 0.",
                 "DisplayName": "Tree Depth",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.IntegerField",
@@ -644,7 +604,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "This field is true if content is in a system folder/trash or the content is a system folder/file.",
                 "DisplayName": "System Content",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.BooleanField",
@@ -657,7 +616,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "This field is true if content can contain other content.",
                 "DisplayName": "Folder",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.BooleanField",
@@ -671,7 +629,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               Object {
                 "Compulsory": false,
                 "ControlHint": "sn:DisplayName",
-                "DefaultOrder": 0,
                 "Description": "Content name. You can set any name you prefer without any restrictions.",
                 "DisplayName": "Display Name",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ShortTextField",
@@ -685,7 +642,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               Object {
                 "Compulsory": false,
                 "ControlHint": "sn:RichText",
-                "DefaultOrder": 0,
                 "Description": "Description of the content.",
                 "DisplayName": "Description",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.LongTextField",
@@ -698,7 +654,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "If checked, content will not show up in navigation.",
                 "DisplayName": "Hidden",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.BooleanField",
@@ -711,7 +666,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Content order in navigation. Numbers closer to 0 will appear first.",
                 "DisplayName": "Index",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.IntegerField",
@@ -724,7 +678,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Specify whether you want to define starting and end date for the validity of this content.",
                 "DisplayName": "Enable Lifespan",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.BooleanField",
@@ -738,7 +691,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               Object {
                 "Compulsory": false,
                 "DateTimeMode": 2,
-                "DefaultOrder": 0,
                 "Description": "This content will appear on the date you set if lifespan handling is enabled for this content.",
                 "DisplayName": "Valid From",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.DateTimeField",
@@ -752,7 +704,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               Object {
                 "Compulsory": false,
                 "DateTimeMode": 2,
-                "DefaultOrder": 0,
                 "Description": "This content will disappear on the date you set if lifespan handling is enabled for this content.",
                 "DisplayName": "Valid Till",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.DateTimeField",
@@ -765,7 +716,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "You can get and set which content types are explicitly allowed to be created under this content. It is a local setting.",
                 "DisplayName": "Allowed child types",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.AllowedChildTypesField",
@@ -778,7 +728,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "You can get which content types are effective allowed to be created under this content. If there is no local setting, the global setting takes effect.",
                 "DisplayName": "Effective allowed child types",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.AllowedChildTypesField",
@@ -793,7 +742,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
                 "AllowExtraValue": false,
                 "AllowMultiple": false,
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "It shows the versioning mode of the current content.",
                 "DisplayChoice": 0,
                 "DisplayName": "Versioning Mode For Current Content",
@@ -837,7 +785,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
                 "AllowMultiple": false,
                 "Compulsory": false,
                 "ControlHint": "sn:VersioningModeChoice",
-                "DefaultOrder": 0,
                 "Description": "Specify whether the system should create a new version whenever you create or modify a content below this content.",
                 "DisplayChoice": 0,
                 "DisplayName": "Version history",
@@ -878,7 +825,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Content creator.",
                 "DisplayName": "Created by",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ReferenceField",
@@ -892,7 +838,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               Object {
                 "Compulsory": false,
                 "DateTimeMode": 2,
-                "DefaultOrder": 0,
                 "Description": "Content creation date.",
                 "DisplayName": "Creation date",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.DateTimeField",
@@ -905,7 +850,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Content was last modified by this user.",
                 "DisplayName": "Modified By",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ReferenceField",
@@ -919,7 +863,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               Object {
                 "Compulsory": false,
                 "DateTimeMode": 2,
-                "DefaultOrder": 0,
                 "Description": "Content was last modified on this date.",
                 "DisplayName": "Modification Date",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.DateTimeField",
@@ -934,7 +877,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
                 "AllowExtraValue": false,
                 "AllowMultiple": false,
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "It shows the approval mode of the current content.",
                 "DisplayChoice": 0,
                 "DisplayName": "Content Approval For Current Content",
@@ -972,7 +914,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
                 "AllowMultiple": false,
                 "Compulsory": false,
                 "ControlHint": "sn:ApprovingModeChoice",
-                "DefaultOrder": 0,
                 "Description": "Specify whether new or changed content below the current one should remain in a draft state until they have been approved.",
                 "DisplayChoice": 0,
                 "DisplayName": "Content approval",
@@ -1007,7 +948,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "It shows whether the content is checked out or not.",
                 "DisplayName": "Locked",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.BooleanField",
@@ -1020,7 +960,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "The user currently locking the content.",
                 "DisplayName": "Checked Out To",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ReferenceField",
@@ -1033,7 +972,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "DefaultValue": "false",
                 "Description": "You can disable trash for this content and its children. If set, you can not restore deleted content.",
                 "DisplayName": "Disable Trash",
@@ -1049,7 +987,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
                 "AllowExtraValue": false,
                 "AllowMultiple": false,
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "State of multi-step saving.",
                 "DisplayChoice": 0,
                 "DisplayName": "Saving state",
@@ -1090,7 +1027,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "You can set extra data in this field which is useful when extending a content.",
                 "DisplayName": "Extension data",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.LongTextField",
@@ -1104,7 +1040,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               Object {
                 "AllowMultiple": false,
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Set this, if you would like to override the default browse application.",
                 "DisplayName": "Reference To Browse Application",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ReferenceField",
@@ -1117,7 +1052,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "This fileld is true if the content is in 'pending' state and can be approved by the current user.",
                 "DisplayName": "Approvable By Current User",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.BooleanField",
@@ -1130,7 +1064,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "DefaultValue": "false",
                 "Description": "Specify whether you would like to enable tagging capability for this content.",
                 "DisplayName": "Enable Tagging",
@@ -1145,7 +1078,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               Object {
                 "Compulsory": false,
                 "ControlHint": "sn:TagList",
-                "DefaultOrder": 0,
                 "Description": "List of tags and creators of them separated by commas.",
                 "DisplayName": "Tags",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.LongTextField",
@@ -1158,7 +1090,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "DefaultValue": "false",
                 "Description": "Specify whether you would like to enable rating capability for this content.",
                 "DisplayName": "Enable Rating",
@@ -1172,7 +1103,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "",
                 "DisplayName": "Raw value of rating",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ShortTextField",
@@ -1185,7 +1115,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Average rate of the content.",
                 "DisplayName": "Average rate",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.NumberField",
@@ -1198,7 +1127,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Count of rates.",
                 "DisplayName": "Rate count",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.IntegerField",
@@ -1211,7 +1139,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "",
                 "DisplayName": "Rate",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.RatingField",
@@ -1226,7 +1153,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "This fileld is true if the content can be published by the current user.",
                 "DisplayName": "Publishable By Current User",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.BooleanField",
@@ -1240,7 +1166,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               Object {
                 "AllowMultiple": true,
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Content version history.",
                 "DisplayName": "Versions",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ReferenceField",
@@ -1253,7 +1178,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Comments for a new version.",
                 "DisplayName": "Checkin comments",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.LongTextField",
@@ -1266,7 +1190,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "The reason why the content was rejected.",
                 "DisplayName": "Reject reason",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.LongTextField",
@@ -1283,7 +1206,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
                   "Workspace",
                 ],
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "The container workspace of the content.",
                 "DisplayName": "Workspace",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ReferenceField",
@@ -1296,7 +1218,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "",
                 "DisplayName": "Browse url",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ShortTextField",
@@ -1309,7 +1230,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Version was last modified by this user.",
                 "DisplayName": "Version is Modified By",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ReferenceField",
@@ -1324,7 +1244,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               Object {
                 "Compulsory": false,
                 "DateTimeMode": 2,
-                "DefaultOrder": 0,
                 "Description": "Version was last modified on this date.",
                 "DisplayName": "Versions Modification Date",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.DateTimeField",
@@ -1338,7 +1257,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DefaultOrder": 0,
                 "Description": "Version was last created by this user.",
                 "DisplayName": "Version is created By",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.ReferenceField",
@@ -1353,7 +1271,6 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               Object {
                 "Compulsory": false,
                 "DateTimeMode": 2,
-                "DefaultOrder": 0,
                 "Description": "Version was created on this date.",
                 "DisplayName": "Versions Creation Date",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.DateTimeField",

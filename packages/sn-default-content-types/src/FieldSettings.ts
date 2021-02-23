@@ -95,7 +95,6 @@ export class FieldSetting {
   public VisibleNew?: FieldVisibility
   public VisibleEdit?: FieldVisibility
   public FieldIndex?: number
-  public DefaultOrder?: number
   public ControlHint?: string
 }
 

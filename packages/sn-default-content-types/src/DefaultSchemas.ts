@@ -49,7 +49,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -62,7 +61,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -73,7 +71,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -85,7 +82,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -96,7 +92,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -107,7 +102,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -120,7 +114,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -133,7 +126,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -144,7 +136,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -158,7 +149,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -171,7 +161,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -184,7 +173,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -197,7 +185,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'LongTextFieldSetting',
@@ -210,7 +197,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.LongTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -223,7 +209,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'BinaryFieldSetting',
@@ -239,7 +224,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.BinaryFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -252,7 +236,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'DateTimeFieldSetting',
@@ -266,7 +249,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -279,7 +261,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'DateTimeFieldSetting',
@@ -292,7 +273,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -304,7 +284,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.Schema.ContentType',
@@ -327,7 +306,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -340,7 +318,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -353,7 +330,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -366,7 +342,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -379,7 +354,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -392,7 +366,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -405,7 +378,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
         ControlHint: 'sn:Name',
       } as FieldSettings.ShortTextFieldSetting,
       {
@@ -419,7 +391,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -432,7 +403,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -445,7 +415,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -458,7 +427,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -471,7 +439,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -485,7 +452,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -498,7 +464,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -511,7 +476,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
         ControlHint: 'sn:DisplayName',
       } as FieldSettings.ShortTextFieldSetting,
       {
@@ -525,7 +489,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
         ControlHint: 'sn:RichText',
       } as FieldSettings.LongTextFieldSetting,
       {
@@ -539,7 +502,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -552,7 +514,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -565,7 +526,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'DateTimeFieldSetting',
@@ -579,7 +539,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
       {
         Type: 'DateTimeFieldSetting',
@@ -594,7 +553,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -608,7 +566,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -622,7 +579,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -645,7 +601,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -669,7 +624,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
         ControlHint: 'sn:VersioningModeChoice',
       } as FieldSettings.ChoiceFieldSetting,
       {
@@ -683,7 +637,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'DateTimeFieldSetting',
@@ -697,7 +650,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -710,7 +662,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'DateTimeFieldSetting',
@@ -724,7 +675,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -746,7 +696,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -769,7 +718,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
         ControlHint: 'sn:ApprovingModeChoice',
       } as FieldSettings.ChoiceFieldSetting,
       {
@@ -783,7 +731,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -796,7 +743,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -811,7 +757,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -834,7 +779,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
       {
         Type: 'LongTextFieldSetting',
@@ -847,7 +791,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.LongTextFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -861,7 +804,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -875,7 +817,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -889,7 +830,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'LongTextFieldSetting',
@@ -902,7 +842,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
         ControlHint: 'sn:TagList',
       } as FieldSettings.LongTextFieldSetting,
       {
@@ -917,7 +856,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -930,7 +868,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'NumberFieldSetting',
@@ -943,7 +880,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NumberFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -956,7 +892,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'RatingFieldSetting',
@@ -971,7 +906,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.RatingFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -984,7 +918,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -998,7 +931,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'LongTextFieldSetting',
@@ -1011,7 +943,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.LongTextFieldSetting,
       {
         Type: 'LongTextFieldSetting',
@@ -1024,7 +955,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.LongTextFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -1039,7 +969,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -1052,7 +981,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Name: 'VersionModifiedBy',
@@ -1065,7 +993,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'ReferenceFieldSetting',
       } as FieldSettings.ReferenceFieldSetting,
       {
@@ -1080,7 +1007,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'DateTimeFieldSetting',
       } as FieldSettings.DateTimeFieldSetting,
       {
@@ -1094,7 +1020,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'ReferenceFieldSetting',
       } as FieldSettings.ReferenceFieldSetting,
       {
@@ -1109,7 +1034,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'DateTimeFieldSetting',
       } as FieldSettings.DateTimeFieldSetting,
     ],
@@ -1135,7 +1059,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.ContentLink',
@@ -1159,7 +1082,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.BinaryFieldSetting,
       {
         Type: 'NumberFieldSetting',
@@ -1172,7 +1094,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NumberFieldSetting,
       {
         Type: 'NumberFieldSetting',
@@ -1185,7 +1106,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NumberFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -1200,7 +1120,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -1212,7 +1131,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'LongTextFieldSetting',
@@ -1226,7 +1144,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.LongTextFieldSetting,
       {
         Type: 'LongTextFieldSetting',
@@ -1240,7 +1157,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.LongTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -1254,7 +1170,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.File',
@@ -1298,7 +1213,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.LongTextFieldSetting,
     ],
     HandlerName: 'SenseNet.Portal.UI.HtmlTemplate',
@@ -1322,7 +1236,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.LongTextFieldSetting,
       {
         Type: 'DateTimeFieldSetting',
@@ -1336,7 +1249,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -1348,7 +1260,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -1360,7 +1271,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.Image',
@@ -1395,7 +1305,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.Settings',
@@ -1419,7 +1328,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
     ],
     HandlerName: 'SenseNet.Search.IndexingSettings',
@@ -1473,7 +1381,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NumberFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.i18n.Resource',
@@ -1507,7 +1414,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.LongTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -1520,7 +1426,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -1535,7 +1440,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -1549,7 +1453,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -1563,7 +1466,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -1576,7 +1478,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -1589,7 +1490,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -1603,7 +1503,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -1641,7 +1540,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -1654,7 +1552,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -1670,7 +1567,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -1683,7 +1579,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -1696,7 +1591,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -1714,7 +1608,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.ContentList',
@@ -1738,7 +1631,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.LongTextFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.Aspect',
@@ -1824,7 +1716,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.ContentList',
@@ -1848,7 +1739,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
     ],
     HandlerName: 'SenseNet.ApplicationModel.Device',
@@ -1872,7 +1762,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'DateTimeFieldSetting',
@@ -1886,7 +1775,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.Domain',
@@ -1920,7 +1808,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'LongTextFieldSetting',
@@ -1934,7 +1821,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
         ControlHint: 'sn:RichText',
       } as FieldSettings.LongTextFieldSetting,
       {
@@ -1949,7 +1835,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.Folder',
@@ -1973,7 +1858,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'DateTimeFieldSetting',
@@ -1987,7 +1871,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.OrganizationalUnit',
@@ -2072,7 +1955,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
         ControlHint: 'sn:QueryBuilder',
       } as FieldSettings.LongTextFieldSetting,
       {
@@ -2095,7 +1977,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -2117,7 +1998,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.SmartFolder',
@@ -2161,7 +2041,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -2174,7 +2053,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -2187,7 +2065,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -2200,7 +2077,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -2214,7 +2090,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.TrashBag',
@@ -2241,7 +2116,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'DateTimeFieldSetting',
@@ -2254,7 +2128,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -2268,7 +2141,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -2283,7 +2155,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -2296,7 +2167,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -2310,7 +2180,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -2321,7 +2190,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.Workspaces.Workspace',
@@ -2364,7 +2232,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -2377,7 +2244,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -2390,7 +2256,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -2403,7 +2268,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -2418,7 +2282,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -2434,7 +2297,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -2450,7 +2312,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -2464,7 +2325,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
     ],
     HandlerName: 'SenseNet.Portal.Site',
@@ -2489,7 +2349,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -2503,7 +2362,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -2518,7 +2376,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.TrashBin',
@@ -2544,7 +2401,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.UserProfile',
@@ -2571,7 +2427,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
         FieldIndex: 20,
       } as FieldSettings.ReferenceFieldSetting,
       {
@@ -2585,7 +2440,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'DateTimeFieldSetting',
@@ -2599,7 +2453,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.Group',
@@ -2631,7 +2484,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.GenericContent',
@@ -2657,7 +2509,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -2679,7 +2530,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -2693,7 +2543,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.GenericContent',
@@ -2717,7 +2566,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
       {
         Type: 'DateTimeFieldSetting',
@@ -2730,7 +2578,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -2746,7 +2593,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -2767,7 +2613,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -2790,7 +2635,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -2806,7 +2650,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -2819,7 +2662,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -2831,7 +2673,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -2844,7 +2685,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.Task',
@@ -2868,7 +2708,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
         ControlHint: 'sn:QueryBuilder',
       } as FieldSettings.LongTextFieldSetting,
       {
@@ -2891,7 +2730,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.QueryContent',
@@ -2917,7 +2755,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -2930,7 +2767,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -2943,7 +2779,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -2956,7 +2791,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -2970,7 +2804,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -2984,7 +2817,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -2997,7 +2829,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'BinaryFieldSetting',
@@ -3009,7 +2840,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.BinaryFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -3022,7 +2852,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
         ControlHint: 'sn:Image',
       } as FieldSettings.NullFieldSetting,
       {
@@ -3039,7 +2868,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.PasswordFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -3052,7 +2880,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'DateTimeFieldSetting',
@@ -3066,7 +2893,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
       {
         Type: 'CaptchaFieldSetting',
@@ -3079,7 +2905,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.CaptchaFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -3095,7 +2920,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -3108,7 +2932,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -3121,7 +2944,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -3135,7 +2957,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -3157,7 +2978,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -3179,7 +2999,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
       {
         Type: 'DateTimeFieldSetting',
@@ -3192,7 +3011,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
       {
         Type: 'LongTextFieldSetting',
@@ -3206,7 +3024,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
         ControlHint: 'sn:EducationEditor',
       } as FieldSettings.LongTextFieldSetting,
       {
@@ -3219,7 +3036,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -3232,7 +3048,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -3245,7 +3060,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -3266,7 +3080,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -3281,7 +3094,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -3294,7 +3106,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'DateTimeFieldSetting',
@@ -3308,7 +3119,6 @@ export const SchemaStore: Schema[] = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.Users',

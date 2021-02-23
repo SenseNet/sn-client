@@ -19,7 +19,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'IntegerFieldSetting',
       },
       {
@@ -33,7 +32,6 @@ export const customSchema = [
         VisibleBrowse: 0,
         VisibleEdit: 0,
         VisibleNew: 0,
-        DefaultOrder: 0,
         ControlHint: 'Color',
         Type: 'ColorFieldSetting',
       },
@@ -50,7 +48,6 @@ export const customSchema = [
         VisibleBrowse: 0,
         VisibleEdit: 0,
         VisibleNew: 0,
-        DefaultOrder: 0,
         Type: 'CurrencyFieldSetting',
       },
       {
@@ -64,7 +61,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'IntegerFieldSetting',
       },
       {
@@ -78,7 +74,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'IntegerFieldSetting',
       },
       {
@@ -92,7 +87,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'ReferenceFieldSetting',
       },
       {
@@ -106,7 +100,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'IntegerFieldSetting',
       },
       {
@@ -120,7 +113,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'NullFieldSetting',
       },
       {
@@ -134,7 +126,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'NullFieldSetting',
       },
       {
@@ -148,7 +139,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'ShortTextFieldSetting',
       },
       {
@@ -162,7 +152,6 @@ export const customSchema = [
         VisibleBrowse: 0,
         VisibleEdit: 0,
         VisibleNew: 0,
-        DefaultOrder: 0,
         ControlHint: 'sn:Name',
         Type: 'ShortTextFieldSetting',
       },
@@ -177,7 +166,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'IntegerFieldSetting',
       },
       {
@@ -191,7 +179,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'IntegerFieldSetting',
       },
       {
@@ -205,7 +192,6 @@ export const customSchema = [
         VisibleBrowse: 2,
         VisibleEdit: 2,
         VisibleNew: 2,
-        DefaultOrder: 0,
         Type: 'NullFieldSetting',
       },
       {
@@ -219,7 +205,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'ShortTextFieldSetting',
       },
       {
@@ -233,7 +218,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'IntegerFieldSetting',
       },
       {
@@ -247,7 +231,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'ShortTextFieldSetting',
       },
       {
@@ -261,7 +244,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'ShortTextFieldSetting',
       },
       {
@@ -276,7 +258,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'NullFieldSetting',
       },
       {
@@ -290,7 +271,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'NullFieldSetting',
       },
       {
@@ -304,7 +284,6 @@ export const customSchema = [
         VisibleBrowse: 0,
         VisibleEdit: 0,
         VisibleNew: 0,
-        DefaultOrder: 0,
         ControlHint: 'sn:DisplayName',
         Type: 'ShortTextFieldSetting',
       },
@@ -319,7 +298,6 @@ export const customSchema = [
         VisibleBrowse: 0,
         VisibleEdit: 0,
         VisibleNew: 0,
-        DefaultOrder: 0,
         ControlHint: 'sn:RichText',
         Type: 'LongTextFieldSetting',
       },
@@ -334,7 +312,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'NullFieldSetting',
       },
       {
@@ -348,7 +325,6 @@ export const customSchema = [
         VisibleBrowse: 2,
         VisibleEdit: 2,
         VisibleNew: 2,
-        DefaultOrder: 0,
         Type: 'IntegerFieldSetting',
       },
       {
@@ -362,7 +338,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'NullFieldSetting',
       },
       {
@@ -377,7 +352,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'DateTimeFieldSetting',
       },
       {
@@ -393,7 +367,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'DateTimeFieldSetting',
       },
       {
@@ -408,7 +381,6 @@ export const customSchema = [
         VisibleBrowse: 0,
         VisibleEdit: 0,
         VisibleNew: 0,
-        DefaultOrder: 0,
         Type: 'NullFieldSetting',
       },
       {
@@ -423,7 +395,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'NullFieldSetting',
       },
       {
@@ -471,7 +442,6 @@ export const customSchema = [
         VisibleBrowse: 0,
         VisibleEdit: 0,
         VisibleNew: 0,
-        DefaultOrder: 0,
         Type: 'ChoiceFieldSetting',
       },
       {
@@ -520,7 +490,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         ControlHint: 'sn:VersioningModeChoice',
         Type: 'ChoiceFieldSetting',
       },
@@ -535,7 +504,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'ReferenceFieldSetting',
       },
       {
@@ -550,7 +518,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'DateTimeFieldSetting',
       },
       {
@@ -564,7 +531,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'ReferenceFieldSetting',
       },
       {
@@ -579,7 +545,6 @@ export const customSchema = [
         VisibleBrowse: 0,
         VisibleEdit: 0,
         VisibleNew: 0,
-        DefaultOrder: 0,
         Type: 'DateTimeFieldSetting',
       },
       {
@@ -620,7 +585,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'ChoiceFieldSetting',
       },
       {
@@ -662,7 +626,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         ControlHint: 'sn:ApprovingModeChoice',
         Type: 'ChoiceFieldSetting',
       },
@@ -677,7 +640,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'NullFieldSetting',
       },
       {
@@ -691,7 +653,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'ReferenceFieldSetting',
       },
       {
@@ -707,7 +668,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'NullFieldSetting',
       },
       {
@@ -755,7 +715,6 @@ export const customSchema = [
         VisibleBrowse: 2,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'ChoiceFieldSetting',
       },
       {
@@ -769,7 +728,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'LongTextFieldSetting',
       },
       {
@@ -784,7 +742,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'ReferenceFieldSetting',
       },
       {
@@ -799,7 +756,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'NullFieldSetting',
       },
       {
@@ -814,7 +770,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'NullFieldSetting',
       },
       {
@@ -828,7 +783,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         ControlHint: 'sn:TagList',
         Type: 'LongTextFieldSetting',
       },
@@ -844,7 +798,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'NullFieldSetting',
       },
       {
@@ -858,7 +811,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'ShortTextFieldSetting',
       },
       {
@@ -872,7 +824,6 @@ export const customSchema = [
         VisibleBrowse: 0,
         VisibleEdit: 0,
         VisibleNew: 0,
-        DefaultOrder: 0,
         Step: 0.5,
         Type: 'NumberFieldSetting',
       },
@@ -887,7 +838,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'IntegerFieldSetting',
       },
       {
@@ -903,7 +853,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'RatingFieldSetting',
       },
       {
@@ -917,7 +866,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'NullFieldSetting',
       },
       {
@@ -932,7 +880,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'ReferenceFieldSetting',
       },
       {
@@ -946,7 +893,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'LongTextFieldSetting',
       },
       {
@@ -960,7 +906,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'LongTextFieldSetting',
       },
       {
@@ -976,7 +921,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'ReferenceFieldSetting',
       },
       {
@@ -990,7 +934,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'ShortTextFieldSetting',
       },
     ],
@@ -1015,7 +958,6 @@ export const customSchema = [
         VisibleBrowse: 0,
         VisibleEdit: 0,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'BinaryFieldSetting',
       },
       {
@@ -1029,7 +971,6 @@ export const customSchema = [
         VisibleBrowse: 0,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         ControlHint: 'sn:Name',
         Type: 'ShortTextFieldSetting',
       },
@@ -1044,7 +985,6 @@ export const customSchema = [
         VisibleBrowse: 0,
         VisibleEdit: 0,
         VisibleNew: 0,
-        DefaultOrder: 0,
         ControlHint: 'sn:FileName',
         Type: 'ShortTextFieldSetting',
       },
@@ -1059,7 +999,6 @@ export const customSchema = [
         VisibleBrowse: 2,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'ReferenceFieldSetting',
       },
       {
@@ -1074,7 +1013,6 @@ export const customSchema = [
         VisibleBrowse: 2,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'DateTimeFieldSetting',
       },
       {
@@ -1088,7 +1026,6 @@ export const customSchema = [
         VisibleBrowse: 2,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'ReferenceFieldSetting',
       },
       {
@@ -1103,7 +1040,6 @@ export const customSchema = [
         VisibleBrowse: 2,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'DateTimeFieldSetting',
       },
       {
@@ -1117,7 +1053,6 @@ export const customSchema = [
         VisibleBrowse: 2,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'NullFieldSetting',
       },
       {
@@ -1131,7 +1066,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'NumberFieldSetting',
       },
       {
@@ -1145,7 +1079,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'NumberFieldSetting',
       },
       {
@@ -1161,7 +1094,6 @@ export const customSchema = [
         VisibleBrowse: 0,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'IntegerFieldSetting',
       },
       {
@@ -1174,7 +1106,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'ShortTextFieldSetting',
       },
       {
@@ -1188,7 +1119,6 @@ export const customSchema = [
         VisibleBrowse: 0,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'NullFieldSetting',
       },
       {
@@ -1202,7 +1132,6 @@ export const customSchema = [
         VisibleBrowse: 2,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         ControlHint: 'sn:RichText',
         Type: 'LongTextFieldSetting',
       },
@@ -1218,7 +1147,6 @@ export const customSchema = [
         VisibleBrowse: 2,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'LongTextFieldSetting',
       },
       {
@@ -1233,7 +1161,6 @@ export const customSchema = [
         VisibleBrowse: 2,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'LongTextFieldSetting',
       },
       {
@@ -1248,7 +1175,6 @@ export const customSchema = [
         VisibleBrowse: 2,
         VisibleEdit: 2,
         VisibleNew: 2,
-        DefaultOrder: 0,
         Type: 'ShortTextFieldSetting',
       },
     ],
@@ -1273,7 +1199,6 @@ export const customSchema = [
         VisibleBrowse: 0,
         VisibleEdit: 0,
         VisibleNew: 0,
-        DefaultOrder: 0,
         Type: 'LongTextFieldSetting',
       },
       {
@@ -1288,7 +1213,6 @@ export const customSchema = [
         VisibleBrowse: 0,
         VisibleEdit: 0,
         VisibleNew: 0,
-        DefaultOrder: 0,
         Type: 'DateTimeFieldSetting',
       },
       {
@@ -1302,7 +1226,6 @@ export const customSchema = [
         VisibleBrowse: 2,
         VisibleEdit: 2,
         VisibleNew: 2,
-        DefaultOrder: 0,
         Type: 'IntegerFieldSetting',
       },
       {
@@ -1316,7 +1239,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'NullFieldSetting',
       },
       {
@@ -1329,7 +1251,6 @@ export const customSchema = [
         VisibleBrowse: 0,
         VisibleEdit: 0,
         VisibleNew: 0,
-        DefaultOrder: 0,
         Type: 'IntegerFieldSetting',
       },
       {
@@ -1342,7 +1263,6 @@ export const customSchema = [
         VisibleBrowse: 0,
         VisibleEdit: 0,
         VisibleNew: 0,
-        DefaultOrder: 0,
         Type: 'IntegerFieldSetting',
       },
     ],
@@ -1377,7 +1297,6 @@ export const customSchema = [
         VisibleBrowse: 0,
         VisibleEdit: 0,
         VisibleNew: 0,
-        DefaultOrder: 0,
         ControlHint: 'sn:DisplayName',
         Type: 'ShortTextFieldSetting',
       },
@@ -1392,7 +1311,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         ControlHint: 'sn:RichText',
         Type: 'LongTextFieldSetting',
       },
@@ -1407,7 +1325,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'NullFieldSetting',
       },
       {
@@ -1421,7 +1338,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         Type: 'IntegerFieldSetting',
       },
       {
@@ -1435,7 +1351,6 @@ export const customSchema = [
         VisibleBrowse: 1,
         VisibleEdit: 1,
         VisibleNew: 1,
-        DefaultOrder: 0,
         ControlHint: 'sn:Name',
         Type: 'ShortTextFieldSetting',
       },
@@ -1463,7 +1378,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -1476,7 +1390,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -1489,7 +1402,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.NullFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -1502,7 +1414,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -1516,7 +1427,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -1530,7 +1440,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -1543,7 +1452,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'BinaryFieldSetting',
@@ -1555,7 +1463,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.BinaryFieldSetting,
       {
         Type: 'NullFieldSetting',
@@ -1569,7 +1476,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
         ControlHint: 'sn:Image',
       } as FieldSettings.NullFieldSetting,
       {
@@ -1586,7 +1492,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.PasswordFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -1599,7 +1504,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Advanced,
         VisibleEdit: FieldSettings.FieldVisibility.Advanced,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'DateTimeFieldSetting',
@@ -1613,7 +1517,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Advanced,
         VisibleEdit: FieldSettings.FieldVisibility.Advanced,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
       {
         Type: 'CaptchaFieldSetting',
@@ -1626,7 +1529,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.CaptchaFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -1642,7 +1544,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -1655,7 +1556,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -1668,7 +1568,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -1682,7 +1581,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -1704,7 +1602,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Advanced,
         VisibleEdit: FieldSettings.FieldVisibility.Advanced,
         VisibleNew: FieldSettings.FieldVisibility.Advanced,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -1726,7 +1623,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Advanced,
         VisibleEdit: FieldSettings.FieldVisibility.Advanced,
         VisibleNew: FieldSettings.FieldVisibility.Advanced,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
       {
         Type: 'DateTimeFieldSetting',
@@ -1739,7 +1635,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Advanced,
         VisibleEdit: FieldSettings.FieldVisibility.Advanced,
         VisibleNew: FieldSettings.FieldVisibility.Advanced,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
       {
         Type: 'LongTextFieldSetting',
@@ -1753,7 +1648,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Advanced,
         VisibleEdit: FieldSettings.FieldVisibility.Advanced,
         VisibleNew: FieldSettings.FieldVisibility.Advanced,
-        DefaultOrder: 0,
         ControlHint: 'sn:EducationEditor',
       } as FieldSettings.LongTextFieldSetting,
       {
@@ -1766,7 +1660,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Advanced,
         VisibleEdit: FieldSettings.FieldVisibility.Advanced,
         VisibleNew: FieldSettings.FieldVisibility.Advanced,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -1779,7 +1672,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Advanced,
         VisibleEdit: FieldSettings.FieldVisibility.Advanced,
         VisibleNew: FieldSettings.FieldVisibility.Advanced,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -1792,7 +1684,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Advanced,
         VisibleEdit: FieldSettings.FieldVisibility.Advanced,
         VisibleNew: FieldSettings.FieldVisibility.Advanced,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -1813,7 +1704,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -1828,7 +1718,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Advanced,
         VisibleEdit: FieldSettings.FieldVisibility.Advanced,
         VisibleNew: FieldSettings.FieldVisibility.Advanced,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -1841,7 +1730,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'DateTimeFieldSetting',
@@ -1855,7 +1743,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.User',
@@ -1882,7 +1769,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -1895,7 +1781,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Advanced,
         VisibleEdit: FieldSettings.FieldVisibility.Advanced,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'DateTimeFieldSetting',
@@ -1909,7 +1794,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Advanced,
         VisibleEdit: FieldSettings.FieldVisibility.Advanced,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.Group',
@@ -1933,7 +1817,6 @@ export const customSchema = [
         VisibleBrowse: 0,
         VisibleEdit: 0,
         VisibleNew: 0,
-        DefaultOrder: 0,
         Type: 'BinaryFieldSetting',
       },
       {
@@ -1947,7 +1830,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
       {
         Type: 'DateTimeFieldSetting',
@@ -1960,7 +1842,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.DateTimeFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
@@ -1976,7 +1857,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ReferenceFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -1997,7 +1877,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
       {
         Type: 'ChoiceFieldSetting',
@@ -2020,7 +1899,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.ChoiceFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -2036,7 +1914,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'IntegerFieldSetting',
@@ -2049,7 +1926,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.IntegerFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -2061,7 +1937,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'ShortTextFieldSetting',
@@ -2074,7 +1949,6 @@ export const customSchema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Hide,
         VisibleEdit: FieldSettings.FieldVisibility.Hide,
         VisibleNew: FieldSettings.FieldVisibility.Hide,
-        DefaultOrder: 0,
       } as FieldSettings.ShortTextFieldSetting,
     ],
     HandlerName: 'SenseNet.ContentRepository.Task',
