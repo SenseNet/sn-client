@@ -121,7 +121,7 @@ export default function SavedQueries() {
                         }}
                         onActivateItem={(p) => {
                           history.push(
-                            pathWithQueryParams({ path: PATHS.search.appPath, newParams: { term: p.Query } }),
+                            pathWithQueryParams({ path: PATHS.search.appPath, newParams: { query: p.Id.toString() } }),
                           )
                         }}
                         onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}

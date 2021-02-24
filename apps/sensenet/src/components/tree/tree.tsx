@@ -1,4 +1,3 @@
-/* eslint-disable import/named */
 import { GenericContent } from '@sensenet/default-content-types'
 import { ListItem, ListItemIcon, ListItemText, List as MuiList } from '@material-ui/core'
 import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
