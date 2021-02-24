@@ -35,7 +35,6 @@
   "dependencies": {
     "@sensenet/client-core": "^3.8.1",
     "@sensenet/client-utils": "^2.0.2",
-    "@sensenet/default-content-types": "^3.2.0",
     "@sensenet/icons-react": "^1.2.19",
     "@sensenet/query": "^1.2.0",
     "autosuggest-highlight": "^3.1.1",
@@ -44,6 +43,7 @@
   },
   "devDependencies": {
     "@material-ui/core": "^4.11.3",
+    "@sensenet/default-content-types": "^3.2.0",
     "@types/autosuggest-highlight": "3.1.1",
     "@types/enzyme": "^3.10.7",
     "@types/jest": "^26.0.20",

@@ -32,12 +32,12 @@
   "dependencies": {
     "@sensenet/client-core": "^3.8.1",
     "@sensenet/client-utils": "^2.0.2",
-    "@sensenet/default-content-types": "^3.2.0",
     "@sensenet/repository-events": "^2.0.4",
     "semaphore-async-await": "^1.5.1",
     "tslib": "^2.1.0"
   },
   "devDependencies": {
+    "@sensenet/default-content-types": "^3.2.0",
     "@types/enzyme": "^3.10.7",
     "@types/jest": "^26.0.20",
     "@types/react": "^17.0.0",

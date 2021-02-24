@@ -31,7 +31,6 @@
     "react-dom": ">=16.8.0"
   },
   "dependencies": {
-    "@sensenet/default-content-types": "^3.2.0",
     "@sensenet/icons-react": "^1.2.19",
     "clsx": "^1.1.1",
     "moment": "^2.29.1",
@@ -41,6 +40,7 @@
   },
   "devDependencies": {
     "@material-ui/core": "^4.11.3",
+    "@sensenet/default-content-types": "^3.2.0",
     "@types/enzyme": "^3.10.7",
     "@types/jest": "^26.0.20",
     "@types/react": "^17.0.0",
