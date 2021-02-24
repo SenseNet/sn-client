@@ -22,7 +22,6 @@ module.exports = merge(common, {
     minimize: true,
     minimizer: [
       new TerserPlugin({
-        sourceMap: true,
         terserOptions: {
           keep_classnames: true,
           keep_fnames: true,

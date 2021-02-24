@@ -19,7 +19,7 @@ module.exports = {
       cacheGroups: {
         commons: {
           test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
+          idHint: 'vendors',
           chunks: 'all',
         },
       },

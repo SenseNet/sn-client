@@ -67,7 +67,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@cypress/webpack-preprocessor": "^5.4.8",
+    "@cypress/webpack-preprocessor": "^5.6.0",
     "@types/chance": "^1.1.1",
     "@types/jest": "^26.0.20",
     "@types/lodash.groupby": "^4.6.6",
