@@ -1,5 +1,6 @@
 import { createStyles, makeStyles, Paper } from '@material-ui/core'
 import React from 'react'
+import ReactFrappeChart from 'react-frappe-charts'
 import { useWidgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 
@@ -24,6 +25,16 @@ export const UsageWidget: React.FunctionComponent = () => {
         <div className={classes.rowContainer}>
           <span>{localization.usage}</span>
         </div>
+        <ReactFrappeChart
+          type="line"
+          colors={['#26a69a']}
+          axisOptions={{ xAxisMode: 'tick', yAxisMode: 'tick', xIsSeries: 1 }}
+          height={300}
+          data={{
+            labels: ['', '', '', '', '', '', '', ''],
+            datasets: [{ values: [15, 20, -3, -15, 58, 12, -17, 37] }],
+          }}
+        />
       </Paper>
     </div>
   )

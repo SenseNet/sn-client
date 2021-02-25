@@ -9951,6 +9951,11 @@ fragment-cache@^0.2.1:
   dependencies:
     map-cache "^0.2.2"
 
+frappe-charts@^1.5.7:
+  version "1.5.7"
+  resolved "https://registry.yarnpkg.com/frappe-charts/-/frappe-charts-1.5.7.tgz#ff5c1b7e6ee5d4c2ce03fdd92ddf21ff41226ba8"
+  integrity sha512-lqOBM9m1QcQCNyE3XDxc84VE0WpU5L4SZkEaqJWZ8HaLOaE8iCprzerdFWtE7yMApRX5a93LhPWZqC0PCn+Pfg==
+
 fresh@0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.5.2.tgz#3d8cadd90d976569fa835ab1f8e4b23a105605a7"
@@ -16766,6 +16771,11 @@ react-focus-lock@^2.1.0:
     react-clientside-effect "^1.2.2"
     use-callback-ref "^1.2.1"
     use-sidecar "^1.0.1"
+
+react-frappe-charts@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/react-frappe-charts/-/react-frappe-charts-4.0.0.tgz#5a9958641ac0e74ce4c44a23788a5e879ac716a7"
+  integrity sha512-QmYY1ExlPidE8DK3jtjGWakP0YptHOlFMoYF4/Qxsbrw5hYMCwocPoco4b3e2qk6mI0trdpzILzpjmFWutO/MA==
 
 react-helmet-async@^1.0.2:
   version "1.0.7"

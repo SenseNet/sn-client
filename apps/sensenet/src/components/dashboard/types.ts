@@ -5,7 +5,7 @@ export interface DashboardData {
   pending: boolean
   version: DashboardVersion
   subscription: DashboardSubscription
-  usage: DashboardLimitations
+  usage: DashboardUsage
 }
 export interface DashboardVersion {
   title: string
@@ -22,6 +22,7 @@ export interface DashboardPlan {
   baseprice?: number
   limitations: DashboardLimitations
 }
+
 export interface DashboardLimitations {
   content: number
   user: number
@@ -29,4 +30,22 @@ export interface DashboardLimitations {
   storage: number
   workspace: number
   contentType: number
+}
+
+export interface DashboardUsage {
+  content: number
+  user: number
+  group: number
+  storage: StorageUsage
+  workspace: number
+  contentType: number
+}
+
+export interface StorageUsage {
+  available: number
+  files: number
+  content: number
+  oldVersions: number
+  log: number
+  system: number
 }

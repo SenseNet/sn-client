@@ -5,6 +5,7 @@ import { useWidgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { round } from '../dashboard'
 import { DashboardData } from '../dashboard/types'
+import { MultiPartProgressLine } from './multi-part-progress-line'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -41,6 +42,13 @@ export const StorageWidget: React.FunctionComponent = () => {
 
   if (!data) return null
 
+  const allUsage =
+    data.usage.storage.files +
+    data.usage.storage.content +
+    data.usage.storage.oldVersions +
+    data.usage.storage.log +
+    data.usage.storage.system
+
   return (
     <div className={widgetClasses.root}>
       <Paper elevation={0} className={widgetClasses.container}>
@@ -48,11 +56,61 @@ export const StorageWidget: React.FunctionComponent = () => {
           <span>{localization.storage}</span>
           <span>
             {localization.used(
-              `${numberFormatter.format(round(data.usage.storage))} MB`,
+              `${numberFormatter.format(round(allUsage / 1024 / 1024))} MB`,
               `${numberFormatter.format(round(data.subscription.plan.limitations.storage / 1024))} GB`,
             )}
           </span>
         </div>
+        <MultiPartProgressLine
+          backgroundColor="white"
+          visualParts={[
+            {
+              percentage: `${
+                allUsage > data.usage.storage.available
+                  ? (data.usage.storage.files / allUsage) * 100
+                  : (data.usage.storage.files / data.usage.storage.available) * 100
+              }%`,
+              color: '#57c1f7',
+              title: 'Files',
+            },
+            {
+              percentage: `${
+                allUsage > data.usage.storage.available
+                  ? (data.usage.storage.content / allUsage) * 100
+                  : (data.usage.storage.content / data.usage.storage.available) * 100
+              }%`,
+              color: '#5bb381',
+              title: 'Content',
+            },
+            {
+              percentage: `${
+                allUsage > data.usage.storage.available
+                  ? (data.usage.storage.oldVersions / allUsage) * 100
+                  : (data.usage.storage.oldVersions / data.usage.storage.available) * 100
+              }%`,
+              color: '#e4b34c',
+              title: 'Old versions',
+            },
+            {
+              percentage: `${
+                allUsage > data.usage.storage.available
+                  ? (data.usage.storage.log / allUsage) * 100
+                  : (data.usage.storage.log / data.usage.storage.available) * 100
+              }%`,
+              color: '#9932CC',
+              title: 'Log',
+            },
+            {
+              percentage: `${
+                allUsage > data.usage.storage.available
+                  ? (data.usage.storage.system / allUsage) * 100
+                  : (data.usage.storage.system / data.usage.storage.available) * 100
+              }%`,
+              color: '#A0522D',
+              title: 'System',
+            },
+          ]}
+        />
         <div className={classes.rowContainer}>
           <span>{localization.users}</span>
           <span>
