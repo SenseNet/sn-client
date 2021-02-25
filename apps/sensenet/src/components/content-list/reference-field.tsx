@@ -66,31 +66,35 @@ export const ReferenceField: FunctionComponent<ReferenceFieldProps> = ({ content
             {content.length} {fieldName}
           </Button>
         </div>
-      ) : content.Name !== 'Somebody' ? (
+      ) : (
         <div className={globalClasses.centeredVertical}>
           {repository.schemas.isContentFromType(content, 'User') ? (
             <Icon item={content} style={{ marginRight: '0.5rem' }} />
           ) : null}
           <Tooltip title={`Open ${content.DisplayName || content.Name} for edit`}>
-            <Link
-              className={classes.link}
-              component="button"
-              onClick={async () => {
-                history.push(
-                  getUrlForContent({
-                    content,
-                    uiSettings,
-                    location: history.location,
-                    action: 'edit',
-                    removePath: true,
-                  }),
-                )
-              }}>
-              {content.DisplayName || content.Name}
-            </Link>
+            {content.Name === 'Somebody' ? (
+              <>{content.DisplayName || content.Name}</>
+            ) : (
+              <Link
+                className={classes.link}
+                component="button"
+                onClick={async () => {
+                  history.push(
+                    getUrlForContent({
+                      content,
+                      uiSettings,
+                      location: history.location,
+                      action: 'edit',
+                      removePath: true,
+                    }),
+                  )
+                }}>
+                {content.DisplayName || content.Name}
+              </Link>
+            )}
           </Tooltip>
         </div>
-      ) : null}
+      )}
     </TableCell>
   )
 }

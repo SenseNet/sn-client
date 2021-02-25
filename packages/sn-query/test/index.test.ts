@@ -34,7 +34,7 @@ describe('Query', () => {
     )
 
     expect(query.toString()).toBe(
-      "TypeIs:Task AND DisplayName:'Unicorn' AND ModificationDate:{'2017-01-01T00\\:00\\:00' TO '2017-02-01T00\\:00\\:00'} OR (NOT(Approvable:'true') AND NOT(Description:'*alma*')) .SORT:DisplayName .TOP:5 .SKIP:10",
+      "TypeIs:Task AND DisplayName:'Unicorn' AND ModificationDate:{'2017-01-01T00:00:00' TO '2017-02-01T00:00:00'} OR (NOT(Approvable:'true') AND NOT(Description:'*alma*')) .SORT:DisplayName .TOP:5 .SKIP:10",
     )
   })
 
@@ -68,10 +68,22 @@ describe('Query', () => {
       const queryInstance = new Query((q) => q.equals('DisplayName', 'test'))
       expect(queryInstance.toString()).toBe("DisplayName:'test'")
     })
+
+    it('Equals with template string', () => {
+      const queryInstance = new Query((q) => q.equals('ModifiedBy', '@@CurrentUser@@'))
+      expect(queryInstance.toString()).toBe('ModifiedBy:@@CurrentUser@@')
+    })
+
     it('NotEquals', () => {
       const queryInstance = new Query((q) => q.notEquals('DisplayName', 'test'))
       expect(queryInstance.toString()).toBe("NOT(DisplayName:'test')")
     })
+
+    it('NotEquals with template string', () => {
+      const queryInstance = new Query((q) => q.notEquals('ModifiedBy', '@@CurrentUser@@'))
+      expect(queryInstance.toString()).toBe('NOT(ModifiedBy:@@CurrentUser@@)')
+    })
+
     it('EqualsNested', () => {
       const queryInstance = new Query((q) => q.equalsNested('Owner', 'DisplayName', 'test'))
       expect(queryInstance.toString()).toBe('Owner:{{DisplayName:test}}')
@@ -90,14 +102,24 @@ describe('Query', () => {
       expect(queryInstance.toString()).toBe("Index:['10' TO '50']")
     })
 
-    it('GreatherThan exclusive', () => {
-      const queryInstance = new Query((q) => q.greatherThan('Index', 10))
+    it('GreaterThan exclusive', () => {
+      const queryInstance = new Query((q) => q.greaterThan('Index', 10))
       expect(queryInstance.toString()).toBe("Index:>'10'")
     })
 
-    it('GreatherThan inclusive', () => {
-      const queryInstance = new Query((q) => q.greatherThan('Index', 10, true))
+    it('GreaterThan exclusive with template string', () => {
+      const queryInstance = new Query((q) => q.greaterThan('CreationDate', '@@Today@@'))
+      expect(queryInstance.toString()).toBe('CreationDate:>@@Today@@')
+    })
+
+    it('GreaterThan inclusive', () => {
+      const queryInstance = new Query((q) => q.greaterThan('Index', 10, true))
       expect(queryInstance.toString()).toBe("Index:>='10'")
+    })
+
+    it('GreaterThan inclusive with template string', () => {
+      const queryInstance = new Query((q) => q.greaterThan('CreationDate', '@@Today@@', true))
+      expect(queryInstance.toString()).toBe('CreationDate:>=@@Today@@')
     })
 
     it('LessThan exclusive', () => {
@@ -105,9 +127,19 @@ describe('Query', () => {
       expect(queryInstance.toString()).toBe("Index:<'10'")
     })
 
+    it('LessThan exclusive with template string', () => {
+      const queryInstance = new Query((q) => q.lessThan('CreationDate', '@@Today@@'))
+      expect(queryInstance.toString()).toBe('CreationDate:<@@Today@@')
+    })
+
     it('LessThan inclusive', () => {
       const queryInstance = new Query((q) => q.lessThan('Index', 10, true))
       expect(queryInstance.toString()).toBe("Index:<='10'")
+    })
+
+    it('LessThan inclusive with template string', () => {
+      const queryInstance = new Query((q) => q.lessThan('CreationDate', '@@Today@@', true))
+      expect(queryInstance.toString()).toBe('CreationDate:<=@@Today@@')
     })
 
     it('AND syntax', () => {

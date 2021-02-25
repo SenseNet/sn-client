@@ -1,4 +1,3 @@
-/* eslint-disable import/named */
 import { ActionModel, FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import { TableSortLabel, Tooltip } from '@material-ui/core'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -230,7 +229,7 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
 
     return (
       <TableCell
-        data-test={`table-header-${displayName?.replace(/\s+/g, '-').toLowerCase()}`}
+        data-test={`table-header-${columnName?.replace(/\s+/g, '-').toLowerCase()}`}
         component="div"
         variant="head"
         style={{

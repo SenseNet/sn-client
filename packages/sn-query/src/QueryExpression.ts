@@ -28,8 +28,7 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
    * @returns { QueryOperator<TReturns> } The Next query operator (fluent)
    */
   public inTree(path: string) {
-    const pathValue = this.escapeValue(path)
-    this.stringValue = `InTree:"${pathValue}"`
+    this.stringValue = `InTree:"${path}"`
     this.segmentType = 'inTree'
     return this.finialize()
   }
@@ -40,8 +39,7 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
    * @returns { QueryOperator<TReturns> } The Next query operator (fluent)
    */
   public inFolder(path: string) {
-    const pathValue = this.escapeValue(path)
-    this.stringValue = `InFolder:"${pathValue}"`
+    this.stringValue = `InFolder:"${path}"`
     this.segmentType = 'inFolder'
     return this.finialize()
   }
@@ -79,7 +77,9 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
     fieldName: K | '_Text',
     value: KValue,
   ) {
-    this.stringValue = `${fieldName}:'${this.escapeValue(value.toString())}'`
+    this.stringValue = this.isTemplateValue(value.toString())
+      ? `${fieldName}:${value.toString()}`
+      : `${fieldName}:'${value.toString()}'`
     this.segmentType = 'equals'
     return this.finialize()
   }
@@ -95,7 +95,9 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
     fieldName: K,
     value: KValue,
   ) {
-    this.stringValue = `NOT(${fieldName}:'${this.escapeValue(value.toString())}')`
+    this.stringValue = this.isTemplateValue(value.toString())
+      ? `NOT(${fieldName}:${value.toString()})`
+      : `NOT(${fieldName}:'${value.toString()}')`
     this.segmentType = 'notEquals'
     return this.finialize()
   }
@@ -142,26 +144,28 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
     minimumInclusive = false,
     maximumInclusive = false,
   ) {
-    this.stringValue = `${fieldName}:${minimumInclusive ? '[' : '{'}'${this.escapeValue(
-      minValue.toString(),
-    )}' TO '${this.escapeValue(maxValue.toString())}'${maximumInclusive ? ']' : '}'}`
+    this.stringValue = `${fieldName}:${
+      minimumInclusive ? '[' : '{'
+    }'${minValue.toString()}' TO '${maxValue.toString()}'${maximumInclusive ? ']' : '}'}`
     this.segmentType = 'between'
     return this.finialize()
   }
 
   /**
-   * Greather than query expression (+FieldName:>'value')
+   * Greater than query expression (+FieldName:>'value')
    * @param { K } fieldName he name of the Field to be checked
    * @param { TReturns[K] } minValue The minimum allowed value
    * @param { boolean } minimumInclusive Lower limit will be inclusive / exclusive
    */
-  public greatherThan<K extends keyof TReturns, KValue extends TReturns[K] & { toString: () => string }>(
+  public greaterThan<K extends keyof TReturns, KValue extends TReturns[K] & { toString: () => string }>(
     fieldName: K,
     minValue: KValue,
     minimumInclusive = false,
   ) {
-    this.stringValue = `${fieldName}:>${minimumInclusive ? '=' : ''}'${this.escapeValue(minValue.toString())}'`
-    this.segmentType = 'greatherThan'
+    this.stringValue = this.isTemplateValue(minValue.toString())
+      ? `${fieldName}:>${minimumInclusive ? '=' : ''}${minValue.toString()}`
+      : `${fieldName}:>${minimumInclusive ? '=' : ''}'${minValue.toString()}'`
+    this.segmentType = 'greaterThan'
     return this.finialize()
   }
 
@@ -176,7 +180,9 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
     maxValue: KValue,
     maximumInclusive = false,
   ) {
-    this.stringValue = `${fieldName}:<${maximumInclusive ? '=' : ''}'${this.escapeValue(maxValue.toString())}'`
+    this.stringValue = this.isTemplateValue(maxValue.toString())
+      ? `${fieldName}:<${maximumInclusive ? '=' : ''}${maxValue.toString()}`
+      : `${fieldName}:<${maximumInclusive ? '=' : ''}'${maxValue.toString()}'`
     this.segmentType = 'lessThan'
     return this.finialize()
   }
