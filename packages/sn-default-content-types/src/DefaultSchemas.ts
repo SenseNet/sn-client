@@ -19,15 +19,15 @@ import * as FieldSettings from './FieldSettings'
  *
  * It represents an object that holds the basic information about the Content Type (name, icon, ect.) and an array of its ```FieldSettings``` and their full configuration.
  */
-export class Schema {
-  public ContentTypeName!: string
-  public ParentTypeName?: string
-  public Icon!: string
-  public DisplayName!: string
-  public Description!: string
-  public AllowedChildTypes!: string[]
-  public FieldSettings!: FieldSettings.FieldSetting[]
-  public HandlerName!: string
+export type Schema = {
+  ContentTypeName: string
+  ParentTypeName?: string
+  Icon: string
+  DisplayName: string
+  Description: string
+  AllowedChildTypes: string[]
+  FieldSettings: FieldSettings.FieldSetting[]
+  HandlerName: string
 }
 
 export const SchemaStore: Schema[] = [
