@@ -21,7 +21,6 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "@sensenet/default-content-types": "^3.2.0",
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.22",
     "@types/react": "^17.0.0",
@@ -40,6 +39,7 @@
     "@material-ui/icons": "^4.11.2",
     "@sensenet/authentication-oidc-react": "^2.1.0",
     "@sensenet/client-core": "^3.8.1",
+    "@sensenet/default-content-types": "^3.2.0",
     "@sensenet/hooks-react": "^1.4.4",
     "react": "^16.13.0",
     "react-dom": "^16.13.0"

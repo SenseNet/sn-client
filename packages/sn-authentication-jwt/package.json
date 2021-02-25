@@ -37,11 +37,11 @@
   "dependencies": {
     "@sensenet/client-core": "^3.8.1",
     "@sensenet/client-utils": "^2.0.2",
+    "@sensenet/default-content-types": "^3.2.0",
     "semaphore-async-await": "^1.5.1",
     "tslib": "^2.1.0"
   },
   "devDependencies": {
-    "@sensenet/default-content-types": "^3.2.0",
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.22",
     "jest": "^26.6.1",

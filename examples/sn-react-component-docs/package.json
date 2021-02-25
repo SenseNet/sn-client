@@ -32,6 +32,7 @@
     "@sensenet/client-utils": "^2.0.2",
     "@sensenet/control-mapper": "^2.1.13",
     "@sensenet/controls-react": "^6.1.1",
+    "@sensenet/default-content-types": "^3.2.0",
     "@sensenet/document-viewer-react": "^4.0.1",
     "@sensenet/icons-react": "^1.2.19",
     "@sensenet/list-controls-react": "^1.6.1",
@@ -43,7 +44,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
-    "@sensenet/default-content-types": "^3.2.0",
     "@storybook/addon-a11y": "^6.1.15",
     "@storybook/addon-actions": "^6.1.15",
     "@storybook/addon-events": "^6.1.15",
