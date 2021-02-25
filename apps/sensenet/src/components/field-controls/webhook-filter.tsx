@@ -33,6 +33,7 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Tooltip,
 } from '@material-ui/core'
 import { red } from '@material-ui/core/colors'
 import { Close } from '@material-ui/icons'
@@ -104,16 +105,34 @@ export interface WebhookContentTypeItem {
 export type WebhookEventType =
   | 'All'
   | 'Create'
-  | 'Save'
-  | 'Publish'
-  | 'Approve'
-  | 'Reject'
-  | 'Checkin'
-  | 'Checkout'
+  | 'Modify'
   | 'Delete'
+  | 'Checkout'
+  | 'Draft'
+  | 'Publish'
+  | 'Pending'
+  | 'Reject'
 
 //Triggers
-export const webhookEvents = ['Create', 'Save', 'Publish', 'Approve', 'Reject', 'Checkin', 'Checkout', 'Delete']
+export const webhookEvents = [
+  { name: 'Create', tooltip: 'A new content is created' },
+  { name: 'Modify', tooltip: 'A content is modified and saved' },
+  { name: 'Delete', tooltip: 'A content is deleted permanently or moved to the trash' },
+  {
+    name: 'Checkout',
+    tooltip: 'A content has become locked by a user (version number will be something similar like 1.0.L )',
+  },
+  { name: 'Draft', tooltip: 'A new draft version created (version number will be something similar like 1.2.D )' },
+  {
+    name: 'Publish',
+    tooltip: 'A content version is published or approved (version number will be something similar like 3.0.A )',
+  },
+  {
+    name: 'Pending',
+    tooltip: 'A content version is waiting for approval (version number will be something similar like 2.0.P )',
+  },
+  { name: 'Reject', tooltip: 'A content version was rejected (version number will be something similar like 1.0.R )' },
+]
 
 /**
  * Field control that represents a Webhook filter field.
@@ -222,7 +241,7 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
 
       const allEventIndex = actualRow?.Events.indexOf('All')
       if (allEventIndex !== undefined && allEventIndex > -1) {
-        const newEvents = webhookEvents.filter((item) => item !== webhookEvent)
+        const newEvents = webhookEvents.filter((item) => item.name !== webhookEvent)
         Object.assign(actualRow, { Events: newEvents })
       }
     }
@@ -340,9 +359,9 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
                       <TableCell align="center" />
                       <TableCell align="center">All</TableCell>
                       {webhookEvents.map((event) => (
-                        <TableCell key={event} align="center">
-                          {event}
-                        </TableCell>
+                        <Tooltip key={event.name} title={event.tooltip} placement="bottom">
+                          <TableCell align="center">{event.name}</TableCell>
+                        </Tooltip>
                       ))}
                       <TableCell align="center" />
                     </TableRow>
@@ -360,16 +379,16 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
                           />
                         </TableCell>
                         {webhookEvents.map((eventItem) => (
-                          <TableCell key={eventItem} align="center">
+                          <TableCell key={eventItem.name} align="center">
                             <Checkbox
                               disabled={value.TriggersForAllEvents}
                               color="primary"
                               checked={
                                 value.ContentTypes?.find((type) => type.Name === row)?.Events.includes(
-                                  eventItem as WebhookEventType,
+                                  eventItem.name as WebhookEventType,
                                 ) || value.ContentTypes?.find((type) => type.Name === row)?.Events.includes('All')
                               }
-                              onChange={(event) => handleCheckboxChange(event, row, eventItem as WebhookEventType)}
+                              onChange={(event) => handleCheckboxChange(event, row, eventItem.name as WebhookEventType)}
                             />
                           </TableCell>
                         ))}
@@ -497,7 +516,7 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
                       <TableCell align="center" />
                       <TableCell align="center">All</TableCell>
                       {webhookEvents.map((event) => (
-                        <TableCell key={event} align="center">
+                        <TableCell key={event.name} align="center">
                           {event}
                         </TableCell>
                       ))}
@@ -517,16 +536,16 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
                           />
                         </TableCell>
                         {webhookEvents.map((eventItem) => (
-                          <TableCell key={eventItem} align="center">
+                          <TableCell key={eventItem.name} align="center">
                             <Checkbox
                               disabled={true}
                               color="primary"
                               checked={
                                 value.ContentTypes?.find((type) => type.Name === row)?.Events.includes(
-                                  eventItem as WebhookEventType,
+                                  eventItem.name as WebhookEventType,
                                 ) || value.ContentTypes?.find((type) => type.Name === row)?.Events.includes('All')
                               }
-                              onChange={(event) => handleCheckboxChange(event, row, eventItem as WebhookEventType)}
+                              onChange={(event) => handleCheckboxChange(event, row, eventItem.name as WebhookEventType)}
                             />
                           </TableCell>
                         ))}
