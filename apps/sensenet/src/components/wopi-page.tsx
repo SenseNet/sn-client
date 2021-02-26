@@ -17,11 +17,12 @@ const useStyles = makeStyles(() => {
     },
     actionButtonWrapper: {
       height: '80px',
-      width: '100%',
+      width: '93%',
       position: 'absolute',
       padding: '20px',
       bottom: 0,
       textAlign: 'right',
+      right: '7%',
     },
     wopiWrapper: {
       width: '100%',

@@ -27,11 +27,11 @@ const useStyles = makeStyles(() => {
     },
     actionButtonWrapper: {
       height: '80px',
-      width: '100%',
+      width: '93%',
       position: 'absolute',
       padding: '20px',
       bottom: 0,
-      right: 0,
+      right: '7%',
     },
   })
 })

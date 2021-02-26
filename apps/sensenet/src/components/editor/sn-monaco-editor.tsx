@@ -12,12 +12,12 @@ const useStyles = makeStyles(() => {
   return createStyles({
     actionButtonWrapper: {
       height: '80px',
-      width: '100%',
+      width: '93%',
       position: 'absolute',
       padding: '20px',
       bottom: 0,
-      left: 0,
       textAlign: 'right',
+      right: '7%',
     },
     form: {
       width: '100%',
