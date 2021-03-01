@@ -507,6 +507,12 @@ const values = {
     valuPlaceHolder: 'Value of this header',
     addCustomHeader: 'Add custom header',
   },
+  webhooksPayload: {
+    useDefault: 'Use default payload',
+    customize: 'Customize web hook payload (This feature is not available right now)',
+    noValue: 'No value set',
+    payload: 'Payload',
+  },
 }
 
 export default values

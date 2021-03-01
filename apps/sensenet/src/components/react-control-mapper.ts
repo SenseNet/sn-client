@@ -36,6 +36,8 @@ export const reactControlMapper = (repository: Repository) => {
           return FieldControls.WebhookFilter
         case 'sn:WebhookHeaders':
           return FieldControls.WebhookHeaders
+        case 'sn:WebhookPayload':
+          return FieldControls.WebhookPayload
         default:
       }
 
