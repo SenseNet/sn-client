@@ -1,5 +1,5 @@
 import { PathHelper } from '@sensenet/client-utils'
-import { TrashBag } from '@sensenet/default-content-types'
+import { GenericContent, TrashBag } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { Button, DialogActions, DialogContent, InputAdornment, TextField } from '@material-ui/core'
 import RestoreIcon from '@material-ui/icons/RestoreFromTrash'
@@ -95,7 +95,8 @@ export function Restore(props: RestoreProps) {
                   content: props.content,
                   currentPath: props.content.OriginalPath || '/Root',
                   selectionRoot: rootPath,
-                  handleSubmit: (path: string) => setDestination(path),
+                  handleSubmit: (content: GenericContent) => setDestination(content.Path),
+                  required: true,
                 },
                 dialogProps: { disableBackdropClick: true, open: true, classes: { paper: globalClasses.pickerDialog } },
               })

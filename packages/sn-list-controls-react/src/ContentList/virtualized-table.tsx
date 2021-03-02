@@ -1,4 +1,3 @@
-/* eslint-disable import/named */
 import { ActionModel, FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import { TableSortLabel, Tooltip } from '@material-ui/core'
 import Checkbox from '@material-ui/core/Checkbox'

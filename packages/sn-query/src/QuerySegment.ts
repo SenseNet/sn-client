@@ -10,14 +10,13 @@ export class QuerySegment<TReturns> {
   public segmentType?: string
 
   /**
-   * Escapes a String value (except '?' and '*' characters for wildcards)
-   * @param {string} value The String value to be escaped
-   * @returns {string} The escaped value
+   * Check if value is a template string
+   * @param {string} value The String value to be checked
+   * @returns {boolean} whether the value is a template string
    */
-  protected escapeValue(value: string): string {
-    return value.replace(/([!+&|()[\]{}^~:"])/g, '\\$1')
+  protected isTemplateValue(value: string): boolean {
+    return new RegExp('^@@.*@@$').test(value)
   }
-
   /**
    * The String value of the current Query expression
    */

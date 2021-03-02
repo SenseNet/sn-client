@@ -1,5 +1,6 @@
 import { History, Location } from 'history'
 import { User, UserManager } from 'oidc-client'
+import { removeUserManager } from './authentication-service'
 
 let userRequested = false
 let numberAuthentication = 0
@@ -24,8 +25,14 @@ export const authenticateUser = (
 
   if (isRequireSignin(oidcUser, isForce)) {
     userRequested = true
-    await userManager.signinRedirect({ data: { url } })
-    userRequested = false
+    try {
+      await userManager.signinRedirect({ data: { url } })
+    } catch (error) {
+      removeUserManager()
+      throw error
+    } finally {
+      userRequested = false
+    }
   } else if (oidcUser?.expired) {
     userRequested = true
     try {
