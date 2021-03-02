@@ -643,6 +643,8 @@ export class Query extends GenericContent {
   public Query?: string
   /* Public queries are stored under the workspace, private queries are stored under the user profile. */
   public QueryType?: Enums.QueryType[]
+  /* Filters object used by search query builder */
+  public UiFilters?: string
 }
 
 /**

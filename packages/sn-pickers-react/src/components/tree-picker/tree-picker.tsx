@@ -41,7 +41,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
 
   const onDoubleClickHandler = useCallback(
     (_event: React.MouseEvent, node: T) => {
-      if (node.IsFolder) {
+      if (node.IsFolder || node.isParent) {
         navigateTo(node)
         props.onTreeNavigation?.(node.Path)
       }
