@@ -12,8 +12,8 @@ import React, { Component } from 'react'
  * Props for the Type Field component
  */
 export interface TypeFieldProps extends SelectProps {
-  types: Array<new (...args: any[]) => GenericContent>
-  selectedTypes?: Array<new (...args: any[]) => GenericContent>
+  types: string[]
+  selectedTypes?: string[]
   schemaStore: SchemaStore
   onQueryChange: (query: Query<GenericContent>) => void
   getMenuItem?: (schema: Schema, isSelected: boolean) => JSX.Element
@@ -23,7 +23,7 @@ export interface TypeFieldProps extends SelectProps {
  * State for the Type Field component
  */
 export interface TypeFieldState {
-  selected: Array<new (...args: any[]) => GenericContent>
+  selected: string[]
   schemas: Schema[]
   name: string
   query?: Query<any>
@@ -63,13 +63,13 @@ export class TypeField extends Component<TypeFieldProps, TypeFieldState> {
     return {
       ...lastState,
       getMenuItem: newProps.getMenuItem || lastState.getMenuItem,
-      schemas: newProps.types.map((contentType) => newProps.schemaStore.getSchemaByName(contentType.name)),
+      schemas: newProps.types.map((contentType) => newProps.schemaStore.getSchemaByName(contentType)),
     }
   }
 
   private handleChange(ev: React.ChangeEvent<HTMLSelectElement>) {
     const values = (ev.target.value as any) as string[]
-    const selected = this.props.types.filter((typeName) => values.indexOf(typeName.name) > -1)
+    const selected = this.props.types.filter((typeName) => values.indexOf(typeName) > -1)
     const query = new Query((q) => {
       selected.forEach((contentType, currentIndex) => {
         const { queryRef } = q
@@ -89,7 +89,7 @@ export class TypeField extends Component<TypeFieldProps, TypeFieldState> {
   }
 
   public render() {
-    const selectedNames = this.state.selected.map((s) => this.props.schemaStore.getSchemaByName(s.name).ContentTypeName)
+    const selectedNames = this.state.selected.map((s) => this.props.schemaStore.getSchemaByName(s).ContentTypeName)
     const { getMenuItem, onQueryChange, types, schemaStore, ...selectProps } = { ...this.props }
 
     return (

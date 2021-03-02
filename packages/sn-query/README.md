@@ -22,13 +22,13 @@ Usage example:
 
 ```ts
 const query = new Query(
-  q =>
+  (q) =>
     q
-      .typeIs<Task>(Task) // adds '+TypeIs:Task' and Typescript type cast
+      .typeIs<Task>('Task') // adds '+TypeIs:Task' and Typescript type cast
       .and.equals('DisplayName', 'Unicorn') // adds +Title:Unicorn
       .and.between('ModificationDate', '2017-01-01T00:00:00', '2017-02-01T00:00:00')
       .or.query(
-        sub =>
+        (sub) =>
           sub // Grouping
             .notEquals('Approvable', true)
             .and.notEquals('Description', '*alma*'), // Contains with wildcards

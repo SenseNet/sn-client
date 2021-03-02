@@ -10,7 +10,7 @@ export type QueryBuilder<TExpression, TReturns> = (first: QueryExpression<TExpre
  * Represents an instance of a Query expression.
  * Usage example:
  * ```ts
- * const query = new Query(q => q.TypeIs(ContentTypes.Task).And.Equals('DisplayName', 'Test'))
+ * const query = new Query(q => q.TypeIs('Task').And.Equals('DisplayName', 'Test'))
  * console.log(query.toString());   // the content query expression
  * ```
  */
