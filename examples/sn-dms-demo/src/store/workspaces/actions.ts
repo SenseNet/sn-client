@@ -21,7 +21,7 @@ export const getWorkspaces = () => ({
       const workspaces = await repository.loadCollection<Workspace>({
         path: '/Root/Content',
         oDataOptions: {
-          query: 'TypeIs:Workspace',
+          filter: `IsOf('Workspace')`,
           select: ['DisplayName', 'Id', 'Path'],
           orderby: [['DisplayName', 'asc']],
         },
