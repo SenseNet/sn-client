@@ -128,7 +128,7 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
     cancelButton: {
       border: theme.palette.type === 'light' ? '2px solid #212121DE' : '2px solid #505050',
       '& ~ button': {
-        marginRight: 38,
+        marginLeft: 38,
       },
     },
   })
