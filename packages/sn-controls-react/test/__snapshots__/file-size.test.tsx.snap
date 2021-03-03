@@ -1,0 +1,122 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FileSize field control in browse view should show the displayname and fieldValue with GB unit when fieldValue is provided and between 1 073 741 824 and 1 099 511 627 776 {pow(1024,4)} 1`] = `
+<div>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="caption"
+  >
+    Size
+  </WithStyles(ForwardRef(Typography))>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="body1"
+  >
+    2 GB
+  </WithStyles(ForwardRef(Typography))>
+</div>
+`;
+
+exports[`FileSize field control in browse view should show the displayname and fieldValue with KB unit when fieldValue is provided and between 1024 and 1 048 576 {pow(1024,2)} 1`] = `
+<div>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="caption"
+  >
+    Size
+  </WithStyles(ForwardRef(Typography))>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="body1"
+  >
+    1.5 KB
+  </WithStyles(ForwardRef(Typography))>
+</div>
+`;
+
+exports[`FileSize field control in browse view should show the displayname and fieldValue with MB unit when fieldValue is provided and between 1 048 576 and 1 073 741 824 {pow(1024,3)} 1`] = `
+<div>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="caption"
+  >
+    Size
+  </WithStyles(ForwardRef(Typography))>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="body1"
+  >
+    1 MB
+  </WithStyles(ForwardRef(Typography))>
+</div>
+`;
+
+exports[`FileSize field control in browse view should show the displayname and fieldValue with TB unit when fieldValue is provided and between 1 099 511 627 776 and 1 125 899 906 842 624 {pow(1024,5)} 1`] = `
+<div>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="caption"
+  >
+    Size
+  </WithStyles(ForwardRef(Typography))>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="body1"
+  >
+    653.5 TB
+  </WithStyles(ForwardRef(Typography))>
+</div>
+`;
+
+exports[`FileSize field control in browse view should show the displayname and fieldValue with byte unit when fieldValue is provided and less than 1024 1`] = `
+<div>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="caption"
+  >
+    Size
+  </WithStyles(ForwardRef(Typography))>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="body1"
+  >
+    123 byte
+  </WithStyles(ForwardRef(Typography))>
+</div>
+`;
+
+exports[`FileSize field control in edit/new view should set all the props 1`] = `
+<Fragment>
+  <WithStyles(ForwardRef(TextField))
+    InputProps={
+      Object {
+        "endAdornment": <WithStyles(ForwardRef(InputAdornment))
+          position="end"
+        >
+          byte
+        </WithStyles(ForwardRef(InputAdornment))>,
+      }
+    }
+    disabled={true}
+    fullWidth={true}
+    id="Size"
+    inputProps={
+      Object {
+        "max": 50,
+        "min": 4,
+        "step": 1,
+      }
+    }
+    label="Size"
+    name="Size"
+    onChange={[Function]}
+    placeholder="Size"
+    required={true}
+    type="number"
+    value={7}
+  />
+  <WithStyles(ForwardRef(FormHelperText))>
+    File size
+  </WithStyles(ForwardRef(FormHelperText))>
+</Fragment>
+`;
