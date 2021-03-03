@@ -22,20 +22,7 @@ describe('Task-List', () => {
 
         cy.get(`[data-test="table-cell-${taskName.replace(/\s+/g, '-').toLowerCase()}"]`).dblclick()
 
-        cy.get('[data-test="add-button"]')
-          .click()
-          .then(() => {
-            const expetcedMenuItems = ['Task']
-            cy.get('[data-test="list-items"]')
-              .children()
-              .should('have.length', expetcedMenuItems.length)
-              .each(($span) => {
-                const text = $span.text()
-                if (text) {
-                  expect(expetcedMenuItems).to.include(text)
-                }
-              })
-          })
+        cy.checkAddItemList(['Task'])
       })
     cy.get('[data-test="list-items"]').first().click()
   })
