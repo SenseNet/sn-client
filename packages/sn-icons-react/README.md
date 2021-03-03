@@ -1,6 +1,6 @@
 # @sensenet/icons-react
 
-> A React component rendering icons for sensenet supporting [material-ui](https://material.io/tools/icons/), [fontawesome](https://fontawesome.com/icons?d=gallery), [flaticon material-design](https://www.flaticon.com/packs/material-design) and sensenet 6 image icons.
+> A React component rendering icons for sensenet supporting [material-ui](https://material.io/tools/icons/), [fontawesome](https://fontawesome.com/icons?d=gallery) and [flaticon material-design](https://www.flaticon.com/packs/material-design).
 
 [![NPM version](https://img.shields.io/npm/v/@sensenet/icons-react.svg?style=flat)](https://www.npmjs.com/package/@sensenet/icons-react)
 [![NPM downloads](https://img.shields.io/npm/dt/@sensenet/icons-react.svg?style=flat)](https://www.npmjs.com/package/@sensenet/icons-react)
@@ -80,24 +80,6 @@ import { Icon, iconType } from '@sensenet/icons-react'
     iconName="file"
     fontSize="default",
     color="primary"
-    onClick={(e) => myEventHandler(e.target)}
-    >
-...
-
-```
-
-### Old sensenet image icons
-
-In the old versions of sensenet there was a naming convention to load images, so that you wanted to use the file icon, it was placed in a pre-defined place (/Root/Global/images/icons/{16|32|64}) with the name `file.png`. We moved the part of that logic into this new package with copying all the related icon images in almost the same structure. So if you want to use the old image icons use the Icon component the following way:
-
-```ts
-import { Icon, iconType } from '@sensenet/icons-react'
-
-...
-<Icon
-    type={iconType.image}
-    iconName="file"
-    size={16},
     onClick={(e) => myEventHandler(e.target)}
     >
 ...

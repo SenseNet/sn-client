@@ -20,7 +20,7 @@ import WatchIcon from '@material-ui/icons/Watch'
 import moment from 'moment'
 import React, { useContext, useState } from 'react'
 import striptags from 'striptags'
-import CalendarEvent from '../CalendarEvent-type'
+import { CalendarEvent } from '../CalendarEvent-type'
 import { SharedContext } from '../context/shared-context'
 import { DialogComponent } from './simple-dialog'
 

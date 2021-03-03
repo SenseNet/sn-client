@@ -1,13 +1,4 @@
-import {
-  ContentType,
-  SchemaStore as DefaultSchemaStore,
-  GenericContent,
-  Group,
-  Image,
-  Schema,
-  File as SnFile,
-  UserProfile,
-} from '@sensenet/default-content-types'
+import { SchemaStore as DefaultSchemaStore, GenericContent, Schema } from '@sensenet/default-content-types'
 import { SchemaStore } from '../src/Schemas/SchemaStore'
 
 /**
@@ -72,19 +63,19 @@ describe('SchemaStore', () => {
     it('Should be return true for descendants', () => {
       const store = new SchemaStore()
       store.setSchemas(DefaultSchemaStore)
-      expect(store.schemaIsDescendantOf(SnFile.name, GenericContent.name)).toBeTruthy()
-      expect(store.schemaIsDescendantOf(SnFile.name, SnFile.name)).toBeTruthy()
-      expect(store.schemaIsDescendantOf(Image.name, File.name)).toBeTruthy()
-      expect(store.schemaIsDescendantOf(Image.name, GenericContent.name)).toBeTruthy()
-      expect(store.schemaIsDescendantOf(UserProfile.name, GenericContent.name)).toBeTruthy()
+      expect(store.schemaIsDescendantOf('File', 'GenericContent')).toBeTruthy()
+      expect(store.schemaIsDescendantOf('File', 'File')).toBeTruthy()
+      expect(store.schemaIsDescendantOf('Image', 'File')).toBeTruthy()
+      expect(store.schemaIsDescendantOf('Image', 'GenericContent')).toBeTruthy()
+      expect(store.schemaIsDescendantOf('UserProfile', 'GenericContent')).toBeTruthy()
     })
 
     it('Should return false for non-descendants values', () => {
       const store = new SchemaStore()
       store.setSchemas(DefaultSchemaStore)
-      expect(store.schemaIsDescendantOf(File.name, Image.name)).toBeFalsy()
-      expect(store.schemaIsDescendantOf(GenericContent.name, ContentType.name)).toBeFalsy()
-      expect(store.schemaIsDescendantOf(UserProfile.name, Group.name)).toBeFalsy()
+      expect(store.schemaIsDescendantOf('File', 'Image')).toBeFalsy()
+      expect(store.schemaIsDescendantOf('GenericContent', 'ContentType')).toBeFalsy()
+      expect(store.schemaIsDescendantOf('UserProfile', 'Group')).toBeFalsy()
     })
   })
 
@@ -102,9 +93,9 @@ describe('SchemaStore', () => {
     it('Should return false for non-descendants values', () => {
       const store = new SchemaStore()
       store.setSchemas(DefaultSchemaStore)
-      expect(store.isContentFromType({ Type: File.name } as GenericContent, 'Image')).toBeFalsy()
-      expect(store.isContentFromType({ Type: GenericContent.name } as GenericContent, 'ContentType')).toBeFalsy()
-      expect(store.isContentFromType({ Type: UserProfile.name } as GenericContent, 'Group')).toBeFalsy()
+      expect(store.isContentFromType({ Type: 'File' } as GenericContent, 'Image')).toBeFalsy()
+      expect(store.isContentFromType({ Type: 'GenericContent' } as GenericContent, 'ContentType')).toBeFalsy()
+      expect(store.isContentFromType({ Type: 'UserProfile' } as GenericContent, 'Group')).toBeFalsy()
     })
   })
 })
