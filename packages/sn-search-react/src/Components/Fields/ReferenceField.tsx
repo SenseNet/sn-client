@@ -177,7 +177,7 @@ export function ReferenceField<T extends GenericContent>(props: ReferenceFieldPr
           displayName={displayName}
           description={description}
           helperText={helperText}
-          inputProps={inputComponentProps as any}
+          inputProps={inputComponentProps}
           autoFocus={props.autoFocus}
         />
       )}
