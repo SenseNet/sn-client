@@ -22,19 +22,7 @@ describe('AddNew Menu', () => {
 
     cy.get('[data-test="drawer-menu-item-content"]').click()
     cy.get('[data-test="add-button"]').should('not.be.disabled')
-    cy.get('[data-test="add-button"]')
-      .click()
-      .then(() => {
-        cy.get('[data-test="list-items"]')
-          .children()
-          .should('have.length', dropdownItems.length)
-          .each(($span) => {
-            const text = $span.text()
-            if (text) {
-              expect(dropdownItems).to.include(text)
-            }
-          })
-      })
+    cy.checkAddItemList(dropdownItems)
   })
 
   it('should display an editor of new content and AddNew button should be disabled after selection', () => {
