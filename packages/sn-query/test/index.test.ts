@@ -1,13 +1,13 @@
 import { Query } from '../src'
 
-class Task {
-  public Id!: number
-  public Name!: string
-  public Path!: string
-  public DisplayName!: string
-  public ModificationDate?: string
-  public Approvable!: boolean
-  public Description!: string
+type Task = {
+  Id: number
+  Name: string
+  Path: string
+  DisplayName: string
+  ModificationDate?: string
+  Approvable: boolean
+  Description: string
 }
 describe('Query', () => {
   it('Can be constructed', () => {
@@ -19,7 +19,7 @@ describe('Query', () => {
     const query = new Query(
       (q) =>
         q
-          .typeIs<Task>(Task) // adds '+TypeIs:Document' and Typescript type cast
+          .typeIs<Task>('Task') // adds '+TypeIs:Document' and Typescript type cast
           .and.equals('DisplayName', 'Unicorn') // adds +Title:Unicorn (TBD: fuzzy/Proximity)
           .and.between('ModificationDate', '2017-01-01T00:00:00', '2017-02-01T00:00:00')
           .or.query(
@@ -45,12 +45,12 @@ describe('Query', () => {
     })
 
     it('TypeIs', () => {
-      const queryInstance = new Query((q) => q.typeIs<Task>(Task))
+      const queryInstance = new Query((q) => q.typeIs<Task>('Task'))
       expect(queryInstance.toString()).toBe('TypeIs:Task')
     })
 
     it('Type', () => {
-      const queryInstance = new Query((q) => q.type<Task>(Task))
+      const queryInstance = new Query((q) => q.type<Task>('Task'))
       expect(queryInstance.toString()).toBe('Type:Task')
     })
 

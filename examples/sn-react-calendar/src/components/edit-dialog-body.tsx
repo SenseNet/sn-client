@@ -5,7 +5,7 @@ import { CurrentContentContext, CurrentContentProvider, useRepository } from '@s
 import { DialogContent, DialogTitle } from '@material-ui/core'
 import { DialogProps } from '@material-ui/core/Dialog'
 import React, { useContext } from 'react'
-import CalendarEvent from '../CalendarEvent-type'
+import { CalendarEvent } from '../CalendarEvent-type'
 import { SharedContext } from '../context/shared-context'
 
 const EditPropertiesDialogBody: React.FunctionComponent<{

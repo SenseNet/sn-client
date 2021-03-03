@@ -1,6 +1,6 @@
 import Snackbar from '@material-ui/core/Snackbar'
 import React, { createContext, Dispatch, SyntheticEvent, useState } from 'react'
-import CalendarEvent from '../CalendarEvent-type'
+import { CalendarEvent } from '../CalendarEvent-type'
 import { EditPropertiesDialog } from '../components/edit-dialog'
 import { NewDialog } from '../components/new-dialog'
 import CalendarNotification from '../components/notification'
