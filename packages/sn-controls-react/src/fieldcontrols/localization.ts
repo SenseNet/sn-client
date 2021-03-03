@@ -70,6 +70,9 @@ export const defaultLocalization = {
   timePicker: {
     noValue: 'No time selected',
   },
+  fileSize: {
+    noValue: 'No value set',
+  },
 }
 
 export type FieldLocalization = DeepPartial<typeof defaultLocalization>
