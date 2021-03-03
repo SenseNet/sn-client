@@ -1,7 +1,6 @@
 import React from 'react'
 import { FlatIcon } from './flaticon/Icon'
 import { FontAwesomeIcon } from './fontawesome/Icon'
-import { ImageIcon } from './image/Icon'
 import { MaterialIcon } from './materialui/Icon'
 
 /**
@@ -20,10 +19,6 @@ export enum iconType {
    * Flaticon icons
    */
   flaticon,
-  /**
-   * Image icons
-   */
-  image,
 }
 
 interface IconProps {
@@ -35,17 +30,12 @@ interface IconProps {
    * Type of the icon (name of the icon library e.g. fontawesome)
    * @default iconType.materialui
    */
-  type?: iconType | null
+  type?: iconType
   /**
    * Color of the icon
    * @default primary
    */
   color?: 'inherit' | 'primary' | 'secondary' | 'action' | 'error' | 'disabled'
-  /**
-   * Size of the icon (only used on image icons)
-   * @default 16
-   */
-  size?: 16 | 32
   /**
    * Font size of the icon (only used on icon font-based icons)
    * @default default
@@ -54,11 +44,11 @@ interface IconProps {
   /**
    * Classes object that is passed to the inner material-ui Icon component
    */
-  classes?: object | null
+  classes?: object
   /**
    * Style object that is passed to the inner material-ui Icon component
    */
-  style?: object | null
+  style?: object
   /**
    * Called when the icon is clicked
    */
@@ -72,68 +62,57 @@ interface IconProps {
 /**
  * Main Icon component
  */
-export class Icon extends React.Component<IconProps, {}> {
-  /**
-   * renders the component
-   */
-  public render() {
-    const { type, color, size, classes, iconName, style, onClick, className, fontSize } = this.props
-    switch (type) {
-      case iconType.materialui:
-        return (
-          <MaterialIcon
-            color={color}
-            fontSize={fontSize}
-            classes={classes}
-            iconName={iconName}
-            style={style}
-            onClick={onClick ? (e) => onClick(e) : undefined}
-            className={className}>
-            {this.props.children ? this.props.children : null}
-          </MaterialIcon>
-        )
-      case iconType.flaticon:
-        return (
-          <FlatIcon
-            color={color}
-            fontSize={fontSize}
-            classes={classes}
-            iconName={iconName}
-            style={style}
-            onClick={onClick ? (e) => onClick(e) : undefined}>
-            {this.props.children ? this.props.children : null}
-          </FlatIcon>
-        )
-      case iconType.fontawesome:
-        return (
-          <FontAwesomeIcon
-            color={color}
-            fontSize={fontSize}
-            classes={classes}
-            iconName={iconName}
-            style={style}
-            onClick={onClick ? (e) => onClick(e) : undefined}>
-            {this.props.children ? this.props.children : null}
-          </FontAwesomeIcon>
-        )
-      case iconType.image:
-        return (
-          <ImageIcon iconName={iconName} size={size} style={style} onClick={onClick ? (e) => onClick(e) : undefined}>
-            {this.props.children ? this.props.children : null}
-          </ImageIcon>
-        )
-      default:
-        return (
-          <MaterialIcon
-            iconName={iconName}
-            color={color ? color : 'primary'}
-            fontSize={fontSize ? fontSize : 'default'}
-            classes={classes ? classes : null}
-            className={className}
-            onClick={onClick ? (e) => onClick(e) : undefined}
-            style={style}
-          />
-        )
-    }
+export const Icon: React.FunctionComponent<IconProps> = (props) => {
+  const { type, color, classes, iconName, style, onClick, className, fontSize } = props
+  switch (type) {
+    case iconType.materialui:
+      return (
+        <MaterialIcon
+          color={color}
+          fontSize={fontSize}
+          classes={classes}
+          iconName={iconName}
+          style={style}
+          onClick={onClick}
+          className={className}>
+          {props.children}
+        </MaterialIcon>
+      )
+    case iconType.flaticon:
+      return (
+        <FlatIcon
+          color={color}
+          fontSize={fontSize}
+          classes={classes}
+          iconName={iconName}
+          style={style}
+          onClick={onClick}>
+          {props.children}
+        </FlatIcon>
+      )
+    case iconType.fontawesome:
+      return (
+        <FontAwesomeIcon
+          color={color}
+          fontSize={fontSize}
+          classes={classes}
+          iconName={iconName}
+          style={style}
+          onClick={onClick}>
+          {props.children}
+        </FontAwesomeIcon>
+      )
+    default:
+      return (
+        <MaterialIcon
+          iconName={iconName}
+          color={color || 'primary'}
+          fontSize={fontSize || 'default'}
+          classes={classes}
+          className={className}
+          onClick={onClick}
+          style={style}
+        />
+      )
   }
 }

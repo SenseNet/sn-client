@@ -1,5 +1,4 @@
-import { FlatIcon, FontAwesomeIcon, Icon, ImageIcon, MaterialIcon } from '@sensenet/icons-react/src'
-import { withA11y } from '@storybook/addon-a11y'
+import { FlatIcon, FontAwesomeIcon, Icon, MaterialIcon } from '@sensenet/icons-react/src'
 import { action } from '@storybook/addon-actions'
 import { select, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
@@ -8,7 +7,6 @@ import React from 'react'
 import defaultNotes from '../notes/icon/Default.md'
 import flaticonNotes from '../notes/icon/Flaticon.md'
 import fontawesomeNotes from '../notes/icon/FontAwesome.md'
-import imageNotes from '../notes/icon/Image.md'
 import materialuiNotes from '../notes/icon/Materialui.md'
 
 const stories = storiesOf('Icon', module).addDecorator(withKnobs)
@@ -63,15 +61,4 @@ stories
       />
     ),
     { notes: { markdown: flaticonNotes } },
-  )
-  .add(
-    'image',
-    () => (
-      <ImageIcon
-        iconName={text('Name of the icon', 'folder')}
-        onClick={action('button-click')}
-        size={select('Size', [16, 32], 16)}
-      />
-    ),
-    { notes: { markdown: imageNotes } },
   )

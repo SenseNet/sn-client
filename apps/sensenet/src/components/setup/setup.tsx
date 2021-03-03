@@ -38,7 +38,7 @@ const Setup = () => {
         path: ConstantContent.PORTAL_ROOT.Path,
         oDataOptions: {
           orderby: [['Index' as any, 'asc']],
-          query: `${new Query((q) => q.typeIs(Settings)).toString()} .AUTOFILTERS:OFF`,
+          query: `${new Query((q) => q.typeIs('Settings')).toString()} .AUTOFILTERS:OFF`,
         },
       })
       setSettings(response.d.results)
