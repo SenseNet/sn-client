@@ -1,9 +1,9 @@
 import TextField from '@material-ui/core/TextField'
 import React from 'react'
-import { InputProps } from 'react-autosuggest'
+import { RenderInputComponentProps } from 'react-autosuggest'
 
 type ReferenceFieldInputProps = {
-  inputProps: InputProps<{}>
+  inputProps: RenderInputComponentProps
   displayName?: string
   helperText?: string
   description?: string
@@ -27,7 +27,7 @@ export const ReferenceFieldInput = (props: ReferenceFieldInputProps) => {
         ...(inputProps as any),
       }}
       onBlur={(ev) => inputProps.onBlur?.(ev)}
-      onChange={(ev) => inputProps.onChange(ev, { method: 'type', newValue: ev.currentTarget.value })}
+      onChange={(ev) => inputProps.onChange && inputProps.onChange(ev)}
     />
   )
 }
