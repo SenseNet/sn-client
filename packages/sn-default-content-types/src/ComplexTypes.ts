@@ -25,28 +25,28 @@
  * ```
  */ /** */
 
-export class ChoiceOption {
-  public Value!: string
-  public Text?: string
-  public Enabled?: boolean
-  public Selected?: boolean
+export type ChoiceOption = {
+  Value: string
+  Text?: string
+  Enabled?: boolean
+  Selected?: boolean
 }
 
-export class DeferredUriObject {
-  public uri!: string
+export type DeferredUriObject = {
+  uri: string
 }
 
-export class DeferredObject extends Object {
-  public __deferred!: DeferredUriObject
+export type DeferredObject = Object & {
+  __deferred: DeferredUriObject
 }
 
-export class MediaObject {
-  public edit_media!: string
-  public media_src!: string
-  public content_type!: string
-  public media_etag!: string
+export type MediaObject = {
+  edit_media: string
+  media_src: string
+  content_type: string
+  media_etag: string
 }
 
-export class MediaResourceObject extends Object {
-  public __mediaresource!: MediaObject
+export type MediaResourceObject = Object & {
+  __mediaresource: MediaObject
 }

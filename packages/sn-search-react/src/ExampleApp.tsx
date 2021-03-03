@@ -1,5 +1,5 @@
 import { ODataCollectionResponse, Repository } from '@sensenet/client-core'
-import { Folder, GenericContent, ReferenceFieldSetting, File as SnFile, User } from '@sensenet/default-content-types'
+import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import { Icon, iconType, MaterialIcon } from '@sensenet/icons-react'
 import { Query } from '@sensenet/query'
 import AppBar from '@material-ui/core/AppBar'
@@ -229,7 +229,7 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
                         _options.updateQuery('Type', query)
                       }}
                       id="type-filter"
-                      types={/*contentTypes*/ [SnFile, Folder, User]}
+                      types={/*contentTypes*/ ['File', 'Folder', 'User']}
                       schemaStore={repo.schemas}
                       getMenuItem={(schema, isSelected) => (
                         <MenuItem
