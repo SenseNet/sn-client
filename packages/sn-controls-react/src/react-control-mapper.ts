@@ -29,8 +29,12 @@ export const reactControlMapper = (repository: Repository) => {
     () => null,
   )
   controlMapper
-    .setupFieldSettingDefault('NumberFieldSetting', () => {
-      return FieldControls.NumberField
+    .setupFieldSettingDefault('NumberFieldSetting', (setting) => {
+      if (setting.ControlHint === 'sn:FileSize') {
+        return FieldControls.FileSizeField
+      } else {
+        return FieldControls.NumberField
+      }
     })
     .setupFieldSettingDefault('CurrencyFieldSetting', () => {
       return FieldControls.NumberField
