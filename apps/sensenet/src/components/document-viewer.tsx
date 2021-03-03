@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     actionButtonWrapper: {
       height: '80px',
-      width: '93%',
+      left: 0,
       position: 'absolute',
       padding: '20px',
       bottom: 0,
@@ -129,6 +129,7 @@ export function DocumentViewer(props: { contentPath: string }) {
         <Button
           color="default"
           className={globalClasses.cancelButton}
+          style={{ marginRight: 0 }}
           onClick={closeViewer}
           aria-label={localization.customActions.resultsDialog.closeButton}>
           {localization.customActions.resultsDialog.closeButton}

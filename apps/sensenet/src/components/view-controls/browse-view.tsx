@@ -4,9 +4,9 @@
 import { BrowseView as SnBrowseView } from '@sensenet/controls-react'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
-import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useSelectionService } from '../../hooks'
 import { navigateToAction } from '../../services'
 import { reactControlMapper } from '../react-control-mapper'
@@ -19,13 +19,21 @@ export interface BrowseViewProps {
   contentPath: string
 }
 
+const useStyles = makeStyles((theme: Theme) => {
+  return createStyles({
+    cancelButton: {
+      border: theme.palette.type === 'light' ? '2px solid #212121DE' : '2px solid #505050',
+    },
+  })
+})
+
 export const BrowseView: React.FC<BrowseViewProps> = (props) => {
   const repository = useRepository()
   const selectionService = useSelectionService()
   const [content, setContent] = useState<GenericContent>()
   const controlMapper = reactControlMapper(repository)
   const classes = useViewControlStyles()
-  const globalClasses = useGlobalStyles()
+  const localClasses = useStyles()
   const localization = useLocalization()
   const history = useHistory()
   const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
@@ -57,7 +65,7 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
         localization={{ cancel: localization.forms.cancel }}
         classes={{
           ...classes,
-          cancel: globalClasses.cancelButton,
+          cancel: localClasses.cancelButton,
         }}
         renderTitle={() => <ViewTitle title={'Info about'} titleBold={content?.DisplayName} content={content} />}
       />

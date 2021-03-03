@@ -17,7 +17,7 @@ const useStyles = makeStyles(() => {
     },
     actionButtonWrapper: {
       height: '80px',
-      width: '93%',
+      left: 0,
       position: 'absolute',
       padding: '20px',
       bottom: 0,
@@ -159,6 +159,7 @@ export default function WopiPage({ contentPath }: { contentPath?: string }) {
           aria-label={formsLocalization.cancel}
           color="default"
           className={globalClasses.cancelButton}
+          style={{ marginRight: 0 }}
           onClick={() => navigateToAction({ history, routeMatch })}>
           {formsLocalization.cancel}
         </Button>
