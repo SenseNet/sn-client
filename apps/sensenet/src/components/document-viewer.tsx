@@ -129,7 +129,6 @@ export function DocumentViewer(props: { contentPath: string }) {
         <Button
           color="default"
           className={globalClasses.cancelButton}
-          style={{ marginRight: 0 }}
           onClick={closeViewer}
           aria-label={localization.customActions.resultsDialog.closeButton}>
           {localization.customActions.resultsDialog.closeButton}

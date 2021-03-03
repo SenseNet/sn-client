@@ -159,7 +159,6 @@ export default function WopiPage({ contentPath }: { contentPath?: string }) {
           aria-label={formsLocalization.cancel}
           color="default"
           className={globalClasses.cancelButton}
-          style={{ marginRight: 0 }}
           onClick={() => navigateToAction({ history, routeMatch })}>
           {formsLocalization.cancel}
         </Button>
