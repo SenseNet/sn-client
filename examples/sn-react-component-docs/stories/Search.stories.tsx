@@ -172,7 +172,7 @@ storiesOf('Search', module)
             placeholder="Select a content type"
             style={{ minWidth: '250px' }}
             schemaStore={new Repository().schemas}
-            types={[User, Folder, PortalSettings]}
+            types={['User', 'Folder', 'PortalSettings']}
             onQueryChange={action('onQueryChange')}
           />
         )}
