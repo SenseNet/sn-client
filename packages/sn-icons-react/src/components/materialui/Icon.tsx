@@ -23,11 +23,11 @@ interface MaterialIconProps {
   /**
    * Classes object that is passed to the inner material-ui Icon component
    */
-  classes?: object | null
+  classes?: object
   /**
    * Style object that is passed to the inner material-ui Icon component
    */
-  style?: object | null
+  style?: object
   /**
    * Called when the icon is clicked
    */
@@ -40,23 +40,18 @@ interface MaterialIconProps {
 /**
  * Material Icon component
  */
-export class MaterialIcon extends React.Component<MaterialIconProps, {}> {
-  /**
-   * renders the component
-   */
-  public render() {
-    const { color, fontSize, classes, iconName, style, onClick, className } = this.props
-    return (
-      <Icon
-        color={color ? color : 'primary'}
-        fontSize={fontSize ? fontSize : 'default'}
-        classes={classes ? classes : undefined}
-        style={style ? style : undefined}
-        onClick={onClick ? onClick : undefined}
-        className={className ? className : undefined}>
-        {iconName}
-        {this.props.children ? this.props.children : undefined}
-      </Icon>
-    )
-  }
+export const MaterialIcon: React.FunctionComponent<MaterialIconProps> = (props) => {
+  const { color, fontSize, classes, iconName, style, onClick, className } = props
+  return (
+    <Icon
+      color={color || 'primary'}
+      fontSize={fontSize || 'default'}
+      classes={classes}
+      style={style}
+      onClick={onClick}
+      className={className}>
+      {iconName}
+      {props.children}
+    </Icon>
+  )
 }
