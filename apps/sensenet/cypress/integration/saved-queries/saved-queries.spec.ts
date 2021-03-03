@@ -1,5 +1,7 @@
 import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
+const expedtedSearchItems = ['Sample workspace', 'Sample link', 'Sample memo', 'Sample task', 'Sample event']
+
 describe('Saved queries', () => {
   before(() => {
     cy.login()
@@ -12,11 +14,9 @@ describe('Saved queries', () => {
     cy.get('a[title="New search"]').click()
     cy.get('[data-test="input-search"]').type(inputText)
 
-    cy.get('[data-test="table-cell-sample-workspace"]').should('be.visible')
-    cy.get('[data-test="table-cell-sample-link"]').should('be.visible')
-    cy.get('[data-test="table-cell-sample-memo"]').should('be.visible')
-    cy.get('[data-test="table-cell-sample-task"]').should('be.visible')
-    cy.get('[data-test="table-cell-sample-event"]').should('be.visible')
+    expedtedSearchItems.forEach((item) => {
+      cy.get(`[data-test="table-cell-${item?.replace(/\s+/g, '-').toLowerCase()}"]`).should('be.visible')
+    })
 
     cy.get('button[aria-label="Save Query"]')
       .click()
@@ -31,11 +31,9 @@ describe('Saved queries', () => {
         cy.get('[data-test="table-cell-test-search-for-a-keyword"]').dblclick()
         cy.get('[data-test="input-search"]').find('input[type="text"]').should('have.value', inputText)
 
-        cy.get('[data-test="table-cell-sample-workspace"]').should('be.visible')
-        cy.get('[data-test="table-cell-sample-link"]').should('be.visible')
-        cy.get('[data-test="table-cell-sample-memo"]').should('be.visible')
-        cy.get('[data-test="table-cell-sample-task"]').should('be.visible')
-        cy.get('[data-test="table-cell-sample-event"]').should('be.visible')
+        expedtedSearchItems.forEach((item) => {
+          cy.get(`[data-test="table-cell-${item?.replace(/\s+/g, '-').toLowerCase()}"]`).should('be.visible')
+        })
       })
   })
   it('delete of a saved query should work properly.', () => {
