@@ -35,9 +35,9 @@ export enum OutputMethod {
  * Enum for Choice Field control values.
  */
 export enum DisplayChoice {
-  DropDown,
-  RadioButtons,
-  CheckBoxes,
+  DropDown = 'DropDown',
+  RadioButtons = 'RadioButtons',
+  CheckBoxes = 'CheckBoxes',
 }
 /**
  * Enum for DateTime Field mode values.
@@ -61,14 +61,6 @@ export enum DateTimePrecision {
  * Type for LongText field editor values.
  */
 export type TextType = 'LongText' | 'RichText' | 'AdvancedRichText'
-
-/**
- * Enum for HyperLink field href values.
- */
-export enum UrlFormat {
-  Hyperlink,
-  Picture,
-}
 
 /**
  * Check if field setting is type of param
