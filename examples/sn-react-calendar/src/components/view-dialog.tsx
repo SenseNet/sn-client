@@ -6,7 +6,7 @@ import Slide from '@material-ui/core/Slide'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import { TransitionProps } from '@material-ui/core/transitions'
 import React from 'react'
-import CalendarEvent from '../CalendarEvent-type'
+import { CalendarEvent } from '../CalendarEvent-type'
 import { ViewDialogBody } from './view-dialog-body'
 
 const Transition = React.forwardRef(

@@ -82,3 +82,19 @@ Cypress.Commands.add('checkReadPermissionGroup', (enabled = true) => {
     .find('.MuiSwitch-input')
     .should(enabled ? 'be.checked' : 'not.be.checked')
 })
+
+Cypress.Commands.add('checkAddItemList', (dropdownItems) => {
+  cy.get('[data-test="add-button"]')
+    .click()
+    .then(() => {
+      cy.get('[data-test="list-items"]')
+        .children()
+        .should('have.length', dropdownItems.length)
+        .each(($span) => {
+          const text = $span.text()
+          if (text) {
+            expect(dropdownItems).to.include(text)
+          }
+        })
+    })
+})

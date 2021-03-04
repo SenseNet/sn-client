@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/react-imagegallery",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "private": true,
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "contributors": [
@@ -22,9 +22,9 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",
-    "@types/node": "^14.14.22",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
+    "@types/node": "^14.14.31",
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.1",
     "@types/react-router": "^5.1.11",
     "@types/react-router-dom": "^5.1.7",
     "react": "^16.13.0",
@@ -37,10 +37,10 @@
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
-    "@sensenet/authentication-oidc-react": "^2.0.1",
-    "@sensenet/client-core": "^3.8.0",
-    "@sensenet/default-content-types": "^3.1.1",
-    "@sensenet/hooks-react": "^1.4.3",
+    "@sensenet/authentication-oidc-react": "^2.1.0",
+    "@sensenet/client-core": "^3.8.1",
+    "@sensenet/default-content-types": "^3.2.0",
+    "@sensenet/hooks-react": "^1.4.4",
     "moment": "^2.29.1"
   },
   "browserslist": {
