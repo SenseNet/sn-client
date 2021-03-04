@@ -126,8 +126,10 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
       maxHeight: 750,
     },
     cancelButton: {
-      marginRight: 38,
       border: theme.palette.type === 'light' ? '2px solid #212121DE' : '2px solid #505050',
+      '& ~ button': {
+        marginLeft: 38,
+      },
     },
   })
 })

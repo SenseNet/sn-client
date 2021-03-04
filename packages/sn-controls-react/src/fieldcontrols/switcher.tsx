@@ -48,10 +48,10 @@ export const Switch = withStyles((theme: Theme) => ({
     opacity: 1,
     '&$checked': {
       transform: 'translateX(12px)',
-      color: theme.palette.type === 'light' ? theme.palette.common.white : theme.palette.common.black,
+      color: theme.palette.common.white,
       '& + $track': {
         opacity: 1,
-        backgroundColor: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
+        backgroundColor: theme.palette.primary.main,
         borderColor: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
       },
     },

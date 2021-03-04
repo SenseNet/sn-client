@@ -21,5 +21,10 @@ declare namespace Cypress {
     restoreLocalStorage(): void
 
     checkReadPermissionGroup(enabled?: boolean): void
+
+    /**
+     * Check the items of the add button dropdown list by name
+     */
+    checkAddItemList(dropdownItems: string[]): void
   }
 }

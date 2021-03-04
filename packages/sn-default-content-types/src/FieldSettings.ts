@@ -80,129 +80,126 @@ export function isFieldSettingOfType<T extends FieldSetting>(setting: FieldSetti
   return setting.Type === type.name
 }
 
-export class FieldSetting {
-  public Name!: string
-  public Type!: string
-  public FieldClassName!: string
-  public DisplayName?: string
-  public Description?: string
-  public Icon?: string
-  public ReadOnly?: boolean
-  public Compulsory?: boolean
-  public DefaultValue?: string
-  public OutputMethod?: OutputMethod
-  public Visible?: boolean
-  public VisibleBrowse?: FieldVisibility
-  public VisibleNew?: FieldVisibility
-  public VisibleEdit?: FieldVisibility
-  public FieldIndex?: number
-  public DefaultOrder?: number
-  public ControlHint?: string
+export type FieldSetting = {
+  Name: string
+  Type: string
+  FieldClassName: string
+  DisplayName?: string
+  Description?: string
+  Icon?: string
+  ReadOnly?: boolean
+  Compulsory?: boolean
+  DefaultValue?: string
+  OutputMethod?: OutputMethod
+  VisibleBrowse?: FieldVisibility
+  VisibleNew?: FieldVisibility
+  VisibleEdit?: FieldVisibility
+  FieldIndex?: number
+  ControlHint?: string
 }
 
 // Used in ContentType, GenericContent, File, Image, TrashBag, TrashBin, Task
-export class IntegerFieldSetting extends FieldSetting {
-  public MinValue?: number
-  public MaxValue?: number
-  public ShowAsPercentage?: boolean
-  public Step?: number
+export type IntegerFieldSetting = FieldSetting & {
+  MinValue?: number
+  MaxValue?: number
+  ShowAsPercentage?: boolean
+  Step?: number
 }
 
-//
-export class TextFieldSetting extends FieldSetting {
-  public MinLength?: number
-  public MaxLength?: number
+export type TextFieldSetting = FieldSetting & {
+  MinLength?: number
+  MaxLength?: number
 }
 
 // Used in ContentType, GenericContent, File, ContentList, Device, Domain, Email, OrganizationalUnit, TrashBag, Group, Task, User
-export class ShortTextFieldSetting extends TextFieldSetting {
-  public Regex?: string
+export type ShortTextFieldSetting = TextFieldSetting & {
+  Regex?: string
 }
 
 // Used in ContentType, GenericContent, Settings, IndexingSettings, ContentList, Workspace, Site, CustomListItem, User
-export class NullFieldSetting extends FieldSetting {
-  public SelectionRoots?: string[]
+export type NullFieldSetting = FieldSetting & {
+  SelectionRoots?: string[]
 }
 
 // Used in ContentType, GenericContent, File, HtmlTemplate, Image, ContentList, Aspect, Email, SmartFolder, Query, User
-export class LongTextFieldSetting extends TextFieldSetting {
-  public Rows?: number
-  public TextType?: TextType
-  public AppendModifications?: boolean
+export type LongTextFieldSetting = TextFieldSetting & {
+  Rows?: number
+  TextType?: TextType
+  AppendModifications?: boolean
 }
 
 // Used in ContentType, File, User
-export class BinaryFieldSetting extends FieldSetting {
-  public IsText?: boolean
+export type BinaryFieldSetting = FieldSetting & {
+  IsText?: boolean
 }
 
 // Used in ContentType, GenericContent, ContentLink, ContentList, ImageLibrary, TrashBag, Workspace, Site, UserProfile, Group, Memo, Task, User
-export class ReferenceFieldSetting extends FieldSetting {
-  public AllowMultiple?: boolean
-  public AllowedTypes?: string[]
-  public SelectionRoots?: string[]
-  public Query?: string /* original: ContentQuery */
-  public FieldName?: string
+export type ReferenceFieldSetting = FieldSetting & {
+  AllowMultiple?: boolean
+  AllowedTypes?: string[]
+  SelectionRoots?: string[]
+  Query?: string /* original: ContentQuery */
+  FieldName?: string
 }
 
 // Used in ContentType, GenericContent, Image, Domain, Email, OrganizationalUnit, TrashBag, Workspace, Group, Memo, Task, User
-export class DateTimeFieldSetting extends FieldSetting {
-  public DateTimeMode?: DateTimeMode
-  public Precision?: DateTimePrecision
-  public EvaluatedDefaultValue?: string
+export type DateTimeFieldSetting = FieldSetting & {
+  DateTimeMode?: DateTimeMode
+  Precision?: DateTimePrecision
+  EvaluatedDefaultValue?: string
 }
 
 // Used in GenericContent, ContentList, SmartFolder, Site, Memo, Task, Query, User
-export class ChoiceFieldSetting extends ShortTextFieldSetting {
-  public AllowExtraValue?: boolean
-  public AllowMultiple?: boolean
-  public Options?: ComplexTypes.ChoiceOption[]
-  public DisplayChoice?: DisplayChoice
-  public EnumTypeName?: string
+export type ChoiceFieldSetting = ShortTextFieldSetting & {
+  AllowExtraValue?: boolean
+  AllowMultiple?: boolean
+  Options?: ComplexTypes.ChoiceOption[]
+  DisplayChoice?: DisplayChoice
+  EnumTypeName?: string
 }
 
 // Used in GenericContent, File, Resource
-export class NumberFieldSetting extends FieldSetting {
-  public MinValue?: number
-  public MaxValue?: number
-  public Digits?: number
-  public ShowAsPercentage?: boolean
-  public Step?: number
+export type NumberFieldSetting = FieldSetting & {
+  MinValue?: number
+  MaxValue?: number
+  Digits?: number
+  ShowAsPercentage?: boolean
+  Step?: number
 }
 
 // Used in GenericContent
-export class RatingFieldSetting extends ShortTextFieldSetting {
-  public Range?: number
-  public Split?: number
+export type RatingFieldSetting = ShortTextFieldSetting & {
+  Range?: number
+  Split?: number
 }
 
 // Used in User
-export class PasswordFieldSetting extends ShortTextFieldSetting {
-  public ReenterTitle?: string
-  public ReenterDescription?: string
-  public PasswordHistoryLength?: number
+export type PasswordFieldSetting = ShortTextFieldSetting & {
+  ReenterTitle?: string
+  ReenterDescription?: string
+  PasswordHistoryLength?: number
 }
 
-export class ColorFieldSetting extends TextFieldSetting {
+export type ColorFieldSetting = TextFieldSetting & {
   /**
    * Semicolon separated list of colors in hexadecimal format.
    * @example "#ff0000;#f0d0c9;#e2a293;#d4735e;#65281a"
    * @type {string}
    * @memberof ColorFieldSetting
    */
-  public Palette?: string
+  Palette?: string
 }
 // Used in User
-export class CaptchaFieldSetting extends FieldSetting {}
+export type CaptchaFieldSetting = FieldSetting
 
-export class BooleanFieldSetting extends FieldSetting {}
+export type BooleanFieldSetting = FieldSetting
 
-export class CurrencyFieldSetting extends NumberFieldSetting {
+export type CurrencyFieldSetting = NumberFieldSetting & {
   /**
    * Provides region information for specific cultures
    * @type {string}
    * @example 'en-US'
    * @memberof CurrencyFieldSetting
    */
-  public Format?: string
+  Format?: string
 }

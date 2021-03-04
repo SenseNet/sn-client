@@ -22,11 +22,11 @@ interface FlatIconProps {
   /**
    * Classes object that is passed to the inner material-ui Icon component
    */
-  classes?: object | null
+  classes?: object
   /**
    * Style object that is passed to the inner material-ui Icon component
    */
-  style?: object | null
+  style?: object
   /**
    * Additional class name
    */
@@ -36,22 +36,17 @@ interface FlatIconProps {
 /**
  * Flaticon Icon component
  */
-export class FlatIcon extends React.Component<FlatIconProps, {}> {
-  /**
-   * renders the component
-   */
-  public render() {
-    const { color, fontSize, classes, iconName, style, onClick } = this.props
-    return (
-      <Icon
-        color={color ? color : 'primary'}
-        fontSize={fontSize ? fontSize : 'default'}
-        classes={classes ? classes : undefined}
-        className={`flaticon-${iconName}`}
-        style={style ? style : undefined}
-        onClick={onClick ? onClick : undefined}>
-        {this.props.children ? this.props.children : undefined}
-      </Icon>
-    )
-  }
+export const FlatIcon: React.FunctionComponent<FlatIconProps> = (props) => {
+  const { color, fontSize, classes, iconName, style, onClick } = props
+  return (
+    <Icon
+      color={color || 'primary'}
+      fontSize={fontSize || 'default'}
+      classes={classes}
+      className={`flaticon-${iconName}`}
+      style={style}
+      onClick={onClick}>
+      {props.children}
+    </Icon>
+  )
 }

@@ -22,7 +22,7 @@ import isSameDay from 'date-fns/isSameDay'
 import parseISO from 'date-fns/parseISO'
 import React, { useContext, useState } from 'react'
 import striptags from 'striptags'
-import CalendarEvent from '../CalendarEvent-type'
+import { CalendarEvent } from '../CalendarEvent-type'
 import { SharedContext } from '../context/shared-context'
 import { DialogComponent } from './simple-dialog'
 

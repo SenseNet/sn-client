@@ -5,7 +5,7 @@ import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
 import React, { useContext } from 'react'
 import defavatar from '../assets/avatar-default.png'
-import CalendarEvent from '../CalendarEvent-type'
+import { CalendarEvent } from '../CalendarEvent-type'
 import { SharedContext } from '../context/shared-context'
 
 const useStyles = makeStyles((theme) =>
