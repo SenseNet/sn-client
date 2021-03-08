@@ -6,6 +6,12 @@ import { HEADER_HEIGHT } from '.'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    iconButton: {
+      padding: 0,
+      '&:hover': {
+        background: 'none',
+      },
+    },
     menuIcon: {
       color: theme.palette.common.white,
       marginRight: '20px',
@@ -67,7 +73,7 @@ export const ThreeDotMenu: React.FunctionComponent<ThreeDotMenuProps> = (props) 
 
   return (
     <div>
-      <IconButton style={{ padding: 0 }} onClick={handleToggle} ref={anchorRef}>
+      <IconButton className={classes.iconButton} onClick={handleToggle} ref={anchorRef}>
         <MoreVert className={clsx(classes.menuIcon, { [classes.menuIconActive]: isPopperOpen })} />
       </IconButton>
       {isPopperOpen ? (

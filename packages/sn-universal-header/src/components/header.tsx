@@ -31,7 +31,7 @@ type UniversalHeaderClassKey = Partial<ReturnType<typeof useStyles>>
 interface UniversalHeaderProps {
   title: string
   threeDotMenuItems?: React.ReactNode
-  headerClasses?: UniversalHeaderClassKey
+  classes?: UniversalHeaderClassKey
   hamburgerMenuClasses?: HamburgerMenuClassKey
   threeDotMenuClasses?: ThreeDotMenuClassKey
 }
