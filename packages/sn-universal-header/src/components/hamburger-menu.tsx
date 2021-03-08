@@ -15,6 +15,12 @@ import { HEADER_HEIGHT } from '.'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    iconButton: {
+      padding: 0,
+      '&:hover:': {
+        background: 'none',
+      },
+    },
     menuIcon: {
       color: theme.palette.common.white,
       marginRight: '20px',
@@ -80,7 +86,7 @@ export const HamburgerMenu: React.FunctionComponent<HamburgerMenuProps> = (props
 
   return (
     <div>
-      <IconButton style={{ padding: 0 }} onClick={handleToggle} ref={anchorRef}>
+      <IconButton className={classes.iconButton} onClick={handleToggle} ref={anchorRef}>
         {isPopperOpen ? <MenuOpenIcon className={classes.menuIconActive} /> : <MenuIcon className={classes.menuIcon} />}
       </IconButton>
       {isPopperOpen ? (
