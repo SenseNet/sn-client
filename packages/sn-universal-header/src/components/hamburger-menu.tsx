@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     iconButton: {
       padding: 0,
-      '&:hover:': {
+      '&:hover': {
         background: 'none',
       },
     },
