@@ -30,7 +30,7 @@ type UniversalHeaderClassKey = Partial<ReturnType<typeof useStyles>>
 
 interface UniversalHeaderProps {
   title: string
-  threeDotMenuItems: React.ReactNode
+  threeDotMenuItems?: React.ReactNode
   headerClasses?: UniversalHeaderClassKey
   hamburgerMenuClasses?: HamburgerMenuClassKey
   threeDotMenuClasses?: ThreeDotMenuClassKey
@@ -46,7 +46,9 @@ export const UniversalHeader: React.FunctionComponent<UniversalHeaderProps> = (p
           <HamburgerMenu classes={props.hamburgerMenuClasses} />
           <div>{props.title}</div>
         </div>
-        <ThreeDotMenu classes={props.threeDotMenuClasses} menuItems={props.threeDotMenuItems} />
+        {props.threeDotMenuItems ? (
+          <ThreeDotMenu classes={props.threeDotMenuClasses} menuItems={props.threeDotMenuItems} />
+        ) : null}
       </Toolbar>
     </AppBar>
   )
