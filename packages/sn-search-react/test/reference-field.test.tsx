@@ -163,7 +163,7 @@ describe('ReferenceField Component', () => {
       const ev = { currentTarget: { value: 'a' } }
       const component = shallow(<ReferenceFieldInput inputProps={{ onChange, value: '' }} />)
       component.find(TextField).first().simulate('change', ev)
-      expect(onChange).toBeCalledWith(ev, { method: 'type', newValue: 'a' })
+      expect(onChange).toBeCalledWith(ev)
     })
   })
 
