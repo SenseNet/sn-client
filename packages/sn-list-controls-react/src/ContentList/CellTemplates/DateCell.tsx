@@ -1,4 +1,4 @@
-import TableCell from '@material-ui/core/TableCell'
+import { TableCell } from '@material-ui/core'
 import React from 'react'
 import Moment from 'react-moment'
 

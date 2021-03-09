@@ -1,12 +1,6 @@
 import { GenericContent } from '@sensenet/default-content-types'
-import { Icon, iconType } from '@sensenet/icons-react'
-import Checkbox from '@material-ui/core/Checkbox'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import Typography from '@material-ui/core/Typography'
-import ArrowUpward from '@material-ui/icons/ArrowUpward'
+import { Checkbox, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core'
+import { ArrowUpward, Folder } from '@material-ui/icons'
 import React, { useCallback } from 'react'
 import { useSelection, useTreePicker } from '../../hooks'
 import { GenericContentWithIsParent } from '../../types'
@@ -80,11 +74,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
               />
             )}
           </ListItemIcon>
-          <ListItemIcon>
-            {props.renderIcon?.(item) || (
-              <Icon type={iconType.materialui} iconName="folder" style={{ color: 'primary' }} />
-            )}
-          </ListItemIcon>
+          <ListItemIcon>{props.renderIcon?.(item) || <Folder style={{ color: 'primary' }} />}</ListItemIcon>
           <ListItemText
             id={labelId}
             primary={item.DisplayName}

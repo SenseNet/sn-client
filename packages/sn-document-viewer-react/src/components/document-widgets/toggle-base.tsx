@@ -1,6 +1,4 @@
-import IconButton from '@material-ui/core/IconButton/IconButton'
-import createStyles from '@material-ui/core/styles/createStyles'
-import makeStyles from '@material-ui/core/styles/makeStyles'
+import { createStyles, IconButton, makeStyles } from '@material-ui/core'
 import React from 'react'
 
 const useStyles = makeStyles(() => {

@@ -1,11 +1,6 @@
 import { Highlight, Shapes } from '@sensenet/client-core'
-import Button from '@material-ui/core/Button/Button'
-import ClickAwayListener from '@material-ui/core/ClickAwayListener/ClickAwayListener'
-import Popper from '@material-ui/core/Popper/Popper'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
-import createStyles from '@material-ui/core/styles/createStyles'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import Delete from '@material-ui/icons/Delete'
+import { Button, ClickAwayListener, createStyles, makeStyles, Popper, Theme } from '@material-ui/core'
+import { Delete } from '@material-ui/icons'
 import React, { useState } from 'react'
 import { useLocalization } from '../../hooks'
 

@@ -1,9 +1,8 @@
 import { deepMerge } from '@sensenet/client-utils'
-import { SlideProps } from '@material-ui/core/Slide'
-import { Theme } from '@material-ui/core/styles'
+import { SlideProps, Theme } from '@material-ui/core'
 import React, { ReactNode } from 'react'
 import { ThemeProvider } from 'styled-components'
-import loaderImage from '../../assets/loader.gif'
+import loaderImage from '../assets/loader.gif'
 import {
   CommentsContextProvider,
   CommentStateProvider,

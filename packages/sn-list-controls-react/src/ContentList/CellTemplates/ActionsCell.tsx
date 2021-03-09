@@ -1,7 +1,6 @@
 import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
-import IconButton from '@material-ui/core/IconButton'
-import TableCell from '@material-ui/core/TableCell'
+import { IconButton, TableCell } from '@material-ui/core'
 import React from 'react'
 
 export const styles = {

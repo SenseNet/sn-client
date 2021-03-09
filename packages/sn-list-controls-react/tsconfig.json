@@ -1,10 +1,11 @@
 {
   "extends": "../../tsconfig-base.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src/ContentList"
+    "outDir": "./dist/types",
+    "emitDeclarationOnly": true,
+    "rootDir": "src"
   },
-  "include": ["src/ContentList"],
+  "include": ["src"],
   "references": [
     { "path": "../sn-default-content-types" },
     { "path": "../sn-icons-react" }

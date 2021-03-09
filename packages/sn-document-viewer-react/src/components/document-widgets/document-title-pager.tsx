@@ -1,8 +1,4 @@
-import ClickAwayListener from '@material-ui/core/ClickAwayListener'
-import createStyles from '@material-ui/core/styles/createStyles'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
+import { ClickAwayListener, createStyles, makeStyles, TextField, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
 import { useDocumentData, useLocalization, useViewerState } from '../../hooks'
 

@@ -1,5 +1,5 @@
 {
-  "name": "@sensenet/sn-app",
+  "name": "@app/sensenet",
   "version": "1.17.0",
   "main": "dist/index.js",
   "files": [

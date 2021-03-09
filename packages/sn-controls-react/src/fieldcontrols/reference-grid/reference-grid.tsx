@@ -1,14 +1,17 @@
 import { deepMerge, PathHelper } from '@sensenet/client-utils'
 import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import { PickerClassKey } from '@sensenet/pickers-react'
-import { DialogTitle } from '@material-ui/core'
-import Dialog, { DialogProps } from '@material-ui/core/Dialog'
-import FormControl from '@material-ui/core/FormControl'
-import FormGroup from '@material-ui/core/FormGroup'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import InputLabel from '@material-ui/core/InputLabel'
-import List from '@material-ui/core/List'
-import Typography from '@material-ui/core/Typography'
+import {
+  Dialog,
+  DialogProps,
+  DialogTitle,
+  FormControl,
+  FormGroup,
+  FormHelperText,
+  InputLabel,
+  List,
+  Typography,
+} from '@material-ui/core'
 import React, { ElementType, useCallback, useEffect, useMemo, useState } from 'react'
 import { ReactClientFieldSetting } from '../client-field-setting'
 import { defaultLocalization } from '../localization'

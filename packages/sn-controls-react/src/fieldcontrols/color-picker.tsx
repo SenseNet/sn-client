@@ -3,12 +3,7 @@
  */
 import { deepMerge } from '@sensenet/client-utils'
 import { ColorFieldSetting } from '@sensenet/default-content-types'
-import ClickAwayListener from '@material-ui/core/ClickAwayListener'
-import FormControl from '@material-ui/core/FormControl'
-import Icon from '@material-ui/core/Icon'
-import InputAdornment from '@material-ui/core/InputAdornment'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
+import { ClickAwayListener, FormControl, Icon, InputAdornment, TextField, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
 import { ColorResult, SketchPicker } from 'react-color'
 import { changeTemplatedValue } from '../helpers'
