@@ -34,9 +34,7 @@ const mapDispatchToProps = {
 }
 
 const LoadableNewView = Loadable({
-  loader: async () =>
-    (await import(/* webpackChunkName: "controls-react" */ '@sensenet/controls-react/dist/viewcontrols/new-view'))
-      .NewView,
+  loader: async () => (await import(/* webpackChunkName: "controls-react" */ '@sensenet/controls-react')).NewView,
   loading: FullScreenLoader,
 })
 

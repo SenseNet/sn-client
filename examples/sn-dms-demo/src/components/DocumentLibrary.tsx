@@ -2,7 +2,7 @@ import { ConstantContent, Content } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
-import { updateContent, uploadRequest } from '@sensenet/redux/dist/Actions'
+import { Actions } from '@sensenet/redux'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import { compile } from 'path-to-regexp'
 import React from 'react'
@@ -69,14 +69,14 @@ const mapStateToProps = (state: rootStateType) => {
 const mapDispatchToProps = {
   loadParent,
   loadMore,
-  uploadContent: uploadRequest,
+  uploadContent: Actions.uploadRequest,
   uploadDataTransfer: DMSActions.uploadDataTransfer,
   openActionMenu: DMSActions.openActionMenu,
   closeActionMenu: DMSActions.closeActionMenu,
   select,
   setActive,
   updateChildrenOptions,
-  updateContent,
+  updateContent: Actions.updateContent,
   updateSearchValues,
   resetSearchValues,
 }

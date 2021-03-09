@@ -1,6 +1,6 @@
 import { ActionModel, Query } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
-import { updateContent } from '@sensenet/redux/dist/Actions'
+import { Actions } from '@sensenet/redux'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import React from 'react'
@@ -31,7 +31,7 @@ const mapDispatchToProps = {
   setActive,
   openActionMenu,
   closeActionMenu,
-  updateContent,
+  updateContent: Actions.updateContent,
 }
 
 class SavedQueries extends React.Component<
