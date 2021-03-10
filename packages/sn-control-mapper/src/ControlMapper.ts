@@ -101,21 +101,17 @@ export class ControlMapper<TControlBaseType, TFieldControlBaseType> {
 
   /**
    * Sets up a specified control for a field setting
-   * @param contentType The Content Type
+   * @param contentType The name of the Content Type
    * @param fieldName The name of the field on the Content Type
    * @param setupControl The callback function that will setup the Control
    */
 
-  public setupFieldSettingForControl<
-    TFieldSettingType extends FieldSetting,
-    TContentType,
-    TField extends keyof TContentType
-  >(
-    contentType: new (...args: any[]) => TContentType,
-    fieldName: TField,
+  public setupFieldSettingForControl<TFieldSettingType extends FieldSetting>(
+    contentType: string,
+    fieldName: string,
     setupControl: (fieldSetting: TFieldSettingType) => TControlBaseType,
   ) {
-    this.contentTypeBoundfieldSettings.set(`${contentType.name}-${fieldName}`, setupControl as any)
+    this.contentTypeBoundfieldSettings.set(`${contentType}-${fieldName}`, setupControl as any)
     return this
   }
 
