@@ -2,11 +2,11 @@ import { GenericContent, User } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { Button, Grid, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@material-ui/core'
 import HistoryIcon from '@material-ui/icons/History'
-import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useSelectionService } from '../../hooks'
+import { useDateUtils } from '../../hooks/use-date-utils'
 import { navigateToAction } from '../../services'
 import { useDialog } from '../dialogs'
 import { useViewControlStyles } from './common/styles'
@@ -32,6 +32,7 @@ export const VersionView: React.FC<VersionViewProps> = (props) => {
   const globalClasses = useGlobalStyles()
   const history = useHistory()
   const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
+  const dateUtils = useDateUtils()
 
   useEffect(() => {
     async function getVersions() {
@@ -107,7 +108,8 @@ export const VersionView: React.FC<VersionViewProps> = (props) => {
               <TableRow key={index}>
                 <TableCell>{version.Version}</TableCell>
                 <TableCell>
-                  {moment(version.VersionModificationDate).fromNow()}
+                  {version.VersionModificationDate &&
+                    dateUtils.formatDistanceFromNow(new Date(version.VersionModificationDate))}
                   {` (${((version.VersionModifiedBy as any) as User).FullName})`}
                 </TableCell>
                 <TableCell>
