@@ -3,7 +3,6 @@ const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 const webpack = require('webpack')
 
 module.exports = {
-  entry: ['./src/index.tsx'],
   output: {
     path: path.resolve(__dirname, 'build'),
     publicPath: '/',
@@ -18,7 +17,7 @@ module.exports = {
         loader: require.resolve('url-loader'),
         options: {
           limit: 10000,
-          name: 'static/media/[name].[hash:8].[ext]',
+          name: 'static/media/[name].[contenthash:8].[ext]',
         },
       },
       {
@@ -35,14 +34,13 @@ module.exports = {
     new MonacoWebpackPlugin({
       languages: ['javascript', 'json'],
     }),
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
   ],
   optimization: {
     splitChunks: {
       cacheGroups: {
         monacoCommon: {
           test: /[\\/]node_modules[\\/]monaco\-editor/,
-          name: 'monaco-editor-common',
+          idHint: 'monaco-editor-common',
           chunks: 'async',
         },
       },

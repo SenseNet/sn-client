@@ -3,11 +3,11 @@ import { useRepository } from '@sensenet/hooks-react'
 import { Query } from '@sensenet/query'
 import { List, ListItem, ListItemAvatar } from '@material-ui/core'
 import { createStyles, makeStyles } from '@material-ui/styles'
+import format from 'date-fns/format'
 import orderby from 'lodash.orderby'
-import moment from 'moment'
 import React, { useContext, useEffect, useState } from 'react'
 import { v1 } from 'uuid'
-import CalendarEvent from '../CalendarEvent-type'
+import { CalendarEvent } from '../CalendarEvent-type'
 import { SharedContext } from '../context/shared-context'
 import AddNewEvent from './add-new-event'
 import EventComponent from './event'
@@ -48,8 +48,8 @@ const groupByDay = function (xs: CalendarEvent[], key: keyof Pick<CalendarEvent,
   xs.forEach((event) => {
     const findevent = resultArray.find(
       (c) =>
-        moment(new Date(c.date)).format('YYYY-MM-DD') ===
-        moment(new Date(event[key] !== undefined ? (event[key] as string) : '')).format('YYYY-MM-DD'),
+        format(new Date(c.date), 'yyyy-MM-dd') ===
+        format(new Date(event[key] !== undefined ? (event[key] as string) : ''), 'yyyy-MM-dd'),
     )
     if (findevent) {
       findevent.event.push(event)
@@ -103,7 +103,7 @@ const MainPanel: React.FunctionComponent = () => {
             'OwnerEmail',
           ] as any,
           query: new Query((q) =>
-            q.greatherThan('StartDate', '2019-01-01').and.lessThan('StartDate', '2019.12.31'),
+            q.greaterThan('StartDate', '2019-01-01').and.lessThan('StartDate', '2019.12.31'),
           ).toString(),
           orderby: [['StartDate', 'asc']],
           expand: ['CreatedBy', 'ModifiedBy'],
@@ -123,12 +123,12 @@ const MainPanel: React.FunctionComponent = () => {
       {data.map((element) => {
         return (
           <React.Fragment key={element.id}>
-            <List className={classes.root} data-month={moment(new Date(element.date)).format('MMMM')}>
+            <List className={classes.root} data-month={format(new Date(element.date), 'MMMM')}>
               <ListItem className={classes.nopadding}>
                 <ListItemAvatar className={classes.dayAvatar}>
                   <div>
-                    <span className={classes.dayname}>{moment(new Date(element.date)).format('ddd')}</span>
-                    <span className={classes.daynumber}>{moment(new Date(element.date)).format('D')}</span>
+                    <span className={classes.dayname}>{format(new Date(element.date), 'ddd')}</span>
+                    <span className={classes.daynumber}>{format(new Date(element.date), 'd')}</span>
                   </div>
                 </ListItemAvatar>
                 <div>

@@ -1,4 +1,4 @@
-import { Folder, GenericContent, File as SnFile } from '@sensenet/default-content-types'
+import { GenericContent } from '@sensenet/default-content-types'
 import { RepositoryContext } from '@sensenet/hooks-react'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { Query } from '@sensenet/query'
@@ -120,7 +120,7 @@ class SearchDocuments extends React.Component<
     if (innerQuery.toString()) {
       this.setState({
         query: new Query((q) =>
-          q.query((typeQuery) => typeQuery.typeIs(SnFile).or.typeIs(Folder)).and.query(innerQuery),
+          q.query((typeQuery) => typeQuery.typeIs('File').or.typeIs('Folder')).and.query(innerQuery),
         ).toString(),
       })
     } else {
@@ -266,21 +266,21 @@ class SearchDocuments extends React.Component<
                                   { text: 'Any', value: new Query((q) => q) },
                                   {
                                     text: 'Document',
-                                    value: new Query((q) => q.typeIs(File).and.equals('Icon' as any, 'word')),
+                                    value: new Query((q) => q.typeIs('File').and.equals('Icon' as any, 'word')),
                                   },
                                   {
                                     text: 'Sheet',
-                                    value: new Query((q) => q.typeIs(File).and.equals('Icon' as any, 'excel')),
+                                    value: new Query((q) => q.typeIs('File').and.equals('Icon' as any, 'excel')),
                                   },
                                   {
                                     text: 'Text',
-                                    value: new Query((q) => q.typeIs(File).and.equals('Icon' as any, 'document')),
+                                    value: new Query((q) => q.typeIs('File').and.equals('Icon' as any, 'document')),
                                   },
                                   {
                                     text: 'Slide',
-                                    value: new Query((q) => q.typeIs(File).and.equals('Icon' as any, 'powerpoint')),
+                                    value: new Query((q) => q.typeIs('File').and.equals('Icon' as any, 'powerpoint')),
                                   },
-                                  { text: 'Folder', value: new Query((q) => q.typeIs(Folder)) },
+                                  { text: 'Folder', value: new Query((q) => q.typeIs('Folder')) },
                                 ]}
                                 onQueryChange={(_key, query, name) =>
                                   this.handleFieldQueryChanged('type', query, name, options.updateQuery)

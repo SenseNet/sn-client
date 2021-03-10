@@ -11,7 +11,7 @@ module.exports = (env) => {
   })(common, {
     entry: env.coverage ? ['./instrumented/index.tsx'] : ['./src/index.tsx'],
     mode: 'development',
-    devtool: 'cheap-module-eval-source-map',
+    devtool: 'cheap-module-source-map',
     devServer: {
       historyApiFallback: true,
       open: true,

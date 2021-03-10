@@ -1,6 +1,6 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import TableCell from '@material-ui/core/TableCell'
-import moment from 'moment'
+import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import React from 'react'
 
 export interface DateCellProps {
@@ -11,7 +11,7 @@ export interface DateCellProps {
 export class DateCell extends React.Component<DateCellProps, {}> {
   public render() {
     const { content, fieldName } = this.props
-    const formattedDate = moment((content as any)[fieldName] as any).fromNow()
-    return <TableCell>{formattedDate}</TableCell>
+    const date = (content as any)[fieldName] as any
+    return <TableCell>{date && formatDistanceToNow(new Date(date), { addSuffix: true })}</TableCell>
   }
 }

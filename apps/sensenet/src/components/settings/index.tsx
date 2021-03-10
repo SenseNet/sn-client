@@ -58,12 +58,12 @@ export const Settings: React.FunctionComponent = () => {
     {
       name: 'stats',
       displayName: localizationDrawer.titles.Stats,
-      url: '/settings/stats',
+      url: resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'stats' } }),
     },
     {
       name: 'apiKeys',
       displayName: localizationDrawer.titles.ApiAndSecurity,
-      url: '/settings/apikeys',
+      url: resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'apiKeys' } }),
     },
     {
       name: 'localization',
@@ -71,14 +71,14 @@ export const Settings: React.FunctionComponent = () => {
       url: resolvePathParams({ path: PATHS.localization.appPath }),
     },
     {
-      name: 'webhooks',
+      name: 'webHooks',
       displayName: localizationDrawer.titles.Webhooks,
-      url: resolvePathParams({ path: PATHS.webhooks.appPath }),
+      url: resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'webhooks' } }),
     },
     {
       name: 'adminui',
       displayName: localizationDrawer.titles.AdminUiCustomization,
-      url: '/settings/adminui',
+      url: resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'adminui' } }),
     },
   ]
 
@@ -110,7 +110,7 @@ export const Settings: React.FunctionComponent = () => {
 
   return (
     <div className={clsx(globalClasses.contentWrapper, classes.settingsWrapper)} style={{ paddingLeft: 0 }}>
-      <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)} style={{ display: 'grid' }}>
+      <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}>
         <span style={{ fontSize: '20px' }}>{localizationDrawer.titles.Settings}</span>
       </div>
       <div className={classes.settingsContainer}>
