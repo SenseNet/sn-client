@@ -1,5 +1,5 @@
 import { useRepository } from '@sensenet/hooks-react'
-import { createStyles, makeStyles, Paper } from '@material-ui/core'
+import { createStyles, makeStyles, Paper, useTheme } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { useWidgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
@@ -20,6 +20,7 @@ const useStyles = makeStyles(() => {
 export const StorageWidget: React.FunctionComponent = () => {
   const classes = useStyles()
   const widgetClasses = useWidgetStyles()
+  const theme = useTheme()
   const localization = useLocalization().settings
   const numberFormatter = new Intl.NumberFormat('en-US')
   const repository = useRepository()
@@ -62,7 +63,7 @@ export const StorageWidget: React.FunctionComponent = () => {
           </span>
         </div>
         <MultiPartProgressLine
-          backgroundColor="white"
+          backgroundColor={theme.palette.type === 'light' ? theme.palette.action.disabled : theme.palette.common.white}
           visualParts={[
             {
               percentage: `${

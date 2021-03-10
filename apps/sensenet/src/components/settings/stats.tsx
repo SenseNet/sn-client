@@ -7,7 +7,6 @@ import { useLocalization } from '../../hooks'
 import { ComponentsWidget } from './stats-components-widget'
 import { InstalledPackagesWidget } from './stats-installed-packages-widget'
 import { StorageWidget } from './stats-storage-widget'
-import { UsageWidget } from './stats-usage-widget'
 
 export const Stats: React.FunctionComponent = () => {
   const globalClasses = useGlobalStyles()
@@ -36,7 +35,6 @@ export const Stats: React.FunctionComponent = () => {
       </div>
       <Container fixed>
         <StorageWidget />
-        <UsageWidget />
         <ComponentsWidget data={data} />
         <InstalledPackagesWidget data={data} />
       </Container>

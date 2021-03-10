@@ -13,9 +13,9 @@ import {
 import { green, red } from '@material-ui/core/colors'
 import { Close, Done } from '@material-ui/icons'
 import React from 'react'
-import { formatDate } from '../../assets/dateUtils'
 import { useGlobalStyles, useWidgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+import { useDateUtils } from '../../hooks/use-date-utils'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -39,6 +39,7 @@ export const InstalledPackagesWidget: React.FunctionComponent<InstalledPackagesW
   const globalClasses = useGlobalStyles()
   const widgetClasses = useWidgetStyles()
   const localization = useLocalization().settings
+  const dateUtils = useDateUtils()
 
   return (
     <div className={widgetClasses.root}>
@@ -62,9 +63,9 @@ export const InstalledPackagesWidget: React.FunctionComponent<InstalledPackagesW
                 <TableRow key={row.ComponentId}>
                   <TableCell align="left">{row.ComponentId}</TableCell>
                   <TableCell align="left">{row.Description}</TableCell>
-                  <TableCell align="left">{formatDate(row.ReleaseDate, 'dd/MM/yyyy')}</TableCell>
+                  <TableCell align="left">{dateUtils.formatDate(row.ReleaseDate, 'dd/MM/yyyy')}</TableCell>
                   <TableCell align="left" className={globalClasses.centeredHorizontal}>
-                    <span>{formatDate(row.ExecutionDate, 'dd/MM/yyyy')}</span>
+                    <span>{dateUtils.formatDate(row.ExecutionDate, 'dd/MM/yyyy')}</span>
                     {row.ExecutionResult === 'Successful' ? (
                       <Done className={classes.icon} style={{ color: green[500] }} />
                     ) : (
