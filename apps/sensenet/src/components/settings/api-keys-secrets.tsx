@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme: Theme) => {
       paddingTop: '10px',
       paddingBottom: '10px',
       backgroundColor: theme.palette.common.white,
+      color: theme.palette.common.black,
     },
     refreshIcon: { marginLeft: '0.5rem', padding: 0 },
   })
@@ -55,7 +56,7 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
     setIsRegenerating(true)
     const response = await repo.executeAction<any, Secret>({
       idOrPath: '/Root',
-      name: 'RegenerateSecret',
+      name: 'RegenerateSecretForRepository',
       method: 'POST',
       body: {
         clientId: client.clientId,
@@ -78,11 +79,8 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
     ;(async () => {
       const response = await repo.executeAction<any, { clients: ApiKey[] }>({
         idOrPath: '/Root',
-        name: 'GetClients',
+        name: 'GetClientsForRepository',
         method: 'GET',
-        body: {
-          repositoryHost: '',
-        },
       })
 
       setExternalClients(response.clients.filter((client) => client.type === ApiKeyType.ExternalClient))

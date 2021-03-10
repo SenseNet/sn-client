@@ -17,7 +17,7 @@ export const TabPanel: React.FC<TabPanelProps> = (props) => {
       aria-labelledby={`api-keys-tab-${index}`}
       {...other}>
       {value === index && (
-        <Box p={3}>
+        <Box>
           <Typography component="div">{children}</Typography>
         </Box>
       )}

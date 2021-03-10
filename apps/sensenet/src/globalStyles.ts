@@ -160,8 +160,8 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
       },
     },
     cardRoot: {
-      backgroundColor: '#F8F8F8',
-      border: '1px solid #E2E2E2',
+      backgroundColor: theme.palette.type === 'light' ? '#F8F8F8' : 'rgba(255, 255, 255, 0.05)',
+      border: theme.palette.type === 'light' ? '1px solid #E2E2E2' : 'none',
       padding: '14px 24px',
       marginBottom: '50px',
       '& .MuiGrid-item': {
