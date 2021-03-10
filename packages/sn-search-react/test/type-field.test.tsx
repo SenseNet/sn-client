@@ -38,7 +38,7 @@ describe('TypeField component', () => {
   it('Select change should update the query', (done) => {
     const instance = shallow(
       <TypeField
-        types={[User, Task]}
+        types={['User', 'Task']}
         schemaStore={schemaStore}
         onQueryChange={(q) => {
           expect(q.toString()).toBe('TypeIs:User')
@@ -53,7 +53,7 @@ describe('TypeField component', () => {
   it('Selecting multiple values should update the query', (done) => {
     const instance = shallow(
       <TypeField
-        types={[User, Task]}
+        types={['User', 'Task']}
         schemaStore={schemaStore}
         onQueryChange={(q) => {
           expect(q.toString()).toBe('TypeIs:User OR TypeIs:Task')

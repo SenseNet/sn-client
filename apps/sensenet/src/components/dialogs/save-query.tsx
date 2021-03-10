@@ -5,11 +5,13 @@ import { Button, DialogActions, DialogContent, TextField } from '@material-ui/co
 import React, { useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+import { createSearchQuery } from '../../services/search-query-builder'
+import { SearchFilters } from '../search'
 import { DialogTitle, useDialog } from '.'
 
 export type SaveQueryProps = {
   saveName?: string
-  query: string
+  filters: SearchFilters
 }
 
 export function SaveQuery(props: SaveQueryProps) {
@@ -30,9 +32,10 @@ export function SaveQuery(props: SaveQueryProps) {
           select: ['DisplayName', 'Query'],
         },
         body: {
-          query: props.query,
+          query: createSearchQuery(props.filters).toString(),
           displayName: saveName,
           queryType: 'Public',
+          uiFilters: JSON.stringify(props.filters),
         },
       })
       logger.information({
@@ -52,7 +55,7 @@ export function SaveQuery(props: SaveQueryProps) {
       <DialogContent style={{ minWidth: 450 }}>
         <TextField
           fullWidth={true}
-          defaultValue={localization.saveInputPlaceholder(props.query)}
+          defaultValue={localization.saveInputPlaceholder(props.filters.term)}
           onChange={(ev) => setSaveName(ev.currentTarget.value)}
         />
       </DialogContent>

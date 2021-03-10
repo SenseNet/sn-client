@@ -1,4 +1,4 @@
-import { ODataParams } from '@sensenet/client-core'
+import { ODataFieldParameter, ODataParams } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
@@ -94,7 +94,12 @@ export function Explore({
   const onActivateItemOverride = async (activeItem: GenericContent) => {
     const expandedItem = await repository.load({
       idOrPath: activeItem.Id,
-      oDataOptions: { select: 'all', expand: ['Actions'] as any },
+      oDataOptions: {
+        select: Array.isArray(repository.configuration.requiredSelect)
+          ? ([...repository.configuration.requiredSelect, 'Actions/Name'] as ODataFieldParameter<GenericContent>)
+          : repository.configuration.requiredSelect,
+        expand: ['Actions'] as ODataFieldParameter<GenericContent>,
+      },
     })
     const { location } = history
     history.push(getPrimaryActionUrl({ content: expandedItem.d, repository, uiSettings, location, snRoute }))

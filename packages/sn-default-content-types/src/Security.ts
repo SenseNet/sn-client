@@ -21,44 +21,45 @@ export enum PermissionLevel {
 /**
  * Type to provide an Object with the permission information that has to be set.
  */
-export class PermissionRequestBody {
-  public identity!: string
-  public localOnly?: boolean
-  public inheritance?: Inheritance
-  public RestrictedPreview?: PermissionValues
-  public PreviewWithoutWatermakr?: PermissionValues
-  public PreviewWithoutRedaction?: PermissionValues
-  public See?: PermissionValues
-  public Open?: PermissionValues
-  public OpenMinor?: PermissionValues
-  public Save?: PermissionValues
-  public Publish?: PermissionValues
-  public ForceUndoCheckout?: PermissionValues
-  public AddNew?: PermissionValues
-  public Approve?: PermissionValues
-  public Delete?: PermissionValues
-  public RecallOldVersion?: PermissionValues
-  public DeleteOldVersion?: PermissionValues
-  public SeePermissions?: PermissionValues
-  public SetPermissions?: PermissionValues
-  public RunApplication?: PermissionValues
-  public ManageListsAndWorkspaces?: PermissionValues
-  public TakeOwnership?: PermissionValues
-  public Custom01?: PermissionValues
-  public Custom02?: PermissionValues
-  public Custom03?: PermissionValues
-  public Custom04?: PermissionValues
-  public Custom05?: PermissionValues
-  public Custom06?: PermissionValues
-  public Custom07?: PermissionValues
-  public Custom08?: PermissionValues
-  public Custom09?: PermissionValues
-  public Custom10?: PermissionValues
-  public Custom11?: PermissionValues
-  public Custom12?: PermissionValues
-  public Custom13?: PermissionValues
-  public Custom14?: PermissionValues
+export type PermissionRequestBody = {
+  identity: string
+  localOnly?: boolean
+  inheritance?: Inheritance
+  RestrictedPreview?: PermissionValues
+  PreviewWithoutWatermakr?: PermissionValues
+  PreviewWithoutRedaction?: PermissionValues
+  See?: PermissionValues
+  Open?: PermissionValues
+  OpenMinor?: PermissionValues
+  Save?: PermissionValues
+  Publish?: PermissionValues
+  ForceUndoCheckout?: PermissionValues
+  AddNew?: PermissionValues
+  Approve?: PermissionValues
+  Delete?: PermissionValues
+  RecallOldVersion?: PermissionValues
+  DeleteOldVersion?: PermissionValues
+  SeePermissions?: PermissionValues
+  SetPermissions?: PermissionValues
+  RunApplication?: PermissionValues
+  ManageListsAndWorkspaces?: PermissionValues
+  TakeOwnership?: PermissionValues
+  Custom01?: PermissionValues
+  Custom02?: PermissionValues
+  Custom03?: PermissionValues
+  Custom04?: PermissionValues
+  Custom05?: PermissionValues
+  Custom06?: PermissionValues
+  Custom07?: PermissionValues
+  Custom08?: PermissionValues
+  Custom09?: PermissionValues
+  Custom10?: PermissionValues
+  Custom11?: PermissionValues
+  Custom12?: PermissionValues
+  Custom13?: PermissionValues
+  Custom14?: PermissionValues
 }
+
 /**
  * Provides metadata about permission values.
  */

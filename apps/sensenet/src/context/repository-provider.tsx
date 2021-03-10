@@ -129,7 +129,7 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
         />
       )}
       customEvents={customEvents}>
-      <RepoProvider repoUrl={authState.repoUrl} identityServerUrl={identityServerUrl}>
+      <RepoProvider repoUrl={authState.repoUrl} identityServerUrl={identityServerUrl} clearAuthState={clearState}>
         {children}
       </RepoProvider>
     </AuthenticationProvider>
@@ -139,13 +139,16 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
 const RepoProvider = ({
   children,
   repoUrl,
+  clearAuthState,
   identityServerUrl,
 }: {
   children: ReactNode
   repoUrl: string
+  clearAuthState: Function
   identityServerUrl?: string
 }) => {
-  const { oidcUser, login } = useOidcAuthentication()
+  const { oidcUser, login, logout } = useOidcAuthentication()
+  const logger = useLogger('repo-provider')
   const [repo, setRepo] = useState<Repository>()
 
   useEffect(() => {
@@ -187,11 +190,20 @@ const RepoProvider = ({
   }, [repo])
 
   useEffect(() => {
-    const configString = window.localStorage.getItem(authConfigKey)
-    if ((!oidcUser || oidcUser.expired) && configString) {
-      login()
-    }
-  }, [login, oidcUser])
+    ;(async () => {
+      const configString = window.localStorage.getItem(authConfigKey)
+      if ((!oidcUser || oidcUser.expired) && configString) {
+        try {
+          await login()
+        } catch (error) {
+          const config = JSON.parse(configString)
+          logger.error({ data: error, message: `Couldn't connect to ${config.authority}` })
+          window.localStorage.removeItem(authConfigKey)
+          clearAuthState()
+        }
+      }
+    })()
+  }, [clearAuthState, logger, login, logout, oidcUser])
 
   if (!oidcUser || oidcUser.expired || !repo) {
     return null

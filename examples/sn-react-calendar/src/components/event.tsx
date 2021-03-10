@@ -1,10 +1,11 @@
 import { User } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import { Avatar, createStyles, List, ListItem, ListItemAvatar, ListItemText, makeStyles } from '@material-ui/core'
-import moment from 'moment'
+import format from 'date-fns/format'
+import parseISO from 'date-fns/parseISO'
 import React, { useContext } from 'react'
 import defavatar from '../assets/avatar-default.png'
-import CalendarEvent from '../CalendarEvent-type'
+import { CalendarEvent } from '../CalendarEvent-type'
 import { SharedContext } from '../context/shared-context'
 
 const useStyles = makeStyles((theme) =>
@@ -43,8 +44,8 @@ const EventComponent: React.FunctionComponent<EventComponentProps> = (props) => 
   const repo = useRepository()
   const sharedcontext = useContext(SharedContext)
   const timeAndLocationpart = (event: CalendarEvent) => {
-    const start = moment(new Date(event.StartDate as string)).format('HH:mm')
-    const end = moment(new Date(event.EndDate as string)).format('HH:mm')
+    const start = format(parseISO(event.StartDate as string), 'HH:mm')
+    const end = format(parseISO(event.EndDate as string), 'HH:mm')
     const isAllday = event.AllDay
     const location = event.Location
     const timeDisplay = isAllday ? 'all day' : ` ${start}-${end}`

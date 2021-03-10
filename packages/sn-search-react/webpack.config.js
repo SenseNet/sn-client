@@ -19,7 +19,7 @@ module.exports = {
       cacheGroups: {
         commons: {
           test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
+          idHint: 'vendors',
           chunks: 'all',
         },
       },
@@ -79,7 +79,7 @@ module.exports = {
         loader: require.resolve('url-loader'),
         options: {
           limit: 10000,
-          name: 'static/media/[name].[hash:8].[ext]',
+          name: 'static/media/[name].[contenthash:8].[ext]',
         },
       },
     ],

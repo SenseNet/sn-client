@@ -9,6 +9,7 @@ import {
   ContentPickerDialogProps,
   CopyMoveDialogProps,
   CustomActionResultDialogProps,
+  DateRangePickerProps,
   DeleteContentDialogProps,
   ExecuteActionDialogProps,
   PermissionEditorDialogProps,
@@ -37,6 +38,7 @@ export type DialogWithProps = (
   | { name: 'content-picker'; props: ContentPickerDialogProps }
   | { name: 'feedback' }
   | { name: 'change-password' }
+  | { name: 'date-range-picker'; props: DateRangePickerProps }
 ) & { dialogProps?: Partial<DialogProps> }
 
 type Action = { type: 'PUSH_DIALOG'; dialog: DialogWithProps } | { type: 'POP_DIALOG' } | { type: 'CLOSE_ALL_DIALOGS' }

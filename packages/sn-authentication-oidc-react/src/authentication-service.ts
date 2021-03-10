@@ -6,6 +6,10 @@ export const getUserManager = () => {
   return userManager
 }
 
+export const removeUserManager = () => {
+  userManager = undefined
+}
+
 export const authenticationService = (configuration: UserManagerSettings) => {
   if (userManager) {
     return userManager

@@ -17,7 +17,7 @@ export const PATHS = {
   settings: { appPath: '/settings/:submenu?' },
 } as const
 
-type SettingsItemType = 'stats' | 'apikeys' | 'webHooks' | 'adminui'
+type SettingsItemType = 'stats' | 'apikeys' | 'webhooks' | 'adminui'
 
 type RoutesWithContentBrowser = keyof Pick<typeof PATHS, 'content' | 'usersAndGroups' | 'contentTypes' | 'trash'>
 

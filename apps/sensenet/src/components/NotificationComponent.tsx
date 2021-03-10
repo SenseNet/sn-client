@@ -48,7 +48,7 @@ export const getAutoHideDuration = (item: LeveledLogEntry<any>) => {
 
 export const NotificationComponent: React.FunctionComponent = () => {
   const notificationService = useNotificationService()
-  const [values, setValues] = useState<Array<LeveledLogEntry<any>>>([])
+  const [values, setValues] = useState<Array<LeveledLogEntry<any>>>(notificationService.activeMessages.getValue())
   const [dismisses, setDismisses] = useState<string[]>([])
   const device = useContext(ResponsiveContext)
   const theme = useTheme()

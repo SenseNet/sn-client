@@ -139,7 +139,7 @@ export const useDrawerItems = () => {
             },
           })
         case 'Settings':
-          return resolvePathParams({ path: PATHS.settings.appPath })
+          return resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'stats' } })
         default:
           return '/'
       }

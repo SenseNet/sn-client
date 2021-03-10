@@ -1,6 +1,7 @@
 import { RepositoryContext } from '@sensenet/hooks-react'
+import format from 'date-fns/format'
+import parseISO from 'date-fns/parseISO'
 import { mount, shallow } from 'enzyme'
-import moment from 'moment'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { App, Transition } from '../src/app'
@@ -41,7 +42,7 @@ describe('App Layout', () => {
     expect(obj.imgPath).toBe(repository.configuration.repositoryUrl + images[0].Path)
     expect(obj.imgAuthorAvatar).toBe(images[0].CreatedBy.Avatar.Url)
     expect(obj.imgDescription).toBe(images[0].Description)
-    expect(obj.imgCreationDate).toBe(moment(images[0].CreationDate).format('YYYY-MM-DD HH:mm:ss'))
+    expect(obj.imgCreationDate).toBe(format(parseISO(images[0].CreationDate as string), 'yyyy-MM-dd HH:mm:ss'))
     expect(obj.imgAuthor).toBe(images[0].CreatedBy.DisplayName)
     expect(obj.imgSize).toBe(`${(images[0].Size / 1024 / 1024).toFixed(2)} MB`)
   })

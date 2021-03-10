@@ -21,6 +21,7 @@ const Restore = React.lazy(() => import('./restore'))
 const ContentPicker = React.lazy(() => import('./content-picker'))
 const Feedback = React.lazy(() => import('./feedback'))
 const ChangePasswordDialog = React.lazy(() => import('./change-password'))
+const DateRangePicker = React.lazy(() => import('./date-range-picker'))
 
 function dialogRenderer(dialog: DialogWithProps) {
   switch (dialog.name) {
@@ -60,6 +61,8 @@ function dialogRenderer(dialog: DialogWithProps) {
       return <Feedback />
     case 'change-password':
       return <ChangePasswordDialog />
+    case 'date-range-picker':
+      return <DateRangePicker {...dialog.props} />
     default:
       return null
   }

@@ -41,6 +41,7 @@ export interface EditViewProps {
   classes?: EditViewClassKey
   controlMapper?: ControlMapper<any, any>
   fieldLocalization?: FieldLocalization
+  locale?: Locale
 }
 
 const useStyles = makeStyles(() => {
@@ -134,6 +135,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
                 uploadFolderPath: props.uploadFolderpath,
                 autoFocus,
                 localization: props.fieldLocalization,
+                locale: props.locale,
               },
             )
 
