@@ -85,7 +85,7 @@ export const NewView: React.FC<NewViewProps> = (props) => {
       <NewTextFile
         contentTypeName={props.contentTypeName}
         routeMatch={routeMatch}
-        savePath={PATHS.setup.snPath}
+        savePath={PATHS.configuration.snPath}
         fileExtension={'.settings'}
         isFileNameEditable={true}
       />

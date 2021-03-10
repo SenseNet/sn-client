@@ -22,15 +22,7 @@ export interface UiSettings {
 
 export const CustomDrawerItemType = tuple('CustomContent')
 
-export const BuiltInDrawerItemType = tuple(
-  'Content',
-  'ContentTypes',
-  'Localization',
-  'Search',
-  'Setup',
-  'Trash',
-  'UsersAndGroups',
-)
+export const BuiltInDrawerItemType = tuple('Content', 'ContentTypes', 'Search', 'Trash', 'UsersAndGroups', 'Settings')
 
 export const ActionType = tuple(
   'Browse',
