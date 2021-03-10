@@ -124,7 +124,7 @@ export function Explore({
         if (contentTypeName) {
           return (
             <NewView
-              contentTypeName={contentTypeName!}
+              contentTypeName={repository.schemas.getSchemaByName(contentTypeName).DisplayName}
               currentContentPath={currentPath}
               submitCallback={() => navigateToAction({ history, routeMatch: snRoute.match })}
             />
