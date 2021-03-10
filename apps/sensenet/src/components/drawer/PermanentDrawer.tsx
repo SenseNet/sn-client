@@ -1,20 +1,20 @@
-import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
 import Tooltip from '@material-ui/core/Tooltip'
 import { Close, Menu } from '@material-ui/icons'
 import clsx from 'clsx'
 import React, { useContext, useState } from 'react'
-import { matchPath, NavLink, useLocation } from 'react-router-dom'
+import { matchPath, useLocation } from 'react-router-dom'
 import { PATHS } from '../../application-paths'
 import { ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
-import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
+import { useDrawerItems, useLocalization } from '../../hooks'
 import { AddButton } from '../AddButton'
 import { SearchButton } from '../search-button'
+import { PermanentDrawerItem } from './PermanentDrawerItem'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -50,27 +50,8 @@ const useStyles = makeStyles((theme: Theme) => {
       overflowX: 'hidden',
       width: '100%',
     },
-    navLink: {
-      textDecoration: 'none',
-      opacity: 0.54,
-    },
     listButton: {
       height: '65px',
-    },
-    navLinkActive: {
-      opacity: 1,
-      '& .MuiListItem-root': { backgroundColor: theme.palette.primary.main },
-      '& .MuiTypography-root': { color: theme.palette.common.white },
-      '& svg': {
-        fill: theme.palette.common.white,
-      },
-    },
-    listItemIconDark: {
-      color: theme.palette.common.white,
-    },
-    listItemIconLight: {
-      color: theme.palette.common.black,
-      opacity: 0.87,
     },
     expandCollapseWrapper: {
       height: '49px',
@@ -85,16 +66,15 @@ const useStyles = makeStyles((theme: Theme) => {
 })
 
 export const PermanentDrawer = () => {
-  const personalSettings = usePersonalSettings()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const settings = useContext(ResponsivePersonalSettings)
-  const theme = useTheme()
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const items = useDrawerItems()
   const localization = useLocalization().drawer
   const location = useLocation()
-  const selectionService = useSelectionService()
+
+  const settingsItem = items.find((item) => item.primaryText === 'Settings')
 
   if (!settings.drawer.enabled) {
     return null
@@ -127,54 +107,20 @@ export const PermanentDrawer = () => {
             {matchPath(location.pathname, [
               PATHS.content.appPath,
               PATHS.usersAndGroups.appPath,
-              PATHS.setup.appPath,
               PATHS.contentTypes.appPath,
-              PATHS.localization.appPath,
+              PATHS.settings.appPath,
               PATHS.custom.appPath.replace(':path', 'root'),
             ]) ? (
               <AddButton aria-label={localization.add} isOpened={opened} />
             ) : null}
             {items.map((item, index) => {
-              return (
-                <NavLink
-                  aria-label={item.url}
-                  to={item.url}
-                  className={classes.navLink}
-                  key={index}
-                  onClick={() => {
-                    selectionService.activeContent.setValue(undefined)
-                  }}
-                  activeClassName={classes.navLinkActive}>
-                  <ListItem
-                    aria-label={item.primaryText}
-                    className={classes.listButton}
-                    button={true}
-                    key={index}
-                    selected={!!matchPath(location.pathname, item.url)}
-                    data-test={`drawer-menu-item-${item.primaryText.replace(/\s+/g, '-').toLowerCase()}`}>
-                    <ListItemIcon
-                      className={clsx(classes.listItemIconDark, globalClasses.centered, {
-                        [classes.listItemIconLight]: personalSettings.theme === 'light',
-                      })}>
-                      <Tooltip title={item.secondaryText} placement="right">
-                        <div>{item.icon}</div>
-                      </Tooltip>
-                    </ListItemIcon>
-                    {opened && (
-                      <ListItemText
-                        primary={`${item.primaryText}`}
-                        style={{
-                          color:
-                            theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
-                        }}
-                      />
-                    )}
-                  </ListItem>
-                </NavLink>
-              )
+              return item.primaryText !== 'Settings' && <PermanentDrawerItem item={item} opened={opened} key={index} />
             })}
           </li>
-          <li style={{ fontWeight: 'bold', textAlign: 'center' }}>BETA</li>
+          <li>
+            {settingsItem && <PermanentDrawerItem item={settingsItem} opened={opened} />}
+            <div style={{ fontWeight: 'bold', textAlign: 'center' }}>BETA</div>
+          </li>
         </List>
       </div>
     </Paper>
