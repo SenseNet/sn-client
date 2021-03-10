@@ -33,18 +33,20 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Theme,
   Tooltip,
 } from '@material-ui/core'
 import { red } from '@material-ui/core/colors'
 import { Close } from '@material-ui/icons'
 import React, { useEffect, useState } from 'react'
+import { globals } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { useWidgetStyles } from '../dashboard'
 
 const ITEM_HEIGHT = 48
 const DEFAULT_CONTAINER = '/Root'
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     deleteIcon: {
       color: red[500],
@@ -86,6 +88,16 @@ const useStyles = makeStyles(() => {
     },
     containerSelectorInput: {
       width: '75%',
+    },
+    fixColumn: {
+      position: 'sticky',
+      backgroundColor: theme.palette.type === 'light' ? globals.light.drawerBackground : '#1e1e1e',
+      left: 0,
+      zIndex: 1,
+    },
+    errorMessage: {
+      color: theme.palette.error.light,
+      padding: '20px 0',
     },
   })
 })
@@ -356,52 +368,64 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
                 <Table size="small" aria-label="stats-components">
                   <TableHead>
                     <TableRow>
-                      <TableCell align="center" />
+                      <TableCell align="center" className={classes.fixColumn} />
                       <TableCell align="center">All</TableCell>
                       {webhookEvents.map((event) => (
                         <Tooltip key={event.name} title={event.tooltip} placement="bottom">
                           <TableCell align="center">{event.name}</TableCell>
                         </Tooltip>
                       ))}
-                      <TableCell align="center" />
+                      <TableCell align="center" className={classes.fixColumn} style={{ right: 0 }} />
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {typesSelected.map((row) => (
-                      <TableRow key={row}>
-                        <TableCell align="center">{row}</TableCell>
-                        <TableCell align="center">
-                          <Checkbox
-                            disabled={value.TriggersForAllEvents}
-                            color="primary"
-                            checked={value.ContentTypes?.find((type) => type.Name === row)?.Events.includes('All')}
-                            onChange={(event) => handleCheckboxAllChange(event, row)}
-                          />
-                        </TableCell>
-                        {webhookEvents.map((eventItem) => (
-                          <TableCell key={eventItem.name} align="center">
+                    {typesSelected.length > 0 ? (
+                      typesSelected.map((row) => (
+                        <TableRow key={row}>
+                          <TableCell align="center" className={classes.fixColumn}>
+                            {row}
+                          </TableCell>
+                          <TableCell align="center">
                             <Checkbox
                               disabled={value.TriggersForAllEvents}
                               color="primary"
-                              checked={
-                                value.ContentTypes?.find((type) => type.Name === row)?.Events.includes(
-                                  eventItem.name as WebhookEventType,
-                                ) || value.ContentTypes?.find((type) => type.Name === row)?.Events.includes('All')
-                              }
-                              onChange={(event) => handleCheckboxChange(event, row, eventItem.name as WebhookEventType)}
+                              checked={value.ContentTypes?.find((type) => type.Name === row)?.Events.includes('All')}
+                              onChange={(event) => handleCheckboxAllChange(event, row)}
                             />
                           </TableCell>
-                        ))}
-                        <TableCell align="center">
-                          <Close
-                            className={classes.deleteIcon}
-                            onClick={() => {
-                              handleTypeRemove(row)
-                            }}
-                          />
+                          {webhookEvents.map((eventItem) => (
+                            <TableCell key={eventItem.name} align="center">
+                              <Checkbox
+                                disabled={value.TriggersForAllEvents}
+                                color="primary"
+                                checked={
+                                  value.ContentTypes?.find((type) => type.Name === row)?.Events.includes(
+                                    eventItem.name as WebhookEventType,
+                                  ) || value.ContentTypes?.find((type) => type.Name === row)?.Events.includes('All')
+                                }
+                                onChange={(event) =>
+                                  handleCheckboxChange(event, row, eventItem.name as WebhookEventType)
+                                }
+                              />
+                            </TableCell>
+                          ))}
+                          <TableCell align="center" className={classes.fixColumn} style={{ right: 0 }}>
+                            <Close
+                              className={classes.deleteIcon}
+                              onClick={() => {
+                                handleTypeRemove(row)
+                              }}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={webhookEvents.length + 3} align="center">
+                          <div className={classes.errorMessage}>{localization.webhooksFilter.noTypeSelected}</div>
                         </TableCell>
                       </TableRow>
-                    ))}
+                    )}
                   </TableBody>
                 </Table>
               </TableContainer>

@@ -2,20 +2,15 @@
  * @module FieldControls
  */
 
-import { ReactClientFieldSetting } from '@sensenet/controls-react'
+import { ReactClientFieldSetting, renderIconDefault } from '@sensenet/controls-react'
 import { LongTextFieldSetting } from '@sensenet/default-content-types'
-import { createStyles, makeStyles, TextField, Theme } from '@material-ui/core'
+import { createStyles, IconButton, makeStyles, TextField } from '@material-ui/core'
 import { Delete } from '@material-ui/icons'
 import React, { useState } from 'react'
 import { useLocalization } from '../../hooks'
 
-const useStyles = makeStyles((theme: Theme) => {
+const useStyles = makeStyles(() => {
   return createStyles({
-    linkStyle: {
-      color: theme.palette.primary.main,
-      cursor: 'pointer',
-      textDecoration: 'underline',
-    },
     input: {
       width: '45%',
     },
@@ -23,12 +18,6 @@ const useStyles = makeStyles((theme: Theme) => {
       display: 'flex',
       alignItems: 'center',
       marginBottom: '20px',
-    },
-    deleteIcon: {
-      cursor: 'pointer',
-      display: 'flex',
-      alignSelf: 'center',
-      margin: '6px',
     },
   })
 })
@@ -76,15 +65,15 @@ export const WebhookHeaders: React.FC<ReactClientFieldSetting<LongTextFieldSetti
                   value={value[headerKey]}
                   fullWidth={false}
                 />
-                <Delete
-                  className={classes.deleteIcon}
+                <IconButton
                   onClick={() => {
                     const valueCopy = { ...value }
                     delete valueCopy[headerKey]
                     setValue(valueCopy)
                     props.fieldOnChange?.(props.settings.Name, JSON.stringify(valueCopy))
-                  }}
-                />
+                  }}>
+                  <Delete />
+                </IconButton>
               </div>
             )
           })}
@@ -113,20 +102,20 @@ export const WebhookHeaders: React.FC<ReactClientFieldSetting<LongTextFieldSetti
               fullWidth={false}
               onChange={(event) => setActualValue(event.target.value)}
             />
-          </div>
-          <div
-            className={classes.linkStyle}
-            onClick={() => {
-              if (actualKey) {
-                const valueCopy = { ...value }
-                Object.assign(valueCopy, { [actualKey]: actualValue })
-                setValue(valueCopy)
-                props.fieldOnChange?.(props.settings.Name, JSON.stringify(valueCopy))
-                setActualKey('')
-                setActualValue('')
-              }
-            }}>
-            {localization.webhooksHeader.addCustomHeader}
+            <IconButton
+              color="primary"
+              onClick={() => {
+                if (actualKey) {
+                  const valueCopy = { ...value }
+                  Object.assign(valueCopy, { [actualKey]: actualValue })
+                  setValue(valueCopy)
+                  props.fieldOnChange?.(props.settings.Name, JSON.stringify(valueCopy))
+                  setActualKey('')
+                  setActualValue('')
+                }
+              }}>
+              {props.renderIcon ? props.renderIcon('add_circle') : renderIconDefault('add_circle')}
+            </IconButton>
           </div>
         </>
       )

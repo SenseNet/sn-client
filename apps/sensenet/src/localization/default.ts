@@ -546,6 +546,7 @@ const values = {
     pickAContainer: 'Pick a container',
     startTyping: 'Start typing to add another type',
     errorMessageOnLoad: 'Something went wrong during loading container content',
+    noTypeSelected: 'No type has been selected',
   },
   webhooksHeader: {
     key: 'Pick a container',
@@ -554,7 +555,6 @@ const values = {
     headers: 'Headers',
     keyPlaceHolder: 'Key of this header',
     valuPlaceHolder: 'Value of this header',
-    addCustomHeader: 'Add custom header',
   },
   webhooksPayload: {
     useDefault: 'Use default payload',
