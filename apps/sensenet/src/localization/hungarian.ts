@@ -66,6 +66,12 @@ const values: DeepPartial<typeof import('./default').default> = {
       Localization: 'Nyelvi fájlok',
       Trash: 'Kuka',
       CustomContent: 'Egyedi tartalom',
+      Settings: 'Beállítások',
+      Configuration: 'Konfiguráció',
+      Stats: 'Statisztika',
+      ApiAndSecurity: 'Api és biztonság',
+      Webhooks: 'Webhooks',
+      AdminUiCustomization: 'Admin-ui tesztreszabás',
     },
     descriptions: {
       Content: 'Tartalom böngészése',
@@ -76,12 +82,14 @@ const values: DeepPartial<typeof import('./default').default> = {
       Localization: 'Nyelvi fájlok kezelése',
       Trash: 'Törölt elemek kezelése',
       CustomContent: 'Egyedi tartalmak böngészése',
+      Settings: 'A rendszer beállításai',
     },
 
     personalSettingsTitle: 'Személyes beállítások',
     personalSettingsSecondaryText: 'Az alkalmazás testreszabása',
     newSearch: 'Új keresés indítása',
     add: 'Hozzáadás',
+    underConstruction: 'Fejlesztés alatt',
   },
   editPropertiesDialog: {
     dialogTitle: '{0} tulajdonságainak szerkesztése',

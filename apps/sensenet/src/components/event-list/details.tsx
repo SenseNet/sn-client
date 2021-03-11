@@ -1,15 +1,17 @@
 import { LeveledLogEntry } from '@sensenet/client-utils'
-import React, { useContext } from 'react'
-import MonacoEditor, { MonacoDiffEditor } from 'react-monaco-editor'
+import React, { lazy, useContext } from 'react'
 import { ResponsiveContext } from '../../context'
 import { useTheme } from '../../hooks'
+const MonacoEditor = lazy(() => import('react-monaco-editor'))
+const SnMonacoDiffEditor = lazy(() => import('../editor/sn-monaco-diff-editor'))
 
 export const EventDetails: React.FunctionComponent<{ event: LeveledLogEntry<any> }> = ({ event }) => {
   const theme = useTheme()
   const platform = useContext(ResponsiveContext)
+
   if (event.data.compare) {
     return (
-      <MonacoDiffEditor
+      <SnMonacoDiffEditor
         options={{
           readOnly: true,
         }}

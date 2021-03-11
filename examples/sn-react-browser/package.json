@@ -42,7 +42,7 @@
     "@sensenet/hooks-react": "^1.4.4",
     "@sensenet/list-controls-react": "^1.6.1",
     "clsx": "^1.1.1",
-    "react-moment": "^1.1.1",
+    "date-fns": "^2.17.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0"
   },

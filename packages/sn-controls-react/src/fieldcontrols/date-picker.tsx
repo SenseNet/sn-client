@@ -6,8 +6,8 @@ import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-ty
 import { FormHelperText, Typography } from '@material-ui/core'
 import { DateTimePicker, DatePicker as MUIDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import type { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
-import MomentUtils from '@date-io/moment'
-import moment from 'moment'
+import DateFnsUtils from '@date-io/date-fns'
+import format from 'date-fns/format'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
@@ -30,15 +30,15 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
     if (!date) {
       return
     }
-    setValue(moment.utc(date).toISOString())
-    props.fieldOnChange?.(props.settings.Name, moment.utc(date).toISOString())
+    setValue(new Date(date).toISOString())
+    props.fieldOnChange?.(props.settings.Name, new Date(date).toISOString())
   }
 
   switch (props.actionName) {
     case 'edit':
     case 'new':
       return (
-        <MuiPickersUtilsProvider utils={MomentUtils}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={props.locale}>
           {props.settings.DateTimeMode === DateTimeMode.Date ? (
             <MUIDatePicker
               value={value}
@@ -76,8 +76,8 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
           <Typography variant="body1" gutterBottom={true}>
             {props.fieldValue
               ? props.settings.DateTimeMode === DateTimeMode.Date
-                ? moment(props.fieldValue).format('LL').toLocaleString()
-                : moment(props.fieldValue).toLocaleString()
+                ? format(new Date(props.fieldValue), 'PPP', { locale: props.locale }).toLocaleString()
+                : format(new Date(props.fieldValue), 'PPPppp', { locale: props.locale }).toLocaleString()
               : localization.noValue}
           </Typography>
         </div>

@@ -4,8 +4,9 @@ import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useCallback } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { PATHS } from '../../application-paths'
+import { LocalizationObject } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization } from '../../hooks'
+import { useLocalization, usePersonalSettings } from '../../hooks'
 import { navigateToAction } from '../../services'
 import { defaultContentType } from '../edit/default-content-type'
 import { NewTextFile } from '../edit/new-text-file'
@@ -28,6 +29,7 @@ export const NewView: React.FC<NewViewProps> = (props) => {
   const logger = useLogger('NewView')
   const history = useHistory()
   const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
+  const personalSettings = usePersonalSettings()
 
   const handleSubmit = async (content: GenericContent, contentTypeName?: string) => {
     try {
@@ -85,7 +87,7 @@ export const NewView: React.FC<NewViewProps> = (props) => {
       <NewTextFile
         contentTypeName={props.contentTypeName}
         routeMatch={routeMatch}
-        savePath={PATHS.setup.snPath}
+        savePath={PATHS.configuration.snPath}
         fileExtension={'.settings'}
         isFileNameEditable={true}
       />
@@ -102,6 +104,7 @@ export const NewView: React.FC<NewViewProps> = (props) => {
       uploadFolderpath="/Root/Content/demoavatars"
       controlMapper={controlMapper}
       localization={{ submit: localization.forms.submit, cancel: localization.forms.cancel }}
+      locale={LocalizationObject[personalSettings.language].locale}
       hideDescription
       classes={{
         ...classes,
