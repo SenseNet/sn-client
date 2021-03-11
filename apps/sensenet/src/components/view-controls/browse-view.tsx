@@ -4,10 +4,12 @@
 import { BrowseView as SnBrowseView } from '@sensenet/controls-react'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
+import enUS from 'date-fns/locale/en-US'
+import hu from 'date-fns/locale/hu'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization, useSelectionService } from '../../hooks'
+import { useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { navigateToAction } from '../../services'
 import { reactControlMapper } from '../react-control-mapper'
 import { useViewControlStyles } from './common/styles'
@@ -29,6 +31,7 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
   const localization = useLocalization()
   const history = useHistory()
   const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
+  const personalSettings = usePersonalSettings()
 
   useEffect(() => {
     async function getExpandedContent() {
@@ -55,6 +58,7 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
         handleCancel={() => navigateToAction({ history, routeMatch })}
         controlMapper={controlMapper}
         localization={{ cancel: localization.forms.cancel }}
+        locale={personalSettings.language === 'hungarian' ? hu : enUS}
         classes={{
           ...classes,
           cancel: globalClasses.cancelButton,

@@ -17,7 +17,9 @@ import EditOutlined from '@material-ui/icons/EditOutlined'
 import NotesIcon from '@material-ui/icons/Notes'
 import RoomIcon from '@material-ui/icons/Room'
 import WatchIcon from '@material-ui/icons/Watch'
-import moment from 'moment'
+import format from 'date-fns/format'
+import isSameDay from 'date-fns/isSameDay'
+import parseISO from 'date-fns/parseISO'
 import React, { useContext, useState } from 'react'
 import striptags from 'striptags'
 import { CalendarEvent } from '../CalendarEvent-type'
@@ -82,11 +84,15 @@ export const ViewDialogBody: React.FunctionComponent<EditDialogBodyDialogProps> 
     if (event.AllDay) {
       return 'All day'
     }
-    if (moment(event.StartDate).isSame(event.EndDate, 'day')) {
-      return `${moment(event.StartDate).format('dddd, MMM-DD HH:mm')} - ${moment(event.EndDate).format('HH:mm')}`
+    if (isSameDay(parseISO(event.StartDate as string), parseISO(event.EndDate as string))) {
+      return `${format(parseISO(event.StartDate as string), 'dddd, MMM-dd HH:mm')} - ${format(
+        parseISO(event.EndDate as string),
+        'HH:mm',
+      )}`
     } else {
-      return `${moment(event.StartDate).format('dddd, MMM-DD HH:mm')} - ${moment(event.EndDate).format(
-        'dddd, MMM-DD HH:mm',
+      return `${format(parseISO(event.StartDate as string), 'dddd, MMM-dd HH:mm')} - ${format(
+        parseISO(event.EndDate as string),
+        'dddd, MMM-dd HH:mm',
       )}`
     }
   }

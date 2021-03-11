@@ -81,10 +81,6 @@ module.exports = {
         '!wordPartOperations',
       ],
     }),
-    new webpack.IgnorePlugin({
-      resourceRegExp: /^\.\/locale$/,
-      contextRegExp: /moment$/,
-    }),
   ],
   optimization: {
     splitChunks: {
