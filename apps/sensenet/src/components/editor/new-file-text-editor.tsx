@@ -123,7 +123,7 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
             }
           />
         ) : (
-          <>New {props.contentType}</>
+          <>New {repo.schemas.getSchemaByName(props.contentType).DisplayName}</>
         )
       }
     />

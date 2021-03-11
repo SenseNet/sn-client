@@ -57,7 +57,7 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
       </span>
       {props.content && (
         <span
-          title={`Open ${props.content.Type} CTD`}
+          title={`Open ${repository.schemas.getSchemaByName(props.content.Type).DisplayName} CTD`}
           onClick={async () => {
             const content = await getContentTypeId(props.content!.Type)
             history.push(
