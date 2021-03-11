@@ -1,10 +1,12 @@
 import TableCell from '@material-ui/core/TableCell'
+import { Locale } from 'date-fns'
+import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import React from 'react'
-import Moment from 'react-moment'
 
 interface DateCellProps {
   date: string
   virtual?: boolean
+  locale?: Locale
 }
 
 export const DateCell: React.FunctionComponent<DateCellProps> = (props) => {
@@ -23,7 +25,7 @@ export const DateCell: React.FunctionComponent<DateCellProps> = (props) => {
           : {}
       }
       component={props.virtual ? 'div' : 'td'}>
-      <Moment fromNow={true}>{props.date}</Moment>
+      {props.date && formatDistanceToNow(new Date(props.date), { locale: props.locale, addSuffix: true })}
     </TableCell>
   )
 }

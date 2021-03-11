@@ -4,10 +4,10 @@ import { useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
 import { Query } from '@sensenet/query'
 import clsx from 'clsx'
 import React, { useCallback, useEffect, useState } from 'react'
-import { useHistory, useRouteMatch } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { PATHS } from '../../application-paths'
 import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization, useQuery } from '../../hooks'
+import { useLocalization, useQuery, useSnRoute } from '../../hooks'
 import { navigateToAction } from '../../services/content-context-service'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { EditBinary } from '../edit/edit-binary'
@@ -29,8 +29,8 @@ const Setup = () => {
 
   const activeContent = useQuery().get('content') ?? ''
   const contentTypeName = useQuery().get('content-type')
-  const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
-  const activeAction = routeMatch.params.action
+  const snRoute = useSnRoute()
+  const activeAction = snRoute.match!.params.action
 
   useEffect(() => {
     ;(async () => {
@@ -65,13 +65,13 @@ const Setup = () => {
   const renderContent = () => {
     switch (activeAction) {
       case 'browse':
-        return <BrowseView contentPath={`${PATHS.setup.snPath}${activeContent}`} />
+        return <BrowseView contentPath={`${PATHS.configuration.snPath}${activeContent}`} />
       case 'edit':
         return (
           <EditView
             actionName={activeAction}
-            contentPath={`${PATHS.setup.snPath}${activeContent}`}
-            submitCallback={() => navigateToAction({ history, routeMatch })}
+            contentPath={`${PATHS.configuration.snPath}${activeContent}`}
+            submitCallback={() => navigateToAction({ history, routeMatch: snRoute.match })}
           />
         )
       case 'new':
@@ -79,15 +79,15 @@ const Setup = () => {
           <div style={{ overflow: 'hidden' }}>
             <NewView
               contentTypeName={contentTypeName!}
-              currentContentPath={PATHS.setup.snPath}
-              submitCallback={() => navigateToAction({ history, routeMatch })}
+              currentContentPath={PATHS.configuration.snPath}
+              submitCallback={() => navigateToAction({ history, routeMatch: snRoute.match })}
             />
           </div>
         )
       case 'version':
-        return <VersionView contentPath={`${PATHS.setup.snPath}${activeContent}`} />
+        return <VersionView contentPath={`${PATHS.configuration.snPath}${activeContent}`} />
       case 'edit-binary':
-        return <EditBinary contentPath={`${PATHS.setup.snPath}${activeContent}`} />
+        return <EditBinary contentPath={`${PATHS.configuration.snPath}${activeContent}`} />
       default:
         return (
           <>
@@ -129,7 +129,7 @@ const Setup = () => {
   return (
     <div className={globalClasses.contentWrapper} style={{ paddingLeft: 0 }}>
       <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)} style={{ display: 'grid' }}>
-        <span style={{ fontSize: '20px' }}>{localizationDrawerTitles.Setup}</span>
+        <span style={{ fontSize: '20px' }}>{localizationDrawerTitles.Configuration}</span>
       </div>
       {renderContent()}
     </div>

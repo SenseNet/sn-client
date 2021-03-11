@@ -4,7 +4,7 @@ import { useRepository } from '@sensenet/hooks-react'
 import { CssBaseline, Slide } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { TransitionProps } from '@material-ui/core/transitions'
-import moment from 'moment'
+import format from 'date-fns/format'
 import React, { useEffect, useState } from 'react'
 import snLogo from './assets/sensenet_logo_transparent.png'
 import { AdvancedGridList } from './components/AdvancedGridList'
@@ -71,9 +71,9 @@ export const App: React.FunctionComponent = () => {
       avatarUserAvatarUrl = avatarUser.Avatar ? avatarUser.Avatar.Url : ''
       imgageAuthorName = (selectedImage.CreatedBy as User).FullName as string
       imagePath = repo.configuration.repositoryUrl + selectedImage.Path
-      imgageCreationDate = moment(new Date(selectedImage.CreationDate ? selectedImage.CreationDate : '')).format(
-        'YYYY-MM-DD HH:mm:ss',
-      )
+      imgageCreationDate = selectedImage.CreationDate
+        ? format(new Date(selectedImage.CreationDate), 'yyyy-MM-dd HH:mm:ss')
+        : 'Invalid date'
       imageSize = `${(selectedImage.Size ? selectedImage.Size / 1024 / 1024 : 0).toFixed(2)} MB`
       imageDownloadUrl =
         selectedImage.Binary !== undefined
