@@ -30,6 +30,7 @@ export interface BrowseViewProps {
   }
   fieldLocalization?: FieldLocalization
   classes?: BrowseViewClassKey
+  locale?: Locale
 }
 
 const useStyles = makeStyles(() => {
@@ -99,6 +100,7 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
                       renderIcon: props.renderIcon,
                       repository: props.repository,
                       localization: props.fieldLocalization,
+                      locale: props.locale,
                     },
                   )}
                 </div>
