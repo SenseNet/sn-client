@@ -146,7 +146,7 @@ const values: DeepPartial<typeof import('./default').default> = {
     logout: 'Kijelentkezés',
     changePassword: 'Jelszó módosítása',
     openUserMenu: 'Felhasználói menü kinyitása',
-    openHelpMenu: 'Segítség menü kinyitása',
+    openNewMenu: 'Újdonságok',
     documentation: 'Dokumentáció',
     reportBug: 'Hibabejelentés',
     feedback: 'Visszajelzés',

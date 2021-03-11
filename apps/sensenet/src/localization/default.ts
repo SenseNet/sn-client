@@ -289,7 +289,7 @@ const values = {
     logout: 'Log out',
     changePassword: 'Change password',
     openUserMenu: 'Open user menu',
-    openHelpMenu: 'Open help menu',
+    openNewMenu: `What's new`,
     documentation: 'Documentation',
     reportBug: 'Report bug',
     feedback: 'Feedback',
