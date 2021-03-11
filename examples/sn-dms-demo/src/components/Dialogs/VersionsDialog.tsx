@@ -17,8 +17,8 @@ import TableRow from '@material-ui/core/TableRow'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 
+import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import React from 'react'
-import Moment from 'react-moment'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 
@@ -245,7 +245,8 @@ class VersionsDialog extends React.Component<
                               {this.formatVersionNumber(version.Version || '')}
                             </TableCell>
                             <TableCell padding="checkbox" className={classes.versionTableCell}>
-                              <Moment fromNow={true}>{version.VersionModificationDate as any}</Moment>
+                              {version.VersionModificationDate &&
+                                formatDistanceToNow(new Date(version.VersionModificationDate), { addSuffix: true })}
                               {` (${((version.VersionModifiedBy as any) as User).FullName})`}
                             </TableCell>
                             <TableCell padding="checkbox" className={classes.versionTableCell}>
@@ -322,8 +323,11 @@ class VersionsDialog extends React.Component<
                                 primary={resources.MODIFIED}
                                 secondary={
                                   <span>
-                                    <Moment fromNow={true}>version.VersionModificationDate</Moment>
-                                    `(${((version.VersionModifiedBy as any) as User).FullName})`
+                                    {version.VersionModificationDate &&
+                                      formatDistanceToNow(new Date(version.VersionModificationDate), {
+                                        addSuffix: true,
+                                      })}
+                                    {`(${((version.VersionModifiedBy as any) as User).FullName})`}
                                   </span>
                                 }
                               />
