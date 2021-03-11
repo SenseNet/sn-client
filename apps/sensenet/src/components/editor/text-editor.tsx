@@ -2,28 +2,30 @@ import { Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { ActionModel, GenericContent, Settings, File as SnFile } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { Uri } from 'monaco-editor'
 import React, { useEffect, useState } from 'react'
 import { useLocalization } from '../../hooks'
 import { getMonacoLanguage } from '../../services/content-context-service'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
+import { FullScreenLoader } from '../full-screen-loader'
 import { SnMonacoEditor, SnMonacoEditorProps } from './sn-monaco-editor'
 
-export const getMonacoModelUri = (content: GenericContent, repo: Repository, action?: ActionModel) => {
+export const getMonacoModelUri = async (content: GenericContent, repo: Repository, action?: ActionModel) => {
+  const { monaco } = await import('react-monaco-editor')
+
   if (repo.schemas.isContentFromType<Settings>(content, 'Settings') || content.Type === 'PersonalSettings') {
-    return Uri.parse(`sensenet://${content.Type}/${content.Name}`)
+    return monaco.Uri.parse(`sensenet://${content.Type}/${content.Name}`)
   }
   if (repo.schemas.isContentFromType<SnFile>(content, 'File')) {
     if (content.Binary) {
-      return Uri.parse(`sensenet://${content.Type}/${content.Binary.__mediaresource.content_type}`)
+      return monaco.Uri.parse(`sensenet://${content.Type}/${content.Binary.__mediaresource.content_type}`)
     }
   }
 
   if (action) {
-    return Uri.parse(`sensenet://${content.Type}/${action.Url}`)
+    return monaco.Uri.parse(`sensenet://${content.Type}/${action.Url}`)
   }
 
-  return Uri.parse(`sensenet://${content.Type}`)
+  return monaco.Uri.parse(`sensenet://${content.Type}`)
 }
 
 export type TextEditorProps = Pick<SnMonacoEditorProps, 'additionalButtons' | 'handleCancel'> & {
@@ -39,7 +41,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
   const [savedTextValue, setSavedTextValue] = useState('')
   const [language, setLanguage] = useState(getMonacoLanguage(props.content, repo))
   const localization = useLocalization()
-  const [uri, setUri] = useState<any>(getMonacoModelUri(props.content, repo))
+  const [uri, setUri] = useState<import('react-monaco-editor').monaco.Uri>()
   const [hasChanges, setHasChanges] = useState(false)
   const logger = useLogger('TextEditor')
   const [error, setError] = useState<Error | undefined>()
@@ -94,13 +96,13 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
   }, [textValue, savedTextValue])
 
   useEffect(() => {
-    setUri(getMonacoModelUri(props.content, repo))
-    setLanguage(getMonacoLanguage(props.content, repo))
+    ;(async () => {
+      setLanguage(getMonacoLanguage(props.content, repo))
+      setUri(await getMonacoModelUri(props.content, repo))
+    })()
   }, [props.content, repo])
 
   useEffect(() => {
-    setUri(getMonacoModelUri(props.content, repo))
-    setLanguage(getMonacoLanguage(props.content, repo))
     ;(async () => {
       try {
         if (props.loadContent) {
@@ -131,6 +133,10 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
       data: error,
     })
     return null
+  }
+
+  if (!uri) {
+    return <FullScreenLoader />
   }
 
   return (
