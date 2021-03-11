@@ -174,7 +174,7 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "Description": "Date of last synchronization.",
                 "DisplayName": "LastSync",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.DateTimeField",
@@ -327,7 +327,7 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 1,
+                "DateTimeMode": "Date",
                 "DisplayName": "Birth date",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.DateTimeField",
                 "Name": "BirthDate",
@@ -446,7 +446,7 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "Description": "Date and time of when the user logged out from all devices.",
                 "DisplayName": "Last logout date",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.DateTimeField",
@@ -690,7 +690,7 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "Description": "This content will appear on the date you set if lifespan handling is enabled for this content.",
                 "DisplayName": "Valid From",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.DateTimeField",
@@ -703,7 +703,7 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "Description": "This content will disappear on the date you set if lifespan handling is enabled for this content.",
                 "DisplayName": "Valid Till",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.DateTimeField",
@@ -837,7 +837,7 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "Description": "Content creation date.",
                 "DisplayName": "Creation date",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.DateTimeField",
@@ -862,7 +862,7 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "Description": "Content was last modified on this date.",
                 "DisplayName": "Modification Date",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.DateTimeField",
@@ -1243,7 +1243,7 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "Description": "Version was last modified on this date.",
                 "DisplayName": "Versions Modification Date",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.DateTimeField",
@@ -1270,7 +1270,7 @@ exports[`The user search component instance should be rendered correctly 1`] = `
               },
               Object {
                 "Compulsory": false,
-                "DateTimeMode": 2,
+                "DateTimeMode": "DateAndTime",
                 "Description": "Version was created on this date.",
                 "DisplayName": "Versions Creation Date",
                 "FieldClassName": "SenseNet.ContentRepository.Fields.DateTimeField",

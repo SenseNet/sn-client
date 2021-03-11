@@ -1,7 +1,7 @@
 import Typography from '@material-ui/core/Typography'
 import { TimePicker as MUITimePicker } from '@material-ui/pickers'
+import format from 'date-fns/format'
 import { shallow } from 'enzyme'
-import moment from 'moment'
 import React from 'react'
 import { defaultLocalization, TimePicker } from '../src/fieldcontrols'
 
@@ -18,7 +18,7 @@ describe('Time picker field control', () => {
     it('should show the displayname and fieldValue when fieldValue is provided', () => {
       const wrapper = shallow(<TimePicker fieldValue={value} actionName="browse" settings={defaultSettings} />)
       expect(wrapper.find(Typography).first().text()).toBe(defaultSettings.DisplayName)
-      expect(wrapper.find(Typography).last().text()).toBe(moment(value).format('HH:mm:ss'))
+      expect(wrapper.find(Typography).last().text()).toBe(format(new Date(value), 'HH:mm:ss'))
     })
     it('should show no value message when field value is not provided', () => {
       const wrapper = shallow(<TimePicker actionName="browse" settings={defaultSettings} />)
