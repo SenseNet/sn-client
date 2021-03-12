@@ -2,11 +2,11 @@ import Button from '@material-ui/core/Button'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import React from 'react'
-import MonacoEditor from 'react-monaco-editor'
+import React, { lazy } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useTheme } from '../../hooks'
 import { useDialog } from './dialog-provider'
+const MonacoEditor = lazy(() => import('react-monaco-editor'))
 
 export type CustomActionResultDialogProps = {
   response: string
