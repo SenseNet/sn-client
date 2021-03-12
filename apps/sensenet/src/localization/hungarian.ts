@@ -161,7 +161,6 @@ const values: DeepPartial<typeof import('./default').default> = {
     content: 'Content',
     numberOfRoles: 'Szerepek száma',
     contentTypes: 'Content typusok',
-    na: 'Ez az információ nem elérhető',
     usage: 'Használat',
     components: 'Components',
     componentId: 'Component Id',
@@ -172,6 +171,10 @@ const values: DeepPartial<typeof import('./default').default> = {
     executionDate: 'Futtatás dátuma',
     componentVersion: 'Component verzió',
     installedPackages: 'Telepített csomagok',
+    files: 'Fájlok',
+    oldVersions: 'Régi verziók',
+    log: 'Log',
+    system: 'Rendszer',
   },
   forms: {
     referencePicker: 'Referencia választó',
@@ -236,6 +239,9 @@ const values: DeepPartial<typeof import('./default').default> = {
     confirmNew: 'Új jelszó megerősítése',
     changePasswordSuccess: 'A jelszóváltoztatás sikeres',
     passwordsDontMatch: 'A beírt jelszavak nem egyeznek!',
+  },
+  multiPartProgressLine: {
+    available: 'Elérhető',
   },
 }
 

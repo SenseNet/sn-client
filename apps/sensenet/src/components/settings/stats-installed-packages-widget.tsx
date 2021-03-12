@@ -44,9 +44,7 @@ export const InstalledPackagesWidget: React.FunctionComponent<InstalledPackagesW
   return (
     <div className={widgetClasses.root}>
       <Paper elevation={0} className={widgetClasses.container}>
-        <div className={classes.rowContainer}>
-          <span>{localization.installedPackages}</span>
-        </div>
+        <div className={classes.rowContainer}>{localization.installedPackages}</div>
         <TableContainer>
           <Table size="small" aria-label="stats-components">
             <TableHead>

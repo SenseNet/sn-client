@@ -36,16 +36,13 @@ export const ComponentsWidget: React.FunctionComponent<ComponentsWidgetProps> = 
   return (
     <div className={widgetClasses.root}>
       <Paper elevation={0} className={widgetClasses.container}>
-        <div className={classes.rowContainer}>
-          <span>{localization.components}</span>
-        </div>
+        <div className={classes.rowContainer}>{localization.components}</div>
         <TableContainer>
           <Table size="small" aria-label="stats-components">
             <TableHead>
               <TableRow>
                 <TableCell align="left">{localization.componentId}</TableCell>
                 <TableCell align="left">{localization.version}</TableCell>
-                <TableCell align="left">{localization.lastOfficialVersion}</TableCell>
                 <TableCell align="left">{localization.description}</TableCell>
               </TableRow>
             </TableHead>
@@ -54,7 +51,6 @@ export const ComponentsWidget: React.FunctionComponent<ComponentsWidgetProps> = 
                 <TableRow key={row.ComponentId}>
                   <TableCell align="left">{row.ComponentId}</TableCell>
                   <TableCell align="left">{row.Version}</TableCell>
-                  <TableCell align="left">{localization.na}</TableCell>
                   <TableCell align="left">{row.Description}</TableCell>
                 </TableRow>
               ))}

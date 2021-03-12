@@ -1,6 +1,7 @@
 import { createStyles, makeStyles } from '@material-ui/core'
 import { Stop } from '@material-ui/icons'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useLocalization } from '../../hooks'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -30,19 +31,7 @@ export interface MultiPartProgressLineProps {
 
 export const MultiPartProgressLine: React.FunctionComponent<MultiPartProgressLineProps> = (props) => {
   const classes = useStyles()
-
-  const [widths, setWidths] = useState<string[]>(
-    props.visualParts.map(() => {
-      return '0px'
-    }),
-  )
-  useEffect(() => {
-    setWidths(
-      props.visualParts.map((item) => {
-        return item.percentage
-      }),
-    )
-  }, [props.visualParts])
+  const localization = useLocalization()
 
   return (
     <>
@@ -56,7 +45,7 @@ export const MultiPartProgressLine: React.FunctionComponent<MultiPartProgressLin
             <div
               key={index}
               style={{
-                width: widths[index],
+                width: item.percentage ?? '0px',
                 backgroundColor: item.color,
               }}
             />
@@ -68,13 +57,13 @@ export const MultiPartProgressLine: React.FunctionComponent<MultiPartProgressLin
           return (
             <div key={index} className={classes.legend}>
               <Stop style={{ fill: item.color }} />
-              <span>{item.title}</span>
+              {item.title}
             </div>
           )
         })}
         <div className={classes.legend}>
           <Stop style={{ fill: props.backgroundColor }} />
-          <span>Available</span>
+          {localization.multiPartProgressLine.available}
         </div>
       </div>
     </>

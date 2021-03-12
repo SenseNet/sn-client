@@ -424,7 +424,6 @@ const values = {
     numberOfRoles: 'Number of roles',
     contentTypes: 'Content Types',
     used: (current: string | number, limit: string | number) => `${current} of ${limit}`,
-    na: 'This information is not available yet',
     usage: 'Usage',
     components: 'Components',
     componentId: 'Component Id',
@@ -435,6 +434,10 @@ const values = {
     executionDate: 'Execution Date',
     componentVersion: 'Component Version',
     installedPackages: 'Installed packages',
+    files: 'Files',
+    oldVersions: 'Old versions',
+    log: 'Log',
+    system: 'System',
   },
   customActions: {
     executeCustomActionDialog: {
@@ -560,6 +563,9 @@ const values = {
     confirmNew: 'Confirm new password',
     changePasswordSuccess: 'Password has changed successfully',
     passwordsDontMatch: 'The passwords do not match',
+  },
+  multiPartProgressLine: {
+    available: 'Available',
   },
 }
 
