@@ -303,7 +303,6 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
               placeholder={props.settings.DisplayName}
               value={value.Path}
               fullWidth={true}
-              disabled={true}
             />
             <Button
               variant="contained"
