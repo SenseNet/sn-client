@@ -3,7 +3,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import enUS from 'date-fns/locale/en-US'
 import hu from 'date-fns/locale/hu'
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { PATHS } from '../../application-paths'
 import { useGlobalStyles } from '../../globalStyles'
@@ -31,6 +31,10 @@ export const NewView: React.FC<NewViewProps> = (props) => {
   const history = useHistory()
   const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
   const personalSettings = usePersonalSettings()
+  const contentDisplayName = useMemo(() => repository.schemas.getSchemaByName(props.contentTypeName).DisplayName, [
+    props.contentTypeName,
+    repository.schemas,
+  ])
 
   const handleSubmit = async (content: GenericContent, contentTypeName?: string) => {
     try {
@@ -111,7 +115,7 @@ export const NewView: React.FC<NewViewProps> = (props) => {
         ...classes,
         cancel: globalClasses.cancelButton,
       }}
-      renderTitle={() => <ViewTitle title={'New'} titleBold={props.contentTypeName} />}
+      renderTitle={() => <ViewTitle title={'New'} titleBold={contentDisplayName} />}
     />
   )
 }
