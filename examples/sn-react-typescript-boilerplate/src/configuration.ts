@@ -3,7 +3,7 @@ import { UserManagerSettings } from '@sensenet/authentication-oidc-react'
 export const repositoryUrl = 'https://dev.demo.sensenet.com/'
 
 export const configuration: UserManagerSettings = {
-  client_id: 'spa',
+  client_id: '7cYLChuhJxyGb7BS', //externalSPA clientId for dev.demo.sensenet.com
   redirect_uri: `${window.location.origin}/authentication/callback`,
   response_type: 'code',
   post_logout_redirect_uri: `${window.location.origin}/`,
