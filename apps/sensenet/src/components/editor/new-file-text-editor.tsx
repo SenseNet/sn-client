@@ -1,7 +1,7 @@
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { Input, InputAdornment } from '@material-ui/core'
 import { Uri } from 'monaco-editor'
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
 import { useLocalization } from '../../hooks'
 import { getMonacoLanguage } from '../../services/content-context-service'
 import { SnMonacoEditor, SnMonacoEditorProps } from './sn-monaco-editor'
@@ -29,6 +29,10 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
   const logger = useLogger('TextEditor')
   const [error, setError] = useState<Error | undefined>()
   const { loadContent } = props
+  const contentDisplayName = useMemo(() => repo.schemas.getSchemaByName(props.contentType).DisplayName, [
+    props.contentType,
+    repo.schemas,
+  ])
 
   const saveContent = async () => {
     const fileName = props.getFileNameFromText?.(textValue) ?? props.fileName
@@ -123,7 +127,7 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
             }
           />
         ) : (
-          <>New {repo.schemas.getSchemaByName(props.contentType).DisplayName}</>
+          <>New {contentDisplayName}</>
         )
       }
     />

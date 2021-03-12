@@ -2,7 +2,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import { createStyles, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
-import React, { useCallback, useContext } from 'react'
+import React, { useCallback, useContext, useMemo } from 'react'
 import { useHistory } from 'react-router'
 import { ResponsivePersonalSettings } from '../../../context'
 import { useGlobalStyles } from '../../../globalStyles'
@@ -37,6 +37,11 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
   const uiSettings = useContext(ResponsivePersonalSettings)
   const snRoute = useSnRoute()
 
+  const contentDisplayName = useMemo(
+    () => props.content && repository.schemas.getSchemaByName(props.content.Type).DisplayName,
+    [props.content, repository.schemas],
+  )
+
   const getContentTypeId = useCallback(
     async (contentType: string) => {
       const result = await repository.loadCollection({
@@ -57,7 +62,7 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
       </span>
       {props.content && (
         <span
-          title={`Open ${repository.schemas.getSchemaByName(props.content.Type).DisplayName} CTD`}
+          title={`Open ${contentDisplayName} CTD`}
           onClick={async () => {
             const content = await getContentTypeId(props.content!.Type)
             history.push(
