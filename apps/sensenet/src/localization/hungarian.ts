@@ -147,9 +147,6 @@ const values: DeepPartial<typeof import('./default').default> = {
     changePassword: 'Jelszó módosítása',
     openUserMenu: 'Felhasználói menü kinyitása',
     openNewMenu: 'Újdonságok',
-    documentation: 'Dokumentáció',
-    reportBug: 'Hibabejelentés',
-    feedback: 'Visszajelzés',
   },
   forms: {
     referencePicker: 'Referencia választó',

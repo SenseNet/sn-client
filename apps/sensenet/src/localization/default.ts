@@ -290,9 +290,6 @@ const values = {
     changePassword: 'Change password',
     openUserMenu: 'Open user menu',
     openNewMenu: `What's new`,
-    documentation: 'Documentation',
-    reportBug: 'Report bug',
-    feedback: 'Feedback',
   },
   navigationCommandProvider: {
     personalSettingsPrimary: 'Personal Settings',
