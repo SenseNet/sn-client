@@ -160,7 +160,7 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
   const initialState = {
     Path: DEFAULT_CONTAINER,
     TriggersForAllEvents: true,
-    ContentTypes: [],
+    ContentTypes: [{ Name: 'File', Events: ['All'] } as WebhookContentTypeItem],
   }
 
   const [value, setValue] = useState<WebhookFilterType>(
