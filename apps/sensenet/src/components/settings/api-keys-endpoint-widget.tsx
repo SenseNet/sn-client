@@ -1,5 +1,5 @@
 import { useRepository } from '@sensenet/hooks-react'
-import { createStyles, Divider, Grid, Link, makeStyles, Paper, TextField, Theme } from '@material-ui/core'
+import { createStyles, Divider, Grid, Hidden, Link, makeStyles, Paper, TextField, Theme } from '@material-ui/core'
 import React from 'react'
 import jslogo from '../../assets/js.png'
 import dotnetlogo from '../../assets/net.png'
@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme: Theme) => {
       margin: '30px 16px',
       cursor: 'pointer',
     },
+    apiDocsLink: {
+      display: 'inline-block',
+    },
   })
 })
 
@@ -46,9 +49,7 @@ export const ApiEndpointWidget: React.FunctionComponent = () => {
       <Paper elevation={0} className={widgetClasses.container} style={{ padding: 0 }}>
         <Grid container spacing={1} style={{ padding: '10px' }}>
           <Grid item xs={12} lg={6} style={{ padding: '1.5rem' }}>
-            <div className={classes.rowContainer}>
-              <span>{localization.apiEndpoint}</span>
-            </div>
+            <div className={classes.rowContainer}>{localization.apiEndpoint}</div>
             <div>{localization.apiEndPointApi}</div>
             <TextField
               name="endpoint"
@@ -75,7 +76,9 @@ export const ApiEndpointWidget: React.FunctionComponent = () => {
             />
           </Grid>
 
-          <Divider orientation="vertical" flexItem />
+          <Hidden mdDown>
+            <Divider orientation="vertical" flexItem />
+          </Hidden>
 
           <Grid item style={{ padding: '1.5rem' }}>
             <div className={classes.rowContainer}>
@@ -86,16 +89,28 @@ export const ApiEndpointWidget: React.FunctionComponent = () => {
               {localization.clientLink}
             </Link>
             <div>
-              <Link target="_blank" href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=jsclient">
+              <Link
+                className={classes.apiDocsLink}
+                target="_blank"
+                href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=jsclient">
                 <img className={classes.logo} src={jslogo} alt="js-logo" width="35" height="35" />
               </Link>
-              <Link target="_blank" href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=dotnet">
+              <Link
+                className={classes.apiDocsLink}
+                target="_blank"
+                href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=dotnet">
                 <img className={classes.logo} src={dotnetlogo} alt="dotnet-logo" width="35" height="35" />
               </Link>
-              <Link target="_blank" href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=react">
+              <Link
+                className={classes.apiDocsLink}
+                target="_blank"
+                href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=react">
                 <img className={classes.logo} src={reactlogo} alt="react-logo" width="35" height="35" />
               </Link>
-              <Link target="_blank" href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=redux">
+              <Link
+                className={classes.apiDocsLink}
+                target="_blank"
+                href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=redux">
                 <img className={classes.logo} src={reduxlogo} alt="reduc-logo" width="35" height="35" />
               </Link>
             </div>
