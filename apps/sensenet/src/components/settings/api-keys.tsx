@@ -12,7 +12,7 @@ export const ApiKeys: React.FunctionComponent = () => {
 
   return (
     <div style={{ overflow: 'auto' }}>
-      <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)} style={{ display: 'grid' }}>
+      <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}>
         <span style={{ fontSize: '20px' }}>{localization.settings.apiAndSecurity}</span>
       </div>
       <Container fixed>
