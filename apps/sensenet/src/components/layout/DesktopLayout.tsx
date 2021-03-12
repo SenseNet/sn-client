@@ -10,7 +10,6 @@ import { DesktopAppBar } from '../appbar/desktop-app-bar'
 import { useDialog } from '../dialogs'
 import { PermanentDrawer } from '../drawer/PermanentDrawer'
 import { TemporaryDrawer } from '../drawer/TemporaryDrawer'
-import { getMonacoModelUri } from '../editor/text-editor'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -57,11 +56,10 @@ export const DesktopLayout: React.FunctionComponent = (props) => {
 
   useEffect(() => {
     const observables = [
-      customActionService.onExecuteAction.subscribe((value) => {
-        const uri = getMonacoModelUri(value.content, repo, value.action)
+      customActionService.onExecuteAction.subscribe(async (value) => {
         openDialog({
           name: 'execute-action',
-          props: { actionValue: value, uri },
+          props: { actionValue: value },
           dialogProps: value.metadata?.parameters?.length
             ? { classes: { paper: classes.executeActionPaper } }
             : undefined,
