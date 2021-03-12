@@ -72,4 +72,9 @@ export interface ReactClientFieldSetting<T = FieldSetting, S = GenericContent> {
    * Localization object
    */
   localization?: FieldLocalization
+
+  /**
+   * Locale for date object
+   */
+  locale?: Locale
 }

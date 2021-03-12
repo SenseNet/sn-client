@@ -1,7 +1,7 @@
 import { Button, createStyles, DialogActions, DialogContent, makeStyles, Theme } from '@material-ui/core'
 import React, { useState } from 'react'
 import DayPicker, { DateUtils, Modifier } from 'react-day-picker'
-import MomentLocaleUtils from 'react-day-picker/moment'
+import { LocalizationObject } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, usePersonalSettings } from '../../hooks'
 import { useDialog } from '.'
@@ -38,7 +38,7 @@ export const DateRangePicker: React.FunctionComponent<DateRangePickerProps> = (p
   const classes = useStyles()
   const localization = useLocalization().dateRangePicker
   const personalSettings = usePersonalSettings()
-  const langCode = personalSettings.language === 'hungarian' ? 'hu' : 'en'
+  const langCode = LocalizationObject[personalSettings.language].text
 
   const [from, setFrom] = useState<Date | undefined>(props.defaultValue?.from)
   const [to, setTo] = useState<Date | undefined>(props.defaultValue?.to)
@@ -96,7 +96,6 @@ export const DateRangePicker: React.FunctionComponent<DateRangePickerProps> = (p
           modifiers={modifiers}
           onDayClick={handleDayClick}
           onDayMouseEnter={handleDayMouseEnter}
-          localeUtils={MomentLocaleUtils}
           locale={langCode}
         />
       </DialogContent>
