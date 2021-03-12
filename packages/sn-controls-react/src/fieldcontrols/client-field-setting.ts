@@ -4,6 +4,7 @@
 import { Repository } from '@sensenet/client-core'
 import { ActionName } from '@sensenet/control-mapper'
 import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
+import type { Locale } from 'date-fns'
 import { ReactElement } from 'react'
 import { FieldLocalization } from './localization'
 
