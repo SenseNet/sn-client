@@ -6,7 +6,20 @@ const shared = {
 
 module.exports = {
   env: {
-    esm: { ...shared, plugins: ['babel-plugin-add-import-extension'] },
+    esm: {
+      ...shared,
+      presets: [
+        [
+          '@babel/env',
+          {
+            targets: 'chrome 79, last 1 edge version, last 1 safari version, last 1 firefox version, node 14',
+            modules: false,
+          },
+        ],
+        ...sharedPresets,
+      ],
+      plugins: ['babel-plugin-add-import-extension'],
+    },
     bundle: {
       ...shared,
       presets: [

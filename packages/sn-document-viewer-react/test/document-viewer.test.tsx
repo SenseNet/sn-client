@@ -11,7 +11,6 @@ import { exampleDocumentData } from './__Mocks__/viewercontext'
 describe('Document Viewer component', () => {
   const defaultProps: DocumentViewerProps = {
     documentIdOrPath: 1,
-    theme: {} as any,
     renderAppBar: () => null,
   }
 
@@ -40,6 +39,8 @@ describe('Document Viewer component', () => {
     })
 
     expect(wrapper).toMatchSnapshot()
+    wrapper.update()
+    debugger
     expect(wrapper.update().containsMatchingElement(<DocumentViewerRegeneratePreviews />)).toEqual(true)
   })
 
