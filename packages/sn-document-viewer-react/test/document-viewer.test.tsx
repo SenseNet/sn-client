@@ -39,8 +39,6 @@ describe('Document Viewer component', () => {
     })
 
     expect(wrapper).toMatchSnapshot()
-    wrapper.update()
-    debugger
     expect(wrapper.update().containsMatchingElement(<DocumentViewerRegeneratePreviews />)).toEqual(true)
   })
 
