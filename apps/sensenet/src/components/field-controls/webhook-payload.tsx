@@ -1,7 +1,15 @@
 import { ReactClientFieldSetting } from '@sensenet/controls-react'
 import { LongTextFieldSetting } from '@sensenet/default-content-types'
-import { createStyles, FormControlLabel, makeStyles, Radio, RadioGroup, TextareaAutosize } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
+import {
+  createStyles,
+  FormControlLabel,
+  FormLabel,
+  makeStyles,
+  Radio,
+  RadioGroup,
+  TextareaAutosize,
+} from '@material-ui/core'
+import React, { useMemo, useState } from 'react'
 import { useLocalization } from '../../hooks'
 
 const useStyles = makeStyles(() => {
@@ -24,11 +32,7 @@ export const WebhookPayload: React.FC<ReactClientFieldSetting<LongTextFieldSetti
   const [value] = useState(initialState)
   const [useDefault, setUseDefault] = useState<boolean>(true)
 
-  useEffect(() => {
-    props.fieldOnChange?.(props.settings.Name, value)
-    //TODO: Temporary solution. This will run on change
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const jsonValue = useMemo(() => JSON.stringify(JSON.parse(value), undefined, 4), [value])
 
   switch (props.actionName) {
     case 'edit':
@@ -37,9 +41,9 @@ export const WebhookPayload: React.FC<ReactClientFieldSetting<LongTextFieldSetti
     default:
       return (
         <>
-          <div>
-            <label>{localization.webhooksPayload.payload}</label>
-          </div>
+          <FormLabel style={{ transform: 'translate(0, 1.5px) scale(0.75)', transformOrigin: 'top left' }}>
+            {localization.webhooksPayload.payload}
+          </FormLabel>
           <RadioGroup
             aria-label="payload"
             name="payload"
@@ -63,7 +67,7 @@ export const WebhookPayload: React.FC<ReactClientFieldSetting<LongTextFieldSetti
             aria-label="minimum height"
             rowsMin={10}
             cols={70}
-            value={JSON.stringify(JSON.parse(value), undefined, 4)}
+            value={jsonValue}
           />
         </>
       )

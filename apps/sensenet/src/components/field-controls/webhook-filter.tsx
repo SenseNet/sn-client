@@ -2,8 +2,7 @@
  * @module FieldControls
  */
 
-import { ReactClientFieldSetting, renderIconDefault, typeicons } from '@sensenet/controls-react'
-import { ReferencePicker } from '@sensenet/controls-react/src/fieldcontrols/reference-grid/reference-picker'
+import { ReactClientFieldSetting, ReferencePicker, renderIconDefault, typeicons } from '@sensenet/controls-react'
 import { GenericContent, LongTextFieldSetting } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import {
@@ -38,7 +37,7 @@ import {
 } from '@material-ui/core'
 import { red } from '@material-ui/core/colors'
 import { Close } from '@material-ui/icons'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { globals } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { useWidgetStyles } from '../dashboard'
@@ -55,13 +54,11 @@ const useStyles = makeStyles((theme: Theme) => {
       alignSelf: 'center',
     },
     inputContainer: {
-      padding: '2px 4px',
       alignItems: 'center',
       boxShadow: 'none',
       position: 'relative',
     },
     input: {
-      marginLeft: 8,
       flex: 1,
     },
     button: {
@@ -125,27 +122,6 @@ export type WebhookEventType =
   | 'Pending'
   | 'Reject'
 
-//Triggers
-export const webhookEvents = [
-  { name: 'Create', tooltip: 'A new content is created' },
-  { name: 'Modify', tooltip: 'A content is modified and saved' },
-  { name: 'Delete', tooltip: 'A content is deleted permanently or moved to the trash' },
-  {
-    name: 'Checkout',
-    tooltip: 'A content has become locked by a user (version number will be something similar like 1.0.L )',
-  },
-  { name: 'Draft', tooltip: 'A new draft version created (version number will be something similar like 1.2.D )' },
-  {
-    name: 'Approve',
-    tooltip: 'A content version is published or approved (version number will be something similar like 3.0.A )',
-  },
-  {
-    name: 'Pending',
-    tooltip: 'A content version is waiting for approval (version number will be something similar like 2.0.P )',
-  },
-  { name: 'Reject', tooltip: 'A content version was rejected (version number will be something similar like 1.0.R )' },
-]
-
 /**
  * Field control that represents a Webhook filter field.
  */
@@ -167,6 +143,30 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
     (props.fieldValue && (JSON.parse(props.fieldValue) as WebhookFilterType)) || initialState,
   )
 
+  //Triggers
+  const webhookEvents = [
+    { name: 'Create', tooltip: localization.webhooksFilter.createTooltip },
+    { name: 'Modify', tooltip: localization.webhooksFilter.modifyTooltip },
+    { name: 'Delete', tooltip: localization.webhooksFilter.deleteTooltip },
+    {
+      name: 'Checkout',
+      tooltip: localization.webhooksFilter.checkoutTooltip,
+    },
+    { name: 'Draft', tooltip: localization.webhooksFilter.draftTooltip },
+    {
+      name: 'Approve',
+      tooltip: localization.webhooksFilter.approveTooltip,
+    },
+    {
+      name: 'Pending',
+      tooltip: localization.webhooksFilter.pendingTooltip,
+    },
+    {
+      name: 'Reject',
+      tooltip: localization.webhooksFilter.rejectTooltip,
+    },
+  ]
+
   const [contentForContainer, setContentForContainer] = useState<GenericContent>()
   const [isPickerOpen, setIsPickerOpen] = useState<boolean>(false)
 
@@ -176,8 +176,13 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
   const [typesSelected, setTypesSelected] = useState<string[]>(value.ContentTypes?.map((type) => type.Name) || [])
   const allTypes = repo.schemas.getTypesFromSchema()
 
-  const filteredList = allTypes.filter(
-    (type: string) => type.toLowerCase().includes(contentTypeInputValue.toLowerCase()) && !typesSelected.includes(type),
+  const filteredList = useMemo(
+    () =>
+      allTypes.filter(
+        (type: string) =>
+          type.toLowerCase().includes(contentTypeInputValue.toLowerCase()) && !typesSelected.includes(type),
+      ),
+    [allTypes, contentTypeInputValue, typesSelected],
   )
 
   useEffect(() => {
@@ -320,8 +325,8 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
               path={DEFAULT_CONTAINER}
               repository={props.repository!}
               handleSubmit={(newSelection: GenericContent[]) => {
-                value.Path = newSelection[0].Path
-                props.fieldOnChange?.(props.settings.Name, JSON.stringify(value))
+                setValue({ ...value, Path: newSelection[0].Path })
+                props.fieldOnChange?.(props.settings.Name, JSON.stringify({ ...value, Path: newSelection[0].Path }))
                 handleDialogClose()
               }}
               handleCancel={handleDialogClose}
@@ -330,8 +335,8 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
           </Dialog>
           <FormControl component="fieldset">
             <RadioGroup
-              aria-label="TriggersForAllEvents"
-              name="TriggersForAllEvents"
+              aria-label={localization.webhooksFilter.triggerRadioGroup}
+              name={localization.webhooksFilter.triggerRadioGroup}
               value={String(value.TriggersForAllEvents)}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 const targetValue = (event.target as HTMLInputElement).value === 'true'
@@ -353,22 +358,26 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
                   JSON.stringify({ ...value, TriggersForAllEvents: targetValue }),
                 )
               }}>
-              <FormControlLabel value="true" control={<Radio color="primary" />} label="Trigger for all events" />
+              <FormControlLabel
+                value="true"
+                control={<Radio color="primary" />}
+                label={localization.webhooksFilter.triggerForAll}
+              />
               <FormControlLabel
                 value="false"
                 control={<Radio color="primary" />}
-                label="Select specific trigger events"
+                label={localization.webhooksFilter.selectSpecificEvents}
               />
             </RadioGroup>
           </FormControl>
           <div className={widgetClasses.root}>
             <Paper elevation={0} className={widgetClasses.container}>
               <TableContainer>
-                <Table size="small" aria-label="stats-components">
+                <Table size="small" aria-label="Stats components">
                   <TableHead>
                     <TableRow>
                       <TableCell align="center" className={classes.fixColumn} />
-                      <TableCell align="center">All</TableCell>
+                      <TableCell align="center">{localization.webhooksFilter.all}</TableCell>
                       {webhookEvents.map((event) => (
                         <Tooltip key={event.name} title={event.tooltip} placement="bottom">
                           <TableCell align="center">{event.name}</TableCell>
@@ -379,45 +388,47 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
                   </TableHead>
                   <TableBody>
                     {typesSelected.length > 0 ? (
-                      typesSelected.map((row) => (
-                        <TableRow key={row}>
-                          <TableCell align="center" className={classes.fixColumn}>
-                            {row}
-                          </TableCell>
-                          <TableCell align="center">
-                            <Checkbox
-                              disabled={value.TriggersForAllEvents}
-                              color="primary"
-                              checked={value.ContentTypes?.find((type) => type.Name === row)?.Events.includes('All')}
-                              onChange={(event) => handleCheckboxAllChange(event, row)}
-                            />
-                          </TableCell>
-                          {webhookEvents.map((eventItem) => (
-                            <TableCell key={eventItem.name} align="center">
+                      typesSelected.map((row) => {
+                        const actualEvent = value.ContentTypes?.find((type) => type.Name === row)
+                        return (
+                          <TableRow key={row}>
+                            <TableCell align="center" className={classes.fixColumn}>
+                              {row}
+                            </TableCell>
+                            <TableCell align="center">
                               <Checkbox
                                 disabled={value.TriggersForAllEvents}
                                 color="primary"
-                                checked={
-                                  value.ContentTypes?.find((type) => type.Name === row)?.Events.includes(
-                                    eventItem.name as WebhookEventType,
-                                  ) || value.ContentTypes?.find((type) => type.Name === row)?.Events.includes('All')
-                                }
-                                onChange={(event) =>
-                                  handleCheckboxChange(event, row, eventItem.name as WebhookEventType)
-                                }
+                                checked={actualEvent?.Events.includes('All')}
+                                onChange={(event) => handleCheckboxAllChange(event, row)}
                               />
                             </TableCell>
-                          ))}
-                          <TableCell align="center" className={classes.fixColumn} style={{ right: 0 }}>
-                            <Close
-                              className={classes.deleteIcon}
-                              onClick={() => {
-                                handleTypeRemove(row)
-                              }}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      ))
+                            {webhookEvents.map((eventItem) => (
+                              <TableCell key={eventItem.name} align="center">
+                                <Checkbox
+                                  disabled={value.TriggersForAllEvents}
+                                  color="primary"
+                                  checked={
+                                    actualEvent?.Events.includes(eventItem.name as WebhookEventType) ||
+                                    actualEvent?.Events.includes('All')
+                                  }
+                                  onChange={(event) =>
+                                    handleCheckboxChange(event, row, eventItem.name as WebhookEventType)
+                                  }
+                                />
+                              </TableCell>
+                            ))}
+                            <TableCell align="center" className={classes.fixColumn} style={{ right: 0 }}>
+                              <Close
+                                className={classes.deleteIcon}
+                                onClick={() => {
+                                  handleTypeRemove(row)
+                                }}
+                              />
+                            </TableCell>
+                          </TableRow>
+                        )
+                      })
                     ) : (
                       <TableRow>
                         <TableCell colSpan={webhookEvents.length + 3} align="center">
@@ -466,7 +477,7 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
                   {filteredList.length > 0 ? (
                     filteredList.map((item: any) => renderTypeListItem(item, handleTypeSelect))
                   ) : (
-                    <ListItem>No hits</ListItem>
+                    <ListItem>{localization.webhooksFilter.noHits}</ListItem>
                   )}
                 </List>
               </Paper>

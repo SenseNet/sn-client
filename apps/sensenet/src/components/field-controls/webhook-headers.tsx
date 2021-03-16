@@ -4,7 +4,7 @@
 
 import { ReactClientFieldSetting, renderIconDefault } from '@sensenet/controls-react'
 import { LongTextFieldSetting } from '@sensenet/default-content-types'
-import { createStyles, IconButton, makeStyles, TextField } from '@material-ui/core'
+import { createStyles, IconButton, InputLabel, makeStyles, TextField } from '@material-ui/core'
 import { Delete } from '@material-ui/icons'
 import React, { useState } from 'react'
 import { useLocalization } from '../../hooks'
@@ -12,7 +12,7 @@ import { useLocalization } from '../../hooks'
 const useStyles = makeStyles(() => {
   return createStyles({
     input: {
-      width: '45%',
+      flexGrow: 1,
     },
     rowContainer: {
       display: 'flex',
@@ -38,10 +38,8 @@ export const WebhookHeaders: React.FC<ReactClientFieldSetting<LongTextFieldSetti
     case 'new':
       return (
         <>
-          <div>
-            <label>{localization.webhooksHeader.headers}</label>
-          </div>
-          {Object.keys(value).map((headerKey, _index) => {
+          <InputLabel shrink>{localization.webhooksHeader.headers}</InputLabel>
+          {Object.entries(value).map(([headerKey, headerValue], _index) => {
             return (
               <div key={headerKey} className={classes.rowContainer}>
                 <TextField
@@ -62,15 +60,15 @@ export const WebhookHeaders: React.FC<ReactClientFieldSetting<LongTextFieldSetti
                   autoComplete="off"
                   name={`${headerKey}-value`}
                   id={`${headerKey}-value`}
-                  value={value[headerKey]}
+                  value={headerValue}
                   fullWidth={false}
                 />
                 <IconButton
                   onClick={() => {
-                    const valueCopy = { ...value }
-                    delete valueCopy[headerKey]
-                    setValue(valueCopy)
-                    props.fieldOnChange?.(props.settings.Name, JSON.stringify(valueCopy))
+                    const newValue = { ...value }
+                    delete newValue[headerKey]
+                    setValue(newValue)
+                    props.fieldOnChange?.(props.settings.Name, JSON.stringify(newValue))
                   }}>
                   <Delete />
                 </IconButton>
@@ -126,7 +124,7 @@ export const WebhookHeaders: React.FC<ReactClientFieldSetting<LongTextFieldSetti
           <div>
             <label>{localization.webhooksHeader.headers}</label>
           </div>
-          {Object.keys(value).map((headerKey, _index) => {
+          {Object.entries(value).map(([headerKey, headerValue], _index) => {
             return (
               <div key={headerKey} className={classes.rowContainer}>
                 <TextField
@@ -147,7 +145,7 @@ export const WebhookHeaders: React.FC<ReactClientFieldSetting<LongTextFieldSetti
                   autoComplete="off"
                   name={`${headerKey}-value`}
                   id={`${headerKey}-value`}
-                  value={value[headerKey]}
+                  value={headerValue}
                   fullWidth={false}
                 />
               </div>

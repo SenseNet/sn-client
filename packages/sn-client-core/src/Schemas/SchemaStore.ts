@@ -122,10 +122,7 @@ export class SchemaStore {
    */
   public getTypesFromSchema(): string[] {
     const schemasCopy = [...this.schemas.getValue()]
-    const contentTypes: string[] = []
-    schemasCopy.forEach((schema) => {
-      contentTypes.push(schema.ContentTypeName)
-    })
+    const contentTypes = schemasCopy.map((schema) => schema.ContentTypeName.toString())
     return contentTypes
   }
 }
