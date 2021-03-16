@@ -1,20 +1,22 @@
-import styled from '@emotion/styled'
+import { createStyles, makeStyles } from '@material-ui/core'
 import * as React from 'react'
+import { globals } from '../styles/globalStyles'
 
-import { dimensions } from '../styles/variables'
+const useStyles = makeStyles(() => {
+  return createStyles({
+    page: {
+      display: 'block',
+      flex: 1,
+      position: 'relative',
+      padding: `${globals.common.containerPadding}rem`,
+      marginBottom: '3rem',
+    },
+  })
+})
 
-const StyledPage = styled.div`
-  display: block;
-  flex: 1;
-  position: relative;
-  padding: ${dimensions.containerPadding}rem;
-  margin-bottom: 3rem;
-`
-
-interface PageProps {
-  className?: string
+const Page: React.FC = (props) => {
+  const classes = useStyles()
+  return <div className={classes.page}>{props.children}</div>
 }
-
-const Page: React.FC<PageProps> = ({ children, className }) => <StyledPage className={className}>{children}</StyledPage>
 
 export default Page

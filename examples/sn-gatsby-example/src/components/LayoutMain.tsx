@@ -1,18 +1,19 @@
-import styled from '@emotion/styled'
+import { createStyles, makeStyles } from '@material-ui/core'
 import * as React from 'react'
 
-const StyledLayoutMain = styled.main`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-`
+const useStyles = makeStyles(() => {
+  return createStyles({
+    layoutMain: {
+      display: 'flex',
+      flex: 1,
+      flexDirection: 'column',
+    },
+  })
+})
 
-interface LayoutMainProps {
-  className?: string
+const LayoutMain: React.FC = (props) => {
+  const classes = useStyles()
+  return <main className={classes.layoutMain}>{props.children}</main>
 }
-
-const LayoutMain: React.FC<LayoutMainProps> = ({ children, className }) => (
-  <StyledLayoutMain className={className}>{children}</StyledLayoutMain>
-)
 
 export default LayoutMain

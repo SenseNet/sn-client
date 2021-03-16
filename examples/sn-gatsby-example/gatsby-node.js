@@ -1,5 +1,3 @@
-'use strict'
-
 const path = require('path')
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
@@ -11,30 +9,33 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   // trip up. An empty string is still required in replacement to `null`.
 
   switch (node.internal.type) {
-    case 'MarkdownRemark': {
-      const { permalink, layout } = node.frontmatter
-      const { relativePath } = getNode(node.parent)
+    case 'MarkdownRemark':
+      {
+        const { permalink, layout } = node.frontmatter
+        const { relativePath } = getNode(node.parent)
 
-      let slug = permalink
+        let slug = permalink
 
-      if (!slug) {
-        slug = `/${relativePath.replace('.md', '')}/`
+        if (!slug) {
+          slug = `/${relativePath.replace('.md', '')}/`
+        }
+
+        // Used to generate URL to view this content.
+        createNodeField({
+          node,
+          name: 'slug',
+          value: slug || '',
+        })
+
+        // Used to determine a page layout.
+        createNodeField({
+          node,
+          name: 'layout',
+          value: layout || '',
+        })
       }
-
-      // Used to generate URL to view this content.
-      createNodeField({
-        node,
-        name: 'slug',
-        value: slug || '',
-      })
-
-      // Used to determine a page layout.
-      createNodeField({
-        node,
-        name: 'layout',
-        value: layout || '',
-      })
-    }
+      break
+    default: //do nothing
   }
 }
 

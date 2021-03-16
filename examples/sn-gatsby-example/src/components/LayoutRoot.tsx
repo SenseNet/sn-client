@@ -1,23 +1,24 @@
-import { css, Global } from '@emotion/core'
-import styled from '@emotion/styled'
+import { createStyles, makeStyles } from '@material-ui/core'
 import * as React from 'react'
-import normalize from '../styles/normalize'
 
-const StyledLayoutRoot = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-`
+const useStyles = makeStyles(() => {
+  return createStyles({
+    layoutRoot: {
+      display: 'flex',
+      minHeight: '100vh',
+      flexDirection: 'column',
+    },
+  })
+})
 
-interface LayoutRootProps {
-  className?: string
+const LayoutRoot: React.FC = (props) => {
+  const classes = useStyles()
+
+  return (
+    <>
+      <div className={classes.layoutRoot}>{props.children}</div>
+    </>
+  )
 }
-
-const LayoutRoot: React.FC<LayoutRootProps> = ({ children, className }) => (
-  <>
-    <Global styles={() => css(normalize)} />
-    <StyledLayoutRoot className={className}>{children}</StyledLayoutRoot>
-  </>
-)
 
 export default LayoutRoot

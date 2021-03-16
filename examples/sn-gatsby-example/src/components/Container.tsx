@@ -1,23 +1,21 @@
-import styled from '@emotion/styled'
+import { createStyles, makeStyles } from '@material-ui/core'
 import * as React from 'react'
 
-import { getEmSize } from '../styles/mixins'
-import { widths } from '../styles/variables'
+const useStyles = makeStyles(() => {
+  return createStyles({
+    container: {
+      position: 'relative',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      width: 'auto',
+      maxWidth: '60rem',
+    },
+  })
+})
 
-const StyledContainer = styled.div`
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-  width: auto;
-  max-width: ${getEmSize(widths.lg)}em;
-`
-
-interface ContainerProps {
-  className?: string
+const Container: React.FC = (props) => {
+  const classes = useStyles()
+  return <div className={classes.container}>{props.children}</div>
 }
-
-const Container: React.FC<ContainerProps> = ({ children, className }) => (
-  <StyledContainer className={className}>{children}</StyledContainer>
-)
 
 export default Container
