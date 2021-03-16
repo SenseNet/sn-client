@@ -12,7 +12,8 @@ describe('Permission.settings effect on permission dialog', () => {
   })
 
   it('adding a new group in Permission.settings file should appear on permission editor dialog', () => {
-    cy.get('[data-test="drawer-menu-item-setup"]').click()
+    cy.get('[data-test="drawer-menu-item-settings"]').click()
+    cy.get('[data-test="drawer-menu-item-configuration"]').click()
     cy.get('[data-test="permission.settings-edit-button"]').click()
     cy.get('.react-monaco-editor-container textarea')
       .click({ force: true })
@@ -65,7 +66,8 @@ describe('Permission.settings effect on permission dialog', () => {
   })
 
   it('removing a group in Permission.settings file should disappear on permission editor dialog', () => {
-    cy.get('[data-test="drawer-menu-item-setup"]').click()
+    cy.get('[data-test="drawer-menu-item-settings"]').click()
+    cy.get('[data-test="drawer-menu-item-configuration"]').click()
     cy.get('[data-test="permission.settings-edit-button"]').click()
     cy.get('.react-monaco-editor-container textarea')
       .click({ force: true })

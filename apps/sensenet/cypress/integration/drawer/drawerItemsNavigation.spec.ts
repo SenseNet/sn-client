@@ -47,19 +47,11 @@ describe('Drawer items navigation', () => {
     })
   })
 
-  it('clicking on the Localization icon on the drawer should navigate to the Localization page', () => {
-    cy.get('[data-test="drawer-menu-item-localization"]').as('localizationIcon')
-    cy.get('@localizationIcon').click()
+  it('clicking on the Settings icon on the drawer should navigate to the Settings page', () => {
+    cy.get('[data-test="drawer-menu-item-settings"]').as('settingsIcon')
+    cy.get('@settingsIcon').click()
     cy.location().should((loc) => {
-      expect(loc.pathname).to.eq('/localization/explorer/')
-    })
-  })
-
-  it('clicking on the Setup icon on the drawer should navigate to the Setup page', () => {
-    cy.get('[data-test="drawer-menu-item-setup"]').as('setupIcon')
-    cy.get('@setupIcon').click()
-    cy.location().should((loc) => {
-      expect(loc.pathname).to.eq('/setup/')
+      expect(loc.pathname).to.eq('/settings/stats')
     })
   })
 })
