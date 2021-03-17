@@ -176,13 +176,8 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
   const [typesSelected, setTypesSelected] = useState<string[]>(value.ContentTypes?.map((type) => type.Name) || [])
   const allTypes = repo.schemas.getTypesFromSchema()
 
-  const filteredList = useMemo(
-    () =>
-      allTypes.filter(
-        (type: string) =>
-          type.toLowerCase().includes(contentTypeInputValue.toLowerCase()) && !typesSelected.includes(type),
-      ),
-    [allTypes, contentTypeInputValue, typesSelected],
+  const filteredList = allTypes.filter(
+    (type: string) => type.toLowerCase().includes(contentTypeInputValue.toLowerCase()) && !typesSelected.includes(type),
   )
 
   useEffect(() => {
