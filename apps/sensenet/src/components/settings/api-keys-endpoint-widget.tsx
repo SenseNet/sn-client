@@ -123,7 +123,7 @@ export const ApiEndpointWidget: React.FunctionComponent = () => {
                 <Link
                   className={classes.apiDocsLink}
                   target="_blank"
-                  href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=react">
+                  href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=reactjs">
                   <img className={classes.logo} src={reactlogo} alt="react-logo" width="35" height="35" />
                 </Link>
               </Tooltip>
