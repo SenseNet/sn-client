@@ -1,5 +1,5 @@
 {
-  "baseUrl": "https://admin.test.sensenet.com",
+  "baseUrl": "http://localhost:8080/",
   "chromeWebSecurity": false,
   "defaultCommandTimeout": 12000,
   "env": {
@@ -8,13 +8,8 @@
     "users": {
       "admin": {
         "clientId": "businesscat",
-        "clientSecret": "",
+        "clientSecret": "secret",
         "id": "/Root/IMS/Public('businesscat')"
-      },
-      "developer": {
-        "clientId": "devdog",
-        "clientSecret": "",
-        "id": "/Root/IMS/Public('devdog')"
       }
     }
   }

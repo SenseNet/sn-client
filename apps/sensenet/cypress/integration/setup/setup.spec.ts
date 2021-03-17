@@ -6,7 +6,7 @@ describe('Setup', () => {
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
       .get('[data-test="drawer-menu-item-settings"]')
       .click()
-    cy.get('[data-test="drawer-menu-item-configuration"]').click()
+    cy.get('[data-test="drawer-submenu-item-configuration"]').click()
   })
 
   it('should open the context menu if a "settings item" is clicked with the right mouse button', () => {

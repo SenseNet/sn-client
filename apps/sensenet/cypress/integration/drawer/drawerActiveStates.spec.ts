@@ -41,7 +41,7 @@ describe('Drawer menu icons', () => {
     cy.get('@contentTypesIcon').should('have.class', 'Mui-selected')
   })
 
-  it('clicking on the Setup icon on the drawer should open the Content TypesSetup page', () => {
+  it('clicking on the Setup icon on the drawer should open the Setup page', () => {
     cy.get('[data-test="drawer-menu-item-settings"]').as('settingsIcon')
     cy.get('@settingsIcon').should('not.have.class', 'Mui-selected')
     cy.get('@settingsIcon').click()
