@@ -100,7 +100,7 @@ const useStyles = makeStyles((theme: Theme) => {
 })
 
 //Types
-export interface WebhookFilterType {
+export interface WebhookTriggerType {
   Path?: string
   TriggersForAllEvents: boolean
   ContentTypes?: WebhookContentTypeItem[]
@@ -125,7 +125,7 @@ export type WebhookEventType =
 /**
  * Field control that represents a Webhook filter field.
  */
-export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSetting>> = (props) => {
+export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetting>> = (props) => {
   const classes = useStyles()
   const widgetClasses = useWidgetStyles()
 
@@ -139,31 +139,31 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
     ContentTypes: [{ Name: 'File', Events: ['All'] } as WebhookContentTypeItem],
   }
 
-  const [value, setValue] = useState<WebhookFilterType>(
-    (props.fieldValue && (JSON.parse(props.fieldValue) as WebhookFilterType)) || initialState,
+  const [value, setValue] = useState<WebhookTriggerType>(
+    (props.fieldValue && (JSON.parse(props.fieldValue) as WebhookTriggerType)) || initialState,
   )
 
   //Triggers
   const webhookEvents = [
-    { name: 'Create', tooltip: localization.webhooksFilter.createTooltip },
-    { name: 'Modify', tooltip: localization.webhooksFilter.modifyTooltip },
-    { name: 'Delete', tooltip: localization.webhooksFilter.deleteTooltip },
+    { name: 'Create', tooltip: localization.webhooksTrigger.createTooltip },
+    { name: 'Modify', tooltip: localization.webhooksTrigger.modifyTooltip },
+    { name: 'Delete', tooltip: localization.webhooksTrigger.deleteTooltip },
     {
       name: 'Checkout',
-      tooltip: localization.webhooksFilter.checkoutTooltip,
+      tooltip: localization.webhooksTrigger.checkoutTooltip,
     },
-    { name: 'Draft', tooltip: localization.webhooksFilter.draftTooltip },
+    { name: 'Draft', tooltip: localization.webhooksTrigger.draftTooltip },
     {
       name: 'Approve',
-      tooltip: localization.webhooksFilter.approveTooltip,
+      tooltip: localization.webhooksTrigger.approveTooltip,
     },
     {
       name: 'Pending',
-      tooltip: localization.webhooksFilter.pendingTooltip,
+      tooltip: localization.webhooksTrigger.pendingTooltip,
     },
     {
       name: 'Reject',
-      tooltip: localization.webhooksFilter.rejectTooltip,
+      tooltip: localization.webhooksTrigger.rejectTooltip,
     },
   ]
 
@@ -194,11 +194,11 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
           })
           setContentForContainer(response.d)
         } catch (error) {
-          logger.error({ message: localization.webhooksFilter.errorMessageOnLoad, data: { error } })
+          logger.error({ message: localization.webhooksTrigger.errorMessageOnLoad, data: { error } })
         }
       })()
     }
-  }, [localization.webhooksFilter.errorMessageOnLoad, logger, repo, value.Path])
+  }, [localization.webhooksTrigger.errorMessageOnLoad, logger, repo, value.Path])
 
   const handleTypeInputOnClick = () => {
     !value.TriggersForAllEvents && setContentTypeDropdownOpened(true)
@@ -315,11 +315,11 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
               onClick={() => {
                 setIsPickerOpen(true)
               }}>
-              {localization.webhooksFilter.pickAContainer}
+              {localization.webhooksTrigger.pickAContainer}
             </Button>
           </div>
           <Dialog fullWidth maxWidth="md" onClose={handleDialogClose} open={isPickerOpen}>
-            <DialogTitle>{localization.webhooksFilter.pickAContainer}</DialogTitle>
+            <DialogTitle>{localization.webhooksTrigger.pickAContainer}</DialogTitle>
             <ReferencePicker
               defaultValue={contentForContainer ? [contentForContainer] : undefined}
               path={DEFAULT_CONTAINER}
@@ -335,8 +335,8 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
           </Dialog>
           <FormControl component="fieldset">
             <RadioGroup
-              aria-label={localization.webhooksFilter.triggerRadioGroup}
-              name={localization.webhooksFilter.triggerRadioGroup}
+              aria-label={localization.webhooksTrigger.triggerRadioGroup}
+              name={localization.webhooksTrigger.triggerRadioGroup}
               value={String(value.TriggersForAllEvents)}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 const targetValue = (event.target as HTMLInputElement).value === 'true'
@@ -361,12 +361,12 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
               <FormControlLabel
                 value="true"
                 control={<Radio color="primary" />}
-                label={localization.webhooksFilter.triggerForAll}
+                label={localization.webhooksTrigger.triggerForAll}
               />
               <FormControlLabel
                 value="false"
                 control={<Radio color="primary" />}
-                label={localization.webhooksFilter.selectSpecificEvents}
+                label={localization.webhooksTrigger.selectSpecificEvents}
               />
             </RadioGroup>
           </FormControl>
@@ -377,7 +377,7 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
                   <TableHead>
                     <TableRow>
                       <TableCell align="center" className={classes.fixColumn} />
-                      <TableCell align="center">{localization.webhooksFilter.all}</TableCell>
+                      <TableCell align="center">{localization.webhooksTrigger.all}</TableCell>
                       {webhookEvents.map((event) => (
                         <Tooltip key={event.name} title={event.tooltip} placement="bottom">
                           <TableCell align="center">{event.name}</TableCell>
@@ -432,7 +432,7 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
                     ) : (
                       <TableRow>
                         <TableCell colSpan={webhookEvents.length + 3} align="center">
-                          <div className={classes.errorMessage}>{localization.webhooksFilter.noTypeSelected}</div>
+                          <div className={classes.errorMessage}>{localization.webhooksTrigger.noTypeSelected}</div>
                         </TableCell>
                       </TableRow>
                     )}
@@ -454,7 +454,7 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
                   type="search"
                   onClick={handleTypeInputOnClick}
                   onChange={handleTypeInputChange}
-                  placeholder={localization.webhooksFilter.startTyping}
+                  placeholder={localization.webhooksTrigger.startTyping}
                   fullWidth={true}
                   value={contentTypeInputValue}
                   className={classes.input}
@@ -477,7 +477,7 @@ export const WebhookFilter: React.FC<ReactClientFieldSetting<LongTextFieldSettin
                   {filteredList.length > 0 ? (
                     filteredList.map((item: any) => renderTypeListItem(item, handleTypeSelect))
                   ) : (
-                    <ListItem>{localization.webhooksFilter.noHits}</ListItem>
+                    <ListItem>{localization.webhooksTrigger.noHits}</ListItem>
                   )}
                 </List>
               </Paper>
