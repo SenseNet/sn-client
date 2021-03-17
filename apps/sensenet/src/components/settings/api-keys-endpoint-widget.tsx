@@ -1,5 +1,16 @@
 import { useRepository } from '@sensenet/hooks-react'
-import { createStyles, Divider, Grid, Hidden, Link, makeStyles, Paper, TextField, Theme } from '@material-ui/core'
+import {
+  createStyles,
+  Divider,
+  Grid,
+  Hidden,
+  Link,
+  makeStyles,
+  Paper,
+  TextField,
+  Theme,
+  Tooltip,
+} from '@material-ui/core'
 import React from 'react'
 import jslogo from '../../assets/js.png'
 import dotnetlogo from '../../assets/net.png'
@@ -37,10 +48,6 @@ const useStyles = makeStyles((theme: Theme) => {
       '&:hover': {
         textDecoration: 'none',
       },
-    },
-    apiDocsTitle: {
-      color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
-      textAlign: 'center',
     },
   })
 })
@@ -96,35 +103,38 @@ export const ApiEndpointWidget: React.FunctionComponent = () => {
               {localization.clientLink}
             </Link>
             <div>
-              <Link
-                className={classes.apiDocsLink}
-                target="_blank"
-                href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=js-snclient">
-                <img className={classes.logo} src={jslogo} alt="js-logo" width="35" height="35" />
-                <div className={classes.apiDocsTitle}>javascript</div>
-              </Link>
-
-              <Link
-                className={classes.apiDocsLink}
-                target="_blank"
-                href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=dotnet">
-                <img className={classes.logo} src={dotnetlogo} alt="dotnet-logo" width="35" height="35" />
-                <div className={classes.apiDocsTitle}>.net</div>
-              </Link>
-              <Link
-                className={classes.apiDocsLink}
-                target="_blank"
-                href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=react">
-                <img className={classes.logo} src={reactlogo} alt="react-logo" width="35" height="35" />
-                <div className={classes.apiDocsTitle}>react</div>
-              </Link>
-              <Link
-                className={classes.apiDocsLink}
-                target="_blank"
-                href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=react-redux">
-                <img className={classes.logo} src={reduxlogo} alt="reduc-logo" width="35" height="35" />
-                <div className={classes.apiDocsTitle}>redux</div>
-              </Link>
+              <Tooltip title="javascript" placement="bottom">
+                <Link
+                  className={classes.apiDocsLink}
+                  target="_blank"
+                  href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=js-snclient">
+                  <img className={classes.logo} src={jslogo} alt="js-logo" width="35" height="35" />
+                </Link>
+              </Tooltip>
+              <Tooltip title=".net" placement="bottom">
+                <Link
+                  className={classes.apiDocsLink}
+                  target="_blank"
+                  href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=dotnet">
+                  <img className={classes.logo} src={dotnetlogo} alt="dotnet-logo" width="35" height="35" />
+                </Link>
+              </Tooltip>
+              <Tooltip title="react" placement="bottom">
+                <Link
+                  className={classes.apiDocsLink}
+                  target="_blank"
+                  href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=react">
+                  <img className={classes.logo} src={reactlogo} alt="react-logo" width="35" height="35" />
+                </Link>
+              </Tooltip>
+              <Tooltip title="redux" placement="bottom">
+                <Link
+                  className={classes.apiDocsLink}
+                  target="_blank"
+                  href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=react-redux">
+                  <img className={classes.logo} src={reduxlogo} alt="reduc-logo" width="35" height="35" />
+                </Link>
+              </Tooltip>
             </div>
           </Grid>
         </Grid>
