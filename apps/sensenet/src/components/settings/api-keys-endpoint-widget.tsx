@@ -110,7 +110,7 @@ export const ApiEndpointWidget: React.FunctionComponent = () => {
               <Link
                 className={classes.apiDocsLink}
                 target="_blank"
-                href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=redux">
+                href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=react-redux">
                 <img className={classes.logo} src={reduxlogo} alt="reduc-logo" width="35" height="35" />
               </Link>
             </div>
