@@ -30,6 +30,33 @@ export const globals = {
   },
 }
 
+export const useWidgetStyles = makeStyles((theme: Theme) => {
+  return createStyles({
+    root: {
+      marginBottom: '2rem',
+      width: '100%',
+    },
+    title: {
+      marginBottom: '1rem',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      fontSize: '20px',
+      fontWeight: 500,
+    },
+    container: {
+      padding: '1.5rem',
+      backgroundColor: theme.palette.type === 'light' ? globals.light.drawerBackground : globals.dark.drawerBackground,
+      border: theme.palette.type === 'light' ? '1px solid #E2E2E2' : 0,
+    },
+    subtitle: {
+      fontSize: '20px',
+      fontWeight: 500,
+      marginTop: 0,
+    },
+  })
+})
+
 export const useGlobalStyles = makeStyles((theme: Theme) => {
   return createStyles({
     '@global': {
@@ -130,6 +157,15 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
       border: theme.palette.type === 'light' ? '2px solid #212121DE' : '2px solid #505050',
       '& ~ button': {
         marginLeft: 38,
+      },
+    },
+    cardRoot: {
+      backgroundColor: theme.palette.type === 'light' ? '#F8F8F8' : 'rgba(255, 255, 255, 0.05)',
+      border: theme.palette.type === 'light' ? '1px solid #E2E2E2' : 'none',
+      padding: '14px 24px',
+      marginBottom: '50px',
+      '& .MuiGrid-item': {
+        marginBottom: '12px',
       },
     },
   })

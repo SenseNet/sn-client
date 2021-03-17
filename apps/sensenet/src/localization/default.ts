@@ -413,6 +413,24 @@ const values = {
   settings: {
     edit: 'Edit',
     learnMore: 'Learn more',
+    apiEndpoint: 'API endpoint',
+    apiAndSecurity: 'API and security',
+    apiEndPointApi: 'Use this endpoint for your API access:',
+    apiEndPointIs: 'Use this as your Identity Server access:',
+    apiClients: 'API clients, frameworks and libs',
+    learnAboutApi: 'Learn about API clients and frameworks',
+    clientLink: 'https://github.com/SenseNet/sn-client',
+    apiKeys: 'API keys',
+    yourAppId: 'ClientID for your app',
+    personalAccessToken: 'Personal Access Token',
+    clientDescription:
+      'The client id and secret is required when you are developing a tool or another server-side application that needs to connect to the repository service. In this case all requests to the repository will be made in the name of a technical user represented by the client id and secret you see below. Please make sure you protect these values because they grant access to your repository. For more details, please visit <a href="https://docs.sensenet.com/tutorials/authentication/how-to-authenticate-dotnet" target="_blank">https://docs.sensenet.com/tutorials/authentication/how-to-authenticate-dotnet</a>',
+    spaDescription:
+      'This client id is required when you are creating a single-page application or a mobile app. In this case users will log in to the system individually using their own credentials. The client id below will identify your application in our authentication flow. Please copy the client id and use it in your application based on the examples in the documentation. For more details, please visit <a href="https://docs.sensenet.com/tutorials/authentication/how-to-authenticate-react" target="_blank">https://docs.sensenet.com/tutorials/authentication/how-to-authenticate-react</a>',
+    clientId: 'Client ID',
+    clientSecret: 'Client Secret',
+    generate: 'Generate access token',
+    regenerate: 'Regenerate',
   },
   customActions: {
     executeCustomActionDialog: {
