@@ -12,10 +12,10 @@ import {
   Tooltip,
 } from '@material-ui/core'
 import React from 'react'
-import jslogo from '../../assets/js.png'
-import dotnetlogo from '../../assets/net.png'
-import reactlogo from '../../assets/react.png'
-import reduxlogo from '../../assets/redux-logo.png'
+import jslogo from '../../assets/js.svg'
+import dotnetlogo from '../../assets/net.svg'
+import reactlogo from '../../assets/react.svg'
+import reduxlogo from '../../assets/redux.svg'
 import { useWidgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 
