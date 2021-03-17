@@ -116,4 +116,13 @@ export class SchemaStore {
 
     return parent === 'GenericContent'
   }
+
+  /**
+   * Returns a list of the content types existing on schema
+   */
+  public getTypesFromSchema(): string[] {
+    const schemasCopy = [...this.schemas.getValue()]
+    const contentTypes = schemasCopy.map((schema) => schema.ContentTypeName.toString())
+    return contentTypes
+  }
 }

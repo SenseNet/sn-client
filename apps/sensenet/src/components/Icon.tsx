@@ -42,6 +42,7 @@ import {
   PublicOutlined,
   Receipt,
   SearchOutlined,
+  Settings,
   SettingsOutlined,
   TextFormat,
   TrendingDown,
@@ -319,6 +320,9 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
       options.repo.schemas.isContentFromType(item, 'Settings') ? <SettingsOutlined style={options.style} /> : null,
   },
   { get: (item, options) => (item.Icon === '' ? <GroupOutlined style={options.style} /> : null) },
+  {
+    get: (item, options) => (item.Icon === 'Settings' ? <Settings style={options.style} /> : null),
+  },
 ]
 
 export const wellKnownIconNames = tuple(
@@ -353,6 +357,7 @@ export const wellKnownIconNames = tuple(
   'Update',
   'VisibilityOff',
   'Workspace',
+  'Settings',
 )
 
 export const defaultSchemaResolvers: Array<IconResolver<{ ContentTypeName: typeof wellKnownIconNames[number] }>> = [
@@ -419,6 +424,8 @@ export const defaultSchemaResolvers: Array<IconResolver<{ ContentTypeName: typeo
           return <Block style={options.style} />
         case 'LockOpen':
           return <LockOpen style={options.style} />
+        case 'Settings':
+          return <Settings style={options.style} />
         default:
           return null
       }
