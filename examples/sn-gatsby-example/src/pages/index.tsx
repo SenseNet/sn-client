@@ -8,7 +8,6 @@ export interface PostNode {
   node: {
     excerpt: string
     frontmatter: {
-      layout: string
       title: string
     }
     fields: {
@@ -58,7 +57,6 @@ export const pageQuery = graphql`
           }
           excerpt
           frontmatter {
-            layout
             title
           }
         }
