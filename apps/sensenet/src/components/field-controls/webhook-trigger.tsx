@@ -308,6 +308,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
               placeholder={props.settings.DisplayName}
               value={value.Path}
               fullWidth={true}
+              InputProps={{ readOnly: true }}
             />
             <Button
               variant="contained"
