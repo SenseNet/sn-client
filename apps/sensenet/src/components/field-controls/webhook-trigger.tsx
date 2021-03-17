@@ -37,7 +37,7 @@ import {
 } from '@material-ui/core'
 import { red } from '@material-ui/core/colors'
 import { Close } from '@material-ui/icons'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { globals } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { useWidgetStyles } from '../dashboard'
