@@ -3,7 +3,7 @@ import { createStyles, Divider, Grid, Hidden, Link, makeStyles, Paper, TextField
 import React from 'react'
 import jslogo from '../../assets/js.png'
 import dotnetlogo from '../../assets/net.png'
-import reactlogo from '../../assets/react.jpg'
+import reactlogo from '../../assets/react.png'
 import reduxlogo from '../../assets/redux-logo.png'
 import { useWidgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
@@ -29,11 +29,18 @@ const useStyles = makeStyles((theme: Theme) => {
       padding: '16px 0',
     },
     logo: {
-      margin: '30px 16px',
+      margin: '30px 16px 16px',
       cursor: 'pointer',
     },
     apiDocsLink: {
       display: 'inline-block',
+      '&:hover': {
+        textDecoration: 'none',
+      },
+    },
+    apiDocsTitle: {
+      color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
+      textAlign: 'center',
     },
   })
 })
@@ -94,24 +101,29 @@ export const ApiEndpointWidget: React.FunctionComponent = () => {
                 target="_blank"
                 href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=js-snclient">
                 <img className={classes.logo} src={jslogo} alt="js-logo" width="35" height="35" />
+                <div className={classes.apiDocsTitle}>javascript</div>
               </Link>
+
               <Link
                 className={classes.apiDocsLink}
                 target="_blank"
                 href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=dotnet">
                 <img className={classes.logo} src={dotnetlogo} alt="dotnet-logo" width="35" height="35" />
+                <div className={classes.apiDocsTitle}>.net</div>
               </Link>
               <Link
                 className={classes.apiDocsLink}
                 target="_blank"
                 href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=react">
                 <img className={classes.logo} src={reactlogo} alt="react-logo" width="35" height="35" />
+                <div className={classes.apiDocsTitle}>react</div>
               </Link>
               <Link
                 className={classes.apiDocsLink}
                 target="_blank"
                 href="https://docs.sensenet.com/api-docs/basic-concepts?chosenLanguage=react-redux">
                 <img className={classes.logo} src={reduxlogo} alt="reduc-logo" width="35" height="35" />
+                <div className={classes.apiDocsTitle}>redux</div>
               </Link>
             </div>
           </Grid>
