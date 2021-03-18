@@ -126,7 +126,7 @@ export const Settings: React.FunctionComponent = () => {
                   button={true}
                   key={index}
                   selected={!!matchPath(location.pathname, item.url)}
-                  data-test={`drawer-menu-item-${item.name.replace(/\s+/g, '-').toLowerCase()}`}>
+                  data-test={`drawer-submenu-item-${item.name.replace(/\s+/g, '-').toLowerCase()}`}>
                   <ListItemText primary={`${item.displayName}`} />
                 </ListItem>
               </NavLink>
