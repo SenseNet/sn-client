@@ -1,4 +1,4 @@
-import { Container, createStyles, List, ListItem, makeStyles } from '@material-ui/core'
+import { Container, createStyles, Grid, makeStyles, Typography } from '@material-ui/core'
 import { graphql, Link } from 'gatsby'
 import * as React from 'react'
 import BlogCard from '../components/blog-card'
@@ -10,36 +10,32 @@ const useStyles = makeStyles(() => {
     title: {
       marginBottom: '3rem',
       textAlign: 'center',
-      fontSize: '4rem',
     },
     blog: {
       display: 'flex',
       flexWrap: 'wrap',
       justifyContent: 'center',
-      margin: '0 -15px',
-      padding: 0,
-      listStyle: 'none',
     },
     blogItem: {
-      flexBasis: 'calc(33% - 60px)',
-      margin: '40px 15px',
       minHeight: '350px',
       overflow: 'hidden',
-      borderRadius: '25px',
+      padding: 0,
+    },
+    link: {
+      textDecoration: 'inherit',
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100%',
     },
   })
 })
-
-export interface Image {
-  relativePath: string
-}
 
 export interface PostNode {
   node: {
     excerpt: string
     frontmatter: {
       title: string
-      image: Image
+      image: string
       redirect_to: string
       tags: string
       author: string
@@ -62,22 +58,24 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
   const { data } = props
   const classes = useStyles()
 
-  console.log('Das ist das', data.allMarkdownRemark.edges)
+  console.log('Das ist das:', data.allMarkdownRemark.edges)
 
   return (
     <IndexLayout>
       <Page>
         <Container maxWidth="lg">
-          <div className={classes.title}>News around sensenet</div>
-          <List className={classes.blog}>
+          <Typography variant="h3" className={classes.title}>
+            News around sensenet
+          </Typography>
+          <Grid container spacing={4} className={classes.blog}>
             {data.allMarkdownRemark.edges.map(({ node }, index) => (
-              <ListItem className={classes.blogItem} key={index}>
-                <Link to={node.fields.slug} key={index}>
-                  <BlogCard title={node.frontmatter.title} excerpt={node.excerpt} />
+              <Grid item xs={12} sm={6} md={4} className={classes.blogItem} key={index}>
+                <Link to={node.fields.slug} key={index} className={classes.link}>
+                  <BlogCard title={node.frontmatter.title} excerpt={node.excerpt} image={node.frontmatter.image} />
                 </Link>
-              </ListItem>
+              </Grid>
             ))}
-          </List>
+          </Grid>
         </Container>
       </Page>
     </IndexLayout>
@@ -97,9 +95,7 @@ export const pageQuery = graphql`
           excerpt
           frontmatter {
             title
-            image {
-              relativePath
-            }
+            image
             redirect_to
             tags
             author

@@ -8,7 +8,7 @@ const useStyles = makeStyles(() => {
       display: 'block',
       flex: 1,
       position: 'relative',
-      padding: `${globals.common.containerPadding}rem`,
+      padding: `${globals.common.containerPadding}rem 0`,
       marginBottom: '3rem',
     },
   })

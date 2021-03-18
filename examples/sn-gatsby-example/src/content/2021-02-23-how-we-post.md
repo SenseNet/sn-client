@@ -1,7 +1,7 @@
 ---
 title: "That's how we post"
 author: [molnarm84, huszerlbence]
-image: 'img/how-we-post.png'
+image: 'how-we-post.png'
 tags: [social media, medium, saas, github, loomly, blog, headless cms]
 redirect_to: https://www.sensenet.com/blog/how-we-post
 date: 2021.02.23

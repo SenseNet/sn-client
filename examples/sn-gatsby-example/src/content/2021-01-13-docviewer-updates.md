@@ -1,7 +1,7 @@
 ---
 title: 'Document Viewer updates'
 author: [pusztaienike]
-image: 'img/docviewer_refactor.jpg'
+image: 'docviewer_refactor.jpg'
 tags: [refactor, document viewer, saas, docviewer, document]
 redirect_to: https://www.sensenet.com/blog/2020-01-13-docviewer_updates
 date: 2021.01.13
@@ -48,7 +48,7 @@ const disabledStyle = useDisabledStyle()
 If you use typescript you can also see the possible classes what you can overwrite:
 
 <p align="center">
-<img src="/img/overwrite_styles.png" alt="overwrite styles">
+<img src="../../overwrite_styles.png" alt="overwrite styles">
 </p>
 
 Since our designer always come up with new solutions and the style is constantly changing, we can never consider it done. 🎡
@@ -63,7 +63,7 @@ Sometimes when you are working with sensitive information 🗝️ in documents y
 With this feature you can hide parts of your doc with a black rectangles. Opening a document without redaction is only possible if the user has permission for it, otherwise the page will be full with black squares. 🙈
 
 <p align="center">
-<img src="/img/redaction.gif" alt="redaction">
+<img src="../../redaction.gif" alt="redaction">
 </p>
 
 **Highlight** ⭐
@@ -71,7 +71,7 @@ With this feature you can hide parts of your doc with a black rectangles. Openin
 The purpose of highlighting is to draw attention to important information in a text. 📑
 
 <p align="center">
-<img src="/img/highlight.gif" alt="highlight">
+<img src="../../highlight.gif" alt="highlight">
 </p>
 
 **Annotation** 💬
@@ -79,7 +79,7 @@ The purpose of highlighting is to draw attention to important information in a t
 Annotation is extra information associated with a particular point in a document. It can be a note that includes a comment, explanation or anything what you would like to share with the audience in a designated place in the text. 📋
 
 <p align="center">
-<img src="/img/annotation.gif" alt="annotation">
+<img src="../../annotation.gif" alt="annotation">
 </p>
 
 **Usage**
@@ -92,7 +92,7 @@ The operation of these three shapes is basically the same with some small differ
 - right-clicking on shapes opens different popups. For the redactions and highlights only a delete button appears, but for annotations, a toolkit with different configuration options 🔧 shows up where you can set line height, font size, font color and make your text **bold** or _italic_.
 
 <p align="center">
-<img src="/img/right-click.png" alt="right click">
+<img src="../../right-click.png" alt="right click">
 </p>
 
 ## What's next 📅
