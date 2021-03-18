@@ -1,8 +1,7 @@
+import { Container } from '@material-ui/core'
 import { graphql } from 'gatsby'
 import * as React from 'react'
-
-import Container from '../components/Container'
-import Page from '../components/Page'
+import Page from '../components/page'
 import IndexLayout from '../layouts'
 
 interface PageTemplateProps {
@@ -30,7 +29,7 @@ interface PageTemplateProps {
 const PageTemplate: React.FC<PageTemplateProps> = ({ data }) => (
   <IndexLayout>
     <Page>
-      <Container>
+      <Container maxWidth="lg">
         <h1>{data.markdownRemark.frontmatter.title}</h1>
         {/* eslint-disable-next-line react/no-danger */}
         <div dangerouslySetInnerHTML={{ __html: data.markdownRemark.html }} />

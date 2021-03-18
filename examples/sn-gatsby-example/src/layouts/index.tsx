@@ -3,9 +3,8 @@ import { CssBaseline } from '@material-ui/core'
 import { graphql, StaticQuery } from 'gatsby'
 import * as React from 'react'
 import Helmet from 'react-helmet'
-
-import LayoutMain from '../components/LayoutMain'
-import LayoutRoot from '../components/LayoutRoot'
+import LayoutMain from '../components/layout-main'
+import LayoutRoot from '../components/layout-root'
 
 interface StaticQueryProps {
   site: {

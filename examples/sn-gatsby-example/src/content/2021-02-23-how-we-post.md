@@ -1,9 +1,10 @@
 ---
 title: "That's how we post"
 author: [molnarm84, huszerlbence]
-image: "../img/posts/how-we-post.png"
+image: 'img/how-we-post.png'
 tags: [social media, medium, saas, github, loomly, blog, headless cms]
 redirect_to: https://www.sensenet.com/blog/how-we-post
+date: 2021.02.23
 ---
 
 Did you know that this post is born as a markdown file and made it's way to our blog with a help of an automated sync tool? Cool, isn't it!?
@@ -21,5 +22,3 @@ The process is triggered when a merge is made into the dedicated GitHub repo's m
 To let everyone know about the new content, we share it on social media ([Twitter](https://twitter.com/sensenet), [Facebook](https://www.facebook.com/sensenetcsp), [LinkedIn](https://www.linkedin.com/company/sense-net-inc)) and post it on [Medium](https://medium.com/sensenet).
 
 Follow us on the channels above and [subscribe to sensenet news](https://sensenet.us11.list-manage.com/subscribe?u=4949e56b955d9cfbf5780c04e&id=ffe20ccea0) to get the latest updates.
-
-

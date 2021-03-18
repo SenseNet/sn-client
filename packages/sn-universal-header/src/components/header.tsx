@@ -3,7 +3,7 @@ import React from 'react'
 import { HamburgerMenu, HamburgerMenuClassKey } from './hamburger-menu'
 import { ThreeDotMenu, ThreeDotMenuClassKey } from './three-dot-menu'
 
-export const HEADER_HEIGHT = '60px'
+export const HEADER_HEIGHT = '64px'
 
 const useStyles = makeStyles(() => {
   return createStyles({
