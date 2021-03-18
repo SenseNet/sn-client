@@ -6,6 +6,7 @@ import { matchPath, NavLink, useLocation, useRouteMatch } from 'react-router-dom
 import { PATHS, resolvePathParams } from '../../application-paths'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+import { ApiKeys } from './api-keys'
 import { Stats } from './stats'
 
 const ContentComponent = lazy(() => import(/* webpackChunkName: "content" */ '../content'))
@@ -64,7 +65,7 @@ export const Settings: React.FunctionComponent = () => {
     {
       name: 'apiKeys',
       displayName: localizationDrawer.titles.ApiAndSecurity,
-      url: resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'apiKeys' } }),
+      url: resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'apikeys' } }),
     },
     {
       name: 'localization',
@@ -93,6 +94,8 @@ export const Settings: React.FunctionComponent = () => {
         return <PersonalSettingsEditor />
       case 'stats':
         return <Stats />
+      case 'apikeys':
+        return <ApiKeys />
       case 'webhooks':
         return (
           <ContentComponent
@@ -126,7 +129,7 @@ export const Settings: React.FunctionComponent = () => {
                   button={true}
                   key={index}
                   selected={!!matchPath(location.pathname, item.url)}
-                  data-test={`drawer-menu-item-${item.name.replace(/\s+/g, '-').toLowerCase()}`}>
+                  data-test={`drawer-submenu-item-${item.name.replace(/\s+/g, '-').toLowerCase()}`}>
                   <ListItemText primary={`${item.displayName}`} />
                 </ListItem>
               </NavLink>
