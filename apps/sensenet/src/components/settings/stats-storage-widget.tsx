@@ -1,4 +1,4 @@
-import { returnValueWithUnit } from '@sensenet/controls-react'
+import { formatSize } from '@sensenet/controls-react'
 import { createStyles, makeStyles, Paper, useTheme } from '@material-ui/core'
 import React from 'react'
 import { useWidgetStyles } from '../../globalStyles'
@@ -42,7 +42,7 @@ export const StorageWidget: React.FunctionComponent<StorageWidgetProps> = (props
           <span>{localization.storage}</span>
           <span>
             {localization.used(
-              returnValueWithUnit(allUsage),
+              formatSize(allUsage),
               `${numberFormatter.format(round(props.data.subscription.plan.limitations.storage / 1024))} GB`,
             )}
           </span>
