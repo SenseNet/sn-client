@@ -30,33 +30,6 @@ export const globals = {
   },
 }
 
-export const useWidgetStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    root: {
-      marginBottom: '2rem',
-      width: '100%',
-    },
-    title: {
-      marginBottom: '1rem',
-      whiteSpace: 'nowrap',
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      fontSize: '20px',
-      fontWeight: 500,
-    },
-    container: {
-      padding: '1.5rem',
-      backgroundColor: theme.palette.type === 'light' ? globals.light.drawerBackground : globals.dark.drawerBackground,
-      border: theme.palette.type === 'light' ? '1px solid #E2E2E2' : 0,
-    },
-    subtitle: {
-      fontSize: '20px',
-      fontWeight: 500,
-      marginTop: 0,
-    },
-  })
-})
-
 export const useGlobalStyles = makeStyles((theme: Theme) => {
   return createStyles({
     '@global': {
@@ -167,6 +140,33 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
       '& .MuiGrid-item': {
         marginBottom: '12px',
       },
+    },
+  })
+})
+
+export const useWidgetStyles = makeStyles((theme: Theme) => {
+  return createStyles({
+    root: {
+      marginBottom: '2rem',
+      width: '100%',
+    },
+    title: {
+      marginBottom: '1rem',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      fontSize: '20px',
+      fontWeight: 500,
+    },
+    container: {
+      padding: '1.5rem',
+      backgroundColor: theme.palette.type === 'light' ? globals.light.drawerBackground : globals.dark.drawerBackground,
+      border: theme.palette.type === 'light' ? '1px solid #E2E2E2' : 0,
+    },
+    subtitle: {
+      fontSize: '20px',
+      fontWeight: 500,
+      marginTop: 0,
     },
   })
 })

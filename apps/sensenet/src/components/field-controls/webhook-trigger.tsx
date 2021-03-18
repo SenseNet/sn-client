@@ -38,9 +38,8 @@ import {
 import { red } from '@material-ui/core/colors'
 import { Close } from '@material-ui/icons'
 import React, { useEffect, useState } from 'react'
-import { globals } from '../../globalStyles'
+import { globals, useWidgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { useWidgetStyles } from '../dashboard'
 
 const ITEM_HEIGHT = 48
 const DEFAULT_CONTAINER = '/Root'
