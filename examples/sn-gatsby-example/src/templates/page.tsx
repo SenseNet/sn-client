@@ -1,7 +1,7 @@
-import { Container, createStyles, Link, makeStyles, Typography } from '@material-ui/core'
+import { Container, createStyles, makeStyles, Link as MaterialLink, Typography } from '@material-ui/core'
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
-import { graphql } from 'gatsby'
+import { graphql, Link } from 'gatsby'
 import * as React from 'react'
 import Page from '../components/page'
 import IndexLayout from '../layouts'
@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => {
     title: {
       fontWeight: 500,
     },
-    authorLink: {
+    link: {
       color: globals.common.linkColor,
     },
     date: {
@@ -62,32 +62,31 @@ interface PageTemplateProps {
 const PageTemplate: React.FC<PageTemplateProps> = ({ data }) => {
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
-  // const authorSplitted = data.markdownRemark.frontmatter.author.split(',')
-
-  console.log('Das ist: ', data)
 
   return (
     <IndexLayout>
       <Page>
         <Container maxWidth="lg" className={globalClasses.container}>
+          <Link to="/" className={classes.link}>
+            Back to blog
+          </Link>
           <div className={classes.postHeader}>
             <Typography variant="h2" className={classes.title}>
               {data.markdownRemark.frontmatter.title}
             </Typography>
-
             <Typography variant="subtitle1">
               <span className={classes.date}>{format(parseISO(data.markdownRemark.frontmatter.date), 'PP')}</span>
               {data.markdownRemark.frontmatter.author.map((author, index) => (
                 <>
                   {index !== 0 && ', '}
-                  <Link
+                  <MaterialLink
                     key={author}
                     href={`https://github.com/${author}`}
                     target="_blank"
                     rel="noopener"
-                    className={classes.authorLink}>
+                    className={classes.link}>
                     {author}
-                  </Link>
+                  </MaterialLink>
                 </>
               ))}
             </Typography>

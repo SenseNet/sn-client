@@ -14,11 +14,7 @@ const useStyles = makeStyles(() => {
 const LayoutRoot: React.FC = (props) => {
   const classes = useStyles()
 
-  return (
-    <>
-      <div className={classes.layoutRoot}>{props.children}</div>
-    </>
-  )
+  return <div className={classes.layoutRoot}>{props.children}</div>
 }
 
 export default LayoutRoot

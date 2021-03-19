@@ -1,14 +1,15 @@
 {
-  "name": "gatsby-starter-typescript-plus",
-  "description": "A starter kit for TypeScript-based Gatsby projects with sensible defaults.",
+  "name": "@sensenet/gatsby_example",
+  "description": "A gatsby example app based on gatsby-starter-typescript-plus",
   "version": "1.0.0",
   "private": true,
-  "author": "Resi Respati <resir014@gmail.com>",
+  "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "keywords": [
-    "gatsby"
+    "sensenet",
+    "gatsby",
+    "typescript"
   ],
   "license": "MIT",
-  "main": "n/a",
   "scripts": {
     "build": "gatsby build",
     "clean": "rimraf public",

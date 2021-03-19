@@ -4,6 +4,9 @@ export const globals = {
   common: {
     containerPadding: 1.5,
     linkColor: '#13a5ad',
+    blogCardImageHeight: 270,
+    borderRadius: 25,
+    headerColor: '#353b4e',
   },
 }
 

@@ -1,16 +1,16 @@
 import { UniversalHeader } from '@sensenet/universal-header-react'
-import { CssBaseline } from '@material-ui/core'
-import { createStyles, makeStyles } from '@material-ui/core'
+import { createStyles, CssBaseline, makeStyles } from '@material-ui/core'
 import { graphql, StaticQuery } from 'gatsby'
 import * as React from 'react'
 import Helmet from 'react-helmet'
 import LayoutMain from '../components/layout-main'
 import LayoutRoot from '../components/layout-root'
+import { globals } from '../styles/globalStyles'
 
 const useHeaderStyle = makeStyles(() => {
   return createStyles({
     appBar: {
-      backgroundColor: '#353b4e',
+      backgroundColor: globals.common.headerColor,
     },
   })
 })

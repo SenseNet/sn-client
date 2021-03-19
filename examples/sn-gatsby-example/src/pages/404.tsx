@@ -3,18 +3,21 @@ import { Link } from 'gatsby'
 import * as React from 'react'
 import Page from '../components/page'
 import IndexLayout from '../layouts'
+import { useGlobalStyles } from '../styles/globalStyles'
 
-const NotFoundPage = () => (
-  <IndexLayout>
-    <Page>
-      <Container maxWidth="lg">
-        <h1>404: Page not found.</h1>
-        <p>
-          You have hit the void. <Link to="/">Go back.</Link>
-        </p>
-      </Container>
-    </Page>
-  </IndexLayout>
-)
+const NotFoundPage: React.FC = () => {
+  const globalClasses = useGlobalStyles()
+
+  return (
+    <IndexLayout>
+      <Page>
+        <Container maxWidth="lg" className={globalClasses.container}>
+          <h1>404: Page not found.</h1>
+          <Link to="/">Go back.</Link>
+        </Container>
+      </Page>
+    </IndexLayout>
+  )
+}
 
 export default NotFoundPage

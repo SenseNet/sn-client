@@ -59,8 +59,6 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
   const { data } = props
   const classes = useStyles()
 
-  console.log('Das ist das:', data.allMarkdownRemark.edges)
-
   return (
     <IndexLayout>
       <Page>
