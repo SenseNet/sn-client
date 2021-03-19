@@ -4,7 +4,7 @@ author: [pusztaienike]
 image: 'docviewer_refactor.jpg'
 tags: [refactor, document viewer, saas, docviewer, document]
 redirect_to: https://www.sensenet.com/blog/2020-01-13-docviewer_updates
-date: 2021.01.13
+date: 2021-01-13
 ---
 
 🌇 “Cities grow, cities evolve, cities have parts that simply die while other parts flourish; each city has to be renewed in order to meet the needs of its populace…” 🌆 -Grady Booch

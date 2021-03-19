@@ -4,7 +4,7 @@ author: [herflis]
 image: 'teamwork.jpg'
 tags: [productivity, teamwork, collaboration, saas, headless cms]
 redirect_to: https://www.sensenet.com/blog/how-we-post
-date: 2021.03.10
+date: 2021-03-10
 ---
 
 Working on a project in a cross-functional team can be full of pitfalls. I have some tips on how you could use [sensenet](https://profile.sensenet.com/?redirectToLogin) avoiding them and boosting team productivity at the same time.

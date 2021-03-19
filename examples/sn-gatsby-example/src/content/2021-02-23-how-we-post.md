@@ -4,7 +4,7 @@ author: [molnarm84, huszerlbence]
 image: 'how-we-post.png'
 tags: [social media, medium, saas, github, loomly, blog, headless cms]
 redirect_to: https://www.sensenet.com/blog/how-we-post
-date: 2021.02.23
+date: 2021-02-23
 ---
 
 Did you know that this post is born as a markdown file and made it's way to our blog with a help of an automated sync tool? Cool, isn't it!?

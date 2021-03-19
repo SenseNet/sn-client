@@ -42,7 +42,7 @@ const BlogCard: React.FC<BlogCardProps> = (props) => {
 
   return (
     <Card className={classes.blogCard}>
-      <img className={classes.blogCardMedia} src={props.image} alt="A dog smiling in a party hat" />
+      <img className={classes.blogCardMedia} src={props.image} alt={props.title} />
       <CardContent className={classes.blogCardContent}>
         <Typography gutterBottom variant="h5" component="h2" className={classes.blogCardTitle}>
           {props.title}

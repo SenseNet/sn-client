@@ -7,10 +7,6 @@ import IndexLayout from '../layouts'
 
 const useStyles = makeStyles(() => {
   return createStyles({
-    title: {
-      marginBottom: '3rem',
-      textAlign: 'center',
-    },
     blog: {
       display: 'flex',
       flexWrap: 'wrap',
@@ -26,6 +22,11 @@ const useStyles = makeStyles(() => {
       display: 'flex',
       flexDirection: 'column',
       height: '100%',
+    },
+    title: {
+      textAlign: 'center',
+      fontWeight: 500,
+      marginBottom: '3rem',
     },
   })
 })
@@ -64,7 +65,7 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
     <IndexLayout>
       <Page>
         <Container maxWidth="lg">
-          <Typography variant="h3" className={classes.title}>
+          <Typography variant="h2" className={classes.title}>
             News around sensenet
           </Typography>
           <Grid container spacing={4} className={classes.blog}>

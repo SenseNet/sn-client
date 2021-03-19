@@ -1,8 +1,42 @@
-import { Container } from '@material-ui/core'
+import { Container, createStyles, Link, makeStyles, Typography } from '@material-ui/core'
+import format from 'date-fns/format'
+import parseISO from 'date-fns/parseISO'
 import { graphql } from 'gatsby'
 import * as React from 'react'
 import Page from '../components/page'
 import IndexLayout from '../layouts'
+import { globals, useGlobalStyles } from '../styles/globalStyles'
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    postHeader: {
+      alignSelf: 'center',
+      marginBottom: '3rem',
+    },
+    title: {
+      fontWeight: 500,
+    },
+    authorLink: {
+      color: globals.common.linkColor,
+    },
+    date: {
+      marginRight: '1rem',
+    },
+    image: {
+      maxHeight: '400px',
+      objectFit: 'cover',
+      objectPosition: 'center',
+      width: '100%',
+      marginBottom: '4rem',
+      alignSelf: 'center',
+    },
+    markdown: {
+      '& img': {
+        maxWidth: '100%',
+      },
+    },
+  })
+})
 
 interface PageTemplateProps {
   data: {
@@ -10,10 +44,6 @@ interface PageTemplateProps {
       siteMetadata: {
         title: string
         description: string
-        author: {
-          name: string
-          url: string
-        }
       }
     }
     markdownRemark: {
@@ -21,22 +51,58 @@ interface PageTemplateProps {
       excerpt: string
       frontmatter: {
         title: string
+        author: string[]
+        image: string
+        date: string
       }
     }
   }
 }
 
-const PageTemplate: React.FC<PageTemplateProps> = ({ data }) => (
-  <IndexLayout>
-    <Page>
-      <Container maxWidth="lg">
-        <h1>{data.markdownRemark.frontmatter.title}</h1>
-        {/* eslint-disable-next-line react/no-danger */}
-        <div dangerouslySetInnerHTML={{ __html: data.markdownRemark.html }} />
-      </Container>
-    </Page>
-  </IndexLayout>
-)
+const PageTemplate: React.FC<PageTemplateProps> = ({ data }) => {
+  const classes = useStyles()
+  const globalClasses = useGlobalStyles()
+  // const authorSplitted = data.markdownRemark.frontmatter.author.split(',')
+
+  console.log('Das ist: ', data)
+
+  return (
+    <IndexLayout>
+      <Page>
+        <Container maxWidth="lg" className={globalClasses.container}>
+          <div className={classes.postHeader}>
+            <Typography variant="h2" className={classes.title}>
+              {data.markdownRemark.frontmatter.title}
+            </Typography>
+
+            <Typography variant="subtitle1">
+              <span className={classes.date}>{format(parseISO(data.markdownRemark.frontmatter.date), 'PP')}</span>
+              {data.markdownRemark.frontmatter.author.map((author, index) => (
+                <>
+                  {index !== 0 && ', '}
+                  <Link
+                    key={author}
+                    href={`https://github.com/${author}`}
+                    target="_blank"
+                    rel="noopener"
+                    className={classes.authorLink}>
+                    {author}
+                  </Link>
+                </>
+              ))}
+            </Typography>
+          </div>
+          <img
+            className={classes.image}
+            src={`../../${data.markdownRemark.frontmatter.image}`}
+            alt={data.markdownRemark.frontmatter.title}
+          />
+          <div className={classes.markdown} dangerouslySetInnerHTML={{ __html: data.markdownRemark.html }} />
+        </Container>
+      </Page>
+    </IndexLayout>
+  )
+}
 
 export default PageTemplate
 
@@ -46,10 +112,6 @@ export const query = graphql`
       siteMetadata {
         title
         description
-        author {
-          name
-          url
-        }
       }
     }
     markdownRemark(fields: { slug: { eq: $slug } }) {
@@ -57,6 +119,9 @@ export const query = graphql`
       excerpt
       frontmatter {
         title
+        author
+        image
+        date
       }
     }
   }
