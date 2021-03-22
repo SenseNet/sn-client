@@ -1,23 +1,22 @@
 import { Button, createStyles, makeStyles, useTheme } from '@material-ui/core'
 import clsx from 'clsx'
-import { Uri } from 'monaco-editor'
-import React, { useContext, useRef } from 'react'
-import MonacoEditor from 'react-monaco-editor'
+import React, { lazy, useContext, useRef } from 'react'
 import { Prompt, useHistory } from 'react-router'
 import { ResponsiveContext } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+const MonacoEditor = lazy(() => import('react-monaco-editor'))
 
 const useStyles = makeStyles(() => {
   return createStyles({
     actionButtonWrapper: {
       height: '80px',
-      width: '100%',
+      left: 0,
       position: 'absolute',
       padding: '20px',
       bottom: 0,
-      left: 0,
       textAlign: 'right',
+      right: '7%',
     },
     form: {
       width: '100%',
@@ -45,7 +44,7 @@ export interface SnMonacoEditorProps {
   setTextValue: React.Dispatch<React.SetStateAction<string>>
   savedTextValue: string
   hasChanges: boolean
-  uri: Uri
+  uri: import('react-monaco-editor').monaco.Uri
   handleSubmit: Function
   renderTitle: () => JSX.Element
   additionalButtons?: JSX.Element

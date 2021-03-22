@@ -1,15 +1,18 @@
-import { TableCell } from '@material-ui/core'
+import { TableCell, Tooltip } from '@material-ui/core'
 import clsx from 'clsx'
-import moment from 'moment'
 import React from 'react'
 import { useGlobalStyles } from '../../globalStyles'
+import { useDateUtils } from '../../hooks/use-date-utils'
 
 export const DateField: React.FC<{ date: string | Date }> = ({ date }) => {
   const globalClasses = useGlobalStyles()
+  const dateUtils = useDateUtils()
 
   return (
     <TableCell component="div" className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)}>
-      <>{moment(date).fromNow()}</>
+      <Tooltip title={dateUtils.formatDate(new Date(date), 'yyyy-MM-dd HH:mm aaa')} placement="top">
+        <div>{dateUtils.formatDistanceFromNow(new Date(date))}</div>
+      </Tooltip>
     </TableCell>
   )
 }

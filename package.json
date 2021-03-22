@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "2021.02.0",
+  "version": "2021.03.0",
   "workspaces": [
     "packages/*",
     "examples/*",
@@ -31,9 +31,9 @@
     "isomorphic-fetch": "^3.0.0",
     "jest-environment-jsdom-sixteen": "^1.0.3",
     "lerna": "^3.22.1",
-    "lint-staged": "^10.5.3",
+    "lint-staged": "^10.5.4",
     "prettier": "^2.2.1",
-    "start-server-and-test": "^1.11.7",
+    "start-server-and-test": "^1.12.0",
     "typescript": "^4.1.3",
     "wait-on": "^5.2.1"
   },

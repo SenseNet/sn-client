@@ -50,8 +50,8 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
    * @returns { QueryOperator<TNewType> } The Next query operator (fluent)
    */
 
-  public type<TNewType>(newTypeAssertion: new (...args: any[]) => TNewType | { name: string }) {
-    this.stringValue = `Type:${newTypeAssertion.name}`
+  public type<TNewType>(newTypeAssertion: string) {
+    this.stringValue = `Type:${newTypeAssertion}`
     this.segmentType = 'type'
     return this.finialize<TNewType>()
   }
@@ -61,8 +61,8 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
    * @param { new (...args: any[]) => TNewType } newTypeAssertion The path string or content that will be used as a root
    * @returns { QueryOperator<TNewType> } The Next query operator (fluent)
    */
-  public typeIs<TNewType>(newTypeAssertion: new (...args: any[]) => TNewType) {
-    this.stringValue = `TypeIs:${newTypeAssertion.name}`
+  public typeIs<TNewType>(newTypeAssertion: string) {
+    this.stringValue = `TypeIs:${newTypeAssertion}`
     this.segmentType = 'typeIs'
     return this.finialize<TNewType>()
   }

@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid'
 import createStyles from '@material-ui/core/styles/createStyles'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import Typography from '@material-ui/core/Typography'
+import type { Locale } from 'date-fns'
 import React, { createElement, ReactElement, useEffect, useState } from 'react'
 import MediaQuery from 'react-responsive'
 import { FieldLocalization } from '../fieldcontrols/localization'
@@ -41,6 +42,7 @@ export interface EditViewProps {
   classes?: EditViewClassKey
   controlMapper?: ControlMapper<any, any>
   fieldLocalization?: FieldLocalization
+  locale?: Locale
 }
 
 const useStyles = makeStyles(() => {
@@ -134,6 +136,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
                 uploadFolderPath: props.uploadFolderpath,
                 autoFocus,
                 localization: props.fieldLocalization,
+                locale: props.locale,
               },
             )
 

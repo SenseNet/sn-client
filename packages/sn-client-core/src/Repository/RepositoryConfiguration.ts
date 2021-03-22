@@ -76,6 +76,11 @@ export interface RepositoryConfiguration {
    * Access token to authorize access to data
    */
   token?: string
+
+  /**
+   * The root URL for the Sense/Net identity server (e.g.: demo-is.sensenet.com) (default:'')
+   */
+  identityServerUrl?: string
 }
 
 /**
@@ -97,4 +102,5 @@ export const defaultRepositoryConfiguration: RepositoryConfigurationWithDefaults
   repositoryUrl: '',
   requiredSelect: ['Id', 'Path', 'Name', 'Type'],
   schemas: SchemaStore,
+  identityServerUrl: '',
 }
