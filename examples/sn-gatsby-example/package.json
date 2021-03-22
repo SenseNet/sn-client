@@ -13,7 +13,6 @@
   "scripts": {
     "build": "gatsby build",
     "clean": "rimraf public",
-    "deploy": "gatsby build --prefix-paths && gh-pages -d public",
     "dev": "gatsby develop",
     "format": "prettier --write \"src/**/*.{ts,tsx,md}\"",
     "type-check": "tsc"
@@ -27,6 +26,7 @@
     "date-fns": "^2.19.0",
     "gatsby": "^2.10.0",
     "gatsby-plugin-canonical-urls": "^2.1.0",
+    "gatsby-plugin-material-ui": "^2.1.10",
     "gatsby-plugin-react-helmet": "^3.1.0",
     "gatsby-plugin-sharp": "^2.2.1",
     "gatsby-plugin-typescript": "^2.1.0",
