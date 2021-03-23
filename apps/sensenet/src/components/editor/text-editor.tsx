@@ -80,10 +80,12 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
     } catch (err) {
       setHasChanges(true)
       logger.error({
-        message: localization.textEditor.saveFailedNotification.replace(
-          '{0}',
-          props.content.DisplayName || props.content.Name,
-        ),
+        message:
+          err.message ||
+          localization.textEditor.saveFailedNotification.replace(
+            '{0}',
+            props.content.DisplayName || props.content.Name,
+          ),
         data: {
           error: err,
         },
