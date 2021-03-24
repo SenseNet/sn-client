@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "sn-react-component-docs",
-  "version": "3.0.9",
+  "version": "3.0.10",
   "description": "UI components for building apps upon sensenet implemented in React",
   "main": "index.js",
   "scripts": {
@@ -28,17 +28,17 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@sensenet/client-core": "^3.8.1",
+    "@sensenet/client-core": "^3.9.0",
     "@sensenet/client-utils": "^2.0.2",
-    "@sensenet/control-mapper": "^2.1.13",
-    "@sensenet/controls-react": "^6.1.1",
-    "@sensenet/default-content-types": "^3.2.0",
-    "@sensenet/document-viewer-react": "^4.0.1",
-    "@sensenet/icons-react": "^1.2.19",
-    "@sensenet/list-controls-react": "^1.6.1",
-    "@sensenet/pickers-react": "^2.0.1",
-    "@sensenet/query": "^1.2.0",
-    "@sensenet/search-react": "^1.5.1",
+    "@sensenet/control-mapper": "^3.0.0",
+    "@sensenet/controls-react": "^7.0.0",
+    "@sensenet/default-content-types": "^4.0.0",
+    "@sensenet/document-viewer-react": "^4.0.2",
+    "@sensenet/icons-react": "^2.0.0",
+    "@sensenet/list-controls-react": "^2.0.0",
+    "@sensenet/pickers-react": "^2.0.2",
+    "@sensenet/query": "^2.0.0",
+    "@sensenet/search-react": "^2.0.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0"
   },
@@ -65,8 +65,8 @@
     "prop-types": "^15.7.2",
     "react-docgen-typescript-loader": "^3.7.1",
     "regenerator-runtime": "^0.13.7",
-    "ts-loader": "^8.0.17",
+    "ts-loader": "8.0.14",
     "uuid": "^8.3.2",
-    "webpack": "^5.24.1"
+    "webpack": "^4.44.2"
   }
 }
