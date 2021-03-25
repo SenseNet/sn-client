@@ -250,6 +250,6 @@ describe('Create comment component', () => {
     )
 
     wrapper.find(IconButton).simulate('click')
-    expect(updateState).toBeCalledWith({ isPlacingCommentMarker: true })
+    expect(updateState).toBeCalledWith({ activeShapePlacing: 'none', isPlacingCommentMarker: true })
   })
 })
