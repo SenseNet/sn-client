@@ -130,7 +130,10 @@ export function CreateComment() {
                   <IconButton
                     aria-label="Toggle"
                     onClick={() =>
-                      viewerState.updateState({ isPlacingCommentMarker: !viewerState.isPlacingCommentMarker })
+                      viewerState.updateState({
+                        activeShapePlacing: 'none',
+                        isPlacingCommentMarker: !viewerState.isPlacingCommentMarker,
+                      })
                     }>
                     <PushPinIcon isPlacingMarker={viewerState.isPlacingCommentMarker} viewBox="0 0 100 125" />
                   </IconButton>
