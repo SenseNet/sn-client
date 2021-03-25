@@ -1,6 +1,5 @@
 import React from 'react'
 
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 export class ErrorBoundary extends React.Component<{ spy: any }, { hasError: boolean }> {
   static getDerivedStateFromError() {
     return {

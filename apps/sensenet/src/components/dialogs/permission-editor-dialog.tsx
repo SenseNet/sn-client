@@ -410,8 +410,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                 return (
                   <ListItem
                     data-test={`permission-item-${selectedGroupPermission.replace(/\s+/g, '-').toLowerCase()}`}
-                    key={selectedGroupPermission}
-                    onClick={() => {}}>
+                    key={selectedGroupPermission}>
                     <ListItemText
                       disableTypography
                       primary={selectedGroupPermission}

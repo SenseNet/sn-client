@@ -1,6 +1,5 @@
 import { sleepAsync } from '@sensenet/client-utils'
 import Avatar from '@material-ui/core/Avatar'
-import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import IconButton from '@material-ui/core/IconButton'
 import InputLabel from '@material-ui/core/InputLabel'

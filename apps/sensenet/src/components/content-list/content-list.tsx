@@ -505,7 +505,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
 
   const menuPropsObj = {
     disablePortal: true,
-    anchorReference: 'anchorPosition' as 'anchorPosition',
+    anchorReference: 'anchorPosition' as const,
     anchorPosition: contextMenuAnchor,
     BackdropProps: {
       onClick: () => setIsContextMenuOpened(false),
