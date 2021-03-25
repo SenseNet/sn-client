@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/search-react",
-  "version": "1.5.1",
+  "version": "2.0.0",
   "description": "Search component in react with sensenet",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -33,11 +33,11 @@
     "react-dom": ">=16.8.0"
   },
   "dependencies": {
-    "@sensenet/client-core": "^3.8.1",
+    "@sensenet/client-core": "^3.9.0",
     "@sensenet/client-utils": "^2.0.2",
-    "@sensenet/default-content-types": "^3.2.0",
-    "@sensenet/icons-react": "^1.2.19",
-    "@sensenet/query": "^1.2.0",
+    "@sensenet/default-content-types": "^4.0.0",
+    "@sensenet/icons-react": "^2.0.0",
+    "@sensenet/query": "^2.0.0",
     "autosuggest-highlight": "^3.1.1",
     "react-autosuggest": "^10.1.0",
     "tslib": "^2.1.0"
