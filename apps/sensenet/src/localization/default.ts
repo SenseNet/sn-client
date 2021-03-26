@@ -541,7 +541,7 @@ const values = {
     cancel: 'Cancel',
     reset: 'Reset',
     name: 'Name',
-    typeIn: 'Type in a name',
+    enterName: 'Enter the name of the user or group',
   },
   restore: {
     description: (contentName: string) =>
