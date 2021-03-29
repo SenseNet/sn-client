@@ -73,7 +73,7 @@ const drawerWidth = 185
 
 const styles = () => ({
   drawerPaper: {
-    position: 'relative' as 'relative',
+    position: 'relative' as const,
     width: drawerWidth,
     padding: '0 10px',
   },

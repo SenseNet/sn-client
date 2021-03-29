@@ -52,14 +52,14 @@ export function CreateComment() {
       try {
         api.commentActions.addPreviewComment({
           document: documentData,
-          comment: { ...commentState.draft, text, page: viewerState.activePage },
+          comment: { ...commentState.draft, text, page: commentState.draft.page },
           abortController: new AbortController(),
         })
       } catch (error) {
         console.log(error)
       }
     },
-    [api.commentActions, commentState.draft, documentData, viewerState],
+    [api.commentActions, commentState.draft, documentData],
   )
 
   const clearState = useCallback(() => {
@@ -130,7 +130,10 @@ export function CreateComment() {
                   <IconButton
                     aria-label="Toggle"
                     onClick={() =>
-                      viewerState.updateState({ isPlacingCommentMarker: !viewerState.isPlacingCommentMarker })
+                      viewerState.updateState({
+                        activeShapePlacing: 'none',
+                        isPlacingCommentMarker: !viewerState.isPlacingCommentMarker,
+                      })
                     }>
                     <PushPinIcon isPlacingMarker={viewerState.isPlacingCommentMarker} viewBox="0 0 100 125" />
                   </IconButton>
