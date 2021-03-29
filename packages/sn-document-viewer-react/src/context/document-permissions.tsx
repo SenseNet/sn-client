@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { createContext, FC, useEffect, useState } from 'react'
 import { useDocumentData, useDocumentViewerApi } from '../hooks'
 
-export const DocumentPermissionsContext = React.createContext({
+export const DocumentPermissionsContext = createContext({
   canEdit: false,
   canHideRedaction: false,
   canHideWatermark: false,
 })
 
-export const DocumentPermissionsContextProvider: React.FC = ({ children }) => {
+export const DocumentPermissionsContextProvider: FC = ({ children }) => {
   const { documentData } = useDocumentData()
   const api = useDocumentViewerApi()
   const [canEdit, setcanEdit] = useState(false)

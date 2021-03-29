@@ -10,6 +10,7 @@ const CompressionPlugin = require('compression-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const { merge } = require('webpack-merge')
 const common = require('./webpack.common.js')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 module.exports = merge(common, {
   mode: 'production',
@@ -31,6 +32,7 @@ module.exports = merge(common, {
     ],
   },
   plugins: [
+    new BundleAnalyzerPlugin(),
     new CleanWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin({
       async: false,

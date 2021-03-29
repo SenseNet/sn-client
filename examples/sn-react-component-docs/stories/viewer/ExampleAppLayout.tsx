@@ -28,17 +28,16 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import Fab from '@material-ui/core/Fab'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Paper from '@material-ui/core/Paper'
-import { MuiThemeProvider } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import FolderOpen from '@material-ui/icons/FolderOpen'
 import Help from '@material-ui/icons/Help'
 import Send from '@material-ui/icons/Send'
-import React, { useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 const localStorageKey = 'sn-docviewer-example'
 
-export const ExampleAppLayout: React.FC = () => {
+export const ExampleAppLayout: FC = () => {
   const [hostName, setHostName] = useState('')
   const [documentIdOrPath, setDocumentIdOrPath] = useState('')
   const [isViewerOpened, setIsViewerOpened] = useState(false)

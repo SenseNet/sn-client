@@ -3,7 +3,7 @@ import { ContentList } from '@sensenet/list-controls-react'
 import { Actions } from '@sensenet/redux'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { closeActionMenu, openActionMenu } from '../Actions'
@@ -34,7 +34,7 @@ const mapDispatchToProps = {
   updateContent: Actions.updateContent,
 }
 
-class SavedQueries extends React.Component<
+class SavedQueries extends Component<
   ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & RouteComponentProps
 > {
   private load(force = false) {

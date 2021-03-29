@@ -5,7 +5,7 @@ import { ContentList } from '@sensenet/list-controls-react'
 import { Actions } from '@sensenet/redux'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import { compile } from 'path-to-regexp'
-import React from 'react'
+import React, { Component, DragEvent, MouseEvent } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import * as DMSActions from '../Actions'
@@ -90,7 +90,7 @@ interface DocumentLibraryState {
   showLoader: boolean
 }
 
-class DocumentLibrary extends React.Component<
+class DocumentLibrary extends Component<
   DocumentLibraryProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   DocumentLibraryState
 > {
@@ -172,7 +172,7 @@ class DocumentLibrary extends React.Component<
     }
   }
 
-  public handleFileDrop(ev: React.DragEvent) {
+  public handleFileDrop(ev: DragEvent) {
     const { uploadDataTransfer, parent } = this.props
     ev.preventDefault()
     uploadDataTransfer({
@@ -184,7 +184,7 @@ class DocumentLibrary extends React.Component<
     })
   }
 
-  public handleRowDoubleClick(_e: React.MouseEvent, content: GenericContent) {
+  public handleRowDoubleClick(_e: MouseEvent, content: GenericContent) {
     this.props.resetSearchValues()
     this.props.updateChildrenOptions({ query: '' })
     if (content.IsFolder) {

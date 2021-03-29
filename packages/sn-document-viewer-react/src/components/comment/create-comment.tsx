@@ -10,7 +10,7 @@ import {
   Theme,
   Tooltip,
 } from '@material-ui/core'
-import React, { useCallback, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useCallback, useState } from 'react'
 import { useCommentState, useDocumentData, useDocumentViewerApi, useLocalization, useViewerState } from '../../hooks'
 import { PushPinIcon } from '.'
 
@@ -54,14 +54,14 @@ export function CreateComment() {
       try {
         api.commentActions.addPreviewComment({
           document: documentData,
-          comment: { ...commentState.draft, text, page: viewerState.activePage },
+          comment: { ...commentState.draft, text, page: commentState.draft.page },
           abortController: new AbortController(),
         })
       } catch (error) {
         console.log(error)
       }
     },
-    [api.commentActions, commentState.draft, documentData, viewerState],
+    [api.commentActions, commentState.draft, documentData],
   )
 
   const clearState = useCallback(() => {
@@ -85,7 +85,7 @@ export function CreateComment() {
   }, [commentState.draft, createCommentValue, localization.inputRequiredError, localization.markerRequiredError])
 
   const handleSubmit = useCallback(
-    (event: React.FormEvent<HTMLFormElement>) => {
+    (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
       const errorText = validate()
       if (errorText) {
@@ -98,7 +98,7 @@ export function CreateComment() {
     [clearState, createComment, createCommentValue, validate],
   )
 
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     setCreateCommentValue(e.target.value)
     setErrorMessage(undefined)
   }
@@ -132,7 +132,10 @@ export function CreateComment() {
                   <IconButton
                     aria-label="Toggle"
                     onClick={() =>
-                      viewerState.updateState({ isPlacingCommentMarker: !viewerState.isPlacingCommentMarker })
+                      viewerState.updateState({
+                        activeShapePlacing: 'none',
+                        isPlacingCommentMarker: !viewerState.isPlacingCommentMarker,
+                      })
                     }>
                     <PushPinIcon isPlacingMarker={viewerState.isPlacingCommentMarker} viewBox="0 0 100 125" />
                   </IconButton>

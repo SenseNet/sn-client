@@ -1,4 +1,4 @@
 import { Theme } from '@material-ui/core/styles/createMuiTheme'
-import React from 'react'
+import { createContext } from 'react'
 
-export const ThemeContext = React.createContext<Theme | undefined>(undefined)
+export const ThemeContext = createContext<Theme | undefined>(undefined)

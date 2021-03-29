@@ -1,4 +1,4 @@
-import { Button, FormHelperText, IconButton, MuiThemeProvider, TextField } from '@material-ui/core'
+import { Button, FormHelperText, IconButton, TextField } from '@material-ui/core'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
@@ -238,6 +238,6 @@ describe('Create comment component', () => {
     )
 
     wrapper.find(IconButton).simulate('click')
-    expect(updateState).toBeCalledWith({ isPlacingCommentMarker: true })
+    expect(updateState).toBeCalledWith({ activeShapePlacing: 'none', isPlacingCommentMarker: true })
   })
 })

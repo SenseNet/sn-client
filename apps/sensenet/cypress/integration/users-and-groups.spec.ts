@@ -59,7 +59,7 @@ describe('Users menu', () => {
 
     // Check if the required title exist
     cy.get('[data-test="viewtitle"]').as('Title').should('contain.text', 'Edit Developer Dog')
-    cy.get('form').within(($form) => {
+    cy.get('form').within(() => {
       cy.get('input[name="FullName"]').should('have.value', 'Developer Dog')
     })
     cy.get('[data-test="cancel"]').click()

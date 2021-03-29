@@ -4,7 +4,7 @@ import { RepositoryContext } from '@sensenet/hooks-react'
 import { Actions } from '@sensenet/redux'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
-import React from 'react'
+import React, { Component } from 'react'
 import Loadable from 'react-loadable'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
@@ -48,7 +48,7 @@ const LoadableEditView = Loadable({
   loading: FullScreenLoader,
 })
 
-class EditPropertiesDialog extends React.Component<
+class EditPropertiesDialog extends Component<
   EditPropertiesDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   EditPropertiesDialogState
 > {

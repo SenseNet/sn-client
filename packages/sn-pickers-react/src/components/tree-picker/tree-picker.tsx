@@ -1,7 +1,7 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import { Checkbox, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core'
 import { ArrowUpward, Folder } from '@material-ui/icons'
-import React, { useCallback } from 'react'
+import React, { ChangeEvent, MouseEvent, useCallback } from 'react'
 import { useSelection, useTreePicker } from '../../hooks'
 import { GenericContentWithIsParent } from '../../types'
 import { PickerProps } from '../picker'
@@ -21,7 +21,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
   })
 
   const onCheckedChangeHandler = useCallback(
-    (_event: React.ChangeEvent<HTMLInputElement>, node: T) => {
+    (_event: ChangeEvent<HTMLInputElement>, node: T) => {
       if (!node.isParent) {
         const newSelection = props.allowMultiple ? selection.filter((item) => item.Id !== node.Id) : []
         if (newSelection.length === selection.length || (!props.allowMultiple && selection[0].Id !== node.Id)) {
@@ -34,7 +34,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
   )
 
   const onDoubleClickHandler = useCallback(
-    (_event: React.MouseEvent, node: T) => {
+    (_event: MouseEvent, node: T) => {
       if (node.IsFolder || node.isParent) {
         navigateTo(node)
         props.onTreeNavigation?.(node.Path)

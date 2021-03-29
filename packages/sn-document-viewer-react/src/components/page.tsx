@@ -104,7 +104,7 @@ export const Page: React.FC<PageProps> = (props) => {
         x: `${xCoord - MARKER_SIZE}`,
         y: `${yCoord - MARKER_SIZE}`,
         id: 'draft',
-        page: viewerState.activePage,
+        page: page.image?.Index || viewerState.activePage,
       }
       commentState.setDraft(newCommentMarker)
     },
@@ -112,6 +112,7 @@ export const Page: React.FC<PageProps> = (props) => {
       commentState,
       imageRotation,
       page.image?.Height,
+      page.image?.Index,
       page.image?.Width,
       props.page.Height,
       props.page.Width,

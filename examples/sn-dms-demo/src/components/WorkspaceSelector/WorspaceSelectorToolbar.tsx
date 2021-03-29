@@ -8,7 +8,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Toolbar from '@material-ui/core/Toolbar'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { resources } from '../../assets/resources'
 import { rootStateType } from '../../store/rootReducer'
@@ -89,7 +89,7 @@ const mapStateToProps = (state: rootStateType) => {
   }
 }
 
-class WorkspaceSelectorToolbar extends React.Component<
+class WorkspaceSelectorToolbar extends Component<
   { classes: any } & ReturnType<typeof mapStateToProps> & WorkspaceSelectorToolbarProps,
   {}
 > {

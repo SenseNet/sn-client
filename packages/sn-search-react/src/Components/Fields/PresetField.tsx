@@ -1,7 +1,7 @@
 import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
 import { ListItemText, MenuItem, Select, SelectProps } from '@material-ui/core'
-import React from 'react'
+import React, { Component } from 'react'
 
 /**
  * Props object for the SelectFieldP Component
@@ -40,7 +40,7 @@ export interface SelectFieldProps<T> extends SelectProps {
  * Component for searching simple text fragments in a specified field
  * @param props
  */
-export class PresetField<T extends GenericContent = GenericContent> extends React.Component<
+export class PresetField<T extends GenericContent = GenericContent> extends Component<
   SelectFieldProps<T>,
   { value: string }
 > {

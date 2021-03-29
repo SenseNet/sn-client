@@ -35,7 +35,9 @@ export const AddAnnotationWidget: React.FC<{ classes?: AddAnnnotationClassKey }>
       classes={classes}
       active={viewerState.activeShapePlacing === 'annotation'}
       title={localization.addAnnotation}
-      setValue={(value) => viewerState.updateState({ activeShapePlacing: value ? 'annotation' : 'none' })}>
+      setValue={(value) =>
+        viewerState.updateState({ activeShapePlacing: value ? 'annotation' : 'none', isPlacingCommentMarker: false })
+      }>
       <ChatSharp
         className={clsx(classes.icon, { [classes.iconActive]: viewerState.activeShapePlacing === 'annotation' })}
       />

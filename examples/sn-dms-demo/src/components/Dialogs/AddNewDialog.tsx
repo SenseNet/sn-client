@@ -1,7 +1,7 @@
 import { RepositoryContext } from '@sensenet/hooks-react'
 import { Actions, Reducers } from '@sensenet/redux'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import React from 'react'
+import React, { Component } from 'react'
 import Loadable from 'react-loadable'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
@@ -38,7 +38,7 @@ const LoadableNewView = Loadable({
   loading: FullScreenLoader,
 })
 
-class AddNewDialog extends React.Component<
+class AddNewDialog extends Component<
   AddNewDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   AddNewDialogState
 > {

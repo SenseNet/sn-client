@@ -1,9 +1,8 @@
 import { Group } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { Container, createStyles, makeStyles, Theme, Typography } from '@material-ui/core'
+import { Container, createStyles, makeStyles, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { useCurrentUser } from '../../context'
-import { globals } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { LearnMoreWidget } from './learn-more-widget'
 import { SubscriptionWidget } from './subscription-widget'
@@ -36,33 +35,6 @@ export const round = (value: number, precision = 1) => {
   const multiplier = Math.pow(10, precision)
   return Math.round((value + Number.EPSILON) * multiplier) / multiplier
 }
-
-export const useWidgetStyles = makeStyles((theme: Theme) => {
-  return createStyles({
-    root: {
-      marginBottom: '2rem',
-      width: '100%',
-    },
-    title: {
-      marginBottom: '1rem',
-      whiteSpace: 'nowrap',
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      fontSize: '20px',
-      fontWeight: 500,
-    },
-    container: {
-      padding: '1.5rem',
-      backgroundColor: theme.palette.type === 'light' ? globals.light.drawerBackground : globals.dark.drawerBackground,
-      border: theme.palette.type === 'light' ? '1px solid #E2E2E2' : 0,
-    },
-    subtitle: {
-      fontSize: '20px',
-      fontWeight: 500,
-      marginTop: 0,
-    },
-  })
-})
 
 const Dashboard = () => {
   const classes = useStyles()

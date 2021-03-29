@@ -1,11 +1,11 @@
 import { IconButton, TableCell } from '@material-ui/core'
 import MoreHoriz from '@material-ui/icons/MoreHoriz'
 import clsx from 'clsx'
-import React from 'react'
+import React, { FC, MouseEvent } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 
-export const ActionsField: React.FC<{
-  onOpen: (ev: React.MouseEvent<HTMLButtonElement>) => void
+export const ActionsField: FC<{
+  onOpen: (ev: MouseEvent<HTMLButtonElement>) => void
 }> = ({ onOpen }) => {
   const globalClasses = useGlobalStyles()
   return (

@@ -11,7 +11,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
-import React from 'react'
+import React, { ChangeEvent, Component, KeyboardEvent, MouseEvent } from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
@@ -89,7 +89,7 @@ interface ShareDialogState {
   anchorEl: HTMLElement | null
 }
 
-class ShareDialog extends React.Component<
+class ShareDialog extends Component<
   { classes: any } & ShareDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   ShareDialogState
 > {
@@ -159,13 +159,13 @@ class ShareDialog extends React.Component<
     })
   }
 
-  public handleAddTypeChange(event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>) {
+  public handleAddTypeChange(event: ChangeEvent<{ name?: string | undefined; value: unknown }>) {
     this.setState({
       addType: (event.target as any).value,
     })
   }
 
-  public handleAddValueChange(ev: React.ChangeEvent<HTMLInputElement>) {
+  public handleAddValueChange(ev: ChangeEvent<HTMLInputElement>) {
     this.setState({
       addValue: ev.currentTarget.value,
     })
@@ -176,7 +176,7 @@ class ShareDialog extends React.Component<
     return `${version.substring(0, version.length - 2)} ${v}`
   }
 
-  public handleAddEntry(ev: React.KeyboardEvent<HTMLInputElement>) {
+  public handleAddEntry(ev: KeyboardEvent<HTMLInputElement>) {
     const target: HTMLInputElement = ev.target as any
     if (ev.key === 'Enter' && target.form && target.form.reportValidity()) {
       ev.preventDefault()
@@ -217,7 +217,7 @@ class ShareDialog extends React.Component<
     })
   }
 
-  private handleOpenLinkSharingMenu(event: React.MouseEvent<HTMLElement>) {
+  private handleOpenLinkSharingMenu(event: MouseEvent<HTMLElement>) {
     this.setState({ anchorEl: event.currentTarget })
   }
 

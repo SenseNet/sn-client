@@ -1,4 +1,4 @@
-import Quill from 'quill'
+import { Quill } from 'react-quill'
 import QuillOEmbedModule from '../src/fieldcontrols/rich-text-editor/quill-oembed-module'
 
 const richHtml = '<a href="https://example.com">Example</a>'

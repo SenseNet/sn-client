@@ -88,6 +88,7 @@ export function Explore({
   const uiSettings = useContext(ResponsivePersonalSettings)
   const activeContent = useQuery().get('content') ?? ''
   const contentTypeName = useQuery().get('content-type')
+  const pathFromUrl = useQuery().get('path')
   const snRoute = useSnRoute()
   const activeAction = snRoute.match!.params.action
 
@@ -117,7 +118,18 @@ export function Explore({
             key={activeContent}
             actionName={activeAction}
             contentPath={`${rootPath}${activeContent}`}
-            submitCallback={() => navigateToAction({ history, routeMatch: snRoute.match })}
+            submitCallback={(savedContent) => {
+              const contentNameBeforeEdit = PathHelper.getSegments(activeContent).pop()
+              if (contentNameBeforeEdit && contentNameBeforeEdit !== savedContent.Name && pathFromUrl) {
+                return navigateToAction({
+                  history,
+                  routeMatch: snRoute.match,
+                  queryParams: { path: pathFromUrl.replace(contentNameBeforeEdit, savedContent.Name) },
+                })
+              }
+
+              navigateToAction({ history, routeMatch: snRoute.match })
+            }}
           />
         )
       case 'new':

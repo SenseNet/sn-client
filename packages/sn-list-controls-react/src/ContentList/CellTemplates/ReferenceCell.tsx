@@ -1,6 +1,6 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import { TableCell } from '@material-ui/core'
-import React from 'react'
+import React, { Component } from 'react'
 
 export interface ReferenceCellProps<T extends GenericContent> {
   content: T
@@ -8,7 +8,7 @@ export interface ReferenceCellProps<T extends GenericContent> {
   virtual?: boolean
 }
 
-export class ReferenceCell<T extends GenericContent> extends React.Component<ReferenceCellProps<T>, {}> {
+export class ReferenceCell<T extends GenericContent> extends Component<ReferenceCellProps<T>, {}> {
   public render() {
     const { content, fieldName, virtual } = this.props
     return (

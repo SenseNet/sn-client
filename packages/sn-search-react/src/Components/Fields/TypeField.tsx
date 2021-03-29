@@ -2,7 +2,7 @@ import { SchemaStore } from '@sensenet/client-core'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
 import { Checkbox, Input, ListItemText, MenuItem, Select, SelectProps } from '@material-ui/core'
-import React, { Component } from 'react'
+import React, { ChangeEvent, Component } from 'react'
 
 /**
  * Props for the Type Field component
@@ -63,7 +63,7 @@ export class TypeField extends Component<TypeFieldProps, TypeFieldState> {
     }
   }
 
-  private handleChange(ev: React.ChangeEvent<HTMLSelectElement>) {
+  private handleChange(ev: ChangeEvent<HTMLSelectElement>) {
     const values = (ev.target.value as any) as string[]
     const selected = this.props.types.filter((typeName) => values.indexOf(typeName) > -1)
     const query = new Query((q) => {

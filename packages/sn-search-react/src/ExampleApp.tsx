@@ -28,7 +28,7 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core'
-import React from 'react'
+import React, { Component, SyntheticEvent } from 'react'
 import { AdvancedSearch } from './Components/AdvancedSearch'
 import { PresetField } from './Components/Fields/PresetField'
 import { ReferenceField } from './Components/Fields/ReferenceField'
@@ -79,7 +79,7 @@ const icons: any = {
 /**
  * Example app component for search
  */
-export class ExampleApp extends React.Component<{}, ExampleComponentState> {
+export class ExampleApp extends Component<{}, ExampleComponentState> {
   /**
    * State object for the Example component
    */
@@ -94,7 +94,7 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
     isHelpOpen: false,
   }
 
-  private async sendRequest(ev: React.SyntheticEvent) {
+  private async sendRequest(ev: SyntheticEvent) {
     ev.preventDefault()
     const response = await repo.loadCollection<GenericContent>({
       path: demoData.idOrPath as string, // ToDo: query by Id in client-core
