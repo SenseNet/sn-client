@@ -1,6 +1,7 @@
 import { Annotation, Highlight, PreviewImageData, Redaction, Shape, Shapes } from '@sensenet/client-core'
 import createStyles from '@material-ui/core/styles/createStyles'
 import makeStyles from '@material-ui/core/styles/makeStyles'
+import clsx from 'clsx'
 import React, { useCallback } from 'react'
 import { useComments, useCommentState, useDocumentData, useDocumentPermissions, useViewerState } from '../../hooks'
 import { applyShapeRotations, Dimensions, ImageUtil } from '../../services'
@@ -92,7 +93,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
 
   const onDrop = useCallback(
     (ev: React.DragEvent<HTMLElement>) => {
-      if (permissions.canEdit) {
+      if (permissions.canEdit && ev.dataTransfer.getData('shape')) {
         ev.preventDefault()
         const shapeData = JSON.parse(ev.dataTransfer.getData('shape')) as {
           type: keyof Shapes
@@ -111,7 +112,10 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
     [permissions.canEdit, props.page.Index, updateShapeData, zoomRatio],
   )
   return (
-    <div className={classes.shapesContainer} onDrop={onDrop} onDragOver={(ev) => ev.preventDefault()}>
+    <div
+      className={clsx(classes.shapesContainer, 'shapesContainer')}
+      onDrop={onDrop}
+      onDragOver={(ev) => ev.preventDefault()}>
       {viewerState.showComments &&
         visibleComments.length > 0 &&
         visibleComments.map((marker) => (

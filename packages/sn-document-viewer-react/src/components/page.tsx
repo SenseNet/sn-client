@@ -5,9 +5,8 @@ import { Theme } from '@material-ui/core/styles/createMuiTheme'
 import createStyles from '@material-ui/core/styles/createStyles'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import clsx from 'clsx'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useCommentState, useDocumentData, usePreviewImage, useViewerState } from '../hooks'
-import { ActiveShapPlacingOptions } from '../models'
 import { ImageUtil } from '../services'
 import { PAGE_NAME, PAGE_PADDING } from './document-viewer-layout'
 import { MARKER_SIZE, ShapeDraft, ShapesWidget } from './shapes'
@@ -56,6 +55,7 @@ export interface PageProps {
   viewportHeight: number
   viewportWidth: number
   page: PreviewImageData
+  visiblePagesIndex?: number
   onClick: (ev: React.MouseEvent<HTMLElement>) => any
 }
 
@@ -67,8 +67,14 @@ export const Page: React.FC<PageProps> = (props) => {
   const [mouseIsDown, setMouseIsDown] = useState<boolean>(false)
   const [startX, setStartX] = useState<number>(0)
   const [startY, setStartY] = useState<number>(0)
+  const [startOffsetX, setStartOffsetX] = useState<number>(0)
+  const [startOffsetY, setStartOffsetY] = useState<number>(0)
   const [draftWidth, setdraftWidth] = useState<number>(0)
   const [draftHeight, setdraftHeight] = useState<number>(0)
+  const [scrollX, setScrollX] = useState<number>(0)
+  const [scrollY, setScrollY] = useState<number>(0)
+  const [scrollOffsetX, setScrollOffsetX] = useState<number>(0)
+  const [scrollOffsetY, setScrollOffsetY] = useState<number>(0)
   const { documentData, updateDocumentData } = useDocumentData()
 
   const isActive = page.image && viewerState.activePage === page.image.Index
@@ -92,6 +98,184 @@ export const Page: React.FC<PageProps> = (props) => {
   const diffHeight = Math.sin(imageRotationRads) * ((props.page.Height - props.page.Width) / 2)
 
   const imageTransform = `translateY(${diffHeight}px) rotate(${imageRotation}deg)`
+
+  const reCalculateDraftShape = useCallback(
+    (ev: MouseEvent) => {
+      const endX =
+        (ev.pageX <
+          document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].right &&
+        ev.pageX < document.getElementById('sn-document-viewer-pages')!.getClientRects()[0].right
+          ? ev.pageX >
+              document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].left &&
+            ev.pageX > document.getElementById('sn-document-viewer-pages')!.getClientRects()[0].left
+            ? ev.pageX + scrollOffsetX
+            : Math.max(
+                document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].left!,
+                document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].left!,
+              ) + scrollOffsetX
+          : Math.min(
+              document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].right!,
+              document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].right!,
+            ) + scrollOffsetX) /
+        (props.page.Height / (page.image?.Height || 1))
+
+      const endY =
+        (ev.pageY <
+          document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].bottom &&
+        ev.pageY < document.getElementById('sn-document-viewer-pages')!.getClientRects()[0].bottom
+          ? ev.pageY >
+              document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].top &&
+            ev.pageY > document.getElementById('sn-document-viewer-pages')!.getClientRects()[0].top
+            ? ev.pageY + scrollOffsetY
+            : Math.max(
+                document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].top!,
+                document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].top!,
+              ) + scrollOffsetY
+          : Math.min(
+              document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].bottom!,
+              document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].bottom!,
+            ) + scrollOffsetY) /
+        (props.page.Height / (page.image?.Height || 1))
+      return { endX, endY }
+    },
+    [page.image?.Height, props.page.Height, props.visiblePagesIndex, scrollOffsetX, scrollOffsetY],
+  )
+
+  useEffect(() => {
+    const handleGlobalScroll = (ev: any) => {
+      if (ev.currentTarget) {
+        if (viewerState.activeShapePlacing !== 'none') {
+          setScrollOffsetX(ev.currentTarget.scrollLeft - scrollX)
+          setScrollOffsetY(ev.currentTarget.scrollTop - scrollY)
+        } else {
+          setScrollX(ev.currentTarget.scrollLeft || 0)
+          setScrollY(ev.currentTarget.scrollTop || 0)
+          setScrollOffsetX(0)
+          setScrollOffsetY(0)
+        }
+      }
+    }
+    document.getElementById('sn-document-viewer-pages')?.addEventListener('scroll', handleGlobalScroll)
+    return () => {
+      document.getElementById('sn-document-viewer-pages')?.removeEventListener('scroll', handleGlobalScroll)
+    }
+  }, [scrollX, scrollY, viewerState.activeShapePlacing])
+
+  useEffect(() => {
+    const handleGlobalMouseMove = (ev: MouseEvent) => {
+      if (
+        viewerState.activeShapePlacing !== 'none' &&
+        mouseIsDown &&
+        document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!] &&
+        document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].right
+      ) {
+        const { endX, endY } = reCalculateDraftShape(ev)
+        setdraftHeight(endY - startY)
+        setdraftWidth(endX - startX)
+      }
+    }
+
+    document.addEventListener('mousemove', handleGlobalMouseMove)
+    return () => {
+      document.removeEventListener('mousemove', handleGlobalMouseMove)
+    }
+  }, [mouseIsDown, props.visiblePagesIndex, reCalculateDraftShape, startX, startY, viewerState.activeShapePlacing])
+
+  useEffect(() => {
+    const handleGlobalMouseUp = (ev: MouseEvent) => {
+      if (mouseIsDown) {
+        setMouseIsDown(false)
+        setdraftHeight(0)
+        setdraftWidth(0)
+
+        const { endX, endY } = reCalculateDraftShape(ev)
+
+        if (endY - startY > 0 && endX - startX > 0) {
+          switch (viewerState.activeShapePlacing) {
+            case 'annotation':
+              documentData.shapes.annotations.push({
+                h: endY - startY,
+                w: endX - startX,
+                x: startOffsetX,
+                y: startOffsetY,
+                imageIndex: props.page.Index,
+                guid: `a-${startX}-${startY}`,
+                ...ANNOTATION_EXTRA_VALUES,
+              })
+
+              updateDocumentData(documentData)
+              viewerState.updateState({
+                hasChanges: true,
+                activeShapePlacing: 'none',
+                showShapes: true,
+              })
+              break
+            case 'highlight':
+              documentData.shapes.highlights.push({
+                h: endY - startY,
+                w: endX - startX,
+                x: startOffsetX,
+                y: startOffsetY,
+                imageIndex: props.page.Index,
+                guid: `h-${startX}-${startY}`,
+              })
+              updateDocumentData(documentData)
+              viewerState.updateState({
+                hasChanges: true,
+                activeShapePlacing: 'none',
+                showShapes: true,
+              })
+              break
+            case 'redaction':
+              documentData.shapes.redactions.push({
+                h: endY - startY,
+                w: endX - startX,
+                x: startOffsetX,
+                y: startOffsetY,
+                imageIndex: props.page.Index,
+                guid: `r-${startX}-${startY}`,
+              })
+              updateDocumentData(documentData)
+              viewerState.updateState({
+                hasChanges: true,
+                activeShapePlacing: 'none',
+                showRedaction: true,
+              })
+              break
+            default:
+              break
+          }
+        }
+        setStartX(0)
+        setStartY(0)
+
+        setScrollX(scrollOffsetX + scrollX)
+        setScrollY(scrollOffsetY + scrollY)
+        setScrollOffsetX(0)
+        setScrollOffsetY(0)
+      }
+    }
+
+    document.addEventListener('mouseup', handleGlobalMouseUp)
+    return () => {
+      document.removeEventListener('mouseup', handleGlobalMouseUp)
+    }
+  }, [
+    documentData,
+    mouseIsDown,
+    props.page.Index,
+    reCalculateDraftShape,
+    scrollOffsetX,
+    scrollOffsetY,
+    scrollX,
+    scrollY,
+    startOffsetX,
+    startOffsetY,
+    startX,
+    startY,
+    updateDocumentData,
+    viewerState,
+  ])
 
   const handleMarkerPlacement = useCallback(
     (event: React.MouseEvent) => {
@@ -127,82 +311,10 @@ export const Page: React.FC<PageProps> = (props) => {
       viewerState.updateState({ activeShapePlacing: 'none' })
     }
     setMouseIsDown(true)
-    setStartX(ev.nativeEvent.offsetX / (props.page.Height / (page.image?.Height || 1)))
-    setStartY(ev.nativeEvent.offsetY / (props.page.Width / (page.image?.Width || 1)))
-  }
-
-  const handleMouseMove = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const endX = ev.nativeEvent.offsetX / (props.page.Height / (page.image?.Height || 1))
-    const endY = ev.nativeEvent.offsetY / (props.page.Width / (page.image?.Width || 1))
-    setdraftHeight(endY - startY)
-    setdraftWidth(endX - startX)
-  }
-
-  const handleMouseUp = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>, shapeType: ActiveShapPlacingOptions) => {
-    setMouseIsDown(false)
-    setdraftHeight(0)
-    setdraftWidth(0)
-    const endX = ev.nativeEvent.offsetX / (props.page.Height / (page.image?.Height || 1))
-    const endY = ev.nativeEvent.offsetY / (props.page.Width / (page.image?.Width || 1))
-
-    if (endY - startY > 0 && endX - startX > 0) {
-      switch (shapeType) {
-        case 'annotation':
-          documentData.shapes.annotations.push({
-            h: endY - startY,
-            w: endX - startX,
-            x: startX,
-            y: startY,
-            imageIndex: props.page.Index,
-            guid: `a-${startX}-${startY}`,
-            ...ANNOTATION_EXTRA_VALUES,
-          })
-
-          updateDocumentData(documentData)
-          viewerState.updateState({
-            hasChanges: true,
-            activeShapePlacing: 'none',
-            showShapes: true,
-          })
-          break
-        case 'highlight':
-          documentData.shapes.highlights.push({
-            h: endY - startY,
-            w: endX - startX,
-            x: startX,
-            y: startY,
-            imageIndex: props.page.Index,
-            guid: `h-${startX}-${startY}`,
-          })
-          updateDocumentData(documentData)
-          viewerState.updateState({
-            hasChanges: true,
-            activeShapePlacing: 'none',
-            showShapes: true,
-          })
-          break
-        case 'redaction':
-          documentData.shapes.redactions.push({
-            h: endY - startY,
-            w: endX - startX,
-            x: startX,
-            y: startY,
-            imageIndex: props.page.Index,
-            guid: `r-${startX}-${startY}`,
-          })
-          updateDocumentData(documentData)
-          viewerState.updateState({
-            hasChanges: true,
-            activeShapePlacing: 'none',
-            showRedaction: true,
-          })
-          break
-        default:
-          break
-      }
-    }
-    setStartX(0)
-    setStartY(0)
+    setStartX(ev.nativeEvent.pageX / (props.page.Height / (page.image?.Height || 1)))
+    setStartY(ev.nativeEvent.pageY / (props.page.Height / (page.image?.Height || 1)))
+    setStartOffsetX(ev.nativeEvent.offsetX / (props.page.Height / (page.image?.Height || 1)))
+    setStartOffsetY(ev.nativeEvent.offsetY / (props.page.Height / (page.image?.Height || 1)))
   }
 
   return (
@@ -216,12 +328,6 @@ export const Page: React.FC<PageProps> = (props) => {
         }}
         onMouseDown={(ev) => {
           viewerState.activeShapePlacing !== 'none' && !mouseIsDown && handleMouseDown(ev)
-        }}
-        onMouseMove={(ev) => {
-          viewerState.activeShapePlacing !== 'none' && mouseIsDown && handleMouseMove(ev)
-        }}
-        onMouseUp={(ev) => {
-          mouseIsDown && handleMouseUp(ev, viewerState.activeShapePlacing)
         }}>
         {page.image && (
           <>
@@ -236,8 +342,8 @@ export const Page: React.FC<PageProps> = (props) => {
               <div className={classes.draftShapeContainer}>
                 <ShapeDraft
                   dimensions={{
-                    top: startY * (props.page.Height / page.image.Height),
-                    left: startX * (props.page.Height / page.image.Height),
+                    top: startOffsetY * (props.page.Height / page.image.Height),
+                    left: startOffsetX * (props.page.Height / page.image.Height),
                     height: draftHeight * (props.page.Height / page.image.Height),
                     width: draftWidth * (props.page.Height / page.image.Height),
                   }}
@@ -256,6 +362,7 @@ export const Page: React.FC<PageProps> = (props) => {
                 width: `${100 * boundingBox.zoomRatio}%`,
                 height: `${100 * boundingBox.zoomRatio}%`,
                 transform: imageTransform,
+                userSelect: 'none',
               }}
             />
           ) : (
