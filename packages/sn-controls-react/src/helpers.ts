@@ -17,6 +17,23 @@ export const isFullWidthField = (field: { fieldSettings: FieldSetting }, content
   return (
     (field.fieldSettings.Name === 'Avatar' && contentType.includes('User')) ||
     (field.fieldSettings.Name === 'Enabled' && contentType.includes('User')) ||
+    (field.fieldSettings.Name === 'Enabled' && contentType === 'WebHookSubscription') ||
     field.fieldSettings.Type === 'LongTextFieldSetting'
   )
+}
+
+const units = ['byte', 'KB', 'MB', 'GB', 'TB']
+
+export const round = (num: number, precision = 1) => {
+  const multiplier = Math.pow(10, precision)
+  return Math.round((num + Number.EPSILON) * multiplier) / multiplier
+}
+
+export const formatSize = (fieldValueNumber: number, index = 0): string => {
+  const inHigherUnit = round(fieldValueNumber / 1024)
+  if (inHigherUnit >= 1 && units.length > index + 1) {
+    return formatSize(inHigherUnit, index + 1)
+  } else {
+    return `${fieldValueNumber} ${units[index]}`
+  }
 }

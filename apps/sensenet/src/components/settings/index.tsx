@@ -6,11 +6,13 @@ import { matchPath, NavLink, useLocation, useRouteMatch } from 'react-router-dom
 import { PATHS, resolvePathParams } from '../../application-paths'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+import { ApiKeys } from './api-keys'
+import { Stats } from './stats'
 
 const ContentComponent = lazy(() => import(/* webpackChunkName: "content" */ '../content'))
 const SetupComponent = lazy(() => import(/* webpackChunkName: "setup" */ './setup'))
 const PersonalSettingsEditor = lazy(
-  () => import(/* webpackChunkName: "PersonalSettingsEditor" */ './PersonalSettingsEditor'),
+  () => import(/* webpackChunkName: "PersonalSettingsEditor" */ './personal-settings-editor'),
 )
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -63,7 +65,7 @@ export const Settings: React.FunctionComponent = () => {
     {
       name: 'apiKeys',
       displayName: localizationDrawer.titles.ApiAndSecurity,
-      url: resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'apiKeys' } }),
+      url: resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'apikeys' } }),
     },
     {
       name: 'localization',
@@ -90,6 +92,18 @@ export const Settings: React.FunctionComponent = () => {
         return <SetupComponent />
       case 'adminui':
         return <PersonalSettingsEditor />
+      case 'stats':
+        return <Stats />
+      case 'apikeys':
+        return <ApiKeys />
+      case 'webhooks':
+        return (
+          <ContentComponent
+            rootPath={PATHS.webhooks.snPath}
+            fieldsToDisplay={['DisplayName', 'WebHookUrl' as any, 'Enabled' as any, 'SuccessfulCalls' as any]}
+            schema={'WebHookSubscription'}
+          />
+        )
       default:
         return (
           <div className={clsx(globalClasses.centered, classes.underConstructionWrapper)}>
@@ -115,7 +129,7 @@ export const Settings: React.FunctionComponent = () => {
                   button={true}
                   key={index}
                   selected={!!matchPath(location.pathname, item.url)}
-                  data-test={`drawer-menu-item-${item.name.replace(/\s+/g, '-').toLowerCase()}`}>
+                  data-test={`drawer-submenu-item-${item.name.replace(/\s+/g, '-').toLowerCase()}`}>
                   <ListItemText primary={`${item.displayName}`} />
                 </ListItem>
               </NavLink>

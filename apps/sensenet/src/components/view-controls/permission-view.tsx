@@ -33,7 +33,8 @@ import { useViewControlStyles } from './common/styles'
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     permissionEditorContainer: {
-      margin: '0px 80px',
+      padding: '0px 80px',
+      overflowY: 'auto',
     },
     titleContainer: {
       display: 'flex',
