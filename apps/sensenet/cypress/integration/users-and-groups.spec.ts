@@ -65,7 +65,7 @@ describe('Users menu', () => {
     cy.get('[data-test="cancel"]').click()
   })
 
-  it('ensures that deletion of users is work properly', () => {
+  it('ensures that deletion of users is working properly', () => {
     cy.intercept({
       method: 'GET',
       url: '/Root/Trash',
@@ -89,7 +89,7 @@ describe('Users menu', () => {
       })
   })
 
-  it('ensures that the creation of a new users is work properly', () => {
+  it('ensures that the creation of a new users is working properly', () => {
     const newUser = {
       loginName: 'devdog',
       fullName: 'Developer Dog',

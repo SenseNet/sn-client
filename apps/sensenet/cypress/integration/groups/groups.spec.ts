@@ -38,7 +38,7 @@ describe('Groups', () => {
     cy.get('[data-test="cancel"]').click()
   })
 
-  it('ensures that creation of a new group is work properly', () => {
+  it('ensures that creation of a new group is working properly', () => {
     const groupName = 'test'
 
     cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
@@ -60,7 +60,7 @@ describe('Groups', () => {
       })
   })
 
-  it('ensures that deletion of a group is work properly', () => {
+  it('ensures that deletion of a group is working properly', () => {
     cy.intercept({
       method: 'GET',
       url: '/Root/Trash',
