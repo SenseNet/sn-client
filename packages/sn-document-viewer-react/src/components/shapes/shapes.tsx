@@ -119,17 +119,101 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
           shape: Shape
           offset: Dimensions
         }
-        const boundingBox = ev.currentTarget.getBoundingClientRect()
-        updateShapeData(shapeData.type, shapeData.shape.guid, {
+        const clientRect = ev.currentTarget.getClientRects()[0]
+
+        console.log(
+          ' ev.pageX - clientRect.left: kisebb mint right nagyobb mint left akkor fain',
+          ev.pageX - shapeData.offset.width,
+        )
+        console.log(
+          'kisebb mint ez és ez',
+          document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].right! -
+            shapeData.shape.w * zoomRatio,
+        )
+        console.log(
+          'kisebb mint ez és ez',
+          document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].right! -
+            shapeData.shape.w * zoomRatio,
+        )
+
+        console.log('BLABLA_---> ', ev.pageX - clientRect.left - shapeData.offset.width)
+        console.log(
+          'MAX: ',
+          Math.max(
+            document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].left!,
+            document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].left!,
+          ) - clientRect.left,
+        )
+
+        console.log(
+          'MIN: ',
+          Math.min(
+            document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].right!,
+            document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].right!,
+          ) -
+            clientRect.left -
+            shapeData.shape.w * zoomRatio,
+        )
+
+        const newX =
+          ev.pageX - shapeData.offset.width <
+            document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].right -
+              shapeData.shape.w * zoomRatio &&
+          ev.pageX - shapeData.offset.width <
+            document.getElementById('sn-document-viewer-pages')!.getClientRects()[0].right -
+              shapeData.shape.w * zoomRatio
+            ? ev.pageX - shapeData.offset.width >
+                document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].left &&
+              ev.pageX - shapeData.offset.width >
+                document.getElementById('sn-document-viewer-pages')!.getClientRects()[0].left
+              ? ev.pageX - clientRect.left - shapeData.offset.width
+              : Math.max(
+                  document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0]
+                    .left!,
+                  document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].left!,
+                ) - clientRect.left
+            : Math.min(
+                document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].right!,
+                document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].right!,
+              ) -
+              clientRect.left -
+              shapeData.shape.w * zoomRatio
+
+        const newY =
+          ev.pageY - shapeData.offset.height <
+            document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].bottom -
+              shapeData.shape.h * zoomRatio &&
+          ev.pageY - shapeData.offset.height <
+            document.getElementById('sn-document-viewer-pages')!.getClientRects()[0].bottom -
+              shapeData.shape.h * zoomRatio
+            ? ev.pageY - shapeData.offset.height >
+                document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].top &&
+              ev.pageY - shapeData.offset.height >
+                document.getElementById('sn-document-viewer-pages')!.getClientRects()[0].top
+              ? ev.pageY - clientRect.top - shapeData.offset.height
+              : Math.max(
+                  document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].top!,
+                  document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].top!,
+                ) - clientRect.top
+            : Math.min(
+                document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0]
+                  .bottom!,
+                document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].bottom!,
+              ) -
+              clientRect.top -
+              shapeData.shape.h * zoomRatio
+
+        forceUpdateShapeData(shapeData.type, shapeData.shape.guid, {
           ...shapeData.shape,
           imageIndex: props.page.Index,
-          x: (ev.clientX - boundingBox.left - shapeData.offset.width) * (1 / zoomRatio),
-          y: (ev.clientY - boundingBox.top - shapeData.offset.height) * (1 / zoomRatio),
+          x: newX / zoomRatio,
+          y: newY / zoomRatio,
         })
       }
     },
-    [permissions.canEdit, props.page.Index, updateShapeData, zoomRatio],
+    [forceUpdateShapeData, permissions.canEdit, props.page.Index, props.visiblePagesIndex, zoomRatio],
   )
+
   return (
     <div
       className={clsx(classes.shapesContainer, 'shapesContainer')}
