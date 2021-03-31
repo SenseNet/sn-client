@@ -10,8 +10,10 @@ export interface ShapeProps {
   shapeType: keyof Shapes
   zoomRatio: number
   updateShapeData: (shapeType: keyof Shapes, guid: string, shape: Redaction | Highlight | Annotation) => void
+  forceUpdateShapeData: (shapeType: keyof Shapes, guid: string, shape: Redaction | Highlight | Annotation) => void
   removeShape: (shapeType: keyof Shapes, guid: string) => void
   rotationDegree: number
+  visiblePagesIndex?: number
 }
 
 export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
@@ -38,18 +40,41 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
   }
 
   /** event that will be triggered on resize */
-  const onResized = (ev: React.MouseEvent<HTMLElement>) => {
-    const boundingBox = ev.currentTarget.getBoundingClientRect()
-    const [shape, shapeType, zoomRatio] = [props.shape, props.shapeType, props.zoomRatio]
-    const newSize = {
-      w: boundingBox.width * (1 / zoomRatio),
-      h: boundingBox.height * (1 / zoomRatio),
-    }
-    if (Math.abs(newSize.w - shape.w) > 1 || Math.abs(newSize.h - shape.h) > 1) {
-      props.updateShapeData(shapeType, shape.guid, {
-        ...(shape as any),
-        ...newSize,
-      })
+  const onResized = (clientRect?: DOMRect) => {
+    if (clientRect) {
+      const [shape, shapeType, zoomRatio] = [props.shape, props.shapeType, props.zoomRatio]
+      const newSize = {
+        w:
+          clientRect.right <
+            document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].right &&
+          clientRect.right < document.getElementById('sn-document-viewer-pages')!.getClientRects()[0].right
+            ? clientRect.width / zoomRatio
+            : (Math.min(
+                document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].right!,
+                document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].right!,
+              ) -
+                clientRect.x) /
+              zoomRatio,
+        h:
+          clientRect.bottom <
+            document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].bottom &&
+          clientRect.height < document.getElementById('sn-document-viewer-pages')!.getClientRects()[0].bottom
+            ? clientRect.height / zoomRatio
+            : (Math.min(
+                document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0]
+                  .bottom!,
+                document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].bottom!,
+              ) -
+                clientRect.y) /
+              zoomRatio,
+      }
+      if (Math.abs(newSize.w - shape.w) > 1 || Math.abs(newSize.h - shape.h) > 1) {
+        props.forceUpdateShapeData(shapeType, shape.guid, {
+          ...(shape as any),
+          w: newSize.w,
+          h: newSize.h,
+        })
+      }
     }
   }
 

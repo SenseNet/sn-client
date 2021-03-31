@@ -6,13 +6,13 @@ import { Theme } from '@material-ui/core/styles/createMuiTheme'
 import createStyles from '@material-ui/core/styles/createStyles'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import Delete from '@material-ui/icons/Delete'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useLocalization } from '../../hooks'
 
 type Props = {
   shape: Highlight
   onDragStart: (ev: React.DragEvent<HTMLElement>) => void
-  onResized: (ev: React.MouseEvent<HTMLElement>) => void
+  onResized: (clientRect?: DOMRect) => void
   permissions: {
     canEdit: boolean
     canHideRedaction: boolean
@@ -32,10 +32,6 @@ type Props = {
 const useStyles = makeStyles<Theme, Props>((theme: Theme) =>
   createStyles({
     root: {
-      top: ({ dimensions }) => dimensions.top,
-      left: ({ dimensions }) => dimensions.left,
-      width: ({ dimensions }) => dimensions.width,
-      height: ({ dimensions }) => dimensions.height,
       position: 'absolute',
       resize: ({ permissions, rotationDegree }) => (permissions.canEdit && rotationDegree === 0 ? 'both' : 'none'),
       overflow: 'auto',
@@ -82,6 +78,18 @@ export function ShapeRedaction({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const id = open ? 'redaction-delete' : undefined
+  const redactionElement = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleGlobalMouseUp = () => {
+      onResized(redactionElement.current?.getClientRects()[0])
+    }
+
+    document.addEventListener('mouseup', handleGlobalMouseUp)
+    return () => {
+      document.removeEventListener('mouseup', handleGlobalMouseUp)
+    }
+  }, [onResized])
 
   const onRightClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
@@ -96,8 +104,14 @@ export function ShapeRedaction({
         key={`r-${shape.h}-${shape.w}`}
         draggable={permissions.canEdit}
         onDragStart={onDragStart}
-        onMouseUp={onResized}
         onContextMenu={onRightClick}
+        ref={redactionElement}
+        style={{
+          top: dimensions.top,
+          left: dimensions.left,
+          width: dimensions.width,
+          height: dimensions.height,
+        }}
       />
       <Popper id={id} open={open} anchorEl={anchorEl} placement="right-start">
         <ClickAwayListener onClickAway={() => setAnchorEl(null)}>

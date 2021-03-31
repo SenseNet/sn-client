@@ -28,6 +28,7 @@ export interface ShapesWidgetProps {
   zoomRatioStanding: number
   zoomRatioLying: number
   imageRotation: number
+  visiblePagesIndex?: number
 }
 
 /**
@@ -37,7 +38,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
   const classes = useStyles()
   const permissions = useDocumentPermissions()
   const viewerState = useViewerState()
-  const { documentData, updateDocumentData } = useDocumentData()
+  const { documentData, updateDocumentData, forceUpdateDocumentData } = useDocumentData()
   const comments = useComments()
   const commentState = useCommentState()
   const zoomRatio =
@@ -79,16 +80,34 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
 
   const updateShapeData = useCallback(
     (shapeType: keyof Shapes, guid: string, shapeChange: Shape | Annotation) => {
-      ;(documentData.shapes as any)[shapeType] = (documentData.shapes[shapeType] as Shape[]).map((s) => {
+      const newDocumentData = { ...documentData }
+      ;(newDocumentData.shapes as any)[shapeType] = (newDocumentData.shapes[shapeType] as Shape[]).map((s) => {
         if (s.guid === guid) {
           return { ...s, ...shapeChange }
         }
         return s
       })
+
+      updateDocumentData(newDocumentData)
       viewerState.updateState({ hasChanges: true })
-      updateDocumentData(documentData)
     },
     [documentData, updateDocumentData, viewerState],
+  )
+
+  const forceUpdateShapeData = useCallback(
+    (shapeType: keyof Shapes, guid: string, shapeChange: Shape | Annotation) => {
+      const newDocumentData = { ...documentData }
+      ;(newDocumentData.shapes as any)[shapeType] = (newDocumentData.shapes[shapeType] as Shape[]).map((s) => {
+        if (s.guid === guid) {
+          return { ...s, ...shapeChange }
+        }
+        return s
+      })
+
+      forceUpdateDocumentData(newDocumentData)
+      viewerState.updateState({ hasChanges: true })
+    },
+    [documentData, forceUpdateDocumentData, viewerState],
   )
 
   const onDrop = useCallback(
@@ -140,8 +159,10 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
                 shapeType="redactions"
                 zoomRatio={zoomRatio}
                 updateShapeData={updateShapeData}
+                forceUpdateShapeData={forceUpdateShapeData}
                 removeShape={removeShape}
                 rotationDegree={rotationDegree}
+                visiblePagesIndex={props.visiblePagesIndex}
               />
             )
           })}
@@ -155,8 +176,10 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
                 shapeType="annotations"
                 zoomRatio={zoomRatio}
                 updateShapeData={updateShapeData}
+                forceUpdateShapeData={forceUpdateShapeData}
                 removeShape={removeShape}
                 rotationDegree={rotationDegree}
+                visiblePagesIndex={props.visiblePagesIndex}
               />
             )
           })}
@@ -170,8 +193,10 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
                 shapeType="highlights"
                 zoomRatio={zoomRatio}
                 updateShapeData={updateShapeData}
+                forceUpdateShapeData={forceUpdateShapeData}
                 removeShape={removeShape}
                 rotationDegree={rotationDegree}
+                visiblePagesIndex={props.visiblePagesIndex}
               />
             )
           })}

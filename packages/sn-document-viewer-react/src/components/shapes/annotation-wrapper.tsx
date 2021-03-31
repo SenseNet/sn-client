@@ -2,7 +2,7 @@ import { Annotation } from '@sensenet/client-core'
 import { Theme } from '@material-ui/core/styles/createMuiTheme'
 import createStyles from '@material-ui/core/styles/createStyles'
 import makeStyles from '@material-ui/core/styles/makeStyles'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useDocumentPermissions } from '../../hooks'
 
 type Props = {
@@ -15,7 +15,7 @@ type Props = {
     height: string | number | (string & {}) | undefined
   }
   onDragStart: (ev: React.DragEvent<HTMLElement>) => void
-  onResized: (ev: React.MouseEvent<HTMLElement>) => void
+  onResized: (clientRect?: DOMRect) => void
   onRightClick: (ev: React.MouseEvent<HTMLElement>) => void
   rotationDegree: number
 }
@@ -32,10 +32,6 @@ const useStyles = makeStyles<
 >(() =>
   createStyles({
     root: {
-      top: ({ dimensions }) => dimensions.top,
-      left: ({ dimensions }) => dimensions.left,
-      width: ({ dimensions }) => dimensions.width,
-      height: ({ dimensions }) => dimensions.height,
       position: 'absolute',
       resize: ({ permissions, rotationDegree }) =>
         `${permissions.canEdit && rotationDegree === 0 ? 'both' : 'none'}` as any,
@@ -69,8 +65,19 @@ const useStyles = makeStyles<
 
 export const AnnotationWrapper: React.FC<Props> = (props) => {
   const permissions = useDocumentPermissions()
-
   const classes = useStyles({ ...props, permissions })
+  const annotationElement = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleGlobalMouseUp = () => {
+      props.onResized(annotationElement.current?.getClientRects()[0])
+    }
+
+    document.addEventListener('mouseup', handleGlobalMouseUp)
+    return () => {
+      document.removeEventListener('mouseup', handleGlobalMouseUp)
+    }
+  }, [props])
 
   return (
     <div
@@ -79,8 +86,14 @@ export const AnnotationWrapper: React.FC<Props> = (props) => {
       tabIndex={0}
       draggable={permissions.canEdit}
       onDragStart={props.onDragStart}
-      onMouseUp={props.onResized}
-      onContextMenu={props.onRightClick}>
+      onContextMenu={props.onRightClick}
+      style={{
+        top: props.dimensions.top,
+        left: props.dimensions.left,
+        width: props.dimensions.width,
+        height: props.dimensions.height,
+      }}
+      ref={annotationElement}>
       {props.children}
     </div>
   )

@@ -144,7 +144,7 @@ export const Page: React.FC<PageProps> = (props) => {
   useEffect(() => {
     const handleGlobalScroll = (ev: any) => {
       if (ev.currentTarget) {
-        if (viewerState.activeShapePlacing !== 'none') {
+        if (viewerState.activeShapePlacing !== 'none' && mouseIsDown) {
           setScrollOffsetX(ev.currentTarget.scrollLeft - scrollX)
           setScrollOffsetY(ev.currentTarget.scrollTop - scrollY)
         } else {
@@ -159,7 +159,7 @@ export const Page: React.FC<PageProps> = (props) => {
     return () => {
       document.getElementById('sn-document-viewer-pages')?.removeEventListener('scroll', handleGlobalScroll)
     }
-  }, [scrollX, scrollY, viewerState.activeShapePlacing])
+  }, [mouseIsDown, scrollX, scrollY, viewerState.activeShapePlacing])
 
   useEffect(() => {
     const handleGlobalMouseMove = (ev: MouseEvent) => {
@@ -336,6 +336,7 @@ export const Page: React.FC<PageProps> = (props) => {
               zoomRatioStanding={props.page.Height / page.image.Height}
               zoomRatioLying={props.page.Width / page.image.Height}
               page={page.image}
+              visiblePagesIndex={props.visiblePagesIndex}
             />
 
             {mouseIsDown && (

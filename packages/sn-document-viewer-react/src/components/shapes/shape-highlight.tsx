@@ -7,14 +7,14 @@ import { Theme } from '@material-ui/core/styles/createMuiTheme'
 import createStyles from '@material-ui/core/styles/createStyles'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import Delete from '@material-ui/icons/Delete'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useLocalization } from '../..'
 import { useDocumentPermissions } from '../../hooks'
 
 type Props = {
   shape: Highlight
   onDragStart: (ev: React.DragEvent<HTMLElement>) => void
-  onResized: (ev: React.MouseEvent<HTMLElement>) => void
+  onResized: (clientRect?: DOMRect) => void
   dimensions: {
     top: string | number | (string & {}) | undefined
     left: string | number | (string & {}) | undefined
@@ -38,10 +38,6 @@ const useStyles = makeStyles<
 >((theme: Theme) =>
   createStyles({
     root: {
-      top: ({ dimensions }) => dimensions.top,
-      left: ({ dimensions }) => dimensions.left,
-      width: ({ dimensions }) => dimensions.width,
-      height: ({ dimensions }) => dimensions.height,
       position: 'absolute',
       resize: ({ permissions, rotationDegree }) => (permissions.canEdit && rotationDegree === 0 ? 'both' : 'none'),
       overflow: 'auto',
@@ -73,6 +69,18 @@ export const ShapeHighlight: React.FC<Props> = (props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const id = open ? 'highlight-delete' : undefined
+  const highlightElement = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleGlobalMouseUp = () => {
+      props.onResized(highlightElement.current?.getClientRects()[0])
+    }
+
+    document.addEventListener('mouseup', handleGlobalMouseUp)
+    return () => {
+      document.removeEventListener('mouseup', handleGlobalMouseUp)
+    }
+  }, [props])
 
   const onRightClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
@@ -86,8 +94,14 @@ export const ShapeHighlight: React.FC<Props> = (props) => {
         tabIndex={0}
         draggable={permissions.canEdit}
         onDragStart={props.onDragStart}
-        onMouseUp={props.onResized}
         onContextMenu={onRightClick}
+        ref={highlightElement}
+        style={{
+          top: props.dimensions.top,
+          left: props.dimensions.left,
+          width: props.dimensions.width,
+          height: props.dimensions.height,
+        }}
       />
       <Popper id={id} open={open} anchorEl={anchorEl} placement="right-start">
         <ClickAwayListener onClickAway={() => setAnchorEl(null)}>

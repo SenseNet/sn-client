@@ -25,6 +25,7 @@ const defaultDocumentData: DocumentData = {
 export interface DocumentDataContextType {
   documentData: DocumentData
   updateDocumentData: (data: DeepPartial<DocumentData>) => void
+  forceUpdateDocumentData: (data: DeepPartial<DocumentData>) => void
   isInProgress: boolean
   triggerReload: () => void
 }
@@ -32,6 +33,7 @@ export interface DocumentDataContextType {
 export const defaultDocumentDataContextValue: DocumentDataContextType = {
   documentData: defaultDocumentData,
   updateDocumentData: () => undefined,
+  forceUpdateDocumentData: () => undefined,
   isInProgress: false,
   triggerReload: () => {},
 }
@@ -95,12 +97,21 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
     [documentData],
   )
 
+  const forceUpdateDocumentData = useCallback(
+    (newDocData: Partial<DocumentData>) => {
+      const merged = deepMerge(documentData, newDocData)
+      setDocumentData(merged)
+    },
+    [documentData],
+  )
+
   if (!documentData.idOrPath) {
     return null
   }
 
   return (
-    <DocumentDataContext.Provider value={{ documentData, updateDocumentData, isInProgress, triggerReload }}>
+    <DocumentDataContext.Provider
+      value={{ documentData, updateDocumentData, forceUpdateDocumentData, isInProgress, triggerReload }}>
       {children}
     </DocumentDataContext.Provider>
   )
