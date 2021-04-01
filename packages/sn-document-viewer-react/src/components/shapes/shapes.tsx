@@ -1,9 +1,9 @@
 import { Annotation, Highlight, PreviewImageData, Redaction, Shape, Shapes } from '@sensenet/client-core'
 import createStyles from '@material-ui/core/styles/createStyles'
 import makeStyles from '@material-ui/core/styles/makeStyles'
-import clsx from 'clsx'
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { useComments, useCommentState, useDocumentData, useDocumentPermissions, useViewerState } from '../../hooks'
+import { ViewerState } from '../../models/viewer-state'
 import { applyShapeRotations, Dimensions, ImageUtil } from '../../services'
 import { ShapeSkeleton } from '../shapes'
 import { CommentMarker } from './comment-marker'
@@ -41,6 +41,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
   const { documentData, updateDocumentData, forceUpdateDocumentData } = useDocumentData()
   const comments = useComments()
   const commentState = useCommentState()
+  const shapesContainerRef = useRef<HTMLDivElement>(null)
   const zoomRatio =
     props.imageRotation === 90 || props.imageRotation === 270 ? props.zoomRatioLying : props.zoomRatioStanding
 
@@ -68,6 +69,39 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
     ...comments.comments.filter((comment) => comment.page === props.page.Index),
     ...(props.page.Index !== undefined && commentState.draft?.page === props.page?.Index ? [commentState.draft] : []),
   ]
+
+  const { updateState } = viewerState
+
+  useEffect(() => {
+    if (shapesContainerRef.current && props.visiblePagesIndex !== undefined) {
+      const updatePagesRectsFunc = (previous: ViewerState) => {
+        const clonePagesRects = [...previous.pagesRects]
+        if (clonePagesRects.length === 0) {
+          clonePagesRects.push({
+            visiblePage: props.visiblePagesIndex!,
+            pageRect: shapesContainerRef.current!.getClientRects()[0],
+          })
+        } else {
+          const findIndex = clonePagesRects.findIndex((item) => item.visiblePage === props.visiblePagesIndex)
+          if (findIndex !== -1) {
+            clonePagesRects[findIndex].pageRect = shapesContainerRef.current!.getClientRects()[0]
+          } else {
+            clonePagesRects.push({
+              visiblePage: props.visiblePagesIndex!,
+              pageRect: shapesContainerRef.current!.getClientRects()[0],
+            })
+          }
+        }
+        return { pagesRects: clonePagesRects }
+      }
+
+      updateState(updatePagesRectsFunc as any)
+      updateState({ boxBottom: document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].bottom })
+      updateState({ boxLeft: document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].left })
+      updateState({ boxRight: document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].right })
+      updateState({ boxTop: document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].top })
+    }
+  }, [props.visiblePagesIndex, updateState])
 
   const removeShape = useCallback(
     (shapeType: keyof Shapes, guid: string) => {
@@ -112,7 +146,11 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
 
   const onDrop = useCallback(
     (ev: React.DragEvent<HTMLElement>) => {
-      if (permissions.canEdit && ev.dataTransfer.getData('shape')) {
+      if (
+        permissions.canEdit &&
+        ev.dataTransfer.getData('shape') &&
+        (viewerState.boxBottom || viewerState.boxLeft || viewerState.boxRight || viewerState.boxTop)
+      ) {
         ev.preventDefault()
         const shapeData = JSON.parse(ev.dataTransfer.getData('shape')) as {
           type: keyof Shapes
@@ -121,85 +159,29 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
         }
         const clientRect = ev.currentTarget.getClientRects()[0]
 
-        console.log(
-          ' ev.pageX - clientRect.left: kisebb mint right nagyobb mint left akkor fain',
-          ev.pageX - shapeData.offset.width,
-        )
-        console.log(
-          'kisebb mint ez és ez',
-          document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].right! -
-            shapeData.shape.w * zoomRatio,
-        )
-        console.log(
-          'kisebb mint ez és ez',
-          document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].right! -
-            shapeData.shape.w * zoomRatio,
-        )
-
-        console.log('BLABLA_---> ', ev.pageX - clientRect.left - shapeData.offset.width)
-        console.log(
-          'MAX: ',
-          Math.max(
-            document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].left!,
-            document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].left!,
-          ) - clientRect.left,
-        )
-
-        console.log(
-          'MIN: ',
-          Math.min(
-            document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].right!,
-            document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].right!,
-          ) -
-            clientRect.left -
-            shapeData.shape.w * zoomRatio,
-        )
-
         const newX =
           ev.pageX - shapeData.offset.width <
-            document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].right -
-              shapeData.shape.w * zoomRatio &&
-          ev.pageX - shapeData.offset.width <
-            document.getElementById('sn-document-viewer-pages')!.getClientRects()[0].right -
-              shapeData.shape.w * zoomRatio
-            ? ev.pageX - shapeData.offset.width >
-                document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].left &&
-              ev.pageX - shapeData.offset.width >
-                document.getElementById('sn-document-viewer-pages')!.getClientRects()[0].left
+            viewerState.pagesRects[props.visiblePagesIndex!].pageRect.right - shapeData.shape.w * zoomRatio &&
+          ev.pageX - shapeData.offset.width < viewerState.boxRight - shapeData.shape.w * zoomRatio
+            ? ev.pageX - shapeData.offset.width > viewerState.pagesRects[props.visiblePagesIndex!].pageRect.left &&
+              ev.pageX - shapeData.offset.width > viewerState.boxLeft
               ? ev.pageX - clientRect.left - shapeData.offset.width
-              : Math.max(
-                  document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0]
-                    .left!,
-                  document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].left!,
-                ) - clientRect.left
-            : Math.min(
-                document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].right!,
-                document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].right!,
-              ) -
+              : Math.max(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.left, viewerState.boxLeft) -
+                clientRect.left
+            : Math.min(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.right, viewerState.boxRight) -
               clientRect.left -
               shapeData.shape.w * zoomRatio
 
         const newY =
           ev.pageY - shapeData.offset.height <
-            document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].bottom -
-              shapeData.shape.h * zoomRatio &&
-          ev.pageY - shapeData.offset.height <
-            document.getElementById('sn-document-viewer-pages')!.getClientRects()[0].bottom -
-              shapeData.shape.h * zoomRatio
-            ? ev.pageY - shapeData.offset.height >
-                document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].top &&
-              ev.pageY - shapeData.offset.height >
-                document.getElementById('sn-document-viewer-pages')!.getClientRects()[0].top
+            viewerState.pagesRects[props.visiblePagesIndex!].pageRect.bottom - shapeData.shape.h * zoomRatio &&
+          ev.pageY - shapeData.offset.height < viewerState.boxBottom - shapeData.shape.h * zoomRatio
+            ? ev.pageY - shapeData.offset.height > viewerState.pagesRects[props.visiblePagesIndex!].pageRect.top &&
+              ev.pageY - shapeData.offset.height > viewerState.boxTop
               ? ev.pageY - clientRect.top - shapeData.offset.height
-              : Math.max(
-                  document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].top!,
-                  document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].top!,
-                ) - clientRect.top
-            : Math.min(
-                document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0]
-                  .bottom!,
-                document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].bottom!,
-              ) -
+              : Math.max(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.top, viewerState.boxTop) -
+                clientRect.top
+            : Math.min(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.bottom, viewerState.boxBottom) -
               clientRect.top -
               shapeData.shape.h * zoomRatio
 
@@ -211,12 +193,24 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
         })
       }
     },
-    [forceUpdateShapeData, permissions.canEdit, props.page.Index, props.visiblePagesIndex, zoomRatio],
+    [
+      forceUpdateShapeData,
+      permissions.canEdit,
+      props.page.Index,
+      props.visiblePagesIndex,
+      viewerState.boxBottom,
+      viewerState.boxLeft,
+      viewerState.boxRight,
+      viewerState.boxTop,
+      viewerState.pagesRects,
+      zoomRatio,
+    ],
   )
 
   return (
     <div
-      className={clsx(classes.shapesContainer, 'shapesContainer')}
+      ref={shapesContainerRef}
+      className={classes.shapesContainer}
       onDrop={onDrop}
       onDragOver={(ev) => ev.preventDefault()}>
       {viewerState.showComments &&

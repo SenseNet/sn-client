@@ -102,43 +102,38 @@ export const Page: React.FC<PageProps> = (props) => {
   const reCalculateDraftShape = useCallback(
     (ev: MouseEvent) => {
       const endX =
-        (ev.pageX <
-          document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].right &&
-        ev.pageX < document.getElementById('sn-document-viewer-pages')!.getClientRects()[0].right
-          ? ev.pageX >
-              document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].left &&
-            ev.pageX > document.getElementById('sn-document-viewer-pages')!.getClientRects()[0].left
+        (ev.pageX < viewerState.pagesRects[props.visiblePagesIndex!].pageRect.right && ev.pageX < viewerState.boxRight
+          ? ev.pageX > viewerState.pagesRects[props.visiblePagesIndex!].pageRect.left && ev.pageX > viewerState.boxLeft
             ? ev.pageX + scrollOffsetX
-            : Math.max(
-                document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].left!,
-                document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].left!,
-              ) + scrollOffsetX
-          : Math.min(
-              document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].right!,
-              document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].right!,
-            ) + scrollOffsetX) /
+            : Math.max(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.left!, viewerState.boxLeft) +
+              scrollOffsetX
+          : Math.min(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.right!, viewerState.boxRight) +
+            scrollOffsetX) /
         (props.page.Height / (page.image?.Height || 1))
 
       const endY =
-        (ev.pageY <
-          document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].bottom &&
-        ev.pageY < document.getElementById('sn-document-viewer-pages')!.getClientRects()[0].bottom
-          ? ev.pageY >
-              document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].top &&
-            ev.pageY > document.getElementById('sn-document-viewer-pages')!.getClientRects()[0].top
+        (ev.pageY < viewerState.pagesRects[props.visiblePagesIndex!].pageRect.bottom && ev.pageY < viewerState.boxBottom
+          ? ev.pageY > viewerState.pagesRects[props.visiblePagesIndex!].pageRect.top && ev.pageY > viewerState.boxTop
             ? ev.pageY + scrollOffsetY
-            : Math.max(
-                document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].top!,
-                document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].top!,
-              ) + scrollOffsetY
-          : Math.min(
-              document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].bottom!,
-              document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].bottom!,
-            ) + scrollOffsetY) /
+            : Math.max(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.top!, viewerState.boxTop!) +
+              scrollOffsetY
+          : Math.min(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.bottom!, viewerState.boxBottom) +
+            scrollOffsetY) /
         (props.page.Height / (page.image?.Height || 1))
       return { endX, endY }
     },
-    [page.image?.Height, props.page.Height, props.visiblePagesIndex, scrollOffsetX, scrollOffsetY],
+    [
+      page.image?.Height,
+      props.page.Height,
+      props.visiblePagesIndex,
+      scrollOffsetX,
+      scrollOffsetY,
+      viewerState.boxBottom,
+      viewerState.boxLeft,
+      viewerState.boxRight,
+      viewerState.boxTop,
+      viewerState.pagesRects,
+    ],
   )
 
   useEffect(() => {
@@ -166,8 +161,8 @@ export const Page: React.FC<PageProps> = (props) => {
       if (
         viewerState.activeShapePlacing !== 'none' &&
         mouseIsDown &&
-        document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!] &&
-        document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].right
+        viewerState.pagesRects[props.visiblePagesIndex!] &&
+        (viewerState.boxBottom || viewerState.boxLeft || viewerState.boxRight || viewerState.boxTop)
       ) {
         const { endX, endY } = reCalculateDraftShape(ev)
         setdraftHeight(endY - startY)
@@ -179,11 +174,23 @@ export const Page: React.FC<PageProps> = (props) => {
     return () => {
       document.removeEventListener('mousemove', handleGlobalMouseMove)
     }
-  }, [mouseIsDown, props.visiblePagesIndex, reCalculateDraftShape, startX, startY, viewerState.activeShapePlacing])
+  }, [
+    mouseIsDown,
+    props.visiblePagesIndex,
+    reCalculateDraftShape,
+    startX,
+    startY,
+    viewerState.activeShapePlacing,
+    viewerState.boxBottom,
+    viewerState.boxLeft,
+    viewerState.boxRight,
+    viewerState.boxTop,
+    viewerState.pagesRects,
+  ])
 
   useEffect(() => {
     const handleGlobalMouseUp = (ev: MouseEvent) => {
-      if (mouseIsDown) {
+      if (mouseIsDown && (viewerState.boxBottom || viewerState.boxLeft || viewerState.boxRight || viewerState.boxTop)) {
         setMouseIsDown(false)
         setdraftHeight(0)
         setdraftWidth(0)
@@ -336,7 +343,7 @@ export const Page: React.FC<PageProps> = (props) => {
               zoomRatioStanding={props.page.Height / page.image.Height}
               zoomRatioLying={props.page.Width / page.image.Height}
               page={page.image}
-              visiblePagesIndex={props.visiblePagesIndex}
+              visiblePagesIndex={props.visiblePagesIndex!}
             />
 
             {mouseIsDown && (

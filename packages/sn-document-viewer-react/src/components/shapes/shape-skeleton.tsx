@@ -1,6 +1,7 @@
 import { Annotation, Highlight, Redaction, Shapes } from '@sensenet/client-core'
 import React, { useState } from 'react'
 import { ShapeAnnotation, ShapeHighlight, ShapeRedaction, useDocumentPermissions } from '../..'
+import { useViewerState } from '../../hooks'
 
 /**
  * Defined the component's own properties
@@ -18,6 +19,7 @@ export interface ShapeProps {
 
 export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
   const permissions = useDocumentPermissions()
+  const viewerState = useViewerState()
   const [focused, setFocused] = useState(false)
 
   /**
@@ -41,30 +43,21 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
 
   /** event that will be triggered on resize */
   const onResized = (clientRect?: DOMRect) => {
-    if (clientRect) {
+    if (clientRect && (viewerState.boxBottom || viewerState.boxLeft || viewerState.boxRight || viewerState.boxTop)) {
       const [shape, shapeType, zoomRatio] = [props.shape, props.shapeType, props.zoomRatio]
       const newSize = {
         w:
-          clientRect.right <
-            document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].right &&
-          clientRect.right < document.getElementById('sn-document-viewer-pages')!.getClientRects()[0].right
+          clientRect.right < viewerState.pagesRects[props.visiblePagesIndex!].pageRect.right &&
+          clientRect.right < viewerState.boxRight
             ? clientRect.width / zoomRatio
-            : (Math.min(
-                document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].right!,
-                document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].right!,
-              ) -
+            : (Math.min(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.right!, viewerState.boxRight) -
                 clientRect.x) /
               zoomRatio,
         h:
-          clientRect.bottom <
-            document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0].bottom &&
-          clientRect.height < document.getElementById('sn-document-viewer-pages')!.getClientRects()[0].bottom
+          clientRect.bottom < viewerState.pagesRects[props.visiblePagesIndex!].pageRect.bottom &&
+          clientRect.height < viewerState.boxBottom
             ? clientRect.height / zoomRatio
-            : (Math.min(
-                document.getElementsByClassName('shapesContainer')[props.visiblePagesIndex!].getClientRects()[0]
-                  .bottom!,
-                document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].bottom!,
-              ) -
+            : (Math.min(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.bottom!, viewerState.boxBottom) -
                 clientRect.y) /
               zoomRatio,
       }
