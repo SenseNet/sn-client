@@ -1,4 +1,4 @@
-import { Disposable } from '../../src/Disposable'
+import { Disposable } from '../../src/disposable'
 
 /**
  * Defines a Mock Disposable class

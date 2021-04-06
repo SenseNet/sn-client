@@ -37,7 +37,9 @@ export const AddRedactionWidget: React.FC<{ classes?: AddRedactionClassKey }> = 
       classes={classes}
       active={viewerState.activeShapePlacing === 'redaction'}
       title={localization.addRedaction}
-      setValue={(value) => viewerState.updateState({ activeShapePlacing: value ? 'redaction' : 'none' })}>
+      setValue={(value) =>
+        viewerState.updateState({ activeShapePlacing: value ? 'redaction' : 'none', isPlacingCommentMarker: false })
+      }>
       <ChatBubbleSharp
         className={clsx(classes.icon, { [classes.iconActive]: viewerState.activeShapePlacing === 'redaction' })}
       />

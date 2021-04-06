@@ -37,7 +37,9 @@ export const AddHighlightWidget: React.FC<{ classes?: AddRHightlightClassKey }> 
       classes={classes}
       active={viewerState.activeShapePlacing === 'highlight'}
       title={localization.addHighlight}
-      setValue={(value) => viewerState.updateState({ activeShapePlacing: value ? 'highlight' : 'none' })}>
+      setValue={(value) =>
+        viewerState.updateState({ activeShapePlacing: value ? 'highlight' : 'none', isPlacingCommentMarker: false })
+      }>
       <ChatBubbleOutlineSharp
         className={clsx(classes.icon, { [classes.iconActive]: viewerState.activeShapePlacing === 'highlight' })}
       />

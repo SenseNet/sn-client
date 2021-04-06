@@ -20,8 +20,7 @@ const VersionInfoDump2 = () => {
   return null
 }
 
-// eslint-disable-next-line require-jsdoc
-function mockFetch(data: any) {
+const mockFetch = (data: any) => {
   return jest.fn().mockImplementation(() =>
     Promise.resolve({
       ok: true,

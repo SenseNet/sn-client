@@ -33,16 +33,16 @@ export const Avatar: React.FunctionComponent<ReactClientFieldSetting<ReferenceFi
   }
 
   const uploadAvatar = async ({ files, progressObservable, setAvatar }: UploadAvatarParams) => {
-    if (!files) {
+    if (!files || !props.content) {
       return
     }
 
     try {
-      const previousAvatarPath = props.content?.Avatar?.Url!
+      const previousAvatarPath = props.content.Avatar?.Url
       //Upload the actual avatar file under the User content
       const response = await repo.upload.file({
         file: files[files.length - 1],
-        parentPath: props.content?.Path!,
+        parentPath: props.content.Path,
         fileName: files[files.length - 1].name,
         overwrite: true,
         binaryPropertyName: 'Binary',
@@ -50,7 +50,7 @@ export const Avatar: React.FunctionComponent<ReactClientFieldSetting<ReferenceFi
       })
       //Replace the ImageRef field of the user with the new avatar
       await repo.patch<User>({
-        idOrPath: props.content?.Id!,
+        idOrPath: props.content.Id,
         content: {
           ImageRef: response.Id,
         },
@@ -59,7 +59,7 @@ export const Avatar: React.FunctionComponent<ReactClientFieldSetting<ReferenceFi
       setAvatar(response.Url)
 
       //Remove the previous avatar image from the User
-      if (props.content?.Avatar?.Url && !props.content?.Avatar?.Url.startsWith('/binaryhandler')) {
+      if (previousAvatarPath && !previousAvatarPath.startsWith('/binaryhandler')) {
         await repo.delete({
           idOrPath: previousAvatarPath,
           permanent: true,
