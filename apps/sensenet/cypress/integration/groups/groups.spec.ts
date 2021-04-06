@@ -37,4 +37,51 @@ describe('Groups', () => {
     cy.get('[data-test="viewtitle"').should('have.text', 'Edit Editors')
     cy.get('[data-test="cancel"]').click()
   })
+
+  it('ensures that creation of a new group is working properly', () => {
+    const groupName = 'test'
+
+    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
+
+    cy.get('[data-test="groups"]').click()
+    cy.get('[data-test="add-button"]').should('not.be.disabled').click()
+
+    cy.get('[data-test="listitem-group"]')
+      .click()
+      .then(() => {
+        cy.get('[data-test="viewtitle"]').should('contain.text', 'New Group')
+
+        cy.get('#Name').type(groupName)
+
+        cy.contains('Submit').click()
+
+        cy.get('[data-test="snackbar-close"]').click()
+        cy.get(`[data-test="table-cell-${groupName}`).should('have.text', groupName)
+      })
+  })
+
+  it('ensures that deletion of a group is working properly', () => {
+    cy.intercept({
+      method: 'GET',
+      url: '/Root/Trash',
+    }).as('getTrashChildren')
+
+    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
+
+    cy.get('[data-test="groups"]').click()
+    cy.get('[data-test="table-cell-test"]')
+      .rightclick()
+      .then(() => {
+        cy.get('[data-test="content-context-menu-delete"]').click()
+        cy.get('[data-test="button-delete-confirm"]').click()
+
+        cy.get('[data-test="table-cell-test"]').should('not.exist')
+
+        cy.get('[data-test="drawer-menu-item-trash"]').click()
+
+        cy.wait('@getTrashChildren').then((_interception) => {
+          cy.get('[data-test="table-cell-test"]').should('not.exist')
+        })
+      })
+  })
 })

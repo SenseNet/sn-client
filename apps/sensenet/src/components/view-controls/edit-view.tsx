@@ -19,7 +19,7 @@ import { ViewTitle } from './common/view-title'
 export interface EditViewProps {
   renderIcon?: (name: string) => ReactElement
   handleCancel?: () => void
-  submitCallback?: () => void
+  submitCallback?: (savedContent: GenericContent) => void
   actionName?: ActionNameType
   isFullPage?: boolean
   contentPath: string
@@ -76,7 +76,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
             },
           },
         })
-        props.submitCallback?.()
+        props.submitCallback?.(response.d)
       } catch (error) {
         logger.error({
           message:

@@ -132,7 +132,7 @@ describe('Component', () => {
     )
     wrapper.find(IconButton).simulate('click')
 
-    expect(updateState).toBeCalledWith({ activeShapePlacing: 'annotation' })
+    expect(updateState).toBeCalledWith({ activeShapePlacing: 'annotation', isPlacingCommentMarker: false })
   })
 
   it('Click on toggle should change the state of activeShapePlacing in viewer-state provider', () => {
@@ -152,7 +152,7 @@ describe('Component', () => {
     )
     wrapper.find(IconButton).simulate('click')
 
-    expect(updateState).toBeCalledWith({ activeShapePlacing: 'highlight' })
+    expect(updateState).toBeCalledWith({ activeShapePlacing: 'highlight', isPlacingCommentMarker: false })
   })
 
   it('Click on toggle should change the state of activeShapePlacing in viewer-state provider', () => {
@@ -172,6 +172,6 @@ describe('Component', () => {
     )
     wrapper.find(IconButton).simulate('click')
 
-    expect(updateState).toBeCalledWith({ activeShapePlacing: 'redaction' })
+    expect(updateState).toBeCalledWith({ activeShapePlacing: 'redaction', isPlacingCommentMarker: false })
   })
 })
