@@ -1,4 +1,3 @@
-/* eslint-disable require-jsdoc */
 import { Container, Typography } from '@material-ui/core'
 import { History } from 'history'
 import React, { ReactNode, useEffect } from 'react'
@@ -20,7 +19,7 @@ type CallbackContainerProps = {
 
 export const CallbackContainer = ({ callbackComponentOverride, history }: CallbackContainerProps) => {
   useEffect(() => {
-    async function signIn() {
+    ;(async () => {
       try {
         // In here we are most probably going to have userManager if not the error will be catched
         const user = await getUserManager()!.signinRedirectCallback()
@@ -32,9 +31,7 @@ export const CallbackContainer = ({ callbackComponentOverride, history }: Callba
       } catch (error) {
         history.push(`/authentication/not-authenticated?message=${encodeURIComponent(error.message)}`)
       }
-    }
-
-    signIn()
+    })()
   }, [history])
 
   return callbackComponentOverride ? <>{callbackComponentOverride}</> : <Callback />

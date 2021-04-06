@@ -36,8 +36,7 @@ const pickerItemOptions: ODataParams<Folder> = {
   orderby: 'DisplayName',
 }
 
-// eslint-disable-next-line require-jsdoc
-function PathPicker(props: PathPickerProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps) {
+const PathPicker = (props: PathPickerProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps) => {
   const repository = useRepository()
   const [selectedItem, setSelectedItem] = useState<GenericContentWithIsParent>()
   const { items, navigateTo, reload } = useTreePicker<GenericContentWithIsParent>({
