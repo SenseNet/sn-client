@@ -10,8 +10,12 @@ export interface ShapeProps {
   shape: Redaction | Highlight | Annotation
   shapeType: keyof Shapes
   zoomRatio: number
-  updateShapeData: (shapeType: keyof Shapes, guid: string, shape: Redaction | Highlight | Annotation) => void
-  forceUpdateShapeData: (shapeType: keyof Shapes, guid: string, shape: Redaction | Highlight | Annotation) => void
+  updateShapeData: (
+    shapeType: keyof Shapes,
+    guid: string,
+    shape: Redaction | Highlight | Annotation,
+    force?: boolean,
+  ) => void
   removeShape: (shapeType: keyof Shapes, guid: string) => void
   rotationDegree: number
   visiblePagesIndex?: number
@@ -62,11 +66,16 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
               zoomRatio,
       }
       if (Math.abs(newSize.w - shape.w) > 1 || Math.abs(newSize.h - shape.h) > 1) {
-        props.forceUpdateShapeData(shapeType, shape.guid, {
-          ...(shape as any),
-          w: newSize.w,
-          h: newSize.h,
-        })
+        props.updateShapeData(
+          shapeType,
+          shape.guid,
+          {
+            ...(shape as any),
+            w: newSize.w,
+            h: newSize.h,
+          },
+          true,
+        )
       }
     }
   }

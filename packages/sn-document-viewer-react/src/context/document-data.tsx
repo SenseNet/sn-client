@@ -24,8 +24,7 @@ const defaultDocumentData: DocumentData = {
 
 export interface DocumentDataContextType {
   documentData: DocumentData
-  updateDocumentData: (data: DeepPartial<DocumentData>) => void
-  forceUpdateDocumentData: (data: DeepPartial<DocumentData>) => void
+  updateDocumentData: (data: DeepPartial<DocumentData>, force?: boolean) => void
   isInProgress: boolean
   triggerReload: () => void
 }
@@ -33,7 +32,6 @@ export interface DocumentDataContextType {
 export const defaultDocumentDataContextValue: DocumentDataContextType = {
   documentData: defaultDocumentData,
   updateDocumentData: () => undefined,
-  forceUpdateDocumentData: () => undefined,
   isInProgress: false,
   triggerReload: () => {},
 }
@@ -88,19 +86,12 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
   }, [api, doc.documentIdOrPath, doc.version, loadLock, repo.configuration.repositoryUrl, reloadToken])
 
   const updateDocumentData = useCallback(
-    (newDocData: Partial<DocumentData>) => {
+    (newDocData: Partial<DocumentData>, force?: boolean) => {
       const merged = deepMerge(documentData, newDocData)
-      if (JSON.stringify(documentData) !== JSON.stringify(merged)) {
-        setDocumentData(merged)
-      }
-    },
-    [documentData],
-  )
 
-  const forceUpdateDocumentData = useCallback(
-    (newDocData: Partial<DocumentData>) => {
-      const merged = deepMerge(documentData, newDocData)
-      setDocumentData(merged)
+      force
+        ? setDocumentData(merged)
+        : JSON.stringify(documentData) !== JSON.stringify(merged) && setDocumentData(merged)
     },
     [documentData],
   )
@@ -110,8 +101,7 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
   }
 
   return (
-    <DocumentDataContext.Provider
-      value={{ documentData, updateDocumentData, forceUpdateDocumentData, isInProgress, triggerReload }}>
+    <DocumentDataContext.Provider value={{ documentData, updateDocumentData, isInProgress, triggerReload }}>
       {children}
     </DocumentDataContext.Provider>
   )
