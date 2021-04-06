@@ -96,10 +96,15 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
       }
 
       updateState(updatePagesRectsFunc as any)
-      updateState({ boxBottom: document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].bottom })
-      updateState({ boxLeft: document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].left })
-      updateState({ boxRight: document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].right })
-      updateState({ boxTop: document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].top })
+      if (
+        document.getElementById('sn-document-viewer-pages') &&
+        document.getElementById('sn-document-viewer-pages')!.getClientRects().length > 0
+      ) {
+        updateState({ boxBottom: document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].bottom })
+        updateState({ boxLeft: document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].left })
+        updateState({ boxRight: document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].right })
+        updateState({ boxTop: document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].top })
+      }
     }
   }, [props.visiblePagesIndex, updateState])
 

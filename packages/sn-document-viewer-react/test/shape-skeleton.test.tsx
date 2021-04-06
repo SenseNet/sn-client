@@ -87,66 +87,6 @@ describe('ShapesSkeleton component', () => {
     expect(updateShapeData).toBeCalled()
   })
 
-  it('should handle resize annotation', () => {
-    const updateShapeData = jest.fn()
-
-    const wrapper = mount(
-      <DocumentPermissionsContext.Provider value={{ canEdit: true, canHideRedaction: true, canHideWatermark: true }}>
-        <ShapeSkeleton
-          rotationDegree={0}
-          shapeType="annotations"
-          zoomRatio={1}
-          shape={exampleAnnotation}
-          removeShape={() => {}}
-          updateShapeData={updateShapeData}
-        />
-      </DocumentPermissionsContext.Provider>,
-    )
-
-    wrapper.find('#annotation-wrapper').simulate('mouseUp')
-    expect(updateShapeData).toBeCalled()
-  })
-
-  it('should handle resize highlight', () => {
-    const updateShapeData = jest.fn()
-
-    const wrapper = mount(
-      <DocumentPermissionsContext.Provider value={{ canEdit: true, canHideRedaction: true, canHideWatermark: true }}>
-        <ShapeSkeleton
-          rotationDegree={0}
-          shapeType="highlights"
-          zoomRatio={1}
-          shape={exampleShape}
-          removeShape={() => {}}
-          updateShapeData={updateShapeData}
-        />
-      </DocumentPermissionsContext.Provider>,
-    )
-
-    wrapper.find(ShapeHighlight).simulate('mouseUp')
-    expect(updateShapeData).toBeCalled()
-  })
-
-  it('should handle resize redaction', () => {
-    const updateShapeData = jest.fn()
-
-    const wrapper = mount(
-      <DocumentPermissionsContext.Provider value={{ canEdit: true, canHideRedaction: true, canHideWatermark: true }}>
-        <ShapeSkeleton
-          rotationDegree={0}
-          shapeType="redactions"
-          zoomRatio={1}
-          shape={exampleShape}
-          removeShape={() => {}}
-          updateShapeData={updateShapeData}
-        />
-      </DocumentPermissionsContext.Provider>,
-    )
-
-    wrapper.find(ShapeRedaction).simulate('mouseUp')
-    expect(updateShapeData).toBeCalled()
-  })
-
   it('should handle to drag redaction', () => {
     const setData = jest.fn()
 

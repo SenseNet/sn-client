@@ -2,7 +2,7 @@
 
 exports[`Shapes component should render ShapeDraft without crashing 1`] = `
 <div
-  className="makeStyles-root-36 makeStyles-root-37"
+  className="makeStyles-root-33 makeStyles-root-34"
   key="draft-30-40"
   tabIndex={0}
 />

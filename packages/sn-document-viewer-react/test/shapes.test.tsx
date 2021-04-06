@@ -25,6 +25,7 @@ describe('Shapes component', () => {
     page: examplePreviewImageData,
     zoomRatioStanding: 1,
     zoomRatioLying: 1,
+    visiblePagesIndex: 0,
   }
 
   it('should render all the shapes', () => {
@@ -254,51 +255,6 @@ describe('Shapes component', () => {
 
     wrapper.find('#annotation-input').simulate('focus')
     wrapper.find('#annotation-input').simulate('blur')
-    expect(updateDocumentData).toBeCalled()
-    expect(updateState).toBeCalledWith({ hasChanges: true })
-  })
-
-  it('should handle drag & drop event', () => {
-    const updateState = jest.fn()
-    const updateDocumentData = jest.fn()
-
-    const wrapper = mount(
-      <DocumentDataContext.Provider
-        value={{ documentData: exampleDocumentData, updateDocumentData, isInProgress: false, triggerReload: () => {} }}>
-        <DocumentPermissionsContext.Provider value={{ canEdit: true, canHideRedaction: true, canHideWatermark: true }}>
-          <ViewerStateContext.Provider
-            value={{ ...defaultViewerState, showRedaction: true, showShapes: true, updateState }}>
-            <ShapesWidget {...defaultProps} />
-          </ViewerStateContext.Provider>
-        </DocumentPermissionsContext.Provider>
-      </DocumentDataContext.Provider>,
-    )
-
-    wrapper
-      .find(ShapeSkeleton)
-      .last()
-      .simulate('drop', {
-        dataTransfer: {
-          getData: () => {
-            return JSON.stringify({
-              type: 'highlights',
-              shape: {
-                guid: '9a324f30-1423-11e9-bcb9-d719ddfb5f43',
-                imageIndex: 1,
-                h: 100,
-                w: 100,
-                x: 100,
-                y: 100,
-              },
-              offset: {
-                width: 10,
-                height: 10,
-              },
-            })
-          },
-        },
-      })
-
     expect(updateDocumentData).toBeCalled()
     expect(updateState).toBeCalledWith({ hasChanges: true })
   })

@@ -1,12 +1,29 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
+import { act } from 'react-dom/test-utils'
 import { DocumentDataContext } from '../src'
 import { Page, PageProps } from '../src/components/page'
 import { CommentStateContext } from '../src/context/comment-states'
 import { PreviewImageDataContext } from '../src/context/preview-image-data'
 import { defaultViewerState, ViewerStateContext } from '../src/context/viewer-state'
 import { exampleDocumentData, examplePreviewImageData } from './__Mocks__/viewercontext'
+
+const mouseMove = (pageX: number, pageY: number) => {
+  const mouseMoveEvent = document.createEvent('Event')
+  mouseMoveEvent.initEvent('mousemove', true, true)
+  Object.defineProperty(HTMLElement.prototype, 'pageX', { configurable: true, value: pageX })
+  Object.defineProperty(HTMLElement.prototype, 'pageY', { configurable: true, value: pageY })
+  document.dispatchEvent(mouseMoveEvent)
+}
+
+const mouseUp = (pageX: number, pageY: number) => {
+  const mouseUpEvent = document.createEvent('Event')
+  mouseUpEvent.initEvent('mouseup', true, true)
+  Object.defineProperty(HTMLElement.prototype, 'pageX', { configurable: true, value: pageX })
+  Object.defineProperty(HTMLElement.prototype, 'pageY', { configurable: true, value: pageY })
+  document.dispatchEvent(mouseUpEvent)
+}
 
 describe('Page component', () => {
   const defaultProps: PageProps = {
@@ -18,6 +35,7 @@ describe('Page component', () => {
     },
     viewportWidth: 768,
     viewportHeight: 1024,
+    visiblePagesIndex: 0,
   }
 
   it('Should render without crashing', () => {
@@ -121,6 +139,26 @@ describe('Page component', () => {
             ...defaultViewerState,
             activeShapePlacing: 'highlight',
             zoomLevel: 0,
+            pagesRects: [
+              {
+                visiblePage: 0,
+                pageRect: {
+                  top: 100,
+                  bottom: 800,
+                  right: 800,
+                  left: 100,
+                  toJSON: () => {},
+                  x: 100,
+                  y: 100,
+                  height: 700,
+                  width: 700,
+                },
+              },
+            ],
+            boxBottom: 800,
+            boxTop: 100,
+            boxRight: 800,
+            boxLeft: 100,
           }}>
           <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData] } as any}>
             <Page {...defaultProps} />
@@ -132,15 +170,12 @@ describe('Page component', () => {
     wrapper
       .find('div')
       .at(1)
-      .simulate('mouseDown', { nativeEvent: { offsetX: 1, offsetY: 1 } })
-    wrapper
-      .find('div')
-      .at(1)
-      .simulate('mouseMove', { nativeEvent: { offsetX: 20, offsetY: 20 } })
-    wrapper
-      .find('div')
-      .at(1)
-      .simulate('mouseUp', { nativeEvent: { offsetX: 11, offsetY: 11 } })
+      .simulate('mouseDown', { nativeEvent: { offsetX: 1, offsetY: 1, pageX: 600, pageY: 600 } })
+
+    act(() => {
+      mouseMove(605, 605)
+      mouseUp(605, 605)
+    })
 
     expect(updateDocumentData).toBeCalled()
   })
@@ -163,6 +198,26 @@ describe('Page component', () => {
             ...defaultViewerState,
             activeShapePlacing: 'redaction',
             zoomLevel: 0,
+            pagesRects: [
+              {
+                visiblePage: 0,
+                pageRect: {
+                  top: 100,
+                  bottom: 800,
+                  right: 800,
+                  left: 100,
+                  toJSON: () => {},
+                  x: 100,
+                  y: 100,
+                  height: 700,
+                  width: 700,
+                },
+              },
+            ],
+            boxBottom: 800,
+            boxTop: 100,
+            boxRight: 800,
+            boxLeft: 100,
           }}>
           <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData] } as any}>
             <Page {...defaultProps} />
@@ -174,15 +229,11 @@ describe('Page component', () => {
     wrapper
       .find('div')
       .at(1)
-      .simulate('mouseDown', { nativeEvent: { offsetX: 1, offsetY: 1 } })
-    wrapper
-      .find('div')
-      .at(1)
-      .simulate('mouseMove', { nativeEvent: { offsetX: 20, offsetY: 20 } })
-    wrapper
-      .find('div')
-      .at(1)
-      .simulate('mouseUp', { nativeEvent: { offsetX: 11, offsetY: 11 } })
+      .simulate('mouseDown', { nativeEvent: { offsetX: 1, offsetY: 1, pageX: 600, pageY: 600 } })
+    act(() => {
+      mouseMove(605, 605)
+      mouseUp(605, 605)
+    })
 
     expect(updateDocumentData).toBeCalled()
   })
@@ -205,6 +256,26 @@ describe('Page component', () => {
             ...defaultViewerState,
             activeShapePlacing: 'annotation',
             zoomLevel: 0,
+            pagesRects: [
+              {
+                visiblePage: 0,
+                pageRect: {
+                  top: 100,
+                  bottom: 800,
+                  right: 800,
+                  left: 100,
+                  toJSON: () => {},
+                  x: 100,
+                  y: 100,
+                  height: 700,
+                  width: 700,
+                },
+              },
+            ],
+            boxBottom: 800,
+            boxTop: 100,
+            boxRight: 800,
+            boxLeft: 100,
           }}>
           <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData] } as any}>
             <Page {...defaultProps} />
@@ -216,15 +287,11 @@ describe('Page component', () => {
     wrapper
       .find('div')
       .at(1)
-      .simulate('mouseDown', { nativeEvent: { offsetX: 1, offsetY: 1 } })
-    wrapper
-      .find('div')
-      .at(1)
-      .simulate('mouseMove', { nativeEvent: { offsetX: 20, offsetY: 20 } })
-    wrapper
-      .find('div')
-      .at(1)
-      .simulate('mouseUp', { nativeEvent: { offsetX: 11, offsetY: 11 } })
+      .simulate('mouseDown', { nativeEvent: { offsetX: 1, offsetY: 1, pageX: 600, pageY: 600 } })
+    act(() => {
+      mouseMove(605, 605)
+      mouseUp(605, 605)
+    })
 
     expect(updateDocumentData).toBeCalled()
   })
