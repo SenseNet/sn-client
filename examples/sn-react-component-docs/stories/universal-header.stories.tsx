@@ -1,4 +1,4 @@
-import { UniversalHeader } from '@sensenet/universal-header-react'
+import { UniversalHeader } from '@sensenet/universal-header'
 import { withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
@@ -11,7 +11,7 @@ storiesOf('Universal components', module)
     () => (
       <UniversalHeader
         title="Universal header"
-        threeDotMenuItems={
+        renderThreeDotMenuItems={
           <>
             <div style={{ padding: '6px 16px ' }}>Example menu item</div>
             <div style={{ padding: '6px 16px' }}>Another example menu item</div>

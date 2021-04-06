@@ -26,11 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
     popperWrapper: {
       position: 'absolute',
       top: HEADER_HEIGHT,
-      right: '1px',
-      height: 'fit-content',
-      width: 'fit-content',
-    },
-    popper: {
+      right: 0,
       backgroundColor: '#F6F6F6',
       border: '1px solid #E2E2E2',
     },
@@ -78,11 +74,9 @@ export const ThreeDotMenu: React.FunctionComponent<ThreeDotMenuProps> = (props) 
       </IconButton>
       {isPopperOpen ? (
         <Paper className={classes.popperWrapper}>
-          <div className={classes.popper}>
-            <ClickAwayListener onClickAway={handleClose}>
-              <MenuList autoFocusItem={isPopperOpen}>{props.menuItems}</MenuList>
-            </ClickAwayListener>
-          </div>
+          <ClickAwayListener onClickAway={handleClose}>
+            <MenuList autoFocusItem={isPopperOpen}>{props.menuItems}</MenuList>
+          </ClickAwayListener>
         </Paper>
       ) : null}
     </div>
