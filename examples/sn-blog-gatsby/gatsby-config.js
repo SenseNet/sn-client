@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: 'sn-gatsby-example',
+    title: 'sensenet blog',
     description: 'A blog app with gatsby and typescript',
     keywords: 'gatsby, javascript, sensenet, typescript',
     siteUrl: 'https://github.com/SenseNet/sn-client.com',
@@ -31,27 +31,12 @@ module.exports = {
           'gatsby-remark-prismjs',
           'gatsby-remark-copy-linked-files',
           'gatsby-remark-smartypants',
-          {
-            resolve: 'gatsby-remark-images',
-            options: {
-              maxWidth: 1140,
-              quality: 90,
-              linkImagesToOriginal: false,
-            },
-          },
         ],
       },
     },
     'gatsby-transformer-json',
-    {
-      resolve: 'gatsby-plugin-canonical-urls',
-      options: {
-        siteUrl: 'https://gatsby-starter-typescript-plus.netlify.com',
-      },
-    },
     'gatsby-plugin-typescript',
     'gatsby-plugin-sharp',
-    'gatsby-transformer-sharp',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-material-ui',
   ],

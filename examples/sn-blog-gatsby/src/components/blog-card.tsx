@@ -4,30 +4,30 @@ import { globals } from '../styles/globalStyles'
 
 const useStyles = makeStyles(() => {
   return createStyles({
-    blogCard: {
+    root: {
       height: '100%',
       borderRadius: `${globals.common.borderRadius}px`,
       display: 'flex',
       flexFlow: 'column',
     },
-    blogCardImage: {
+    image: {
       height: `${globals.common.blogCardImageHeight}px`,
       objectFit: 'cover',
       width: '100%',
     },
-    blogCardContent: {
+    wrapper: {
       flexGrow: 1,
       padding: '1rem',
       border: '2px solid #13a5ad',
       borderTop: 0,
       borderRadius: `0 0 ${globals.common.borderRadius}px ${globals.common.borderRadius}px`,
     },
-    blogCardTitle: {
+    title: {
       margin: '1rem 0',
       fontSize: '20px',
       fontWeight: 700,
     },
-    blogCardDescription: {
+    description: {
       marginBottom: '1rem',
     },
   })
@@ -43,13 +43,13 @@ const BlogCard: React.FC<BlogCardProps> = (props) => {
   const classes = useStyles()
 
   return (
-    <Card className={classes.blogCard}>
-      <img className={classes.blogCardImage} src={props.image} alt={props.title} />
-      <CardContent className={classes.blogCardContent}>
-        <Typography gutterBottom variant="h5" component="h5" className={classes.blogCardTitle}>
+    <Card className={classes.root}>
+      <img className={classes.image} src={props.image} alt={props.title} />
+      <CardContent className={classes.wrapper}>
+        <Typography gutterBottom variant="h5" component="h5" className={classes.title}>
           {props.title}
         </Typography>
-        <Typography variant="body2" color="textSecondary" component="p" className={classes.blogCardDescription}>
+        <Typography variant="body2" color="textSecondary" component="p" className={classes.description}>
           {props.excerpt}
         </Typography>
       </CardContent>

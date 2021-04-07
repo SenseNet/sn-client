@@ -51,6 +51,8 @@ If you use typescript you can also see the possible classes what you can overwri
 <img src="../../overwrite_styles.png" alt="overwrite styles">
 </p>
 
+![Alt text here](../../overwrite_styles.png)
+
 Since our designer always come up with new solutions and the style is constantly changing, we can never consider it done. 🎡
 
 ## New features 🎉
