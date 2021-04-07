@@ -1,4 +1,4 @@
-import { UniversalHeader } from '@sensenet/universal-header-react'
+import { UniversalHeader } from '@sensenet/universal-header'
 import { createStyles, CssBaseline, makeStyles } from '@material-ui/core'
 import { graphql, StaticQuery } from 'gatsby'
 import * as React from 'react'

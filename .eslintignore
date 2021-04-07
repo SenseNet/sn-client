@@ -5,4 +5,5 @@ packages/**/dist/*
 examples/**/build/*
 examples/**/storybook-static/*
 apps/**/bundle/*
+apps/**/instrumented/*
 webpack.*

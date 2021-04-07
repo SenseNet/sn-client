@@ -39,8 +39,7 @@ export class EventHub implements Disposable {
    */
   public dispose() {
     for (const key in this) {
-      // eslint-disable-next-line no-prototype-builtins
-      if (this.hasOwnProperty(key) && typeof (this[key] as any).dispose === 'function') {
+      if (Object.prototype.hasOwnProperty.call(this, key) && typeof (this[key] as any).dispose === 'function') {
         // do not dispose repository
         key !== 'repository' && (this[key] as any).dispose()
       }

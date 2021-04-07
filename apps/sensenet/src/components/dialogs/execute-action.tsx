@@ -5,8 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import Typography from '@material-ui/core/Typography'
-import React, { useEffect, useState } from 'react'
-import MonacoEditor from 'react-monaco-editor'
+import React, { lazy, useEffect, useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useTheme } from '../../hooks'
 import {
@@ -14,7 +13,9 @@ import {
   OnExecuteActionPayload,
 } from '../../services/CommandProviders/CustomActionCommandProvider'
 import { createCustomActionModel } from '../../services/MonacoModels/create-custom-action-model'
+import { getMonacoModelUri } from '../editor/text-editor'
 import { DialogTitle, useDialog } from '.'
+const MonacoEditor = lazy(() => import('react-monaco-editor'))
 
 const EDITOR_INITIAL_VALUE = `{
 
@@ -22,10 +23,9 @@ const EDITOR_INITIAL_VALUE = `{
 
 export type ExecuteActionDialogProps = {
   actionValue: OnExecuteActionPayload
-  uri: import('monaco-editor').Uri
 }
 
-export function ExecuteActionDialog({ actionValue, uri }: ExecuteActionDialogProps) {
+export function ExecuteActionDialog({ actionValue }: ExecuteActionDialogProps) {
   const theme = useTheme()
   const { closeLastDialog } = useDialog()
   const localization = useLocalization().customActions.executeCustomActionDialog
@@ -34,9 +34,16 @@ export function ExecuteActionDialog({ actionValue, uri }: ExecuteActionDialogPro
   const repo = useRepository()
   const globalClasses = useGlobalStyles()
 
+  const [uri, setUri] = useState<import('react-monaco-editor').monaco.Uri>()
   const [postBody, setPostBody] = useState(EDITOR_INITIAL_VALUE)
   const [isExecuting, setIsExecuting] = useState(false)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    ;(async () => {
+      setUri(await getMonacoModelUri(actionValue.content, repo, actionValue.action))
+    })()
+  }, [actionValue, repo])
 
   useEffect(() => {
     if (uri && actionValue && actionValue.metadata) {
@@ -131,7 +138,11 @@ export function ExecuteActionDialog({ actionValue, uri }: ExecuteActionDialogPro
           .replace('{1}', (actionValue && (actionValue.content.DisplayName || actionValue.content.Name)) || '')}
       </DialogTitle>
       <DialogContent style={{ overflow: 'hidden' }}>
-        {isExecuting ? (
+        {!uri ? (
+          <div>
+            <LinearProgress />
+          </div>
+        ) : isExecuting ? (
           <div>
             <Typography>{localization.executingAction}</Typography>
             <LinearProgress />

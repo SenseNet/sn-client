@@ -53,6 +53,7 @@ export interface Package {
   Description: string
   ExecutionDate: Date
   ExecutionError: any
+  ExecutionResult: string
   Id: number
   Manifest: any
   PackageType: PackageType

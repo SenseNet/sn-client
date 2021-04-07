@@ -1,4 +1,3 @@
-/* eslint-disable require-jsdoc */
 import { GenericContent, User } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import { Accordion, AccordionDetails, AccordionSummary, Grid, TextField, Typography } from '@material-ui/core'
@@ -11,7 +10,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import RedoIcon from '@material-ui/icons/Redo'
 import SaveIcon from '@material-ui/icons/Save'
 import format from 'date-fns/format'
-import parseISO from 'date-fns/parseISO'
 import React, { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { NewMemo } from '../interfaces'

@@ -1,4 +1,3 @@
-/* eslint-disable require-jsdoc */
 import { Divider, Drawer, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
@@ -88,6 +87,7 @@ export const useStyles = makeStyles((theme) => ({
     marginLeft: '5px',
   },
 }))
+
 export const ResponsiveDrawer: React.FunctionComponent<ResponsiveProps> = (props) => {
   const classes = useStyles()
   const matches = useMediaQuery('(min-width:600px)')

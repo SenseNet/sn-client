@@ -98,4 +98,48 @@ describe('SchemaStore', () => {
       expect(store.isContentFromType({ Type: 'UserProfile' } as GenericContent, 'Group')).toBeFalsy()
     })
   })
+
+  describe('getTypesFromSchema', () => {
+    const SchemaStoreExample: Schema[] = [
+      {
+        ContentTypeName: 'ContentType',
+        DisplayName: '$Ctd-ContentType,DisplayName',
+        Description: '$Ctd-ContentType,Description',
+        Icon: 'ContentType',
+        AllowedChildTypes: [],
+        FieldSettings: [],
+        HandlerName: 'SenseNet.ContentRepository.Schema.ContentType',
+      },
+      {
+        ContentTypeName: 'GenericContent',
+        DisplayName: '$Ctd-GenericContent,DisplayName',
+        Description: '$Ctd-GenericContent,Description',
+        Icon: 'Content',
+        AllowedChildTypes: [],
+        FieldSettings: [],
+        HandlerName: 'SenseNet.ContentRepository.File',
+      },
+      {
+        ContentTypeName: 'DynamicJsonContent',
+        ParentTypeName: 'File',
+        DisplayName: 'Dynamic JSON content',
+        Description: '',
+        Icon: 'Settings',
+        AllowedChildTypes: [],
+        FieldSettings: [],
+        HandlerName: 'SenseNet.Portal.Handlers.DynamicJsonContent',
+      },
+    ]
+    it('Should be return a list of the content types existing on schema', () => {
+      const store = new SchemaStore()
+      store.setSchemas(SchemaStoreExample)
+      expect(store.getTypesFromSchema()).toEqual(['ContentType', 'GenericContent', 'DynamicJsonContent'])
+    })
+
+    it('Should contain all content type ', () => {
+      const store = new SchemaStore()
+      store.setSchemas(DefaultSchemaStore)
+      expect(store.getTypesFromSchema().length).toEqual(50)
+    })
+  })
 })

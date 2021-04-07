@@ -4,8 +4,9 @@ describe('Localization', () => {
   beforeEach(() => {
     cy.login()
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
-      .get('[data-test="drawer-menu-item-localization"]')
+      .get('[data-test="drawer-menu-item-settings"]')
       .click()
+    cy.get('[data-test="drawer-submenu-item-localization"]').click()
   })
 
   it('should contain a row with ActionResources.xml', () => {

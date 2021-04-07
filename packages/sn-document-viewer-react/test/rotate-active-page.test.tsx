@@ -1,15 +1,7 @@
 import IconButton from '@material-ui/core/IconButton'
 import { mount } from 'enzyme'
 import React from 'react'
-import {
-  defaultViewerState,
-  DocumentDataContext,
-  PreviewImageDataContext,
-  RotateActivePagesWidget,
-  ROTATION_MODE,
-  ViewerStateContext,
-} from '../src'
-import { exampleDocumentData, examplePreviewImageData } from './__Mocks__/viewercontext'
+import { defaultViewerState, RotateActivePagesWidget, ROTATION_MODE, ViewerStateContext } from '../src'
 
 describe('RotateActivePage component', () => {
   it('Should render without crashing', () => {
