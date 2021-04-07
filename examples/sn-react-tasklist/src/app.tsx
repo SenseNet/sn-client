@@ -1,13 +1,7 @@
-// start of material imports
 import { UniversalHeader } from '@sensenet/universal-header-react'
-import { Container, createStyles, CssBaseline, Grid, makeStyles } from '@material-ui/core'
-import Toolbar from '@material-ui/core/Toolbar'
+import { Container, createStyles, CssBaseline, Grid, makeStyles, Toolbar } from '@material-ui/core'
 import React from 'react'
-// end of material imports
-
-// start of component imports
 import TodoListPanel from './components/todo-list'
-// end of component imports
 
 const useHeaderStyles = makeStyles(() =>
   createStyles({
