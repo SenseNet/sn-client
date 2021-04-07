@@ -1,4 +1,3 @@
-/* eslint-disable require-jsdoc */
 import { GenericContent, User } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import { Accordion, AccordionDetails, AccordionSummary, Grid, TextField, Typography } from '@material-ui/core'
@@ -10,7 +9,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import RedoIcon from '@material-ui/icons/Redo'
 import SaveIcon from '@material-ui/icons/Save'
-import moment from 'moment'
+import format from 'date-fns/format'
 import React, { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { NewMemo } from '../interfaces'
@@ -190,10 +189,12 @@ export const MemoPanel: React.FunctionComponent = () => {
             <Typography className={classes.heading}>{memo.DisplayName}</Typography>
             <Typography className={classes.secondaryHeading}>
               Created by: {memo.CreatedBy ? (memo.CreatedBy as User).FullName : ''}{' '}
-              {moment(new Date(memo.CreationDate ? memo.CreationDate : '')).format('dddd on DD-MM-YYYY')}{' '}
+              {memo.CreationDate ? format(new Date(memo.CreationDate), "d 'on' dd-MM-yyyy") : 'Invalid date'}{' '}
               <span style={{ fontStyle: 'italic' }}>
                 (Modified:{' '}
-                {moment(new Date(memo.ModificationDate ? memo.ModificationDate : '')).format('DD-MM-YYYY HH:mm:ss')})
+                {memo.ModificationDate
+                  ? format(new Date(memo.ModificationDate), 'dd-MM-yyyy HH:mm:ss')
+                  : 'Invalid date'}
               </span>
             </Typography>
           </AccordionSummary>

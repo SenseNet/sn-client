@@ -3,26 +3,26 @@ import { BrowseType } from './components/content'
 export const PATHS = {
   loginCallback: { appPath: '/authentication/login-callback' },
   silentCallback: { appPath: '/authentication/silent-callback' },
-  personalSettings: { appPath: '/personal-settings' },
   events: { appPath: '/events/:eventGuid?' },
   savedQueries: { appPath: '/saved-queries/:action?', snPath: '/Root/Content/Queries' },
-  setup: { appPath: '/setup/:action?', snPath: '/Root/System/Settings' },
   trash: { appPath: '/trash/:browseType/:action?', snPath: '/Root/Trash' },
-  localization: { appPath: '/localization/:browseType/:action?', snPath: '/Root/Localization' },
   usersAndGroups: { appPath: '/users-and-groups/:browseType/:action?', snPath: '/Root/IMS/Public' },
   dashboard: { appPath: '/dashboard' },
   contentTypes: { appPath: '/content-types/:browseType/:action?', snPath: '/Root/System/Schema/ContentTypes' },
   search: { appPath: '/search' },
   content: { appPath: '/content/:browseType/:action?', snPath: '/Root/Content' },
   custom: { appPath: '/custom/:browseType/:path/:action?' },
+  configuration: { appPath: '/settings/configuration/:action?', snPath: '/Root/System/Settings' },
+  localization: { appPath: '/settings/localization/:action?', snPath: '/Root/Localization' },
+  webhooks: { appPath: '/settings/webhooks/:action?', snPath: '/Root/System/WebHooks' },
+  settings: { appPath: '/settings/:submenu?' },
 } as const
 
-type RoutesWithContentBrowser = keyof Pick<
-  typeof PATHS,
-  'content' | 'localization' | 'usersAndGroups' | 'contentTypes' | 'trash'
->
+type SettingsItemType = 'stats' | 'apikeys' | 'webhooks' | 'adminui'
 
-type RoutesWithActionParam = keyof Pick<typeof PATHS, 'setup' | 'savedQueries'>
+type RoutesWithContentBrowser = keyof Pick<typeof PATHS, 'content' | 'usersAndGroups' | 'contentTypes' | 'trash'>
+
+type RoutesWithActionParam = keyof Pick<typeof PATHS, 'savedQueries' | 'localization' | 'configuration' | 'webhooks'>
 
 type Options =
   | { path: typeof PATHS['events']['appPath']; params?: { eventGuid: string; [index: string]: string } }
@@ -42,6 +42,10 @@ type Options =
   | {
       path: typeof PATHS[RoutesWithActionParam]['appPath']
       params?: { action: string; [index: string]: string }
+    }
+  | {
+      path: typeof PATHS['settings']['appPath']
+      params?: { submenu: SettingsItemType; [index: string]: string | SettingsItemType }
     }
 
 export const resolvePathParams = ({ path, params }: Options) => {

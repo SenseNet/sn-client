@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid'
 import createStyles from '@material-ui/core/styles/createStyles'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import Typography from '@material-ui/core/Typography'
+import type { Locale } from 'date-fns'
 import React, { createElement, ReactElement, useEffect, useState } from 'react'
 import { FieldLocalization } from '../fieldcontrols/localization'
 import { isFullWidthField } from '../helpers'
@@ -30,6 +31,7 @@ export interface BrowseViewProps {
   }
   fieldLocalization?: FieldLocalization
   classes?: BrowseViewClassKey
+  locale?: Locale
 }
 
 const useStyles = makeStyles(() => {
@@ -99,6 +101,7 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
                       renderIcon: props.renderIcon,
                       repository: props.repository,
                       localization: props.fieldLocalization,
+                      locale: props.locale,
                     },
                   )}
                 </div>

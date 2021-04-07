@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 export class Repository {
   content = [{ Id: 1, Name: 'name' }]
   post(content: any) {

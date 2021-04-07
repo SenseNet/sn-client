@@ -8,8 +8,8 @@ import { Breakpoint } from '@material-ui/core/styles/createBreakpoints'
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth'
 import { ArrowBack, CloudDownload, Edit, OpenInBrowser } from '@material-ui/icons'
 import clsx from 'clsx'
+import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import React, { useEffect, useState } from 'react'
-import Moment from 'react-moment'
 import { useHistory } from 'react-router'
 import { icons } from '../assets/icons'
 import { downloadFile } from '../helper'
@@ -232,7 +232,10 @@ const MainPanel: React.FunctionComponent<MainPanelProps> = (props) => {
                     return (
                       <TableCell>
                         <Tooltip title={(fieldOptions.content.ModifiedBy as GenericContent).DisplayName ?? ''}>
-                          <Moment fromNow={true}>{fieldOptions.content.ModificationDate as string}</Moment>
+                          <span>
+                            {fieldOptions.content.ModificationDate &&
+                              formatDistanceToNow(new Date(fieldOptions.content.ModificationDate), { addSuffix: true })}
+                          </span>
                         </Tooltip>
                       </TableCell>
                     )

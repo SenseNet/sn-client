@@ -1,4 +1,4 @@
-import { PATHS } from '../../../src/application-paths'
+import { PATHS, resolvePathParams } from '../../../src/application-paths'
 import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
 describe('Custom menu item', () => {
@@ -42,7 +42,10 @@ describe('Custom menu item', () => {
     ]
 
     cy.visit(
-      pathWithQueryParams({ path: PATHS.personalSettings.appPath, newParams: { repoUrl: Cypress.env('repoUrl') } }),
+      pathWithQueryParams({
+        path: resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'adminui' } }),
+        newParams: { repoUrl: Cypress.env('repoUrl') },
+      }),
     )
 
     cy.get('.monaco-editor textarea')
@@ -91,7 +94,10 @@ describe('Custom menu item', () => {
     }).as('getCalendar')
 
     cy.visit(
-      pathWithQueryParams({ path: PATHS.personalSettings.appPath, newParams: { repoUrl: Cypress.env('repoUrl') } }),
+      pathWithQueryParams({
+        path: resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'adminui' } }),
+        newParams: { repoUrl: Cypress.env('repoUrl') },
+      }),
     )
 
     cy.get('.monaco-editor textarea')
@@ -124,7 +130,10 @@ describe('Custom menu item', () => {
     cy.restoreLocalStorage()
 
     cy.visit(
-      pathWithQueryParams({ path: PATHS.personalSettings.appPath, newParams: { repoUrl: Cypress.env('repoUrl') } }),
+      pathWithQueryParams({
+        path: resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'adminui' } }),
+        newParams: { repoUrl: Cypress.env('repoUrl') },
+      }),
     )
 
     cy.get('[data-test="drawer-menu-item-test"]').should('exist')

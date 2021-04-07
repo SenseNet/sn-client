@@ -263,7 +263,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
 
   return (
     <>
-      <DialogTitle>{props.entry.identity.displayName}</DialogTitle>
+      <DialogTitle data-test={'permission-dialog-title'}>{props.entry.identity.displayName}</DialogTitle>
       <DialogContent className={classes.contentWrapper}>
         <List
           className={clsx(classes.column, classes.leftColumn)}
@@ -410,8 +410,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                 return (
                   <ListItem
                     data-test={`permission-item-${selectedGroupPermission.replace(/\s+/g, '-').toLowerCase()}`}
-                    key={selectedGroupPermission}
-                    onClick={() => {}}>
+                    key={selectedGroupPermission}>
                     <ListItemText
                       disableTypography
                       primary={selectedGroupPermission}
@@ -452,6 +451,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
           )}
           <DialogActions className={classes.dialogActions}>
             <Button
+              data-test="permission-editor-cancel"
               aria-label={localization.forms.cancel}
               className={globalClasses.cancelButton}
               onClick={() => {

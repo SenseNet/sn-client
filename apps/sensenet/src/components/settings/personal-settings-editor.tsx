@@ -2,14 +2,14 @@ import { deepMerge } from '@sensenet/client-utils'
 import { CurrentContentContext, useInjector, useLogger } from '@sensenet/hooks-react'
 import { Button, createStyles, FormControlLabel, makeStyles, Switch, Typography, useTheme } from '@material-ui/core'
 import clsx from 'clsx'
-import React, { useContext, useEffect, useState } from 'react'
-import MonacoEditor from 'react-monaco-editor'
+import React, { lazy, useContext, useEffect, useState } from 'react'
 import { LocalizationContext, ResponsiveContext } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { setupModel } from '../../services/MonacoModels/PersonalSettingsModel'
 import { defaultSettings, PersonalSettings } from '../../services/PersonalSettings'
 import { useDialog } from '../dialogs'
 import { TextEditor } from '../editor/text-editor'
+const MonacoEditor = lazy(() => import('react-monaco-editor'))
 
 const editorContent: any = {
   Type: 'PersonalSettings',
