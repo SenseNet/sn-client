@@ -1,21 +1,21 @@
 import { shallow } from 'enzyme'
 import React from 'react'
-import { FullScreenDialog } from '../src/components/FullScreenDialog'
+import { FullScreenDialog } from '../src/components/full-screen-dialog'
 
 describe('FullScreenDialog', () => {
   const testprops = {
-    isopen: true,
-    openedImg: {
-      imgIndex: 1,
-      imgPath: 'Path',
+    open: true,
+    openedImage: {
+      Id: 1,
+      Name: 'Image',
+      Type: 'Image',
+      Path: 'Path',
+      Index: 1,
       imgTitle: 'Title',
-      imgDescription: 'Description',
-      imgAuthor: 'Test Elek',
-      imgAuthorAvatar: 'Avatar img Path',
-      imgCreationDate: '2019.05.05',
-      imgSize: '1024',
-      imgDownloadUrl: 'Download Path',
+      Description: 'Description',
+      CreationDate: '2019.05.05',
     },
+    handleDelete: jest.fn(),
     closeFunction: jest.fn(),
     steppingFunction: jest.fn(),
     imgList: [],

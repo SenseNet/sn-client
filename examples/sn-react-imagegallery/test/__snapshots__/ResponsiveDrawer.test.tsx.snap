@@ -37,15 +37,15 @@ exports[`ResponsiveDrawer Matches snapshot 1`] = `
     />
     <WithStyles(ForwardRef(Divider)) />
     <WithStyles(ForwardRef(Typography))>
-      Name: 
+      Name:
       Title
     </WithStyles(ForwardRef(Typography))>
     <WithStyles(ForwardRef(Typography))>
-      Descripton: 
+      Descripton:
       Description
     </WithStyles(ForwardRef(Typography))>
     <WithStyles(ForwardRef(Typography))>
-      Author: 
+      Author:
       Test Elek
       <img
         alt="Path"
@@ -54,11 +54,11 @@ exports[`ResponsiveDrawer Matches snapshot 1`] = `
       />
     </WithStyles(ForwardRef(Typography))>
     <WithStyles(ForwardRef(Typography))>
-      Created: 
+      Created:
       2019.05.05
     </WithStyles(ForwardRef(Typography))>
     <WithStyles(ForwardRef(Typography))>
-      Size: 
+      Size:
       1024
     </WithStyles(ForwardRef(Typography))>
     <WithStyles(ForwardRef(Divider)) />

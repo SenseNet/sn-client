@@ -1,18 +1,18 @@
+import { Image } from '@sensenet/default-content-types'
 import { AppBar, Dialog, IconButton, Toolbar, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import CloseIcon from '@material-ui/icons/Close'
-import SaveAlt from '@material-ui/icons/SaveAlt'
 import React from 'react'
 import { Transition } from '../app'
-import { SelectedImage } from '../Interface'
-import { ResponsiveDrawer } from './ResponsiveDrawer'
+import { ImageGallery } from './image-gallery'
 
-interface FullScreenprops {
-  openedImg: SelectedImage
-  isopen: boolean
+export interface FullScreenDialogProps {
+  openedImage: Image
+  open: boolean
   closeFunction: () => void
   steppingFunction: (imageIndex: number, openInfoTab: boolean) => void
-  imgList: object[]
+  imgList: Image[]
+  handleDelete: (deletedItem: Image) => void
 }
 
 export const useStyles = makeStyles((theme) => ({
@@ -32,14 +32,13 @@ export const useStyles = makeStyles((theme) => ({
     marginRight: '0',
   },
 }))
-/**
- * Display the details view
- */
-export const FullScreenDialog: React.FunctionComponent<FullScreenprops> = (props) => {
+
+export const FullScreenDialog: React.FunctionComponent<FullScreenDialogProps> = (props) => {
   const classes = useStyles()
+
   return (
     <div>
-      <Dialog fullScreen open={props.isopen} onClose={props.closeFunction} TransitionComponent={Transition}>
+      <Dialog fullScreen open={props.open} onClose={props.closeFunction} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
           <Toolbar>
             <IconButton edge="start" color="inherit" onClick={props.closeFunction} aria-label="Close">
@@ -48,15 +47,12 @@ export const FullScreenDialog: React.FunctionComponent<FullScreenprops> = (props
             <Typography variant="h6" className={classes.title}>
               Image
             </Typography>
-            <IconButton edge="start" color="inherit" href={props.openedImg.imgDownloadUrl} aria-label="Close">
-              <SaveAlt />
-            </IconButton>
           </Toolbar>
         </AppBar>
-        <ResponsiveDrawer
+        <ImageGallery
           steppingFunction={props.steppingFunction}
-          imageListLenght={props.imgList.length}
-          imageInfo={props.openedImg}
+          handleDelete={props.handleDelete}
+          openedImage={props.openedImage}
         />
       </Dialog>
     </div>

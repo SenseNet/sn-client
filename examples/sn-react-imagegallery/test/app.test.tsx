@@ -5,7 +5,7 @@ import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { App, Transition } from '../src/app'
-import { FullScreenDialog } from '../src/components/FullScreenDialog'
+import { FullScreenDialog } from '../src/components/full-screen-dialog'
 import { emptyimages, images } from './mocks/images'
 
 describe('App Layout', () => {
