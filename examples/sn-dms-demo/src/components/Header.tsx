@@ -1,6 +1,6 @@
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import React from 'react'
+import React, { Component } from 'react'
 import AppBarLogo from './AppBarLogo'
 import { Search } from './Search/Search'
 import UserActionMenu from './UserActionMenu'
@@ -14,7 +14,7 @@ const styles = {
   },
 }
 
-class Header extends React.Component<{}, {}> {
+class Header extends Component<{}, {}> {
   public render() {
     return (
       <AppBar position="absolute" style={{ ...styles.appBar, boxShadow: 'none' }}>

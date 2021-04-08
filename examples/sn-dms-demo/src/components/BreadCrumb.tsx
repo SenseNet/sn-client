@@ -2,7 +2,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import Button from '@material-ui/core/Button'
 import { compile } from 'path-to-regexp'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
@@ -77,7 +77,7 @@ interface BreadCrumbState {
   currentContent?: GenericContent
 }
 
-class BreadCrumb extends React.Component<
+class BreadCrumb extends Component<
   BreadCrumbProps & typeof mapDispatchToProps & ReturnType<typeof mapStateToProps>,
   BreadCrumbState
 > {

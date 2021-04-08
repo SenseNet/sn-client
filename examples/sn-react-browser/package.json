@@ -1,5 +1,5 @@
 {
-  "name": "@sensenet/react-browser",
+  "name": "@example/react-browser",
   "version": "2.1.3",
   "private": true,
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.21",
-    "@types/node": "^14.14.35",
+    "@types/node": "^14.14.37",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
     "@types/react-router": "^5.1.12",

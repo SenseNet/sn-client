@@ -1,14 +1,14 @@
 import { PreviewImageData } from '@sensenet/client-core'
-import React, { Dispatch, useEffect, useState } from 'react'
-import { PreviewState } from '..'
+import React, { createContext, Dispatch, FC, SetStateAction, useEffect, useState } from 'react'
+import { PreviewState } from '../enums'
 import { useDocumentData, useDocumentViewerApi, useViewerSettings, useViewerState } from '../hooks'
 
-export const PreviewImageDataContext = React.createContext<{
+export const PreviewImageDataContext = createContext<{
   imageData: PreviewImageData[]
-  setImageData: Dispatch<React.SetStateAction<PreviewImageData[]>>
+  setImageData: Dispatch<SetStateAction<PreviewImageData[]>>
 }>({ imageData: [], setImageData: () => ({} as any) })
 
-export const PreviewImageDataContextProvider: React.FC = (props) => {
+export const PreviewImageDataContextProvider: FC = (props) => {
   const viewerSettings = useViewerSettings()
   const api = useDocumentViewerApi()
   const { documentData } = useDocumentData()

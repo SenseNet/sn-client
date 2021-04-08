@@ -1,7 +1,4 @@
-import Drawer from '@material-ui/core/Drawer'
-import createStyles from '@material-ui/core/styles/createStyles'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import Typography from '@material-ui/core/Typography'
+import { createStyles, Drawer, makeStyles, Typography } from '@material-ui/core'
 import React, { useCallback, useEffect } from 'react'
 import { CommentsContext } from '../context/comments'
 import { useLocalization, useViewerSettings, useViewerState } from '../hooks'

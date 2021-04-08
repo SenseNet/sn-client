@@ -1,5 +1,4 @@
 import {
-  defaultTheme,
   DocumentTitlePager,
   DocumentViewer,
   LayoutAppBar,
@@ -25,7 +24,6 @@ const DocViewer: React.FunctionComponent<RouteComponentProps<{ documentId: strin
   return (
     <div style={{ overflow: 'hidden', width: '100%', height: '100%', position: 'inherit' }}>
       <DocumentViewer
-        theme={defaultTheme}
         documentIdOrPath={documentId}
         renderAppBar={() => (
           <LayoutAppBar>

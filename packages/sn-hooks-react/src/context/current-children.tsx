@@ -1,7 +1,7 @@
 import { Content, ODataParams } from '@sensenet/client-core'
 import { deepMerge, PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { createContext, FunctionComponent, useContext, useEffect, useState } from 'react'
 import { useRepository, useRepositoryEvents } from '../hooks'
 import { CurrentContentContext } from './current-content'
 import { LoadSettingsContext } from './load-settings'
@@ -9,7 +9,7 @@ import { LoadSettingsContext } from './load-settings'
 /**
  * Context that will return with a list of a current content's children
  */
-export const CurrentChildrenContext = React.createContext<GenericContent[]>([])
+export const CurrentChildrenContext = createContext<GenericContent[]>([])
 CurrentChildrenContext.displayName = 'CurrentChildrenContext'
 
 export interface CurrentChildrenProviderProps {
@@ -22,7 +22,7 @@ export interface CurrentChildrenProviderProps {
  * Loads the children of the current content.
  * Loads an ancestor list from the Repository. Has to be wrapped with a **CurrentContentContext** and a **RepositoryContext**
  */
-export const CurrentChildrenProvider: React.FunctionComponent<CurrentChildrenProviderProps> = (props) => {
+export const CurrentChildrenProvider: FunctionComponent<CurrentChildrenProviderProps> = (props) => {
   const currentContent = useContext(CurrentContentContext)
   const [children, setChildren] = useState<GenericContent[]>([])
 

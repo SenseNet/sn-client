@@ -3,7 +3,7 @@ import { Icon, iconType } from '@sensenet/icons-react'
 import AppBar from '@material-ui/core/AppBar'
 import IconButton from '@material-ui/core/IconButton'
 import Toolbar from '@material-ui/core/Toolbar'
-import React from 'react'
+import React, { Component, MouseEvent } from 'react'
 import { connect } from 'react-redux'
 import * as DMSActions from '../../Actions'
 import { getContentTypeFromUrl, getExtensionFromUrl } from '../../assets/helpers'
@@ -56,7 +56,7 @@ interface MobileHeaderState {
   currentContent: GenericContent | null
 }
 
-class MobileHeader extends React.Component<
+class MobileHeader extends Component<
   MobileHeaderProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   MobileHeaderState
 > {
@@ -76,7 +76,7 @@ class MobileHeader extends React.Component<
       open: !this.state.open,
     })
   }
-  public handleAddNewClick = (e: React.MouseEvent<HTMLElement>) => {
+  public handleAddNewClick = (e: MouseEvent<HTMLElement>) => {
     const { addNewOptions } = this.state
     this.props.closeActionMenu()
     this.props.currentContent &&

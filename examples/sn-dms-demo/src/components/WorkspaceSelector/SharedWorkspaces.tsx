@@ -2,7 +2,7 @@ import { Icon, iconType } from '@sensenet/icons-react'
 import Badge from '@material-ui/core/Badge'
 import Button from '@material-ui/core/Button'
 import withStyles from '@material-ui/core/styles/withStyles'
-import React from 'react'
+import React, { Component } from 'react'
 
 import { resources } from '../../assets/resources'
 
@@ -34,7 +34,7 @@ const styles = () => ({
   },
 })
 
-class SharedWorkspaces extends React.Component<{ classes?: any }, {}> {
+class SharedWorkspaces extends Component<{ classes?: any }, {}> {
   public render() {
     const { classes } = this.props
     return (

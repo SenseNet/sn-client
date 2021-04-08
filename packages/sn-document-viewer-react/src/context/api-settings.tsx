@@ -2,7 +2,7 @@ import { Annotation, CommentData, DocumentData, Highlight, Redaction, Repository
 import { deepMerge, toNumber } from '@sensenet/client-utils'
 import { File as SnFile } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import React, { useMemo } from 'react'
+import React, { createContext, FC, useMemo } from 'react'
 import { v1 } from 'uuid'
 import { DocumentViewerApiSettings } from '../models'
 
@@ -27,7 +27,7 @@ function changeCreatedByUrlToCurrent(documentData: DocumentData): (value: Commen
   }
 }
 
-export const DocumentViewerApiSettingsContext = React.createContext<DocumentViewerApiSettings>({
+export const DocumentViewerApiSettingsContext = createContext<DocumentViewerApiSettings>({
   canEditDocument: async () => false,
   canHideRedaction: async () => false,
   canHideWatermark: async () => false,
@@ -139,7 +139,7 @@ export const createDefaultApiSettings: (repo: Repository) => DocumentViewerApiSe
   },
 })
 
-export const DocumentViewerApiSettingsProvider: React.FC<{ options?: Partial<DocumentViewerApiSettings> }> = ({
+export const DocumentViewerApiSettingsProvider: FC<{ options?: Partial<DocumentViewerApiSettings> }> = ({
   children,
   options,
 }) => {

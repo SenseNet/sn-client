@@ -1,6 +1,6 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import Checkbox from '@material-ui/core/Checkbox'
-import React, { useEffect, useState } from 'react'
+import React, { FunctionComponent, useEffect, useState } from 'react'
 import { useSelectionService } from '../hooks'
 import { Icon } from './Icon'
 
@@ -10,7 +10,7 @@ type SelectionControlProps = {
   onChangeCallback: () => void
 }
 
-export const SelectionControl: React.FunctionComponent<SelectionControlProps> = ({
+export const SelectionControl: FunctionComponent<SelectionControlProps> = ({
   isSelected,
   content,
   onChangeCallback,

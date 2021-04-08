@@ -4,7 +4,7 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import { Theme } from '@material-ui/core/styles/createMuiTheme'
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
 import TextField from '@material-ui/core/TextField'
-import React from 'react'
+import React, { Component, KeyboardEvent } from 'react'
 
 const styles = (theme: Theme) => ({
   wsSearchContainer: {
@@ -53,10 +53,10 @@ const styles = (theme: Theme) => ({
 
 type C = 'wsSearchInput'
 
-class WorkspaceSearch extends React.Component<
+class WorkspaceSearch extends Component<
   {
     classes: any
-    handleKeyup: (e: React.KeyboardEvent) => void
+    handleKeyup: (e: KeyboardEvent) => void
     matches: boolean
     closeDropDown: (open: boolean) => void
   } & WithStyles<C>,

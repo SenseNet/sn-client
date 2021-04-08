@@ -1,7 +1,7 @@
 import { Icon, iconType } from '@sensenet/icons-react'
 import Button from '@material-ui/core/Button'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { rootStateType } from '../../store/rootReducer'
@@ -41,7 +41,7 @@ const mapStateToProps = (state: rootStateType) => {
   }
 }
 
-class WorkspaceSelector extends React.Component<ReturnType<typeof mapStateToProps>, WorkspaceSelectorState> {
+class WorkspaceSelector extends Component<ReturnType<typeof mapStateToProps>, WorkspaceSelectorState> {
   public state = {
     open: false,
   }
