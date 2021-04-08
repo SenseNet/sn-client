@@ -1,4 +1,4 @@
-import TableCell from '@material-ui/core/TableCell'
+import { TableCell } from '@material-ui/core'
 import type { Locale } from 'date-fns'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import React from 'react'

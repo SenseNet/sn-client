@@ -1,27 +1,27 @@
 import { Dialog } from '@material-ui/core'
-import React, { Suspense } from 'react'
+import React, { lazy, Suspense } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { DialogWithProps, useDialog } from '.'
 
-const Approve = React.lazy(() => import('./approve'))
-const AreYouSure = React.lazy(() => import('./are-you-sure'))
-const CheckIn = React.lazy(() => import('./check-in'))
-const CopyMove = React.lazy(() => import('./copy-move'))
-const CustomActionResult = React.lazy(() => import('./custom-action-result'))
-const Delete = React.lazy(() => import('./delete'))
-const Error = React.lazy(() => import('./error-dialog'))
-const ExecuteAction = React.lazy(() => import('./execute-action'))
-const Logout = React.lazy(() => import('./logout'))
-const SaveQuery = React.lazy(() => import('./save-query'))
-const Upload = React.lazy(() => import('./upload/upload-dialog'))
-const ReferenceContentList = React.lazy(() => import('./reference-content-list'))
-const PermissionEditorDialog = React.lazy(() => import('./permission-editor-dialog'))
-const MemberSelect = React.lazy(() => import('./member-select-dialog'))
-const Restore = React.lazy(() => import('./restore'))
-const ContentPicker = React.lazy(() => import('./content-picker'))
-const Feedback = React.lazy(() => import('./feedback'))
-const ChangePasswordDialog = React.lazy(() => import('./change-password'))
-const DateRangePicker = React.lazy(() => import('./date-range-picker'))
+const Approve = lazy(() => import('./approve'))
+const AreYouSure = lazy(() => import('./are-you-sure'))
+const CheckIn = lazy(() => import('./check-in'))
+const CopyMove = lazy(() => import('./copy-move'))
+const CustomActionResult = lazy(() => import('./custom-action-result'))
+const Delete = lazy(() => import('./delete'))
+const Error = lazy(() => import('./error-dialog'))
+const ExecuteAction = lazy(() => import('./execute-action'))
+const Logout = lazy(() => import('./logout'))
+const SaveQuery = lazy(() => import('./save-query'))
+const Upload = lazy(() => import('./upload/upload-dialog'))
+const ReferenceContentList = lazy(() => import('./reference-content-list'))
+const PermissionEditorDialog = lazy(() => import('./permission-editor-dialog'))
+const MemberSelect = lazy(() => import('./member-select-dialog'))
+const Restore = lazy(() => import('./restore'))
+const ContentPicker = lazy(() => import('./content-picker'))
+const Feedback = lazy(() => import('./feedback'))
+const ChangePasswordDialog = lazy(() => import('./change-password'))
+const DateRangePicker = lazy(() => import('./date-range-picker'))
 
 function dialogRenderer(dialog: DialogWithProps) {
   switch (dialog.name) {

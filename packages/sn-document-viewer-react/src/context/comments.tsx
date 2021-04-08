@@ -1,6 +1,6 @@
 import { CommentData } from '@sensenet/client-core'
 import { Trace } from '@sensenet/client-utils'
-import React, { useEffect, useState } from 'react'
+import React, { createContext, FC, useEffect, useState } from 'react'
 import { useDocumentData, useDocumentViewerApi, useViewerState } from '../hooks'
 import { DocumentViewerApiSettings } from '../models'
 
@@ -15,9 +15,9 @@ export const defaultCommentsContext: CommentsContextType = {
   getPreviewComments: async () => undefined as any,
 }
 
-export const CommentsContext = React.createContext<CommentsContextType>(defaultCommentsContext)
+export const CommentsContext = createContext<CommentsContextType>(defaultCommentsContext)
 
-export const CommentsContextProvider: React.FC = (props) => {
+export const CommentsContextProvider: FC = (props) => {
   const api = useDocumentViewerApi()
   const { documentData } = useDocumentData()
   const viewerState = useViewerState()

@@ -7,7 +7,7 @@ import List from '@material-ui/core/List'
 import ListSubheader from '@material-ui/core/ListSubheader'
 import Paper from '@material-ui/core/Paper'
 import Snackbar from '@material-ui/core/Snackbar'
-import React from 'react'
+import React, { Component } from 'react'
 import MediaQuery from 'react-responsive'
 import { ExtendedUploadProgressInfo } from '../../Actions'
 import { resources } from '../../assets/resources'
@@ -27,7 +27,7 @@ export interface UploadBarState {
   isUploadInProgress: boolean
 }
 
-export class UploadBar extends React.Component<UploadBarProps, UploadBarState> {
+export class UploadBar extends Component<UploadBarProps, UploadBarState> {
   public state: UploadBarState = {
     overallProgressPercent: 0,
     isUploadInProgress: false,

@@ -1,12 +1,12 @@
 import Button from '@material-ui/core/Button'
-import React from 'react'
+import React, { Component } from 'react'
 
 export interface FetchErrorProps {
   message: string
   onRetry: () => void
 }
 
-export class FetchError extends React.Component<FetchErrorProps, {}> {
+export class FetchError extends Component<FetchErrorProps, {}> {
   public render() {
     return (
       <div>

@@ -1,5 +1,5 @@
 {
-  "name": "@sensenet/sn-app",
+  "name": "@app/sensenet",
   "version": "1.18.0",
   "main": "dist/index.js",
   "files": [
@@ -38,7 +38,7 @@
     ]
   },
   "devDependencies": {
-    "@cypress/code-coverage": "^3.9.2",
+    "@cypress/code-coverage": "^3.9.3",
     "@relative-ci/agent": "^1.5.0",
     "@types/autosuggest-highlight": "^3.1.1",
     "@types/react": "^17.0.3",

@@ -1,14 +1,14 @@
 import { ConstantContent, Content, ODataParams } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { createContext, FunctionComponent, useCallback, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { useRepository, useRepositoryEvents } from '../hooks'
 
 /**
  * Returns a given content as current content
  */
-export const CurrentContentContext = React.createContext<GenericContent>(ConstantContent.PORTAL_ROOT)
+export const CurrentContentContext = createContext<GenericContent>(ConstantContent.PORTAL_ROOT)
 CurrentContentContext.displayName = 'CurrentContentContext'
 
 export interface CurrentContentProviderProps {
@@ -31,7 +31,7 @@ export interface CurrentContentProviderProps {
  * Loads a content from the Repository with the given Id or Path.
  * Has to be wrapped with a **RepositoryContext**
  */
-export const CurrentContentProvider: React.FunctionComponent<CurrentContentProviderProps> = (props) => {
+export const CurrentContentProvider: FunctionComponent<CurrentContentProviderProps> = (props) => {
   const [loadLock] = useState(new Semaphore(1))
   const [content, setContent] = useState<GenericContent>(ConstantContent.EMPTY_CONTENT)
   const [errorState, setErrorState] = useState<{

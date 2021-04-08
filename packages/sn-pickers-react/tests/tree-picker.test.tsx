@@ -1,4 +1,4 @@
-import ListItem from '@material-ui/core/ListItem'
+import { ListItem } from '@material-ui/core'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'

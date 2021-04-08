@@ -1,6 +1,5 @@
 import { useInjector, useRepository } from '@sensenet/hooks-react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
-import CssBaseline from '@material-ui/core/CssBaseline'
 import clsx from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
 import { ResponsivePersonalSettings } from '../../context'
@@ -95,7 +94,6 @@ export const DesktopLayout: React.FunctionComponent = (props) => {
 
   return (
     <div className={clsx(globalClasses.full, classes.desktopLayoutWrapper)}>
-      <CssBaseline />
       <DesktopAppBar openDrawer={() => setTempDrawerOpened(!tempDrawerOpened)} />
       <div className={classes.drawerandContentSlot}>
         {settings.drawer.enabled ? (

@@ -1,8 +1,4 @@
-import Button from '@material-ui/core/Button/Button'
-import CircularProgress from '@material-ui/core/CircularProgress/CircularProgress'
-import createStyles from '@material-ui/core/styles/createStyles'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import Typography from '@material-ui/core/Typography'
+import { Button, CircularProgress, createStyles, makeStyles, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
 import { useDocumentData, useDocumentViewerApi, useLocalization } from '../hooks'
 

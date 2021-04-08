@@ -1,6 +1,5 @@
 import { GenericContent } from '@sensenet/default-content-types'
-import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox'
-import TableCell from '@material-ui/core/TableCell'
+import { Checkbox, CheckboxProps, TableCell } from '@material-ui/core'
 import React from 'react'
 
 interface RowCheckboxProps<T = GenericContent> {

@@ -1,7 +1,8 @@
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { Query } from '@sensenet/default-content-types'
-import { createAction, isFromAction } from '@sensenet/redux'
-import { deleteContent, PromiseReturns, updateContent } from '@sensenet/redux/dist/Actions'
+import { Actions, createAction, isFromAction } from '@sensenet/redux'
+import { PromiseReturns } from '@sensenet/redux/dist/types/Actions'
+
 import { Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { rootStateType } from './rootReducer'
@@ -113,7 +114,7 @@ export const queries: Reducer<QueriesType> = (
     return {
       ...state,
       queries: state.queries.map((c) => {
-        if (c.Id === (action.result as PromiseReturns<typeof updateContent>).d.Id) {
+        if (c.Id === (action.result as PromiseReturns<typeof Actions.updateContent>).d.Id) {
           return action.result.d
         }
         return c
@@ -121,7 +122,7 @@ export const queries: Reducer<QueriesType> = (
     }
   }
   if (action.type === 'DELETE_BATCH_SUCCESS') {
-    const deletedIds = (action.result as PromiseReturns<typeof deleteContent>).d.results.map((d) => d.Id)
+    const deletedIds = (action.result as PromiseReturns<typeof Actions.deleteContent>).d.results.map((d) => d.Id)
     return {
       ...state,
       queries: [...state.queries.filter((q) => !(deletedIds as any).includes(q.Id))],

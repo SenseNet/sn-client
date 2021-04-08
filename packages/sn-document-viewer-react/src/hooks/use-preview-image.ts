@@ -1,6 +1,6 @@
 import { sleepAsync } from '@sensenet/client-utils'
 import { useEffect, useMemo } from 'react'
-import { POLLING_INTERVAL } from '..'
+import { POLLING_INTERVAL } from '../components/document-viewer'
 import { useDocumentData, useDocumentViewerApi, usePreviewImages, useViewerSettings, useViewerState } from '.'
 
 export const usePreviewImage = (pageNo: number) => {

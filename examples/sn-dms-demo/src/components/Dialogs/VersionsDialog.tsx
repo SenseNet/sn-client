@@ -18,7 +18,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 
@@ -156,7 +156,7 @@ interface VersionsDialogState {
   expanded: string | boolean
 }
 
-class VersionsDialog extends React.Component<
+class VersionsDialog extends Component<
   { classes: any } & VersionsDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   VersionsDialogState
 > {

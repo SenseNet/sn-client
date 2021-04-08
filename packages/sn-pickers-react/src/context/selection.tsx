@@ -1,5 +1,5 @@
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useCallback, useState } from 'react'
+import React, { createContext, FC, useCallback, useState } from 'react'
 
 export interface SelectionState {
   selection: GenericContent[]
@@ -13,9 +13,9 @@ export const defaultSelectionState: SelectionState = {
   allowMultiple: false,
 }
 
-export const SelectionContext = React.createContext<SelectionState>(defaultSelectionState)
+export const SelectionContext = createContext<SelectionState>(defaultSelectionState)
 
-export const SelectionProvider: React.FC<{
+export const SelectionProvider: FC<{
   defaultValue?: GenericContent[]
   allowMultiple?: boolean
   selectionChangeCallback?: (selection: GenericContent[]) => void

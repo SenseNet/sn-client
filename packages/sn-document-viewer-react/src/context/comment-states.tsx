@@ -1,5 +1,5 @@
 import { DraftCommentMarker } from '@sensenet/client-core'
-import React, { useState } from 'react'
+import React, { createContext, useState } from 'react'
 
 export interface CommentState {
   draft?: DraftCommentMarker
@@ -14,7 +14,7 @@ export const defaultCommentState: CommentState = {
   setActiveComment: () => undefined,
 }
 
-export const CommentStateContext = React.createContext<CommentState>(defaultCommentState)
+export const CommentStateContext = createContext<CommentState>(defaultCommentState)
 
 export const CommentStateProvider: React.FC = ({ children }) => {
   const [draft, setDraft] = useState<DraftCommentMarker>()
