@@ -163,7 +163,6 @@ export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
               <Tooltip title={localization.addNew} placement="right">
                 <IconButton
                   className={globalClasses.drawerButton}
-
                   onClick={(event: MouseEvent<HTMLElement>) => {
                     if (isLoading) return
                     setAnchorEl(event.currentTarget)
