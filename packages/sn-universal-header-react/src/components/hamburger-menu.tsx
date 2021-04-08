@@ -36,7 +36,6 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'absolute',
       top: HEADER_HEIGHT,
       left: 0,
-      width: 'auto',
       backgroundColor: '#F6F6F6',
       border: '1px solid #E2E2E2',
     },
