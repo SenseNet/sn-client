@@ -7,23 +7,8 @@ import { Page, PageProps } from '../src/components/page'
 import { CommentStateContext } from '../src/context/comment-states'
 import { PreviewImageDataContext } from '../src/context/preview-image-data'
 import { defaultViewerState, ViewerStateContext } from '../src/context/viewer-state'
+import { mouseMove, mouseUp } from './__Mocks__/global-functions'
 import { exampleDocumentData, examplePreviewImageData } from './__Mocks__/viewercontext'
-
-const mouseMove = (pageX: number, pageY: number) => {
-  const mouseMoveEvent = document.createEvent('Event')
-  mouseMoveEvent.initEvent('mousemove', true, true)
-  Object.defineProperty(HTMLElement.prototype, 'pageX', { configurable: true, value: pageX })
-  Object.defineProperty(HTMLElement.prototype, 'pageY', { configurable: true, value: pageY })
-  document.dispatchEvent(mouseMoveEvent)
-}
-
-const mouseUp = (pageX: number, pageY: number) => {
-  const mouseUpEvent = document.createEvent('Event')
-  mouseUpEvent.initEvent('mouseup', true, true)
-  Object.defineProperty(HTMLElement.prototype, 'pageX', { configurable: true, value: pageX })
-  Object.defineProperty(HTMLElement.prototype, 'pageY', { configurable: true, value: pageY })
-  document.dispatchEvent(mouseUpEvent)
-}
 
 describe('Page component', () => {
   const defaultProps: PageProps = {

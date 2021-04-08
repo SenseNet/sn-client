@@ -1,6 +1,14 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import { DocumentPermissionsContext, ShapeHighlight, ShapeRedaction, ShapeSkeleton } from '../src'
+import {
+  defaultViewerState,
+  DocumentPermissionsContext,
+  ShapeHighlight,
+  ShapeRedaction,
+  ShapeSkeleton,
+  ViewerStateContext,
+} from '../src'
+import { mouseUp } from './__Mocks__/global-functions'
 
 const exampleShape = {
   h: 100,
@@ -84,6 +92,195 @@ describe('ShapesSkeleton component', () => {
     )
     wrapper.find('#annotation-input').simulate('focus')
     wrapper.find('#annotation-input').simulate('blur')
+    expect(updateShapeData).toBeCalled()
+  })
+
+  it('should handle resize annotation', () => {
+    const updateShapeData = jest.fn()
+
+    mount(
+      <DocumentPermissionsContext.Provider value={{ canEdit: true, canHideRedaction: true, canHideWatermark: true }}>
+        <ViewerStateContext.Provider
+          value={{
+            ...defaultViewerState,
+            activeShapePlacing: 'highlight',
+            zoomLevel: 0,
+            pagesRects: [
+              {
+                visiblePage: 0,
+                pageRect: {
+                  top: 100,
+                  bottom: 800,
+                  right: 800,
+                  left: 100,
+                  toJSON: () => {},
+                  x: 100,
+                  y: 100,
+                  height: 700,
+                  width: 700,
+                },
+              },
+            ],
+            boxBottom: 800,
+            boxTop: 100,
+            boxRight: 800,
+            boxLeft: 100,
+          }}>
+          <ShapeSkeleton
+            rotationDegree={0}
+            shapeType="annotations"
+            zoomRatio={1}
+            shape={exampleAnnotation}
+            removeShape={() => {}}
+            updateShapeData={updateShapeData}
+            visiblePagesIndex={0}
+          />
+        </ViewerStateContext.Provider>
+      </DocumentPermissionsContext.Provider>,
+    )
+
+    window.HTMLElement.prototype.getClientRects = () => {
+      return [
+        {
+          width: 700,
+          height: 700,
+          top: 100,
+          left: 100,
+          right: 800,
+          bottom: 800,
+          x: 100,
+          y: 100,
+        },
+      ] as any
+    }
+
+    mouseUp(600, 600)
+    expect(updateShapeData).toBeCalled()
+  })
+
+  it('should handle resize highlight', () => {
+    const updateShapeData = jest.fn()
+
+    mount(
+      <DocumentPermissionsContext.Provider value={{ canEdit: true, canHideRedaction: true, canHideWatermark: true }}>
+        <ViewerStateContext.Provider
+          value={{
+            ...defaultViewerState,
+            activeShapePlacing: 'highlight',
+            zoomLevel: 0,
+            pagesRects: [
+              {
+                visiblePage: 0,
+                pageRect: {
+                  top: 100,
+                  bottom: 800,
+                  right: 800,
+                  left: 100,
+                  toJSON: () => {},
+                  x: 100,
+                  y: 100,
+                  height: 700,
+                  width: 700,
+                },
+              },
+            ],
+            boxBottom: 800,
+            boxTop: 100,
+            boxRight: 800,
+            boxLeft: 100,
+          }}>
+          <ShapeSkeleton
+            rotationDegree={0}
+            shapeType="highlights"
+            zoomRatio={1}
+            shape={exampleShape}
+            removeShape={() => {}}
+            updateShapeData={updateShapeData}
+            visiblePagesIndex={0}
+          />
+        </ViewerStateContext.Provider>
+      </DocumentPermissionsContext.Provider>,
+    )
+
+    window.HTMLElement.prototype.getClientRects = () => {
+      return [
+        {
+          width: 700,
+          height: 700,
+          top: 100,
+          left: 100,
+          right: 800,
+          bottom: 800,
+          x: 100,
+          y: 100,
+        },
+      ] as any
+    }
+
+    mouseUp(600, 600)
+    expect(updateShapeData).toBeCalled()
+  })
+
+  it('should handle resize redaction', () => {
+    const updateShapeData = jest.fn()
+
+    mount(
+      <DocumentPermissionsContext.Provider value={{ canEdit: true, canHideRedaction: true, canHideWatermark: true }}>
+        <ViewerStateContext.Provider
+          value={{
+            ...defaultViewerState,
+            activeShapePlacing: 'highlight',
+            zoomLevel: 0,
+            pagesRects: [
+              {
+                visiblePage: 0,
+                pageRect: {
+                  top: 100,
+                  bottom: 800,
+                  right: 800,
+                  left: 100,
+                  toJSON: () => {},
+                  x: 100,
+                  y: 100,
+                  height: 700,
+                  width: 700,
+                },
+              },
+            ],
+            boxBottom: 800,
+            boxTop: 100,
+            boxRight: 800,
+            boxLeft: 100,
+          }}>
+          <ShapeSkeleton
+            rotationDegree={0}
+            shapeType="redactions"
+            zoomRatio={1}
+            shape={exampleShape}
+            removeShape={() => {}}
+            updateShapeData={updateShapeData}
+            visiblePagesIndex={0}
+          />
+        </ViewerStateContext.Provider>
+      </DocumentPermissionsContext.Provider>,
+    )
+
+    window.HTMLElement.prototype.getClientRects = () => {
+      return [
+        {
+          width: 700,
+          height: 700,
+          top: 100,
+          left: 100,
+          right: 800,
+          bottom: 800,
+          x: 100,
+          y: 100,
+        },
+      ] as any
+    }
+
+    mouseUp(600, 600)
     expect(updateShapeData).toBeCalled()
   })
 

@@ -259,6 +259,93 @@ describe('Shapes component', () => {
     expect(updateState).toBeCalledWith({ hasChanges: true })
   })
 
+  it('should handle drag & drop event', () => {
+    const updateState = jest.fn()
+    const updateDocumentData = jest.fn()
+
+    const wrapper = mount(
+      <DocumentDataContext.Provider
+        value={{ documentData: exampleDocumentData, updateDocumentData, isInProgress: false, triggerReload: () => {} }}>
+        <DocumentPermissionsContext.Provider value={{ canEdit: true, canHideRedaction: true, canHideWatermark: true }}>
+          <ViewerStateContext.Provider
+            value={{
+              ...defaultViewerState,
+              showRedaction: true,
+              showShapes: true,
+              updateState,
+              pagesRects: [
+                {
+                  visiblePage: 0,
+                  pageRect: {
+                    top: 100,
+                    bottom: 800,
+                    right: 800,
+                    left: 100,
+                    toJSON: () => {},
+                    x: 100,
+                    y: 100,
+                    height: 700,
+                    width: 700,
+                  },
+                },
+              ],
+              boxBottom: 800,
+              boxTop: 100,
+              boxRight: 800,
+              boxLeft: 100,
+            }}>
+            <ShapesWidget {...defaultProps} />
+          </ViewerStateContext.Provider>
+        </DocumentPermissionsContext.Provider>
+      </DocumentDataContext.Provider>,
+    )
+
+    window.HTMLElement.prototype.getClientRects = () => {
+      return [
+        {
+          width: 700,
+          height: 700,
+          top: 100,
+          left: 100,
+          right: 800,
+          bottom: 800,
+          x: 100,
+          y: 100,
+        },
+      ] as any
+    }
+
+    wrapper
+      .find(ShapeSkeleton)
+      .last()
+      .simulate('drop', {
+        dataTransfer: {
+          getData: () => {
+            return JSON.stringify({
+              type: 'highlights',
+              shape: {
+                guid: '9a324f30-1423-11e9-bcb9-d719ddfb5f43',
+                imageIndex: 1,
+                h: 100,
+                w: 100,
+                x: 100,
+                y: 100,
+              },
+              offset: {
+                width: 10,
+                height: 10,
+              },
+            })
+          },
+        },
+        pageX: 600,
+        pageY: 600,
+      })
+
+    expect(updateDocumentData).toBeCalled()
+    expect(updateState).toBeCalledWith({ hasChanges: true })
+  })
+
   it('should render ShapeDraft without crashing', () => {
     const wrapper = shallow(<ShapeDraft dimensions={{ top: 10, left: 20, height: 30, width: 40 }} />)
     expect(wrapper).toMatchSnapshot()
