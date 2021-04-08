@@ -1,6 +1,6 @@
 import { createStyles, makeStyles, TableCell, Tooltip } from '@material-ui/core'
 import clsx from 'clsx'
-import React from 'react'
+import React, { FC } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 
 const useStyles = makeStyles(() => {
@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => {
   })
 })
 
-export const DescriptionField: React.FC<{ text: string }> = ({ text }) => {
+export const DescriptionField: FC<{ text: string }> = ({ text }) => {
   const globalClasses = useGlobalStyles()
   const classes = useStyles()
 

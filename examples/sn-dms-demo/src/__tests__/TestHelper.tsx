@@ -1,7 +1,6 @@
 import { Repository } from '@sensenet/client-core'
 import { Reducers, Store } from '@sensenet/redux'
-
-import { CreateStoreOptions } from '@sensenet/redux/dist/Store'
+import { CreateStoreOptions } from '@sensenet/redux/dist/types/Store'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { combineReducers } from 'redux'

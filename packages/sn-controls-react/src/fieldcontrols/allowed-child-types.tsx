@@ -1,21 +1,23 @@
 import { ConstantContent, ODataCollectionResponse } from '@sensenet/client-core'
 import { deepMerge } from '@sensenet/client-utils'
 import { ContentType, GenericContent } from '@sensenet/default-content-types'
-import ClickAwayListener from '@material-ui/core/ClickAwayListener'
-import FormGroup from '@material-ui/core/FormGroup'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import IconButton from '@material-ui/core/IconButton'
-import InputLabel from '@material-ui/core/InputLabel'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import ListItemText from '@material-ui/core/ListItemText'
-import Paper from '@material-ui/core/Paper'
-import createStyles from '@material-ui/core/styles/createStyles'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
+import {
+  ClickAwayListener,
+  createStyles,
+  FormGroup,
+  FormHelperText,
+  IconButton,
+  InputLabel,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemSecondaryAction,
+  ListItemText,
+  makeStyles,
+  Paper,
+  TextField,
+  Typography,
+} from '@material-ui/core'
 import React, { useCallback, useEffect, useState } from 'react'
 import { typeicons } from '../assets/icons'
 import { ReactClientFieldSetting } from './client-field-setting'

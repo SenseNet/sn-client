@@ -1,9 +1,7 @@
 import { deepMerge } from '@sensenet/client-utils'
-import { SlideProps } from '@material-ui/core/Slide'
-import { Theme } from '@material-ui/core/styles'
+import { MuiThemeProvider, SlideProps, Theme } from '@material-ui/core'
 import React, { ReactNode } from 'react'
-import { ThemeProvider } from 'styled-components'
-import loaderImage from '../../assets/loader.gif'
+import loaderImage from '../assets/loader.gif'
 import {
   CommentsContextProvider,
   CommentStateProvider,
@@ -81,7 +79,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = (props) => {
     <DocumentViewerApiSettingsProvider options={props.api}>
       <LocalizationContext.Provider value={deepMerge(defaultLocalization, props.localization)}>
         <ViewerSettingsContext.Provider value={props}>
-          <ThemeProvider theme={props.theme || defaultTheme}>
+          <MuiThemeProvider theme={props.theme || defaultTheme}>
             <DocumentDataProvider>
               <DocumentPermissionsContextProvider>
                 <PreviewImageDataContextProvider>
@@ -108,7 +106,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = (props) => {
                 </PreviewImageDataContextProvider>
               </DocumentPermissionsContextProvider>
             </DocumentDataProvider>
-          </ThemeProvider>
+          </MuiThemeProvider>
         </ViewerSettingsContext.Provider>
       </LocalizationContext.Provider>
     </DocumentViewerApiSettingsProvider>

@@ -1,6 +1,6 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import TableCell from '@material-ui/core/TableCell'
-import React from 'react'
+import React, { Component } from 'react'
 
 export interface ReferencedUserCellProps {
   content: GenericContent
@@ -11,7 +11,7 @@ export interface ReferencedUserCellState {
   status: boolean
 }
 
-export class ReferencedUserCell extends React.Component<ReferencedUserCellProps, ReferencedUserCellState> {
+export class ReferencedUserCell extends Component<ReferencedUserCellProps, ReferencedUserCellState> {
   public render() {
     const { content, fieldName } = this.props
     const userName = ((content as any)[fieldName] as any).Name as string

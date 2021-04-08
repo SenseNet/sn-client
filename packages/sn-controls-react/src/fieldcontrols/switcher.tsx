@@ -3,15 +3,17 @@
  */
 import { deepMerge } from '@sensenet/client-utils'
 import { FieldSetting } from '@sensenet/default-content-types'
-import FormControl from '@material-ui/core/FormControl'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import Grid from '@material-ui/core/Grid'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
-import createStyles from '@material-ui/core/styles/createStyles'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import withStyles from '@material-ui/core/styles/withStyles'
-import MuiSwitch from '@material-ui/core/Switch'
-import Typography from '@material-ui/core/Typography'
+import {
+  createStyles,
+  FormControl,
+  FormHelperText,
+  Grid,
+  makeStyles,
+  Switch as MuiSwitch,
+  Theme,
+  Typography,
+  withStyles,
+} from '@material-ui/core'
 import clsx from 'clsx'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'

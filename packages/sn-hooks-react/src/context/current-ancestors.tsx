@@ -1,7 +1,7 @@
 import { ODataCollectionResponse } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { createContext, FunctionComponent, useContext, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { useLogger, useRepository, useRepositoryEvents } from '../hooks'
 import { CurrentContentContext } from './current-content'
@@ -9,7 +9,7 @@ import { CurrentContentContext } from './current-content'
 /**
  * Context that will return with the current content's ancestors
  */
-export const CurrentAncestorsContext = React.createContext<GenericContent[]>([])
+export const CurrentAncestorsContext = createContext<GenericContent[]>([])
 CurrentAncestorsContext.displayName = 'CurrentAncestorsContext'
 
 export interface CurrentAncestorsProviderProps {
@@ -23,7 +23,7 @@ export interface CurrentAncestorsProviderProps {
  * Provider component for the CurrentAncestorsContext component.
  * Loads an ancestor list from the Repository. Has to be wrapped with a **CurrentContentContext** and a **RepositoryContext**
  */
-export const CurrentAncestorsProvider: React.FunctionComponent<CurrentAncestorsProviderProps> = (props) => {
+export const CurrentAncestorsProvider: FunctionComponent<CurrentAncestorsProviderProps> = (props) => {
   const currentContent = useContext(CurrentContentContext)
   const [loadLock] = useState(new Semaphore(1))
 

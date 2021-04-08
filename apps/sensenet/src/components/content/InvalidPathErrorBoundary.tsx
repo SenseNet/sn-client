@@ -1,5 +1,5 @@
 import { Button, Container, Grid, Typography } from '@material-ui/core'
-import React from 'react'
+import React, { Component } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 
 export interface InvalidPathErrorBoundaryState {
@@ -12,7 +12,7 @@ export interface InvalidPathError {
   error?: Error
 }
 
-class InvalidPath extends React.Component<RouteComponentProps, InvalidPathErrorBoundaryState> {
+class InvalidPath extends Component<RouteComponentProps, InvalidPathErrorBoundaryState> {
   public static getDerivedStateFromError(errorState: InvalidPathError) {
     if (errorState.error && errorState.currentPath) {
       return {

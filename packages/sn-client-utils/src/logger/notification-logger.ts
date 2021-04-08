@@ -1,4 +1,4 @@
-import { Injectable } from '..'
+import { Injectable } from '../inject'
 import { NotificationService } from './notification-service'
 import { AbstractLogger, LeveledLogEntry, LogLevel } from '.'
 

@@ -1,8 +1,7 @@
 import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
-import IconButton from '@material-ui/core/IconButton'
-import TableCell from '@material-ui/core/TableCell'
-import React from 'react'
+import { IconButton, TableCell } from '@material-ui/core'
+import React, { Component, MouseEvent } from 'react'
 
 export const styles = {
   actionMenuButton: {
@@ -33,7 +32,7 @@ export const styles = {
 export interface ActionsCellProps<T extends GenericContent> {
   content: T
   actions: ActionModel[]
-  openActionMenu: (ev: React.MouseEvent) => any
+  openActionMenu: (ev: MouseEvent) => any
   virtual?: boolean
 }
 
@@ -42,7 +41,7 @@ export interface MenuCellState {
   anchorLeft: number
 }
 
-export class ActionsCell<T extends GenericContent> extends React.Component<ActionsCellProps<T>, MenuCellState> {
+export class ActionsCell<T extends GenericContent> extends Component<ActionsCellProps<T>, MenuCellState> {
   constructor(props: ActionsCellProps<T>) {
     super(props)
     this.state = {
@@ -51,7 +50,7 @@ export class ActionsCell<T extends GenericContent> extends React.Component<Actio
     }
     this.handleActionMenuClick = this.handleActionMenuClick.bind(this)
   }
-  public handleActionMenuClick(e: React.MouseEvent) {
+  public handleActionMenuClick(e: MouseEvent) {
     this.props.openActionMenu(e)
   }
   public render() {

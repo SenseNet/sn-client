@@ -3,9 +3,7 @@
  */
 import { deepMerge } from '@sensenet/client-utils'
 import { ShortTextFieldSetting } from '@sensenet/default-content-types'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
+import { FormHelperText, TextField, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'

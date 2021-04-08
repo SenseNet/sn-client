@@ -1,6 +1,6 @@
 import People from '@material-ui/icons/People'
 import Person from '@material-ui/icons/Person'
-import React from 'react'
+import React, { FunctionComponent } from 'react'
 import { PATHS } from '../application-paths'
 import { useGridSwitcher } from '../hooks'
 import { Content } from './content'
@@ -24,7 +24,7 @@ const gridSwitcherConfig = [
   },
 ]
 
-const UsersAndGroups: React.FunctionComponent = () => {
+const UsersAndGroups: FunctionComponent = () => {
   const gridSwitcher = useGridSwitcher({ config: gridSwitcherConfig, defaultItem: gridSwitcherConfig[0] })
 
   return (

@@ -3,19 +3,21 @@
  */
 import { deepMerge, PathHelper } from '@sensenet/client-utils'
 import { GenericContent, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
-import Avatar from '@material-ui/core/Avatar'
-import Chip from '@material-ui/core/Chip'
-import FormControl from '@material-ui/core/FormControl'
-import FormGroup from '@material-ui/core/FormGroup'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import Input from '@material-ui/core/Input'
-import InputLabel from '@material-ui/core/InputLabel'
-import { MenuProps } from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
-import createStyles from '@material-ui/core/styles/createStyles'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import Typography from '@material-ui/core/Typography'
+import {
+  Avatar,
+  Chip,
+  createStyles,
+  FormControl,
+  FormGroup,
+  FormHelperText,
+  Input,
+  InputLabel,
+  makeStyles,
+  MenuItem,
+  MenuProps,
+  Select,
+  Typography,
+} from '@material-ui/core'
 import React, { useCallback, useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { renderIconDefault } from './icon'

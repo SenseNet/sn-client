@@ -1,8 +1,8 @@
 import { useInjector } from '@sensenet/hooks-react'
-import React, { useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import { defaultSettings, PersonalSettings } from '../services/PersonalSettings'
 
-export const PersonalSettingsContext = React.createContext(defaultSettings)
+export const PersonalSettingsContext = createContext(defaultSettings)
 
 export const PersonalSettingsContextProvider: React.FunctionComponent = (props) => {
   const di = useInjector()

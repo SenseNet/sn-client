@@ -2,11 +2,7 @@
  * @module FieldControls
  */
 import { deepMerge } from '@sensenet/client-utils'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import InputLabel from '@material-ui/core/InputLabel'
-import createStyles from '@material-ui/core/styles/createStyles'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import Typography from '@material-ui/core/Typography'
+import { createStyles, FormHelperText, InputLabel, makeStyles, Typography } from '@material-ui/core'
 import React, { useEffect, useRef, useState } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'

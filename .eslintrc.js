@@ -25,6 +25,14 @@ module.exports = {
       version: 'detect',
     },
     jsdoc: { exemptEmptyFunctions: false },
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
+    'import/resolver': {
+      typescript: {
+        project: 'packages/*/tsconfig.json',
+      },
+    },
   },
   rules: {
     'react/prop-types': 0,
@@ -39,6 +47,7 @@ module.exports = {
     'require-jsdoc': 1,
     'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
     'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
+    'import/default': 0,
     'import/order': [
       'error',
       {
