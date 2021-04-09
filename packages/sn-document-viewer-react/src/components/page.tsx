@@ -317,8 +317,16 @@ export const Page: React.FC<PageProps> = (props) => {
     setMouseIsDown(true)
     setStartX(ev.nativeEvent.pageX / (props.page.Height / (page.image?.Height || 1)))
     setStartY(ev.nativeEvent.pageY / (props.page.Height / (page.image?.Height || 1)))
-    setStartOffsetX(ev.nativeEvent.offsetX / (props.page.Height / (page.image?.Height || 1)))
-    setStartOffsetY(ev.nativeEvent.offsetY / (props.page.Height / (page.image?.Height || 1)))
+    setStartOffsetX(
+      (ev.nativeEvent.pageX -
+        Math.max(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.left!, viewerState.boxLeft)) /
+        (props.page.Height / (page.image?.Height || 1)),
+    )
+    setStartOffsetY(
+      (ev.nativeEvent.pageY -
+        Math.max(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.top!, viewerState.boxTop)) /
+        (props.page.Height / (page.image?.Height || 1)),
+    )
   }
 
   return (
