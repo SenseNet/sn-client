@@ -2,7 +2,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import CloudUploadTwoTone from '@material-ui/icons/CloudUploadTwoTone'
 import clsx from 'clsx'
-import React, { useState } from 'react'
+import React, { CSSProperties, DragEvent, FunctionComponent, useState } from 'react'
 import { useGlobalStyles } from '../globalStyles'
 import { useDialog } from './dialogs'
 import { getFilesFromDragEvent } from './dialogs/upload/helper'
@@ -37,17 +37,17 @@ const useStyles = makeStyles((theme: Theme) => {
 
 type Props = {
   parentContent?: GenericContent
-  onDrop?: (event: React.DragEvent) => void
-  style?: React.CSSProperties
+  onDrop?: (event: DragEvent) => void
+  style?: CSSProperties
 }
 
-export const DropFileArea: React.FunctionComponent<Props> = (props) => {
+export const DropFileArea: FunctionComponent<Props> = (props) => {
   const [isDragOver, setDragOver] = useState(false)
   const { openDialog } = useDialog()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
 
-  const onDrop = async (event: React.DragEvent) => {
+  const onDrop = async (event: DragEvent) => {
     event.stopPropagation()
     event.preventDefault()
     setDragOver(false)

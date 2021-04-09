@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { Component } from 'react'
 
-export class ErrorBoundary extends React.Component<{ spy: any }, { hasError: boolean }> {
+export class ErrorBoundary extends Component<{ spy: any }, { hasError: boolean }> {
   static getDerivedStateFromError() {
     return {
       hasError: true,

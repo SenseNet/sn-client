@@ -1,5 +1,5 @@
 import { LogLevel } from '@sensenet/client-utils'
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { createContext, Dispatch, SetStateAction, useState } from 'react'
 
 export interface EventListFilter {
   term?: string
@@ -7,7 +7,7 @@ export interface EventListFilter {
   logLevel?: LogLevel
 }
 
-export const EventListFilterContext = React.createContext<{
+export const EventListFilterContext = createContext<{
   filter: EventListFilter
   setFilter: Dispatch<SetStateAction<EventListFilter>>
 }>({ filter: {}, setFilter: () => ({} as any) })

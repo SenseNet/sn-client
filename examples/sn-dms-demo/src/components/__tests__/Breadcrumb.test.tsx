@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { render } from 'react-dom'
 import { MemoryRouter } from 'react-router-dom'
 import { withStore } from '../../__tests__/TestHelper'
 import BreadCrumb from '../BreadCrumb'
@@ -20,7 +20,7 @@ it('renders without crashing', () => {
       },
     },
   }
-  ReactDOM.render(
+  render(
     withStore(
       <MemoryRouter>
         <BreadCrumb

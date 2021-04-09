@@ -1,5 +1,5 @@
 import { ActionModel, ContentType, GenericContent } from '@sensenet/default-content-types'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as DMSActions from '../../Actions'
 import { rootStateType } from '../../store/rootReducer'
@@ -31,7 +31,7 @@ interface AddNemMenuState {
   currentContent: GenericContent | null
 }
 
-class AddNewMenu extends React.Component<
+class AddNewMenu extends Component<
   AddNemMenuProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   AddNemMenuState
 > {

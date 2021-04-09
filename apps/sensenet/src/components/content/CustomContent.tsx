@@ -1,5 +1,5 @@
 import { ConstantContent } from '@sensenet/client-core'
-import React, { useContext } from 'react'
+import React, { FunctionComponent, useContext } from 'react'
 import { useRouteMatch } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'
 import { useTreeNavigation } from '../../hooks/use-tree-navigation'
@@ -7,7 +7,7 @@ import { Explore, ExploreProps } from './Explore'
 
 type ContentProps = Partial<ExploreProps>
 
-export const CustomContent: React.FunctionComponent<ContentProps> = () => {
+export const CustomContent: FunctionComponent<ContentProps> = () => {
   const match = useRouteMatch<{ browseType: string; path: string }>()
   const settings = useContext(ResponsivePersonalSettings)
 

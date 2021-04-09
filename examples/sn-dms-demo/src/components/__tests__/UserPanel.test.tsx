@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { render } from 'react-dom'
 import { withStore } from '../../__tests__/TestHelper'
 import UserPanel from '../UserPanel'
 
@@ -24,5 +24,5 @@ it('renders without crashing', () => {
     },
   }
 
-  ReactDOM.render(withStore(<UserPanel />, options), div)
+  render(withStore(<UserPanel />, options), div)
 })

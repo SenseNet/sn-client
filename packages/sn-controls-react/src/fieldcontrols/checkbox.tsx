@@ -3,10 +3,7 @@
  */
 import { deepMerge } from '@sensenet/client-utils'
 import { FieldSetting } from '@sensenet/default-content-types'
-import MuiCheckbox from '@material-ui/core/Checkbox'
-import FormControl from '@material-ui/core/FormControl'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormHelperText from '@material-ui/core/FormHelperText'
+import { FormControl, FormControlLabel, FormHelperText, Checkbox as MuiCheckbox } from '@material-ui/core'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'

@@ -4,7 +4,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import match from 'autosuggest-highlight/match'
 import parse from 'autosuggest-highlight/parse'
-import React, { useContext } from 'react'
+import React, { FunctionComponent, useContext } from 'react'
 import { RenderSuggestionParams } from 'react-autosuggest'
 import { ResponsiveContext } from '../../context'
 import { globals } from '../../globalStyles'
@@ -21,7 +21,7 @@ export const getMatchParts = (hits: string[], term: string) => {
   )
 }
 
-export const CommandPaletteSuggestion: React.FunctionComponent<{
+export const CommandPaletteSuggestion: FunctionComponent<{
   suggestion: CommandPaletteItem
   params: RenderSuggestionParams
 }> = ({ suggestion, params }) => {

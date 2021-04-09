@@ -1,8 +1,8 @@
 import { Workspace } from '@sensenet/default-content-types'
 import MenuList from '@material-ui/core/MenuList'
 import withStyles from '@material-ui/core/styles/withStyles'
-import React from 'react'
-import Scrollbars from 'react-custom-scrollbars'
+import React, { Component } from 'react'
+import { Scrollbars } from 'react-custom-scrollbars'
 import { connect } from 'react-redux'
 import { rootStateType } from '../../store/rootReducer'
 import { getWorkspaces, searchWorkspaces } from '../../store/workspaces/actions'
@@ -56,7 +56,7 @@ interface WorkspaceListProps {
   matches: boolean
 }
 
-class WorkspaceList extends React.Component<
+class WorkspaceList extends Component<
   { classes: any } & WorkspaceListProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   WorkspaceListState
 > {

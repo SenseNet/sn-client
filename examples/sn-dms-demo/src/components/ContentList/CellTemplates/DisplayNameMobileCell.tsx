@@ -3,7 +3,7 @@ import { Icon, iconType } from '@sensenet/icons-react'
 import Checkbox from '@material-ui/core/Checkbox'
 import TableCell from '@material-ui/core/TableCell'
 import Tooltip from '@material-ui/core/Tooltip'
-import React from 'react'
+import React, { Component, MouseEvent } from 'react'
 import { connect } from 'react-redux'
 import { resources } from '../../../assets/resources'
 import { select, setActive } from '../../../store/documentlibrary/actions'
@@ -16,7 +16,7 @@ export interface DisplayNameMobilCellProps {
   hasSelected: boolean
   icons: any
   select: (selection: GenericContent[]) => void
-  onActivate: (ev: React.MouseEvent, content: GenericContent) => void
+  onActivate: (ev: MouseEvent, content: GenericContent) => void
 }
 
 const styles = {
@@ -47,7 +47,7 @@ const mapDispatchToProps = {
   select,
   setActive,
 }
-class DisplayNameMobileCell extends React.Component<
+class DisplayNameMobileCell extends Component<
   DisplayNameMobilCellProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   {}
 > {
@@ -67,7 +67,7 @@ class DisplayNameMobileCell extends React.Component<
     this.handleDisplayNameClick = this.handleDisplayNameClick.bind(this)
   }
 
-  private handleContentSelection(ev: React.MouseEvent) {
+  private handleContentSelection(ev: MouseEvent) {
     ev.preventDefault()
     ev.stopPropagation()
     if (this.props.selected.find((c) => c.Id === this.props.content.Id)) {
@@ -77,13 +77,13 @@ class DisplayNameMobileCell extends React.Component<
     }
   }
 
-  private handleDisplayNameClick(ev: React.MouseEvent) {
+  private handleDisplayNameClick(ev: MouseEvent) {
     ev.preventDefault()
     ev.stopPropagation()
     this.props.onActivate(ev, this.props.content)
   }
 
-  private handleOnClick(ev: React.MouseEvent) {
+  private handleOnClick(ev: MouseEvent) {
     ev.preventDefault()
     ev.stopPropagation()
     this.props.setActive(this.props.content)

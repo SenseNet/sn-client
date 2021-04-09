@@ -3,7 +3,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
 import withStyles from '@material-ui/core/styles/withStyles'
 import groupBy from 'lodash.groupby'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { LogEntry, readLogEntries } from '../store/actionlog/actions'
@@ -61,7 +61,7 @@ const mapDispatchToProps = {
   read: readLogEntries,
 }
 
-class MessageBar extends React.Component<
+class MessageBar extends Component<
   { classes: any } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   MessageBarState
 > {

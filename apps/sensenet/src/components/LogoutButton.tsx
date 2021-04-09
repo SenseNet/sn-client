@@ -1,15 +1,15 @@
 import Button from '@material-ui/core/Button'
 import Tooltip from '@material-ui/core/Tooltip'
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
-import React from 'react'
+import React, { CSSProperties, FunctionComponent } from 'react'
 import { useLocalization, useTheme } from '../hooks'
 import { useDialog } from './dialogs'
 
 export type LogoutButtonProps = {
-  buttonStyle?: React.CSSProperties
+  buttonStyle?: CSSProperties
 }
 
-export const LogoutButton: React.FunctionComponent<LogoutButtonProps> = (props) => {
+export const LogoutButton: FunctionComponent<LogoutButtonProps> = (props) => {
   const theme = useTheme()
   const localization = useLocalization().logout
   const { openDialog } = useDialog()

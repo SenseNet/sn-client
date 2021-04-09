@@ -5,7 +5,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
-import React from 'react'
+import React, { Component } from 'react'
 import { ExtendedUploadProgressInfo } from '../../Actions'
 import { icons } from '../../assets/icons'
 import { resources } from '../../assets/resources'
@@ -25,7 +25,7 @@ export interface UploadBarItemState {
   isLoading: boolean
 }
 
-export class UploadBarItem extends React.Component<UploadBarItemProps, UploadBarItemState> {
+export class UploadBarItem extends Component<UploadBarItemProps, UploadBarItemState> {
   public state = { icon: 'File', displayName: '', percent: 0, isLoading: true }
 
   public static getDerivedStateFromProps(newProps: UploadBarItemProps) {

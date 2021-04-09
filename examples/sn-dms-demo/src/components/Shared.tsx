@@ -3,7 +3,7 @@ import { ContentList } from '@sensenet/list-controls-react'
 import { Actions } from '@sensenet/redux'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { closeActionMenu, openActionMenu } from '../Actions'
@@ -40,9 +40,7 @@ const mapDispatchToProps = {
   updateChildrenOptions,
 }
 
-class Shared extends React.Component<
-  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & RouteComponentProps
-> {
+class Shared extends Component<ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & RouteComponentProps> {
   private load() {
     const user = this.props.currentUser
     this.props.getSharedItems(user)

@@ -1,7 +1,4 @@
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
-import createStyles from '@material-ui/core/styles/createStyles'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import SvgIcon from '@material-ui/core/SvgIcon/SvgIcon'
+import { createStyles, makeStyles, SvgIcon, Theme } from '@material-ui/core'
 import React from 'react'
 
 type Props = {

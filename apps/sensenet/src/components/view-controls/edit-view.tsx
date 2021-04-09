@@ -5,10 +5,9 @@ import { isExtendedError } from '@sensenet/client-core'
 import { ActionNameType, EditView as SnEditView } from '@sensenet/controls-react'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import enUS from 'date-fns/locale/en-US'
-import hu from 'date-fns/locale/hu'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
+import { LocalizationObject } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { navigateToAction } from '../../services'
@@ -109,7 +108,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         controlMapper={controlMapper}
         localization={{ submit: localization.forms.submit, cancel: localization.forms.cancel }}
         hideDescription
-        locale={personalSettings.language === 'hungarian' ? hu : enUS}
+        locale={LocalizationObject[personalSettings.language].locale}
         classes={{
           ...classes,
           cancel: globalClasses.cancelButton,

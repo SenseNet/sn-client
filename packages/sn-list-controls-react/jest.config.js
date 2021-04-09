@@ -7,6 +7,7 @@ module.exports = {
   coveragePathIgnorePatterns: ['index.ts', '[eE]xample.*'],
   setupFilesAfterEnv: ['<rootDir>../../jest/setup.js'],
   moduleNameMapper: {
+    ...base.moduleNameMapper,
     '\\.css$': '<rootDir>../../jest/cssTransform.js',
   },
   snapshotSerializers: ['enzyme-to-json/serializer'],

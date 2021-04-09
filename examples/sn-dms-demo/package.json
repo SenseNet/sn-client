@@ -70,7 +70,7 @@
     "@types/chance": "^1.1.1",
     "@types/jest": "^26.0.21",
     "@types/lodash.groupby": "^4.6.6",
-    "@types/node": "^14.14.35",
+    "@types/node": "^14.14.37",
     "@types/react": "^17.0.3",
     "@types/react-custom-scrollbars": "^4.0.6",
     "@types/react-dom": "^17.0.3",

@@ -1,7 +1,7 @@
 import { useInjector } from '@sensenet/hooks-react'
 import enUS from 'date-fns/locale/en-US'
 import hu from 'date-fns/locale/hu'
-import React, { useEffect, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import { usePersonalSettings } from '../hooks'
 import DefaultLocalization from '../localization/default'
 import { LocalizationService } from '../services/LocalizationService'
@@ -14,7 +14,7 @@ export const LocalizationObject = {
 /**
  * Context that can be used for getting localization values
  */
-export const LocalizationContext = React.createContext({
+export const LocalizationContext = createContext({
   service: new LocalizationService(),
   values: DefaultLocalization,
 })
