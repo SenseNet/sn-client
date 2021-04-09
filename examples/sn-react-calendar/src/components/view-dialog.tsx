@@ -5,15 +5,13 @@ import DialogContent from '@material-ui/core/DialogContent'
 import Slide from '@material-ui/core/Slide'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import { TransitionProps } from '@material-ui/core/transitions'
-import React from 'react'
+import React, { forwardRef, FunctionComponent, ReactElement, Ref } from 'react'
 import { CalendarEvent } from '../CalendarEvent-type'
 import { ViewDialogBody } from './view-dialog-body'
 
-const Transition = React.forwardRef(
-  (props: TransitionProps & { children?: React.ReactElement<any, any> }, ref: React.Ref<unknown>) => {
-    return <Slide direction="up" ref={ref} {...props} />
-  },
-)
+const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => {
+  return <Slide direction="up" ref={ref} {...props} />
+})
 Transition.displayName = 'Transition'
 
 export interface DialogProps {
@@ -33,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-export const DialogComponent: React.FunctionComponent<DialogProps> = (props) => {
+export const DialogComponent: FunctionComponent<DialogProps> = (props) => {
   const classes = useStyles()
 
   return (

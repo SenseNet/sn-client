@@ -2,7 +2,7 @@ import { Repository } from '@sensenet/client-core'
 import { Store } from '@sensenet/redux'
 import { EventHub } from '@sensenet/repository-events'
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { ReduxDiMiddleware } from 'redux-di-middleware'
 import { loadUser, OidcProvider } from 'redux-oidc'
@@ -35,7 +35,7 @@ loadUser(store, userManager)
 
 store.dispatch(initLog())
 
-ReactDOM.render(
+render(
   <Provider store={store}>
     <OidcProvider store={store} userManager={userManager}>
       <Sensenet />

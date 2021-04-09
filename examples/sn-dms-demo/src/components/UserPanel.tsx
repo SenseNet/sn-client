@@ -1,5 +1,4 @@
 import { Reducers } from '@sensenet/redux'
-import { fullName, userAvatarPath, userContent, userLanguage, userName } from '@sensenet/redux/dist/reducers'
 import Avatar from '@material-ui/core/Avatar'
 import React from 'react'
 import { connect } from 'react-redux'
@@ -18,11 +17,11 @@ const userPanel = ({
   repositoryUrl,
 }: {
   user: {
-    userName: ReturnType<typeof userName>
-    fullName: ReturnType<typeof fullName>
-    userLanguage: ReturnType<typeof userLanguage>
-    userAvatarPath: ReturnType<typeof userAvatarPath>
-    content: ReturnType<typeof userContent>
+    userName: ReturnType<typeof Reducers.userName>
+    fullName: ReturnType<typeof Reducers.fullName>
+    userLanguage: ReturnType<typeof Reducers.userLanguage>
+    userAvatarPath: ReturnType<typeof Reducers.userAvatarPath>
+    content: ReturnType<typeof Reducers.userContent>
   }
   repositoryUrl: string
 }) => (
@@ -34,4 +33,4 @@ const userPanel = ({
   />
 )
 
-export default connect(mapStateToProps, {})(userPanel as React.StatelessComponent)
+export default connect(mapStateToProps, {})(userPanel as React.FunctionComponent)

@@ -1,7 +1,7 @@
 import { Icon, iconType } from '@sensenet/icons-react'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import TableCell from '@material-ui/core/TableCell'
-import React from 'react'
+import React, { Component, createRef, FormEvent, KeyboardEvent, MouseEvent, RefObject } from 'react'
 import { connect } from 'react-redux'
 import { setEditedContentId } from '../../../Actions'
 
@@ -17,12 +17,12 @@ interface RenameCellProps {
   onFinish: (newDisplayName: string) => any
 }
 
-class RenameCell extends React.Component<
+class RenameCell extends Component<
   RenameCellProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   { newDisplayName: string }
 > {
   public state = { newDisplayName: this.props.displayName }
-  public inputRef: React.RefObject<HTMLInputElement>
+  public inputRef: RefObject<HTMLInputElement>
 
   constructor(props: RenameCell['props']) {
     super(props)
@@ -31,7 +31,7 @@ class RenameCell extends React.Component<
     this.handleKeyUp = this.handleKeyUp.bind(this)
     this.handleDismiss = this.handleDismiss.bind(this)
     this.handleClick = this.handleClick.bind(this)
-    this.inputRef = React.createRef()
+    this.inputRef = createRef()
   }
 
   public componentDidMount() {
@@ -40,7 +40,7 @@ class RenameCell extends React.Component<
     }, 300)
   }
 
-  private handleChange(ev: React.FormEvent<HTMLInputElement>) {
+  private handleChange(ev: FormEvent<HTMLInputElement>) {
     this.setState({
       newDisplayName: ev.currentTarget.value,
     })
@@ -50,19 +50,19 @@ class RenameCell extends React.Component<
     this.props.setEdited(0)
   }
 
-  private handleSubmit(ev: React.FormEvent) {
+  private handleSubmit(ev: FormEvent) {
     ev.preventDefault()
     this.props.onFinish(this.state.newDisplayName)
     this.handleDismiss()
   }
 
-  private handleKeyUp(ev: React.KeyboardEvent) {
+  private handleKeyUp(ev: KeyboardEvent) {
     if (ev.key === 'Escape') {
       this.handleDismiss()
     }
   }
 
-  private handleClick(ev: React.MouseEvent) {
+  private handleClick(ev: MouseEvent) {
     ev.preventDefault()
     ev.stopPropagation()
     ev.nativeEvent.stopImmediatePropagation()

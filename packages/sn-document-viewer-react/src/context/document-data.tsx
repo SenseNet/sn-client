@@ -1,7 +1,7 @@
 import { DocumentData } from '@sensenet/client-core'
 import { deepMerge, DeepPartial, sleepAsync } from '@sensenet/client-utils'
 import { useRepository } from '@sensenet/hooks-react'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { createContext, FC, useCallback, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { POLLING_INTERVAL } from '../components'
 import { PreviewState } from '../enums'
@@ -36,9 +36,9 @@ export const defaultDocumentDataContextValue: DocumentDataContextType = {
   triggerReload: () => {},
 }
 
-export const DocumentDataContext = React.createContext<DocumentDataContextType>(defaultDocumentDataContextValue)
+export const DocumentDataContext = createContext<DocumentDataContextType>(defaultDocumentDataContextValue)
 
-export const DocumentDataProvider: React.FC = ({ children }) => {
+export const DocumentDataProvider: FC = ({ children }) => {
   const api = useDocumentViewerApi()
   const doc = useViewerSettings()
   const repo = useRepository()

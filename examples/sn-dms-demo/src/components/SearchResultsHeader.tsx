@@ -8,7 +8,7 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Close from '@material-ui/icons/Close'
 import Save from '@material-ui/icons/Save'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { openDialog } from '../Actions'
 import { resources } from '../assets/resources'
@@ -35,7 +35,7 @@ const mapDispatchToProps = {
   saveQuery,
 }
 
-class SearchResultsHeader extends React.Component<
+class SearchResultsHeader extends Component<
   SearchResultsHeaderProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   SearchResultsHeaderState
 > {

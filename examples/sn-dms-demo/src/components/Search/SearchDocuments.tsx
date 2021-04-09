@@ -8,7 +8,7 @@ import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
 import Popover from '@material-ui/core/Popover'
 import Typography from '@material-ui/core/Typography'
-import React from 'react'
+import React, { Component, CSSProperties, FormEvent, FunctionComponent, MouseEvent } from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { resources } from '../../assets/resources'
@@ -57,19 +57,19 @@ interface SearchDocumentsState {
 
 const titleWidth = 2
 const contentWidth = 7
-const containerStyles: React.CSSProperties = {
+const containerStyles: CSSProperties = {
   padding: '1em',
   display: 'flex',
   flexDirection: 'column',
   marginRight: '4em',
 }
 
-const rowStyles: React.CSSProperties = {
+const rowStyles: CSSProperties = {
   display: 'flex',
   flexDirection: 'row',
 }
 
-const titleColumnStyles: React.CSSProperties = {
+const titleColumnStyles: CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -78,14 +78,14 @@ const titleColumnStyles: React.CSSProperties = {
   width: 200,
 }
 
-const contentColumnStyles: React.CSSProperties = {
+const contentColumnStyles: CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   flexGrow: contentWidth,
 }
 
-const SearchRow: React.StatelessComponent<{ title: string }> = (props) => (
+const SearchRow: FunctionComponent<{ title: string }> = (props) => (
   <div style={rowStyles}>
     <Typography style={titleColumnStyles} variant="body1">
       {props.title}
@@ -94,8 +94,8 @@ const SearchRow: React.StatelessComponent<{ title: string }> = (props) => (
   </div>
 )
 
-class SearchDocuments extends React.Component<
-  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & { style?: React.CSSProperties } & React.Props<any>,
+class SearchDocuments extends Component<
+  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & { style?: CSSProperties } & any,
   SearchDocumentsState
 > {
   constructor(props: SearchDocuments['props']) {
@@ -140,7 +140,7 @@ class SearchDocuments extends React.Component<
     callback(key, value)
   }
 
-  private handleOnSubmit(ev: React.FormEvent) {
+  private handleOnSubmit(ev: FormEvent) {
     ev.preventDefault()
     /** */
     if (this.state.query !== this.props.query) {
@@ -153,7 +153,7 @@ class SearchDocuments extends React.Component<
     }
   }
 
-  private handlePickLocation(_ev: React.MouseEvent, options: AdvancedSearchOptions<any>) {
+  private handlePickLocation(_ev: MouseEvent, options: AdvancedSearchOptions<any>) {
     this.props.openPicker(
       <PathPickerDialog
         showAddFolder={false}

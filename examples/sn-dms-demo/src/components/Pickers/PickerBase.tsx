@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import React from 'react'
+import React, { Component, CSSProperties } from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { pickerTheme } from '../../assets/picker'
@@ -65,7 +65,7 @@ const styles = {
   },
 }
 
-class Picker extends React.Component<ReturnType<typeof mapStateToProps>, {}> {
+class Picker extends Component<ReturnType<typeof mapStateToProps>, {}> {
   public handleClose = () => {
     this.props.onClose()
   }
@@ -84,7 +84,7 @@ class Picker extends React.Component<ReturnType<typeof mapStateToProps>, {}> {
                       {resources[this.props.pickerMode.toUpperCase()]}
                     </Typography>
                     <IconButton
-                      style={styles.closeButton as React.CSSProperties}
+                      style={styles.closeButton as CSSProperties}
                       color="inherit"
                       onClick={() => this.handleClose()}>
                       <Icon type={iconType.materialui} iconName="close" style={{ color: '#fff' }} />

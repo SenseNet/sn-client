@@ -10,7 +10,6 @@ import { exampleDocumentData } from './__Mocks__/viewercontext'
 describe('Document Viewer component', () => {
   const defaultProps: DocumentViewerProps = {
     documentIdOrPath: 1,
-    theme: {} as any,
     renderAppBar: () => null,
   }
 

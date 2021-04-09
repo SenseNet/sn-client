@@ -4,7 +4,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import MenuItem from '@material-ui/core/MenuItem'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { compile } from 'path-to-regexp'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { rootStateType } from '../../store/rootReducer'
@@ -60,7 +60,7 @@ const mapDispatchToProps = {
   fetchContent: Actions.requestContent,
 }
 
-class WorkspaceListItem extends React.Component<
+class WorkspaceListItem extends Component<
   { classes: any } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & WorkspaceListItemProps
 > {
   constructor(props: WorkspaceListItem['props']) {

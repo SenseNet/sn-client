@@ -9,7 +9,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { compile } from 'path-to-regexp'
-import React from 'react'
+import React, { createElement, MouseEvent } from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router'
@@ -159,7 +159,7 @@ const DashboardDrawer: React.FunctionComponent<
 > = (props) => {
   const { logout } = useOidcAuthentication()
 
-  const handleMenuItemClick = (_e: React.MouseEvent, action: ActionModel) => {
+  const handleMenuItemClick = (_e: MouseEvent, action: ActionModel) => {
     if ((action as any).Action) {
       ;(action as any).Action()
     } else {
@@ -208,7 +208,7 @@ const DashboardDrawer: React.FunctionComponent<
                 return matches ? (
                   !item.adminOnly ? (
                     <div key={index}>
-                      {React.createElement(item.component, {
+                      {createElement(item.component, {
                         active: activeItem === item.name,
                         item,
                         chooseMenuItem,
@@ -221,7 +221,7 @@ const DashboardDrawer: React.FunctionComponent<
                 ) : item.mobile ? (
                   !item.adminOnly ? (
                     <div key={index}>
-                      {React.createElement(item.component, {
+                      {createElement(item.component, {
                         active: activeItem === item.name,
                         item,
                         chooseMenuItem,

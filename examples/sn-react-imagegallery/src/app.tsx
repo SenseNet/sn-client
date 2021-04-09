@@ -1,8 +1,8 @@
-import { UniversalHeader } from '@sensenet/universal-header'
+import { UniversalHeader } from '@sensenet/universal-header-react'
 import { Container, CssBaseline, Slide } from '@material-ui/core'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import { TransitionProps } from '@material-ui/core/transitions'
-import React from 'react'
+import React, { forwardRef, FunctionComponent, ReactElement, Ref } from 'react'
 import snLogo from './assets/sensenet_logo_transparent.png'
 import { ImageList } from './components/image-list'
 
@@ -28,13 +28,13 @@ const useHamburgerMenuStyles = makeStyles(() =>
 )
 
 // eslint-disable-next-line react/display-name
-export const Transition = React.forwardRef(
-  (props: TransitionProps & { children?: React.ReactElement<any, any> }, ref: React.Ref<unknown>) => {
+export const Transition = forwardRef(
+  (props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => {
     return <Slide direction="up" ref={ref} {...props} />
   },
 )
 
-export const App: React.FunctionComponent = () => {
+export const App: FunctionComponent = () => {
   const headerStyle = useHeaderStyles()
   const hamburgerMenuStyle = useHamburgerMenuStyles()
 

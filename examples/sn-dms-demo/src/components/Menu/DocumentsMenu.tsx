@@ -6,7 +6,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import withStyles from '@material-ui/core/styles/withStyles'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
@@ -138,7 +138,7 @@ const subMenu = [
   },
 ]
 
-class DocumentsMenu extends React.Component<
+class DocumentsMenu extends Component<
   DocumentMenuProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   {}
 > {

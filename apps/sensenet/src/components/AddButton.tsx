@@ -16,7 +16,7 @@ import {
 import { CloudUploadOutlined } from '@material-ui/icons'
 import Add from '@material-ui/icons/Add'
 import clsx from 'clsx'
-import React, { useEffect, useState } from 'react'
+import React, { FunctionComponent, MouseEvent, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { globals, useGlobalStyles } from '../globalStyles'
 import { useLocalization, usePersonalSettings, useQuery, useSnRoute } from '../hooks'
@@ -70,7 +70,7 @@ export interface AddButtonProps {
   isOpened?: boolean
 }
 
-export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
+export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const repo = useRepository()
@@ -82,7 +82,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
   const logger = useLogger('AddButton')
   const [isLoading, setIsLoading] = useState(false)
   const [isAvailable, setAvailable] = useState(false)
-  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const [hasUpload, setHasUpload] = useState(false)
   const personalSettings = usePersonalSettings()
 
@@ -163,7 +163,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
               <Tooltip title={localization.addNew} placement="right">
                 <IconButton
                   className={globalClasses.drawerButton}
-                  onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+                  onClick={(event: MouseEvent<HTMLElement>) => {
                     if (isLoading) return
                     setAnchorEl(event.currentTarget)
                     setShowSelectType(true)
@@ -189,7 +189,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = (props) => {
         <ListItem
           className={classes.listItem}
           button={true}
-          onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+          onClick={(event: MouseEvent<HTMLElement>) => {
             setAnchorEl(event.currentTarget)
             setShowSelectType(true)
           }}
