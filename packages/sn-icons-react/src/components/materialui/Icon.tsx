@@ -1,7 +1,7 @@
-import Icon from '@material-ui/core/Icon'
+import { Icon } from '@material-ui/core'
 import React from 'react'
 
-import '../../../assets/css/material.css'
+import '../../assets/css/material.css'
 
 interface MaterialIconProps {
   /**

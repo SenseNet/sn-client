@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core'
 import Add from '@material-ui/icons/Add'
 import clsx from 'clsx'
-import React from 'react'
+import React, { FunctionComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { PATHS } from '../application-paths'
 import { globals, useGlobalStyles } from '../globalStyles'
@@ -33,7 +33,7 @@ export interface SearchButtonProps {
   isOpened?: boolean
 }
 
-export const SearchButton: React.FunctionComponent<SearchButtonProps> = (props) => {
+export const SearchButton: FunctionComponent<SearchButtonProps> = (props) => {
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const theme = useTheme()

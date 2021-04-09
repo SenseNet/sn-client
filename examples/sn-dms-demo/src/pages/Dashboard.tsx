@@ -5,7 +5,7 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
 import Drawer from '@material-ui/core/Drawer'
 import IconButton from '@material-ui/core/IconButton'
-import React from 'react'
+import React, { Component } from 'react'
 import Loadable from 'react-loadable'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
@@ -99,7 +99,7 @@ export interface DashboardState {
   currentUserName: string
 }
 
-class DashboardComponent extends React.Component<
+class DashboardComponent extends Component<
   DashboardProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   DashboardState
 > {

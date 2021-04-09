@@ -1,6 +1,5 @@
 import { Repository } from '@sensenet/client-core'
-import { reactControlMapper as snReactControlMapper } from '@sensenet/controls-react'
-import * as SnFieldControls from '@sensenet/controls-react/src/fieldcontrols'
+import { FieldControls as SnFieldControls, reactControlMapper as snReactControlMapper } from '@sensenet/controls-react'
 import { LongTextFieldSetting, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import * as FieldControls from './field-controls'
 

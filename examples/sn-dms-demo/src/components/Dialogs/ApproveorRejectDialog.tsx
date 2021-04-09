@@ -4,7 +4,7 @@ import Fade from '@material-ui/core/Fade'
 import withStyles from '@material-ui/core/styles/withStyles'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import React from 'react'
+import React, { ChangeEvent, Component } from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import * as DMSActions from '../../Actions'
@@ -89,7 +89,7 @@ const mapDispatchToProps = {
   rejectContent: Actions.rejectContent,
 }
 
-class RestoreVersionDialog extends React.Component<
+class RestoreVersionDialog extends Component<
   { classes: any } & ApproveorRejectDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   ApproveorRejectDialogState
 > {
@@ -114,7 +114,7 @@ class RestoreVersionDialog extends React.Component<
           isRejected: true,
         })
   }
-  public handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  public handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     this.setState({
       rejectReason: (e.target as HTMLInputElement).value,
     })
@@ -141,7 +141,7 @@ class RestoreVersionDialog extends React.Component<
                 multiline={true}
                 rowsMax="4"
                 value={this.state.rejectReason}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.handleChange(e)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => this.handleChange(e)}
                 margin="normal"
                 fullWidth={true}
                 style={{ marginBottom: 30, marginTop: 0 }}

@@ -1,5 +1,5 @@
 {
-  "name": "@sensenet/react-calendar",
+  "name": "@example/react-calendar",
   "version": "2.0.10",
   "private": true,
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
@@ -23,7 +23,7 @@
   "devDependencies": {
     "@types/jest": "^26.0.21",
     "@types/lodash.orderby": "^4.6.6",
-    "@types/node": "^14.14.35",
+    "@types/node": "^14.14.37",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
     "@types/react-router": "^5.1.12",

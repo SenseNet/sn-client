@@ -1,4 +1,4 @@
-import { Injectable } from '..'
+import { Injectable } from '../inject'
 import { AbstractLogger, colors, LeveledLogEntry, LogLevel } from '.'
 
 /**

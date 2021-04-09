@@ -6,7 +6,7 @@ import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/sty
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
 import Notifications from '@material-ui/icons/Notifications'
 import clsx from 'clsx'
-import React, { useState } from 'react'
+import React, { ChangeEvent, Dispatch, FunctionComponent, SetStateAction, useState } from 'react'
 import { useCurrentUser } from '../../context/current-user-provider'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization, usePersonalSettings } from '../../hooks'
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-export const DesktopNavMenu: React.FunctionComponent = () => {
+export const DesktopNavMenu: FunctionComponent = () => {
   const personalSettings = usePersonalSettings()
   const injector = useInjector()
   const classes = useStyles()
@@ -75,11 +75,11 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   const { openDialog } = useDialog()
   const [openUserMenu, setOpenUserMenu] = useState(false)
 
-  const handleToggle = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
+  const handleToggle = (setter: Dispatch<SetStateAction<boolean>>) => {
     setter((prevState) => !prevState)
   }
 
-  const handleClose = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
+  const handleClose = (setter: Dispatch<SetStateAction<boolean>>) => {
     setter(false)
   }
 
@@ -93,7 +93,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
     handleClose(setOpenUserMenu)
   }
 
-  const switchTheme = () => (event: React.ChangeEvent<HTMLInputElement>) => {
+  const switchTheme = () => (event: ChangeEvent<HTMLInputElement>) => {
     const settings = service.userValue.getValue()
     service.setPersonalSettingsValue({ ...settings, theme: event.target.checked ? 'dark' : 'light' })
   }

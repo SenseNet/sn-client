@@ -1,11 +1,10 @@
 import { NewView as SnNewView } from '@sensenet/controls-react'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import enUS from 'date-fns/locale/en-US'
-import hu from 'date-fns/locale/hu'
 import React, { useCallback, useMemo } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { PATHS } from '../../application-paths'
+import { LocalizationObject } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, usePersonalSettings } from '../../hooks'
 import { navigateToAction } from '../../services'
@@ -109,7 +108,7 @@ export const NewView: React.FC<NewViewProps> = (props) => {
       uploadFolderpath="/Root/Content/demoavatars"
       controlMapper={controlMapper}
       localization={{ submit: localization.forms.submit, cancel: localization.forms.cancel }}
-      locale={personalSettings.language === 'hungarian' ? hu : enUS}
+      locale={LocalizationObject[personalSettings.language].locale}
       hideDescription
       classes={{
         ...classes,

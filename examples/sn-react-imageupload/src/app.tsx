@@ -4,7 +4,7 @@ import { useRepository } from '@sensenet/hooks-react'
 import { CssBaseline, IconButton, Snackbar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import CloseIcon from '@material-ui/icons/Close'
-import React, { useEffect, useState } from 'react'
+import React, { FunctionComponent, useEffect, useState } from 'react'
 import snLogo from './assets/sensenet_logo_transparent.png'
 import { AdvancedGridList } from './components/AdvancedGridList'
 import { SimpleAppBar } from './components/SimpleAppBar'
@@ -29,11 +29,11 @@ export const useStyles = makeStyles((theme) => ({
 /**
  * The main entry point of your app. You can start h@cking from here ;)
  */
-export const App: React.FunctionComponent = () => {
+export const App: FunctionComponent = () => {
   const repo = useRepository()
   const [data, setData] = useState<Image[]>([])
   const classes = useStyles()
-  const [isNotificationShown, ShowNotification] = React.useState<boolean>(false)
+  const [isNotificationShown, ShowNotification] = useState<boolean>(false)
   const [reloadToken, setReloadToken] = useState(1)
   /** Display the notificationbar about successful upload
    * @param {boolean} switcher Should the notification shown or not

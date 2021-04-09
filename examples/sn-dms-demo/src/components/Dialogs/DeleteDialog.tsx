@@ -5,7 +5,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import * as DMSActions from '../../Actions'
@@ -76,7 +76,7 @@ const mapDispatchToProps = {
   deleteContent: Actions.deleteBatch,
 }
 
-class DeleteDialog extends React.Component<
+class DeleteDialog extends Component<
   { classes: any } & DeleteDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   DeleteDialogState
 > {

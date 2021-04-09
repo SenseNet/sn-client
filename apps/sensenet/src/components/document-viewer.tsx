@@ -20,7 +20,7 @@ import { Button, createStyles, makeStyles, Theme } from '@material-ui/core'
 import React, { useCallback, useEffect } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { globals, useGlobalStyles } from '../globalStyles'
-import { useLocalization, useSelectionService } from '../hooks'
+import { useLocalization, useSelectionService, useTheme } from '../hooks'
 import { navigateToAction } from '../services'
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -79,6 +79,7 @@ export function DocumentViewer(props: { contentPath: string }) {
   const globalClasses = useGlobalStyles()
   const layoutAppBarStyle = useAppBarStyles()
   const disabledStyle = useZoomInOutStyles()
+  const theme = useTheme()
 
   useEffect(() => {
     const keyboardHandler = (event: KeyboardEvent) => {
@@ -102,6 +103,7 @@ export function DocumentViewer(props: { contentPath: string }) {
           onContentLoaded={(c) => selectionService.activeContent.setValue(c)}>
           <SnDocumentViewer
             documentIdOrPath={props.contentPath}
+            theme={theme}
             renderAppBar={() => (
               <LayoutAppBar classes={layoutAppBarStyle}>
                 <div style={{ flexShrink: 0 }}>

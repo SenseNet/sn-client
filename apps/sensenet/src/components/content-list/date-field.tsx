@@ -1,10 +1,10 @@
 import { TableCell, Tooltip } from '@material-ui/core'
 import clsx from 'clsx'
-import React from 'react'
+import React, { FC } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useDateUtils } from '../../hooks/use-date-utils'
 
-export const DateField: React.FC<{ date: string | Date }> = ({ date }) => {
+export const DateField: FC<{ date: string | Date }> = ({ date }) => {
   const globalClasses = useGlobalStyles()
   const dateUtils = useDateUtils()
 

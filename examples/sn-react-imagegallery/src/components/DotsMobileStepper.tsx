@@ -3,7 +3,7 @@ import MobileStepper from '@material-ui/core/MobileStepper'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
-import React from 'react'
+import React, { FunctionComponent, useState } from 'react'
 
 interface DottedStepperProps {
   imageIndex: number
@@ -13,7 +13,7 @@ interface DottedStepperProps {
 /**
  * Fetches the images from the repository.
  */
-export const DotsMobileStepper: React.FunctionComponent<DottedStepperProps> = (props) => {
+export const DotsMobileStepper: FunctionComponent<DottedStepperProps> = (props) => {
   const useStyles = makeStyles({
     root: {
       maxWidth: '100%',
@@ -22,7 +22,7 @@ export const DotsMobileStepper: React.FunctionComponent<DottedStepperProps> = (p
   })
   const classes = useStyles()
   const theme = useTheme()
-  const [activeStep, setActiveStep] = React.useState(props.imageIndex)
+  const [activeStep, setActiveStep] = useState(props.imageIndex)
   const maxSteps = props.imageListLenght
   let imageIndex = 0
   /**

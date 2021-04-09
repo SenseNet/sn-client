@@ -1,4 +1,4 @@
-import { UniversalHeader } from '@sensenet/universal-header'
+import { UniversalHeader } from '@sensenet/universal-header-react'
 import { Container, createStyles, CssBaseline, Grid, makeStyles, Toolbar } from '@material-ui/core'
 import React from 'react'
 import TodoListPanel from './components/todo-list'

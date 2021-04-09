@@ -3,10 +3,9 @@
  */
 import { deepMerge } from '@sensenet/client-utils'
 import { DateTimeFieldSetting } from '@sensenet/default-content-types'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import Typography from '@material-ui/core/Typography'
+import { FormHelperText, Typography } from '@material-ui/core'
 import { MuiPickersUtilsProvider, TimePicker as MUITimePicker } from '@material-ui/pickers'
-import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
+import type { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import DateFnsUtils from '@date-io/date-fns'
 import format from 'date-fns/format'
 import React, { useState } from 'react'

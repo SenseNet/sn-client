@@ -7,7 +7,7 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
-import React from 'react'
+import React, { Component } from 'react'
 import MediaQuery from 'react-responsive'
 import { icons } from '../../assets/icons'
 import { resources } from '../../assets/resources'
@@ -83,7 +83,7 @@ interface DialogInfoProps {
   repositoryUrl: string
 }
 
-class DialogInfo extends React.Component<{ classes: any } & DialogInfoProps, {}> {
+class DialogInfo extends Component<{ classes: any } & DialogInfoProps, {}> {
   public render() {
     const { classes, currentContent, repositoryUrl } = this.props
     const icon = currentContent ? currentContent.Icon || currentContent.Type : ''

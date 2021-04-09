@@ -1,11 +1,6 @@
 import { ReferenceFieldSetting, User } from '@sensenet/default-content-types'
-import FormControl from '@material-ui/core/FormControl'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import InputLabel from '@material-ui/core/InputLabel'
-import List from '@material-ui/core/List'
-import createStyles from '@material-ui/core/styles/createStyles'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import React from 'react'
+import { createStyles, FormControl, FormHelperText, InputLabel, List, makeStyles } from '@material-ui/core'
+import React, { Dispatch, FunctionComponent, useState } from 'react'
 import { changeTemplatedValue } from '../../helpers'
 import { ReactClientFieldSetting } from '../client-field-setting'
 import { renderIconDefault } from '../icon'
@@ -34,16 +29,16 @@ const useStyles = makeStyles(() => {
 })
 
 interface AvatarProps extends ReactClientFieldSetting<ReferenceFieldSetting, User> {
-  handleAdd: ({ setAvatar }: { setAvatar: React.Dispatch<any> }) => void
+  handleAdd: ({ setAvatar }: { setAvatar: Dispatch<any> }) => void
   handleRemove?: () => void
-  avatarTemplateOverride?: React.FC<DefaultAvatarTemplateProps>
+  avatarTemplateOverride?: FunctionComponent<DefaultAvatarTemplateProps>
   hideLabel?: boolean
 }
 
-export const Avatar: React.FunctionComponent<AvatarProps> = (props) => {
+export const Avatar: FunctionComponent<AvatarProps> = (props) => {
   const classes = useStyles()
 
-  const [fieldValue, setFieldValue] = React.useState(
+  const [fieldValue, setFieldValue] = useState(
     (props.fieldValue as any)?.Url ||
       (props.actionName === 'new' && changeTemplatedValue(props.settings.DefaultValue)) ||
       '',

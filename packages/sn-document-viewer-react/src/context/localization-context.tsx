@@ -1,4 +1,4 @@
-import React from 'react'
+import { createContext } from 'react'
 import { PreviewState } from '../enums'
 
 export const defaultLocalization = {
@@ -81,6 +81,6 @@ export const defaultLocalization = {
   commentSideBarTitle: 'Comments',
 }
 
-export const LocalizationContext = React.createContext(defaultLocalization)
+export const LocalizationContext = createContext(defaultLocalization)
 
 export type LocalizationType = typeof defaultLocalization

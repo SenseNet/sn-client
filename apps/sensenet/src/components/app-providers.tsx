@@ -1,5 +1,5 @@
 import { InjectorContext, LoggerContextProvider } from '@sensenet/hooks-react'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import {
   CurrentUserProvider,
@@ -20,7 +20,7 @@ import { DialogProvider } from './dialogs/dialog-provider'
 import { snInjector } from './sn-injector'
 
 export type AppProvidersProps = {
-  children: React.ReactNode
+  children: ReactNode
 }
 
 export default function AppProviders({ children }: AppProvidersProps) {
