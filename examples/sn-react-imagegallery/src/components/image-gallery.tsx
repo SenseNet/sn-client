@@ -32,6 +32,10 @@ export const useStyles = makeStyles((theme) => ({
         color: theme.palette.primary.main,
       },
 
+      '&:focus': {
+        outline: 0,
+      },
+
       '& .image-gallery-svg': {
         height: 60,
         width: 30,
@@ -101,6 +105,7 @@ export const ImageGallery: React.FunctionComponent<ImageGalleryProps> = (props) 
         showFullscreenButton={false}
         onBeforeSlide={(currentIndex) => setActiveItem(items[currentIndex])}
         showPlayButton={false}
+        slideDuration={0}
         showIndex={items.length > 1}
         startIndex={items.findIndex((current) => current.Id === props.openedImage.Id)}
         items={items.map((item) => ({
