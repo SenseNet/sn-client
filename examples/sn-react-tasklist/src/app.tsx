@@ -1,26 +1,40 @@
-// start of material imports
-import { Container, CssBaseline, Grid } from '@material-ui/core'
-import Toolbar from '@material-ui/core/Toolbar'
+import { UniversalHeader } from '@sensenet/universal-header-react'
+import { Container, createStyles, CssBaseline, Grid, makeStyles, Toolbar } from '@material-ui/core'
 import React from 'react'
-// end of material imports
-
-// start of sensenet imports
-import snLogo from './assets/sensenet_logo_transparent.png'
-// end of materiasensenet imports
-
-// start of component imports
-import HeaderPanel from './components/header'
 import TodoListPanel from './components/todo-list'
-// end of component imports
+
+const useHeaderStyles = makeStyles(() =>
+  createStyles({
+    appBar: {
+      backgroundColor: '#019592',
+    },
+  }),
+)
+
+const useHamburgerMenuStyles = makeStyles(() =>
+  createStyles({
+    menuIcon: {
+      '&:hover': {
+        color: '#C8FFF4',
+      },
+    },
+    menuIconActive: {
+      color: '#C8FFF4',
+    },
+  }),
+)
 
 /**
  * The main entry point of your app. You can start h@cking from here ;)
  */
 export const App: React.FunctionComponent = () => {
+  const headerStyle = useHeaderStyles()
+  const hamburgerMenuStyle = useHamburgerMenuStyles()
+
   return (
     <React.Fragment>
       <CssBaseline />
-      <HeaderPanel />
+      <UniversalHeader title="To Do App" classes={headerStyle} hamburgerMenuClasses={hamburgerMenuStyle} />
       <Toolbar />
       <Container
         maxWidth="lg"
@@ -32,10 +46,6 @@ export const App: React.FunctionComponent = () => {
           justifyContent: 'center',
           width: '100%',
           flexDirection: 'column',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          backgroundImage: `url(${snLogo})`,
-          backgroundSize: 'auto',
         }}>
         <Grid container>
           <Grid item xs={12}>

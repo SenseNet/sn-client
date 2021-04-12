@@ -42,6 +42,7 @@
     "@sensenet/client-core": "^3.9.0",
     "@sensenet/default-content-types": "^4.0.0",
     "@sensenet/hooks-react": "^1.4.5",
+    "@sensenet/universal-header-react": "^1.0.0",
     "navbar": "^2.1.0"
   },
   "browserslist": {
