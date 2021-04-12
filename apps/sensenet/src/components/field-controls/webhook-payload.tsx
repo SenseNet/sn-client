@@ -9,13 +9,20 @@ import {
   RadioGroup,
   TextareaAutosize,
 } from '@material-ui/core'
-import React, { useMemo, useState } from 'react'
+import clsx from 'clsx'
+import React, { useState } from 'react'
 import { useLocalization } from '../../hooks'
 
 const useStyles = makeStyles(() => {
   return createStyles({
     textArea: {
       padding: '10px',
+    },
+    example: {
+      marginTop: '10px',
+    },
+    italic: {
+      fontStyle: 'italic',
     },
   })
 })
@@ -27,16 +34,65 @@ export const WebhookPayload: React.FC<ReactClientFieldSetting<LongTextFieldSetti
   const localization = useLocalization()
   const classes = useStyles()
 
-  const initialState =
-    '{"nodeId":1388,"versionId":401,"version":"V0.1.D","previousVersion":null,"versionModificationDate":"2021-02-25T12:16:58.78Z","modifiedBy":1,"path":"/Root/Content/DocLib/mydoc.docx","name":"mydoc.docx","displayName":"mydoc.docx","eventName":"Create","subscriptionId":1386,"sentTime":"2021-02-25T12:16:58.9472693Z"}'
-  const [value] = useState(initialState)
-  const [useDefault, setUseDefault] = useState<boolean>(true)
+  const [value, setValue] = useState(
+    (props.fieldValue === undefined || props.fieldValue === '') && props.actionName === 'new'
+      ? props.settings.DefaultValue
+      : props.fieldValue,
+  )
+  const [useDefault, setUseDefault] = useState<boolean>(value === undefined || value === '' || value === null)
 
-  const jsonValue = useMemo(() => JSON.stringify(JSON.parse(value), undefined, 4), [value])
+  const exampleJSON =
+    '{"nodeId":1388,"versionId":401,"version":"V0.1.D","previousVersion":null,"versionModificationDate":"2021-02-25T12:16:58.78Z","modifiedBy":1,"path":"/Root/Content/DocLib/mydoc.docx","name":"mydoc.docx","displayName":"mydoc.docx","eventName":"Create","subscriptionId":1386,"sentTime":"2021-02-25T12:16:58.9472693Z"}'
 
   switch (props.actionName) {
     case 'edit':
     case 'new':
+      return (
+        <>
+          <FormLabel style={{ transform: 'translate(0, 1.5px) scale(0.75)', transformOrigin: 'top left' }}>
+            {localization.webhooksPayload.payload}
+          </FormLabel>
+          <RadioGroup
+            aria-label="payload"
+            name="payload"
+            value={String(useDefault)}
+            onChange={(event) => {
+              setUseDefault(event.target.value === 'true')
+              if (event.target.value === 'true') {
+                setValue('')
+                props.fieldOnChange?.(props.settings.Name, '')
+              }
+            }}>
+            <FormControlLabel
+              value="true"
+              control={<Radio color="primary" />}
+              label={localization.webhooksPayload.useDefault}
+            />
+            <FormControlLabel
+              value="false"
+              control={<Radio color="primary" />}
+              label={localization.webhooksPayload.customize}
+            />
+          </RadioGroup>
+          <TextareaAutosize
+            disabled={useDefault}
+            className={classes.textArea}
+            aria-label="minimum height"
+            rowsMin={10}
+            cols={70}
+            value={value}
+            onChange={(ev) => {
+              setValue(ev.target.value)
+              props.fieldOnChange?.(props.settings.Name, ev.target.value)
+            }}
+          />
+          <div className={clsx(classes.example, classes.italic)}>{localization.webhooksPayload.exampleDescription}</div>
+          <div className={classes.italic}>{localization.webhooksPayload.example}</div>
+          <pre className={classes.italic} id="json">
+            {JSON.stringify(JSON.parse(exampleJSON), undefined, 4)}
+          </pre>
+        </>
+      )
     case 'browse':
     default:
       return (
@@ -50,6 +106,7 @@ export const WebhookPayload: React.FC<ReactClientFieldSetting<LongTextFieldSetti
             value={String(useDefault)}
             onChange={(event) => setUseDefault(event.target.value === 'true')}>
             <FormControlLabel
+              disabled
               value="true"
               control={<Radio color="primary" />}
               label={localization.webhooksPayload.useDefault}
@@ -67,7 +124,7 @@ export const WebhookPayload: React.FC<ReactClientFieldSetting<LongTextFieldSetti
             aria-label="minimum height"
             rowsMin={10}
             cols={70}
-            value={jsonValue}
+            value={value}
           />
         </>
       )
