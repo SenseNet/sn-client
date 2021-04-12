@@ -615,7 +615,7 @@ const values = {
     noValue: 'No value set',
     payload: 'Payload',
     exampleDescription:
-      'Custom payload can be any valid JSON value. To resolve a value from the original webhook payload use a JSON pointer wrapped with curly braces.',
+      'Custom payload can be any valid JSON value. If you want to use the default payload, leave the textbox empty.',
     example: 'Example:',
   },
 }
