@@ -34,11 +34,11 @@ export const WebhookPayload: React.FC<ReactClientFieldSetting<LongTextFieldSetti
   const localization = useLocalization()
   const classes = useStyles()
 
-  const [value, setValue] = useState(
+  const initValue =
     (props.fieldValue === undefined || props.fieldValue === '') && props.actionName === 'new'
       ? props.settings.DefaultValue
-      : props.fieldValue,
-  )
+      : props.fieldValue
+  const [value, setValue] = useState(initValue)
   const [useDefault, setUseDefault] = useState<boolean>(value === undefined || value === '' || value === null)
 
   const exampleJSON =
@@ -61,6 +61,9 @@ export const WebhookPayload: React.FC<ReactClientFieldSetting<LongTextFieldSetti
               if (event.target.value === 'true') {
                 setValue('')
                 props.fieldOnChange?.(props.settings.Name, '')
+              } else {
+                setValue(initValue)
+                props.fieldOnChange?.(props.settings.Name, initValue)
               }
             }}>
             <FormControlLabel
