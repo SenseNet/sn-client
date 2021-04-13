@@ -114,7 +114,13 @@ export const NewView: React.FC<NewViewProps> = (props) => {
         ...classes,
         cancel: globalClasses.cancelButton,
       }}
-      renderTitle={() => <ViewTitle title={'New'} titleBold={contentDisplayName} />}
+      renderTitle={() => (
+        <ViewTitle
+          title={'New'}
+          titleBold={contentDisplayName}
+          content={{ Type: props.contentTypeName } as GenericContent}
+        />
+      )}
     />
   )
 }

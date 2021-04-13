@@ -8,7 +8,7 @@ import { ResponsivePersonalSettings } from '../../../context'
 import { useGlobalStyles } from '../../../globalStyles'
 import { useSnRoute } from '../../../hooks'
 import { getPrimaryActionUrl } from '../../../services'
-import { editviewFileResolver, Icon } from '../../Icon'
+import { Icon } from '../../Icon'
 
 interface ViewTitleProps {
   title: string
@@ -78,14 +78,13 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
           }}
           className={globalClasses.centered}>
           <Icon
-            resolvers={editviewFileResolver}
             style={{
               marginLeft: '9px',
               height: '24px',
               width: '24px',
               cursor: 'pointer',
             }}
-            item={{ ...props.content, Type: '' }}
+            item={props.content}
           />
         </span>
       )}
