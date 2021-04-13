@@ -25,12 +25,11 @@ exports[`FullScreenDialog Matches snapshot 1`] = `
         >
           <Memo(ForwardRef(CloseIcon)) />
         </WithStyles(ForwardRef(IconButton))>
-        <WithStyles(ForwardRef(Typography))
+        <div
           className="makeStyles-title-2"
-          variant="h6"
         >
           Image
-        </WithStyles(ForwardRef(Typography))>
+        </div>
       </WithStyles(ForwardRef(Toolbar))>
     </WithStyles(ForwardRef(AppBar))>
     <ImageGallery
