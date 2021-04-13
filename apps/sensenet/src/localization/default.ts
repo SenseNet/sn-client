@@ -611,9 +611,12 @@ const values = {
   },
   webhooksPayload: {
     useDefault: 'Use default payload',
-    customize: 'Customize web hook payload (This feature is not available right now)',
+    customize: 'Customize web hook payload',
     noValue: 'No value set',
     payload: 'Payload',
+    exampleDescription:
+      'Custom payload can be any valid JSON value. If you want to use the default payload, leave the textbox empty.',
+    example: 'Example:',
   },
 }
 
