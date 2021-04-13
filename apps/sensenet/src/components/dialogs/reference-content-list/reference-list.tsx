@@ -110,7 +110,7 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
         }}>
         {pagination.currentItems.length ? (
           <>
-            <List>
+            <List data-test={'reference-list'}>
               {pagination.currentItems.map((item) => (
                 <ListItem key={item.Id}>
                   <ListItemAvatar>
@@ -122,6 +122,7 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
                   {props.canEdit && fieldControl && (
                     <ListItemSecondaryAction>
                       <IconButton
+                        data-test={`${item.DisplayName?.replace(/\s+/g, '-').toLowerCase()}-delete`}
                         edge="end"
                         aria-label="delete"
                         onClick={async () => {
