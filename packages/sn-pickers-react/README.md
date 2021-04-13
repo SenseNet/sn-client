@@ -16,4 +16,4 @@ npm install @sensenet/pickers-react
 
 ## Usage
 
-See examples and usage in [storybook](https://sn-react-component-docs-dev.netlify.com/?path=/story/listpicker--connected-to-repository)
+See examples and usage in [storybook](https://sn-react-component-docs-dev.netlify.app/?path=/story/picker--connected-to-repository)

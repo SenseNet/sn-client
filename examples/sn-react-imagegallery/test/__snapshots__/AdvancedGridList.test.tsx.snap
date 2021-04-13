@@ -1,74 +1,485 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AdvancedGridList Matches snapshot 1`] = `
-<div
-  className="makeStyles-root-1"
+<WithStyles(ForwardRef(GridList))
+  cellHeight={150}
+  cols={3}
 >
-  <WithStyles(ForwardRef(GridList))
-    cellHeight={200}
-    className="makeStyles-gridList-2"
-    spacing={1}
+  <WithStyles(ForwardRef(GridListTile))
+    className="makeStyles-item-1"
   >
-    <WithStyles(ForwardRef(GridListTile))
-      cols={2}
-      key="1299"
-      rows={2}
+    <WithStyles(ForwardRef(Button))
+      className="makeStyles-addButton-2"
+      color="primary"
+      onClick={[Function]}
+      startIcon={<Memo />}
+      variant="contained"
     >
-      <img
-        alt="Description"
-        className="makeStyles-imgTile-3"
-        onClick={[Function]}
-        src="/Root/Content/IT/ImageLibrary/bagas-haryo-1415756-unsplash.jpg"
-      />
-      <WithStyles(ForwardRef(GridListTileBar))
-        actionIcon={
-          <WithStyles(ForwardRef(IconButton))
-            aria-label="star bagas-haryo-1415756-unsplash.jpg"
-            className="makeStyles-icon-4"
-          />
-        }
-        actionPosition="left"
-        className="makeStyles-titleBar-5"
-        subtitle={
-          <span>
-            by: 
-            Admin
-          </span>
-        }
-        title="bagas-haryo-1415756-unsplash.jpg"
-        titlePosition="bottom"
-      />
-    </WithStyles(ForwardRef(GridListTile))>
-    <WithStyles(ForwardRef(GridListTile))
-      cols={1}
-      key="1300"
-      rows={1}
-    >
-      <img
-        alt="Description"
-        className="makeStyles-imgTile-3"
-        onClick={[Function]}
-        src="/Root/Content/IT/ImageLibrary/brunetto-ziosi-1231102-unsplash.jpg"
-      />
-      <WithStyles(ForwardRef(GridListTileBar))
-        actionIcon={
-          <WithStyles(ForwardRef(IconButton))
-            aria-label="star brunetto-ziosi-1231102-unsplash.jpg"
-            className="makeStyles-icon-4"
-          />
-        }
-        actionPosition="left"
-        className="makeStyles-titleBar-5"
-        subtitle={
-          <span>
-            by: 
-            Admin
-          </span>
-        }
-        title="brunetto-ziosi-1231102-unsplash.jpg"
-        titlePosition="bottom"
-      />
-    </WithStyles(ForwardRef(GridListTile))>
-  </WithStyles(ForwardRef(GridList))>
-</div>
+      Add Images
+    </WithStyles(ForwardRef(Button))>
+    <UploadDialog
+      onClose={[Function]}
+      open={false}
+      uploadCallback={[Function]}
+    />
+  </WithStyles(ForwardRef(GridListTile))>
+  <GridListItem
+    className="makeStyles-item-1"
+    index={0}
+    key="1299"
+    openFunction={[MockFunction]}
+    requestReload={[MockFunction]}
+    tile={
+      Object {
+        "CreatedBy": Object {
+          "AllowedChildTypes": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/AllowedChildTypes",
+            },
+          },
+          "Approvable": false,
+          "ApprovingMode": Array [
+            "0",
+          ],
+          "Avatar": Object {
+            "Url": "avatarUrl",
+          },
+          "BirthDate": "0001-01-01T00:00:00Z",
+          "BrowseApplication": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/BrowseApplication",
+            },
+          },
+          "BrowseUrl": "/Root/IMS/BuiltIn/Portal/Admin",
+          "Captcha": null,
+          "CheckInComments": null,
+          "CheckedOutTo": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/CheckedOutTo",
+            },
+          },
+          "CreatedBy": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/CreatedBy",
+            },
+          },
+          "CreatedById": 1,
+          "CreationDate": "2019-10-09T01:02:24.921466Z",
+          "Department": null,
+          "Depth": 4,
+          "Description": null,
+          "DisplayName": "Admin",
+          "Domain": "BuiltIn",
+          "Education": null,
+          "EffectiveAllowedChildTypes": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/EffectiveAllowedChildTypes",
+            },
+          },
+          "Email": null,
+          "EnableLifespan": false,
+          "Enabled": true,
+          "ExtensionData": null,
+          "FacebookURL": null,
+          "FollowedWorkspaces": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/FollowedWorkspaces",
+            },
+          },
+          "FullName": "Admin",
+          "Gender": Array [],
+          "Hidden": false,
+          "Icon": "User",
+          "Id": 1,
+          "ImageRef": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/ImageRef",
+            },
+          },
+          "InFolder": "/Root/IMS/BuiltIn/Portal/Admin",
+          "InTree": "/Root/IMS/BuiltIn/Portal/Admin",
+          "Index": 0,
+          "InheritableApprovingMode": Array [
+            "0",
+          ],
+          "InheritableVersioningMode": Array [
+            "0",
+          ],
+          "IsFolder": false,
+          "IsRateable": false,
+          "IsSystemContent": false,
+          "IsTaggable": false,
+          "JobTitle": null,
+          "Language": Array [],
+          "Languages": null,
+          "LastLoggedOut": "2019-10-09T01:02:45.2963165Z",
+          "LastSync": "0001-01-01T00:00:00Z",
+          "LinkedInURL": null,
+          "Locked": false,
+          "LoginName": "Admin",
+          "Manager": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/Manager",
+            },
+          },
+          "MaritalStatus": Array [],
+          "ModificationDate": "2019-10-09T01:02:24.921466Z",
+          "ModifiedBy": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/ModifiedBy",
+            },
+          },
+          "ModifiedById": 1,
+          "Name": "Admin",
+          "Owner": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/Owner",
+            },
+          },
+          "OwnerId": 1,
+          "ParentId": 5,
+          "Password": null,
+          "Path": "/Root/IMS/BuiltIn/Portal/Admin",
+          "Phone": null,
+          "ProfilePath": "/Root/Profiles/BuiltIn/Admin",
+          "Publishable": false,
+          "Rate": Object {
+            "AverageRate": 0,
+            "CountVotes": Array [
+              0,
+              0,
+              0,
+              0,
+              0,
+            ],
+            "EnableGrouping": false,
+            "ErrorMessage": null,
+            "HoverPanelData": Array [
+              Object {
+                "Index": 1,
+                "Value": 0,
+              },
+              Object {
+                "Index": 2,
+                "Value": 0,
+              },
+              Object {
+                "Index": 3,
+                "Value": 0,
+              },
+              Object {
+                "Index": 4,
+                "Value": 0,
+              },
+              Object {
+                "Index": 5,
+                "Value": 0,
+              },
+            ],
+            "MaxVotes": 5,
+            "OldValue": null,
+            "PercentageVotes": Array [
+              0,
+              0,
+              0,
+              0,
+              0,
+            ],
+            "SelectedValue": null,
+            "Split": 1,
+            "Success": false,
+            "SumVotes": 0,
+          },
+          "RateAvg": 0,
+          "RateCount": 0,
+          "RateStr": null,
+          "RejectReason": null,
+          "SavingState": Array [
+            "0",
+          ],
+          "SharedBy": "",
+          "SharedWith": "",
+          "Sharing": "",
+          "SharingLevel": "",
+          "SharingMode": "",
+          "SyncGuid": null,
+          "Tags": null,
+          "TrashDisabled": false,
+          "TwitterAccount": null,
+          "Type": "User",
+          "TypeIs": "User",
+          "ValidFrom": "0001-01-01T00:00:00Z",
+          "ValidTill": "0001-01-01T00:00:00Z",
+          "Version": "V1.0.A",
+          "VersionCreatedBy": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/VersionCreatedBy",
+            },
+          },
+          "VersionCreationDate": "2019-10-09T01:02:24.921466Z",
+          "VersionId": 1,
+          "VersionModificationDate": "2019-10-09T01:02:24.921466Z",
+          "VersionModifiedBy": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/VersionModifiedBy",
+            },
+          },
+          "VersioningMode": Array [
+            "0",
+          ],
+          "Versions": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/Versions",
+            },
+          },
+          "Workspace": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/Workspace",
+            },
+          },
+        },
+        "CreationDate": "2019-10-09T01:07:08.29Z",
+        "Description": "Description",
+        "DisplayName": "bagas-haryo-1415756-unsplash.jpg",
+        "Height": 4160,
+        "Id": 1299,
+        "ModificationDate": "2019-10-09T01:07:08.29Z",
+        "Name": "bagas-haryo-1415756-unsplash.jpg",
+        "Path": "/Root/Content/IT/ImageLibrary/bagas-haryo-1415756-unsplash.jpg",
+        "Size": 3189114,
+        "Type": "Image",
+        "Width": 2340,
+      }
+    }
+  />
+  <GridListItem
+    className="makeStyles-item-1"
+    index={1}
+    key="1300"
+    openFunction={[MockFunction]}
+    requestReload={[MockFunction]}
+    tile={
+      Object {
+        "CreatedBy": Object {
+          "AllowedChildTypes": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/AllowedChildTypes",
+            },
+          },
+          "Approvable": false,
+          "ApprovingMode": Array [
+            "0",
+          ],
+          "Avatar": Object {
+            "Url": "avatarUrl",
+          },
+          "BirthDate": "0001-01-01T00:00:00Z",
+          "BrowseApplication": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/BrowseApplication",
+            },
+          },
+          "BrowseUrl": "/Root/IMS/BuiltIn/Portal/Admin",
+          "Captcha": null,
+          "CheckInComments": null,
+          "CheckedOutTo": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/CheckedOutTo",
+            },
+          },
+          "CreatedBy": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/CreatedBy",
+            },
+          },
+          "CreatedById": 1,
+          "CreationDate": "2019-10-10T01:02:18.7497738Z",
+          "Department": null,
+          "Depth": 4,
+          "Description": null,
+          "DisplayName": "Admin",
+          "Domain": "BuiltIn",
+          "Education": null,
+          "EffectiveAllowedChildTypes": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/EffectiveAllowedChildTypes",
+            },
+          },
+          "Email": null,
+          "EnableLifespan": false,
+          "Enabled": true,
+          "ExtensionData": null,
+          "FacebookURL": null,
+          "FollowedWorkspaces": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/FollowedWorkspaces",
+            },
+          },
+          "FullName": "Admin",
+          "Gender": Array [],
+          "Hidden": false,
+          "Icon": "User",
+          "Id": 1,
+          "ImageRef": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/ImageRef",
+            },
+          },
+          "InFolder": "/Root/IMS/BuiltIn/Portal/Admin",
+          "InTree": "/Root/IMS/BuiltIn/Portal/Admin",
+          "Index": 0,
+          "InheritableApprovingMode": Array [
+            "0",
+          ],
+          "InheritableVersioningMode": Array [
+            "0",
+          ],
+          "IsFolder": false,
+          "IsRateable": false,
+          "IsSystemContent": false,
+          "IsTaggable": false,
+          "JobTitle": null,
+          "Language": Array [],
+          "Languages": null,
+          "LastLoggedOut": "2019-10-10T01:02:39.4933949Z",
+          "LastSync": "0001-01-01T00:00:00Z",
+          "LinkedInURL": null,
+          "Locked": false,
+          "LoginName": "Admin",
+          "Manager": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/Manager",
+            },
+          },
+          "MaritalStatus": Array [],
+          "ModificationDate": "2019-10-10T01:02:18.7497738Z",
+          "ModifiedBy": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/ModifiedBy",
+            },
+          },
+          "ModifiedById": 1,
+          "Name": "Admin",
+          "Owner": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/Owner",
+            },
+          },
+          "OwnerId": 1,
+          "ParentId": 5,
+          "Password": null,
+          "Path": "/Root/IMS/BuiltIn/Portal/Admin",
+          "Phone": null,
+          "ProfilePath": "/Root/Profiles/BuiltIn/Admin",
+          "Publishable": false,
+          "Rate": Object {
+            "AverageRate": 0,
+            "CountVotes": Array [
+              0,
+              0,
+              0,
+              0,
+              0,
+            ],
+            "EnableGrouping": false,
+            "ErrorMessage": null,
+            "HoverPanelData": Array [
+              Object {
+                "Index": 1,
+                "Value": 0,
+              },
+              Object {
+                "Index": 2,
+                "Value": 0,
+              },
+              Object {
+                "Index": 3,
+                "Value": 0,
+              },
+              Object {
+                "Index": 4,
+                "Value": 0,
+              },
+              Object {
+                "Index": 5,
+                "Value": 0,
+              },
+            ],
+            "MaxVotes": 5,
+            "OldValue": null,
+            "PercentageVotes": Array [
+              0,
+              0,
+              0,
+              0,
+              0,
+            ],
+            "SelectedValue": null,
+            "Split": 1,
+            "Success": false,
+            "SumVotes": 0,
+          },
+          "RateAvg": 0,
+          "RateCount": 0,
+          "RateStr": null,
+          "RejectReason": null,
+          "SavingState": Array [
+            "0",
+          ],
+          "SharedBy": "",
+          "SharedWith": "",
+          "Sharing": "",
+          "SharingLevel": "",
+          "SharingMode": "",
+          "SyncGuid": null,
+          "Tags": null,
+          "TrashDisabled": false,
+          "TwitterAccount": null,
+          "Type": "User",
+          "TypeIs": "User",
+          "ValidFrom": "0001-01-01T00:00:00Z",
+          "ValidTill": "0001-01-01T00:00:00Z",
+          "Version": "V1.0.A",
+          "VersionCreatedBy": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/VersionCreatedBy",
+            },
+          },
+          "VersionCreationDate": "2019-10-10T01:02:18.7497738Z",
+          "VersionId": 1,
+          "VersionModificationDate": "2019-10-10T01:02:18.7497738Z",
+          "VersionModifiedBy": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/VersionModifiedBy",
+            },
+          },
+          "VersioningMode": Array [
+            "0",
+          ],
+          "Versions": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/Versions",
+            },
+          },
+          "Workspace": Object {
+            "__deferred": Object {
+              "uri": "/odata.svc/Root/IMS/BuiltIn/Portal('Admin')/Workspace",
+            },
+          },
+        },
+        "CreationDate": "2019-10-10T01:07:03.25Z",
+        "Description": "Description",
+        "DisplayName": "brunetto-ziosi-1231102-unsplash.jpg",
+        "Height": 3641,
+        "Id": 1300,
+        "ModificationDate": "2019-10-10T01:07:03.25Z",
+        "Name": "brunetto-ziosi-1231102-unsplash.jpg",
+        "Path": "/Root/Content/IT/ImageLibrary/brunetto-ziosi-1231102-unsplash.jpg",
+        "Size": 11966704,
+        "Type": "Image",
+        "Width": 5428,
+      }
+    }
+  />
+</WithStyles(ForwardRef(GridList))>
 `;

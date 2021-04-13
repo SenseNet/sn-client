@@ -1,17 +1,21 @@
 import { AuthenticationProvider, useOidcAuthentication } from '@sensenet/authentication-oidc-react'
 import { Repository } from '@sensenet/client-core'
 import { RepositoryContext } from '@sensenet/hooks-react'
+import { MuiThemeProvider } from '@material-ui/core'
 import React, { PropsWithChildren } from 'react'
 import { BrowserRouter, useHistory } from 'react-router-dom'
 import { configuration, repositoryUrl } from '../configuration'
+import { theme } from '../theme'
 import { LoginForm } from './login-form'
 
 export function AppProviders({ children }: PropsWithChildren<{}>) {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <RepositoryProvider>{children}</RepositoryProvider>
-      </AuthProvider>
+      <MuiThemeProvider theme={theme}>
+        <AuthProvider>
+          <RepositoryProvider>{children}</RepositoryProvider>
+        </AuthProvider>
+      </MuiThemeProvider>
     </BrowserRouter>
   )
 }
