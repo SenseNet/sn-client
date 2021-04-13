@@ -444,7 +444,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
               <FormGroup row className={classes.inputContainer}>
                 <TextField
                   disabled={value.TriggersForAllEvents}
-                  id={props.settings.Name}
+                  id="trigger-for-all-events"
                   autoComplete="off"
                   type="search"
                   onClick={handleTypeInputOnClick}

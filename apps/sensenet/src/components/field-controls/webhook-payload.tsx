@@ -8,15 +8,19 @@ import {
   Radio,
   RadioGroup,
   TextareaAutosize,
+  Theme,
 } from '@material-ui/core'
 import clsx from 'clsx'
 import React, { useState } from 'react'
 import { useLocalization } from '../../hooks'
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     textArea: {
       padding: '10px',
+      '&:focus': {
+        outlineColor: theme.palette.primary.main,
+      },
     },
     example: {
       marginTop: '10px',
@@ -35,8 +39,10 @@ export const WebhookPayload: React.FC<ReactClientFieldSetting<LongTextFieldSetti
   const classes = useStyles()
 
   const initValue =
-    (props.fieldValue === undefined || props.fieldValue === '') && props.actionName === 'new'
-      ? props.settings.DefaultValue
+    (props.fieldValue === undefined || props.fieldValue === '') &&
+    props.actionName === 'new' &&
+    props.settings.DefaultValue
+      ? JSON.stringify(JSON.parse(props.settings.DefaultValue), undefined, 4)
       : props.fieldValue
   const [value, setValue] = useState(initValue)
   const [useDefault, setUseDefault] = useState<boolean>(value === undefined || value === '' || value === null)
