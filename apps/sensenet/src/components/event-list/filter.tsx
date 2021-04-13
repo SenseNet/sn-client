@@ -46,10 +46,7 @@ export const Filter: React.FunctionComponent<{ style?: React.CSSProperties }> = 
           style={{ minWidth: 80 }}
           startAdornment={
             f.filter.logLevel ? (
-              <Icon
-                // style={{ marginRight: 9, height: 16 }}
-                item={{ message: '', level: f.filter.logLevel }}
-              />
+              <Icon style={{ marginRight: 6 }} item={{ message: '', level: f.filter.logLevel }} />
             ) : null
           }
           value={isNaN(f.filter.logLevel as number) ? '' : f.filter.logLevel}
