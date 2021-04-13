@@ -36,7 +36,7 @@ export default function EventList() {
         <div className="header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Icon
-              item={currentEvent ? currentEvent : { Type: 'EventLog' }}
+              item={currentEvent ? currentEvent : { Icon: 'EventLog' }}
               style={{ fontSize: 32, marginRight: '.3em', color: theme.palette.text.primary }}
             />
             <Typography variant="h4">{currentEvent ? currentEvent.message : 'Event list'} </Typography>
