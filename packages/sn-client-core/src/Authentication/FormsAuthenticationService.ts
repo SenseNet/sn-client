@@ -1,7 +1,9 @@
 import { ObservableValue } from '@sensenet/client-utils'
 import { User } from '@sensenet/default-content-types'
 import Semaphor from 'semaphore-async-await'
-import { AuthenticationService, ConstantContent, LoginState, ODataParams, ODataResponse, Repository } from '..'
+import { ODataParams, ODataResponse } from '../Models'
+import { ConstantContent, Repository } from '../Repository'
+import { AuthenticationService, LoginState } from '.'
 
 /**
  * Authentication Service class for using Forms authentication through OData Actions

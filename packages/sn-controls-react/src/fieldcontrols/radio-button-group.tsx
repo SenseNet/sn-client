@@ -3,13 +3,15 @@
  */
 import { deepMerge } from '@sensenet/client-utils'
 import { ChoiceFieldSetting } from '@sensenet/default-content-types'
-import FormControl from '@material-ui/core/FormControl'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import FormLabel from '@material-ui/core/FormLabel'
-import Radio from '@material-ui/core/Radio'
-import RadioGroup from '@material-ui/core/RadioGroup'
-import Typography from '@material-ui/core/Typography'
+import {
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  Typography,
+} from '@material-ui/core'
 import React, { useState } from 'react'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { defaultLocalization } from './localization'

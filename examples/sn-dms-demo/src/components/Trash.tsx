@@ -4,7 +4,7 @@ import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import { compile } from 'path-to-regexp'
-import React from 'react'
+import React, { Component, MouseEvent } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import * as DMSActions from '../Actions'
@@ -83,10 +83,7 @@ interface TrashState {
   showLoader: boolean
 }
 
-class Trash extends React.Component<
-  TrashProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
-  TrashState
-> {
+class Trash extends Component<TrashProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, TrashState> {
   constructor(props: Trash['props']) {
     super(props)
     this.state = {
@@ -162,7 +159,7 @@ class Trash extends React.Component<
     }
   }
 
-  public handleRowDoubleClick(_e: React.MouseEvent, content: GenericContent) {
+  public handleRowDoubleClick(_e: MouseEvent, content: GenericContent) {
     this.props.resetSearchValues()
     this.props.updateChildrenOptions({ query: '' })
     if (content.IsFolder) {

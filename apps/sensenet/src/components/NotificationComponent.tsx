@@ -5,7 +5,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
 import { Theme, useTheme } from '@material-ui/core/styles'
 import Close from '@material-ui/icons/Close'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react'
 import { ResponsiveContext } from '../context'
 import { useNotificationService } from '../hooks/use-notification-service'
 import { Icon } from './Icon'
@@ -46,7 +46,7 @@ export const getAutoHideDuration = (item: LeveledLogEntry<any>) => {
   }
 }
 
-export const NotificationComponent: React.FunctionComponent = () => {
+export const NotificationComponent: FunctionComponent = () => {
   const notificationService = useNotificationService()
   const [values, setValues] = useState<Array<LeveledLogEntry<any>>>(notificationService.activeMessages.getValue())
   const [dismisses, setDismisses] = useState<string[]>([])

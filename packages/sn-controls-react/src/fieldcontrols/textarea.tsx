@@ -3,8 +3,7 @@
  */
 import { deepMerge } from '@sensenet/client-utils'
 import { LongTextFieldSetting } from '@sensenet/default-content-types'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
+import { TextField, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'

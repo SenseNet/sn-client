@@ -19,6 +19,7 @@
     { "path": "./sn-redux" },
     { "path": "./sn-redux-promise-middleware" },
     { "path": "./sn-repository-events" },
-    { "path": "./sn-search-react" }
+    { "path": "./sn-search-react" },
+    { "path": "./sn-universal-header-react" }
   ]
 }

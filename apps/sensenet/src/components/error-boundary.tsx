@@ -1,7 +1,7 @@
 import { ExtendedError, isExtendedError, Repository } from '@sensenet/client-core'
 import { Injector } from '@sensenet/client-utils'
 import { InjectorContext } from '@sensenet/hooks-react'
-import React from 'react'
+import React, { Component, ComponentType, Context } from 'react'
 
 export interface ErrorBoundaryState {
   error?: Error
@@ -11,11 +11,11 @@ export interface ErrorBoundaryState {
 }
 
 export interface ErrorBoundaryProps {
-  FallbackComponent?: React.ComponentType<ErrorBoundaryState>
+  FallbackComponent?: ComponentType<ErrorBoundaryState>
 }
 
-export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  public static contextType: React.Context<Injector> = InjectorContext
+export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  public static contextType: Context<Injector> = InjectorContext
   public static getDerivedStateFromError(error?: Error) {
     return {
       error,

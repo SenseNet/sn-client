@@ -1,6 +1,5 @@
 import { mount, shallow } from 'enzyme'
 import React from 'react'
-import { ThemeProvider } from 'styled-components'
 import {
   CommentMarker,
   CommentStateContext,
@@ -16,7 +15,6 @@ import { CommentsContext } from '../src/context/comments'
 import { DocumentDataContext } from '../src/context/document-data'
 import { DocumentPermissionsContext } from '../src/context/document-permissions'
 import { defaultViewerState, ViewerStateContext } from '../src/context/viewer-state'
-import { defaultTheme } from '../src/models'
 import { exampleDocumentData, examplePreviewImageData } from './__Mocks__/viewercontext'
 
 describe('Shapes component', () => {
@@ -66,22 +64,20 @@ describe('Shapes component', () => {
 
   it('should render comment markers', () => {
     const wrapper = mount(
-      <ThemeProvider theme={defaultTheme}>
-        <ViewerStateContext.Provider value={{ ...defaultViewerState, showComments: true }}>
-          <CommentsContext.Provider
-            value={{
-              comments: [
-                { x: '10', y: '10', id: 'a', page: 1, text: 'a', createdBy: {} as any },
-                { x: '20', y: '20', id: 'b', page: 1, text: 'b', createdBy: {} as any },
-              ],
-              addPreviewComment: jest.fn(),
-              deletePreviewComment: jest.fn(),
-              getPreviewComments: jest.fn(),
-            }}>
-            <ShapesWidget {...defaultProps} />
-          </CommentsContext.Provider>
-        </ViewerStateContext.Provider>
-      </ThemeProvider>,
+      <ViewerStateContext.Provider value={{ ...defaultViewerState, showComments: true }}>
+        <CommentsContext.Provider
+          value={{
+            comments: [
+              { x: '10', y: '10', id: 'a', page: 1, text: 'a', createdBy: {} as any },
+              { x: '20', y: '20', id: 'b', page: 1, text: 'b', createdBy: {} as any },
+            ],
+            addPreviewComment: jest.fn(),
+            deletePreviewComment: jest.fn(),
+            getPreviewComments: jest.fn(),
+          }}>
+          <ShapesWidget {...defaultProps} />
+        </CommentsContext.Provider>
+      </ViewerStateContext.Provider>,
     )
     expect(wrapper.find(CommentMarker).exists()).toBeTruthy()
     expect(wrapper.find(CommentMarker).length).toBe(2)
@@ -89,24 +85,22 @@ describe('Shapes component', () => {
 
   it('should rotate comment marker on rotation degree(90)', () => {
     const wrapper = mount(
-      <ThemeProvider theme={defaultTheme}>
-        <ViewerStateContext.Provider
+      <ViewerStateContext.Provider
+        value={{
+          ...defaultViewerState,
+          rotation: [{ degree: 90, pageNum: 1 }],
+          showComments: true,
+        }}>
+        <CommentsContext.Provider
           value={{
-            ...defaultViewerState,
-            rotation: [{ degree: 90, pageNum: 1 }],
-            showComments: true,
+            comments: [{ x: '10', y: '30', id: 'a', page: 1, text: 'a', createdBy: {} as any }],
+            addPreviewComment: jest.fn(),
+            deletePreviewComment: jest.fn(),
+            getPreviewComments: jest.fn(),
           }}>
-          <CommentsContext.Provider
-            value={{
-              comments: [{ x: '10', y: '30', id: 'a', page: 1, text: 'a', createdBy: {} as any }],
-              addPreviewComment: jest.fn(),
-              deletePreviewComment: jest.fn(),
-              getPreviewComments: jest.fn(),
-            }}>
-            <ShapesWidget {...defaultProps} />
-          </CommentsContext.Provider>
-        </ViewerStateContext.Provider>
-      </ThemeProvider>,
+          <ShapesWidget {...defaultProps} />
+        </CommentsContext.Provider>
+      </ViewerStateContext.Provider>,
     )
 
     const domNode = wrapper.find(CommentMarker).getDOMNode()
@@ -122,24 +116,22 @@ describe('Shapes component', () => {
 
   it('should rotate comment marker on rotation degree(180)', () => {
     const wrapper = mount(
-      <ThemeProvider theme={defaultTheme}>
-        <ViewerStateContext.Provider
+      <ViewerStateContext.Provider
+        value={{
+          ...defaultViewerState,
+          rotation: [{ degree: 180, pageNum: 1 }],
+          showComments: true,
+        }}>
+        <CommentsContext.Provider
           value={{
-            ...defaultViewerState,
-            rotation: [{ degree: 180, pageNum: 1 }],
-            showComments: true,
+            comments: [{ x: '10', y: '30', id: 'a', page: 1, text: 'a', createdBy: {} as any }],
+            addPreviewComment: jest.fn(),
+            deletePreviewComment: jest.fn(),
+            getPreviewComments: jest.fn(),
           }}>
-          <CommentsContext.Provider
-            value={{
-              comments: [{ x: '10', y: '30', id: 'a', page: 1, text: 'a', createdBy: {} as any }],
-              addPreviewComment: jest.fn(),
-              deletePreviewComment: jest.fn(),
-              getPreviewComments: jest.fn(),
-            }}>
-            <ShapesWidget {...defaultProps} />
-          </CommentsContext.Provider>
-        </ViewerStateContext.Provider>
-      </ThemeProvider>,
+          <ShapesWidget {...defaultProps} />
+        </CommentsContext.Provider>
+      </ViewerStateContext.Provider>,
     )
 
     const domNode = wrapper.find(CommentMarker).getDOMNode()
@@ -155,24 +147,22 @@ describe('Shapes component', () => {
 
   it('should rotate comment marker on rotation degree(270)', () => {
     const wrapper = mount(
-      <ThemeProvider theme={defaultTheme}>
-        <ViewerStateContext.Provider
+      <ViewerStateContext.Provider
+        value={{
+          ...defaultViewerState,
+          rotation: [{ degree: 270, pageNum: 1 }],
+          showComments: true,
+        }}>
+        <CommentsContext.Provider
           value={{
-            ...defaultViewerState,
-            rotation: [{ degree: 270, pageNum: 1 }],
-            showComments: true,
+            comments: [{ x: '10', y: '30', id: 'a', page: 1, text: 'a', createdBy: {} as any }],
+            addPreviewComment: jest.fn(),
+            deletePreviewComment: jest.fn(),
+            getPreviewComments: jest.fn(),
           }}>
-          <CommentsContext.Provider
-            value={{
-              comments: [{ x: '10', y: '30', id: 'a', page: 1, text: 'a', createdBy: {} as any }],
-              addPreviewComment: jest.fn(),
-              deletePreviewComment: jest.fn(),
-              getPreviewComments: jest.fn(),
-            }}>
-            <ShapesWidget {...defaultProps} />
-          </CommentsContext.Provider>
-        </ViewerStateContext.Provider>
-      </ThemeProvider>,
+          <ShapesWidget {...defaultProps} />
+        </CommentsContext.Provider>
+      </ViewerStateContext.Provider>,
     )
 
     const domNode = wrapper.find(CommentMarker).getDOMNode()
@@ -189,25 +179,23 @@ describe('Shapes component', () => {
   it('should set active comment click on marker', () => {
     const setActiveComment = jest.fn()
     const wrapper = mount(
-      <ThemeProvider theme={defaultTheme}>
-        <ViewerStateContext.Provider value={{ ...defaultViewerState, showComments: true }}>
-          <CommentStateContext.Provider
-            value={{ draft: undefined, setDraft: () => {}, activeCommentId: 'k', setActiveComment }}>
-            <CommentsContext.Provider
-              value={{
-                comments: [
-                  { x: '10', y: '10', id: 'a', page: 1, text: 'a', createdBy: {} as any },
-                  { x: '20', y: '20', id: 'b', page: 1, text: 'b', createdBy: {} as any },
-                ],
-                addPreviewComment: jest.fn(),
-                deletePreviewComment: jest.fn(),
-                getPreviewComments: jest.fn(),
-              }}>
-              <ShapesWidget {...defaultProps} />
-            </CommentsContext.Provider>
-          </CommentStateContext.Provider>
-        </ViewerStateContext.Provider>
-      </ThemeProvider>,
+      <ViewerStateContext.Provider value={{ ...defaultViewerState, showComments: true }}>
+        <CommentStateContext.Provider
+          value={{ draft: undefined, setDraft: () => {}, activeCommentId: 'k', setActiveComment }}>
+          <CommentsContext.Provider
+            value={{
+              comments: [
+                { x: '10', y: '10', id: 'a', page: 1, text: 'a', createdBy: {} as any },
+                { x: '20', y: '20', id: 'b', page: 1, text: 'b', createdBy: {} as any },
+              ],
+              addPreviewComment: jest.fn(),
+              deletePreviewComment: jest.fn(),
+              getPreviewComments: jest.fn(),
+            }}>
+            <ShapesWidget {...defaultProps} />
+          </CommentsContext.Provider>
+        </CommentStateContext.Provider>
+      </ViewerStateContext.Provider>,
     )
     wrapper
       .find(CommentMarker)

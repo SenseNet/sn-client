@@ -5,7 +5,7 @@ import { CssBaseline, Slide } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { TransitionProps } from '@material-ui/core/transitions'
 import format from 'date-fns/format'
-import React, { useEffect, useState } from 'react'
+import React, { forwardRef, FunctionComponent, ReactElement, Ref, useEffect, useState } from 'react'
 import snLogo from './assets/sensenet_logo_transparent.png'
 import { AdvancedGridList } from './components/AdvancedGridList'
 import { FullScreenDialog } from './components/FullScreenDialog'
@@ -26,17 +26,17 @@ export const useStyles = makeStyles((theme) => ({
 }))
 
 // eslint-disable-next-line react/display-name
-export const Transition = React.forwardRef(
-  (props: TransitionProps & { children?: React.ReactElement<any, any> }, ref: React.Ref<unknown>) => {
+export const Transition = forwardRef(
+  (props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => {
     return <Slide direction="up" ref={ref} {...props} />
   },
 )
 
-export const App: React.FunctionComponent = () => {
+export const App: FunctionComponent = () => {
   const repo = useRepository()
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
   const [data, setData] = useState<Image[]>([])
-  const [selectedimage, setSelectedimage] = React.useState<SelectedImage>({
+  const [selectedimage, setSelectedimage] = useState<SelectedImage>({
     imgIndex: 0,
     imgPath: '',
     imgTitle: '',

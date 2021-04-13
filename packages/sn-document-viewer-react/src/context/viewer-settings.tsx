@@ -1,4 +1,4 @@
-import React from 'react'
+import { createContext } from 'react'
 import { DocumentViewerProps } from '../components/document-viewer'
 
 export const defaultViewerProps: DocumentViewerProps = {
@@ -6,4 +6,4 @@ export const defaultViewerProps: DocumentViewerProps = {
   renderAppBar: () => null,
 }
 
-export const ViewerSettingsContext = React.createContext<DocumentViewerProps>(defaultViewerProps)
+export const ViewerSettingsContext = createContext<DocumentViewerProps>(defaultViewerProps)

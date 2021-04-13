@@ -1,12 +1,12 @@
 import { PathHelper } from '@sensenet/client-utils'
 import { User } from '@sensenet/default-content-types'
 import Avatar, { AvatarProps } from '@material-ui/core/Avatar'
-import React from 'react'
+import React, { CSSProperties, FC } from 'react'
 
-export const UserAvatar: React.FC<{
+export const UserAvatar: FC<{
   user: User
   avatarProps?: AvatarProps
-  style?: React.CSSProperties
+  style?: CSSProperties
   repositoryUrl: string
 }> = (props) => {
   const avatarUrl = props.user.Avatar?.Url

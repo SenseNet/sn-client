@@ -1,7 +1,5 @@
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
-import createStyles from '@material-ui/core/styles/createStyles'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import ChatSharp from '@material-ui/icons/ChatSharp'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import { ChatSharp } from '@material-ui/icons'
 import clsx from 'clsx'
 import React from 'react'
 import { useDocumentPermissions, useLocalization, useViewerState } from '../../hooks'
@@ -37,7 +35,9 @@ export const AddAnnotationWidget: React.FC<{ classes?: AddAnnnotationClassKey }>
       classes={classes}
       active={viewerState.activeShapePlacing === 'annotation'}
       title={localization.addAnnotation}
-      setValue={(value) => viewerState.updateState({ activeShapePlacing: value ? 'annotation' : 'none' })}>
+      setValue={(value) =>
+        viewerState.updateState({ activeShapePlacing: value ? 'annotation' : 'none', isPlacingCommentMarker: false })
+      }>
       <ChatSharp
         className={clsx(classes.icon, { [classes.iconActive]: viewerState.activeShapePlacing === 'annotation' })}
       />

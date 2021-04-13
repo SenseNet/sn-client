@@ -2,7 +2,7 @@ import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { Actions } from '@sensenet/redux'
 import IconButton from '@material-ui/core/IconButton'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import * as DMSActions from '../../Actions'
@@ -84,7 +84,7 @@ export interface BatchActionlistState {
   actions: ActionModel[]
 }
 
-class BatchActionlist extends React.Component<
+class BatchActionlist extends Component<
   BatchActionListProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   BatchActionlistState
 > {

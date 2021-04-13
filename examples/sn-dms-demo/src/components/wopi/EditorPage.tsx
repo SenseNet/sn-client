@@ -1,6 +1,6 @@
 import { Repository } from '@sensenet/client-core'
 import { compile } from 'path-to-regexp'
-import React, { Component } from 'react'
+import React, { Component, createRef, RefObject } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { rootStateType } from '../../store/rootReducer'
@@ -35,12 +35,12 @@ class EditorPage extends Component<
     this.state = {
       documentId: 0,
     }
-    this.formElement = React.createRef()
+    this.formElement = createRef()
     if (this.props.documentId) {
       this.props.getWopiData(this.props.documentId)
     }
   }
-  private formElement: React.RefObject<HTMLFormElement>
+  private formElement: RefObject<HTMLFormElement>
   private static updateStoreFromPath(newProps: EditorPage['props']) {
     try {
       if (newProps.match.params.documentId) {

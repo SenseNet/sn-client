@@ -12,7 +12,17 @@ import {
 import { VirtualCellProps, VirtualDefaultCell, VirtualizedTable } from '@sensenet/list-controls-react'
 import { createStyles, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, {
+  CSSProperties,
+  DetailedHTMLProps,
+  HTMLAttributes,
+  KeyboardEvent,
+  MouseEvent,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 import { TableCellProps } from 'react-virtualized'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
@@ -65,13 +75,13 @@ export interface ContentListProps<T extends GenericContent> {
   onTabRequest?: () => void
   onActiveItemChange?: (item: T) => void
   onActivateItem: (item: T) => void
-  style?: React.CSSProperties
+  style?: CSSProperties
   containerRef?: (r: HTMLDivElement | null) => void
   fieldsToDisplay?: Array<Extract<keyof T, string>>
   schema?: string
   onSelectionChange?: (sel: T[]) => void
   onFocus?: () => void
-  containerProps?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+  containerProps?: DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 }
 
 export const isReferenceField = (fieldName: string, repo: Repository, schema = 'GenericContent') => {
@@ -228,7 +238,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
   )
 
   const handleKeyDown = useCallback(
-    (ev: React.KeyboardEvent) => {
+    (ev: KeyboardEvent) => {
       if (!activeContent) {
         setActiveContent(children[0])
       }
@@ -310,7 +320,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
     <SelectionControl {...{ isSelected, content, onChangeCallback }} />
   )
 
-  const openContext = (ev: React.MouseEvent, rowData: T) => {
+  const openContext = (ev: MouseEvent, rowData: T) => {
     ev.preventDefault()
     ev.stopPropagation()
     setActiveContent(rowData)
@@ -505,7 +515,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
 
   const menuPropsObj = {
     disablePortal: true,
-    anchorReference: 'anchorPosition' as 'anchorPosition',
+    anchorReference: 'anchorPosition' as const,
     anchorPosition: contextMenuAnchor,
     BackdropProps: {
       onClick: () => setIsContextMenuOpened(false),

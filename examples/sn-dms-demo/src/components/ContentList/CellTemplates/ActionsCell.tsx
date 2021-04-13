@@ -2,7 +2,7 @@ import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import IconButton from '@material-ui/core/IconButton'
 import TableCell from '@material-ui/core/TableCell'
 import MoreHoriz from '@material-ui/icons/MoreHoriz'
-import React from 'react'
+import React, { Component, MouseEvent } from 'react'
 import { connect } from 'react-redux'
 import * as DMSActions from '../../../Actions'
 import { rootStateType } from '../../../store/rootReducer'
@@ -27,11 +27,11 @@ export interface ActionsCellState {
   status: boolean
 }
 
-class ActionsCell extends React.Component<
+class ActionsCell extends Component<
   ActionsCellProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   ActionsCellState
 > {
-  public onClick = (ev: React.MouseEvent) => {
+  public onClick = (ev: MouseEvent) => {
     const { content, closeActionMenu, openActionMenu } = this.props
     ev.preventDefault()
     closeActionMenu()
@@ -43,7 +43,7 @@ class ActionsCell extends React.Component<
   public render() {
     return (
       <TableCell>
-        <IconButton onClick={(ev: React.MouseEvent) => this.onClick(ev)}>
+        <IconButton onClick={(ev: MouseEvent) => this.onClick(ev)}>
           <MoreHoriz />
         </IconButton>
       </TableCell>

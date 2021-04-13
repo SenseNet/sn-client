@@ -1,6 +1,5 @@
 import { Repository } from '@sensenet/client-core'
 import { sleepAsync } from '@sensenet/client-utils'
-import { Folder, PortalSettings, User } from '@sensenet/default-content-types'
 import { GenericContent } from '@sensenet/default-content-types/src'
 import { Query } from '@sensenet/query'
 import {
@@ -14,7 +13,6 @@ import {
 import { ExampleApp } from '@sensenet/search-react/src/ExampleApp'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
-import { withA11y } from '@storybook/addon-a11y'
 import { action } from '@storybook/addon-actions'
 import { withActions } from '@storybook/addon-actions/dist/preview'
 import { withKnobs } from '@storybook/addon-knobs'

@@ -1,8 +1,8 @@
 import clsx from 'clsx'
-import React from 'react'
+import React, { FC, MouseEvent } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 
-export const ContextMenuWrapper: React.FC<{ onContextMenu: (ev: React.MouseEvent) => void }> = (props) => {
+export const ContextMenuWrapper: FC<{ onContextMenu: (ev: MouseEvent) => void }> = (props) => {
   const globalClasses = useGlobalStyles()
   return (
     <div

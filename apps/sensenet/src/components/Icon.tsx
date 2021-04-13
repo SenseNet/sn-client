@@ -50,12 +50,12 @@ import {
   WebAssetOutlined,
   Widgets,
 } from '@material-ui/icons'
-import React from 'react'
+import React, { CSSProperties, FunctionComponent } from 'react'
 import { EventLogEntry } from '../services/EventService'
 import { UserAvatar } from './UserAvatar'
 
 export interface IconOptions {
-  style?: React.CSSProperties
+  style?: CSSProperties
   injector: Injector
   repo: Repository
 }
@@ -249,11 +249,11 @@ export const defaultNotificationResolvers: Array<IconResolver<EventLogEntry<any>
   },
 ]
 
-export const IconComponent: React.FunctionComponent<{
+export const IconComponent: FunctionComponent<{
   resolvers?: Array<IconResolver<any>>
   item: any
   defaultIcon?: JSX.Element
-  style?: React.CSSProperties
+  style?: CSSProperties
 }> = (props) => {
   const injector = useInjector()
   const repo = useRepository()
