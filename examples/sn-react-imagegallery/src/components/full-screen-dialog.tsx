@@ -1,5 +1,5 @@
 import { Image } from '@sensenet/default-content-types'
-import { AppBar, Dialog, IconButton, Toolbar, Typography } from '@material-ui/core'
+import { AppBar, Dialog, IconButton, Toolbar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import CloseIcon from '@material-ui/icons/Close'
 import React from 'react'
@@ -24,8 +24,7 @@ export const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
   },
   title: {
-    marginLeft: theme.spacing(2),
-    flex: 1,
+    marginLeft: theme.spacing(1),
   },
   appBar: {
     width: '100%',
@@ -44,9 +43,7 @@ export const FullScreenDialog: React.FunctionComponent<FullScreenDialogProps> = 
             <IconButton edge="start" color="inherit" onClick={props.closeFunction} aria-label="Close">
               <CloseIcon />
             </IconButton>
-            <Typography variant="h6" className={classes.title}>
-              Image
-            </Typography>
+            <div className={classes.title}>Image</div>
           </Toolbar>
         </AppBar>
         <ImageGallery
