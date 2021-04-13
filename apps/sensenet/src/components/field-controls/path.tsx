@@ -3,7 +3,7 @@
  */
 import { changeTemplatedValue, ReactClientFieldSetting, renderIconDefault } from '@sensenet/controls-react'
 import { ShortTextFieldSetting } from '@sensenet/default-content-types'
-import { createStyles, Icon, Input, InputAdornment, InputLabel, makeStyles } from '@material-ui/core'
+import { createStyles, Input, InputAdornment, InputLabel, makeStyles } from '@material-ui/core'
 import React from 'react'
 
 const useStyles = makeStyles(() => {
@@ -39,11 +39,7 @@ export const Path: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>> = (p
         value={props.fieldValue || changeTemplatedValue(props.settings.DefaultValue) || ''}
         defaultValue={changeTemplatedValue(props.settings.DefaultValue)}
         fullWidth={true}
-        endAdornment={
-          <InputAdornment position="end">
-            <Icon aria-label="link"> {renderIconDefault('link')}</Icon>
-          </InputAdornment>
-        }
+        endAdornment={<InputAdornment position="end">{renderIconDefault('link')}</InputAdornment>}
       />
     </>
   )
