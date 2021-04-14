@@ -290,7 +290,7 @@ export class Repository implements Disposable {
       requestInit: options.requestInit,
       body: {
         paths: this.createArray(options.idOrPath),
-        permanent: options.permanent,
+        permanent: options.permanent ?? false,
       },
     })
   }
