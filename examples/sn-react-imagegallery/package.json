@@ -39,7 +39,7 @@
     "@sensenet/authentication-oidc-react": "^2.2.0",
     "@sensenet/client-core": "^3.10.0",
     "@sensenet/default-content-types": "^4.1.0",
-    "@sensenet/universal-header-react": "^1.0.0",
+    "@sensenet/universal-header-react": "^0.1.0",
     "react-image-gallery": "^1.0.9"
   },
   "browserslist": {
