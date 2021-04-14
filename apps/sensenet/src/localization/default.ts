@@ -425,7 +425,8 @@ const values = {
     components: 'Components',
     componentId: 'Component Id',
     version: 'Version',
-    lastOfficialVersion: 'Last official version',
+    latestOfficialVersion: 'Latest official version',
+    latest: 'Latest',
     description: 'Description',
     releaseDate: 'Release Date',
     executionDate: 'Execution Date',
@@ -453,6 +454,9 @@ const values = {
     clientSecret: 'Client Secret',
     generate: 'Generate access token',
     regenerate: 'Regenerate',
+    latestBackendRelease: 'Latest backend release:',
+    latestFrontendRelease: 'Latest AdminUI release:',
+    goToChangeLog: 'Go to changelog',
   },
   customActions: {
     executeCustomActionDialog: {

@@ -38,6 +38,7 @@ export interface Assembly {
 export interface Component {
   ComponentId: string
   Version: string
+  LatestVersion: string | null
   AcceptableVersion: string
   Description: string
   IsUpdateAvailable?: boolean
@@ -61,6 +62,16 @@ export interface Package {
 }
 
 /**
+ * Represents a sensenet Release in the Version Info
+ */
+export interface Release {
+  ProductName: string
+  DisplayName: string
+  Version: null | string
+  ReleaseData: Date
+}
+
+/**
  * Represents a model for the sensenet's GetVersionInfo custom action's response
  */
 export interface VersionInfo {
@@ -74,6 +85,7 @@ export interface VersionInfo {
   Components: Component[]
   DatabaseAvailable: boolean
   InstalledPackages: Package[]
+  LatestReleases: Release[]
 }
 
 /**
