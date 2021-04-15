@@ -7,10 +7,12 @@ import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
 import Notifications from '@material-ui/icons/Notifications'
 import clsx from 'clsx'
 import React, { ChangeEvent, Dispatch, FunctionComponent, SetStateAction, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { PATHS, resolvePathParams } from '../../application-paths'
 import { useCurrentUser } from '../../context/current-user-provider'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization, usePersonalSettings } from '../../hooks'
-import { PersonalSettings } from '../../services'
+import { pathWithQueryParams, PersonalSettings } from '../../services'
 import { useDialog } from '../dialogs'
 import { UserAvatar } from '../UserAvatar'
 
@@ -157,6 +159,18 @@ export const DesktopNavMenu: FunctionComponent = () => {
                     }}
                     primary={`${currentUser.DisplayName || currentUser.Name}`}
                   />
+                </MenuItem>
+                <MenuItem className={classes.userMenuItem}>
+                  <Link
+                    to={pathWithQueryParams({
+                      path: resolvePathParams({
+                        path: PATHS.usersAndGroups.appPath,
+                        params: { browseType: 'explorer', action: 'edit' },
+                      }),
+                      newParams: { content: `/${currentUser.Name}` },
+                    })}>
+                    {localization.topMenu.accountSettings}
+                  </Link>
                 </MenuItem>
                 <MenuItem onClick={changePassword} className={classes.userMenuItem}>
                   {localization.topMenu.changePassword}
