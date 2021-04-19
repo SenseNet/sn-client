@@ -1,8 +1,6 @@
 import { DocumentData } from '@sensenet/client-core'
-import IconButton from '@material-ui/core/IconButton'
-import createStyles from '@material-ui/core/styles/createStyles'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import PrintIcon from '@material-ui/icons/Print'
+import { createStyles, IconButton, makeStyles } from '@material-ui/core'
+import { Print as PrintIcon } from '@material-ui/icons'
 import React from 'react'
 import { useDocumentData, useLocalization } from '../../hooks'
 

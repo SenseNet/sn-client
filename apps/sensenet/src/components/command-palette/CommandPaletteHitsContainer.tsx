@@ -1,11 +1,11 @@
 import List from '@material-ui/core/List'
 import Paper from '@material-ui/core/Paper'
-import React, { useContext } from 'react'
+import React, { FunctionComponent, useContext } from 'react'
 import { RenderSuggestionsContainerParams } from 'react-autosuggest'
 import { ResponsiveContext } from '../../context'
 import { useLocalization } from '../../hooks'
 
-export const CommandPaletteHitsContainer: React.FunctionComponent<RenderSuggestionsContainerParams> = (options) => {
+export const CommandPaletteHitsContainer: FunctionComponent<RenderSuggestionsContainerParams> = (options) => {
   const device = useContext(ResponsiveContext)
   const localization = useLocalization()
 

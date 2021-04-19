@@ -1,6 +1,6 @@
 import { ODataParams } from '@sensenet/client-core'
 import { TrashBin } from '@sensenet/default-content-types'
-import React, { useContext } from 'react'
+import React, { memo, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { PATHS, resolvePathParams } from '../../application-paths'
 import { ResponsivePersonalSettings } from '../../context'
@@ -12,7 +12,7 @@ import TrashHeader from './TrashHeader'
 const oDataOptions: ODataParams<TrashBin> = { select: 'all' }
 const loadTreeSettings = { select: ['OriginalPath'] as any }
 
-const Trash = React.memo(() => {
+const Trash = memo(() => {
   const { content } = useLoadContent<TrashBin>({ idOrPath: PATHS.trash.snPath, oDataOptions })
   const history = useHistory()
   const settings = useContext(ResponsivePersonalSettings)

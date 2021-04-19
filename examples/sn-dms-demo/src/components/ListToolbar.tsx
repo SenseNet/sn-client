@@ -1,7 +1,7 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import React from 'react'
+import React, { Component } from 'react'
 import MediaQuery from 'react-responsive'
 import WorkspaceSelector from '../components/WorkspaceSelector/WorkspaceSelector'
 import BatchActionlist from './ActionMenu/BatchActionlist'
@@ -37,7 +37,7 @@ const styles = {
   },
 }
 
-export class ListToolbar extends React.Component<ListToolbarProps, {}> {
+export class ListToolbar extends Component<ListToolbarProps, {}> {
   public render() {
     return (
       <MediaQuery minDeviceWidth={700}>

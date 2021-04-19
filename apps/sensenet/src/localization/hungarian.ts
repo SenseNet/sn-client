@@ -233,7 +233,7 @@ const values: DeepPartial<typeof import('./default').default> = {
     cancel: 'Vissza',
     reset: 'Visszaállítás',
     name: 'Név',
-    typeIn: 'Írj be egy nevet',
+    enterName: 'Írj be egy felhasználó vagy csoport nevet',
   },
   feedback: {
     title: 'Küldj nekünk visszajelzést vagy új ötletet',

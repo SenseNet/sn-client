@@ -34,8 +34,16 @@ const useStyles = makeStyles((theme: Theme) =>
       visibility: 'hidden',
     },
     listItem: {
+      '&:hover': {
+        backgroundColor: '#C8FFF4',
+      },
       '&:hover $listItemSecondaryAction': {
         visibility: 'inherit',
+      },
+    },
+    checkbox: {
+      '& svg': {
+        fill: '#019592',
       },
     },
   }),
@@ -110,6 +118,7 @@ const ListPanel: React.FunctionComponent<TodoItems> = ({ data, setData }) => {
         }}>
         <ListItemIcon>
           <Checkbox
+            className={classes.checkbox}
             edge="start"
             checked={d.Status && d.Status[0] === Status.completed}
             tabIndex={-1}

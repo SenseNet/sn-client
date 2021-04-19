@@ -17,8 +17,7 @@ type State = {
   error?: string
 }
 
-// eslint-disable-next-line require-jsdoc
-export function oidcReducer(state: State, action: Action) {
+export const oidcReducer = (state: State, action: Action) => {
   switch (action.type) {
     case 'ON_ERROR':
       return { ...state, error: action.message, isLoading: false }

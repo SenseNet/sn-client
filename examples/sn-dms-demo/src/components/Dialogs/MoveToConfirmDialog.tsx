@@ -1,7 +1,7 @@
 import { Actions } from '@sensenet/redux'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import * as DMSActions from '../../Actions'
@@ -58,7 +58,7 @@ const mapDispatchToProps = {
   moveContent: Actions.moveBatch,
 }
 
-class MoveToConfirmDialog extends React.Component<ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, {}> {
+class MoveToConfirmDialog extends Component<ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, {}> {
   public handleCancel = () => {
     this.props.closeDialog()
   }

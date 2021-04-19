@@ -61,7 +61,7 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
     } catch (err) {
       setHasChanges(true)
       logger.error({
-        message: localization.textEditor.saveFailedNotification.replace('{0}', fileName),
+        message: err.message || localization.textEditor.saveFailedNotification.replace('{0}', fileName),
         data: {
           error: err,
         },

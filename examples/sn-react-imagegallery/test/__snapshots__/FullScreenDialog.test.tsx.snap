@@ -25,37 +25,27 @@ exports[`FullScreenDialog Matches snapshot 1`] = `
         >
           <Memo(ForwardRef(CloseIcon)) />
         </WithStyles(ForwardRef(IconButton))>
-        <WithStyles(ForwardRef(Typography))
+        <div
           className="makeStyles-title-2"
-          variant="h6"
         >
           Image
-        </WithStyles(ForwardRef(Typography))>
-        <WithStyles(ForwardRef(IconButton))
-          aria-label="Close"
-          color="inherit"
-          edge="start"
-          href="Download Path"
-        >
-          <Memo(ForwardRef(SaveAltIcon)) />
-        </WithStyles(ForwardRef(IconButton))>
+        </div>
       </WithStyles(ForwardRef(Toolbar))>
     </WithStyles(ForwardRef(AppBar))>
-    <ResponsiveDrawer
-      imageInfo={
+    <ImageGallery
+      handleDelete={[MockFunction]}
+      openedImage={
         Object {
-          "imgAuthor": "Test Elek",
-          "imgAuthorAvatar": "Avatar img Path",
-          "imgCreationDate": "2019.05.05",
-          "imgDescription": "Description",
-          "imgDownloadUrl": "Download Path",
-          "imgIndex": 1,
-          "imgPath": "Path",
-          "imgSize": "1024",
+          "CreationDate": "2019.05.05",
+          "Description": "Description",
+          "Id": 1,
+          "Index": 1,
+          "Name": "Image",
+          "Path": "Path",
+          "Type": "Image",
           "imgTitle": "Title",
         }
       }
-      imageListLenght={0}
       steppingFunction={[MockFunction]}
     />
   </WithStyles(ForwardRef(Dialog))>

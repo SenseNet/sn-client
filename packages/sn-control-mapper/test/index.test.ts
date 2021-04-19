@@ -1,5 +1,5 @@
 import { Repository } from '@sensenet/client-core'
-import { ChoiceFieldSetting, FieldVisibility, Task } from '@sensenet/default-content-types'
+import { ChoiceFieldSetting, FieldVisibility } from '@sensenet/default-content-types'
 import { ControlMapper } from '../src'
 
 class ExampleControlBase {}

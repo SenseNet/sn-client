@@ -1,8 +1,5 @@
 import { ActionModel, FieldSetting, GenericContent } from '@sensenet/default-content-types'
-import { TableSortLabel, Tooltip } from '@material-ui/core'
-import Checkbox from '@material-ui/core/Checkbox'
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import TableCell from '@material-ui/core/TableCell'
+import { Checkbox, createStyles, makeStyles, TableCell, TableSortLabel, Theme, Tooltip } from '@material-ui/core'
 import clsx from 'clsx'
 import React, { useCallback, useMemo } from 'react'
 import {

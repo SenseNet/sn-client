@@ -1,9 +1,5 @@
 import { PreviewImageData } from '@sensenet/client-core'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import Paper from '@material-ui/core/Paper'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
-import createStyles from '@material-ui/core/styles/createStyles'
-import makeStyles from '@material-ui/core/styles/makeStyles'
+import { CircularProgress, createStyles, makeStyles, Paper, Theme } from '@material-ui/core'
 import clsx from 'clsx'
 import React, { useCallback, useState } from 'react'
 import { useCommentState, useDocumentData, usePreviewImage, useViewerState } from '../hooks'
@@ -108,7 +104,7 @@ export const Page: React.FC<PageProps> = (props) => {
         x: `${xCoord - MARKER_SIZE}`,
         y: `${yCoord - MARKER_SIZE}`,
         id: 'draft',
-        page: viewerState.activePage,
+        page: page.image?.Index || viewerState.activePage,
       }
       commentState.setDraft(newCommentMarker)
     },
@@ -116,6 +112,7 @@ export const Page: React.FC<PageProps> = (props) => {
       commentState,
       imageRotation,
       page.image?.Height,
+      page.image?.Index,
       page.image?.Width,
       props.page.Height,
       props.page.Width,

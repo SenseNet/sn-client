@@ -1,14 +1,16 @@
 import { Repository } from '@sensenet/client-core'
 import { GenericContent, User } from '@sensenet/default-content-types'
-import Avatar from '@material-ui/core/Avatar'
-import Icon from '@material-ui/core/Icon'
-import IconButton from '@material-ui/core/IconButton'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import ListItemText from '@material-ui/core/ListItemText'
-import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
+import {
+  Avatar,
+  Icon,
+  IconButton,
+  ListItem,
+  ListItemAvatar,
+  ListItemIcon,
+  ListItemSecondaryAction,
+  ListItemText,
+} from '@material-ui/core'
+import { InsertDriveFile } from '@material-ui/icons'
 import React from 'react'
 import { renderIconDefault } from '../icon'
 

@@ -1,5 +1,5 @@
 import { RepositoryContext } from '@sensenet/hooks-react'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Route, RouteComponentProps, Switch } from 'react-router-dom'
 import * as DMSActions from '../Actions'
@@ -29,7 +29,7 @@ export interface DashboardState {
   currentUserName: string
 }
 
-class DashboardComponent extends React.Component<
+class DashboardComponent extends Component<
   DashboardProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   DashboardState
 > {

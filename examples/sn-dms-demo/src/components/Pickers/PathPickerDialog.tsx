@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import { noop } from '@babel/types'
 import React from 'react'
-import Scrollbars from 'react-custom-scrollbars'
+import { Scrollbars } from 'react-custom-scrollbars'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import * as DMSActions from '../../Actions'
@@ -35,10 +35,9 @@ const mapDispatchToProps = {
   openDialog: DMSActions.openDialog,
 }
 
-// eslint-disable-next-line require-jsdoc
-function PathPickerDialog(
+const PathPickerDialog = (
   props: PathPickerDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
-) {
+) => {
   const handleSubmit = () => {
     const { dialogComponent, dialogTitle, dialogCallback } = props
     if (!dialogComponent) {

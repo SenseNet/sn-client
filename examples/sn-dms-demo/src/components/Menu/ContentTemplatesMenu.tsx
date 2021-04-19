@@ -3,7 +3,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import withStyles from '@material-ui/core/styles/withStyles'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 
@@ -115,7 +115,7 @@ const mapDispatchToProps = {
   handleDrawerMenu: DMSActions.handleDrawerMenu,
 }
 
-class ContentTemplatesMenu extends React.Component<
+class ContentTemplatesMenu extends Component<
   ContentTemplatesMenuProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   {}
 > {
