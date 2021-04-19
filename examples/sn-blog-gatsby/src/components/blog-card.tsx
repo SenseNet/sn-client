@@ -36,7 +36,7 @@ const useStyles = makeStyles(() => {
 export interface BlogCardProps {
   title: string
   excerpt: string
-  image: string
+  image?: string
 }
 
 const BlogCard: React.FC<BlogCardProps> = (props) => {
@@ -44,7 +44,7 @@ const BlogCard: React.FC<BlogCardProps> = (props) => {
 
   return (
     <Card className={classes.root}>
-      <img className={classes.image} src={props.image} alt={props.title} />
+      {props.image && <img className={classes.image} src={props.image} alt={props.title} />}
       <CardContent className={classes.wrapper}>
         <Typography gutterBottom variant="h5" component="h5" className={classes.title}>
           {props.title}

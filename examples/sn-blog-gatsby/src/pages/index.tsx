@@ -33,23 +33,16 @@ const useStyles = makeStyles(() => {
 
 export interface PostNode {
   node: {
-    excerpt: string
-    frontmatter: {
-      title: string
-      image: string
-      redirect_to: string
-      tags: string
-      author: string
-      date: Date
-    }
-    fields: {
-      slug: string
-    }
+    DisplayName: string
+    Lead: string
+    Keywords: string
+    Author: string
+    PublishDate: Date
   }
 }
 export interface IndexPageProps {
   data: {
-    allMarkdownRemark: {
+    allBlog: {
       edges: PostNode[]
     }
   }
@@ -58,7 +51,6 @@ export interface IndexPageProps {
 const IndexPage: React.FC<IndexPageProps> = (props) => {
   const { data } = props
   const classes = useStyles()
-
   return (
     <IndexLayout>
       <Page>
@@ -67,10 +59,10 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
             News around sensenet
           </Typography>
           <Grid container spacing={4} className={classes.blog}>
-            {data.allMarkdownRemark.edges.map(({ node }, index) => (
+            {data.allBlog.edges.map(({ node }, index) => (
               <Grid item xs={12} sm={6} md={4} className={classes.blogItem} key={index}>
-                <Link to={node.fields.slug} key={index} className={classes.link}>
-                  <BlogCard title={node.frontmatter.title} excerpt={node.excerpt} image={node.frontmatter.image} />
+                <Link to={'/'} key={index} className={classes.link}>
+                  <BlogCard title={node.DisplayName} excerpt={node.Lead} />
                 </Link>
               </Grid>
             ))}
@@ -83,23 +75,18 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
 
 export default IndexPage
 
-export const pageQuery = graphql`
-  query {
-    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
+export const query = graphql`
+  query MyQuery {
+    allBlog {
       edges {
         node {
-          fields {
-            slug
-          }
-          excerpt
-          frontmatter {
-            title
-            image
-            redirect_to
-            tags
-            author
-            date
-          }
+          id
+          Name
+          DisplayName
+          Lead
+          Keywords
+          Author
+          PublishDate
         }
       }
     }

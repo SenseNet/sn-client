@@ -39,5 +39,13 @@ module.exports = {
     'gatsby-plugin-sharp',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-material-ui',
+    {
+      resolve: `gatsby-source-sensenet`,
+      options: {
+        host: 'https://netcore-service.test.sensenet.com',
+        path: '/Root/Content/SampleWorkspace/Blog',
+        accessToken: '',
+      },
+    },
   ],
 }
