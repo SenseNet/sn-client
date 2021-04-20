@@ -55,7 +55,7 @@ describe('Organizational units', () => {
     cy.get('[data-test="delete-permanently"] input[type="checkbox"]').check()
     cy.get('[data-test="button-delete-confirm"]').click()
 
-    cy.get('[data-test="menu-item-test1').should('not.exist')
-    cy.get('[data-test="menu-item-test2').should('not.exist')
+    cy.get('[data-test="menu-item-test1]').should('not.exist')
+    cy.get('[data-test="menu-item-test2]').should('not.exist')
   })
 })

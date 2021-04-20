@@ -65,7 +65,7 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
         onContextMenu(ev)
       }}
       className={classes.card}
-      data-test="content-card">
+      data-test={`content-card-${settings.DisplayName?.replace(/\s+/g, '-').toLowerCase()}`}>
       <CardContent>
         <Tooltip placement="top" title={settings.DisplayName || settings.Name}>
           <Typography variant="h5" gutterBottom={true} className={classes.title}>
