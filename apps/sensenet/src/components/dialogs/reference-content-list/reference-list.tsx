@@ -93,6 +93,7 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
             props.renderButton(newReference)
           ) : (
             <Button
+              data-test={'reference-add-button'}
               variant="contained"
               color="primary"
               startIcon={<AddIcon />}

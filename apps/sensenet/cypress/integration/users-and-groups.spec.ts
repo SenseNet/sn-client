@@ -79,12 +79,12 @@ describe('Users menu', () => {
         cy.get('[data-test="content-context-menu-delete"]').click()
         cy.get('[data-test="button-delete-confirm"]').click()
 
-        cy.get('[data-test="table-celll-developer-dog"]').should('not.exist')
+        cy.get('[data-test="table-cell-developer-dog"]').should('not.exist')
 
         cy.get('[data-test="drawer-menu-item-trash"]').click()
 
         cy.wait('@getTrashChildren').then((_interception) => {
-          cy.get('[data-test="table-celll-developer-dog"]').should('not.exist')
+          cy.get('[data-test="table-cell-developer-dog"]').should('not.exist')
         })
       })
   })
@@ -127,5 +127,19 @@ describe('Users menu', () => {
     cy.get(`[data-test="switcher-${'Developer Dog'.replace(/\s+/g, '-').toLowerCase()}`).as('StatusSwitcher')
     cy.get('@StatusSwitcher').click()
     cy.get('@StatusSwitcher').find('.MuiSwitch-input').first().should('be.checked')
+  })
+
+  it('ensures that adding to a group is working properly', () => {
+    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
+    cy.get('[data-test="groups"]').click()
+    cy.get(`[data-test="developers-members"]`).click()
+    cy.get('[data-test="reference-input"]').type('Developer D')
+    cy.get('[data-test="suggestion-developer-dog"]').click()
+    cy.get('[data-test="reference-add-button"]').click()
+    cy.get('[data-test="reference-list"] li')
+      .should('have.length', 1)
+      .each(($el) => {
+        expect('Developer Dog').to.include($el.text())
+      })
   })
 })
