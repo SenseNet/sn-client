@@ -18,13 +18,13 @@ export const globals = {
   light: {
     navMenuColor: '#F6F6F6',
     borderColor: '#E2E2E2',
-    drawerBackground: '#F8F8F8 !important',
+    drawerBackground: '#F8F8F8',
     textColor: 'rgba(0,0,0,0.87)',
     dialogBackground: '#F8F8F8',
   },
   dark: {
     navMenuColor: 'rgba(255, 255, 255, 0.16)',
-    drawerBackground: 'rgba(255,255,255, 0.05) !important',
+    drawerBackground: 'rgba(255,255,255, 0.05)',
     textColor: 'rgba(255,255,255,0.87)',
     dialogBackground: '#2F2F2F',
   },
