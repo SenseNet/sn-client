@@ -1,7 +1,7 @@
 {
   "name": "@example/blog-gatsby",
   "description": "A gatsby example app based on gatsby-starter-typescript-plus",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": true,
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "keywords": [
@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.11.3",
-    "@sensenet/universal-header-react": "^1.0.0",
+    "@sensenet/universal-header-react": "^0.1.0",
     "date-fns": "^2.19.0",
     "gatsby": "^3.2.1",
     "gatsby-plugin-material-ui": "^3.0.0",
