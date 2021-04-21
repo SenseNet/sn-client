@@ -9,9 +9,10 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
 } from '@material-ui/core'
 import { green, red } from '@material-ui/core/colors'
-import { Close, Done } from '@material-ui/icons'
+import { Close, Done, Info } from '@material-ui/icons'
 import React from 'react'
 import { useGlobalStyles, useWidgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
@@ -26,6 +27,12 @@ const useStyles = makeStyles(() => {
     },
     icon: {
       marginLeft: '12px',
+    },
+    info: {
+      height: '16px',
+      width: '16px',
+      marginLeft: '6px',
+      cursor: 'pointer',
     },
   })
 })
@@ -44,7 +51,12 @@ export const InstalledPackagesWidget: React.FunctionComponent<InstalledPackagesW
   return (
     <div className={widgetClasses.root}>
       <Paper elevation={0} className={widgetClasses.container}>
-        <div className={classes.rowContainer}>{localization.installedPackages}</div>
+        <div className={globalClasses.centeredVertical} style={{ padding: '10px 0' }}>
+          {localization.installedPackages}
+          <Tooltip title={localization.installedPackagesInfo} placement="top">
+            <Info className={classes.info} />
+          </Tooltip>
+        </div>
         <TableContainer>
           <Table size="small" aria-label="stats-components">
             <TableHead>

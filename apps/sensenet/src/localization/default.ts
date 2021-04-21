@@ -457,6 +457,10 @@ const values = {
     latestBackendRelease: 'Latest backend release:',
     latestFrontendRelease: 'Latest AdminUI release:',
     goToChangeLog: 'Go to changelog',
+    componentsInfo:
+      'Components of your sensenet. A component can consist of several packages, but there is also possible that a component is from only a single package.',
+    installedPackagesInfo:
+      'These packages make up the components of sensenet. There can also be packages that are not involved in the structure of the components, such as a tool-type package designed to run multiple times, for example deleting content or indexing.',
   },
   customActions: {
     executeCustomActionDialog: {

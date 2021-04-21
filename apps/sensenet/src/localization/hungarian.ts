@@ -194,6 +194,10 @@ const values: DeepPartial<typeof import('./default').default> = {
     latestBackendRelease: 'Utolsó backend release:',
     latestFrontendRelease: 'Utolsó AdminUI release:',
     goToChangeLog: 'Changelog megnyitása',
+    componentsInfo:
+      'A sensenet komponensei. Egy komponens állhat több csomagból is, de akár egy csomag is alkothat komponenst.',
+    installedPackagesInfo:
+      'Csomagok, melyekből a sensenet komponensek felépülnek. Léteznek olyan csomagok is, melyek nem felelősek a komponensekért, többszöri futtatásra lettek létrehozva - ilyenek a tool-típusú csomagok. Ezek például kontent törlésre vagy indexelésre használatosak.',
   },
   forms: {
     referencePicker: 'Referencia választó',
