@@ -38,6 +38,7 @@ export interface PostNode {
     Keywords: string
     Author: string
     PublishDate: Date
+    remoteImage: any
   }
 }
 export interface IndexPageProps {
@@ -62,7 +63,11 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
             {data.allBlog.edges.map(({ node }, index) => (
               <Grid item xs={12} sm={6} md={4} className={classes.blogItem} key={index}>
                 <Link to={'/'} key={index} className={classes.link}>
-                  <BlogCard title={node.DisplayName} excerpt={node.Lead} />
+                  <BlogCard
+                    title={node.DisplayName}
+                    excerpt={node.Lead}
+                    image={node.remoteImage.childImageSharp.fluid}
+                  />
                 </Link>
               </Grid>
             ))}

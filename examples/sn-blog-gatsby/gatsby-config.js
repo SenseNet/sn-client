@@ -39,6 +39,7 @@ module.exports = {
     'gatsby-plugin-sharp',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-material-ui',
+    `gatsby-transformer-sharp`,
     {
       resolve: `gatsby-source-sensenet`,
       options: {

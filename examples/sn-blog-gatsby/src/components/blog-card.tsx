@@ -1,4 +1,5 @@
 import { Card, CardContent, createStyles, makeStyles, Typography } from '@material-ui/core'
+import Img, { FluidObject } from 'gatsby-image'
 import * as React from 'react'
 import { globals } from '../styles/globalStyles'
 
@@ -36,7 +37,7 @@ const useStyles = makeStyles(() => {
 export interface BlogCardProps {
   title: string
   excerpt: string
-  image?: string
+  image?: FluidObject
 }
 
 const BlogCard: React.FC<BlogCardProps> = (props) => {
@@ -44,7 +45,7 @@ const BlogCard: React.FC<BlogCardProps> = (props) => {
 
   return (
     <Card className={classes.root}>
-      {props.image && <img className={classes.image} src={props.image} alt={props.title} />}
+      {props.image && <Img fluid={props.image} alt="test" />}
       <CardContent className={classes.wrapper}>
         <Typography gutterBottom variant="h5" component="h5" className={classes.title}>
           {props.title}
