@@ -121,10 +121,12 @@ describe('ShapesSkeleton component', () => {
                 },
               },
             ],
-            boxBottom: 800,
-            boxTop: 100,
-            boxRight: 800,
-            boxLeft: 100,
+            boxPosition: {
+              top: 100,
+              bottom: 800,
+              right: 800,
+              left: 100,
+            },
           }}>
           <ShapeSkeleton
             rotationDegree={0}
@@ -184,10 +186,12 @@ describe('ShapesSkeleton component', () => {
                 },
               },
             ],
-            boxBottom: 800,
-            boxTop: 100,
-            boxRight: 800,
-            boxLeft: 100,
+            boxPosition: {
+              top: 100,
+              bottom: 800,
+              right: 800,
+              left: 100,
+            },
           }}>
           <ShapeSkeleton
             rotationDegree={0}
@@ -247,10 +251,12 @@ describe('ShapesSkeleton component', () => {
                 },
               },
             ],
-            boxBottom: 800,
-            boxTop: 100,
-            boxRight: 800,
-            boxLeft: 100,
+            boxPosition: {
+              top: 100,
+              bottom: 800,
+              right: 800,
+              left: 100,
+            },
           }}>
           <ShapeSkeleton
             rotationDegree={0}
