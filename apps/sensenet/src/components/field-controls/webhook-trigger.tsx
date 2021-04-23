@@ -132,7 +132,8 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
   const logger = useLogger('webhook filter')
   const localization = useLocalization()
 
-  const initialState = (props.settings.DefaultValue &&
+  const initialState = (props.actionName === 'new' &&
+    props.settings.DefaultValue &&
     (JSON.parse(props.settings.DefaultValue) as WebhookTriggerType | undefined)) || {
     Path: DEFAULT_CONTAINER,
     TriggersForAllEvents: true,
