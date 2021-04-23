@@ -167,6 +167,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
             viewportHeight={viewport.height}
             onClick={() => props.onPageClick(page.Index)}
             visiblePagesIndex={index}
+            pageContainerRef={viewportElement.current}
           />
         ))}
       </div>

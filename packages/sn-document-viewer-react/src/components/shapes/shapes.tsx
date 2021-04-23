@@ -28,6 +28,7 @@ export interface ShapesWidgetProps {
   zoomRatioLying: number
   imageRotation: number
   visiblePagesIndex: number
+  pageContainerRef?: HTMLElement
 }
 
 /**
@@ -95,21 +96,18 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
       }
 
       updateState(updatePagesRectsFunc as any)
-      if (
-        document.getElementById('sn-document-viewer-pages') &&
-        document.getElementById('sn-document-viewer-pages')!.getClientRects().length > 0
-      ) {
+      if (props.pageContainerRef && props.pageContainerRef.getClientRects().length > 0) {
         updateState({
           boxPosition: {
-            bottom: document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].bottom,
-            left: document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].left,
-            right: document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].right,
-            top: document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].top,
+            bottom: props.pageContainerRef.getClientRects()[0].bottom,
+            left: props.pageContainerRef.getClientRects()[0].left,
+            right: props.pageContainerRef.getClientRects()[0].right,
+            top: props.pageContainerRef.getClientRects()[0].top,
           },
         })
       }
     }
-  }, [props.visiblePagesIndex, updateState])
+  }, [props.pageContainerRef, props.visiblePagesIndex, updateState])
 
   const removeShape = useCallback(
     (shapeType: keyof Shapes, guid: string) => {

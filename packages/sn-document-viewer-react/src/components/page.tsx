@@ -53,6 +53,7 @@ export interface PageProps {
   page: PreviewImageData
   visiblePagesIndex: number
   onClick: (ev: React.MouseEvent<HTMLElement>) => any
+  pageContainerRef?: HTMLElement
 }
 
 export const Page: React.FC<PageProps> = (props) => {
@@ -342,6 +343,7 @@ export const Page: React.FC<PageProps> = (props) => {
               zoomRatioLying={props.page.Width / page.image.Height}
               page={page.image}
               visiblePagesIndex={props.visiblePagesIndex}
+              pageContainerRef={props.pageContainerRef}
             />
 
             {mouseIsDown && (
