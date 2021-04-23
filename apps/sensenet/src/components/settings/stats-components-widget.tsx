@@ -56,6 +56,9 @@ export const ComponentsWidget: React.FunctionComponent<ComponentsWidgetProps> = 
   const localization = useLocalization().settings
   const dateUtils = useDateUtils()
 
+  const latestBackendRelease = props.data.LatestReleases.find((item) => item.ProductName === 'SenseNet.Services')
+  const latestFrontendRelease = props.data.LatestReleases.find((item) => item.ProductName === 'SenseNet.AdminUI')
+
   return (
     <div className={widgetClasses.root}>
       <Paper elevation={0} className={widgetClasses.container}>
@@ -67,22 +70,14 @@ export const ComponentsWidget: React.FunctionComponent<ComponentsWidgetProps> = 
         </div>
         <div className={classes.paragraph}>
           {localization.latestBackendRelease}{' '}
-          {props.data.LatestReleases.find((item) => item.ProductName === 'SenseNet.Services') &&
-            dateUtils.formatDate(
-              props.data.LatestReleases.find((item) => item.ProductName === 'SenseNet.Services')!.ReleaseData,
-              'yyyy.MM.dd HH:mm aaa',
-            )}
+          {latestBackendRelease && dateUtils.formatDate(latestBackendRelease!.ReleaseData, 'yyyy.MM.dd HH:mm aaa')}
           <Link className={classes.link} href="https://www.sensenet.com/backend-updates" target="_blank" rel="noopener">
             {localization.goToChangeLog}
           </Link>
         </div>
         <div className={classes.paragraph}>
           {localization.latestFrontendRelease}{' '}
-          {props.data.LatestReleases.find((item) => item.ProductName === 'SenseNet.AdminUI') &&
-            dateUtils.formatDate(
-              props.data.LatestReleases.find((item) => item.ProductName === 'SenseNet.AdminUI')!.ReleaseData,
-              'yyyy.MM.dd HH:mm aaa',
-            )}
+          {latestFrontendRelease && dateUtils.formatDate(latestFrontendRelease!.ReleaseData, 'yyyy.MM.dd HH:mm aaa')}
           <Link
             className={classes.link}
             href="https://www.sensenet.com/frontend-updates"
