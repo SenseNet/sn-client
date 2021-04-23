@@ -1,7 +1,7 @@
 import { PreviewImageData } from '@sensenet/client-core'
 import { CircularProgress, createStyles, makeStyles, Paper, Theme } from '@material-ui/core'
 import clsx from 'clsx'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useCommentState, useDocumentData, usePreviewImage, useViewerState } from '../hooks'
 import { ImageUtil } from '../services'
 import { PAGE_NAME, PAGE_PADDING } from './document-viewer-layout'
@@ -51,7 +51,7 @@ export interface PageProps {
   viewportHeight: number
   viewportWidth: number
   page: PreviewImageData
-  visiblePagesIndex?: number
+  visiblePagesIndex: number
   onClick: (ev: React.MouseEvent<HTMLElement>) => any
 }
 
@@ -72,6 +72,11 @@ export const Page: React.FC<PageProps> = (props) => {
   const [scrollOffsetX, setScrollOffsetX] = useState<number>(0)
   const [scrollOffsetY, setScrollOffsetY] = useState<number>(0)
   const { documentData, updateDocumentData } = useDocumentData()
+
+  const imageRatio = useMemo(() => props.page.Height / (page.image?.Height || 1), [
+    props.page.Height,
+    page.image?.Height,
+  ])
 
   const isActive = page.image && viewerState.activePage === page.image.Index
 
@@ -97,37 +102,33 @@ export const Page: React.FC<PageProps> = (props) => {
 
   const reCalculateDraftShape = useCallback(
     (ev: MouseEvent) => {
+      const compareNumbers = (a: number, b: number) => a - b
+      const pageBoundings = {
+        left: Math.max(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.left, viewerState.boxPosition.left),
+        right: Math.min(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.right, viewerState.boxPosition.right),
+        bottom: Math.min(
+          viewerState.pagesRects[props.visiblePagesIndex!].pageRect.bottom,
+          viewerState.boxPosition.bottom,
+        ),
+        top: Math.max(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.top, viewerState.boxPosition.top),
+      }
+
       const endX =
-        (ev.pageX < viewerState.pagesRects[props.visiblePagesIndex!].pageRect.right && ev.pageX < viewerState.boxRight
-          ? ev.pageX > viewerState.pagesRects[props.visiblePagesIndex!].pageRect.left && ev.pageX > viewerState.boxLeft
-            ? ev.pageX + scrollOffsetX
-            : Math.max(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.left!, viewerState.boxLeft) +
-              scrollOffsetX
-          : Math.min(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.right!, viewerState.boxRight) +
-            scrollOffsetX) /
-        (props.page.Height / (page.image?.Height || 1))
+        ([pageBoundings.left, pageBoundings.right, ev.pageX].sort(compareNumbers)[1] + scrollOffsetX) / imageRatio
 
       const endY =
-        (ev.pageY < viewerState.pagesRects[props.visiblePagesIndex!].pageRect.bottom && ev.pageY < viewerState.boxBottom
-          ? ev.pageY > viewerState.pagesRects[props.visiblePagesIndex!].pageRect.top && ev.pageY > viewerState.boxTop
-            ? ev.pageY + scrollOffsetY
-            : Math.max(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.top!, viewerState.boxTop!) +
-              scrollOffsetY
-          : Math.min(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.bottom!, viewerState.boxBottom) +
-            scrollOffsetY) /
-        (props.page.Height / (page.image?.Height || 1))
+        ([pageBoundings.bottom, pageBoundings.top, ev.pageY].sort(compareNumbers)[1] + scrollOffsetY) / imageRatio
       return { endX, endY }
     },
     [
-      page.image?.Height,
-      props.page.Height,
+      imageRatio,
       props.visiblePagesIndex,
       scrollOffsetX,
       scrollOffsetY,
-      viewerState.boxBottom,
-      viewerState.boxLeft,
-      viewerState.boxRight,
-      viewerState.boxTop,
+      viewerState.boxPosition.bottom,
+      viewerState.boxPosition.left,
+      viewerState.boxPosition.right,
+      viewerState.boxPosition.top,
       viewerState.pagesRects,
     ],
   )
@@ -157,8 +158,11 @@ export const Page: React.FC<PageProps> = (props) => {
       if (
         viewerState.activeShapePlacing !== 'none' &&
         mouseIsDown &&
-        viewerState.pagesRects[props.visiblePagesIndex!] &&
-        (viewerState.boxBottom || viewerState.boxLeft || viewerState.boxRight || viewerState.boxTop)
+        viewerState.pagesRects[props.visiblePagesIndex] &&
+        (viewerState.boxPosition.bottom ||
+          viewerState.boxPosition.left ||
+          viewerState.boxPosition.right ||
+          viewerState.boxPosition.top)
       ) {
         const { endX, endY } = reCalculateDraftShape(ev)
         setdraftHeight(endY - startY)
@@ -177,16 +181,22 @@ export const Page: React.FC<PageProps> = (props) => {
     startX,
     startY,
     viewerState.activeShapePlacing,
-    viewerState.boxBottom,
-    viewerState.boxLeft,
-    viewerState.boxRight,
-    viewerState.boxTop,
+    viewerState.boxPosition.bottom,
+    viewerState.boxPosition.left,
+    viewerState.boxPosition.right,
+    viewerState.boxPosition.top,
     viewerState.pagesRects,
   ])
 
   useEffect(() => {
     const handleGlobalMouseUp = (ev: MouseEvent) => {
-      if (mouseIsDown && (viewerState.boxBottom || viewerState.boxLeft || viewerState.boxRight || viewerState.boxTop)) {
+      if (
+        mouseIsDown &&
+        (viewerState.boxPosition.bottom ||
+          viewerState.boxPosition.left ||
+          viewerState.boxPosition.right ||
+          viewerState.boxPosition.top)
+      ) {
         setMouseIsDown(false)
         setdraftHeight(0)
         setdraftWidth(0)
@@ -285,7 +295,7 @@ export const Page: React.FC<PageProps> = (props) => {
       if (imageRotation !== 0) {
         viewerState.updateState({ isPlacingCommentMarker: false })
       }
-      const xCoord = event.nativeEvent.offsetX / (props.page.Height / (page.image?.Height || 1))
+      const xCoord = event.nativeEvent.offsetX / imageRatio
       const yCoord = event.nativeEvent.offsetY / (props.page.Width / (page.image?.Width || 1))
 
       if (!viewerState.isPlacingCommentMarker || xCoord <= MARKER_SIZE || yCoord <= MARKER_SIZE) {
@@ -299,26 +309,17 @@ export const Page: React.FC<PageProps> = (props) => {
       }
       commentState.setDraft(newCommentMarker)
     },
-    [
-      commentState,
-      imageRotation,
-      page.image?.Height,
-      page.image?.Index,
-      page.image?.Width,
-      props.page.Height,
-      props.page.Width,
-      viewerState,
-    ],
+    [commentState, imageRatio, imageRotation, page.image?.Index, page.image?.Width, props.page.Width, viewerState],
   )
   const handleMouseDown = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (imageRotation !== 0) {
       viewerState.updateState({ activeShapePlacing: 'none' })
     }
     setMouseIsDown(true)
-    setStartX(ev.nativeEvent.pageX / (props.page.Height / (page.image?.Height || 1)))
-    setStartY(ev.nativeEvent.pageY / (props.page.Height / (page.image?.Height || 1)))
-    setStartOffsetX(ev.nativeEvent.offsetX / (props.page.Height / (page.image?.Height || 1)))
-    setStartOffsetY(ev.nativeEvent.offsetY / (props.page.Height / (page.image?.Height || 1)))
+    setStartX(ev.nativeEvent.pageX / imageRatio)
+    setStartY(ev.nativeEvent.pageY / imageRatio)
+    setStartOffsetX(ev.nativeEvent.offsetX / imageRatio)
+    setStartOffsetY(ev.nativeEvent.offsetY / imageRatio)
   }
 
   return (
@@ -340,7 +341,7 @@ export const Page: React.FC<PageProps> = (props) => {
               zoomRatioStanding={props.page.Height / page.image.Height}
               zoomRatioLying={props.page.Width / page.image.Height}
               page={page.image}
-              visiblePagesIndex={props.visiblePagesIndex!}
+              visiblePagesIndex={props.visiblePagesIndex}
             />
 
             {mouseIsDown && (

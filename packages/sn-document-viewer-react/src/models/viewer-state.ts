@@ -107,8 +107,10 @@ export interface ViewerState {
   /**
    * The attributes of the viewbox
    */
-  boxRight: number
-  boxLeft: number
-  boxTop: number
-  boxBottom: number
+  boxPosition: {
+    left: number
+    right: number
+    top: number
+    bottom: number
+  }
 }
