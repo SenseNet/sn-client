@@ -105,13 +105,13 @@ export const Page: React.FC<PageProps> = (props) => {
     (ev: MouseEvent) => {
       const compareNumbers = (a: number, b: number) => a - b
       const pageBoundings = {
-        left: Math.max(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.left, viewerState.boxPosition.left),
-        right: Math.min(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.right, viewerState.boxPosition.right),
+        left: Math.max(viewerState.pagesRects[props.visiblePagesIndex].pageRect.left, viewerState.boxPosition.left),
+        right: Math.min(viewerState.pagesRects[props.visiblePagesIndex].pageRect.right, viewerState.boxPosition.right),
         bottom: Math.min(
-          viewerState.pagesRects[props.visiblePagesIndex!].pageRect.bottom,
+          viewerState.pagesRects[props.visiblePagesIndex].pageRect.bottom,
           viewerState.boxPosition.bottom,
         ),
-        top: Math.max(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.top, viewerState.boxPosition.top),
+        top: Math.max(viewerState.pagesRects[props.visiblePagesIndex].pageRect.top, viewerState.boxPosition.top),
       }
 
       const endX =

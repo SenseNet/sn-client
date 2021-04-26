@@ -151,35 +151,24 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
           offset: Dimensions
         }
         const clientRect = ev.currentTarget.getClientRects()[0]
+        const compareNumbers = (a: number, b: number) => a - b
 
+        const pageBoundings = {
+          left: Math.max(viewerState.pagesRects[props.visiblePagesIndex].pageRect.left, viewerState.boxPosition.left),
+          right:
+            Math.min(viewerState.pagesRects[props.visiblePagesIndex].pageRect.right, viewerState.boxPosition.right) -
+            shapeData.shape.w * zoomRatio,
+          bottom:
+            Math.min(viewerState.pagesRects[props.visiblePagesIndex].pageRect.bottom, viewerState.boxPosition.bottom) -
+            shapeData.shape.h * zoomRatio,
+          top: Math.max(viewerState.pagesRects[props.visiblePagesIndex].pageRect.top, viewerState.boxPosition.top),
+        }
         const newX =
-          ev.pageX - shapeData.offset.width <
-            viewerState.pagesRects[props.visiblePagesIndex].pageRect.right - shapeData.shape.w * zoomRatio &&
-          ev.pageX - shapeData.offset.width < viewerState.boxPosition.right - shapeData.shape.w * zoomRatio
-            ? ev.pageX - shapeData.offset.width > viewerState.pagesRects[props.visiblePagesIndex].pageRect.left &&
-              ev.pageX - shapeData.offset.width > viewerState.boxPosition.left
-              ? ev.pageX - clientRect.left - shapeData.offset.width
-              : Math.max(viewerState.pagesRects[props.visiblePagesIndex].pageRect.left, viewerState.boxPosition.left) -
-                clientRect.left
-            : Math.min(viewerState.pagesRects[props.visiblePagesIndex].pageRect.right, viewerState.boxPosition.right) -
-              clientRect.left -
-              shapeData.shape.w * zoomRatio
-
+          [pageBoundings.left, pageBoundings.right, ev.pageX - shapeData.offset.width].sort(compareNumbers)[1] -
+          clientRect.left
         const newY =
-          ev.pageY - shapeData.offset.height <
-            viewerState.pagesRects[props.visiblePagesIndex].pageRect.bottom - shapeData.shape.h * zoomRatio &&
-          ev.pageY - shapeData.offset.height < viewerState.boxPosition.bottom - shapeData.shape.h * zoomRatio
-            ? ev.pageY - shapeData.offset.height > viewerState.pagesRects[props.visiblePagesIndex].pageRect.top &&
-              ev.pageY - shapeData.offset.height > viewerState.boxPosition.top
-              ? ev.pageY - clientRect.top - shapeData.offset.height
-              : Math.max(viewerState.pagesRects[props.visiblePagesIndex].pageRect.top, viewerState.boxPosition.top) -
-                clientRect.top
-            : Math.min(
-                viewerState.pagesRects[props.visiblePagesIndex].pageRect.bottom,
-                viewerState.boxPosition.bottom,
-              ) -
-              clientRect.top -
-              shapeData.shape.h * zoomRatio
+          [pageBoundings.top, pageBoundings.bottom, ev.pageY - shapeData.offset.height].sort(compareNumbers)[1] -
+          clientRect.top
 
         updateShapeData(
           shapeData.type,
