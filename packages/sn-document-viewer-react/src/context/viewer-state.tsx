@@ -22,10 +22,7 @@ export const defaultViewerState: ViewerState & {
   pageToGo: new ObservableValue({ page: 1 }),
   updateState: () => {},
   pagesRects: new Array<pageRectModel>(),
-  boxRight: 0,
-  boxLeft: 0,
-  boxTop: 0,
-  boxBottom: 0,
+  boxPosition: { left: 0, top: 0, bottom: 0, right: 0 },
 }
 export const ViewerStateContext = createContext(defaultViewerState)
 

@@ -7,7 +7,6 @@
     { "path": "./sn-react-calendar" },
     // { "path": "./sn-react-component-docs" },
     { "path": "./sn-react-imagegallery" },
-    { "path": "./sn-react-imageupload" },
     { "path": "./sn-react-memoapp" },
     { "path": "./sn-react-tasklist" },
     { "path": "./sn-react-typescript-boilerplate" },

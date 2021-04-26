@@ -18,7 +18,7 @@ export interface ShapeProps {
   ) => void
   removeShape: (shapeType: keyof Shapes, guid: string) => void
   rotationDegree: number
-  visiblePagesIndex?: number
+  visiblePagesIndex: number
 }
 
 export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
@@ -47,25 +47,39 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
 
   /** event that will be triggered on resize */
   const onResized = (clientRect?: DOMRect) => {
-    if (clientRect && (viewerState.boxBottom || viewerState.boxLeft || viewerState.boxRight || viewerState.boxTop)) {
-      const [shape, shapeType, zoomRatio] = [props.shape, props.shapeType, props.zoomRatio]
+    if (
+      clientRect &&
+      (viewerState.boxPosition.bottom ||
+        viewerState.boxPosition.left ||
+        viewerState.boxPosition.right ||
+        viewerState.boxPosition.top)
+    ) {
+      const { shape, shapeType, zoomRatio } = props
+
       const newSize = {
         w:
-          clientRect.right < viewerState.pagesRects[props.visiblePagesIndex!].pageRect.right &&
-          clientRect.right < viewerState.boxRight
+          clientRect.right < viewerState.pagesRects[props.visiblePagesIndex].pageRect.right &&
+          clientRect.right < viewerState.boxPosition.right
             ? clientRect.width / zoomRatio
-            : (Math.min(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.right!, viewerState.boxRight) -
+            : (Math.min(
+                viewerState.pagesRects[props.visiblePagesIndex].pageRect.right!,
+                viewerState.boxPosition.right,
+              ) -
                 clientRect.x) /
               zoomRatio,
         h:
-          clientRect.bottom < viewerState.pagesRects[props.visiblePagesIndex!].pageRect.bottom &&
-          clientRect.height < viewerState.boxBottom
+          clientRect.bottom < viewerState.pagesRects[props.visiblePagesIndex].pageRect.bottom &&
+          clientRect.height < viewerState.boxPosition.bottom
             ? clientRect.height / zoomRatio
-            : (Math.min(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.bottom!, viewerState.boxBottom) -
+            : (Math.min(
+                viewerState.pagesRects[props.visiblePagesIndex].pageRect.bottom!,
+                viewerState.boxPosition.bottom,
+              ) -
                 clientRect.y) /
               zoomRatio,
       }
-      if (Math.abs(newSize.w - shape.w) > 1 || Math.abs(newSize.h - shape.h) > 1) {
+
+      if (Math.abs(newSize.w - shape.w) > 0 || Math.abs(newSize.h - shape.h) > 0) {
         props.updateShapeData(
           shapeType,
           shape.guid,

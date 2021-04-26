@@ -27,7 +27,8 @@ export interface ShapesWidgetProps {
   zoomRatioStanding: number
   zoomRatioLying: number
   imageRotation: number
-  visiblePagesIndex?: number
+  visiblePagesIndex: number
+  pageContainerRef?: HTMLElement
 }
 
 /**
@@ -77,7 +78,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
         const clonePagesRects = [...previous.pagesRects]
         if (clonePagesRects.length === 0) {
           clonePagesRects.push({
-            visiblePage: props.visiblePagesIndex!,
+            visiblePage: props.visiblePagesIndex,
             pageRect: shapesContainerRef.current!.getClientRects()[0],
           })
         } else {
@@ -86,7 +87,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
             clonePagesRects[findIndex].pageRect = shapesContainerRef.current!.getClientRects()[0]
           } else {
             clonePagesRects.push({
-              visiblePage: props.visiblePagesIndex!,
+              visiblePage: props.visiblePagesIndex,
               pageRect: shapesContainerRef.current!.getClientRects()[0],
             })
           }
@@ -95,17 +96,18 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
       }
 
       updateState(updatePagesRectsFunc as any)
-      if (
-        document.getElementById('sn-document-viewer-pages') &&
-        document.getElementById('sn-document-viewer-pages')!.getClientRects().length > 0
-      ) {
-        updateState({ boxBottom: document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].bottom })
-        updateState({ boxLeft: document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].left })
-        updateState({ boxRight: document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].right })
-        updateState({ boxTop: document.getElementById('sn-document-viewer-pages')?.getClientRects()[0].top })
+      if (props.pageContainerRef && props.pageContainerRef.getClientRects().length > 0) {
+        updateState({
+          boxPosition: {
+            bottom: props.pageContainerRef.getClientRects()[0].bottom,
+            left: props.pageContainerRef.getClientRects()[0].left,
+            right: props.pageContainerRef.getClientRects()[0].right,
+            top: props.pageContainerRef.getClientRects()[0].top,
+          },
+        })
       }
     }
-  }, [props.visiblePagesIndex, updateState])
+  }, [props.pageContainerRef, props.visiblePagesIndex, updateState])
 
   const removeShape = useCallback(
     (shapeType: keyof Shapes, guid: string) => {
@@ -137,7 +139,10 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
       if (
         permissions.canEdit &&
         ev.dataTransfer.getData('shape') &&
-        (viewerState.boxBottom || viewerState.boxLeft || viewerState.boxRight || viewerState.boxTop)
+        (viewerState.boxPosition.bottom ||
+          viewerState.boxPosition.left ||
+          viewerState.boxPosition.right ||
+          viewerState.boxPosition.top)
       ) {
         ev.preventDefault()
         const shapeData = JSON.parse(ev.dataTransfer.getData('shape')) as {
@@ -146,32 +151,24 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
           offset: Dimensions
         }
         const clientRect = ev.currentTarget.getClientRects()[0]
+        const compareNumbers = (a: number, b: number) => a - b
 
+        const pageBoundings = {
+          left: Math.max(viewerState.pagesRects[props.visiblePagesIndex].pageRect.left, viewerState.boxPosition.left),
+          right:
+            Math.min(viewerState.pagesRects[props.visiblePagesIndex].pageRect.right, viewerState.boxPosition.right) -
+            shapeData.shape.w * zoomRatio,
+          bottom:
+            Math.min(viewerState.pagesRects[props.visiblePagesIndex].pageRect.bottom, viewerState.boxPosition.bottom) -
+            shapeData.shape.h * zoomRatio,
+          top: Math.max(viewerState.pagesRects[props.visiblePagesIndex].pageRect.top, viewerState.boxPosition.top),
+        }
         const newX =
-          ev.pageX - shapeData.offset.width <
-            viewerState.pagesRects[props.visiblePagesIndex!].pageRect.right - shapeData.shape.w * zoomRatio &&
-          ev.pageX - shapeData.offset.width < viewerState.boxRight - shapeData.shape.w * zoomRatio
-            ? ev.pageX - shapeData.offset.width > viewerState.pagesRects[props.visiblePagesIndex!].pageRect.left &&
-              ev.pageX - shapeData.offset.width > viewerState.boxLeft
-              ? ev.pageX - clientRect.left - shapeData.offset.width
-              : Math.max(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.left, viewerState.boxLeft) -
-                clientRect.left
-            : Math.min(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.right, viewerState.boxRight) -
-              clientRect.left -
-              shapeData.shape.w * zoomRatio
-
+          [pageBoundings.left, pageBoundings.right, ev.pageX - shapeData.offset.width].sort(compareNumbers)[1] -
+          clientRect.left
         const newY =
-          ev.pageY - shapeData.offset.height <
-            viewerState.pagesRects[props.visiblePagesIndex!].pageRect.bottom - shapeData.shape.h * zoomRatio &&
-          ev.pageY - shapeData.offset.height < viewerState.boxBottom - shapeData.shape.h * zoomRatio
-            ? ev.pageY - shapeData.offset.height > viewerState.pagesRects[props.visiblePagesIndex!].pageRect.top &&
-              ev.pageY - shapeData.offset.height > viewerState.boxTop
-              ? ev.pageY - clientRect.top - shapeData.offset.height
-              : Math.max(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.top, viewerState.boxTop) -
-                clientRect.top
-            : Math.min(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.bottom, viewerState.boxBottom) -
-              clientRect.top -
-              shapeData.shape.h * zoomRatio
+          [pageBoundings.top, pageBoundings.bottom, ev.pageY - shapeData.offset.height].sort(compareNumbers)[1] -
+          clientRect.top
 
         updateShapeData(
           shapeData.type,
@@ -191,10 +188,10 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
       props.page.Index,
       props.visiblePagesIndex,
       updateShapeData,
-      viewerState.boxBottom,
-      viewerState.boxLeft,
-      viewerState.boxRight,
-      viewerState.boxTop,
+      viewerState.boxPosition.bottom,
+      viewerState.boxPosition.left,
+      viewerState.boxPosition.right,
+      viewerState.boxPosition.top,
       viewerState.pagesRects,
       zoomRatio,
     ],
