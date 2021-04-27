@@ -1,5 +1,5 @@
 import { Card, CardContent, createStyles, makeStyles, Typography } from '@material-ui/core'
-import Img, { FluidObject } from 'gatsby-image'
+import { GatsbyImage } from 'gatsby-plugin-image'
 import * as React from 'react'
 import { globals } from '../styles/globalStyles'
 
@@ -12,9 +12,9 @@ const useStyles = makeStyles(() => {
       flexFlow: 'column',
     },
     image: {
-      height: `${globals.common.blogCardImageHeight}px`,
+      height: `${globals.common.blogCardImageHeight}px !important`,
       objectFit: 'cover',
-      width: '100%',
+      width: '100% !important',
     },
     wrapper: {
       flexGrow: 1,
@@ -37,7 +37,7 @@ const useStyles = makeStyles(() => {
 export interface BlogCardProps {
   title: string
   excerpt: string
-  image?: FluidObject
+  image?: any
 }
 
 const BlogCard: React.FC<BlogCardProps> = (props) => {
@@ -45,7 +45,13 @@ const BlogCard: React.FC<BlogCardProps> = (props) => {
 
   return (
     <Card className={classes.root}>
-      {props.image && <Img fluid={props.image} alt="test" />}
+      {props.image && (
+        <GatsbyImage
+          className={classes.image}
+          image={props.image.childImageSharp.gatsbyImageData}
+          alt={props.image.name}
+        />
+      )}
       <CardContent className={classes.wrapper}>
         <Typography gutterBottom variant="h5" component="h5" className={classes.title}>
           {props.title}

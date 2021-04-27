@@ -2,7 +2,6 @@ const fetch = require('node-fetch')
 const { createRemoteFileNode } = require(`gatsby-source-filesystem`)
 
 const BLOG_NODE_TYPE = `Blog`
-let global_path = ''
 
 exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }, options) => {
   console.log(options)
@@ -27,7 +26,10 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }, opt
         id: createNodeId(`Blog-${blog.Id}`),
         internal: {
           type: BLOG_NODE_TYPE,
-          contentDigest: createContentDigest(blog),
+          contentDigest: createContentDigest(blog.Body),
+          mediaType: 'text/markdown',
+          content: blog.Body,
+          description: `Blog node with mdx body`,
         },
       }
 
@@ -38,12 +40,7 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }, opt
   }
 }
 
-exports.onCreateNode = async ({
-  node, // the node that was just created
-  actions: { createNode },
-  createNodeId,
-  getCache,
-}) => {
+exports.onCreateNode = async ({ node, actions: { createNode }, createNodeId, getCache }) => {
   if (node.internal.type === BLOG_NODE_TYPE) {
     const fileNode = await createRemoteFileNode({
       // the url of the remote image to generate a node for

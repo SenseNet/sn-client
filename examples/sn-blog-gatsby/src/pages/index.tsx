@@ -34,11 +34,16 @@ const useStyles = makeStyles(() => {
 export interface PostNode {
   node: {
     DisplayName: string
-    Lead: string
     Keywords: string
     Author: string
     PublishDate: Date
     remoteImage: any
+    fields: {
+      slug: string
+    }
+    childMdx: {
+      excerpt: string
+    }
   }
 }
 export interface IndexPageProps {
@@ -62,12 +67,8 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
           <Grid container spacing={4} className={classes.blog}>
             {data.allBlog.edges.map(({ node }, index) => (
               <Grid item xs={12} sm={6} md={4} className={classes.blogItem} key={index}>
-                <Link to={'/'} key={index} className={classes.link}>
-                  <BlogCard
-                    title={node.DisplayName}
-                    excerpt={node.Lead}
-                    image={node.remoteImage.childImageSharp.fluid}
-                  />
+                <Link to={node.fields.slug} key={index} className={classes.link}>
+                  <BlogCard title={node.DisplayName} excerpt={node.childMdx.excerpt} image={node.remoteImage} />
                 </Link>
               </Grid>
             ))}
@@ -88,10 +89,20 @@ export const query = graphql`
           id
           Name
           DisplayName
-          Lead
           Keywords
           Author
           PublishDate
+          remoteImage {
+            childImageSharp {
+              gatsbyImageData(layout: FIXED)
+            }
+          }
+          fields {
+            slug
+          }
+          childMdx {
+            excerpt
+          }
         }
       }
     }

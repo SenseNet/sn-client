@@ -1,32 +1,16 @@
 const path = require('path')
 
-exports.onCreateNode = ({ node, actions, getNode }) => {
+exports.onCreateNode = ({ node, actions }) => {
   const { createNodeField } = actions
 
   switch (node.internal.type) {
-    case 'MarkdownRemark':
-      {
-        const { permalink, layout } = node.frontmatter
-        const { relativePath } = getNode(node.parent)
+    case 'Blog':
+      createNodeField({
+        node,
+        name: 'slug',
+        value: node.Name || '',
+      })
 
-        let slug = permalink
-
-        if (!slug) {
-          slug = `/${relativePath.replace('.md', '')}/`
-        }
-
-        createNodeField({
-          node,
-          name: 'slug',
-          value: slug || '',
-        })
-
-        createNodeField({
-          node,
-          name: 'layout',
-          value: layout || '',
-        })
-      }
       break
     default: //do nothing
   }
@@ -35,13 +19,12 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
 
-  const allMarkdown = await graphql(`
+  const allBlog = await graphql(`
     {
-      allMarkdownRemark(limit: 1000) {
+      allBlog(limit: 1000) {
         edges {
           node {
             fields {
-              layout
               slug
             }
           }
@@ -50,17 +33,19 @@ exports.createPages = async ({ graphql, actions }) => {
     }
   `)
 
-  if (allMarkdown.errors) {
-    console.error(allMarkdown.errors)
-    throw new Error(allMarkdown.errors)
+  if (allBlog.errors) {
+    console.error(allBlog.errors)
+    throw new Error(allBlog.errors)
   }
 
-  allMarkdown.data.allMarkdownRemark.edges.forEach(({ node }) => {
-    const { slug, layout } = node.fields
+  const blogTemplate = path.resolve(`./src/templates/page.tsx`)
+
+  allBlog.data.allBlog.edges.forEach(({ node }) => {
+    const { slug } = node.fields
 
     createPage({
-      path: slug,
-      component: path.resolve(`./src/templates/${layout || 'page'}.tsx`),
+      path: `/${slug}/`,
+      component: blogTemplate,
       context: {
         slug,
       },
