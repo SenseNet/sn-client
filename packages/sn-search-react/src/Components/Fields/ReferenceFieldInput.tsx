@@ -16,6 +16,7 @@ export const ReferenceFieldInput = (props: ReferenceFieldInputProps) => {
   const { description, displayName, helperText, inputProps } = props
   return (
     <TextField
+      data-test={'reference-input'}
       autoFocus={props.autoFocus}
       type="text"
       label={displayName}
