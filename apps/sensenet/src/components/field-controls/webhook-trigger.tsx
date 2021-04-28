@@ -132,18 +132,22 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
   const logger = useLogger('webhook filter')
   const localization = useLocalization()
 
-  const initialState =
-    props.actionName === 'new'
-      ? (props.settings.DefaultValue &&
-          (JSON.parse(props.settings.DefaultValue) as WebhookTriggerType | undefined)) || {
-          Path: DEFAULT_CONTAINER,
-          TriggersForAllEvents: true,
-          ContentTypes: [{ Name: 'File', Events: ['All'] } as WebhookContentTypeItem],
-        }
-      : undefined
+  const getInitialstate = () => {
+    const initialState =
+      props.actionName === 'new'
+        ? (props.settings.DefaultValue &&
+            (JSON.parse(props.settings.DefaultValue) as WebhookTriggerType | undefined)) || {
+            Path: DEFAULT_CONTAINER,
+            TriggersForAllEvents: true,
+            ContentTypes: [{ Name: 'File', Events: ['All'] } as WebhookContentTypeItem],
+          }
+        : undefined
+    props.fieldOnChange?.(props.settings.Name, JSON.stringify(initialState))
+    return initialState
+  }
 
   const [value, setValue] = useState<WebhookTriggerType | undefined>(
-    (props.fieldValue && (JSON.parse(props.fieldValue) as WebhookTriggerType)) || initialState,
+    (props.fieldValue && (JSON.parse(props.fieldValue) as WebhookTriggerType)) || getInitialstate,
   )
 
   //Triggers
@@ -182,11 +186,6 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
   const filteredList = allTypes.filter(
     (type: string) => type.toLowerCase().includes(contentTypeInputValue.toLowerCase()) && !typesSelected.includes(type),
   )
-
-  useEffect(() => {
-    props.fieldOnChange?.(props.settings.Name, JSON.stringify({ ...value }))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   useEffect(() => {
     if (value?.Path) {
