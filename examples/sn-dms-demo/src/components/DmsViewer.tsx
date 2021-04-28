@@ -26,7 +26,7 @@ const DocViewer: React.FunctionComponent<
     10,
   )
   const closeViewer = useCallback(() => {
-    props.previousLocation ? props.history.push(props.previousLocation) : props.history.back()
+    props.previousLocation ? props.history.push(props.previousLocation) : props.history.go(-1)
   }, [props.history, props.previousLocation])
 
   useEffect(() => {
