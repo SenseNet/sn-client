@@ -127,7 +127,7 @@ const Setup = () => {
   }
 
   return (
-    <div className={globalClasses.contentWrapper} style={{ paddingLeft: 0 }}>
+    <div className={globalClasses.contentWrapper} style={{ paddingLeft: 0 }} data-test="settings-container">
       <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)} style={{ display: 'grid' }}>
         <span style={{ fontSize: '20px' }}>{localizationDrawerTitles.Configuration}</span>
       </div>
