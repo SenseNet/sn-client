@@ -98,6 +98,7 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
               startIcon={<AddIcon />}
               style={{ marginLeft: '0.5rem' }}
               disabled={!newReference}
+              data-test="reference-add"
               type="submit">
               Add
             </Button>
@@ -118,12 +119,16 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
                       <Icon item={item} />
                     </Avatar>
                   </ListItemAvatar>
-                  <ListItemText primary={item.DisplayName} />
+                  <ListItemText
+                    primary={item.DisplayName}
+                    data-test={`reference-item-${item.DisplayName?.replace(/\s+/g, '-').toLowerCase()}`}
+                  />
                   {props.canEdit && fieldControl && (
                     <ListItemSecondaryAction>
                       <IconButton
                         edge="end"
                         aria-label="delete"
+                        data-test={`reference-item-remove-${item.DisplayName?.replace(/\s+/g, '-').toLowerCase()}`}
                         onClick={async () => {
                           const remainedReferences = references.filter((content) => item.Id !== content.Id)
                           try {
