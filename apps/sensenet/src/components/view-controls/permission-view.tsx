@@ -223,6 +223,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
               </Button>
             </Tooltip>
             <Button
+              data-test={'assing-new-permission'}
               className={classes.assignButton}
               aria-label={localization.permissionEditor.assign}
               color="primary"

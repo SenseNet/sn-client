@@ -26,5 +26,15 @@ declare namespace Cypress {
      * Check the items of the add button dropdown list by name
      */
     checkAddItemList(dropdownItems: string[]): void
+
+    scrollToItem({
+      container,
+      selector,
+      done,
+    }: {
+      container: JQuery<HTMLElement>
+      selector: string
+      done?: (element: HTMLElement) => void
+    }): Promise<HTMLElement>
   }
 }

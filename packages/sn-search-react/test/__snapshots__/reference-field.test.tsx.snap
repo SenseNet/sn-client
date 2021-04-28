@@ -37,6 +37,7 @@ exports[`ReferenceField Component InputField Should be rendered without error 1`
       "value": "",
     }
   }
+  data-test="reference-input"
   onBlur={[Function]}
   onChange={[Function]}
   type="text"
@@ -51,6 +52,7 @@ exports[`ReferenceField Component Suggestion Should be rendered without error 1`
   selected={true}
 >
   <WithStyles(ForwardRef(ListItemText))
+    data-test="suggestion-alma"
     primary={
       Array [
         <strong>
