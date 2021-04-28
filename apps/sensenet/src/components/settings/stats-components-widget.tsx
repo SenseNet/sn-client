@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core'
 import { green, grey, red } from '@material-ui/core/colors'
 import { Close, Done, HelpOutline, Info } from '@material-ui/icons'
+import clsx from 'clsx'
 import React from 'react'
 import { useGlobalStyles, useWidgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
@@ -22,9 +23,8 @@ import { useDateUtils } from '../../hooks/use-date-utils'
 const useStyles = makeStyles(() => {
   return createStyles({
     rowContainer: {
-      display: 'flex',
-      justifyContent: 'space-between',
       padding: '10px 0',
+      fontSize: '16px',
     },
     icon: {
       marginLeft: '12px',
@@ -62,7 +62,7 @@ export const ComponentsWidget: React.FunctionComponent<ComponentsWidgetProps> = 
   return (
     <div className={widgetClasses.root}>
       <Paper elevation={0} className={widgetClasses.container}>
-        <div className={globalClasses.centeredVertical} style={{ padding: '10px 0' }}>
+        <div className={clsx(globalClasses.centeredVertical, classes.rowContainer)}>
           {localization.components}
           <Tooltip title={localization.componentsInfo} placement="top">
             <Info className={classes.info} />
