@@ -1,5 +1,6 @@
 import { Card, CardContent, createStyles, makeStyles, Typography } from '@material-ui/core'
 import { GatsbyImage } from 'gatsby-plugin-image'
+import { MDXRenderer } from 'gatsby-plugin-mdx'
 import * as React from 'react'
 import { globals } from '../styles/globalStyles'
 
@@ -36,7 +37,7 @@ const useStyles = makeStyles(() => {
 
 export interface BlogCardProps {
   title: string
-  excerpt: string
+  excerpt: any
   image?: any
 }
 
@@ -57,7 +58,7 @@ const BlogCard: React.FC<BlogCardProps> = (props) => {
           {props.title}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p" className={classes.description}>
-          {props.excerpt}
+          <MDXRenderer>{props.excerpt}</MDXRenderer>
         </Typography>
       </CardContent>
     </Card>

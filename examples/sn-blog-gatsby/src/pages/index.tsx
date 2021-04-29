@@ -41,8 +41,10 @@ export interface PostNode {
     fields: {
       slug: string
     }
-    childMdx: {
-      excerpt: string
+    markdownLead: {
+      childMdx: {
+        body: any
+      }
     }
   }
 }
@@ -68,7 +70,11 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
             {data.allBlog.edges.map(({ node }, index) => (
               <Grid item xs={12} sm={6} md={4} className={classes.blogItem} key={index}>
                 <Link to={node.fields.slug} key={index} className={classes.link}>
-                  <BlogCard title={node.DisplayName} excerpt={node.childMdx.excerpt} image={node.remoteImage} />
+                  <BlogCard
+                    title={node.DisplayName}
+                    excerpt={node.markdownLead.childMdx.body}
+                    image={node.remoteImage}
+                  />
                 </Link>
               </Grid>
             ))}
@@ -100,8 +106,10 @@ export const query = graphql`
           fields {
             slug
           }
-          childMdx {
-            excerpt
+          markdownLead {
+            childMdx {
+              body
+            }
           }
         }
       }

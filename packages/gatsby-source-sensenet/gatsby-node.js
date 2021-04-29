@@ -4,8 +4,6 @@ const { createRemoteFileNode } = require(`gatsby-source-filesystem`)
 const BLOG_NODE_TYPE = `Blog`
 
 exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }, options) => {
-  console.log(options)
-
   try {
     const res = await fetch(
       `${options.host}/odata.svc${options.path}?query=Type%3ABlogPost&$expand=LeadImage&metadata=no`,
@@ -16,7 +14,6 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }, opt
         method: 'GET',
       },
     )
-    console.log('--------------------------------------------------')
 
     const data = await res.json()
 
@@ -26,10 +23,8 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }, opt
         id: createNodeId(`Blog-${blog.Id}`),
         internal: {
           type: BLOG_NODE_TYPE,
-          contentDigest: createContentDigest(blog.Body),
-          mediaType: 'text/markdown',
-          content: blog.Body,
-          description: `Blog node with mdx body`,
+          contentDigest: createContentDigest(blog),
+          description: `Blog node`,
         },
       }
 
@@ -40,18 +35,54 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }, opt
   }
 }
 
-exports.onCreateNode = async ({ node, actions: { createNode }, createNodeId, getCache }) => {
+exports.onCreateNode = async ({ node, actions: { createNode }, createNodeId, getCache }, options) => {
   if (node.internal.type === BLOG_NODE_TYPE) {
-    const fileNode = await createRemoteFileNode({
-      // the url of the remote image to generate a node for
-      url: 'https://images.unsplash.com/photo-1534432586043-ead5b99229fb',
+    const imageNode = await createRemoteFileNode({
+      url: `${options.host}${node.LeadImage.Path}`,
+      httpHeaders: { Authorization: `Bearer ${options.accessToken}` },
       parentNodeId: node.Id.toString(),
       createNode,
       createNodeId,
       getCache,
     })
-    if (fileNode) {
-      node.remoteImage___NODE = fileNode.id
+    if (imageNode) {
+      node.remoteImage___NODE = imageNode.id
+    }
+
+    //create node for Body field
+    const bodyMdxNode = {
+      id: `${node.Id.toString()}-MarkdownBody`,
+      parent: node.Id.toString(),
+      internal: {
+        type: `${node.internal.type}MarkdownBody`,
+        mediaType: 'text/markdown',
+        content: node.Body,
+        contentDigest: node.Body,
+      },
+    }
+
+    createNode(bodyMdxNode)
+
+    if (bodyMdxNode) {
+      node.markdownBody___NODE = bodyMdxNode.id
+    }
+
+    //create node for Lead field
+    const leadMdxNode = {
+      id: `${node.Id.toString()}-MarkdownLead`,
+      parent: node.Id.toString(),
+      internal: {
+        type: `${node.internal.type}MarkdownLead`,
+        mediaType: 'text/markdown',
+        content: node.Lead,
+        contentDigest: node.Lead,
+      },
+    }
+
+    createNode(leadMdxNode)
+
+    if (leadMdxNode) {
+      node.markdownLead___NODE = leadMdxNode.id
     }
   }
 }

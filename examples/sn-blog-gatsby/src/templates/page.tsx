@@ -56,8 +56,15 @@ interface PageTemplateProps {
       fields: {
         slug: string
       }
-      childMdx: {
-        body: any
+      markdownBody: {
+        childMdx: {
+          body: any
+        }
+      }
+      markdownLead: {
+        childMdx: {
+          body: any
+        }
       }
     }
   }
@@ -98,7 +105,7 @@ const PageTemplate: React.FC<PageTemplateProps> = ({ data }) => {
             </Typography>
           </div>
 
-          <MDXRenderer>{data.blog.childMdx.body}</MDXRenderer>
+          <MDXRenderer>{data.blog.markdownBody.childMdx.body}</MDXRenderer>
         </Container>
       </Page>
     </IndexLayout>
@@ -124,8 +131,15 @@ export const query = graphql`
       fields {
         slug
       }
-      childMdx {
-        body
+      markdownBody {
+        childMdx {
+          body
+        }
+      }
+      markdownLead {
+        childMdx {
+          body
+        }
       }
     }
   }
