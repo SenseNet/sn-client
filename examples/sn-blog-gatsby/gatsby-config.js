@@ -47,7 +47,6 @@ module.exports = {
         path: '/Root/Content/SampleWorkspace/Blog',
         oDataOptions: {
           select: 'all',
-          query: 'TypeIs:BlogPost',
           expand: ['LeadImage'],
           metadata: 'no',
         },

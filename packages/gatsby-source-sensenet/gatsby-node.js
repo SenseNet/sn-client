@@ -7,7 +7,41 @@ const BLOGPOST_NODE_TYPE = 'BlogPost'
 const DEFAULT_PATH = '/Root/Content'
 
 exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }, options) => {
+  const createTreeNode = async (parentNode, content) => {
+    const newNode = {
+      ...content,
+      id: createNodeId(`${content.Type}-${content.Id}`),
+      internal: {
+        type: content.Type,
+        contentDigest: createContentDigest(content),
+        description: `${content.Type} node`,
+      },
+    }
+
+    actions.createNode(newNode)
+    actions.createParentChildLink({ parent: parentNode, child: newNode })
+
+    try {
+      const res = await fetch(`${options.host}/${defaultRepositoryConfiguration.oDataToken}${content.Path}`, {
+        headers: {
+          Authorization: `Bearer ${options.accessToken}`,
+        },
+        method: 'GET',
+      })
+
+      const data = await res.json()
+
+      data.d.results.length > 0 &&
+        data.d.results.forEach((childContent) => {
+          createTreeNode(newNode, childContent)
+        })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const path = options.path || DEFAULT_PATH
+
   try {
     const params = ODataUrlBuilder.buildUrlParamString(defaultRepositoryConfiguration, options.oDataOptions)
     console.log('REQUEST:', `${options.host}/${defaultRepositoryConfiguration.oDataToken}${path}?${params}`)
@@ -21,18 +55,21 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }, opt
 
     const data = await res.json()
 
-    data.d.results.forEach((content) => {
-      const node = {
-        ...content,
-        id: createNodeId(`${content.Type}-${content.Id}`),
-        internal: {
-          type: content.Type,
-          contentDigest: createContentDigest(content),
-          description: `${content.Type} node`,
-        },
-      }
+    const rootNode = {
+      id: createNodeId('root'),
+      internal: {
+        content: '{{ Name: "root" }}',
+        type: 'root',
+        contentDigest: createContentDigest('root'),
+        description: `root node`,
+      },
+    }
 
-      actions.createNode(node)
+    actions.createNode(rootNode)
+    console.log('root:', rootNode.id)
+
+    data.d.results.forEach((content) => {
+      createTreeNode(rootNode, content)
     })
   } catch (error) {
     console.log(error)
