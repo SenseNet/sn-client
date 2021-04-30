@@ -47,7 +47,7 @@ interface PageTemplateProps {
         description: string
       }
     }
-    blog: {
+    blogPost: {
       Body: string
       Lead: string
       DisplayName: string
@@ -74,7 +74,7 @@ const PageTemplate: React.FC<PageTemplateProps> = ({ data }) => {
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
 
-  const authors = data.blog.Author.split(',')
+  const authors = data.blogPost.Author.split(',')
 
   return (
     <IndexLayout>
@@ -85,10 +85,10 @@ const PageTemplate: React.FC<PageTemplateProps> = ({ data }) => {
           </Link>
           <div className={classes.postHeader}>
             <Typography variant="h2" className={classes.title}>
-              {data.blog.DisplayName}
+              {data.blogPost.DisplayName}
             </Typography>
             <Typography variant="subtitle1">
-              <span className={classes.date}>{format(parseISO(data.blog.PublishDate), 'PP')}</span>
+              <span className={classes.date}>{format(parseISO(data.blogPost.PublishDate), 'PP')}</span>
               {authors.map((author, index) => (
                 <>
                   {index !== 0 && ', '}
@@ -105,7 +105,7 @@ const PageTemplate: React.FC<PageTemplateProps> = ({ data }) => {
             </Typography>
           </div>
 
-          <MDXRenderer>{data.blog.markdownBody.childMdx.body}</MDXRenderer>
+          <MDXRenderer>{data.blogPost.markdownBody.childMdx.body}</MDXRenderer>
         </Container>
       </Page>
     </IndexLayout>
@@ -122,7 +122,7 @@ export const query = graphql`
         description
       }
     }
-    blog(fields: { slug: { eq: $slug } }) {
+    blogPost(fields: { slug: { eq: $slug } }) {
       Body
       Lead
       DisplayName

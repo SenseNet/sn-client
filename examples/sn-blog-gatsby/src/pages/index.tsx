@@ -37,7 +37,7 @@ export interface PostNode {
     Keywords: string
     Author: string
     PublishDate: Date
-    remoteImage: any
+    leadImage: any
     fields: {
       slug: string
     }
@@ -50,7 +50,7 @@ export interface PostNode {
 }
 export interface IndexPageProps {
   data: {
-    allBlog: {
+    allBlogPost: {
       edges: PostNode[]
     }
   }
@@ -67,14 +67,10 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
             News around sensenet
           </Typography>
           <Grid container spacing={4} className={classes.blog}>
-            {data.allBlog.edges.map(({ node }, index) => (
+            {data.allBlogPost.edges.map(({ node }, index) => (
               <Grid item xs={12} sm={6} md={4} className={classes.blogItem} key={index}>
                 <Link to={node.fields.slug} key={index} className={classes.link}>
-                  <BlogCard
-                    title={node.DisplayName}
-                    excerpt={node.markdownLead.childMdx.body}
-                    image={node.remoteImage}
-                  />
+                  <BlogCard title={node.DisplayName} excerpt={node.markdownLead.childMdx.body} image={node.leadImage} />
                 </Link>
               </Grid>
             ))}
@@ -89,7 +85,7 @@ export default IndexPage
 
 export const query = graphql`
   query MyQuery {
-    allBlog {
+    allBlogPost {
       edges {
         node {
           id
@@ -98,7 +94,7 @@ export const query = graphql`
           Keywords
           Author
           PublishDate
-          remoteImage {
+          leadImage {
             childImageSharp {
               gatsbyImageData(layout: FIXED)
             }

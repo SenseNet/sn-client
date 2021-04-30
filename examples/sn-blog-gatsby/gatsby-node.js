@@ -4,7 +4,7 @@ exports.onCreateNode = ({ node, actions }) => {
   const { createNodeField } = actions
 
   switch (node.internal.type) {
-    case 'Blog':
+    case 'BlogPost':
       createNodeField({
         node,
         name: 'slug',
@@ -19,9 +19,9 @@ exports.onCreateNode = ({ node, actions }) => {
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
 
-  const allBlog = await graphql(`
+  const allBlogPost = await graphql(`
     {
-      allBlog(limit: 1000) {
+      allBlogPost(limit: 1000) {
         edges {
           node {
             fields {
@@ -33,19 +33,19 @@ exports.createPages = async ({ graphql, actions }) => {
     }
   `)
 
-  if (allBlog.errors) {
-    console.error(allBlog.errors)
-    throw new Error(allBlog.errors)
+  if (allBlogPost.errors) {
+    console.error(allBlogPost.errors)
+    throw new Error(allBlogPost.errors)
   }
 
-  const blogTemplate = path.resolve(`./src/templates/page.tsx`)
+  const blogPostTemplate = path.resolve(`./src/templates/page.tsx`)
 
-  allBlog.data.allBlog.edges.forEach(({ node }) => {
+  allBlogPost.data.allBlogPost.edges.forEach(({ node }) => {
     const { slug } = node.fields
 
     createPage({
       path: `/${slug}/`,
-      component: blogTemplate,
+      component: blogPostTemplate,
       context: {
         slug,
       },

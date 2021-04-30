@@ -15,6 +15,8 @@
   "license": "MIT",
   "dependencies": {
     "gatsby-source-filesystem": "^3.3.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "@sensenet/client-core": "^3.9.0",
+    "@sensenet/default-content-types": "^4.0.0"
   }
 }

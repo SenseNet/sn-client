@@ -45,6 +45,12 @@ module.exports = {
       options: {
         host: 'https://netcore-service.test.sensenet.com',
         path: '/Root/Content/SampleWorkspace/Blog',
+        oDataOptions: {
+          select: 'all',
+          query: 'TypeIs:BlogPost',
+          expand: ['LeadImage'],
+          metadata: 'no',
+        },
         accessToken: '',
       },
     },

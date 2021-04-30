@@ -1,30 +1,34 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { createRemoteFileNode } = require('gatsby-source-filesystem')
+const { defaultRepositoryConfiguration, ODataUrlBuilder } = require('@sensenet/client-core')
 const fetch = require('node-fetch')
-const { createRemoteFileNode } = require(`gatsby-source-filesystem`)
 
-const BLOG_NODE_TYPE = `Blog`
+const BLOGPOST_NODE_TYPE = 'BlogPost'
+const DEFAULT_PATH = '/Root/Content'
 
 exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }, options) => {
+  const path = options.path || DEFAULT_PATH
   try {
-    const res = await fetch(
-      `${options.host}/odata.svc${options.path}?query=Type%3ABlogPost&$expand=LeadImage&metadata=no`,
-      {
-        headers: {
-          Authorization: `Bearer ${options.accessToken}`,
-        },
-        method: 'GET',
+    const params = ODataUrlBuilder.buildUrlParamString(defaultRepositoryConfiguration, options.oDataOptions)
+    console.log('REQUEST:', `${options.host}/${defaultRepositoryConfiguration.oDataToken}${path}?${params}`)
+
+    const res = await fetch(`${options.host}/${defaultRepositoryConfiguration.oDataToken}${path}?${params}`, {
+      headers: {
+        Authorization: `Bearer ${options.accessToken}`,
       },
-    )
+      method: 'GET',
+    })
 
     const data = await res.json()
 
-    data.d.results.forEach((blog) => {
+    data.d.results.forEach((content) => {
       const node = {
-        ...blog,
-        id: createNodeId(`Blog-${blog.Id}`),
+        ...content,
+        id: createNodeId(`${content.Type}-${content.Id}`),
         internal: {
-          type: BLOG_NODE_TYPE,
-          contentDigest: createContentDigest(blog),
-          description: `Blog node`,
+          type: content.Type,
+          contentDigest: createContentDigest(content),
+          description: `${content.Type} node`,
         },
       }
 
@@ -36,8 +40,8 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }, opt
 }
 
 exports.onCreateNode = async ({ node, actions: { createNode }, createNodeId, getCache }, options) => {
-  if (node.internal.type === BLOG_NODE_TYPE) {
-    const imageNode = await createRemoteFileNode({
+  if (node.internal.type === BLOGPOST_NODE_TYPE) {
+    const leadImageNode = await createRemoteFileNode({
       url: `${options.host}${node.LeadImage.Path}`,
       httpHeaders: { Authorization: `Bearer ${options.accessToken}` },
       parentNodeId: node.Id.toString(),
@@ -45,8 +49,8 @@ exports.onCreateNode = async ({ node, actions: { createNode }, createNodeId, get
       createNodeId,
       getCache,
     })
-    if (imageNode) {
-      node.remoteImage___NODE = imageNode.id
+    if (leadImageNode) {
+      node.leadImage___NODE = leadImageNode.id
     }
 
     //create node for Body field
