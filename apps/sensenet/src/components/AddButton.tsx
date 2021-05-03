@@ -51,15 +51,15 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     listDropdown: {
       padding: '10px 0 10px 10px',
-      width: '245px',
+      minWidth: '245px',
       maxHeight: '548px',
+      width: 'auto',
     },
     listItemTextDropdown: {
       margin: 0,
       textOverflow: 'ellipsis',
       overflow: 'hidden',
       whiteSpace: 'nowrap',
-      maxWidth: '139px',
     },
     disabled: {
       cursor: 'not-allowed',
