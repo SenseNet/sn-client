@@ -70,14 +70,14 @@ export const ComponentsWidget: React.FunctionComponent<ComponentsWidgetProps> = 
         </div>
         <div className={classes.paragraph}>
           {localization.latestBackendRelease}{' '}
-          {latestBackendRelease && dateUtils.formatDate(latestBackendRelease!.ReleaseData, 'yyyy.MM.dd HH:mm aaa')}
+          {latestBackendRelease && dateUtils.formatDate(latestBackendRelease!.ReleaseDate, 'yyyy.MM.dd HH:mm aaa')}
           <Link className={classes.link} href="https://www.sensenet.com/backend-updates" target="_blank" rel="noopener">
             {localization.goToChangeLog}
           </Link>
         </div>
         <div className={classes.paragraph}>
           {localization.latestFrontendRelease}{' '}
-          {latestFrontendRelease && dateUtils.formatDate(latestFrontendRelease!.ReleaseData, 'yyyy.MM.dd HH:mm aaa')}
+          {latestFrontendRelease && dateUtils.formatDate(latestFrontendRelease!.ReleaseDate, 'yyyy.MM.dd HH:mm aaa')}
           <Link
             className={classes.link}
             href="https://www.sensenet.com/frontend-updates"

@@ -68,7 +68,7 @@ export interface Release {
   ProductName: string
   DisplayName: string
   Version: null | string
-  ReleaseData: Date
+  ReleaseDate: Date
 }
 
 /**
