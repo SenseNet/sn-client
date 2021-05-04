@@ -148,11 +148,11 @@ export const Page: React.FC<PageProps> = (props) => {
         }
       }
     }
-    document.getElementById('sn-document-viewer-pages')?.addEventListener('scroll', handleGlobalScroll)
+    props.pageContainerRef?.addEventListener('scroll', handleGlobalScroll)
     return () => {
-      document.getElementById('sn-document-viewer-pages')?.removeEventListener('scroll', handleGlobalScroll)
+      props.pageContainerRef?.removeEventListener('scroll', handleGlobalScroll)
     }
-  }, [mouseIsDown, scrollX, scrollY, viewerState.activeShapePlacing])
+  }, [mouseIsDown, props.pageContainerRef, scrollX, scrollY, viewerState.activeShapePlacing])
 
   useEffect(() => {
     const handleGlobalMouseMove = (ev: MouseEvent) => {
