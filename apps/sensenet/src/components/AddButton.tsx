@@ -53,7 +53,6 @@ const useStyles = makeStyles((theme: Theme) => {
       padding: '10px 0 10px 10px',
       minWidth: '245px',
       maxHeight: '548px',
-      width: 'auto',
     },
     listItemTextDropdown: {
       margin: 0,
