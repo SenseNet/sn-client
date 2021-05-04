@@ -162,6 +162,7 @@ export const DesktopNavMenu: FunctionComponent = () => {
                 </MenuItem>
                 <MenuItem className={classes.userMenuItem}>
                   <Link
+                    onClick={() => handleClose(setOpenUserMenu)}
                     to={pathWithQueryParams({
                       path: resolvePathParams({
                         path: PATHS.usersAndGroups.appPath,
