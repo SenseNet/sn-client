@@ -524,7 +524,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
             <RadioGroup
               aria-label="TriggersForAllEvents"
               name="TriggersForAllEvents"
-              value={String(value?.TriggersForAllEvents)}>
+              value={value ? String(value.TriggersForAllEvents) : undefined}>
               <FormControlLabel
                 value="true"
                 control={<Radio disabled={true} color="primary" />}
