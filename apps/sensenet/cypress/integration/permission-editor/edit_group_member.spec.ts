@@ -19,7 +19,7 @@ describe('Editing group member in permission editor', () => {
     cy.get('[data-test="reference-list"] li')
       .should('have.length', expectedMembers.length)
       .each(($el) => {
-        expect(expectedMembers).to.include($el.text())
+        expect(expectedMembers).to.include($el.children().eq(0).children().eq(1).text())
       })
     cy.get('[data-test="reference-input"]').type('Business C')
     cy.get('[data-test="suggestion-business-cat"]').click()
@@ -27,7 +27,7 @@ describe('Editing group member in permission editor', () => {
     cy.get('[data-test="reference-list"] li')
       .should('have.length', expectedMembersAfterAdditon.length)
       .each(($el) => {
-        expect(expectedMembersAfterAdditon).to.include($el.text())
+        expect(expectedMembersAfterAdditon).to.include($el.children().eq(0).children().eq(1).text())
       })
     cy.get('[data-test="permission-editor-submit"]').click()
     cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
@@ -36,7 +36,7 @@ describe('Editing group member in permission editor', () => {
     cy.get('[data-test="reference-list"] li')
       .should('have.length', expectedMembersAfterAdditon.length)
       .each(($el) => {
-        expect(expectedMembersAfterAdditon).to.include($el.text())
+        expect(expectedMembersAfterAdditon).to.include($el.children().eq(0).children().eq(1).text())
       })
     cy.get(`[data-test="business-cat-delete"]`).click()
   })
@@ -51,7 +51,7 @@ describe('Editing group member in permission editor', () => {
     cy.get('[data-test="reference-list"] li')
       .should('have.length', expectedMembers.length)
       .each(($el) => {
-        expect(expectedMembers).to.include($el.text())
+        expect(expectedMembers).to.include($el.children().eq(0).children().eq(1).text())
       })
   })
 })

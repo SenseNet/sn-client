@@ -139,7 +139,7 @@ describe('Users menu', () => {
     cy.get('[data-test="reference-list"] li')
       .should('have.length', 1)
       .each(($el) => {
-        expect('Developer Dog').to.include($el.text())
+        expect('Developer Dog').to.include($el.children().eq(0).children().eq(1).text())
       })
   })
 })
