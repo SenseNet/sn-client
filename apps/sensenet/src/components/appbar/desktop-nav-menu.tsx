@@ -121,6 +121,7 @@ export const DesktopNavMenu: FunctionComponent = () => {
           }}
         />
         <IconButton
+          data-test="user-menu-button"
           aria-label={localization.topMenu.openUserMenu}
           aria-controls={openUserMenu ? 'menu-list-grow' : undefined}
           aria-haspopup="true"
@@ -182,11 +183,15 @@ export const DesktopNavMenu: FunctionComponent = () => {
                 <MenuItem>
                   <Typography component="div" className={classes.themeSwitcher}>
                     <Grid component="label" container alignItems="center" spacing={1}>
-                      <Grid item style={{ paddingRight: '32px' }}>
+                      <Grid item style={{ paddingRight: '32px' }} data-test="theme-status">
                         {personalSettings.theme === 'dark' ? 'Light theme' : 'Dark theme'}
                       </Grid>
                       <Grid item>
-                        <Switch checked={personalSettings.theme === 'dark'} onChange={switchTheme()} />
+                        <Switch
+                          data-test="theme-switcher"
+                          checked={personalSettings.theme === 'dark'}
+                          onChange={switchTheme()}
+                        />
                       </Grid>
                     </Grid>
                   </Typography>

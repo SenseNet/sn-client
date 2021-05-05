@@ -201,10 +201,9 @@ export const MemoPanel: React.FunctionComponent = () => {
           <AccordionDetails>
             <Grid container>
               <Grid item xs={12}>
-                <ReactMarkdown
-                  source={memo.Description || ''}
-                  className={editmode === memo.Id.toString() ? classes.hidden : ''}
-                />
+                <ReactMarkdown className={editmode === memo.Id.toString() ? classes.hidden : ''}>
+                  {memo.Description || ''}
+                </ReactMarkdown>
                 <TextField
                   style={{ width: '100%', display: editmode === memo.Id.toString() ? 'inline-flex' : 'none' }}
                   placeholder="Write a memo..."

@@ -38,7 +38,7 @@ export const StorageWidget: React.FunctionComponent<StorageWidgetProps> = (props
   return (
     <div className={widgetClasses.root}>
       <Paper elevation={0} className={widgetClasses.container}>
-        <div className={classes.rowContainer}>
+        <div className={classes.rowContainer} style={{ fontSize: '16px' }}>
           <span>{localization.storage}</span>
           <span>
             {localization.used(
