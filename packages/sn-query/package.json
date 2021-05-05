@@ -46,28 +46,28 @@
   "homepage": "https://sensenet.com",
   "dependencies": {
     "@babel/runtime": "^7.13.9",
-    "tslib": "^2.1.0"
+    "tslib": "^2.2.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.13.0",
-    "@babel/core": "^7.13.13",
+    "@babel/cli": "^7.13.14",
+    "@babel/core": "^7.13.15",
     "@babel/plugin-proposal-class-properties": "^7.13.0",
-    "@babel/plugin-transform-runtime": "^7.13.9",
-    "@babel/preset-env": "^7.13.5",
+    "@babel/plugin-transform-runtime": "^7.13.15",
+    "@babel/preset-env": "^7.13.15",
     "@babel/preset-typescript": "^7.13.0",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-node-resolve": "^11.2.1",
     "@types/jest": "^26.0.21",
-    "@types/node": "^14.14.37",
-    "babel-plugin-add-import-extension": "^1.5.0",
+    "@types/node": "^14.14.41",
+    "babel-plugin-add-import-extension": "^1.5.1",
     "cross-env": "^7.0.3",
     "jest": "^26.6.1",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
-    "rollup": "^2.43.1",
+    "rollup": "^2.45.2",
     "rollup-plugin-terser": "^7.0.2",
-    "ts-jest": "^26.5.4",
-    "typescript": "^4.2.3"
+    "ts-jest": "^26.5.5",
+    "typescript": "^4.2.4"
   },
   "engines": {
     "node": ">=10.0.0"
