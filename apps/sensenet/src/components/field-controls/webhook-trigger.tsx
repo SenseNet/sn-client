@@ -38,11 +38,13 @@ import {
 import { red } from '@material-ui/core/colors'
 import { Close } from '@material-ui/icons'
 import React, { useEffect, useState } from 'react'
-import { globals, useWidgetStyles } from '../../globalStyles'
+import { globals, widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 
 const ITEM_HEIGHT = 48
 const DEFAULT_CONTAINER = '/Root'
+
+const useWidgetStyles = makeStyles(widgetStyles)
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
