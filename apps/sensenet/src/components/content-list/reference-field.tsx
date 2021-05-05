@@ -48,6 +48,7 @@ export const ReferenceField: FunctionComponent<ReferenceFieldProps> = ({ content
       {Array.isArray(content) ? (
         <div className={globalClasses.centeredVertical}>
           <Button
+            data-test={`${parent.Name.replace(/\s+/g, '-').toLowerCase()}-${fieldName.toLowerCase()}`}
             variant="contained"
             color="primary"
             size="small"
