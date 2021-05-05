@@ -21,7 +21,7 @@ Be sure that you have installed a GIT client, Node.JS (latest or LTS). You can u
 1. Create a GIT repository with [this template](https://github.com/SenseNet/sn-react-typescript-boilerplate/generate)
 1. Clone your repository with `git clone <enter-your-git-repo-url-here>`
 1. cd into the cloned directory
-1. Install the package dependencies with `npm install` or `yarn install`
+1. Install the package dependencies with `npm install`
 
 ### Starting the dev server
 
