@@ -36,6 +36,7 @@ const EditPropertiesDialogBody: React.FunctionComponent<{
     <CurrentContentProvider idOrPath={props.contentId} oDataOptions={{ select: 'all' }}>
       <CurrentContentContext.Consumer>
         {(content: CalendarEvent) =>
+          content.Id &&
           content.Id !== ConstantContent.PORTAL_ROOT.Id && (
             <>
               <DialogTitle>Edit</DialogTitle>
