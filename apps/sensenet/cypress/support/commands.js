@@ -27,6 +27,14 @@ import { codeLogin } from '@sensenet/authentication-oidc-react'
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
+const resizeObserverLoopErrRe = /^[^(ResizeObserver loop limit exceeded)]/
+Cypress.on('uncaught:exception', (err) => {
+  /* returning false here prevents Cypress from failing the test */
+  if (resizeObserverLoopErrRe.test(err.message)) {
+    return false
+  }
+})
+
 Cypress.Commands.add('login', (userType = 'admin') => {
   const user = Cypress.env('users')[userType]
   codeLogin({
@@ -78,4 +86,28 @@ Cypress.Commands.add('checkAddItemList', (dropdownItems) => {
           }
         })
     })
+})
+
+Cypress.Commands.add('scrollToItem', ({ container, selector, done }) => {
+  let scroll = 0
+
+  return new Cypress.Promise((resolve) => {
+    const timeout = () => {
+      setTimeout(() => {
+        scroll = scroll + 200
+        container.scrollTop(scroll)
+
+        const item = container.find(selector)
+        if (!item.length) {
+          timeout()
+        } else {
+          item[0].scrollIntoView()
+          done?.(item[0])
+          resolve(item[0])
+        }
+      }, 100)
+    }
+
+    timeout()
+  })
 })
