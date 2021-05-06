@@ -50,7 +50,7 @@ export interface PostNode {
 }
 export interface IndexPageProps {
   data: {
-    allBlogPost: {
+    allSensenetBlogPost: {
       edges: PostNode[]
     }
   }
@@ -67,7 +67,7 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
             News around sensenet
           </Typography>
           <Grid container spacing={4} className={classes.blog}>
-            {data.allBlogPost.edges.map(({ node }, index) => (
+            {data.allSensenetBlogPost.edges.map(({ node }, index) => (
               <Grid item xs={12} sm={6} md={4} className={classes.blogItem} key={index}>
                 <Link to={node.fields.slug} key={index} className={classes.link}>
                   <BlogCard title={node.DisplayName} excerpt={node.markdownLead.childMdx.body} image={node.leadImage} />
@@ -85,7 +85,7 @@ export default IndexPage
 
 export const query = graphql`
   query MyQuery {
-    allBlogPost {
+    allSensenetBlogPost {
       edges {
         node {
           id

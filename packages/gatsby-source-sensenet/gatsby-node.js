@@ -3,16 +3,17 @@ const { createRemoteFileNode } = require('gatsby-source-filesystem')
 const { defaultRepositoryConfiguration, ODataUrlBuilder } = require('@sensenet/client-core')
 const fetch = require('node-fetch')
 
-const BLOGPOST_NODE_TYPE = 'BlogPost'
+const BLOGPOST_NODE_TYPE = 'sensenetBlogPost'
 const DEFAULT_PATH = '/Root/Content'
+const snPrefix = 'sensenet'
 
 exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }, options) => {
-  const createTreeNode = async (parentNode, content) => {
+  const createTreeNode = async (parentNode, content, level) => {
     const newNode = {
       ...content,
       id: createNodeId(`${content.Type}-${content.Id}`),
       internal: {
-        type: content.Type,
+        type: `${snPrefix}${content.Type}`,
         contentDigest: createContentDigest(content),
         description: `${content.Type} node`,
       },
@@ -22,25 +23,28 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }, opt
     actions.createParentChildLink({ parent: parentNode, child: newNode })
 
     try {
-      const res = await fetch(`${options.host}/${defaultRepositoryConfiguration.oDataToken}${content.Path}`, {
-        headers: {
-          Authorization: `Bearer ${options.accessToken}`,
-        },
-        method: 'GET',
-      })
-
-      const data = await res.json()
-
-      data.d.results.length > 0 &&
-        data.d.results.forEach((childContent) => {
-          createTreeNode(newNode, childContent)
+      if ((level && level > 0) || !level) {
+        const res = await fetch(`${options.host}/${defaultRepositoryConfiguration.oDataToken}${content.Path}`, {
+          headers: {
+            Authorization: `Bearer ${options.accessToken}`,
+          },
+          method: 'GET',
         })
+
+        const data = await res.json()
+
+        data.d.results.length > 0 &&
+          data.d.results.forEach((childContent) => {
+            createTreeNode(newNode, childContent, level - 1)
+          })
+      }
     } catch (error) {
       console.log(error)
     }
   }
 
   const path = options.path || DEFAULT_PATH
+  console.log('PATH', path)
 
   try {
     const params = ODataUrlBuilder.buildUrlParamString(defaultRepositoryConfiguration, options.oDataOptions)
@@ -59,7 +63,7 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }, opt
       id: createNodeId('root'),
       internal: {
         content: '{{ Name: "root" }}',
-        type: 'root',
+        type: `${snPrefix}root`,
         contentDigest: createContentDigest('root'),
         description: `root node`,
       },
@@ -69,7 +73,7 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }, opt
     console.log('root:', rootNode.id)
 
     data.d.results.forEach((content) => {
-      createTreeNode(rootNode, content)
+      createTreeNode(rootNode, content, options.level)
     })
   } catch (error) {
     console.log(error)
