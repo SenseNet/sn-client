@@ -28,18 +28,7 @@ describe('Custom menu item', () => {
       },
     }
 
-    const items = [
-      'Code review',
-      'Infrastructure meeting',
-      'Kickoff meeting',
-      'Refinement',
-      'Release',
-      'Retrospective meeting',
-      'Sales and product',
-      'Scrum meeting',
-      'Tech Call with Thorwell Group',
-      'Upgrade',
-    ]
+    const items = ['Awesome demo', 'Cruel deadline', 'Long event', 'Overrated meeting', 'Remarkable event']
 
     cy.visit(
       pathWithQueryParams({
