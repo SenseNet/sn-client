@@ -132,14 +132,22 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
   const logger = useLogger('webhook filter')
   const localization = useLocalization()
 
-  const initialState = {
-    Path: DEFAULT_CONTAINER,
-    TriggersForAllEvents: true,
-    ContentTypes: [{ Name: 'File', Events: ['All'] } as WebhookContentTypeItem],
+  const getInitialstate = () => {
+    const initialState =
+      props.actionName === 'new'
+        ? (props.settings.DefaultValue &&
+            (JSON.parse(props.settings.DefaultValue) as WebhookTriggerType | undefined)) || {
+            Path: DEFAULT_CONTAINER,
+            TriggersForAllEvents: true,
+            ContentTypes: [{ Name: 'File', Events: ['All'] } as WebhookContentTypeItem],
+          }
+        : undefined
+    props.fieldOnChange?.(props.settings.Name, JSON.stringify(initialState))
+    return initialState
   }
 
-  const [value, setValue] = useState<WebhookTriggerType>(
-    (props.fieldValue && (JSON.parse(props.fieldValue) as WebhookTriggerType)) || initialState,
+  const [value, setValue] = useState<WebhookTriggerType | undefined>(
+    (props.fieldValue && (JSON.parse(props.fieldValue) as WebhookTriggerType)) || getInitialstate,
   )
 
   //Triggers
@@ -172,7 +180,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
   const [isContentTypeDropdownOpened, setContentTypeDropdownOpened] = useState<boolean>(false)
   const [contentTypeInputValue, setContentTypeInputValue] = useState('')
   const [currentTypeSelected, setCurrentTypeSelected] = useState<string>()
-  const [typesSelected, setTypesSelected] = useState<string[]>(value.ContentTypes?.map((type) => type.Name) || [])
+  const [typesSelected, setTypesSelected] = useState<string[]>(value?.ContentTypes?.map((type) => type.Name) || [])
   const allTypes = repo.schemas.getTypesFromSchema()
 
   const filteredList = allTypes.filter(
@@ -180,7 +188,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
   )
 
   useEffect(() => {
-    if (value.Path) {
+    if (value?.Path) {
       ;(async () => {
         try {
           const response = await repo.load({
@@ -192,10 +200,10 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
         }
       })()
     }
-  }, [localization.webhooksTrigger.errorMessageOnLoad, logger, repo, value.Path])
+  }, [localization.webhooksTrigger.errorMessageOnLoad, logger, repo, value?.Path])
 
   const handleTypeInputOnClick = () => {
-    !value.TriggersForAllEvents && setContentTypeDropdownOpened(true)
+    !value?.TriggersForAllEvents && setContentTypeDropdownOpened(true)
   }
 
   const handleTypeInputChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
@@ -209,7 +217,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
   const handleTypeAddClick = () => {
     const newSelection = currentTypeSelected ? [...typesSelected, currentTypeSelected] : typesSelected
     setTypesSelected(newSelection)
-    currentTypeSelected && value.ContentTypes?.push({ Name: currentTypeSelected, Events: [] })
+    currentTypeSelected && value?.ContentTypes?.push({ Name: currentTypeSelected, Events: [] })
 
     setCurrentTypeSelected(undefined)
     setContentTypeInputValue('')
@@ -222,7 +230,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
   }
 
   const handleTypeRemove = (item: string) => {
-    if (!value.TriggersForAllEvents) {
+    if (value && !value?.TriggersForAllEvents) {
       const newSelected = typesSelected.filter((type) => item !== type)
       setTypesSelected(newSelected)
 
@@ -239,7 +247,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
     contentType: string,
     webhookEvent: WebhookEventType,
   ) => {
-    const copyOfContentTypes = value.ContentTypes
+    const copyOfContentTypes = value?.ContentTypes
     const actualRow = copyOfContentTypes?.find((type) => type.Name === contentType)
 
     if (event.target.checked) {
@@ -257,12 +265,14 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
       }
     }
 
-    setValue({ ...value, ContentTypes: copyOfContentTypes })
+    value
+      ? setValue({ ...value, ContentTypes: copyOfContentTypes })
+      : setValue({ Path: DEFAULT_CONTAINER, TriggersForAllEvents: true, ContentTypes: copyOfContentTypes })
     props.fieldOnChange?.(props.settings.Name, JSON.stringify(value))
   }
 
   const handleCheckboxAllChange = (event: React.ChangeEvent<HTMLInputElement>, contentType: string) => {
-    const copyOfContentTypes = value.ContentTypes
+    const copyOfContentTypes = value?.ContentTypes
     const actualRow = copyOfContentTypes?.find((type) => type.Name === contentType)
 
     if (event.target.checked) {
@@ -271,7 +281,9 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
       Object.assign(actualRow, { Events: [] })
     }
 
-    setValue({ ...value, ContentTypes: copyOfContentTypes })
+    value
+      ? setValue({ ...value, ContentTypes: copyOfContentTypes })
+      : setValue({ Path: DEFAULT_CONTAINER, TriggersForAllEvents: true, ContentTypes: copyOfContentTypes })
     props.fieldOnChange?.(props.settings.Name, JSON.stringify(value))
   }
 
@@ -300,7 +312,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
               id={props.settings.Name}
               label={props.settings.DisplayName}
               placeholder={props.settings.DisplayName}
-              value={value.Path}
+              value={value?.Path}
               fullWidth={true}
               InputProps={{ readOnly: true }}
             />
@@ -320,7 +332,9 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
               path={DEFAULT_CONTAINER}
               repository={props.repository!}
               handleSubmit={(newSelection: GenericContent[]) => {
-                setValue({ ...value, Path: newSelection[0].Path })
+                value
+                  ? setValue({ ...value, Path: newSelection[0].Path })
+                  : setValue({ TriggersForAllEvents: true, Path: newSelection[0].Path, ContentTypes: [] })
                 props.fieldOnChange?.(props.settings.Name, JSON.stringify({ ...value, Path: newSelection[0].Path }))
                 handleDialogClose()
               }}
@@ -332,19 +346,25 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
             <RadioGroup
               aria-label={localization.webhooksTrigger.triggerRadioGroup}
               name="triggerRadioGroup"
-              value={String(value.TriggersForAllEvents)}
+              value={value ? String(value.TriggersForAllEvents) : undefined}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 const targetValue = (event.target as HTMLInputElement).value === 'true'
-                setValue({
-                  ...value,
-                  TriggersForAllEvents: targetValue,
-                })
+                value
+                  ? setValue({
+                      ...value,
+                      TriggersForAllEvents: targetValue,
+                    })
+                  : setValue({
+                      Path: DEFAULT_CONTAINER,
+                      TriggersForAllEvents: targetValue,
+                      ContentTypes: [],
+                    })
                 if (targetValue) {
-                  value.ContentTypes?.forEach((type) => {
+                  value?.ContentTypes?.forEach((type) => {
                     Object.assign(type, { Events: ['All'] })
                   })
                 } else {
-                  value.ContentTypes?.forEach((type) => {
+                  value?.ContentTypes?.forEach((type) => {
                     Object.assign(type, { Events: [] })
                   })
                 }
@@ -384,7 +404,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
                   <TableBody>
                     {typesSelected.length > 0 ? (
                       typesSelected.map((row) => {
-                        const actualEvent = value.ContentTypes?.find((type) => type.Name === row)
+                        const actualEvent = value?.ContentTypes?.find((type) => type.Name === row)
                         return (
                           <TableRow key={row}>
                             <TableCell align="center" className={classes.fixColumn}>
@@ -392,7 +412,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
                             </TableCell>
                             <TableCell align="center">
                               <Checkbox
-                                disabled={value.TriggersForAllEvents}
+                                disabled={value?.TriggersForAllEvents}
                                 color="primary"
                                 checked={actualEvent?.Events.includes('All')}
                                 onChange={(event) => handleCheckboxAllChange(event, row)}
@@ -401,7 +421,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
                             {webhookEvents.map((eventItem) => (
                               <TableCell key={eventItem.name} align="center">
                                 <Checkbox
-                                  disabled={value.TriggersForAllEvents}
+                                  disabled={value?.TriggersForAllEvents}
                                   color="primary"
                                   checked={
                                     actualEvent?.Events.includes(eventItem.name as WebhookEventType) ||
@@ -443,7 +463,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
             <div style={{ position: 'relative' }}>
               <FormGroup row className={classes.inputContainer}>
                 <TextField
-                  disabled={value.TriggersForAllEvents}
+                  disabled={value?.TriggersForAllEvents}
                   id="trigger-for-all-events"
                   autoComplete="off"
                   type="search"
@@ -458,7 +478,8 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
                   color="primary"
                   className={classes.button}
                   disabled={
-                    value.TriggersForAllEvents || (currentTypeSelected && currentTypeSelected.length > 0 ? false : true)
+                    value?.TriggersForAllEvents ||
+                    (currentTypeSelected && currentTypeSelected.length > 0 ? false : true)
                   }
                   onClick={handleTypeAddClick}>
                   {props.renderIcon ? props.renderIcon('add_circle') : renderIconDefault('add_circle')}
@@ -494,7 +515,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
               id={props.settings.Name}
               label={props.settings.DisplayName}
               placeholder={props.settings.DisplayName}
-              value={value.Path}
+              value={value?.Path}
               fullWidth={true}
               disabled={true}
             />
@@ -503,7 +524,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
             <RadioGroup
               aria-label="TriggersForAllEvents"
               name="TriggersForAllEvents"
-              value={String(value.TriggersForAllEvents)}>
+              value={value ? String(value.TriggersForAllEvents) : undefined}>
               <FormControlLabel
                 value="true"
                 control={<Radio disabled={true} color="primary" />}
@@ -540,7 +561,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
                           <Checkbox
                             disabled={true}
                             color="primary"
-                            checked={value.ContentTypes?.find((type) => type.Name === row)?.Events.includes('All')}
+                            checked={value?.ContentTypes?.find((type) => type.Name === row)?.Events.includes('All')}
                           />
                         </TableCell>
                         {webhookEvents.map((eventItem) => (
@@ -549,9 +570,9 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
                               disabled={true}
                               color="primary"
                               checked={
-                                value.ContentTypes?.find((type) => type.Name === row)?.Events.includes(
+                                value?.ContentTypes?.find((type) => type.Name === row)?.Events.includes(
                                   eventItem.name as WebhookEventType,
-                                ) || value.ContentTypes?.find((type) => type.Name === row)?.Events.includes('All')
+                                ) || value?.ContentTypes?.find((type) => type.Name === row)?.Events.includes('All')
                               }
                             />
                           </TableCell>
