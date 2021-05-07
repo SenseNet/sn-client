@@ -461,6 +461,7 @@ const values = {
     componentsInfo: 'Components of your sensenet instance. These components may include one or more packages.',
     installedPackagesInfo:
       'These packages are mainly the building bricks of sensenet components. There are tool-like packages that are not part of the component structure, they were made to run multiple times, for example delete or index content.',
+    notAvailable: 'Not available',
   },
   customActions: {
     executeCustomActionDialog: {
