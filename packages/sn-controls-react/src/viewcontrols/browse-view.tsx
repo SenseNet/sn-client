@@ -74,7 +74,11 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
         {schema.fieldMappings
           .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
           .map((field) => {
-            const isFullWidth = isFullWidthField(field, props.content.Type)
+            const isFullWidth = isFullWidthField(
+              field,
+              props.content.Type,
+              repository.schemas.getSchemaByName(props.content.Type).ParentTypeName || props.content.Type,
+            )
 
             return (
               <Grid

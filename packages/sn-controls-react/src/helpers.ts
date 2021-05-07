@@ -13,11 +13,12 @@ export const changeTemplatedValue = (value: string | undefined, evaluatedValue?:
   }
 }
 
-export const isFullWidthField = (field: { fieldSettings: FieldSetting }, contentType: string) => {
+export const isFullWidthField = (field: { fieldSettings: FieldSetting }, contentType: string, parentType: string) => {
   return (
-    (field.fieldSettings.Name === 'Avatar' && contentType.includes('User')) ||
-    (field.fieldSettings.Name === 'Enabled' && contentType.includes('User')) ||
-    (field.fieldSettings.Name === 'Enabled' && contentType === 'WebHookSubscription') ||
+    (field.fieldSettings.Name === 'Avatar' && (contentType === 'User' || parentType === 'User')) ||
+    (field.fieldSettings.Name === 'Enabled' && (contentType === 'User' || parentType === 'User')) ||
+    (field.fieldSettings.Name === 'Enabled' &&
+      (contentType === 'WebHookSubscription' || parentType === 'WebHookSubscription')) ||
     field.fieldSettings.Type === 'LongTextFieldSetting'
   )
 }
