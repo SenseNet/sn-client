@@ -50,6 +50,13 @@ import {
   WebAssetOutlined,
   Widgets,
 } from '@material-ui/icons'
+import circleciIcon from '@iconify-icons/logos/circleci'
+import gatsbyIcon from '@iconify-icons/logos/gatsby'
+import herokuIcon from '@iconify-icons/logos/heroku-icon'
+import netlifyIcon from '@iconify-icons/logos/netlify'
+import travisCi from '@iconify-icons/logos/travis-ci'
+import vercelIcon from '@iconify-icons/logos/vercel-icon'
+import { InlineIcon } from '@iconify/react'
 import React, { CSSProperties, FunctionComponent } from 'react'
 import { EventLogEntry } from '../services/EventService'
 import { UserAvatar } from './UserAvatar'
@@ -154,6 +161,18 @@ const getIconByName = (name: string | undefined, options: IconOptions) => {
       return <AllInboxOutlined style={options.style} />
     case 'Settings':
       return <Settings style={options.style} />
+    case 'Netlify':
+      return <InlineIcon icon={netlifyIcon} width="24" />
+    case 'Gatsby':
+      return <InlineIcon icon={gatsbyIcon} width="24" />
+    case 'Travis':
+      return <InlineIcon icon={travisCi} width="24" />
+    case 'CircleCI':
+      return <InlineIcon icon={circleciIcon} width="24" />
+    case 'Vercel':
+      return <InlineIcon icon={vercelIcon} width="24" />
+    case 'Heroku':
+      return <InlineIcon icon={herokuIcon} height="24" />
     default:
       return null
   }
@@ -270,7 +289,6 @@ export const IconComponent: FunctionComponent<{
   if (assignedResolver) {
     return assignedResolver.get(props.item, options)!
   }
-
   return defaultIcon
 }
 
