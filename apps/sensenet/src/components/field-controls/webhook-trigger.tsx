@@ -346,7 +346,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
             <RadioGroup
               aria-label={localization.webhooksTrigger.triggerRadioGroup}
               name="triggerRadioGroup"
-              value={String(value?.TriggersForAllEvents)}
+              value={value ? String(value.TriggersForAllEvents) : undefined}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 const targetValue = (event.target as HTMLInputElement).value === 'true'
                 value
