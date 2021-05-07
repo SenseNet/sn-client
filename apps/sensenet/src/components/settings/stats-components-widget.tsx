@@ -70,14 +70,18 @@ export const ComponentsWidget: React.FunctionComponent<ComponentsWidgetProps> = 
         </div>
         <div className={classes.paragraph}>
           {localization.latestBackendRelease}{' '}
-          {latestBackendRelease && dateUtils.formatDate(latestBackendRelease!.ReleaseDate, 'yyyy.MM.dd HH:mm aaa')}
+          {latestBackendRelease?.ReleaseDate
+            ? dateUtils.formatDate(latestBackendRelease!.ReleaseDate, 'yyyy.MM.dd HH:mm aaa')
+            : localization.notAvailable}
           <Link className={classes.link} href="https://www.sensenet.com/backend-updates" target="_blank" rel="noopener">
             {localization.goToChangeLog}
           </Link>
         </div>
         <div className={classes.paragraph}>
           {localization.latestFrontendRelease}{' '}
-          {latestFrontendRelease && dateUtils.formatDate(latestFrontendRelease!.ReleaseDate, 'yyyy.MM.dd HH:mm aaa')}
+          {latestFrontendRelease?.ReleaseDate
+            ? dateUtils.formatDate(latestFrontendRelease!.ReleaseDate, 'yyyy.MM.dd HH:mm aaa')
+            : localization.notAvailable}
           <Link
             className={classes.link}
             href="https://www.sensenet.com/frontend-updates"
@@ -102,7 +106,7 @@ export const ComponentsWidget: React.FunctionComponent<ComponentsWidgetProps> = 
                 <TableRow key={row.ComponentId}>
                   <TableCell align="left">{row.ComponentId}</TableCell>
                   <TableCell align="center">{row.Version}</TableCell>
-                  <TableCell align="center">{row.LatestVersion || 'N/A'}</TableCell>
+                  <TableCell align="center">{row.LatestVersion || localization.notAvailable}</TableCell>
                   <TableCell align="center" className={globalClasses.centeredVertical}>
                     {row.LatestVersion !== null ? (
                       row.LatestVersion === row.Version ? (
