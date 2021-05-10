@@ -1,18 +1,65 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
+const { createRemoteFileNode } = require('gatsby-source-filesystem')
 
-exports.onCreateNode = ({ node, actions }) => {
-  const { createNodeField } = actions
+const BLOGPOST_NODE_TYPE = 'sensenetBlogPost'
 
-  switch (node.internal.type) {
-    case 'sensenetBlogPost':
-      createNodeField({
-        node,
-        name: 'slug',
-        value: node.Name || '',
-      })
+exports.onCreateNode = async ({ node, actions: { createNode, createNodeField }, createNodeId, getCache }) => {
+  if (node.internal.type === BLOGPOST_NODE_TYPE) {
+    //create slug node field
+    createNodeField({
+      node,
+      name: 'slug',
+      value: node.Name || '',
+    })
 
-      break
-    default: //do nothing
+    //create node for LeadImage field
+    const leadImageNode = await createRemoteFileNode({
+      url: `https://netcore-service.test.sensenet.com${node.LeadImage.Path}`,
+      parentNodeId: node.Id.toString(),
+      createNode,
+      createNodeId,
+      getCache,
+    })
+    if (leadImageNode) {
+      node.leadImage___NODE = leadImageNode.id
+    }
+
+    //create node for Body field
+    const bodyMdxNode = {
+      id: `${node.Id.toString()}-MarkdownBody`,
+      parent: node.Id.toString(),
+      internal: {
+        type: `${node.internal.type}MarkdownBody`,
+        mediaType: 'text/markdown',
+        content: node.Body,
+        contentDigest: node.Body,
+      },
+    }
+
+    createNode(bodyMdxNode)
+
+    if (bodyMdxNode) {
+      node.markdownBody___NODE = bodyMdxNode.id
+    }
+
+    //create node for Lead field
+    const leadMdxNode = {
+      id: `${node.Id.toString()}-MarkdownLead`,
+      parent: node.Id.toString(),
+      internal: {
+        type: `${node.internal.type}MarkdownLead`,
+        mediaType: 'text/markdown',
+        content: node.Lead,
+        contentDigest: node.Lead,
+      },
+    }
+
+    createNode(leadMdxNode)
+
+    if (leadMdxNode) {
+      node.markdownLead___NODE = leadMdxNode.id
+    }
   }
 }
 
