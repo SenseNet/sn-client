@@ -317,10 +317,18 @@ export const Page: React.FC<PageProps> = (props) => {
       viewerState.updateState({ activeShapePlacing: 'none' })
     }
     setMouseIsDown(true)
-    setStartX(ev.nativeEvent.pageX / imageRatio)
-    setStartY(ev.nativeEvent.pageY / imageRatio)
-    setStartOffsetX(ev.nativeEvent.offsetX / imageRatio)
-    setStartOffsetY(ev.nativeEvent.offsetY / imageRatio)
+    setStartX(ev.nativeEvent.pageX / (props.page.Height / (page.image?.Height || 1)))
+    setStartY(ev.nativeEvent.pageY / (props.page.Height / (page.image?.Height || 1)))
+    setStartOffsetX(
+      (ev.nativeEvent.pageX -
+        Math.max(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.left!, viewerState.boxPosition.left)) /
+        imageRatio,
+    )
+    setStartOffsetY(
+      (ev.nativeEvent.pageY -
+        Math.max(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.top!, viewerState.boxPosition.top)) /
+        imageRatio,
+    )
   }
 
   return (
