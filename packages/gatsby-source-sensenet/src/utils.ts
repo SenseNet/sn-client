@@ -1,16 +1,17 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const { defaultRepositoryConfiguration } = require('@sensenet/client-core')
-const fetch = require('node-fetch')
+import { defaultRepositoryConfiguration } from '@sensenet/client-core'
+import { Actions } from 'gatsby'
+import fetch from 'node-fetch'
+import { PluginConfig } from './gatsby-node'
+export const snPrefix = 'sensenet'
 
-const createTreeNode = async (
-  parentNode,
-  content,
-  level,
-  createNodeId,
-  actions,
-  createContentDigest,
-  options,
-  snPrefix,
+export const createTreeNode = async (
+  parentNode: any,
+  content: any,
+  level: number,
+  createNodeId: { (input: string): string; (arg0: string): any },
+  actions: Actions,
+  createContentDigest: { (input: string | object): string; (arg0: any): any },
+  options: PluginConfig,
 ) => {
   const newNode = {
     ...content,
@@ -37,22 +38,11 @@ const createTreeNode = async (
       const data = await res.json()
 
       data.d.results.length > 0 &&
-        data.d.results.forEach((childContent) => {
-          createTreeNode(
-            newNode,
-            childContent,
-            level - 1,
-            createNodeId,
-            actions,
-            createContentDigest,
-            options,
-            snPrefix,
-          )
+        data.d.results.forEach((childContent: any) => {
+          createTreeNode(newNode, childContent, level - 1, createNodeId, actions, createContentDigest, options)
         })
     }
   } catch (error) {
     console.log(error)
   }
 }
-
-exports.createTreeNode = createTreeNode
