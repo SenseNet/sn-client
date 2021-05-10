@@ -1,6 +1,7 @@
 import { Annotation, Highlight, PreviewImageData, Redaction, Shape, Shapes } from '@sensenet/client-core'
+import { debounce } from '@sensenet/client-utils'
 import { createStyles, makeStyles } from '@material-ui/core'
-import React, { useCallback, useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useComments, useCommentState, useDocumentData, useDocumentPermissions, useViewerState } from '../../hooks'
 import { ViewerState } from '../../models/viewer-state'
 import { applyShapeRotations, Dimensions, ImageUtil } from '../../services'
@@ -42,6 +43,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
   const comments = useComments()
   const commentState = useCommentState()
   const shapesContainerRef = useRef<HTMLDivElement>(null)
+  const [resizeToken, setResizeToken] = useState(0)
   const zoomRatio =
     props.imageRotation === 90 || props.imageRotation === 270 ? props.zoomRatioLying : props.zoomRatioStanding
 
@@ -71,6 +73,26 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
   ]
 
   const { updateState } = viewerState
+
+  const requestResize = useCallback(
+    debounce(() => {
+      setResizeToken(Math.random())
+    }, 300),
+
+    [],
+  )
+
+  const onScroll = useCallback(() => {
+    requestResize()
+  }, [requestResize])
+
+  useEffect(() => {
+    const currentViewport = props.pageContainerRef
+    if (currentViewport) {
+      currentViewport.addEventListener('scroll', onScroll)
+    }
+    return () => currentViewport && currentViewport.removeEventListener('scroll', onScroll)
+  }, [onScroll, props.pageContainerRef])
 
   useEffect(() => {
     if (shapesContainerRef.current && props.visiblePagesIndex !== undefined) {
@@ -107,7 +129,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
         })
       }
     }
-  }, [props.pageContainerRef, props.visiblePagesIndex, updateState])
+  }, [resizeToken, props.pageContainerRef, props.visiblePagesIndex, updateState])
 
   const removeShape = useCallback(
     (shapeType: keyof Shapes, guid: string) => {
