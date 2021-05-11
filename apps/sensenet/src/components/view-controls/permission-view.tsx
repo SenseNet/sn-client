@@ -23,10 +23,11 @@ import GroupOutlined from '@material-ui/icons/GroupOutlined'
 import clsx from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router'
+import { PATHS, resolvePathParams } from '../../application-paths'
 import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { getUrlForContent, navigateToAction } from '../../services'
+import { navigateToAction, pathWithQueryParams } from '../../services'
 import { useDialog } from '../dialogs'
 import { useViewControlStyles } from './common/styles'
 
@@ -223,7 +224,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
               </Button>
             </Tooltip>
             <Button
-              data-test={'assing-new-permission'}
+              data-test={'assign-new-permission'}
               className={classes.assignButton}
               aria-label={localization.permissionEditor.assign}
               color="primary"
@@ -294,19 +295,19 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                         <div>
                           {inheritedEntry.identity.displayName}
                           <Link
+                            data-test={`inherited-${inheritedEntry.identity.displayName
+                              ?.replace(/\s+/g, '-')
+                              .toLowerCase()}-link`}
                             component="button"
                             onClick={async (event: React.MouseEvent<HTMLElement>) => {
                               event.stopPropagation()
-                              const response = await repo.load({
-                                idOrPath: inheritedEntry.ancestor!,
-                                oDataOptions: { select: 'all' },
-                              })
                               history.push(
-                                getUrlForContent({
-                                  content: response.d,
-                                  uiSettings,
-                                  location: history.location,
-                                  action: 'setpermissions',
+                                pathWithQueryParams({
+                                  path: resolvePathParams({
+                                    path: PATHS.content.appPath,
+                                    params: { browseType: 'explorer', action: 'setpermissions' },
+                                  }),
+                                  newParams: { content: inheritedEntry.ancestor?.replace('/Root/Content', '') },
                                 }),
                               )
                             }}

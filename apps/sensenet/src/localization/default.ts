@@ -526,7 +526,7 @@ const values = {
     errorContentModification: 'There was an error during content modification',
   },
   permissionEditor: {
-    assign: 'Assing new permisson',
+    assign: 'Assign new permission',
     setPermissons: 'Set permissions for',
     errorGetAcl: 'Something went wrong during getting permissions',
     noContent: 'There is no direct permission setting on this content',
