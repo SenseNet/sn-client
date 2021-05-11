@@ -40,7 +40,7 @@ export function ReferenceContentList(props: ReferenceContentListProps) {
           aria-label="close"
           className={classes.closeButton}
           onClick={closeLastDialog}
-          data-test="refernce-content-list-dialog-close">
+          data-test="reference-content-list-dialog-close">
           <CloseIcon />
         </IconButton>
       </DialogTitle>

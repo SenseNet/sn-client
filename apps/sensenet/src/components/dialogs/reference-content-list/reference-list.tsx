@@ -93,13 +93,12 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
             props.renderButton(newReference)
           ) : (
             <Button
-              data-test={'reference-add-button'}
+              data-test="reference-add-button"
               variant="contained"
               color="primary"
               startIcon={<AddIcon />}
               style={{ marginLeft: '0.5rem' }}
               disabled={!newReference}
-              data-test="reference-add"
               type="submit">
               Add
             </Button>
@@ -127,7 +126,6 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
                   {props.canEdit && fieldControl && (
                     <ListItemSecondaryAction>
                       <IconButton
-                        data-test={`${item.DisplayName?.replace(/\s+/g, '-').toLowerCase()}-delete`}
                         edge="end"
                         aria-label="delete"
                         data-test={`reference-item-remove-${item.DisplayName?.replace(/\s+/g, '-').toLowerCase()}`}

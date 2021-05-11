@@ -82,7 +82,7 @@ describe('Groups', () => {
     cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
     cy.get('[data-test="groups"]').click()
 
-    cy.get('[data-test="members-administrators"]').click()
+    cy.get('[data-test="administrators-members"]').click()
 
     cy.get('[data-test="reference-input"]').type('deve')
 
@@ -95,21 +95,21 @@ describe('Groups', () => {
     cy.get('[data-test="suggestion-developer-dog"]').click()
 
     cy.get('[data-test="reference-item-developer-dog"]').should('not.exist')
-    cy.get('[data-test="reference-add"]').click()
+    cy.get('[data-test="reference-add-button"]').click()
     cy.get('[data-test="reference-item-developer-dog"]').should('exist')
 
-    cy.get('[data-test="refernce-content-list-dialog-close"]').click()
-    cy.get('[data-test="members-administrators"]').should('have.text', '2 Members')
+    cy.get('[data-test="reference-content-list-dialog-close"]').click()
+    cy.get('[data-test="administrators-members"]').should('have.text', '2 Members')
   })
 
   it('ensures that we can remove a member from a group', () => {
-    cy.get('[data-test="members-administrators"]').click()
+    cy.get('[data-test="administrators-members"]').click()
 
     cy.get('[data-test="reference-item-developer-dog"]').should('exist')
     cy.get('[data-test="reference-item-remove-developer-dog"]').click()
     cy.get('[data-test="reference-item-developer-dog"]').should('not.exist')
 
-    cy.get('[data-test="refernce-content-list-dialog-close"]').click()
-    cy.get('[data-test="members-administrators"]').should('have.text', '1 Members')
+    cy.get('[data-test="reference-content-list-dialog-close"]').click()
+    cy.get('[data-test="administrators-members"]').should('have.text', '1 Members')
   })
 })

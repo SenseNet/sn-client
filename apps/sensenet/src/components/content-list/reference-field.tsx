@@ -53,7 +53,6 @@ export const ReferenceField: FunctionComponent<ReferenceFieldProps> = ({ content
             color="primary"
             size="small"
             className={classes.button}
-            data-test={`${fieldName}-${parent.DisplayName?.replace(/\s+/g, '-')}`.toLowerCase()}
             onClick={async (event) => {
               event.stopPropagation()
               const actions = await repository.getActions({ idOrPath: parent.Path })
