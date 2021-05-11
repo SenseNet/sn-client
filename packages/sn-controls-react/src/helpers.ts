@@ -1,3 +1,4 @@
+import { Content, Repository } from '@sensenet/client-core'
 import { FieldSetting } from '@sensenet/default-content-types'
 
 /**
@@ -13,12 +14,16 @@ export const changeTemplatedValue = (value: string | undefined, evaluatedValue?:
   }
 }
 
-export const isFullWidthField = (field: { fieldSettings: FieldSetting }, contentType: string, parentType: string) => {
+export const isFullWidthField = (
+  field: { fieldSettings: FieldSetting },
+  contentTypeName: string,
+  repository: Repository,
+) => {
+  const isInheritedType = repository.schemas.isContentFromType({ Type: contentTypeName } as Content, contentTypeName)
   return (
-    (field.fieldSettings.Name === 'Avatar' && (contentType === 'User' || parentType === 'User')) ||
-    (field.fieldSettings.Name === 'Enabled' && (contentType === 'User' || parentType === 'User')) ||
-    (field.fieldSettings.Name === 'Enabled' &&
-      (contentType === 'WebHookSubscription' || parentType === 'WebHookSubscription')) ||
+    (field.fieldSettings.Name === 'Avatar' && (contentTypeName === 'User' || isInheritedType)) ||
+    (field.fieldSettings.Name === 'Enabled' && (contentTypeName === 'User' || isInheritedType)) ||
+    (field.fieldSettings.Name === 'Enabled' && (contentTypeName === 'WebHookSubscription' || isInheritedType)) ||
     field.fieldSettings.Type === 'LongTextFieldSetting'
   )
 }

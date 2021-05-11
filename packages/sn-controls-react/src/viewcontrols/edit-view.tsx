@@ -136,11 +136,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
               },
             )
 
-            const isFullWidth = isFullWidthField(
-              field,
-              props.contentTypeName,
-              repository.schemas.getSchemaByName(props.contentTypeName).ParentTypeName || props.contentTypeName,
-            )
+            const isFullWidth = isFullWidthField(field, props.contentTypeName, repository)
 
             if (autoFocus) {
               isAutofocusSet = true
