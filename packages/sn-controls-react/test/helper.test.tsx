@@ -1,5 +1,5 @@
 import { Repository } from '@sensenet/client-core'
-import { FieldSetting } from '@sensenet/default-content-types'
+import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import { isFullWidthField } from '../src/helpers'
 import { schema } from './__mocks__/schema'
 
@@ -46,29 +46,53 @@ describe('Helpers', () => {
     }) as any,
   )
 
+  const testUser = {
+    Type: 'User',
+  } as GenericContent
+
+  const testSNaaSUser = {
+    Type: 'SNaaSUser',
+  } as GenericContent
+
+  const testWebHookSubscription = {
+    Type: 'WebHookSubscription',
+  } as GenericContent
+
+  const testGatsbyWebHookSubscription = {
+    Type: 'GatsbyWebHookSubscription',
+  } as GenericContent
+
+  const testArticle = {
+    Type: 'Article',
+  } as GenericContent
+
+  const testFolder = {
+    Type: 'Folder',
+  } as GenericContent
+
   describe('isFullWidthField', () => {
     it('should return true when the current content type is User', () => {
-      const isFullWidth = isFullWidthField(testBooleanField, 'User', testRepository)
+      const isFullWidth = isFullWidthField(testBooleanField, testUser, testRepository)
       expect(isFullWidth).toBeTruthy()
     })
     it(`should return true when the current content type's parent type is User`, () => {
-      const isFullWidth = isFullWidthField(testBooleanField, 'SNaaSUser', testRepository)
+      const isFullWidth = isFullWidthField(testBooleanField, testSNaaSUser, testRepository)
       expect(isFullWidth).toBeTruthy()
     })
     it('should return true when the current content type is WebHookSubscription', () => {
-      const isFullWidth = isFullWidthField(testBooleanField, 'WebHookSubscription', testRepository)
+      const isFullWidth = isFullWidthField(testBooleanField, testWebHookSubscription, testRepository)
       expect(isFullWidth).toBeTruthy()
     })
     it(`should return true when the current content type's parent type is WebHookSubscription`, () => {
-      const isFullWidth = isFullWidthField(testBooleanField, 'GatsbyWebHookSubscription', testRepository)
+      const isFullWidth = isFullWidthField(testBooleanField, testGatsbyWebHookSubscription, testRepository)
       expect(isFullWidth).toBeTruthy()
     })
     it(`should return true when the given field control is LongTextFieldSetting`, () => {
-      const isFullWidth = isFullWidthField(testLongTextField, 'Article', testRepository)
+      const isFullWidth = isFullWidthField(testLongTextField, testArticle, testRepository)
       expect(isFullWidth).toBeTruthy()
     })
     it(`should return false when the type is Folder and the field is ShortText`, () => {
-      const isFullWidth = isFullWidthField(testShortTextField, 'Folder', testRepository)
+      const isFullWidth = isFullWidthField(testShortTextField, testFolder, testRepository)
       expect(isFullWidth).toBeFalsy()
     })
   })

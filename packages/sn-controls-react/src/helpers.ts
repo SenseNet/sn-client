@@ -1,5 +1,5 @@
 import { Content, Repository } from '@sensenet/client-core'
-import { FieldSetting } from '@sensenet/default-content-types'
+import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
 
 /**
  * Search for '[Script:jScript]' tag in string and returns empty string when found
@@ -16,14 +16,14 @@ export const changeTemplatedValue = (value: string | undefined, evaluatedValue?:
 
 export const isFullWidthField = (
   field: { fieldSettings: FieldSetting },
-  contentTypeName: string,
+  content: GenericContent,
   repository: Repository,
 ) => {
-  const isInheritedType = repository.schemas.isContentFromType({ Type: contentTypeName } as Content, contentTypeName)
+  const isInheritedType = repository.schemas.isContentFromType(content, content.Type)
   return (
-    (field.fieldSettings.Name === 'Avatar' && (contentTypeName === 'User' || isInheritedType)) ||
-    (field.fieldSettings.Name === 'Enabled' && (contentTypeName === 'User' || isInheritedType)) ||
-    (field.fieldSettings.Name === 'Enabled' && (contentTypeName === 'WebHookSubscription' || isInheritedType)) ||
+    (field.fieldSettings.Name === 'Avatar' && (content.Type === 'User' || isInheritedType)) ||
+    (field.fieldSettings.Name === 'Enabled' && (content.Type === 'User' || isInheritedType)) ||
+    (field.fieldSettings.Name === 'Enabled' && (content.Type === 'WebHookSubscription' || isInheritedType)) ||
     field.fieldSettings.Type === 'LongTextFieldSetting'
   )
 }
