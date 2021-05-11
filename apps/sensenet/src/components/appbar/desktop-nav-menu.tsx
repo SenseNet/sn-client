@@ -7,10 +7,12 @@ import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
 import Notifications from '@material-ui/icons/Notifications'
 import clsx from 'clsx'
 import React, { ChangeEvent, Dispatch, FunctionComponent, SetStateAction, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { PATHS, resolvePathParams } from '../../application-paths'
 import { useCurrentUser } from '../../context/current-user-provider'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization, usePersonalSettings } from '../../hooks'
-import { PersonalSettings } from '../../services'
+import { pathWithQueryParams, PersonalSettings } from '../../services'
 import { useDialog } from '../dialogs'
 import { UserAvatar } from '../UserAvatar'
 
@@ -119,6 +121,7 @@ export const DesktopNavMenu: FunctionComponent = () => {
           }}
         />
         <IconButton
+          data-test="user-menu-button"
           aria-label={localization.topMenu.openUserMenu}
           aria-controls={openUserMenu ? 'menu-list-grow' : undefined}
           aria-haspopup="true"
@@ -158,6 +161,19 @@ export const DesktopNavMenu: FunctionComponent = () => {
                     primary={`${currentUser.DisplayName || currentUser.Name}`}
                   />
                 </MenuItem>
+                <MenuItem className={classes.userMenuItem}>
+                  <Link
+                    onClick={() => handleClose(setOpenUserMenu)}
+                    to={pathWithQueryParams({
+                      path: resolvePathParams({
+                        path: PATHS.usersAndGroups.appPath,
+                        params: { browseType: 'explorer', action: 'edit' },
+                      }),
+                      newParams: { content: `${currentUser.Path.replace(PATHS.usersAndGroups.snPath, '')}` },
+                    })}>
+                    {localization.topMenu.accountSettings}
+                  </Link>
+                </MenuItem>
                 <MenuItem onClick={changePassword} className={classes.userMenuItem}>
                   {localization.topMenu.changePassword}
                 </MenuItem>
@@ -167,11 +183,15 @@ export const DesktopNavMenu: FunctionComponent = () => {
                 <MenuItem>
                   <Typography component="div" className={classes.themeSwitcher}>
                     <Grid component="label" container alignItems="center" spacing={1}>
-                      <Grid item style={{ paddingRight: '32px' }}>
+                      <Grid item style={{ paddingRight: '32px' }} data-test="theme-status">
                         {personalSettings.theme === 'dark' ? 'Light theme' : 'Dark theme'}
                       </Grid>
                       <Grid item>
-                        <Switch checked={personalSettings.theme === 'dark'} onChange={switchTheme()} />
+                        <Switch
+                          data-test="theme-switcher"
+                          checked={personalSettings.theme === 'dark'}
+                          onChange={switchTheme()}
+                        />
                       </Grid>
                     </Grid>
                   </Typography>

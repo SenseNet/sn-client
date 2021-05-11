@@ -1,11 +1,13 @@
 import { formatSize } from '@sensenet/controls-react'
 import { createStyles, makeStyles, Paper, useTheme } from '@material-ui/core'
 import React from 'react'
-import { useWidgetStyles } from '../../globalStyles'
+import { widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { round } from '../dashboard'
 import { DashboardData } from '../dashboard/types'
 import { MultiPartProgressLine } from './multi-part-progress-line'
+
+const useWidgetStyles = makeStyles(widgetStyles)
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -38,7 +40,7 @@ export const StorageWidget: React.FunctionComponent<StorageWidgetProps> = (props
   return (
     <div className={widgetClasses.root}>
       <Paper elevation={0} className={widgetClasses.container}>
-        <div className={classes.rowContainer}>
+        <div className={classes.rowContainer} style={{ fontSize: '16px' }}>
           <span>{localization.storage}</span>
           <span>
             {localization.used(

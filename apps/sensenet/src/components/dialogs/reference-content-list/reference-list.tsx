@@ -93,6 +93,7 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
             props.renderButton(newReference)
           ) : (
             <Button
+              data-test={'reference-add-button'}
               variant="contained"
               color="primary"
               startIcon={<AddIcon />}
@@ -111,7 +112,7 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
         }}>
         {pagination.currentItems.length ? (
           <>
-            <List>
+            <List data-test={'reference-list'}>
               {pagination.currentItems.map((item) => (
                 <ListItem key={item.Id}>
                   <ListItemAvatar>
@@ -126,6 +127,7 @@ export const ReferenceList: React.FC<ReferenceListProps> = (props) => {
                   {props.canEdit && fieldControl && (
                     <ListItemSecondaryAction>
                       <IconButton
+                        data-test={`${item.DisplayName?.replace(/\s+/g, '-').toLowerCase()}-delete`}
                         edge="end"
                         aria-label="delete"
                         data-test={`reference-item-remove-${item.DisplayName?.replace(/\s+/g, '-').toLowerCase()}`}
