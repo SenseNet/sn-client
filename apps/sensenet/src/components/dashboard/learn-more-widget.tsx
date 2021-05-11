@@ -7,8 +7,10 @@ import plutoOrderCompleted from '../../assets/dashboard/pluto-order-completed.pn
 import plutoOrderCompleted2x from '../../assets/dashboard/pluto-order-completed@2x.png'
 import plutoWelcome from '../../assets/dashboard/pluto-welcome.png'
 import plutoWelcome2x from '../../assets/dashboard/pluto-welcome@2x.png'
-import { useWidgetStyles } from '../../globalStyles'
+import { widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+
+const useWidgetStyles = makeStyles(widgetStyles)
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
