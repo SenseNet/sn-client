@@ -21,10 +21,9 @@ import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import GroupOutlined from '@material-ui/icons/GroupOutlined'
 import clsx from 'clsx'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router'
 import { PATHS, resolvePathParams } from '../../application-paths'
-import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { navigateToAction, pathWithQueryParams } from '../../services'
@@ -99,7 +98,6 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
   const localization = useLocalization()
   const history = useHistory()
   const logger = useLogger('PermissionEditor')
-  const uiSettings = useContext(ResponsivePersonalSettings)
   const { openDialog } = useDialog()
   const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
   const [permissions, setPermissions] = useState<AclResponseModel>()
