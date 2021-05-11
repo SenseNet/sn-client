@@ -1,4 +1,4 @@
-import { Content, Repository } from '@sensenet/client-core'
+import { Repository } from '@sensenet/client-core'
 import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
 
 /**
