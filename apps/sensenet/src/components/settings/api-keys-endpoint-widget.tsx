@@ -16,8 +16,10 @@ import jslogo from '../../assets/js.svg'
 import dotnetlogo from '../../assets/net.svg'
 import reactlogo from '../../assets/react.svg'
 import reduxlogo from '../../assets/redux.svg'
-import { useWidgetStyles } from '../../globalStyles'
+import { widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+
+const useWidgetStyles = makeStyles(widgetStyles)
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({

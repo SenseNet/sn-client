@@ -144,7 +144,7 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
   })
 })
 
-export const useWidgetStyles = makeStyles((theme: Theme) => {
+export const widgetStyles = (theme: Theme) => {
   return createStyles({
     root: {
       marginBottom: '2rem',
@@ -169,4 +169,4 @@ export const useWidgetStyles = makeStyles((theme: Theme) => {
       marginTop: 0,
     },
   })
-})
+}

@@ -16,9 +16,11 @@ import { green, grey, red } from '@material-ui/core/colors'
 import { Close, Done, HelpOutline, Info } from '@material-ui/icons'
 import clsx from 'clsx'
 import React from 'react'
-import { useGlobalStyles, useWidgetStyles } from '../../globalStyles'
+import { useGlobalStyles, widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { useDateUtils } from '../../hooks/use-date-utils'
+
+const useWidgetStyles = makeStyles(widgetStyles)
 
 const useStyles = makeStyles(() => {
   return createStyles({
