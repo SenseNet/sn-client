@@ -6,8 +6,10 @@ import { PATHS, resolvePathParams } from '../../application-paths'
 import plutoSuccess from '../../assets/dashboard/pluto-success-1.png'
 import plutoSuccess2x from '../../assets/dashboard/pluto-success-1@2x.png'
 import { ResponsivePersonalSettings } from '../../context'
-import { useWidgetStyles } from '../../globalStyles'
+import { widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+
+const useWidgetStyles = makeStyles(widgetStyles)
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({

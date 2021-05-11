@@ -1,10 +1,12 @@
 import { createStyles, Grid, LinearProgress, makeStyles, Paper, Theme, Typography } from '@material-ui/core'
 import clsx from 'clsx'
 import React from 'react'
-import { useWidgetStyles } from '../../globalStyles'
+import { widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { DashboardLimitations, DashboardUsage } from './types'
 import { round } from '.'
+
+const useWidgetStyles = makeStyles(widgetStyles)
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
