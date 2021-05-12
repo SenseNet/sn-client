@@ -7,7 +7,7 @@
     "identityServer": "https://is.demo.sensenet.com",
     "users": {
       "admin": {
-        "clientId": "businesscat",
+        "clientId": "KxkgOTAxLLCicUx7",
         "clientSecret": "",
         "id": "/Root/IMS/Public('businesscat')"
       },
