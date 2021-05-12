@@ -1,13 +1,8 @@
-// start of material imports
-import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
 import AppBar from '@material-ui/core/AppBar'
-import IconButton from '@material-ui/core/IconButton'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import LogoutIcon from '@material-ui/icons/PowerSettingsNew'
 import React from 'react'
-// end of material imports
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,7 +28,6 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const HeaderPanel = () => {
-  const { logout, oidcUser } = useOidcAuthentication()
   const classes = useStyles()
 
   return (
@@ -41,16 +35,8 @@ const HeaderPanel = () => {
       <AppBar position="fixed">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            {oidcUser?.profile.name}
+            User search
           </Typography>
-          <IconButton
-            edge="start"
-            className={classes.logoutButton}
-            color="inherit"
-            aria-label="logout"
-            onClick={logout}>
-            <LogoutIcon />
-          </IconButton>
         </Toolbar>
       </AppBar>
     </div>
