@@ -1,5 +1,4 @@
-import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
-import { AppBar, Button, Toolbar, Typography } from '@material-ui/core'
+import { AppBar, Toolbar, Typography } from '@material-ui/core'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import React from 'react'
 
@@ -17,7 +16,6 @@ const useStyles = makeStyles((theme: Theme) =>
  * Navbar component
  */
 export const NavBarComponent: React.FunctionComponent = () => {
-  const { logout } = useOidcAuthentication()
   const classes = useStyles()
 
   return (
@@ -27,9 +25,6 @@ export const NavBarComponent: React.FunctionComponent = () => {
           <Typography variant="h6" className={classes.title}>
             Calendar
           </Typography>
-          <Button color="inherit" onClick={logout}>
-            Log out
-          </Button>
         </Toolbar>
       </AppBar>
     </div>

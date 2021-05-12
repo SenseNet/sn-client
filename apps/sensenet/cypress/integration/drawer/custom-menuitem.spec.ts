@@ -79,7 +79,7 @@ describe('Custom menu item', () => {
 
     cy.intercept({
       method: 'GET',
-      url: '/Root/Content/IT/Calendar',
+      url: 'odata.svc/Root/Content/IT/Calendar?*',
     }).as('getCalendar')
 
     cy.visit(
