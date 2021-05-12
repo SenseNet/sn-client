@@ -16,16 +16,8 @@ describe('Helpers', () => {
       const isFullWidth = isFullWidthField(testBooleanField, testUser, testRepository)
       expect(isFullWidth).toBeTruthy()
     })
-    it(`should return true when the current content type's parent type is User`, () => {
-      const isFullWidth = isFullWidthField(testBooleanField, testSNaaSUser, testRepository)
-      expect(isFullWidth).toBeTruthy()
-    })
     it('should return true when the current content type is WebHookSubscription', () => {
       const isFullWidth = isFullWidthField(testBooleanField, testWebHookSubscription, testRepository)
-      expect(isFullWidth).toBeTruthy()
-    })
-    it(`should return true when the current content type's parent type is WebHookSubscription`, () => {
-      const isFullWidth = isFullWidthField(testBooleanField, testGatsbyWebHookSubscription, testRepository)
       expect(isFullWidth).toBeTruthy()
     })
     it(`should return true when the given field control is LongTextFieldSetting`, () => {

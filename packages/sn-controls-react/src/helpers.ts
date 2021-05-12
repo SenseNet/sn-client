@@ -19,11 +19,12 @@ export const isFullWidthField = (
   content: GenericContent,
   repository: Repository,
 ) => {
-  const isInheritedType = repository.schemas.isContentFromType(content, content.Type)
+  const isUser = repository.schemas.isContentFromType(content, 'User')
+  const isWebhookSubscription = repository.schemas.isContentFromType(content, 'WebHookSubscription')
+
   return (
-    (field.fieldSettings.Name === 'Avatar' && (content.Type === 'User' || isInheritedType)) ||
-    (field.fieldSettings.Name === 'Enabled' && (content.Type === 'User' || isInheritedType)) ||
-    (field.fieldSettings.Name === 'Enabled' && (content.Type === 'WebHookSubscription' || isInheritedType)) ||
+    (field.fieldSettings.Name === 'Avatar' && isUser) ||
+    (field.fieldSettings.Name === 'Enabled' && (isUser || isWebhookSubscription)) ||
     field.fieldSettings.Type === 'LongTextFieldSetting'
   )
 }
