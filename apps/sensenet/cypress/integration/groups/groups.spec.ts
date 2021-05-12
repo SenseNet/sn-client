@@ -63,7 +63,7 @@ describe('Groups', () => {
   it('ensures that deletion of a group is working properly', () => {
     cy.intercept({
       method: 'GET',
-      url: '/Root/Trash',
+      url: 'odata.svc/Root/Trash?*',
     }).as('getTrashChildren')
 
     cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
