@@ -1,14 +1,7 @@
 import { isFullWidthField } from '../src/helpers'
 import { testBooleanField, testLongTextField, testShortTextField } from './__mocks__/fields'
 import { testRepository } from './__mocks__/repository'
-import {
-  testArticle,
-  testFolder,
-  testGatsbyWebHookSubscription,
-  testSNaaSUser,
-  testUser,
-  testWebHookSubscription,
-} from './__mocks__/types'
+import { testArticle, testFolder, testUser, testWebHookSubscription } from './__mocks__/types'
 
 describe('Helpers', () => {
   describe('isFullWidthField', () => {
