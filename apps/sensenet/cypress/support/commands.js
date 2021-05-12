@@ -1,4 +1,6 @@
 import 'cypress-file-upload'
+import { codeLogin } from '@sensenet/authentication-oidc-react'
+
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -35,34 +37,13 @@ Cypress.on('uncaught:exception', (err) => {
 
 Cypress.Commands.add('login', (userType = 'admin') => {
   const user = Cypress.env('users')[userType]
-
-  const configuration = {
-    client_id: user.clientId,
-    client_secret: Cypress.env(`secret_${userType}`) || user.clientSecret,
-    grant_type: 'client_credentials',
-    scope: encodeURIComponent('sensenet'),
-  }
-
-  const requestBody = Object.keys(configuration).reduce((acc, current, idx) => {
-    return `${acc}${current}=${configuration[current]}${idx === Object.keys(configuration).length - 1 ? '' : '&'}`
-  }, '')
-
-  cy.request({
-    url: `${Cypress.env('identityServer')}/connect/token`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: requestBody,
-  }).then((resp) => {
-    const oidcUser = resp.body
-
-    oidcUser.profile = {
-      sub: user.id,
-    }
-
-    window.sessionStorage.setItem(
-      `oidc.user:${Cypress.env('identityServer')}:11V28Add7IaP1iFw`,
-      JSON.stringify(oidcUser),
-    )
+  codeLogin({
+    clientId: user.clientId,
+    clientSecret: Cypress.env(`secret_${userType}`) || user.clientSecret,
+    identityServerUrl: Cypress.env('identityServer'),
+    appId: '11V28Add7IaP1iFw',
+    userId: user.id,
+    fetchMethod: (url, options) => cy.request({ url, ...options }),
   })
 })
 
