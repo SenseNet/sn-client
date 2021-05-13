@@ -117,10 +117,7 @@ export const PermanentDrawer = () => {
               return item.primaryText !== 'Settings' && <PermanentDrawerItem item={item} opened={opened} key={index} />
             })}
           </li>
-          <li>
-            {settingsItem && <PermanentDrawerItem item={settingsItem} opened={opened} />}
-            <div style={{ fontWeight: 'bold', textAlign: 'center' }}>BETA</div>
-          </li>
+          <li>{settingsItem && <PermanentDrawerItem item={settingsItem} opened={opened} />}</li>
         </List>
       </div>
     </Paper>
