@@ -109,7 +109,7 @@ const UserSearchPanel = () => {
 
   const sendRequest = async () => {
     const result = await repo.loadCollection<User>({
-      path: `/Root/IMS`,
+      path: `/Root/IMS/Public`,
       oDataOptions: {
         metadata: 'no',
         inlinecount: 'allpages',
