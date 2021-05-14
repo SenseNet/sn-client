@@ -312,22 +312,19 @@ export const Page: React.FC<PageProps> = (props) => {
     },
     [commentState, imageRatio, imageRotation, page.image?.Index, page.image?.Width, props.page.Width, viewerState],
   )
+
   const handleMouseDown = (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (imageRotation !== 0) {
       viewerState.updateState({ activeShapePlacing: 'none' })
     }
     setMouseIsDown(true)
-    setStartX(ev.nativeEvent.pageX / (props.page.Height / (page.image?.Height || 1)))
-    setStartY(ev.nativeEvent.pageY / (props.page.Height / (page.image?.Height || 1)))
+    setStartX(ev.nativeEvent.pageX / imageRatio)
+    setStartY(ev.nativeEvent.pageY / imageRatio)
     setStartOffsetX(
-      (ev.nativeEvent.pageX -
-        Math.max(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.left!, viewerState.boxPosition.left)) /
-        imageRatio,
+      (ev.nativeEvent.pageX - viewerState.pagesRects[props.visiblePagesIndex!].pageRect.left!) / imageRatio,
     )
     setStartOffsetY(
-      (ev.nativeEvent.pageY -
-        Math.max(viewerState.pagesRects[props.visiblePagesIndex!].pageRect.top!, viewerState.boxPosition.top)) /
-        imageRatio,
+      (ev.nativeEvent.pageY - viewerState.pagesRects[props.visiblePagesIndex!].pageRect.top!) / imageRatio,
     )
   }
 

@@ -1,7 +1,7 @@
 import { Annotation } from '@sensenet/client-core'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import React, { useEffect, useRef } from 'react'
-import { useDocumentPermissions } from '../../hooks'
+import { useDocumentPermissions, useViewerState } from '../../hooks'
 
 type Props = {
   shape: Annotation
@@ -65,21 +65,38 @@ export const AnnotationWrapper: React.FC<Props> = (props) => {
   const permissions = useDocumentPermissions()
   const classes = useStyles({ ...props, permissions })
   const annotationElement = useRef<HTMLDivElement>(null)
+  const viewerState = useViewerState()
+  const { updateState } = viewerState
 
   useEffect(() => {
     const handleGlobalMouseUp = () => {
-      props.onResized(annotationElement.current?.getClientRects()[0])
+      if (viewerState.currentlyResizedElementId === props.shape.guid) {
+        updateState({ currentlyResizedElementId: undefined })
+        props.onResized(annotationElement.current?.getClientRects()[0])
+      }
     }
 
     document.addEventListener('mouseup', handleGlobalMouseUp)
     return () => {
       document.removeEventListener('mouseup', handleGlobalMouseUp)
     }
-  }, [props])
+  }, [props, updateState, viewerState.currentlyResizedElementId])
+
+  useEffect(() => {
+    const mutationObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'style') {
+          updateState({ currentlyResizedElementId: (mutation.target as any).id })
+        }
+      })
+    })
+
+    annotationElement.current && mutationObserver.observe(annotationElement.current, { attributes: true })
+  }, [updateState])
 
   return (
     <div
-      id="annotation-wrapper"
+      id={props.shape.guid}
       className={classes.root}
       tabIndex={0}
       draggable={permissions.canEdit}

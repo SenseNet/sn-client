@@ -2,7 +2,7 @@ import { Highlight, Shapes } from '@sensenet/client-core'
 import { Button, ClickAwayListener, createStyles, makeStyles, Popper, Theme } from '@material-ui/core'
 import { Delete } from '@material-ui/icons'
 import React, { useEffect, useRef, useState } from 'react'
-import { useLocalization } from '../../hooks'
+import { useLocalization, useViewerState } from '../../hooks'
 
 type Props = {
   shape: Highlight
@@ -74,17 +74,34 @@ export function ShapeRedaction({
   const open = Boolean(anchorEl)
   const id = open ? 'redaction-delete' : undefined
   const redactionElement = useRef<HTMLDivElement>(null)
+  const viewerState = useViewerState()
+  const { updateState } = viewerState
 
   useEffect(() => {
     const handleGlobalMouseUp = () => {
-      onResized(redactionElement.current?.getClientRects()[0])
+      if (viewerState.currentlyResizedElementId === shape.guid) {
+        updateState({ currentlyResizedElementId: undefined })
+        onResized(redactionElement.current?.getClientRects()[0])
+      }
     }
 
     document.addEventListener('mouseup', handleGlobalMouseUp)
     return () => {
       document.removeEventListener('mouseup', handleGlobalMouseUp)
     }
-  }, [onResized])
+  }, [onResized, shape.guid, updateState, viewerState.currentlyResizedElementId])
+
+  useEffect(() => {
+    const mutationObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'style') {
+          updateState({ currentlyResizedElementId: (mutation.target as any).id })
+        }
+      })
+    })
+
+    redactionElement.current && mutationObserver.observe(redactionElement.current, { attributes: true })
+  }, [updateState])
 
   const onRightClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
@@ -94,6 +111,7 @@ export function ShapeRedaction({
   return (
     <>
       <div
+        id={shape.guid}
         className={classes.root}
         tabIndex={0}
         key={`r-${shape.h}-${shape.w}`}

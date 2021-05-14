@@ -113,4 +113,8 @@ export interface ViewerState {
     top: number
     bottom: number
   }
+  /**
+   * The id of the active resized element
+   */
+  currentlyResizedElementId?: string
 }

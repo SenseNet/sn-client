@@ -4,7 +4,7 @@ import yellow from '@material-ui/core/colors/yellow.js'
 import { Delete } from '@material-ui/icons'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocalization } from '../..'
-import { useDocumentPermissions } from '../../hooks'
+import { useDocumentPermissions, useViewerState } from '../../hooks'
 
 type Props = {
   shape: Highlight
@@ -65,17 +65,34 @@ export const ShapeHighlight: React.FC<Props> = (props) => {
   const open = Boolean(anchorEl)
   const id = open ? 'highlight-delete' : undefined
   const highlightElement = useRef<HTMLDivElement>(null)
+  const viewerState = useViewerState()
+  const { updateState } = viewerState
 
   useEffect(() => {
     const handleGlobalMouseUp = () => {
-      props.onResized(highlightElement.current?.getClientRects()[0])
+      if (viewerState.currentlyResizedElementId === props.shape.guid) {
+        updateState({ currentlyResizedElementId: undefined })
+        props.onResized(highlightElement.current?.getClientRects()[0])
+      }
     }
 
     document.addEventListener('mouseup', handleGlobalMouseUp)
     return () => {
       document.removeEventListener('mouseup', handleGlobalMouseUp)
     }
-  }, [props])
+  }, [props, updateState, viewerState.currentlyResizedElementId])
+
+  useEffect(() => {
+    const mutationObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'style') {
+          updateState({ currentlyResizedElementId: (mutation.target as any).id })
+        }
+      })
+    })
+
+    highlightElement.current && mutationObserver.observe(highlightElement.current, { attributes: true })
+  }, [updateState])
 
   const onRightClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
@@ -85,6 +102,7 @@ export const ShapeHighlight: React.FC<Props> = (props) => {
   return (
     <>
       <div
+        id={props.shape.guid}
         className={classes.root}
         tabIndex={0}
         draggable={permissions.canEdit}

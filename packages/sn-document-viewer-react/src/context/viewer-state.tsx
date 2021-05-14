@@ -23,6 +23,7 @@ export const defaultViewerState: ViewerState & {
   updateState: () => {},
   pagesRects: new Array<pageRectModel>(),
   boxPosition: { left: 0, top: 0, bottom: 0, right: 0 },
+  currentlyResizedElementId: undefined,
 }
 export const ViewerStateContext = createContext(defaultViewerState)
 

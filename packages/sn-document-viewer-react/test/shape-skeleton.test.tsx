@@ -45,6 +45,7 @@ describe('ShapesSkeleton component', () => {
         shape={exampleShape}
         removeShape={() => {}}
         updateShapeData={() => {}}
+        visiblePagesIndex={0}
       />,
     )
     expect(wrapper).toMatchSnapshot()
@@ -63,6 +64,7 @@ describe('ShapesSkeleton component', () => {
           shape={exampleShape}
           removeShape={removeShape}
           updateShapeData={updateShapeData}
+          visiblePagesIndex={0}
         />
       </DocumentPermissionsContext.Provider>,
     )
@@ -87,6 +89,7 @@ describe('ShapesSkeleton component', () => {
           shape={exampleAnnotation}
           removeShape={removeShape}
           updateShapeData={updateShapeData}
+          visiblePagesIndex={0}
         />
       </DocumentPermissionsContext.Provider>,
     )
@@ -103,6 +106,7 @@ describe('ShapesSkeleton component', () => {
         <ViewerStateContext.Provider
           value={{
             ...defaultViewerState,
+            currentlyResizedElementId: '9a324f30-1423-11e9-bcb9-d719ddfb5f43',
             activeShapePlacing: 'highlight',
             zoomLevel: 0,
             pagesRects: [
@@ -168,6 +172,7 @@ describe('ShapesSkeleton component', () => {
         <ViewerStateContext.Provider
           value={{
             ...defaultViewerState,
+            currentlyResizedElementId: '9a324f30-1423-11e9-bcb9-d719ddfb5f43',
             activeShapePlacing: 'highlight',
             zoomLevel: 0,
             pagesRects: [
@@ -233,6 +238,7 @@ describe('ShapesSkeleton component', () => {
         <ViewerStateContext.Provider
           value={{
             ...defaultViewerState,
+            currentlyResizedElementId: '9a324f30-1423-11e9-bcb9-d719ddfb5f43',
             activeShapePlacing: 'highlight',
             zoomLevel: 0,
             pagesRects: [
@@ -302,6 +308,7 @@ describe('ShapesSkeleton component', () => {
           shape={exampleShape}
           removeShape={() => {}}
           updateShapeData={() => {}}
+          visiblePagesIndex={0}
         />
       </DocumentPermissionsContext.Provider>,
     )
@@ -332,6 +339,7 @@ describe('ShapesSkeleton component', () => {
           shape={exampleShape}
           removeShape={() => {}}
           updateShapeData={() => {}}
+          visiblePagesIndex={0}
         />
       </DocumentPermissionsContext.Provider>,
     )
@@ -362,6 +370,7 @@ describe('ShapesSkeleton component', () => {
           shape={exampleAnnotation}
           removeShape={() => {}}
           updateShapeData={() => {}}
+          visiblePagesIndex={0}
         />
       </DocumentPermissionsContext.Provider>,
     )
