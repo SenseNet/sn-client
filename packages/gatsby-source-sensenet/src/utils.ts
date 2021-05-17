@@ -12,6 +12,7 @@ export const createTreeNode = async (
   actions: Actions,
   createContentDigest: { (input: string | object): string; (arg0: any): any },
   options: PluginConfig,
+  token: string,
 ) => {
   const newNode = {
     ...content,
@@ -30,7 +31,7 @@ export const createTreeNode = async (
     if ((level && level > 0) || !level) {
       const res = await fetch(`${options.host}/${defaultRepositoryConfiguration.oDataToken}${content.Path}`, {
         headers: {
-          Authorization: `Bearer ${options.accessToken}`,
+          Authorization: `Bearer ${token}`,
         },
         method: 'GET',
       })
@@ -39,7 +40,7 @@ export const createTreeNode = async (
 
       data.d.results.length > 0 &&
         data.d.results.forEach((childContent: any) => {
-          createTreeNode(newNode, childContent, level - 1, createNodeId, actions, createContentDigest, options)
+          createTreeNode(newNode, childContent, level - 1, createNodeId, actions, createContentDigest, options, token)
         })
     }
   } catch (error) {

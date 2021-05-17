@@ -9,7 +9,7 @@ export interface PluginConfig extends PluginOptions {
   host: string
   path: string
   oDataOptions: ODataParams<any>
-  accessToken: string
+  accessToken: Function
   level: number
 }
 
@@ -18,7 +18,7 @@ export const sourceNodes: GatsbyNode['sourceNodes'] = async (
   options: PluginConfig,
 ) => {
   const path = options.path || DEFAULT_PATH
-  console.log('PATH', path)
+  const token = await options.accessToken()
 
   try {
     const params = ODataUrlBuilder.buildUrlParamString(defaultRepositoryConfiguration, options.oDataOptions)
@@ -26,7 +26,7 @@ export const sourceNodes: GatsbyNode['sourceNodes'] = async (
 
     const res = await fetch(`${options.host}/${defaultRepositoryConfiguration.oDataToken}${path}?${params}`, {
       headers: {
-        Authorization: `Bearer ${options.accessToken}`,
+        Authorization: `Bearer ${token}`,
       },
       method: 'GET',
     })
@@ -47,7 +47,7 @@ export const sourceNodes: GatsbyNode['sourceNodes'] = async (
     console.log('root:', rootNode.id)
 
     data.d.results.forEach((content: any) => {
-      createTreeNode(rootNode, content, options.level, createNodeId, actions, createContentDigest, options)
+      createTreeNode(rootNode, content, options.level, createNodeId, actions, createContentDigest, options, token)
     })
   } catch (error) {
     console.log(error)

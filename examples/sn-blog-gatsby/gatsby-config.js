@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+const fetch = require('node-fetch')
+const { codeLogin } = require('@sensenet/authentication-oidc-react')
+const { configuration } = require('./configuration')
+
 module.exports = {
   siteMetadata: {
     title: 'sensenet blog',
@@ -50,7 +55,10 @@ module.exports = {
           expand: ['LeadImage'],
           metadata: 'no',
         },
-        accessToken: '',
+        accessToken: async () => {
+          const authData = await codeLogin({ ...configuration, fetchMethod: fetch })
+          return authData.access_token
+        },
       },
     },
   ],
