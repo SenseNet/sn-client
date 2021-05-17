@@ -8,7 +8,7 @@
     "clean": "rimraf dist",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "dev": "npm-run-all -p \"build:types -w\" \"build:esm -w\"",
-    "build:release": "npm-run-all -p build:esm build:cjs",
+    "build:release": "yarn build:esm",
     "build:esm": "babel src --extensions .ts --out-dir dist --source-maps",
     "build:types": "tsc -p tsconfig.json"
   },
