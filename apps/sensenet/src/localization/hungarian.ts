@@ -147,6 +147,7 @@ const values: DeepPartial<typeof import('./default').default> = {
     changePassword: 'Jelszó módosítása',
     openUserMenu: 'Felhasználói menü kinyitása',
     openNewMenu: 'Újdonságok',
+    accountSettings: 'Felhasználói beállítások',
   },
   settings: {
     edit: 'Módosítás',
@@ -162,7 +163,8 @@ const values: DeepPartial<typeof import('./default').default> = {
     components: 'Components',
     componentId: 'Component Id',
     version: 'Verzió',
-    lastOfficialVersion: 'Utolsó hivatalos verzió',
+    latestOfficialVersion: 'Utolsó hivatalos verzió',
+    latest: 'Legfrissebb',
     description: 'Leírás',
     releaseDate: 'Release dátuma',
     executionDate: 'Futtatás dátuma',
@@ -190,6 +192,14 @@ const values: DeepPartial<typeof import('./default').default> = {
     clientSecret: 'Client Secret',
     generate: 'Generate access token',
     regenerate: 'Regenerate',
+    latestBackendRelease: 'Utolsó backend release:',
+    latestFrontendRelease: 'Utolsó AdminUI release:',
+    goToChangeLog: 'Changelog megnyitása',
+    componentsInfo:
+      'A sensenet komponensei. Egy komponens állhat több csomagból is, de akár egy csomag is alkothat komponenst.',
+    installedPackagesInfo:
+      'Csomagok, melyekből a sensenet komponensek felépülnek. Léteznek olyan csomagok is, melyek nem felelősek a komponensekért, többszöri futtatásra lettek létrehozva - ilyenek a tool-típusú csomagok. Ezek például kontent törlésre vagy indexelésre használatosak.',
+    notAvailable: 'Nem elérhető',
   },
   forms: {
     referencePicker: 'Referencia választó',

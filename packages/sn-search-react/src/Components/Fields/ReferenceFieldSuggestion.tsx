@@ -30,7 +30,11 @@ export const ReferenceFieldSuggestion: React.FunctionComponent<{
   const secondary = getMatchParts(props.query, props.item.Path)
   return (
     <ListItem key={props.item.Id} button={true} selected={props.isHighlighted}>
-      <ListItemText primary={primary} secondary={secondary} />
+      <ListItemText
+        data-test={`suggestion-${(props.item.DisplayName || props.item.Name).replace(/\s+/g, '-').toLowerCase()}`}
+        primary={primary}
+        secondary={secondary}
+      />
     </ListItem>
   )
 }

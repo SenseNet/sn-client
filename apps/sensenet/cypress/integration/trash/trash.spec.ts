@@ -68,7 +68,7 @@ describe('Trash', () => {
   it('permanently deleted content should not be in the trash', () => {
     cy.intercept({
       method: 'GET',
-      url: '/Root/Trash',
+      url: 'odata.svc/Root/Trash?*',
     }).as('getTrashChildren')
 
     cy.visit(
