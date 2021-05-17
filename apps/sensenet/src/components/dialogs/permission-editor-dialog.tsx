@@ -379,6 +379,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
             <>
               <Divider />
               <ListItem
+                data-test={'members-tab'}
                 button
                 className={clsx({ [classes.selected]: actualGroup === 'Members' })}
                 onClick={() => {

@@ -1,5 +1,24 @@
 import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
+const exampleLocalization = `<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="view.xslt"?>
+<Resources>
+  <ResourceClass name="Test">
+    <Languages>
+      <Language cultureName="en">
+        <data name="Test" xml:space="preserve">
+          <value>Test</value>
+        </data>
+      </Language>
+      <Language cultureName="hu">
+        <data name="Test" xml:space="preserve">
+          <value>Teszt</value>
+        </data>
+      </Language>
+    </Languages>
+  </ResourceClass>
+</Resources>`
+
 describe('Localization', () => {
   beforeEach(() => {
     cy.login()
@@ -37,5 +56,52 @@ describe('Localization', () => {
     cy.get('button[aria-label="Cancel"]').click()
 
     cy.get('[data-test="editor-title"]').should('not.exist')
+  })
+
+  it('should create a new localization file', (done) => {
+    cy.get('[data-test="add-button"]').should('not.be.disabled').click()
+    cy.get('[data-test="listitem-resource"]')
+      .click()
+      .then(() => {
+        cy.get('[data-test="editor-title"] input').type('testResource')
+
+        cy.get('.monaco-editor textarea')
+          .click({ force: true })
+          .focused()
+          .type('{ctrl}a')
+          .clear()
+          .invoke('val', exampleLocalization)
+          .trigger('input')
+
+        cy.contains('Submit').click()
+
+        cy.get('.ReactVirtualized__Table__Grid').then((grid) => {
+          cy.scrollToItem({
+            container: grid,
+            selector: '[data-test="table-cell-testresource.xml"]',
+            done: (element) => {
+              expect(!!(element.offsetWidth || element.offsetHeight || element.getClientRects().length)).to.equal(true)
+              done()
+            },
+          })
+        })
+      })
+  })
+
+  it('should delete a localization file', () => {
+    cy.get('.ReactVirtualized__Table__Grid').then((grid) => {
+      cy.scrollToItem({
+        container: grid,
+        selector: '[data-test="table-cell-testresource.xml"]',
+      }).then(() => {
+        cy.get(`[data-test="table-cell-testresource.xml"]`).rightclick({ force: true })
+
+        cy.get('[data-test="content-context-menu-delete"]').click()
+        cy.get('[data-test="delete-permanently"] input[type="checkbox"]').check()
+        cy.get('[data-test="button-delete-confirm"]').click()
+
+        cy.get('[data-test="table-cell-testresource.xml"]').should('not.exist')
+      })
+    })
   })
 })

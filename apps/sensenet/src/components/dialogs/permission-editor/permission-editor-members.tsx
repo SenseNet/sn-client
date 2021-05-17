@@ -32,7 +32,13 @@ export function PermissionEditorMembers(props: PermissionEditorMembersProps) {
       fieldName={props.fieldName}
       items={props.items}
       renderButton={(newRef) => (
-        <Button variant="outlined" color="primary" disabled={!newRef} type="submit" className={classes.addNewButton}>
+        <Button
+          data-test={'add-new-member'}
+          variant="outlined"
+          color="primary"
+          disabled={!newRef}
+          type="submit"
+          className={classes.addNewButton}>
           {localization.permissionEditor.addNewMember}
         </Button>
       )}

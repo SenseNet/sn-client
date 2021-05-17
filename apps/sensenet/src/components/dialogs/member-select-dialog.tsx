@@ -58,7 +58,7 @@ export function MemberSelect(props: MemberSelectProps) {
 
   return (
     <>
-      <DialogTitle>
+      <DialogTitle data-test={'member-select-dialog'}>
         {localization.permissionEditor.newEntry}
         <IconButton aria-label="close" className={classes.closeButton} onClick={closeLastDialog}>
           <CloseIcon />
@@ -85,6 +85,7 @@ export function MemberSelect(props: MemberSelectProps) {
           {localization.forms.cancel}
         </Button>
         <Button
+          data-test={'member-select-add'}
           aria-label={localization.permissionEditor.add}
           color="primary"
           variant="contained"
