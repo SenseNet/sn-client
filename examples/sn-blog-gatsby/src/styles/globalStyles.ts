@@ -17,6 +17,9 @@ export const useGlobalStyles = makeStyles(() => {
         textDecoration: 'unset',
         color: globals.common.linkColor,
       },
+      img: {
+        maxWidth: '100%',
+      },
     },
     container: {
       display: 'flex',

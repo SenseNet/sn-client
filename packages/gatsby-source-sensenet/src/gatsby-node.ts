@@ -7,10 +7,10 @@ const DEFAULT_PATH = '/Root/Content'
 
 export interface PluginConfig extends PluginOptions {
   host: string
-  path: string
-  oDataOptions: ODataParams<any>
-  accessToken: Function
-  level: number
+  path?: string
+  oDataOptions?: ODataParams<any>
+  accessToken: Function | string
+  level?: number
 }
 
 export const sourceNodes: GatsbyNode['sourceNodes'] = async (
@@ -18,11 +18,14 @@ export const sourceNodes: GatsbyNode['sourceNodes'] = async (
   options: PluginConfig,
 ) => {
   const path = options.path || DEFAULT_PATH
-  const token = await options.accessToken()
+  const token = options.accessToken instanceof Function ? await options.accessToken() : options.accessToken
 
   try {
     const params = ODataUrlBuilder.buildUrlParamString(defaultRepositoryConfiguration, options.oDataOptions)
-    console.log('REQUEST:', `${options.host}/${defaultRepositoryConfiguration.oDataToken}${path}?${params}`)
+    console.log(
+      'REQUEST SENT TO SENENET:',
+      `${options.host}/${defaultRepositoryConfiguration.oDataToken}${path}?${params}`,
+    )
 
     const res = await fetch(`${options.host}/${defaultRepositoryConfiguration.oDataToken}${path}?${params}`, {
       headers: {
@@ -44,10 +47,9 @@ export const sourceNodes: GatsbyNode['sourceNodes'] = async (
     }
 
     actions.createNode(rootNode)
-    console.log('root:', rootNode.id)
 
     data.d.results.forEach((content: any) => {
-      createTreeNode(rootNode, content, options.level, createNodeId, actions, createContentDigest, options, token)
+      createTreeNode(rootNode, content, { createNodeId, actions, createContentDigest }, options, token)
     })
   } catch (error) {
     console.log(error)

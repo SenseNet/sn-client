@@ -48,7 +48,7 @@ module.exports = {
     {
       resolve: `gatsby-source-sensenet`,
       options: {
-        host: 'https://netcore-service.test.sensenet.com',
+        host: 'https://dev.demo.sensenet.com',
         path: '/Root/Content/SampleWorkspace/Blog',
         oDataOptions: {
           select: 'all',

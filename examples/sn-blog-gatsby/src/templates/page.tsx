@@ -31,11 +31,6 @@ const useStyles = makeStyles(() => {
       marginBottom: '4rem',
       alignSelf: 'center',
     },
-    markdown: {
-      '& img': {
-        maxWidth: '100%',
-      },
-    },
   })
 })
 

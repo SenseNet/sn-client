@@ -13,7 +13,7 @@
   "scripts": {
     "build": "gatsby build",
     "clean": "rimraf public",
-    "dev": "gatsby develop",
+    "dev": "gatsby clean && gatsby develop",
     "format": "prettier --write \"src/**/*.{ts,tsx,md}\"",
     "type-check": "tsc"
   },
