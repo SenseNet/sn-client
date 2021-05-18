@@ -29,6 +29,7 @@ exports[`App Layout Matches snapshot 1`] = `
         "menuIconActive": "makeStyles-menuIconActive-3",
       }
     }
+    name="sn-react-imagegallery"
     title="Image gallery"
   />
   <WithStyles(ForwardRef(Container))
