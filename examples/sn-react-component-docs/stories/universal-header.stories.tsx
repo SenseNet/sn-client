@@ -17,6 +17,7 @@ storiesOf('Universal components', module)
             <div style={{ padding: '6px 16px' }}>Another example menu item</div>
           </>
         }
+        name="sn-react-imagegallery"
       />
     ),
     {
