@@ -51,6 +51,7 @@ export type HamburgerMenuClassKey = Partial<ReturnType<typeof useStyles>>
 
 interface HamburgerMenuProps {
   classes?: HamburgerMenuClassKey
+  appName?: string
 }
 
 export const HamburgerMenu: React.FunctionComponent<HamburgerMenuProps> = (props) => {
@@ -89,7 +90,13 @@ export const HamburgerMenu: React.FunctionComponent<HamburgerMenuProps> = (props
         <Paper className={classes.popperWrapper}>
           <ClickAwayListener onClickAway={handleClose}>
             <MenuList autoFocusItem={isPopperOpen}>
-              <Link href="https://github.com/SenseNet/sn-client/tree/master/examples/sn-react-tasklist" target="_blank">
+              <Link
+                href={
+                  props.appName
+                    ? `https://github.com/SenseNet/sn-client/tree/master/examples/${props.appName}`
+                    : 'https://github.com/SenseNet/sn-client/tree/master/examples/sn-react-tasklist'
+                }
+                target="_blank">
                 <MenuItem className={classes.menuItem}>View source on github</MenuItem>
               </Link>
               <Link
