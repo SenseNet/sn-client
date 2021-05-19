@@ -1,30 +1,20 @@
 var path = require('path')
-const webpack = require('webpack')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   mode: 'development',
   entry: './src/example.tsx',
   output: {
-    filename: 'bundle.js',
-    publicPath: '/assets/',
-    path: path.resolve(__dirname + '/bundle/assets'),
-  },
-  devServer: {
-    publicPath: '/assets/',
+    filename: '[name].js',
+    path: path.resolve(__dirname, 'bundle'),
+    publicPath: '/',
   },
   optimization: {
     splitChunks: {
-      cacheGroups: {
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
-          idHint: 'vendors',
-          chunks: 'all',
-        },
-      },
+      chunks: 'all',
     },
-    runtimeChunk: true,
   },
   // Enable sourcemaps for debugging webpack's output.
   devtool: 'source-map',
@@ -34,23 +24,29 @@ module.exports = {
   },
   plugins: [
     // new BundleAnalyzerPlugin(),
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: 'index.html',
-          to: './../',
-        },
-        // {
-        //     from: "assets",
-        //     to: "./assets"
-        // }
-      ],
+    // new CopyWebpackPlugin({
+    //   patterns: [
+    //     {
+    //       from: 'index.html',
+    //       to: './../',
+    //     },
+    //     // {
+    //     //     from: "assets",
+    //     //     to: "./assets"
+    //     // }
+    //   ],
+    // }),
+    new HtmlWebpackPlugin({
+      template: './index.html',
     }),
   ],
   module: {
     rules: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-      { test: /\.tsx?$/, loader: 'ts-loader' },
+      {
+        test: /\.tsx?$/,
+        use: [{ loader: 'ts-loader', options: { compilerOptions: { emitDeclarationOnly: false, module: 'esnext' } } }],
+      },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
       { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
