@@ -47,17 +47,13 @@ const BlogCard: React.FC<BlogCardProps> = (props) => {
   return (
     <Card className={classes.root}>
       {props.image && (
-        <GatsbyImage
-          className={classes.image}
-          image={props.image.childImageSharp.gatsbyImageData}
-          alt={props.image.name}
-        />
+        <GatsbyImage className={classes.image} image={props.image.childImageSharp.gatsbyImageData} alt="cover image" />
       )}
       <CardContent className={classes.wrapper}>
         <Typography gutterBottom variant="h5" component="h5" className={classes.title}>
           {props.title}
         </Typography>
-        <Typography variant="body2" color="textSecondary" component="p" className={classes.description}>
+        <Typography variant="body2" color="textSecondary" component="div" className={classes.description}>
           <MDXRenderer>{props.excerpt}</MDXRenderer>
         </Typography>
       </CardContent>

@@ -6,7 +6,7 @@ export const globals = {
     linkColor: '#13a5ad',
     blogCardImageHeight: 270,
     borderRadius: 25,
-    headerColor: '#353b4e',
+    headerColor: '#353b4e !important',
   },
 }
 

@@ -5,7 +5,7 @@ import * as React from 'react'
 import Helmet from 'react-helmet'
 import LayoutMain from '../components/layout-main'
 import LayoutRoot from '../components/layout-root'
-import { globals } from '../styles/globalStyles'
+import { globals, useGlobalStyles } from '../styles/globalStyles'
 
 const useHeaderStyle = makeStyles(() => {
   return createStyles({
@@ -27,6 +27,7 @@ interface StaticQueryProps {
 
 const IndexLayout: React.FC = ({ children }) => {
   const headerStyle = useHeaderStyle()
+  useGlobalStyles()
 
   return (
     <StaticQuery
