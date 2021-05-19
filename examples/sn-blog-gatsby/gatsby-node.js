@@ -1,8 +1,15 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
+const spawn = require('cross-spawn')
 const { createRemoteFileNode } = require('gatsby-source-filesystem')
 
 const BLOGPOST_NODE_TYPE = 'sensenetBlogPost'
+
+exports.onPreInit = () => {
+  spawn.sync('yarnpkg', ['build'], { cwd: '../../', stdio: 'inherit' })
+  spawn.sync('yarnpkg', ['build:cjs'], { cwd: '../../', stdio: 'inherit' })
+  spawn.sync('gatsby', ['clean'], { stdio: 'inherit' })
+}
 
 exports.onCreateNode = async ({ node, actions: { createNode, createNodeField }, createNodeId, getCache }) => {
   if (node.internal.type === BLOGPOST_NODE_TYPE) {
