@@ -102,9 +102,7 @@ const MainPanel: React.FunctionComponent = () => {
             'EventUrl',
             'OwnerEmail',
           ] as any,
-          query: new Query((q) =>
-            q.greaterThan('StartDate', '2019-01-01').and.lessThan('StartDate', '2019.12.31'),
-          ).toString(),
+          query: new Query((q) => q.typeIs('CalendarEvent')).toString(),
           orderby: [['StartDate', 'asc']],
           expand: ['CreatedBy', 'ModifiedBy'],
         },
