@@ -69,7 +69,7 @@ export class Injector implements Disposable {
    */
   public getInstance<T>(ctor: Constructable<T>, dependencies: Array<Constructable<T>> = []): T {
     if (ctor === this.constructor) {
-      return (this as any) as T
+      return this as any as T
     }
     const meta = Injector.meta.get(ctor)
     if (!meta) {

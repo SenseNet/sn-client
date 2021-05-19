@@ -72,10 +72,10 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
           throw new Error(errorMessages.contentToFetch)
         }
         const loadPath = PathHelper.joinPaths(PathHelper.getContentUrl(props.content.Path), '/', props.settings.Name)
-        const binaryField = ((await props.repository.load({
+        const binaryField = (await props.repository.load({
           idOrPath: loadPath,
           requestInit: { signal: ac.signal },
-        })) as unknown) as ODataResponse<{
+        })) as unknown as ODataResponse<{
           Binary: Binary
         }>
         setFileName(binaryField.d.Binary.FileName.FullFileName)

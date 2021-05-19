@@ -1528,7 +1528,7 @@ describe('Actions', () => {
       expect(
         Actions.uploadRequest(
           'Root/Example',
-          ({ size: 65535000, slice: (..._args: any[]) => '' } as any) as File,
+          { size: 65535000, slice: (..._args: any[]) => '' } as any as File,
           'Binary',
         ).type,
       ).toBe('UPLOAD_CONTENT')
@@ -1540,7 +1540,7 @@ describe('Actions', () => {
         beforeEach(async () => {
           data = await Actions.uploadRequest(
             'Root/Example',
-            ({ size: 65535000, slice: (..._args: any[]) => '' } as any) as File,
+            { size: 65535000, slice: (..._args: any[]) => '' } as any as File,
             'Binary',
           ).payload(repo)
         })
@@ -1548,7 +1548,7 @@ describe('Actions', () => {
           expect(
             Actions.uploadRequest(
               '/Root/Example',
-              ({ size: 65535000, slice: (..._args: any[]) => '' } as any) as File,
+              { size: 65535000, slice: (..._args: any[]) => '' } as any as File,
               'File',
             ),
           ).toHaveProperty('type', 'UPLOAD_CONTENT')

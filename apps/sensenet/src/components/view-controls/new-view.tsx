@@ -30,10 +30,10 @@ export const NewView: React.FC<NewViewProps> = (props) => {
   const history = useHistory()
   const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
   const personalSettings = usePersonalSettings()
-  const contentDisplayName = useMemo(() => repository.schemas.getSchemaByName(props.contentTypeName).DisplayName, [
-    props.contentTypeName,
-    repository.schemas,
-  ])
+  const contentDisplayName = useMemo(
+    () => repository.schemas.getSchemaByName(props.contentTypeName).DisplayName,
+    [props.contentTypeName, repository.schemas],
+  )
 
   const handleSubmit = async (content: GenericContent, contentTypeName?: string) => {
     try {

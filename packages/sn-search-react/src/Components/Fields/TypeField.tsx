@@ -64,7 +64,7 @@ export class TypeField extends Component<TypeFieldProps, TypeFieldState> {
   }
 
   private handleChange(ev: ChangeEvent<HTMLSelectElement>) {
-    const values = (ev.target.value as any) as string[]
+    const values = ev.target.value as any as string[]
     const selected = this.props.types.filter((typeName) => values.indexOf(typeName) > -1)
     const query = new Query((q) => {
       selected.forEach((contentType, currentIndex) => {
