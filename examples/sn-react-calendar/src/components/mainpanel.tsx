@@ -125,7 +125,7 @@ const MainPanel: React.FunctionComponent = () => {
               <ListItem className={classes.nopadding}>
                 <ListItemAvatar className={classes.dayAvatar}>
                   <div>
-                    <span className={classes.dayname}>{format(new Date(element.date), 'ddd')}</span>
+                    <span className={classes.dayname}>{format(new Date(element.date), 'eee')}</span>
                     <span className={classes.daynumber}>{format(new Date(element.date), 'd')}</span>
                   </div>
                 </ListItemAvatar>
