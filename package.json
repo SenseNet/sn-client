@@ -40,7 +40,7 @@
     "wait-on": "^5.3.0"
   },
   "scripts": {
-    "postinstall": "husky install",
+    "postinstall": "husky install && yarn build && yarn build:cjs",
     "cy:run:dms": "cypress run --project ./examples/sn-dms-demo",
     "start:dms:e2e": "yarn workspace sn-dms-demo start:e2e",
     "test:dms:e2e": "start-server-and-test start:dms:e2e http-get://localhost:3000 cy:run:dms",
