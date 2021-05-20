@@ -24,18 +24,6 @@ module.exports = {
   },
   plugins: [
     // new BundleAnalyzerPlugin(),
-    // new CopyWebpackPlugin({
-    //   patterns: [
-    //     {
-    //       from: 'index.html',
-    //       to: './../',
-    //     },
-    //     // {
-    //     //     from: "assets",
-    //     //     to: "./assets"
-    //     // }
-    //   ],
-    // }),
     new HtmlWebpackPlugin({
       template: './index.html',
     }),
