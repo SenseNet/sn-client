@@ -5,14 +5,19 @@ import {
   FormControlLabel,
   FormLabel,
   makeStyles,
+  Paper,
   Radio,
   RadioGroup,
   TextareaAutosize,
   Theme,
+  Typography,
 } from '@material-ui/core'
 import clsx from 'clsx'
 import React, { useState } from 'react'
+import { widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+
+const useWidgetStyles = makeStyles(widgetStyles)
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -28,6 +33,11 @@ const useStyles = makeStyles((theme: Theme) => {
     italic: {
       fontStyle: 'italic',
     },
+    paper: {
+      minHeight: 200,
+      padding: 20,
+      maxWidth: '50%',
+    },
   })
 })
 
@@ -37,6 +47,7 @@ const useStyles = makeStyles((theme: Theme) => {
 export const WebhookPayload: React.FC<ReactClientFieldSetting<LongTextFieldSetting>> = (props) => {
   const localization = useLocalization()
   const classes = useStyles()
+  const widgetClasses = useWidgetStyles()
 
   const initValue =
     (props.fieldValue === undefined || props.fieldValue === '') &&
@@ -106,35 +117,15 @@ export const WebhookPayload: React.FC<ReactClientFieldSetting<LongTextFieldSetti
     default:
       return (
         <>
-          <FormLabel style={{ transform: 'translate(0, 1.5px) scale(0.75)', transformOrigin: 'top left' }}>
+          <Typography variant="caption" gutterBottom={true}>
             {localization.webhooksPayload.payload}
-          </FormLabel>
-          <RadioGroup
-            aria-label="payload"
-            name="payload"
-            value={String(useDefault)}
-            onChange={(event) => setUseDefault(event.target.value === 'true')}>
-            <FormControlLabel
-              disabled
-              value="true"
-              control={<Radio color="primary" />}
-              label={localization.webhooksPayload.useDefault}
-            />
-            <FormControlLabel
-              disabled
-              value="false"
-              control={<Radio color="primary" />}
-              label={localization.webhooksPayload.customize}
-            />
-          </RadioGroup>
-          <TextareaAutosize
-            className={classes.textArea}
-            disabled
-            aria-label="minimum height"
-            rowsMin={10}
-            cols={70}
-            value={value}
-          />
+          </Typography>
+          <Typography variant="body1" gutterBottom={true}>
+            {String(useDefault) ? localization.webhooksPayload.defaultPayload : localization.webhooksPayload.customize}
+          </Typography>
+          <Paper elevation={0} className={widgetClasses.container}>
+            {value || ''}
+          </Paper>
         </>
       )
   }

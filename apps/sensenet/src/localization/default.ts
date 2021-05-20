@@ -626,6 +626,7 @@ const values = {
     exampleDescription:
       'Custom payload can be any valid JSON value. If you want to use the default payload, leave the textbox empty.',
     example: 'Example:',
+    defaultPayload: 'Default payload',
   },
 }
 
