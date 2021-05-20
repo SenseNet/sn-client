@@ -95,13 +95,14 @@ export function ShapeRedaction({
     const mutationObserver = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.attributeName === 'style') {
-          updateState({ currentlyResizedElementId: (mutation.target as any).id })
+          updateState({ currentlyResizedElementId: shape.guid })
         }
       })
     })
 
     redactionElement.current && mutationObserver.observe(redactionElement.current, { attributes: true })
-  }, [updateState])
+    return () => mutationObserver.disconnect()
+  }, [shape.guid, updateState])
 
   const onRightClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
@@ -111,7 +112,6 @@ export function ShapeRedaction({
   return (
     <>
       <div
-        id={shape.guid}
         className={classes.root}
         tabIndex={0}
         key={`r-${shape.h}-${shape.w}`}

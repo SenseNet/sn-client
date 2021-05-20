@@ -78,7 +78,6 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
     debounce(() => {
       setResizeToken(Math.random())
     }, 300),
-
     [],
   )
 
@@ -88,10 +87,8 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
 
   useEffect(() => {
     const currentViewport = props.pageContainerRef
-    if (currentViewport) {
-      currentViewport.addEventListener('scroll', onScroll)
-    }
-    return () => currentViewport && currentViewport.removeEventListener('scroll', onScroll)
+    currentViewport?.addEventListener('scroll', onScroll)
+    return () => currentViewport?.removeEventListener('scroll', onScroll)
   }, [onScroll, props.pageContainerRef])
 
   useEffect(() => {

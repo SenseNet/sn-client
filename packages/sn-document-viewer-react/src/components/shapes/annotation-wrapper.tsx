@@ -86,17 +86,17 @@ export const AnnotationWrapper: React.FC<Props> = (props) => {
     const mutationObserver = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.attributeName === 'style') {
-          updateState({ currentlyResizedElementId: (mutation.target as any).id })
+          updateState({ currentlyResizedElementId: props.shape.guid })
         }
       })
     })
 
     annotationElement.current && mutationObserver.observe(annotationElement.current, { attributes: true })
-  }, [updateState])
+    return () => mutationObserver.disconnect()
+  }, [props.shape.guid, updateState])
 
   return (
     <div
-      id={props.shape.guid}
       className={classes.root}
       tabIndex={0}
       draggable={permissions.canEdit}

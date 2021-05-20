@@ -86,13 +86,14 @@ export const ShapeHighlight: React.FC<Props> = (props) => {
     const mutationObserver = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.attributeName === 'style') {
-          updateState({ currentlyResizedElementId: (mutation.target as any).id })
+          updateState({ currentlyResizedElementId: props.shape.guid })
         }
       })
     })
 
     highlightElement.current && mutationObserver.observe(highlightElement.current, { attributes: true })
-  }, [updateState])
+    return () => mutationObserver.disconnect()
+  }, [props.shape.guid, updateState])
 
   const onRightClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
@@ -102,7 +103,6 @@ export const ShapeHighlight: React.FC<Props> = (props) => {
   return (
     <>
       <div
-        id={props.shape.guid}
         className={classes.root}
         tabIndex={0}
         draggable={permissions.canEdit}

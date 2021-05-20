@@ -79,18 +79,16 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
               zoomRatio,
       }
 
-      if (Math.abs(newSize.w - shape.w) > 0 || Math.abs(newSize.h - shape.h) > 0) {
-        props.updateShapeData(
-          shapeType,
-          shape.guid,
-          {
-            ...(shape as any),
-            w: newSize.w,
-            h: newSize.h,
-          },
-          true,
-        )
-      }
+      props.updateShapeData(
+        shapeType,
+        shape.guid,
+        {
+          ...(shape as any),
+          w: newSize.w,
+          h: newSize.h,
+        },
+        true,
+      )
     }
   }
 
