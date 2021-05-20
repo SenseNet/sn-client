@@ -94,7 +94,7 @@ export const HamburgerMenu: React.FunctionComponent<HamburgerMenuProps> = (props
                 href={
                   props.appName
                     ? `https://github.com/SenseNet/sn-client/tree/master/examples/${props.appName}`
-                    : 'https://github.com/SenseNet/sn-client/tree/master/examples/sn-react-tasklist'
+                    : 'https://github.com/SenseNet/sn-client/tree/master/examples'
                 }
                 target="_blank">
                 <MenuItem className={classes.menuItem}>View source on github</MenuItem>
