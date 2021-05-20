@@ -167,7 +167,7 @@ const values = {
     used: (current: string | number, limit: string | number) => `${current} of ${limit} used`,
     yourProject: 'Your project',
     getStarted: 'Get started with your new project.',
-    learnMore: 'Learn more about Sensenet',
+    learnMore: 'Learn more about sensenet',
     learnBasics: 'Learn the basics',
     learnBasicsDescription: 'Get step-by-step guides and learn what you can achieve only working on the admin-ui.',
     beExpert: 'Be a content management expert',

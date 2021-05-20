@@ -43,7 +43,7 @@ export const LearnMoreWidget: React.FunctionComponent = () => {
 
   return (
     <div className={widgetClasses.root}>
-      <Typography variant="h2" title="Learn more about Sensenet" gutterBottom={true} className={widgetClasses.title}>
+      <Typography variant="h2" title="Learn more about sensenet" gutterBottom={true} className={widgetClasses.title}>
         {localization.learnMore}
       </Typography>
       <Grid
