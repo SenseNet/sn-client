@@ -1,6 +1,6 @@
 import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
-const expedtedSearchItems = ['Sample workspace', 'Sample link', 'Sample memo', 'Sample task', 'Sample event']
+const expedtedSearchItems = ['Sample workspace']
 
 describe('Saved queries', () => {
   before(() => {
