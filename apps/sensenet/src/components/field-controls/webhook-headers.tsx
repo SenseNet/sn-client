@@ -95,7 +95,7 @@ export const WebhookHeaders: React.FC<ReactClientFieldSetting<LongTextFieldSetti
               autoComplete="off"
               name={`${props.settings.Name}-value`}
               id={`${props.settings.Name}-value`}
-              placeholder={localization.webhooksHeader.valuPlaceHolder}
+              placeholder={localization.webhooksHeader.valuePlaceHolder}
               value={actualValue}
               fullWidth={false}
               onChange={(event) => setActualValue(event.target.value)}
