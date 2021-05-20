@@ -38,7 +38,7 @@ export const App: React.FunctionComponent = () => {
         title="To Do App"
         classes={headerStyle}
         hamburgerMenuClasses={hamburgerMenuStyle}
-        name="sn-react-tasklist"
+        appName="sn-react-tasklist"
       />
       <Toolbar />
       <Container

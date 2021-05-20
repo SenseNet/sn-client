@@ -56,7 +56,7 @@ export const App: FunctionComponent = () => {
         title="Image gallery"
         classes={headerStyle}
         hamburgerMenuClasses={hamburgerMenuStyle}
-        name="sn-react-imagegallery"
+        appName="sn-react-imagegallery"
       />
       <Container maxWidth="md">
         <ImageList />
