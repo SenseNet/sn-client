@@ -102,9 +102,7 @@ const MainPanel: React.FunctionComponent = () => {
             'EventUrl',
             'OwnerEmail',
           ] as any,
-          query: new Query((q) =>
-            q.greaterThan('StartDate', '2019-01-01').and.lessThan('StartDate', '2019.12.31'),
-          ).toString(),
+          query: new Query((q) => q.typeIs('CalendarEvent')).toString(),
           orderby: [['StartDate', 'asc']],
           expand: ['CreatedBy', 'ModifiedBy'],
         },
@@ -127,7 +125,7 @@ const MainPanel: React.FunctionComponent = () => {
               <ListItem className={classes.nopadding}>
                 <ListItemAvatar className={classes.dayAvatar}>
                   <div>
-                    <span className={classes.dayname}>{format(new Date(element.date), 'ddd')}</span>
+                    <span className={classes.dayname}>{format(new Date(element.date), 'eee')}</span>
                     <span className={classes.daynumber}>{format(new Date(element.date), 'd')}</span>
                   </div>
                 </ListItemAvatar>
