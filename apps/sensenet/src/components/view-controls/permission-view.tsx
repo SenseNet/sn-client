@@ -21,12 +21,12 @@ import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import GroupOutlined from '@material-ui/icons/GroupOutlined'
 import clsx from 'clsx'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router'
-import { PATHS, resolvePathParams } from '../../application-paths'
+import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { navigateToAction, pathWithQueryParams } from '../../services'
+import { getUrlForContent, navigateToAction } from '../../services'
 import { useDialog } from '../dialogs'
 import { useViewControlStyles } from './common/styles'
 
@@ -98,6 +98,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
   const localization = useLocalization()
   const history = useHistory()
   const logger = useLogger('PermissionEditor')
+  const uiSettings = useContext(ResponsivePersonalSettings)
   const { openDialog } = useDialog()
   const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
   const [permissions, setPermissions] = useState<AclResponseModel>()
@@ -299,13 +300,16 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                             component="button"
                             onClick={async (event: React.MouseEvent<HTMLElement>) => {
                               event.stopPropagation()
+                              const response = await repo.load({
+                                idOrPath: inheritedEntry.ancestor!,
+                                oDataOptions: { select: 'all' },
+                              })
                               history.push(
-                                pathWithQueryParams({
-                                  path: resolvePathParams({
-                                    path: PATHS.content.appPath,
-                                    params: { browseType: 'explorer', action: 'setpermissions' },
-                                  }),
-                                  newParams: { content: inheritedEntry.ancestor?.replace('/Root/Content', '') },
+                                getUrlForContent({
+                                  content: response.d,
+                                  uiSettings,
+                                  location: history.location,
+                                  action: 'setpermissions',
                                 }),
                               )
                             }}
