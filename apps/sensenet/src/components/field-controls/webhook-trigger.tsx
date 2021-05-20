@@ -36,7 +36,7 @@ import {
   Tooltip,
 } from '@material-ui/core'
 import { red } from '@material-ui/core/colors'
-import { Close } from '@material-ui/icons'
+import { Close, Info } from '@material-ui/icons'
 import React, { useEffect, useState } from 'react'
 import { globals, widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
@@ -96,6 +96,14 @@ const useStyles = makeStyles((theme: Theme) => {
     errorMessage: {
       color: theme.palette.error.light,
       padding: '20px 0',
+    },
+    webhookTriggerTableHeader: {
+      display: 'flex',
+      alignItems: 'center',
+      flexWrap: 'nowrap',
+    },
+    infoIcon: {
+      marginLeft: '2px',
     },
   })
 })
@@ -401,7 +409,12 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
                       <TableCell align="center">{localization.webhooksTrigger.all}</TableCell>
                       {webhookEvents.map((event) => (
                         <Tooltip key={event.name} title={event.tooltip} placement="bottom">
-                          <TableCell align="center">{event.name}</TableCell>
+                          <TableCell align="center">
+                            <div className={classes.webhookTriggerTableHeader}>
+                              {event.name}
+                              <Info className={classes.infoIcon} fontSize="small" color="disabled" />
+                            </div>
+                          </TableCell>
                         </Tooltip>
                       ))}
                       <TableCell align="center" className={classes.fixColumn} style={{ right: 0 }} />
