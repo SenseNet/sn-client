@@ -65,7 +65,6 @@ exports[`ShapesSkeleton component should render without crashing 1`] = `
       <div
         className="makeStyles-root-1 makeStyles-root-3"
         draggable={false}
-        id="9a324f30-1423-11e9-bcb9-d719ddfb5f43"
         key="r-100-200"
         onContextMenu={[Function]}
         onDragStart={[Function]}
