@@ -123,8 +123,8 @@ export class Trace {
     object: object,
     methodName: string,
   ): MethodMapping<TReturns, TArgs> {
-    const objectTrace = (this.objectTraces.get(object) as any) as ObjectTrace
-    return (objectTrace.methodMappings.get(methodName) as any) as MethodMapping<TReturns, TArgs>
+    const objectTrace = this.objectTraces.get(object)!
+    return objectTrace.methodMappings.get(methodName) as MethodMapping<TReturns, TArgs>
   }
 
   private static traceStart<TReturns, TArgs extends any[]>(
@@ -219,7 +219,7 @@ export class Trace {
       Object.defineProperty(overriddenMethod, 'isTraced', { value: options.methodName })
       ;(options.object as any)[options.methodName] = overriddenMethod
     }
-    const objectTrace = (this.objectTraces.get(options.object) as any) as ObjectTrace
+    const objectTrace = this.objectTraces.get(options.object) as any as ObjectTrace
 
     // add method mapping if needed
     if (!objectTrace.methodMappings.has(options.methodName)) {
@@ -230,7 +230,7 @@ export class Trace {
         errorObservable: new ObservableValue<TraceMethodError<TArgs>>(),
       } as any)
     }
-    const methodTrace = (objectTrace.methodMappings.get(options.methodName) as any) as MethodMapping<
+    const methodTrace = objectTrace.methodMappings.get(options.methodName) as any as MethodMapping<
       ReturnType<TMethod>,
       TArgs
     >
