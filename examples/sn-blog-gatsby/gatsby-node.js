@@ -6,8 +6,6 @@ const { createRemoteFileNode } = require('gatsby-source-filesystem')
 const BLOGPOST_NODE_TYPE = 'sensenetBlogPost'
 
 exports.onPreInit = () => {
-  spawn.sync('yarnpkg', ['build'], { cwd: '../../', stdio: 'inherit' })
-  spawn.sync('yarnpkg', ['build:cjs'], { cwd: '../../', stdio: 'inherit' })
   spawn.sync('gatsby', ['clean'], { stdio: 'inherit' })
 }
 
