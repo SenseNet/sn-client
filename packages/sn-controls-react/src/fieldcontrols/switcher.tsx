@@ -154,11 +154,6 @@ export const Switcher: React.FC<ReactClientFieldSetting<FieldSetting>> = (props)
             item
             style={{
               paddingRight: '30px',
-              textAlign:
-                props.repository?.schemas.isContentFromType(props.content, 'User') ||
-                props.repository?.schemas.isContentFromType(props.content, 'WebHookSubscription')
-                  ? 'center'
-                  : 'left',
             }}>
             {props.settings.DisplayName}
           </Grid>
