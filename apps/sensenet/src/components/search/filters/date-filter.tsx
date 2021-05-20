@@ -88,23 +88,25 @@ export const DateFilter = () => {
   const searchState = useSearch()
   const localization = useLocalization().search.filters.date
 
-  const handleCustomRangePick = (filter: any) => ({ from, to }: { from: Date; to: Date }) => {
-    const newFilter = { ...filter }
+  const handleCustomRangePick =
+    (filter: any) =>
+    ({ from, to }: { from: Date; to: Date }) => {
+      const newFilter = { ...filter }
 
-    if (from && to) {
-      newFilter.query.from = from.toISOString()
-      newFilter.query.to = to.toISOString()
+      if (from && to) {
+        newFilter.query.from = from.toISOString()
+        newFilter.query.to = to.toISOString()
 
-      searchState.setFilters((filters) => ({ ...filters, date: newFilter }))
-    } else if (!from && !to) {
-      searchState.setFilters((filters) => ({ ...filters, date: defaultDateFilter }))
-    } else {
-      newFilter.query.value = from.toISOString()
-      searchState.setFilters((filters) => ({ ...filters, date: newFilter }))
+        searchState.setFilters((filters) => ({ ...filters, date: newFilter }))
+      } else if (!from && !to) {
+        searchState.setFilters((filters) => ({ ...filters, date: defaultDateFilter }))
+      } else {
+        newFilter.query.value = from.toISOString()
+        searchState.setFilters((filters) => ({ ...filters, date: newFilter }))
+      }
+
+      closeLastDialog()
     }
-
-    closeLastDialog()
-  }
 
   return (
     <>

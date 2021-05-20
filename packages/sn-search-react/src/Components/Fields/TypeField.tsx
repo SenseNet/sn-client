@@ -21,7 +21,6 @@ export interface TypeFieldProps extends SelectProps {
 export interface TypeFieldState {
   selected: string[]
   schemas: Schema[]
-  name: string
   query?: Query<any>
   getMenuItem: (schema: Schema, isSelected: boolean) => JSX.Element
 }
@@ -34,7 +33,6 @@ export class TypeField extends Component<TypeFieldProps, TypeFieldState> {
    * State object for the Type Field filter component
    */
   public state: TypeFieldState = {
-    name: '',
     selected: this.props.selectedTypes || [],
     schemas: [],
     getMenuItem: (schema, isSelected) => (
@@ -63,8 +61,8 @@ export class TypeField extends Component<TypeFieldProps, TypeFieldState> {
     }
   }
 
-  private handleChange(ev: ChangeEvent<HTMLSelectElement>) {
-    const values = (ev.target.value as any) as string[]
+  private handleChange(ev: ChangeEvent<{ name?: string; value: unknown }>) {
+    const values = ev.target.value as string[]
     const selected = this.props.types.filter((typeName) => values.indexOf(typeName) > -1)
     const query = new Query((q) => {
       selected.forEach((contentType, currentIndex) => {
@@ -78,7 +76,6 @@ export class TypeField extends Component<TypeFieldProps, TypeFieldState> {
     })
     this.props.onQueryChange(query)
     this.setState({
-      name: ev.target.value,
       selected,
       query,
     })
