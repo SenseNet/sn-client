@@ -268,6 +268,44 @@ const values: DeepPartial<typeof import('./default').default> = {
   multiPartProgressLine: {
     available: 'Elérhető',
   },
+  webhooksTrigger: {
+    pickAContainer: 'Válasszon szülő mappát',
+    startTyping: 'Kezdjen el gépelni másik típus megadásához',
+    errorMessageOnLoad: 'Hiba történt a szülő tartalom betöltése közben',
+    noTypeSelected: 'Nincs kiválasztva típus',
+    createTooltip: 'Új tartalom jött létre',
+    modifyTooltip: 'Egy tartalom frissült',
+    moveToTrashTooltip: 'Egy tartalmat a kukába töröltek',
+    restoreFromTrashTooltip: 'Egy tartalmat visszaállítottak a kukából',
+    deleteTooltip: 'Egy tartalom véglegesen törlésre került',
+    checkoutTooltip: 'Egy tartalmat lokkoltak (a verziószám ehhez hasonló lesz: 1.0.L )',
+    draftTooltip: 'Új draft verzió keletkezett (a verziószám ehhez hasonló lesz: 1.2.D )',
+    approveTooltip: 'Egy tartalmat jóváhagytak vagy publikáltak (a verziószám ehhez hasonló lesz: 3.0.A )',
+    pendingTooltip: 'Egy tartalom jóváhagyásra váró állapotba került (a verziószám ehhez hasonló lesz: 2.0.P )',
+    rejectTooltip: 'Egy tartalom vissza lett utasítva (a verziószám ehhez hasonló lesz: 1.0.R )',
+    selectSpecificEvents: 'Válasszon kiváltó eseményt/eseményeket',
+    triggerForAll: 'Minden esemény váltsa ki',
+    triggerRadioGroup: 'Trigger Radio Group',
+    all: 'Mind',
+    noHits: 'Nincs találat',
+  },
+  webhooksHeader: {
+    key: 'Válasszon szülő mappát',
+    startTyping: 'Kezdjen el gépelni másik típus megadásához',
+    errorMessageOnLoad: 'Hiba történt a szülő tartalom betöltése közben',
+    headers: 'Headers',
+    keyPlaceHolder: 'Headerhez tartozó kulcs',
+    valuePlaceHolder: 'Header értéke',
+  },
+  webhooksPayload: {
+    useDefault: 'Használja az alapértelmezett payload-ot',
+    customize: 'Webhook payload testreszabása',
+    noValue: 'Nincs beállított érték',
+    payload: 'Payload',
+    exampleDescription:
+      'Saját payload bármilyen valid JSON lehet. Ha az alapértelmezett payload-ot szeretné használni, hagyja üresen ezt a mezőt.',
+    example: 'Példa:',
+  },
 }
 
 export default values
