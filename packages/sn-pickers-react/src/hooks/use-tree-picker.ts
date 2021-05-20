@@ -101,9 +101,10 @@ export const useTreePicker = <T extends GenericContentWithIsParent = GenericCont
     })()
   }, [repository, reloadToken, parentId, roots, options.itemsODataOptions, options.parentODataOptions, path])
 
-  const navigateTo = useCallback((node: T) => dispatch(setParentIdAndPath(node, items?.find((c) => c.isParent) as T)), [
-    items,
-  ])
+  const navigateTo = useCallback(
+    (node: T) => dispatch(setParentIdAndPath(node, items?.find((c) => c.isParent) as T)),
+    [items],
+  )
 
   return { items, navigateTo, path, isLoading, error, reload }
 }
