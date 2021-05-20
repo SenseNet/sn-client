@@ -247,7 +247,7 @@ class VersionsDialog extends Component<
                             <TableCell padding="checkbox" className={classes.versionTableCell}>
                               {version.VersionModificationDate &&
                                 formatDistanceToNow(new Date(version.VersionModificationDate), { addSuffix: true })}
-                              {` (${(version.VersionModifiedBy as any as User).FullName})`}
+                              {` (${(version.VersionModifiedBy as User).FullName})`}
                             </TableCell>
                             <TableCell padding="checkbox" className={classes.versionTableCell}>
                               <Tooltip
@@ -327,7 +327,7 @@ class VersionsDialog extends Component<
                                       formatDistanceToNow(new Date(version.VersionModificationDate), {
                                         addSuffix: true,
                                       })}
-                                    {`(${(version.VersionModifiedBy as any as User).FullName})`}
+                                    {`(${(version.VersionModifiedBy as User).FullName})`}
                                   </span>
                                 }
                               />

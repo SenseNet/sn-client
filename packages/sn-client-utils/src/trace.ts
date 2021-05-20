@@ -123,8 +123,8 @@ export class Trace {
     object: object,
     methodName: string,
   ): MethodMapping<TReturns, TArgs> {
-    const objectTrace = this.objectTraces.get(object) as any as ObjectTrace
-    return objectTrace.methodMappings.get(methodName) as any as MethodMapping<TReturns, TArgs>
+    const objectTrace = this.objectTraces.get(object)!
+    return objectTrace.methodMappings.get(methodName) as MethodMapping<TReturns, TArgs>
   }
 
   private static traceStart<TReturns, TArgs extends any[]>(

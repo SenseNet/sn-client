@@ -241,7 +241,7 @@ export class Upload {
       fileEntry.file(
         async (f) => {
           await this.file({
-            file: f as any as File,
+            file: f,
             ...options,
             parentPath: contentPath,
           })

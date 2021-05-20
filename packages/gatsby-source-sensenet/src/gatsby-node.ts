@@ -22,7 +22,7 @@ export const sourceNodes: GatsbyNode['sourceNodes'] = async (
 
   try {
     const params = ODataUrlBuilder.buildUrlParamString(defaultRepositoryConfiguration, options.oDataOptions)
-    console.log(
+    console.info(
       'REQUEST SENT TO SENENET:',
       `${options.host}/${defaultRepositoryConfiguration.oDataToken}${path}?${params}`,
     )

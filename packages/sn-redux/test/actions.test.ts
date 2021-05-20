@@ -1003,7 +1003,7 @@ describe('Actions', () => {
 
     describe('serviceChecks()', () => {
       describe('Given repository.getActions() resolves', () => {
-        let data: { d: { Actions: ActionModel[] } }
+        let data: { d: { results: ActionModel[] } }
         const expectedResult = { d: [] }
         beforeEach(async () => {
           data = await Actions.loadContentActions(path).payload(repo)
@@ -1540,7 +1540,7 @@ describe('Actions', () => {
         beforeEach(async () => {
           data = await Actions.uploadRequest(
             'Root/Example',
-            { size: 65535000, slice: (..._args: any[]) => '' } as any as File,
+            { size: 65535000, slice: (..._args: any[]) => '' } as unknown as File,
             'Binary',
           ).payload(repo)
         })
@@ -1548,7 +1548,7 @@ describe('Actions', () => {
           expect(
             Actions.uploadRequest(
               '/Root/Example',
-              { size: 65535000, slice: (..._args: any[]) => '' } as any as File,
+              { size: 65535000, slice: (..._args: any[]) => '' } as unknown as File,
               'File',
             ),
           ).toHaveProperty('type', 'UPLOAD_CONTENT')

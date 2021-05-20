@@ -28,7 +28,7 @@ export const createTreeNode = async (
   try {
     if ((options.level && options.level > 0) || !options.level) {
       const params = ODataUrlBuilder.buildUrlParamString(defaultRepositoryConfiguration, options.oDataOptions)
-      console.log(
+      console.info(
         'REQUEST SENT TO SENENET:',
         `${options.host}/${defaultRepositoryConfiguration.oDataToken}${content.Path}?${params}`,
       )

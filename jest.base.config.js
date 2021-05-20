@@ -1,6 +1,5 @@
 module.exports = {
   coveragePathIgnorePatterns: ['index.ts', 'examples'],
-  testEnvironment: 'jest-environment-jsdom-sixteen',
   setupFiles: ['<rootDir>/../../jest/global-setup.js'],
   moduleNameMapper: {
     '^@sensenet/list-controls-react(/src/ContentList)?(.*)$':

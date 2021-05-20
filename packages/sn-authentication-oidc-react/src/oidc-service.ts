@@ -10,10 +10,8 @@ const isRequireSignin = (oidcUser: User | null, isForce: boolean) => isForce || 
 export const authenticateUser =
   (userManager: UserManager, location: Location, history: History, user: User | null = null) =>
   async (isForce = false, callbackPath: string | null = null) => {
-    let oidcUser = user
-    if (!oidcUser) {
-      oidcUser = await userManager.getUser()
-    }
+    const oidcUser = user !== null ? user : await userManager.getUser()
+
     if (userRequested) {
       return
     }
