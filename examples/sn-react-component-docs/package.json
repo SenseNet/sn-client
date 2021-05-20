@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "sn-react-component-docs",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "UI components for building apps upon sensenet implemented in React",
   "main": "index.js",
   "scripts": {
@@ -31,14 +31,14 @@
     "@sensenet/client-core": "^3.10.0",
     "@sensenet/client-utils": "^2.1.0",
     "@sensenet/control-mapper": "^3.1.0",
-    "@sensenet/controls-react": "^7.1.0",
+    "@sensenet/controls-react": "^7.1.1",
     "@sensenet/default-content-types": "^4.1.0",
-    "@sensenet/document-viewer-react": "^4.1.0",
+    "@sensenet/document-viewer-react": "^4.1.1",
     "@sensenet/icons-react": "^2.1.0",
     "@sensenet/list-controls-react": "^2.1.0",
     "@sensenet/pickers-react": "^2.1.0",
     "@sensenet/query": "^2.1.0",
-    "@sensenet/search-react": "^2.1.0",
+    "@sensenet/search-react": "^2.1.1",
     "@sensenet/universal-header-react": "^0.1.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0"
