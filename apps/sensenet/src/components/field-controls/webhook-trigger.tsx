@@ -512,6 +512,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
+          <Typography gutterBottom={true}>{value?.Path}</Typography>
           {value?.TriggersForAllEvents ? (
             <Typography variant="body1" gutterBottom={true}>
               {localization.webhooksTrigger.triggerForAll}
