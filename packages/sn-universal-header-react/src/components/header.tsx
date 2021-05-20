@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => {
 type UniversalHeaderClassKey = Partial<ReturnType<typeof useStyles>>
 
 interface UniversalHeaderProps {
-  name: string
+  appName: string
   title: string
   renderThreeDotMenuItems?: React.ReactNode
   classes?: UniversalHeaderClassKey
@@ -44,7 +44,7 @@ export const UniversalHeader: React.FunctionComponent<UniversalHeaderProps> = (p
     <AppBar position="sticky" className={classes.appBar}>
       <Toolbar className={classes.toolBar}>
         <div className={classes.hamburgerAndTitleContainer}>
-          <HamburgerMenu classes={props.hamburgerMenuClasses} appName={props.name} />
+          <HamburgerMenu classes={props.hamburgerMenuClasses} appName={props.appName} />
           <div>{props.title}</div>
         </div>
         {props.renderThreeDotMenuItems && (
