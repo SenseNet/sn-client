@@ -117,6 +117,8 @@ export type WebhookEventType =
   | 'Create'
   | 'Modify'
   | 'Delete'
+  | 'MoveToTrash'
+  | 'RestoreFromTrash'
   | 'Checkout'
   | 'Draft'
   | 'Approve'
@@ -157,6 +159,8 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
     { name: 'Create', tooltip: localization.webhooksTrigger.createTooltip },
     { name: 'Modify', tooltip: localization.webhooksTrigger.modifyTooltip },
     { name: 'Delete', tooltip: localization.webhooksTrigger.deleteTooltip },
+    { name: 'MoveToTrash', tooltip: localization.webhooksTrigger.moveToTrashTooltip },
+    { name: 'RestoreFromTrash', tooltip: localization.webhooksTrigger.restoreFromTrashTooltip },
     {
       name: 'Checkout',
       tooltip: localization.webhooksTrigger.checkoutTooltip,
