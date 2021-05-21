@@ -89,6 +89,7 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
         },
         true,
       )
+      return newSize
     }
   }
 

@@ -7,7 +7,12 @@ import { useLocalization, useViewerState } from '../../hooks'
 type Props = {
   shape: Highlight
   onDragStart: (ev: React.DragEvent<HTMLElement>) => void
-  onResized: (clientRect?: DOMRect) => void
+  onResized: (
+    clientRect?: DOMRect,
+  ) => {
+    w: number
+    h: number
+  }
   permissions: {
     canEdit: boolean
     canHideRedaction: boolean
@@ -81,7 +86,11 @@ export function ShapeRedaction({
     const handleGlobalMouseUp = () => {
       if (viewerState.currentlyResizedElementId === shape.guid) {
         updateState({ currentlyResizedElementId: undefined })
-        onResized(redactionElement.current?.getClientRects()[0])
+        const newSize = onResized(redactionElement.current?.getClientRects()[0])
+        if (redactionElement.current) {
+          redactionElement.current.style.width = `${newSize.w * zoomRatio}px`
+          redactionElement.current.style.height = `${newSize.h * zoomRatio}px`
+        }
       }
     }
 
@@ -89,7 +98,7 @@ export function ShapeRedaction({
     return () => {
       document.removeEventListener('mouseup', handleGlobalMouseUp)
     }
-  }, [onResized, shape.guid, updateState, viewerState.currentlyResizedElementId])
+  }, [onResized, shape.guid, updateState, viewerState.currentlyResizedElementId, zoomRatio])
 
   useEffect(() => {
     const mutationObserver = new MutationObserver((mutations) => {
@@ -122,8 +131,8 @@ export function ShapeRedaction({
         style={{
           top: dimensions.top,
           left: dimensions.left,
-          width: dimensions.width,
-          height: dimensions.height,
+          width: `${dimensions.width}px`,
+          height: `${dimensions.height}px`,
         }}
       />
       <Popper id={id} open={open} anchorEl={anchorEl} placement="right-start">

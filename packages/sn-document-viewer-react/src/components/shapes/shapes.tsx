@@ -238,10 +238,10 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
       <>
         {permissions.canHideRedaction &&
           viewerState.showRedaction &&
-          visibleShapes.redactions.map((redaction, index) => {
+          visibleShapes.redactions.map((redaction) => {
             return (
               <ShapeSkeleton
-                key={index}
+                key={redaction.guid}
                 shape={redaction}
                 shapeType="redactions"
                 zoomRatio={zoomRatio}
@@ -254,10 +254,10 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
           })}
 
         {viewerState.showShapes &&
-          visibleShapes.annotations.map((annotation, index) => {
+          visibleShapes.annotations.map((annotation) => {
             return (
               <ShapeSkeleton
-                key={index}
+                key={annotation.guid}
                 shape={annotation}
                 shapeType="annotations"
                 zoomRatio={zoomRatio}
@@ -270,10 +270,10 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
           })}
 
         {viewerState.showShapes &&
-          visibleShapes.highlights.map((highlight, index) => {
+          visibleShapes.highlights.map((highlight) => {
             return (
               <ShapeSkeleton
-                key={index}
+                key={highlight.guid}
                 shape={highlight}
                 shapeType="highlights"
                 zoomRatio={zoomRatio}

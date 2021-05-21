@@ -13,7 +13,12 @@ type Props = {
     height: string | number | (string & {}) | undefined
   }
   onDragStart: (ev: React.DragEvent<HTMLElement>) => void
-  onResized: (clientRect?: DOMRect) => void
+  onResized: (
+    clientRect?: DOMRect,
+  ) => {
+    w: number
+    h: number
+  }
   onRightClick: (ev: React.MouseEvent<HTMLElement>) => void
   rotationDegree: number
 }
@@ -72,7 +77,11 @@ export const AnnotationWrapper: React.FC<Props> = (props) => {
     const handleGlobalMouseUp = () => {
       if (viewerState.currentlyResizedElementId === props.shape.guid) {
         updateState({ currentlyResizedElementId: undefined })
-        props.onResized(annotationElement.current?.getClientRects()[0])
+        const newSize = props.onResized(annotationElement.current?.getClientRects()[0])
+        if (annotationElement.current) {
+          annotationElement.current.style.width = `${newSize.w * props.zoomRatio}px`
+          annotationElement.current.style.height = `${newSize.h * props.zoomRatio}px`
+        }
       }
     }
 
@@ -105,8 +114,8 @@ export const AnnotationWrapper: React.FC<Props> = (props) => {
       style={{
         top: props.dimensions.top,
         left: props.dimensions.left,
-        width: props.dimensions.width,
-        height: props.dimensions.height,
+        width: `${props.dimensions.width}px`,
+        height: `${props.dimensions.height}px`,
       }}
       ref={annotationElement}>
       {props.children}

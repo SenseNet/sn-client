@@ -9,7 +9,12 @@ import { useDocumentPermissions, useViewerState } from '../../hooks'
 type Props = {
   shape: Highlight
   onDragStart: (ev: React.DragEvent<HTMLElement>) => void
-  onResized: (clientRect?: DOMRect) => void
+  onResized: (
+    clientRect?: DOMRect,
+  ) => {
+    w: number
+    h: number
+  }
   dimensions: {
     top: string | number | (string & {}) | undefined
     left: string | number | (string & {}) | undefined
@@ -72,7 +77,11 @@ export const ShapeHighlight: React.FC<Props> = (props) => {
     const handleGlobalMouseUp = () => {
       if (viewerState.currentlyResizedElementId === props.shape.guid) {
         updateState({ currentlyResizedElementId: undefined })
-        props.onResized(highlightElement.current?.getClientRects()[0])
+        const newSize = props.onResized(highlightElement.current?.getClientRects()[0])
+        if (highlightElement.current) {
+          highlightElement.current.style.width = `${newSize.w * props.zoomRatio}px`
+          highlightElement.current.style.height = `${newSize.h * props.zoomRatio}px`
+        }
       }
     }
 
@@ -112,8 +121,8 @@ export const ShapeHighlight: React.FC<Props> = (props) => {
         style={{
           top: props.dimensions.top,
           left: props.dimensions.left,
-          width: props.dimensions.width,
-          height: props.dimensions.height,
+          width: `${props.dimensions.width}px`,
+          height: `${props.dimensions.height}px`,
         }}
       />
       <Popper id={id} open={open} anchorEl={anchorEl} placement="right-start">
