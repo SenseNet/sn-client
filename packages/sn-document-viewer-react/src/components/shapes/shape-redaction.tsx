@@ -9,10 +9,12 @@ type Props = {
   onDragStart: (ev: React.DragEvent<HTMLElement>) => void
   onResized: (
     clientRect?: DOMRect,
-  ) => {
-    w: number
-    h: number
-  }
+  ) =>
+    | undefined
+    | {
+        w: number
+        h: number
+      }
   permissions: {
     canEdit: boolean
     canHideRedaction: boolean
@@ -87,7 +89,7 @@ export function ShapeRedaction({
       if (viewerState.currentlyResizedElementId === shape.guid) {
         updateState({ currentlyResizedElementId: undefined })
         const newSize = onResized(redactionElement.current?.getClientRects()[0])
-        if (redactionElement.current) {
+        if (redactionElement.current && newSize) {
           redactionElement.current.style.width = `${newSize.w * zoomRatio}px`
           redactionElement.current.style.height = `${newSize.h * zoomRatio}px`
         }

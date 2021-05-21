@@ -63,7 +63,7 @@ export interface ShapeAnnotationProps {
   shape: Annotation
   zoomRatio: number
   onDragStart: (ev: React.DragEvent<HTMLElement>) => void
-  onResized: (clientRect?: DOMRect) => void
+  onResized: (clientRect?: DOMRect) => undefined | { w: number; h: number }
   getShapeDimensions: (shape: Annotation) => React.CSSProperties
   updateShapeData: (shapeType: keyof Shapes, guid: string, shape: Annotation) => void
   removeShape: (shapeType: keyof Shapes, guid: string) => void

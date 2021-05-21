@@ -91,6 +91,7 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
       )
       return newSize
     }
+    return undefined
   }
 
   /** onDragStart event handler for the Shape instance */
@@ -148,7 +149,13 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
           shape={props.shape as Annotation}
           zoomRatio={props.zoomRatio}
           onDragStart={(ev) => props.rotationDegree === 0 && onDragStart(ev)}
-          onResized={(ev) => props.rotationDegree === 0 && onResized(ev)}
+          onResized={(ev) => {
+            if (props.rotationDegree === 0) {
+              return onResized(ev)
+            } else {
+              return undefined
+            }
+          }}
           getShapeDimensions={getShapeDimensions}
           updateShapeData={props.updateShapeData}
           removeShape={props.removeShape}
@@ -160,7 +167,13 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
           removeShape={props.removeShape}
           shape={props.shape}
           onDragStart={(ev) => props.rotationDegree === 0 && onDragStart(ev)}
-          onResized={(ev) => props.rotationDegree === 0 && onResized(ev)}
+          onResized={(ev) => {
+            if (props.rotationDegree === 0) {
+              return onResized(ev)
+            } else {
+              return undefined
+            }
+          }}
           permissions={permissions}
           dimensions={getShapeDimensions(props.shape) as any}
           rotationDegree={props.rotationDegree}
@@ -171,7 +184,13 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
           removeShape={props.removeShape}
           shape={props.shape}
           onDragStart={(ev) => props.rotationDegree === 0 && onDragStart(ev)}
-          onResized={(ev) => props.rotationDegree === 0 && onResized(ev)}
+          onResized={(ev) => {
+            if (props.rotationDegree === 0) {
+              return onResized(ev)
+            } else {
+              return undefined
+            }
+          }}
           dimensions={getShapeDimensions(props.shape) as any}
           rotationDegree={props.rotationDegree}
         />

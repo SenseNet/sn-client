@@ -15,10 +15,12 @@ type Props = {
   onDragStart: (ev: React.DragEvent<HTMLElement>) => void
   onResized: (
     clientRect?: DOMRect,
-  ) => {
-    w: number
-    h: number
-  }
+  ) =>
+    | undefined
+    | {
+        w: number
+        h: number
+      }
   onRightClick: (ev: React.MouseEvent<HTMLElement>) => void
   rotationDegree: number
 }
@@ -78,7 +80,7 @@ export const AnnotationWrapper: React.FC<Props> = (props) => {
       if (viewerState.currentlyResizedElementId === props.shape.guid) {
         updateState({ currentlyResizedElementId: undefined })
         const newSize = props.onResized(annotationElement.current?.getClientRects()[0])
-        if (annotationElement.current) {
+        if (annotationElement.current && newSize) {
           annotationElement.current.style.width = `${newSize.w * props.zoomRatio}px`
           annotationElement.current.style.height = `${newSize.h * props.zoomRatio}px`
         }

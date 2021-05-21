@@ -11,10 +11,12 @@ type Props = {
   onDragStart: (ev: React.DragEvent<HTMLElement>) => void
   onResized: (
     clientRect?: DOMRect,
-  ) => {
-    w: number
-    h: number
-  }
+  ) =>
+    | {
+        w: number
+        h: number
+      }
+    | undefined
   dimensions: {
     top: string | number | (string & {}) | undefined
     left: string | number | (string & {}) | undefined
@@ -78,7 +80,8 @@ export const ShapeHighlight: React.FC<Props> = (props) => {
       if (viewerState.currentlyResizedElementId === props.shape.guid) {
         updateState({ currentlyResizedElementId: undefined })
         const newSize = props.onResized(highlightElement.current?.getClientRects()[0])
-        if (highlightElement.current) {
+        console.log('NEWSIZE:', newSize)
+        if (highlightElement.current && newSize) {
           highlightElement.current.style.width = `${newSize.w * props.zoomRatio}px`
           highlightElement.current.style.height = `${newSize.h * props.zoomRatio}px`
         }
@@ -95,6 +98,7 @@ export const ShapeHighlight: React.FC<Props> = (props) => {
     const mutationObserver = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.attributeName === 'style') {
+          console.log('MUTATION:', mutation)
           updateState({ currentlyResizedElementId: props.shape.guid })
         }
       })
