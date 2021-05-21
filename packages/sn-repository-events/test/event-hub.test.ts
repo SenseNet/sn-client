@@ -610,7 +610,7 @@ export const eventHubTests = describe('EventHub', () => {
         binaryPropertyName: 'Binary',
         overwrite: true,
         parentPath: 'Root/Example',
-        file: ({ size: 1, name: 'LICENSE', slice: jest.fn() } as unknown) as File,
+        file: { size: 1, name: 'LICENSE', slice: jest.fn() } as unknown as File,
         contentTypeName: 'File',
       })
     })
@@ -620,7 +620,7 @@ export const eventHubTests = describe('EventHub', () => {
         binaryPropertyName: 'Binary',
         overwrite: true,
         parentPath: 'Root/Example',
-        file: ({ size: 1, name: 'LICENSE', slice: jest.fn() } as unknown) as File,
+        file: { size: 1, name: 'LICENSE', slice: jest.fn() } as unknown as File,
         contentTypeName: 'File',
       }
       const onUploadFailed = jest.fn()
@@ -661,7 +661,7 @@ export const eventHubTests = describe('EventHub', () => {
         binaryPropertyName: 'Binary',
         overwrite: true,
         parentPath: 'Root/Example',
-        file: ({ size: 1, name: 'LICENSE', slice: jest.fn() } as unknown) as File,
+        file: { size: 1, name: 'LICENSE', slice: jest.fn() } as unknown as File,
         contentTypeName: 'File',
       })
     })
@@ -671,7 +671,7 @@ export const eventHubTests = describe('EventHub', () => {
         binaryPropertyName: 'Binary',
         overwrite: true,
         parentPath: 'Root/Example',
-        file: ({ size: 1, name: 'LICENSE', slice: jest.fn() } as unknown) as File,
+        file: { size: 1, name: 'LICENSE', slice: jest.fn() } as unknown as File,
         contentTypeName: 'File',
       }
       const onUploadFailed = jest.fn()

@@ -18,6 +18,7 @@ exports[`App Layout Matches snapshot 1`] = `
 >
   <WithStyles(CssBaseline) />
   <UniversalHeader
+    appName="sn-react-imagegallery"
     classes={
       Object {
         "appBar": "makeStyles-appBar-1",
