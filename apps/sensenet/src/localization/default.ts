@@ -174,9 +174,9 @@ const values = {
     beExpertDescription: 'Master the concept of sensenet with its special terms and abstractions.',
     buildApp: 'Build your first app',
     buildAppDescription: 'Let us help you to begin your sensenet journey!',
-    viewUserGuides: 'View User Guides',
-    viewConceptDocs: 'View Concept Docs',
-    viewDevManual: 'View the Developer manual',
+    viewUserGuides: 'User Guides',
+    viewConceptDocs: 'Concept Docs',
+    viewDevManual: 'API Docs',
   },
   trash: {
     title: 'Trash',
