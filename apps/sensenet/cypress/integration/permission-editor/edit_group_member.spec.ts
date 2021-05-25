@@ -38,7 +38,7 @@ describe('Editing group member in permission editor', () => {
       .each(($el) => {
         expect(expectedMembersAfterAdditon).to.include($el.children().eq(0).children().eq(1).text())
       })
-    cy.get(`[data-test="business-cat-delete"]`).click()
+    cy.get(`[data-test="reference-item-remove-business-cat"]`).click()
   })
 
   it('contains the appropriate values', () => {

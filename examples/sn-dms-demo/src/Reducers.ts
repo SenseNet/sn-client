@@ -83,10 +83,10 @@ export const open: Reducer<boolean> = (state = false, action: AnyAction) => {
 export const actions: Reducer<ActionModel[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
     case 'LOAD_CONTENT_ACTIONS_SUCCESS': {
-      const result: { d: { results: ActionModel[] } } = (action.result as Actions.PromiseReturns<
+      const result: { d: { results: ActionModel[] } } = action.result as Actions.PromiseReturns<
         typeof Actions.loadContentActions
-      >) as any
-      return result && result.d.results ? result.d.results : []
+      >
+      return result?.d.results ? result.d.results : []
     }
     case 'OPEN_ACTIONMENU':
       return action.actions || []

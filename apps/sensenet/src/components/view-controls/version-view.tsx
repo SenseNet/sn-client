@@ -110,7 +110,7 @@ export const VersionView: React.FC<VersionViewProps> = (props) => {
                 <TableCell>
                   {version.VersionModificationDate &&
                     dateUtils.formatDistanceFromNow(new Date(version.VersionModificationDate))}
-                  {` (${((version.VersionModifiedBy as any) as User).FullName})`}
+                  {` (${(version.VersionModifiedBy as User).FullName})`}
                 </TableCell>
                 <TableCell>
                   <Tooltip disableFocusListener={true} title={version.CheckInComments ?? ''}>
