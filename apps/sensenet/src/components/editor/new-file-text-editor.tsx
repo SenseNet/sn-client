@@ -29,10 +29,10 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
   const logger = useLogger('TextEditor')
   const [error, setError] = useState<Error | undefined>()
   const { loadContent } = props
-  const contentDisplayName = useMemo(() => repo.schemas.getSchemaByName(props.contentType).DisplayName, [
-    props.contentType,
-    repo.schemas,
-  ])
+  const contentDisplayName = useMemo(
+    () => repo.schemas.getSchemaByName(props.contentType).DisplayName,
+    [props.contentType, repo.schemas],
+  )
 
   const saveContent = async () => {
     const fileName = props.getFileNameFromText?.(textValue) ?? props.fileName

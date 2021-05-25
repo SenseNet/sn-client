@@ -44,7 +44,7 @@
     "react-dom": ">=16.8.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.13.9",
+    "@babel/runtime": "^7.14.0",
     "@sensenet/client-core": "^3.10.0",
     "@sensenet/client-utils": "^2.1.0",
     "@sensenet/default-content-types": "^4.1.0",
@@ -81,6 +81,7 @@
     "enzyme-adapter-react-16": "^1.15.6",
     "enzyme-to-json": "^3.6.2",
     "file-loader": "^6.1.1",
+    "html-webpack-plugin": "^5.3.1",
     "jest": "^26.6.1",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.2.10",
