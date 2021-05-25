@@ -2,6 +2,7 @@
 const path = require('path')
 const spawn = require('cross-spawn')
 const { createRemoteFileNode } = require('gatsby-source-filesystem')
+const { repositoryUrl } = require('./configuration')
 
 const BLOGPOST_NODE_TYPE = 'sensenetBlogPost'
 
@@ -20,7 +21,7 @@ exports.onCreateNode = async ({ node, actions: { createNode, createNodeField }, 
 
     //create node for LeadImage field
     const leadImageNode = await createRemoteFileNode({
-      url: `https://netcore-service.test.sensenet.com${node.LeadImage.Path}`,
+      url: `${repositoryUrl}${node.LeadImage.Path}`,
       parentNodeId: node.Id.toString(),
       createNode,
       createNodeId,
