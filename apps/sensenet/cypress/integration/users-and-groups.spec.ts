@@ -4,11 +4,10 @@ describe('Users menu', () => {
   beforeEach(() => {
     cy.login()
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
+    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
   })
 
   it('ensures that users list has the appropriate data', () => {
-    cy.get('[data-test="drawer-menu-item-users-and-groups"]').as('UsersAndGroupsIcon')
-    cy.get('@UsersAndGroupsIcon').click()
     cy.get('.ReactVirtualized__Table>.ReactVirtualized__Table__headerRow>.ReactVirtualized__Table__headerColumn').as(
       'ColumnHeaders',
     )
@@ -27,9 +26,6 @@ describe('Users menu', () => {
   })
 
   it('ensures that right click on a user opens context-menu', () => {
-    cy.get('[data-test="drawer-menu-item-users-and-groups"]').as('UsersAndGroupsIcon')
-    cy.get('@UsersAndGroupsIcon').click()
-
     // Checks for users
     cy.get('.ReactVirtualized__Table .ReactVirtualized__Table__Grid .ReactVirtualized__Table__row').as('UserRows')
 
@@ -48,9 +44,6 @@ describe('Users menu', () => {
   })
 
   it('ensures that double click on a user opens an edit form of the content', () => {
-    cy.get('[data-test="drawer-menu-item-users-and-groups"]').as('UsersAndGroupsIcon')
-    cy.get('@UsersAndGroupsIcon').click()
-
     // Checks for users
     cy.get('.ReactVirtualized__Table .ReactVirtualized__Table__Grid .ReactVirtualized__Table__row').as('UserRows')
 
@@ -70,8 +63,6 @@ describe('Users menu', () => {
       method: 'GET',
       url: 'odata.svc/Root/Trash?*',
     }).as('getTrashChildren')
-
-    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
 
     cy.get('[data-test="table-cell-developer-dog"]')
       .rightclick()
@@ -97,8 +88,6 @@ describe('Users menu', () => {
       password: 'devdog',
     }
 
-    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
-
     cy.get('[data-test="add-button"]').should('not.be.disabled').click()
 
     cy.get('[data-test="listitem-user"]')
@@ -122,8 +111,6 @@ describe('Users menu', () => {
   })
 
   it('ensures that we can enable a user by clicking on its status checkbox in the User list', () => {
-    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
-
     cy.get(`[data-test="switcher-${'Developer Dog'.replace(/\s+/g, '-').toLowerCase()}`).as('StatusSwitcher')
     cy.get('@StatusSwitcher').click()
     cy.get('@StatusSwitcher').find('.MuiSwitch-input').first().should('be.checked')
