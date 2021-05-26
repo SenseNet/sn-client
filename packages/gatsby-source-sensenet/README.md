@@ -28,6 +28,7 @@ module.exports = {
         path: '<RELATIVE PATH TO YOUR CONTENTS>',
         oDataOptions: '<ODATA OPTIONS>'
         accessToken: '<ACCESS TOKEN FOR AUTHENTICATION>'
+        level: '<NUMBER OF LEVELS TO READ CONTENTS>'
       },
     },
   ],
@@ -72,6 +73,11 @@ Query options are query string parameters a client may specify to control the am
 | [$inlinecount](https://docs.sensenet.com/api-docs/basic-concepts/02-collection#inlinecountqueryoption) | controls the `__count` property that can be found in every collection response                                                                                                       |
 | [query](https://docs.sensenet.com/api-docs/basic-concepts/05-search-filter#queryoption)                | filter the result collection using sensenet Content Query                                                                                                                            |
 | [metadata](https://docs.sensenet.com/api-docs/basic-concepts/06-metadata)                              | controls the metadata content in output entities                                                                                                                                     |
+
+**`level`** [number][optional]
+
+The value of the level option is either a positive integer to specify the number of levels to read contents in the tree.
+If it is not specified then the plugin will read till a child content is exists.
 
 **`accessToken`** [string | Function][required]
 
