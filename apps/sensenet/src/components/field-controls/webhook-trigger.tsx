@@ -37,7 +37,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import { red } from '@material-ui/core/colors'
-import { Check, Close } from '@material-ui/icons'
+import { Close, Info } from '@material-ui/icons'
 import React, { useEffect, useState } from 'react'
 import { globals, widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
@@ -98,6 +98,14 @@ const useStyles = makeStyles((theme: Theme) => {
       color: theme.palette.error.light,
       padding: '20px 0',
     },
+    webhookTriggerTableHeader: {
+      display: 'flex',
+      alignItems: 'center',
+      flexWrap: 'nowrap',
+    },
+    infoIcon: {
+      marginLeft: '2px',
+    },
   })
 })
 
@@ -118,6 +126,8 @@ export type WebhookEventType =
   | 'Create'
   | 'Modify'
   | 'Delete'
+  | 'MoveToTrash'
+  | 'RestoreFromTrash'
   | 'Checkout'
   | 'Draft'
   | 'Approve'
@@ -158,6 +168,8 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
     { name: 'Create', tooltip: localization.webhooksTrigger.createTooltip },
     { name: 'Modify', tooltip: localization.webhooksTrigger.modifyTooltip },
     { name: 'Delete', tooltip: localization.webhooksTrigger.deleteTooltip },
+    { name: 'MoveToTrash', tooltip: localization.webhooksTrigger.moveToTrashTooltip },
+    { name: 'RestoreFromTrash', tooltip: localization.webhooksTrigger.restoreFromTrashTooltip },
     {
       name: 'Checkout',
       tooltip: localization.webhooksTrigger.checkoutTooltip,
@@ -398,7 +410,12 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
                       <TableCell align="center">{localization.webhooksTrigger.all}</TableCell>
                       {webhookEvents.map((event) => (
                         <Tooltip key={event.name} title={event.tooltip} placement="bottom">
-                          <TableCell align="center">{event.name}</TableCell>
+                          <TableCell align="center">
+                            <div className={classes.webhookTriggerTableHeader}>
+                              {event.name}
+                              <Info className={classes.infoIcon} fontSize="small" color="disabled" />
+                            </div>
+                          </TableCell>
                         </Tooltip>
                       ))}
                       <TableCell align="center" className={classes.fixColumn} style={{ right: 0 }} />

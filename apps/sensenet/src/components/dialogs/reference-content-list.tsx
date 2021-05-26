@@ -36,7 +36,11 @@ export function ReferenceContentList(props: ReferenceContentListProps) {
     <>
       <DialogTitle>
         {props.parent.DisplayName}
-        <IconButton aria-label="close" className={classes.closeButton} onClick={closeLastDialog}>
+        <IconButton
+          aria-label="close"
+          className={classes.closeButton}
+          onClick={closeLastDialog}
+          data-test="reference-content-list-dialog-close">
           <CloseIcon />
         </IconButton>
       </DialogTitle>

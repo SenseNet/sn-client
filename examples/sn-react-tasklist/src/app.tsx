@@ -34,7 +34,12 @@ export const App: React.FunctionComponent = () => {
   return (
     <React.Fragment>
       <CssBaseline />
-      <UniversalHeader title="To Do App" classes={headerStyle} hamburgerMenuClasses={hamburgerMenuStyle} />
+      <UniversalHeader
+        title="To Do App"
+        classes={headerStyle}
+        hamburgerMenuClasses={hamburgerMenuStyle}
+        appName="sn-react-tasklist"
+      />
       <Toolbar />
       <Container
         maxWidth="lg"

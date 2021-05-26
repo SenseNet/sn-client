@@ -52,7 +52,7 @@ const IndexLayout: React.FC = ({ children }) => {
                 { name: 'keywords', content: data.site.siteMetadata.keywords },
               ]}
             />
-            <UniversalHeader title="Gatsby example" classes={headerStyle} />
+            <UniversalHeader title="Gatsby example" classes={headerStyle} appName="sn-blog-gatsby" />
             <LayoutMain>{children}</LayoutMain>
           </LayoutRoot>
         </>

@@ -52,7 +52,12 @@ export const App: FunctionComponent = () => {
         backgroundSize: 'auto',
       }}>
       <CssBaseline />
-      <UniversalHeader title="Image gallery" classes={headerStyle} hamburgerMenuClasses={hamburgerMenuStyle} />
+      <UniversalHeader
+        title="Image gallery"
+        classes={headerStyle}
+        hamburgerMenuClasses={hamburgerMenuStyle}
+        appName="sn-react-imagegallery"
+      />
       <Container maxWidth="md">
         <ImageList />
       </Container>
