@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const fetch = require('node-fetch')
 const { codeLogin } = require('@sensenet/authentication-oidc-react')
-const { configuration } = require('./configuration')
+const { configuration, repositoryUrl } = require('./configuration')
 
 module.exports = {
   siteMetadata: {
@@ -48,7 +48,7 @@ module.exports = {
     {
       resolve: `gatsby-source-sensenet`,
       options: {
-        host: 'https://dev.demo.sensenet.com',
+        host: repositoryUrl,
         path: '/Root/Content/SampleWorkspace/Blog',
         oDataOptions: {
           select: 'all',
