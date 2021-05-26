@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/document-viewer-react",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "exports": {
@@ -42,12 +42,12 @@
     "react-dom": ">=16.8.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.13.9",
+    "@babel/runtime": "^7.14.0",
     "@material-ui/icons": "^4.11.2",
     "@sensenet/client-core": "^3.10.0",
     "@sensenet/client-utils": "^2.1.0",
     "@sensenet/default-content-types": "^4.1.0",
-    "@sensenet/hooks-react": "^1.5.0",
+    "@sensenet/hooks-react": "^1.6.0",
     "semaphore-async-await": "^1.5.1",
     "tslib": "^2.2.0",
     "uuid": "^8.3.2"
