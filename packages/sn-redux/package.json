@@ -50,7 +50,7 @@
     "@sensenet/client-utils": "^2.1.0",
     "@sensenet/default-content-types": "^4.1.0",
     "@sensenet/redux-promise-middleware": "^2.3.0",
-    "redux": "^4.0.4",
+    "redux": "^4.1.0",
     "redux-logger": "^3.0.6",
     "tslib": "^2.2.0"
   },

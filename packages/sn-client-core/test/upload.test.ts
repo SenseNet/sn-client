@@ -120,7 +120,7 @@ describe('Upload', () => {
         binaryPropertyName: 'Binary',
         overwrite: true,
         parentPath: 'Root/Example',
-        file: ({ size: 65535000, slice: () => '' } as any) as File,
+        file: { size: 65535000, slice: () => '' } as unknown as File,
         contentTypeName: 'File',
         progressObservable: new ObservableValue<UploadProgressInfo>(),
       })
@@ -133,7 +133,7 @@ describe('Upload', () => {
         .file({
           binaryPropertyName: 'Binary',
           overwrite: true,
-          file: ({ size: 65535000, slice: () => '' } as any) as File,
+          file: { size: 65535000, slice: () => '' } as unknown as File,
           parentPath: 'Root/Example',
           contentTypeName: 'File',
           progressObservable: new ObservableValue<UploadProgressInfo>(),
@@ -162,7 +162,7 @@ describe('Upload', () => {
         .file({
           binaryPropertyName: 'Binary',
           overwrite: true,
-          file: ({ size: 65535000, slice: () => '' } as any) as File,
+          file: { size: 65535000, slice: () => '' } as unknown as File,
           parentPath: 'Root/Example',
           contentTypeName: 'File',
           progressObservable: new ObservableValue<UploadProgressInfo>(),
@@ -419,7 +419,7 @@ describe('Upload', () => {
       })
 
       repo.upload.fromFileList({
-        fileList: ([file, file2, file3] as any) as FileList,
+        fileList: [file, file2, file3] as unknown as FileList,
         parentPath: 'Root/Example',
         createFolders: true,
         binaryPropertyName: 'Binary',
@@ -445,7 +445,7 @@ describe('Upload', () => {
       })
 
       repo.upload.fromFileList({
-        fileList: ([file, file2, file3] as any) as FileList,
+        fileList: [file, file2, file3] as unknown as FileList,
         parentPath: 'Root/Example',
         createFolders: false,
         binaryPropertyName: 'Binary',
