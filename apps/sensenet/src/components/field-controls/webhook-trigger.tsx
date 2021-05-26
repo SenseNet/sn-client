@@ -37,7 +37,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import { red } from '@material-ui/core/colors'
-import { Close, Info } from '@material-ui/icons'
+import { Check, Close, Info } from '@material-ui/icons'
 import React, { useEffect, useState } from 'react'
 import { globals, widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
