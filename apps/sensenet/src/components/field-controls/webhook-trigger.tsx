@@ -34,9 +34,10 @@ import {
   TextField,
   Theme,
   Tooltip,
+  Typography,
 } from '@material-ui/core'
 import { red } from '@material-ui/core/colors'
-import { Close } from '@material-ui/icons'
+import { Check, Close } from '@material-ui/icons'
 import React, { useEffect, useState } from 'react'
 import { globals, widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
@@ -508,85 +509,67 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
     default:
       return (
         <>
-          <div className={classes.containerSelector}>
-            <TextField
-              className={classes.containerSelectorInput}
-              autoFocus={props.autoFocus}
-              autoComplete="off"
-              name={props.settings.Name}
-              id={props.settings.Name}
-              label={props.settings.DisplayName}
-              placeholder={props.settings.DisplayName}
-              value={value?.Path}
-              fullWidth={true}
-              disabled={true}
-            />
-          </div>
-          <FormControl component="fieldset">
-            <RadioGroup
-              aria-label="TriggersForAllEvents"
-              name="TriggersForAllEvents"
-              value={value ? String(value.TriggersForAllEvents) : undefined}>
-              <FormControlLabel
-                value="true"
-                control={<Radio disabled={true} color="primary" />}
-                label="Trigger for all events"
-              />
-              <FormControlLabel
-                value="false"
-                control={<Radio disabled={true} color="primary" />}
-                label="Select specific trigger events"
-              />
-            </RadioGroup>
-          </FormControl>
-          <div className={widgetClasses.root}>
-            <Paper elevation={0} className={widgetClasses.container}>
-              <TableContainer>
-                <Table size="small" aria-label="stats-components">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align="center" />
-                      <TableCell align="center">All</TableCell>
-                      {webhookEvents.map((event) => (
-                        <TableCell key={event.name} align="center">
-                          {event.name}
-                        </TableCell>
-                      ))}
-                      <TableCell align="center" />
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {typesSelected.map((row) => (
-                      <TableRow key={row}>
-                        <TableCell align="center">{row}</TableCell>
-                        <TableCell align="center">
-                          <Checkbox
-                            disabled={true}
-                            color="primary"
-                            checked={value?.ContentTypes?.find((type) => type.Name === row)?.Events.includes('All')}
-                          />
-                        </TableCell>
-                        {webhookEvents.map((eventItem) => (
-                          <TableCell key={eventItem.name} align="center">
-                            <Checkbox
-                              disabled={true}
-                              color="primary"
-                              checked={
-                                value?.ContentTypes?.find((type) => type.Name === row)?.Events.includes(
-                                  eventItem.name as WebhookEventType,
-                                ) || value?.ContentTypes?.find((type) => type.Name === row)?.Events.includes('All')
-                              }
-                            />
-                          </TableCell>
+          <Typography variant="caption" gutterBottom={true}>
+            {props.settings.DisplayName}
+          </Typography>
+          <Typography gutterBottom={true}>{value?.Path}</Typography>
+          {value?.TriggersForAllEvents ? (
+            <Typography variant="body1" gutterBottom={true}>
+              {localization.webhooksTrigger.triggerForAll}
+            </Typography>
+          ) : (
+            <div className={widgetClasses.root}>
+              <Paper elevation={0} className={widgetClasses.container}>
+                <TableContainer>
+                  <Table size="small" aria-label="Stats components">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="center" className={classes.fixColumn} />
+                        <TableCell align="center">{localization.webhooksTrigger.all}</TableCell>
+                        {webhookEvents.map((event) => (
+                          <Tooltip key={event.name} title={event.tooltip} placement="bottom">
+                            <TableCell align="center">{event.name}</TableCell>
+                          </Tooltip>
                         ))}
-                        <TableCell align="center" />
+                        <TableCell align="center" className={classes.fixColumn} style={{ right: 0 }} />
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Paper>
-          </div>
+                    </TableHead>
+                    <TableBody>
+                      {typesSelected.length > 0 ? (
+                        typesSelected.map((row) => {
+                          const actualEvent = value?.ContentTypes?.find((type) => type.Name === row)
+                          return (
+                            <TableRow key={row}>
+                              <TableCell align="center" className={classes.fixColumn}>
+                                {row}
+                              </TableCell>
+                              <TableCell align="center">
+                                {actualEvent?.Events.includes('All') ? <Check color="primary" /> : null}
+                              </TableCell>
+                              {webhookEvents.map((eventItem) => (
+                                <TableCell key={eventItem.name} align="center">
+                                  {actualEvent?.Events.includes(eventItem.name as WebhookEventType) ||
+                                  actualEvent?.Events.includes('All') ? (
+                                    <Check color="primary" />
+                                  ) : null}
+                                </TableCell>
+                              ))}
+                            </TableRow>
+                          )
+                        })
+                      ) : (
+                        <TableRow>
+                          <TableCell colSpan={webhookEvents.length + 3} align="center">
+                            <div className={classes.errorMessage}>{localization.webhooksTrigger.noTypeSelected}</div>
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Paper>
+            </div>
+          )}
         </>
       )
   }
