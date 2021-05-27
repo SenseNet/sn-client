@@ -74,10 +74,10 @@ export const Page: React.FC<PageProps> = (props) => {
   const [scrollOffsetY, setScrollOffsetY] = useState<number>(0)
   const { documentData, updateDocumentData } = useDocumentData()
 
-  const imageRatio = useMemo(() => props.page.Height / (page.image?.Height || 1), [
-    props.page.Height,
-    page.image?.Height,
-  ])
+  const imageRatio = useMemo(
+    () => props.page.Height / (page.image?.Height || 1),
+    [props.page.Height, page.image?.Height],
+  )
 
   const isActive = page.image && viewerState.activePage === page.image.Index
 

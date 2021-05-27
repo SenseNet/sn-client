@@ -13,9 +13,7 @@ type Props = {
     height: string | number | (string & {}) | undefined
   }
   onDragStart: (ev: React.DragEvent<HTMLElement>) => void
-  onResized: (
-    clientRect?: DOMRect,
-  ) =>
+  onResized: (clientRect?: DOMRect) =>
     | undefined
     | {
         w: number

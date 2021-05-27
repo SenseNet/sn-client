@@ -9,9 +9,7 @@ import { useDocumentPermissions, useViewerState } from '../../hooks'
 type Props = {
   shape: Highlight
   onDragStart: (ev: React.DragEvent<HTMLElement>) => void
-  onResized: (
-    clientRect?: DOMRect,
-  ) =>
+  onResized: (clientRect?: DOMRect) =>
     | {
         w: number
         h: number
