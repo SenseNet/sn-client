@@ -73,6 +73,7 @@ export class CustomActionCommandProvider implements CommandProvider {
             .replace('{0}', content.DisplayName || content.Name)
             .replace('{1}', a.DisplayName || a.Name),
           secondaryText: localization.executeSecondaryText.replace('{0}', content.Name).replace('{1}', a.Name),
+          parameters: a.ActionParameters,
           content,
           hits: [filteredTerm],
           url: '',

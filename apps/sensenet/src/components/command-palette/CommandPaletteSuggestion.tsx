@@ -11,14 +11,25 @@ import { globals } from '../../globalStyles'
 import { Icon } from '../Icon'
 import { CommandPaletteItem } from './CommandPalette'
 
-export const getMatchParts = (hits: string[], term: string) => {
+export const getMatchParts = (hits: string[], term: string, actionParams?: string[]) => {
   const matchValueArr = match(term, hits.join(' '))
 
   const parseValue = parse(term, matchValueArr as Array<[number, number]>)
 
-  return parseValue.map((part, index) =>
+  const matchParts = parseValue.map((part, index) =>
     part.highlight ? <strong key={String(index)}>{part.text}</strong> : <span key={String(index)}>{part.text}</span>,
   )
+
+  if (actionParams && actionParams.length > 0) {
+    matchParts.push(
+      <span key="params" style={{ color: '#67707d' }}>
+        {' '}
+        ({actionParams.join(', ')})
+      </span>,
+    )
+  }
+
+  return matchParts
 }
 
 export const CommandPaletteSuggestion: FunctionComponent<{
@@ -48,7 +59,7 @@ export const CommandPaletteSuggestion: FunctionComponent<{
           </ListItemIcon>
         ) : null}
         <ListItemText
-          primary={getMatchParts(suggestion.hits, suggestion.primaryText)}
+          primary={getMatchParts(suggestion.hits, suggestion.primaryText, suggestion.parameters)}
           secondary={suggestion.secondaryText && getMatchParts(suggestion.hits, suggestion.secondaryText)}
           secondaryTypographyProps={{
             style: {
