@@ -33,23 +33,24 @@ const useStyles = makeStyles(() => {
 
 export interface PostNode {
   node: {
-    excerpt: string
-    frontmatter: {
-      title: string
-      image: string
-      redirect_to: string
-      tags: string
-      author: string
-      date: Date
-    }
+    DisplayName: string
+    Keywords: string
+    Author: string
+    PublishDate: Date
+    leadImage: any
     fields: {
       slug: string
+    }
+    markdownLead: {
+      childMdx: {
+        body: any
+      }
     }
   }
 }
 export interface IndexPageProps {
   data: {
-    allMarkdownRemark: {
+    allSensenetBlogPost: {
       edges: PostNode[]
     }
   }
@@ -58,7 +59,6 @@ export interface IndexPageProps {
 const IndexPage: React.FC<IndexPageProps> = (props) => {
   const { data } = props
   const classes = useStyles()
-
   return (
     <IndexLayout>
       <Page>
@@ -67,10 +67,10 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
             News around sensenet
           </Typography>
           <Grid container spacing={4} className={classes.blog}>
-            {data.allMarkdownRemark.edges.map(({ node }, index) => (
+            {data.allSensenetBlogPost.edges.map(({ node }, index) => (
               <Grid item xs={12} sm={6} md={4} className={classes.blogItem} key={index}>
                 <Link to={node.fields.slug} key={index} className={classes.link}>
-                  <BlogCard title={node.frontmatter.title} excerpt={node.excerpt} image={node.frontmatter.image} />
+                  <BlogCard title={node.DisplayName} excerpt={node.markdownLead.childMdx.body} image={node.leadImage} />
                 </Link>
               </Grid>
             ))}
@@ -83,22 +83,29 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
 
 export default IndexPage
 
-export const pageQuery = graphql`
-  query {
-    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
+export const query = graphql`
+  query MyQuery {
+    allSensenetBlogPost {
       edges {
         node {
+          id
+          Name
+          DisplayName
+          Keywords
+          Author
+          PublishDate
+          leadImage {
+            childImageSharp {
+              gatsbyImageData(layout: FIXED)
+            }
+          }
           fields {
             slug
           }
-          excerpt
-          frontmatter {
-            title
-            image
-            redirect_to
-            tags
-            author
-            date
+          markdownLead {
+            childMdx {
+              body
+            }
           }
         }
       }

@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+const fetch = require('node-fetch')
+const { codeLogin } = require('@sensenet/authentication-oidc-react')
+const { configuration, repositoryUrl } = require('./configuration')
+
 module.exports = {
   siteMetadata: {
     title: 'sensenet blog',
@@ -11,13 +16,6 @@ module.exports = {
     },
   },
   plugins: [
-    {
-      resolve: 'gatsby-source-filesystem',
-      options: {
-        name: 'content',
-        path: `${__dirname}/src/content`,
-      },
-    },
     {
       resolve: 'gatsby-transformer-remark',
       options: {
@@ -34,10 +32,34 @@ module.exports = {
         ],
       },
     },
+    {
+      resolve: `gatsby-plugin-mdx`,
+      options: {
+        mediaTypes: [`text/markdown`, `text/x-markdown`],
+      },
+    },
     'gatsby-transformer-json',
     'gatsby-plugin-typescript',
     'gatsby-plugin-sharp',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-material-ui',
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-image`,
+    {
+      resolve: `gatsby-source-sensenet`,
+      options: {
+        host: repositoryUrl,
+        path: '/Root/Content/SampleWorkspace/Blog',
+        oDataOptions: {
+          select: 'all',
+          expand: ['LeadImage'],
+          metadata: 'no',
+        },
+        accessToken: async () => {
+          const authData = await codeLogin({ ...configuration, fetchMethod: fetch })
+          return authData.access_token
+        },
+      },
+    },
   ],
 }

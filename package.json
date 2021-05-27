@@ -39,7 +39,7 @@
     "wait-on": "^5.3.0"
   },
   "scripts": {
-    "postinstall": "husky install",
+    "postinstall": "husky install && yarn build && yarn build:cjs",
     "cy:run:dms": "cypress run --project ./examples/sn-dms-demo",
     "start:dms:e2e": "yarn workspace sn-dms-demo start:e2e",
     "test:dms:e2e": "start-server-and-test start:dms:e2e http-get://localhost:3000 cy:run:dms",
@@ -47,8 +47,8 @@
     "storybook": "yarn workspace sn-react-component-docs",
     "dms": "yarn workspace sn-dms-demo",
     "build:clean": "lerna run --parallel --scope \"@sensenet/*\" clean",
-    "build:esm": "lerna run --parallel --scope \"@sensenet/*\" build:esm",
-    "build:cjs": "lerna run --parallel --scope \"@sensenet/*\" build:cjs",
+    "build:esm": "lerna run --parallel --scope \"@sensenet/*\" build:esm && yarn workspace gatsby-source-sensenet run build",
+    "build:cjs": "lerna run --parallel --scope \"@sensenet/*\" build:cjs && yarn workspace gatsby-source-sensenet run build",
     "build:bundles": "lerna run --parallel --scope \"@sensenet/*\" build:bundles",
     "build:types": "tsc -b packages",
     "build:packages": "npm-run-all -l -p build:types build:esm",

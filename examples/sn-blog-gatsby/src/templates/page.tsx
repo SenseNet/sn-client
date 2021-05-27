@@ -2,6 +2,7 @@ import { Container, createStyles, makeStyles, Link as MaterialLink, Typography }
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
 import { graphql, Link } from 'gatsby'
+import { MDXRenderer } from 'gatsby-plugin-mdx'
 import * as React from 'react'
 import Page from '../components/page'
 import IndexLayout from '../layouts'
@@ -30,11 +31,6 @@ const useStyles = makeStyles(() => {
       marginBottom: '4rem',
       alignSelf: 'center',
     },
-    markdown: {
-      '& img': {
-        maxWidth: '100%',
-      },
-    },
   })
 })
 
@@ -46,14 +42,24 @@ interface PageTemplateProps {
         description: string
       }
     }
-    markdownRemark: {
-      html: string
-      excerpt: string
-      frontmatter: {
-        title: string
-        author: string[]
-        image: string
-        date: string
+    sensenetBlogPost: {
+      Body: string
+      Lead: string
+      DisplayName: string
+      Author: string
+      PublishDate: string
+      fields: {
+        slug: string
+      }
+      markdownBody: {
+        childMdx: {
+          body: any
+        }
+      }
+      markdownLead: {
+        childMdx: {
+          body: any
+        }
       }
     }
   }
@@ -62,6 +68,8 @@ interface PageTemplateProps {
 const PageTemplate: React.FC<PageTemplateProps> = ({ data }) => {
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
+
+  const authors = data.sensenetBlogPost.Author.split(',')
 
   return (
     <IndexLayout>
@@ -72,11 +80,11 @@ const PageTemplate: React.FC<PageTemplateProps> = ({ data }) => {
           </Link>
           <div className={classes.postHeader}>
             <Typography variant="h2" className={classes.title}>
-              {data.markdownRemark.frontmatter.title}
+              {data.sensenetBlogPost.DisplayName}
             </Typography>
             <Typography variant="subtitle1">
-              <span className={classes.date}>{format(parseISO(data.markdownRemark.frontmatter.date), 'PP')}</span>
-              {data.markdownRemark.frontmatter.author.map((author, index) => (
+              <span className={classes.date}>{format(parseISO(data.sensenetBlogPost.PublishDate), 'PP')}</span>
+              {authors.map((author, index) => (
                 <>
                   {index !== 0 && ', '}
                   <MaterialLink
@@ -91,12 +99,8 @@ const PageTemplate: React.FC<PageTemplateProps> = ({ data }) => {
               ))}
             </Typography>
           </div>
-          <img
-            className={classes.image}
-            src={`../../${data.markdownRemark.frontmatter.image}`}
-            alt={data.markdownRemark.frontmatter.title}
-          />
-          <div className={classes.markdown} dangerouslySetInnerHTML={{ __html: data.markdownRemark.html }} />
+
+          <MDXRenderer>{data.sensenetBlogPost.markdownBody.childMdx.body}</MDXRenderer>
         </Container>
       </Page>
     </IndexLayout>
@@ -113,14 +117,24 @@ export const query = graphql`
         description
       }
     }
-    markdownRemark(fields: { slug: { eq: $slug } }) {
-      html
-      excerpt
-      frontmatter {
-        title
-        author
-        image
-        date
+    sensenetBlogPost(fields: { slug: { eq: $slug } }) {
+      Body
+      Lead
+      DisplayName
+      Author
+      PublishDate
+      fields {
+        slug
+      }
+      markdownBody {
+        childMdx {
+          body
+        }
+      }
+      markdownLead {
+        childMdx {
+          body
+        }
       }
     }
   }
