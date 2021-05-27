@@ -535,13 +535,12 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
               <Typography variant="body1" gutterBottom={true}>
                 {localization.webhooksTrigger.triggerForAll}
               </Typography>
-              {value?.ContentTypes?.length > 0 ? (
+              {value?.ContentTypes && value?.ContentTypes?.length > 0 ? (
                 <Typography variant="body1" gutterBottom={true}>
                   {localization.webhooksTrigger.onTypes}
-                  {value?.ContentTypes?.map((type, index) => (
+                  {value?.ContentTypes?.map((type) => (
                     <Typography key="type.Name" variant="body1" display="inline" gutterBottom={true}>
-                      {type.Name}
-                      {index === value.ContentTypes.length - 1 ? '' : ', '}
+                      {`${type.Name} `}
                     </Typography>
                   ))}
                 </Typography>
