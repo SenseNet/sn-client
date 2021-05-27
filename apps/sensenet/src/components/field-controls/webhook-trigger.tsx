@@ -531,9 +531,24 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
           </Typography>
           <Typography gutterBottom={true}>{value?.Path}</Typography>
           {value?.TriggersForAllEvents ? (
-            <Typography variant="body1" gutterBottom={true}>
-              {localization.webhooksTrigger.triggerForAll}
-            </Typography>
+            <>
+              <Typography variant="body1" gutterBottom={true}>
+                {localization.webhooksTrigger.triggerForAll}
+              </Typography>
+              {value?.ContentTypes?.length > 0 ? (
+                <Typography variant="body1" gutterBottom={true}>
+                  {localization.webhooksTrigger.onTypes}
+                  {value?.ContentTypes?.map((type, index) => (
+                    <Typography key="type.Name" variant="body1" display="inline" gutterBottom={true}>
+                      {type.Name}
+                      {index === value.ContentTypes.length - 1 ? '' : ', '}
+                    </Typography>
+                  ))}
+                </Typography>
+              ) : (
+                localization.webhooksTrigger.noTypeSelected
+              )}
+            </>
           ) : (
             <div className={widgetClasses.root}>
               <Paper elevation={0} className={widgetClasses.container}>
