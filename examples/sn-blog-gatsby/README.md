@@ -1,6 +1,6 @@
 # sn-blog-gatsby
 
-This example demonstrate sensenet with Gatsby using senesenet source plugin. It's a good starter for building a blog sourcing from sensenet.
+This example demonstrate sensenet with Gatsby using sensenet source plugin. It's a good starter for building a blog sourcing from sensenet.
 
 ## Quick start
 
@@ -13,7 +13,7 @@ TODO: This will change soon
 - A simple blog built with sensenet
 - Uses typescript
 - Uses gatsby-plugin-material-ui for styling
-- Uses prismjs for code higlighting
+- Uses prismjs for code highlighting
 - Uses date-fns for date formatting
 - Uses gatsby-plugin-mdx to process mdx
 - Uses gatsby-plugin-image for image rendering

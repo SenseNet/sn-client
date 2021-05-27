@@ -82,7 +82,7 @@ If it is not specified then the plugin will read till a child content is exists.
 **`accessToken`** [string | Function][required]
 
 accessToken can be a string or a function as well, it is for authentication purposes.
-If you would like to generate accesstoken programatically you can use _codeLogin_ function from [sn-authentication-oidc-react](https://github.com/SenseNet/sn-client/tree/develop/packages/sn-authentication-oidc-react) package.
+If you would like to generate access token programmatically you can use _codeLogin_ function from [sn-authentication-oidc-react](https://github.com/SenseNet/sn-client/tree/develop/packages/sn-authentication-oidc-react) package.
 
 ```shell
 npm install @sensenet/authentication-oidc-react
@@ -204,7 +204,7 @@ You might query for all of a type of node e.g.: sensenetBlogPost:
     }
 ```
 
-To query for a single blogpost with the name '2021-02-23-how-we-post':
+To query for a single blog post with the name '2021-02-23-how-we-post':
 
 ```graphql
 query MyQuery {
@@ -238,7 +238,7 @@ query MyQuery {
 
 ### Create pages
 
-When building pages from contents you may want to create URL for your blogpost contents. E.g. if you have a content with markdown body at /Root/Content/SampleWorkspace/Blog/2021-02-23-how-we-post, you might want to turn that into a page on your site at example.com/2021-02-23-how-we-post/.
+When building pages from contents you may want to create URL for your blog post contents. E.g. if you have a content with markdown body at /Root/Content/SampleWorkspace/Blog/2021-02-23-how-we-post, you might want to turn that into a page on your site at example.com/2021-02-23-how-we-post/.
 
 This is an example how can you implement:
 
@@ -303,7 +303,7 @@ exports.createPages = async ({ graphql, actions }) => {
 
 ### Image
 
-In sensenet images can be references. In this case the LeadImage field of a Blogpost will be something like this:
+In sensenet images can be references. In this case the LeadImage field of a "BlogPost" will be something like this:
 
 ```json
 "LeadImage": {
@@ -329,7 +329,7 @@ exports.onCreateNode = async ({ node, actions: { createNode }, createNodeId, get
       getCache,
     })
     if (leadImageNode) {
-      node.leadImage___NODE = leadImageNode.id ///connect to blogpost node
+      node.leadImage___NODE = leadImageNode.id ///connect to blog post node
     }
   }
 }
@@ -337,7 +337,7 @@ exports.onCreateNode = async ({ node, actions: { createNode }, createNodeId, get
 
 <note severity="info">The content should be public otherwise you have to provide a httpHeaders: { Authorization: `Bearer <yourAccessToken>` } attribute to createRemoteFileNode function</note>
 
-You can query for leadImage field on all blogpost:
+You can query for leadImage field on all blog post:
 
 ```graphql
 query MyQuery {
@@ -360,7 +360,7 @@ You can use [gatsby-plugin-image](https://www.gatsbyjs.com/plugins/gatsby-plugin
 ### Mdx
 
 If your content contains a filed with mdx format you can process it using [gatsby-plugin-mdx](https://www.gatsbyjs.com/plugins/gatsby-plugin-mdx/).
-First, you need to create node from the mardkdown and save it with the `internal.mediaType ='text/markdown'` .
+First, you need to create node from the markdown and save it with the `internal.mediaType ='text/markdown'`.
 
 ```javascript
 //In your gatsby-node.js
@@ -380,13 +380,13 @@ exports.onCreateNode = async ({ node, actions: { createNode } }) => {
     createNode(bodyMdxNode)
 
     if (bodyMdxNode) {
-      node.markdownBody___NODE = bodyMdxNode.id //connect to blogpost node
+      node.markdownBody___NODE = bodyMdxNode.id //connect to blog post node
     }
   }
 }
 ```
 
-This node is connected to the blogpost, so you can query it like this:
+This node is connected to the blog post, so you can query it like this:
 
 ```graphql
 query MyQuery {
@@ -408,4 +408,4 @@ To render the markdown use `<MDXRenderer><YOUR MARKDOWN BODY></MDXRenderer>`
 
 ## How to contribute
 
-Before you start working on this package please check the [contibution guide](https://github.com/SenseNet/sn-client/blob/develop/CONTRIBUTING.md) first.
+Before you start working on this package please check the [contribution guide](https://github.com/SenseNet/sn-client/blob/develop/CONTRIBUTING.md) first.
