@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) => {
       padding: 20,
       maxWidth: '50%',
     },
-    defaultPayload: {
+    payload: {
       margin: 0,
     },
   })
@@ -123,12 +123,15 @@ export const WebhookPayload: React.FC<ReactClientFieldSetting<LongTextFieldSetti
           <Typography variant="caption" gutterBottom={true}>
             {localization.webhooksPayload.payload}
           </Typography>
-          <Typography variant="body1" gutterBottom={true}>
-            {useDefault ? localization.webhooksPayload.defaultPayload : localization.webhooksPayload.customize}
-          </Typography>
-          <Paper elevation={0} className={widgetClasses.container}>
-            {<pre className={classes.defaultPayload}>{value}</pre> || ''}
-          </Paper>
+          {useDefault ? (
+            <Typography variant="body1" gutterBottom={true}>
+              {localization.webhooksPayload.defaultPayload}
+            </Typography>
+          ) : (
+            <Paper elevation={0} className={widgetClasses.container}>
+              <pre className={classes.payload}>{value}</pre>
+            </Paper>
+          )}
         </>
       )
   }
