@@ -38,11 +38,33 @@ const useStyles = makeStyles((theme: Theme) =>
       left: 0,
       backgroundColor: '#F6F6F6',
       border: '1px solid #E2E2E2',
+      height: `calc(100vh - ${HEADER_HEIGHT})`,
+      boxShadow: '12px 0 12px rgb(0 0 0 / 20%)',
+      width: '281px',
+    },
+    menuList: {
+      padding: '20px 10px',
     },
     menuItem: {
-      textDecoration: 'underline',
-      color: theme.palette.primary.main,
       fontSize: '14px',
+      '&:hover': {
+        color: '#342cac',
+        backgroundColor: 'transparent',
+      },
+    },
+    menuGroup: {
+      padding: '0 20px',
+    },
+    menuItemFix: {
+      color: '#a5a5a5',
+      '&:hover': {
+        backgroundColor: 'transparent',
+      },
+    },
+    link: {
+      '&:hover': {
+        textDecoration: 'none',
+      },
     },
   }),
 )
@@ -89,35 +111,45 @@ export const HamburgerMenu: React.FunctionComponent<HamburgerMenuProps> = (props
       {isPopperOpen ? (
         <Paper className={classes.popperWrapper}>
           <ClickAwayListener onClickAway={handleClose}>
-            <MenuList autoFocusItem={isPopperOpen}>
-              <Link
-                href={
-                  props.appName
-                    ? `https://github.com/SenseNet/sn-client/tree/master/examples/${props.appName}`
-                    : 'https://github.com/SenseNet/sn-client/tree/master/examples'
-                }
-                target="_blank">
-                <MenuItem className={classes.menuItem}>View source on github</MenuItem>
-              </Link>
-              <Link
-                href="https://docs.sensenet.com/tutorials/getting-started/getting-started-with-react"
-                target="_blank">
-                <MenuItem className={classes.menuItem}>Develop your application</MenuItem>
-              </Link>
-              <Link href="https://docs.sensenet.com/" target="_blank">
-                <MenuItem className={classes.menuItem}>sensenet documentation</MenuItem>
-              </Link>
-              <Link href="https://docs.sensenet.com/example-apps" target="_blank">
-                <MenuItem className={classes.menuItem}>More examples</MenuItem>
-              </Link>
-              <Link
-                href="https://is.sensenet.com/Account/Registration?returnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fclient_id%3Dspa%26redirect_uri%3Dhttps%253A%252F%252Fprofile.sensenet.com%252Fauthentication%252Fcallback%26response_type%3Dcode%26scope%3Dopenid%2520profile%2520sensenet%26state%3D10ff2f66ac7f4a4da1436832a10cdc83%26code_challenge%3DU4n_OVI0Q6zg3PRutc_bsOr6txMXZRSSzkwbWCiqnuo%26code_challenge_method%3DS256%26response_mode%3Dquery%26snrepo%3Dhttps%253A%252F%252Fsnover.service.sensenet.com"
-                target="_blank">
-                <MenuItem className={classes.menuItem}>Get your own repo</MenuItem>
-              </Link>
-              <Link href="https://www.sensenet.com/help-center" target="_blank">
-                <MenuItem className={classes.menuItem}>Help center</MenuItem>
-              </Link>
+            <MenuList className={classes.menuList} autoFocusItem={isPopperOpen}>
+              <MenuItem className={classes.menuItemFix}>Live demo</MenuItem>
+
+              <div className={classes.menuGroup}>
+                <Link
+                  className={classes.link}
+                  href={
+                    props.appName
+                      ? `https://github.com/SenseNet/sn-client/tree/master/examples/${props.appName}`
+                      : 'https://github.com/SenseNet/sn-client/tree/master/examples'
+                  }
+                  target="_blank">
+                  <MenuItem className={classes.menuItem}>Connected repository</MenuItem>
+                </Link>
+                <Link className={classes.link} href="https://docs.sensenet.com/example-apps" target="_blank">
+                  <MenuItem className={classes.menuItem}>More examples</MenuItem>
+                </Link>
+                <Link className={classes.link} href="https://profile.sensenet.com/?redirectToLogin" target="_blank">
+                  <MenuItem className={classes.menuItem}>Get your free repo</MenuItem>
+                </Link>
+              </div>
+              <MenuItem className={classes.menuItemFix}>Resources</MenuItem>
+              <div className={classes.menuGroup}>
+                <Link
+                  className={classes.link}
+                  href="https://docs.sensenet.com/tutorials/getting-started"
+                  target="_blank">
+                  <MenuItem className={classes.menuItem}>Develop your application</MenuItem>
+                </Link>
+                <Link className={classes.link} href="https://docs.sensenet.com/" target="_blank">
+                  <MenuItem className={classes.menuItem}>Documentation</MenuItem>
+                </Link>
+                <Link className={classes.link} href="https://github.com/SenseNet" target="_blank">
+                  <MenuItem className={classes.menuItem}>View on GitHub</MenuItem>
+                </Link>
+                <Link className={classes.link} href="https://www.sensenet.com/help-center" target="_blank">
+                  <MenuItem className={classes.menuItem}>Help center</MenuItem>
+                </Link>
+              </div>
             </MenuList>
           </ClickAwayListener>
         </Paper>

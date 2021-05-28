@@ -1,38 +1,77 @@
-import { Container, CssBaseline, Grid } from '@material-ui/core'
+import { HEADER_HEIGHT, UniversalHeader } from '@sensenet/universal-header-react'
+import { Button, Container, createStyles, CssBaseline, Grid, Link, makeStyles } from '@material-ui/core'
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import snLogo from './assets/sensenet_logo_transparent.png'
 import { DocumentEditor } from './components/document-editor'
 import DocviewerComponent from './components/document-viewer'
 import MainPanel from './components/mainpanel'
-import { NavBarComponent } from './components/navbar'
+
+const GOTOREPO_BUTTON_HEIGHT = 44
+const GOTOREPO_BUTTON_MARGIN_Y = 40
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    container: {
+      width: '100%',
+      display: 'flex',
+      height: `calc(100% - ${HEADER_HEIGHT})`,
+      position: 'relative',
+      verticalAlign: 'middle',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      flexDirection: 'column',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      backgroundImage: `url(${snLogo})`,
+      backgroundSize: 'auto',
+    },
+    link: {
+      '&:hover': {
+        textDecoration: 'none',
+      },
+    },
+    button: {
+      backgroundColor: '#7169f4',
+      color: '#FFFFFF',
+      borderRadius: '26px',
+      padding: '10px 20px',
+      margin: `${GOTOREPO_BUTTON_MARGIN_Y}px 0`,
+      height: `${GOTOREPO_BUTTON_HEIGHT}px`,
+      '&:hover': {
+        backgroundColor: '#5e58cc',
+      },
+      textTransform: 'uppercase',
+    },
+    gridContainer: {
+      height: `calc(100% - ${GOTOREPO_BUTTON_HEIGHT + 2 * GOTOREPO_BUTTON_MARGIN_Y}px)`,
+      position: 'relative',
+    },
+    gridItem: {
+      height: '100%',
+    },
+  }),
+)
 
 /**
  * The main entry point of your app. You can start h@cking from here ;)
  */
 export const App: React.FunctionComponent = () => {
+  const classes = useStyles()
+
   return (
     <>
       <CssBaseline />
-      <NavBarComponent />
-      <Container
-        maxWidth="lg"
-        style={{
-          width: '100%',
-          minHeight: '80vh',
-          display: 'flex',
-          marginTop: '10px',
-          verticalAlign: 'middle',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          flexDirection: 'column',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          backgroundImage: `url(${snLogo})`,
-          backgroundSize: 'auto',
-        }}>
-        <Grid container>
-          <Grid item xs={12}>
+      <UniversalHeader title="Document Browser" appName="sn-react-browser" />
+      <Container maxWidth="lg" className={classes.container}>
+        <Link
+          className={classes.link}
+          href="https://admin.sensenet.com/content/explorer/?path=%2FIT%2FDocument_Library"
+          target="_blank">
+          <Button className={classes.button}>Go to connected repository</Button>
+        </Link>
+        <Grid container className={classes.gridContainer}>
+          <Grid item xs={12} className={classes.gridItem}>
             <Switch>
               <Route path="/" exact component={MainPanel} />
               <Route path="/preview/:documentId" component={DocviewerComponent} />
