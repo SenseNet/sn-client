@@ -11,7 +11,7 @@ describe('Add new permission entry', () => {
     cy.get('[data-test="drawer-menu-item-content"]').click()
     cy.get('[data-test="menu-item-it-workspace"]').rightclick()
     cy.get('[data-test="content-context-menu-setpermissions"]').click()
-    cy.get('[data-test="assing-new-permission"]').click()
+    cy.get('[data-test="assign-new-permission"]').click()
     cy.get('[data-test="member-select-dialog"]').should('contain.text', 'New permission entry')
 
     cy.get('[data-test="reference-input"]').type('Developer D')
