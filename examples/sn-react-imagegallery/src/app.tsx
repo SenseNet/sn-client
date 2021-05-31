@@ -1,5 +1,5 @@
 import { UniversalHeader } from '@sensenet/universal-header-react'
-import { Container, CssBaseline, Slide } from '@material-ui/core'
+import { Button, Container, CssBaseline, Link, Slide } from '@material-ui/core'
 import { createStyles, makeStyles } from '@material-ui/core/styles'
 import { TransitionProps } from '@material-ui/core/transitions'
 import React, { forwardRef, FunctionComponent, ReactElement, Ref } from 'react'
@@ -24,6 +24,37 @@ const useHamburgerMenuStyles = makeStyles(() =>
     menuIconActive: {
       color: '#C8FFF4',
     },
+    menuItem: {
+      '&:hover': {
+        color: '#13a5ad',
+      },
+    },
+  }),
+)
+
+export const goToRepoStyles = makeStyles(() =>
+  createStyles({
+    linkContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+    },
+    link: {
+      '&:hover': {
+        textDecoration: 'none',
+      },
+    },
+    button: {
+      backgroundColor: '#7169f4',
+      color: '#FFFFFF',
+      borderRadius: '26px',
+      padding: '10px 20px',
+      margin: '40px 0',
+      height: '44px',
+      '&:hover': {
+        backgroundColor: '#5e58cc',
+      },
+      textTransform: 'uppercase',
+    },
   }),
 )
 
@@ -37,6 +68,7 @@ export const Transition = forwardRef(
 export const App: FunctionComponent = () => {
   const headerStyle = useHeaderStyles()
   const hamburgerMenuStyle = useHamburgerMenuStyles()
+  const goToRepoClasses = goToRepoStyles()
 
   return (
     <div
@@ -59,6 +91,14 @@ export const App: FunctionComponent = () => {
         appName="sn-react-imagegallery"
       />
       <Container maxWidth="md">
+        <div className={goToRepoClasses.linkContainer}>
+          <Link
+            className={goToRepoClasses.link}
+            href="https://admin.sensenet.com/content/explorer/?path=%2FIT%2FImageLibrary"
+            target="_blank">
+            <Button className={goToRepoClasses.button}>Go to connected repository</Button>
+          </Link>
+        </div>
         <ImageList />
       </Container>
     </div>

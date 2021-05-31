@@ -46,6 +46,7 @@
     "@sensenet/icons-react": "^2.1.0",
     "@sensenet/query": "^2.1.0",
     "@sensenet/search-react": "^2.1.1",
+    "@sensenet/universal-header-react": "^0.1.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0"
   },

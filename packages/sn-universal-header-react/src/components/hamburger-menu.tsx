@@ -7,10 +7,13 @@ import {
   MenuItem,
   MenuList,
   Paper,
+  Slide,
   Theme,
 } from '@material-ui/core'
-import { Menu as MenuIcon, MenuOpen as MenuOpenIcon } from '@material-ui/icons'
+import { Close, Menu as MenuIcon } from '@material-ui/icons'
+import clsx from 'clsx'
 import React, { useEffect, useRef, useState } from 'react'
+import { useMediaQueryOverride } from '../hooks/media-query-override'
 import { HEADER_HEIGHT } from '.'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -42,10 +45,18 @@ const useStyles = makeStyles((theme: Theme) =>
       boxShadow: '12px 0 12px rgb(0 0 0 / 20%)',
       width: '281px',
     },
+    popperWrapperMobile: {
+      width: '100%',
+      textAlign: 'center',
+      '& .MuiListItem-root': {
+        justifyContent: 'center',
+      },
+    },
     menuList: {
       padding: '20px 10px',
     },
     menuItem: {
+      color: '#7a7a7a',
       fontSize: '14px',
       '&:hover': {
         color: '#342cac',
@@ -57,9 +68,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     menuItemFix: {
       color: '#a5a5a5',
-      '&:hover': {
-        backgroundColor: 'transparent',
-      },
+      fontSize: '1rem',
+      padding: '6px 16px',
+    },
+    menuItemFixMobile: {
+      textDecoration: 'underline',
     },
     link: {
       '&:hover': {
@@ -78,9 +91,14 @@ interface HamburgerMenuProps {
 
 export const HamburgerMenu: React.FunctionComponent<HamburgerMenuProps> = (props) => {
   const classes = useStyles(props)
+  const isMobile = useMediaQueryOverride()
 
   const anchorRef = useRef<HTMLButtonElement>(null)
   const [isPopperOpen, setIsPopperOpen] = useState(false)
+
+  useEffect(() => {
+    setIsPopperOpen(!isMobile)
+  }, [isMobile])
 
   const handleToggle = () => {
     setIsPopperOpen((prevOpen) => !prevOpen)
@@ -106,14 +124,13 @@ export const HamburgerMenu: React.FunctionComponent<HamburgerMenuProps> = (props
   return (
     <div>
       <IconButton className={classes.iconButton} onClick={handleToggle} ref={anchorRef}>
-        {isPopperOpen ? <MenuOpenIcon className={classes.menuIconActive} /> : <MenuIcon className={classes.menuIcon} />}
+        {isPopperOpen ? <Close className={classes.menuIconActive} /> : <MenuIcon className={classes.menuIcon} />}
       </IconButton>
-      {isPopperOpen ? (
-        <Paper className={classes.popperWrapper}>
+      <Slide direction="right" in={isPopperOpen} mountOnEnter unmountOnExit>
+        <Paper className={clsx(classes.popperWrapper, { [classes.popperWrapperMobile]: isMobile })}>
           <ClickAwayListener onClickAway={handleClose}>
             <MenuList className={classes.menuList} autoFocusItem={isPopperOpen}>
-              <MenuItem className={classes.menuItemFix}>Live demo</MenuItem>
-
+              <div className={clsx(classes.menuItemFix, { [classes.menuItemFixMobile]: isMobile })}>Live demo</div>
               <div className={classes.menuGroup}>
                 <Link
                   className={classes.link}
@@ -132,7 +149,11 @@ export const HamburgerMenu: React.FunctionComponent<HamburgerMenuProps> = (props
                   <MenuItem className={classes.menuItem}>Get your free repo</MenuItem>
                 </Link>
               </div>
-              <MenuItem className={classes.menuItemFix}>Resources</MenuItem>
+              <div
+                className={clsx(classes.menuItemFix, { [classes.menuItemFixMobile]: isMobile })}
+                style={{ paddingTop: '20px' }}>
+                Resources
+              </div>
               <div className={classes.menuGroup}>
                 <Link
                   className={classes.link}
@@ -153,7 +174,7 @@ export const HamburgerMenu: React.FunctionComponent<HamburgerMenuProps> = (props
             </MenuList>
           </ClickAwayListener>
         </Paper>
-      ) : null}
+      </Slide>
     </div>
   )
 }

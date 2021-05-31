@@ -28,6 +28,7 @@ exports[`App Layout Matches snapshot 1`] = `
       Object {
         "menuIcon": "makeStyles-menuIcon-2",
         "menuIconActive": "makeStyles-menuIconActive-3",
+        "menuItem": "makeStyles-menuItem-4",
       }
     }
     title="Image gallery"
@@ -35,6 +36,21 @@ exports[`App Layout Matches snapshot 1`] = `
   <WithStyles(ForwardRef(Container))
     maxWidth="md"
   >
+    <div
+      className="makeStyles-linkContainer-5"
+    >
+      <WithStyles(ForwardRef(Link))
+        className="makeStyles-link-6"
+        href="https://admin.sensenet.com/content/explorer/?path=%2FIT%2FImageLibrary"
+        target="_blank"
+      >
+        <WithStyles(ForwardRef(Button))
+          className="makeStyles-button-7"
+        >
+          Go to connected repository
+        </WithStyles(ForwardRef(Button))>
+      </WithStyles(ForwardRef(Link))>
+    </div>
     <ImageList />
   </WithStyles(ForwardRef(Container))>
 </div>

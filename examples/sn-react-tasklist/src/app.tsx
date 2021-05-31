@@ -1,5 +1,5 @@
 import { UniversalHeader } from '@sensenet/universal-header-react'
-import { Container, createStyles, CssBaseline, Grid, makeStyles, Toolbar } from '@material-ui/core'
+import { Button, Container, createStyles, CssBaseline, Grid, Link, makeStyles } from '@material-ui/core'
 import React from 'react'
 import TodoListPanel from './components/todo-list'
 
@@ -21,6 +21,33 @@ const useHamburgerMenuStyles = makeStyles(() =>
     menuIconActive: {
       color: '#C8FFF4',
     },
+    menuItem: {
+      '&:hover': {
+        color: '#13a5ad',
+      },
+    },
+  }),
+)
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    link: {
+      '&:hover': {
+        textDecoration: 'none',
+      },
+    },
+    button: {
+      backgroundColor: '#7169f4',
+      color: '#FFFFFF',
+      borderRadius: '26px',
+      padding: '10px 20px',
+      margin: '40px 0',
+      height: '44px',
+      '&:hover': {
+        backgroundColor: '#5e58cc',
+      },
+      textTransform: 'uppercase',
+    },
   }),
 )
 
@@ -30,6 +57,7 @@ const useHamburgerMenuStyles = makeStyles(() =>
 export const App: React.FunctionComponent = () => {
   const headerStyle = useHeaderStyles()
   const hamburgerMenuStyle = useHamburgerMenuStyles()
+  const classes = useStyles()
 
   return (
     <React.Fragment>
@@ -40,7 +68,7 @@ export const App: React.FunctionComponent = () => {
         hamburgerMenuClasses={hamburgerMenuStyle}
         appName="sn-react-tasklist"
       />
-      <Toolbar />
+
       <Container
         maxWidth="lg"
         style={{
@@ -52,6 +80,12 @@ export const App: React.FunctionComponent = () => {
           width: '100%',
           flexDirection: 'column',
         }}>
+        <Link
+          className={classes.link}
+          href="https://admin.sensenet.com/content/explorer/?path=%2FIT%2FTasks"
+          target="_blank">
+          <Button className={classes.button}>Go to connected repository</Button>
+        </Link>
         <Grid container>
           <Grid item xs={12}>
             <TodoListPanel />
