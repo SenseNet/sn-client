@@ -49,4 +49,9 @@ export interface ActionModel {
    * ActionParameters
    */
   ActionParameters?: string[]
+
+  /**
+   * Id of the action: Name + ActionParameters
+   */
+  OpId: string
 }

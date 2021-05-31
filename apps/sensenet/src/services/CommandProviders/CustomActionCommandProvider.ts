@@ -59,8 +59,8 @@ export class CustomActionCommandProvider implements CommandProvider {
           a.IsODataAction,
       )
       .map((a) => {
-        const actionMetadata = contentWithActions.__metadata?.actions?.find((action) => action.name === a.Name)
-        const functionMetadata = contentWithActions.__metadata?.functions?.find((fn) => fn.name === a.Name)
+        const actionMetadata = contentWithActions.__metadata?.actions?.find((action) => action.opId === a.OpId)
+        const functionMetadata = contentWithActions.__metadata?.functions?.find((fn) => fn.opId === a.OpId)
 
         // merge custom parameters to function metadata
         const customActionMetadata = functionMetadata && {
