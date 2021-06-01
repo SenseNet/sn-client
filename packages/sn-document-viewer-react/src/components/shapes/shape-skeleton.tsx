@@ -1,6 +1,7 @@
 import { Annotation, Highlight, Redaction, Shapes } from '@sensenet/client-core'
 import React, { useState } from 'react'
 import { ShapeAnnotation, ShapeHighlight, ShapeRedaction, useDocumentPermissions } from '../..'
+import { useViewerState } from '../../hooks'
 
 /**
  * Defined the component's own properties
@@ -9,13 +10,20 @@ export interface ShapeProps {
   shape: Redaction | Highlight | Annotation
   shapeType: keyof Shapes
   zoomRatio: number
-  updateShapeData: (shapeType: keyof Shapes, guid: string, shape: Redaction | Highlight | Annotation) => void
+  updateShapeData: (
+    shapeType: keyof Shapes,
+    guid: string,
+    shape: Redaction | Highlight | Annotation,
+    force?: boolean,
+  ) => void
   removeShape: (shapeType: keyof Shapes, guid: string) => void
   rotationDegree: number
+  visiblePagesIndex: number
 }
 
 export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
   const permissions = useDocumentPermissions()
+  const viewerState = useViewerState()
   const [focused, setFocused] = useState(false)
 
   /**
@@ -38,19 +46,52 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
   }
 
   /** event that will be triggered on resize */
-  const onResized = (ev: React.MouseEvent<HTMLElement>) => {
-    const boundingBox = ev.currentTarget.getBoundingClientRect()
-    const [shape, shapeType, zoomRatio] = [props.shape, props.shapeType, props.zoomRatio]
-    const newSize = {
-      w: boundingBox.width * (1 / zoomRatio),
-      h: boundingBox.height * (1 / zoomRatio),
+  const onResized = (clientRect?: DOMRect) => {
+    if (
+      clientRect &&
+      (viewerState.boxPosition.bottom ||
+        viewerState.boxPosition.left ||
+        viewerState.boxPosition.right ||
+        viewerState.boxPosition.top)
+    ) {
+      const { shape, shapeType, zoomRatio } = props
+
+      const newSize = {
+        w:
+          clientRect.right < viewerState.pagesRects[props.visiblePagesIndex].pageRect.right &&
+          clientRect.right < viewerState.boxPosition.right
+            ? clientRect.width / zoomRatio
+            : (Math.min(
+                viewerState.pagesRects[props.visiblePagesIndex].pageRect.right!,
+                viewerState.boxPosition.right,
+              ) -
+                clientRect.x) /
+              zoomRatio,
+        h:
+          clientRect.bottom < viewerState.pagesRects[props.visiblePagesIndex].pageRect.bottom &&
+          clientRect.height < viewerState.boxPosition.bottom
+            ? clientRect.height / zoomRatio
+            : (Math.min(
+                viewerState.pagesRects[props.visiblePagesIndex].pageRect.bottom!,
+                viewerState.boxPosition.bottom,
+              ) -
+                clientRect.y) /
+              zoomRatio,
+      }
+
+      props.updateShapeData(
+        shapeType,
+        shape.guid,
+        {
+          ...(shape as any),
+          w: newSize.w,
+          h: newSize.h,
+        },
+        true,
+      )
+      return newSize
     }
-    if (Math.abs(newSize.w - shape.w) > 1 || Math.abs(newSize.h - shape.h) > 1) {
-      props.updateShapeData(shapeType, shape.guid, {
-        ...(shape as any),
-        ...newSize,
-      })
-    }
+    return undefined
   }
 
   /** onDragStart event handler for the Shape instance */
@@ -108,7 +149,13 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
           shape={props.shape as Annotation}
           zoomRatio={props.zoomRatio}
           onDragStart={(ev) => props.rotationDegree === 0 && onDragStart(ev)}
-          onResized={(ev) => props.rotationDegree === 0 && onResized(ev)}
+          onResized={(ev) => {
+            if (props.rotationDegree === 0) {
+              return onResized(ev)
+            } else {
+              return undefined
+            }
+          }}
           getShapeDimensions={getShapeDimensions}
           updateShapeData={props.updateShapeData}
           removeShape={props.removeShape}
@@ -120,7 +167,13 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
           removeShape={props.removeShape}
           shape={props.shape}
           onDragStart={(ev) => props.rotationDegree === 0 && onDragStart(ev)}
-          onResized={(ev) => props.rotationDegree === 0 && onResized(ev)}
+          onResized={(ev) => {
+            if (props.rotationDegree === 0) {
+              return onResized(ev)
+            } else {
+              return undefined
+            }
+          }}
           permissions={permissions}
           dimensions={getShapeDimensions(props.shape) as any}
           rotationDegree={props.rotationDegree}
@@ -131,7 +184,13 @@ export const ShapeSkeleton: React.FC<ShapeProps> = (props) => {
           removeShape={props.removeShape}
           shape={props.shape}
           onDragStart={(ev) => props.rotationDegree === 0 && onDragStart(ev)}
-          onResized={(ev) => props.rotationDegree === 0 && onResized(ev)}
+          onResized={(ev) => {
+            if (props.rotationDegree === 0) {
+              return onResized(ev)
+            } else {
+              return undefined
+            }
+          }}
           dimensions={getShapeDimensions(props.shape) as any}
           rotationDegree={props.rotationDegree}
         />
