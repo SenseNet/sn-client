@@ -21,6 +21,18 @@ export interface RotationModel {
   degree: number
 }
 
+export interface pageRectModel {
+  /**
+   * The index in the visible pages array
+   */
+  visiblePage: number
+
+  /**
+   * DOM rect attributes
+   */
+  pageRect: DOMRect
+}
+
 /**
  * Type model for the Viewer state
  */
@@ -86,4 +98,23 @@ export interface ViewerState {
    *
    */
   pageToGo: ObservableValue<{ page: number }>
+
+  /**
+   * The attributes of the visible pages
+   */
+  pagesRects: pageRectModel[]
+
+  /**
+   * The attributes of the viewbox
+   */
+  boxPosition: {
+    left: number
+    right: number
+    top: number
+    bottom: number
+  }
+  /**
+   * The id of the active resized element
+   */
+  currentlyResizedElementId?: string
 }
