@@ -9,6 +9,7 @@ import { FullScreenLoader } from '../full-screen-loader'
 import { ComponentsWidget } from './stats-components-widget'
 import { InstalledPackagesWidget } from './stats-installed-packages-widget'
 import { StorageWidget } from './stats-storage-widget'
+import { UsageWidget } from './stats-usage-widget'
 
 export const Stats: React.FunctionComponent = () => {
   const globalClasses = useGlobalStyles()
@@ -53,6 +54,7 @@ export const Stats: React.FunctionComponent = () => {
       </div>
       <Container fixed>
         <StorageWidget data={dashboardData} />
+        <UsageWidget />
         <ComponentsWidget data={versionInfo} />
         <InstalledPackagesWidget data={versionInfo} />
       </Container>
