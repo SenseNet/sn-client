@@ -118,8 +118,9 @@ export const Switcher: React.FC<ReactClientFieldSetting<FieldSetting>> = (props)
         <FormControl
           className={clsx(classes.root, {
             [classes.alignedCenter]:
-              props.settings.Name === 'Enabled' &&
-              (props.repository?.schemas.isContentFromType(props.content, 'User') || props.actionName === 'new'),
+              props.repository?.schemas.isContentFromType(props.content, 'User') ||
+              props.repository?.schemas.isContentFromType(props.content, 'WebHookSubscription') ||
+              props.actionName === 'new',
           })}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>
@@ -139,8 +140,21 @@ export const Switcher: React.FC<ReactClientFieldSetting<FieldSetting>> = (props)
     case 'browse':
     default:
       return (
-        <Grid component={Typography} container alignItems="center" spacing={1}>
-          <Grid item style={{ paddingRight: '30px' }}>
+        <Grid
+          component={Typography}
+          container
+          alignItems="center"
+          spacing={1}
+          className={clsx(classes.root, {
+            [classes.alignedCenter]:
+              props.repository?.schemas.isContentFromType(props.content, 'User') ||
+              props.repository?.schemas.isContentFromType(props.content, 'WebHookSubscription'),
+          })}>
+          <Grid
+            item
+            style={{
+              paddingRight: '30px',
+            }}>
             {props.settings.DisplayName}
           </Grid>
           <Grid item>

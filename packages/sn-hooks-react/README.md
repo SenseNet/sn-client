@@ -1,6 +1,6 @@
 # @sensenet/hooks-react
 
-> Sensenet related logic as React hooks for reusability.
+> sensenet related logic as React hooks for reusability.
 
 [![NPM version](https://img.shields.io/npm/v/@sensenet/hooks-react.svg?style=flat)](https://www.npmjs.com/package/@sensenet/hooks-react)
 [![NPM downloads](https://img.shields.io/npm/dt/@sensenet/hooks-react.svg?style=flat)](https://www.npmjs.com/package/@sensenet/hooks-react)
