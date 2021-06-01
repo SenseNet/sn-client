@@ -3,6 +3,7 @@
 exports[`Switcher field control in browse view should show the displayname and fieldValue when fieldValue is provided 1`] = `
 <WithStyles(ForwardRef(Grid))
   alignItems="center"
+  className="makeStyles-root-1"
   component={
     Object {
       "$$typeof": Symbol(react.forward_ref),

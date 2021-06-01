@@ -49,7 +49,7 @@ export interface DocumentViewerApiSettings {
    * Callback that will return with the retrieved PreviewImageData array
    */
   getExistingPreviewImages: (options: {
-    document: DocumentData
+    document: Partial<DocumentData>
     version: string
     showWatermark: boolean
     abortController: AbortController
