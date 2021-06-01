@@ -159,13 +159,15 @@ export const PageList: React.FC<PageListProps> = (props) => {
   return (
     <Grid item={true} className={classes.grid} id={PAGE_CONTAINER_ID} innerRef={viewportElement}>
       <div className={classes.pagesWrapper} style={{ paddingTop: paddingTop || 0, paddingBottom: paddingBottom || 0 }}>
-        {visiblePages.map((page) => (
+        {visiblePages.map((page, index) => (
           <Page
             key={page.Index}
             page={page}
             viewportWidth={viewport.width}
             viewportHeight={viewport.height}
             onClick={() => props.onPageClick(page.Index)}
+            visiblePagesIndex={index}
+            pageContainerRef={viewportElement.current}
           />
         ))}
       </div>
