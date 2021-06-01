@@ -16,6 +16,7 @@ exports[`ShapesSkeleton component should render without crashing 1`] = `
   }
   shapeType="redactions"
   updateShapeData={[Function]}
+  visiblePagesIndex={0}
   zoomRatio={1}
 >
   <div
@@ -67,7 +68,14 @@ exports[`ShapesSkeleton component should render without crashing 1`] = `
         key="r-100-200"
         onContextMenu={[Function]}
         onDragStart={[Function]}
-        onMouseUp={[Function]}
+        style={
+          Object {
+            "height": "100px",
+            "left": 10,
+            "top": 10,
+            "width": "200px",
+          }
+        }
         tabIndex={0}
       />
       <ForwardRef(Popper)
