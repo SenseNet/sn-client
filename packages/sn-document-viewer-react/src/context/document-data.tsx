@@ -24,7 +24,7 @@ const defaultDocumentData: DocumentData = {
 
 export interface DocumentDataContextType {
   documentData: DocumentData
-  updateDocumentData: (data: DeepPartial<DocumentData>) => void
+  updateDocumentData: (data: DeepPartial<DocumentData>, force?: boolean) => void
   isInProgress: boolean
   triggerReload: () => void
 }
@@ -86,11 +86,12 @@ export const DocumentDataProvider: FC = ({ children }) => {
   }, [api, doc.documentIdOrPath, doc.version, loadLock, repo.configuration.repositoryUrl, reloadToken])
 
   const updateDocumentData = useCallback(
-    (newDocData: Partial<DocumentData>) => {
+    (newDocData: Partial<DocumentData>, force?: boolean) => {
       const merged = deepMerge(documentData, newDocData)
-      if (JSON.stringify(documentData) !== JSON.stringify(merged)) {
-        setDocumentData(merged)
-      }
+
+      force
+        ? setDocumentData(merged)
+        : JSON.stringify(documentData) !== JSON.stringify(merged) && setDocumentData(merged)
     },
     [documentData],
   )

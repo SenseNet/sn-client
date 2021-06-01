@@ -1,7 +1,7 @@
 import { Annotation } from '@sensenet/client-core'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
-import React from 'react'
-import { useDocumentPermissions } from '../../hooks'
+import React, { useEffect, useRef } from 'react'
+import { useDocumentPermissions, useViewerState } from '../../hooks'
 
 type Props = {
   shape: Annotation
@@ -13,7 +13,12 @@ type Props = {
     height: string | number | (string & {}) | undefined
   }
   onDragStart: (ev: React.DragEvent<HTMLElement>) => void
-  onResized: (ev: React.MouseEvent<HTMLElement>) => void
+  onResized: (clientRect?: DOMRect) =>
+    | undefined
+    | {
+        w: number
+        h: number
+      }
   onRightClick: (ev: React.MouseEvent<HTMLElement>) => void
   rotationDegree: number
 }
@@ -30,10 +35,6 @@ const useStyles = makeStyles<
 >(() =>
   createStyles({
     root: {
-      top: ({ dimensions }) => dimensions.top,
-      left: ({ dimensions }) => dimensions.left,
-      width: ({ dimensions }) => dimensions.width,
-      height: ({ dimensions }) => dimensions.height,
       position: 'absolute',
       resize: ({ permissions, rotationDegree }) =>
         `${permissions.canEdit && rotationDegree === 0 ? 'both' : 'none'}` as any,
@@ -67,18 +68,56 @@ const useStyles = makeStyles<
 
 export const AnnotationWrapper: React.FC<Props> = (props) => {
   const permissions = useDocumentPermissions()
-
   const classes = useStyles({ ...props, permissions })
+  const annotationElement = useRef<HTMLDivElement>(null)
+  const viewerState = useViewerState()
+  const { updateState } = viewerState
+
+  useEffect(() => {
+    const handleGlobalMouseUp = () => {
+      if (viewerState.currentlyResizedElementId === props.shape.guid) {
+        updateState({ currentlyResizedElementId: undefined })
+        const newSize = props.onResized(annotationElement.current?.getClientRects()[0])
+        if (annotationElement.current && newSize) {
+          annotationElement.current.style.width = `${newSize.w * props.zoomRatio}px`
+          annotationElement.current.style.height = `${newSize.h * props.zoomRatio}px`
+        }
+      }
+    }
+
+    document.addEventListener('mouseup', handleGlobalMouseUp)
+    return () => {
+      document.removeEventListener('mouseup', handleGlobalMouseUp)
+    }
+  }, [props, updateState, viewerState.currentlyResizedElementId])
+
+  useEffect(() => {
+    const mutationObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'style') {
+          updateState({ currentlyResizedElementId: props.shape.guid })
+        }
+      })
+    })
+
+    annotationElement.current && mutationObserver.observe(annotationElement.current, { attributes: true })
+    return () => mutationObserver.disconnect()
+  }, [props.shape.guid, updateState])
 
   return (
     <div
-      id="annotation-wrapper"
       className={classes.root}
       tabIndex={0}
       draggable={permissions.canEdit}
       onDragStart={props.onDragStart}
-      onMouseUp={props.onResized}
-      onContextMenu={props.onRightClick}>
+      onContextMenu={props.onRightClick}
+      style={{
+        top: props.dimensions.top,
+        left: props.dimensions.left,
+        width: `${props.dimensions.width}px`,
+        height: `${props.dimensions.height}px`,
+      }}
+      ref={annotationElement}>
       {props.children}
     </div>
   )
