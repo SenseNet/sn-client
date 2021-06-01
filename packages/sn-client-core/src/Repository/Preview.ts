@@ -52,45 +52,49 @@ export class Preview {
   }
 
   public async getExistingImages(options: {
-    document: DocumentData
+    document: Partial<DocumentData>
     version: string
     abortController?: AbortController
   }) {
-    if (options.document.pageCount < -1) {
+    if (options.document.pageCount && options.document.pageCount < -1) {
       throw Error('Preview generation error')
     }
 
-    const response = await this.repository.executeAction({
-      idOrPath: options.document.idOrPath,
-      name: `GetExistingPreviewImages`,
-      method: 'POST',
-      body: {},
-      oDataOptions: {
-        select: 'all',
-        expand: 'all',
-        version: options.version,
-      } as any,
-      requestInit: {
-        signal: options.abortController?.signal,
-      },
-    })
+    if (options.document.idOrPath && options.document.hostName && options.document.pageCount) {
+      const response = await this.repository.executeAction({
+        idOrPath: options.document.idOrPath,
+        name: `GetExistingPreviewImages`,
+        method: 'POST',
+        body: {},
+        oDataOptions: {
+          select: 'all',
+          expand: 'all',
+          version: options.version,
+        } as any,
+        requestInit: {
+          signal: options.abortController?.signal,
+        },
+      })
 
-    const availablePreviews = (response as PreviewImageData[]).map((preview) => {
-      if (preview.PreviewAvailable) {
-        preview.PreviewImageUrl = `${options.document.hostName}${preview.PreviewAvailable}`
-        preview.ThumbnailImageUrl = `${options.document.hostName}${preview.PreviewAvailable.replace(
-          'preview',
-          'thumbnail',
-        )}`
+      const availablePreviews = (response as PreviewImageData[]).map((preview) => {
+        if (preview.PreviewAvailable) {
+          preview.PreviewImageUrl = `${options.document.hostName}${preview.PreviewAvailable}`
+          preview.ThumbnailImageUrl = `${options.document.hostName}${preview.PreviewAvailable.replace(
+            'preview',
+            'thumbnail',
+          )}`
+        }
+        return preview
+      })
+
+      const allPreviews: PreviewImageData[] = []
+      for (let i = 0; i < options.document.pageCount; i++) {
+        allPreviews[i] = availablePreviews[i] || ({ Index: i + 1 } as any)
       }
-      return preview
-    })
-
-    const allPreviews: PreviewImageData[] = []
-    for (let i = 0; i < options.document.pageCount; i++) {
-      allPreviews[i] = availablePreviews[i] || ({ Index: i + 1 } as any)
+      return allPreviews
+    } else {
+      return []
     }
-    return allPreviews
   }
 
   public getPageCount(options: { idOrPath: number | string; abortController?: AbortController }): Promise<number> {
