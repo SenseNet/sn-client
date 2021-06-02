@@ -1,5 +1,5 @@
 import { UniversalHeader } from '@sensenet/universal-header-react'
-import { Button, Container, createStyles, CssBaseline, Grid, Link, makeStyles } from '@material-ui/core'
+import { Button, Container, createStyles, CssBaseline, Grid, makeStyles, Theme } from '@material-ui/core'
 import React from 'react'
 import TodoListPanel from './components/todo-list'
 
@@ -29,16 +29,11 @@ const useHamburgerMenuStyles = makeStyles(() =>
   }),
 )
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    link: {
-      '&:hover': {
-        textDecoration: 'none',
-      },
-    },
     button: {
       backgroundColor: '#7169f4',
-      color: '#FFFFFF',
+      color: `${theme.palette.common.white} !important`,
       borderRadius: '26px',
       padding: '10px 20px',
       margin: '40px 0',
@@ -80,12 +75,12 @@ export const App: React.FunctionComponent = () => {
           width: '100%',
           flexDirection: 'column',
         }}>
-        <Link
-          className={classes.link}
+        <Button
           href="https://admin.sensenet.com/content/explorer/?path=%2FIT%2FTasks"
-          target="_blank">
-          <Button className={classes.button}>Go to connected repository</Button>
-        </Link>
+          target="_blank"
+          className={classes.button}>
+          Go to connected repository
+        </Button>
         <Grid container>
           <Grid item xs={12}>
             <TodoListPanel />

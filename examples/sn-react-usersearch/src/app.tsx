@@ -1,10 +1,10 @@
 import { UniversalHeader } from '@sensenet/universal-header-react'
-import { Button, Container, createStyles, CssBaseline, Grid, Link, makeStyles } from '@material-ui/core'
+import { Button, Container, createStyles, CssBaseline, Grid, makeStyles, Theme } from '@material-ui/core'
 import React from 'react'
 import snLogo from './assets/sensenet_logo_transparent.png'
 import UserSearch from './components/user-search'
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
       minHeight: '90vh',
@@ -19,14 +19,9 @@ const useStyles = makeStyles(() =>
       backgroundImage: `url(${snLogo})`,
       backgroundSize: 'auto',
     },
-    link: {
-      '&:hover': {
-        textDecoration: 'none',
-      },
-    },
     button: {
       backgroundColor: '#7169f4',
-      color: '#FFFFFF',
+      color: `${theme.palette.common.white} !important`,
       borderRadius: '26px',
       padding: '10px 20px',
       margin: '40px 0',
@@ -49,9 +44,9 @@ export const App: React.FunctionComponent = () => {
       <CssBaseline />
       <UniversalHeader title="User search" appName="sn-react-usersearch" />
       <Container maxWidth="lg" className={classes.container}>
-        <Link className={classes.link} href="https://admin.sensenet.com/users-and-groups/explorer/" target="_blank">
-          <Button className={classes.button}>Go to connected repository</Button>
-        </Link>
+        <Button href="https://admin.sensenet.com/users-and-groups/explorer/" target="_blank" className={classes.button}>
+          Go to connected repository
+        </Button>
         <Grid container>
           <Grid item xs={12}>
             <UserSearch />

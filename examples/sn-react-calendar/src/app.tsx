@@ -1,12 +1,12 @@
 import { useRepository } from '@sensenet/hooks-react'
 import { UniversalHeader } from '@sensenet/universal-header-react'
-import { Button, Container, createStyles, CssBaseline, Grid, Link, makeStyles } from '@material-ui/core'
+import { Button, Container, createStyles, CssBaseline, Grid, makeStyles, Theme } from '@material-ui/core'
 import React from 'react'
 import snLogo from './assets/sensenet_logo_transparent.png'
 import MainPanel from './components/mainpanel'
 import SharedProvider from './context/shared-context'
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
       width: '100%',
@@ -22,14 +22,9 @@ const useStyles = makeStyles(() =>
       backgroundImage: `url(${snLogo})`,
       backgroundSize: 'auto',
     },
-    link: {
-      '&:hover': {
-        textDecoration: 'none',
-      },
-    },
     button: {
       backgroundColor: '#7169f4',
-      color: '#FFFFFF',
+      color: `${theme.palette.common.white} !important`,
       borderRadius: '26px',
       padding: '10px 20px',
       marginBottom: '40px',
@@ -55,12 +50,12 @@ export const App: React.FunctionComponent = () => {
       <CssBaseline />
       <UniversalHeader title="Calendar" appName="sn-react-calendar" />
       <Container maxWidth="lg" className={classes.container}>
-        <Link
-          className={classes.link}
+        <Button
           href="https://admin.sensenet.com/content/explorer/?path=%2FIT%2FCalendar"
-          target="_blank">
-          <Button className={classes.button}>Go to connected repository</Button>
-        </Link>
+          target="_blank"
+          className={classes.button}>
+          Go to connected repository
+        </Button>
         <Grid container direction="column" justify="center">
           <Grid item xs={12} style={{ alignSelf: 'center' }}>
             <SharedProvider>

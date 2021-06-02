@@ -1,11 +1,11 @@
 import { UniversalHeader } from '@sensenet/universal-header-react'
-import { Button, Container, createStyles, CssBaseline, Grid, Link, makeStyles } from '@material-ui/core'
+import { Button, Container, createStyles, CssBaseline, Grid, makeStyles, Theme } from '@material-ui/core'
 import Toolbar from '@material-ui/core/Toolbar'
 import React from 'react'
 import snLogo from './assets/sensenet_logo_transparent.png'
 import { MemoPanel } from './components/memo-panel'
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
       width: '100%',
@@ -21,14 +21,9 @@ const useStyles = makeStyles(() =>
       backgroundImage: `url(${snLogo})`,
       backgroundSize: 'auto',
     },
-    link: {
-      '&:hover': {
-        textDecoration: 'none',
-      },
-    },
     button: {
       backgroundColor: '#7169f4',
-      color: '#FFFFFF',
+      color: `${theme.palette.common.white} !important`,
       borderRadius: '26px',
       padding: '10px 20px',
       marginBottom: '40px',
@@ -53,12 +48,12 @@ export const App: React.FunctionComponent = () => {
       <UniversalHeader title="Memo application" appName="sn-react-memoapp" />
       <Toolbar />
       <Container maxWidth="lg" className={classes.container}>
-        <Link
-          className={classes.link}
+        <Button
           href="https://admin.sensenet.com/content/explorer/?path=%2FIT%2FMemos"
-          target="_blank">
-          <Button className={classes.button}>Go to connected repository</Button>
-        </Link>
+          target="_blank"
+          className={classes.button}>
+          Go to connected repository
+        </Button>
         <Grid container>
           <Grid item xs={12}>
             <MemoPanel />

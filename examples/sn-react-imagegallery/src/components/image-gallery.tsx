@@ -1,7 +1,7 @@
 import { ConstantContent } from '@sensenet/client-core'
 import { Image } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import { Button, Container, Link, makeStyles } from '@material-ui/core'
+import { Button, Container, makeStyles } from '@material-ui/core'
 import React, { useEffect, useRef, useState } from 'react'
 import ReactImageGallery from 'react-image-gallery'
 import { goToRepoStyles } from '../app'
@@ -101,12 +101,12 @@ export const ImageGallery: React.FunctionComponent<ImageGalleryProps> = (props) 
   return (
     <Container component="main" maxWidth="md" className={classes.root}>
       <div className={goToRepoClasses.linkContainer}>
-        <Link
-          className={goToRepoClasses.link}
+        <Button
           href="https://admin.sensenet.com/content/explorer/?path=%2FIT%2FImageLibrary"
-          target="_blank">
-          <Button className={goToRepoClasses.button}>Go to connected repository</Button>
-        </Link>
+          target="_blank"
+          className={goToRepoClasses.button}>
+          Go to connected repository
+        </Button>
       </div>
       <ReactImageGallery
         ref={galleryRef}

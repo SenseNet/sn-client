@@ -1,5 +1,5 @@
 import { HEADER_HEIGHT, UniversalHeader } from '@sensenet/universal-header-react'
-import { Button, Container, createStyles, CssBaseline, Grid, Link, makeStyles } from '@material-ui/core'
+import { Button, Container, createStyles, CssBaseline, Grid, makeStyles, Theme } from '@material-ui/core'
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import snLogo from './assets/sensenet_logo_transparent.png'
@@ -10,7 +10,7 @@ import MainPanel from './components/mainpanel'
 const GOTOREPO_BUTTON_HEIGHT = 44
 const GOTOREPO_BUTTON_MARGIN_Y = 40
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
       width: '100%',
@@ -26,14 +26,9 @@ const useStyles = makeStyles(() =>
       backgroundImage: `url(${snLogo})`,
       backgroundSize: 'auto',
     },
-    link: {
-      '&:hover': {
-        textDecoration: 'none',
-      },
-    },
     button: {
       backgroundColor: '#7169f4',
-      color: '#FFFFFF',
+      color: `${theme.palette.common.white} !important`,
       borderRadius: '26px',
       padding: '10px 20px',
       margin: `${GOTOREPO_BUTTON_MARGIN_Y}px 0`,
@@ -64,12 +59,12 @@ export const App: React.FunctionComponent = () => {
       <CssBaseline />
       <UniversalHeader title="Document Browser" appName="sn-react-browser" />
       <Container maxWidth="lg" className={classes.container}>
-        <Link
-          className={classes.link}
+        <Button
+          target="_blank"
           href="https://admin.sensenet.com/content/explorer/?path=%2FIT%2FDocument_Library"
-          target="_blank">
-          <Button className={classes.button}>Go to connected repository</Button>
-        </Link>
+          className={classes.button}>
+          Go to connected repository
+        </Button>
         <Grid container className={classes.gridContainer}>
           <Grid item xs={12} className={classes.gridItem}>
             <Switch>

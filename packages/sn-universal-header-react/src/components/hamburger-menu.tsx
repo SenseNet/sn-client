@@ -1,5 +1,4 @@
 import {
-  ClickAwayListener,
   createStyles,
   IconButton,
   Link,
@@ -9,11 +8,12 @@ import {
   Paper,
   Slide,
   Theme,
+  useMediaQuery,
+  useTheme,
 } from '@material-ui/core'
 import { Close, Menu as MenuIcon } from '@material-ui/icons'
 import clsx from 'clsx'
 import React, { useEffect, useRef, useState } from 'react'
-import { useMediaQueryOverride } from '../hooks/media-query-override'
 import { HEADER_HEIGHT } from '.'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
       border: '1px solid #E2E2E2',
       height: `calc(100vh - ${HEADER_HEIGHT})`,
       boxShadow: '12px 0 12px rgb(0 0 0 / 20%)',
-      width: '281px',
+      width: 'auto',
     },
     popperWrapperMobile: {
       width: '100%',
@@ -91,25 +91,18 @@ interface HamburgerMenuProps {
 
 export const HamburgerMenu: React.FunctionComponent<HamburgerMenuProps> = (props) => {
   const classes = useStyles(props)
-  const isMobile = useMediaQueryOverride()
+  const theme = useTheme()
+  const isUnderMd = useMediaQuery(theme.breakpoints.down('md'))
 
   const anchorRef = useRef<HTMLButtonElement>(null)
   const [isPopperOpen, setIsPopperOpen] = useState(false)
 
   useEffect(() => {
-    setIsPopperOpen(!isMobile)
-  }, [isMobile])
+    setIsPopperOpen(!isUnderMd)
+  }, [isUnderMd])
 
   const handleToggle = () => {
     setIsPopperOpen((prevOpen) => !prevOpen)
-  }
-
-  const handleClose = (event: React.MouseEvent<EventTarget>) => {
-    if (anchorRef.current?.contains(event.target as HTMLElement)) {
-      return
-    }
-
-    setIsPopperOpen(false)
   }
 
   const prevOpen = useRef(isPopperOpen)
@@ -127,52 +120,47 @@ export const HamburgerMenu: React.FunctionComponent<HamburgerMenuProps> = (props
         {isPopperOpen ? <Close className={classes.menuIconActive} /> : <MenuIcon className={classes.menuIcon} />}
       </IconButton>
       <Slide direction="right" in={isPopperOpen} mountOnEnter unmountOnExit>
-        <Paper className={clsx(classes.popperWrapper, { [classes.popperWrapperMobile]: isMobile })}>
-          <ClickAwayListener onClickAway={handleClose}>
-            <MenuList className={classes.menuList} autoFocusItem={isPopperOpen}>
-              <div className={clsx(classes.menuItemFix, { [classes.menuItemFixMobile]: isMobile })}>Live demo</div>
-              <div className={classes.menuGroup}>
-                <Link
-                  className={classes.link}
-                  href={
-                    props.appName
-                      ? `https://github.com/SenseNet/sn-client/tree/master/examples/${props.appName}`
-                      : 'https://github.com/SenseNet/sn-client/tree/master/examples'
-                  }
-                  target="_blank">
-                  <MenuItem className={classes.menuItem}>Connected repository</MenuItem>
-                </Link>
-                <Link className={classes.link} href="https://docs.sensenet.com/example-apps" target="_blank">
-                  <MenuItem className={classes.menuItem}>More examples</MenuItem>
-                </Link>
-                <Link className={classes.link} href="https://profile.sensenet.com/?redirectToLogin" target="_blank">
-                  <MenuItem className={classes.menuItem}>Get your free repo</MenuItem>
-                </Link>
-              </div>
-              <div
-                className={clsx(classes.menuItemFix, { [classes.menuItemFixMobile]: isMobile })}
-                style={{ paddingTop: '20px' }}>
-                Resources
-              </div>
-              <div className={classes.menuGroup}>
-                <Link
-                  className={classes.link}
-                  href="https://docs.sensenet.com/tutorials/getting-started"
-                  target="_blank">
-                  <MenuItem className={classes.menuItem}>Develop your application</MenuItem>
-                </Link>
-                <Link className={classes.link} href="https://docs.sensenet.com/" target="_blank">
-                  <MenuItem className={classes.menuItem}>Documentation</MenuItem>
-                </Link>
-                <Link className={classes.link} href="https://github.com/SenseNet" target="_blank">
-                  <MenuItem className={classes.menuItem}>View on GitHub</MenuItem>
-                </Link>
-                <Link className={classes.link} href="https://www.sensenet.com/help-center" target="_blank">
-                  <MenuItem className={classes.menuItem}>Help center</MenuItem>
-                </Link>
-              </div>
-            </MenuList>
-          </ClickAwayListener>
+        <Paper className={clsx(classes.popperWrapper, { [classes.popperWrapperMobile]: isUnderMd })}>
+          <MenuList className={classes.menuList} autoFocusItem={isPopperOpen}>
+            <div className={clsx(classes.menuItemFix, { [classes.menuItemFixMobile]: isUnderMd })}>Live demo</div>
+            <div className={classes.menuGroup}>
+              <Link
+                className={classes.link}
+                href={
+                  props.appName
+                    ? `https://github.com/SenseNet/sn-client/tree/master/examples/${props.appName}`
+                    : 'https://github.com/SenseNet/sn-client/tree/master/examples'
+                }
+                target="_blank">
+                <MenuItem className={classes.menuItem}>Connected repository</MenuItem>
+              </Link>
+              <Link className={classes.link} href="https://docs.sensenet.com/example-apps" target="_blank">
+                <MenuItem className={classes.menuItem}>More examples</MenuItem>
+              </Link>
+              <Link className={classes.link} href="https://profile.sensenet.com/?redirectToLogin" target="_blank">
+                <MenuItem className={classes.menuItem}>Get your free repo</MenuItem>
+              </Link>
+            </div>
+            <div
+              className={clsx(classes.menuItemFix, { [classes.menuItemFixMobile]: isUnderMd })}
+              style={{ paddingTop: '20px' }}>
+              Resources
+            </div>
+            <div className={classes.menuGroup}>
+              <Link className={classes.link} href="https://docs.sensenet.com/tutorials/getting-started" target="_blank">
+                <MenuItem className={classes.menuItem}>Develop your application</MenuItem>
+              </Link>
+              <Link className={classes.link} href="https://docs.sensenet.com/" target="_blank">
+                <MenuItem className={classes.menuItem}>Documentation</MenuItem>
+              </Link>
+              <Link className={classes.link} href="https://github.com/SenseNet" target="_blank">
+                <MenuItem className={classes.menuItem}>View on GitHub</MenuItem>
+              </Link>
+              <Link className={classes.link} href="https://www.sensenet.com/help-center" target="_blank">
+                <MenuItem className={classes.menuItem}>Help center</MenuItem>
+              </Link>
+            </div>
+          </MenuList>
         </Paper>
       </Slide>
     </div>
