@@ -7,8 +7,6 @@ import { useLocalization } from '../../hooks'
 import { useDateUtils } from '../../hooks/use-date-utils'
 
 const exampleStatsUsageData = {
-  ApiCalls: 3,
-  UsageOfThisRepository: 250085376, //byte
   UsageData: [
     {
       PeriodStartDate: '2021-01-01T00:00:00Z',
@@ -17,6 +15,8 @@ const exampleStatsUsageData = {
         215, 220, 230, 215, 258, 112, 17, 37, 12, 23, 233, 233, 232, 234, 43, 23, 32, 65, 1, 0, 1, 22, 91, 24, 25, 6, 3,
         80, 2, 2, 3,
       ],
+      ApiCalls: 2,
+      UsagePerMonth: 230085376, //byte
     },
     {
       PeriodStartDate: '2021-02-01T00:00:00Z',
@@ -25,6 +25,8 @@ const exampleStatsUsageData = {
         234, 43, 23, 32, 65, 1, 0, 1, 22, 91, 24, 25, 6, 3, 80, 2, 2, 3, 215, 220, 230, 215, 258, 112, 17, 37, 12, 23,
         233, 233,
       ],
+      ApiCalls: 6,
+      UsagePerMonth: 220085376, //byte
     },
     {
       PeriodStartDate: '2021-03-01T00:00:00Z',
@@ -33,6 +35,8 @@ const exampleStatsUsageData = {
         234, 143, 123, 132, 165, 111, 110, 11, 122, 91, 24, 25, 6, 3, 80, 2, 2, 3, 215, 220, 230, 215, 258, 112, 17, 37,
         12, 23, 233, 233,
       ],
+      ApiCalls: 5,
+      UsagePerMonth: 50232435, //byte
     },
     {
       PeriodStartDate: '2021-04-01T00:00:00Z',
@@ -41,12 +45,16 @@ const exampleStatsUsageData = {
         0, 1, 2, 3, 4, 5, 6, 7, 8, 91, 24, 25, 6, 3, 80, 2, 2, 3, 215, 220, 230, 215, 258, 112, 17, 37, 12, 23, 233,
         233,
       ],
+      ApiCalls: 1,
+      UsagePerMonth: 12344544, //byte
     },
     {
       // ez egy tört hónap
       PeriodStartDate: '2021-05-01T00:00:00Z',
       PeriodEndDate: '2021-05-13T00:00:00Z',
       UsageValues: [200, 201, 202, 203, 204, 205, 206, 207, 208, 291, 324, 325, 306],
+      ApiCalls: 3,
+      UsagePerMonth: 250085376, //byte
     },
   ],
 }
@@ -124,9 +132,9 @@ export const UsageWidget: React.FunctionComponent = () => {
               })}
             </Select>
             <div className={classes.rowContainer}>{localization.usageOfThisRepo}</div>
-            <div style={{ fontSize: '30px' }}>{formatSize(exampleStatsUsageData.UsageOfThisRepository)}</div>
+            <div style={{ fontSize: '30px' }}>{formatSize(currentData.UsagePerMonth)}</div>
             <div className={classes.rowContainer}>{localization.apiCalls}</div>
-            <div style={{ fontSize: '30px' }}>{exampleStatsUsageData.ApiCalls}</div>
+            <div style={{ fontSize: '30px' }}>{currentData.ApiCalls}</div>
           </div>
         </div>
       </Paper>
