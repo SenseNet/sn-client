@@ -22,6 +22,7 @@ export interface CommandPaletteItem {
   hits: string[]
   content?: GenericContent
   openAction?: () => void
+  parameters?: string[]
 }
 
 const useStyles = makeStyles(() => {
