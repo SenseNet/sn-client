@@ -11,23 +11,19 @@ exports[`The app layout instance should be rendered correctly 1`] = `
     className="makeStyles-container-1"
     maxWidth="lg"
   >
-    <WithStyles(ForwardRef(Link))
-      className="makeStyles-link-2"
+    <WithStyles(ForwardRef(Button))
+      className="makeStyles-button-2"
       href="https://admin.sensenet.com/content/explorer/?path=%2FIT%2FDocument_Library"
       target="_blank"
     >
-      <WithStyles(ForwardRef(Button))
-        className="makeStyles-button-3"
-      >
-        Go to connected repository
-      </WithStyles(ForwardRef(Button))>
-    </WithStyles(ForwardRef(Link))>
+      Go to connected repository
+    </WithStyles(ForwardRef(Button))>
     <WithStyles(ForwardRef(Grid))
-      className="makeStyles-gridContainer-4"
+      className="makeStyles-gridContainer-3"
       container={true}
     >
       <WithStyles(ForwardRef(Grid))
-        className="makeStyles-gridItem-5"
+        className="makeStyles-gridItem-4"
         item={true}
         xs={12}
       >

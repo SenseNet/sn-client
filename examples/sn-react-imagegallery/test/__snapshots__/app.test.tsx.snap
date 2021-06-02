@@ -39,17 +39,13 @@ exports[`App Layout Matches snapshot 1`] = `
     <div
       className="makeStyles-linkContainer-5"
     >
-      <WithStyles(ForwardRef(Link))
-        className="makeStyles-link-6"
+      <WithStyles(ForwardRef(Button))
+        className="makeStyles-button-6"
         href="https://admin.sensenet.com/content/explorer/?path=%2FIT%2FImageLibrary"
         target="_blank"
       >
-        <WithStyles(ForwardRef(Button))
-          className="makeStyles-button-7"
-        >
-          Go to connected repository
-        </WithStyles(ForwardRef(Button))>
-      </WithStyles(ForwardRef(Link))>
+        Go to connected repository
+      </WithStyles(ForwardRef(Button))>
     </div>
     <ImageList />
   </WithStyles(ForwardRef(Container))>
