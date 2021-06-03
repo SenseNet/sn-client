@@ -611,6 +611,7 @@ const values = {
     triggerRadioGroup: 'Trigger Radio Group',
     all: 'All',
     noHits: 'No hits',
+    onTypes: 'on type(s): ',
   },
   webhooksHeader: {
     key: 'Pick a container',
