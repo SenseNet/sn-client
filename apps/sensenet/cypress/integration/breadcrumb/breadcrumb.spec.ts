@@ -1,60 +1,44 @@
+import { PATHS, resolvePathParams } from '../../../src/application-paths'
 import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
-const expectedBreadcrumbItems = ['Content', '/', 'IT Workspace', '/', 'Document library']
-
-describe('Breadcrumb', () => {
-  before(() => {
+describe('breadcrumb', () => {
+  beforeEach(() => {
     cy.login()
-    cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
+    cy.visit(
+      pathWithQueryParams({
+        path: resolvePathParams({ path: PATHS.content.appPath, params: { browseType: 'explorer' } }),
+        newParams: { repoUrl: Cypress.env('repoUrl'), path: '/IT/Document_Library' },
+      }),
+    )
   })
-  it('breadcrumb after navigating to IT Workspace, breadcrumb should be displayed as it should.', () => {
-    cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]')
-      .click()
-      .then(() => {
-        cy.get('[data-test="table-cell-calendar"]').should('be.visible')
-      })
 
-    cy.get('[data-test="menu-item-document-library"]').click({ force: true })
-    cy.get('nav[aria-label="breadcrumb"] li')
-      .should('have.length', expectedBreadcrumbItems.length)
-      .each(($el) => {
-        expect(expectedBreadcrumbItems).to.include($el.text())
-      })
+  it('should contain the expected items', () => {
+    const expectedItems = ['Content', 'IT Workspace', 'Document library']
+
+    cy.get('[data-test^="breadcrumb-item-"]').should('have.length', expectedItems.length)
+
+    cy.get('[data-test^="breadcrumb-item-"]').each(($el, index) => {
+      expect(expectedItems[index]).to.equal($el.text())
+    })
   })
-  it('clicking on parent item in the breadcrumb should open the chosen container', () => {
-    cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]')
-      .click()
-      .then(() => {
-        cy.get('[data-test="table-cell-calendar"]').should('be.visible')
-      })
-    cy.get('[data-test="menu-item-document-library"]')
-      .click({ force: true })
-      .then(() => {
-        cy.get('[data-test="table-cell-calendar"]').should('not.exist')
-      })
-    cy.get('nav[aria-label="breadcrumb"] li')
-      .find('button[aria-label="IT Workspace"]')
-      .click()
-      .then(() => {
-        cy.get('[data-test="table-cell-calendar"]').should('be.visible')
-      })
+
+  it('should navigate in the target folder on click', () => {
+    const documentLibrarySelector = '[data-test="breadcrumb-item-document-library"]'
+
+    cy.get(documentLibrarySelector).should('exist')
+    cy.get('[data-test="breadcrumb-item-it-workspace"]').click()
+    cy.get('[data-test="breadcrumb-item-it-workspace"]').should('exist')
+    cy.get(documentLibrarySelector).should('not.exist')
+
+    cy.location().should((loc) => {
+      const query = new URLSearchParams(loc.search)
+      expect(query.get('path')).to.eq('/IT')
+    })
   })
-  it('right click on a breadcrumb item should open its actionmenu.', () => {
-    cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]')
-      .click()
-      .then(() => {
-        cy.get('[data-test="table-cell-calendar"]').should('be.visible')
-      })
-    cy.get('[data-test="menu-item-document-library"]').click({ force: true })
-    cy.get('nav[aria-label="breadcrumb"] li')
-      .should('have.length', expectedBreadcrumbItems.length)
-      .find('button[aria-label="IT Workspace"]')
-      .rightclick()
-      .then(() => {
-        cy.get('ul[role="menu"]').should('be.visible')
-      })
+
+  it('right click on a breadcrumb item should open its action menu', () => {
+    cy.get('[data-test^="content-context-menu-"]').should('not.exist')
+    cy.get('[data-test="breadcrumb-item-it-workspace"]').rightclick()
+    cy.get('[data-test^="content-context-menu-"]').should('have.length.of.at.least', 1)
   })
 })

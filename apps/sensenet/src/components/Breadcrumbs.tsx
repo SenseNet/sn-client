@@ -30,6 +30,7 @@ export function Breadcrumbs<T extends GenericContent>(props: BreadcrumbProps<T>)
           <DropFileArea key={item.content.Id} parentContent={item.content} style={{ display: 'inline-block' }}>
             <Tooltip title={item.title}>
               <Button
+                data-test={`breadcrumb-item-${item.displayName.replace(/\s+/g, '-').toLowerCase()}`}
                 aria-label={item.displayName}
                 onClick={(ev) => props.onItemClick(ev, item)}
                 onContextMenu={(ev) => {
