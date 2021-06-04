@@ -10,7 +10,13 @@ exports.onPreInit = () => {
   spawn.sync('gatsby', ['clean'], { stdio: 'inherit' })
 }
 
-exports.onCreateNode = async ({ node, actions: { createNode, createNodeField }, createNodeId, getCache }) => {
+exports.onCreateNode = async ({
+  node,
+  actions: { createNode, createNodeField },
+  createNodeId,
+  getCache,
+  createContentDigest,
+}) => {
   if (node.internal.type === BLOGPOST_NODE_TYPE) {
     //create slug node field
     createNodeField({
@@ -27,9 +33,8 @@ exports.onCreateNode = async ({ node, actions: { createNode, createNodeField }, 
       createNodeId,
       getCache,
     })
-    if (leadImageNode) {
-      node.leadImage___NODE = leadImageNode.id
-    }
+
+    node.leadImage___NODE = leadImageNode.id
 
     //create node for Body field
     const bodyMdxNode = {
@@ -39,15 +44,13 @@ exports.onCreateNode = async ({ node, actions: { createNode, createNodeField }, 
         type: `${node.internal.type}MarkdownBody`,
         mediaType: 'text/markdown',
         content: node.Body,
-        contentDigest: node.Body,
+        contentDigest: createContentDigest(node.Body),
       },
     }
 
     createNode(bodyMdxNode)
 
-    if (bodyMdxNode) {
-      node.markdownBody___NODE = bodyMdxNode.id
-    }
+    node.markdownBody___NODE = bodyMdxNode.id
 
     //create node for Lead field
     const leadMdxNode = {
@@ -57,15 +60,13 @@ exports.onCreateNode = async ({ node, actions: { createNode, createNodeField }, 
         type: `${node.internal.type}MarkdownLead`,
         mediaType: 'text/markdown',
         content: node.Lead,
-        contentDigest: node.Lead,
+        contentDigest: createContentDigest(node.Lead),
       },
     }
 
     createNode(leadMdxNode)
 
-    if (leadMdxNode) {
-      node.markdownLead___NODE = leadMdxNode.id
-    }
+    node.markdownLead___NODE = leadMdxNode.id
   }
 }
 

@@ -3,8 +3,6 @@ import { createStyles, CssBaseline, makeStyles } from '@material-ui/core'
 import { graphql, StaticQuery } from 'gatsby'
 import * as React from 'react'
 import { Helmet } from 'react-helmet'
-import LayoutMain from '../components/layout-main'
-import LayoutRoot from '../components/layout-root'
 import { globals, useGlobalStyles } from '../styles/globalStyles'
 
 const useHeaderStyle = makeStyles(() => {
@@ -45,17 +43,15 @@ const IndexLayout: React.FC = ({ children }) => {
       render={(data: StaticQueryProps) => (
         <>
           <CssBaseline />
-          <LayoutRoot>
-            <Helmet
-              title={data.site.siteMetadata.title}
-              meta={[
-                { name: 'description', content: data.site.siteMetadata.description },
-                { name: 'keywords', content: data.site.siteMetadata.keywords },
-              ]}
-            />
-            <UniversalHeader title="Gatsby example" classes={headerStyle} appName="sn-blog-gatsby" />
-            <LayoutMain>{children}</LayoutMain>
-          </LayoutRoot>
+          <Helmet
+            title={data.site.siteMetadata.title}
+            meta={[
+              { name: 'description', content: data.site.siteMetadata.description },
+              { name: 'keywords', content: data.site.siteMetadata.keywords },
+            ]}
+          />
+          <UniversalHeader title="Gatsby example" classes={headerStyle} appName="sn-blog-gatsby" />
+          {children}
         </>
       )}
     />

@@ -1,6 +1,6 @@
 {
   "name": "@example/blog-gatsby",
-  "description": "A gatsby example app based on gatsby-starter-typescript-plus",
+  "description": "A gatsby example app created by gatsby-source-sensenet plugin",
   "version": "0.1.0",
   "private": true,
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
@@ -12,7 +12,7 @@
   "license": "MIT",
   "scripts": {
     "build": "gatsby build",
-    "clean": "rimraf public",
+    "clean": "gatsby clean",
     "dev": "gatsby clean && gatsby develop",
     "format": "prettier --write \"src/**/*.{ts,tsx,md}\"",
     "type-check": "tsc"
@@ -56,8 +56,6 @@
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
     "@types/react-helmet": "^6.1.1",
-    "eslint": "^7.24.0",
-    "gh-pages": "^3.1.0",
-    "rimraf": "^3.0.2"
+    "eslint": "^7.24.0"
   }
 }

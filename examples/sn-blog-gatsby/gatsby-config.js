@@ -8,10 +8,10 @@ module.exports = {
     title: 'sensenet blog',
     description: 'A blog app with gatsby and typescript',
     keywords: 'gatsby, javascript, sensenet, typescript',
-    siteUrl: 'https://github.com/SenseNet/sn-client.com',
+    siteUrl: 'https://github.com/SenseNet/sn-client',
     author: {
       name: 'Sense/Net',
-      url: 'http://sensenet.com/',
+      url: 'https://sensenet.com/',
       email: 'snteam@sensenet.com',
     },
   },

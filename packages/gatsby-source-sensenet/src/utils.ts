@@ -8,7 +8,7 @@ export const snPrefix = 'sensenet'
 export const createTreeNode = async (
   parentNode: any,
   content: any,
-  sourceNodesArgs: Partial<SourceNodesArgs>,
+  sourceNodesArgs: Pick<SourceNodesArgs, 'createNodeId' | 'createContentDigest' | 'actions'>,
   options: PluginConfig,
   token: string,
 ) => {
@@ -26,13 +26,11 @@ export const createTreeNode = async (
   sourceNodesArgs.actions!.createParentChildLink({ parent: parentNode, child: newNode })
 
   try {
-    if ((options.level && options.level > 0) || !options.level) {
+    if (options.level === undefined || options.level > 0) {
       const params = ODataUrlBuilder.buildUrlParamString(defaultRepositoryConfiguration, options.oDataOptions)
-      console.info(
-        'REQUEST SENT TO SENENET:',
-        `${options.host}/${defaultRepositoryConfiguration.oDataToken}${content.Path}?${params}`,
-      )
-      const res = await fetch(`${options.host}/${defaultRepositoryConfiguration.oDataToken}${content.Path}?${params}`, {
+      const request = `${options.host}/${defaultRepositoryConfiguration.oDataToken}${content.Path}?${params}`
+      console.info('REQUEST SENT TO SENSENET:', request)
+      const res = await fetch(request, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -43,8 +41,16 @@ export const createTreeNode = async (
 
       data.d.results.length > 0 &&
         data.d.results.forEach((childContent: any) => {
-          createTreeNode(newNode, childContent, sourceNodesArgs, options, token)
+          createTreeNode(
+            newNode,
+            childContent,
+            sourceNodesArgs,
+            { ...options, level: options.level ? options.level - 1 : undefined },
+            token,
+          )
         })
+    } else {
+      return
     }
   } catch (error) {
     console.log(error)

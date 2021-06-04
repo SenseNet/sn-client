@@ -24,6 +24,10 @@ export const useGlobalStyles = makeStyles(() => {
     container: {
       display: 'flex',
       flexFlow: 'column',
+      flex: 1,
+      position: 'relative',
+      padding: `${globals.common.containerPadding}rem 0`,
+      marginBottom: '3rem',
     },
   })
 })

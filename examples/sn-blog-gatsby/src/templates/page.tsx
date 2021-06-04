@@ -1,10 +1,9 @@
-import { Container, createStyles, makeStyles, Link as MaterialLink, Typography } from '@material-ui/core'
+import { Container, createStyles, makeStyles, Link as MuiLink, Typography } from '@material-ui/core'
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
 import { graphql, Link } from 'gatsby'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import * as React from 'react'
-import Page from '../components/page'
 import IndexLayout from '../layouts'
 import { globals, useGlobalStyles } from '../styles/globalStyles'
 
@@ -22,14 +21,6 @@ const useStyles = makeStyles(() => {
     },
     date: {
       marginRight: '1rem',
-    },
-    image: {
-      maxHeight: '400px',
-      objectFit: 'cover',
-      objectPosition: 'center',
-      width: '100%',
-      marginBottom: '4rem',
-      alignSelf: 'center',
     },
   })
 })
@@ -73,10 +64,10 @@ const PageTemplate: React.FC<PageTemplateProps> = ({ data }) => {
 
   return (
     <IndexLayout>
-      <Page>
+      <article>
         <Container maxWidth="lg" className={globalClasses.container}>
           <Link to="/" className={classes.link}>
-            Back to blog
+            Back to (post) list
           </Link>
           <div className={classes.postHeader}>
             <Typography variant="h2" className={classes.title}>
@@ -87,22 +78,21 @@ const PageTemplate: React.FC<PageTemplateProps> = ({ data }) => {
               {authors.map((author, index) => (
                 <>
                   {index !== 0 && ', '}
-                  <MaterialLink
+                  <MuiLink
                     key={author}
                     href={`https://github.com/${author}`}
                     target="_blank"
                     rel="noopener"
                     className={classes.link}>
                     {author}
-                  </MaterialLink>
+                  </MuiLink>
                 </>
               ))}
             </Typography>
           </div>
-
           <MDXRenderer>{data.sensenetBlogPost.markdownBody.childMdx.body}</MDXRenderer>
         </Container>
-      </Page>
+      </article>
     </IndexLayout>
   )
 }

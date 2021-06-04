@@ -37,7 +37,7 @@ const useStyles = makeStyles(() => {
 
 export interface BlogCardProps {
   title: string
-  excerpt: any
+  excerpt: string
   image?: any
 }
 
@@ -50,7 +50,7 @@ const BlogCard: React.FC<BlogCardProps> = (props) => {
         <GatsbyImage className={classes.image} image={props.image.childImageSharp.gatsbyImageData} alt="cover image" />
       )}
       <CardContent className={classes.wrapper}>
-        <Typography gutterBottom variant="h5" component="h5" className={classes.title}>
+        <Typography gutterBottom variant="h5" component="h2" className={classes.title}>
           {props.title}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="div" className={classes.description}>
