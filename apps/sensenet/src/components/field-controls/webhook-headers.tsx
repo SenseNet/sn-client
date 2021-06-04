@@ -126,7 +126,7 @@ export const WebhookHeaders: React.FC<ReactClientFieldSetting<LongTextFieldSetti
           </Typography>
           {Object.entries(value).map(([headerKey, headerValue], _index) => {
             return (
-              <div key={headerKey} className={classes.rowContainer}>
+              <div key={headerKey}>
                 <Typography variant="overline" gutterBottom>{`${headerKey}: ${headerValue}`}</Typography>
               </div>
             )
