@@ -95,11 +95,8 @@ export const HamburgerMenu: React.FunctionComponent<HamburgerMenuProps> = (props
   const isUnderMd = useMediaQuery(theme.breakpoints.down('md'))
 
   const anchorRef = useRef<HTMLButtonElement>(null)
-  const [isPopperOpen, setIsPopperOpen] = useState(false)
-
-  useEffect(() => {
-    setIsPopperOpen(!isUnderMd)
-  }, [isUnderMd])
+  const [isPopperOpen, setIsPopperOpen] = useState(!isUnderMd)
+  console.log(isUnderMd)
 
   const handleToggle = () => {
     setIsPopperOpen((prevOpen) => !prevOpen)

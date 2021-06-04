@@ -1,6 +1,11 @@
 import { createMuiTheme } from '@material-ui/core'
 
 export const theme = createMuiTheme({
+  props: {
+    MuiUseMediaQuery: {
+      noSsr: true,
+    },
+  },
   palette: {
     primary: {
       light: '#80cbc4',
