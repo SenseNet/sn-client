@@ -71,6 +71,7 @@ class SavedQueries extends Component<
               this.props.openActionMenu(
                 [
                   {
+                    OpId: 'ExecuteQuery param1',
                     Name: 'ExecuteQuery',
                     DisplayName: 'Execute Query',
                     Icon: 'queryExecute',
@@ -101,6 +102,7 @@ class SavedQueries extends Component<
               this.props.openActionMenu(
                 [
                   {
+                    OpId: 'ExecuteQuery param1',
                     Name: 'ExecuteQuery',
                     DisplayName: 'Execute Query',
                     Icon: 'queryExecute',

@@ -113,7 +113,7 @@ export function getUrlForContent({
       }),
       newParams: {
         path: action
-          ? removePath
+          ? removePath || pathOfContent.snPath === content.Path
             ? undefined
             : `/${PathHelper.getParentPath(content.Path)}`.replace(pathOfContent.snPath, '')
           : contentPath,

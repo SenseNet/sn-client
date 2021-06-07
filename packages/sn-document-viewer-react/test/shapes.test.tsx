@@ -23,6 +23,7 @@ describe('Shapes component', () => {
     page: examplePreviewImageData,
     zoomRatioStanding: 1,
     zoomRatioLying: 1,
+    visiblePagesIndex: 0,
   }
 
   it('should render all the shapes', () => {
@@ -255,12 +256,54 @@ describe('Shapes component', () => {
         value={{ documentData: exampleDocumentData, updateDocumentData, isInProgress: false, triggerReload: () => {} }}>
         <DocumentPermissionsContext.Provider value={{ canEdit: true, canHideRedaction: true, canHideWatermark: true }}>
           <ViewerStateContext.Provider
-            value={{ ...defaultViewerState, showRedaction: true, showShapes: true, updateState }}>
+            value={{
+              ...defaultViewerState,
+              showRedaction: true,
+              showShapes: true,
+              updateState,
+              pagesRects: [
+                {
+                  visiblePage: 0,
+                  pageRect: {
+                    top: 100,
+                    bottom: 800,
+                    right: 800,
+                    left: 100,
+                    toJSON: () => {},
+                    x: 100,
+                    y: 100,
+                    height: 700,
+                    width: 700,
+                  },
+                },
+              ],
+              boxPosition: {
+                top: 100,
+                bottom: 800,
+                right: 800,
+                left: 100,
+              },
+            }}>
             <ShapesWidget {...defaultProps} />
           </ViewerStateContext.Provider>
         </DocumentPermissionsContext.Provider>
       </DocumentDataContext.Provider>,
     )
+
+    window.HTMLElement.prototype.getClientRects = () => {
+      return [
+        {
+          width: 700,
+          height: 700,
+          top: 100,
+          left: 100,
+          right: 800,
+          bottom: 800,
+          x: 100,
+          y: 100,
+        },
+      ] as any
+    }
 
     wrapper
       .find(ShapeSkeleton)
@@ -285,6 +328,8 @@ describe('Shapes component', () => {
             })
           },
         },
+        pageX: 600,
+        pageY: 600,
       })
 
     expect(updateDocumentData).toBeCalled()

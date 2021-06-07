@@ -12,6 +12,7 @@ exports[`Page component Should render page without crashing 1`] = `
   }
   viewportHeight={1024}
   viewportWidth={768}
+  visiblePagesIndex={0}
 />
 `;
 
@@ -29,8 +30,6 @@ exports[`Page component Should render without crashing 1`] = `
     className="makeStyles-page-1 makeStyles-page-5"
     onClick={[Function]}
     onMouseDown={[Function]}
-    onMouseMove={[Function]}
-    onMouseUp={[Function]}
   >
     <span
       className="makeStyles-image-2"

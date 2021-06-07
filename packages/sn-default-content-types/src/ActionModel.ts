@@ -44,4 +44,14 @@ export interface ActionModel {
    * List of scenarios
    */
   Scenario?: string[]
+
+  /**
+   * ActionParameters
+   */
+  ActionParameters?: string[]
+
+  /**
+   * Id of the action: Name + ActionParameters
+   */
+  OpId: string
 }
