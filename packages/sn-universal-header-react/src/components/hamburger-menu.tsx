@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme: Theme) =>
       border: '1px solid #E2E2E2',
       height: `calc(100vh - ${HEADER_HEIGHT})`,
       boxShadow: '12px 0 12px rgb(0 0 0 / 20%)',
-      width: 'auto',
     },
     popperWrapperMobile: {
       width: '100%',
@@ -96,7 +95,6 @@ export const HamburgerMenu: React.FunctionComponent<HamburgerMenuProps> = (props
 
   const anchorRef = useRef<HTMLButtonElement>(null)
   const [isPopperOpen, setIsPopperOpen] = useState(!isUnderMd)
-  console.log(isUnderMd)
 
   const handleToggle = () => {
     setIsPopperOpen((prevOpen) => !prevOpen)
