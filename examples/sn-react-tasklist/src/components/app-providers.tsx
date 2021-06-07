@@ -1,15 +1,19 @@
 import { codeLogin, CodeLoginResponse } from '@sensenet/authentication-oidc-react'
 import { Repository } from '@sensenet/client-core'
 import { RepositoryContext } from '@sensenet/hooks-react'
+import { MuiThemeProvider } from '@material-ui/core'
 import React, { PropsWithChildren, useEffect, useState } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { configuration, repositoryUrl } from '../configuration'
+import { theme } from '../theme'
 import { FullScreenLoader } from './full-screen-loader'
 
 export function AppProviders({ children }: PropsWithChildren<{}>) {
   return (
     <BrowserRouter>
-      <RepositoryProvider>{children}</RepositoryProvider>
+      <MuiThemeProvider theme={theme}>
+        <RepositoryProvider>{children}</RepositoryProvider>
+      </MuiThemeProvider>
     </BrowserRouter>
   )
 }

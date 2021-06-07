@@ -1,9 +1,10 @@
 import { ConstantContent } from '@sensenet/client-core'
 import { Image } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import { Container, makeStyles } from '@material-ui/core'
+import { Button, Container, makeStyles } from '@material-ui/core'
 import React, { useEffect, useRef, useState } from 'react'
 import ReactImageGallery from 'react-image-gallery'
+import { goToRepoStyles } from '../app'
 import { DeleteConfirm } from './delete-confirm'
 import { FullScreenDialogProps } from './full-screen-dialog'
 
@@ -69,6 +70,7 @@ export const ImageGallery: React.FunctionComponent<ImageGalleryProps> = (props) 
   const [items, setItems] = useState<Image[]>([])
   const [activeItem, setActiveItem] = useState<Image>(props.openedImage)
   const galleryRef = useRef<ReactImageGallery>(null)
+  const goToRepoClasses = goToRepoStyles()
 
   useEffect(() => {
     ;(async () => {
@@ -98,6 +100,14 @@ export const ImageGallery: React.FunctionComponent<ImageGalleryProps> = (props) 
 
   return (
     <Container component="main" maxWidth="md" className={classes.root}>
+      <div className={goToRepoClasses.linkContainer}>
+        <Button
+          href="https://admin.sensenet.com/content/explorer/?path=%2FIT%2FImageLibrary"
+          target="_blank"
+          className={goToRepoClasses.button}>
+          Go to connected repository
+        </Button>
+      </div>
       <ReactImageGallery
         ref={galleryRef}
         lazyLoad={true}

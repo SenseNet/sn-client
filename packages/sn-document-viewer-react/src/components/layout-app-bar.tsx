@@ -10,6 +10,8 @@ const useStyles = makeStyles(() => {
     toolBar: {
       display: 'flex',
       justifyContent: 'space-between',
+      color: 'inherit',
+      backgroundColor: 'inherit',
     },
   })
 })

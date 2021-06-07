@@ -2,45 +2,60 @@ import {
   DocumentTitlePager,
   DocumentViewer,
   LayoutAppBar,
-  SaveWidget,
   ToggleCommentsWidget,
   ToggleShapesWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
 } from '@sensenet/document-viewer-react'
+import { createStyles, IconButton, makeStyles, useTheme } from '@material-ui/core'
+import { Close } from '@material-ui/icons'
 import React from 'react'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom'
+
+const useAppBarStyles = makeStyles(() =>
+  createStyles({
+    appBar: {
+      backgroundColor: '#342cac',
+      color: '#FFFFFF',
+    },
+  }),
+)
 
 /**
  * Document viewer component
  */
 const DocViewer: React.FunctionComponent<RouteComponentProps<{ documentId: string }>> = (props) => {
   const documentId = parseInt(props.match.params.documentId, 10)
+  const history = useHistory()
+  const layoutAppBarStyle = useAppBarStyles()
+  const theme = useTheme()
 
   if (isNaN(documentId)) {
     throw Error(`Invalid document Id: ${documentId}`)
   }
 
   return (
-    <div style={{ overflow: 'hidden', width: '100%', height: '100%', position: 'inherit' }}>
+    <>
       <DocumentViewer
         documentIdOrPath={documentId}
         renderAppBar={() => (
-          <LayoutAppBar>
+          <LayoutAppBar classes={layoutAppBarStyle}>
             <div style={{ flexShrink: 0 }}>
               <ToggleShapesWidget />
               <ToggleThumbnailsWidget />
               <ZoomInOutWidget />
-              <SaveWidget />
             </div>
             <DocumentTitlePager />
             <div style={{ display: 'flex', flexShrink: 0 }}>
               <ToggleCommentsWidget />
+              <IconButton aria-label="docviewer-close">
+                <Close style={{ color: theme.palette.common.white }} onClick={history.goBack} />
+              </IconButton>
             </div>
           </LayoutAppBar>
         )}
       />
-    </div>
+    </>
   )
 }
 
