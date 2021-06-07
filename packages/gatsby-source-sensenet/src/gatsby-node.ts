@@ -17,5 +17,12 @@ export const sourceNodes: GatsbyNode['sourceNodes'] = async (
 ) => {
   const token = options.accessToken instanceof Function ? await options.accessToken() : options.accessToken
 
-  await createTreeNode({ createNodeId, actions, createContentDigest }, options, token, 0, undefined, undefined)
+  await createTreeNode({
+    sourceNodesArgs: { createNodeId, actions, createContentDigest },
+    options,
+    token,
+    currentLevel: 0,
+    parentNode: undefined,
+    content: undefined,
+  })
 }

@@ -12,14 +12,23 @@ export const makePathToGetItself = (path: string) => {
   return `${pathInPieces.join('/')}('${contentItself}')`
 }
 
-export const createTreeNode = async (
-  sourceNodesArgs: Pick<SourceNodesArgs, 'createNodeId' | 'createContentDigest' | 'actions'>,
-  options: PluginConfig,
-  token: string,
-  currentLevel: number,
-  parentNode?: any,
-  content?: any,
-) => {
+export interface createTreeNodeParams {
+  sourceNodesArgs: Pick<SourceNodesArgs, 'createNodeId' | 'createContentDigest' | 'actions'>
+  options: PluginConfig
+  token: string
+  currentLevel: number
+  parentNode?: any
+  content?: any
+}
+
+export const createTreeNode = async ({
+  sourceNodesArgs,
+  options,
+  token,
+  currentLevel,
+  parentNode,
+  content,
+}: createTreeNodeParams) => {
   let parent: any
   const originalPath = options.path || DEFAULT_PATH
   if (currentLevel === 0) {
@@ -89,7 +98,14 @@ export const createTreeNode = async (
 
       data.d.results.length > 0 &&
         data.d.results.forEach((childContent: any) => {
-          createTreeNode(sourceNodesArgs, options, token, currentLevel + 1, parent, childContent)
+          createTreeNode({
+            sourceNodesArgs,
+            options,
+            token,
+            currentLevel: currentLevel + 1,
+            parentNode: parent,
+            content: childContent,
+          })
         })
     } else {
       return

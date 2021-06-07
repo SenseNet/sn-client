@@ -30,6 +30,7 @@
     "date-fns": "^2.21.3",
     "gatsby": "^3.5.0",
     "gatsby-plugin-image": "^1.5.0",
+    "gatsby-plugin-layout": "^2.6.0",
     "gatsby-plugin-material-ui": "^3.0.1",
     "gatsby-plugin-mdx": "^2.5.0",
     "gatsby-plugin-react-helmet": "^4.5.0",

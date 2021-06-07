@@ -1,8 +1,7 @@
-import { Container, createStyles, Grid, makeStyles } from '@material-ui/core'
+import { Container, createStyles, Grid, makeStyles, Typography } from '@material-ui/core'
 import { graphql, Link } from 'gatsby'
 import * as React from 'react'
 import BlogCard from '../components/blog-card'
-import IndexLayout from '../layouts'
 import { commonElementStyles } from '../styles/globalStyles'
 
 const useCommonElementStyle = makeStyles(commonElementStyles)
@@ -63,20 +62,20 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
   const commonClasses = useCommonElementStyle()
 
   return (
-    <IndexLayout>
-      <Container maxWidth="lg" className={commonClasses.container}>
-        <h1 className={classes.title}>News around sensenet</h1>
-        <Grid container spacing={4} className={classes.blog}>
-          {data.allSensenetBlogPost.edges.map(({ node }, index) => (
-            <Grid item xs={12} sm={6} md={4} className={classes.blogItem} key={index}>
-              <Link to={node.fields.slug} key={index} className={classes.link}>
-                <BlogCard title={node.DisplayName} excerpt={node.markdownLead.childMdx.body} image={node.leadImage} />
-              </Link>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-    </IndexLayout>
+    <Container maxWidth="lg" className={commonClasses.container}>
+      <Typography variant="h1" className={classes.title}>
+        News around sensenet
+      </Typography>
+      <Grid container spacing={4} className={classes.blog}>
+        {data.allSensenetBlogPost.edges.map(({ node }, index) => (
+          <Grid item xs={12} sm={6} md={4} className={classes.blogItem} key={index}>
+            <Link to={node.fields.slug} key={index} className={classes.link}>
+              <BlogCard title={node.DisplayName} excerpt={node.markdownLead.childMdx.body} image={node.leadImage} />
+            </Link>
+          </Grid>
+        ))}
+      </Grid>
+    </Container>
   )
 }
 

@@ -65,37 +65,33 @@ const PageTemplate: React.FC<PageTemplateProps> = ({ data }) => {
   const authors = data.sensenetBlogPost.Author.split(',')
 
   return (
-    <IndexLayout>
-      <article>
-        <Container maxWidth="lg" className={commonClasses.container}>
-          <Link to="/" className={classes.link}>
-            Back to (post) list
-          </Link>
-          <div className={classes.postHeader}>
-            <Typography variant="h2" className={classes.title}>
-              {data.sensenetBlogPost.DisplayName}
-            </Typography>
-            <Typography variant="subtitle1">
-              <span className={classes.date}>{format(parseISO(data.sensenetBlogPost.PublishDate), 'PP')}</span>
-              {authors.map((author, index) => (
-                <>
-                  {index !== 0 && ', '}
-                  <MuiLink
-                    key={author}
-                    href={`https://github.com/${author}`}
-                    target="_blank"
-                    rel="noopener"
-                    className={classes.link}>
-                    {author}
-                  </MuiLink>
-                </>
-              ))}
-            </Typography>
-          </div>
-          <MDXRenderer>{data.sensenetBlogPost.markdownBody.childMdx.body}</MDXRenderer>
-        </Container>
-      </article>
-    </IndexLayout>
+    <Container component="article" maxWidth="lg" className={commonClasses.container}>
+      <Link to="/" className={classes.link}>
+        Back to list
+      </Link>
+      <div className={classes.postHeader}>
+        <Typography variant="h2" className={classes.title}>
+          {data.sensenetBlogPost.DisplayName}
+        </Typography>
+        <Typography variant="subtitle1">
+          <span className={classes.date}>{format(parseISO(data.sensenetBlogPost.PublishDate), 'PP')}</span>
+          {authors.map((author, index) => (
+            <>
+              {index !== 0 && ', '}
+              <MuiLink
+                key={author}
+                href={`https://github.com/${author}`}
+                target="_blank"
+                rel="noopener"
+                className={classes.link}>
+                {author}
+              </MuiLink>
+            </>
+          ))}
+        </Typography>
+      </div>
+      <MDXRenderer>{data.sensenetBlogPost.markdownBody.childMdx.body}</MDXRenderer>
+    </Container>
   )
 }
 

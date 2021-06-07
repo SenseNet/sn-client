@@ -45,6 +45,7 @@ module.exports = {
     'gatsby-plugin-material-ui',
     `gatsby-transformer-sharp`,
     `gatsby-plugin-image`,
+    `gatsby-plugin-layout`,
     {
       resolve: `gatsby-source-sensenet`,
       options: {
