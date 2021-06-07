@@ -1,6 +1,6 @@
 import { UniversalHeader } from '@sensenet/universal-header-react'
-import { Container, CssBaseline, Slide } from '@material-ui/core'
-import { createStyles, makeStyles } from '@material-ui/core/styles'
+import { Button, Container, CssBaseline, Slide } from '@material-ui/core'
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import { TransitionProps } from '@material-ui/core/transitions'
 import React, { forwardRef, FunctionComponent, ReactElement, Ref } from 'react'
 import snLogo from './assets/sensenet_logo_transparent.png'
@@ -24,6 +24,32 @@ const useHamburgerMenuStyles = makeStyles(() =>
     menuIconActive: {
       color: '#C8FFF4',
     },
+    menuItem: {
+      '&:hover': {
+        color: '#13a5ad',
+      },
+    },
+  }),
+)
+
+export const goToRepoStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    linkContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+    },
+    button: {
+      backgroundColor: '#7169f4',
+      color: `${theme.palette.common.white} !important`,
+      borderRadius: '26px',
+      padding: '10px 20px',
+      margin: '40px 0',
+      height: '44px',
+      '&:hover': {
+        backgroundColor: '#5e58cc',
+      },
+      textTransform: 'uppercase',
+    },
   }),
 )
 
@@ -37,6 +63,7 @@ export const Transition = forwardRef(
 export const App: FunctionComponent = () => {
   const headerStyle = useHeaderStyles()
   const hamburgerMenuStyle = useHamburgerMenuStyles()
+  const goToRepoClasses = goToRepoStyles()
 
   return (
     <div
@@ -59,6 +86,14 @@ export const App: FunctionComponent = () => {
         appName="sn-react-imagegallery"
       />
       <Container maxWidth="md">
+        <div className={goToRepoClasses.linkContainer}>
+          <Button
+            href="https://admin.sensenet.com/content/explorer/?path=%2FIT%2FImageLibrary"
+            target="_blank"
+            className={goToRepoClasses.button}>
+            Go to connected repository
+          </Button>
+        </div>
         <ImageList />
       </Container>
     </div>

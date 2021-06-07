@@ -46,6 +46,7 @@
     "@sensenet/hooks-react": "^1.6.0",
     "@sensenet/query": "^2.1.0",
     "@sensenet/repository-events": "^2.1.0",
+    "@sensenet/universal-header-react": "^0.1.0",
     "clsx": "^1.1.1",
     "date-fns": "^2.21.3",
     "lodash.orderby": "^4.6.0",
