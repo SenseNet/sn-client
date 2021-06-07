@@ -3,7 +3,9 @@ import { graphql, Link } from 'gatsby'
 import * as React from 'react'
 import BlogCard from '../components/blog-card'
 import IndexLayout from '../layouts'
-import { useGlobalStyles } from '../styles/globalStyles'
+import { commonElementStyles } from '../styles/globalStyles'
+
+const useCommonElementStyle = makeStyles(commonElementStyles)
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -58,11 +60,11 @@ export interface IndexPageProps {
 const IndexPage: React.FC<IndexPageProps> = (props) => {
   const { data } = props
   const classes = useStyles()
-  const globalClasses = useGlobalStyles()
+  const commonClasses = useCommonElementStyle()
 
   return (
     <IndexLayout>
-      <Container maxWidth="lg" className={globalClasses.container}>
+      <Container maxWidth="lg" className={commonClasses.container}>
         <h1 className={classes.title}>News around sensenet</h1>
         <Grid container spacing={4} className={classes.blog}>
           {data.allSensenetBlogPost.edges.map(({ node }, index) => (

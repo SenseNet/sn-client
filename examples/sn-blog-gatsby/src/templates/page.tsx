@@ -5,7 +5,9 @@ import { graphql, Link } from 'gatsby'
 import { MDXRenderer } from 'gatsby-plugin-mdx'
 import * as React from 'react'
 import IndexLayout from '../layouts'
-import { globals, useGlobalStyles } from '../styles/globalStyles'
+import { commonElementStyles, globals } from '../styles/globalStyles'
+
+const useCommonElementStyle = makeStyles(commonElementStyles)
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -58,14 +60,14 @@ interface PageTemplateProps {
 
 const PageTemplate: React.FC<PageTemplateProps> = ({ data }) => {
   const classes = useStyles()
-  const globalClasses = useGlobalStyles()
+  const commonClasses = useCommonElementStyle()
 
   const authors = data.sensenetBlogPost.Author.split(',')
 
   return (
     <IndexLayout>
       <article>
-        <Container maxWidth="lg" className={globalClasses.container}>
+        <Container maxWidth="lg" className={commonClasses.container}>
           <Link to="/" className={classes.link}>
             Back to (post) list
           </Link>

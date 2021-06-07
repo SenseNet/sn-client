@@ -21,6 +21,11 @@ export const useGlobalStyles = makeStyles(() => {
         maxWidth: '100%',
       },
     },
+  })
+})
+
+export const commonElementStyles = () => {
+  return createStyles({
     container: {
       display: 'flex',
       flexFlow: 'column',
@@ -30,4 +35,4 @@ export const useGlobalStyles = makeStyles(() => {
       marginBottom: '3rem',
     },
   })
-})
+}

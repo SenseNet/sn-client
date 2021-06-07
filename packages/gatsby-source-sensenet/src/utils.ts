@@ -4,31 +4,79 @@ import fetch from 'node-fetch'
 import { PluginConfig } from './gatsby-node'
 
 export const snPrefix = 'sensenet'
+const DEFAULT_PATH = '/Root/Content'
+
+export const makePathToGetItself = (path: string) => {
+  const pathInPieces = path.split('/')
+  const contentItself = pathInPieces.pop()
+  return `${pathInPieces.join('/')}('${contentItself}')`
+}
 
 export const createTreeNode = async (
-  parentNode: any,
-  content: any,
   sourceNodesArgs: Pick<SourceNodesArgs, 'createNodeId' | 'createContentDigest' | 'actions'>,
   options: PluginConfig,
   token: string,
+  currentLevel: number,
+  parentNode?: any,
+  content?: any,
 ) => {
-  const newNode = {
-    ...content,
-    id: sourceNodesArgs.createNodeId!(`${content.Type}-${content.Id}`),
-    internal: {
-      type: `${snPrefix}${content.Type}`,
-      contentDigest: sourceNodesArgs.createContentDigest!(content),
-      description: `${content.Type} node`,
-    },
+  let parent: any
+  const originalPath = options.path || DEFAULT_PATH
+  if (currentLevel === 0) {
+    try {
+      const params = ODataUrlBuilder.buildUrlParamString(defaultRepositoryConfiguration, options.oDataOptions)
+
+      const rootPath = makePathToGetItself(originalPath)
+      const request = `${options.host}/${defaultRepositoryConfiguration.oDataToken}${rootPath}?${params}`
+      console.info('REQUEST SENT TO SENSENET:', request)
+      const res = await fetch(request, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        method: 'GET',
+      })
+
+      const data = await res.json()
+      const rootContent = data.d
+
+      const rootNode = {
+        ...rootContent,
+        id: sourceNodesArgs.createNodeId(`${rootContent.Type}-${rootContent.Id}`),
+        internal: {
+          type: `${snPrefix}root`,
+          contentDigest: sourceNodesArgs.createContentDigest(rootContent),
+          description: `root node`,
+        },
+      }
+
+      sourceNodesArgs.actions.createNode(rootNode)
+      parent = rootNode
+    } catch (error) {
+      console.log(error)
+    }
+  } else {
+    const newNode = {
+      ...content,
+      id: sourceNodesArgs.createNodeId!(`${content.Type}-${content.Id}`),
+      internal: {
+        type: `${snPrefix}${content.Type}`,
+        contentDigest: sourceNodesArgs.createContentDigest!(content),
+        description: `${content.Type} node`,
+      },
+    }
+
+    sourceNodesArgs.actions.createNode(newNode)
+    sourceNodesArgs.actions.createParentChildLink({ parent: parentNode, child: newNode })
+    parent = newNode
   }
 
-  sourceNodesArgs.actions!.createNode(newNode)
-  sourceNodesArgs.actions!.createParentChildLink({ parent: parentNode, child: newNode })
-
   try {
-    if (options.level === undefined || options.level > 0) {
+    if (options.level === undefined || currentLevel < options.level) {
       const params = ODataUrlBuilder.buildUrlParamString(defaultRepositoryConfiguration, options.oDataOptions)
-      const request = `${options.host}/${defaultRepositoryConfiguration.oDataToken}${content.Path}?${params}`
+
+      const request = `${options.host}/${defaultRepositoryConfiguration.oDataToken}${
+        content ? content.Path : originalPath
+      }?${params}`
       console.info('REQUEST SENT TO SENSENET:', request)
       const res = await fetch(request, {
         headers: {
@@ -41,13 +89,7 @@ export const createTreeNode = async (
 
       data.d.results.length > 0 &&
         data.d.results.forEach((childContent: any) => {
-          createTreeNode(
-            newNode,
-            childContent,
-            sourceNodesArgs,
-            { ...options, level: options.level ? options.level - 1 : undefined },
-            token,
-          )
+          createTreeNode(sourceNodesArgs, options, token, currentLevel + 1, parent, childContent)
         })
     } else {
       return
