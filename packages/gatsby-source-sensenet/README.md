@@ -215,11 +215,11 @@ query MyQuery {
 }
 ```
 
-gatsby-source-sensenet is also capable to build a tree of content. The root is always "sensenetroot" that comes from the _path_ param you've passedd to your gatsby-config or the default path (_/Root/Content_). If your collection has multiple types (e.g.: Folder and BlogPost) you can query both for them, and if you would like to go deeper in the tree (selecting the Folder's children which contains Images) you can create a nested childrenSensenet[_Type_] into another childrenSensenet[_Type_].
+gatsby-source-sensenet is also capable to build a tree of content. The root comes from the _path_ param you've passed to your gatsby-config or the default path (_/Root/Content_). If your collection has multiple types (e.g.: Folder and BlogPost) you can query both for them, and if you would like to go deeper in the tree (selecting the Folder's children which contains Images) you can create a nested childrenSensenet[_Type_] into another childrenSensenet[_Type_].
 
 ```graphql
 query MyQuery {
-  sensenetroot {
+  sensenetBlog {
     childrenSensenetBlogPost {
       Name
       DisplayName

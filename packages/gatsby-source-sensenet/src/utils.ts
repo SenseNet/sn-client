@@ -52,9 +52,9 @@ export const createTreeNode = async ({
         ...rootContent,
         id: sourceNodesArgs.createNodeId(`${rootContent.Type}-${rootContent.Id}`),
         internal: {
-          type: `${snPrefix}root`,
+          type: `${snPrefix}${rootContent.Type}`,
           contentDigest: sourceNodesArgs.createContentDigest(rootContent),
-          description: `root node`,
+          description: `${rootContent.Type} node`,
         },
       }
 
