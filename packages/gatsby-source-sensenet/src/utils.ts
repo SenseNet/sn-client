@@ -1,16 +1,11 @@
 import { defaultRepositoryConfiguration, ODataUrlBuilder } from '@sensenet/client-core'
+import { PathHelper } from '@sensenet/client-utils'
 import { SourceNodesArgs } from 'gatsby'
 import fetch from 'node-fetch'
 import { PluginConfig } from './gatsby-node'
 
 export const snPrefix = 'sensenet'
 const DEFAULT_PATH = '/Root/Content'
-
-export const makePathToGetItself = (path: string) => {
-  const pathInPieces = path.split('/')
-  const contentItself = pathInPieces.pop()
-  return `${pathInPieces.join('/')}('${contentItself}')`
-}
 
 export interface createTreeNodeParams {
   sourceNodesArgs: Pick<SourceNodesArgs, 'createNodeId' | 'createContentDigest' | 'actions'>
@@ -35,8 +30,8 @@ export const createTreeNode = async ({
     try {
       const params = ODataUrlBuilder.buildUrlParamString(defaultRepositoryConfiguration, options.oDataOptions)
 
-      const rootPath = makePathToGetItself(originalPath)
-      const request = `${options.host}/${defaultRepositoryConfiguration.oDataToken}${rootPath}?${params}`
+      const rootPath = PathHelper.getContentUrlByPath(originalPath)
+      const request = `${options.host}/${defaultRepositoryConfiguration.oDataToken}/${rootPath}?${params}`
       console.info('REQUEST SENT TO SENSENET:', request)
       const res = await fetch(request, {
         headers: {
