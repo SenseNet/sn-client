@@ -17,6 +17,7 @@ import {
   RestoreProps,
   SaveQueryProps,
   UploadDialogProps,
+  WebhookLogDialogProps,
 } from '.'
 
 export type DialogWithProps = (
@@ -39,6 +40,7 @@ export type DialogWithProps = (
   | { name: 'feedback' }
   | { name: 'change-password' }
   | { name: 'date-range-picker'; props: DateRangePickerProps }
+  | { name: 'webhook-log'; props: WebhookLogDialogProps }
 ) & { dialogProps?: Partial<DialogProps> }
 
 type Action = { type: 'PUSH_DIALOG'; dialog: DialogWithProps } | { type: 'POP_DIALOG' } | { type: 'CLOSE_ALL_DIALOGS' }
