@@ -44,6 +44,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         oDataOptions: {
           select: 'all',
           expand: ['Manager', 'FollowedWorkspaces', 'ModifiedBy'] as any,
+          richtexteditor: 'all',
         },
       })
       setContent(expanedContentResponse.d)

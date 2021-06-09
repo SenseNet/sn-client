@@ -25,7 +25,8 @@ export const isFullWidthField = (
   return (
     (field.fieldSettings.Name === 'Avatar' && isUser) ||
     (field.fieldSettings.Name === 'Enabled' && (isUser || isWebhookSubscription)) ||
-    field.fieldSettings.Type === 'LongTextFieldSetting'
+    field.fieldSettings.Type === 'LongTextFieldSetting' ||
+    field.fieldSettings.Type === 'RichTextFieldSetting'
   )
 }
 

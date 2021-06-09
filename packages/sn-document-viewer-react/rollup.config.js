@@ -1,4 +1,4 @@
-import babel from '@rollup/plugin-babel'
+import { babel } from '@rollup/plugin-babel'
 import commonJS from '@rollup/plugin-commonjs'
 import image from '@rollup/plugin-image'
 import resolve from '@rollup/plugin-node-resolve'
