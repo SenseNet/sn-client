@@ -1,12 +1,12 @@
-import { createStyles, makeStyles, MenuItem, Select } from '@material-ui/core'
+import { createStyles, makeStyles, MenuItem, Select, Tooltip } from '@material-ui/core'
 import { Editor } from '@tiptap/core'
 import { HeadingOptions } from '@tiptap/extension-heading'
 import React, { ChangeEvent, FC } from 'react'
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme) => {
   return createStyles({
     root: {
-      color: '#556685',
+      color: theme.palette.type === 'dark' ? theme.palette.common.white : '#556685',
       verticalAlign: 'middle',
     },
   })
@@ -49,30 +49,32 @@ export const TypographyControl: FC<TypographyControlProps> = (props) => {
   }
 
   return (
-    <Select
-      id="demo-simple-select"
-      value={getActiveValue()}
-      onChange={handleChange}
-      disableUnderline={true}
-      className={classes.root}
-      MenuProps={{
-        anchorOrigin: {
-          vertical: 'bottom',
-          horizontal: 'left',
-        },
-        transformOrigin: {
-          vertical: 'top',
-          horizontal: 'left',
-        },
-        getContentAnchorEl: null,
-      }}>
-      <MenuItem value={0}>Paragraph</MenuItem>
-      <MenuItem value={1}>Heading 1</MenuItem>
-      <MenuItem value={2}>Heading 2</MenuItem>
-      <MenuItem value={3}>Heading 3</MenuItem>
-      <MenuItem value={4}>Heading 4</MenuItem>
-      <MenuItem value={5}>Heading 5</MenuItem>
-      <MenuItem value={6}>Heading 6</MenuItem>
-    </Select>
+    <Tooltip title="Heading">
+      <Select
+        id="demo-simple-select"
+        value={getActiveValue()}
+        onChange={handleChange}
+        disableUnderline={true}
+        className={classes.root}
+        MenuProps={{
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'left',
+          },
+          transformOrigin: {
+            vertical: 'top',
+            horizontal: 'left',
+          },
+          getContentAnchorEl: null,
+        }}>
+        <MenuItem value={0}>Paragraph</MenuItem>
+        <MenuItem value={1}>Heading 1</MenuItem>
+        <MenuItem value={2}>Heading 2</MenuItem>
+        <MenuItem value={3}>Heading 3</MenuItem>
+        <MenuItem value={4}>Heading 4</MenuItem>
+        <MenuItem value={5}>Heading 5</MenuItem>
+        <MenuItem value={6}>Heading 6</MenuItem>
+      </Select>
+    </Tooltip>
   )
 }

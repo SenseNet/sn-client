@@ -9,6 +9,7 @@ import {
   IconButton,
   IconButtonProps,
   makeStyles,
+  Tooltip,
 } from '@material-ui/core'
 import ImageIcon from '@material-ui/icons/Image'
 import { Editor } from '@tiptap/react'
@@ -90,9 +91,11 @@ export const ImageControl: FC<ImageControlProps> = ({ buttonProps, editor }) => 
 
   return (
     <>
-      <IconButton onClick={handleClickOpen} {...buttonProps}>
-        <ImageIcon />
-      </IconButton>
+      <Tooltip title="Insert image">
+        <IconButton onClick={handleClickOpen} {...buttonProps}>
+          <ImageIcon />
+        </IconButton>
+      </Tooltip>
       <input
         onChange={(ev) => {
           setOpen(true)

@@ -1,4 +1,4 @@
-import { createStyles, IconButton, makeStyles } from '@material-ui/core'
+import { createStyles, IconButton, makeStyles, Tooltip } from '@material-ui/core'
 import CodeIcon from '@material-ui/icons/Code'
 import FormatAlignCenterIcon from '@material-ui/icons/FormatAlignCenter'
 import FormatAlignJustifyIcon from '@material-ui/icons/FormatAlignJustify'
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => {
 
     button: {
       borderRadius: '5px',
-      color: '#556685',
+      color: theme.palette.type === 'dark' ? theme.palette.common.white : '#556685',
       fontSize: '1.3rem',
       padding: '4px 8px',
       margin: '0 5px',
@@ -63,77 +63,99 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
     <div className={classes.root}>
       <TypographyControl editor={editor} />
       <div className={classes.divider} />
-      <IconButton
-        onClick={() => editor.chain().focus().toggleBold().run()}
-        color={editor.isActive('bold') ? 'primary' : 'default'}
-        classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
-        <strong>B</strong>
-      </IconButton>
-      <IconButton
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-        color={editor.isActive('italic') ? 'primary' : 'default'}
-        classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
-        <em>I</em>
-      </IconButton>
-      <IconButton
-        onClick={() => editor.chain().focus().toggleUnderline().run()}
-        color={editor.isActive('underline') ? 'primary' : 'default'}
-        classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
-        <FormatUnderlinedIcon />
-      </IconButton>
+      <Tooltip title="Bold (Ctrl + B)">
+        <IconButton
+          onClick={() => editor.chain().focus().toggleBold().run()}
+          color={editor.isActive('bold') ? 'primary' : 'default'}
+          classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
+          <strong>B</strong>
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Italic (Ctrl + I)">
+        <IconButton
+          onClick={() => editor.chain().focus().toggleItalic().run()}
+          color={editor.isActive('italic') ? 'primary' : 'default'}
+          classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
+          <em>I</em>
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Underline (Ctrl + U)">
+        <IconButton
+          onClick={() => editor.chain().focus().toggleUnderline().run()}
+          color={editor.isActive('underline') ? 'primary' : 'default'}
+          classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
+          <FormatUnderlinedIcon />
+        </IconButton>
+      </Tooltip>
       <div className={classes.divider} />
-      <IconButton
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        color={editor.isActive('blockquote') ? 'primary' : 'default'}
-        classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
-        <FormatQuoteIcon />
-      </IconButton>
-      <IconButton
-        onClick={() => editor.chain().focus().toggleCode().run()}
-        color={editor.isActive('code') ? 'primary' : 'default'}
-        classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
-        <CodeIcon />
-      </IconButton>
+      <Tooltip title="Block quote (Ctrl + Shift + B)">
+        <IconButton
+          onClick={() => editor.chain().focus().toggleBlockquote().run()}
+          color={editor.isActive('blockquote') ? 'primary' : 'default'}
+          classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
+          <FormatQuoteIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Code (Ctrl + E)">
+        <IconButton
+          onClick={() => editor.chain().focus().toggleCode().run()}
+          color={editor.isActive('code') ? 'primary' : 'default'}
+          classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
+          <CodeIcon />
+        </IconButton>
+      </Tooltip>
       <div className={classes.divider} />
-      <IconButton
-        onClick={() => editor.chain().focus().setTextAlign('left').run()}
-        color={editor.isActive({ textAlign: 'left' }) ? 'primary' : 'default'}
-        classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
-        <FormatAlignLeftIcon />
-      </IconButton>
-      <IconButton
-        onClick={() => {
-          editor.chain().focus().setTextAlign('center').run()
-        }}
-        color={editor.isActive({ textAlign: 'center' }) ? 'primary' : 'default'}
-        classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
-        <FormatAlignCenterIcon />
-      </IconButton>
-      <IconButton
-        onClick={() => editor.chain().focus().setTextAlign('right').run()}
-        color={editor.isActive({ textAlign: 'right' }) ? 'primary' : 'default'}
-        classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
-        <FormatAlignRightIcon />
-      </IconButton>
-      <IconButton
-        onClick={() => editor.chain().focus().setTextAlign('justify').run()}
-        color={editor.isActive({ textAlign: 'justify' }) ? 'primary' : 'default'}
-        classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
-        <FormatAlignJustifyIcon />
-      </IconButton>
+      <Tooltip title="Align left (Ctrl + Shift + L)">
+        <IconButton
+          onClick={() => editor.chain().focus().setTextAlign('left').run()}
+          color={editor.isActive({ textAlign: 'left' }) ? 'primary' : 'default'}
+          classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
+          <FormatAlignLeftIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Align center (Ctrl + Shift + E)">
+        <IconButton
+          onClick={() => {
+            editor.chain().focus().setTextAlign('center').run()
+          }}
+          color={editor.isActive({ textAlign: 'center' }) ? 'primary' : 'default'}
+          classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
+          <FormatAlignCenterIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Align right (Ctrl + Shift + R)">
+        <IconButton
+          onClick={() => editor.chain().focus().setTextAlign('right').run()}
+          color={editor.isActive({ textAlign: 'right' }) ? 'primary' : 'default'}
+          classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
+          <FormatAlignRightIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Align justify (Ctrl + Shift + J)">
+        <IconButton
+          onClick={() => editor.chain().focus().setTextAlign('justify').run()}
+          color={editor.isActive({ textAlign: 'justify' }) ? 'primary' : 'default'}
+          classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
+          <FormatAlignJustifyIcon />
+        </IconButton>
+      </Tooltip>
       <div className={classes.divider} />
-      <IconButton
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={editor.isActive('bulletList') ? 'is-active' : ''}
-        classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
-        <FormatListBulletedIcon />
-      </IconButton>
-      <IconButton
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        color={editor.isActive('orderedList') ? 'primary' : 'default'}
-        classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
-        <FormatListNumberedIcon />
-      </IconButton>
+      <Tooltip title="Bullet list">
+        <IconButton
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          className={editor.isActive('bulletList') ? 'is-active' : ''}
+          classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
+          <FormatListBulletedIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Ordered list">
+        <IconButton
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          color={editor.isActive('orderedList') ? 'primary' : 'default'}
+          classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
+          <FormatListNumberedIcon />
+        </IconButton>
+      </Tooltip>
       <LinkControl
         editor={editor}
         buttonProps={{ classes: { root: classes.button, colorPrimary: classes.buttonPrimary } }}
@@ -142,26 +164,32 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
         editor={editor}
         buttonProps={{ classes: { root: classes.button, colorPrimary: classes.buttonPrimary } }}
       />
-      <IconButton
-        classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}
-        onClick={() => {
-          editor.chain().focus().unsetAllMarks().run()
-          editor.chain().focus().clearNodes().run()
-        }}>
-        <FormatClearIcon />
-      </IconButton>
-      <IconButton
-        onClick={() => editor.chain().focus().undo().run()}
-        disabled={!editor.can().undo()}
-        classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
-        <UndoIcon />
-      </IconButton>
-      <IconButton
-        onClick={() => editor.chain().focus().redo().run()}
-        disabled={!editor.can().redo()}
-        classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
-        <RedoIcon />
-      </IconButton>
+      <Tooltip title="Clear format">
+        <IconButton
+          classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}
+          onClick={() => {
+            editor.chain().focus().unsetAllMarks().run()
+            editor.chain().focus().clearNodes().run()
+          }}>
+          <FormatClearIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Undo">
+        <IconButton
+          onClick={() => editor.chain().focus().undo().run()}
+          disabled={!editor.can().undo()}
+          classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
+          <UndoIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Redo">
+        <IconButton
+          onClick={() => editor.chain().focus().redo().run()}
+          disabled={!editor.can().redo()}
+          classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
+          <RedoIcon />
+        </IconButton>
+      </Tooltip>
     </div>
   )
 }

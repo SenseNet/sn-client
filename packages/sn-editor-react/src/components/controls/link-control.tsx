@@ -11,6 +11,7 @@ import {
   IconButtonProps,
   makeStyles,
   TextField,
+  Tooltip,
 } from '@material-ui/core'
 import { Link } from '@material-ui/icons'
 import { Editor } from '@tiptap/react'
@@ -64,9 +65,11 @@ export const LinkControl: FC<LinkControlProps> = ({ editor, buttonProps }) => {
 
   return (
     <>
-      <IconButton onClick={handleClickOpen} color={editor.isActive('link') ? 'primary' : 'default'} {...buttonProps}>
-        <Link />
-      </IconButton>
+      <Tooltip title="Link">
+        <IconButton onClick={handleClickOpen} color={editor.isActive('link') ? 'primary' : 'default'} {...buttonProps}>
+          <Link />
+        </IconButton>
+      </Tooltip>
       <Dialog
         open={open}
         onClose={handleClose}
