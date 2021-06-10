@@ -116,4 +116,9 @@ export interface ODataParams<T> {
    * Switch lifespan filtering on and off
    */
   enablelifespanfilter?: boolean
+
+  /**
+   * The value of the given RichText fields contains the editor state beside the HTMl
+   */
+  richtexteditor?: 'all' | Array<keyof T>
 }

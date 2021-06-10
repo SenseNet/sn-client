@@ -11,6 +11,7 @@
     { "path": "../sn-client-utils" },
     { "path": "../sn-control-mapper" },
     { "path": "../sn-default-content-types" },
+    { "path": "../sn-editor-react" },
     { "path": "../sn-hooks-react" },
     { "path": "../sn-pickers-react" },
     { "path": "../sn-query"},
