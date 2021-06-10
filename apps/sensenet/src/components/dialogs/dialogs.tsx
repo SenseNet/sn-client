@@ -22,7 +22,7 @@ const ContentPicker = lazy(() => import('./content-picker'))
 const Feedback = lazy(() => import('./feedback'))
 const ChangePasswordDialog = lazy(() => import('./change-password'))
 const DateRangePicker = lazy(() => import('./date-range-picker'))
-const WebhookLog = lazy(() => import('./webhook-log'))
+const WebhookLog = lazy(() => import('./webhook-log/webhook-log'))
 
 function dialogRenderer(dialog: DialogWithProps) {
   switch (dialog.name) {
