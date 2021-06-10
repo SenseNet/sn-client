@@ -181,7 +181,7 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
           <FormatClearIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Undo">
+      <Tooltip title="Undo (Ctrl + Z)">
         <IconButton
           onClick={() => editor.chain().focus().undo().run()}
           disabled={!editor.can().undo()}
@@ -189,7 +189,7 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
           <UndoIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Redo">
+      <Tooltip title="Redo (Ctrl + Y)">
         <IconButton
           onClick={() => editor.chain().focus().redo().run()}
           disabled={!editor.can().redo()}

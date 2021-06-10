@@ -85,7 +85,6 @@ export const LinkControl: FC<LinkControlProps> = ({ editor, buttonProps }) => {
           <TextField
             autoFocus
             margin="dense"
-            id="name"
             label="Url"
             type="url"
             required
