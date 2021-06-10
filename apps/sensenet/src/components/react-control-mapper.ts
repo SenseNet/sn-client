@@ -40,19 +40,7 @@ export const reactControlMapper = (repository: Repository) => {
         default:
       }
 
-      switch (setting.TextType) {
-        case 'LongText':
-          return SnFieldControls.Textarea
-        case 'RichText':
-        case 'AdvancedRichText':
-          return FieldControls.RichTextEditor
-        default:
-          if (setting.ControlHint === 'sn:QueryBuilder') {
-            return SnFieldControls.Textarea
-          } else {
-            return FieldControls.RichTextEditor
-          }
-      }
+      return SnFieldControls.Textarea
     })
     .setupFieldSettingDefault('NullFieldSetting', (setting) => {
       if (setting.Name === 'Avatar') {
