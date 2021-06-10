@@ -37,11 +37,13 @@
   "license": "GPL-2.0",
   "homepage": "https://sensenet.com",
   "peerDependencies": {
+    "@material-ui/core": "^4.0.0",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.13.9",
+    "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
     "@tiptap/core": "^2.0.0-beta.73",
     "@tiptap/extension-blockquote": "^2.0.0-beta.13",

@@ -2,10 +2,12 @@ import { createStyles, makeStyles } from '@material-ui/core'
 import { EditorContent, EditorOptions, useEditor } from '@tiptap/react'
 import React, { FC } from 'react'
 import { createExtensions } from '../extension-list'
+import { getCommonStyles } from '../styles'
 import { BubbleMenu } from './bubble-menu'
 import { MenuBar } from './menu-bar'
 
 const useStyles = makeStyles((theme) => {
+  const commonStyles = getCommonStyles(theme)
   return createStyles({
     root: {
       margin: '0.5rem 0',
@@ -14,6 +16,10 @@ const useStyles = makeStyles((theme) => {
     },
     editorWrapper: {
       padding: '0rem 1rem 0.5rem',
+      marginTop: '1rem',
+      background: commonStyles.editorBackground,
+      borderRadius: commonStyles.editorBorderRadius,
+      border: theme.palette.type === 'dark' ? commonStyles.editorBorder : 'unset',
     },
     editor: {
       outline: 0,

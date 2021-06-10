@@ -14,14 +14,21 @@ import UndoIcon from '@material-ui/icons/Undo'
 import { Editor } from '@tiptap/react'
 import React, { FC } from 'react'
 
+import { getCommonStyles } from '../styles'
+
 import { ImageControl, LinkControl, TypographyControl } from './controls'
 
 const useStyles = makeStyles((theme) => {
+  const commonStyles = getCommonStyles(theme)
   return createStyles({
     root: {
+      position: 'sticky',
+      top: '-14px',
       padding: '0.5rem 1rem',
-      borderRadius: '5px',
-      border: `2px solid ${theme.palette.primary.main}`,
+      zIndex: 10,
+      borderRadius: commonStyles.editorBorderRadius,
+      border: commonStyles.editorBorder,
+      backgroundColor: commonStyles.editorBackground,
     },
 
     divider: {
