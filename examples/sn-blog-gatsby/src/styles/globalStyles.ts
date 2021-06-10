@@ -6,7 +6,7 @@ export const globals = {
     linkColor: '#13a5ad',
     blogCardImageHeight: 270,
     borderRadius: 25,
-    headerColor: '#353b4e',
+    headerColor: '#353b4e !important',
   },
 }
 
@@ -17,10 +17,22 @@ export const useGlobalStyles = makeStyles(() => {
         textDecoration: 'unset',
         color: globals.common.linkColor,
       },
-    },
-    container: {
-      display: 'flex',
-      flexFlow: 'column',
+      img: {
+        maxWidth: '100%',
+      },
     },
   })
 })
+
+export const commonElementStyles = () => {
+  return createStyles({
+    container: {
+      display: 'flex',
+      flexFlow: 'column',
+      flex: 1,
+      position: 'relative',
+      padding: `${globals.common.containerPadding}rem 0`,
+      marginBottom: '3rem',
+    },
+  })
+}

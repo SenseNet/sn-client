@@ -1,4 +1,6 @@
 import { Card, CardContent, createStyles, makeStyles, Typography } from '@material-ui/core'
+import { GatsbyImage } from 'gatsby-plugin-image'
+import { MDXRenderer } from 'gatsby-plugin-mdx'
 import * as React from 'react'
 import { globals } from '../styles/globalStyles'
 
@@ -11,9 +13,9 @@ const useStyles = makeStyles(() => {
       flexFlow: 'column',
     },
     image: {
-      height: `${globals.common.blogCardImageHeight}px`,
+      height: `${globals.common.blogCardImageHeight}px !important`,
       objectFit: 'cover',
-      width: '100%',
+      width: '100% !important',
     },
     wrapper: {
       flexGrow: 1,
@@ -36,7 +38,7 @@ const useStyles = makeStyles(() => {
 export interface BlogCardProps {
   title: string
   excerpt: string
-  image: string
+  image?: any
 }
 
 const BlogCard: React.FC<BlogCardProps> = (props) => {
@@ -44,13 +46,15 @@ const BlogCard: React.FC<BlogCardProps> = (props) => {
 
   return (
     <Card className={classes.root}>
-      <img className={classes.image} src={props.image} alt={props.title} />
+      {props.image && (
+        <GatsbyImage className={classes.image} image={props.image.childImageSharp.gatsbyImageData} alt="cover image" />
+      )}
       <CardContent className={classes.wrapper}>
-        <Typography gutterBottom variant="h5" component="h5" className={classes.title}>
+        <Typography gutterBottom variant="h5" component="h2" className={classes.title}>
           {props.title}
         </Typography>
-        <Typography variant="body2" color="textSecondary" component="p" className={classes.description}>
-          {props.excerpt}
+        <Typography variant="body2" color="textSecondary" component="div" className={classes.description}>
+          <MDXRenderer>{props.excerpt}</MDXRenderer>
         </Typography>
       </CardContent>
     </Card>
