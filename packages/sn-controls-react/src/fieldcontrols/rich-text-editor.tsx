@@ -2,7 +2,6 @@
  * @module FieldControls
  */
 import { deepMerge } from '@sensenet/client-utils'
-// import { Editor } from '@sensenet/editor-react'
 import { CircularProgress, createStyles, FormHelperText, InputLabel, makeStyles, Typography } from '@material-ui/core'
 import React, { lazy, Suspense } from 'react'
 import { changeTemplatedValue } from '../helpers'
