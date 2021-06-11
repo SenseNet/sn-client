@@ -77,14 +77,29 @@ export function Approve(props: ApproveProps) {
         <Button aria-label={localization.cancelButton} onClick={closeLastDialog} className={globalClasses.cancelButton}>
           {localization.cancelButton}
         </Button>
-        <div>
-          <Button aria-label={localization.rejectButton} onClick={reject} className={globalClasses.cancelButton}>
-            {localization.rejectButton}
-          </Button>
-          <Button aria-label={localization.approveButton} onClick={approve} color="primary" variant="contained">
-            {localization.approveButton}
-          </Button>
-        </div>
+        {aboutToReject ? (
+          <div>
+            <Button aria-label={localization.rejectButton} onClick={reject} color="primary" variant="contained">
+              {localization.rejectButton}
+            </Button>
+            <Button
+              aria-label={localization.approveButton}
+              onClick={approve}
+              className={globalClasses.cancelButton}
+              style={{ marginLeft: '38px' }}>
+              {localization.approveButton}
+            </Button>
+          </div>
+        ) : (
+          <div>
+            <Button aria-label={localization.rejectButton} onClick={reject} className={globalClasses.cancelButton}>
+              {localization.rejectButton}
+            </Button>
+            <Button aria-label={localization.approveButton} onClick={approve} color="primary" variant="contained">
+              {localization.approveButton}
+            </Button>
+          </div>
+        )}
       </DialogActions>
     </>
   )
