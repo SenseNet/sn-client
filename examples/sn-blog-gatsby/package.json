@@ -1,7 +1,7 @@
 {
   "name": "@example/blog-gatsby",
   "description": "A gatsby example app created by gatsby-source-sensenet plugin",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "keywords": [
@@ -24,8 +24,8 @@
     "@material-ui/core": "^4.11.4",
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
-    "@sensenet/authentication-oidc-react": "^2.3.0",
-    "@sensenet/universal-header-react": "^0.1.0",
+    "@sensenet/authentication-oidc-react": "^2.3.1",
+    "@sensenet/universal-header-react": "^0.2.0",
     "cross-spawn": "^7.0.3",
     "date-fns": "^2.21.3",
     "gatsby": "^3.5.0",
@@ -41,7 +41,7 @@
     "gatsby-remark-responsive-iframe": "^4.2.0",
     "gatsby-remark-smartypants": "^4.2.0",
     "gatsby-source-filesystem": "^3.5.0",
-    "gatsby-source-sensenet": "0.1.0",
+    "gatsby-source-sensenet": "^0.1.0",
     "gatsby-transformer-json": "^3.5.0",
     "gatsby-transformer-remark": "^4.2.0",
     "gatsby-transformer-sharp": "^3.5.0",
