@@ -1,11 +1,13 @@
-import { Container, createStyles, makeStyles, Link as MaterialLink, Typography } from '@material-ui/core'
+import { Container, createStyles, makeStyles, Link as MuiLink, Typography } from '@material-ui/core'
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
 import { graphql, Link } from 'gatsby'
+import { MDXRenderer } from 'gatsby-plugin-mdx'
 import * as React from 'react'
-import Page from '../components/page'
 import IndexLayout from '../layouts'
-import { globals, useGlobalStyles } from '../styles/globalStyles'
+import { commonElementStyles, globals } from '../styles/globalStyles'
+
+const useCommonElementStyle = makeStyles(commonElementStyles)
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -22,19 +24,6 @@ const useStyles = makeStyles(() => {
     date: {
       marginRight: '1rem',
     },
-    image: {
-      maxHeight: '400px',
-      objectFit: 'cover',
-      objectPosition: 'center',
-      width: '100%',
-      marginBottom: '4rem',
-      alignSelf: 'center',
-    },
-    markdown: {
-      '& img': {
-        maxWidth: '100%',
-      },
-    },
   })
 })
 
@@ -46,14 +35,24 @@ interface PageTemplateProps {
         description: string
       }
     }
-    markdownRemark: {
-      html: string
-      excerpt: string
-      frontmatter: {
-        title: string
-        author: string[]
-        image: string
-        date: string
+    sensenetBlogPost: {
+      Body: string
+      Lead: string
+      DisplayName: string
+      Author: string
+      PublishDate: string
+      fields: {
+        slug: string
+      }
+      markdownBody: {
+        childMdx: {
+          body: any
+        }
+      }
+      markdownLead: {
+        childMdx: {
+          body: any
+        }
       }
     }
   }
@@ -61,45 +60,38 @@ interface PageTemplateProps {
 
 const PageTemplate: React.FC<PageTemplateProps> = ({ data }) => {
   const classes = useStyles()
-  const globalClasses = useGlobalStyles()
+  const commonClasses = useCommonElementStyle()
+
+  const authors = data.sensenetBlogPost.Author.split(',')
 
   return (
-    <IndexLayout>
-      <Page>
-        <Container maxWidth="lg" className={globalClasses.container}>
-          <Link to="/" className={classes.link}>
-            Back to blog
-          </Link>
-          <div className={classes.postHeader}>
-            <Typography variant="h2" className={classes.title}>
-              {data.markdownRemark.frontmatter.title}
-            </Typography>
-            <Typography variant="subtitle1">
-              <span className={classes.date}>{format(parseISO(data.markdownRemark.frontmatter.date), 'PP')}</span>
-              {data.markdownRemark.frontmatter.author.map((author, index) => (
-                <>
-                  {index !== 0 && ', '}
-                  <MaterialLink
-                    key={author}
-                    href={`https://github.com/${author}`}
-                    target="_blank"
-                    rel="noopener"
-                    className={classes.link}>
-                    {author}
-                  </MaterialLink>
-                </>
-              ))}
-            </Typography>
-          </div>
-          <img
-            className={classes.image}
-            src={`../../${data.markdownRemark.frontmatter.image}`}
-            alt={data.markdownRemark.frontmatter.title}
-          />
-          <div className={classes.markdown} dangerouslySetInnerHTML={{ __html: data.markdownRemark.html }} />
-        </Container>
-      </Page>
-    </IndexLayout>
+    <Container component="article" maxWidth="lg" className={commonClasses.container}>
+      <Link to="/" className={classes.link}>
+        Back to list
+      </Link>
+      <div className={classes.postHeader}>
+        <Typography variant="h2" className={classes.title}>
+          {data.sensenetBlogPost.DisplayName}
+        </Typography>
+        <Typography variant="subtitle1">
+          <span className={classes.date}>{format(parseISO(data.sensenetBlogPost.PublishDate), 'PP')}</span>
+          {authors.map((author, index) => (
+            <>
+              {index !== 0 && ', '}
+              <MuiLink
+                key={author}
+                href={`https://github.com/${author}`}
+                target="_blank"
+                rel="noopener"
+                className={classes.link}>
+                {author}
+              </MuiLink>
+            </>
+          ))}
+        </Typography>
+      </div>
+      <MDXRenderer>{data.sensenetBlogPost.markdownBody.childMdx.body}</MDXRenderer>
+    </Container>
   )
 }
 
@@ -113,14 +105,24 @@ export const query = graphql`
         description
       }
     }
-    markdownRemark(fields: { slug: { eq: $slug } }) {
-      html
-      excerpt
-      frontmatter {
-        title
-        author
-        image
-        date
+    sensenetBlogPost(fields: { slug: { eq: $slug } }) {
+      Body
+      Lead
+      DisplayName
+      Author
+      PublishDate
+      fields {
+        slug
+      }
+      markdownBody {
+        childMdx {
+          body
+        }
+      }
+      markdownLead {
+        childMdx {
+          body
+        }
       }
     }
   }

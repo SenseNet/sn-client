@@ -120,6 +120,8 @@ export type LongTextFieldSetting = TextFieldSetting & {
   AppendModifications?: boolean
 }
 
+export type RichTextFieldSetting = TextFieldSetting
+
 // Used in ContentType, File, User
 export type BinaryFieldSetting = FieldSetting & {
   IsText?: boolean
