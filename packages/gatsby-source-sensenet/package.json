@@ -1,0 +1,47 @@
+{
+  "name": "gatsby-source-sensenet",
+  "version": "0.1.0",
+  "description": "A minimal plugin for sensenet",
+  "main": "./dist/index.js",
+  "typings": "./dist/types/index.d.ts",
+  "scripts": {
+    "clean": "rimraf dist",
+    "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
+    "dev": "npm-run-all -p \"build:types -w\" \"build -w\"",
+    "build": "babel src --extensions .ts --out-dir dist --source-maps",
+    "build:types": "tsc -p tsconfig.json"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "keywords": [
+    "gatsby",
+    "gatsby-plugin",
+    "sensenet"
+  ],
+  "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/runtime": "^7.14.0",
+    "@sensenet/client-core": "^3.9.0",
+    "@sensenet/default-content-types": "^4.0.0",
+    "node-fetch": "^2.6.1",
+    "tslib": "^2.1.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@babel/preset-typescript": "^7.13.0",
+    "@types/node-fetch": "^2.5.10",
+    "babel-preset-gatsby-package": "^1.5.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^4.2.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  }
+}

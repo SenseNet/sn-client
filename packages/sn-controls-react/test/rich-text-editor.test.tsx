@@ -1,9 +1,9 @@
+import { Editor } from '@sensenet/editor-react'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import InputLabel from '@material-ui/core/InputLabel'
 import Typography from '@material-ui/core/Typography'
-import { shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import React from 'react'
-import ReactQuill from 'react-quill'
 import { defaultLocalization, RichTextEditor } from '../src/fieldcontrols'
 
 describe('Rich text editor field control', () => {
@@ -42,9 +42,9 @@ describe('Rich text editor field control', () => {
         />,
       )
 
-      expect(wrapper.find(ReactQuill).prop('value')).toBe(value)
-      expect(wrapper.find(ReactQuill).prop('placeholder')).toBe(defaultSettings.DisplayName)
-      expect(wrapper.find(ReactQuill).prop('readOnly')).toBeTruthy()
+      expect(wrapper.find(Editor).prop('content')).toBe(value)
+      expect(wrapper.find(Editor).prop('placeholder')).toBe(defaultSettings.DisplayName)
+      expect(wrapper.find(Editor).prop('readOnly')).toBeTruthy()
       expect(wrapper.find(InputLabel).text()).toBe(defaultSettings.DisplayName)
       expect(wrapper.find(InputLabel).prop('required')).toBeTruthy()
       expect(wrapper.find(FormHelperText).text()).toBe('description')
@@ -61,16 +61,7 @@ describe('Rich text editor field control', () => {
           }}
         />,
       )
-      expect(wrapper.find(ReactQuill).prop('value')).toBe('defaultValue')
-    })
-
-    it('should call on change when input changes', () => {
-      const fieldOnChange = jest.fn()
-      const wrapper = shallow(
-        <RichTextEditor actionName="edit" fieldOnChange={fieldOnChange} settings={defaultSettings} />,
-      )
-      wrapper.find(ReactQuill).simulate('change', { target: { value: 'Hello World' } })
-      expect(fieldOnChange).toBeCalled()
+      expect(wrapper.find(Editor).prop('content')).toBe('defaultValue')
     })
   })
 })

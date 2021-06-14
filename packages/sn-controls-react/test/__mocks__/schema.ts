@@ -98,11 +98,10 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        TextType: 'RichText',
-        Type: 'LongTextFieldSetting',
+        Type: 'RichTextFieldSetting',
       },
       {
-        Type: 'LongTextFieldSetting',
+        Type: 'RichTextFieldSetting',
         Name: 'Description',
         FieldClassName: 'SenseNet.ContentRepository.Fields.LongTextField',
         DisplayName: 'Description',
@@ -112,7 +111,6 @@ export const schema = [
         VisibleBrowse: FieldSettings.FieldVisibility.Show,
         VisibleEdit: FieldSettings.FieldVisibility.Show,
         VisibleNew: FieldSettings.FieldVisibility.Show,
-        ControlHint: 'sn:RichText',
       } as FieldSettings.LongTextFieldSetting,
       {
         Type: 'PasswordFieldSetting',

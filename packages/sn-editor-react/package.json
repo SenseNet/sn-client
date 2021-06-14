@@ -1,0 +1,108 @@
+{
+  "name": "@sensenet/editor-react",
+  "version": "0.1.0",
+  "description": "",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "exports": {
+    "require": "./dist/cjs/index.js",
+    "import": "./dist/esm/index.js"
+  },
+  "typings": "./dist/types/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "keywords": [
+    "sensenet",
+    "cms",
+    "csp",
+    "react",
+    "hooks"
+  ],
+  "scripts": {
+    "clean": "rimraf dist",
+    "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
+    "dev": "npm-run-all -p \"build:types -w\" \"build:esm -w\"",
+    "build:release": "npm-run-all -p build:esm build:cjs build:bundles",
+    "build:esm": "cross-env BABEL_ENV=esm babel src --extensions '.ts,.tsx' --out-dir 'dist/esm' --source-maps",
+    "build:cjs": "cross-env BABEL_ENV=cjs babel src --extensions '.ts,.tsx' --out-dir 'dist/cjs' --source-maps",
+    "build:bundles": "cross-env BABEL_ENV=bundle rollup -c",
+    "build:types": "tsc -p tsconfig.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
+  "license": "GPL-2.0",
+  "homepage": "https://sensenet.com",
+  "peerDependencies": {
+    "@material-ui/core": "^4.0.0",
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.13.9",
+    "@material-ui/core": "^4.11.4",
+    "@material-ui/icons": "^4.11.2",
+    "@tiptap/core": "^2.0.0-beta.73",
+    "@tiptap/extension-blockquote": "^2.0.0-beta.13",
+    "@tiptap/extension-bold": "^2.0.0-beta.13",
+    "@tiptap/extension-bullet-list": "^2.0.0-beta.13",
+    "@tiptap/extension-code": "^2.0.0-beta.13",
+    "@tiptap/extension-code-block": "^2.0.0-beta.15",
+    "@tiptap/extension-document": "^2.0.0-beta.12",
+    "@tiptap/extension-dropcursor": "^2.0.0-beta.14",
+    "@tiptap/extension-gapcursor": "^2.0.0-beta.17",
+    "@tiptap/extension-hard-break": "^2.0.0-beta.13",
+    "@tiptap/extension-heading": "^2.0.0-beta.13",
+    "@tiptap/extension-history": "^2.0.0-beta.12",
+    "@tiptap/extension-image": "^2.0.0-beta.13",
+    "@tiptap/extension-italic": "^2.0.0-beta.13",
+    "@tiptap/extension-link": "^2.0.0-beta.17",
+    "@tiptap/extension-list-item": "^2.0.0-beta.13",
+    "@tiptap/extension-ordered-list": "^2.0.0-beta.13",
+    "@tiptap/extension-paragraph": "^2.0.0-beta.14",
+    "@tiptap/extension-placeholder": "^2.0.0-beta.21",
+    "@tiptap/extension-text": "^2.0.0-beta.12",
+    "@tiptap/extension-text-align": "^2.0.0-beta.17",
+    "@tiptap/extension-text-style": "^2.0.0-beta.13",
+    "@tiptap/extension-underline": "^2.0.0-beta.14",
+    "@tiptap/html": "^2.0.0-beta.79",
+    "@tiptap/react": "^2.0.0-beta.45",
+    "tslib": "^2.2.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.13.14",
+    "@babel/core": "^7.13.15",
+    "@babel/plugin-transform-runtime": "^7.13.15",
+    "@babel/preset-env": "^7.13.15",
+    "@babel/preset-react": "^7.13.13",
+    "@babel/preset-typescript": "^7.13.0",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^18.0.0",
+    "@rollup/plugin-node-resolve": "^11.2.1",
+    "@types/enzyme": "^3.10.7",
+    "@types/jest": "^26.0.21",
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.3",
+    "babel-plugin-add-import-extension": "^1.5.1",
+    "cross-env": "^7.0.3",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "enzyme-to-json": "^3.6.2",
+    "jest": "^26.6.1",
+    "npm-run-all": "^4.1.5",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.45.2",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-terser": "^7.0.2",
+    "ts-jest": "^26.5.5",
+    "typescript": "^4.2.4"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  }
+}
