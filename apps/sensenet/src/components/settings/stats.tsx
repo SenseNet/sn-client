@@ -11,6 +11,27 @@ import { InstalledPackagesWidget } from './stats-installed-packages-widget'
 import { StorageWidget } from './stats-storage-widget'
 import { UsageWidget } from './stats-usage-widget'
 
+const getPeriods = () => {
+  return [
+    {
+      PeriodStartDate: '2021-01-01T00:00:00Z',
+      PeriodEndDate: '2021-02-01T00:00:00Z',
+    },
+    {
+      PeriodStartDate: '2021-02-01T00:00:00Z',
+      PeriodEndDate: '2021-03-01T00:00:00Z',
+    },
+    {
+      PeriodStartDate: '2021-03-01T00:00:00Z',
+      PeriodEndDate: '2021-04-01T00:00:00Z',
+    },
+    {
+      PeriodStartDate: '2021-04-01T00:00:00Z',
+      PeriodEndDate: '2021-05-01T00:00:00Z',
+    },
+  ]
+}
+
 export const Stats: React.FunctionComponent = () => {
   const globalClasses = useGlobalStyles()
   const localization = useLocalization()
@@ -54,7 +75,7 @@ export const Stats: React.FunctionComponent = () => {
       </div>
       <Container fixed>
         <StorageWidget data={dashboardData} />
-        <UsageWidget />
+        <UsageWidget periodData={getPeriods()} />
         <ComponentsWidget data={versionInfo} />
         <InstalledPackagesWidget data={versionInfo} />
       </Container>

@@ -462,8 +462,9 @@ const values = {
     installedPackagesInfo:
       'These packages are mainly the building bricks of sensenet components. There are tool-like packages that are not part of the component structure, they were made to run multiple times, for example delete or index content.',
     notAvailable: 'Not available',
-    usageOfThisRepo: 'Usage of this repository',
-    apiCalls: 'API calls',
+    traffic: 'Traffic',
+    dataTraffic: 'Data traffic (request and response)',
+    apiCalls: 'Number of requests (API calls)',
   },
   customActions: {
     executeCustomActionDialog: {
