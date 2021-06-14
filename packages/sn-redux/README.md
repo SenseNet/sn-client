@@ -143,4 +143,4 @@ dispatch(Actions.CreateContent(parentPath, content, 'Task'))
 ## Example applications
 
 - [Using React](https://github.com/SenseNet/sn-client/tree/master/examples/sn-react-redux-todo-app)
-- [Sensenet DMS Demo](https://github.com/SenseNet/sn-client/tree/master/examples/sn-dms-demo)
+- [sensenet DMS Demo](https://github.com/SenseNet/sn-client/tree/master/examples/sn-dms-demo)

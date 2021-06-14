@@ -1,4 +1,5 @@
-import { FieldSetting } from '@sensenet/default-content-types'
+import { Repository } from '@sensenet/client-core'
+import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
 
 /**
  * Search for '[Script:jScript]' tag in string and returns empty string when found
@@ -13,12 +14,19 @@ export const changeTemplatedValue = (value: string | undefined, evaluatedValue?:
   }
 }
 
-export const isFullWidthField = (field: { fieldSettings: FieldSetting }, contentType: string) => {
+export const isFullWidthField = (
+  field: { fieldSettings: FieldSetting },
+  content: GenericContent,
+  repository: Repository,
+) => {
+  const isUser = repository.schemas.isContentFromType(content, 'User')
+  const isWebhookSubscription = repository.schemas.isContentFromType(content, 'WebHookSubscription')
+
   return (
-    (field.fieldSettings.Name === 'Avatar' && contentType.includes('User')) ||
-    (field.fieldSettings.Name === 'Enabled' && contentType.includes('User')) ||
-    (field.fieldSettings.Name === 'Enabled' && contentType === 'WebHookSubscription') ||
-    field.fieldSettings.Type === 'LongTextFieldSetting'
+    (field.fieldSettings.Name === 'Avatar' && isUser) ||
+    (field.fieldSettings.Name === 'Enabled' && (isUser || isWebhookSubscription)) ||
+    field.fieldSettings.Type === 'LongTextFieldSetting' ||
+    field.fieldSettings.Type === 'RichTextFieldSetting'
   )
 }
 

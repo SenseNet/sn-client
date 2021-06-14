@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/hooks-react",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -41,11 +41,11 @@
     "react-dom": ">=16.8.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.13.9",
-    "@sensenet/client-core": "^3.10.0",
-    "@sensenet/client-utils": "^2.1.0",
-    "@sensenet/default-content-types": "^4.1.0",
-    "@sensenet/repository-events": "^2.1.0",
+    "@babel/runtime": "^7.14.0",
+    "@sensenet/client-core": "^4.0.0",
+    "@sensenet/client-utils": "^2.1.1",
+    "@sensenet/default-content-types": "^5.0.0",
+    "@sensenet/repository-events": "^2.1.1",
     "semaphore-async-await": "^1.5.1",
     "tslib": "^2.2.0"
   },

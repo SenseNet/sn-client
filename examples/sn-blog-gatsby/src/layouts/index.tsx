@@ -1,11 +1,10 @@
 import { UniversalHeader } from '@sensenet/universal-header-react'
-import { createStyles, CssBaseline, makeStyles } from '@material-ui/core'
+import { createStyles, CssBaseline, makeStyles, MuiThemeProvider } from '@material-ui/core'
 import { graphql, StaticQuery } from 'gatsby'
 import * as React from 'react'
-import Helmet from 'react-helmet'
-import LayoutMain from '../components/layout-main'
-import LayoutRoot from '../components/layout-root'
-import { globals } from '../styles/globalStyles'
+import { Helmet } from 'react-helmet'
+import { globals, useGlobalStyles } from '../styles/globalStyles'
+import { theme } from '../theme'
 
 const useHeaderStyle = makeStyles(() => {
   return createStyles({
@@ -27,24 +26,25 @@ interface StaticQueryProps {
 
 const IndexLayout: React.FC = ({ children }) => {
   const headerStyle = useHeaderStyle()
+  useGlobalStyles()
 
   return (
-    <StaticQuery
-      query={graphql`
-        query IndexLayoutQuery {
-          site {
-            siteMetadata {
-              title
-              description
-              keywords
+    <MuiThemeProvider theme={theme}>
+      <StaticQuery
+        query={graphql`
+          query IndexLayoutQuery {
+            site {
+              siteMetadata {
+                title
+                description
+                keywords
+              }
             }
           }
-        }
-      `}
-      render={(data: StaticQueryProps) => (
-        <>
-          <CssBaseline />
-          <LayoutRoot>
+        `}
+        render={(data: StaticQueryProps) => (
+          <>
+            <CssBaseline />
             <Helmet
               title={data.site.siteMetadata.title}
               meta={[
@@ -52,12 +52,12 @@ const IndexLayout: React.FC = ({ children }) => {
                 { name: 'keywords', content: data.site.siteMetadata.keywords },
               ]}
             />
-            <UniversalHeader title="Gatsby example" classes={headerStyle} />
-            <LayoutMain>{children}</LayoutMain>
-          </LayoutRoot>
-        </>
-      )}
-    />
+            <UniversalHeader title="Gatsby example" classes={headerStyle} appName="sn-blog-gatsby" />
+            {children}
+          </>
+        )}
+      />
+    </MuiThemeProvider>
   )
 }
 

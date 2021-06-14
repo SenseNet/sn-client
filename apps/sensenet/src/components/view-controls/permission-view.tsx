@@ -223,7 +223,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
               </Button>
             </Tooltip>
             <Button
-              data-test={'assing-new-permission'}
+              data-test={'assign-new-permission'}
               className={classes.assignButton}
               aria-label={localization.permissionEditor.assign}
               color="primary"
@@ -294,6 +294,9 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                         <div>
                           {inheritedEntry.identity.displayName}
                           <Link
+                            data-test={`inherited-${inheritedEntry.identity.displayName
+                              ?.replace(/\s+/g, '-')
+                              .toLowerCase()}-link`}
                             component="button"
                             onClick={async (event: React.MouseEvent<HTMLElement>) => {
                               event.stopPropagation()
@@ -340,7 +343,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                     <ListItem
                       data-test={`set-on-this-${setOnThisEntry.identity.displayName
                         ?.replace(/\s+/g, '-')
-                        .toLowerCase()}`}
+                        .toLowerCase()}${!setOnThisEntry.propagates ? '-local-only' : ''}`}
                       selected={selectedListItem === `${setOnThisEntry.identity.id}${setOnThisEntry.propagates}`}
                       button
                       key={`${setOnThisEntry.identity.id}${setOnThisEntry.propagates}`}

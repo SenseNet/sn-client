@@ -52,7 +52,7 @@ You can simply run `npm run build` or `yarn build` to create the bundle. It will
   | main / container components, layouts
   | ...
   | - app.tsx - The main entry point of your application
-  | - index.tsx - React and Sensenet Repository initialization
+  | - index.tsx - React and sensenet Repository initialization
   | - style.css - generic css overrides
 ```
 

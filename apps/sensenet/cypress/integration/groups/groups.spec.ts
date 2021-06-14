@@ -5,12 +5,13 @@ describe('Groups', () => {
   before(() => {
     cy.login()
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
+    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
+    cy.get('[data-test="groups"]').click()
   })
   it('Groups list should have the appropriate data', () => {
     const items = ['Administrators', 'Developers', 'Editors']
     const columns = ['DisplayName', 'Description', 'Members', 'Actions']
-    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
-    cy.get('[data-test="groups"]').click()
+
     items.forEach((item) => {
       cy.get(`[data-test="table-cell-${item.replace(/\s+/g, '-').toLowerCase()}"]`).should('be.visible')
     })
@@ -19,8 +20,6 @@ describe('Groups', () => {
     })
   })
   it('right click on a group should open context-menu', () => {
-    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
-    cy.get('[data-test="groups"]').click()
     cy.get('[data-test="table-cell-editors"]')
       .rightclick()
       .then(() => {
@@ -31,8 +30,6 @@ describe('Groups', () => {
       })
   })
   it('Double click on group should open a edit form of the content', () => {
-    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
-    cy.get('[data-test="groups"]').click()
     cy.get('[data-test="table-cell-editors"]').dblclick()
     cy.get('[data-test="viewtitle"').should('have.text', 'Edit Editors')
     cy.get('[data-test="cancel"]').click()
@@ -41,9 +38,6 @@ describe('Groups', () => {
   it('ensures that creation of a new group is working properly', () => {
     const groupName = 'test'
 
-    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
-
-    cy.get('[data-test="groups"]').click()
     cy.get('[data-test="add-button"]').should('not.be.disabled').click()
 
     cy.get('[data-test="listitem-group"]')
@@ -66,9 +60,6 @@ describe('Groups', () => {
       url: 'odata.svc/Root/Trash?*',
     }).as('getTrashChildren')
 
-    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
-
-    cy.get('[data-test="groups"]').click()
     cy.get('[data-test="table-cell-test"]')
       .rightclick()
       .then(() => {
@@ -83,5 +74,42 @@ describe('Groups', () => {
           cy.get('[data-test="table-cell-test"]').should('not.exist')
         })
       })
+  })
+
+  it('ensures that we can add a new member to a group', () => {
+    const expectedSuggestions = ['Developers', 'Developer Dog']
+
+    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
+    cy.get('[data-test="groups"]').click()
+
+    cy.get('[data-test="administrators-members"]').click()
+
+    cy.get('[data-test="reference-input"]').type('deve')
+
+    cy.get('[data-test^="suggestion-"] > span.MuiTypography-root')
+      .should('have.length', 2)
+      .each(($el) => {
+        expect(expectedSuggestions).to.include($el.text())
+      })
+
+    cy.get('[data-test="suggestion-developer-dog"]').click()
+
+    cy.get('[data-test="reference-item-developer-dog"]').should('not.exist')
+    cy.get('[data-test="reference-add-button"]').click()
+    cy.get('[data-test="reference-item-developer-dog"]').should('exist')
+
+    cy.get('[data-test="reference-content-list-dialog-close"]').click()
+    cy.get('[data-test="administrators-members"]').should('have.text', '2 Members')
+  })
+
+  it('ensures that we can remove a member from a group', () => {
+    cy.get('[data-test="administrators-members"]').click()
+
+    cy.get('[data-test="reference-item-developer-dog"]').should('exist')
+    cy.get('[data-test="reference-item-remove-developer-dog"]').click()
+    cy.get('[data-test="reference-item-developer-dog"]').should('not.exist')
+
+    cy.get('[data-test="reference-content-list-dialog-close"]').click()
+    cy.get('[data-test="administrators-members"]').should('have.text', '1 Members')
   })
 })

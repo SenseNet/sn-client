@@ -96,21 +96,21 @@ export const VersionView: React.FC<VersionViewProps> = (props) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>{localization.versionTableHead}</TableCell>
-              <TableCell>{localization.modifiedByTableHead}</TableCell>
-              <TableCell>{localization.commentTableHead}</TableCell>
-              <TableCell>{localization.rejectReasonTableHead}</TableCell>
-              <TableCell>{localization.restoreTableHead}</TableCell>
+              <TableCell data-test="version-table-header-cell">{localization.versionTableHead}</TableCell>
+              <TableCell data-test="version-table-header-cell">{localization.modifiedByTableHead}</TableCell>
+              <TableCell data-test="version-table-header-cell">{localization.commentTableHead}</TableCell>
+              <TableCell data-test="version-table-header-cell">{localization.rejectReasonTableHead}</TableCell>
+              <TableCell data-test="version-table-header-cell">{localization.restoreTableHead}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {versions?.map((version, index) => (
               <TableRow key={index}>
-                <TableCell>{version.Version}</TableCell>
+                <TableCell data-test="version-number">{version.Version}</TableCell>
                 <TableCell>
                   {version.VersionModificationDate &&
                     dateUtils.formatDistanceFromNow(new Date(version.VersionModificationDate))}
-                  {` (${((version.VersionModifiedBy as any) as User).FullName})`}
+                  {` (${(version.VersionModifiedBy as User).FullName})`}
                 </TableCell>
                 <TableCell>
                   <Tooltip disableFocusListener={true} title={version.CheckInComments ?? ''}>

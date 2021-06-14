@@ -59,8 +59,8 @@ export class CustomActionCommandProvider implements CommandProvider {
           a.IsODataAction,
       )
       .map((a) => {
-        const actionMetadata = contentWithActions.__metadata?.actions?.find((action) => action.name === a.Name)
-        const functionMetadata = contentWithActions.__metadata?.functions?.find((fn) => fn.name === a.Name)
+        const actionMetadata = contentWithActions.__metadata?.actions?.find((action) => action.opId === a.OpId)
+        const functionMetadata = contentWithActions.__metadata?.functions?.find((fn) => fn.opId === a.OpId)
 
         // merge custom parameters to function metadata
         const customActionMetadata = functionMetadata && {
@@ -73,6 +73,7 @@ export class CustomActionCommandProvider implements CommandProvider {
             .replace('{0}', content.DisplayName || content.Name)
             .replace('{1}', a.DisplayName || a.Name),
           secondaryText: localization.executeSecondaryText.replace('{0}', content.Name).replace('{1}', a.Name),
+          parameters: a.ActionParameters,
           content,
           hits: [filteredTerm],
           url: '',
