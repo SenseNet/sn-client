@@ -1,47 +1,84 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
+const spawn = require('cross-spawn')
+const { createRemoteFileNode } = require('gatsby-source-filesystem')
+const { repositoryUrl } = require('./configuration')
 
-exports.onCreateNode = ({ node, actions, getNode }) => {
-  const { createNodeField } = actions
+const BLOGPOST_NODE_TYPE = 'sensenetBlogPost'
 
-  switch (node.internal.type) {
-    case 'MarkdownRemark':
-      {
-        const { permalink, layout } = node.frontmatter
-        const { relativePath } = getNode(node.parent)
+exports.onPreInit = () => {
+  spawn.sync('gatsby', ['clean'], { stdio: 'inherit' })
+}
 
-        let slug = permalink
+exports.onCreateNode = async ({
+  node,
+  actions: { createNode, createNodeField },
+  createNodeId,
+  getCache,
+  createContentDigest,
+}) => {
+  if (node.internal.type === BLOGPOST_NODE_TYPE) {
+    //create slug node field
+    createNodeField({
+      node,
+      name: 'slug',
+      value: node.Name || '',
+    })
 
-        if (!slug) {
-          slug = `/${relativePath.replace('.md', '')}/`
-        }
+    //create node for LeadImage field
+    const leadImageNode = await createRemoteFileNode({
+      url: `${repositoryUrl}${node.LeadImage.Path}`,
+      parentNodeId: node.Id.toString(),
+      createNode,
+      createNodeId,
+      getCache,
+    })
 
-        createNodeField({
-          node,
-          name: 'slug',
-          value: slug || '',
-        })
+    node.leadImage___NODE = leadImageNode.id
 
-        createNodeField({
-          node,
-          name: 'layout',
-          value: layout || '',
-        })
-      }
-      break
-    default: //do nothing
+    //create node for Body field
+    const bodyMdxNode = {
+      id: `${node.Id.toString()}-MarkdownBody`,
+      parent: node.Id.toString(),
+      internal: {
+        type: `${node.internal.type}MarkdownBody`,
+        mediaType: 'text/markdown',
+        content: node.Body,
+        contentDigest: createContentDigest(node.Body),
+      },
+    }
+
+    createNode(bodyMdxNode)
+
+    node.markdownBody___NODE = bodyMdxNode.id
+
+    //create node for Lead field
+    const leadMdxNode = {
+      id: `${node.Id.toString()}-MarkdownLead`,
+      parent: node.Id.toString(),
+      internal: {
+        type: `${node.internal.type}MarkdownLead`,
+        mediaType: 'text/markdown',
+        content: node.Lead,
+        contentDigest: createContentDigest(node.Lead),
+      },
+    }
+
+    createNode(leadMdxNode)
+
+    node.markdownLead___NODE = leadMdxNode.id
   }
 }
 
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
 
-  const allMarkdown = await graphql(`
+  const allSensenetBlogPost = await graphql(`
     {
-      allMarkdownRemark(limit: 1000) {
+      allSensenetBlogPost(limit: 1000) {
         edges {
           node {
             fields {
-              layout
               slug
             }
           }
@@ -50,17 +87,19 @@ exports.createPages = async ({ graphql, actions }) => {
     }
   `)
 
-  if (allMarkdown.errors) {
-    console.error(allMarkdown.errors)
-    throw new Error(allMarkdown.errors)
+  if (allSensenetBlogPost.errors) {
+    console.error(allSensenetBlogPost.errors)
+    throw new Error(allSensenetBlogPost.errors)
   }
 
-  allMarkdown.data.allMarkdownRemark.edges.forEach(({ node }) => {
-    const { slug, layout } = node.fields
+  const blogPostTemplate = path.resolve(`./src/templates/page.tsx`)
+
+  allSensenetBlogPost.data.allSensenetBlogPost.edges.forEach(({ node }) => {
+    const { slug } = node.fields
 
     createPage({
-      path: slug,
-      component: path.resolve(`./src/templates/${layout || 'page'}.tsx`),
+      path: `/${slug}/`,
+      component: blogPostTemplate,
       context: {
         slug,
       },

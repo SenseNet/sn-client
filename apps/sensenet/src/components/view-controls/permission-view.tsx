@@ -343,7 +343,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                     <ListItem
                       data-test={`set-on-this-${setOnThisEntry.identity.displayName
                         ?.replace(/\s+/g, '-')
-                        .toLowerCase()}`}
+                        .toLowerCase()}${!setOnThisEntry.propagates ? '-local-only' : ''}`}
                       selected={selectedListItem === `${setOnThisEntry.identity.id}${setOnThisEntry.propagates}`}
                       button
                       key={`${setOnThisEntry.identity.id}${setOnThisEntry.propagates}`}

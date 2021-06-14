@@ -9,6 +9,7 @@ import {
   DisplayChoice,
   LongTextFieldSetting,
   ReferenceFieldSetting,
+  RichTextFieldSetting,
 } from '@sensenet/default-content-types'
 import { ComponentType } from 'react'
 import * as FieldControls from './fieldcontrols'
@@ -89,20 +90,11 @@ export const reactControlMapper = (repository: Repository) => {
         return FieldControls.ReferenceGrid
       }
     })
-    .setupFieldSettingDefault<LongTextFieldSetting>('LongTextFieldSetting', (setting) => {
-      switch (setting.TextType) {
-        case 'LongText':
-          return FieldControls.Textarea
-        case 'RichText':
-        case 'AdvancedRichText':
-          return FieldControls.RichTextEditor
-        default:
-          if (setting.ControlHint === 'sn:QueryBuilder') {
-            return FieldControls.Textarea
-          } else {
-            return FieldControls.RichTextEditor
-          }
-      }
+    .setupFieldSettingDefault<LongTextFieldSetting>('LongTextFieldSetting', () => {
+      return FieldControls.Textarea
+    })
+    .setupFieldSettingDefault<RichTextFieldSetting>('RichTextFieldSetting', () => {
+      return FieldControls.RichTextEditor
     })
     .setupFieldSettingDefault('NullFieldSetting', (setting) => {
       if (setting.Name === 'Avatar') {

@@ -333,6 +333,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
               })}
             />
             <Switch
+              data-test="switcher-full-access"
               checked={isFullAccessChecked()}
               disabled={isFullAccessDisabled()}
               size="small"
@@ -368,6 +369,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
           <ListItem>
             <ListItemText primary={localization.permissionEditor.localOnly} />
             <Switch
+              data-test="switcher-local-only"
               checked={isLocalOnly}
               size="small"
               onClick={() => {

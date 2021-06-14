@@ -18,6 +18,8 @@ const useStyles = makeStyles(() => {
       height: '100%',
       paddingRight: 0,
       paddingLeft: '20px',
+      color: 'inherit',
+      backgroundColor: 'inherit',
     },
     hamburgerAndTitleContainer: {
       display: 'flex',

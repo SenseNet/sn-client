@@ -33,11 +33,6 @@ const useStyles = makeStyles((theme: Theme) => {
     italic: {
       fontStyle: 'italic',
     },
-    paper: {
-      minHeight: 200,
-      padding: 20,
-      maxWidth: '50%',
-    },
     payload: {
       margin: 0,
     },

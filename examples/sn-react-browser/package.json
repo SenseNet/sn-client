@@ -41,6 +41,7 @@
     "@sensenet/document-viewer-react": "^4.1.1",
     "@sensenet/hooks-react": "^1.6.0",
     "@sensenet/list-controls-react": "^2.1.0",
+    "@sensenet/universal-header-react": "^0.1.0",
     "clsx": "^1.1.1",
     "date-fns": "^2.21.3",
     "react-router": "^5.2.0",

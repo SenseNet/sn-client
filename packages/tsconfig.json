@@ -2,6 +2,7 @@
   "files": [],
   "include": [],
   "references": [
+    { "path": "./gatsby-source-sensenet" },
     { "path": "./sn-authentication-jwt" },
     { "path": "./sn-authentication-oidc-react" },
     { "path": "./sn-client-auth-google" },
@@ -11,6 +12,7 @@
     { "path": "./sn-controls-react" },
     { "path": "./sn-default-content-types" },
     { "path": "./sn-document-viewer-react" },
+    { "path": "./sn-editor-react" },
     { "path": "./sn-hooks-react" },
     { "path": "./sn-icons-react" },
     { "path": "./sn-list-controls-react" },
