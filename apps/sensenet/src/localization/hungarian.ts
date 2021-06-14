@@ -1,6 +1,6 @@
-import { DeepPartial } from '@sensenet/client-utils'
+import { Localization } from './default'
 
-const values: DeepPartial<typeof import('./default').default> = {
+const values: Localization = {
   addButton: {
     new: 'Új...',
     addNew: 'Új hozzáadása',
@@ -305,6 +305,42 @@ const values: DeepPartial<typeof import('./default').default> = {
     exampleDescription:
       'Saját payload bármilyen valid JSON lehet. Ha az alapértelmezett payload-ot szeretné használni, hagyja üresen ezt a mezőt.',
     example: 'Példa:',
+  },
+  editor: {
+    common: {
+      cancel: 'Mégse',
+    },
+    menubar: {
+      bold: 'Félkövér',
+      italic: 'Dőlt',
+      underline: 'Aláhúzott',
+      blockquote: 'Idézet blokk',
+      code: 'Kód',
+      alignLeft: 'Balra igazítás',
+      alignCenter: 'Középre igazítás',
+      alignRight: 'Jobbra igazítás',
+      alignJustify: 'Sorkizárt',
+      bulletList: 'Felsorolás',
+      orderedList: 'Számozás',
+      link: 'Hivatkozás',
+      clearFormat: 'Formázás törlése',
+      undo: 'Visszavonás',
+      redo: 'Ismét',
+    },
+    bubbleMenu: {
+      removeImage: 'kép törlése',
+      removeLink: 'hivatkozás törlése',
+    },
+    imageControl: {
+      title: 'Képbeszúrás',
+      submit: 'Beszúrás',
+    },
+    linkControl: {
+      title: 'Hivatkozás beszúrása',
+      url: 'Url',
+      openInNewTab: 'Hivatkozás új lapon történő megnyitása',
+      submit: 'Beszúrás',
+    },
   },
 }
 

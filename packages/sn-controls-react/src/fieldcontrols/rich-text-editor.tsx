@@ -64,6 +64,7 @@ export const RichTextEditor: React.FC<
             autofocus={props.autoFocus}
             placeholder={props.settings.DisplayName}
             readOnly={props.settings.ReadOnly}
+            localization={props.localization?.richTextEditor}
             onChange={({ editor }) => {
               props.fieldOnChange?.(props.settings.Name, {
                 text: editor.getHTML(),

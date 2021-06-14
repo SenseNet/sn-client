@@ -1,4 +1,4 @@
-import { deepMerge } from '@sensenet/client-utils'
+import { deepMerge, DeepPartial } from '@sensenet/client-utils'
 import React, { createContext, FC, useEffect, useState } from 'react'
 
 export const defaultLocalization = {
@@ -40,7 +40,7 @@ export const defaultLocalization = {
 
 export const LocalizationContext = createContext(defaultLocalization)
 
-export type LocalizationType = typeof defaultLocalization
+export type LocalizationType = DeepPartial<typeof defaultLocalization>
 
 interface LocalizationProviderProps {
   localization?: Partial<LocalizationType>
