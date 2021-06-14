@@ -11,7 +11,7 @@ export function CollapsibleTable({ webhooks }: CollapsibleTableProps) {
     <Table aria-label="collapsible table">
       <TableBody>
         {webhooks.map((webhookItem) => (
-          <CollapsibleTableRow key={webhookItem.WebhookId} row={webhookItem} />
+          <CollapsibleTableRow key={webhookItem.CreationTime} row={webhookItem} />
         ))}
       </TableBody>
     </Table>

@@ -1,11 +1,11 @@
 export type WebhookStatInput = {
   Url: string
-  RequestTime: string
-  ResponseTime: string
+  CreationTime: string
+  Duration: string
   RequestLength: number
   ResponseLength: number
   ResponseStatusCode: number
-  WebhookId: number | string
+  WebHookId: number | string
   ContentId: number | string
   EventName: string
   ErrorMessage: string | null

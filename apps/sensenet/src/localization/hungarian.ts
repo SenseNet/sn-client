@@ -310,7 +310,7 @@ const values: DeepPartial<typeof import('./default').default> = {
     log: 'Napló',
     details: 'Részletek',
     requestTime: 'Kérés időpontja:',
-    responseTime: 'Válasz időpontja:',
+    duration: 'Válasz időtartama:',
     requestLength: 'Kérés mérete:',
     responseLength: 'Válasz mérete:',
     webhookId: 'Webhook azonosító:',

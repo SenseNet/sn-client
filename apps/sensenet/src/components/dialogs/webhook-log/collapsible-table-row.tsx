@@ -47,7 +47,7 @@ export function CollapsibleTableRow(props: { row: WebhookStatInput }) {
     <React.Fragment>
       <TableRow className={classes.row}>
         <TableCell align="left">
-          {dateUtils.formatDate(new Date(props.row.RequestTime), 'yyyy-MM-dd HH:mm aaa')}
+          {dateUtils.formatDate(new Date(props.row.CreationTime), 'yyyy-MM-dd HH:mm aaa')}
         </TableCell>
         <TableCell align="center" className={classes.cell}>
           <FiberManualRecord
@@ -74,7 +74,7 @@ export function CollapsibleTableRow(props: { row: WebhookStatInput }) {
               <div style={{ width: '50%' }}>
                 <div>
                   <span className={classes.title}>{localization.requestTime}</span>
-                  {dateUtils.formatDate(new Date(props.row.RequestTime), 'yyyy-MM-dd HH:mm aaa')}
+                  {dateUtils.formatDate(new Date(props.row.CreationTime), 'yyyy-MM-dd HH:mm aaa')}
                 </div>
                 <div>
                   <span className={classes.title}>{localization.requestLength}</span>
@@ -82,7 +82,7 @@ export function CollapsibleTableRow(props: { row: WebhookStatInput }) {
                 </div>
                 <div>
                   <span className={classes.title}>{localization.webhookId}</span>
-                  {props.row.WebhookId}
+                  {props.row.WebHookId}
                 </div>
                 <div>
                   <span className={classes.title}>{localization.eventName}</span>
@@ -91,12 +91,12 @@ export function CollapsibleTableRow(props: { row: WebhookStatInput }) {
               </div>
               <div style={{ width: '50%' }}>
                 <div>
-                  <span className={classes.title}>{localization.responseTime}</span>
-                  {dateUtils.formatDate(new Date(props.row.ResponseTime), 'yyyy-MM-dd HH:mm aaa')}
+                  <span className={classes.title}>{localization.duration}</span>
+                  {props.row.Duration}
                 </div>
                 <div>
-                  <span className={classes.title}>{localization.requestLength}</span>
-                  {props.row.RequestLength}
+                  <span className={classes.title}>{localization.responseLength}</span>
+                  {props.row.ResponseLength}
                 </div>
                 <div>
                   <span className={classes.title}>{localization.contentId}</span>

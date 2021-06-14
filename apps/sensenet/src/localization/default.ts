@@ -635,7 +635,7 @@ const values = {
     log: 'Log',
     details: 'Details',
     requestTime: 'Request time:',
-    responseTime: 'Response time:',
+    duration: 'Duration:',
     requestLength: 'Request length:',
     responseLength: 'Response length',
     webhookId: 'Webhook id:',
