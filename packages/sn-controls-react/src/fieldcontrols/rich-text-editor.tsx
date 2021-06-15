@@ -84,7 +84,7 @@ export const RichTextEditor: React.FC<
           {props.fieldValue ? (
             <div
               dangerouslySetInnerHTML={{
-                __html: typeof props.fieldValue === 'string' ? props.fieldValue : props.fieldValue.text,
+                __html: typeof props.fieldValue === 'string' ? props.fieldValue : (props.fieldValue as any).text,
               }}
             />
           ) : (
