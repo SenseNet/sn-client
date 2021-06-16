@@ -6,6 +6,7 @@ export const defaultLocalization = {
     cancel: 'Cancel',
   },
   menubar: {
+    typography: 'Heading',
     bold: 'Bold',
     italic: 'Italic',
     underline: 'Underline',
@@ -35,6 +36,10 @@ export const defaultLocalization = {
     url: 'Url',
     openInNewTab: 'Open link in a new tab',
     submit: 'Insert',
+  },
+  typographyControl: {
+    paragraph: 'Paragraph',
+    heading: 'Heading',
   },
 }
 

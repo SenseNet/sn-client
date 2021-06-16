@@ -311,6 +311,7 @@ const values: Localization = {
       cancel: 'Mégse',
     },
     menubar: {
+      typography: 'Címsor',
       bold: 'Félkövér',
       italic: 'Dőlt',
       underline: 'Aláhúzott',
@@ -340,6 +341,10 @@ const values: Localization = {
       url: 'Url',
       openInNewTab: 'Hivatkozás új lapon történő megnyitása',
       submit: 'Beszúrás',
+    },
+    typographyControl: {
+      paragraph: 'Normál',
+      heading: 'Címsor',
     },
   },
 }
