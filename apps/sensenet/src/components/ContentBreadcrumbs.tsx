@@ -81,6 +81,7 @@ export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(pr
         <div className={classes.batchActionWrapper}>
           <Tooltip title={localization.batchActions.delete} placement="bottom">
             <IconButton
+              data-test="batch-delete"
               aria-label="delete"
               onClick={() => {
                 openDialog({
@@ -94,6 +95,7 @@ export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(pr
           </Tooltip>
           <Tooltip title={localization.batchActions.move} placement="bottom">
             <IconButton
+              data-test="batch-move"
               aria-label="move"
               onClick={() => {
                 openDialog({
@@ -115,6 +117,7 @@ export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(pr
           </Tooltip>
           <Tooltip title={localization.batchActions.copy} placement="bottom">
             <IconButton
+              data-test="batch-copy"
               aria-label="copy"
               onClick={() => {
                 openDialog({
