@@ -2,7 +2,7 @@ import { Editor } from '@sensenet/editor-react'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import InputLabel from '@material-ui/core/InputLabel'
 import Typography from '@material-ui/core/Typography'
-import { mount, shallow } from 'enzyme'
+import { shallow } from 'enzyme'
 import React from 'react'
 import { defaultLocalization, RichTextEditor } from '../src/fieldcontrols'
 
