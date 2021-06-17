@@ -1,5 +1,6 @@
 import { formatSize } from '@sensenet/controls-react'
 import { createStyles, ListItemText, makeStyles, MenuItem, Paper, Select } from '@material-ui/core'
+import { isSameDay } from 'date-fns'
 import React, { useEffect, useState } from 'react'
 import ReactFrappeChart from 'react-frappe-charts'
 import { widgetStyles } from '../../globalStyles'
@@ -7,8 +8,8 @@ import { useLocalization } from '../../hooks'
 import { useDateUtils } from '../../hooks/use-date-utils'
 
 export type PeriodData = {
-  PeriodStartDate: string
-  PeriodEndDate: string
+  PeriodStartDate: Date
+  PeriodEndDate: Date
 }
 
 const getUsageData1 = () => {
@@ -23,14 +24,14 @@ const getUsageData1 = () => {
       3619, 3620, 3621, 3622, 3623, 3624, 3625, 3626, 3627, 3628, 3629, 3630,
     ],
     RequestLengths: [
-      360000, 360001, 360002, 360003, 360004, 360005, 360006, 360007, 360008, 360009, 360010, 360011, 360012, 360013,
-      360014, 360015, 360016, 360017, 360018, 360019, 360020, 360021, 360022, 360023, 360024, 360025, 360026, 360027,
-      360028, 360029, 360030,
+      310000, 360001, 360002, 360003, 300004, 360005, 360006, 360007, 310008, 360009, 360010, 360011, 360012, 360013,
+      310014, 360015, 360016, 360017, 300018, 360019, 360020, 360021, 310022, 360023, 360024, 360025, 360026, 360027,
+      310028, 360029, 360030,
     ],
     ResponseLengths: [
-      340000, 340001, 340002, 340003, 340004, 340005, 340006, 340007, 340008, 340009, 340010, 340011, 340012, 340013,
-      340014, 340015, 340016, 340017, 340018, 340019, 340020, 340021, 340022, 340023, 340024, 340025, 340026, 340027,
-      340028, 340029, 340030,
+      340000, 300001, 340002, 340003, 310004, 340005, 340006, 340007, 340008, 340009, 340010, 340011, 340012, 340013,
+      340014, 300015, 340016, 340017, 310018, 340019, 340020, 340021, 340022, 340023, 340024, 340025, 340026, 340027,
+      340028, 300029, 340030,
     ],
     Status100: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     Status200: [
@@ -61,14 +62,14 @@ const getUsageData2 = () => {
       2619, 2620, 2621, 2622, 2622, 2624, 2625, 2626, 2627, 2628, 1629, 2620, 2620,
     ],
     RequestLengths: [
-      160000, 160001, 160002, 160001, 160004, 160005, 160006, 160007, 160008, 160009, 160010, 160011, 160012, 160011,
-      160014, 160015, 160016, 160017, 160018, 160019, 160020, 160021, 160022, 160021, 160024, 160025, 160026, 160027,
-      160028, 160029, 160010, 160010,
+      150000, 160001, 140002, 160001, 130004, 160005, 160006, 110007, 160008, 160009, 160010, 160011, 160012, 160011,
+      150014, 160015, 140016, 160017, 130018, 160019, 160020, 110021, 160022, 160021, 160024, 160025, 160026, 160027,
+      150028, 160029, 140010, 160010,
     ],
     ResponseLengths: [
-      240000, 240001, 240001, 240002, 240004, 240005, 240006, 240007, 240008, 240009, 240010, 240011, 240011, 240012,
-      240014, 240015, 240016, 240017, 240018, 240019, 240010, 240011, 240011, 240012, 240014, 240015, 240016, 240017,
-      240018, 240019, 240020, 240020,
+      230000, 240001, 240001, 240002, 220004, 240005, 240006, 240007, 200008, 240009, 240010, 240011, 240011, 240012,
+      230014, 240015, 240016, 240017, 220018, 240019, 240010, 240011, 200011, 240012, 240014, 240015, 240016, 240017,
+      230018, 240019, 240020, 240020,
     ],
     Status100: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     Status200: [
@@ -125,8 +126,8 @@ export const UsageWidget: React.FunctionComponent<UsageWidgetProps> = (props) =>
 
   useEffect(() => {
     if (
-      currentPeriod.PeriodStartDate === '2021-01-01T00:00:00Z' ||
-      currentPeriod.PeriodStartDate === '2021-03-01T00:00:00Z'
+      isSameDay(currentPeriod.PeriodStartDate, new Date('2021-01-01T00:00:00Z')) ||
+      isSameDay(currentPeriod.PeriodStartDate, new Date('2021-03-01T00:00:00Z'))
     ) {
       setCurrentData(getUsageData1())
     } else {
@@ -162,16 +163,16 @@ export const UsageWidget: React.FunctionComponent<UsageWidgetProps> = (props) =>
               value={currentPeriod.PeriodStartDate}
               onChange={(event) => {
                 setCurrentPeriod(
-                  props.periodData.find((usageItem) => event.target.value === usageItem.PeriodStartDate) ||
+                  props.periodData.find((usageItem) => event.target.value === usageItem.PeriodStartDate.toString()) ||
                     props.periodData[props.periodData.length - 1],
                 )
               }}>
               {props.periodData.map((item, index) => {
                 return (
-                  <MenuItem key={index} value={item.PeriodStartDate}>
+                  <MenuItem key={index} value={item.PeriodStartDate.toString()}>
                     <ListItemText>
-                      {dateUtils.formatDate(dateUtils.parseDate(item.PeriodStartDate as any), 'LLL dd yyyy')} -{' '}
-                      {dateUtils.formatDate(dateUtils.parseDate(item.PeriodEndDate as any), 'LLL dd yyyy')}
+                      {dateUtils.formatDate(item.PeriodStartDate, 'LLL dd yyyy')} -{' '}
+                      {dateUtils.formatDate(item.PeriodEndDate, 'LLL dd yyyy')}
                     </ListItemText>
                   </MenuItem>
                 )

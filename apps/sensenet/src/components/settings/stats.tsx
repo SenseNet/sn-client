@@ -1,6 +1,7 @@
 import { useRepository, VersionInfo } from '@sensenet/hooks-react'
 import { Container } from '@material-ui/core'
 import clsx from 'clsx'
+import { addMonths, isSameDay, parseISO } from 'date-fns'
 import React, { useEffect, useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
@@ -11,25 +12,47 @@ import { InstalledPackagesWidget } from './stats-installed-packages-widget'
 import { StorageWidget } from './stats-storage-widget'
 import { UsageWidget } from './stats-usage-widget'
 
-const getPeriods = () => {
-  return [
-    {
-      PeriodStartDate: '2021-01-01T00:00:00Z',
-      PeriodEndDate: '2021-02-01T00:00:00Z',
-    },
-    {
-      PeriodStartDate: '2021-02-01T00:00:00Z',
-      PeriodEndDate: '2021-03-01T00:00:00Z',
-    },
-    {
-      PeriodStartDate: '2021-03-01T00:00:00Z',
-      PeriodEndDate: '2021-04-01T00:00:00Z',
-    },
-    {
-      PeriodStartDate: '2021-04-01T00:00:00Z',
-      PeriodEndDate: '2021-05-01T00:00:00Z',
-    },
-  ]
+export type RawPeriodData = {
+  Window: 'Hour' | 'Day' | 'Month' | 'Year'
+  Resolution: 'Minute' | 'Hour' | 'Day' | 'Month'
+  First: string
+  Last: string
+  Count: number
+}
+
+const makePeriodArrayFromRawData = () => {
+  const periodArray = []
+  const rawData = getPeriodFromBackend()
+
+  let currentDate = parseISO(rawData.First)
+  const lastDate = parseISO(rawData.Last)
+
+  while (!isSameDay(currentDate, lastDate)) {
+    const endDate = addMonths(currentDate, 1)
+    periodArray.push({
+      PeriodStartDate: currentDate,
+      PeriodEndDate: endDate,
+    })
+    currentDate = endDate
+  }
+  if (periodArray.length < rawData.Count) {
+    periodArray.push({
+      PeriodStartDate: lastDate,
+      PeriodEndDate: new Date(Date.now()),
+    })
+  }
+
+  return periodArray
+}
+
+const getPeriodFromBackend = () => {
+  return {
+    Window: 'Month',
+    Resolution: 'Day',
+    First: '2021-01-01T00:00:00Z',
+    Last: '2021-05-01T00:00:00Z',
+    Count: 4,
+  }
 }
 
 export const Stats: React.FunctionComponent = () => {
@@ -75,7 +98,7 @@ export const Stats: React.FunctionComponent = () => {
       </div>
       <Container fixed>
         <StorageWidget data={dashboardData} />
-        <UsageWidget periodData={getPeriods()} />
+        <UsageWidget periodData={makePeriodArrayFromRawData()} />
         <ComponentsWidget data={versionInfo} />
         <InstalledPackagesWidget data={versionInfo} />
       </Container>
