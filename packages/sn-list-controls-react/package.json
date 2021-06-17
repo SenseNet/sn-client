@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/list-controls-react",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -43,8 +43,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.14.0",
-    "@sensenet/default-content-types": "^4.1.0",
-    "@sensenet/icons-react": "^2.1.0",
+    "@sensenet/default-content-types": "^5.0.0",
+    "@sensenet/icons-react": "^2.1.1",
     "clsx": "^1.1.1",
     "date-fns": "^2.21.3",
     "react-virtualized": "^9.22.3",
