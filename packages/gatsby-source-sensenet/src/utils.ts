@@ -67,6 +67,7 @@ export const createTreeNode = async ({
         contentDigest: sourceNodesArgs.createContentDigest!(content),
         description: `${content.Type} node`,
       },
+      parent: parentNode.id,
     }
 
     sourceNodesArgs.actions.createNode(newNode)
