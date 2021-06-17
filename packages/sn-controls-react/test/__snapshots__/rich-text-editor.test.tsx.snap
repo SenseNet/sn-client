@@ -17,26 +17,3 @@ exports[`Rich text editor field control in browse view should show the displayna
   />
 </div>
 `;
-
-exports[`Rich text editor field control in edit/new view should set all the props 1`] = `
-<div
-  className="makeStyles-richTextEditor-1"
->
-  <WithStyles(ForwardRef(InputLabel))
-    htmlFor="Description"
-    required={true}
-    shrink={true}
-  >
-    Description of the field
-  </WithStyles(ForwardRef(InputLabel))>
-  <Editor
-    content="Hello World"
-    onChange={[Function]}
-    placeholder="Description of the field"
-    readOnly={true}
-  />
-  <WithStyles(ForwardRef(FormHelperText))>
-    description
-  </WithStyles(ForwardRef(FormHelperText))>
-</div>
-`;
