@@ -20,8 +20,8 @@ type RichTextEditorClassKey = Partial<ReturnType<typeof useStyles>>
 const getFieldValue = (rawValue?: string) => {
   let value
 
-  if (rawValue === undefined) {
-    return
+  if (rawValue === undefined || rawValue === null) {
+    return undefined
   }
 
   try {
