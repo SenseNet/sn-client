@@ -8,7 +8,7 @@ import { createExtensions } from '../src/extension-list'
 
 describe('typography control', () => {
   const editor = new TiptapEditor({
-    content: '<h2>Hello</h2><p>world</p>',
+    content: '<h6>Hello</h6><p>world</p>',
     extensions: createExtensions(),
   })
 
@@ -31,6 +31,6 @@ describe('typography control', () => {
     editor.commands.setTextSelection(2)
 
     const wrapper = shallow(<TypographyControl editor={editor} />)
-    expect(wrapper.find(Select).prop('value')).toBe(2)
+    expect(wrapper.find(Select).prop('value')).toBe(6)
   })
 })

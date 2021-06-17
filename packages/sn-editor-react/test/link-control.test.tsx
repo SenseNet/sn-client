@@ -25,9 +25,17 @@ describe('link control', () => {
 
     const wrapper = shallow(<LinkControl editor={editor} />)
     expect(wrapper.find(Dialog).prop('open')).toBe(false)
-    expect(wrapper.find(IconButton).simulate('click'))
+    wrapper.find(IconButton).simulate('click')
     expect(wrapper.find(Dialog).prop('open')).toBe(true)
     expect(wrapper.find(DialogTitle).text()).toBe(defaultLocalization.linkControl.title)
+  })
+
+  it('should not open dialog when no text selected', () => {
+    editor.commands.setTextSelection(0)
+
+    const wrapper = shallow(<LinkControl editor={editor} />)
+    wrapper.find(IconButton).simulate('click')
+    expect(wrapper.find(Dialog).prop('open')).toBe(false)
   })
 
   it('should add a link to the selected text', () => {
@@ -49,5 +57,17 @@ describe('link control', () => {
     expect(onChange).toReturnWith(
       '<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://sensenet.com">Hello</a> world</p>',
     )
+  })
+
+  it('should pre-fill the form when a link is active', () => {
+    editor.commands.setContent(
+      '<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://sensenet.com">Hello</a> world</p>',
+    )
+    editor.commands.setTextSelection({ from: 0, to: 6 })
+
+    const wrapper = shallow(<LinkControl editor={editor} />)
+    wrapper.find(IconButton).simulate('click')
+    expect(wrapper.find(TextField).prop('value')).toBe('https://sensenet.com')
+    expect(wrapper.find(FormControlLabel).prop('control').props.checked).toBe(true)
   })
 })
