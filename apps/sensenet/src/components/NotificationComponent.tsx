@@ -92,6 +92,7 @@ export const NotificationComponent: FunctionComponent = () => {
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Icon item={value} style={{ marginRight: '1em' }} />
                 <div
+                  data-test="snackbar-message"
                   title={value.message}
                   style={{ overflow: 'hidden', textOverflow: 'ellipsis', wordBreak: 'break-word' }}>
                   {(count > 1 && value.data?.digestMessage && value.data.digestMessage.replace('{count}', count)) ||
