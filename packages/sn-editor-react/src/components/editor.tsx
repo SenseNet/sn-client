@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => {
   })
 })
 
-interface EditorProps {
+export interface EditorProps {
   autofocus?: EditorOptions['autofocus']
   content?: EditorOptions['content']
   onChange?: EditorOptions['onUpdate']
