@@ -25,6 +25,8 @@ export function Approve(props: ApproveProps) {
   const globalClasses = useGlobalStyles()
 
   const name = content.DisplayName ?? content.Name
+  const submitProps = { color: 'primary', variant: 'contained' } as const
+  const cancelProps = { className: globalClasses.cancelButton } as const
 
   const reject = async () => {
     if (!aboutToReject) {
@@ -77,29 +79,21 @@ export function Approve(props: ApproveProps) {
         <Button aria-label={localization.cancelButton} onClick={closeLastDialog} className={globalClasses.cancelButton}>
           {localization.cancelButton}
         </Button>
-        {aboutToReject ? (
-          <div>
-            <Button aria-label={localization.rejectButton} onClick={reject} color="primary" variant="contained">
-              {localization.rejectButton}
-            </Button>
-            <Button
-              aria-label={localization.approveButton}
-              onClick={approve}
-              className={globalClasses.cancelButton}
-              style={{ marginLeft: '38px' }}>
-              {localization.approveButton}
-            </Button>
-          </div>
-        ) : (
-          <div>
-            <Button aria-label={localization.rejectButton} onClick={reject} className={globalClasses.cancelButton}>
-              {localization.rejectButton}
-            </Button>
-            <Button aria-label={localization.approveButton} onClick={approve} color="primary" variant="contained">
-              {localization.approveButton}
-            </Button>
-          </div>
-        )}
+        <div>
+          <Button
+            aria-label={localization.rejectButton}
+            onClick={reject}
+            {...(aboutToReject ? submitProps : cancelProps)}>
+            {localization.rejectButton}
+          </Button>
+          <Button
+            aria-label={localization.approveButton}
+            onClick={approve}
+            {...(aboutToReject ? cancelProps : submitProps)}
+            style={{ marginLeft: '38px' }}>
+            {localization.approveButton}
+          </Button>
+        </div>
       </DialogActions>
     </>
   )
