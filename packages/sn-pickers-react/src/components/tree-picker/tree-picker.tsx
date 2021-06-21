@@ -47,7 +47,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
     (item: T) => {
       if (item.isParent) {
         return (
-          <ListItem key={item.Id} button={true}>
+          <ListItem data-test="picker-up" key={item.Id} button={true}>
             <ListItemIcon>
               <ArrowUpward />
             </ListItemIcon>
@@ -63,6 +63,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
           <ListItemIcon>
             {!props.selectionBlacklist?.includes(item.Path) && (
               <Checkbox
+                data-test={`picker-checkbox-item-${item.Name.replace(/\s+/g, '-').toLowerCase()}`}
                 color="primary"
                 edge="start"
                 checked={selection.some((selected) => selected.Id === item.Id)}
