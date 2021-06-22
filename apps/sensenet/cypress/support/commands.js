@@ -1,5 +1,6 @@
 import 'cypress-file-upload'
 import { codeLogin } from '@sensenet/authentication-oidc-react'
+import { getAuthConfig } from '../../src/services/auth-config'
 
 // ***********************************************
 // This example commands.js shows you how to
@@ -41,7 +42,7 @@ Cypress.Commands.add('login', (userType = 'admin') => {
     clientId: user.clientId,
     clientSecret: Cypress.env(`secret_${userType}`) || user.clientSecret,
     identityServerUrl: Cypress.env('identityServer'),
-    appId: '11V28Add7IaP1iFw',
+    appId: Cypress.env('appId'),
     userId: user.id,
     fetchMethod: (url, options) => cy.request({ url, ...options }),
   })
@@ -110,4 +111,15 @@ Cypress.Commands.add('scrollToItem', ({ container, selector, done }) => {
 
     timeout()
   })
+})
+
+Cypress.Commands.add('checkContextMenu', ({ selector, contextMenuItems, clickAction }) => {
+  cy.get(selector)
+    [clickAction]()
+    .then(() => {
+      cy.get('ul[role="menu"] li').each(($el) => {
+        expect(contextMenuItems).to.include($el.text())
+      })
+      cy.get('body').click()
+    })
 })

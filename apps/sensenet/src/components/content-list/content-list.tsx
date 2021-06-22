@@ -373,7 +373,10 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
       case 'Actions':
         return (
           <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
-            <ActionsField onOpen={(ev) => openContext(ev, fieldOptions.rowData)} />
+            <ActionsField
+              onOpen={(ev) => openContext(ev, fieldOptions.rowData)}
+              name={fieldOptions.rowData.Name as string}
+            />
           </ContextMenuWrapper>
         )
       case 'Enabled':

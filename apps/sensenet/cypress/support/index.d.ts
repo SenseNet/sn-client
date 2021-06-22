@@ -36,5 +36,18 @@ declare namespace Cypress {
       selector: string
       done?: (element: HTMLElement) => void
     }): Promise<HTMLElement>
+
+    /**
+     * Check the context menu items for the selected item
+     */
+    checkContextMenu({
+      selector,
+      contextMenuItems,
+      clickAction,
+    }: {
+      selector: string
+      contextMenuItems: string[]
+      clickAction: 'click' | 'rightclick'
+    }): void
   }
 }
