@@ -5,7 +5,7 @@ Source plugin for pulling data from [sensenet](https://sensenet.com) into Gatsby
 sensenet is an open-source headless content management system (CMS) built mainly for developers and development companies.
 It is a content repository where you can store all your content and reach them through APIs. It is a solid base for your custom solutions, offering an enterprise-grade security and permission system, versioning, dynamic content types and even more.
 
-An example of how to use this plugin is at [sn-blog-gatsby](https://github.com/SenseNet/sn-client/tree/develop/examples/sn-blog-gatsby)
+An example of how to use this plugin is at [sn-blog-gatsby](https://github.com/SenseNet/gatsby-starter-sensenet-blog)
 
 ## How to install
 
@@ -153,7 +153,7 @@ You can find them on your [snaas user profile](https://docs.sensenet.com/concept
 ## When do I use this plugin?
 
 sensenet is the single hub for all your content packed with enterprise grade features. In sensenet everything is a content (blog posts, files, users, roles, comments, etc.) delivered the same way through the API, making it super easy to work with any type of data. With the flexibility and power of sensenet and Gatsby you can build any kind of app or website you need.
-For more details check [this guide](https://docs.sensenet.com/integrations//gatsby/using-gatsby-with-sensenet).
+For more details check [this guide](https://docs.sensenet.com/integrations/gatsby/using-gatsby-with-sensenet).
 
 ## Examples of usage
 
