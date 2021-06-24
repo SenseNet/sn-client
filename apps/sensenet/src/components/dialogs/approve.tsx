@@ -25,6 +25,8 @@ export function Approve(props: ApproveProps) {
   const globalClasses = useGlobalStyles()
 
   const name = content.DisplayName ?? content.Name
+  const submitProps = { color: 'primary', variant: 'contained' } as const
+  const cancelProps = { className: globalClasses.cancelButton } as const
 
   const reject = async () => {
     if (!aboutToReject) {
@@ -78,10 +80,17 @@ export function Approve(props: ApproveProps) {
           {localization.cancelButton}
         </Button>
         <div>
-          <Button aria-label={localization.rejectButton} onClick={reject} className={globalClasses.cancelButton}>
+          <Button
+            aria-label={localization.rejectButton}
+            onClick={reject}
+            {...(aboutToReject ? submitProps : cancelProps)}>
             {localization.rejectButton}
           </Button>
-          <Button aria-label={localization.approveButton} onClick={approve} color="primary" variant="contained">
+          <Button
+            aria-label={localization.approveButton}
+            onClick={approve}
+            {...(aboutToReject ? cancelProps : submitProps)}
+            style={{ marginLeft: '38px' }}>
             {localization.approveButton}
           </Button>
         </div>

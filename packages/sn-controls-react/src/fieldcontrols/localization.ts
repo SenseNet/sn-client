@@ -53,6 +53,7 @@ export const defaultLocalization = {
     noValue: 'No reference selected',
   },
   richTextEditor: {
+    loading: 'Loading the editor...',
     noValue: 'No value set',
   },
   shortText: {

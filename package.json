@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "2021.05.0",
+  "version": "2021.06.0",
   "workspaces": [
     "packages/*",
     "examples/*",
@@ -47,8 +47,8 @@
     "storybook": "yarn workspace sn-react-component-docs",
     "dms": "yarn workspace sn-dms-demo",
     "build:clean": "lerna run --parallel --scope \"@sensenet/*\" clean",
-    "build:esm": "lerna run --parallel --scope \"@sensenet/*\" build:esm",
-    "build:cjs": "lerna run --parallel --scope \"@sensenet/*\" build:cjs",
+    "build:esm": "lerna run --parallel --scope \"@sensenet/*\" build:esm && yarn workspace gatsby-source-sensenet run build",
+    "build:cjs": "lerna run --parallel --scope \"@sensenet/*\" build:cjs && yarn workspace gatsby-source-sensenet run build",
     "build:bundles": "lerna run --parallel --scope \"@sensenet/*\" build:bundles",
     "build:types": "tsc -b packages",
     "build:packages": "npm-run-all -l -p build:types build:esm",

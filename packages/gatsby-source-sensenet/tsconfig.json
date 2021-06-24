@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig-base.json",
+  "compilerOptions": {
+    "outDir": "./dist/types",
+    "emitDeclarationOnly": true,
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "references": [{ "path": "../sn-client-core" }, { "path": "../sn-default-content-types" }]
+}

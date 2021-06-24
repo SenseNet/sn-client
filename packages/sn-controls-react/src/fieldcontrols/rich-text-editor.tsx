@@ -2,12 +2,12 @@
  * @module FieldControls
  */
 import { deepMerge } from '@sensenet/client-utils'
-import { Editor } from '@sensenet/editor-react'
-import { createStyles, FormHelperText, InputLabel, makeStyles, Typography } from '@material-ui/core'
-import React from 'react'
+import { CircularProgress, createStyles, FormHelperText, InputLabel, makeStyles, Typography } from '@material-ui/core'
+import React, { lazy, Suspense } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { defaultLocalization } from './localization'
+const Editor = lazy(() => import('../editor-wrapper'))
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -20,8 +20,8 @@ type RichTextEditorClassKey = Partial<ReturnType<typeof useStyles>>
 const getFieldValue = (rawValue?: string) => {
   let value
 
-  if (rawValue === undefined) {
-    return
+  if (rawValue === undefined || rawValue === null) {
+    return undefined
   }
 
   try {
@@ -59,19 +59,29 @@ export const RichTextEditor: React.FC<
           <InputLabel shrink htmlFor={props.settings.Name} required={props.settings.Compulsory}>
             {props.settings.DisplayName}
           </InputLabel>
-          <Editor
-            content={initialState}
-            autofocus={props.autoFocus}
-            placeholder={props.settings.DisplayName}
-            readOnly={props.settings.ReadOnly}
-            localization={props.localization?.richTextEditor}
-            onChange={({ editor }) => {
-              props.fieldOnChange?.(props.settings.Name, {
-                text: editor.getHTML(),
-                editor: JSON.stringify(editor.getJSON()),
-              })
-            }}
-          />
+
+          <Suspense
+            fallback={
+              <div style={{ textAlign: 'center' }}>
+                <CircularProgress />
+                <div>{localization.loading}</div>
+              </div>
+            }>
+            <Editor
+              content={initialState}
+              autofocus={props.autoFocus}
+              placeholder={props.settings.DisplayName}
+              readOnly={props.settings.ReadOnly}
+              localization={props.localization?.richTextEditor}
+              onChange={({ editor }) => {
+                props.fieldOnChange?.(props.settings.Name, {
+                  text: editor.getHTML(),
+                  editor: JSON.stringify(editor.getJSON()),
+                })
+              }}
+            />
+          </Suspense>
+
           {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </div>
       )
