@@ -140,7 +140,7 @@ fieldControlStory({
     </div>
   ),
   markdown: allowedTypeNotes,
-  storyName: '/FieldControls/AllowedChildTypes',
+  storyName: 'FieldControls/AllowedChildTypes',
 })
 
 fieldControlStory({
@@ -158,7 +158,7 @@ fieldControlStory({
     </div>
   ),
   markdown: autocompleteNotes,
-  storyName: '/FieldControls/AutoComplete',
+  storyName: 'FieldControls/AutoComplete',
 })
 
 fieldControlStory({
@@ -176,7 +176,7 @@ fieldControlStory({
     </div>
   ),
   markdown: avatarNotes,
-  storyName: '/FieldControls/Avatar',
+  storyName: 'FieldControls/Avatar',
 })
 
 fieldControlStory({
@@ -190,7 +190,7 @@ fieldControlStory({
     />
   ),
   markdown: '',
-  storyName: '/FieldControls/Checkbox',
+  storyName: 'FieldControls/Checkbox',
 })
 
 fieldControlStory({
@@ -204,7 +204,7 @@ fieldControlStory({
     />
   ),
   markdown: '',
-  storyName: '/FieldControls/Switcher',
+  storyName: 'FieldControls/Switcher',
 })
 
 fieldControlStory({
@@ -218,7 +218,7 @@ fieldControlStory({
     />
   ),
   markdown: checkboxgroupNotes,
-  storyName: '/FieldControls/CheckboxGroup',
+  storyName: 'FieldControls/CheckboxGroup',
 })
 
 fieldControlStory({
@@ -232,7 +232,7 @@ fieldControlStory({
     />
   ),
   markdown: colorPickerNotes,
-  storyName: '/FieldControls/ColorPicker',
+  storyName: 'FieldControls/ColorPicker',
 })
 
 fieldControlStory({
@@ -246,7 +246,7 @@ fieldControlStory({
     />
   ),
   markdown: datepickerNotes,
-  storyName: '/FieldControls/DatePicker',
+  storyName: 'FieldControls/DatePicker',
 })
 
 fieldControlStory({
@@ -260,7 +260,7 @@ fieldControlStory({
     />
   ),
   markdown: datetimepickerNotes,
-  storyName: '/FieldControls/DateTimePicker',
+  storyName: 'FieldControls/DateTimePicker',
 })
 
 fieldControlStory({
@@ -268,7 +268,7 @@ fieldControlStory({
     <DynamicControl actionName={actionName} repository={testRepository} content={testContent} fieldName="DisplayName" />
   ),
   markdown: displaynameNotes,
-  storyName: '/FieldControls/DisplayName',
+  storyName: 'FieldControls/DisplayName',
 })
 
 fieldControlStory({
@@ -282,7 +282,7 @@ fieldControlStory({
     />
   ),
   markdown: dropdownlistNotes,
-  storyName: '/FieldControls/DropDownList',
+  storyName: 'FieldControls/DropDownList',
 })
 
 fieldControlStory({
@@ -301,7 +301,7 @@ fieldControlStory({
     )
   },
   markdown: filenameNotes,
-  storyName: '/FieldControls/FileName',
+  storyName: 'FieldControls/FileName',
 })
 
 fieldControlStory({
@@ -319,7 +319,7 @@ fieldControlStory({
     </div>
   ),
   markdown: fileUploadNotes,
-  storyName: '/FieldControls/FileUpload',
+  storyName: 'FieldControls/FileUpload',
 })
 
 fieldControlStory({
@@ -333,7 +333,7 @@ fieldControlStory({
     />
   ),
   markdown: nameNotes,
-  storyName: '/FieldControls/Name',
+  storyName: 'FieldControls/Name',
 })
 
 fieldControlStory({
@@ -347,7 +347,7 @@ fieldControlStory({
     />
   ),
   markdown: numberNotes,
-  storyName: '/FieldControls/Number',
+  storyName: 'FieldControls/Number',
 })
 
 fieldControlStory({
@@ -361,7 +361,7 @@ fieldControlStory({
     />
   ),
   markdown: numberNotes,
-  storyName: '/FieldControls/Number.Percantage',
+  storyName: 'FieldControls/Number.Percantage',
 })
 
 fieldControlStory({
@@ -375,7 +375,7 @@ fieldControlStory({
     />
   ),
   markdown: numberNotes,
-  storyName: '/FieldControls/Number.Currency',
+  storyName: 'FieldControls/Number.Currency',
 })
 
 fieldControlStory({
@@ -389,7 +389,7 @@ fieldControlStory({
     />
   ),
   markdown: numberNotes,
-  storyName: '/FieldControls/Number.Double',
+  storyName: 'FieldControls/Number.Double',
 })
 
 fieldControlStory({
@@ -403,7 +403,7 @@ fieldControlStory({
     />
   ),
   markdown: passwordNotes,
-  storyName: '/FieldControls/Password',
+  storyName: 'FieldControls/Password',
 })
 
 fieldControlStory({
@@ -417,7 +417,7 @@ fieldControlStory({
     />
   ),
   markdown: radiobuttongroupNotes,
-  storyName: '/FieldControls/RadioButtonGroup',
+  storyName: 'FieldControls/RadioButtonGroup',
 })
 
 fieldControlStory({
@@ -435,7 +435,7 @@ fieldControlStory({
     </div>
   ),
   markdown: referenceGridNotes,
-  storyName: '/FieldControls/ReferenceGrid',
+  storyName: 'FieldControls/ReferenceGrid',
 })
 
 fieldControlStory({
@@ -449,7 +449,7 @@ fieldControlStory({
     />
   ),
   markdown: richtextNotes,
-  storyName: '/FieldControls/RichTextEditor',
+  storyName: 'FieldControls/RichTextEditor',
 })
 
 fieldControlStory({
@@ -463,7 +463,7 @@ fieldControlStory({
     />
   ),
   markdown: shorttextNotes,
-  storyName: '/FieldControls/ShortText',
+  storyName: 'FieldControls/ShortText',
 })
 
 fieldControlStory({
@@ -481,7 +481,7 @@ fieldControlStory({
     </div>
   ),
   markdown: tagsInputNotes,
-  storyName: '/FieldControls/TagsInput',
+  storyName: 'FieldControls/TagsInput',
 })
 
 fieldControlStory({
@@ -495,7 +495,7 @@ fieldControlStory({
     />
   ),
   markdown: textareasNotes,
-  storyName: '/FieldControls/Textarea',
+  storyName: 'FieldControls/Textarea',
 })
 
 fieldControlStory({
@@ -509,5 +509,5 @@ fieldControlStory({
     />
   ),
   markdown: timepickerNotes,
-  storyName: '/FieldControls/TimePicker',
+  storyName: 'FieldControls/TimePicker',
 })
