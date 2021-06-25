@@ -3,6 +3,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { Editor, posToDOMRect, BubbleMenu as TiptapBubbleMenu } from '@tiptap/react'
 import React, { FC } from 'react'
+import { useLocalization } from '../hooks'
 
 const useStyles = makeStyles((theme) => {
   return createStyles({
@@ -28,6 +29,8 @@ interface BubbleMenuProps {
 
 export const BubbleMenu: FC<BubbleMenuProps> = (props) => {
   const classes = useStyles()
+  const localization = useLocalization()
+
   return (
     <TiptapBubbleMenu
       className={classes.root}
@@ -55,7 +58,7 @@ export const BubbleMenu: FC<BubbleMenuProps> = (props) => {
       editor={props.editor}>
       {props.editor.isActive('image') && (
         <IconButton
-          aria-label="remove image"
+          aria-label={localization.bubbleMenu.removeImage}
           size="small"
           onClick={() => props.editor.chain().focus().deleteSelection().run()}>
           <DeleteIcon fontSize="inherit" />
@@ -72,7 +75,7 @@ export const BubbleMenu: FC<BubbleMenuProps> = (props) => {
             {props.editor.getMarkAttributes('link').href}
           </Link>
           <IconButton
-            aria-label="remove link"
+            aria-label={localization.bubbleMenu.removeLink}
             size="small"
             onClick={() => props.editor.chain().focus().unsetLink().run()}>
             <CloseIcon fontSize="inherit" />
