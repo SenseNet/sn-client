@@ -121,10 +121,18 @@ You can overwrite fetch method according to your own needs. In this particular e
 npm install node-fetch
 ```
 
+For using environmental variables you should install [dotenv](https://www.npmjs.com/package/node-fetch):
+
+```shell
+npm install dotenv
+```
+
 Configuration should be something like this:
 
 ```javascript
 // Create a new file in root folder with the name configuration.js
+require('dotenv').config()
+
 exports.repositoryUrl = '<YOUR REPOSITORY URL>'
 
 exports.configuration = {
@@ -134,7 +142,7 @@ exports.configuration = {
 }
 ```
 
-**GATSBY_REACT_APP_CLIENT_ID** and **GATSBY_REACT_APP_CLIENT_SECRET** environmental variables should be defined.
+**GATSBY_REACT_APP_CLIENT_ID** and **GATSBY_REACT_APP_CLIENT_SECRET** [environmental variables](https://www.gatsbyjs.com/docs/how-to/local-development/environment-variables/) should be defined.
 
 You can easily store them in .env files by doing the following:
 
