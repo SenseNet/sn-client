@@ -1,6 +1,7 @@
 import { createStyles, makeStyles } from '@material-ui/core'
 import { EditorContent, EditorOptions, useEditor } from '@tiptap/react'
 import React, { FC } from 'react'
+import { LocalizationProvider, LocalizationType } from '../context'
 import { createExtensions } from '../extension-list'
 import { getCommonStyles } from '../styles'
 import { BubbleMenu } from './bubble-menu'
@@ -68,6 +69,7 @@ interface EditorProps {
   onChange?: EditorOptions['onUpdate']
   readOnly?: boolean
   placeholder?: string
+  localization?: Partial<LocalizationType>
 }
 
 export const Editor: FC<EditorProps> = (props) => {
@@ -89,10 +91,12 @@ export const Editor: FC<EditorProps> = (props) => {
   })
 
   return (
-    <div className={classes.root}>
-      <MenuBar editor={sensenetEditor} />
-      {sensenetEditor && <BubbleMenu editor={sensenetEditor} />}
-      <EditorContent editor={sensenetEditor} className={classes.editorWrapper} contentEditable={false} />
-    </div>
+    <LocalizationProvider localization={props.localization}>
+      <div className={classes.root}>
+        <MenuBar editor={sensenetEditor} />
+        {sensenetEditor && <BubbleMenu editor={sensenetEditor} />}
+        <EditorContent editor={sensenetEditor} className={classes.editorWrapper} contentEditable={false} />
+      </div>
+    </LocalizationProvider>
   )
 }
