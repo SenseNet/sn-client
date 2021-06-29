@@ -414,6 +414,35 @@ query MyQuery {
 
 To render the markdown use `<MDXRenderer><YOUR MARKDOWN BODY></MDXRenderer>`
 
+### Richtext
+
+RichText is a field type that enables authors to create rich text content. By default sensenet will provide you the field as HTML format but there is also possible to get the response as JSON. For getting both you have to add `richtexteditor: 'all'` to the oDataOptions in gatsby-config. The API response contains a _text_ part (which is the HTML code) and an _editor_ returned as a JSON array of nodes that follows the format of an abstract syntax tree.
+
+```JSON
+{
+   "type":"doc",
+   "content":[
+      {
+         "type":"paragraph",
+         "attrs":{
+            "textAlign":"center"
+         },
+         "content":[
+            {
+               "type":"text",
+               "marks":[
+                  {
+                     "type":"bold"
+                  }
+               ],
+               "text":"Lorem ipsum dolor sit amet ..."
+            }
+         ]
+      }
+   ]
+}
+```
+
 ## How to contribute
 
 Before you start working on this package please check the [contribution guide](https://github.com/SenseNet/sn-client/blob/develop/CONTRIBUTING.md) first.
