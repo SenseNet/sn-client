@@ -65,6 +65,7 @@ export const RichTextEditor: React.FC<
           <InputLabel shrink htmlFor={props.settings.Name} required={props.settings.Compulsory}>
             {props.settings.DisplayName}
           </InputLabel>
+
           <Suspense
             fallback={
               <div style={{ textAlign: 'center' }}>
@@ -77,6 +78,7 @@ export const RichTextEditor: React.FC<
               autofocus={props.autoFocus}
               placeholder={props.settings.DisplayName}
               readOnly={props.settings.ReadOnly}
+              localization={props.localization?.richTextEditor}
               onChange={({ editor }) => {
                 props.fieldOnChange?.(props.settings.Name, {
                   text: editor.getHTML(),
@@ -85,6 +87,7 @@ export const RichTextEditor: React.FC<
               }}
             />
           </Suspense>
+
           {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </div>
       )
