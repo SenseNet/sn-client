@@ -6,7 +6,7 @@ import { Editor } from '../src/components/editor'
 import { MenuBar } from '../src/components/menu-bar'
 
 describe('editor', () => {
-  it('should render properly', () => {
+  it('should be rendered properly', () => {
     const wrapper = shallow(<Editor />)
     expect(wrapper.find(MenuBar).exists()).toBeTruthy()
     expect(wrapper.find(EditorContent).exists()).toBeTruthy()
@@ -22,7 +22,7 @@ describe('editor', () => {
     expect(options.autofocus).toBe(true)
   })
 
-  it('should render placeholder if no content passed', () => {
+  it('should render placeholder if no content is passed', () => {
     const placeholder = 'Placeholder'
     const wrapper = mount(<Editor placeholder={placeholder} />)
 

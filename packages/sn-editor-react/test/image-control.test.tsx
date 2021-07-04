@@ -18,7 +18,7 @@ describe('image control', () => {
   const fileReader = new FileReaderMock()
   jest.spyOn(window, 'FileReader').mockImplementation(() => fileReader)
 
-  it('should render properly', () => {
+  it('should be rendered properly', () => {
     const wrapper = shallow(<ImageControl editor={editor} />)
     expect(wrapper.find(Tooltip).prop('title')).toBe(defaultLocalization.imageControl.title)
     expect(wrapper.find(IconButton).exists()).toBeTruthy()

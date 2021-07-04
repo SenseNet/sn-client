@@ -14,7 +14,7 @@ describe('link control', () => {
     onUpdate: onChange,
   })
 
-  it('should render properly', () => {
+  it('should be rendered properly', () => {
     const wrapper = shallow(<LinkControl editor={editor} />)
     expect(wrapper.find(Tooltip).prop('title')).toBe(defaultLocalization.menubar.link)
     expect(wrapper.find(IconButton).exists()).toBeTruthy()
@@ -30,7 +30,7 @@ describe('link control', () => {
     expect(wrapper.find(DialogTitle).text()).toBe(defaultLocalization.linkControl.title)
   })
 
-  it('should not open dialog when no text selected', () => {
+  it('should not open dialog when no text is selected', () => {
     editor.commands.setTextSelection(0)
 
     const wrapper = shallow(<LinkControl editor={editor} />)

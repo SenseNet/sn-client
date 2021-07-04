@@ -12,7 +12,7 @@ describe('typography control', () => {
     extensions: createExtensions(),
   })
 
-  it('should render properly', () => {
+  it('should be rendered properly', () => {
     const options = [
       defaultLocalization.typographyControl.paragraph,
       ...Array.from(Array(6).keys()).map((index) => `${defaultLocalization.typographyControl.heading} ${index + 1}`),
