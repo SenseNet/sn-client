@@ -5,7 +5,7 @@ const sharedPresets = ['@babel/typescript']
 
 const shared = {
   presets: sharedPresets,
-  plugins: ['@babel/plugin-proposal-class-properties'],
+  plugins: [['@babel/plugin-proposal-class-properties', { loose: true }]],
 }
 
 !isBundling && shared.plugins.push('@babel/plugin-transform-runtime')

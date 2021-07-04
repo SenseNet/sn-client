@@ -339,7 +339,7 @@ const values: Localization = {
     linkControl: {
       title: 'Hivatkozás beszúrása',
       url: 'Url',
-      openInNewTab: 'Hivatkozás új lapon történő megnyitása',
+      openInNewTab: 'Megnyitás új lapon',
       submit: 'Beszúrás',
     },
     typographyControl: {

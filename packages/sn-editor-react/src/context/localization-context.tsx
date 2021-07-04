@@ -15,7 +15,7 @@ export const defaultLocalization = {
     alignLeft: 'Align left',
     alignCenter: 'Align center',
     alignRight: 'Align right',
-    alignJustify: 'Align justify',
+    alignJustify: 'Justify',
     bulletList: 'Bullet list',
     orderedList: 'Ordered list',
     link: 'Link',

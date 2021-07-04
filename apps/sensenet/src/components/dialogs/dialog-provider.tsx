@@ -44,8 +44,9 @@ export type DialogWithProps = (
 type Action = { type: 'PUSH_DIALOG'; dialog: DialogWithProps } | { type: 'POP_DIALOG' } | { type: 'CLOSE_ALL_DIALOGS' }
 
 const initialState: DialogWithProps[] = []
-const DialogContext =
-  createContext<{ dialogs: typeof initialState; dispatch: React.Dispatch<Action> } | undefined>(undefined)
+const DialogContext = createContext<{ dialogs: typeof initialState; dispatch: React.Dispatch<Action> } | undefined>(
+  undefined,
+)
 
 function dialogReducer(state: typeof initialState, action: Action) {
   switch (action.type) {

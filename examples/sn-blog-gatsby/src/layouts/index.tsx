@@ -3,9 +3,7 @@ import { createStyles, CssBaseline, makeStyles, MuiThemeProvider } from '@materi
 import { graphql, StaticQuery } from 'gatsby'
 import * as React from 'react'
 import { Helmet } from 'react-helmet'
-import LayoutMain from '../components/layout-main'
-import LayoutRoot from '../components/layout-root'
-import { globals } from '../styles/globalStyles'
+import { globals, useGlobalStyles } from '../styles/globalStyles'
 import { theme } from '../theme'
 
 const useHeaderStyle = makeStyles(() => {
@@ -28,6 +26,7 @@ interface StaticQueryProps {
 
 const IndexLayout: React.FC = ({ children }) => {
   const headerStyle = useHeaderStyle()
+  useGlobalStyles()
 
   return (
     <MuiThemeProvider theme={theme}>
@@ -46,17 +45,15 @@ const IndexLayout: React.FC = ({ children }) => {
         render={(data: StaticQueryProps) => (
           <>
             <CssBaseline />
-            <LayoutRoot>
-              <Helmet
-                title={data.site.siteMetadata.title}
-                meta={[
-                  { name: 'description', content: data.site.siteMetadata.description },
-                  { name: 'keywords', content: data.site.siteMetadata.keywords },
-                ]}
-              />
-              <UniversalHeader title="Gatsby example" classes={headerStyle} appName="sn-blog-gatsby" />
-              <LayoutMain>{children}</LayoutMain>
-            </LayoutRoot>
+            <Helmet
+              title={data.site.siteMetadata.title}
+              meta={[
+                { name: 'description', content: data.site.siteMetadata.description },
+                { name: 'keywords', content: data.site.siteMetadata.keywords },
+              ]}
+            />
+            <UniversalHeader title="Gatsby example" classes={headerStyle} appName="sn-blog-gatsby" />
+            {children}
           </>
         )}
       />

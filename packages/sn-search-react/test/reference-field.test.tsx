@@ -1,6 +1,7 @@
 import { SchemaStore } from '@sensenet/client-core'
 import { SchemaStore as defaultSchemas, GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import TextField from '@material-ui/core/TextField'
+import { setImmediate } from 'timers'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'

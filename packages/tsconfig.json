@@ -2,6 +2,7 @@
   "files": [],
   "include": [],
   "references": [
+    { "path": "./gatsby-source-sensenet" },
     { "path": "./sn-authentication-jwt" },
     { "path": "./sn-authentication-oidc-react" },
     { "path": "./sn-client-auth-google" },
