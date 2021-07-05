@@ -2,6 +2,7 @@ import { EditorContent } from '@tiptap/react'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
+import { ContextMenu } from '../src/components/context-menu'
 import { Editor } from '../src/components/editor'
 import { MenuBar } from '../src/components/menu-bar'
 
@@ -44,5 +45,20 @@ describe('editor', () => {
     })
 
     expect(onChange).toBeCalled()
+  })
+
+  it('should open context menu on right click inside a table ', () => {
+    const value =
+      '<table><tbody><tr><th colspan="1" rowspan="1"><p></p></th><th colspan="1" rowspan="1"><p></p></th></tr><tr><td colspan="1" rowspan="1"><p></p></td><td colspan="1" rowspan="1"><p></p></td></tr></tbody></table>'
+    const wrapper = mount(<Editor content={value} autofocus={true} />)
+
+    expect(wrapper.find(ContextMenu).prop('open')).toBe(false)
+
+    act(() => {
+      wrapper.find(EditorContent).simulate('contextmenu')
+    })
+    wrapper.update()
+
+    expect(wrapper.find(ContextMenu).prop('open')).toBe(true)
   })
 })

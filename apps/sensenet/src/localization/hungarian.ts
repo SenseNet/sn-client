@@ -324,6 +324,7 @@ const values: Localization = {
       bulletList: 'Felsorolás',
       orderedList: 'Számozás',
       link: 'Hivatkozás',
+      table: 'Táblázat beszúrása',
       clearFormat: 'Formázás törlése',
       undo: 'Visszavonás',
       redo: 'Ismét',
@@ -331,6 +332,19 @@ const values: Localization = {
     bubbleMenu: {
       removeImage: 'kép törlése',
       removeLink: 'hivatkozás törlése',
+    },
+    contextMenu: {
+      deleteTable: 'Táblázat törlése',
+      deleteRow: 'Sor törlése',
+      deleteCol: 'Oszlop törlése',
+      addRowAbove: 'Sor beszúrása felülre',
+      addRowBelow: 'Sor beszúrása alulra',
+      addColBefore: 'Oszlop beszúrása balra',
+      addColAfter: 'Oszlop beszúrása jobbra',
+      toggleHeaderRow: '',
+      toggleHeaderCol: 'Toggle header col',
+      mergeCells: 'Cellák egyesítése',
+      splitCell: 'Cella felosztása',
     },
     imageControl: {
       title: 'Képbeszúrás',

@@ -19,6 +19,7 @@ export const defaultLocalization = {
     bulletList: 'Bullet list',
     orderedList: 'Ordered list',
     link: 'Link',
+    table: 'Insert table',
     clearFormat: 'Clear format',
     undo: 'Undo',
     redo: 'Redo',
@@ -26,6 +27,19 @@ export const defaultLocalization = {
   bubbleMenu: {
     removeImage: 'remove image',
     removeLink: 'remove link',
+  },
+  contextMenu: {
+    deleteTable: 'Delete table',
+    deleteRow: 'Delete row',
+    deleteCol: 'Delete column',
+    addRowAbove: 'Add row above',
+    addRowBelow: 'Add row below',
+    addColBefore: 'Add column before',
+    addColAfter: 'Add column after',
+    toggleHeaderRow: 'Toggle header row',
+    toggleHeaderCol: 'Toggle header column',
+    mergeCells: 'Merge cells',
+    splitCell: 'Split cell',
   },
   imageControl: {
     title: 'Insert image',
@@ -35,6 +49,13 @@ export const defaultLocalization = {
     title: 'Insert a link',
     url: 'Url',
     openInNewTab: 'Open link in a new tab',
+    submit: 'Insert',
+  },
+  tableControl: {
+    title: 'Insert table',
+    rows: 'Rows',
+    cols: 'Cols',
+    hasHeader: 'Has header',
     submit: 'Insert',
   },
   typographyControl: {
