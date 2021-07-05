@@ -1,4 +1,5 @@
 import { Button, Dialog, DialogTitle, IconButton, Tooltip } from '@material-ui/core'
+import { setImmediate } from 'timers'
 import { Editor as TiptapEditor } from '@tiptap/react'
 import { shallow } from 'enzyme'
 import React from 'react'
