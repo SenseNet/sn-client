@@ -1,3 +1,4 @@
+import { MenuItem } from '@material-ui/core'
 import { EditorContent } from '@tiptap/react'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
@@ -5,6 +6,7 @@ import { act } from 'react-dom/test-utils'
 import { ContextMenu } from '../src/components/context-menu'
 import { Editor } from '../src/components/editor'
 import { MenuBar } from '../src/components/menu-bar'
+import { defaultLocalization } from '../src/context'
 
 describe('editor', () => {
   it('should be rendered properly', () => {
@@ -47,10 +49,11 @@ describe('editor', () => {
     expect(onChange).toBeCalled()
   })
 
-  it('should open context menu on right click inside a table ', () => {
+  it('should open context menu on right click inside a table and execute action on MenuItem click', () => {
+    const onChange = jest.fn(({ editor }) => editor.getHTML())
     const value =
       '<table><tbody><tr><th colspan="1" rowspan="1"><p></p></th><th colspan="1" rowspan="1"><p></p></th></tr><tr><td colspan="1" rowspan="1"><p></p></td><td colspan="1" rowspan="1"><p></p></td></tr></tbody></table>'
-    const wrapper = mount(<Editor content={value} autofocus={true} />)
+    const wrapper = mount(<Editor content={value} autofocus={true} onChange={onChange} />)
 
     expect(wrapper.find(ContextMenu).prop('open')).toBe(false)
 
@@ -60,5 +63,15 @@ describe('editor', () => {
     wrapper.update()
 
     expect(wrapper.find(ContextMenu).prop('open')).toBe(true)
+
+    wrapper
+      .find(ContextMenu)
+      .findWhere((node) => {
+        return node.type() === MenuItem && node.text() === defaultLocalization.contextMenu.deleteTable
+      })
+      .simulate('click')
+
+    expect(onChange).toReturnWith('<p></p>')
+    expect(wrapper.find(ContextMenu).prop('open')).toBe(false)
   })
 })

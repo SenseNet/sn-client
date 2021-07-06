@@ -37,7 +37,7 @@ export const ContextMenu: FC<ContextMenuProps> = (props) => {
       transitionDuration={{ enter: theme.transitions.duration.enteringScreen, exit: 0 }}
       BackdropProps={{
         onClick: () => {
-          props.setOpen(false)
+          handleClose()
         },
         onContextMenu: (ev) => ev.preventDefault(),
       }}>
