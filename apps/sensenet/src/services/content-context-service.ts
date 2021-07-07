@@ -113,7 +113,7 @@ export function getUrlForContent({
       }),
       newParams: {
         path: action
-          ? removePath
+          ? removePath || pathOfContent.snPath === content.Path
             ? undefined
             : `/${PathHelper.getParentPath(content.Path)}`.replace(pathOfContent.snPath, '')
           : contentPath,
@@ -163,7 +163,10 @@ export function getPrimaryActionUrl({
   removePath,
 }: GetPrimaryActionUrlParams) {
   if (content.Type === 'PersonalSettings') {
-    return PATHS.personalSettings.appPath
+    return resolvePathParams({
+      path: PATHS.settings.appPath,
+      params: { submenu: 'adminui' },
+    })
   }
 
   if (content.IsFolder) {

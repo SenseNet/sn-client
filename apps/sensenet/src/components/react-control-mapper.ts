@@ -1,7 +1,6 @@
 import { Repository } from '@sensenet/client-core'
-import { reactControlMapper as snReactControlMapper } from '@sensenet/controls-react'
-import * as SnFieldControls from '@sensenet/controls-react/src/fieldcontrols'
-import { LongTextFieldSetting, ReferenceFieldSetting } from '@sensenet/default-content-types'
+import { FieldControls as SnFieldControls, reactControlMapper as snReactControlMapper } from '@sensenet/controls-react'
+import { LongTextFieldSetting, ReferenceFieldSetting, RichTextFieldSetting } from '@sensenet/default-content-types'
 import * as FieldControls from './field-controls'
 
 /**
@@ -31,19 +30,20 @@ export const reactControlMapper = (repository: Repository) => {
       }
     })
     .setupFieldSettingDefault<LongTextFieldSetting>('LongTextFieldSetting', (setting) => {
-      switch (setting.TextType) {
-        case 'LongText':
-          return SnFieldControls.Textarea
-        case 'RichText':
-        case 'AdvancedRichText':
-          return FieldControls.RichTextEditor
+      switch (setting.ControlHint) {
+        case 'sn:WebhookFilter':
+          return FieldControls.WebhookTrigger
+        case 'sn:WebhookHeaders':
+          return FieldControls.WebhookHeaders
+        case 'sn:WebhookPayload':
+          return FieldControls.WebhookPayload
         default:
-          if (setting.ControlHint === 'sn:QueryBuilder') {
-            return SnFieldControls.Textarea
-          } else {
-            return FieldControls.RichTextEditor
-          }
       }
+
+      return SnFieldControls.Textarea
+    })
+    .setupFieldSettingDefault<RichTextFieldSetting>('RichTextFieldSetting', () => {
+      return FieldControls.RichTextEditor
     })
     .setupFieldSettingDefault('NullFieldSetting', (setting) => {
       if (setting.Name === 'Avatar') {

@@ -17,8 +17,7 @@ type State = {
   error?: string
 }
 
-// eslint-disable-next-line require-jsdoc
-export function oidcReducer(state: State, action: Action) {
+export const oidcReducer = (state: State, action: Action) => {
   switch (action.type) {
     case 'ON_ERROR':
       return { ...state, error: action.message, isLoading: false }
@@ -41,15 +40,11 @@ export const logout = (userManager: UserManager, dispatch: Dispatch<Action>) => 
   }
 }
 
-export const login = (
-  userManager: UserManager,
-  dispatch: Dispatch<Action>,
-  location: Location,
-  history: History,
-) => async () => {
-  dispatch({ type: 'ON_LOADING' })
-  await authenticateUser(userManager, location, history)()
-}
+export const login =
+  (userManager: UserManager, dispatch: Dispatch<Action>, location: Location, history: History) => async () => {
+    dispatch({ type: 'ON_LOADING' })
+    await authenticateUser(userManager, location, history)()
+  }
 
 export const onError = (dispatch: Dispatch<Action>, error: Error) => {
   dispatch({ type: 'ON_ERROR', message: error.message })

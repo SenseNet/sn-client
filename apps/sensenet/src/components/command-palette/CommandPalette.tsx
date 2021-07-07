@@ -5,7 +5,7 @@ import { createStyles, IconButton, makeStyles, Tooltip } from '@material-ui/core
 import Clear from '@material-ui/icons/Clear'
 import Search from '@material-ui/icons/Search'
 import clsx from 'clsx'
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { SyntheticEvent, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import Autosuggest, { SuggestionSelectedEventData, SuggestionsFetchRequestedParams } from 'react-autosuggest'
 import { useHistory } from 'react-router-dom'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
@@ -22,6 +22,7 @@ export interface CommandPaletteItem {
   hits: string[]
   content?: GenericContent
   openAction?: () => void
+  parameters?: string[]
 }
 
 const useStyles = makeStyles(() => {
@@ -139,10 +140,7 @@ export const CommandPalette = () => {
     setItems(foundItems)
   }
 
-  const handleSelectSuggestion = (
-    ev: React.SyntheticEvent,
-    suggestion: SuggestionSelectedEventData<CommandPaletteItem>,
-  ) => {
+  const handleSelectSuggestion = (ev: SyntheticEvent, suggestion: SuggestionSelectedEventData<CommandPaletteItem>) => {
     ev.preventDefault()
     suggestion.suggestion.openAction ? suggestion.suggestion.openAction() : history.push(suggestion.suggestion.url)
 

@@ -1,5 +1,4 @@
 import { MetadataAction } from '@sensenet/client-core'
-import { languages, Uri } from 'monaco-editor'
 
 const getJsonType = (type: string) => {
   const lowerType = type.toLowerCase()
@@ -23,13 +22,17 @@ const getJsonType = (type: string) => {
   return 'string'
 }
 
-export const createCustomActionModel = (uri: Uri, actionMetadata: MetadataAction) => {
+export const createCustomActionModel = async (
+  uri: import('react-monaco-editor').monaco.Uri,
+  actionMetadata: MetadataAction,
+) => {
+  const { monaco } = await import('react-monaco-editor')
   const uriString = uri.toString()
 
   const properties: any = {}
   actionMetadata.parameters.forEach((prop) => (properties[prop.name] = { type: getJsonType(prop.type) }))
 
-  languages.json.jsonDefaults.setDiagnosticsOptions({
+  monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
     validate: true,
     enableSchemaRequest: false,
     schemas: [

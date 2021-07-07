@@ -1,5 +1,5 @@
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { Build, Delete, Folder, Language, People, Public, Search, Widgets } from '@material-ui/icons'
+import { Build, Delete, Folder, People, Public, Search, Widgets } from '@material-ui/icons'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { PATHS, resolvePathParams } from '../application-paths'
 import { Icon } from '../components/Icon'
@@ -71,24 +71,7 @@ export const useDrawerItems = () => {
         ],
       },
       {
-        itemType: 'Localization',
-        settings: { root: PATHS.localization.snPath },
-        permissions: [
-          {
-            path: PATHS.localization.snPath,
-            action: 'Add',
-          },
-        ],
-      },
-      {
-        itemType: 'Setup',
-        settings: { root: PATHS.setup.snPath },
-        permissions: [
-          {
-            path: PATHS.setup.snPath,
-            action: 'Browse',
-          },
-        ],
+        itemType: 'Settings',
       },
     ],
     [],
@@ -115,12 +98,10 @@ export const useDrawerItems = () => {
           return <Delete />
         case 'ContentTypes':
           return <Widgets />
-        case 'Localization':
-          return <Language />
-        case 'Setup':
-          return <Build />
         case 'CustomContent':
           return item.settings?.icon ? <Icon item={{ ContentTypeName: item.settings.icon }} /> : <Folder />
+        case 'Settings':
+          return <Build />
         // no default
       }
     }
@@ -149,13 +130,6 @@ export const useDrawerItems = () => {
             path: PATHS.contentTypes.appPath,
             params: { browseType: settings.content.browseType },
           })
-        case 'Localization':
-          return resolvePathParams({
-            path: PATHS.localization.appPath,
-            params: { browseType: settings.content.browseType },
-          })
-        case 'Setup':
-          return resolvePathParams({ path: PATHS.setup.appPath })
         case 'CustomContent':
           return resolvePathParams({
             path: PATHS.custom.appPath,
@@ -164,6 +138,8 @@ export const useDrawerItems = () => {
               path: (item as CustomContentDrawerItem).settings?.appPath || '',
             },
           })
+        case 'Settings':
+          return resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'stats' } })
         default:
           return '/'
       }

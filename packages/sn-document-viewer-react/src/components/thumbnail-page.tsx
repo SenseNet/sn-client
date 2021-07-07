@@ -1,14 +1,10 @@
 import { PreviewImageData } from '@sensenet/client-core'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import Paper from '@material-ui/core/Paper'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
-import createStyles from '@material-ui/core/styles/createStyles'
-import makeStyles from '@material-ui/core/styles/makeStyles'
+import { CircularProgress, createStyles, makeStyles, Paper, Theme } from '@material-ui/core'
 import React from 'react'
-import { PageProps, THUMBNAIL_NAME, THUMBNAIL_PADDING } from '..'
+import { THUMBNAIL_NAME, THUMBNAIL_PADDING } from '../components'
 import { usePreviewImage, useViewerState } from '../hooks'
 
-const useStyles = makeStyles<Theme, PageProps>(() => {
+const useStyles = makeStyles<Theme, ThumbnailPageProps>(() => {
   return createStyles({
     thumbnailPage: {
       padding: 0,

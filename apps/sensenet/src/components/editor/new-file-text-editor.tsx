@@ -1,9 +1,9 @@
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { Input, InputAdornment } from '@material-ui/core'
-import { Uri } from 'monaco-editor'
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
 import { useLocalization } from '../../hooks'
 import { getMonacoLanguage } from '../../services/content-context-service'
+import { FullScreenLoader } from '../full-screen-loader'
 import { SnMonacoEditor, SnMonacoEditorProps } from './sn-monaco-editor'
 
 export type NewFileTextEditorProps = Pick<SnMonacoEditorProps, 'handleCancel'> & {
@@ -24,11 +24,15 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
   const [savedTextValue, setSavedTextValue] = useState('')
   const [language, setLanguage] = useState(getMonacoLanguage({ Type: props.contentType } as any, repo))
   const localization = useLocalization()
-  const uri = Uri.parse(`sensenet://${props.contentType}`)
+  const [uri, setUri] = useState<import('react-monaco-editor').monaco.Uri>()
   const [hasChanges, setHasChanges] = useState(false)
   const logger = useLogger('TextEditor')
   const [error, setError] = useState<Error | undefined>()
   const { loadContent } = props
+  const contentDisplayName = useMemo(
+    () => repo.schemas.getSchemaByName(props.contentType).DisplayName,
+    [props.contentType, repo.schemas],
+  )
 
   const saveContent = async () => {
     const fileName = props.getFileNameFromText?.(textValue) ?? props.fileName
@@ -57,7 +61,7 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
     } catch (err) {
       setHasChanges(true)
       logger.error({
-        message: localization.textEditor.saveFailedNotification.replace('{0}', fileName),
+        message: err.message || localization.textEditor.saveFailedNotification.replace('{0}', fileName),
         data: {
           error: err,
         },
@@ -68,6 +72,13 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
   useEffect(() => {
     setHasChanges(textValue !== savedTextValue)
   }, [textValue, savedTextValue])
+
+  useEffect(() => {
+    ;(async () => {
+      const { monaco } = await import('react-monaco-editor')
+      setUri(monaco.Uri.parse(`sensenet://${props.contentType}`))
+    })()
+  }, [props.contentType])
 
   useEffect(() => {
     setLanguage(getMonacoLanguage({ Type: props.contentType } as any, repo))
@@ -93,6 +104,10 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
       data: error,
     })
     return null
+  }
+
+  if (!uri) {
+    return <FullScreenLoader />
   }
 
   return (
@@ -123,7 +138,7 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
             }
           />
         ) : (
-          <>New {props.contentType}</>
+          <>New {contentDisplayName}</>
         )
       }
     />

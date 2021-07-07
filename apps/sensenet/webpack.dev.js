@@ -17,7 +17,7 @@ module.exports = (env) => {
       open: true,
     },
     output: {
-      filename: 'static/js/bundle.js',
+      filename: 'static/js/[name].js',
       chunkFilename: 'static/js/[name].chunk.js',
     },
     plugins: [

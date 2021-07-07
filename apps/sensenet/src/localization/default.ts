@@ -1,3 +1,10 @@
+import { DeepPartial } from '@sensenet/client-utils'
+import { LocalizationType as EditorLocalization } from '@sensenet/editor-react'
+
+export type Localization = DeepPartial<typeof import('./default').default> & {
+  editor?: EditorLocalization
+}
+
 const values = {
   addButton: {
     tooltip: 'Create or upload content',
@@ -118,6 +125,12 @@ const values = {
       Trash: 'Trash',
       UsersAndGroups: 'Users and groups',
       CustomContent: 'Custom content',
+      Settings: 'Settings',
+      Configuration: 'Configuration',
+      Stats: 'Stats',
+      ApiAndSecurity: 'Api and security',
+      Webhooks: 'Webhooks',
+      AdminUiCustomization: 'Admin-ui customization',
     },
     descriptions: {
       Content: 'Explore and manage your content in the repository',
@@ -128,6 +141,7 @@ const values = {
       Trash: 'Manage deleted items here: restore content or purge them permanently',
       UsersAndGroups: 'Manage users and groups, roles and identities',
       CustomContent: 'Explore and manage your content from the configured path',
+      Settings: 'Configure the sensenet system',
     },
     personalSettingsTitle: 'Edit personal settings',
     personalSettingsSecondaryText: 'Customize the application behavior',
@@ -137,6 +151,7 @@ const values = {
     collapse: 'Collapse',
     newSearch: 'New search',
     add: 'Add',
+    underConstruction: 'Under construction',
   },
   dashboard: {
     title: (projectName: string) => `Welcome to your ${projectName} project`,
@@ -159,16 +174,16 @@ const values = {
     used: (current: string | number, limit: string | number) => `${current} of ${limit} used`,
     yourProject: 'Your project',
     getStarted: 'Get started with your new project.',
-    learnMore: 'Learn more about Sensenet',
+    learnMore: 'Learn more about sensenet',
     learnBasics: 'Learn the basics',
     learnBasicsDescription: 'Get step-by-step guides and learn what you can achieve only working on the admin-ui.',
     beExpert: 'Be a content management expert',
     beExpertDescription: 'Master the concept of sensenet with its special terms and abstractions.',
     buildApp: 'Build your first app',
     buildAppDescription: 'Let us help you to begin your sensenet journey!',
-    viewUserGuides: 'View User Guides',
-    viewConceptDocs: 'View Concept Docs',
-    viewDevManual: 'View the Developer manual',
+    viewUserGuides: 'User Guides',
+    viewConceptDocs: 'Concept Docs',
+    viewDevManual: 'API Docs',
   },
   trash: {
     title: 'Trash',
@@ -232,7 +247,7 @@ const values = {
     cancel: 'Cancel',
     restore: 'Restore',
     restoringDefaultsProgress: 'Restoring the default settings...',
-    title: 'Personal settings',
+    title: 'Admin-ui customization',
     drawer: 'Options for the left drawer',
     drawerEnable: 'Enable or disable the drawer',
     drawerType: 'Drawer type',
@@ -281,10 +296,8 @@ const values = {
     logout: 'Log out',
     changePassword: 'Change password',
     openUserMenu: 'Open user menu',
-    openHelpMenu: 'Open help menu',
-    documentation: 'Documentation',
-    reportBug: 'Report bug',
-    feedback: 'Feedback',
+    openNewMenu: `What's new`,
+    accountSettings: 'Account settings',
   },
   navigationCommandProvider: {
     personalSettingsPrimary: 'Personal Settings',
@@ -408,6 +421,54 @@ const values = {
   settings: {
     edit: 'Edit',
     learnMore: 'Learn more',
+    stats: 'Stats',
+    storage: 'Storage',
+    users: 'Users',
+    workspaces: 'Workspaces',
+    content: 'Content',
+    numberOfRoles: 'Number of roles',
+    contentTypes: 'Content Types',
+    used: (current: string | number, limit: string | number) => `${current} of ${limit}`,
+    usage: 'Usage',
+    components: 'Components',
+    componentId: 'Component Id',
+    version: 'Version',
+    latestOfficialVersion: 'Latest official version',
+    latest: 'Latest',
+    description: 'Description',
+    releaseDate: 'Release Date',
+    executionDate: 'Execution Date',
+    componentVersion: 'Component Version',
+    installedPackages: 'Installed packages',
+    files: 'Files',
+    oldVersions: 'Old versions',
+    log: 'Log',
+    system: 'System',
+    apiEndpoint: 'API endpoint',
+    apiAndSecurity: 'API and security',
+    apiEndPointApi: 'Use this endpoint for your API access:',
+    apiEndPointIs: 'Use this as your Identity Server access:',
+    apiClients: 'API clients, frameworks and libs',
+    learnAboutApi: 'Learn about API clients and frameworks',
+    clientLink: 'https://github.com/SenseNet/sn-client',
+    apiKeys: 'API keys',
+    yourAppId: 'ClientID for your app',
+    personalAccessToken: 'Personal Access Token',
+    clientDescription:
+      'The client id and secret is required when you are developing a tool or another server-side application that needs to connect to the repository service. In this case all requests to the repository will be made in the name of a technical user represented by the client id and secret you see below. Please make sure you protect these values because they grant access to your repository. For more details, please visit <a href="https://docs.sensenet.com/tutorials/authentication/how-to-authenticate-dotnet" target="_blank">https://docs.sensenet.com/tutorials/authentication/how-to-authenticate-dotnet</a>',
+    spaDescription:
+      'This client id is required when you are creating a single-page application or a mobile app. In this case users will log in to the system individually using their own credentials. The client id below will identify your application in our authentication flow. Please copy the client id and use it in your application based on the examples in the documentation. For more details, please visit <a href="https://docs.sensenet.com/tutorials/authentication/how-to-authenticate-react" target="_blank">https://docs.sensenet.com/tutorials/authentication/how-to-authenticate-react</a>',
+    clientId: 'Client ID',
+    clientSecret: 'Client Secret',
+    generate: 'Generate access token',
+    regenerate: 'Regenerate',
+    latestBackendRelease: 'Latest backend release:',
+    latestFrontendRelease: 'Latest AdminUI release:',
+    goToChangeLog: 'Go to changelog',
+    componentsInfo: 'Components of your sensenet instance. These components may include one or more packages.',
+    installedPackagesInfo:
+      'These packages are mainly the building bricks of sensenet components. There are tool-like packages that are not part of the component structure, they were made to run multiple times, for example delete or index content.',
+    notAvailable: 'Not available',
   },
   customActions: {
     executeCustomActionDialog: {
@@ -472,8 +533,8 @@ const values = {
     errorContentModification: 'There was an error during content modification',
   },
   permissionEditor: {
-    assign: 'Assing new permisson',
-    setPermissons: 'Set permissions for ',
+    assign: 'Assign new permission',
+    setPermissons: 'Set permissions for',
     errorGetAcl: 'Something went wrong during getting permissions',
     noContent: 'There is no direct permission setting on this content',
     inherited: 'Inherited from ancestor',
@@ -496,7 +557,7 @@ const values = {
     cancel: 'Cancel',
     reset: 'Reset',
     name: 'Name',
-    typeIn: 'Type in a name',
+    enterName: 'Enter the name of the user or group',
   },
   restore: {
     description: (contentName: string) =>
@@ -534,6 +595,50 @@ const values = {
     changePasswordSuccess: 'Password has changed successfully',
     passwordsDontMatch: 'The passwords do not match',
   },
+  multiPartProgressLine: {
+    available: 'Available',
+  },
+  webhooksTrigger: {
+    pickAContainer: 'Pick a container',
+    startTyping: 'Start typing to add another type',
+    errorMessageOnLoad: 'Something went wrong during loading container content',
+    noTypeSelected: 'No type has been selected',
+    createTooltip: 'A new content is created',
+    modifyTooltip: 'A content is modified and saved',
+    moveToTrashTooltip: 'A content is deleted to the Trash',
+    restoreFromTrashTooltip: 'A content is restored from the Trash',
+    deleteTooltip: 'A content is deleted permanently',
+    checkoutTooltip: 'A content has become locked by a user (version number will be something similar like 1.0.L )',
+    draftTooltip: 'A new draft version created (version number will be something similar like 1.2.D )',
+    approveTooltip: 'A content version is published or approved (version number will be something similar like 3.0.A )',
+    pendingTooltip: 'A content version is waiting for approval (version number will be something similar like 2.0.P )',
+    rejectTooltip: 'A content version was rejected (version number will be something similar like 1.0.R )',
+    selectSpecificEvents: 'Select specific trigger events',
+    triggerForAll: 'Trigger for all events',
+    triggerRadioGroup: 'Trigger Radio Group',
+    all: 'All',
+    noHits: 'No hits',
+    onTypes: 'on type(s): ',
+  },
+  webhooksHeader: {
+    key: 'Pick a container',
+    startTyping: 'Start typing to add another type',
+    errorMessageOnLoad: 'Something went wrong during loading container content',
+    headers: 'Headers',
+    keyPlaceHolder: 'Key of this header',
+    valuePlaceHolder: 'Value of this header',
+  },
+  webhooksPayload: {
+    useDefault: 'Use default payload',
+    customize: 'Customize webhook payload',
+    noValue: 'No value set',
+    payload: 'Payload',
+    exampleDescription:
+      'Custom payload can be any valid JSON value. If you want to use the default payload, leave the textbox empty.',
+    example: 'Example:',
+    defaultPayload: 'Default payload',
+  },
+  editor: {},
 }
 
 export default values

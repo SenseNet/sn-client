@@ -7,8 +7,9 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
+import { LocalizationObject } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization, useSelectionService } from '../../hooks'
+import { useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { navigateToAction } from '../../services'
 import { reactControlMapper } from '../react-control-mapper'
 import { useViewControlStyles } from './common/styles'
@@ -17,7 +18,7 @@ import { ViewTitle } from './common/view-title'
 export interface EditViewProps {
   renderIcon?: (name: string) => ReactElement
   handleCancel?: () => void
-  submitCallback?: () => void
+  submitCallback?: (savedContent: GenericContent) => void
   actionName?: ActionNameType
   isFullPage?: boolean
   contentPath: string
@@ -34,6 +35,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
   const logger = useLogger('EditView')
   const history = useHistory()
   const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
+  const personalSettings = usePersonalSettings()
 
   useEffect(() => {
     async function getExpandedContent() {
@@ -42,6 +44,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         oDataOptions: {
           select: 'all',
           expand: ['Manager', 'FollowedWorkspaces', 'ModifiedBy'] as any,
+          richtexteditor: 'all',
         },
       })
       setContent(expanedContentResponse.d)
@@ -73,7 +76,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
             },
           },
         })
-        props.submitCallback?.()
+        props.submitCallback?.(response.d)
       } catch (error) {
         logger.error({
           message:
@@ -106,6 +109,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         controlMapper={controlMapper}
         localization={{ submit: localization.forms.submit, cancel: localization.forms.cancel }}
         hideDescription
+        locale={LocalizationObject[personalSettings.language].locale}
         classes={{
           ...classes,
           cancel: globalClasses.cancelButton,

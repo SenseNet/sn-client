@@ -1,6 +1,5 @@
 import { useInjector, useRepository } from '@sensenet/hooks-react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
-import CssBaseline from '@material-ui/core/CssBaseline'
 import clsx from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
 import { ResponsivePersonalSettings } from '../../context'
@@ -10,7 +9,6 @@ import { DesktopAppBar } from '../appbar/desktop-app-bar'
 import { useDialog } from '../dialogs'
 import { PermanentDrawer } from '../drawer/PermanentDrawer'
 import { TemporaryDrawer } from '../drawer/TemporaryDrawer'
-import { getMonacoModelUri } from '../editor/text-editor'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -57,11 +55,10 @@ export const DesktopLayout: React.FunctionComponent = (props) => {
 
   useEffect(() => {
     const observables = [
-      customActionService.onExecuteAction.subscribe((value) => {
-        const uri = getMonacoModelUri(value.content, repo, value.action)
+      customActionService.onExecuteAction.subscribe(async (value) => {
         openDialog({
           name: 'execute-action',
-          props: { actionValue: value, uri },
+          props: { actionValue: value },
           dialogProps: value.metadata?.parameters?.length
             ? { classes: { paper: classes.executeActionPaper } }
             : undefined,
@@ -97,7 +94,6 @@ export const DesktopLayout: React.FunctionComponent = (props) => {
 
   return (
     <div className={clsx(globalClasses.full, classes.desktopLayoutWrapper)}>
-      <CssBaseline />
       <DesktopAppBar openDrawer={() => setTempDrawerOpened(!tempDrawerOpened)} />
       <div className={classes.drawerandContentSlot}>
         {settings.drawer.enabled ? (

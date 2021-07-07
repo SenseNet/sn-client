@@ -1,5 +1,5 @@
 import { Repository } from '@sensenet/client-core'
-import { Injector, LogLevel, PathHelper, tuple } from '@sensenet/client-utils'
+import { Injector, LogLevel, PathHelper } from '@sensenet/client-utils'
 import { File, GenericContent, User } from '@sensenet/default-content-types'
 import { useInjector, useRepository } from '@sensenet/hooks-react'
 import {
@@ -29,7 +29,6 @@ import {
   LanguageOutlined,
   LibraryBooksOutlined,
   LinkOutlined,
-  ListAlt,
   ListAltOutlined,
   LocationCity,
   LockOpen,
@@ -42,7 +41,7 @@ import {
   PublicOutlined,
   Receipt,
   SearchOutlined,
-  SettingsOutlined,
+  Settings,
   TextFormat,
   TrendingDown,
   Update,
@@ -51,18 +50,132 @@ import {
   WebAssetOutlined,
   Widgets,
 } from '@material-ui/icons'
-import React from 'react'
+import circleciIcon from '@iconify-icons/logos/circleci'
+import gatsbyIcon from '@iconify-icons/logos/gatsby'
+import herokuIcon from '@iconify-icons/logos/heroku-icon'
+import netlifyIcon from '@iconify-icons/logos/netlify'
+import travisCi from '@iconify-icons/logos/travis-ci'
+import vercelIcon from '@iconify-icons/logos/vercel-icon'
+import { InlineIcon } from '@iconify/react'
+import React, { CSSProperties, FunctionComponent } from 'react'
 import { EventLogEntry } from '../services/EventService'
 import { UserAvatar } from './UserAvatar'
 
 export interface IconOptions {
-  style?: React.CSSProperties
+  style?: CSSProperties
   injector: Injector
   repo: Repository
 }
 
 export interface IconResolver<T> {
   get: (item: T, options: IconOptions) => JSX.Element | null
+}
+
+const getIconByName = (name: string | undefined, options: IconOptions) => {
+  switch (name) {
+    case 'Folder':
+    case 'SystemFolder':
+      return <Folder style={options.style} />
+    case 'SmartFolder':
+      return <FolderSpecial style={options.style} />
+    case 'File':
+      return <InsertDriveFileOutlined style={{ ...options.style }} />
+    case 'TrashBin':
+    case 'DeleteOutlined':
+      return <DeleteOutlined style={options.style} />
+    case 'PortalRoot':
+      return <PublicOutlined style={options.style} />
+    case 'Search':
+      return <SearchOutlined style={options.style} />
+    case 'Comment':
+      return <CommentOutlined style={options.style} />
+    case 'ImageLibrary':
+      return <PhotoLibrary style={options.style} />
+    case 'Image':
+      return <PhotoOutlined style={options.style} />
+    case 'EventList':
+      return <CalendarTodayOutlined style={options.style} />
+    case 'CalendarEvent':
+      return <EventOutlined style={options.style} />
+    case 'DocumentLibrary':
+    case 'ContentList':
+      return <LibraryBooksOutlined style={options.style} />
+    case 'excel':
+      return <GridOnOutlined style={options.style} />
+    case 'word':
+      return <DescriptionOutlined style={options.style} />
+    case 'powerpoint':
+      return <PresentToAllOutlined style={options.style} />
+    case 'adobe':
+    case 'acrobat':
+      return <PictureAsPdfOutlined style={options.style} />
+    case 'LinkList':
+    case 'MemoList':
+    case 'TaskList':
+    case 'EventLog':
+      return <ListAltOutlined style={options.style} />
+    case 'Link':
+      return <LinkOutlined style={options.style} />
+    case 'Memo':
+    case 'Plan':
+      return <AssignmentOutlined style={options.style} />
+    case 'Task':
+      return <BallotOutlined style={options.style} />
+    case 'Domain':
+      return <DomainOutlined style={options.style} />
+    case 'User':
+      return <PersonOutline style={options.style} />
+    case 'Group':
+    case 'Profiles':
+      return <GroupOutlined style={options.style} />
+    case 'OrganizationalUnit':
+      return <LocationCity style={options.style} />
+    case 'Resources':
+      return <LanguageOutlined style={options.style} />
+    case 'Resource':
+      return <TextFormat style={options.style} />
+    case 'ContentType':
+      return <Widgets style={options.style} />
+    case 'AddAlert':
+      return <AddAlert style={options.style} />
+    case 'VisibilityOff':
+      return <VisibilityOff style={options.style} />
+    case 'MoneyOff':
+      return <MoneyOff style={options.style} />
+    case 'Update':
+      return <Update style={options.style} />
+    case 'Receipt':
+      return <Receipt style={options.style} />
+    case 'HourglassEmpty':
+      return <HourglassEmpty style={options.style} />
+    case 'FiberNew':
+      return <FiberNew style={options.style} />
+    case 'TrendingDown':
+      return <TrendingDown style={options.style} />
+    case 'Block':
+      return <Block style={options.style} />
+    case 'LockOpen':
+      return <LockOpen style={options.style} />
+    case 'Box':
+    case 'Workspace':
+      return <AllInboxOutlined style={options.style} />
+    case 'Settings':
+      return <Settings style={options.style} />
+    case 'Netlify':
+      return <InlineIcon icon={netlifyIcon} width="24" />
+    case 'Gatsby':
+      return <InlineIcon icon={gatsbyIcon} width="24" />
+    case 'Travis':
+      return <InlineIcon icon={travisCi} width="24" />
+    case 'CircleCI':
+      return <InlineIcon icon={circleciIcon} width="24" />
+    case 'Vercel':
+      return <InlineIcon icon={vercelIcon} width="24" />
+    case 'Heroku':
+      return <InlineIcon icon={herokuIcon} height="24" />
+    default:
+      return null
+  }
 }
 
 /* eslint-disable react/display-name */
@@ -96,8 +209,8 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
     get: (item, options) =>
       options.repo.schemas.isContentFromType<File>(item, 'File') && item.PageCount && item.PageCount > 0 ? (
         <img
-          width={(options.style && options.style.width) || 32}
-          height={(options.style && options.style.width) || 32}
+          width={options.style?.width || 32}
+          height={options.style?.width || 32}
           alt=""
           src={PathHelper.joinPaths(
             options.repo.configuration.repositoryUrl,
@@ -111,333 +224,25 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
       ) : null,
   },
   {
-    get: (item, options) =>
-      item.Type === ('Folder' || 'SystemFolder') || item.Icon === ('Folder' || 'SystemFolder') ? (
-        <Folder style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      item.Icon === 'SmartFolder' || options.repo.schemas.isContentFromType(item, 'SmartFolder') ? (
-        <FolderSpecial style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      item.Icon === 'TrashBin' ||
-      item.Icon === 'DeleteOutlined' ||
-      options.repo.schemas.isContentFromType(item, 'TrashBin') ? (
-        <DeleteOutlined style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      item.Type === 'PortalRoot' || item.Icon === 'PortalRoot' ? <PublicOutlined style={options.style} /> : null,
-  },
-  {
-    get: (item, options) =>
-      item.Icon === 'Search' || options.repo.schemas.isContentFromType(item, 'Search') ? (
-        <SearchOutlined style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      item.Icon === 'Comment' || options.repo.schemas.isContentFromType(item, 'Comment') ? (
-        <CommentOutlined style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      item.Icon === 'ImageLibrary' || options.repo.schemas.isContentFromType(item, 'ImageLibrary') ? (
-        <PhotoLibrary style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      item.Icon === 'Image' || options.repo.schemas.isContentFromType(item, 'Image') ? (
-        <PhotoOutlined style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      item.Icon === 'EventList' || options.repo.schemas.isContentFromType(item, 'EventList') ? (
-        <CalendarTodayOutlined style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      item.Icon === 'CalendarEvent' || options.repo.schemas.isContentFromType(item, 'CalendarEvent') ? (
-        <EventOutlined style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      item.Type === 'DocumentLibrary' ||
-      item.Icon === 'DocumentLibrary' ||
-      item.Type === 'ContentList' ||
-      item.Icon === 'ContentList' ? (
-        <LibraryBooksOutlined style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      item.Icon === 'TaskList' || options.repo.schemas.isContentFromType(item, 'TaskList') ? (
-        <ListAlt style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      options.repo.schemas.isContentFromType(item, 'File') && item.Icon === 'excel' ? (
-        <GridOnOutlined style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      options.repo.schemas.isContentFromType(item, 'File') && item.Icon === 'word' ? (
-        <DescriptionOutlined style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      options.repo.schemas.isContentFromType(item, 'File') && item.Icon === 'powerpoint' ? (
-        <PresentToAllOutlined style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      options.repo.schemas.isContentFromType(item, 'File') && item.Icon === 'adobe' ? (
-        <PictureAsPdfOutlined style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      item.Icon === ('LinkList' || 'MemoList' || 'TaskList' || 'EventLog') ||
-      options.repo.schemas.isContentFromType(item, 'LinkList') ||
-      options.repo.schemas.isContentFromType(item, 'MemoList') ||
-      options.repo.schemas.isContentFromType(item, 'TaskList') ||
-      options.repo.schemas.isContentFromType(item, 'EventLog') ? (
-        <ListAltOutlined style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      item.Icon === 'Link' || options.repo.schemas.isContentFromType(item, 'Link') ? (
-        <LinkOutlined style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      item.Icon === 'Memo' ||
-      item.Icon === 'Plan' ||
-      options.repo.schemas.isContentFromType(item, 'Memo') ||
-      options.repo.schemas.isContentFromType(item, 'Plan') ? (
-        <AssignmentOutlined style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      item.Icon === 'Task' || options.repo.schemas.isContentFromType(item, 'Task') ? (
-        <BallotOutlined style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      item.Icon === 'Domain' || options.repo.schemas.isContentFromType(item, 'Domain') ? (
-        <DomainOutlined style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      item.Icon === 'User' || options.repo.schemas.isContentFromType(item, 'User') ? (
-        <PersonOutline style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      item.Icon === ('Group' || 'Profiles') ||
-      options.repo.schemas.isContentFromType(item, 'Group') ||
-      options.repo.schemas.isContentFromType(item, 'Profiles') ? (
-        <GroupOutlined style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      item.Icon === 'OrganizationalUnit' || options.repo.schemas.isContentFromType(item, 'OrganizationalUnit') ? (
-        <LocationCity style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      item.Type === 'Resources' || item.Icon === 'Resources' ? <LanguageOutlined style={options.style} /> : null,
-  },
-  {
-    get: (item, options) =>
-      item.Type === 'Resource' || item.Icon === 'Resource' ? <TextFormat style={options.style} /> : null,
-  },
-  {
-    get: (item, options) =>
-      item.Type === 'ContentType' || item.Icon === 'ContentType' ? <Widgets style={options.style} /> : null,
-  },
-  {
-    get: (item, options) => (item.Icon === 'AddAlert' ? <AddAlert style={options.style} /> : null),
-  },
-  {
-    get: (item, options) => (item.Icon === 'VisibilityOff' ? <VisibilityOff style={options.style} /> : null),
-  },
-  {
-    get: (item, options) => (item.Icon === 'MoneyOff' ? <MoneyOff style={options.style} /> : null),
-  },
-  {
-    get: (item, options) => (item.Icon === 'Update' ? <Update style={options.style} /> : null),
-  },
-  {
-    get: (item, options) => (item.Icon === 'Receipt' ? <Receipt style={options.style} /> : null),
-  },
-  {
-    get: (item, options) => (item.Icon === 'HourglassEmpty' ? <HourglassEmpty style={options.style} /> : null),
-  },
-  {
-    get: (item, options) => (item.Icon === 'FiberNew' ? <FiberNew style={options.style} /> : null),
-  },
-  {
-    get: (item, options) => (item.Icon === 'TrendingDown' ? <TrendingDown style={options.style} /> : null),
-  },
-  {
-    get: (item, options) => (item.Icon === 'Block' ? <Block style={options.style} /> : null),
-  },
-  {
-    get: (item, options) => (item.Icon === 'LockOpen' ? <LockOpen style={options.style} /> : null),
-  },
-  {
-    get: (item, options) =>
-      item.Icon === 'Box' || options.repo.schemas.isContentFromType(item, 'Workspace') ? (
-        <AllInboxOutlined style={options.style} />
-      ) : null,
-  },
-  {
-    get: (item, options) =>
-      options.repo.schemas.isContentFromType(item, 'Settings') ? <SettingsOutlined style={options.style} /> : null,
-  },
-  { get: (item, options) => (item.Icon === '' ? <GroupOutlined style={options.style} /> : null) },
-]
-
-export const wellKnownIconNames = tuple(
-  'AddAlert',
-  'Block',
-  'Folder',
-  'File',
-  'ImageLibrary',
-  'EventList',
-  'FiberNew',
-  'CalendarEvent',
-  'DeleteOutlined',
-  'DocumentLibrary',
-  'HourglassEmpty',
-  'LinkList',
-  'Link',
-  'LockOpen',
-  'MemoList',
-  'Memo',
-  'MoneyOff',
-  'Receipt',
-  'TaskList',
-  'Task',
-  'TrendingDown',
-  'User',
-  'Group',
-  'ContentType',
-  'SmartFolder',
-  'SystemFolder',
-  'Resource',
-  'OrganizationalUnit',
-  'Update',
-  'VisibilityOff',
-  'Workspace',
-)
-
-export const defaultSchemaResolvers: Array<IconResolver<{ ContentTypeName: typeof wellKnownIconNames[number] }>> = [
-  {
-    get: (item, options) => {
-      switch (item.ContentTypeName) {
-        case 'Folder':
-          return <Folder style={{ ...options.style }} />
-        case 'SmartFolder':
-          return <FolderSpecial style={{ ...options.style }} />
-        case 'File':
-          return <InsertDriveFileOutlined style={{ ...options.style }} />
-        case 'ImageLibrary':
-          return <PhotoLibrary style={options.style} />
-        case 'EventList':
-          return <CalendarTodayOutlined style={options.style} />
-        case 'CalendarEvent':
-          return <EventOutlined style={options.style} />
-        case 'DocumentLibrary':
-          return <LibraryBooksOutlined style={options.style} />
-        case 'LinkList':
-          return <ListAltOutlined style={options.style} />
-        case 'Link':
-          return <LinkOutlined style={options.style} />
-        case 'MemoList':
-          return <ListAltOutlined style={options.style} />
-        case 'Memo':
-          return <AssignmentOutlined style={options.style} />
-        case 'TaskList':
-          return <ListAltOutlined style={options.style} />
-        case 'Task':
-          return <BallotOutlined style={options.style} />
-        case 'User':
-          return <PersonOutline style={options.style} />
-        case 'Group':
-          return <GroupOutlined style={options.style} />
-        case 'ContentType':
-          return <Widgets style={options.style} />
-        case 'SystemFolder':
-          return <Folder style={options.style} />
-        case 'Resource':
-          return <TextFormat style={options.style} />
-        case 'OrganizationalUnit':
-          return <LocationCity style={options.style} />
-        case 'AddAlert':
-          return <AddAlert style={options.style} />
-        case 'VisibilityOff':
-          return <VisibilityOff style={options.style} />
-        case 'MoneyOff':
-          return <MoneyOff style={options.style} />
-        case 'Update':
-          return <Update style={options.style} />
-        case 'Receipt':
-          return <Receipt style={options.style} />
-        case 'HourglassEmpty':
-          return <HourglassEmpty style={options.style} />
-        case 'FiberNew':
-          return <FiberNew style={options.style} />
-        case 'TrendingDown':
-          return <TrendingDown style={options.style} />
-        case 'DeleteOutlined':
-          return <DeleteOutlined style={options.style} />
-        case 'Block':
-          return <Block style={options.style} />
-        case 'LockOpen':
-          return <LockOpen style={options.style} />
-        default:
-          return null
-      }
-    },
-  },
-  {
-    get: (item, options) =>
-      item.ContentTypeName && item.ContentTypeName.indexOf('Workspace') > -1 ? (
-        <AllInboxOutlined style={options.style} />
-      ) : null,
+    get: (item, options) => getIconByName(item.Icon, options),
   },
 ]
 
-export const editviewFileResolver: Array<IconResolver<GenericContent>> = [
+export const defaultSchemaResolvers: Array<IconResolver<GenericContent | { ContentTypeName: string }>> = [
   {
     get: (item, options) => {
-      if (item.Type === 'File') {
-        return <InsertDriveFileOutlined style={{ ...options.style }} />
-      }
+      let currentSchema = options.repo.schemas.getSchemaByName(
+        'ContentTypeName' in item ? item.ContentTypeName : item.Type,
+      )
+
+      do {
+        const icon = getIconByName(currentSchema.Icon ?? currentSchema.ContentTypeName, options)
+        if (icon) {
+          return icon
+        }
+        currentSchema = options.repo.schemas.getSchemaByName(currentSchema.ParentTypeName || '')
+      } while (currentSchema.ContentTypeName && currentSchema.ContentTypeName !== 'GenericContent')
+
       return null
     },
   },
@@ -446,33 +251,28 @@ export const editviewFileResolver: Array<IconResolver<GenericContent>> = [
 export const defaultNotificationResolvers: Array<IconResolver<EventLogEntry<any>>> = [
   {
     get: (item, options) => {
-      return item.level === LogLevel.Fatal || item.level === LogLevel.Error ? (
-        <ErrorOutlined style={{ ...options.style }} />
-      ) : null
-    },
-  },
-  {
-    get: (item, options) => {
-      return item.level === LogLevel.Warning ? <Warning style={{ ...options.style }} /> : null
-    },
-  },
-  {
-    get: (item, options) => {
-      return item.level === LogLevel.Debug ? <BugReport style={{ ...options.style }} /> : null
-    },
-  },
-  {
-    get: (item, options) => {
-      return item.level === LogLevel.Information ? <Info style={{ ...options.style }} /> : null
+      switch (item.level) {
+        case LogLevel.Fatal:
+        case LogLevel.Error:
+          return <ErrorOutlined style={{ ...options.style }} />
+        case LogLevel.Warning:
+          return <Warning style={{ ...options.style }} />
+        case LogLevel.Debug:
+          return <BugReport style={{ ...options.style }} />
+        case LogLevel.Information:
+          return <Info style={{ ...options.style }} />
+        default:
+          return null
+      }
     },
   },
 ]
 
-export const IconComponent: React.FunctionComponent<{
+export const IconComponent: FunctionComponent<{
   resolvers?: Array<IconResolver<any>>
   item: any
   defaultIcon?: JSX.Element
-  style?: React.CSSProperties
+  style?: CSSProperties
 }> = (props) => {
   const injector = useInjector()
   const repo = useRepository()
@@ -487,9 +287,8 @@ export const IconComponent: React.FunctionComponent<{
   const defaultIcon = props.defaultIcon || <WebAssetOutlined style={props.style} /> || null
   const assignedResolver = resolvers.find((r) => (r.get(props.item, options) ? true : false))
   if (assignedResolver) {
-    return assignedResolver.get(props.item, options) as JSX.Element
+    return assignedResolver.get(props.item, options)!
   }
-
   return defaultIcon
 }
 

@@ -1,20 +1,20 @@
 import { Icon, iconType } from '@sensenet/icons-react'
 import Button from '@material-ui/core/Button'
-import React from 'react'
+import React, { Component, MouseEvent } from 'react'
 import { resources } from '../../assets/resources'
 
 interface AddNewButtonProps {
   disabled: boolean
   contentType: string
-  onClick: (e: React.MouseEvent<HTMLElement>) => void
+  onClick: (e: MouseEvent<HTMLElement>) => void
 }
 
-export class AddNewButton extends React.Component<AddNewButtonProps, {}> {
+export class AddNewButton extends Component<AddNewButtonProps, {}> {
   constructor(props: AddNewButton['props']) {
     super(props)
     this.handleButtonClick = this.handleButtonClick.bind(this)
   }
-  public handleButtonClick(e: React.MouseEvent<HTMLElement>) {
+  public handleButtonClick(e: MouseEvent<HTMLElement>) {
     if (this.props.onClick) {
       this.props.onClick(e)
     }

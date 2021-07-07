@@ -5,7 +5,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
 import { Theme, useTheme } from '@material-ui/core/styles'
 import Close from '@material-ui/icons/Close'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react'
 import { ResponsiveContext } from '../context'
 import { useNotificationService } from '../hooks/use-notification-service'
 import { Icon } from './Icon'
@@ -46,7 +46,7 @@ export const getAutoHideDuration = (item: LeveledLogEntry<any>) => {
   }
 }
 
-export const NotificationComponent: React.FunctionComponent = () => {
+export const NotificationComponent: FunctionComponent = () => {
   const notificationService = useNotificationService()
   const [values, setValues] = useState<Array<LeveledLogEntry<any>>>(notificationService.activeMessages.getValue())
   const [dismisses, setDismisses] = useState<string[]>([])
@@ -92,6 +92,7 @@ export const NotificationComponent: React.FunctionComponent = () => {
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Icon item={value} style={{ marginRight: '1em' }} />
                 <div
+                  data-test="snackbar-message"
                   title={value.message}
                   style={{ overflow: 'hidden', textOverflow: 'ellipsis', wordBreak: 'break-word' }}>
                   {(count > 1 && value.data?.digestMessage && value.data.digestMessage.replace('{count}', count)) ||

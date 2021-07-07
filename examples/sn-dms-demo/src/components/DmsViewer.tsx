@@ -1,5 +1,4 @@
 import {
-  defaultTheme,
   DocumentTitlePager,
   DocumentViewer,
   Download,
@@ -12,7 +11,7 @@ import {
   ZoomInOutWidget,
 } from '@sensenet/document-viewer-react'
 import { Icon, iconType } from '@sensenet/icons-react'
-import { IconButton, MuiThemeProvider } from '@material-ui/core'
+import { IconButton } from '@material-ui/core'
 import React, { useCallback, useEffect } from 'react'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router'
@@ -27,7 +26,7 @@ const DocViewer: React.FunctionComponent<
     10,
   )
   const closeViewer = useCallback(() => {
-    props.previousLocation ? props.history.push(props.previousLocation) : props.history.goBack()
+    props.previousLocation ? props.history.push(props.previousLocation) : props.history.go(-1)
   }, [props.history, props.previousLocation])
 
   useEffect(() => {
@@ -73,69 +72,67 @@ const DocViewer: React.FunctionComponent<
         }}
       />
       <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' }}>
-        <MuiThemeProvider theme={defaultTheme}>
-          <DocumentViewer
-            documentIdOrPath={documentId}
-            renderAppBar={() => (
-              <MediaQuery minDeviceWidth={700}>
-                {(matches) =>
-                  matches ? (
-                    <div>
-                      <LayoutAppBar>
-                        <div style={{ flexShrink: 0 }}>
-                          <ToggleThumbnailsWidget />
-                          <Download
-                            download={(doc) => {
-                              console.log('Download triggered', doc)
-                            }}
-                          />
-                          <Print
-                            print={(doc) => {
-                              console.log('Print triggered', doc)
-                            }}
-                          />
-                          <Share
-                            share={() => {
-                              console.log('Share triggered')
-                              // props.openDialog(<ShareDialog currentContent={props.currentContent || null} />)
-                            }}
-                          />
-                          <ZoomInOutWidget />
-                          <RotateActivePagesWidget />
-                        </div>
-                        <DocumentTitlePager />
-                        <div style={{ display: 'flex', flexShrink: 0 }}>
-                          <ToggleCommentsWidget />
-                          <IconButton color="inherit" onClick={() => closeViewer()}>
-                            <Icon iconName="close" type={iconType.materialui} />
-                          </IconButton>
-                        </div>
-                      </LayoutAppBar>
-                    </div>
-                  ) : (
-                    <div>
-                      <LayoutAppBar>
-                        {/* <Typography variant="h6" color="inherit">
+        <DocumentViewer
+          documentIdOrPath={documentId}
+          renderAppBar={() => (
+            <MediaQuery minDeviceWidth={700}>
+              {(matches) =>
+                matches ? (
+                  <div>
+                    <LayoutAppBar>
+                      <div style={{ flexShrink: 0 }}>
+                        <ToggleThumbnailsWidget />
+                        <Download
+                          download={(doc) => {
+                            console.log('Download triggered', doc)
+                          }}
+                        />
+                        <Print
+                          print={(doc) => {
+                            console.log('Print triggered', doc)
+                          }}
+                        />
+                        <Share
+                          share={() => {
+                            console.log('Share triggered')
+                            // props.openDialog(<ShareDialog currentContent={props.currentContent || null} />)
+                          }}
+                        />
+                        <ZoomInOutWidget />
+                        <RotateActivePagesWidget />
+                      </div>
+                      <DocumentTitlePager />
+                      <div style={{ display: 'flex', flexShrink: 0 }}>
+                        <ToggleCommentsWidget />
+                        <IconButton color="inherit" onClick={() => closeViewer()}>
+                          <Icon iconName="close" type={iconType.materialui} />
+                        </IconButton>
+                      </div>
+                    </LayoutAppBar>
+                  </div>
+                ) : (
+                  <div>
+                    <LayoutAppBar>
+                      {/* <Typography variant="h6" color="inherit">
                      {props.documentName}
                    </Typography> */}
-                        <div>
-                          <Share
-                            share={() => {
-                              // this.props.openDialog(<ShareDialog currentContent={this.props.currentContent || null} />)
-                            }}
-                          />
-                          <IconButton color="inherit">
-                            <Icon iconName="search" type={iconType.materialui} />
-                          </IconButton>
-                        </div>
-                      </LayoutAppBar>
-                    </div>
-                  )
-                }
-              </MediaQuery>
-            )}
-          />
-        </MuiThemeProvider>
+                      <div>
+                        <Share
+                          share={() => {
+                            // this.props.openDialog(<ShareDialog currentContent={this.props.currentContent || null} />)
+                          }}
+                        />
+                        <IconButton color="inherit">
+                          <Icon iconName="search" type={iconType.materialui} />
+                        </IconButton>
+                      </div>
+                    </LayoutAppBar>
+                  </div>
+                )
+              }
+            </MediaQuery>
+          )}
+        />
       </div>
     </div>
   )

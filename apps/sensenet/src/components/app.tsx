@@ -1,4 +1,4 @@
-import { CssBaseline } from '@material-ui/core'
+import { CssBaseline, StylesProvider } from '@material-ui/core'
 import React from 'react'
 import AppProviders from './app-providers'
 import { Dialogs } from './dialogs'
@@ -12,11 +12,13 @@ export function App() {
     <ErrorBoundary>
       <AppProviders>
         <CssBaseline />
-        <DesktopLayout>
-          <MainRouter />
-        </DesktopLayout>
-        <NotificationComponent />
-        <Dialogs />
+        <StylesProvider injectFirst>
+          <DesktopLayout>
+            <MainRouter />
+          </DesktopLayout>
+          <NotificationComponent />
+          <Dialogs />
+        </StylesProvider>
       </AppProviders>
     </ErrorBoundary>
   )

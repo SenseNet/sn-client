@@ -1,4 +1,4 @@
-import TextField from '@material-ui/core/TextField'
+import { TextField } from '@material-ui/core'
 import React from 'react'
 import { RenderInputComponentProps } from 'react-autosuggest'
 
@@ -16,6 +16,7 @@ export const ReferenceFieldInput = (props: ReferenceFieldInputProps) => {
   const { description, displayName, helperText, inputProps } = props
   return (
     <TextField
+      data-test={'reference-input'}
       autoFocus={props.autoFocus}
       type="text"
       label={displayName}

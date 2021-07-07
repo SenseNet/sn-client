@@ -10,6 +10,7 @@ export const globals = {
     drawerItemHeight: 65,
     formTitleHeight: 68,
     formActionButtonsHeight: 80,
+    settingsDrawerWidth: 250,
     //Colors
     headerBackground: '#353B4E',
     headerText: 'rgba(255,255,255,0.87)',
@@ -131,5 +132,41 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
         marginLeft: 38,
       },
     },
+    cardRoot: {
+      backgroundColor: theme.palette.type === 'light' ? '#F8F8F8' : 'rgba(255, 255, 255, 0.05)',
+      border: theme.palette.type === 'light' ? '1px solid #E2E2E2' : 'none',
+      padding: '14px 24px',
+      marginBottom: '50px',
+      '& .MuiGrid-item': {
+        marginBottom: '12px',
+      },
+    },
   })
 })
+
+export const widgetStyles = (theme: Theme) => {
+  return createStyles({
+    root: {
+      marginBottom: '2rem',
+      width: '100%',
+    },
+    title: {
+      marginBottom: '1rem',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      fontSize: '20px',
+      fontWeight: 500,
+    },
+    container: {
+      padding: '1.5rem',
+      backgroundColor: theme.palette.type === 'light' ? globals.light.drawerBackground : globals.dark.drawerBackground,
+      border: theme.palette.type === 'light' ? '1px solid #E2E2E2' : 0,
+    },
+    subtitle: {
+      fontSize: '20px',
+      fontWeight: 500,
+      marginTop: 0,
+    },
+  })
+}

@@ -1,15 +1,10 @@
-import Button from '@material-ui/core/Button'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import IconButton from '@material-ui/core/IconButton/IconButton'
-import TextField from '@material-ui/core/TextField/TextField'
+import { Button, FormHelperText, IconButton, TextField } from '@material-ui/core'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
-import { ThemeProvider } from 'styled-components'
 import { defaultLocalization, defaultViewerState, DocumentViewerApiSettingsContext, ViewerStateContext } from '../src'
 import { CreateComment } from '../src/components'
 import { CommentStateContext, defaultCommentState } from '../src/context/comment-states'
-import { defaultTheme } from '../src/models'
 import { defaultSettings, examplePreviewComment } from './__Mocks__/viewercontext'
 
 const emptyDocumentData = {
@@ -29,10 +24,7 @@ const emptyDocumentData = {
 
 describe('Create comment component', () => {
   it('should show add comment button when not active', () => {
-    const wrapper = mount(<CreateComment />, {
-      wrappingComponent: ThemeProvider,
-      wrappingComponentProps: { theme: defaultTheme },
-    })
+    const wrapper = mount(<CreateComment />)
     expect(wrapper.find(Button).exists()).toBeTruthy()
     expect(wrapper.find(Button).length).toBe(1)
     expect(wrapper.find(Button).text()).toBe('+ Add Comment')
@@ -48,10 +40,6 @@ describe('Create comment component', () => {
         }}>
         <CreateComment />
       </ViewerStateContext.Provider>,
-      {
-        wrappingComponent: ThemeProvider,
-        wrappingComponentProps: { theme: defaultTheme },
-      },
     )
     wrapper.find(Button).simulate('click')
     expect(updateState).toBeCalledWith({ isCreateCommentActive: true })
@@ -250,6 +238,6 @@ describe('Create comment component', () => {
     )
 
     wrapper.find(IconButton).simulate('click')
-    expect(updateState).toBeCalledWith({ isPlacingCommentMarker: true })
+    expect(updateState).toBeCalledWith({ activeShapePlacing: 'none', isPlacingCommentMarker: true })
   })
 })

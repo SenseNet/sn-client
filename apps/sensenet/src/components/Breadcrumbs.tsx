@@ -2,7 +2,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import MUIBreadcrumbs from '@material-ui/core/Breadcrumbs'
 import Button from '@material-ui/core/Button'
 import Tooltip from '@material-ui/core/Tooltip'
-import React, { useState } from 'react'
+import React, { MouseEvent, useState } from 'react'
 import { ContentContextMenu } from './context-menu/content-context-menu'
 import { DropFileArea } from './DropFileArea'
 
@@ -15,7 +15,7 @@ export interface BreadcrumbItem<T extends GenericContent> {
 
 export interface BreadcrumbProps<T extends GenericContent> {
   items: Array<BreadcrumbItem<T>>
-  onItemClick: (event: React.MouseEvent, item: BreadcrumbItem<T>) => void
+  onItemClick: (event: MouseEvent, item: BreadcrumbItem<T>) => void
 }
 
 export function Breadcrumbs<T extends GenericContent>(props: BreadcrumbProps<T>) {
@@ -30,6 +30,7 @@ export function Breadcrumbs<T extends GenericContent>(props: BreadcrumbProps<T>)
           <DropFileArea key={item.content.Id} parentContent={item.content} style={{ display: 'inline-block' }}>
             <Tooltip title={item.title}>
               <Button
+                data-test={`breadcrumb-item-${item.displayName.replace(/\s+/g, '-').toLowerCase()}`}
                 aria-label={item.displayName}
                 onClick={(ev) => props.onItemClick(ev, item)}
                 onContextMenu={(ev) => {

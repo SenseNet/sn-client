@@ -1,13 +1,7 @@
 import { GenericContent } from '@sensenet/default-content-types'
-import { Icon, iconType } from '@sensenet/icons-react'
-import Checkbox from '@material-ui/core/Checkbox'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import Typography from '@material-ui/core/Typography'
-import ArrowUpward from '@material-ui/icons/ArrowUpward'
-import React, { useCallback } from 'react'
+import { Checkbox, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core'
+import { ArrowUpward, Folder } from '@material-ui/icons'
+import React, { ChangeEvent, MouseEvent, useCallback } from 'react'
 import { useSelection, useTreePicker } from '../../hooks'
 import { GenericContentWithIsParent } from '../../types'
 import { PickerProps } from '../picker'
@@ -27,7 +21,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
   })
 
   const onCheckedChangeHandler = useCallback(
-    (_event: React.ChangeEvent<HTMLInputElement>, node: T) => {
+    (_event: ChangeEvent<HTMLInputElement>, node: T) => {
       if (!node.isParent) {
         const newSelection = props.allowMultiple ? selection.filter((item) => item.Id !== node.Id) : []
         if (newSelection.length === selection.length || (!props.allowMultiple && selection[0].Id !== node.Id)) {
@@ -40,7 +34,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
   )
 
   const onDoubleClickHandler = useCallback(
-    (_event: React.MouseEvent, node: T) => {
+    (_event: MouseEvent, node: T) => {
       if (node.IsFolder || node.isParent) {
         navigateTo(node)
         props.onTreeNavigation?.(node.Path)
@@ -53,7 +47,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
     (item: T) => {
       if (item.isParent) {
         return (
-          <ListItem key={item.Id} button={true}>
+          <ListItem data-test="picker-up" key={item.Id} button={true}>
             <ListItemIcon>
               <ArrowUpward />
             </ListItemIcon>
@@ -69,6 +63,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
           <ListItemIcon>
             {!props.selectionBlacklist?.includes(item.Path) && (
               <Checkbox
+                data-test={`picker-checkbox-item-${item.Name.replace(/\s+/g, '-').toLowerCase()}`}
                 color="primary"
                 edge="start"
                 checked={selection.some((selected) => selected.Id === item.Id)}
@@ -80,11 +75,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
               />
             )}
           </ListItemIcon>
-          <ListItemIcon>
-            {props.renderIcon?.(item) || (
-              <Icon type={iconType.materialui} iconName="folder" style={{ color: 'primary' }} />
-            )}
-          </ListItemIcon>
+          <ListItemIcon>{props.renderIcon?.(item) || <Folder style={{ color: 'primary' }} />}</ListItemIcon>
           <ListItemText
             id={labelId}
             primary={item.DisplayName}

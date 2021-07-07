@@ -3,12 +3,11 @@
  */
 import { deepMerge } from '@sensenet/client-utils'
 import { DateTimeFieldSetting } from '@sensenet/default-content-types'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import Typography from '@material-ui/core/Typography'
+import { FormHelperText, Typography } from '@material-ui/core'
 import { MuiPickersUtilsProvider, TimePicker as MUITimePicker } from '@material-ui/pickers'
-import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
-import MomentUtils from '@date-io/moment'
-import moment from 'moment'
+import type { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
+import DateFnsUtils from '@date-io/date-fns'
+import format from 'date-fns/format'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
@@ -31,15 +30,15 @@ export const TimePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
     if (!date) {
       return
     }
-    setValue(moment.utc(date).toString())
-    props.fieldOnChange?.(props.settings.Name, moment.utc(date))
+    setValue(new Date(date).toISOString())
+    props.fieldOnChange?.(props.settings.Name, new Date(date).toISOString())
   }
 
   switch (props.actionName) {
     case 'edit':
     case 'new':
       return (
-        <MuiPickersUtilsProvider utils={MomentUtils}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={props.locale}>
           <MUITimePicker
             value={value}
             name={props.settings.Name}
@@ -62,7 +61,9 @@ export const TimePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
             {props.settings.DisplayName}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
-            {props.fieldValue ? moment(props.fieldValue).format('HH:mm:ss') : localization.noValue}
+            {props.fieldValue
+              ? format(new Date(props.fieldValue), 'HH:mm:ss', { locale: props.locale })
+              : localization.noValue}
           </Typography>
         </div>
       )

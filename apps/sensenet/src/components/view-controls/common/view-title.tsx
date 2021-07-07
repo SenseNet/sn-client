@@ -2,13 +2,13 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import { createStyles, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
-import React, { useCallback, useContext } from 'react'
+import React, { useCallback, useContext, useMemo } from 'react'
 import { useHistory } from 'react-router'
 import { ResponsivePersonalSettings } from '../../../context'
 import { useGlobalStyles } from '../../../globalStyles'
 import { useSnRoute } from '../../../hooks'
 import { getPrimaryActionUrl } from '../../../services'
-import { editviewFileResolver, Icon } from '../../Icon'
+import { Icon } from '../../Icon'
 
 interface ViewTitleProps {
   title: string
@@ -37,6 +37,11 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
   const uiSettings = useContext(ResponsivePersonalSettings)
   const snRoute = useSnRoute()
 
+  const contentDisplayName = useMemo(
+    () => props.content && repository.schemas.getSchemaByName(props.content.Type).DisplayName,
+    [props.content, repository.schemas],
+  )
+
   const getContentTypeId = useCallback(
     async (contentType: string) => {
       const result = await repository.loadCollection({
@@ -57,7 +62,7 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
       </span>
       {props.content && (
         <span
-          title={`Open ${props.content.Type} CTD`}
+          title={`Open ${contentDisplayName} CTD`}
           onClick={async () => {
             const content = await getContentTypeId(props.content!.Type)
             history.push(
@@ -73,14 +78,13 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
           }}
           className={globalClasses.centered}>
           <Icon
-            resolvers={editviewFileResolver}
             style={{
               marginLeft: '9px',
               height: '24px',
               width: '24px',
               cursor: 'pointer',
             }}
-            item={{ ...props.content, Type: '' }}
+            item={props.content}
           />
         </span>
       )}

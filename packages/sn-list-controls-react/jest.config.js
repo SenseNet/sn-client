@@ -1,5 +1,5 @@
-const pack = require('./package')
 const base = require('../../jest.base.config')
+const pack = require('./package')
 
 module.exports = {
   ...base,
@@ -7,6 +7,7 @@ module.exports = {
   coveragePathIgnorePatterns: ['index.ts', '[eE]xample.*'],
   setupFilesAfterEnv: ['<rootDir>../../jest/setup.js'],
   moduleNameMapper: {
+    ...base.moduleNameMapper,
     '\\.css$': '<rootDir>../../jest/cssTransform.js',
   },
   snapshotSerializers: ['enzyme-to-json/serializer'],

@@ -67,7 +67,6 @@ describe('Edit view component', () => {
     expect(wrapper.find(ColorPicker)).toHaveLength(2)
   })
   it('should handle change', () => {
-    const submitCallback = jest.fn()
     const onSubmit = jest.fn()
     const wrapper = shallow(
       <EditView repository={testRepository} onSubmit={onSubmit} content={testFile} contentTypeName={testFile.Type} />,

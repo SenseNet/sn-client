@@ -1,4 +1,4 @@
-import { createStyles, Grid, Link, makeStyles, Paper, Theme, Typography } from '@material-ui/core'
+import { Button, createStyles, Grid, makeStyles, Paper, Theme, Typography } from '@material-ui/core'
 import clsx from 'clsx'
 import React from 'react'
 import plutoComeBack from '../../assets/dashboard/pluto-come-back-later.png'
@@ -7,8 +7,10 @@ import plutoOrderCompleted from '../../assets/dashboard/pluto-order-completed.pn
 import plutoOrderCompleted2x from '../../assets/dashboard/pluto-order-completed@2x.png'
 import plutoWelcome from '../../assets/dashboard/pluto-welcome.png'
 import plutoWelcome2x from '../../assets/dashboard/pluto-welcome@2x.png'
+import { widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { useWidgetStyles } from '.'
+
+const useWidgetStyles = makeStyles(widgetStyles)
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -41,7 +43,7 @@ export const LearnMoreWidget: React.FunctionComponent = () => {
 
   return (
     <div className={widgetClasses.root}>
-      <Typography variant="h2" title="Learn more about Sensenet" gutterBottom={true} className={widgetClasses.title}>
+      <Typography variant="h2" title="Learn more about sensenet" gutterBottom={true} className={widgetClasses.title}>
         {localization.learnMore}
       </Typography>
       <Grid
@@ -65,9 +67,14 @@ export const LearnMoreWidget: React.FunctionComponent = () => {
             <div>{localization.learnBasicsDescription}</div>
           </div>
           <div className={classes.link}>
-            <Link href="https://docs.sensenet.com/guides/getting-started" target="_blank" rel="noopener">
+            <Button
+              color="primary"
+              variant="contained"
+              href="https://docs.sensenet.com/guides/getting-started"
+              target="_blank"
+              rel="noopener">
               {localization.viewUserGuides}
-            </Link>
+            </Button>
           </div>
         </Grid>
         <Grid item xs={12} lg={4} className={classes.item}>
@@ -85,9 +92,14 @@ export const LearnMoreWidget: React.FunctionComponent = () => {
             <div>{localization.beExpertDescription}</div>
           </div>
           <div className={classes.link}>
-            <Link href="https://docs.sensenet.com/concepts/introduction" target="_blank" rel="noopener">
+            <Button
+              color="primary"
+              variant="contained"
+              href="https://docs.sensenet.com/concepts/introduction"
+              target="_blank"
+              rel="noopener">
               {localization.viewConceptDocs}
-            </Link>
+            </Button>
           </div>
         </Grid>
         <Grid item xs={12} lg={4} className={classes.item}>
@@ -105,9 +117,14 @@ export const LearnMoreWidget: React.FunctionComponent = () => {
             <div>{localization.buildAppDescription}</div>
           </div>
           <div className={classes.link}>
-            <Link href="https://docs.sensenet.com/api-docs/basic-concepts" target="_blank" rel="noopener">
+            <Button
+              color="primary"
+              variant="contained"
+              href="https://docs.sensenet.com/api-docs/basic-concepts"
+              target="_blank"
+              rel="noopener">
               {localization.viewDevManual}
-            </Link>
+            </Button>
           </div>
         </Grid>
       </Grid>

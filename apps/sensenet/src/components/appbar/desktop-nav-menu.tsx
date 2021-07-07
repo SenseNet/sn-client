@@ -1,29 +1,18 @@
 import { Switch } from '@sensenet/controls-react'
 import { useInjector, useRepository } from '@sensenet/hooks-react'
-import {
-  Grid,
-  IconButton,
-  Link,
-  ListItemIcon,
-  ListItemText,
-  MenuItem,
-  MenuList,
-  Paper,
-  Typography,
-} from '@material-ui/core'
+import { Grid, IconButton, ListItemIcon, ListItemText, MenuItem, MenuList, Paper, Typography } from '@material-ui/core'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles'
-import BugReport from '@material-ui/icons/BugReport'
-import Feedback from '@material-ui/icons/Feedback'
-import HelpOutline from '@material-ui/icons/HelpOutline'
-import Info from '@material-ui/icons/Info'
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
+import Notifications from '@material-ui/icons/Notifications'
 import clsx from 'clsx'
-import React, { useState } from 'react'
+import React, { ChangeEvent, Dispatch, FunctionComponent, SetStateAction, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { PATHS, resolvePathParams } from '../../application-paths'
 import { useCurrentUser } from '../../context/current-user-provider'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization, usePersonalSettings } from '../../hooks'
-import { PersonalSettings } from '../../services'
+import { pathWithQueryParams, PersonalSettings } from '../../services'
 import { useDialog } from '../dialogs'
 import { UserAvatar } from '../UserAvatar'
 
@@ -50,13 +39,6 @@ const useStyles = makeStyles((theme: Theme) =>
       height: 'fit-content',
       width: '216px',
     },
-    popperHelpWrapper: {
-      position: 'absolute',
-      top: globals.common.headerHeight,
-      right: '88px',
-      height: 'fit-content',
-      width: 'fit-content',
-    },
     popper: {
       backgroundColor: theme.palette.type === 'light' ? globals.light.navMenuColor : globals.dark.navMenuColor,
       border: theme.palette.type === 'light' ? clsx(globals.light.borderColor, '1px') : 'none',
@@ -71,9 +53,6 @@ const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.primary.main,
       fontSize: '14px',
     },
-    helpMenuItem: {
-      color: theme.palette.primary.main,
-    },
     themeSwitcher: {
       color: theme.palette.primary.main,
       fontSize: '14px',
@@ -85,7 +64,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-export const DesktopNavMenu: React.FunctionComponent = () => {
+export const DesktopNavMenu: FunctionComponent = () => {
   const personalSettings = usePersonalSettings()
   const injector = useInjector()
   const classes = useStyles()
@@ -97,13 +76,12 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   const localization = useLocalization()
   const { openDialog } = useDialog()
   const [openUserMenu, setOpenUserMenu] = useState(false)
-  const [openHelpMenu, setOpenHelpMenu] = useState(false)
 
-  const handleToggle = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
+  const handleToggle = (setter: Dispatch<SetStateAction<boolean>>) => {
     setter((prevState) => !prevState)
   }
 
-  const handleClose = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
+  const handleClose = (setter: Dispatch<SetStateAction<boolean>>) => {
     setter(false)
   }
 
@@ -117,12 +95,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
     handleClose(setOpenUserMenu)
   }
 
-  const feedback = () => {
-    openDialog({ name: 'feedback' })
-    handleClose(setOpenHelpMenu)
-  }
-
-  const switchTheme = () => (event: React.ChangeEvent<HTMLInputElement>) => {
+  const switchTheme = () => (event: ChangeEvent<HTMLInputElement>) => {
     const settings = service.userValue.getValue()
     service.setPersonalSettingsValue({ ...settings, theme: event.target.checked ? 'dark' : 'light' })
   }
@@ -130,13 +103,11 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   return (
     <div className={clsx(globalClasses.centered, classes.navMenu)}>
       <IconButton
-        aria-label={localization.topMenu.openHelpMenu}
-        aria-controls={openUserMenu ? 'menu-list-grow' : undefined}
-        aria-haspopup="true"
-        onClick={() => handleToggle(setOpenHelpMenu)}
+        id="olvy-trigger"
+        aria-label={localization.topMenu.openNewMenu}
         className={classes.iconButton}
         style={{ marginRight: '16px' }}>
-        <HelpOutline className={classes.icon} />
+        <Notifications className={classes.icon} />
       </IconButton>
       <>
         <UserAvatar
@@ -150,6 +121,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
           }}
         />
         <IconButton
+          data-test="user-menu-button"
           aria-label={localization.topMenu.openUserMenu}
           aria-controls={openUserMenu ? 'menu-list-grow' : undefined}
           aria-haspopup="true"
@@ -189,6 +161,19 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                     primary={`${currentUser.DisplayName || currentUser.Name}`}
                   />
                 </MenuItem>
+                <MenuItem className={classes.userMenuItem}>
+                  <Link
+                    onClick={() => handleClose(setOpenUserMenu)}
+                    to={pathWithQueryParams({
+                      path: resolvePathParams({
+                        path: PATHS.usersAndGroups.appPath,
+                        params: { browseType: 'explorer', action: 'edit' },
+                      }),
+                      newParams: { content: `${currentUser.Path.replace(PATHS.usersAndGroups.snPath, '')}` },
+                    })}>
+                    {localization.topMenu.accountSettings}
+                  </Link>
+                </MenuItem>
                 <MenuItem onClick={changePassword} className={classes.userMenuItem}>
                   {localization.topMenu.changePassword}
                 </MenuItem>
@@ -198,48 +183,18 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                 <MenuItem>
                   <Typography component="div" className={classes.themeSwitcher}>
                     <Grid component="label" container alignItems="center" spacing={1}>
-                      <Grid item style={{ paddingRight: '32px' }}>
+                      <Grid item style={{ paddingRight: '32px' }} data-test="theme-status">
                         {personalSettings.theme === 'dark' ? 'Light theme' : 'Dark theme'}
                       </Grid>
                       <Grid item>
-                        <Switch checked={personalSettings.theme === 'dark'} onChange={switchTheme()} />
+                        <Switch
+                          data-test="theme-switcher"
+                          checked={personalSettings.theme === 'dark'}
+                          onChange={switchTheme()}
+                        />
                       </Grid>
                     </Grid>
                   </Typography>
-                </MenuItem>
-              </MenuList>
-            </ClickAwayListener>
-          </div>
-        </Paper>
-      ) : null}
-      {openHelpMenu ? (
-        <Paper className={classes.popperHelpWrapper}>
-          <div className={classes.popper}>
-            <ClickAwayListener onClickAway={() => handleClose(setOpenHelpMenu)}>
-              <MenuList autoFocusItem={openHelpMenu} id="menu-list-grow">
-                <Link href="https://docs.sensenet.com/" target="_blank">
-                  <MenuItem onClick={() => handleClose(setOpenHelpMenu)} className={classes.helpMenuItem}>
-                    <ListItemIcon>
-                      <Info />
-                    </ListItemIcon>
-                    <ListItemText primary={localization.topMenu.documentation} />
-                  </MenuItem>
-                </Link>
-                <Link
-                  href="https://github.com/SenseNet/sn-client/issues/new?assignees=&labels=bug&template=bug_report.md&title=%5BBUG%5D"
-                  target="_blank">
-                  <MenuItem onClick={() => handleClose(setOpenHelpMenu)} className={classes.helpMenuItem}>
-                    <ListItemIcon>
-                      <BugReport />
-                    </ListItemIcon>
-                    <ListItemText primary={localization.topMenu.reportBug} />
-                  </MenuItem>
-                </Link>
-                <MenuItem onClick={feedback} className={classes.helpMenuItem}>
-                  <ListItemIcon>
-                    <Feedback />
-                  </ListItemIcon>
-                  <ListItemText primary={localization.topMenu.feedback} />
                 </MenuItem>
               </MenuList>
             </ClickAwayListener>

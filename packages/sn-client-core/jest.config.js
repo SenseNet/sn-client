@@ -1,5 +1,5 @@
-const pack = require('./package')
 const base = require('../../jest.base.config')
+const pack = require('./package')
 
 module.exports = {
   ...base,

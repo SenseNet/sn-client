@@ -1,4 +1,4 @@
-import { Content, ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
+import { ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
 import { debounce, ValueObserver } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { createAction } from '@sensenet/redux'
@@ -106,8 +106,7 @@ export const updateChildrenOptions = createAction(<T extends GenericContent>(oda
 
 export const changedContent: GenericContent[] = []
 
-// eslint-disable-next-line require-jsdoc
-function methodToDebounce(getState: () => rootStateType, dispatch: Dispatch) {
+const methodToDebounce = (getState: () => rootStateType, dispatch: Dispatch) => {
   const currentContent = getState().dms.documentLibrary.parent
   changedContent.forEach((content) => {
     if (currentContent && currentContent.Id === content.ParentId) {

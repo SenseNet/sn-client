@@ -1,6 +1,6 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import Checkbox from '@material-ui/core/Checkbox'
-import React, { useEffect, useState } from 'react'
+import React, { FunctionComponent, useEffect, useState } from 'react'
 import { useSelectionService } from '../hooks'
 import { Icon } from './Icon'
 
@@ -10,7 +10,7 @@ type SelectionControlProps = {
   onChangeCallback: () => void
 }
 
-export const SelectionControl: React.FunctionComponent<SelectionControlProps> = ({
+export const SelectionControl: FunctionComponent<SelectionControlProps> = ({
   isSelected,
   content,
   onChangeCallback,
@@ -29,7 +29,9 @@ export const SelectionControl: React.FunctionComponent<SelectionControlProps> = 
   }, [selectionService.selection])
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 40, height: 40 }}>
+    <div
+      data-test={`table-row-selection-control-${content.Name.replace(/\s+/g, '-').toLowerCase()}`}
+      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 40, height: 40 }}>
       <Checkbox
         checked={isSelected}
         style={{ display: selection.length > 0 ? undefined : 'none' }}

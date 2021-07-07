@@ -5,7 +5,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import React from 'react'
+import React, { ChangeEvent, Component, CSSProperties, MouseEvent } from 'react'
 import { v1 } from 'uuid'
 import { resources } from '../../assets/resources'
 import { theme } from '../../assets/theme'
@@ -32,7 +32,7 @@ export interface UploadButtonProps {
   accept?: string
   multiple?: boolean
   handleUpload: (files: FileList) => void
-  style: React.CSSProperties
+  style: CSSProperties
 }
 
 export interface UploadButtonState {
@@ -43,7 +43,7 @@ export const UPLOAD_FILE_BUTTON_ID = 'sn-dms-upload-button'
 export const UPLOAD_FOLDER_BUTTON_ID = 'sn-dms-upload-button'
 export const UPLOAD_MENU_ID = 'sn-dms-upload-button'
 
-export class UploadButton extends React.Component<UploadButtonProps, UploadButtonState> {
+export class UploadButton extends Component<UploadButtonProps, UploadButtonState> {
   private readonly uploadFileButtonId = `${UPLOAD_FILE_BUTTON_ID}-${v1()}`
   private readonly uploadFolderButtonId = `${UPLOAD_FOLDER_BUTTON_ID}-${v1()}`
   private readonly uploadMenuId = `${UPLOAD_MENU_ID}-${v1()}`
@@ -52,12 +52,12 @@ export class UploadButton extends React.Component<UploadButtonProps, UploadButto
     anchorElement: undefined,
   }
 
-  private async handleUpload(ev: React.ChangeEvent<HTMLInputElement>) {
+  private async handleUpload(ev: ChangeEvent<HTMLInputElement>) {
     ev.persist()
     ev.target.files && (await this.props.handleUpload(ev.target.files))
   }
 
-  private toggleOpen = (ev: React.MouseEvent<HTMLElement>) => {
+  private toggleOpen = (ev: MouseEvent<HTMLElement>) => {
     this.setState({
       ...this.state,
       anchorElement: this.state.anchorElement ? undefined : ev.currentTarget,

@@ -11,36 +11,44 @@ exports[`App Layout Matches snapshot 1`] = `
       "backgroundSize": "auto",
       "display": "flex",
       "flexDirection": "column",
-      "height": "auto",
-      "justifyContent": "center",
+      "height": "100%",
       "width": "100%",
     }
   }
 >
   <WithStyles(CssBaseline) />
-  <AdvancedGridList
-    imgList={Array []}
-    openFunction={[Function]}
-  />
-  <FullScreenDialog
-    closeFunction={[Function]}
-    imgList={Array []}
-    isopen={false}
-    openedImg={
+  <UniversalHeader
+    appName="sn-react-imagegallery"
+    classes={
       Object {
-        "imgAuthor": "",
-        "imgAuthorAvatar": "",
-        "imgCreationDate": "",
-        "imgDescription": "",
-        "imgDownloadUrl": "",
-        "imgIndex": 0,
-        "imgPath": "",
-        "imgSize": "",
-        "imgTitle": "",
+        "appBar": "makeStyles-appBar-1",
       }
     }
-    steppingFunction={[Function]}
+    hamburgerMenuClasses={
+      Object {
+        "menuIcon": "makeStyles-menuIcon-2",
+        "menuIconActive": "makeStyles-menuIconActive-3",
+        "menuItem": "makeStyles-menuItem-4",
+      }
+    }
+    title="Image gallery"
   />
+  <WithStyles(ForwardRef(Container))
+    maxWidth="md"
+  >
+    <div
+      className="makeStyles-linkContainer-5"
+    >
+      <WithStyles(ForwardRef(Button))
+        className="makeStyles-button-6"
+        href="https://admin.sensenet.com/content/explorer/?path=%2FIT%2FImageLibrary"
+        target="_blank"
+      >
+        Go to connected repository
+      </WithStyles(ForwardRef(Button))>
+    </div>
+    <ImageList />
+  </WithStyles(ForwardRef(Container))>
 </div>
 `;
 

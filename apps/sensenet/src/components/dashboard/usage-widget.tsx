@@ -1,9 +1,12 @@
 import { createStyles, Grid, LinearProgress, makeStyles, Paper, Theme, Typography } from '@material-ui/core'
 import clsx from 'clsx'
 import React from 'react'
+import { widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { DashboardLimitations } from './types'
-import { round, useWidgetStyles } from '.'
+import { DashboardLimitations, DashboardUsage } from './types'
+import { round } from '.'
+
+const useWidgetStyles = makeStyles(widgetStyles)
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -31,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) => {
 
 interface UsageWidgetProps {
   limitations: DashboardLimitations
-  used: DashboardLimitations
+  used: DashboardUsage
 }
 
 export const UsageWidget: React.FunctionComponent<UsageWidgetProps> = (props) => {
@@ -40,9 +43,15 @@ export const UsageWidget: React.FunctionComponent<UsageWidgetProps> = (props) =>
   const localization = useLocalization().dashboard
   const { limitations, used } = props
 
+  const allUsageInMB = round(
+    (used.storage.files + used.storage.content + used.storage.oldVersions + used.storage.log + used.storage.system) /
+      1024 /
+      1024,
+  )
+
   const userPercentage = (used.user / limitations.user) * 100
   const contentPercentage = (used.content / limitations.content) * 100
-  const storagePercentage = (used.storage / limitations.storage) * 100
+  const storagePercentage = (allUsageInMB / limitations.storage) * 100
   const limits = {
     warning: 50,
     danger: 85,
@@ -109,7 +118,7 @@ export const UsageWidget: React.FunctionComponent<UsageWidgetProps> = (props) =>
             />
             <div className={classes.progressCaption} data-test="usage-storage-space">
               {localization.used(
-                numberFormatter.format(round(used.storage / 1024)),
+                numberFormatter.format(round(allUsageInMB / 1024)),
                 `${numberFormatter.format(round(limitations.storage / 1024))} GB`,
               )}
             </div>

@@ -1,8 +1,7 @@
 import { GenericContent } from '@sensenet/default-content-types'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import match from 'autosuggest-highlight/match'
-import parse from 'autosuggest-highlight/parse'
+import { ListItem, ListItemText } from '@material-ui/core'
+import match from 'autosuggest-highlight/match/index.js'
+import parse from 'autosuggest-highlight/parse/index.js'
 import React from 'react'
 
 /**
@@ -31,7 +30,11 @@ export const ReferenceFieldSuggestion: React.FunctionComponent<{
   const secondary = getMatchParts(props.query, props.item.Path)
   return (
     <ListItem key={props.item.Id} button={true} selected={props.isHighlighted}>
-      <ListItemText primary={primary} secondary={secondary} />
+      <ListItemText
+        data-test={`suggestion-${(props.item.DisplayName || props.item.Name).replace(/\s+/g, '-').toLowerCase()}`}
+        primary={primary}
+        secondary={secondary}
+      />
     </ListItem>
   )
 }

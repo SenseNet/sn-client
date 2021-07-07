@@ -1,4 +1,4 @@
-import { PATHS } from '../../../src/application-paths'
+import { PATHS, resolvePathParams } from '../../../src/application-paths'
 import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
 describe('Custom menu item', () => {
@@ -28,21 +28,13 @@ describe('Custom menu item', () => {
       },
     }
 
-    const items = [
-      'Code review',
-      'Infrastructure meeting',
-      'Kickoff meeting',
-      'Refinement',
-      'Release',
-      'Retrospective meeting',
-      'Sales and product',
-      'Scrum meeting',
-      'Tech Call with Thorwell Group',
-      'Upgrade',
-    ]
+    const items = ['Awesome demo', 'Cruel deadline', 'Long event', 'Overrated meeting', 'Remarkable event']
 
     cy.visit(
-      pathWithQueryParams({ path: PATHS.personalSettings.appPath, newParams: { repoUrl: Cypress.env('repoUrl') } }),
+      pathWithQueryParams({
+        path: resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'adminui' } }),
+        newParams: { repoUrl: Cypress.env('repoUrl') },
+      }),
     )
 
     cy.get('.monaco-editor textarea')
@@ -87,11 +79,14 @@ describe('Custom menu item', () => {
 
     cy.intercept({
       method: 'GET',
-      url: '/Root/Content/IT/Calendar',
+      url: 'odata.svc/Root/Content/IT/Calendar?*',
     }).as('getCalendar')
 
     cy.visit(
-      pathWithQueryParams({ path: PATHS.personalSettings.appPath, newParams: { repoUrl: Cypress.env('repoUrl') } }),
+      pathWithQueryParams({
+        path: resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'adminui' } }),
+        newParams: { repoUrl: Cypress.env('repoUrl') },
+      }),
     )
 
     cy.get('.monaco-editor textarea')
@@ -124,7 +119,10 @@ describe('Custom menu item', () => {
     cy.restoreLocalStorage()
 
     cy.visit(
-      pathWithQueryParams({ path: PATHS.personalSettings.appPath, newParams: { repoUrl: Cypress.env('repoUrl') } }),
+      pathWithQueryParams({
+        path: resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'adminui' } }),
+        newParams: { repoUrl: Cypress.env('repoUrl') },
+      }),
     )
 
     cy.get('[data-test="drawer-menu-item-test"]').should('exist')

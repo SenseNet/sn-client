@@ -1,12 +1,8 @@
 import { SchemaStore } from '@sensenet/client-core'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
-import Checkbox from '@material-ui/core/Checkbox'
-import Input from '@material-ui/core/Input'
-import ListItemText from '@material-ui/core/ListItemText'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select, { SelectProps } from '@material-ui/core/Select'
-import React, { Component } from 'react'
+import { Checkbox, Input, ListItemText, MenuItem, Select, SelectProps } from '@material-ui/core'
+import React, { ChangeEvent, Component } from 'react'
 
 /**
  * Props for the Type Field component
@@ -25,7 +21,6 @@ export interface TypeFieldProps extends SelectProps {
 export interface TypeFieldState {
   selected: string[]
   schemas: Schema[]
-  name: string
   query?: Query<any>
   getMenuItem: (schema: Schema, isSelected: boolean) => JSX.Element
 }
@@ -38,7 +33,6 @@ export class TypeField extends Component<TypeFieldProps, TypeFieldState> {
    * State object for the Type Field filter component
    */
   public state: TypeFieldState = {
-    name: '',
     selected: this.props.selectedTypes || [],
     schemas: [],
     getMenuItem: (schema, isSelected) => (
@@ -67,8 +61,8 @@ export class TypeField extends Component<TypeFieldProps, TypeFieldState> {
     }
   }
 
-  private handleChange(ev: React.ChangeEvent<HTMLSelectElement>) {
-    const values = (ev.target.value as any) as string[]
+  private handleChange(ev: ChangeEvent<{ name?: string; value: unknown }>) {
+    const values = ev.target.value as string[]
     const selected = this.props.types.filter((typeName) => values.indexOf(typeName) > -1)
     const query = new Query((q) => {
       selected.forEach((contentType, currentIndex) => {
@@ -82,7 +76,6 @@ export class TypeField extends Component<TypeFieldProps, TypeFieldState> {
     })
     this.props.onQueryChange(query)
     this.setState({
-      name: ev.target.value,
       selected,
       query,
     })

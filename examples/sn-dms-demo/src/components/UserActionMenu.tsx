@@ -1,5 +1,5 @@
 import { Icon, iconType } from '@sensenet/icons-react'
-import React from 'react'
+import React, { Component, CSSProperties, MouseEvent } from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import * as DMSActions from '../Actions'
@@ -44,8 +44,8 @@ const mapDispatchToProps = {
   closeActionMenu: DMSActions.closeActionMenu,
 }
 
-class UserActionMenu extends React.Component<
-  { style?: React.CSSProperties } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
+class UserActionMenu extends Component<
+  { style?: CSSProperties } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   UserActionMenuState
 > {
   public state = {
@@ -68,7 +68,7 @@ class UserActionMenu extends React.Component<
       userName: newProps.loggedinUser.userName,
     }
   }
-  public handleClick = (e: React.MouseEvent<HTMLElement>) => {
+  public handleClick = (e: MouseEvent<HTMLElement>) => {
     const { actions, loggedinUser } = this.props
     this.props.closeActionMenu()
     this.props.openActionMenu(actions, loggedinUser.content, loggedinUser.fullName, e.currentTarget, {

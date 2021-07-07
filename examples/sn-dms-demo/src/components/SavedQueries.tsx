@@ -1,9 +1,9 @@
 import { ActionModel, Query } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
-import { updateContent } from '@sensenet/redux/dist/Actions'
+import { Actions } from '@sensenet/redux'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { closeActionMenu, openActionMenu } from '../Actions'
@@ -31,10 +31,10 @@ const mapDispatchToProps = {
   setActive,
   openActionMenu,
   closeActionMenu,
-  updateContent,
+  updateContent: Actions.updateContent,
 }
 
-class SavedQueries extends React.Component<
+class SavedQueries extends Component<
   ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & RouteComponentProps
 > {
   private load(force = false) {
@@ -71,6 +71,7 @@ class SavedQueries extends React.Component<
               this.props.openActionMenu(
                 [
                   {
+                    OpId: 'ExecuteQuery param1',
                     Name: 'ExecuteQuery',
                     DisplayName: 'Execute Query',
                     Icon: 'queryExecute',
@@ -101,6 +102,7 @@ class SavedQueries extends React.Component<
               this.props.openActionMenu(
                 [
                   {
+                    OpId: 'ExecuteQuery param1',
                     Name: 'ExecuteQuery',
                     DisplayName: 'Execute Query',
                     Icon: 'queryExecute',

@@ -5,11 +5,8 @@ import { Repository } from '@sensenet/client-core'
 import { ActionName, ControlMapper } from '@sensenet/control-mapper'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import Button from '@material-ui/core/Button'
-import Grid from '@material-ui/core/Grid'
-import createStyles from '@material-ui/core/styles/createStyles'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import Typography from '@material-ui/core/Typography'
+import { Button, createStyles, Grid, makeStyles, Typography } from '@material-ui/core'
+import type { Locale } from 'date-fns'
 import React, { createElement, ReactElement, useEffect, useState } from 'react'
 import MediaQuery from 'react-responsive'
 import { FieldLocalization } from '../fieldcontrols/localization'
@@ -41,6 +38,7 @@ export interface EditViewProps {
   classes?: EditViewClassKey
   controlMapper?: ControlMapper<any, any>
   fieldLocalization?: FieldLocalization
+  locale?: Locale
 }
 
 const useStyles = makeStyles(() => {
@@ -134,10 +132,15 @@ export const EditView: React.FC<EditViewProps> = (props) => {
                 uploadFolderPath: props.uploadFolderpath,
                 autoFocus,
                 localization: props.fieldLocalization,
+                locale: props.locale,
               },
             )
 
-            const isFullWidth = isFullWidthField(field, props.contentTypeName)
+            const isFullWidth = isFullWidthField(
+              field,
+              props.content || ({ Type: props.contentTypeName } as GenericContent),
+              repository,
+            )
 
             if (autoFocus) {
               isAutofocusSet = true

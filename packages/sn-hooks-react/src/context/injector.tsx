@@ -1,8 +1,8 @@
 import { Injector } from '@sensenet/client-utils'
-import React from 'react'
+import { createContext } from 'react'
 
 /**
  * Context that returns an Injector instance
  */
-export const InjectorContext = React.createContext(new Injector())
+export const InjectorContext = createContext(new Injector())
 InjectorContext.displayName = 'InjectorContext'

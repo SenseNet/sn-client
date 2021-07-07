@@ -1,5 +1,28 @@
 import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
+const ctdExample = `<ContentType name="MyType" parentType="GenericContent" handler="SenseNet.ContentRepository.GenericContent" xmlns="http://schemas.sensenet.com/SenseNet/ContentRepository/ContentTypeDefinition">
+<DisplayName>MyType</DisplayName>
+<Description></Description>
+<Icon>Content</Icon>
+<AllowIncrementalNaming>true</AllowIncrementalNaming>
+<Fields>
+<Field name="ShortTextField" type="ShortText">
+  <DisplayName>ShortTextFieldTest</DisplayName>
+  <Description></Description>
+  <Configuration>
+    <MaxLength>100</MaxLength>
+    <MinLength>0</MinLength>
+    <ReadOnly>false</ReadOnly>
+    <Compulsory>false</Compulsory>
+    <DefaultValue>test</DefaultValue>
+    <VisibleBrowse>Show</VisibleBrowse>
+    <VisibleEdit>Show</VisibleEdit>
+    <VisibleNew>Show</VisibleNew>
+  </Configuration>
+</Field>
+</Fields>
+</ContentType>`
+
 describe('Content types', () => {
   before(() => {
     cy.login()
@@ -8,41 +31,79 @@ describe('Content types', () => {
       .click()
   })
 
-  beforeEach((done) => {
-    cy.get('.ReactVirtualized__Table__Grid').then((grid) => {
-      let scroll = 0
+  context('create & delete', () => {
+    it('should create a new content type', (done) => {
+      cy.get('[data-test="add-button"]').should('not.be.disabled').click()
+      cy.get('[data-test="listitem-content-type"]')
+        .click()
+        .then(() => {
+          cy.get('.monaco-editor textarea')
+            .click({ force: true })
+            .focused()
+            .type('{ctrl}a')
+            .clear()
+            .invoke('val', ctdExample)
+            .trigger('input')
 
-      function timeout() {
-        setTimeout(() => {
-          scroll = scroll + 200
-          grid.scrollTop(scroll)
+          cy.contains('Submit').click()
 
-          const article = grid.find('[data-test="table-cell-article"]')
-          if (!article.length) {
-            timeout()
-          } else {
-            article[0].scrollIntoView()
-            done()
-          }
-        }, 100)
-      }
+          cy.get('.ReactVirtualized__Table__Grid').then((grid) => {
+            cy.scrollToItem({
+              container: grid,
+              selector: '[data-test="table-cell-mytype"]',
+              done: (element) => {
+                expect(!!(element.offsetWidth || element.offsetHeight || element.getClientRects().length)).to.equal(
+                  true,
+                )
+                done()
+              },
+            })
+          })
+        })
+    })
 
-      timeout()
+    it('should delete a content type', () => {
+      cy.get('.ReactVirtualized__Table__Grid').then((grid) => {
+        cy.scrollToItem({
+          container: grid,
+          selector: '[data-test="table-cell-mytype"]',
+        }).then(() => {
+          cy.get(`[data-test="table-cell-mytype"]`).rightclick({ force: true })
+
+          cy.get('[data-test="content-context-menu-delete"]').click()
+          cy.get('[data-test="delete-permanently"] input[type="checkbox"]').check()
+          cy.get('[data-test="button-delete-confirm"]').click()
+
+          cy.get('[data-test="table-cell-mytype"]').should('not.exist')
+        })
+      })
     })
   })
 
-  afterEach(() => {
-    cy.get('.ReactVirtualized__Table__Grid').then((grid) => grid.scrollTop(0))
-  })
+  context('read', () => {
+    before((done) => {
+      cy.get('.ReactVirtualized__Table__Grid').then((grid) => {
+        cy.scrollToItem({
+          container: grid,
+          selector: '[data-test="table-cell-article"]',
+          done: () => {
+            done()
+          },
+        })
+      })
+    })
 
-  it('clicking on the content types menu item should show article', () => {
-    cy.get('[data-test="table-cell-article"]').should('be.visible')
-  })
+    it('clicking on the content types menu item should show article', () => {
+      cy.get('[data-test="table-cell-article"]').should('be.visible')
+    })
 
-  it('double clicking on article should open binary editor', () => {
-    cy.get('[data-test="table-cell-article"]').dblclick({ force: true })
-    cy.get('div').contains('Article').should('be.visible')
-    cy.get('.monaco-editor').should('be.visible')
-    cy.get('[data-test="monaco-editor-cancel"]').click()
+    it('double clicking on article should open binary editor', () => {
+      cy.get('[data-test="table-cell-article"]').dblclick({ force: true })
+
+      cy.get('[data-test="editor-title"]').should('have.text', 'Article')
+      cy.get('.monaco-editor').should('exist')
+
+      cy.get('[data-test="monaco-editor-cancel"]').click()
+    })
   })
 })

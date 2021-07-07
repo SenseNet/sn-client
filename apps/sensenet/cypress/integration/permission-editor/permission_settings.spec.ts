@@ -12,12 +12,14 @@ describe('Permission.settings effect on permission dialog', () => {
   })
 
   it('adding a new group in Permission.settings file should appear on permission editor dialog', () => {
-    cy.get('[data-test="drawer-menu-item-setup"]').click()
+    cy.get('[data-test="drawer-menu-item-settings"]').click()
+    cy.get('[data-test="drawer-submenu-item-configuration"]').click()
     cy.get('[data-test="permission.settings-edit-button"]').click()
     cy.get('.react-monaco-editor-container textarea')
       .click({ force: true })
-      .clear()
       .focused()
+      .type('{ctrl}a')
+      .clear()
       .type(newSettings, { parseSpecialCharSequences: false })
     cy.get('[data-test="monaco-editor-submit"]').click()
     cy.get('[data-test="drawer-menu-item-content"]').click()
@@ -65,12 +67,14 @@ describe('Permission.settings effect on permission dialog', () => {
   })
 
   it('removing a group in Permission.settings file should disappear on permission editor dialog', () => {
-    cy.get('[data-test="drawer-menu-item-setup"]').click()
+    cy.get('[data-test="drawer-menu-item-settings"]').click()
+    cy.get('[data-test="drawer-submenu-item-configuration"]').click()
     cy.get('[data-test="permission.settings-edit-button"]').click()
     cy.get('.react-monaco-editor-container textarea')
       .click({ force: true })
-      .clear()
       .focused()
+      .type('{ctrl}a')
+      .clear()
       .type(defaultSettings, { parseSpecialCharSequences: false })
     cy.get('[data-test="monaco-editor-submit"]').click()
     cy.get('[data-test="drawer-menu-item-content"]').click()

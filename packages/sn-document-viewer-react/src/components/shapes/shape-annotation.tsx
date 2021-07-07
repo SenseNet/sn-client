@@ -1,15 +1,17 @@
 import { Annotation, Shapes } from '@sensenet/client-core'
-import Button from '@material-ui/core/Button/Button'
-import Checkbox from '@material-ui/core/Checkbox/Checkbox'
-import ClickAwayListener from '@material-ui/core/ClickAwayListener/ClickAwayListener'
-import grey from '@material-ui/core/colors/grey'
-import Paper from '@material-ui/core/Paper/Paper'
-import Popper from '@material-ui/core/Popper/Popper'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
-import createStyles from '@material-ui/core/styles/createStyles'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import TextField from '@material-ui/core/TextField/TextField'
-import Delete from '@material-ui/icons/Delete'
+import {
+  Button,
+  Checkbox,
+  ClickAwayListener,
+  createStyles,
+  makeStyles,
+  Paper,
+  Popper,
+  TextField,
+  Theme,
+} from '@material-ui/core'
+import grey from '@material-ui/core/colors/grey.js'
+import { Delete } from '@material-ui/icons'
 import React, { useState } from 'react'
 import { AnnotationWrapper, useDocumentPermissions } from '../..'
 import { useLocalization, useViewerState } from '../../hooks'
@@ -61,7 +63,7 @@ export interface ShapeAnnotationProps {
   shape: Annotation
   zoomRatio: number
   onDragStart: (ev: React.DragEvent<HTMLElement>) => void
-  onResized: (ev: React.MouseEvent<HTMLElement>) => void
+  onResized: (clientRect?: DOMRect) => undefined | { w: number; h: number }
   getShapeDimensions: (shape: Annotation) => React.CSSProperties
   updateShapeData: (shapeType: keyof Shapes, guid: string, shape: Annotation) => void
   removeShape: (shapeType: keyof Shapes, guid: string) => void

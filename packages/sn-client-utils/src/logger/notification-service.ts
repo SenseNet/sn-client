@@ -1,4 +1,5 @@
-import { Injectable, ObservableValue } from '..'
+import { Injectable } from '../inject'
+import { ObservableValue } from '../observable-value'
 import { LeveledLogEntry } from '.'
 
 /**

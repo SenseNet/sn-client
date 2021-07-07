@@ -33,7 +33,8 @@ import { useViewControlStyles } from './common/styles'
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     permissionEditorContainer: {
-      margin: '0px 80px',
+      padding: '0px 80px',
+      overflowY: 'auto',
     },
     titleContainer: {
       display: 'flex',
@@ -172,8 +173,10 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
         <div className={classes.titleContainer}>
           <Tooltip title={localization.permissionEditor.setPermissons + currentContent?.DisplayName} placement="top">
             <div className={classes.title}>
-              <span>{localization.permissionEditor.setPermissons} </span>
-              <span className={classes.contentName}>{currentContent?.DisplayName}</span>
+              <span data-test={'permission-view-title-first'}>{localization.permissionEditor.setPermissons} </span>
+              <span data-test={'permission-view-title-second'} className={classes.contentName}>
+                {currentContent?.DisplayName}
+              </span>
             </div>
           </Tooltip>
           <div className={classes.buttonWrapper}>
@@ -185,6 +188,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
               }
               placement="right">
               <Button
+                data-test={'make-content-public-or-private'}
                 aria-label={
                   isPrivate ? localization.permissionEditor.makePublic : localization.permissionEditor.makePrivate
                 }
@@ -219,6 +223,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
               </Button>
             </Tooltip>
             <Button
+              data-test={'assign-new-permission'}
               className={classes.assignButton}
               aria-label={localization.permissionEditor.assign}
               color="primary"
@@ -241,7 +246,10 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
           </div>
         </div>
         <List component="nav">
-          <ListItem button onClick={() => setOpenInheritedList(!openInheritedList)}>
+          <ListItem
+            data-test={'permission-inherited-list'}
+            button
+            onClick={() => setOpenInheritedList(!openInheritedList)}>
             {openInheritedList ? <ExpandLess /> : <ExpandMore />}
             <ListItemText primary={localization.permissionEditor.inherited} className={classes.listTitle} />
           </ListItem>
@@ -267,7 +275,10 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                         dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
                       })
                     }}>
-                    <ListItemIcon>
+                    <ListItemIcon
+                      data-test={`inherited-${inheritedEntry.identity.displayName
+                        ?.replace(/\s+/g, '-')
+                        .toLowerCase()}`}>
                       {inheritedEntry.identity.kind === 'group' ? (
                         <div className={clsx(classes.iconWrapper, globalClasses.centered)}>
                           <GroupOutlined />
@@ -283,6 +294,9 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                         <div>
                           {inheritedEntry.identity.displayName}
                           <Link
+                            data-test={`inherited-${inheritedEntry.identity.displayName
+                              ?.replace(/\s+/g, '-')
+                              .toLowerCase()}-link`}
                             component="button"
                             onClick={async (event: React.MouseEvent<HTMLElement>) => {
                               event.stopPropagation()
@@ -310,7 +324,10 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
               })}
             </List>
           </Collapse>
-          <ListItem button onClick={() => setOpenSetOnThisList(!openSetOnThisList)}>
+          <ListItem
+            data-test={'permission-set-on-this-list'}
+            button
+            onClick={() => setOpenSetOnThisList(!openSetOnThisList)}>
             {openSetOnThisList ? <ExpandLess /> : <ExpandMore />}
             <ListItemText primary={localization.permissionEditor.setOnThis} className={classes.listTitle} />
           </ListItem>
@@ -326,7 +343,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                     <ListItem
                       data-test={`set-on-this-${setOnThisEntry.identity.displayName
                         ?.replace(/\s+/g, '-')
-                        .toLowerCase()}`}
+                        .toLowerCase()}${!setOnThisEntry.propagates ? '-local-only' : ''}`}
                       selected={selectedListItem === `${setOnThisEntry.identity.id}${setOnThisEntry.propagates}`}
                       button
                       key={`${setOnThisEntry.identity.id}${setOnThisEntry.propagates}`}

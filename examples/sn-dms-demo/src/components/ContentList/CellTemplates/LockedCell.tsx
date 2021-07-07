@@ -2,7 +2,7 @@ import { GenericContent, User } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import TableCell from '@material-ui/core/TableCell'
 import Tooltip from '@material-ui/core/Tooltip'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { resources } from '../../../assets/resources'
 import { rootStateType } from '../../../store/rootReducer'
@@ -47,7 +47,7 @@ export interface LockedCellState {
   status: DocumentState
 }
 
-class LockedCell extends React.Component<LockedCellProps & ReturnType<typeof mapStateToProps>, LockedCellState> {
+class LockedCell extends Component<LockedCellProps & ReturnType<typeof mapStateToProps>, LockedCellState> {
   public getStatus = (content: GenericContent | null) => {
     if (content ? content.Approvable : false) {
       return DocumentState.Approvable

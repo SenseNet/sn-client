@@ -4,11 +4,10 @@ describe('Users menu', () => {
   beforeEach(() => {
     cy.login()
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
+    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
   })
 
   it('ensures that users list has the appropriate data', () => {
-    cy.get('[data-test="drawer-menu-item-users-and-groups"]').as('UsersAndGroupsIcon')
-    cy.get('@UsersAndGroupsIcon').click()
     cy.get('.ReactVirtualized__Table>.ReactVirtualized__Table__headerRow>.ReactVirtualized__Table__headerColumn').as(
       'ColumnHeaders',
     )
@@ -27,9 +26,6 @@ describe('Users menu', () => {
   })
 
   it('ensures that right click on a user opens context-menu', () => {
-    cy.get('[data-test="drawer-menu-item-users-and-groups"]').as('UsersAndGroupsIcon')
-    cy.get('@UsersAndGroupsIcon').click()
-
     // Checks for users
     cy.get('.ReactVirtualized__Table .ReactVirtualized__Table__Grid .ReactVirtualized__Table__row').as('UserRows')
 
@@ -48,9 +44,6 @@ describe('Users menu', () => {
   })
 
   it('ensures that double click on a user opens an edit form of the content', () => {
-    cy.get('[data-test="drawer-menu-item-users-and-groups"]').as('UsersAndGroupsIcon')
-    cy.get('@UsersAndGroupsIcon').click()
-
     // Checks for users
     cy.get('.ReactVirtualized__Table .ReactVirtualized__Table__Grid .ReactVirtualized__Table__row').as('UserRows')
 
@@ -59,9 +52,81 @@ describe('Users menu', () => {
 
     // Check if the required title exist
     cy.get('[data-test="viewtitle"]').as('Title').should('contain.text', 'Edit Developer Dog')
-    cy.get('form').within(($form) => {
+    cy.get('form').within(() => {
       cy.get('input[name="FullName"]').should('have.value', 'Developer Dog')
     })
     cy.get('[data-test="cancel"]').click()
+  })
+
+  it('ensures that deletion of users is working properly', () => {
+    cy.intercept({
+      method: 'GET',
+      url: 'odata.svc/Root/Trash?*',
+    }).as('getTrashChildren')
+
+    cy.get('[data-test="table-cell-developer-dog"]')
+      .rightclick()
+      .then(() => {
+        cy.get('[data-test="content-context-menu-delete"]').click()
+        cy.get('[data-test="button-delete-confirm"]').click()
+
+        cy.get('[data-test="table-cell-developer-dog"]').should('not.exist')
+
+        cy.get('[data-test="drawer-menu-item-trash"]').click()
+
+        cy.wait('@getTrashChildren').then((_interception) => {
+          cy.get('[data-test="table-cell-developer-dog"]').should('not.exist')
+        })
+      })
+  })
+
+  it('ensures that the creation of a new users is working properly', () => {
+    const newUser = {
+      loginName: 'devdog',
+      fullName: 'Developer Dog',
+      email: 'devdog@sensenet.com',
+      password: 'devdog',
+    }
+
+    cy.get('[data-test="add-button"]').should('not.be.disabled').click()
+
+    cy.get('[data-test="listitem-user"]')
+      .click()
+      .then(() => {
+        cy.get('[data-test="viewtitle"]').should('contain.text', 'New User')
+
+        cy.get('#LoginName').type(newUser.loginName)
+        cy.get('#FullName').type(newUser.fullName)
+        cy.get('#Email').type(newUser.email)
+        cy.get('#Password').type(newUser.password)
+
+        cy.contains('Submit').click()
+
+        cy.get('[data-test="snackbar-close"]').click()
+        cy.get(`[data-test="table-cell-${newUser.fullName.replace(/\s+/g, '-').toLowerCase()}`).should(
+          'have.text',
+          newUser.fullName,
+        )
+      })
+  })
+
+  it('ensures that we can enable a user by clicking on its status checkbox in the User list', () => {
+    cy.get(`[data-test="switcher-${'Developer Dog'.replace(/\s+/g, '-').toLowerCase()}`).as('StatusSwitcher')
+    cy.get('@StatusSwitcher').click()
+    cy.get('@StatusSwitcher').find('.MuiSwitch-input').first().should('be.checked')
+  })
+
+  it('ensures that adding to a group is working properly', () => {
+    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
+    cy.get('[data-test="groups"]').click()
+    cy.get(`[data-test="developers-members"]`).click()
+    cy.get('[data-test="reference-input"]').type('Developer D')
+    cy.get('[data-test="suggestion-developer-dog"]').click()
+    cy.get('[data-test="reference-add-button"]').click()
+    cy.get('[data-test="reference-list"] li')
+      .should('have.length', 1)
+      .each(($el) => {
+        expect('Developer Dog').to.include($el.children().eq(0).children().eq(1).text())
+      })
   })
 })

@@ -1,9 +1,12 @@
 import { Button, createStyles, Grid, Link, makeStyles, Paper, Typography } from '@material-ui/core'
 import React from 'react'
 import logo from '../../assets/sensenet-icon-32.png'
+import { widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { DashboardSubscription, DashboardVersion } from './types'
-import { round, useWidgetStyles } from '.'
+import { round } from '.'
+
+const useWidgetStyles = makeStyles(widgetStyles)
 
 const useStyles = makeStyles(() => {
   return createStyles({

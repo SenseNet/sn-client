@@ -1,15 +1,10 @@
 /**
  * @module FieldControls
  */
-import { ODataResponse } from '@sensenet/client-core'
+import { Content } from '@sensenet/client-core'
 import { deepMerge, PathHelper } from '@sensenet/client-utils'
 import { BinaryFieldSetting } from '@sensenet/default-content-types'
-import Button from '@material-ui/core/Button'
-import FormControl from '@material-ui/core/FormControl'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import Input from '@material-ui/core/Input'
-import InputLabel from '@material-ui/core/InputLabel/InputLabel'
-import Typography from '@material-ui/core/Typography'
+import { Button, FormControl, FormHelperText, Input, InputLabel, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { defaultLocalization } from './localization'
@@ -77,12 +72,10 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
           throw new Error(errorMessages.contentToFetch)
         }
         const loadPath = PathHelper.joinPaths(PathHelper.getContentUrl(props.content.Path), '/', props.settings.Name)
-        const binaryField = ((await props.repository.load({
+        const binaryField = await props.repository.load<{ Binary: Binary } & Content>({
           idOrPath: loadPath,
           requestInit: { signal: ac.signal },
-        })) as unknown) as ODataResponse<{
-          Binary: Binary
-        }>
+        })
         setFileName(binaryField.d.Binary.FileName.FullFileName)
       } catch (error) {
         console.error(error.message)

@@ -2,7 +2,7 @@ import { Actions } from '@sensenet/redux'
 import Button from '@material-ui/core/Button'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
-import React from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import * as DMSActions from '../../Actions'
@@ -71,7 +71,7 @@ const mapDispatchToProps = {
   restoreVersion: Actions.restoreVersion,
 }
 
-class RestoreVersionDialog extends React.Component<
+class RestoreVersionDialog extends Component<
   { classes: any } & RestoreVersionDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   {}
 > {

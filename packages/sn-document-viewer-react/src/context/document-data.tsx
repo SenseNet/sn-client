@@ -1,7 +1,7 @@
 import { DocumentData } from '@sensenet/client-core'
 import { deepMerge, DeepPartial, sleepAsync } from '@sensenet/client-utils'
 import { useRepository } from '@sensenet/hooks-react'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { createContext, FC, useCallback, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { POLLING_INTERVAL } from '../components'
 import { PreviewState } from '../enums'
@@ -24,7 +24,7 @@ const defaultDocumentData: DocumentData = {
 
 export interface DocumentDataContextType {
   documentData: DocumentData
-  updateDocumentData: (data: DeepPartial<DocumentData>) => void
+  updateDocumentData: (data: DeepPartial<DocumentData>, force?: boolean) => void
   isInProgress: boolean
   triggerReload: () => void
 }
@@ -36,9 +36,9 @@ export const defaultDocumentDataContextValue: DocumentDataContextType = {
   triggerReload: () => {},
 }
 
-export const DocumentDataContext = React.createContext<DocumentDataContextType>(defaultDocumentDataContextValue)
+export const DocumentDataContext = createContext<DocumentDataContextType>(defaultDocumentDataContextValue)
 
-export const DocumentDataProvider: React.FC = ({ children }) => {
+export const DocumentDataProvider: FC = ({ children }) => {
   const api = useDocumentViewerApi()
   const doc = useViewerSettings()
   const repo = useRepository()
@@ -59,7 +59,7 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
         version: doc.version,
         abortController: ac,
       })
-      if (result.pageCount === PreviewState.Loading) {
+      if (result.pageCount === PreviewState.Loading && ac.signal.aborted === false) {
         setDocumentData(result)
         await sleepAsync(POLLING_INTERVAL)
         getData()
@@ -86,11 +86,12 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
   }, [api, doc.documentIdOrPath, doc.version, loadLock, repo.configuration.repositoryUrl, reloadToken])
 
   const updateDocumentData = useCallback(
-    (newDocData: Partial<DocumentData>) => {
+    (newDocData: Partial<DocumentData>, force?: boolean) => {
       const merged = deepMerge(documentData, newDocData)
-      if (JSON.stringify(documentData) !== JSON.stringify(merged)) {
-        setDocumentData(merged)
-      }
+
+      force
+        ? setDocumentData(merged)
+        : JSON.stringify(documentData) !== JSON.stringify(merged) && setDocumentData(merged)
     },
     [documentData],
   )

@@ -2,12 +2,8 @@ import { ConstantContent } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
-import Box from '@material-ui/core/Box'
-import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import AccountTree from '@material-ui/icons/AccountTree'
+import { Box, Button, createStyles, IconButton, makeStyles, TextField, Theme } from '@material-ui/core'
+import { AccountTree } from '@material-ui/icons'
 import React, { useCallback, useEffect, useState } from 'react'
 import { SelectionContext, SelectionProvider } from '../../context/selection'
 import { SaveButton } from '../save-button'
@@ -155,6 +151,7 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
                 {props.localization?.cancelButton ?? 'Cancel'}
               </Button>
               <SaveButton
+                data-test="picker-submit"
                 disabled={(props.required && selection.length < props.required) || !!props.isExecInProgress}
                 localization={{ label: props.localization?.submitButton ?? 'Submit' }}
                 onClick={() => props.handleSubmit?.(selection)}

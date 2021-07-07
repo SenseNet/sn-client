@@ -5,11 +5,8 @@ import { Repository } from '@sensenet/client-core'
 import { ControlMapper } from '@sensenet/control-mapper'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import Button from '@material-ui/core/Button'
-import Grid from '@material-ui/core/Grid'
-import createStyles from '@material-ui/core/styles/createStyles'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import Typography from '@material-ui/core/Typography'
+import { Button, createStyles, Grid, makeStyles, Typography } from '@material-ui/core'
+import type { Locale } from 'date-fns'
 import React, { createElement, ReactElement, useEffect, useState } from 'react'
 import { FieldLocalization } from '../fieldcontrols/localization'
 import { isFullWidthField } from '../helpers'
@@ -30,6 +27,7 @@ export interface BrowseViewProps {
   }
   fieldLocalization?: FieldLocalization
   classes?: BrowseViewClassKey
+  locale?: Locale
 }
 
 const useStyles = makeStyles(() => {
@@ -76,7 +74,7 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
         {schema.fieldMappings
           .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
           .map((field) => {
-            const isFullWidth = isFullWidthField(field, props.content.Type)
+            const isFullWidth = isFullWidthField(field, props.content, repository)
 
             return (
               <Grid
@@ -99,6 +97,7 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
                       renderIcon: props.renderIcon,
                       repository: props.repository,
                       localization: props.fieldLocalization,
+                      locale: props.locale,
                     },
                   )}
                 </div>

@@ -35,40 +35,32 @@ export enum OutputMethod {
  * Enum for Choice Field control values.
  */
 export enum DisplayChoice {
-  DropDown,
-  RadioButtons,
-  CheckBoxes,
+  DropDown = 'DropDown',
+  RadioButtons = 'RadioButtons',
+  CheckBoxes = 'CheckBoxes',
 }
 /**
  * Enum for DateTime Field mode values.
  */
 export enum DateTimeMode {
-  None,
-  Date,
-  DateAndTime,
+  None = 'None',
+  Date = 'Date',
+  DateAndTime = 'DateAndTime',
 }
 /**
  * Enum for DateTime Field precision values.
  */
 export enum DateTimePrecision {
-  Millisecond,
-  Second,
-  Minute,
-  Hour,
-  Day,
+  Millisecond = 'Millisecond',
+  Second = 'Second',
+  Minute = 'Minute',
+  Hour = 'Hour',
+  Day = 'Day',
 }
 /**
  * Type for LongText field editor values.
  */
 export type TextType = 'LongText' | 'RichText' | 'AdvancedRichText'
-
-/**
- * Enum for HyperLink field href values.
- */
-export enum UrlFormat {
-  Hyperlink,
-  Picture,
-}
 
 /**
  * Check if field setting is type of param
@@ -127,6 +119,8 @@ export type LongTextFieldSetting = TextFieldSetting & {
   TextType?: TextType
   AppendModifications?: boolean
 }
+
+export type RichTextFieldSetting = TextFieldSetting
 
 // Used in ContentType, File, User
 export type BinaryFieldSetting = FieldSetting & {
