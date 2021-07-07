@@ -2,6 +2,7 @@
  * @module FieldControls
  */
 import { deepMerge } from '@sensenet/client-utils'
+import { EditorProps, renderHtml } from '@sensenet/editor-react'
 import { CircularProgress, createStyles, FormHelperText, InputLabel, makeStyles, Typography } from '@material-ui/core'
 import React, { lazy, Suspense } from 'react'
 import { changeTemplatedValue } from '../helpers'
@@ -17,6 +18,11 @@ const useStyles = makeStyles(() =>
 
 type RichTextEditorClassKey = Partial<ReturnType<typeof useStyles>>
 
+interface ParsedRichTextFieldValue {
+  text: string
+  editor: string
+}
+
 const getFieldValue = (rawValue?: string) => {
   let value
 
@@ -25,13 +31,13 @@ const getFieldValue = (rawValue?: string) => {
   }
 
   try {
-    value = JSON.parse(rawValue)
+    value = JSON.parse(rawValue) as ParsedRichTextFieldValue
   } catch (_) {
     return rawValue
   }
 
   try {
-    return value.editor ? JSON.parse(value.editor) : value.text
+    return value.editor ? (JSON.parse(value.editor) as EditorProps['content']) : value.text
   } catch (_) {
     return value.text
   }
@@ -41,7 +47,7 @@ const getFieldValue = (rawValue?: string) => {
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
 export const RichTextEditor: React.FC<
-  ReactClientFieldSetting & { classes?: RichTextEditorClassKey; fieldValue?: string | { text: string; editor: string } }
+  ReactClientFieldSetting & { classes?: RichTextEditorClassKey; fieldValue?: string }
 > = (props) => {
   const localization = deepMerge(defaultLocalization.richTextEditor, props.localization?.richTextEditor)
 
@@ -92,10 +98,10 @@ export const RichTextEditor: React.FC<
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
-          {props.fieldValue ? (
+          {initialState ? (
             <div
               dangerouslySetInnerHTML={{
-                __html: typeof props.fieldValue === 'string' ? props.fieldValue : props.fieldValue.text,
+                __html: typeof initialState === 'string' ? initialState : renderHtml(initialState),
               }}
             />
           ) : (
