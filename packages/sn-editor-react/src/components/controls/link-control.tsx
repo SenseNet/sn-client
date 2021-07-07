@@ -44,7 +44,7 @@ export const LinkControl: FC<LinkControlProps> = ({ editor, buttonProps }) => {
     }
     setOpen(true)
 
-    const currentLink = editor.getMarkAttributes('link')
+    const currentLink = editor.getAttributes('link')
     if (currentLink?.href) {
       setLink(currentLink.href)
       setInNewTab(currentLink.target === '_blank')
