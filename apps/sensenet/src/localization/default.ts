@@ -1,3 +1,10 @@
+import { DeepPartial } from '@sensenet/client-utils'
+import { LocalizationType as EditorLocalization } from '@sensenet/editor-react'
+
+export type Localization = DeepPartial<typeof import('./default').default> & {
+  editor?: EditorLocalization
+}
+
 const values = {
   addButton: {
     tooltip: 'Create or upload content',
@@ -634,6 +641,7 @@ const values = {
     example: 'Example:',
     defaultPayload: 'Default payload',
   },
+  editor: {},
 }
 
 export default values
