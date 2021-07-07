@@ -62,8 +62,8 @@ export const ImageControl: FC<ImageControlProps> = ({ buttonProps, editor }) => 
     }
   }
 
-  const imageToBase64 = async (image: File) => {
-    return await new Promise<string>((resolve, reject) => {
+  const imageToBase64 = (image: File) => {
+    return new Promise<string>((resolve, reject) => {
       const reader = new FileReader()
       reader.onload = (e) => {
         if (e.target?.result) {

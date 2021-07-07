@@ -53,7 +53,6 @@ export const TypographyControl: FC<TypographyControlProps> = (props) => {
   return (
     <Tooltip title={localization.menubar.typography}>
       <Select
-        id="demo-simple-select"
         value={getActiveValue()}
         onChange={handleChange}
         disableUnderline={true}
