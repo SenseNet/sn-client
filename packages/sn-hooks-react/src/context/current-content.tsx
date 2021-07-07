@@ -34,12 +34,11 @@ export interface CurrentContentProviderProps {
 export const CurrentContentProvider: FunctionComponent<CurrentContentProviderProps> = (props) => {
   const [loadLock] = useState(new Semaphore(1))
   const [content, setContent] = useState<GenericContent>(ConstantContent.EMPTY_CONTENT)
-  const [errorState, setErrorState] =
-    useState<{
-      currentPath?: string | number
-      status?: number
-      error?: Error | undefined
-    }>()
+  const [errorState, setErrorState] = useState<{
+    currentPath?: string | number
+    status?: number
+    error?: Error | undefined
+  }>()
   const [reloadToken, setReloadToken] = useState(1)
   const reload = () => setReloadToken(Math.random())
   const repo = useRepository()

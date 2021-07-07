@@ -151,6 +151,7 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
                 {props.localization?.cancelButton ?? 'Cancel'}
               </Button>
               <SaveButton
+                data-test="picker-submit"
                 disabled={(props.required && selection.length < props.required) || !!props.isExecInProgress}
                 localization={{ label: props.localization?.submitButton ?? 'Submit' }}
                 onClick={() => props.handleSubmit?.(selection)}
