@@ -14,6 +14,7 @@ import {
 import ImageIcon from '@material-ui/icons/Image'
 import { Editor } from '@tiptap/react'
 import React, { FC, useRef, useState } from 'react'
+import { useLocalization } from '../../hooks'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -42,6 +43,7 @@ export const ImageControl: FC<ImageControlProps> = ({ buttonProps, editor }) => 
   const fileInput = useRef<HTMLInputElement>(null)
 
   const classes = useStyles()
+  const localization = useLocalization()
 
   const handleClickOpen = () => {
     if (isUploadInProgress) {
@@ -60,8 +62,8 @@ export const ImageControl: FC<ImageControlProps> = ({ buttonProps, editor }) => 
     }
   }
 
-  const imageToBase64 = async (image: File) => {
-    return await new Promise<string>((resolve, reject) => {
+  const imageToBase64 = (image: File) => {
+    return new Promise<string>((resolve, reject) => {
       const reader = new FileReader()
       reader.onload = (e) => {
         if (e.target?.result) {
@@ -91,7 +93,7 @@ export const ImageControl: FC<ImageControlProps> = ({ buttonProps, editor }) => 
 
   return (
     <>
-      <Tooltip title="Insert image">
+      <Tooltip title={localization.imageControl.title}>
         <IconButton onClick={handleClickOpen} {...buttonProps}>
           <ImageIcon />
         </IconButton>
@@ -119,7 +121,7 @@ export const ImageControl: FC<ImageControlProps> = ({ buttonProps, editor }) => 
             fileInput.current.value = ''
           }
         }}>
-        <DialogTitle id="form-dialog-title">Image insert</DialogTitle>
+        <DialogTitle id="form-dialog-title">{localization.imageControl.title}</DialogTitle>
         <DialogContent>
           {uploadedFile ? (
             <>
@@ -133,14 +135,14 @@ export const ImageControl: FC<ImageControlProps> = ({ buttonProps, editor }) => 
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>{localization.common.cancel}</Button>
           <Button
             onClick={() => {
               handleClose()
               addImage()
             }}
             color="primary">
-            Insert
+            {localization.imageControl.submit}
           </Button>
         </DialogActions>
       </Dialog>
