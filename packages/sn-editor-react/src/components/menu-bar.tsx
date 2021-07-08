@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => {
     },
 
     divider: {
-      background: 'rgba(57,76,96,.15)',
+      background: theme.palette.type === 'dark' ? theme.palette.common.white : 'rgba(57,76,96,.15)',
       width: '1px',
       display: 'inline-block',
       height: '28px',

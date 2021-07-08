@@ -22,81 +22,82 @@ const useStyles = makeStyles((theme) => {
       background: commonStyles.editorBackground,
       borderRadius: commonStyles.editorBorderRadius,
       border: theme.palette.type === 'dark' ? commonStyles.editorBorder : 'unset',
-    },
-    editor: {
-      outline: 0,
 
-      '&:after': {
-        clear: 'both',
-        content: '""',
-        display: 'block',
-      },
+      '& .ProseMirror': {
+        outline: 0,
 
-      '& p.is-empty:only-child:before': {
-        content: 'attr(data-placeholder)',
-        float: 'left',
-        opacity: 0.5,
-        pointerEvents: 'none',
-        height: 0,
-        fontStyle: 'italic',
-      },
-
-      '& a': {
-        textDecoration: 'underline',
-        color: '#06c',
-      },
-
-      '& figure': {
-        margin: 0,
-
-        '& img': {
-          maxWidth: '100%',
-          height: 'auto',
-        },
-      },
-
-      '& table': {
-        borderCollapse: 'collapse',
-        tableLayout: 'fixed',
-        width: '100%',
-        margin: 0,
-        overflow: 'hidden',
-
-        '& th': {
-          fontWeight: 700,
-          textAlign: 'left',
-          backgroundColor: theme.palette.type === 'light' ? '#f1f3f5' : '#403f3f',
+        '&:after': {
+          clear: 'both',
+          content: '""',
+          display: 'block',
         },
 
-        '& td, & th': {
-          minWidth: '1em',
-          border: '2px solid #ced4da',
-          padding: '3px 5px',
-          verticalAlign: 'top',
-          boxSizing: 'border-box',
-          position: 'relative',
+        '& p.is-empty:only-child:before': {
+          content: 'attr(data-placeholder)',
+          float: 'left',
+          opacity: 0.5,
+          pointerEvents: 'none',
+          height: 0,
+          fontStyle: 'italic',
+        },
 
-          '& > *': {
-            margin: 0,
+        '& a': {
+          textDecoration: 'underline',
+          color: '#06c',
+        },
+
+        '& figure': {
+          margin: 0,
+
+          '& img': {
+            maxWidth: '100%',
+            height: 'auto',
           },
         },
 
-        '& .selectedCell:after': {
-          zIndex: 2,
-          position: 'absolute',
-          content: '""',
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0,
-          background: 'rgba(200, 200, 255, 0.4)',
-          pointerEvents: 'none',
-        },
-      },
+        '& table': {
+          borderCollapse: 'collapse',
+          tableLayout: 'fixed',
+          width: '100%',
+          margin: 0,
+          overflow: 'hidden',
 
-      '& .ProseMirror-selectednode': {
-        '& img': {
-          outline: `3px solid ${theme.palette.primary.main}`,
+          '& th': {
+            fontWeight: 700,
+            textAlign: 'left',
+            backgroundColor: theme.palette.type === 'light' ? '#f1f3f5' : '#403f3f',
+          },
+
+          '& td, & th': {
+            minWidth: '1em',
+            border: '2px solid #ced4da',
+            padding: '3px 5px',
+            verticalAlign: 'top',
+            boxSizing: 'border-box',
+            position: 'relative',
+
+            '& > *': {
+              margin: 0,
+            },
+          },
+
+          '& .selectedCell:after': {
+            zIndex: 2,
+            position: 'absolute',
+            content: '""',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            background: 'rgba(200, 200, 255, 0.4)',
+            pointerEvents: 'none',
+          },
+        },
+
+        '& .ProseMirror-selectednode': {
+          '& img': {
+            outline: `3px solid ${theme.palette.primary.main}`,
+          },
         },
       },
     },
@@ -124,11 +125,6 @@ export const Editor: FC<EditorProps> = (props) => {
     content: props.content,
     onUpdate(updateProps) {
       props.onChange?.(updateProps)
-    },
-    editorProps: {
-      attributes: {
-        class: classes.editor,
-      },
     },
   })
 
