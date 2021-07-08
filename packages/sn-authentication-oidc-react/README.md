@@ -50,7 +50,7 @@ import { BrowserRouter, useHistory } from 'react-router-dom'
 export const repositoryUrl = 'https://my-service.sensenet.com/'
 
 export const configuration: UserManagerSettings = {
-  client_id: 'spa',
+  client_id: '7cYLChuhJxyGb7BS', //externalSPA clientId for dev.demo.sensenet.com
   automaticSilentRenew: true,
   redirect_uri: 'http://localhost:3000/authentication/callback',
   response_type: 'code',
