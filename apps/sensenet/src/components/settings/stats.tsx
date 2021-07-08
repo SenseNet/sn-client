@@ -12,17 +12,9 @@ import { InstalledPackagesWidget } from './stats-installed-packages-widget'
 import { StorageWidget } from './stats-storage-widget'
 import { UsageWidget } from './stats-usage-widget'
 
-export type RawPeriodData = {
-  Window: 'Hour' | 'Day' | 'Month' | 'Year'
-  Resolution: 'Minute' | 'Hour' | 'Day' | 'Month'
-  First: string
-  Last: string
-  Count: number
-}
-
-const makePeriodArrayFromRawData = () => {
+const makePeriodArrayFromRawData = (periodData: RawPeriodData) => {
   const periodArray = []
-  const rawData = getPeriodFromBackend()
+  const rawData = periodData
 
   let currentDate = parseISO(rawData.First)
   const lastDate = parseISO(rawData.Last)
@@ -45,14 +37,12 @@ const makePeriodArrayFromRawData = () => {
   return periodArray
 }
 
-const getPeriodFromBackend = () => {
-  return {
-    Window: 'Month',
-    Resolution: 'Day',
-    First: '2021-01-01T00:00:00Z',
-    Last: '2021-05-01T00:00:00Z',
-    Count: 4,
-  }
+export type RawPeriodData = {
+  Window: 'Hour' | 'Day' | 'Month' | 'Year'
+  Resolution: 'Minute' | 'Hour' | 'Day' | 'Month'
+  First: string
+  Last: string
+  Count: number
 }
 
 export const Stats: React.FunctionComponent = () => {
@@ -61,6 +51,22 @@ export const Stats: React.FunctionComponent = () => {
   const repository = useRepository()
   const [versionInfo, setVersionInfo] = useState<VersionInfo>()
   const [dashboardData, setDashboardData] = useState<DashboardData>()
+  const [periodData, setPeriodData] = useState<RawPeriodData>()
+
+  useEffect(() => {
+    ;(async () => {
+      const response = await repository.executeAction<any, RawPeriodData>({
+        idOrPath: '/Root',
+        name: 'GetApiUsagePeriods',
+        method: 'POST',
+        body: {
+          timeWindow: 'Month',
+        },
+      })
+
+      setPeriodData(response)
+    })()
+  }, [repository])
 
   useEffect(() => {
     ;(async () => {
@@ -89,7 +95,7 @@ export const Stats: React.FunctionComponent = () => {
     })()
   }, [repository])
 
-  if (!versionInfo || !dashboardData) return <FullScreenLoader />
+  if (!versionInfo || !dashboardData || !periodData) return <FullScreenLoader />
 
   return (
     <div style={{ overflow: 'auto' }}>
@@ -98,7 +104,7 @@ export const Stats: React.FunctionComponent = () => {
       </div>
       <Container fixed>
         <StorageWidget data={dashboardData} />
-        <UsageWidget periodData={makePeriodArrayFromRawData()} />
+        <UsageWidget periodData={periodData && makePeriodArrayFromRawData(periodData)} />
         <ComponentsWidget data={versionInfo} />
         <InstalledPackagesWidget data={versionInfo} />
       </Container>
