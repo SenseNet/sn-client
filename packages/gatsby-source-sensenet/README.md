@@ -443,6 +443,8 @@ RichText is a field type that enables authors to create rich text content. By de
 }
 ```
 
+JSON can be rendered with _renderHtml_ method from @sensenet/editor-react package.
+
 ## How to contribute
 
 Before you start working on this package please check the [contribution guide](https://github.com/SenseNet/sn-client/blob/develop/CONTRIBUTING.md) first.

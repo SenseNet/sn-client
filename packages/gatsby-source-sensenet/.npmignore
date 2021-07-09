@@ -44,6 +44,5 @@ test
 .tarballs
 jest-config.js
 package-lock.json
-yarn.lock
 tsconfig.json
 .babelrc.js
