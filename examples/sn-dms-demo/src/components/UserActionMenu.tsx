@@ -72,8 +72,8 @@ class UserActionMenu extends Component<
     const { actions, loggedinUser } = this.props
     this.props.closeActionMenu()
     this.props.openActionMenu(actions, loggedinUser.content, loggedinUser.fullName, e.currentTarget, {
-      top: (e.target as HTMLElement).offsetTop + 40,
-      left: (e.target as HTMLElement).offsetLeft,
+      top: e.clientY + 25,
+      left: e.clientX,
     })
   }
 
