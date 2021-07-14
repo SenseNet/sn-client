@@ -15,7 +15,7 @@ import { Editor } from '@tiptap/react'
 import React, { FC } from 'react'
 import { useLocalization } from '../hooks'
 import { getCommonStyles } from '../styles'
-import { ImageControl, LinkControl, TypographyControl } from './controls'
+import { ImageControl, LinkControl, TableControl, TypographyControl } from './controls'
 
 const useStyles = makeStyles((theme) => {
   const commonStyles = getCommonStyles(theme)
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => {
     },
 
     divider: {
-      background: 'rgba(57,76,96,.15)',
+      background: theme.palette.type === 'dark' ? theme.palette.common.white : 'rgba(57,76,96,.15)',
       width: '1px',
       display: 'inline-block',
       height: '28px',
@@ -168,6 +168,10 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
         buttonProps={{ classes: { root: classes.button, colorPrimary: classes.buttonPrimary } }}
       />
       <ImageControl
+        editor={editor}
+        buttonProps={{ classes: { root: classes.button, colorPrimary: classes.buttonPrimary } }}
+      />
+      <TableControl
         editor={editor}
         buttonProps={{ classes: { root: classes.button, colorPrimary: classes.buttonPrimary } }}
       />
