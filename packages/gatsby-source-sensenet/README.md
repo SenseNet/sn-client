@@ -5,7 +5,7 @@ Source plugin for pulling data from [sensenet](https://sensenet.com) into Gatsby
 sensenet is an open-source headless content management system (CMS) built mainly for developers and development companies.
 It is a content repository where you can store all your content and reach them through APIs. It is a solid base for your custom solutions, offering an enterprise-grade security and permission system, versioning, dynamic content types and even more.
 
-An example of how to use this plugin is at [sn-blog-gatsby](https://github.com/SenseNet/sn-client/tree/develop/examples/sn-blog-gatsby)
+An example of how to use this plugin is at [sn-blog-gatsby](https://github.com/SenseNet/gatsby-starter-sensenet-blog)
 
 ## How to install
 
@@ -121,10 +121,18 @@ You can overwrite fetch method according to your own needs. In this particular e
 npm install node-fetch
 ```
 
+For using environmental variables you should install [dotenv](https://www.npmjs.com/package/node-fetch):
+
+```shell
+npm install dotenv
+```
+
 Configuration should be something like this:
 
 ```javascript
 // Create a new file in root folder with the name configuration.js
+require('dotenv').config()
+
 exports.repositoryUrl = '<YOUR REPOSITORY URL>'
 
 exports.configuration = {
@@ -134,7 +142,7 @@ exports.configuration = {
 }
 ```
 
-**GATSBY_REACT_APP_CLIENT_ID** and **GATSBY_REACT_APP_CLIENT_SECRET** environmental variables should be defined.
+**GATSBY_REACT_APP_CLIENT_ID** and **GATSBY_REACT_APP_CLIENT_SECRET** [environmental variables](https://www.gatsbyjs.com/docs/how-to/local-development/environment-variables/) should be defined.
 
 You can easily store them in .env files by doing the following:
 
@@ -153,7 +161,7 @@ You can find them on your [snaas user profile](https://docs.sensenet.com/concept
 ## When do I use this plugin?
 
 sensenet is the single hub for all your content packed with enterprise grade features. In sensenet everything is a content (blog posts, files, users, roles, comments, etc.) delivered the same way through the API, making it super easy to work with any type of data. With the flexibility and power of sensenet and Gatsby you can build any kind of app or website you need.
-For more details check [this guide](https://docs.sensenet.com/integrations//gatsby/using-gatsby-with-sensenet).
+For more details check [this guide](https://docs.sensenet.com/integrations/gatsby/using-gatsby-with-sensenet).
 
 ## Examples of usage
 
@@ -405,6 +413,37 @@ query MyQuery {
 ```
 
 To render the markdown use `<MDXRenderer><YOUR MARKDOWN BODY></MDXRenderer>`
+
+### Richtext
+
+RichText is a field type that enables authors to create rich text content. By default sensenet will provide you the field as HTML format but there is also possible to get the response as JSON. For getting both you have to add `richtexteditor: 'all'` to the oDataOptions in gatsby-config. The API response contains a _text_ part (which is the HTML code) and an _editor_ returned as a JSON array of nodes that follows the format of an abstract syntax tree.
+
+```JSON
+{
+   "type":"doc",
+   "content":[
+      {
+         "type":"paragraph",
+         "attrs":{
+            "textAlign":"center"
+         },
+         "content":[
+            {
+               "type":"text",
+               "marks":[
+                  {
+                     "type":"bold"
+                  }
+               ],
+               "text":"Lorem ipsum dolor sit amet ..."
+            }
+         ]
+      }
+   ]
+}
+```
+
+JSON can be rendered with _renderHtml_ method from @sensenet/editor-react package.
 
 ## How to contribute
 
