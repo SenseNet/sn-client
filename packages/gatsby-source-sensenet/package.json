@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-sensenet",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A minimal plugin for sensenet",
   "main": "./dist/index.js",
   "typings": "./dist/types/index.d.ts",
@@ -20,7 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.14.5",
-    "@sensenet/client-core": "^4.0.0",
+    "@sensenet/client-core": "^4.0.1",
     "@sensenet/default-content-types": "^5.0.0",
     "gatsby": "^3.7.2",
     "node-fetch": "^2.6.1",
