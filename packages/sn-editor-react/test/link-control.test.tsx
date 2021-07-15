@@ -1,7 +1,8 @@
 import { Button, Dialog, DialogTitle, FormControlLabel, IconButton, TextField, Tooltip } from '@material-ui/core'
 import { Editor as TiptapEditor } from '@tiptap/react'
-import { shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import React from 'react'
+import { act } from 'react-dom/test-utils'
 import { LinkControl } from '../src/components/controls'
 import { defaultLocalization } from '../src/context'
 import { createExtensions } from '../src/extension-list'
@@ -41,13 +42,21 @@ describe('link control', () => {
   it('should add a link to the selected text', () => {
     editor.commands.setTextSelection({ from: 0, to: 6 })
 
-    const wrapper = shallow(<LinkControl editor={editor} />)
-    expect(wrapper.find(IconButton).simulate('click'))
-    wrapper.find(TextField).simulate('change', { target: { value: 'https://sensenet.com' } })
+    const wrapper = mount(<LinkControl editor={editor} />)
+    wrapper.find(IconButton).simulate('click')
+
     wrapper
-      .find(FormControlLabel)
-      .prop('control')
-      .props.onChange({ target: { checked: true }, persist: jest.fn() })
+      .find(TextField)
+      .find('input')
+      .simulate('change', { target: { value: 'https://sensenet.com' } })
+
+    act(() => {
+      wrapper
+        .find(FormControlLabel)
+        .prop('control')
+        .props.onChange({ target: { checked: true }, persist: jest.fn() })
+    })
+
     wrapper
       .findWhere((node) => {
         return node.type() === Button && node.text() === defaultLocalization.linkControl.submit

@@ -35,13 +35,10 @@ describe('Tree', () => {
   it('Right click on the Tree item should make context-menu open.', () => {
     const contextMenuItems = ['Details', 'Copy to', 'Edit', 'Move to', 'Versions', 'Share', 'Delete', 'Set permissions']
     cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]')
-      .rightclick()
-      .then(() => {
-        cy.get('ul[role="menu"] li').each(($el) => {
-          expect(contextMenuItems).to.include($el.text())
-        })
-        cy.get('body').click()
-      })
+    cy.checkContextMenu({
+      selector: '[data-test="menu-item-it-workspace"]',
+      contextMenuItems,
+      clickAction: 'rightclick',
+    })
   })
 })

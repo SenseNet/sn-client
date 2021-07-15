@@ -6,11 +6,12 @@ import { useGlobalStyles } from '../../globalStyles'
 
 export const ActionsField: FC<{
   onOpen: (ev: MouseEvent<HTMLButtonElement>) => void
-}> = ({ onOpen }) => {
+  name: string
+}> = ({ onOpen, name }) => {
   const globalClasses = useGlobalStyles()
   return (
     <TableCell component="div" className={clsx(globalClasses.centered, globalClasses.virtualizedCellStyle)}>
-      <IconButton onClick={onOpen}>
+      <IconButton onClick={onOpen} data-test={`actions-button-${name?.replace(/\s+/g, '-').toLowerCase()}`}>
         <MoreHoriz />
       </IconButton>
     </TableCell>
