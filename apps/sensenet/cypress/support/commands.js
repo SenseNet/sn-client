@@ -111,3 +111,14 @@ Cypress.Commands.add('scrollToItem', ({ container, selector, done }) => {
     timeout()
   })
 })
+
+Cypress.Commands.add('checkContextMenu', ({ selector, contextMenuItems, clickAction }) => {
+  cy.get(selector)
+    [clickAction]()
+    .then(() => {
+      cy.get('ul[role="menu"] li').each(($el) => {
+        expect(contextMenuItems).to.include($el.text())
+      })
+      cy.get('body').click()
+    })
+})

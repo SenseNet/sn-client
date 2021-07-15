@@ -67,6 +67,7 @@ export const createTreeNode = async ({
         contentDigest: sourceNodesArgs.createContentDigest!(content),
         description: `${content.Type} node`,
       },
+      parent: parentNode.id,
     }
 
     sourceNodesArgs.actions.createNode(newNode)
@@ -92,16 +93,18 @@ export const createTreeNode = async ({
       const data = await res.json()
 
       data.d.results.length > 0 &&
-        data.d.results.forEach((childContent: any) => {
-          createTreeNode({
-            sourceNodesArgs,
-            options,
-            token,
-            currentLevel: currentLevel + 1,
-            parentNode: parent,
-            content: childContent,
-          })
-        })
+        (await Promise.all(
+          data.d.results.map(async (childContent: any) => {
+            await createTreeNode({
+              sourceNodesArgs,
+              options,
+              token,
+              currentLevel: currentLevel + 1,
+              parentNode: parent,
+              content: childContent,
+            })
+          }),
+        ))
     } else {
       return
     }
