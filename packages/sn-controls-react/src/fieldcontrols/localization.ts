@@ -1,4 +1,5 @@
 import { DeepPartial } from '@sensenet/client-utils'
+import { LocalizationType } from '@sensenet/editor-react'
 
 export const defaultLocalization = {
   allowedChildTypes: {
@@ -52,6 +53,7 @@ export const defaultLocalization = {
     noValue: 'No reference selected',
   },
   richTextEditor: {
+    loading: 'Loading the editor...',
     noValue: 'No value set',
   },
   shortText: {
@@ -75,4 +77,6 @@ export const defaultLocalization = {
   },
 }
 
-export type FieldLocalization = DeepPartial<typeof defaultLocalization>
+export type FieldLocalization = DeepPartial<typeof defaultLocalization> & {
+  richTextEditor?: LocalizationType
+}

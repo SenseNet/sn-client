@@ -1,6 +1,6 @@
 import { Repository } from '@sensenet/client-core'
 import { FieldControls as SnFieldControls, reactControlMapper as snReactControlMapper } from '@sensenet/controls-react'
-import { LongTextFieldSetting, ReferenceFieldSetting } from '@sensenet/default-content-types'
+import { LongTextFieldSetting, ReferenceFieldSetting, RichTextFieldSetting } from '@sensenet/default-content-types'
 import * as FieldControls from './field-controls'
 
 /**
@@ -41,6 +41,9 @@ export const reactControlMapper = (repository: Repository) => {
       }
 
       return SnFieldControls.Textarea
+    })
+    .setupFieldSettingDefault<RichTextFieldSetting>('RichTextFieldSetting', () => {
+      return FieldControls.RichTextEditor
     })
     .setupFieldSettingDefault('NullFieldSetting', (setting) => {
       if (setting.Name === 'Avatar') {

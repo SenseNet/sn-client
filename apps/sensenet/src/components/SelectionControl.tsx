@@ -29,7 +29,9 @@ export const SelectionControl: FunctionComponent<SelectionControlProps> = ({
   }, [selectionService.selection])
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 40, height: 40 }}>
+    <div
+      data-test={`table-row-selection-control-${content.Name.replace(/\s+/g, '-').toLowerCase()}`}
+      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 40, height: 40 }}>
       <Checkbox
         checked={isSelected}
         style={{ display: selection.length > 0 ? undefined : 'none' }}

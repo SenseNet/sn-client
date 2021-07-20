@@ -2,12 +2,13 @@
  * @module FieldControls
  */
 import { deepMerge } from '@sensenet/client-utils'
-import { Editor } from '@sensenet/editor-react'
-import { createStyles, FormHelperText, InputLabel, makeStyles, Typography } from '@material-ui/core'
-import React from 'react'
+import { EditorProps, renderHtml } from '@sensenet/editor-react'
+import { CircularProgress, createStyles, FormHelperText, InputLabel, makeStyles, Typography } from '@material-ui/core'
+import React, { lazy, Suspense } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { defaultLocalization } from './localization'
+const Editor = lazy(() => import('../editor-wrapper'))
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -17,6 +18,11 @@ const useStyles = makeStyles(() =>
 
 type RichTextEditorClassKey = Partial<ReturnType<typeof useStyles>>
 
+interface ParsedRichTextFieldValue {
+  text: string
+  editor: string
+}
+
 const getFieldValue = (rawValue?: string) => {
   let value
 
@@ -25,13 +31,13 @@ const getFieldValue = (rawValue?: string) => {
   }
 
   try {
-    value = JSON.parse(rawValue)
+    value = JSON.parse(rawValue) as ParsedRichTextFieldValue
   } catch (_) {
     return rawValue
   }
 
   try {
-    return value.editor ? JSON.parse(value.editor) : value.text
+    return value.editor ? (JSON.parse(value.editor) as EditorProps['content']) : value.text
   } catch (_) {
     return value.text
   }
@@ -41,7 +47,7 @@ const getFieldValue = (rawValue?: string) => {
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
 export const RichTextEditor: React.FC<
-  ReactClientFieldSetting & { classes?: RichTextEditorClassKey; fieldValue?: string | { text: string; editor: string } }
+  ReactClientFieldSetting & { classes?: RichTextEditorClassKey; fieldValue?: string }
 > = (props) => {
   const localization = deepMerge(defaultLocalization.richTextEditor, props.localization?.richTextEditor)
 
@@ -59,18 +65,29 @@ export const RichTextEditor: React.FC<
           <InputLabel shrink htmlFor={props.settings.Name} required={props.settings.Compulsory}>
             {props.settings.DisplayName}
           </InputLabel>
-          <Editor
-            content={initialState}
-            autofocus={props.autoFocus}
-            placeholder={props.settings.DisplayName}
-            readOnly={props.settings.ReadOnly}
-            onChange={({ editor }) => {
-              props.fieldOnChange?.(props.settings.Name, {
-                text: editor.getHTML(),
-                editor: JSON.stringify(editor.getJSON()),
-              })
-            }}
-          />
+
+          <Suspense
+            fallback={
+              <div style={{ textAlign: 'center' }}>
+                <CircularProgress />
+                <div>{localization.loading}</div>
+              </div>
+            }>
+            <Editor
+              content={initialState}
+              autofocus={props.autoFocus}
+              placeholder={props.settings.DisplayName}
+              readOnly={props.settings.ReadOnly}
+              localization={props.localization?.richTextEditor}
+              onChange={({ editor }) => {
+                props.fieldOnChange?.(props.settings.Name, {
+                  text: editor.getHTML(),
+                  editor: JSON.stringify(editor.getJSON()),
+                })
+              }}
+            />
+          </Suspense>
+
           {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </div>
       )
@@ -81,10 +98,10 @@ export const RichTextEditor: React.FC<
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
-          {props.fieldValue ? (
+          {initialState ? (
             <div
               dangerouslySetInnerHTML={{
-                __html: typeof props.fieldValue === 'string' ? props.fieldValue : props.fieldValue.text,
+                __html: typeof initialState === 'string' ? initialState : renderHtml(initialState),
               }}
             />
           ) : (

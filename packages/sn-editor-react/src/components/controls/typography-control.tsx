@@ -2,6 +2,7 @@ import { createStyles, makeStyles, MenuItem, Select, Tooltip } from '@material-u
 import { Editor } from '@tiptap/core'
 import { HeadingOptions } from '@tiptap/extension-heading'
 import React, { ChangeEvent, FC } from 'react'
+import { useLocalization } from '../../hooks'
 
 const useStyles = makeStyles((theme) => {
   return createStyles({
@@ -19,6 +20,7 @@ interface TypographyControlProps {
 type Level = 0 | HeadingOptions['levels'][number]
 
 export const TypographyControl: FC<TypographyControlProps> = (props) => {
+  const localization = useLocalization()
   const classes = useStyles()
   const getActiveValue = () => {
     if (props.editor.isActive('paragraph')) {
@@ -49,9 +51,8 @@ export const TypographyControl: FC<TypographyControlProps> = (props) => {
   }
 
   return (
-    <Tooltip title="Heading">
+    <Tooltip title={localization.menubar.typography}>
       <Select
-        id="demo-simple-select"
         value={getActiveValue()}
         onChange={handleChange}
         disableUnderline={true}
@@ -67,13 +68,13 @@ export const TypographyControl: FC<TypographyControlProps> = (props) => {
           },
           getContentAnchorEl: null,
         }}>
-        <MenuItem value={0}>Paragraph</MenuItem>
-        <MenuItem value={1}>Heading 1</MenuItem>
-        <MenuItem value={2}>Heading 2</MenuItem>
-        <MenuItem value={3}>Heading 3</MenuItem>
-        <MenuItem value={4}>Heading 4</MenuItem>
-        <MenuItem value={5}>Heading 5</MenuItem>
-        <MenuItem value={6}>Heading 6</MenuItem>
+        <MenuItem value={0}>{localization.typographyControl.paragraph}</MenuItem>
+        <MenuItem value={1}>{localization.typographyControl.heading} 1</MenuItem>
+        <MenuItem value={2}>{localization.typographyControl.heading} 2</MenuItem>
+        <MenuItem value={3}>{localization.typographyControl.heading} 3</MenuItem>
+        <MenuItem value={4}>{localization.typographyControl.heading} 4</MenuItem>
+        <MenuItem value={5}>{localization.typographyControl.heading} 5</MenuItem>
+        <MenuItem value={6}>{localization.typographyControl.heading} 6</MenuItem>
       </Select>
     </Tooltip>
   )

@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/control-mapper",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "Control mapping utility for sensenet",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -47,7 +47,7 @@
   "homepage": "https://sensenet.com",
   "dependencies": {
     "@babel/runtime": "^7.14.0",
-    "@sensenet/client-core": "^4.0.0",
+    "@sensenet/client-core": "^4.0.1",
     "@sensenet/default-content-types": "^5.0.0",
     "tslib": "^2.2.0"
   },
@@ -63,13 +63,13 @@
     "@types/jest": "^26.0.23",
     "babel-plugin-add-import-extension": "^1.5.1",
     "cross-env": "^7.0.3",
-    "jest": "^26.6.1",
+    "jest": "^27.0.4",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
     "rollup": "^2.48.0",
     "rollup-plugin-terser": "^7.0.2",
-    "ts-jest": "^26.5.6",
-    "typescript": "^4.2.4"
+    "ts-jest": "^27.0.3",
+    "typescript": "^4.3.3"
   },
   "engines": {
     "node": ">=10.0.0"

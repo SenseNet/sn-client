@@ -1,6 +1,6 @@
 {
   "name": "@example/react-calendar",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "private": true,
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "contributors": [
@@ -23,10 +23,10 @@
   "devDependencies": {
     "@types/jest": "^26.0.21",
     "@types/lodash.orderby": "^4.6.6",
-    "@types/node": "^14.14.41",
-    "@types/react": "^17.0.3",
-    "@types/react-dom": "^17.0.3",
-    "@types/react-router": "^5.1.12",
+    "@types/node": "^15.12.2",
+    "@types/react": "^17.0.11",
+    "@types/react-dom": "^17.0.7",
+    "@types/react-router": "^5.1.15",
     "@types/react-router-dom": "^5.1.7",
     "@types/uuid": "^8.0.1",
     "react": "^16.13.0",
@@ -34,21 +34,21 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
-    "typescript": "^4.2.4"
+    "typescript": "^4.3.3"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
     "@sensenet/authentication-oidc-react": "^2.3.1",
-    "@sensenet/client-core": "^4.0.0",
-    "@sensenet/controls-react": "^8.0.0",
+    "@sensenet/client-core": "^4.0.1",
+    "@sensenet/controls-react": "^8.0.1",
     "@sensenet/default-content-types": "^5.0.0",
-    "@sensenet/hooks-react": "^1.6.1",
-    "@sensenet/query": "^2.1.1",
-    "@sensenet/repository-events": "^2.1.1",
+    "@sensenet/hooks-react": "^1.6.2",
+    "@sensenet/query": "^2.1.2",
+    "@sensenet/repository-events": "^2.1.2",
     "@sensenet/universal-header-react": "^0.2.0",
     "clsx": "^1.1.1",
-    "date-fns": "^2.21.3",
+    "date-fns": "^2.22.1",
     "lodash.orderby": "^4.6.0",
     "striptags": "^3.1.1",
     "uuid": "^8.3.2"

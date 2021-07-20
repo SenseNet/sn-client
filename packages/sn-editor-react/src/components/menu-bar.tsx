@@ -13,10 +13,9 @@ import RedoIcon from '@material-ui/icons/Redo'
 import UndoIcon from '@material-ui/icons/Undo'
 import { Editor } from '@tiptap/react'
 import React, { FC } from 'react'
-
+import { useLocalization } from '../hooks'
 import { getCommonStyles } from '../styles'
-
-import { ImageControl, LinkControl, TypographyControl } from './controls'
+import { ImageControl, LinkControl, TableControl, TypographyControl } from './controls'
 
 const useStyles = makeStyles((theme) => {
   const commonStyles = getCommonStyles(theme)
@@ -32,7 +31,7 @@ const useStyles = makeStyles((theme) => {
     },
 
     divider: {
-      background: 'rgba(57,76,96,.15)',
+      background: theme.palette.type === 'dark' ? theme.palette.common.white : 'rgba(57,76,96,.15)',
       width: '1px',
       display: 'inline-block',
       height: '28px',
@@ -61,6 +60,7 @@ interface MenuBarProps {
 
 export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
   const classes = useStyles()
+  const localization = useLocalization()
 
   if (!editor) {
     return null
@@ -70,7 +70,7 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
     <div className={classes.root}>
       <TypographyControl editor={editor} />
       <div className={classes.divider} />
-      <Tooltip title="Bold (Ctrl + B)">
+      <Tooltip title={`${localization.menubar.bold} (Ctrl + B)`}>
         <IconButton
           onClick={() => editor.chain().focus().toggleBold().run()}
           color={editor.isActive('bold') ? 'primary' : 'default'}
@@ -78,7 +78,7 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
           <strong>B</strong>
         </IconButton>
       </Tooltip>
-      <Tooltip title="Italic (Ctrl + I)">
+      <Tooltip title={`${localization.menubar.italic} (Ctrl + I)`}>
         <IconButton
           onClick={() => editor.chain().focus().toggleItalic().run()}
           color={editor.isActive('italic') ? 'primary' : 'default'}
@@ -86,7 +86,7 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
           <em>I</em>
         </IconButton>
       </Tooltip>
-      <Tooltip title="Underline (Ctrl + U)">
+      <Tooltip title={`${localization.menubar.underline} (Ctrl + U)`}>
         <IconButton
           onClick={() => editor.chain().focus().toggleUnderline().run()}
           color={editor.isActive('underline') ? 'primary' : 'default'}
@@ -95,7 +95,7 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
         </IconButton>
       </Tooltip>
       <div className={classes.divider} />
-      <Tooltip title="Block quote (Ctrl + Shift + B)">
+      <Tooltip title={`${localization.menubar.blockquote} (Ctrl + Shift + B)`}>
         <IconButton
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           color={editor.isActive('blockquote') ? 'primary' : 'default'}
@@ -103,7 +103,7 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
           <FormatQuoteIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Code (Ctrl + E)">
+      <Tooltip title={`${localization.menubar.code} (Ctrl + E)`}>
         <IconButton
           onClick={() => editor.chain().focus().toggleCode().run()}
           color={editor.isActive('code') ? 'primary' : 'default'}
@@ -112,7 +112,7 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
         </IconButton>
       </Tooltip>
       <div className={classes.divider} />
-      <Tooltip title="Align left (Ctrl + Shift + L)">
+      <Tooltip title={`${localization.menubar.alignLeft} (Ctrl + Shift + L)`}>
         <IconButton
           onClick={() => editor.chain().focus().setTextAlign('left').run()}
           color={editor.isActive({ textAlign: 'left' }) ? 'primary' : 'default'}
@@ -120,7 +120,7 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
           <FormatAlignLeftIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Align center (Ctrl + Shift + E)">
+      <Tooltip title={`${localization.menubar.alignCenter} (Ctrl + Shift + E)`}>
         <IconButton
           onClick={() => {
             editor.chain().focus().setTextAlign('center').run()
@@ -130,7 +130,7 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
           <FormatAlignCenterIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Align right (Ctrl + Shift + R)">
+      <Tooltip title={`${localization.menubar.alignRight} (Ctrl + Shift + R)`}>
         <IconButton
           onClick={() => editor.chain().focus().setTextAlign('right').run()}
           color={editor.isActive({ textAlign: 'right' }) ? 'primary' : 'default'}
@@ -138,7 +138,7 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
           <FormatAlignRightIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Align justify (Ctrl + Shift + J)">
+      <Tooltip title={`${localization.menubar.alignJustify} (Ctrl + Shift + J)`}>
         <IconButton
           onClick={() => editor.chain().focus().setTextAlign('justify').run()}
           color={editor.isActive({ textAlign: 'justify' }) ? 'primary' : 'default'}
@@ -147,7 +147,7 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
         </IconButton>
       </Tooltip>
       <div className={classes.divider} />
-      <Tooltip title="Bullet list">
+      <Tooltip title={localization.menubar.bulletList}>
         <IconButton
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={editor.isActive('bulletList') ? 'is-active' : ''}
@@ -155,7 +155,7 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
           <FormatListBulletedIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Ordered list">
+      <Tooltip title={localization.menubar.orderedList}>
         <IconButton
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           color={editor.isActive('orderedList') ? 'primary' : 'default'}
@@ -171,7 +171,11 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
         editor={editor}
         buttonProps={{ classes: { root: classes.button, colorPrimary: classes.buttonPrimary } }}
       />
-      <Tooltip title="Clear format">
+      <TableControl
+        editor={editor}
+        buttonProps={{ classes: { root: classes.button, colorPrimary: classes.buttonPrimary } }}
+      />
+      <Tooltip title={localization.menubar.clearFormat}>
         <IconButton
           classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}
           onClick={() => {
@@ -181,7 +185,7 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
           <FormatClearIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Undo (Ctrl + Z)">
+      <Tooltip title={`${localization.menubar.undo} (Ctrl + Z)`}>
         <IconButton
           onClick={() => editor.chain().focus().undo().run()}
           disabled={!editor.can().undo()}
@@ -189,7 +193,7 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
           <UndoIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Redo (Ctrl + Y)">
+      <Tooltip title={`${localization.menubar.redo} (Ctrl + Y)`}>
         <IconButton
           onClick={() => editor.chain().focus().redo().run()}
           disabled={!editor.can().redo()}
