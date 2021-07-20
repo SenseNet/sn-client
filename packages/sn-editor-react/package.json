@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/editor-react",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -44,7 +44,7 @@
   "dependencies": {
     "@babel/runtime": "^7.14.5",
     "@material-ui/icons": "^4.11.2",
-    "@sensenet/client-utils": "^2.1.0",
+    "@sensenet/client-utils": "^2.1.2",
     "@tiptap/core": "^2.0.0-beta.73",
     "@tiptap/extension-blockquote": "^2.0.0-beta.13",
     "@tiptap/extension-bold": "^2.0.0-beta.13",
