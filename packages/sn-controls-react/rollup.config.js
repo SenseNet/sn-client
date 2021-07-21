@@ -14,6 +14,7 @@ module.exports = {
       file: 'dist/bundle.esm.min.js',
       format: 'esm',
       plugins: [],
+      inlineDynamicImports: true,
     },
     {
       file: 'dist/bundle.min.js',
@@ -23,6 +24,7 @@ module.exports = {
         react: 'React',
       },
       sourcemap: true,
+      inlineDynamicImports: true,
     },
   ],
   plugins: [
