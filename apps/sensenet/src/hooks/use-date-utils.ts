@@ -1,6 +1,4 @@
-import format from 'date-fns/format'
-import formatDistanceToNow from 'date-fns/formatDistanceToNow'
-import parseISO from 'date-fns/parseISO'
+import { format, formatDistanceToNow, parseISO } from 'date-fns'
 import { useCallback } from 'react'
 import { LocalizationObject } from '../context'
 import { usePersonalSettings } from '.'

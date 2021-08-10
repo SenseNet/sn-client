@@ -200,6 +200,9 @@ const values: Localization = {
     installedPackagesInfo:
       'Csomagok, melyekből a sensenet komponensek felépülnek. Léteznek olyan csomagok is, melyek nem felelősek a komponensekért, többszöri futtatásra lettek létrehozva - ilyenek a tool-típusú csomagok. Ezek például kontent törlésre vagy indexelésre használatosak.',
     notAvailable: 'Nem elérhető',
+    traffic: 'Adatforgalom',
+    dataTraffic: 'Adatforgalom (kérések és válaszok)',
+    apiCalls: 'Kérések száma (API hívások)',
   },
   forms: {
     referencePicker: 'Referencia választó',
