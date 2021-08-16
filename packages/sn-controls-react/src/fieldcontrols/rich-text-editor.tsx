@@ -2,7 +2,7 @@
  * @module FieldControls
  */
 import { deepMerge } from '@sensenet/client-utils'
-import { EditorProps, renderHtml } from '@sensenet/editor-react'
+import { renderHtml } from '@sensenet/editor-react'
 import { CircularProgress, createStyles, FormHelperText, InputLabel, makeStyles, Typography } from '@material-ui/core'
 import React, { lazy, Suspense } from 'react'
 import { changeTemplatedValue } from '../helpers'
@@ -37,7 +37,7 @@ const getFieldValue = (rawValue?: string) => {
   }
 
   try {
-    return value.editor ? (JSON.parse(value.editor) as EditorProps['content']) : value.text
+    return value.editor ? JSON.parse(value.editor) : value.text
   } catch (_) {
     return value.text
   }

@@ -35,6 +35,11 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
   const selectionRoots = useMemo(() => [snRoute.path], [snRoute.path])
   const itemsODataOptions = useMemo(() => ({ filter: '' }), [])
 
+  const blackList =
+    props.operation === 'copy'
+      ? [props.content[0].Path]
+      : [props.content[0].Path, `/${PathHelper.getParentPath(props.content[0].Path)}`]
+
   useEffect(() => {
     setLocalization(localizations[props.operation])
   }, [localizations, props.operation])
@@ -148,7 +153,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
         actionsContainer={DialogActions}
         handleCancel={closeLastDialog}
         handleSubmit={handleSubmit}
-        selectionBlacklist={[props.content[0].Path, `/${PathHelper.getParentPath(props.content[0].Path)}`]}
+        selectionBlacklist={blackList}
         isExecInProgress={isExecInProgress}
         required={1}
         classes={{ cancelButton: globalClasses.cancelButton }}
