@@ -50,9 +50,9 @@
     "@sensenet/client-utils": "^2.1.2",
     "@sensenet/default-content-types": "^5.0.0",
     "@sensenet/redux-promise-middleware": "^2.3.1",
-    "redux": "^4.1.0",
+    "redux": "^4.1.1",
     "redux-logger": "^3.0.6",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.8",
@@ -74,7 +74,7 @@
     "rollup": "^2.55.1",
     "rollup-plugin-terser": "^7.0.2",
     "ts-jest": "^27.0.4",
-    "typescript": "^4.3.5"
+    "typescript": "~4.3.5"
   },
   "engines": {
     "node": ">=10.0.0"

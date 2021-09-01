@@ -68,11 +68,11 @@ export const BubbleMenu: FC<BubbleMenuProps> = (props) => {
         <>
           <Link
             color="inherit"
-            href={props.editor.getMarkAttributes('link').href}
+            href={props.editor.getAttributes('link').href}
             target="_blank"
             rel="noreferrer"
             style={{ marginRight: '3px' }}>
-            {props.editor.getMarkAttributes('link').href}
+            {props.editor.getAttributes('link').href}
           </Link>
           <IconButton
             aria-label={localization.bubbleMenu.removeLink}
