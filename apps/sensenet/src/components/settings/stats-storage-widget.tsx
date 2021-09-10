@@ -31,11 +31,15 @@ export const StorageWidget: React.FunctionComponent<StorageWidgetProps> = (props
   const numberFormatter = new Intl.NumberFormat('en-US')
 
   const allUsage =
-    props.data.usage.storage.files +
-    props.data.usage.storage.content +
-    props.data.usage.storage.oldVersions +
-    props.data.usage.storage.log +
-    props.data.usage.storage.system
+    props.data?.usage?.storage.files +
+    props.data?.usage?.storage.content +
+    props.data?.usage?.storage.oldVersions +
+    props.data?.usage?.storage.log +
+    props.data?.usage?.storage.system
+
+  if (!allUsage) {
+    return null
+  }
 
   return (
     <div className={widgetClasses.root}>

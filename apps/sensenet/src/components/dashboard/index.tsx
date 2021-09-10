@@ -98,9 +98,13 @@ const Dashboard = () => {
           {localization.descriptionSecondLine}
         </div>
         <LearnMoreWidget />
-        <SubscriptionWidget subscription={data.subscription} version={data.version} isAdmin={isAdmin} />
+        {data.subscription && (
+          <SubscriptionWidget subscription={data.subscription} version={data.version} isAdmin={isAdmin} />
+        )}
         {data?.usage?.user === 1 && <YourProjectWidget />}
-        <UsageWidget limitations={data.subscription.plan.limitations} used={data.usage} />
+        {data.subscription?.plan?.limitations && (
+          <UsageWidget limitations={data.subscription?.plan?.limitations} used={data.usage} />
+        )}
       </Container>
     </div>
   )
