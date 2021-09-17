@@ -154,7 +154,7 @@ const values = {
     underConstruction: 'Under construction',
   },
   dashboard: {
-    title: (projectName: string) => `Welcome to your ${projectName} project`,
+    title: (projectName: string) => (projectName ? `Welcome to your ${projectName} project` : 'Welcome to Admin UI'),
     descriptionFirstLine: 'Here you can Explore the Admin UI with sample content',
     descriptionSecondLine: 'Feel free to look around!',
     subscriptionPlan: 'Your subscription plan',
