@@ -83,8 +83,8 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
         method: 'GET',
       })
 
-      setExternalClients(response.clients.filter((client) => client.type === ApiKeyType.ExternalClient))
-      setExternalSpas(response.clients.filter((client) => client.type === ApiKeyType.ExternalSpa))
+      setExternalClients(response.clients.filter((client: any) => client.type === ApiKeyType.ExternalClient))
+      setExternalSpas(response.clients.filter((client: any) => client.type === ApiKeyType.ExternalSpa))
     })()
   }, [repo])
 
