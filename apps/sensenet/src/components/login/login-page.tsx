@@ -85,12 +85,12 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
             </Typography>
           </Grid>
           <Grid container direction="column" justify="center" alignItems="center" style={{ flexBasis: 150 }}>
-            <Grid item alignContent="center" alignItems="center">
+            <Grid item>
               <Typography align="center" variant="subtitle1" component="p">
                 {localization.demoTitle}
               </Typography>
             </Grid>
-            <Grid item alignContent="center" alignItems="center">
+            <Grid item>
               <Button
                 onClick={handleDemoSubmit}
                 size="medium"

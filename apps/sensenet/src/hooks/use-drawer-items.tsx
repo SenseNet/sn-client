@@ -13,6 +13,7 @@ export interface DrawerItem {
   url: string
   icon: JSX.Element
   root?: string
+  itemType: string
 }
 
 type DrawerType = CustomContentDrawerItem | DrawerItemSetting<any>
@@ -152,6 +153,7 @@ export const useDrawerItems = () => {
         secondaryText: getItemDescriptionFromSettings(setting),
         url: getUrlFromSetting(setting),
         root: setting.settings?.root,
+        itemType: setting.itemType,
       }
       return drawerItem
     }

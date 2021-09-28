@@ -16,35 +16,45 @@ export const Stats: React.FunctionComponent = () => {
   const repository = useRepository()
   const [versionInfo, setVersionInfo] = useState<VersionInfo>()
   const [dashboardData, setDashboardData] = useState<DashboardData>()
+  const [versionInfoError, setVersionInfoError] = useState<boolean>(false)
+  const [dashboardDataError, setDashboardDataError] = useState<boolean>(false)
 
   useEffect(() => {
     ;(async () => {
-      const response = await repository.executeAction<any, VersionInfo>({
-        idOrPath: '/Root',
-        name: 'GetVersionInfo',
-        method: 'GET',
-      })
+      try {
+        const response = await repository.executeAction<any, VersionInfo>({
+          idOrPath: '/Root',
+          name: 'GetVersionInfo',
+          method: 'GET',
+        })
 
-      setVersionInfo(response)
+        setVersionInfo(response)
+      } catch {
+        setVersionInfoError(true)
+      }
     })()
   }, [repository])
 
   useEffect(() => {
     ;(async () => {
-      const response = await repository.executeAction<any, DashboardData>({
-        idOrPath: '/Root',
-        name: 'GetDashboardData',
-        method: 'GET',
-        oDataOptions: {
-          select: ['Plan'],
-        },
-      })
+      try {
+        const response = await repository.executeAction<any, DashboardData>({
+          idOrPath: '/Root',
+          name: 'GetDashboardData',
+          method: 'GET',
+          oDataOptions: {
+            select: ['Plan'],
+          },
+        })
 
-      setDashboardData(response)
+        setDashboardData(response)
+      } catch {
+        setDashboardDataError(true)
+      }
     })()
   }, [repository])
 
-  if (!versionInfo || !dashboardData) return <FullScreenLoader />
+  if ((!versionInfo && !versionInfoError) || (!dashboardData && !dashboardDataError)) return <FullScreenLoader />
 
   return (
     <div style={{ overflow: 'auto' }}>
@@ -52,9 +62,13 @@ export const Stats: React.FunctionComponent = () => {
         <span style={{ fontSize: '20px' }}>{localization.settings.stats}</span>
       </div>
       <Container fixed>
-        <StorageWidget data={dashboardData} />
-        <ComponentsWidget data={versionInfo} />
-        <InstalledPackagesWidget data={versionInfo} />
+        {dashboardData && !dashboardDataError && <StorageWidget data={dashboardData} />}
+        {versionInfo && !versionInfoError && (
+          <>
+            <ComponentsWidget data={versionInfo} />
+            <InstalledPackagesWidget data={versionInfo} />
+          </>
+        )}
       </Container>
     </div>
   )
