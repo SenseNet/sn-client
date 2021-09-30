@@ -74,7 +74,7 @@ export const PermanentDrawer = () => {
   const localization = useLocalization().drawer
   const location = useLocation()
 
-  const settingsItem = items.find((item) => item.primaryText === 'Settings')
+  const settingsItem = items.find((item) => item.itemType === 'Settings')
 
   if (!settings.drawer.enabled) {
     return null
@@ -114,7 +114,7 @@ export const PermanentDrawer = () => {
               <AddButton aria-label={localization.add} isOpened={opened} />
             ) : null}
             {items.map((item, index) => {
-              return item.primaryText !== 'Settings' && <PermanentDrawerItem item={item} opened={opened} key={index} />
+              return item.itemType !== 'Settings' && <PermanentDrawerItem item={item} opened={opened} key={index} />
             })}
           </li>
           <li>{settingsItem && <PermanentDrawerItem item={settingsItem} opened={opened} />}</li>

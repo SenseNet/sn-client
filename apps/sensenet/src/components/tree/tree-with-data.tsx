@@ -20,7 +20,7 @@ let lastRequest: { path: string; lastIndex: number } | undefined
 const ITEM_THRESHOLD = 50
 
 const walkTree = (node: ItemType, callBack: (node: ItemType) => void) => {
-  if (node.children?.length) {
+  if (node?.children?.length) {
     node.children.forEach((child) => {
       callBack(child)
       walkTree(child, callBack)
@@ -77,19 +77,20 @@ export default function TreeWithData(props: TreeWithDataProps) {
 
   useEffect(() => {
     if (prevActiveItemPath && prevActiveItemPath !== props.activeItemPath) {
-      walkTree(treeData!, async (node: ItemType) => {
-        if (node.Path === props.activeItemPath || PathHelper.isAncestorOf(node.Path, props.activeItemPath)) {
-          if (!node.expanded && !node.children?.length && node.Type !== 'SmartFolder') {
-            const children = await loadCollection(node.Path, ITEM_THRESHOLD, 0)
-            if (children) {
-              node.children = children.d.results
-              node.hasNextPage = children.d.__count > node.children.length
+      treeData &&
+        walkTree(treeData, async (node: ItemType) => {
+          if (node.Path === props.activeItemPath || PathHelper.isAncestorOf(node.Path, props.activeItemPath)) {
+            if (!node.expanded && !node.children?.length && node.Type !== 'SmartFolder') {
+              const children = await loadCollection(node.Path, ITEM_THRESHOLD, 0)
+              if (children) {
+                node.children = children.d.results
+                node.hasNextPage = children.d.__count > node.children.length
+              }
             }
+            node.expanded = true
+            setTreeData({ ...treeData })
           }
-          node.expanded = true
-          setTreeData({ ...treeData! })
-        }
-      })
+        })
     }
   }, [props.activeItemPath, loadCollection, treeData, prevActiveItemPath])
 
@@ -112,20 +113,24 @@ export default function TreeWithData(props: TreeWithDataProps) {
           }))
       }
 
-      const treeResponse = await repo.executeAction<any, ODataResponse<{ results: GenericContent[] }>>({
-        idOrPath: props.activeItemPath,
-        name: 'OpenTree',
-        method: 'GET',
-        oDataOptions: props.loadSettings,
-        body: {
-          rootPath: props.parentPath,
-          withSystem: true,
-        },
-      })
-
-      const tree = buildTree(treeResponse.d.results)
-      setItemCount(tree.children.length)
-      setTreeData(tree)
+      try {
+        const treeResponse = await repo.executeAction<any, ODataResponse<{ results: GenericContent[] }>>({
+          idOrPath: props.activeItemPath,
+          name: 'OpenTree',
+          method: 'GET',
+          oDataOptions: props.loadSettings,
+          body: {
+            rootPath: props.parentPath,
+            withSystem: true,
+          },
+        })
+        const tree = buildTree(treeResponse.d.results)
+        setItemCount(tree.children.length)
+        setTreeData(tree)
+      } catch (error) {
+        setItemCount(0)
+        setTreeData(undefined)
+      }
     },
     [props.activeItemPath, props.parentPath, repo, treeData, props.loadSettings],
   )
@@ -157,13 +162,14 @@ export default function TreeWithData(props: TreeWithDataProps) {
         })
       } else {
         // load more items under tree node
-        walkTree(treeData!, (node) => {
-          if (node.Path === path && node.children) {
-            node.children = [...node.children, ...result.d.results]
-            node.hasNextPage = result.d.__count > node.children.length
-          }
-        })
-        setTreeData({ ...treeData! })
+        treeData &&
+          walkTree(treeData, (node) => {
+            if (node.Path === path && node.children) {
+              node.children = [...node.children, ...result.d.results]
+              node.hasNextPage = result.d.__count > node.children.length
+            }
+          })
+        treeData && setTreeData({ ...treeData })
       }
     },
     [loadCollection, logger, props.parentPath, treeData],
@@ -172,18 +178,19 @@ export default function TreeWithData(props: TreeWithDataProps) {
   const onDeleteContent = useCallback(
     async (content: Content, pathInObject = 'Path') => {
       await lock.acquire()
-      walkTree(treeData!, (node) => {
-        if (node.Id === content.Id && treeData?.children?.length) {
-          treeData.children = treeData.children.filter((n) => n.Id !== content.Id)
-          setItemCount((itemCountTemp) => (itemCountTemp > 0 ? itemCountTemp - 1 : 0))
-        } else if (
-          PathHelper.trimSlashes(node.Path) ===
-          PathHelper.getParentPath(content[pathInObject as keyof Content] as string)
-        ) {
-          node.children = node.children?.filter((n) => n.Id !== content.Id)
-        }
-      })
-      setTreeData({ ...treeData! })
+      treeData &&
+        walkTree(treeData, (node) => {
+          if (node.Id === content.Id && treeData?.children?.length) {
+            treeData.children = treeData.children.filter((n) => n.Id !== content.Id)
+            setItemCount((itemCountTemp) => (itemCountTemp > 0 ? itemCountTemp - 1 : 0))
+          } else if (
+            PathHelper.trimSlashes(node.Path) ===
+            PathHelper.getParentPath(content[pathInObject as keyof Content] as string)
+          ) {
+            node.children = node.children?.filter((n) => n.Id !== content.Id)
+          }
+        })
+      treeData && setTreeData({ ...treeData })
       lock.release()
     },
     [treeData],
@@ -203,24 +210,25 @@ export default function TreeWithData(props: TreeWithDataProps) {
       ) {
         openTree(true)
       } else {
-        walkTree(treeData!, async (node) => {
-          if (
-            contents.some(
-              (createdContent) =>
-                (createdContent as GenericContent).ParentId === node.Id ||
-                PathHelper.getParentPath(createdContent.Path) === PathHelper.trimSlashes(node.Path),
-            )
-          ) {
-            const result = await loadCollection(node.Path, ITEM_THRESHOLD, 0)
-            if (!result) {
-              logger.debug({ message: `loadCollection failed to load from ${node.Path}` })
-              return
+        treeData &&
+          walkTree(treeData, async (node) => {
+            if (
+              contents.some(
+                (createdContent) =>
+                  (createdContent as GenericContent).ParentId === node.Id ||
+                  PathHelper.getParentPath(createdContent.Path) === PathHelper.trimSlashes(node.Path),
+              )
+            ) {
+              const result = await loadCollection(node.Path, ITEM_THRESHOLD, 0)
+              if (!result) {
+                logger.debug({ message: `loadCollection failed to load from ${node.Path}` })
+                return
+              }
+              node.children = result.d.results
+              node.hasNextPage = result.d.__count > node.children.length
+              treeData && setTreeData({ ...treeData })
             }
-            node.children = result.d.results
-            node.hasNextPage = result.d.__count > node.children.length
-            setTreeData({ ...treeData! })
-          }
-        })
+          })
       }
     }
 
@@ -237,15 +245,16 @@ export default function TreeWithData(props: TreeWithDataProps) {
       eventHub.onCustomActionExecuted.subscribe(async (event) => {
         if (event.actionOptions.name === 'Restore') {
           await lock.acquire()
-          walkTree(treeData!, (node) => {
-            if (node.Path === event.actionOptions.idOrPath && treeData?.children?.length) {
-              treeData.children = treeData.children.filter((n) => n.Path !== event.actionOptions.idOrPath)
-              setItemCount((itemCountTemp) => (itemCountTemp > 0 ? itemCountTemp - 1 : 0))
-            } else if (PathHelper.trimSlashes(node.Path) === PathHelper.getParentPath(event.actionOptions.idOrPath)) {
-              node.children = node.children?.filter((n) => n.Path !== event.actionOptions.idOrPath)
-            }
-          })
-          setTreeData({ ...treeData! })
+          treeData &&
+            walkTree(treeData, (node) => {
+              if (node.Path === event.actionOptions.idOrPath && treeData?.children?.length) {
+                treeData.children = treeData.children.filter((n) => n.Path !== event.actionOptions.idOrPath)
+                setItemCount((itemCountTemp) => (itemCountTemp > 0 ? itemCountTemp - 1 : 0))
+              } else if (PathHelper.trimSlashes(node.Path) === PathHelper.getParentPath(event.actionOptions.idOrPath)) {
+                node.children = node.children?.filter((n) => n.Path !== event.actionOptions.idOrPath)
+              }
+            })
+          treeData && setTreeData({ ...treeData })
           lock.release()
         }
       }),

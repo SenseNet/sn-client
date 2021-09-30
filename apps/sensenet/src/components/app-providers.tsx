@@ -9,6 +9,7 @@ import {
   ResponsiveContextProvider,
   ThemeProvider,
 } from '../context'
+import { ShareProvider } from '../context/ShareProvider'
 import {
   CommandProviderManager,
   CustomActionCommandProvider,
@@ -40,11 +41,13 @@ export default function AppProviders({ children }: AppProvidersProps) {
             <BrowserRouter>
               <ThemeProvider>
                 <RepositoryProvider>
-                  <CurrentUserProvider>
-                    <ResponsiveContextProvider>
-                      <DialogProvider>{children}</DialogProvider>
-                    </ResponsiveContextProvider>
-                  </CurrentUserProvider>
+                  <ShareProvider>
+                    <CurrentUserProvider>
+                      <ResponsiveContextProvider>
+                        <DialogProvider>{children}</DialogProvider>
+                      </ResponsiveContextProvider>
+                    </CurrentUserProvider>
+                  </ShareProvider>
                 </RepositoryProvider>
               </ThemeProvider>
             </BrowserRouter>
