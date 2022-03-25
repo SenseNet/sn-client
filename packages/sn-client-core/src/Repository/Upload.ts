@@ -191,6 +191,7 @@ export class Upload {
 
         chunkFormData.append('FileLength', options.file.size.toString())
         chunkFormData.append('ChunkToken', chunkToken)
+        chunkFormData.append('PropertyName', options.binaryPropertyName)
         chunkFormData.append(options.file.name, chunkData)
 
         const lastResponse = await this.repository.fetch(uploadPath, {

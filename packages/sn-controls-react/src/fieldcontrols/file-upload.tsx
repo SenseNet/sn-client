@@ -110,7 +110,7 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
         fileName: props.content.Name,
         overwrite: true,
         contentTypeName: props.content.Type,
-        binaryPropertyName: 'Binary',
+        binaryPropertyName: props.settings.Name,
       })
 
       const newValue = `${getNameFromPath(e.target.value)}`
