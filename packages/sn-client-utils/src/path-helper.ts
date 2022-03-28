@@ -33,7 +33,7 @@ export class PathHelper {
     if (!lastItem) {
       throw new Error(`Couldn't get the segments for ${path}`)
     }
-    // Match if last item is Root/content(123) or Root/Example('content')
+    // Match if last item is Root/Example('content')
     const matches = lastItem.match(/(\('\w+'\)$)/g)
     if (!matches) {
       return [...splitted, lastItem]
@@ -44,11 +44,11 @@ export class PathHelper {
   }
 
   /**
-   * Checks if a specific segment is an Item segment or not (like "('Content1')" or "Test(1)")
+   * Checks if a specific segment is an Item segment or not (like "('Content1')")
    * @param segment The segment to be examined
    */
   public static isItemSegment(segment: string): boolean {
-    return RegExp(/^\('+[\s\S]+'\)$/).test(segment) || RegExp(/^\(+\w+\d+\)$/).test(segment)
+    return RegExp(/^\('+[\s\S]+'\)$/).test(segment)
   }
 
   /**
