@@ -14,6 +14,8 @@ describe('AllowedChildTypes', () => {
   }
 
   beforeEach(() => {
+    ;(mockResponse as any).ok = true
+    ;(mockResponse as any).json = async () => ({})
     repository = new Repository(undefined, fetchMock)
   })
 
