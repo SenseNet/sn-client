@@ -180,7 +180,6 @@ export class Upload {
 
       const chunkToken = await initRequest.text()
       let lastResponseContent: UploadResponse = {} as any
-
       for (let i = 0; i <= chunkCount; i++) {
         const start = i * this.repository.configuration.chunkSize
         let end = start + this.repository.configuration.chunkSize
@@ -191,7 +190,7 @@ export class Upload {
 
         chunkFormData.append('FileLength', options.file.size.toString())
         chunkFormData.append('ChunkToken', chunkToken)
-        chunkFormData.append('PropertyName', options.binaryPropertyName)
+        chunkFormData.append('PropertyName', options.binaryPropertyName.toString())
         chunkFormData.append(options.file.name, chunkData)
 
         const lastResponse = await this.repository.fetch(uploadPath, {
