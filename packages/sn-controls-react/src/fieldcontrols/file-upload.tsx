@@ -115,7 +115,6 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
 
       const newValue = `${getNameFromPath(e.target.value)}`
       setFileName(newValue)
-      props.fieldOnChange?.(props.settings.Name, newValue)
     } catch (error) {
       console.error(error.message)
     }
