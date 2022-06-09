@@ -74,7 +74,6 @@ describe('File upload field control', () => {
 
     wrapper.find(Input).simulate('change', { target: { files: [], value: 'somePath' }, persist: jest.fn() })
     await sleepAsync(0)
-    expect(fieldOnChange).toBeCalled()
     expect(repository.upload.file).toBeCalled()
   })
 
