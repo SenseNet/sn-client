@@ -34,7 +34,7 @@ export class PathHelper {
       throw new Error(`Couldn't get the segments for ${path}`)
     }
     // Match if last item is Root/Example('content')
-    const matches = lastItem.match(/(\('[\s\S]+'\)$)/g)
+    const matches = lastItem.match(/(\('.+'\)$)/g)
     if (!matches) {
       return [...splitted, lastItem]
     }
@@ -48,7 +48,7 @@ export class PathHelper {
    * @param segment The segment to be examined
    */
   public static isItemSegment(segment: string): boolean {
-    return RegExp(/\('[\s\S]+'\)$/).test(segment)
+    return RegExp(/\('.+'\)$/).test(segment)
   }
 
   /**
