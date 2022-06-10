@@ -9,10 +9,6 @@ export const pathHelperTests = describe('PathHelper', () => {
       expect(PathHelper.isItemSegment("('Item1')")).toBe(true)
     })
 
-    it('Should return true for item segments with numeric key "(42)"', () => {
-      expect(PathHelper.isItemSegment('(42)')).toBe(true)
-    })
-
     it('Should return false for string keys w/o quotes', () => {
       expect(PathHelper.isItemSegment('(invalidValue)')).toBe(false)
     })
@@ -61,11 +57,6 @@ export const pathHelperTests = describe('PathHelper', () => {
 
     it('should return true for reference paths', () => {
       const isAnItem = PathHelper.isItemPath("/workspace/('project')/CustomAction")
-      expect(isAnItem).toBe(true)
-    })
-
-    it('should return true for reference paths with ids', () => {
-      const isAnItem = PathHelper.isItemPath('/workspaces/(22)/CustomAction')
       expect(isAnItem).toBe(true)
     })
   })
@@ -200,6 +191,10 @@ export const pathHelperTests = describe('PathHelper', () => {
 
     it('Should return the parent path in case of more than 1 segments with item path', () => {
       expect(PathHelper.getParentPath('Root/Memo/Test(1)')).toBe('Root/Memo')
+    })
+
+    it('Should return the parent path in case of more than 1 segments with item path', () => {
+      expect(PathHelper.getParentPath('Root/Memo/Test (11)')).toBe('Root/Memo')
     })
 
     it('Should return the path in case of 1 segments', () => {
