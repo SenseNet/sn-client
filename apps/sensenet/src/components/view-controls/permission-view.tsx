@@ -257,69 +257,70 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
             <List component="div" disablePadding>
               {inheritedArray?.map((inheritedEntry) => {
                 return (
-                  <ListItem
-                    selected={selectedListItem === `${inheritedEntry.identity.id}${inheritedEntry.propagates}`}
-                    button
-                    key={inheritedEntry.identity.id}
-                    onClick={() => {
-                      setSelectedListItem(`${inheritedEntry.identity.id}${inheritedEntry.propagates}`)
-                      openDialog({
-                        name: 'permission-editor',
-                        props: {
-                          entry: inheritedEntry,
-                          path: currentContent!.Path,
-                          submitCallback: () => {
-                            setRefreshFlag(!refreshFlag)
+                  <Tooltip key={inheritedEntry.identity.id} title={inheritedEntry.identity.path} placement="left">
+                    <ListItem
+                      selected={selectedListItem === `${inheritedEntry.identity.id}${inheritedEntry.propagates}`}
+                      button
+                      onClick={() => {
+                        setSelectedListItem(`${inheritedEntry.identity.id}${inheritedEntry.propagates}`)
+                        openDialog({
+                          name: 'permission-editor',
+                          props: {
+                            entry: inheritedEntry,
+                            path: currentContent!.Path,
+                            submitCallback: () => {
+                              setRefreshFlag(!refreshFlag)
+                            },
                           },
-                        },
-                        dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
-                      })
-                    }}>
-                    <ListItemIcon
-                      data-test={`inherited-${inheritedEntry.identity.displayName
-                        ?.replace(/\s+/g, '-')
-                        .toLowerCase()}`}>
-                      {inheritedEntry.identity.kind === 'group' ? (
-                        <div className={clsx(classes.iconWrapper, globalClasses.centered)}>
-                          <GroupOutlined />
-                        </div>
-                      ) : inheritedEntry.identity.kind === 'user' && inheritedEntry.identity.avatar ? (
-                        <Avatar
-                          src={PathHelper.joinPaths(repo.configuration.repositoryUrl, inheritedEntry.identity.avatar)}
-                        />
-                      ) : null}
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={
-                        <div>
-                          {inheritedEntry.identity.displayName}
-                          <Link
-                            data-test={`inherited-${inheritedEntry.identity.displayName
-                              ?.replace(/\s+/g, '-')
-                              .toLowerCase()}-link`}
-                            component="button"
-                            onClick={async (event: React.MouseEvent<HTMLElement>) => {
-                              event.stopPropagation()
-                              const response = await repo.load({
-                                idOrPath: inheritedEntry.ancestor!,
-                                oDataOptions: { select: 'all' },
-                              })
-                              history.push(
-                                getUrlForContent({
-                                  content: response.d,
-                                  uiSettings,
-                                  location: history.location,
-                                  action: 'setpermissions',
-                                }),
-                              )
-                            }}
-                            className={classes.anchor}>
-                            ({inheritedEntry.ancestor})
-                          </Link>
-                        </div>
-                      }
-                    />
-                  </ListItem>
+                          dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
+                        })
+                      }}>
+                      <ListItemIcon
+                        data-test={`inherited-${inheritedEntry.identity.displayName
+                          ?.replace(/\s+/g, '-')
+                          .toLowerCase()}`}>
+                        {inheritedEntry.identity.kind === 'group' ? (
+                          <div className={clsx(classes.iconWrapper, globalClasses.centered)}>
+                            <GroupOutlined />
+                          </div>
+                        ) : inheritedEntry.identity.kind === 'user' && inheritedEntry.identity.avatar ? (
+                          <Avatar
+                            src={PathHelper.joinPaths(repo.configuration.repositoryUrl, inheritedEntry.identity.avatar)}
+                          />
+                        ) : null}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={
+                          <div>
+                            {inheritedEntry.identity.displayName}
+                            <Link
+                              data-test={`inherited-${inheritedEntry.identity.displayName
+                                ?.replace(/\s+/g, '-')
+                                .toLowerCase()}-link`}
+                              component="button"
+                              onClick={async (event: React.MouseEvent<HTMLElement>) => {
+                                event.stopPropagation()
+                                const response = await repo.load({
+                                  idOrPath: inheritedEntry.ancestor!,
+                                  oDataOptions: { select: 'all' },
+                                })
+                                history.push(
+                                  getUrlForContent({
+                                    content: response.d,
+                                    uiSettings,
+                                    location: history.location,
+                                    action: 'setpermissions',
+                                  }),
+                                )
+                              }}
+                              className={classes.anchor}>
+                              ({inheritedEntry.ancestor})
+                            </Link>
+                          </div>
+                        }
+                      />
+                    </ListItem>
+                  </Tooltip>
                 )
               })}
             </List>
@@ -340,51 +341,59 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
               <List id="setOnThisList" component="div" disablePadding>
                 {setOnThisArray?.map((setOnThisEntry) => {
                   return (
-                    <ListItem
-                      data-test={`set-on-this-${setOnThisEntry.identity.displayName
-                        ?.replace(/\s+/g, '-')
-                        .toLowerCase()}${!setOnThisEntry.propagates ? '-local-only' : ''}`}
-                      selected={selectedListItem === `${setOnThisEntry.identity.id}${setOnThisEntry.propagates}`}
-                      button
+                    <Tooltip
                       key={`${setOnThisEntry.identity.id}${setOnThisEntry.propagates}`}
-                      onClick={() => {
-                        setSelectedListItem(`${setOnThisEntry.identity.id}${setOnThisEntry.propagates}`)
-                        openDialog({
-                          name: 'permission-editor',
-                          props: {
-                            entry: setOnThisEntry,
-                            path: currentContent!.Path,
-                            submitCallback: () => {
-                              setRefreshFlag(!refreshFlag)
+                      title={setOnThisEntry.identity.path}
+                      placement="left">
+                      <ListItem
+                        data-test={`set-on-this-${setOnThisEntry.identity.displayName
+                          ?.replace(/\s+/g, '-')
+                          .toLowerCase()}${!setOnThisEntry.propagates ? '-local-only' : ''}`}
+                        selected={selectedListItem === `${setOnThisEntry.identity.id}${setOnThisEntry.propagates}`}
+                        button
+                        key={`${setOnThisEntry.identity.id}${setOnThisEntry.propagates}`}
+                        onClick={() => {
+                          setSelectedListItem(`${setOnThisEntry.identity.id}${setOnThisEntry.propagates}`)
+                          openDialog({
+                            name: 'permission-editor',
+                            props: {
+                              entry: setOnThisEntry,
+                              path: currentContent!.Path,
+                              submitCallback: () => {
+                                setRefreshFlag(!refreshFlag)
+                              },
                             },
-                          },
-                          dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
-                        })
-                      }}>
-                      <ListItemIcon>
-                        {setOnThisEntry.identity.kind === 'group' ? (
-                          <div className={clsx(classes.iconWrapper, globalClasses.centered)}>
-                            <GroupOutlined />
-                          </div>
-                        ) : setOnThisEntry.identity.kind === 'user' && setOnThisEntry.identity.avatar ? (
-                          <Avatar
-                            src={PathHelper.joinPaths(repo.configuration.repositoryUrl, setOnThisEntry.identity.avatar)}
-                          />
-                        ) : null}
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={
-                          <div className={globalClasses.centeredVertical}>
-                            {setOnThisEntry.identity.displayName}
-                            {!setOnThisEntry.propagates && (
-                              <Tooltip title={localization.permissionEditor.localOnly} placement="top">
-                                <DesktopMac className={classes.localOnlyIcon} />
-                              </Tooltip>
-                            )}
-                          </div>
-                        }
-                      />
-                    </ListItem>
+                            dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
+                          })
+                        }}>
+                        <ListItemIcon>
+                          {setOnThisEntry.identity.kind === 'group' ? (
+                            <div className={clsx(classes.iconWrapper, globalClasses.centered)}>
+                              <GroupOutlined />
+                            </div>
+                          ) : setOnThisEntry.identity.kind === 'user' && setOnThisEntry.identity.avatar ? (
+                            <Avatar
+                              src={PathHelper.joinPaths(
+                                repo.configuration.repositoryUrl,
+                                setOnThisEntry.identity.avatar,
+                              )}
+                            />
+                          ) : null}
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={
+                            <div className={globalClasses.centeredVertical}>
+                              {setOnThisEntry.identity.displayName}
+                              {!setOnThisEntry.propagates && (
+                                <Tooltip title={localization.permissionEditor.localOnly} placement="top">
+                                  <DesktopMac className={classes.localOnlyIcon} />
+                                </Tooltip>
+                              )}
+                            </div>
+                          }
+                        />
+                      </ListItem>
+                    </Tooltip>
                   )
                 })}
               </List>
