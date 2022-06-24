@@ -1,4 +1,5 @@
 import Button from '@material-ui/core/Button'
+import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined'
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
 import React, { useState } from 'react'
 
@@ -31,7 +32,9 @@ const CopyPath = ({ copyText }: Props) => {
   return (
     <div>
       <Button onClick={handleCopyClick}>
-        <span>{isCopied ? 'Copied!' : <FileCopyOutlinedIcon />}</span>
+        <span>
+          {isCopied ? <CheckCircleOutlineOutlinedIcon style={{ color: 'lightgreen' }} /> : <FileCopyOutlinedIcon />}
+        </span>
       </Button>
     </div>
   )
