@@ -638,6 +638,18 @@ const values = {
     example: 'Example:',
     defaultPayload: 'Default payload',
   },
+  webhookLogDialog: {
+    log: 'Log',
+    details: 'Details',
+    requestTime: 'Request time:',
+    duration: 'Duration:',
+    requestLength: 'Request length:',
+    responseLength: 'Response length',
+    webhookId: 'Webhook id:',
+    contentId: 'Content id:',
+    eventName: 'Event name:',
+    errorMessage: 'Error message:',
+  },
   editor: {},
 }
 

@@ -424,6 +424,21 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
           )
         }
         return null
+      case 'SuccessfulCalls':
+        return (
+          <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
+            <VirtualDefaultCell
+              onTextClick={() => {
+                openDialog({
+                  name: 'webhook-log',
+                  props: { content: fieldOptions.rowData },
+                })
+              }}
+              cellData={fieldOptions.cellData}
+              textForLink=" (Click for details)"
+            />
+          </ContextMenuWrapper>
+        )
       default:
         break
     }

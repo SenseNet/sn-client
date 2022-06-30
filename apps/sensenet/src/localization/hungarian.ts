@@ -306,6 +306,18 @@ const values: Localization = {
       'Saját payload bármilyen valid JSON lehet. Ha az alapértelmezett payload-ot szeretné használni, hagyja üresen ezt a mezőt.',
     example: 'Példa:',
   },
+  webhookLogDialog: {
+    log: 'Napló',
+    details: 'Részletek',
+    requestTime: 'Kérés időpontja:',
+    duration: 'Válasz időtartama:',
+    requestLength: 'Kérés mérete:',
+    responseLength: 'Válasz mérete:',
+    webhookId: 'Webhook azonosító:',
+    contentId: 'Kontent azonosító:',
+    eventName: 'Esemény neve:',
+    errorMessage: 'Hibaüzenet:',
+  },
   editor: {
     common: {
       cancel: 'Mégse',

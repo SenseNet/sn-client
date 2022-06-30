@@ -758,3 +758,27 @@ export type Link = ListItem & {
  * Content list type for grouping external links
  */
 export type LinkList = ContentList
+
+/**
+ * Defines an event and a 3rd party service that should be called when the event is fired.
+ */
+export type WebhookSubscription = GenericContent & {
+  /* Http method */
+  WebHookHttpMethod: Enums.HttpMethod[]
+  /* Url */
+  WebHookUrl: string
+  /* Triggers */
+  WebHookFilter: string
+  /* HTTP headers */
+  WebHookHeaders: string
+  /* Status */
+  Enabled: boolean
+
+  IsValid: boolean
+
+  InvalidFields: string
+  /* % of successful calls */
+  SuccessfulCalls: number
+  /* Custom payload */
+  WebHookPayload: string
+}
