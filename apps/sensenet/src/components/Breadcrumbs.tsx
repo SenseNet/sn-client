@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button'
 import Tooltip from '@material-ui/core/Tooltip'
 import React, { MouseEvent, useState } from 'react'
 import { ContentContextMenu } from './context-menu/content-context-menu'
+import CopyPath from './CopyPath'
 import { DropFileArea } from './DropFileArea'
 
 export interface BreadcrumbItem<T extends GenericContent> {
@@ -27,7 +28,7 @@ export function Breadcrumbs<T extends GenericContent>(props: BreadcrumbProps<T>)
     <>
       <MUIBreadcrumbs maxItems={5} aria-label="breadcrumb">
         {props.items.map((item) => (
-          <DropFileArea key={item.content.Id} parentContent={item.content} style={{ display: 'inline-block' }}>
+          <DropFileArea key={item.content.Id} parentContent={item.content} style={{ display: 'flex' }}>
             <Tooltip title={item.title}>
               <Button
                 data-test={`breadcrumb-item-${item.displayName.replace(/\s+/g, '-').toLowerCase()}`}
@@ -45,6 +46,7 @@ export function Breadcrumbs<T extends GenericContent>(props: BreadcrumbProps<T>)
           </DropFileArea>
         ))}
       </MUIBreadcrumbs>
+      <CopyPath copyText={props.items[props.items.length - 1].title} />
       {contextMenuItem ? (
         <ContentContextMenu
           isOpened={isContextMenuOpened}
