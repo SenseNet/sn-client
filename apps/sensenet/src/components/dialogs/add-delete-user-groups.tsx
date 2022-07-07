@@ -1,4 +1,3 @@
-import { Content, ODataResponse } from '@sensenet/client-core'
 import { AutoComplete } from '@sensenet/controls-react'
 import { GenericContent, Group, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
