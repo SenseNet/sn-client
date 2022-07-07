@@ -362,7 +362,7 @@ const values: Localization = {
     },
   },
   addDeleteUserGroups: {
-    addToGroup: 'Csoporthoz hozzáadás',
+    manageGroups: 'Csoportok kezelése',
     groups: 'Csoportok',
     search: 'Keresés a csoportok között',
     userGroups: (userName: string) => `${userName} csoportjai`,

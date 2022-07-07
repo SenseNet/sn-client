@@ -640,7 +640,7 @@ const values = {
   },
   editor: {},
   addDeleteUserGroups: {
-    addToGroup: 'Add to group',
+    manageGroups: 'Manage groups',
     groups: 'Groups',
     search: 'Search in groups',
     userGroups: (userName: string) => `${userName}'s groups`,

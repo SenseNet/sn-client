@@ -1,7 +1,7 @@
 import { GenericContent, Group, User } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import { Button, createStyles, makeStyles, Menu, MenuItem, TableCell, Tooltip } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
+import SettingsIcon from '@material-ui/icons/Settings'
 import SwapHorizIcon from '@material-ui/icons/SwapHoriz'
 import clsx from 'clsx'
 import React, { FunctionComponent, useState } from 'react'
@@ -122,9 +122,9 @@ export const RolesField: FunctionComponent<RolesFieldProps> = ({ user, roles, di
             openAddToGroupDialog(event)
             setAnchorEl(null)
           }}>
-          {localization.addDeleteUserGroups.addToGroup}
+          {localization.addDeleteUserGroups.manageGroups}
           <div style={{ display: 'flex', paddingLeft: '6px' }}>
-            <AddIcon fontSize="small" />
+            <SettingsIcon fontSize="small" />
           </div>
         </MenuItem>
       </Menu>
