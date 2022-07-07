@@ -6,7 +6,7 @@ import { globals } from '../../globalStyles'
 import { ReferenceList } from './reference-content-list/reference-list'
 import { DialogTitle, useDialog } from '.'
 
-const useStyles = makeStyles((theme: Theme) => {
+export const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     closeButton: {
       position: 'absolute',

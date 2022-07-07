@@ -361,6 +361,13 @@ const values: Localization = {
       heading: 'Címsor',
     },
   },
+  addDeleteUserGroups: {
+    addToGroup: 'Csoporthoz hozzáadás',
+    groups: 'Csoportok',
+    search: 'Keresés a csoportok között',
+    userGroups: (userName: string) => `${userName} csoportjai`,
+    userNoMembership: (userName: string) => `${userName} nem tagja egyetlen csoportnak sem`,
+  },
 }
 
 export default values
