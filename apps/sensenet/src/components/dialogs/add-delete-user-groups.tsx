@@ -41,51 +41,24 @@ export const AddDeleteUserGroups: FunctionComponent<AddDeleteUserGroupsProps> = 
   const handleOnSubmit = async (): Promise<void> => {
     if (selectedGroup) {
       try {
-        const members = await getGroupMembers(selectedGroup.Id)
-        const memberIds = (members.d.Members as Array<User | Group>).map((member) => member.Id)
-        memberIds.push(user.Id)
-
-        await patchGroupMembers(selectedGroup.Id, memberIds)
+        await repository.security.addMembers(selectedGroup.Path, [user.Id])
 
         setGroups([...groups, selectedGroup])
+        setSelectedGroup(null)
       } catch (e) {
         logError(selectedGroup)
       }
-      setSelectedGroup(null)
     }
   }
 
   const handleOnDelete = async (group: GenericContent): Promise<void> => {
     try {
-      const members = await getGroupMembers(group.Id)
-      const memberIds = (members.d.Members as Array<User | Group>)
-        .map((member) => member.Id)
-        .filter((e) => e !== user.Id)
-
-      await patchGroupMembers(group.Id, memberIds)
+      await repository.security.removeMembers(group.Path, [user.Id])
 
       setGroups(groups.filter((e) => e.Id !== group.Id))
     } catch (e) {
       logError(group)
     }
-  }
-
-  const patchGroupMembers = async (groupId: number, memberIds: number[]): Promise<void> => {
-    await repository.patch({
-      idOrPath: groupId,
-      content: { Members: memberIds } as Partial<Content>,
-      forceRefresh: true,
-    })
-  }
-
-  const getGroupMembers = async (groupId: number): Promise<ODataResponse<Group>> => {
-    return await repository.load<Group>({
-      idOrPath: groupId,
-      oDataOptions: {
-        select: ['Members'],
-        expand: ['Members'],
-      },
-    })
   }
 
   const logError = (relatedContent: GenericContent) => {
