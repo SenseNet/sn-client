@@ -1,10 +1,13 @@
+import { ODataParams } from '@sensenet/client-core'
 import { sleepAsync } from '@sensenet/client-utils'
+import { Folder } from '@sensenet/default-content-types'
+import { Picker } from '@sensenet/pickers-react'
 import Avatar from '@material-ui/core/Avatar'
 import Dialog from '@material-ui/core/Dialog'
 import IconButton from '@material-ui/core/IconButton'
 import InputLabel from '@material-ui/core/InputLabel'
 import Typography from '@material-ui/core/Typography'
-import { mount, shallow } from 'enzyme'
+import { mount, ReactWrapper, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { defaultLocalization } from '../src/fieldcontrols'
@@ -79,6 +82,36 @@ describe('Reference grid field control', () => {
 
       expect(wrapper.find(DefaultItemTemplate)).toHaveLength(1)
       expect(wrapper.find(InputLabel).text()).toBe(defaultSettings.DisplayName)
+    })
+
+    it('should create an allowed type list filter', async () => {
+      const fieldSettings = { ...defaultSettings }
+
+      let wrapper: ReactWrapper<any, Readonly<{}>, React.Component<{}, {}, any>>
+      await act(async () => {
+        wrapper = mount(
+          <ReferencePicker repository={repository} fieldSettings={fieldSettings} path="" defaultValue={[]} />,
+        )
+      })
+
+      expect((wrapper!.update().find(Picker).prop('itemsODataOptions') as ODataParams<Folder>).filter).toBe(
+        "isOf('Folder') or isOf('User') or isOf('Group')",
+      )
+    })
+
+    it('should create a default allowed type list filter', async () => {
+      const fieldSettings = { ...defaultSettings, AllowedTypes: undefined }
+
+      let wrapper: ReactWrapper<any, Readonly<{}>, React.Component<{}, {}, any>>
+      await act(async () => {
+        wrapper = mount(
+          <ReferencePicker repository={repository} fieldSettings={fieldSettings} path="" defaultValue={[]} />,
+        )
+      })
+
+      expect((wrapper!.update().find(Picker).prop('itemsODataOptions') as ODataParams<Folder>).filter).toBe(
+        "isOf('GenericContent')",
+      )
     })
   })
   describe('in edit/new view', () => {
