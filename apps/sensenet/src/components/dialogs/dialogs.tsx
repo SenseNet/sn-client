@@ -1,7 +1,7 @@
 import { Dialog } from '@material-ui/core'
 import React, { lazy, Suspense } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
-import { AddDeleteUserGroups, DialogWithProps, useDialog } from '.'
+import { DialogWithProps, useDialog } from '.'
 
 const Approve = lazy(() => import('./approve'))
 const AreYouSure = lazy(() => import('./are-you-sure'))
