@@ -639,6 +639,13 @@ const values = {
     defaultPayload: 'Default payload',
   },
   editor: {},
+  addDeleteUserGroups: {
+    manageGroups: 'Manage groups',
+    groups: 'Groups',
+    search: 'Search in groups',
+    userGroups: (userName: string) => `${userName}'s groups`,
+    userNoMembership: (userName: string) => `${userName} isn't a member of any group`,
+  },
 }
 
 export default values
