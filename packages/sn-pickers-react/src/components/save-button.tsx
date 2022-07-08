@@ -1,6 +1,5 @@
 import { Button, ButtonProps } from '@material-ui/core'
 import React from 'react'
-import { useSelection } from '../hooks'
 
 interface SaveButtonProps extends ButtonProps {
   localization: {
@@ -9,8 +8,6 @@ interface SaveButtonProps extends ButtonProps {
 }
 
 export const SaveButton: React.FC<SaveButtonProps> = ({ localization, ...props }) => {
-  const { selection } = useSelection()
-
   return (
     <Button
       aria-label={localization.label}
@@ -19,7 +16,7 @@ export const SaveButton: React.FC<SaveButtonProps> = ({ localization, ...props }
       autoFocus={true}
       disabled={props.disabled || false}
       {...props}>
-      {localization.label} ({selection.length})
+      {localization.label}
     </Button>
   )
 }

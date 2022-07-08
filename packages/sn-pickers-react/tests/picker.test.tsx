@@ -46,22 +46,6 @@ describe('Picker component', () => {
     expect(submitButton.props().disabled).toBeTruthy()
   })
 
-  it('should activate submit button only when the required number of items are selected', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = mount(<Picker repository={repository(genericContentItems) as any} required={1} />)
-    })
-
-    expect(wrapper.update().find(Button).at(1).props().disabled).toBeTruthy()
-
-    await act(
-      async () =>
-        await wrapper.find(ListItem).at(1).find(Checkbox).prop('onChange')({ target: { checked: true } } as any, true),
-    )
-
-    expect(wrapper.update().find(Button).at(1).props().disabled).toBeFalsy()
-  })
-
   it('texts of "Show selected" link and in submit button should contain the count of selected items', async () => {
     let wrapper: any
     await act(async () => {
@@ -70,18 +54,8 @@ describe('Picker component', () => {
 
     wrapper.update()
 
-    expect(wrapper.find(Button).at(1).text()).toContain('(0)')
-    expect(wrapper.find(Link).text()).toContain('(0)')
-
-    await act(
-      async () =>
-        await wrapper.find(ListItem).at(1).find(Checkbox).prop('onChange')({ target: { checked: true } } as any, true),
-    )
-
-    wrapper.update()
-
-    expect(wrapper.find(Button).at(1).text()).toContain('(1)')
-    expect(wrapper.find(Link).text()).toContain('(1)')
+    expect(wrapper.find(Button).at(1).text()).toContain('Submit')
+    expect(wrapper.find(Link).text()).toContain('Show selected')
   })
 
   it('should handle submit', async () => {
@@ -116,7 +90,7 @@ describe('Picker component', () => {
 
     expect(wrapper.update().find(SelectionList).exists()).toBeFalsy()
 
-    act(() => wrapper.find(Link).prop('onClick')())
+    await act(async () => wrapper.find(Link).prop('onClick')())
     wrapper.update()
 
     expect(wrapper.update().find(SelectionList).exists()).toBeTruthy()
@@ -129,7 +103,7 @@ describe('Picker component', () => {
     })
 
     // navigate to selection list from tree view
-    act(() => wrapper.find(Link).prop('onClick')())
+    await act(async () => wrapper.find(Link).prop('onClick')())
 
     wrapper.update()
 
