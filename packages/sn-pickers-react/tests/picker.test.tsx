@@ -46,6 +46,15 @@ describe('Picker component', () => {
     expect(submitButton.props().disabled).toBeTruthy()
   })
 
+  it('should always activate submit button', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(<Picker repository={repository(genericContentItems) as any} />)
+    })
+
+    expect(wrapper.update().find(Button).at(1).props().disabled).toBeFalsy()
+  })
+
   it('texts of "Show selected" link and in submit button should contain the count of selected items', async () => {
     let wrapper: any
     await act(async () => {
@@ -90,7 +99,7 @@ describe('Picker component', () => {
 
     expect(wrapper.update().find(SelectionList).exists()).toBeFalsy()
 
-    await act(async () => wrapper.find(Link).prop('onClick')())
+    act(() => wrapper.find(Link).prop('onClick')())
     wrapper.update()
 
     expect(wrapper.update().find(SelectionList).exists()).toBeTruthy()
@@ -103,7 +112,7 @@ describe('Picker component', () => {
     })
 
     // navigate to selection list from tree view
-    await act(async () => wrapper.find(Link).prop('onClick')())
+    act(() => wrapper.find(Link).prop('onClick')())
 
     wrapper.update()
 
