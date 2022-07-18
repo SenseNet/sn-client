@@ -1,4 +1,4 @@
-import { Button, Checkbox, IconButton, Link, ListItem, ListItemText, TextField } from '@material-ui/core'
+import { Button, IconButton, Link, ListItem, ListItemText, TextField } from '@material-ui/core'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
