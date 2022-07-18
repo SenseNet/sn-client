@@ -67,7 +67,7 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
       try {
         const getQueryFromTerm = () => {
           const query = new Query((q) =>
-            q.query((q2) => q2.equals('Name', `*${term}*`).or.equals('DisplayName', `*${term}*`)),
+            q.query((q2) => q2.equals('Name', `*${term}*`).or.equals('DisplayName', `*${term}*`).autofilters('OFF')),
           )
 
           if (props.selectionRoots) {

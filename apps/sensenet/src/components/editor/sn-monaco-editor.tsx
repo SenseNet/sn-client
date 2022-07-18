@@ -91,7 +91,7 @@ export const SnMonacoEditor: React.FunctionComponent<SnMonacoEditorProps> = (pro
           </Button>
         </div>
       </div>
-      <Prompt when={props.textValue !== props.savedTextValue} message={localization.textEditor.unsavedChangesWarning} />
+      <Prompt when={props.hasChanges} message={localization.textEditor.unsavedChangesWarning} />
       <MonacoEditor
         theme={theme.palette.type === 'dark' ? 'admin-ui-dark' : 'vs-light'}
         width="100%"

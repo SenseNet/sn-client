@@ -308,7 +308,7 @@ describe('Picker component', () => {
 
       expect(loadCollection.mock.calls[1][0].oDataOptions).toEqual({
         query:
-          '(Name:\'*workspace*\' OR DisplayName:\'*workspace*\') AND (InTree:"/Root/Content" OR InTree:"/Root/IMS/Public")',
+          '(Name:\'*workspace*\' OR DisplayName:\'*workspace*\' .AUTOFILTERS:OFF) AND (InTree:"/Root/Content" OR InTree:"/Root/IMS/Public")',
       })
     })
 

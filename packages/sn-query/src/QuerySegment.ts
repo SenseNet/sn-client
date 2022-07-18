@@ -55,6 +55,17 @@ export class QuerySegment<TReturns> {
   }
 
   /**
+   * Adds a '.AUTOFILTERS' Content Query segment
+   * @param {string} filterType type of autofilter
+   */
+
+  public autofilters(filterType: 'ON' | 'OFF') {
+    this.stringValue = ` .AUTOFILTERS:${filterType}`
+    this.segmentType = 'autofilters'
+    return this.finializeSegment()
+  }
+
+  /**
    * Creates a content query segment from a QuerySegment object
    * @returns {string} a segment string value
    */

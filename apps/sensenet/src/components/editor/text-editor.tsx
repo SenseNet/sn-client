@@ -94,7 +94,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
   }
 
   useEffect(() => {
-    setHasChanges(textValue !== savedTextValue)
+    setHasChanges(textValue.replace(/\r\n/g, '\n') !== savedTextValue.replace(/\r\n/g, '\n'))
   }, [textValue, savedTextValue])
 
   useEffect(() => {

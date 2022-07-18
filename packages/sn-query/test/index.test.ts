@@ -199,5 +199,10 @@ describe('Query', () => {
       const queryInstance = new Query((q) => q.skip(10))
       expect(queryInstance.toString()).toBe(' .SKIP:10')
     })
+
+    it('Autofilters syntax', () => {
+      const queryInstance = new Query((q) => q.autofilters('OFF'))
+      expect(queryInstance.toString()).toBe(' .AUTOFILTERS:OFF')
+    })
   })
 })
