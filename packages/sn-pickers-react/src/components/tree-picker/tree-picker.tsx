@@ -25,17 +25,17 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
   const [parentNode, setParentNode] = useState<any[]>([])
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const setDefaultParent = setTimeout(() => {
       setSelection([props.currentParent as GenericContent])
     }, 50)
 
     return () => {
-      clearTimeout(timer)
+      clearTimeout(setDefaultParent)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const onCheckedChangeHandler = useCallback(
+  const onClickSelectListItem = useCallback(
     (_event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>, index: number, node: T) => {
       if (selectedIndex === index) {
         setSelectedIndex(0)
@@ -99,7 +99,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
           button={true}
           selected={selectedIndex === item.Id}
           data-test={`picker-checkbox-item-${item.Name.replace(/\s+/g, '-').toLowerCase()}`}
-          onClick={(e) => onCheckedChangeHandler(e, item.Id, item as any)}>
+          onClick={(e) => onClickSelectListItem(e, item.Id, item as any)}>
           <ListItemIcon>{props.renderIcon?.(item) || <Folder style={{ color: 'primary' }} />}</ListItemIcon>
           <ListItemText
             id={labelId}
@@ -109,7 +109,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
         </ListItem>
       )
     },
-    [onCheckedChangeHandler, props, selectedIndex],
+    [onClickSelectListItem, props, selectedIndex],
   )
 
   const renderItem = props.renderItem || defaultRenderer

@@ -34,4 +34,13 @@ export const genericContentItems: Array<GenericContent & { isParent?: boolean }>
     Name: 'Content4',
     DisplayName: 'Content 4',
   },
+  {
+    Id: 5,
+    Type: 'Folder',
+    Path: 'path5',
+    Name: 'Content5',
+    DisplayName: 'Content 5',
+    IsFolder: false,
+    isParent: true,
+  },
 ]
