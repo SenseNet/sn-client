@@ -1,7 +1,7 @@
 import { GenericContent } from '@sensenet/default-content-types'
-import { Checkbox, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core'
+import { List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core'
 import { ArrowUpward, Folder } from '@material-ui/icons'
-import React, { ChangeEvent, MouseEvent, useCallback } from 'react'
+import React, { MouseEvent, useCallback, useEffect, useState } from 'react'
 import { useSelection, useTreePicker } from '../../hooks'
 import { GenericContentWithIsParent } from '../../types'
 import { PickerProps } from '../picker'
@@ -11,6 +11,7 @@ import { PickerProps } from '../picker'
  */
 export function TreePicker<T extends GenericContentWithIsParent = GenericContent>(props: PickerProps<T>) {
   const { selection, setSelection } = useSelection()
+
   const { items, navigateTo, isLoading, error } = useTreePicker<T>({
     repository: props.repository,
     currentPath: props.currentPath,
@@ -20,17 +21,48 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
     parentODataOptions: props.parentODataOptions as any,
   })
 
-  const onCheckedChangeHandler = useCallback(
-    (_event: ChangeEvent<HTMLInputElement>, node: T) => {
-      if (!node.isParent) {
-        const newSelection = props.allowMultiple ? selection.filter((item) => item.Id !== node.Id) : []
-        if (newSelection.length === selection.length || (!props.allowMultiple && selection[0].Id !== node.Id)) {
-          newSelection.push(node)
+  const [selectedIndex, setSelectedIndex] = useState(0)
+  const [parentNode, setParentNode] = useState<any[]>([])
+
+  useEffect(() => {
+    const setDefaultParent = setTimeout(() => {
+      setSelection([props.currentParent as GenericContent])
+    }, 50)
+
+    return () => {
+      clearTimeout(setDefaultParent)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const onClickSelectListItem = useCallback(
+    (_event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>, index: number, node: T) => {
+      if (selectedIndex === index) {
+        setSelectedIndex(0)
+
+        if (parentNode.length === 0) {
+          setSelection([props.currentParent as GenericContent])
+          props.setDestination?.(props.currentParent?.DisplayName)
+        } else {
+          setSelection(parentNode)
+          props.setDestination?.(parentNode[0].DisplayName)
         }
-        setSelection(newSelection)
+      } else {
+        setSelectedIndex(index)
+
+        if (!node.isParent) {
+          const newSelection = props.allowMultiple ? selection.filter((item) => item.Id !== node.Id) : []
+
+          if (newSelection.length === selection.length || (!props.allowMultiple && selection[0].Id !== node.Id)) {
+            newSelection.push(node)
+            props.setDestination?.(node.DisplayName)
+          }
+
+          setSelection(newSelection)
+        }
       }
     },
-    [props, selection, setSelection],
+    [selectedIndex, parentNode, setSelection, props, selection],
   )
 
   const onDoubleClickHandler = useCallback(
@@ -38,9 +70,12 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
       if (node.IsFolder || node.isParent) {
         navigateTo(node)
         props.onTreeNavigation?.(node.Path)
+        setSelection([node])
+        setParentNode([node])
+        props.setDestination?.(node.DisplayName)
       }
     },
-    [navigateTo, props],
+    [navigateTo, props, setSelection],
   )
 
   const defaultRenderer = useCallback(
@@ -59,22 +94,12 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
       const labelId = `checkbox-list-label-${item.Id}`
 
       return (
-        <ListItem key={item.Id} button={true}>
-          <ListItemIcon>
-            {!props.selectionBlacklist?.includes(item.Path) && (
-              <Checkbox
-                data-test={`picker-checkbox-item-${item.Name.replace(/\s+/g, '-').toLowerCase()}`}
-                color="primary"
-                edge="start"
-                checked={selection.some((selected) => selected.Id === item.Id)}
-                onChange={(e) => onCheckedChangeHandler(e, item as any)}
-                onDoubleClick={(e) => e.stopPropagation()}
-                tabIndex={-1}
-                disableRipple
-                inputProps={{ 'aria-labelledby': labelId }}
-              />
-            )}
-          </ListItemIcon>
+        <ListItem
+          key={item.Id}
+          button={true}
+          selected={selectedIndex === item.Id}
+          data-test={`picker-checkbox-item-${item.Name.replace(/\s+/g, '-').toLowerCase()}`}
+          onClick={(e) => onClickSelectListItem(e, item.Id, item as any)}>
           <ListItemIcon>{props.renderIcon?.(item) || <Folder style={{ color: 'primary' }} />}</ListItemIcon>
           <ListItemText
             id={labelId}
@@ -84,7 +109,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
         </ListItem>
       )
     },
-    [selection, onCheckedChangeHandler, props],
+    [onClickSelectListItem, props, selectedIndex],
   )
 
   const renderItem = props.renderItem || defaultRenderer
@@ -105,7 +130,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
 
   return (
     <List>
-      {items?.map((item) => (
+      {items?.map((item: { Id: React.Key | null | undefined }) => (
         <div onDoubleClick={(e) => onDoubleClickHandler(e, item as any)} key={item.Id}>
           {renderItem(item as any)}
         </div>
