@@ -163,4 +163,8 @@ export interface PickerProps<T> {
   required?: number
 
   classes?: PickerClassKey
+
+  setDestination?: React.Dispatch<React.SetStateAction<string | undefined>>
+
+  currentParent?: GenericContent
 }
