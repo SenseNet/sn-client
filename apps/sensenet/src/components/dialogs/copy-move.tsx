@@ -44,6 +44,8 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
     setLocalization(localizations[props.operation])
   }, [localizations, props.operation])
 
+  const [destination, setDestination] = useState(props.currentParent.DisplayName)
+
   if (!props.content.length) {
     return null
   }
@@ -140,6 +142,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
             : props.content.length === 1
             ? localization.title.replace('{0}', props.content[0].DisplayName || props.content[0].Name)
             : localization.titleMultiple.replace('{0}', props.content.length.toString())}
+          {<span style={{ marginLeft: '0.25rem' }}>to {destination}</span>}
         </div>
       </DialogTitle>
       <Picker
@@ -157,6 +160,8 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
         isExecInProgress={isExecInProgress}
         required={1}
         classes={{ cancelButton: globalClasses.cancelButton }}
+        setDestination={setDestination}
+        currentParent={props.currentParent}
       />
     </>
   )
