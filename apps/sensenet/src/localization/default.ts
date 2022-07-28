@@ -357,6 +357,13 @@ const values = {
     uploadFailed: 'Upload failed',
     contentUploaded: `Content '{0}' has been uploaded succesfully`,
     contentUploadedMultiple: `Finished uploading {count} content.`,
+    uploadConflictDetails: (fileName: string) =>
+      `The file named "<span style='color: #26a69a'><b>${fileName}</b></span>" already exsits. Do you want to replace it with this item?`,
+    applyToAll: 'Apply to all',
+    keepBoth: 'Keep both',
+    replace: 'Replace',
+    skip: 'Skip',
+    skipped: 'Skipped',
   },
   search: {
     title: 'Search',

@@ -15,6 +15,7 @@ import clsx from 'clsx'
 import filesize from 'filesize'
 import React from 'react'
 import { v1 } from 'uuid'
+import { useLocalization } from '../../../hooks'
 import { FileWithFullPath } from './helper'
 import { ProgressBar } from './progress-bar'
 
@@ -22,6 +23,7 @@ type Props = {
   files: FileWithFullPath[]
   removeItem: (file: File) => void
   isUploadInProgress: boolean
+  skippedFiles?: FileWithFullPath[]
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -53,6 +55,11 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const FileList: React.FC<Props> = (props) => {
   const classes = useStyles()
+  const localization = useLocalization()
+
+  const isFileSkipped = (file: FileWithFullPath) => {
+    return (props.skippedFiles ?? []).some((f) => f === file)
+  }
 
   return (
     <List className={classes.listRoot}>
@@ -66,7 +73,11 @@ export const FileList: React.FC<Props> = (props) => {
             className={classes.listItemText}
             secondary={filesize(file.size)}
           />
-          {file.progress ? <ProgressBar progress={file.progress} /> : null}
+          {file.progress ? (
+            <ProgressBar progress={file.progress} />
+          ) : isFileSkipped(file) ? (
+            localization.uploadProgress.skipped
+          ) : null}
           <ListItemSecondaryAction>
             {file.progress && file.progress.error ? (
               <Tooltip title={file.progress.error.message}>
