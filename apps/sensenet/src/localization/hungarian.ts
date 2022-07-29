@@ -363,7 +363,7 @@ const values: Localization = {
   },
   uploadProgress: {
     uploadConflictDetails: (fileName: string) =>
-      `Ezzel a névvel (<span style='color: #26a69a'><b>${fileName}</b></span>) már létezik fájl. Szeretné lecseréni?`,
+      `Ezzel a névvel (<span style='color: #26a69a'><b>${fileName}</b></span>) már létezik fájl. Szeretné lecserélni?`,
     applyToAll: 'Minden fájl esetén',
     keepBoth: 'Mindkettő megtartása',
     replace: 'Csere',
