@@ -3,7 +3,7 @@ import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { SearchPicker, SelectionList, TreePicker } from '../src'
-import { Picker } from '../src/components/picker'
+import { Picker, PickerModes } from '../src/components/picker'
 import { genericContentItems } from './mocks/items'
 
 describe('Picker component', () => {
@@ -54,22 +54,6 @@ describe('Picker component', () => {
     expect(wrapper.update().find(Button).at(1).props().disabled).toBeFalsy()
   })
 
-  it('should selected line when click on ListItem', async () => {
-    let wrapper: any
-    await act(async () => {
-      wrapper = mount(
-        <Picker
-          repository={repository(genericContentItems) as any}
-          currentParent={{ Id: 1, Name: 'Test', Path: 'Content/Workspace', Type: 'Folder', DisplayName: 'test' }}
-        />,
-      )
-    })
-
-    expect(wrapper.update().find(ListItem).exists()).toBeTruthy()
-    await act(() => wrapper.find(ListItem).at(0).prop('onClick')())
-    expect(wrapper.update().find(ListItem).at(0).prop('selected')).toBeTruthy()
-  })
-
   it('should not selected line when click the selected ListItem', async () => {
     let wrapper: any
     await act(async () => {
@@ -94,75 +78,6 @@ describe('Picker component', () => {
     })
     await act(async () => wrapper.update().find(ListItem).at(0).simulate('click'))
     expect(wrapper.prop('currentParent').DisplayName).toBe('test')
-  })
-
-  it('should set destination name when select one listItem', async () => {
-    let wrapper: any
-    const setDestination = jest.fn()
-    await act(async () => {
-      wrapper = mount(
-        <Picker
-          repository={repository(genericContentItems) as any}
-          currentParent={{ Id: 1, Name: 'Test', Path: 'Content/Workspace', Type: 'Folder', DisplayName: 'test' }}
-          setDestination={setDestination}
-        />,
-      )
-    })
-
-    await act(async () => wrapper.update().find(ListItem).at(0).simulate('click'))
-    expect(setDestination).toHaveBeenCalledTimes(1)
-  })
-
-  it('should set destination name when unselect one listItem', async () => {
-    let wrapper: any
-    const setDestination = jest.fn()
-    await act(async () => {
-      wrapper = mount(<Picker repository={repository(genericContentItems) as any} setDestination={setDestination} />)
-    })
-
-    await act(async () => wrapper.update().find(ListItem).at(0).simulate('click'))
-    await act(async () => wrapper.update().find(ListItem).at(0).simulate('click'))
-    expect(setDestination).toHaveBeenCalledTimes(2)
-  })
-
-  it('should set default selection after navigate in to folder and re-select same listItems', async () => {
-    let wrapper: any
-    const setDestination = jest.fn()
-    await act(async () => {
-      wrapper = mount(
-        <Picker
-          repository={repository(genericContentItems) as any}
-          currentParent={{ Id: 1, Name: 'Test', Path: 'Content/Workspace', Type: 'Folder', DisplayName: 'test' }}
-          setDestination={setDestination}
-        />,
-      )
-    })
-
-    await act(async () => wrapper.update().find(ListItem).at(0).simulate('dblclick'))
-    await act(async () => wrapper.update().find(ListItem).at(1).simulate('click'))
-    await act(async () => wrapper.update().find(ListItem).at(1).simulate('click'))
-
-    expect(setDestination).toHaveBeenCalledTimes(3)
-  })
-
-  it('should set default selection after navigate in to not folder and re-select same listItems', async () => {
-    let wrapper: any
-    const setDestination = jest.fn()
-    await act(async () => {
-      wrapper = mount(
-        <Picker
-          repository={repository(genericContentItems) as any}
-          currentParent={{ Id: 1, Name: 'Test', Path: 'Content/Workspace', Type: 'Folder', DisplayName: 'test' }}
-          setDestination={setDestination}
-        />,
-      )
-    })
-
-    await act(async () => wrapper.update().find(ListItem).at(4).simulate('dblclick'))
-    await act(async () => wrapper.update().find(ListItem).at(4).simulate('click'))
-    await act(async () => wrapper.update().find(ListItem).at(4).simulate('click'))
-
-    expect(setDestination).toHaveBeenCalledTimes(2)
   })
 
   it('texts of "Show selected" link and in submit button should render', async () => {
@@ -235,6 +150,101 @@ describe('Picker component', () => {
     })
 
     expect(wrapper.update().find(TreePicker).exists()).toBeTruthy()
+  })
+
+  it('should selected line when click on ListItem', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(
+        <Picker
+          treePickerMode={PickerModes.COPY_MOVE_TREE}
+          repository={repository(genericContentItems) as any}
+          currentParent={{ Id: 1, Name: 'Test', Path: 'Content/Workspace', Type: 'Folder', DisplayName: 'test' }}
+        />,
+      )
+    })
+
+    expect(wrapper.update().find(ListItem).exists()).toBeTruthy()
+    await act(() => wrapper.find(ListItem).at(0).prop('onClick')())
+    expect(wrapper.update().find(ListItem).at(0).prop('selected')).toBeTruthy()
+  })
+
+  it('should set destination name when select one listItem', async () => {
+    let wrapper: any
+    const setDestination = jest.fn()
+    await act(async () => {
+      wrapper = mount(
+        <Picker
+          repository={repository(genericContentItems) as any}
+          currentParent={{ Id: 1, Name: 'Test', Path: 'Content/Workspace', Type: 'Folder', DisplayName: 'test' }}
+          setDestination={setDestination}
+          treePickerMode={PickerModes.COPY_MOVE_TREE}
+        />,
+      )
+    })
+
+    await act(async () => wrapper.update().find(ListItem).at(0).simulate('click'))
+    expect(setDestination).toHaveBeenCalledTimes(1)
+  })
+
+  it('should set destination name when unselect one listItem', async () => {
+    let wrapper: any
+    const setDestination = jest.fn()
+    await act(async () => {
+      wrapper = mount(
+        <Picker
+          treePickerMode={PickerModes.COPY_MOVE_TREE}
+          repository={repository(genericContentItems) as any}
+          setDestination={setDestination}
+        />,
+      )
+    })
+
+    await act(async () => wrapper.update().find(ListItem).at(0).simulate('click'))
+    await act(async () => wrapper.update().find(ListItem).at(0).simulate('click'))
+    expect(setDestination).toHaveBeenCalledTimes(2)
+  })
+
+  it('should set default selection after navigate in to folder and re-select same listItems', async () => {
+    let wrapper: any
+    const setDestination = jest.fn()
+    await act(async () => {
+      wrapper = mount(
+        <Picker
+          repository={repository(genericContentItems) as any}
+          currentParent={{ Id: 1, Name: 'Test', Path: 'Content/Workspace', Type: 'Folder', DisplayName: 'test' }}
+          setDestination={setDestination}
+          treePickerMode={PickerModes.COPY_MOVE_TREE}
+        />,
+      )
+    })
+
+    await act(async () => wrapper.update().find(ListItem).at(0).simulate('dblclick'))
+    await act(async () => wrapper.update().find(ListItem).at(1).simulate('click'))
+    await act(async () => wrapper.update().find(ListItem).at(1).simulate('click'))
+
+    expect(setDestination).toHaveBeenCalledTimes(3)
+  })
+
+  it('should set default selection after navigate in to not folder and re-select same listItems', async () => {
+    let wrapper: any
+    const setDestination = jest.fn()
+    await act(async () => {
+      wrapper = mount(
+        <Picker
+          repository={repository(genericContentItems) as any}
+          currentParent={{ Id: 1, Name: 'Test', Path: 'Content/Workspace', Type: 'Folder', DisplayName: 'test' }}
+          setDestination={setDestination}
+          treePickerMode={PickerModes.COPY_MOVE_TREE}
+        />,
+      )
+    })
+
+    await act(async () => wrapper.update().find(ListItem).at(4).simulate('dblclick'))
+    await act(async () => wrapper.update().find(ListItem).at(4).simulate('click'))
+    await act(async () => wrapper.update().find(ListItem).at(4).simulate('click'))
+
+    expect(setDestination).toHaveBeenCalledTimes(2)
   })
 
   it('should enter search mode after input getting focus', async () => {
