@@ -185,6 +185,7 @@ describe('Picker component', () => {
 
     await act(async () => wrapper.update().find(ListItem).at(0).simulate('click'))
     expect(setDestination).toHaveBeenCalledTimes(1)
+    expect(setDestination).toBeCalledWith(genericContentItems[0].DisplayName)
   })
 
   it('copy-move tree should render an error message when error', async () => {
@@ -207,6 +208,22 @@ describe('Picker component', () => {
     })
     expect(wrapper.find(ListItem).exists()).toBeFalsy()
     expect(errorRenderer).toBeCalled()
+  })
+
+  it('copy-move tree should call renderLoading when loading is true', async () => {
+    const loadingRenderer = jest.fn(() => null)
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(
+        <TreePicker
+          renderLoading={loadingRenderer as any}
+          repository={repository() as any}
+          treePickerMode={PickerModes.COPY_MOVE_TREE}
+        />,
+      )
+    })
+    expect(wrapper.find(ListItem).exists()).toBeFalsy()
+    expect(loadingRenderer).toBeCalled()
   })
 
   it('should set destination name when unselect one listItem', async () => {
