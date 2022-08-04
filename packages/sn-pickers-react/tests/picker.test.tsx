@@ -187,6 +187,28 @@ describe('Picker component', () => {
     expect(setDestination).toHaveBeenCalledTimes(1)
   })
 
+  it('copy-move tree should render an error message when error', async () => {
+    const errorRenderer = jest.fn(() => null)
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(
+        <Picker
+          renderError={errorRenderer as any}
+          repository={
+            {
+              loadCollection: () => {
+                throw new Error('error')
+              },
+            } as any
+          }
+          treePickerMode={PickerModes.COPY_MOVE_TREE}
+        />,
+      )
+    })
+    expect(wrapper.find(ListItem).exists()).toBeFalsy()
+    expect(errorRenderer).toBeCalled()
+  })
+
   it('should set destination name when unselect one listItem', async () => {
     let wrapper: any
     const setDestination = jest.fn()
