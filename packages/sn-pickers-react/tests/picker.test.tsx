@@ -1,5 +1,5 @@
-import { Button, IconButton, Link, ListItem, ListItemText, TextField } from '@material-ui/core'
-import { mount } from 'enzyme'
+import { Button, Checkbox, IconButton, Link, ListItem, ListItemText, TextField } from '@material-ui/core'
+import { mount, ReactWrapper } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { SearchPicker, SelectionList, TreePicker } from '../src'
@@ -245,6 +245,44 @@ describe('Picker component', () => {
     await act(async () => wrapper.update().find(ListItem).at(4).simulate('click'))
 
     expect(setDestination).toHaveBeenCalledTimes(2)
+  })
+
+  it('texts of "Show selected" link and in submit button should contain the count of selected items', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(<Picker repository={repository(genericContentItems) as any} required={1} />)
+    })
+
+    expect(wrapper.update().find(Link).text()).toContain('(0)')
+
+    await act(
+      async () =>
+        await wrapper.find(ListItem).at(1).find(Checkbox).prop('onChange')({ target: { checked: true } } as any, true),
+    )
+
+    expect(wrapper.update().find(Link).text()).toContain('(1)')
+  })
+
+  it('should allow multiple selection', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(<Picker repository={repository(genericContentItems) as any} allowMultiple={true} />)
+    })
+
+    expect(wrapper.update().find(Link).text()).toContain('(0)')
+
+    await act(async () => {
+      await wrapper.update().find(ListItem).at(1).find(Checkbox).prop('onChange')(
+        { target: { checked: true } } as any,
+        true,
+      )
+      await wrapper.update().find(ListItem).at(4).find(Checkbox).prop('onChange')(
+        { target: { checked: true } } as any,
+        true,
+      )
+    })
+
+    expect(wrapper.update().find(Link).text()).toContain('(2)')
   })
 
   it('should enter search mode after input getting focus', async () => {
