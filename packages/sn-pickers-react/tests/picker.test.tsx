@@ -302,6 +302,19 @@ describe('Picker component', () => {
     expect(wrapper.update().find(Link).text()).toContain('(1)')
   })
 
+  it('After doubleclick a checkbox, list item should not be selected', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(<Picker repository={repository(genericContentItems) as any} required={1} />)
+    })
+
+    expect(wrapper.update().find(Link).text()).toContain('(0)')
+
+    await act(async () => await wrapper.find(ListItem).at(1).find(Checkbox).simulate('dblclick'))
+
+    expect(wrapper.update().find(Link).text()).toContain('(0)')
+  })
+
   it('should allow multiple selection', async () => {
     let wrapper: any
     await act(async () => {
