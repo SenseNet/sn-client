@@ -74,7 +74,7 @@ export function UploadDialog(props: UploadDialogProps) {
           return undefined
         }
         return ffiles.map((f) => {
-          if (f.lastModified === progressInfo.file.lastModified) {
+          if (f === progressInfo.file) {
             const updated = Object.assign(f, { progress: progressInfo })
             return updated
           }
