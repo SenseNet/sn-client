@@ -1,4 +1,4 @@
-import { UploadProgressInfo } from '@sensenet/client-core'
+import { UploadProgressInfo, UploadResponse } from '@sensenet/client-core'
 import { ObservableValue } from '@sensenet/client-utils'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import {
@@ -21,6 +21,7 @@ import { DropFileArea } from '../../DropFileArea'
 import { useDialog } from '../dialog-provider'
 import { FileList } from './file-list'
 import { FileWithFullPath, getFilesFromDragEvent } from './helper'
+import UploadConflictDialog, { ResolveConflictType } from './upload-conflict-dialog'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -55,6 +56,15 @@ export type UploadDialogProps = {
   customUploadFunction?: (files: FileWithFullPath[] | undefined, progressObservable: any) => any
 }
 
+export interface UploadingState {
+  remainingFiles?: FileWithFullPath[]
+  skippedFiles?: FileWithFullPath[]
+  applyActionToAllFile?: boolean
+  resolveConflict?: ResolveConflictType
+  currentFile?: FileWithFullPath
+  showConflictDialog: boolean
+}
+
 export function UploadDialog(props: UploadDialogProps) {
   const classes = useStyles()
   const logger = useLogger('upload')
@@ -64,6 +74,10 @@ export function UploadDialog(props: UploadDialogProps) {
   const inputFile = useRef<HTMLInputElement>(null)
   const [files, setFiles] = useState<FileWithFullPath[] | undefined>(props.files)
   const [isUploadInProgress, setIsUploadInProgress] = useState(false)
+  const [uploadingState, setUploadingState] = useState<UploadingState>({
+    applyActionToAllFile: false,
+    showConflictDialog: false,
+  })
   const progressObservable = useRef(new ObservableValue<UploadProgressInfo>())
   const abortController = useRef(new AbortController())
 
@@ -110,6 +124,10 @@ export function UploadDialog(props: UploadDialogProps) {
       return
     }
     setFiles(files.filter((f) => f !== file))
+    setUploadingState({
+      ...uploadingState,
+      remainingFiles: uploadingState.remainingFiles?.filter((f) => f !== file),
+    })
 
     // it can access to select the same file again after removal. Check: https://github.com/sensenet/sn-client/issues/491
     if (inputFile.current) {
@@ -118,11 +136,8 @@ export function UploadDialog(props: UploadDialogProps) {
   }
 
   const addFiles = (fileList: FileWithFullPath[]) => {
-    const noDuplicateFiles =
-      files && files.length
-        ? [...files, ...fileList.filter((file) => !files.some((f2) => f2.size === file.size && f2.name === file.name))]
-        : fileList
-    setFiles(noDuplicateFiles)
+    const concatFileList = files && files.length ? [...files, ...fileList] : fileList
+    setFiles(concatFileList)
   }
 
   const isUploadCompleted = () => {
@@ -136,40 +151,121 @@ export function UploadDialog(props: UploadDialogProps) {
   }
 
   const onDrop = async (event: React.DragEvent) => {
-    if (isUploadInProgress || isUploadCompleted()) {
+    if (isUploadInProgress) {
       return
     }
     const result = await getFilesFromDragEvent(event)
     addFiles(result)
   }
 
-  const upload = async () => {
-    if (!files) {
-      return
+  useEffect(() => {
+    if (!uploadingState.showConflictDialog && uploadingState.currentFile) {
+      if (!isResolveConflict('SKIP')) uploadFileAndShift()
+      else onSkipFile(uploadingState.currentFile)
     }
-    setIsUploadInProgress(true)
+  }, [uploadingState.showConflictDialog])
 
-    try {
-      props.customUploadFunction
-        ? props.customUploadFunction(files, progressObservable)
-        : await repository.upload.fromFileList({
-            parentPath: props.uploadPath,
-            fileList: files as any,
-            createFolders: true,
-            binaryPropertyName: 'Binary',
-            overwrite: false,
-            progressObservable: progressObservable.current,
-            requestInit: { signal: abortController.current.signal },
+  useEffect(() => {
+    if (uploadingState.currentFile) {
+      setIsUploadInProgress(true)
+
+      if (uploadingState.applyActionToAllFile) {
+        if (!isResolveConflict('SKIP')) uploadFileAndShift()
+        else onSkipFile(uploadingState.currentFile!)
+      } else {
+        repository
+          .load({
+            idOrPath: `${props.uploadPath}/${uploadingState.currentFile.name}`,
+            oDataOptions: {
+              select: ['Id'],
+            },
           })
+          .then(() => {
+            setIsUploadInProgress(false)
+            setUploadingState({
+              ...uploadingState,
+              showConflictDialog: true,
+            })
+          })
+          .catch(() => {
+            uploadFileAndShift()
+          })
+      }
+    } else {
+      setIsUploadInProgress(false)
+    }
+  }, [uploadingState.currentFile])
+
+  const uploadFile = async (file: FileWithFullPath, overwrite = false): Promise<UploadResponse | undefined> => {
+    try {
+      return await repository.upload.file({
+        parentPath: props.uploadPath,
+        file,
+        binaryPropertyName: 'Binary',
+        overwrite,
+        progressObservable: progressObservable.current,
+        requestInit: { signal: abortController.current.signal },
+      })
     } catch (error) {
       logger.error({ message: 'Upload failed', data: { error } })
-    } finally {
-      setIsUploadInProgress(false)
+    }
+  }
+
+  const isResolveConflict = (type: ResolveConflictType) => uploadingState.resolveConflict === type
+
+  const onSkipFile = (skippedFile: FileWithFullPath) => {
+    setUploadingState({
+      ...uploadingState,
+      currentFile: uploadingState.remainingFiles!.shift(),
+      skippedFiles: [...(uploadingState.skippedFiles ?? []), skippedFile],
+    })
+  }
+
+  const uploadFileAndShift = () => {
+    uploadFile(uploadingState.currentFile!, isResolveConflict('REPLACE')).then(() => {
+      setUploadingState({
+        ...uploadingState,
+        currentFile: uploadingState.remainingFiles!.shift(),
+      })
+    })
+  }
+
+  const upload = async () => {
+    if (!files) return
+
+    if (props.customUploadFunction) props.customUploadFunction(files, progressObservable)
+    else {
+      const remainingFiles = files.filter((f) => !f.progress?.error && !f.progress?.completed)
+      setUploadingState({
+        ...uploadingState,
+        resolveConflict: undefined,
+        applyActionToAllFile: false,
+        remainingFiles,
+        currentFile: remainingFiles.shift(),
+      })
     }
   }
 
   return (
     <>
+      {uploadingState.showConflictDialog && (
+        <UploadConflictDialog
+          fileName={uploadingState.currentFile!.name}
+          onSelectAction={(resolveConflict: ResolveConflictType) => {
+            setUploadingState({
+              ...uploadingState,
+              resolveConflict,
+              showConflictDialog: false,
+            })
+          }}
+          onApplyAllChange={(applyActionToAllFile: boolean) => {
+            setUploadingState({
+              ...uploadingState,
+              applyActionToAllFile,
+            })
+          }}
+        />
+      )}
       <DialogTitle disableTypography>
         <Typography variant="h6" align="center">
           {localization.title}
@@ -198,7 +294,12 @@ export function UploadDialog(props: UploadDialogProps) {
             alignItems={isFileAdded ? 'stretch' : 'center'}
             className={classes.grid}>
             {isFileAdded ? (
-              <FileList files={files!} removeItem={removeItem} isUploadInProgress={isUploadInProgress} />
+              <FileList
+                files={files!}
+                removeItem={removeItem}
+                isUploadInProgress={isUploadInProgress}
+                skippedFiles={uploadingState.skippedFiles}
+              />
             ) : (
               <>
                 <NoteAddSharpIcon className={classes.icon} />
