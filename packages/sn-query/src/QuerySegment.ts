@@ -28,7 +28,7 @@ export class QuerySegment<TReturns> {
    * @param {boolean} reverse Sort in reverse order, false by default
    */
   public sort<K extends keyof TReturns>(field: K, reverse = false) {
-    this.stringValue = ` .${reverse ? 'REVERSESORT' : 'SORT'}:${field}`
+    this.stringValue = ` .${reverse ? 'REVERSESORT' : 'SORT'}:${field as string}`
     this.segmentType = 'sort'
     return this.finializeSegment()
   }

@@ -47,4 +47,5 @@ const Trash = memo(() => {
   )
 })
 
+Trash.displayName = 'Trash'
 export default Trash

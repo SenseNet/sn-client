@@ -5,7 +5,7 @@ export interface WebKitFileSystem {
 
 export type WebKitEntriesCallback = ((entries: WebKitEntry[]) => void) | { handleEvent(entries: WebKitEntry[]): void }
 
-export type WebKitErrorCallback = ((err: DOMError) => void) | { handleEvent(err: DOMError): void }
+export type WebKitErrorCallback = ((err: DOMException) => void) | { handleEvent(err: DOMException): void }
 
 export type WebKitFileCallback = ((file: File) => void) | { handleEvent(file: File): void }
 

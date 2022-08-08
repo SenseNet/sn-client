@@ -47,20 +47,22 @@ export const BubbleMenu: FC<BubbleMenuProps> = (props) => {
           const { selection } = state
           const { ranges } = selection
 
-          const from = Math.min(...ranges.map((range) => range.$from.pos))
-          const to = Math.max(...ranges.map((range) => range.$to.pos))
+          const from = Math.min(...ranges.map((range: { $from: { pos: any } }) => range.$from.pos))
+          const to = Math.max(...ranges.map((range: { $to: { pos: any } }) => range.$to.pos))
 
           instance.setProps({
             getReferenceClientRect: () => posToDOMRect(props.editor.view, from, to),
           })
         },
       }}
-      editor={props.editor}>
+      editor={props.editor}
+    >
       {props.editor.isActive('image') && (
         <IconButton
           aria-label={localization.bubbleMenu.removeImage}
           size="small"
-          onClick={() => props.editor.chain().focus().deleteSelection().run()}>
+          onClick={() => props.editor.chain().focus().deleteSelection().run()}
+        >
           <DeleteIcon fontSize="inherit" />
         </IconButton>
       )}
@@ -71,13 +73,15 @@ export const BubbleMenu: FC<BubbleMenuProps> = (props) => {
             href={props.editor.getAttributes('link').href}
             target="_blank"
             rel="noreferrer"
-            style={{ marginRight: '3px' }}>
+            style={{ marginRight: '3px' }}
+          >
             {props.editor.getAttributes('link').href}
           </Link>
           <IconButton
             aria-label={localization.bubbleMenu.removeLink}
             size="small"
-            onClick={() => props.editor.chain().focus().unsetLink().run()}>
+            onClick={() => props.editor.chain().focus().unsetLink().run()}
+          >
             <CloseIcon fontSize="inherit" />
           </IconButton>
         </>

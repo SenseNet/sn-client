@@ -40,7 +40,7 @@ export const createTreeNode = async ({
         method: 'GET',
       })
 
-      const data = await res.json()
+      const data: any = await res.json()
       const rootContent = data.d
 
       const rootNode = {
@@ -90,7 +90,7 @@ export const createTreeNode = async ({
         method: 'GET',
       })
 
-      const data = await res.json()
+      const data: any = await res.json()
 
       data.d.results.length > 0 &&
         (await Promise.all(
