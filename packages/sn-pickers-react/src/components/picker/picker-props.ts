@@ -1,7 +1,7 @@
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ReactElement } from 'react'
-import { PickerClassKey } from './picker'
+import { PickerClassKey, PickerModes } from './picker'
 
 export interface PickerLocalization {
   searchPlaceholder?: string
@@ -167,4 +167,6 @@ export interface PickerProps<T> {
   setDestination?: React.Dispatch<React.SetStateAction<string | undefined>>
 
   currentParent?: GenericContent
+
+  treePickerMode?: PickerModes.TREE | PickerModes.COPY_MOVE_TREE
 }
