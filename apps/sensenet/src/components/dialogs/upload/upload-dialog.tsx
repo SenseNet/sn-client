@@ -169,28 +169,28 @@ export function UploadDialog(props: UploadDialogProps) {
     if (uploadingState.currentFile) {
       setIsUploadInProgress(true)
 
-      if (uploadingState.applyActionToAllFile) {
-        if (!isResolveConflict('SKIP')) uploadFileAndShift()
-        else onSkipFile(uploadingState.currentFile!)
-      } else {
-        repository
-          .load({
-            idOrPath: `${props.uploadPath}/${uploadingState.currentFile.name}`,
-            oDataOptions: {
-              select: ['Id'],
-            },
-          })
-          .then(() => {
+      repository
+        .load({
+          idOrPath: `${props.uploadPath}/${uploadingState.currentFile.name}`,
+          oDataOptions: {
+            select: ['Id'],
+          },
+        })
+        .then(() => {
+          if (uploadingState.applyActionToAllFile) {
+            if (!isResolveConflict('SKIP')) uploadFileAndShift()
+            else onSkipFile(uploadingState.currentFile!)
+          } else {
             setIsUploadInProgress(false)
             setUploadingState({
               ...uploadingState,
               showConflictDialog: true,
             })
-          })
-          .catch(() => {
-            uploadFileAndShift()
-          })
-      }
+          }
+        })
+        .catch(() => {
+          uploadFileAndShift()
+        })
     } else {
       setIsUploadInProgress(false)
     }
