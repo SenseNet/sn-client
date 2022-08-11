@@ -1,7 +1,10 @@
+// eslint-disable-next-line import/no-unresolved
+import { CreateStoreOptions } from '@sensenet/redux/dist/types/Store'
 import React from 'react'
 import { render } from 'react-dom'
 import { MemoryRouter } from 'react-router-dom'
 import { withStore } from '../../__tests__/TestHelper'
+import { rootStateType } from '../../store/rootReducer'
 import BreadCrumb from '../BreadCrumb'
 
 it('renders without crashing', () => {
@@ -29,7 +32,7 @@ it('renders without crashing', () => {
           typeFilter={['DocumentLibrary', 'Folder']}
         />
       </MemoryRouter>,
-      options,
+      options as CreateStoreOptions<rootStateType>,
     ),
     div,
   )

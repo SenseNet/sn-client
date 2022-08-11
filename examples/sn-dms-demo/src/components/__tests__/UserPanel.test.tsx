@@ -1,6 +1,9 @@
+// eslint-disable-next-line import/no-unresolved
+import { CreateStoreOptions } from '@sensenet/redux/dist/types/Store'
 import React from 'react'
 import { render } from 'react-dom'
 import { withStore } from '../../__tests__/TestHelper'
+import { rootStateType } from '../../store/rootReducer'
 import UserPanel from '../UserPanel'
 
 it('renders without crashing', () => {
@@ -24,5 +27,5 @@ it('renders without crashing', () => {
     },
   }
 
-  render(withStore(<UserPanel />, options), div)
+  render(withStore(<UserPanel />, options as CreateStoreOptions<rootStateType>), div)
 })
