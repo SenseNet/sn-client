@@ -40,7 +40,7 @@ export async function getAllFileEntries(dataTransferItemList: DataTransferItemLi
   const queue: WebKitEntry[] = []
   // Unfortunately dataTransferItemList is not iterable i.e. no forEach
   for (let i = 0; i < dataTransferItemList.length; i++) {
-    queue.push(dataTransferItemList[i].webkitGetAsEntry())
+    queue.push(dataTransferItemList[i].webkitGetAsEntry() as WebKitEntry)
   }
   while (queue.length > 0) {
     const entry = queue.shift()
