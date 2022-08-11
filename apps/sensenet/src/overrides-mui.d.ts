@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
+/* eslint-disable-next-line import/no-unresolved */
 import { MuiPickersOverrides } from '@material-ui/pickers/typings/overrides'
 
 type overridesNameToClassKey = {

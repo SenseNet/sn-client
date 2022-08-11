@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { Query } from '@sensenet/default-content-types'
 import { Actions, createAction, isFromAction } from '@sensenet/redux'

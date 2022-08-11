@@ -16,17 +16,13 @@ export function ChangePasswordDialog() {
   const globalClasses = useGlobalStyles()
   const repo = useRepository()
   const currentUser = useCurrentUser()
-  const [passwordFields, setPasswordFields] = useState<
-    {
-      [K in PasswordFieldKeys]?: string
-    }
-  >({})
+  const [passwordFields, setPasswordFields] = useState<{
+    [K in PasswordFieldKeys]?: string
+  }>({})
   const [match, setMatch] = useState<boolean>(true)
-  const [dirtyFlags, setDirtyFlags] = useState<
-    {
-      [K in PasswordFieldKeys]: boolean
-    }
-  >({
+  const [dirtyFlags, setDirtyFlags] = useState<{
+    [K in PasswordFieldKeys]: boolean
+  }>({
     oldPassword: false,
     newPassword: false,
     confirmPassword: false,
@@ -135,7 +131,8 @@ export function ChangePasswordDialog() {
             disabled={
               !passwordFields.oldPassword || !passwordFields.newPassword || !passwordFields.confirmPassword || !match
             }
-            autoFocus={true}>
+            autoFocus={true}
+          >
             {localization.update}
           </Button>
         </DialogActions>

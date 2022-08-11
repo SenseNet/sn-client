@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import { GenericContent } from '@sensenet/default-content-types'
 import { Actions } from '@sensenet/redux'
 import { PromiseReturns } from '@sensenet/redux/dist/types/Actions'
