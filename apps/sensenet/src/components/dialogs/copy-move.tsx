@@ -1,7 +1,7 @@
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { GenericContentWithIsParent, Picker } from '@sensenet/pickers-react'
+import { GenericContentWithIsParent, Picker, PickerModes } from '@sensenet/pickers-react'
 import { LinearProgress } from '@material-ui/core'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -162,6 +162,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
         classes={{ cancelButton: globalClasses.cancelButton }}
         setDestination={setDestination}
         currentParent={props.currentParent}
+        treePickerMode={PickerModes.COPY_MOVE_TREE}
       />
     </>
   )

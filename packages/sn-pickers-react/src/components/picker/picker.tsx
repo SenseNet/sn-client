@@ -11,10 +11,12 @@ import { SearchPicker } from '../search-picker'
 import { SelectionList } from '../selection-list'
 import { ShowSelectedButton } from '../show-selected-button'
 import { TreePicker } from '../tree-picker'
+import { CopyMoveTreePicker } from '../tree-picker/copy-move-tree-picker'
 import { PickerProps } from './picker-props'
 
-enum PickerModes {
+export enum PickerModes {
   TREE,
+  COPY_MOVE_TREE,
   SEARCH,
   SELECTION,
 }
@@ -42,10 +44,12 @@ const useStyles = makeStyles((theme: Theme) => {
 export type PickerClassKey = Partial<ReturnType<typeof useStyles>>
 
 export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (props) => {
+  const treePickerMode = props.treePickerMode ?? PickerModes.TREE
+
   const [term, setTerm] = useState<string>()
   const [result, setResult] = useState<GenericContent[]>([])
   const [searchError, setSearchError] = useState<string>()
-  const [mode, setMode] = useState(PickerModes.TREE)
+  const [mode, setMode] = useState<PickerModes>(treePickerMode)
   const classes = useStyles(props)
 
   const PickerContainer = props.pickerContainer || 'div'
@@ -115,8 +119,8 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
         <Box className={classes.toolbar}>
           <IconButton
             title={props.localization?.treeViewButton ?? 'Tree view'}
-            onClick={() => setMode(PickerModes.TREE)}
-            className={`${classes.treeIcon} ${mode === PickerModes.TREE ? classes.treeActiveIcon : ''}`}>
+            onClick={() => setMode(treePickerMode)}
+            className={`${classes.treeIcon} ${mode === treePickerMode ? classes.treeActiveIcon : ''}`}>
             <AccountTree />
           </IconButton>
           <TextField
@@ -136,6 +140,7 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
         {mode === PickerModes.SELECTION && <SelectionList {...props} />}
         {mode === PickerModes.SEARCH && <SearchPicker {...props} items={result} error={searchError} />}
         {mode === PickerModes.TREE && <TreePicker {...props} />}
+        {mode === PickerModes.COPY_MOVE_TREE && <CopyMoveTreePicker {...props} />}
       </PickerContainer>
       <SelectionContext.Consumer>
         {({ selection }) =>
