@@ -63,7 +63,7 @@
     "clean:packages": "yarn build:types --clean",
     "test": "jest",
     "clean": "lerna clean",
-    "lint": "eslint . --ext .tsx,.ts --cache"
+    "lint": "eslint . --ext .tsx,.ts --cache --fix"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
