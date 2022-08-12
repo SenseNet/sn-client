@@ -71,6 +71,7 @@
       "prettier --write"
     ],
     "*.{js,jsx}": [
+      "eslint --ext .jsx,.js --cache --fix",
       "prettier --write"
     ]
   }
