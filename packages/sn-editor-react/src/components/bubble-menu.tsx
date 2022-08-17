@@ -47,8 +47,8 @@ export const BubbleMenu: FC<BubbleMenuProps> = (props) => {
           const { selection } = state
           const { ranges } = selection
 
-          const from = Math.min(...ranges.map((range: { $from: { pos: any } }) => range.$from.pos))
-          const to = Math.max(...ranges.map((range: { $to: { pos: any } }) => range.$to.pos))
+          const from = Math.min(...ranges.map((range) => range.$from.pos))
+          const to = Math.max(...ranges.map((range) => range.$to.pos))
 
           instance.setProps({
             getReferenceClientRect: () => posToDOMRect(props.editor.view, from, to),
