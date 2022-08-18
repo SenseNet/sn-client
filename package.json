@@ -13,8 +13,8 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.24",
-    "@typescript-eslint/eslint-plugin": "^4.28.5",
-    "@typescript-eslint/parser": "^4.28.5",
+    "@typescript-eslint/eslint-plugin": "^ 5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
     "babel-eslint": "10.1.0",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.32.0",
@@ -29,16 +29,16 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "husky": "^7.0.1",
+    "husky": "^8.0.1",
     "isomorphic-fetch": "^3.0.0",
-    "lerna": "^4.0.0",
+    "lerna": "^5.3.0",
     "lint-staged": "^11.1.1",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.3.2",
-    "start-server-and-test": "^1.13.1",
+    "prettier": "^2.7.1",
+    "start-server-and-test": "^1.14.0",
     "ts-jest": "^27.0.4",
-    "typescript": "~4.3.5",
-    "wait-on": "^6.0.0"
+    "typescript": "~4.7.4",
+    "wait-on": "^6.0.1"
   },
   "scripts": {
     "postinstall": "husky install",
@@ -63,7 +63,7 @@
     "clean:packages": "yarn build:types --clean",
     "test": "jest",
     "clean": "lerna clean",
-    "lint": "eslint . --ext .tsx,.ts --cache"
+    "lint": "eslint . --ext .tsx,.ts --cache --fix"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -71,6 +71,7 @@
       "prettier --write"
     ],
     "*.{js,jsx}": [
+      "eslint --ext .jsx,.js --cache --fix",
       "prettier --write"
     ]
   }

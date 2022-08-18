@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import { Repository } from '@sensenet/client-core'
 import { Reducers, Store } from '@sensenet/redux'
 import { CreateStoreOptions } from '@sensenet/redux/dist/types/Store'

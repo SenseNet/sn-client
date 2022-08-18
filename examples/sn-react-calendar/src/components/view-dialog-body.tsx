@@ -1,3 +1,4 @@
+/* eslint-disable import/no-duplicates */
 import { RepositoryContext } from '@sensenet/hooks-react'
 import {
   Avatar,
@@ -119,7 +120,8 @@ export const ViewDialogBody: React.FunctionComponent<EditDialogBodyDialogProps> 
                 className={classes.button}
                 onClick={() => {
                   setOpenmodal(true)
-                }}>
+                }}
+              >
                 <DeleteOutlined className={classes.icon} />
               </IconButton>
               <IconButton
@@ -128,7 +130,8 @@ export const ViewDialogBody: React.FunctionComponent<EditDialogBodyDialogProps> 
                 onClick={() => {
                   sharedcontext.setEvent(props.content)
                   sharedcontext.setOpeneditmodal(true)
-                }}>
+                }}
+              >
                 <EditOutlined className={classes.icon} />
               </IconButton>
             </Grid>

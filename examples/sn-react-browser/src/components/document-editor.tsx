@@ -41,9 +41,9 @@ export function DocumentEditor() {
       } catch (e) {
         if (!ac.signal.aborted) {
           let errorMessage = 'There was an error during opening the file for online editing.'
-          if (isExtendedError(e)) {
-            const extendedError = await repo.getErrorFromResponse(e.response)
-            errorMessage = extendedError.message || extendedError.body.message || e.toString()
+          if (isExtendedError(e as any)) {
+            const extendedError = await repo.getErrorFromResponse((e as any).response)
+            errorMessage = extendedError.message || extendedError.body.message || (e as any).toString()
           }
           setError(errorMessage)
         }
@@ -63,7 +63,8 @@ export function DocumentEditor() {
           justifyContent: 'center',
           alignItems: 'center',
           minHeight: 250,
-        }}>
+        }}
+      >
         <Typography variant="h4" gutterBottom={true}>
           Error opening file for online editing
         </Typography>
@@ -72,7 +73,8 @@ export function DocumentEditor() {
           <Button
             onClick={() => {
               history.push(`/edit/${params.documentId}/view`)
-            }}>
+            }}
+          >
             View
           </Button>
 
@@ -91,7 +93,8 @@ export function DocumentEditor() {
         action={wopiData.actionUrl}
         target="office_frame"
         method="post"
-        ref={formElement}>
+        ref={formElement}
+      >
         <input name="access_token" value={wopiData.accesstoken} type="hidden" />
         <input name="access_token_ttl" value={wopiData.expiration} type="hidden" />
       </form>

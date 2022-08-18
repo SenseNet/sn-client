@@ -1,3 +1,4 @@
+/* eslint-disable import/no-duplicates */
 import { User } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import { Avatar, createStyles, List, ListItem, ListItemAvatar, ListItemText, makeStyles } from '@material-ui/core'
@@ -62,7 +63,8 @@ const EventComponent: React.FunctionComponent<EventComponentProps> = (props) => 
                 sharedcontext.setEvent(event)
                 sharedcontext.setOpendisplaymodal(true)
               }}
-              className={`${classes.parentlistelement} ${event.AllDay ? classes.alldayevent : classes.simpleevent}`}>
+              className={`${classes.parentlistelement} ${event.AllDay ? classes.alldayevent : classes.simpleevent}`}
+            >
               <ListItemAvatar>
                 <Avatar
                   alt="Avatar"

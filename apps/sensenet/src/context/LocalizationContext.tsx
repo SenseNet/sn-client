@@ -1,3 +1,4 @@
+/* eslint-disable import/no-duplicates */
 import { useInjector } from '@sensenet/hooks-react'
 import enUS from 'date-fns/locale/en-US'
 import hu from 'date-fns/locale/hu'
@@ -54,7 +55,8 @@ export const LocalizationProvider: React.FunctionComponent = (props) => {
       value={{
         values: currentValues,
         service: localizationService,
-      }}>
+      }}
+    >
       {props.children}
     </LocalizationContext.Provider>
   )
