@@ -74,6 +74,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
 
   const { updateState } = viewerState
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const requestResize = useCallback(
     debounce(() => {
       setResizeToken(Math.random())
@@ -221,7 +222,8 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
       ref={shapesContainerRef}
       className={classes.shapesContainer}
       onDrop={onDrop}
-      onDragOver={(ev) => ev.preventDefault()}>
+      onDragOver={(ev) => ev.preventDefault()}
+    >
       {viewerState.showComments &&
         visibleComments.length > 0 &&
         visibleComments.map((marker) => (

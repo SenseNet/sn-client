@@ -55,6 +55,7 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
   const PickerContainer = props.pickerContainer || 'div'
   const ActionsContainer = props.actionsContainer || 'div'
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedQuery = useCallback(
     debounce((a: string) => setTerm(a), 250),
     [],
@@ -114,13 +115,15 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
     <SelectionProvider
       allowMultiple={props.allowMultiple}
       selectionChangeCallback={props.onSelectionChanged}
-      defaultValue={props.defaultValue}>
+      defaultValue={props.defaultValue}
+    >
       <PickerContainer>
         <Box className={classes.toolbar}>
           <IconButton
             title={props.localization?.treeViewButton ?? 'Tree view'}
             onClick={() => setMode(treePickerMode)}
-            className={`${classes.treeIcon} ${mode === treePickerMode ? classes.treeActiveIcon : ''}`}>
+            className={`${classes.treeIcon} ${mode === treePickerMode ? classes.treeActiveIcon : ''}`}
+          >
             <AccountTree />
           </IconButton>
           <TextField
@@ -152,7 +155,8 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
                 aria-label={props.localization?.cancelButton ?? 'Cancel'}
                 className={classes.cancelButton}
                 disabled={!!props.isExecInProgress}
-                onClick={() => props.handleCancel?.()}>
+                onClick={() => props.handleCancel?.()}
+              >
                 {props.localization?.cancelButton ?? 'Cancel'}
               </Button>
               <SaveButton

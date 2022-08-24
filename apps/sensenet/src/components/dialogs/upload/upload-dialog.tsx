@@ -163,6 +163,7 @@ export function UploadDialog(props: UploadDialogProps) {
       if (!isResolveConflict('SKIP')) uploadFileAndShift()
       else onSkipFile(uploadingState.currentFile)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uploadingState.showConflictDialog])
 
   useEffect(() => {
@@ -194,6 +195,7 @@ export function UploadDialog(props: UploadDialogProps) {
     } else {
       setIsUploadInProgress(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uploadingState.currentFile])
 
   const uploadFile = async (file: FileWithFullPath, overwrite = false): Promise<UploadResponse | undefined> => {
@@ -275,7 +277,8 @@ export function UploadDialog(props: UploadDialogProps) {
           aria-label="close"
           data-test="dialog-close"
           className={classes.closeButton}
-          onClick={closeLastDialog}>
+          onClick={closeLastDialog}
+        >
           <CloseIcon />
         </IconButton>
       </DialogTitle>
@@ -292,7 +295,8 @@ export function UploadDialog(props: UploadDialogProps) {
             justify={isFileAdded ? 'flex-start' : 'center'}
             direction="column"
             alignItems={isFileAdded ? 'stretch' : 'center'}
-            className={classes.grid}>
+            className={classes.grid}
+          >
             {isFileAdded ? (
               <FileList
                 files={files!}
@@ -321,7 +325,8 @@ export function UploadDialog(props: UploadDialogProps) {
               color="primary"
               disabled={isUploadInProgress}
               variant="contained"
-              onClick={() => upload()}>
+              onClick={() => upload()}
+            >
               {localization.uploadButton}
             </Button>
           )}
