@@ -1,5 +1,5 @@
 import { IconButton } from '@material-ui/core'
-import { posToDOMRect, BubbleMenu as TiptapBubbleMenu } from '@tiptap/react'
+import { posToDOMRect, BubbleMenu as TiptapBubbleMenu, Editor as TipTapEditor } from '@tiptap/react'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
@@ -13,43 +13,58 @@ describe('BubbleMenu', () => {
     expect(wrapper.find(BubbleMenu).exists()).toBeTruthy()
   })
 
-  it('should be exist IconButton', () => {
-    const wrapper = mount(<Editor autofocus={true} />)
-    const editorWrapper = wrapper.find(BubbleMenu).prop('editor')
-    editorWrapper.isActive = jest.fn((value: string) => value === 'image')
+  it('should not be rendered BubbleMenu if image is not active', () => {
+    const editor = {
+      isActive: jest.fn((value: string) => value === 'image'),
+      registerPlugin: jest.fn(),
+    } as unknown as TipTapEditor
+    const wrapper = mount(<BubbleMenu editor={editor} />)
 
-    expect(editorWrapper?.isActive('image')).toBeTruthy()
-    expect(wrapper.find(IconButton).exists()).toBeTruthy()
+    expect(wrapper.find(TiptapBubbleMenu).find(IconButton).exists()).toBeTruthy()
   })
 
-  it('should be click IconButton', () => {
-    const wrapper = mount(<Editor autofocus={true} />)
-    const editorWrapper = wrapper.find(BubbleMenu).prop('editor')
-    editorWrapper.isActive = jest.fn((value: string) => value === 'image')
+  it(`should call chain function on clicking IconButton with type 'image'`, () => {
     const chain = {
       focus: jest.fn(() => chain),
       deleteSelection: jest.fn(() => chain),
       run: jest.fn(() => chain),
-      toggleBold: jest.fn(() => chain),
-      toggleItalic: jest.fn(() => chain),
-      toggleUnderline: jest.fn(() => chain),
-      toggleBlockquote: jest.fn(() => chain),
-      toggleCode: jest.fn(() => chain),
-      setTextAlign: jest.fn(() => chain),
-      toggleBulletList: jest.fn(() => chain),
-      toggleOrderedList: jest.fn(() => chain),
-      unsetAllMarks: jest.fn(() => chain),
-      clearNodes: jest.fn(() => chain),
-      undo: jest.fn(() => chain),
-      redo: jest.fn(() => chain),
+      unsetLink: jest.fn(() => chain),
     }
+    const editor = {
+      isActive: jest.fn((value: string) => value === 'image'),
+      registerPlugin: jest.fn(),
+      chain: jest.fn(() => chain),
+    } as unknown as TipTapEditor
+    const wrapper = mount(<BubbleMenu editor={editor} />)
 
-    editorWrapper.chain = jest.fn(() => chain)
+    wrapper.find(TiptapBubbleMenu).find(IconButton).simulate('click')
 
-    console.log('jestIsTheBlh', wrapper.find(IconButton).at(14))
-    wrapper.find(IconButton).at(14).simulate('click')
+    expect(editor.chain).toBeCalled()
+    expect(chain.focus).toBeCalled()
+    expect(chain.deleteSelection).toBeCalled()
+    expect(chain.run).toBeCalled()
+  })
 
-    expect(editorWrapper.chain).toBeCalled()
+  it(`should call chain function on clicking IconButton with type 'link'`, () => {
+    const chain = {
+      focus: jest.fn(() => chain),
+      run: jest.fn(() => chain),
+      unsetLink: jest.fn(() => chain),
+    }
+    const editor = {
+      isActive: jest.fn((value: string) => value === 'link'),
+      registerPlugin: jest.fn(),
+      chain: jest.fn(() => chain),
+      getAttributes: jest.fn((href: string) => href),
+    } as unknown as TipTapEditor
+    const wrapper = mount(<BubbleMenu editor={editor} />)
+
+    wrapper.find(TiptapBubbleMenu).find(IconButton).simulate('click')
+
+    expect(editor.chain).toBeCalled()
+    expect(chain.focus).toBeCalled()
+    expect(chain.unsetLink).toBeCalled()
+    expect(chain.run).toBeCalled()
   })
 
   it('should not be rendered BubbleMenu if link is not active', () => {
