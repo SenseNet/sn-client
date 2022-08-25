@@ -63,8 +63,7 @@ const EventComponent: React.FunctionComponent<EventComponentProps> = (props) => 
                 sharedcontext.setEvent(event)
                 sharedcontext.setOpendisplaymodal(true)
               }}
-              className={`${classes.parentlistelement} ${event.AllDay ? classes.alldayevent : classes.simpleevent}`}
-            >
+              className={`${classes.parentlistelement} ${event.AllDay ? classes.alldayevent : classes.simpleevent}`}>
               <ListItemAvatar>
                 <Avatar
                   alt="Avatar"

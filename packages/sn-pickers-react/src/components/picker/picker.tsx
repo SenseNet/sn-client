@@ -55,6 +55,7 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
   const PickerContainer = props.pickerContainer || 'div'
   const ActionsContainer = props.actionsContainer || 'div'
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedQuery = useCallback(
     debounce((a: string) => setTerm(a), 250),
     [],

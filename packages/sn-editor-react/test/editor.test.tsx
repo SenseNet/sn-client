@@ -74,4 +74,33 @@ describe('editor', () => {
     expect(onChange).toReturnWith('<p></p>')
     expect(wrapper.find(ContextMenu).prop('open')).toBe(false)
   })
+
+  it('should open context menu on right click inside a table and execute action addRowBelow on MenuItem click', () => {
+    const onChange = jest.fn(({ editor }) => editor.getHTML())
+    const value =
+      '<table><tbody><tr><th colspan="1" rowspan="1"><p></p></th><th colspan="1" rowspan="1"><p></p></th></tr><tr><td colspan="1" rowspan="1"><p></p></td><td colspan="1" rowspan="1"><p></p></td></tr></tbody></table>'
+    const wrapper = mount(<Editor content={value} autofocus={true} onChange={onChange} />)
+
+    expect(wrapper.find(ContextMenu).prop('open')).toBe(false)
+
+    act(() => {
+      wrapper.find(EditorContent).simulate('contextmenu')
+    })
+    wrapper.update()
+
+    expect(wrapper.find(ContextMenu).prop('open')).toBe(true)
+
+    wrapper
+      .find(ContextMenu)
+      .findWhere((node) => {
+        return node.type() === MenuItem && node.text() === defaultLocalization.contextMenu.addRowBelow
+      })
+      .simulate('click')
+
+    const result =
+      '<table><tbody><tr><th colspan="1" rowspan="1"><p></p></th><th colspan="1" rowspan="1"><p></p></th></tr><tr><td colspan="1" rowspan="1"><p></p></td><td colspan="1" rowspan="1"><p></p></td></tr><tr><td colspan="1" rowspan="1"><p></p></td><td colspan="1" rowspan="1"><p></p></td></tr></tbody></table>'
+
+    expect(onChange).toReturnWith(result)
+    expect(wrapper.find(ContextMenu).prop('open')).toBe(false)
+  })
 })

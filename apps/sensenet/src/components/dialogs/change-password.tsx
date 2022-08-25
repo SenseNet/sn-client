@@ -131,8 +131,7 @@ export function ChangePasswordDialog() {
             disabled={
               !passwordFields.oldPassword || !passwordFields.newPassword || !passwordFields.confirmPassword || !match
             }
-            autoFocus={true}
-          >
+            autoFocus={true}>
             {localization.update}
           </Button>
         </DialogActions>

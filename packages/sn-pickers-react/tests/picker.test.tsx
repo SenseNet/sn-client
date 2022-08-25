@@ -1,5 +1,5 @@
 import { Button, Checkbox, IconButton, Link, ListItem, ListItemText, TextField } from '@material-ui/core'
-import { mount, ReactWrapper } from 'enzyme'
+import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { SearchPicker, SelectionList, TreePicker } from '../src'

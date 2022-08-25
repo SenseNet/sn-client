@@ -163,6 +163,7 @@ export function UploadDialog(props: UploadDialogProps) {
       if (!isResolveConflict('SKIP')) uploadFileAndShift()
       else onSkipFile(uploadingState.currentFile)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uploadingState.showConflictDialog])
 
   useEffect(() => {
@@ -194,6 +195,7 @@ export function UploadDialog(props: UploadDialogProps) {
     } else {
       setIsUploadInProgress(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uploadingState.currentFile])
 
   const uploadFile = async (file: FileWithFullPath, overwrite = false): Promise<UploadResponse | undefined> => {
