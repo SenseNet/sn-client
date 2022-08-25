@@ -55,8 +55,7 @@ export const LocalizationProvider: React.FunctionComponent = (props) => {
       value={{
         values: currentValues,
         service: localizationService,
-      }}
-    >
+      }}>
       {props.children}
     </LocalizationContext.Provider>
   )

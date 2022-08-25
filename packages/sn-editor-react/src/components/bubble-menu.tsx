@@ -55,14 +55,12 @@ export const BubbleMenu: FC<BubbleMenuProps> = (props) => {
           })
         },
       }}
-      editor={props.editor}
-    >
+      editor={props.editor}>
       {props.editor.isActive('image') && (
         <IconButton
           aria-label={localization.bubbleMenu.removeImage}
           size="small"
-          onClick={() => (props.editor.chain() as any).focus().deleteSelection().run()}
-        >
+          onClick={() => (props.editor.chain() as any).focus().deleteSelection().run()}>
           <DeleteIcon fontSize="inherit" />
         </IconButton>
       )}
@@ -73,15 +71,13 @@ export const BubbleMenu: FC<BubbleMenuProps> = (props) => {
             href={props.editor.getAttributes('link').href}
             target="_blank"
             rel="noreferrer"
-            style={{ marginRight: '3px' }}
-          >
+            style={{ marginRight: '3px' }}>
             {props.editor.getAttributes('link').href}
           </Link>
           <IconButton
             aria-label={localization.bubbleMenu.removeLink}
             size="small"
-            onClick={() => (props.editor.chain() as any).focus().unsetLink().run()}
-          >
+            onClick={() => (props.editor.chain() as any).focus().unsetLink().run()}>
             <CloseIcon fontSize="inherit" />
           </IconButton>
         </>

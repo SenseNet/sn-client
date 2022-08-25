@@ -59,8 +59,7 @@ export const SearchBar = () => {
                     className={classes.inputButton}
                     aria-label={localization.clearTerm}
                     title={localization.clearTerm}
-                    onClick={() => null}
-                  >
+                    onClick={() => null}>
                     <Cancel
                       onClick={() => {
                         if (searchInputRef.current) {
@@ -84,8 +83,7 @@ export const SearchBar = () => {
                         filters: { term: searchState.term, filters: searchState.filters },
                       },
                     })
-                  }}
-                >
+                  }}>
                   <Bookmark />
                 </IconButton>
               </InputAdornment>

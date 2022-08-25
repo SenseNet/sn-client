@@ -336,8 +336,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
               color="primary"
               onClick={() => {
                 setIsPickerOpen(true)
-              }}
-            >
+              }}>
               {localization.webhooksTrigger.pickAContainer}
             </Button>
           </div>
@@ -388,8 +387,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
                   props.settings.Name,
                   JSON.stringify({ ...value, TriggersForAllEvents: targetValue }),
                 )
-              }}
-            >
+              }}>
               <FormControlLabel
                 value="true"
                 control={<Radio color="primary" />}
@@ -481,8 +479,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
           <ClickAwayListener
             onClickAway={() => {
               setContentTypeDropdownOpened(false)
-            }}
-          >
+            }}>
             <div style={{ position: 'relative' }}>
               <FormGroup row className={classes.inputContainer}>
                 <TextField
@@ -504,16 +501,14 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
                     value?.TriggersForAllEvents ||
                     (currentTypeSelected && currentTypeSelected.length > 0 ? false : true)
                   }
-                  onClick={handleTypeAddClick}
-                >
+                  onClick={handleTypeAddClick}>
                   {props.renderIcon ? props.renderIcon('add_circle') : renderIconDefault('add_circle')}
                 </IconButton>
               </FormGroup>
               <Paper
                 className={`${classes.listContainer} ${
                   isContentTypeDropdownOpened ? classes.ddIsOpened : classes.ddIsClosed
-                }`}
-              >
+                }`}>
                 <List>
                   {filteredList.length > 0 ? (
                     filteredList.map((item: any) => renderTypeListItem(item, handleTypeSelect))
