@@ -13,11 +13,43 @@ describe('BubbleMenu', () => {
     expect(wrapper.find(BubbleMenu).exists()).toBeTruthy()
   })
 
-  it('should not be rendered BubbleMenu if image is not active', () => {
+  it('should be exist IconButton', () => {
     const wrapper = mount(<Editor autofocus={true} />)
     const editorWrapper = wrapper.find(BubbleMenu).prop('editor')
+    editorWrapper.isActive = jest.fn((value: string) => value === 'image')
 
-    expect(editorWrapper?.isActive('image')).toBe(false)
+    expect(editorWrapper?.isActive('image')).toBeTruthy()
+    expect(wrapper.find(IconButton).exists()).toBeTruthy()
+  })
+
+  it('should be click IconButton', () => {
+    const wrapper = mount(<Editor autofocus={true} />)
+    const editorWrapper = wrapper.find(BubbleMenu).prop('editor')
+    editorWrapper.isActive = jest.fn((value: string) => value === 'image')
+    const chain = {
+      focus: jest.fn(() => chain),
+      deleteSelection: jest.fn(() => chain),
+      run: jest.fn(() => chain),
+      toggleBold: jest.fn(() => chain),
+      toggleItalic: jest.fn(() => chain),
+      toggleUnderline: jest.fn(() => chain),
+      toggleBlockquote: jest.fn(() => chain),
+      toggleCode: jest.fn(() => chain),
+      setTextAlign: jest.fn(() => chain),
+      toggleBulletList: jest.fn(() => chain),
+      toggleOrderedList: jest.fn(() => chain),
+      unsetAllMarks: jest.fn(() => chain),
+      clearNodes: jest.fn(() => chain),
+      undo: jest.fn(() => chain),
+      redo: jest.fn(() => chain),
+    }
+
+    editorWrapper.chain = jest.fn(() => chain)
+
+    console.log('jestIsTheBlh', wrapper.find(IconButton).at(14))
+    wrapper.find(IconButton).at(14).simulate('click')
+
+    expect(editorWrapper.chain).toBeCalled()
   })
 
   it('should not be rendered BubbleMenu if link is not active', () => {
