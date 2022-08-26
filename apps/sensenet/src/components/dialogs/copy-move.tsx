@@ -1,7 +1,7 @@
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { GenericContentWithIsParent, Picker } from '@sensenet/pickers-react'
+import { GenericContentWithIsParent, Picker, PickerModes } from '@sensenet/pickers-react'
 import { LinearProgress } from '@material-ui/core'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -43,6 +43,8 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
   useEffect(() => {
     setLocalization(localizations[props.operation])
   }, [localizations, props.operation])
+
+  const [destination, setDestination] = useState(props.currentParent.DisplayName)
 
   if (!props.content.length) {
     return null
@@ -140,6 +142,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
             : props.content.length === 1
             ? localization.title.replace('{0}', props.content[0].DisplayName || props.content[0].Name)
             : localization.titleMultiple.replace('{0}', props.content.length.toString())}
+          {<span style={{ marginLeft: '0.25rem' }}>to {destination}</span>}
         </div>
       </DialogTitle>
       <Picker
@@ -157,6 +160,9 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
         isExecInProgress={isExecInProgress}
         required={1}
         classes={{ cancelButton: globalClasses.cancelButton }}
+        setDestination={setDestination}
+        currentParent={props.currentParent}
+        treePickerMode={PickerModes.COPY_MOVE_TREE}
       />
     </>
   )

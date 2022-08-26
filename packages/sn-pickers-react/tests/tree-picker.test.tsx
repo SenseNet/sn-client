@@ -31,7 +31,7 @@ describe('Tree picker component', () => {
     })
 
     expect(wrapper.update().find(ListItem).exists()).toBeTruthy()
-    expect(wrapper.find(ListItem).length).toBe(4)
+    expect(wrapper.find(ListItem).length).toBe(5)
   })
 
   it('should call renderLoading when loading is true', async () => {
@@ -118,6 +118,6 @@ describe('Tree picker component', () => {
       wrapper = mount(<PickerWithoutOptions repository={repository(genericContentItems) as any} />)
     })
     expect(wrapper.update().find('li').exists()).toBeTruthy()
-    expect(wrapper.find('li').length).toBe(4)
+    expect(wrapper.find('li').length).toBe(5)
   })
 })

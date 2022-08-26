@@ -1,3 +1,4 @@
+/* eslint-disable import/no-duplicates */
 import { RepositoryContext } from '@sensenet/hooks-react'
 import {
   Avatar,

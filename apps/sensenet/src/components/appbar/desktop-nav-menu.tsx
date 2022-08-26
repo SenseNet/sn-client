@@ -169,7 +169,10 @@ export const DesktopNavMenu: FunctionComponent = () => {
                         path: PATHS.usersAndGroups.appPath,
                         params: { browseType: 'explorer', action: 'edit' },
                       }),
-                      newParams: { content: `${currentUser.Path.replace(PATHS.usersAndGroups.snPath, '')}` },
+                      newParams: {
+                        content: currentUser.Path,
+                        needRoot: 'false',
+                      },
                     })}>
                     {localization.topMenu.accountSettings}
                   </Link>

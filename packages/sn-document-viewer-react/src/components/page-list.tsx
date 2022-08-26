@@ -41,6 +41,7 @@ export const PageList: React.FC<PageListProps> = (props) => {
   const pages = usePreviewImages()
   const classes = useStyles()
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const requestResize = useCallback(
     debounce(() => {
       setResizeToken(Math.random())

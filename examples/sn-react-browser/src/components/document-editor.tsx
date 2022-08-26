@@ -41,9 +41,9 @@ export function DocumentEditor() {
       } catch (e) {
         if (!ac.signal.aborted) {
           let errorMessage = 'There was an error during opening the file for online editing.'
-          if (isExtendedError(e)) {
-            const extendedError = await repo.getErrorFromResponse(e.response)
-            errorMessage = extendedError.message || extendedError.body.message || e.toString()
+          if (isExtendedError(e as any)) {
+            const extendedError = await repo.getErrorFromResponse((e as any).response)
+            errorMessage = extendedError.message || extendedError.body.message || (e as any).toString()
           }
           setError(errorMessage)
         }

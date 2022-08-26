@@ -60,7 +60,7 @@ export const BubbleMenu: FC<BubbleMenuProps> = (props) => {
         <IconButton
           aria-label={localization.bubbleMenu.removeImage}
           size="small"
-          onClick={() => props.editor.chain().focus().deleteSelection().run()}>
+          onClick={() => (props.editor.chain() as any).focus().deleteSelection().run()}>
           <DeleteIcon fontSize="inherit" />
         </IconButton>
       )}
@@ -77,7 +77,7 @@ export const BubbleMenu: FC<BubbleMenuProps> = (props) => {
           <IconButton
             aria-label={localization.bubbleMenu.removeLink}
             size="small"
-            onClick={() => props.editor.chain().focus().unsetLink().run()}>
+            onClick={() => (props.editor.chain() as any).focus().unsetLink().run()}>
             <CloseIcon fontSize="inherit" />
           </IconButton>
         </>

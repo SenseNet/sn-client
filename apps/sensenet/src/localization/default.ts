@@ -357,6 +357,13 @@ const values = {
     uploadFailed: 'Upload failed',
     contentUploaded: `Content '{0}' has been uploaded succesfully`,
     contentUploadedMultiple: `Finished uploading {count} content.`,
+    uploadConflictDetails: (fileName: string) =>
+      `The file named "<span style='color: #26a69a'><b>${fileName}</b></span>" already exsits. Do you want to replace it with this item?`,
+    applyToAll: 'Apply to all',
+    keepBoth: 'Keep both',
+    replace: 'Replace',
+    skip: 'Skip',
+    skipped: 'Skipped',
   },
   search: {
     title: 'Search',
@@ -639,6 +646,13 @@ const values = {
     defaultPayload: 'Default payload',
   },
   editor: {},
+  addDeleteUserGroups: {
+    manageGroups: 'Manage groups',
+    groups: 'Groups',
+    search: 'Search in groups',
+    userGroups: (userName: string) => `${userName}'s groups`,
+    userNoMembership: (userName: string) => `${userName} isn't a member of any group`,
+  },
 }
 
 export default values

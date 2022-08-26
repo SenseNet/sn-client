@@ -31,7 +31,7 @@ const NewDialogBody: React.FunctionComponent<{
               sharedcontext.setRefreshcalendar(!sharedcontext.refreshcalendar)
               handleClose()
             } catch (error) {
-              console.log(error.message)
+              console.log((error as Error).message)
             }
           }}
         />

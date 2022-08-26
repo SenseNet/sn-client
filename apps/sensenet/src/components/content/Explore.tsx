@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) => {
       boxSizing: 'border-box',
       borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
       paddingLeft: '15px',
-      justifyContent: 'space-between',
+      justifyContent: 'start',
     },
     treeAndDatagridWrapper: {
       display: 'flex',
@@ -87,6 +87,7 @@ export function Explore({
   const history = useHistory()
   const uiSettings = useContext(ResponsivePersonalSettings)
   const activeContent = useQuery().get('content') ?? ''
+  const needRoot = useQuery().get('needRoot') !== 'false'
   const contentTypeName = useQuery().get('content-type')
   const pathFromUrl = useQuery().get('path')
   const snRoute = useSnRoute()
@@ -117,7 +118,7 @@ export function Explore({
           <EditView
             key={activeContent}
             actionName={activeAction}
-            contentPath={`${rootPath}${activeContent}`}
+            contentPath={`${needRoot ? rootPath : ''}${activeContent}`}
             submitCallback={(savedContent) => {
               const contentNameBeforeEdit = PathHelper.getSegments(activeContent).pop()
               if (contentNameBeforeEdit && contentNameBeforeEdit !== savedContent.Name && pathFromUrl) {

@@ -74,6 +74,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = (props) => {
 
   const { updateState } = viewerState
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const requestResize = useCallback(
     debounce(() => {
       setResizeToken(Math.random())

@@ -51,6 +51,9 @@ const useStyles = makeStyles((theme: Theme) => {
     secondaryListItem: {
       paddingLeft: '40px',
     },
+    secondaryTitle: {
+      fontSize: '12px',
+    },
     permissionContainer: {
       padding: '60px',
       minHeight: '400px',
@@ -263,7 +266,10 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
 
   return (
     <>
-      <DialogTitle data-test={'permission-dialog-title'}>{props.entry.identity.displayName}</DialogTitle>
+      <DialogTitle data-test={'permission-dialog-title'}>
+        <div>{props.entry.identity.displayName}</div>
+        <div className={classes.secondaryTitle}>{props.entry.identity.path}</div>
+      </DialogTitle>
       <DialogContent className={classes.contentWrapper}>
         <List
           className={clsx(classes.column, classes.leftColumn)}

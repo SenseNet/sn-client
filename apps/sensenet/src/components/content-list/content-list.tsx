@@ -417,6 +417,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
           return (
             <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
               <RolesField
+                user={fieldOptions.rowData}
                 roles={fieldOptions.rowData[fieldOptions.dataKey] as GenericContent[]}
                 directRoles={fieldOptions.rowData.DirectRoles}
               />

@@ -361,6 +361,22 @@ const values: Localization = {
       heading: 'Címsor',
     },
   },
+  uploadProgress: {
+    uploadConflictDetails: (fileName: string) =>
+      `Ezzel a névvel (<span style='color: #26a69a'><b>${fileName}</b></span>) már létezik fájl. Szeretné lecserélni?`,
+    applyToAll: 'Minden fájl esetén',
+    keepBoth: 'Mindkettő megtartása',
+    replace: 'Csere',
+    skip: 'Kihagyás',
+    skipped: 'Kihagyva',
+  },
+  addDeleteUserGroups: {
+    manageGroups: 'Csoportok kezelése',
+    groups: 'Csoportok',
+    search: 'Keresés a csoportok között',
+    userGroups: (userName: string) => `${userName} csoportjai`,
+    userNoMembership: (userName: string) => `${userName} nem tagja egyetlen csoportnak sem`,
+  },
 }
 
 export default values

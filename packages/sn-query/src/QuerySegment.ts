@@ -28,7 +28,7 @@ export class QuerySegment<TReturns> {
    * @param {boolean} reverse Sort in reverse order, false by default
    */
   public sort<K extends keyof TReturns>(field: K, reverse = false) {
-    this.stringValue = ` .${reverse ? 'REVERSESORT' : 'SORT'}:${field}`
+    this.stringValue = ` .${reverse ? 'REVERSESORT' : 'SORT'}:${field as string}`
     this.segmentType = 'sort'
     return this.finializeSegment()
   }
@@ -51,6 +51,17 @@ export class QuerySegment<TReturns> {
   public skip(skipCount: number) {
     this.stringValue = ` .SKIP:${skipCount}`
     this.segmentType = 'skip'
+    return this.finializeSegment()
+  }
+
+  /**
+   * Adds a '.AUTOFILTERS' Content Query segment
+   * @param {string} filterType type of autofilter
+   */
+
+  public autofilters(filterType: 'ON' | 'OFF') {
+    this.stringValue = ` .AUTOFILTERS:${filterType}`
+    this.segmentType = 'autofilters'
     return this.finializeSegment()
   }
 

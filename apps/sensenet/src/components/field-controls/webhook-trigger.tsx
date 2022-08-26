@@ -276,7 +276,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
       const allEventIndex = actualRow?.Events.indexOf('All')
       if (allEventIndex !== undefined && allEventIndex > -1) {
         const newEvents = webhookEvents.filter((item) => item.name !== webhookEvent)
-        Object.assign(actualRow, { Events: newEvents })
+        Object.assign(actualRow as WebhookContentTypeItem, { Events: newEvents })
       }
     }
 
@@ -291,9 +291,9 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
     const actualRow = copyOfContentTypes?.find((type) => type.Name === contentType)
 
     if (event.target.checked) {
-      Object.assign(actualRow, { Events: ['All'] })
+      Object.assign(actualRow as WebhookContentTypeItem, { Events: ['All'] })
     } else {
-      Object.assign(actualRow, { Events: [] })
+      Object.assign(actualRow as WebhookContentTypeItem, { Events: [] })
     }
 
     value

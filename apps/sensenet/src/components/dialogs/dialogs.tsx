@@ -22,6 +22,7 @@ const ContentPicker = lazy(() => import('./content-picker'))
 const Feedback = lazy(() => import('./feedback'))
 const ChangePasswordDialog = lazy(() => import('./change-password'))
 const DateRangePicker = lazy(() => import('./date-range-picker'))
+const AddDeleteUserGroups = lazy(() => import('./add-delete-user-groups'))
 
 function dialogRenderer(dialog: DialogWithProps) {
   switch (dialog.name) {
@@ -51,6 +52,8 @@ function dialogRenderer(dialog: DialogWithProps) {
       return <SaveQuery {...dialog.props} />
     case 'reference-content-list':
       return <ReferenceContentList {...dialog.props} />
+    case 'add-delete-user-groups':
+      return <AddDeleteUserGroups {...dialog.props} />
     case 'permission-editor':
       return <PermissionEditorDialog {...dialog.props} />
     case 'member-select':

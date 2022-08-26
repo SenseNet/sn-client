@@ -1,3 +1,4 @@
+/* eslint-disable import/no-duplicates */
 import { useInjector } from '@sensenet/hooks-react'
 import enUS from 'date-fns/locale/en-US'
 import hu from 'date-fns/locale/hu'

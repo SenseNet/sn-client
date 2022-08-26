@@ -18,11 +18,11 @@ describe('editor', () => {
   it('should set all the props', () => {
     const value = '<p>Hello World</p>'
     const wrapper = mount(<Editor content={value} autofocus={true} readOnly={true} />)
+    const editorWrapper = wrapper.find(EditorContent).prop('editor')
 
-    const { options } = wrapper.find(EditorContent).prop('editor')
-    expect(options.content).toBe(value)
-    expect(options.editable).toBe(false)
-    expect(options.autofocus).toBe(true)
+    expect(editorWrapper?.options.content).toBe(value)
+    expect(editorWrapper?.options.editable).toBe(false)
+    expect(editorWrapper?.options.autofocus).toBe(true)
   })
 
   it('should render placeholder if no content is passed', () => {
@@ -30,11 +30,11 @@ describe('editor', () => {
     const wrapper = mount(<Editor placeholder={placeholder} />)
 
     const placeholderExtension = wrapper
-      .find(EditorContent)
-      .prop('editor')
-      .options.extensions.find((extension) => extension.name === 'placeholder')
+      ?.find(EditorContent)
+      ?.prop('editor')
+      ?.options.extensions.find((extension) => extension.name === 'placeholder')
 
-    expect(placeholderExtension.options.placeholder).toBe(placeholder)
+    expect(placeholderExtension?.options.placeholder).toBe(placeholder)
   })
 
   it('should call onChange when content updates', () => {
@@ -43,7 +43,7 @@ describe('editor', () => {
     const wrapper = mount(<Editor content={value} onChange={onChange} />)
 
     act(() => {
-      wrapper.find(EditorContent).prop('editor').commands.setContent('<p>New value</p>', true)
+      wrapper?.find(EditorContent)?.prop('editor')?.commands.setContent('<p>New value</p>', true)
     })
 
     expect(onChange).toBeCalled()
@@ -72,6 +72,35 @@ describe('editor', () => {
       .simulate('click')
 
     expect(onChange).toReturnWith('<p></p>')
+    expect(wrapper.find(ContextMenu).prop('open')).toBe(false)
+  })
+
+  it('should open context menu on right click inside a table and execute action addRowBelow on MenuItem click', () => {
+    const onChange = jest.fn(({ editor }) => editor.getHTML())
+    const value =
+      '<table><tbody><tr><th colspan="1" rowspan="1"><p></p></th><th colspan="1" rowspan="1"><p></p></th></tr><tr><td colspan="1" rowspan="1"><p></p></td><td colspan="1" rowspan="1"><p></p></td></tr></tbody></table>'
+    const wrapper = mount(<Editor content={value} autofocus={true} onChange={onChange} />)
+
+    expect(wrapper.find(ContextMenu).prop('open')).toBe(false)
+
+    act(() => {
+      wrapper.find(EditorContent).simulate('contextmenu')
+    })
+    wrapper.update()
+
+    expect(wrapper.find(ContextMenu).prop('open')).toBe(true)
+
+    wrapper
+      .find(ContextMenu)
+      .findWhere((node) => {
+        return node.type() === MenuItem && node.text() === defaultLocalization.contextMenu.addRowBelow
+      })
+      .simulate('click')
+
+    const result =
+      '<table><tbody><tr><th colspan="1" rowspan="1"><p></p></th><th colspan="1" rowspan="1"><p></p></th></tr><tr><td colspan="1" rowspan="1"><p></p></td><td colspan="1" rowspan="1"><p></p></td></tr><tr><td colspan="1" rowspan="1"><p></p></td><td colspan="1" rowspan="1"><p></p></td></tr></tbody></table>'
+
+    expect(onChange).toReturnWith(result)
     expect(wrapper.find(ContextMenu).prop('open')).toBe(false)
   })
 })

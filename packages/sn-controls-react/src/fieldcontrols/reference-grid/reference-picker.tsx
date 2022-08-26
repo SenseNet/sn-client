@@ -14,7 +14,7 @@ interface ReferencePickerProps<T>
 }
 
 const createTypeFilterString = (allowedTypes: string[]) => {
-  let filterString = "(isOf('Folder') and not isOf('SystemFolder'))"
+  let filterString = "isOf('Folder')"
   allowedTypes.forEach((typeName: string) => {
     if (typeName !== 'Folder') {
       filterString += ` or isOf('${typeName}')`
@@ -33,7 +33,7 @@ export const ReferencePicker: React.FC<ReferencePickerProps<GenericContentWithIs
       expand: ['Children'] as any,
       filter: props.fieldSettings.AllowedTypes
         ? createTypeFilterString(props.fieldSettings.AllowedTypes)
-        : "(isOf('GenericContent') and not isOf('SystemFolder'))",
+        : "isOf('GenericContent')",
       metadata: 'no',
       orderby: 'DisplayName',
     }),

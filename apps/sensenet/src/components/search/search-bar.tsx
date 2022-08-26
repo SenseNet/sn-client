@@ -33,6 +33,7 @@ export const SearchBar = () => {
   const searchInputRef = useRef<HTMLInputElement>()
   const searchState = useSearch()
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedQuery = useCallback(
     debounce((a: string) => searchState.setTerm(a), searchDebounceTime),
     [searchState.setTerm],

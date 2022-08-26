@@ -7,7 +7,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import { Button, createStyles, Grid, makeStyles, Typography } from '@material-ui/core'
 import type { Locale } from 'date-fns'
-import React, { createElement, ReactElement, useEffect, useState } from 'react'
+import React, { createElement, ReactElement, useEffect, useRef, useState } from 'react'
 import MediaQuery from 'react-responsive'
 import { FieldLocalization } from '../fieldcontrols/localization'
 import { isFullWidthField } from '../helpers'
@@ -72,7 +72,9 @@ export const EditView: React.FC<EditViewProps> = (props) => {
   const actionName = props.actionName || 'edit'
   const controlMapper = props.controlMapper || reactControlMapper(props.repository)
   const [schema, setSchema] = useState(controlMapper.getFullSchemaForContentType(props.contentTypeName, actionName))
-  const [content, setContent] = useState({})
+  const contentRef = useRef({})
+  const [content, setContent] = useState(contentRef.current)
+  contentRef.current = content
   const classes = useStyles(props)
   const repository = useRepository()
 
@@ -86,7 +88,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
   }
 
   const handleInputChange = (field: string, value: unknown) => {
-    setContent({ ...content, [field]: value })
+    setContent({ ...contentRef.current, [field]: value })
   }
 
   useEffect(() => {
