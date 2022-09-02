@@ -20,12 +20,12 @@
     "start": "webpack serve --progress --config webpack.dev.js",
     "cypress": "cypress open --env coverage=false",
     "cypress:all": "cypress run --env coverage=false",
-    "cypress:coverage": "cypress run && nyc report --reporter=text-summary",
+    "cypress:coverage": "cypress run --headed -b chrome --config-file ./cypress.config.ts && nyc report --reporter=text-summary",
     "instrument": "nyc instrument --compct=false --complete-copy --delete src instrumented && yarn start --env coverage"
   },
   "private": true,
   "publishConfig": {
-    "access": "private"
+    "access": "restricted"
   },
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "license": "GPL-2.0",
