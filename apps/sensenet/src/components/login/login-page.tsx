@@ -124,7 +124,8 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
                   className: classes.input,
                 }}
                 onChange={(ev) => {
-                  setUrl(ev.target.value)
+                  const schValue = ev.target.value.startsWith('http') ? ev.target.value : `https://${ev.target.value}`
+                  setUrl(schValue)
                 }}
                 style={{ paddingBottom: 30 }}
               />
