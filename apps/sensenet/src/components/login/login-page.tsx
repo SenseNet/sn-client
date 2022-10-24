@@ -54,6 +54,9 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
   const globalClasses = useGlobalStyles()
   const [url, setUrl] = useState('')
   const localization = useLocalization().login
+  const validUrl = new RegExp('^http[s]?:[/]{2}')
+  const stripPrefix = new RegExp('^.*[:]?[/]{1,2}')
+  const splitStr = ':/'
 
   const handleOnSubmit = (ev: React.FormEvent) => {
     ev.preventDefault()
@@ -124,7 +127,12 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
                   className: classes.input,
                 }}
                 onChange={(ev) => {
-                  const schValue = ev.target.value.startsWith('http') ? ev.target.value : `https://${ev.target.value}`
+                  // const schValue = ev.target.value.startsWith('http://') ? ev.target.value : `https://${ev.target.value}`
+                  const schValue =
+                    validUrl.test(ev.target.value) || ev.target.value === ''
+                      ? ev.target.value
+                      : `https://${ev.target.value.replace(stripPrefix, '')}`
+                  console.log(ev.target.value, ev.target.value.indexOf(splitStr), splitStr, splitStr.length)
                   setUrl(schValue)
                 }}
                 style={{ paddingBottom: 30 }}
