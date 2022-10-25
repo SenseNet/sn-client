@@ -54,7 +54,7 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
   const globalClasses = useGlobalStyles()
   const [url, setUrl] = useState('')
   const localization = useLocalization().login
-  const validUrl = new RegExp('^http[s]?:[/]{2}')
+  const validUrl = new RegExp('(^h|ht|htt|http[s]?|http[s]?:|http[s]?:/)$|^http[s]?://')
   const stripPrefix = new RegExp('^.*[:]?[/]{1,2}')
   const splitStr = ':/'
 
