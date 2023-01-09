@@ -23,9 +23,14 @@ const useStyles = makeStyles(() => {
       padding: '3rem 0',
     },
     title: {
-      fontSize: '34px',
+      fontSize: '62px',
       fontWeight: 500,
       marginBottom: '20px',
+      whiteSpace: 'break-spaces',
+    },
+    desciption: {
+      fontSize: '22px',
+      color: '#66758d',
     },
   })
 })
@@ -93,9 +98,11 @@ const Dashboard = () => {
           <Typography variant="h1" className={classes.title} data-test="app-header">
             {localization.title(data.displayName || data.host)}
           </Typography>
-          {localization.descriptionFirstLine}
-          <br />
-          {localization.descriptionSecondLine}
+          <div className={classes.desciption}>
+            {localization.descriptionFirstLine}
+            <br />
+            {localization.descriptionSecondLine}
+          </div>
         </div>
         <LearnMoreWidget />
         {data.subscription && (
