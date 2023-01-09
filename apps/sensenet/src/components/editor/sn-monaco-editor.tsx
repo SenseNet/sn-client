@@ -132,7 +132,7 @@ export const SnMonacoEditor: React.FunctionComponent<SnMonacoEditorProps> = (pro
           aria-label={localization.forms.cancel}
           color="default"
           className={globalClasses.cancelButton}
-          onClick={props.handleCancel || history.goBack}>
+          onClick={props.handleCancel || (() => history.go(-1))}>
           {localization.forms.cancel}
         </Button>
 
