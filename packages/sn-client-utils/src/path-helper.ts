@@ -19,6 +19,23 @@ export class PathHelper {
   }
 
   /**
+   * Check if url contain https.
+   * @param {string} path The source path that should be trimmed
+   * @returns {string}  If url does not contain http:// | https:// it will return with https://{url}.
+   */
+  public static convertToUrl(path: string): string {
+    const validUrl = new RegExp('(http[s]?://)')
+
+    if (validUrl.test(path)) {
+      return path
+    }
+
+    const stripPrefix = new RegExp('^.*[:]?[/]{1,2}')
+
+    return `https://${path.replace(stripPrefix, '')}`
+  }
+
+  /**
    * Splits a full path into path segments,
    * e.g.: /Root/Example('Content1') will be ["Root", "Example", "('Content1')"]
    * @param path The path to be splitted

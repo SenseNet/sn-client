@@ -9,10 +9,11 @@ import {
   InputLabel,
   makeStyles,
   TextField,
+  TextFieldProps,
   Typography,
 } from '@material-ui/core'
 import clsx from 'clsx'
-import React, { useState } from 'react'
+import React, { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import snLogo from '../../assets/sensenet-icon-32.png'
 import { globals, useGlobalStyles } from '../../globalStyles'
@@ -52,15 +53,15 @@ type LoginPageProps = {
 export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPageProps) {
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
-  const [url, setUrl] = useState('')
   const localization = useLocalization().login
-  const validUrl = new RegExp('(^h|ht|htt|http[s]?|http[s]?:|http[s]?:/)$|^http[s]?://')
-  const stripPrefix = new RegExp('^.*[:]?[/]{1,2}')
-  const splitStr = ':/'
+  const loginUrlInputField = useRef<TextFieldProps>()
 
   const handleOnSubmit = (ev: React.FormEvent) => {
     ev.preventDefault()
-    handleSubmit(PathHelper.trimSlashes(url))
+
+    const url = loginUrlInputField.current?.value as string
+
+    handleSubmit(PathHelper.convertToUrl(url))
   }
 
   const handleDemoSubmit = () => {
@@ -121,18 +122,10 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
                 variant="outlined"
                 placeholder={localization.repositoryHelperText}
                 fullWidth={true}
-                type="url"
-                value={url}
+                type="text"
+                inputRef={loginUrlInputField}
                 inputProps={{
                   className: classes.input,
-                }}
-                onChange={(ev) => {
-                  const schValue =
-                    validUrl.test(ev.target.value) || ev.target.value === ''
-                      ? ev.target.value
-                      : `https://${ev.target.value.replace(stripPrefix, '')}`
-                  console.log(ev.target.value, ev.target.value.indexOf(splitStr), splitStr, splitStr.length)
-                  setUrl(schValue)
                 }}
                 style={{ paddingBottom: 30 }}
               />
