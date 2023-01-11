@@ -209,4 +209,19 @@ export const pathHelperTests = describe('PathHelper', () => {
       expect(PathHelper.getParentPath('/content(123)')).toBe('')
     })
   })
+
+  describe('#convertToUrl()', () => {
+    it('should not do anything https://', () => {
+      expect(PathHelper.convertToUrl('https://dev.demo.sensenet.com')).toBe('https://dev.demo.sensenet.com')
+    })
+    it('should not do anything http://', () => {
+      expect(PathHelper.convertToUrl('http://dev.demo.sensenet.com')).toBe('http://dev.demo.sensenet.com')
+    })
+    it('should add https:// at the begining', () => {
+      expect(PathHelper.convertToUrl('dev.demo.sensenet.com')).toBe('https://dev.demo.sensenet.com')
+    })
+    it('should convert from // to https:// ', () => {
+      expect(PathHelper.convertToUrl('//dev.demo.sensenet.com')).toBe('https://dev.demo.sensenet.com')
+    })
+  })
 })
