@@ -54,7 +54,7 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const localization = useLocalization().login
-  const loginUrlInputField = useRef<TextFieldProps>()
+  const loginUrlInputField = useRef<TextFieldProps>(null)
 
   const handleOnSubmit = (ev: React.FormEvent) => {
     ev.preventDefault()
