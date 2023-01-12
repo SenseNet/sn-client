@@ -8,6 +8,15 @@ import { usePersonalSettings } from '../hooks'
 import { PersonalSettings } from '../services'
 import { ThemeContext } from './ThemeContext'
 
+export interface IMaterialUIFontFace {
+  fontFamily: string
+  fontStyle?: string
+  fontDisplay: 'auto' | 'block' | 'swap' | 'fallback' | 'optional'
+  fontWeight: number
+  src: string
+  unicodeRange?: string
+}
+
 export const ThemeProvider: React.FunctionComponent = (props) => {
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
   const personalSettings = usePersonalSettings()
@@ -31,7 +40,7 @@ export const ThemeProvider: React.FunctionComponent = (props) => {
   }, [prefersDark, settingsService])
 
   const theme = useMemo(() => {
-    const lartsseit = {
+    const larsseit: IMaterialUIFontFace = {
       fontFamily: 'Larsseit',
       fontStyle: 'normal',
       fontDisplay: 'swap' as const,
@@ -117,7 +126,7 @@ export const ThemeProvider: React.FunctionComponent = (props) => {
         },
         MuiCssBaseline: {
           '@global': {
-            '@font-face': [lartsseit],
+            '@font-face': [larsseit],
           },
         },
       },
