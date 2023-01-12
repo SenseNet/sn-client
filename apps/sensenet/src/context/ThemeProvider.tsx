@@ -43,7 +43,7 @@ export const ThemeProvider: React.FunctionComponent = (props) => {
     const larsseit: IMaterialUIFontFace = {
       fontFamily: 'Larsseit',
       fontStyle: 'normal',
-      fontDisplay: 'swap' as const,
+      fontDisplay: 'swap',
       fontWeight: 400,
       src: `
         local('Larsseit'),
