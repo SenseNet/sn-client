@@ -21,18 +21,16 @@ export class PathHelper {
   /**
    * Check if url contain https.
    * @param {string} path The source path that should be trimmed
-   * @returns {string}  If url does not contain http:// | https:// it will return with https://{url}.
+   * @returns {string}  If path does not contain <schema> it will attach https://{path}.
    */
-  public static convertToUrl(path: string): string {
-    const validUrl = new RegExp('(http[s]?://)')
+  public static ensureDefaultSchema(path: string): string {
+    const validUrl = new RegExp('^[a-zA-Z]+[:][/]{1}')
 
     if (validUrl.test(path)) {
       return path
     }
 
-    const stripPrefix = new RegExp('^.*[:]?[/]{1,2}')
-
-    return `https://${path.replace(stripPrefix, '')}`
+    return `https://${path}`
   }
 
   /**

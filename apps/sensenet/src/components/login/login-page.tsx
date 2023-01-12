@@ -61,7 +61,7 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
 
     const url = loginUrlInputField.current?.value as string
 
-    handleSubmit(PathHelper.convertToUrl(url))
+    handleSubmit(PathHelper.ensureDefaultSchema(url))
   }
 
   const handleDemoSubmit = () => {
