@@ -16,10 +16,11 @@ import { useDialog } from './dialogs'
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     batchActionWrapper: {
-      marginRight: '125px',
+      marginRight: '7.5%',
       ' & .MuiIconButton-root': {
         color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
       },
+      marginLeft: 'auto',
     },
   })
 })
