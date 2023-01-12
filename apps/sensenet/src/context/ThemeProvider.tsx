@@ -56,7 +56,7 @@ export const ThemeProvider: React.FunctionComponent = (props) => {
 
     const nextTheme = createMuiTheme({
       typography: {
-        fontFamily: ['Roboto', 'Helvetica', 'Arial', 'sans-serif', 'Larsseit'].join(','),
+        fontFamily: ['Roboto', 'Helvetica', 'sans-serif', 'Arial', 'Larsseit'].join(','),
         h1: {
           fontFamily: '"Larsseit", Roboto',
         },
