@@ -154,9 +154,9 @@ const values = {
     underConstruction: 'Under construction',
   },
   dashboard: {
-    title: (projectName: string) => (projectName ? `Welcome to your ${projectName} project` : 'Welcome to Admin UI'),
-    descriptionFirstLine: 'Here you can Explore the Admin UI with sample content',
-    descriptionSecondLine: 'Feel free to look around!',
+    title: (projectName: string) => (projectName ? `Welcome to ${projectName}` : 'Welcome to your Repository'),
+    descriptionFirstLine: 'Here you can manage the contents of your repository.',
+    descriptionSecondLine: "Let's get started!",
     subscriptionPlan: 'Your subscription plan',
     free: 'Free',
     features: 'Features',
