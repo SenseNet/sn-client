@@ -1,19 +1,39 @@
+import { createStyles, makeStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined'
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
 import React, { useState } from 'react'
+import { globals } from '../globalStyles'
+import { useLocalization } from '../hooks'
+import { ButtonTooltip } from './tooltips/ButtonTooltip'
 
 type Props = { copyText: string }
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    buttonWrapper: {
+      display: 'flex',
+      lineHeight: 1.1,
+    },
+    button: {
+      border: globals.common.grayBorder,
+      boxShadow: globals.common.buttonBoxShadow,
+      padding: '5px 3px',
+    },
+  })
+})
 
 const CopyPath = ({ copyText }: Props) => {
   const [isCopied, setIsCopied] = useState(false)
 
+  const localization = useLocalization()
+
   const copyTextToClipboard = async (text: string) => {
     if ('clipboard' in navigator) {
       return await navigator.clipboard.writeText(text)
-    } else {
-      return document.execCommand('copy', true, text)
     }
+
+    return document.execCommand('copy', true, text)
   }
 
   const handleCopyClick = () => {
@@ -29,12 +49,13 @@ const CopyPath = ({ copyText }: Props) => {
       })
   }
 
+  const classes = useStyles()
+
   return (
-    <div>
-      <Button onClick={handleCopyClick}>
-        <span>
-          {isCopied ? <CheckCircleOutlineOutlinedIcon style={{ color: 'lightgreen' }} /> : <FileCopyOutlinedIcon />}
-        </span>
+    <div className={classes.buttonWrapper}>
+      <Button onClick={handleCopyClick} className={classes.button}>
+        {isCopied ? <CheckCircleOutlineOutlinedIcon style={{ color: 'lightgreen' }} /> : <FileCopyOutlinedIcon />}
+        <ButtonTooltip title={localization.batchActions.copyPath} />
       </Button>
     </div>
   )
