@@ -118,7 +118,7 @@ const values = {
   drawer: {
     titles: {
       Content: 'Content',
-      ContentTypes: 'Content Types',
+      ContentTypes: 'Content Explorer',
       Localization: 'Localization',
       Search: 'Search',
       Setup: 'Setup',
