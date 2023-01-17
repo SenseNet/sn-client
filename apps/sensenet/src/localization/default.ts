@@ -118,13 +118,13 @@ const values = {
   drawer: {
     titles: {
       Content: 'Content',
-      ContentTypes: 'Content Explorer',
+      ContentTypes: 'Content Types',
       Localization: 'Localization',
       Search: 'Search',
       Setup: 'Setup',
       Trash: 'Trash',
       UsersAndGroups: 'Users and groups',
-      CustomContent: 'Custom content',
+      CustomContent: 'Content Explorer',
       Settings: 'Settings',
       Configuration: 'Configuration',
       Stats: 'Stats',
