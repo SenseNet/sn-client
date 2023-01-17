@@ -1,19 +1,23 @@
+import { Tooltip } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined'
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
 import React, { useState } from 'react'
+import { useLocalization } from '../hooks'
 
 type Props = { copyText: string }
 
 const CopyPath = ({ copyText }: Props) => {
   const [isCopied, setIsCopied] = useState(false)
 
+  const localization = useLocalization()
+
   const copyTextToClipboard = async (text: string) => {
     if ('clipboard' in navigator) {
       return await navigator.clipboard.writeText(text)
-    } else {
-      return document.execCommand('copy', true, text)
     }
+
+    return document.execCommand('copy', true, text)
   }
 
   const handleCopyClick = () => {
@@ -31,11 +35,11 @@ const CopyPath = ({ copyText }: Props) => {
 
   return (
     <div>
-      <Button onClick={handleCopyClick}>
-        <span>
+      <Tooltip title={localization.batchActions.copyPath} placement="bottom">
+        <Button onClick={handleCopyClick}>
           {isCopied ? <CheckCircleOutlineOutlinedIcon style={{ color: 'lightgreen' }} /> : <FileCopyOutlinedIcon />}
-        </span>
-      </Button>
+        </Button>
+      </Tooltip>
     </div>
   )
 }
