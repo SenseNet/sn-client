@@ -14,8 +14,6 @@ export const globals = {
     //Colors
     headerBackground: '#353B4E',
     headerText: 'rgba(255,255,255,0.87)',
-    grayBorder: '1px solid hsl(0deg 0% 80%)',
-    buttonBoxShadow: '0 1px 2px hsl(0deg 0% 0% / 12%)',
   },
   light: {
     navMenuColor: '#F6F6F6',

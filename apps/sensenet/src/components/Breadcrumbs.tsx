@@ -26,7 +26,7 @@ export function Breadcrumbs<T extends GenericContent>(props: BreadcrumbProps<T>)
 
   return (
     <>
-      <MUIBreadcrumbs maxItems={5} aria-label="breadcrumb" style={{ marginRight: '10px' }}>
+      <MUIBreadcrumbs maxItems={5} aria-label="breadcrumb">
         {props.items.map((item) => (
           <DropFileArea key={item.content.Id} parentContent={item.content} style={{ display: 'flex' }}>
             <Tooltip title={item.title}>
