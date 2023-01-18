@@ -124,7 +124,7 @@ const values = {
       Setup: 'Setup',
       Trash: 'Trash',
       UsersAndGroups: 'Users and groups',
-      CustomContent: 'Custom content',
+      CustomContent: 'Content Explorer',
       Settings: 'Settings',
       Configuration: 'Configuration',
       Stats: 'Stats',
