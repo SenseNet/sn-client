@@ -4,6 +4,7 @@ import React, { FunctionComponent } from 'react'
 import { PATHS } from '../application-paths'
 import { useGridSwitcher } from '../hooks'
 import { Content } from './content'
+import { PageTitle } from './PageTitle'
 
 const gridSwitcherConfig = [
   {
@@ -28,13 +29,16 @@ const UsersAndGroups: FunctionComponent = () => {
   const gridSwitcher = useGridSwitcher({ config: gridSwitcherConfig, defaultItem: gridSwitcherConfig[0] })
 
   return (
-    <Content
-      rootPath={PATHS.usersAndGroups.snPath}
-      fieldsToDisplay={gridSwitcher.activeItem.fieldsToDisplay as any}
-      renderBeforeGrid={(): JSX.Element => <div style={{ margin: '10px 12px' }}>{gridSwitcher.renderButtons()}</div>}
-      schema={gridSwitcher.activeItem.schema}
-      loadChildrenSettings={gridSwitcher.activeItem.loadSettings}
-    />
+    <>
+      <PageTitle title="Users and Groups" />
+      <Content
+        rootPath={PATHS.usersAndGroups.snPath}
+        fieldsToDisplay={gridSwitcher.activeItem.fieldsToDisplay as any}
+        renderBeforeGrid={(): JSX.Element => <div style={{ margin: '10px 12px' }}>{gridSwitcher.renderButtons()}</div>}
+        schema={gridSwitcher.activeItem.schema}
+        loadChildrenSettings={gridSwitcher.activeItem.loadSettings}
+      />
+    </>
   )
 }
 
