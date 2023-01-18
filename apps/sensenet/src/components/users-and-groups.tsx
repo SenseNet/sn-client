@@ -2,7 +2,7 @@ import People from '@material-ui/icons/People'
 import Person from '@material-ui/icons/Person'
 import React, { FunctionComponent } from 'react'
 import { PATHS } from '../application-paths'
-import { useGridSwitcher } from '../hooks'
+import { useGridSwitcher, useLocalization } from '../hooks'
 import { Content } from './content'
 import { PageTitle } from './PageTitle'
 
@@ -27,10 +27,11 @@ const gridSwitcherConfig = [
 
 const UsersAndGroups: FunctionComponent = () => {
   const gridSwitcher = useGridSwitcher({ config: gridSwitcherConfig, defaultItem: gridSwitcherConfig[0] })
+  const localization = useLocalization()
 
   return (
     <>
-      <PageTitle title="Users and Groups" />
+      <PageTitle title={localization.pageTitles.usersAndGroup} />
       <Content
         rootPath={PATHS.usersAndGroups.snPath}
         fieldsToDisplay={gridSwitcher.activeItem.fieldsToDisplay as any}
