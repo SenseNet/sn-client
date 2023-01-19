@@ -14,7 +14,7 @@ export interface DrawerItem {
   icon: JSX.Element
   root?: string
   itemType: string
-  contentSetting?: boolean
+  systemItem?: boolean
 }
 
 type DrawerType = CustomContentDrawerItem | DrawerItemSetting<any>
@@ -38,7 +38,7 @@ export const useDrawerItems = () => {
             action: 'Browse',
           },
         ],
-        contentSetting: false,
+        systemItem: false,
       },
       {
         itemType: 'UsersAndGroups',
@@ -49,11 +49,11 @@ export const useDrawerItems = () => {
             action: 'Add',
           },
         ],
-        contentSetting: false,
+        systemItem: false,
       },
       {
         itemType: 'SavedQueries',
-        contentSetting: false,
+        systemItem: false,
       },
       {
         itemType: 'Trash',
@@ -64,7 +64,7 @@ export const useDrawerItems = () => {
             action: 'Edit',
           },
         ],
-        contentSetting: false,
+        systemItem: false,
       },
       {
         itemType: 'ContentTypes',
@@ -75,11 +75,11 @@ export const useDrawerItems = () => {
             action: 'Add',
           },
         ],
-        contentSetting: true,
+        systemItem: true,
       },
       {
         itemType: 'Settings',
-        contentSetting: true,
+        systemItem: true,
       },
     ],
     [],
@@ -166,7 +166,7 @@ export const useDrawerItems = () => {
         url: getUrlFromSetting(setting),
         root: setting.settings?.root,
         itemType: setting.itemType,
-        contentSetting: setting.contentSetting,
+        systemItem: setting.systemItem,
       }
       return drawerItem
     }

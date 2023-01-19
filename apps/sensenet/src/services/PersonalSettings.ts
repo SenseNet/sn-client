@@ -67,7 +67,7 @@ export interface DrawerItem<T> {
     path: string
     action: typeof ActionType[number]
   }>
-  contentSetting?: boolean
+  systemItem?: boolean
 }
 
 export interface CustomDrawerItem<T> extends DrawerItem<T> {
@@ -115,7 +115,7 @@ export const defaultSettings: PersonalSettingsType = {
               action: 'Browse',
             },
           ],
-          contentSetting: true,
+          systemItem: true,
         },
       ],
     },

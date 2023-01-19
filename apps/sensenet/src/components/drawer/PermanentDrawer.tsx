@@ -75,9 +75,9 @@ export const PermanentDrawer = () => {
   const localization = useLocalization().drawer
   const location = useLocation()
 
-  const baseItems = items.filter((item) => !item.contentSetting)
+  const baseItems = items.filter((item) => !item.systemItem)
 
-  const settingsItems = items.filter((item) => item.contentSetting)
+  const settingsItems = items.filter((item) => item.systemItem)
 
   if (!settings.drawer.enabled) {
     return null
