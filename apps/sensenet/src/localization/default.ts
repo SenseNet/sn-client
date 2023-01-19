@@ -656,6 +656,8 @@ const values = {
   },
   pageTitles: {
     usersAndGroup: 'Users and Groups',
+    savedQueries: 'Saved Queries',
+    trash: 'Trash',
   },
 }
 

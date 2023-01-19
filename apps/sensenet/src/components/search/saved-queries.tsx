@@ -12,20 +12,19 @@ import {
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Typography from '@material-ui/core/Typography'
-import clsx from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { PATHS } from '../../application-paths'
-import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useQuery, useSelectionService } from '../../hooks'
 import { navigateToAction } from '../../services'
 import { pathWithQueryParams } from '../../services/query-string-builder'
 import { ContentList } from '../content-list/content-list'
+import { PageTitle } from '../PageTitle'
 import { BrowseView, EditView, VersionView } from '../view-controls'
 
 export default function SavedQueries() {
   const repo = useRepository()
-  const localization = useLocalization().search
+  const { search: localization, pageTitles } = useLocalization()
   const history = useHistory()
   const [onlyPublic, setOnlyPublic] = useState(false)
   const [queries, setQueries] = useState<Query[]>([])
@@ -35,7 +34,6 @@ export default function SavedQueries() {
   const loadSettingsContext = useContext(LoadSettingsContext)
 
   const eventHub = useRepositoryEvents()
-  const globalClasses = useGlobalStyles()
   const selectionService = useSelectionService()
 
   const activeContent = useQuery().get('content') ?? ''
@@ -142,9 +140,7 @@ export default function SavedQueries() {
 
   return (
     <>
-      <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)} style={{ padding: '0 15px' }}>
-        <span style={{ fontSize: '20px' }}>{localization.savedQueries}</span>
-      </div>
+      <PageTitle title={pageTitles.savedQueries} />
       {renderContent()}
     </>
   )

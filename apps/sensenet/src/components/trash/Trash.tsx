@@ -19,7 +19,7 @@ const Trash = memo(() => {
 
   return (
     <>
-      <div style={{ padding: '0 15px' }}>
+      <div>
         {content && (
           <TrashHeader
             iconClickHandler={() => {

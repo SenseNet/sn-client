@@ -35,14 +35,12 @@ const useStyles = makeStyles((theme: Theme) => {
       height: globals.common.drawerItemHeight,
       boxSizing: 'border-box',
       borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
-      paddingLeft: `${globals.common.explorePaddingLeft}`,
       justifyContent: 'start',
     },
     treeAndDatagridWrapper: {
       display: 'flex',
       width: '100%',
       height: `calc(100% - ${globals.common.drawerItemHeight}px)`,
-      paddingLeft: `${globals.common.explorePaddingLeft}`,
       position: 'relative',
     },
     exploreContainer: {

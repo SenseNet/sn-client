@@ -35,6 +35,10 @@ const useStyles = makeStyles((theme: Theme) => {
       boxSizing: 'border-box',
       overflow: 'hidden',
       height: '100%',
+      paddingTop: '10px',
+      '& > *': {
+        paddingLeft: `${globals.common.explorePaddingLeft}`,
+      },
     },
     executeActionPaper: {
       height: '100%',
