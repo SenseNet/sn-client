@@ -77,7 +77,7 @@ export const PermanentDrawer = () => {
 
   const baseItems = items.filter((item) => !item.systemItem)
 
-  const settingsItems = items.filter((item) => item.systemItem)
+  const systemItems = items.filter((item) => item.systemItem)
 
   if (!settings.drawer.enabled) {
     return null
@@ -124,9 +124,9 @@ export const PermanentDrawer = () => {
           </li>
         </List>
 
-        {settingsItems && (
+        {systemItems && (
           <List>
-            {settingsItems.map((item) => {
+            {systemItems.map((item) => {
               return (
                 <li key={item.itemType}>
                   <PermanentDrawerItem item={item} opened={opened} />
