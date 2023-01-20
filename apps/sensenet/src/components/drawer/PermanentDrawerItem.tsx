@@ -57,39 +57,39 @@ export const PermanentDrawerItem: React.FunctionComponent<PermanentDrawerItemPro
   const personalSettings = usePersonalSettings()
 
   return (
-    <NavLink
-      aria-label={props.item.url}
-      to={props.item.url}
-      className={classes.navLink}
-      onClick={() => {
-        selectionService.activeContent.setValue(undefined)
-      }}
-      activeClassName={classes.navLinkActive}>
-      <ListItem
-        aria-label={props.item.primaryText}
-        className={classes.listButton}
-        button={true}
-        selected={!!matchPath(location.pathname, props.item.url)}
-        data-test={`drawer-menu-item-${props.item.primaryText.replace(/\s+/g, '-').toLowerCase()}`}>
-        <ListItemIcon
-          className={clsx(classes.listItemIconDark, globalClasses.centered, {
-            [classes.listItemIconLight]: personalSettings.theme === 'light',
-          })}>
-          <Tooltip title={props.item.primaryText} placement="right">
+    <Tooltip title={props.item.primaryText} placement="right">
+      <NavLink
+        aria-label={props.item.url}
+        to={props.item.url}
+        className={classes.navLink}
+        onClick={() => {
+          selectionService.activeContent.setValue(undefined)
+        }}
+        activeClassName={classes.navLinkActive}>
+        <ListItem
+          aria-label={props.item.primaryText}
+          className={classes.listButton}
+          button={true}
+          selected={!!matchPath(location.pathname, props.item.url)}
+          data-test={`drawer-menu-item-${props.item.primaryText.replace(/\s+/g, '-').toLowerCase()}`}>
+          <ListItemIcon
+            className={clsx(classes.listItemIconDark, globalClasses.centered, {
+              [classes.listItemIconLight]: personalSettings.theme === 'light',
+            })}>
             <div>{props.item.icon}</div>
-          </Tooltip>
-        </ListItemIcon>
-        {props.opened && (
-          <Tooltip title={props.item.secondaryText} placement="right">
-            <ListItemText
-              primary={`${props.item.primaryText}`}
-              style={{
-                color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
-              }}
-            />
-          </Tooltip>
-        )}
-      </ListItem>
-    </NavLink>
+          </ListItemIcon>
+          {props.opened && (
+            <Tooltip title={props.item.secondaryText} placement="right">
+              <ListItemText
+                primary={`${props.item.primaryText}`}
+                style={{
+                  color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
+                }}
+              />
+            </Tooltip>
+          )}
+        </ListItem>
+      </NavLink>
+    </Tooltip>
   )
 }
