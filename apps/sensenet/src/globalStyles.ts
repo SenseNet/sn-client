@@ -15,6 +15,7 @@ export const globals = {
     headerBackground: '#353B4E',
     headerText: 'rgba(255,255,255,0.87)',
     secondaryIconSize: '16px',
+    explorePaddingLeft: '15px',
   },
   light: {
     navMenuColor: '#F6F6F6',

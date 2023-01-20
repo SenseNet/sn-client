@@ -19,6 +19,21 @@ export class PathHelper {
   }
 
   /**
+   * Check if url contain https.
+   * @param {string} path The source path that should be trimmed
+   * @returns {string}  If path does not contain <schema> it will attach https://{path}.
+   */
+  public static ensureDefaultSchema(path: string): string {
+    const validUrl = new RegExp('^[a-zA-Z]+[:][/]{1}')
+
+    if (validUrl.test(path)) {
+      return path
+    }
+
+    return `https://${path}`
+  }
+
+  /**
    * Splits a full path into path segments,
    * e.g.: /Root/Example('Content1') will be ["Root", "Example", "('Content1')"]
    * @param path The path to be splitted

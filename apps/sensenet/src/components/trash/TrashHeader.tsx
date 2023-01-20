@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import React from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+import { PageTitle } from '../PageTitle'
 
 type props = { trash: TrashBin; iconClickHandler: () => void }
 
@@ -26,10 +27,10 @@ const TrashHeader: React.FC<props> = ({ trash, iconClickHandler }) => {
     <Grid
       container={true}
       alignItems="center"
-      className={clsx(globalClasses.centeredVertical, globalClasses.contentTitle)}
+      className={clsx(globalClasses.centeredVertical)}
       style={{ justifyContent: 'space-between' }}>
       <Grid item={true} className={globalClasses.centeredVertical}>
-        <span style={{ fontSize: '20px' }}>{trashLocalization.title}</span>
+        <PageTitle title={localization.pageTitles.trash} />
         <Tooltip title={localization.settings.edit}>
           <IconButton onClick={() => iconClickHandler()}>
             <Settings />

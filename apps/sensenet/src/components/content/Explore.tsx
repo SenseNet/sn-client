@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme: Theme) => {
       height: globals.common.drawerItemHeight,
       boxSizing: 'border-box',
       borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
-      paddingLeft: '15px',
       justifyContent: 'start',
     },
     treeAndDatagridWrapper: {
