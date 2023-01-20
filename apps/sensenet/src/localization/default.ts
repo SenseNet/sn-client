@@ -654,6 +654,11 @@ const values = {
     userGroups: (userName: string) => `${userName}'s groups`,
     userNoMembership: (userName: string) => `${userName} isn't a member of any group`,
   },
+  pageTitles: {
+    usersAndGroup: 'Users and Groups',
+    savedQueries: 'Saved Queries',
+    trash: 'Trash',
+  },
 }
 
 export default values
