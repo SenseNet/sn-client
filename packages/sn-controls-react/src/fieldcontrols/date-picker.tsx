@@ -39,32 +39,35 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
     case 'new':
       return (
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={props.locale}>
-          {props.settings.DateTimeMode === DateTimeMode.Date ? (
-            <MUIDatePicker
-              value={value}
-              onChange={handleDateChange}
-              name={props.settings.Name}
-              label={props.settings.DisplayName}
-              id={props.settings.Name}
-              disabled={props.settings.ReadOnly}
-              placeholder={props.settings.DisplayName}
-              required={props.settings.Compulsory}
-              fullWidth={true}
-            />
-          ) : (
-            <DateTimePicker
-              value={value}
-              onChange={handleDateChange}
-              label={props.settings.DisplayName}
-              name={props.settings.Name}
-              id={props.settings.Name}
-              disabled={props.settings.ReadOnly}
-              placeholder={props.settings.DisplayName}
-              required={props.settings.Compulsory}
-              fullWidth={true}
-            />
-          )}
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
+          <>
+            {props.settings.DateTimeMode === DateTimeMode.Date ? (
+              <MUIDatePicker
+                value={value}
+                onChange={handleDateChange}
+                name={props.settings.Name}
+                label={props.settings.DisplayName}
+                id={props.settings.Name}
+                disabled={props.settings.ReadOnly}
+                placeholder={props.settings.DisplayName}
+                required={props.settings.Compulsory}
+                fullWidth={true}
+                format={props.settings.dateTimeFormat || 'yyyy MMMM dd'}
+              />
+            ) : (
+              <DateTimePicker
+                value={value}
+                onChange={handleDateChange}
+                label={props.settings.DisplayName}
+                name={props.settings.Name}
+                id={props.settings.Name}
+                disabled={props.settings.ReadOnly}
+                placeholder={props.settings.DisplayName}
+                required={props.settings.Compulsory}
+                fullWidth={true}
+              />
+            )}
+            {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
+          </>
         </MuiPickersUtilsProvider>
       )
     default:

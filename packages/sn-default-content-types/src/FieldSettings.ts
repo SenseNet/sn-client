@@ -141,6 +141,7 @@ export type DateTimeFieldSetting = FieldSetting & {
   DateTimeMode?: DateTimeMode
   Precision?: DateTimePrecision
   EvaluatedDefaultValue?: string
+  dateTimeFormat?: string
 }
 
 // Used in GenericContent, ContentList, SmartFolder, Site, Memo, Task, Query, User
