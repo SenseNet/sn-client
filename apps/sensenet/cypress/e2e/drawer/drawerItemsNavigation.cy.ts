@@ -7,7 +7,7 @@ describe('Drawer items navigation', () => {
   })
 
   it('clicking on the search icon on the drawer should navigate to the Saved Queries page', () => {
-    cy.get('[data-test="drawer-menu-item-search"]').as('searchIcon')
+    cy.get('[data-test="drawer-menu-item-saved-queries"]').as('searchIcon')
     cy.get('@searchIcon').click()
     cy.location().should((loc) => {
       expect(loc.pathname).to.eq('/saved-queries/')

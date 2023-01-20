@@ -10,7 +10,7 @@ describe('Saved queries', () => {
   })
   it('saving a query should work properly.', () => {
     const inputText = 'Sample'
-    cy.get('[data-test="drawer-menu-item-search"]').click()
+    cy.get('[data-test="drawer-menu-item-saved-queries"]').click()
     cy.get('a[title="New search"]').click()
     cy.get('[data-test="input-search"]').type(inputText)
 
@@ -23,7 +23,7 @@ describe('Saved queries', () => {
       .then(() => {
         cy.get('div[role="dialog"]').find('input[type="text"]').clear().type('test search for a keyword')
         cy.get('div[role="dialog"]').find('button[aria-label="Save"]').click()
-        cy.get('[data-test="drawer-menu-item-search"]')
+        cy.get('[data-test="drawer-menu-item-saved-queries"]')
           .click()
           .then(() => {
             cy.get('[data-test="table-cell-test-search-for-a-keyword"]').should('be.visible')
@@ -37,7 +37,7 @@ describe('Saved queries', () => {
       })
   })
   it('delete of a saved query should work properly.', () => {
-    cy.get('[data-test="drawer-menu-item-search"]').click()
+    cy.get('[data-test="drawer-menu-item-saved-queries"]').click()
     cy.get('[data-test="table-cell-test-search-for-a-keyword"]')
       .rightclick()
       .then(() => {

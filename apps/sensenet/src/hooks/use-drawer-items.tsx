@@ -1,5 +1,5 @@
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { Build, Delete, Folder, People, Public, Search, Widgets } from '@material-ui/icons'
+import { Build, Delete, Folder, People, Public, Save, Search, Widgets } from '@material-ui/icons'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { PATHS, resolvePathParams } from '../application-paths'
 import { Icon } from '../components/Icon'
@@ -14,6 +14,7 @@ export interface DrawerItem {
   icon: JSX.Element
   root?: string
   itemType: string
+  systemItem?: boolean
 }
 
 type DrawerType = CustomContentDrawerItem | DrawerItemSetting<any>
@@ -29,9 +30,6 @@ export const useDrawerItems = () => {
   const builtInDrawerItems: Array<DrawerItemSetting<any>> = useMemo(
     () => [
       {
-        itemType: 'Search',
-      },
-      {
         itemType: 'Content',
         settings: { root: PATHS.content.snPath },
         permissions: [
@@ -40,6 +38,7 @@ export const useDrawerItems = () => {
             action: 'Browse',
           },
         ],
+        systemItem: false,
       },
       {
         itemType: 'UsersAndGroups',
@@ -50,6 +49,11 @@ export const useDrawerItems = () => {
             action: 'Add',
           },
         ],
+        systemItem: false,
+      },
+      {
+        itemType: 'SavedQueries',
+        systemItem: false,
       },
       {
         itemType: 'Trash',
@@ -60,6 +64,7 @@ export const useDrawerItems = () => {
             action: 'Edit',
           },
         ],
+        systemItem: false,
       },
       {
         itemType: 'ContentTypes',
@@ -70,9 +75,11 @@ export const useDrawerItems = () => {
             action: 'Add',
           },
         ],
+        systemItem: true,
       },
       {
         itemType: 'Settings',
+        systemItem: true,
       },
     ],
     [],
@@ -89,8 +96,13 @@ export const useDrawerItems = () => {
 
     const getIconFromSetting = (item: DrawerType) => {
       switch (item.itemType) {
-        case 'Search':
-          return <Search />
+        case 'SavedQueries':
+          return (
+            <div>
+              <Search />
+              <Save className="secondary-icon" />
+            </div>
+          )
         case 'Content':
           return <Public />
         case 'UsersAndGroups':
@@ -109,7 +121,7 @@ export const useDrawerItems = () => {
 
     const getUrlFromSetting = (item: DrawerType) => {
       switch (item.itemType) {
-        case 'Search':
+        case 'SavedQueries':
           return resolvePathParams({ path: PATHS.savedQueries.appPath })
         case 'Content':
           return resolvePathParams({
@@ -154,11 +166,12 @@ export const useDrawerItems = () => {
         url: getUrlFromSetting(setting),
         root: setting.settings?.root,
         itemType: setting.itemType,
+        systemItem: setting.systemItem,
       }
       return drawerItem
     }
 
-    ;[...builtInDrawerItems, ...settings.drawer.items]
+    ;[...settings.drawer.items, ...builtInDrawerItems]
       .filterAsync(async (item) => {
         if (!item.permissions?.length) {
           return true
