@@ -51,7 +51,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
                 placeholder={props.settings.DisplayName}
                 required={props.settings.Compulsory}
                 fullWidth={true}
-                format={props.settings.dateTimeFormat || 'yyyy MMMM dd'}
+                format={props.settings.DateTimeFormat || 'yyyy MMMM dd'}
               />
             ) : (
               <DateTimePicker
