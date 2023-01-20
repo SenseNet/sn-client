@@ -22,7 +22,14 @@ export interface UiSettings {
 
 export const CustomDrawerItemType = tuple('CustomContent')
 
-export const BuiltInDrawerItemType = tuple('Content', 'ContentTypes', 'Search', 'Trash', 'UsersAndGroups', 'Settings')
+export const BuiltInDrawerItemType = tuple(
+  'Content',
+  'ContentTypes',
+  'SavedQueries',
+  'Trash',
+  'UsersAndGroups',
+  'Settings',
+)
 
 export const ActionType = tuple(
   'Browse',
@@ -60,6 +67,7 @@ export interface DrawerItem<T> {
     path: string
     action: typeof ActionType[number]
   }>
+  systemItem?: boolean
 }
 
 export interface CustomDrawerItem<T> extends DrawerItem<T> {
@@ -107,6 +115,7 @@ export const defaultSettings: PersonalSettingsType = {
               action: 'Browse',
             },
           ],
+          systemItem: true,
         },
       ],
     },
