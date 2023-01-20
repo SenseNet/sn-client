@@ -28,4 +28,9 @@ describe('Token', () => {
     await t.AwaitNotBeforeTime()
     expect(t.IsValid()).toEqual(true)
   })
+
+  it('should be expired', async () => {
+    const t = MockTokenFactory.CreateExpired()
+    expect(t.IsValid()).toEqual(false)
+  })
 })
