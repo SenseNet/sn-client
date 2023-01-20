@@ -9,10 +9,11 @@ import {
   InputLabel,
   makeStyles,
   TextField,
+  TextFieldProps,
   Typography,
 } from '@material-ui/core'
 import clsx from 'clsx'
-import React, { useState } from 'react'
+import React, { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import snLogo from '../../assets/sensenet-icon-32.png'
 import { globals, useGlobalStyles } from '../../globalStyles'
@@ -52,12 +53,15 @@ type LoginPageProps = {
 export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPageProps) {
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
-  const [url, setUrl] = useState('')
   const localization = useLocalization().login
+  const loginUrlInputField = useRef<TextFieldProps>(null)
 
   const handleOnSubmit = (ev: React.FormEvent) => {
     ev.preventDefault()
-    handleSubmit(PathHelper.trimSlashes(url))
+
+    const url = loginUrlInputField.current?.value as string
+
+    handleSubmit(PathHelper.ensureDefaultSchema(url))
   }
 
   const handleDemoSubmit = () => {
@@ -118,13 +122,10 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
                 variant="outlined"
                 placeholder={localization.repositoryHelperText}
                 fullWidth={true}
-                type="url"
-                value={url}
+                type="text"
+                inputRef={loginUrlInputField}
                 inputProps={{
                   className: classes.input,
-                }}
-                onChange={(ev) => {
-                  setUrl(ev.target.value)
                 }}
                 style={{ paddingBottom: 30 }}
               />

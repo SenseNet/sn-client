@@ -209,4 +209,16 @@ export const pathHelperTests = describe('PathHelper', () => {
       expect(PathHelper.getParentPath('/content(123)')).toBe('')
     })
   })
+
+  describe('#ensureDefaultSchema()', () => {
+    it('should not do anything with https://', () => {
+      expect(PathHelper.ensureDefaultSchema('https://dev.demo.sensenet.com')).toBe('https://dev.demo.sensenet.com')
+    })
+    it('should not do anything with http://', () => {
+      expect(PathHelper.ensureDefaultSchema('http://dev.demo.sensenet.com')).toBe('http://dev.demo.sensenet.com')
+    })
+    it('should add https:// at the begining', () => {
+      expect(PathHelper.ensureDefaultSchema('dev.demo.sensenet.com')).toBe('https://dev.demo.sensenet.com')
+    })
+  })
 })
