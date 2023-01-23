@@ -15,18 +15,20 @@ import { defaultLocalization } from './localization'
 
 const minDatePickerDate = new Date('0001-01-01')
 
-const initialValueState = (
-  props: Pick<ReactClientFieldSetting<DateTimeFieldSetting>, 'fieldValue' | 'actionName' | 'settings'>,
-) => {
-  if (props.fieldValue === '0001-01-01T00:00:00Z') {
+const initialValueState = ({
+  actionName,
+  fieldValue,
+  settings,
+}: Pick<ReactClientFieldSetting<DateTimeFieldSetting>, 'fieldValue' | 'actionName' | 'settings'>) => {
+  if (fieldValue === '0001-01-01T00:00:00Z') {
     return null
   }
 
-  if (props.actionName !== 'new') {
+  if (actionName !== 'new') {
     return null
   }
 
-  const secureCheckedDateInput = changeTemplatedValue(props.settings.DefaultValue, props.settings.EvaluatedDefaultValue)
+  const secureCheckedDateInput = changeTemplatedValue(settings.DefaultValue, settings.EvaluatedDefaultValue)
 
   return secureCheckedDateInput
 }
@@ -34,35 +36,37 @@ const initialValueState = (
  * Field control that represents a Date field. Available values will be populated from the FieldSettings.
  */
 export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>> = (props) => {
-  const localization = deepMerge(defaultLocalization.datePicker, props.localization?.datePicker)
+  const { settings, actionName, fieldValue, locale, localization, hideDescription, fieldOnChange } = props
 
-  const [value, setValue] = useState(initialValueState(props))
+  const localizationMerged = deepMerge(defaultLocalization.datePicker, localization?.datePicker)
+
+  const [value, setValue] = useState(initialValueState({ actionName, fieldValue, settings }))
 
   const handleDateChange = (date: MaterialUiPickersDate) => {
     if (!date) {
       return
     }
     setValue(new Date(date).toISOString())
-    props.fieldOnChange?.(props.settings.Name, new Date(date).toISOString())
+    fieldOnChange?.(settings.Name, new Date(date).toISOString())
   }
 
-  switch (props.actionName) {
+  switch (actionName) {
     case 'edit':
     case 'new':
       return (
-        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={props.locale}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={locale}>
           <>
-            {props.settings.DateTimeMode === DateTimeMode.Date ? (
+            {settings.DateTimeMode === DateTimeMode.Date ? (
               <MUIDatePicker
                 value={value}
                 minDate={minDatePickerDate}
                 onChange={handleDateChange}
-                name={props.settings.Name}
-                label={props.settings.DisplayName}
-                id={props.settings.Name}
-                disabled={props.settings.ReadOnly}
-                placeholder={props.settings.DisplayName}
-                required={props.settings.Compulsory}
+                name={settings.Name}
+                label={settings.DisplayName}
+                id={settings.Name}
+                disabled={settings.ReadOnly}
+                placeholder={settings.DisplayName}
+                required={settings.Compulsory}
                 fullWidth={true}
                 format="yyyy MMMM dd"
               />
@@ -71,17 +75,17 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
                 minDate={minDatePickerDate}
                 value={value}
                 onChange={handleDateChange}
-                label={props.settings.DisplayName}
-                name={props.settings.Name}
-                id={props.settings.Name}
-                disabled={props.settings.ReadOnly}
-                placeholder={props.settings.DisplayName}
-                required={props.settings.Compulsory}
+                label={settings.DisplayName}
+                name={settings.Name}
+                id={settings.Name}
+                disabled={settings.ReadOnly}
+                placeholder={settings.DisplayName}
+                required={settings.Compulsory}
                 fullWidth={true}
                 format="yyyy MMMM do hh:mm aaaa"
               />
             )}
-            {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
+            {!hideDescription && <FormHelperText>{settings.Description}</FormHelperText>}
           </>
         </MuiPickersUtilsProvider>
       )
@@ -89,14 +93,14 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
       return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {settings.DisplayName}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
-            {props.fieldValue
-              ? props.settings.DateTimeMode === DateTimeMode.Date
-                ? format(new Date(props.fieldValue), 'PPP', { locale: props.locale }).toLocaleString()
-                : format(new Date(props.fieldValue), 'PPPppp', { locale: props.locale }).toLocaleString()
-              : localization.noValue}
+            {fieldValue
+              ? settings.DateTimeMode === DateTimeMode.Date
+                ? format(new Date(fieldValue), 'PPP', { locale }).toLocaleString()
+                : format(new Date(fieldValue), 'PPPppp', { locale }).toLocaleString()
+              : localizationMerged.noValue}
           </Typography>
         </div>
       )
