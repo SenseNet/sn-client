@@ -15,30 +15,30 @@ import { defaultLocalization } from './localization'
 
 const minDatePickerDate = new Date('0001-01-01')
 
-const initialState = (fieldAttributes: ReactClientFieldSetting<DateTimeFieldSetting>) => {
-  if (fieldAttributes.fieldValue === '0001-01-01T00:00:00Z') {
-    return null
-  }
-
-  if (fieldAttributes.actionName !== 'new') {
-    return null
-  }
-
-  const secureCheckedDateInput = changeTemplatedValue(
-    fieldAttributes.settings.DefaultValue,
-    fieldAttributes.settings.EvaluatedDefaultValue,
-  )
-
-  return secureCheckedDateInput
-}
-
 /**
  * Field control that represents a Date field. Available values will be populated from the FieldSettings.
  */
 export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>> = (props) => {
   const localization = deepMerge(defaultLocalization.datePicker, props.localization?.datePicker)
 
-  const [value, setValue] = useState(props.fieldValue || initialState(props))
+  const initialState = () => {
+    if (props.fieldValue === '0001-01-01T00:00:00Z') {
+      return null
+    }
+
+    if (props.actionName !== 'new') {
+      return null
+    }
+
+    const secureCheckedDateInput = changeTemplatedValue(
+      props.settings.DefaultValue,
+      props.settings.EvaluatedDefaultValue,
+    )
+
+    return secureCheckedDateInput
+  }
+
+  const [value, setValue] = useState(initialState())
 
   const handleDateChange = (date: MaterialUiPickersDate) => {
     if (!date) {
