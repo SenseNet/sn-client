@@ -12,6 +12,7 @@ const defaultSettings: DateTimeFieldSetting = {
   DisplayName: 'Modification Date',
   Description: 'Content was last modified on this date.',
   Type: 'DateTimeFieldSetting',
+  DateTimeFormat: 'yyyy MMMMM dd',
 }
 
 const value = '1912-04-15T02:10:00.000Z'
@@ -89,7 +90,6 @@ describe('Date/Date time field control', () => {
             ReadOnly: true,
             Compulsory: true,
             DateTimeMode: DateTimeMode.Date,
-            DateTimeFormat: 'yyyy MMMMM dd',
           }}
         />,
       )
@@ -98,6 +98,7 @@ describe('Date/Date time field control', () => {
       expect(wrapper.find(MUIDatePicker).prop('id')).toBe(defaultSettings.Name)
       expect(wrapper.find(MUIDatePicker).prop('label')).toBe(defaultSettings.DisplayName)
       expect(wrapper.find(MUIDatePicker).prop('placeholder')).toBe(defaultSettings.DisplayName)
+      expect(wrapper.find(MUIDatePicker).prop('format')).toBe(defaultSettings.DateTimeFormat)
       expect(wrapper.find(MUIDatePicker).prop('required')).toBeTruthy()
       expect(wrapper.find(MUIDatePicker).prop('disabled')).toBeTruthy()
       expect(wrapper).toMatchSnapshot()
