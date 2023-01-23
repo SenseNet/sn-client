@@ -96,8 +96,6 @@ describe('Date/Date time field control', () => {
         />,
       )
 
-      console.log(wrapper, MUIDatePicker)
-
       expect(wrapper.find(MUIDatePicker).prop('value')).toBe(value)
       expect(wrapper.find(MUIDatePicker).prop('name')).toBe(defaultSettings.Name)
       expect(wrapper.find(MUIDatePicker).prop('id')).toBe(defaultSettings.Name)
