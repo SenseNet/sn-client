@@ -25,7 +25,6 @@ exports[`Date/Date time field control in edit/new view should set all the props 
     allowKeyboardControl={true}
     ampm={true}
     disabled={true}
-    format="yyyy MMMM dd"
     fullWidth={true}
     id="ModificationDate"
     invalidDateMessage="Invalid Date Format"
