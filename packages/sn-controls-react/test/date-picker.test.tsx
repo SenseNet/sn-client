@@ -7,12 +7,12 @@ import React from 'react'
 import { DatePicker, defaultLocalization } from '../src/fieldcontrols'
 
 const defaultSettings: DateTimeFieldSetting = {
+  DateTimeMode: DateTimeMode.DateAndTime,
   Name: 'ModificationDate',
   FieldClassName: 'SenseNet.ContentRepository.Fields.DateTimeField',
   DisplayName: 'Modification Date',
   Description: 'Content was last modified on this date.',
   Type: 'DateTimeFieldSetting',
-  DateTimeFormat: 'yyyy MMMMM dd',
 }
 
 const value = '1912-04-15T02:10:00.000Z'
@@ -90,17 +90,21 @@ describe('Date/Date time field control', () => {
             ReadOnly: true,
             Compulsory: true,
             DateTimeMode: DateTimeMode.Date,
+            DateTimeFormat: 'yyyy MMMMM dd',
           }}
         />,
       )
+
+      console.log(wrapper, MUIDatePicker)
+
       expect(wrapper.find(MUIDatePicker).prop('value')).toBe(value)
       expect(wrapper.find(MUIDatePicker).prop('name')).toBe(defaultSettings.Name)
       expect(wrapper.find(MUIDatePicker).prop('id')).toBe(defaultSettings.Name)
       expect(wrapper.find(MUIDatePicker).prop('label')).toBe(defaultSettings.DisplayName)
       expect(wrapper.find(MUIDatePicker).prop('placeholder')).toBe(defaultSettings.DisplayName)
-      expect(wrapper.find(MUIDatePicker).prop('format')).toBe(defaultSettings.DateTimeFormat)
       expect(wrapper.find(MUIDatePicker).prop('required')).toBeTruthy()
       expect(wrapper.find(MUIDatePicker).prop('disabled')).toBeTruthy()
+      expect(wrapper.find(MUIDatePicker).prop('format')).toBe('yyyy MMMMM dd')
       expect(wrapper).toMatchSnapshot()
     })
 
