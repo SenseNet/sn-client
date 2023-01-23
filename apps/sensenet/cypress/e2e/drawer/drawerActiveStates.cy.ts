@@ -7,7 +7,7 @@ describe('Drawer menu icons', () => {
   })
 
   it('clicking on the Search icon on the drawer should open the Search page', () => {
-    cy.get('[data-test="drawer-menu-item-search"]').as('searchIcon')
+    cy.get('[data-test="drawer-menu-item-saved-queries"]').as('searchIcon')
     cy.get('@searchIcon').should('not.have.class', 'Mui-selected')
     cy.get('@searchIcon').click()
     cy.get('@searchIcon').should('have.class', 'Mui-selected')

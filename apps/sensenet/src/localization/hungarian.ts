@@ -59,7 +59,7 @@ const values: Localization = {
   drawer: {
     titles: {
       Content: 'Tartalom',
-      Search: 'Keresés',
+      SavedQueries: 'Mentett Keresések',
       Setup: 'Beállítás',
       UsersAndGroups: 'Felhasználók és csoportok',
       ContentTypes: 'Tartalom típusok',
@@ -75,7 +75,7 @@ const values: Localization = {
     },
     descriptions: {
       Content: 'Tartalom böngészése',
-      Search: 'Testreszabott keresések futtatása és mentése későbbi használatra',
+      SavedQueries: 'Testreszabott keresések futtatása és mentése későbbi használatra',
       Setup: 'A rendszer beállításai',
       UsersAndGroups: 'Felhasználó és csoport kezelése, szerkesztése',
       ContentTypes: 'Tartalom típusok kezelése',

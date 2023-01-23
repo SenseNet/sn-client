@@ -14,6 +14,7 @@ export const globals = {
     //Colors
     headerBackground: '#353B4E',
     headerText: 'rgba(255,255,255,0.87)',
+    secondaryIconSize: '16px',
     explorePaddingLeft: '15px',
   },
   light: {

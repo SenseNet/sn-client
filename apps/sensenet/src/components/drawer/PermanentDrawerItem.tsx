@@ -11,7 +11,7 @@ import {
 import clsx from 'clsx'
 import React from 'react'
 import { matchPath, NavLink, useLocation } from 'react-router-dom'
-import { useGlobalStyles } from '../../globalStyles'
+import { globals, useGlobalStyles } from '../../globalStyles'
 import { usePersonalSettings, useSelectionService } from '../../hooks'
 import { DrawerItem } from '../../hooks/use-drawer-items'
 
@@ -34,10 +34,22 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     listItemIconDark: {
       color: theme.palette.common.white,
+      lineHeight: '0px',
     },
     listItemIconLight: {
       color: theme.palette.common.black,
       opacity: 0.87,
+      '& > div': {
+        lineHeight: '0',
+      },
+    },
+    listIconWrapper: {
+      '& .secondary-icon': {
+        position: 'absolute',
+        marginTop: '-10px',
+        marginLeft: '-10px',
+        fontSize: globals.common.secondaryIconSize,
+      },
     },
   })
 })
@@ -76,7 +88,7 @@ export const PermanentDrawerItem: React.FunctionComponent<PermanentDrawerItemPro
             className={clsx(classes.listItemIconDark, globalClasses.centered, {
               [classes.listItemIconLight]: personalSettings.theme === 'light',
             })}>
-            <div>{props.item.icon}</div>
+            <div className={classes.listIconWrapper}>{props.item.icon}</div>
           </ListItemIcon>
           {props.opened && (
             <Tooltip title={props.item.secondaryText} placement="right">
