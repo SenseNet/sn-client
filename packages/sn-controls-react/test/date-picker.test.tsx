@@ -1,4 +1,4 @@
-import { DateTimeMode } from '@sensenet/default-content-types'
+import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-types'
 import Typography from '@material-ui/core/Typography'
 import { DateTimePicker, DatePicker as MUIDatePicker } from '@material-ui/pickers'
 import format from 'date-fns/format'
@@ -6,8 +6,7 @@ import { shallow } from 'enzyme'
 import React from 'react'
 import { DatePicker, defaultLocalization } from '../src/fieldcontrols'
 
-const defaultSettings = {
-  DateTimeMode: 2,
+const defaultSettings: DateTimeFieldSetting = {
   Name: 'ModificationDate',
   FieldClassName: 'SenseNet.ContentRepository.Fields.DateTimeField',
   DisplayName: 'Modification Date',
