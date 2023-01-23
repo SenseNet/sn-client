@@ -13,6 +13,8 @@ import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { defaultLocalization } from './localization'
 
+const minDatePickerDate = new Date('0001-01-01')
+
 /**
  * Field control that represents a Date field. Available values will be populated from the FieldSettings.
  */
@@ -43,6 +45,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
             {props.settings.DateTimeMode === DateTimeMode.Date ? (
               <MUIDatePicker
                 value={value}
+                minDate={minDatePickerDate}
                 onChange={handleDateChange}
                 name={props.settings.Name}
                 label={props.settings.DisplayName}
@@ -51,10 +54,11 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
                 placeholder={props.settings.DisplayName}
                 required={props.settings.Compulsory}
                 fullWidth={true}
-                format={props.settings.DateTimeFormat || 'yyyy MMMM dd'}
+                format="yyyy MMMM dd"
               />
             ) : (
               <DateTimePicker
+                minDate={minDatePickerDate}
                 value={value}
                 onChange={handleDateChange}
                 label={props.settings.DisplayName}
@@ -64,6 +68,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
                 placeholder={props.settings.DisplayName}
                 required={props.settings.Compulsory}
                 fullWidth={true}
+                format="yyyy MMMM do hh:mm aaaa"
               />
             )}
             {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}

@@ -25,13 +25,14 @@ exports[`Date/Date time field control in edit/new view should set all the props 
     allowKeyboardControl={true}
     ampm={true}
     disabled={true}
+    format="yyyy MMMM do hh:mm aaaa"
     fullWidth={true}
     id="ModificationDate"
     invalidDateMessage="Invalid Date Format"
     label="Modification Date"
     maxDate={2100-01-01T00:00:00.000Z}
     maxDateMessage="Date should not be after maximal date"
-    minDate={1900-01-01T00:00:00.000Z}
+    minDate={0001-01-01T00:00:00.000Z}
     minDateMessage="Date should not be before minimal date"
     name="ModificationDate"
     onChange={[Function]}
@@ -64,14 +65,14 @@ exports[`Date/Date time field control in edit/new view should set all the props 
   <PickerWithState
     allowKeyboardControl={true}
     disabled={true}
-    format="yyyy MMMMM dd"
+    format="yyyy MMMM dd"
     fullWidth={true}
     id="ModificationDate"
     invalidDateMessage="Invalid Date Format"
     label="Modification Date"
     maxDate={2100-01-01T00:00:00.000Z}
     maxDateMessage="Date should not be after maximal date"
-    minDate={1900-01-01T00:00:00.000Z}
+    minDate={0001-01-01T00:00:00.000Z}
     minDateMessage="Date should not be before minimal date"
     name="ModificationDate"
     onChange={[Function]}
