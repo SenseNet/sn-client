@@ -89,6 +89,7 @@ describe('Date/Date time field control', () => {
             ReadOnly: true,
             Compulsory: true,
             DateTimeMode: DateTimeMode.Date,
+            DateTimeFormat: 'yyyy MMMMM dd',
           }}
         />,
       )
