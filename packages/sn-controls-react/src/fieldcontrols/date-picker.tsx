@@ -15,7 +15,7 @@ import { defaultLocalization } from './localization'
 
 const minDatePickerDate = new Date('0001-01-01')
 
-const initialState = (
+const initialValueState = (
   props: Pick<ReactClientFieldSetting<DateTimeFieldSetting>, 'fieldValue' | 'actionName' | 'settings'>,
 ) => {
   if (props.fieldValue === '0001-01-01T00:00:00Z') {
@@ -36,7 +36,7 @@ const initialState = (
 export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>> = (props) => {
   const localization = deepMerge(defaultLocalization.datePicker, props.localization?.datePicker)
 
-  const [value, setValue] = useState(initialState(props))
+  const [value, setValue] = useState(initialValueState(props))
 
   const handleDateChange = (date: MaterialUiPickersDate) => {
     if (!date) {
