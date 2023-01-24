@@ -125,5 +125,20 @@ describe('Date/Date time field control', () => {
       wrapper.find(DateTimePicker).simulate('change', new Date(123234538324).toISOString())
       expect(fieldOnChange).toBeCalled()
     })
+
+    it('value should be null when value is .Net min.Date', () => {
+      const wrapper = shallow(
+        <DatePicker
+          actionName="edit"
+          fieldValue="0001-01-01T00:00:00Z"
+          settings={{
+            ...defaultSettings,
+            DateTimeMode: DateTimeMode.Date,
+          }}
+        />,
+      )
+
+      expect(wrapper.find(MUIDatePicker).prop('value')).toBe(null)
+    })
   })
 })
