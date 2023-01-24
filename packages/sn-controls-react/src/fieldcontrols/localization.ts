@@ -37,6 +37,13 @@ export const defaultLocalization = {
   },
   number: {
     noValue: 'No value set',
+    pageCountValues: {
+      '-1': 'No preview provider',
+      '-2': 'Preview generation postponed',
+      '-3': 'Preview error',
+      '-4': 'Preview generation in progress',
+      '-5': 'Preview generation in progress',
+    },
   },
   password: {
     toggleVisibility: 'Toggle password visibility',
@@ -76,6 +83,12 @@ export const defaultLocalization = {
     noValue: 'No value set',
   },
 }
+
+export type IPageCount = {
+  [key in '-1' | '-2' | '-3' | '-4' | '-5']: string
+}
+
+export const pageCountValues: IPageCount = {}
 
 export type FieldLocalization = DeepPartial<typeof defaultLocalization> & {
   richTextEditor?: LocalizationType
