@@ -52,36 +52,6 @@ export const NumberField: React.FC<ReactClientFieldSetting<NumberFieldSetting | 
     return null
   }
 
-  if (props.actionName === 'new') {
-    return (
-      <>
-        <TextField
-          autoFocus={props.autoFocus}
-          name={props.settings.Name}
-          type="number"
-          label={props.settings.DisplayName}
-          value={value}
-          required={props.settings.Compulsory}
-          disabled={props.settings.ReadOnly}
-          placeholder={props.settings.DisplayName}
-          InputProps={{
-            startAdornment: defineCurrency(),
-            endAdornment: props.settings.ShowAsPercentage ? <InputAdornment position="end">%</InputAdornment> : null,
-          }}
-          inputProps={{
-            step: defineStepValue(),
-            max: props.settings.MaxValue,
-            min: props.settings.MinValue,
-          }}
-          id={props.settings.Name}
-          fullWidth={true}
-          onChange={handleChange}
-        />
-        {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
-      </>
-    )
-  }
-
   const renderFieldValue = (fieldName: string, fieldValue: string) => {
     if (fieldName === 'PageCount' && +fieldValue < 0) {
       return localization.pageCountValues[fieldValue as keyof typeof localization.pageCountValues]
@@ -90,22 +60,55 @@ export const NumberField: React.FC<ReactClientFieldSetting<NumberFieldSetting | 
     return props.fieldValue
   }
 
-  return (
-    <div>
-      <Typography variant="caption" gutterBottom={true}>
-        {props.settings.DisplayName}
-      </Typography>
-      <Typography variant="body1" gutterBottom={true}>
-        {props.fieldValue != null ? (
-          <>
-            {isCurrencyFieldSetting(props.settings) ? props.settings.Format || '$' : null}
-            {renderFieldValue(props.settings.Name, props.fieldValue)}
-            {props.settings.ShowAsPercentage ? '%' : null}
-          </>
-        ) : (
-          localization.noValue
-        )}
-      </Typography>
-    </div>
-  )
+  switch (props.actionName) {
+    case 'edit':
+    case 'new':
+      return (
+        <>
+          <TextField
+            autoFocus={props.autoFocus}
+            name={props.settings.Name}
+            type="number"
+            label={props.settings.DisplayName}
+            value={value}
+            required={props.settings.Compulsory}
+            disabled={props.settings.ReadOnly}
+            placeholder={props.settings.DisplayName}
+            InputProps={{
+              startAdornment: defineCurrency(),
+              endAdornment: props.settings.ShowAsPercentage ? <InputAdornment position="end">%</InputAdornment> : null,
+            }}
+            inputProps={{
+              step: defineStepValue(),
+              max: props.settings.MaxValue,
+              min: props.settings.MinValue,
+            }}
+            id={props.settings.Name}
+            fullWidth={true}
+            onChange={handleChange}
+          />
+          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
+        </>
+      )
+    case 'browse':
+    default:
+      return (
+        <div>
+          <Typography variant="caption" gutterBottom={true}>
+            {props.settings.DisplayName}
+          </Typography>
+          <Typography variant="body1" gutterBottom={true}>
+            {props.fieldValue != null ? (
+              <>
+                {isCurrencyFieldSetting(props.settings) ? props.settings.Format || '$' : null}
+                {renderFieldValue(props.settings.Name, props.fieldValue)}
+                {props.settings.ShowAsPercentage ? '%' : null}
+              </>
+            ) : (
+              localization.noValue
+            )}
+          </Typography>
+        </div>
+      )
+  }
 }
