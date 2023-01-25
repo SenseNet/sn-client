@@ -84,12 +84,6 @@ export const defaultLocalization = {
   },
 }
 
-export type IPageCount = {
-  [key in '-1' | '-2' | '-3' | '-4' | '-5']: string
-}
-
-export const pageCountValues: IPageCount = {}
-
 export type FieldLocalization = DeepPartial<typeof defaultLocalization> & {
   richTextEditor?: LocalizationType
 }
