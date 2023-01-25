@@ -7,7 +7,7 @@ import { FormHelperText, InputAdornment, TextField, Typography } from '@material
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
-import { defaultLocalization, pageCountValues } from './localization'
+import { defaultLocalization } from './localization'
 
 /**
  * Field control that represents a Number field. Available values will be populated from the FieldSettings.
