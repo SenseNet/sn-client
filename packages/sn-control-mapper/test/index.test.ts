@@ -83,6 +83,18 @@ export const controlMapperTests = describe('ControlMapper', () => {
     expect(controlOtherDateTime).toBe(ExampleDefaultFieldControl)
   })
 
+  it('should return with Page Count Field control', () => {
+    mapper.setupFieldSettingDefault('IntegerFieldSetting', (setting) => {
+      if (setting.Name === 'PageCount') {
+        return ExampleModifiedControl
+      }
+      return ExampleDefaultFieldControl
+    })
+
+    const control = mapper.getControlForContentField('File', 'PageCount', 'browse')
+    expect(control).toBe(ExampleModifiedControl)
+  })
+
   it('Should return a correct default control for a specified Content Field when there is a ContentType bound setting specified', () => {
     mapper.setupFieldSettingForControl('Task', 'DisplayName', () => {
       return ExampleModifiedControl2
