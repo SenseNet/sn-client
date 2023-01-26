@@ -1,5 +1,5 @@
 import { Repository } from '@sensenet/client-core'
-import { ChoiceFieldSetting, FieldVisibility } from '@sensenet/default-content-types'
+import { ChoiceFieldSetting, FieldSetting, FieldVisibility, IntegerFieldSetting } from '@sensenet/default-content-types'
 import { ControlMapper } from '../src'
 
 class ExampleControlBase {}
@@ -88,10 +88,12 @@ export const controlMapperTests = describe('ControlMapper', () => {
       if (setting.Name === 'PageCount') {
         return ExampleModifiedControl
       }
+      return ExampleDefaultFieldControl
     })
 
-    const control = mapper.getControlForContentField('File', 'PageCount', 'browse')
-    expect(control).toBe(ExampleModifiedControl)
+    const fs = { Name: 'PageCount', Type: 'IntegerFieldSetting' } as IntegerFieldSetting
+    const controlType = mapper.getControlForFieldSetting(fs)
+    expect(controlType).toBe(ExampleModifiedControl)
   })
 
   it('Should return a correct default control for a specified Content Field when there is a ContentType bound setting specified', () => {
