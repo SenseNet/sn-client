@@ -88,7 +88,6 @@ export const controlMapperTests = describe('ControlMapper', () => {
       if (setting.Name === 'PageCount') {
         return ExampleModifiedControl
       }
-      return ExampleDefaultFieldControl
     })
 
     const control = mapper.getControlForContentField('File', 'PageCount', 'browse')
