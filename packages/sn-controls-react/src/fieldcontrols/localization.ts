@@ -85,6 +85,8 @@ export const defaultLocalization = {
   },
 }
 
+export type PageCountKey = keyof typeof defaultLocalization.pageCount
+
 export type FieldLocalization = DeepPartial<typeof defaultLocalization> & {
   richTextEditor?: LocalizationType
 }

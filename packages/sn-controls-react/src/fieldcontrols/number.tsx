@@ -52,14 +52,6 @@ export const NumberField: React.FC<ReactClientFieldSetting<NumberFieldSetting | 
     return null
   }
 
-  const renderFieldValue = (fieldName: string, fieldValue: string) => {
-    if (fieldName === 'PageCount' && +fieldValue < 0) {
-      return localization.pageCountValues[fieldValue as keyof typeof localization.pageCountValues]
-    }
-
-    return props.fieldValue
-  }
-
   switch (props.actionName) {
     case 'edit':
     case 'new':
@@ -101,7 +93,7 @@ export const NumberField: React.FC<ReactClientFieldSetting<NumberFieldSetting | 
             {props.fieldValue != null ? (
               <>
                 {isCurrencyFieldSetting(props.settings) ? props.settings.Format || '$' : null}
-                {renderFieldValue(props.settings.Name, props.fieldValue)}
+                {props.fieldValue}
                 {props.settings.ShowAsPercentage ? '%' : null}
               </>
             ) : (
