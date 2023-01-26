@@ -35,15 +35,16 @@ export const defaultLocalization = {
     invalidCharactersError: `The Name field can't contain these characters:`,
     noValue: 'No value set',
   },
+  pageCount: {
+    noValue: 'No Pages',
+    '-1': 'Preview generation in progress',
+    '-2': 'File type not supported',
+    '-3': 'Preview error',
+    '-4': 'Preview generation postponed',
+    '-5': 'No preview provider',
+  },
   number: {
     noValue: 'No value set',
-    pageCountValues: {
-      '-1': 'No preview provider',
-      '-2': 'Preview generation postponed',
-      '-3': 'Preview error',
-      '-4': 'Preview generation in progress',
-      '-5': 'Preview generation in progress',
-    },
   },
   password: {
     toggleVisibility: 'Toggle password visibility',
