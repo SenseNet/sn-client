@@ -1,4 +1,4 @@
-import { DateTimeMode } from '@sensenet/default-content-types'
+import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-types'
 import Typography from '@material-ui/core/Typography'
 import { DateTimePicker, DatePicker as MUIDatePicker } from '@material-ui/pickers'
 import format from 'date-fns/format'
@@ -6,8 +6,8 @@ import { shallow } from 'enzyme'
 import React from 'react'
 import { DatePicker, defaultLocalization } from '../src/fieldcontrols'
 
-const defaultSettings = {
-  DateTimeMode: 2,
+const defaultSettings: DateTimeFieldSetting = {
+  DateTimeMode: DateTimeMode.DateAndTime,
   Name: 'ModificationDate',
   FieldClassName: 'SenseNet.ContentRepository.Fields.DateTimeField',
   DisplayName: 'Modification Date',
@@ -93,6 +93,7 @@ describe('Date/Date time field control', () => {
           }}
         />,
       )
+
       expect(wrapper.find(MUIDatePicker).prop('value')).toBe(value)
       expect(wrapper.find(MUIDatePicker).prop('name')).toBe(defaultSettings.Name)
       expect(wrapper.find(MUIDatePicker).prop('id')).toBe(defaultSettings.Name)
@@ -123,6 +124,21 @@ describe('Date/Date time field control', () => {
       const wrapper = shallow(<DatePicker actionName="edit" fieldOnChange={fieldOnChange} settings={defaultSettings} />)
       wrapper.find(DateTimePicker).simulate('change', new Date(123234538324).toISOString())
       expect(fieldOnChange).toBeCalled()
+    })
+
+    it('value should be null when value is .Net min.Date', () => {
+      const wrapper = shallow(
+        <DatePicker
+          actionName="edit"
+          fieldValue="0001-01-01T00:00:00Z"
+          settings={{
+            ...defaultSettings,
+            DateTimeMode: DateTimeMode.Date,
+          }}
+        />,
+      )
+
+      expect(wrapper.find(MUIDatePicker).prop('value')).toBe(null)
     })
   })
 })
