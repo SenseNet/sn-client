@@ -21,6 +21,19 @@ export const controlMapperTests = describe('ControlMapper', () => {
     mapper = new ControlMapper(repository, ExampleControlBase, ExampleDefaultFieldControl)
   })
 
+  it('should return with Page Count Field control', () => {
+    mapper.setupFieldSettingDefault('IntegerFieldSetting', (setting) => {
+      if (setting.Name === 'PageCount') {
+        return ExampleModifiedControl
+      }
+      return ExampleDefaultFieldControl
+    })
+
+    const fs = { Name: 'PageCount', Type: 'IntegerFieldSetting' } as IntegerFieldSetting
+    const controlType = mapper.getControlForFieldSetting(fs)
+    expect(controlType).toBe(ExampleModifiedControl)
+  })
+
   it('Should be constructed', () => {
     expect(mapper).toBeInstanceOf(ControlMapper)
   })
@@ -81,19 +94,6 @@ export const controlMapperTests = describe('ControlMapper', () => {
 
     const controlOtherDateTime = mapper.getControlForContentField('Task', 'DueDate', 'new')
     expect(controlOtherDateTime).toBe(ExampleDefaultFieldControl)
-  })
-
-  it('should return with Page Count Field control', () => {
-    mapper.setupFieldSettingDefault('IntegerFieldSetting', (setting) => {
-      if (setting.Name === 'PageCount') {
-        return ExampleModifiedControl
-      }
-      return ExampleDefaultFieldControl
-    })
-
-    const fs = { Name: 'PageCount', Type: 'IntegerFieldSetting' } as IntegerFieldSetting
-    const controlType = mapper.getControlForFieldSetting(fs)
-    expect(controlType).toBe(ExampleModifiedControl)
   })
 
   it('Should return a correct default control for a specified Content Field when there is a ContentType bound setting specified', () => {
