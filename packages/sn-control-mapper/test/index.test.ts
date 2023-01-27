@@ -32,6 +32,10 @@ export const controlMapperTests = describe('ControlMapper', () => {
     const fs = { Name: 'PageCount', Type: 'IntegerFieldSetting' } as IntegerFieldSetting
     const controlType = mapper.getControlForFieldSetting(fs)
     expect(controlType).toBe(ExampleModifiedControl)
+
+    const fs2 = { Type: 'IntegerFieldSetting' } as IntegerFieldSetting
+    const controlType2 = mapper.getControlForFieldSetting(fs2)
+    expect(controlType2).toBe(ExampleDefaultFieldControl)
   })
 
   it('Should be constructed', () => {
