@@ -21,7 +21,13 @@ export const controlMapperTests = describe('ControlMapper', () => {
     mapper = new ControlMapper(repository, ExampleControlBase, ExampleDefaultFieldControl)
   })
 
-  it('should return with Page Count Field control', () => {
+  it('Should return correct Default Control for FieldSettings', () => {
+    const fs = {} as IntegerFieldSetting
+    const controlType = mapper.getControlForFieldSetting(fs)
+    expect(controlType).toBe(ExampleDefaultFieldControl)
+  })
+
+  it('Should return correct explicit defined Control for PageCount', () => {
     mapper.setupFieldSettingDefault('IntegerFieldSetting', (setting) => {
       if (setting.Name === 'PageCount') {
         return ExampleModifiedControl
@@ -29,8 +35,13 @@ export const controlMapperTests = describe('ControlMapper', () => {
       return ExampleDefaultFieldControl
     })
 
-    const control = mapper.getControlForContentField('File', 'PageCount', 'browse')
-    expect(control).toBe(ExampleModifiedControl)
+    const fs = { Name: 'PageCount', Type: 'IntegerFieldSetting' } as IntegerFieldSetting
+    const controlType = mapper.getControlForFieldSetting(fs)
+    expect(controlType).toBe(ExampleModifiedControl)
+
+    const fs2 = { Name: '', Type: 'IntegerFieldSetting' } as IntegerFieldSetting
+    const controlType2 = mapper.getControlForFieldSetting(fs2)
+    expect(controlType2).toBe(ExampleDefaultFieldControl)
   })
 
   it('Should be constructed', () => {
