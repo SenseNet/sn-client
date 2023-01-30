@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { shallow } from 'enzyme'
 import React from 'react'
-import { defaultLocalization, PageCount } from '../src/fieldcontrols'
+import { defaultLocalization, NumberField, PageCount } from '../src/fieldcontrols'
 
 describe('Name field control', () => {
   const defaultSettings = {
@@ -31,6 +31,11 @@ describe('Name field control', () => {
     it('should show no value message when field value is not provided', () => {
       const wrapper = shallow(<PageCount actionName="browse" settings={defaultSettings} />)
       expect(wrapper.find(Typography).last().text()).toBe(defaultLocalization.pageCount.noValue)
+    })
+    it('should show fieldValue of 1 and UsePageCount Field', () => {
+      const value = '1'
+      const wrapper = shallow(<NumberField fieldValue={value} actionName="browse" settings={defaultSettings} />)
+      expect(wrapper.find(Typography).last().text()).toBe(value)
     })
   })
   describe('in edit/new view', () => {
