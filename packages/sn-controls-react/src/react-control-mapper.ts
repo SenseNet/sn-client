@@ -41,12 +41,10 @@ export const reactControlMapper = (repository: Repository) => {
       return FieldControls.NumberField
     })
     .setupFieldSettingDefault('IntegerFieldSetting', (setting) => {
-      switch (setting.Name) {
-        case 'PageCount':
-          return FieldControls.PageCount
-        default:
-          return FieldControls.NumberField
+      if (setting.Name === 'PageCount') {
+        return FieldControls.PageCount
       }
+      return FieldControls.NumberField
     })
     .setupFieldSettingDefault('ColorFieldSetting', () => {
       return FieldControls.ColorPicker
