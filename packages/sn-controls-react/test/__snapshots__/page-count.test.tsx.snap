@@ -20,14 +20,12 @@ exports[`Name field control in browse view should show the displayname and field
 exports[`Name field control in edit/new view should set all the props 1`] = `
 <Fragment>
   <WithStyles(ForwardRef(TextField))
-    disabled={true}
     fullWidth={true}
     id="PageCount"
     label="Page Count"
     name="PageCount"
     onChange={[Function]}
     placeholder="Page Count"
-    required={true}
     type="number"
     value="1"
   />

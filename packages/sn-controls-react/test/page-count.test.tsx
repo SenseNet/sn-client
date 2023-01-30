@@ -47,8 +47,6 @@ describe('Name field control', () => {
           actionName="edit"
           settings={{
             ...defaultSettings,
-            ReadOnly: true,
-            Compulsory: true,
           }}
         />,
       )
