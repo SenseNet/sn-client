@@ -39,7 +39,7 @@ export const controlMapperTests = describe('ControlMapper', () => {
     const controlType = mapper.getControlForFieldSetting(fs)
     expect(controlType).toBe(ExampleModifiedControl)
 
-    const fs2 = { Name: '', Type: 'IntegerFieldSetting' } as IntegerFieldSetting
+    const fs2 = { Name: 'test', Type: 'IntegerFieldSetting' } as IntegerFieldSetting
     const controlType2 = mapper.getControlForFieldSetting(fs2)
     expect(controlType2).toBe(ExampleDefaultFieldControl)
   })
