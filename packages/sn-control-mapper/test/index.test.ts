@@ -1,6 +1,6 @@
 import { Repository } from '@sensenet/client-core'
 import { ChoiceFieldSetting, FieldVisibility, IntegerFieldSetting } from '@sensenet/default-content-types'
-import { PageCount } from '../../sn-controls-react/src/fieldcontrols'
+import * as FieldControls from '../../sn-controls-react/src/fieldcontrols'
 import { ControlMapper } from '../src'
 
 class ExampleControlBase {}
@@ -31,14 +31,14 @@ export const controlMapperTests = describe('ControlMapper', () => {
   it('Should return correct explicit defined Control for PageCount', () => {
     mapper.setupFieldSettingDefault('IntegerFieldSetting', (setting) => {
       if (setting.Name === 'PageCount') {
-        return PageCount
+        return FieldControls.PageCount
       }
       return ExampleDefaultFieldControl
     })
 
     const fs = { Name: 'PageCount', Type: 'IntegerFieldSetting' } as IntegerFieldSetting
     const controlType = mapper.getControlForFieldSetting(fs)
-    expect(controlType).toBe(PageCount)
+    expect(controlType).toBe(FieldControls.PageCount)
 
     const fs2 = { Name: 'test', Type: 'IntegerFieldSetting' } as IntegerFieldSetting
     const controlType2 = mapper.getControlForFieldSetting(fs2)
