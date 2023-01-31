@@ -22,7 +22,7 @@ describe('Date/Date time field control', () => {
     it('should show the displayname and fieldValue when fieldValue is provided', () => {
       const wrapper = shallow(<DatePicker fieldValue={value} actionName="browse" settings={defaultSettings} />)
       expect(wrapper.find(Typography).first().text()).toBe(defaultSettings.DisplayName)
-      expect(wrapper.find(Typography).last().text()).toBe(format(new Date(value), 'PPPppp').toLocaleString())
+      expect(wrapper.find(Typography).last().text()).toBe(format(new Date(value), 'PPpp').toLocaleString())
     })
 
     it('should show the displayname and fieldValue as date when fieldValue is provided and set as date', () => {
