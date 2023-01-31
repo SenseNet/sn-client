@@ -25,28 +25,6 @@ describe('Date/Date time field control', () => {
       expect(wrapper.find(Typography).last().text()).toBe(format(new Date(value), 'PPpp').toLocaleString())
     })
 
-    // it('it should display human readable format YesterDay', () => {
-    //   const date = new Date()
-    //   const yesterday = new Date(date.getTime() - 24 * 60 * 60 * 1000)
-    //   const yesterdayISOUTC = yesterday.toISOString()
-    //   const formatYesterday = "'Yesterday' h:mm a"
-
-    //   const wrapper = shallow(
-    //     <DatePicker actionName="browse" fieldValue={yesterdayISOUTC} settings={defaultSettings} />,
-    //   )
-    //   expect(wrapper.find(Typography).last().text()).toBe(format(date, formatYesterday))
-    // })
-
-    // it('it should display human readable format TodayDay', () => {
-    //   const date = new Date()
-    //   const today = new Date(date.getTime())
-    //   const todayISOUTC = today.toISOString()
-    //   const formatToday = "'Today' h:mm a"
-
-    //   const wrapper = shallow(<DatePicker actionName="browse" fieldValue={todayISOUTC} settings={defaultSettings} />)
-    //   expect(wrapper.find(Typography).last().text()).toBe(format(date, formatToday))
-    // })
-
     it('should show the displayname and fieldValue as date when fieldValue is provided and set as date', () => {
       const wrapper = shallow(
         <DatePicker
