@@ -1,5 +1,6 @@
 import { Repository } from '@sensenet/client-core'
-import { ChoiceFieldSetting, FieldVisibility } from '@sensenet/default-content-types'
+import { ChoiceFieldSetting, FieldVisibility, IntegerFieldSetting } from '@sensenet/default-content-types'
+import * as FieldControls from '../../sn-controls-react/src/fieldcontrols'
 import { ControlMapper } from '../src'
 
 class ExampleControlBase {}
@@ -19,6 +20,29 @@ export const controlMapperTests = describe('ControlMapper', () => {
   beforeEach(() => {
     repository = new Repository({}, async () => ({} as any))
     mapper = new ControlMapper(repository, ExampleControlBase, ExampleDefaultFieldControl)
+  })
+
+  it('Should return correct Default Control for FieldSettings', () => {
+    const fs = {} as IntegerFieldSetting
+    const controlType = mapper.getControlForFieldSetting(fs)
+    expect(controlType).toBe(ExampleDefaultFieldControl)
+  })
+
+  it('Should return correct explicit defined Control for PageCount', () => {
+    mapper.setupFieldSettingDefault('IntegerFieldSetting', (setting) => {
+      if (setting.Name === 'PageCount') {
+        return FieldControls.PageCount
+      }
+      return ExampleDefaultFieldControl
+    })
+
+    const fs = { Name: 'PageCount', Type: 'IntegerFieldSetting' } as IntegerFieldSetting
+    const controlType = mapper.getControlForFieldSetting(fs)
+    expect(controlType).toBe(FieldControls.PageCount)
+
+    const fs2 = { Name: 'test', Type: 'IntegerFieldSetting' } as IntegerFieldSetting
+    const controlType2 = mapper.getControlForFieldSetting(fs2)
+    expect(controlType2).toBe(ExampleDefaultFieldControl)
   })
 
   it('Should be constructed', () => {
