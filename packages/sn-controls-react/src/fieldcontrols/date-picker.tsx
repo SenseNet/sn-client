@@ -7,7 +7,7 @@ import { FormHelperText, Typography } from '@material-ui/core'
 import { DateTimePicker, DatePicker as MUIDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import type { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import DateFnsUtils from '@date-io/date-fns'
-import format from 'date-fns/format'
+import { format, isToday, isYesterday } from 'date-fns'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
@@ -52,6 +52,23 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
     }
     setValue(new Date(date).toISOString())
     fieldOnChange?.(settings.Name, new Date(date).toISOString())
+  }
+
+  const toHumanReadableDate = (date: Date, formatDefault: string) => {
+    const formatToday = "'Today at' h:mm a"
+    const formatYesterday = "'Yesterday at' h:mm a"
+
+    console.log(date, formatToday, { locale })
+
+    if (isToday(date)) {
+      return format(date, formatToday, { locale })
+    }
+
+    if (isYesterday(date)) {
+      return format(date, formatYesterday, { locale })
+    }
+
+    return format(date, formatDefault, { locale })
   }
 
   switch (actionName) {
@@ -102,8 +119,8 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
           <Typography variant="body1" gutterBottom={true}>
             {fieldValue
               ? settings.DateTimeMode === DateTimeMode.Date
-                ? format(new Date(fieldValue), 'PPP', { locale }).toLocaleString()
-                : format(new Date(fieldValue), 'PPPppp', { locale }).toLocaleString()
+                ? toHumanReadableDate(new Date(fieldValue), 'PPP').toLocaleString()
+                : toHumanReadableDate(new Date(fieldValue), 'PPpp').toLocaleString()
               : localizationMerged.noValue}
           </Typography>
         </div>
