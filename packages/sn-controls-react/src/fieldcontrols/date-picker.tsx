@@ -55,8 +55,8 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
   }
 
   const toHumanReadableDate = (date: Date, formatDefault: string) => {
-    const formatToday = "'Today at' h:mm a"
-    const formatYesterday = "'Yesterday at' h:mm a"
+    const formatToday = "'Today' h:mm a"
+    const formatYesterday = "'Yesterday' h:mm a"
 
     if (isToday(date)) {
       return format(date, formatToday, { locale })

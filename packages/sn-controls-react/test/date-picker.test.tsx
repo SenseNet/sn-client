@@ -29,7 +29,7 @@ describe('Date/Date time field control', () => {
       const date = new Date()
       const yesterday = new Date(date.getTime() - 24 * 60 * 60 * 1000)
       const yesterdayISOUTC = yesterday.toISOString()
-      const formatYesterday = "'Yesterday at' h:mm a"
+      const formatYesterday = "'Yesterday' h:mm a"
 
       const wrapper = shallow(
         <DatePicker actionName="browse" fieldValue={yesterdayISOUTC} settings={defaultSettings} />,
@@ -41,7 +41,7 @@ describe('Date/Date time field control', () => {
       const date = new Date()
       const today = new Date(date.getTime())
       const todayISOUTC = today.toISOString()
-      const formatToday = "'Today at' h:mm a"
+      const formatToday = "'Today' h:mm a"
 
       const wrapper = shallow(<DatePicker actionName="browse" fieldValue={todayISOUTC} settings={defaultSettings} />)
       expect(wrapper.find(Typography).last().text()).toBe(format(date, formatToday))
