@@ -8,12 +8,16 @@ exports[`Date/Date time field control in browse view should show the displayname
   >
     Modification Date
   </WithStyles(ForwardRef(Typography))>
-  <WithStyles(ForwardRef(Typography))
-    gutterBottom={true}
-    variant="body1"
+  <WithStyles(ForwardRef(Tooltip))
+    title="1912-04-15T02:10:00.000Z"
   >
-    April 15th, 1912
-  </WithStyles(ForwardRef(Typography))>
+    <WithStyles(ForwardRef(Typography))
+      gutterBottom={true}
+      variant="body1"
+    >
+      4/15/1912
+    </WithStyles(ForwardRef(Typography))>
+  </WithStyles(ForwardRef(Tooltip))>
 </div>
 `;
 

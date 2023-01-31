@@ -4,7 +4,7 @@ import { DateTimePicker, DatePicker as MUIDatePicker } from '@material-ui/picker
 import format from 'date-fns/format'
 import { shallow } from 'enzyme'
 import React from 'react'
-import { DatePicker, defaultLocalization } from '../src/fieldcontrols'
+import { DatePicker, dateTimeOptions, defaultLocalization } from '../src/fieldcontrols'
 
 const defaultSettings: DateTimeFieldSetting = {
   DateTimeMode: DateTimeMode.DateAndTime,
@@ -20,9 +20,13 @@ const value = '1912-04-15T02:10:00.000Z'
 describe('Date/Date time field control', () => {
   describe('in browse view', () => {
     it('should show the displayname and fieldValue when fieldValue is provided', () => {
-      const wrapper = shallow(<DatePicker fieldValue={value} actionName="browse" settings={defaultSettings} />)
+      const wrapper = shallow(
+        <DatePicker locale={{ code: 'en-Us' }} fieldValue={value} actionName="browse" settings={defaultSettings} />,
+      )
       expect(wrapper.find(Typography).first().text()).toBe(defaultSettings.DisplayName)
-      expect(wrapper.find(Typography).last().text()).toBe(format(new Date(value), 'PPpp').toLocaleString())
+      expect(wrapper.find(Typography).last().text()).toBe(
+        new Intl.DateTimeFormat('en-Us', dateTimeOptions).format(new Date(value)),
+      )
     })
 
     it('should show the displayname and fieldValue as date when fieldValue is provided and set as date', () => {
@@ -30,11 +34,12 @@ describe('Date/Date time field control', () => {
         <DatePicker
           fieldValue={value}
           actionName="browse"
+          locale={{ code: 'en-Us' }}
           settings={{ ...defaultSettings, DateTimeMode: DateTimeMode.Date }}
         />,
       )
       expect(wrapper.find(Typography).first().text()).toBe(defaultSettings.DisplayName)
-      expect(wrapper.find(Typography).last().text()).toBe(format(new Date(value), 'PPP').toLocaleString())
+      expect(wrapper.find(Typography).last().text()).toBe(new Intl.DateTimeFormat('en-Us').format(new Date(value)))
       expect(wrapper).toMatchSnapshot()
     })
 
