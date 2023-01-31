@@ -3,17 +3,25 @@
  */
 import { deepMerge } from '@sensenet/client-utils'
 import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-types'
-import { FormHelperText, Typography } from '@material-ui/core'
+import { FormHelperText, Tooltip, Typography } from '@material-ui/core'
 import { DateTimePicker, DatePicker as MUIDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import type { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import DateFnsUtils from '@date-io/date-fns'
-import { format, isToday, isYesterday } from 'date-fns'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { defaultLocalization } from './localization'
 
 const minDatePickerDate = new Date('0001-01-01')
+
+const dateTimeOptions: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+  second: 'numeric',
+}
 
 const initialValueState = ({
   fieldValue,
@@ -52,21 +60,6 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
     }
     setValue(new Date(date).toISOString())
     fieldOnChange?.(settings.Name, new Date(date).toISOString())
-  }
-
-  const toHumanReadableDate = (date: Date, formatDefault: string) => {
-    const formatToday = "'Today' h:mm a"
-    const formatYesterday = "'Yesterday' h:mm a"
-
-    if (isToday(date)) {
-      return format(date, formatToday, { locale })
-    }
-
-    if (isYesterday(date)) {
-      return format(date, formatYesterday, { locale })
-    }
-
-    return format(date, formatDefault, { locale })
   }
 
   switch (actionName) {
@@ -114,13 +107,16 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
           <Typography variant="caption" gutterBottom={true}>
             {settings.DisplayName}
           </Typography>
-          <Typography variant="body1" gutterBottom={true}>
-            {fieldValue
-              ? settings.DateTimeMode === DateTimeMode.Date
-                ? toHumanReadableDate(new Date(fieldValue), 'PPP').toLocaleString()
-                : toHumanReadableDate(new Date(fieldValue), 'PPpp').toLocaleString()
-              : localizationMerged.noValue}
-          </Typography>
+
+          <Tooltip title={fieldValue as string}>
+            <Typography variant="body1" gutterBottom={true}>
+              {fieldValue
+                ? settings.DateTimeMode === DateTimeMode.Date
+                  ? new Intl.DateTimeFormat(locale?.code).format(new Date(fieldValue))
+                  : new Intl.DateTimeFormat(locale?.code, dateTimeOptions).format(new Date(fieldValue))
+                : localizationMerged.noValue}
+            </Typography>
+          </Tooltip>
         </div>
       )
   }
