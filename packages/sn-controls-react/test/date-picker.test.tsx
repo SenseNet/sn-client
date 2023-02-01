@@ -1,6 +1,7 @@
 import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-types'
 import Typography from '@material-ui/core/Typography'
 import { DateTimePicker, DatePicker as MUIDatePicker } from '@material-ui/pickers'
+import { intlFormatDistance } from 'date-fns'
 import { shallow } from 'enzyme'
 import React from 'react'
 import { DatePicker, dateTimeOptions, defaultLocalization } from '../src/fieldcontrols'
@@ -14,17 +15,23 @@ const defaultSettings: DateTimeFieldSetting = {
   Type: 'DateTimeFieldSetting',
 }
 
+const locale: Locale = {
+  code: 'en-US',
+}
+
 const value = '1912-04-15T02:10:00.000Z'
 
 describe('Date/Date time field control', () => {
   describe('in browse view', () => {
     it('should show the displayname and fieldValue when fieldValue is provided', () => {
       const wrapper = shallow(
-        <DatePicker locale={{ code: 'en-Us' }} fieldValue={value} actionName="browse" settings={defaultSettings} />,
+        <DatePicker locale={locale} fieldValue={value} actionName="browse" settings={defaultSettings} />,
       )
-      expect(wrapper.find(Typography).first().text()).toBe(defaultSettings.DisplayName)
+      expect(wrapper.find(Typography).first().text()).toBe(
+        `${defaultSettings.DisplayName}- ${intlFormatDistance(new Date(value), new Date(), { locale: locale?.code })}`,
+      )
       expect(wrapper.find(Typography).last().text()).toBe(
-        new Intl.DateTimeFormat('en-Us', dateTimeOptions).format(new Date(value)),
+        new Intl.DateTimeFormat(locale.code, dateTimeOptions).format(new Date(value)),
       )
     })
 
@@ -33,7 +40,7 @@ describe('Date/Date time field control', () => {
         <DatePicker
           fieldValue={value}
           actionName="browse"
-          locale={{ code: 'en-Us' }}
+          locale={locale}
           settings={{ ...defaultSettings, DateTimeMode: DateTimeMode.Date }}
         />,
       )
