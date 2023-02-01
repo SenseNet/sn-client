@@ -14,7 +14,7 @@ import { defaultLocalization } from './localization'
 
 const minDatePickerDate = new Date('0001-01-01')
 
-const dateTimeOptions: Intl.DateTimeFormatOptions = {
+export const dateTimeOptions: Intl.DateTimeFormatOptions = {
   year: 'numeric',
   month: 'numeric',
   day: 'numeric',
