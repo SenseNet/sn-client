@@ -25,14 +25,10 @@ import { defaultLocalization } from './localization'
 const useStyles = makeStyles(() => {
   return createStyles({
     downloadContainer: {
-      display: 'flex',
-      alignItems: 'flex-end',
       cursor: 'pointer',
-      columnGap: '10px',
-      '& p ': {
-        marginBottom: '1.5px',
-        lineHeight: 1,
-      },
+    },
+    downloadIcon: {
+      fontSize: '30px',
     },
     textDate: {
       fontSize: '0.66rem',
@@ -188,10 +184,7 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
           </Typography>
           <Tooltip title={fileName || localization.noValue}>
             <Box onClick={download.download} className={classes.downloadContainer}>
-              <CloudDownload />
-              <Typography variant="body1" gutterBottom={true}>
-                {defaultLocalization.fileDownload.buttonText}
-              </Typography>
+              <CloudDownload className={classes.downloadIcon} />
             </Box>
           </Tooltip>
         </div>
