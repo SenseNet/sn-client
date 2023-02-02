@@ -110,7 +110,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
                 placeholder={settings.DisplayName}
                 required={settings.Compulsory}
                 fullWidth={true}
-                format="yyyy MMMM do hh:mm aaaa"
+                format="yyyy MMMM dd hh:mm aaaa"
               />
             )}
             {!hideDescription && <FormHelperText>{settings.Description}</FormHelperText>}
@@ -124,12 +124,12 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
             {settings.DisplayName}
             {settings.DateTimeMode === DateTimeMode.DateAndTime && fieldValue && (
               <span className={classes.textDate}>
-                - {intlFormatDistance(dateFieldValue, new Date(), { locale: locale?.code })}
+                {intlFormatDistance(dateFieldValue, new Date(), {
+                  locale: locale?.code || window.navigator.language,
+                })}
               </span>
             )}
           </Typography>
-
-          {/* +1 - 1 nap akkor legyen ott ez az extra információ */}
 
           <Tooltip title={fieldValue as string}>
             <Typography variant="body1" gutterBottom={true}>
