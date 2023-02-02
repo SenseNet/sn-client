@@ -3,28 +3,59 @@
  */
 import { Content } from '@sensenet/client-core'
 import { deepMerge, PathHelper } from '@sensenet/client-utils'
-import { BinaryFieldSetting } from '@sensenet/default-content-types'
-import { Button, FormControl, FormHelperText, Input, InputLabel, Typography } from '@material-ui/core'
+import { BinaryFieldSetting, GenericContent } from '@sensenet/default-content-types'
+import { useDownload } from '@sensenet/hooks-react'
+import {
+  Box,
+  Button,
+  createStyles,
+  FormControl,
+  FormHelperText,
+  Input,
+  InputLabel,
+  makeStyles,
+  Tooltip,
+  Typography,
+} from '@material-ui/core'
+import CloudDownload from '@material-ui/icons/CloudDownload'
 import React, { useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { defaultLocalization } from './localization'
 
-const styles = {
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  label: {
-    padding: 0,
-    fontSize: '12px',
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    lineHeight: 1,
-  },
-  value: {
-    fontStyle: 'italic',
-    margin: '5px 0',
-  },
-}
+const useStyles = makeStyles(() => {
+  return createStyles({
+    downloadContainer: {
+      display: 'flex',
+      alignItems: 'flex-end',
+      cursor: 'pointer',
+      columnGap: '10px',
+      '& p ': {
+        marginBottom: '1.5px',
+        lineHeight: 1,
+      },
+    },
+    textDate: {
+      fontSize: '0.66rem',
+      letterSpacing: '0.5px',
+      marginLeft: '5px',
+      verticalAlign: 'middle',
+    },
+    root: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    label: {
+      padding: 0,
+      fontSize: '12px',
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+      lineHeight: 1,
+    },
+    value: {
+      fontStyle: 'italic',
+      margin: '5px 0',
+    },
+  })
+})
 
 interface FileName {
   IsValid: boolean
@@ -120,16 +151,20 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
     }
   }
 
+  const download = useDownload(props.content as GenericContent)
+
+  const classes = useStyles()
+
   switch (props.actionName) {
     case 'edit':
     case 'new':
       return (
         <FormControl
-          style={styles.root as any}
+          className={classes.root}
           key={props.settings.Name}
           component={'fieldset' as 'div'}
           required={props.settings.Compulsory}>
-          <label style={styles.label} htmlFor={props.settings.Name}>
+          <label className={classes.label} htmlFor={props.settings.Name}>
             {props.settings.DisplayName}
           </label>
           <Typography variant="body1" gutterBottom={true}>
@@ -151,9 +186,14 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
-          <Typography variant="body1" gutterBottom={true}>
-            {fileName || localization.noValue}
-          </Typography>
+          <Tooltip title={fileName || localization.noValue}>
+            <Box onClick={download.download} className={classes.downloadContainer}>
+              <CloudDownload />
+              <Typography variant="body1" gutterBottom={true}>
+                {defaultLocalization.fileDownload.buttonText}
+              </Typography>
+            </Box>
+          </Tooltip>
         </div>
       )
   }
