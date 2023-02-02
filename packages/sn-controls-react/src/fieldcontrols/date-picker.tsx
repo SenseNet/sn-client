@@ -76,6 +76,8 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
     fieldOnChange?.(settings.Name, new Date(date).toISOString())
   }
 
+  const localeCode = locale?.code || window.navigator.language
+
   const dateFieldValue: Date = new Date(fieldValue as string)
 
   switch (actionName) {
@@ -125,7 +127,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
             {settings.DateTimeMode === DateTimeMode.DateAndTime && fieldValue && (
               <span className={classes.textDate}>
                 {intlFormatDistance(dateFieldValue, new Date(), {
-                  locale: locale?.code || window.navigator.language,
+                  locale: localeCode,
                 })}
               </span>
             )}
@@ -135,8 +137,8 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
             <Typography variant="body1" gutterBottom={true}>
               {fieldValue
                 ? settings.DateTimeMode === DateTimeMode.Date
-                  ? new Intl.DateTimeFormat(locale?.code).format(dateFieldValue)
-                  : new Intl.DateTimeFormat(locale?.code, dateTimeOptions).format(dateFieldValue)
+                  ? new Intl.DateTimeFormat(localeCode).format(dateFieldValue)
+                  : new Intl.DateTimeFormat(localeCode, dateTimeOptions).format(dateFieldValue)
                 : localizationMerged.noValue}
             </Typography>
           </Tooltip>
