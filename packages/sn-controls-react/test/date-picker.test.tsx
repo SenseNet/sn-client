@@ -28,7 +28,7 @@ describe('Date/Date time field control', () => {
         <DatePicker locale={locale} fieldValue={value} actionName="browse" settings={defaultSettings} />,
       )
       expect(wrapper.find(Typography).first().text()).toBe(
-        `${defaultSettings.DisplayName}- ${intlFormatDistance(new Date(value), new Date(), { locale: locale?.code })}`,
+        `${defaultSettings.DisplayName}${intlFormatDistance(new Date(value), new Date(), { locale: locale?.code })}`,
       )
       expect(wrapper.find(Typography).last().text()).toBe(
         new Intl.DateTimeFormat(locale.code, dateTimeOptions).format(new Date(value)),
