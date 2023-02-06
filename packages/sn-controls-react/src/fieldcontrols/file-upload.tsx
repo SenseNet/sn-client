@@ -3,7 +3,7 @@
  */
 import { Content } from '@sensenet/client-core'
 import { deepMerge, PathHelper } from '@sensenet/client-utils'
-import { BinaryFieldSetting } from '@sensenet/default-content-types'
+import { BinaryField, BinaryFieldSetting } from '@sensenet/default-content-types'
 import { downloadFile, useRepository } from '@sensenet/hooks-react'
 import {
   Button,
@@ -125,7 +125,7 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
    */
   const getNameFromPath = (path: string) => path.replace(/^.*[\\/]/, '')
 
-  const binaryFieldValue = props.fieldValue as any
+  const binaryFieldValue = props.fieldValue as unknown
 
   /**
    * handles change event on the fileupload input
@@ -157,6 +157,19 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
       console.error(error.message)
     }
   }
+
+  /**
+   * handle download event
+   */
+
+  const handleDownload = () => {
+    if (typeof binaryFieldValue !== 'object') return
+
+    const binaryValue = binaryFieldValue as BinaryField
+
+    downloadFile(binaryValue.__mediaresource.media_src, repo.configuration.repositoryUrl)
+  }
+
   const classes = useStyles()
 
   switch (props.actionName) {
@@ -192,8 +205,9 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
           </Typography>
           <Tooltip title={fileName || props.settings.Name}>
             <Button
+              data-test="download-button"
               className={classes.downloadButton}
-              onClick={() => downloadFile(binaryFieldValue.__mediaresource.media_src, repo.configuration.repositoryUrl)}
+              onClick={handleDownload}
               aria-label={localization.downloadButtonText}
               variant="contained"
               component="span"
