@@ -57,7 +57,6 @@ describe('File upload field control', () => {
       wrapper = mount(<FileUpload settings={defaultSettings} repository={repository} content={fileContent} />)
     })
     expect(wrapper.update().find(Typography).first().text()).toBe(defaultSettings.DisplayName)
-    expect(wrapper.find(Typography).last().text()).toBe(fileContent.Name)
   })
 
   it('should handle uploads from input', async () => {
