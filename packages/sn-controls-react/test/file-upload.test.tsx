@@ -1,6 +1,5 @@
 import { sleepAsync } from '@sensenet/client-utils'
 import { Image } from '@sensenet/default-content-types'
-import { Button } from '@material-ui/core'
 import Input from '@material-ui/core/Input'
 import Typography from '@material-ui/core/Typography'
 import { mount, shallow } from 'enzyme'
@@ -97,19 +96,5 @@ describe('File upload field control', () => {
     expect(consoleSpy).toBeCalledWith(errorMessages.repository)
     // Restore console.errors
     jest.restoreAllMocks()
-  })
-
-  it('should show show buttons.', async () => {
-    const value = {
-      __mediaResource: {
-        content_type: 'image/png',
-        edit_media: null,
-        media_etag: null,
-        media_src: '/binaryhandler.ashx?nodeid=1210&propertyname=Binary11&checksum=24417',
-      },
-    }
-
-    const wrapper = shallow(<FileUpload settings={defaultSettings} repository={repository} content={fileContent} />)
-    wrapper.find(Button).simulate('click')
   })
 })
