@@ -94,7 +94,7 @@ describe('File upload field control', () => {
     wrapper.find(Input).simulate('change', { target: { files: [], value: 'somePath' }, persist: jest.fn() })
     await sleepAsync(0)
     expect(consoleSpy).toBeCalledWith(errorMessages.repository)
-    // Restore console.errors
+    /// Restore console.errors
     jest.restoreAllMocks()
   })
 })
