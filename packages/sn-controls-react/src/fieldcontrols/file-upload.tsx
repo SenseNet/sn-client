@@ -125,7 +125,7 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
    */
   const getNameFromPath = (path: string) => path.replace(/^.*[\\/]/, '')
 
-  const binaryFieldValue = props.fieldValue as unknown
+  const binaryFieldValue = props.fieldValue as any
 
   /**
    * handles change event on the fileupload input
@@ -157,19 +157,6 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
       console.error(error.message)
     }
   }
-
-  /**
-   * handle download event
-   */
-
-  const handleDownload = () => {
-    if (typeof binaryFieldValue !== 'object') return
-
-    const binaryValue = binaryFieldValue as BinaryField
-
-    downloadFile(binaryValue.__mediaresource.media_src, repo.configuration.repositoryUrl)
-  }
-
   const classes = useStyles()
 
   switch (props.actionName) {
@@ -206,7 +193,7 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
           <Tooltip title={fileName || props.settings.Name}>
             <Button
               className={classes.downloadButton}
-              onClick={handleDownload}
+              onClick={() => downloadFile(binaryFieldValue.__mediaresource.media_src, repo.configuration.repositoryUrl)}
               aria-label={localization.downloadButtonText}
               variant="contained"
               component="span"
