@@ -31,8 +31,11 @@ const useStyles = makeStyles(() => {
     downloadContainer: {
       cursor: 'pointer',
     },
+    downloadButton: {
+      minWidth: 'unset',
+    },
     downloadIcon: {
-      fontSize: '30px',
+      fontSize: '23px',
     },
     textDate: {
       fontSize: '0.66rem',
@@ -202,6 +205,7 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
           </Typography>
           <Tooltip title={fileName || props.settings.Name}>
             <Button
+              className={classes.downloadButton}
               onClick={handleDownload}
               aria-label={localization.downloadButtonText}
               variant="contained"
