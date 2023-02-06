@@ -3,10 +3,9 @@
  */
 import { Content } from '@sensenet/client-core'
 import { deepMerge, PathHelper } from '@sensenet/client-utils'
-import { BinaryFieldSetting, GenericContent } from '@sensenet/default-content-types'
-import { useDownload } from '@sensenet/hooks-react'
+import { BinaryField, BinaryFieldSetting } from '@sensenet/default-content-types'
+import { downloadFile, useRepository } from '@sensenet/hooks-react'
 import {
-  Box,
   Button,
   createStyles,
   FormControl,
@@ -24,6 +23,11 @@ import { defaultLocalization } from './localization'
 
 const useStyles = makeStyles(() => {
   return createStyles({
+    binaryContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+    },
     downloadContainer: {
       cursor: 'pointer',
     },
@@ -86,6 +90,8 @@ export const errorMessages = {
 export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> = (props) => {
   const localization = deepMerge(defaultLocalization.fileUpload, props.localization?.fileUpload)
 
+  const repo = useRepository()
+
   const [fileName, setFileName] = useState('')
   useEffect(() => {
     const ac = new AbortController()
@@ -115,6 +121,8 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
    * returns a name from the given path
    */
   const getNameFromPath = (path: string) => path.replace(/^.*[\\/]/, '')
+
+  const binaryFieldValue = props.fieldValue as unknown
 
   /**
    * handles change event on the fileupload input
@@ -147,7 +155,17 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
     }
   }
 
-  const download = useDownload(props.content as GenericContent)
+  /**
+   * handle download event
+   */
+
+  const handleDownload = () => {
+    if (typeof binaryFieldValue !== 'object') return
+
+    const binaryValue = binaryFieldValue as BinaryField
+
+    downloadFile(binaryValue.__mediaresource.media_src, repo.configuration.repositoryUrl)
+  }
 
   const classes = useStyles()
 
@@ -164,7 +182,7 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
             {props.settings.DisplayName}
           </label>
           <Typography variant="body1" gutterBottom={true}>
-            {fileName}
+            {fileName || ''}
           </Typography>
           <InputLabel htmlFor="raised-button-file">
             <Button aria-label={localization.buttonText} variant="contained" component="span" color="primary">
@@ -178,14 +196,19 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
     case 'browse':
     default:
       return (
-        <div>
+        <div className={classes.binaryContainer}>
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
-          <Tooltip title={fileName || localization.noValue}>
-            <Box onClick={download.download} className={classes.downloadContainer}>
+          <Tooltip title={fileName || props.settings.Name}>
+            <Button
+              onClick={handleDownload}
+              aria-label={localization.downloadButtonText}
+              variant="contained"
+              component="span"
+              color="primary">
               <CloudDownload className={classes.downloadIcon} />
-            </Box>
+            </Button>
           </Tooltip>
         </div>
       )
