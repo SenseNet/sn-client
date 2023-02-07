@@ -1,5 +1,6 @@
 import { sleepAsync } from '@sensenet/client-utils'
 import { Image } from '@sensenet/default-content-types'
+import * as downloads from '@sensenet/hooks-react'
 import Input from '@material-ui/core/Input'
 import Typography from '@material-ui/core/Typography'
 import { mount, shallow } from 'enzyme'
@@ -99,7 +100,8 @@ describe('File upload field control', () => {
   })
 
   it('should call handleDownload function', async () => {
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => jest.fn())
+    const download = jest.spyOn(downloads.downloadFile)
+
     let component: any
     await act(async () => {
       component = mount(
@@ -109,8 +111,9 @@ describe('File upload field control', () => {
 
     const button = component.find('[data-test="download-button"]').last()
     button.simulate('click')
+    console.log(download.mock.calls)
 
-    expect(consoleSpy).toBeCalledTimes(0)
+    expect(download).toBeCalledTimes(1)
     jest.restoreAllMocks()
   })
 })

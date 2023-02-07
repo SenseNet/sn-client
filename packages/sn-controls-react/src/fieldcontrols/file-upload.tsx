@@ -86,7 +86,6 @@ export const errorMessages = {
   contentToFetch: 'There needs to be a content to get the name of the binary field.',
   contentToUpload: 'There needs to be a content to be able to upload.',
 }
-
 /**
  * Field control that represents a FileUpload field. Available values will be populated from the FieldSettings.
  */
@@ -128,7 +127,7 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
    */
   const getNameFromPath = (path: string) => path.replace(/^.*[\\/]/, '')
 
-  const binaryFieldValue = props.fieldValue as unknown
+  const binaryFieldValue = props.fieldValue as any
 
   /**
    * handles change event on the fileupload input
@@ -164,17 +163,6 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
   /**
    * handle download event
    */
-
-  const handleDownload = () => {
-    if (typeof binaryFieldValue !== 'object') return
-
-    try {
-      const binaryValue = binaryFieldValue as BinaryField
-      downloadFile(binaryValue.__mediaresource.media_src, repo.configuration.repositoryUrl)
-    } catch (error) {
-      console.error(error.message)
-    }
-  }
 
   const classes = useStyles()
 
@@ -213,7 +201,7 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
             <Button
               data-test="download-button"
               className={classes.downloadButton}
-              onClick={handleDownload}
+              onClick={() => downloadFile(binaryFieldValue.__mediaresource.media_src, repo.configuration.repositoryUrl)}
               aria-label={localization.downloadButtonText}
               variant="contained"
               component="span"
