@@ -3,7 +3,7 @@
  */
 import { Content } from '@sensenet/client-core'
 import { deepMerge, PathHelper } from '@sensenet/client-utils'
-import { BinaryField, BinaryFieldSetting } from '@sensenet/default-content-types'
+import { BinaryFieldSetting } from '@sensenet/default-content-types'
 import { downloadFile, useRepository } from '@sensenet/hooks-react'
 import {
   Button,
@@ -159,10 +159,6 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
       console.error(error.message)
     }
   }
-
-  /**
-   * handle download event
-   */
 
   const classes = useStyles()
 
