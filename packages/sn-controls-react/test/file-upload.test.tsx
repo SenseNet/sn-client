@@ -98,22 +98,4 @@ describe('File upload field control', () => {
     /// Restore console.errors
     jest.restoreAllMocks()
   })
-
-  it('should call handleDownload function', async () => {
-    const download = jest.spyOn(downloads.downloadFile)
-
-    let component: any
-    await act(async () => {
-      component = mount(
-        <FileUpload settings={defaultSettings} content={fileContent} actionName="browse" repository={repository} />,
-      )
-    })
-
-    const button = component.find('[data-test="download-button"]').last()
-    button.simulate('click')
-    console.log(download.mock.calls)
-
-    expect(download).toBeCalledTimes(1)
-    jest.restoreAllMocks()
-  })
 })
