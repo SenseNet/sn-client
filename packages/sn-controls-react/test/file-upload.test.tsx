@@ -98,4 +98,34 @@ describe('File upload field control', () => {
     /// Restore console.errors
     jest.restoreAllMocks()
   })
+  it('should click on button', async () => {
+    const value = {
+      __mediaresource: {
+        content_type: 'image/png',
+        edit_media: null,
+        media_etag: null,
+        media_src: '/binaryhandler.ashx?nodeid=1210&propertyname=Binary11&checksum=24417',
+      },
+    }
+
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => jest.fn())
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(
+        <FileUpload
+          actionName="browse"
+          fieldValue={value as any}
+          settings={defaultSettings}
+          repository={repository}
+          content={fileContent}
+        />,
+      )
+    })
+
+    wrapper.find("[data-test='download-button']").last().simulate('click')
+
+    expect(consoleSpy).toBeCalledTimes(0)
+    /// Restore console.errors
+    jest.restoreAllMocks()
+  })
 })
