@@ -61,8 +61,6 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
     return () => schemaObservable.dispose()
   }, [repository.schemas, props.content.Type, controlMapper])
 
-  console.log(schema)
-
   return (
     <>
       {props.renderTitle ? (

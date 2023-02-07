@@ -112,7 +112,10 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
           idOrPath: loadPath,
           requestInit: { signal: ac.signal },
         })
-        setFileName(binaryField.d.Binary.FileName.FullFileName)
+
+        const binaryData = Object.values(binaryField.d)[0] as Binary
+
+        setFileName(binaryData.FileName.FullFileName)
       } catch (error) {
         console.error(error.message)
       }
@@ -165,9 +168,12 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
   const handleDownload = () => {
     if (typeof binaryFieldValue !== 'object') return
 
-    const binaryValue = binaryFieldValue as BinaryField
-
-    downloadFile(binaryValue.__mediaresource.media_src, repo.configuration.repositoryUrl)
+    try {
+      const binaryValue = binaryFieldValue as BinaryField
+      downloadFile(binaryValue.__mediaresource.media_src, repo.configuration.repositoryUrl)
+    } catch (error) {
+      console.error(error.message)
+    }
   }
 
   const classes = useStyles()

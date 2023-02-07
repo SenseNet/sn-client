@@ -1,6 +1,5 @@
 import { sleepAsync } from '@sensenet/client-utils'
 import { Image } from '@sensenet/default-content-types'
-import { Button } from '@material-ui/core'
 import Input from '@material-ui/core/Input'
 import Typography from '@material-ui/core/Typography'
 import { mount, shallow } from 'enzyme'
@@ -100,11 +99,18 @@ describe('File upload field control', () => {
   })
 
   it('should call handleDownload function', async () => {
-    const handleDownload = jest.fn()
-
-    const component = mount(<FileUpload settings={defaultSettings} actionName="browse" repository={repository} />)
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => jest.fn())
+    let component: any
+    await act(async () => {
+      component = mount(
+        <FileUpload settings={defaultSettings} content={fileContent} actionName="browse" repository={repository} />,
+      )
+    })
 
     const button = component.find('[data-test="download-button"]').last()
     button.simulate('click')
+
+    expect(consoleSpy).toBeCalledTimes(0)
+    jest.restoreAllMocks()
   })
 })
