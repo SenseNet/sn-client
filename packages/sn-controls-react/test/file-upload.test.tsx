@@ -97,7 +97,7 @@ describe('File upload field control', () => {
     /// Restore console.errors
     jest.restoreAllMocks()
   })
-  it('should click on button', async () => {
+  it('should click on download button', async () => {
     const value = {
       __mediaresource: {
         media_src: '/binaryhandler.ashx?nodeid=3777&propertyname=Binary&',
