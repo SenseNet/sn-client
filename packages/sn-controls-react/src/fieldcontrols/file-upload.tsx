@@ -175,7 +175,7 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
             {props.settings.DisplayName}
           </label>
           <Typography variant="body1" gutterBottom={true}>
-            {fileName || ''}
+            {fileName}
           </Typography>
           <InputLabel htmlFor="raised-button-file">
             <Button aria-label={localization.buttonText} variant="contained" component="span" color="primary">
