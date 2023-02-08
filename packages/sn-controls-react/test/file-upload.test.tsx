@@ -100,14 +100,11 @@ describe('File upload field control', () => {
   it('should click on button', async () => {
     const value = {
       __mediaresource: {
-        content_type: 'image/png',
-        edit_media: null,
-        media_etag: null,
-        media_src: '/binaryhandler.ashx?nodeid=1210&propertyname=Binary11&checksum=24417',
+        media_src: '/binaryhandler.ashx?nodeid=3777&propertyname=Binary&',
       },
     }
 
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => jest.fn())
+    const consoleSpy = jest.spyOn(console, 'error')
     let wrapper: any
     await act(async () => {
       wrapper = mount(
