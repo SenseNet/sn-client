@@ -98,7 +98,8 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
 
   const repo = useRepository()
 
-  const [fileName, setFileName] = useState('')
+  const [fileName, setFileName] = useState<string>('')
+
   useEffect(() => {
     const ac = new AbortController()
 
@@ -133,7 +134,7 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
 
   const binaryFieldValue = props.fieldValue as any
 
-  let mediaSrc: string
+  const mediaResource = binaryFieldValue?.__mediaresource
 
   /**
    * handles change event on the fileupload input
@@ -199,19 +200,18 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
       )
     case 'browse':
     default:
-      mediaSrc = binaryFieldValue?.__mediaresource?.media_src
       return (
         <div className={classes.binaryContainer}>
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
 
-          {mediaSrc ? (
+          {mediaResource?.content_type ? (
             <Tooltip title={fileName}>
               <Button
                 data-test="download-button"
                 className={classes.downloadButton}
-                onClick={() => downloadFile(mediaSrc, repo.configuration.repositoryUrl)}
+                onClick={() => downloadFile(mediaResource?.media_src, repo.configuration.repositoryUrl)}
                 aria-label={localization.downloadButtonText}
                 variant="contained"
                 component="span"

@@ -100,6 +100,7 @@ describe('File upload field control', () => {
   it('should click on download button', async () => {
     const value = {
       __mediaresource: {
+        content_type: 'image/png',
         media_src: '/binaryhandler.ashx?nodeid=3777&propertyname=Binary&',
       },
     }
