@@ -1,6 +1,5 @@
 import { sleepAsync } from '@sensenet/client-utils'
 import { Image } from '@sensenet/default-content-types'
-import * as downloads from '@sensenet/hooks-react'
 import Input from '@material-ui/core/Input'
 import Typography from '@material-ui/core/Typography'
 import { mount, shallow } from 'enzyme'
