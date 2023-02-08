@@ -57,6 +57,10 @@ const useStyles = makeStyles(() => {
       fontStyle: 'italic',
       margin: '5px 0',
     },
+    inputLabel: {
+      position: 'relative',
+      transform: 'none',
+    },
   })
 })
 
@@ -177,13 +181,18 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
           <Typography variant="body1" gutterBottom={true}>
             {fileName}
           </Typography>
-          <InputLabel htmlFor="raised-button-file">
+          <InputLabel className={classes.inputLabel} htmlFor={`raised-button-file-${props.settings.Name}`}>
             <Button aria-label={localization.buttonText} variant="contained" component="span" color="primary">
               {localization.buttonText}
             </Button>
           </InputLabel>
           {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
-          <Input style={{ display: 'none' }} id="raised-button-file" type="file" onChange={handleUpload} />
+          <Input
+            style={{ display: 'none' }}
+            id={`raised-button-file-${props.settings.Name}`}
+            type="file"
+            onChange={handleUpload}
+          />
         </FormControl>
       )
     case 'browse':
@@ -193,18 +202,27 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
-          <Tooltip title={fileName || props.settings.Name}>
-            <Button
-              data-test="download-button"
-              className={classes.downloadButton}
-              onClick={() => downloadFile(binaryFieldValue.__mediaresource.media_src, repo.configuration.repositoryUrl)}
-              aria-label={localization.downloadButtonText}
-              variant="contained"
-              component="span"
-              color="primary">
-              <CloudDownload className={classes.downloadIcon} />
-            </Button>
-          </Tooltip>
+
+          {fileName ? (
+            <Tooltip title={fileName}>
+              <Button
+                data-test="download-button"
+                className={classes.downloadButton}
+                onClick={() =>
+                  downloadFile(binaryFieldValue.__mediaresource.media_src, repo.configuration.repositoryUrl)
+                }
+                aria-label={localization.downloadButtonText}
+                variant="contained"
+                component="span"
+                color="primary">
+                <CloudDownload className={classes.downloadIcon} />
+              </Button>
+            </Tooltip>
+          ) : (
+            <Typography variant="caption" gutterBottom={true}>
+              {localization.noValue}
+            </Typography>
+          )}
         </div>
       )
   }
