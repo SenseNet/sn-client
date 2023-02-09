@@ -30,6 +30,7 @@ export const defaultLocalization = {
   fileUpload: {
     buttonText: 'Upload',
     noValue: 'No file uploaded',
+    downloadButtonText: 'download',
   },
   name: {
     invalidCharactersError: `The Name field can't contain these characters:`,
