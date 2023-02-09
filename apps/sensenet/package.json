@@ -91,6 +91,7 @@
     "@sensenet/controls-react": "^8.0.4",
     "@sensenet/default-content-types": "^5.0.0",
     "@sensenet/document-viewer-react": "^4.2.2",
+    "@sensenet/editor-react": "^0.3.2",
     "@sensenet/hooks-react": "^1.6.3",
     "@sensenet/list-controls-react": "^2.1.1",
     "@sensenet/pickers-react": "^2.1.3",
