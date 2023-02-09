@@ -1,7 +1,7 @@
 import { TrashBin } from '@sensenet/default-content-types'
 import { Grid, IconButton, Tooltip, Typography } from '@material-ui/core'
 import { Settings } from '@material-ui/icons'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'

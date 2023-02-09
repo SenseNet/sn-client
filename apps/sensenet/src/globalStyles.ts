@@ -1,5 +1,5 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 
 export const globals = {
   common: {

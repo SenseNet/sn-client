@@ -11,7 +11,7 @@ import {
 } from '@sensenet/hooks-react'
 import { VirtualCellProps, VirtualDefaultCell, VirtualizedTable } from '@sensenet/list-controls-react'
 import { createStyles, makeStyles } from '@material-ui/core'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React, {
   CSSProperties,
   DetailedHTMLProps,

@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core'
 import { CloudUploadOutlined } from '@material-ui/icons'
 import Add from '@material-ui/icons/Add'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React, { FunctionComponent, MouseEvent, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { globals, useGlobalStyles } from '../globalStyles'

@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core'
 import { green, grey, red } from '@material-ui/core/colors'
 import { Close, Done, HelpOutline, Info } from '@material-ui/icons'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React from 'react'
 import { useGlobalStyles, widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'

@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import InfoIcon from '@material-ui/icons/Info'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import filesize from 'filesize'
 import React from 'react'
 import { v1 } from 'uuid'

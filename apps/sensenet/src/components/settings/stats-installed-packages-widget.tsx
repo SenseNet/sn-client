@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core'
 import { green, red } from '@material-ui/core/colors'
 import { Close, Done, Info } from '@material-ui/icons'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React from 'react'
 import { useGlobalStyles, widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'

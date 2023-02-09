@@ -1,6 +1,6 @@
 import { Switch } from '@sensenet/controls-react'
 import { TableCell, Tooltip } from '@material-ui/core'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React, { FunctionComponent, useEffect, useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 
