@@ -7825,6 +7825,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-autosuggest@10.1.6":
+  version "10.1.6"
+  resolved "https://registry.yarnpkg.com/@types/react-autosuggest/-/react-autosuggest-10.1.6.tgz#0642119ebc8e65846739dd9db2517620c9ae50de"
+  integrity sha512-yRsoW19yQzS8VDEW7bytqfGLzkZipTo8qVhqILQWcBI6hdRjN2x/o+0BQBaZ/fc4LlL3b/D6XgjMvlr0I3+2Xw==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-autosuggest@^10.1.5":
   version "10.1.5"
   resolved "https://registry.yarnpkg.com/@types/react-autosuggest/-/react-autosuggest-10.1.5.tgz#8698576c186d3dd964df90451228d2cf787d0e0f"
