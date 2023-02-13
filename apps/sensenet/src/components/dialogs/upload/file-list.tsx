@@ -12,7 +12,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close'
 import InfoIcon from '@material-ui/icons/Info'
 import { clsx } from 'clsx'
-import filesize from 'filesize'
+import { filesize } from 'filesize'
 import React from 'react'
 import { v1 } from 'uuid'
 import { useLocalization } from '../../../hooks'

@@ -101,7 +101,7 @@
     "autosuggest-highlight": "^3.3.4",
     "clsx": "1.2.1",
     "date-fns": "2.29.3",
-    "filesize": "^8.0.0",
+    "filesize": "10.0.6",
     "react": "^16.13.0",
     "react-autosuggest": "^10.1.0",
     "react-day-picker": "^7.4.10",
