@@ -48,7 +48,7 @@
     "@types/react-router": "5.1.20",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-virtualized": "^9.21.21",
-    "@types/uuid": "^8.3.4",
+    "@types/uuid": "9.0.0",
     "clean-webpack-plugin": "4.0.0",
     "compression-webpack-plugin": "10.0.0",
     "copy-webpack-plugin": "^9.0.1",
