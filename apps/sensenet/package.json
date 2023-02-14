@@ -108,7 +108,7 @@
     "react-dom": "^16.13.0",
     "react-markdown": "6.0.3",
     "react-monaco-editor": "0.44.0",
-    "react-responsive": "^8.2.0",
+    "react-responsive": "9.0.2",
     "react-virtualized": "^9.22.3",
     "semaphore-async-await": "^1.5.1",
     "uuid": "9.0.0"
