@@ -8,7 +8,7 @@ import {
   Tooltip,
   useTheme,
 } from '@material-ui/core'
-import { clsx } from 'clsx'
+import clsx from 'clsx'
 import React from 'react'
 import { matchPath, NavLink, useLocation } from 'react-router-dom'
 import { globals, useGlobalStyles } from '../../globalStyles'
