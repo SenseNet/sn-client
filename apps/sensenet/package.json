@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
-    "build": "SET NODE_OPTIONS=--openssl-legacy-provider &&  webpack --config webpack.prod.js ",
+    "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack --config webpack.prod.js",
     "build:stats": "webpack --config webpack.prod.js --profile --json > stats.json",
     "start": "webpack serve --progress --config webpack.dev.js",
     "cypress": "cypress open --env coverage=false",
@@ -52,6 +52,7 @@
     "clean-webpack-plugin": "4.0.0",
     "compression-webpack-plugin": "10.0.0",
     "copy-webpack-plugin": "^9.0.1",
+    "cross-env": "^7.0.3",
     "css-loader": "6.7.3",
     "css-minimizer-webpack-plugin": "4.2.2",
     "cypress": "10.4.0",

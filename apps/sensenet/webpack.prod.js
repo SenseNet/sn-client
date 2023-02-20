@@ -15,7 +15,6 @@ module.exports = merge(common, {
   mode: 'production',
   devtool: 'source-map',
   output: {
-    hashFunction: 'xxhash64',
     filename: 'static/js/[name].[contenthash:8].js',
     chunkFilename: 'static/js/[name].[contenthash:8].chunk.js',
   },
