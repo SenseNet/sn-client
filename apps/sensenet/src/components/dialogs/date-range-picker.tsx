@@ -1,12 +1,13 @@
 import { Button, createStyles, DialogActions, DialogContent, makeStyles, Theme } from '@material-ui/core'
+import isBefore from 'date-fns/isBefore'
 import React, { useState } from 'react'
-import DayPicker, { DateUtils, Modifier } from 'react-day-picker'
+import { DayPicker, Matcher } from 'react-day-picker'
 import { LocalizationObject } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, usePersonalSettings } from '../../hooks'
 import { useDialog } from '.'
 
-import 'react-day-picker/lib/style.css'
+import 'react-day-picker/dist/style.css'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -38,14 +39,14 @@ export const DateRangePicker: React.FunctionComponent<DateRangePickerProps> = (p
   const classes = useStyles()
   const localization = useLocalization().dateRangePicker
   const personalSettings = usePersonalSettings()
-  const langCode = LocalizationObject[personalSettings.language].text
+  const langCode = LocalizationObject[personalSettings.language].locale
 
   const [from, setFrom] = useState<Date | undefined>(props.defaultValue?.from)
   const [to, setTo] = useState<Date | undefined>(props.defaultValue?.to)
   const [enteredTo, setEnteredTo] = useState<Date | undefined>(props.defaultValue?.to)
 
   const isSelectingFirstDay = (day: Date) => {
-    const isBeforeFirstDay = from && DateUtils.isDayBefore(day, from)
+    const isBeforeFirstDay = from && isBefore(day, from)
     const isRangeSelected = from && to
     return !from || isBeforeFirstDay || isRangeSelected
   }
@@ -77,22 +78,21 @@ export const DateRangePicker: React.FunctionComponent<DateRangePickerProps> = (p
     setEnteredTo(undefined)
   }
 
-  const modifiers = { start: from, end: enteredTo }
-  const disabledDays: Modifier = from ? { before: from } : undefined
-  const selectedDays: Modifier[] = from && enteredTo ? [from, { from, to: enteredTo }] : from ? [from] : []
+  const modifiers = { mods: { from, to: enteredTo } } || undefined
+  const disabledDays: Matcher | undefined = from ? { before: from } : undefined
+  const selectedDays: Matcher[] = from && enteredTo ? [from, { from, to: enteredTo }] : from ? [from] : []
 
   return (
     <>
       <DialogContent>
         <DayPicker
           className={classes.root}
-          firstDayOfWeek={1}
           fixedWeeks
           numberOfMonths={2}
           fromMonth={from}
           toMonth={new Date()}
-          selectedDays={selectedDays}
-          disabledDays={disabledDays}
+          selected={selectedDays}
+          disabled={disabledDays}
           modifiers={modifiers}
           onDayClick={handleDayClick}
           onDayMouseEnter={handleDayMouseEnter}
