@@ -25,26 +25,26 @@ type RoutesWithContentBrowser = keyof Pick<typeof PATHS, 'content' | 'usersAndGr
 type RoutesWithActionParam = keyof Pick<typeof PATHS, 'savedQueries' | 'localization' | 'configuration' | 'webhooks'>
 
 type Options =
-  | { path: typeof PATHS['events']['appPath']; params?: { eventGuid: string; [index: string]: string } }
+  | { path: (typeof PATHS)['events']['appPath']; params?: { eventGuid: string; [index: string]: string } }
   | {
-      path: typeof PATHS[RoutesWithContentBrowser]['appPath']
-      params: { browseType: typeof BrowseType[number]; action?: string; [index: string]: string | undefined }
+      path: (typeof PATHS)[RoutesWithContentBrowser]['appPath']
+      params: { browseType: (typeof BrowseType)[number]; action?: string; [index: string]: string | undefined }
     }
   | {
-      path: typeof PATHS['custom']['appPath']
+      path: (typeof PATHS)['custom']['appPath']
       params: {
-        browseType: typeof BrowseType[number]
+        browseType: (typeof BrowseType)[number]
         path: string
         action?: string
         [index: string]: string | undefined
       }
     }
   | {
-      path: typeof PATHS[RoutesWithActionParam]['appPath']
+      path: (typeof PATHS)[RoutesWithActionParam]['appPath']
       params?: { action: string; [index: string]: string }
     }
   | {
-      path: typeof PATHS['settings']['appPath']
+      path: (typeof PATHS)['settings']['appPath']
       params?: { submenu: SettingsItemType; [index: string]: string | SettingsItemType }
     }
 

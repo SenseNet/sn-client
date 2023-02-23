@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { useSearch } from '../../../context/search'
 import { useLocalization } from '../../../hooks'
 
-export type Filter = typeof options[number]
+export type Filter = (typeof options)[number]
 
 export const options = [
   {
