@@ -1,3 +1,4 @@
+import { IconButton } from '@material-ui/core'
 import {
   DocumentTitlePager,
   DocumentViewer,
@@ -11,7 +12,6 @@ import {
   ZoomInOutWidget,
 } from '@sensenet/document-viewer-react'
 import { Icon, iconType } from '@sensenet/icons-react'
-import { IconButton } from '@material-ui/core'
 import React, { useCallback, useEffect } from 'react'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router'

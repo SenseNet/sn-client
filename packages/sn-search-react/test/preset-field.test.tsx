@@ -1,5 +1,5 @@
-import { Query } from '@sensenet/query'
 import Select from '@material-ui/core/Select'
+import { Query } from '@sensenet/query'
 import { shallow } from 'enzyme'
 import React from 'react'
 import { PresetField } from '../src/Components/Fields/PresetField'

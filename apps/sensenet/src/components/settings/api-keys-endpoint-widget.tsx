@@ -1,4 +1,3 @@
-import { useRepository } from '@sensenet/hooks-react'
 import {
   createStyles,
   Divider,
@@ -11,6 +10,7 @@ import {
   Theme,
   Tooltip,
 } from '@material-ui/core'
+import { useRepository } from '@sensenet/hooks-react'
 import React from 'react'
 import jslogo from '../../assets/js.svg'
 import dotnetlogo from '../../assets/net.svg'

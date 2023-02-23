@@ -1,7 +1,7 @@
-import { GenericContent } from '@sensenet/default-content-types'
 import MUIBreadcrumbs from '@material-ui/core/Breadcrumbs'
 import Button from '@material-ui/core/Button'
 import Tooltip from '@material-ui/core/Tooltip'
+import { GenericContent } from '@sensenet/default-content-types'
 import React, { MouseEvent, useState } from 'react'
 import { ContentContextMenu } from './context-menu/content-context-menu'
 import CopyPath from './CopyPath'

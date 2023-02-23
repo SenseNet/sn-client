@@ -1,5 +1,5 @@
-import { ReactClientFieldSetting, AllowedChildTypes as SnAllowedChildTypes } from '@sensenet/controls-react'
 import { createStyles, makeStyles } from '@material-ui/core'
+import { ReactClientFieldSetting, AllowedChildTypes as SnAllowedChildTypes } from '@sensenet/controls-react'
 import React from 'react'
 
 const ITEM_HEIGHT = 48

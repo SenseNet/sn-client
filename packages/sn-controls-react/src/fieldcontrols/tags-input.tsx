@@ -1,8 +1,6 @@
 /**
  * @module FieldControls
  */
-import { deepMerge, PathHelper } from '@sensenet/client-utils'
-import { GenericContent, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
 import {
   Avatar,
   Chip,
@@ -18,6 +16,8 @@ import {
   Select,
   Typography,
 } from '@material-ui/core'
+import { deepMerge, PathHelper } from '@sensenet/client-utils'
+import { GenericContent, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { renderIconDefault } from './icon'

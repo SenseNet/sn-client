@@ -1,6 +1,6 @@
+import Select from '@material-ui/core/Select'
 import { SchemaStore } from '@sensenet/client-core'
 import { SchemaStore as defaultSchemas } from '@sensenet/default-content-types'
-import Select from '@material-ui/core/Select'
 import { shallow } from 'enzyme'
 import React from 'react'
 import { TypeField } from '../src/Components/Fields/TypeField'

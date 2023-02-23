@@ -1,7 +1,7 @@
+import { Button, Container, makeStyles } from '@material-ui/core'
 import { ConstantContent } from '@sensenet/client-core'
 import { Image } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import { Button, Container, makeStyles } from '@material-ui/core'
 import React, { useEffect, useRef, useState } from 'react'
 import ReactImageGallery from 'react-image-gallery'
 import { goToRepoStyles } from '../app'

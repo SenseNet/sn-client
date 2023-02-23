@@ -1,6 +1,3 @@
-import { ConstantContent, UploadProgressInfo } from '@sensenet/client-core'
-import { ObservableValue } from '@sensenet/client-utils'
-import { useRepository } from '@sensenet/hooks-react'
 import {
   Button,
   createStyles,
@@ -14,6 +11,9 @@ import {
   Typography,
 } from '@material-ui/core'
 import { AddAPhoto, Close } from '@material-ui/icons'
+import { ConstantContent, UploadProgressInfo } from '@sensenet/client-core'
+import { ObservableValue } from '@sensenet/client-utils'
+import { useRepository } from '@sensenet/hooks-react'
 import React, { FunctionComponent, useRef, useState } from 'react'
 import { Prompt } from 'react-router'
 import { FileList } from './file-list'

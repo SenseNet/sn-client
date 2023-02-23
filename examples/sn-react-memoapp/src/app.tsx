@@ -1,6 +1,6 @@
-import { UniversalHeader } from '@sensenet/universal-header-react'
 import { Button, Container, createStyles, CssBaseline, Grid, makeStyles, Theme } from '@material-ui/core'
 import Toolbar from '@material-ui/core/Toolbar'
+import { UniversalHeader } from '@sensenet/universal-header-react'
 import React from 'react'
 import snLogo from './assets/sensenet_logo_transparent.png'
 import { MemoPanel } from './components/memo-panel'

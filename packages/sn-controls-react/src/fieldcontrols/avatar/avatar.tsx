@@ -1,5 +1,5 @@
-import { ReferenceFieldSetting, User } from '@sensenet/default-content-types'
 import { createStyles, FormControl, FormHelperText, InputLabel, List, makeStyles } from '@material-ui/core'
+import { ReferenceFieldSetting, User } from '@sensenet/default-content-types'
 import React, { Dispatch, FunctionComponent, useState } from 'react'
 import { changeTemplatedValue } from '../../helpers'
 import { ReactClientFieldSetting } from '../client-field-setting'

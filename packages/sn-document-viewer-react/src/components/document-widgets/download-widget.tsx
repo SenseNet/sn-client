@@ -1,6 +1,6 @@
-import { DocumentData } from '@sensenet/client-core'
 import { createStyles, IconButton, makeStyles } from '@material-ui/core'
 import { CloudDownload } from '@material-ui/icons'
+import { DocumentData } from '@sensenet/client-core'
 import React from 'react'
 import { useDocumentData, useLocalization } from '../../hooks'
 

@@ -1,6 +1,6 @@
+import { Button, ButtonGroup } from '@material-ui/core'
 import { ODataParams } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
-import { Button, ButtonGroup } from '@material-ui/core'
 import React, { useState } from 'react'
 
 interface GridSwitcherItem {

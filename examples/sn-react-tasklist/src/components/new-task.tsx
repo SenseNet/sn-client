@@ -1,8 +1,8 @@
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
 import { ODataResponse } from '@sensenet/client-core'
 import { Task } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
 import React, { ChangeEvent, Dispatch, FunctionComponent, SetStateAction, useState } from 'react'
 
 const useStyles = makeStyles((theme: Theme) =>

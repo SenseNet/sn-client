@@ -1,9 +1,9 @@
-import { ODataCollectionResponse } from '@sensenet/client-core'
-import { Task } from '@sensenet/default-content-types'
-import { useRepository } from '@sensenet/hooks-react'
 import Grid from '@material-ui/core/Grid'
 import List from '@material-ui/core/List'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import { ODataCollectionResponse } from '@sensenet/client-core'
+import { Task } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
 
 // start of component imports

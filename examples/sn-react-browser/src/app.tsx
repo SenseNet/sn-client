@@ -1,5 +1,5 @@
-import { HEADER_HEIGHT, UniversalHeader } from '@sensenet/universal-header-react'
 import { Button, Container, createStyles, CssBaseline, Grid, makeStyles, Theme } from '@material-ui/core'
+import { HEADER_HEIGHT, UniversalHeader } from '@sensenet/universal-header-react'
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import snLogo from './assets/sensenet_logo_transparent.png'

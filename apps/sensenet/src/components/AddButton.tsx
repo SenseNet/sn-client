@@ -1,5 +1,3 @@
-import { Schema } from '@sensenet/default-content-types'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
 import {
   CircularProgress,
   createStyles,
@@ -15,6 +13,8 @@ import {
 } from '@material-ui/core'
 import { CloudUploadOutlined } from '@material-ui/icons'
 import Add from '@material-ui/icons/Add'
+import { Schema } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { clsx } from 'clsx'
 import React, { FunctionComponent, MouseEvent, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'

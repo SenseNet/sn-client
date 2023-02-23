@@ -1,7 +1,7 @@
-import { debounce } from '@sensenet/client-utils'
 import { createStyles, IconButton, InputAdornment, makeStyles, TextField, Theme } from '@material-ui/core'
 import Bookmark from '@material-ui/icons/Bookmark'
 import Cancel from '@material-ui/icons/Cancel'
+import { debounce } from '@sensenet/client-utils'
 import React, { useCallback, useRef } from 'react'
 import { useSearch } from '../../context/search'
 import { useGlobalStyles } from '../../globalStyles'

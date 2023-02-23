@@ -1,7 +1,3 @@
-import { AclResponseModel, ConstantContent, EntryType } from '@sensenet/client-core'
-import { PathHelper } from '@sensenet/client-utils'
-import { GenericContent, PermissionValues } from '@sensenet/default-content-types'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
 import {
   Avatar,
   Button,
@@ -20,6 +16,10 @@ import DesktopMac from '@material-ui/icons/DesktopMac'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import GroupOutlined from '@material-ui/icons/GroupOutlined'
+import { AclResponseModel, ConstantContent, EntryType } from '@sensenet/client-core'
+import { PathHelper } from '@sensenet/client-utils'
+import { GenericContent, PermissionValues } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { clsx } from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router'

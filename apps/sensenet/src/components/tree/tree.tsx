@@ -1,5 +1,5 @@
-import { GenericContent } from '@sensenet/default-content-types'
 import { ListItem, ListItemIcon, ListItemText, List as MuiList } from '@material-ui/core'
+import { GenericContent } from '@sensenet/default-content-types'
 import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import { AutoSizer, Index, List, ListRowProps } from 'react-virtualized'
 import { ContentContextMenu } from '../context-menu/content-context-menu'

@@ -1,6 +1,6 @@
+import { Button, Container, createStyles, CssBaseline, Grid, makeStyles, Theme } from '@material-ui/core'
 import { useRepository } from '@sensenet/hooks-react'
 import { UniversalHeader } from '@sensenet/universal-header-react'
-import { Button, Container, createStyles, CssBaseline, Grid, makeStyles, Theme } from '@material-ui/core'
 import React from 'react'
 import snLogo from './assets/sensenet_logo_transparent.png'
 import MainPanel from './components/mainpanel'

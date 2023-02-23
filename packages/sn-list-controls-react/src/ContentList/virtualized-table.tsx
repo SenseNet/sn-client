@@ -1,5 +1,5 @@
-import { ActionModel, FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import { Checkbox, createStyles, makeStyles, TableCell, TableSortLabel, Theme, Tooltip } from '@material-ui/core'
+import { ActionModel, FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import clsx from 'clsx'
 import React, { useCallback, useMemo } from 'react'
 import {

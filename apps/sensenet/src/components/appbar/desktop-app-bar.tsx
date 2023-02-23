@@ -1,6 +1,6 @@
-import { useRepository } from '@sensenet/hooks-react'
 import { AppBar, createStyles, IconButton, makeStyles, Toolbar } from '@material-ui/core'
 import Menu from '@material-ui/icons/Menu'
+import { useRepository } from '@sensenet/hooks-react'
 import { clsx } from 'clsx'
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'

@@ -1,5 +1,5 @@
-import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { Build, Delete, Folder, People, Public, Save, Search, Widgets } from '@material-ui/icons'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { PATHS, resolvePathParams } from '../application-paths'
 import { Icon } from '../components/Icon'

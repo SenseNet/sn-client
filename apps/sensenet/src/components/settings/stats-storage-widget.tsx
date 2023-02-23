@@ -1,5 +1,5 @@
-import { formatSize } from '@sensenet/controls-react'
 import { createStyles, makeStyles, Paper, useTheme } from '@material-ui/core'
+import { formatSize } from '@sensenet/controls-react'
 import React from 'react'
 import { widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'

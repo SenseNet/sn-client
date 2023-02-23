@@ -1,6 +1,6 @@
-import { GenericContent } from '@sensenet/default-content-types'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import CloudUploadTwoTone from '@material-ui/icons/CloudUploadTwoTone'
+import { GenericContent } from '@sensenet/default-content-types'
 import { clsx } from 'clsx'
 import React, { CSSProperties, DragEvent, FunctionComponent, useState } from 'react'
 import { useGlobalStyles } from '../globalStyles'

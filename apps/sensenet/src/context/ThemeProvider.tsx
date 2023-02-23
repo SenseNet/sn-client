@@ -1,7 +1,7 @@
-import { useInjector } from '@sensenet/hooks-react'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
 import zIndex from '@material-ui/core/styles/zIndex'
+import { useInjector } from '@sensenet/hooks-react'
 import React, { useEffect, useMemo, useState } from 'react'
 import LarsseitBold from '../assets/fonts/LarsseitBold.woff'
 import { usePersonalSettings } from '../hooks'

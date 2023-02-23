@@ -1,5 +1,5 @@
-import { ObservableValue } from '@sensenet/client-utils'
 import Typography from '@material-ui/core/Typography/Typography'
+import { ObservableValue } from '@sensenet/client-utils'
 import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'

@@ -1,6 +1,6 @@
+import { createStyles, Grid, makeStyles, Theme } from '@material-ui/core'
 import { PreviewImageData } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
-import { createStyles, Grid, makeStyles, Theme } from '@material-ui/core'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { usePreviewImages, useViewerState } from '../hooks'
 import { Dimensions, ImageUtil } from '../services'

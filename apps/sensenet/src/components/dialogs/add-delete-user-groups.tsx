@@ -1,6 +1,3 @@
-import { AutoComplete } from '@sensenet/controls-react'
-import { GenericContent, Group, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
 import {
   Button,
   DialogContent,
@@ -14,6 +11,9 @@ import { GroupOutlined } from '@material-ui/icons'
 import AddIcon from '@material-ui/icons/Add'
 import ClearIcon from '@material-ui/icons/Clear'
 import CloseIcon from '@material-ui/icons/Close'
+import { AutoComplete } from '@sensenet/controls-react'
+import { GenericContent, Group, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { FunctionComponent, useState } from 'react'
 import { useLocalization } from '../../hooks'
 import { DialogTitle, useDialog, useStyles } from '.'

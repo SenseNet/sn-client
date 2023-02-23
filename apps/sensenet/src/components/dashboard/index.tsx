@@ -1,6 +1,6 @@
+import { Container, createStyles, makeStyles, Typography } from '@material-ui/core'
 import { Group } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { Container, createStyles, makeStyles, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { useCurrentUser } from '../../context'
 import { useLocalization } from '../../hooks'

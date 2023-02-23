@@ -1,3 +1,4 @@
+import { Button, createStyles, makeStyles, Theme } from '@material-ui/core'
 import {
   AddAnnotationWidget,
   AddHighlightWidget,
@@ -16,7 +17,6 @@ import {
   ZoomInOutWidget,
 } from '@sensenet/document-viewer-react'
 import { CurrentContentProvider } from '@sensenet/hooks-react'
-import { Button, createStyles, makeStyles, Theme } from '@material-ui/core'
 import React, { useCallback, useEffect } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { globals, useGlobalStyles } from '../globalStyles'

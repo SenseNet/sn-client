@@ -1,6 +1,6 @@
+import { TextField } from '@material-ui/core'
 import { Repository } from '@sensenet/client-core'
 import { RepositoryContext } from '@sensenet/hooks-react'
-import { TextField } from '@material-ui/core'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'

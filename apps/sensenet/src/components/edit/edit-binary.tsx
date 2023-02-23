@@ -1,5 +1,5 @@
-import { CurrentContentProvider } from '@sensenet/hooks-react'
 import { createStyles, makeStyles } from '@material-ui/core'
+import { CurrentContentProvider } from '@sensenet/hooks-react'
 import { clsx } from 'clsx'
 import React, { useEffect } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'

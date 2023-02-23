@@ -1,7 +1,7 @@
-import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import IconButton from '@material-ui/core/IconButton'
 import TableCell from '@material-ui/core/TableCell'
 import MoreHoriz from '@material-ui/icons/MoreHoriz'
+import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import React, { Component, MouseEvent } from 'react'
 import { connect } from 'react-redux'
 import * as DMSActions from '../../../Actions'

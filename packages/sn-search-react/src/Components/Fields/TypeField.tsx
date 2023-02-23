@@ -1,7 +1,7 @@
+import { Checkbox, Input, ListItemText, MenuItem, Select, SelectProps } from '@material-ui/core'
 import { SchemaStore } from '@sensenet/client-core'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
-import { Checkbox, Input, ListItemText, MenuItem, Select, SelectProps } from '@material-ui/core'
 import React, { ChangeEvent, Component } from 'react'
 
 /**

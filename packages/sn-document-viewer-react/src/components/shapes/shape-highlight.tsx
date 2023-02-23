@@ -1,7 +1,7 @@
-import { Highlight, Shapes } from '@sensenet/client-core'
 import { Button, ClickAwayListener, createStyles, makeStyles, Popper, Theme } from '@material-ui/core'
 import yellow from '@material-ui/core/colors/yellow.js'
 import { Delete } from '@material-ui/icons'
+import { Highlight, Shapes } from '@sensenet/client-core'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocalization } from '../..'
 import { useDocumentPermissions, useViewerState } from '../../hooks'
