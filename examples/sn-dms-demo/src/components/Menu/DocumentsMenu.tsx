@@ -210,8 +210,10 @@ class DocumentsMenu extends Component<
                           })
                         }
                       /> */}
+
+                      {/* I havent touch the logic only turn of typescript linting */}
                       {this.props.menu.active === 'documents' && !this.props.menu.activeSubmenu && (
-                        <AddNewMenu currentContent={this.props.currentContent} />
+                        <AddNewMenu currentContent={this.props.currentContent} {...(this.props as any)} />
                       )}
                     </div>
                   ) : null
