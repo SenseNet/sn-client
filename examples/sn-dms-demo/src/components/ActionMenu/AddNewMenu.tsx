@@ -119,4 +119,6 @@ class AddNewMenu extends Component<
   }
 }
 
+/*Ez tűz oltás, ezt nagyon részletében kéne átnézni. De úgy vélem csak emiatt nem frissíteni a typescriptet overkill lenne*/
+
 export default connect(mapStateToProps, mapDispatchToProps as any)(AddNewMenu)
