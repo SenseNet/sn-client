@@ -119,4 +119,4 @@ class AddNewMenu extends Component<
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddNewMenu)
+export default connect(mapStateToProps, mapDispatchToProps as any)(AddNewMenu)
