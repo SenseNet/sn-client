@@ -1,6 +1,6 @@
+import { Avatar, Button, CardActions, CardContent, CardHeader, Collapse, Typography } from '@material-ui/core'
 import { CommentData } from '@sensenet/client-core'
 import { useRepository } from '@sensenet/hooks-react'
-import { Avatar, Button, CardActions, CardContent, CardHeader, Collapse, Typography } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { useCommentState, useLocalization } from '../../hooks'
 import { CommentCard, DeleteButton } from '.'

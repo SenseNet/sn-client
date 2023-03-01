@@ -1,6 +1,3 @@
-import { reactControlMapper } from '@sensenet/controls-react'
-import { GenericContent } from '@sensenet/default-content-types'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
 import {
   Avatar,
   Button,
@@ -13,6 +10,9 @@ import {
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import ClearIcon from '@material-ui/icons/Clear'
+import { reactControlMapper } from '@sensenet/controls-react'
+import { GenericContent } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { createElement, ReactNode, useState } from 'react'
 import { useGlobalStyles } from '../../../globalStyles'
 import { useLocalization, usePagination } from '../../../hooks'

@@ -1,4 +1,3 @@
-import { useRepository } from '@sensenet/hooks-react'
 import {
   CircularProgress,
   createStyles,
@@ -10,6 +9,7 @@ import {
   Theme,
 } from '@material-ui/core'
 import { Refresh } from '@material-ui/icons'
+import { useRepository } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'

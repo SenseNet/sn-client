@@ -1,8 +1,6 @@
 /**
  * @module FieldControls
  */
-import { deepMerge } from '@sensenet/client-utils'
-import { FieldSetting } from '@sensenet/default-content-types'
 import {
   createStyles,
   FormControl,
@@ -14,6 +12,8 @@ import {
   Typography,
   withStyles,
 } from '@material-ui/core'
+import { deepMerge } from '@sensenet/client-utils'
+import { FieldSetting } from '@sensenet/default-content-types'
 import clsx from 'clsx'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'

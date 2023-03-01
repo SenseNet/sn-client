@@ -1,6 +1,6 @@
-import { CurrentContentProvider } from '@sensenet/hooks-react'
 import { createStyles, makeStyles } from '@material-ui/core'
-import clsx from 'clsx'
+import { CurrentContentProvider } from '@sensenet/hooks-react'
+import { clsx } from 'clsx'
 import React, { useEffect } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { useGlobalStyles } from '../../globalStyles'

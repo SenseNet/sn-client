@@ -1,7 +1,3 @@
-import { ODataCollectionResponse, Repository } from '@sensenet/client-core'
-import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
-import { Icon, iconType, MaterialIcon } from '@sensenet/icons-react'
-import { Query } from '@sensenet/query'
 import {
   AppBar,
   Button,
@@ -28,6 +24,10 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core'
+import { ODataCollectionResponse, Repository } from '@sensenet/client-core'
+import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
+import { Icon, iconType, MaterialIcon } from '@sensenet/icons-react'
+import { Query } from '@sensenet/query'
 import React, { Component, SyntheticEvent } from 'react'
 import { AdvancedSearch } from './Components/AdvancedSearch'
 import { PresetField } from './Components/Fields/PresetField'

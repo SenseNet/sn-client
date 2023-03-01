@@ -1,14 +1,14 @@
-import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
-import { ActionModel, Query } from '@sensenet/default-content-types'
-import { RepositoryContext } from '@sensenet/hooks-react'
-import { Icon, iconType } from '@sensenet/icons-react'
-import { Actions } from '@sensenet/redux'
 import Drawer from '@material-ui/core/Drawer'
 import Fade from '@material-ui/core/Fade'
 import List from '@material-ui/core/List'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
+import { ActionModel, Query } from '@sensenet/default-content-types'
+import { RepositoryContext } from '@sensenet/hooks-react'
+import { Icon, iconType } from '@sensenet/icons-react'
+import { Actions } from '@sensenet/redux'
 import { compile } from 'path-to-regexp'
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
@@ -443,7 +443,7 @@ const ActionMenu: React.FunctionComponent<
                   if (action.Name === 'uploadFile') {
                     const uploadFileButtonId = `${UPLOAD_FILE_BUTTON_ID}-${v1()}`
                     return (
-                      <label htmlFor={uploadFileButtonId} style={{ outline: 'none' }}>
+                      <label key={action.Name} htmlFor={uploadFileButtonId} style={{ outline: 'none' }}>
                         <MenuItem style={styles.menuItem}>
                           <ListItemIcon style={styles.actionIcon}>
                             <div>
@@ -478,7 +478,7 @@ const ActionMenu: React.FunctionComponent<
                   if (action.Name === 'uploadFolder') {
                     const uploadFolderButtonId = `${UPLOAD_FOLDER_BUTTON_ID}-${v1()}`
                     return (
-                      <label htmlFor={uploadFolderButtonId} style={{ outline: 'none' }}>
+                      <label key={action.Name} htmlFor={uploadFolderButtonId} style={{ outline: 'none' }}>
                         <MenuItem style={styles.menuItem}>
                           <ListItemIcon style={styles.actionIcon}>
                             <div>

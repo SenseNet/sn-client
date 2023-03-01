@@ -1,6 +1,6 @@
+import Typography from '@material-ui/core/Typography'
 import { Repository } from '@sensenet/client-core'
 import { GenericContent, VersioningMode } from '@sensenet/default-content-types'
-import Typography from '@material-ui/core/Typography'
 import { shallow } from 'enzyme'
 import React from 'react'
 import {

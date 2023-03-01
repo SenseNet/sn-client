@@ -1,9 +1,9 @@
 /**
  * @module FieldControls
  */
+import { ClickAwayListener, FormControl, Icon, InputAdornment, TextField, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { ColorFieldSetting } from '@sensenet/default-content-types'
-import { ClickAwayListener, FormControl, Icon, InputAdornment, TextField, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
 import { ColorResult, SketchPicker } from 'react-color'
 import { changeTemplatedValue } from '../helpers'

@@ -1,4 +1,3 @@
-import { Annotation, Shapes } from '@sensenet/client-core'
 import {
   Button,
   Checkbox,
@@ -12,6 +11,7 @@ import {
 } from '@material-ui/core'
 import grey from '@material-ui/core/colors/grey.js'
 import { Delete } from '@material-ui/icons'
+import { Annotation, Shapes } from '@sensenet/client-core'
 import React, { useState } from 'react'
 import { AnnotationWrapper, useDocumentPermissions } from '../..'
 import { useLocalization, useViewerState } from '../../hooks'

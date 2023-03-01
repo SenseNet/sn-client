@@ -1,6 +1,6 @@
-import { GenericContent } from '@sensenet/default-content-types'
 import { createStyles, DialogContent, IconButton, makeStyles, Theme } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
+import { GenericContent } from '@sensenet/default-content-types'
 import React from 'react'
 import { globals } from '../../globalStyles'
 import { ReferenceList } from './reference-content-list/reference-list'

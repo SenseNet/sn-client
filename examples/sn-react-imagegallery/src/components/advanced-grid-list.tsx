@@ -1,6 +1,6 @@
-import { Image } from '@sensenet/default-content-types'
 import { Button, GridList, GridListTile, makeStyles, useMediaQuery, useTheme } from '@material-ui/core'
 import { AddCircle } from '@material-ui/icons'
+import { Image } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { GridListItem, GridListItemProps } from './grid-list-item'
 import { UploadDialog } from './upload-dialog'

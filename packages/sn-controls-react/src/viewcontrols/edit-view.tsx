@@ -1,11 +1,11 @@
 /**
  * @module ViewControls
  */
+import { Button, createStyles, Grid, makeStyles, Typography } from '@material-ui/core'
 import { Repository } from '@sensenet/client-core'
 import { ActionName, ControlMapper } from '@sensenet/control-mapper'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import { Button, createStyles, Grid, makeStyles, Typography } from '@material-ui/core'
 import type { Locale } from 'date-fns'
 import React, { createElement, ReactElement, useEffect, useRef, useState } from 'react'
 import MediaQuery from 'react-responsive'

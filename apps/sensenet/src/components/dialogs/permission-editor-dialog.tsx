@@ -1,8 +1,3 @@
-import { EntryType } from '@sensenet/client-core'
-import { PathHelper } from '@sensenet/client-utils'
-import { Switch } from '@sensenet/controls-react'
-import { Group, PermissionRequestBody, PermissionValues, Settings, User } from '@sensenet/default-content-types'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
 import {
   Button,
   createStyles,
@@ -15,7 +10,12 @@ import {
   makeStyles,
   Theme,
 } from '@material-ui/core'
-import clsx from 'clsx'
+import { EntryType } from '@sensenet/client-core'
+import { PathHelper } from '@sensenet/client-utils'
+import { Switch } from '@sensenet/controls-react'
+import { Group, PermissionRequestBody, PermissionValues, Settings, User } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
+import { clsx } from 'clsx'
 import React, { useEffect, useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'

@@ -1,5 +1,3 @@
-import { ReactClientFieldSetting } from '@sensenet/controls-react'
-import { LongTextFieldSetting } from '@sensenet/default-content-types'
 import {
   createStyles,
   FormControlLabel,
@@ -12,7 +10,9 @@ import {
   Theme,
   Typography,
 } from '@material-ui/core'
-import clsx from 'clsx'
+import { ReactClientFieldSetting } from '@sensenet/controls-react'
+import { LongTextFieldSetting } from '@sensenet/default-content-types'
+import { clsx } from 'clsx'
 import React, { useState } from 'react'
 import { widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'

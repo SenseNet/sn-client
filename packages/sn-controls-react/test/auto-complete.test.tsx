@@ -1,5 +1,5 @@
-import { ReferenceField } from '@sensenet/search-react'
 import Typography from '@material-ui/core/Typography'
+import { ReferenceField } from '@sensenet/search-react'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { AutoComplete, defaultLocalization } from '../src/fieldcontrols'

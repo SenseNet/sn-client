@@ -1,4 +1,3 @@
-import { PathHelper } from '@sensenet/client-utils'
 import {
   AppBar,
   Button,
@@ -12,7 +11,8 @@ import {
   TextFieldProps,
   Typography,
 } from '@material-ui/core'
-import clsx from 'clsx'
+import { PathHelper } from '@sensenet/client-utils'
+import { clsx } from 'clsx'
 import React, { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import snLogo from '../../assets/sensenet-icon-32.png'

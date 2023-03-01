@@ -1,9 +1,9 @@
 /* eslint-disable no-irregular-whitespace */
 
-import { Editor } from '@sensenet/editor-react'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import InputLabel from '@material-ui/core/InputLabel'
 import Typography from '@material-ui/core/Typography'
+import { Editor } from '@sensenet/editor-react'
 import { mount, shallow } from 'enzyme'
 import React, { FC, useEffect, useState } from 'react'
 import { act } from 'react-dom/test-utils'

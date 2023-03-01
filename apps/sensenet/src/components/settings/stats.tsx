@@ -1,6 +1,6 @@
-import { useRepository, VersionInfo } from '@sensenet/hooks-react'
 import { Container } from '@material-ui/core'
-import clsx from 'clsx'
+import { useRepository, VersionInfo } from '@sensenet/hooks-react'
+import { clsx } from 'clsx'
 import React, { useEffect, useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'

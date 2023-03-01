@@ -1,8 +1,8 @@
-import { DefaultAvatarTemplateProps } from '@sensenet/controls-react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import { DefaultAvatarTemplateProps } from '@sensenet/controls-react'
 import React from 'react'
 
 const useStyles = makeStyles((theme: Theme) => {

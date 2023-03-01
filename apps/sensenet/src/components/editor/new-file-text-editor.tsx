@@ -1,5 +1,5 @@
-import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { Input, InputAdornment } from '@material-ui/core'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
 import { useLocalization } from '../../hooks'
 import { getMonacoLanguage } from '../../services/content-context-service'

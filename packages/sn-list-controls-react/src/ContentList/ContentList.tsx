@@ -1,5 +1,5 @@
-import { ActionModel, FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import { Checkbox, Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, Tooltip } from '@material-ui/core'
+import { ActionModel, FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import React, { useCallback, useMemo } from 'react'
 
 import { ActionsCell, CellProps, DateCell, DefaultCell, DisplayNameCell, ReferenceCell } from './CellTemplates'

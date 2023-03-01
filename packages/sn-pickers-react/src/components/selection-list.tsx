@@ -1,6 +1,6 @@
-import { GenericContent } from '@sensenet/default-content-types'
 import { Checkbox, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import { Folder } from '@material-ui/icons'
+import { GenericContent } from '@sensenet/default-content-types'
 import React, { useCallback } from 'react'
 import { GenericContentWithIsParent } from '..'
 import { useSelection } from '../hooks/use-selection'

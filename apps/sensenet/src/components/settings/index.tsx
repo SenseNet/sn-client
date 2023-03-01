@@ -1,6 +1,6 @@
 import { createStyles, ListItem, ListItemText, makeStyles, Theme } from '@material-ui/core'
 import SettingsIcon from '@material-ui/icons/Settings'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React, { lazy } from 'react'
 import { matchPath, NavLink, useLocation, useRouteMatch } from 'react-router-dom'
 import { PATHS, resolvePathParams } from '../../application-paths'

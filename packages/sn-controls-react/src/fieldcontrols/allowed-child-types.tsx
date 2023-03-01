@@ -1,6 +1,3 @@
-import { ConstantContent, ODataCollectionResponse } from '@sensenet/client-core'
-import { deepMerge } from '@sensenet/client-utils'
-import { ContentType, GenericContent } from '@sensenet/default-content-types'
 import {
   ClickAwayListener,
   createStyles,
@@ -18,6 +15,9 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core'
+import { ConstantContent, ODataCollectionResponse } from '@sensenet/client-core'
+import { deepMerge } from '@sensenet/client-utils'
+import { ContentType, GenericContent } from '@sensenet/default-content-types'
 import React, { useCallback, useEffect, useState } from 'react'
 import { typeicons } from '../assets/icons'
 import { ReactClientFieldSetting } from './client-field-setting'

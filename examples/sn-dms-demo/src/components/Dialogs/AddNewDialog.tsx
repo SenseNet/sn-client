@@ -1,6 +1,6 @@
+import CircularProgress from '@material-ui/core/CircularProgress'
 import { RepositoryContext } from '@sensenet/hooks-react'
 import { Actions, Reducers } from '@sensenet/redux'
-import CircularProgress from '@material-ui/core/CircularProgress'
 import React, { Component } from 'react'
 import Loadable from 'react-loadable'
 import { connect } from 'react-redux'

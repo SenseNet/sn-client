@@ -1,5 +1,5 @@
-import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
 import { Button, Paper, Typography } from '@material-ui/core'
+import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
 import React from 'react'
 import { repositoryUrl } from '../configuration'
 

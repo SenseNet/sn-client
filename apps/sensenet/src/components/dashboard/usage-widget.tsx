@@ -1,5 +1,5 @@
 import { createStyles, Grid, LinearProgress, makeStyles, Paper, Theme, Typography } from '@material-ui/core'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React from 'react'
 import { widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
