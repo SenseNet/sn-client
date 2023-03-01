@@ -1,9 +1,9 @@
 /**
  * @module FieldControls
  */
+import { FormHelperText, InputAdornment, TextField, Typography } from '@material-ui/core'
 import { deepMerge, toNumber } from '@sensenet/client-utils'
 import { NumberFieldSetting } from '@sensenet/default-content-types'
-import { FormHelperText, InputAdornment, TextField, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
 import { changeTemplatedValue, formatSize } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'

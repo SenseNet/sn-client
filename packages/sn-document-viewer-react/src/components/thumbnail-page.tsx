@@ -1,5 +1,5 @@
-import { PreviewImageData } from '@sensenet/client-core'
 import { CircularProgress, createStyles, makeStyles, Paper, Theme } from '@material-ui/core'
+import { PreviewImageData } from '@sensenet/client-core'
 import React from 'react'
 import { THUMBNAIL_NAME, THUMBNAIL_PADDING } from '../components'
 import { usePreviewImage, useViewerState } from '../hooks'

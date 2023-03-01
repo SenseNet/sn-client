@@ -1,3 +1,4 @@
+import { LinearProgress, Typography } from '@material-ui/core'
 import { ConstantContent, ODataFieldParameter } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
@@ -6,7 +7,6 @@ import {
   CurrentContentContext,
   useRepository,
 } from '@sensenet/hooks-react'
-import { LinearProgress, Typography } from '@material-ui/core'
 import React, { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'

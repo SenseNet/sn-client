@@ -1,7 +1,6 @@
 /**
  * @module FieldControls
  */
-import { deepMerge } from '@sensenet/client-utils'
 import {
   createStyles,
   FormControl,
@@ -13,6 +12,7 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core'
+import { deepMerge } from '@sensenet/client-utils'
 import React, { useState } from 'react'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { renderIconDefault } from './icon'

@@ -1,10 +1,6 @@
 /**
  * @module FieldControls
  */
-import { Content } from '@sensenet/client-core'
-import { deepMerge, PathHelper } from '@sensenet/client-utils'
-import { BinaryFieldSetting } from '@sensenet/default-content-types'
-import { downloadFile, useRepository } from '@sensenet/hooks-react'
 import {
   Button,
   createStyles,
@@ -17,6 +13,10 @@ import {
   Typography,
 } from '@material-ui/core'
 import CloudDownload from '@material-ui/icons/CloudDownload'
+import { Content } from '@sensenet/client-core'
+import { deepMerge, PathHelper } from '@sensenet/client-utils'
+import { BinaryFieldSetting } from '@sensenet/default-content-types'
+import { downloadFile, useRepository } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { defaultLocalization } from './localization'

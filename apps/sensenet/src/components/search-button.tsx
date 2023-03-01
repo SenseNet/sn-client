@@ -9,7 +9,7 @@ import {
   useTheme,
 } from '@material-ui/core'
 import Add from '@material-ui/icons/Add'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React, { FunctionComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { PATHS } from '../application-paths'

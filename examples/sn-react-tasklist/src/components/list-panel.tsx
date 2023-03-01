@@ -1,6 +1,4 @@
 // start of material imports
-import { Status, Task } from '@sensenet/default-content-types'
-import { useRepository } from '@sensenet/hooks-react'
 import Checkbox from '@material-ui/core/Checkbox'
 import IconButton from '@material-ui/core/IconButton'
 import ListItem from '@material-ui/core/ListItem'
@@ -9,6 +7,8 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import DeleteIcon from '@material-ui/icons/Delete'
+import { Status, Task } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
 import React from 'react'
 // end of material imports
 

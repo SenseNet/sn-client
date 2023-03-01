@@ -1,5 +1,5 @@
-import { deepMerge } from '@sensenet/client-utils'
 import { MuiThemeProvider, SlideProps, Theme } from '@material-ui/core'
+import { deepMerge } from '@sensenet/client-utils'
 import React, { ReactNode } from 'react'
 import loaderImage from '../assets/loader.gif'
 import {

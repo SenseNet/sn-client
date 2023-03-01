@@ -9,7 +9,7 @@ import React, { useState } from 'react'
 import { useSearch } from '../../../context/search'
 import { useLocalization } from '../../../hooks'
 
-export type Filter = typeof options[number] | typeof moreOptions[number]
+export type Filter = (typeof options)[number] | (typeof moreOptions)[number]
 
 const options = [
   {

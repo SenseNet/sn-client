@@ -1,6 +1,6 @@
+import { Paper } from '@material-ui/core'
 import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import { ContentList, VirtualizedTable } from '@sensenet/list-controls-react/src/ContentList'
-import { Paper } from '@material-ui/core'
 import { action } from '@storybook/addon-actions'
 import { array, boolean, select, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'

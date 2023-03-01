@@ -1,6 +1,6 @@
-import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-types'
 import Typography from '@material-ui/core/Typography'
 import { DateTimePicker, DatePicker as MUIDatePicker } from '@material-ui/pickers'
+import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-types'
 import { intlFormatDistance } from 'date-fns'
 import { shallow } from 'enzyme'
 import React from 'react'

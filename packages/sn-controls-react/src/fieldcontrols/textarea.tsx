@@ -1,9 +1,9 @@
 /**
  * @module FieldControls
  */
+import { TextField, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { LongTextFieldSetting } from '@sensenet/default-content-types'
-import { TextField, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'

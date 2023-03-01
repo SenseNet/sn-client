@@ -1,7 +1,7 @@
 /* eslint-disable import/no-duplicates */
+import { Avatar, createStyles, List, ListItem, ListItemAvatar, ListItemText, makeStyles } from '@material-ui/core'
 import { User } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import { Avatar, createStyles, List, ListItem, ListItemAvatar, ListItemText, makeStyles } from '@material-ui/core'
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
 import React, { useContext } from 'react'

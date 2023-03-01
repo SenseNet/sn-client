@@ -1,5 +1,3 @@
-import { Repository } from '@sensenet/client-core'
-import { GenericContent, User } from '@sensenet/default-content-types'
 import {
   Avatar,
   Icon,
@@ -11,6 +9,8 @@ import {
   ListItemText,
 } from '@material-ui/core'
 import { InsertDriveFile } from '@material-ui/icons'
+import { Repository } from '@sensenet/client-core'
+import { GenericContent, User } from '@sensenet/default-content-types'
 import React from 'react'
 import { renderIconDefault } from '../icon'
 

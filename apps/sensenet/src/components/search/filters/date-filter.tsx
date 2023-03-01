@@ -6,7 +6,7 @@ import { useSearch } from '../../../context/search'
 import { useLocalization } from '../../../hooks'
 import { useDialog } from '../../dialogs'
 
-export type Filter = typeof options[number]
+export type Filter = (typeof options)[number]
 
 const options = [
   {

@@ -1,7 +1,7 @@
-import { UniversalHeader } from '@sensenet/universal-header-react'
 import { Button, Container, CssBaseline, Slide } from '@material-ui/core'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import { TransitionProps } from '@material-ui/core/transitions'
+import { UniversalHeader } from '@sensenet/universal-header-react'
 import React, { forwardRef, FunctionComponent, ReactElement, Ref } from 'react'
 import snLogo from './assets/sensenet_logo_transparent.png'
 import { ImageList } from './components/image-list'

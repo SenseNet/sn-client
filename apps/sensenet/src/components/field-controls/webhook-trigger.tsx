@@ -2,9 +2,6 @@
  * @module FieldControls
  */
 
-import { ReactClientFieldSetting, ReferencePicker, renderIconDefault, typeicons } from '@sensenet/controls-react'
-import { GenericContent, LongTextFieldSetting } from '@sensenet/default-content-types'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
 import {
   Button,
   Checkbox,
@@ -38,6 +35,9 @@ import {
 } from '@material-ui/core'
 import { red } from '@material-ui/core/colors'
 import { Check, Close, Info } from '@material-ui/icons'
+import { ReactClientFieldSetting, ReferencePicker, renderIconDefault, typeicons } from '@sensenet/controls-react'
+import { GenericContent, LongTextFieldSetting } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
 import { globals, widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'

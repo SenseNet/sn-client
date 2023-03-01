@@ -8,7 +8,7 @@ const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
 
 export interface UiSettings {
   content: {
-    browseType: typeof BrowseType[number]
+    browseType: (typeof BrowseType)[number]
     fields: Array<keyof GenericContent>
     root: string
   }
@@ -62,16 +62,16 @@ export const ActionType = tuple(
 
 export interface DrawerItem<T> {
   settings?: T
-  itemType: typeof CustomDrawerItemType[number] | typeof BuiltInDrawerItemType[number]
+  itemType: (typeof CustomDrawerItemType)[number] | (typeof BuiltInDrawerItemType)[number]
   permissions?: Array<{
     path: string
-    action: typeof ActionType[number]
+    action: (typeof ActionType)[number]
   }>
   systemItem?: boolean
 }
 
 export interface CustomDrawerItem<T> extends DrawerItem<T> {
-  itemType: typeof CustomDrawerItemType[number]
+  itemType: (typeof CustomDrawerItemType)[number]
 }
 
 export interface CustomContentDrawerItem

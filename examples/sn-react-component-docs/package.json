@@ -5,7 +5,7 @@
   "description": "UI components for building apps upon sensenet implemented in React",
   "main": "index.js",
   "scripts": {
-    "build-storybook": "build-storybook -c .storybook --quiet",
+    "build-storybook": "cross-env NODE_OPTIONS=--openssl-legacy-provider build-storybook -c .storybook --quiet",
     "start": "start-storybook --static-dir assets",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write"
   },
@@ -63,6 +63,7 @@
     "@types/react": "^17.0.15",
     "@types/uuid": "^8.3.4",
     "babel-loader": "^8.2.5",
+    "cross-env": "^7.0.3",
     "prop-types": "^15.8.1",
     "react-docgen-typescript-loader": "^3.7.2",
     "regenerator-runtime": "^0.13.9",

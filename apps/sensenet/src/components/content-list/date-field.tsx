@@ -1,5 +1,5 @@
 import { TableCell, Tooltip } from '@material-ui/core'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React, { FC } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useDateUtils } from '../../hooks/use-date-utils'

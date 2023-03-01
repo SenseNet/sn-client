@@ -2,10 +2,10 @@
  * @module FieldControls
  */
 
-import { ReactClientFieldSetting, renderIconDefault } from '@sensenet/controls-react'
-import { LongTextFieldSetting } from '@sensenet/default-content-types'
 import { createStyles, IconButton, InputLabel, makeStyles, TextField, Typography } from '@material-ui/core'
 import { Delete } from '@material-ui/icons'
+import { ReactClientFieldSetting, renderIconDefault } from '@sensenet/controls-react'
+import { LongTextFieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { useLocalization } from '../../hooks'
 

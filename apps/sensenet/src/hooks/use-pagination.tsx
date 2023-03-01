@@ -1,5 +1,5 @@
-import { GenericContent } from '@sensenet/default-content-types'
 import MuiPagination, { PaginationProps as MuiPaginationProps } from '@material-ui/lab/Pagination'
+import { GenericContent } from '@sensenet/default-content-types'
 import React, { useCallback, useEffect, useState } from 'react'
 
 export type PaginationProps = {

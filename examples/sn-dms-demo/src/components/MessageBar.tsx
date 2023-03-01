@@ -1,7 +1,7 @@
-import { Icon, iconType } from '@sensenet/icons-react'
 import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
 import withStyles from '@material-ui/core/styles/withStyles'
+import { Icon, iconType } from '@sensenet/icons-react'
 import groupBy from 'lodash.groupby'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'

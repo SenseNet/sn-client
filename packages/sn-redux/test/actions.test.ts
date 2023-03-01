@@ -920,7 +920,7 @@ describe('Actions', () => {
       describe('Given repository.loadCollection() resolves', () => {
         let data: ODataCollectionResponse<GenericContent>
         let dataWithoutOptions: ODataCollectionResponse<GenericContent>
-        let mockCollectionResponseData: ReturnType<typeof collectionMockResponse['json']>
+        let mockCollectionResponseData: ReturnType<(typeof collectionMockResponse)['json']>
         beforeEach(async () => {
           data = await Actions.requestContent(path, { scenario: '' }).payload(repo)
           dataWithoutOptions = await Actions.requestContent(path).payload(repo)
@@ -1706,7 +1706,7 @@ describe('Actions', () => {
     describe('serviceChecks()', () => {
       describe('Given repository.getSchema() resolves', () => {
         let data: any
-        let mockSchemaResponseData: ReturnType<typeof schemaResponse['json']>
+        let mockSchemaResponseData: ReturnType<(typeof schemaResponse)['json']>
         beforeEach(async () => {
           data = await Actions.getSchema().payload(repo)
           mockSchemaResponseData = await schemaResponse.json()
@@ -2082,7 +2082,7 @@ describe('Actions', () => {
     describe('serviceChecks()', () => {
       describe('Given repository.getImplicitAllowedChildTypes() resolves', () => {
         let data: ODataCollectionResponse<GenericContent>
-        let mockCollectionResponseData: ReturnType<typeof contentTypeCollectionMockResponse['json']>
+        let mockCollectionResponseData: ReturnType<(typeof contentTypeCollectionMockResponse)['json']>
         beforeEach(async () => {
           data = await Actions.getAllowedChildTypes(path).payload(repo)
           mockCollectionResponseData = await contentTypeCollectionMockResponse.json()
@@ -2110,7 +2110,7 @@ describe('Actions', () => {
     describe('serviceChecks()', () => {
       describe('Given repository.getAllowedChildTypes() resolves', () => {
         let data: ODataCollectionResponse<GenericContent>
-        let mockCollectionResponseData: ReturnType<typeof contentTypeCollectionMockResponse['json']>
+        let mockCollectionResponseData: ReturnType<(typeof contentTypeCollectionMockResponse)['json']>
         beforeEach(async () => {
           data = await Actions.getEffectiveAllowedChildTypes(path).payload(repo)
           mockCollectionResponseData = await contentTypeCollectionMockResponse.json()
@@ -2138,7 +2138,7 @@ describe('Actions', () => {
     describe('serviceChecks()', () => {
       describe('Given repository.getAllowedTypesFromCTD() resolves', () => {
         let data: ODataCollectionResponse<GenericContent>
-        let mockCollectionResponseData: ReturnType<typeof contentTypeCollectionMockResponse['json']>
+        let mockCollectionResponseData: ReturnType<(typeof contentTypeCollectionMockResponse)['json']>
         beforeEach(async () => {
           data = await Actions.getAllowedTypesFromCTD(path).payload(repo)
           mockCollectionResponseData = await contentTypeCollectionMockResponse.json()
@@ -2163,7 +2163,7 @@ describe('Actions', () => {
     describe('serviceChecks()', () => {
       describe('Given repository.checkAllowedChildTypes() resolves', () => {
         let data: any
-        let mockCollectionResponseData: ReturnType<typeof collectionMockResponse['json']>
+        let mockCollectionResponseData: ReturnType<(typeof collectionMockResponse)['json']>
         beforeEach(async () => {
           data = await Actions.checkAllowedChildTypes(path).payload(repo)
           mockCollectionResponseData = await collectionMockResponse.json()
@@ -2188,7 +2188,7 @@ describe('Actions', () => {
     describe('serviceChecks()', () => {
       describe('Given repository.udpateListField() resolves', () => {
         let data: any
-        let mockContentResponseData: ReturnType<typeof contentMockResponse['json']>
+        let mockContentResponseData: ReturnType<(typeof contentMockResponse)['json']>
         beforeEach(async () => {
           data = await Actions.udpateListField(path, { Name: 'MyCustomField' }).payload(repo)
           mockContentResponseData = await contentMockResponse.json()

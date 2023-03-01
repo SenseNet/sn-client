@@ -1,7 +1,7 @@
-import { Image } from '@sensenet/default-content-types'
-import { useRepository } from '@sensenet/hooks-react'
 import { IconButton, makeStyles } from '@material-ui/core'
 import { Delete } from '@material-ui/icons'
+import { Image } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
 import React, { FunctionComponent } from 'react'
 import { AlertDialog } from './alert-dialog'
 

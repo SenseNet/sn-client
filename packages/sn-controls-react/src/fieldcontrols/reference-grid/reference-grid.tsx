@@ -1,6 +1,3 @@
-import { deepMerge, PathHelper } from '@sensenet/client-utils'
-import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
-import { PickerClassKey } from '@sensenet/pickers-react'
 import {
   Dialog,
   DialogProps,
@@ -12,6 +9,9 @@ import {
   List,
   Typography,
 } from '@material-ui/core'
+import { deepMerge, PathHelper } from '@sensenet/client-utils'
+import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
+import { PickerClassKey } from '@sensenet/pickers-react'
 import React, { ElementType, useCallback, useEffect, useMemo, useState } from 'react'
 import { ReactClientFieldSetting } from '../client-field-setting'
 import { defaultLocalization } from '../localization'

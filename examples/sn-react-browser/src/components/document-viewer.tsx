@@ -1,3 +1,5 @@
+import { createStyles, IconButton, makeStyles, useTheme } from '@material-ui/core'
+import { Close } from '@material-ui/icons'
 import {
   DocumentTitlePager,
   DocumentViewer,
@@ -7,8 +9,6 @@ import {
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
 } from '@sensenet/document-viewer-react'
-import { createStyles, IconButton, makeStyles, useTheme } from '@material-ui/core'
-import { Close } from '@material-ui/icons'
 import React from 'react'
 import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom'
 

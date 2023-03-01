@@ -1,5 +1,4 @@
 /* eslint-disable import/no-duplicates */
-import { RepositoryContext } from '@sensenet/hooks-react'
 import {
   Avatar,
   Card,
@@ -18,6 +17,7 @@ import EditOutlined from '@material-ui/icons/EditOutlined'
 import NotesIcon from '@material-ui/icons/Notes'
 import RoomIcon from '@material-ui/icons/Room'
 import WatchIcon from '@material-ui/icons/Watch'
+import { RepositoryContext } from '@sensenet/hooks-react'
 import format from 'date-fns/format'
 import isSameDay from 'date-fns/isSameDay'
 import parseISO from 'date-fns/parseISO'

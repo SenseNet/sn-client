@@ -1,7 +1,7 @@
-import { toNumber } from '@sensenet/client-utils'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+import { toNumber } from '@sensenet/client-utils'
 import { shallow } from 'enzyme'
 import React from 'react'
 import { defaultLocalization, FileSizeField } from '../src/fieldcontrols'

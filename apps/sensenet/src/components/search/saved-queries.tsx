@@ -1,3 +1,6 @@
+import Checkbox from '@material-ui/core/Checkbox'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Typography from '@material-ui/core/Typography'
 import { ConstantContent } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { Query } from '@sensenet/default-content-types'
@@ -9,9 +12,6 @@ import {
   useRepository,
   useRepositoryEvents,
 } from '@sensenet/hooks-react'
-import Checkbox from '@material-ui/core/Checkbox'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Typography from '@material-ui/core/Typography'
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { PATHS } from '../../application-paths'

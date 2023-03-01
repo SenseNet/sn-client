@@ -1,5 +1,5 @@
 import { Button, createStyles, makeStyles, useTheme } from '@material-ui/core'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React, { lazy, useContext, useRef } from 'react'
 import { Prompt, useHistory } from 'react-router'
 import { ResponsiveContext } from '../../context'

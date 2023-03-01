@@ -1,7 +1,7 @@
+import LinearProgress from '@material-ui/core/LinearProgress'
 import { Repository } from '@sensenet/client-core'
 import { SchemaStore } from '@sensenet/default-content-types'
 import { GenericContentWithIsParent, Picker, useTreePicker } from '@sensenet/pickers-react'
-import LinearProgress from '@material-ui/core/LinearProgress'
 import React, { useState } from 'react'
 
 const contentPath = '/Root/Content'

@@ -1,6 +1,6 @@
-import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { Button, DialogActions, DialogContent } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useState } from 'react'
 import { useCurrentUser } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'

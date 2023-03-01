@@ -1,5 +1,5 @@
-import { UniversalHeader } from '@sensenet/universal-header-react'
 import { Button, Container, createStyles, CssBaseline, Grid, makeStyles, Theme } from '@material-ui/core'
+import { UniversalHeader } from '@sensenet/universal-header-react'
 import React from 'react'
 import snLogo from './assets/sensenet_logo_transparent.png'
 import UserSearch from './components/user-search'

@@ -1,5 +1,5 @@
-import { GenericContent } from '@sensenet/default-content-types'
 import { Button, createStyles, makeStyles } from '@material-ui/core'
+import { GenericContent } from '@sensenet/default-content-types'
 import React from 'react'
 import { useLocalization } from '../../../hooks'
 import { ReferenceList } from '../reference-content-list/reference-list'
