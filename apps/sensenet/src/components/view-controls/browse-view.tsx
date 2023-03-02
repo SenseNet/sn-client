@@ -49,21 +49,21 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
 
   if (content === undefined) {
     return null
-  } else {
-    return (
-      <SnBrowseView
-        content={content}
-        repository={repository}
-        handleCancel={() => navigateToAction({ history, routeMatch })}
-        controlMapper={controlMapper}
-        localization={{ cancel: localization.forms.cancel }}
-        locale={LocalizationObject[personalSettings.language].locale}
-        classes={{
-          ...classes,
-          cancel: globalClasses.cancelButton,
-        }}
-        renderTitle={() => <ViewTitle title={'Info about'} titleBold={content?.DisplayName} content={content} />}
-      />
-    )
   }
+
+  return (
+    <SnBrowseView
+      content={content}
+      repository={repository}
+      handleCancel={() => navigateToAction({ history, routeMatch })}
+      controlMapper={controlMapper}
+      localization={{ cancel: localization.forms.cancel }}
+      locale={LocalizationObject[personalSettings.language].locale}
+      classes={{
+        ...classes,
+        cancel: globalClasses.cancelButton,
+      }}
+      renderTitle={() => <ViewTitle title={'Info about'} titleBold={content?.DisplayName} content={content} />}
+    />
+  )
 }

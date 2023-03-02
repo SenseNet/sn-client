@@ -5,7 +5,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import Paper from '@material-ui/core/Paper'
 import Tooltip from '@material-ui/core/Tooltip'
 import { Close, Menu } from '@material-ui/icons'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React, { useContext, useState } from 'react'
 import { matchPath, useLocation } from 'react-router-dom'
 import { PATHS } from '../../application-paths'
@@ -29,13 +29,14 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     opened: {},
     backgroundDiv: {
+      display: 'flex',
+      flexDirection: 'column',
       height: '100%',
       backgroundColor: theme.palette.type === 'light' ? globals.light.drawerBackground : globals.dark.drawerBackground,
       border: theme.palette.type === 'light' ? clsx(globals.light.borderColor, '1px') : 'none',
     },
     list: {
       width: '100%',
-      height: '100%',
       flexGrow: 1,
       flexShrink: 0,
       display: 'flex',
@@ -74,7 +75,9 @@ export const PermanentDrawer = () => {
   const localization = useLocalization().drawer
   const location = useLocation()
 
-  const settingsItem = items.find((item) => item.itemType === 'Settings')
+  const baseItems = items.filter((item) => !item.systemItem)
+
+  const systemItems = items.filter((item) => item.systemItem)
 
   if (!settings.drawer.enabled) {
     return null
@@ -113,12 +116,25 @@ export const PermanentDrawer = () => {
             ]) ? (
               <AddButton aria-label={localization.add} isOpened={opened} />
             ) : null}
-            {items.map((item, index) => {
-              return item.itemType !== 'Settings' && <PermanentDrawerItem item={item} opened={opened} key={index} />
+            {baseItems.map((item) => {
+              return (
+                item.itemType !== 'Settings' && <PermanentDrawerItem item={item} opened={opened} key={item.itemType} />
+              )
             })}
           </li>
-          <li>{settingsItem && <PermanentDrawerItem item={settingsItem} opened={opened} />}</li>
         </List>
+
+        {systemItems && (
+          <List>
+            {systemItems.map((item) => {
+              return (
+                <li key={item.itemType}>
+                  <PermanentDrawerItem item={item} opened={opened} />
+                </li>
+              )
+            })}
+          </List>
+        )}
       </div>
     </Paper>
   )

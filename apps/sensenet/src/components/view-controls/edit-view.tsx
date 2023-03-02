@@ -55,73 +55,73 @@ export const EditView: React.FC<EditViewProps> = (props) => {
 
   if (content === undefined) {
     return null
-  } else {
-    const handleSubmit = async (saveableFields: GenericContent) => {
-      try {
-        const response = await repository.patch({
-          idOrPath: content.Id,
-          content: saveableFields,
-        })
+  }
 
-        logger.information({
-          message: localization.editPropertiesDialog.saveSuccessNotification.replace(
+  const handleSubmit = async (saveableFields: GenericContent) => {
+    try {
+      const response = await repository.patch({
+        idOrPath: content.Id,
+        content: saveableFields,
+      })
+
+      logger.information({
+        message: localization.editPropertiesDialog.saveSuccessNotification.replace(
+          '{0}',
+          saveableFields.DisplayName || saveableFields.Name || content.DisplayName || content.Name,
+        ),
+        data: {
+          relatedContent: content,
+          relatedRepository: repository.configuration.repositoryUrl,
+          details: {
+            edited: response,
+          },
+        },
+      })
+      props.submitCallback?.(response.d)
+    } catch (error) {
+      logger.error({
+        message:
+          error.message ||
+          localization.editPropertiesDialog.saveFailedNotification.replace(
             '{0}',
             saveableFields.DisplayName || saveableFields.Name || content.DisplayName || content.Name,
           ),
-          data: {
-            relatedContent: content,
-            relatedRepository: repository.configuration.repositoryUrl,
-            details: {
-              edited: response,
-            },
+        data: {
+          relatedContent: content,
+          relatedRepository: repository.configuration.repositoryUrl,
+          details: {
+            error: isExtendedError(error) ? repository.getErrorFromResponse(error.response) : error,
           },
-        })
-        props.submitCallback?.(response.d)
-      } catch (error) {
-        logger.error({
-          message:
-            error.message ||
-            localization.editPropertiesDialog.saveFailedNotification.replace(
-              '{0}',
-              saveableFields.DisplayName || saveableFields.Name || content.DisplayName || content.Name,
-            ),
-          data: {
-            relatedContent: content,
-            relatedRepository: repository.configuration.repositoryUrl,
-            details: {
-              error: isExtendedError(error) ? repository.getErrorFromResponse(error.response) : error,
-            },
-          },
-        })
-      }
+        },
+      })
     }
-
-    return (
-      <SnEditView
-        actionName={props.actionName}
-        content={content}
-        onSubmit={handleSubmit}
-        repository={repository}
-        contentTypeName={content.Type}
-        handleCancel={() => navigateToAction({ history, routeMatch })}
-        showTitle={true}
-        uploadFolderpath="/Root/Content/demoavatars"
-        controlMapper={controlMapper}
-        localization={{ submit: localization.forms.submit, cancel: localization.forms.cancel }}
-        hideDescription
-        locale={LocalizationObject[personalSettings.language].locale}
-        classes={{
-          ...classes,
-          cancel: globalClasses.cancelButton,
-        }}
-        renderTitle={() => (
-          <ViewTitle
-            title={props.actionName === 'browse' ? 'Info about' : 'Edit'}
-            titleBold={content?.DisplayName}
-            content={content}
-          />
-        )}
-      />
-    )
   }
+
+  return (
+    <SnEditView
+      actionName={props.actionName}
+      content={content}
+      onSubmit={handleSubmit}
+      repository={repository}
+      contentTypeName={content.Type}
+      handleCancel={() => navigateToAction({ history, routeMatch })}
+      showTitle={true}
+      uploadFolderpath="/Root/Content/demoavatars"
+      controlMapper={controlMapper}
+      localization={{ submit: localization.forms.submit, cancel: localization.forms.cancel }}
+      hideDescription
+      locale={LocalizationObject[personalSettings.language].locale}
+      classes={{
+        ...classes,
+        cancel: globalClasses.cancelButton,
+      }}
+      renderTitle={() => (
+        <ViewTitle
+          title={props.actionName === 'browse' ? 'Info about' : 'Edit'}
+          titleBold={content?.DisplayName}
+          content={content}
+        />
+      )}
+    />
+  )
 }

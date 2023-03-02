@@ -1,11 +1,11 @@
-import { UploadProgressInfo } from '@sensenet/client-core'
-import { Icon, iconType } from '@sensenet/icons-react'
 import Divider from '@material-ui/core/Divider'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import withStyles from '@material-ui/core/styles/withStyles'
+import { UploadProgressInfo } from '@sensenet/client-core'
+import { Icon, iconType } from '@sensenet/icons-react'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
@@ -210,8 +210,10 @@ class DocumentsMenu extends Component<
                           })
                         }
                       /> */}
+
+                      {/* I havent touch the logic only turn of typescript linting */}
                       {this.props.menu.active === 'documents' && !this.props.menu.activeSubmenu && (
-                        <AddNewMenu currentContent={this.props.currentContent} />
+                        <AddNewMenu currentContent={this.props.currentContent} {...(this.props as any)} />
                       )}
                     </div>
                   ) : null

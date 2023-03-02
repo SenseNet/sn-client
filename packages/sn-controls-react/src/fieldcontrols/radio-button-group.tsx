@@ -1,8 +1,6 @@
 /**
  * @module FieldControls
  */
-import { deepMerge } from '@sensenet/client-utils'
-import { ChoiceFieldSetting } from '@sensenet/default-content-types'
 import {
   FormControl,
   FormControlLabel,
@@ -12,6 +10,8 @@ import {
   RadioGroup,
   Typography,
 } from '@material-ui/core'
+import { deepMerge } from '@sensenet/client-utils'
+import { ChoiceFieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { defaultLocalization } from './localization'

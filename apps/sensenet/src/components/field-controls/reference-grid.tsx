@@ -1,5 +1,5 @@
 import { ReactClientFieldSetting, ReferenceGrid as SnReferenceGrid } from '@sensenet/controls-react'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { DialogTitle } from '../dialogs/dialog-title'

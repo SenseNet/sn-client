@@ -1,9 +1,9 @@
 /**
  * @module FieldControls
  */
+import { createStyles, Input, InputAdornment, InputLabel, makeStyles } from '@material-ui/core'
 import { changeTemplatedValue, ReactClientFieldSetting, renderIconDefault } from '@sensenet/controls-react'
 import { ShortTextFieldSetting } from '@sensenet/default-content-types'
-import { createStyles, Input, InputAdornment, InputLabel, makeStyles } from '@material-ui/core'
 import React from 'react'
 
 const useStyles = makeStyles(() => {

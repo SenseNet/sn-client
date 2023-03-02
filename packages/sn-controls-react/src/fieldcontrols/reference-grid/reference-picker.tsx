@@ -1,7 +1,7 @@
+import { Avatar, DialogActions, DialogContent, LinearProgress } from '@material-ui/core'
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { Folder, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
 import { GenericContentWithIsParent, Picker, PickerProps } from '@sensenet/pickers-react'
-import { Avatar, DialogActions, DialogContent, LinearProgress } from '@material-ui/core'
 import React, { useMemo } from 'react'
 import { renderIconDefault } from '../icon'
 

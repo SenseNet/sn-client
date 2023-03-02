@@ -1,11 +1,11 @@
 /**
  * @module FieldControls
  */
-import { deepMerge } from '@sensenet/client-utils'
-import { DateTimeFieldSetting } from '@sensenet/default-content-types'
 import { FormHelperText, Typography } from '@material-ui/core'
 import { MuiPickersUtilsProvider, TimePicker as MUITimePicker } from '@material-ui/pickers'
 import type { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
+import { deepMerge } from '@sensenet/client-utils'
+import { DateTimeFieldSetting } from '@sensenet/default-content-types'
 import DateFnsUtils from '@date-io/date-fns'
 import format from 'date-fns/format'
 import React, { useState } from 'react'

@@ -1,5 +1,5 @@
-import { GenericContent, Schema } from '@sensenet/default-content-types'
 import { CheckboxProps } from '@material-ui/core/Checkbox'
+import { GenericContent, Schema } from '@sensenet/default-content-types'
 
 export interface ContentListBaseProps<T extends GenericContent = GenericContent> {
   /**

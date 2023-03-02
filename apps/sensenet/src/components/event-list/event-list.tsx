@@ -1,7 +1,7 @@
-import { LeveledLogEntry } from '@sensenet/client-utils'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import KeyboardBackspace from '@material-ui/icons/KeyboardBackspace'
+import { LeveledLogEntry } from '@sensenet/client-utils'
 import React, { useEffect, useState } from 'react'
 import { Link, useRouteMatch } from 'react-router-dom'
 import { PATHS, resolvePathParams } from '../../application-paths'

@@ -1,7 +1,7 @@
-import { Image } from '@sensenet/default-content-types'
 import { AppBar, Dialog, IconButton, Toolbar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import CloseIcon from '@material-ui/icons/Close'
+import { Image } from '@sensenet/default-content-types'
 import React from 'react'
 import { Transition } from '../app'
 import { ImageGallery } from './image-gallery'

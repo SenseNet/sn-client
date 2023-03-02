@@ -1,30 +1,68 @@
 /**
  * @module FieldControls
  */
+import {
+  Button,
+  createStyles,
+  FormControl,
+  FormHelperText,
+  Input,
+  InputLabel,
+  makeStyles,
+  Tooltip,
+  Typography,
+} from '@material-ui/core'
+import CloudDownload from '@material-ui/icons/CloudDownload'
 import { Content } from '@sensenet/client-core'
 import { deepMerge, PathHelper } from '@sensenet/client-utils'
 import { BinaryFieldSetting } from '@sensenet/default-content-types'
-import { Button, FormControl, FormHelperText, Input, InputLabel, Typography } from '@material-ui/core'
+import { downloadFile, useRepository } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { defaultLocalization } from './localization'
 
-const styles = {
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  label: {
-    padding: 0,
-    fontSize: '12px',
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    lineHeight: 1,
-  },
-  value: {
-    fontStyle: 'italic',
-    margin: '5px 0',
-  },
-}
+const useStyles = makeStyles(() => {
+  return createStyles({
+    binaryContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+    },
+    downloadContainer: {
+      cursor: 'pointer',
+    },
+    downloadButton: {
+      minWidth: 'unset',
+    },
+    downloadIcon: {
+      fontSize: '23px',
+    },
+    textDate: {
+      fontSize: '0.66rem',
+      letterSpacing: '0.5px',
+      marginLeft: '5px',
+      verticalAlign: 'middle',
+    },
+    root: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    label: {
+      padding: 0,
+      fontSize: '12px',
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+      lineHeight: 1,
+    },
+    value: {
+      fontStyle: 'italic',
+      margin: '5px 0',
+    },
+    inputLabel: {
+      position: 'relative',
+      transform: 'none',
+    },
+  })
+})
 
 interface FileName {
   IsValid: boolean
@@ -52,14 +90,16 @@ export const errorMessages = {
   contentToFetch: 'There needs to be a content to get the name of the binary field.',
   contentToUpload: 'There needs to be a content to be able to upload.',
 }
-
 /**
  * Field control that represents a FileUpload field. Available values will be populated from the FieldSettings.
  */
 export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> = (props) => {
   const localization = deepMerge(defaultLocalization.fileUpload, props.localization?.fileUpload)
 
-  const [fileName, setFileName] = useState('')
+  const repo = useRepository()
+
+  const [fileName, setFileName] = useState<string>('')
+
   useEffect(() => {
     const ac = new AbortController()
 
@@ -76,7 +116,10 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
           idOrPath: loadPath,
           requestInit: { signal: ac.signal },
         })
-        setFileName(binaryField.d.Binary.FileName.FullFileName)
+
+        const binaryData = Object.values(binaryField.d)[0] as Binary
+
+        setFileName(binaryData.FileName.FullFileName)
       } catch (error) {
         console.error(error.message)
       }
@@ -88,6 +131,10 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
    * returns a name from the given path
    */
   const getNameFromPath = (path: string) => path.replace(/^.*[\\/]/, '')
+
+  const binaryFieldValue = props.fieldValue as any
+
+  const mediaResource = binaryFieldValue?.__mediaresource
 
   /**
    * handles change event on the fileupload input
@@ -120,40 +167,63 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
     }
   }
 
+  const classes = useStyles()
+
   switch (props.actionName) {
     case 'edit':
     case 'new':
       return (
         <FormControl
-          style={styles.root as any}
+          className={classes.root}
           key={props.settings.Name}
           component={'fieldset' as 'div'}
           required={props.settings.Compulsory}>
-          <label style={styles.label} htmlFor={props.settings.Name}>
+          <label className={classes.label} htmlFor={props.settings.Name}>
             {props.settings.DisplayName}
           </label>
           <Typography variant="body1" gutterBottom={true}>
             {fileName}
           </Typography>
-          <InputLabel htmlFor="raised-button-file">
+          <InputLabel className={classes.inputLabel} htmlFor={`raised-button-file-${props.settings.Name}`}>
             <Button aria-label={localization.buttonText} variant="contained" component="span" color="primary">
               {localization.buttonText}
             </Button>
           </InputLabel>
           {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
-          <Input style={{ display: 'none' }} id="raised-button-file" type="file" onChange={handleUpload} />
+          <Input
+            style={{ display: 'none' }}
+            id={`raised-button-file-${props.settings.Name}`}
+            type="file"
+            onChange={handleUpload}
+          />
         </FormControl>
       )
     case 'browse':
     default:
       return (
-        <div>
+        <div className={classes.binaryContainer}>
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
-          <Typography variant="body1" gutterBottom={true}>
-            {fileName || localization.noValue}
-          </Typography>
+
+          {mediaResource?.content_type ? (
+            <Tooltip title={fileName}>
+              <Button
+                data-test="download-button"
+                className={classes.downloadButton}
+                onClick={() => downloadFile(mediaResource?.media_src, repo.configuration.repositoryUrl)}
+                aria-label={localization.downloadButtonText}
+                variant="contained"
+                component="span"
+                color="primary">
+                <CloudDownload className={classes.downloadIcon} />
+              </Button>
+            </Tooltip>
+          ) : (
+            <Typography variant="caption" gutterBottom={true}>
+              {localization.noValue}
+            </Typography>
+          )}
         </div>
       )
   }

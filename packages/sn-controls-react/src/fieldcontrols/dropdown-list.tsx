@@ -1,9 +1,9 @@
 /**
  * @module FieldControls
  */
+import { FormControl, FormGroup, FormHelperText, InputLabel, MenuItem, Select, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { ChoiceFieldSetting } from '@sensenet/default-content-types'
-import { FormControl, FormGroup, FormHelperText, InputLabel, MenuItem, Select, Typography } from '@material-ui/core'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { defaultLocalization } from './localization'

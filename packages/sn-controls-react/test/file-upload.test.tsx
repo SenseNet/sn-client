@@ -1,7 +1,7 @@
-import { sleepAsync } from '@sensenet/client-utils'
-import { Image } from '@sensenet/default-content-types'
 import Input from '@material-ui/core/Input'
 import Typography from '@material-ui/core/Typography'
+import { sleepAsync } from '@sensenet/client-utils'
+import { Image } from '@sensenet/default-content-types'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
@@ -57,7 +57,6 @@ describe('File upload field control', () => {
       wrapper = mount(<FileUpload settings={defaultSettings} repository={repository} content={fileContent} />)
     })
     expect(wrapper.update().find(Typography).first().text()).toBe(defaultSettings.DisplayName)
-    expect(wrapper.find(Typography).last().text()).toBe(fileContent.Name)
   })
 
   it('should handle uploads from input', async () => {
@@ -95,7 +94,35 @@ describe('File upload field control', () => {
     wrapper.find(Input).simulate('change', { target: { files: [], value: 'somePath' }, persist: jest.fn() })
     await sleepAsync(0)
     expect(consoleSpy).toBeCalledWith(errorMessages.repository)
-    // Restore console.errors
+    /// Restore console.errors
+    jest.restoreAllMocks()
+  })
+  it('should click on download button', async () => {
+    const value = {
+      __mediaresource: {
+        content_type: 'image/png',
+        media_src: '/binaryhandler.ashx?nodeid=3777&propertyname=Binary&',
+      },
+    }
+
+    const consoleSpy = jest.spyOn(console, 'error')
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(
+        <FileUpload
+          actionName="browse"
+          fieldValue={value as any}
+          settings={defaultSettings}
+          repository={repository}
+          content={fileContent}
+        />,
+      )
+    })
+
+    wrapper.find("[data-test='download-button']").last().simulate('click')
+
+    expect(consoleSpy).toBeCalledTimes(0)
+    /// Restore console.errors
     jest.restoreAllMocks()
   })
 })

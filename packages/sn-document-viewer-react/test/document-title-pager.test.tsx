@@ -1,6 +1,6 @@
-import { ObservableValue } from '@sensenet/client-utils'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+import { ObservableValue } from '@sensenet/client-utils'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'

@@ -1,5 +1,5 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 
 export const globals = {
   common: {
@@ -14,6 +14,8 @@ export const globals = {
     //Colors
     headerBackground: '#353B4E',
     headerText: 'rgba(255,255,255,0.87)',
+    secondaryIconSize: '16px',
+    explorePaddingLeft: '15px',
   },
   light: {
     navMenuColor: '#F6F6F6',

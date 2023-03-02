@@ -1,3 +1,4 @@
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import { ODataFieldParameter, ODataParams } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
@@ -8,8 +9,7 @@ import {
   LoadSettingsContextProvider,
   useRepository,
 } from '@sensenet/hooks-react'
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React, { useCallback, useContext, useState } from 'react'
 import { useHistory } from 'react-router'
 import { ResponsivePersonalSettings } from '../../context'
@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme: Theme) => {
       height: globals.common.drawerItemHeight,
       boxSizing: 'border-box',
       borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
-      paddingLeft: '15px',
       justifyContent: 'start',
     },
     treeAndDatagridWrapper: {

@@ -1,8 +1,8 @@
 /**
  * @module FieldControls
  */
-import { deepMerge } from '@sensenet/client-utils'
 import { InputAdornment, TextField, Typography } from '@material-ui/core'
+import { deepMerge } from '@sensenet/client-utils'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { defaultLocalization } from './localization'

@@ -1,6 +1,6 @@
+import { GridListTile, GridListTileBar, makeStyles, Slide, useMediaQuery, useTheme } from '@material-ui/core'
 import { Image } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import { GridListTile, GridListTileBar, makeStyles, Slide, useMediaQuery, useTheme } from '@material-ui/core'
 import React, { DetailedHTMLProps, FunctionComponent, StyleHTMLAttributes, useState } from 'react'
 import { GRID_ITEM_SIZE } from './advanced-grid-list'
 import { DeleteConfirm } from './delete-confirm'

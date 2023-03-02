@@ -1,5 +1,5 @@
 import { Button, createStyles, Grid, makeStyles, Paper, Theme, Typography } from '@material-ui/core'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React from 'react'
 import plutoComeBack from '../../assets/dashboard/pluto-come-back-later.png'
 import plutoComeBack2x from '../../assets/dashboard/pluto-come-back-later@2x.png'

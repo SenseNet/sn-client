@@ -1,7 +1,3 @@
-import { Repository } from '@sensenet/client-core'
-import { Injector, LogLevel, PathHelper } from '@sensenet/client-utils'
-import { File, GenericContent, User } from '@sensenet/default-content-types'
-import { useInjector, useRepository } from '@sensenet/hooks-react'
 import {
   AddAlert,
   AllInboxOutlined,
@@ -50,13 +46,17 @@ import {
   WebAssetOutlined,
   Widgets,
 } from '@material-ui/icons'
+import { Repository } from '@sensenet/client-core'
+import { Injector, LogLevel, PathHelper } from '@sensenet/client-utils'
+import { File, GenericContent, User } from '@sensenet/default-content-types'
+import { useInjector, useRepository } from '@sensenet/hooks-react'
+import { InlineIcon } from '@iconify/react'
 import circleciIcon from '@iconify-icons/logos/circleci'
 import gatsbyIcon from '@iconify-icons/logos/gatsby'
 import herokuIcon from '@iconify-icons/logos/heroku-icon'
 import netlifyIcon from '@iconify-icons/logos/netlify'
 import travisCi from '@iconify-icons/logos/travis-ci'
 import vercelIcon from '@iconify-icons/logos/vercel-icon'
-import { InlineIcon } from '@iconify/react'
 import React, { CSSProperties, FunctionComponent } from 'react'
 import { EventLogEntry } from '../services/EventService'
 import { UserAvatar } from './UserAvatar'

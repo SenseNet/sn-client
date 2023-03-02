@@ -40,7 +40,10 @@ export const reactControlMapper = (repository: Repository) => {
     .setupFieldSettingDefault('CurrencyFieldSetting', () => {
       return FieldControls.NumberField
     })
-    .setupFieldSettingDefault('IntegerFieldSetting', () => {
+    .setupFieldSettingDefault('IntegerFieldSetting', (setting) => {
+      if (setting.Name === 'PageCount') {
+        return FieldControls.PageCount
+      }
       return FieldControls.NumberField
     })
     .setupFieldSettingDefault('ColorFieldSetting', () => {

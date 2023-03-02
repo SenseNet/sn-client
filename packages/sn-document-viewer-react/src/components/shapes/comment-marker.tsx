@@ -1,5 +1,5 @@
-import { DraftCommentMarker } from '@sensenet/client-core'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import { DraftCommentMarker } from '@sensenet/client-core'
 import React from 'react'
 import { useCommentState, useViewerState } from '../..'
 

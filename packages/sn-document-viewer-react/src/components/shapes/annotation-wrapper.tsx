@@ -1,5 +1,5 @@
-import { Annotation } from '@sensenet/client-core'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import { Annotation } from '@sensenet/client-core'
 import React, { useEffect, useRef } from 'react'
 import { useDocumentPermissions, useViewerState } from '../../hooks'
 

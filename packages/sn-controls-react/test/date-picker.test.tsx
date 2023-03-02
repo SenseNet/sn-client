@@ -1,13 +1,13 @@
-import { DateTimeMode } from '@sensenet/default-content-types'
 import Typography from '@material-ui/core/Typography'
 import { DateTimePicker, DatePicker as MUIDatePicker } from '@material-ui/pickers'
-import format from 'date-fns/format'
+import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-types'
+import { intlFormatDistance } from 'date-fns'
 import { shallow } from 'enzyme'
 import React from 'react'
-import { DatePicker, defaultLocalization } from '../src/fieldcontrols'
+import { DatePicker, dateTimeOptions, defaultLocalization } from '../src/fieldcontrols'
 
-const defaultSettings = {
-  DateTimeMode: 2,
+const defaultSettings: DateTimeFieldSetting = {
+  DateTimeMode: DateTimeMode.DateAndTime,
   Name: 'ModificationDate',
   FieldClassName: 'SenseNet.ContentRepository.Fields.DateTimeField',
   DisplayName: 'Modification Date',
@@ -15,14 +15,24 @@ const defaultSettings = {
   Type: 'DateTimeFieldSetting',
 }
 
+const locale: Locale = {
+  code: 'en-US',
+}
+
 const value = '1912-04-15T02:10:00.000Z'
 
 describe('Date/Date time field control', () => {
   describe('in browse view', () => {
     it('should show the displayname and fieldValue when fieldValue is provided', () => {
-      const wrapper = shallow(<DatePicker fieldValue={value} actionName="browse" settings={defaultSettings} />)
-      expect(wrapper.find(Typography).first().text()).toBe(defaultSettings.DisplayName)
-      expect(wrapper.find(Typography).last().text()).toBe(format(new Date(value), 'PPPppp').toLocaleString())
+      const wrapper = shallow(
+        <DatePicker locale={locale} fieldValue={value} actionName="browse" settings={defaultSettings} />,
+      )
+      expect(wrapper.find(Typography).first().text()).toBe(
+        `${defaultSettings.DisplayName}${intlFormatDistance(new Date(value), new Date(), { locale: locale?.code })}`,
+      )
+      expect(wrapper.find(Typography).last().text()).toBe(
+        new Intl.DateTimeFormat(locale.code, dateTimeOptions).format(new Date(value)),
+      )
     })
 
     it('should show the displayname and fieldValue as date when fieldValue is provided and set as date', () => {
@@ -30,11 +40,12 @@ describe('Date/Date time field control', () => {
         <DatePicker
           fieldValue={value}
           actionName="browse"
+          locale={locale}
           settings={{ ...defaultSettings, DateTimeMode: DateTimeMode.Date }}
         />,
       )
       expect(wrapper.find(Typography).first().text()).toBe(defaultSettings.DisplayName)
-      expect(wrapper.find(Typography).last().text()).toBe(format(new Date(value), 'PPP').toLocaleString())
+      expect(wrapper.find(Typography).last().text()).toBe(new Intl.DateTimeFormat('en-Us').format(new Date(value)))
       expect(wrapper).toMatchSnapshot()
     })
 
@@ -93,6 +104,7 @@ describe('Date/Date time field control', () => {
           }}
         />,
       )
+
       expect(wrapper.find(MUIDatePicker).prop('value')).toBe(value)
       expect(wrapper.find(MUIDatePicker).prop('name')).toBe(defaultSettings.Name)
       expect(wrapper.find(MUIDatePicker).prop('id')).toBe(defaultSettings.Name)
@@ -123,6 +135,21 @@ describe('Date/Date time field control', () => {
       const wrapper = shallow(<DatePicker actionName="edit" fieldOnChange={fieldOnChange} settings={defaultSettings} />)
       wrapper.find(DateTimePicker).simulate('change', new Date(123234538324).toISOString())
       expect(fieldOnChange).toBeCalled()
+    })
+
+    it('value should be null when value is .Net min.Date', () => {
+      const wrapper = shallow(
+        <DatePicker
+          actionName="edit"
+          fieldValue="0001-01-01T00:00:00Z"
+          settings={{
+            ...defaultSettings,
+            DateTimeMode: DateTimeMode.Date,
+          }}
+        />,
+      )
+
+      expect(wrapper.find(MUIDatePicker).prop('value')).toBe(null)
     })
   })
 })

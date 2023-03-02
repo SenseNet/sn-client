@@ -73,6 +73,8 @@ Cypress.Commands.add('checkReadPermissionGroup', (enabled = true) => {
 })
 
 Cypress.Commands.add('checkAddItemList', (dropdownItems) => {
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(2000)
   cy.get('[data-test="add-button"]')
     .click()
     .then(() => {

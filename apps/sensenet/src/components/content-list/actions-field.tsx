@@ -1,6 +1,6 @@
 import { IconButton, TableCell } from '@material-ui/core'
 import MoreHoriz from '@material-ui/icons/MoreHoriz'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React, { FC, MouseEvent } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 

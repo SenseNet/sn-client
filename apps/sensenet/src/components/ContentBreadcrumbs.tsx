@@ -1,9 +1,9 @@
-import { GenericContent } from '@sensenet/default-content-types'
-import { CurrentAncestorsContext, CurrentContentContext, useRepository } from '@sensenet/hooks-react'
 import { createStyles, IconButton, makeStyles, Theme, Tooltip } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import FileCopyIcon from '@material-ui/icons/FileCopy'
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
+import { GenericContent } from '@sensenet/default-content-types'
+import { CurrentAncestorsContext, CurrentContentContext, useRepository } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../context'
@@ -16,10 +16,11 @@ import { useDialog } from './dialogs'
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     batchActionWrapper: {
-      marginRight: '125px',
+      marginRight: '7.5%',
       ' & .MuiIconButton-root': {
         color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
       },
+      marginLeft: 'auto',
     },
   })
 })

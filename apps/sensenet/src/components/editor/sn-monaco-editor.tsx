@@ -1,5 +1,5 @@
 import { Button, createStyles, makeStyles, useTheme } from '@material-ui/core'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React, { lazy, useContext, useRef } from 'react'
 import { Prompt, useHistory } from 'react-router'
 import { ResponsiveContext } from '../../context'
@@ -132,7 +132,7 @@ export const SnMonacoEditor: React.FunctionComponent<SnMonacoEditorProps> = (pro
           aria-label={localization.forms.cancel}
           color="default"
           className={globalClasses.cancelButton}
-          onClick={props.handleCancel || history.goBack}>
+          onClick={props.handleCancel || (() => history.go(-1))}>
           {localization.forms.cancel}
         </Button>
 

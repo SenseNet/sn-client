@@ -1,6 +1,6 @@
+import { TableCell } from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
-import { TableCell } from '@material-ui/core'
 import React, { useState } from 'react'
 
 export interface VirtualDisplayNameCellProps<T extends GenericContent = GenericContent> {

@@ -30,10 +30,19 @@ export const defaultLocalization = {
   fileUpload: {
     buttonText: 'Upload',
     noValue: 'No file uploaded',
+    downloadButtonText: 'download',
   },
   name: {
     invalidCharactersError: `The Name field can't contain these characters:`,
     noValue: 'No value set',
+  },
+  pageCount: {
+    noValue: 'No Pages',
+    '-1': 'Preview generation in progress',
+    '-2': 'File type not supported',
+    '-3': 'Preview error',
+    '-4': 'Preview generation postponed',
+    '-5': 'No preview provider',
   },
   number: {
     noValue: 'No value set',
@@ -76,6 +85,8 @@ export const defaultLocalization = {
     noValue: 'No value set',
   },
 }
+
+export type PageCountKey = keyof typeof defaultLocalization.pageCount
 
 export type FieldLocalization = DeepPartial<typeof defaultLocalization> & {
   richTextEditor?: LocalizationType

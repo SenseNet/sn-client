@@ -1,6 +1,6 @@
+import { IconButton, TableCell } from '@material-ui/core'
 import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
-import { IconButton, TableCell } from '@material-ui/core'
 import React, { Component, MouseEvent } from 'react'
 
 export const styles = {

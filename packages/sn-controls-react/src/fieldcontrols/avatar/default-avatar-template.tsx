@@ -1,5 +1,5 @@
-import { GenericContent } from '@sensenet/default-content-types'
 import { Avatar, IconButton, ListItem, ListItemAvatar, ListItemSecondaryAction } from '@material-ui/core'
+import { GenericContent } from '@sensenet/default-content-types'
 import React from 'react'
 
 const styles = {

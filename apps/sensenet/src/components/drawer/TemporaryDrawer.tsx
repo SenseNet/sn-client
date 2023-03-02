@@ -1,4 +1,3 @@
-import { useRepository, useSession } from '@sensenet/hooks-react'
 import {
   IconButton,
   List,
@@ -11,6 +10,7 @@ import {
   Tooltip,
 } from '@material-ui/core'
 import Settings from '@material-ui/icons/Settings'
+import { useRepository, useSession } from '@sensenet/hooks-react'
 import React, { useContext } from 'react'
 import { Link, matchPath, NavLink, useLocation } from 'react-router-dom'
 import { PATHS, resolvePathParams } from '../../application-paths'

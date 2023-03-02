@@ -1,6 +1,6 @@
-import { useInjector, useRepository } from '@sensenet/hooks-react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
-import clsx from 'clsx'
+import { useInjector, useRepository } from '@sensenet/hooks-react'
+import { clsx } from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
 import { ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
@@ -35,6 +35,10 @@ const useStyles = makeStyles((theme: Theme) => {
       boxSizing: 'border-box',
       overflow: 'hidden',
       height: '100%',
+      paddingTop: '10px',
+      '& > *': {
+        paddingLeft: `${globals.common.explorePaddingLeft}`,
+      },
     },
     executeActionPaper: {
       height: '100%',

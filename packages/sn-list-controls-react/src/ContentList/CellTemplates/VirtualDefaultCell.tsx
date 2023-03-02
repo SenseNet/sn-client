@@ -1,5 +1,5 @@
-import { GenericContent } from '@sensenet/default-content-types'
 import { TableCell, Tooltip } from '@material-ui/core'
+import { GenericContent } from '@sensenet/default-content-types'
 import React from 'react'
 
 export interface VirtualDefaultCellProps<T extends GenericContent> {

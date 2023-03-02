@@ -1,5 +1,5 @@
 import { createStyles, Link, makeStyles, Paper, Theme, Typography } from '@material-ui/core'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React, { useContext } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { PATHS, resolvePathParams } from '../../application-paths'
