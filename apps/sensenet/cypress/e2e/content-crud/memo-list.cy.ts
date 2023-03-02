@@ -24,20 +24,9 @@ describe('Memo list', () => {
         cy.get(`[data-test="table-cell-test-memo-list"]`).should('exist')
       })
     cy.get('[data-test="menu-item-test-memo-list"]').click({ force: true })
-    cy.get('[data-test="add-button"]')
-      .click()
-      .then(() => {
-        const expetcedMenuItems = ['Memo']
-        cy.get('[data-test="list-items"]')
-          .children()
-          .should('have.length', expetcedMenuItems.length)
-          .each(($span) => {
-            const text = $span.text()
-            if (text) {
-              expect(expetcedMenuItems).to.include(text)
-            }
-          })
-      })
+    const dropdownItems = ['Memo']
+
+    cy.checkAddItemList(dropdownItems)
   })
 
   it('should edit the memo list', () => {

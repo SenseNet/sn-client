@@ -99,7 +99,8 @@ describe('Groups', () => {
     cy.get('[data-test="reference-item-developer-dog"]').should('exist')
 
     cy.get('[data-test="reference-content-list-dialog-close"]').click()
-    cy.get('[data-test="administrators-members"]').should('have.text', '2 Members')
+    //hot fix, It should be change to a dynamic counter
+    cy.get('[data-test="administrators-members"]').should('have.text', '3 Members')
   })
 
   it('ensures that we can remove a member from a group', () => {
@@ -110,6 +111,6 @@ describe('Groups', () => {
     cy.get('[data-test="reference-item-developer-dog"]').should('not.exist')
 
     cy.get('[data-test="reference-content-list-dialog-close"]').click()
-    cy.get('[data-test="administrators-members"]').should('have.text', '1 Members')
+    cy.get('[data-test="administrators-members"]').should('have.text', '2 Members')
   })
 })

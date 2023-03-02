@@ -16,7 +16,7 @@ describe('Add new permission entry', () => {
 
     cy.get('[data-test="reference-input"]').type('Developer D')
     cy.get('[data-test="suggestion-developer-dog"]').click()
-    cy.get('[data-test="member-select-add"]').click()
+    cy.get('[data-test="member-select-add"]').click({ force: true })
     cy.get('[data-test="set-on-this-developer-dog"]').should('exist')
     cy.get('[data-test="permission-dialog-title"]').should('contain.text', 'Developer Dog')
     cy.get('[data-test="permission-editor-cancel"]').click()

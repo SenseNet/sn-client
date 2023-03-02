@@ -1,5 +1,5 @@
 import { pathWithQueryParams } from '../../../src/services/query-string-builder'
-
+import 'cypress-file-upload'
 describe('Upload', () => {
   before(() => {
     cy.login()
@@ -35,4 +35,5 @@ describe('Upload', () => {
           })
       })
   })
+  //When the backend got a new Release i have to make a clean up for the this test.
 })

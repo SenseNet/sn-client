@@ -41,7 +41,7 @@ describe('Content types', () => {
             .click({ force: true })
             .focused()
             .type('{ctrl}a')
-            .clear()
+            .clear({ force: true })
             .invoke('val', ctdExample)
             .trigger('input')
 

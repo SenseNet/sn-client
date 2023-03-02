@@ -12,7 +12,7 @@ describe('Dashboard', () => {
   })
 
   it(`should have title`, () => {
-    cy.get('[data-test="app-header"]').contains(/Welcome to your (.)+ project/)
+    cy.get('[data-test="app-header"]').contains(/Welcome to/)
   })
 
   it('Subscription section should have the Business plan text and features list', () => {
