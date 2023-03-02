@@ -23,20 +23,10 @@ describe('Link list', () => {
         cy.get(`[data-test="table-cell-test-link-list"]`).should('exist')
       })
     cy.get('[data-test="menu-item-test-link-list"]').click({ force: true })
-    cy.get('[data-test="add-button"]')
-      .click()
-      .then(() => {
-        const expetcedMenuItems = ['Link']
-        cy.get('[data-test="list-items"]')
-          .children()
-          .should('have.length', expetcedMenuItems.length)
-          .each(($span) => {
-            const text = $span.text()
-            if (text) {
-              expect(expetcedMenuItems).to.include(text)
-            }
-          })
-      })
+
+    const dropdownItems = ['Link']
+
+    cy.checkAddItemList(dropdownItems)
   })
 
   it('should edit the link list', () => {
