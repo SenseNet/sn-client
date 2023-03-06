@@ -111,7 +111,7 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
 
       <div className={classes.actionButtonWrapper}>
         <Button
-          aria-label={props.localization?.close || 'Close'}
+          aria-label={props.localization?.close || 'Closes'}
           color="default"
           className={classes.cancel}
           onClick={() => props.handleCancel?.()}>
