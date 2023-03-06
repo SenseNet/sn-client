@@ -520,6 +520,7 @@ const values = {
     addReference: 'Add reference',
     ok: 'Ok',
     cancel: 'Cancel',
+    close: 'Close',
     upload: 'Upload',
     submit: 'Submit',
     inputPlaceHolder: 'Start typing to add another type',
