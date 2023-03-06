@@ -51,7 +51,6 @@ type BrowseViewClassKey = Partial<ReturnType<typeof useStyles>>
 export const BrowseView: React.FC<BrowseViewProps> = (props) => {
   const controlMapper = props.controlMapper || reactControlMapper(props.repository)
   const [schema, setSchema] = useState(controlMapper.getFullSchemaForContentType(props.content.Type, 'browse'))
-
   const classes = useStyles(props)
   const repository = useRepository()
 
