@@ -62,6 +62,8 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
     return () => schemaObservable.dispose()
   }, [repository.schemas, props.content.Type, controlMapper])
 
+  console.log('v')
+
   return (
     <>
       {props.renderTitle ? (
@@ -106,6 +108,7 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
             )
           })}
       </Grid>
+
       <div className={classes.actionButtonWrapper}>
         <Button
           aria-label={props.localization?.close || 'Close'}
