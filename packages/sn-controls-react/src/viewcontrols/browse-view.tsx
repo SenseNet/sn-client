@@ -23,7 +23,7 @@ export interface BrowseViewProps {
   controlMapper?: ControlMapper<any, any>
   handleCancel?: () => void
   localization?: {
-    cancel?: string
+    close?: string
   }
   fieldLocalization?: FieldLocalization
   classes?: BrowseViewClassKey
@@ -51,6 +51,7 @@ type BrowseViewClassKey = Partial<ReturnType<typeof useStyles>>
 export const BrowseView: React.FC<BrowseViewProps> = (props) => {
   const controlMapper = props.controlMapper || reactControlMapper(props.repository)
   const [schema, setSchema] = useState(controlMapper.getFullSchemaForContentType(props.content.Type, 'browse'))
+  console.log('v')
   const classes = useStyles(props)
   const repository = useRepository()
 
@@ -107,11 +108,11 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
       </Grid>
       <div className={classes.actionButtonWrapper}>
         <Button
-          aria-label={props.localization?.cancel || 'Cancel'}
+          aria-label={props.localization?.close || 'Close'}
           color="default"
           className={classes.cancel}
           onClick={() => props.handleCancel?.()}>
-          {props.localization?.cancel || 'Cancel'}
+          {props.localization?.close || 'Close'}
         </Button>
       </div>
     </>
