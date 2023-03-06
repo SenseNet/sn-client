@@ -51,7 +51,7 @@ type BrowseViewClassKey = Partial<ReturnType<typeof useStyles>>
 export const BrowseView: React.FC<BrowseViewProps> = (props) => {
   const controlMapper = props.controlMapper || reactControlMapper(props.repository)
   const [schema, setSchema] = useState(controlMapper.getFullSchemaForContentType(props.content.Type, 'browse'))
-  console.log('v')
+
   const classes = useStyles(props)
   const repository = useRepository()
 
@@ -61,8 +61,6 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
     })
     return () => schemaObservable.dispose()
   }, [repository.schemas, props.content.Type, controlMapper])
-
-  console.log('v')
 
   return (
     <>
@@ -111,7 +109,7 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
 
       <div className={classes.actionButtonWrapper}>
         <Button
-          aria-label={props.localization?.close || 'Closes'}
+          aria-label={props.localization?.close || 'Close'}
           color="default"
           className={classes.cancel}
           onClick={() => props.handleCancel?.()}>
