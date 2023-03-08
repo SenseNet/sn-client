@@ -20,9 +20,9 @@ const useStyles = makeStyles((theme: Theme) =>
       '& .ReactVirtualized__Table__headerRow': {
         backgroundColor: theme.palette.type === 'dark' ? 'hsl(0deg 0% 24%)' : 'hsl(0deg 0% 92%)',
         boxShadow:
-          theme.palette.type === 'dark'
-            ? '0px 8px 28px rgb(0 0 0 / 25%), 0px 4px 10px rgb(0 0 0 / 22%)'
-            : '1px 1px 3px 0px hsl(0deg 0% 0% / 28%)',
+          theme.palette.type !== 'dark'
+            ? '1px 1px 3px 0px hsl(0deg 0% 0% / 28%)'
+            : '0px 8px 28px rgb(0 0 0 / 25%), 0px 4px 10px rgb(0 0 0 / 22%)',
       },
     },
     flexContainer: {
