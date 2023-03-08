@@ -1,5 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Short text field control in browse view should show [OBJECT] when iccorect type passed 1`] = `
+<div>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="caption"
+  >
+    Display name
+  </WithStyles(ForwardRef(Typography))>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="body1"
+  >
+    [OBJECT]
+  </WithStyles(ForwardRef(Typography))>
+</div>
+`;
+
 exports[`Short text field control in browse view should show the displayname and fieldValue when fieldValue is provided 1`] = `
 <div>
   <WithStyles(ForwardRef(Typography))
