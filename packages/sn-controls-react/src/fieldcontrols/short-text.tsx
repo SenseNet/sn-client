@@ -59,7 +59,9 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
             {/* Temporary hot fix */}
-            {typeof props.fieldValue !== 'string' ? '[OBJECT]' : props.fieldValue || localization.noValue}
+            {typeof props.fieldValue === 'string' || props.fieldValue === null
+              ? props.fieldValue || localization.noValue
+              : '[OBJECT]'}
           </Typography>
         </div>
       )
