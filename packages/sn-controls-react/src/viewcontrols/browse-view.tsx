@@ -23,7 +23,7 @@ export interface BrowseViewProps {
   controlMapper?: ControlMapper<any, any>
   handleCancel?: () => void
   localization?: {
-    cancel?: string
+    close?: string
   }
   fieldLocalization?: FieldLocalization
   classes?: BrowseViewClassKey
@@ -105,13 +105,14 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
             )
           })}
       </Grid>
+
       <div className={classes.actionButtonWrapper}>
         <Button
-          aria-label={props.localization?.cancel || 'Cancel'}
+          aria-label={props.localization?.close || 'Close'}
           color="default"
           className={classes.cancel}
           onClick={() => props.handleCancel?.()}>
-          {props.localization?.cancel || 'Cancel'}
+          {props.localization?.close || 'Close'}
         </Button>
       </div>
     </>
