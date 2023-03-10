@@ -8,15 +8,23 @@ import {
   TextField,
   Theme,
 } from '@material-ui/core'
+
+import Box from '@material-ui/core/Box/Box'
+import Tooltip from '@material-ui/core/Tooltip'
 import { Refresh } from '@material-ui/icons'
+import { copyToClipboard } from '@sensenet/client-utils'
 import { useRepository } from '@sensenet/hooks-react'
+import { Icon } from '@iconify/react'
+import { clsx } from 'clsx'
 import React, { useEffect, useState } from 'react'
-import { useGlobalStyles } from '../../globalStyles'
+import { globals, useGlobalStyles, widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { ApiKey, ApiKeyType, Secret } from './api-key'
+import { ApiKey, ClientType, Secret, SpaType } from './api-key'
 import { Tab } from './api-keys-tab'
 import { TabPanel } from './api-keys-tab-panel'
 import { Tabs } from './api-keys-tabs'
+
+const useWidgetStyles = makeStyles(widgetStyles)
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -32,6 +40,22 @@ const useStyles = makeStyles((theme: Theme) => {
       alignItems: 'flex-end',
       marginBottom: '0.5rem',
     },
+    label: {
+      // fontSize: '0.7rem',
+    },
+    clientRoot: {
+      columnGap: '15px',
+      padding: '5px 0px',
+    },
+    clientCard: {
+      borderRadius: '5px',
+      columnGap: '8px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      boxShadow: globals.common.elavationShadow,
+      width: 'calc(100% / 3)',
+      cursor: 'pointer',
+    },
     input: {
       paddingTop: '10px',
       paddingBottom: '10px',
@@ -39,18 +63,32 @@ const useStyles = makeStyles((theme: Theme) => {
       color: theme.palette.common.black,
     },
     refreshIcon: { marginLeft: '0.5rem', padding: 0 },
+    secondaryInfo: {
+      fontSize: '0.7rem',
+      color: `hsl(174deg 3% ${theme.palette.type === 'light' ? '41' : '74'}%)`,
+    },
+    appClientID: {
+      alignItems: 'flex-end',
+      columnGap: '5px',
+      display: 'flex',
+    },
+    appClientType: {},
   })
 })
 
+const clientTypes: SpaType[] = ['ExternalSpa', 'InternalSpa']
+const spaTypes: ClientType[] = ['ExternalClient', 'InternalClient']
+
 export const ApiSecretsWidget: React.FunctionComponent = () => {
+  const { container: keyContainer } = useWidgetStyles()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const repo = useRepository()
   const localization = useLocalization().settings
   const [activeTabIndex, setActiveTabIndex] = useState(0)
   const [isRegenerating, setIsRegenerating] = useState(false)
-  const [externalClients, setExternalClients] = useState<ApiKey[]>([])
-  const [externalSpas, setExternalSpas] = useState<ApiKey[]>([])
+  const [spas, setSpas] = useState<ApiKey[]>([])
+  const [clients, setClients] = useState<ApiKey[]>([])
 
   const regenerateApiKey = async (client: ApiKey) => {
     setIsRegenerating(true)
@@ -64,8 +102,8 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
       },
     })
 
-    setExternalSpas(
-      externalClients.map((externalClient) => {
+    setClients(
+      spas.map((externalClient) => {
         if (externalClient.secrets[0].id === response.id) {
           externalClient.secrets[0] = response
         }
@@ -79,12 +117,14 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
     ;(async () => {
       const response = await repo.executeAction<any, { clients: ApiKey[] }>({
         idOrPath: '/Root',
-        name: 'GetClientsForRepository',
+        name: 'GetClients',
         method: 'GET',
       })
 
-      setExternalClients(response.clients.filter((client: any) => client.type === ApiKeyType.ExternalClient))
-      setExternalSpas(response.clients.filter((client: any) => client.type === ApiKeyType.ExternalSpa))
+      console.log(response)
+
+      setClients(response.clients.filter((client: any) => clientTypes.includes(client.type)))
+      setSpas(response.clients.filter((client: any) => spaTypes.includes(client.type)))
     })()
   }, [repo])
 
@@ -104,28 +144,46 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
 
       <TabPanel value={activeTabIndex} index={0}>
         <p className={classes.description} dangerouslySetInnerHTML={{ __html: localization.spaDescription }} />
-        {externalSpas.map((spa) => (
-          <Paper key={spa.clientId} className={globalClasses.cardRoot}>
-            <InputLabel shrink htmlFor={spa.clientId} className={classes.inputLabel}>
-              {localization.clientId}
-            </InputLabel>
-            <TextField
-              name={spa.clientId}
-              variant="outlined"
-              fullWidth
-              value={spa.clientId}
-              inputProps={{
-                readOnly: true,
-                className: classes.input,
-              }}
-            />
-          </Paper>
-        ))}
+        <Box display="flex" className={classes.clientRoot}>
+          {clients.map((client) => (
+            <Box
+              className={clsx(keyContainer, classes.clientCard)}
+              onClick={() => copyToClipboard(client.clientId)}
+              key={client.clientId}>
+              <Box className={classes.appClientID}>
+                <Tooltip title={localization.clientId}>
+                  <b>{client.clientId}</b>
+                </Tooltip>
+              </Box>
+              <Box className={classes.appClientType}>
+                <span className={classes.secondaryInfo}>{client.type}</span>
+              </Box>
+            </Box>
+
+            /*Onclickre tartalom kimásolás*/
+
+            // <Paper key={spa.clientId} className={globalClasses.cardRoot}>
+            //   <InputLabel shrink htmlFor={spa.clientId} className={classes.inputLabel}>
+            //     {localization.clientId}
+            //   </InputLabel>
+            //   <TextField
+            //     name={spa.clientId}
+            //     variant="outlined"
+            //     fullWidth
+            //     value={spa.clientId}
+            //     inputProps={{
+            //       readOnly: true,
+            //       className: classes.input,
+            //     }}
+            //   />
+            // </Paper>
+          ))}
+        </Box>
       </TabPanel>
 
       <TabPanel value={activeTabIndex} index={1}>
         <p className={classes.description} dangerouslySetInnerHTML={{ __html: localization.clientDescription }} />
-        {externalClients.map((client) => (
+        {spas.map((client) => (
           <Paper key={client.clientId} className={globalClasses.cardRoot}>
             <div style={{ marginBottom: '1rem' }}>
               <InputLabel shrink htmlFor={client.clientId} className={classes.inputLabel}>
