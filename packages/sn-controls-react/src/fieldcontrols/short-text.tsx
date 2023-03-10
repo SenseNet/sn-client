@@ -24,8 +24,6 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
     props.fieldOnChange?.(props.settings.Name, e.target.value)
   }
 
-  console.log(props.fieldValue)
-
   switch (props.actionName) {
     case 'edit':
     case 'new':
