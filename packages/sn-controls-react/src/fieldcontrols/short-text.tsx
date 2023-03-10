@@ -24,6 +24,8 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
     props.fieldOnChange?.(props.settings.Name, e.target.value)
   }
 
+  console.log(props.fieldValue)
+
   switch (props.actionName) {
     case 'edit':
     case 'new':
@@ -59,9 +61,9 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
             {/* Temporary hot fix */}
-            {typeof props.fieldValue === 'string' || props.fieldValue === null
-              ? props.fieldValue || localization.noValue
-              : '[OBJECT]'}
+            {typeof props.fieldValue === 'object' && props.fieldValue !== null
+              ? '[OBJECT]'
+              : props.fieldValue || localization.noValue}
           </Typography>
         </div>
       )
