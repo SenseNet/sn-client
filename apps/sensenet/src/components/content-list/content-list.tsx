@@ -91,7 +91,7 @@ export const isReferenceField = (fieldName: string, repo: Repository, schema = '
 }
 
 const rowHeightConst = 57
-const headerHeightConst = 42
+const headerHeightConst = 48
 
 export const ContentList = <T extends GenericContent = GenericContent>(props: ContentListProps<T>) => {
   const selectionService = useSelectionService()

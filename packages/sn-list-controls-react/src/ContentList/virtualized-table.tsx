@@ -16,6 +16,13 @@ import { ActionsCell, DateCell, ReferenceCell, RowCheckbox, VirtualDefaultCell, 
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    root: {
+      '& .ReactVirtualized__Table__headerRow': {
+        backgroundColor: theme.palette.type === 'dark' ? 'hsl(0deg 0% 24%)' : 'hsl(0deg 0% 92%)',
+        boxShadow:
+          theme.palette.type === 'dark' ? '0px 3px 2px hsl(0deg 0% 0% / 30%)' : '1px 1px 3px 0px hsl(0deg 0% 0% / 28%)',
+      },
+    },
     flexContainer: {
       display: 'flex',
       alignItems: 'center',
@@ -26,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     tableRowHover: {
       '&:hover': {
-        backgroundColor: theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 0.14)' : 'rgba(0, 0, 0, 0.07)',
+        backgroundColor: theme.palette.type === 'dark' ? 'hsl(0deg 0% 51% / 10%)' : 'hsl(0deg 0% 0% / 3.5%)',
       },
     },
     tableCell: {
@@ -39,10 +46,12 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.type === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)',
     },
     label: {
-      display: 'block',
+      display: 'flex',
       whiteSpace: 'nowrap',
       overflow: 'hidden',
       textOverflow: 'ellipsis',
+      letterSpacing: '1px',
+      color: theme.palette.type === 'dark' ? 'hsl(0deg 0% 60%)' : 'hsl(0deg 0% 40%)',
     },
   }),
 )
@@ -268,6 +277,7 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
     <AutoSizer>
       {({ height, width }) => (
         <Table
+          className={classes.root}
           height={height}
           width={width}
           gridStyle={{
