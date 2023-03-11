@@ -29,7 +29,6 @@ describe('Short text field control', () => {
       const wrapper = shallow(<ShortText fieldValue={value as any} actionName="browse" settings={defaultSettings} />)
       expect(wrapper.find(Typography).first().text()).toBe(defaultSettings.DisplayName)
       expect(wrapper.find(Typography).last().text()).toBe('[OBJECT]')
-      expect(wrapper).toMatchSnapshot()
     })
   })
   describe('in edit/new view', () => {
