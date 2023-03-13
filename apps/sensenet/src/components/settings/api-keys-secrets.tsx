@@ -158,24 +158,6 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
                 <span className={classes.secondaryInfo}>{client.type}</span>
               </Box>
             </Box>
-
-            /*Onclickre tartalom kimásolás*/
-
-            // <Paper key={spa.clientId} className={globalClasses.cardRoot}>
-            //   <InputLabel shrink htmlFor={spa.clientId} className={classes.inputLabel}>
-            //     {localization.clientId}
-            //   </InputLabel>
-            //   <TextField
-            //     name={spa.clientId}
-            //     variant="outlined"
-            //     fullWidth
-            //     value={spa.clientId}
-            //     inputProps={{
-            //       readOnly: true,
-            //       className: classes.input,
-            //     }}
-            //   />
-            // </Paper>
           ))}
         </Box>
       </TabPanel>
