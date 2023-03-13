@@ -13,7 +13,7 @@ import Box from '@material-ui/core/Box/Box'
 import Tooltip from '@material-ui/core/Tooltip'
 import { Refresh } from '@material-ui/icons'
 import { copyToClipboard } from '@sensenet/client-utils'
-import { useRepository } from '@sensenet/hooks-react'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { clsx } from 'clsx'
 import React, { useEffect, useState } from 'react'
 import { globals, useGlobalStyles, widgetStyles } from '../../globalStyles'
@@ -88,6 +88,11 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
   const [isRegenerating, setIsRegenerating] = useState(false)
   const [spas, setSpas] = useState<ApiKey[]>([])
   const [clients, setClients] = useState<ApiKey[]>([])
+  const logger = useLogger('ApiSecretsWidgets')
+  const handleClientClick = (value: string) => {
+    const copy = copyToClipboard(value)
+    return logger.information({ message: 'Succesfully copied to Clipboard' })
+  }
 
   const regenerateApiKey = async (client: ApiKey) => {
     setIsRegenerating(true)
@@ -147,7 +152,7 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
           {clients.map((client) => (
             <Box
               className={clsx(keyContainer, classes.clientCard)}
-              onClick={() => copyToClipboard(client.clientId)}
+              onClick={handleClientClick.bind(null, client.clientId)}
               key={client.clientId}>
               <Box className={classes.appClientID}>
                 <Tooltip title={localization.clientId}>
