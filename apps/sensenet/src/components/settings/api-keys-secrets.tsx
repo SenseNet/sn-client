@@ -83,7 +83,7 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const repo = useRepository()
-  const localization = useLocalization().settings
+  const { settings: settingLocalization, errorBoundary } = useLocalization()
   const [activeTabIndex, setActiveTabIndex] = useState(0)
   const [isRegenerating, setIsRegenerating] = useState(false)
   const [spas, setSpas] = useState<ApiKey[]>([])
@@ -91,6 +91,11 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
   const logger = useLogger('ApiSecretsWidgets')
   const handleClientClick = (value: string) => {
     const copy = copyToClipboard(value)
+
+    if (!copy) {
+      return logger.error({ message: errorBoundary.title })
+    }
+
     return logger.information({ message: 'Succesfully copied to Clipboard' })
   }
 
@@ -141,13 +146,16 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
 
   return (
     <>
-      <Tabs value={activeTabIndex} aria-label={localization.apiKeys} onChange={(_, value) => setActiveTabIndex(value)}>
-        <Tab label={localization.yourAppId} {...a11yPropsForTab(0)} />
-        <Tab label={localization.personalAccessToken} {...a11yPropsForTab(1)} />
+      <Tabs
+        value={activeTabIndex}
+        aria-label={settingLocalization.apiKeys}
+        onChange={(_, value) => setActiveTabIndex(value)}>
+        <Tab label={settingLocalization.yourAppId} {...a11yPropsForTab(0)} />
+        <Tab label={settingLocalization.personalAccessToken} {...a11yPropsForTab(1)} />
       </Tabs>
 
       <TabPanel value={activeTabIndex} index={0}>
-        <p className={classes.description} dangerouslySetInnerHTML={{ __html: localization.spaDescription }} />
+        <p className={classes.description} dangerouslySetInnerHTML={{ __html: settingLocalization.spaDescription }} />
         <Box display="flex" className={classes.clientRoot}>
           {clients.map((client) => (
             <Box
@@ -155,7 +163,7 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
               onClick={handleClientClick.bind(null, client.clientId)}
               key={client.clientId}>
               <Box className={classes.appClientID}>
-                <Tooltip title={localization.clientId}>
+                <Tooltip title={settingLocalization.clientId}>
                   <b>{client.clientId}</b>
                 </Tooltip>
               </Box>
@@ -168,12 +176,15 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
       </TabPanel>
 
       <TabPanel value={activeTabIndex} index={1}>
-        <p className={classes.description} dangerouslySetInnerHTML={{ __html: localization.clientDescription }} />
+        <p
+          className={classes.description}
+          dangerouslySetInnerHTML={{ __html: settingLocalization.clientDescription }}
+        />
         {spas.map((client) => (
           <Paper key={client.clientId} className={globalClasses.cardRoot}>
             <div style={{ marginBottom: '1rem' }}>
               <InputLabel shrink htmlFor={client.clientId} className={classes.inputLabel}>
-                {localization.clientId}
+                {settingLocalization.clientId}
               </InputLabel>
               <TextField
                 name={client.clientId}
@@ -189,12 +200,12 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
 
             <div>
               <InputLabel shrink htmlFor="repository" className={classes.inputLabel}>
-                {localization.clientSecret}
+                {settingLocalization.clientSecret}
                 <IconButton
                   disabled={isRegenerating}
                   onClick={() => regenerateApiKey(client)}
                   className={classes.refreshIcon}>
-                  <Refresh aria-label={localization.regenerate} />
+                  <Refresh aria-label={settingLocalization.regenerate} />
                 </IconButton>
               </InputLabel>
               {isRegenerating ? (
