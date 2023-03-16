@@ -9,17 +9,17 @@ export default defineConfig({
 
   env: {
     repoUrl: 'https://e2e-service.test.sensenet.com',
-    identityServer: 'https://is.demo.sensenet.com',
+    identityServer: 'https://is.test.sensenet.com',
     users: {
       admin: {
-        clientId: 'xZSq7OvBQIPEXxWo',
-        clientSecret: 'TSWPEcLvDY2xyGUgIGsclSK2vX6WKK4QbKuO6foxvlToIl5Ar1K79Vp15soJTvy4',
+        clientId: 'emuRBycXurC1jhwD',
+        clientSecret: '9xrLk56Scv12gu8WUlIx5WMYCMsv8HPblrGBKroNVCKYrMS1vKui8uTXhVGkV7O9',
         id: "/Root/IMS/Public('businesscat')",
       },
-      developer: {
-        clientId: 'devdog',
-        clientSecret: '',
-        id: "/Root/IMS/Public('devdog')",
+      superAdmin: {
+        clientId: '7bZk2drAheS3UPgV',
+        clientSecret: '4UBzLkvPyWsWXrWUjy7QVkcVaDyLfjejiJ3FfDm3fU1LlTxaGI9OT4x1NJMxRCGu',
+        id: "/Root/IMS/BuiltIn/Portal/('Admin')",
       },
     },
   },

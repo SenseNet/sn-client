@@ -5,19 +5,12 @@ export interface Secret {
   validTill: string
 }
 
-export const ClientsKeys = {
-  ExternalClient: 'ExternalClient',
-  InternalClient: 'InternalClient',
-} as const
+export type ClientType = 'ExternalClient' | 'InternalClient'
 
-export type ClientType = (typeof ClientsKeys)[keyof typeof ClientsKeys]
+export type SpaType = 'InternalSpa' | 'ExternalSpa'
 
-export const SpaKeys = {
-  InternalSpa: 'InternalSpa',
-  ExternalSpa: 'ExternalSpa',
-} as const
-
-export type SpaType = (typeof SpaKeys)[keyof typeof SpaKeys]
+export const spaTypes: SpaType[] = ['ExternalSpa', 'InternalSpa']
+export const clientTypes: ClientType[] = ['ExternalClient', 'InternalClient']
 
 export interface ApiKey {
   name: string

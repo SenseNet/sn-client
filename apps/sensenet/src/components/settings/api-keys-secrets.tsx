@@ -18,7 +18,7 @@ import { clsx } from 'clsx'
 import React, { useEffect, useState } from 'react'
 import { globals, useGlobalStyles, widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { ApiKey, ClientType, Secret, SpaType } from './api-key'
+import { ApiKey, clientTypes, Secret, spaTypes } from './api-key'
 import { Tab } from './api-keys-tab'
 import { TabPanel } from './api-keys-tab-panel'
 import { Tabs } from './api-keys-tabs'
@@ -42,18 +42,19 @@ const useStyles = makeStyles((theme: Theme) => {
     label: {
       // fontSize: '0.7rem',
     },
-    clientRoot: {
+    clientsContainer: {
       columnGap: '15px',
-      padding: '5px 0px',
+      flexWrap: 'wrap',
+      padding: '1rem 0px',
+      rowGap: '15px',
     },
     clientCard: {
+      width: '35ch',
+      cursor: 'pointer',
+      boxShadow: globals.common.elavationShadow,
       borderRadius: '5px',
-      columnGap: '8px',
       display: 'flex',
       justifyContent: 'space-between',
-      boxShadow: globals.common.elavationShadow,
-      width: 'calc(100% / 3)',
-      cursor: 'pointer',
     },
     input: {
       paddingTop: '10px',
@@ -75,9 +76,6 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-const clientTypes: SpaType[] = ['ExternalSpa', 'InternalSpa']
-const spaTypes: ClientType[] = ['ExternalClient', 'InternalClient']
-
 export const ApiSecretsWidget: React.FunctionComponent = () => {
   const { container: keyContainer } = useWidgetStyles()
   const classes = useStyles()
@@ -96,7 +94,7 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
       return logger.error({ message: errorBoundary.title })
     }
 
-    return logger.information({ message: 'Succesfully copied to Clipboard' })
+    return logger.information({ message: settingLocalization.clientIDCopiedToClipboard })
   }
 
   const regenerateApiKey = async (client: ApiKey) => {
@@ -126,11 +124,9 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
     ;(async () => {
       const response = await repo.executeAction<any, { clients: ApiKey[] }>({
         idOrPath: '/Root',
-        name: 'GetClients',
+        name: 'GetClientsForRepository',
         method: 'GET',
       })
-
-      console.log(response)
 
       setClients(response.clients.filter((client: any) => clientTypes.includes(client.type)))
       setSpas(response.clients.filter((client: any) => spaTypes.includes(client.type)))
@@ -156,8 +152,8 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
 
       <TabPanel value={activeTabIndex} index={0}>
         <p className={classes.description} dangerouslySetInnerHTML={{ __html: settingLocalization.spaDescription }} />
-        <Box display="flex" className={classes.clientRoot}>
-          {clients.map((client) => (
+        <Box display="flex" className={classes.clientsContainer} data-test="client-keys">
+          {clients?.map((client) => (
             <Box
               className={clsx(keyContainer, classes.clientCard)}
               onClick={handleClientClick.bind(null, client.clientId)}
@@ -175,12 +171,12 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
         </Box>
       </TabPanel>
 
-      <TabPanel value={activeTabIndex} index={1}>
+      {/* <TabPanel value={activeTabIndex} index={1}>
         <p
           className={classes.description}
           dangerouslySetInnerHTML={{ __html: settingLocalization.clientDescription }}
         />
-        {spas.map((client) => (
+        {spas?.map((client) => (
           <Paper key={client.clientId} className={globalClasses.cardRoot}>
             <div style={{ marginBottom: '1rem' }}>
               <InputLabel shrink htmlFor={client.clientId} className={classes.inputLabel}>
@@ -225,7 +221,7 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
             </div>
           </Paper>
         ))}
-      </TabPanel>
+      </TabPanel> */}
     </>
   )
 }
