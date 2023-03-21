@@ -10,23 +10,34 @@ describe('Api Keys', () => {
   it('should display client APIKeys', () => {
     cy.get('[data-test="drawer-menu-item-settings"]').click()
     cy.intercept(/GetClients/).as('getClients')
+    cy.intercept(/GetClientsForRepository\?/).as('GetClientsForRepository')
     cy.get('[data-test="drawer-submenu-item-apikeys"]').click()
 
+    let clientKeys: ApiKey[] = []
+
     cy.wait('@getClients').then(({ response }) => {
-      const clientKeys: ApiKey[] = response?.body.clients.filter((client: any) => {
+      clientKeys = response?.body.clients.filter((client: any) => {
         return clientTypes.indexOf(client.type) > -1
       })
       cy.get('[data-test="client-keys"]').children().should('have.length', clientKeys.length)
     })
+
+    if (clientKeys.length === 0) {
+      cy.reload()
+      cy.get('[data-test="client-keys"]').children().should('have.length', clientKeys.length)
+    }
   })
 
   it('should copy client APIKeys to clipboard', () => {
     cy.get('[data-test="drawer-menu-item-settings"]').click()
-    cy.intercept(/GetClients/).as('getClients')
+    cy.intercept(/GetClients\?/).as('getClients')
+    cy.intercept(/GetClientsForRepository\?/).as('GetClientsForRepository')
     cy.get('[data-test="drawer-submenu-item-apikeys"]').click()
 
+    let clientKeys: ApiKey[] = []
+
     cy.wait('@getClients').then(({ response }) => {
-      const clientKeys: ApiKey[] = response?.body.clients.filter((client: any) => {
+      clientKeys = response?.body.clients.filter((client: any) => {
         return clientTypes.indexOf(client.type) > -1
       })
 
@@ -46,5 +57,30 @@ describe('Api Keys', () => {
             })
         })
     })
+
+    if (clientKeys.length === 0) {
+      cy.reload()
+      cy.wait('@GetClientsForRepository').then(({ response }) => {
+        clientKeys = response?.body.clients.filter((client: any) => {
+          return clientTypes.indexOf(client.type) > -1
+        })
+
+        cy.get('[data-test="client-keys"]')
+          .children()
+          .should('have.length', clientKeys.length)
+          .each(($key, index) => {
+            cy.wrap($key)
+              .should('be.visible')
+              .click()
+              .then(() => {
+                cy.window().then((win) => {
+                  win.navigator.clipboard.readText().then((content) => {
+                    expect(content).to.equal(clientKeys[index].clientId)
+                  })
+                })
+              })
+          })
+      })
+    }
   })
 })
