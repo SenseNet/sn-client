@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) => {
       display: 'flex',
       justifyContent: 'flex-start',
       flexDirection: 'column',
-      maxWidth: '350px',
+      maxWidth: '480px',
       '&.Mui-expanded': {
         margin: 0,
       },
@@ -67,9 +67,23 @@ const useStyles = makeStyles((theme: Theme) => {
       },
       '& .MuiAccordionSummary-root .MuiAccordionSummary-content': {
         flex: 1,
-        columnGap: '5px',
-        alignItems: 'baseline',
+        columnGap: '20px',
+        alignItems: 'center',
         justifyContent: 'space-evenly',
+      },
+      '& .user-info': {
+        flex: 1,
+        columnGap: '10px',
+        rowGap: '2px',
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+        alignItems: 'baseline',
+      },
+      '& .user-info .user-name': {
+        opacity: 0.9,
+        fontSize: '0.9rem',
+        minWidth: '16ch',
       },
       '& .MuiAccordionDetails-root': {
         boxShadow: globals.common.elavationShadow,
@@ -110,7 +124,6 @@ const useStyles = makeStyles((theme: Theme) => {
     },
   })
 })
-
 export const ApiKeyAccordion = (props: ApiKeyAccordionProps) => {
   const {
     client,
@@ -136,13 +149,17 @@ export const ApiKeyAccordion = (props: ApiKeyAccordionProps) => {
         className={keyContainer}
         disabled={!apiSecrects.length}
         expandIcon={apiSecrects.length ? <ExpandMore /> : undefined}>
+        <Box className="user-info">
+          {client.userName ? <span className="user-name">{client.userName}</span> : null}
+
+          <Box onClick={(event) => handleCopyClientClick(event, client.clientId, clientIdLocalization)}>
+            <Tooltip title={clientIdLocalization}>
+              <b>{client.clientId}</b>
+            </Tooltip>
+          </Box>
+        </Box>
         <Box>
           <span className={classes.secondaryInfo}>{client.type}</span>
-        </Box>
-        <Box onClick={(event) => handleCopyClientClick(event, client.clientId, clientIdLocalization)}>
-          <Tooltip title={clientIdLocalization}>
-            <b>{client.clientId}</b>
-          </Tooltip>
         </Box>
       </AccordionSummary>
       {apiSecrects.length ? (

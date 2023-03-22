@@ -5,7 +5,7 @@ import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useState } from 'react'
 import { globals } from '../../globalStyles'
 import { useGetClients, useLocalization } from '../../hooks'
-import { ApiKey, ClientType, clientTypes, Secret, SpaType } from './api-key'
+import { ApiKey, clientTypes, Secret } from './api-key'
 import { ApiKeyAccordion } from './api-key-accordion'
 import { Tab } from './api-keys-tab'
 import { TabPanel } from './api-keys-tab-panel'
@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme: Theme) => {
       // fontSize: '0.7rem',
     },
     ApiKeysContainer: {
+      display: 'flex',
       columnGap: '15px',
       flexWrap: 'wrap',
       padding: '1rem 0px',
