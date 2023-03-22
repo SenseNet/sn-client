@@ -87,8 +87,6 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
   const regenerateApiKey = async (client: ApiKey, secretIndex: number) => {
     setIsRegenerating(true)
 
-    let unavailableFeture
-
     const response = await repo
       .executeAction<any, Secret>({
         idOrPath: '/Root',
@@ -102,11 +100,10 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
       .catch(() => {
         setIsRegenerating(false)
         logger.error({ message: settingLocalization.unavailableRegenSecret })
-        unavailableFeture = true
         return false
       })
 
-    if (unavailableFeture) {
+    if (!response) {
       return false
     }
 
@@ -119,7 +116,7 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
           secrets: [...prevState[clientIndex].secrets],
         }
 
-        updatedClient.secrets[secretIndex] = response
+        updatedClient.secrets[secretIndex] = response as Secret
 
         const updatedClients = [...prevState]
         updatedClients[clientIndex] = updatedClient
@@ -140,7 +137,7 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
         secrets: [...prevState[clientIndex].secrets],
       }
 
-      updatedClient.secrets[secretIndex] = response
+      updatedClient.secrets[secretIndex] = response as Secret
 
       const updatedClients = [...prevState]
       updatedClients[clientIndex] = updatedClient
