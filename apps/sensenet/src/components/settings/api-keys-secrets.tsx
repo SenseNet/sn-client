@@ -71,6 +71,7 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
   const logger = useLogger('ApiSecretsWidgets')
   const [activeTabIndex, setActiveTabIndex] = useState(0)
   const [isRegenerating, setIsRegenerating] = useState(false)
+
   const handleCopyClientClick = (event: React.MouseEvent<HTMLElement, MouseEvent>, value: string, title: string) => {
     event.stopPropagation()
     const copy = copyToClipboard(value)
@@ -81,6 +82,7 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
 
     return logger.information({ message: `${title} ${settingLocalization.copiedToClipboard}` })
   }
+
   const regenerateApiKey = async (client: ApiKey, secretIndex: number) => {
     setIsRegenerating(true)
 

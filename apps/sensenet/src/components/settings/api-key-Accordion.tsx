@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) => {
       cursor: 'pointer',
       borderRadius: '5px',
       display: 'flex',
-      justifyContent: 'space-between',
+      justifyContent: 'flex-start',
       flexDirection: 'column',
       maxWidth: '350px',
       '&.Mui-expanded': {
@@ -79,6 +79,7 @@ const useStyles = makeStyles((theme: Theme) => {
         wordBreak: 'break-all',
         padding: '0px',
         flexDirection: 'column',
+        rowGap: '15px',
       },
       '& .MuiAccordionDetails-root > div': {
         borderRadius: 'inherit',
