@@ -6,10 +6,10 @@ import React, { useState } from 'react'
 import { globals } from '../../globalStyles'
 import { useGetClients, useLocalization } from '../../hooks'
 import { ApiKey, clientTypes, Secret } from './api-key'
-import { ApiKeyAccordion } from './api-key-accordion'
 import { Tab } from './api-keys-tab'
 import { TabPanel } from './api-keys-tab-panel'
 import { Tabs } from './api-keys-tabs'
+import { ApiKeyAccordion } from './apikey-accordion'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
