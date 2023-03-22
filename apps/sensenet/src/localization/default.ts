@@ -479,6 +479,7 @@ const values = {
     copiedToClipboard: 'successfully copied to Clipboard',
     noExpiration: 'No expiration date',
     expiratinDate: 'Expiration date',
+    unavailableRegenSecret: 'Currently regenerate secret is unavailable',
   },
   customActions: {
     executeCustomActionDialog: {

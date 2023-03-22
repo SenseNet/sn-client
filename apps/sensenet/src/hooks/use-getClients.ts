@@ -51,5 +51,5 @@ export const useGetClients = () => {
     }
   }, [repo])
 
-  return { spas, clients, unAuthorizedRequest }
+  return { spas, clients, unAuthorizedRequest, setClients, setSpas }
 }

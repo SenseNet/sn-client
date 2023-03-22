@@ -5,8 +5,8 @@ import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useState } from 'react'
 import { globals } from '../../globalStyles'
 import { useGetClients, useLocalization } from '../../hooks'
-import { ApiKey, Secret } from './api-key'
-import { ApiKeyAccordion } from './api-key-Accordion'
+import { ApiKey, ClientType, clientTypes, Secret, SpaType } from './api-key'
+import { ApiKeyAccordion } from './api-key-accordion'
 import { Tab } from './api-keys-tab'
 import { TabPanel } from './api-keys-tab-panel'
 import { Tabs } from './api-keys-tabs'
@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme: Theme) => {
 export const ApiSecretsWidget: React.FunctionComponent = () => {
   const classes = useStyles()
   const repo = useRepository()
-  const { spas, clients, unAuthorizedRequest } = useGetClients()
+  const { spas, clients, unAuthorizedRequest, setClients, setSpas } = useGetClients()
   const { settings: settingLocalization, errorBoundary } = useLocalization()
   const logger = useLogger('ApiSecretsWidgets')
   const [activeTabIndex, setActiveTabIndex] = useState(0)
@@ -86,24 +86,67 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
   const regenerateApiKey = async (client: ApiKey, secretIndex: number) => {
     setIsRegenerating(true)
 
-    const response = await repo.executeAction<any, Secret>({
-      idOrPath: '/Root',
-      name: 'RegenerateSecretForRepository',
-      method: 'POST',
-      body: {
-        clientId: client.clientId,
-        secretId: client.secrets[secretIndex]?.id,
-      },
+    let unavailableFeture
+
+    const response = await repo
+      .executeAction<any, Secret>({
+        idOrPath: '/Root',
+        name: 'RegenerateSecretForRepository',
+        method: 'POST',
+        body: {
+          clientId: client.clientId,
+          secretId: client.secrets[secretIndex]?.id,
+        },
+      })
+      .catch(() => {
+        setIsRegenerating(false)
+        logger.error({ message: settingLocalization.unavailableRegenSecret })
+        unavailableFeture = true
+        return false
+      })
+
+    if (unavailableFeture) {
+      return false
+    }
+
+    if (clientTypes.includes(client.type as any)) {
+      setClients((prevState) => {
+        const clientIndex = prevState.findIndex((prevclient) => prevclient.clientId === client.clientId)
+
+        const updatedClient = {
+          ...prevState[clientIndex],
+          secrets: [...prevState[clientIndex].secrets],
+        }
+
+        updatedClient.secrets[secretIndex] = response
+
+        const updatedClients = [...prevState]
+        updatedClients[clientIndex] = updatedClient
+
+        return updatedClients
+      })
+
+      setIsRegenerating(false)
+
+      return
+    }
+
+    setSpas((prevState) => {
+      const clientIndex = prevState.findIndex((prevclient) => prevclient.clientId === client.clientId)
+
+      const updatedClient = {
+        ...prevState[clientIndex],
+        secrets: [...prevState[clientIndex].secrets],
+      }
+
+      updatedClient.secrets[secretIndex] = response
+
+      const updatedClients = [...prevState]
+      updatedClients[clientIndex] = updatedClient
+
+      return updatedClients
     })
 
-    setClients(
-      spas.map((externalClient) => {
-        if (externalClient.secrets[0].id === response.id) {
-          externalClient.secrets[0] = response
-        }
-        return client
-      }),
-    )
     setIsRegenerating(false)
   }
 
