@@ -174,7 +174,7 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
         aria-label={settingLocalization.apiKeys}
         onChange={(_, value) => setActiveTabIndex(value)}>
         <Tab label={settingLocalization.yourAppId} {...a11yPropsForTab(0)} />
-        <Tab label={settingLocalization.personalAccessToken} {...a11yPropsForTab(1)} />
+        <Tab data-test="spas-tab" label={settingLocalization.personalAccessToken} {...a11yPropsForTab(1)} />
       </Tabs>
 
       <TabPanel value={activeTabIndex} index={0}>
@@ -200,7 +200,7 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
           className={classes.description}
           dangerouslySetInnerHTML={{ __html: settingLocalization.clientDescription }}
         />
-        <Box className={classes.ApiKeysContainer}>
+        <Box className={classes.ApiKeysContainer} data-test="spa-keys">
           {spas?.map((client) => (
             <ApiKeyAccordion
               handleCopyClientClick={handleCopyClientClick}

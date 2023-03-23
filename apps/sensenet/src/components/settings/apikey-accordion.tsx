@@ -11,7 +11,7 @@ import {
 import IconButton from '@material-ui/core/IconButton'
 import { ExpandMore, Refresh } from '@material-ui/icons'
 import { convertUtcToLocale } from '@sensenet/client-utils'
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { globals, widgetStyles } from '../../globalStyles'
 import { ApiKey, Secret } from './api-key'
 
@@ -64,6 +64,7 @@ const useStyles = makeStyles((theme: Theme) => {
       },
       '& .MuiAccordionSummary-root.Mui-disabled': {
         opacity: 1,
+        pointerEvents: 'auto',
       },
       '& .MuiAccordionSummary-root .MuiAccordionSummary-content': {
         flex: 1,
@@ -79,6 +80,7 @@ const useStyles = makeStyles((theme: Theme) => {
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
         alignItems: 'baseline',
+        cursor: 'pointer',
       },
       '& .user-info .user-name': {
         opacity: 0.9,
@@ -106,7 +108,7 @@ const useStyles = makeStyles((theme: Theme) => {
         flex: 1,
         textAlign: 'center',
       },
-      '& .secret-container': {
+      '& .user-secret-container': {
         height: 'calc(3 * 1.5rem)',
       },
       '& .additional': {
@@ -137,14 +139,35 @@ export const ApiKeyAccordion = (props: ApiKeyAccordionProps) => {
     isRegenerating,
   } = props
 
+  const accordionContentRef = useRef<HTMLDivElement>(null)
+
   const classes = useStyles()
 
   const { container: keyContainer } = useWidgetStyles()
 
   const apiSecrects: Secret[] = client.secrets
 
+  const [expanded, setExpanded] = useState(false)
+
+  const handleChange = (_event: React.ChangeEvent<{}>, isExpanded: boolean) => {
+    setExpanded(isExpanded)
+    // if (isExpanded) {
+    //   setTimeout(() => {
+    //     accordionContentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+    //   }, 150)
+    // }
+  }
+
   return (
-    <Accordion key={client.clientId} className={classes.ApiKeyCard} elevation={0}>
+    <Accordion
+      expanded={expanded}
+      onChange={handleChange}
+      TransitionComponent={undefined}
+      TransitionProps={undefined}
+      key={client.clientId}
+      className={classes.ApiKeyCard}
+      elevation={0}
+      data-test="api-key-accordion-container">
       <AccordionSummary
         className={keyContainer}
         disabled={!apiSecrects.length}
@@ -158,23 +181,25 @@ export const ApiKeyAccordion = (props: ApiKeyAccordionProps) => {
             </Tooltip>
           </Box>
         </Box>
-        <Box>
+        <Box data-test="type-container">
           <span className={classes.secondaryInfo}>{client.type}</span>
         </Box>
       </AccordionSummary>
       {apiSecrects.length ? (
-        <AccordionDetails>
+        <AccordionDetails data-test="secret-container">
           {apiSecrects.map((secret, index) => {
             const { value, validTill } = secret
 
             const expiration =
               validTill === '9999-12-31T23:59:59.9999999' ? noExpirationLocalization : convertUtcToLocale(validTill)
             return (
-              <Box className={keyContainer} key={value}>
+              <div ref={accordionContentRef} className={keyContainer} key={value}>
                 <Tooltip
                   onClick={(event) => handleCopyClientClick(event, value, clientSecretLocalization)}
                   title={clientSecretLocalization}>
-                  <Box className="secret-container">{value}</Box>
+                  <Box data-test="user-secret-container" className="user-secret-container">
+                    {value}
+                  </Box>
                 </Tooltip>
                 <Box className="additional">
                   <Tooltip title={expiratinDateLocalization}>
@@ -190,7 +215,7 @@ export const ApiKeyAccordion = (props: ApiKeyAccordionProps) => {
                     </IconButton>
                   </Tooltip>
                 </Box>
-              </Box>
+              </div>
             )
           })}
         </AccordionDetails>

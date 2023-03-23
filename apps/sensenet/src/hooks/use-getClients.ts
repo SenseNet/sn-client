@@ -42,6 +42,7 @@ export const useGetClients = () => {
         setClients(response.clients.filter((client: any) => clientTypes.includes(client.type)))
         setSpas(response.clients.filter((client: any) => spaTypes.includes(client.type)))
       } catch (error) {
+        console.log(error.message)
         setUnAuthorizedRequest(true)
       }
     })()
