@@ -7,9 +7,9 @@ export interface Secret {
 
 export type ClientType = 'ExternalClient' | 'InternalClient'
 
-export type SpaType = 'InternalSpa' | 'ExternalSpa'
+export type SpaType = 'InternalSpa' | 'ExternalSpa' | 'AdminUi'
 
-export const spaTypes: SpaType[] = ['ExternalSpa', 'InternalSpa']
+export const spaTypes: SpaType[] = ['ExternalSpa', 'InternalSpa', 'AdminUi']
 export const clientTypes: ClientType[] = ['ExternalClient', 'InternalClient']
 
 export interface ApiKey {
