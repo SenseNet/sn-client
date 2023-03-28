@@ -19,6 +19,7 @@
     "build:stats": "webpack --config webpack.prod.js --profile --json > stats.json",
     "start": "cross-env NODE_OPTIONS=--openssl-legacy-provider webpack serve --progress --config webpack.dev.js",
     "cypress": "cypress open --env coverage=false",
+    "cypress:local": "cypress open --env coverage=false --config baseUrl=http://localhost:8080",
     "cypress:all": "cypress run --env coverage=false",
     "cypress:coverage": "cypress run --headed -b chrome --config-file ./cypress.config.ts && nyc report --reporter=text-summary",
     "instrument": "nyc instrument --compct=false --complete-copy --delete src instrumented && yarn start --env coverage"

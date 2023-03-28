@@ -37,6 +37,7 @@ export const getItemTextColor = (item: LeveledLogEntry<any>) => {
 export const getAutoHideDuration = (item: LeveledLogEntry<any>) => {
   switch (item.level) {
     case LogLevel.Error:
+      return 5000
     case LogLevel.Fatal:
       return undefined
     case LogLevel.Warning:
