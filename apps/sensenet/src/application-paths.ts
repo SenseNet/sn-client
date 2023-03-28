@@ -16,6 +16,7 @@ export const PATHS = {
   localization: { appPath: '/settings/localization/:action?', snPath: '/Root/Localization' },
   webhooks: { appPath: '/settings/webhooks/:action?', snPath: '/Root/System/WebHooks' },
   settings: { appPath: '/settings/:submenu?' },
+  apiKeys: { appPath: '/settings/apikeys' },
 } as const
 
 type SettingsItemType = 'stats' | 'apikeys' | 'webhooks' | 'adminui'
