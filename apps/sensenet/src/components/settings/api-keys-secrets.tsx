@@ -25,9 +25,6 @@ const useStyles = makeStyles((theme: Theme) => {
       alignItems: 'flex-end',
       marginBottom: '0.5rem',
     },
-    label: {
-      // fontSize: '0.7rem',
-    },
     ApiKeysContainer: {
       display: 'flex',
       columnGap: '15px',
