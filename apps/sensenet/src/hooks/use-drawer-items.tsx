@@ -46,7 +46,7 @@ export const useDrawerItems = () => {
         permissions: [
           {
             path: PATHS.usersAndGroups.snPath,
-            action: 'Add',
+            action: 'Browse',
           },
         ],
         systemItem: false,
@@ -176,6 +176,7 @@ export const useDrawerItems = () => {
         if (!item.permissions?.length) {
           return true
         }
+
         try {
           for (const permission of item.permissions) {
             const actions = await repo.getActions({ idOrPath: permission.path })
