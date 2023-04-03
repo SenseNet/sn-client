@@ -177,7 +177,7 @@ export const DesktopNavMenu: FunctionComponent = () => {
                     {localization.topMenu.accountSettings}
                   </Link>
                 </MenuItem>
-                <MenuItem onClick={changePassword} className={classes.userMenuItem}>
+                <MenuItem data-test="change-password-menu" onClick={changePassword} className={classes.userMenuItem}>
                   {localization.topMenu.changePassword}
                 </MenuItem>
                 <MenuItem onClick={logout} className={classes.userMenuItem}>

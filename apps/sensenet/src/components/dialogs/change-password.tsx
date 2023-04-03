@@ -7,7 +7,7 @@ import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { DialogTitle, useDialog } from '.'
 
-type PasswordFieldKeys = 'oldPassword' | 'newPassword' | 'confirmPassword'
+type PasswordFieldKeys = 'newPassword' | 'confirmPassword'
 
 export function ChangePasswordDialog() {
   const { closeLastDialog } = useDialog()
@@ -18,15 +18,11 @@ export function ChangePasswordDialog() {
   const currentUser = useCurrentUser()
   const [passwordFields, setPasswordFields] = useState<{
     [K in PasswordFieldKeys]?: string
-  }>({})
-  const [match, setMatch] = useState<boolean>(true)
-  const [dirtyFlags, setDirtyFlags] = useState<{
-    [K in PasswordFieldKeys]: boolean
   }>({
-    oldPassword: false,
-    newPassword: false,
-    confirmPassword: false,
+    newPassword: '',
+    confirmPassword: '',
   })
+  const [match, setMatch] = useState<boolean>(true)
 
   const onSubmit = async () => {
     if (!validate()) {
@@ -40,7 +36,6 @@ export function ChangePasswordDialog() {
         name: 'ChangePassword',
         method: 'POST',
         body: {
-          oldPassword: passwordFields.oldPassword,
           password: passwordFields.newPassword,
         },
       })
@@ -54,8 +49,8 @@ export function ChangePasswordDialog() {
 
   const validate = () => {
     if (
-      dirtyFlags.newPassword &&
-      dirtyFlags.confirmPassword &&
+      passwordFields.newPassword &&
+      passwordFields.confirmPassword &&
       passwordFields.newPassword !== passwordFields.confirmPassword
     ) {
       return false
@@ -65,7 +60,6 @@ export function ChangePasswordDialog() {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setPasswordFields({ ...passwordFields, [event.target.name]: event.target.value })
-    setDirtyFlags({ ...dirtyFlags, [event.target.name]: true })
   }
 
   return (
@@ -74,22 +68,10 @@ export function ChangePasswordDialog() {
         <div className={globalClasses.centered}>{localization.changeYourPassword}</div>
       </DialogTitle>
       <>
-        <DialogContent>
-          <TextField
-            name="oldPassword"
-            label={localization.oldPassword}
-            multiline={false}
-            rowsMax="4"
-            value={passwordFields.oldPassword}
-            onChange={(event) => handleInputChange(event)}
-            margin="normal"
-            fullWidth={true}
-            placeholder={localization.oldPassword}
-            type="password"
-            required
-          />
+        <DialogContent data-test="change-password-fields">
           <TextField
             name="newPassword"
+            data-test="new-password"
             label={localization.newPassword}
             multiline={false}
             rowsMax="4"
@@ -104,6 +86,7 @@ export function ChangePasswordDialog() {
           />
           <TextField
             name="confirmPassword"
+            date-test="confirm-password"
             label={localization.confirmNew}
             multiline={false}
             rowsMax="4"
@@ -124,13 +107,12 @@ export function ChangePasswordDialog() {
             {localization.cancel}
           </Button>
           <Button
+            data-test="change-password-submit"
             aria-label={localization.update}
             color="primary"
             variant="contained"
             onClick={onSubmit}
-            disabled={
-              !passwordFields.oldPassword || !passwordFields.newPassword || !passwordFields.confirmPassword || !match
-            }
+            disabled={!passwordFields.newPassword || !passwordFields.confirmPassword || !match}
             autoFocus={true}>
             {localization.update}
           </Button>
