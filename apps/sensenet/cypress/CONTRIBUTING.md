@@ -148,7 +148,7 @@ As of now we implemented the login command for you to make implementing tests ea
 You can use the login command in your tests with an argument as your role you want to use:
 
 ```javascript
-cy.login('developer')
+cy.login('superAdmin')
 ```
 
 If no argument added then login will be done with admin role.
