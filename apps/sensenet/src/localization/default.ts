@@ -131,6 +131,7 @@ const values = {
       ApiAndSecurity: 'Api and security',
       Webhooks: 'Webhooks',
       AdminUiCustomization: 'Admin-ui customization',
+      ContentTemplates: 'Content templates',
     },
     descriptions: {
       Content: 'Explore and manage your content in the repository',
@@ -142,6 +143,7 @@ const values = {
       UsersAndGroups: 'Manage users and groups, roles and identities',
       CustomContent: 'Explore and manage your content from the configured path',
       Settings: 'Configure the sensenet system',
+      ContentTemplates: 'Manage content templates',
     },
     personalSettingsTitle: 'Edit personal settings',
     personalSettingsSecondaryText: 'Customize the application behavior',
@@ -663,6 +665,7 @@ const values = {
     usersAndGroup: 'Users and Groups',
     savedQueries: 'Saved Queries',
     trash: 'Trash',
+    '/Root/ContentTemplates': 'Content Templates',
   },
 }
 

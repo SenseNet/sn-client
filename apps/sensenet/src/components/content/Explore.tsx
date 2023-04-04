@@ -65,6 +65,7 @@ export type ExploreProps = {
   renderBeforeGrid?: () => JSX.Element
   hasTree?: boolean
   alwaysRefreshChildren?: boolean
+  showPageTitle?: boolean
 }
 
 export function Explore({

@@ -11,6 +11,7 @@ export const PATHS = {
   contentTypes: { appPath: '/content-types/:browseType/:action?', snPath: '/Root/System/Schema/ContentTypes' },
   search: { appPath: '/search' },
   content: { appPath: '/content/:browseType/:action?', snPath: '/Root/Content' },
+  contentTemplates: { appPath: '/content-templates/:browseType/:action?', snPath: '/Root/ContentTemplates' },
   custom: { appPath: '/custom/:browseType/:path/:action?' },
   configuration: { appPath: '/settings/configuration/:action?', snPath: '/Root/System/Settings' },
   localization: { appPath: '/settings/localization/:action?', snPath: '/Root/Localization' },
@@ -21,7 +22,10 @@ export const PATHS = {
 
 type SettingsItemType = 'stats' | 'apikeys' | 'webhooks' | 'adminui'
 
-type RoutesWithContentBrowser = keyof Pick<typeof PATHS, 'content' | 'usersAndGroups' | 'contentTypes' | 'trash'>
+type RoutesWithContentBrowser = keyof Pick<
+  typeof PATHS,
+  'content' | 'usersAndGroups' | 'contentTypes' | 'trash' | 'contentTemplates'
+>
 
 type RoutesWithActionParam = keyof Pick<typeof PATHS, 'savedQueries' | 'localization' | 'configuration' | 'webhooks'>
 
