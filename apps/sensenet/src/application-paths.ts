@@ -6,7 +6,7 @@ export const PATHS = {
   events: { appPath: '/events/:eventGuid?' },
   savedQueries: { appPath: '/saved-queries/:action?', snPath: '/Root/Content/Queries' },
   trash: { appPath: '/trash/:browseType/:action?', snPath: '/Root/Trash' },
-  usersAndGroups: { appPath: '/users-and-groups/:browseType/:action?', snPath: '/Root/IMS/Public' },
+  usersAndGroups: { appPath: '/users-and-groups/:browseType/:action?', snPath: '/Root/IMS' },
   dashboard: { appPath: '/dashboard' },
   contentTypes: { appPath: '/content-types/:browseType/:action?', snPath: '/Root/System/Schema/ContentTypes' },
   search: { appPath: '/search' },
