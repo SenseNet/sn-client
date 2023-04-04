@@ -49,7 +49,7 @@ export const useDrawerItems = () => {
             action: 'Browse',
           },
         ],
-        systemItem: false,
+        systemItem: true,
       },
       {
         itemType: 'UsersAndGroups',
