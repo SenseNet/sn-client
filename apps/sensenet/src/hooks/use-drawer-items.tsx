@@ -41,17 +41,6 @@ export const useDrawerItems = () => {
         systemItem: false,
       },
       {
-        itemType: 'ContentTemplates',
-        settings: { root: PATHS.contentTemplates.snPath },
-        permissions: [
-          {
-            path: PATHS.contentTemplates.snPath,
-            action: 'Browse',
-          },
-        ],
-        systemItem: true,
-      },
-      {
         itemType: 'UsersAndGroups',
         settings: { root: PATHS.usersAndGroups.snPath },
         permissions: [
@@ -84,6 +73,17 @@ export const useDrawerItems = () => {
           {
             path: PATHS.contentTypes.snPath,
             action: 'Add',
+          },
+        ],
+        systemItem: true,
+      },
+      {
+        itemType: 'ContentTemplates',
+        settings: { root: PATHS.contentTemplates.snPath },
+        permissions: [
+          {
+            path: PATHS.contentTemplates.snPath,
+            action: 'Browse',
           },
         ],
         systemItem: true,
