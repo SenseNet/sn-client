@@ -119,7 +119,7 @@ export const useDrawerItems = () => {
         case 'ContentTemplates':
           return (
             <div>
-              <Folder />
+              <Public />
               <Description className="secondary-icon" />
             </div>
           )
