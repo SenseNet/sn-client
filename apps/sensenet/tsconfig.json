@@ -9,7 +9,6 @@
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "importsNotUsedAsValues": "preserve",
     "typeRoots": ["./node_modules/@types"],
     "types": ["node"]
   },

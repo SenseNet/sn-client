@@ -29,6 +29,7 @@ export const BuiltInDrawerItemType = tuple(
   'Trash',
   'UsersAndGroups',
   'Settings',
+  'ContentTemplates',
 )
 
 export const ActionType = tuple(

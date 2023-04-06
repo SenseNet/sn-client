@@ -32,6 +32,12 @@ export const MainRouter = () => {
             </InvalidPathErrorBoundary>
           </Route>
 
+          <Route path={PATHS.contentTemplates.appPath}>
+            <InvalidPathErrorBoundary>
+              <ContentComponent showPageTitle rootPath={PATHS.contentTemplates.snPath} />
+            </InvalidPathErrorBoundary>
+          </Route>
+
           <Route path={PATHS.search.appPath}>
             <LoadSettingsContextProvider>
               <SearchComponent />

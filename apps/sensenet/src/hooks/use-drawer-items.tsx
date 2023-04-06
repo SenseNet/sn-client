@@ -1,4 +1,4 @@
-import { Build, Delete, Folder, People, Public, Save, Search, Widgets } from '@material-ui/icons'
+import { Build, Delete, Description, Folder, People, Public, Save, Search, Widgets } from '@material-ui/icons'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { PATHS, resolvePathParams } from '../application-paths'
@@ -78,6 +78,17 @@ export const useDrawerItems = () => {
         systemItem: true,
       },
       {
+        itemType: 'ContentTemplates',
+        settings: { root: PATHS.contentTemplates.snPath },
+        permissions: [
+          {
+            path: PATHS.contentTemplates.snPath,
+            action: 'Browse',
+          },
+        ],
+        systemItem: true,
+      },
+      {
         itemType: 'Settings',
         systemItem: true,
       },
@@ -105,6 +116,13 @@ export const useDrawerItems = () => {
           )
         case 'Content':
           return <Public />
+        case 'ContentTemplates':
+          return (
+            <div>
+              <Public />
+              <Description className="secondary-icon" />
+            </div>
+          )
         case 'UsersAndGroups':
           return <People />
         case 'Trash':
@@ -126,6 +144,11 @@ export const useDrawerItems = () => {
         case 'Content':
           return resolvePathParams({
             path: PATHS.content.appPath,
+            params: { browseType: settings.content.browseType },
+          })
+        case 'ContentTemplates':
+          return resolvePathParams({
+            path: PATHS.contentTemplates.appPath,
             params: { browseType: settings.content.browseType },
           })
         case 'UsersAndGroups':
