@@ -6,6 +6,7 @@ import { PATHS } from '../../application-paths'
 import { useLocalization } from '../../hooks'
 import { getMonacoLanguage } from '../../services/content-context-service'
 import { FullScreenLoader } from '../full-screen-loader'
+import { ContentTypePreset } from './conent-type-preset'
 import { SnMonacoEditor, SnMonacoEditorProps } from './sn-monaco-editor'
 
 export type NewFileTextEditorProps = Pick<SnMonacoEditorProps, 'handleCancel'> & {
@@ -22,6 +23,29 @@ export type NewFileTextEditorProps = Pick<SnMonacoEditorProps, 'handleCancel'> &
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
+    editorWrapper: {
+      display: 'flex',
+      overflow: 'hidden',
+      position: 'relative',
+      paddingTop: '8px',
+    },
+    presetsContainer: {
+      width: '20%',
+      '& .title': {
+        fontSize: '1.2rem',
+        marginBottom: '8px',
+        height: '65px',
+        display: 'flex',
+        placeContent: 'center',
+        flexWrap: 'wrap',
+      },
+      '& .presets': {
+        display: 'flex',
+        flexDirection: 'column',
+        rowGap: '8px',
+        padding: '8px',
+      },
+    },
     title: {
       display: 'flex',
       flexDirection: 'row',
@@ -177,8 +201,19 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
     return null
   }
 
+  //rendering buttons if contentType path
+  const renderPresets = () => {
+    if (props.savePath === PATHS.contentTypes.snPath) {
+      return (
+        <div className={classes.presetsContainer}>
+          <ContentTypePreset setTextValue={setTextValue} />
+        </div>
+      )
+    }
+  }
+
   return (
-    <>
+    <div data-test="editor-wrapper" className={classes.editorWrapper}>
       <SnMonacoEditor
         language={language}
         textValue={textValue}
@@ -212,6 +247,7 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
           )
         }
       />
-    </>
+      {renderPresets()}
+    </div>
   )
 }

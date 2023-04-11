@@ -292,6 +292,7 @@ const values = {
     reset: 'Reset',
     saveSuccessNotification: `The changes of '{0}' has been saved`,
     saveFailedNotification: `Failed to save changes of content '{0}'`,
+    presets: 'Presets',
   },
   topMenu: {
     personalSettings: 'Personal settings',
