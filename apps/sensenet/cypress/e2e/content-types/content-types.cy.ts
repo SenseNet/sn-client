@@ -83,6 +83,33 @@ describe('Content types', () => {
     })
   })
 
+  context('read', () => {
+    before((done) => {
+      cy.get('.ReactVirtualized__Table__Grid').then((grid) => {
+        cy.scrollToItem({
+          container: grid,
+          selector: '[data-test="table-cell-article"]',
+          done: () => {
+            done()
+          },
+        })
+      })
+    })
+
+    it('clicking on the content types menu item should show article', () => {
+      cy.get('[data-test="table-cell-article"]').should('be.visible')
+    })
+
+    it('double clicking on article should open binary editor', () => {
+      cy.get('[data-test="table-cell-article"]').dblclick({ force: true })
+
+      cy.get('[data-test="editor-title"]').should('have.text', 'Article')
+      cy.get('.monaco-editor').should('exist')
+
+      cy.get('[data-test="monaco-editor-cancel"]').click()
+    })
+  })
+
   context('presets', () => {
     before(() => {
       cy.login()
@@ -115,33 +142,6 @@ describe('Content types', () => {
               })
           })
         })
-    })
-  })
-
-  context('read', () => {
-    before((done) => {
-      cy.get('.ReactVirtualized__Table__Grid').then((grid) => {
-        cy.scrollToItem({
-          container: grid,
-          selector: '[data-test="table-cell-article"]',
-          done: () => {
-            done()
-          },
-        })
-      })
-    })
-
-    it('clicking on the content types menu item should show article', () => {
-      cy.get('[data-test="table-cell-article"]').should('be.visible')
-    })
-
-    it('double clicking on article should open binary editor', () => {
-      cy.get('[data-test="table-cell-article"]').dblclick({ force: true })
-
-      cy.get('[data-test="editor-title"]').should('have.text', 'Article')
-      cy.get('.monaco-editor').should('exist')
-
-      cy.get('[data-test="monaco-editor-cancel"]').click()
     })
   })
 })
