@@ -8,14 +8,7 @@ export const defaultContentType = `<ContentType name="MyType" parentType="Generi
   </Fields>
 </ContentType>`
 
-// type defaultFieldSettingsType = {
-//   [key: string]: {
-//     title: string
-//     value: string
-//   }
-// }
-
-// object which will contain the field settings from textfields. There will be a title for button and a value which will be the field setting itself
+//CHANGE To comments
 export const defaultFieldSettings = [
   {
     name: 'shorttextfield',
@@ -24,15 +17,15 @@ export const defaultFieldSettings = [
       <DisplayName>ShortTextField</DisplayName>
       <Description></Description>
       <Configuration>
-        <MaxLength>100</MaxLength>
-        <MinLength>0</MinLength>
-        <Regex>[a-zA-Z0-9]*$</Regex>
-        <ReadOnly>false</ReadOnly>
-        <Compulsory>false</Compulsory>
-        <DefaultValue></DefaultValue>
-        <VisibleBrowse>Show|Hide|Advanced</VisibleBrowse>
-        <VisibleEdit>Show|Hide|Advanced</VisibleEdit>
-        <VisibleNew>Show|Hide|Advanced</VisibleNew>
+        <!--<MaxLength>100</MaxLength>-->
+        <!--<MinLength>0</MinLength>-->
+        <!--<Regex>[a-zA-Z0-9]*$</Regex>-->
+        <!--<ReadOnly>false</ReadOnly>-->
+        <!--<Compulsory>false</Compulsory>-->
+        <!--<DefaultValue></DefaultValue>-->
+        <!--<VisibleBrowse>Choose one from: Show, Hide, Advanced</VisibleBrowse>-->
+        <!--<VisibleEdit>Choose one from: Show, Hide, Advanced</VisibleEdit>-->
+        <!--<VisibleNew>Choose one from: Show, Hide, Advanced</VisibleNew>-->
       </Configuration>
     </Field>
   `,
@@ -44,15 +37,15 @@ export const defaultFieldSettings = [
       <DisplayName>LongTextField</DisplayName>
       <Description></Description>
       <Configuration>
-        <MaxLength>100</MaxLength>
-        <MinLength>0</MinLength>
-        <TextType>LongText|RichText|AdvancedRichText</TextType>
-        <ReadOnly>false</ReadOnly>
-        <Compulsory>false</Compulsory>
-        <DefaultValue></DefaultValue>
-        <VisibleBrowse>Show|Hide|Advanced</VisibleBrowse>
-        <VisibleEdit>Show|Hide|Advanced</VisibleEdit>
-        <VisibleNew>Show|Hide|Advanced</VisibleNew>
+        <!--<MaxLength>100</MaxLength>-->
+        <!--<MinLength>0</MinLength>-->
+        <!--<TextType>LongText|RichText|AdvancedRichText</TextType>-->
+        <!--<ReadOnly>false</ReadOnly>-->
+        <!--<Compulsory>false</Compulsory>-->
+        <!--<DefaultValue></DefaultValue>-->
+        <!--<VisibleBrowse>Choose one from: Show, Hide, Advanced</VisibleBrowse>-->
+        <!--<VisibleEdit>Choose one from: Show, Hide, Advanced</VisibleEdit>-->
+        <!--<VisibleNew>Choose one from: Show, Hide, Advanced</VisibleNew>-->
       </Configuration>
     </Field>
   `,
@@ -64,15 +57,15 @@ export const defaultFieldSettings = [
       <DisplayName>NumberField</DisplayName>
       <Description></Description>
       <Configuration>
-        <MinValue>0</MinValue>
-        <MaxValue>100.5</MaxValue>
-        <Digits>2</Digits>
-        <ReadOnly>false</ReadOnly>
-        <Compulsory>false</Compulsory>
-        <DefaultValue></DefaultValue>
-        <VisibleBrowse>Show|Hide|Advanced</VisibleBrowse>
-        <VisibleEdit>Show|Hide|Advanced</VisibleEdit>
-        <VisibleNew>Show|Hide|Advanced</VisibleNew>
+        <!--<MinValue>0</MinValue>-->
+        <!--<MaxValue>100.5</MaxValue>-->
+        <!--<Digits>2</Digits>-->
+        <!--<ReadOnly>false</ReadOnly>-->
+        <!--<Compulsory>false</Compulsory>-->
+        <!--<DefaultValue></DefaultValue>-->
+        <!--<VisibleBrowse>Choose one from: Show, Hide, Advanced</VisibleBrowse>-->
+        <!--<VisibleEdit>Choose one from: Show, Hide, Advanced</VisibleEdit>-->
+        <!--<VisibleNew>Choose one from: Show, Hide, Advanced</VisibleNew>-->
       </Configuration>
     </Field>
   `,
@@ -84,14 +77,14 @@ export const defaultFieldSettings = [
       <DisplayName>IntegerField</DisplayName>
       <Description></Description>
       <Configuration>
-        <MinValue>0</MinValue>
-        <MaxValue>100</MaxValue>
-        <ReadOnly>false</ReadOnly>
-        <Compulsory>false</Compulsory>
-        <DefaultValue></DefaultValue>
-        <VisibleBrowse>Show|Hide|Advanced</VisibleBrowse>
-        <VisibleEdit>Show|Hide|Advanced</VisibleEdit>
-        <VisibleNew>Show|Hide|Advanced</VisibleNew>
+        <!--<MinValue>0</MinValue>-->
+        <!--<MaxValue>100</MaxValue>-->
+        <!--<ReadOnly>false</ReadOnly>-->
+        <!--<Compulsory>false</Compulsory>-->
+        <!--<DefaultValue></DefaultValue>-->
+        <!--<VisibleBrowse>Choose one from: Show, Hide, Advanced</VisibleBrowse>-->
+        <!--<VisibleEdit>Choose one from: Show, Hide, Advanced</VisibleEdit>-->
+        <!--<VisibleNew>Choose one from: Show, Hide, Advanced</VisibleNew>-->
       </Configuration>
     </Field>
   `,
@@ -103,12 +96,12 @@ export const defaultFieldSettings = [
       <DisplayName>BooleanField</DisplayName>
       <Description></Description>
       <Configuration>
-        <ReadOnly>false</ReadOnly>
-        <Compulsory>false</Compulsory>
-        <DefaultValue></DefaultValue>
-        <VisibleBrowse>Show|Hide|Advanced</VisibleBrowse>
-        <VisibleEdit>Show|Hide|Advanced</VisibleEdit>
-        <VisibleNew>Show|Hide|Advanced</VisibleNew>
+        <!--<ReadOnly>false</ReadOnly>-->
+        <!--<Compulsory>false</Compulsory>-->
+        <!--<DefaultValue></DefaultValue>-->
+        <!--<VisibleBrowse>Choose one from: Show, Hide, Advanced</VisibleBrowse>-->
+        <!--<VisibleEdit>Choose one from: Show, Hide, Advanced</VisibleEdit>-->
+        <!--<VisibleNew>Choose one from: Show, Hide, Advanced</VisibleNew>-->
       </Configuration>
     </Field>
   `,
@@ -120,18 +113,18 @@ export const defaultFieldSettings = [
       <DisplayName>ChoiceField</DisplayName>
       <Description></Description>
       <Configuration>
-        <AllowMultiple>false</AllowMultiple>
-        <AllowExtraValue>false</AllowExtraValue>
-        <Options>
+        <!--<AllowMultiple>false</AllowMultiple>-->
+        <!--<AllowExtraValue>false</AllowExtraValue>-->
+        <!--<Options>
           <Option selected="true">1</Option>
           <Option>2</Option>
-        </Options>
-        <ReadOnly>false</ReadOnly>
-        <Compulsory>false</Compulsory>
-        <DefaultValue></DefaultValue>
-        <VisibleBrowse>Show|Hide|Advanced</VisibleBrowse>
-        <VisibleEdit>Show|Hide|Advanced</VisibleEdit>
-        <VisibleNew>Show|Hide|Advanced</VisibleNew>
+        </Options>-->
+        <!--<ReadOnly>false</ReadOnly>-->
+        <!--<Compulsory>false</Compulsory>-->
+        <!--<DefaultValue></DefaultValue>-->
+        <!--<VisibleBrowse>Choose one from: Show, Hide, Advanced</VisibleBrowse>-->
+        <!--<VisibleEdit>Choose one from: Show, Hide, Advanced</VisibleEdit>-->
+        <!--<VisibleNew>Choose one from: Show, Hide, Advanced</VisibleNew>-->
       </Configuration>
     </Field>
   `,
@@ -145,12 +138,12 @@ export const defaultFieldSettings = [
       <Configuration>
         <DateTimeMode>DateAndTime</DateTimeMode>
         <Precision>Second</Precision>
-        <ReadOnly>false</ReadOnly>
-        <Compulsory>false</Compulsory>
-        <DefaultValue></DefaultValue>
-        <VisibleBrowse>Show|Hide|Advanced</VisibleBrowse>
-        <VisibleEdit>Show|Hide|Advanced</VisibleEdit>
-        <VisibleNew>Show|Hide|Advanced</VisibleNew>
+        <!--<ReadOnly>false</ReadOnly>-->
+        <!--<Compulsory>false</Compulsory>-->
+        <!--<DefaultValue></DefaultValue>-->
+        <!--<VisibleBrowse>Choose one from: Show, Hide, Advanced</VisibleBrowse>-->
+        <!--<VisibleEdit>Choose one from: Show, Hide, Advanced</VisibleEdit>-->
+        <!--<VisibleNew>Choose one from: Show, Hide, Advanced</VisibleNew>-->
       </Configuration>
     </Field>
   `,
@@ -162,21 +155,21 @@ export const defaultFieldSettings = [
       <DisplayName>ReferenceField</DisplayName>
       <Description></Description>
       <Configuration>
-        <AllowMultiple>true</AllowMultiple>
-        <AllowedTypes>
+        <!--<AllowMultiple>true</AllowMultiple>-->
+        <!--<AllowedTypes>
           <Type>Type1</Type>
           <Type>Type2</Type>
-        </AllowedTypes>
-        <SelectionRoot>
+        </AllowedTypes>-->
+        <!--<SelectionRoot>
           <Path>/Root/Path1</Path>
           <Path>/Root/Path2</Path>
-        </SelectionRoot>
-        <DefaultValue>/Root/Path1,/Root/Path2</DefaultValue>
-        <ReadOnly>false</ReadOnly>
-        <Compulsory>false</Compulsory>
-        <VisibleBrowse>Show|Hide|Advanced</VisibleBrowse>
-        <VisibleEdit>Show|Hide|Advanced</VisibleEdit>
-        <VisibleNew>Show|Hide|Advanced</VisibleNew>
+        </SelectionRoot>-->
+        <!--<DefaultValue>/Root/Path1,/Root/Path2</DefaultValue>-->
+        <!--<ReadOnly>false</ReadOnly>-->
+        <!--<Compulsory>false</Compulsory>-->
+        <!--<VisibleBrowse>Choose one from: Show, Hide, Advanced</VisibleBrowse>-->
+        <!--<VisibleEdit>Choose one from: Show, Hide, Advanced</VisibleEdit>-->
+        <!--<VisibleNew>Choose one from: Show, Hide, Advanced</VisibleNew>-->
       </Configuration>
     </Field>
   `,
@@ -188,13 +181,13 @@ export const defaultFieldSettings = [
       <DisplayName>BinaryField</DisplayName>
       <Description></Description>
       <Configuration>
-        <IsText>true</IsText>
-        <ReadOnly>false</ReadOnly>
-        <Compulsory>false</Compulsory>
-        <DefaultValue></DefaultValue>
-        <VisibleBrowse>Show|Hide|Advanced</VisibleBrowse>
-        <VisibleEdit>Show|Hide|Advanced</VisibleEdit>
-        <VisibleNew>Show|Hide|Advanced</VisibleNew>
+        <!--<IsText>true</IsText>-->
+        <!--<ReadOnly>false</ReadOnly>-->
+        <!--<Compulsory>false</Compulsory>-->
+        <!--<DefaultValue></DefaultValue>-->
+        <!--<VisibleBrowse>Choose one from: Show, Hide, Advanced</VisibleBrowse>-->
+        <!--<VisibleEdit>Choose one from: Show, Hide, Advanced</VisibleEdit>-->
+        <!--<VisibleNew>Choose one from: Show, Hide, Advanced</VisibleNew>-->
         </Configuration>
     </Field>
   `,
