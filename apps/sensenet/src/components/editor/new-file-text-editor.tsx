@@ -6,7 +6,7 @@ import { PATHS } from '../../application-paths'
 import { useLocalization } from '../../hooks'
 import { getMonacoLanguage } from '../../services/content-context-service'
 import { FullScreenLoader } from '../full-screen-loader'
-import { ContentTypePreset } from './conent-type-preset'
+import { ContentTypePreset } from './content-type-preset'
 import { SnMonacoEditor, SnMonacoEditorProps } from './sn-monaco-editor'
 
 export type NewFileTextEditorProps = Pick<SnMonacoEditorProps, 'handleCancel'> & {
