@@ -179,19 +179,11 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
           <div className="hints">
             <div className="hint">
               {<Help fontSize="small" />}
-              <div>
-                Please edit the <b>name</b>, <b>parent type</b> and <b>handler</b> attributes before saving!
-              </div>
+              <div dangerouslySetInnerHTML={{ __html: localization.textEditor.hints.newContentTypeEditHint }} />
             </div>
             <div className="hint">
               {<Info fontSize="small" />}{' '}
-              <div>
-                Further
-                <a href="https://docs.sensenet.com/tutorials/content-types" target="_blank" rel="noopener noreferrer">
-                  {' '}
-                  informations
-                </a>
-              </div>
+              <div dangerouslySetInnerHTML={{ __html: localization.textEditor.hints.contentTypeTutorialrefenceHint }} />
             </div>
           </div>
         </div>
