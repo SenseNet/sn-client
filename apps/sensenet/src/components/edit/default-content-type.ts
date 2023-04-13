@@ -8,8 +8,14 @@ export const defaultContentType = `<ContentType name="MyType" parentType="Generi
   </Fields>
 </ContentType>`
 
+type defaultSetting = {
+  name: string
+  title: string
+  value: string
+}
+
 //CHANGE To comments
-export const defaultFieldSettings = [
+export const defaultFieldSettings: defaultSetting[] = [
   {
     name: 'shorttextfield',
     title: 'Short TextField',
@@ -192,4 +198,4 @@ export const defaultFieldSettings = [
     </Field>
   `,
   },
-] as const
+]

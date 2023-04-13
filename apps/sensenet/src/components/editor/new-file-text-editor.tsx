@@ -23,29 +23,6 @@ export type NewFileTextEditorProps = Pick<SnMonacoEditorProps, 'handleCancel'> &
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
-    editorWrapper: {
-      display: 'flex',
-      overflow: 'hidden',
-      position: 'relative',
-      paddingTop: '8px',
-    },
-    presetsContainer: {
-      width: '20%',
-      '& .title': {
-        fontSize: '1.2rem',
-        marginBottom: '8px',
-        height: '65px',
-        display: 'flex',
-        placeContent: 'center',
-        flexWrap: 'wrap',
-      },
-      '& .presets': {
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: '8px',
-        padding: '8px',
-      },
-    },
     title: {
       display: 'flex',
       flexDirection: 'row',
@@ -193,53 +170,40 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
     return null
   }
 
-  //rendering buttons if contentType path
-  const renderPresets = () => {
-    if (props.savePath === PATHS.contentTypes.snPath) {
-      return (
-        <div className={classes.presetsContainer}>
-          <ContentTypePreset setTextValue={setTextValue} />
-        </div>
-      )
-    }
-  }
-
   return (
-    <div data-test="editor-wrapper" className={classes.editorWrapper}>
-      <SnMonacoEditor
-        language={language}
-        textValue={textValue}
-        setTextValue={setTextValue}
-        savedTextValue={savedTextValue}
-        hasChanges={hasChanges}
-        uri={uri}
-        handleSubmit={saveContent}
-        handleCancel={props.handleCancel}
-        renderTitle={() =>
-          props.setFileName ? (
-            <Input
-              required={true}
-              name={props.contentType}
-              // fullWidth={true}
-              type="text"
-              value={props.fileName}
-              onChange={(ev) => {
-                props.setFileName!(ev.target.value)
-              }}
-              endAdornment={
-                props.fileNamePostfix ? (
-                  <InputAdornment position="end">{props.fileNamePostfix}</InputAdornment>
-                ) : undefined
-              }
-            />
-          ) : (
-            <div className={classes.title}>
-              New {contentDisplayName} {renderHint()}
-            </div>
-          )
-        }
-      />
-      {renderPresets()}
-    </div>
+    <SnMonacoEditor
+      preset={props.savePath}
+      language={language}
+      textValue={textValue}
+      setTextValue={setTextValue}
+      savedTextValue={savedTextValue}
+      hasChanges={hasChanges}
+      uri={uri}
+      handleSubmit={saveContent}
+      handleCancel={props.handleCancel}
+      renderTitle={() =>
+        props.setFileName ? (
+          <Input
+            required={true}
+            name={props.contentType}
+            // fullWidth={true}
+            type="text"
+            value={props.fileName}
+            onChange={(ev) => {
+              props.setFileName!(ev.target.value)
+            }}
+            endAdornment={
+              props.fileNamePostfix ? (
+                <InputAdornment position="end">{props.fileNamePostfix}</InputAdornment>
+              ) : undefined
+            }
+          />
+        ) : (
+          <div className={classes.title}>
+            New {contentDisplayName} {renderHint()}
+          </div>
+        )
+      }
+    />
   )
 }
