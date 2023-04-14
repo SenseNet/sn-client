@@ -1,6 +1,8 @@
-import { Input, InputAdornment } from '@material-ui/core'
+import { createStyles, Input, InputAdornment, makeStyles, Theme } from '@material-ui/core'
+import { Help, Info } from '@material-ui/icons'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
+import { PATHS } from '../../application-paths'
 import { useLocalization } from '../../hooks'
 import { getMonacoLanguage } from '../../services/content-context-service'
 import { FullScreenLoader } from '../full-screen-loader'
@@ -18,6 +20,42 @@ export type NewFileTextEditorProps = Pick<SnMonacoEditorProps, 'handleCancel'> &
   saveCallback?: Function
 }
 
+const useStyles = makeStyles((theme: Theme) => {
+  return createStyles({
+    title: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      '& .hint-container': {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        fontSize: '0.8rem',
+        opacity: 0.55,
+        flex: 1,
+        '& .hints': {
+          display: 'flex',
+          flexDirection: 'column',
+          rowGap: '4px',
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          textAlign: 'center',
+          '& > .hint': {
+            display: 'flex',
+            alignItems: 'flex-end',
+            columnGap: '4px',
+          },
+          '& b': {
+            letterSpacing: theme.palette.type === 'light' ? 'initial' : '0.8px',
+          },
+          '& a': {
+            textDecoration: 'underline',
+          },
+        },
+      },
+    },
+  })
+})
+
 export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> = (props) => {
   const repo = useRepository()
   const [textValue, setTextValue] = useState('')
@@ -28,6 +66,7 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
   const [hasChanges, setHasChanges] = useState(false)
   const logger = useLogger('TextEditor')
   const [error, setError] = useState<Error | undefined>()
+  const classes = useStyles()
   const { loadContent } = props
   const contentDisplayName = useMemo(
     () => repo.schemas.getSchemaByName(props.contentType).DisplayName,
@@ -109,9 +148,30 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
   if (!uri) {
     return <FullScreenLoader />
   }
+  const renderHint = () => {
+    if (props.savePath === PATHS.contentTypes.snPath) {
+      return (
+        <div className="hint-container">
+          <div className="hints">
+            <div className="hint">
+              {<Help fontSize="small" />}
+              <div dangerouslySetInnerHTML={{ __html: localization.textEditor.hints.newContentTypeEditHint }} />
+            </div>
+            <div className="hint">
+              {<Info fontSize="small" />}{' '}
+              <div dangerouslySetInnerHTML={{ __html: localization.textEditor.hints.contentTypeTutorialrefenceHint }} />
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    return null
+  }
 
   return (
     <SnMonacoEditor
+      preset={props.savePath}
       language={language}
       textValue={textValue}
       setTextValue={setTextValue}
@@ -138,7 +198,9 @@ export const NewFileTextEditor: React.FunctionComponent<NewFileTextEditorProps> 
             }
           />
         ) : (
-          <>New {contentDisplayName}</>
+          <div className={classes.title}>
+            New {contentDisplayName} {renderHint()}
+          </div>
         )
       }
     />

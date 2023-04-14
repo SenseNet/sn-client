@@ -145,6 +145,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
     <SnMonacoEditor
       language={language}
       textValue={textValue}
+      preset={props.content.Path}
       setTextValue={setTextValue}
       savedTextValue={savedTextValue}
       hasChanges={hasChanges}
