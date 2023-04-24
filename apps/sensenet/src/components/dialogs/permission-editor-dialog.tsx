@@ -19,8 +19,13 @@ import { clsx } from 'clsx'
 import React, { useEffect, useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { forcePermissionActions } from './permission-editor/forcePermissionActions'
-import { PermissionEditorMembers } from './permission-editor/permission-editor-members'
+import {
+  forcePermissionActions,
+  PermissionEditorMembers,
+  SetFullAccess,
+  SetGroupPermission,
+  SetValueForPermission,
+} from './permission-editor'
 import { DialogTitle, useDialog } from '.'
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -49,13 +54,13 @@ const useStyles = makeStyles((theme: Theme) => {
       padding: '16px',
     },
     secondaryListItem: {
-      paddingLeft: '40px',
+      paddingLeft: '35px',
     },
     secondaryTitle: {
       fontSize: '12px',
     },
     permissionContainer: {
-      padding: '60px',
+      padding: '60px 20px',
       minHeight: '400px',
     },
     disabled: {
@@ -203,6 +208,28 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
     )
   }
 
+  const getGroupPermission = (selectedGroup: string) => {
+    const allAllowed = getPermissionsFromGroupName(selectedGroup).every(
+      (selectedGroupPermission: keyof PermissionRequestBody) =>
+        responseBody[selectedGroupPermission] === PermissionValues.allow,
+    )
+
+    if (allAllowed) {
+      return 'allow'
+    }
+
+    const allDeny = getPermissionsFromGroupName(selectedGroup).every(
+      (selectedGroupPermission: keyof PermissionRequestBody) =>
+        responseBody[selectedGroupPermission] === PermissionValues.deny,
+    )
+
+    if (allDeny) {
+      return 'deny'
+    }
+
+    return 'undefined'
+  }
+
   const isGroupChecked = (selectedGroup: string) => {
     return isGroupDisabled(selectedGroup)
       ? !!getPermissionsFromGroupName(selectedGroup).every(
@@ -216,10 +243,32 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
         )
   }
 
-  const isFullAccessChecked = () => {
-    return !!permissionSetting?.groups.every((groupsFromSettings: PermissionGroupType) =>
-      Object.entries(groupsFromSettings).every(([groupName]) => isGroupChecked(groupName)),
+  const fullAccessCheck = () => {
+    const groupPermissions: string[] = []
+
+    permissionSetting?.groups.forEach((groupsFromSettings: PermissionGroupType) => {
+      Object.entries(groupsFromSettings).forEach(([groupName]) => {
+        groupPermissions.push(getGroupPermission(groupName))
+      })
+    })
+
+    const allAllowed = groupPermissions.every(
+      (selectedGroupPermission: keyof typeof PermissionValues) => selectedGroupPermission === 'allow',
     )
+
+    if (allAllowed) {
+      return 'allow'
+    }
+
+    const allDeny = groupPermissions.every(
+      (selectedGroupPermission: keyof typeof PermissionValues) => selectedGroupPermission === 'deny',
+    )
+
+    if (allDeny) {
+      return 'deny'
+    }
+
+    return 'undefined'
   }
 
   const isFullAccessDisabled = () => {
@@ -251,17 +300,35 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
    * Disable permissions for which the permission specified in the parameter is a condition and saved to localResponseBody
    * @param localResponseBody The local copy of the actual permission request body.
    * @param permissionNameParam Permission, which we examine as a condition for other permissions.
+   * @param permissionValue The value of the permission to be set Allow|Deny .
    */
 
-  const setForcedPermissionsToUndefined = (localResponseBody: PermissionRequestBody, permissionNameParam: string) => {
+  const setForcedPermissionsToUndefinedOrDeny = (
+    localResponseBody: PermissionRequestBody,
+    permissionNameParam: string,
+    permissionValue: 'deny' | 'undefined',
+  ) => {
     forcePermissionActions.forEach((forcePermObject) => {
       Object.entries(forcePermObject).forEach(([permissionName, forcedPermissions]) => {
-        if (forcedPermissions && forcedPermissions.length > 0 && forcedPermissions.includes(permissionNameParam)) {
-          Object.assign(localResponseBody, { [permissionName]: PermissionValues.undefined })
-          setForcedPermissionsToUndefined(localResponseBody, permissionName)
+        if (forcedPermissions.includes(permissionNameParam)) {
+          Object.assign(localResponseBody, { [permissionName]: PermissionValues[permissionValue] })
+          setForcedPermissionsToUndefinedOrDeny(localResponseBody, permissionName, permissionValue)
         }
       })
     })
+  }
+
+  const setForcedPermissions = (
+    localResponseBody: PermissionRequestBody,
+    permissionNameParam: string,
+    permissionValue: keyof typeof PermissionValues,
+  ) => {
+    if (permissionValue === 'allow') {
+      setForcedPermissionsToAllowed(localResponseBody, permissionNameParam)
+      return
+    }
+
+    setForcedPermissionsToUndefinedOrDeny(localResponseBody, permissionNameParam, permissionValue)
   }
 
   return (
@@ -298,77 +365,37 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                       [classes.disabled]: isGroupDisabled(groupNameFromSettings),
                     })}
                   />
-                  <Switch
-                    data-test={`switcher-${groupNameFromSettings.replace(/\s+/g, '-').toLowerCase()}`}
-                    checked={isGroupChecked(groupNameFromSettings)}
-                    disabled={isGroupDisabled(groupNameFromSettings)}
-                    size="small"
-                    onClick={() => {
-                      const localResponseBody = { ...responseBody }
-                      getPermissionsFromGroupName(groupNameFromSettings).forEach(
-                        (selectedGroupPermission: keyof PermissionRequestBody) => {
-                          if (responseBody[selectedGroupPermission] !== undefined) {
-                            if (isGroupChecked(groupNameFromSettings)) {
-                              Object.assign(localResponseBody, {
-                                [selectedGroupPermission]: PermissionValues.undefined,
-                              })
-                              setForcedPermissionsToUndefined(localResponseBody, selectedGroupPermission)
-                            } else {
-                              Object.assign(localResponseBody, {
-                                [selectedGroupPermission]: PermissionValues.allow,
-                              })
-                              setForcedPermissionsToAllowed(localResponseBody, selectedGroupPermission)
-                            }
-                          }
-                        },
-                      )
-                      setResponseBody(localResponseBody)
-                    }}
+                  <SetGroupPermission
+                    setResponseBody={setResponseBody}
+                    setForcedPermissions={setForcedPermissions}
+                    responseBody={responseBody}
+                    groupName={groupNameFromSettings}
+                    getGroupPermission={getGroupPermission}
+                    getPermissionsFromGroupName={getPermissionsFromGroupName}
+                    isGroupChecked={isGroupChecked}
+                    isGroupDisabled={isGroupDisabled}
                   />
                 </ListItem>
               )
             }),
           )}
           <Divider />
-          <ListItem className={classes.secondaryListItem}>
+          <ListItem>
             <ListItemText
               disableTypography
-              primary={localization.permissionEditor.grantFullAccess}
+              primary={localization.permissionEditor.fullAccess}
               className={clsx({
                 [classes.disabled]: isFullAccessDisabled(),
               })}
             />
-            <Switch
-              data-test="switcher-full-access"
-              checked={isFullAccessChecked()}
-              disabled={isFullAccessDisabled()}
-              size="small"
-              onClick={() => {
-                const localResponseBody = { ...responseBody }
-                permissionSetting?.groups.forEach((groupsFromSettings: PermissionGroupType) =>
-                  Object.entries(groupsFromSettings).forEach(([groupName]) => {
-                    getPermissionsFromGroupName(groupName).forEach(
-                      (selectedGroupPermission: keyof PermissionRequestBody) => {
-                        if (responseBody[selectedGroupPermission] !== undefined) {
-                          if (isFullAccessChecked()) {
-                            Object.assign(localResponseBody, {
-                              [selectedGroupPermission]: PermissionValues.undefined,
-                            })
-                            setForcedPermissionsToUndefined(localResponseBody, selectedGroupPermission)
-                          } else {
-                            Object.assign(localResponseBody, {
-                              [selectedGroupPermission]: PermissionValues.allow,
-                            })
-                            setForcedPermissionsToAllowed(localResponseBody, selectedGroupPermission)
-                          }
-                        }
-                      },
-                    )
-                  }),
-                )
 
-                setResponseBody(localResponseBody)
-              }}
+            <SetFullAccess
+              setResponseBody={setResponseBody}
+              setForcedPermissions={setForcedPermissions}
+              responseBody={responseBody}
+              getPermissionsFromGroupName={getPermissionsFromGroupName}
+              fullAccessCheck={fullAccessCheck}
+              permissionSettingGroups={permissionSetting?.groups}
             />
           </ListItem>
           <Divider />
@@ -427,31 +454,11 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                         [classes.disabled]: isPermissionDisabled(selectedGroupPermission),
                       })}
                     />
-                    <Switch
-                      data-test={`switcher-${selectedGroupPermission.replace(/\s+/g, '-').toLowerCase()}`}
-                      checked={
-                        (responseBody[selectedGroupPermission] !== undefined &&
-                          responseBody[selectedGroupPermission] === PermissionValues.allow) ||
-                        (responseBody[selectedGroupPermission] === undefined &&
-                          props.entry.permissions[selectedGroupPermission]?.value === 'allow')
-                      }
-                      disabled={isPermissionDisabled(selectedGroupPermission)}
-                      size="small"
-                      onClick={() => {
-                        const localResponseBody = { ...responseBody }
-                        if (responseBody[selectedGroupPermission] === PermissionValues.allow) {
-                          Object.assign(localResponseBody, {
-                            [selectedGroupPermission]: PermissionValues.undefined,
-                          })
-                          setForcedPermissionsToUndefined(localResponseBody, selectedGroupPermission)
-                        } else {
-                          Object.assign(localResponseBody, {
-                            [selectedGroupPermission]: PermissionValues.allow,
-                          })
-                          setForcedPermissionsToAllowed(localResponseBody, selectedGroupPermission)
-                        }
-                        setResponseBody(localResponseBody)
-                      }}
+                    <SetValueForPermission
+                      setForcedPermissions={setForcedPermissions}
+                      responseBody={responseBody}
+                      permisssionName={selectedGroupPermission}
+                      setResponseBody={setResponseBody}
                     />
                   </ListItem>
                 )
