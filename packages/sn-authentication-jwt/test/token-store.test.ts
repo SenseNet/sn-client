@@ -66,14 +66,14 @@ describe('TokenStore', () => {
     })
 
     it('should pick up global document if declared', () => {
-      ;(global as any).document = { cookie: '' }
+      ;(global as any).document ??= { cookie: '' }
       const store = new TokenStore('https://my_token_store', 'token_store_key_template', TokenPersist.Session)
       expect(store).toBeInstanceOf(TokenStore)
       expect(store.tokenStoreType).toEqual(TokenStoreType.SessionStorage)
     })
 
     it('should pick up global localStorage and sessionStorage if declared', () => {
-      ;(global as any).localStorage = new MockStorage()
+      ;(global as any).localStorage ??= new MockStorage()
       ;(global as any).sessionStorage = new MockStorage()
       sessionStorage = new TokenStore('https://my_token_store', 'token_store_key_template', TokenPersist.Session)
       expect(sessionStorage).toBeInstanceOf(TokenStore)
@@ -81,7 +81,7 @@ describe('TokenStore', () => {
     })
 
     it('should work with localStorage', () => {
-      ;(global as any).localStorage = new MockStorage()
+      ;(global as any).localStorage ??= new MockStorage()
       ;(global as any).sessionStorage = new MockStorage()
       localStorage = new TokenStore('https://my_token_store', 'token_store_key_template', TokenPersist.Expiration)
       expect(localStorage).toBeInstanceOf(TokenStore)

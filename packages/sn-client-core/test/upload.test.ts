@@ -240,7 +240,7 @@ describe('Upload', () => {
     })
 
     it('should fail with webkitRequestFileSystem if failed to read a file', (done) => {
-      ;(global as any).window = {
+      ;(global as any).window ??= {
         webkitRequestFileSystem: () => {
           /**/
         },
@@ -270,7 +270,7 @@ describe('Upload', () => {
     })
 
     it('should trigger a post when the dataTransfer contains folders', (done) => {
-      ;(global as any).window = {
+      ;(global as any).window ??= {
         webkitRequestFileSystem: () => {
           /**/
         },
@@ -337,7 +337,7 @@ describe('Upload', () => {
     })
 
     it('should fail if there is an error reading folders', (done) => {
-      ;(global as any).window = {
+      ;(global as any).window ??= {
         webkitRequestFileSystem: () => {
           /**/
         },
@@ -403,7 +403,7 @@ describe('Upload', () => {
     }
 
     it('should trigger an Upload request when uploading with folders', (done) => {
-      ;(global as any).window = {
+      ;(global as any).window ??= {
         webkitRequestFileSystem: () => {
           /**/
         },
@@ -429,7 +429,7 @@ describe('Upload', () => {
     })
 
     it('should trigger an Upload request without folder upload', (done) => {
-      ;(global as any).window = {
+      ;(global as any).window ??= {
         webkitRequestFileSystem: () => {
           /**/
         },
