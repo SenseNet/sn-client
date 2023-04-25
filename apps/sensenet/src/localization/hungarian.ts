@@ -231,7 +231,7 @@ const values: Localization = {
     setOnThis: 'Ezen a kontenten beállított jogosultságok',
     errorGetPermissionSetting: 'Hiba történt a beállítások lekérdezése során',
     permissions: 'Jogosultságok',
-    grantFullAccess: 'Teljes hozzáférés',
+    fullAccess: 'Teljes hozzáférés',
     localOnly: 'Helyi módosítás',
     newEntry: 'Új engedélybejegyzés',
     add: 'Hozzáadás',

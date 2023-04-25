@@ -1,4 +1,4 @@
-import { permissionKeys, PermissionRequestBody, PermissionValues } from '@sensenet/default-content-types'
+import { PermissionRequestBody, PermissionValues } from '@sensenet/default-content-types'
 import React from 'react'
 import { PermissionSelector } from './permissionSelector'
 

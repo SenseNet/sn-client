@@ -1,20 +1,8 @@
-import {
-  Button,
-  ClickAwayListener,
-  Grow,
-  MenuItem,
-  MenuList,
-  Paper,
-  Popper,
-  Radio,
-  RadioGroup,
-  RadioProps,
-} from '@material-ui/core'
+import { Radio, RadioGroup, RadioProps } from '@material-ui/core'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import { Clear, Done, Remove } from '@material-ui/icons'
 import { PermissionValues } from '@sensenet/default-content-types'
-import clsx from 'clsx'
-import React, { useRef, useState } from 'react'
+import React from 'react'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
