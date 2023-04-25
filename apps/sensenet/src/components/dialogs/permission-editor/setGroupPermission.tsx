@@ -13,7 +13,6 @@ interface selectorProps {
   ): void
   getGroupPermission: (groupName: string) => keyof typeof PermissionValues
   getPermissionsFromGroupName: (groupName: string) => string[]
-  isGroupChecked: (selectedGroup: string) => boolean
   isGroupDisabled: (selectedGroup: string) => boolean
 }
 
@@ -25,14 +24,14 @@ export const SetGroupPermission = (props: selectorProps) => {
     getPermissionsFromGroupName,
     setForcedPermissions,
     setResponseBody,
-    isGroupChecked,
+    isGroupDisabled,
   } = props
 
   const localResponseBody = { ...responseBody }
 
   const permissionStringValue = getGroupPermission(groupName)
 
-  const isDiabled = isGroupChecked(groupName)
+  const isDiabled = isGroupDisabled(groupName)
 
   const setPermission = (selectedPermission: keyof typeof PermissionValues) => {
     getPermissionsFromGroupName(groupName).forEach((selectedGroupPermission: keyof PermissionRequestBody) => {

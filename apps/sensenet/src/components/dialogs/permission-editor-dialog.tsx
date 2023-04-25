@@ -230,19 +230,6 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
     return 'undefined'
   }
 
-  const isGroupChecked = (selectedGroup: string) => {
-    return isGroupDisabled(selectedGroup)
-      ? !!getPermissionsFromGroupName(selectedGroup).every(
-          (selectedGroupPermission: string) => props.entry.permissions[selectedGroupPermission]?.value === 'allow',
-        )
-      : !!getPermissionsFromGroupName(selectedGroup).every(
-          (selectedGroupPermission: keyof PermissionRequestBody) =>
-            responseBody[selectedGroupPermission] === undefined ||
-            (responseBody[selectedGroupPermission] !== undefined &&
-              responseBody[selectedGroupPermission] === PermissionValues.allow),
-        )
-  }
-
   const fullAccessCheck = () => {
     const groupPermissions: string[] = []
 
@@ -372,7 +359,6 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
                     groupName={groupNameFromSettings}
                     getGroupPermission={getGroupPermission}
                     getPermissionsFromGroupName={getPermissionsFromGroupName}
-                    isGroupChecked={isGroupChecked}
                     isGroupDisabled={isGroupDisabled}
                   />
                 </ListItem>
