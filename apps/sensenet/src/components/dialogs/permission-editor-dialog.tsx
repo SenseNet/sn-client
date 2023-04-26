@@ -13,7 +13,14 @@ import {
 import { EntryType } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { Switch } from '@sensenet/controls-react'
-import { Group, PermissionRequestBody, PermissionValues, Settings, User } from '@sensenet/default-content-types'
+import {
+  Group,
+  permissionKeys,
+  PermissionRequestBody,
+  PermissionValues,
+  Settings,
+  User,
+} from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { clsx } from 'clsx'
 import React, { useEffect, useState } from 'react'
@@ -209,29 +216,30 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
   }
 
   const getGroupPermission = (selectedGroup: string) => {
-    const allAllowed = getPermissionsFromGroupName(selectedGroup).every(
-      (selectedGroupPermission: keyof PermissionRequestBody) =>
-        responseBody[selectedGroupPermission] === PermissionValues.allow,
-    )
+    let groupPermission = 'undefined' as keyof typeof PermissionValues
+    permissionKeys.every((permissionKey) => {
+      const checkAllGroupPermission = getPermissionsFromGroupName(selectedGroup).every(
+        (selectedGroupPermission: keyof PermissionRequestBody) => {
+          return responseBody[selectedGroupPermission] === PermissionValues[permissionKey]
+        },
+      )
 
-    if (allAllowed) {
-      return 'allow'
-    }
+      if (!checkAllGroupPermission) {
+        return true
+      }
 
-    const allDeny = getPermissionsFromGroupName(selectedGroup).every(
-      (selectedGroupPermission: keyof PermissionRequestBody) =>
-        responseBody[selectedGroupPermission] === PermissionValues.deny,
-    )
+      groupPermission = permissionKey
 
-    if (allDeny) {
-      return 'deny'
-    }
+      return false
+    })
 
-    return 'undefined'
+    return groupPermission
   }
 
   const fullAccessCheck = () => {
     const groupPermissions: string[] = []
+
+    let groupPermission = 'undefined' as keyof typeof PermissionValues
 
     permissionSetting?.groups.forEach((groupsFromSettings: PermissionGroupType) => {
       Object.entries(groupsFromSettings).forEach(([groupName]) => {
@@ -239,23 +247,23 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
       })
     })
 
-    const allAllowed = groupPermissions.every(
-      (selectedGroupPermission: keyof typeof PermissionValues) => selectedGroupPermission === 'allow',
-    )
+    permissionKeys.every((permissionKey) => {
+      const checkAllGroupPermission = groupPermissions.every(
+        (selectedGroupPermission: keyof typeof PermissionValues) => {
+          return selectedGroupPermission === permissionKey
+        },
+      )
 
-    if (allAllowed) {
-      return 'allow'
-    }
+      if (!checkAllGroupPermission) {
+        return true
+      }
 
-    const allDeny = groupPermissions.every(
-      (selectedGroupPermission: keyof typeof PermissionValues) => selectedGroupPermission === 'deny',
-    )
+      groupPermission = permissionKey
 
-    if (allDeny) {
-      return 'deny'
-    }
+      return false
+    })
 
-    return 'undefined'
+    return groupPermission
   }
 
   const isFullAccessDisabled = () => {
