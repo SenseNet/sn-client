@@ -2,14 +2,14 @@ import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
 describe('Add new permission entry', () => {
   before(() => {
-    cy.login()
+    cy.login('superAdmin')
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
   })
 
   it('opens a new dialog', () => {
     cy.viewport(1840, 890)
     cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]').rightclick()
+    cy.get('[data-test*="-workspace"]').eq(0).rightclick()
     cy.get('[data-test="content-context-menu-setpermissions"]').click()
     cy.get('[data-test="assign-new-permission"]').click()
     cy.get('[data-test="member-select-dialog"]').should('contain.text', 'New permission entry')

@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) => {
       borderRight: `1px solid ${theme.palette.divider}`,
     },
     rightColumn: {
-      flex: 2,
+      flex: 1.5,
     },
     dialogActions: {
       marginTop: 'auto',

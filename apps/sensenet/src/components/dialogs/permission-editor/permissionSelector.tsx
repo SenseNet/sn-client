@@ -13,8 +13,14 @@ const useStyles = makeStyles((theme: Theme) =>
       '& .MuiButtonBase-root': {
         padding: '5px',
       },
-      '& .Mui-checked': {
+      '& .Mui-checked.allow': {
         backgroundColor: theme.palette.primary.main,
+      },
+      '& .Mui-checked.undefined': {
+        backgroundColor: 'rgba(255, 255, 255, 0.51)',
+      },
+      '& .Mui-checked.deny': {
+        backgroundColor: theme.palette.error.light,
       },
       '& .MuiSvgIcon-root': {
         fontSize: '1rem',
@@ -47,10 +53,21 @@ export const PermissionSelector = (props: PermissionSelectorProps) => {
   }
 
   return (
-    <RadioGroup className={classes.root} aria-label="permission" value={permissionValue} onChange={handleRadioClick}>
-      <StyledRadio disabled={disabled} value="deny" icon={<Clear />} />
-      <StyledRadio disabled={disabled} value="undefined" icon={<Remove />} />
-      <StyledRadio disabled={disabled} value="allow" icon={<Done />} />
+    <RadioGroup
+      className={classes.root}
+      data-test="permission-switcher"
+      aria-label="permission"
+      value={permissionValue}
+      onChange={handleRadioClick}>
+      <StyledRadio data-test="deny" className="deny" disabled={disabled} value="deny" icon={<Clear />} />
+      <StyledRadio
+        data-test="undefined"
+        className="undefined"
+        disabled={disabled}
+        value="undefined"
+        icon={<Remove />}
+      />
+      <StyledRadio data-test="allow" className="allow" disabled={disabled} value="allow" icon={<Done />} />
     </RadioGroup>
   )
 }

@@ -124,6 +124,7 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
     dialog: {
       backgroundColor: theme.palette.type === 'light' ? globals.light.dialogBackground : globals.dark.dialogBackground,
       border: theme.palette.type === 'light' ? clsx(globals.light.borderColor, '1px') : 'none',
+      maxWidth: '700px',
     },
     pickerDialog: {
       height: '100%',
