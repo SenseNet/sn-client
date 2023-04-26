@@ -427,7 +427,9 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
               />
             )
           ) : (
-            <List className={classes.permissionContainer}>
+            <List
+              className={classes.permissionContainer}
+              data-test={`${actualGroup.toLocaleLowerCase()}-group-permissions`}>
               {getPermissionsFromGroupName(actualGroup).map((selectedGroupPermission: keyof PermissionRequestBody) => {
                 return (
                   <ListItem

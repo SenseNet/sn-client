@@ -46,28 +46,28 @@ export const PermissionSelector = (props: PermissionSelectorProps) => {
 
   const classes = useStyles()
 
-  const handleRadioClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const option = event.target.value as keyof typeof PermissionValues
+  const handleRadioClick = (event: React.MouseEvent<HTMLInputElement>) => {
+    const option = event.currentTarget.value as keyof typeof PermissionValues
 
     setPermission(option)
   }
-
   return (
-    <RadioGroup
-      className={classes.root}
-      data-test="permission-switcher"
-      aria-label="permission"
-      value={permissionValue}
-      onChange={handleRadioClick}>
-      <StyledRadio data-test="deny" className="deny" disabled={disabled} value="deny" icon={<Clear />} />
-      <StyledRadio
-        data-test="undefined"
-        className="undefined"
-        disabled={disabled}
-        value="undefined"
-        icon={<Remove />}
-      />
-      <StyledRadio data-test="allow" className="allow" disabled={disabled} value="allow" icon={<Done />} />
-    </RadioGroup>
+    <div onClick={handleRadioClick}>
+      <RadioGroup
+        className={classes.root}
+        data-test="permission-switcher"
+        aria-label="permission"
+        value={permissionValue}>
+        <StyledRadio data-test="deny" className="deny" disabled={disabled} value="deny" icon={<Clear />} />
+        <StyledRadio
+          data-test="undefined"
+          className="undefined"
+          disabled={disabled}
+          value="undefined"
+          icon={<Remove />}
+        />
+        <StyledRadio data-test="allow" className="allow" disabled={disabled} value="allow" icon={<Done />} />
+      </RadioGroup>
+    </div>
   )
 }
