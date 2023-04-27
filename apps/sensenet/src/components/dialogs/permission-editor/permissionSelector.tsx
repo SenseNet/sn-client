@@ -52,11 +52,15 @@ export const PermissionSelector = (props: PermissionSelectorProps) => {
     setPermission(option)
   }
 
-  const handletestClick = (event: React.MouseEvent<HTMLInputElement>) => {
-    const option = event.currentTarget.value as keyof typeof PermissionValues
+  /*This looks like a hack, but it was necesarry. Basic behavior is undefined so when i click on it, even its not changing i want to set it.*/
+  const handletestClick = (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+    const target = event.target as HTMLInputElement
+
+    const option = target.value as keyof typeof PermissionValues
 
     setPermission(option)
   }
+
   return (
     <div onClick={handletestClick}>
       <RadioGroup
