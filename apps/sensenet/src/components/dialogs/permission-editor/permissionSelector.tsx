@@ -52,7 +52,7 @@ export const PermissionSelector = (props: PermissionSelectorProps) => {
     setPermission(option)
   }
 
-  /*This looks like a hack, but it was necesarry. Basic behavior is undefined so when i click on it, even its not changing i want to set it.*/
+  /*This looks like a hack, but it was necesarry. Basic behavior is undefined so when i click on it, even its not changing i want to set it.m "*/
   const handletestClick = (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
     const target = event.target as HTMLInputElement
 
