@@ -1,7 +1,7 @@
 import { codeLogin } from '../src/code-login'
 
 declare const global: any
-global.window = {}
+global.window ??= Object.create(window)
 
 describe('CodeLogin', () => {
   const loginParams = { clientId: 'test', clientSecret: 'test', identityServerUrl: 'https://is.test.com' }

@@ -561,7 +561,7 @@ const values = {
     setOnThis: 'Set on this content',
     errorGetPermissionSetting: 'Something went wrong during getting permission settings',
     permissions: 'Permissions',
-    grantFullAccess: 'Grant full access',
+    fullAccess: 'full access',
     localOnly: 'Local only',
     newEntry: 'New permission entry',
     add: 'Add',

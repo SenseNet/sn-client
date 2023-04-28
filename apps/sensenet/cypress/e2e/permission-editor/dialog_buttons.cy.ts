@@ -8,11 +8,11 @@ describe('Permission editor dialog buttons', () => {
 
   it('opens the permission editor dialog and clicking on Submit closes it', () => {
     cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]').rightclick()
+    cy.get('[data-test*="-workspace"]').eq(0).rightclick()
     cy.get('[data-test="content-context-menu-setpermissions"]').click()
-    cy.get('[data-test="set-on-this-visitors"]').click()
+    cy.get('[data-test*="set-on-this-administrators"]').click()
 
-    cy.get('[data-test="permission-dialog-title"]').should('have.text', 'Visitors/Root/Content/IT/Groups/Visitors')
+    cy.get('[data-test="permission-dialog-title"]').should('contain.text', '/Root/IMS/Public/Administrators')
     cy.get('[data-test="permission-editor-submit"]').click()
     cy.get('[data-test="permission-dialog-title"]').should('not.exist')
   })

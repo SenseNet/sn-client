@@ -9,7 +9,7 @@ import { ConstantContent } from '../src/Repository/ConstantContent'
 import { isExtendedError } from '../src/Repository/Repository'
 
 declare const global: any
-global.window = {}
+global.window ??= Object.create(window)
 describe('Repository', () => {
   let repository: Repository
   const mockResponse = {

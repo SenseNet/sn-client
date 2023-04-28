@@ -17,8 +17,8 @@ export default defineConfig({
         id: "/Root/IMS/Public('businesscat')",
       },
       superAdmin: {
-        clientId: 'iixy2lBXNIUJq6Gh',
-        clientSecret: 'QufWcKT4cDdNa8lhs7USupXPR5udUdE61Q2yhj1f1fWsEYwuHaqM3RIuCA2C53Qq',
+        clientId: 'A5E6uTwVnZpuOddm',
+        clientSecret: 'WmjbMMPMM8yALI8NrhNmQb4uLUn7SkDQB3O834Wyu3eoMjNy4vLn7uYdpawnGloO',
         id: "/Root/IMS/BuiltIn/Portal/('Admin')",
       },
     },
