@@ -72,7 +72,7 @@ export function MemberSelect(props: MemberSelectProps) {
           settings={
             {
               AllowedTypes: ['User', 'Group'],
-              SelectionRoots: ['/Root/IMS/Public'],
+              SelectionRoots: ['/Root/IMS'],
               Name: localization.permissionEditor.name,
               DisplayName: localization.permissionEditor.name,
               Description: localization.permissionEditor.enterName,
