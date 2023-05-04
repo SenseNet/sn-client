@@ -19,6 +19,8 @@ export const Content: FunctionComponent<ContentProps> = ({ rootPath, showPageTit
   const { currentPath, onNavigate } = useTreeNavigation(path)
   const localization = useLocalization().pageTitles
 
+  console.log(props)
+
   switch (routeMatch.params.browseType) {
     default:
       return (

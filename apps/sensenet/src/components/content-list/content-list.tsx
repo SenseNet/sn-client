@@ -517,7 +517,13 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
     })
   }
 
-  const handleColumnSettingsClick = () => {}
+  const handleColumnSettingsClick = () => {
+    openDialog({
+      name: 'column-settings',
+      props: { test: 1 },
+      dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
+    })
+  }
 
   const menuPropsObj = {
     disablePortal: true,

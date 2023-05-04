@@ -1,4 +1,13 @@
-import { Checkbox, createStyles, makeStyles, TableCell, TableSortLabel, Theme, Tooltip } from '@material-ui/core'
+import {
+  Button,
+  Checkbox,
+  createStyles,
+  makeStyles,
+  TableCell,
+  TableSortLabel,
+  Theme,
+  Tooltip,
+} from '@material-ui/core'
 import { Build } from '@material-ui/icons'
 import { ActionModel, FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import clsx from 'clsx'
@@ -19,8 +28,9 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     columnSetting: {
       position: 'absolute',
-      top: '13px',
-      left: '13px',
+      top: '6px',
+      left: '6px',
+      minWidth: '30px',
     },
     root: {
       '& .ReactVirtualized__Table__headerRow': {
@@ -287,9 +297,9 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
     <AutoSizer>
       {({ height, width }) => (
         <>
-          <div className={classes.columnSetting} onClick={props.handleColumnSettingsClick}>
+          <Button className={classes.columnSetting} onClick={props.handleColumnSettingsClick}>
             <Build />
-          </div>
+          </Button>
           <Table
             className={classes.root}
             height={height}
