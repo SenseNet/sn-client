@@ -517,6 +517,8 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
     })
   }
 
+  const handleColumnSettingsClick = () => {}
+
   const menuPropsObj = {
     disablePortal: true,
     anchorReference: 'anchorPosition' as const,
@@ -552,6 +554,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
           ref={props.containerRef}
           onKeyDown={handleKeyDown}>
           <VirtualizedTable
+            handleColumnSettingsClick={handleColumnSettingsClick}
             active={activeContent}
             checkboxProps={{ color: 'primary' }}
             cellRenderer={fieldComponentFunc}
