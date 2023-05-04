@@ -87,7 +87,7 @@ export const AddDeleteUserGroups: FunctionComponent<AddDeleteUserGroupsProps> = 
             settings={
               {
                 AllowedTypes: ['Group'],
-                SelectionRoots: ['/Root/IMS/Public'],
+                SelectionRoots: ['/Root/IMS'],
                 DisplayName: localization.addDeleteUserGroups.groups,
                 Description: localization.addDeleteUserGroups.search,
               } as ReferenceFieldSetting
