@@ -69,11 +69,11 @@ describe('Textarea field control', () => {
       wrapper.find(TextField).simulate('change', { target: { value: 'Hello World' } })
       expect(fieldOnChange).toBeCalled()
     })
-    it('should remove html tags from the field value', () => {
+    it('should not remove html tags from the field value', () => {
       const wrapper = shallow(
         <Textarea actionName="edit" fieldValue="<html>some value</html>" settings={defaultSettings} />,
       )
-      expect(wrapper.find(TextField).prop('value')).toBe('some value')
+      expect(wrapper.find(TextField).prop('value')).toBe('<html>some value</html>')
     })
   })
 })
