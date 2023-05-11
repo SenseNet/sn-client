@@ -132,21 +132,21 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
               </TableCell>
             ) : null}
             {props.fieldsToDisplay.map((field) => {
-              const fieldSetting = getSchemaForField(field)
+              const fieldSetting = getSchemaForField(field.field)
               const isNumeric =
                 fieldSetting &&
                 (fieldSetting.Type === 'IntegerFieldSetting' || fieldSetting.Type === 'NumberFieldSetting')
               const description = (fieldSetting && fieldSetting.Description) || field
               const displayName = (fieldSetting && fieldSetting.DisplayName) || field
               return (
-                <TableCell key={field as string} align={isNumeric ? 'right' : 'inherit'} className={field as string}>
+                <TableCell key={field.field} align={isNumeric ? 'right' : 'inherit'} className={field.field}>
                   <Tooltip title={description}>
                     <TableSortLabel
-                      active={props.orderBy === field}
+                      active={props.orderBy === field.field}
                       direction={props.orderDirection}
                       onClick={() =>
                         props.onRequestOrderChange &&
-                        props.onRequestOrderChange(field, props.orderDirection === 'asc' ? 'desc' : 'asc')
+                        props.onRequestOrderChange(field.field, props.orderDirection === 'asc' ? 'desc' : 'asc')
                       }>
                       {displayName}
                     </TableSortLabel>
@@ -192,10 +192,10 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
                 </TableCell>
               ) : null}
               {props.fieldsToDisplay.map((field) => {
-                const fieldSetting = getSchemaForField(field)
+                const fieldSetting = getSchemaForField(field.field)
                 const cellProps: CellProps<T> = {
                   ...props,
-                  field,
+                  field: field.field,
                   content: item,
                   fieldSetting,
                   isSelected,

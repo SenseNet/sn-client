@@ -4,68 +4,31 @@ import { ActionModel, GenericContent, Settings, File as SnFile } from '@sensenet
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
 import { useLocalization } from '../../hooks'
-import { getMonacoLanguage } from '../../services/content-context-service'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { FullScreenLoader } from '../full-screen-loader'
 import { SnMonacoEditor, SnMonacoEditorProps } from './sn-monaco-editor'
-
-export const getMonacoModelUri = async (content: GenericContent, repo: Repository, action?: ActionModel) => {
-  const { monaco } = await import('react-monaco-editor')
-
-  if (
-    repo.schemas.isContentFromType<Settings>(content, 'Settings') ||
-    content.Type === 'PersonalSettings' ||
-    content.Type === 'ColumnSettings'
-  ) {
-    return monaco.Uri.parse(`sensenet://${content.Type}/${content.Name}`)
-  }
-  if (repo.schemas.isContentFromType<SnFile>(content, 'File')) {
-    if (content.Binary) {
-      return monaco.Uri.parse(`sensenet://${content.Type}/${content.Binary.__mediaresource.content_type}`)
-    }
-  }
-
-  if (action) {
-    return monaco.Uri.parse(`sensenet://${content.Type}/${action.Url}`)
-  }
-
-  return monaco.Uri.parse(`sensenet://${content.Type}`)
-}
+import { getMonacoModelUri } from './text-editor'
 
 export type TextEditorProps = Pick<SnMonacoEditorProps, 'additionalButtons' | 'handleCancel'> & {
   content: SnFile
   loadContent?: (content: SnFile) => Promise<string>
-  saveContent?: (content: SnFile, value: string) => Promise<void>
+  saveContent: (value: any) => void
   showBreadCrumb: boolean
-  setContent?: (value: any) => void
 }
 
-export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
+export const JsonEditor: React.FunctionComponent<TextEditorProps> = (props) => {
   const repo = useRepository()
   const [textValue, setTextValue] = useState('')
   const [savedTextValue, setSavedTextValue] = useState('')
-  const [language, setLanguage] = useState(getMonacoLanguage(props.content, repo))
   const localization = useLocalization()
   const [uri, setUri] = useState<import('react-monaco-editor').monaco.Uri>()
   const [hasChanges, setHasChanges] = useState(false)
-  const logger = useLogger('TextEditor')
+  const logger = useLogger('JSONEditor')
   const [error, setError] = useState<Error | undefined>()
 
-  const saveContent = async () => {
+  const saveContent = () => {
     try {
-      setHasChanges(false)
-      if (props.saveContent) {
-        await props.saveContent(props.content, textValue)
-      } else {
-        await repo.upload.textAsFile({
-          text: textValue,
-          parentPath: PathHelper.getParentPath(props.content.Path),
-          fileName: props.content.Name,
-          overwrite: true,
-          contentTypeName: props.content.Type,
-          binaryPropertyName: 'Binary',
-        })
-      }
+      props.saveContent(JSON.parse(textValue))
       logger.information({
         message: localization.textEditor.saveSuccessNotification.replace(
           '{0}',
@@ -80,8 +43,6 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
           },
         },
       })
-      await repo.reloadSchema()
-      setSavedTextValue(textValue)
     } catch (err) {
       setHasChanges(true)
       logger.error({
@@ -104,7 +65,6 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
 
   useEffect(() => {
     ;(async () => {
-      setLanguage(getMonacoLanguage(props.content, repo))
       setUri(await getMonacoModelUri(props.content, repo))
     })()
   }, [props.content, repo])
@@ -116,17 +76,6 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
           const value = await props.loadContent(props.content)
           setTextValue(value)
           setSavedTextValue(value)
-        } else {
-          const binaryPath = props.content.Binary && props.content.Binary.__mediaresource.media_src
-          if (!binaryPath) {
-            return
-          }
-          const textFile = await repo.fetch(PathHelper.joinPaths(repo.configuration.repositoryUrl, binaryPath))
-          if (textFile.ok) {
-            const text = await textFile.text()
-            setTextValue(text)
-            setSavedTextValue(text)
-          }
         }
       } catch (err) {
         setError(err)
@@ -148,7 +97,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
 
   return (
     <SnMonacoEditor
-      language={language}
+      language={'json'}
       textValue={textValue}
       preset={props.content.Path}
       setTextValue={setTextValue}

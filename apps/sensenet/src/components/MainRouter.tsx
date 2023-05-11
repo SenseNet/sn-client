@@ -66,11 +66,11 @@ export const MainRouter = () => {
             <ContentComponent
               rootPath={PATHS.contentTypes.snPath}
               fieldsToDisplay={[
-                'DisplayName',
-                'Description',
-                'ParentTypeName' as any,
-                'ModificationDate',
-                'ModifiedBy',
+                { field: 'DisplayName' },
+                { field: 'Description' },
+                { field: 'ParentTypeName' as any },
+                { field: 'ModificationDate' },
+                { field: 'ModifiedBy' },
               ]}
               loadChildrenSettings={{
                 select: ['DisplayName', 'Description', 'ParentTypeName' as any, 'ModificationDate', 'ModifiedBy'],

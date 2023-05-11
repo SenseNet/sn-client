@@ -9,6 +9,7 @@ import {
   LoadSettingsContextProvider,
   useRepository,
 } from '@sensenet/hooks-react'
+import { ColumnSetting } from '@sensenet/list-controls-react/src/ContentList/content-list-base-props'
 import { clsx } from 'clsx'
 import React, { useCallback, useContext, useState } from 'react'
 import { useHistory } from 'react-router'
@@ -58,7 +59,7 @@ export type ExploreProps = {
   currentPath: string
   rootPath: string
   onNavigate: (content: GenericContent) => void
-  fieldsToDisplay?: Array<keyof GenericContent>
+  fieldsToDisplay?: Array<ColumnSetting<GenericContent>>
   schema?: string
   loadTreeSettings?: ODataParams<GenericContent>
   loadChildrenSettings?: ODataParams<GenericContent>

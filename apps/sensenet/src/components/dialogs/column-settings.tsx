@@ -1,43 +1,43 @@
-import { DialogContent, IconButton, useTheme } from '@material-ui/core'
+import { createStyles, DialogContent, IconButton, makeStyles, useTheme } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
-import React, { lazy, useContext } from 'react'
-import { ResponsiveContext } from '../../context'
+import { GenericContent } from '@sensenet/default-content-types'
+import React from 'react'
 import { useLocalization } from '../../hooks'
+import { JsonEditor } from '../editor/json-editor'
 import { DialogTitle } from './dialog-title'
 import { useDialog, useStyles } from '.'
-const MonacoEditor = lazy(() => import('react-monaco-editor'))
 
-interface ColumunSettingsProps {
-  test?: any
+interface ColumunSettingsProps<T extends GenericContent = GenericContent> {
+  columnSettings: Extract<keyof T, string>
+  setColumnSettings: (columnSettings: Extract<keyof T, string>) => void
 }
 
-export const ColumnSettings: React.FunctionComponent<ColumunSettingsProps> = () => {
-  const classes = useStyles()
+const editorContent: any = {
+  Type: 'ColumnSettings',
+  Name: `ColumnSettings`,
+}
+
+export const ColumnSettings = (props: ColumunSettingsProps) => {
+  const { setColumnSettings, columnSettings } = props
+  const dialogClasses = useStyles()
   const { closeLastDialog } = useDialog()
-  const theme = useTheme()
   const localization = useLocalization()
-  const platform = useContext(ResponsiveContext)
 
   return (
     <>
       <DialogTitle>
         {localization.columnSettingsDialog.title}
-        <IconButton aria-label="close" className={classes.closeButton} onClick={closeLastDialog}>
+        <IconButton aria-label="close" className={dialogClasses.closeButton} onClick={closeLastDialog}>
           <Close />
         </IconButton>
       </DialogTitle>
-      <DialogContent>
-        <MonacoEditor
-          theme={theme.palette.type === 'dark' ? 'vs-dark' : 'vs-light'}
-          width="100%"
-          language={'json'}
-          value={JSON.stringify({ test: 'ok' }, undefined, 2)}
-          options={{
-            automaticLayout: true,
-            minimap: {
-              enabled: platform === 'desktop' ? true : false,
-            },
-          }}
+      <DialogContent style={{ height: '500px' }}>
+        <JsonEditor
+          content={editorContent}
+          loadContent={async () => JSON.stringify(columnSettings, undefined, 3)}
+          saveContent={setColumnSettings}
+          handleCancel={closeLastDialog}
+          showBreadCrumb={false}
         />
       </DialogContent>
     </>

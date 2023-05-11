@@ -11,6 +11,7 @@ import {
   useRepository,
 } from '@sensenet/hooks-react'
 import { VirtualCellProps, VirtualDefaultCell, VirtualizedTable } from '@sensenet/list-controls-react'
+import { ColumnSetting } from '@sensenet/list-controls-react/src/ContentList/content-list-base-props'
 import { clsx } from 'clsx'
 import React, {
   CSSProperties,
@@ -77,7 +78,7 @@ export interface ContentListProps<T extends GenericContent> {
   onActivateItem: (item: T) => void
   style?: CSSProperties
   containerRef?: (r: HTMLDivElement | null) => void
-  fieldsToDisplay?: Array<Extract<keyof T, string>>
+  fieldsToDisplay?: Array<ColumnSetting<GenericContent>>
   schema?: string
   onSelectionChange?: (sel: T[]) => void
   onFocus?: () => void
@@ -104,7 +105,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
   const repo = useRepository()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
-  const { openDialog } = useDialog()
+  const { openDialog, closeLastDialog } = useDialog()
   const logger = useLogger('ContentList')
   const localization = useLocalization()
   const [selected, setSelected] = useState<T[]>([])
@@ -123,6 +124,45 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
   const [currentDirection, setCurrentDirection] = useState<'asc' | 'desc'>(
     (loadChildrenSettingsOrderBy?.[0][1] as 'asc' | 'desc') || 'asc',
   )
+
+  const [columnSettings, setColumnSettings] = useState<Array<ColumnSetting<GenericContent>>>(
+    personalSettings.content.fields,
+  )
+
+  useEffect(() => {
+    const getColumnSettings = async () => {
+      // const schema = await repo.getActions()
+      const fields = schema.FieldSettings.map((field) => {
+        return {
+          field: field.Name,
+          title: field.DisplayName,
+          visible: true,
+          width: 150,
+        }
+      })
+
+      const costumColumns = [
+        {
+          field: 'DisplayName' as keyof GenericContent,
+          title: 'Megjelenítés Név',
+        },
+        {
+          field: 'CreationDate' as keyof GenericContent,
+          title: 'Mikor készült',
+        },
+      ]
+
+      setColumnSettings(costumColumns || personalSettings.content.fields)
+    }
+
+    if (!props.fieldsToDisplay) {
+      getColumnSettings()
+
+      return
+    }
+
+    setColumnSettings(props.fieldsToDisplay || personalSettings.content.fields)
+  }, [personalSettings.content.fields, props.fieldsToDisplay, repo, schema.FieldSettings])
 
   useEffect(() => {
     setSelected([])
@@ -144,14 +184,14 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
   }, [selected])
 
   useEffect(() => {
-    const fields = props.fieldsToDisplay || personalSettings.content.fields
+    const fields = columnSettings
     loadSettings.setLoadChildrenSettings({
       ...loadSettings.loadChildrenSettings,
       expand: [
         'CheckedOutTo',
-        ...(fields as string[]).reduce<any[]>((referenceFields, fieldName) => {
-          if (fieldName.includes('/')) {
-            const splittedFieldName = fieldName.split('/')
+        ...fields.reduce<any[]>((referenceFields, fieldName) => {
+          if (fieldName.field.includes('/')) {
+            const splittedFieldName = fieldName.field.split('/')
             if (splittedFieldName.length === 2 && splittedFieldName[1] === '') {
               if (isReferenceField(splittedFieldName[0], repo, props.schema)) {
                 referenceFields.push(splittedFieldName[0])
@@ -162,10 +202,10 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
             ) {
               !referenceFields.includes(fieldName) && referenceFields.push(fieldName)
             } else {
-              !referenceFields.includes(PathHelper.getParentPath(fieldName)) &&
-                referenceFields.push(PathHelper.getParentPath(fieldName))
+              !referenceFields.includes(PathHelper.getParentPath(fieldName.field)) &&
+                referenceFields.push(PathHelper.getParentPath(fieldName.field))
             }
-          } else if (repo.schemas.getFieldTypeByName(fieldName) === 'ReferenceFieldSetting') {
+          } else if (repo.schemas.getFieldTypeByName(fieldName.field) === 'ReferenceFieldSetting') {
             referenceFields.push(fieldName)
           }
           return referenceFields
@@ -517,10 +557,15 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
     })
   }
 
-  const handleColumnSettingsClick = () => {
+  const setCostumColumnSettings = (newSettings: Array<ColumnSetting<GenericContent>>) => {
+    setColumnSettings(newSettings)
+    closeLastDialog()
+  }
+
+  const columnSettingsDialog = () => {
     openDialog({
       name: 'column-settings',
-      props: { test: 1 },
+      props: { columnSettings, setColumnSettings: setCostumColumnSettings },
       dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
     })
   }
@@ -560,15 +605,17 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
           ref={props.containerRef}
           onKeyDown={handleKeyDown}>
           <VirtualizedTable
-            handleColumnSettingsClick={handleColumnSettingsClick}
+            handleColumnSettingsClick={columnSettingsDialog}
             active={activeContent}
             checkboxProps={{ color: 'primary' }}
             cellRenderer={fieldComponentFunc}
             referenceCellRenderer={fieldReferenceFunc}
             displayRowCheckbox={!props.disableSelection}
             fieldsToDisplay={
-              (props.fieldsToDisplay?.map((field) => {
-                const splittedField = field.split('/')
+              (columnSettings?.map((field) => {
+                console.log(columnSettings)
+
+                const splittedField = field?.field?.split('/')
                 if (splittedField.length === 2 && splittedField[1] === '') {
                   return splittedField[0]
                 } else {
