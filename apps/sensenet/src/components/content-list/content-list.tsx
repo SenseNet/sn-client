@@ -94,6 +94,43 @@ export const isReferenceField = (fieldName: string, repo: Repository, schema = '
 const rowHeightConst = 57
 const headerHeightConst = 48
 
+/**
+ * Compare passed minutes with
+ * @param value The base value.
+ * @param timeDifference The minimum elapsed time time in minutes in Miliseconds.( Dafault 5 minutes )
+ * @returns Returns true if the base value is greater than the compared value.
+ */
+
+// a function which expect a Date and it will compare with the current time and if the passed interval is greater than the current time it will return true
+const isExpired = (value: Date, timeDifference = 300000) => {
+  const currentTime = new Date().getTime()
+  const valueTime = value.getTime()
+  return currentTime - valueTime > timeDifference
+}
+
+interface ColumnSettingsContainerType {
+  [key: string]: {
+    settings: Array<ColumnSetting<GenericContent>>
+    lastValidation: Date
+  }
+}
+
+const ColumnSettingsContainer: ColumnSettingsContainerType = {
+  '/Root/Content/SampleWorkspace': {
+    settings: [
+      {
+        field: 'DisplayName' as keyof GenericContent,
+        title: 'Megjelenítés Cache',
+      },
+      {
+        field: 'CreationDate' as keyof GenericContent,
+        title: 'Mikor',
+      },
+    ],
+    lastValidation: new Date('2021-05-12T11:00:00.000Z'),
+  },
+}
+
 export const ContentList = <T extends GenericContent = GenericContent>(props: ContentListProps<T>) => {
   const selectionService = useSelectionService()
   const parentContent = useContext(CurrentContentContext)
@@ -129,32 +166,39 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
     personalSettings.content.fields,
   )
 
+  console.log(ColumnSettingsContainer)
+
   useEffect(() => {
+    console.log('render', props.parentIdOrPath)
+
     const getColumnSettings = async () => {
       // const schema = await repo.getActions()
-      const fields = schema.FieldSettings.map((field) => {
-        return {
-          field: field.Name,
-          title: field.DisplayName,
-          visible: true,
-          width: 150,
-        }
-      })
 
-      const costumColumns = [
-        {
-          field: 'DisplayName' as keyof GenericContent,
-          title: 'Megjelenítés Név',
-        },
-        {
-          field: 'CreationDate' as keyof GenericContent,
-          title: 'Mikor készült',
-        },
-      ]
+      const columnSettingsCache = ColumnSettingsContainer[props.parentIdOrPath]
+      if (!columnSettingsCache || isExpired(new Date(columnSettingsCache.lastValidation))) {
+        const costumColumns = [
+          {
+            field: 'DisplayName' as keyof GenericContent,
+            title: `BackendResponse to cache${new Date().toLocaleTimeString()}`,
+          },
+          {
+            field: 'CreationDate' as keyof GenericContent,
+            title: 'BackendResponse',
+          },
+        ]
+        ColumnSettingsContainer[props.parentIdOrPath] = { settings: costumColumns, lastValidation: new Date() }
 
-      setColumnSettings(costumColumns || personalSettings.content.fields)
+        console.log('updated cache', ColumnSettingsContainer)
+
+        setColumnSettings(ColumnSettingsContainer[props.parentIdOrPath].settings || personalSettings.content.fields)
+
+        return
+      }
+
+      setColumnSettings(columnSettingsCache.settings)
     }
 
+    console.log(props.fieldsToDisplay)
     if (!props.fieldsToDisplay) {
       getColumnSettings()
 
@@ -162,7 +206,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
     }
 
     setColumnSettings(props.fieldsToDisplay || personalSettings.content.fields)
-  }, [personalSettings.content.fields, props.fieldsToDisplay, repo, schema.FieldSettings])
+  }, [personalSettings.content.fields, props.fieldsToDisplay, props.parentIdOrPath, repo, schema.FieldSettings])
 
   useEffect(() => {
     setSelected([])
@@ -558,6 +602,8 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
   }
 
   const setCostumColumnSettings = (newSettings: Array<ColumnSetting<GenericContent>>) => {
+    ColumnSettingsContainer[props.parentIdOrPath] = { settings: newSettings, lastValidation: new Date() }
+
     setColumnSettings(newSettings)
     closeLastDialog()
   }

@@ -34,7 +34,6 @@ export interface CurrentContentProviderProps {
 export const CurrentContentProvider: FunctionComponent<CurrentContentProviderProps> = (props) => {
   const [loadLock] = useState(new Semaphore(1))
   const [content, setContent] = useState<GenericContent>(ConstantContent.EMPTY_CONTENT)
-  const [columnSettings, setColumnSettings] = useState<Array<Extract<keyof GenericContent, string>>>([])
   const [errorState, setErrorState] = useState<{
     currentPath?: string | number
     status?: number
@@ -79,17 +78,6 @@ export const CurrentContentProvider: FunctionComponent<CurrentContentProviderPro
             requestInit: { signal: ac.signal },
             oDataOptions: props.oDataOptions,
           })
-
-          const costumColumns = [
-            {
-              field: 'DisplayName' as keyof GenericContent,
-              title: 'Megjelenítés Név',
-            },
-            {
-              field: 'CreationDate' as keyof GenericContent,
-              title: 'Mikor készült',
-            },
-          ]
 
           setContent(response.d)
           props.onContentLoaded && props.onContentLoaded(response.d)

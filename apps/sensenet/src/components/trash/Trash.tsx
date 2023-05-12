@@ -1,5 +1,5 @@
 import { ODataParams } from '@sensenet/client-core'
-import { TrashBin } from '@sensenet/default-content-types'
+import { GenericContent, TrashBin } from '@sensenet/default-content-types'
 import React, { memo, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { PATHS, resolvePathParams } from '../../application-paths'
@@ -40,7 +40,12 @@ const Trash = memo(() => {
       </div>
       <Content
         rootPath={PATHS.trash.snPath}
-        fieldsToDisplay={['DisplayName', 'ModificationDate', 'ModifiedBy', 'Actions']}
+        fieldsToDisplay={[
+          { field: 'DisplayName' as keyof GenericContent },
+          { field: 'Locked' as keyof GenericContent },
+          { field: 'CreatedBy' as keyof GenericContent },
+          { field: 'Actions' as keyof GenericContent },
+        ]}
         loadTreeSettings={loadTreeSettings}
       />
     </>
