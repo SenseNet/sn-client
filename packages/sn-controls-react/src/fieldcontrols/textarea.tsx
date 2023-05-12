@@ -15,10 +15,9 @@ import { defaultLocalization } from './localization'
 export const Textarea: React.FC<ReactClientFieldSetting<LongTextFieldSetting>> = (props) => {
   const localization = deepMerge(defaultLocalization.textarea, props.localization?.textarea)
 
+  /*?.replace(/<[^>]*>/g, '') for taking tags from value*/
   const initialState =
-    props.fieldValue?.replace(/<[^>]*>/g, '') ||
-    (props.actionName === 'new' && changeTemplatedValue(props.settings.DefaultValue)) ||
-    ''
+    props.fieldValue || (props.actionName === 'new' && changeTemplatedValue(props.settings.DefaultValue)) || ''
   const [value, setValue] = useState(initialState)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -52,7 +51,7 @@ export const Textarea: React.FC<ReactClientFieldSetting<LongTextFieldSetting>> =
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
-          <Typography variant="body1" gutterBottom={true}>
+          <Typography component="div" variant="body1" gutterBottom={true}>
             {props.fieldValue || localization.noValue}
           </Typography>
         </div>

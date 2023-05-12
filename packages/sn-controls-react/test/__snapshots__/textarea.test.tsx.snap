@@ -9,6 +9,7 @@ exports[`Textarea field control in browse view should show the displayname and f
     Description of the field
   </WithStyles(ForwardRef(Typography))>
   <WithStyles(ForwardRef(Typography))
+    component="div"
     gutterBottom={true}
     variant="body1"
   >
