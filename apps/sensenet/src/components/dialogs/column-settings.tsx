@@ -1,4 +1,4 @@
-import { createStyles, DialogContent, IconButton, makeStyles, useTheme } from '@material-ui/core'
+import { DialogContent, IconButton } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
 import { GenericContent } from '@sensenet/default-content-types'
 import React from 'react'

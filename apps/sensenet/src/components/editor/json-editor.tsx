@@ -1,6 +1,4 @@
-import { Repository } from '@sensenet/client-core'
-import { PathHelper } from '@sensenet/client-utils'
-import { ActionModel, GenericContent, Settings, File as SnFile } from '@sensenet/default-content-types'
+import { File as SnFile } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
 import { useLocalization } from '../../hooks'

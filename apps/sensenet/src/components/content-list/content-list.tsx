@@ -116,7 +116,7 @@ interface ColumnSettingsContainerType {
 }
 
 const ColumnSettingsContainer: ColumnSettingsContainerType = {
-  '/Root/Content/SampleWorkspace': {
+  '/Root/Content/MyWorkspace': {
     settings: [
       {
         field: 'DisplayName',
