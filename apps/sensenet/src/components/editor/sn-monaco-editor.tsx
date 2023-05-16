@@ -16,6 +16,7 @@ const useStyles = makeStyles(() => {
       overflow: 'hidden',
       position: 'relative',
       paddingTop: '8px',
+      height: '100%',
     },
     presetsContainer: {
       width: '20%',
