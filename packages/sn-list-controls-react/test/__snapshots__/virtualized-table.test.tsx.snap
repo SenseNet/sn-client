@@ -45,7 +45,9 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [
-        "DisplayName",
+        Object {
+          "field": "DisplayName",
+        },
       ]
     }
     getSelectionControl={[Function]}
@@ -121,7 +123,9 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [
-        "DisplayName",
+        Object {
+          "field": "DisplayName",
+        },
       ]
     }
     getSelectionControl={[Function]}
@@ -208,7 +212,9 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [
-        "DisplayName",
+        Object {
+          "field": "DisplayName",
+        },
       ]
     }
     icons={Object {}}
@@ -283,7 +289,9 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     displayRowCheckbox={false}
     fieldsToDisplay={
       Array [
-        "DisplayName",
+        Object {
+          "field": "DisplayName",
+        },
       ]
     }
     icons={Object {}}
@@ -359,7 +367,9 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [
-        "DisplayName",
+        Object {
+          "field": "DisplayName",
+        },
       ]
     }
     items={
@@ -434,7 +444,9 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [
-        "DisplayName",
+        Object {
+          "field": "DisplayName",
+        },
       ]
     }
     icons={Object {}}
@@ -509,7 +521,9 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [
-        "DisplayName",
+        Object {
+          "field": "DisplayName",
+        },
       ]
     }
     icons={Object {}}
@@ -584,7 +598,9 @@ exports[`Virtualized Table component Selection and active item changes Event bin
     displayRowCheckbox={true}
     fieldsToDisplay={
       Array [
-        "DisplayName",
+        Object {
+          "field": "DisplayName",
+        },
       ]
     }
     icons={Object {}}
