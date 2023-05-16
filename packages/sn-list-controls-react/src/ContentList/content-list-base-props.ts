@@ -2,7 +2,7 @@ import { CheckboxProps } from '@material-ui/core/Checkbox'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 
 export interface ColumnSetting<T> {
-  field: keyof T
+  field: keyof T | 'Checkbox'
   title?: string
 }
 

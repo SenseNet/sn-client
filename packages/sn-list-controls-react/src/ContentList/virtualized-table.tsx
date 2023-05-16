@@ -218,7 +218,11 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
 
   const getSchemaForField = useCallback((fieldName: string) => fieldSchemas[fieldName] as FieldSetting, [fieldSchemas])
 
-  const headerRenderer = (columnSetting: ColumnSetting<T>, columnCount: number, autoSizerWidth: number) => {
+  const headerRenderer = (
+    columnSetting: ColumnSetting<GenericContent>,
+    columnCount: number,
+    autoSizerWidth: number,
+  ) => {
     const {
       tableProps: { headerHeight },
     } = props
@@ -291,8 +295,8 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
 
   const { fieldsToDisplay, tableProps } = props
 
-  const extendedFieldsToDisplay: Array<ColumnSetting<T>> = props.displayRowCheckbox
-    ? [{ field: 'Checkbox' } as ColumnSetting<T>].concat(fieldsToDisplay)
+  const extendedFieldsToDisplay: Array<ColumnSetting<GenericContent>> = props.displayRowCheckbox
+    ? [{ field: 'Checkbox' } as ColumnSetting].concat(fieldsToDisplay)
     : fieldsToDisplay
 
   return (
