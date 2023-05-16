@@ -80,6 +80,10 @@ export interface VirtualCellProps {
   fieldSettings: FieldSetting
 }
 
+interface CheckboxExtendedGenericContent extends GenericContent {
+  Checkbox?: string
+}
+
 interface VirtualizedTableProps<T extends GenericContent> extends ContentListBaseProps<T> {
   /**
    * Contains custom cell template components
@@ -219,7 +223,7 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
   const getSchemaForField = useCallback((fieldName: string) => fieldSchemas[fieldName] as FieldSetting, [fieldSchemas])
 
   const headerRenderer = (
-    columnSetting: ColumnSetting<GenericContent>,
+    columnSetting: ColumnSetting<CheckboxExtendedGenericContent>,
     columnCount: number,
     autoSizerWidth: number,
   ) => {
@@ -295,8 +299,8 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
 
   const { fieldsToDisplay, tableProps } = props
 
-  const extendedFieldsToDisplay: Array<ColumnSetting<GenericContent>> = props.displayRowCheckbox
-    ? [{ field: 'Checkbox' } as ColumnSetting].concat(fieldsToDisplay)
+  const extendedFieldsToDisplay: Array<ColumnSetting<CheckboxExtendedGenericContent>> = props.displayRowCheckbox
+    ? [{ field: 'Checkbox' } as any].concat(fieldsToDisplay)
     : fieldsToDisplay
 
   return (

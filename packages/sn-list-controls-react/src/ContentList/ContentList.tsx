@@ -146,7 +146,10 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
                       direction={props.orderDirection}
                       onClick={() =>
                         props.onRequestOrderChange &&
-                        props.onRequestOrderChange(field.field, props.orderDirection === 'asc' ? 'desc' : 'asc')
+                        props.onRequestOrderChange(
+                          field.field as keyof GenericContent,
+                          props.orderDirection === 'asc' ? 'desc' : 'asc',
+                        )
                       }>
                       {displayName}
                     </TableSortLabel>
@@ -195,7 +198,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
                 const fieldSetting = getSchemaForField(field.field)
                 const cellProps: CellProps<T> = {
                   ...props,
-                  field: field.field,
+                  field: field.field as keyof GenericContent,
                   content: item,
                   fieldSetting,
                   isSelected,
