@@ -119,11 +119,11 @@ const ColumnSettingsContainer: ColumnSettingsContainerType = {
   '/Root/Content/SampleWorkspace': {
     settings: [
       {
-        field: 'DisplayName' as keyof GenericContent,
+        field: 'DisplayName',
         title: 'Megjelenítés Cache',
       },
       {
-        field: 'CreationDate' as keyof GenericContent,
+        field: 'AvailableContentTypeFields' as keyof GenericContent,
         title: 'Mikor',
       },
     ],
@@ -166,46 +166,42 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
     personalSettings.content.fields,
   )
 
-  console.log(ColumnSettingsContainer)
-
+  /* Handle Column Settings */
   useEffect(() => {
-    console.log('render', props.parentIdOrPath)
-
     const getColumnSettings = async () => {
-      // const schema = await repo.getActions()
+      const currentPathSettingCache = ColumnSettingsContainer[props.parentIdOrPath]
 
-      const columnSettingsCache = ColumnSettingsContainer[props.parentIdOrPath]
-      if (!columnSettingsCache || isExpired(new Date(columnSettingsCache.lastValidation))) {
-        const costumColumns = [
+      if (!currentPathSettingCache || isExpired(new Date(currentPathSettingCache.lastValidation))) {
+        const costumColumns: Array<ColumnSetting<GenericContent>> = [
           {
-            field: 'DisplayName' as keyof GenericContent,
-            title: `BackendResponse to cache${new Date().toLocaleTimeString()}`,
+            field: 'DisplayName',
+            title: 'BackendResponse to cache',
           },
           {
-            field: 'CreationDate' as keyof GenericContent,
+            field: 'AvailableContentTypeFields' as keyof GenericContent,
             title: 'BackendResponse',
           },
         ]
         ColumnSettingsContainer[props.parentIdOrPath] = { settings: costumColumns, lastValidation: new Date() }
 
-        console.log('updated cache', ColumnSettingsContainer)
+        /* Add Actions if field Settings Does not contain it. */
+        if (!ColumnSettingsContainer[props.parentIdOrPath].settings.find((f) => f.field === 'Actions')) {
+          ColumnSettingsContainer[props.parentIdOrPath].settings.push({ field: 'Actions', title: 'Actions' })
+        }
 
-        setColumnSettings(ColumnSettingsContainer[props.parentIdOrPath].settings || personalSettings.content.fields)
-
-        return
+        console.log('updated cache', ColumnSettingsContainer[props.parentIdOrPath])
       }
 
-      setColumnSettings(columnSettingsCache.settings)
+      setColumnSettings(ColumnSettingsContainer[props.parentIdOrPath].settings)
     }
 
-    console.log(props.fieldsToDisplay)
     if (!props.fieldsToDisplay) {
       getColumnSettings()
 
       return
     }
 
-    setColumnSettings(props.fieldsToDisplay || personalSettings.content.fields)
+    setColumnSettings(props.fieldsToDisplay)
   }, [personalSettings.content.fields, props.fieldsToDisplay, props.parentIdOrPath, repo, schema.FieldSettings])
 
   useEffect(() => {
@@ -233,24 +229,24 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
       ...loadSettings.loadChildrenSettings,
       expand: [
         'CheckedOutTo',
-        ...fields.reduce<any[]>((referenceFields, fieldName) => {
+        ...fields.reduce<Array<keyof GenericContent>>((referenceFields, fieldName) => {
           if (fieldName.field.includes('/')) {
             const splittedFieldName = fieldName.field.split('/')
             if (splittedFieldName.length === 2 && splittedFieldName[1] === '') {
               if (isReferenceField(splittedFieldName[0], repo, props.schema)) {
-                referenceFields.push(splittedFieldName[0])
+                referenceFields.push(splittedFieldName[0] as keyof GenericContent)
               }
             } else if (
               repo.schemas.getFieldTypeByName(splittedFieldName[splittedFieldName.length - 1]) ===
               'ReferenceFieldSetting'
             ) {
-              !referenceFields.includes(fieldName) && referenceFields.push(fieldName)
+              !referenceFields.includes(fieldName.field) && referenceFields.push(fieldName.field)
             } else {
-              !referenceFields.includes(PathHelper.getParentPath(fieldName.field)) &&
-                referenceFields.push(PathHelper.getParentPath(fieldName.field))
+              !referenceFields.includes(PathHelper.getParentPath(fieldName.field) as keyof GenericContent) &&
+                referenceFields.push(PathHelper.getParentPath(fieldName.field) as keyof GenericContent)
             }
           } else if (repo.schemas.getFieldTypeByName(fieldName.field) === 'ReferenceFieldSetting') {
-            referenceFields.push(fieldName)
+            referenceFields.push(fieldName.field)
           }
           return referenceFields
         }, []),
@@ -258,7 +254,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
       orderby: [[currentOrder as any, currentDirection as any]],
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentDirection, currentOrder, personalSettings.content.fields, props.fieldsToDisplay, repo])
+  }, [currentDirection, currentOrder, personalSettings.content.fields, props.fieldsToDisplay, repo, columnSettings])
 
   useEffect(() => {
     setSelected([])
@@ -659,8 +655,6 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
             displayRowCheckbox={!props.disableSelection}
             fieldsToDisplay={
               (columnSettings?.map((field) => {
-                console.log(columnSettings)
-
                 const splittedField = field?.field?.split('/')
                 if (splittedField.length === 2 && splittedField[1] === '') {
                   return splittedField[0]
