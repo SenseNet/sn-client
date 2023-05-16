@@ -269,9 +269,15 @@ class DocumentLibrary extends Component<
               fieldsToDisplay={
                 matchesDesktop
                   ? this.props.childrenOptions.query
-                    ? ['DisplayName']
-                    : ['DisplayName', 'Locked', 'ModificationDate', 'Owner', 'Actions']
-                  : ['DisplayName', 'Actions']
+                    ? [{ field: 'DisplayName' }]
+                    : [
+                        { field: 'DisplayName' },
+                        { field: 'Locked' },
+                        { field: 'ModificationDate' },
+                        { field: 'Owner' },
+                        { field: 'Actions' },
+                      ]
+                  : [{ field: 'DisplayName' }, { field: 'Actions' }]
               }
               orderBy={this.props.childrenOptions.orderby && (this.props.childrenOptions.orderby[0][0] as any)}
               orderDirection={this.props.childrenOptions.orderby && (this.props.childrenOptions.orderby[0][1] as any)}
