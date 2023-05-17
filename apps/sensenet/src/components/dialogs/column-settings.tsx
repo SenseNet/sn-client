@@ -9,7 +9,7 @@ import { useDialog, useStyles } from '.'
 
 interface ColumunSettingsProps<T extends GenericContent = GenericContent> {
   columnSettings: Extract<keyof T, string>
-  setColumnSettings: (columnSettings: Extract<keyof T, string>) => void
+  setColumnSettings: (columnSettings: Extract<keyof T, string>) => void | Promise<void>
 }
 
 const editorContent: any = {

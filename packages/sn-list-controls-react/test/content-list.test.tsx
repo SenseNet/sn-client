@@ -19,7 +19,7 @@ describe('ContentList component', () => {
         <ContentList
           items={[]}
           schema={genericSchema}
-          fieldsToDisplay={['DisplayName']}
+          fieldsToDisplay={[{ field: 'DisplayName' }]}
           selected={[]}
           orderBy="DisplayName"
           orderDirection="asc"
@@ -34,7 +34,7 @@ describe('ContentList component', () => {
         <ContentList
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
           schema={genericSchema}
-          fieldsToDisplay={['DisplayName']}
+          fieldsToDisplay={[{ field: 'DisplayName' }]}
           selected={[]}
           orderBy="DisplayName"
           orderDirection="asc"
@@ -51,7 +51,7 @@ describe('ContentList component', () => {
         <ContentList
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
           schema={genericSchema}
-          fieldsToDisplay={['DisplayName']}
+          fieldsToDisplay={[{ field: 'DisplayName' }]}
           selected={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
           orderBy="DisplayName"
           orderDirection="asc"
@@ -78,7 +78,7 @@ describe('ContentList component', () => {
             { Id: 2, Name: '2', Path: '2', DisplayName: 'B', Type: 'Folder' },
           ]}
           schema={genericSchema}
-          fieldsToDisplay={['DisplayName', 'Type']}
+          fieldsToDisplay={[{ field: 'DisplayName' }, { field: 'Type' }]}
           selected={[]}
           active={{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }}
           orderBy="DisplayName"
@@ -101,7 +101,7 @@ describe('ContentList component', () => {
             { Id: 2, Name: '2', Path: '2', DisplayName: 'B', Type: 'Folder' },
           ]}
           schema={genericSchema}
-          fieldsToDisplay={['DisplayName', 'Type']}
+          fieldsToDisplay={[{ field: 'DisplayName' }, { field: 'Type' }]}
           selected={[]}
           active={{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }}
           orderBy="DisplayName"
@@ -129,7 +129,7 @@ describe('ContentList component', () => {
             { Id: 2, Name: '2', Path: '2', DisplayName: 'B', Type: 'Folder' },
           ]}
           schema={genericSchema}
-          fieldsToDisplay={['DisplayName', 'Type']}
+          fieldsToDisplay={[{ field: 'DisplayName' }, { field: 'Type' }]}
           selected={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
           active={{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }}
           orderBy="DisplayName"
@@ -158,7 +158,7 @@ describe('ContentList component', () => {
         <ContentList
           items={items}
           schema={genericSchema}
-          fieldsToDisplay={['DisplayName', 'Type']}
+          fieldsToDisplay={[{ field: 'DisplayName' }, { field: 'Type' }]}
           selected={[]}
           active={{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }}
           orderBy="DisplayName"
@@ -187,7 +187,7 @@ describe('ContentList component', () => {
         <ContentList
           items={items}
           schema={genericSchema}
-          fieldsToDisplay={['DisplayName', 'Type']}
+          fieldsToDisplay={[{ field: 'DisplayName' }, { field: 'Type' }]}
           selected={items}
           active={{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }}
           orderBy="DisplayName"
@@ -212,7 +212,7 @@ describe('ContentList component', () => {
         <ContentList
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
           schema={genericSchema}
-          fieldsToDisplay={['DisplayName', 'Type']}
+          fieldsToDisplay={[{ field: 'DisplayName' }, { field: 'Type' }]}
           selected={[]}
           active={{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }}
           orderBy="DisplayName"
@@ -235,7 +235,7 @@ describe('ContentList component', () => {
         <ContentList
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
           schema={genericSchema}
-          fieldsToDisplay={['DisplayName', 'Type']}
+          fieldsToDisplay={[{ field: 'DisplayName' }, { field: 'Type' }]}
           selected={[]}
           orderBy="DisplayName"
           orderDirection="asc"
@@ -264,7 +264,7 @@ describe('ContentList component', () => {
           <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
-            fieldsToDisplay={['Actions', 'Type']}
+            fieldsToDisplay={[{ field: 'Actions' }, { field: 'Type' }]}
             selected={[]}
             orderBy="DisplayName"
             orderDirection="asc"
@@ -283,7 +283,7 @@ describe('ContentList component', () => {
               { Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder', Actions: [{ Name: 'Example' } as any] },
             ]}
             schema={genericSchema}
-            fieldsToDisplay={['Actions', 'Type']}
+            fieldsToDisplay={[{ field: 'Type' }]}
             selected={[]}
             orderBy="DisplayName"
             orderDirection="asc"
@@ -301,7 +301,7 @@ describe('ContentList component', () => {
               { Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder', Actions: [{ Name: 'Example' } as any] },
             ]}
             schema={genericSchema}
-            fieldsToDisplay={['Actions', 'Type']}
+            fieldsToDisplay={[{ field: 'Actions' }, { field: 'Type' }]}
             selected={[]}
             orderBy="DisplayName"
             orderDirection="asc"
@@ -328,7 +328,7 @@ describe('ContentList component', () => {
               { Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder', ModificationDate: '2018-02-03T11:11Z' },
             ]}
             schema={genericSchema}
-            fieldsToDisplay={['ModificationDate']}
+            fieldsToDisplay={[{ field: 'ModificationDate' }]}
             selected={[]}
             orderBy="ModificationDate"
             orderDirection="asc"
@@ -357,7 +357,7 @@ describe('ContentList component', () => {
               },
             ]}
             schema={genericSchema}
-            fieldsToDisplay={['CreatedBy']}
+            fieldsToDisplay={[{ field: 'CreatedBy' }]}
             selected={[]}
             orderBy="ModificationDate"
             orderDirection="asc"
@@ -377,7 +377,7 @@ describe('ContentList component', () => {
           <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
-            fieldsToDisplay={['DisplayName', 'Name']}
+            fieldsToDisplay={[{ field: 'DisplayName' }, { field: 'Name' }]}
             selected={[]}
             orderBy="ModificationDate"
             orderDirection="asc"
@@ -409,7 +409,7 @@ describe('ContentList component', () => {
           <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
-            fieldsToDisplay={['DisplayName', 'Type']}
+            fieldsToDisplay={[{ field: 'DisplayName' }, { field: 'Type' }]}
             selected={[]}
             orderBy="DisplayName"
             orderDirection="asc"
@@ -437,7 +437,7 @@ describe('ContentList component', () => {
           <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
-            fieldsToDisplay={['DisplayName', 'Type']}
+            fieldsToDisplay={[{ field: 'DisplayName' }, { field: 'Type' }]}
             selected={[]}
             orderBy="DisplayName"
             orderDirection="asc"
@@ -464,7 +464,7 @@ describe('ContentList component', () => {
           <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
-            fieldsToDisplay={['DisplayName', 'Type']}
+            fieldsToDisplay={[{ field: 'DisplayName' }, { field: 'Type' }]}
             selected={[]}
             orderBy="DisplayName"
             orderDirection="asc"
@@ -491,7 +491,7 @@ describe('ContentList component', () => {
           <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
-            fieldsToDisplay={['DisplayName', 'Type']}
+            fieldsToDisplay={[{ field: 'DisplayName' }, { field: 'Type' }]}
             selected={[]}
             orderBy="DisplayName"
             orderDirection="asc"
@@ -518,7 +518,7 @@ describe('ContentList component', () => {
           <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
-            fieldsToDisplay={['DisplayName', 'Type']}
+            fieldsToDisplay={[{ field: 'DisplayName' }, { field: 'Type' }]}
             selected={[]}
             orderBy="Type"
             orderDirection="asc"
@@ -539,7 +539,7 @@ describe('ContentList component', () => {
           <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
-            fieldsToDisplay={['DisplayName', 'Type']}
+            fieldsToDisplay={[{ field: 'DisplayName' }, { field: 'Type' }]}
             selected={[]}
             orderBy="DisplayName"
             orderDirection="desc"
@@ -560,7 +560,7 @@ describe('ContentList component', () => {
           <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
-            fieldsToDisplay={['DisplayName']}
+            fieldsToDisplay={[{ field: 'DisplayName' }]}
             selected={[]}
             orderBy="DisplayName"
             orderDirection="asc"
@@ -576,7 +576,7 @@ describe('ContentList component', () => {
           <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
-            fieldsToDisplay={['DisplayName']}
+            fieldsToDisplay={[{ field: 'DisplayName' }]}
             orderBy="DisplayName"
             orderDirection="asc"
             icons={{}}
@@ -592,7 +592,7 @@ describe('ContentList component', () => {
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
             selected={undefined}
-            fieldsToDisplay={['DisplayName']}
+            fieldsToDisplay={[{ field: 'DisplayName' }]}
             orderBy="DisplayName"
             orderDirection="asc"
             icons={{}}
@@ -608,7 +608,7 @@ describe('ContentList component', () => {
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
             selected={undefined}
-            fieldsToDisplay={['DisplayName']}
+            fieldsToDisplay={[{ field: 'DisplayName' }]}
             orderBy="DisplayName"
             orderDirection="asc"
             icons={{}}
@@ -626,7 +626,7 @@ describe('ContentList component', () => {
             items={[content]}
             schema={genericSchema}
             selected={[content]}
-            fieldsToDisplay={['DisplayName']}
+            fieldsToDisplay={[{ field: 'DisplayName' }]}
             orderBy="DisplayName"
             orderDirection="asc"
             icons={{}}
@@ -642,7 +642,7 @@ describe('ContentList component', () => {
           <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
-            fieldsToDisplay={['DisplayName']}
+            fieldsToDisplay={[{ field: 'DisplayName' }]}
             selected={[]}
             orderDirection="asc"
             icons={{}}
@@ -657,7 +657,7 @@ describe('ContentList component', () => {
           <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
-            fieldsToDisplay={['DisplayName']}
+            fieldsToDisplay={[{ field: 'DisplayName' }]}
             selected={[]}
             orderBy="DisplayName"
             icons={{}}
@@ -672,7 +672,7 @@ describe('ContentList component', () => {
           <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
-            fieldsToDisplay={['DisplayName']}
+            fieldsToDisplay={[{ field: 'DisplayName' }]}
             selected={[]}
             orderBy="DisplayName"
             orderDirection="asc"

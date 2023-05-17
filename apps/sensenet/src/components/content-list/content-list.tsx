@@ -66,7 +66,6 @@ const useStyles = makeStyles(() => {
     },
   })
 })
-
 export interface ContentListProps<T extends GenericContent> {
   enableBreadcrumbs?: boolean
   hideHeader?: boolean
@@ -166,30 +165,51 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
     personalSettings.content.fields,
   )
 
+  const fetchUrl = PathHelper.joinPaths(
+    repo.configuration.repositoryUrl,
+    repo.configuration.oDataToken,
+    PathHelper.getContentUrl(props.parentIdOrPath),
+  )
+
   /* Handle Column Settings */
   useEffect(() => {
+    const ac = new AbortController()
+
     const getColumnSettings = async () => {
       const currentPathSettingCache = ColumnSettingsContainer[props.parentIdOrPath]
 
       if (!currentPathSettingCache || isExpired(new Date(currentPathSettingCache.lastValidation))) {
-        const costumColumns: Array<ColumnSetting<GenericContent>> = [
-          {
-            field: 'DisplayName',
-            title: 'BackendResponse to cache',
-          },
-          {
-            field: 'AvailableContentTypeFields' as keyof GenericContent,
-            title: 'BackendResponse',
-          },
-        ]
-        ColumnSettingsContainer[props.parentIdOrPath] = { settings: costumColumns, lastValidation: new Date() }
+        const endpoint = 'GetSettings'
+        const queryParameters = { name: 'ColumnSettings' }
+        const search = new URLSearchParams(queryParameters).toString()
 
-        /* Add Actions if field Settings Does not contain it. */
-        if (!ColumnSettingsContainer[props.parentIdOrPath].settings.find((f) => f.field === 'Actions')) {
-          ColumnSettingsContainer[props.parentIdOrPath].settings.push({ field: 'Actions', title: 'Actions' })
+        const requestUrl = `${fetchUrl}/${endpoint}?${search}`
+
+        let data
+
+        try {
+          const response = await repo.fetch(requestUrl, {
+            method: 'GET',
+            credentials: 'include',
+            signal: ac.signal,
+          })
+
+          data = await response.json()
+          // Continue processing data...
+        } catch (error) {
+          /* empty */
         }
 
-        console.log('updated cache', ColumnSettingsContainer[props.parentIdOrPath])
+        if (!data?.settings) {
+          return
+        }
+
+        ColumnSettingsContainer[props.parentIdOrPath] = { settings: data.settings, lastValidation: new Date() }
+
+        /* Add Actions if field Settings Does not contain it. */
+        if (!ColumnSettingsContainer[props.parentIdOrPath]?.settings?.find((f) => f.field === 'Actions')) {
+          ColumnSettingsContainer[props.parentIdOrPath].settings.push({ field: 'Actions', title: 'Actions' })
+        }
       }
 
       setColumnSettings(ColumnSettingsContainer[props.parentIdOrPath].settings)
@@ -198,11 +218,13 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
     if (!props.fieldsToDisplay) {
       getColumnSettings()
 
-      return
+      return () => {
+        ac.abort()
+      }
     }
 
     setColumnSettings(props.fieldsToDisplay)
-  }, [personalSettings.content.fields, props.fieldsToDisplay, props.parentIdOrPath, repo, schema.FieldSettings])
+  }, [props.fieldsToDisplay, props.parentIdOrPath, repo, fetchUrl])
 
   useEffect(() => {
     setSelected([])
@@ -597,8 +619,23 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
     })
   }
 
-  const setCostumColumnSettings = (newSettings: Array<ColumnSetting<GenericContent>>) => {
+  const setCostumColumnSettings = async (newSettings: Array<ColumnSetting<GenericContent>>) => {
     ColumnSettingsContainer[props.parentIdOrPath] = { settings: newSettings, lastValidation: new Date() }
+
+    const endpoint = 'WriteSettings'
+
+    const requestUrl = `${fetchUrl}/${endpoint}`
+
+    const data = {
+      name: 'ColumnSettings',
+      settingsData: { settings: [...newSettings] },
+    }
+
+    const response = await repo.fetch(requestUrl, {
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify(data),
+    })
 
     setColumnSettings(newSettings)
     closeLastDialog()

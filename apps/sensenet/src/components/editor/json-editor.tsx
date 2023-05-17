@@ -10,7 +10,7 @@ import { getMonacoModelUri } from './text-editor'
 export type TextEditorProps = Pick<SnMonacoEditorProps, 'additionalButtons' | 'handleCancel'> & {
   content: SnFile
   loadContent?: (content: SnFile) => Promise<string>
-  saveContent: (value: any) => void
+  saveContent: (value: any) => void | Promise<void>
   showBreadCrumb: boolean
 }
 
