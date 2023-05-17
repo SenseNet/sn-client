@@ -631,7 +631,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
       settingsData: { settings: [...newSettings] },
     }
 
-    const response = await repo.fetch(requestUrl, {
+    await repo.fetch(requestUrl, {
       method: 'POST',
       credentials: 'include',
       body: JSON.stringify(data),
