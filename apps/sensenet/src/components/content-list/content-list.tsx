@@ -205,11 +205,10 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
         }
 
         ColumnSettingsContainer[props.parentIdOrPath] = { settings: data.settings, lastValidation: new Date() }
-
-        /* Add Actions if field Settings Does not contain it. */
-        if (!ColumnSettingsContainer[props.parentIdOrPath]?.settings?.find((f) => f.field === 'Actions')) {
-          ColumnSettingsContainer[props.parentIdOrPath].settings.push({ field: 'Actions', title: 'Actions' })
-        }
+      }
+      /* Add Actions if field Settings Does not contain it. */
+      if (!ColumnSettingsContainer[props.parentIdOrPath]?.settings?.find((f) => f.field === 'Actions')) {
+        ColumnSettingsContainer[props.parentIdOrPath].settings.push({ field: 'Actions', title: 'Actions' })
       }
 
       setColumnSettings(ColumnSettingsContainer[props.parentIdOrPath].settings)
