@@ -283,7 +283,7 @@ describe('ContentList component', () => {
               { Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder', Actions: [{ Name: 'Example' } as any] },
             ]}
             schema={genericSchema}
-            fieldsToDisplay={[{ field: 'Type' }]}
+            fieldsToDisplay={[{ field: 'Actions' }, { field: 'Type' }]}
             selected={[]}
             orderBy="DisplayName"
             orderDirection="asc"

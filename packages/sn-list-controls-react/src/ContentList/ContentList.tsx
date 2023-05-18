@@ -136,8 +136,8 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
               const isNumeric =
                 fieldSetting &&
                 (fieldSetting.Type === 'IntegerFieldSetting' || fieldSetting.Type === 'NumberFieldSetting')
-              const description = (fieldSetting && fieldSetting.Description) || field
-              const displayName = (fieldSetting && fieldSetting.DisplayName) || field
+              const description: string = (fieldSetting && fieldSetting.Description) || field.field
+              const displayName: string = (fieldSetting && fieldSetting.DisplayName) || field.field
               return (
                 <TableCell key={field.field} align={isNumeric ? 'right' : 'inherit'} className={field.field}>
                   <Tooltip title={description}>
