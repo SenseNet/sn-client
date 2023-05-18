@@ -249,10 +249,21 @@ const MainPanel: React.FunctionComponent<MainPanelProps> = (props) => {
             }}
             fieldsToDisplay={
               isWidthUp('md', props.width)
-                ? ['DisplayName', 'CreatedBy', 'ModificationDate', 'Size' as any, 'Actions'] // x > 960px
+                ? [
+                    { field: 'DisplayName' },
+                    { field: 'CreatedBy' },
+                    { field: 'ModificationDate' },
+                    { field: 'Size' } as any,
+                    { field: 'Actions' },
+                  ] // x > 960px
                 : isWidthUp('sm', props.width)
-                ? ['DisplayName', 'ModificationDate', 'Size' as any, 'Actions'] // 600px < x < 960px
-                : ['DisplayName', 'Actions'] // x < 600px
+                ? [
+                    { field: 'DisplayName' },
+                    { field: 'ModificationDate' },
+                    { field: 'Size' } as any,
+                    { field: 'Actions' },
+                  ] // 600px < x < 960px
+                : [{ field: 'DisplayName' }, { field: 'Actions' }] // x < 600px
             }
             onItemClick={handleItemClickEvent}
             onItemDoubleClick={handleItemDoubleClickEvent}
