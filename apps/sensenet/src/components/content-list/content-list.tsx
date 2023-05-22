@@ -13,7 +13,6 @@ import {
 import { VirtualCellProps, VirtualDefaultCell, VirtualizedTable } from '@sensenet/list-controls-react'
 import { ColumnSetting } from '@sensenet/list-controls-react/src/ContentList/content-list-base-props'
 import { clsx } from 'clsx'
-import { fi } from 'date-fns/locale'
 import React, {
   CSSProperties,
   DetailedHTMLProps,
