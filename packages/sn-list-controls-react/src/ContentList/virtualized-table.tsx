@@ -303,11 +303,18 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
     ? [{ field: 'Checkbox' } as any].concat(fieldsToDisplay)
     : fieldsToDisplay
 
+  if (!extendedFieldsToDisplay.find((f) => f.field === 'Actions')) {
+    extendedFieldsToDisplay.push({ field: 'Actions', title: 'Actions' })
+  }
+
   return (
     <AutoSizer>
       {({ height, width }) => (
         <>
-          <Button className={classes.columnSetting} onClick={props.handleColumnSettingsClick}>
+          <Button
+            data-test="column-settings"
+            className={classes.columnSetting}
+            onClick={props.handleColumnSettingsClick}>
             <Build />
           </Button>
           <Table

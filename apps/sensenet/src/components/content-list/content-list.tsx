@@ -13,6 +13,7 @@ import {
 import { VirtualCellProps, VirtualDefaultCell, VirtualizedTable } from '@sensenet/list-controls-react'
 import { ColumnSetting } from '@sensenet/list-controls-react/src/ContentList/content-list-base-props'
 import { clsx } from 'clsx'
+import { fi } from 'date-fns/locale'
 import React, {
   CSSProperties,
   DetailedHTMLProps,
@@ -177,8 +178,11 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
 
     const getColumnSettings = async () => {
       const currentPathSettingCache = ColumnSettingsContainer[props.parentIdOrPath]
-
-      if (!currentPathSettingCache || isExpired(new Date(currentPathSettingCache.lastValidation))) {
+      if (
+        !currentPathSettingCache ||
+        !currentPathSettingCache.settings.length ||
+        isExpired(new Date(currentPathSettingCache.lastValidation))
+      ) {
         const endpoint = 'GetSettings'
         const queryParameters = { name: 'ColumnSettings' }
         const search = new URLSearchParams(queryParameters).toString()
@@ -197,7 +201,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
           data = await response.json()
           // Continue processing data...
         } catch (error) {
-          /* empty */
+          /*empty*/
         }
 
         if (!data?.settings) {
@@ -206,6 +210,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
 
         ColumnSettingsContainer[props.parentIdOrPath] = { settings: data.settings, lastValidation: new Date() }
       }
+
       /* Add Actions if field Settings Does not contain it. */
       if (!ColumnSettingsContainer[props.parentIdOrPath]?.settings?.find((f) => f.field === 'Actions')) {
         ColumnSettingsContainer[props.parentIdOrPath].settings.push({ field: 'Actions', title: 'Actions' })
@@ -245,7 +250,8 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
   }, [selected])
 
   useEffect(() => {
-    const fields = columnSettings
+    const fields = columnSettings || personalSettings.content.fields
+
     loadSettings.setLoadChildrenSettings({
       ...loadSettings.loadChildrenSettings,
       expand: [
@@ -618,8 +624,8 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
     })
   }
 
-  const setCostumColumnSettings = async (newSettings: Array<ColumnSetting<GenericContent>>) => {
-    ColumnSettingsContainer[props.parentIdOrPath] = { settings: newSettings, lastValidation: new Date() }
+  const setCostumColumnSettings = async (newSettings: { settings: Array<ColumnSetting<GenericContent>> }) => {
+    ColumnSettingsContainer[props.parentIdOrPath] = { ...newSettings, lastValidation: new Date() }
 
     const endpoint = 'WriteSettings'
 
@@ -627,16 +633,19 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
 
     const data = {
       name: 'ColumnSettings',
-      settingsData: { settings: [...newSettings] },
+      settingsData: { ...newSettings },
     }
 
-    await repo.fetch(requestUrl, {
-      method: 'POST',
-      credentials: 'include',
-      body: JSON.stringify(data),
-    })
-
-    setColumnSettings(newSettings)
+    try {
+      await repo.fetch(requestUrl, {
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify(data),
+      })
+    } catch (error) {
+      console.error(error)
+    }
+    setColumnSettings(newSettings.settings)
     closeLastDialog()
   }
 
