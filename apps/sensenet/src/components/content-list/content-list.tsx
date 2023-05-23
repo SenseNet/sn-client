@@ -114,21 +114,7 @@ interface ColumnSettingsContainerType {
   }
 }
 
-const ColumnSettingsContainer: ColumnSettingsContainerType = {
-  '/Root/Content/MyWorkspace': {
-    settings: [
-      {
-        field: 'DisplayName',
-        title: 'Megjelenítés Cache',
-      },
-      {
-        field: 'AvailableContentTypeFields' as keyof GenericContent,
-        title: 'Mikor',
-      },
-    ],
-    lastValidation: new Date('2021-05-12T11:00:00.000Z'),
-  },
-}
+const ColumnSettingsContainer: ColumnSettingsContainerType = {}
 
 export const ContentList = <T extends GenericContent = GenericContent>(props: ContentListProps<T>) => {
   const selectionService = useSelectionService()
@@ -179,7 +165,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
       const currentPathSettingCache = ColumnSettingsContainer[props.parentIdOrPath]
       if (
         !currentPathSettingCache ||
-        !currentPathSettingCache.settings.length ||
+        !currentPathSettingCache?.settings?.length ||
         isExpired(new Date(currentPathSettingCache.lastValidation))
       ) {
         const endpoint = 'GetSettings'
@@ -623,8 +609,10 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
     })
   }
 
-  const setCostumColumnSettings = async (newSettings: { settings: Array<ColumnSetting<GenericContent>> }) => {
-    ColumnSettingsContainer[props.parentIdOrPath] = { ...newSettings, lastValidation: new Date() }
+  const setCostumColumnSettings = async (newSettings: Array<ColumnSetting<GenericContent>>) => {
+    ColumnSettingsContainer[props.parentIdOrPath] = { settings: newSettings, lastValidation: new Date() }
+
+    console.log('newSettings', newSettings)
 
     const endpoint = 'WriteSettings'
 
@@ -632,7 +620,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
 
     const data = {
       name: 'ColumnSettings',
-      settingsData: { ...newSettings },
+      settingsData: newSettings,
     }
 
     try {
@@ -644,7 +632,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
     } catch (error) {
       console.error(error)
     }
-    setColumnSettings(newSettings.settings)
+    setColumnSettings(newSettings)
     closeLastDialog()
   }
 
