@@ -612,8 +612,6 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
   const setCostumColumnSettings = async (newSettings: Array<ColumnSetting<GenericContent>>) => {
     ColumnSettingsContainer[props.parentIdOrPath] = { settings: newSettings, lastValidation: new Date() }
 
-    console.log('newSettings', newSettings)
-
     const endpoint = 'WriteSettings'
 
     const requestUrl = `${fetchUrl}/${endpoint}`
