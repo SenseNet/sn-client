@@ -609,8 +609,8 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
     })
   }
 
-  const setCostumColumnSettings = async (newSettings: Array<ColumnSetting<GenericContent>>) => {
-    ColumnSettingsContainer[props.parentIdOrPath] = { columns: newSettings, lastValidation: new Date() }
+  const setCostumColumnSettings = async (newSettings: { columns: Array<ColumnSetting<GenericContent>> }) => {
+    ColumnSettingsContainer[props.parentIdOrPath] = { columns: newSettings.columns, lastValidation: new Date() }
 
     const endpoint = 'WriteSettings'
 
@@ -618,7 +618,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
 
     const data = {
       name: 'ColumnSettings',
-      settingsData: { columns: newSettings },
+      settingsData: newSettings,
     }
 
     try {
@@ -630,7 +630,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
     } catch (error) {
       console.error(error)
     }
-    setColumnSettings(newSettings)
+    setColumnSettings(newSettings.columns)
     closeLastDialog()
   }
 

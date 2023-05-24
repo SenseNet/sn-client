@@ -34,7 +34,10 @@ export const ColumnSettings = (props: ColumunSettingsProps) => {
       <DialogContent style={{ height: '500px' }}>
         <JsonEditor
           content={editorContent}
-          loadContent={async () => JSON.stringify(columnSettings, undefined, 3)}
+          loadContent={async () => {
+            const columnSettingsToDisplay = { columns: columnSettings }
+            return JSON.stringify(columnSettingsToDisplay, undefined, 3)
+          }}
           saveContent={setColumnSettings}
           handleCancel={closeLastDialog}
           showBreadCrumb={false}
