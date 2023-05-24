@@ -109,7 +109,7 @@ const isExpired = (value: Date, timeDifference = 300000) => {
 
 interface ColumnSettingsContainerType {
   [key: string]: {
-    settings: Array<ColumnSetting<GenericContent>>
+    columns: Array<ColumnSetting<GenericContent>>
     lastValidation: Date
   }
 }
@@ -165,7 +165,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
       const currentPathSettingCache = ColumnSettingsContainer[props.parentIdOrPath]
       if (
         !currentPathSettingCache ||
-        !currentPathSettingCache?.settings?.length ||
+        !currentPathSettingCache?.columns?.length ||
         isExpired(new Date(currentPathSettingCache.lastValidation))
       ) {
         const endpoint = 'GetSettings'
@@ -174,7 +174,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
 
         const requestUrl = `${fetchUrl}/${endpoint}?${search}`
 
-        let data
+        let data: { columns: Array<ColumnSetting<GenericContent>> } | undefined
 
         try {
           const response = await repo.fetch(requestUrl, {
@@ -189,19 +189,19 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
           /*empty*/
         }
 
-        if (!data?.settings) {
+        if (!data?.columns) {
           return
         }
 
-        ColumnSettingsContainer[props.parentIdOrPath] = { settings: data.settings, lastValidation: new Date() }
+        ColumnSettingsContainer[props.parentIdOrPath] = { columns: data.columns, lastValidation: new Date() }
       }
 
       /* Add Actions if field Settings Does not contain it. */
-      if (!ColumnSettingsContainer[props.parentIdOrPath]?.settings?.find((f) => f.field === 'Actions')) {
-        ColumnSettingsContainer[props.parentIdOrPath].settings.push({ field: 'Actions', title: 'Actions' })
+      if (!ColumnSettingsContainer[props.parentIdOrPath]?.columns?.find((f) => f.field === 'Actions')) {
+        ColumnSettingsContainer[props.parentIdOrPath].columns.push({ field: 'Actions', title: 'Actions' })
       }
 
-      setColumnSettings(ColumnSettingsContainer[props.parentIdOrPath].settings)
+      setColumnSettings(ColumnSettingsContainer[props.parentIdOrPath].columns)
     }
 
     if (!props.fieldsToDisplay) {
@@ -610,7 +610,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
   }
 
   const setCostumColumnSettings = async (newSettings: Array<ColumnSetting<GenericContent>>) => {
-    ColumnSettingsContainer[props.parentIdOrPath] = { settings: newSettings, lastValidation: new Date() }
+    ColumnSettingsContainer[props.parentIdOrPath] = { columns: newSettings, lastValidation: new Date() }
 
     const endpoint = 'WriteSettings'
 
@@ -618,7 +618,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
 
     const data = {
       name: 'ColumnSettings',
-      settingsData: newSettings,
+      settingsData: { columns: newSettings },
     }
 
     try {
@@ -637,7 +637,10 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
   const columnSettingsDialog = () => {
     openDialog({
       name: 'column-settings',
-      props: { columnSettings, setColumnSettings: setCostumColumnSettings },
+      props: {
+        columnSettings: ColumnSettingsContainer[props.parentIdOrPath].columns,
+        setColumnSettings: setCostumColumnSettings,
+      },
       dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
     })
   }
