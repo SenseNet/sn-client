@@ -638,7 +638,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
     openDialog({
       name: 'column-settings',
       props: {
-        columnSettings: ColumnSettingsContainer[props.parentIdOrPath].columns,
+        columnSettings: ColumnSettingsContainer[props.parentIdOrPath]?.columns,
         setColumnSettings: setCostumColumnSettings,
       },
       dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
