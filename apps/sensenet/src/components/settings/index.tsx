@@ -100,7 +100,12 @@ export const Settings: React.FunctionComponent = () => {
         return (
           <ContentComponent
             rootPath={PATHS.webhooks.snPath}
-            fieldsToDisplay={['DisplayName', 'WebHookUrl' as any, 'Enabled' as any, 'SuccessfulCalls' as any]}
+            fieldsToDisplay={[
+              { field: 'DisplayName' },
+              { field: 'WebHookUrl' } as any,
+              { field: 'Enabled' } as any,
+              { field: 'SuccessfulCalls' } as any,
+            ]}
             schema={'WebHookSubscription'}
           />
         )
