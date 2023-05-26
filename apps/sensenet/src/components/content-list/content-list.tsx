@@ -82,6 +82,7 @@ export interface ContentListProps<T extends GenericContent> {
   onSelectionChange?: (sel: T[]) => void
   onFocus?: () => void
   containerProps?: DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+  disableColumnSettings?: boolean
 }
 
 export const isReferenceField = (fieldName: string, repo: Repository, schema = 'GenericContent') => {
@@ -680,6 +681,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
           ref={props.containerRef}
           onKeyDown={handleKeyDown}>
           <VirtualizedTable
+            disableColumnSettings={props.disableColumnSettings}
             handleColumnSettingsClick={columnSettingsDialog}
             active={activeContent}
             checkboxProps={{ color: 'primary' }}
