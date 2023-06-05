@@ -77,6 +77,7 @@ module.exports = {
     yoda: 'error',
     'prefer-arrow-callback': 'error',
     'no-shadow': 'off',
+    'no-unused-vars': ['error'],
     '@typescript-eslint/no-shadow': ['error'],
     '@typescript-eslint/no-useless-constructor': 'error',
     'prefer-template': 'error',
