@@ -1,4 +1,3 @@
-import { ConstantContent } from '@sensenet/client-core'
 import { Settings } from '@sensenet/default-content-types'
 import { useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
 import { Query } from '@sensenet/query'
