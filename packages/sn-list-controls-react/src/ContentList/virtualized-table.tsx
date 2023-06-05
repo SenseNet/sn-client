@@ -26,12 +26,6 @@ import { ActionsCell, DateCell, ReferenceCell, RowCheckbox, VirtualDefaultCell, 
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    columnSetting: {
-      position: 'absolute',
-      top: '6px',
-      left: '6px',
-      minWidth: '30px',
-    },
     root: {
       '& .ReactVirtualized__Table__headerRow': {
         backgroundColor: theme.palette.type === 'dark' ? 'hsl(0deg 0% 24%)' : 'hsl(0deg 0% 92%)',
@@ -132,6 +126,21 @@ interface VirtualizedTableProps<T extends GenericContent> extends ContentListBas
      */
     disableHeader?: boolean
   }
+}
+
+const minColumnWith = (field: keyof ExtendedGenericContent) => {
+  if (field !== 'Checkbox' && field !== 'ColumnSettings') {
+    return
+  }
+  return 48
+}
+
+const maxColumnWith = (field: keyof ExtendedGenericContent) => {
+  if (field !== 'Checkbox' && field !== 'ColumnSettings') {
+    return
+  }
+
+  return 48
 }
 
 const EmptyCell = () => {
@@ -261,16 +270,12 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
             width: '48px',
             height: '42px',
             maxWidth: '48px',
-            paddingRight: 0,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
           }}
           component="div">
-          <Button
-            data-test="column-settings"
-            className={classes.columnSetting}
-            onClick={props.handleColumnSettingsClick}>
+          <Button data-test="column-settings" onClick={props.handleColumnSettingsClick}>
             <Build />
           </Button>
         </TableCell>
@@ -361,27 +366,12 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
     currentFieldsToDisplay.unshift(aditionalFields.Checkbox)
   }
 
-  if (!props.disableColumnSettings) {
-    currentFieldsToDisplay.unshift(aditionalFields.ColumnSettins)
-  }
-
   if (!currentFieldsToDisplay.find((f) => f.field === 'Actions')) {
     currentFieldsToDisplay.push({ field: 'Actions', title: 'Actions' })
   }
 
-  const minColumnWith = (field: keyof ExtendedGenericContent) => {
-    if (field !== 'Checkbox' && field !== 'ColumnSettings') {
-      return
-    }
-    return 48
-  }
-
-  const maxColumnWith = (field: keyof ExtendedGenericContent) => {
-    if (field !== 'Checkbox' && field !== 'ColumnSettings') {
-      return
-    }
-
-    return 48
+  if (!props.disableColumnSettings) {
+    currentFieldsToDisplay.push(aditionalFields.ColumnSettins)
   }
 
   return (
