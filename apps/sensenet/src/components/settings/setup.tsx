@@ -35,7 +35,7 @@ const Setup = () => {
   useEffect(() => {
     ;(async () => {
       const response = await repository.loadCollection({
-        path: ConstantContent.PORTAL_ROOT.Path,
+        path: PATHS.configuration.snPath,
         oDataOptions: {
           orderby: [['Index' as any, 'asc']],
           query: `${new Query((q) => q.typeIs('Settings')).toString()} .AUTOFILTERS:OFF`,
