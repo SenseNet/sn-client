@@ -1,6 +1,7 @@
 import { Button, ButtonGroup } from '@material-ui/core'
 import { ODataParams } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
+import { ColumnSetting } from '@sensenet/list-controls-react/src/ContentList/content-list-base-props'
 import React, { useState } from 'react'
 
 interface GridSwitcherItem {
@@ -8,7 +9,7 @@ interface GridSwitcherItem {
   name: string
   displayName: string
   schema?: string
-  fieldsToDisplay: string[]
+  fieldsToDisplay: Array<ColumnSetting<GenericContent>>
   loadSettings?: ODataParams<GenericContent>
 }
 

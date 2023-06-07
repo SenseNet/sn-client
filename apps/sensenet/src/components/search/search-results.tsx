@@ -46,7 +46,7 @@ export const SearchResults = () => {
                 height: '100%',
                 overflow: 'auto',
               }}
-              fieldsToDisplay={['DisplayName', 'Path', 'ModifiedBy', 'Actions']}
+              fieldsToDisplay={[{ field: 'DisplayName' }, { field: 'Path' }, { field: 'ModifiedBy' }]}
               enableBreadcrumbs={false}
               parentIdOrPath={0}
               onParentChange={(p) => {

@@ -78,6 +78,7 @@ export const CurrentContentProvider: FunctionComponent<CurrentContentProviderPro
             requestInit: { signal: ac.signal },
             oDataOptions: props.oDataOptions,
           })
+
           setContent(response.d)
           props.onContentLoaded && props.onContentLoaded(response.d)
         } catch (error) {

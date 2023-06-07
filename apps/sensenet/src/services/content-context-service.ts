@@ -8,7 +8,11 @@ import { CustomContentDrawerItem } from './PersonalSettings'
 import { pathWithQueryParams, UiSettings } from '.'
 
 export function getMonacoLanguage(content: GenericContent, repository: Repository) {
-  if (repository.schemas.isContentFromType<Settings>(content, 'Settings') || content.Type === 'PersonalSettings') {
+  if (
+    repository.schemas.isContentFromType<Settings>(content, 'Settings') ||
+    content.Type === 'PersonalSettings' ||
+    content.Type === 'ColumnSettings'
+  ) {
     return 'json'
   }
   if (

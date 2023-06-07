@@ -1,4 +1,14 @@
-import { Checkbox, createStyles, makeStyles, TableCell, TableSortLabel, Theme, Tooltip } from '@material-ui/core'
+import {
+  Button,
+  Checkbox,
+  createStyles,
+  makeStyles,
+  TableCell,
+  TableSortLabel,
+  Theme,
+  Tooltip,
+} from '@material-ui/core'
+import { Build } from '@material-ui/icons'
 import { ActionModel, FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import clsx from 'clsx'
 import React, { useCallback, useMemo } from 'react'
@@ -11,7 +21,7 @@ import {
   TableCellProps,
   TableCellRenderer,
 } from 'react-virtualized'
-import { ContentListBaseProps } from './content-list-base-props'
+import { ColumnSetting, ContentListBaseProps } from './content-list-base-props'
 import { ActionsCell, DateCell, ReferenceCell, RowCheckbox, VirtualDefaultCell, VirtualDisplayNameCell } from '.'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -22,6 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
         boxShadow:
           theme.palette.type === 'dark' ? '0px 3px 2px hsl(0deg 0% 0% / 30%)' : '1px 1px 3px 0px hsl(0deg 0% 0% / 28%)',
       },
+      '& .ReactVirtualized__Table__row': {},
     },
     flexContainer: {
       display: 'flex',
@@ -61,16 +72,27 @@ export interface VirtualCellProps {
   fieldSettings: FieldSetting
 }
 
+interface ExtendedGenericContent extends GenericContent {
+  Checkbox?: string
+  ColumnSettings?: string
+}
+
 interface VirtualizedTableProps<T extends GenericContent> extends ContentListBaseProps<T> {
   /**
    * Contains custom cell template components
    */
   cellRenderer?: (props: VirtualCellProps) => React.ReactNode
 
+  /*Disable Collumn Settings*/
+
+  disableColumnSettings?: boolean
+
   /**
    * Contains custom reference cell template components
    */
   referenceCellRenderer?: (tableCellProps: TableCellProps) => React.ReactNode
+
+  handleColumnSettingsClick?: () => void
 
   tableProps: {
     /**
@@ -104,6 +126,40 @@ interface VirtualizedTableProps<T extends GenericContent> extends ContentListBas
      */
     disableHeader?: boolean
   }
+}
+
+const minColumnWith = (field: keyof ExtendedGenericContent) => {
+  if (field !== 'Checkbox' && field !== 'ColumnSettings') {
+    return
+  }
+  return 48
+}
+
+const maxColumnWith = (field: keyof ExtendedGenericContent) => {
+  if (field !== 'Checkbox' && field !== 'ColumnSettings') {
+    return
+  }
+
+  return 48
+}
+
+const EmptyCell = () => {
+  return (
+    <TableCell
+      style={{
+        height: '57px',
+        opacity: '0',
+        width: '50px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 0,
+        maxWidth: '48px',
+      }}
+      component="div"
+      key="EmptyField"
+    />
+  )
 }
 
 export const VirtualizedTable = <T extends GenericContent = GenericContent>(props: VirtualizedTableProps<T>) => {
@@ -197,12 +253,36 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
 
   const getSchemaForField = useCallback((fieldName: string) => fieldSchemas[fieldName] as FieldSetting, [fieldSchemas])
 
-  const headerRenderer = (columnName: string, columnCount: number, autoSizerWidth: number) => {
+  const headerRenderer = (
+    columnSetting: ColumnSetting<ExtendedGenericContent>,
+    columnCount: number,
+    autoSizerWidth: number,
+  ) => {
     const {
       tableProps: { headerHeight },
     } = props
 
-    if (columnName === 'Checkbox') {
+    if (columnSetting.field === 'ColumnSettings') {
+      return (
+        <TableCell
+          key="ColumnSettings"
+          style={{
+            width: '48px',
+            height: '42px',
+            maxWidth: '48px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          component="div">
+          <Button data-test="column-settings" onClick={props.handleColumnSettingsClick}>
+            <Build />
+          </Button>
+        </TableCell>
+      )
+    }
+
+    if (columnSetting.field === 'Checkbox') {
       return (
         <TableCell
           padding="checkbox"
@@ -229,35 +309,33 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
       )
     }
 
-    const fieldSetting = getSchemaForField(columnName)
-    const displayName = (fieldSetting && fieldSetting.DisplayName) || columnName
-    const description = (fieldSetting && fieldSetting.Description) || columnName
+    const fieldSetting = getSchemaForField(columnSetting.field)
+    const displayName: string = columnSetting.title || (fieldSetting && fieldSetting.DisplayName) || columnSetting.field
+    const description: string = (fieldSetting && fieldSetting.Description) || columnSetting.field
 
     return (
       <TableCell
-        data-test={`table-header-${columnName?.replace(/\s+/g, '-').toLowerCase()}`}
+        data-test={`table-header-${columnSetting.field?.replace(/\s+/g, '-').toLowerCase()}`}
         component="div"
         variant="head"
         style={{
           height: headerHeight || 42,
-          width: props.displayRowCheckbox
-            ? (autoSizerWidth - 48 - 10) / (columnCount - 1)
-            : autoSizerWidth / columnCount,
+          width: props.displayRowCheckbox ? 'auto' : autoSizerWidth / columnCount,
           display: 'flex',
-          padding: columnName === 'Actions' ? '0 0 0 24px' : 0,
+          padding: columnSetting.field === 'Actions' ? '0 0 0 0px' : 0,
           alignItems: 'center',
-          justifyContent: columnName === 'Actions' ? 'center' : 'left',
+          justifyContent: columnSetting.field === 'Actions' ? 'center' : 'left',
         }}
-        className={columnName as string}>
+        className={columnSetting.field as string}>
         <Tooltip title={description}>
           <TableSortLabel
             className={classes.label}
-            active={props.orderBy === columnName}
+            active={props.orderBy === columnSetting.field}
             direction={props.orderDirection}
             onClick={() =>
               props.onRequestOrderChange &&
               props.onRequestOrderChange(
-                columnName as keyof GenericContent,
+                columnSetting.field as keyof GenericContent,
                 props.orderDirection === 'asc' ? 'desc' : 'asc',
               )
             }>
@@ -269,60 +347,91 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
   }
 
   const { fieldsToDisplay, tableProps } = props
-  const fieldsToDisplayWithOrWithoutCheckbox = props.displayRowCheckbox
-    ? ['Checkbox'].concat(fieldsToDisplay)
-    : fieldsToDisplay
+
+  const currentFieldsToDisplay: Array<ColumnSetting<ExtendedGenericContent>> = [...fieldsToDisplay]
+
+  /*An object which will contain the extend field*/
+
+  const aditionalFields = {
+    Checkbox: { field: 'Checkbox', title: 'Checkbox' } as ColumnSetting<ExtendedGenericContent>,
+    ColumnSettins: {
+      field: 'ColumnSettings',
+      title: 'ColumnSettings',
+    } as ColumnSetting<ExtendedGenericContent>,
+  }
+
+  /*An array which will contain the extend field*/
+
+  if (props.displayRowCheckbox) {
+    currentFieldsToDisplay.unshift(aditionalFields.Checkbox)
+  }
+
+  if (!currentFieldsToDisplay.find((f) => f.field === 'Actions')) {
+    currentFieldsToDisplay.push({ field: 'Actions', title: 'Actions' })
+  }
+
+  if (!props.disableColumnSettings) {
+    currentFieldsToDisplay.push(aditionalFields.ColumnSettins)
+  }
 
   return (
     <AutoSizer>
       {({ height, width }) => (
-        <Table
-          className={classes.root}
-          height={height}
-          width={width}
-          gridStyle={{
-            direction: 'inherit',
-            outline: 'none',
-          }}
-          {...tableProps}
-          rowClassName={getRowClassName}>
-          {fieldsToDisplayWithOrWithoutCheckbox.map((field) => {
-            return (
-              <Column
-                flexGrow={props.displayRowCheckbox && field === 'Checkbox' ? 0 : 0}
-                flexShrink={props.displayRowCheckbox && field === 'Checkbox' ? 5 : 1}
-                key={field}
-                columnData={{ label: field }}
-                headerRenderer={() => headerRenderer(field, fieldsToDisplayWithOrWithoutCheckbox.length, width)}
-                className={classes.flexContainer}
-                cellRenderer={(tableCellProps) => {
-                  if (props.displayRowCheckbox && field === 'Checkbox') {
-                    const isSelected =
-                      props.selected && props.selected.find((s) => s.Id === tableCellProps.rowData.Id) ? true : false
-                    return checkBoxRenderer(tableCellProps, isSelected)
-                  } else {
-                    if (tableCellProps.dataKey.includes('/')) {
-                      return props.referenceCellRenderer
-                        ? props.referenceCellRenderer(tableCellProps)
-                        : defaultCellRenderer(tableCellProps)
-                    } else {
-                      return props.cellRenderer
-                        ? props.cellRenderer({
-                            tableCellProps,
-                            fieldSettings: getSchemaForField(tableCellProps.dataKey),
-                          })
-                        : defaultCellRenderer(tableCellProps)
+        <>
+          <Table
+            className={classes.root}
+            height={height}
+            width={width}
+            gridStyle={{
+              direction: 'inherit',
+              outline: 'none',
+            }}
+            {...tableProps}
+            rowClassName={getRowClassName}>
+            {currentFieldsToDisplay.map((field) => {
+              const currentField = field.field
+              return (
+                <Column
+                  flexGrow={props.displayRowCheckbox && field.field === 'Checkbox' ? 0 : 0}
+                  flexShrink={props.displayRowCheckbox && field.field === 'Checkbox' ? 5 : 1}
+                  key={currentField}
+                  columnData={{ label: currentField }}
+                  headerRenderer={() => headerRenderer(field, currentFieldsToDisplay.length, width)}
+                  className={classes.flexContainer}
+                  cellRenderer={(tableCellProps) => {
+                    if (currentField === 'ColumnSettings') {
+                      EmptyCell()
+                      return
                     }
-                  }
-                }}
-                dataKey={field}
-                width={width}
-                minWidth={props.displayRowCheckbox && field === 'Checkbox' ? 48 : undefined}
-                maxWidth={props.displayRowCheckbox && field === 'Checkbox' ? 48 : undefined}
-              />
-            )
-          })}
-        </Table>
+
+                    if (props.displayRowCheckbox && currentField === 'Checkbox') {
+                      const isSelected =
+                        props.selected && props.selected.find((s) => s.Id === tableCellProps.rowData.Id) ? true : false
+                      return checkBoxRenderer(tableCellProps, isSelected)
+                    } else {
+                      if (tableCellProps.dataKey.includes('/')) {
+                        return props.referenceCellRenderer
+                          ? props.referenceCellRenderer(tableCellProps)
+                          : defaultCellRenderer(tableCellProps)
+                      } else {
+                        return props.cellRenderer
+                          ? props.cellRenderer({
+                              tableCellProps,
+                              fieldSettings: getSchemaForField(tableCellProps.dataKey),
+                            })
+                          : defaultCellRenderer(tableCellProps)
+                      }
+                    }
+                  }}
+                  dataKey={currentField}
+                  width={width}
+                  minWidth={minColumnWith(currentField)}
+                  maxWidth={maxColumnWith(currentField)}
+                />
+              )
+            })}
+          </Table>
+        </>
       )}
     </AutoSizer>
   )

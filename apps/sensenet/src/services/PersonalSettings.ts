@@ -1,5 +1,6 @@
 import { deepMerge, Injectable, LogLevel, ObservableValue, tuple } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
+import { ColumnSetting } from '@sensenet/list-controls-react/src/ContentList/content-list-base-props'
 import { BrowseType } from '../components/content'
 import { PlatformDependent } from '../context'
 
@@ -9,7 +10,7 @@ const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
 export interface UiSettings {
   content: {
     browseType: (typeof BrowseType)[number]
-    fields: Array<keyof GenericContent>
+    fields: Array<ColumnSetting<GenericContent>>
     root: string
   }
   commandPalette: { enabled: boolean; wrapQuery: string }
@@ -97,7 +98,12 @@ export const defaultSettings: PersonalSettingsType = {
   default: {
     content: {
       browseType: 'explorer',
-      fields: ['DisplayName', 'Locked', 'CreatedBy', 'Actions'],
+      fields: [
+        { field: 'DisplayName' as keyof GenericContent },
+        { field: 'Locked' as keyof GenericContent },
+        { field: 'CreatedBy' as keyof GenericContent },
+        { field: 'Actions' as keyof GenericContent },
+      ],
       root: '/Root/Content',
     },
     drawer: {

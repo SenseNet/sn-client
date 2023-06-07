@@ -196,6 +196,9 @@ const values = {
     capacity: 'Trashbag capacity',
     capacityUnit: 'content',
   },
+  columnSettingsDialog: {
+    title: 'Column settings',
+  },
   editPropertiesDialog: {
     dialogTitle: 'Edit {0}',
     saveSuccessNotification: `Content '{0}' has been updated.`,

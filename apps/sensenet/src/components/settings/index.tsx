@@ -87,7 +87,7 @@ export const Settings: React.FunctionComponent = () => {
   const renderContent = () => {
     switch (routeMatch.params.submenu) {
       case 'localization':
-        return <ContentComponent rootPath={PATHS.localization.snPath} />
+        return <ContentComponent disableColumnSettings rootPath={PATHS.localization.snPath} />
       case 'configuration':
         return <SetupComponent />
       case 'adminui':
@@ -100,7 +100,12 @@ export const Settings: React.FunctionComponent = () => {
         return (
           <ContentComponent
             rootPath={PATHS.webhooks.snPath}
-            fieldsToDisplay={['DisplayName', 'WebHookUrl' as any, 'Enabled' as any, 'SuccessfulCalls' as any]}
+            fieldsToDisplay={[
+              { field: 'DisplayName' },
+              { field: 'WebHookUrl' } as any,
+              { field: 'Enabled' } as any,
+              { field: 'SuccessfulCalls' } as any,
+            ]}
             schema={'WebHookSubscription'}
           />
         )

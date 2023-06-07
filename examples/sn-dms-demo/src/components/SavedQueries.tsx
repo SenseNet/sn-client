@@ -62,7 +62,7 @@ class SavedQueries extends Component<
             active={this.props.active}
             icons={icons}
             items={this.props.queries}
-            fieldsToDisplay={['DisplayName', 'Actions']}
+            fieldsToDisplay={[{ field: 'DisplayName' }, { field: 'Actions' }]}
             onRequestActiveItemChange={this.props.setActive}
             displayRowCheckbox={false}
             onRequestActionsMenu={(ev, content) => {
