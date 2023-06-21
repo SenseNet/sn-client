@@ -9,7 +9,7 @@ describe('Create/Delete content', () => {
   })
   it('Creating a new folder should work properly', () => {
     cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]').click()
+    cy.get('[data-test="menu-item-sample-workspace"]').click()
     cy.get('[data-test="add-button"]').click()
     cy.get('[data-test="listitem-folder"]')
       .click()
@@ -27,8 +27,8 @@ describe('Create/Delete content', () => {
 
   it('Folder delete should work properly', () => {
     cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]').click()
-    cy.get(`[data-test="table-cell-${folderName.replace(/\s+/g, '-').toLowerCase()}"]`).rightclick()
+    cy.get('[data-test="menu-item-sample-workspace"]').click()
+    cy.get(`[data-test="table-cell-${folderName.replace(/\s+/g, '-').toLowerCase()}"]`).rightclick({ force: true })
     cy.get('[data-test="content-context-menu-delete"]')
       .click()
       .then(() => {

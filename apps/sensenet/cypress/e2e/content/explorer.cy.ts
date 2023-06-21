@@ -1,14 +1,14 @@
 import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
 const newColumnSettings = {
-  settings: [
+  columns: [
     { field: 'DisplayName', title: 'Test Display' },
     { field: 'AvailableContentTypeFields', title: 'Test' },
   ],
 }
 
 const originalColumnSettings = {
-  settings: [
+  columns: [
     { field: 'DisplayName', title: 'Display Name' },
     { field: 'AvailableContentTypeFields', title: 'Available Content Type Fields' },
   ],

@@ -10,7 +10,7 @@ describe('Create/Delete content', () => {
   })
   it('Creating a new file should work properly', () => {
     cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]').click()
+    cy.get('[data-test="menu-item-sample-workspace"]').click()
     cy.get('[data-test="menu-item-document-library"]').click({ force: true })
     cy.get('[data-test="add-button"]').click()
     cy.get('[data-test="listitem-file"]')
@@ -25,9 +25,9 @@ describe('Create/Delete content', () => {
 
   it('File should be edited', () => {
     cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]').click()
+    cy.get('[data-test="menu-item-sample-workspace"]').click()
     cy.get('[data-test="menu-item-document-library"]').click({ force: true })
-    cy.get(`[data-test="table-cell-${fileName.replace(/\s+/g, '-').toLowerCase()}"]`).rightclick()
+    cy.get(`[data-test="table-cell-${fileName.replace(/\s+/g, '-').toLowerCase()}"]`).rightclick({ force: true })
     cy.get('[data-test="content-context-menu-edit"]')
       .click()
       .then(() => {
@@ -44,9 +44,9 @@ describe('Create/Delete content', () => {
 
   it('File delete should work properly', () => {
     cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]').click()
+    cy.get('[data-test="menu-item-sample-workspace"]').click({ force: true })
     cy.get('[data-test="menu-item-document-library"]').click({ force: true })
-    cy.get(`[data-test="table-cell-${newFileName.replace(/\s+/g, '-').toLowerCase()}"]`).rightclick()
+    cy.get(`[data-test="table-cell-${newFileName.replace(/\s+/g, '-').toLowerCase()}"]`).rightclick({ force: true })
     cy.get('[data-test="content-context-menu-delete"]')
       .click()
       .then(() => {

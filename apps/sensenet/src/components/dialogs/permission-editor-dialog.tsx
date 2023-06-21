@@ -374,7 +374,7 @@ export function PermissionEditorDialog(props: PermissionEditorDialogProps) {
             }),
           )}
           <Divider />
-          <ListItem>
+          <ListItem data-test="switcher-full-access">
             <ListItemText
               disableTypography
               primary={localization.permissionEditor.fullAccess}
