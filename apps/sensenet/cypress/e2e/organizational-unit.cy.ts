@@ -14,6 +14,12 @@ describe('Organizational units', () => {
 
   it('ensure that creating a new org unit works as it is expected', () => {
     cy.get('[data-test="add-button"]').should('not.be.disabled').click()
+
+    cy.get('[data-test="listitem-domain"]').click()
+    cy.get('[data-test="menu-item-public"]').click()
+
+    cy.get('[data-test="add-button"]').should('not.be.disabled').click()
+
     cy.get('[data-test="listitem-organizational-unit"]')
       .click()
       .then(() => {
@@ -26,6 +32,8 @@ describe('Organizational units', () => {
   })
 
   it('ensure that organizational units build a tree', () => {
+    cy.get('[data-test="menu-item-public"]').click()
+
     cy.get(`[data-test="menu-item-test1"]`).click()
 
     cy.get('[data-test="add-button"]').should('not.be.disabled').click()
@@ -49,6 +57,7 @@ describe('Organizational units', () => {
   })
 
   it('ensure that organizational units tree is deletable', () => {
+    cy.get('[data-test="menu-item-public"]').click()
     cy.get(`[data-test="menu-item-test1"]`).click().rightclick()
 
     cy.get('[data-test="content-context-menu-delete"]').click()
