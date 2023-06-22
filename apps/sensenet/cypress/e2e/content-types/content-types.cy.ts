@@ -37,7 +37,8 @@ describe('Content types', () => {
   context('create & delete', () => {
     it('should create a new content type', (done) => {
       cy.get('[data-test="add-button"]').should('not.be.disabled').click()
-      cy.get('[data-test="listitem-content-type"]')
+      cy.get('[data-test="list-items"]')
+        .eq(0)
         .click()
         .then(() => {
           cy.get('.monaco-editor textarea')
@@ -121,7 +122,8 @@ describe('Content types', () => {
     })
     it('it should insert presets', () => {
       cy.get('[data-test="add-button"]').should('not.be.disabled').click()
-      cy.get('[data-test="listitem-content-type"]')
+      cy.get('[data-test="list-items"]')
+        .eq(0)
         .click()
         .then(() => {
           defaultFieldSettings.forEach((field) => {

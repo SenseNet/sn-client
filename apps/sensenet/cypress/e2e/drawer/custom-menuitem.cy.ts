@@ -3,7 +3,7 @@ import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
 describe('Custom menu item', () => {
   beforeEach(() => {
-    cy.login()
+    cy.login('superAdmin')
   })
 
   it('should create a new custom menu', () => {
@@ -18,8 +18,8 @@ describe('Custom menu item', () => {
                 icon: 'AddAlert',
                 title: 'Test',
                 appPath: 'test',
-                root: '/Root/Content/IT/Calendar',
-                columns: ['DisplayName'],
+                root: '/Root/Content/SampleWorkspace/Calendar',
+                columns: [{ field: 'DisplayName' }],
                 description: 'List of tests',
               },
             },
@@ -67,8 +67,8 @@ describe('Custom menu item', () => {
                 icon: 'AddAlert',
                 title: 'Test',
                 appPath: 'test',
-                root: '/Root/Content/IT/Calendar',
-                columns: ['DisplayName', 'CreatedBy'],
+                root: '/Root/Content/SampleWorkspace/Calendar',
+                columns: [{ field: 'DisplayName' }, { field: 'CreatedBy' }],
                 description: 'List of tests',
               },
             },
@@ -79,7 +79,7 @@ describe('Custom menu item', () => {
 
     cy.intercept({
       method: 'GET',
-      url: 'odata.svc/Root/Content/IT/Calendar?*',
+      url: 'odata.svc/Root/Content/SampleWorkspace/Calendar?*',
     }).as('getCalendar')
 
     cy.visit(
@@ -106,7 +106,7 @@ describe('Custom menu item', () => {
 
     cy.wait('@getCalendar').then((_interception) => {
       settings.default.drawer.items[0].settings.columns.forEach((column) =>
-        cy.get(`[data-test="table-header-${column.replace(/\s+/g, '-').toLowerCase()}"]`).should('exist'),
+        cy.get(`[data-test="table-header-${column.field?.replace(/\s+/g, '-').toLowerCase()}"]`).should('exist'),
       )
     })
   })
