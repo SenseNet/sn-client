@@ -11,7 +11,7 @@ describe('Grid context menu', () => {
   it('right-click on a content in the grid makes context-menu open', () => {
     cy.get('[data-test="drawer-menu-item-content"]').click()
     cy.checkContextMenu({
-      selector: '[data-test="table-cell-it-workspace"]',
+      selector: '[data-test="table-cell-sample-workspace"]',
       contextMenuItems,
       clickAction: 'rightclick',
     })
@@ -20,7 +20,7 @@ describe('Grid context menu', () => {
   it('click on ... (Actions) in the grid makes context-menu open', () => {
     cy.get('[data-test="drawer-menu-item-content"]').click()
     cy.checkContextMenu({
-      selector: '[data-test="actions-button-it"]',
+      selector: '[data-test="actions-button-sampleworkspace"]',
       contextMenuItems,
       clickAction: 'click',
     })

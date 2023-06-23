@@ -14,7 +14,7 @@ describe('Trash', () => {
       }),
     )
 
-    cy.get('[data-test="menu-item-it-workspace"]').click()
+    cy.get('[data-test="menu-item-sample-workspace"]').click()
     cy.get('[data-test="menu-item-document-library"]').click({ force: true })
     cy.get('[data-test="add-button"]').click()
     cy.get('[data-test="listitem-folder"]')
@@ -25,7 +25,7 @@ describe('Trash', () => {
         cy.contains('Submit').click()
 
         cy.get(`[data-test="table-cell-test"]`)
-          .rightclick()
+          .rightclick({ force: true })
           .then(() => {
             cy.get('[data-test="content-context-menu-delete"]').click()
             cy.get('[data-test="button-delete-confirm"]').click()
@@ -74,12 +74,12 @@ describe('Trash', () => {
     cy.visit(
       pathWithQueryParams({
         path: resolvePathParams({ path: PATHS.content.appPath, params: { browseType: 'explorer' } }),
-        newParams: { repoUrl: Cypress.env('repoUrl'), path: '/IT/Document_Library' },
+        newParams: { repoUrl: Cypress.env('repoUrl'), path: '/SampleWorkspace/Document_Library' },
       }),
     )
 
     cy.get(`[data-test="table-cell-test"]`)
-      .rightclick()
+      .rightclick({ force: true })
       .then(() => {
         cy.get('[data-test="content-context-menu-delete"]').click()
         cy.get('[data-test="delete-permanently"] input[type="checkbox"]').check()

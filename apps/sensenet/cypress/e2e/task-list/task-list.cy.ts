@@ -9,7 +9,7 @@ describe('Task-List', () => {
   })
   it('Task should be created', () => {
     cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]').click()
+    cy.get('[data-test="menu-item-sample-workspace"]').click()
     cy.get('[data-test="add-button"]').click()
     cy.get('[data-test="listitem-task-list"]')
       .click()
@@ -20,7 +20,7 @@ describe('Task-List', () => {
         cy.get(`[data-test="table-cell-${taskName.replace(/\s+/g, '-').toLowerCase()}"]`).should('have.text', taskName)
         cy.get('[data-test="snackbar-close"]').click()
 
-        cy.get(`[data-test="table-cell-${taskName.replace(/\s+/g, '-').toLowerCase()}"]`).dblclick()
+        cy.get(`[data-test="table-cell-${taskName.replace(/\s+/g, '-').toLowerCase()}"]`).dblclick({ force: true })
 
         cy.checkAddItemList(['Task'])
       })
@@ -30,8 +30,8 @@ describe('Task-List', () => {
   it('Task should be edited', () => {
     const newTaskName = `${taskName}-edited`
     cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]').click()
-    cy.get(`[data-test="table-cell-${taskName.replace(/\s+/g, '-').toLowerCase()}"]`).rightclick()
+    cy.get('[data-test="menu-item-sample-workspace"]').click()
+    cy.get(`[data-test="table-cell-${taskName.replace(/\s+/g, '-').toLowerCase()}"]`).rightclick({ force: true })
     cy.get('[data-test="content-context-menu-edit"]')
       .click()
       .then(() => {
@@ -49,8 +49,8 @@ describe('Task-List', () => {
   it('Task should be deleted', () => {
     const taskToBeDeleted = `${taskName}-edited`
     cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]').click()
-    cy.get(`[data-test="table-cell-${taskToBeDeleted.replace(/\s+/g, '-').toLowerCase()}"]`).rightclick()
+    cy.get('[data-test="menu-item-sample-workspace"]').click({ force: true })
+    cy.get(`[data-test="table-cell-${taskToBeDeleted.replace(/\s+/g, '-').toLowerCase()}"]`).rightclick({ force: true })
     cy.get('[data-test="content-context-menu-delete"]')
       .click()
       .then(() => {

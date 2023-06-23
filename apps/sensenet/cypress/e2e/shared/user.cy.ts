@@ -6,8 +6,6 @@ describe('User handling', () => {
   it('should login with test user', () => {
     cy.visit('/')
     cy.get('input[name="repository"]').type(`${Cypress.env('repoUrl')}{enter}`)
-
-    cy.get('[data-test="demo-button"]').click()
   })
 
   it('should logout', () => {

@@ -17,7 +17,9 @@ describe('AddNew Menu', () => {
       'Task list',
       'Custom List',
       'Workspace',
-      'Demo Workspace',
+      'Upload',
+      'File',
+      'Image',
     ]
 
     cy.get('[data-test="drawer-menu-item-content"]').click()

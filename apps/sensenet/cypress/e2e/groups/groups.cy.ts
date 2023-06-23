@@ -1,11 +1,16 @@
+import { PATHS, resolvePathParams } from '../../../src/application-paths'
 import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
 const contextMenuItems = ['browse', 'copyto', 'edit', 'moveto', 'delete']
 describe('Groups', () => {
   before(() => {
     cy.login()
-    cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
-    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
+    cy.visit(
+      pathWithQueryParams({
+        path: resolvePathParams({ path: PATHS.usersAndGroups.appPath, params: { browseType: 'explorer' } }),
+        newParams: { repoUrl: Cypress.env('repoUrl'), path: '/Public' },
+      }),
+    )
     cy.get('[data-test="groups"]').click()
   })
   it('Groups list should have the appropriate data', () => {
@@ -79,7 +84,13 @@ describe('Groups', () => {
   it('ensures that we can add a new member to a group', () => {
     const expectedSuggestions = ['Developers', 'Developer Dog']
 
-    cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
+    cy.visit(
+      pathWithQueryParams({
+        path: resolvePathParams({ path: PATHS.usersAndGroups.appPath, params: { browseType: 'explorer' } }),
+        newParams: { repoUrl: Cypress.env('repoUrl'), path: '/Public' },
+      }),
+    )
+
     cy.get('[data-test="groups"]').click()
 
     cy.get('[data-test="administrators-members"]').click()

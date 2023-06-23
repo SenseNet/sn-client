@@ -10,7 +10,7 @@ describe('Permission editor main page links', () => {
     cy.login()
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
     cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]').rightclick()
+    cy.get('[data-test="menu-item-sample-workspace"]').rightclick()
     cy.get('[data-test="content-context-menu-setpermissions"]').click()
   })
 

@@ -9,7 +9,7 @@ describe('Upload', () => {
   it('uploading a file/content should works properly', () => {
     const fileToBeUploaded = 'data.json'
     cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]').click()
+    cy.get('[data-test="menu-item-sample-workspace"]').click()
     cy.get('[data-test="menu-item-document-library"]').click({ force: true })
     cy.get('[data-test="add-button"]')
       .click()
