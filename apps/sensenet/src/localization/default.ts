@@ -123,14 +123,15 @@ const values = {
       SavedQueries: 'Saved Queries',
       Setup: 'Setup',
       Trash: 'Trash',
-      UsersAndGroups: 'Users and groups',
+      UsersAndGroups: 'Users and Groups',
       CustomContent: 'Content Explorer',
       Settings: 'Settings',
       Configuration: 'Configuration',
       Stats: 'Stats',
-      ApiAndSecurity: 'Api and security',
+      ApiAndSecurity: 'Api and Security',
       Webhooks: 'Webhooks',
       AdminUiCustomization: 'Admin-ui customization',
+      ContentTemplates: 'Content Templates',
     },
     descriptions: {
       Content: 'Explore and manage your content in the repository',
@@ -142,6 +143,7 @@ const values = {
       UsersAndGroups: 'Manage users and groups, roles and identities',
       CustomContent: 'Explore and manage your content from the configured path',
       Settings: 'Configure the sensenet system',
+      ContentTemplates: 'Manage content templates',
     },
     personalSettingsTitle: 'Edit personal settings',
     personalSettingsSecondaryText: 'Customize the application behavior',
@@ -193,6 +195,9 @@ const values = {
     sizeQuotaUnit: 'MB',
     capacity: 'Trashbag capacity',
     capacityUnit: 'content',
+  },
+  columnSettingsDialog: {
+    title: 'Column settings',
   },
   editPropertiesDialog: {
     dialogTitle: 'Edit {0}',
@@ -290,6 +295,11 @@ const values = {
     reset: 'Reset',
     saveSuccessNotification: `The changes of '{0}' has been saved`,
     saveFailedNotification: `Failed to save changes of content '{0}'`,
+    presets: 'Presets',
+    hints: {
+      newContentTypeEditHint: `Please edit the <b>name</b>, <b>parent type</b> and <b>handler</b> attributes before saving!`,
+      contentTypeTutorialrefenceHint: `Further <a href="https://docs.sensenet.com/tutorials/content-types" target="_blank" rel="noopener noreferrer"> informations </a>`,
+    },
   },
   topMenu: {
     personalSettings: 'Personal settings',
@@ -476,6 +486,10 @@ const values = {
     installedPackagesInfo:
       'These packages are mainly the building bricks of sensenet components. There are tool-like packages that are not part of the component structure, they were made to run multiple times, for example delete or index content.',
     notAvailable: 'Not available',
+    copiedToClipboard: 'successfully copied to Clipboard',
+    noExpiration: 'No expiration date',
+    expiratinDate: 'Expiration date',
+    unavailableRegenSecret: 'Currently regenerate secret is unavailable',
   },
   customActions: {
     executeCustomActionDialog: {
@@ -520,6 +534,7 @@ const values = {
     addReference: 'Add reference',
     ok: 'Ok',
     cancel: 'Cancel',
+    close: 'Close',
     upload: 'Upload',
     submit: 'Submit',
     inputPlaceHolder: 'Start typing to add another type',
@@ -549,7 +564,7 @@ const values = {
     setOnThis: 'Set on this content',
     errorGetPermissionSetting: 'Something went wrong during getting permission settings',
     permissions: 'Permissions',
-    grantFullAccess: 'Grant full access',
+    fullAccess: 'full access',
     localOnly: 'Local only',
     newEntry: 'New permission entry',
     add: 'Add',
@@ -658,6 +673,7 @@ const values = {
     usersAndGroup: 'Users and Groups',
     savedQueries: 'Saved Queries',
     trash: 'Trash',
+    '/Root/ContentTemplates': 'Content Templates',
   },
 }
 

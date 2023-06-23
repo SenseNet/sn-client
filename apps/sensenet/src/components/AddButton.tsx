@@ -121,9 +121,11 @@ export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
           idOrPath: currentPath,
         })
 
+        //sort the allowed types by display name
         const filteredTypes = allowedChildTypesFromRepo.d.results
           .filter((type) => repo.schemas.getSchemaByName(type.Name).ContentTypeName === type.Name)
           .map((type) => repo.schemas.getSchemaByName(type.Name))
+          .sort((a, b) => a.DisplayName.localeCompare(b.DisplayName))
 
         const tempHasUpload = filteredTypes.some((type) => personalSettings.uploadHandlers.includes(type.HandlerName))
 

@@ -1,6 +1,11 @@
 import { CheckboxProps } from '@material-ui/core/Checkbox'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 
+export interface ColumnSetting<T> {
+  field: keyof T
+  title?: string
+}
+
 export interface ContentListBaseProps<T extends GenericContent = GenericContent> {
   /**
    * Array of content items
@@ -37,7 +42,7 @@ export interface ContentListBaseProps<T extends GenericContent = GenericContent>
   /**
    * Array of fields that should be displayed
    */
-  fieldsToDisplay: Array<Extract<keyof T, string>>
+  fieldsToDisplay: Array<ColumnSetting<GenericContent>>
   /**
    * Defines wheter a checkbox per row should be displayed or not
    */

@@ -1,22 +1,15 @@
-import {
-  CircularProgress,
-  createStyles,
-  IconButton,
-  InputLabel,
-  makeStyles,
-  Paper,
-  TextField,
-  Theme,
-} from '@material-ui/core'
-import { Refresh } from '@material-ui/icons'
-import { useRepository } from '@sensenet/hooks-react'
-import React, { useEffect, useState } from 'react'
-import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization } from '../../hooks'
-import { ApiKey, ApiKeyType, Secret } from './api-key'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import Box from '@material-ui/core/Box/Box'
+import { copyToClipboard } from '@sensenet/client-utils'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
+import React, { useState } from 'react'
+import { globals } from '../../globalStyles'
+import { useGetClients, useLocalization } from '../../hooks'
+import { ApiKey, clientTypes, Secret } from './api-key'
 import { Tab } from './api-keys-tab'
 import { TabPanel } from './api-keys-tab-panel'
 import { Tabs } from './api-keys-tabs'
+import { ApiKeyAccordion } from './apikey-accordion'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -32,61 +25,136 @@ const useStyles = makeStyles((theme: Theme) => {
       alignItems: 'flex-end',
       marginBottom: '0.5rem',
     },
+    label: {
+      // fontSize: '0.7rem',
+    },
+    ApiKeysContainer: {
+      display: 'flex',
+      columnGap: '15px',
+      flexWrap: 'wrap',
+      padding: '1rem 0px',
+      rowGap: '15px',
+    },
+    clientCard: {
+      maxWidth: '50ch',
+      cursor: 'pointer',
+      boxShadow: globals.common.elavationShadow,
+      borderRadius: '5px',
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
     input: {
       paddingTop: '10px',
       paddingBottom: '10px',
       backgroundColor: theme.palette.common.white,
       color: theme.palette.common.black,
     },
-    refreshIcon: { marginLeft: '0.5rem', padding: 0 },
+    refreshIcon: {
+      padding: '5px',
+    },
+    secondaryInfo: {
+      fontSize: '0.7rem',
+      color: `hsl(174deg 3% ${theme.palette.type === 'light' ? '41' : '74'}%)`,
+    },
+    appClientID: {
+      alignItems: 'flex-end',
+      columnGap: '5px',
+      display: 'flex',
+    },
   })
 })
 
 export const ApiSecretsWidget: React.FunctionComponent = () => {
   const classes = useStyles()
-  const globalClasses = useGlobalStyles()
   const repo = useRepository()
-  const localization = useLocalization().settings
+  const { spas, clients, unAuthorizedRequest, setClients, setSpas } = useGetClients()
+  const { settings: settingLocalization, errorBoundary } = useLocalization()
+  const logger = useLogger('ApiSecretsWidgets')
   const [activeTabIndex, setActiveTabIndex] = useState(0)
   const [isRegenerating, setIsRegenerating] = useState(false)
-  const [externalClients, setExternalClients] = useState<ApiKey[]>([])
-  const [externalSpas, setExternalSpas] = useState<ApiKey[]>([])
 
-  const regenerateApiKey = async (client: ApiKey) => {
+  const handleCopyClientClick = (event: React.MouseEvent<HTMLElement, MouseEvent>, value: string, title: string) => {
+    event.stopPropagation()
+    const copy = copyToClipboard(value)
+
+    if (!copy) {
+      return logger.error({ message: errorBoundary.title })
+    }
+
+    return logger.information({ message: `${title} ${settingLocalization.copiedToClipboard}` })
+  }
+
+  const regenerateApiKey = async (client: ApiKey, secretIndex: number) => {
     setIsRegenerating(true)
-    const response = await repo.executeAction<any, Secret>({
-      idOrPath: '/Root',
-      name: 'RegenerateSecretForRepository',
-      method: 'POST',
-      body: {
-        clientId: client.clientId,
-        secretId: client.secrets[0]?.id,
-      },
+
+    const response = await repo
+      .executeAction<any, Secret>({
+        idOrPath: '/Root',
+        name: 'RegenerateSecretForRepository',
+        method: 'POST',
+        body: {
+          clientId: client.clientId,
+          secretId: client.secrets[secretIndex]?.id,
+        },
+      })
+      .catch(() => {
+        setIsRegenerating(false)
+        logger.error({ message: settingLocalization.unavailableRegenSecret })
+        return false
+      })
+
+    if (!response) {
+      return false
+    }
+
+    if (clientTypes.includes(client.type as any)) {
+      setClients((prevState) => {
+        const clientIndex = prevState.findIndex((prevclient) => prevclient.clientId === client.clientId)
+
+        const updatedClient = {
+          ...prevState[clientIndex],
+          secrets: [...prevState[clientIndex].secrets],
+        }
+
+        updatedClient.secrets[secretIndex] = response as Secret
+
+        const updatedClients = [...prevState]
+        updatedClients[clientIndex] = updatedClient
+
+        return updatedClients
+      })
+
+      setIsRegenerating(false)
+
+      return
+    }
+
+    setSpas((prevState) => {
+      const clientIndex = prevState.findIndex((prevclient) => prevclient.clientId === client.clientId)
+
+      const updatedClient = {
+        ...prevState[clientIndex],
+        secrets: [...prevState[clientIndex].secrets],
+      }
+
+      updatedClient.secrets[secretIndex] = response as Secret
+
+      const updatedClients = [...prevState]
+      updatedClients[clientIndex] = updatedClient
+
+      return updatedClients
     })
 
-    setExternalSpas(
-      externalClients.map((externalClient) => {
-        if (externalClient.secrets[0].id === response.id) {
-          externalClient.secrets[0] = response
-        }
-        return client
-      }),
-    )
     setIsRegenerating(false)
   }
 
-  useEffect(() => {
-    ;(async () => {
-      const response = await repo.executeAction<any, { clients: ApiKey[] }>({
-        idOrPath: '/Root',
-        name: 'GetClientsForRepository',
-        method: 'GET',
-      })
-
-      setExternalClients(response.clients.filter((client: any) => client.type === ApiKeyType.ExternalClient))
-      setExternalSpas(response.clients.filter((client: any) => client.type === ApiKeyType.ExternalSpa))
-    })()
-  }, [repo])
+  const Accordionlocalization = {
+    clientIdLocalization: settingLocalization.clientId,
+    noExpirationLocalization: settingLocalization.noExpiration,
+    expiratinDateLocalization: settingLocalization.expiratinDate,
+    regenerateLocalization: settingLocalization.regenerate,
+    clientSecretLocalization: settingLocalization.clientSecret,
+  }
 
   function a11yPropsForTab(index: number) {
     return {
@@ -95,81 +163,55 @@ export const ApiSecretsWidget: React.FunctionComponent = () => {
     }
   }
 
+  if (unAuthorizedRequest) {
+    return null
+  }
+
   return (
     <>
-      <Tabs value={activeTabIndex} aria-label={localization.apiKeys} onChange={(_, value) => setActiveTabIndex(value)}>
-        <Tab label={localization.yourAppId} {...a11yPropsForTab(0)} />
-        <Tab label={localization.personalAccessToken} {...a11yPropsForTab(1)} />
+      <Tabs
+        value={activeTabIndex}
+        aria-label={settingLocalization.apiKeys}
+        onChange={(_, value) => setActiveTabIndex(value)}>
+        <Tab label={settingLocalization.yourAppId} {...a11yPropsForTab(0)} />
+        <Tab data-test="clients-tab" label={settingLocalization.personalAccessToken} {...a11yPropsForTab(1)} />
       </Tabs>
 
       <TabPanel value={activeTabIndex} index={0}>
-        <p className={classes.description} dangerouslySetInnerHTML={{ __html: localization.spaDescription }} />
-        {externalSpas.map((spa) => (
-          <Paper key={spa.clientId} className={globalClasses.cardRoot}>
-            <InputLabel shrink htmlFor={spa.clientId} className={classes.inputLabel}>
-              {localization.clientId}
-            </InputLabel>
-            <TextField
-              name={spa.clientId}
-              variant="outlined"
-              fullWidth
-              value={spa.clientId}
-              inputProps={{
-                readOnly: true,
-                className: classes.input,
-              }}
-            />
-          </Paper>
-        ))}
+        <p className={classes.description} dangerouslySetInnerHTML={{ __html: settingLocalization.spaDescription }} />
+        <Box display="flex" className={classes.ApiKeysContainer} data-test="spa-keys">
+          {spas?.map((client: ApiKey) => {
+            return (
+              <ApiKeyAccordion
+                handleCopyClientClick={handleCopyClientClick}
+                client={client}
+                key={client.clientId}
+                regenerateApiKey={regenerateApiKey}
+                isRegenerating={isRegenerating}
+                {...Accordionlocalization}
+              />
+            )
+          })}
+        </Box>
       </TabPanel>
 
       <TabPanel value={activeTabIndex} index={1}>
-        <p className={classes.description} dangerouslySetInnerHTML={{ __html: localization.clientDescription }} />
-        {externalClients.map((client) => (
-          <Paper key={client.clientId} className={globalClasses.cardRoot}>
-            <div style={{ marginBottom: '1rem' }}>
-              <InputLabel shrink htmlFor={client.clientId} className={classes.inputLabel}>
-                {localization.clientId}
-              </InputLabel>
-              <TextField
-                name={client.clientId}
-                variant="outlined"
-                fullWidth
-                value={client.clientId}
-                inputProps={{
-                  readOnly: true,
-                  className: classes.input,
-                }}
-              />
-            </div>
-
-            <div>
-              <InputLabel shrink htmlFor="repository" className={classes.inputLabel}>
-                {localization.clientSecret}
-                <IconButton
-                  disabled={isRegenerating}
-                  onClick={() => regenerateApiKey(client)}
-                  className={classes.refreshIcon}>
-                  <Refresh aria-label={localization.regenerate} />
-                </IconButton>
-              </InputLabel>
-              {isRegenerating ? (
-                <CircularProgress color="primary" size={32} />
-              ) : (
-                <TextField
-                  name="repository"
-                  variant="outlined"
-                  fullWidth
-                  value={client.secrets[0].value}
-                  inputProps={{
-                    readOnly: true,
-                    className: classes.input,
-                  }}
-                />
-              )}
-            </div>
-          </Paper>
-        ))}
+        <p
+          className={classes.description}
+          dangerouslySetInnerHTML={{ __html: settingLocalization.clientDescription }}
+        />
+        <Box className={classes.ApiKeysContainer} data-test="client-keys">
+          {clients?.map((client: ApiKey) => (
+            <ApiKeyAccordion
+              handleCopyClientClick={handleCopyClientClick}
+              client={client}
+              key={client.clientId}
+              regenerateApiKey={regenerateApiKey}
+              isRegenerating={isRegenerating}
+              {...Accordionlocalization}
+            />
+          ))}
+        </Box>
       </TabPanel>
     </>
   )

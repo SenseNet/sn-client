@@ -1,7 +1,7 @@
 import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
-const inheritedItems = ['Administrators', 'Developers', 'Editors']
-const setOnThisItems = ['Members', 'Owners', 'Visitors']
+const inheritedItems = ['Developers', 'Editors']
+const setOnThisItems = ['Administrators']
 describe('Permission editor main page lists', () => {
   before(() => {
     cy.login()
@@ -11,10 +11,10 @@ describe('Permission editor main page lists', () => {
 
   it('appears from the context-menu', () => {
     cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]').rightclick()
+    cy.get('[data-test="menu-item-sample-workspace"]').rightclick()
     cy.get('[data-test="content-context-menu-setpermissions"]').click()
     cy.get('[data-test="permission-view-title-first"]').should('have.text', 'Set permissions for ')
-    cy.get('[data-test="permission-view-title-second"]').should('have.text', 'IT Workspace')
+    cy.get('[data-test="permission-view-title-second"]').should('have.text', 'Sample workspace')
   })
 
   it('Inherited from ancestor list has the expected child items', () => {

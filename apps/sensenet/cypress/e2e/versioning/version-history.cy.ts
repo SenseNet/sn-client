@@ -7,7 +7,7 @@ describe('version history', () => {
     cy.visit(
       pathWithQueryParams({
         path: resolvePathParams({ path: PATHS.content.appPath, params: { browseType: 'explorer' } }),
-        newParams: { repoUrl: Cypress.env('repoUrl'), path: '/IT/Document_Library' },
+        newParams: { repoUrl: Cypress.env('repoUrl'), path: '/SampleWorkspace/Document_Library' },
       }),
     )
     cy.get('[data-test="menu-item-memos"]').click({ force: true })
@@ -18,7 +18,7 @@ describe('version history', () => {
     cy.visit(
       pathWithQueryParams({
         path: resolvePathParams({ path: PATHS.content.appPath, params: { browseType: 'explorer' } }),
-        newParams: { repoUrl: Cypress.env('repoUrl'), path: '/IT/Document_Library' },
+        newParams: { repoUrl: Cypress.env('repoUrl'), path: '/SampleWorkspace/Document_Library' },
       }),
     )
     cy.get('[data-test="menu-item-memos"]').rightclick({ force: true })
@@ -70,7 +70,7 @@ describe('version history', () => {
     cy.visit(
       pathWithQueryParams({
         path: resolvePathParams({ path: PATHS.content.appPath, params: { browseType: 'explorer' } }),
-        newParams: { repoUrl: Cypress.env('repoUrl'), path: '/IT/Document_Library' },
+        newParams: { repoUrl: Cypress.env('repoUrl'), path: '/SampleWorkspace/Document_Library' },
       }),
     )
     cy.get('[data-test="menu-item-memos"]').rightclick({ force: true })

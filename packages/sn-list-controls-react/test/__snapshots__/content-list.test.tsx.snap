@@ -86,7 +86,9 @@ exports[`ContentList component Selection and active item changes Event bindings 
         }
         fieldsToDisplay={
           Array [
-            "DisplayName",
+            Object {
+              "field": "DisplayName",
+            },
           ]
         }
         getSelectionControl={[Function]}
@@ -1035,7 +1037,9 @@ exports[`ContentList component Selection and active item changes Event bindings 
         }
         fieldsToDisplay={
           Array [
-            "DisplayName",
+            Object {
+              "field": "DisplayName",
+            },
           ]
         }
         getSelectionControl={[Function]}
@@ -1972,7 +1976,9 @@ exports[`ContentList component Selection and active item changes Event bindings 
         }
         fieldsToDisplay={
           Array [
-            "DisplayName",
+            Object {
+              "field": "DisplayName",
+            },
           ]
         }
         icons={Object {}}
@@ -2924,7 +2930,9 @@ exports[`ContentList component Selection and active item changes Event bindings 
         }
         fieldsToDisplay={
           Array [
-            "DisplayName",
+            Object {
+              "field": "DisplayName",
+            },
           ]
         }
         isSelected={false}
@@ -3875,7 +3883,9 @@ exports[`ContentList component Selection and active item changes Event bindings 
         }
         fieldsToDisplay={
           Array [
-            "DisplayName",
+            Object {
+              "field": "DisplayName",
+            },
           ]
         }
         icons={Object {}}
@@ -4825,7 +4835,9 @@ exports[`ContentList component Selection and active item changes Event bindings 
         }
         fieldsToDisplay={
           Array [
-            "DisplayName",
+            Object {
+              "field": "DisplayName",
+            },
           ]
         }
         icons={Object {}}
@@ -5776,7 +5788,9 @@ exports[`ContentList component Selection and active item changes Event bindings 
         }
         fieldsToDisplay={
           Array [
-            "DisplayName",
+            Object {
+              "field": "DisplayName",
+            },
           ]
         }
         icons={Object {}}
@@ -6727,7 +6741,9 @@ exports[`ContentList component Selection and active item changes Event bindings 
         }
         fieldsToDisplay={
           Array [
-            "DisplayName",
+            Object {
+              "field": "DisplayName",
+            },
           ]
         }
         icons={Object {}}

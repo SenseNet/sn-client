@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/client-utils",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "General sensenet independent client side utilities",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",

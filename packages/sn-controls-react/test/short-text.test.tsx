@@ -24,6 +24,12 @@ describe('Short text field control', () => {
       const wrapper = shallow(<ShortText actionName="browse" settings={defaultSettings} />)
       expect(wrapper.find(Typography).last().text()).toBe(defaultLocalization.shortText.noValue)
     })
+    it('should show [OBJECT] when iccorect value type passed', () => {
+      const value = { url: '' }
+      const wrapper = shallow(<ShortText fieldValue={value as any} actionName="browse" settings={defaultSettings} />)
+      expect(wrapper.find(Typography).first().text()).toBe(defaultSettings.DisplayName)
+      expect(wrapper.find(Typography).last().text()).toBe('[OBJECT]')
+    })
   })
   describe('in edit/new view', () => {
     it('should set all the props', () => {

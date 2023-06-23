@@ -6,21 +6,26 @@ export const PATHS = {
   events: { appPath: '/events/:eventGuid?' },
   savedQueries: { appPath: '/saved-queries/:action?', snPath: '/Root/Content/Queries' },
   trash: { appPath: '/trash/:browseType/:action?', snPath: '/Root/Trash' },
-  usersAndGroups: { appPath: '/users-and-groups/:browseType/:action?', snPath: '/Root/IMS/Public' },
+  usersAndGroups: { appPath: '/users-and-groups/:browseType/:action?', snPath: '/Root/IMS' },
   dashboard: { appPath: '/dashboard' },
   contentTypes: { appPath: '/content-types/:browseType/:action?', snPath: '/Root/System/Schema/ContentTypes' },
   search: { appPath: '/search' },
   content: { appPath: '/content/:browseType/:action?', snPath: '/Root/Content' },
+  contentTemplates: { appPath: '/content-templates/:browseType/:action?', snPath: '/Root/ContentTemplates' },
   custom: { appPath: '/custom/:browseType/:path/:action?' },
   configuration: { appPath: '/settings/configuration/:action?', snPath: '/Root/System/Settings' },
   localization: { appPath: '/settings/localization/:action?', snPath: '/Root/Localization' },
   webhooks: { appPath: '/settings/webhooks/:action?', snPath: '/Root/System/WebHooks' },
   settings: { appPath: '/settings/:submenu?' },
+  apiKeys: { appPath: '/settings/apikeys' },
 } as const
 
 type SettingsItemType = 'stats' | 'apikeys' | 'webhooks' | 'adminui'
 
-type RoutesWithContentBrowser = keyof Pick<typeof PATHS, 'content' | 'usersAndGroups' | 'contentTypes' | 'trash'>
+type RoutesWithContentBrowser = keyof Pick<
+  typeof PATHS,
+  'content' | 'usersAndGroups' | 'contentTypes' | 'trash' | 'contentTemplates'
+>
 
 type RoutesWithActionParam = keyof Pick<typeof PATHS, 'savedQueries' | 'localization' | 'configuration' | 'webhooks'>
 

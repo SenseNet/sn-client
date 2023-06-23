@@ -7,7 +7,7 @@ describe('Task', () => {
     cy.visit(
       pathWithQueryParams({
         path: resolvePathParams({ path: PATHS.content.appPath, params: { browseType: 'explorer' } }),
-        newParams: { repoUrl: Cypress.env('repoUrl'), path: '/IT/Tasks' },
+        newParams: { repoUrl: Cypress.env('repoUrl'), path: '/SampleWorkspace/Tasks' },
       }),
     )
   })

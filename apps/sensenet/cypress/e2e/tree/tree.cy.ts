@@ -9,7 +9,7 @@ describe('Tree', () => {
   })
   it('Tree item should open with the list of its children.', () => {
     cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]')
+    cy.get('[data-test="menu-item-sample-workspace"]')
       .click()
       .then(() => {
         items.forEach(($el) => {
@@ -19,10 +19,10 @@ describe('Tree', () => {
   })
   it('Click on the Tree item when it is open should close it and make its children invisible.', () => {
     cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]')
+    cy.get('[data-test="menu-item-sample-workspace"]')
       .click()
       .then(() => {
-        cy.get('[data-test="menu-item-it-workspace"]')
+        cy.get('[data-test="menu-item-sample-workspace"]')
           .click()
           .then(() => {
             items.forEach(($el) => {
@@ -36,7 +36,7 @@ describe('Tree', () => {
     const contextMenuItems = ['Details', 'Copy to', 'Edit', 'Move to', 'Versions', 'Share', 'Delete', 'Set permissions']
     cy.get('[data-test="drawer-menu-item-content"]').click()
     cy.checkContextMenu({
-      selector: '[data-test="menu-item-it-workspace"]',
+      selector: '[data-test="menu-item-sample-workspace"]',
       contextMenuItems,
       clickAction: 'rightclick',
     })

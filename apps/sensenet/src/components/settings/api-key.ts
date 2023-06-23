@@ -5,10 +5,12 @@ export interface Secret {
   validTill: string
 }
 
-export enum ApiKeyType {
-  ExternalClient = 'ExternalClient',
-  ExternalSpa = 'ExternalSpa',
-}
+export type ClientType = 'ExternalClient' | 'InternalClient'
+
+export type SpaType = 'InternalSpa' | 'ExternalSpa' | 'AdminUi'
+
+export const spaTypes: SpaType[] = ['ExternalSpa', 'InternalSpa', 'AdminUi']
+export const clientTypes: ClientType[] = ['ExternalClient', 'InternalClient']
 
 export interface ApiKey {
   name: string
@@ -16,6 +18,6 @@ export interface ApiKey {
   clientId: string
   userName: string
   authority: string
-  type: ApiKeyType
+  type: SpaType | ClientType
   secrets: Secret[]
 }

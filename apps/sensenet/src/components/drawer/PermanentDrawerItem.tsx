@@ -46,8 +46,8 @@ const useStyles = makeStyles((theme: Theme) => {
     listIconWrapper: {
       '& .secondary-icon': {
         position: 'absolute',
-        marginTop: '-10px',
-        marginLeft: '-10px',
+        marginTop: '-6px',
+        marginLeft: '-4px',
         fontSize: globals.common.secondaryIconSize,
       },
     },

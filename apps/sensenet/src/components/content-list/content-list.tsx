@@ -11,6 +11,7 @@ import {
   useRepository,
 } from '@sensenet/hooks-react'
 import { VirtualCellProps, VirtualDefaultCell, VirtualizedTable } from '@sensenet/list-controls-react'
+import { ColumnSetting } from '@sensenet/list-controls-react/src/ContentList/content-list-base-props'
 import { clsx } from 'clsx'
 import React, {
   CSSProperties,
@@ -65,7 +66,6 @@ const useStyles = makeStyles(() => {
     },
   })
 })
-
 export interface ContentListProps<T extends GenericContent> {
   enableBreadcrumbs?: boolean
   hideHeader?: boolean
@@ -77,11 +77,12 @@ export interface ContentListProps<T extends GenericContent> {
   onActivateItem: (item: T) => void
   style?: CSSProperties
   containerRef?: (r: HTMLDivElement | null) => void
-  fieldsToDisplay?: Array<Extract<keyof T, string>>
+  fieldsToDisplay?: Array<ColumnSetting<GenericContent>>
   schema?: string
   onSelectionChange?: (sel: T[]) => void
   onFocus?: () => void
   containerProps?: DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+  disableColumnSettings?: boolean
 }
 
 export const isReferenceField = (fieldName: string, repo: Repository, schema = 'GenericContent') => {
@@ -91,7 +92,30 @@ export const isReferenceField = (fieldName: string, repo: Repository, schema = '
 }
 
 const rowHeightConst = 57
-const headerHeightConst = 42
+const headerHeightConst = 48
+
+/**
+ * Compare passed minutes with
+ * @param value The base value.
+ * @param timeDifference The minimum elapsed time time in minutes in Miliseconds.( Dafault 5 minutes )
+ * @returns Returns true if the base value is greater than the compared value.
+ */
+
+// a function which expect a Date and it will compare with the current time and if the passed interval is greater than the current time it will return true
+const isExpired = (value: Date, timeDifference = 300000) => {
+  const currentTime = new Date().getTime()
+  const valueTime = value.getTime()
+  return currentTime - valueTime > timeDifference
+}
+
+interface ColumnSettingsContainerType {
+  [key: string]: {
+    columns: Array<ColumnSetting<GenericContent>>
+    lastValidation: Date
+  }
+}
+
+const ColumnSettingsContainer: ColumnSettingsContainerType = {}
 
 export const ContentList = <T extends GenericContent = GenericContent>(props: ContentListProps<T>) => {
   const selectionService = useSelectionService()
@@ -104,7 +128,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
   const repo = useRepository()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
-  const { openDialog } = useDialog()
+  const { openDialog, closeLastDialog } = useDialog()
   const logger = useLogger('ContentList')
   const localization = useLocalization()
   const [selected, setSelected] = useState<T[]>([])
@@ -123,6 +147,74 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
   const [currentDirection, setCurrentDirection] = useState<'asc' | 'desc'>(
     (loadChildrenSettingsOrderBy?.[0][1] as 'asc' | 'desc') || 'asc',
   )
+
+  const [columnSettings, setColumnSettings] = useState<Array<ColumnSetting<GenericContent>>>(
+    personalSettings.content.fields,
+  )
+
+  const fetchUrl = PathHelper.joinPaths(
+    repo.configuration.repositoryUrl,
+    repo.configuration.oDataToken,
+    PathHelper.getContentUrl(props.parentIdOrPath),
+  )
+
+  /* Handle Column Settings */
+  useEffect(() => {
+    const ac = new AbortController()
+
+    const getColumnSettings = async () => {
+      const currentPathSettingCache = ColumnSettingsContainer[props.parentIdOrPath]
+      if (
+        !currentPathSettingCache ||
+        !currentPathSettingCache?.columns?.length ||
+        isExpired(new Date(currentPathSettingCache.lastValidation))
+      ) {
+        const endpoint = 'GetSettings'
+        const queryParameters = { name: 'ColumnSettings' }
+        const search = new URLSearchParams(queryParameters).toString()
+
+        const requestUrl = `${fetchUrl}/${endpoint}?${search}`
+
+        let data: { columns: Array<ColumnSetting<GenericContent>> } | undefined
+
+        try {
+          const response = await repo.fetch(requestUrl, {
+            method: 'GET',
+            credentials: 'include',
+            signal: ac.signal,
+          })
+
+          data = await response.json()
+          // Continue processing data...
+        } catch (error) {
+          /*empty*/
+        }
+
+        if (!data?.columns) {
+          return
+        }
+
+        ColumnSettingsContainer[props.parentIdOrPath] = { columns: data.columns, lastValidation: new Date() }
+      }
+
+      /* Add Actions if field Settings Does not contain it. */
+      if (!ColumnSettingsContainer[props.parentIdOrPath]?.columns?.find((f) => f.field === 'Actions')) {
+        ColumnSettingsContainer[props.parentIdOrPath].columns.push({ field: 'Actions', title: 'Actions' })
+      }
+
+      setColumnSettings(ColumnSettingsContainer[props.parentIdOrPath].columns)
+    }
+
+    if (!props.fieldsToDisplay) {
+      getColumnSettings()
+
+      return () => {
+        ac.abort()
+      }
+    }
+
+    setColumnSettings(props.fieldsToDisplay)
+  }, [props.fieldsToDisplay, props.parentIdOrPath, repo, fetchUrl])
 
   useEffect(() => {
     setSelected([])
@@ -144,29 +236,30 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
   }, [selected])
 
   useEffect(() => {
-    const fields = props.fieldsToDisplay || personalSettings.content.fields
+    const fields = columnSettings || personalSettings.content.fields
+
     loadSettings.setLoadChildrenSettings({
       ...loadSettings.loadChildrenSettings,
       expand: [
         'CheckedOutTo',
-        ...(fields as string[]).reduce<any[]>((referenceFields, fieldName) => {
-          if (fieldName.includes('/')) {
-            const splittedFieldName = fieldName.split('/')
+        ...fields.reduce<Array<keyof GenericContent>>((referenceFields, fieldName) => {
+          if (fieldName.field.includes('/')) {
+            const splittedFieldName = fieldName.field.split('/')
             if (splittedFieldName.length === 2 && splittedFieldName[1] === '') {
               if (isReferenceField(splittedFieldName[0], repo, props.schema)) {
-                referenceFields.push(splittedFieldName[0])
+                referenceFields.push(splittedFieldName[0] as keyof GenericContent)
               }
             } else if (
               repo.schemas.getFieldTypeByName(splittedFieldName[splittedFieldName.length - 1]) ===
               'ReferenceFieldSetting'
             ) {
-              !referenceFields.includes(fieldName) && referenceFields.push(fieldName)
+              !referenceFields.includes(fieldName.field) && referenceFields.push(fieldName.field)
             } else {
-              !referenceFields.includes(PathHelper.getParentPath(fieldName)) &&
-                referenceFields.push(PathHelper.getParentPath(fieldName))
+              !referenceFields.includes(PathHelper.getParentPath(fieldName.field) as keyof GenericContent) &&
+                referenceFields.push(PathHelper.getParentPath(fieldName.field) as keyof GenericContent)
             }
-          } else if (repo.schemas.getFieldTypeByName(fieldName) === 'ReferenceFieldSetting') {
-            referenceFields.push(fieldName)
+          } else if (repo.schemas.getFieldTypeByName(fieldName.field) === 'ReferenceFieldSetting') {
+            referenceFields.push(fieldName.field)
           }
           return referenceFields
         }, []),
@@ -174,7 +267,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
       orderby: [[currentOrder as any, currentDirection as any]],
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentDirection, currentOrder, personalSettings.content.fields, props.fieldsToDisplay, repo])
+  }, [currentDirection, currentOrder, personalSettings.content.fields, props.fieldsToDisplay, repo, columnSettings])
 
   useEffect(() => {
     setSelected([])
@@ -517,6 +610,42 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
     })
   }
 
+  const setCostumColumnSettings = async (newSettings: { columns: Array<ColumnSetting<GenericContent>> }) => {
+    ColumnSettingsContainer[props.parentIdOrPath] = { columns: newSettings.columns, lastValidation: new Date() }
+
+    const endpoint = 'WriteSettings'
+
+    const requestUrl = `${fetchUrl}/${endpoint}`
+
+    const data = {
+      name: 'ColumnSettings',
+      settingsData: newSettings,
+    }
+
+    try {
+      await repo.fetch(requestUrl, {
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify(data),
+      })
+    } catch (error) {
+      console.error(error)
+    }
+    setColumnSettings(newSettings.columns)
+    closeLastDialog()
+  }
+
+  const columnSettingsDialog = () => {
+    openDialog({
+      name: 'column-settings',
+      props: {
+        columnSettings: ColumnSettingsContainer[props.parentIdOrPath]?.columns,
+        setColumnSettings: setCostumColumnSettings,
+      },
+      dialogProps: { maxWidth: 'sm', classes: { container: globalClasses.centeredRight } },
+    })
+  }
+
   const menuPropsObj = {
     disablePortal: true,
     anchorReference: 'anchorPosition' as const,
@@ -552,14 +681,16 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
           ref={props.containerRef}
           onKeyDown={handleKeyDown}>
           <VirtualizedTable
+            disableColumnSettings={props.disableColumnSettings}
+            handleColumnSettingsClick={columnSettingsDialog}
             active={activeContent}
             checkboxProps={{ color: 'primary' }}
             cellRenderer={fieldComponentFunc}
             referenceCellRenderer={fieldReferenceFunc}
             displayRowCheckbox={!props.disableSelection}
             fieldsToDisplay={
-              (props.fieldsToDisplay?.map((field) => {
-                const splittedField = field.split('/')
+              (columnSettings?.map((field) => {
+                const splittedField = field?.field?.split('/')
                 if (splittedField.length === 2 && splittedField[1] === '') {
                   return splittedField[0]
                 } else {

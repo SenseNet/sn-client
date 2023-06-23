@@ -2,6 +2,7 @@ import { Tooltip } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined'
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
+import { copyToClipboard } from '@sensenet/client-utils'
 import React, { useState } from 'react'
 import { useLocalization } from '../hooks'
 
@@ -14,7 +15,7 @@ const CopyPath = ({ copyText }: Props) => {
 
   const copyTextToClipboard = async (text: string) => {
     if ('clipboard' in navigator) {
-      return await navigator.clipboard.writeText(text)
+      return copyToClipboard(text)
     }
 
     return document.execCommand('copy', true, text)

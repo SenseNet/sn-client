@@ -45,6 +45,13 @@ describe('Drawer items navigation', () => {
       expect(loc.pathname).to.eq('/content-types/explorer/')
     })
   })
+  it('clicking on the Content Templetes icon on the drawer should navigate to the Content Types page', () => {
+    cy.get('[data-test="drawer-menu-item-content-templates"]').as('contentTypesIcon')
+    cy.get('@contentTypesIcon').click()
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq('/content-templates/explorer/')
+    })
+  })
 
   it('clicking on the Settings icon on the drawer should navigate to the Settings page', () => {
     cy.get('[data-test="drawer-menu-item-settings"]').as('settingsIcon')

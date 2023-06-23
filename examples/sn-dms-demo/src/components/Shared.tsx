@@ -76,7 +76,7 @@ class Shared extends Component<ReturnType<typeof mapStateToProps> & typeof mapDi
             active={this.props.active}
             icons={icons}
             items={this.props.sharedItems}
-            fieldsToDisplay={['DisplayName', 'ModifiedBy', 'ModificationDate']}
+            fieldsToDisplay={[{ field: 'DisplayName' }, { field: 'ModifiedBy' }, { field: 'ModificationDate' }]}
             onRequestActiveItemChange={this.props.setActive}
             displayRowCheckbox={false}
             checkboxProps={{

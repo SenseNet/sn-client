@@ -2,7 +2,9 @@
 /// <reference types="cypress-xpath/src" />
 
 declare namespace Cypress {
-  type UserTypes = 'developer' | 'admin'
+  type UserTypes = 'admin' | 'superAdmin'
+
+  type PermissionValues = 'allow' | 'deny' | 'undefined'
 
   interface Chainable {
     /**
@@ -21,6 +23,10 @@ declare namespace Cypress {
     restoreLocalStorage(): void
 
     checkReadPermissionGroup(enabled?: boolean): void
+    /**
+     * Set the permission for the selected group
+     */
+    setGroupPermission(groupPermisisonName: string, permission: PermissionValues): void
 
     /**
      * Check the items of the add button dropdown list by name

@@ -1,5 +1,6 @@
 import People from '@material-ui/icons/People'
 import Person from '@material-ui/icons/Person'
+import { GenericContent } from '@sensenet/default-content-types'
 import React, { FunctionComponent } from 'react'
 import { PATHS } from '../application-paths'
 import { useGridSwitcher, useLocalization } from '../hooks'
@@ -12,7 +13,13 @@ const gridSwitcherConfig = [
     displayName: 'Users',
     name: 'users',
     schema: 'User',
-    fieldsToDisplay: ['DisplayName', 'Email', 'AllRoles', 'Enabled', 'Actions'],
+    fieldsToDisplay: [
+      { field: 'DisplayName' as keyof GenericContent },
+      { field: 'Email' as keyof GenericContent },
+      { field: 'AllRoles' as keyof GenericContent },
+      { field: 'Enabled' as keyof GenericContent },
+      { field: 'Actions' as keyof GenericContent },
+    ],
     loadSettings: { filter: "isOf('User')", expand: ['DirectRoles', 'AllRoles', 'CheckedOutTo'] as any },
   },
   {
@@ -20,7 +27,12 @@ const gridSwitcherConfig = [
     displayName: 'Groups',
     name: 'groups',
     schema: 'Group',
-    fieldsToDisplay: ['DisplayName', 'Description', 'Members', 'Actions'],
+    fieldsToDisplay: [
+      { field: 'DisplayName' as keyof GenericContent },
+      { field: 'Description' as keyof GenericContent },
+      { field: 'Members' as keyof GenericContent },
+      { field: 'Actions' as keyof GenericContent },
+    ],
     loadSettings: { filter: "isOf('Group')" },
   },
 ]

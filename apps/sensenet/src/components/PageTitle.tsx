@@ -1,8 +1,8 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import React from 'react'
 
-interface IPageTitleProps {
-  title: string
+interface IPageTitleProps<T = string> {
+  title: T
 }
 
 const useStyles = makeStyles((theme: Theme) => {

@@ -12,7 +12,11 @@ import { SnMonacoEditor, SnMonacoEditorProps } from './sn-monaco-editor'
 export const getMonacoModelUri = async (content: GenericContent, repo: Repository, action?: ActionModel) => {
   const { monaco } = await import('react-monaco-editor')
 
-  if (repo.schemas.isContentFromType<Settings>(content, 'Settings') || content.Type === 'PersonalSettings') {
+  if (
+    repo.schemas.isContentFromType<Settings>(content, 'Settings') ||
+    content.Type === 'PersonalSettings' ||
+    content.Type === 'ColumnSettings'
+  ) {
     return monaco.Uri.parse(`sensenet://${content.Type}/${content.Name}`)
   }
   if (repo.schemas.isContentFromType<SnFile>(content, 'File')) {
@@ -33,6 +37,7 @@ export type TextEditorProps = Pick<SnMonacoEditorProps, 'additionalButtons' | 'h
   loadContent?: (content: SnFile) => Promise<string>
   saveContent?: (content: SnFile, value: string) => Promise<void>
   showBreadCrumb: boolean
+  setContent?: (value: any) => void
 }
 
 export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
@@ -145,6 +150,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
     <SnMonacoEditor
       language={language}
       textValue={textValue}
+      preset={props.content.Path}
       setTextValue={setTextValue}
       savedTextValue={savedTextValue}
       hasChanges={hasChanges}

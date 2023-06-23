@@ -9,6 +9,7 @@ import {
   LoadSettingsContextProvider,
   useRepository,
 } from '@sensenet/hooks-react'
+import { ColumnSetting } from '@sensenet/list-controls-react/src/ContentList/content-list-base-props'
 import { clsx } from 'clsx'
 import React, { useCallback, useContext, useState } from 'react'
 import { useHistory } from 'react-router'
@@ -49,6 +50,7 @@ const useStyles = makeStyles((theme: Theme) => {
       width: '100%',
       position: 'relative',
       overflow: 'hidden',
+      paddingTop: '8px',
     },
   })
 })
@@ -57,13 +59,15 @@ export type ExploreProps = {
   currentPath: string
   rootPath: string
   onNavigate: (content: GenericContent) => void
-  fieldsToDisplay?: Array<keyof GenericContent>
+  fieldsToDisplay?: Array<ColumnSetting<GenericContent>>
   schema?: string
   loadTreeSettings?: ODataParams<GenericContent>
   loadChildrenSettings?: ODataParams<GenericContent>
   renderBeforeGrid?: () => JSX.Element
   hasTree?: boolean
   alwaysRefreshChildren?: boolean
+  showPageTitle?: boolean
+  disableColumnSettings?: boolean
 }
 
 export function Explore({
@@ -77,6 +81,7 @@ export function Explore({
   renderBeforeGrid,
   hasTree = true,
   alwaysRefreshChildren,
+  disableColumnSettings,
 }: ExploreProps) {
   const selectionService = useSelectionService()
   const classes = useStyles()
@@ -165,6 +170,7 @@ export function Explore({
       <>
         {renderBeforeGrid?.()}
         <ContentList
+          disableColumnSettings={disableColumnSettings}
           style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
           enableBreadcrumbs={false}
           fieldsToDisplay={fieldsToDisplay}

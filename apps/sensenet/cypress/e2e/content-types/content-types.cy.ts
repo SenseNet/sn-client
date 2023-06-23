@@ -1,3 +1,4 @@
+import { defaultContentType, defaultFieldSettings } from '../../../src/components/edit/default-content-type'
 import { pathWithQueryParams } from '../../../src/services/query-string-builder'
 
 const ctdExample = `<ContentType name="MyType" parentType="GenericContent" handler="SenseNet.ContentRepository.GenericContent" xmlns="http://schemas.sensenet.com/SenseNet/ContentRepository/ContentTypeDefinition">
@@ -29,12 +30,15 @@ describe('Content types', () => {
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
       .get('[data-test="drawer-menu-item-content-types"]')
       .click()
+
+    cy.viewport(1340, 890)
   })
 
   context('create & delete', () => {
     it('should create a new content type', (done) => {
       cy.get('[data-test="add-button"]').should('not.be.disabled').click()
-      cy.get('[data-test="listitem-content-type"]')
+      cy.get('[data-test="list-items"]')
+        .eq(0)
         .click()
         .then(() => {
           cy.get('.monaco-editor textarea')
@@ -104,6 +108,42 @@ describe('Content types', () => {
       cy.get('.monaco-editor').should('exist')
 
       cy.get('[data-test="monaco-editor-cancel"]').click()
+    })
+  })
+
+  context('presets', () => {
+    before(() => {
+      cy.login()
+      cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
+        .get('[data-test="drawer-menu-item-content-types"]')
+        .click()
+
+      cy.viewport(1340, 890)
+    })
+    it('it should insert presets', () => {
+      cy.get('[data-test="add-button"]').should('not.be.disabled').click()
+      cy.get('[data-test="list-items"]')
+        .eq(0)
+        .click()
+        .then(() => {
+          defaultFieldSettings.forEach((field) => {
+            cy.get(`[data-test="preset-button-${field.name}"]`)
+              .should('exist')
+              .click()
+              .then(() => {
+                cy.get('.monaco-editor .view-lines')
+                  .then((editor) => {
+                    const content = editor.text().replace(/[\s]+/g, '')
+                    //field.value.replace "\n" to '' and every whitespace to ''
+                    const fieldvalue = field.value.replace(/[\n\s]+/g, '')
+                    expect(content).to.contain(fieldvalue)
+                  })
+                  .then(() => {
+                    cy.get('.monaco-editor textarea').click({ force: true }).focused().type('{ctrl}z')
+                  })
+              })
+          })
+        })
     })
   })
 })

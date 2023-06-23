@@ -41,10 +41,23 @@ Cypress.Commands.add('login', (userType = 'admin') => {
     clientId: user.clientId,
     clientSecret: Cypress.env(`secret_${userType}`) || user.clientSecret,
     identityServerUrl: Cypress.env('identityServer'),
-    appId: '11V28Add7IaP1iFw',
+    appId: 'Y4ruK4aoWgO3Y6Jz',
     userId: user.id,
     fetchMethod: (url, options) => cy.request({ url, ...options }),
   })
+})
+
+// setGroup Permission to given permission
+Cypress.Commands.add('setGroupPermission', (groupPermisisonName, permission) => {
+  cy.get(`[data-test="permission-group-${groupPermisisonName}"] [data-test="permission-switcher"]`).as(
+    'GroupPermissionSwitcher',
+  )
+
+  cy.get('@GroupPermissionSwitcher').should('be.visible')
+
+  cy.get('@GroupPermissionSwitcher').find(`[data-test="${permission}"]`).click()
+
+  cy.get(`[data-test="${groupPermisisonName}-group-permissions"] input[value=${permission}]`).should('be.checked')
 })
 
 //All permissions should be enabled/disabled on Read tab

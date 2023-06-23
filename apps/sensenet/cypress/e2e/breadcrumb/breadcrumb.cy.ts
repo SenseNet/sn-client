@@ -7,38 +7,37 @@ describe('breadcrumb', () => {
     cy.visit(
       pathWithQueryParams({
         path: resolvePathParams({ path: PATHS.content.appPath, params: { browseType: 'explorer' } }),
-        newParams: { repoUrl: Cypress.env('repoUrl'), path: '/IT/Document_Library' },
+        newParams: { repoUrl: Cypress.env('repoUrl'), path: '' },
       }),
     )
   })
 
   it('should contain the expected items', () => {
-    const expectedItems = ['Content', 'IT Workspace', 'Document library']
-
-    cy.get('[data-test^="breadcrumb-item-"]').should('have.length', expectedItems.length)
-
-    cy.get('[data-test^="breadcrumb-item-"]').each(($el, index) => {
-      expect(expectedItems[index]).to.equal($el.text())
-    })
+    cy.get('[data-test^="breadcrumb-item-"]').should('have.length', 1)
   })
 
   it('should navigate in the target folder on click', () => {
-    const documentLibrarySelector = '[data-test="breadcrumb-item-document-library"]'
+    cy.get('[data-test="menu-item-sample-workspace"]').click()
+    cy.get("[data-test='breadcrumb-item-sample-workspace']").should('exist')
+    cy.get('[data-test="menu-item-document-library"]').click({ force: true })
+    cy.get('[data-test="breadcrumb-item-document-library"]').as('docLibBreadCrumb').should('exist')
+    cy.get('[data-test="menu-item-memos"]').click({ force: true })
+    cy.get('[data-test="breadcrumb-item-memos"]').should('exist')
 
-    cy.get(documentLibrarySelector).should('exist')
-    cy.get('[data-test="breadcrumb-item-it-workspace"]').click()
-    cy.get('[data-test="breadcrumb-item-it-workspace"]').should('exist')
-    cy.get(documentLibrarySelector).should('not.exist')
+    cy.get('@docLibBreadCrumb').should('not.exist')
 
     cy.location().should((loc) => {
       const query = new URLSearchParams(loc.search)
-      expect(query.get('path')).to.eq('/IT')
+
+      console.log(query.get('path'))
+
+      expect(query.get('path')).to.eq('/SampleWorkspace/Memos')
     })
   })
 
   it('right click on a breadcrumb item should open its action menu', () => {
     cy.get('[data-test^="content-context-menu-"]').should('not.exist')
-    cy.get('[data-test="breadcrumb-item-it-workspace"]').rightclick()
+    cy.get('[data-test="breadcrumb-item-content"]').rightclick()
     cy.get('[data-test^="content-context-menu-"]').should('have.length.of.at.least', 1)
   })
 })
