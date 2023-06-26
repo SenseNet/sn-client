@@ -658,6 +658,8 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
 
   const displayNameInArray = ['DisplayName']
 
+  console.log(currentOrder)
+
   return (
     <div style={{ ...props.style, ...{ height: '100%' } }} {...props.containerProps}>
       {props.enableBreadcrumbs ? (

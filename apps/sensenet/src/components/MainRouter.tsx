@@ -73,8 +73,10 @@ export const MainRouter = () => {
                 { field: 'ModifiedBy' },
               ]}
               loadChildrenSettings={{
-                select: ['DisplayName', 'Description', 'ParentTypeName' as any, 'ModificationDate', 'ModifiedBy'],
-                query: "+TypeIs:'ContentType' .AUTOFILTERS:OFF",
+                select: ['DisplayName', 'Name', 'ParentTypeName' as any, 'ModificationDate', 'ModifiedBy'],
+                query: "+TypeIs:'ContentType' .SORT:DisplayName .AUTOFILTERS:OFF",
+                inlinecount: 'allpages',
+                top: 1000,
               }}
               hasTree={false}
               alwaysRefreshChildren={true}
