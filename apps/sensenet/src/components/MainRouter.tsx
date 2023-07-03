@@ -67,14 +67,24 @@ export const MainRouter = () => {
               rootPath={PATHS.contentTypes.snPath}
               fieldsToDisplay={[
                 { field: 'DisplayName' },
+                { field: 'Name' },
                 { field: 'Description' },
                 { field: 'ParentTypeName' as any },
                 { field: 'ModificationDate' },
                 { field: 'ModifiedBy' },
               ]}
               loadChildrenSettings={{
-                select: ['DisplayName', 'Description', 'ParentTypeName' as any, 'ModificationDate', 'ModifiedBy'],
+                select: [
+                  'DisplayName',
+                  'Name',
+                  'Description',
+                  'ParentTypeName' as any,
+                  'ModificationDate',
+                  'ModifiedBy',
+                ],
                 query: "+TypeIs:'ContentType' .AUTOFILTERS:OFF",
+                inlinecount: 'allpages',
+                top: 1000,
               }}
               hasTree={false}
               alwaysRefreshChildren={true}

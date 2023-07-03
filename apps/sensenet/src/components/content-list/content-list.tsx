@@ -144,6 +144,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
   const [currentOrder, setCurrentOrder] = useState<keyof T>(
     (loadChildrenSettingsOrderBy?.[0][0] as keyof T) || 'DisplayName',
   )
+
   const [currentDirection, setCurrentDirection] = useState<'asc' | 'desc'>(
     (loadChildrenSettingsOrderBy?.[0][1] as 'asc' | 'desc') || 'asc',
   )
@@ -701,7 +702,22 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
                 displayNameInArray) as any
             }
             getSelectionControl={getSelectionControl}
-            items={children}
+            /* If the Order by Column Is The Display. The client will sort it. Due to some locale and indexing issues */
+            items={
+              currentOrder === 'DisplayName'
+                ? children.sort((a, b) => {
+                    // If no display Name
+                    if (!a?.DisplayName || !b?.DisplayName) {
+                      return 0
+                    }
+
+                    if (currentDirection === 'asc') {
+                      return a?.DisplayName.localeCompare(b?.DisplayName)
+                    }
+                    return b?.DisplayName.localeCompare(a?.DisplayName)
+                  })
+                : children
+            }
             onRequestOrderChange={onRequestOrderChangeFunc}
             onRequestSelectionChange={setSelected}
             orderBy={currentOrder}
