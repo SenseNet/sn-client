@@ -81,9 +81,9 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
                 item={true}
                 xs={12}
                 sm={12}
-                md={isFullWidth ? 12 : 6}
-                lg={isFullWidth ? 12 : 6}
-                xl={isFullWidth ? 12 : 6}
+                md={12}
+                lg={12}
+                xl={12}
                 key={field.fieldSettings.Name}
                 className={classes.fieldWrapper}>
                 <div className={isFullWidth ? classes.fieldFullWidth : classes.field}>
