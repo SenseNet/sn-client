@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core'
 import { InsertDriveFile } from '@material-ui/icons'
 import { Repository } from '@sensenet/client-core'
-import { GenericContent, User } from '@sensenet/default-content-types'
+import { GenericContent, Image, User } from '@sensenet/default-content-types'
 import React from 'react'
 import { renderIconDefault } from '../icon'
 
@@ -43,6 +43,16 @@ export const DefaultItemTemplate: React.FC<DefaultItemTemplateProps> = (props) =
                     ? `${repository.configuration.repositoryUrl}${content.Avatar.Url}`
                     : ''
                 }
+              />
+            }
+          </ListItemAvatar>
+        ) : repository?.schemas.isContentFromType<Image>(content, 'Image') ? (
+          <ListItemAvatar>
+            {
+              <img
+                alt={content.DisplayName}
+                src={`${repository?.configuration.repositoryUrl}${(content as Image).Path}`}
+                style={{ width: '3em', height: '3em' }}
               />
             }
           </ListItemAvatar>
