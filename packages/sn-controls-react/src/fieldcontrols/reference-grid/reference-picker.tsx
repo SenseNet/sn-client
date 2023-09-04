@@ -48,8 +48,6 @@ export const ReferencePicker: React.FC<ReferencePickerProps<GenericContentWithIs
   }
 
   const renderIcon = (item: GenericContentWithIsParent | User | Image) => {
-    console.log('item', item)
-
     if (props.repository.schemas.isContentFromType<User>(item, 'User')) {
       const avatarUrl = item.Avatar?.Url
       if (avatarUrl) {
