@@ -47,31 +47,40 @@ export const ReferencePicker: React.FC<ReferencePickerProps<GenericContentWithIs
     return isFolder ? 'folder' : 'insert_drive_file'
   }
 
-  const renderIcon = (item: GenericContentWithIsParent) =>
-    props.repository.schemas.isContentFromType<User>(item, 'User') ? (
-      (item as User).Avatar?.Url ? (
-        <Avatar
-          alt={item.DisplayName}
-          src={`${props.repository.configuration.repositoryUrl}${(item as User).Avatar!.Url}`}
-        />
-      ) : (
+  const renderIcon = (item: GenericContentWithIsParent | User | Image) => {
+    console.log('item', item)
+
+    if (props.repository.schemas.isContentFromType<User>(item, 'User')) {
+      const avatarUrl = item.Avatar?.Url
+      if (avatarUrl) {
+        return <Avatar alt={item.DisplayName} src={`${props.repository.configuration.repositoryUrl}${avatarUrl}`} />
+      }
+
+      return (
         <Avatar alt={item.DisplayName}>
           {item.DisplayName?.split(' ')
             .map((namePart) => namePart[0])
             .join('.')}
         </Avatar>
       )
-    ) : props.repository.schemas.isContentFromType<Image>(item, 'Image') ? (
-      <img
-        alt=""
-        src={`${props.repository.configuration.repositoryUrl}${(item as Image).Path}`}
-        style={{ width: '3em', height: '3em' }}
-      />
-    ) : props.renderIcon ? (
-      props.renderIcon(item)
-    ) : (
-      renderIconDefault(iconName(item.IsFolder))
-    )
+    }
+
+    if (props.repository.schemas.isContentFromType<Image>(item, 'Image')) {
+      return (
+        <img
+          alt=""
+          src={`${props.repository.configuration.repositoryUrl}${item.Path}`}
+          style={{ width: '3em', height: '3em', objectFit: 'scale-down' }}
+        />
+      )
+    }
+
+    if (props.renderIcon) {
+      return props.renderIcon(item)
+    }
+
+    return renderIconDefault(iconName(item.IsFolder))
+  }
 
   return (
     <Picker
