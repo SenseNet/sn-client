@@ -66,7 +66,8 @@ export const ReferencePicker: React.FC<ReferencePickerProps<GenericContentWithIs
     if (props.repository.schemas.isContentFromType<Image>(item, 'Image')) {
       return (
         <img
-          alt=""
+          data-test="reference-selection-image"
+          alt={item.DisplayName}
           src={`${props.repository.configuration.repositoryUrl}${item.Path}`}
           style={{ width: '3em', height: '3em', objectFit: 'scale-down' }}
         />

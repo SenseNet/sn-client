@@ -17,7 +17,7 @@ import { ReferencePicker } from '../src/fieldcontrols/reference-grid/reference-p
 
 const defaultSettings = {
   Type: 'ReferenceFieldSetting',
-  AllowedTypes: ['User', 'Group'],
+  AllowedTypes: ['User', 'Group', 'Image'],
   SelectionRoots: ['/Root/IMS', '/Root'],
   Name: 'Members',
   FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
@@ -41,6 +41,15 @@ const userContent = {
     Id: 4810,
     Type: 'User',
   },
+}
+
+const imageContent = {
+  Name: 'Test Image',
+  Path: '/Root/IMS/Public/alba',
+  DisplayName: 'Test Image',
+  Id: 4830,
+  Type: 'Image',
+  Enabled: true,
 }
 
 const repository: any = {
@@ -227,7 +236,7 @@ describe('Reference grid field control', () => {
       )
       await sleepAsync(0)
 
-      wrapper.find(ReferencePicker).prop('handleSubmit')([{ Path: '/', Name: 'Jane Doe', Id: 1234, Type: 'User' }])
+      wrapper.find(ReferencePicker).prop('handleSubmit')!([{ Path: '/', Name: 'Jane Doe', Id: 1234, Type: 'User' }])
 
       // Jane Doe + add reference
       expect(wrapper.update().find(DefaultItemTemplate)).toHaveLength(2)
@@ -246,6 +255,27 @@ describe('Reference grid field control', () => {
       })
 
       expect(wrapper.update().find(Avatar).text()).toBe('A.M')
+    })
+
+    it('should render img tag if type is image', async () => {
+      const repo = {
+        loadCollection: jest.fn(() => {
+          return { d: { results: [{ ...imageContent }] } }
+        }),
+        schemas: {
+          isContentFromType: jest.fn((a, b) => b === 'Image'),
+        },
+        configuration: repository.configuration,
+      } as any
+      let wrapper: any
+      await act(async () => {
+        wrapper = mount(
+          <ReferencePicker repository={repo} fieldSettings={{ ...defaultSettings, Type: 'Image' }} path="" />,
+        )
+      })
+
+      expect(wrapper.update().find('img').prop('src')).toContain(imageContent.Path)
+      expect(wrapper.update().find('img').prop('alt')).toBe(imageContent.DisplayName)
     })
   })
 })
