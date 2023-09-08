@@ -45,11 +45,23 @@ const userContent = {
 
 const imageContent = {
   Name: 'Test Image',
-  Path: '/Root/IMS/Public/alba',
+  Path: '/Root/Content/Images/Picture.jpg',
   DisplayName: 'Test Image',
   Id: 4830,
   Type: 'Image',
   Enabled: true,
+  PageCount: 0,
+}
+
+const imageContentWithPreview = {
+  Name: 'Test Image',
+  Path: '/Root/Content/Images/Picture.jpg',
+  DisplayName: 'Test Image',
+  Id: 4830,
+  Type: 'Image',
+  Enabled: true,
+  PageCount: 1,
+  Version: 'v1.0.A',
 }
 
 const repository: any = {
@@ -257,7 +269,7 @@ describe('Reference grid field control', () => {
       expect(wrapper.update().find(Avatar).text()).toBe('A.M')
     })
 
-    it('should render img tag if type is image', async () => {
+    it('should render img tag if type is image but PageCount is 0', async () => {
       const repo = {
         loadCollection: jest.fn(() => {
           return { d: { results: [{ ...imageContent }] } }
@@ -276,6 +288,29 @@ describe('Reference grid field control', () => {
 
       expect(wrapper.update().find('img').prop('src')).toContain(imageContent.Path)
       expect(wrapper.update().find('img').prop('alt')).toBe(imageContent.DisplayName)
+    })
+
+    it('should render img tag with thumbnail if type is image but PageCount is greater than 0', async () => {
+      const repo = {
+        loadCollection: jest.fn(() => {
+          return { d: { results: [{ ...imageContentWithPreview }] } }
+        }),
+        schemas: {
+          isContentFromType: jest.fn((a, b) => b === 'Image'),
+        },
+        configuration: repository.configuration,
+      } as any
+      let wrapper: any
+      await act(async () => {
+        wrapper = mount(
+          <ReferencePicker repository={repo} fieldSettings={{ ...defaultSettings, Type: 'Image' }} path="" />,
+        )
+      })
+
+      expect(wrapper.update().find('img').prop('src')).toContain(
+        `${imageContentWithPreview.Path}/Previews/${imageContentWithPreview.Version}/thumbnail1.png`,
+      )
+      expect(wrapper.update().find('img').prop('alt')).toBe(imageContentWithPreview.DisplayName)
     })
   })
 })
