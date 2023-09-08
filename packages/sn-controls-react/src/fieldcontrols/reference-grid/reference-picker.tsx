@@ -1,5 +1,6 @@
 import { Avatar, DialogActions, DialogContent, LinearProgress } from '@material-ui/core'
 import { ODataParams, Repository } from '@sensenet/client-core'
+import { PathHelper } from '@sensenet/client-utils'
 import { Folder, Image, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
 import { GenericContentWithIsParent, Picker, PickerProps } from '@sensenet/pickers-react'
 import React, { useMemo } from 'react'
@@ -63,12 +64,29 @@ export const ReferencePicker: React.FC<ReferencePickerProps<GenericContentWithIs
       )
     }
 
-    if (props.repository.schemas.isContentFromType<Image>(item, 'Image')) {
+    if (props.repository.schemas.isContentFromType<Image>(item, 'Image') && (!item.PageCount || item.PageCount <= 0)) {
       return (
         <img
           data-test="reference-selection-image"
           alt={item.DisplayName}
           src={`${props.repository.configuration.repositoryUrl}${item.Path}`}
+          style={{ width: '3em', height: '3em', objectFit: 'scale-down' }}
+        />
+      )
+    }
+
+    if (props.repository.schemas.isContentFromType<Image>(item, 'Image') && item.PageCount && item.PageCount > 0) {
+      return (
+        <img
+          data-test="reference-selection-image"
+          alt={item.DisplayName}
+          src={PathHelper.joinPaths(
+            props.repository.configuration.repositoryUrl,
+            item.Path,
+            '/Previews',
+            item.Version as string,
+            'thumbnail1.png',
+          )}
           style={{ width: '3em', height: '3em', objectFit: 'scale-down' }}
         />
       )
