@@ -7,6 +7,17 @@ describe('Batch operations: ', () => {
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
   })
 
+  it('batch actions should appear when at least a single item is selected', () => {
+    cy.visit(
+      pathWithQueryParams({
+        path: resolvePathParams({ path: PATHS.content.appPath, params: { browseType: 'explorer' } }),
+        newParams: { repoUrl: Cypress.env('repoUrl'), path: '/SampleWorkspace/Document_Library' },
+      }),
+    )
+    cy.get('[data-test="table-row-selection-control-dinnerscookbook.pdf"]').click({ force: true })
+    cy.get('[data-test="batch-actions"]').should('exist')
+  })
+
   it('multiple content copy works as it is intended', () => {
     cy.visit(
       pathWithQueryParams({
@@ -74,9 +85,7 @@ describe('Batch operations: ', () => {
     //put it back
 
     cy.get('[data-test="table-row-selection-control-dinnerscookbook.pdf"]').click({ force: true })
-    cy.get('[data-test="table-row-selection-control-hello_world.docx"]')
-      .find('input[type="checkbox"]')
-      .check({ force: true })
+    cy.get('[data-test="table-row-selection-control-hello_world.docx"]').click({ force: true })
     cy.get('[data-test="batch-move"]').click()
     cy.get('[data-test="picker-up"]').dblclick()
     cy.get('[data-test="picker-submit"]').click()
