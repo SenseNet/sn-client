@@ -48,7 +48,7 @@ import {
 } from '@material-ui/icons'
 import { Repository } from '@sensenet/client-core'
 import { Injector, LogLevel, PathHelper } from '@sensenet/client-utils'
-import { File, GenericContent, User } from '@sensenet/default-content-types'
+import { File, GenericContent, Image, User } from '@sensenet/default-content-types'
 import { useInjector, useRepository } from '@sensenet/hooks-react'
 import { InlineIcon } from '@iconify/react'
 import circleciIcon from '@iconify-icons/logos/circleci'
@@ -219,6 +219,18 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
             item.Version as string,
             'thumbnail1.png',
           )}
+          style={options.style}
+        />
+      ) : null,
+  },
+  {
+    get: (item, options) =>
+      options.repo.schemas.isContentFromType<Image>(item, 'Image') && (!item.PageCount || item.PageCount <= 0) ? (
+        <img
+          width={options.style?.width || 32}
+          height={options.style?.width || 32}
+          alt=""
+          src={PathHelper.joinPaths(options.repo.configuration.repositoryUrl, item.Path)}
           style={options.style}
         />
       ) : null,
