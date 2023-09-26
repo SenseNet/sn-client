@@ -275,9 +275,11 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
             alignItems: 'center',
           }}
           component="div">
-          <Button data-test="column-settings" onClick={props.handleColumnSettingsClick}>
-            <Build />
-          </Button>
+          <Tooltip title="Column Settings" placement="bottom">
+            <Button data-test="column-settings" onClick={props.handleColumnSettingsClick}>
+              <Build />
+            </Button>
+          </Tooltip>
         </TableCell>
       )
     }

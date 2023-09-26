@@ -78,8 +78,8 @@ export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(pr
             : history.push(getPrimaryActionUrl({ content: item.content, repository, uiSettings, location }))
         }}
       />
-      {props.batchActions && selected.length > 1 ? (
-        <div className={classes.batchActionWrapper}>
+      {props.batchActions && selected.length > 0 ? (
+        <div className={classes.batchActionWrapper} data-test="batch-actions">
           <Tooltip title={localization.batchActions.delete} placement="bottom">
             <IconButton
               data-test="batch-delete"
