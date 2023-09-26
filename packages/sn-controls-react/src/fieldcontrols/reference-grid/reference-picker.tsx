@@ -1,6 +1,6 @@
 import { Avatar, DialogActions, DialogContent, LinearProgress } from '@material-ui/core'
 import { ODataParams, Repository } from '@sensenet/client-core'
-import { Folder, Image, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
+import { Folder, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
 import { GenericContentWithIsParent, Picker, PickerProps } from '@sensenet/pickers-react'
 import React, { useMemo } from 'react'
 import { renderIconDefault } from '../icon'
@@ -47,7 +47,7 @@ export const ReferencePicker: React.FC<ReferencePickerProps<GenericContentWithIs
     return isFolder ? 'folder' : 'insert_drive_file'
   }
 
-  const renderIcon = (item: GenericContentWithIsParent | User | Image) => {
+  const renderIcon = (item: GenericContentWithIsParent | User) => {
     if (props.repository.schemas.isContentFromType<User>(item, 'User')) {
       const avatarUrl = item.Avatar?.Url
       if (avatarUrl) {
