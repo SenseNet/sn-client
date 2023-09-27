@@ -33,7 +33,6 @@ export const DefaultItemTemplate: React.FC<DefaultItemTemplateProps> = (props) =
   const { content, repository } = props
 
   const renderIcon = (item: GenericContent | User | Image) => {
-    console.log('renderIcon')
     if (repository?.schemas.isContentFromType<User>(item, 'User')) {
       const avatarUrl = item.Avatar?.Url
       if (avatarUrl) {
