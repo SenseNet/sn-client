@@ -65,20 +65,20 @@ export const DefaultItemTemplate: React.FC<DefaultItemTemplateProps> = (props) =
 
     if (repository?.schemas.isContentFromType<Image>(item, 'Image') && (!item.PageCount || item.PageCount <= 0)) {
       return (
-        <ListItemAvatar>
+        <ListItemIcon>
           <img
             data-test="reference-selection-image"
             alt={item.DisplayName}
             src={`${repository?.configuration.repositoryUrl}${item.Path}`}
             style={{ width: '3em', height: '3em', objectFit: 'scale-down' }}
           />
-        </ListItemAvatar>
+        </ListItemIcon>
       )
     }
 
     if (repository?.schemas.isContentFromType<Image>(item, 'Image') && item.PageCount && item.PageCount > 0) {
       return (
-        <ListItemAvatar>
+        <ListItemIcon>
           <img
             data-test="reference-selection-image"
             alt={item.DisplayName}
@@ -91,7 +91,7 @@ export const DefaultItemTemplate: React.FC<DefaultItemTemplateProps> = (props) =
             )}
             style={{ width: '3em', height: '3em', objectFit: 'scale-down' }}
           />
-        </ListItemAvatar>
+        </ListItemIcon>
       )
     }
 
