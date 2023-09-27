@@ -47,7 +47,7 @@ export const ReferencePicker: React.FC<ReferencePickerProps<GenericContentWithIs
     return isFolder ? 'folder' : 'insert_drive_file'
   }
 
-  const renderIcon = (item: GenericContentWithIsParent) =>
+  const renderIcon = (item: GenericContentWithIsParent | User) =>
     props.repository.schemas.isContentFromType<User>(item, 'User') ? (
       (item as User).Avatar?.Url ? (
         <Avatar
