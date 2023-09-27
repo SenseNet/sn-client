@@ -53,6 +53,14 @@ const imageContent = {
   PageCount: 0,
 }
 
+const GenericContent = {
+  Name: 'Test Generic',
+  Path: '/Root/Content/SampleWorkspace/Memos/TestMemo',
+  DisplayName: 'Test Memo',
+  Id: 4830,
+  Type: 'GenericContent',
+}
+
 type ImageContentType = typeof imageContent
 type PreviewImageContentType = ImageContentType & { Version: string }
 
@@ -125,6 +133,117 @@ describe('Reference grid field control', () => {
       expect((wrapper!.update().find(Picker).prop('itemsODataOptions') as ODataParams<Folder>).filter).toBe(
         "isOf('GenericContent')",
       )
+    })
+
+    it('DefaultItemTemplate should render file icon on GenericContent', async () => {
+      const repo = {
+        loadCollection: jest.fn(() => {
+          return { d: { results: [GenericContent] } }
+        }),
+        schemas: {
+          isContentFromType: jest.fn(() => false),
+        },
+        load: jest.fn((props) => {
+          return { d: GenericContent }
+        }),
+      } as any
+
+      let wrapper: any
+
+      await act(async () => {
+        wrapper = mount(
+          <ReferenceGrid actionName="browse" settings={defaultSettings} content={GenericContent} repository={repo} />,
+        )
+      })
+
+      /*find by data-test attribe an icon */
+      expect(wrapper.update().find('[data-test="file-icon"]')).toBeDefined()
+    })
+
+    it('should render the monogram of Displayname when no Avatar.Url is provided in DefaultItemTemplate', async () => {
+      const avatarLessUserContent = { ...userContent, Avatar: { Url: '' } }
+
+      const repo = {
+        loadCollection: jest.fn(() => {
+          return { d: { results: [avatarLessUserContent] } }
+        }),
+        schemas: repository.schemas,
+        load: jest.fn((props) => {
+          return { d: avatarLessUserContent }
+        }),
+      } as any
+
+      let wrapper: any
+
+      await act(async () => {
+        wrapper = mount(
+          <ReferenceGrid
+            actionName="browse"
+            settings={defaultSettings}
+            content={avatarLessUserContent}
+            repository={repo}
+          />,
+        )
+      })
+
+      expect(wrapper.update().find(Avatar).text()).toBe('A.M')
+    })
+
+    it('should render img tag if type is image and there is no preview generated', async () => {
+      const repo = {
+        loadCollection: jest.fn(() => {
+          return { d: { results: [{ ...imageContent }] } }
+        }),
+        schemas: {
+          isContentFromType: jest.fn((a, b) => b === 'Image'),
+        },
+        configuration: repository.configuration,
+        load: jest.fn((props) => {
+          return { d: imageContent }
+        }),
+      } as any
+      let wrapper: any
+      await act(async () => {
+        wrapper = mount(
+          <ReferenceGrid actionName="browse" settings={defaultSettings} content={imageContent} repository={repo} />,
+        )
+      })
+
+      expect(wrapper.update().find('img').prop('src')).toContain(imageContent.Path)
+      expect(wrapper.update().find('img').prop('alt')).toBe(imageContent.DisplayName)
+    })
+
+    it('should render img tag if type is image when preview has been generated', async () => {
+      const previewImageContent: PreviewImageContentType = { ...imageContent, Version: '1.0', PageCount: 1 }
+
+      const repo = {
+        loadCollection: jest.fn(() => {
+          return { d: { results: [{ ...previewImageContent }] } }
+        }),
+        schemas: {
+          isContentFromType: jest.fn((a, b) => b === 'Image'),
+        },
+        configuration: repository.configuration,
+        load: jest.fn((props) => {
+          return { d: previewImageContent }
+        }),
+      } as any
+
+      let wrapper: any
+
+      await act(async () => {
+        wrapper = mount(
+          <ReferenceGrid
+            actionName="browse"
+            settings={defaultSettings}
+            content={previewImageContent}
+            repository={repo}
+          />,
+        )
+      })
+
+      expect(wrapper.update().find('img').prop('src')).toContain('thumbnail1.png')
+      expect(wrapper.update().find('img').prop('alt')).toBe(previewImageContent.DisplayName)
     })
   })
   describe('in edit/new view', () => {
@@ -259,92 +378,6 @@ describe('Reference grid field control', () => {
       })
 
       expect(wrapper.update().find(Avatar).text()).toBe('A.M')
-    })
-
-    it('should render the monogram of Displayname when no Avatar.Url is provided in DefaultItemTemplate', async () => {
-      const avatarLessUserContent = { ...userContent, Avatar: { Url: '' } }
-
-      const repo = {
-        loadCollection: jest.fn(() => {
-          return { d: { results: [avatarLessUserContent] } }
-        }),
-        schemas: repository.schemas,
-        load: jest.fn((props) => {
-          return { d: avatarLessUserContent }
-        }),
-      } as any
-
-      let wrapper: any
-
-      await act(async () => {
-        wrapper = mount(
-          <ReferenceGrid
-            actionName="browse"
-            settings={defaultSettings}
-            content={avatarLessUserContent}
-            repository={repo}
-          />,
-        )
-      })
-
-      expect(wrapper.update().find(Avatar).text()).toBe('A.M')
-    })
-
-    it('should render img tag if type is image and there is no preview generated', async () => {
-      const repo = {
-        loadCollection: jest.fn(() => {
-          return { d: { results: [{ ...imageContent }] } }
-        }),
-        schemas: {
-          isContentFromType: jest.fn((a, b) => b === 'Image'),
-        },
-        configuration: repository.configuration,
-        load: jest.fn((props) => {
-          return { d: imageContent }
-        }),
-      } as any
-      let wrapper: any
-      await act(async () => {
-        wrapper = mount(
-          <ReferenceGrid actionName="browse" settings={defaultSettings} content={imageContent} repository={repo} />,
-        )
-      })
-
-      expect(wrapper.update().find('img').prop('src')).toContain(imageContent.Path)
-      expect(wrapper.update().find('img').prop('alt')).toBe(imageContent.DisplayName)
-    })
-
-    it('should render img tag if type is image when preview has been generated', async () => {
-      const previewImageContent: PreviewImageContentType = { ...imageContent, Version: '1.0', PageCount: 1 }
-
-      const repo = {
-        loadCollection: jest.fn(() => {
-          return { d: { results: [{ ...previewImageContent }] } }
-        }),
-        schemas: {
-          isContentFromType: jest.fn((a, b) => b === 'Image'),
-        },
-        configuration: repository.configuration,
-        load: jest.fn((props) => {
-          return { d: previewImageContent }
-        }),
-      } as any
-
-      let wrapper: any
-
-      await act(async () => {
-        wrapper = mount(
-          <ReferenceGrid
-            actionName="browse"
-            settings={defaultSettings}
-            content={previewImageContent}
-            repository={repo}
-          />,
-        )
-      })
-
-      expect(wrapper.update().find('img').prop('src')).toContain('thumbnail1.png')
-      expect(wrapper.update().find('img').prop('alt')).toBe(previewImageContent.DisplayName)
     })
   })
 })
