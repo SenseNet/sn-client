@@ -227,7 +227,7 @@ describe('Reference grid field control', () => {
       )
       await sleepAsync(0)
 
-      wrapper.find(ReferencePicker).prop('handleSubmit')([{ Path: '/', Name: 'Jane Doe', Id: 1234, Type: 'User' }])
+      wrapper.find(ReferencePicker).prop('handleSubmit')!([{ Path: '/', Name: 'Jane Doe', Id: 1234, Type: 'User' }])
 
       // Jane Doe + add reference
       expect(wrapper.update().find(DefaultItemTemplate)).toHaveLength(2)
