@@ -108,7 +108,7 @@ describe('Reference grid field control', () => {
       })
 
       expect((wrapper!.update().find(Picker).prop('itemsODataOptions') as ODataParams<Folder>).filter).toBe(
-        "isOf('Folder') or isOf('User') or isOf('Group')",
+        "isOf('Folder') or isOf('User') or isOf('Group') or isOf('Image')",
       )
     })
 
