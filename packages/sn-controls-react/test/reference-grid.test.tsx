@@ -261,6 +261,35 @@ describe('Reference grid field control', () => {
       expect(wrapper.update().find(Avatar).text()).toBe('A.M')
     })
 
+    it('should render the monogram of Displayname when no Avatar.Url is provided in DefaultItemTemplate', async () => {
+      const avatarLessUserContent = { ...userContent, Avatar: { Url: '' } }
+
+      const repo = {
+        loadCollection: jest.fn(() => {
+          return { d: { results: [avatarLessUserContent] } }
+        }),
+        schemas: repository.schemas,
+        load: jest.fn((props) => {
+          return { d: avatarLessUserContent }
+        }),
+      } as any
+
+      let wrapper: any
+
+      await act(async () => {
+        wrapper = mount(
+          <ReferenceGrid
+            actionName="browse"
+            settings={defaultSettings}
+            content={avatarLessUserContent}
+            repository={repo}
+          />,
+        )
+      })
+
+      expect(wrapper.update().find(Avatar).text()).toBe('A.M')
+    })
+
     it('should render img tag if type is image and there is no preview generated', async () => {
       const repo = {
         loadCollection: jest.fn(() => {
@@ -300,7 +329,9 @@ describe('Reference grid field control', () => {
           return { d: previewImageContent }
         }),
       } as any
+
       let wrapper: any
+
       await act(async () => {
         wrapper = mount(
           <ReferenceGrid
