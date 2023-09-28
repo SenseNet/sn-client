@@ -129,6 +129,11 @@ export const ThemeProvider: React.FunctionComponent = (props) => {
             '@font-face': [larsseit],
           },
         },
+        MuiInputLabel: {
+          root: {
+            fontSize: '1.3rem',
+          },
+        },
       },
     })
 
