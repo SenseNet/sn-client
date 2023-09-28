@@ -21,7 +21,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
   })
 
   const onCheckedChangeHandler = useCallback(
-    (_event: React.ChangeEvent<HTMLInputElement>, node: T) => {
+    (_event: unknown, node: T) => {
       if (!node.isParent) {
         const newSelection = props.allowMultiple ? selection.filter((item) => item.Id !== node.Id) : []
         if (newSelection.length === selection.length || (!props.allowMultiple && selection[0].Id !== node.Id)) {
@@ -106,7 +106,10 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
   return (
     <List>
       {items?.map((item) => (
-        <div onDoubleClick={(e) => onDoubleClickHandler(e, item as any)} key={item.Id}>
+        <div
+          onClick={(e) => onCheckedChangeHandler(e, item as any)}
+          onDoubleClick={(e) => onDoubleClickHandler(e, item as any)}
+          key={item.Id}>
           {renderItem(item as any)}
         </div>
       ))}
