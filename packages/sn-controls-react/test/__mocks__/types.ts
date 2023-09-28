@@ -15,3 +15,7 @@ export const testArticle = {
 export const testFolder = {
   Type: 'Folder',
 } as GenericContent
+
+export const testImage = {
+  Type: 'Image',
+} as GenericContent
