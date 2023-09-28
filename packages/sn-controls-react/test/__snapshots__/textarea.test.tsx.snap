@@ -20,6 +20,11 @@ exports[`Textarea field control in browse view should show the displayname and f
 
 exports[`Textarea field control in edit/new view should set all the props 1`] = `
 <WithStyles(ForwardRef(TextField))
+  InputLabelProps={
+    Object {
+      "shrink": true,
+    }
+  }
   disabled={true}
   fullWidth={true}
   helperText="description"

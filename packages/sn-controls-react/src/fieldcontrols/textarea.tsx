@@ -42,6 +42,7 @@ export const Textarea: React.FC<ReactClientFieldSetting<LongTextFieldSetting>> =
           multiline={true}
           fullWidth={true}
           helperText={props.hideDescription ? undefined : props.settings.Description}
+          InputLabelProps={{ shrink: true }}
         />
       )
     case 'browse':
