@@ -95,11 +95,10 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
                 label={settings.DisplayName}
                 id={settings.Name}
                 disabled={settings.ReadOnly}
-                placeholder={settings.DisplayName}
+                // placeholder={settings.DisplayName}
+                InputLabelProps={{ shrink: true }}
                 required={settings.Compulsory}
-                fullWidth={true}
                 format="yyyy MMMM dd"
-                style={{ width: 220 }}
               />
             ) : (
               <DateTimePicker
@@ -110,11 +109,10 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
                 name={settings.Name}
                 id={settings.Name}
                 disabled={settings.ReadOnly}
-                placeholder={settings.DisplayName}
+                // placeholder={settings.DisplayName}
+                InputLabelProps={{ shrink: true }}
                 required={settings.Compulsory}
-                fullWidth={true}
                 format="yyyy MMMM dd hh:mm aaaa"
-                style={{ width: 220 }}
               />
             )}
             {!hideDescription && <FormHelperText>{settings.Description}</FormHelperText>}
