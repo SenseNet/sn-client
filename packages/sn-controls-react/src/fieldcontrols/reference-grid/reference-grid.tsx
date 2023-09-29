@@ -22,10 +22,12 @@ const styles = {
   root: {
     display: 'flex',
     flexWrap: 'wrap',
+    alignItems: 'flex-start',
   },
   listContainer: {
-    display: 'block',
+    display: 'inline-block',
     marginTop: 10,
+    minWidth: 250,
   },
 }
 
