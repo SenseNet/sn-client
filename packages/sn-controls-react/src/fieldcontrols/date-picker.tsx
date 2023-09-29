@@ -99,6 +99,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
                 required={settings.Compulsory}
                 fullWidth={true}
                 format="yyyy MMMM dd"
+                style={{ width: 220 }}
               />
             ) : (
               <DateTimePicker
@@ -113,6 +114,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
                 required={settings.Compulsory}
                 fullWidth={true}
                 format="yyyy MMMM dd hh:mm aaaa"
+                style={{ width: 220 }}
               />
             )}
             {!hideDescription && <FormHelperText>{settings.Description}</FormHelperText>}
