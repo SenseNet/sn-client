@@ -28,6 +28,7 @@ const styles = {
     display: 'inline-block',
     minWidth: 250,
     padding: 0,
+    marginTop: 15,
   },
 }
 
