@@ -105,12 +105,9 @@ export const DefaultItemTemplate: React.FC<DefaultItemTemplateProps> = (props) =
   }
 
   return (
-    <ListItem key={content.Id} button={false}>
+    <ListItem style={props.actionName === 'browse' ? { padding: 0 } : undefined} key={content.Id} button={false}>
       {content.Type ? renderIcon(content) : null}
-      <ListItemText
-        primary={content.DisplayName}
-        style={content.Id < 0 ? { textAlign: 'right', paddingRight: 16 } : { textAlign: 'left' }}
-      />
+      <ListItemText primary={content.DisplayName} style={{ textAlign: 'left', paddingRight: 15 }} />
       {props.actionName && props.actionName !== 'browse' && !props.readOnly ? (
         <ListItemSecondaryAction>
           {content.Id > 0 ? (
