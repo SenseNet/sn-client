@@ -20,6 +20,11 @@ exports[`Number field control in browse view should show the displayname and fie
 exports[`Number field control in edit/new view should set all the props 1`] = `
 <Fragment>
   <WithStyles(ForwardRef(TextField))
+    InputLabelProps={
+      Object {
+        "shrink": true,
+      }
+    }
     InputProps={
       Object {
         "endAdornment": <WithStyles(ForwardRef(InputAdornment))
@@ -35,7 +40,6 @@ exports[`Number field control in edit/new view should set all the props 1`] = `
       }
     }
     disabled={true}
-    fullWidth={true}
     id="Index"
     inputProps={
       Object {
@@ -47,7 +51,7 @@ exports[`Number field control in edit/new view should set all the props 1`] = `
     label="Index"
     name="Index"
     onChange={[Function]}
-    placeholder="Index"
+    placeholder="0"
     required={true}
     type="number"
     value={7}

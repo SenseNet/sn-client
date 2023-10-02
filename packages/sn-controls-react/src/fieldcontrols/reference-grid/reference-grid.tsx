@@ -22,10 +22,13 @@ const styles = {
   root: {
     display: 'flex',
     flexWrap: 'wrap',
+    alignItems: 'flex-start',
   },
   listContainer: {
-    display: 'block',
-    marginTop: 10,
+    display: 'inline-block',
+    minWidth: 250,
+    padding: 0,
+    marginTop: 15,
   },
 }
 
@@ -232,9 +235,9 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
     default: {
       return (
         <FormControl style={styles.root as any}>
-          <InputLabel shrink={true} htmlFor={props.settings.Name}>
+          <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
-          </InputLabel>
+          </Typography>
           <FormGroup>
             {fieldValue ? (
               <List dense={true} style={styles.listContainer}>

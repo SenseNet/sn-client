@@ -20,6 +20,11 @@ exports[`Short text field control in browse view should show the displayname and
 exports[`Short text field control in edit/new view should set all the props 1`] = `
 <Fragment>
   <WithStyles(ForwardRef(TextField))
+    InputLabelProps={
+      Object {
+        "shrink": true,
+      }
+    }
     autoComplete="off"
     disabled={true}
     fullWidth={true}
@@ -34,7 +39,6 @@ exports[`Short text field control in edit/new view should set all the props 1`] 
     label="Display name"
     name="DisplayName"
     onChange={[Function]}
-    placeholder="Display name"
     required={true}
     value="Hello World"
   />

@@ -53,7 +53,6 @@ describe('Short text field control', () => {
       expect(wrapper.find(TextField).prop('name')).toBe(defaultSettings.Name)
       expect(wrapper.find(TextField).prop('id')).toBe(defaultSettings.Name)
       expect(wrapper.find(TextField).prop('label')).toBe(defaultSettings.DisplayName)
-      expect(wrapper.find(TextField).prop('placeholder')).toBe(defaultSettings.DisplayName)
       expect(wrapper.find(TextField).prop('required')).toBeTruthy()
       expect(wrapper.find(TextField).prop('disabled')).toBeTruthy()
       expect(wrapper.find(FormHelperText).text()).toEqual('description')

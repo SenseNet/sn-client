@@ -83,12 +83,16 @@ describe('Reference grid field control', () => {
   describe('in browse view', () => {
     it('should show no value message when field value is not provided', () => {
       const wrapper = shallow(<ReferenceGrid actionName="browse" settings={defaultSettings} />)
-      expect(wrapper.find(Typography).text()).toBe(defaultLocalization.referenceGrid.noValue)
+      expect(wrapper.find(Typography).filter({ variant: 'body1' }).text()).toBe(
+        defaultLocalization.referenceGrid.noValue,
+      )
     })
 
     it('should show no value message when field value is empty array', () => {
       const wrapper = shallow(<ReferenceGrid actionName="browse" settings={defaultSettings} fieldValue={[] as any} />)
-      expect(wrapper.find(Typography).text()).toBe(defaultLocalization.referenceGrid.noValue)
+      expect(wrapper.find(Typography).filter({ variant: 'body1' }).text()).toBe(
+        defaultLocalization.referenceGrid.noValue,
+      )
     })
 
     it('should render the default item template when there is a field value', async () => {
@@ -102,7 +106,7 @@ describe('Reference grid field control', () => {
       })
 
       expect(wrapper.find(DefaultItemTemplate)).toHaveLength(1)
-      expect(wrapper.find(InputLabel).text()).toBe(defaultSettings.DisplayName)
+      expect(wrapper.find(Typography).filter({ variant: 'caption' }).text()).toBe(defaultSettings.DisplayName)
     })
 
     it('should create an allowed type list filter', async () => {

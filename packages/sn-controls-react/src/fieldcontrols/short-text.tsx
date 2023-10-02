@@ -35,7 +35,7 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
             name={props.settings.Name}
             id={props.settings.Name}
             label={props.settings.DisplayName}
-            placeholder={props.settings.DisplayName}
+            InputLabelProps={{ shrink: true }}
             value={value}
             required={props.settings.Compulsory}
             disabled={props.settings.ReadOnly}

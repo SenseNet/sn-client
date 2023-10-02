@@ -3,8 +3,12 @@
 exports[`Drop down list field control in edit/new view should set all the props 1`] = `
 <WithStyles(ForwardRef(FormControl))
   disabled={true}
-  fullWidth={true}
   required={true}
+  style={
+    Object {
+      "minWidth": "220px",
+    }
+  }
 >
   <WithStyles(ForwardRef(InputLabel))
     htmlFor="VersioningMode"

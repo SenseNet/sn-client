@@ -230,7 +230,7 @@ export const AllowedChildTypes: React.FC<ReactClientFieldSetting & { classes?: A
     case 'new':
       return (
         <ClickAwayListener onClickAway={handleClickAway}>
-          <div>
+          <div style={{ display: 'inline-block', minWidth: '350px' }}>
             <InputLabel shrink htmlFor={props.settings.Name} required={props.settings.Compulsory}>
               {props.settings.DisplayName}
             </InputLabel>
@@ -264,7 +264,6 @@ export const AllowedChildTypes: React.FC<ReactClientFieldSetting & { classes?: A
                   onClick={handleOnClick}
                   onChange={handleInputChange}
                   placeholder={INPUT_PLACEHOLDER}
-                  fullWidth={true}
                   value={inputValue}
                   className={classes.input}
                 />
