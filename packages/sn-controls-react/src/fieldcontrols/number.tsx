@@ -65,7 +65,7 @@ export const NumberField: React.FC<ReactClientFieldSetting<NumberFieldSetting | 
             value={value}
             required={props.settings.Compulsory}
             disabled={props.settings.ReadOnly}
-            placeholder="0" //{props.settings.DisplayName}
+            placeholder="0"
             InputLabelProps={{ shrink: true }}
             InputProps={{
               startAdornment: defineCurrency(),

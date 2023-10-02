@@ -108,7 +108,6 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
                 name={settings.Name}
                 id={settings.Name}
                 disabled={settings.ReadOnly}
-                // placeholder={settings.DisplayName}
                 InputLabelProps={{ shrink: true }}
                 required={settings.Compulsory}
                 format="yyyy MMMM dd hh:mm aaaa"
