@@ -51,6 +51,13 @@ export interface PickerProps<T> {
   currentPath?: string
 
   /**
+   * The context content's path.
+   * @type {string}
+   * @default '' // - empty string (This will load content under default site)
+   */
+  contextPath?: string
+
+  /**
    * Roots of subtrees where selection is enabled
    * @type {string}
    */
