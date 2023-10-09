@@ -95,7 +95,7 @@ export function Explore({
   const contentTypeName = useQuery().get('content-type')
   const pathFromUrl = useQuery().get('path')
   const snRoute = useSnRoute()
-  const activeAction = snRoute.match!.params.action
+  let activeAction = snRoute.match!.params.action
 
   const onActivateItemOverride = async (activeItem: GenericContent) => {
     const expandedItem = await repository.load({
@@ -112,6 +112,11 @@ export function Explore({
   }
 
   const onTreeLoadingChange = useCallback((isLoading) => setIsTreeLoading(isLoading), [])
+
+  console.log('!!!', snRoute, activeContent)
+  if (activeContent.endsWith('png') || activeContent.endsWith('jpg') || activeContent.endsWith('jpeg')) {
+    activeAction = 'image'
+  }
 
   const renderContent = () => {
     switch (activeAction) {
@@ -152,6 +157,8 @@ export function Explore({
         return <VersionView key={activeContent} contentPath={`${rootPath}${activeContent}`} />
       case 'setpermissions':
         return <PermissionView key={activeContent} contentPath={`${rootPath}${activeContent}`} />
+      case 'image':
+        return <img src={`${repository.configuration.repositoryUrl}${rootPath}${activeContent}`} alt="" />
       case 'preview':
         return <DocumentViewer key={activeContent} contentPath={`${rootPath}${activeContent}`} />
       case 'edit-binary':
