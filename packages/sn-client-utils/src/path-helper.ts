@@ -9,10 +9,10 @@ export class PathHelper {
    * @param {string} path The source path that should be trimmed
    */
   public static trimSlashes(path: string) {
-    while (path.endsWith('/')) {
+    while (path?.endsWith('/')) {
       path = path.substring(0, path.length - 1)
     }
-    while (path.startsWith('/')) {
+    while (path?.startsWith('/')) {
       path = path.substring(1, path.length)
     }
     return path
