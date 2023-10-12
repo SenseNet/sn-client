@@ -181,6 +181,10 @@ export function getPrimaryActionUrl({
     return getUrlForContent({ content, uiSettings, location, action: 'edit-binary', snRoute, removePath })
   }
 
+  if (content.Type === 'Image') {
+    return getUrlForContent({ content, uiSettings, location, action: 'image', snRoute, removePath })
+  }
+
   if (
     (content as any).Binary &&
     (content as any).Binary.__mediaresource.content_type !== 'application/x-javascript' &&
