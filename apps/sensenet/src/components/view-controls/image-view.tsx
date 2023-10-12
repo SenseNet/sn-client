@@ -16,7 +16,7 @@ export const ImageView: React.FC<ImageViewProps> = (props) => {
   const repository = useRepository()
 
   return (
-    <div style={{ overflow: 'auto' }}>
+    <div style={{ overflow: 'auto', margin: '15px 24px' }}>
       <img src={`${repository.configuration.repositoryUrl}${contentPath}`} alt="" />
     </div>
   )
