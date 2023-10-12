@@ -1,6 +1,7 @@
 /**
  * @module ViewControls
  */
+import { Style } from '@material-ui/icons'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { ReactElement } from 'react'
 
@@ -14,5 +15,9 @@ export const ImageView: React.FC<ImageViewProps> = (props) => {
   const { contentPath } = props
   const repository = useRepository()
 
-  return <img src={`${repository.configuration.repositoryUrl}${contentPath}`} alt="" />
+  return (
+    <div style={{ overflow: 'auto' }}>
+      <img src={`${repository.configuration.repositoryUrl}${contentPath}`} alt="" />
+    </div>
+  )
 }
