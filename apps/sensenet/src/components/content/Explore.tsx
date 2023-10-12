@@ -95,7 +95,7 @@ export function Explore({
   const contentTypeName = useQuery().get('content-type')
   const pathFromUrl = useQuery().get('path')
   const snRoute = useSnRoute()
-  let activeAction = snRoute.match!.params.action
+  const activeAction = snRoute.match!.params.action
 
   const onActivateItemOverride = async (activeItem: GenericContent) => {
     const expandedItem = await repository.load({
