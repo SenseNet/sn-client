@@ -113,11 +113,6 @@ export function Explore({
 
   const onTreeLoadingChange = useCallback((isLoading) => setIsTreeLoading(isLoading), [])
 
-  console.log('!!!', snRoute, activeContent)
-  if (activeContent.endsWith('png') || activeContent.endsWith('jpg') || activeContent.endsWith('jpeg')) {
-    activeAction = 'image'
-  }
-
   const renderContent = () => {
     switch (activeAction) {
       case 'browse':
