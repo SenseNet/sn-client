@@ -181,7 +181,7 @@ export function getPrimaryActionUrl({
     return getUrlForContent({ content, uiSettings, location, action: 'edit-binary', snRoute, removePath })
   }
 
-  if (content.Type === 'Image') {
+  if (content.Type === 'Image' || repository.schemas.isContentFromType<ContentType>(content, 'Image')) {
     return getUrlForContent({ content, uiSettings, location, action: 'image', snRoute, removePath })
   }
 
