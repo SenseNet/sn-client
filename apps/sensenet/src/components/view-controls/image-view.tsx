@@ -1,7 +1,7 @@
 /**
  * @module ViewControls
  */
-import { Button, createStyles, makeStyles, Theme } from '@material-ui/core'
+import { Button, createStyles, makeStyles } from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { ReactElement, useEffect, useState } from 'react'
