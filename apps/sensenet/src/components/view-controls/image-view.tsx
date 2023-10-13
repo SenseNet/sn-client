@@ -13,7 +13,7 @@ import { navigateToAction } from '../../services'
 const useStyles = makeStyles(() => {
   return createStyles({
     imageViewContainer: {
-      width: '100%',
+      width: 'auto',
       overflow: 'auto',
       margin: '0 24px',
     },
@@ -35,21 +35,19 @@ const useStyles = makeStyles(() => {
       fontWeight: 500,
     },
     imageContainer: {
-      width: '100%',
-    },
-    image: {
-      width: '95%',
-    },
-    closeButton: {
-      marginRight: '20px',
+      width: '90%',
+      display: 'flex',
+      flexDirection: 'column',
+      flexWrap: 'nowrap',
+      alignItems: 'flex-start',
     },
     buttonWrapper: {
-      width: '100%',
-      display: 'inline-flex',
-      whiteSpace: 'nowrap',
-      justifyContent: 'flex-end',
-      padding: '20px',
-      height: '80px',
+      padding: '20px 0',
+      width: '90%',
+      display: 'flex',
+      flexDirection: 'column',
+      flexWrap: 'nowrap',
+      alignItems: 'flex-end',
     },
   })
 })
@@ -97,7 +95,6 @@ export const ImageView: React.FC<ImageViewProps> = (props) => {
           aria-label={formLocalization.close}
           color="default"
           className={globalClasses.cancelButton}
-          style={{ marginRight: '20px' }}
           onClick={() => {
             navigateToAction({ history, routeMatch })
             props.handleCancel?.()
