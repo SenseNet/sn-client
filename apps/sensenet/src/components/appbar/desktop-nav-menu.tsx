@@ -153,12 +153,22 @@ export const DesktopNavMenu: FunctionComponent = () => {
                       style: {
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
-                        marginLeft: '30px',
+                        marginLeft: '20px',
                         color: theme.palette.type === 'light' ? globals.light.textColor : globals.dark.textColor,
                       },
-                      title: currentUser.DisplayName || currentUser.Name,
+                      title: `Full-name: ${currentUser.DisplayName}` || currentUser.Name,
+                    }}
+                    secondaryTypographyProps={{
+                      style: {
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        marginLeft: '20px',
+                        color: theme.palette.type === 'light' ? globals.light.textColor : globals.dark.textColor,
+                      },
+                      title: `Login-name: ${currentUser.LoginName}` || currentUser.Name,
                     }}
                     primary={`${currentUser.DisplayName || currentUser.Name}`}
+                    secondary={`${currentUser.LoginName || currentUser.Name}`}
                   />
                 </MenuItem>
                 <MenuItem className={classes.userMenuItem}>
