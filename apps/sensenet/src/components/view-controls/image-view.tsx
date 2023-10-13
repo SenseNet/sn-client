@@ -41,6 +41,7 @@ const useStyles = makeStyles(() => {
       flexWrap: 'nowrap',
       alignItems: 'flex-start',
     },
+    image: {},
     buttonWrapper: {
       padding: '20px 0',
       width: '90%',
