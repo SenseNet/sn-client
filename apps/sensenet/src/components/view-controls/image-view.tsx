@@ -15,7 +15,6 @@ const useStyles = makeStyles(() => {
     imageViewContainer: {
       width: '100%',
       overflow: 'auto',
-      // overflowY: 'auto',
       margin: '0 24px',
     },
     titleContainer: {
