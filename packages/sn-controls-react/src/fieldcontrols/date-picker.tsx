@@ -88,6 +88,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
           <>
             {settings.DateTimeMode === DateTimeMode.Date ? (
               <MUIDatePicker
+                style={{ display: 'inherit' }}
                 value={value}
                 minDate={minDatePickerDate}
                 onChange={handleDateChange}
@@ -101,6 +102,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
               />
             ) : (
               <DateTimePicker
+                style={{ display: 'inherit' }}
                 minDate={minDatePickerDate}
                 value={value}
                 onChange={handleDateChange}
@@ -111,6 +113,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
                 InputLabelProps={{ shrink: true }}
                 required={settings.Compulsory}
                 format="yyyy MMMM dd hh:mm aaaa"
+                InputProps={{ readOnly: true, style: { minWidth: '200px' } }}
               />
             )}
             {!hideDescription && <FormHelperText>{settings.Description}</FormHelperText>}
