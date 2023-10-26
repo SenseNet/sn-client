@@ -7,7 +7,6 @@ interface CreateSearchQuery {
 }
 
 export const createSearchQuery = ({ term, filters }: CreateSearchQuery) => {
-  // const query = new Query((q) => q.query((q2) => q2.equals('Name', `*${term}*`).or.equals('DisplayName', `*${term}*`)))
   const query = new Query((q) => q.query((q2) => q2.explicitQuery(term)))
 
   if (filters.type.type) {
