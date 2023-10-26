@@ -85,7 +85,8 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
             className={globalClasses.centered}>
             <Icon
               style={{
-                marginLeft: '9px',
+                marginLeft: '4px',
+                marginRight: '4px',
                 height: '24px',
                 width: '24px',
                 cursor: 'pointer',
@@ -112,7 +113,8 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
             className={globalClasses.centered}>
             <Icon
               style={{
-                marginLeft: '9px',
+                marginLeft: '4px',
+                marginRight: '4px',
                 height: '24px',
                 width: '24px',
                 cursor: 'pointer',
@@ -140,7 +142,8 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
             className={globalClasses.centered}>
             <Icon
               style={{
-                marginLeft: '9px',
+                marginLeft: '4px',
+                marginRight: '4px',
                 height: '24px',
                 width: '24px',
                 cursor: 'pointer',
