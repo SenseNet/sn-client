@@ -11,7 +11,7 @@ import { getPrimaryActionUrl } from '../../../services'
 import { Icon } from '../../Icon'
 
 interface ViewTitleProps {
-  title: string
+  title?: string
   titleBold?: string
   content?: GenericContent
 }
