@@ -66,7 +66,7 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
       <div data-test="viewtitle">
         {props.title} <span className={classes.textBolder}>{props.titleBold}</span>
       </div>
-      <div className={clsx(classes.actionBar)}>
+      <div className={classes.actionBar}>
         {props.actionName === 'browse' && (
           <span
             title={`Open ${contentDisplayName} Edit Page`}
