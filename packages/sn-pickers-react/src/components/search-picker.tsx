@@ -15,7 +15,7 @@ export function SearchPicker<T extends GenericContentWithIsParent = GenericConte
   const { selection, setSelection, allowMultiple } = useSelection()
 
   const onCheckedChangeHandler = useCallback(
-    (_event: unknown, node: T) => {
+    (_event: React.MouseEvent<HTMLDivElement, MouseEvent> | React.ChangeEvent<HTMLInputElement>, node: T) => {
       const newSelection = allowMultiple ? selection.filter((item) => item.Id !== node.Id) : []
       if (newSelection.length === selection.length || (!allowMultiple && selection[0].Id !== node.Id)) {
         newSelection.push(node)
