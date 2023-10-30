@@ -69,6 +69,7 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
       <div className={classes.actionBar}>
         {props.actionName === 'browse' && (
           <span
+            data-test="viewtitle-edit"
             title={`Open ${contentDisplayName} Edit Page`}
             onClick={async () => {
               history.push(
@@ -97,6 +98,7 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
         )}
         {props.actionName === 'edit' && (
           <span
+            data-test="viewtitle-details"
             title={`Open ${contentDisplayName} Details Page`}
             onClick={async () => {
               history.push(
