@@ -117,9 +117,10 @@ export const EditView: React.FC<EditViewProps> = (props) => {
       }}
       renderTitle={() => (
         <ViewTitle
-          title={props.actionName === 'browse' ? 'Info about' : 'Edit'}
+          title={props.actionName === 'browse' ? '' : 'Edit'}
           titleBold={content?.DisplayName}
           content={content}
+          actionName={props.actionName}
         />
       )}
     />

@@ -63,7 +63,7 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
         ...classes,
         cancel: globalClasses.cancelButton,
       }}
-      renderTitle={() => <ViewTitle title={'Info about'} titleBold={content?.DisplayName} content={content} />}
+      renderTitle={() => <ViewTitle actionName="browse" titleBold={content?.DisplayName} content={content} />}
     />
   )
 }

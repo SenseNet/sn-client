@@ -11,6 +11,7 @@ import {
   DeleteOutlined,
   DescriptionOutlined,
   DomainOutlined,
+  Edit,
   ErrorOutlined,
   EventOutlined,
   FiberNew,
@@ -173,6 +174,10 @@ const getIconByName = (name: string | undefined, options: IconOptions) => {
       return <InlineIcon icon={vercelIcon} width="24" />
     case 'Heroku':
       return <InlineIcon icon={herokuIcon} height="24" />
+    case 'Edit':
+      return <Edit style={options.style} />
+    case 'Details':
+      return <Info style={options.style} />
     default:
       return null
   }

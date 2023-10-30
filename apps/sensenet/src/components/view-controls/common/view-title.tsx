@@ -7,13 +7,14 @@ import { useHistory } from 'react-router'
 import { ResponsivePersonalSettings } from '../../../context'
 import { useGlobalStyles } from '../../../globalStyles'
 import { useSnRoute } from '../../../hooks'
-import { getPrimaryActionUrl } from '../../../services'
+import { getPrimaryActionUrl, getUrlForContent } from '../../../services'
 import { Icon } from '../../Icon'
 
 interface ViewTitleProps {
-  title: string
+  title?: string
   titleBold?: string
   content?: GenericContent
+  actionName?: string
 }
 
 const useStyles = makeStyles(() => {
@@ -22,9 +23,14 @@ const useStyles = makeStyles(() => {
       height: '68px',
       fontSize: '20px',
       flexShrink: 0,
+      flexDirection: 'column',
+      flexWrap: 'nowrap',
     },
     textBolder: {
       fontWeight: 500,
+    },
+    actionBar: {
+      display: 'flex',
     },
   })
 })
@@ -57,37 +63,98 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
 
   return (
     <div className={clsx(classes.title, globalClasses.centered)}>
-      <span data-test="viewtitle">
+      <div data-test="viewtitle">
         {props.title} <span className={classes.textBolder}>{props.titleBold}</span>
-      </span>
-      {props.content && (
-        <span
-          title={`Open ${contentDisplayName} CTD`}
-          onClick={async () => {
-            const content = await getContentTypeId(props.content!.Type)
-            history.push(
-              getPrimaryActionUrl({
-                content,
-                repository,
-                location: history.location,
-                uiSettings,
-                snRoute,
-                removePath: true,
-              }),
-            )
-          }}
-          className={globalClasses.centered}>
-          <Icon
-            style={{
-              marginLeft: '9px',
-              height: '24px',
-              width: '24px',
-              cursor: 'pointer',
+      </div>
+      <div className={classes.actionBar}>
+        {props.actionName === 'browse' && (
+          <span
+            data-test="viewtitle-edit"
+            title={`Open ${contentDisplayName} Edit Page`}
+            onClick={async () => {
+              history.push(
+                getUrlForContent({
+                  content: props.content!,
+                  uiSettings,
+                  location: history.location,
+                  action: 'edit',
+                  snRoute,
+                  removePath: true,
+                }),
+              )
             }}
-            item={{ ContentTypeName: 'ContentType' }}
-          />
-        </span>
-      )}
+            className={globalClasses.centered}>
+            <Icon
+              style={{
+                marginLeft: '4px',
+                marginRight: '4px',
+                height: '24px',
+                width: '24px',
+                cursor: 'pointer',
+              }}
+              item={{ Icon: 'Edit' }}
+            />
+          </span>
+        )}
+        {props.actionName === 'edit' && (
+          <span
+            data-test="viewtitle-details"
+            title={`Open ${contentDisplayName} Details Page`}
+            onClick={async () => {
+              history.push(
+                getUrlForContent({
+                  content: props.content!,
+                  uiSettings,
+                  location: history.location,
+                  action: 'browse',
+                  snRoute,
+                  removePath: true,
+                }),
+              )
+            }}
+            className={globalClasses.centered}>
+            <Icon
+              style={{
+                marginLeft: '4px',
+                marginRight: '4px',
+                height: '24px',
+                width: '24px',
+                cursor: 'pointer',
+              }}
+              item={{ Icon: 'Details' }}
+            />
+          </span>
+        )}
+        {props.content && (
+          <span
+            title={`Open ${contentDisplayName} CTD`}
+            onClick={async () => {
+              const content = await getContentTypeId(props.content!.Type)
+              history.push(
+                getPrimaryActionUrl({
+                  content,
+                  repository,
+                  location: history.location,
+                  uiSettings,
+                  snRoute,
+                  removePath: true,
+                }),
+              )
+            }}
+            className={globalClasses.centered}>
+            <Icon
+              style={{
+                marginLeft: '4px',
+                marginRight: '4px',
+                height: '24px',
+                width: '24px',
+                cursor: 'pointer',
+              }}
+              item={{ ContentTypeName: 'ContentType' }}
+            />
+          </span>
+        )}
+      </div>
     </div>
   )
 }
