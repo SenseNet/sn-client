@@ -27,8 +27,8 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
    * @param {string} explicitQuery The Query string
    * @returns { QueryOperator<TReturns> } The Next query operator (fluent)
    */
-  public explicitQuery<TNewType>(newTypeAssertion: string) {
-    this.stringValue = `${newTypeAssertion}`
+  public explicitQuery<TNewType>(explicitQuery: string) {
+    this.stringValue = `${explicitQuery}`
     this.segmentType = 'explicitQuery'
     return this.finialize<TNewType>()
   }
