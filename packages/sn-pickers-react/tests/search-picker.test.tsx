@@ -30,7 +30,7 @@ describe('Search picker component', () => {
     expect(wrapper.findWhere((node) => node.name() === 'input' && node.prop('checked') === true)).toHaveLength(1)
   })
 
-  it('should handle selection on  click', async () => {
+  it('should handle selection on click', async () => {
     let wrapper: any
     await act(async () => {
       wrapper = mount(
@@ -42,6 +42,24 @@ describe('Search picker component', () => {
 
     await act(async () => {
       await wrapper.find(ListItem).at(3).simulate('click')
+      wrapper.update()
+    })
+
+    expect(wrapper.findWhere((node) => node.name() === 'input' && node.prop('checked') === true)).toHaveLength(1)
+
+    //Double click should not change the selection
+
+    await act(async () => {
+      await wrapper.find(ListItem).at(3).simulate('dblclick')
+      wrapper.update()
+    })
+
+    expect(wrapper.findWhere((node) => node.name() === 'input' && node.prop('checked') === true)).toHaveLength(1)
+
+    //parent Double Click should not change the selection
+
+    await act(async () => {
+      await wrapper.find(ListItem).at(3).closest("[data-testid='search-list-item-container']").simulate('dblclick')
       wrapper.update()
     })
 

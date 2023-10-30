@@ -73,6 +73,7 @@ export function SearchPicker<T extends GenericContentWithIsParent = GenericConte
     <List>
       {props.items.map((item) => (
         <div
+          data-testid="search-list-item-container"
           onClick={(e) => onCheckedChangeHandler(e, item as any)}
           onDoubleClick={(e) => e.stopPropagation()}
           key={item.Id}>
