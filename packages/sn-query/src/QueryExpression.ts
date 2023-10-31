@@ -23,6 +23,17 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
   }
 
   /**
+   * A plain string as Query string
+   * @param {string} explicitQuery The Query string
+   * @returns { QueryOperator<TReturns> } The Next query operator (fluent)
+   */
+  public explicitQuery<TNewType>(explicitQuery: string) {
+    this.stringValue = `${explicitQuery}`
+    this.segmentType = 'explicitQuery'
+    return this.finialize<TNewType>()
+  }
+
+  /**
    * Adds an InTree content query expression
    * @param {string | Content } path The path string or content that will be used as a root
    * @returns { QueryOperator<TReturns> } The Next query operator (fluent)
@@ -49,7 +60,6 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
    * @param { new (...args: any[]) => TNewType } newTypeAssertion The path string or content that will be used as a root
    * @returns { QueryOperator<TNewType> } The Next query operator (fluent)
    */
-
   public type<TNewType>(newTypeAssertion: string) {
     this.stringValue = `Type:${newTypeAssertion}`
     this.segmentType = 'type'

@@ -44,6 +44,11 @@ describe('Query', () => {
       expect(queryInstance.toString()).toBe('test term')
     })
 
+    it('ExplicitQuery', () => {
+      const queryInstance = new Query((q) => q.explicitQuery('Name:"test term"'))
+      expect(queryInstance.toString()).toBe('Name:"test term"')
+    })
+
     it('TypeIs', () => {
       const queryInstance = new Query((q) => q.typeIs<Task>('Task'))
       expect(queryInstance.toString()).toBe('TypeIs:Task')
