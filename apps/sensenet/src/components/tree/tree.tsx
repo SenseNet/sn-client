@@ -20,8 +20,39 @@ type TreeProps = {
   treeData: ItemType
 }
 
-const ROW_HEIGHT = 48
+const ROW_HEIGHT = 47.93
 const LOAD_MORE_CLASS = 'loadMore'
+const MAXIMUM_AVAILABLE_SPACE = 268
+const FONT_HEIGHT = 23.98
+const SUM_VERTICAL_PADDING = 24
+
+const calculateRowUsage = (text: string, availableSpace: number, fontWidth = 7.5) => {
+  let rowCount = 1
+  const words = text.split(' ')
+  const whitespaceLength = 10
+  let currentWidth = words[0].length * fontWidth + whitespaceLength
+
+  for (let i = 0; i < words.length; i++) {
+    //check if the next word will fit, the first will always fit
+    const nextWord = words[i + 1]
+    const isLastWord = i === words.length - 1
+
+    if (nextWord) {
+      const nextWordLength = nextWord.length
+
+      if (currentWidth + nextWordLength * fontWidth <= availableSpace) {
+        currentWidth += nextWordLength * fontWidth + (isLastWord ? 0 : whitespaceLength)
+
+        continue
+      }
+
+      rowCount++
+      currentWidth = nextWordLength * fontWidth + (isLastWord ? 0 : whitespaceLength)
+    }
+  }
+
+  return rowCount
+}
 
 export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, activeItemPath }: TreeProps) {
   const listRef = useRef<List>(null)
@@ -74,22 +105,32 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
     if (!treeData.children?.[index]) {
       return rowHeight
     }
-    return getExpandedItemCount(treeData.children[index]) * rowHeight
+
+    return getRowHeight(treeData.children[index])
   }
 
-  const getExpandedItemCount = (item: ItemType) => {
-    let totalCount = 1
+  const getRowHeight = (item: ItemType) => {
+    //get the current depth of the item
+
+    let itemHeight = 0
+
+    const currentDepth = item.Path.split('/').length - 4
+
+    const currentAvailableSpace = MAXIMUM_AVAILABLE_SPACE - currentDepth * 20
+
+    const calculateRow = calculateRowUsage(item.DisplayName ?? '', currentAvailableSpace)
+
+    itemHeight += calculateRow * FONT_HEIGHT + SUM_VERTICAL_PADDING
+
+    //calculate how many rows the item will take up
 
     if (item.expanded && item.children?.length) {
-      totalCount += item.children.map(getExpandedItemCount).reduce((total, count) => {
-        return total + count
-      }, 0)
-      if (item.hasNextPage) {
-        totalCount++
-      }
+      item.children.forEach((child) => {
+        itemHeight += getRowHeight(child)
+      })
     }
 
-    return totalCount
+    return itemHeight
   }
 
   function renderItem(item: ItemType, keyPrefix: string, paddingLeft: number) {
@@ -173,11 +214,13 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
         flexGrow: 2,
         flexShrink: 0,
         borderRight: '1px solid rgba(128,128,128,.2)',
+        overflow: 'scroll',
       }}>
       <AutoSizer>
         {({ height, width }) => (
           <List
             height={height}
+            autoHeight
             width={width}
             overscanRowCount={10}
             ref={listRef}
