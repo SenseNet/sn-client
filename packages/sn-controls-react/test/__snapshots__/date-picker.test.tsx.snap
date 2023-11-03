@@ -31,6 +31,14 @@ exports[`Date/Date time field control in edit/new view should set all the props 
         "shrink": true,
       }
     }
+    InputProps={
+      Object {
+        "readOnly": true,
+        "style": Object {
+          "minWidth": "200px",
+        },
+      }
+    }
     allowKeyboardControl={true}
     ampm={true}
     disabled={true}
@@ -48,6 +56,11 @@ exports[`Date/Date time field control in edit/new view should set all the props 
     orientation="portrait"
     required={true}
     showTabs={true}
+    style={
+      Object {
+        "display": "inherit",
+      }
+    }
     value="1912-04-15T02:10:00.000Z"
     views={
       Array [
@@ -89,6 +102,11 @@ exports[`Date/Date time field control in edit/new view should set all the props 
     onChange={[Function]}
     openTo="date"
     required={true}
+    style={
+      Object {
+        "display": "inherit",
+      }
+    }
     value="1912-04-15T02:10:00.000Z"
     views={
       Array [

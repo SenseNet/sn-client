@@ -12,6 +12,7 @@ exports[`Drop down list field control in edit/new view should set all the props 
 >
   <WithStyles(ForwardRef(InputLabel))
     htmlFor="VersioningMode"
+    shrink={true}
   >
     Versioning Mode For Current Content
   </WithStyles(ForwardRef(InputLabel))>
