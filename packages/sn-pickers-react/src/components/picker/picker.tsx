@@ -179,7 +179,6 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
               localization={{ label: props.localization?.showSelected ?? 'Show selected' }}
             />
           </div>
-          {console.log('AAAAAAAAAAA', props, mode)}
           {mode === PickerModes.TREE && <TreePicker {...props} />}
           {mode === PickerModes.COPY_MOVE_TREE && <CopyMoveTreePicker {...props} />}
           {mode === PickerModes.SEARCH && <SearchPicker {...props} items={result} error={searchError} />}
