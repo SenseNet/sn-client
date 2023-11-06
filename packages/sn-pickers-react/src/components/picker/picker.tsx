@@ -1,4 +1,4 @@
-import { Box, Button, createStyles, IconButton, makeStyles, TextField, Theme } from '@material-ui/core'
+import { Box, Button, createStyles, IconButton, Link, makeStyles, TextField, Theme } from '@material-ui/core'
 import { AccountTree } from '@material-ui/icons'
 import { ConstantContent } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
@@ -30,8 +30,11 @@ const useStyles = makeStyles((theme: Theme) => {
       color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
     },
     showSelected: {
-      marginTop: '0.5rem',
       textAlign: 'right',
+    },
+    jumpCurrentPath: {
+      paddingLeft: '16px',
+      cursor: 'pointer',
     },
     toolbar: {
       display: 'flex',
@@ -43,21 +46,7 @@ const useStyles = makeStyles((theme: Theme) => {
       height: 20,
       borderRadius: '50%',
       backgroundColor: 'blue',
-      // position: 'relative',
     },
-    // currentLlocationIcon::after {
-    //   content: "",
-    //   position: absolute,
-    //   top: 50%,
-    //   left: 50%,
-    //   transform: translate(-50%, -50%) rotate(45deg),
-    //   width: 0,
-    //   height: 0,
-    //   border-top: 8px solid white,
-    //   border-right: 8px solid white,
-    //   border-bottom: none,
-    //   border-left: none,
-    // }
   })
 })
 
@@ -132,28 +121,36 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
     return () => ac.abort()
   }, [term, props.repository, props.selectionRoots])
 
+  const handleJumpToCurrentPath = async () => {
+    if (!props.currentPath) {
+      return
+    }
+
+    try {
+      const response = await props.repository.loadCollection({
+        path: props.currentPath,
+      })
+
+      setResult(response.d.results)
+      setMode(PickerModes.SEARCH)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <SelectionProvider
       allowMultiple={props.allowMultiple}
       selectionChangeCallback={props.onSelectionChanged}
       defaultValue={props.defaultValue}>
-      <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-        <div
-          style={{
-            float: 'left',
-            width: '185px',
-            height: '100%',
-            display: 'flex',
-            backgroundColor: 'indianred',
-          }}>
-          {console.log(props)}
-          <a className={classes.currentLocationIcon} href={props.contextPath}>
-            CURRENT
-          </a>
-          <a className={classes.currentLocationIcon} href={props.currentPath}>
-            ROOT
-          </a>
-        </div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          height: '100%',
+          justifyContent: 'space-between',
+        }}>
         <PickerContainer>
           <Box className={classes.toolbar}>
             <IconButton
@@ -171,23 +168,31 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
               }}
             />
           </Box>
-          <ShowSelectedButton
-            className={classes.showSelected}
-            handleClick={() => setMode(PickerModes.SELECTION)}
-            localization={{ label: props.localization?.showSelected ?? 'Show selected' }}
-          />
-          {console.log('AAAAAAAAAAA', props)}
-          {mode === PickerModes.SELECTION && <SelectionList {...props} />}
-          {mode === PickerModes.SEARCH && <SearchPicker {...props} items={result} error={searchError} />}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            {console.log(props)}
+
+            <Link variant="body2" onClick={handleJumpToCurrentPath} className={classes.jumpCurrentPath}>
+              Jumping to current path
+            </Link>
+
+            <ShowSelectedButton
+              className={classes.showSelected}
+              handleClick={() => setMode(PickerModes.SELECTION)}
+              localization={{ label: props.localization?.showSelected ?? 'Show selected' }}
+            />
+          </div>
+          {console.log('AAAAAAAAAAA', props, mode)}
           {mode === PickerModes.TREE && <TreePicker {...props} />}
           {mode === PickerModes.COPY_MOVE_TREE && <CopyMoveTreePicker {...props} />}
+          {mode === PickerModes.SEARCH && <SearchPicker {...props} items={result} error={searchError} />}
+          {mode === PickerModes.SELECTION && <SelectionList {...props} />}
         </PickerContainer>
         <SelectionContext.Consumer>
           {({ selection }) =>
             props.renderActions ? (
               props.renderActions(selection)
             ) : (
-              <ActionsContainer>
+              <ActionsContainer style={{ marginLeft: 'auto', width: '100%' }}>
                 <Button
                   aria-label={props.localization?.cancelButton ?? 'Cancel'}
                   className={classes.cancelButton}
