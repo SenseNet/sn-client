@@ -177,6 +177,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         <Button
           aria-label={props.localization?.submit || 'Submit'}
           type="submit"
+          data-test="submit"
           form={`edit-form-${uniqueId}`}
           variant="contained"
           color="primary">

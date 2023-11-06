@@ -7,6 +7,7 @@ import {
   FormHelperText,
   InputLabel,
   List,
+  TextField,
   Typography,
 } from '@material-ui/core'
 import { deepMerge, PathHelper } from '@sensenet/client-utils'
@@ -183,6 +184,14 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
     case 'edit':
       return (
         <FormControl style={styles.root as any} component={'fieldset' as 'div'} required={props.settings.Compulsory}>
+          <TextField
+            name={props.content?.Name}
+            autoComplete="off"
+            value={fieldValue.length === 0 ? '' : 'selected'}
+            required={props.settings.Compulsory}
+            style={{ opacity: '0', pointerEvents: 'none', height: '0px' }}
+          />
+
           <InputLabel shrink={true} htmlFor={props.settings.Name}>
             {props.settings.DisplayName}
           </InputLabel>
