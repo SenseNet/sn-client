@@ -169,8 +169,6 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
             />
           </Box>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            {console.log(props)}
-
             <Link variant="body2" onClick={handleJumpToCurrentPath} className={classes.jumpCurrentPath}>
               Jumping to current path
             </Link>
