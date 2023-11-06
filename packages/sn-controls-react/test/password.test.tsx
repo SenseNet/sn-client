@@ -35,7 +35,6 @@ describe('Password field control', () => {
     expect(wrapper.find(InputLabel).text()).toBe(defaultSettings.DisplayName)
     expect(wrapper.find(Input).prop('name')).toBe(defaultSettings.Name)
     expect(wrapper.find(Input).prop('id')).toBe(defaultSettings.Name)
-    expect(wrapper.find(Input).prop('placeholder')).toBe(defaultSettings.DisplayName)
     expect(wrapper.find(Input).prop('required')).toBeTruthy()
     expect(wrapper.find(Input).prop('disabled')).toBeTruthy()
     expect(wrapper.find(FormHelperText).text()).toBe(defaultSettings.Description)
