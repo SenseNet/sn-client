@@ -197,6 +197,7 @@ export function Explore({
                   onNavigate(i.content)
                 }}
                 batchActions={true}
+                treeActions={true}
               />
             </div>
             <div className={classes.treeAndDatagridWrapper}>
