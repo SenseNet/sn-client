@@ -56,6 +56,7 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
   const treePickerMode = props.treePickerMode ?? PickerModes.TREE
   // const contextPath = props.contextPath!
 
+  const [navigationPath, setNavigationPath] = useState(props.currentPath)
   const [term, setTerm] = useState<string>()
   const [result, setResult] = useState<GenericContent[]>([])
   const [searchError, setSearchError] = useState<string>()
@@ -126,16 +127,7 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
       return
     }
 
-    try {
-      const response = await props.repository.loadCollection({
-        path: props.currentPath,
-      })
-
-      setResult(response.d.results)
-      setMode(PickerModes.SEARCH)
-    } catch (error) {
-      console.log(error)
-    }
+    setNavigationPath(props.currentPath)
   }
 
   return (
@@ -179,7 +171,9 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
               localization={{ label: props.localization?.showSelected ?? 'Show selected' }}
             />
           </div>
-          {mode === PickerModes.TREE && <TreePicker {...props} />}
+          {mode === PickerModes.TREE && (
+            <TreePicker setNavigationPath={setNavigationPath} navigationPath={navigationPath} {...props} />
+          )}
           {mode === PickerModes.COPY_MOVE_TREE && <CopyMoveTreePicker {...props} />}
           {mode === PickerModes.SEARCH && <SearchPicker {...props} items={result} error={searchError} />}
           {mode === PickerModes.SELECTION && <SelectionList {...props} />}

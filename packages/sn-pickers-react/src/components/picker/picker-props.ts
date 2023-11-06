@@ -176,4 +176,7 @@ export interface PickerProps<T> {
   currentParent?: GenericContent
 
   treePickerMode?: PickerModes.TREE | PickerModes.COPY_MOVE_TREE
+
+  navigationPath?: string
+  setNavigationPath?: React.Dispatch<React.SetStateAction<string>>
 }

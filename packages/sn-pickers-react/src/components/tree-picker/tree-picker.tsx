@@ -6,14 +6,21 @@ import { useSelection, useTreePicker } from '../../hooks'
 import { GenericContentWithIsParent } from '../../types'
 import { PickerProps } from '../picker'
 
+type useTreePickerNavigaTionProps = {
+  navigationPath?: string
+  setNavigationPath?: (path: string) => void
+}
+
 /**
  * Represents a list picker component.
  */
 export function TreePicker<T extends GenericContentWithIsParent = GenericContent>(props: PickerProps<T>) {
   const { selection, setSelection } = useSelection()
-  const { items, navigateTo, isLoading, error } = useTreePicker<T>({
+
+  const { items, navigateTo, isLoading, error } = useTreePicker<T & useTreePickerNavigaTionProps>({
     repository: props.repository,
     currentPath: props.currentPath,
+    navigationPath: props.navigationPath,
     selectionRoots: props.selectionRoots,
     allowMultiple: props.allowMultiple,
     itemsODataOptions: props.itemsODataOptions as any,
@@ -37,6 +44,10 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
     (_event: MouseEvent, node: T) => {
       if (node.IsFolder || node.isParent) {
         navigateTo(node)
+        if (props.setNavigationPath) {
+          props.setNavigationPath(node.Path)
+        }
+
         props.onTreeNavigation?.(node.Path)
       }
     },
@@ -105,6 +116,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
 
   return (
     <List>
+      {/* <div onClick={() => navigateTo(props?.defaultValue[0] as T)}>Test</div> */}
       {items?.map((item) => (
         <div
           onClick={(e) => onCheckedChangeHandler(e, item as any)}
