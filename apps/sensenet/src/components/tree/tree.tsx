@@ -159,7 +159,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
       )
     }
     return (
-      <MuiList key={key} style={style}>
+      <MuiList key={key} style={{ display: 'flex', paddingTop: '0px', paddingBottom: '0px', flexDirection: 'column' }}>
         {renderItem(treeData.children?.[index], index.toString(), 10)}
       </MuiList>
     )
@@ -189,6 +189,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
               }
               setElements([...loadMoreElements])
             }}
+            containerStyle={{ overflow: 'initial' }}
             rowRenderer={rowRenderer}
             rowCount={itemCount}
             style={{ outline: 'none' }}

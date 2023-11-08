@@ -28,7 +28,10 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
   })
 
   const onCheckedChangeHandler = useCallback(
-    (_event: unknown, node: T) => {
+    (
+      _event: React.MouseEvent<HTMLDivElement, globalThis.MouseEvent> | React.ChangeEvent<HTMLInputElement>,
+      node: T,
+    ) => {
       if (!node.isParent) {
         const newSelection = props.allowMultiple ? selection.filter((item) => item.Id !== node.Id) : []
         if (newSelection.length === selection.length || (!props.allowMultiple && selection[0].Id !== node.Id)) {
