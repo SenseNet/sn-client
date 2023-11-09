@@ -29,16 +29,24 @@ const useStyles = makeStyles((theme: Theme) => {
     treeActiveIcon: {
       color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
     },
+
     showSelected: {
       textAlign: 'right',
+      marginLeft: 'auto',
+      marginTop: '5px',
     },
     jumpCurrentPath: {
-      paddingLeft: '16px',
       cursor: 'pointer',
     },
     toolbar: {
       display: 'flex',
       alignItems: 'center',
+      paddingRight: '24px',
+      flexWrap: 'wrap',
+      marginBottom: '10px',
+      '& .MuiFormControl-root': {
+        width: 'calc(100% - 48px)',
+      },
     },
     cancelButton: {},
     currentLocationIcon: {
@@ -122,12 +130,8 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
     return () => ac.abort()
   }, [term, props.repository, props.selectionRoots])
 
-  const handleJumpToCurrentPath = async () => {
-    if (!props.currentPath) {
-      return
-    }
-
-    setNavigationPath(props.currentPath)
+  const handleJumpToCurrentPath = (path: string) => {
+    setNavigationPath(path)
   }
 
   return (
@@ -138,70 +142,88 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
       <div
         style={{
           display: 'flex',
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          height: '100%',
+          flexDirection: 'column',
+          flexWrap: 'nowrap',
+          height: '85%',
           justifyContent: 'space-between',
         }}>
-        <PickerContainer>
-          <Box className={classes.toolbar}>
-            <IconButton
-              title={props.localization?.treeViewButton ?? 'Tree view'}
-              onClick={() => setMode(treePickerMode)}
-              className={`${classes.treeIcon} ${mode === treePickerMode ? classes.treeActiveIcon : ''}`}>
-              <AccountTree />
-            </IconButton>
-            <TextField
-              fullWidth={true}
-              placeholder={props.localization?.searchPlaceholder ?? 'Search'}
-              onFocus={() => setMode(PickerModes.SEARCH)}
-              onChange={(ev) => {
-                debouncedQuery(ev.target.value)
-              }}
-            />
-          </Box>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Link variant="body2" onClick={handleJumpToCurrentPath} className={classes.jumpCurrentPath}>
-              Jumping to current path
-            </Link>
+        <Box className={classes.toolbar}>
+          <IconButton
+            title={props.localization?.treeViewButton ?? 'Tree view'}
+            onClick={() => setMode(treePickerMode)}
+            className={`${classes.treeIcon} ${mode === treePickerMode ? classes.treeActiveIcon : ''}`}>
+            <AccountTree />
+          </IconButton>
+          <TextField
+            fullWidth={true}
+            placeholder={props.localization?.searchPlaceholder ?? 'Search'}
+            onFocus={() => setMode(PickerModes.SEARCH)}
+            onChange={(ev) => {
+              debouncedQuery(ev.target.value)
+            }}
+          />
+          <ShowSelectedButton
+            className={classes.showSelected}
+            handleClick={() => setMode(PickerModes.SELECTION)}
+            localization={{ label: props.localization?.showSelected ?? 'Show selected' }}
+          />
+        </Box>
 
-            <ShowSelectedButton
-              className={classes.showSelected}
-              handleClick={() => setMode(PickerModes.SELECTION)}
-              localization={{ label: props.localization?.showSelected ?? 'Show selected' }}
-            />
+        <div className="selection-container" style={{ width: '100%', display: 'flex' }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              rowGap: '10px',
+              width: '140px',
+              paddingInline: '10px',
+            }}>
+            {props.helperPaths?.map((path) => (
+              <Link
+                key={path}
+                variant="body2"
+                onClick={() => handleJumpToCurrentPath(path)}
+                className={classes.jumpCurrentPath}>
+                {path === props.contextPath ? 'Current Content' : path}
+              </Link>
+            ))}
           </div>
-          {mode === PickerModes.TREE && (
-            <TreePicker setNavigationPath={setNavigationPath} navigationPath={navigationPath} {...props} />
-          )}
-          {mode === PickerModes.COPY_MOVE_TREE && <CopyMoveTreePicker {...props} />}
-          {mode === PickerModes.SEARCH && <SearchPicker {...props} items={result} error={searchError} />}
-          {mode === PickerModes.SELECTION && <SelectionList {...props} />}
-        </PickerContainer>
-        <SelectionContext.Consumer>
-          {({ selection }) =>
-            props.renderActions ? (
-              props.renderActions(selection)
-            ) : (
-              <ActionsContainer style={{ marginLeft: 'auto', width: '100%' }}>
-                <Button
-                  aria-label={props.localization?.cancelButton ?? 'Cancel'}
-                  className={classes.cancelButton}
-                  disabled={!!props.isExecInProgress}
-                  onClick={() => props.handleCancel?.()}>
-                  {props.localization?.cancelButton ?? 'Cancel'}
-                </Button>
-                <SaveButton
-                  data-test="picker-submit"
-                  disabled={(props.required && selection.length < props.required) || !!props.isExecInProgress}
-                  localization={{ label: props.localization?.submitButton ?? 'Submit' }}
-                  onClick={() => props.handleSubmit?.(selection)}
-                />
-              </ActionsContainer>
-            )
-          }
-        </SelectionContext.Consumer>
+
+          <PickerContainer style={{ height: '545px', paddingTop: 0, position: 'relative', top: '-7px' }}>
+            {mode === PickerModes.TREE && (
+              <TreePicker setNavigationPath={setNavigationPath} navigationPath={navigationPath} {...props} />
+            )}
+            {mode === PickerModes.COPY_MOVE_TREE && <CopyMoveTreePicker {...props} />}
+            {mode === PickerModes.SEARCH && <SearchPicker {...props} items={result} error={searchError} />}
+            {mode === PickerModes.SELECTION && <SelectionList {...props} />}
+          </PickerContainer>
+        </div>
       </div>
+      <SelectionContext.Consumer>
+        {({ selection }) =>
+          props.renderActions ? (
+            props.renderActions(selection)
+          ) : (
+            <ActionsContainer style={{ marginLeft: 'auto', width: '100%' }}>
+              <Button
+                aria-label={props.localization?.cancelButton ?? 'Cancel'}
+                className={classes.cancelButton}
+                disabled={!!props.isExecInProgress}
+                onClick={() => props.handleCancel?.()}>
+                {props.localization?.cancelButton ?? 'Cancel'}
+              </Button>
+              <SaveButton
+                data-test="picker-submit"
+                disabled={(props.required && selection.length < props.required) || !!props.isExecInProgress}
+                localization={{ label: props.localization?.submitButton ?? 'Submit' }}
+                onClick={() => props.handleSubmit?.(selection)}
+              />
+            </ActionsContainer>
+          )
+        }
+      </SelectionContext.Consumer>
     </SelectionProvider>
   )
 }

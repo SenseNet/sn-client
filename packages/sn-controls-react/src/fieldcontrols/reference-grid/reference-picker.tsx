@@ -12,6 +12,7 @@ interface ReferencePickerProps<T>
   contextPath?: string
   renderIcon?: (name: T) => JSX.Element
   fieldSettings: ReferenceFieldSetting
+  helperPaths?: string[]
 }
 
 const createTypeFilterString = (allowedTypes: string[]) => {
@@ -70,6 +71,7 @@ export const ReferencePicker: React.FC<ReferencePickerProps<GenericContentWithIs
 
   return (
     <Picker
+      helperPaths={props.helperPaths}
       defaultValue={props.defaultValue}
       repository={props.repository}
       currentPath={props.path}

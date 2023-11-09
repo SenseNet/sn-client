@@ -179,6 +179,24 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
     }
   }, [props.actionName, getSelected])
 
+  const currentParent = props.content?.Path.substring(0, props.content?.Path.lastIndexOf('/')) || '/Root'
+
+  const getPathForReferenceHelper = () => {
+    const paths = new Set<string>()
+
+    for (const root of props.settings.SelectionRoots || []) {
+      paths.add(root)
+      //if currenParent inside selectionRoots then add it to the list
+      if (PathHelper.isInSubTree(currentParent, root)) {
+        paths.add(currentParent)
+      }
+    }
+
+    return Array.from(paths)
+  }
+
+  const helperPaths = getPathForReferenceHelper()
+
   switch (props.actionName) {
     case 'new':
     case 'edit':
@@ -229,7 +247,8 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
             <ReferencePicker
               defaultValue={fieldValue}
               path={props.settings.SelectionRoots?.[0] || '/Root'}
-              contextPath={props.content?.Path}
+              contextPath={currentParent}
+              helperPaths={helperPaths}
               repository={props.repository!}
               renderIcon={props.renderPickerIcon}
               handleSubmit={handleOkClick}
