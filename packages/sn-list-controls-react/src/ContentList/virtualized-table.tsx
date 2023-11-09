@@ -95,6 +95,11 @@ interface VirtualizedTableProps<T extends GenericContent> extends ContentListBas
   handleColumnSettingsClick?: () => void
 
   tableProps: {
+    autoHeight?: boolean
+
+    containerStyle?: React.CSSProperties
+
+
     /**
      * Number of rows in table.
      */

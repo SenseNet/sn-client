@@ -735,6 +735,14 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
               },
               onRowDoubleClick: onItemDoubleClickFunc,
               disableHeader: props.hideHeader,
+
+
+              containerStyle: {
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                flexWrap: 'nowrap',
+              },
             }}
           />
           {activeContent ? (
