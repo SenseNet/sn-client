@@ -733,15 +733,22 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
                 setActiveContent(rowMouseEventHandlerParams.rowData)
                 handleItemClick(rowMouseEventHandlerParams)
               },
+              rowStyle: {
+                position: 'static',
+                top: 'auto',
+                height: 'auto',
+                overflow: 'initial',
+                padding: '10px 0px',
+              },
               onRowDoubleClick: onItemDoubleClickFunc,
               disableHeader: props.hideHeader,
-
-
               containerStyle: {
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                flexWrap: 'nowrap',
+                overflowY: 'auto',
+                maxHeight: '100%',
+                paddingBottom: '15px',
               },
             }}
           />
