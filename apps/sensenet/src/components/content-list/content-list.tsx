@@ -738,7 +738,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
                 top: 'auto',
                 height: 'auto',
                 overflow: 'initial',
-                padding: '10px 0px',
+                padding: '5px 0px',
               },
               onRowDoubleClick: onItemDoubleClickFunc,
               disableHeader: props.hideHeader,
