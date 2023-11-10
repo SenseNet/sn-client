@@ -87,7 +87,7 @@ export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(pr
             : history.push(getPrimaryActionUrl({ content: item.content, repository, uiSettings, location }))
         }}
       />
-       {props.treeActions && selected.length > 0 ? (
+      {props.treeActions && selected.length > 0 ? (
         <div className={classes.treeActionWrapper} data-test="tree-actions">
           <Tooltip title={localization.treeActions.delete} placement="bottom">
             <IconButton

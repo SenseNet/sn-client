@@ -96,7 +96,7 @@ export function Explore({
   const pathFromUrl = useQuery().get('path')
   const snRoute = useSnRoute()
   const activeAction = snRoute.match!.params.action
-  const [selected, setSelected] = useState<T[]>([])
+  const [selected, setSelected] = useState<GenericContent[]>([])
 
   const onActivateItemOverride = async (activeItem: GenericContent) => {
     const expandedItem = await repository.load({
