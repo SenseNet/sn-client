@@ -10,9 +10,10 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core'
+import { ODataResponse } from '@sensenet/client-core'
 import { deepMerge, PathHelper } from '@sensenet/client-utils'
 import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
-import { PickerClassKey } from '@sensenet/pickers-react'
+import { PickerClassKey, TReferemceSelectionHelperPath } from '@sensenet/pickers-react'
 import React, { ElementType, useCallback, useEffect, useMemo, useState } from 'react'
 import { ReactClientFieldSetting } from '../client-field-setting'
 import { defaultLocalization } from '../localization'
@@ -181,21 +182,33 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
 
   const currentParent = props.content?.Path.substring(0, props.content?.Path.lastIndexOf('/')) || '/Root'
 
-  const getPathForReferenceHelper = () => {
-    const paths = new Set<string>()
+  const getReferencePickerHelperData = async () => {
+    const SelectionRootQueries = []
+
+    //i will create an array of query and i will resolve them in parallel
 
     for (const root of props.settings.SelectionRoots || []) {
-      paths.add(root)
-      //if currenParent inside selectionRoots then add it to the list
-      if (PathHelper.isInSubTree(currentParent, root)) {
-        paths.add(currentParent)
-      }
+      const promise = props.repository?.load<GenericContent>({
+        idOrPath: root,
+        oDataOptions: {
+          select: ['Name', 'DisplayName', 'Path'],
+        },
+      })
+
+      SelectionRootQueries.push(promise)
     }
 
-    return Array.from(paths)
-  }
+    const promiseResult = await Promise.allSettled(SelectionRootQueries)
 
-  const helperPaths = getPathForReferenceHelper()
+    const fulfilledResults: TReferemceSelectionHelperPath[] = promiseResult
+      .filter((result) => result.status === 'fulfilled' && result.value?.d.Path !== currentParent)
+      .map(
+        (result) =>
+          (result as PromiseFulfilledResult<ODataResponse<GenericContent>>).value.d as TReferemceSelectionHelperPath,
+      )
+
+    return fulfilledResults
+  }
 
   switch (props.actionName) {
     case 'new':
@@ -248,7 +261,7 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
               defaultValue={fieldValue}
               path={props.settings.SelectionRoots?.[0] || '/Root'}
               contextPath={currentParent}
-              helperPaths={helperPaths}
+              getReferencePickerHelperData={getReferencePickerHelperData}
               repository={props.repository!}
               renderIcon={props.renderPickerIcon}
               handleSubmit={handleOkClick}

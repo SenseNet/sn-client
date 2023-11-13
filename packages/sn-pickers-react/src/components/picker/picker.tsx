@@ -4,7 +4,7 @@ import { ConstantContent } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { Suspense, useCallback, useEffect, useMemo, useState } from 'react'
 import { SelectionContext, SelectionProvider } from '../../context/selection'
 import { SaveButton } from '../save-button'
 import { SearchPicker } from '../search-picker'
@@ -12,7 +12,7 @@ import { SelectionList } from '../selection-list'
 import { ShowSelectedButton } from '../show-selected-button'
 import { TreePicker } from '../tree-picker'
 import { CopyMoveTreePicker } from '../tree-picker/copy-move-tree-picker'
-import { PickerProps } from './picker-props'
+import { PickerProps, TReferemceSelectionHelperPath } from './picker-props'
 
 export enum PickerModes {
   TREE,
@@ -57,6 +57,71 @@ const useStyles = makeStyles((theme: Theme) => {
     },
   })
 })
+
+type ReferenceFieldHelperProps = {
+  contextPath?: string
+  handleJumpToCurrentPath: (path: string) => void
+  styles?: string
+  getPath?: () => Promise<TReferemceSelectionHelperPath[]>
+  currentContentText?: string
+}
+
+const ReferenceFieldHelper = ({
+  handleJumpToCurrentPath,
+  contextPath,
+  styles,
+  getPath,
+  currentContentText,
+}: ReferenceFieldHelperProps) => {
+  const memorizedGetPath = useMemo(() => getPath, [getPath])
+
+  const [helperPaths, setHelperPaths] = useState<TReferemceSelectionHelperPath[]>([])
+
+  useEffect(() => {
+    const fetchResult = async () => {
+      if (!memorizedGetPath) {
+        return
+      }
+
+      try {
+        const response = await memorizedGetPath()
+
+        setHelperPaths(response)
+      } catch (e) {
+        console.error(e)
+      }
+    }
+
+    fetchResult()
+  }, [memorizedGetPath])
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        rowGap: '10px',
+        paddingTop: '15px',
+        width: '240px',
+        paddingInline: '10px',
+      }}>
+      <Link variant="body2" onClick={() => handleJumpToCurrentPath(contextPath || '')} className={styles}>
+        {currentContentText || 'Current Content'}
+      </Link>
+
+      {helperPaths.length > 0 &&
+        helperPaths.map((path) => {
+          return (
+            <Link key={path.Path} variant="body2" onClick={() => handleJumpToCurrentPath(path.Path)} className={styles}>
+              {path.DisplayName || path.Name}
+            </Link>
+          )
+        })}
+    </div>
+  )
+}
 
 export type PickerClassKey = Partial<ReturnType<typeof useStyles>>
 
@@ -170,26 +235,15 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
         </Box>
 
         <div className="selection-container" style={{ width: '100%', display: 'flex' }}>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              rowGap: '10px',
-              width: '140px',
-              paddingInline: '10px',
-            }}>
-            {props.helperPaths?.map((path) => (
-              <Link
-                key={path}
-                variant="body2"
-                onClick={() => handleJumpToCurrentPath(path)}
-                className={classes.jumpCurrentPath}>
-                {path === props.contextPath ? 'Current Content' : path}
-              </Link>
-            ))}
-          </div>
+          <Suspense fallback={<div>Loading...</div>}>
+            <ReferenceFieldHelper
+              handleJumpToCurrentPath={handleJumpToCurrentPath}
+              contextPath={props.contextPath}
+              styles={classes.jumpCurrentPath}
+              getPath={props.getReferencePickerHelperData}
+              currentContentText={props.localization?.currentContentText}
+            />
+          </Suspense>
 
           <PickerContainer style={{ height: '545px', paddingTop: 0, position: 'relative', top: '-7px' }}>
             {mode === PickerModes.TREE && (

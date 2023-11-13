@@ -9,7 +9,28 @@ export interface PickerLocalization {
   treeViewButton?: string
   submitButton?: string
   cancelButton?: string
+  currentContentText?: string
 }
+
+export type TReferemceSelectionHelperPath = Pick<
+  GenericContent,
+  | 'Id'
+  | 'ParentId'
+  | 'OwnerId'
+  | 'VersionId'
+  | 'Icon'
+  | 'Name'
+  | 'CreatedById'
+  | 'ModifiedById'
+  | 'Version'
+  | 'Path'
+  | 'Depth'
+  | 'IsSystemContent'
+  | 'IsFile'
+  | 'IsFolder'
+  | 'DisplayName'
+  | 'Description'
+>
 
 /**
  * Properties for picker component.
@@ -179,5 +200,5 @@ export interface PickerProps<T> {
 
   navigationPath?: string
   setNavigationPath?: React.Dispatch<React.SetStateAction<string>>
-  helperPaths?: string[]
+  getReferencePickerHelperData?: () => Promise<any[]>
 }
