@@ -24,6 +24,8 @@ describe('Picker component', () => {
     }
   }
 
+  const repositoryForPickerHelper = (loadCollectionValue?: unknown, loadValue?: unknown) => {}
+
   it('should render properly', async () => {
     let wrapper: any
     await act(async () => {
@@ -352,7 +354,7 @@ describe('Picker component', () => {
   })
 
   it('should refresh the results after search', async () => {
-    jest.useFakeTimers('legacy' as any)
+    jest.useFakeTimers('legacy')
 
     let wrapper: any
     const repositoryInstance = repository(genericContentItems)
@@ -389,7 +391,7 @@ describe('Picker component', () => {
   })
 
   it('should search inside SelectionRoots', async () => {
-    jest.useFakeTimers('legacy' as any)
+    jest.useFakeTimers('legacy')
 
     let wrapper: any
     const loadCollection = jest.fn()
@@ -458,21 +460,7 @@ describe('Picker component', () => {
   })
 
   it('should render helper Items  is defined', async () => {
-    const helperItems = ({ path }: any) => {
-      return {
-        d: {
-          results: [
-            {
-              Id: 10,
-              Type: 'Folder',
-              Path: path,
-              Name: 'SampleWorkspace',
-              DisplayName: 'Sample Workspace',
-            },
-          ],
-        },
-      }
-    }
+    const helperItems = [{ Id: 1, Name: 'Item1', DisplayName: 'Display Item1', Path: '/Root/Content/EN/Blog/Posts' }]
 
     let wrapper: any
     await act(async () => {
