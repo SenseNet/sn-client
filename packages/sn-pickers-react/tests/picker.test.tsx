@@ -89,7 +89,7 @@ describe('Picker component', () => {
     wrapper.update()
 
     expect(wrapper.find(Button).at(1).text()).toContain('Submit')
-    expect(wrapper.find(Link).text()).toContain('Show selected')
+    expect(wrapper.find("[data-test='show-selected-container'] button").text()).toContain('Show selected')
   })
 
   it('should handle submit', async () => {
@@ -124,7 +124,7 @@ describe('Picker component', () => {
 
     expect(wrapper.update().find(SelectionList).exists()).toBeFalsy()
 
-    act(() => wrapper.find(Link).prop('onClick')())
+    act(() => wrapper.find("[data-test='show-selected-container'] button").prop('onClick')())
     wrapper.update()
 
     expect(wrapper.update().find(SelectionList).exists()).toBeTruthy()
@@ -137,7 +137,7 @@ describe('Picker component', () => {
     })
 
     // navigate to selection list from tree view
-    act(() => wrapper.find(Link).prop('onClick')())
+    act(() => wrapper.find("[data-test='show-selected-container'] button").prop('onClick')())
 
     wrapper.update()
 
@@ -292,14 +292,14 @@ describe('Picker component', () => {
       wrapper = mount(<Picker repository={repository(genericContentItems) as any} required={1} />)
     })
 
-    expect(wrapper.update().find(Link).text()).toContain('(0)')
+    expect(wrapper.update().find("[data-test='show-selected-container'] button").text()).toContain('(0)')
 
     await act(
       async () =>
         await wrapper.find(ListItem).at(1).find(Checkbox).prop('onChange')({ target: { checked: true } } as any, true),
     )
 
-    expect(wrapper.update().find(Link).text()).toContain('(1)')
+    expect(wrapper.update().find("[data-test='show-selected-container'] button").text()).toContain('(1)')
   })
 
   it('After doubleclick a checkbox, list item should not be selected', async () => {
@@ -308,11 +308,11 @@ describe('Picker component', () => {
       wrapper = mount(<Picker repository={repository(genericContentItems) as any} required={1} />)
     })
 
-    expect(wrapper.update().find(Link).text()).toContain('(0)')
+    expect(wrapper.update().find("[data-test='show-selected-container'] button").text()).toContain('(0)')
 
     await act(async () => await wrapper.find(ListItem).at(1).find(Checkbox).simulate('dblclick'))
 
-    expect(wrapper.update().find(Link).text()).toContain('(0)')
+    expect(wrapper.update().find("[data-test='show-selected-container'] button").text()).toContain('(0)')
   })
 
   it('should allow multiple selection', async () => {
@@ -321,7 +321,7 @@ describe('Picker component', () => {
       wrapper = mount(<Picker repository={repository(genericContentItems) as any} allowMultiple={true} />)
     })
 
-    expect(wrapper.update().find(Link).text()).toContain('(0)')
+    expect(wrapper.update().find("[data-test='show-selected-container'] button").text()).toContain('(0)')
 
     await act(async () => {
       await wrapper.update().find(ListItem).at(1).find(Checkbox).prop('onChange')(
@@ -334,7 +334,7 @@ describe('Picker component', () => {
       )
     })
 
-    expect(wrapper.update().find(Link).text()).toContain('(2)')
+    expect(wrapper.update().find("[data-test='show-selected-container'] button").text()).toContain('(2)')
   })
 
   it('should enter search mode after input getting focus', async () => {
