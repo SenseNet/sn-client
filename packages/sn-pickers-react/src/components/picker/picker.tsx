@@ -175,7 +175,6 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
             handleJumpToCurrentPath={handleJumpToCurrentPath}
             contextPath={props.contextPath}
             styles={classes.jumpCurrentPath}
-            getPath={props.getReferencePickerHelperData}
             repository={props.repository}
             selectionRoots={props.selectionRoots}
             currentContentText={props.localization?.currentContentText}

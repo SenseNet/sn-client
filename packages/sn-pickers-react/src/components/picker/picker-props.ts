@@ -200,5 +200,4 @@ export interface PickerProps<T> {
 
   navigationPath?: string
   setNavigationPath?: React.Dispatch<React.SetStateAction<string>>
-  getReferencePickerHelperData?: () => Promise<TReferemceSelectionHelperPath[]>
 }

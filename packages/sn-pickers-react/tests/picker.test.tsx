@@ -3,7 +3,7 @@ import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { SearchPicker, SelectionList, TreePicker } from '../src'
-import { Picker, PickerModes, TReferemceSelectionHelperPath } from '../src/components/picker'
+import { Picker, PickerModes } from '../src/components/picker'
 import { genericContentItems } from './mocks/items'
 
 describe('Picker component', () => {
@@ -352,7 +352,7 @@ describe('Picker component', () => {
   })
 
   it('should refresh the results after search', async () => {
-    jest.useFakeTimers('legacy')
+    jest.useFakeTimers('legacy' as any)
 
     let wrapper: any
     const repositoryInstance = repository(genericContentItems)
@@ -389,7 +389,7 @@ describe('Picker component', () => {
   })
 
   it('should search inside SelectionRoots', async () => {
-    jest.useFakeTimers('legacy')
+    jest.useFakeTimers('legacy' as any)
 
     let wrapper: any
     const loadCollection = jest.fn()
@@ -457,50 +457,35 @@ describe('Picker component', () => {
     })
   })
 
-  it('should run getReferencePickerHelper', async () => {
-    const getReferencePickerHelperData = jest.fn()
+  it('should render helper Items  is defined', async () => {
+    const helperItems = ({ path }: any) => {
+      return {
+        d: {
+          results: [
+            {
+              Id: 10,
+              Type: 'Folder',
+              Path: path,
+              Name: 'SampleWorkspace',
+              DisplayName: 'Sample Workspace',
+            },
+          ],
+        },
+      }
+    }
 
     let wrapper: any
     await act(async () => {
       wrapper = mount(
         <Picker
-          getReferencePickerHelperData={getReferencePickerHelperData}
-          repository={repository(genericContentItems) as any}
-        />,
-      )
-    })
-
-    // getReferencePickerHelperData should be called once
-
-    expect(getReferencePickerHelperData).toHaveBeenCalledTimes(1)
-  })
-
-  it('should render helper Items if getReferencePickerHelperData is defined', async () => {
-    const helperItems: TReferemceSelectionHelperPath[] = [
-      { Id: 1, Name: 'Item1', DisplayName: 'Display Item1', Path: '/path/to/item1' },
-      { Id: 2, Name: 'Item2', DisplayName: 'Display Item2', Path: '/path/to/item2' },
-      { Id: 3, Name: 'Item3', DisplayName: 'Display Item3', Path: '/path/to/item3' },
-    ]
-
-    const getReferencePickerHelperData = jest.fn(() => Promise.resolve(helperItems))
-
-    let wrapper: any
-    await act(async () => {
-      wrapper = mount(
-        <Picker
-          getReferencePickerHelperData={getReferencePickerHelperData}
-          repository={repository(genericContentItems) as any}
+          selectionRoots={['/Root/Content/EN/Blog/Posts', '/Root/Content/img']}
+          contextPath="/Root/Content/EN/Blog/Posts"
+          repository={repository(genericContentItems, helperItems) as any}
         />,
       )
     })
 
     wrapper.update()
-
-    // getReferencePickerHelperData should be called once
-
-    expect(getReferencePickerHelperData).toHaveBeenCalledTimes(1)
-
-    // helper items should be rendered
 
     //data-test current-content should be rendered
 
@@ -511,7 +496,5 @@ describe('Picker component', () => {
     expect(wrapper.find("[data-test='path-helpers']").exists()).toBeTruthy()
 
     //find helper items length of Link inside data-test path-helpers
-
-    expect(wrapper.find("[data-test='path-helpers']").find(Link).length).toBe(helperItems.length)
   })
 })

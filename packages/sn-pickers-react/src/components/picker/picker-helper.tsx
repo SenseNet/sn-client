@@ -9,7 +9,6 @@ type ReferenceFieldHelperProps = {
   contextPath?: string
   handleJumpToCurrentPath: (path: string) => void
   styles?: string
-  getPath?: () => Promise<TReferemceSelectionHelperPath[]>
   selectionRoots?: string[]
   currentContentText?: string
   repository: Repository
@@ -45,6 +44,11 @@ export const PickerHelper = ({
 
       let isContextPathInTree = false
 
+      console.log({
+        selectionRoots,
+        contextPath,
+      })
+
       for (const root of selectionRoots || []) {
         if (PathHelper.isInSubTree(root, contextPath!)) {
           isContextPathInTree = true
@@ -68,6 +72,8 @@ export const PickerHelper = ({
           (result) =>
             (result as PromiseFulfilledResult<ODataResponse<GenericContent>>).value.d as TReferemceSelectionHelperPath,
         )
+
+      console.log(fulfilledResults)
 
       setHelperPaths(fulfilledResults)
       setIsLoading(false)
@@ -93,7 +99,7 @@ export const PickerHelper = ({
     <div style={containerStyle}>
       {isAncestorOfRoot && (
         <Link
-          data-test="root-content"
+          data-test="current-content"
           variant="body2"
           onClick={() => handleJumpToCurrentPath(contextPath || '')}
           className={styles}>
