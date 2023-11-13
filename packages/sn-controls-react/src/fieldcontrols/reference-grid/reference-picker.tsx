@@ -1,7 +1,7 @@
 import { Avatar, DialogActions, DialogContent, LinearProgress } from '@material-ui/core'
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { Folder, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
-import { GenericContentWithIsParent, Picker, PickerProps, TReferemceSelectionHelperPath } from '@sensenet/pickers-react'
+import { GenericContentWithIsParent, Picker, PickerProps } from '@sensenet/pickers-react'
 import React, { useMemo } from 'react'
 import { renderIconDefault } from '../icon'
 
@@ -12,8 +12,6 @@ interface ReferencePickerProps<T>
   contextPath?: string
   renderIcon?: (name: T) => JSX.Element
   fieldSettings: ReferenceFieldSetting
-  helperPaths?: string[]
-  getReferencePickerHelperData?: () => Promise<TReferemceSelectionHelperPath[]>
 }
 
 const createTypeFilterString = (allowedTypes: string[]) => {
@@ -74,7 +72,6 @@ export const ReferencePicker: React.FC<ReferencePickerProps<GenericContentWithIs
     <Picker
       defaultValue={props.defaultValue}
       repository={props.repository}
-      getReferencePickerHelperData={props.getReferencePickerHelperData}
       currentPath={props.path}
       contextPath={props.contextPath}
       selectionRoots={props.fieldSettings.SelectionRoots}

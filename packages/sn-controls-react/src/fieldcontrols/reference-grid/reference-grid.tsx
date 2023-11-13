@@ -10,10 +10,9 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core'
-import { ODataResponse } from '@sensenet/client-core'
 import { deepMerge, PathHelper } from '@sensenet/client-utils'
 import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
-import { PickerClassKey, TReferemceSelectionHelperPath } from '@sensenet/pickers-react'
+import { PickerClassKey } from '@sensenet/pickers-react'
 import React, { ElementType, useCallback, useEffect, useMemo, useState } from 'react'
 import { ReactClientFieldSetting } from '../client-field-setting'
 import { defaultLocalization } from '../localization'
@@ -182,34 +181,6 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
 
   const currentParent = props.content?.Path.substring(0, props.content?.Path.lastIndexOf('/')) || '/Root'
 
-  const getReferencePickerHelperData = async () => {
-    const SelectionRootQueries = []
-
-    //i will create an array of query and i will resolve them in parallel
-
-    for (const root of props.settings.SelectionRoots || []) {
-      const promise = props.repository?.load<GenericContent>({
-        idOrPath: root,
-        oDataOptions: {
-          select: ['Name', 'DisplayName', 'Path'],
-        },
-      })
-
-      SelectionRootQueries.push(promise)
-    }
-
-    const promiseResult = await Promise.allSettled(SelectionRootQueries)
-
-    const fulfilledResults: TReferemceSelectionHelperPath[] = promiseResult
-      .filter((result) => result.status === 'fulfilled' && result.value?.d.Path !== currentParent)
-      .map(
-        (result) =>
-          (result as PromiseFulfilledResult<ODataResponse<GenericContent>>).value.d as TReferemceSelectionHelperPath,
-      )
-
-    return fulfilledResults
-  }
-
   switch (props.actionName) {
     case 'new':
     case 'edit':
@@ -261,7 +232,6 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
               defaultValue={fieldValue}
               path={props.settings.SelectionRoots?.[0] || '/Root'}
               contextPath={currentParent}
-              getReferencePickerHelperData={getReferencePickerHelperData}
               repository={props.repository!}
               renderIcon={props.renderPickerIcon}
               handleSubmit={handleOkClick}
