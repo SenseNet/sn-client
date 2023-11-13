@@ -83,13 +83,9 @@ const ReferenceFieldHelper = ({
         return
       }
 
-      try {
-        const response = await memorizedGetPath()
+      const response = await memorizedGetPath()
 
-        setHelperPaths(response)
-      } catch (e) {
-        console.error(e)
-      }
+      setHelperPaths(response)
     }
 
     fetchResult()
@@ -107,18 +103,29 @@ const ReferenceFieldHelper = ({
         width: '240px',
         paddingInline: '10px',
       }}>
-      <Link variant="body2" onClick={() => handleJumpToCurrentPath(contextPath || '')} className={styles}>
+      <Link
+        data-test="current-content"
+        variant="body2"
+        onClick={() => handleJumpToCurrentPath(contextPath || '')}
+        className={styles}>
         {currentContentText || 'Current Content'}
       </Link>
 
-      {helperPaths.length > 0 &&
-        helperPaths.map((path) => {
-          return (
-            <Link key={path.Path} variant="body2" onClick={() => handleJumpToCurrentPath(path.Path)} className={styles}>
-              {path.DisplayName || path.Name}
-            </Link>
-          )
-        })}
+      {helperPaths.length > 0 && (
+        <div data-test="path-helpers">
+          {helperPaths.map((path) => {
+            return (
+              <Link
+                key={path.Path}
+                variant="body2"
+                onClick={() => handleJumpToCurrentPath(path.Path)}
+                className={styles}>
+                {path.DisplayName || path.Name}
+              </Link>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }
