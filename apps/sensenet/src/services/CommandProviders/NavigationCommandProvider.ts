@@ -39,14 +39,6 @@ export class NavigationCommandProvider implements CommandProvider {
         keywords: 'saved query search find',
         hits: [term],
       },
-      {
-        primaryText: this.localizationValues.eventsPrimary,
-        url: resolvePathParams({ path: PATHS.events.appPath }),
-        secondaryText: this.localizationValues.eventsSecondary,
-        content: { Icon: 'EventLog' } as any,
-        keywords: 'event events error warning log logs',
-        hits: [term],
-      },
     ]
   }
 
