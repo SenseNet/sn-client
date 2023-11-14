@@ -1,6 +1,6 @@
 import React, { lazy, useState } from 'react'
 import { PATHS } from '../../application-paths'
-import { Switch as MuiSwitch } from '@material-ui/core'
+import { Switch } from '@sensenet/controls-react'
 
 const ContentComponent = lazy(() => import(/* webpackChunkName: "content" */ '../content'))
 
@@ -9,10 +9,12 @@ const ContentTypeList: React.FC = () => {
   const renderBeforeGrid = () => {
     return (
       <div style={{ marginTop: '20px', marginBottom: '20px' }}>
-        <label htmlFor="showHiddenTypes">Show hidden types</label>
-        <MuiSwitch
+        <label htmlFor="showHiddenTypes" style={{ marginRight: '10px' }}>
+          Show hidden types
+        </label>
+        <Switch
           data-test="hidden-type-switch"
-          size="small"
+          size="medium"
           checked={showHiddenTypes}
           onChange={() => setShowHiddenTypes(!showHiddenTypes)}
         />
