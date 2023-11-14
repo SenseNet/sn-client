@@ -44,14 +44,13 @@ export const PickerHelper = ({
 
       let isContextPathInTree = false
 
-      console.log({
-        selectionRoots,
-        contextPath,
-      })
-
       for (const root of selectionRoots || []) {
         if (PathHelper.isInSubTree(root, contextPath!)) {
           isContextPathInTree = true
+        }
+
+        if (!repository.load) {
+          continue
         }
 
         const promise = repository?.load<GenericContent>({
@@ -64,20 +63,24 @@ export const PickerHelper = ({
         SelectionRootQueries.push(promise)
       }
 
-      const promiseResult = await Promise.allSettled(SelectionRootQueries)
+      try {
+        const promiseResult = await Promise.allSettled(SelectionRootQueries)
 
-      const fulfilledResults: TReferemceSelectionHelperPath[] = promiseResult
-        .filter((result) => result.status === 'fulfilled' && result.value?.d.Path !== contextPath)
-        .map(
-          (result) =>
-            (result as PromiseFulfilledResult<ODataResponse<GenericContent>>).value.d as TReferemceSelectionHelperPath,
-        )
+        const fulfilledResults: TReferemceSelectionHelperPath[] = promiseResult
+          .filter((result) => result.status === 'fulfilled' && result.value?.d.Path !== contextPath)
+          .map(
+            (result) =>
+              (result as PromiseFulfilledResult<ODataResponse<GenericContent>>).value
+                .d as TReferemceSelectionHelperPath,
+          )
 
-      console.log(fulfilledResults)
-
-      setHelperPaths(fulfilledResults)
-      setIsLoading(false)
-      setIsAncestorOfRoot(isContextPathInTree)
+        setHelperPaths(fulfilledResults)
+        console.log(fulfilledResults)
+        setIsLoading(false)
+        setIsAncestorOfRoot(isContextPathInTree)
+      } catch (e) {
+        console.error(e)
+      }
     }
 
     getReferencePickerHelperData()
@@ -113,6 +116,7 @@ export const PickerHelper = ({
             return (
               <Link
                 key={path.Path}
+                data-test={`path-helper-${path.Path}`}
                 variant="body2"
                 onClick={() => handleJumpToCurrentPath(path.Path)}
                 className={styles}>

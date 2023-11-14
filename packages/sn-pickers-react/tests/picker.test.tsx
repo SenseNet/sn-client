@@ -459,14 +459,14 @@ describe('Picker component', () => {
     })
   })
 
-  it('should render helper Items  is defined', async () => {
-    const helperItems = [{ Id: 1, Name: 'Item1', DisplayName: 'Display Item1', Path: '/Root/Content/EN/Blog/Posts' }]
+  it('should render helper Current Conten based on SelectionRoot', async () => {
+    let helperItems = { Id: 1, Name: 'Item1', DisplayName: 'Display Item1', Path: '/Root/Content/EN/Blog/Posts' }
 
     let wrapper: any
     await act(async () => {
       wrapper = mount(
         <Picker
-          selectionRoots={['/Root/Content/EN/Blog/Posts', '/Root/Content/img']}
+          selectionRoots={['/Root/Content/EN/Blog/Posts']}
           contextPath="/Root/Content/EN/Blog/Posts"
           repository={repository(genericContentItems, helperItems) as any}
         />,
@@ -477,11 +477,89 @@ describe('Picker component', () => {
 
     //data-test current-content should be rendered
 
-    expect(wrapper.find("[data-test='current-content']").exists()).toBeTruthy()
+    expect(
+      wrapper
+        .find(Link)
+        .filterWhere((n) => n.prop('data-test') === 'current-content')
+        .exists(),
+    ).toBeTruthy()
+
+    helperItems = { Id: 1, Name: 'Item1', DisplayName: 'Display Item1', Path: '/Root/Content/HU/Blog/Posts' }
+
+    await act(async () => {
+      wrapper = mount(
+        <Picker
+          selectionRoots={['/Root/Content/HU/Blog/Posts']}
+          contextPath="/Root/Content/EN/Blog/Posts"
+          repository={repository(genericContentItems, helperItems) as any}
+        />,
+      )
+    })
+
+    wrapper.update()
+
+    expect(
+      wrapper
+        .find(Link)
+        .filterWhere((n) => n.prop('data-test') === 'current-content')
+        .exists(),
+    ).toBeFalsy()
+  })
+
+  it('Should render Selection Roots', async () => {
+    let wrapper: any
 
     // helper items should be rendered
 
-    expect(wrapper.find("[data-test='path-helpers']").exists()).toBeTruthy()
+    const helperItems = {
+      '/Root/Content/EN/Blog/Posts': {
+        Id: 1,
+        Name: 'Item1',
+        DisplayName: 'Display Item1',
+        Path: '/Root/Content/EN/Blog/Posts',
+      },
+      '/Root/Content/HU/Blog/Posts': {
+        Id: 1,
+        Name: 'Item1',
+        DisplayName: 'Display Item1',
+        Path: '/Root/Content/HU/Blog/Posts',
+      },
+    }
+    const repositoryHandle = (loadCollectionValue?: unknown) => {
+      return {
+        loadCollection: () => {
+          return {
+            d: {
+              results: loadCollectionValue,
+            },
+          }
+        },
+        load: (item) => {
+          return {
+            d: helperItems[item.idOrPath],
+          }
+        },
+      }
+    }
+
+    await act(async () => {
+      wrapper = mount(
+        <Picker
+          selectionRoots={['/Root/Content/HU/Blog/Posts']}
+          contextPath="/Root/Content/EN/Blog/Posts"
+          repository={repositoryHandle(genericContentItems) as any}
+        />,
+      )
+    })
+
+    wrapper.update()
+
+    expect(
+      wrapper
+        .find(Link)
+        .filterWhere((n) => n.prop('data-test') === `path-helper-${helperItems['/Root/Content/HU/Blog/Posts'].Path}`)
+        .exists(),
+    ).toBeTruthy()
 
     //find helper items length of Link inside data-test path-helpers
   })
