@@ -384,7 +384,6 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
       {({ height, width }) => (
         <>
           <Table
-            {...tableProps}
             className={classes.root}
             height={height}
             width={width}
@@ -392,9 +391,11 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
               direction: 'inherit',
               outline: 'none',
             }}
-            rowClassName={getRowClassName}>
+            rowClassName={getRowClassName}
+            {...tableProps}>
             {currentFieldsToDisplay.map((field) => {
               const currentField = field.field
+
               return (
                 <Column
                   flexGrow={props.displayRowCheckbox && field.field === 'Checkbox' ? 0 : 0}
