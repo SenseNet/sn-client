@@ -102,13 +102,6 @@ export const DesktopNavMenu: FunctionComponent = () => {
 
   return (
     <div className={clsx(globalClasses.centered, classes.navMenu)}>
-      <IconButton
-        id="olvy-trigger"
-        aria-label={localization.topMenu.openNewMenu}
-        className={classes.iconButton}
-        style={{ marginRight: '16px' }}>
-        <Notifications className={classes.icon} />
-      </IconButton>
       <>
         <UserAvatar
           user={currentUser}

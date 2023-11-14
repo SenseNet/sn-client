@@ -77,11 +77,6 @@ export const Settings: React.FunctionComponent = () => {
       displayName: localizationDrawer.titles.Webhooks,
       url: resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'webhooks' } }),
     },
-    {
-      name: 'adminui',
-      displayName: localizationDrawer.titles.AdminUiCustomization,
-      url: resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'adminui' } }),
-    },
   ]
 
   const renderContent = () => {
