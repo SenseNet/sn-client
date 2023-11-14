@@ -48,13 +48,14 @@ export const Password: React.FC<ReactClientFieldSetting> = (props) => {
     case 'new':
       return (
         <FormControl fullWidth={true} className={classes.root}>
-          <InputLabel htmlFor={props.settings.Name}>{props.settings.DisplayName}</InputLabel>
+          <InputLabel htmlFor={props.settings.Name} shrink={true}>
+            {props.settings.DisplayName}
+          </InputLabel>
           <Input
             autoComplete="new-password"
             type={showPassword ? 'text' : 'password'}
             name={props.settings.Name}
             id={props.settings.Name}
-            placeholder={props.settings.DisplayName}
             required={props.settings.Compulsory}
             disabled={props.settings.ReadOnly}
             onChange={handleChange}
