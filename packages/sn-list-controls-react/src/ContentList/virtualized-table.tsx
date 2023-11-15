@@ -20,6 +20,7 @@ import {
   Table,
   TableCellProps,
   TableCellRenderer,
+  TableProps,
 } from 'react-virtualized'
 import { ColumnSetting, ContentListBaseProps } from './content-list-base-props'
 import { ActionsCell, DateCell, ReferenceCell, RowCheckbox, VirtualDefaultCell, VirtualDisplayNameCell } from '.'
@@ -77,6 +78,39 @@ interface ExtendedGenericContent extends GenericContent {
   ColumnSettings?: string
 }
 
+interface snTableProps extends Partial<TableProps> {
+  /**
+   * Number of rows in table.
+   */
+  rowCount: number
+  /**
+   * Callback responsible for returning a data row given an index.
+   * ({ index: number }): any
+   */
+  rowHeight: number | ((params: Index) => number)
+  /** Fixed height of header row */
+  headerHeight: number
+  /**
+   * Callback responsible for returning a data row given an index.
+   * ({ index: number }): any
+   */
+  rowGetter: (info: Index) => any
+  /**
+   * Callback invoked when a user clicks on a table row.
+   * ({ index: number }): void
+   */
+  onRowClick?: (info: RowMouseEventHandlerParams) => void
+  /**
+   * Callback invoked when a user double-clicks on a table row.
+   * ({ index: number }): void
+   */
+  onRowDoubleClick?: (info: RowMouseEventHandlerParams) => void
+  /**
+   * Disable rendering the header at all
+   */
+  disableHeader?: boolean
+}
+
 interface VirtualizedTableProps<T extends GenericContent> extends ContentListBaseProps<T> {
   /**
    * Contains custom cell template components
@@ -94,38 +128,7 @@ interface VirtualizedTableProps<T extends GenericContent> extends ContentListBas
 
   handleColumnSettingsClick?: () => void
 
-  tableProps: {
-    /**
-     * Number of rows in table.
-     */
-    rowCount: number
-    /**
-     * Callback responsible for returning a data row given an index.
-     * ({ index: number }): any
-     */
-    rowHeight: number | ((params: Index) => number)
-    /** Fixed height of header row */
-    headerHeight: number
-    /**
-     * Callback responsible for returning a data row given an index.
-     * ({ index: number }): any
-     */
-    rowGetter: (info: Index) => any
-    /**
-     * Callback invoked when a user clicks on a table row.
-     * ({ index: number }): void
-     */
-    onRowClick?: (info: RowMouseEventHandlerParams) => void
-    /**
-     * Callback invoked when a user double-clicks on a table row.
-     * ({ index: number }): void
-     */
-    onRowDoubleClick?: (info: RowMouseEventHandlerParams) => void
-    /**
-     * Disable rendering the header at all
-     */
-    disableHeader?: boolean
-  }
+  tableProps: snTableProps
 }
 
 const minColumnWith = (field: keyof ExtendedGenericContent) => {
@@ -388,10 +391,11 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
               direction: 'inherit',
               outline: 'none',
             }}
-            {...tableProps}
-            rowClassName={getRowClassName}>
+            rowClassName={getRowClassName}
+            {...tableProps}>
             {currentFieldsToDisplay.map((field) => {
               const currentField = field.field
+
               return (
                 <Column
                   flexGrow={props.displayRowCheckbox && field.field === 'Checkbox' ? 0 : 0}

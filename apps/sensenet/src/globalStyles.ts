@@ -117,7 +117,6 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
       },
     },
     virtualizedCellStyle: {
-      height: '57px',
       width: '100%',
       padding: 0,
     },
