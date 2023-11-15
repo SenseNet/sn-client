@@ -32,7 +32,7 @@ module.exports = {
       APP_VERSION: require('./package.json').version,
     }),
     new MonacoWebpackPlugin({
-      languages: ['json', 'xml'],
+      languages: ['json', 'xml', 'html', 'javascript', 'markdown'],
       features: [
         '!accessibilityHelp',
         '!anchorSelect',
