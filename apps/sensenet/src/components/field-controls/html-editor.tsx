@@ -1,27 +1,36 @@
 /**
  * @module FieldControls
  */
-import { ReactClientFieldSetting, RichTextEditor as SnRichTextEditor } from '@sensenet/controls-react'
+import { Typography } from '@material-ui/core'
+import { changeTemplatedValue, ReactClientFieldSetting } from '@sensenet/controls-react'
 import React, { useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
-import { useLocalization } from '../../hooks'
 
 /**
- * Field control that represents a RichText field. Available values will be populated from the FieldSettings.
+ * Field control that represents a LongText field with Html highlights. Available values will be populated from the FieldSettings.
  */
 export const HtmlEditor: React.FC<ReactClientFieldSetting> = (props) => {
   // const localization = useLocalization()
-  const [value, setValue] = useState(props.fieldValue || '')
+  const initialState =
+    props.fieldValue || (props.actionName === 'new' && changeTemplatedValue(props.settings.DefaultValue)) || ''
+  const [value, setValue] = useState(initialState)
+
+  const readonly = props.actionName === 'browse' || props.settings.ReadOnly
 
   return (
     <>
-      <div>Monaco Editor in sn</div>
+      <Typography variant="caption" gutterBottom={true}>
+        {props.settings.DisplayName}
+      </Typography>
       <MonacoEditor
         {...props}
-        height="400px"
+        height="200px"
         width="100%"
         value={value}
-        onChange={(v) => setValue(v)}
+        onChange={(v) => {
+          setValue(v)
+          props.fieldOnChange?.(props.settings.Name, v)
+        }}
         options={{
           contextmenu: true,
           hideCursorInOverviewRuler: true,
@@ -35,15 +44,11 @@ export const HtmlEditor: React.FC<ReactClientFieldSetting> = (props) => {
           },
           selectOnLineNumbers: true,
           roundedSelection: false,
-          readOnly: false,
+          readOnly: readonly,
           cursorStyle: 'line',
           automaticLayout: true,
-          // automaticLayout: true,
-          // readOnly: props.settings.ReadOnly,
-          // lineNumbers: 'on',
-          // glyphMargin: false,
-          // folding: false,
-          language: 'javascript',
+          lineNumbers: 'on',
+          language: 'html',
         }}
       />
     </>
