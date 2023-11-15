@@ -93,8 +93,14 @@ export const reactControlMapper = (repository: Repository) => {
         return FieldControls.ReferenceGrid
       }
     })
-    .setupFieldSettingDefault<LongTextFieldSetting>('LongTextFieldSetting', () => {
-      return FieldControls.Textarea
+    .setupFieldSettingDefault<LongTextFieldSetting>('LongTextFieldSetting', (setting) => {
+      switch (setting.ControlHint) {
+        case 'sn:HtmlEditor':
+          return FieldControls.HtmlEditor
+        default:
+          // return FieldControls.Textarea
+          return FieldControls.HtmlEditor
+      }
     })
     .setupFieldSettingDefault<RichTextFieldSetting>('RichTextFieldSetting', () => {
       return FieldControls.RichTextEditor
