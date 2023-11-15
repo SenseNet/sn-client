@@ -5,7 +5,10 @@ import Image from '@material-ui/icons/Image'
 import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
 import Person from '@material-ui/icons/Person'
 import Search from '@material-ui/icons/Search'
-import React, { useState } from 'react'
+import { ConstantContent } from '@sensenet/client-core'
+import { AllFieldNames, GenericContent } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
+import React, { useEffect, useState } from 'react'
 import { useSearch } from '../../../context/search'
 import { useLocalization } from '../../../hooks'
 
@@ -56,12 +59,20 @@ const moreOptions = [
     type: 'Task',
   },
   {
+    name: 'custom2',
+    type: 'Custom2',
+  },
+  {
     name: 'memo',
     type: 'Memo',
   },
   {
     name: 'group',
     type: 'Group',
+  },
+  {
+    name: 'custom',
+    type: 'Custom',
   },
 ]
 
@@ -75,14 +86,48 @@ const useStyles = makeStyles(() => {
   })
 })
 
+type moreOptionsItem = {
+  name: string
+  type: string
+}
+
 export const TypeFilter = () => {
+  const ac = new AbortController()
+  const repo = useRepository()
   const classes = useStyles()
   const localization = useLocalization().search.filters.type
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
 
   const searchState = useSearch()
 
-  const [[activeFromMore], othersFromMore] = moreOptions.reduce(
+  const [otherContentTypes, setOtherContentTypes] = useState<moreOptionsItem[]>([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        //??repo.schemas
+        const response = await repo.loadCollection<GenericContent>({
+          path: ConstantContent.PORTAL_ROOT.Path,
+          oDataOptions: {
+            query: "+TypeIs:'ContentType' .AUTOFILTERS:OFF",
+            select: ['Type', 'DisplayName'],
+          },
+          requestInit: { signal: ac.signal },
+        })
+        /* ------------------------------------------------------------------ */ console.log(response.d)
+        const items: moreOptionsItem[] = response.d.results
+          .slice(0, 10)
+          .map((item) => ({ name: item.DisplayName ?? item.Name, type: item.Name }))
+        /* ------------------------------------------------------------------ */ console.log(items)
+        setOtherContentTypes(items)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
+    fetchData()
+  }, [repo])
+
+  const [[activeFromMore], othersFromMore] = otherContentTypes.reduce(
     ([pass, fail], filter) => {
       return filter.name === searchState.filters.type.name ? [[...pass, filter], fail] : [pass, [...fail, filter]]
     },
@@ -116,7 +161,9 @@ export const TypeFilter = () => {
         onClick={(event) => {
           setAnchorEl(event.currentTarget)
         }}>
-        {activeFromMore ? localization[activeFromMore.name as keyof typeof localization] : localization.more}
+        {activeFromMore
+          ? activeFromMore.name /*localization[activeFromMore.name as keyof typeof localization]*/
+          : localization.more}
       </Button>
       <Menu
         id="more-type-filter"
@@ -142,7 +189,7 @@ export const TypeFilter = () => {
                 filters.type.name === filter.name ? filters : { ...filters, type: filter },
               )
             }}>
-            {localization[filter.name as keyof typeof localization]}
+            {filter.name /*localization[filter.name as keyof typeof localization]*/}
           </MenuItem>
         ))}
       </Menu>
