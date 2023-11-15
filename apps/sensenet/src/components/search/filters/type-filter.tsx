@@ -6,7 +6,7 @@ import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
 import Person from '@material-ui/icons/Person'
 import Search from '@material-ui/icons/Search'
 import { ConstantContent } from '@sensenet/client-core'
-import { AllFieldNames, GenericContent } from '@sensenet/default-content-types'
+import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
 import { useSearch } from '../../../context/search'
@@ -109,16 +109,15 @@ export const TypeFilter = () => {
         const response = await repo.loadCollection<GenericContent>({
           path: ConstantContent.PORTAL_ROOT.Path,
           oDataOptions: {
-            query: "+TypeIs:'ContentType' .AUTOFILTERS:OFF",
+            query: "-Categories:'*HideByDefault*' +TypeIs:'ContentType' .AUTOFILTERS:OFF",
             select: ['Type', 'DisplayName'],
           },
           requestInit: { signal: ac.signal },
         })
-        /* ------------------------------------------------------------------ */ console.log(response.d)
-        const items: moreOptionsItem[] = response.d.results
-          .slice(0, 10)
-          .map((item) => ({ name: item.DisplayName ?? item.Name, type: item.Name }))
-        /* ------------------------------------------------------------------ */ console.log(items)
+        const items: moreOptionsItem[] = response.d.results.map((item) => ({
+          name: item.DisplayName ?? item.Name,
+          type: item.Name,
+        }))
         setOtherContentTypes(items)
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -161,9 +160,7 @@ export const TypeFilter = () => {
         onClick={(event) => {
           setAnchorEl(event.currentTarget)
         }}>
-        {activeFromMore
-          ? activeFromMore.name /*localization[activeFromMore.name as keyof typeof localization]*/
-          : localization.more}
+        {activeFromMore ? activeFromMore.name : localization.more}
       </Button>
       <Menu
         id="more-type-filter"
@@ -189,7 +186,7 @@ export const TypeFilter = () => {
                 filters.type.name === filter.name ? filters : { ...filters, type: filter },
               )
             }}>
-            {filter.name /*localization[filter.name as keyof typeof localization]*/}
+            {filter.name}
           </MenuItem>
         ))}
       </Menu>
