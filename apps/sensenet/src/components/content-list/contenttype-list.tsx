@@ -1,12 +1,21 @@
 import React, { lazy, useState } from 'react'
 import { PATHS } from '../../application-paths'
 import { Switch } from '@sensenet/controls-react'
+import { useRepository } from '@sensenet/hooks-react'
 
 const ContentComponent = lazy(() => import(/* webpackChunkName: "content" */ '../content'))
 
 const ContentTypeList: React.FC = () => {
+  const repository = useRepository()
   const [showHiddenTypes, setShowHiddenTypes] = useState(false)
+  const categoryField = repository.schemas.getFieldTypeByName('Categories')
+  const isCategoryFieldAvailable = categoryField !== undefined
+
   const renderBeforeGrid = () => {
+    if (!isCategoryFieldAvailable) {
+      return <></>
+    }
+
     return (
       <div style={{ marginTop: '20px', marginBottom: '20px' }}>
         <label htmlFor="showHiddenTypes" style={{ marginRight: '10px' }}>
@@ -23,7 +32,9 @@ const ContentTypeList: React.FC = () => {
   }
 
   const contentTypeQuery =
-    "+TypeIs:'ContentType'" + (!showHiddenTypes ? ' -Categories:*HideByDefault*' : '') + ' .AUTOFILTERS:OFF'
+    "+TypeIs:'ContentType'" +
+    (isCategoryFieldAvailable && !showHiddenTypes ? ' -Categories:*HideByDefault*' : '') +
+    ' .AUTOFILTERS:OFF'
 
   return (
     <ContentComponent
