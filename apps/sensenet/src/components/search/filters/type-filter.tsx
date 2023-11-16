@@ -59,20 +59,12 @@ const moreOptions = [
     type: 'Task',
   },
   {
-    name: 'custom2',
-    type: 'Custom2',
-  },
-  {
     name: 'memo',
     type: 'Memo',
   },
   {
     name: 'group',
     type: 'Group',
-  },
-  {
-    name: 'custom',
-    type: 'Custom',
   },
 ]
 
@@ -105,7 +97,6 @@ export const TypeFilter = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        //??repo.schemas
         const response = await repo.loadCollection<GenericContent>({
           path: ConstantContent.PORTAL_ROOT.Path,
           oDataOptions: {
