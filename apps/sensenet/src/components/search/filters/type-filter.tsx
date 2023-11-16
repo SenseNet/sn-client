@@ -89,27 +89,30 @@ export const TypeFilter = () => {
   const classes = useStyles()
   const localization = useLocalization().search.filters.type
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
-
   const searchState = useSearch()
-
   const [otherContentTypes, setOtherContentTypes] = useState<moreOptionsItem[]>([])
+  const categoryField = repo.schemas.getFieldTypeByName('Categories')
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await repo.loadCollection<GenericContent>({
-          path: ConstantContent.PORTAL_ROOT.Path,
-          oDataOptions: {
-            query: "-Categories:'*HideByDefault*' +TypeIs:'ContentType' .AUTOFILTERS:OFF",
-            select: ['Type', 'DisplayName'],
-          },
-          requestInit: { signal: ac.signal },
-        })
-        const items: moreOptionsItem[] = response.d.results.map((item) => ({
-          name: item.DisplayName ?? item.Name,
-          type: item.Name,
-        }))
-        setOtherContentTypes(items)
+        if (categoryField) {
+          const response = await repo.loadCollection<GenericContent>({
+            path: ConstantContent.PORTAL_ROOT.Path,
+            oDataOptions: {
+              query: "-Categories:'*HideByDefault*' +TypeIs:'ContentType' .AUTOFILTERS:OFF",
+              select: ['Type', 'DisplayName'],
+            },
+            requestInit: { signal: ac.signal },
+          })
+          const items: moreOptionsItem[] = response.d.results.map((item) => ({
+            name: item.DisplayName ?? item.Name,
+            type: item.Name,
+          }))
+          setOtherContentTypes(items)
+        } else {
+          setOtherContentTypes(moreOptions)
+        }
       } catch (error) {
         console.error('Error fetching data:', error)
       }
