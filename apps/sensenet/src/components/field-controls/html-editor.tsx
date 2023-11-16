@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { InputLabel } from '@material-ui/core'
+import { InputLabel, useTheme } from '@material-ui/core'
 import { changeTemplatedValue, ReactClientFieldSetting } from '@sensenet/controls-react'
 import React, { useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
@@ -14,6 +14,7 @@ export const HtmlEditor: React.FC<ReactClientFieldSetting> = (props) => {
   const initialState =
     props.fieldValue || (props.actionName === 'new' && changeTemplatedValue(props.settings.DefaultValue)) || ''
   const [value, setValue] = useState(initialState)
+  const theme = useTheme()
 
   const readonly = props.actionName === 'browse' || props.settings.ReadOnly
 
@@ -68,6 +69,17 @@ export const HtmlEditor: React.FC<ReactClientFieldSetting> = (props) => {
             showKeywords: true,
             showWords: true,
           },
+        }}
+        theme={theme.palette.type === 'dark' ? 'admin-ui-dark' : 'vs-light'}
+        editorWillMount={(monaco) => {
+          monaco.editor.defineTheme('admin-ui-dark', {
+            base: 'vs-dark',
+            inherit: true,
+            rules: [],
+            colors: {
+              'editor.background': '#121212',
+            },
+          })
         }}
       />
     </>
