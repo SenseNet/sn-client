@@ -4,7 +4,7 @@ import { ConstantContent } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { SelectionContext, SelectionProvider } from '../../context/selection'
 import { SaveButton } from '../save-button'
 import { SearchPicker } from '../search-picker'
@@ -71,6 +71,7 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
   const [searchError, setSearchError] = useState<string>()
   const [mode, setMode] = useState<PickerModes>(treePickerMode)
   const classes = useStyles(props)
+  const searchFieldRef = useRef<HTMLInputElement | null>(null)
 
   const PickerContainer = props.pickerContainer || 'div'
   const ActionsContainer = props.actionsContainer || 'div'
@@ -132,6 +133,8 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
   }, [term, props.repository, props.selectionRoots])
 
   const handleJumpToCurrentPath = (path: string) => {
+    setMode(PickerModes.TREE)
+    setTerm('')
     setNavigationPath(path)
   }
 
@@ -156,12 +159,14 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
             <AccountTree />
           </IconButton>
           <TextField
+            ref={searchFieldRef}
             fullWidth={true}
             placeholder={props.localization?.searchPlaceholder ?? 'Search'}
             onFocus={() => setMode(PickerModes.SEARCH)}
             onChange={(ev) => {
               debouncedQuery(ev.target.value)
             }}
+            value={term}
           />
           <ShowSelectedButton
             className={classes.showSelected}
@@ -180,7 +185,7 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
             currentContentText={props.localization?.currentContentText}
           />
 
-          <PickerContainer style={{ height: '545px', paddingTop: 0, position: 'relative', top: '-7px' }}>
+          <PickerContainer style={{ height: '545px', paddingTop: 0, position: 'relative', top: '-7px', width: '100%' }}>
             {mode === PickerModes.TREE && (
               <TreePicker setNavigationPath={setNavigationPath} navigationPath={navigationPath} {...props} />
             )}

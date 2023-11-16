@@ -226,7 +226,14 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
           </List>
           {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
 
-          <Dialog fullWidth maxWidth="lg" onClose={handleDialogClose} open={isPickerOpen} {...props.dialogProps}>
+          <Dialog
+            fullScreen
+            fullWidth
+            PaperProps={{ style: { maxWidth: '950px' } }}
+            maxWidth={false}
+            onClose={handleDialogClose}
+            open={isPickerOpen}
+            {...props.dialogProps}>
             <DialogTitleComponent style={{ width: '100%' }}>{localization.referencePickerTitle}</DialogTitleComponent>
             <ReferencePicker
               defaultValue={fieldValue}
