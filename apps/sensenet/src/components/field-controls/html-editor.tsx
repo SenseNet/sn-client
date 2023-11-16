@@ -35,26 +35,25 @@ export const HtmlEditor: React.FC<ReactClientFieldSetting> = (props) => {
         }}
         options={{
           automaticLayout: true,
-
           contextmenu: true,
           hideCursorInOverviewRuler: true,
-          matchBrackets: 'always',
+          lineNumbers: 'on',
+          selectOnLineNumbers: true,
           minimap: {
             enabled: true,
           },
+          roundedSelection: false,
+          readOnly: readonly,
+          cursorStyle: 'line',
           scrollbar: {
             horizontalSliderSize: 4,
             verticalScrollbarSize: 6,
             // vertical: 'hidden',
           },
 
-          selectOnLineNumbers: true,
-          roundedSelection: false,
-          readOnly: readonly,
-          cursorStyle: 'line',
-          lineNumbers: 'on',
           wordWrap: 'on',
-
+          autoIndent: 'advanced',
+          matchBrackets: 'always',
           language: 'html',
           suggest: {
             snippetsPreventQuickSuggestions: false,
