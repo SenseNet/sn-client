@@ -152,6 +152,7 @@ export const TypeFilter = () => {
       ))}
 
       <Button
+        data-test="more-type-filter-button"
         aria-controls="more-type-filter"
         aria-haspopup="true"
         variant="outlined"
@@ -180,6 +181,7 @@ export const TypeFilter = () => {
         {(othersFromMore as Filter[]).map((filter) => (
           <MenuItem
             key={filter.name}
+            data-test={`more-menu-item-${filter.name.toLowerCase()}`}
             onClick={() => {
               setAnchorEl(null)
               searchState.setFilters((filters) =>
