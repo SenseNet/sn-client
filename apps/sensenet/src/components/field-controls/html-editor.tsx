@@ -53,7 +53,15 @@ export const HtmlEditor: React.FC<ReactClientFieldSetting> = (props) => {
           readOnly: readonly,
           cursorStyle: 'line',
           lineNumbers: 'on',
+          wordWrap: 'on',
+
           language: 'html',
+          suggest: {
+            snippetsPreventQuickSuggestions: false,
+            showProperties: true,
+            showKeywords: true,
+            showWords: true,
+          },
         }}
       />
     </>
