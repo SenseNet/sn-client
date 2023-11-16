@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { InputLabel, Typography } from '@material-ui/core'
+import { InputLabel } from '@material-ui/core'
 import { changeTemplatedValue, ReactClientFieldSetting } from '@sensenet/controls-react'
 import React, { useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
@@ -22,7 +22,14 @@ export const HtmlEditor: React.FC<ReactClientFieldSetting> = (props) => {
       {/* <Typography variant="caption" gutterBottom={true}>
         {props.settings.DisplayName}
       </Typography> */}
-      <InputLabel>{props.settings.DisplayName}</InputLabel>
+      <InputLabel
+        style={{
+          display: 'block',
+          fontSize: '1.3rem',
+          transformOrigin: 'top left',
+        }}>
+        {props.settings.DisplayName}
+      </InputLabel>
 
       <MonacoEditor
         {...props}
