@@ -84,16 +84,16 @@ type moreOptionsItem = {
 }
 
 export const TypeFilter = () => {
-  const ac = new AbortController()
   const repo = useRepository()
   const classes = useStyles()
   const localization = useLocalization().search.filters.type
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const searchState = useSearch()
   const [otherContentTypes, setOtherContentTypes] = useState<moreOptionsItem[]>([])
-  const categoryField = repo.schemas.getFieldTypeByName('Categories')
 
   useEffect(() => {
+    const ac = new AbortController()
+    const categoryField = repo.schemas.getFieldTypeByName('Categories')
     const fetchData = async () => {
       try {
         if (categoryField) {
@@ -118,6 +118,10 @@ export const TypeFilter = () => {
       }
     }
     fetchData()
+
+    return () => {
+      ac.abort()
+    }
   }, [repo])
 
   const [[activeFromMore], othersFromMore] = otherContentTypes.reduce(
