@@ -59,7 +59,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
 
   const defaultRenderer = useCallback(
     (item: T) => {
-      if (item.isParent) {
+      if (item.isParent && props.selectionRoots?.includes(item.Path)) {
         return (
           <ListItem data-test="picker-up" key={item.Id} button={true}>
             <ListItemIcon>
@@ -119,7 +119,6 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
 
   return (
     <List>
-      {/* <div onClick={() => navigateTo(props?.defaultValue[0] as T)}>Test</div> */}
       {items?.map((item) => (
         <div
           onClick={(e) => onCheckedChangeHandler(e, item as any)}
