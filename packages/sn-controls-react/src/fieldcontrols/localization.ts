@@ -78,9 +78,6 @@ export const defaultLocalization = {
   textarea: {
     noValue: 'No value set',
   },
-  htmleditor: {
-    noValue: 'No value set',
-  },
   timePicker: {
     noValue: 'No time selected',
   },
