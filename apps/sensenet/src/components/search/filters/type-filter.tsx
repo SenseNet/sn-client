@@ -102,6 +102,7 @@ export const TypeFilter = () => {
             oDataOptions: {
               query: "-Categories:'*HideByDefault*' +TypeIs:'ContentType' .AUTOFILTERS:OFF",
               select: ['Type', 'DisplayName'],
+              orderby: 'DisplayName',
             },
             requestInit: { signal: ac.signal },
           })
