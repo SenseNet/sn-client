@@ -1,9 +1,10 @@
-import { createStyles, makeStyles, Theme, Tooltip } from '@material-ui/core'
+import { createStyles, IconButton, makeStyles, Theme, Tooltip } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
+import DeleteIcon from '@material-ui/icons/Delete'
 import { Settings } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import { clsx } from 'clsx'
@@ -12,6 +13,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'
 import { useLocalization } from '../../hooks'
 import { getPrimaryActionUrl } from '../../services'
+import { useDialog } from '../dialogs'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -52,6 +54,20 @@ type ContentCardProps = {
 }
 
 const hasDocumentation = ['Portal', 'OAuth', 'DocumentPreview', 'OfficeOnline', 'Indexing', 'Sharing']
+const isSystemSettings = [
+  'OAuth',
+  'OfficeOnline',
+  'Indexing',
+  'Sharing',
+  'Logging',
+  'Portal',
+  'Permission',
+  'MailProcessor',
+  'UserProfile',
+  'ColumnSettings',
+  'TaskManagement',
+  'MultiFactorAuthentication',
+]
 
 export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
   const localization = useLocalization().settings
@@ -60,7 +76,8 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
   const history = useHistory()
   const classes = useStyles()
   const settingsName = settings.DisplayName || settings.Name
-  const settingsTitle = settingsName.replace(/.settings/gi, '')
+  const settingsTitle = settingsName.replace(/\.settings/gi, '')
+  const { openDialog } = useDialog()
 
   return (
     <Card
@@ -83,6 +100,20 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
         />
       </CardContent>
       <CardActions style={{ justifyContent: 'flex-end' }}>
+        {!isSystemSettings.includes(settingsTitle) && (
+          <IconButton
+            data-test="batch-delete"
+            aria-label="delete"
+            onClick={() => {
+              openDialog({
+                name: 'delete',
+                props: { content: [settings] },
+                dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true },
+              })
+            }}>
+            <DeleteIcon />
+          </IconButton>
+        )}
         <Link
           to={getPrimaryActionUrl({ content: settings, repository, uiSettings, location: history.location })}
           style={{ textDecoration: 'none' }}>
@@ -90,17 +121,17 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
             aria-label={localization.edit}
             size="small"
             className={classes.button}
-            style={{ marginRight: '35px' }}
+            //style={{ marginRight: '35px' }}
             data-test={`${settings.Name.replace(/\s+/g, '-').toLowerCase()}-edit-button`}>
             {localization.edit}
           </Button>
         </Link>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href={`${SETUP_DOCS_URL}${createAnchorFromName(settings.Name)}`}
-          style={{ textDecoration: 'none' }}>
-          {hasDocumentation.includes(settingsTitle) && (
+        {hasDocumentation.includes(settingsTitle) && (
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href={`${SETUP_DOCS_URL}${createAnchorFromName(settings.Name)}`}
+            style={{ textDecoration: 'none' }}>
             <Button
               aria-label={localization.learnMore}
               size="small"
@@ -108,8 +139,8 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
               data-test="content-card-learnmore-button">
               {localization.learnMore}
             </Button>
-          )}
-        </a>
+          </a>
+        )}
       </CardActions>
     </Card>
   )
