@@ -42,7 +42,7 @@ describe('Setup', () => {
   it('should open a binary editor with the content of the "settings item" if Edit button is clicked', () => {
     cy.get('[data-test="content-card-documentpreview.settings"]')
       .within(() => {
-        cy.get('[data-test="documentpreview.settings-edit-button"]').click()
+        cy.get('[data-test="documentpreview-edit-button"]').click()
       })
       .get('[data-test="editor-title"]')
       .should('have.text', 'DocumentPreview.settings')
@@ -50,8 +50,8 @@ describe('Setup', () => {
 
   it('should open the document of the selected "settings item" if "Learn more" button is clicked', () => {
     cy.get('[data-test="content-card-documentpreview.settings"]').within(() => {
-      cy.get('[data-test="content-card-learnmore-button"]')
-        .get('a[href="https://docs.sensenet.com/concepts/basics/07-settings#documentpreview-settings"]')
+      cy.get('[data-test="documentpreview-learnmore-button"]')
+        .get('a[href="https://docs.sensenet.com/guides/settings/setup#documentpreview-settings"]')
         .should('have.attr', 'target', '_blank')
     })
   })
@@ -84,6 +84,23 @@ describe('Setup', () => {
           })
         })
       })
+  })
+
+  it('check white- and blacklisted buttons', () => {
+    // custom settings can be deleted and never hasn't documentation
+    cy.get(`[data-test="testsettings-delete-button"]`).should('exist')
+    cy.get(`[data-test="testsettings-edit-button"]`).should('exist')
+    cy.get(`[data-test="testsettings-learnmore-button"]`).should('not.exist')
+
+    // indexing is system and documented
+    cy.get(`[data-test="indexing-delete-button"]`).should('not.exist')
+    cy.get(`[data-test="indexing-edit-button"]`).should('exist')
+    cy.get(`[data-test="indexing-learnmore-button"]`).should('exist')
+
+    // logging is system and not documented
+    cy.get(`[data-test="logging-delete-button"]`).should('not.exist')
+    cy.get(`[data-test="logging-edit-button"]`).should('exist')
+    cy.get(`[data-test="logging-learnmore-button"]`).should('not.exist')
   })
 
   it('should delete a setup file', () => {

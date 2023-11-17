@@ -55,6 +55,7 @@ type ContentCardProps = {
 
 const hasDocumentation = ['Portal', 'OAuth', 'DocumentPreview', 'OfficeOnline', 'Indexing', 'Sharing']
 const isSystemSettings = [
+  'DocumentPreview',
   'OAuth',
   'OfficeOnline',
   'Indexing',
@@ -75,9 +76,10 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
   const uiSettings = useContext(ResponsivePersonalSettings)
   const history = useHistory()
   const classes = useStyles()
+  const { openDialog } = useDialog()
   const settingsName = settings.DisplayName || settings.Name
   const settingsTitle = settingsName.replace(/\.settings/gi, '')
-  const { openDialog } = useDialog()
+  const dataTestName = settingsTitle.replace(/\s+/g, '-').toLowerCase()
 
   return (
     <Card
@@ -102,7 +104,7 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
       <CardActions style={{ justifyContent: 'flex-end' }}>
         {!isSystemSettings.includes(settingsTitle) && (
           <IconButton
-            data-test="batch-delete"
+            data-test={`${dataTestName}-delete-button`}
             aria-label="delete"
             onClick={() => {
               openDialog({
@@ -121,8 +123,7 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
             aria-label={localization.edit}
             size="small"
             className={classes.button}
-            //style={{ marginRight: '35px' }}
-            data-test={`${settings.Name.replace(/\s+/g, '-').toLowerCase()}-edit-button`}>
+            data-test={`${dataTestName}-edit-button`}>
             {localization.edit}
           </Button>
         </Link>
@@ -136,7 +137,7 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
               aria-label={localization.learnMore}
               size="small"
               className={classes.button}
-              data-test="content-card-learnmore-button">
+              data-test={`${dataTestName}-learnmore-button`}>
               {localization.learnMore}
             </Button>
           </a>
