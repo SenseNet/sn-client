@@ -42,14 +42,16 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-export const SETUP_DOCS_URL = 'https://docs.sensenet.com/concepts/basics/07-settings'
+export const SETUP_DOCS_URL = 'https://docs.sensenet.com/guides/settings/setup'
 
-export const createAnchorFromName = (displayName: string) => `#${displayName.replace('.', '-').toLocaleLowerCase()}`
+export const createAnchorFromName = (name: string) => `#${name.replace('.', '-').toLocaleLowerCase()}`
 
 type ContentCardProps = {
   settings: Settings
   onContextMenu: (ev: React.MouseEvent) => void
 }
+
+const hasDocumentation = ['Portal', 'OAuth', 'DocumentPreview', 'OfficeOnline', 'Indexing', 'Sharing']
 
 export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
   const localization = useLocalization().settings
@@ -96,15 +98,17 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href={`${SETUP_DOCS_URL}${createAnchorFromName(settings.DisplayName ? settings.DisplayName : '')}`}
+          href={`${SETUP_DOCS_URL}${createAnchorFromName(settings.Name)}`}
           style={{ textDecoration: 'none' }}>
-          <Button
-            aria-label={localization.learnMore}
-            size="small"
-            className={classes.button}
-            data-test="content-card-learnmore-button">
-            {localization.learnMore}
-          </Button>
+          {hasDocumentation.includes(settingsTitle) && (
+            <Button
+              aria-label={localization.learnMore}
+              size="small"
+              className={classes.button}
+              data-test="content-card-learnmore-button">
+              {localization.learnMore}
+            </Button>
+          )}
         </a>
       </CardActions>
     </Card>
