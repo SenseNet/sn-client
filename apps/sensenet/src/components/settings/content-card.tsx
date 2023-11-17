@@ -57,6 +57,8 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
   const uiSettings = useContext(ResponsivePersonalSettings)
   const history = useHistory()
   const classes = useStyles()
+  const settingsName = settings.DisplayName || settings.Name
+  const settingsTitle = settingsName.replace(/.settings/gi, '')
 
   return (
     <Card
@@ -65,11 +67,11 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
         onContextMenu(ev)
       }}
       className={classes.card}
-      data-test={`content-card-${settings.DisplayName?.replace(/\s+/g, '-').toLowerCase()}`}>
+      data-test={`content-card-${settingsName.replace(/\s+/g, '-').toLowerCase()}`}>
       <CardContent>
-        <Tooltip placement="top" title={settings.DisplayName || settings.Name}>
+        <Tooltip placement="top" title={settingsName}>
           <Typography variant="h5" gutterBottom={true} className={classes.title}>
-            {settings.DisplayName || settings.Name}
+            {settingsTitle}
           </Typography>
         </Tooltip>
         <Typography
