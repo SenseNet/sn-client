@@ -8,17 +8,17 @@ export default defineConfig({
   video: false,
 
   env: {
-    repoUrl: 'https://daily.test.sensenet.cloud',
-    identityServer: 'https://daily-is.test.sensenet.cloud',
+    repoUrl: 'https://e2e.test.sensenet.cloud',
+    identityServer: 'https://e2e-is.test.sensenet.cloud',
     users: {
       admin: {
-        clientId: 'J6IRgrjcydea2Z1N',
-        clientSecret: 'heIP9iGXs76nmYYsIQAOZwoaGFDX8iu6UHnqoE32PYwdY1QD8qNPfLOM5X4xuFmQ',
+        clientId: 'DLb8MEWjqSMTAPQC',
+        clientSecret: 'nGp3dSOuhCnpw4lXKuwWfguLjrqAV8UEflVRNwnLdc3rGMpK7A7MBuwjI4wKZpUT',
         id: "/Root/IMS/Public('businesscat')",
       },
       superAdmin: {
-        clientId: 'A5E6uTwVnZpuOddm',
-        clientSecret: 'WmjbMMPMM8yALI8NrhNmQb4uLUn7SkDQB3O834Wyu3eoMjNy4vLn7uYdpawnGloO',
+        clientId: 'OrgJhzuEs4s4SlPn',
+        clientSecret: 'H3EsuyCAJ6uXUQhiEZ7HRsaxGhllISsS8TIen1aeAH6K2HzOIg1GkVA4RIVVSGff',
         id: "/Root/IMS/BuiltIn/Portal/('Admin')",
       },
     },

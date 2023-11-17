@@ -41,7 +41,7 @@ Cypress.Commands.add('login', (userType = 'admin') => {
     clientId: user.clientId,
     clientSecret: Cypress.env(`secret_${userType}`) || user.clientSecret,
     identityServerUrl: Cypress.env('identityServer'),
-    appId: 'Y4ruK4aoWgO3Y6Jz',
+    appId: 'OB4jkKf1Y5kR34OM',
     userId: user.id,
     fetchMethod: (url, options) => cy.request({ url, ...options }),
   })
