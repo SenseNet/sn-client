@@ -53,7 +53,6 @@ export const usePickerHelper = ({ contextPath, selectionRoots, repository }: Ref
           )
 
         setHelperPaths(fulfilledResults)
-        console.log(fulfilledResults)
         setIsLoading(false)
         setIsAncestorOfRoot(isContextPathInTree)
       } catch (e) {

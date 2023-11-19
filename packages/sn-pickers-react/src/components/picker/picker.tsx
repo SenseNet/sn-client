@@ -135,6 +135,7 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
   const handleJumpToCurrentPath = (path: string) => {
     setMode(PickerModes.TREE)
     setTerm('')
+    console.log('handleJumpToCurrentPath', path, navigationPath)
     setNavigationPath(path)
   }
 

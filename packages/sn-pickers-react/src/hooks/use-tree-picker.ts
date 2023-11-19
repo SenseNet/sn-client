@@ -1,4 +1,4 @@
-import { ConstantContent, ODataParams, Repository } from '@sensenet/client-core'
+import { ConstantContent, ODataParams, ODataResponse, Repository } from '@sensenet/client-core'
 import { AsyncReturnValue, PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -61,7 +61,7 @@ export const useTreePicker = <T extends GenericContentWithIsParent = GenericCont
         setIsLoading(true)
 
         if (path === virtualRootPath && roots) {
-          const result = await Promise.all(
+          const promises = await Promise.allSettled(
             roots.map((root) =>
               repository.load({
                 idOrPath: root,
@@ -69,12 +69,16 @@ export const useTreePicker = <T extends GenericContentWithIsParent = GenericCont
               }),
             ),
           )
-          return setItems(result.map((item) => ({ ...item.d, isParent: false })))
+          const fulfilledResults: GenericContent[] = promises
+            .filter((result) => result.status === 'fulfilled')
+            .map((result) => (result as PromiseFulfilledResult<ODataResponse<GenericContent>>).value.d)
+
+          return setItems(fulfilledResults.map((item) => ({ ...item, isParent: false })))
         }
 
         const result = await loadItems({
           path: navigationPath || path,
-          loadParent: !roots?.includes(path),
+          loadParent: !roots?.includes(navigationPath || path),
           repository,
           parentId,
           itemsODataOptions: options.itemsODataOptions,
@@ -83,6 +87,8 @@ export const useTreePicker = <T extends GenericContentWithIsParent = GenericCont
         })
 
         if ((roots?.length ?? 0) > 1 && roots?.includes(path)) {
+          console.log('roots', roots)
+
           result.unshift({
             ...(ConstantContent.EMPTY_CONTENT as T),
             isParent: true,
