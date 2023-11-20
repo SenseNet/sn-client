@@ -134,14 +134,8 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
 
   const handleJumpToCurrentPath = (path: string) => {
     setNavigationPath(path)
-
-    if (term?.length && term.length > 0) {
-      debouncedQuery('')
-    }
-
-    if (mode !== PickerModes.TREE) {
-      setMode(PickerModes.TREE)
-    }
+    debouncedQuery('')
+    setMode(PickerModes.TREE)
   }
 
   return (
