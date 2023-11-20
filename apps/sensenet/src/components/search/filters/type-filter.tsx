@@ -177,19 +177,21 @@ export const TypeFilter = () => {
           vertical: 'top',
           horizontal: 'right',
         }}>
-        {(othersFromMore as Filter[]).map((filter) => (
-          <MenuItem
-            key={filter.name}
-            data-test={`more-menu-item-${filter.name.toLowerCase()}`}
-            onClick={() => {
-              setAnchorEl(null)
-              searchState.setFilters((filters) =>
-                filters.type.name === filter.name ? filters : { ...filters, type: filter },
-              )
-            }}>
-            {filter.name}
-          </MenuItem>
-        ))}
+        {(othersFromMore as Filter[])
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((filter) => (
+            <MenuItem
+              key={filter.name}
+              data-test={`more-menu-item-${filter.name.toLowerCase()}`}
+              onClick={() => {
+                setAnchorEl(null)
+                searchState.setFilters((filters) =>
+                  filters.type.name === filter.name ? filters : { ...filters, type: filter },
+                )
+              }}>
+              {filter.name}
+            </MenuItem>
+          ))}
       </Menu>
     </div>
   )
