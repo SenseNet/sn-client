@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) => {
 
 export const SETUP_DOCS_URL = 'https://docs.sensenet.com/guides/settings/setup'
 
-export const createAnchorFromName = (name: string) => `#${name.replace('.', '-').toLocaleLowerCase()}`
+export const createAnchorFromName = (name: string) => `#${name.toLocaleLowerCase()}`
 
 type ContentCardProps = {
   settings: Settings
