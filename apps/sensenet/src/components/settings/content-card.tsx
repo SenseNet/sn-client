@@ -1,9 +1,10 @@
-import { createStyles, makeStyles, Theme, Tooltip } from '@material-ui/core'
+import { createStyles, IconButton, makeStyles, Theme, Tooltip } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
+import DeleteIcon from '@material-ui/icons/Delete'
 import { Settings } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import { clsx } from 'clsx'
@@ -12,6 +13,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'
 import { useLocalization } from '../../hooks'
 import { getPrimaryActionUrl } from '../../services'
+import { useDialog } from '../dialogs'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -42,14 +44,31 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-export const SETUP_DOCS_URL = 'https://docs.sensenet.com/concepts/basics/07-settings'
+export const SETUP_DOCS_URL = 'https://docs.sensenet.com/guides/settings/setup'
 
-export const createAnchorFromName = (displayName: string) => `#${displayName.replace('.', '-').toLocaleLowerCase()}`
+export const createAnchorFromName = (name: string) => `#${name.toLocaleLowerCase()}`
 
 type ContentCardProps = {
   settings: Settings
   onContextMenu: (ev: React.MouseEvent) => void
 }
+
+const hasDocumentation = ['Portal', 'OAuth', 'DocumentPreview', 'OfficeOnline', 'Indexing', 'Sharing']
+const isSystemSettings = [
+  'DocumentPreview',
+  'OAuth',
+  'OfficeOnline',
+  'Indexing',
+  'Sharing',
+  'Logging',
+  'Portal',
+  'Permission',
+  'MailProcessor',
+  'UserProfile',
+  'ColumnSettings',
+  'TaskManagement',
+  'MultiFactorAuthentication',
+]
 
 export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
   const localization = useLocalization().settings
@@ -57,6 +76,10 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
   const uiSettings = useContext(ResponsivePersonalSettings)
   const history = useHistory()
   const classes = useStyles()
+  const { openDialog } = useDialog()
+  const settingsName = settings.DisplayName || settings.Name
+  const settingsTitle = settingsName.replace(/\.settings/gi, '')
+  const dataTestName = settingsTitle.replace(/\s+/g, '-').toLowerCase()
 
   return (
     <Card
@@ -65,11 +88,11 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
         onContextMenu(ev)
       }}
       className={classes.card}
-      data-test={`content-card-${settings.DisplayName?.replace(/\s+/g, '-').toLowerCase()}`}>
+      data-test={`content-card-${settingsName.replace(/\s+/g, '-').toLowerCase()}`}>
       <CardContent>
-        <Tooltip placement="top" title={settings.DisplayName || settings.Name}>
+        <Tooltip placement="top" title={settingsName}>
           <Typography variant="h5" gutterBottom={true} className={classes.title}>
-            {settings.DisplayName || settings.Name}
+            {settingsTitle}
           </Typography>
         </Tooltip>
         <Typography
@@ -79,6 +102,20 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
         />
       </CardContent>
       <CardActions style={{ justifyContent: 'flex-end' }}>
+        {!isSystemSettings.includes(settingsTitle) && (
+          <IconButton
+            data-test={`${dataTestName}-delete-button`}
+            aria-label="delete"
+            onClick={() => {
+              openDialog({
+                name: 'delete',
+                props: { content: [settings] },
+                dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true },
+              })
+            }}>
+            <DeleteIcon />
+          </IconButton>
+        )}
         <Link
           to={getPrimaryActionUrl({ content: settings, repository, uiSettings, location: history.location })}
           style={{ textDecoration: 'none' }}>
@@ -86,24 +123,25 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
             aria-label={localization.edit}
             size="small"
             className={classes.button}
-            style={{ marginRight: '35px' }}
-            data-test={`${settings.Name.replace(/\s+/g, '-').toLowerCase()}-edit-button`}>
+            data-test={`${dataTestName}-edit-button`}>
             {localization.edit}
           </Button>
         </Link>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href={`${SETUP_DOCS_URL}${createAnchorFromName(settings.DisplayName ? settings.DisplayName : '')}`}
-          style={{ textDecoration: 'none' }}>
-          <Button
-            aria-label={localization.learnMore}
-            size="small"
-            className={classes.button}
-            data-test="content-card-learnmore-button">
-            {localization.learnMore}
-          </Button>
-        </a>
+        {hasDocumentation.includes(settingsTitle) && (
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href={`${SETUP_DOCS_URL}${createAnchorFromName(settings.Name)}`}
+            style={{ textDecoration: 'none' }}>
+            <Button
+              aria-label={localization.learnMore}
+              size="small"
+              className={classes.button}
+              data-test={`${dataTestName}-learnmore-button`}>
+              {localization.learnMore}
+            </Button>
+          </a>
+        )}
       </CardActions>
     </Card>
   )
