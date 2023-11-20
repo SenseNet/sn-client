@@ -108,7 +108,6 @@ export const loadItems = async <T extends GenericContentWithIsParent>({
       parentId ?? (items?.[0] ? undefined : PathHelper.getParentPath(path)),
     )
 
-    console.log(parentResult)
     if (!parentResult) {
       return items
     }

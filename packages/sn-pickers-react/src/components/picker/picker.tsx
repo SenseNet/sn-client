@@ -133,10 +133,15 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
   }, [term, props.repository, props.selectionRoots])
 
   const handleJumpToCurrentPath = (path: string) => {
-    setMode(PickerModes.TREE)
-    setTerm('')
-    console.log('handleJumpToCurrentPath', path, navigationPath)
     setNavigationPath(path)
+
+    if (term?.length && term.length > 0) {
+      debouncedQuery('')
+    }
+
+    if (mode !== PickerModes.TREE) {
+      setMode(PickerModes.TREE)
+    }
   }
 
   return (
@@ -167,7 +172,6 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
             onChange={(ev) => {
               debouncedQuery(ev.target.value)
             }}
-            value={term}
           />
           <ShowSelectedButton
             className={classes.showSelected}

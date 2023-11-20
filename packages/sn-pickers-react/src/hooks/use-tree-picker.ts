@@ -60,7 +60,7 @@ export const useTreePicker = <T extends GenericContentWithIsParent = GenericCont
       try {
         setIsLoading(true)
 
-        if (path === virtualRootPath && roots) {
+        if (path === virtualRootPath && roots && navigationPath === virtualRootPath) {
           const promises = await Promise.allSettled(
             roots.map((root) =>
               repository.load({
@@ -86,9 +86,7 @@ export const useTreePicker = <T extends GenericContentWithIsParent = GenericCont
           abortController,
         })
 
-        if ((roots?.length ?? 0) > 1 && roots?.includes(path)) {
-          console.log('roots', roots)
-
+        if ((roots?.length ?? 0) > 1 && (roots?.includes(path) || roots?.includes(navigationPath!))) {
           result.unshift({
             ...(ConstantContent.EMPTY_CONTENT as T),
             isParent: true,

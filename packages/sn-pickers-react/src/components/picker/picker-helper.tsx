@@ -1,6 +1,6 @@
 import { CircularProgress, Link } from '@material-ui/core'
 import { Repository } from '@sensenet/client-core'
-import React from 'react'
+import React, { memo } from 'react'
 import { usePickerHelper } from './picker-helper.hook'
 
 type ReferenceFieldHelperProps = {
@@ -80,4 +80,5 @@ export const PickerHelper = ({
     </div>
   )
 }
-export default PickerHelper
+
+export default memo(PickerHelper, (prevProps, nextProps) => prevProps.contextPath === nextProps.contextPath)
