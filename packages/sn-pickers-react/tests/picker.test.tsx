@@ -1,5 +1,5 @@
 import { Button, Checkbox, IconButton, Link, ListItem, ListItemText, TextField } from '@material-ui/core'
-import { mount } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { SearchPicker, SelectionList, TreePicker } from '../src'
@@ -480,7 +480,7 @@ describe('Picker component', () => {
     expect(
       wrapper
         .find(Link)
-        .filterWhere((n) => n.prop('data-test') === 'current-content')
+        .filterWhere((n: { prop: (arg0: string) => string }) => n.prop('data-test') === 'current-content')
         .exists(),
     ).toBeTruthy()
 
@@ -501,7 +501,7 @@ describe('Picker component', () => {
     expect(
       wrapper
         .find(Link)
-        .filterWhere((n) => n.prop('data-test') === 'current-content')
+        .filterWhere((n: { prop: (arg0: string) => string }) => n.prop('data-test') === 'current-content')
         .exists(),
     ).toBeFalsy()
   })
@@ -525,6 +525,7 @@ describe('Picker component', () => {
         Path: '/Root/Content/HU/Blog/Posts',
       },
     }
+
     const repositoryHandle = (loadCollectionValue?: unknown) => {
       return {
         loadCollection: () => {
@@ -534,7 +535,7 @@ describe('Picker component', () => {
             },
           }
         },
-        load: (item) => {
+        load: (item: { idOrPath: string | number }) => {
           return {
             d: helperItems[item.idOrPath],
           }
@@ -557,10 +558,37 @@ describe('Picker component', () => {
     expect(
       wrapper
         .find(Link)
-        .filterWhere((n) => n.prop('data-test') === `path-helper-${helperItems['/Root/Content/HU/Blog/Posts'].Path}`)
+        .filterWhere(
+          (n: { prop: (arg0: string) => string }) =>
+            n.prop('data-test') === `path-helper-${helperItems['/Root/Content/HU/Blog/Posts'].Path}`,
+        )
         .exists(),
     ).toBeTruthy()
 
-    //find helper items length of Link inside data-test path-helpers
+    //click on a helper item
+
+    //test current helper items
+
+    await act(async () => {
+      wrapper
+        .find(Link)
+        .filterWhere(
+          (n: { prop: (arg0: string) => string }) =>
+            n.prop('data-test') === `path-helper-${helperItems['/Root/Content/HU/Blog/Posts'].Path}`,
+        )
+        .simulate('click')
+    })
+
+    wrapper.update()
+
+    expect(
+      wrapper
+        .find(Link)
+        .filterWhere(
+          (n: { prop: (arg0: string) => string }) =>
+            n.prop('data-test') === `path-helper-${helperItems['/Root/Content/HU/Blog/Posts'].Path}`,
+        )
+        .exists(),
+    ).toBeTruthy()
   })
 })
