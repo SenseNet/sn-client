@@ -5,7 +5,10 @@ import Image from '@material-ui/icons/Image'
 import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
 import Person from '@material-ui/icons/Person'
 import Search from '@material-ui/icons/Search'
-import React, { useState } from 'react'
+import { ConstantContent } from '@sensenet/client-core'
+import { GenericContent } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
+import React, { useEffect, useState } from 'react'
 import { useSearch } from '../../../context/search'
 import { useLocalization } from '../../../hooks'
 
@@ -75,14 +78,54 @@ const useStyles = makeStyles(() => {
   })
 })
 
+type moreOptionsItem = {
+  name: string
+  type: string
+}
+
 export const TypeFilter = () => {
+  const repo = useRepository()
   const classes = useStyles()
   const localization = useLocalization().search.filters.type
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
-
   const searchState = useSearch()
+  const [otherContentTypes, setOtherContentTypes] = useState<moreOptionsItem[]>([])
 
-  const [[activeFromMore], othersFromMore] = moreOptions.reduce(
+  useEffect(() => {
+    const ac = new AbortController()
+    const categoryField = repo.schemas.getFieldTypeByName('Categories')
+    const fetchData = async () => {
+      try {
+        if (categoryField) {
+          const response = await repo.loadCollection<GenericContent>({
+            path: ConstantContent.PORTAL_ROOT.Path,
+            oDataOptions: {
+              query: "-Categories:'*HideByDefault*' +TypeIs:'ContentType' .AUTOFILTERS:OFF",
+              select: ['Type', 'DisplayName'],
+              orderby: 'Name',
+            },
+            requestInit: { signal: ac.signal },
+          })
+          const items: moreOptionsItem[] = response.d.results.map((item) => ({
+            name: item.DisplayName ?? item.Name,
+            type: item.Name,
+          }))
+          setOtherContentTypes(items)
+        } else {
+          setOtherContentTypes(moreOptions)
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
+    fetchData()
+
+    return () => {
+      ac.abort()
+    }
+  }, [repo])
+
+  const [[activeFromMore], othersFromMore] = otherContentTypes.reduce(
     ([pass, fail], filter) => {
       return filter.name === searchState.filters.type.name ? [[...pass, filter], fail] : [pass, [...fail, filter]]
     },
@@ -108,6 +151,7 @@ export const TypeFilter = () => {
       ))}
 
       <Button
+        data-test="more-type-filter-button"
         aria-controls="more-type-filter"
         aria-haspopup="true"
         variant="outlined"
@@ -116,7 +160,7 @@ export const TypeFilter = () => {
         onClick={(event) => {
           setAnchorEl(event.currentTarget)
         }}>
-        {activeFromMore ? localization[activeFromMore.name as keyof typeof localization] : localization.more}
+        {activeFromMore ? activeFromMore.name : localization.more}
       </Button>
       <Menu
         id="more-type-filter"
@@ -133,18 +177,21 @@ export const TypeFilter = () => {
           vertical: 'top',
           horizontal: 'right',
         }}>
-        {(othersFromMore as Filter[]).map((filter) => (
-          <MenuItem
-            key={filter.name}
-            onClick={() => {
-              setAnchorEl(null)
-              searchState.setFilters((filters) =>
-                filters.type.name === filter.name ? filters : { ...filters, type: filter },
-              )
-            }}>
-            {localization[filter.name as keyof typeof localization]}
-          </MenuItem>
-        ))}
+        {(othersFromMore as Filter[])
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((filter) => (
+            <MenuItem
+              key={filter.name}
+              data-test={`more-menu-item-${filter.name.toLowerCase()}`}
+              onClick={() => {
+                setAnchorEl(null)
+                searchState.setFilters((filters) =>
+                  filters.type.name === filter.name ? filters : { ...filters, type: filter },
+                )
+              }}>
+              {filter.name}
+            </MenuItem>
+          ))}
       </Menu>
     </div>
   )
