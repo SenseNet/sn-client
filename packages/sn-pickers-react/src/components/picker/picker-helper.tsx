@@ -56,7 +56,7 @@ export const PickerHelper = ({
           <Link
             data-test="current-content"
             variant="body2"
-            onClick={() => handleJumpToCurrentPath(contextPath)}
+            onClick={() => handleJumpToCurrentPath(contextPath || '')}
             className={styles}>
             {currentContentText || 'Current Content'}
           </Link>
