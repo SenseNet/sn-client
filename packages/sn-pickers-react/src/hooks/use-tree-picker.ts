@@ -1,4 +1,4 @@
-import { ConstantContent, ODataParams, ODataResponse, Repository } from '@sensenet/client-core'
+import { ODataParams, Repository } from '@sensenet/client-core'
 import { AsyncReturnValue, PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -9,8 +9,6 @@ interface State {
   path: string
   parentId: number | undefined
 }
-
-const virtualRootPath = '!VirtualRoot!'
 
 const setParentIdAndPath = <T extends GenericContent>(node: T, parent?: T) => {
   return parent && parent.Id === node.Id
@@ -60,22 +58,6 @@ export const useTreePicker = <T extends GenericContentWithIsParent = GenericCont
       try {
         setIsLoading(true)
 
-        if (path === virtualRootPath && roots && navigationPath === virtualRootPath) {
-          const promises = await Promise.allSettled(
-            roots.map((root) =>
-              repository.load({
-                idOrPath: root,
-                oDataOptions: options.itemsODataOptions,
-              }),
-            ),
-          )
-          const fulfilledResults: GenericContent[] = promises
-            .filter((result) => result.status === 'fulfilled')
-            .map((result) => (result as PromiseFulfilledResult<ODataResponse<GenericContent>>).value.d)
-
-          return setItems(fulfilledResults.map((item) => ({ ...item, isParent: false })))
-        }
-
         const result = await loadItems({
           path: navigationPath || path,
           loadParent: !roots?.includes(navigationPath || path),
@@ -85,15 +67,6 @@ export const useTreePicker = <T extends GenericContentWithIsParent = GenericCont
           parentODataOptions: options.parentODataOptions,
           abortController,
         })
-
-        if ((roots?.length ?? 0) > 1 && (roots?.includes(path) || roots?.includes(navigationPath!))) {
-          result.unshift({
-            ...(ConstantContent.EMPTY_CONTENT as T),
-            isParent: true,
-            IsFolder: true,
-            Path: virtualRootPath,
-          })
-        }
 
         setItems(result)
       } catch (e) {

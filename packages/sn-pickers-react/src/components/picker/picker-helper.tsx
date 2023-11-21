@@ -1,4 +1,4 @@
-import { CircularProgress, Link } from '@material-ui/core'
+import { CircularProgress, Link, Tooltip } from '@material-ui/core'
 import { Repository } from '@sensenet/client-core'
 import React, { memo } from 'react'
 import { usePickerHelper } from './picker-helper.hook'
@@ -51,28 +51,31 @@ export const PickerHelper = ({
 
   return (
     <div style={containerStyle}>
-      {isAncestorOfRoot && (
-        <Link
-          data-test="current-content"
-          variant="body2"
-          onClick={() => handleJumpToCurrentPath(contextPath || '')}
-          className={styles}>
-          {currentContentText || 'Current Content'}
-        </Link>
+      {isAncestorOfRoot && contextPath && (
+        <Tooltip title={contextPath}>
+          <Link
+            data-test="current-content"
+            variant="body2"
+            onClick={() => handleJumpToCurrentPath(contextPath)}
+            className={styles}>
+            {currentContentText || 'Current Content'}
+          </Link>
+        </Tooltip>
       )}
 
       {helperPaths.length > 0 && (
         <div data-test="path-helpers">
           {helperPaths.map((path) => {
             return (
-              <Link
-                key={path.Path}
-                data-test={`path-helper-${path.Path}`}
-                variant="body2"
-                onClick={() => handleJumpToCurrentPath(path.Path)}
-                className={styles}>
-                {path.DisplayName || path.Name}
-              </Link>
+              <Tooltip key={path.Path} title={path.Path}>
+                <Link
+                  data-test={`path-helper-${path.Path}`}
+                  variant="body2"
+                  onClick={() => handleJumpToCurrentPath(path.Path)}
+                  className={styles}>
+                  {path.DisplayName || path.Name}
+                </Link>
+              </Tooltip>
             )
           })}
         </div>
