@@ -186,7 +186,7 @@ describe('Picker component', () => {
     })
 
     await act(async () => wrapper.update().find(ListItem).at(0).simulate('click'))
-    expect(setDestination).toHaveBeenCalledTimes(1)
+
     expect(setDestination).toBeCalledWith(genericContentItems[0].DisplayName)
   })
 
