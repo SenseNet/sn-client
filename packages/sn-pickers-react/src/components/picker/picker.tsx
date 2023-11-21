@@ -4,7 +4,7 @@ import { ConstantContent } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { SelectionContext, SelectionProvider } from '../../context/selection'
 import { SaveButton } from '../save-button'
 import { SearchPicker } from '../search-picker'
@@ -12,6 +12,7 @@ import { SelectionList } from '../selection-list'
 import { ShowSelectedButton } from '../show-selected-button'
 import { TreePicker } from '../tree-picker'
 import { CopyMoveTreePicker } from '../tree-picker/copy-move-tree-picker'
+import { PickerHelper } from './picker-helper'
 import { PickerProps } from './picker-props'
 
 export enum PickerModes {
@@ -29,15 +30,32 @@ const useStyles = makeStyles((theme: Theme) => {
     treeActiveIcon: {
       color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
     },
+
     showSelected: {
-      marginTop: '0.5rem',
       textAlign: 'right',
+      marginLeft: 'auto',
+      marginTop: '5px',
+    },
+    jumpCurrentPath: {
+      cursor: 'pointer',
     },
     toolbar: {
       display: 'flex',
       alignItems: 'center',
+      paddingRight: '24px',
+      flexWrap: 'wrap',
+      marginBottom: '10px',
+      '& .MuiFormControl-root': {
+        width: 'calc(100% - 48px)',
+      },
     },
     cancelButton: {},
+    currentLocationIcon: {
+      width: 20,
+      height: 20,
+      borderRadius: '50%',
+      backgroundColor: 'blue',
+    },
   })
 })
 
@@ -45,12 +63,15 @@ export type PickerClassKey = Partial<ReturnType<typeof useStyles>>
 
 export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (props) => {
   const treePickerMode = props.treePickerMode ?? PickerModes.TREE
+  // const contextPath = props.contextPath!
 
+  const [navigationPath, setNavigationPath] = useState(props.currentPath)
   const [term, setTerm] = useState<string>()
   const [result, setResult] = useState<GenericContent[]>([])
   const [searchError, setSearchError] = useState<string>()
   const [mode, setMode] = useState<PickerModes>(treePickerMode)
   const classes = useStyles(props)
+  const searchFieldRef = useRef<HTMLInputElement | null>(null)
 
   const PickerContainer = props.pickerContainer || 'div'
   const ActionsContainer = props.actionsContainer || 'div'
@@ -111,12 +132,25 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
     return () => ac.abort()
   }, [term, props.repository, props.selectionRoots])
 
+  const handleJumpToCurrentPath = (path: string) => {
+    setNavigationPath(path)
+    debouncedQuery('')
+    setMode(PickerModes.TREE)
+  }
+
   return (
     <SelectionProvider
       allowMultiple={props.allowMultiple}
       selectionChangeCallback={props.onSelectionChanged}
       defaultValue={props.defaultValue}>
-      <PickerContainer>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          flexWrap: 'nowrap',
+          height: '85%',
+          justifyContent: 'space-between',
+        }}>
         <Box className={classes.toolbar}>
           <IconButton
             title={props.localization?.treeViewButton ?? 'Tree view'}
@@ -125,6 +159,7 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
             <AccountTree />
           </IconButton>
           <TextField
+            ref={searchFieldRef}
             fullWidth={true}
             placeholder={props.localization?.searchPlaceholder ?? 'Search'}
             onFocus={() => setMode(PickerModes.SEARCH)}
@@ -132,23 +167,39 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
               debouncedQuery(ev.target.value)
             }}
           />
+          <ShowSelectedButton
+            className={classes.showSelected}
+            handleClick={() => setMode(PickerModes.SELECTION)}
+            localization={{ label: props.localization?.showSelected ?? 'Show selected' }}
+          />
         </Box>
-        <ShowSelectedButton
-          className={classes.showSelected}
-          handleClick={() => setMode(PickerModes.SELECTION)}
-          localization={{ label: props.localization?.showSelected ?? 'Show selected' }}
-        />
-        {mode === PickerModes.SELECTION && <SelectionList {...props} />}
-        {mode === PickerModes.SEARCH && <SearchPicker {...props} items={result} error={searchError} />}
-        {mode === PickerModes.TREE && <TreePicker {...props} />}
-        {mode === PickerModes.COPY_MOVE_TREE && <CopyMoveTreePicker {...props} />}
-      </PickerContainer>
+
+        <div className="selection-container" style={{ width: '100%', display: 'flex' }}>
+          <PickerHelper
+            handleJumpToCurrentPath={handleJumpToCurrentPath}
+            contextPath={props.contextPath}
+            styles={classes.jumpCurrentPath}
+            repository={props.repository}
+            selectionRoots={props.selectionRoots}
+            currentContentText={props.localization?.currentContentText}
+          />
+
+          <PickerContainer style={{ height: '545px', paddingTop: 0, position: 'relative', top: '-7px', width: '100%' }}>
+            {mode === PickerModes.TREE && (
+              <TreePicker setNavigationPath={setNavigationPath} navigationPath={navigationPath} {...props} />
+            )}
+            {mode === PickerModes.COPY_MOVE_TREE && <CopyMoveTreePicker {...props} />}
+            {mode === PickerModes.SEARCH && <SearchPicker {...props} items={result} error={searchError} />}
+            {mode === PickerModes.SELECTION && <SelectionList {...props} />}
+          </PickerContainer>
+        </div>
+      </div>
       <SelectionContext.Consumer>
         {({ selection }) =>
           props.renderActions ? (
             props.renderActions(selection)
           ) : (
-            <ActionsContainer>
+            <ActionsContainer style={{ marginLeft: 'auto', width: '100%' }}>
               <Button
                 aria-label={props.localization?.cancelButton ?? 'Cancel'}
                 className={classes.cancelButton}

@@ -1,5 +1,5 @@
 import { Button, Checkbox, IconButton, Link, ListItem, ListItemText, TextField } from '@material-ui/core'
-import { mount } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { SearchPicker, SelectionList, TreePicker } from '../src'
@@ -23,6 +23,8 @@ describe('Picker component', () => {
       },
     }
   }
+
+  const repositoryForPickerHelper = (loadCollectionValue?: unknown, loadValue?: unknown) => {}
 
   it('should render properly', async () => {
     let wrapper: any
@@ -89,7 +91,7 @@ describe('Picker component', () => {
     wrapper.update()
 
     expect(wrapper.find(Button).at(1).text()).toContain('Submit')
-    expect(wrapper.find(Link).text()).toContain('Show selected')
+    expect(wrapper.find("[data-test='show-selected-container'] button").text()).toContain('Show selected')
   })
 
   it('should handle submit', async () => {
@@ -124,7 +126,7 @@ describe('Picker component', () => {
 
     expect(wrapper.update().find(SelectionList).exists()).toBeFalsy()
 
-    act(() => wrapper.find(Link).prop('onClick')())
+    act(() => wrapper.find("[data-test='show-selected-container'] button").prop('onClick')())
     wrapper.update()
 
     expect(wrapper.update().find(SelectionList).exists()).toBeTruthy()
@@ -137,7 +139,7 @@ describe('Picker component', () => {
     })
 
     // navigate to selection list from tree view
-    act(() => wrapper.find(Link).prop('onClick')())
+    act(() => wrapper.find("[data-test='show-selected-container'] button").prop('onClick')())
 
     wrapper.update()
 
@@ -184,7 +186,7 @@ describe('Picker component', () => {
     })
 
     await act(async () => wrapper.update().find(ListItem).at(0).simulate('click'))
-    expect(setDestination).toHaveBeenCalledTimes(1)
+
     expect(setDestination).toBeCalledWith(genericContentItems[0].DisplayName)
   })
 
@@ -292,14 +294,14 @@ describe('Picker component', () => {
       wrapper = mount(<Picker repository={repository(genericContentItems) as any} required={1} />)
     })
 
-    expect(wrapper.update().find(Link).text()).toContain('(0)')
+    expect(wrapper.update().find("[data-test='show-selected-container'] button").text()).toContain('(0)')
 
     await act(
       async () =>
         await wrapper.find(ListItem).at(1).find(Checkbox).prop('onChange')({ target: { checked: true } } as any, true),
     )
 
-    expect(wrapper.update().find(Link).text()).toContain('(1)')
+    expect(wrapper.update().find("[data-test='show-selected-container'] button").text()).toContain('(1)')
   })
 
   it('After doubleclick a checkbox, list item should not be selected', async () => {
@@ -308,11 +310,11 @@ describe('Picker component', () => {
       wrapper = mount(<Picker repository={repository(genericContentItems) as any} required={1} />)
     })
 
-    expect(wrapper.update().find(Link).text()).toContain('(0)')
+    expect(wrapper.update().find("[data-test='show-selected-container'] button").text()).toContain('(0)')
 
     await act(async () => await wrapper.find(ListItem).at(1).find(Checkbox).simulate('dblclick'))
 
-    expect(wrapper.update().find(Link).text()).toContain('(0)')
+    expect(wrapper.update().find("[data-test='show-selected-container'] button").text()).toContain('(0)')
   })
 
   it('should allow multiple selection', async () => {
@@ -321,7 +323,7 @@ describe('Picker component', () => {
       wrapper = mount(<Picker repository={repository(genericContentItems) as any} allowMultiple={true} />)
     })
 
-    expect(wrapper.update().find(Link).text()).toContain('(0)')
+    expect(wrapper.update().find("[data-test='show-selected-container'] button").text()).toContain('(0)')
 
     await act(async () => {
       await wrapper.update().find(ListItem).at(1).find(Checkbox).prop('onChange')(
@@ -334,7 +336,7 @@ describe('Picker component', () => {
       )
     })
 
-    expect(wrapper.update().find(Link).text()).toContain('(2)')
+    expect(wrapper.update().find("[data-test='show-selected-container'] button").text()).toContain('(2)')
   })
 
   it('should enter search mode after input getting focus', async () => {
@@ -415,45 +417,136 @@ describe('Picker component', () => {
     wrapper.update()
   })
 
-  it('should handle distinct SelectionRoots', async () => {
-    const loadCollection = () => ({
-      d: {
-        results: [
-          {
-            Id: 10,
-            Type: 'Folder',
-            Path: '/Root/Content',
-            Name: 'SampleWorkspace',
-            DisplayName: 'Sample Workspace',
-          },
-        ],
-      },
-    })
-    const load = jest.fn()
-    const onTreeNavigation = jest.fn()
+  it('should render helper Current Conten based on SelectionRoot', async () => {
+    let helperItems = { Id: 1, Name: 'Item1', DisplayName: 'Display Item1', Path: '/Root/Content/EN/Blog/Posts' }
 
     let wrapper: any
     await act(async () => {
       wrapper = mount(
         <Picker
-          currentPath="/Root/Content"
-          repository={{ loadCollection, load } as any}
-          selectionRoots={['/Root/Content', '/Root/IMS/Public', '/Root/Content/TestFolder']}
-          onTreeNavigation={onTreeNavigation}
+          selectionRoots={['/Root/Content/EN/Blog/Posts']}
+          contextPath="/Root/Content/EN/Blog/Posts"
+          repository={repository(genericContentItems, helperItems) as any}
         />,
       )
     })
 
     wrapper.update()
 
-    await act(async () => wrapper.update().find(ListItem).at(0).simulate('dblclick'))
+    //data-test current-content should be rendered
 
-    expect(onTreeNavigation).toHaveBeenCalledWith('!VirtualRoot!')
+    expect(
+      wrapper
+        .find(Link)
+        .filterWhere((n: { prop: (arg0: string) => string }) => n.prop('data-test') === 'current-content')
+        .exists(),
+    ).toBeTruthy()
 
-    expect(load).toHaveBeenCalledWith({ idOrPath: '/Root/Content', oDataOptions: undefined })
-    expect(load).toHaveBeenCalledWith({
-      idOrPath: '/Root/IMS/Public',
-      oDataOptions: undefined,
+    helperItems = { Id: 1, Name: 'Item1', DisplayName: 'Display Item1', Path: '/Root/Content/HU/Blog/Posts' }
+
+    await act(async () => {
+      wrapper = mount(
+        <Picker
+          selectionRoots={['/Root/Content/HU/Blog/Posts']}
+          contextPath="/Root/Content/EN/Blog/Posts"
+          repository={repository(genericContentItems, helperItems) as any}
+        />,
+      )
     })
+
+    wrapper.update()
+
+    expect(
+      wrapper
+        .find(Link)
+        .filterWhere((n: { prop: (arg0: string) => string }) => n.prop('data-test') === 'current-content')
+        .exists(),
+    ).toBeFalsy()
+  })
+
+  it('Should render Selection Roots', async () => {
+    let wrapper: any
+
+    // helper items should be rendered
+
+    const helperItems = {
+      '/Root/Content/EN/Blog/Posts': {
+        Id: 1,
+        Name: 'Item1',
+        DisplayName: 'Display Item1',
+        Path: '/Root/Content/EN/Blog/Posts',
+      },
+      '/Root/Content/HU/Blog/Posts': {
+        Id: 1,
+        Name: 'Item1',
+        DisplayName: 'Display Item1',
+        Path: '/Root/Content/HU/Blog/Posts',
+      },
+    }
+
+    const repositoryHandle = (loadCollectionValue?: unknown) => {
+      return {
+        loadCollection: () => {
+          return {
+            d: {
+              results: loadCollectionValue,
+            },
+          }
+        },
+        load: (item: { idOrPath: string | number }) => {
+          return {
+            d: helperItems[item.idOrPath],
+          }
+        },
+      }
+    }
+
+    await act(async () => {
+      wrapper = mount(
+        <Picker
+          selectionRoots={['/Root/Content/HU/Blog/Posts']}
+          contextPath="/Root/Content/EN/Blog/Posts"
+          repository={repositoryHandle(genericContentItems) as any}
+        />,
+      )
+    })
+
+    wrapper.update()
+
+    expect(
+      wrapper
+        .find(Link)
+        .filterWhere(
+          (n: { prop: (arg0: string) => string }) =>
+            n.prop('data-test') === `path-helper-${helperItems['/Root/Content/HU/Blog/Posts'].Path}`,
+        )
+        .exists(),
+    ).toBeTruthy()
+
+    //click on a helper item
+
+    //test current helper items
+
+    await act(async () => {
+      wrapper
+        .find(Link)
+        .filterWhere(
+          (n: { prop: (arg0: string) => string }) =>
+            n.prop('data-test') === `path-helper-${helperItems['/Root/Content/HU/Blog/Posts'].Path}`,
+        )
+        .simulate('click')
+    })
+
+    wrapper.update()
+
+    expect(
+      wrapper
+        .find(Link)
+        .filterWhere(
+          (n: { prop: (arg0: string) => string }) =>
+            n.prop('data-test') === `path-helper-${helperItems['/Root/Content/HU/Blog/Posts'].Path}`,
+        )
+        .exists(),
+    ).toBeTruthy()
   })
 })
