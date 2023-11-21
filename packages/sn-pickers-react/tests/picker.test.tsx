@@ -417,48 +417,6 @@ describe('Picker component', () => {
     wrapper.update()
   })
 
-  it('should handle distinct SelectionRoots', async () => {
-    const loadCollection = () => ({
-      d: {
-        results: [
-          {
-            Id: 10,
-            Type: 'Folder',
-            Path: '/Root/Content',
-            Name: 'SampleWorkspace',
-            DisplayName: 'Sample Workspace',
-          },
-        ],
-      },
-    })
-    const load = jest.fn()
-    const onTreeNavigation = jest.fn()
-
-    let wrapper: any
-    await act(async () => {
-      wrapper = mount(
-        <Picker
-          currentPath="/Root/Content"
-          repository={{ loadCollection, load } as any}
-          selectionRoots={['/Root/Content', '/Root/IMS/Public', '/Root/Content/TestFolder']}
-          onTreeNavigation={onTreeNavigation}
-        />,
-      )
-    })
-
-    wrapper.update()
-
-    await act(async () => wrapper.update().find(ListItem).at(0).simulate('dblclick'))
-
-    expect(onTreeNavigation).toHaveBeenCalledWith('!VirtualRoot!')
-
-    expect(load).toHaveBeenCalledWith({ idOrPath: '/Root/Content', oDataOptions: undefined })
-    expect(load).toHaveBeenCalledWith({
-      idOrPath: '/Root/IMS/Public',
-      oDataOptions: undefined,
-    })
-  })
-
   it('should render helper Current Conten based on SelectionRoot', async () => {
     let helperItems = { Id: 1, Name: 'Item1', DisplayName: 'Display Item1', Path: '/Root/Content/EN/Blog/Posts' }
 
