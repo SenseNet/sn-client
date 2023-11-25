@@ -14,7 +14,6 @@ import { ReactClientFieldSetting } from './client-field-setting'
 export const HtmlEditor: React.FC<
   ReactClientFieldSetting & {
     theme?: Theme
-    test?: boolean
   }
 > = (props) => {
   const initialState =
@@ -35,10 +34,6 @@ export const HtmlEditor: React.FC<
     })
   }, [editorRef])
   const readonly = props.actionName === 'browse' || props.settings.ReadOnly
-
-  if (props.test) {
-    return <div data-test="html-editor-container">{value}</div>
-  }
 
   return (
     <>

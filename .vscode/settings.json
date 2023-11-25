@@ -1,16 +1,4 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
-  "editor.formatOnSave": true,
-  "sqltools.connections": [
-    {
-      "previewLimit": 50,
-      "server": "38.242.211.248",
-      "port": 5432,
-      "driver": "PostgreSQL",
-      "name": "idopontom",
-      "username": "admin",
-      "database": "idopontom",
-      "password": "10825660"
-    }
-  ]
+  "editor.formatOnSave": true
 }
