@@ -1,17 +1,22 @@
 import { ActionName } from '@sensenet/control-mapper'
-import { mount, ReactWrapper } from 'enzyme'
+import { mount } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import { defaultLocalization, HtmlEditor } from '../src/fieldcontrols'
 
 jest.mock('react-monaco-editor', () =>
   jest.fn((props) => {
-    return <div data-test="mock-monaco-editor">{props.value}</div>
+    return (
+      <div data-test="mock-monaco-editor" onChange={props.onChange}>
+        {props.value}
+      </div>
+    )
   }),
 )
 
 describe('Html Editor', () => {
   it('should display the content', async () => {
+    const onChange = jest.fn()
     const props = {
       actionName: 'edit' as ActionName,
       settings: {
@@ -26,18 +31,24 @@ describe('Html Editor', () => {
       },
       localization: defaultLocalization,
       fieldValue: '<p>Test</p>',
-      fieldOnChange: jest.fn(),
+
+      onChange,
     }
 
-    let wrapper: ReactWrapper<any, Readonly<{}>, React.Component<{}, {}, any>>
+    const wrapper = mount(<HtmlEditor {...props} />)
 
-    await act(async () => {
-      wrapper = mount(<HtmlEditor {...props} />)
-    })
-    wrapper!.update()
+    wrapper.update()
 
     const htmlEditorContainer = wrapper!.find('[data-test="html-editor-container"]')
 
     expect(htmlEditorContainer.text()).toBe('<p>Test</p>')
+
+    const mockMonacoEditor = wrapper.find('[data-test="mock-monaco-editor"]')
+
+    await act(async () => {
+      mockMonacoEditor.prop('onChange')?.('<p>Changed Test</p>' as any)
+    })
+
+    expect(htmlEditorContainer.text()).toBe('<p>Changed Test</p>')
   })
 })
