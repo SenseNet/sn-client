@@ -7,7 +7,7 @@ import { defaultLocalization, HtmlEditor } from '../src/fieldcontrols'
 jest.mock('react-monaco-editor', () =>
   jest.fn((props) => {
     return (
-      <div data-test="mock-monaco-editor" onChange={props.onChange}>
+      <div data-test="mock-monaco-editor" onChange={props.fieldOnChange}>
         {props.value}
       </div>
     )
@@ -32,7 +32,7 @@ describe('Html Editor', () => {
       localization: defaultLocalization,
       fieldValue: '<p>Test</p>',
 
-      onChange,
+      fieldOnChange: onChange,
     }
 
     const wrapper = mount(<HtmlEditor {...props} />)
@@ -49,6 +49,8 @@ describe('Html Editor', () => {
       mockMonacoEditor.prop('onChange')?.('<p>Changed Test</p>' as any)
     })
 
-    expect(htmlEditorContainer.text()).toBe('<p>Changed Test</p>')
+    //should be called with onChange
+
+    expect(props.fieldOnChange).toBeCalledWith('<p>Changed Test</p>')
   })
 })

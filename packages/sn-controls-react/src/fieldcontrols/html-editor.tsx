@@ -14,11 +14,12 @@ import { ReactClientFieldSetting } from './client-field-setting'
 export const HtmlEditor: React.FC<
   ReactClientFieldSetting & {
     theme?: Theme
+    setValue?: (value: string) => void
   }
 > = (props) => {
   const initialState =
     props.fieldValue || (props.actionName === 'new' && changeTemplatedValue(props.settings.DefaultValue)) || ''
-  const [value, setValue] = useState(initialState)
+  props.setValue?.(initialState)
 
   const editorRef = useRef<MonacoEditor>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -35,6 +36,10 @@ export const HtmlEditor: React.FC<
   }, [editorRef])
   const readonly = props.actionName === 'browse' || props.settings.ReadOnly
 
+  const editorChangeHandler = (newValue: string) => {
+    props.fieldOnChange?.(props.settings.Name, newValue)
+  }
+
   return (
     <>
       <InputLabel shrink>{props.settings.DisplayName}</InputLabel>
@@ -45,11 +50,8 @@ export const HtmlEditor: React.FC<
           {...props}
           width="100%"
           height="100%"
-          value={value}
-          onChange={(v) => {
-            setValue(v)
-            props.fieldOnChange?.(props.settings.Name, v)
-          }}
+          value={props.fieldValue}
+          onChange={editorChangeHandler}
           options={{
             automaticLayout: true,
             contextmenu: true,
