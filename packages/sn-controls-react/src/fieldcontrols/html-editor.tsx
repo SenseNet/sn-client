@@ -2,7 +2,7 @@
  * @module FieldControls
  */
 import { InputLabel, Theme } from '@material-ui/core'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 
 import { changeTemplatedValue } from '../helpers'
