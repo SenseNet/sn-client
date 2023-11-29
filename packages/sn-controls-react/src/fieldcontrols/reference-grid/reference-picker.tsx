@@ -9,6 +9,7 @@ interface ReferencePickerProps<T>
   extends Pick<PickerProps<T>, 'handleSubmit' | 'handleCancel' | 'localization' | 'defaultValue' | 'classes'> {
   repository: Repository
   path: string
+  contextPath?: string
   renderIcon?: (name: T) => JSX.Element
   fieldSettings: ReferenceFieldSetting
 }
@@ -72,6 +73,7 @@ export const ReferencePicker: React.FC<ReferencePickerProps<GenericContentWithIs
       defaultValue={props.defaultValue}
       repository={props.repository}
       currentPath={props.path}
+      contextPath={props.contextPath}
       selectionRoots={props.fieldSettings.SelectionRoots}
       itemsODataOptions={pickerItemOptions}
       renderIcon={renderIcon}

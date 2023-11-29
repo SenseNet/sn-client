@@ -9,7 +9,28 @@ export interface PickerLocalization {
   treeViewButton?: string
   submitButton?: string
   cancelButton?: string
+  currentContentText?: string
 }
+
+export type TReferemceSelectionHelperPath = Pick<
+  GenericContent,
+  | 'Id'
+  | 'ParentId'
+  | 'OwnerId'
+  | 'VersionId'
+  | 'Icon'
+  | 'Name'
+  | 'CreatedById'
+  | 'ModifiedById'
+  | 'Version'
+  | 'Path'
+  | 'Depth'
+  | 'IsSystemContent'
+  | 'IsFile'
+  | 'IsFolder'
+  | 'DisplayName'
+  | 'Description'
+>
 
 /**
  * Properties for picker component.
@@ -49,6 +70,13 @@ export interface PickerProps<T> {
    * @default '' // - empty string (This will load content under default site)
    */
   currentPath?: string
+
+  /**
+   * The context content's path.
+   * @type {string}
+   * @default '' // - empty string (This will load content under default site)
+   */
+  contextPath?: string
 
   /**
    * Roots of subtrees where selection is enabled
@@ -169,4 +197,7 @@ export interface PickerProps<T> {
   currentParent?: GenericContent
 
   treePickerMode?: PickerModes.TREE | PickerModes.COPY_MOVE_TREE
+
+  navigationPath?: string
+  setNavigationPath?: React.Dispatch<React.SetStateAction<string>>
 }

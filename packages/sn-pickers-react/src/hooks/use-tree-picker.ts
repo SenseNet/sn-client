@@ -1,4 +1,4 @@
-import { ConstantContent, ODataParams, Repository } from '@sensenet/client-core'
+import { ODataParams, Repository } from '@sensenet/client-core'
 import { AsyncReturnValue, PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -9,8 +9,6 @@ interface State {
   path: string
   parentId: number | undefined
 }
-
-const virtualRootPath = '!VirtualRoot!'
 
 const setParentIdAndPath = <T extends GenericContent>(node: T, parent?: T) => {
   return parent && parent.Id === node.Id
@@ -28,9 +26,10 @@ export const useTreePicker = <T extends GenericContentWithIsParent = GenericCont
   allowMultiple?: boolean
   itemsODataOptions?: ODataParams<T>
   parentODataOptions?: ODataParams<T>
+  navigationPath?: string
 }) => {
   // get defaults
-  const { repository, currentPath = '' } = options
+  const { repository, currentPath = '', navigationPath } = options
 
   const roots = useMemo(
     () =>
@@ -59,36 +58,15 @@ export const useTreePicker = <T extends GenericContentWithIsParent = GenericCont
       try {
         setIsLoading(true)
 
-        if (path === virtualRootPath && roots) {
-          const result = await Promise.all(
-            roots.map((root) =>
-              repository.load({
-                idOrPath: root,
-                oDataOptions: options.itemsODataOptions,
-              }),
-            ),
-          )
-          return setItems(result.map((item) => ({ ...item.d, isParent: false })))
-        }
-
         const result = await loadItems({
-          path,
-          loadParent: !roots?.includes(path),
+          path: navigationPath || path,
+          loadParent: !roots?.includes(navigationPath || path),
           repository,
           parentId,
           itemsODataOptions: options.itemsODataOptions,
           parentODataOptions: options.parentODataOptions,
           abortController,
         })
-
-        if ((roots?.length ?? 0) > 1 && roots?.includes(path)) {
-          result.unshift({
-            ...(ConstantContent.EMPTY_CONTENT as T),
-            isParent: true,
-            IsFolder: true,
-            Path: virtualRootPath,
-          })
-        }
 
         setItems(result)
       } catch (e) {
@@ -99,7 +77,16 @@ export const useTreePicker = <T extends GenericContentWithIsParent = GenericCont
         setIsLoading(false)
       }
     })()
-  }, [repository, reloadToken, parentId, roots, options.itemsODataOptions, options.parentODataOptions, path])
+  }, [
+    repository,
+    reloadToken,
+    parentId,
+    roots,
+    options.itemsODataOptions,
+    options.parentODataOptions,
+    path,
+    navigationPath,
+  ])
 
   const navigateTo = useCallback(
     (node: T) => dispatch(setParentIdAndPath(node, items?.find((c) => c.isParent) as T)),

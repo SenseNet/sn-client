@@ -70,4 +70,52 @@ describe('Search', () => {
         .then((fullname) => expect(fullname).to.eq('Business Cat'))
     })
   })
+
+  context('more contentTypes filter', () => {
+    const term = 'admin*'
+    before(() => {
+      cy.login()
+      cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
+    })
+    beforeEach(() => {
+      cy.get('[data-test="sensenet-logo"]').click()
+      cy.get('[data-test="search-button"]')
+        .click()
+        .get('[data-test="command-box"] input')
+        .type(term, { delay: 250 })
+        .get('[data-test="search-suggestion-list"] ul')
+        .children()
+        .as('search')
+        .first()
+        .click()
+        .location()
+        .should((loc) => {
+          expect(loc.pathname).to.eq(PATHS.search.appPath)
+          expect(loc.search).to.eq(`?term=${term}`)
+        })
+    })
+
+    it('result contains users and groups', () => {
+      cy.get('[data-test="table-cell-admin"]').should('exist')
+      cy.get('[data-test="table-cell-administrators"]').should('exist')
+      cy.get('[data-test="table-cell-captain-picard"]').should('not.exist')
+    })
+
+    it('the "more" menu contains more than 20 items including "group" and "user"', () => {
+      cy.get('[data-test="more-type-filter-button"]').click()
+      cy.get('[id="more-type-filter"]').contains('li', 'User')
+      cy.get('[id="more-type-filter"]').contains('li', 'Group')
+      cy.get('[data-test="more-menu-item-user"]').parent().children().its('length').should('be.gt', 20)
+      // press <ESC> to hide the menu to unblock the UI
+      cy.get('body').trigger('keydown', { keyCode: 27 })
+    })
+
+    it('result contains one user after  use the filter', () => {
+      cy.get('[data-test="more-type-filter-button"]').click().get('[data-test="more-menu-item-user"]').click()
+      // "MORE" changed to "USER"
+      cy.get('[data-test="more-type-filter-button"]').contains('User')
+      // "Administrators" disappeared
+      cy.get('[data-test="table-cell-administrators"]').should('not.exist')
+    })
+  })
 })

@@ -179,6 +179,8 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
     }
   }, [props.actionName, getSelected])
 
+  const currentParent = props.content?.Path.substring(0, props.content?.Path.lastIndexOf('/')) || '/Root'
+
   switch (props.actionName) {
     case 'new':
     case 'edit':
@@ -224,11 +226,19 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
           </List>
           {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
 
-          <Dialog fullWidth maxWidth="md" onClose={handleDialogClose} open={isPickerOpen} {...props.dialogProps}>
-            <DialogTitleComponent>{localization.referencePickerTitle}</DialogTitleComponent>
+          <Dialog
+            fullScreen
+            fullWidth
+            PaperProps={{ style: { maxWidth: '950px' } }}
+            maxWidth={false}
+            onClose={handleDialogClose}
+            open={isPickerOpen}
+            {...props.dialogProps}>
+            <DialogTitleComponent style={{ width: '100%' }}>{localization.referencePickerTitle}</DialogTitleComponent>
             <ReferencePicker
               defaultValue={fieldValue}
               path={props.settings.SelectionRoots?.[0] || '/Root'}
+              contextPath={currentParent}
               repository={props.repository!}
               renderIcon={props.renderPickerIcon}
               handleSubmit={handleOkClick}
