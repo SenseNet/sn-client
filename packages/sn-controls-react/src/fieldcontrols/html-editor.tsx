@@ -15,6 +15,7 @@ export const HtmlEditor: React.FC<
   ReactClientFieldSetting & {
     theme?: Theme
     setValue?: (value: string) => void
+    handleChange?: (value: string) => void
   }
 > = (props) => {
   const initialState =
@@ -52,7 +53,7 @@ export const HtmlEditor: React.FC<
           width="100%"
           height="100%"
           value={value}
-          onChange={editorChangeHandler}
+          onChange={props.handleChange || editorChangeHandler}
           options={{
             automaticLayout: true,
             contextmenu: true,

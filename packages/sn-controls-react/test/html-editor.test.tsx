@@ -31,8 +31,8 @@ describe('Html Editor', () => {
       },
       localization: defaultLocalization,
       fieldValue: '<p>Test</p>',
-
       fieldOnChange: onChange,
+      handleChange: onChange,
     }
 
     const wrapper = mount(<HtmlEditor {...props} />)
@@ -51,6 +51,6 @@ describe('Html Editor', () => {
 
     //should be called with onChange
 
-    expect(props.fieldOnChange).toBeCalledWith('<p>Changed Test</p>')
+    expect(props.handleChange).toBeCalledWith('<p>Changed Test</p>')
   })
 })
