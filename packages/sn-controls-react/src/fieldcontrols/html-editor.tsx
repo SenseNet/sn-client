@@ -2,7 +2,7 @@
  * @module FieldControls
  */
 import { InputLabel, Theme } from '@material-ui/core'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 
 import { changeTemplatedValue } from '../helpers'
@@ -19,7 +19,7 @@ export const HtmlEditor: React.FC<
 > = (props) => {
   const initialState =
     props.fieldValue || (props.actionName === 'new' && changeTemplatedValue(props.settings.DefaultValue)) || ''
-  props.setValue?.(initialState)
+  const [value, setValue] = useState(initialState)
 
   const editorRef = useRef<MonacoEditor>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -37,6 +37,7 @@ export const HtmlEditor: React.FC<
   const readonly = props.actionName === 'browse' || props.settings.ReadOnly
 
   const editorChangeHandler = (newValue: string) => {
+    setValue(newValue)
     props.fieldOnChange?.(props.settings.Name, newValue)
   }
 
@@ -50,7 +51,7 @@ export const HtmlEditor: React.FC<
           {...props}
           width="100%"
           height="100%"
-          value={props.fieldValue}
+          value={value}
           onChange={editorChangeHandler}
           options={{
             automaticLayout: true,
