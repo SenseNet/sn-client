@@ -15,12 +15,12 @@ export const HtmlEditor: React.FC<
   ReactClientFieldSetting & {
     theme?: Theme
     setValue?: (value: string) => void
-    handleChange?: (value: string) => void
   }
 > = (props) => {
   const initialState =
     props.fieldValue || (props.actionName === 'new' && changeTemplatedValue(props.settings.DefaultValue)) || ''
   const [value, setValue] = useState(initialState)
+  const readonly = props.actionName === 'browse' || props.settings.ReadOnly
 
   const editorRef = useRef<MonacoEditor>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -35,7 +35,6 @@ export const HtmlEditor: React.FC<
       containerRef.current!.style.height = `${contentHeight}px`
     })
   }, [editorRef])
-  const readonly = props.actionName === 'browse' || props.settings.ReadOnly
 
   const editorChangeHandler = (newValue: string) => {
     setValue(newValue)
@@ -53,7 +52,7 @@ export const HtmlEditor: React.FC<
           width="100%"
           height="100%"
           value={value}
-          onChange={props.handleChange || editorChangeHandler}
+          onChange={editorChangeHandler}
           options={{
             automaticLayout: true,
             contextmenu: true,
