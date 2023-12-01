@@ -10,7 +10,7 @@ import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
 import UserSearchPanel from '../src/components/user-search'
-import { TestUserList } from './_mocks_/test_contents'
+import { TestUserList } from './__mocks__/test_contents'
 
 describe('The user search component instance', () => {
   let wrapper: any
