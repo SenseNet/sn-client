@@ -383,6 +383,7 @@ const values = {
     queryHelperText: 'Enter a keyword',
     clearTerm: 'Clear input',
     resultCount: (count: number) => `${count} results`,
+    resultLimited: (limit: number) => `(only the first ${limit} are displayed)`,
     openInSearchTitle: (term: string) => `See all results for '${term}'`,
     openInSearchDescription: 'Opens the query expression in the Search view',
     saveQuery: 'Save Query',
