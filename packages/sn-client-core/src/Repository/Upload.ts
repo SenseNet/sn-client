@@ -174,7 +174,7 @@ export class Upload {
         method: 'POST',
         headers: {
           'Content-Range': `bytes 0-${this.repository.configuration.chunkSize - 1}/${options.file.size}`,
-          'Content-Disposition': `attachment; filename="${options.file.name}"`,
+          'Content-Disposition': `attachment; filename="${encodeURIComponent(options.file.name)}"`,
         },
       })
 
@@ -200,7 +200,7 @@ export class Upload {
           method: 'POST',
           headers: {
             'Content-Range': `bytes ${start}-${end - 1}/${options.file.size}`,
-            'Content-Disposition': `attachment; filename="${options.file.name}"`,
+            'Content-Disposition': `attachment; filename="${encodeURIComponent(options.file.name)}"`,
           },
         })
         if (lastResponse.ok) {
