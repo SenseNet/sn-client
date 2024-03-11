@@ -20,9 +20,9 @@ type TreeProps = {
   treeData: ItemType
 }
 
-const CHARACHTER_SPLIT = 6
+const CHARACHTER_SPLIT = 10
 const getStringParts = (str: string) => {
-  return [str.slice(0, Math.abs(CHARACHTER_SPLIT - 1)), str.slice(Math.abs(CHARACHTER_SPLIT) * -1)]
+  return [str.slice(0, CHARACHTER_SPLIT * -1), str.slice(CHARACHTER_SPLIT * -1)]
 }
 
 const useStyles = makeStyles(() => {
@@ -33,7 +33,7 @@ const useStyles = makeStyles(() => {
         flexWrap: 'no-wrap',
         maxWidth: 'calc(100% - 56px)',
         flex: 1,
-        '& .second': {
+        '& .second span': {
           width: `${CHARACHTER_SPLIT}ch`,
         },
         '& .first': {
@@ -162,6 +162,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
         selected={activeItemPath === item.Path}
         key={keyPrefix}
         style={{ paddingLeft }}
+        data-item-name={item.Name}
         button>
         <ListItemIcon>
           <Icon item={item} />
