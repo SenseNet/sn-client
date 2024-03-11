@@ -14,7 +14,6 @@ import clsx from 'clsx'
 import React, { useCallback, useMemo } from 'react'
 import {
   AutoSizer,
-  CellMeasurerCache,
   Column,
   Index,
   RowMouseEventHandlerParams,
@@ -25,11 +24,6 @@ import {
 } from 'react-virtualized'
 import { ColumnSetting, ContentListBaseProps } from './content-list-base-props'
 import { ActionsCell, DateCell, ReferenceCell, RowCheckbox, VirtualDefaultCell, VirtualDisplayNameCell } from '.'
-
-const _cache = new CellMeasurerCache({
-  fixedWidth: true,
-  minHeight: 25,
-})
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
