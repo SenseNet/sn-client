@@ -1,4 +1,12 @@
-import { createStyles, ListItem, ListItemIcon, ListItemText, makeStyles, List as MuiList } from '@material-ui/core'
+import {
+  createStyles,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  makeStyles,
+  List as MuiList,
+  Tooltip,
+} from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import { AutoSizer, Index, List, ListRowProps } from 'react-virtualized'
@@ -149,29 +157,31 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
     const [firstPart, SecondPart] = getStringParts(item.Name)
 
     const nodeItem = (
-      <ListItem
-        ref={listItemRef}
-        className={classes.listItem}
-        data-test={`menu-item-${item.DisplayName?.replace(/\s+/g, '-').toLowerCase()}`}
-        onClick={onClick}
-        onContextMenu={(ev) => {
-          ev.preventDefault()
-          setContextMenuAnchor(ev.currentTarget)
-          setActiveContent(item)
-        }}
-        selected={activeItemPath === item.Path}
-        key={keyPrefix}
-        style={{ paddingLeft }}
-        data-item-name={item.Name}
-        button>
-        <ListItemIcon>
-          <Icon item={item} />
-        </ListItemIcon>
-        <div className="text-container">
-          <ListItemText primary={firstPart} className="first" />
-          <ListItemText primary={SecondPart} className="second" />
-        </div>
-      </ListItem>
+      <Tooltip title={item.Name} placement="bottom">
+        <ListItem
+          ref={listItemRef}
+          className={classes.listItem}
+          data-test={`menu-item-${item.DisplayName?.replace(/\s+/g, '-').toLowerCase()}`}
+          onClick={onClick}
+          onContextMenu={(ev) => {
+            ev.preventDefault()
+            setContextMenuAnchor(ev.currentTarget)
+            setActiveContent(item)
+          }}
+          selected={activeItemPath === item.Path}
+          key={keyPrefix}
+          style={{ paddingLeft }}
+          data-item-name={item.Name}
+          button>
+          <ListItemIcon>
+            <Icon item={item} />
+          </ListItemIcon>
+          <div className="text-container">
+            <ListItemText primary={firstPart} className="first" />
+            <ListItemText primary={SecondPart} className="second" />
+          </div>
+        </ListItem>
+      </Tooltip>
     )
 
     if (item.hasNextPage && item.children && !isLoading) {
