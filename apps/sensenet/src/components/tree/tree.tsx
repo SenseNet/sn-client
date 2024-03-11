@@ -173,8 +173,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
         flexGrow: 2,
         flexShrink: 0,
         borderRight: '1px solid rgba(128,128,128,.2)',
-        overflowY: 'scroll',
-        overflowX: 'hidden',
+        overflow: 'unset',
       }}>
       <AutoSizer>
         {({ height, width }) => (
@@ -191,7 +190,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
               }
               setElements([...loadMoreElements])
             }}
-            containerStyle={{ overflow: 'initial' }}
+            containerStyle={{ overflow: 'unset' }}
             rowRenderer={rowRenderer}
             rowCount={itemCount}
             style={{ outline: 'none', overflow: 'unset' }}
