@@ -1,4 +1,4 @@
-import { ListItem, ListItemIcon, ListItemText, List as MuiList } from '@material-ui/core'
+import { createStyles, ListItem, ListItemIcon, ListItemText, makeStyles, List as MuiList } from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import { AutoSizer, Index, List, ListRowProps } from 'react-virtualized'
@@ -20,6 +20,42 @@ type TreeProps = {
   treeData: ItemType
 }
 
+const CHARACHTER_SPLIT = 6
+const getStringParts = (str: string) => {
+  return [str.slice(0, Math.abs(CHARACHTER_SPLIT - 1)), str.slice(Math.abs(CHARACHTER_SPLIT) * -1)]
+}
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    listItem: {
+      '& .text-container': {
+        display: 'flex',
+        flexWrap: 'no-wrap',
+        maxWidth: 'calc(100% - 56px)',
+        flex: 1,
+        '& .second': {
+          width: `${CHARACHTER_SPLIT}ch`,
+        },
+        '& .first': {
+          maxWidth: 'calc(100% - 56px)',
+          '& span': {
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+          },
+        },
+        '& > *': {
+          display: 'inline-block',
+          flex: 'unset',
+        },
+        '& .MuiTypography-root': {
+          display: 'inherit',
+        },
+      },
+    },
+  })
+})
+
 const ROW_HEIGHT = 48
 const LOAD_MORE_CLASS = 'loadMore'
 
@@ -30,6 +66,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [elements, setElements] = useState<Element[]>()
   const [rowHeight, setRowHeight] = useState(ROW_HEIGHT)
+  const classes = useStyles()
 
   const listItemRef = useCallback((node) => {
     if (node) {
@@ -108,9 +145,13 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
       })
     }
 
+    //Convert the name to two parts in order to display ... in the middle
+    const [firstPart, SecondPart] = getStringParts(item.Name)
+
     const nodeItem = (
       <ListItem
         ref={listItemRef}
+        className={classes.listItem}
         data-test={`menu-item-${item.DisplayName?.replace(/\s+/g, '-').toLowerCase()}`}
         onClick={onClick}
         onContextMenu={(ev) => {
@@ -125,7 +166,10 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
         <ListItemIcon>
           <Icon item={item} />
         </ListItemIcon>
-        <ListItemText primary={item.DisplayName} />
+        <div className="text-container">
+          <ListItemText primary={firstPart} className="first" />
+          <ListItemText primary={SecondPart} className="second" />
+        </div>
       </ListItem>
     )
 
@@ -180,7 +224,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
           <List
             height={height}
             width={width}
-            overscanRowCount={10}
+            overscanRowCount={10000}
             ref={listRef}
             rowHeight={rowHeightFunc}
             onRowsRendered={() => {
