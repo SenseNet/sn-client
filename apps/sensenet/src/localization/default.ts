@@ -549,6 +549,12 @@ const values = {
     copy: 'Copy selected items',
     copyPath: 'Copy path',
   },
+  treeActions: {
+    delete: 'Delete selected items',
+    move: 'Move selected items',
+    copy: 'Copy selected items',
+    copyPath: 'Copy path',
+  },
   referenceContentListDialog: {
     errorAlreadyInList: 'The selected item is already in the list',
   },
