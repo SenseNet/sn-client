@@ -1,4 +1,12 @@
-import { ListItem, ListItemIcon, ListItemText, List as MuiList } from '@material-ui/core'
+import {
+  createStyles,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  makeStyles,
+  List as MuiList,
+  Tooltip,
+} from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import { AutoSizer, Index, List, ListRowProps } from 'react-virtualized'
@@ -20,6 +28,43 @@ type TreeProps = {
   treeData: ItemType
 }
 
+const CHARACHTER_SPLIT = 10
+const getStringParts = (str: string) => {
+  return [str.slice(0, CHARACHTER_SPLIT * -1), str.slice(CHARACHTER_SPLIT * -1)]
+}
+
+const useStyles = makeStyles(() => {
+  return createStyles({
+    listItem: {
+      '& .text-container': {
+        display: 'flex',
+        flexWrap: 'no-wrap',
+        maxWidth: 'calc(100% - 56px)',
+        flex: 1,
+        '& .second span': {
+          width: `${CHARACHTER_SPLIT}ch`,
+          textWrap: 'nowrap',
+        },
+        '& .first': {
+          maxWidth: 'calc(100% - 56px - 5ch)',
+          '& span': {
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+          },
+        },
+        '& > *': {
+          display: 'inline-block',
+          flex: 'unset',
+        },
+        '& .MuiTypography-root': {
+          display: 'inherit',
+        },
+      },
+    },
+  })
+})
+
 const ROW_HEIGHT = 48
 const LOAD_MORE_CLASS = 'loadMore'
 
@@ -30,6 +75,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [elements, setElements] = useState<Element[]>()
   const [rowHeight, setRowHeight] = useState(ROW_HEIGHT)
+  const classes = useStyles()
 
   const listItemRef = useCallback((node) => {
     if (node) {
@@ -108,25 +154,35 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
       })
     }
 
+    //Convert the name to two parts in order to display ... in the middle
+    const [firstPart, SecondPart] = getStringParts(item.Name)
+
     const nodeItem = (
-      <ListItem
-        ref={listItemRef}
-        data-test={`menu-item-${item.DisplayName?.replace(/\s+/g, '-').toLowerCase()}`}
-        onClick={onClick}
-        onContextMenu={(ev) => {
-          ev.preventDefault()
-          setContextMenuAnchor(ev.currentTarget)
-          setActiveContent(item)
-        }}
-        selected={activeItemPath === item.Path}
-        key={keyPrefix}
-        style={{ paddingLeft }}
-        button>
-        <ListItemIcon>
-          <Icon item={item} />
-        </ListItemIcon>
-        <ListItemText primary={item.DisplayName} />
-      </ListItem>
+      <Tooltip title={item.Name} placement="bottom">
+        <ListItem
+          ref={listItemRef}
+          className={classes.listItem}
+          data-test={`menu-item-${item.DisplayName?.replace(/\s+/g, '-').toLowerCase()}`}
+          onClick={onClick}
+          onContextMenu={(ev) => {
+            ev.preventDefault()
+            setContextMenuAnchor(ev.currentTarget)
+            setActiveContent(item)
+          }}
+          selected={activeItemPath === item.Path}
+          key={keyPrefix}
+          style={{ paddingLeft }}
+          data-item-name={item.Name}
+          button>
+          <ListItemIcon>
+            <Icon item={item} />
+          </ListItemIcon>
+          <div className="text-container">
+            <ListItemText primary={firstPart} className="first" />
+            <ListItemText primary={SecondPart} className="second" />
+          </div>
+        </ListItem>
+      </Tooltip>
     )
 
     if (item.hasNextPage && item.children && !isLoading) {
@@ -173,13 +229,14 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
         flexGrow: 2,
         flexShrink: 0,
         borderRight: '1px solid rgba(128,128,128,.2)',
+        overflow: 'unset',
       }}>
       <AutoSizer>
         {({ height, width }) => (
           <List
             height={height}
             width={width}
-            overscanRowCount={10}
+            overscanRowCount={10000}
             ref={listRef}
             rowHeight={rowHeightFunc}
             onRowsRendered={() => {
@@ -189,7 +246,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
               }
               setElements([...loadMoreElements])
             }}
-            containerStyle={{ overflow: 'initial' }}
+            containerStyle={{ overflow: 'unset' }}
             rowRenderer={rowRenderer}
             rowCount={itemCount}
             style={{ outline: 'none' }}

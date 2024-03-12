@@ -91,8 +91,8 @@ export const isReferenceField = (fieldName: string, repo: Repository, schema = '
   return refWhiteList.some((field) => field === fieldName) || setting?.Type === 'ReferenceFieldSetting'
 }
 
-const rowHeightConst = 57
-const headerHeightConst = 48
+const rowHeightConst = 67
+const headerHeightConst = 58
 
 /**
  * Compare passed minutes with
@@ -734,8 +734,8 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
                 handleItemClick(rowMouseEventHandlerParams)
               },
               rowStyle: {
-                position: 'static',
-                top: 'auto',
+                position: 'relative',
+                top: 'unset',
                 height: 'auto',
                 overflow: 'initial',
                 padding: '5px 0px',
@@ -743,12 +743,13 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
               onRowDoubleClick: onItemDoubleClickFunc,
               disableHeader: props.hideHeader,
               containerStyle: {
-                height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
                 overflowY: 'auto',
-                maxHeight: '100%',
                 paddingBottom: '15px',
+                minHeight: '100%',
+                height: 'inherit',
+                maxHeight: 'inherit',
               },
             }}
           />
