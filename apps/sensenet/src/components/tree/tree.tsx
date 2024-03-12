@@ -43,9 +43,10 @@ const useStyles = makeStyles(() => {
         flex: 1,
         '& .second span': {
           width: `${CHARACHTER_SPLIT}ch`,
+          textWrap: 'nowrap',
         },
         '& .first': {
-          maxWidth: 'calc(100% - 56px)',
+          maxWidth: 'calc(100% - 56px - 5ch)',
           '& span': {
             overflow: 'hidden',
             whiteSpace: 'nowrap',
@@ -248,7 +249,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
             containerStyle={{ overflow: 'unset' }}
             rowRenderer={rowRenderer}
             rowCount={itemCount}
-            style={{ outline: 'none', overflow: 'unset' }}
+            style={{ outline: 'none' }}
           />
         )}
       </AutoSizer>
