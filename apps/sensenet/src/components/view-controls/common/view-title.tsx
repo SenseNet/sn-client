@@ -32,6 +32,13 @@ const useStyles = makeStyles(() => {
     actionBar: {
       display: 'flex',
     },
+    typeinfo: {
+      display: 'flex',
+      justifyContent: 'center',
+      fontSize: '12px',
+      color: 'grey',
+      marginTop: '4px',
+    },
   })
 })
 
@@ -155,6 +162,7 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
           </span>
         )}
       </div>
+      <div className={classes.typeinfo}>({props.content!.Type})</div>
     </div>
   )
 }
