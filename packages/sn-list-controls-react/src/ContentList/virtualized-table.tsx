@@ -421,6 +421,8 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
                           ? props.referenceCellRenderer(tableCellProps)
                           : defaultCellRenderer(tableCellProps)
                       } else {
+                        console.log(tableCellProps)
+
                         return props.cellRenderer
                           ? props.cellRenderer({
                               tableCellProps,
