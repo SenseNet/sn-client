@@ -35,8 +35,14 @@ const useStyles = makeStyles(() => {
     typeinfo: {
       fontSize: '12px',
       color: 'grey',
-      marginTop: '4px',
       marginLeft: '5px',
+    },
+
+    viewTitle: {
+      '& span': {
+        display: 'inline-block',
+        verticalAlign: 'middle',
+      },
     },
   })
 })
@@ -69,7 +75,7 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
 
   return (
     <div className={clsx(classes.title, globalClasses.centered)}>
-      <div data-test="viewtitle" className={clsx(globalClasses.centeredVertical)}>
+      <div data-test="viewtitle" className={classes.viewTitle}>
         {props.title} <span className={classes.textBolder}>{props.titleBold}</span>
         <span className={classes.typeinfo}>({props.content!.Type})</span>
       </div>
@@ -160,7 +166,6 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
             />
           </span>
         )}
-
       </div>
     </div>
   )
