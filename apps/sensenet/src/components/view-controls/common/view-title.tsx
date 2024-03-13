@@ -32,6 +32,18 @@ const useStyles = makeStyles(() => {
     actionBar: {
       display: 'flex',
     },
+    typeinfo: {
+      fontSize: '12px',
+      color: 'grey',
+      marginLeft: '5px',
+    },
+
+    viewTitle: {
+      '& span': {
+        display: 'inline-block',
+        verticalAlign: 'middle',
+      },
+    },
   })
 })
 
@@ -63,8 +75,9 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
 
   return (
     <div className={clsx(classes.title, globalClasses.centered)}>
-      <div data-test="viewtitle">
+      <div data-test="viewtitle" className={classes.viewTitle}>
         {props.title} <span className={classes.textBolder}>{props.titleBold}</span>
+        <span className={classes.typeinfo}>({props.content!.Type})</span>
       </div>
       <div className={classes.actionBar}>
         {props.actionName === 'browse' && (
@@ -130,16 +143,15 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
             title={`Open ${contentDisplayName} CTD`}
             onClick={async () => {
               const content = await getContentTypeId(props.content!.Type)
-              history.push(
-                getPrimaryActionUrl({
-                  content,
-                  repository,
-                  location: history.location,
-                  uiSettings,
-                  snRoute,
-                  removePath: true,
-                }),
-              )
+              const url = getPrimaryActionUrl({
+                content,
+                repository,
+                location: history.location,
+                uiSettings,
+                snRoute,
+                removePath: true,
+              })
+              window.open(url, '_blank')
             }}
             className={globalClasses.centered}>
             <Icon
