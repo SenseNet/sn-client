@@ -137,16 +137,15 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
             title={`Open ${contentDisplayName} CTD`}
             onClick={async () => {
               const content = await getContentTypeId(props.content!.Type)
-              history.push(
-                getPrimaryActionUrl({
-                  content,
-                  repository,
-                  location: history.location,
-                  uiSettings,
-                  snRoute,
-                  removePath: true,
-                }),
-              )
+              const url = getPrimaryActionUrl({
+                content,
+                repository,
+                location: history.location,
+                uiSettings,
+                snRoute,
+                removePath: true,
+              })
+              window.open(url, '_blank')
             }}
             className={globalClasses.centered}>
             <Icon
