@@ -33,11 +33,10 @@ const useStyles = makeStyles(() => {
       display: 'flex',
     },
     typeinfo: {
-      display: 'flex',
-      justifyContent: 'center',
       fontSize: '12px',
       color: 'grey',
       marginTop: '4px',
+      marginLeft: '5px',
     },
   })
 })
@@ -70,8 +69,9 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
 
   return (
     <div className={clsx(classes.title, globalClasses.centered)}>
-      <div data-test="viewtitle">
+      <div data-test="viewtitle" className={clsx(globalClasses.centeredVertical)}>
         {props.title} <span className={classes.textBolder}>{props.titleBold}</span>
+        <span className={classes.typeinfo}>({props.content!.Type})</span>
       </div>
       <div className={classes.actionBar}>
         {props.actionName === 'browse' && (
@@ -161,8 +161,8 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
             />
           </span>
         )}
+
       </div>
-      <div className={classes.typeinfo}>({props.content!.Type})</div>
     </div>
   )
 }
