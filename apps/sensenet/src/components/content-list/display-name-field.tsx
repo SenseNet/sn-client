@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => {
         verticalAlign: 'middle',
       },
       '& .first': {
-        maxWidth: `calc(100% - ${CHARACHTER_SPLIT}ch)`,
+        maxWidth: `calc(100% - ${CHARACHTER_SPLIT + 1}ch)`,
         overflow: 'hidden',
         textOverflow: 'ellipsis',
       },
