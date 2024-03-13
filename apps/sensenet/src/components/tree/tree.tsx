@@ -215,7 +215,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
       )
     }
     return (
-      <MuiList key={key} style={{ display: 'flex', paddingTop: '0px', paddingBottom: '0px', flexDirection: 'column' }}>
+      <MuiList key={key} style={style}>
         {renderItem(treeData.children?.[index], index.toString(), 10)}
       </MuiList>
     )
@@ -229,14 +229,13 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
         flexGrow: 2,
         flexShrink: 0,
         borderRight: '1px solid rgba(128,128,128,.2)',
-        overflow: 'unset',
       }}>
       <AutoSizer>
         {({ height, width }) => (
           <List
             height={height}
             width={width}
-            overscanRowCount={10000}
+            overscanRowCount={11000}
             ref={listRef}
             rowHeight={rowHeightFunc}
             onRowsRendered={() => {
@@ -246,7 +245,6 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
               }
               setElements([...loadMoreElements])
             }}
-            containerStyle={{ overflow: 'unset' }}
             rowRenderer={rowRenderer}
             rowCount={itemCount}
             style={{ outline: 'none' }}
