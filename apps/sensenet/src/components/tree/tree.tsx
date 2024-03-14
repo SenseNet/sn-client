@@ -29,8 +29,8 @@ type TreeProps = {
 }
 
 const CHARACHTER_SPLIT = 10
-const getStringParts = (str: string) => {
-  return [str.slice(0, CHARACHTER_SPLIT * -1), str.slice(CHARACHTER_SPLIT * -1)]
+export const getStringParts = (str: string, characterSplit = 10) => {
+  return [str.slice(0, characterSplit * -1), str.slice(characterSplit * -1)]
 }
 
 const useStyles = makeStyles(() => {

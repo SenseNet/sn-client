@@ -178,16 +178,16 @@ describe('Picker component', () => {
       wrapper = mount(
         <Picker
           repository={repository(genericContentItems) as any}
-          currentParent={{ Id: 1, Name: 'Test', Path: 'Content/Workspace', Type: 'Folder', DisplayName: 'test' }}
+          currentParent={{ Id: 1, Name: 'Test', Path: 'Content/Workspace', Type: 'Folder', DisplayName: 'Test' }}
           setDestination={setDestination}
           treePickerMode={PickerModes.COPY_MOVE_TREE}
         />,
       )
     })
 
-    await act(async () => wrapper.update().find(ListItem).at(0).simulate('click'))
+    await act(async () => wrapper.update().find(ListItem).at(1).simulate('click'))
 
-    expect(setDestination).toBeCalledWith(genericContentItems[0].DisplayName)
+    expect(setDestination).toBeCalledWith(genericContentItems[1].DisplayName)
   })
 
   it('copy-move tree should render an error message when error', async () => {
