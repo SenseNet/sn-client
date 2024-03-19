@@ -53,7 +53,7 @@ export function CopyMoveTreePicker<T extends GenericContentWithIsParent = Generi
         if (!node.isParent) {
           const newSelection = []
 
-          if (newSelection.length === selection.length || selection[0].Id !== node.Id) {
+          if (newSelection.length === selection.length || selection[0]?.Id !== node.Id) {
             newSelection.push(node)
             props.setDestination?.(node.DisplayName)
           }
