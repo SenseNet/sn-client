@@ -25,6 +25,11 @@ export const SearchResults = () => {
   const snRoute = useSnRoute()
 
   const searchState = useSearch()
+  const maxResultCount = 20
+
+  const resultText =
+    localization.resultCount(searchState.resultCount) +
+    (searchState.resultCount > maxResultCount ? ` ${localization.resultLimited(maxResultCount)}` : '')
 
   return (
     <>
@@ -36,7 +41,7 @@ export const SearchResults = () => {
 
       {searchState.isLoading && <LinearProgress style={{ margin: '15px 15px 0' }} />}
 
-      <Typography style={{ margin: '1rem' }}>{localization.resultCount(searchState.resultCount)}</Typography>
+      <Typography style={{ margin: '1rem' }}>{resultText}</Typography>
 
       <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>
         <CurrentChildrenContext.Provider value={searchState.result}>
