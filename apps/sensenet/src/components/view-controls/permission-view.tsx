@@ -292,7 +292,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                       <ListItemText
                         primary={
                           <div>
-                            {inheritedEntry.identity.displayName}
+                            {inheritedEntry.identity.displayName} ({inheritedEntry.identity.path})
                             <Link
                               data-test={`inherited-${inheritedEntry.identity.displayName
                                 ?.replace(/\s+/g, '-')
@@ -383,7 +383,7 @@ export const PermissionView: React.FC<PermissionViewProps> = (props) => {
                         <ListItemText
                           primary={
                             <div className={globalClasses.centeredVertical}>
-                              {setOnThisEntry.identity.displayName}
+                              {setOnThisEntry.identity.displayName} ({setOnThisEntry.identity.path})
                               {!setOnThisEntry.propagates && (
                                 <Tooltip title={localization.permissionEditor.localOnly} placement="top">
                                   <DesktopMac className={classes.localOnlyIcon} />
