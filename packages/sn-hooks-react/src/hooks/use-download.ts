@@ -10,6 +10,7 @@ export const fakeClick = (obj: EventTarget) => {
 export const downloadFile = (name: string, repositoryUrl: string) => {
   const saveLink = document.createElement('a')
   saveLink.href = `${repositoryUrl}${name}?download`
+  saveLink.target = '_blank';
   fakeClick(saveLink)
 }
 
