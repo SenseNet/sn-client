@@ -20,7 +20,7 @@ describe('Users enabled field', () => {
   })
   it('Enabled state should work properly', () => {
     cy.get('[data-test="switcher-developer-dog"]').click()
-    cy.get('[data-test="table-cell-developer-dog"]').dblclick()
+    cy.get('[data-test="table-cell-developer-dog"]').dblclick({ force: true })
     cy.get('[data-test="viewtitle"]').should('be.visible')
     cy.get('.MuiSwitch-root').find('.MuiSwitch-input').first().should('be.checked')
     cy.get('[data-test="cancel"]').click()

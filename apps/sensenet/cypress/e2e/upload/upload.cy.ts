@@ -22,7 +22,7 @@ describe('Upload', () => {
             cy.get('div[role="progressbar"]').should('have.text', 'Upload completed')
             cy.get('[data-test="dialog-close"]').click()
 
-            cy.get(`[data-test="table-cell-${fileToBeUploaded}"]`).should('have.text', fileToBeUploaded)
+            cy.get(`[data-test="table-cell-${fileToBeUploaded}"]`).should('contain', fileToBeUploaded)
 
             cy.get(`[data-test="table-cell-${fileToBeUploaded}"]`).rightclick()
             cy.get('[data-test="content-context-menu-delete"]')

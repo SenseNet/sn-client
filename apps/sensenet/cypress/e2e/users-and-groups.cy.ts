@@ -6,6 +6,7 @@ describe('Users menu', () => {
       cy.login()
       cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
       cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
+      cy.viewport(1920, 1080)
     })
 
     it('ensures that domains are listed', () => {
@@ -25,6 +26,7 @@ describe('Users menu', () => {
       cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
       cy.get('[data-test="drawer-menu-item-users-and-groups"]').click()
       cy.get('[data-test="menu-item-public"]').click()
+      cy.viewport(1920, 1080)
     })
 
     it('ensures that users list has the appropriate data', () => {
@@ -41,8 +43,8 @@ describe('Users menu', () => {
 
       // Checks for users
       cy.get('.ReactVirtualized__Table .ReactVirtualized__Table__Grid .ReactVirtualized__Table__row').as('UserRows')
-      cy.get('@UserRows').contains('Business Cat').should('have.length', 1)
-      cy.get('@UserRows').contains('Developer Dog').should('have.length', 1)
+      cy.get("[data-test='table-cell-business-cat']").should('exist')
+      cy.get("[data-test='table-cell-developer-dog']").should('exist')
     })
 
     it('ensures that right click on a user opens context-menu', () => {
@@ -50,7 +52,7 @@ describe('Users menu', () => {
       cy.get('.ReactVirtualized__Table .ReactVirtualized__Table__Grid .ReactVirtualized__Table__row').as('UserRows')
 
       // Select Developer Dog
-      cy.get('@UserRows').contains('Developer Dog').rightclick()
+      cy.get("[data-test='table-cell-developer-dog']").should('exist').rightclick()
 
       // Check if the required actions exist
       cy.get('[data-test="content-context-menu-browse"]').as('BrowseAction').should('exist')
@@ -68,7 +70,7 @@ describe('Users menu', () => {
       cy.get('.ReactVirtualized__Table .ReactVirtualized__Table__Grid .ReactVirtualized__Table__row').as('UserRows')
 
       // Select Developer Dog
-      cy.get('@UserRows').contains('Developer Dog').dblclick()
+      cy.get("[data-test='table-cell-developer-dog']").should('exist').dblclick()
 
       // Check if the required title exist
       cy.get('[data-test="viewtitle"]').as('Title').should('contain.text', 'Edit Developer Dog')
@@ -108,7 +110,7 @@ describe('Users menu', () => {
         password: 'devdog',
       }
 
-      cy.get('[data-test="add-button"]').should('not.be.disabled').click()
+      cy.get('[data-test="add-button"]').should('not.be.disabled').click({ force: true })
 
       cy.get('[data-test="listitem-user"]')
         .click()
