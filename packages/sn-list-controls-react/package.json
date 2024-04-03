@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/list-controls-react",
-  "version": "2.2.1",
+  "version": "2.2.0",
   "description": "",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
