@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/pickers-react",
-  "version": "3.0.0",
+  "version": "2.1.4",
   "description": "Content picker components in react with sensenet.",
   "keywords": [
     "sensenet",
