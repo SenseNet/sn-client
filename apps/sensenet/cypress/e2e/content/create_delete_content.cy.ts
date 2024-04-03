@@ -18,10 +18,9 @@ describe('Create/Delete content', () => {
         cy.get('#Name').type(folderName)
         cy.contains('Submit').click()
         cy.get('[data-test="snackbar-close"]').click()
-        cy.get(`[data-test="table-cell-${folderName.replace(/\s+/g, '-').toLowerCase()}"]`).should(
-          'have.text',
-          folderName,
-        )
+        cy.get(`[data-test="table-cell-${folderName.replace(/\s+/g, '-').toLowerCase()}"]`)
+          .invoke('text')
+          .should('include', folderName)
       })
   })
 

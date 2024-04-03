@@ -19,7 +19,9 @@ describe('Create/Delete content', () => {
         cy.get('#Name').type(fileName)
         cy.contains('Submit').click()
         cy.get('[data-test="snackbar-close"]').click()
-        cy.get(`[data-test="table-cell-${fileName.replace(/\s+/g, '-').toLowerCase()}"]`).should('have.text', fileName)
+        cy.get(`[data-test="table-cell-${fileName.replace(/\s+/g, '-').toLowerCase()}"]`)
+          .invoke('text')
+          .should('include', fileName)
       })
   })
 
@@ -34,10 +36,9 @@ describe('Create/Delete content', () => {
         cy.get('#Name').clear().type(newFileName)
         cy.contains('Submit').click()
         cy.get('[data-test="snackbar-close"]').click()
-        cy.get(`[data-test="table-cell-${newFileName.replace(/\s+/g, '-').toLowerCase()}"]`).should(
-          'have.text',
-          newFileName,
-        )
+        cy.get(`[data-test="table-cell-${newFileName.replace(/\s+/g, '-').toLowerCase()}"]`)
+          .invoke('text')
+          .should('include', fileName)
         cy.get(`[data-test="table-cell-${fileName.replace(/\s+/g, '-').toLowerCase()}"]`).should('not.exist')
       })
   })

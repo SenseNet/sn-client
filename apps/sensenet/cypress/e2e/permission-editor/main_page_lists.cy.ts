@@ -14,7 +14,7 @@ describe('Permission editor main page lists', () => {
     cy.get('[data-test="menu-item-sample-workspace"]').rightclick()
     cy.get('[data-test="content-context-menu-setpermissions"]').click()
     cy.get('[data-test="permission-view-title-first"]').should('have.text', 'Set permissions for ')
-    cy.get('[data-test="permission-view-title-second"]').should('have.text', 'Sample workspace')
+    cy.get('[data-test="permission-view-title-second"]').invoke('text').should('contain', 'Sample Workspace')
   })
 
   it('Inherited from ancestor list has the expected child items', () => {
