@@ -65,7 +65,8 @@ export const NumberField: React.FC<ReactClientFieldSetting<NumberFieldSetting | 
             value={value}
             required={props.settings.Compulsory}
             disabled={props.settings.ReadOnly}
-            placeholder={props.settings.DisplayName}
+            placeholder="0"
+            InputLabelProps={{ shrink: true }}
             InputProps={{
               startAdornment: defineCurrency(),
               endAdornment: props.settings.ShowAsPercentage ? <InputAdornment position="end">%</InputAdornment> : null,
@@ -76,7 +77,6 @@ export const NumberField: React.FC<ReactClientFieldSetting<NumberFieldSetting | 
               min: props.settings.MinValue,
             }}
             id={props.settings.Name}
-            fullWidth={true}
             onChange={handleChange}
           />
           {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}

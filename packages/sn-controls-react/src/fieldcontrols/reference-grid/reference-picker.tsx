@@ -9,6 +9,7 @@ interface ReferencePickerProps<T>
   extends Pick<PickerProps<T>, 'handleSubmit' | 'handleCancel' | 'localization' | 'defaultValue' | 'classes'> {
   repository: Repository
   path: string
+  contextPath?: string
   renderIcon?: (name: T) => JSX.Element
   fieldSettings: ReferenceFieldSetting
 }
@@ -47,7 +48,7 @@ export const ReferencePicker: React.FC<ReferencePickerProps<GenericContentWithIs
     return isFolder ? 'folder' : 'insert_drive_file'
   }
 
-  const renderIcon = (item: GenericContentWithIsParent) =>
+  const renderIcon = (item: GenericContentWithIsParent | User) =>
     props.repository.schemas.isContentFromType<User>(item, 'User') ? (
       (item as User).Avatar?.Url ? (
         <Avatar
@@ -72,6 +73,7 @@ export const ReferencePicker: React.FC<ReferencePickerProps<GenericContentWithIs
       defaultValue={props.defaultValue}
       repository={props.repository}
       currentPath={props.path}
+      contextPath={props.contextPath}
       selectionRoots={props.fieldSettings.SelectionRoots}
       itemsODataOptions={pickerItemOptions}
       renderIcon={renderIcon}

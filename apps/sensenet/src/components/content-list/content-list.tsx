@@ -91,8 +91,8 @@ export const isReferenceField = (fieldName: string, repo: Repository, schema = '
   return refWhiteList.some((field) => field === fieldName) || setting?.Type === 'ReferenceFieldSetting'
 }
 
-const rowHeightConst = 57
-const headerHeightConst = 48
+const rowHeightConst = 67
+const headerHeightConst = 58
 
 /**
  * Compare passed minutes with
@@ -144,6 +144,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
   const [currentOrder, setCurrentOrder] = useState<keyof T>(
     (loadChildrenSettingsOrderBy?.[0][0] as keyof T) || 'DisplayName',
   )
+
   const [currentDirection, setCurrentDirection] = useState<'asc' | 'desc'>(
     (loadChildrenSettingsOrderBy?.[0][1] as 'asc' | 'desc') || 'asc',
   )
@@ -701,7 +702,22 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
                 displayNameInArray) as any
             }
             getSelectionControl={getSelectionControl}
-            items={children}
+            /* If the Order by Column Is The Display. The client will sort it. Due to some locale and indexing issues */
+            items={
+              currentOrder === 'DisplayName'
+                ? children.sort((a, b) => {
+                    // If no display Name
+                    if (!a?.DisplayName || !b?.DisplayName) {
+                      return 0
+                    }
+
+                    if (currentDirection === 'asc') {
+                      return a?.DisplayName.localeCompare(b?.DisplayName)
+                    }
+                    return b?.DisplayName.localeCompare(a?.DisplayName)
+                  })
+                : children
+            }
             onRequestOrderChange={onRequestOrderChangeFunc}
             onRequestSelectionChange={setSelected}
             orderBy={currentOrder}
@@ -717,8 +733,24 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
                 setActiveContent(rowMouseEventHandlerParams.rowData)
                 handleItemClick(rowMouseEventHandlerParams)
               },
+              rowStyle: {
+                position: 'relative',
+                top: 'unset',
+                height: 'auto',
+                overflow: 'initial',
+                padding: '5px 0px',
+              },
               onRowDoubleClick: onItemDoubleClickFunc,
               disableHeader: props.hideHeader,
+              containerStyle: {
+                display: 'flex',
+                flexDirection: 'column',
+                overflowY: 'auto',
+                paddingBottom: '15px',
+                minHeight: '100%',
+                height: 'inherit',
+                maxHeight: 'inherit',
+              },
             }}
           />
           {activeContent ? (

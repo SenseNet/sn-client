@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => {
       position: 'relative',
     },
     field: {
-      width: '75%',
+      width: '88%',
       position: 'relative',
     },
     fieldFullWidth: {

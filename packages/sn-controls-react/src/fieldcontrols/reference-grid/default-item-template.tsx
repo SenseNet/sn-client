@@ -10,7 +10,8 @@ import {
 } from '@material-ui/core'
 import { InsertDriveFile } from '@material-ui/icons'
 import { Repository } from '@sensenet/client-core'
-import { GenericContent, User } from '@sensenet/default-content-types'
+import { PathHelper } from '@sensenet/client-utils'
+import { GenericContent, Image, User } from '@sensenet/default-content-types'
 import React from 'react'
 import { renderIconDefault } from '../icon'
 
@@ -30,34 +31,83 @@ interface DefaultItemTemplateProps {
  */
 export const DefaultItemTemplate: React.FC<DefaultItemTemplateProps> = (props) => {
   const { content, repository } = props
-  return (
-    <ListItem key={content.Id} button={false}>
-      {content.Type ? (
-        repository?.schemas.isContentFromType<User>(content, 'User') ? (
+
+  const renderIcon = (item: GenericContent | User | Image) => {
+    if (repository?.schemas.isContentFromType<User>(item, 'User')) {
+      const avatarUrl = item.Avatar?.Url
+      if (avatarUrl) {
+        return (
           <ListItemAvatar>
             {
               <Avatar
-                alt={content.FullName}
+                alt={item.FullName}
                 src={
-                  content.Avatar?.Url && repository?.configuration.repositoryUrl
-                    ? `${repository.configuration.repositoryUrl}${content.Avatar.Url}`
+                  avatarUrl && repository?.configuration.repositoryUrl
+                    ? `${repository.configuration.repositoryUrl}${avatarUrl}`
                     : ''
                 }
               />
             }
           </ListItemAvatar>
-        ) : (
-          <ListItemIcon style={{ marginRight: 0 }}>
-            <Icon>
-              <InsertDriveFile />
-            </Icon>
-          </ListItemIcon>
         )
-      ) : null}
-      <ListItemText
-        primary={content.DisplayName}
-        style={content.Id < 0 ? { textAlign: 'right', paddingRight: 16 } : { textAlign: 'left' }}
-      />
+      }
+
+      return (
+        <ListItemAvatar>
+          <Avatar alt={item.DisplayName}>
+            {item.DisplayName?.split(' ')
+              .map((namePart) => namePart[0])
+              .join('.')}
+          </Avatar>
+        </ListItemAvatar>
+      )
+    }
+
+    if (repository?.schemas.isContentFromType<Image>(item, 'Image') && (!item.PageCount || item.PageCount <= 0)) {
+      return (
+        <ListItemIcon>
+          <img
+            data-test="reference-selection-image"
+            alt={item.DisplayName}
+            src={`${repository?.configuration.repositoryUrl}${item.Path}`}
+            style={{ width: '3em', height: '3em', objectFit: 'scale-down' }}
+          />
+        </ListItemIcon>
+      )
+    }
+
+    if (repository?.schemas.isContentFromType<Image>(item, 'Image') && item.PageCount && item.PageCount > 0) {
+      return (
+        <ListItemIcon>
+          <img
+            data-test="reference-selection-image"
+            alt={item.DisplayName}
+            src={PathHelper.joinPaths(
+              repository?.configuration.repositoryUrl,
+              item.Path,
+              '/Previews',
+              item.Version as string,
+              'thumbnail1.png',
+            )}
+            style={{ width: '3em', height: '3em', objectFit: 'scale-down' }}
+          />
+        </ListItemIcon>
+      )
+    }
+
+    return (
+      <ListItemIcon style={{ marginRight: 0 }}>
+        <Icon>
+          <InsertDriveFile />
+        </Icon>
+      </ListItemIcon>
+    )
+  }
+
+  return (
+    <ListItem style={props.actionName === 'browse' ? { padding: 0 } : undefined} key={content.Id} button={false}>
+      {content.Type ? renderIcon(content) : null}
+      <ListItemText primary={content.DisplayName} style={{ textAlign: 'left', paddingRight: 15 }} />
       {props.actionName && props.actionName !== 'browse' && !props.readOnly ? (
         <ListItemSecondaryAction>
           {content.Id > 0 ? (

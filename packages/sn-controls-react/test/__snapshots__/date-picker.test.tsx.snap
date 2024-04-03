@@ -26,11 +26,23 @@ exports[`Date/Date time field control in edit/new view should set all the props 
   utils={[Function]}
 >
   <PickerWithState
+    InputLabelProps={
+      Object {
+        "shrink": true,
+      }
+    }
+    InputProps={
+      Object {
+        "readOnly": true,
+        "style": Object {
+          "minWidth": "200px",
+        },
+      }
+    }
     allowKeyboardControl={true}
     ampm={true}
     disabled={true}
     format="yyyy MMMM dd hh:mm aaaa"
-    fullWidth={true}
     id="ModificationDate"
     invalidDateMessage="Invalid Date Format"
     label="Modification Date"
@@ -42,9 +54,13 @@ exports[`Date/Date time field control in edit/new view should set all the props 
     onChange={[Function]}
     openTo="date"
     orientation="portrait"
-    placeholder="Modification Date"
     required={true}
     showTabs={true}
+    style={
+      Object {
+        "display": "inherit",
+      }
+    }
     value="1912-04-15T02:10:00.000Z"
     views={
       Array [
@@ -67,10 +83,14 @@ exports[`Date/Date time field control in edit/new view should set all the props 
   utils={[Function]}
 >
   <PickerWithState
+    InputLabelProps={
+      Object {
+        "shrink": true,
+      }
+    }
     allowKeyboardControl={true}
     disabled={true}
     format="yyyy MMMM dd"
-    fullWidth={true}
     id="ModificationDate"
     invalidDateMessage="Invalid Date Format"
     label="Modification Date"
@@ -81,8 +101,12 @@ exports[`Date/Date time field control in edit/new view should set all the props 
     name="ModificationDate"
     onChange={[Function]}
     openTo="date"
-    placeholder="Modification Date"
     required={true}
+    style={
+      Object {
+        "display": "inherit",
+      }
+    }
     value="1912-04-15T02:10:00.000Z"
     views={
       Array [

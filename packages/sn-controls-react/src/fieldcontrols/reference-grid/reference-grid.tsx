@@ -7,6 +7,7 @@ import {
   FormHelperText,
   InputLabel,
   List,
+  TextField,
   Typography,
 } from '@material-ui/core'
 import { deepMerge, PathHelper } from '@sensenet/client-utils'
@@ -22,10 +23,13 @@ const styles = {
   root: {
     display: 'flex',
     flexWrap: 'wrap',
+    alignItems: 'flex-start',
   },
   listContainer: {
-    display: 'block',
-    marginTop: 10,
+    display: 'inline-block',
+    minWidth: 250,
+    padding: 0,
+    marginTop: 15,
   },
 }
 
@@ -175,11 +179,21 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
     }
   }, [props.actionName, getSelected])
 
+  const currentParent = props.content?.Path.substring(0, props.content?.Path.lastIndexOf('/')) || '/Root'
+
   switch (props.actionName) {
     case 'new':
     case 'edit':
       return (
         <FormControl style={styles.root as any} component={'fieldset' as 'div'} required={props.settings.Compulsory}>
+          <TextField
+            name={props.content?.Name}
+            autoComplete="off"
+            value={fieldValue.length === 0 ? '' : 'selected'}
+            required={props.settings.Compulsory}
+            style={{ opacity: '0', pointerEvents: 'none', height: '0px' }}
+          />
+
           <InputLabel shrink={true} htmlFor={props.settings.Name}>
             {props.settings.DisplayName}
           </InputLabel>
@@ -212,11 +226,19 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
           </List>
           {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
 
-          <Dialog fullWidth maxWidth="md" onClose={handleDialogClose} open={isPickerOpen} {...props.dialogProps}>
-            <DialogTitleComponent>{localization.referencePickerTitle}</DialogTitleComponent>
+          <Dialog
+            fullScreen
+            fullWidth
+            PaperProps={{ style: { maxWidth: '950px' } }}
+            maxWidth={false}
+            onClose={handleDialogClose}
+            open={isPickerOpen}
+            {...props.dialogProps}>
+            <DialogTitleComponent style={{ width: '100%' }}>{localization.referencePickerTitle}</DialogTitleComponent>
             <ReferencePicker
               defaultValue={fieldValue}
               path={props.settings.SelectionRoots?.[0] || '/Root'}
+              contextPath={currentParent}
               repository={props.repository!}
               renderIcon={props.renderPickerIcon}
               handleSubmit={handleOkClick}
@@ -232,9 +254,9 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
     default: {
       return (
         <FormControl style={styles.root as any}>
-          <InputLabel shrink={true} htmlFor={props.settings.Name}>
+          <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
-          </InputLabel>
+          </Typography>
           <FormGroup>
             {fieldValue ? (
               <List dense={true} style={styles.listContainer}>

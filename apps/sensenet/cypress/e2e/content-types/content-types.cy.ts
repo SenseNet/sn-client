@@ -34,6 +34,37 @@ describe('Content types', () => {
     cy.viewport(1340, 890)
   })
 
+  it('should sort by DisplayName', () => {
+    //The only down side is that i refering to colindex. In the future it can be changed and this test will fail
+    cy.get("[aria-colindex='2'] [data-test^='table-cell-']").then((cells) => {
+      console.log(cells)
+
+      let prevCell = cells[0]
+      for (let i = 1; i < cells.length; i++) {
+        const cell = cells[i]
+        const prevCellText = prevCell.innerText.toLowerCase()
+        const cellText = cell.innerText.toLocaleLowerCase()
+        expect(prevCellText.localeCompare(cellText)).to.equal(-1)
+        prevCell = cell
+      }
+    })
+
+    // get data-test table-header-displayname and do the same thing before but descending order
+
+    cy.get('[data-test="table-header-displayname"]').click()
+
+    cy.get("[aria-colindex='2'] [data-test^='table-cell-']").then((cells) => {
+      let prevCell = cells[0]
+      for (let i = 1; i < cells.length; i++) {
+        const cell = cells[i]
+        const prevCellText = prevCell.innerText.toLowerCase()
+        const cellText = cell.innerText.toLocaleLowerCase()
+        expect(prevCellText.localeCompare(cellText)).to.equal(1)
+        prevCell = cell
+      }
+    })
+  })
+
   context('create & delete', () => {
     it('should create a new content type', (done) => {
       cy.get('[data-test="add-button"]').should('not.be.disabled').click()

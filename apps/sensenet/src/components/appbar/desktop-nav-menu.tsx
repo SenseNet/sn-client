@@ -2,7 +2,6 @@ import { Grid, IconButton, ListItemIcon, ListItemText, MenuItem, MenuList, Paper
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles'
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
-import Notifications from '@material-ui/icons/Notifications'
 import { Switch } from '@sensenet/controls-react'
 import { useInjector, useRepository } from '@sensenet/hooks-react'
 import { clsx } from 'clsx'
@@ -102,13 +101,6 @@ export const DesktopNavMenu: FunctionComponent = () => {
 
   return (
     <div className={clsx(globalClasses.centered, classes.navMenu)}>
-      <IconButton
-        id="olvy-trigger"
-        aria-label={localization.topMenu.openNewMenu}
-        className={classes.iconButton}
-        style={{ marginRight: '16px' }}>
-        <Notifications className={classes.icon} />
-      </IconButton>
       <>
         <UserAvatar
           user={currentUser}
@@ -153,12 +145,22 @@ export const DesktopNavMenu: FunctionComponent = () => {
                       style: {
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
-                        marginLeft: '30px',
+                        marginLeft: '20px',
                         color: theme.palette.type === 'light' ? globals.light.textColor : globals.dark.textColor,
                       },
-                      title: currentUser.DisplayName || currentUser.Name,
+                      title: `Full-name: ${currentUser.DisplayName}` || currentUser.Name,
+                    }}
+                    secondaryTypographyProps={{
+                      style: {
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        marginLeft: '20px',
+                        color: theme.palette.type === 'light' ? globals.light.textColor : globals.dark.textColor,
+                      },
+                      title: `Login-name: ${currentUser.LoginName}` || currentUser.Name,
                     }}
                     primary={`${currentUser.DisplayName || currentUser.Name}`}
+                    secondary={`${currentUser.LoginName || currentUser.Name}`}
                   />
                 </MenuItem>
                 <MenuItem className={classes.userMenuItem}>

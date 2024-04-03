@@ -16,6 +16,9 @@ const TrashComponent = lazy(() => import(/* webpackChunkName: "Trash" */ './tras
 const EventListComponent = lazy(() => import(/* webpackChunkName: "EventList" */ './event-list/event-list'))
 const CustomContent = lazy(() => import(/* webpackChunkName: "CustomContent" */ './content/CustomContent'))
 const SettingsComponent = lazy(() => import(/* webpackChunkName: "setup" */ './settings'))
+const ContentTypeListComponent = lazy(
+  () => import(/* webpackChunkName: "contenttypes" */ './content-list/contenttype-list'),
+)
 
 export const MainRouter = () => {
   return (
@@ -63,22 +66,7 @@ export const MainRouter = () => {
           </Route>
 
           <Route path={PATHS.contentTypes.appPath}>
-            <ContentComponent
-              rootPath={PATHS.contentTypes.snPath}
-              fieldsToDisplay={[
-                { field: 'DisplayName' },
-                { field: 'Description' },
-                { field: 'ParentTypeName' as any },
-                { field: 'ModificationDate' },
-                { field: 'ModifiedBy' },
-              ]}
-              loadChildrenSettings={{
-                select: ['DisplayName', 'Description', 'ParentTypeName' as any, 'ModificationDate', 'ModifiedBy'],
-                query: "+TypeIs:'ContentType' .AUTOFILTERS:OFF",
-              }}
-              hasTree={false}
-              alwaysRefreshChildren={true}
-            />
+            <ContentTypeListComponent />
           </Route>
 
           <Route path={PATHS.dashboard.appPath}>

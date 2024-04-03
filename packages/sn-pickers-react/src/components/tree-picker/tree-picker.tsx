@@ -6,14 +6,21 @@ import { useSelection, useTreePicker } from '../../hooks'
 import { GenericContentWithIsParent } from '../../types'
 import { PickerProps } from '../picker'
 
+type useTreePickerNavigaTionProps = {
+  navigationPath?: string
+  setNavigationPath?: (path: string) => void
+}
+
 /**
  * Represents a list picker component.
  */
 export function TreePicker<T extends GenericContentWithIsParent = GenericContent>(props: PickerProps<T>) {
   const { selection, setSelection } = useSelection()
-  const { items, navigateTo, isLoading, error } = useTreePicker<T>({
+
+  const { items, navigateTo, isLoading, error } = useTreePicker<T & useTreePickerNavigaTionProps>({
     repository: props.repository,
     currentPath: props.currentPath,
+    navigationPath: props.navigationPath,
     selectionRoots: props.selectionRoots,
     allowMultiple: props.allowMultiple,
     itemsODataOptions: props.itemsODataOptions as any,
@@ -21,7 +28,10 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
   })
 
   const onCheckedChangeHandler = useCallback(
-    (_event: React.ChangeEvent<HTMLInputElement>, node: T) => {
+    (
+      _event: React.MouseEvent<HTMLDivElement, globalThis.MouseEvent> | React.ChangeEvent<HTMLInputElement>,
+      node: T,
+    ) => {
       if (!node.isParent) {
         const newSelection = props.allowMultiple ? selection.filter((item) => item.Id !== node.Id) : []
         if (newSelection.length === selection.length || (!props.allowMultiple && selection[0].Id !== node.Id)) {
@@ -37,6 +47,10 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
     (_event: MouseEvent, node: T) => {
       if (node.IsFolder || node.isParent) {
         navigateTo(node)
+        if (props.setNavigationPath) {
+          props.setNavigationPath(node.Path)
+        }
+
         props.onTreeNavigation?.(node.Path)
       }
     },
@@ -45,7 +59,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
 
   const defaultRenderer = useCallback(
     (item: T) => {
-      if (item.isParent) {
+      if (item.isParent && props.selectionRoots?.includes(item.Path)) {
         return (
           <ListItem data-test="picker-up" key={item.Id} button={true}>
             <ListItemIcon>
@@ -106,7 +120,10 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
   return (
     <List>
       {items?.map((item) => (
-        <div onDoubleClick={(e) => onDoubleClickHandler(e, item as any)} key={item.Id}>
+        <div
+          onClick={(e) => onCheckedChangeHandler(e, item as any)}
+          onDoubleClick={(e) => onDoubleClickHandler(e, item as any)}
+          key={item.Id}>
           {renderItem(item as any)}
         </div>
       ))}

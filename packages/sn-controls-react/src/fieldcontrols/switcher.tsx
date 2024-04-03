@@ -89,7 +89,7 @@ const useStyles = makeStyles(() =>
       alignItems: 'flex-start',
     },
     alignedCenter: {
-      alignItems: 'center',
+      alignItems: 'flex-start',
     },
   }),
 )

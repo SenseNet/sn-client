@@ -14,7 +14,7 @@
     { "path": "../sn-editor-react" },
     { "path": "../sn-hooks-react" },
     { "path": "../sn-pickers-react" },
-    { "path": "../sn-query"},
+    { "path": "../sn-query" },
     { "path": "../sn-search-react" }
   ]
 }

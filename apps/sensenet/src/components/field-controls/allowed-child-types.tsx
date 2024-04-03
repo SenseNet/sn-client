@@ -21,7 +21,8 @@ const useStyles = makeStyles(() =>
     list: {
       padding: 0,
       marginTop: '9px',
-      height: '80px',
+      minHeight: '80px',
+      maxHeight: '260px',
       overflowY: 'scroll',
     },
     listItem: {

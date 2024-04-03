@@ -107,6 +107,7 @@ export const loadItems = async <T extends GenericContentWithIsParent>({
       parentODataOptions,
       parentId ?? (items?.[0] ? undefined : PathHelper.getParentPath(path)),
     )
+
     if (!parentResult) {
       return items
     }
