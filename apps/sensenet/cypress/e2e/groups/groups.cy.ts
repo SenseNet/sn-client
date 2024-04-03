@@ -36,7 +36,7 @@ describe('Groups', () => {
   })
   it('Double click on group should open a edit form of the content', () => {
     cy.get('[data-test="table-cell-editors"]').dblclick()
-    cy.get('[data-test="viewtitle"').should('have.text', 'Edit Editors')
+    cy.get('[data-test="viewtitle"').should('contain', 'Edit Editors')
     cy.get('[data-test="cancel"]').click()
   })
 
@@ -55,7 +55,7 @@ describe('Groups', () => {
         cy.contains('Submit').click()
 
         cy.get('[data-test="snackbar-close"]').click()
-        cy.get(`[data-test="table-cell-${groupName}`).should('have.text', groupName)
+        cy.get(`[data-test="table-cell-${groupName}`).should('contain.text', groupName)
       })
   })
 

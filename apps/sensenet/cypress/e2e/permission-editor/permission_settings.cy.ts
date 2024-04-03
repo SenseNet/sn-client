@@ -7,6 +7,7 @@ const defaultSettings =
   '{"groups":[{"Read":["See","Preview","PreviewWithoutWatermark","PreviewWithoutRedaction","Open"]},{"Write":["Save","AddNew","Delete"]},{"Versioning":["OpenMinor","Publish","ForceCheckin","Approve","RecallOldVersion"]},{"Advanced":["SeePermissions","SetPermissions","RunApplication"]}]}'
 describe('Permission.settings effect on permission dialog', () => {
   beforeEach(() => {
+    cy.viewport(1840, 920)
     cy.login()
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
   })
@@ -14,7 +15,7 @@ describe('Permission.settings effect on permission dialog', () => {
   it('adding a new group in Permission.settings file should appear on permission editor dialog', () => {
     cy.get('[data-test="drawer-menu-item-settings"]').click()
     cy.get('[data-test="drawer-submenu-item-configuration"]').click()
-    cy.get('[data-test="permission.settings-edit-button"]').click()
+    cy.get('[data-test="permission-edit-button"]').click()
     cy.get('.react-monaco-editor-container textarea')
       .click({ force: true })
       .focused()
@@ -23,9 +24,9 @@ describe('Permission.settings effect on permission dialog', () => {
       .type(newSettings, { parseSpecialCharSequences: false })
     cy.get('[data-test="monaco-editor-submit"]').click()
     cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]').rightclick()
+    cy.get('[data-test="menu-item-sample-workspace"]').rightclick()
     cy.get('[data-test="content-context-menu-setpermissions"]').click()
-    cy.get('[data-test="set-on-this-visitors"]').click()
+    cy.get('[data-test="set-on-this-developer-dog"]').click()
 
     //check the permission groups
     cy.get('[data-test="permission-group-see"]').should('be.visible')
@@ -69,7 +70,7 @@ describe('Permission.settings effect on permission dialog', () => {
   it('removing a group in Permission.settings file should disappear on permission editor dialog', () => {
     cy.get('[data-test="drawer-menu-item-settings"]').click()
     cy.get('[data-test="drawer-submenu-item-configuration"]').click()
-    cy.get('[data-test="permission.settings-edit-button"]').click()
+    cy.get('[data-test="permission-edit-button"]').click()
     cy.get('.react-monaco-editor-container textarea')
       .click({ force: true })
       .focused()
@@ -78,9 +79,9 @@ describe('Permission.settings effect on permission dialog', () => {
       .type(defaultSettings, { parseSpecialCharSequences: false })
     cy.get('[data-test="monaco-editor-submit"]').click()
     cy.get('[data-test="drawer-menu-item-content"]').click()
-    cy.get('[data-test="menu-item-it-workspace"]').rightclick()
+    cy.get('[data-test="menu-item-sample-workspace"]').rightclick()
     cy.get('[data-test="content-context-menu-setpermissions"]').click()
-    cy.get('[data-test="set-on-this-visitors"]').click()
+    cy.get('[data-test="set-on-this-developer-dog"]').click()
 
     //check the permission groups
     cy.get('[data-test="permission-group-read"]').should('be.visible')

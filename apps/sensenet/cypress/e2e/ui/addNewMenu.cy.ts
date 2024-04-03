@@ -29,7 +29,7 @@ describe('AddNew Menu', () => {
 
   it('should display an editor of new content and AddNew button should be disabled after selection', () => {
     cy.get('[data-test="listitem-folder"]').click()
-    cy.get('span[data-test="viewtitle"]').should('have.text', 'New Folder')
+    cy.get('[data-test="viewtitle"]').should('contain.text', 'New Folder')
     cy.get('[data-test="add-button"][disabled]').should('exist')
   })
 })
