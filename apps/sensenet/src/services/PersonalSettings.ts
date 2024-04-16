@@ -29,7 +29,7 @@ export const BuiltInDrawerItemType = tuple(
   'SavedQueries',
   'Trash',
   'UsersAndGroups',
-  'Settings',
+  'System',
   'ContentTemplates',
 )
 
@@ -149,19 +149,19 @@ export const defaultSettings: PersonalSettingsType = {
 export class PersonalSettings {
   private checkDrawerItems(settings: Partial<PersonalSettingsType>): Partial<PersonalSettingsType> {
     if (settings.default?.drawer?.items?.find((i) => typeof i === 'string')) {
-      ;(settings.default.drawer.items as any) = undefined
+      ; (settings.default.drawer.items as any) = undefined
     }
 
     if (settings.desktop?.drawer?.items?.find((i) => typeof i === 'string')) {
-      ;(settings.desktop.drawer.items as any) = undefined
+      ; (settings.desktop.drawer.items as any) = undefined
     }
 
     if (settings.tablet?.drawer?.items?.find((i) => typeof i === 'string')) {
-      ;(settings.tablet.drawer.items as any) = undefined
+      ; (settings.tablet.drawer.items as any) = undefined
     }
 
     if (settings.mobile?.drawer?.items?.find((i) => typeof i === 'string')) {
-      ;(settings.mobile.drawer.items as any) = undefined
+      ; (settings.mobile.drawer.items as any) = undefined
     }
 
     return settings
