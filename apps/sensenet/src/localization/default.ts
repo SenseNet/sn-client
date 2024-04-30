@@ -308,6 +308,9 @@ const values = {
     openUserMenu: 'Open user menu',
     openNewMenu: `What's new`,
     accountSettings: 'Account settings',
+    openViewOptions: 'Open view options',
+    showHiddenItems: 'Show hidden items',
+    viewOptions: 'View options',
   },
   navigationCommandProvider: {
     personalSettingsPrimary: 'Personal Settings',
