@@ -57,6 +57,8 @@ export const RichTextEditor: React.FC<
     ''
   const classes = useStyles(props)
 
+  console.log(props.settings.ControlHint)
+
   switch (props.actionName) {
     case 'edit':
     case 'new':
@@ -80,6 +82,11 @@ export const RichTextEditor: React.FC<
               readOnly={props.settings.ReadOnly}
               localization={props.localization?.richTextEditor}
               onChange={({ editor }) => {
+                if (props.settings.ControlHint === 'sn:RichText') {
+                  props.fieldOnChange?.(props.settings.Name, editor.getHTML())
+                  return
+                }
+
                 props.fieldOnChange?.(props.settings.Name, {
                   text: editor.getHTML(),
                   editor: JSON.stringify(editor.getJSON()),

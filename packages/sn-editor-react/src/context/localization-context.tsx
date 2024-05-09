@@ -23,6 +23,7 @@ export const defaultLocalization = {
     clearFormat: 'Clear format',
     undo: 'Undo',
     redo: 'Redo',
+    EditHtml: 'Edit HTML',
   },
   bubbleMenu: {
     removeImage: 'remove image',

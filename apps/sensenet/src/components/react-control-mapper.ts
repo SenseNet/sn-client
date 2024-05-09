@@ -39,6 +39,8 @@ export const reactControlMapper = (repository: Repository) => {
           return FieldControls.WebhookPayload
         case 'sn:HtmlEditor':
           return FieldControls.HtmlEditor
+        case 'sn:RichText':
+          return FieldControls.RichTextEditor
         default:
       }
 
