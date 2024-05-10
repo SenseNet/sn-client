@@ -15,7 +15,7 @@ import { Editor } from '@tiptap/react'
 import React, { FC } from 'react'
 import { useLocalization } from '../hooks'
 import { getCommonStyles } from '../styles'
-import { HtmlEditorControl, ImageControl, LinkControl, TableControl, TypographyControl } from './controls'
+import { HTMLEditorControl, ImageControl, TableControl, TypographyControl } from './controls'
 
 const useStyles = makeStyles((theme) => {
   const commonStyles = getCommonStyles(theme)
@@ -163,7 +163,7 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
           <FormatListNumberedIcon />
         </IconButton>
       </Tooltip>
-      <LinkControl
+      <HTMLEditorControl
         editor={editor}
         buttonProps={{ classes: { root: classes.button, colorPrimary: classes.buttonPrimary } }}
       />
@@ -201,7 +201,7 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
           <RedoIcon />
         </IconButton>
       </Tooltip>
-      <HtmlEditorControl
+      <HTMLEditorControl
         editor={editor}
         buttonProps={{ classes: { root: classes.button, colorPrimary: classes.buttonPrimary } }}
       />

@@ -1,152 +1,84 @@
 import {
   Button,
-  CircularProgress,
-  createStyles,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   IconButton,
   IconButtonProps,
-  makeStyles,
   Tooltip,
 } from '@material-ui/core'
 import CodeIcon from '@material-ui/icons/Code'
 import { Editor } from '@tiptap/react'
-import React, { FC, useRef, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { useLocalization } from '../../hooks'
+import { HtmlEditor } from '../html-editor'
 
-const useStyles = makeStyles(() => {
-  return createStyles({
-    image: {
-      maxWidth: '100%',
-      height: 'auto',
-    },
-    fileName: {
-      marginTop: '0.5rem',
-      textAlign: 'center',
-    },
-  })
-})
-
-interface ImageControlProps {
+interface HTMLEditorControlProps {
   editor: Editor
   buttonProps?: Partial<IconButtonProps>
 }
 
-type ImageFile = File & { src?: string }
-
-export const HtmlEditorControl: FC<ImageControlProps> = ({ buttonProps, editor }) => {
+export const HTMLEditorControl: FC<HTMLEditorControlProps> = ({ editor, buttonProps }) => {
   const [open, setOpen] = useState(false)
-  const [uploadedFile, setUploadedFile] = useState<ImageFile>()
-  const [isUploadInProgress, setIsUploadInProgress] = useState(false)
-  const fileInput = useRef<HTMLInputElement>(null)
-
-  const classes = useStyles()
+  const [html, setHtml] = useState(editor.getHTML())
   const localization = useLocalization()
 
   const handleClickOpen = () => {
-    if (isUploadInProgress) {
-      return
-    }
-    fileInput.current && fileInput.current.click()
+    setOpen(true)
   }
 
   const handleClose = () => {
-    setOpen(false)
-  }
-
-  const addImage = () => {
-    if (uploadedFile?.src) {
-      editor.chain().focus().setImage({ src: uploadedFile.src }).run()
-    }
-  }
-
-  const imageToBase64 = (image: File) => {
-    return new Promise<string>((resolve, reject) => {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        if (e.target?.result) {
-          resolve(e.target.result as string)
-        } else {
-          reject(e)
-        }
-      }
-      reader.readAsDataURL(image)
-    })
-  }
-
-  const upload = async (fileToUpload: File) => {
-    if (!fileToUpload) {
+    if (editor.getHTML() === html) {
+      setOpen(false)
       return
     }
 
-    setIsUploadInProgress(true)
+    const confirmResult = window.confirm(localization.HTMLEditorControl.confirm)
+    if (!confirmResult) {
+      return
+    }
+    editor.commands.setContent(html)
 
-    const imageSrc = await imageToBase64(fileToUpload)
-    const image: ImageFile = new File([fileToUpload], fileToUpload.name, { type: fileToUpload.type })
-    image.src = imageSrc
-
-    setIsUploadInProgress(false)
-    setUploadedFile(image)
+    setOpen(false)
   }
 
   return (
     <>
       <Tooltip title={`${localization.menubar.EditHtml}`}>
         <IconButton
-          onClick={() => editor.chain().focus().toggleCode().run()}
+          onClick={() => handleClickOpen()}
           color={editor.isActive('code') ? 'primary' : 'default'}
           {...buttonProps}>
           <CodeIcon style={{ marginTop: '-7px' }} />
           <span style={{ position: 'absolute', fontSize: '12px', top: '13px', fontWeight: 'bold' }}>html</span>
         </IconButton>
       </Tooltip>
-      <input
-        onChange={(ev) => {
-          setOpen(true)
-
-          ev.target.files && upload(ev.target.files[0])
-        }}
-        style={{ display: 'none' }}
-        ref={fileInput}
-        type="file"
-        accept="image/*"
-        multiple={false}
-      />
       <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby="form-dialog-title"
-        onExited={() => {
-          setUploadedFile(undefined)
-
-          if (fileInput.current) {
-            fileInput.current.value = ''
-          }
-        }}>
-        <DialogTitle id="form-dialog-title">{localization.imageControl.title}</DialogTitle>
+        aria-labelledby="html-editor-control-title"
+        fullWidth
+        maxWidth="sm"
+        onExited={() => {}}>
+        <DialogTitle id="html-editor-control-title">{localization.HTMLEditorControl.title}</DialogTitle>
         <DialogContent>
-          {uploadedFile ? (
-            <>
-              <img src={uploadedFile.src} alt="" className={classes.image} />
-              <div className={classes.fileName}>{uploadedFile.name}</div>
-            </>
-          ) : (
-            <div style={{ textAlign: 'center' }}>
-              <CircularProgress />
-            </div>
-          )}
+          <HtmlEditor initialState={editor.getHTML()} fieldOnChange={setHtml} />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>{localization.common.cancel}</Button>
           <Button
             onClick={() => {
-              handleClose()
-              addImage()
+              setOpen(false)
+            }}>
+            {localization.common.cancel}
+          </Button>
+          <Button
+            onClick={() => {
+              editor.commands.setContent(html)
+              setOpen(false)
             }}
             color="primary">
-            {localization.imageControl.submit}
+            {localization.linkControl.submit}
           </Button>
         </DialogActions>
       </Dialog>

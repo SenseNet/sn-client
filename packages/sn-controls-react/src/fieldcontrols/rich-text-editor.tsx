@@ -57,8 +57,6 @@ export const RichTextEditor: React.FC<
     ''
   const classes = useStyles(props)
 
-  console.log(props.settings.ControlHint)
-
   switch (props.actionName) {
     case 'edit':
     case 'new':

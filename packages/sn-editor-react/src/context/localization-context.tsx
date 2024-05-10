@@ -52,6 +52,10 @@ export const defaultLocalization = {
     openInNewTab: 'Open link in a new tab',
     submit: 'Insert',
   },
+  HTMLEditorControl: {
+    title: 'Edit HTML',
+    confirm: 'Would you like to save the changes?',
+  },
   tableControl: {
     title: 'Insert table',
     rows: 'Rows',
