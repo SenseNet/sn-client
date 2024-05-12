@@ -268,7 +268,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
         }, []),
       ],
       orderby: [[currentOrder as any, currentDirection as any]],
-      filter: !userPersonalSettings.showHiddenItems ? SETTINGS_FOLDER_FILTER : '',
+      filter: !userPersonalSettings.showHiddenItems ? `(${SETTINGS_FOLDER_FILTER})` : '',
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [

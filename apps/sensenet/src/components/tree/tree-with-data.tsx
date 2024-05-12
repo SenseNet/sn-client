@@ -18,7 +18,7 @@ type TreeWithDataProps = {
 let lastRequest: { path: string; lastIndex: number } | undefined
 
 const ITEM_THRESHOLD = 50
-export const SETTINGS_FOLDER_FILTER = `not (Name eq 'Settings')`
+export const SETTINGS_FOLDER_FILTER = `not ((Name eq 'Settings') and (isOf('SystemFolder')))`
 
 const walkTree = (node: ItemType, callBack: (node: ItemType) => void) => {
   if (node?.children?.length) {
