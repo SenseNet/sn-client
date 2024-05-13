@@ -163,10 +163,6 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
           <FormatListNumberedIcon />
         </IconButton>
       </Tooltip>
-      <HTMLEditorControl
-        editor={editor}
-        buttonProps={{ classes: { root: classes.button, colorPrimary: classes.buttonPrimary } }}
-      />
       <ImageControl
         editor={editor}
         buttonProps={{ classes: { root: classes.button, colorPrimary: classes.buttonPrimary } }}
