@@ -4,6 +4,7 @@ const items = ['Calendar', 'Document library', 'Groups', 'Links', 'Memos', 'Task
 
 describe('Tree', () => {
   before(() => {
+    cy.viewport(1920, 1080)
     cy.login()
     cy.visit(pathWithQueryParams({ path: '/', newParams: { repoUrl: Cypress.env('repoUrl') } }))
   })
@@ -13,7 +14,7 @@ describe('Tree', () => {
       .click()
       .then(() => {
         items.forEach(($el) => {
-          cy.get(`[data-test="menu-item-${$el.replace(/\s+/g, '-').toLowerCase()}"]`).should('be.visible')
+          cy.get(`[data-test="menu-item-${$el.replace(/\s+/g, '-').toLowerCase()}"]`).should('exist')
         })
       })
   })

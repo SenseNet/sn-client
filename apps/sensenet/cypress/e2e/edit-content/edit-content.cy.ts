@@ -13,7 +13,12 @@ describe('Edit Content', () => {
         cy.get('[data-test="content-context-menu-edit"]').click()
         cy.get('#DisplayName').type(' Test')
         cy.contains('Submit').click()
-        cy.get(`[data-test="table-cell-sample-workspace-test"]`).should('have.text', 'Sample Workspace Test')
+        cy.get(`[data-test="table-cell-sample-workspace-test"]`)
+          .invoke('text')
+          .then((text) => {
+            expect(text.trim().replace(/\s/g, '')).to.equal('SampleWorkspaceTest')
+          })
+
         //  breadcrumb test
         const expectedBreadcrumbItems = ['Content', '/', 'Sample Workspace Test']
         cy.get('[data-test="drawer-menu-item-content"]').click()

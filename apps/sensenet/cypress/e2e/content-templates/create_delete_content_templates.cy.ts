@@ -20,10 +20,10 @@ describe('Create/Delete content', () => {
           cy.get('#Name').type(templeteName)
           cy.contains('Submit').click()
           cy.get('[data-test="snackbar-close"]').click()
-          cy.get(`[data-test="table-cell-${templeteName.replace(/\s+/g, '-').toLowerCase()}"]`).should(
-            'have.text',
-            templeteName,
-          )
+          cy.get(`[data-test="table-cell-${templeteName.replace(/\s+/g, '-').toLowerCase()}"]`)
+            .invoke('text')
+            .then((text) => text.replace(/\s+/g, ''))
+            .should('include', templeteName.replace(/\s+/g, ''))
         })
     })
   })

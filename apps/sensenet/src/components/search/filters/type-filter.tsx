@@ -141,6 +141,7 @@ export const TypeFilter = () => {
           color={filter.name === searchState.filters.type.name ? 'primary' : 'default'}
           startIcon={filter.icon}
           className={classes.filter}
+          data-test={`${filter.name}-filter-button`}
           onClick={() =>
             searchState.setFilters((filters) =>
               filters.type.name === filter.name ? filters : { ...filters, type: filter },
