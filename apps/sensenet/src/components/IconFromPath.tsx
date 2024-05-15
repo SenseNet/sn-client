@@ -37,7 +37,7 @@ const IconFromPath = ({ path, options }: { path: string; options: IconOptions })
   }
 
   if (path.endsWith('.svg')) {
-    return <span dangerouslySetInnerHTML={{ __html: icon }} />
+    return <span dangerouslySetInnerHTML={{ __html: icon }} style={options.style} />
   }
 
   return <img src={icon} alt="icon" style={options.style} />
