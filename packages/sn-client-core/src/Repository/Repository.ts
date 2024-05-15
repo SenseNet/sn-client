@@ -500,6 +500,8 @@ export class Repository implements Disposable {
     this.schemas.setSchemas(schemas)
   }
 
+  public iconCache = new Map<string, string>()
+
   constructor(
     config?: RepositoryConfiguration,
     private fetchMethod: WindowOrWorkerGlobalScope['fetch'] = window && window.fetch && window.fetch.bind(window),
