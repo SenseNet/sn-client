@@ -1,10 +1,11 @@
 /**
  * @module ViewControls
  */
-import { Button, createStyles, Grid, makeStyles, Typography } from '@material-ui/core'
+import { Box, Button, createStyles, Grid, IconButton, makeStyles, Theme, Typography } from '@material-ui/core'
+import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons'
 import { Repository } from '@sensenet/client-core'
 import { ActionName, ControlMapper } from '@sensenet/control-mapper'
-import { GenericContent } from '@sensenet/default-content-types'
+import { FieldSetting, FieldVisibility, GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import type { Locale } from 'date-fns'
 import React, { createElement, ReactElement, useEffect, useRef, useState } from 'react'
@@ -31,6 +32,7 @@ export interface EditViewProps {
   extension?: string
   uploadFolderpath?: string
   localization?: {
+    advancedFields?: string
     cancel?: string
     submit?: string
   }
@@ -41,7 +43,7 @@ export interface EditViewProps {
   locale?: Locale
 }
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     grid: {
       margin: '0 auto',
@@ -54,6 +56,24 @@ const useStyles = makeStyles(() => {
     },
     cancel: {
       marginRight: 20,
+    },
+    advancedFieldContainer: {
+      padding: '15px',
+      fontSize: '18px',
+      width: '100%',
+    },
+    advancedFieldBox: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: '88%',
+      margin: '0 auto',
+    },
+    divider: {
+      width: '88%',
+      height: '1px',
+      margin: '16px auto',
+      backgroundColor: theme.palette.primary.main,
     },
   })
 })
@@ -72,6 +92,8 @@ export const EditView: React.FC<EditViewProps> = (props) => {
   const actionName = props.actionName || 'edit'
   const controlMapper = props.controlMapper || reactControlMapper(props.repository)
   const [schema, setSchema] = useState(controlMapper.getFullSchemaForContentType(props.contentTypeName, actionName))
+  const [advancedFields, setAdvancedFields] = useState<string[]>([])
+  const [showAdvancedFields, setShowAdvancedFields] = useState<boolean>(false)
   const contentRef = useRef({})
   const [content, setContent] = useState(contentRef.current)
   contentRef.current = content
@@ -98,6 +120,64 @@ export const EditView: React.FC<EditViewProps> = (props) => {
     return () => schemaObservable.dispose()
   }, [repository.schemas, actionName, controlMapper, props.contentTypeName])
 
+  useEffect(() => {
+    if (actionName && schema) {
+      const filteredFields = schema.fieldMappings
+        .filter((s) =>
+          actionName === 'edit' ? s.fieldSettings.VisibleEdit : s.fieldSettings.VisibleNew === FieldVisibility.Advanced,
+        )
+        .map((s) => s.fieldSettings.Name)
+
+      setAdvancedFields(filteredFields)
+    }
+  }, [actionName, schema])
+
+  const renderField = (field: { fieldSettings: FieldSetting; actionName: ActionName; controlType: any }) => {
+    const autoFocus = hasInputField.includes(field.controlType.name) && !isAutofocusSet
+    const fieldControl = createElement(
+      controlMapper.getControlForContentField(props.contentTypeName, field.fieldSettings.Name, actionName),
+      {
+        actionName,
+        settings: field.fieldSettings,
+        repository: props.repository,
+        content: props.content,
+        fieldValue: props.content ? (props.content as any)[field.fieldSettings.Name] : undefined,
+        renderIcon: props.renderIcon,
+        fieldOnChange: handleInputChange,
+        extension: props.extension,
+        hideDescription: props.hideDescription,
+        uploadFolderPath: props.uploadFolderpath,
+        autoFocus,
+        localization: props.fieldLocalization,
+        locale: props.locale,
+      },
+    )
+
+    const isFullWidth = isFullWidthField(
+      field,
+      props.content || ({ Type: props.contentTypeName } as GenericContent),
+      repository,
+    )
+
+    if (autoFocus) {
+      isAutofocusSet = true
+    }
+
+    return (
+      <Grid
+        item={true}
+        xs={12}
+        sm={12}
+        md={12}
+        lg={12}
+        xl={12}
+        key={field.fieldSettings.Name}
+        className={classes.fieldWrapper}>
+        <div className={isFullWidth ? classes.fieldFullWidth : classes.field}>{fieldControl}</div>
+      </Grid>
+    )
+  }
+
   return (
     <>
       {props.showTitle &&
@@ -116,52 +196,28 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         spacing={2}
         className={classes.grid}>
         {schema.fieldMappings
+          .filter((i) => !advancedFields.includes(i.fieldSettings.Name))
           .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
-          .map((field) => {
-            const autoFocus = hasInputField.includes(field.controlType.name) && !isAutofocusSet
-            const fieldControl = createElement(
-              controlMapper.getControlForContentField(props.contentTypeName, field.fieldSettings.Name, actionName),
-              {
-                actionName,
-                settings: field.fieldSettings,
-                repository: props.repository,
-                content: props.content,
-                fieldValue: props.content ? (props.content as any)[field.fieldSettings.Name] : undefined,
-                renderIcon: props.renderIcon,
-                fieldOnChange: handleInputChange,
-                extension: props.extension,
-                hideDescription: props.hideDescription,
-                uploadFolderPath: props.uploadFolderpath,
-                autoFocus,
-                localization: props.fieldLocalization,
-                locale: props.locale,
-              },
-            )
+          .map((field) => renderField(field))}
 
-            const isFullWidth = isFullWidthField(
-              field,
-              props.content || ({ Type: props.contentTypeName } as GenericContent),
-              repository,
-            )
-
-            if (autoFocus) {
-              isAutofocusSet = true
-            }
-
-            return (
-              <Grid
-                item={true}
-                xs={12}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                key={field.fieldSettings.Name}
-                className={classes.fieldWrapper}>
-                <div className={isFullWidth ? classes.fieldFullWidth : classes.field}>{fieldControl}</div>
-              </Grid>
-            )
-          })}
+        {advancedFields.length > 0 && (
+          <>
+            <Box className={classes.divider} />
+            <Box className={classes.advancedFieldContainer}>
+              <Box className={classes.advancedFieldBox}>
+                <span>{props.localization?.advancedFields ?? 'Advanced fields'}</span>
+                <IconButton onClick={() => setShowAdvancedFields(!showAdvancedFields)}>
+                  {showAdvancedFields ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+                </IconButton>
+              </Box>
+            </Box>
+            {showAdvancedFields &&
+              schema.fieldMappings
+                .filter((i) => advancedFields.includes(i.fieldSettings.Name))
+                .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
+                .map((field) => renderField(field))}
+          </>
+        )}
       </Grid>
       <div className={classes.actionButtonWrapper}>
         <MediaQuery minDeviceWidth={700}>

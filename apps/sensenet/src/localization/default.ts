@@ -534,6 +534,7 @@ const values = {
     addReference: 'Add reference',
     ok: 'Ok',
     cancel: 'Cancel',
+    advancedFields: 'Advanced fields',
     close: 'Close',
     upload: 'Upload',
     submit: 'Submit',

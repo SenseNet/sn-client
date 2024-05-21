@@ -1,10 +1,11 @@
 /**
  * @module ViewControls
  */
-import { Button, createStyles, Grid, makeStyles, Typography } from '@material-ui/core'
+import { Box, Button, createStyles, Grid, IconButton, makeStyles, Theme, Typography } from '@material-ui/core'
+import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons'
 import { Repository } from '@sensenet/client-core'
-import { ControlMapper } from '@sensenet/control-mapper'
-import { GenericContent } from '@sensenet/default-content-types'
+import { ActionName, ControlMapper } from '@sensenet/control-mapper'
+import { FieldSetting, FieldVisibility, GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import type { Locale } from 'date-fns'
 import React, { createElement, ReactElement, useEffect, useState } from 'react'
@@ -23,6 +24,7 @@ export interface BrowseViewProps {
   controlMapper?: ControlMapper<any, any>
   handleCancel?: () => void
   localization?: {
+    advancedFields?: string
     close?: string
   }
   fieldLocalization?: FieldLocalization
@@ -30,7 +32,7 @@ export interface BrowseViewProps {
   locale?: Locale
 }
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     grid: {},
     fieldWrapper: {},
@@ -40,6 +42,24 @@ const useStyles = makeStyles(() => {
       textAlign: 'right',
     },
     cancel: {},
+    advancedFieldContainer: {
+      padding: '15px',
+      fontSize: '18px',
+      width: '100%',
+    },
+    advancedFieldBox: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: '88%',
+      margin: '0 auto',
+    },
+    divider: {
+      width: '88%',
+      height: '1px',
+      margin: '16px auto',
+      backgroundColor: theme.palette.primary.main,
+    },
   })
 })
 
@@ -52,6 +72,8 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
   const controlMapper = props.controlMapper || reactControlMapper(props.repository)
   const [schema, setSchema] = useState(controlMapper.getFullSchemaForContentType(props.content.Type, 'browse'))
   const classes = useStyles(props)
+  const [advancedFields, setAdvancedFields] = useState<string[]>([])
+  const [showAdvancedFields, setShowAdvancedFields] = useState<boolean>(false)
   const repository = useRepository()
 
   useEffect(() => {
@@ -60,6 +82,48 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
     })
     return () => schemaObservable.dispose()
   }, [repository.schemas, props.content.Type, controlMapper])
+
+  useEffect(() => {
+    if (schema) {
+      const filteredFields = schema.fieldMappings
+        .filter((s) => s.fieldSettings.VisibleBrowse === FieldVisibility.Advanced)
+        .map((s) => s.fieldSettings.Name)
+
+      setAdvancedFields(filteredFields)
+    }
+  }, [schema])
+
+  const renderField = (field: { fieldSettings: FieldSetting; actionName: ActionName; controlType: any }) => {
+    const isFullWidth = isFullWidthField(field, props.content, repository)
+
+    return (
+      <Grid
+        item={true}
+        xs={12}
+        sm={12}
+        md={12}
+        lg={12}
+        xl={12}
+        key={field.fieldSettings.Name}
+        className={classes.fieldWrapper}>
+        <div className={isFullWidth ? classes.fieldFullWidth : classes.field}>
+          {createElement(
+            controlMapper.getControlForContentField(props.content.Type, field.fieldSettings.Name, 'browse'),
+            {
+              actionName: 'browse',
+              settings: field.fieldSettings,
+              content: props.content,
+              fieldValue: (props.content as any)[field.fieldSettings.Name],
+              renderIcon: props.renderIcon,
+              repository: props.repository,
+              localization: props.fieldLocalization,
+              locale: props.locale,
+            },
+          )}
+        </div>
+      </Grid>
+    )
+  }
 
   return (
     <>
@@ -72,38 +136,28 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
       )}
       <Grid container={true} spacing={2} className={classes.grid}>
         {schema.fieldMappings
+          .filter((i) => !advancedFields.includes(i.fieldSettings.Name))
           .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
-          .map((field) => {
-            const isFullWidth = isFullWidthField(field, props.content, repository)
+          .map((field) => renderField(field))}
 
-            return (
-              <Grid
-                item={true}
-                xs={12}
-                sm={12}
-                md={12}
-                lg={12}
-                xl={12}
-                key={field.fieldSettings.Name}
-                className={classes.fieldWrapper}>
-                <div className={isFullWidth ? classes.fieldFullWidth : classes.field}>
-                  {createElement(
-                    controlMapper.getControlForContentField(props.content.Type, field.fieldSettings.Name, 'browse'),
-                    {
-                      actionName: 'browse',
-                      settings: field.fieldSettings,
-                      content: props.content,
-                      fieldValue: (props.content as any)[field.fieldSettings.Name],
-                      renderIcon: props.renderIcon,
-                      repository: props.repository,
-                      localization: props.fieldLocalization,
-                      locale: props.locale,
-                    },
-                  )}
-                </div>
-              </Grid>
-            )
-          })}
+        {advancedFields.length > 0 && (
+          <>
+            <Box className={classes.divider} />
+            <Box className={classes.advancedFieldContainer}>
+              <Box className={classes.advancedFieldBox}>
+                <span>{props.localization?.advancedFields ?? 'Advanced fields'}</span>
+                <IconButton onClick={() => setShowAdvancedFields(!showAdvancedFields)}>
+                  {showAdvancedFields ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+                </IconButton>
+              </Box>
+            </Box>
+            {showAdvancedFields &&
+              schema.fieldMappings
+                .filter((i) => advancedFields.includes(i.fieldSettings.Name))
+                .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
+                .map((field) => renderField(field))}
+          </>
+        )}
       </Grid>
 
       <div className={classes.actionButtonWrapper}>

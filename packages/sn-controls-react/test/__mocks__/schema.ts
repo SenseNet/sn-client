@@ -457,4 +457,13 @@ export const schema = [
       } as FieldSettings.NullFieldSetting,
     ],
   },
+  {
+    ContentTypeName: 'TestContentType',
+    DisplayName: '$Ctd-GenericContent,DisplayName',
+    Description: '$Ctd-GenericContent,Description',
+    Icon: 'Content',
+    AllowedChildTypes: [],
+    HandlerName: 'a',
+    FieldSettings: []
+  }
 ]
