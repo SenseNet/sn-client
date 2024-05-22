@@ -201,7 +201,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
           .map((field) => renderField(field))}
 
         {advancedFields.length > 0 && (
-          <>
+          <Box data-test="advanced-field-container">
             <Box className={classes.divider} />
             <Box className={classes.advancedFieldContainer}>
               <Box className={classes.advancedFieldBox}>
@@ -216,7 +216,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
                 .filter((i) => advancedFields.includes(i.fieldSettings.Name))
                 .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
                 .map((field) => renderField(field))}
-          </>
+          </Box>
         )}
       </Grid>
       <div className={classes.actionButtonWrapper}>

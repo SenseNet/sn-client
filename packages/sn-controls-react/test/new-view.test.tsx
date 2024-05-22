@@ -1,7 +1,8 @@
+import { IconButton } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import { Repository } from '@sensenet/client-core'
 import { GenericContent, VersioningMode } from '@sensenet/default-content-types'
-import { shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import React from 'react'
 import {
   AllowedChildTypes,
@@ -73,11 +74,48 @@ describe('New view component', () => {
   it('should handle change', () => {
     const onSubmit = jest.fn()
     const wrapper = shallow(
-      <NewView repository={testRepository} onSubmit={onSubmit} contentTypeName="GenericContent" />,
+      <NewView repository={testRepository} showTitle={true} contentTypeName="GenericContent" />,
     ).dive()
     const onChange = wrapper.find(CheckboxGroup).first().prop('fieldOnChange')
     onChange?.('VersioningMode', VersioningMode.Option1)
     wrapper.find('[component="form"]').simulate('submit', { preventDefault: jest.fn() })
     expect(onSubmit).toBeCalledWith({ VersioningMode: '1' }, 'GenericContent')
+  })
+  //Advanced field tests
+  it('Advanced field header should be visible', () => {
+    const wrapper = mount(<NewView repository={testRepository} showTitle={true} contentTypeName="TestContentType" />)
+    wrapper.update()
+
+    const element = wrapper.find('[data-test="advanced-field-container"]')
+    expect(element.exists()).toBe(true)
+
+    wrapper.unmount()
+  })
+  it('Advanced fields should be invisible by default', () => {
+    const wrapper = shallow(<NewView repository={testRepository} showTitle={true} contentTypeName="TestContentType" />)
+    const element = wrapper.find('[data-test="advanced-field-container"]')
+    expect(element.find(DatePicker).exists()).toBe(false)
+    expect(element.find(ShortText).exists()).toBe(false)
+  })
+  it('Advanced fields should be visible after clicking on show icon', () => {
+    const wrapper = shallow(<NewView repository={testRepository} showTitle={true} contentTypeName="TestContentType" />)
+    wrapper.update()
+
+    wrapper.find('[data-test="advanced-field-container"]').find(IconButton).simulate('click')
+    wrapper.update()
+
+    const element = wrapper.find('[data-test="advanced-field-container"]')
+    expect(element.find(DatePicker).exists()).toBe(true)
+    expect(element.find(ShortText).exists()).toBe(true)
+  })
+  it('Should render advanced fields in the right section', async () => {
+    const wrapper = mount(<NewView repository={testRepository} showTitle={true} contentTypeName="TestContentType" />)
+    wrapper.update()
+
+    const parent = wrapper.find('[data-test="advanced-field-container"]')
+    expect(parent.find(DatePicker)).toHaveLength(1)
+    expect(parent.find(ShortText)).toHaveLength(1)
+
+    wrapper.unmount()
   })
 })
