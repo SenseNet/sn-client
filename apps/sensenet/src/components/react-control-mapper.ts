@@ -40,6 +40,7 @@ export const reactControlMapper = (repository: Repository) => {
         case 'sn:HtmlEditor':
           return FieldControls.HtmlEditor
         case 'sn:RichText':
+        case 'sn:TipTapEditor':
           return FieldControls.RichTextEditor
         default:
       }

@@ -80,7 +80,7 @@ export const RichTextEditor: React.FC<
               readOnly={props.settings.ReadOnly}
               localization={props.localization?.richTextEditor}
               onChange={({ editor }) => {
-                if (props.settings.ControlHint === 'sn:RichText') {
+                if (props.settings.ControlHint === 'sn:RichText' || props.settings.ControlHint === 'sn:TipTapEditor') {
                   props.fieldOnChange?.(props.settings.Name, editor.getHTML())
                   return
                 }
