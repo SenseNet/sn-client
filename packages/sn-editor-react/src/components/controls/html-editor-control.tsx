@@ -59,8 +59,8 @@ export const HTMLEditorControl: FC<HTMLEditorControlProps> = ({ editor, buttonPr
         onClose={handleClose}
         aria-labelledby="html-editor-control-title"
         fullWidth
-        maxWidth="sm"
-        onExited={() => {}}>
+        maxWidth="lg"
+        onExited={() => { }}>
         <DialogTitle id="html-editor-control-title">{localization.HTMLEditorControl.title}</DialogTitle>
         <DialogContent>
           <HtmlEditor initialState={editor.getHTML()} fieldOnChange={setHtml} />
