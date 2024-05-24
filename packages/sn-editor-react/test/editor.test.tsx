@@ -8,6 +8,17 @@ import { Editor } from '../src/components/editor'
 import { MenuBar } from '../src/components/menu-bar'
 import { defaultLocalization } from '../src/context'
 
+jest.mock('react-monaco-editor', () =>
+  jest.fn((props) => {
+    console.log(props)
+    return (
+      <div data-test="mock-monaco-editor" onChange={props.fieldOnChange} ref={props.editorRef}>
+        {props.value}
+      </div>
+    )
+  }),
+)
+
 describe('editor', () => {
   it('should be rendered properly', () => {
     const wrapper = shallow(<Editor />)

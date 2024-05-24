@@ -1,4 +1,14 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
-exec >/dev/tty 2>&1
+
+# Detect /dev/tty using readlink and fd/2
+tty=$(readlink /proc/$$/fd/2)
+
+# Use the detected tty for redirection
+if [[ -n "$tty" ]]; then
+    exec >"$tty" 2>&1
+else
+    echo "Could not detect /dev/tty"
+fi
+
 yarn lint-staged

@@ -6,6 +6,17 @@ import { TypographyControl } from '../src/components/controls'
 import { defaultLocalization } from '../src/context'
 import { createExtensions } from '../src/extension-list'
 
+jest.mock('react-monaco-editor', () =>
+  jest.fn((props) => {
+    console.log(props)
+    return (
+      <div data-test="mock-monaco-editor" onChange={props.fieldOnChange} ref={props.editorRef}>
+        {props.value}
+      </div>
+    )
+  }),
+)
+
 describe('typography control', () => {
   const editor = new TiptapEditor({
     content: '<h6>Hello</h6><p>world</p>',
