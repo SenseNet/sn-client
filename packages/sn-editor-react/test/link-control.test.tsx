@@ -7,6 +7,17 @@ import { LinkControl } from '../src/components/controls'
 import { defaultLocalization } from '../src/context'
 import { createExtensions } from '../src/extension-list'
 
+jest.mock('react-monaco-editor', () =>
+  jest.fn((props) => {
+    console.log(props)
+    return (
+      <div data-test="mock-monaco-editor" onChange={props.fieldOnChange} ref={props.editorRef}>
+        {props.value}
+      </div>
+    )
+  }),
+)
+
 describe('link control', () => {
   const onChange = jest.fn(({ editor }) => editor.getHTML())
   const editor = new TiptapEditor({
