@@ -1,11 +1,10 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
-
-# Check if running in a terminal
-if [[ "$OSTYPE" == "linux-gnu"* || "$OSTYPE" == "darwin"* ]]; then
+if [[ "$OSTYPE" == "linux-gnu"* || "$OSTYPE" == "darwin"* ]] &&!("$PSVersionTable.PSVersion.Major" -ge 5); then
     # Unix-like OS detected, proceed with redirection
     exec >/dev/tty 2>&1
+elif $PSVersionTable.PSVersion.Major -lt 5; then
+    # PowerShell version less than 5, assume Unix-like environment
+    exec >/dev/tty 2>&1
 fi
-
-# Continue with the rest of the script
 yarn lint-staged

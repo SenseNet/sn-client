@@ -10,7 +10,6 @@ import { FileReaderMock } from './__mocks__/file-reader'
 
 jest.mock('react-monaco-editor', () =>
   jest.fn((props) => {
-    console.log(props)
     return (
       <div data-test="mock-monaco-editor" onChange={props.fieldOnChange} ref={props.editorRef}>
         {props.value}
