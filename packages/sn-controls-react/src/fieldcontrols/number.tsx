@@ -25,10 +25,10 @@ export const NumberField: React.FC<ReactClientFieldSetting<NumberFieldSetting | 
   const [value, setValue] = useState(initialState)
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
-    setValue(e.target.value)
+    const inputValue = e.target.value.replace(/[^0-9.,]/g, '')
+    setValue(inputValue)
     props.fieldOnChange?.(props.settings.Name, e.target.value)
   }
-
   /**
    * Returns steps value by decimal and step settings
    */
@@ -60,7 +60,7 @@ export const NumberField: React.FC<ReactClientFieldSetting<NumberFieldSetting | 
           <TextField
             autoFocus={props.autoFocus}
             name={props.settings.Name}
-            type="number"
+            type="text"
             label={props.settings.DisplayName}
             value={value}
             required={props.settings.Compulsory}
