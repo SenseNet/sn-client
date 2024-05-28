@@ -88,6 +88,7 @@ export interface CustomContentDrawerItem
 export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   eventLogSize: number
   sendLogWithCrashReports: boolean
+  showHiddenItems: boolean
   logLevel: Array<keyof typeof LogLevel>
   language: 'default' | 'hungarian'
   theme: 'light' | 'dark'
@@ -138,6 +139,7 @@ export const defaultSettings: PersonalSettingsType = {
   sendLogWithCrashReports: true,
   logLevel: ['Information', 'Warning', 'Error', 'Fatal'],
   theme: prefersDark ? 'dark' : 'light',
+  showHiddenItems: true,
   uploadHandlers: [
     'SenseNet.ContentRepository.File',
     'SenseNet.ContentRepository.Image',
