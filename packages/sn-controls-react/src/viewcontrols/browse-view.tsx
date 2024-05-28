@@ -12,6 +12,7 @@ import React, { createElement, ReactElement, useEffect, useState } from 'react'
 import { FieldLocalization } from '../fieldcontrols/localization'
 import { isFullWidthField } from '../helpers'
 import { reactControlMapper } from '../react-control-mapper'
+import { AdvancedFieldGroup, DEFAULT_GROUP_KEY } from './edit-view'
 
 /**
  * Interface for BrowseView properties
@@ -72,8 +73,8 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
   const controlMapper = props.controlMapper || reactControlMapper(props.repository)
   const [schema, setSchema] = useState(controlMapper.getFullSchemaForContentType(props.content.Type, 'browse'))
   const classes = useStyles(props)
-  const [advancedFields, setAdvancedFields] = useState<string[]>([])
-  const [showAdvancedFields, setShowAdvancedFields] = useState<boolean>(false)
+  const [advancedFields, setAdvancedFields] = useState<AdvancedFieldGroup[]>([])
+  const [advancedFieldStateGroup, setAdvancedFieldStateGroup] = useState<Array<{ key: string; isOpened: boolean }>>([])
   const repository = useRepository()
 
   useEffect(() => {
@@ -85,11 +86,38 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
 
   useEffect(() => {
     if (schema) {
-      const filteredFields = schema.fieldMappings
-        .filter((s) => s.fieldSettings.VisibleBrowse === FieldVisibility.Advanced)
-        .map((s) => s.fieldSettings.Name)
+      const groups: AdvancedFieldGroup[] = [
+        {
+          key: DEFAULT_GROUP_KEY,
+          fields: [],
+        },
+      ]
 
-      setAdvancedFields(filteredFields)
+      schema.fieldMappings.forEach((e) => {
+        if (e.fieldSettings.VisibleBrowse === FieldVisibility.Advanced) {
+          const category = e.fieldSettings.Customization?.Categories?.split(' ')[0]
+          if (category) {
+            const group = groups.find((g) => g.key === category)
+            if (group) {
+              group.fields.push(e)
+            } else {
+              groups.push({
+                key: category,
+                fields: [e],
+              })
+            }
+          } else {
+            groups.find((g) => g.key === DEFAULT_GROUP_KEY)?.fields.push(e)
+          }
+        }
+      })
+
+      setAdvancedFieldStateGroup(
+        groups.map((g) => {
+          return { key: g.key, isOpened: false }
+        }),
+      )
+      setAdvancedFields(groups)
     }
   }, [schema])
 
@@ -125,6 +153,12 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
     )
   }
 
+  const toggleAdvancedFieldGroup = (key: string) => {
+    setAdvancedFieldStateGroup((prevItems) =>
+      prevItems.map((item) => (item.key === key ? { ...item, isOpened: !item.isOpened } : item)),
+    )
+  }
+
   return (
     <>
       {props.renderTitle ? (
@@ -136,28 +170,47 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
       )}
       <Grid container={true} spacing={2} className={classes.grid}>
         {schema.fieldMappings
-          .filter((i) => !advancedFields.includes(i.fieldSettings.Name))
+          .filter(
+            (i) =>
+              !advancedFields
+                .flatMap((g) => g.fields)
+                .map((g) => g.fieldSettings.Name)
+                .includes(i.fieldSettings.Name),
+          )
           .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
           .map((field) => renderField(field))}
 
-        {advancedFields.length > 0 && (
-          <Box data-test="advanced-field-container">
-            <Box className={classes.divider} />
-            <Box className={classes.advancedFieldContainer}>
-              <Box className={classes.advancedFieldBox}>
-                <span>{props.localization?.advancedFields ?? 'Advanced fields'}</span>
-                <IconButton onClick={() => setShowAdvancedFields(!showAdvancedFields)}>
-                  {showAdvancedFields ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-                </IconButton>
+        <Box className={classes.advancedFieldContainer} data-test="advanced-field-container">
+          {advancedFields.map((group, index) =>
+            group.fields.length > 0 ? (
+              <Box key={index} data-test="group-container">
+                <Box className={classes.divider} />
+                <Box data-test="group-header">
+                  <Box className={classes.advancedFieldBox}>
+                    <span data-test="advanced-field-group-title">{`${
+                      props.localization?.advancedFields ?? 'Advanced fields'
+                    }${group.key === DEFAULT_GROUP_KEY ? '' : ` - ${group.key}`}`}</span>
+                    <IconButton onClick={() => toggleAdvancedFieldGroup(group.key)}>
+                      {advancedFieldStateGroup.find((g) => g.key === group.key)?.isOpened ? (
+                        <KeyboardArrowUp />
+                      ) : (
+                        <KeyboardArrowDown />
+                      )}
+                    </IconButton>
+                  </Box>
+                </Box>
+                {advancedFieldStateGroup.find((g) => g.key === group.key)?.isOpened &&
+                  group.fields
+                    .sort(
+                      (item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0),
+                    )
+                    .map((field) => renderField(field))}
               </Box>
-            </Box>
-            {showAdvancedFields &&
-              schema.fieldMappings
-                .filter((i) => advancedFields.includes(i.fieldSettings.Name))
-                .sort((item1, item2) => (item2.fieldSettings.FieldIndex || 0) - (item1.fieldSettings.FieldIndex || 0))
-                .map((field) => renderField(field))}
-          </Box>
-        )}
+            ) : (
+              <></>
+            ),
+          )}
+        </Box>
       </Grid>
 
       <div className={classes.actionButtonWrapper}>

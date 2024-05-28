@@ -1,9 +1,10 @@
-import { IconButton } from '@material-ui/core'
+import { Box, IconButton } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import { Repository } from '@sensenet/client-core'
 import { GenericContent, VersioningMode } from '@sensenet/default-content-types'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
+import { act } from 'react-dom/test-utils'
 import {
   AllowedChildTypes,
   AutoComplete,
@@ -46,6 +47,18 @@ export const testFile: GenericContent = {
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec iaculis lectus, sed blandit urna. Nullam in auctor odio, eu eleifend diam. Curabitur rutrum ullamcorper nunc, sit amet consectetur turpis elementum ac. Aenean lorem lorem, feugiat sit amet sem at, accumsan cursus leo.',
 }
 
+export const testContent: GenericContent = {
+  Id: 1,
+  Name: 'TestContent',
+  DisplayName: 'Test content',
+  Path: '/Root/Content/TestContent',
+  Type: 'TestContentType',
+  Index: 42,
+  VersioningMode: [VersioningMode.Option0],
+  AllowedChildTypes: [1, 2],
+  Description: 'Lorem ipsum short description.',
+}
+
 describe('New view component', () => {
   it('should render all components', () => {
     const wrapper = shallow(
@@ -82,39 +95,74 @@ describe('New view component', () => {
     expect(onSubmit).toBeCalledWith({ VersioningMode: '1' }, 'GenericContent')
   })
   //Advanced field tests
-  it('Advanced field header should be visible', () => {
-    const wrapper = mount(<NewView repository={testRepository} showTitle={true} contentTypeName="TestContentType" />)
+  it('Advanced field inputs in a group should be invisible by default', () => {
+    const wrapper = mount(
+      <NewView repository={testRepository} content={testContent} contentTypeName={testContent.Type} />,
+    )
     wrapper.update()
 
-    const element = wrapper.find('[data-test="advanced-field-container"]')
-    expect(element.exists()).toBe(true)
+    const element = wrapper.find('[data-test="group-container-Group1"]')
+    expect(element.find(DatePicker).exists()).toBe(false)
 
     wrapper.unmount()
   })
-  it('Advanced fields should be invisible by default', () => {
-    const wrapper = shallow(<NewView repository={testRepository} showTitle={true} contentTypeName="TestContentType" />)
-    const element = wrapper.find('[data-test="advanced-field-container"]')
-    expect(element.find(DatePicker).exists()).toBe(false)
-    expect(element.find(ShortText).exists()).toBe(false)
+
+  it('Should render the correct amount of groups', () => {
+    const wrapper = mount(
+      <NewView repository={testRepository} content={testContent} contentTypeName={testContent.Type} />,
+    )
+    wrapper.update()
+
+    const elements = wrapper
+      .find(Box)
+      .filterWhere((node) => node.prop('data-test') && node.prop('data-test').startsWith('group-header'))
+
+    expect(elements).toHaveLength(3)
+
+    wrapper.unmount()
   })
-  it('Advanced fields should be visible after clicking on show icon', () => {
-    const wrapper = shallow(<NewView repository={testRepository} showTitle={true} contentTypeName="TestContentType" />)
+
+  it('Should render the corrent title', () => {
+    const wrapper = mount(
+      <NewView repository={testRepository} content={testContent} contentTypeName={testContent.Type} />,
+    )
     wrapper.update()
 
-    wrapper.find('[data-test="advanced-field-container"]').find(IconButton).simulate('click')
-    wrapper.update()
+    const element = wrapper
+      .find(Box)
+      .filterWhere((node) => node.prop('data-test') && node.prop('data-test').startsWith('group-header'))
+      .at(1)
 
-    const element = wrapper.find('[data-test="advanced-field-container"]')
-    expect(element.find(DatePicker).exists()).toBe(true)
-    expect(element.find(ShortText).exists()).toBe(true)
+    expect(element.find('[data-test="advanced-field-group-title"]').text()).toBe('Advanced fields - Group1')
+
+    wrapper.unmount()
   })
-  it('Should render advanced fields in the right section', async () => {
-    const wrapper = mount(<NewView repository={testRepository} showTitle={true} contentTypeName="TestContentType" />)
+
+  it('Should render input fields after clicking on show more button', async () => {
+    let wrapper
+    await act(async () => {
+      wrapper = mount(<NewView repository={testRepository} content={testContent} contentTypeName={testContent.Type} />)
+    })
     wrapper.update()
 
-    const parent = wrapper.find('[data-test="advanced-field-container"]')
-    expect(parent.find(DatePicker)).toHaveLength(1)
-    expect(parent.find(ShortText)).toHaveLength(1)
+    const element = wrapper
+      .find(Box)
+      .filterWhere((node) => node.prop('data-test') && node.prop('data-test').startsWith('group-container'))
+      .at(2)
+
+    await act(async () => {
+      element.find(IconButton).simulate('click')
+    })
+
+    wrapper.update()
+
+    const updatedElement = wrapper
+      .find(Box)
+      .filterWhere((node) => node.prop('data-test') && node.prop('data-test').startsWith('group-container'))
+      .at(2)
+
+    expect(updatedElement.find(DatePicker)).toHaveLength(1)
+    expect(updatedElement.find(ShortText).exists()).toBe(false)
 
     wrapper.unmount()
   })

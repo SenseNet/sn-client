@@ -72,6 +72,10 @@ export function isFieldSettingOfType<T extends FieldSetting>(setting: FieldSetti
   return setting.Type === type.name
 }
 
+export type Customization = {
+  Categories: string
+}
+
 export type FieldSetting = {
   Name: string
   Type: string
@@ -87,6 +91,7 @@ export type FieldSetting = {
   VisibleNew?: FieldVisibility
   VisibleEdit?: FieldVisibility
   FieldIndex?: number
+  Customization?: Customization
   ControlHint?: string
 }
 
