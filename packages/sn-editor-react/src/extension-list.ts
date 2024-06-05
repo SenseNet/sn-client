@@ -22,7 +22,19 @@ import { TableRow } from '@tiptap/extension-table-row'
 import { Text } from '@tiptap/extension-text'
 import { TextAlign } from '@tiptap/extension-text-align'
 import { Underline } from '@tiptap/extension-underline'
-import { SensenetImage } from './extensions'
+import {
+  LinkExtend,
+  Panel,
+  PanelBody,
+  PanelColapse,
+  PanelGroup,
+  PanelHeading,
+  PanelTitle,
+  ParagraphExtend,
+  SensenetImage,
+} from './extensions'
+import { PanelIcon } from './extensions/panel-icon'
+import { PanelLink } from './extensions/panel-link'
 
 interface ExtensionOptions {
   placeholder: Partial<PlaceholderOptions>
@@ -35,6 +47,14 @@ export const createExtensions = (options?: ExtensionOptions) => [
   Code.configure(),
   CodeBlock.configure(),
   Document.configure(),
+  Panel.configure(),
+  PanelGroup.configure(),
+  PanelColapse.configure(),
+  PanelHeading.configure(),
+  PanelBody.configure(),
+  PanelIcon.configure(),
+  PanelLink.configure(),
+  PanelTitle.configure(),
   Dropcursor.configure(),
   Gapcursor.configure(),
   HardBreak.configure(),
@@ -44,10 +64,13 @@ export const createExtensions = (options?: ExtensionOptions) => [
   Link.configure({
     openOnClick: false,
   }),
+  LinkExtend.configure(),
   ListItem.configure(),
   OrderedList.configure(),
   Paragraph.configure(),
+  ParagraphExtend.configure(),
   Placeholder.configure(options?.placeholder),
+  PanelColapse.configure(),
   SensenetImage.configure(),
   Table.configure(),
   TableCell.configure(),

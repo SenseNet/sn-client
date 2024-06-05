@@ -15,7 +15,14 @@ import { Editor } from '@tiptap/react'
 import React, { FC } from 'react'
 import { useLocalization } from '../hooks'
 import { getCommonStyles } from '../styles'
-import { HTMLEditorControl, ImageControl, LinkControl, TableControl, TypographyControl } from './controls'
+import {
+  AccordionControl,
+  HTMLEditorControl,
+  ImageControl,
+  LinkControl,
+  TableControl,
+  TypographyControl,
+} from './controls'
 
 const useStyles = makeStyles((theme) => {
   const commonStyles = getCommonStyles(theme)
@@ -70,6 +77,16 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
     <div className={classes.root}>
       <TypographyControl editor={editor} />
       <div className={classes.divider} />
+      {/* <Tooltip title={`${localization.menubar.bold}`}>
+        <IconButton
+          onClick={() =>
+            editor.chain().focus().setYoutubeVideo({ src: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }).run()
+          }
+          color={editor.isActive('bold') ? 'primary' : 'default'}
+          classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
+          <strong>B</strong>
+        </IconButton>
+      </Tooltip> */}
       <Tooltip title={`${localization.menubar.bold} (Ctrl + B)`}>
         <IconButton
           onClick={() => editor.chain().focus().toggleBold().run()}
@@ -201,6 +218,10 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
           <RedoIcon />
         </IconButton>
       </Tooltip>
+      <AccordionControl
+        editor={editor}
+        buttonProps={{ classes: { root: classes.button, colorPrimary: classes.buttonPrimary } }}
+      />
       <HTMLEditorControl
         editor={editor}
         buttonProps={{ classes: { root: classes.button, colorPrimary: classes.buttonPrimary } }}

@@ -23,6 +23,55 @@ const useStyles = makeStyles((theme) => {
       borderRadius: commonStyles.editorBorderRadius,
       border: theme.palette.type === 'dark' ? commonStyles.editorBorder : 'unset',
 
+      '& .panel-group': {
+        paddingBlock: '10px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        rowGap: '20px',
+        '& .panel': {
+          display: 'inline-block',
+          border: '2px solid',
+          borderColor: theme.palette.primary.main,
+          borderRadius: '8px',
+          position: 'relative',
+          maxWidth: '100%',
+          paddingBlock: '5px',
+          '& .panel-heading': {
+            borderBottom: '1px solid',
+            borderBottomColor: theme.palette.primary.main,
+            '& h3': {
+              margin: '0px',
+              padding: '0px 30px 5px 10px',
+              display: 'block',
+              '& a ': {
+                textDecoration: 'none',
+                color: 'currentColor',
+                letterSpacing: '1px',
+                fontWeight: '500',
+              },
+            },
+          },
+          '& .panel-body': {
+            paddingInline: '10px',
+            paddingTop: '10px',
+            '& .panel-collapse': {
+              paddingRight: '10px',
+            },
+          },
+          '&:after': {
+            content: '"➧"',
+            position: 'absolute',
+            top: '0',
+            right: '0',
+            transform: 'rotate(90deg)',
+            marginTop: '-1px',
+            fontSize: '26px',
+            marginRight: '5px',
+          },
+        },
+      },
+
       '& .ProseMirror': {
         outline: 0,
 
