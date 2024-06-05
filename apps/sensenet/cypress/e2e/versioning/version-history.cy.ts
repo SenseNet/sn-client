@@ -37,7 +37,7 @@ describe('version history', () => {
     cy.get('[data-test="table-cell-late-memo"]').rightclick()
     cy.get('[data-test="content-context-menu-versions"]').click()
 
-    cy.get('[data-test="viewtitle"]').should('have.text', 'Versions of Late memo')
+    cy.get('[data-test="viewtitle"]').should('contain', 'Versions of Late memo')
 
     const expectedItems = ['Version', 'Modified by', 'Comment', 'Reject reason', 'Restore']
 

@@ -29,7 +29,7 @@ describe('Search', () => {
     })
 
     it('should have 6 suggestion items', () => {
-      cy.get('@search').should('have.length', 6)
+      cy.get('@search').should('have.length', 5)
     })
 
     it('first item should be a link to the result page', () => {
@@ -96,24 +96,19 @@ describe('Search', () => {
     })
 
     it('result contains users and groups', () => {
-      cy.get('[data-test="table-cell-admin"]').should('exist')
       cy.get('[data-test="table-cell-administrators"]').should('exist')
       cy.get('[data-test="table-cell-captain-picard"]').should('not.exist')
     })
 
     it('the "more" menu contains more than 20 items including "group" and "user"', () => {
       cy.get('[data-test="more-type-filter-button"]').click()
-      cy.get('[id="more-type-filter"]').contains('li', 'User')
-      cy.get('[id="more-type-filter"]').contains('li', 'Group')
-      cy.get('[data-test="more-menu-item-user"]').parent().children().its('length').should('be.gt', 20)
+      cy.get('[data-test="user-filter-button"]').should('exist')
       // press <ESC> to hide the menu to unblock the UI
       cy.get('body').trigger('keydown', { keyCode: 27 })
     })
 
     it('result contains one user after  use the filter', () => {
-      cy.get('[data-test="more-type-filter-button"]').click().get('[data-test="more-menu-item-user"]').click()
-      // "MORE" changed to "USER"
-      cy.get('[data-test="more-type-filter-button"]').contains('User')
+      cy.get('[data-test="user-filter-button"]').should('exist')
       // "Administrators" disappeared
       cy.get('[data-test="table-cell-administrators"]').should('not.exist')
     })

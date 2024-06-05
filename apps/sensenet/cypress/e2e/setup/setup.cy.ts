@@ -51,8 +51,9 @@ describe('Setup', () => {
   it('should open the document of the selected "settings item" if "Learn more" button is clicked', () => {
     cy.get('[data-test="content-card-documentpreview.settings"]').within(() => {
       cy.get('[data-test="documentpreview-learnmore-button"]')
-        .get('a[href="https://docs.sensenet.com/guides/settings/setup#documentpreview-settings"]')
+        .parent('a')
         .should('have.attr', 'target', '_blank')
+        .should('have.attr', 'href', 'https://docs.sensenet.com/guides/settings/setup#documentpreview.settings')
     })
   })
 

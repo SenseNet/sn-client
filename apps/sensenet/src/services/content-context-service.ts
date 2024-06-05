@@ -185,13 +185,8 @@ export function getPrimaryActionUrl({
     return getUrlForContent({ content, uiSettings, location, action: 'image', snRoute, removePath })
   }
 
-  if (
-    (content as any).Binary &&
-    (content as any).Binary.__mediaresource.content_type !== 'application/x-javascript' &&
-    (content as any).Binary.__mediaresource.content_type !== 'text/css' &&
-    (content as any).Binary.__mediaresource.content_type !== 'text/xml'
-  ) {
-    return getUrlForContent({ content, uiSettings, location, action: 'preview', snRoute, removePath })
+  if ((content.Type === 'File' || repository.schemas.isContentFromType<ContentType>(content, 'File'))) {
+    return getUrlForContent({ content, uiSettings, location, action: 'browse', snRoute, removePath })
   }
 
   if (

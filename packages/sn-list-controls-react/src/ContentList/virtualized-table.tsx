@@ -386,13 +386,14 @@ export const VirtualizedTable = <T extends GenericContent = GenericContent>(prop
           <Table
             className={classes.root}
             height={height}
+            overscanRowCount={10000}
             width={width}
             gridStyle={{
               direction: 'inherit',
               outline: 'none',
             }}
-            rowClassName={getRowClassName}
-            {...tableProps}>
+            {...tableProps}
+            rowClassName={getRowClassName}>
             {currentFieldsToDisplay.map((field) => {
               const currentField = field.field
 

@@ -7,6 +7,17 @@ import { Editor } from '../src/components/editor'
 import { BubbleMenu } from './../src/components/bubble-menu'
 import { mockInstance } from './__mocks__/mokInstance'
 
+jest.mock('react-monaco-editor', () =>
+  jest.fn((props) => {
+    console.log(props)
+    return (
+      <div data-test="mock-monaco-editor" onChange={props.fieldOnChange} ref={props.editorRef}>
+        {props.value}
+      </div>
+    )
+  }),
+)
+
 describe('BubbleMenu', () => {
   it('should be rendered BubbleMenu', () => {
     const wrapper = mount(<Editor />)

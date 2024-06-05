@@ -27,12 +27,13 @@ import React, {
 import { TableCellProps } from 'react-virtualized'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
-import { useLocalization, useSelectionService } from '../../hooks'
+import { useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { useDialog } from '../dialogs'
 import { DropFileArea } from '../DropFileArea'
 import { SelectionControl } from '../SelectionControl'
+import { SETTINGS_FOLDER_FILTER } from '../tree/tree-with-data'
 import { ContextMenuWrapper } from './context-menu-wrapper'
 import {
   ActionsField,
@@ -91,8 +92,8 @@ export const isReferenceField = (fieldName: string, repo: Repository, schema = '
   return refWhiteList.some((field) => field === fieldName) || setting?.Type === 'ReferenceFieldSetting'
 }
 
-const rowHeightConst = 57
-const headerHeightConst = 48
+const rowHeightConst = 67
+const headerHeightConst = 58
 
 /**
  * Compare passed minutes with
@@ -124,6 +125,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
   const ancestors = useContext(CurrentAncestorsContext) as T[]
   const device = useContext(ResponsiveContext)
   const personalSettings = useContext(ResponsivePersonalSettings)
+  const userPersonalSettings = usePersonalSettings()
   const loadSettings = useContext(LoadSettingsContext)
   const repo = useRepository()
   const classes = useStyles()
@@ -266,9 +268,18 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
         }, []),
       ],
       orderby: [[currentOrder as any, currentDirection as any]],
+      filter: !userPersonalSettings.showHiddenItems ? `(${SETTINGS_FOLDER_FILTER})` : '',
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentDirection, currentOrder, personalSettings.content.fields, props.fieldsToDisplay, repo, columnSettings])
+  }, [
+    currentDirection,
+    currentOrder,
+    personalSettings.content.fields,
+    userPersonalSettings.showHiddenItems,
+    props.fieldsToDisplay,
+    repo,
+    columnSettings,
+  ])
 
   useEffect(() => {
     setSelected([])
@@ -734,8 +745,8 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
                 handleItemClick(rowMouseEventHandlerParams)
               },
               rowStyle: {
-                position: 'static',
-                top: 'auto',
+                position: 'relative',
+                top: 'unset',
                 height: 'auto',
                 overflow: 'initial',
                 padding: '5px 0px',
@@ -743,12 +754,13 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
               onRowDoubleClick: onItemDoubleClickFunc,
               disableHeader: props.hideHeader,
               containerStyle: {
-                height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
                 overflowY: 'auto',
-                maxHeight: '100%',
                 paddingBottom: '15px',
+                minHeight: '100%',
+                height: 'inherit',
+                maxHeight: 'inherit',
               },
             }}
           />
