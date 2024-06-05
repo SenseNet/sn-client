@@ -149,7 +149,8 @@ const values: Localization = {
     openNewMenu: 'Újdonságok',
     accountSettings: 'Felhasználói beállítások',
     openViewOptions: 'Felületi beállítások kinyitása',
-    showHiddenItems: 'Rejtett elemek megj.',
+    showHiddenItems: 'Rejtett elemek megjelenítése',
+    preferDisplayName: 'DisplayName a mappaszerkezetnél',
     viewOptions: 'Felület beállítások',
   },
   settings: {

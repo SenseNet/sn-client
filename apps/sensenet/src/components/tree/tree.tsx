@@ -10,6 +10,7 @@ import {
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import { AutoSizer, Index, List, ListRowProps } from 'react-virtualized'
+import { usePersonalSettings } from '../../hooks'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { Icon } from '../Icon'
 
@@ -76,6 +77,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
   const [elements, setElements] = useState<Element[]>()
   const [rowHeight, setRowHeight] = useState(ROW_HEIGHT)
   const classes = useStyles()
+  const personalSettings = usePersonalSettings()
 
   const listItemRef = useCallback((node) => {
     if (node) {
@@ -155,7 +157,9 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
     }
 
     //Convert the name to two parts in order to display ... in the middle
-    const [firstPart, SecondPart] = getStringParts(item.Name)
+    const [firstPart, SecondPart] = getStringParts(
+      personalSettings.preferDisplayName && item.DisplayName ? item.DisplayName : item.Name,
+    )
 
     const nodeItem = (
       <Tooltip title={item.Name} placement="bottom">

@@ -89,6 +89,7 @@ export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   eventLogSize: number
   sendLogWithCrashReports: boolean
   showHiddenItems: boolean
+  preferDisplayName: boolean
   logLevel: Array<keyof typeof LogLevel>
   language: 'default' | 'hungarian'
   theme: 'light' | 'dark'
@@ -140,6 +141,7 @@ export const defaultSettings: PersonalSettingsType = {
   logLevel: ['Information', 'Warning', 'Error', 'Fatal'],
   theme: prefersDark ? 'dark' : 'light',
   showHiddenItems: true,
+  preferDisplayName: false,
   uploadHandlers: [
     'SenseNet.ContentRepository.File',
     'SenseNet.ContentRepository.Image',

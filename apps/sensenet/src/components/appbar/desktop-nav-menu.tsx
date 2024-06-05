@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme: Theme) =>
       top: globals.common.headerHeight,
       right: '1px',
       height: 'fit-content',
-      width: '256px',
+      width: '300px',
     },
     popper: {
       backgroundColor: theme.palette.type === 'light' ? globals.light.navMenuColor : globals.dark.navMenuColor,
@@ -115,6 +115,11 @@ export const DesktopNavMenu: FunctionComponent = () => {
   const toggleHideSettingsFolder = () => (event: ChangeEvent<HTMLInputElement>) => {
     const settings = service.userValue.getValue()
     service.setPersonalSettingsValue({ ...settings, showHiddenItems: event.target.checked })
+  }
+
+  const togglePreferDisplayNameValue = () => (event: ChangeEvent<HTMLInputElement>) => {
+    const settings = service.userValue.getValue()
+    service.setPersonalSettingsValue({ ...settings, preferDisplayName: event.target.checked })
   }
 
   return (
@@ -252,6 +257,22 @@ export const DesktopNavMenu: FunctionComponent = () => {
                           data-test="hide-settings-folder-checkbox"
                           checked={personalSettings.showHiddenItems}
                           onChange={toggleHideSettingsFolder()}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Typography>
+                </MenuItem>
+                <MenuItem>
+                  <Typography component="div" className={classes.checkboxMenuItem} style={{ width: '100%' }}>
+                    <Grid component="label" container alignItems="center" justify="space-between">
+                      <Grid item style={{ paddingRight: '16px' }}>
+                        {localization.topMenu.preferDisplayName}
+                      </Grid>
+                      <Grid item>
+                        <Switch
+                          data-test="prefer-display-name-checkbox"
+                          checked={personalSettings.preferDisplayName}
+                          onChange={togglePreferDisplayNameValue()}
                         />
                       </Grid>
                     </Grid>
