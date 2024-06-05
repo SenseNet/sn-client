@@ -42,6 +42,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
 
   const prevActiveItemPath = usePreviousValue(props.activeItemPath)
   const prevShowHiddenItems = usePreviousValue(personalSettings.showHiddenItems)
+  const prevPreferDisplayName = usePreviousValue(personalSettings.preferDisplayName)
   const { onTreeLoadingChange } = props
 
   const loadCollection = useCallback(
@@ -286,6 +287,51 @@ export default function TreeWithData(props: TreeWithDataProps) {
   useEffect(() => {
     openTree(personalSettings.showHiddenItems !== prevShowHiddenItems)
   }, [openTree, personalSettings.showHiddenItems, prevShowHiddenItems])
+
+  useEffect(() => {
+    if (prevPreferDisplayName !== personalSettings.preferDisplayName) {
+      const buildTree = (items: GenericContent[], id?: number): any => {
+        if (!id) {
+          return { ...items[0], children: buildTree(items, items[0].Id), hasNextPage: false, expanded: true }
+        }
+
+        return items
+          .filter((item) => item.ParentId === id)
+          .map((item) => ({
+            ...item,
+            children: buildTree(items, item.Id),
+            hasNextPage: false,
+            expanded: items.some((treeNode) => treeNode.ParentId === item.Id) || props.activeItemPath === item.Path,
+          }))
+      }
+
+      repo
+        .executeAction<any, ODataResponse<{ results: GenericContent[] }>>({
+          idOrPath: props.activeItemPath,
+          name: 'OpenTree',
+          method: 'GET',
+          oDataOptions: {
+            ...props.loadSettings,
+            filter: !personalSettings.showHiddenItems ? SETTINGS_FOLDER_FILTER : '',
+            orderby: personalSettings.preferDisplayName ? [['DisplayName', 'asc']] : [['Name', 'asc']],
+          },
+          body: {
+            rootPath: props.parentPath,
+            withSystem: true,
+          },
+        })
+        .then((response) => {
+          const tree = buildTree(response.d.results)
+          setItemCount(tree.children.length)
+          setTreeData(tree)
+        })
+        .catch(() => {
+          setItemCount(0)
+          setTreeData(undefined)
+        })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [prevPreferDisplayName, personalSettings.preferDisplayName])
 
   const onItemClick = async (item: ItemType) => {
     if (!treeData) {

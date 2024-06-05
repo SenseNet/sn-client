@@ -312,6 +312,7 @@ const values = {
     accountSettings: 'Account settings',
     openViewOptions: 'Open view options',
     showHiddenItems: 'Show hidden items',
+    preferDisplayName: 'Prefer DisplayName in Tree',
     viewOptions: 'View options',
   },
   navigationCommandProvider: {
