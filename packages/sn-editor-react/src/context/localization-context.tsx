@@ -23,6 +23,7 @@ export const defaultLocalization = {
     clearFormat: 'Clear format',
     undo: 'Undo',
     redo: 'Redo',
+    EditHtml: 'Edit HTML',
   },
   bubbleMenu: {
     removeImage: 'remove image',
@@ -50,6 +51,10 @@ export const defaultLocalization = {
     url: 'Url',
     openInNewTab: 'Open link in a new tab',
     submit: 'Insert',
+  },
+  HTMLEditorControl: {
+    title: 'Edit HTML',
+    confirm: 'Would you like to save the changes?',
   },
   tableControl: {
     title: 'Insert table',

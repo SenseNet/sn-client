@@ -8,6 +8,15 @@ import { defaultLocalization } from '../src/context'
 import { createExtensions } from '../src/extension-list'
 import { FileReaderMock } from './__mocks__/file-reader'
 
+jest.mock('react-monaco-editor', () =>
+  jest.fn((props) => {
+    return (
+      <div data-test="mock-monaco-editor" onChange={props.fieldOnChange} ref={props.editorRef}>
+        {props.value}
+      </div>
+    )
+  }),
+)
 describe('image control', () => {
   const onChange = jest.fn(({ editor }) => editor.getHTML())
   const editor = new TiptapEditor({

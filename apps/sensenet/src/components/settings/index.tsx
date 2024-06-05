@@ -53,8 +53,8 @@ export const Settings: React.FunctionComponent = () => {
 
   const settingsItems = [
     {
-      name: 'configuration',
-      displayName: localizationDrawer.titles.Configuration,
+      name: 'settings',
+      displayName: localizationDrawer.titles.Settings,
       url: resolvePathParams({ path: PATHS.configuration.appPath }),
     },
     {
@@ -83,7 +83,7 @@ export const Settings: React.FunctionComponent = () => {
     switch (routeMatch.params.submenu) {
       case 'localization':
         return <ContentComponent disableColumnSettings rootPath={PATHS.localization.snPath} />
-      case 'configuration':
+      case 'settings':
         return <SetupComponent />
       case 'adminui':
         return <PersonalSettingsEditor />
@@ -117,7 +117,7 @@ export const Settings: React.FunctionComponent = () => {
   return (
     <div className={clsx(globalClasses.contentWrapper, classes.settingsWrapper)} style={{ paddingLeft: 0 }}>
       <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}>
-        <span style={{ fontSize: '20px' }}>{localizationDrawer.titles.Settings}</span>
+        <span style={{ fontSize: '20px' }}>{localizationDrawer.titles.System}</span>
       </div>
       <div className={classes.settingsContainer}>
         <div className={classes.settingsDrawer}>
