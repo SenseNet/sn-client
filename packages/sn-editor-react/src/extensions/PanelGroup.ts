@@ -3,8 +3,6 @@ import { mergeAttributes, Node } from '@tiptap/core'
 export const PanelGroup = Node.create({
   name: 'panelGroup',
 
-  priority: 1100,
-
   draggable: true,
 
   addAttributes() {
