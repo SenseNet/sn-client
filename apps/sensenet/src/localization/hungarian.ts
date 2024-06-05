@@ -148,6 +148,9 @@ const values: Localization = {
     openUserMenu: 'Felhasználói menü kinyitása',
     openNewMenu: 'Újdonságok',
     accountSettings: 'Felhasználói beállítások',
+    openViewOptions: 'Felületi beállítások kinyitása',
+    showHiddenItems: 'Rejtett elemek megj.',
+    viewOptions: 'Felület beállítások',
   },
   settings: {
     edit: 'Módosítás',
