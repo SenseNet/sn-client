@@ -24,12 +24,25 @@ const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     ListIcon: {
       paddingLeft: '0px',
-      '& .down-arrow': {
-        position: 'absolute',
-        right: '0',
-        marginRight: '-6px',
-        top: '0',
-        marginTop: '3px',
+      height: '32px',
+      '& .MuiIconButton-label': {
+        flexDirection: 'column',
+        height: 'inherit',
+        justifyContent: 'center',
+        '& .icon-container': {
+          '&:first-of-type': {
+            marginBottom: '-14px',
+          },
+          height: '23px',
+          position: 'relative',
+          '& .down-arrow': {
+            top: '0',
+            right: '0',
+            position: 'absolute',
+            marginTop: '0px',
+            marginRight: '-13px',
+          },
+        },
       },
     },
     accordion: {
@@ -158,8 +171,14 @@ export const AccordionControl: FC<AccordionControlProps> = ({ buttonProps, edito
     <>
       <Tooltip title={localization.accordionControl.title}>
         <IconButton className={classes.ListIcon} onClick={handleClickOpen} {...buttonProps}>
-          <ArrowDropDown className="down-arrow" />
-          <DragHandle />
+          <div className="icon-container">
+            <ArrowDropDown className="down-arrow" />
+            <DragHandle />
+          </div>
+          <div className="icon-container">
+            <ArrowDropDown className="down-arrow" />
+            <DragHandle />
+          </div>
         </IconButton>
       </Tooltip>
       <Dialog

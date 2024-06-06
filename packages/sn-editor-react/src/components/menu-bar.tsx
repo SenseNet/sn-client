@@ -77,16 +77,6 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
     <div className={classes.root}>
       <TypographyControl editor={editor} />
       <div className={classes.divider} />
-      {/* <Tooltip title={`${localization.menubar.bold}`}>
-        <IconButton
-          onClick={() =>
-            editor.chain().focus().setYoutubeVideo({ src: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }).run()
-          }
-          color={editor.isActive('bold') ? 'primary' : 'default'}
-          classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
-          <strong>B</strong>
-        </IconButton>
-      </Tooltip> */}
       <Tooltip title={`${localization.menubar.bold} (Ctrl + B)`}>
         <IconButton
           onClick={() => editor.chain().focus().toggleBold().run()}
