@@ -180,6 +180,10 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
           <FormatListNumberedIcon />
         </IconButton>
       </Tooltip>
+      <AccordionControl
+        editor={editor}
+        buttonProps={{ classes: { root: classes.button, colorPrimary: classes.buttonPrimary } }}
+      />
       <LinkControl
         editor={editor}
         buttonProps={{ classes: { root: classes.button, colorPrimary: classes.buttonPrimary } }}
@@ -218,10 +222,7 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
           <RedoIcon />
         </IconButton>
       </Tooltip>
-      <AccordionControl
-        editor={editor}
-        buttonProps={{ classes: { root: classes.button, colorPrimary: classes.buttonPrimary } }}
-      />
+
       <HTMLEditorControl
         editor={editor}
         buttonProps={{ classes: { root: classes.button, colorPrimary: classes.buttonPrimary } }}

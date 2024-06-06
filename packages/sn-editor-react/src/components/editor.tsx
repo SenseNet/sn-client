@@ -27,10 +27,9 @@ const useStyles = makeStyles((theme) => {
         paddingBlock: '10px',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'flex-start',
+        alignItems: 'strech',
         rowGap: '20px',
         '& .panel': {
-          display: 'inline-block',
           border: '2px solid',
           borderColor: theme.palette.primary.main,
           borderRadius: '8px',

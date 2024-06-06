@@ -49,7 +49,13 @@ export const createExtensions = (options?: ExtensionOptions) => [
   Document.configure(),
   Dropcursor.configure(),
   Gapcursor.configure(),
-  HardBreak.configure(),
+  HardBreak.configure().extend({
+    addKeyboardShortcuts() {
+      return {
+        Enter: () => this.editor.commands.setHardBreak(),
+      }
+    },
+  }),
   Heading.configure(),
   History.configure(),
   Italic.configure(),
