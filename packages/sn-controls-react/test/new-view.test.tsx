@@ -87,7 +87,7 @@ describe('New view component', () => {
   it('should handle change', () => {
     const onSubmit = jest.fn()
     const wrapper = shallow(
-      <NewView repository={testRepository} showTitle={true} contentTypeName="GenericContent" />,
+      <NewView repository={testRepository} showTitle={true} onSubmit={onSubmit} contentTypeName="GenericContent" />,
     ).dive()
     const onChange = wrapper.find(CheckboxGroup).first().prop('fieldOnChange')
     onChange?.('VersioningMode', VersioningMode.Option1)
