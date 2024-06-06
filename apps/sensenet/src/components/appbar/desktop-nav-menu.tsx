@@ -1,6 +1,7 @@
 import { Grid, IconButton, ListItemIcon, ListItemText, MenuItem, MenuList, Paper, Typography } from '@material-ui/core'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles'
+import { TuneOutlined } from '@material-ui/icons'
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
 import { Switch } from '@sensenet/controls-react'
 import { useInjector, useRepository } from '@sensenet/hooks-react'
@@ -17,6 +18,10 @@ import { UserAvatar } from '../UserAvatar'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    viewOptions: {
+      cursor: 'pointer',
+      marginRight: '16px',
+    },
     navMenu: {
       height: '100%',
       width: '140px',
@@ -38,6 +43,13 @@ const useStyles = makeStyles((theme: Theme) =>
       height: 'fit-content',
       width: '216px',
     },
+    popperViewWrapper: {
+      position: 'absolute',
+      top: globals.common.headerHeight,
+      right: '1px',
+      height: 'fit-content',
+      width: '300px',
+    },
     popper: {
       backgroundColor: theme.palette.type === 'light' ? globals.light.navMenuColor : globals.dark.navMenuColor,
       border: theme.palette.type === 'light' ? clsx(globals.light.borderColor, '1px') : 'none',
@@ -52,7 +64,7 @@ const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.primary.main,
       fontSize: '14px',
     },
-    themeSwitcher: {
+    checkboxMenuItem: {
       color: theme.palette.primary.main,
       fontSize: '14px',
       '& .MuiButtonBase-root': {
@@ -75,6 +87,7 @@ export const DesktopNavMenu: FunctionComponent = () => {
   const localization = useLocalization()
   const { openDialog } = useDialog()
   const [openUserMenu, setOpenUserMenu] = useState(false)
+  const [openViewOptions, setOpenViewOptions] = useState(false)
 
   const handleToggle = (setter: Dispatch<SetStateAction<boolean>>) => {
     setter((prevState) => !prevState)
@@ -99,9 +112,26 @@ export const DesktopNavMenu: FunctionComponent = () => {
     service.setPersonalSettingsValue({ ...settings, theme: event.target.checked ? 'dark' : 'light' })
   }
 
+  const toggleHideSettingsFolder = () => (event: ChangeEvent<HTMLInputElement>) => {
+    const settings = service.userValue.getValue()
+    service.setPersonalSettingsValue({ ...settings, showHiddenItems: event.target.checked })
+  }
+
+  const togglePreferDisplayNameValue = () => (event: ChangeEvent<HTMLInputElement>) => {
+    const settings = service.userValue.getValue()
+    service.setPersonalSettingsValue({ ...settings, preferDisplayName: event.target.checked })
+  }
+
   return (
     <div className={clsx(globalClasses.centered, classes.navMenu)}>
       <>
+        <IconButton
+          aria-label={localization.topMenu.openViewOptions}
+          aria-controls={openViewOptions ? 'menu-list-grow' : undefined}
+          className={classes.viewOptions}
+          onClick={() => handleToggle(setOpenViewOptions)}>
+          <TuneOutlined />
+        </IconButton>
         <UserAvatar
           user={currentUser}
           repositoryUrl={repo.configuration.repositoryUrl}
@@ -185,10 +215,25 @@ export const DesktopNavMenu: FunctionComponent = () => {
                 <MenuItem onClick={logout} className={classes.userMenuItem}>
                   {localization.topMenu.logout}
                 </MenuItem>
+              </MenuList>
+            </ClickAwayListener>
+          </div>
+        </Paper>
+      ) : null}
+      {openViewOptions ? (
+        <Paper className={classes.popperViewWrapper}>
+          <div className={classes.popper}>
+            <ClickAwayListener onClickAway={() => handleClose(setOpenViewOptions)}>
+              <MenuList autoFocusItem={openViewOptions} id="menu-list-grow">
+                <MenuItem onClick={() => handleClose(setOpenViewOptions)}>
+                  <Typography component="div" style={{ margin: '0 auto' }}>
+                    {localization.topMenu.viewOptions}
+                  </Typography>
+                </MenuItem>
                 <MenuItem>
-                  <Typography component="div" className={classes.themeSwitcher}>
-                    <Grid component="label" container alignItems="center" spacing={1}>
-                      <Grid item style={{ paddingRight: '32px' }} data-test="theme-status">
+                  <Typography component="div" className={classes.checkboxMenuItem} style={{ width: '100%' }}>
+                    <Grid component="label" container alignItems="center" justify="space-between">
+                      <Grid item style={{ paddingRight: '16px' }} data-test="theme-status">
                         {personalSettings.theme === 'dark' ? 'Light theme' : 'Dark theme'}
                       </Grid>
                       <Grid item>
@@ -196,6 +241,38 @@ export const DesktopNavMenu: FunctionComponent = () => {
                           data-test="theme-switcher"
                           checked={personalSettings.theme === 'dark'}
                           onChange={switchTheme()}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Typography>
+                </MenuItem>
+                <MenuItem>
+                  <Typography component="div" className={classes.checkboxMenuItem} style={{ width: '100%' }}>
+                    <Grid component="label" container alignItems="center" justify="space-between">
+                      <Grid item style={{ paddingRight: '16px' }}>
+                        {localization.topMenu.showHiddenItems}
+                      </Grid>
+                      <Grid item>
+                        <Switch
+                          data-test="hide-settings-folder-checkbox"
+                          checked={personalSettings.showHiddenItems}
+                          onChange={toggleHideSettingsFolder()}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Typography>
+                </MenuItem>
+                <MenuItem>
+                  <Typography component="div" className={classes.checkboxMenuItem} style={{ width: '100%' }}>
+                    <Grid component="label" container alignItems="center" justify="space-between">
+                      <Grid item style={{ paddingRight: '16px' }}>
+                        {localization.topMenu.preferDisplayName}
+                      </Grid>
+                      <Grid item>
+                        <Switch
+                          data-test="prefer-display-name-checkbox"
+                          checked={personalSettings.preferDisplayName}
+                          onChange={togglePreferDisplayNameValue()}
                         />
                       </Grid>
                     </Grid>

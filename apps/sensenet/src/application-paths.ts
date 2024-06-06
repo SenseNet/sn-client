@@ -13,11 +13,11 @@ export const PATHS = {
   content: { appPath: '/content/:browseType/:action?', snPath: '/Root/Content' },
   contentTemplates: { appPath: '/content-templates/:browseType/:action?', snPath: '/Root/ContentTemplates' },
   custom: { appPath: '/custom/:browseType/:path/:action?' },
-  configuration: { appPath: '/settings/configuration/:action?', snPath: '/Root/System/Settings' },
-  localization: { appPath: '/settings/localization/:action?', snPath: '/Root/Localization' },
-  webhooks: { appPath: '/settings/webhooks/:action?', snPath: '/Root/System/WebHooks' },
-  settings: { appPath: '/settings/:submenu?' },
-  apiKeys: { appPath: '/settings/apikeys' },
+  configuration: { appPath: '/system/settings/:action?', snPath: '/Root/System/Settings' },
+  localization: { appPath: '/system/localization/:action?', snPath: '/Root/Localization' },
+  webhooks: { appPath: '/system/webhooks/:action?', snPath: '/Root/System/WebHooks' },
+  settings: { appPath: '/system/:submenu?' },
+  apiKeys: { appPath: '/system/apikeys' },
 } as const
 
 type SettingsItemType = 'stats' | 'apikeys' | 'webhooks' | 'adminui'
@@ -30,28 +30,28 @@ type RoutesWithContentBrowser = keyof Pick<
 type RoutesWithActionParam = keyof Pick<typeof PATHS, 'savedQueries' | 'localization' | 'configuration' | 'webhooks'>
 
 type Options =
-  | { path: (typeof PATHS)['events']['appPath']; params?: { eventGuid: string; [index: string]: string } }
+  | { path: (typeof PATHS)['events']['appPath']; params?: { eventGuid: string;[index: string]: string } }
   | {
-      path: (typeof PATHS)[RoutesWithContentBrowser]['appPath']
-      params: { browseType: (typeof BrowseType)[number]; action?: string; [index: string]: string | undefined }
-    }
+    path: (typeof PATHS)[RoutesWithContentBrowser]['appPath']
+    params: { browseType: (typeof BrowseType)[number]; action?: string;[index: string]: string | undefined }
+  }
   | {
-      path: (typeof PATHS)['custom']['appPath']
-      params: {
-        browseType: (typeof BrowseType)[number]
-        path: string
-        action?: string
-        [index: string]: string | undefined
-      }
+    path: (typeof PATHS)['custom']['appPath']
+    params: {
+      browseType: (typeof BrowseType)[number]
+      path: string
+      action?: string
+      [index: string]: string | undefined
     }
+  }
   | {
-      path: (typeof PATHS)[RoutesWithActionParam]['appPath']
-      params?: { action: string; [index: string]: string }
-    }
+    path: (typeof PATHS)[RoutesWithActionParam]['appPath']
+    params?: { action: string;[index: string]: string }
+  }
   | {
-      path: (typeof PATHS)['settings']['appPath']
-      params?: { submenu: SettingsItemType; [index: string]: string | SettingsItemType }
-    }
+    path: (typeof PATHS)['settings']['appPath']
+    params?: { submenu: SettingsItemType;[index: string]: string | SettingsItemType }
+  }
 
 export const resolvePathParams = ({ path, params }: Options) => {
   let currentPath: string = path
