@@ -28,6 +28,11 @@ export const HTMLEditorControl: FC<HTMLEditorControlProps> = ({ editor, buttonPr
     setOpen(true)
   }
 
+  const saveHTMLContent = () => {
+    editor.chain().focus().setContent(html, true).run()
+    setOpen(false)
+  }
+
   const handleClose = () => {
     if (editor.getHTML() === html) {
       setOpen(false)
@@ -38,9 +43,7 @@ export const HTMLEditorControl: FC<HTMLEditorControlProps> = ({ editor, buttonPr
     if (!confirmResult) {
       return
     }
-    editor.commands.setContent(html)
-
-    setOpen(false)
+    saveHTMLContent()
   }
 
   return (
@@ -60,7 +63,7 @@ export const HTMLEditorControl: FC<HTMLEditorControlProps> = ({ editor, buttonPr
         aria-labelledby="html-editor-control-title"
         fullWidth
         maxWidth="lg"
-        onExited={() => { }}>
+        onExited={() => {}}>
         <DialogTitle id="html-editor-control-title">{localization.HTMLEditorControl.title}</DialogTitle>
         <DialogContent>
           <HtmlEditor initialState={editor.getHTML()} fieldOnChange={setHtml} />
@@ -74,8 +77,7 @@ export const HTMLEditorControl: FC<HTMLEditorControlProps> = ({ editor, buttonPr
           </Button>
           <Button
             onClick={() => {
-              editor.commands.setContent(html)
-              setOpen(false)
+              saveHTMLContent()
             }}
             color="primary">
             {localization.linkControl.submit}
