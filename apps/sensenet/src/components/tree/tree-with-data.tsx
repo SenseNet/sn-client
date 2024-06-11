@@ -4,7 +4,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
 import React, { useCallback, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
-import { usePreviousValue, useSelectionService } from '../../hooks'
+import { usePersonalSettings, usePreviousValue, useSelectionService } from '../../hooks'
 import { ItemType, Tree } from './tree'
 
 type TreeWithDataProps = {
@@ -18,6 +18,7 @@ type TreeWithDataProps = {
 let lastRequest: { path: string; lastIndex: number } | undefined
 
 const ITEM_THRESHOLD = 50
+export const SETTINGS_FOLDER_FILTER = `not ((Name eq 'Settings') and (isOf('SystemFolder')))`
 
 const walkTree = (node: ItemType, callBack: (node: ItemType) => void) => {
   if (node?.children?.length) {
@@ -31,6 +32,7 @@ const lock = new Semaphore(1)
 
 export default function TreeWithData(props: TreeWithDataProps) {
   const repo = useRepository()
+  const personalSettings = usePersonalSettings()
   const [itemCount, setItemCount] = useState(0)
   const [treeData, setTreeData] = useState<ItemType>()
   const [isLoading, setIsLoading] = useState(false)
@@ -39,6 +41,8 @@ export default function TreeWithData(props: TreeWithDataProps) {
   const logger = useLogger('tree-with-data')
 
   const prevActiveItemPath = usePreviousValue(props.activeItemPath)
+  const prevShowHiddenItems = usePreviousValue(personalSettings.showHiddenItems)
+  const prevPreferDisplayName = usePreviousValue(personalSettings.preferDisplayName)
   const { onTreeLoadingChange } = props
 
   const loadCollection = useCallback(
@@ -55,7 +59,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
           oDataOptions: {
             top,
             skip,
-            filter: 'IsFolder eq true',
+            filter: `IsFolder eq true ${!personalSettings.showHiddenItems ? `and (${SETTINGS_FOLDER_FILTER})` : ''}`,
             orderby: [
               ['DisplayName', 'asc'],
               ['Name', 'asc'],
@@ -72,7 +76,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
         setIsLoading(false)
       }
     },
-    [logger, repo, onTreeLoadingChange],
+    [onTreeLoadingChange, repo, personalSettings.showHiddenItems, logger],
   )
 
   useEffect(() => {
@@ -97,7 +101,6 @@ export default function TreeWithData(props: TreeWithDataProps) {
   const openTree = useCallback(
     async (forced = false) => {
       if (!forced && treeData && treeData.Path === props.parentPath) return
-
       const buildTree = (items: GenericContent[], id?: number): any => {
         if (!id) {
           return { ...items[0], children: buildTree(items, items[0].Id), hasNextPage: false, expanded: true }
@@ -118,7 +121,10 @@ export default function TreeWithData(props: TreeWithDataProps) {
           idOrPath: props.activeItemPath,
           name: 'OpenTree',
           method: 'GET',
-          oDataOptions: props.loadSettings,
+          oDataOptions: {
+            ...props.loadSettings,
+            filter: !personalSettings.showHiddenItems ? SETTINGS_FOLDER_FILTER : '',
+          },
           body: {
             rootPath: props.parentPath,
             withSystem: true,
@@ -132,7 +138,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
         setTreeData(undefined)
       }
     },
-    [props.activeItemPath, props.parentPath, repo, treeData, props.loadSettings],
+    [treeData, props.parentPath, props.activeItemPath, props.loadSettings, repo, personalSettings.showHiddenItems],
   )
 
   const loadMoreItems = useCallback(
@@ -279,8 +285,53 @@ export default function TreeWithData(props: TreeWithDataProps) {
   ])
 
   useEffect(() => {
-    openTree()
-  }, [openTree])
+    openTree(personalSettings.showHiddenItems !== prevShowHiddenItems)
+  }, [openTree, personalSettings.showHiddenItems, prevShowHiddenItems])
+
+  useEffect(() => {
+    if (prevPreferDisplayName !== personalSettings.preferDisplayName) {
+      const buildTree = (items: GenericContent[], id?: number): any => {
+        if (!id) {
+          return { ...items[0], children: buildTree(items, items[0].Id), hasNextPage: false, expanded: true }
+        }
+
+        return items
+          .filter((item) => item.ParentId === id)
+          .map((item) => ({
+            ...item,
+            children: buildTree(items, item.Id),
+            hasNextPage: false,
+            expanded: items.some((treeNode) => treeNode.ParentId === item.Id) || props.activeItemPath === item.Path,
+          }))
+      }
+
+      repo
+        .executeAction<any, ODataResponse<{ results: GenericContent[] }>>({
+          idOrPath: props.activeItemPath,
+          name: 'OpenTree',
+          method: 'GET',
+          oDataOptions: {
+            ...props.loadSettings,
+            filter: !personalSettings.showHiddenItems ? SETTINGS_FOLDER_FILTER : '',
+            orderby: personalSettings.preferDisplayName ? [['DisplayName', 'asc']] : [['Name', 'asc']],
+          },
+          body: {
+            rootPath: props.parentPath,
+            withSystem: true,
+          },
+        })
+        .then((response) => {
+          const tree = buildTree(response.d.results)
+          setItemCount(tree.children.length)
+          setTreeData(tree)
+        })
+        .catch(() => {
+          setItemCount(0)
+          setTreeData(undefined)
+        })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [prevPreferDisplayName, personalSettings.preferDisplayName])
 
   const onItemClick = async (item: ItemType) => {
     if (!treeData) {
