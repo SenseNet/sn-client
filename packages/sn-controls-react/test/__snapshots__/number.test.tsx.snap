@@ -53,7 +53,7 @@ exports[`Number field control in edit/new view should set all the props 1`] = `
     onChange={[Function]}
     placeholder="0"
     required={true}
-    type="number"
+    type="text"
     value={7}
   />
   <WithStyles(ForwardRef(FormHelperText))>

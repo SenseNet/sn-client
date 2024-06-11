@@ -101,7 +101,7 @@ describe('Number field control', () => {
       const wrapper = shallow(
         <NumberField actionName="edit" fieldOnChange={fieldOnChange} settings={defaultSettings} />,
       )
-      wrapper.find(TextField).simulate('change', { target: { value: 2 } })
+      wrapper.find(TextField).simulate('change', { target: { value: '2' } })
       expect(fieldOnChange).toBeCalled()
     })
   })
