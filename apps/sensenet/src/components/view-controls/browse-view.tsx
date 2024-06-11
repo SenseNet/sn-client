@@ -57,7 +57,7 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
       repository={repository}
       handleCancel={() => navigateToAction({ history, routeMatch })}
       controlMapper={controlMapper}
-      localization={{ close: localization.forms.close }}
+      localization={{ close: localization.forms.close, advancedFields: localization.forms.advancedFields }}
       locale={LocalizationObject[personalSettings.language].locale}
       classes={{
         ...classes,

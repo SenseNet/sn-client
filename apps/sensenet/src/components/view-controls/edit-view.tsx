@@ -108,7 +108,11 @@ export const EditView: React.FC<EditViewProps> = (props) => {
       showTitle={true}
       uploadFolderpath="/Root/Content/demoavatars"
       controlMapper={controlMapper}
-      localization={{ submit: localization.forms.submit, cancel: localization.forms.cancel }}
+      localization={{
+        submit: localization.forms.submit,
+        cancel: localization.forms.cancel,
+        advancedFields: localization.forms.advancedFields,
+      }}
       hideDescription
       locale={LocalizationObject[personalSettings.language].locale}
       classes={{

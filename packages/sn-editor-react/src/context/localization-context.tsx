@@ -42,6 +42,13 @@ export const defaultLocalization = {
     mergeCells: 'Merge cells',
     splitCell: 'Split cell',
   },
+  accordionControl: {
+    title: 'Accordions',
+    body: 'Accordion Body',
+    addPanel: 'Add Panel',
+    submit: 'Insert',
+    closePanel: 'Close Panel',
+  },
   imageControl: {
     title: 'Insert image',
     submit: 'Insert',
