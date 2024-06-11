@@ -1,6 +1,6 @@
 import { Button, Container, Typography } from '@material-ui/core'
 import { History } from 'history'
-import React, { ElementType } from 'react'
+import React from 'react'
 import { getUserManager } from '../authentication-service'
 import { authenticateUser } from '../oidc-service'
 
@@ -20,7 +20,7 @@ export const SessionLost = ({ onAuthenticate }: SessionLostProps) => (
 
 type SessionLostContainerProps = {
   history: History
-  SessionLostComponentOverride?: ElementType<SessionLostProps>
+  SessionLostComponentOverride?: any
 }
 
 export const SessionLostContainer = ({ history, SessionLostComponentOverride }: SessionLostContainerProps) => {

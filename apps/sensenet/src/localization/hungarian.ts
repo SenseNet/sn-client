@@ -211,6 +211,7 @@ const values: Localization = {
     removeAvatar: 'Avatar törlése',
     changeReference: 'Referencia módosítása',
     addReference: 'Referencia hozzáadása',
+    advancedFields: 'Haladó mezők',
     ok: 'Ok',
     cancel: 'Vissza',
     upload: 'Feltöltés',
