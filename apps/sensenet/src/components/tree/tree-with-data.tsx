@@ -269,7 +269,10 @@ export default function TreeWithData(props: TreeWithDataProps) {
       }),
     ]
 
-    return () => subscriptions.forEach((s) => s.dispose())
+    return () => {
+      console.log('unmounting')
+      subscriptions.forEach((s) => s.dispose())
+    }
   }, [
     treeData,
     eventHub.onContentDeleted,
