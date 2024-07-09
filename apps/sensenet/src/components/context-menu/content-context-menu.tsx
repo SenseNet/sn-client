@@ -79,7 +79,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
           disablePortal={true}
           open={props.isOpened}
           PaperProps={{ style: { paddingBottom: '2em' } }}>
-          <List>
+          <List style={{ padding: 0, backgroundColor: 'green' }}>
             {actions?.map((action) => {
               return (
                 <ListItem

@@ -45,9 +45,8 @@ const useStyles = makeStyles(() => {
     },
     iconButton: {
       color: globals.common.headerText,
-      '&:hover': {
-        backgroundColor: 'initial',
-      },
+      padding: '7px',
+      marginRight: '6px',
     },
     comboBox: {
       position: 'relative',

@@ -442,6 +442,7 @@ const values = {
     },
   },
   settings: {
+    name: 'Name',
     edit: 'Edit',
     learnMore: 'Learn more',
     stats: 'Stats',
