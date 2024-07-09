@@ -4,18 +4,18 @@ import { clsx } from 'clsx'
 export const globals = {
   common: {
     //Fix sizes
-    headerHeight: 80,
-    drawerWidthCollapsed: 90,
-    drawerWidthExpanded: 250,
-    drawerItemHeight: 65,
+    headerHeight: 42,
+    drawerWidthCollapsed: 60,
+    drawerWidthExpanded: 240,
+    drawerItemHeight: 42,
     formTitleHeight: 68,
     formActionButtonsHeight: 80,
     settingsDrawerWidth: 250,
+    addButtonHeight: 60,
     //Colors
     headerBackground: '#353B4E',
     headerText: 'rgba(255,255,255,0.87)',
     secondaryIconSize: '16px',
-    explorePaddingLeft: '15px',
     elavationShadow: '1px 1px 3px 0px hsl(0deg 0% 0% / 28%)',
   },
   light: {
@@ -106,7 +106,7 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
       backgroundColor: theme.palette.primary.main,
     },
     drawerIconButtonWrapper: {
-      height: globals.common.drawerItemHeight,
+      height: globals.common.addButtonHeight,
       width: '100%',
       display: 'flex',
       justifyContent: 'center',

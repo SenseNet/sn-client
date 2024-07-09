@@ -12,6 +12,7 @@ import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { EditBinary } from '../edit/edit-binary'
 import { BrowseView, EditView, NewView, VersionView } from '../view-controls'
 import { ContentCard } from './content-card'
+import { SettingsTable } from './settings-table'
 
 const Setup = () => {
   const repository = useRepository()
@@ -62,6 +63,7 @@ const Setup = () => {
   ])
 
   const renderContent = () => {
+    console.log(settings)
     switch (activeAction) {
       case 'browse':
         return <BrowseView contentPath={`${PATHS.configuration.snPath}${activeContent}`} />
@@ -104,7 +106,8 @@ const Setup = () => {
                     },
                   }}
                 />
-                {settings.map((s) => {
+                <SettingsTable settings={settings} />
+                {/* {settings.map((s) => {
                   return (
                     <ContentCard
                       settings={s}
@@ -117,7 +120,7 @@ const Setup = () => {
                       }}
                     />
                   )
-                })}
+                })} */}
               </div>
             ) : null}
           </>

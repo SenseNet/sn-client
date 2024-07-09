@@ -52,7 +52,8 @@ const useStyles = makeStyles((theme: Theme) => {
       width: '100%',
     },
     listButton: {
-      height: '65px',
+      height: '60px',
+      paddingLeft: '2px',
     },
     expandCollapseWrapper: {
       height: '49px',
@@ -126,7 +127,7 @@ export const PermanentDrawer = () => {
         </List>
 
         {systemItems && (
-          <List>
+          <List style={{ padding: 0 }}>
             {systemItems.map((item) => {
               return (
                 <li key={item.itemType}>

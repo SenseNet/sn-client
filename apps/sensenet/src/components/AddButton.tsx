@@ -47,7 +47,8 @@ const useStyles = makeStyles((theme: Theme) => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-evenly',
-      height: globals.common.drawerItemHeight,
+      height: globals.common.addButtonHeight,
+      paddingLeft: '2px',
     },
     listDropdown: {
       padding: '10px 0 10px 10px',

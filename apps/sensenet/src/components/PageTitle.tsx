@@ -10,7 +10,8 @@ const useStyles = makeStyles((theme: Theme) => {
     pageTitle: {
       color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
       fontFamily: '"Larsseit", Roboto',
-      fontSize: '20px',
+      fontSize: '24px',
+      padding: '8px 16px',
     },
   })
 })
