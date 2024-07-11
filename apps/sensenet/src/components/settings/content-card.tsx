@@ -1,15 +1,4 @@
-import {
-  createStyles,
-  IconButton,
-  makeStyles,
-  Table,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Theme,
-  Tooltip,
-} from '@material-ui/core'
+import { createStyles, IconButton, makeStyles, Theme, Tooltip } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
@@ -25,7 +14,6 @@ import { ResponsivePersonalSettings } from '../../context'
 import { useLocalization } from '../../hooks'
 import { getPrimaryActionUrl } from '../../services'
 import { useDialog } from '../dialogs'
-
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     card: {
@@ -54,16 +42,12 @@ const useStyles = makeStyles((theme: Theme) => {
     },
   })
 })
-
 export const SETUP_DOCS_URL = 'https://docs.sensenet.com/guides/settings/setup'
-
 export const createAnchorFromName = (name: string) => `#${name.toLocaleLowerCase()}`
-
 type ContentCardProps = {
   settings: Settings
   onContextMenu: (ev: React.MouseEvent) => void
 }
-
 const hasDocumentation = ['Portal', 'OAuth', 'DocumentPreview', 'OfficeOnline', 'Indexing', 'Sharing']
 const isSystemSettings = [
   'DocumentPreview',
@@ -80,7 +64,6 @@ const isSystemSettings = [
   'TaskManagement',
   'MultiFactorAuthentication',
 ]
-
 export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
   const localization = useLocalization().settings
   const repository = useRepository()
@@ -93,70 +76,67 @@ export const ContentCard = ({ settings, onContextMenu }: ContentCardProps) => {
   const dataTestName = settingsTitle.replace(/\s+/g, '-').toLowerCase()
 
   return (
-    <div>
-      <div />
-      <Card
-        onContextMenu={(ev) => {
-          ev.preventDefault()
-          onContextMenu(ev)
-        }}
-        className={classes.card}
-        data-test={`content-card-${settingsName.replace(/\s+/g, '-').toLowerCase()}`}>
-        <CardContent>
-          <Tooltip placement="top" title={settingsName}>
-            <Typography variant="h5" gutterBottom={true} className={classes.title}>
-              {settingsTitle}
-            </Typography>
-          </Tooltip>
-          <Typography
-            color="textSecondary"
-            style={{ wordWrap: 'break-word' }}
-            dangerouslySetInnerHTML={{ __html: settings.Description || '' }}
-          />
-        </CardContent>
-        <CardActions style={{ justifyContent: 'flex-end' }}>
-          {!isSystemSettings.includes(settingsTitle) && (
-            <IconButton
-              data-test={`${dataTestName}-delete-button`}
-              aria-label="delete"
-              onClick={() => {
-                openDialog({
-                  name: 'delete',
-                  props: { content: [settings] },
-                  dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true },
-                })
-              }}>
-              <DeleteIcon />
-            </IconButton>
-          )}
-          <Link
-            to={getPrimaryActionUrl({ content: settings, repository, uiSettings, location: history.location })}
+    <Card
+      onContextMenu={(ev) => {
+        ev.preventDefault()
+        onContextMenu(ev)
+      }}
+      className={classes.card}
+      data-test={`content-card-${settingsName.replace(/\s+/g, '-').toLowerCase()}`}>
+      <CardContent>
+        <Tooltip placement="top" title={settingsName}>
+          <Typography variant="h5" gutterBottom={true} className={classes.title}>
+            {settingsTitle}
+          </Typography>
+        </Tooltip>
+        <Typography
+          color="textSecondary"
+          style={{ wordWrap: 'break-word' }}
+          dangerouslySetInnerHTML={{ __html: settings.Description || '' }}
+        />
+      </CardContent>
+      <CardActions style={{ justifyContent: 'flex-end' }}>
+        {!isSystemSettings.includes(settingsTitle) && (
+          <IconButton
+            data-test={`${dataTestName}-delete-button`}
+            aria-label="delete"
+            onClick={() => {
+              openDialog({
+                name: 'delete',
+                props: { content: [settings] },
+                dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true },
+              })
+            }}>
+            <DeleteIcon />
+          </IconButton>
+        )}
+        <Link
+          to={getPrimaryActionUrl({ content: settings, repository, uiSettings, location: history.location })}
+          style={{ textDecoration: 'none' }}>
+          <Button
+            aria-label={localization.edit}
+            size="small"
+            className={classes.button}
+            data-test={`${dataTestName}-edit-button`}>
+            {localization.edit}
+          </Button>
+        </Link>
+        {hasDocumentation.includes(settingsTitle) && (
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href={`${SETUP_DOCS_URL}${createAnchorFromName(settings.Name)}`}
             style={{ textDecoration: 'none' }}>
             <Button
-              aria-label={localization.edit}
+              aria-label={localization.learnMore}
               size="small"
               className={classes.button}
-              data-test={`${dataTestName}-edit-button`}>
-              {localization.edit}
+              data-test={`${dataTestName}-learnmore-button`}>
+              {localization.learnMore}
             </Button>
-          </Link>
-          {hasDocumentation.includes(settingsTitle) && (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={`${SETUP_DOCS_URL}${createAnchorFromName(settings.Name)}`}
-              style={{ textDecoration: 'none' }}>
-              <Button
-                aria-label={localization.learnMore}
-                size="small"
-                className={classes.button}
-                data-test={`${dataTestName}-learnmore-button`}>
-                {localization.learnMore}
-              </Button>
-            </a>
-          )}
-        </CardActions>
-      </Card>
-    </div>
+          </a>
+        )}
+      </CardActions>
+    </Card>
   )
 }

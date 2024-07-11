@@ -54,7 +54,7 @@ export default function EventList() {
         {currentEvent ? (
           <EventDetails event={currentEvent} />
         ) : (
-          <List style={{ height: 'calc(100% - 48px)', overflow: 'auto', backgroundColor: 'green' }} values={events} />
+          <List style={{ height: 'calc(100% - 48px)', overflow: 'auto' }} values={events} />
         )}
       </div>
     </FilterContextProvider>

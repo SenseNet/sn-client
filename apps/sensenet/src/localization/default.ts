@@ -443,6 +443,7 @@ const values = {
   },
   settings: {
     name: 'Name',
+    delete: 'Delete',
     edit: 'Edit',
     learnMore: 'Learn more',
     stats: 'Stats',
