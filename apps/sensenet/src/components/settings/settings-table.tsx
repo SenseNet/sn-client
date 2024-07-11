@@ -1,6 +1,4 @@
 import {
-  Button,
-  createStyles,
   IconButton,
   makeStyles,
   Table,
@@ -9,11 +7,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Theme,
-  Tooltip,
 } from '@material-ui/core'
 
-import { Edit, InfoOutlined } from '@material-ui/icons'
+import { Delete, Edit, InfoOutlined } from '@material-ui/icons'
 import { Settings } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { useContext } from 'react'
@@ -21,6 +17,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'
 import { useLocalization } from '../../hooks'
 import { getPrimaryActionUrl } from '../../services'
+import { useDialog } from '../dialogs'
 
 const useStyles = makeStyles((theme) => ({
   tableHead: {
@@ -74,15 +71,24 @@ const isSystemSettings = [
 export const createAnchorFromName = (name: string) => `#${name.toLocaleLowerCase()}`
 
 export const SettingsTable = ({ settings }: SettingsTableProps) => {
-  console.log(settings)
   const classes = useStyles()
   const localization = useLocalization().settings
   const repository = useRepository()
   const uiSettings = useContext(ResponsivePersonalSettings)
   const history = useHistory()
-  if (!settings) {
-    return <div>Loading</div>
-  }
+  const { openDialog } = useDialog()
+  const updatedSettings = settings.map((setting: Settings) => {
+    return {
+      ...setting,
+      nameToDisplay: setting.Name.split('.')[0]
+        .replace(/([A-Z])/g, ' $1')
+        .trim(),
+      nameToTest: setting.Name.replace(/\.settings/gi, '')
+        .replace(/\s+/g, '-')
+        .toLowerCase(),
+    }
+  })
+  const hasDeletableSetting = updatedSettings.some((setting) => !isSystemSettings.includes(setting.Name.split('.')[0]))
   return (
     <TableContainer>
       <Table>
@@ -92,15 +98,14 @@ export const SettingsTable = ({ settings }: SettingsTableProps) => {
             <TableCell className={classes.tableHeadCell}>{localization.description}</TableCell>
             <TableCell className={classes.tableHeadCell}>{localization.edit}</TableCell>
             <TableCell className={classes.tableHeadCell}>{localization.learnMore}</TableCell>
+            {hasDeletableSetting && <TableCell className={classes.tableHeadCell}>{localization.delete}</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
-          {settings.map((setting) => (
+          {updatedSettings.map((setting) => (
             <TableRow key={setting.Id} className={classes.tableRow}>
               <TableCell component="th" scope="row" className={`${classes.tableCell} ${classes.tableCellName}`}>
-                {setting.Name.split('.')[0]
-                  .replace(/([A-Z])/g, ' $1')
-                  .trim()}
+                {setting.nameToDisplay}
               </TableCell>
               <TableCell className={`${classes.tableCell} ${classes.descriptionCell}`}>
                 {setting.Description || '-'}
@@ -109,10 +114,7 @@ export const SettingsTable = ({ settings }: SettingsTableProps) => {
                 <Link
                   to={getPrimaryActionUrl({ content: setting, repository, uiSettings, location: history.location })}
                   style={{ textDecoration: 'none' }}>
-                  <IconButton
-                    aria-label={localization.edit}
-                    //data-test={`${dataTestName}-edit-button`}
-                  >
+                  <IconButton aria-label={localization.edit} data-test={`${setting.nameToTest}-edit-button`}>
                     <Edit />
                   </IconButton>
                 </Link>
@@ -131,6 +133,22 @@ export const SettingsTable = ({ settings }: SettingsTableProps) => {
                   </a>
                 )}
               </TableCell>
+              {hasDeletableSetting && !isSystemSettings.includes(setting.Name.split('.')[0]) && (
+                <TableCell className={classes.tableCell}>
+                  <IconButton
+                    aria-label={localization.delete}
+                    data-test={`${setting.nameToTest}-delete-button`}
+                    onClick={() => {
+                      openDialog({
+                        name: 'delete',
+                        props: { content: [setting] },
+                        dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true },
+                      })
+                    }}>
+                    <Delete />
+                  </IconButton>
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>

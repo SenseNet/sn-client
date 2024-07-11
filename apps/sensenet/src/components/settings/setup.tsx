@@ -63,7 +63,6 @@ const Setup = () => {
   ])
 
   const renderContent = () => {
-    console.log(settings)
     switch (activeAction) {
       case 'browse':
         return <BrowseView contentPath={`${PATHS.configuration.snPath}${activeContent}`} />
@@ -107,20 +106,6 @@ const Setup = () => {
                   }}
                 />
                 <SettingsTable settings={settings} />
-                {/* {settings.map((s) => {
-                  return (
-                    <ContentCard
-                      settings={s}
-                      key={s.Id}
-                      onContextMenu={(ev) => {
-                        ev.preventDefault()
-                        setContextMenuAnchor((ev.currentTarget as HTMLElement) || null)
-                        setContextMenuItem(s)
-                        setIsContextMenuOpened(true)
-                      }}
-                    />
-                  )
-                })} */}
               </div>
             ) : null}
           </>
