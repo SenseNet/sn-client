@@ -162,7 +162,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
     )
 
     const nodeItem = (
-      <Tooltip title={item.Name} placement="bottom">
+      <Tooltip title={item.Name} key={keyPrefix} placement="bottom">
         <ListItem
           ref={listItemRef}
           className={classes.listItem}
