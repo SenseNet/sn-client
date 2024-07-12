@@ -19,7 +19,7 @@ import { useLocalization } from '../../hooks'
 import { getPrimaryActionUrl } from '../../services'
 import { useDialog } from '../dialogs'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   tableHead: {
     backgroundColor: 'hsl(0deg 0% 24%)',
     cursor: 'default',
@@ -27,6 +27,14 @@ const useStyles = makeStyles((theme) => ({
   tableHeadCell: {
     color: 'white',
     fontSize: '1.1rem',
+  },
+  stickyTableHeadCell: {
+    color: 'white',
+    padding: 0,
+    margin: 0,
+    textAlign: 'center',
+    maxWidth: '20px',
+    minWidth: '20px',
   },
   tableCell: {
     verticalAlign: 'middle',
@@ -41,6 +49,10 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '12px',
     paddingBottom: '12px',
   },
+  stickyCell: {
+    maxWidth: '32px',
+    paddingLeft: '16px',
+  },
   tableRow: {
     '&:hover': {
       backgroundColor: 'rgba(255, 255, 255, 0.08)',
@@ -48,9 +60,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export interface SettingsTableProps {
-  settings: Settings[]
-}
 export const SETUP_DOCS_URL = 'https://docs.sensenet.com/guides/settings/setup'
 const hasDocumentation = ['Portal', 'OAuth', 'DocumentPreview', 'OfficeOnline', 'Indexing', 'Sharing']
 const isSystemSettings = [
@@ -70,7 +79,12 @@ const isSystemSettings = [
 ]
 export const createAnchorFromName = (name: string) => `#${name.toLocaleLowerCase()}`
 
-export const SettingsTable = ({ settings }: SettingsTableProps) => {
+export interface SettingsTableProps {
+  settings: Settings[]
+  onContextMenu: (ev: React.MouseEvent, setting: Settings) => void
+}
+
+export const SettingsTable = ({ settings, onContextMenu }: SettingsTableProps) => {
   const classes = useStyles()
   const localization = useLocalization().settings
   const repository = useRepository()
@@ -96,21 +110,29 @@ export const SettingsTable = ({ settings }: SettingsTableProps) => {
           <TableRow>
             <TableCell className={classes.tableHeadCell}>{localization.name}</TableCell>
             <TableCell className={classes.tableHeadCell}>{localization.description}</TableCell>
-            <TableCell className={classes.tableHeadCell}>{localization.edit}</TableCell>
-            <TableCell className={classes.tableHeadCell}>{localization.learnMore}</TableCell>
-            {hasDeletableSetting && <TableCell className={classes.tableHeadCell}>{localization.delete}</TableCell>}
+            <TableCell className={classes.stickyTableHeadCell}>{localization.edit}</TableCell>
+            <TableCell className={classes.stickyTableHeadCell}>{localization.learnMore}</TableCell>
+            {hasDeletableSetting && (
+              <TableCell className={classes.stickyTableHeadCell}>{localization.delete}</TableCell>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
           {updatedSettings.map((setting) => (
-            <TableRow key={setting.Id} className={classes.tableRow}>
+            <TableRow
+              key={setting.Id}
+              className={classes.tableRow}
+              onContextMenu={(ev) => {
+                ev.preventDefault()
+                onContextMenu(ev, setting)
+              }}>
               <TableCell component="th" scope="row" className={`${classes.tableCell} ${classes.tableCellName}`}>
                 {setting.nameToDisplay}
               </TableCell>
               <TableCell className={`${classes.tableCell} ${classes.descriptionCell}`}>
                 {setting.Description || '-'}
               </TableCell>
-              <TableCell className={classes.tableCell}>
+              <TableCell className={classes.stickyCell}>
                 <Link
                   to={getPrimaryActionUrl({ content: setting, repository, uiSettings, location: history.location })}
                   style={{ textDecoration: 'none' }}>
@@ -119,7 +141,7 @@ export const SettingsTable = ({ settings }: SettingsTableProps) => {
                   </IconButton>
                 </Link>
               </TableCell>
-              <TableCell className={classes.tableCell}>
+              <TableCell className={classes.stickyCell}>
                 {hasDocumentation.includes(
                   (setting.Name || setting.DisplayName || '')?.replace(/\.settings/gi, ''),
                 ) && (
@@ -133,20 +155,22 @@ export const SettingsTable = ({ settings }: SettingsTableProps) => {
                   </a>
                 )}
               </TableCell>
-              {hasDeletableSetting && !isSystemSettings.includes(setting.Name.split('.')[0]) && (
-                <TableCell className={classes.tableCell}>
-                  <IconButton
-                    aria-label={localization.delete}
-                    data-test={`${setting.nameToTest}-delete-button`}
-                    onClick={() => {
-                      openDialog({
-                        name: 'delete',
-                        props: { content: [setting] },
-                        dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true },
-                      })
-                    }}>
-                    <Delete />
-                  </IconButton>
+              {hasDeletableSetting && (
+                <TableCell className={classes.stickyCell}>
+                  {!isSystemSettings.includes(setting.Name.split('.')[0]) && (
+                    <IconButton
+                      aria-label={localization.delete}
+                      data-test={`${setting.nameToTest}-delete-button`}
+                      onClick={() => {
+                        openDialog({
+                          name: 'delete',
+                          props: { content: [setting] },
+                          dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true },
+                        })
+                      }}>
+                      <Delete />
+                    </IconButton>
+                  )}
                 </TableCell>
               )}
             </TableRow>
