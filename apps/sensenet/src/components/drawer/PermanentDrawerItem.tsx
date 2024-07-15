@@ -30,7 +30,8 @@ const useStyles = makeStyles((theme: Theme) => {
       },
     },
     listButton: {
-      height: '65px',
+      height: '60px',
+      paddingLeft: '2px',
     },
     listItemIconDark: {
       color: theme.palette.common.white,

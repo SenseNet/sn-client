@@ -11,7 +11,7 @@ import { navigateToAction } from '../../services/content-context-service'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { EditBinary } from '../edit/edit-binary'
 import { BrowseView, EditView, NewView, VersionView } from '../view-controls'
-import { ContentCard } from './content-card'
+import { SettingsTable } from './settings-table'
 
 const Setup = () => {
   const repository = useRepository()
@@ -22,7 +22,10 @@ const Setup = () => {
   const [reloadToken, setReloadToken] = useState(Date.now())
   const [settings, setSettings] = useState<Settings[]>([])
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
-  const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
+  const [contextMenuAnchorPos, setContextMenuAnchorPos] = useState<{ top: number; left: number }>({
+    top: 0,
+    left: 0,
+  })
   const [contextMenuItem, setContextMenuItem] = useState<Settings | null>(null)
   const requestReload = useCallback(() => setReloadToken(Date.now()), [])
 
@@ -97,27 +100,23 @@ const Setup = () => {
                   content={contextMenuItem ?? settings[0]}
                   onClose={() => setIsContextMenuOpened(false)}
                   menuProps={{
-                    anchorEl: contextMenuAnchor,
+                    anchorReference: 'anchorPosition' as const,
+                    anchorPosition: contextMenuAnchorPos,
                     BackdropProps: {
                       onClick: () => setIsContextMenuOpened(false),
                       onContextMenu: (ev) => ev.preventDefault(),
                     },
                   }}
                 />
-                {settings.map((s) => {
-                  return (
-                    <ContentCard
-                      settings={s}
-                      key={s.Id}
-                      onContextMenu={(ev) => {
-                        ev.preventDefault()
-                        setContextMenuAnchor((ev.currentTarget as HTMLElement) || null)
-                        setContextMenuItem(s)
-                        setIsContextMenuOpened(true)
-                      }}
-                    />
-                  )
-                })}
+                <SettingsTable
+                  settings={settings}
+                  onContextMenu={(ev, setting) => {
+                    ev.preventDefault()
+                    setContextMenuAnchorPos({ top: ev.clientY, left: ev.clientX })
+                    setContextMenuItem(setting)
+                    setIsContextMenuOpened(true)
+                  }}
+                />
               </div>
             ) : null}
           </>
