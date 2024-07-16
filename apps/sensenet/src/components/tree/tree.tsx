@@ -162,7 +162,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
     )
 
     const nodeItem = (
-      <Tooltip title={item.Name} placement="bottom">
+      <Tooltip title={item.Name} key={keyPrefix} placement="bottom">
         <ListItem
           ref={listItemRef}
           className={classes.listItem}
@@ -219,7 +219,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
       )
     }
     return (
-      <MuiList key={key} style={style}>
+      <MuiList key={key} style={{ padding: 0 }}>
         {renderItem(treeData.children?.[index], index.toString(), 10)}
       </MuiList>
     )

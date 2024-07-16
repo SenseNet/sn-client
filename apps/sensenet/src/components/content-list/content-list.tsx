@@ -93,7 +93,7 @@ export const isReferenceField = (fieldName: string, repo: Repository, schema = '
 }
 
 const rowHeightConst = 67
-const headerHeightConst = 58
+const headerHeightConst = 48
 
 /**
  * Compare passed minutes with
@@ -747,9 +747,9 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
               rowStyle: {
                 position: 'relative',
                 top: 'unset',
-                height: 'auto',
+                height: '48px',
                 overflow: 'initial',
-                padding: '5px 0px',
+                padding: '0',
               },
               onRowDoubleClick: onItemDoubleClickFunc,
               disableHeader: props.hideHeader,

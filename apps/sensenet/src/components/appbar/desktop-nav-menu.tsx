@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
     viewOptions: {
       cursor: 'pointer',
       marginRight: '16px',
+      padding: '7px',
     },
     navMenu: {
       height: '100%',

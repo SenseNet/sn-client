@@ -21,7 +21,8 @@ const useStyles = makeStyles(() => {
     toolBar: {
       position: 'static',
       height: '100%',
-      paddingLeft: '32px',
+      minHeight: '42px',
+      paddingLeft: '16px',
       paddingRight: 0,
     },
     logo: {
