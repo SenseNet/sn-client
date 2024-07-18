@@ -219,7 +219,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
       )
     }
     return (
-      <MuiList key={key} style={{ padding: 0 }}>
+      <MuiList key={key} style={{ ...style, padding: '0' }}>
         {renderItem(treeData.children?.[index], index.toString(), 10)}
       </MuiList>
     )

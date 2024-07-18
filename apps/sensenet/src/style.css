@@ -6,3 +6,8 @@ ul[role='listbox'] {
   margin: 0;
   padding: 0;
 }
+
+.bread-crumbs-separator {
+  padding: 0;
+  margin: 0;
+}

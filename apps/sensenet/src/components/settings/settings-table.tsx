@@ -7,6 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Theme,
 } from '@material-ui/core'
 
 import { Delete, Edit, InfoOutlined } from '@material-ui/icons'
@@ -19,17 +20,17 @@ import { useLocalization } from '../../hooks'
 import { getPrimaryActionUrl } from '../../services'
 import { useDialog } from '../dialogs'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   tableHead: {
-    backgroundColor: 'hsl(0deg 0% 24%)',
+    backgroundColor: theme.palette.type === 'dark' ? 'hsl(0deg 0% 24%)' : 'hsl(0deg 0% 92%)',
     cursor: 'default',
   },
   tableHeadCell: {
-    color: 'white',
+    color: theme.palette.type === 'dark' ? 'white' : '#666666',
     fontSize: '1.1rem',
   },
   stickyTableHeadCell: {
-    color: 'white',
+    color: theme.palette.type === 'dark' ? 'white' : '#666666',
     padding: '0px 1px 0px 0px',
     margin: 0,
     textAlign: 'center',
@@ -91,17 +92,19 @@ export const SettingsTable = ({ settings, onContextMenu }: SettingsTableProps) =
   const uiSettings = useContext(ResponsivePersonalSettings)
   const history = useHistory()
   const { openDialog } = useDialog()
-  const updatedSettings = settings.map((setting: Settings) => {
-    return {
-      ...setting,
-      nameToDisplay: setting.Name.split('.')[0]
-        .replace(/([A-Z])/g, ' $1')
-        .trim(),
-      nameToTest: setting.Name.replace(/\.settings/gi, '')
-        .replace(/\s+/g, '-')
-        .toLowerCase(),
-    }
-  })
+  const updatedSettings = settings
+    .map((setting: Settings) => {
+      return {
+        ...setting,
+        nameToDisplay: setting.Name.split('.')[0]
+          .replace(/([A-Z])/g, ' $1')
+          .trim(),
+        nameToTest: setting.Name.replace(/\.settings/gi, '')
+          .replace(/\s+/g, '-')
+          .toLowerCase(),
+      }
+    })
+    .sort((a, b) => a.Name.localeCompare(b.Name))
   const hasDeletableSetting = updatedSettings.some((setting) => !isSystemSettings.includes(setting.Name.split('.')[0]))
   return (
     <TableContainer>

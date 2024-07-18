@@ -9,6 +9,7 @@ import {
   makeStyles,
   TextField,
   TextFieldProps,
+  Theme,
   Typography,
 } from '@material-ui/core'
 import { PathHelper } from '@sensenet/client-utils'
@@ -19,12 +20,13 @@ import snLogo from '../../assets/sensenet-icon-32.png'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     appBar: {
       position: 'relative',
       height: globals.common.headerHeight,
-      backgroundColor: globals.common.headerBackground,
+      backgroundColor:
+        theme.palette.type === 'dark' ? globals.common.headerBackground : globals.common.headerLightBackground,
       boxShadow: 'none',
     },
     loginSubtitle: {

@@ -1,14 +1,15 @@
-import { AppBar, Button, Container, createStyles, makeStyles, Toolbar, Typography } from '@material-ui/core'
+import { AppBar, Button, Container, createStyles, makeStyles, Theme, Toolbar, Typography } from '@material-ui/core'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import logo from '../../assets/sensenet-icon-32.png'
 import { globals, useGlobalStyles } from '../../globalStyles'
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     appBar: {
       height: globals.common.headerHeight,
-      backgroundColor: globals.common.headerBackground,
+      backgroundColor:
+        theme.palette.type === 'dark' ? globals.common.headerBackground : globals.common.headerLightBackground,
       boxShadow: 'none',
     },
     toolBar: {
@@ -33,7 +34,8 @@ const useStyles = makeStyles(() =>
     },
     footer: {
       height: '180px',
-      backgroundColor: globals.common.headerBackground,
+      backgroundColor:
+        theme.palette.type === 'dark' ? globals.common.headerBackground : globals.common.headerLightBackground,
       boxShadow: 'none',
     },
   }),

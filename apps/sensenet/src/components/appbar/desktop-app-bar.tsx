@@ -1,4 +1,4 @@
-import { AppBar, createStyles, IconButton, makeStyles, Toolbar } from '@material-ui/core'
+import { AppBar, createStyles, IconButton, makeStyles, Theme, Toolbar } from '@material-ui/core'
 import Menu from '@material-ui/icons/Menu'
 import { useRepository } from '@sensenet/hooks-react'
 import { clsx } from 'clsx'
@@ -10,12 +10,13 @@ import { globals, useGlobalStyles } from '../../globalStyles'
 import { CommandPalette } from '../command-palette/CommandPalette'
 import { DesktopNavMenu } from './desktop-nav-menu'
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     appBar: {
       position: 'relative',
       height: globals.common.headerHeight,
-      backgroundColor: globals.common.headerBackground,
+      backgroundColor:
+        theme.palette.type === 'dark' ? globals.common.headerBackground : globals.common.headerLightBackground,
       boxShadow: 'none',
     },
     toolBar: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles(() => {
       paddingRight: 0,
     },
     logo: {
-      marginRight: '40px',
+      marginRight: '32px',
       filter: 'drop-shadow(0px 0px 3px black)',
     },
     commandPaletteReplacement: {
