@@ -60,3 +60,4 @@ typings/
 dist
 temp
 bundle
+/public/tinymce/

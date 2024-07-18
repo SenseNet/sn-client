@@ -42,6 +42,8 @@ export const reactControlMapper = (repository: Repository) => {
         case 'sn:RichText':
         case 'sn:TipTapEditor':
           return FieldControls.RichTextEditor
+        case 'sn:TinymceEditor':
+          return FieldControls.TinymceEditor
         default:
       }
 

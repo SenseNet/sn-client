@@ -716,16 +716,15 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
             /* If the Order by Column Is The Display. The client will sort it. Due to some locale and indexing issues */
             items={
               currentOrder === 'DisplayName'
-                ? children.sort((a, b) => {
+                ? children?.sort((a, b) => {
                     // If no display Name
-                    if (!a?.DisplayName || !b?.DisplayName) {
-                      return 0
-                    }
+                    const nameA = a?.DisplayName ?? '' // Provide a default value if displayName is undefined
+                    const nameB = b?.DisplayName ?? '' // Provide a default value if displayName is undefined
 
                     if (currentDirection === 'asc') {
-                      return a?.DisplayName.localeCompare(b?.DisplayName)
+                      return nameA.localeCompare(nameB)
                     }
-                    return b?.DisplayName.localeCompare(a?.DisplayName)
+                    return nameB.localeCompare(nameA)
                   })
                 : children
             }

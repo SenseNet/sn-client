@@ -44,7 +44,7 @@
     "yarn": "^1.22.19"
   },
   "scripts": {
-    "postinstall": "husky install",
+    "postinstall": "husky install && node postinstall.mjs",
     "cy:run:dms": "cypress run --project ./examples/sn-dms-demo",
     "start:dms:e2e": "cross-env NODE_OPTIONS=--openssl-legacy-provider yarn workspace sn-dms-demo start:e2e",
     "test:dms:e2e": "cross-env NODE_OPTIONS=--openssl-legacy-provider start-server-and-test start:dms:e2e http-get://localhost:3000 cy:run:dms",

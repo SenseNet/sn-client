@@ -18,6 +18,7 @@ export function convertUtcToLocale(utcDateString: string) {
 
     return new Intl.DateTimeFormat(window.navigator.language, options).format(date)
   } catch (error) {
-    return console.error(error.message)
+    console.error(error.message)
+    return ''
   }
 }
