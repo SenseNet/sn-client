@@ -160,7 +160,7 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
         binaryPropertyName: props.settings.Name,
       })
 
-      const newValue = `${getNameFromPath(e.target.value)}`
+      const newValue = `${getNameFromPath(e.target.value)}?t=${Date.now()}`
       setFileName(newValue)
     } catch (error) {
       console.error(error.message)

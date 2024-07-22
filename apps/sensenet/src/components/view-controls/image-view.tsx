@@ -91,7 +91,11 @@ export const ImageView: React.FC<ImageViewProps> = (props) => {
         </div>
       </div>
       <div className={classes.imageContainer}>
-        <img className={classes.image} src={`${repository.configuration.repositoryUrl}${contentPath}`} alt="" />
+        <img
+          className={classes.image}
+          src={`${repository.configuration.repositoryUrl}${contentPath}?t=${Date.now()}`}
+          alt=""
+        />
       </div>
       <div className={classes.buttonWrapper}>
         <Button
