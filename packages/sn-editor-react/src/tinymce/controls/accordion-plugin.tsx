@@ -13,11 +13,11 @@ import {
   Tooltip,
   useTheme,
 } from '@material-ui/core'
-import { ArrowDropDown, Close, DragHandle } from '@material-ui/icons'
+import { Close } from '@material-ui/icons'
 
-import { Editor } from '@tiptap/react'
 import React, { FC, useCallback, useRef, useState } from 'react'
 import { renderToString } from 'react-dom/server'
+import { Editor } from 'tinymce'
 import { useLocalization } from '../../hooks'
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -78,11 +78,6 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
-interface AccordionControlProps {
-  editor: Editor
-  buttonProps?: Partial<IconButtonProps>
-}
-
 type TAccordions = {
   title: string
   body: string
@@ -113,9 +108,13 @@ const Panel = ({ title, body }: PanelPros) => {
 
 const initialAccordion = { title: '', body: '' }
 
-export const AccordionControl: FC<AccordionControlProps> = ({ buttonProps, editor }) => {
-  const [open, setOpen] = useState(false)
+interface AccordionPluginControlProps {
+  editor: Editor
+  buttonProps?: Partial<IconButtonProps>
+  closeDialog: () => void
+}
 
+export const AccordionPluginControl: FC<AccordionPluginControlProps> = ({ editor, buttonProps, closeDialog }) => {
   const [accordions, setAccordions] = useState<TAccordions[]>([initialAccordion])
   const form = useRef<HTMLFormElement>(null)
 
@@ -124,15 +123,11 @@ export const AccordionControl: FC<AccordionControlProps> = ({ buttonProps, edito
   const classes = useStyles(theme)
   const localization = useLocalization()
 
-  const handleClickOpen = () => {
-    setOpen(true)
-  }
-
   const handleClose = useCallback(() => {
     setAccordions([initialAccordion])
 
-    setOpen(false)
-  }, [])
+    closeDialog()
+  }, [closeDialog])
 
   const handleSubmit = () => {
     if (accordions.length === 0) {
@@ -156,7 +151,7 @@ export const AccordionControl: FC<AccordionControlProps> = ({ buttonProps, edito
       </>,
     )
 
-    editor.chain().focus().insertContent(panelGroup).run()
+    editor.execCommand('mceInsertContent', false, panelGroup)
 
     handleClose()
   }
@@ -166,27 +161,14 @@ export const AccordionControl: FC<AccordionControlProps> = ({ buttonProps, edito
       return prev.filter((_, i) => i !== index)
     })
   }
-
   return (
     <>
-      <Tooltip title={localization.accordionControl.title}>
-        <IconButton className={classes.ListIcon} onClick={handleClickOpen} {...buttonProps}>
-          <div className="icon-container">
-            <ArrowDropDown className="down-arrow" />
-            <DragHandle />
-          </div>
-          <div className="icon-container">
-            <ArrowDropDown className="down-arrow" />
-            <DragHandle />
-          </div>
-        </IconButton>
-      </Tooltip>
       <Dialog
-        open={open}
+        open={true}
         className={classes.dialog}
         onClose={handleSubmit}
         aria-labelledby="form-dialog-title"
-        maxWidth="sm"
+        maxWidth="md"
         fullWidth>
         <DialogTitle id="form-dialog-title">{localization.accordionControl.title}</DialogTitle>
         <DialogContent>
