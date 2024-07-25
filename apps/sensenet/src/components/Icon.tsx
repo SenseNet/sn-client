@@ -228,13 +228,13 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
           width={options.style?.width || 32}
           height={options.style?.width || 32}
           alt=""
-          src={PathHelper.joinPaths(
+          src={`${PathHelper.joinPaths(
             options.repo.configuration.repositoryUrl,
             item.Path,
             '/Previews',
             item.Version as string,
             'thumbnail1.png',
-          )}
+          )}?t=${Date.now()}`}
           style={options.style}
         />
       ) : null,
@@ -246,7 +246,7 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
           width={options.style?.width || 32}
           height={options.style?.width || 32}
           alt=""
-          src={PathHelper.joinPaths(options.repo.configuration.repositoryUrl, item.Path)}
+          src={`${PathHelper.joinPaths(options.repo.configuration.repositoryUrl, item.Path)}?t=${Date.now()}`}
           style={options.style}
         />
       ) : null,
