@@ -1,6 +1,5 @@
 const path = require('path')
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
-const CopyPlugin = require('copy-webpack-plugin')
 const webpack = require('webpack')
 
 module.exports = {
@@ -29,9 +28,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new CopyPlugin({
-      patterns: [{ from: './tinymce/**/*' }],
-    }),
     new webpack.EnvironmentPlugin({
       APP_VERSION: require('./package.json').version,
     }),
