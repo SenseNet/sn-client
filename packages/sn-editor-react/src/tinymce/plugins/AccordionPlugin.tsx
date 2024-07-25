@@ -5,7 +5,7 @@ import { PluginRegistrationProps } from '.'
 
 export const AccordionPlugin = ({ editor }: PluginRegistrationProps) => {
   editor.ui.registry.addMenuItem('InsertAccordion' /*name of the plugin*/, {
-    text: 'Insert Accordion',
+    text: 'Accordion',
     icon: 'accordion',
     onAction() {
       const dialogContainer = document.createElement('div')

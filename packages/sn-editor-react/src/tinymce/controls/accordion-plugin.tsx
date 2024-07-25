@@ -1,7 +1,6 @@
 import {
   Button,
   createStyles,
-  Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -9,18 +8,16 @@ import {
   IconButtonProps,
   makeStyles,
   TextField,
-  Theme,
   Tooltip,
-  useTheme,
 } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
 
-import React, { FC, useCallback, useRef, useState } from 'react'
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { renderToString } from 'react-dom/server'
 import { Editor } from 'tinymce'
 import { useLocalization } from '../../hooks'
 
-const useStyles = makeStyles((theme: Theme) => {
+const useStyles = makeStyles(() => {
   return createStyles({
     ListIcon: {
       paddingLeft: '0px',
@@ -45,12 +42,39 @@ const useStyles = makeStyles((theme: Theme) => {
         },
       },
     },
+    dialog: {
+      border: 'none !important',
+      borderRadius: 12,
+      boxShadow: '0 0 #0000, 0 0 #0000, 0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+      padding: '1.6rem',
+      maxWidth: '600px',
+      width: '100%',
+      '&::backdrop': {
+        backgroundColor: 'rgba(255, 255, 255, .75)',
+      },
+
+      '& .MuiDialogContent-root': {
+        padding: 0,
+      },
+      '& .MuiDialogTitle-root': {
+        paddingLeft: 0,
+      },
+      '& .tox-icon': {
+        position: 'absolute',
+        top: '0',
+        right: '0',
+        marginRight: '25px',
+        marginTop: '20px',
+        cursor: 'pointer',
+        padding: '10px',
+      },
+    },
     accordion: {
       display: 'flex',
       flexDirection: 'column',
       rowGap: '15px',
       border: '2px solid',
-      borderColor: theme.palette.primary.main,
+      borderColor: '#006ce7',
       position: 'relative',
       padding: '10px',
       borderRadius: '10px',
@@ -70,7 +94,7 @@ const useStyles = makeStyles((theme: Theme) => {
       flex: 1,
       justifyContent: 'space-between',
     },
-    dialog: {
+    modal: {
       '& .MuiDialogContent-root': {
         padding: '8px 15px',
       },
@@ -118,9 +142,7 @@ export const AccordionPluginControl: FC<AccordionPluginControlProps> = ({ editor
   const [accordions, setAccordions] = useState<TAccordions[]>([initialAccordion])
   const form = useRef<HTMLFormElement>(null)
 
-  const theme = useTheme()
-
-  const classes = useStyles(theme)
+  const classes = useStyles()
   const localization = useLocalization()
 
   const handleClose = useCallback(() => {
@@ -161,16 +183,34 @@ export const AccordionPluginControl: FC<AccordionPluginControlProps> = ({ editor
       return prev.filter((_, i) => i !== index)
     })
   }
+
+  const dialogRef = useRef<HTMLDialogElement>(null)
+
+  useEffect(() => {
+    dialogRef.current?.showModal()
+
+    return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      dialogRef.current?.close()
+    }
+  }, [])
+
   return (
     <>
-      <Dialog
-        open={true}
-        className={classes.dialog}
-        onClose={handleSubmit}
-        aria-labelledby="form-dialog-title"
-        maxWidth="md"
-        fullWidth>
-        <DialogTitle id="form-dialog-title">{localization.accordionControl.title}</DialogTitle>
+      <dialog ref={dialogRef} className={classes.dialog}>
+        <DialogTitle id="form-dialog-title">{localization.accordionControl.title}</DialogTitle>{' '}
+        <span
+          className="tox-icon"
+          onClick={() => {
+            dialogRef.current?.close()
+          }}>
+          <svg width="24" height="24" focusable="false">
+            <path
+              d="M17.3 8.2 13.4 12l3.9 3.8a1 1 0 0 1-1.5 1.5L12 13.4l-3.8 3.9a1 1 0 0 1-1.5-1.5l3.9-3.8-3.9-3.8a1 1 0 0 1 1.5-1.5l3.8 3.9 3.8-3.9a1 1 0 0 1 1.5 1.5Z"
+              fillRule="evenodd"
+            />
+          </svg>
+        </span>
         <DialogContent>
           <form ref={form} className={classes.accordionContainer}>
             {accordions.map((accordion, index) => {
@@ -245,7 +285,7 @@ export const AccordionPluginControl: FC<AccordionPluginControlProps> = ({ editor
             </div>
           </div>
         </DialogActions>
-      </Dialog>
+      </dialog>
     </>
   )
 }

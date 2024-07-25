@@ -5,8 +5,6 @@ import { type Editor as TinyMCEEditor } from 'tinymce'
 import 'tinymce/tinymce'
 // DOM model
 import 'tinymce/models/dom/model'
-// import { HTMLEditorControl } from '../components/controls'
-// import { RegisterPlugins } from './plugins/RegisterPlugins'
 // Theme
 import 'tinymce/themes/silver'
 // Toolbar icons
@@ -47,15 +45,7 @@ import 'tinymce/plugins/visualchars'
 import 'tinymce/plugins/wordcount'
 // importing plugin resources
 import 'tinymce/plugins/emoticons/js/emojis'
-// Content styles, including inline UI like fake cursors
-import 'tinymce/skins/content/default/content'
-import 'tinymce/skins/content/default/content.min.css'
-import 'tinymce/skins/ui/oxide/content'
-import 'tinymce/skins/ui/oxide-dark/content'
-import 'tinymce/skins/ui/oxide-dark/content.min.css'
-import 'tinymce/skins/ui/oxide/content.min.css'
-import 'tinymce/skins/ui/oxide-dark/skin.min.css'
-import 'tinymce/skins/ui/oxide/skin.min.css'
+
 import { RegisterPlugins } from './plugins'
 
 export interface TinymceEditorProps {
@@ -75,8 +65,6 @@ export const TinymceEditor: FC<TinymceEditorProps> = (props) => {
         }}
         initialValue={props.initvalue}
         init={{
-          skin: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'oxide-dark' : 'oxide-dark',
-          content_css: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'dark',
           file_picker_types: 'image',
           /* and here's our custom image picker*/
           file_picker_callback: (cb, _value, _meta) => {
@@ -93,10 +81,10 @@ export const TinymceEditor: FC<TinymceEditorProps> = (props) => {
               const reader = new FileReader()
               reader.addEventListener('load', () => {
                 /*
-          Note: Now we need to register the blob in TinyMCEs image blob
-          registry. In the next release this part hopefully won't be
-          necessary, as we are looking to handle it internally.
-        */
+                  Note: Now we need to register the blob in TinyMCEs image blob
+                  registry. In the next release this part hopefully won't be
+                  necessary, as we are looking to handle it internally.
+                */
                 const id = `blobid${new Date().getTime()}`
                 const { blobCache } = editorRef.current?.editorUpload || {}
                 const base64 = (reader.result as any).split(',')[1]
