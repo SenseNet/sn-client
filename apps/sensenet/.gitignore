@@ -68,3 +68,5 @@ cypress/screenshots
 
 # Instrumented code for cypress code coverage
 instrumented
+
+/tinymce

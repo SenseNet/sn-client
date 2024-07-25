@@ -1,1 +1,1 @@
-export { Editor as default } from '@sensenet/editor-react'
+export { Editor as default, TinymceEditor } from '@sensenet/editor-react'

@@ -45,6 +45,7 @@
     "@babel/runtime": "^7.18.9",
     "@material-ui/icons": "^4.11.3",
     "@sensenet/client-utils": "^2.3.0",
+    "@tinymce/tinymce-react": "^5.1.1",
     "@tiptap/core": "^2.0.0-beta.102",
     "@tiptap/extension-blockquote": "^2.0.0-beta.15",
     "@tiptap/extension-bold": "^2.0.0-beta.15",
@@ -74,6 +75,8 @@
     "@tiptap/extension-underline": "^2.0.0-beta.16",
     "@tiptap/html": "^2.0.0-beta.101",
     "@tiptap/react": "^2.0.0-beta.63",
+    "fs-extra": "^11.2.0",
+    "tinymce": "^7",
     "tslib": "^2.4.0"
   },
   "devDependencies": {
