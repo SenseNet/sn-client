@@ -75,7 +75,7 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
       <AppBar position="sticky" className={clsx(globalClasses.centeredHorizontal, classes.appBar)}>
         <Grid container direction="row">
           <Grid item xs={1}>
-            <Grid container justify="flex-end">
+            <Grid container style={{ paddingLeft: '16px', paddingTop: '4px' }}>
               <Link to="/">
                 <img src={snLogo} alt="sensenet logo" />
               </Link>

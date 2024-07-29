@@ -17,7 +17,8 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'space-between',
       height: '100%',
       paddingRight: 0,
-      paddingLeft: '32px',
+      paddingLeft: '16px',
+      marginTop: '-12px',
     },
     contentWrapper: {
       minHeight: 'calc(100vh - 180px)',

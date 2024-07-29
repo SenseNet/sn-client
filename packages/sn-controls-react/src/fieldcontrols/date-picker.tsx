@@ -113,7 +113,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
                 InputLabelProps={{ shrink: true }}
                 required={settings.Compulsory}
                 format="yyyy MMMM dd hh:mm aaaa"
-                InputProps={{ readOnly: true, style: { minWidth: '200px' } }}
+                InputProps={{ readOnly: true, style: { minWidth: '200px', width: '100%' } }}
               />
             )}
             {!hideDescription && <FormHelperText>{settings.Description}</FormHelperText>}

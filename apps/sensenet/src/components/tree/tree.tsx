@@ -152,7 +152,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
 
     if (item.expanded && item.children) {
       children = item.children.map((child, index) => {
-        return renderItem(child, `${keyPrefix}-${index}`, paddingLeft + 20)
+        return renderItem(child, `${keyPrefix}-${index}`, paddingLeft + 12)
       })
     }
 
@@ -178,7 +178,7 @@ export function Tree({ treeData, itemCount, onItemClick, loadMore, isLoading, ac
           style={{ paddingLeft }}
           data-item-name={item.Name}
           button>
-          <ListItemIcon>
+          <ListItemIcon style={{ minWidth: '32px' }}>
             <Icon item={item} />
           </ListItemIcon>
           <div className="text-container">

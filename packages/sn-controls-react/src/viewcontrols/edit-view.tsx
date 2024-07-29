@@ -47,10 +47,13 @@ const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     grid: {
       margin: '0 auto',
+      maxWidth: '750px',
     },
     fieldWrapper: {},
     field: {},
-    fieldFullWidth: {},
+    fieldFullWidth: {
+      width: '100%',
+    },
     actionButtonWrapper: {
       textAlign: 'right',
     },
@@ -168,6 +171,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
   }, [actionName, schema])
 
   const renderField = (field: { fieldSettings: FieldSetting; actionName: ActionName; controlType: any }) => {
+    field.fieldSettings.DisplayName = field.fieldSettings.DisplayName ?? field.fieldSettings.Name
     const autoFocus = hasInputField.includes(field.controlType.name) && !isAutofocusSet
     const fieldControl = createElement(
       controlMapper.getControlForContentField(props.contentTypeName, field.fieldSettings.Name, actionName),

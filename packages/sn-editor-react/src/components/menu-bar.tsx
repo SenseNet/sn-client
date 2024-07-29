@@ -197,20 +197,24 @@ export const MenuBar: FC<MenuBarProps> = ({ editor }) => {
         </IconButton>
       </Tooltip>
       <Tooltip title={`${localization.menubar.undo} (Ctrl + Z)`}>
-        <IconButton
-          onClick={() => editor.chain().focus().undo().run()}
-          disabled={!editor.can().undo()}
-          classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
-          <UndoIcon />
-        </IconButton>
+        <span>
+          <IconButton
+            onClick={() => editor.chain().focus().undo().run()}
+            disabled={!editor.can().undo()}
+            classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
+            <UndoIcon />
+          </IconButton>
+        </span>
       </Tooltip>
       <Tooltip title={`${localization.menubar.redo} (Ctrl + Y)`}>
-        <IconButton
-          onClick={() => editor.chain().focus().redo().run()}
-          disabled={!editor.can().redo()}
-          classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
-          <RedoIcon />
-        </IconButton>
+        <span>
+          <IconButton
+            onClick={() => editor.chain().focus().redo().run()}
+            disabled={!editor.can().redo()}
+            classes={{ root: classes.button, colorPrimary: classes.buttonPrimary }}>
+            <RedoIcon />
+          </IconButton>
+        </span>
       </Tooltip>
 
       <HTMLEditorControl
