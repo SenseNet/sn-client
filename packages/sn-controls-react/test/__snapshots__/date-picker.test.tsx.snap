@@ -36,6 +36,7 @@ exports[`Date/Date time field control in edit/new view should set all the props 
         "readOnly": true,
         "style": Object {
           "minWidth": "200px",
+          "width": "100%",
         },
       }
     }
