@@ -16,7 +16,7 @@ import { PathHelper } from '@sensenet/client-utils'
 import { clsx } from 'clsx'
 import React, { useRef } from 'react'
 import { Link } from 'react-router-dom'
-import snLogo from '../../../../../../sn-client/examples/sn-dms-demo/src/assets/sensenet_white.png'
+import snLogo from '../../assets/sensenet_white.png'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 

@@ -1,7 +1,7 @@
 import { AppBar, Button, Container, createStyles, makeStyles, Theme, Toolbar, Typography } from '@material-ui/core'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import logo from '../../../../../../sn-client/examples/sn-dms-demo/src/assets/sensenet_white.png'
+import logo from '../../assets/sensenet_white.png'
 import { globals, useGlobalStyles } from '../../globalStyles'
 
 const useStyles = makeStyles((theme: Theme) =>
