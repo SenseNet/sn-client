@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     grid: {
       margin: '0 auto',
-      maxWidth: '750px',
+      maxWidth: '850px',
     },
     fieldWrapper: {},
     field: {},
@@ -55,11 +55,9 @@ const useStyles = makeStyles((theme: Theme) => {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      width: '88%',
       margin: '0 auto',
     },
     divider: {
-      width: '88%',
       height: '1px',
       margin: '16px auto',
       backgroundColor: theme.palette.primary.main,
