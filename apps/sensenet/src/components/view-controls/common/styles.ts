@@ -17,11 +17,9 @@ const useStyles = makeStyles(() => {
       position: 'relative',
     },
     field: {
-      width: '88%',
       position: 'relative',
     },
     fieldFullWidth: {
-      width: '88%',
       position: 'relative',
     },
     actionButtonWrapper: {
