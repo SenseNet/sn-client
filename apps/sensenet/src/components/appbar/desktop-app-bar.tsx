@@ -4,7 +4,7 @@ import { useRepository } from '@sensenet/hooks-react'
 import { clsx } from 'clsx'
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import logo from '../../assets/sensenet-icon-32.png'
+import logo from '../../../../../../sn-client/examples/sn-dms-demo/src/assets/sensenet_white.png'
 import { ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { CommandPalette } from '../command-palette/CommandPalette'
@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     logo: {
       marginRight: '32px',
-      filter: 'drop-shadow(0px 0px 3px black)',
     },
     commandPaletteReplacement: {
       flex: 1,

@@ -1,8 +1,8 @@
 import Button from '@material-ui/core/Button'
 import React from 'react'
 import MediaQuery from 'react-responsive'
-import logo from '../assets/logo.png'
 import { resources } from '../assets/resources'
+import logo from '../assets/sensenet_white.png'
 import { WelcomeMessage } from '../components/WelcomeMessage'
 import { userManager } from '../userManager'
 

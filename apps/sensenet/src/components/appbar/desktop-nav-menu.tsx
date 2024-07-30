@@ -235,7 +235,7 @@ export const DesktopNavMenu: FunctionComponent = () => {
                   <Typography component="div" className={classes.checkboxMenuItem} style={{ width: '100%' }}>
                     <Grid component="label" container alignItems="center" justify="space-between">
                       <Grid item style={{ paddingRight: '16px' }} data-test="theme-status">
-                        {personalSettings.theme === 'dark' ? 'Light theme' : 'Dark theme'}
+                        {'Dark theme'}
                       </Grid>
                       <Grid item>
                         <Switch

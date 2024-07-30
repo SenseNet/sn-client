@@ -51,7 +51,7 @@ const blobToFile = (theBlob: Blob, fileName: string): File => {
 
 Cypress.Commands.add('uploadWithApi', (options: UploadOptions) => {
   cy.visit('')
-  cy.fixture('logo.png').then(async (img) => {
+  cy.fixture('sensenet_white.png').then(async (img) => {
     Cypress.log({
       name: 'upload',
       consoleProps: () => {
