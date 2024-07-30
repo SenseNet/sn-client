@@ -1,7 +1,7 @@
-import React, { lazy, useState } from 'react'
-import { PATHS } from '../../application-paths'
 import { Switch } from '@sensenet/controls-react'
 import { useRepository } from '@sensenet/hooks-react'
+import React, { lazy, useState } from 'react'
+import { PATHS } from '../../application-paths'
 
 const ContentComponent = lazy(() => import(/* webpackChunkName: "content" */ '../content'))
 
@@ -17,11 +17,12 @@ const ContentTypeList: React.FC = () => {
     }
 
     return (
-      <div style={{ marginTop: '20px', marginBottom: '20px' }}>
-        <label htmlFor="showHiddenTypes" style={{ marginRight: '10px' }}>
+      <div style={{ marginTop: '12px', marginBottom: '12px' }}>
+        <label htmlFor="showHiddenTypes" style={{ marginRight: '10px', paddingLeft: '17px', cursor: 'pointer' }}>
           Show hidden types
         </label>
         <Switch
+          id="showHiddenTypes"
           data-test="hidden-type-switch"
           size="medium"
           checked={showHiddenTypes}
@@ -31,10 +32,9 @@ const ContentTypeList: React.FC = () => {
     )
   }
 
-  const contentTypeQuery =
-    "+TypeIs:'ContentType'" +
-    (isCategoryFieldAvailable && !showHiddenTypes ? ' -Categories:*HideByDefault*' : '') +
-    ' .AUTOFILTERS:OFF'
+  const contentTypeQuery = `+TypeIs:'ContentType'${
+    isCategoryFieldAvailable && !showHiddenTypes ? ' -Categories:*HideByDefault*' : ''
+  } .AUTOFILTERS:OFF`
 
   return (
     <ContentComponent

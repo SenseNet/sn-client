@@ -57,7 +57,7 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
     case 'new':
       return (
         <FormControl
-          style={{ minWidth: '220px' }}
+          style={{ minWidth: '220px', width: '100%' }}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>
           <InputLabel htmlFor={props.settings.Name} shrink={true}>

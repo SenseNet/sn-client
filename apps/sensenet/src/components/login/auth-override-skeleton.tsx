@@ -1,14 +1,15 @@
-import { AppBar, Button, Container, createStyles, makeStyles, Toolbar, Typography } from '@material-ui/core'
+import { AppBar, Button, Container, createStyles, makeStyles, Theme, Toolbar, Typography } from '@material-ui/core'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import logo from '../../assets/sensenet-icon-32.png'
+import logo from '../../../../../../sn-client/examples/sn-dms-demo/src/assets/sensenet_white.png'
 import { globals, useGlobalStyles } from '../../globalStyles'
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     appBar: {
       height: globals.common.headerHeight,
-      backgroundColor: globals.common.headerBackground,
+      backgroundColor:
+        theme.palette.type === 'dark' ? globals.common.headerBackground : globals.common.headerLightBackground,
       boxShadow: 'none',
     },
     toolBar: {
@@ -16,7 +17,8 @@ const useStyles = makeStyles(() =>
       justifyContent: 'space-between',
       height: '100%',
       paddingRight: 0,
-      paddingLeft: '32px',
+      paddingLeft: '16px',
+      marginTop: '-12px',
     },
     contentWrapper: {
       minHeight: 'calc(100vh - 180px)',
@@ -33,7 +35,8 @@ const useStyles = makeStyles(() =>
     },
     footer: {
       height: '180px',
-      backgroundColor: globals.common.headerBackground,
+      backgroundColor:
+        theme.palette.type === 'dark' ? globals.common.headerBackground : globals.common.headerLightBackground,
       boxShadow: 'none',
     },
   }),
@@ -55,7 +58,7 @@ export const AuthOverrideSkeleton = (props: {
           <Toolbar className={classes.toolBar}>
             <div className={globalClasses.centeredVertical}>
               <NavLink to="/" style={{ display: 'flex', marginRight: '38px' }}>
-                <img src={logo} alt="logo" />
+                <img src={logo} alt="logo" style={{ height: '32px', marginTop: '1px' }} />
               </NavLink>
             </div>
           </Toolbar>

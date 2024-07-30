@@ -26,11 +26,16 @@ export function Breadcrumbs<T extends GenericContent>(props: BreadcrumbProps<T>)
 
   return (
     <>
-      <MUIBreadcrumbs maxItems={5} aria-label="breadcrumb">
+      <MUIBreadcrumbs
+        maxItems={5}
+        aria-label="breadcrumb"
+        style={{ marginLeft: '8.5px' }}
+        classes={{ separator: 'bread-crumbs-separator' }}>
         {props.items.map((item) => (
           <DropFileArea key={item.content.Id} parentContent={item.content} style={{ display: 'flex' }}>
             <Tooltip title={item.title}>
               <Button
+                style={{ minWidth: '12px' }}
                 data-test={`breadcrumb-item-${item.displayName.replace(/\s+/g, '-').toLowerCase()}`}
                 aria-label={item.displayName}
                 onClick={(ev) => props.onItemClick(ev, item)}

@@ -35,7 +35,10 @@ export interface BrowseViewProps {
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
-    grid: {},
+    grid: {
+      margin: '0 auto',
+      maxWidth: '750px',
+    },
     fieldWrapper: {},
     field: {},
     fieldFullWidth: {},

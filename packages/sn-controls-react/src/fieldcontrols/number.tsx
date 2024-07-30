@@ -58,6 +58,7 @@ export const NumberField: React.FC<ReactClientFieldSetting<NumberFieldSetting | 
       return (
         <>
           <TextField
+            style={{ width: '100%' }}
             autoFocus={props.autoFocus}
             name={props.settings.Name}
             type="text"

@@ -13,7 +13,8 @@ export const globals = {
     settingsDrawerWidth: 250,
     addButtonHeight: 60,
     //Colors
-    headerBackground: '#353B4E',
+    headerBackground: '#0192db',
+    headerLightBackground: '#0192db',
     headerText: 'rgba(255,255,255,0.87)',
     secondaryIconSize: '16px',
     elavationShadow: '1px 1px 3px 0px hsl(0deg 0% 0% / 28%)',
@@ -82,7 +83,7 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
     contentTitle: {
       height: globals.common.drawerItemHeight,
       minHeight: globals.common.drawerItemHeight,
-      paddingLeft: '15px',
+      paddingLeft: '16px',
     },
     drawerButton: {
       width: '32px',

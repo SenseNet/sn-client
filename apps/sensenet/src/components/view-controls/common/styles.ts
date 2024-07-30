@@ -10,7 +10,6 @@ const useStyles = makeStyles(() => {
       maxHeight: `calc(100% - ${globals.common.formActionButtonsHeight}px - ${globals.common.formTitleHeight}px)`,
     },
     fieldWrapper: {
-      display: 'flex',
       alignItems: 'center',
       flexFlow: 'column',
       padding: '15px !important',

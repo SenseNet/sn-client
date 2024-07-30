@@ -7,29 +7,33 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TableSortLabel,
+  Theme,
+  Tooltip,
+  Typography,
 } from '@material-ui/core'
 
 import { Delete, Edit, InfoOutlined } from '@material-ui/icons'
 import { Settings } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'
 import { useLocalization } from '../../hooks'
 import { getPrimaryActionUrl } from '../../services'
 import { useDialog } from '../dialogs'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   tableHead: {
-    backgroundColor: 'hsl(0deg 0% 24%)',
+    backgroundColor: theme.palette.type === 'dark' ? 'hsl(0deg 0% 24%)' : 'hsl(0deg 0% 92%)',
     cursor: 'default',
   },
   tableHeadCell: {
-    color: 'white',
+    color: theme.palette.type === 'dark' ? 'hsl(0deg 0% 60%)' : '#666666',
     fontSize: '1.1rem',
   },
   stickyTableHeadCell: {
-    color: 'white',
+    color: theme.palette.type === 'dark' ? 'hsl(0deg 0% 60%)' : '#666666',
     padding: '0px 1px 0px 0px',
     margin: 0,
     textAlign: 'center',
@@ -79,9 +83,43 @@ const isSystemSettings = [
 ]
 export const createAnchorFromName = (name: string) => `#${name.toLocaleLowerCase()}`
 
+export interface UpdatedSettings extends Settings {
+  nameToDisplay: string
+  nameToTest: string
+}
+
 export interface SettingsTableProps {
   settings: Settings[]
   onContextMenu: (ev: React.MouseEvent, setting: Settings) => void
+}
+
+const stripHtml = (html: string) => {
+  const div = document.createElement('div')
+  div.innerHTML = html
+  return div.textContent || div.innerText || ''
+}
+
+const sortArray = (array: UpdatedSettings[], order: 'asc' | 'desc', orderBy: keyof UpdatedSettings) => {
+  return array.sort((a, b) => {
+    const aO = a[orderBy]
+    const bO = b[orderBy]
+    if (!aO) {
+      return order === 'asc' ? -1 : 1
+    } else if (!bO) {
+      return order === 'asc' ? 1 : -1
+    } else if (aO && bO) {
+      const aValue = orderBy === 'Description' ? stripHtml(aO.toLocaleString()) : aO.toLocaleString()
+      const bValue = orderBy === 'Description' ? stripHtml(bO.toLocaleString()) : bO.toLocaleString()
+      if (aValue < bValue) {
+        return order === 'asc' ? -1 : 1
+      } else if (aValue > bValue) {
+        return order === 'asc' ? 1 : -1
+      } else {
+        return 0
+      }
+    }
+    return 0
+  })
 }
 
 export const SettingsTable = ({ settings, onContextMenu }: SettingsTableProps) => {
@@ -91,25 +129,54 @@ export const SettingsTable = ({ settings, onContextMenu }: SettingsTableProps) =
   const uiSettings = useContext(ResponsivePersonalSettings)
   const history = useHistory()
   const { openDialog } = useDialog()
-  const updatedSettings = settings.map((setting: Settings) => {
-    return {
-      ...setting,
-      nameToDisplay: setting.Name.split('.')[0]
-        .replace(/([A-Z])/g, ' $1')
-        .trim(),
-      nameToTest: setting.Name.replace(/\.settings/gi, '')
-        .replace(/\s+/g, '-')
-        .toLowerCase(),
-    }
-  })
+
+  const [order, setOrder] = useState<'asc' | 'desc'>('asc')
+  const [orderBy, setOrderBy] = useState<keyof UpdatedSettings>('nameToDisplay')
+
+  const handleRequestSort = (property: keyof UpdatedSettings) => {
+    const isAsc = orderBy === property && order === 'asc'
+    setOrder(isAsc ? 'desc' : 'asc')
+    setOrderBy(property)
+  }
+
+  const updatedSettings: UpdatedSettings[] = settings.map((setting: Settings) => ({
+    ...setting,
+    nameToDisplay: setting.Name.split('.')[0]
+      .replace(/([A-Z])/g, ' $1')
+      .trim(),
+    nameToTest: setting.Name.replace(/\.settings/gi, '')
+      .replace(/\s+/g, '-')
+      .toLowerCase(),
+  }))
+
+  const sortedSettings = sortArray(updatedSettings, order, orderBy)
   const hasDeletableSetting = updatedSettings.some((setting) => !isSystemSettings.includes(setting.Name.split('.')[0]))
+
   return (
     <TableContainer>
       <Table>
         <TableHead className={classes.tableHead}>
           <TableRow>
-            <TableCell className={classes.tableHeadCell}>{localization.name}</TableCell>
-            <TableCell className={classes.tableHeadCell}>{localization.description}</TableCell>
+            <TableCell className={classes.tableHeadCell}>
+              <Tooltip title={localization.name}>
+                <TableSortLabel
+                  active={orderBy === 'nameToDisplay'}
+                  direction={orderBy === 'nameToDisplay' ? order : 'asc'}
+                  onClick={() => handleRequestSort('nameToDisplay')}>
+                  {localization.name}
+                </TableSortLabel>
+              </Tooltip>
+            </TableCell>
+            <TableCell className={classes.tableHeadCell}>
+              <Tooltip title={localization.description}>
+                <TableSortLabel
+                  active={orderBy === 'Description'}
+                  direction={orderBy === 'Description' ? order : 'asc'}
+                  onClick={() => handleRequestSort('Description')}>
+                  {localization.description}
+                </TableSortLabel>
+              </Tooltip>
+            </TableCell>
             <TableCell className={classes.stickyTableHeadCell}>{localization.edit}</TableCell>
             <TableCell className={classes.stickyTableHeadCell}>{localization.learnMore}</TableCell>
             {hasDeletableSetting && (
@@ -118,7 +185,7 @@ export const SettingsTable = ({ settings, onContextMenu }: SettingsTableProps) =
           </TableRow>
         </TableHead>
         <TableBody>
-          {updatedSettings.map((setting) => (
+          {sortedSettings.map((setting: UpdatedSettings) => (
             <TableRow
               key={setting.Id}
               className={classes.tableRow}
@@ -130,7 +197,11 @@ export const SettingsTable = ({ settings, onContextMenu }: SettingsTableProps) =
                 {setting.nameToDisplay}
               </TableCell>
               <TableCell className={`${classes.tableCell} ${classes.descriptionCell}`}>
-                {setting.Description || '-'}
+                <Typography
+                  color="textSecondary"
+                  style={{ wordWrap: 'break-word' }}
+                  dangerouslySetInnerHTML={{ __html: setting.Description || '' }}
+                />
               </TableCell>
               <TableCell className={classes.stickyCell}>
                 <Link
