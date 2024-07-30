@@ -16,7 +16,7 @@ import { PathHelper } from '@sensenet/client-utils'
 import { clsx } from 'clsx'
 import React, { useRef } from 'react'
 import { Link } from 'react-router-dom'
-import snLogo from '../../assets/sensenet-icon-32.png'
+import snLogo from '../../../../../../sn-client/examples/sn-dms-demo/src/assets/sensenet_white.png'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 
@@ -77,7 +77,7 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
           <Grid item xs={1}>
             <Grid container style={{ paddingLeft: '16px', paddingTop: '4px' }}>
               <Link to="/">
-                <img src={snLogo} alt="sensenet logo" />
+                <img src={snLogo} alt="sensenet logo" style={{ height: '32px', marginTop: '1px' }} />
               </Link>
             </Grid>
           </Grid>

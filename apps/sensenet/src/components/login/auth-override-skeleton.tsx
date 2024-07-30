@@ -1,7 +1,7 @@
 import { AppBar, Button, Container, createStyles, makeStyles, Theme, Toolbar, Typography } from '@material-ui/core'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import logo from '../../assets/sensenet-icon-32.png'
+import logo from '../../../../../../sn-client/examples/sn-dms-demo/src/assets/sensenet_white.png'
 import { globals, useGlobalStyles } from '../../globalStyles'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -58,7 +58,7 @@ export const AuthOverrideSkeleton = (props: {
           <Toolbar className={classes.toolBar}>
             <div className={globalClasses.centeredVertical}>
               <NavLink to="/" style={{ display: 'flex', marginRight: '38px' }}>
-                <img src={logo} alt="logo" />
+                <img src={logo} alt="logo" style={{ height: '32px', marginTop: '1px' }} />
               </NavLink>
             </div>
           </Toolbar>
