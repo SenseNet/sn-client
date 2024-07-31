@@ -11,7 +11,6 @@ import type { Locale } from 'date-fns'
 import React, { createElement, ReactElement, useEffect, useRef, useState } from 'react'
 import MediaQuery from 'react-responsive'
 import { FieldLocalization } from '../fieldcontrols/localization'
-import { isFullWidthField } from '../helpers'
 import { reactControlMapper } from '../react-control-mapper'
 
 const hasInputField = ['Name', 'FileName', 'ShortText', 'AutoComplete', 'Textarea', 'NumberField', 'RichTextEditor']
@@ -47,12 +46,11 @@ const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     grid: {
       margin: '0 auto',
-      maxWidth: '850px',
     },
-    fieldWrapper: {},
-    field: {},
-    fieldFullWidth: {
-      width: '100%',
+    field: {
+      width: '780px',
+      margin: 'auto',
+      maxWidth: '100%',
     },
     actionButtonWrapper: {
       textAlign: 'right',
@@ -61,9 +59,11 @@ const useStyles = makeStyles((theme: Theme) => {
       marginRight: 20,
     },
     advancedFieldContainer: {
-      padding: '15px',
+      padding: '15px 0',
       fontSize: '18px',
-      width: '100%',
+      width: '780px',
+      maxWidth: '100%',
+      margin: 'auto',
     },
     advancedFieldBox: {
       display: 'flex',
@@ -190,27 +190,13 @@ export const EditView: React.FC<EditViewProps> = (props) => {
       },
     )
 
-    const isFullWidth = isFullWidthField(
-      field,
-      props.content || ({ Type: props.contentTypeName } as GenericContent),
-      repository,
-    )
-
     if (autoFocus) {
       isAutofocusSet = true
     }
 
     return (
-      <Grid
-        item={true}
-        xs={12}
-        sm={12}
-        md={12}
-        lg={12}
-        xl={12}
-        key={field.fieldSettings.Name}
-        className={classes.fieldWrapper}>
-        <div className={isFullWidth ? classes.fieldFullWidth : classes.field}>{fieldControl}</div>
+      <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} key={field.fieldSettings.Name}>
+        <div className={classes.field}>{fieldControl}</div>
       </Grid>
     )
   }

@@ -556,7 +556,12 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
       ) {
         return (
           <ContextMenuWrapper onContextMenu={(ev) => openContext(ev, fieldOptions.rowData)}>
-            <ReferenceField content={expectedContent} fieldName={fieldOptions.dataKey} parent={fieldOptions.rowData} />
+            <ReferenceField
+              content={expectedContent}
+              fieldName={fieldOptions.dataKey}
+              parent={fieldOptions.rowData}
+              showIcon={false}
+            />
           </ContextMenuWrapper>
         )
       }

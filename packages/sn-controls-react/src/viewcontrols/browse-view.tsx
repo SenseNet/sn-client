@@ -10,7 +10,6 @@ import { useRepository } from '@sensenet/hooks-react'
 import type { Locale } from 'date-fns'
 import React, { createElement, ReactElement, useEffect, useState } from 'react'
 import { FieldLocalization } from '../fieldcontrols/localization'
-import { isFullWidthField } from '../helpers'
 import { reactControlMapper } from '../react-control-mapper'
 import { AdvancedFieldGroup, DEFAULT_GROUP_KEY } from './edit-view'
 
@@ -37,19 +36,22 @@ const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     grid: {
       margin: '0 auto',
-      maxWidth: '850px',
     },
-    fieldWrapper: {},
-    field: {},
-    fieldFullWidth: {},
     actionButtonWrapper: {
       textAlign: 'right',
+    },
+    field: {
+      width: '780px',
+      margin: 'auto',
+      maxWidth: '100%',
     },
     cancel: {},
     advancedFieldContainer: {
       padding: '15px',
       fontSize: '18px',
-      width: '100%',
+      width: '780px',
+      maxWidth: '100%',
+      margin: 'auto',
     },
     advancedFieldBox: {
       display: 'flex',
@@ -123,19 +125,9 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
   }, [schema])
 
   const renderField = (field: { fieldSettings: FieldSetting; actionName: ActionName; controlType: any }) => {
-    const isFullWidth = isFullWidthField(field, props.content, repository)
-
     return (
-      <Grid
-        item={true}
-        xs={12}
-        sm={12}
-        md={12}
-        lg={12}
-        xl={12}
-        key={field.fieldSettings.Name}
-        className={classes.fieldWrapper}>
-        <div className={isFullWidth ? classes.fieldFullWidth : classes.field}>
+      <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} key={field.fieldSettings.Name}>
+        <div className={classes.field}>
           {createElement(
             controlMapper.getControlForContentField(props.content.Type, field.fieldSettings.Name, 'browse'),
             {

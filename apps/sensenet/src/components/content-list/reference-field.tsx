@@ -31,9 +31,10 @@ interface ReferenceFieldProps {
   content: GenericContent | GenericContent[]
   fieldName: string
   parent: GenericContent
+  showIcon: boolean
 }
 
-export const ReferenceField: FunctionComponent<ReferenceFieldProps> = ({ content, fieldName, parent }) => {
+export const ReferenceField: FunctionComponent<ReferenceFieldProps> = ({ content, fieldName, parent, showIcon }) => {
   const globalClasses = useGlobalStyles()
   const classes = useStyles()
   const { openDialog } = useDialog()
@@ -69,7 +70,7 @@ export const ReferenceField: FunctionComponent<ReferenceFieldProps> = ({ content
         </div>
       ) : (
         <div className={globalClasses.centeredVertical}>
-          {repository.schemas.isContentFromType(content, 'User') ? (
+          {repository.schemas.isContentFromType(content, 'User') && showIcon ? (
             <Icon item={content} style={{ marginRight: '0.5rem' }} />
           ) : null}
           <Tooltip title={`Open ${content.DisplayName || content.Name} for edit`}>
