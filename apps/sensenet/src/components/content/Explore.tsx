@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme: Theme) => {
       flexDirection: 'column',
     },
     breadcrumbsWrapper: {
-      height: globals.common.drawerItemHeight,
       boxSizing: 'border-box',
       borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
       justifyContent: 'start',
