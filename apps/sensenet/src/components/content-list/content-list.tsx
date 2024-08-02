@@ -669,6 +669,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
   }
 
   const displayNameInArray = ['DisplayName']
+  const sortableColumns = ['DisplayName', 'Path', 'Type', 'Name', 'Version', 'CreationDate', 'ModificationDate']
 
   return (
     <div style={{ ...props.style, ...{ height: '100%' } }} {...props.containerProps}>
@@ -715,11 +716,24 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
             getSelectionControl={getSelectionControl}
             /* If the Order by Column Is The Display. The client will sort it. Due to some locale and indexing issues */
             items={
-              currentOrder === 'DisplayName'
+              sortableColumns.includes(String(currentOrder))
                 ? children?.sort((a, b) => {
                     // If no display Name
-                    const nameA = a?.DisplayName ?? '' // Provide a default value if displayName is undefined
-                    const nameB = b?.DisplayName ?? '' // Provide a default value if displayName is undefined
+                    const nameA = String(a[currentOrder]) ?? '' // Provide a default value if displayName is undefined
+                    const nameB = String(b[currentOrder]) ?? '' // Provide a default value if displayName is undefined
+
+                    if (currentDirection === 'asc') {
+                      return nameA.localeCompare(nameB)
+                    }
+                    return nameB.localeCompare(nameA)
+                  })
+                : currentOrder === 'CreatedBy' || currentOrder === 'ModifiedBy'
+                ? children?.sort((a, b) => {
+                    const aTmp = a[currentOrder] as any
+                    const bTmp = b[currentOrder] as any
+
+                    const nameA = String(aTmp?.DisplayName) ?? ''
+                    const nameB = String(bTmp?.DisplayName) ?? ''
 
                     if (currentDirection === 'asc') {
                       return nameA.localeCompare(nameB)
