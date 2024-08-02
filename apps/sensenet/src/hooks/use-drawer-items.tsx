@@ -194,32 +194,32 @@ export const useDrawerItems = () => {
       return drawerItem
     }
 
-      ;[...settings.drawer.items, ...builtInDrawerItems]
-        .filterAsync(async (item) => {
-          if (!item.permissions?.length) {
-            return true
-          }
-
-          try {
-            for (const permission of item.permissions) {
-              const actions = await repo.getActions({ idOrPath: permission.path })
-              const actionIndex = actions.d.results.findIndex((action) => action.Name === permission.action)
-              if (actionIndex === -1 || actions.d.results[actionIndex].Forbidden) {
-                return false
-              }
-            }
-          } catch (error) {
-            logger.debug({
-              message: error.message,
-              data: {
-                error,
-              },
-            })
-            return false
-          }
+    ;[...settings.drawer.items, ...builtInDrawerItems]
+      .filterAsync(async (item) => {
+        if (!item.permissions?.length) {
           return true
-        })
-        .then((items) => setDrawerItems(items.map(getItemFromSettings)))
+        }
+
+        try {
+          for (const permission of item.permissions) {
+            const actions = await repo.getActions({ idOrPath: permission.path })
+            const actionIndex = actions.d.results.findIndex((action) => action.Name === permission.action)
+            if (actionIndex === -1 || actions.d.results[actionIndex].Forbidden) {
+              return false
+            }
+          }
+        } catch (error) {
+          logger.debug({
+            message: error.message,
+            data: {
+              error,
+            },
+          })
+          return false
+        }
+        return true
+      })
+      .then((items) => setDrawerItems(items.map(getItemFromSettings)))
   }, [
     localization.descriptions,
     localization.titles,

@@ -6,21 +6,8 @@ const useStyles = makeStyles(() => {
     grid: {
       padding: '14px 14px 0 14px',
       overflowY: 'auto',
-      width: '100%',
+      maxWidth: '100%',
       maxHeight: `calc(100% - ${globals.common.formActionButtonsHeight}px - ${globals.common.formTitleHeight}px)`,
-    },
-    fieldWrapper: {
-      alignItems: 'center',
-      flexFlow: 'column',
-      padding: '15px !important',
-      height: 'fit-content',
-      position: 'relative',
-    },
-    field: {
-      position: 'relative',
-    },
-    fieldFullWidth: {
-      position: 'relative',
     },
     actionButtonWrapper: {
       height: '80px',

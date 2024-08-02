@@ -110,7 +110,7 @@ const sortArray = (array: UpdatedSettings[], order: 'asc' | 'desc', orderBy: key
     } else if (aO && bO) {
       const aValue = orderBy === 'Description' ? stripHtml(aO.toLocaleString()) : aO.toLocaleString()
       const bValue = orderBy === 'Description' ? stripHtml(bO.toLocaleString()) : bO.toLocaleString()
-      if (aValue < bValue) {
+      if (aValue.toLocaleLowerCase() < bValue.toLocaleLowerCase()) {
         return order === 'asc' ? -1 : 1
       } else if (aValue > bValue) {
         return order === 'asc' ? 1 : -1
