@@ -27,6 +27,7 @@ const SearchContext = createContext<{
   setFilters: React.Dispatch<React.SetStateAction<Filters>>
   result: GenericContent[]
   resultCount: number
+  maxSearchResult: number
   error: string
   isLoading: boolean
 }>({
@@ -41,6 +42,7 @@ const SearchContext = createContext<{
   setFilters: () => null,
   result: [],
   resultCount: 0,
+  maxSearchResult: 0,
   error: '',
   isLoading: false,
 })
@@ -52,6 +54,7 @@ export function SearchProvider({
 }: PropsWithChildren<{ defaultTerm?: string; defaultFilters?: Filters }>) {
   const repository = useRepository()
   const history = useHistory()
+  const maxSearchResult = 200
 
   const [term, setTerm] = useState(defaultTerm ?? '')
   const [result, setResult] = useState<GenericContent[]>([])
@@ -93,6 +96,7 @@ export function SearchProvider({
                 ] as Array<keyof GenericContent>)
               : repository.configuration.requiredSelect,
             expand: ['ModifiedBy'],
+            top: maxSearchResult,
           },
           requestInit: { signal: ac.signal },
         })
@@ -116,7 +120,8 @@ export function SearchProvider({
   }, [term, repository, history, filters])
 
   return (
-    <SearchContext.Provider value={{ term, setTerm, filters, setFilters, result, resultCount, error, isLoading }}>
+    <SearchContext.Provider
+      value={{ term, setTerm, filters, setFilters, result, resultCount, maxSearchResult, error, isLoading }}>
       {children}
     </SearchContext.Provider>
   )
