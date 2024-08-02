@@ -729,8 +729,8 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
                   })
                 : currentOrder === 'CreatedBy' || currentOrder === 'ModifiedBy'
                 ? children?.sort((a, b) => {
-                    const aTmp = a[currentOrder] as any
-                    const bTmp = b[currentOrder] as any
+                    const aTmp = a[currentOrder] as GenericContent
+                    const bTmp = b[currentOrder] as GenericContent
 
                     const nameA = String(aTmp?.DisplayName) ?? ''
                     const nameB = String(bTmp?.DisplayName) ?? ''
