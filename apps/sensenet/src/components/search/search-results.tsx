@@ -36,7 +36,12 @@ export const SearchResults = () => {
 
       {searchState.isLoading && <LinearProgress style={{ margin: '15px 15px 0' }} />}
 
-      <Typography style={{ margin: '1rem' }}>{localization.resultCount(searchState.resultCount)}</Typography>
+      <Typography style={{ margin: '1rem' }}>
+        {localization.resultCount(searchState.resultCount) +
+          (searchState.resultCount > searchState.maxSearchResult
+            ? localization.onlyResultCountDisplayed(searchState.maxSearchResult)
+            : '')}
+      </Typography>
 
       <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>
         <CurrentChildrenContext.Provider value={searchState.result}>
