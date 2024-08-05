@@ -185,7 +185,7 @@ export function getPrimaryActionUrl({
     return getUrlForContent({ content, uiSettings, location, action: 'image', snRoute, removePath })
   }
 
-  if ((content.Type === 'File' || repository.schemas.isContentFromType<ContentType>(content, 'File'))) {
+  if (content.Type === 'File' || repository.schemas.isContentFromType<ContentType>(content, 'File')) {
     return getUrlForContent({ content, uiSettings, location, action: 'browse', snRoute, removePath })
   }
 

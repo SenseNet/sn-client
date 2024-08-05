@@ -16,11 +16,16 @@ import { useDialog } from './dialogs'
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     batchActionWrapper: {
-      marginRight: '7.5%',
       ' & .MuiIconButton-root': {
         color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
       },
       marginLeft: 'auto',
+      display: 'flex',
+      marginRight: '8px',
+    },
+    buttonsWrapper: {
+      display: 'flex',
+      alignItems: 'center',
     },
   })
 })
@@ -55,7 +60,7 @@ export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(pr
   }, [selectionService.selection])
 
   return (
-    <>
+    <div className={classes.buttonsWrapper}>
       <Breadcrumbs<T>
         items={[
           ...ancestors.map((content) => ({
@@ -140,6 +145,6 @@ export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(pr
           </Tooltip>
         </div>
       ) : null}
-    </>
+    </div>
   )
 }

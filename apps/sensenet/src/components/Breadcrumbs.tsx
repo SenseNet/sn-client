@@ -27,7 +27,7 @@ export function Breadcrumbs<T extends GenericContent>(props: BreadcrumbProps<T>)
   return (
     <>
       <MUIBreadcrumbs
-        maxItems={5}
+        maxItems={15}
         aria-label="breadcrumb"
         style={{ marginLeft: '8.5px' }}
         classes={{ separator: 'bread-crumbs-separator' }}>
@@ -50,8 +50,8 @@ export function Breadcrumbs<T extends GenericContent>(props: BreadcrumbProps<T>)
             </Tooltip>
           </DropFileArea>
         ))}
+        <CopyPath copyText={props.items[props.items.length - 1].title} />
       </MUIBreadcrumbs>
-      <CopyPath copyText={props.items[props.items.length - 1].title} />
       {contextMenuItem ? (
         <ContentContextMenu
           isOpened={isContextMenuOpened}
