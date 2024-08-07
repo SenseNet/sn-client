@@ -43,9 +43,10 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
       })
       setContent(expanedContentResponse.d)
       selectionService.activeContent.setValue(expanedContentResponse.d)
+      selectionService.selection.setValue([expanedContentResponse.d])
     }
     getExpandedContent()
-  }, [repository, props.contentPath, selectionService.activeContent])
+  }, [repository, props.contentPath, selectionService.activeContent, selectionService.selection])
 
   if (content === undefined) {
     return null

@@ -73,7 +73,7 @@ export const NewView: React.FC<NewViewProps> = (props) => {
         routeMatch={routeMatch}
         savePath={PATHS.contentTypes.snPath}
         loadContent={loadDefaultContentType}
-        getFileNameFromText={(text) => text.match(/<ContentType.*name="([^"]*)".*>/m)?.[1] || ''}
+        getFileNameFromText={(text) => text.match(/<ContentType.*name=['"]([^'"]*)['"].*>/m)?.[1] || ''}
       />
     )
   } else if (props.contentTypeName === 'Resource') {

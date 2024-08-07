@@ -3,7 +3,7 @@ import { PathHelper } from '@sensenet/client-utils'
 import { ActionModel, GenericContent, Settings, File as SnFile } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
-import { useLocalization } from '../../hooks'
+import { useLocalization, useSelectionService } from '../../hooks'
 import { getMonacoLanguage } from '../../services/content-context-service'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { FullScreenLoader } from '../full-screen-loader'
@@ -50,6 +50,11 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = (props) => {
   const [hasChanges, setHasChanges] = useState(false)
   const logger = useLogger('TextEditor')
   const [error, setError] = useState<Error | undefined>()
+  const selectionService = useSelectionService()
+
+  useEffect(() => {
+    selectionService.selection.setValue([props.content])
+  }, [props, selectionService.selection])
 
   const saveContent = async () => {
     try {

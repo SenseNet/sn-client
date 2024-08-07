@@ -22,10 +22,15 @@ const useStyles = makeStyles((theme: Theme) => {
       marginLeft: 'auto',
       display: 'flex',
       marginRight: '8px',
+      height: '40px',
     },
     buttonsWrapper: {
       display: 'flex',
       alignItems: 'center',
+    },
+    actionButton: {
+      width: '40px',
+      marginRight: '2px',
     },
   })
 })
@@ -87,6 +92,7 @@ export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(pr
         <div className={classes.batchActionWrapper} data-test="batch-actions">
           <Tooltip title={localization.batchActions.delete} placement="bottom">
             <IconButton
+              className={classes.actionButton}
               data-test="batch-delete"
               aria-label="delete"
               onClick={() => {
@@ -101,6 +107,7 @@ export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(pr
           </Tooltip>
           <Tooltip title={localization.batchActions.move} placement="bottom">
             <IconButton
+              className={classes.actionButton}
               data-test="batch-move"
               aria-label="move"
               onClick={() => {
@@ -123,6 +130,7 @@ export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(pr
           </Tooltip>
           <Tooltip title={localization.batchActions.copy} placement="bottom">
             <IconButton
+              className={classes.actionButton}
               data-test="batch-copy"
               aria-label="copy"
               onClick={() => {
