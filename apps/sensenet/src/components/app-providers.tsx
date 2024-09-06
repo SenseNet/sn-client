@@ -1,15 +1,17 @@
 import { InjectorContext, LoggerContextProvider } from '@sensenet/hooks-react'
 import React, { ReactNode } from 'react'
 import { BrowserRouter } from 'react-router-dom'
+import { defaultAuthConfig } from '../auth-config'
 import {
-  CurrentUserProvider,
   LocalizationProvider,
   PersonalSettingsContextProvider,
   RepositoryProvider,
   ResponsiveContextProvider,
   ThemeProvider,
 } from '../context'
+import { ISAuthProvider, SNAuthProvider } from '../context/auth-provider'
 import { ShareProvider } from '../context/ShareProvider'
+import { SnAuthRepositoryProvider } from '../context/sn-auth-repository-provider'
 import {
   CommandProviderManager,
   CustomActionCommandProvider,
@@ -40,15 +42,27 @@ export default function AppProviders({ children }: AppProvidersProps) {
           <LocalizationProvider>
             <BrowserRouter>
               <ThemeProvider>
-                <RepositoryProvider>
-                  <ShareProvider>
-                    <CurrentUserProvider>
-                      <ResponsiveContextProvider>
-                        <DialogProvider>{children}</DialogProvider>
-                      </ResponsiveContextProvider>
-                    </CurrentUserProvider>
-                  </ShareProvider>
-                </RepositoryProvider>
+                {defaultAuthConfig.authType === 'IdentityServer' ? (
+                  <RepositoryProvider>
+                    <ShareProvider>
+                      <ISAuthProvider>
+                        <ResponsiveContextProvider>
+                          <DialogProvider>{children}</DialogProvider>
+                        </ResponsiveContextProvider>
+                      </ISAuthProvider>
+                    </ShareProvider>
+                  </RepositoryProvider>
+                ) : (
+                  <SnAuthRepositoryProvider>
+                    <ShareProvider>
+                      <SNAuthProvider>
+                        <ResponsiveContextProvider>
+                          <DialogProvider>{children}</DialogProvider>
+                        </ResponsiveContextProvider>
+                      </SNAuthProvider>
+                    </ShareProvider>
+                  </SnAuthRepositoryProvider>
+                )}
               </ThemeProvider>
             </BrowserRouter>
           </LocalizationProvider>

@@ -47,7 +47,7 @@ You can simply run `npm run build` or `yarn build` to create the bundle. It will
   | - context
   | | - React contexts and context providers
   | - hooks
-  | | - Custom React hooks like useCurrentUser.
+  | | - Custom React hooks like useAuth.
   | ...
   | main / container components, layouts
   | ...

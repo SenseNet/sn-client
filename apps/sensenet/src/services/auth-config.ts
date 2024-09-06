@@ -2,14 +2,7 @@ import { UserManagerSettings } from '@sensenet/authentication-oidc-react'
 import { PATHS } from '../application-paths'
 import { pathWithQueryParams } from '.'
 
-let config: UserManagerSettings
-let currentRepoUrl: string
-
 export const getAuthConfig = async (repoUrl: string) => {
-  if (config && repoUrl === currentRepoUrl) {
-    return config
-  }
-
   const trimmedRepoUrl = repoUrl.replace(/\/\s*$/, '')
   const response = await fetch(`${trimmedRepoUrl}/odata.svc/('Root')/GetClientRequestParameters?clientType=adminui`)
   if (!response.ok) {
@@ -30,7 +23,9 @@ export const getAuthConfig = async (repoUrl: string) => {
     extraQueryParams: { snrepo: trimmedRepoUrl },
   }
 
-  const userManagerSettings = { ...settings, ...mySettings }
-  currentRepoUrl = repoUrl
+  const userManagerSettings = {
+    authServerSettings: settings,
+    userManagerSettings: { ...settings, ...mySettings },
+  }
   return userManagerSettings
 }

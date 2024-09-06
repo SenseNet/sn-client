@@ -9,7 +9,7 @@ import { clsx } from 'clsx'
 import React, { ChangeEvent, Dispatch, FunctionComponent, SetStateAction, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { PATHS, resolvePathParams } from '../../application-paths'
-import { useCurrentUser } from '../../context/current-user-provider'
+import { useAuth } from '../../context/auth-provider'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization, usePersonalSettings } from '../../hooks'
 import { pathWithQueryParams, PersonalSettings } from '../../services'
@@ -83,7 +83,7 @@ export const DesktopNavMenu: FunctionComponent = () => {
   const globalClasses = useGlobalStyles()
   const theme = useTheme()
   const service = injector.getInstance(PersonalSettings)
-  const currentUser = useCurrentUser()
+  const { user } = useAuth()
   const repo = useRepository()
   const localization = useLocalization()
   const { openDialog } = useDialog()
@@ -134,7 +134,7 @@ export const DesktopNavMenu: FunctionComponent = () => {
           <TuneOutlined />
         </IconButton>
         <UserAvatar
-          user={currentUser}
+          user={user!}
           repositoryUrl={repo.configuration.repositoryUrl}
           style={{
             height: '35px',
@@ -167,7 +167,7 @@ export const DesktopNavMenu: FunctionComponent = () => {
                         backgroundColor: theme.palette.primary.main,
                         color: globals.common.headerText,
                       }}
-                      user={currentUser}
+                      user={user}
                       repositoryUrl={repo.configuration.repositoryUrl}
                     />
                   </ListItemIcon>
@@ -179,7 +179,7 @@ export const DesktopNavMenu: FunctionComponent = () => {
                         marginLeft: '20px',
                         color: theme.palette.type === 'light' ? globals.light.textColor : globals.dark.textColor,
                       },
-                      title: `Full-name: ${currentUser.DisplayName}` || currentUser.Name,
+                      title: `Full-name: ${user?.DisplayName}` || user?.Name,
                     }}
                     secondaryTypographyProps={{
                       style: {
@@ -188,10 +188,10 @@ export const DesktopNavMenu: FunctionComponent = () => {
                         marginLeft: '20px',
                         color: theme.palette.type === 'light' ? globals.light.textColor : globals.dark.textColor,
                       },
-                      title: `Login-name: ${currentUser.LoginName}` || currentUser.Name,
+                      title: `Login-name: ${user?.LoginName}` || user?.Name,
                     }}
-                    primary={`${currentUser.DisplayName || currentUser.Name}`}
-                    secondary={`${currentUser.LoginName || currentUser.Name}`}
+                    primary={`${user?.DisplayName || user?.Name}`}
+                    secondary={`${user?.LoginName || user?.Name}`}
                   />
                 </MenuItem>
                 <MenuItem className={classes.userMenuItem}>
@@ -203,7 +203,7 @@ export const DesktopNavMenu: FunctionComponent = () => {
                         params: { browseType: 'explorer', action: 'edit' },
                       }),
                       newParams: {
-                        content: currentUser.Path,
+                        content: user?.Path,
                         needRoot: 'false',
                       },
                     })}>

@@ -1,8 +1,8 @@
 import { Button, DialogActions, DialogContent, DialogContentText } from '@material-ui/core'
-import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
 import { useRepository } from '@sensenet/hooks-react'
 import React from 'react'
-import { authConfigKey, useCurrentUser } from '../../context'
+import { authConfigKey } from '../../context'
+import { useAuth } from '../../context/auth-provider'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { Icon } from '../Icon'
@@ -10,8 +10,7 @@ import { DialogTitle, useDialog } from '.'
 
 export function LogoutDialog() {
   const { closeLastDialog } = useDialog()
-  const currentUser = useCurrentUser()
-  const { logout } = useOidcAuthentication()
+  const { user, logout } = useAuth()
   const repository = useRepository()
   const localization = useLocalization().logout
   const globalClasses = useGlobalStyles()
@@ -25,7 +24,7 @@ export function LogoutDialog() {
               margin: '0 1em 0 0',
               transition: 'filter linear 1s, opacity linear 1.5s',
             }}
-            item={currentUser}
+            item={user}
           />
           {localization.logoutDialogTitle}
         </div>
@@ -35,7 +34,7 @@ export function LogoutDialog() {
           <DialogContentText style={{ wordBreak: 'break-word' }}>
             {localization.logoutConfirmText(
               repository.configuration.repositoryUrl,
-              currentUser?.DisplayName ?? currentUser?.Name ?? 'Visitor',
+              user?.DisplayName ?? user?.Name ?? 'Visitor',
             )}
           </DialogContentText>
         </DialogContent>

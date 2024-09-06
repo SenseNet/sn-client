@@ -1,13 +1,10 @@
 import { CssBaseline } from '@material-ui/core'
-import { AuthenticationProvider, useOidcAuthentication, UserManagerSettings } from '@sensenet/authentication-oidc-react'
+import { UserManagerSettings } from '@sensenet/authentication-oidc-react'
 import { Repository } from '@sensenet/client-core'
 import { RepositoryContext, useLogger } from '@sensenet/hooks-react'
+import { AuthenticationProvider, useSnAuth } from '@sensenet/sn-auth-react'
 import React, { lazy, ReactNode, Suspense, useCallback, useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { FullScreenLoader } from '../components/full-screen-loader'
-import { AuthOverrideSkeleton } from '../components/login/auth-override-skeleton'
-import { NotAuthenticatedOverride } from '../components/login/not-authenticated-override'
-import { SessionLostOverride } from '../components/login/session-lost-override'
 import { NotificationComponent } from '../components/NotificationComponent'
 import { useGlobalStyles } from '../globalStyles'
 import { useQuery } from '../hooks'
@@ -16,39 +13,35 @@ import { getAuthConfig } from '../services/auth-config'
 const LoginPage = lazy(() => import(/* webpackChunkName: "login" */ '../components/login/login-page'))
 
 export const authConfigKey = 'sn-oidc-config'
-const customEvents = {
-  onUserSignedOut: () => {
-    window.localStorage.removeItem(authConfigKey)
-  },
-}
 
-export function RepositoryProvider({ children }: { children: React.ReactNode }) {
+export function SnAuthRepositoryProvider({ children }: { children: React.ReactNode }) {
   const [isLoginInProgress, setIsLoginInProgress] = useState(false)
   const logger = useLogger('repository-provider')
   const globalClasses = useGlobalStyles()
-  const history = useHistory()
+
   const [authState, setAuthState] = useState<{ repoUrl: string; config: UserManagerSettings | null }>({
     repoUrl: '',
     config: null,
   })
   const repoFromUrl = useQuery().get('repoUrl')
   const configString = window.localStorage.getItem(authConfigKey)
-  const [identityServerUrl, setIdentityServerUrl] = useState()
+  const [authServerUrl, setAuthServerUrl] = useState()
 
   const clearState = useCallback(() => setAuthState({ repoUrl: '', config: null }), [])
 
   useEffect(() => {
     if (configString) {
       const prevAuthConfig = JSON.parse(configString)
-      setIdentityServerUrl(prevAuthConfig.authority)
+      setAuthServerUrl(prevAuthConfig.userManagerSettings.authority)
 
-      if (repoFromUrl && prevAuthConfig.extraQueryParams.snrepo !== repoFromUrl) {
+      if (repoFromUrl && prevAuthConfig.userManagerSettings.extraQueryParams.snrepo !== repoFromUrl) {
         return setAuthState({ repoUrl: repoFromUrl, config: null })
       }
 
       setAuthState((oldState) => ({
-        repoUrl: prevAuthConfig?.extraQueryParams.snrepo || '',
-        config: prevAuthConfig?.extraQueryParams.snrepo === oldState.repoUrl ? prevAuthConfig : null,
+        repoUrl: prevAuthConfig?.userManagerSettings.extraQueryParams.snrepo || '',
+        config:
+          prevAuthConfig?.userManagerSettings.extraQueryParams.snrepo === oldState.repoUrl ? prevAuthConfig : null,
       }))
     } else {
       repoFromUrl && setAuthState({ repoUrl: repoFromUrl, config: null })
@@ -104,32 +97,12 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
 
   return (
     <AuthenticationProvider
-      configuration={authState.config}
-      history={history}
-      authenticating={() => (
-        <AuthOverrideSkeleton
-          primaryText="Authentication is in progress"
-          secondaryText="You will be redirected to the login page"
-        />
-      )}
-      notAuthenticated={() => <NotAuthenticatedOverride clearState={clearState} />}
-      notAuthorized={() => (
-        <AuthOverrideSkeleton
-          primaryText="Authorization"
-          secondaryText="You are not authorized to access this resource."
-        />
-      )}
-      sessionLost={(props) => {
-        return <SessionLostOverride onAuthenticate={props.onAuthenticate} />
-      }}
-      callbackComponentOverride={() => (
-        <AuthOverrideSkeleton
-          primaryText="Authentication complete"
-          secondaryText="You will be redirected to your application."
-        />
-      )}
-      customEvents={customEvents}>
-      <RepoProvider repoUrl={authState.repoUrl} identityServerUrl={identityServerUrl} clearAuthState={clearState}>
+      authServerUrl={authServerUrl!}
+      repoUrl={authState.repoUrl}
+      snAuthConfiguration={{
+        callbackUri: '/authentication/callback',
+      }}>
+      <RepoProvider repoUrl={authState.repoUrl} authServerUrl={authServerUrl} clearAuthState={clearState}>
         {children}
       </RepoProvider>
     </AuthenticationProvider>
@@ -140,24 +113,24 @@ const RepoProvider = ({
   children,
   repoUrl,
   clearAuthState,
-  identityServerUrl,
+  authServerUrl,
 }: {
   children: ReactNode
   repoUrl: string
   clearAuthState: Function
-  identityServerUrl?: string
+  authServerUrl?: string
 }) => {
-  const { oidcUser, login, logout } = useOidcAuthentication()
+  const { user, login, logout, accessToken, isLoading } = useSnAuth()
   const logger = useLogger('repo-provider')
   const [repo, setRepo] = useState<Repository>()
 
   useEffect(() => {
     setRepo((prevRepo) => {
-      if (oidcUser && !prevRepo) {
+      if (user && !prevRepo) {
         return new Repository({
           repositoryUrl: repoUrl,
-          identityServerUrl,
-          token: oidcUser.access_token,
+          identityServerUrl: authServerUrl,
+          token: accessToken ?? undefined,
           requiredSelect: [
             'Id',
             'Path',
@@ -175,13 +148,13 @@ const RepoProvider = ({
             'Avatar',
           ],
         })
-      } else if (oidcUser && prevRepo) {
-        prevRepo.configuration.token = oidcUser?.access_token
+      } else if (user && prevRepo) {
+        prevRepo.configuration.token = accessToken ?? undefined
       }
 
       return prevRepo
     })
-  }, [repoUrl, oidcUser, identityServerUrl])
+  }, [repoUrl, user, authServerUrl, accessToken])
 
   useEffect(() => {
     if (repo) {
@@ -192,7 +165,7 @@ const RepoProvider = ({
   useEffect(() => {
     ;(async () => {
       const configString = window.localStorage.getItem(authConfigKey)
-      if ((!oidcUser || oidcUser.expired) && configString) {
+      if (!user && !isLoading && !accessToken && configString) {
         try {
           await login()
         } catch (error) {
@@ -203,9 +176,9 @@ const RepoProvider = ({
         }
       }
     })()
-  }, [clearAuthState, logger, login, logout, oidcUser])
+  }, [clearAuthState, logger, login, logout, user, isLoading, accessToken])
 
-  if (!oidcUser || oidcUser.expired || !repo) {
+  if (!user || !repo) {
     return null
   }
 

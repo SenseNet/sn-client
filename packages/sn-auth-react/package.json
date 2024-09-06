@@ -1,0 +1,55 @@
+{
+  "name": "@sensenet/sn-auth-react",
+  "version": "1.0.0",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "typings": "./dist/types/index.d.ts",
+  "exports": {
+    "require": "./dist/cjs/index.js",
+    "import": "./dist/esm/index.js"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
+  "license": "GPL-2.0",
+  "homepage": "https://sensenet.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SenseNet/sn-client.git"
+  },
+  "scripts": {
+    "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!your-module-name)/\"",
+    "fix:prettier": "prettier \"{,!(dist|temp)/**/}*.{ts,tsx}\" --write",
+    "clean": "rimraf dist",
+    "build:release": "npm-run-all -p build:esm build:cjs build:types",
+    "build:esm": "cross-env BABEL_ENV=esm babel src --extensions '.ts,.tsx' --out-dir 'dist/esm' --source-maps",
+    "build:cjs": "cross-env BABEL_ENV=cjs babel src --extensions '.ts,.tsx' --out-dir 'dist/cjs' --source-maps",
+    "build:types": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.18.9",
+    "@material-ui/core": "^4.12.4",
+    "tslib": "^2.4.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.9",
+    "@babel/core": "^7.18.9",
+    "@babel/plugin-transform-runtime": "^7.18.9",
+    "@babel/preset-env": "^7.18.9",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.18.6",
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
+    "@types/node": "^16.4.10",
+    "axios": "^1.7.7",
+    "cross-env": "^7.0.3",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jest-mock": "^29.7.0",
+    "npm-run-all": "^4.1.5",
+    "ts-jest": "^27.0.5",
+    "typescript": "~4.7.4"
+  }
+}

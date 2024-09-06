@@ -2,7 +2,7 @@ import { Container, createStyles, makeStyles, Typography } from '@material-ui/co
 import { Group } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
-import { useCurrentUser } from '../../context'
+import { useAuth } from '../../context/auth-provider'
 import { useLocalization } from '../../hooks'
 import { LearnMoreWidget } from './learn-more-widget'
 import { SubscriptionWidget } from './subscription-widget'
@@ -44,7 +44,7 @@ const Dashboard = () => {
   const classes = useStyles()
   const repository = useRepository()
   const localization = useLocalization().dashboard
-  const currentUser = useCurrentUser()
+  const { user } = useAuth()
   const [data, setData] = useState<DashboardData>()
   const logger = useLogger('Dashboard')
   const [isAdmin, setIsAdmin] = useState(false)
@@ -70,7 +70,7 @@ const Dashboard = () => {
     ;(async () => {
       try {
         const result = await repository.load<any>({
-          idOrPath: currentUser.Path,
+          idOrPath: user!.Path,
           oDataOptions: {
             select: ['AllRoles'] as any,
             expand: ['AllRoles'] as any,
@@ -87,7 +87,7 @@ const Dashboard = () => {
         }
       }
     })()
-  }, [currentUser, logger, repository])
+  }, [user, logger, repository])
 
   if (!data) return null
 

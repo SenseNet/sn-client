@@ -58,6 +58,7 @@ export const TinymceEditor: FC<TinymceEditorProps> = (props) => {
 
   return (
     <>
+      {/* @ts-ignore*/}
       <Editor
         licenseKey="gpl"
         onInit={(_evt, editor) => {

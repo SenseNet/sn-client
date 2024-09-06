@@ -28,7 +28,7 @@
  */
 import { Repository } from '@sensenet/client-core'
 import { promiseMiddleware } from '@sensenet/redux-promise-middleware'
-import { applyMiddleware, compose, createStore, Middleware, PreloadedState, Reducer, Store, StoreEnhancer } from 'redux'
+import { AnyAction, applyMiddleware, compose, createStore, Dispatch, Middleware, PreloadedState, Reducer, Store, StoreEnhancer } from 'redux'
 import { createLogger } from 'redux-logger'
 import * as Actions from './Actions'
 
@@ -111,7 +111,7 @@ export const createSensenetStore = <T>(options: CreateStoreOptions<T>) => {
   } else {
     middlewareArray = [...options.middlewares]
   }
-  const loggerMiddleware = options.logger && process.env.NODE_ENV !== `test` ? createLogger() : null
+  const loggerMiddleware = options.logger && process.env.NODE_ENV !== `test` ? createLogger() as Middleware<{}, any, Dispatch<AnyAction>> : null
   const reduxPromiseMiddleware = promiseMiddleware(options.repository)
   loggerMiddleware
     ? middlewareArray.push(loggerMiddleware, reduxPromiseMiddleware)

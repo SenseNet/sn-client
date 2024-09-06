@@ -2,20 +2,33 @@ import { useOidcAuthentication } from '@sensenet/authentication-oidc-react'
 import { ConstantContent } from '@sensenet/client-core'
 import { User } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
+import { User as SNUser, useSnAuth } from '@sensenet/sn-auth-react'
 import React, { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react'
 
-const CurrentUserContext = createContext<User | undefined>(undefined)
+export interface AuthContextModel {
+  user?: User | SNUser | null
+  userPath?: string | null
+  login: () => any
+  logout: () => any
+}
 
-export function CurrentUserProvider({ children }: PropsWithChildren<{}>) {
+const AuthContext = createContext<AuthContextModel>({
+  user: null,
+  userPath: null,
+  login: () => {},
+  logout: () => {},
+})
+
+export function ISAuthProvider({ children }: PropsWithChildren<{}>) {
   const repository = useRepository()
-  const { oidcUser } = useOidcAuthentication()
+  const { oidcUser, login, logout } = useOidcAuthentication()
   const logger = useLogger('current-user-provider')
   const [currentUser, setCurrentUser] = useState<User>()
 
   useEffect(() => {
     const ac = new AbortController()
     async function getUser() {
-      if (!oidcUser) {
+      if (!oidcUser || !oidcUser.profile.sub) {
         return
       }
 
@@ -42,15 +55,36 @@ export function CurrentUserProvider({ children }: PropsWithChildren<{}>) {
     return () => ac.abort()
   }, [logger, oidcUser, repository])
 
-  if (!currentUser) {
-    return null
-  }
-
-  return <CurrentUserContext.Provider value={currentUser}>{children}</CurrentUserContext.Provider>
+  return (
+    <AuthContext.Provider
+      value={{
+        user: currentUser,
+        userPath: currentUser?.Path,
+        login,
+        logout,
+      }}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
-export function useCurrentUser() {
-  const context = useContext(CurrentUserContext)
+export function SNAuthProvider({ children }: PropsWithChildren<{}>) {
+  const { user, login, logout } = useSnAuth()
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        logout,
+      }}>
+      {children}
+    </AuthContext.Provider>
+  )
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext)
 
   if (!context) {
     throw new Error('useCurrentUser must be used within a CurrentUserProvider')

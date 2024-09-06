@@ -2,7 +2,7 @@ import { Button, DialogActions, DialogContent } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useState } from 'react'
-import { useCurrentUser } from '../../context'
+import { useAuth } from '../../context/auth-provider'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { DialogTitle, useDialog } from '.'
@@ -15,7 +15,7 @@ export function ChangePasswordDialog() {
   const logger = useLogger('change-password')
   const globalClasses = useGlobalStyles()
   const repo = useRepository()
-  const currentUser = useCurrentUser()
+  const { user } = useAuth()
   const [passwordFields, setPasswordFields] = useState<{
     [K in PasswordFieldKeys]?: string
   }>({
@@ -32,7 +32,7 @@ export function ChangePasswordDialog() {
 
     try {
       await repo.executeAction({
-        idOrPath: currentUser.Path,
+        idOrPath: user!.Path,
         name: 'ChangePassword',
         method: 'POST',
         body: {

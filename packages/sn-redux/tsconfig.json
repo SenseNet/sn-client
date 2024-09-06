@@ -3,7 +3,10 @@
   "compilerOptions": {
     "outDir": "./dist/types",
     "emitDeclarationOnly": true,
-    "rootDir": "src"
+    "rootDir": "src",
+    "paths": {
+      "react": ["../../node_modules/@types/react"]
+    }
   },
   "include": ["src"],
   "references": [
