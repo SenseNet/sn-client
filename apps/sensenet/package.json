@@ -117,8 +117,5 @@
     "semaphore-async-await": "^1.5.1",
     "uuid": "9.0.0"
   },
-  "typings": "./dist/index.d.ts",
-  "resolutions": {
-    "@types/react": "^18.2.7"
-  }
+  "typings": "./dist/index.d.ts"
 }

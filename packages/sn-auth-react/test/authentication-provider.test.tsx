@@ -74,9 +74,9 @@ describe('AuthenticationProvider', () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
-    ;(getAccessToken as jest.Mock).mockReturnValue('mockAccessToken')
-    ;(getRefreshToken as jest.Mock).mockReturnValue('mockRefreshToken')
-    ;(getUserDetails as jest.Mock).mockReturnValue(mockUser)
+      ; (getAccessToken as jest.Mock).mockReturnValue('mockAccessToken')
+      ; (getRefreshToken as jest.Mock).mockReturnValue('mockRefreshToken')
+      ; (getUserDetails as jest.Mock).mockReturnValue(mockUser)
 
     originalLocation = window.location
 
@@ -104,7 +104,7 @@ describe('AuthenticationProvider', () => {
   test('calls login function and redirects to the correct URL', async () => {
     setup(
       <AuthenticationContext.Consumer>
-        {(c) => <button onClick={c?.login}>Login</button>}
+        {(c) => <button onClick={c?.externalLogin}>Login</button>}
       </AuthenticationContext.Consumer>,
     )
 
@@ -123,7 +123,7 @@ describe('AuthenticationProvider', () => {
         {(c) => <button onClick={c?.logout}>Logout</button>}
       </AuthenticationContext.Consumer>,
     )
-    ;(logoutApiCall as jest.Mock).mockResolvedValueOnce(null)
+      ; (logoutApiCall as jest.Mock).mockResolvedValueOnce(null)
 
     await act(async () => {
       screen.getByText('Logout').click()
@@ -136,7 +136,7 @@ describe('AuthenticationProvider', () => {
   })
 
   test('refreshes access token when about to expire', async () => {
-    ;(refreshTokenApiCall as jest.Mock).mockResolvedValue({
+    ; (refreshTokenApiCall as jest.Mock).mockResolvedValue({
       accessToken: 'newAccessToken',
       refreshToken: 'newRefreshToken',
     })
@@ -163,11 +163,11 @@ describe('AuthenticationProvider', () => {
         replace: jest.fn(),
       },
     })
-    ;(convertAuthTokenApiCall as jest.Mock).mockResolvedValue({
-      accessToken: 'newAccessToken',
-      refreshToken: 'newRefreshToken',
-    })
-    ;(getUserDetailsApiCall as jest.Mock).mockResolvedValue(mockUser)
+      ; (convertAuthTokenApiCall as jest.Mock).mockResolvedValue({
+        accessToken: 'newAccessToken',
+        refreshToken: 'newRefreshToken',
+      })
+      ; (getUserDetailsApiCall as jest.Mock).mockResolvedValue(mockUser)
 
     await act(async () => {
       setup()

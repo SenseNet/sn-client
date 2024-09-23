@@ -12,7 +12,7 @@ import { getAuthConfig } from '../services/auth-config'
 
 const LoginPage = lazy(() => import(/* webpackChunkName: "login" */ '../components/login/login-page'))
 
-export const authConfigKey = 'sn-oidc-config'
+export const authConfigKey = 'sn-auth-config'
 
 export function SnAuthRepositoryProvider({ children }: { children: React.ReactNode }) {
   const [isLoginInProgress, setIsLoginInProgress] = useState(false)
@@ -120,7 +120,7 @@ const RepoProvider = ({
   clearAuthState: Function
   authServerUrl?: string
 }) => {
-  const { user, login, logout, accessToken, isLoading } = useSnAuth()
+  const { user, externalLogin, logout, accessToken, isLoading } = useSnAuth()
   const logger = useLogger('repo-provider')
   const [repo, setRepo] = useState<Repository>()
 
@@ -167,7 +167,7 @@ const RepoProvider = ({
       const configString = window.localStorage.getItem(authConfigKey)
       if (!user && !isLoading && !accessToken && configString) {
         try {
-          await login()
+          await externalLogin()
         } catch (error) {
           const config = JSON.parse(configString)
           logger.error({ data: error, message: `Couldn't connect to ${config.authority}` })
@@ -176,7 +176,7 @@ const RepoProvider = ({
         }
       }
     })()
-  }, [clearAuthState, logger, login, logout, user, isLoading, accessToken])
+  }, [clearAuthState, logger, externalLogin, logout, user, isLoading, accessToken])
 
   if (!user || !repo) {
     return null

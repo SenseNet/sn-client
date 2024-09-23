@@ -2,7 +2,7 @@ import React, { createContext, ReactNode, useState, useEffect } from 'react'
 import { User } from '../models/user'
 import { AuthRoutes } from './auth-routes'
 import { SnAuthConfiguration } from '../models/sn-auth-configuration'
-import { convertAuthTokenApiCall, getUserDetailsApiCall, logoutApiCall, refreshTokenApiCall } from '../server-actions'
+import { changePasswordApiCall, convertAuthTokenApiCall, forgotPasswordApiCall, getUserDetailsApiCall, loginApiCall, logoutApiCall, multiFactorApiCall, passwordRecoveryApiCall, refreshTokenApiCall, validateTokenApiCall } from '../server-actions'
 import {
   getAccessToken,
   getRefreshToken,
@@ -14,13 +14,22 @@ import {
   setRefreshToken as setRefreshTokenStorage,
   setUserDetails as setUserDetailsStorage,
 } from '../storageHelpers'
+import { LoginRequest } from '../models/login-request'
+import { LoginResponse } from '../models/login-response'
+import { MultiFactorLoginRequest } from '../models/multi-factor-login-request'
 
 export interface AuthenticationContextState {
   isLoading: boolean
   user: User | null
-  login: () => void
+  login: (loginRequest: LoginRequest) => Promise<LoginResponse>
+  externalLogin: () => void
+  multiFactorLogin: (multiFactorRequest: MultiFactorLoginRequest) => void
+  forgotPassword: (email: string) => Promise<void>,
+  passwordRecovery: (token: string, password: string) => Promise<void>,
+  changePassword: (password: string) => Promise<void>
   logout: () => void
   accessToken: string | null
+  error: string | null
 }
 
 export const AuthenticationContext = createContext<AuthenticationContextState | undefined>(undefined)
@@ -70,6 +79,8 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
   const [user, setUser] = useState<User | null>(getUserDetails())
   const [path, setPath] = useState<string>(window.location.pathname)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [isRefreshingToken, setIsRefreshingToken] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
 
   const setNewPath = () => setPath(window.location.pathname)
 
@@ -86,27 +97,69 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
     }
   }, [path])
 
+
   useEffect(() => {
-    const checkTokenExpiry = async () => {
-      setIsLoading(true)
-      if (isTokenAboutToExpire(accessToken)) {
-        await refreshAccessToken()
-      }
+    const validateAndRefreshToken = async () => {
+      setIsLoading(true);
+      try {
+        if (accessToken) {
+          let accessTokenLocal = accessToken
+          const isValid = await validateTokenApiCall(props.authServerUrl, accessTokenLocal);
 
-      const intervalId = setInterval(async () => {
-        if (isTokenAboutToExpire(accessToken)) {
-          await refreshAccessToken()
+          if (!isValid) {
+            const response = await refreshAccessToken();
+            if (!response?.accessTokenResponse)
+              throw new Error()
+
+            accessTokenLocal = response.accessTokenResponse
+          }
+
+          const userDetails = await getUserDetailsApiCall(props.authServerUrl, accessTokenLocal);
+          setUser(userDetails);
         }
-      }, 5000)
 
-      setIsLoading(false)
-      return () => clearInterval(intervalId)
+        setIsLoading(false);
+      } catch (err) {
+        setError('Failed to validate or refresh token');
+        setIsLoading(false);
+      }
+    };
+
+    validateAndRefreshToken();
+  }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(async () => {
+      const accToken = getAccessToken()
+      if (accToken && isTokenAboutToExpire(accToken) && !isRefreshingToken) {
+        setIsRefreshingToken(true)
+      }
+    }, TOKEN_EXPIRY_THRESHOLD);
+
+    return () => clearInterval(intervalId);
+  }, [isRefreshingToken]) 
+
+  useEffect(() => {
+    const refreshToken = async () => {
+      try {
+        const response = await refreshAccessToken();
+        if (!response?.accessTokenResponse)
+          throw new Error()
+
+        const userDetails = await getUserDetailsApiCall(props.authServerUrl, response.accessTokenResponse);
+        setUser(userDetails);
+      } catch (err) {
+        setError('Failed to refresh access token');
+        logoutLocal();
+      }
+      setIsRefreshingToken(false)
     }
 
-    checkTokenExpiry()
-  }, [accessToken, refreshToken])
+    if (isRefreshingToken)
+      refreshToken()
+  }, [isRefreshingToken, props.authServerUrl])
 
-  const login = () => {
+  const externalLogin = () => {
     window.location.replace(
       `${props.authServerUrl}/Login?RedirectUrl=${window.location.origin}&CallbackUri=${props.snAuthConfiguration.callbackUri}`,
     )
@@ -119,20 +172,18 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
 
     try {
       if (authToken) {
-        const { accessToken: accessTokenResponse, refreshToken: refreshTokenRepsonse } = await convertAuthTokenApiCall(
+        const { accessToken: accessTokenResponse, refreshToken: refreshTokenResponse } = await convertAuthTokenApiCall(
           props.authServerUrl,
           authToken,
         )
-        setAccessToken(accessTokenResponse)
-        setRefreshToken(refreshTokenRepsonse)
-        setAccessTokenStorage(accessTokenResponse)
-        setRefreshTokenStorage(refreshTokenRepsonse)
+        setAccessAndRefreshToken(accessTokenResponse, refreshTokenResponse)
 
         const user = await getUserDetailsApiCall(props.authServerUrl, accessTokenResponse)
         setUser(user)
         setUserDetailsStorage(user)
       }
     } catch (e) {
+      setError(e);
       console.error(e)
     } finally {
       setIsLoading(false)
@@ -147,13 +198,13 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
           props.authServerUrl,
           refreshToken,
         )
-        setAccessToken(accessTokenResponse)
-        setRefreshToken(refreshTokenResponse)
+        setAccessAndRefreshToken(accessTokenResponse, refreshTokenResponse)
 
-        setAccessTokenStorage(accessTokenResponse)
-        setRefreshTokenStorage(refreshTokenResponse)
+        return { accessTokenResponse, refreshTokenResponse }
       } catch (e) {
         console.error(e)
+        setError("Failed to refresh token")
+        logoutLocal()
       } finally {
         setIsLoading(false)
       }
@@ -174,6 +225,69 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
     else logoutLocal()
   }
 
+  const login = async (loginRequest: LoginRequest): Promise<LoginResponse> => {
+    try {
+      const response = await loginApiCall(props.authServerUrl, loginRequest)
+
+      if (!response.multiFactorRequired && response.accessToken && response.refreshToken) {
+        setAccessAndRefreshToken(response.accessToken, response.refreshToken)
+
+        const user = await getUserDetailsApiCall(props.authServerUrl, response.accessToken)
+        setUser(user)
+        setUserDetailsStorage(user)
+
+        return response
+      }
+      else {
+        throw new Error()
+      }
+    }
+    catch (e) {
+      console.log("Error during login.")
+
+      removeAccessToken()
+      removeRefreshToken()
+
+      throw e;
+    }
+  }
+
+  const multiFactorLogin = async (multiFactorRequest: MultiFactorLoginRequest): Promise<LoginResponse> => {
+    try {
+      const response = await multiFactorApiCall(props.authServerUrl, multiFactorRequest)
+
+      if (response.accessToken && response.refreshToken) {
+        setAccessAndRefreshToken(response.accessToken, response.refreshToken)
+
+        return response;
+      }
+      else {
+        throw new Error();
+      }
+    }
+    catch (e) {
+      console.log("Error during multi-factor validation.")
+
+      removeAccessToken()
+      removeRefreshToken()
+
+      throw e;
+    }
+  }
+
+  const forgotPassword = async (email: string) => {
+    await forgotPasswordApiCall(props.authServerUrl, { email })
+  }
+
+  const passwordRecovery = async (token: string, password: string) => {
+    await passwordRecoveryApiCall(props.authServerUrl, { token, password })
+  }
+
+  const changePassword = async (password: string) => {
+    if (accessToken)
+      changePasswordApiCall(props.authServerUrl, accessToken, { password })
+  }
+
   const logoutLocal = () => {
     setAccessToken(null)
     setRefreshToken(null)
@@ -186,14 +300,28 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
     window.location.replace('/')
   }
 
+  const setAccessAndRefreshToken = (accessToken: string, refreshToken: string) => {
+    setAccessToken(accessToken)
+    setRefreshToken(refreshToken)
+
+    setAccessTokenStorage(accessToken)
+    setRefreshTokenStorage(refreshToken)
+  }
+
   return (
     <AuthenticationContext.Provider
       value={{
         accessToken,
         user,
         login,
+        externalLogin,
         logout,
+        forgotPassword,
+        passwordRecovery,
+        changePassword,
+        multiFactorLogin,
         isLoading,
+        error
       }}>
       <AuthRoutes callbackUri={props.snAuthConfiguration.callbackUri} currentPath={path}>
         {props.children}

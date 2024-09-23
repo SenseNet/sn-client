@@ -69,7 +69,7 @@ export function ISAuthProvider({ children }: PropsWithChildren<{}>) {
 }
 
 export function SNAuthProvider({ children }: PropsWithChildren<{}>) {
-  const { user, login, logout } = useSnAuth()
+  const { user, externalLogin: login, logout } = useSnAuth()
 
   return (
     <AuthContext.Provider
