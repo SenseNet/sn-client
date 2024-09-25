@@ -23,8 +23,8 @@ export interface AuthenticationContextState {
   user: User | null
   login: (loginRequest: LoginRequest) => Promise<LoginResponse>
   externalLogin: () => void
-  multiFactorLogin: (multiFactorRequest: MultiFactorLoginRequest) => void
-  forgotPassword: (email: string) => Promise<void>,
+  multiFactorLogin: (multiFactorRequest: MultiFactorLoginRequest) => Promise<LoginResponse>
+  forgotPassword: (email: string, passwordRecoveryUrl?: string) => Promise<void>,
   passwordRecovery: (token: string, password: string) => Promise<void>,
   changePassword: (password: string) => Promise<void>
   logout: () => void
@@ -137,7 +137,7 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
     }, TOKEN_EXPIRY_THRESHOLD);
 
     return () => clearInterval(intervalId);
-  }, [isRefreshingToken]) 
+  }, [isRefreshingToken])
 
   useEffect(() => {
     const refreshToken = async () => {
@@ -235,12 +235,9 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
         const user = await getUserDetailsApiCall(props.authServerUrl, response.accessToken)
         setUser(user)
         setUserDetailsStorage(user)
+      }
 
-        return response
-      }
-      else {
-        throw new Error()
-      }
+      return response
     }
     catch (e) {
       console.log("Error during login.")
@@ -259,6 +256,10 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
       if (response.accessToken && response.refreshToken) {
         setAccessAndRefreshToken(response.accessToken, response.refreshToken)
 
+        const user = await getUserDetailsApiCall(props.authServerUrl, response.accessToken)
+        setUser(user)
+        setUserDetailsStorage(user);
+
         return response;
       }
       else {
@@ -275,8 +276,8 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
     }
   }
 
-  const forgotPassword = async (email: string) => {
-    await forgotPasswordApiCall(props.authServerUrl, { email })
+  const forgotPassword = async (email: string, passwordRecoveryUrl?: string) => {
+    await forgotPasswordApiCall(props.authServerUrl, { email, passwordRecoveryUrl })
   }
 
   const passwordRecovery = async (token: string, password: string) => {
