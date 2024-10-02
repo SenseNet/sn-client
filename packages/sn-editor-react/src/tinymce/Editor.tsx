@@ -65,6 +65,7 @@ export const TinymceEditor: FC<TinymceEditorProps> = (props) => {
         }}
         initialValue={props.initvalue}
         init={{
+          sandbox_iframes: false,
           file_picker_types: 'image',
           /* and here's our custom image picker*/
           file_picker_callback: (cb, _value, _meta) => {
