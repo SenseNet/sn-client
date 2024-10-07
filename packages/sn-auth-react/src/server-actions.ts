@@ -142,7 +142,7 @@ export async function passwordRecoveryApiCall(server: string, passwordRequest: P
 
 export async function changePasswordApiCall(server: string, accessToken: string, passwordRequest: ChangePasswordRequest): Promise<void> {
   try {
-    const response = await fetch(`${server}/api/auth/password-recovery`, {
+    const response = await fetch(`${server}/api/auth/change-password`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -183,7 +183,7 @@ export async function multiFactorApiCall(server: string, loginRequest: MultiFact
 
 export async function validateTokenApiCall(server: string, accessToken: string): Promise<boolean> {
   try {
-    const response = await fetch(`${server}/api/user`, {
+    const response = await fetch(`${server}/api/auth/validate-token`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -200,9 +200,9 @@ export async function validateTokenApiCall(server: string, accessToken: string):
   return false
 }
 
-export async function getUserDetailsApiCall(server: string, accessToken: string): Promise<User> {
+export async function getUserDetailsApiCall(repoUrl: string, accessToken: string): Promise<User> {
   try {
-    const response = await fetch(`${server}/api/user`, {
+    const response = await fetch(`${repoUrl}/odata.svc/('Root')/GetCurrentUser`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -211,22 +211,11 @@ export async function getUserDetailsApiCall(server: string, accessToken: string)
     })
 
     if (response.ok) {
-      const user = await response.json()
+      const responseJson = await response.json()
 
-      return {
-        Avatar: {
-          Url: user.avatar?.url
-        },
-        DisplayName: user.displayName,
-        Name: user.name,
-        Email: user.email,
-        FullName: user.fullName,
-        Id: user.id,
-        LoginName: user.loginName,
-        Path: user.path
-      }
+      return responseJson.d;
     } else {
-      throw new Error(`Error during logout: ${response.statusText}`)
+      throw new Error(`Error during getting user: ${response.statusText}`)
     }
   } catch (error) {
     console.error('Error:', error)

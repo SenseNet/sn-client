@@ -24,10 +24,20 @@ export function SnAuthRepositoryProvider({ children }: { children: React.ReactNo
     config: null,
   })
   const repoFromUrl = useQuery().get('repoUrl')
-  const configString = window.localStorage.getItem(authConfigKey)
+  const cancelledLogin = useQuery().get('cancelledLogin')
+  const [configString, setConfigString] = useState<any>()
   const [authServerUrl, setAuthServerUrl] = useState()
 
   const clearState = useCallback(() => setAuthState({ repoUrl: '', config: null }), [])
+
+  useEffect(() => {
+    if (cancelledLogin) {
+      window.localStorage.removeItem(authConfigKey)
+      setAuthState((oldState) => ({ ...oldState, repoUrl: '' }))
+    } else {
+      setConfigString(window.localStorage.getItem(authConfigKey))
+    }
+  }, [cancelledLogin])
 
   useEffect(() => {
     if (configString) {
@@ -56,8 +66,15 @@ export function SnAuthRepositoryProvider({ children }: { children: React.ReactNo
     try {
       setIsLoginInProgress(true)
       const config = await getAuthConfig(authState.repoUrl)
-      window.localStorage.setItem(authConfigKey, JSON.stringify(config))
-      setAuthState((oldState) => ({ ...oldState, config: config.userManagerSettings }))
+      if (config.authServerSettings.type === 'SNAuth') {
+        window.localStorage.setItem(authConfigKey, JSON.stringify(config))
+        setConfigString(window.localStorage.getItem(authConfigKey))
+        setAuthState((oldState) => ({ ...oldState, config: config.userManagerSettings }))
+      } else {
+        logger.error({ message: 'Incompatible authentication server type' })
+        window.localStorage.removeItem(authConfigKey)
+        setAuthState((oldState) => ({ ...oldState, repoUrl: '' }))
+      }
     } catch (error) {
       logger.warning({ data: error, message: `Couldn't connect to ${authState.repoUrl}` })
       window.localStorage.removeItem(authConfigKey)
@@ -71,7 +88,7 @@ export function SnAuthRepositoryProvider({ children }: { children: React.ReactNo
     getConfig()
   }, [getConfig])
 
-  if (!authState.config || !authState.repoUrl) {
+  if (!authState.config || !authState.repoUrl || !authServerUrl) {
     return (
       <div className={globalClasses.full}>
         <CssBaseline />
@@ -101,6 +118,13 @@ export function SnAuthRepositoryProvider({ children }: { children: React.ReactNo
       repoUrl={authState.repoUrl}
       snAuthConfiguration={{
         callbackUri: '/authentication/callback',
+      }}
+      eventCallbacks={{
+        onLogout() {
+          setConfigString(null)
+          window.localStorage.removeItem(authConfigKey)
+          clearState()
+        },
       }}>
       <RepoProvider repoUrl={authState.repoUrl} authServerUrl={authServerUrl} clearAuthState={clearState}>
         {children}
@@ -165,18 +189,17 @@ const RepoProvider = ({
   useEffect(() => {
     ;(async () => {
       const configString = window.localStorage.getItem(authConfigKey)
-      if (!user && !isLoading && !accessToken && configString) {
+      if (!user && !isLoading && !accessToken && authServerUrl && configString) {
         try {
           await externalLogin()
         } catch (error) {
-          const config = JSON.parse(configString)
-          logger.error({ data: error, message: `Couldn't connect to ${config.authority}` })
+          logger.error({ data: error, message: `Couldn't connect to ${authServerUrl}` })
           window.localStorage.removeItem(authConfigKey)
           clearAuthState()
         }
       }
     })()
-  }, [clearAuthState, logger, externalLogin, logout, user, isLoading, accessToken])
+  }, [clearAuthState, logger, externalLogin, logout, user, isLoading, accessToken, authServerUrl])
 
   if (!user || !repo) {
     return null
