@@ -28,7 +28,10 @@ export function ErrorDialog(props: ErrorBoundaryState) {
           <Button
             aria-label={localization.reload}
             className={globalClasses.cancelButton}
-            onClick={() => window.location.reload()}>
+            onClick={() => {
+              window.history.back()
+              setTimeout(() => window.location.reload(), 10)
+            }}>
             <RefreshTwoTone />
             {localization.reload}
           </Button>
