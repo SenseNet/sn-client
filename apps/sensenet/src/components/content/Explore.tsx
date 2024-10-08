@@ -11,7 +11,7 @@ import {
 } from '@sensenet/hooks-react'
 import { ColumnSetting } from '@sensenet/list-controls-react/src/ContentList/content-list-base-props'
 import { clsx } from 'clsx'
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import { ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
@@ -94,6 +94,7 @@ export function Explore({
   const pathFromUrl = useQuery().get('path')
   const snRoute = useSnRoute()
   const activeAction = snRoute.match!.params.action
+  const [selected, setSelected] = useState<GenericContent[]>([])
 
   const onActivateItemOverride = async (activeItem: GenericContent) => {
     const expandedItem = await repository.load({
@@ -184,6 +185,10 @@ export function Explore({
     )
   }
 
+  useEffect(() => {
+    selectionService.selection.setValue(selected)
+  }, [selected, selectionService.selection])
+
   return (
     <LoadSettingsContextProvider>
       <CurrentContentProvider idOrPath={currentPath}>
@@ -195,6 +200,7 @@ export function Explore({
                   onNavigate(i.content)
                 }}
                 batchActions={true}
+                treeActions={true}
               />
             </div>
             <div className={classes.treeAndDatagridWrapper}>
@@ -202,6 +208,7 @@ export function Explore({
                 <TreeWithData
                   onItemClick={(item) => {
                     onNavigate(item)
+                    setSelected([item])
                   }}
                   parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
                   activeItemPath={currentPath}

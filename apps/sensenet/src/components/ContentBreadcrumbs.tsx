@@ -32,12 +32,21 @@ const useStyles = makeStyles((theme: Theme) => {
       width: '40px',
       marginRight: '2px',
     },
+    treeActionWrapper: {
+      marginRight: '7.5%',
+      ' & .MuiIconButton-root': {
+        color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
+      },
+      // marginLeft: '10px',
+      borderLeft: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
+    },
   })
 })
 
 type ContentBreadcrumbsProps<T extends GenericContent> = {
   onItemClick?: (item: BreadcrumbItem<T>) => void
   batchActions?: boolean
+  treeActions?: boolean
 }
 
 export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(props: ContentBreadcrumbsProps<T>) => {
@@ -88,6 +97,68 @@ export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(pr
             : history.push(getPrimaryActionUrl({ content: item.content, repository, uiSettings, location }))
         }}
       />
+      {props.treeActions && selected.length > 0 ? (
+        <div className={classes.treeActionWrapper} data-test="tree-actions">
+          <Tooltip title={localization.treeActions.delete} placement="bottom">
+            <IconButton
+              data-test="tree-delete"
+              aria-label="delete"
+              onClick={() => {
+                openDialog({
+                  name: 'delete',
+                  props: { content: selected },
+                  dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true },
+                })
+              }}>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={localization.treeActions.move} placement="bottom">
+            <IconButton
+              data-test="tree-move"
+              aria-label="move"
+              onClick={() => {
+                openDialog({
+                  name: 'copy-move',
+                  props: {
+                    content: selected,
+                    currentParent: parent,
+                    operation: 'move',
+                  },
+                  dialogProps: {
+                    disableBackdropClick: true,
+                    disableEscapeKeyDown: true,
+                    classes: { paper: globalClasses.pickerDialog },
+                  },
+                })
+              }}>
+              <FileCopyIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={localization.treeActions.copy} placement="bottom">
+            <IconButton
+              data-test="tree-copy"
+              aria-label="copy"
+              onClick={() => {
+                openDialog({
+                  name: 'copy-move',
+                  props: {
+                    content: selected,
+                    currentParent: parent,
+                    operation: 'copy',
+                  },
+                  dialogProps: {
+                    disableBackdropClick: true,
+                    disableEscapeKeyDown: true,
+                    classes: { paper: globalClasses.pickerDialog },
+                  },
+                })
+              }}>
+              <FileCopyOutlinedIcon />
+            </IconButton>
+          </Tooltip>
+        </div>
+      ) : null}
       {props.batchActions && selected.length > 0 ? (
         <div className={classes.batchActionWrapper} data-test="batch-actions">
           <Tooltip title={localization.batchActions.delete} placement="bottom">
