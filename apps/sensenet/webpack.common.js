@@ -28,6 +28,9 @@ module.exports = {
     ],
   },
   plugins: [
+    new webpack.ProvidePlugin({
+        "React": "react",
+    }),
     new webpack.EnvironmentPlugin({
       APP_VERSION: require('./package.json').version,
     }),
