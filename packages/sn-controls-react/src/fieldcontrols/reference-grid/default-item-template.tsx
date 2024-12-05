@@ -7,6 +7,9 @@ import {
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
+  Table,
+  TableBody,
+  TableCell,
 } from '@material-ui/core'
 import { InsertDriveFile } from '@material-ui/icons'
 import { Repository } from '@sensenet/client-core'
@@ -107,7 +110,28 @@ export const DefaultItemTemplate: React.FC<DefaultItemTemplateProps> = (props) =
   return (
     <ListItem style={props.actionName === 'browse' ? { padding: 0 } : undefined} key={content.Id} button={false}>
       {content.Type ? renderIcon(content) : null}
-      <ListItemText primary={content.DisplayName} style={{ textAlign: 'left', paddingRight: 15 }} />
+      <ListItemText
+        primary={
+          content.Path?.trim() === '' ? (
+            content.DisplayName
+          ) : (
+            <Table>
+              <TableBody>
+                <TableCell component="th" title={content.Path} scope="row">
+                  {content.Path}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {content.DisplayName}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {content.Type}
+                </TableCell>
+              </TableBody>
+            </Table>
+          )
+        }
+        style={{ textAlign: 'left', paddingRight: 15 }}
+      />
       {props.actionName && props.actionName !== 'browse' && !props.readOnly ? (
         <ListItemSecondaryAction>
           {content.Id > 0 ? (

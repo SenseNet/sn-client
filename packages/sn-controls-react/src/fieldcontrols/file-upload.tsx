@@ -211,7 +211,14 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
               <Button
                 data-test="download-button"
                 className={classes.downloadButton}
-                onClick={() => downloadFile(mediaResource?.media_src, repo.configuration.repositoryUrl)}
+                onClick={() =>
+                  downloadFile(
+                    fileName,
+                    mediaResource?.media_src,
+                    repo.configuration.repositoryUrl,
+                    repo.configuration.token,
+                  )
+                }
                 aria-label={localization.downloadButtonText}
                 variant="contained"
                 component="span"

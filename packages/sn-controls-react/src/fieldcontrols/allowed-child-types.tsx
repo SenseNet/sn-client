@@ -230,7 +230,7 @@ export const AllowedChildTypes: React.FC<ReactClientFieldSetting & { classes?: A
     case 'new':
       return (
         <ClickAwayListener onClickAway={handleClickAway}>
-          <div style={{ display: 'inline-block', minWidth: '350px' }}>
+          <div style={{ display: 'inline-block', minWidth: '100%' }}>
             <InputLabel shrink htmlFor={props.settings.Name} required={props.settings.Compulsory}>
               {props.settings.DisplayName}
             </InputLabel>
@@ -270,6 +270,7 @@ export const AllowedChildTypes: React.FC<ReactClientFieldSetting & { classes?: A
                 <IconButton
                   color="primary"
                   className={classes.button}
+                  style={{ marginTop: '22px', width: '33px' }}
                   disabled={currentSelected && currentSelected.Name.length > 0 ? false : true}
                   onClick={handleAddClick}>
                   {props.renderIcon ? props.renderIcon('add_circle') : renderIconDefault('add_circle')}

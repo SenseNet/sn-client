@@ -10,8 +10,8 @@ export const DateField: FC<{ date: string | Date }> = ({ date }) => {
 
   return (
     <TableCell component="div" className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)}>
-      <Tooltip title={dateUtils.formatDate(new Date(date), 'yyyy-MM-dd HH:mm aaa')} placement="top">
-        <div>{dateUtils.formatDistanceFromNow(new Date(date))}</div>
+      <Tooltip title={dateUtils.formatDate(new Date(date), 'yyyy-MM-dd HH:mm:ss')} placement="top">
+        <div>{dateUtils.formatDate(new Date(date), 'yyyy-MM-dd HH:mm:ss')}</div>
       </Tooltip>
     </TableCell>
   )
