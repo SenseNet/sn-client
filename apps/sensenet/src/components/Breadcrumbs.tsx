@@ -52,6 +52,24 @@ export function Breadcrumbs<T extends GenericContent>(props: BreadcrumbProps<T>)
         ))}
         <CopyPath copyText={props.items[props.items.length - 1].title} />
       </MUIBreadcrumbs>
+      <>
+        <b className="ContentExtraInfo">
+          <span title="DisplayName">{props.items[props.items.length - 1].content.DisplayName}</span>
+          <span title="ContentType" className="ContentTypeSpan">
+            (
+            <a
+              href={`/content-types/explorer/edit-binary?content=%2FGenericContent%2FFolder%2F${
+                props.items[props.items.length - 1].content.Type
+              }`}
+              target="_blank"
+              rel="noreferrer">
+              {props.items[props.items.length - 1].content.Type}
+            </a>
+            )
+          </span>
+        </b>
+      </>
+
       {contextMenuItem ? (
         <ContentContextMenu
           isOpened={isContextMenuOpened}

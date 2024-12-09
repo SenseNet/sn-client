@@ -48,7 +48,6 @@ const Dashboard = () => {
   const [data, setData] = useState<DashboardData>()
   const logger = useLogger('Dashboard')
   const [isAdmin, setIsAdmin] = useState(false)
-
   useEffect(() => {
     ;(async () => {
       const response = await repository.executeAction<any, DashboardData>({

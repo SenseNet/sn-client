@@ -4,7 +4,7 @@ import { globals } from '../../../globalStyles'
 const useStyles = makeStyles(() => {
   return createStyles({
     grid: {
-      padding: '14px 14px 0 14px',
+      padding: '14px 14px 0 134px',
       overflowY: 'auto',
       maxWidth: '100%',
       maxHeight: `calc(100% - ${globals.common.formActionButtonsHeight}px - ${globals.common.formTitleHeight}px)`,
@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => {
       position: 'absolute',
       padding: '20px',
       bottom: 0,
-      right: '7%',
+      right: '1%',
     },
   })
 })

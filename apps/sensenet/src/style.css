@@ -26,7 +26,17 @@ div[class*='makeStyles-actionButtonWrapper'] {
 button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary[type='submit'] {
   margin-left: 0px;
 }
-
+.ContentExtraInfo {
+  position: absolute;
+  right: 15px;
+}
+.ContentExtraInfo .ContentTypeSpan {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.ContentExtraInfo .ContentTypeSpan a {
+  color: #0292db;
+}
 /*.leftTree .MuiListItemIcon-root {
   border-left: 2px dotted #ccc;
   padding-left: 5px;

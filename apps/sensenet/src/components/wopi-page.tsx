@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => {
       padding: '20px',
       bottom: 0,
       textAlign: 'right',
-      right: '7%',
+      right: '1%',
     },
     wopiWrapper: {
       width: '100%',
