@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => {
     },
     actionButtonWrapper: {
       height: '80px',
-      left: 0,
+      left: 'auto',
       position: 'absolute',
       padding: '20px',
       bottom: 0,

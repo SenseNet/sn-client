@@ -20,9 +20,7 @@ ul[role='listbox'] {
 .MuiGrid-container {
   max-height: 100% !important;
 }
-div[class*='makeStyles-actionButtonWrapper'] {
-  left: auto;
-}
+
 button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary[type='submit'] {
   margin-left: 0px;
 }
