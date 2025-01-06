@@ -40,12 +40,8 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     actionButtonWrapper: {
       height: '80px',
-      left: 0,
-      position: 'absolute',
       padding: '20px',
-      bottom: 0,
-      textAlign: 'right',
-      right: '7%',
+      paddingRight: 'calc(7%  + 20px)',
     },
   })
 })

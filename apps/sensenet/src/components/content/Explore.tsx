@@ -197,7 +197,7 @@ export function Explore({
                 batchActions={true}
               />
             </div>
-            <div className={classes.treeAndDatagridWrapper}>
+            <div id="treeAndDatagridWrapper" className={classes.treeAndDatagridWrapper}>
               {hasTree && (
                 <TreeWithData
                   onItemClick={(item) => {
