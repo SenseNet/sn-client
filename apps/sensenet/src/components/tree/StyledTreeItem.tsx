@@ -42,6 +42,7 @@ export const StyledTreeItem = withStyles((theme: Theme) =>
       return repo.loadCollection<GenericContent>({
         path: props.contentValue.Path,
         oDataOptions: { select: ['Path', 'Name', 'DisplayName', 'Type', 'Actions'] },
+        useCache: true,
       })
     }
     const respRequest = loadCollection()
