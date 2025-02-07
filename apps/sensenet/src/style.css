@@ -1,7 +1,11 @@
 /**
  * Global Style overrides
 **/
+body {
+  font-size: 11px !important;
 
+  font-family: Arial, Helvetica, sans-serif !important;
+}
 ul[role='listbox'] {
   margin: 0;
   padding: 0;
@@ -34,6 +38,148 @@ button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-contained
 }
 .ContentExtraInfo .ContentTypeSpan a {
   color: #0292db;
+}
+span.icon svg {
+  width: 100%;
+}
+.react-grid-Main {
+  height: 100%;
+}
+
+.react-grid-Container {
+  height: 100%;
+}
+
+.react-grid-Grid {
+  min-height: 100% !important;
+}
+
+.react-grid-Canvas {
+  height: 100% !important;
+}
+.simpleContextMenu {
+  padding: 0 !important;
+  min-width: 45px;
+}
+/*
+SimpleTree
+*/
+.simpletree {
+  width: 400px;
+  overflow: auto;
+  padding: 5px;
+}
+
+.simpletree .MuiTypography-body1 {
+  font-size: 12px !important;
+  display: flex;
+  align-self: center;
+}
+.simpletree .MuiListItemIcon-root {
+  display: flex;
+  align-self: center;
+}
+.simpletree .MuiSvgIcon-root {
+  height: 16px;
+}
+.simpletree .svgicon {
+  width: 24px;
+  height: 24px;
+}
+.simpletree .MuiSvgIcon-root svg {
+  height: '16px!important';
+}
+.simpletree .MuiListItemIcon-root {
+  min-width: 25px;
+  margin-right: 3px;
+}
+.gridTopPanel {
+  min-height: 40px;
+  padding: 10px;
+  padding-left: 4rem;
+  position: relative;
+  border: 1px solid #dddddd;
+  background-color: #f9f9f9;
+}
+.gridTopPanel .svgicon {
+  width: 48px;
+  height: 48px;
+}
+.gridTopPanel a,
+.gridTopPanel h1,
+.gridTopPanel span {
+  padding: 0;
+  margin: 0;
+}
+.gridTopPanel h1 span {
+  font-weight: normal;
+  padding-left: 0.5rem;
+}
+.gridTopPanel label {
+  padding: 0;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.gridTopPanel label:first-of-type {
+  padding-left: 0;
+}
+.gridTopPanel .iconArea {
+  position: absolute;
+  left: 0;
+  top: 5px;
+  bottom: 0;
+  width: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gridTopPanel .iconArea svg {
+  width: 100%;
+  height: auto;
+  padding-left: 0.4rem;
+}
+.gridTopPanel h1.title {
+  font-size: 1.2rem;
+}
+.theme-dark .gridTopPanel,
+.theme-dark .react-grid-Grid {
+  background-color: #121212;
+  border-color: #2c2c2c;
+}
+.theme-dark .react-grid-Canvas {
+  background-color: #121212;
+}
+.theme-dark .react-grid-Cell {
+  background-color: #232323;
+  border-color: #333 !important;
+}
+.theme-dark .react-grid-HeaderCell,
+.theme-dark .react-grid-Header {
+  background: #333;
+  border-color: #555;
+}
+
+.theme-dark .react-grid-Row:hover .react-grid-Cell,
+.theme-dark .react-grid-Row.row-context-menu .react-grid-Cell {
+  background-color: #666;
+}
+.theme-dark .react-grid-Cell.row-selected {
+  background-color: #555 !important;
+}
+.theme-dark .react-grid-checkbox + .react-grid-checkbox-label:before,
+.theme-dark .radio-custom + .radio-custom-label:before {
+  background: #777 !important;
+}
+.buttonPanel {
+  float: right;
+  padding-bottom: 1rem;
+  margin-top: -2rem;
+}
+.buttonPanel .MuiListItemIcon-root {
+  min-width: 25px !important;
+}
+.buttonPanel .MuiButton-label {
+  flex-direction: column;
 }
 /*.leftTree .MuiListItemIcon-root {
   border-left: 2px dotted #ccc;

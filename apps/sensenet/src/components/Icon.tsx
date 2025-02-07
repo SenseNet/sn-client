@@ -184,18 +184,100 @@ const getIconByName = (name: string | undefined, options: IconOptions) => {
   }
 }
 
-const getIconByPath = (icon: string | undefined, options: IconOptions) => {
-  if (!icon || !icon.startsWith('/')) {
+const getIconByPath = (content: GenericContent, iconOptions: IconOptions) => {
+  if (content !== undefined && content.Path !== undefined && content.Path.toLowerCase().endsWith('.settings')) {
+    return (
+      <IconFromPath
+        path={'/Root/System/Images/Icons/colors/settings.svg'}
+        options={iconOptions}
+        contentPath={content.Path}
+        contentType={content.Type}
+      />
+    )
+  }
+  if (!content.Icon || !content.Icon.startsWith('/')) {
+    if (content.Icon !== undefined) {
+      switch (content.Icon) {
+        case 'DocumentLibrary':
+          return (
+            <IconFromPath
+              path={'/Root/System/Images/Icons/colors/doclib.svg'}
+              options={iconOptions}
+              contentPath={content.Path}
+              contentType={content.Type}
+            />
+          )
+        case 'Workspace':
+          return (
+            <IconFromPath
+              path={'/Root/System/Images/Icons/colors/workspace.svg'}
+              options={iconOptions}
+              contentPath={content.Path}
+              contentType={content.Type}
+            />
+          )
+        case 'excel':
+          return (
+            <IconFromPath
+              path={'/Root/System/Images/Icons/colors/file_xlsx.svg'}
+              options={iconOptions}
+              contentPath={content.Path}
+              contentType={content.Type}
+            />
+          )
+        case 'image':
+          return (
+            <IconFromPath
+              path={'/Root/System/Images/Icons/colors/file_img.svg'}
+              options={iconOptions}
+              contentPath={content.Path}
+              contentType={content.Type}
+            />
+          )
+        case 'word':
+          return (
+            <IconFromPath
+              path={'/Root/System/Images/Icons/colors/file_word.svg'}
+              options={iconOptions}
+              contentPath={content.Path}
+              contentType={content.Type}
+            />
+          )
+        case 'powerpoint':
+          return (
+            <IconFromPath
+              path={'/Root/System/Images/Icons/colors/file_ppt.svg'}
+              options={iconOptions}
+              contentPath={content.Path}
+              contentType={content.Type}
+            />
+          )
+        case 'adobe':
+        case 'acrobat':
+          return (
+            <IconFromPath
+              path={'/Root/System/Images/Icons/colors/file_pdf.svg'}
+              options={iconOptions}
+              contentPath={content.Path}
+              contentType={content.Type}
+            />
+          )
+        default:
+          return null
+      }
+    }
+
     return null
   }
-
-  return <IconFromPath path={icon} options={options} />
+  return (
+    <IconFromPath path={content.Icon} options={iconOptions} contentPath={content.Path} contentType={content.Type} />
+  )
 }
 
 /* eslint-disable react/display-name */
 export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   {
-    get: (item, options) => getIconByPath(item.Icon, options),
+    get: (item, options) => getIconByPath(item, options),
   },
   {
     get: (item, options) =>
@@ -253,6 +335,9 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
   {
     get: (item, options) => getIconByName(item.Icon, options),
+  },
+  {
+    get: (item, options) => getIconByPath(item, options),
   },
 ]
 
@@ -314,9 +399,11 @@ export const IconComponent: FunctionComponent<{
   ]
   const defaultIcon = props.defaultIcon || <WebAssetOutlined style={props.style} /> || null
   const assignedResolver = resolvers.find((r) => (r.get(props.item, options) ? true : false))
+  // console.log('#icon', assignedResolver, props.item.Path, props.item.Icon)
   if (assignedResolver) {
     return assignedResolver.get(props.item, options)!
   }
+
   return defaultIcon
 }
 

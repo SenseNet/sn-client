@@ -47,6 +47,7 @@ export interface LoadCollectionOptions<TContentType> extends WithOdataOptions<TC
    * The collection path
    */
   path: string
+  useCache: boolean
 }
 
 /**

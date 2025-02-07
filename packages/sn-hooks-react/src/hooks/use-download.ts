@@ -36,7 +36,6 @@ export const downloadFile = (
 export const useDownload = (content: GenericContent) => {
   const repo = useRepository()
   const isFile = repo.schemas.isContentFromType(content, 'File')
-  console.log(repo.configuration.token)
   return {
     /**
      * Boolean that indicates if the content is a File

@@ -36,6 +36,9 @@ module.exports = {
   },
   rules: {
     'react/prop-types': 0,
+    'no-unused-vars': 'off',
+    'import/export': 0,
+    '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/ban-types': 'off',
     '@typescript-eslint/no-empty-function': 'off',

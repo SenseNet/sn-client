@@ -1,4 +1,4 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core'
 import { ODataFieldParameter, ODataParams } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
@@ -17,14 +17,20 @@ import { ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useQuery, useSelectionService, useSnRoute } from '../../hooks'
 import { getPrimaryActionUrl, navigateToAction } from '../../services'
+// @ts-ignore
 import { ContentList } from '../content-list/content-list'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { DocumentViewer } from '../document-viewer'
 import { EditBinary } from '../edit/edit-binary'
 import { FullScreenLoader } from '../full-screen-loader'
+import { Grid } from '../grid/Grid'
+// @ts-ignore
+import { SimpleTree } from '../tree/SimpleTree'
+// @ts-ignore
 import TreeWithData from '../tree/tree-with-data'
 import { BrowseView, EditView, ImageView, NewView, PermissionView, VersionView } from '../view-controls'
 import WopiPage from '../wopi-page'
+import { ContentInfo } from './ContentInfo'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -81,6 +87,7 @@ export function Explore({
   alwaysRefreshChildren,
   disableColumnSettings,
 }: ExploreProps) {
+  const theme = useTheme()
   const selectionService = useSelectionService()
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
@@ -105,6 +112,7 @@ export function Explore({
         expand: ['Actions'] as ODataFieldParameter<GenericContent>,
       },
     })
+    console.log(expandedItem)
     const { location } = history
     history.push(getPrimaryActionUrl({ content: expandedItem.d, repository, uiSettings, location, snRoute }))
   }
@@ -166,24 +174,51 @@ export function Explore({
       return <FullScreenLoader />
     }
 
-    return (
-      <>
-        {renderBeforeGrid?.()}
-        <ContentList
-          disableColumnSettings={disableColumnSettings}
-          style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
-          enableBreadcrumbs={false}
-          fieldsToDisplay={fieldsToDisplay}
-          schema={schema}
-          onParentChange={onNavigate}
-          onActivateItem={onActivateItemOverride}
-          onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
-          parentIdOrPath={currentPath}
-        />
-      </>
-    )
+    const isNewGrid =
+      window.location.pathname === '/content/explorer/' || window.location.pathname === '/custom/explorer/root/'
+    if (isNewGrid) {
+      return (
+        <>
+          {renderBeforeGrid?.()}
+          <ContentInfo
+            onParentChange={onNavigate}
+            onActivateItem={onActivateItemOverride}
+            onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
+            parentIdOrPath={currentPath}
+          />
+          <Grid
+            disableColumnSettings={disableColumnSettings}
+            style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
+            enableBreadcrumbs={false}
+            fieldsToDisplay={fieldsToDisplay}
+            schema={schema}
+            onParentChange={onNavigate}
+            onActivateItem={onActivateItemOverride}
+            onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
+            parentIdOrPath={currentPath}
+          />
+        </>
+      )
+    } else {
+      return (
+        <>
+          {renderBeforeGrid?.()}
+          <ContentList
+            disableColumnSettings={disableColumnSettings}
+            style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
+            enableBreadcrumbs={false}
+            fieldsToDisplay={fieldsToDisplay}
+            schema={schema}
+            onParentChange={onNavigate}
+            onActivateItem={onActivateItemOverride}
+            onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
+            parentIdOrPath={currentPath}
+          />
+        </>
+      )
+    }
   }
-
+  console.log('theme:', theme)
   return (
     <LoadSettingsContextProvider>
       <CurrentContentProvider idOrPath={currentPath}>
@@ -197,17 +232,22 @@ export function Explore({
                 batchActions={true}
               />
             </div>
-            <div className={`${classes.treeAndDatagridWrapper} leftTree`}>
+
+            <div className={`${classes.treeAndDatagridWrapper} leftTree theme-${theme.palette.type} `}>
               {hasTree && (
-                <TreeWithData
-                  onItemClick={(item) => {
-                    onNavigate(item)
-                  }}
-                  parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
-                  activeItemPath={currentPath}
-                  onTreeLoadingChange={onTreeLoadingChange}
-                  loadSettings={loadTreeSettings}
-                />
+                <div className="simpletree">
+                  <SimpleTree
+                    onItemClick={(item) => {
+                      onNavigate(item)
+                    }}
+                    parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
+                    activeItemPath={currentPath}
+                    onTreeLoadingChange={onTreeLoadingChange}
+                    loadSettings={loadTreeSettings}
+                    onNavigate={onNavigate}
+                    rootLoaded={false}
+                  />
+                </div>
               )}
               <div className={classes.exploreContainer}>{renderContent()}</div>
             </div>

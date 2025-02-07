@@ -9,7 +9,7 @@
     "forceConsistentCasingInFileNames": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "typeRoots": ["./node_modules/@types"],
+    "noUnusedLocals": false,
     "types": ["node"],
     "paths": {
       "react": [ "../../node_modules/@types/react" ]

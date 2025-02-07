@@ -66,7 +66,6 @@ export class Repository implements Disposable {
   public dispose() {
     this.authentication.dispose()
   }
-
   /**
    * Authentication service associated with the repository object
    */
@@ -97,6 +96,7 @@ export class Repository implements Disposable {
     if (this.configuration.token) {
       request.headers.append('Authorization', `Bearer ${this.configuration.token}`)
     }
+    console.log('load from cache')
     return await this.fetchMethod(request)
   }
 
@@ -186,6 +186,7 @@ export class Repository implements Disposable {
       credentials: 'include',
       method: 'GET',
     })
+
     if (!response.ok) {
       throw await this.getErrorFromResponse(response)
     }
@@ -501,6 +502,9 @@ export class Repository implements Disposable {
   }
 
   public iconCache = new Map<string, string>()
+  //Caches for tree and grid elements
+  public exploreContentCache = new Map<string, string>()
+  public exploreContentCollectionCache = new Map<string, string>()
 
   constructor(
     config?: RepositoryConfiguration,

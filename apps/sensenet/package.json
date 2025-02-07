@@ -108,6 +108,7 @@
     "filesize": "10.0.6",
     "react": "^16.13.0",
     "react-autosuggest": "^10.1.0",
+    "react-data-grid": "6.1.0",
     "react-day-picker": "^8.6.0",
     "react-dom": "^16.13.0",
     "react-markdown": "6.0.3",
