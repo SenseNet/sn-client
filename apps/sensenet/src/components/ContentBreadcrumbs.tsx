@@ -63,7 +63,6 @@ export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(pr
       selectedComponentsObserve.dispose()
     }
   }, [selectionService.selection])
-
   return (
     <div className={classes.buttonsWrapper}>
       <Breadcrumbs<T>

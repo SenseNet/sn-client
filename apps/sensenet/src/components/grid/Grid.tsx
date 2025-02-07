@@ -3,6 +3,7 @@ import { CurrentChildrenContext, CurrentContentContext } from '@sensenet/hooks-r
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 // @ts-ignore
 import ReactDataGrid from 'react-data-grid'
+import { useSelectionService } from '../../hooks'
 
 import { DropFileArea } from '../DropFileArea'
 import { ActionFormatter } from './Formatters/ActionFormatter'
@@ -16,6 +17,7 @@ import { EmptyRowsView } from './Views/EmptyRowsView'
 
 export function Grid<T extends GenericContent = GenericContent>(this: any, props: GridProps<T>) {
   // @ts-ignore
+  const selectionService = useSelectionService()
   const [selectedIndexes, setSelectedIndexes] = useState<any[]>([])
   const [rowItems, setRowItems] = useState<any[]>([])
   const [sortColumn, setSortColumn] = useState<string>('DisplayName')
@@ -38,12 +40,23 @@ export function Grid<T extends GenericContent = GenericContent>(this: any, props
     { key: 'check', name: '#', width: 0, formatter: CheckBoxFormatter, flex: 1 },
     { key: 'icon', name: '', width: 35, formatter: IconFormatter, flex: 1 },
     { key: 'id', name: 'ID', width: 55, sortable: true, flex: 1 },
-    { key: 'index', name: 'Index', width: 45, sortable: true, flex: 1 },
+    { key: 'index', name: 'Idx', width: 35, sortable: true, flex: 1 },
+    {
+      key: 'Name',
+      name: 'Name',
+      resizable: true,
+      width: 200,
+      autofill: false,
+      sortable: true,
+      filterable: true,
+      formatter: DisplayNameFormatter,
+      flex: 1,
+    },
     {
       key: 'DisplayName',
       name: 'Display Name',
       resizable: true,
-      minWidth: 400,
+      minWidth: 200,
       autofill: true,
       sortable: true,
       filterable: true,
@@ -124,6 +137,11 @@ export function Grid<T extends GenericContent = GenericContent>(this: any, props
     }
   }
   useEffect(() => {
+    const selected = selectedIndexes.map((i) => rowItems[i].Content)
+    selectionService.selection.setValue(selected)
+  }, [rowItems, selectedIndexes, selectionService.selection])
+
+  useEffect(() => {
     for (let i = 0; i < selectedIndexes.length; i++) {
       const a = selectedIndexes[i]
       const item = rowItems[a]
@@ -155,6 +173,16 @@ export function Grid<T extends GenericContent = GenericContent>(this: any, props
         if (sortColumn === 'DisplayName') {
           const aCol = (a.DisplayName ?? '').trim()
           const bCol = (b.DisplayName ?? '').trim()
+          if (sortDirection === 'ASC') {
+            result = aCol.localeCompare(bCol)
+          }
+          if (sortDirection === 'DESC') {
+            result = bCol.localeCompare(aCol)
+          }
+        }
+        if (sortColumn === 'Name') {
+          const aCol = (a.Name ?? '').trim()
+          const bCol = (b.Name ?? '').trim()
           if (sortDirection === 'ASC') {
             result = aCol.localeCompare(bCol)
           }
@@ -213,6 +241,7 @@ export function Grid<T extends GenericContent = GenericContent>(this: any, props
         index: child.Index,
         icon: child,
         DisplayName: child.DisplayName,
+        Name: child.Name,
         Locked: child.Locked,
         CreatedBy: child.CreatedBy,
         CreationDate: child.CreationDate,
@@ -225,6 +254,10 @@ export function Grid<T extends GenericContent = GenericContent>(this: any, props
     }
     setRowItems(items)
   }, [children, sortColumn, sortDirection])
+  useEffect(() => {
+    console.log('Grid: children changed')
+    setSelectedIndexes([])
+  }, [children])
   //examples: https://github.com/adazzle/react-data-grid/blob/v6.0.0-alpha.0/packages/react-data-grid-examples/src/scripts
   return (
     <DropFileArea parentContent={parentContent} style={{ height: '100%', overflow: 'hidden' }}>

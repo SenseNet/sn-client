@@ -49,7 +49,6 @@ const IconFromPath = ({
         case '/Root/System/Images/Icons/GroupIcon.svg':
           svgPath = '/Root/System/Images/Icons/colors/users.svg'
           break
-
         case '/Root/System/Images/Icons/site.svg':
           svgPath = '/Root/System/Images/Icons/colors/site.svg'
           break
@@ -87,7 +86,7 @@ const IconFromPath = ({
         const resizedsvg = svg
           .replace('width=', 'width="100%" oldwidth=')
           .replace('height=', 'height="100%" oldheight=')
-        options.repo.iconCache.set(svgPath, resizedsvg)
+        options.repo.iconCache.set(path, resizedsvg)
         setIcon(resizedsvg)
         return
       }
