@@ -25,7 +25,6 @@ import { EditBinary } from '../edit/edit-binary'
 import { FullScreenLoader } from '../full-screen-loader'
 import { Grid } from '../grid/Grid'
 // @ts-ignore
-// eslint-disable-next-line import/no-unresolved
 import { SimpleTree } from '../tree/SimpleTree'
 // @ts-ignore
 import TreeWithData from '../tree/tree-with-data'
