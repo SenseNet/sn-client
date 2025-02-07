@@ -87,7 +87,7 @@ const IconFromPath = ({
         const resizedsvg = svg
           .replace('width=', 'width="100%" oldwidth=')
           .replace('height=', 'height="100%" oldheight=')
-        options.repo.iconCache.set(path, resizedsvg)
+        options.repo.iconCache.set(svgPath, resizedsvg)
         setIcon(resizedsvg)
         return
       }

@@ -7,6 +7,7 @@ import { ODataCollectionResponse } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { useCallback, useEffect, useState } from 'react'
+import { useQuery } from '../../hooks'
 import { Icon } from '../Icon'
 import StyledTreeItemProps from './Props/StyledTreeItemProps'
 function isOpen(prop: any) {
@@ -36,21 +37,31 @@ export const StyledTreeItem = withStyles((theme: Theme) =>
 )((props: StyledTreeItemProps) => {
   const repo = useRepository()
   const [innerElements, setInnerElements] = useState<[]>()
-  // const [elementsLoaded, setElemetnsLoaded] = useState<boolean>()
   const loadCollectionCB = useCallback(() => {
     function loadCollection(): Promise<ODataCollectionResponse<GenericContent>> {
-      return repo.loadCollection<GenericContent>({
-        path: props.contentValue.Path,
-        oDataOptions: { select: ['Path', 'Name', 'DisplayName', 'Type', 'Actions'] },
-      })
+      const cacheKey = `collection_${props.contentValue.Path}`
+      const cachedData = sessionStorage.getItem(cacheKey)
+      const cacheTimestamp = sessionStorage.getItem(`${cacheKey}_timestamp`)
+      const now = new Date().getTime()
+
+      if (cachedData && cacheTimestamp && now - parseInt(cacheTimestamp, 10) < 30 * 1000) {
+        return Promise.resolve(JSON.parse(cachedData))
+      }
+
+      return repo
+        .loadCollection<GenericContent>({
+          path: props.contentValue.Path,
+          oDataOptions: { select: ['Path', 'Name', 'DisplayName', 'Type', 'Actions'] },
+        })
+        .then((result) => {
+          sessionStorage.setItem(cacheKey, JSON.stringify(result))
+          sessionStorage.setItem(`${cacheKey}_timestamp`, now.toString())
+          return result
+        })
     }
+
     const respRequest = loadCollection()
     respRequest.then((result: any) => {
-      //console.log('#tree: loadCollectionCB')
-      //const piso = isOpen(props['aria-expanded'])
-      //if (!elementsLoaded || (elementsLoaded && piso)) {
-      // setElemetnsLoaded(true)
-      //console.log('#tree:amottan piso:', piso, props.contentValue.Name)
       const elements = result?.d.results.map((innerChild: GenericContent) => {
         props.addItemToExpanded(innerChild)
         return (

@@ -181,6 +181,10 @@ SimpleTree
 .buttonPanel .MuiButton-label {
   flex-direction: column;
 }
+.MuiListItemIcon-root .svgicon {
+  width: 24px;
+  height: 24px;
+}
 /*.leftTree .MuiListItemIcon-root {
   border-left: 2px dotted #ccc;
   padding-left: 5px;

@@ -101,7 +101,8 @@ export function Explore({
   const pathFromUrl = useQuery().get('path')
   const snRoute = useSnRoute()
   const activeAction = snRoute.match!.params.action
-
+  const isNewGrid =
+    window.location.pathname === '/content/explorer/' || window.location.pathname === '/custom/explorer/root/'
   const onActivateItemOverride = async (activeItem: GenericContent) => {
     const expandedItem = await repository.load({
       idOrPath: activeItem.Id,
@@ -174,8 +175,6 @@ export function Explore({
       return <FullScreenLoader />
     }
 
-    const isNewGrid =
-      window.location.pathname === '/content/explorer/' || window.location.pathname === '/custom/explorer/root/'
     if (isNewGrid) {
       return (
         <>
@@ -218,7 +217,6 @@ export function Explore({
       )
     }
   }
-  console.log('theme:', theme)
   return (
     <LoadSettingsContextProvider>
       <CurrentContentProvider idOrPath={currentPath}>
@@ -235,19 +233,35 @@ export function Explore({
 
             <div className={`${classes.treeAndDatagridWrapper} leftTree theme-${theme.palette.type} `}>
               {hasTree && (
-                <div className="simpletree">
-                  <SimpleTree
-                    onItemClick={(item) => {
-                      onNavigate(item)
-                    }}
-                    parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
-                    activeItemPath={currentPath}
-                    onTreeLoadingChange={onTreeLoadingChange}
-                    loadSettings={loadTreeSettings}
-                    onNavigate={onNavigate}
-                    rootLoaded={false}
-                  />
-                </div>
+                //
+                <>
+                  {!isNewGrid ? (
+                    <TreeWithData
+                      onItemClick={(item) => {
+                        onNavigate(item)
+                      }}
+                      parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
+                      activeItemPath={currentPath}
+                      onTreeLoadingChange={onTreeLoadingChange}
+                      loadSettings={loadTreeSettings}
+                    />
+                  ) : (
+                    <div className="simpletree">
+                      <SimpleTree
+                        onItemClick={(item) => {
+                          onNavigate(item)
+                        }}
+                        parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
+                        activeItemPath={currentPath}
+                        onTreeLoadingChange={onTreeLoadingChange}
+                        loadSettings={loadTreeSettings}
+                        onNavigate={onNavigate}
+                        rootLoaded={false}
+                      />
+                    </div>
+                  )}
+                  {/* */}
+                </>
               )}
               <div className={classes.exploreContainer}>{renderContent()}</div>
             </div>

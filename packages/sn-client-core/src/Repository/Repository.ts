@@ -96,7 +96,6 @@ export class Repository implements Disposable {
     if (this.configuration.token) {
       request.headers.append('Authorization', `Bearer ${this.configuration.token}`)
     }
-    console.log('load from cache')
     return await this.fetchMethod(request)
   }
 
