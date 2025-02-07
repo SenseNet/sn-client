@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => {
       padding: '8px 16px',
       height: `${TTITLE_SIZE}px`,
       '& ~ #treeAndDatagridWrapper': {
-        height: `calc(100% - ${globals.common.drawerItemHeight}px - ${TTITLE_SIZE}px)`,
+        height: `calc( 100% - ${globals.common.drawerItemHeight}px - ${TTITLE_SIZE}px )`,
       },
     },
   })
