@@ -12,7 +12,7 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'react', 'cypress', 'jsdoc', 'import', 'react-hooks'],
-  env: { browser: true, node: true, es6: true, jest: true, 'cypress/globals': true },
+  env: { browser: true, node: true, es6: true, 'cypress/globals': true },
   parserOptions: {
     ecmaVersion: 6,
     sourceType: 'module',
