@@ -42,11 +42,14 @@ export class ODataUrlBuilder {
     if (config.requiredSelect === 'all' || config.defaultSelect === 'all' || oDataParams?.select === 'all') {
       oDataParams.select = undefined
     } else {
-      oDataParams.select = this.combineODataFieldParameters<T>(
-        config.requiredSelect as any,
-        oDataParams.select ?? (config.defaultSelect as any),
-      )
+      if (oDataParams.onlyselectList === undefined || !oDataParams.onlyselectList) {
+        oDataParams.select = this.combineODataFieldParameters<T>(
+          config.requiredSelect as any,
+          oDataParams.select ?? (config.defaultSelect as any),
+        )
+      }
     }
+    console.log(oDataParams.select)
     oDataParams.metadata = oDataParams.metadata ?? config.defaultMetadata
     oDataParams.inlinecount = oDataParams.inlinecount ?? config.defaultInlineCount
     oDataParams.expand = oDataParams.expand ?? (config.defaultExpand as any)

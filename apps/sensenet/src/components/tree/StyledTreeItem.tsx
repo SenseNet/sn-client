@@ -51,7 +51,10 @@ export const StyledTreeItem = withStyles((theme: Theme) =>
       return repo
         .loadCollection<GenericContent>({
           path: props.contentValue.Path,
-          oDataOptions: { select: ['Path', 'Name', 'DisplayName', 'Type', 'Actions'] },
+          oDataOptions: {
+            select: ['Id', 'Path', 'Name', 'DisplayName', 'Type', 'Actions', 'Icon'],
+            onlyselectList: true,
+          },
         })
         .then((result) => {
           sessionStorage.setItem(cacheKey, JSON.stringify(result))
