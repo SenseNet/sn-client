@@ -1,25 +1,16 @@
 import { Collapse, ListItemIcon, ListItemText } from '@material-ui/core'
 // @ts-ignore
 import { createStyles, Theme, withStyles } from '@material-ui/core/styles'
-import { TransitionProps } from '@material-ui/core/transitions'
 import TreeItem from '@material-ui/lab/TreeItem'
 import { ODataCollectionResponse } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import React, { useCallback, useEffect, useState } from 'react'
-import { useQuery } from '../../hooks'
+//import { useQueryClient } from 'react-query'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { useGlobalCacheFetch } from '../contentprovider/GlobalContentCollection'
 import { Icon } from '../Icon'
+import { ExpandItemsContext } from './Contexts/ExpandedItemsProvider'
 import StyledTreeItemProps from './Props/StyledTreeItemProps'
-function isOpen(prop: any) {
-  return prop !== undefined && prop !== false
-}
-function TransitionComponent(props: TransitionProps) {
-  return (
-    <div>
-      <Collapse in={true} {...props} />
-    </div>
-  )
-}
 // @ts-ignore
 export const StyledTreeItem = withStyles((theme: Theme) =>
   createStyles({
@@ -36,94 +27,142 @@ export const StyledTreeItem = withStyles((theme: Theme) =>
   }),
 )((props: StyledTreeItemProps) => {
   const repo = useRepository()
+  //const queryClient = useQueryClient()
   const [innerElements, setInnerElements] = useState<[]>()
+  const [childrenLoaded, setChildrenLoaded] = useState<boolean>(false)
+  const expContext = useContext(ExpandItemsContext)
+  if (!expContext) {
+    throw new Error('MyComponent must be used within a ExpandItemsProvider')
+  }
+  // const fetchCollection = (contentPath: string): Promise<ODataCollectionResponse<GenericContent>> => {
+  //   return repo.loadCollection<GenericContent>({
+  //     path: contentPath,
+  //     oDataOptions: {
+  //       select: ['Id', 'Path', 'Name', 'DisplayName', 'Type', 'Actions', 'Icon', 'ParentId'],
+  //       onlyselectList: true,
+  //     },
+  //   })
+  // }
+
+  const { data } = useGlobalCacheFetch('https://jsonplaceholder.typicode.com/todos', 60000)
+  const [expandItems, setExpandItems] = expContext
   const loadCollectionCB = useCallback(() => {
-    function loadCollection(): Promise<ODataCollectionResponse<GenericContent>> {
-      const cacheKey = `collection_${props.contentValue.Path}`
-      const cachedData = sessionStorage.getItem(cacheKey)
-      const cacheTimestamp = sessionStorage.getItem(`${cacheKey}_timestamp`)
-      const now = new Date().getTime()
-
-      if (cachedData && cacheTimestamp && now - parseInt(cacheTimestamp, 10) < 30 * 1000) {
-        return Promise.resolve(JSON.parse(cachedData))
-      }
-
-      return repo
-        .loadCollection<GenericContent>({
-          path: props.contentValue.Path,
-          oDataOptions: {
-            select: ['Id', 'Path', 'Name', 'DisplayName', 'Type', 'Actions', 'Icon'],
-            onlyselectList: true,
-          },
-        })
-        .then((result) => {
-          sessionStorage.setItem(cacheKey, JSON.stringify(result))
-          sessionStorage.setItem(`${cacheKey}_timestamp`, now.toString())
-          return result
-        })
+    function loadCollection(contentPath: string): Promise<ODataCollectionResponse<GenericContent>> {
+      return repo.loadCollection<GenericContent>({
+        path: contentPath,
+        oDataOptions: {
+          select: ['Id', 'Path', 'Name', 'DisplayName', 'Type', 'Actions', 'Icon', 'ParentId'],
+          onlyselectList: true,
+        },
+      })
     }
 
-    const respRequest = loadCollection()
+    setChildrenLoaded(true)
+    const respRequest = loadCollection(props.contentvalue.Path)
     respRequest.then((result: any) => {
       const elements = result?.d.results.map((innerChild: GenericContent) => {
-        props.addItemToExpanded(innerChild)
         return (
           <StyledTreeItem
-            key={innerChild.Id}
-            itemID={innerChild.Id.toString()}
             id="1"
-            nodeId={innerChild.Path}
-            label={innerChild.Name}
-            contentValue={innerChild}
+            key={innerChild.Id}
+            activeItemPath={props.activeItemPath}
+            itemID={innerChild.Id.toString()}
+            nodeId={innerChild.Id.toString()}
+            label={`${innerChild.Name} ${innerChild.Id}`}
+            contentvalue={innerChild}
             isOpen={true}
-            parentIsOpen={true}
+            parentisopen={true}
             onNavigate={props.onNavigate}
-            addItemToExpanded={props.addItemToExpanded}
-            //aria-expanded={true}
+            // addItemToExpanded={props.addItemToExpanded}
+            // expandedItems={props.expandedItems}
+            // getExpandedItems={props.getExpandedItems}
           />
         )
       })
       setInnerElements(elements)
       //}
     })
-  }, [props, repo])
+  }, [props.activeItemPath, props.contentvalue.Path, props.onNavigate, repo])
 
   useEffect(() => {
-    //TODO:ha onNavigate van akkor újra tölti az egészet, ezt meg kell akadályozni
-    console.log('#tree: 1>', isOpen(props['aria-expanded']), props.contentValue.Name)
-    //ha a root element van
-    if (props.id !== undefined && props.id === '0') {
-      console.log('#tree:root', props.contentValue.Name)
+    console.log('#exptree: 2nd 0cb', props.contentvalue.Id, props.activeItemPath, props.contentvalue.Path)
+    //első gyerekeke letöltése
+    if (!childrenLoaded && props.id !== undefined && props.id === '0') {
+      console.log('#exptree: 1st lcb', props.contentvalue.Id)
       loadCollectionCB()
     }
-    //amikor a treeitem nincs nyitva, de a parent igen
-    if (!isOpen(props['aria-expanded']) && props.parentIsOpen) {
-      console.log('#tree:ottan2', props.contentValue.Name)
+    //A currentpath-t tartalmazó elemeket kinyitjuk
+    if (props.activeItemPath.startsWith(props.contentvalue.Path)) {
+      console.log('#exptree: 2nd lcb', props.contentvalue.Id, props.activeItemPath, props.contentvalue.Path)
       loadCollectionCB()
+      // const { data, fetchData, loading } = useGlobalCacheFetch('https://jsonplaceholder.typicode.com/todos', 60000)
+      // fetchData().then(() => {
+      //   console.log('fetchData result', data)
+      // })
+      setExpandItems((eItems) => eItems.add(props.contentvalue.Id.toString()))
     }
-  }, [loadCollectionCB, props, props.contentValue.Path, props.isOpen, props.parentIsOpen, repo])
-  //Első betöltésre: Ha a parent parentje closed akkor nem töltök be gyerek elemeket
-  //On click-re csak contextust kell válltani
+
+    //Első betöltésre: Ha a parent parentje closed akkor nem töltök be gyerek elemeket, amikor a treeitem nincs nyitva, de a parent igen
+    console.log('#exptree: 3rd lcb', props.contentvalue, expandItems)
+    let parentIdString = ''
+    const parentId = props.contentvalue.ParentId?.toString()
+    if (parentId !== undefined) {
+      parentIdString = parentId
+    }
+    if (expandItems.has(parentIdString)) {
+      //loadCollectionCB()
+      console.log('#exptree: parent opened', props.contentvalue, expandItems)
+    }
+  }, [
+    props,
+    childrenLoaded,
+    loadCollectionCB,
+    expandItems,
+    setExpandItems,
+    props.contentvalue.Path,
+    props.isOpen,
+    props.parentisopen,
+    repo,
+  ])
+  //console.log('#exptree on render', expandItems, props.contentvalue.Id)
+  if (props.activeItemPath.startsWith(props.contentvalue.Path)) {
+    console.log('#exptree: treeitem root render', props.contentvalue.Id, props.activeItemPath, props.contentvalue.Path)
+    //loadCollectionCB()
+    setExpandItems((eItems) => eItems.add(props.contentvalue.Id.toString()))
+  }
   return (
     <TreeItem
       {...props}
       label={
         <>
-          <ListItemIcon key={props.contentValue.Id}>
-            <Icon item={props.contentValue} />
+          <ListItemIcon key={props.contentvalue.Id}>
+            <Icon item={props.contentvalue} />
           </ListItemIcon>
-          <ListItemText style={{ fontSize: '11px!important' }} primary={props.contentValue.Name} />
+          <ListItemText
+            style={{ fontSize: '11px!important' }}
+            primary={`${props.contentvalue.Name} ${props.contentvalue.Id} `}
+          />
         </>
       }
-      id="0"
-      TransitionComponent={TransitionComponent}
+      // id="1"
+
       onIconClick={() => {
-        //console.log('#tree: letöltöm a gyerekeket')
-        loadCollectionCB()
+        //Ha a lenyílóra kattintasz akkor hozzáadjuk hogy őt ki kell nyitni
+        if (expandItems.has(props.contentvalue.Id.toString())) {
+          const deleteResult = expandItems.delete(props.contentvalue.Id.toString())
+          if (deleteResult) {
+            // setExpandItems((eItems) => eItems)
+            console.log('#exptree: close', props.contentvalue.Id, expandItems)
+          }
+          loadCollectionCB()
+        } else {
+          //setExpandItems((eItems) => eItems.add(props.contentvalue.Id.toString()))
+          console.log('#exptree: open', props.contentvalue.Id, expandItems)
+        }
       }}
       onLabelClick={() => {
-        console.log('#tree:labelclicked')
-        props.onNavigate(props.contentValue)
+        //On click-re csak contextust kell válltani
+        props.onNavigate(props.contentvalue)
       }}>
       {innerElements}
     </TreeItem>

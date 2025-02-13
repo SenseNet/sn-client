@@ -18,6 +18,7 @@ export function UserNameFormatter(props: SimpleContentProps) {
   function GetEditLink(user: any) {
     return `/users-and-groups/explorer/edit?content=${(user as User).Path?.replace('/Root/IMS', '')}`
   }
+
   if (IsUserExists(props.value)) {
     return (
       <a href={GetEditLink(props.value)} title={`Open ${props.value?.Path} for Edit`} target="_blank" rel="noreferrer">

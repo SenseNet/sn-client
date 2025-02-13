@@ -5,7 +5,7 @@ import { SimpleTextValueProps } from '../Props/SimpleTextValueProps'
 export function IconFormatter(props: SimpleTextValueProps) {
   return (
     <>
-      <span className="icon" title={(props.value as any).Type}>
+      <span className="icon" title={`${(props.value as any)?.Type.toString()}`}>
         {<Icon item={props.value} />}
       </span>
     </>

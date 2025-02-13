@@ -1,10 +1,10 @@
-import { Button } from '@material-ui/core'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon'
 import TreeView from '@material-ui/lab/TreeView'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import ExpandedItemsProvider, { ExpandItemsContext } from './Contexts/ExpandedItemsProvider'
 import { SimpleTreeProps } from './Props/SimpleTreeProps'
 import { StyledTreeItem } from './StyledTreeItem'
 
@@ -45,60 +45,62 @@ export function SimpleTree(props: SimpleTreeProps) {
   const classes = useStyles()
   const repo = useRepository()
   const [rootElement, setRootElement] = useState<GenericContent>()
-  const [elementsLoaded, setElemetnsLoaded] = useState<boolean>()
-  const [expandItems, setExpandItems] = useState<string[]>([])
-  const addItemToExpanded = useCallback(
-    async (content: GenericContent) => {
-      if (props.activeItemPath.startsWith(content.Path)) {
-        console.log('#tree: additemtoxpand =>', props.activeItemPath, content.Path)
-        const expitems: string[] = expandItems
-        expitems.push(content.Id.toString())
-        console.log('#tree: ExpItems-=>', expandItems)
-        setExpandItems(expitems)
-      }
-    },
-    [expandItems, props.activeItemPath],
-  )
+
+  const expContext = useContext(ExpandItemsContext)
+  if (!expContext) {
+    throw new Error('SimpleTree must be used within a ExpandItemsProvider')
+  }
+
+  const [expandItems, setExpandItems] = expContext
   const loadRoot = useCallback(async () => {
-    if (!elementsLoaded) {
-      setElemetnsLoaded(true)
-      let rootElementPath = '/Root/Content'
-      if (window.location.pathname === '/custom/explorer/root/') {
-        rootElementPath = '/Root'
-      }
-      const result = await repo.load<GenericContent>({
-        idOrPath: rootElementPath,
-        oDataOptions: { select: ['Path', 'DisplayName', 'Name', 'Actions'] },
-      })
-      setRootElement(result.d)
-      addItemToExpanded(result.d)
+    console.log('#exptree_looadroot')
+    let rootElementPath = '/Root/Content'
+    if (window.location.pathname === '/custom/explorer/root/') {
+      rootElementPath = '/Root'
     }
-  }, [addItemToExpanded, elementsLoaded, repo])
-  loadRoot()
+    const result = await repo.load<GenericContent>({
+      idOrPath: rootElementPath,
+      oDataOptions: { select: ['Path', 'DisplayName', 'Name', 'Actions'] },
+    })
+    setRootElement(result.d)
+  }, [repo])
+  useEffect(() => {
+    loadRoot()
+  }, [loadRoot, props.rootLoaded])
   if (rootElement !== undefined) {
+    setExpandItems((eItems) => eItems.add(rootElement.Id.toString()))
     return (
-      <>
-        <TreeView
-          className={`${classes.root}`}
-          defaultExpanded={expandItems}
-          defaultCollapseIcon={<MinusSquare />}
-          defaultExpandIcon={<PlusSquare />}>
-          <StyledTreeItem
-            addItemToExpanded={addItemToExpanded}
-            onNavigate={props.onNavigate}
-            nodeId={`${rootElement.Id.toString()}`}
-            id="0"
-            // itemID={rootElement.Id.toString()}
-            label={props.activeItemPath}
-            aria-expanded={true}
-            isOpen={false}
-            parentIsOpen={true}
-            contentValue={rootElement}
-          />
-        </TreeView>
-      </>
+      // <ExpandedItemsProvider>
+      <TreeView
+        className={`${classes.root}`}
+        //defaultExpanded={[...expandItems]} //{['1124', '1387']}
+        expanded={[...expandItems]}
+        onNodeToggle={(event, nodeIds) => {
+          console.log('#exptree_onnodetoggle', nodeIds, event, props.activeItemPath)
+          //const newExpandItems = new Set(expandItems)
+          //newExpandItems.add('1391')
+          //newExpandItems.add('1392')
+
+          setExpandItems(new Set(nodeIds))
+        }}
+        defaultCollapseIcon={<MinusSquare />}
+        defaultExpandIcon={<PlusSquare />}>
+        <StyledTreeItem
+          id={'0'}
+          onNavigate={props.onNavigate}
+          nodeId={`${rootElement.Id.toString()}`}
+          itemID={rootElement.Id.toString()}
+          activeItemPath={props.activeItemPath}
+          aria-expanded={true}
+          isOpen={false}
+          parentisopen={true}
+          contentvalue={rootElement}
+        />
+      </TreeView>
+      // </ExpandedItemsProvider>
     )
   } else {
+    console.log('#exptree: rootElement is undefined')
     return <></>
   }
 }

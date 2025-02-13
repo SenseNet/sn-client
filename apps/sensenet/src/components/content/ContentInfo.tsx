@@ -11,8 +11,8 @@ import { contextMenuODataOptions } from '../context-menu/context-menu-odata-opti
 import { getIcon } from '../context-menu/icons'
 import { useContextMenuActions } from '../context-menu/use-context-menu-actions'
 import { Icon } from '../Icon'
+import SimpleTabs from '../tabs/SimpleTabs'
 import { ContentInfoProps } from './Props/ContentInfoProps'
-
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     flexGrow: 1,
@@ -60,7 +60,6 @@ export function ContentInfo<T extends GenericContent = GenericContent>(this: any
 
   useEffect(() => {
     if (content) {
-      console.log('#actions: cc==>', content)
       setActionsWopi(content)
     }
   }, [content, setActionsWopi])

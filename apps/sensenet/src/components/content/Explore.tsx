@@ -25,6 +25,7 @@ import { EditBinary } from '../edit/edit-binary'
 import { FullScreenLoader } from '../full-screen-loader'
 import { Grid } from '../grid/Grid'
 // @ts-ignore
+import ExpandedItemsProvider from '../tree/Contexts/ExpandedItemsProvider'
 import { SimpleTree } from '../tree/SimpleTree'
 // @ts-ignore
 import TreeWithData from '../tree/tree-with-data'
@@ -247,17 +248,19 @@ export function Explore({
                     />
                   ) : (
                     <div className="simpletree">
-                      <SimpleTree
-                        onItemClick={(item) => {
-                          onNavigate(item)
-                        }}
-                        parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
-                        activeItemPath={currentPath}
-                        onTreeLoadingChange={onTreeLoadingChange}
-                        loadSettings={loadTreeSettings}
-                        onNavigate={onNavigate}
-                        rootLoaded={false}
-                      />
+                      <ExpandedItemsProvider>
+                        <SimpleTree
+                          onItemClick={(item) => {
+                            onNavigate(item)
+                          }}
+                          parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
+                          activeItemPath={currentPath}
+                          onTreeLoadingChange={onTreeLoadingChange}
+                          loadSettings={loadTreeSettings}
+                          onNavigate={onNavigate}
+                          rootLoaded={false}
+                        />
+                      </ExpandedItemsProvider>
                     </div>
                   )}
                   {/* */}

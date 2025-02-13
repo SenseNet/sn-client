@@ -255,7 +255,6 @@ export function Grid<T extends GenericContent = GenericContent>(this: any, props
     setRowItems(items)
   }, [children, sortColumn, sortDirection])
   useEffect(() => {
-    console.log('Grid: children changed')
     setSelectedIndexes([])
   }, [children])
   //examples: https://github.com/adazzle/react-data-grid/blob/v6.0.0-alpha.0/packages/react-data-grid-examples/src/scripts
@@ -268,12 +267,13 @@ export function Grid<T extends GenericContent = GenericContent>(this: any, props
         columns={columns}
         rowsCount={children.length}
         onGridSort={handleGridSort}
+        enableRowSelect={null}
+        rowScrollTimeout={null}
         height={32}
         minColumnWidth={0}
         defaultColumnOptions={{
           minWidth: 100,
           resizable: true,
-          // sortable: true,
           draggable: true,
         }}
         onRowDoubleClick={(row: any) => {
