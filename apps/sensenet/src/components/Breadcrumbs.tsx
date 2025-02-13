@@ -45,7 +45,7 @@ export function Breadcrumbs<T extends GenericContent>(props: BreadcrumbProps<T>)
                   setIsContextMenuOpened(true)
                   ev.preventDefault()
                 }}>
-                <span style={{ textTransform: 'none', fontSize: '16px' }}>{item.displayName}</span>
+                <span style={{ textTransform: 'none', fontSize: '13px' }}>{item.displayName}</span>
               </Button>
             </Tooltip>
           </DropFileArea>

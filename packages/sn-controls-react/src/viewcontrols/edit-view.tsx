@@ -48,7 +48,8 @@ const useStyles = makeStyles((theme: Theme) => {
       margin: '0 auto',
     },
     field: {
-      width: '780px',
+      minWidth: '780px',
+      width: '800%',
       margin: 'auto',
       maxWidth: '100%',
     },
@@ -59,9 +60,10 @@ const useStyles = makeStyles((theme: Theme) => {
       marginRight: 20,
     },
     advancedFieldContainer: {
-      padding: '15px 0',
-      fontSize: '18px',
-      width: '780px',
+      padding: '15px 10px',
+      fontSize: '16px',
+      minWidth: '780px',
+      width: '100%',
       maxWidth: '100%',
       margin: 'auto',
     },

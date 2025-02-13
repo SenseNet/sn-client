@@ -40,7 +40,7 @@ const useStyles = makeStyles(() => {
       left: 0,
       position: 'absolute',
       padding: '20px',
-      bottom: 0,
+      top: 0,
       textAlign: 'right',
       right: '1%',
     },

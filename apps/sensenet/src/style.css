@@ -105,16 +105,27 @@ SimpleTree
 }
 
 .gridTopPanel {
-  min-height: 40px;
+  height: 60px;
   padding: 10px;
   padding-left: 4rem;
   position: relative;
   border: 1px solid #dddddd;
   background-color: #f9f9f9;
 }
+.gridTopPanel .MuiSvgIcon-root {
+  width: 18px;
+  height: 18px;
+}
+.gridTopPanel .MuiButton-label div {
+  font-size: 12px;
+  text-transform: none;
+}
 .gridTopPanel .svgicon {
   width: 48px;
   height: 48px;
+}
+.gridTopPanel h1 {
+  font-size: 16px;
 }
 .gridTopPanel a,
 .gridTopPanel h1,
@@ -184,7 +195,7 @@ SimpleTree
 .buttonPanel {
   float: right;
   padding-bottom: 1rem;
-  margin-top: -2rem;
+  margin-top: -1.7rem;
 }
 .buttonPanel .MuiListItemIcon-root {
   min-width: 25px !important;
