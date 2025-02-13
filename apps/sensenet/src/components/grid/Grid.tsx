@@ -11,6 +11,7 @@ import { CheckBoxFormatter } from './Formatters/CheckBoxFormatter'
 import { DateTimeFormatter } from './Formatters/DateTimeFormatter'
 import { DisplayNameFormatter } from './Formatters/DisplayNameFormatter'
 import { IconFormatter } from './Formatters/IconFormatter'
+import { LockedFormatter } from './Formatters/LockedFormatter'
 import { UserNameFormatter } from './Formatters/UserNameFormatter'
 import { GridProps } from './Props/GridProps'
 import { EmptyRowsView } from './Views/EmptyRowsView'
@@ -37,7 +38,6 @@ export function Grid<T extends GenericContent = GenericContent>(this: any, props
     [props],
   )
   const columns = [
-    { key: 'check', name: '#', width: 0, formatter: CheckBoxFormatter, flex: 1 },
     { key: 'icon', name: '', width: 35, formatter: IconFormatter, flex: 1 },
     { key: 'id', name: 'ID', width: 55, sortable: true, flex: 1 },
     { key: 'index', name: 'Idx', width: 35, sortable: true, flex: 1 },
@@ -63,7 +63,7 @@ export function Grid<T extends GenericContent = GenericContent>(this: any, props
       formatter: DisplayNameFormatter,
       flex: 1,
     },
-    { key: 'Locked', name: 'Locked', resizable: true, width: 60, sortable: false, flex: 1 },
+    { key: 'Locked', name: 'Locked', resizable: true, width: 60, sortable: false, flex: 1, formatter: LockedFormatter },
     {
       key: 'CreatedBy',
       name: 'Created By',
