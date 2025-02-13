@@ -269,6 +269,7 @@ export function Grid<T extends GenericContent = GenericContent>(this: any, props
       <ReactDataGrid
         ref={refContainer}
         rowKey="id"
+        rowHeight={25}
         rowGetter={rowGetter}
         columns={columns}
         rowsCount={children.length}
