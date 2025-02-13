@@ -72,6 +72,7 @@ SimpleTree
   width: 400px;
   overflow: auto;
   padding: 5px;
+  border-right: 1px solid #ccc;
 }
 
 .simpletree .MuiTypography-body1 {

@@ -70,7 +70,7 @@ export const ImageView: React.FC<ImageViewProps> = (props) => {
   const [currentContent, setCurrentContent] = useState<GenericContent>()
   const history = useHistory()
   const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
-
+  const [getBlob, setBlob] = useState<Blob>()
   useEffect(() => {
     async function getCurrentContent() {
       const result = await repository.load({
@@ -80,7 +80,23 @@ export const ImageView: React.FC<ImageViewProps> = (props) => {
     }
     getCurrentContent()
   }, [props.contentPath, repository])
-
+  useEffect(() => {
+    const url = `${repository.configuration.repositoryUrl + contentPath}?t=${Date.now()}`
+    const { token } = repository.configuration
+    fetch(url, {
+      method: 'get',
+      headers: new Headers({
+        Authorization: `Bearer ${token}`,
+      }),
+    })
+      .then((response) => response.blob())
+      .then((blob) => {
+        setBlob(blob)
+      })
+      .catch((error) => {
+        console.error('Error fetching the file:', error)
+      })
+  }, [contentPath, repository.configuration])
   return (
     <div className={classes.imageViewContainer}>
       <div className={classes.titleContainer}>
@@ -91,11 +107,7 @@ export const ImageView: React.FC<ImageViewProps> = (props) => {
         </div>
       </div>
       <div className={classes.imageContainer}>
-        <img
-          className={classes.image}
-          src={`${repository.configuration.repositoryUrl}${contentPath}?t=${Date.now()}`}
-          alt=""
-        />
+        {getBlob && <img className={classes.image} src={URL.createObjectURL(getBlob)} alt="" />}
       </div>
       <div className={classes.buttonWrapper}>
         <Button

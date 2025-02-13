@@ -1,5 +1,5 @@
 import { GenericContent, User } from '@sensenet/default-content-types'
-import { CurrentChildrenContext, CurrentContentContext } from '@sensenet/hooks-react'
+import { CurrentChildrenContext, CurrentContentContext, LoadSettingsContext } from '@sensenet/hooks-react'
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 // @ts-ignore
 import ReactDataGrid from 'react-data-grid'
@@ -23,6 +23,7 @@ export function Grid<T extends GenericContent = GenericContent>(this: any, props
   const [rowItems, setRowItems] = useState<any[]>([])
   const [sortColumn, setSortColumn] = useState<string>('DisplayName')
   const [sortDirection, setSortDirection] = useState<string>('ASC')
+  const loadSettings = useContext(LoadSettingsContext)
   // @ts-ignore
 
   const parentContent = useContext(CurrentContentContext)
@@ -110,7 +111,12 @@ export function Grid<T extends GenericContent = GenericContent>(this: any, props
       flex: 1,
     },
   ]
-
+  useEffect(() => {
+    loadSettings.setLoadChildrenSettings({
+      ...loadSettings.loadChildrenSettings,
+      expand: ['CreatedBy', 'ModifiedBy'],
+    })
+  }, [loadSettings, loadSettings.loadChildrenSettings])
   const rowGetter = (rowNumber: number) => rowItems[rowNumber]
 
   const handleGridSort = (sColumn: any, sDirection: any) => {
