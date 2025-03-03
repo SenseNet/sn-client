@@ -94,6 +94,8 @@ export function OperationsDialog(props: OperationsDialogProps) {
         body: formJson,
       })
 
+      logger.information({ message: localization.success })
+
       closeLastDialog()
     } catch (error) {
       logger.error({ message: error.message })
