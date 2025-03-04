@@ -13,6 +13,7 @@ import {
   DateRangePickerProps,
   DeleteContentDialogProps,
   ExecuteActionDialogProps,
+  OperationsDialogProps,
   PermissionEditorDialogProps,
   ReferenceContentListProps,
   RestoreProps,
@@ -24,6 +25,7 @@ export type DialogWithProps = (
   | { name: 'delete'; props: DeleteContentDialogProps }
   | { name: 'error'; props: ErrorBoundaryState }
   | { name: 'copy-move'; props: CopyMoveDialogProps }
+  | { name: 'operation'; props: OperationsDialogProps }
   | { name: 'check-in'; props: CheckInProps }
   | { name: 'are-you-sure'; props: AreYouSureProps }
   | { name: 'approve'; props: ApproveProps }

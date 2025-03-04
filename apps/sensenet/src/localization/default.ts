@@ -685,6 +685,12 @@ const values = {
     trash: 'Trash',
     '/Root/ContentTemplates': 'Content Templates',
   },
+  operations: {
+    title: 'Action Framkework Demo',
+    submit: 'Upload',
+    cancel: 'Cancel',
+    success: 'Succesfull Operation!',
+  },
 }
 
 export default values
