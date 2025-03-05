@@ -99,7 +99,7 @@ export function OperationsDialog(props: OperationsDialogProps) {
         body: formJson,
       })
 
-      const success = result.ToastMassge || ''
+      const success = result?.ToastMassge || ''
 
       logger.information({ message: `${localization.success} ${success}` })
 
