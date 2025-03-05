@@ -26,7 +26,7 @@ type UIDescription = {
 }
 
 type OperationResult = {
-  ToastMassge?: string
+  ToastMessage?: string
 }
 
 const useStyles = makeStyles(() =>
@@ -99,9 +99,9 @@ export function OperationsDialog(props: OperationsDialogProps) {
         body: formJson,
       })
 
-      const success = result?.ToastMassge || ''
+      const success = `: ${result?.ToastMessage}` || ''
 
-      logger.information({ message: `${localization.success} ${success}` })
+      logger.information({ message: `${localization.success}${success}` })
 
       closeLastDialog()
     } catch (error) {
