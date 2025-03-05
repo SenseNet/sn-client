@@ -689,7 +689,7 @@ const values = {
     title: 'Action Framkework Demo',
     submit: 'Upload',
     cancel: 'Cancel',
-    success: 'Succesfull Operation!',
+    success: 'Succesfull Operation:',
   },
 }
 
