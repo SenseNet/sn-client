@@ -24,6 +24,11 @@ type UIDescription = {
     inputProps: React.HTMLProps<HTMLInputElement>
   }>
 }
+
+type OperationResult = {
+  ToastMassge?: string
+}
+
 const useStyles = makeStyles(() =>
   createStyles({
     form: {
@@ -87,14 +92,16 @@ export function OperationsDialog(props: OperationsDialogProps) {
     })
 
     try {
-      await repository.executeAction<any, UIDescription>({
+      const result = await repository.executeAction<any, OperationResult>({
         method: 'POST',
         idOrPath: props.content.Path,
         name: props.OperationName,
         body: formJson,
       })
 
-      logger.information({ message: localization.success })
+      const success = result?.ToastMassge || ''
+
+      logger.information({ message: `${localization.success} ${success}` })
 
       closeLastDialog()
     } catch (error) {
