@@ -42,13 +42,15 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
       const prevAuthConfig = JSON.parse(configString)
       setIdentityServerUrl(prevAuthConfig.authority)
 
-      if (repoFromUrl && prevAuthConfig.extraQueryParams.snrepo !== repoFromUrl) {
+      // Access extraQueryParams via userManagerSettings
+      const extraQueryParams = prevAuthConfig.userManagerSettings?.extraQueryParams
+      if (repoFromUrl && extraQueryParams?.snrepo !== repoFromUrl) {
         return setAuthState({ repoUrl: repoFromUrl, config: null })
       }
 
       setAuthState((oldState) => ({
-        repoUrl: prevAuthConfig?.extraQueryParams.snrepo || '',
-        config: prevAuthConfig?.extraQueryParams.snrepo === oldState.repoUrl ? prevAuthConfig : null,
+        repoUrl: extraQueryParams?.snrepo || '',
+        config: extraQueryParams?.snrepo === oldState.repoUrl ? prevAuthConfig.userManagerSettings : null,
       }))
     } else {
       repoFromUrl && setAuthState({ repoUrl: repoFromUrl, config: null })
@@ -64,6 +66,7 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
       setIsLoginInProgress(true)
       const config = await getAuthConfig(authState.repoUrl)
       window.localStorage.setItem(authConfigKey, JSON.stringify(config))
+      // Set only userManagerSettings in authState to match the expected type
       setAuthState((oldState) => ({ ...oldState, config: config.userManagerSettings }))
     } catch (error) {
       logger.warning({ data: error, message: `Couldn't connect to ${authState.repoUrl}` })

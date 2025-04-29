@@ -26,7 +26,7 @@ import { FullScreenLoader } from '../full-screen-loader'
 import { Grid } from '../grid/Grid'
 // @ts-ignore
 import ExpandedItemsProvider from '../tree/Contexts/ExpandedItemsProvider'
-import { SimpleTree } from '../tree/SimpleTree'
+import { SimpleTree } from '../tree/simpletree'
 // @ts-ignore
 import TreeWithData from '../tree/tree-with-data'
 import { BrowseView, EditView, ImageView, NewView, PermissionView, VersionView } from '../view-controls'

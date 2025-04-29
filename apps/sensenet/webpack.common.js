@@ -29,10 +29,11 @@ module.exports = {
   },
   plugins: [
     new webpack.ProvidePlugin({
-        "React": "react",
+      React: 'react',
     }),
     new webpack.EnvironmentPlugin({
       APP_VERSION: require('./package.json').version,
+      AUTH_TYPE: process.env.AUTH_TYPE || 'SNAuth', // Default to SNAuth if not specified
     }),
     new MonacoWebpackPlugin({
       languages: ['json', 'xml', 'html', 'javascript', 'markdown'],
