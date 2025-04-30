@@ -1,307 +1,181 @@
-import { GenericContent, User } from '@sensenet/default-content-types'
-import { CurrentChildrenContext, CurrentContentContext, LoadSettingsContext } from '@sensenet/hooks-react'
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
-// @ts-ignore
-import ReactDataGrid from 'react-data-grid'
+import { LinearProgress, useTheme } from '@material-ui/core'
+import { GenericContent } from '@sensenet/default-content-types'
+import { CurrentChildrenContext, CurrentContentContext } from '@sensenet/hooks-react'
+import {
+  CellContextMenuEvent,
+  ColDef,
+  ColumnApi,
+  GridApi,
+  GridReadyEvent,
+  RowDoubleClickedEvent,
+  SelectionChangedEvent,
+} from 'ag-grid-community'
+import { AgGridReact } from 'ag-grid-react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useSelectionService } from '../../hooks'
-
+import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { DropFileArea } from '../DropFileArea'
-import { ActionFormatter } from './Formatters/ActionFormatter'
-import { CheckBoxFormatter } from './Formatters/CheckBoxFormatter'
-import { DateTimeFormatter } from './Formatters/DateTimeFormatter'
-import { DisplayNameFormatter } from './Formatters/DisplayNameFormatter'
-import { IconFormatter } from './Formatters/IconFormatter'
-import { LockedFormatter } from './Formatters/LockedFormatter'
-import { UserNameFormatter } from './Formatters/UserNameFormatter'
+import { contentColumnDefs } from './Cols/ColumnDefs.'
 import { GridProps } from './Props/GridProps'
-import { EmptyRowsView } from './Views/EmptyRowsView'
+import { useGridLoading } from './Providers/GridLoadingProvider'
 
 export function Grid<T extends GenericContent = GenericContent>(this: any, props: GridProps<T>) {
-  // @ts-ignore
+  const { isGridLoading, setIsGridLoading } = useGridLoading()
   const selectionService = useSelectionService()
-  const [selectedIndexes, setSelectedIndexes] = useState<any[]>([])
-  const [rowItems, setRowItems] = useState<any[]>([])
-  const [sortColumn, setSortColumn] = useState<string>('DisplayName')
-  const [sortDirection, setSortDirection] = useState<string>('ASC')
-  const loadSettings = useContext(LoadSettingsContext)
-  // @ts-ignore
-
   const parentContent = useContext(CurrentContentContext)
-  const children = useContext(CurrentChildrenContext) as GenericContent[]
-  const handleActivateItem = useCallback(
-    (item: T) => {
-      if (item.IsFolder) {
-        props.onParentChange(item)
-      } else {
-        props.onActivateItem(item)
-      }
-    },
-    [props],
-  )
-  const columns = [
-    { key: 'icon', name: '', width: 35, formatter: IconFormatter, flex: 1 },
-    { key: 'id', name: 'ID', width: 55, sortable: true, flex: 1 },
-    { key: 'index', name: 'Idx', width: 35, sortable: true, flex: 1 },
-    {
-      key: 'Name',
-      name: 'Name',
-      resizable: true,
-      width: 200,
-      autofill: false,
-      sortable: true,
-      filterable: true,
-      formatter: DisplayNameFormatter,
-      flex: 1,
-    },
-    {
-      key: 'DisplayName',
-      name: 'Display Name',
-      resizable: true,
-      minWidth: 200,
-      autofill: true,
-      sortable: true,
-      filterable: true,
-      formatter: DisplayNameFormatter,
-      flex: 1,
-    },
-    { key: 'Locked', name: 'Locked', resizable: true, width: 60, sortable: false, flex: 1, formatter: LockedFormatter },
-    {
-      key: 'CreatedBy',
-      name: 'Created By',
-      resizable: true,
-      sortable: true,
-      width: 130,
-      formatter: UserNameFormatter,
-      flex: 1,
-    },
-    {
-      key: 'CreationDate',
-      name: 'Creation Date',
-      resizable: true,
-      sortable: true,
-      width: 130,
-      formatter: DateTimeFormatter,
-      flex: 1,
-    },
-    {
-      key: 'ModifiedBy',
-      name: 'Modified By',
-      resizable: true,
-      sortable: true,
-      width: 130,
-      formatter: UserNameFormatter,
-      flex: 1,
-    },
-    {
-      key: 'ModificationDate',
-      name: 'Modification Date',
-      resizable: true,
-      sortable: true,
-      width: 130,
-      formatter: DateTimeFormatter,
-      flex: 1,
-    },
-    {
-      key: 'Actions',
-      name: 'Actions',
-      resizable: false,
-      sortable: false,
-      width: 60,
-      formatter: ActionFormatter,
-      flex: 1,
-    },
-  ]
+  const children = (useContext(CurrentChildrenContext) as GenericContent[]).sort((a, b) => {
+    const aIsFolder = a.Type?.toLowerCase().includes('folder') ?? false
+    const bIsFolder = b.Type?.toLowerCase().includes('folder') ?? false
+
+    if (aIsFolder && !bIsFolder) return -1
+    if (!aIsFolder && bIsFolder) return 1
+
+    return (a.DisplayName ?? '').localeCompare(b.DisplayName ?? '')
+  })
+
+  const theme = useTheme()
+  const [contextMenuItem, setContextMenuItem] = useState<GenericContent | null>(null)
+  const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
+  const [contextMenuAnchorPos, setContextMenuAnchorPos] = useState<{ top: number; left: number }>({
+    top: 0,
+    left: 0,
+  })
+  const gridApi = useRef<GridApi | null>(null)
+  const columnApi = useRef<ColumnApi | null>(null)
+  const gridRef = useRef<HTMLDivElement>(null)
+  const fixedColumns: string[] = ['0', 'Icon', 'Actions']
+
+  const [columnDefs, setColumnDefs] = useState<ColDef[]>(props.colDef ?? contentColumnDefs)
+
   useEffect(() => {
-    loadSettings.setLoadChildrenSettings({
-      ...loadSettings.loadChildrenSettings,
-      expand: ['CreatedBy', 'ModifiedBy'],
-    })
-  }, [loadSettings, loadSettings.loadChildrenSettings])
-  const rowGetter = (rowNumber: number) => rowItems[rowNumber]
+    setIsGridLoading(false)
+  }, [children, setIsGridLoading])
 
-  const handleGridSort = (sColumn: any, sDirection: any) => {
-    setSortColumn(sColumn)
-    setSortDirection(sDirection)
+  useEffect(() => {
+    setIsGridLoading(true)
+  }, [parentContent, setIsGridLoading])
+
+  const onRowDoubleClicked = (item: RowDoubleClickedEvent) => {
+    setIsGridLoading(true)
+    item.data.isFolder ? props.onParentChange(item.data) : props.onActivateItem(item.data)
   }
-  const refContainer = useRef()
 
-  if (refContainer.current) {
-    const currentContainer = refContainer.current as any
-    let sumofwidths = 0
-    let needAutoFillIndex = -1
-    for (let i = 0; i < columns.length; i++) {
-      if (columns[i].width !== undefined) {
-        const numb = Number(columns[i].width)
-        if (!Number.isNaN(numb)) sumofwidths += numb
-      }
-      if (columns[i].autofill !== undefined && columns[i].autofill === true) {
-        needAutoFillIndex = i
+  const onSelectionChanged = (params: SelectionChangedEvent) => {
+    const selectedIds = params.api.getSelectedRows().map((c) => c.Id)
+    const x: GenericContent[] = []
+    for (const id of selectedIds) {
+      if (children.length) {
+        const item = children.find((c) => c.Id === id)
+        if (item) {
+          x.push(item)
+        }
       }
     }
-    if (needAutoFillIndex > -1) {
-      columns[needAutoFillIndex].width = Number(currentContainer.getTotalWidth()) - sumofwidths - 100
+    selectionService.selection.setValue(x)
+  }
+
+  const onContextMenu = (event: CellContextMenuEvent) => {
+    event.event?.preventDefault()
+    event.event?.stopPropagation()
+    if (!event.node || !event.event) return
+    const mouseEvent = event.event as MouseEvent
+    setContextMenuItem(event.data)
+    setContextMenuAnchorPos({ top: mouseEvent.clientY, left: mouseEvent.clientX })
+    setIsContextMenuOpened(true)
+  }
+
+  const onColumnResized = (event: any) => {
+    if (event.finished) {
+      saveColumnFlexRatios()
     }
   }
-  useEffect(() => {
-    const selected = selectedIndexes.map((i) => rowItems[i].Content)
-    selectionService.selection.setValue(selected)
-  }, [rowItems, selectedIndexes, selectionService.selection])
+
+  const restoreColumnFlexRatios = () => {
+    if (columnApi.current) {
+      const savedRatios = localStorage.getItem('gridColumnFlexRatios')
+      if (savedRatios) {
+        const flexRatios = JSON.parse(savedRatios)
+        const updatedDefs = columnDefs.map((col) => {
+          const savedRatio = flexRatios.find((r: { colId: string; flex: number }) => r.colId === col.field)
+          return savedRatio ? { ...col, flex: savedRatio.flex } : col
+        })
+        setColumnDefs(updatedDefs)
+      }
+    }
+  }
+
+  const saveColumnFlexRatios = () => {
+    if (columnApi.current && gridRef.current) {
+      const totalWidth = gridRef.current.clientWidth
+      const columnState = columnApi.current.getColumnState()
+      const flexRatios = columnState
+        .filter((col) => !fixedColumns.includes(col.colId))
+        .map((col) => ({
+          colId: col.colId,
+          flex: col.width
+            ? (col.width / totalWidth) * 10
+            : columnDefs.find((d: { field: string }) => d.field === col.colId)?.flex || 1,
+        }))
+      localStorage.setItem('gridColumnFlexRatios', JSON.stringify(flexRatios))
+    }
+  }
+
+  const onGridReady = (params: GridReadyEvent) => {
+    setIsGridLoading(false)
+    gridApi.current = params.api
+    columnApi.current = params.columnApi
+    restoreColumnFlexRatios()
+  }
 
   useEffect(() => {
-    for (let i = 0; i < selectedIndexes.length; i++) {
-      const a = selectedIndexes[i]
-      const item = rowItems[a]
-      if (
-        props !== undefined &&
-        props.onActiveItemChange !== undefined &&
-        item !== undefined &&
-        item.Content !== undefined
-      ) {
-        props.onActiveItemChange(item.Content)
-      }
+    if (gridApi.current) {
+      gridApi.current.setColumnDefs([...props.colDef])
     }
-  }, [props, rowItems, selectedIndexes])
-  useEffect(() => {
-    const sortedchildrens = children
-    if (sortDirection !== 'NONE') {
-      sortedchildrens.sort((a: GenericContent, b: GenericContent) => {
-        let result = 0
-        if (sortColumn === 'index') {
-          const aIndex = a.Index ?? 0
-          const bIndex = b.Index ?? 0
-          if (sortDirection === 'ASC') {
-            result = aIndex - bIndex
-          }
-          if (sortDirection === 'DESC') {
-            result = bIndex - aIndex
-          }
-        }
-        if (sortColumn === 'DisplayName') {
-          const aCol = (a.DisplayName ?? '').trim()
-          const bCol = (b.DisplayName ?? '').trim()
-          if (sortDirection === 'ASC') {
-            result = aCol.localeCompare(bCol)
-          }
-          if (sortDirection === 'DESC') {
-            result = bCol.localeCompare(aCol)
-          }
-        }
-        if (sortColumn === 'Name') {
-          const aCol = (a.Name ?? '').trim()
-          const bCol = (b.Name ?? '').trim()
-          if (sortDirection === 'ASC') {
-            result = aCol.localeCompare(bCol)
-          }
-          if (sortDirection === 'DESC') {
-            result = bCol.localeCompare(aCol)
-          }
-        }
-        if (sortColumn === 'CreatedBy') {
-          const aCol = `${(a.CreatedBy as User).Domain}\\${(a.CreatedBy as User).LoginName}`
-          const bCol = `${(b.CreatedBy as User).Domain}\\${(b.CreatedBy as User).LoginName}`
-          if (sortDirection === 'ASC') {
-            result = aCol.localeCompare(bCol)
-          }
-          if (sortDirection === 'DESC') {
-            result = bCol.localeCompare(aCol)
-          }
-        }
-        if (sortColumn === 'ModifiedBy') {
-          const aCol = `${(a.ModifiedBy as User).Domain}\\${(a.ModifiedBy as User).LoginName}`
-          const bCol = `${(b.ModifiedBy as User).Domain}\\${(b.ModifiedBy as User).LoginName}`
-          if (sortDirection === 'ASC') {
-            result = aCol.localeCompare(bCol)
-          }
-          if (sortDirection === 'DESC') {
-            result = bCol.localeCompare(aCol)
-          }
-        }
-        if (sortColumn === 'CreationDate') {
-          const aCol = a.CreationDate ?? ''
-          const bCol = b.CreationDate ?? ''
-          if (sortDirection === 'ASC') {
-            result = aCol.localeCompare(bCol)
-          }
-          if (sortDirection === 'DESC') {
-            result = bCol.localeCompare(aCol)
-          }
-        }
-        if (sortColumn === 'ModificationDate') {
-          const aCol = a.CreationDate ?? ''
-          const bCol = b.CreationDate ?? ''
-          if (sortDirection === 'ASC') {
-            result = aCol.localeCompare(bCol)
-          }
-          if (sortDirection === 'DESC') {
-            result = bCol.localeCompare(aCol)
-          }
-        }
-        return result
-      })
-    }
-    const items = []
-    for (let i = 0; i < sortedchildrens.length; i++) {
-      const child = sortedchildrens[i]
-      const item = {
-        id: child.Id,
-        index: child.Index,
-        icon: child,
-        DisplayName: child.DisplayName,
-        Name: child.Name,
-        Locked: child.Locked,
-        CreatedBy: child.CreatedBy,
-        CreationDate: child.CreationDate,
-        ModifiedBy: child.ModifiedBy,
-        ModificationDate: child.ModificationDate,
-        Content: child,
-        Actions: child,
-      }
-      items.push(item)
-    }
-    setRowItems(items)
-  }, [children, sortColumn, sortDirection])
-  useEffect(() => {
-    setSelectedIndexes([])
-  }, [children])
-  //examples: https://github.com/adazzle/react-data-grid/blob/v6.0.0-alpha.0/packages/react-data-grid-examples/src/scripts
+  }, [props.colDef])
+
   return (
     <DropFileArea parentContent={parentContent} style={{ height: '100%', overflow: 'hidden' }}>
-      <ReactDataGrid
-        ref={refContainer}
-        rowKey="id"
-        rowHeight={25}
-        rowGetter={rowGetter}
-        columns={columns}
-        rowsCount={children.length}
-        onGridSort={handleGridSort}
-        enableRowSelect={null}
-        rowScrollTimeout={null}
-        height={32}
-        minColumnWidth={0}
-        defaultColumnOptions={{
-          minWidth: 100,
-          resizable: true,
-          draggable: true,
-        }}
-        onRowDoubleClick={(row: any) => {
-          handleActivateItem(rowItems[row].Content)
-        }}
-        rowSelection={{
-          showCheckbox: true,
-          enableShiftSelect: true,
-          onRowsSelected: (rows: any[]) => {
-            setSelectedIndexes(selectedIndexes.concat(rows.map((item: any) => (item as any).rowIdx)))
-          },
-          onRowsDeselected: (rows: any[]) => {
-            const rowIndexes = rows.map((r) => r.rowIdx)
-            setSelectedIndexes(selectedIndexes.filter((i) => rowIndexes.indexOf(i) === -1))
-          },
-          selectBy: {
-            indexes: selectedIndexes,
-          },
-          emptyRowsView: { EmptyRowsView },
-        }}
-      />
+      {isGridLoading && (
+        <LinearProgress
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            zIndex: 10,
+          }}
+        />
+      )}
+      <div ref={gridRef} style={{ height: '100%', width: '100%' }}>
+        <AgGridReact
+          rowData={children}
+          columnDefs={columnDefs}
+          className={theme.palette.type === 'light' ? 'ag-theme-balham' : 'ag-theme-balham-dark'}
+          rowSelection={'multiple'}
+          tooltipShowDelay={100}
+          onRowDoubleClicked={onRowDoubleClicked}
+          preventDefaultOnContextMenu={true}
+          onGridReady={onGridReady}
+          onSelectionChanged={onSelectionChanged}
+          onCellContextMenu={(event) => onContextMenu(event)}
+          onColumnResized={onColumnResized}
+        />
+      </div>
+      {contextMenuItem && (
+        <ContentContextMenu
+          isOpened={isContextMenuOpened}
+          content={contextMenuItem}
+          menuProps={{
+            anchorReference: 'anchorPosition',
+            anchorPosition: contextMenuAnchorPos,
+            BackdropProps: {
+              onClick: () => setIsContextMenuOpened(false),
+              onContextMenu: (ev) => ev.preventDefault(),
+            },
+          }}
+          onClose={() => setIsContextMenuOpened(false)}
+        />
+      )}
     </DropFileArea>
   )
 }

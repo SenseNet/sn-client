@@ -20,6 +20,7 @@ import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useQuery, useSelectionService, useSnRoute } from '../../hooks'
 import { navigateToAction } from '../../services'
 import { Icon } from '../Icon'
+import { useTreeLoading } from '../tree/Contexts/TreeLoadingProvider'
 import { DialogTitle, useDialog } from '.'
 
 export type DeleteContentDialogProps = {
@@ -40,6 +41,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
   const selectionService = useSelectionService()
   const snRoute = useSnRoute()
   const currentPath = useQuery().get('path')
+  const { setIsTreeLoading } = useTreeLoading()
   const hasUserOrGroupContent = props.content.some(
     (content) => repo.schemas.isContentFromType(content, 'User') || repo.schemas.isContentFromType(content, 'Group'),
   )
@@ -125,6 +127,8 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                       relatedRepository: repo.configuration.repositoryUrl,
                     },
                   })
+                  setIsTreeLoading(true)
+                  setIsTreeLoading(false)
                 }
                 if (result.d.errors.length) {
                   logger.warning({

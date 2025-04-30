@@ -1,12 +1,10 @@
 import React from 'react'
-// import { Icon } from '../../Icon'
 import { Icon } from '../../Icon'
-import { SimpleTextValueProps } from '../Props/SimpleTextValueProps'
-export function IconFormatter(props: SimpleTextValueProps) {
+export function IconFormatter(props: { data: string }) {
   return (
     <>
-      <span className="icon" title={`${(props.value as any)?.Type.toString()}`}>
-        {<Icon item={props.value} />}
+      <span className="icon-grid" title={`${(props.data as any)?.Type.toString()}`}>
+        {<Icon item={props.data} />}
       </span>
     </>
   )

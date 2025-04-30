@@ -82,6 +82,7 @@ const useStyles = makeStyles((theme: Theme) => {
     buttonWrapper: {
       display: 'inline-flex',
       whiteSpace: 'nowrap',
+      paddingRight: '3rem',
     },
   })
 })

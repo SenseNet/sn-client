@@ -1,26 +1,22 @@
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import { useDownload, useLogger, useRepository } from '@sensenet/hooks-react'
+import { CurrentContentContext, useDownload, useLogger, useRepository } from '@sensenet/hooks-react'
 import { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
-import { useLoadContent, useSnRoute } from '../../hooks'
+import { useSnRoute } from '../../hooks'
 import { getUrlForContent, navigateToAction } from '../../services'
 import { useDialog } from '../dialogs'
 import { contextMenuODataOptions } from './context-menu-odata-options'
 
-export function useContextMenuActions(
-  content: GenericContent,
-  isOpened: boolean,
-  setActions: (content: GenericContent) => void,
-) {
+export function useContextMenuActions(content: GenericContent, setActions: (content: GenericContent) => void) {
   const logger = useLogger('context-menu')
   const history = useHistory()
   const repository = useRepository()
   const download = useDownload(content)
   const globalClasses = useGlobalStyles()
-  const currentParent = useLoadContent({ idOrPath: content.ParentId!, isOpened }).content
+  const currentParent = useContext(CurrentContentContext)
   const { openDialog } = useDialog()
   const uiSettings = useContext(ResponsivePersonalSettings)
   const snRoute = useSnRoute()

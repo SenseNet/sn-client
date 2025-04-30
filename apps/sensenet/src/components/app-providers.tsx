@@ -10,6 +10,7 @@ import {
   ThemeProvider,
 } from '../context'
 import { ISAuthProvider, SNAuthProvider } from '../context/auth-provider'
+import PathSaver from '../context/PathSaver'
 import { ShareProvider } from '../context/ShareProvider'
 import { SnAuthRepositoryProvider } from '../context/sn-auth-repository-provider'
 import {
@@ -20,7 +21,9 @@ import {
   SearchCommandProvider,
 } from '../services'
 import { DialogProvider } from './dialogs/dialog-provider'
+import { GridLoadingProvider } from './grid/Providers/GridLoadingProvider'
 import { snInjector } from './sn-injector'
+import { TreeLoadingProvider } from './tree/Contexts/TreeLoadingProvider'
 
 export type AppProvidersProps = {
   children: ReactNode
@@ -41,29 +44,34 @@ export default function AppProviders({ children }: AppProvidersProps) {
         <PersonalSettingsContextProvider>
           <LocalizationProvider>
             <BrowserRouter>
-              <ThemeProvider>
-                {defaultAuthConfig.authType === 'IdentityServer' ? (
-                  <RepositoryProvider>
-                    <ShareProvider>
-                      <ISAuthProvider>
-                        <ResponsiveContextProvider>
-                          <DialogProvider>{children}</DialogProvider>
-                        </ResponsiveContextProvider>
-                      </ISAuthProvider>
-                    </ShareProvider>
-                  </RepositoryProvider>
-                ) : (
-                  <SnAuthRepositoryProvider>
-                    <ShareProvider>
-                      <SNAuthProvider>
-                        <ResponsiveContextProvider>
-                          <DialogProvider>{children}</DialogProvider>
-                        </ResponsiveContextProvider>
-                      </SNAuthProvider>
-                    </ShareProvider>
-                  </SnAuthRepositoryProvider>
-                )}
-              </ThemeProvider>
+              <PathSaver />
+              <GridLoadingProvider>
+                <TreeLoadingProvider>
+                  <ThemeProvider>
+                    {defaultAuthConfig.authType === 'IdentityServer' ? (
+                      <RepositoryProvider>
+                        <ShareProvider>
+                          <ISAuthProvider>
+                            <ResponsiveContextProvider>
+                              <DialogProvider>{children}</DialogProvider>
+                            </ResponsiveContextProvider>
+                          </ISAuthProvider>
+                        </ShareProvider>
+                      </RepositoryProvider>
+                    ) : (
+                      <SnAuthRepositoryProvider>
+                        <ShareProvider>
+                          <SNAuthProvider>
+                            <ResponsiveContextProvider>
+                              <DialogProvider>{children}</DialogProvider>
+                            </ResponsiveContextProvider>
+                          </SNAuthProvider>
+                        </ShareProvider>
+                      </SnAuthRepositoryProvider>
+                    )}
+                  </ThemeProvider>
+                </TreeLoadingProvider>
+              </GridLoadingProvider>
             </BrowserRouter>
           </LocalizationProvider>
         </PersonalSettingsContextProvider>

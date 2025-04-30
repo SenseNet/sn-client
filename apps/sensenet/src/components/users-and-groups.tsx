@@ -5,6 +5,7 @@ import React, { FunctionComponent } from 'react'
 import { PATHS } from '../application-paths'
 import { useGridSwitcher, useLocalization } from '../hooks'
 import { Content } from './content'
+import { groupColumnDefs, userColumnDefs } from './grid/Cols/ColumnDefs.'
 import { PageTitle } from './PageTitle'
 
 const gridSwitcherConfig = [
@@ -21,6 +22,7 @@ const gridSwitcherConfig = [
       { field: 'Actions' as keyof GenericContent },
     ],
     loadSettings: { filter: "isOf('User')", expand: ['DirectRoles', 'AllRoles', 'CheckedOutTo'] as any },
+    colDef: userColumnDefs,
   },
   {
     icon: <People />,
@@ -34,6 +36,7 @@ const gridSwitcherConfig = [
       { field: 'Actions' as keyof GenericContent },
     ],
     loadSettings: { filter: "isOf('Group')" },
+    colDef: groupColumnDefs,
   },
 ]
 
@@ -46,8 +49,13 @@ const UsersAndGroups: FunctionComponent = () => {
       <PageTitle title={localization.pageTitles.usersAndGroup} />
       <Content
         rootPath={PATHS.usersAndGroups.snPath}
+        colDef={gridSwitcher.activeItem.colDef}
         fieldsToDisplay={gridSwitcher.activeItem.fieldsToDisplay as any}
-        renderBeforeGrid={(): JSX.Element => <div style={{ margin: '10px 12px' }}>{gridSwitcher.renderButtons()}</div>}
+        renderBeforeGrid={(): JSX.Element => (
+          <div style={{ margin: '10px 12px', display: 'flex', flexDirection: 'row-reverse' }}>
+            {gridSwitcher.renderButtons()}
+          </div>
+        )}
         schema={gridSwitcher.activeItem.schema}
         loadChildrenSettings={gridSwitcher.activeItem.loadSettings}
       />

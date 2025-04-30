@@ -6,6 +6,7 @@ import { InvalidPathErrorBoundary } from './content/InvalidPathErrorBoundary'
 import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './full-screen-loader'
+import { contentTemplatesColumnDefs } from './grid/Cols/ColumnDefs.'
 
 const ContentComponent = lazy(() => import(/* webpackChunkName: "content" */ './content'))
 const DashboardComponent = lazy(() => import(/* webpackChunkName: "dashboard" */ './dashboard'))
@@ -31,13 +32,17 @@ export const MainRouter = () => {
 
           <Route path={PATHS.content.appPath}>
             <InvalidPathErrorBoundary>
-              <ContentComponent />
+              <ContentComponent rootPath={PATHS.content.snPath} />
             </InvalidPathErrorBoundary>
           </Route>
 
           <Route path={PATHS.contentTemplates.appPath}>
             <InvalidPathErrorBoundary>
-              <ContentComponent showPageTitle rootPath={PATHS.contentTemplates.snPath} />
+              <ContentComponent
+                showPageTitle
+                rootPath={PATHS.contentTemplates.snPath}
+                colDef={contentTemplatesColumnDefs}
+              />
             </InvalidPathErrorBoundary>
           </Route>
 
@@ -77,7 +82,7 @@ export const MainRouter = () => {
             <CustomContent />
           </Route>
 
-          <Route path="/" exact>
+          <Route path={PATHS.root.snPath} exact>
             <DashboardComponent />
           </Route>
         </Switch>

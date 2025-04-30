@@ -11,6 +11,7 @@ import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useQuery, useSnRoute } from '../../hooks'
 import { navigateToAction } from '../../services'
 import { Icon } from '../Icon'
+import { useTreeLoading } from '../tree/Contexts/TreeLoadingProvider'
 import { DialogTitle, useDialog } from '.'
 
 export interface CopyMoveDialogProps {
@@ -28,6 +29,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
   const localizations = useLocalization().copyMoveContentDialog
   const logger = useLogger('CopyDialog')
   const globalClasses = useGlobalStyles()
+  const { setIsTreeLoading } = useTreeLoading()
 
   const [localization, setLocalization] = useState(localizations[props.operation])
   const [isExecInProgress, setIsExecInProgress] = useState(false)
@@ -100,6 +102,8 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
               : {}),
           },
         })
+        setIsTreeLoading(true)
+        setIsTreeLoading(false)
       } else if (result.d.results.length > 1) {
         logger.information({
           message: localization.copyMultipleSucceededNotification
@@ -109,6 +113,8 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
             error: result.d.errors,
           },
         })
+        setIsTreeLoading(true)
+        setIsTreeLoading(false)
       }
 
       if (
@@ -135,14 +141,31 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
   return (
     <>
       <DialogTitle>
-        <div className={globalClasses.centeredVertical}>
-          <Icon item={props.content[0]} style={{ marginRight: '1em' }} />
+        <div className={globalClasses.centeredVertical} style={{ justifyContent: 'center' }}>
+          <Icon
+            item={props.content[0]}
+            style={{ marginRight: '1em', height: '27px', filter: 'drop-shadow(0px 0px 8px white)' }}
+          />
           {isExecInProgress
             ? localization.inProgress
-            : props.content.length === 1
-            ? localization.title.replace('{0}', props.content[0].DisplayName || props.content[0].Name)
-            : localization.titleMultiple.replace('{0}', props.content.length.toString())}
-          {<span style={{ marginLeft: '0.25rem' }}>to {destination}</span>}
+            : (() => {
+                const title = props.content.length === 1 ? localization.title : localization.titleMultiple
+                const [before, after] = title.split('{0}')
+                return (
+                  <>
+                    {before.trim()}
+                    <span style={{ color: 'yellow', marginLeft: '0.25rem' }}>
+                      {props.content.length === 1
+                        ? props.content[0].DisplayName || props.content[0].Name
+                        : props.content.length}
+                    </span>
+                    {after.trim()}
+                  </>
+                )
+              })()}
+          <span style={{ marginLeft: '0.25rem' }}>
+            to <span style={{ color: 'yellow' }}>{destination}</span>
+          </span>
         </div>
       </DialogTitle>
       <Picker

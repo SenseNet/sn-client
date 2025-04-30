@@ -18,9 +18,11 @@ export const PATHS = {
   webhooks: { appPath: '/system/webhooks/:action?', snPath: '/Root/System/WebHooks' },
   settings: { appPath: '/system/:submenu?' },
   apiKeys: { appPath: '/system/apikeys' },
+  landingPath: { appPath: '/content/explorer/' },
+  root: { appPath: '/Root', snPath: '/Root' },
 } as const
 
-type SettingsItemType = 'stats' | 'apikeys' | 'webhooks' | 'adminui'
+type SettingsItemType = 'stats' | 'settings' | 'apikeys' | 'webhooks' | 'adminui'
 
 type RoutesWithContentBrowser = keyof Pick<
   typeof PATHS,

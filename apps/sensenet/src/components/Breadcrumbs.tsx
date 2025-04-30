@@ -1,8 +1,10 @@
+import { Menu, MenuItem } from '@material-ui/core'
 import MUIBreadcrumbs from '@material-ui/core/Breadcrumbs'
 import Button from '@material-ui/core/Button'
 import Tooltip from '@material-ui/core/Tooltip'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { MouseEvent, useState } from 'react'
+import { useRepository } from '@sensenet/hooks-react'
+import React, { MouseEvent, useEffect, useState } from 'react'
 import { ContentContextMenu } from './context-menu/content-context-menu'
 import CopyPath from './CopyPath'
 import { DropFileArea } from './DropFileArea'
@@ -16,7 +18,77 @@ export interface BreadcrumbItem<T extends GenericContent> {
 
 export interface BreadcrumbProps<T extends GenericContent> {
   items: Array<BreadcrumbItem<T>>
-  onItemClick: (event: MouseEvent, item: BreadcrumbItem<T>) => void
+  onItemClick: (event: MouseEvent, item: any) => void
+}
+
+export interface BreadcrumbSeparatorProps {
+  itemPath: string
+  onItemClick: (event: MouseEvent, item: any) => void
+}
+
+export function BreadcrumbSeparator(props: BreadcrumbSeparatorProps) {
+  const { itemPath, onItemClick } = props
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [siblings, setSiblings] = useState<any[]>([])
+  const repo = useRepository()
+
+  useEffect(() => {
+    let isMounted = true
+    const fetchSiblings = async () => {
+      if (!itemPath) return
+      try {
+        const siblingsResult = await repo.loadCollection<GenericContent>({
+          path: itemPath,
+          oDataOptions: {
+            select: ['Id', 'Path', 'Name'],
+            orderby: 'Name',
+            metadata: 'no',
+          },
+        })
+        if (isMounted) {
+          setSiblings(
+            siblingsResult.d.results.map((s) => {
+              return { content: s, DisplayName: s.DisplayName, Id: s.Id }
+            }),
+          )
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    fetchSiblings()
+    return () => {
+      isMounted = false
+    }
+  }, [itemPath, repo])
+
+  const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  return (
+    <>
+      <Button onClick={handleOpen} className="bread-crumb-button">
+        /
+      </Button>
+      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+        {siblings.map((sibling) => (
+          <MenuItem
+            key={sibling.Id}
+            onClick={(ev) => {
+              onItemClick(ev, sibling)
+              handleClose()
+            }}>
+            {sibling.DisplayName}
+          </MenuItem>
+        ))}
+      </Menu>
+    </>
+  )
 }
 
 export function Breadcrumbs<T extends GenericContent>(props: BreadcrumbProps<T>) {
@@ -26,12 +98,8 @@ export function Breadcrumbs<T extends GenericContent>(props: BreadcrumbProps<T>)
 
   return (
     <>
-      <MUIBreadcrumbs
-        maxItems={15}
-        aria-label="breadcrumb"
-        style={{ marginLeft: '8.5px' }}
-        classes={{ separator: 'bread-crumbs-separator' }}>
-        {props.items.map((item) => (
+      <MUIBreadcrumbs maxItems={15} aria-label="breadcrumb" separator={null}>
+        {props.items.map((item, index) => (
           <DropFileArea key={item.content.Id} parentContent={item.content} style={{ display: 'flex' }}>
             <Tooltip title={item.title}>
               <Button
@@ -48,6 +116,9 @@ export function Breadcrumbs<T extends GenericContent>(props: BreadcrumbProps<T>)
                 <span style={{ textTransform: 'none', fontSize: '13px' }}>{item.displayName}</span>
               </Button>
             </Tooltip>
+            {index < props.items.length - 1 && (
+              <BreadcrumbSeparator itemPath={item.content.Path} onItemClick={props.onItemClick} />
+            )}
           </DropFileArea>
         ))}
         <CopyPath copyText={props.items[props.items.length - 1].title} />

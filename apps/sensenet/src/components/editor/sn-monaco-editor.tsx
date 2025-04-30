@@ -15,7 +15,6 @@ const useStyles = makeStyles(() => {
       display: 'flex',
       overflow: 'hidden',
       position: 'relative',
-      paddingTop: '8px',
       height: '100%',
     },
     presetsContainer: {
@@ -35,23 +34,15 @@ const useStyles = makeStyles(() => {
         padding: '8px',
       },
     },
-    actionButtonWrapper: {
-      height: '80px',
-      left: 0,
-      position: 'absolute',
-      padding: '20px',
-      top: 0,
-      textAlign: 'right',
-      right: '1%',
-    },
     form: {
       width: '100%',
       height: '100%',
     },
     header: {
-      height: globals.common.drawerItemHeight,
+      height: '50px',
       paddingLeft: '15px',
       justifyContent: 'space-between',
+      marginRight: '15px',
     },
     title: {
       flexGrow: 1,
@@ -59,7 +50,11 @@ const useStyles = makeStyles(() => {
     },
     headerButtonWrapper: {
       display: 'flex',
-      marginRight: '1em',
+      marginRight: '240px',
+    },
+    buttonsWrapper: {
+      display: 'flex',
+      gap: '20px',
     },
   })
 })
@@ -121,13 +116,31 @@ export const SnMonacoEditor: React.FunctionComponent<SnMonacoEditorProps> = (pro
           <div className={classes.title} data-test="editor-title">
             {props.renderTitle()}
           </div>
-          <div className={classes.headerButtonWrapper}>
+          <div className={classes.buttonsWrapper}>
             {props.additionalButtons ? props.additionalButtons : null}
             <Button
               aria-label={localization.textEditor.reset}
               disabled={!props.hasChanges}
               onClick={() => props.setTextValue(props.savedTextValue)}>
               {localization.textEditor.reset}
+            </Button>
+            <Button
+              data-test="monaco-editor-cancel"
+              aria-label={localization.forms.cancel}
+              color="default"
+              className={globalClasses.cancelButton}
+              onClick={props.handleCancel || (() => history.go(-1))}>
+              {localization.forms.cancel}
+            </Button>
+            <Button
+              data-test="monaco-editor-submit"
+              aria-label={localization.forms.submit}
+              variant="contained"
+              color="primary"
+              type="submit"
+              ref={formSubmitButton}
+              disabled={!props.hasChanges}>
+              {localization.forms.submit}
             </Button>
           </div>
         </div>
@@ -166,27 +179,6 @@ export const SnMonacoEditor: React.FunctionComponent<SnMonacoEditorProps> = (pro
             })
           }}
         />
-        <div className={classes.actionButtonWrapper}>
-          <Button
-            data-test="monaco-editor-cancel"
-            aria-label={localization.forms.cancel}
-            color="default"
-            className={globalClasses.cancelButton}
-            onClick={props.handleCancel || (() => history.go(-1))}>
-            {localization.forms.cancel}
-          </Button>
-
-          <Button
-            data-test="monaco-editor-submit"
-            aria-label={localization.forms.submit}
-            variant="contained"
-            color="primary"
-            type="submit"
-            ref={formSubmitButton}
-            disabled={!props.hasChanges}>
-            {localization.forms.submit}
-          </Button>
-        </div>
       </form>
       {props.preset ? renderPresets() : null}
     </div>

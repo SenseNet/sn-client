@@ -1,24 +1,13 @@
-import Checkbox from '@material-ui/core/Checkbox'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Typography from '@material-ui/core/Typography'
-import { ConstantContent } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { Query } from '@sensenet/default-content-types'
-import {
-  CurrentAncestorsContext,
-  CurrentChildrenContext,
-  CurrentContentContext,
-  LoadSettingsContext,
-  useRepository,
-  useRepositoryEvents,
-} from '@sensenet/hooks-react'
+import { LoadSettingsContext, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { PATHS } from '../../application-paths'
 import { useLocalization, useQuery, useSelectionService } from '../../hooks'
 import { navigateToAction } from '../../services'
-import { pathWithQueryParams } from '../../services/query-string-builder'
-import { ContentList } from '../content-list/content-list'
+import { Content } from '../content'
+import { savedQueriesColumnDefs } from '../grid/Cols/ColumnDefs.'
 import { PageTitle } from '../PageTitle'
 import { BrowseView, EditView, VersionView } from '../view-controls'
 
@@ -69,7 +58,9 @@ export default function SavedQueries() {
         } as any,
         body: undefined,
       })
-      .then((result) => setQueries(result.d.results))
+      .then((result) => {
+        setQueries(result.d.results)
+      })
   }, [reloadToken, loadSettingsContext.loadChildrenSettings, repo, onlyPublic])
 
   const renderContent = () => {
@@ -89,50 +80,7 @@ export default function SavedQueries() {
       default:
         return (
           <>
-            <div style={{ padding: '0 15px', marginBottom: '2rem' }}>
-              <FormControlLabel
-                label={localization.onlyPublic}
-                control={
-                  <Checkbox
-                    color="primary"
-                    onChange={(ev) => {
-                      setOnlyPublic(ev.target.checked)
-                    }}
-                  />
-                }
-              />
-            </div>
-            <>
-              {queries.length > 0 ? (
-                <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>
-                  <CurrentChildrenContext.Provider value={queries}>
-                    <CurrentAncestorsContext.Provider value={[]}>
-                      <ContentList<Query>
-                        style={{
-                          height: 'calc(100% - 107px)',
-                          overflow: 'auto',
-                        }}
-                        enableBreadcrumbs={false}
-                        parentIdOrPath={0}
-                        onParentChange={() => {
-                          // ignore, only queries will be listed
-                        }}
-                        onActivateItem={(p) => {
-                          history.push(
-                            pathWithQueryParams({ path: PATHS.search.appPath, newParams: { query: p.Id.toString() } }),
-                          )
-                        }}
-                        onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
-                      />
-                    </CurrentAncestorsContext.Provider>
-                  </CurrentChildrenContext.Provider>
-                </CurrentContentContext.Provider>
-              ) : (
-                <Typography variant="subtitle1" style={{ padding: '0 15px' }}>
-                  {localization.noSavedQuery}
-                </Typography>
-              )}
-            </>
+            <Content rootPath={PATHS.savedQueries.snPath} colDef={savedQueriesColumnDefs} />
           </>
         )
     }

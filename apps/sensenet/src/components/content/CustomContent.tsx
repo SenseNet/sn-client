@@ -3,6 +3,7 @@ import React, { FunctionComponent, useContext } from 'react'
 import { useRouteMatch } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'
 import { useTreeNavigation } from '../../hooks/use-tree-navigation'
+import { contentExplorerColumnDefs } from '../grid/Cols/ColumnDefs.'
 import { Explore, ExploreProps } from './Explore'
 
 type ContentProps = Partial<ExploreProps>
@@ -20,6 +21,7 @@ export const CustomContent: FunctionComponent<ContentProps> = () => {
       return (
         <Explore
           currentPath={currentPath}
+          colDef={contentExplorerColumnDefs}
           onNavigate={onNavigate}
           rootPath={path}
           fieldsToDisplay={customDrawer?.settings.columns}

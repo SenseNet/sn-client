@@ -4,13 +4,13 @@ import { SimpleContentProps } from '../Props/SimpleContentProps'
 
 export function UserNameFormatter(props: SimpleContentProps) {
   function IsUserExists(user: any) {
-    if ((user as User).Domain === undefined || (user as User).LoginName === undefined) {
+    if ((user as User)?.Domain === undefined || (user as User).LoginName === undefined) {
       return false
     }
     return true
   }
   function GetUserName(user: any) {
-    if ((user as User).Domain === undefined || (user as User).LoginName === undefined) {
+    if ((user as User)?.Domain === undefined || (user as User).LoginName === undefined) {
       return 'Somebody'
     }
     return `${(user as User).Domain}\\${(user as User).LoginName}`

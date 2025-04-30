@@ -1,11 +1,12 @@
 import { ConstantContent } from '@sensenet/client-core'
 import { tuple } from '@sensenet/client-utils'
-import React, { FunctionComponent, useContext } from 'react'
+import React, { FunctionComponent, useContext, useEffect } from 'react'
 import { useRouteMatch } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'
 import { useLocalization } from '../../hooks'
 import { useTreeNavigation } from '../../hooks/use-tree-navigation'
 import { PageTitle } from '../PageTitle'
+import { useTreeLoading } from '../tree/Contexts/TreeLoadingProvider'
 import { Explore, ExploreProps } from './Explore'
 
 export const BrowseType = tuple('explorer')
@@ -18,6 +19,11 @@ export const Content: FunctionComponent<ContentProps> = ({ rootPath, showPageTit
   const path = rootPath || settings.content.root || ConstantContent.PORTAL_ROOT.Path
   const { currentPath, onNavigate } = useTreeNavigation(path)
   const localization = useLocalization().pageTitles
+
+  const { setEnabledPath } = useTreeLoading()
+  useEffect(() => {
+    setEnabledPath(rootPath ?? '')
+  }, [rootPath, setEnabledPath])
 
   switch (routeMatch.params.browseType) {
     default:
