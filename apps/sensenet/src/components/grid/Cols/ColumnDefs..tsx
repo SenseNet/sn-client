@@ -1,0 +1,707 @@
+import { ColDef } from 'ag-grid-community'
+import React from 'react'
+import { EnabledField, ReferenceField, RolesField } from '../../content-list'
+import { ActionFormatter } from '../Formatters/ActionFormatter'
+import { DateTimeFormatter } from '../Formatters/DateTimeFormatter'
+import { IconFormatter } from '../Formatters/IconFormatter'
+import { UserNameFormatter } from '../Formatters/UserNameFormatter'
+
+const enabledColDef: ColDef = {
+  headerName: 'Enabled',
+  field: 'Enabled',
+  headerTooltip: 'Enabled',
+  width: 70,
+  maxWidth: 70,
+  minWidth: 70,
+}
+
+const lockedColDef: ColDef = {
+  headerName: 'Locked',
+  field: 'Locked',
+  headerTooltip: 'Locked',
+  width: 70,
+  maxWidth: 70,
+  minWidth: 70,
+}
+
+export const contentColumnDefs: ColDef[] = [
+  {
+    headerCheckboxSelection: true,
+    checkboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
+    width: 27,
+    minWidth: 27,
+    cellStyle: { padding: '0px 4px' },
+    headerClass: 'grid-checkbox-header',
+  },
+  {
+    headerName: '',
+    field: 'Icon',
+    width: 24,
+    minWidth: 24,
+    cellRenderer: IconFormatter,
+    cellStyle: { padding: 0 },
+  },
+  {
+    headerName: 'ID',
+    field: 'Id',
+    headerTooltip: 'ID',
+    flex: 0.75,
+    filter: true,
+    sortable: true,
+    resizable: true,
+    cellStyle: { paddingRight: 0 },
+  },
+  {
+    headerName: 'Display Name',
+    field: 'DisplayName',
+    headerTooltip: 'Display Name',
+    flex: 5,
+    filter: true,
+    sortable: true,
+    comparator: (valueA: string, valueB: string) => {
+      return valueA.toLowerCase().localeCompare(valueB.toLowerCase())
+    },
+    resizable: true,
+  },
+  {
+    headerName: 'Name',
+    field: 'Name',
+    headerTooltip: 'Name',
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    comparator: (valueA: string, valueB: string) => {
+      return valueA.toLowerCase().localeCompare(valueB.toLowerCase())
+    },
+    resizable: true,
+  },
+  {
+    headerName: 'Index',
+    field: 'Index',
+    headerTooltip: 'Index',
+    flex: 0.75,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Created By',
+    field: 'CreatedBy',
+    headerTooltip: 'Created By',
+    cellRenderer: UserNameFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Creation Date',
+    field: 'CreationDate',
+    headerTooltip: 'Creation Date',
+    cellRenderer: DateTimeFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Modified By',
+    field: 'ModifiedBy',
+    headerTooltip: 'Modified By',
+    cellRenderer: UserNameFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Modification Date',
+    field: 'ModificationDate',
+    headerTooltip: 'Modification Date',
+    cellRenderer: DateTimeFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Actions',
+    field: 'Actions',
+    headerTooltip: 'Actions',
+    cellRenderer: ActionFormatter,
+    width: 66,
+    resizable: false,
+    wrapText: true,
+    autoHeight: true,
+  },
+]
+
+export const userColumnDefs: ColDef[] = [
+  {
+    headerCheckboxSelection: true,
+    checkboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
+    width: 27,
+    minWidth: 27,
+    cellStyle: { padding: '0px 4px' },
+    headerClass: 'grid-checkbox-header',
+  },
+  {
+    headerName: '',
+    field: 'Icon',
+    width: 24,
+    minWidth: 24,
+    cellRenderer: IconFormatter,
+    cellStyle: { padding: 0 },
+  },
+  {
+    headerName: 'Display Name',
+    field: 'DisplayName',
+    headerTooltip: 'Display Name',
+    filter: true,
+    sortable: true,
+    comparator: (valueA: string, valueB: string) => {
+      return valueA.toLowerCase().localeCompare(valueB.toLowerCase())
+    },
+    resizable: true,
+  },
+  {
+    headerName: 'E-mail',
+    field: 'Email',
+    headerTooltip: 'E-mail',
+  },
+  {
+    headerName: 'Roles',
+    field: 'AllRoles',
+    headerTooltip: 'Roles',
+    width: 110,
+    minWidth: 110,
+    maxWidth: 110,
+    cellRendererFramework: (params: any) => {
+      const roles = params.data.AllRoles.length ? params.data.AllRoles : []
+      const directRoles = params.data.DirectRoles?.length ? params.data.DirectRoles : []
+      return <RolesField user={params.data} roles={roles} directRoles={directRoles} />
+    },
+  },
+  enabledColDef,
+  {
+    headerName: 'Actions',
+    field: 'Actions',
+    headerTooltip: 'Actions',
+    cellRenderer: ActionFormatter,
+    width: 70,
+    resizable: false,
+    wrapText: true,
+    autoHeight: true,
+  },
+]
+
+export const groupColumnDefs: ColDef[] = [
+  {
+    headerCheckboxSelection: true,
+    checkboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
+    width: 27,
+    minWidth: 27,
+    cellStyle: { padding: '0px 4px' },
+    headerClass: 'grid-checkbox-header',
+  },
+  {
+    headerName: '',
+    field: 'Icon',
+    width: 24,
+    minWidth: 24,
+    cellRenderer: IconFormatter,
+    cellStyle: { padding: 0 },
+  },
+  {
+    headerName: 'Display Name',
+    field: 'DisplayName',
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Description',
+    field: 'Description',
+    resizable: true,
+  },
+  {
+    headerName: 'Members',
+    field: 'Members',
+    sortable: true,
+    width: 110,
+    minWidth: 110,
+    maxWidth: 110,
+    cellRendererFramework: (params: any) => {
+      console.log('params:', params)
+      return <ReferenceField content={params.data} fieldName={'Members'} parent={params.data} showIcon={true} />
+    },
+  },
+  {
+    headerName: 'Actions',
+    field: 'Actions',
+    cellRenderer: ActionFormatter,
+    width: 70,
+    resizable: false,
+  },
+]
+
+export const savedQueriesColumnDefs: ColDef[] = [
+  {
+    headerName: 'Display Name',
+    field: 'DisplayName',
+    sortable: true,
+    resizable: true,
+  },
+  lockedColDef,
+  {
+    headerName: 'Created By',
+    field: 'CreatedBy',
+    headerTooltip: 'Created By',
+    cellRenderer: UserNameFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Actions',
+    field: 'Actions',
+    cellRenderer: ActionFormatter,
+    width: 66,
+    resizable: false,
+  },
+]
+
+export const trashColumnDefs: ColDef[] = [
+  {
+    headerName: 'Display Name',
+    field: 'DisplayName',
+    sortable: true,
+    resizable: true,
+  },
+  lockedColDef,
+
+  {
+    headerName: 'Created By',
+    field: 'CreatedBy',
+    headerTooltip: 'Created By',
+    cellRenderer: UserNameFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Actions',
+    field: 'Actions',
+    cellRenderer: ActionFormatter,
+    width: 66,
+    resizable: false,
+  },
+]
+
+export const contentExplorerColumnDefs: ColDef[] = [
+  {
+    headerCheckboxSelection: true,
+    checkboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
+    width: 27,
+    minWidth: 27,
+    cellStyle: { padding: '0px 4px' },
+    headerClass: 'grid-checkbox-header',
+  },
+  {
+    headerName: '',
+    field: 'Icon',
+    width: 24,
+    minWidth: 24,
+    cellRenderer: IconFormatter,
+    cellStyle: { padding: 0 },
+  },
+  {
+    headerName: 'Name',
+    field: 'Name',
+    headerTooltip: 'Name',
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    comparator: (valueA: string, valueB: string) => {
+      return valueA.toLowerCase().localeCompare(valueB.toLowerCase())
+    },
+    resizable: true,
+  },
+  {
+    headerName: 'Display Name',
+    field: 'DisplayName',
+    headerTooltip: 'Display Name',
+    flex: 5,
+    filter: true,
+    sortable: true,
+    comparator: (valueA: string, valueB: string) => {
+      return valueA.toLowerCase().localeCompare(valueB.toLowerCase())
+    },
+    resizable: true,
+  },
+  lockedColDef,
+
+  {
+    headerName: 'Created By',
+    field: 'CreatedBy',
+    headerTooltip: 'Created By',
+    cellRenderer: UserNameFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Creation Date',
+    field: 'CreationDate',
+    headerTooltip: 'Creation Date',
+    cellRenderer: DateTimeFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Modified By',
+    field: 'ModifiedBy',
+    headerTooltip: 'Modified By',
+    cellRenderer: UserNameFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Modification Date',
+    field: 'ModificationDate',
+    headerTooltip: 'Modification Date',
+    cellRenderer: DateTimeFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Actions',
+    field: 'Actions',
+    headerTooltip: 'Actions',
+    cellRenderer: ActionFormatter,
+    width: 66,
+    resizable: false,
+    wrapText: true,
+    autoHeight: true,
+  },
+]
+
+export const contentTypesColumnDefs: ColDef[] = [
+  {
+    headerCheckboxSelection: true,
+    checkboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
+    width: 27,
+    minWidth: 27,
+    cellStyle: { padding: '0px 4px' },
+    headerClass: 'grid-checkbox-header',
+  },
+  {
+    headerName: '',
+    field: 'Icon',
+    width: 24,
+    minWidth: 24,
+    cellRenderer: IconFormatter,
+    cellStyle: { padding: 0 },
+  },
+  {
+    headerName: 'Display Name',
+    field: 'DisplayName',
+    headerTooltip: 'Display Name',
+    flex: 5,
+    filter: true,
+    sortable: true,
+    comparator: (valueA: string, valueB: string) => {
+      return valueA.toLowerCase().localeCompare(valueB.toLowerCase())
+    },
+    resizable: true,
+  },
+  {
+    headerName: 'Name',
+    field: 'Name',
+    headerTooltip: 'Name',
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    comparator: (valueA: string, valueB: string) => {
+      return valueA.toLowerCase().localeCompare(valueB.toLowerCase())
+    },
+    resizable: true,
+  },
+  {
+    headerName: 'Description',
+    field: 'Description',
+    resizable: true,
+  },
+  {
+    headerName: 'ParentTypeName',
+    field: 'ParentTypeName',
+    resizable: true,
+  },
+  {
+    headerName: 'Modified By',
+    field: 'ModifiedBy',
+    headerTooltip: 'Modified By',
+    cellRenderer: UserNameFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Modification Date',
+    field: 'ModificationDate',
+    headerTooltip: 'Modification Date',
+    cellRenderer: DateTimeFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Actions',
+    field: 'Actions',
+    headerTooltip: 'Actions',
+    cellRenderer: ActionFormatter,
+    width: 66,
+    resizable: false,
+    wrapText: true,
+    autoHeight: true,
+  },
+]
+
+export const contentTemplatesColumnDefs: ColDef[] = [
+  {
+    headerCheckboxSelection: true,
+    checkboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
+    width: 27,
+    minWidth: 27,
+    cellStyle: { padding: '0px 4px' },
+    headerClass: 'grid-checkbox-header',
+  },
+  {
+    headerName: '',
+    field: 'Icon',
+    width: 24,
+    minWidth: 24,
+    cellRenderer: IconFormatter,
+    cellStyle: { padding: 0 },
+  },
+  {
+    headerName: 'Display Name',
+    field: 'DisplayName',
+    headerTooltip: 'Display Name',
+    flex: 5,
+    filter: true,
+    sortable: true,
+    comparator: (valueA: string, valueB: string) => {
+      return valueA.toLowerCase().localeCompare(valueB.toLowerCase())
+    },
+    resizable: true,
+  },
+  lockedColDef,
+
+  {
+    headerName: 'Created By',
+    field: 'CreatedBy',
+    headerTooltip: 'Created By',
+    cellRenderer: UserNameFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Creation Date',
+    field: 'CreationDate',
+    headerTooltip: 'Creation Date',
+    cellRenderer: DateTimeFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Modified By',
+    field: 'ModifiedBy',
+    headerTooltip: 'Modified By',
+    cellRenderer: UserNameFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Modification Date',
+    field: 'ModificationDate',
+    headerTooltip: 'Modification Date',
+    cellRenderer: DateTimeFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Actions',
+    field: 'Actions',
+    headerTooltip: 'Actions',
+    cellRenderer: ActionFormatter,
+    width: 66,
+    resizable: false,
+    wrapText: true,
+    autoHeight: true,
+  },
+]
+
+export const localizationColumnDefs: ColDef[] = [
+  {
+    headerCheckboxSelection: true,
+    checkboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
+    width: 27,
+    minWidth: 27,
+    cellStyle: { padding: '0px 4px' },
+    headerClass: 'grid-checkbox-header',
+  },
+  {
+    headerName: '',
+    field: 'Icon',
+    width: 24,
+    minWidth: 24,
+    cellRenderer: IconFormatter,
+    cellStyle: { padding: 0 },
+  },
+  {
+    headerName: 'Display Name',
+    field: 'DisplayName',
+    headerTooltip: 'Display Name',
+    flex: 5,
+    filter: true,
+    sortable: true,
+    comparator: (valueA: string, valueB: string) => {
+      return valueA.toLowerCase().localeCompare(valueB.toLowerCase())
+    },
+    resizable: true,
+  },
+  lockedColDef,
+
+  {
+    headerName: 'Created By',
+    field: 'CreatedBy',
+    headerTooltip: 'Created By',
+    cellRenderer: UserNameFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Creation Date',
+    field: 'CreationDate',
+    headerTooltip: 'Creation Date',
+    cellRenderer: DateTimeFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Modified By',
+    field: 'ModifiedBy',
+    headerTooltip: 'Modified By',
+    cellRenderer: UserNameFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Modification Date',
+    field: 'ModificationDate',
+    headerTooltip: 'Modification Date',
+    cellRenderer: DateTimeFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Actions',
+    field: 'Actions',
+    headerTooltip: 'Actions',
+    cellRenderer: ActionFormatter,
+    width: 66,
+    resizable: false,
+    wrapText: true,
+    autoHeight: true,
+  },
+]
+
+export const webHooksColumnDefs: ColDef[] = [
+  {
+    headerCheckboxSelection: true,
+    checkboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
+    width: 27,
+    minWidth: 27,
+    cellStyle: { padding: '0px 4px' },
+    headerClass: 'grid-checkbox-header',
+  },
+  {
+    headerName: '',
+    field: 'Icon',
+    width: 24,
+    minWidth: 24,
+    cellRenderer: IconFormatter,
+    cellStyle: { padding: 0 },
+  },
+  {
+    headerName: 'Display Name',
+    field: 'DisplayName',
+    headerTooltip: 'Display Name',
+    flex: 5,
+    filter: true,
+    sortable: true,
+    comparator: (valueA: string, valueB: string) => {
+      return valueA.toLowerCase().localeCompare(valueB.toLowerCase())
+    },
+    resizable: true,
+  },
+  {
+    headerName: 'WebHookUrl',
+    field: 'WebHookUrl',
+    resizable: true,
+  },
+  enabledColDef,
+  {
+    headerName: 'SuccessfulCalls',
+    field: 'SuccessfulCalls',
+    headerTooltip: 'SuccessfulCalls',
+    width: 110,
+    maxWidth: 110,
+    minWidth: 110,
+  },
+  {
+    headerName: 'Actions',
+    field: 'Actions',
+    headerTooltip: 'Actions',
+    cellRenderer: ActionFormatter,
+    width: 66,
+    resizable: false,
+    wrapText: true,
+    autoHeight: true,
+  },
+]

@@ -23,11 +23,11 @@ const useStyles = makeStyles((theme: Theme) => {
       position: 'static',
       height: '100%',
       minHeight: '42px',
-      paddingLeft: '16px',
+      paddingLeft: '6px',
       paddingRight: 0,
     },
     logo: {
-      marginRight: '32px',
+      marginRight: '21px',
     },
     commandPaletteReplacement: {
       flex: 1,
@@ -46,8 +46,8 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
     <AppBar position="sticky" className={clsx(globalClasses.centeredHorizontal, classes.appBar)}>
       <Toolbar className={classes.toolBar}>
         <div className={globalClasses.centeredVertical}>
-          <Link to="/" className={globalClasses.centeredVertical}>
-            <img src={logo} className={classes.logo} alt="logo" data-test="sensenet-logo" width="29" height="32" />
+          <Link to="/" className={`${globalClasses.centeredVertical} ${classes.logo}`}>
+            <img src={logo} alt="logo" data-test="sensenet-logo" width="29" height="32" />
           </Link>
           {personalSettings.drawer.type === 'temporary' ? (
             <IconButton

@@ -62,7 +62,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
     [isWriteAvailable, logger],
   )
 
-  const { runAction } = useContextMenuActions(props.content, props.isOpened, setActionsWopi)
+  const { runAction } = useContextMenuActions(props.content, setActionsWopi)
   const device = useContext(ResponsiveContext)
 
   useEffect(() => {

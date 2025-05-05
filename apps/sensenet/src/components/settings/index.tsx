@@ -6,6 +6,7 @@ import { matchPath, NavLink, useLocation, useRouteMatch } from 'react-router-dom
 import { PATHS, resolvePathParams } from '../../application-paths'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+import { localizationColumnDefs, webHooksColumnDefs } from '../grid/Cols/ColumnDefs.'
 import { ApiKeys } from './api-keys'
 import { Stats } from './stats'
 
@@ -82,7 +83,13 @@ export const Settings: React.FunctionComponent = () => {
   const renderContent = () => {
     switch (routeMatch.params.submenu) {
       case 'localization':
-        return <ContentComponent disableColumnSettings rootPath={PATHS.localization.snPath} />
+        return (
+          <ContentComponent
+            disableColumnSettings
+            rootPath={PATHS.localization.snPath}
+            colDef={localizationColumnDefs}
+          />
+        )
       case 'settings':
         return <SetupComponent />
       case 'adminui':
@@ -101,6 +108,7 @@ export const Settings: React.FunctionComponent = () => {
               { field: 'Enabled' } as any,
               { field: 'SuccessfulCalls' } as any,
             ]}
+            colDef={webHooksColumnDefs}
             schema={'WebHookSubscription'}
           />
         )

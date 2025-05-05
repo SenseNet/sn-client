@@ -19,10 +19,17 @@ ul[role='listbox'] {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 2px 5px;
-  margin-top: 23px !important;
 }
 .MuiGrid-container {
   max-height: 100% !important;
+}
+.MuiBreadcrumbs-separator {
+  margin: 0;
+}
+.bread-crumb-button {
+  min-width: 12px;
+  padding-left: 6px;
+  padding-right: 6px;
 }
 
 button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary[type='submit'] {
@@ -65,15 +72,6 @@ span.icon svg {
   padding: 0 !important;
   min-width: 45px;
 }
-/*
-SimpleTree
-*/
-.simpletree {
-  width: 400px;
-  overflow: auto;
-  padding: 5px;
-  border-right: 1px solid #ccc;
-}
 
 .simpletree .MuiTypography-body1 {
   font-size: 12px !important;
@@ -105,12 +103,16 @@ SimpleTree
 }
 
 .gridTopPanel {
-  height: 60px;
   padding: 10px;
   padding-left: 4rem;
   position: relative;
   border: 1px solid #dddddd;
   background-color: #f9f9f9;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 70px;
 }
 .gridTopPanel .MuiSvgIcon-root {
   width: 18px;
@@ -148,12 +150,9 @@ SimpleTree
 .gridTopPanel .iconArea {
   position: absolute;
   left: 0;
-  top: 5px;
+  top: 12px;
   bottom: 0;
   width: 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 .gridTopPanel .iconArea svg {
   width: 100%;
@@ -193,9 +192,8 @@ SimpleTree
   background: #777 !important;
 }
 .buttonPanel {
-  float: right;
-  padding-bottom: 1rem;
-  margin-top: -1.7rem;
+  margin-left: auto;
+  height: 39px;
 }
 .buttonPanel .MuiListItemIcon-root {
   min-width: 25px !important;
@@ -206,6 +204,17 @@ SimpleTree
 .MuiListItemIcon-root .svgicon {
   width: 24px;
   height: 24px;
+}
+.MuiCollapse-wrapperInner {
+  width: 100%;
+}
+.icon-grid {
+  display: flex;
+  align-items: stretch;
+}
+
+.grid-checkbox-header {
+  padding: 0px 4px !important;
 }
 /*.leftTree .MuiListItemIcon-root {
   border-left: 2px dotted #ccc;

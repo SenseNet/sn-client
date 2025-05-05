@@ -49,7 +49,6 @@ export class ODataUrlBuilder {
         )
       }
     }
-    console.log(oDataParams.select)
     oDataParams.metadata = oDataParams.metadata ?? config.defaultMetadata
     oDataParams.inlinecount = oDataParams.inlinecount ?? config.defaultInlineCount
     oDataParams.expand = oDataParams.expand ?? (config.defaultExpand as any)

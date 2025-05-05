@@ -7,6 +7,7 @@ import { ResponsivePersonalSettings } from '../../context'
 import { useLoadContent } from '../../hooks/use-loadContent'
 import { pathWithQueryParams } from '../../services'
 import { Content } from '../content'
+import { trashColumnDefs } from '../grid/Cols/ColumnDefs.'
 import TrashHeader from './TrashHeader'
 
 const oDataOptions: ODataParams<TrashBin> = { select: 'all' }
@@ -40,6 +41,7 @@ const Trash = memo(() => {
       </div>
       <Content
         rootPath={PATHS.trash.snPath}
+        colDef={trashColumnDefs}
         fieldsToDisplay={[
           { field: 'DisplayName' as keyof GenericContent },
           { field: 'Locked' as keyof GenericContent },

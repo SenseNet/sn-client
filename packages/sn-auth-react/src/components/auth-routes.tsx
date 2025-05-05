@@ -1,4 +1,4 @@
-import React, { memo, ReactNode, useEffect } from 'react'
+import React, { memo, ReactNode } from 'react'
 import { Authenticating } from './authenticating'
 
 export type AuthRoutesProps = {
@@ -8,10 +8,6 @@ export type AuthRoutesProps = {
 }
 
 const AuthRoutesComponent = ({ callbackUri, children, currentPath }: AuthRoutesProps) => {
-  useEffect(() => {
-    console.log(currentPath)
-  }, [currentPath])
-
   switch (currentPath) {
     case callbackUri:
       return <Authenticating />

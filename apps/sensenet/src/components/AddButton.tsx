@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     addWrapper: {
       position: 'relative',
+      margin: 0,
     },
     addListLoader: {
       color: theme.palette.secondary.main,
@@ -43,12 +44,8 @@ const useStyles = makeStyles((theme: Theme) => {
       },
     },
     listItem: {
-      width: '100%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-evenly',
       height: globals.common.addButtonHeight,
-      paddingLeft: '2px',
+      paddingLeft: '4px',
     },
     listDropdown: {
       padding: '10px 0 10px 10px',
@@ -63,6 +60,9 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     disabled: {
       cursor: 'not-allowed',
+    },
+    drawerIconButtonWrapper: {
+      height: '40px',
     },
   })
 })
@@ -157,14 +157,15 @@ export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
   ])
 
   return (
-    <div className={clsx(globalClasses.centered, globalClasses.relative)}>
+    <div className={clsx(globalClasses.relative)}>
       {!props.isOpened ? (
-        <div className={globalClasses.drawerIconButtonWrapper}>
+        <div className={classes.drawerIconButtonWrapper}>
           {isAvailable ? (
             <div className={classes.addWrapper}>
               <Tooltip title={localization.addNew} placement="right">
                 <IconButton
                   className={globalClasses.drawerButton}
+                  style={{ margin: 4 }}
                   onClick={(event: MouseEvent<HTMLElement>) => {
                     if (isLoading) return
                     setAnchorEl(event.currentTarget)
@@ -181,6 +182,7 @@ export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
               className={clsx(globalClasses.drawerButton, {
                 [classes.addButtonDisabled]: !isAvailable,
               })}
+              style={{ margin: 4 }}
               data-test="add-button"
               disabled={true}>
               <Add className={globalClasses.drawerButtonIcon} />
@@ -196,7 +198,7 @@ export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
             setShowSelectType(true)
           }}
           disabled={!isAvailable}>
-          <ListItemIcon className={globalClasses.centeredHorizontal}>
+          <ListItemIcon>
             <Tooltip title={localization.addNew} placement="right" data-test="add-button">
               <IconButton
                 className={clsx(globalClasses.drawerButtonExpanded, {
@@ -208,7 +210,13 @@ export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
               </IconButton>
             </Tooltip>
           </ListItemIcon>
-          <ListItemText primary={localization.addNew} />
+          <ListItemText
+            primary={localization.addNew}
+            style={{
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+            }}
+          />
         </ListItem>
       )}
       {!isLoading && (

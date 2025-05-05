@@ -2,6 +2,7 @@ import { Switch } from '@sensenet/controls-react'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { lazy, useState } from 'react'
 import { PATHS } from '../../application-paths'
+import { contentTypesColumnDefs } from '../grid/Cols/ColumnDefs.'
 
 const ContentComponent = lazy(() => import(/* webpackChunkName: "content" */ '../content'))
 
@@ -39,6 +40,7 @@ const ContentTypeList: React.FC = () => {
   return (
     <ContentComponent
       renderBeforeGrid={renderBeforeGrid}
+      colDef={contentTypesColumnDefs}
       rootPath={PATHS.contentTypes.snPath}
       fieldsToDisplay={[
         { field: 'DisplayName' },
@@ -54,7 +56,6 @@ const ContentTypeList: React.FC = () => {
         inlinecount: 'allpages',
         top: 1000,
       }}
-      hasTree={false}
       alwaysRefreshChildren={true}
     />
   )

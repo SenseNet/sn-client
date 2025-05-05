@@ -1,25 +1,14 @@
 import { Button, ListItemIcon, makeStyles, Theme } from '@material-ui/core'
 import { ActionModel, GenericContent, isActionModel } from '@sensenet/default-content-types'
 import { CurrentContentContext, useLogger, useWopi } from '@sensenet/hooks-react'
-// @ts-ignore
-// eslint-disable-next-line import/no-unresolved
-
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-// eslint-disable-next-line import/no-unresolved
 import { useLoadContent } from '../../hooks'
 import { contextMenuODataOptions } from '../context-menu/context-menu-odata-options'
 import { getIcon } from '../context-menu/icons'
 import { useContextMenuActions } from '../context-menu/use-context-menu-actions'
 import { Icon } from '../Icon'
-import SimpleTabs from '../tabs/SimpleTabs'
-import { ContentInfoProps } from './Props/ContentInfoProps'
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-  },
-}))
-export function ContentInfo<T extends GenericContent = GenericContent>(this: any, props: ContentInfoProps<T>) {
+
+export function ContentInfo() {
   const DISABLED_ACTIONS = ['Share', 'Preview', 'Delete']
   const logger = useLogger('context-menu')
   const [actions, setActions] = useState<ActionModel[]>()
@@ -30,6 +19,7 @@ export function ContentInfo<T extends GenericContent = GenericContent>(this: any
     isOpened: true,
   })
   const { isWriteAvailable } = useWopi()
+
   const setActionsWopi = useCallback(
     (contentFromCallback: GenericContent) => {
       if (!isActionModel(contentFromCallback.Actions)) {
@@ -63,33 +53,29 @@ export function ContentInfo<T extends GenericContent = GenericContent>(this: any
       setActionsWopi(content)
     }
   }, [content, setActionsWopi])
-  const { runAction } = useContextMenuActions(parentContent, false, setActionsWopi)
-  const handleActivateItem = useCallback(
-    (item: T) => {
-      if (item.IsFolder) {
-        props.onParentChange(item)
-      } else {
-        props.onActivateItem(item)
-      }
-    },
-    [props],
-  )
+  const { runAction } = useContextMenuActions(parentContent, setActionsWopi)
+
   return (
     <>
       <div className="gridTopPanel">
-        <div className="iconArea" title={parentContent.Type}>
-          <Icon item={parentContent} />
+        <div>
+          <div className="iconArea" title={parentContent.Type}>
+            <Icon item={parentContent} />
+          </div>
+          <h1 title="DisplayName" style={{ paddingTop: '3px' }}>
+            {parentContent?.DisplayName || 'Loading...'}
+          </h1>
+          <label>Type:</label>
+          <a
+            style={{ textDecoration: 'underline' }}
+            href={`/content-types/explorer/edit-binary?content=%2FGenericContent%2FFolder%2F${parentContent.Type}`}
+            target="_blank"
+            rel="noreferrer">
+            {parentContent.Type}
+          </a>
+          <label>Path:</label>
+          <span> {parentContent.Path}</span>
         </div>
-        <h1 title="DisplayName">{parentContent.DisplayName}</h1>
-        <label>Type:</label>
-        <a
-          href={`/content-types/explorer/edit-binary?content=%2FGenericContent%2FFolder%2F${parentContent.Type}`}
-          target="_blank"
-          rel="noreferrer">
-          {parentContent.Type}
-        </a>
-        <label>Path:</label>
-        <span> {parentContent.Path}</span>
         <div className="buttonPanel">
           {actions
             ?.filter((a: ActionModel) => {

@@ -1,5 +1,6 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import { ColumnSetting } from '@sensenet/list-controls-react/src/ContentList/content-list-base-props'
+import { ColDef } from 'ag-grid-community'
 import { CSSProperties, DetailedHTMLProps, HTMLAttributes } from 'react'
 
 export interface GridProps<T extends GenericContent> {
@@ -19,4 +20,5 @@ export interface GridProps<T extends GenericContent> {
   onFocus?: () => void
   containerProps?: DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
   disableColumnSettings?: boolean
+  colDef: ColDef[]
 }

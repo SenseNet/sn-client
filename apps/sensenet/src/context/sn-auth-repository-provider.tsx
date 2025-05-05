@@ -4,12 +4,13 @@ import { Repository } from '@sensenet/client-core'
 import { RepositoryContext, useLogger } from '@sensenet/hooks-react'
 import { AuthenticationProvider, useSnAuth } from '@sensenet/sn-auth-react'
 import React, { lazy, ReactNode, Suspense, useCallback, useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { PATHS } from '../application-paths'
 import { FullScreenLoader } from '../components/full-screen-loader'
 import { NotificationComponent } from '../components/NotificationComponent'
 import { useGlobalStyles } from '../globalStyles'
 import { useQuery } from '../hooks'
 import { getAuthConfig } from '../services/auth-config'
-
 const LoginPage = lazy(() => import(/* webpackChunkName: "login" */ '../components/login/login-page'))
 
 export const authConfigKey = 'sn-auth-config'
@@ -147,6 +148,7 @@ const RepoProvider = ({
   const { user, externalLogin, logout, accessToken, isLoading } = useSnAuth()
   const logger = useLogger('repo-provider')
   const [repo, setRepo] = useState<Repository>()
+  const history = useHistory()
 
   useEffect(() => {
     setRepo((prevRepo) => {
@@ -183,8 +185,13 @@ const RepoProvider = ({
   useEffect(() => {
     if (repo) {
       repo.reloadSchema()
+      const lastPath = sessionStorage.getItem('lastPath')
+      history.push(lastPath ?? PATHS.landingPath.appPath)
+      if (lastPath) {
+        localStorage.removeItem('lastPath')
+      }
     }
-  }, [repo])
+  }, [repo, history])
 
   useEffect(() => {
     ;(async () => {

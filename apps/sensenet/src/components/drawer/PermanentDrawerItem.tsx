@@ -30,8 +30,8 @@ const useStyles = makeStyles((theme: Theme) => {
       },
     },
     listButton: {
-      height: '60px',
-      paddingLeft: '2px',
+      height: '40px',
+      paddingLeft: '7px',
     },
     listItemIconDark: {
       color: theme.palette.common.white,
@@ -86,7 +86,7 @@ export const PermanentDrawerItem: React.FunctionComponent<PermanentDrawerItemPro
           selected={!!matchPath(location.pathname, props.item.url)}
           data-test={`drawer-menu-item-${props.item.primaryText.replace(/\s+/g, '-').toLowerCase()}`}>
           <ListItemIcon
-            className={clsx(classes.listItemIconDark, globalClasses.centered, {
+            className={clsx(classes.listItemIconDark, {
               [classes.listItemIconLight]: personalSettings.theme === 'light',
             })}>
             <div className={classes.listIconWrapper}>{props.item.icon}</div>
@@ -96,6 +96,8 @@ export const PermanentDrawerItem: React.FunctionComponent<PermanentDrawerItemPro
               <ListItemText
                 primary={`${props.item.primaryText}`}
                 style={{
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
                   color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
                 }}
               />

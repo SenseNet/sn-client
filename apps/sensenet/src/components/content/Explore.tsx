@@ -10,31 +10,27 @@ import {
   useRepository,
 } from '@sensenet/hooks-react'
 import { ColumnSetting } from '@sensenet/list-controls-react/src/ContentList/content-list-base-props'
+import { ColDef } from 'ag-grid-community'
 import { clsx } from 'clsx'
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
 import { ResponsivePersonalSettings } from '../../context'
-import { globals, useGlobalStyles } from '../../globalStyles'
+import { useGlobalStyles } from '../../globalStyles'
 import { useQuery, useSelectionService, useSnRoute } from '../../hooks'
 import { getPrimaryActionUrl, navigateToAction } from '../../services'
-// @ts-ignore
-import { ContentList } from '../content-list/content-list'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { DocumentViewer } from '../document-viewer'
 import { EditBinary } from '../edit/edit-binary'
-import { FullScreenLoader } from '../full-screen-loader'
+import { contentColumnDefs } from '../grid/Cols/ColumnDefs.'
 import { Grid } from '../grid/Grid'
-// @ts-ignore
 import ExpandedItemsProvider from '../tree/Contexts/ExpandedItemsProvider'
-import { SimpleTree } from '../tree/SimpleTree'
-// @ts-ignore
-import TreeWithData from '../tree/tree-with-data'
+import { SimpleTree } from '../tree/simpletree'
 import { BrowseView, EditView, ImageView, NewView, PermissionView, VersionView } from '../view-controls'
 import WopiPage from '../wopi-page'
 import { ContentInfo } from './ContentInfo'
 
-const useStyles = makeStyles((theme: Theme) => {
-  return createStyles({
+const useStyles = makeStyles<Theme, { width: number }>((theme) =>
+  createStyles({
     exploreWrapper: {
       display: 'flex',
       flexDirection: 'column',
@@ -47,8 +43,9 @@ const useStyles = makeStyles((theme: Theme) => {
     treeAndDatagridWrapper: {
       display: 'flex',
       width: '100%',
-      height: `calc(100% - ${globals.common.drawerItemHeight}px)`,
+      height: '100%',
       position: 'relative',
+      overflow: 'auto',
     },
     exploreContainer: {
       display: 'flex',
@@ -57,8 +54,67 @@ const useStyles = makeStyles((theme: Theme) => {
       position: 'relative',
       overflow: 'hidden',
     },
-  })
-})
+    simpleTree: {
+      width: ({ width }) => `${width}px`,
+      overflow: 'auto',
+      position: 'relative',
+      flex: 'none',
+      '& .MuiTypography-body1': {
+        fontSize: '12px !important',
+        display: 'flex',
+        alignSelf: 'center',
+        paddingRight: '4px',
+      },
+      '& .MuiListItemIcon-root': {
+        display: 'flex',
+        alignSelf: 'center',
+        minWidth: '25px',
+        marginRight: '3px',
+      },
+      '& .MuiSvgIcon-root': {
+        height: '16px',
+      },
+      '& .svgicon': {
+        width: '24px',
+        height: '24px',
+      },
+      '& .MuiSvgIcon-root svg': {
+        height: '16px !important',
+      },
+      '& .MuiCollapse-container.MuiTreeItem-group': {
+        marginLeft: '7px',
+        paddingLeft: '18px',
+        borderLeft: '1px dashed #cececeff',
+      },
+    },
+    resizeButton: {
+      position: 'sticky',
+      top: 0,
+      right: 0,
+      width: '26px',
+      height: '25px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      cursor: 'pointer',
+      zIndex: 101,
+      margin: '-1px 0.5px -24px auto',
+      border: `1px solid ${theme.palette.primary.main}`,
+      backgroundColor: theme.palette.type === 'light' ? 'white' : 'black',
+      '&:hover': {
+        backgroundColor: theme.palette.type === 'light' ? '#f0f0f0' : '#222222',
+      },
+      '&:active': {
+        backgroundColor: theme.palette.type === 'light' ? '#f0f0f0' : '#222222',
+      },
+    },
+    symbol: {
+      color: theme.palette.primary.main,
+      fontSize: '18px',
+      paddingBottom: '3px',
+    },
+  }),
+)
 
 export type ExploreProps = {
   currentPath: string
@@ -73,6 +129,7 @@ export type ExploreProps = {
   alwaysRefreshChildren?: boolean
   showPageTitle?: boolean
   disableColumnSettings?: boolean
+  colDef?: ColDef[]
 }
 
 export function Explore({
@@ -87,12 +144,39 @@ export function Explore({
   hasTree = true,
   alwaysRefreshChildren,
   disableColumnSettings,
+  colDef,
 }: ExploreProps) {
   const theme = useTheme()
   const selectionService = useSelectionService()
-  const classes = useStyles()
+  const [width, setWidth] = useState<number>(Number(localStorage.getItem('treeWidth') ?? '400'))
+  const classes = useStyles({ width })
   const globalClasses = useGlobalStyles()
-  const [isTreeLoading, setIsTreeLoading] = useState(false)
+  const isResizing = useRef(false)
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    isResizing.current = true
+    document.body.style.userSelect = 'none'
+    const startX = e.clientX
+    const resizeElement = e.currentTarget.parentElement as HTMLDivElement
+    const handleMouseMove = (event: MouseEvent) => {
+      if (isResizing.current) {
+        const newWidth = width + (event.clientX - startX)
+        resizeElement.style.width = `${newWidth}px`
+      }
+    }
+    const handleMouseUp = () => {
+      isResizing.current = false
+      document.body.style.userSelect = ''
+      const newWidth = parseInt(resizeElement.style.width, 10)
+      setWidth(newWidth)
+      localStorage.setItem('treeWidth', String(newWidth))
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('mouseup', handleMouseUp)
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mouseup', handleMouseUp)
+  }
+
   const repository = useRepository()
   const history = useHistory()
   const uiSettings = useContext(ResponsivePersonalSettings)
@@ -122,12 +206,9 @@ export function Explore({
         expand: ['Actions'] as ODataFieldParameter<GenericContent>,
       },
     })
-    console.log(expandedItem)
     const { location } = history
     history.push(getPrimaryActionUrl({ content: expandedItem.d, repository, uiSettings, location, snRoute }))
   }
-
-  const onTreeLoadingChange = useCallback((isLoading) => setIsTreeLoading(isLoading), [])
 
   const renderContent = () => {
     switch (activeAction) {
@@ -180,52 +261,26 @@ export function Explore({
       default:
     }
 
-    if (isTreeLoading) {
-      return <FullScreenLoader />
-    }
-
-    if (isNewGrid) {
-      return (
-        <>
-          {renderBeforeGrid?.()}
-          <ContentInfo
-            onParentChange={onNavigate}
-            onActivateItem={onActivateItemOverride}
-            onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
-            parentIdOrPath={currentPath}
-          />
-          <Grid
-            disableColumnSettings={disableColumnSettings}
-            style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
-            enableBreadcrumbs={false}
-            fieldsToDisplay={fieldsToDisplay}
-            schema={schema}
-            onParentChange={onNavigate}
-            onActivateItem={onActivateItemOverride}
-            onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
-            parentIdOrPath={currentPath}
-          />
-        </>
-      )
-    } else {
-      return (
-        <>
-          {renderBeforeGrid?.()}
-          <ContentList
-            disableColumnSettings={disableColumnSettings}
-            style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
-            enableBreadcrumbs={false}
-            fieldsToDisplay={fieldsToDisplay}
-            schema={schema}
-            onParentChange={onNavigate}
-            onActivateItem={onActivateItemOverride}
-            onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
-            parentIdOrPath={currentPath}
-          />
-        </>
-      )
-    }
+    return (
+      <>
+        {renderBeforeGrid?.()}
+        <ContentInfo />
+        <Grid
+          disableColumnSettings={disableColumnSettings}
+          style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
+          enableBreadcrumbs={false}
+          fieldsToDisplay={fieldsToDisplay}
+          schema={schema}
+          onParentChange={onNavigate}
+          onActivateItem={onActivateItemOverride}
+          onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
+          parentIdOrPath={currentPath}
+          colDef={colDef ?? contentColumnDefs}
+        />
+      </>
+    )
   }
+
   return (
     <LoadSettingsContextProvider>
       <CurrentContentProvider idOrPath={currentPath}>
@@ -242,37 +297,23 @@ export function Explore({
 
             <div className={`${classes.treeAndDatagridWrapper} leftTree theme-${theme.palette.type} `}>
               {hasTree && (
-                //
-                <>
-                  {!isNewGrid ? (
-                    <TreeWithData
+                <ExpandedItemsProvider>
+                  <div className={classes.simpleTree}>
+                    <div className={classes.resizeButton} onMouseDown={handleMouseDown}>
+                      <div className={classes.symbol}>&#8596;</div>
+                    </div>
+                    <SimpleTree
                       onItemClick={(item) => {
                         onNavigate(item)
                       }}
                       parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
                       activeItemPath={currentPath}
-                      onTreeLoadingChange={onTreeLoadingChange}
                       loadSettings={loadTreeSettings}
+                      onNavigate={onNavigate}
+                      rootLoaded={false}
                     />
-                  ) : (
-                    <div className="simpletree">
-                      <ExpandedItemsProvider>
-                        <SimpleTree
-                          onItemClick={(item) => {
-                            onNavigate(item)
-                          }}
-                          parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
-                          activeItemPath={currentPath}
-                          onTreeLoadingChange={onTreeLoadingChange}
-                          loadSettings={loadTreeSettings}
-                          onNavigate={onNavigate}
-                          rootLoaded={false}
-                        />
-                      </ExpandedItemsProvider>
-                    </div>
-                  )}
-                  {/* */}
-                </>
+                  </div>
+                </ExpandedItemsProvider>
               )}
               <div className={classes.exploreContainer}>{renderContent()}</div>
             </div>

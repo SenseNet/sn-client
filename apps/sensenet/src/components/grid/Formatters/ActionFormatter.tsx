@@ -1,6 +1,5 @@
 import { Button, IconButton, ListItemIcon, Menu, MenuItem } from '@material-ui/core'
 import { MoreHoriz } from '@material-ui/icons'
-//import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import { Content } from '@sensenet/client-core'
 import { ActionModel, GenericContent, isActionModel } from '@sensenet/default-content-types'
 import { useLogger, useWopi } from '@sensenet/hooks-react'
@@ -10,14 +9,14 @@ import { useLoadContent } from '../../../hooks'
 import { contextMenuODataOptions } from '../../context-menu/context-menu-odata-options'
 import { getIcon } from '../../context-menu/icons'
 import { useContextMenuActions } from '../../context-menu/use-context-menu-actions'
-import { SimpleContentProps } from '../Props/SimpleContentProps'
 const DISABLED_ACTIONS = ['Share', 'Preview']
-export function ActionFormatter(props: SimpleContentProps) {
+
+export function ActionFormatter(props: { data: Content }) {
   const [anchorEl, setAnchorEl] = useState(null)
   const [actions, setActions] = useState<ActionModel[]>()
   const logger = useLogger('context-menu')
   const { content } = useLoadContent<GenericContent>({
-    idOrPath: props.value.Id,
+    idOrPath: props.data.Id,
     oDataOptions: contextMenuODataOptions,
     isOpened: anchorEl !== null,
   })
@@ -51,7 +50,7 @@ export function ActionFormatter(props: SimpleContentProps) {
     [isWriteAvailable, logger],
   )
 
-  const { runAction } = useContextMenuActions(props.value, anchorEl !== null, setActionsWopi)
+  const { runAction } = useContextMenuActions(props.data, setActionsWopi)
   const device = useContext(ResponsiveContext)
 
   useEffect(() => {
@@ -61,7 +60,6 @@ export function ActionFormatter(props: SimpleContentProps) {
   }, [content, setActionsWopi])
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget)
-    console.log(actions)
   }
 
   const handleClose = () => {
@@ -69,11 +67,9 @@ export function ActionFormatter(props: SimpleContentProps) {
   }
   return (
     <>
-      <Button aria-controls="simple-menu" className="simpleContextMenu" aria-haspopup="true" onClick={handleClick}>
-        <IconButton>
-          <MoreHoriz />
-        </IconButton>
-      </Button>
+      <IconButton aria-controls="simple-menu" className="simpleContextMenu" aria-haspopup="true" onClick={handleClick}>
+        <MoreHoriz />
+      </IconButton>
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         {actions?.map((action) => {
           return (

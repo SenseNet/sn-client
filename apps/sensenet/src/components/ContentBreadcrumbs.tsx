@@ -19,18 +19,22 @@ const useStyles = makeStyles((theme: Theme) => {
       ' & .MuiIconButton-root': {
         color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
       },
-      marginLeft: 'auto',
+      marginLeft: '12px',
       display: 'flex',
       marginRight: '8px',
-      height: '40px',
+      height: '36px',
     },
     buttonsWrapper: {
       display: 'flex',
       alignItems: 'center',
+      marginLeft: '10px',
     },
     actionButton: {
       width: '40px',
       marginRight: '2px',
+      '&:disabled': {
+        opacity: 0.2,
+      },
     },
   })
 })
@@ -87,68 +91,77 @@ export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(pr
             : history.push(getPrimaryActionUrl({ content: item.content, repository, uiSettings, location }))
         }}
       />
-      {props.batchActions && selected.length > 0 ? (
+      {props.batchActions ? (
         <div className={classes.batchActionWrapper} data-test="batch-actions">
           <Tooltip title={localization.batchActions.delete} placement="bottom">
-            <IconButton
-              className={classes.actionButton}
-              data-test="batch-delete"
-              aria-label="delete"
-              onClick={() => {
-                openDialog({
-                  name: 'delete',
-                  props: { content: selected },
-                  dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true },
-                })
-              }}>
-              <DeleteIcon />
-            </IconButton>
+            <>
+              <IconButton
+                className={classes.actionButton}
+                data-test="batch-delete"
+                aria-label="delete"
+                disabled={selected.length === 0}
+                onClick={() => {
+                  openDialog({
+                    name: 'delete',
+                    props: { content: selected },
+                    dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true },
+                  })
+                }}>
+                <DeleteIcon />
+              </IconButton>
+            </>
           </Tooltip>
           <Tooltip title={localization.batchActions.move} placement="bottom">
-            <IconButton
-              className={classes.actionButton}
-              data-test="batch-move"
-              aria-label="move"
-              onClick={() => {
-                openDialog({
-                  name: 'copy-move',
-                  props: {
-                    content: selected,
-                    currentParent: parent,
-                    operation: 'move',
-                  },
-                  dialogProps: {
-                    disableBackdropClick: true,
-                    disableEscapeKeyDown: true,
-                    classes: { paper: globalClasses.pickerDialog },
-                  },
-                })
-              }}>
-              <FileCopyIcon />
-            </IconButton>
+            <>
+              <IconButton
+                className={classes.actionButton}
+                data-test="batch-move"
+                aria-label="move"
+                disabled={selected.length === 0}
+                onClick={() => {
+                  openDialog({
+                    name: 'copy-move',
+                    props: {
+                      content: selected,
+                      currentParent: parent,
+                      operation: 'move',
+                    },
+                    dialogProps: {
+                      disableBackdropClick: true,
+                      disableEscapeKeyDown: true,
+                      classes: { paper: globalClasses.pickerDialog },
+                    },
+                  })
+                }}>
+                <FileCopyIcon />
+              </IconButton>
+            </>
           </Tooltip>
           <Tooltip title={localization.batchActions.copy} placement="bottom">
-            <IconButton
-              className={classes.actionButton}
-              data-test="batch-copy"
-              aria-label="copy"
-              onClick={() => {
-                openDialog({
-                  name: 'copy-move',
-                  props: {
-                    content: selected,
-                    currentParent: parent,
-                    operation: 'copy',
-                  },
-                  dialogProps: {
-                    disableBackdropClick: true,
-                    disableEscapeKeyDown: true,
-                    classes: { paper: globalClasses.pickerDialog },
-                  },
-                })
-              }}>
-              <FileCopyOutlinedIcon />
-            </IconButton>
+            <>
+              <IconButton
+                className={classes.actionButton}
+                data-test="batch-copy"
+                aria-label="copy"
+                disabled={selected.length === 0}
+                onClick={() => {
+                  openDialog({
+                    name: 'copy-move',
+                    props: {
+                      content: selected,
+                      currentParent: parent,
+                      operation: 'copy',
+                    },
+                    dialogProps: {
+                      disableBackdropClick: true,
+                      disableEscapeKeyDown: true,
+                      classes: { paper: globalClasses.pickerDialog },
+                    },
+                  })
+                }}>
+                <FileCopyOutlinedIcon />
+              </IconButton>
+            </>
           </Tooltip>
         </div>
       ) : null}

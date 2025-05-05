@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme: Theme) => {
       flexShrink: 0,
       position: 'relative',
       width: globals.common.drawerWidthCollapsed,
+      transition: 'width 250ms ease-in-out',
       '&$opened': {
         width: globals.common.drawerWidthExpanded,
       },
@@ -47,13 +48,14 @@ const useStyles = makeStyles((theme: Theme) => {
       paddingTop: 0,
     },
     listWrapper: {
-      overflowY: 'auto',
+      overflowY: 'hidden',
       overflowX: 'hidden',
       width: '100%',
     },
     listButton: {
-      height: '60px',
-      paddingLeft: '2px',
+      height: '36px',
+      paddingLeft: '7px',
+      width: 'auto',
     },
     expandCollapseWrapper: {
       height: '49px',
@@ -97,7 +99,7 @@ export const PermanentDrawer = () => {
                 onClick={() => setOpened(!opened)}
                 key="expandcollapse"
                 data-test="drawer-expandcollapse-button">
-                <ListItemIcon className={globalClasses.centered}>
+                <ListItemIcon>
                   <Tooltip
                     className={globalClasses.centered}
                     title={opened ? localization.collapse : localization.expand}

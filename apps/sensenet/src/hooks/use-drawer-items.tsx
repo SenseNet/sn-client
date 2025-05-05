@@ -97,6 +97,8 @@ export const useDrawerItems = () => {
   )
 
   useEffect(() => {
+    let isMounted = true
+
     const getItemNameFromSettings = (item: DrawerItemSetting<any>) => {
       return item.settings?.title || localization.titles[item.itemType] || '!NO TITLE!'
     }
@@ -175,51 +177,50 @@ export const useDrawerItems = () => {
             },
           })
         case 'System':
-          return resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'stats' } })
+          return resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'settings' } })
         default:
           return '/'
       }
     }
 
-    const getItemFromSettings = (setting: DrawerItemSetting<any>) => {
-      const drawerItem: DrawerItem = {
-        icon: getIconFromSetting(setting),
-        primaryText: getItemNameFromSettings(setting),
-        secondaryText: getItemDescriptionFromSettings(setting),
-        url: getUrlFromSetting(setting),
-        root: setting.settings?.root,
-        itemType: setting.itemType,
-        systemItem: setting.systemItem,
-      }
-      return drawerItem
-    }
+    const getItemFromSettings = (setting: DrawerItemSetting<any>) => ({
+      icon: getIconFromSetting(setting),
+      primaryText: getItemNameFromSettings(setting),
+      secondaryText: getItemDescriptionFromSettings(setting),
+      url: getUrlFromSetting(setting),
+      root: setting.settings?.root,
+      itemType: setting.itemType,
+      systemItem: setting.systemItem,
+    })
 
-    ;[...settings.drawer.items, ...builtInDrawerItems]
-      .filterAsync(async (item) => {
-        if (!item.permissions?.length) {
-          return true
-        }
+    ;(async () => {
+      const allItems = [...settings.drawer.items, ...builtInDrawerItems]
+
+      const filtered = await allItems.filterAsync(async (item) => {
+        if (!item.permissions?.length) return true
 
         try {
           for (const permission of item.permissions) {
             const actions = await repo.getActions({ idOrPath: permission.path })
-            const actionIndex = actions.d.results.findIndex((action) => action.Name === permission.action)
-            if (actionIndex === -1 || actions.d.results[actionIndex].Forbidden) {
-              return false
-            }
+            const action = actions.d.results.find((a) => a.Name === permission.action)
+            if (!action || action.Forbidden) return false
           }
         } catch (error) {
           logger.debug({
             message: error.message,
-            data: {
-              error,
-            },
+            data: { error },
           })
           return false
         }
         return true
       })
-      .then((items) => setDrawerItems(items.map(getItemFromSettings)))
+      if (isMounted) {
+        setDrawerItems(filtered.map(getItemFromSettings))
+      }
+    })()
+    return () => {
+      isMounted = false
+    }
   }, [
     localization.descriptions,
     localization.titles,

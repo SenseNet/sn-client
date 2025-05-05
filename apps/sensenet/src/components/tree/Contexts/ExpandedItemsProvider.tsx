@@ -6,6 +6,8 @@ import React, { createContext, ReactNode, useEffect, useRef, useState } from 're
 type ExpandItemsContextType = [
   Set<string>,
   React.Dispatch<React.SetStateAction<Set<string>>>,
+  Set<string>,
+  React.Dispatch<React.SetStateAction<Set<string>>>,
   (path: string) => Promise<GenericContent[] | undefined>,
   React.Dispatch<React.SetStateAction<number>>,
 ]
@@ -15,6 +17,7 @@ export const ExpandItemsContext = createContext<ExpandItemsContextType | undefin
 
 const ExpandedItemsProvider = ({ children }: { children: ReactNode }) => {
   const [expandItems, setExpandItems] = useState<Set<string>>(new Set())
+  const [expandOriginalItems, setExpandOriginalItems] = useState<Set<string>>(new Set())
   const cache = useRef<{ [key: string]: { data: GenericContent[] | undefined; timestamp: number } }>({}) // Globális cache objektum
   const [cacheTime, setCacheTime] = useState<number>(6000)
   const repo = useRepository()
@@ -40,17 +43,14 @@ const ExpandedItemsProvider = ({ children }: { children: ReactNode }) => {
       let i = 0
       while (cache.current[path].data === undefined) {
         setTimeout(() => {}, 200)
-        console.log('#globalfetch: waiting for response', path)
         i++
         if (i > 10) {
-          console.log('#globalfetch: max iteration exceeded', path)
           return undefined
         }
       }
 
       //ha a cacheben van elem és nem undefined akkor visszadjuk azt
       if (now - cache.current[path].timestamp < cacheTime) {
-        console.log('#globalfetch: from cache', path)
         return (
           cache.current[path] as {
             data: GenericContent[] | undefined
@@ -64,7 +64,6 @@ const ExpandedItemsProvider = ({ children }: { children: ReactNode }) => {
       //itt megkéne várni, esetleg egy await async meoldaná a problémát
       const result = response?.d.results
       cache.current[path] = { data: result, timestamp: now }
-      console.log('#globalfetch: miss cache', path)
       return result
       //ezt nem várja meg
     } catch (error) {
@@ -73,7 +72,8 @@ const ExpandedItemsProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <ExpandItemsContext.Provider value={[expandItems, setExpandItems, loadChildren, setCacheTime]}>
+    <ExpandItemsContext.Provider
+      value={[expandItems, setExpandItems, expandOriginalItems, setExpandOriginalItems, loadChildren, setCacheTime]}>
       {children}
     </ExpandItemsContext.Provider>
   )
