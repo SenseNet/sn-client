@@ -46,6 +46,9 @@ jobs:
       - name: build
         run: yarn build
 
+      - name: build examples
+        run: yarn build:examples
+
       - name: build snapp
         run: yarn snapp build
         env:
