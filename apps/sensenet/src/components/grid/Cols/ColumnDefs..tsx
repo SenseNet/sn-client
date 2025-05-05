@@ -28,6 +28,7 @@ export const contentColumnDefs: ColDef[] = [
   {
     headerCheckboxSelection: true,
     checkboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
     width: 27,
     minWidth: 27,
     cellStyle: { padding: '0px 4px' },
@@ -140,6 +141,7 @@ export const userColumnDefs: ColDef[] = [
   {
     headerCheckboxSelection: true,
     checkboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
     width: 27,
     minWidth: 27,
     cellStyle: { padding: '0px 4px' },
@@ -199,6 +201,7 @@ export const groupColumnDefs: ColDef[] = [
   {
     headerCheckboxSelection: true,
     checkboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
     width: 27,
     minWidth: 27,
     cellStyle: { padding: '0px 4px' },
@@ -303,6 +306,7 @@ export const contentExplorerColumnDefs: ColDef[] = [
   {
     headerCheckboxSelection: true,
     checkboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
     width: 27,
     minWidth: 27,
     cellStyle: { padding: '0px 4px' },
@@ -398,6 +402,7 @@ export const contentTypesColumnDefs: ColDef[] = [
   {
     headerCheckboxSelection: true,
     checkboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
     width: 27,
     minWidth: 27,
     cellStyle: { padding: '0px 4px' },
@@ -481,6 +486,7 @@ export const contentTemplatesColumnDefs: ColDef[] = [
   {
     headerCheckboxSelection: true,
     checkboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
     width: 27,
     minWidth: 27,
     cellStyle: { padding: '0px 4px' },
@@ -564,6 +570,7 @@ export const localizationColumnDefs: ColDef[] = [
   {
     headerCheckboxSelection: true,
     checkboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
     width: 27,
     minWidth: 27,
     cellStyle: { padding: '0px 4px' },
@@ -647,6 +654,7 @@ export const webHooksColumnDefs: ColDef[] = [
   {
     headerCheckboxSelection: true,
     checkboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
     width: 27,
     minWidth: 27,
     cellStyle: { padding: '0px 4px' },
