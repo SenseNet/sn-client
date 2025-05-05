@@ -6,7 +6,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v2
 
       - uses: actions/cache@v4
         with:
@@ -29,9 +29,9 @@ jobs:
   build_and_test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v2
 
-      - uses: actions/cache@v4
+      - uses: actions/cache
         with:
           path: ~/.cache/yarn
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -57,4 +57,4 @@ jobs:
       - name: test
         run: NODE_OPTIONS='--max-old-space-size=4096' yarn test --coverage --logHeapUsage
 
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v1
