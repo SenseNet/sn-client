@@ -192,8 +192,19 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
           },
         })
         break
+      /*Az az új hozzáállás, hogy ha nem találja meg az action-t akkor jöjjön be az operation kezelő.
+        Ezt majd le kell!! cserélni úgy, hogy vizsgálva legyen a Type-ja*/
       default:
-        logger.warning({ message: `${actionName} is not implemented yet. Try to use it from command palette.` })
+        openDialog({
+          name: 'operation',
+          props: {
+            content,
+            OperationName: actionName,
+          },
+          dialogProps: { classes: { paper: globalClasses.pickerDialog } },
+        })
+        break
+      // logger.warning({ message: `${actionName} is not implemented yet. Try to use it from command palette.` })
     }
   }
 
