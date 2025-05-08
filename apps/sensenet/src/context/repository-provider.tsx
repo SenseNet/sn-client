@@ -1,31 +1,22 @@
-import { CssBaseline } from '@material-ui/core'
 import { AuthenticationProvider, useOidcAuthentication, UserManagerSettings } from '@sensenet/authentication-oidc-react'
 import { Repository } from '@sensenet/client-core'
 import { RepositoryContext, useLogger } from '@sensenet/hooks-react'
-import React, { lazy, ReactNode, Suspense, useCallback, useEffect, useState } from 'react'
+import React, { ReactNode, useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { FullScreenLoader } from '../components/full-screen-loader'
 import { AuthOverrideSkeleton } from '../components/login/auth-override-skeleton'
 import { NotAuthenticatedOverride } from '../components/login/not-authenticated-override'
 import { SessionLostOverride } from '../components/login/session-lost-override'
-import { NotificationComponent } from '../components/NotificationComponent'
-import { useGlobalStyles } from '../globalStyles'
 import { useQuery } from '../hooks'
-import { getAuthConfig } from '../services/auth-config'
-
-const LoginPage = lazy(() => import(/* webpackChunkName: "login" */ '../components/login/login-page'))
 
 export const authConfigKey = 'sn-oidc-config'
 const customEvents = {
   onUserSignedOut: () => {
     window.localStorage.removeItem(authConfigKey)
+    window.localStorage.removeItem('repoInfo')
   },
 }
 
-export function RepositoryProvider({ children }: { children: React.ReactNode }) {
-  const [isLoginInProgress, setIsLoginInProgress] = useState(false)
-  const logger = useLogger('repository-provider')
-  const globalClasses = useGlobalStyles()
+export function RepositoryProvider({ children, url }: { children: React.ReactNode; url: string }) {
   const history = useHistory()
   const [authState, setAuthState] = useState<{ repoUrl: string; config: UserManagerSettings | null }>({
     repoUrl: '',
@@ -38,68 +29,42 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
   const clearState = useCallback(() => setAuthState({ repoUrl: '', config: null }), [])
 
   useEffect(() => {
+    const stored = (() => {
+      try {
+        const item = window.localStorage.getItem('repoInfo')
+        return item ? JSON.parse(item) : null
+      } catch {
+        return null
+      }
+    })()
+    if (stored) {
+      window.localStorage.setItem(authConfigKey, JSON.stringify(stored.config))
+      setAuthState({ repoUrl: stored.url, config: stored.config.userManagerSettings })
+    }
+  }, [url])
+
+  useEffect(() => {
     if (configString) {
       const prevAuthConfig = JSON.parse(configString)
       setIdentityServerUrl(prevAuthConfig.authority)
 
-      if (repoFromUrl && prevAuthConfig.extraQueryParams.snrepo !== repoFromUrl) {
+      // Access extraQueryParams via userManagerSettings
+      const extraQueryParams = prevAuthConfig.userManagerSettings?.extraQueryParams
+      if (repoFromUrl && extraQueryParams?.snrepo !== repoFromUrl) {
         return setAuthState({ repoUrl: repoFromUrl, config: null })
       }
 
       setAuthState((oldState) => ({
-        repoUrl: prevAuthConfig?.extraQueryParams.snrepo || '',
-        config: prevAuthConfig?.extraQueryParams.snrepo === oldState.repoUrl ? prevAuthConfig : null,
+        repoUrl: extraQueryParams?.snrepo || '',
+        config: extraQueryParams?.snrepo === oldState.repoUrl ? prevAuthConfig.userManagerSettings : null,
       }))
     } else {
       repoFromUrl && setAuthState({ repoUrl: repoFromUrl, config: null })
     }
   }, [repoFromUrl, configString])
 
-  const getConfig = useCallback(async () => {
-    if (!authState.repoUrl) {
-      setIsLoginInProgress(false)
-      return
-    }
-    try {
-      setIsLoginInProgress(true)
-      const config = await getAuthConfig(authState.repoUrl)
-      window.localStorage.setItem(authConfigKey, JSON.stringify(config))
-      setAuthState((oldState) => ({ ...oldState, config: config.userManagerSettings }))
-    } catch (error) {
-      logger.warning({ data: error, message: `Couldn't connect to ${authState.repoUrl}` })
-      window.localStorage.removeItem(authConfigKey)
-      setAuthState((oldState) => ({ ...oldState, repoUrl: '' }))
-    } finally {
-      setIsLoginInProgress(false)
-    }
-  }, [logger, authState.repoUrl])
-
-  useEffect(() => {
-    getConfig()
-  }, [getConfig])
-
   if (!authState.config || !authState.repoUrl) {
-    return (
-      <div className={globalClasses.full}>
-        <CssBaseline />
-        <Suspense fallback={<FullScreenLoader loaderText="Loading" />}>
-          {configString || (!configString && repoFromUrl === authState.repoUrl) ? (
-            <FullScreenLoader loaderText="Loading" />
-          ) : (
-            <LoginPage
-              isLoginInProgress={isLoginInProgress}
-              handleSubmit={(url) => {
-                setAuthState({
-                  repoUrl: url,
-                  config: null,
-                })
-              }}
-            />
-          )}
-          <NotificationComponent />
-        </Suspense>
-      </div>
-    )
+    return <></>
   }
 
   return (
@@ -199,6 +164,7 @@ const RepoProvider = ({
           const config = JSON.parse(configString)
           logger.error({ data: error, message: `Couldn't connect to ${config.authority}` })
           window.localStorage.removeItem(authConfigKey)
+          window.localStorage.removeItem('repoInfo')
           clearAuthState()
         }
       }

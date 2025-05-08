@@ -11,6 +11,7 @@ export const NotAuthenticatedOverride = (props: { clearState: Function }) => {
   useEffect(() => {
     if (message === 'access_denied' || message === 'No matching state found in storage') {
       window.localStorage.removeItem(authConfigKey)
+      window.localStorage.removeItem('repoInfo')
       props.clearState()
       window.location.replace('/')
     }
