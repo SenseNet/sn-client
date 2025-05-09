@@ -1,3 +1,4 @@
+export * from './current-user-provider'
 export * from './LocalizationContext'
 export * from './PersonalSettingsContext'
 export * from './repository-provider'
