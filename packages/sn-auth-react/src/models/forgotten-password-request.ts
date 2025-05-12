@@ -1,4 +1,4 @@
 export interface ForgottenPasswordRequest {
-    email: string;
-    passwordRecoveryUrl?: string;
+  email: string
+  passwordRecoveryUrl?: string
 }

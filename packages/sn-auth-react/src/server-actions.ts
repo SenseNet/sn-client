@@ -1,9 +1,9 @@
-import { ChangePasswordRequest } from './models/change-password-request';
-import { ForgottenPasswordRequest } from './models/forgotten-password-request';
-import { LoginRequest } from './models/login-request';
-import { LoginResponse } from './models/login-response';
-import { MultiFactorLoginRequest } from './models/multi-factor-login-request';
-import { PasswordRecoveryRequest } from './models/password-recovery-request';
+import { ChangePasswordRequest } from './models/change-password-request'
+import { ForgottenPasswordRequest } from './models/forgotten-password-request'
+import { LoginRequest } from './models/login-request'
+import { LoginResponse } from './models/login-response'
+import { MultiFactorLoginRequest } from './models/multi-factor-login-request'
+import { PasswordRecoveryRequest } from './models/password-recovery-request'
 import { User } from './models/user'
 
 export async function convertAuthTokenApiCall(
@@ -35,7 +35,7 @@ export async function convertAuthTokenApiCall(
 
 export async function refreshTokenApiCall(
   server: string,
-  refreshToken: string,
+  refToken: string,
 ): Promise<{ accessToken: string; refreshToken: string }> {
   try {
     const response = await fetch(`${server}/api/auth/refresh-token`, {
@@ -43,7 +43,7 @@ export async function refreshTokenApiCall(
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ token: refreshToken }),
+      body: JSON.stringify({ token: refToken }),
     })
 
     if (response.ok) {
@@ -86,9 +86,9 @@ export async function loginApiCall(server: string, loginRequest: LoginRequest): 
     const response = await fetch(`${server}/api/auth/login`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(loginRequest)
+      body: JSON.stringify(loginRequest),
     })
 
     if (response.ok) {
@@ -107,9 +107,9 @@ export async function forgotPasswordApiCall(server: string, passwordRequest: For
     const response = await fetch(`${server}/api/auth/forgotten-password`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(passwordRequest)
+      body: JSON.stringify(passwordRequest),
     })
 
     if (!response.ok) {
@@ -126,9 +126,9 @@ export async function passwordRecoveryApiCall(server: string, passwordRequest: P
     const response = await fetch(`${server}/api/auth/password-recovery`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(passwordRequest)
+      body: JSON.stringify(passwordRequest),
     })
 
     if (!response.ok) {
@@ -140,7 +140,11 @@ export async function passwordRecoveryApiCall(server: string, passwordRequest: P
   }
 }
 
-export async function changePasswordApiCall(server: string, accessToken: string, passwordRequest: ChangePasswordRequest): Promise<void> {
+export async function changePasswordApiCall(
+  server: string,
+  accessToken: string,
+  passwordRequest: ChangePasswordRequest,
+): Promise<void> {
   try {
     const response = await fetch(`${server}/api/auth/change-password`, {
       method: 'POST',
@@ -148,7 +152,7 @@ export async function changePasswordApiCall(server: string, accessToken: string,
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify(passwordRequest)
+      body: JSON.stringify(passwordRequest),
     })
 
     if (!response.ok) {
@@ -160,14 +164,17 @@ export async function changePasswordApiCall(server: string, accessToken: string,
   }
 }
 
-export async function multiFactorApiCall(server: string, loginRequest: MultiFactorLoginRequest): Promise<LoginResponse> {
+export async function multiFactorApiCall(
+  server: string,
+  loginRequest: MultiFactorLoginRequest,
+): Promise<LoginResponse> {
   try {
     const response = await fetch(`${server}/api/auth/login/multi-factor`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(loginRequest)
+      body: JSON.stringify(loginRequest),
     })
 
     if (response.ok) {
@@ -191,8 +198,7 @@ export async function validateTokenApiCall(server: string, accessToken: string):
       },
     })
 
-    if (response.ok)
-      return true
+    if (response.ok) return true
   } catch (error) {
     console.error('Error:', error)
   }
@@ -213,7 +219,7 @@ export async function getUserDetailsApiCall(repoUrl: string, accessToken: string
     if (response.ok) {
       const responseJson = await response.json()
 
-      return responseJson.d;
+      return responseJson.d
     } else {
       throw new Error(`Error during getting user: ${response.statusText}`)
     }

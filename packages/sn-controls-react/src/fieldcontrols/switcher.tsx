@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { FieldSetting } from '@sensenet/default-content-types'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'

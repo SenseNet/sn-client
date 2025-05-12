@@ -1,7 +1,9 @@
-import React, { createContext, ReactNode, useState, useEffect } from 'react'
-import { User } from '../models/user'
-import { AuthRoutes } from './auth-routes'
+import React, { createContext, ReactNode, useEffect, useState } from 'react'
+import { LoginRequest } from '../models/login-request'
+import { LoginResponse } from '../models/login-response'
+import { MultiFactorLoginRequest } from '../models/multi-factor-login-request'
 import { SnAuthConfiguration } from '../models/sn-auth-configuration'
+import { User } from '../models/user'
 import {
   changePasswordApiCall,
   convertAuthTokenApiCall,
@@ -22,10 +24,8 @@ import {
   setAccessToken as setAccessTokenStorage,
   setRefreshToken as setRefreshTokenStorage,
 } from '../storage-helpers'
-import { LoginRequest } from '../models/login-request'
-import { LoginResponse } from '../models/login-response'
-import { MultiFactorLoginRequest } from '../models/multi-factor-login-request'
 import { isTokenAboutToExpire } from '../token-helpers'
+import { AuthRoutes } from './auth-routes'
 
 export interface AuthenticationContextState {
   isLoading: boolean
@@ -98,16 +98,16 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
             if (!isValid) {
               const response = await refreshAccessToken(refreshToken)
               if (!response?.accessToken) throw new Error()
-
-              accessToken = response.accessToken
-              refreshToken = response.refreshToken
+              const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response
+              accessToken = newAccessToken
+              refreshToken = newRefreshToken
               setAccessAndRefreshTokenStorage(accessToken, refreshToken)
             }
 
             const userDetails = await getUserDetailsApiCall(props.repoUrl, accessToken)
             setState({
-              accessToken: accessToken,
-              refreshToken: refreshToken,
+              accessToken,
+              refreshToken,
               user: userDetails,
               isLoading: false,
             })
@@ -190,8 +190,8 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
         const user = await getUserDetailsApiCall(props.repoUrl, accessToken)
         setState({
           user,
-          accessToken: accessToken,
-          refreshToken: refreshToken,
+          accessToken,
+          refreshToken,
           isLoading: false,
         })
         setAccessAndRefreshTokenStorage(accessToken, refreshToken)

@@ -48,6 +48,7 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/array-type': ['error', { default: 'array-simple', readonly: 'array-simple' }],
     'require-jsdoc': 1,
+    'cypress/unsafe-to-chain-command': 'off',
     'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
     'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
     'import/default': 0,

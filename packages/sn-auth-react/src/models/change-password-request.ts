@@ -1,3 +1,3 @@
 export interface ChangePasswordRequest {
-    password: string;
+  password: string
 }

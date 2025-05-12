@@ -1,4 +1,4 @@
 export interface PasswordRecoveryRequest {
-    password: string;
-    token: string;
+  password: string
+  token: string
 }

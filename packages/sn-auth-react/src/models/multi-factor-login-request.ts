@@ -1,4 +1,4 @@
 export interface MultiFactorLoginRequest {
-    multiFactorAuthToken: string;
-    multiFactorCode: string;
+  multiFactorAuthToken: string
+  multiFactorCode: string
 }

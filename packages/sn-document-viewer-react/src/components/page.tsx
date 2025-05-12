@@ -1,6 +1,6 @@
 import { CircularProgress, createStyles, makeStyles, Paper, Theme } from '@material-ui/core'
 import { PreviewImageData } from '@sensenet/client-core'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useCommentState, useDocumentData, usePreviewImage, useViewerState } from '../hooks'
 import { ImageUtil } from '../services'

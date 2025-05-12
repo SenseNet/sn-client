@@ -1,5 +1,5 @@
 import { GenericContent } from '@sensenet/default-content-types'
-import { createContext, FC, useCallback, useState } from 'react'
+import React, { createContext, FC, useCallback, useState } from 'react'
 
 export interface SelectionState {
   selection: GenericContent[]
