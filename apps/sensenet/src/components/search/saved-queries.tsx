@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core'
 import { debounce } from '@sensenet/client-utils'
 import { Query } from '@sensenet/default-content-types'
 import { LoadSettingsContext, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
@@ -80,7 +81,13 @@ export default function SavedQueries() {
       default:
         return (
           <>
-            <Content rootPath={PATHS.savedQueries.snPath} colDef={savedQueriesColumnDefs} />
+            {queries.length > 0 ? (
+              <Content rootPath={PATHS.savedQueries.snPath} colDef={savedQueriesColumnDefs} />
+            ) : (
+              <Typography variant="subtitle1" style={{ padding: '0 15px' }}>
+                {localization.noSavedQuery}
+              </Typography>
+            )}
           </>
         )
     }
