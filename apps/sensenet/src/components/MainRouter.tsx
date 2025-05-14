@@ -79,7 +79,7 @@ export const MainRouter = () => {
           </Route>
 
           <Route path={PATHS.custom.appPath}>
-            <CustomContent />
+            <CustomContent rootPath={PATHS.custom.snPath} />
           </Route>
 
           <Route path={PATHS.root.snPath} exact>

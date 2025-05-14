@@ -12,7 +12,7 @@ export const PATHS = {
   search: { appPath: '/search' },
   content: { appPath: '/content/:browseType/:action?', snPath: '/Root/Content' },
   contentTemplates: { appPath: '/content-templates/:browseType/:action?', snPath: '/Root/ContentTemplates' },
-  custom: { appPath: '/custom/:browseType/:path/:action?' },
+  custom: { appPath: '/custom/:browseType/:path/:action?', snPath: '/Root' },
   configuration: { appPath: '/system/settings/:action?', snPath: '/Root/System/Settings' },
   localization: { appPath: '/system/localization/:action?', snPath: '/Root/Localization' },
   webhooks: { appPath: '/system/webhooks/:action?', snPath: '/Root/System/WebHooks' },
