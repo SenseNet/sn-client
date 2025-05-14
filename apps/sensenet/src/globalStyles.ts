@@ -127,7 +127,6 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
       maxWidth: '700px',
     },
     pickerDialog: {
-      height: '100%',
       maxHeight: 750,
     },
     cancelButton: {
