@@ -243,7 +243,7 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
 
           <Dialog
             fullWidth
-            PaperProps={{ style: { maxWidth: '950px', maxHeight: '950px' } }}
+            PaperProps={{ style: { maxWidth: '950px', maxHeight: '100%' } }}
             maxWidth={false}
             onClose={handleDialogClose}
             open={isPickerOpen}
