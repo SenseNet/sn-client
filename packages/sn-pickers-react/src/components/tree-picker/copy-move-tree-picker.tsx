@@ -1,4 +1,4 @@
-import { List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core'
+import { List, ListItem, ListItemIcon, ListItemText, Typography, useTheme } from '@material-ui/core'
 import { ArrowUpward, Folder } from '@material-ui/icons'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { MouseEvent, useCallback, useEffect, useState } from 'react'
@@ -10,6 +10,7 @@ import { PickerProps } from '../picker'
  * Represents a list picker component.
  */
 export function CopyMoveTreePicker<T extends GenericContentWithIsParent = GenericContent>(props: PickerProps<T>) {
+  const theme = useTheme()
   const { selection, setSelection } = useSelection()
 
   const { items, navigateTo, isLoading, error } = useTreePicker<T>({
@@ -95,6 +96,11 @@ export function CopyMoveTreePicker<T extends GenericContentWithIsParent = Generi
 
       return (
         <ListItem
+          style={{
+            paddingTop: '0px',
+            paddingBottom: '0px',
+            borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid #737373',
+          }}
           key={item.Id}
           button={true}
           selected={selectedIndex === item.Id}
@@ -102,6 +108,7 @@ export function CopyMoveTreePicker<T extends GenericContentWithIsParent = Generi
           onClick={(e) => onClickSelectListItem(e, item.Id, item as any)}>
           <ListItemIcon>{props.renderIcon?.(item) || <Folder style={{ color: 'primary' }} />}</ListItemIcon>
           <ListItemText
+            style={{ marginTop: '0px', marginBottom: '0px' }}
             id={labelId}
             primary={item.DisplayName}
             secondary={item.Path.replace(new RegExp('^/Root', 'g'), '')}
@@ -109,7 +116,7 @@ export function CopyMoveTreePicker<T extends GenericContentWithIsParent = Generi
         </ListItem>
       )
     },
-    [onClickSelectListItem, props, selectedIndex],
+    [onClickSelectListItem, props, selectedIndex, theme.palette.type],
   )
 
   const renderItem = props.renderItem || defaultRenderer
