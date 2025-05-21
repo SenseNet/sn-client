@@ -20,7 +20,6 @@ interface ViewTitleProps {
 const useStyles = makeStyles((theme) => {
   return createStyles({
     title: {
-      height: '68px',
       fontSize: '20px',
       flexShrink: 0,
       flexDirection: 'column',

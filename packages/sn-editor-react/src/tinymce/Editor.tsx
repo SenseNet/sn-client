@@ -142,7 +142,7 @@ export const TinymceEditor: FC<TinymceEditorProps> = (props) => {
             insert: {
               title: 'Insert',
               items:
-                'InsertAccordion link media addcomment pageembed codesample inserttable | math | charmap emoticons hr | pagebreak nonbreaking anchor tableofcontents | insertdatetime',
+                'InsertAccordion link media InsertRepoFile addcomment pageembed codesample inserttable | math | charmap emoticons hr | pagebreak nonbreaking anchor tableofcontents | insertdatetime',
             },
             format: {
               title: 'Format',
