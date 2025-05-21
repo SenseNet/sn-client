@@ -184,7 +184,7 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
             currentContentText={props.localization?.currentContentText}
           />
 
-          <PickerContainer style={{ height: '545px', paddingTop: 0, position: 'relative', top: '-7px', width: '100%' }}>
+          <PickerContainer style={{ padding: '0px' }}>
             {mode === PickerModes.TREE && (
               <TreePicker setNavigationPath={setNavigationPath} navigationPath={navigationPath} {...props} />
             )}
