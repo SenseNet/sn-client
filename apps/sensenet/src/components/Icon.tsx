@@ -9,6 +9,7 @@ import {
   CodeOutlined,
   CommentOutlined,
   DeleteOutlined,
+  Description,
   DescriptionOutlined,
   DomainOutlined,
   Edit,
@@ -179,6 +180,8 @@ const getIconByName = (name: string | undefined, options: IconOptions) => {
       return <Edit style={options.style} />
     case 'Details':
       return <Info style={options.style} />
+    case 'Description':
+      return <Description style={options.style} />
     default:
       return null
   }

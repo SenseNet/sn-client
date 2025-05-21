@@ -159,6 +159,7 @@ export function Grid<T extends GenericContent = GenericContent>(this: any, props
           onSelectionChanged={onSelectionChanged}
           onCellContextMenu={(event) => onContextMenu(event)}
           onColumnResized={onColumnResized}
+          suppressNoRowsOverlay={true}
         />
       </div>
       {contextMenuItem && (

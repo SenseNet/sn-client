@@ -129,9 +129,21 @@ export const ThemeProvider: React.FunctionComponent = (props) => {
             '@font-face': [larsseit],
           },
         },
-        MuiInputLabel: {
+        MuiOutlinedInput: {
           root: {
-            fontSize: '1.3rem',
+            borderRadius: '4px 4px 0 0',
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderColor: pageTheme === 'light' ? '#DBDBDB' : '#2c2c2c',
+            },
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+              borderColor: '#666',
+            },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              borderColor: '#1976d2',
+            },
+          },
+          input: {
+            padding: '9px',
           },
         },
       },

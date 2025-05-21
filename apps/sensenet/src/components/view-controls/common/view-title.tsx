@@ -1,4 +1,4 @@
-import { createStyles, makeStyles } from '@material-ui/core'
+import { createStyles, ListItemIcon, makeStyles } from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import { clsx } from 'clsx'
@@ -17,7 +17,7 @@ interface ViewTitleProps {
   actionName?: string
 }
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme) => {
   return createStyles({
     title: {
       height: '68px',
@@ -25,6 +25,7 @@ const useStyles = makeStyles(() => {
       flexShrink: 0,
       flexDirection: 'column',
       flexWrap: 'nowrap',
+      borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
     },
     textBolder: {
       fontWeight: 500,

@@ -51,11 +51,7 @@ const UsersAndGroups: FunctionComponent = () => {
         rootPath={PATHS.usersAndGroups.snPath}
         colDef={gridSwitcher.activeItem.colDef}
         fieldsToDisplay={gridSwitcher.activeItem.fieldsToDisplay as any}
-        renderBeforeGrid={(): JSX.Element => (
-          <div style={{ margin: '10px 12px', display: 'flex', flexDirection: 'row-reverse' }}>
-            {gridSwitcher.renderButtons()}
-          </div>
-        )}
+        renderBeforeGrid={(): JSX.Element => <div style={{ margin: '10px 12px' }}>{gridSwitcher.renderButtons()}</div>}
         schema={gridSwitcher.activeItem.schema}
         loadChildrenSettings={gridSwitcher.activeItem.loadSettings}
       />

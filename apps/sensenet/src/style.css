@@ -15,11 +15,6 @@ ul[role='listbox'] {
   padding: 0;
   margin: 0;
 }
-.MuiInputBase-root {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 2px 5px;
-}
 .MuiGrid-container {
   max-height: 100% !important;
 }

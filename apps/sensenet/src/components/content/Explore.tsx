@@ -53,6 +53,7 @@ const useStyles = makeStyles<Theme, { width: number }>((theme) =>
       width: '100%',
       position: 'relative',
       overflow: 'hidden',
+      borderLeft: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
     },
     simpleTree: {
       width: ({ width }) => `${width}px`,
@@ -97,7 +98,7 @@ const useStyles = makeStyles<Theme, { width: number }>((theme) =>
       justifyContent: 'center',
       alignItems: 'center',
       cursor: 'pointer',
-      zIndex: 101,
+      zIndex: 9999,
       margin: '-1px 0.5px -24px auto',
       border: `1px solid ${theme.palette.primary.main}`,
       backgroundColor: theme.palette.type === 'light' ? 'white' : 'black',
@@ -161,7 +162,7 @@ export function Explore({
     const handleMouseMove = (event: MouseEvent) => {
       if (isResizing.current) {
         const newWidth = width + (event.clientX - startX)
-        resizeElement.style.width = `${newWidth}px`
+        resizeElement.style.width = `${Math.max(newWidth, 26)}px`
       }
     }
     const handleMouseUp = () => {

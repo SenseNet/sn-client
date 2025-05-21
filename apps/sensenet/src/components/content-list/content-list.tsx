@@ -50,7 +50,7 @@ import {
   RolesField,
 } from '.'
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme) => {
   return createStyles({
     tableWrapper: {
       height: '100%',
@@ -62,7 +62,7 @@ const useStyles = makeStyles(() => {
     breadcrumbsWrapper: {
       height: globals.common.drawerItemHeight,
       boxSizing: 'border-box',
-      borderBottom: '1px solid rgba(255, 255, 255, 0.11)',
+      borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
       paddingLeft: '15px',
     },
   })
