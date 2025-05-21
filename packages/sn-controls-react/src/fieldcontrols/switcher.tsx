@@ -80,16 +80,28 @@ export const Switch = withStyles((theme: Theme) => ({
   },
 }))(MuiSwitch)
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
       width: '100%',
       display: 'flex',
-      justifyContent: 'center',
       alignItems: 'flex-start',
     },
     alignedCenter: {
       alignItems: 'flex-start',
+    },
+    switcherCont: {
+      padding: '1.5px 4px',
+      maxWidth: '420px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      border: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid #2c2c2c',
+      borderRadius: '4px 4px 0 0',
+      marginLeft: '0',
+      '&:hover': {
+        cursor: 'pointer',
+        border: '1px solid #666',
+      },
     },
   }),
 )
@@ -124,13 +136,11 @@ export const Switcher: React.FC<ReactClientFieldSetting<FieldSetting>> = (props)
           })}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>
-          <Typography component="div">
-            <Grid component="label" container alignItems="center" spacing={1}>
-              <Grid item style={{ paddingRight: '30px' }}>
-                {props.settings.DisplayName}
-              </Grid>
+          <Typography component="div" style={{ width: '100%' }}>
+            <Grid component="label" className={classes.switcherCont} container spacing={1}>
+              <Grid item>{props.settings.DisplayName}</Grid>
               <Grid item>
-                <Switch data-test="edit-switch" size="small" checked={value} onChange={handleChange} />
+                <Switch data-test="edit-switch" size="medium" checked={value} onChange={handleChange} />
               </Grid>
             </Grid>
           </Typography>

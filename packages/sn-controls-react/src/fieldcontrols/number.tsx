@@ -56,18 +56,20 @@ export const NumberField: React.FC<ReactClientFieldSetting<NumberFieldSetting | 
     case 'edit':
     case 'new':
       return (
-        <>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
+          </label>
           <TextField
-            style={{ width: '100%' }}
+            variant="outlined"
+            style={{ width: '100%', maxWidth: '420px' }}
             autoFocus={props.autoFocus}
             name={props.settings.Name}
             type="text"
-            label={props.settings.DisplayName}
             value={value}
             required={props.settings.Compulsory}
             disabled={props.settings.ReadOnly}
             placeholder="0"
-            InputLabelProps={{ shrink: true }}
             InputProps={{
               startAdornment: defineCurrency(),
               endAdornment: props.settings.ShowAsPercentage ? <InputAdornment position="end">%</InputAdornment> : null,
@@ -81,7 +83,7 @@ export const NumberField: React.FC<ReactClientFieldSetting<NumberFieldSetting | 
             onChange={handleChange}
           />
           {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
-        </>
+        </div>
       )
     case 'browse':
     default:

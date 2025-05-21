@@ -1,12 +1,13 @@
 import {
+  createStyles,
   Dialog,
   DialogProps,
   DialogTitle,
   FormControl,
   FormGroup,
   FormHelperText,
-  InputLabel,
   List,
+  makeStyles,
   TextField,
   Typography,
 } from '@material-ui/core'
@@ -19,6 +20,21 @@ import { defaultLocalization } from '../localization'
 import { DefaultItemTemplate } from './default-item-template'
 import { ReferencePicker } from './reference-picker'
 
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    container: {
+      paddingLeft: '10px',
+      paddingTop: '10px',
+      width: '100%',
+      border: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid #2c2c2c',
+      borderRadius: '4px 4px 0 0',
+      '&:hover': {
+        border: '1px solid #666',
+      },
+    },
+  }),
+)
+
 const styles = {
   root: {
     display: 'flex',
@@ -26,10 +42,7 @@ const styles = {
     alignItems: 'flex-start',
   },
   listContainer: {
-    display: 'inline-block',
-    minWidth: 250,
     padding: 0,
-    marginTop: 15,
   },
 }
 
@@ -43,6 +56,7 @@ interface ReferenceGridProps extends ReactClientFieldSetting<ReferenceFieldSetti
 export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
   const localization = deepMerge(defaultLocalization.referenceGrid, props.localization?.referenceGrid)
   const DialogTitleComponent = props.dialogTitleComponent ?? DialogTitle
+  const classes = useStyles()
 
   const emptyContent = useMemo(
     () => ({
@@ -194,12 +208,13 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
             style={{ opacity: '0', pointerEvents: 'none', height: '0px' }}
           />
 
-          <InputLabel shrink={true} htmlFor={props.settings.Name}>
-            {props.settings.DisplayName}
-          </InputLabel>
+          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
+          </label>
           <List
+            className={classes.container}
             dense={true}
-            style={fieldValue?.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
+            style={fieldValue?.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 420 }}>
             {fieldValue?.map((item: GenericContent) => (
               <DefaultItemTemplate
                 content={item}
@@ -227,7 +242,6 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
           {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
 
           <Dialog
-            fullScreen
             fullWidth
             PaperProps={{ style: { maxWidth: '950px' } }}
             maxWidth={false}

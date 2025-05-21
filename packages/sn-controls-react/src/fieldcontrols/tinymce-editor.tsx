@@ -10,9 +10,15 @@ import { ReactClientFieldSetting } from './client-field-setting'
 import { defaultLocalization } from './localization'
 const Editor = lazy(() => import('../editor-wrapper').then((module) => ({ default: module.TinymceEditor })))
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
   createStyles({
-    richTextEditor: {},
+    richTextEditor: {
+      padding: '9px',
+      borderTopRightRadius: '4px',
+      borderTopLeftRadius: '4px',
+      borderBottom: theme.palette.type === 'light' ? '1px solid #878787' : '1px solid #bfbfbf',
+      backgroundColor: theme.palette.type === 'light' ? '#e8e8e8' : '#272727',
+    },
   }),
 )
 
@@ -55,16 +61,20 @@ export const TinymceEditor: React.FC<
     getFieldValue(props.fieldValue) ||
     (props.actionName === 'new' && changeTemplatedValue(props.settings.DefaultValue)) ||
     ''
-  const classes = useStyles(props)
+  // const classes = useStyles(props)
 
   switch (props.actionName) {
     case 'edit':
     case 'new':
       return (
-        <div className={classes.richTextEditor}>
-          <InputLabel shrink htmlFor={props.settings.Name} required={props.settings.Compulsory}>
-            {props.settings.DisplayName}
+        <div>
+          <InputLabel htmlFor={props.settings.Name} required={props.settings.Compulsory}>
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </InputLabel>
+
+          {/* <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
+          </label> */}
 
           <Suspense
             fallback={

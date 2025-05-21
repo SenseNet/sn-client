@@ -47,12 +47,7 @@ const useStyles = makeStyles((theme: Theme) => {
     grid: {
       margin: '0 auto',
     },
-    field: {
-      minWidth: '780px',
-      width: '800%',
-      margin: 'auto',
-      maxWidth: '100%',
-    },
+    field: {},
     actionButtonWrapper: {
       textAlign: 'right',
     },
@@ -62,10 +57,14 @@ const useStyles = makeStyles((theme: Theme) => {
     advancedFieldContainer: {
       padding: '15px 10px',
       fontSize: '16px',
-      minWidth: '780px',
       width: '100%',
       maxWidth: '100%',
       margin: 'auto',
+    },
+    advancedHolder: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '15px',
     },
     advancedFieldBox: {
       display: 'flex',
@@ -77,6 +76,7 @@ const useStyles = makeStyles((theme: Theme) => {
       height: '1px',
       margin: '16px auto',
       backgroundColor: theme.palette.primary.main,
+      width: '100%',
     },
   })
 })
@@ -184,7 +184,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         renderIcon: props.renderIcon,
         fieldOnChange: handleInputChange,
         extension: props.extension,
-        hideDescription: props.hideDescription,
+        hideDescription: true,
         uploadFolderPath: props.uploadFolderpath,
         autoFocus,
         localization: props.fieldLocalization,
@@ -240,7 +240,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         <Box className={classes.advancedFieldContainer}>
           {advancedFields.map((group, index) =>
             group.fields.length > 0 ? (
-              <Box key={index} data-test="group-container">
+              <Box key={index} className={classes.advancedHolder} data-test="group-container">
                 <Box className={classes.divider} />
                 <Box data-test="group-header">
                   <Box className={classes.advancedFieldBox}>

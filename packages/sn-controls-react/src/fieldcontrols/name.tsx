@@ -37,6 +37,8 @@ export const Name: React.FC<ReactClientFieldSetting> = (props) => {
     case 'new':
       return (
         <TextField
+          variant="outlined"
+          style={{ width: '100%' }}
           autoFocus={props.autoFocus}
           autoComplete="off"
           name={props.settings.Name}

@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { CircularProgress, createStyles, FormHelperText, InputLabel, makeStyles, Typography } from '@material-ui/core'
+import { CircularProgress, createStyles, FormHelperText, makeStyles, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { renderHtml } from '@sensenet/editor-react'
 import React, { lazy, Suspense } from 'react'
@@ -10,9 +10,15 @@ import { ReactClientFieldSetting } from './client-field-setting'
 import { defaultLocalization } from './localization'
 const Editor = lazy(() => import('../editor-wrapper'))
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
   createStyles({
-    richTextEditor: {},
+    richTextEditor: {
+      border: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid #2c2c2c',
+      borderRadius: '4px 4px 0 0',
+      '&:hover': {
+        border: '1px solid #666',
+      },
+    },
   }),
 )
 
@@ -55,17 +61,15 @@ export const RichTextEditor: React.FC<
     getFieldValue(props.fieldValue) ||
     (props.actionName === 'new' && changeTemplatedValue(props.settings.DefaultValue)) ||
     ''
-  const classes = useStyles(props)
 
   switch (props.actionName) {
     case 'edit':
     case 'new':
       return (
-        <div className={classes.richTextEditor}>
-          <InputLabel shrink htmlFor={props.settings.Name} required={props.settings.Compulsory}>
-            {props.settings.DisplayName}
-          </InputLabel>
-
+        <div>
+          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
+          </label>
           <Suspense
             fallback={
               <div style={{ textAlign: 'center' }}>

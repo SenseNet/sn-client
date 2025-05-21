@@ -3,11 +3,12 @@
  */
 import {
   Checkbox,
+  createStyles,
   FormControl,
   FormControlLabel,
   FormGroup,
   FormHelperText,
-  FormLabel,
+  makeStyles,
   TextField,
   Typography,
 } from '@material-ui/core'
@@ -18,11 +19,27 @@ import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { defaultLocalization } from './localization'
 
+const useStyles = makeStyles((theme) =>
+  createStyles({
+    groupCont: {
+      paddingLeft: '10px',
+      width: '100%',
+      maxWidth: '420px',
+      borderRadius: '4px 4px 0 0',
+      border: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid #2c2c2c',
+      '&:hover': {
+        border: '1px solid #666',
+      },
+    },
+  }),
+)
+
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
 export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>> = (props) => {
   const localization = deepMerge(defaultLocalization.checkboxGroup, props.localization?.checkboxGroup)
+  const classes = useStyles()
 
   const getInitialstate = () => {
     if (!props.fieldValue) {
@@ -74,11 +91,12 @@ export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>
         <FormControl
           disabled={props.settings.ReadOnly}
           component={'fieldset' as 'div'}
+          style={{ width: '100%' }}
           required={props.settings.Compulsory}>
-          <FormLabel style={{ transform: 'translate(0, 1.5px) scale(0.75)', transformOrigin: 'top left' }}>
-            {props.settings.DisplayName}
-          </FormLabel>
-          <FormGroup>
+          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
+          </label>
+          <FormGroup className={classes.groupCont}>
             {props.settings.Options?.map((option) => {
               return (
                 <FormControlLabel

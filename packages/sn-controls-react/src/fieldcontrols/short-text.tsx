@@ -29,12 +29,15 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
     case 'new':
       return (
         <>
+          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
+          </label>
           <TextField
+            variant="outlined"
             autoFocus={props.autoFocus}
             autoComplete="off"
             name={props.settings.Name}
             id={props.settings.Name}
-            label={props.settings.DisplayName}
             InputLabelProps={{ shrink: true }}
             value={value}
             required={props.settings.Compulsory}

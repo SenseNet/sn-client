@@ -47,6 +47,8 @@ export const ColorPicker: React.FC<ReactClientFieldSetting<ColorFieldSetting>> =
       return (
         <FormControl>
           <TextField
+            variant="outlined"
+            style={{ maxWidth: '420px', width: '100%' }}
             label={props.settings.DisplayName}
             type="text"
             name={props.settings.Name}

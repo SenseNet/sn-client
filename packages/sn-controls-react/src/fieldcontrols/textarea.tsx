@@ -30,6 +30,8 @@ export const Textarea: React.FC<ReactClientFieldSetting<LongTextFieldSetting>> =
     case 'new':
       return (
         <TextField
+          variant="outlined"
+          rows={3}
           autoFocus={props.autoFocus}
           onChange={handleChange}
           name={props.settings.Name}

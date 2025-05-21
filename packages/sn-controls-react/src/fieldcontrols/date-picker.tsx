@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { createStyles, FormHelperText, makeStyles, Theme, Tooltip, Typography } from '@material-ui/core'
+import { createStyles, FormHelperText, makeStyles, TextField, Theme, Tooltip, Typography } from '@material-ui/core'
 import { DateTimePicker, DatePicker as MUIDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import type { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import { deepMerge } from '@sensenet/client-utils'
@@ -86,6 +86,9 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
       return (
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={locale}>
           <>
+            <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+              {props.settings.DisplayName}
+            </label>
             {settings.DateTimeMode === DateTimeMode.Date ? (
               <MUIDatePicker
                 style={{ display: 'inherit' }}
@@ -93,12 +96,14 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
                 minDate={minDatePickerDate}
                 onChange={handleDateChange}
                 name={settings.Name}
-                label={settings.DisplayName}
                 id={settings.Name}
                 disabled={settings.ReadOnly}
                 InputLabelProps={{ shrink: true }}
                 required={settings.Compulsory}
                 format="yyyy MMMM dd"
+                TextFieldComponent={(propss) => (
+                  <TextField {...propss} variant="outlined" fullWidth InputLabelProps={{ shrink: true }} />
+                )}
               />
             ) : (
               <DateTimePicker
@@ -106,14 +111,16 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
                 minDate={minDatePickerDate}
                 value={value}
                 onChange={handleDateChange}
-                label={settings.DisplayName}
                 name={settings.Name}
                 id={settings.Name}
                 disabled={settings.ReadOnly}
                 InputLabelProps={{ shrink: true }}
                 required={settings.Compulsory}
                 format="yyyy MMMM dd hh:mm aaaa"
-                InputProps={{ readOnly: true, style: { minWidth: '200px', width: '100%' } }}
+                InputProps={{ readOnly: true, style: { maxWidth: '420px' } }}
+                TextFieldComponent={(propss) => (
+                  <TextField {...propss} variant="outlined" fullWidth InputLabelProps={{ shrink: true }} />
+                )}
               />
             )}
             {!hideDescription && <FormHelperText>{settings.Description}</FormHelperText>}

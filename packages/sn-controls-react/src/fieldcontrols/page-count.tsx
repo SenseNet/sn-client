@@ -28,11 +28,15 @@ export const PageCount: React.FC<ReactClientFieldSetting> = (props) => {
     case 'new':
       return (
         <>
+          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+            {props.settings.DisplayName}
+          </label>
           <TextField
+            variant="outlined"
+            style={{ maxWidth: '420px', width: '100%' }}
             autoFocus={props.autoFocus}
             name={props.settings.Name}
             type="number"
-            label={props.settings.DisplayName}
             value={value}
             required={props.settings.Compulsory}
             disabled={props.settings.ReadOnly}

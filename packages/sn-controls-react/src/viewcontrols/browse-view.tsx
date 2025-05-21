@@ -41,7 +41,6 @@ const useStyles = makeStyles((theme: Theme) => {
       textAlign: 'right',
     },
     field: {
-      minWidth: '780px',
       width: '80%',
       margin: 'auto',
       maxWidth: '100%',
@@ -50,7 +49,6 @@ const useStyles = makeStyles((theme: Theme) => {
     advancedFieldContainer: {
       padding: '15px 10px',
       fontSize: '16px',
-      minWidth: '780px',
       width: '100%',
       maxWidth: '100%',
       margin: 'auto',

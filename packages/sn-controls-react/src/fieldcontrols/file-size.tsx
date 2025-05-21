@@ -48,6 +48,8 @@ export const FileSizeField: React.FC<ReactClientFieldSetting<NumberFieldSetting>
       return (
         <>
           <TextField
+            variant="outlined"
+            style={{ width: '100%' }}
             autoFocus={props.autoFocus}
             name={props.settings.Name}
             type="number"

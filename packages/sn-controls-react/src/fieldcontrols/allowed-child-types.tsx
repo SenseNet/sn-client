@@ -4,7 +4,6 @@ import {
   FormGroup,
   FormHelperText,
   IconButton,
-  InputLabel,
   List,
   ListItem,
   ListItemIcon,
@@ -27,7 +26,7 @@ import { defaultLocalization } from './localization'
 const INPUT_PLACEHOLDER = 'Start typing to add another type'
 const ITEM_HEIGHT = 48
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme) => {
   return createStyles({
     inputContainer: {
       padding: '2px 4px',
@@ -61,6 +60,17 @@ const useStyles = makeStyles(() => {
     },
     ddIsClosed: {
       display: 'none',
+    },
+    container: {
+      maxWidth: '420px',
+      width: '100%',
+      paddingLeft: '11px',
+      paddingTop: '14px',
+      borderRadius: '4px 4px 0 0',
+      border: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid #2c2c2c',
+      '&:hover': {
+        border: '1px solid #666',
+      },
     },
   })
 })
@@ -230,11 +240,11 @@ export const AllowedChildTypes: React.FC<ReactClientFieldSetting & { classes?: A
     case 'new':
       return (
         <ClickAwayListener onClickAway={handleClickAway}>
-          <div style={{ display: 'inline-block', minWidth: '100%' }}>
-            <InputLabel shrink htmlFor={props.settings.Name} required={props.settings.Compulsory}>
-              {props.settings.DisplayName}
-            </InputLabel>
-            <List dense={true} className={classes.list}>
+          <div>
+            <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+              {`${props.settings.DisplayName} (${props.settings.Name})`}
+            </label>
+            <List dense={true} className={classes.container}>
               {selected.map((item, index) => (
                 <ListItem key={index} className={classes.listItem}>
                   <ListItemIcon style={{ margin: 0 }}>
@@ -258,6 +268,7 @@ export const AllowedChildTypes: React.FC<ReactClientFieldSetting & { classes?: A
             <div style={{ position: 'relative' }}>
               <FormGroup row className={classes.inputContainer}>
                 <TextField
+                  variant="outlined"
                   id={props.settings.Name}
                   autoComplete="off"
                   type="search"
@@ -270,7 +281,7 @@ export const AllowedChildTypes: React.FC<ReactClientFieldSetting & { classes?: A
                 <IconButton
                   color="primary"
                   className={classes.button}
-                  style={{ marginTop: '22px', width: '33px' }}
+                  style={{ paddingRight: '9px' }}
                   disabled={currentSelected && currentSelected.Name.length > 0 ? false : true}
                   onClick={handleAddClick}>
                   {props.renderIcon ? props.renderIcon('add_circle') : renderIconDefault('add_circle')}
