@@ -35,6 +35,8 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
+const disabledDateTimes: string[] = ['CreationDate', 'ModificationDate']
+
 const initialValueState = ({
   fieldValue,
   actionName,
@@ -78,6 +80,8 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
 
   const localeCode = locale?.code || window.navigator.language
 
+  const isDisabled = settings.ReadOnly || disabledDateTimes.includes(settings.Name)
+
   const dateFieldValue: Date = new Date(fieldValue as string)
 
   switch (actionName) {
@@ -97,7 +101,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
                 onChange={handleDateChange}
                 name={settings.Name}
                 id={settings.Name}
-                disabled={settings.ReadOnly}
+                disabled={isDisabled}
                 InputLabelProps={{ shrink: true }}
                 required={settings.Compulsory}
                 format="yyyy MMMM dd"
@@ -113,7 +117,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
                 onChange={handleDateChange}
                 name={settings.Name}
                 id={settings.Name}
-                disabled={settings.ReadOnly}
+                disabled={isDisabled}
                 InputLabelProps={{ shrink: true }}
                 required={settings.Compulsory}
                 format="yyyy MMMM dd hh:mm aaaa"
