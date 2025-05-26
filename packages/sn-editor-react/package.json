@@ -44,9 +44,7 @@
   "dependencies": {
     "@babel/runtime": "^7.18.9",
     "@material-ui/icons": "^4.11.3",
-    "@sensenet/client-core": "^4.1.0",
     "@sensenet/client-utils": "^2.3.0",
-    "@sensenet/controls-react": "^10.0.0",
     "@tinymce/tinymce-react": "^5.1.1",
     "@tiptap/core": "^2.0.0-beta.102",
     "@tiptap/extension-blockquote": "^2.0.0-beta.15",

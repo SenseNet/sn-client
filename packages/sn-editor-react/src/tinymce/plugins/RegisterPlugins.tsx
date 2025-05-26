@@ -1,5 +1,5 @@
 import { Editor } from 'tinymce'
-import { AccordionPlugin, RepoFilePlugin } from './'
+import { AccordionPlugin } from './'
 
 export type PluginRegistrationProps = {
   editor: Editor
@@ -7,7 +7,6 @@ export type PluginRegistrationProps = {
 
 export const RegisterPlugins = ({ ...props }: PluginRegistrationProps) => {
   AccordionPlugin({ ...props }) /*this is my custom component*/
-  RepoFilePlugin({ ...props })
 }
 
 export default RegisterPlugins

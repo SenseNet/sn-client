@@ -3256,29 +3256,6 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
-"@sensenet/controls-react@^10.0.0":
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/@sensenet/controls-react/-/controls-react-10.0.0.tgz#0866f45de7940904398a2079855410636ab005ab"
-  integrity sha512-I4O1WooSHjq+ij+zv0OuxdUfeXhK2p42aDbdrVSWq0we8hUJx8Aw7Gh5KVqtDGGNoMGESwQzBRN7KRFPAzaSMQ==
-  dependencies:
-    "@babel/runtime" "^7.18.9"
-    "@date-io/core" "^1.3.13"
-    "@date-io/date-fns" "1.3.13"
-    "@material-ui/pickers" "^3.3.10"
-    "@sensenet/client-core" "^4.1.0"
-    "@sensenet/client-utils" "^2.3.0"
-    "@sensenet/control-mapper" "^3.2.0"
-    "@sensenet/default-content-types" "^5.1.0"
-    "@sensenet/editor-react" "^0.3.2"
-    "@sensenet/hooks-react" "^1.6.3"
-    "@sensenet/pickers-react" "^2.1.4"
-    "@sensenet/query" "^2.1.3"
-    "@sensenet/search-react" "^2.1.5"
-    date-fns "^2.29.3"
-    react-color "^2.19.3"
-    react-responsive "^8.2.0"
-    tslib "^2.4.0"
-
 "@sideway/address@^4.1.5":
   version "4.1.5"
   resolved "https://registry.npmjs.org/@sideway/address/-/address-4.1.5.tgz"
