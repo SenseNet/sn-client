@@ -184,7 +184,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         renderIcon: props.renderIcon,
         fieldOnChange: handleInputChange,
         extension: props.extension,
-        hideDescription: true,
+        hideDescription: props.hideDescription,
         uploadFolderPath: props.uploadFolderpath,
         autoFocus,
         localization: props.fieldLocalization,
