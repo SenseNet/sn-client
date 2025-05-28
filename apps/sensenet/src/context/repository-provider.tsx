@@ -39,7 +39,6 @@ export function RepositoryProvider({
     repoUrl: '',
     config: null,
   })
-  const repoFromUrl = useQuery().get('repoUrl')
   const configString = window.localStorage.getItem(authConfigKey)
   const [identityServerUrl, setIdentityServerUrl] = useState()
 
@@ -52,18 +51,13 @@ export function RepositoryProvider({
 
       // Access extraQueryParams via userManagerSettings
       const extraQueryParams = prevAuthConfig.userManagerSettings?.extraQueryParams
-      if (repoFromUrl && extraQueryParams?.snrepo !== repoFromUrl) {
-        return setAuthState({ repoUrl: repoFromUrl, config: null })
-      }
 
       setAuthState((oldState) => ({
         repoUrl: extraQueryParams?.snrepo || '',
         config: extraQueryParams?.snrepo === oldState.repoUrl ? prevAuthConfig.userManagerSettings : null,
       }))
-    } else {
-      repoFromUrl && setAuthState({ repoUrl: repoFromUrl, config: null })
     }
-  }, [repoFromUrl, configString])
+  }, [configString])
 
   useEffect(() => {
     if (url) {
@@ -100,7 +94,7 @@ export function RepositoryProvider({
       <div className={globalClasses.full}>
         <CssBaseline />
         <Suspense fallback={<FullScreenLoader loaderText="Loading" />}>
-          {configString || (!configString && repoFromUrl === authState.repoUrl) ? (
+          {configString ? (
             <FullScreenLoader loaderText="Loading" />
           ) : (
             <LoginPage

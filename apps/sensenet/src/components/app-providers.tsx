@@ -1,9 +1,10 @@
 import { PathHelper } from '@sensenet/client-utils'
 import { InjectorContext, LoggerContextProvider } from '@sensenet/hooks-react'
-import React, { ReactNode, Suspense, useState } from 'react'
+import React, { ReactNode, Suspense, useCallback, useEffect, useState } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthServerType, defaultAuthConfig } from '../auth-config'
 import {
+  authConfigKey as authConfigKeyIS,
   LocalizationProvider,
   PersonalSettingsContextProvider,
   RepositoryProvider,
@@ -13,7 +14,7 @@ import {
 import { ISAuthProvider, SNAuthProvider } from '../context/auth-provider'
 import PathSaver from '../context/PathSaver'
 import { ShareProvider } from '../context/ShareProvider'
-import { SnAuthRepositoryProvider } from '../context/sn-auth-repository-provider'
+import { authConfigKey as authConfigKeySN, SnAuthRepositoryProvider } from '../context/sn-auth-repository-provider'
 import {
   CommandProviderManager,
   CustomActionCommandProvider,
@@ -36,17 +37,24 @@ export default function AppProviders({ children }: AppProvidersProps) {
   const [authType, setAuthType] = useState<'IdentityServer' | 'SNAuth'>(initAuthType)
   const [url, setUrl] = useState<string>('')
 
-  const changeAuthType = (providedUrl: string) => {
-    console.log('providedUrl:', providedUrl)
+  const changeAuthType = useCallback((providedUrl: string) => {
     setUrl(PathHelper.ensureDefaultSchema(providedUrl))
-    if (authType === 'IdentityServer') {
-      setAuthType('SNAuth')
-      window.localStorage.setItem('authType', 'SNAuth')
-    } else {
-      setAuthType('IdentityServer')
-      window.localStorage.setItem('authType', 'IdentityServer')
+    setAuthType((prev) => {
+      const newAuthType = prev === 'IdentityServer' ? 'SNAuth' : 'IdentityServer'
+      window.localStorage.setItem('authType', newAuthType)
+      return newAuthType
+    })
+  }, [])
+
+  useEffect(() => {
+    const IsAuthKey = localStorage.getItem(authConfigKeyIS)
+    const SnAuthKey = localStorage.getItem(authConfigKeySN)
+    if (IsAuthKey || SnAuthKey) return
+    const repoUrl = new URL(window.location.href).searchParams.get('repoUrl')
+    if (repoUrl) {
+      changeAuthType(repoUrl)
     }
-  }
+  }, [changeAuthType])
 
   snInjector
     .getInstance(CommandProviderManager)

@@ -31,7 +31,6 @@ export function SnAuthRepositoryProvider({
     repoUrl: '',
     config: null,
   })
-  const repoFromUrl = useQuery().get('repoUrl')
   const cancelledLogin = useQuery().get('cancelledLogin')
   const [configString, setConfigString] = useState<any>()
   const [authServerUrl, setAuthServerUrl] = useState()
@@ -52,19 +51,13 @@ export function SnAuthRepositoryProvider({
       const prevAuthConfig = JSON.parse(configString)
       setAuthServerUrl(prevAuthConfig.userManagerSettings.authority)
 
-      if (repoFromUrl && prevAuthConfig.userManagerSettings.extraQueryParams.snrepo !== repoFromUrl) {
-        return setAuthState({ repoUrl: repoFromUrl, config: null })
-      }
-
       setAuthState((oldState) => ({
         repoUrl: prevAuthConfig?.userManagerSettings.extraQueryParams.snrepo || '',
         config:
           prevAuthConfig?.userManagerSettings.extraQueryParams.snrepo === oldState.repoUrl ? prevAuthConfig : null,
       }))
-    } else {
-      repoFromUrl && setAuthState({ repoUrl: repoFromUrl, config: null })
     }
-  }, [repoFromUrl, configString])
+  }, [configString])
 
   useEffect(() => {
     if (url) {
@@ -108,7 +101,7 @@ export function SnAuthRepositoryProvider({
       <div className={globalClasses.full}>
         <CssBaseline />
         <Suspense fallback={<FullScreenLoader loaderText="Loading" />}>
-          {configString || (!configString && repoFromUrl === authState.repoUrl) ? (
+          {configString ? (
             <FullScreenLoader loaderText="Loading" />
           ) : (
             <LoginPage
