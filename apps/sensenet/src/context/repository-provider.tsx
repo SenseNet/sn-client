@@ -1,22 +1,39 @@
+import { CssBaseline } from '@material-ui/core'
 import { AuthenticationProvider, useOidcAuthentication, UserManagerSettings } from '@sensenet/authentication-oidc-react'
 import { Repository } from '@sensenet/client-core'
 import { RepositoryContext, useLogger } from '@sensenet/hooks-react'
-import React, { ReactNode, useCallback, useEffect, useState } from 'react'
+import React, { lazy, ReactNode, Suspense, useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { FullScreenLoader } from '../components/full-screen-loader'
 import { AuthOverrideSkeleton } from '../components/login/auth-override-skeleton'
 import { NotAuthenticatedOverride } from '../components/login/not-authenticated-override'
 import { SessionLostOverride } from '../components/login/session-lost-override'
+import { NotificationComponent } from '../components/NotificationComponent'
+import { useGlobalStyles } from '../globalStyles'
 import { useQuery } from '../hooks'
+import { getAuthConfig } from '../services/auth-config'
+
+const LoginPage = lazy(() => import(/* webpackChunkName: "login" */ '../components/login/login-page'))
 
 export const authConfigKey = 'sn-oidc-config'
 const customEvents = {
   onUserSignedOut: () => {
     window.localStorage.removeItem(authConfigKey)
-    window.localStorage.removeItem('repoInfo')
   },
 }
 
-export function RepositoryProvider({ children, url }: { children: React.ReactNode; url: string }) {
+export function RepositoryProvider({
+  children,
+  url,
+  changeAuthType,
+}: {
+  children: React.ReactNode
+  url: string
+  changeAuthType: (x: string) => void
+}) {
+  const [isLoginInProgress, setIsLoginInProgress] = useState(false)
+  const logger = useLogger('repository-provider')
+  const globalClasses = useGlobalStyles()
   const history = useHistory()
   const [authState, setAuthState] = useState<{ repoUrl: string; config: UserManagerSettings | null }>({
     repoUrl: '',
@@ -27,21 +44,6 @@ export function RepositoryProvider({ children, url }: { children: React.ReactNod
   const [identityServerUrl, setIdentityServerUrl] = useState()
 
   const clearState = useCallback(() => setAuthState({ repoUrl: '', config: null }), [])
-
-  useEffect(() => {
-    const stored = (() => {
-      try {
-        const item = window.localStorage.getItem('repoInfo')
-        return item ? JSON.parse(item) : null
-      } catch {
-        return null
-      }
-    })()
-    if (stored) {
-      window.localStorage.setItem(authConfigKey, JSON.stringify(stored.config))
-      setAuthState({ repoUrl: stored.url, config: stored.config.userManagerSettings })
-    }
-  }, [url])
 
   useEffect(() => {
     if (configString) {
@@ -63,8 +65,58 @@ export function RepositoryProvider({ children, url }: { children: React.ReactNod
     }
   }, [repoFromUrl, configString])
 
+  useEffect(() => {
+    if (url) {
+      setAuthState({ repoUrl: url, config: null })
+    }
+  }, [url])
+
+  const getConfig = useCallback(async () => {
+    if (!authState.repoUrl) {
+      setIsLoginInProgress(false)
+      return
+    }
+    try {
+      setIsLoginInProgress(true)
+      const config = await getAuthConfig(authState.repoUrl)
+      window.localStorage.setItem(authConfigKey, JSON.stringify(config))
+      // Set only userManagerSettings in authState to match the expected type
+      setAuthState((oldState) => ({ ...oldState, config: config.userManagerSettings }))
+    } catch (error) {
+      logger.warning({ data: error, message: `Couldn't connect to ${authState.repoUrl}` })
+      window.localStorage.removeItem(authConfigKey)
+      setAuthState((oldState) => ({ ...oldState, repoUrl: '' }))
+    } finally {
+      setIsLoginInProgress(false)
+    }
+  }, [logger, authState.repoUrl])
+
+  useEffect(() => {
+    getConfig()
+  }, [getConfig])
+
   if (!authState.config || !authState.repoUrl) {
-    return <></>
+    return (
+      <div className={globalClasses.full}>
+        <CssBaseline />
+        <Suspense fallback={<FullScreenLoader loaderText="Loading" />}>
+          {configString || (!configString && repoFromUrl === authState.repoUrl) ? (
+            <FullScreenLoader loaderText="Loading" />
+          ) : (
+            <LoginPage
+              isLoginInProgress={isLoginInProgress}
+              handleSubmit={(formUrl) => {
+                setAuthState({
+                  repoUrl: formUrl,
+                  config: null,
+                })
+              }}
+            />
+          )}
+          <NotificationComponent />
+        </Suspense>
+      </div>
+    )
   }
 
   return (
@@ -94,7 +146,11 @@ export function RepositoryProvider({ children, url }: { children: React.ReactNod
         />
       )}
       customEvents={customEvents}>
-      <RepoProvider repoUrl={authState.repoUrl} identityServerUrl={identityServerUrl} clearAuthState={clearState}>
+      <RepoProvider
+        repoUrl={authState.repoUrl}
+        identityServerUrl={identityServerUrl}
+        clearAuthState={clearState}
+        changeAuthType={changeAuthType}>
         {children}
       </RepoProvider>
     </AuthenticationProvider>
@@ -106,11 +162,13 @@ const RepoProvider = ({
   repoUrl,
   clearAuthState,
   identityServerUrl,
+  changeAuthType,
 }: {
   children: ReactNode
   repoUrl: string
   clearAuthState: Function
   identityServerUrl?: string
+  changeAuthType: (x: string) => void
 }) => {
   const { oidcUser, login, logout } = useOidcAuthentication()
   const logger = useLogger('repo-provider')
@@ -162,14 +220,14 @@ const RepoProvider = ({
           await login()
         } catch (error) {
           const config = JSON.parse(configString)
+          changeAuthType(repoUrl)
           logger.error({ data: error, message: `Couldn't connect to ${config.authority}` })
           window.localStorage.removeItem(authConfigKey)
-          window.localStorage.removeItem('repoInfo')
           clearAuthState()
         }
       }
     })()
-  }, [clearAuthState, logger, login, logout, oidcUser])
+  }, [clearAuthState, logger, login, logout, oidcUser, changeAuthType, repoUrl])
 
   if (!oidcUser || oidcUser.expired || !repo) {
     return null

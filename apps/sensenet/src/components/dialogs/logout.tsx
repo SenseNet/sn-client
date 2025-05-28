@@ -52,7 +52,6 @@ export function LogoutDialog() {
             variant="contained"
             onClick={() => {
               window.localStorage.removeItem(authConfigKey)
-              window.localStorage.removeItem('repoInfo')
               logout()
             }}
             autoFocus={true}>

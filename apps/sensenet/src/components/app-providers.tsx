@@ -1,7 +1,8 @@
-import { CssBaseline } from '@material-ui/core'
+import { PathHelper } from '@sensenet/client-utils'
 import { InjectorContext, LoggerContextProvider } from '@sensenet/hooks-react'
 import React, { ReactNode, Suspense, useState } from 'react'
 import { BrowserRouter } from 'react-router-dom'
+import { AuthServerType, defaultAuthConfig } from '../auth-config'
 import {
   LocalizationProvider,
   PersonalSettingsContextProvider,
@@ -13,20 +14,16 @@ import { ISAuthProvider, SNAuthProvider } from '../context/auth-provider'
 import PathSaver from '../context/PathSaver'
 import { ShareProvider } from '../context/ShareProvider'
 import { SnAuthRepositoryProvider } from '../context/sn-auth-repository-provider'
-import { useGlobalStyles } from '../globalStyles'
 import {
   CommandProviderManager,
   CustomActionCommandProvider,
-  getAuthConfig,
   HelpCommandProvider,
   NavigationCommandProvider,
   SearchCommandProvider,
 } from '../services'
 import { DialogProvider } from './dialogs/dialog-provider'
-import { FullScreenLoader } from './full-screen-loader'
+
 import { GridLoadingProvider } from './grid/Providers/GridLoadingProvider'
-import LoginPage from './login/login-page'
-import { NotificationComponent } from './NotificationComponent'
 import { snInjector } from './sn-injector'
 import { TreeLoadingProvider } from './tree/Contexts/TreeLoadingProvider'
 
@@ -35,28 +32,21 @@ export type AppProvidersProps = {
 }
 
 export default function AppProviders({ children }: AppProvidersProps) {
-  const globalClasses = useGlobalStyles()
-  const [url, setUrl] = useState<any>(undefined)
+  const initAuthType: AuthServerType = (window.localStorage.getItem('authType') as AuthServerType) ?? 'IdentityServer'
+  const [authType, setAuthType] = useState<'IdentityServer' | 'SNAuth'>(initAuthType)
+  const [url, setUrl] = useState<string>('')
 
-  const onLogin = async (loginUrl: string) => {
-    const config = await getAuthConfig(loginUrl)
-    const repoInfo = {
-      url: loginUrl,
-      config,
-      authType: config.authServerSettings.type,
+  const changeAuthType = (providedUrl: string) => {
+    console.log('providedUrl:', providedUrl)
+    setUrl(PathHelper.ensureDefaultSchema(providedUrl))
+    if (authType === 'IdentityServer') {
+      setAuthType('SNAuth')
+      window.localStorage.setItem('authType', 'SNAuth')
+    } else {
+      setAuthType('IdentityServer')
+      window.localStorage.setItem('authType', 'IdentityServer')
     }
-    window.localStorage.setItem('repoInfo', JSON.stringify(repoInfo))
-    setUrl(loginUrl)
   }
-
-  const repoInfo = (() => {
-    try {
-      const item = window.localStorage.getItem('repoInfo')
-      return item ? JSON.parse(item) : null
-    } catch {
-      return null
-    }
-  })()
 
   snInjector
     .getInstance(CommandProviderManager)
@@ -77,17 +67,8 @@ export default function AppProviders({ children }: AppProvidersProps) {
               <GridLoadingProvider>
                 <TreeLoadingProvider>
                   <ThemeProvider>
-                    {!repoInfo && (
-                      <div className={globalClasses.full}>
-                        <CssBaseline />
-                        <Suspense fallback={<FullScreenLoader loaderText="Loading" />}>
-                          <LoginPage isLoginInProgress={false} handleSubmit={onLogin} />
-                          <NotificationComponent />
-                        </Suspense>
-                      </div>
-                    )}
-                    {repoInfo?.authType === 'IdentityServer' && (
-                      <RepositoryProvider url={url}>
+                    {authType === 'IdentityServer' ? (
+                      <RepositoryProvider url={url} changeAuthType={changeAuthType}>
                         <ShareProvider>
                           <ISAuthProvider>
                             <ResponsiveContextProvider>
@@ -96,9 +77,8 @@ export default function AppProviders({ children }: AppProvidersProps) {
                           </ISAuthProvider>
                         </ShareProvider>
                       </RepositoryProvider>
-                    )}
-                    {repoInfo?.authType === 'SNAuth' && (
-                      <SnAuthRepositoryProvider url={url}>
+                    ) : (
+                      <SnAuthRepositoryProvider url={url} changeAuthType={changeAuthType}>
                         <ShareProvider>
                           <SNAuthProvider>
                             <ResponsiveContextProvider>
