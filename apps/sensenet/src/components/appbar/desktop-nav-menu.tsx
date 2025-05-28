@@ -113,6 +113,11 @@ export const DesktopNavMenu: FunctionComponent = () => {
     service.setPersonalSettingsValue({ ...settings, theme: event.target.checked ? 'dark' : 'light' })
   }
 
+  const switchDescription = () => (event: ChangeEvent<HTMLInputElement>) => {
+    const settings = service.userValue.getValue()
+    service.setPersonalSettingsValue({ ...settings, showDescription: event.target.checked })
+  }
+
   const toggleHideSettingsFolder = () => (event: ChangeEvent<HTMLInputElement>) => {
     const settings = service.userValue.getValue()
     service.setPersonalSettingsValue({ ...settings, showHiddenItems: event.target.checked })
@@ -242,6 +247,22 @@ export const DesktopNavMenu: FunctionComponent = () => {
                           data-test="theme-switcher"
                           checked={personalSettings.theme === 'dark'}
                           onChange={switchTheme()}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Typography>
+                </MenuItem>
+                <MenuItem>
+                  <Typography component="div" className={classes.checkboxMenuItem} style={{ width: '100%' }}>
+                    <Grid component="label" container alignItems="center" justify="space-between">
+                      <Grid item style={{ paddingRight: '16px' }} data-test="description-status">
+                        {'Show Description'}
+                      </Grid>
+                      <Grid item>
+                        <Switch
+                          data-test="description-switcher"
+                          checked={personalSettings.showDescription}
+                          onChange={switchDescription()}
                         />
                       </Grid>
                     </Grid>

@@ -93,6 +93,7 @@ export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   logLevel: Array<keyof typeof LogLevel>
   language: 'default' | 'hungarian'
   theme: 'light' | 'dark'
+  showDescription: boolean
   uploadHandlers: string[]
 }
 
@@ -140,6 +141,7 @@ export const defaultSettings: PersonalSettingsType = {
   sendLogWithCrashReports: true,
   logLevel: ['Information', 'Warning', 'Error', 'Fatal'],
   theme: prefersDark ? 'dark' : 'light',
+  showDescription: false,
   showHiddenItems: true,
   preferDisplayName: false,
   uploadHandlers: [

@@ -114,7 +114,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         cancel: localization.forms.cancel,
         advancedFields: localization.forms.advancedFields,
       }}
-      hideDescription
+      hideDescription={!personalSettings.showDescription}
       locale={LocalizationObject[personalSettings.language].locale}
       classes={{
         ...classes,
