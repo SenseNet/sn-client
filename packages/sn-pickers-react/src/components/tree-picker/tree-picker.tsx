@@ -127,7 +127,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
   }
 
   return (
-    <List style={{ padding: '0px' }}>
+    <List style={{ padding: '0px', maxHeight: '400px' }}>
       {items?.map((item) => (
         <div
           onClick={(e) => onCheckedChangeHandler(e, item as any)}
