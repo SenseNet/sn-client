@@ -167,7 +167,7 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
           />
         </Box>
 
-        <div className="selection-container" style={{ width: '100%', display: 'flex' }}>
+        <div className="selection-container" style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           <PickerContainer style={{ padding: '0px', overflowX: 'hidden' }}>
             {mode === PickerModes.TREE && (
               <TreePicker setNavigationPath={setNavigationPath} navigationPath={navigationPath} {...props} />
