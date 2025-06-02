@@ -9,5 +9,10 @@
     }
   },
   "include": ["src"],
-  "references": [{ "path": "../sn-client-utils" }]
+  "references": [
+    { "path": "../sn-client-utils" },
+    { "path": "../sn-pickers-react" },
+    { "path": "../sn-client-core" },
+    { "path": "../sn-hooks-react" }
+  ]
 }

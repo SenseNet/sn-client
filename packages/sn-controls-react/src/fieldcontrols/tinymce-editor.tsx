@@ -88,6 +88,7 @@ export const TinymceEditor: React.FC<
               onChange={(content) => {
                 props.fieldOnChange?.(props.settings.Name, content)
               }}
+              repository={props.repository}
             />
           </Suspense>
 

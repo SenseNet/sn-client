@@ -1,3 +1,4 @@
+import { Repository } from '@sensenet/client-core'
 import { Editor, IAllProps } from '@tinymce/tinymce-react'
 import React, { FC, useRef } from 'react'
 import { type Editor as TinyMCEEditor } from 'tinymce'
@@ -51,6 +52,7 @@ import { RegisterPlugins } from './plugins'
 export interface TinymceEditorProps {
   onChange?: IAllProps['onEditorChange']
   initvalue?: string
+  repository?: Repository
 }
 
 export const TinymceEditor: FC<TinymceEditorProps> = (props) => {
@@ -125,7 +127,7 @@ export const TinymceEditor: FC<TinymceEditorProps> = (props) => {
             'wordcount',
           ],
           setup: (editor) => {
-            RegisterPlugins({ editor })
+            RegisterPlugins({ editor, repository: props.repository })
           },
           menu: {
             file: {
@@ -142,7 +144,7 @@ export const TinymceEditor: FC<TinymceEditorProps> = (props) => {
             insert: {
               title: 'Insert',
               items:
-                'InsertAccordion link media addcomment pageembed codesample inserttable | math | charmap emoticons hr | pagebreak nonbreaking anchor tableofcontents | insertdatetime',
+                'InsertAccordion link media InsertRepoFile addcomment pageembed codesample inserttable | math | charmap emoticons hr | pagebreak nonbreaking anchor tableofcontents | insertdatetime',
             },
             format: {
               title: 'Format',
