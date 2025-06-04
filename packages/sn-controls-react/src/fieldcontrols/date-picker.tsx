@@ -2,7 +2,7 @@
  * @module FieldControls
  */
 import { createStyles, FormHelperText, makeStyles, TextField, Theme, Tooltip, Typography } from '@material-ui/core'
-import { DateTimePicker, DatePicker as MUIDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
+import { KeyboardDateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import type { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import { deepMerge } from '@sensenet/client-utils'
 import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-types'
@@ -71,11 +71,12 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
   const [value, setValue] = useState(initialValueState({ fieldValue, actionName, settings }))
 
   const handleDateChange = (date: MaterialUiPickersDate) => {
-    if (!date) {
+    if (!date || isNaN(date.getTime())) {
       return
     }
-    setValue(new Date(date).toISOString())
-    fieldOnChange?.(settings.Name, new Date(date).toISOString())
+    const isoString: string = new Date(date).toISOString()
+    setValue(isoString)
+    fieldOnChange?.(settings.Name, isoString)
   }
 
   const localeCode = locale?.code || window.navigator.language
@@ -93,40 +94,27 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
             <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
               {props.settings.DisplayName}
             </label>
-            {settings.DateTimeMode === DateTimeMode.Date ? (
-              <MUIDatePicker
-                style={{ display: 'inherit' }}
-                value={value}
-                minDate={minDatePickerDate}
-                onChange={handleDateChange}
-                name={settings.Name}
-                id={settings.Name}
-                disabled={isDisabled}
-                InputLabelProps={{ shrink: true }}
-                required={settings.Compulsory}
-                format="yyyy MMMM dd"
-                TextFieldComponent={(propss) => (
-                  <TextField {...propss} variant="outlined" fullWidth InputLabelProps={{ shrink: true }} />
-                )}
-              />
-            ) : (
-              <DateTimePicker
-                style={{ display: 'inherit' }}
-                minDate={minDatePickerDate}
-                value={value}
-                onChange={handleDateChange}
-                name={settings.Name}
-                id={settings.Name}
-                disabled={isDisabled}
-                InputLabelProps={{ shrink: true }}
-                required={settings.Compulsory}
-                format="yyyy MMMM dd hh:mm aaaa"
-                InputProps={{ readOnly: true, style: { maxWidth: '420px' } }}
-                TextFieldComponent={(propss) => (
-                  <TextField {...propss} variant="outlined" fullWidth InputLabelProps={{ shrink: true }} />
-                )}
-              />
-            )}
+            <KeyboardDateTimePicker
+              style={{ display: 'inherit' }}
+              minDate={minDatePickerDate}
+              value={value}
+              onChange={handleDateChange}
+              name={settings.Name}
+              id={settings.Name}
+              disabled={isDisabled}
+              InputLabelProps={{ shrink: true }}
+              required={settings.Compulsory}
+              format={settings.DateTimeMode === DateTimeMode.Date ? 'yyyy-MM-dd' : 'yyyy-MM-dd HH:mm'}
+              TextFieldComponent={(params) => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  InputProps={{ ...params.InputProps, style: { maxWidth: '420px' } }}
+                />
+              )}
+            />
             {!hideDescription && <FormHelperText>{settings.Description}</FormHelperText>}
           </>
         </MuiPickersUtilsProvider>
