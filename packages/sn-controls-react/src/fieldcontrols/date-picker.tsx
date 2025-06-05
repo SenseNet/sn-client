@@ -1,17 +1,17 @@
 /**
  * @module FieldControls
  */
-import { createStyles, FormHelperText, makeStyles, TextField, Theme, Tooltip, Typography } from '@material-ui/core'
-import { KeyboardDateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
-import type { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
+import { createStyles, FormHelperText, makeStyles, Theme, Tooltip, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-types'
-import DateFnsUtils from '@date-io/date-fns'
 import intlFormatDistance from 'date-fns/intlFormatDistance'
 import React, { useState } from 'react'
+import DatePickerLib from 'react-datepicker'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { defaultLocalization } from './localization'
+import 'react-datepicker/dist/react-datepicker.css'
+
 const minDatePickerDate = new Date('0001-01-01')
 
 export const dateTimeOptions: Intl.DateTimeFormatOptions = {
@@ -41,83 +41,67 @@ const initialValueState = ({
   fieldValue,
   actionName,
   settings,
-}: Pick<ReactClientFieldSetting<DateTimeFieldSetting>, 'fieldValue' | 'actionName' | 'settings'>) => {
-  if (fieldValue === '0001-01-01T00:00:00Z') {
-    return null
-  }
+}: Pick<ReactClientFieldSetting<DateTimeFieldSetting>, 'fieldValue' | 'actionName' | 'settings'>): Date | null => {
+  if (fieldValue === '0001-01-01T00:00:00Z') return null
 
   if (fieldValue) {
-    return fieldValue
+    const parsed = new Date(fieldValue)
+    return isNaN(parsed.getTime()) ? null : parsed
   }
 
-  if (actionName !== 'new') {
-    return null
-  }
+  if (actionName !== 'new') return null
 
-  const secureCheckedDateInput = changeTemplatedValue(settings.DefaultValue, settings.EvaluatedDefaultValue)
+  const defaultVal = changeTemplatedValue(settings.DefaultValue, settings.EvaluatedDefaultValue)
+  if (!defaultVal) return null
 
-  return secureCheckedDateInput
+  const parsed = new Date(defaultVal)
+  return isNaN(parsed.getTime()) ? null : parsed
 }
+
 /**
  * Field control that represents a Date field. Available values will be populated from the FieldSettings.
  */
 export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>> = (props) => {
   const classes = useStyles()
-
   const { settings, actionName, fieldValue, locale, localization, hideDescription, fieldOnChange } = props
-
   const localizationMerged = deepMerge(defaultLocalization.datePicker, localization?.datePicker)
+  const [value, setValue] = useState<Date | null>(initialValueState({ fieldValue, actionName, settings }))
+  const localeCode = locale?.code || window.navigator.language
+  const isDisabled = settings.ReadOnly || disabledDateTimes.includes(settings.Name)
+  const dateFieldValue: Date = new Date(fieldValue as string)
 
-  const [value, setValue] = useState(initialValueState({ fieldValue, actionName, settings }))
-
-  const handleDateChange = (date: MaterialUiPickersDate) => {
-    if (!date || isNaN(date.getTime())) {
-      return
-    }
-    const isoString: string = new Date(date).toISOString()
-    setValue(isoString)
+  const handleDateChange = (date: Date | null) => {
+    if (!date || isNaN(date.getTime())) return
+    setValue(date)
+    const isoString = date.toISOString()
     fieldOnChange?.(settings.Name, isoString)
   }
-
-  const localeCode = locale?.code || window.navigator.language
-
-  const isDisabled = settings.ReadOnly || disabledDateTimes.includes(settings.Name)
-
-  const dateFieldValue: Date = new Date(fieldValue as string)
 
   switch (actionName) {
     case 'edit':
     case 'new':
       return (
-        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={locale}>
-          <>
-            <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-              {props.settings.DisplayName}
-            </label>
-            <KeyboardDateTimePicker
-              style={{ display: 'inherit' }}
-              minDate={minDatePickerDate}
-              value={value}
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+            {props.settings.DisplayName}
+          </label>
+          <div style={{ maxWidth: '420px' }}>
+            <DatePickerLib
+              selected={value}
               onChange={handleDateChange}
-              name={settings.Name}
-              id={settings.Name}
+              minDate={minDatePickerDate}
+              showTimeSelect={settings.DateTimeMode === DateTimeMode.DateAndTime}
+              dateFormat={settings.DateTimeMode === DateTimeMode.Date ? 'yyyy-MM-dd' : 'yyyy-MM-dd HH:mm'}
+              timeFormat="HH:mm"
+              timeIntervals={30}
+              locale={locale}
               disabled={isDisabled}
-              InputLabelProps={{ shrink: true }}
-              required={settings.Compulsory}
-              format={settings.DateTimeMode === DateTimeMode.Date ? 'yyyy-MM-dd' : 'yyyy-MM-dd HH:mm'}
-              TextFieldComponent={(params) => (
-                <TextField
-                  {...params}
-                  variant="outlined"
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                  InputProps={{ ...params.InputProps, style: { maxWidth: '420px' } }}
-                />
-              )}
+              placeholderText="Select date"
+              todayButton="Today"
             />
-            {!hideDescription && <FormHelperText>{settings.Description}</FormHelperText>}
-          </>
-        </MuiPickersUtilsProvider>
+          </div>
+          {!hideDescription && <FormHelperText>{settings.Description}</FormHelperText>}
+        </div>
       )
     default:
       return (
