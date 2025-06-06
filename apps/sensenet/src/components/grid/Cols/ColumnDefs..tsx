@@ -1,6 +1,9 @@
+import { IconButton } from '@material-ui/core'
+import { Edit, InfoOutlined } from '@material-ui/icons'
 import { ColDef } from 'ag-grid-community'
 import React from 'react'
-import { EnabledField, ReferenceField, RolesField } from '../../content-list'
+import { ReferenceField, RolesField } from '../../content-list'
+import { createAnchorFromName, SETUP_DOCS_URL, UpdatedSettings } from '../../settings/settings-table'
 import { ActionFormatter } from '../Formatters/ActionFormatter'
 import { DateTimeFormatter } from '../Formatters/DateTimeFormatter'
 import { IconFormatter } from '../Formatters/IconFormatter'
@@ -703,5 +706,56 @@ export const webHooksColumnDefs: ColDef[] = [
     resizable: false,
     wrapText: true,
     autoHeight: true,
+  },
+]
+
+const hasDocumentation = ['Portal', 'OAuth', 'DocumentPreview', 'OfficeOnline', 'Indexing', 'Sharing']
+
+export const getSettingsColumnDefs = (history: any): ColDef[] => [
+  {
+    headerName: 'Display Name',
+    field: 'DisplayName',
+    sortable: true,
+    resizable: true,
+    flex: 1,
+  },
+  {
+    headerName: 'Description',
+    field: 'Description',
+    resizable: true,
+    flex: 4,
+  },
+  {
+    headerName: 'Edit',
+    resizable: false,
+    width: 50,
+    cellRenderer: (params: any) => {
+      const content = encodeURIComponent(params.data?.Name || '')
+      return (
+        <IconButton
+          style={{ padding: '3px', marginBottom: '6px' }}
+          onClick={() => {
+            history.push(`/system/settings/edit-binary?path=&content=%2F${content}`)
+          }}>
+          <Edit style={{ fontSize: '16px' }} />
+        </IconButton>
+      )
+    },
+  },
+  {
+    headerName: 'Learn More',
+    resizable: false,
+    cellRenderer: (params: { data: UpdatedSettings }) =>
+      hasDocumentation.includes(params.data.Name.replace(/\.settings/gi, '')) ? (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={`${SETUP_DOCS_URL}${createAnchorFromName(params.data.Name)}`}>
+          <IconButton style={{ padding: '3px', marginBottom: '6px' }}>
+            <InfoOutlined style={{ fontSize: '16px' }} />
+          </IconButton>
+        </a>
+      ) : null,
+    width: 90,
   },
 ]

@@ -2,11 +2,11 @@ import { createStyles, ListItem, ListItemText, makeStyles, Theme } from '@materi
 import SettingsIcon from '@material-ui/icons/Settings'
 import { clsx } from 'clsx'
 import React, { lazy } from 'react'
-import { matchPath, NavLink, useLocation, useRouteMatch } from 'react-router-dom'
+import { matchPath, NavLink, useHistory, useLocation, useRouteMatch } from 'react-router-dom'
 import { PATHS, resolvePathParams } from '../../application-paths'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { localizationColumnDefs, webHooksColumnDefs } from '../grid/Cols/ColumnDefs.'
+import { getSettingsColumnDefs, localizationColumnDefs, webHooksColumnDefs } from '../grid/Cols/ColumnDefs.'
 import { ApiKeys } from './api-keys'
 import { Stats } from './stats'
 
@@ -31,6 +31,8 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRight: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
     },
     settingsContent: {
+      display: 'flex',
+      flexDirection: 'column',
       overflow: 'auto',
       width: `calc(100% - ${globals.common.settingsDrawerWidth}px)`,
     },
@@ -51,6 +53,7 @@ export const Settings: React.FunctionComponent = () => {
   const globalClasses = useGlobalStyles()
   const localizationDrawer = useLocalization().drawer
   const location = useLocation()
+  const history = useHistory()
 
   const settingsItems = [
     {
@@ -91,7 +94,13 @@ export const Settings: React.FunctionComponent = () => {
           />
         )
       case 'settings':
-        return <SetupComponent />
+        return (
+          <ContentComponent
+            disableColumnSettings
+            rootPath={PATHS.settings.snPath}
+            colDef={getSettingsColumnDefs(history)}
+          />
+        )
       case 'adminui':
         return <PersonalSettingsEditor />
       case 'stats':

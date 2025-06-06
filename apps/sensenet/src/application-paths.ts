@@ -16,7 +16,7 @@ export const PATHS = {
   configuration: { appPath: '/system/settings/:action?', snPath: '/Root/System/Settings' },
   localization: { appPath: '/system/localization/:action?', snPath: '/Root/Localization' },
   webhooks: { appPath: '/system/webhooks/:action?', snPath: '/Root/System/WebHooks' },
-  settings: { appPath: '/system/:submenu?' },
+  settings: { appPath: '/system/:submenu?', snPath: '/Root/System/Settings' },
   apiKeys: { appPath: '/system/apikeys' },
   landingPath: { appPath: '/content/explorer/' },
   root: { appPath: '/Root', snPath: '/Root' },
