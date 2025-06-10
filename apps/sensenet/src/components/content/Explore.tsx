@@ -23,7 +23,6 @@ import { DocumentViewer } from '../document-viewer'
 import { EditBinary } from '../edit/edit-binary'
 import { contentColumnDefs } from '../grid/Cols/ColumnDefs.'
 import { Grid } from '../grid/Grid'
-import ExpandedItemsProvider from '../tree/Contexts/ExpandedItemsProvider'
 import { SimpleTree } from '../tree/simpletree'
 import { BrowseView, EditView, ImageView, NewView, PermissionView, VersionView } from '../view-controls'
 import WopiPage from '../wopi-page'
@@ -298,23 +297,21 @@ export function Explore({
 
             <div className={`${classes.treeAndDatagridWrapper} leftTree theme-${theme.palette.type} `}>
               {hasTree && (
-                <ExpandedItemsProvider>
-                  <div className={classes.simpleTree}>
-                    <div className={classes.resizeButton} onMouseDown={handleMouseDown}>
-                      <div className={classes.symbol}>&#8596;</div>
-                    </div>
-                    <SimpleTree
-                      onItemClick={(item) => {
-                        onNavigate(item)
-                      }}
-                      parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
-                      activeItemPath={currentPath}
-                      loadSettings={loadTreeSettings}
-                      onNavigate={onNavigate}
-                      rootLoaded={false}
-                    />
+                <div className={classes.simpleTree}>
+                  <div className={classes.resizeButton} onMouseDown={handleMouseDown}>
+                    <div className={classes.symbol}>&#8596;</div>
                   </div>
-                </ExpandedItemsProvider>
+                  <SimpleTree
+                    onItemClick={(item) => {
+                      onNavigate(item)
+                    }}
+                    parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
+                    activeItemPath={currentPath}
+                    loadSettings={loadTreeSettings}
+                    onNavigate={onNavigate}
+                    rootLoaded={false}
+                  />
+                </div>
               )}
               <div className={classes.exploreContainer}>{renderContent()}</div>
             </div>

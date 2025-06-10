@@ -26,6 +26,7 @@ import { DialogProvider } from './dialogs/dialog-provider'
 
 import { GridLoadingProvider } from './grid/Providers/GridLoadingProvider'
 import { snInjector } from './sn-injector'
+import ExpandedItemsProvider from './tree/Contexts/ExpandedItemsProvider'
 import { TreeLoadingProvider } from './tree/Contexts/TreeLoadingProvider'
 
 export type AppProvidersProps = {
@@ -80,7 +81,9 @@ export default function AppProviders({ children }: AppProvidersProps) {
                         <ShareProvider>
                           <ISAuthProvider>
                             <ResponsiveContextProvider>
-                              <DialogProvider>{children}</DialogProvider>
+                              <ExpandedItemsProvider>
+                                <DialogProvider>{children}</DialogProvider>
+                              </ExpandedItemsProvider>
                             </ResponsiveContextProvider>
                           </ISAuthProvider>
                         </ShareProvider>
@@ -90,7 +93,9 @@ export default function AppProviders({ children }: AppProvidersProps) {
                         <ShareProvider>
                           <SNAuthProvider>
                             <ResponsiveContextProvider>
-                              <DialogProvider>{children}</DialogProvider>
+                              <ExpandedItemsProvider>
+                                <DialogProvider>{children}</DialogProvider>
+                              </ExpandedItemsProvider>
                             </ResponsiveContextProvider>
                           </SNAuthProvider>
                         </ShareProvider>

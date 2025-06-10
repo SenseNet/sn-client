@@ -5,13 +5,14 @@ import { isExtendedError } from '@sensenet/client-core'
 import { ActionNameType, EditView as SnEditView } from '@sensenet/controls-react'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement, useContext, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { LocalizationObject } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { navigateToAction } from '../../services'
 import { reactControlMapper } from '../react-control-mapper'
+import { ExpandItemsContext } from '../tree/Contexts/ExpandedItemsProvider'
 import { useViewControlStyles } from './common/styles'
 import { ViewTitle } from './common/view-title'
 
@@ -36,6 +37,19 @@ export const EditView: React.FC<EditViewProps> = (props) => {
   const history = useHistory()
   const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
   const personalSettings = usePersonalSettings()
+  const expContext = useContext(ExpandItemsContext)
+  if (!expContext) {
+    throw new Error('SimpleTree111 must be used within a ExpandItemsProvider')
+  }
+  const [
+    _expandItems,
+    _setExpandItems,
+    _expandOriginalItems,
+    _setExpandOriginalItems,
+    _loadChildren,
+    _setCacheTime,
+    deleteCache,
+  ] = expContext
 
   useEffect(() => {
     async function getExpandedContent() {
@@ -64,7 +78,8 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         idOrPath: content.Id,
         content: saveableFields,
       })
-
+      const parentPath = content.Path.split('/').slice(0, -1).join('/')
+      deleteCache(parentPath)
       logger.information({
         message: localization.editPropertiesDialog.saveSuccessNotification.replace(
           '{0}',
