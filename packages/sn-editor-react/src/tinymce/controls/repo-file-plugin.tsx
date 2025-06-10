@@ -94,11 +94,10 @@ export const RepoFilePluginControl: React.FC<RepoFilePluginControlProps> = ({ ed
     const content = selection
       .filter((item) => item.IsFile)
       .map((item) => {
-        const href = `${item.Path.replace(/^\/+/, '')}`.replace('/Content', '')
         const size = item.Size ? `(${(item.Size / 1024).toFixed(0)} KB)` : ''
         return `<div class="download">
           <div>${item.DisplayName}</div>
-          <a href="${href}" target="_blank" rel="noopener">Download</a> ${size}
+          <a href="${item.Path}" target="_blank" rel="noopener">Download</a> ${size}
           </div>
           <p>&nbsp;</p>`
       })
