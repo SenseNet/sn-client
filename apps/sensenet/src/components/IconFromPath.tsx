@@ -2,70 +2,65 @@ import { PathHelper } from '@sensenet/client-utils'
 import React, { memo, useEffect, useState } from 'react'
 import { IconOptions } from './Icon'
 
-const IconFromPath = ({
-  path,
-  options,
-  contentPath,
-  contentType,
-}: {
+type IconFromPathProps = {
   path: string
   options: IconOptions
   contentPath: string
   contentType: string
-}) => {
+}
+
+const IconFromPathComponent = ({ path, options, contentPath, contentType }: IconFromPathProps) => {
   const [icon, setIcon] = useState<string | null>(null)
 
   useEffect(() => {
-    async function fetchData() {
-      if (options.repo.iconCache.has(path)) {
-        const cachedData = options.repo.iconCache.get(path) ?? ''
-        setIcon(cachedData)
-        return
-      }
+    const loadIcon = async () => {
       let svgPath = path
 
       if (contentType.toLowerCase().endsWith('file')) {
         if (contentPath.toLowerCase().endsWith('.csv')) {
-          svgPath = '/Root/System/Images/Icons/colors/csv.svg'
+          svgPath = '/icons/csv.svg'
+        } else if (contentPath.toLowerCase().endsWith('.svg')) {
+          svgPath = '/icons/file_img.svg'
         }
-        if (contentPath.toLowerCase().endsWith('.svg')) {
-          svgPath = '/Root/System/Images/Icons/colors/file_img.svg'
+      } else {
+        const fileName = path.split('/').pop()
+        if (fileName) {
+          svgPath = `/icons/${fileName}`
         }
       }
-      const imageUrl = PathHelper.joinPaths(options.repo.configuration.repositoryUrl, svgPath)
 
-      if (path.endsWith('.svg')) {
-        const fetchedSvg = await options.repo.fetch(imageUrl, { cache: 'force-cache' })
-        if (!fetchedSvg.ok) {
-          return
+      if (svgPath.endsWith('.svg')) {
+        try {
+          const response = await options.repo.fetch(svgPath, { cache: 'force-cache' })
+          if (!response.ok) return
+
+          const svgText = await response.text()
+          const resizedSvg = svgText
+            .replace('width=', 'width="24px" oldwidth=')
+            .replace('height=', 'height="24px" oldheight=')
+
+          options.repo.iconCache.set(path, resizedSvg)
+          setIcon(resizedSvg)
+        } catch (e) {
+          console.warn('Failed to load SVG icon:', e)
         }
-        const svg = await fetchedSvg.text().catch(() => '')
-        const resizedsvg = svg
-          .replace('width=', 'width="24px" oldwidth=')
-          .replace('height=', 'height="24px" oldheight=')
-        options.repo.iconCache.set(path, resizedsvg)
-        setIcon(resizedsvg)
         return
       }
-      if (path !== undefined) {
-        options.repo.iconCache.set(path, imageUrl)
-      }
-      setIcon(imageUrl)
+
+      setIcon(svgPath)
+      options.repo.iconCache.set(path, svgPath)
     }
-    fetchData()
-  }, [contentPath, contentType, options.repo, path])
 
-  if (!icon) {
-    return null
-  }
+    loadIcon()
+  }, [path, contentPath, contentType, options.repo])
 
-  if (path !== undefined && path.endsWith('.svg')) {
-    return <span dangerouslySetInnerHTML={{ __html: icon }} style={options.style} className="svgicon" />
-  }
+  if (!icon) return null
 
-  return <img src={icon} alt="icon" style={options.style} />
+  return path.endsWith('.svg') ? (
+    <span dangerouslySetInnerHTML={{ __html: icon }} style={options.style} className="svgicon" />
+  ) : (
+    <img src={icon} alt="icon" style={options.style} />
+  )
 }
 
-const memoIzedIconFromPath = memo(IconFromPath)
-
-export { memoIzedIconFromPath as IconFromPath }
+export const IconFromPath = memo(IconFromPathComponent)
