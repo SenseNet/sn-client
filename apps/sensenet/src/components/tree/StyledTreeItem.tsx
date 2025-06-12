@@ -79,6 +79,19 @@ export const StyledTreeItem = (props: StyledTreeItemProps) => {
     }
   }, [props, expandItems, loadCollectionCB, currentPath])
 
+  useEffect(() => {
+    const itemId = String(props.contentvalue.Id)
+    const itemPath = props.contentvalue.Path
+
+    if (!enabledPath.startsWith(itemPath) && !itemPath.startsWith(enabledPath) && expandItems.has(itemId)) {
+      setExpandItems((prev) => {
+        const updated = new Set(prev)
+        updated.delete(itemId)
+        return updated
+      })
+    }
+  }, [enabledPath, expandItems, props.contentvalue.Id, props.contentvalue.Path, setExpandItems])
+
   const getLabel = () => {
     return (
       <>
