@@ -1,3 +1,4 @@
+import { PathHelper } from '@sensenet/client-utils'
 import React, { memo, useEffect, useState } from 'react'
 import { IconOptions } from './Icon'
 
@@ -9,13 +10,11 @@ type IconFromPathProps = {
 }
 
 const IconFromPathComponent = ({ path, options, contentPath, contentType }: IconFromPathProps) => {
-  const [iconUrlOrSvg, setIconUrlOrSvg] = useState<string | null>(null)
-  const [isInlineSvg, setIsInlineSvg] = useState(false)
+  const [icon, setIcon] = useState<string | null>(null)
 
   useEffect(() => {
     const loadIcon = async () => {
-      const fileName = path.split('/').pop() || ''
-      let svgPath = `/icons/${fileName}`
+      let svgPath = path
 
       if (contentType.toLowerCase().endsWith('file')) {
         if (contentPath.toLowerCase().endsWith('.csv')) {
@@ -23,42 +22,44 @@ const IconFromPathComponent = ({ path, options, contentPath, contentType }: Icon
         } else if (contentPath.toLowerCase().endsWith('.svg')) {
           svgPath = '/icons/file_img.svg'
         }
+      } else {
+        const fileName = path.split('/').pop()
+        if (fileName) {
+          svgPath = `/icons/${fileName}`
+        }
       }
 
-      // For SVGs, fetch and inline them
       if (svgPath.endsWith('.svg')) {
         try {
-          const response = await fetch(svgPath, {
-            cache: 'no-store',
-          })
+          const response = await options.repo.fetch(svgPath, { cache: 'force-cache' })
           if (!response.ok) return
+
           const svgText = await response.text()
           const resizedSvg = svgText
             .replace('width=', 'width="24px" oldwidth=')
             .replace('height=', 'height="24px" oldheight=')
 
-          setIsInlineSvg(true)
-          setIconUrlOrSvg(resizedSvg)
+          options.repo.iconCache.set(path, resizedSvg)
+          setIcon(resizedSvg)
         } catch (e) {
-          console.warn('Failed to load SVG:', e)
+          console.warn('Failed to load SVG icon:', e)
         }
         return
       }
 
-      // For non-SVG fallback
-      setIconUrlOrSvg(svgPath)
-      setIsInlineSvg(false)
+      setIcon(svgPath)
+      options.repo.iconCache.set(path, svgPath)
     }
 
     loadIcon()
-  }, [path, contentPath, contentType])
+  }, [path, contentPath, contentType, options.repo])
 
-  if (!iconUrlOrSvg) return null
+  if (!icon) return null
 
-  return isInlineSvg ? (
-    <span dangerouslySetInnerHTML={{ __html: iconUrlOrSvg }} style={options.style} className="svgicon" />
+  return path.endsWith('.svg') ? (
+    <span dangerouslySetInnerHTML={{ __html: icon }} style={options.style} className="svgicon" />
   ) : (
-    <img src={iconUrlOrSvg} alt="icon" style={options.style} />
+    <img src={icon} alt="icon" style={options.style} />
   )
 }
 
