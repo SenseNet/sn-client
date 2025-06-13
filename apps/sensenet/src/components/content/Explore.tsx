@@ -97,7 +97,7 @@ const useStyles = makeStyles<Theme, { width: number }>((theme) =>
       justifyContent: 'center',
       alignItems: 'center',
       cursor: 'pointer',
-      zIndex: 9999,
+      zIndex: 999,
       margin: '-1px 0.5px -24px auto',
       border: `1px solid ${theme.palette.primary.main}`,
       backgroundColor: theme.palette.type === 'light' ? 'white' : 'black',
