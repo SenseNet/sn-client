@@ -107,7 +107,6 @@ span.icon svg {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 6px;
-  min-height: 70px;
 }
 .gridTopPanel .MuiSvgIcon-root {
   width: 18px;
