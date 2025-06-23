@@ -199,6 +199,29 @@ const getIconByPath = (content: GenericContent, iconOptions: IconOptions) => {
 /* eslint-disable react/display-name */
 export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   {
+    get: (item, options) => {
+      const name = item.Icon?.toLowerCase()
+      let svgPath = ''
+
+      switch (name) {
+        case 'excel':
+          svgPath = '/Root/System/Images/Icons/colors/csv.svg'
+          break
+        case 'word':
+          svgPath = '/Root/System/Images/Icons/colors/word.svg'
+          break
+        case 'acrobat':
+        case 'adobe':
+          svgPath = '/Root/System/Images/Icons/colors/pdf.svg'
+          break
+        default:
+          return null
+      }
+
+      return <IconFromPath path={svgPath} options={options} contentPath={item.Path} contentType={item.Type} />
+    },
+  },
+  {
     get: (item, options) => getIconByPath(item, options),
   },
   {
