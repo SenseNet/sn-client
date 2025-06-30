@@ -759,3 +759,64 @@ export const getSettingsColumnDefs = (history: any): ColDef[] => [
     width: 90,
   },
 ]
+
+export const searchColumnDefs: ColDef[] = [
+  {
+    headerCheckboxSelection: true,
+    checkboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
+    width: 27,
+    minWidth: 27,
+    cellStyle: { padding: '0px 4px' },
+    headerClass: 'grid-checkbox-header',
+  },
+  {
+    headerName: '',
+    field: 'Icon',
+    width: 24,
+    minWidth: 24,
+    cellRenderer: IconFormatter,
+    cellStyle: { padding: 0 },
+  },
+  {
+    headerName: 'Display Name',
+    field: 'DisplayName',
+    headerTooltip: 'Display Name',
+    flex: 5,
+    filter: true,
+    sortable: true,
+    comparator: (valueA: string, valueB: string) => {
+      return valueA.toLowerCase().localeCompare(valueB.toLowerCase())
+    },
+    resizable: true,
+  },
+  {
+    headerName: 'Path',
+    field: 'Path',
+    headerTooltip: 'Path',
+    flex: 5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Modified By',
+    field: 'ModifiedBy',
+    headerTooltip: 'Modified By',
+    cellRenderer: UserNameFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Actions',
+    field: 'Actions',
+    headerTooltip: 'Actions',
+    cellRenderer: ActionFormatter,
+    width: 66,
+    resizable: false,
+    wrapText: true,
+    autoHeight: true,
+  },
+]

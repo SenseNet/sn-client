@@ -218,7 +218,7 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
           return null
       }
 
-      if (item.Name.endsWith('.xls') || item.Name.endsWith('.xlsx')) {
+      if (item.Name.endsWith('.xls') || item.Name.endsWith('.xlsx') || item.Name.endsWith('.xlsm')) {
         svgPath = '/Root/System/Images/Icons/colors/xls.svg'
       }
 
