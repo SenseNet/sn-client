@@ -218,6 +218,10 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
           return null
       }
 
+      if (item.Name.endsWith('.xls') || item.Name.endsWith('.xlsx')) {
+        svgPath = '/Root/System/Images/Icons/colors/xls.svg'
+      }
+
       return <IconFromPath path={svgPath} options={options} contentPath={item.Path} contentType={item.Type} />
     },
   },
