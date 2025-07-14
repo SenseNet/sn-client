@@ -16,6 +16,7 @@ export function CopyMoveTreePicker<T extends GenericContentWithIsParent = Generi
   const { items, navigateTo, isLoading, error } = useTreePicker<T>({
     repository: props.repository,
     currentPath: props.currentPath,
+    contextPath: props.contextPath,
     selectionRoots: props.selectionRoots,
     allowMultiple: false,
     itemsODataOptions: props.itemsODataOptions as any,

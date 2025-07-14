@@ -21,6 +21,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
   const { items, navigateTo, isLoading, error } = useTreePicker<T & useTreePickerNavigaTionProps>({
     repository: props.repository,
     currentPath: props.currentPath,
+    contextPath: props.contextPath,
     navigationPath: props.navigationPath,
     selectionRoots: props.selectionRoots,
     allowMultiple: props.allowMultiple,
