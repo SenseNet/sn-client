@@ -49,7 +49,7 @@ export const Password: React.FC<ReactClientFieldSetting> = (props) => {
       return (
         <FormControl fullWidth={true} className={classes.root}>
           <InputLabel htmlFor={props.settings.Name} shrink={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </InputLabel>
           <Input
             autoComplete="new-password"
@@ -77,7 +77,7 @@ export const Password: React.FC<ReactClientFieldSetting> = (props) => {
     default:
       return (
         <Typography variant="caption" gutterBottom={true}>
-          {props.settings.DisplayName}
+          {`${props.settings.DisplayName} (${props.settings.Name})`}
         </Typography>
       )
   }

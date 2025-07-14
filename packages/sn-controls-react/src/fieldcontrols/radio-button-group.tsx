@@ -45,7 +45,7 @@ export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetti
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>
           <FormLabel style={{ transform: 'translate(0, 1.5px) scale(0.75)', transformOrigin: 'top left' }}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </FormLabel>
           <RadioGroup
             aria-label={props.settings.DisplayName}
@@ -67,7 +67,7 @@ export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetti
       return (
         <>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           <Typography variant="body1" gutterBottom>
             {value ? props.settings.Options?.find((item) => item.Value === value)?.Text ?? value : localization.noValue}

@@ -19,9 +19,9 @@ export const NumberField: React.FC<ReactClientFieldSetting<NumberFieldSetting | 
     props.fieldValue != null
       ? props.fieldValue
       : (props.actionName === 'new' &&
-          props.settings.DefaultValue !== undefined &&
-          Number.parseInt(changeTemplatedValue(props.settings.DefaultValue)!, 10)) ||
-        undefined
+        props.settings.DefaultValue !== undefined &&
+        Number.parseInt(changeTemplatedValue(props.settings.DefaultValue)!, 10)) ||
+      undefined
   const [value, setValue] = useState(initialState)
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
@@ -90,7 +90,7 @@ export const NumberField: React.FC<ReactClientFieldSetting<NumberFieldSetting | 
       return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
             {props.fieldValue != null ? (
