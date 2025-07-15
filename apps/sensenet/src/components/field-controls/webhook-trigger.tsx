@@ -325,7 +325,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
               autoComplete="off"
               name={props.settings.Name}
               id={props.settings.Name}
-              label={props.settings.DisplayName}
+              label={`${props.settings.DisplayName} (${props.settings.Name})`}
               placeholder={props.settings.DisplayName}
               value={value?.Path}
               fullWidth={true}
@@ -527,7 +527,7 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
       return (
         <>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           <Typography gutterBottom={true}>{value?.Path}</Typography>
           {value?.TriggersForAllEvents ? (

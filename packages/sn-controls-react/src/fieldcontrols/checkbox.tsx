@@ -35,7 +35,7 @@ export const Checkbox: React.FC<ReactClientFieldSetting<FieldSetting>> = (props)
           <FormControlLabel
             name={props.settings.Name}
             control={<MuiCheckbox checked={value} onChange={handleChange} />}
-            label={props.settings.DisplayName}
+            label={`${props.settings.DisplayName} (${props.settings.Name})`}
           />
           {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </FormControl>

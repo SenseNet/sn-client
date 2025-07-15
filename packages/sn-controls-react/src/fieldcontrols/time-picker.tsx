@@ -43,7 +43,7 @@ export const TimePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
             value={value}
             name={props.settings.Name}
             onChange={handleDateChange}
-            label={props.settings.DisplayName}
+            label={`${props.settings.DisplayName} (${props.settings.Name})`}
             id={props.settings.Name}
             disabled={props.settings.ReadOnly}
             placeholder={props.settings.DisplayName}
@@ -58,7 +58,7 @@ export const TimePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
       return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
             {props.fieldValue

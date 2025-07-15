@@ -82,7 +82,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
       return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </label>
           <div style={{ maxWidth: '420px' }}>
             <DatePickerLib
