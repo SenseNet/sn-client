@@ -71,10 +71,9 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
   const dateFieldValue: Date = new Date(fieldValue as string)
 
   const handleDateChange = (date: Date | null) => {
-    if (!date || isNaN(date.getTime())) return
     setValue(date)
-    const isoString = date.toISOString()
-    fieldOnChange?.(settings.Name, isoString)
+    const isoString = date?.toISOString() ?? null
+    fieldOnChange?.(settings.Name, isoString ?? '0001-01-01T00:00:00Z')
   }
 
   switch (actionName) {
@@ -98,6 +97,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
               disabled={isDisabled}
               placeholderText="Select date"
               todayButton="Today"
+              isClearable
             />
           </div>
           {!hideDescription && <FormHelperText>{settings.Description}</FormHelperText>}

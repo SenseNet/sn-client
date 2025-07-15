@@ -262,3 +262,7 @@ span.icon svg {
 .theme-dark .react-datepicker-wrapper input:disabled {
   border: 1px solid #2c2c2c;
 }
+
+.react-datepicker-popper {
+  z-index: 10;
+}
