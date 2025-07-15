@@ -43,7 +43,7 @@ export const HtmlEditor: React.FC<
 
   return (
     <>
-      <InputLabel shrink>{props.settings.DisplayName}</InputLabel>
+      <InputLabel shrink>{`${props.settings.DisplayName} (${props.settings.Name})`}</InputLabel>
 
       <div style={{ maxHeight: '68vh', margin: '0.5rem 0' }} ref={containerRef} data-test="html-editor-container">
         <MonacoEditor

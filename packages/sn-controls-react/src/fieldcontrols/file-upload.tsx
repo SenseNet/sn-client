@@ -179,7 +179,7 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
           component={'fieldset' as 'div'}
           required={props.settings.Compulsory}>
           <label className={classes.label} htmlFor={props.settings.Name}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </label>
           <Typography variant="body1" gutterBottom={true}>
             {fileName}
@@ -203,7 +203,7 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
       return (
         <div className={classes.binaryContainer}>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
 
           {mediaResource?.content_type ? (

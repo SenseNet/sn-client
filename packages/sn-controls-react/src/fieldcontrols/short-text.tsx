@@ -58,7 +58,7 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
       return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
             {/* Temporary hot fix */}

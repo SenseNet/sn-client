@@ -105,7 +105,7 @@ export const RichTextEditor: React.FC<
       return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           {initialState ? (
             <div

@@ -29,7 +29,7 @@ export const PageCount: React.FC<ReactClientFieldSetting> = (props) => {
       return (
         <>
           <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </label>
           <TextField
             variant="outlined"
@@ -53,7 +53,7 @@ export const PageCount: React.FC<ReactClientFieldSetting> = (props) => {
       return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
             {props.fieldValue != null ? (

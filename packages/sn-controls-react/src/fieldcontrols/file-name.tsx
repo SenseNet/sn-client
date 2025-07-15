@@ -50,7 +50,7 @@ export const FileName: React.FC<ReactClientFieldSetting> = (props) => {
           autoFocus={props.autoFocus}
           name={props.settings.Name}
           id={props.settings.Name}
-          label={props.settings.DisplayName}
+          label={`${props.settings.DisplayName} (${props.settings.Name})`}
           placeholder={props.settings.DisplayName}
           value={value}
           onChange={handleChange}
@@ -72,7 +72,7 @@ export const FileName: React.FC<ReactClientFieldSetting> = (props) => {
       return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
             {props.fieldValue || localization.noValue}

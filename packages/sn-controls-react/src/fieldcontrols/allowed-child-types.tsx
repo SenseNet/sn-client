@@ -306,7 +306,7 @@ export const AllowedChildTypes: React.FC<ReactClientFieldSetting & { classes?: A
       return (
         <>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           {selected.length ? (
             <List dense={true}>

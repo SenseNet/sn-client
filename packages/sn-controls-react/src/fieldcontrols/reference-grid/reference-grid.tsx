@@ -269,7 +269,7 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
       return (
         <FormControl style={styles.root as any}>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           <FormGroup>
             {fieldValue ? (
