@@ -49,7 +49,7 @@ export const ColorPicker: React.FC<ReactClientFieldSetting<ColorFieldSetting>> =
           <TextField
             variant="outlined"
             style={{ maxWidth: '420px', width: '100%' }}
-            label={props.settings.DisplayName}
+            label={`${props.settings.DisplayName} (${props.settings.Name})`}
             type="text"
             name={props.settings.Name}
             id={props.settings.Name}
@@ -86,7 +86,7 @@ export const ColorPicker: React.FC<ReactClientFieldSetting<ColorFieldSetting>> =
       return (
         <>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           {props.fieldValue ? (
             <div style={{ display: 'flex' }}>

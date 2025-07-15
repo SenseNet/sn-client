@@ -53,7 +53,7 @@ export const FileSizeField: React.FC<ReactClientFieldSetting<NumberFieldSetting>
             autoFocus={props.autoFocus}
             name={props.settings.Name}
             type="number"
-            label={props.settings.DisplayName}
+            label={`${props.settings.DisplayName} (${props.settings.Name})`}
             value={value}
             required={props.settings.Compulsory}
             disabled={props.settings.ReadOnly}
@@ -78,7 +78,7 @@ export const FileSizeField: React.FC<ReactClientFieldSetting<NumberFieldSetting>
       return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
             {props.fieldValue && props.fieldValue !== '0' ? (

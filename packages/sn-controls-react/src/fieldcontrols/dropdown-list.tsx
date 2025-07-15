@@ -61,7 +61,7 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>
           <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </label>
           <Select
             variant="outlined"
@@ -93,7 +93,7 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
       return (
         <>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           <FormGroup>
             {props.fieldValue ? (

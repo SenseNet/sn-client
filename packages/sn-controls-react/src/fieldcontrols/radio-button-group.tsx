@@ -48,7 +48,7 @@ export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetti
             {`${props.settings.DisplayName} (${props.settings.Name})`}
           </FormLabel>
           <RadioGroup
-            aria-label={props.settings.DisplayName}
+            aria-label={`${props.settings.DisplayName} (${props.settings.Name})`}
             name={props.settings.Name}
             value={value}
             onChange={handleChange}>
