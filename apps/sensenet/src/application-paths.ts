@@ -10,7 +10,7 @@ export const PATHS = {
   dashboard: { appPath: '/dashboard' },
   contentTypes: { appPath: '/content-types/:browseType/:action?', snPath: '/Root/System/Schema/ContentTypes' },
   search: { appPath: '/search' },
-  content: { appPath: '/Root', snPath: '/Root' },
+  content: { appPath: '/content/:browseType/:action?', snPath: '/Root/Content' },
   contentTemplates: { appPath: '/content-templates/:browseType/:action?', snPath: '/Root/ContentTemplates' },
   custom: { appPath: '/custom/:browseType/:path/:action?', snPath: '/Root' },
   configuration: { appPath: '/system/settings/:action?', snPath: '/Root/System/Settings' },
