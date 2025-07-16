@@ -48,5 +48,6 @@ export const logoutUser = async (userManager: UserManager) => {
   const oidcUser = await userManager.getUser()
   if (oidcUser) {
     await userManager.signoutRedirect()
+    window.location.reload()
   }
 }

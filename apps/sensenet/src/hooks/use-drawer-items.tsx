@@ -194,9 +194,7 @@ export const useDrawerItems = () => {
     })
 
     ;(async () => {
-      const allItems = [...settings.drawer.items, ...builtInDrawerItems]
-
-      const filtered = await allItems.filterAsync(async (item) => {
+      const filtered = await builtInDrawerItems.filterAsync(async (item) => {
         if (!item.permissions?.length) return true
 
         try {

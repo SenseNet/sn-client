@@ -27,9 +27,7 @@ export const StyledTreeItem = (props: StyledTreeItemProps) => {
     left: 0,
   })
   const path = props.contentvalue.Path
-  const isDisabled = !(
-    path.includes(enabledPath) && !(enabledPath === PATHS.content.snPath && path === PATHS.contentTemplates.snPath)
-  )
+  const isDisabled = !path.includes(enabledPath)
 
   const loadCollectionCB = useCallback(
     async (contentPath: string): Promise<void> => {
