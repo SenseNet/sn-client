@@ -32,7 +32,7 @@ export const MainRouter = () => {
 
           <Route path={PATHS.content.appPath}>
             <InvalidPathErrorBoundary>
-              <ContentComponent rootPath={PATHS.content.snPath} />
+              <ContentComponent rootPath={PATHS.custom.snPath} />
             </InvalidPathErrorBoundary>
           </Route>
 
