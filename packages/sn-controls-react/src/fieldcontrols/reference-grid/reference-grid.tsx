@@ -18,7 +18,7 @@ import React, { ElementType, useCallback, useEffect, useMemo, useState } from 'r
 import { ReactClientFieldSetting } from '../client-field-setting'
 import { defaultLocalization } from '../localization'
 import { DefaultItemTemplate } from './default-item-template'
-import { ReferencePicker } from './reference-picker'
+import { PickerAdvanced } from './picker-advanced'
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -243,23 +243,20 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
 
           <Dialog
             fullWidth
-            PaperProps={{ style: { maxWidth: '950px', maxHeight: '600px' } }}
+            PaperProps={{ style: { maxWidth: '950px', height: '900px' } }}
             maxWidth={false}
             onClose={handleDialogClose}
             open={isPickerOpen}
             {...props.dialogProps}>
             <DialogTitleComponent style={{ width: '100%' }}>{localization.referencePickerTitle}</DialogTitleComponent>
-            <ReferencePicker
+            <PickerAdvanced
               defaultValue={fieldValue}
-              path={props.settings.SelectionRoots?.[0] || '/Root'}
-              contextPath={currentParent}
               repository={props.repository!}
+              path={currentParent}
               renderIcon={props.renderPickerIcon}
-              handleSubmit={handleOkClick}
-              handleCancel={handleCancelClick}
               fieldSettings={props.settings}
-              localization={{ cancelButton: localization.cancelButton, submitButton: localization.okButton }}
-              classes={props.pickerClasses}
+              onCancel={handleCancelClick}
+              onSubmit={handleOkClick}
             />
           </Dialog>
         </FormControl>
