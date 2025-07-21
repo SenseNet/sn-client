@@ -130,6 +130,12 @@ const useStyles = makeStyles(() =>
       width: '100%',
       marginBottom: '4px',
     },
+    actionButton: {
+      minHeight: '0',
+      minWidth: '0',
+      padding: '0 12px',
+      marginBottom: '4px',
+    },
   }),
 )
 
@@ -222,6 +228,7 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps<GenericContentWithIsPa
   renderIcon,
   onCancel,
   onSubmit,
+  fieldSettings,
   selectionRoots,
 }) => {
   const classes = useStyles()
@@ -229,8 +236,8 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps<GenericContentWithIsPa
 
   const [children, setChildren] = useState<GenericContent[]>([])
   const [currentPath, setCurrentPath] = useState(path)
+  const [isInitPath, setIsInitPath] = useState(false)
   const [expanded, setExpanded] = useState<string[]>([])
-  // const [selected, setSelected] = useState<string>()
   const [selectedItems, setSelectedItems] = useState<GenericContent[]>(defaultValue ?? [])
   const [rootElement, setRootElement] = useState<GenericContent>()
   const [searchTerm, setSearchTerm] = useState<string>('')
@@ -267,9 +274,15 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps<GenericContentWithIsPa
     field: '',
     width: 66,
     cellRenderer: (props: { data: GenericContent }) => {
-      const isAlreadySelected = selectedItems.some((item) => item.Id === props.data.Id)
-      if (isAlreadySelected) return <></>
-      return <Button onClick={() => handleAdd(props.data)}>&#10009;</Button>
+      const isDisabled =
+        selectedItems.some((item) => item.Id === props.data.Id) ||
+        (!fieldSettings.AllowMultiple && selectedItems.length > 0)
+      if (isDisabled) return <></>
+      return (
+        <Button className={classes.actionButton} onClick={() => handleAdd(props.data)}>
+          &#10009;
+        </Button>
+      )
     },
   }
   const removeCol: ColDef = {
@@ -278,9 +291,7 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps<GenericContentWithIsPa
     width: 66,
     cellRenderer: (props: { data: GenericContent }) => {
       return (
-        <Button
-          style={{ padding: '0 0 2px 0 !important', display: 'inline-block', minHeight: '0', minWidth: '0' }}
-          onClick={() => handleRemove(props.data)}>
+        <Button className={classes.actionButton} onClick={() => handleRemove(props.data)}>
           &#10006;
         </Button>
       )
@@ -330,7 +341,6 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps<GenericContentWithIsPa
     }
 
     setExpanded(expandedIds)
-    // setSelected(expandedIds[expandedIds.length - 1])
   }, [path, repository])
 
   //Search
@@ -343,13 +353,16 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps<GenericContentWithIsPa
   )
   const onSetCurrentPath = (currPath: string) => {
     setCurrentPath(currPath)
+    if (currPath === path) {
+      setIsInitPath(true)
+    }
     setSearchTerm('')
   }
 
   //Use Effects
   useEffect(() => {
-    const fetchSiblings = async () => {
-      if (!currentPath) return
+    const fetchChildren = async () => {
+      if (!currentPath || !isInitPath) return
       try {
         const y = await repository.loadCollection<GenericContent>({
           path: currentPath,
@@ -372,8 +385,8 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps<GenericContentWithIsPa
         console.error(error)
       }
     }
-    fetchSiblings()
-  }, [currentPath, repository])
+    fetchChildren()
+  }, [currentPath, repository, fieldSettings, isInitPath, path])
 
   useEffect(() => {
     loadRoot()
