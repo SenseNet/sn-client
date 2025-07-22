@@ -154,7 +154,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
                 return (
                   <>
                     {before.trim()}
-                    <span style={{ color: 'yellow', marginLeft: '0.25rem' }}>
+                    <span style={{ color: 'yellow', margin: '0 0.25rem' }}>
                       {props.content.length === 1
                         ? props.content[0].DisplayName || props.content[0].Name
                         : props.content.length}

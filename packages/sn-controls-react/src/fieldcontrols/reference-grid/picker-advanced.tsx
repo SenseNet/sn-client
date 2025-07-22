@@ -98,12 +98,12 @@ const useStyles = makeStyles(() =>
       padding: '4px',
     },
     treeCont: {
-      flex: '2',
+      flex: '1',
       display: 'flex',
       overflow: 'auto',
     },
     gridCont: {
-      flex: '5',
+      flex: '2',
       display: 'flex',
     },
     grid: {
@@ -114,6 +114,22 @@ const useStyles = makeStyles(() =>
       width: '100%',
       height: '100%',
     },
+    treeNode: {
+      '& .MuiSvgIcon-root': {
+        fontSize: '16px',
+      },
+      '& .MuiTreeItem-content': {
+        padding: '0 4px',
+      },
+    },
+    treeLabel: {
+      fontSize: '11px',
+    },
+    treeIcon: {
+      '& svg': {
+        height: '18px',
+      },
+    },
     header: {
       display: 'flex',
       alignItems: 'center',
@@ -122,7 +138,7 @@ const useStyles = makeStyles(() =>
     },
     path: {
       flex: '1',
-      fontSize: '16px',
+      fontSize: '12px',
       padding: '4px 12px',
     },
     search: {
@@ -158,6 +174,7 @@ const TreeNode = ({
   setExpanded,
   onSetCurrentPath,
 }: TreeNodeProps) => {
+  const classes = useStyles()
   const [childNodes, setChildNodes] = useState<GenericContent[]>([])
   const loadSettings = useContext(LoadSettingsContext)
 
@@ -186,14 +203,18 @@ const TreeNode = ({
 
   return (
     <TreeItem
+      className={classes.treeNode}
       key={node.Id}
       nodeId={node.Id.toString()}
       label={
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }} onClick={handleNodeClick}>
-          {renderIconLocal(node)}
-          {node.DisplayName}
+          <div className={classes.treeIcon}>{renderIconLocal(node)}</div>
+          <div className={classes.treeLabel}>{node.DisplayName}</div>
         </div>
-      }>
+      }
+      collapseIcon={<MinusSquare />}
+      expandIcon={<PlusSquare />}
+      endIcon={<PlusSquare />}>
       {childNodes.map((childNode) => (
         <TreeNode
           key={childNode.Id}

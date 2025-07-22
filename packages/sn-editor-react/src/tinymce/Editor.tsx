@@ -53,6 +53,7 @@ export interface TinymceEditorProps {
   onChange?: IAllProps['onEditorChange']
   initvalue?: string
   repository?: Repository
+  path?: string
 }
 
 export const TinymceEditor: FC<TinymceEditorProps> = (props) => {
@@ -127,7 +128,7 @@ export const TinymceEditor: FC<TinymceEditorProps> = (props) => {
             'wordcount',
           ],
           setup: (editor) => {
-            RegisterPlugins({ editor, repository: props.repository })
+            RegisterPlugins({ editor, repository: props.repository, path: props.path })
           },
           menu: {
             file: {

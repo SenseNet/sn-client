@@ -5,10 +5,11 @@ import { AccordionPlugin, RepoFilePlugin } from './'
 export type PluginRegistrationProps = {
   editor: Editor
   repository?: Repository
+  path?: string
 }
 
 export const RegisterPlugins = ({ ...props }: PluginRegistrationProps) => {
-  AccordionPlugin({ ...props }) /*this is my custom component*/
+  AccordionPlugin({ ...props })
   RepoFilePlugin({ ...props })
 }
 

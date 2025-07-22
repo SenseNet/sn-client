@@ -9,7 +9,7 @@ export const PATHS = {
   usersAndGroups: { appPath: '/users-and-groups/:browseType/:action?', snPath: '/Root/IMS' },
   dashboard: { appPath: '/dashboard' },
   contentTypes: { appPath: '/content-types/:browseType/:action?', snPath: '/Root/System/Schema/ContentTypes' },
-  search: { appPath: '/search' },
+  search: { appPath: '/search', snPath: '/Root' },
   content: { appPath: '/content/explorer/:action?', snPath: '/Root' },
   contentTemplates: { appPath: '/content-templates/:browseType/:action?', snPath: '/Root/ContentTemplates' },
   custom: { appPath: '/custom/:browseType/:path/:action?', snPath: '/Root' },

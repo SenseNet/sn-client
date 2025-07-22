@@ -84,9 +84,15 @@ interface RepoFilePluginControlProps {
   editor: any
   closeDialog: () => void
   repository?: Repository
+  path?: string
 }
 
-export const RepoFilePluginControl: React.FC<RepoFilePluginControlProps> = ({ editor, closeDialog, repository }) => {
+export const RepoFilePluginControl: React.FC<RepoFilePluginControlProps> = ({
+  editor,
+  closeDialog,
+  repository,
+  path,
+}) => {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const classes = useStyles()
 
@@ -249,7 +255,7 @@ export const RepoFilePluginControl: React.FC<RepoFilePluginControlProps> = ({ ed
         renderIcon={renderIcon}
         required={1}
         allowMultiple={true}
-        contextPath={'/Root/Content/Sites/keler'}
+        contextPath={path}
         handleSubmit={handleInsert}
         handleCancel={closeDialog}
         localization={{}}

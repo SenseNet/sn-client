@@ -10,6 +10,7 @@ import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { useQuery } from '../../hooks/use-query'
 import { createSearchQuery } from '../../services/search-query-builder'
+import { BatchActions } from '../BatchActions'
 import { FullScreenLoader } from '../full-screen-loader'
 import { Filters } from './filters'
 import { defaultDateFilter } from './filters/date-filter'
@@ -36,6 +37,9 @@ const useStyles = makeStyles(() => {
       alignItems: 'center',
       gap: '10px',
       padding: '4px',
+    },
+    batchActions: {
+      marginLeft: '24px',
     },
   })
 })
@@ -102,6 +106,9 @@ export const Search = () => {
       maxSearchResult={maxSearchResult}>
       <div className={clsx(globalClasses.centeredVertical, classes.contentTitle)}>
         <span style={{ fontSize: '20px' }}>{localization.title}</span>
+        <div className={classes.batchActions}>
+          <BatchActions />
+        </div>
       </div>
 
       <SearchBar />
