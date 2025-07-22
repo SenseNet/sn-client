@@ -188,6 +188,8 @@ const TreeNode = ({
       requestInit: { signal: abortController.signal },
       oDataOptions: deepMerge(loadSettings.loadChildrenSettings, {}),
     })
+    const children = sortResults(childrenResult.d.results)
+    if (!children || children.length === 0) return
 
     onSetCurrentPath(node.Path)
     setChildNodes(childrenResult.d.results)
@@ -232,6 +234,17 @@ const TreeNode = ({
       ))}
     </TreeItem>
   )
+}
+
+//Helpre function
+const sortResults = (results: GenericContent[]): GenericContent[] => {
+  return results.sort((a, b) => {
+    const aIsFolder = a.Type?.toLowerCase().includes('folder') ?? false
+    const bIsFolder = b.Type?.toLowerCase().includes('folder') ?? false
+    if (aIsFolder && !bIsFolder) return -1
+    if (!aIsFolder && bIsFolder) return 1
+    return (a.DisplayName ?? '').localeCompare(b.DisplayName ?? '')
+  })
 }
 
 //Picker
@@ -396,15 +409,7 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps<GenericContentWithIsPa
             metadata: 'no',
           },
         })
-        setChildren(
-          y.d.results.sort((a, b) => {
-            const aIsFolder = a.Type?.toLowerCase().includes('folder') ?? false
-            const bIsFolder = b.Type?.toLowerCase().includes('folder') ?? false
-            if (aIsFolder && !bIsFolder) return -1
-            if (!aIsFolder && bIsFolder) return 1
-            return (a.DisplayName ?? '').localeCompare(b.DisplayName ?? '')
-          }),
-        )
+        setChildren(sortResults(y.d.results))
       } catch (error) {
         console.error(error)
       }
