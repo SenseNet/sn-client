@@ -126,6 +126,9 @@ const useStyles = makeStyles(() =>
       fontSize: '11px',
     },
     treeIcon: {
+      '& span': {
+        display: 'flex',
+      },
       '& svg': {
         height: '18px',
       },
