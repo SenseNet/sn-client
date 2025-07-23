@@ -48,10 +48,21 @@ const useStyles = makeStyles(() => {
       marginRight: '9px',
     },
     input: {
+      color: 'white',
+      backgroundColor: '#016ea5ff',
+      border: 'none',
+      height: '33px',
+      width: '100%',
+      paddingLeft: '12px',
+      borderRadius: '4px',
       '&::placeholder': {
         color: 'white',
         opacity: 1, // optional - ensures it's not semi-transparent
       },
+    },
+    inputOpened: {
+      borderBottomLeftRadius: 0,
+      borderBottomRightRadius: 0,
     },
   })
 })
@@ -155,15 +166,6 @@ export const CommandPalette = () => {
               margin: 0,
               padding: 0,
             },
-            input: {
-              color: 'white',
-              backgroundColor: '#016ea5ff',
-              border: 'none',
-              height: '33px',
-              width: '100%',
-              paddingLeft: '12px',
-              borderRadius: '4px',
-            },
             inputFocused: {
               outlineWidth: 0,
             },
@@ -180,7 +182,7 @@ export const CommandPalette = () => {
           )}
           renderSuggestionsContainer={(params) => <CommandPaletteHitsContainer {...params} />}
           inputProps={{
-            className: classes.input,
+            className: `${classes.input} ${inputValue ? classes.inputOpened : ''}`,
             value: inputValue,
             placeholder: 'Search',
             onChange: (_ev, changeEvent) => {
