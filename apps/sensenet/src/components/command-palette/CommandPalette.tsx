@@ -32,16 +32,10 @@ const useStyles = makeStyles(() => {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'flex-end',
-      border: 'none',
       backgroundColor: 'transparent',
       '& .MuiIconButton-root': {
         color: globals.common.headerText,
       },
-    },
-    buttonWrapperOpened: {
-      border: '1px solid #13a5ad',
-      backgroundColor: 'rgba(255,255,255,.10)',
-      marginRight: '40px',
     },
     iconButton: {
       color: globals.common.headerText,
@@ -50,15 +44,14 @@ const useStyles = makeStyles(() => {
     },
     comboBox: {
       position: 'relative',
-      overflow: 'visible',
-      transition:
-        'width cubic-bezier(0.230, 1.000, 0.320, 1.000) 350ms, opacity cubic-bezier(0.230, 1.000, 0.320, 1.000) 250ms',
-      opacity: 0,
-      width: 0,
+      width: '50%',
+      marginRight: '9px',
     },
-    comboBoxOpened: {
-      opacity: 1,
-      width: '100%',
+    input: {
+      '&::placeholder': {
+        color: 'white',
+        opacity: 1, // optional - ensures it's not semi-transparent
+      },
     },
   })
 })
@@ -153,24 +146,8 @@ export const CommandPalette = () => {
   }
 
   return (
-    <div
-      className={clsx(classes.buttonWrapper, {
-        [classes.buttonWrapperOpened]: isOpened,
-      })}>
-      {isOpened ? null : (
-        <Tooltip placeholder="bottom-end" title={localization.title}>
-          <IconButton onClick={() => setIsOpened(true)} className={classes.iconButton} data-test="search-button">
-            <Search />
-          </IconButton>
-        </Tooltip>
-      )}
-
-      <div
-        ref={containerRef}
-        className={clsx(classes.comboBox, {
-          [classes.comboBoxOpened]: isOpened,
-        })}
-        data-test="command-box">
+    <div className={classes.buttonWrapper}>
+      <div ref={containerRef} className={classes.comboBox} data-test="command-box">
         <Autosuggest<CommandPaletteItem>
           theme={{
             suggestionsList: {
@@ -179,13 +156,13 @@ export const CommandPalette = () => {
               padding: 0,
             },
             input: {
-              width: '100%',
-              padding: '5px',
-              fontFamily: 'monospace',
-              color: theme.palette.common.white,
-              backgroundColor: 'transparent',
+              color: 'white',
+              backgroundColor: '#016ea5ff',
               border: 'none',
-              margin: '.3em 0',
+              height: '33px',
+              width: '100%',
+              paddingLeft: '12px',
+              borderRadius: '4px',
             },
             inputFocused: {
               outlineWidth: 0,
@@ -203,7 +180,9 @@ export const CommandPalette = () => {
           )}
           renderSuggestionsContainer={(params) => <CommandPaletteHitsContainer {...params} />}
           inputProps={{
+            className: classes.input,
             value: inputValue,
+            placeholder: 'Search',
             onChange: (_ev, changeEvent) => {
               setInputValue(changeEvent.newValue)
             },
@@ -212,10 +191,17 @@ export const CommandPalette = () => {
             onBlur: () => setIsOpened(false),
           }}
         />
+        {!inputValue && (
+          <IconButton
+            title={'search'}
+            style={{ position: 'absolute', right: '0px', zIndex: 2, top: '50%', transform: 'translateY(-50%)' }}>
+            <Search />
+          </IconButton>
+        )}
         {inputValue && (
           <IconButton
             title={localization.clear}
-            style={{ position: 'absolute', right: '20px', zIndex: 2, top: '50%', transform: 'translateY(-50%)' }}
+            style={{ position: 'absolute', right: '0px', zIndex: 2, top: '50%', transform: 'translateY(-50%)' }}
             onClick={() => {
               setInputValue('')
               setItems([])
