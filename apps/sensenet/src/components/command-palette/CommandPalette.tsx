@@ -131,16 +131,48 @@ export const CommandPalette = () => {
     }
   }, [delayedOpened, isOpened])
 
-  const handleSuggestionsFetchRequested = async (options: SuggestionsFetchRequestedParams) => {
-    const foundItems = await cpm.getItems({
-      term: options.value,
+  const latestParamsRef = useRef({
+    repository,
+    device,
+    uiSettings,
+    location: history.location,
+    snRoute,
+  })
+
+  useEffect(() => {
+    latestParamsRef.current = {
       repository,
       device,
       uiSettings,
       location: history.location,
       snRoute,
-    })
-    setItems(foundItems)
+    }
+  }, [repository, device, uiSettings, history.location, snRoute])
+
+  const debouncedFetchRef = useRef(
+    debounce(async (term: string) => {
+      const {
+        repository: currentRepository,
+        device: currentDevice,
+        uiSettings: currentUiSettings,
+        location: currentLocation,
+        snRoute: currentSnRoute,
+      } = latestParamsRef.current
+
+      const foundItems = await cpm.getItems({
+        term,
+        repository: currentRepository,
+        device: currentDevice,
+        uiSettings: currentUiSettings,
+        location: currentLocation,
+        snRoute: currentSnRoute,
+      })
+      setItems(foundItems)
+    }, 200),
+  )
+
+  const handleSuggestionsFetchRequested = (options: SuggestionsFetchRequestedParams) => {
+    debouncedFetchRef.current(options.value)
   }
 
   const handleSelectSuggestion = (ev: SyntheticEvent, suggestion: SuggestionSelectedEventData<CommandPaletteItem>) => {
