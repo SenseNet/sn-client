@@ -33,6 +33,15 @@ const useStyles = makeStyles((theme: Theme) => {
       flex: 1,
       marginRight: '10px',
     },
+    linkText: {
+      marginRight: '2rem',
+      fontSize: '18px',
+      fontWeight: 500,
+      fontFamily: 'Roboto,Helvetica,Arial,sans-serif',
+      '&:hover': {
+        cursor: 'pointer',
+      },
+    },
   })
 })
 
@@ -41,6 +50,10 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const repository = useRepository()
+
+  const copyAddress = () => {
+    navigator.clipboard.writeText(repository.configuration.repositoryUrl)
+  }
 
   return (
     <AppBar position="sticky" className={clsx(globalClasses.centeredHorizontal, classes.appBar)}>
@@ -57,7 +70,11 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
               <Menu />
             </IconButton>
           ) : null}
-          <div style={{ marginRight: '2rem' }} data-test="sensenet-header">
+          <div
+            className={classes.linkText}
+            data-test="sensenet-header"
+            onClick={copyAddress}
+            title="Copy to Clipboard ">
             {repository.configuration.repositoryUrl}
           </div>
         </div>
