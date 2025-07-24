@@ -1,9 +1,12 @@
 import { ListItemIcon, ListItemText } from '@material-ui/core'
 import TreeItem from '@material-ui/lab/TreeItem'
 import { GenericContent } from '@sensenet/default-content-types'
+import { useRepository } from '@sensenet/hooks-react'
 import React, { MouseEventHandler, useCallback, useContext, useEffect, useState } from 'react'
-import { PATHS } from '../../application-paths'
-import { useQuery } from '../../hooks'
+import { useHistory } from 'react-router'
+import { ResponsivePersonalSettings } from '../../context'
+import { useQuery, useSnRoute } from '../../hooks'
+import { getPrimaryActionUrl } from '../../services'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { Icon } from '../Icon'
 import { ExpandItemsContext } from './Contexts/ExpandedItemsProvider'
@@ -28,6 +31,11 @@ export const StyledTreeItem = (props: StyledTreeItemProps) => {
   })
   const path = props.contentvalue.Path
   const isDisabled = !path.includes(enabledPath)
+  const history = useHistory()
+  const repository = useRepository()
+  const { location } = history
+  const snRoute = useSnRoute()
+  const uiSettings = useContext(ResponsivePersonalSettings)
 
   const loadCollectionCB = useCallback(
     async (contentPath: string): Promise<void> => {
@@ -127,6 +135,11 @@ export const StyledTreeItem = (props: StyledTreeItemProps) => {
 
   const onLabelClick: MouseEventHandler = (event) => {
     if (isDisabled) return
+    const displayName = props.contentvalue.DisplayName
+    if (displayName?.endsWith('.settings') || displayName?.endsWith('.xml')) {
+      history.push(getPrimaryActionUrl({ content: props.contentvalue, repository, uiSettings, location, snRoute }))
+      return
+    }
     const itemPath = (event.target as HTMLElement).closest('[data-path]')?.getAttribute('data-path')
     const itemId = props.contentvalue.Id.toString()
     setExpandItems((prevItems) => {

@@ -30,10 +30,6 @@ import { ContentInfo } from './ContentInfo'
 
 const useStyles = makeStyles<Theme, { width: number }>((theme) =>
   createStyles({
-    exploreWrapper: {
-      display: 'flex',
-      flexDirection: 'column',
-    },
     breadcrumbsWrapper: {
       boxSizing: 'border-box',
       borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
@@ -186,16 +182,6 @@ export function Explore({
   const pathFromUrl = useQuery().get('path')
   const snRoute = useSnRoute()
   const activeAction = snRoute.match!.params.action
-  const isNewGrid =
-    window.location.pathname === '/content/explorer/' ||
-    window.location.pathname === '/custom/explorer/root/' ||
-    window.location.pathname === '/content/explorer/edit' ||
-    window.location.pathname === '/content/explorer/new' ||
-    window.location.pathname === '/content/explorer/version' ||
-    window.location.pathname === '/content/explorer/setpermissions' ||
-    window.location.pathname === '/content/explorer/image' ||
-    window.location.pathname === '/content/explorer/preview' ||
-    window.location.pathname === '/content/explorer/edit-binary'
   const onActivateItemOverride = async (activeItem: GenericContent) => {
     const expandedItem = await repository.load({
       idOrPath: activeItem.Id,
