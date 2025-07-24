@@ -1,50 +1,90 @@
 import {
+  Avatar,
+  Button,
   createStyles,
   Dialog,
   DialogProps,
   DialogTitle,
   FormControl,
-  FormGroup,
   FormHelperText,
-  List,
   makeStyles,
   TextField,
   Typography,
+  useTheme,
 } from '@material-ui/core'
 import { deepMerge, PathHelper } from '@sensenet/client-utils'
-import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
-import { PickerClassKey } from '@sensenet/pickers-react'
-import React, { ElementType, useCallback, useEffect, useMemo, useState } from 'react'
+import { GenericContent, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
+import { GenericContentWithIsParent, PickerClassKey } from '@sensenet/pickers-react'
+import { ColDef } from 'ag-grid-community'
+import { AgGridReact } from 'ag-grid-react'
+import React, { ElementType, useCallback, useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from '../client-field-setting'
+import { renderIconDefault } from '../icon'
 import { defaultLocalization } from '../localization'
-import { DefaultItemTemplate } from './default-item-template'
 import { PickerAdvanced } from './picker-advanced'
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
-    container: {
-      paddingLeft: '10px',
-      paddingTop: '10px',
+    gridCont: {
       width: '100%',
-      border: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid #2c2c2c',
-      borderRadius: '4px 4px 0 0',
-      '&:hover': {
-        border: '1px solid #666',
-      },
+      height: '100%',
+      minHeight: '300px',
+    },
+    grid: {
+      width: '100%',
+    },
+    root: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      alignItems: 'flex-start',
+    },
+    listContainer: {
+      padding: 0,
+    },
+    fieldName: {
+      opacity: '0',
+      pointerEvents: 'none',
+      height: '0px',
+    },
+    actionButton: {
+      minHeight: '0',
+      minWidth: '0',
+      padding: '0 12px',
     },
   }),
 )
 
-const styles = {
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: 'flex-start',
+const referemceGridColumns: ColDef[] = [
+  {
+    headerName: 'Path',
+    field: 'Path',
+    headerTooltip: 'Path',
+    flex: 5,
+    filter: true,
+    sortable: true,
+    comparator: (a: string, b: string) => a.toLowerCase().localeCompare(b.toLowerCase()),
+    resizable: true,
   },
-  listContainer: {
-    padding: 0,
+  {
+    headerName: 'Display Name',
+    field: 'DisplayName',
+    headerTooltip: 'Display Name',
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    comparator: (a: string, b: string) => a.toLowerCase().localeCompare(b.toLowerCase()),
+    resizable: true,
   },
-}
+  {
+    headerName: 'Type',
+    field: 'Type',
+    headerTooltip: 'Type',
+    flex: 1,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+]
 
 interface ReferenceGridProps extends ReactClientFieldSetting<ReferenceFieldSetting> {
   dialogProps?: Partial<DialogProps>
@@ -56,31 +96,8 @@ interface ReferenceGridProps extends ReactClientFieldSetting<ReferenceFieldSetti
 export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
   const localization = deepMerge(defaultLocalization.referenceGrid, props.localization?.referenceGrid)
   const DialogTitleComponent = props.dialogTitleComponent ?? DialogTitle
+  const theme = useTheme()
   const classes = useStyles()
-
-  const emptyContent = useMemo(
-    () => ({
-      DisplayName: localization.addReference,
-      Icon: '',
-      Id: -1,
-      Path: '',
-      Type: '',
-      Name: 'AddReference',
-    }),
-    [localization.addReference],
-  )
-
-  const changeContent = useMemo(
-    () => ({
-      DisplayName: localization.changeReference,
-      Icon: '',
-      Id: -2,
-      Path: '',
-      Type: '',
-      Name: 'ChangeReference',
-    }),
-    [localization.changeReference],
-  )
 
   const [isPickerOpen, setIsPickerOpen] = useState(false)
   const [fieldValue, setFieldValue] = useState<GenericContent[]>([])
@@ -110,9 +127,7 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
     }
   }, [props.content, props.repository, props.settings.Name])
 
-  /**
-   * Removes the chosen item from the grid and the field value
-   */
+  //Removes the chosen item from the grid and the field value
   const removeItem = (id: number) => {
     const value = fieldValue.length > 1 ? fieldValue.filter((item) => item.Id !== id) : []
     props.fieldOnChange?.(
@@ -123,9 +138,7 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
     setFieldValue(value)
   }
 
-  /**
-   * Opens a picker to choose an item to add into the grid and the field value
-   */
+  //Opens a picker to choose an item to add into the grid and the field value
   const addItem = () => {
     setIsPickerOpen(true)
   }
@@ -193,52 +206,94 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
     }
   }, [props.actionName, getSelected])
 
+  const iconCol: ColDef = {
+    headerName: '',
+    field: 'Icon',
+    width: 24,
+    minWidth: 24,
+    cellRenderer: (x: { data: GenericContent }) => renderIconLocal(x.data),
+    cellStyle: { padding: 0 },
+  }
+
+  const removeCol: ColDef = {
+    headerName: '',
+    field: '',
+    width: 66,
+    cellRenderer: (x: { data: GenericContent }) => {
+      return (
+        <Button className={classes.actionButton} onClick={() => removeItem(x.data.Id)}>
+          &#10006;
+        </Button>
+      )
+    },
+    headerComponentFramework: () => (
+      <Button
+        className={classes.actionButton}
+        onClick={() => {
+          addItem()
+        }}>
+        &#10009;
+      </Button>
+    ),
+  }
+
+  //Icons
+  const iconName = (isFolder?: boolean) => {
+    if (isFolder == null) {
+      return 'arrow_upward'
+    }
+    return isFolder ? 'folder' : 'insert_drive_file'
+  }
+  const renderIconLocal = (item: GenericContentWithIsParent | User) =>
+    props.repository?.schemas.isContentFromType<User>(item, 'User') ? (
+      (item as User).Avatar?.Url ? (
+        <Avatar
+          alt={item.DisplayName}
+          src={`${props.repository.configuration.repositoryUrl}${(item as User).Avatar!.Url}`}
+        />
+      ) : (
+        <Avatar alt={item.DisplayName}>
+          {item.DisplayName?.split(' ')
+            .map((namePart) => namePart[0])
+            .join('.')}
+        </Avatar>
+      )
+    ) : props.renderPickerIcon ? (
+      props.renderPickerIcon(item)
+    ) : (
+      renderIconDefault(iconName(item.IsFolder))
+    )
+
   const currentParent = props.content?.Path.substring(0, props.content?.Path.lastIndexOf('/')) || '/Root'
 
   switch (props.actionName) {
     case 'new':
     case 'edit':
       return (
-        <FormControl style={styles.root as any} component={'fieldset' as 'div'} required={props.settings.Compulsory}>
+        <FormControl className={classes.root} component={'fieldset' as 'div'} required={props.settings.Compulsory}>
           <TextField
             name={props.content?.Name}
             autoComplete="off"
             value={fieldValue.length === 0 ? '' : 'selected'}
             required={props.settings.Compulsory}
-            style={{ opacity: '0', pointerEvents: 'none', height: '0px' }}
+            className={classes.fieldName}
           />
 
           <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
             {`${props.settings.DisplayName} (${props.settings.Name})`}
           </label>
-          <List
-            className={classes.container}
-            dense={true}
-            style={fieldValue?.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 420 }}>
-            {fieldValue?.map((item: GenericContent) => (
-              <DefaultItemTemplate
-                content={item}
-                remove={removeItem}
-                add={addItem}
-                key={item.Id}
-                actionName={props.actionName}
-                readOnly={props.settings.ReadOnly}
-                repository={props.repository}
-                multiple={props.settings.AllowMultiple ? props.settings.AllowMultiple : false}
-                renderIcon={props.renderIcon}
-              />
-            ))}
-            {!props.settings.ReadOnly ? (
-              <DefaultItemTemplate
-                content={fieldValue?.length > 0 && !props.settings.AllowMultiple ? changeContent : emptyContent}
-                add={addItem}
-                actionName={props.actionName}
-                repository={props.repository}
-                multiple={props.settings.AllowMultiple ? props.settings.AllowMultiple : false}
-                renderIcon={props.renderIcon}
-              />
-            ) : null}
-          </List>
+
+          <div style={{ height: `${35 + (fieldValue?.length || 0) * 28}px`, width: '100%' }}>
+            <AgGridReact
+              rowData={fieldValue}
+              columnDefs={[iconCol, ...referemceGridColumns, removeCol]}
+              className={`${classes.grid} ${
+                theme.palette.type === 'light' ? 'ag-theme-balham' : 'ag-theme-balham-dark'
+              }`}
+              tooltipShowDelay={100}
+              suppressNoRowsOverlay={true}
+            />
+          </div>
           {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
 
           <Dialog
@@ -253,7 +308,7 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
               defaultValue={fieldValue}
               repository={props.repository!}
               path={currentParent}
-              renderIcon={props.renderPickerIcon}
+              renderIcon={renderIconLocal}
               fieldSettings={props.settings}
               onCancel={handleCancelClick}
               onSubmit={handleOkClick}
@@ -264,38 +319,21 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
     case 'browse':
     default: {
       return (
-        <FormControl style={styles.root as any}>
+        <FormControl className={classes.root}>
           <Typography variant="caption" gutterBottom={true}>
             {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
-          <FormGroup>
-            {fieldValue ? (
-              <List dense={true} style={styles.listContainer}>
-                {fieldValue.length ? (
-                  fieldValue.map((item: GenericContent) => (
-                    <DefaultItemTemplate
-                      content={item}
-                      remove={removeItem}
-                      add={addItem}
-                      key={item.Id}
-                      actionName="browse"
-                      repository={props.repository}
-                      multiple={props.settings.AllowMultiple ? props.settings.AllowMultiple : false}
-                      renderIcon={props.renderIcon}
-                    />
-                  ))
-                ) : (
-                  <Typography variant="body1" gutterBottom={true}>
-                    {localization.noValue}
-                  </Typography>
-                )}
-              </List>
-            ) : (
-              <Typography variant="body1" gutterBottom={true}>
-                {localization.noValue}
-              </Typography>
-            )}
-          </FormGroup>
+          <div style={{ height: `${35 + (fieldValue?.length || 0) * 27}px`, width: '100%' }}>
+            <AgGridReact
+              rowData={fieldValue}
+              columnDefs={[iconCol, ...referemceGridColumns]}
+              className={`${classes.grid} ${
+                theme.palette.type === 'light' ? 'ag-theme-balham' : 'ag-theme-balham-dark'
+              }`}
+              tooltipShowDelay={100}
+              suppressNoRowsOverlay={true}
+            />
+          </div>
         </FormControl>
       )
     }

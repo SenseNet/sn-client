@@ -1,5 +1,5 @@
 /* eslint-disable require-jsdoc */
-import { Avatar, createStyles, debounce, makeStyles, SvgIconProps, TextField, useTheme } from '@material-ui/core'
+import { createStyles, debounce, makeStyles, SvgIconProps, TextField, useTheme } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import SvgIcon from '@material-ui/core/SvgIcon'
 import TreeItem from '@material-ui/lab/TreeItem'
@@ -13,7 +13,6 @@ import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
 import { ColDef } from 'ag-grid-community'
 import { AgGridReact } from 'ag-grid-react'
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
-import { renderIconDefault } from '../icon'
 
 // Icons
 function MinusSquare(props: SvgIconProps) {
@@ -129,9 +128,6 @@ const useStyles = makeStyles(() =>
       '& span': {
         display: 'flex',
       },
-      '& svg': {
-        height: '18px',
-      },
     },
     header: {
       display: 'flex',
@@ -162,21 +158,13 @@ const useStyles = makeStyles(() =>
 type TreeNodeProps = {
   node: GenericContent
   repository: Repository
-  renderIconLocal: (item: GenericContentWithIsParent | User) => JSX.Element
+  renderIcon: (item: GenericContentWithIsParent | User) => JSX.Element
   path: string
   expanded: string[]
   setExpanded: React.Dispatch<React.SetStateAction<string[]>>
   onSetCurrentPath: (path: string) => void
 }
-const TreeNode = ({
-  node,
-  repository,
-  renderIconLocal,
-  path,
-  expanded,
-  setExpanded,
-  onSetCurrentPath,
-}: TreeNodeProps) => {
+const TreeNode = ({ node, repository, renderIcon, path, expanded, setExpanded, onSetCurrentPath }: TreeNodeProps) => {
   const classes = useStyles()
   const [childNodes, setChildNodes] = useState<GenericContent[]>([])
   const loadSettings = useContext(LoadSettingsContext)
@@ -213,7 +201,7 @@ const TreeNode = ({
       nodeId={node.Id.toString()}
       label={
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }} onClick={handleNodeClick}>
-          <div className={classes.treeIcon}>{renderIconLocal(node)}</div>
+          <div className={classes.treeIcon}>{renderIcon(node)}</div>
           <div className={classes.treeLabel}>{node.DisplayName}</div>
         </div>
       }
@@ -225,7 +213,7 @@ const TreeNode = ({
           key={childNode.Id}
           node={childNode}
           repository={repository}
-          renderIconLocal={renderIconLocal}
+          renderIcon={renderIcon}
           path={path}
           expanded={expanded}
           setExpanded={setExpanded}
@@ -248,17 +236,17 @@ const sortResults = (results: GenericContent[]): GenericContent[] => {
 }
 
 //Picker
-interface PickerAdvancedProps<T> {
+interface PickerAdvancedProps {
   defaultValue?: GenericContent[]
   repository: Repository
   path: string
-  renderIcon?: (name: T) => JSX.Element
+  renderIcon: (item: GenericContentWithIsParent | User) => JSX.Element
   onCancel?: () => void
   onSubmit?: (selectedItems: GenericContent[]) => void | undefined
   fieldSettings: ReferenceFieldSetting
   selectionRoots?: string[]
 }
-export const PickerAdvanced: React.FC<PickerAdvancedProps<GenericContentWithIsParent>> = ({
+export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
   defaultValue,
   repository,
   path,
@@ -280,30 +268,6 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps<GenericContentWithIsPa
   const [searchTerm, setSearchTerm] = useState<string>('')
 
   const searchFieldRef = useRef<HTMLInputElement | null>(null)
-
-  //Icons
-  const iconName = (isFolder?: boolean) => {
-    if (isFolder == null) {
-      return 'arrow_upward'
-    }
-    return isFolder ? 'folder' : 'insert_drive_file'
-  }
-  const renderIconLocal = (item: GenericContentWithIsParent | User) =>
-    repository.schemas.isContentFromType<User>(item, 'User') ? (
-      (item as User).Avatar?.Url ? (
-        <Avatar alt={item.DisplayName} src={`${repository.configuration.repositoryUrl}${(item as User).Avatar!.Url}`} />
-      ) : (
-        <Avatar alt={item.DisplayName}>
-          {item.DisplayName?.split(' ')
-            .map((namePart) => namePart[0])
-            .join('.')}
-        </Avatar>
-      )
-    ) : renderIcon ? (
-      renderIcon(item)
-    ) : (
-      renderIconDefault(iconName(item.IsFolder))
-    )
 
   //Grid Columns
   const addCol: ColDef = {
@@ -339,7 +303,7 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps<GenericContentWithIsPa
     field: 'Icon',
     width: 24,
     minWidth: 24,
-    cellRenderer: (props: { data: GenericContent }) => renderIconLocal(props.data),
+    cellRenderer: (props: { data: GenericContent }) => renderIcon(props.data),
     cellStyle: { padding: 0 },
   }
   const handleAdd = (item: GenericContent) => {
@@ -497,7 +461,7 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps<GenericContentWithIsPa
               <TreeNode
                 repository={repository}
                 node={rootElement}
-                renderIconLocal={renderIconLocal}
+                renderIcon={renderIcon}
                 path={path}
                 expanded={expanded}
                 setExpanded={setExpanded}
