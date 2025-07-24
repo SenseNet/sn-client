@@ -84,7 +84,6 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
           }
           jsonString += decoder.decode()
           const setting = JSON.parse(jsonString)
-          console.log('setting.HeaderColor:', setting.HeaderColor)
           setHeaderColor(setting.HeaderColor)
         }
       } catch (error) {
