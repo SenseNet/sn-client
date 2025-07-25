@@ -1,4 +1,4 @@
-import { createStyles, DialogActions, DialogContent, makeStyles } from '@material-ui/core'
+import { createStyles, makeStyles } from '@material-ui/core'
 import {
   AddAlert,
   AllInboxOutlined,
@@ -43,39 +43,21 @@ import {
   VisibilityOff,
   Widgets,
 } from '@material-ui/icons'
-import { ODataParams, Repository } from '@sensenet/client-core'
+import { Repository } from '@sensenet/client-core'
 import { File } from '@sensenet/default-content-types'
-import { Picker } from '@sensenet/pickers-react'
+import { PickerAdvanced } from '@sensenet/pickers-react'
 import React, { useEffect, useRef } from 'react'
 
 const useStyles = makeStyles(() => {
   return createStyles({
-    dialog: {
-      border: 'none !important',
-      borderRadius: 12,
-      boxShadow: '0 0 #0000, 0 0 #0000, 0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-      padding: '1.6rem',
-      maxWidth: '600px',
-      width: '100%',
-      '&::backdrop': {
-        backgroundColor: 'rgba(255, 255, 255, .75)',
-      },
-
-      '& .MuiDialogContent-root': {
-        padding: 0,
-      },
-      '& .MuiDialogTitle-root': {
-        paddingLeft: 0,
-      },
-      '& .tox-icon': {
-        position: 'absolute',
-        top: '0',
-        right: '0',
-        marginRight: '25px',
-        marginTop: '20px',
-        cursor: 'pointer',
-        padding: '10px',
-      },
+    pickerDialog: {
+      width: '950px',
+      maxWidth: '80%',
+      height: '900px',
+      maxHeight: '80%',
+      border: '2px solid grey',
+      borderRadius: '8px',
+      padding: '8px 8px 0',
     },
   })
 })
@@ -113,14 +95,6 @@ export const RepoFilePluginControl: React.FC<RepoFilePluginControlProps> = ({
     dialogRef.current?.close()
     closeDialog()
   }
-  const queryObject: ODataParams<any> = {
-    expand: ['Children'],
-    filter: "isOf('GenericContent')",
-    metadata: 'no',
-    orderby: 'DisplayName',
-    select: ['DisplayName', 'Path', 'Id', 'Children/IsFolder', 'IsFolder', 'Avatar', 'Icon', 'Size'],
-  }
-
   useEffect(() => {
     dialogRef.current?.showModal()
 
@@ -243,23 +217,14 @@ export const RepoFilePluginControl: React.FC<RepoFilePluginControlProps> = ({
   if (!repository) return <></>
 
   return (
-    <dialog ref={dialogRef} className={classes.dialog}>
-      <Picker
+    <dialog ref={dialogRef} className={classes.pickerDialog}>
+      <PickerAdvanced
         repository={repository}
-        defaultValue={undefined}
-        currentPath={'/Root'}
-        selectionRoots={['/Root']}
-        itemsODataOptions={queryObject}
-        pickerContainer={DialogContent}
-        actionsContainer={DialogActions}
-        renderIcon={renderIcon}
-        required={1}
+        path={path ?? '/Root'}
         allowMultiple={true}
-        contextPath={path}
-        handleSubmit={handleInsert}
-        handleCancel={closeDialog}
-        localization={{}}
-        classes={{}}
+        renderIcon={renderIcon}
+        onCancel={closeDialog}
+        onSubmit={handleInsert}
       />
     </dialog>
   )

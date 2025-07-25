@@ -1,18 +1,16 @@
 /* eslint-disable require-jsdoc */
-import { createStyles, debounce, makeStyles, SvgIconProps, TextField, useTheme } from '@material-ui/core'
+import { createStyles, debounce, DialogTitle, makeStyles, SvgIconProps, TextField, useTheme } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import SvgIcon from '@material-ui/core/SvgIcon'
 import TreeItem from '@material-ui/lab/TreeItem'
 import TreeView from '@material-ui/lab/TreeView'
 import { ConstantContent, Repository } from '@sensenet/client-core'
-import { deepMerge } from '@sensenet/client-utils'
-import { GenericContent, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
-import { LoadSettingsContext } from '@sensenet/hooks-react'
-import { GenericContentWithIsParent } from '@sensenet/pickers-react'
+import { GenericContent, User } from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
 import { ColDef } from 'ag-grid-community'
 import { AgGridReact } from 'ag-grid-react'
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { GenericContentWithIsParent } from '../types'
 
 // Icons
 function MinusSquare(props: SvgIconProps) {
@@ -67,7 +65,22 @@ const baseColumns: ColDef[] = [
 // Styles
 const useStyles = makeStyles(() =>
   createStyles({
-    addWrapper: { position: 'relative', margin: 0 },
+    dialog: {
+      maxWidth: '950px',
+      height: '900px',
+      border: '2px solid grey',
+    },
+    dialogTitle: {
+      width: '100%',
+      textAlign: 'center',
+      borderBottom: '1px solid grey',
+      marginBottom: '4px',
+      padding: 0,
+    },
+    addWrapper: {
+      position: 'relative',
+      margin: 0,
+    },
     mainCont: {
       display: 'flex',
       flexDirection: 'column',
@@ -100,6 +113,7 @@ const useStyles = makeStyles(() =>
       flex: '1',
       display: 'flex',
       overflow: 'auto',
+      overflowX: 'hidden',
     },
     gridCont: {
       flex: '2',
@@ -123,6 +137,7 @@ const useStyles = makeStyles(() =>
     },
     treeLabel: {
       fontSize: '11px',
+      wordBreak: 'break-all',
     },
     treeIcon: {
       '& span': {
@@ -167,14 +182,12 @@ type TreeNodeProps = {
 const TreeNode = ({ node, repository, renderIcon, path, expanded, setExpanded, onSetCurrentPath }: TreeNodeProps) => {
   const classes = useStyles()
   const [childNodes, setChildNodes] = useState<GenericContent[]>([])
-  const loadSettings = useContext(LoadSettingsContext)
 
   const handleNodeClick = async () => {
     const abortController = new AbortController()
     const childrenResult = await repository.loadCollection<GenericContent>({
       path: node.Path,
       requestInit: { signal: abortController.signal },
-      oDataOptions: deepMerge(loadSettings.loadChildrenSettings, {}),
     })
     const children = sortResults(childrenResult.d.results)
     if (!children || children.length === 0) return
@@ -243,7 +256,7 @@ interface PickerAdvancedProps {
   renderIcon: (item: GenericContentWithIsParent | User) => JSX.Element
   onCancel?: () => void
   onSubmit?: (selectedItems: GenericContent[]) => void | undefined
-  fieldSettings: ReferenceFieldSetting
+  allowMultiple?: boolean
   selectionRoots?: string[]
 }
 export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
@@ -253,7 +266,7 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
   renderIcon,
   onCancel,
   onSubmit,
-  fieldSettings,
+  allowMultiple = true,
   selectionRoots,
 }) => {
   const classes = useStyles()
@@ -276,8 +289,7 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
     width: 66,
     cellRenderer: (props: { data: GenericContent }) => {
       const isDisabled =
-        selectedItems.some((item) => item.Id === props.data.Id) ||
-        (!fieldSettings.AllowMultiple && selectedItems.length > 0)
+        selectedItems.some((item) => item.Id === props.data.Id) || (!allowMultiple && selectedItems.length > 0)
       if (isDisabled) return <></>
       return (
         <Button className={classes.actionButton} onClick={() => handleAdd(props.data)}>
@@ -306,14 +318,16 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
     cellRenderer: (props: { data: GenericContent }) => renderIcon(props.data),
     cellStyle: { padding: 0 },
   }
+  const availableCols = [iconCol, ...baseColumns, addCol]
+  const selectedCols = [iconCol, ...baseColumns, removeCol]
+
+  //Button Actions
   const handleAdd = (item: GenericContent) => {
     setSelectedItems((prev) => [...prev, item])
   }
   const handleRemove = (item: GenericContent) => {
     setSelectedItems((prev) => prev.filter((i) => i.Id !== item.Id))
   }
-  const availableCols = [iconCol, ...baseColumns, addCol]
-  const selectedCols = [iconCol, ...baseColumns, removeCol]
 
   //Load Data
   const loadRoot = useCallback(async () => {
@@ -379,8 +393,7 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
       }
     }
     fetchChildren()
-  }, [currentPath, repository, fieldSettings, isInitPath, path])
-
+  }, [currentPath, repository, isInitPath, path])
   useEffect(() => {
     loadRoot()
   }, [loadRoot])
@@ -392,7 +405,6 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
         setChildren([])
         return
       }
-
       try {
         const getQueryFromTerm = () => {
           const query = new Query((q) =>
@@ -400,7 +412,6 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
               q2.equals('Name', `*${searchTerm}*`).or.equals('DisplayName', `*${searchTerm}*`).autofilters('OFF'),
             ),
           )
-
           if (selectionRoots) {
             new QueryOperators(query).and.query((q2) => {
               selectionRoots?.forEach((root, index, array) => {
@@ -414,7 +425,6 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
           }
           return query
         }
-
         const response = await repository.loadCollection({
           path: ConstantContent.PORTAL_ROOT.Path,
           oDataOptions: {
@@ -436,6 +446,7 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
 
   return (
     <div className={classes.mainCont}>
+      <DialogTitle className={classes.dialogTitle}>Picker</DialogTitle>
       <div className={classes.header}>
         <div className={classes.path}>{currentPath}</div>
         <div className={classes.search}>
@@ -490,10 +501,18 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
         />
       </div>
       <div className={classes.buttonsCont}>
-        <Button type="button" onClick={() => onCancel?.()}>
+        <Button
+          type="button"
+          onClick={() => {
+            onCancel?.()
+          }}>
           Cancel
         </Button>
-        <Button type="button" onClick={() => onSubmit?.(selectedItems)}>
+        <Button
+          type="button"
+          onClick={() => {
+            onSubmit?.(selectedItems)
+          }}>
           Submit
         </Button>
       </div>

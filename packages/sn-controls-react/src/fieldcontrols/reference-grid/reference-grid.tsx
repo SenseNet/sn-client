@@ -4,7 +4,6 @@ import {
   createStyles,
   Dialog,
   DialogProps,
-  DialogTitle,
   FormControl,
   FormHelperText,
   makeStyles,
@@ -12,16 +11,14 @@ import {
   Typography,
   useTheme,
 } from '@material-ui/core'
-import { deepMerge, PathHelper } from '@sensenet/client-utils'
+import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
-import { GenericContentWithIsParent, PickerClassKey } from '@sensenet/pickers-react'
+import { GenericContentWithIsParent, PickerAdvanced, PickerClassKey } from '@sensenet/pickers-react'
 import { ColDef } from 'ag-grid-community'
 import { AgGridReact } from 'ag-grid-react'
-import React, { ElementType, useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from '../client-field-setting'
 import { renderIconDefault } from '../icon'
-import { defaultLocalization } from '../localization'
-import { PickerAdvanced } from './picker-advanced'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -50,6 +47,14 @@ const useStyles = makeStyles(() =>
       minHeight: '0',
       minWidth: '0',
       padding: '0 12px',
+    },
+    pickerDialog: {
+      width: '950px',
+      maxWidth: '80%',
+      height: '900px',
+      maxHeight: '80%',
+      padding: '8px 8px 0',
+      border: '2px solid grey',
     },
   }),
 )
@@ -88,14 +93,11 @@ const referemceGridColumns: ColDef[] = [
 
 interface ReferenceGridProps extends ReactClientFieldSetting<ReferenceFieldSetting> {
   dialogProps?: Partial<DialogProps>
-  dialogTitleComponent?: ElementType
   renderPickerIcon?: (item: any) => JSX.Element
   pickerClasses?: PickerClassKey
 }
 
 export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
-  const localization = deepMerge(defaultLocalization.referenceGrid, props.localization?.referenceGrid)
-  const DialogTitleComponent = props.dialogTitleComponent ?? DialogTitle
   const theme = useTheme()
   const classes = useStyles()
 
@@ -283,7 +285,7 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
             {`${props.settings.DisplayName} (${props.settings.Name})`}
           </label>
 
-          <div style={{ height: `${35 + (fieldValue?.length || 0) * 28}px`, width: '100%' }}>
+          <div style={{ height: `${34 + (fieldValue?.length || 0) * 27}px`, width: '100%' }}>
             <AgGridReact
               rowData={fieldValue}
               columnDefs={[iconCol, ...referemceGridColumns, removeCol]}
@@ -298,18 +300,17 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
 
           <Dialog
             fullWidth
-            PaperProps={{ style: { maxWidth: '950px', height: '900px' } }}
+            PaperProps={{ className: classes.pickerDialog }}
             maxWidth={false}
             onClose={handleDialogClose}
             open={isPickerOpen}
             {...props.dialogProps}>
-            <DialogTitleComponent style={{ width: '100%' }}>{localization.referencePickerTitle}</DialogTitleComponent>
             <PickerAdvanced
               defaultValue={fieldValue}
               repository={props.repository!}
               path={currentParent}
               renderIcon={renderIconLocal}
-              fieldSettings={props.settings}
+              allowMultiple={props.settings.AllowMultiple}
               onCancel={handleCancelClick}
               onSubmit={handleOkClick}
             />

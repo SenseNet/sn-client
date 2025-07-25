@@ -126,9 +126,6 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
       border: theme.palette.type === 'light' ? clsx(globals.light.borderColor, '1px') : 'none',
       maxWidth: '700px',
     },
-    pickerDialog: {
-      maxHeight: 750,
-    },
     cancelButton: {
       //border: theme.palette.type === 'light' ? '2px solid #212121DE' : '2px solid #505050',
       backgroundColor: theme.palette.type === 'light' ? '#cecece' : 'rgba(255, 255, 255, 0.05)',
@@ -144,6 +141,12 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
       '& .MuiGrid-item': {
         marginBottom: '12px',
       },
+    },
+    pickerDialog: {
+      width: '950px',
+      maxWidth: '80%',
+      height: '900px',
+      maxHeight: '80%',
     },
   })
 })
