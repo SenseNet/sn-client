@@ -145,6 +145,9 @@ export const ThemeProvider: React.FunctionComponent = (props) => {
           input: {
             padding: '9px',
           },
+          multiline: {
+            padding: '9px',
+          },
         },
       },
     })
