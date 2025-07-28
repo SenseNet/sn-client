@@ -1,10 +1,7 @@
-import { LinearProgress } from '@material-ui/core'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
-import { GenericContentWithIsParent, Picker, PickerModes } from '@sensenet/pickers-react'
+import { PickerAdvanced } from '@sensenet/pickers-react'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useGlobalStyles } from '../../globalStyles'
@@ -35,26 +32,21 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
   const [isExecInProgress, setIsExecInProgress] = useState(false)
 
   const selectionRoots = useMemo(() => [snRoute.path], [snRoute.path])
-  const itemsODataOptions = useMemo(() => ({ filter: '' }), [])
-
-  const blackList =
-    props.operation === 'copy'
-      ? [props.content[0].Path]
-      : [props.content[0].Path, `/${PathHelper.getParentPath(props.content[0].Path)}`]
 
   useEffect(() => {
     setLocalization(localizations[props.operation])
   }, [localizations, props.operation])
 
-  const [destination, setDestination] = useState(props.currentParent.DisplayName)
+  const [destinationString, setDestinationString] = useState(props.currentParent.DisplayName)
+  const [currentNode, setCurrentNode] = useState(props.currentParent)
 
   if (!props.content.length) {
     return null
   }
 
-  const handleSubmit = async (selection: GenericContentWithIsParent[]) => {
+  const handleSubmit = async () => {
     try {
-      const target = selection[0]
+      const target = currentNode
 
       setIsExecInProgress(true)
 
@@ -164,28 +156,25 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
                 )
               })()}
           <span style={{ marginLeft: '0.25rem' }}>
-            to <span style={{ color: 'yellow' }}>{destination}</span>
+            to <span style={{ color: 'yellow' }}>{destinationString}</span>
           </span>
         </div>
       </DialogTitle>
-      <Picker
+      <PickerAdvanced
         repository={repo}
-        currentPath={props.currentParent.Path}
-        selectionRoots={selectionRoots}
-        itemsODataOptions={itemsODataOptions}
+        defaultValue={props.content}
+        path={props.currentParent.Path}
         renderIcon={(item) => <Icon item={item} />}
-        renderLoading={() => <LinearProgress />}
-        pickerContainer={DialogContent}
-        actionsContainer={DialogActions}
-        handleCancel={closeLastDialog}
-        handleSubmit={handleSubmit}
-        selectionBlacklist={blackList}
-        isExecInProgress={isExecInProgress}
-        required={1}
-        classes={{ cancelButton: globalClasses.cancelButton }}
-        setDestination={setDestination}
-        currentParent={props.currentParent}
-        treePickerMode={PickerModes.COPY_MOVE_TREE}
+        onCancel={closeLastDialog}
+        onSubmit={() => {
+          handleSubmit()
+        }}
+        selectionRoots={selectionRoots}
+        showDialogTitle={false}
+        canPick={false}
+        showSearch={false}
+        setDestinationString={setDestinationString}
+        setCurrentNode={setCurrentNode}
       />
     </>
   )

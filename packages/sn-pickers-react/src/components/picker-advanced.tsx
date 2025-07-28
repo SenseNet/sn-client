@@ -177,9 +177,9 @@ type TreeNodeProps = {
   path: string
   expanded: string[]
   setExpanded: React.Dispatch<React.SetStateAction<string[]>>
-  onSetCurrentPath: (path: string) => void
+  onSetCurrentNode: (content: GenericContent) => void
 }
-const TreeNode = ({ node, repository, renderIcon, path, expanded, setExpanded, onSetCurrentPath }: TreeNodeProps) => {
+const TreeNode = ({ node, repository, renderIcon, path, expanded, setExpanded, onSetCurrentNode }: TreeNodeProps) => {
   const classes = useStyles()
   const [childNodes, setChildNodes] = useState<GenericContent[]>([])
 
@@ -189,11 +189,9 @@ const TreeNode = ({ node, repository, renderIcon, path, expanded, setExpanded, o
       path: node.Path,
       requestInit: { signal: abortController.signal },
     })
-    const children = sortResults(childrenResult.d.results)
-    if (!children || children.length === 0) return
 
-    onSetCurrentPath(node.Path)
-    setChildNodes(childrenResult.d.results)
+    onSetCurrentNode(node)
+    setChildNodes(sortResults(childrenResult.d.results))
 
     setExpanded((prevExpanded) =>
       prevExpanded.includes(node.Id.toString()) ? prevExpanded : [...prevExpanded, node.Id.toString()],
@@ -215,7 +213,7 @@ const TreeNode = ({ node, repository, renderIcon, path, expanded, setExpanded, o
       label={
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }} onClick={handleNodeClick}>
           <div className={classes.treeIcon}>{renderIcon(node)}</div>
-          <div className={classes.treeLabel}>{node.DisplayName}</div>
+          <div className={classes.treeLabel}>{node.Name}</div>
         </div>
       }
       collapseIcon={<MinusSquare />}
@@ -230,7 +228,7 @@ const TreeNode = ({ node, repository, renderIcon, path, expanded, setExpanded, o
           path={path}
           expanded={expanded}
           setExpanded={setExpanded}
-          onSetCurrentPath={onSetCurrentPath}
+          onSetCurrentNode={onSetCurrentNode}
         />
       ))}
     </TreeItem>
@@ -258,6 +256,11 @@ interface PickerAdvancedProps {
   onSubmit?: (selectedItems: GenericContent[]) => void | undefined
   allowMultiple?: boolean
   selectionRoots?: string[]
+  showDialogTitle?: boolean
+  canPick?: boolean
+  showSearch?: boolean
+  setDestinationString?: React.Dispatch<React.SetStateAction<string | undefined>>
+  setCurrentNode?: React.Dispatch<React.SetStateAction<GenericContent>>
 }
 export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
   defaultValue,
@@ -268,6 +271,11 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
   onSubmit,
   allowMultiple = true,
   selectionRoots,
+  showDialogTitle = true,
+  canPick = true,
+  showSearch = true,
+  setDestinationString,
+  setCurrentNode,
 }) => {
   const classes = useStyles()
   const theme = useTheme()
@@ -318,8 +326,8 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
     cellRenderer: (props: { data: GenericContent }) => renderIcon(props.data),
     cellStyle: { padding: 0 },
   }
-  const availableCols = [iconCol, ...baseColumns, addCol]
-  const selectedCols = [iconCol, ...baseColumns, removeCol]
+  const availableCols = [iconCol, ...baseColumns, ...(canPick ? [addCol] : [])]
+  const selectedCols = [iconCol, ...baseColumns, ...(canPick ? [removeCol] : [])]
 
   //Button Actions
   const handleAdd = (item: GenericContent) => {
@@ -366,8 +374,17 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
     }, 250),
     [],
   )
+  const onSetCurrentNode = (currNode: GenericContent) => {
+    if (setCurrentNode) {
+      setCurrentNode(currNode)
+    }
+    onSetCurrentPath(currNode.Path)
+  }
   const onSetCurrentPath = (currPath: string) => {
     setCurrentPath(currPath)
+    if (setDestinationString) {
+      setDestinationString(currPath)
+    }
     if (currPath === path) {
       setIsInitPath(true)
     }
@@ -446,18 +463,20 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
 
   return (
     <div className={classes.mainCont}>
-      <DialogTitle className={classes.dialogTitle}>Picker</DialogTitle>
+      {showDialogTitle && <DialogTitle className={classes.dialogTitle}>Picker</DialogTitle>}
       <div className={classes.header}>
         <div className={classes.path}>{currentPath}</div>
         <div className={classes.search}>
-          <TextField
-            ref={searchFieldRef}
-            fullWidth={true}
-            placeholder={'Search'}
-            onChange={(ev) => {
-              onSearchFieldChange(ev.target.value)
-            }}
-          />
+          {showSearch && (
+            <TextField
+              ref={searchFieldRef}
+              fullWidth={true}
+              placeholder={'Search'}
+              onChange={(ev) => {
+                onSearchFieldChange(ev.target.value)
+              }}
+            />
+          )}
         </div>
       </div>
       <div className={classes.pickingCont}>
@@ -476,7 +495,7 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
                 path={path}
                 expanded={expanded}
                 setExpanded={setExpanded}
-                onSetCurrentPath={onSetCurrentPath}
+                onSetCurrentNode={onSetCurrentNode}
               />
             )}
           </TreeView>
