@@ -95,7 +95,6 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
           },
         })
         setIsTreeLoading(true)
-        setIsTreeLoading(false)
       } else if (result.d.results.length > 1) {
         logger.information({
           message: localization.copyMultipleSucceededNotification
@@ -106,7 +105,6 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
           },
         })
         setIsTreeLoading(true)
-        setIsTreeLoading(false)
       }
 
       if (
@@ -127,6 +125,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = (pro
     } finally {
       setIsExecInProgress(false)
       closeLastDialog()
+      setIsTreeLoading(false)
     }
   }
 

@@ -11,7 +11,7 @@ import {
   SelectionChangedEvent,
 } from 'ag-grid-community'
 import { AgGridReact } from 'ag-grid-react'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useSelectionService } from '../../hooks'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { DropFileArea } from '../DropFileArea'
@@ -19,7 +19,7 @@ import { contentColumnDefs } from './Cols/ColumnDefs.'
 import { GridProps } from './Props/GridProps'
 import { useGridLoading } from './Providers/GridLoadingProvider'
 
-export function Grid<T extends GenericContent = GenericContent>(this: any, props: GridProps<T>) {
+export function Grid<T extends GenericContent = GenericContent>(props: GridProps<T>) {
   const { isGridLoading, setIsGridLoading } = useGridLoading()
   const selectionService = useSelectionService()
   const parentContent = useContext(CurrentContentContext)
@@ -44,34 +44,50 @@ export function Grid<T extends GenericContent = GenericContent>(this: any, props
   const columnApi = useRef<ColumnApi | null>(null)
   const gridRef = useRef<HTMLDivElement>(null)
   const fixedColumns: string[] = ['0', 'Icon', 'Actions']
-
   const [columnDefs, setColumnDefs] = useState<ColDef[]>(props.colDef ?? contentColumnDefs)
+  const loadingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  const setLoadingWithMinDuration = useCallback(
+    (isLoading: boolean) => {
+      if (isLoading) {
+        if (loadingTimeoutRef.current) {
+          clearTimeout(loadingTimeoutRef.current)
+        }
+        setIsGridLoading(true)
+      } else {
+        loadingTimeoutRef.current = setTimeout(() => {
+          setIsGridLoading(false)
+          loadingTimeoutRef.current = null
+        }, 300)
+      }
+    },
+    [setIsGridLoading],
+  )
 
   useEffect(() => {
-    setIsGridLoading(false)
-  }, [children, setIsGridLoading])
+    setLoadingWithMinDuration(true)
+    return () => {
+      if (loadingTimeoutRef.current) {
+        clearTimeout(loadingTimeoutRef.current)
+      }
+    }
+  }, [parentContent, setLoadingWithMinDuration])
 
   useEffect(() => {
-    setIsGridLoading(true)
-  }, [parentContent, setIsGridLoading])
+    if (isGridLoading) {
+      setLoadingWithMinDuration(false)
+    }
+  }, [children, isGridLoading, setLoadingWithMinDuration])
 
   const onRowDoubleClicked = (item: RowDoubleClickedEvent) => {
-    setIsGridLoading(true)
+    setLoadingWithMinDuration(true)
     item.data.isFolder ? props.onParentChange(item.data) : props.onActivateItem(item.data)
   }
 
   const onSelectionChanged = (params: SelectionChangedEvent) => {
     const selectedIds = params.api.getSelectedRows().map((c) => c.Id)
-    const x: GenericContent[] = []
-    for (const id of selectedIds) {
-      if (children.length) {
-        const item = children.find((c) => c.Id === id)
-        if (item) {
-          x.push(item)
-        }
-      }
-    }
-    selectionService.selection.setValue(x)
+    const selectedItems: GenericContent[] = children.filter((item) => selectedIds.includes(item.Id))
+    selectionService.selection.setValue(selectedItems)
   }
 
   const onContextMenu = (event: CellContextMenuEvent) => {
@@ -121,10 +137,10 @@ export function Grid<T extends GenericContent = GenericContent>(this: any, props
   }
 
   const onGridReady = (params: GridReadyEvent) => {
-    setIsGridLoading(false)
     gridApi.current = params.api
     columnApi.current = params.columnApi
     restoreColumnFlexRatios()
+    setLoadingWithMinDuration(false) // Reset loading when grid is ready
   }
 
   useEffect(() => {

@@ -114,6 +114,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                   permanent,
                 })
                 if (result.d.results.length) {
+                  setIsTreeLoading(true)
                   logger.information({
                     message:
                       result.d.results.length > 1
@@ -127,8 +128,6 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                       relatedRepository: repo.configuration.repositoryUrl,
                     },
                   })
-                  setIsTreeLoading(true)
-                  setIsTreeLoading(false)
                 }
                 if (result.d.errors.length) {
                   logger.warning({
@@ -180,6 +179,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                 selectionService.selection.setValue([])
                 setIsDeleteInProgress(false)
                 closeLastDialog()
+                setIsTreeLoading(false)
               }
             }}>
             {isTrashBag ? localization.deletePermanently : localization.deleteButton}
