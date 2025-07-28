@@ -13,6 +13,7 @@ const enabledColDef: ColDef = {
   headerName: 'Enabled',
   field: 'Enabled',
   headerTooltip: 'Enabled',
+  tooltipField: 'Enabled',
   width: 70,
   maxWidth: 70,
   minWidth: 70,
@@ -22,43 +23,57 @@ const lockedColDef: ColDef = {
   headerName: 'Locked',
   field: 'Locked',
   headerTooltip: 'Locked',
+  tooltipField: 'Locked',
   width: 70,
   maxWidth: 70,
   minWidth: 70,
 }
 
+const checkBoxCol: ColDef = {
+  headerCheckboxSelection: true,
+  checkboxSelection: true,
+  headerCheckboxSelectionFilteredOnly: true,
+  width: 27,
+  minWidth: 27,
+  cellStyle: { padding: '0px 4px' },
+  headerClass: 'grid-checkbox-header',
+}
+const iconCol: ColDef = {
+  headerName: '',
+  field: 'Icon',
+  width: 24,
+  minWidth: 24,
+  cellRenderer: IconFormatter,
+  cellStyle: { padding: 0 },
+}
+const idCol: ColDef = {
+  headerName: 'ID',
+  field: 'Id',
+  headerTooltip: 'ID',
+  tooltipField: 'Id',
+  flex: 0.75,
+  filter: true,
+  sortable: true,
+  resizable: true,
+  cellStyle: { paddingRight: 0 },
+}
+
+function GetDate(date: any) {
+  if (date === undefined) {
+    return ''
+  }
+  return date.replace('T', ' ').replace('Z', '').split('.', 1)[0]
+}
+
 export const contentColumnDefs: ColDef[] = [
-  {
-    headerCheckboxSelection: true,
-    checkboxSelection: true,
-    headerCheckboxSelectionFilteredOnly: true,
-    width: 27,
-    minWidth: 27,
-    cellStyle: { padding: '0px 4px' },
-    headerClass: 'grid-checkbox-header',
-  },
-  {
-    headerName: '',
-    field: 'Icon',
-    width: 24,
-    minWidth: 24,
-    cellRenderer: IconFormatter,
-    cellStyle: { padding: 0 },
-  },
-  {
-    headerName: 'ID',
-    field: 'Id',
-    headerTooltip: 'ID',
-    flex: 0.75,
-    filter: true,
-    sortable: true,
-    resizable: true,
-    cellStyle: { paddingRight: 0 },
-  },
+  checkBoxCol,
+  iconCol,
+  idCol,
   {
     headerName: 'Display Name',
     field: 'DisplayName',
     headerTooltip: 'Display Name',
+    tooltipField: 'DisplayName',
     flex: 5,
     filter: true,
     sortable: true,
@@ -71,6 +86,7 @@ export const contentColumnDefs: ColDef[] = [
     headerName: 'Name',
     field: 'Name',
     headerTooltip: 'Name',
+    tooltipField: 'Name',
     flex: 1.5,
     filter: true,
     sortable: true,
@@ -83,6 +99,7 @@ export const contentColumnDefs: ColDef[] = [
     headerName: 'Index',
     field: 'Index',
     headerTooltip: 'Index',
+    tooltipField: 'Index',
     flex: 0.75,
     filter: true,
     sortable: true,
@@ -103,6 +120,7 @@ export const contentColumnDefs: ColDef[] = [
     field: 'CreationDate',
     headerTooltip: 'Creation Date',
     cellRenderer: DateTimeFormatter,
+    tooltipValueGetter: (params) => GetDate(params.value),
     flex: 1.5,
     filter: true,
     sortable: true,
@@ -123,6 +141,7 @@ export const contentColumnDefs: ColDef[] = [
     field: 'ModificationDate',
     headerTooltip: 'Modification Date',
     cellRenderer: DateTimeFormatter,
+    tooltipValueGetter: (params) => GetDate(params.value),
     flex: 1.5,
     filter: true,
     sortable: true,
@@ -141,27 +160,13 @@ export const contentColumnDefs: ColDef[] = [
 ]
 
 export const userColumnDefs: ColDef[] = [
-  {
-    headerCheckboxSelection: true,
-    checkboxSelection: true,
-    headerCheckboxSelectionFilteredOnly: true,
-    width: 27,
-    minWidth: 27,
-    cellStyle: { padding: '0px 4px' },
-    headerClass: 'grid-checkbox-header',
-  },
-  {
-    headerName: '',
-    field: 'Icon',
-    width: 24,
-    minWidth: 24,
-    cellRenderer: IconFormatter,
-    cellStyle: { padding: 0 },
-  },
+  checkBoxCol,
+  iconCol,
   {
     headerName: 'Display Name',
     field: 'DisplayName',
     headerTooltip: 'Display Name',
+    tooltipField: 'DisplayName',
     filter: true,
     sortable: true,
     comparator: (valueA: string, valueB: string) => {
@@ -173,6 +178,7 @@ export const userColumnDefs: ColDef[] = [
     headerName: 'E-mail',
     field: 'Email',
     headerTooltip: 'E-mail',
+    tooltipField: 'Email',
   },
   {
     headerName: 'Roles',
@@ -201,37 +207,27 @@ export const userColumnDefs: ColDef[] = [
 ]
 
 export const groupColumnDefs: ColDef[] = [
-  {
-    headerCheckboxSelection: true,
-    checkboxSelection: true,
-    headerCheckboxSelectionFilteredOnly: true,
-    width: 27,
-    minWidth: 27,
-    cellStyle: { padding: '0px 4px' },
-    headerClass: 'grid-checkbox-header',
-  },
-  {
-    headerName: '',
-    field: 'Icon',
-    width: 24,
-    minWidth: 24,
-    cellRenderer: IconFormatter,
-    cellStyle: { padding: 0 },
-  },
+  checkBoxCol,
+  iconCol,
   {
     headerName: 'Display Name',
     field: 'DisplayName',
+    headerTooltip: 'Display Name',
+    tooltipField: 'DisplayName',
     sortable: true,
     resizable: true,
   },
   {
     headerName: 'Description',
     field: 'Description',
+    headerTooltip: 'Description',
+    tooltipField: 'Description',
     resizable: true,
   },
   {
     headerName: 'Members',
     field: 'Members',
+    headerTooltip: 'Members',
     sortable: true,
     width: 110,
     minWidth: 110,
@@ -254,6 +250,8 @@ export const savedQueriesColumnDefs: ColDef[] = [
   {
     headerName: 'Display Name',
     field: 'DisplayName',
+    headerTooltip: 'Display Name',
+    tooltipField: 'DisplayName',
     sortable: true,
     resizable: true,
   },
@@ -281,6 +279,8 @@ export const trashColumnDefs: ColDef[] = [
   {
     headerName: 'Display Name',
     field: 'DisplayName',
+    headerTooltip: 'Display Name',
+    tooltipField: 'DisplayName',
     sortable: true,
     resizable: true,
   },
@@ -306,27 +306,13 @@ export const trashColumnDefs: ColDef[] = [
 ]
 
 export const contentExplorerColumnDefs: ColDef[] = [
-  {
-    headerCheckboxSelection: true,
-    checkboxSelection: true,
-    headerCheckboxSelectionFilteredOnly: true,
-    width: 27,
-    minWidth: 27,
-    cellStyle: { padding: '0px 4px' },
-    headerClass: 'grid-checkbox-header',
-  },
-  {
-    headerName: '',
-    field: 'Icon',
-    width: 24,
-    minWidth: 24,
-    cellRenderer: IconFormatter,
-    cellStyle: { padding: 0 },
-  },
+  checkBoxCol,
+  iconCol,
   {
     headerName: 'Name',
     field: 'Name',
     headerTooltip: 'Name',
+    tooltipField: 'Name',
     flex: 1.5,
     filter: true,
     sortable: true,
@@ -339,6 +325,7 @@ export const contentExplorerColumnDefs: ColDef[] = [
     headerName: 'Display Name',
     field: 'DisplayName',
     headerTooltip: 'Display Name',
+    tooltipField: 'DisplayName',
     flex: 5,
     filter: true,
     sortable: true,
@@ -348,7 +335,6 @@ export const contentExplorerColumnDefs: ColDef[] = [
     resizable: true,
   },
   lockedColDef,
-
   {
     headerName: 'Created By',
     field: 'CreatedBy',
@@ -363,6 +349,7 @@ export const contentExplorerColumnDefs: ColDef[] = [
     headerName: 'Creation Date',
     field: 'CreationDate',
     headerTooltip: 'Creation Date',
+    tooltipValueGetter: (params) => GetDate(params.value),
     cellRenderer: DateTimeFormatter,
     flex: 1.5,
     filter: true,
@@ -383,6 +370,7 @@ export const contentExplorerColumnDefs: ColDef[] = [
     headerName: 'Modification Date',
     field: 'ModificationDate',
     headerTooltip: 'Modification Date',
+    tooltipValueGetter: (params) => GetDate(params.value),
     cellRenderer: DateTimeFormatter,
     flex: 1.5,
     filter: true,
@@ -402,27 +390,13 @@ export const contentExplorerColumnDefs: ColDef[] = [
 ]
 
 export const contentTypesColumnDefs: ColDef[] = [
-  {
-    headerCheckboxSelection: true,
-    checkboxSelection: true,
-    headerCheckboxSelectionFilteredOnly: true,
-    width: 27,
-    minWidth: 27,
-    cellStyle: { padding: '0px 4px' },
-    headerClass: 'grid-checkbox-header',
-  },
-  {
-    headerName: '',
-    field: 'Icon',
-    width: 24,
-    minWidth: 24,
-    cellRenderer: IconFormatter,
-    cellStyle: { padding: 0 },
-  },
+  checkBoxCol,
+  iconCol,
   {
     headerName: 'Display Name',
     field: 'DisplayName',
     headerTooltip: 'Display Name',
+    tooltipField: 'DisplayName',
     flex: 5,
     filter: true,
     sortable: true,
@@ -435,6 +409,7 @@ export const contentTypesColumnDefs: ColDef[] = [
     headerName: 'Name',
     field: 'Name',
     headerTooltip: 'Name',
+    tooltipField: 'Name',
     flex: 1.5,
     filter: true,
     sortable: true,
@@ -446,11 +421,15 @@ export const contentTypesColumnDefs: ColDef[] = [
   {
     headerName: 'Description',
     field: 'Description',
+    headerTooltip: 'Description',
+    tooltipField: 'Description',
     resizable: true,
   },
   {
     headerName: 'ParentTypeName',
     field: 'ParentTypeName',
+    headerTooltip: 'ParentTypeName',
+    tooltipField: 'ParentTypeName',
     resizable: true,
   },
   {
@@ -467,6 +446,7 @@ export const contentTypesColumnDefs: ColDef[] = [
     headerName: 'Modification Date',
     field: 'ModificationDate',
     headerTooltip: 'Modification Date',
+    tooltipValueGetter: (params) => GetDate(params.value),
     cellRenderer: DateTimeFormatter,
     flex: 1.5,
     filter: true,
@@ -486,27 +466,13 @@ export const contentTypesColumnDefs: ColDef[] = [
 ]
 
 export const contentTemplatesColumnDefs: ColDef[] = [
-  {
-    headerCheckboxSelection: true,
-    checkboxSelection: true,
-    headerCheckboxSelectionFilteredOnly: true,
-    width: 27,
-    minWidth: 27,
-    cellStyle: { padding: '0px 4px' },
-    headerClass: 'grid-checkbox-header',
-  },
-  {
-    headerName: '',
-    field: 'Icon',
-    width: 24,
-    minWidth: 24,
-    cellRenderer: IconFormatter,
-    cellStyle: { padding: 0 },
-  },
+  checkBoxCol,
+  iconCol,
   {
     headerName: 'Display Name',
     field: 'DisplayName',
     headerTooltip: 'Display Name',
+    tooltipField: 'DisplayName',
     flex: 5,
     filter: true,
     sortable: true,
@@ -531,6 +497,7 @@ export const contentTemplatesColumnDefs: ColDef[] = [
     headerName: 'Creation Date',
     field: 'CreationDate',
     headerTooltip: 'Creation Date',
+    tooltipValueGetter: (params) => GetDate(params.value),
     cellRenderer: DateTimeFormatter,
     flex: 1.5,
     filter: true,
@@ -551,6 +518,7 @@ export const contentTemplatesColumnDefs: ColDef[] = [
     headerName: 'Modification Date',
     field: 'ModificationDate',
     headerTooltip: 'Modification Date',
+    tooltipValueGetter: (params) => GetDate(params.value),
     cellRenderer: DateTimeFormatter,
     flex: 1.5,
     filter: true,
@@ -570,27 +538,13 @@ export const contentTemplatesColumnDefs: ColDef[] = [
 ]
 
 export const localizationColumnDefs: ColDef[] = [
-  {
-    headerCheckboxSelection: true,
-    checkboxSelection: true,
-    headerCheckboxSelectionFilteredOnly: true,
-    width: 27,
-    minWidth: 27,
-    cellStyle: { padding: '0px 4px' },
-    headerClass: 'grid-checkbox-header',
-  },
-  {
-    headerName: '',
-    field: 'Icon',
-    width: 24,
-    minWidth: 24,
-    cellRenderer: IconFormatter,
-    cellStyle: { padding: 0 },
-  },
+  checkBoxCol,
+  iconCol,
   {
     headerName: 'Display Name',
     field: 'DisplayName',
     headerTooltip: 'Display Name',
+    tooltipField: 'DisplayName',
     flex: 5,
     filter: true,
     sortable: true,
@@ -615,6 +569,7 @@ export const localizationColumnDefs: ColDef[] = [
     headerName: 'Creation Date',
     field: 'CreationDate',
     headerTooltip: 'Creation Date',
+    tooltipValueGetter: (params) => GetDate(params.value),
     cellRenderer: DateTimeFormatter,
     flex: 1.5,
     filter: true,
@@ -635,6 +590,7 @@ export const localizationColumnDefs: ColDef[] = [
     headerName: 'Modification Date',
     field: 'ModificationDate',
     headerTooltip: 'Modification Date',
+    tooltipValueGetter: (params) => GetDate(params.value),
     cellRenderer: DateTimeFormatter,
     flex: 1.5,
     filter: true,
@@ -645,6 +601,7 @@ export const localizationColumnDefs: ColDef[] = [
     headerName: 'Actions',
     field: 'Actions',
     headerTooltip: 'Actions',
+    tooltipField: 'Actions',
     cellRenderer: ActionFormatter,
     width: 66,
     resizable: false,
@@ -654,27 +611,13 @@ export const localizationColumnDefs: ColDef[] = [
 ]
 
 export const webHooksColumnDefs: ColDef[] = [
-  {
-    headerCheckboxSelection: true,
-    checkboxSelection: true,
-    headerCheckboxSelectionFilteredOnly: true,
-    width: 27,
-    minWidth: 27,
-    cellStyle: { padding: '0px 4px' },
-    headerClass: 'grid-checkbox-header',
-  },
-  {
-    headerName: '',
-    field: 'Icon',
-    width: 24,
-    minWidth: 24,
-    cellRenderer: IconFormatter,
-    cellStyle: { padding: 0 },
-  },
+  checkBoxCol,
+  iconCol,
   {
     headerName: 'Display Name',
     field: 'DisplayName',
     headerTooltip: 'Display Name',
+    tooltipField: 'DisplayName',
     flex: 5,
     filter: true,
     sortable: true,
@@ -686,6 +629,8 @@ export const webHooksColumnDefs: ColDef[] = [
   {
     headerName: 'WebHookUrl',
     field: 'WebHookUrl',
+    headerTooltip: 'WebHookUrl',
+    tooltipField: 'WebHookUrl',
     resizable: true,
   },
   enabledColDef,
@@ -693,6 +638,7 @@ export const webHooksColumnDefs: ColDef[] = [
     headerName: 'SuccessfulCalls',
     field: 'SuccessfulCalls',
     headerTooltip: 'SuccessfulCalls',
+    tooltipField: 'SuccessfulCalls',
     width: 110,
     maxWidth: 110,
     minWidth: 110,
@@ -715,6 +661,8 @@ export const getSettingsColumnDefs = (history: any): ColDef[] => [
   {
     headerName: 'Display Name',
     field: 'DisplayName',
+    headerTooltip: 'Display Name',
+    tooltipField: 'DisplayName',
     sortable: true,
     resizable: true,
     flex: 1,
@@ -722,6 +670,8 @@ export const getSettingsColumnDefs = (history: any): ColDef[] => [
   {
     headerName: 'Description',
     field: 'Description',
+    headerTooltip: 'Description',
+    tooltipField: 'Description',
     resizable: true,
     flex: 4,
   },
@@ -761,27 +711,13 @@ export const getSettingsColumnDefs = (history: any): ColDef[] => [
 ]
 
 export const searchColumnDefs: ColDef[] = [
-  {
-    headerCheckboxSelection: true,
-    checkboxSelection: true,
-    headerCheckboxSelectionFilteredOnly: true,
-    width: 27,
-    minWidth: 27,
-    cellStyle: { padding: '0px 4px' },
-    headerClass: 'grid-checkbox-header',
-  },
-  {
-    headerName: '',
-    field: 'Icon',
-    width: 24,
-    minWidth: 24,
-    cellRenderer: IconFormatter,
-    cellStyle: { padding: 0 },
-  },
+  checkBoxCol,
+  iconCol,
   {
     headerName: 'Display Name',
     field: 'DisplayName',
     headerTooltip: 'Display Name',
+    tooltipField: 'DisplayName',
     flex: 5,
     filter: true,
     sortable: true,
@@ -794,6 +730,7 @@ export const searchColumnDefs: ColDef[] = [
     headerName: 'Path',
     field: 'Path',
     headerTooltip: 'Path',
+    tooltipField: 'Path',
     flex: 5,
     filter: true,
     sortable: true,
@@ -803,6 +740,7 @@ export const searchColumnDefs: ColDef[] = [
     headerName: 'Modified By',
     field: 'ModifiedBy',
     headerTooltip: 'Modified By',
+    tooltipField: 'ModifiedBy',
     cellRenderer: UserNameFormatter,
     flex: 1.5,
     filter: true,
