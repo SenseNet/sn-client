@@ -276,6 +276,7 @@ export const savedQueriesColumnDefs: ColDef[] = [
 ]
 
 export const trashColumnDefs: ColDef[] = [
+  iconCol,
   {
     headerName: 'Display Name',
     field: 'DisplayName',
@@ -284,13 +285,32 @@ export const trashColumnDefs: ColDef[] = [
     sortable: true,
     resizable: true,
   },
-  lockedColDef,
-
+  {
+    headerName: 'Deleted From',
+    field: 'OriginalPath',
+    headerTooltip: 'Deleted From',
+    tooltipField: 'OriginalPath',
+    flex: 2,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
   {
     headerName: 'Created By',
     field: 'CreatedBy',
     headerTooltip: 'Created By',
     cellRenderer: UserNameFormatter,
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  },
+  {
+    headerName: 'Creation Date',
+    field: 'CreationDate',
+    headerTooltip: 'Creation Date',
+    tooltipValueGetter: (params) => GetDate(params.value),
+    cellRenderer: DateTimeFormatter,
     flex: 1.5,
     filter: true,
     sortable: true,
