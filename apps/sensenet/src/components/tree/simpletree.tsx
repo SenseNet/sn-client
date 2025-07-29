@@ -1,4 +1,4 @@
-import { LinearProgress } from '@material-ui/core'
+import { Button, LinearProgress, Switch } from '@material-ui/core'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon'
 import TreeView from '@material-ui/lab/TreeView'
@@ -32,12 +32,19 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       width: '100%',
       backgroundColor: theme.palette.background.paper,
+      borderTop: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
     },
     nested: {
       paddingLeft: theme.spacing(4),
     },
     '& .MuiListItemText-primary.MuiTypography-body1': {
       fontSize: '10px!important',
+    },
+    btnCont: {
+      display: 'flex',
+      gap: '8px',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
     },
   }),
 )
@@ -60,6 +67,7 @@ export function SimpleTree(props: SimpleTreeProps) {
     left: 0,
   })
   const [selected, setSelected] = useState<string>('')
+  const [editMode, setEditMode] = useState<boolean>(false)
 
   const loadRoot = useCallback(async () => {
     setIsTreeLoading(true)
@@ -107,6 +115,16 @@ export function SimpleTree(props: SimpleTreeProps) {
 
   return (
     <>
+      <div className={classes.btnCont}>
+        <Button onClick={() => setEditMode(false)}>View</Button>
+        <Switch checked={editMode} onChange={() => setEditMode((prev) => !prev)} />
+        <Button
+          color={editMode ? 'primary' : 'default'}
+          variant={editMode ? 'contained' : 'text'}
+          onClick={() => setEditMode(true)}>
+          Edit
+        </Button>
+      </div>
       {isTreeLoading && (
         <LinearProgress
           style={{ position: 'sticky', top: '0', left: '0', width: '100%', zIndex: '100', marginBottom: '-4px' }}
@@ -126,6 +144,7 @@ export function SimpleTree(props: SimpleTreeProps) {
             data-id={rootElement?.Id}
             contentvalue={rootElement}
             onContextMenu={(event) => onContextMenu(event, rootElement)}
+            editMode={editMode}
           />
         )}
       </TreeView>

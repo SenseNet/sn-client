@@ -6,7 +6,7 @@ import React, { MouseEventHandler, useCallback, useContext, useEffect, useState 
 import { useHistory } from 'react-router'
 import { ResponsivePersonalSettings } from '../../context'
 import { useQuery, useSnRoute } from '../../hooks'
-import { getPrimaryActionUrl } from '../../services'
+import { getPrimaryActionUrl, navigateToAction } from '../../services'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { Icon } from '../Icon'
 import { ExpandItemsContext } from './Contexts/ExpandedItemsProvider'
@@ -59,6 +59,7 @@ export const StyledTreeItem = (props: StyledTreeItemProps) => {
             nodeId={innerChild.Id.toString()}
             contentvalue={innerChild}
             navigate={props.navigate}
+            editMode={props.editMode}
             onContextMenu={(event) => {
               event.preventDefault()
               event.stopPropagation()
@@ -74,7 +75,7 @@ export const StyledTreeItem = (props: StyledTreeItemProps) => {
         //
       }
     },
-    [loadChildren, props.activeitempath, props.navigate],
+    [loadChildren, props.activeitempath, props.navigate, props.editMode],
   )
 
   const { navigate, ...restProps } = props
@@ -140,22 +141,31 @@ export const StyledTreeItem = (props: StyledTreeItemProps) => {
       history.push(getPrimaryActionUrl({ content: props.contentvalue, repository, uiSettings, location, snRoute }))
       return
     }
-    const itemPath = (event.target as HTMLElement).closest('[data-path]')?.getAttribute('data-path')
-    const itemId = props.contentvalue.Id.toString()
-    setExpandItems((prevItems) => {
-      const updatedItems = new Set(prevItems)
-      if (!expandItems.has(itemId)) {
-        setIsTreeLoading(true)
-        updatedItems.add(itemId)
-        loadCollectionCB(props.contentvalue.Path).finally(() => setIsTreeLoading(false))
-      } else {
-        if (itemPath === props.activeitempath) {
-          updatedItems.delete(itemId)
+    if (props.editMode) {
+      navigateToAction({
+        history,
+        routeMatch: snRoute.match!,
+        action: 'edit',
+        queryParams: { content: props.contentvalue.Path.replace(snRoute.path, '') },
+      })
+    } else {
+      const itemPath = (event.target as HTMLElement).closest('[data-path]')?.getAttribute('data-path')
+      const itemId = props.contentvalue.Id.toString()
+      setExpandItems((prevItems) => {
+        const updatedItems = new Set(prevItems)
+        if (!expandItems.has(itemId)) {
+          setIsTreeLoading(true)
+          updatedItems.add(itemId)
+          loadCollectionCB(props.contentvalue.Path).finally(() => setIsTreeLoading(false))
+        } else {
+          if (itemPath === props.activeitempath) {
+            updatedItems.delete(itemId)
+          }
         }
-      }
-      return updatedItems
-    })
-    props.navigate(props.contentvalue)
+        return updatedItems
+      })
+      props.navigate(props.contentvalue)
+    }
   }
 
   const onContextMenu = (event: React.MouseEvent, data: GenericContent) => {

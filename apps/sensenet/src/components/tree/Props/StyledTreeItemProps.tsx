@@ -4,4 +4,5 @@ export default interface StyledTreeItemProps extends TreeItemProps {
   contentvalue: GenericContent
   activeitempath: string
   navigate: (item: GenericContent) => void
+  editMode: boolean
 }
