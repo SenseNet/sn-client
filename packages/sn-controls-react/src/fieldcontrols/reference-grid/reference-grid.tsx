@@ -256,7 +256,7 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
             {`${props.settings.DisplayName} (${props.settings.Name})`}
           </label>
 
-          <div style={{ height: `${34 + (fieldValue?.length || 0) * 27}px`, width: '100%' }}>
+          <div style={{ width: '100%' }}>
             <AgGridReact
               rowData={fieldValue}
               columnDefs={[iconCol, ...referemceGridColumns, removeCol]}
@@ -265,6 +265,7 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
               }`}
               tooltipShowDelay={100}
               suppressNoRowsOverlay={true}
+              domLayout="autoHeight"
             />
           </div>
           {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
