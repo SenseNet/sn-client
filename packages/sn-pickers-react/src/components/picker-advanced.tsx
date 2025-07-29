@@ -259,8 +259,10 @@ interface PickerAdvancedProps {
   showDialogTitle?: boolean
   canPick?: boolean
   showSearch?: boolean
+  isRequired?: boolean
   setDestinationString?: React.Dispatch<React.SetStateAction<string | undefined>>
   setCurrentNode?: React.Dispatch<React.SetStateAction<GenericContent>>
+  dialogTitle?: string
 }
 export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
   defaultValue,
@@ -274,8 +276,10 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
   showDialogTitle = true,
   canPick = true,
   showSearch = true,
+  isRequired = false,
   setDestinationString,
   setCurrentNode,
+  dialogTitle = 'Picker',
 }) => {
   const classes = useStyles()
   const theme = useTheme()
@@ -463,7 +467,7 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
 
   return (
     <div className={classes.mainCont}>
-      {showDialogTitle && <DialogTitle className={classes.dialogTitle}>Picker</DialogTitle>}
+      {showDialogTitle && <DialogTitle className={classes.dialogTitle}>{dialogTitle}</DialogTitle>}
       <div className={classes.header}>
         <div className={classes.path}>{currentPath}</div>
         <div className={classes.search}>
@@ -529,6 +533,7 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
         </Button>
         <Button
           type="button"
+          disabled={isRequired && !selectedItems.length}
           onClick={() => {
             onSubmit?.(selectedItems)
           }}>

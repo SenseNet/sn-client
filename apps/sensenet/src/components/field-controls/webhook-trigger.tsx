@@ -8,7 +8,6 @@ import {
   ClickAwayListener,
   createStyles,
   Dialog,
-  DialogTitle,
   FormControl,
   FormControlLabel,
   FormGroup,
@@ -35,12 +34,14 @@ import {
 } from '@material-ui/core'
 import { red } from '@material-ui/core/colors'
 import { Check, Close, Info } from '@material-ui/icons'
-import { ReactClientFieldSetting, ReferencePicker, renderIconDefault, typeicons } from '@sensenet/controls-react'
+import { ReactClientFieldSetting, renderIconDefault, typeicons } from '@sensenet/controls-react'
 import { GenericContent, LongTextFieldSetting } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
+import { PickerAdvanced } from '@sensenet/pickers-react'
 import React, { useEffect, useState } from 'react'
 import { globals, widgetStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+import { Icon } from '../Icon'
 
 const ITEM_HEIGHT = 48
 const DEFAULT_CONTAINER = '/Root'
@@ -105,6 +106,14 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     infoIcon: {
       marginLeft: '2px',
+    },
+    pickerDialog: {
+      width: '950px',
+      maxWidth: '80%',
+      height: '900px',
+      maxHeight: '80%',
+      padding: '8px 8px 0',
+      border: '2px solid grey',
     },
   })
 })
@@ -340,21 +349,27 @@ export const WebhookTrigger: React.FC<ReactClientFieldSetting<LongTextFieldSetti
               {localization.webhooksTrigger.pickAContainer}
             </Button>
           </div>
-          <Dialog fullWidth maxWidth="md" onClose={handleDialogClose} open={isPickerOpen}>
-            <DialogTitle>{localization.webhooksTrigger.pickAContainer}</DialogTitle>
-            <ReferencePicker
-              defaultValue={contentForContainer ? [contentForContainer] : undefined}
-              path={DEFAULT_CONTAINER}
+          <Dialog
+            fullWidth
+            maxWidth={false}
+            PaperProps={{ className: classes.pickerDialog }}
+            onClose={handleDialogClose}
+            open={isPickerOpen}>
+            <PickerAdvanced
               repository={props.repository!}
-              handleSubmit={(newSelection: GenericContent[]) => {
+              path={DEFAULT_CONTAINER}
+              allowMultiple={false}
+              onSubmit={(newSelection: GenericContent[]) => {
                 value
                   ? setValue({ ...value, Path: newSelection[0].Path })
                   : setValue({ TriggersForAllEvents: true, Path: newSelection[0].Path, ContentTypes: [] })
                 props.fieldOnChange?.(props.settings.Name, JSON.stringify({ ...value, Path: newSelection[0].Path }))
                 handleDialogClose()
               }}
-              handleCancel={handleDialogClose}
-              fieldSettings={props.settings}
+              onCancel={handleDialogClose}
+              renderIcon={(item) => <Icon item={item} />}
+              dialogTitle={localization.webhooksTrigger.pickAContainer}
+              isRequired={true}
             />
           </Dialog>
           <FormControl component="fieldset">

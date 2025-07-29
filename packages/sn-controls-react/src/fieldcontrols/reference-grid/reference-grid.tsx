@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   createStyles,
   Dialog,
@@ -18,7 +17,6 @@ import { ColDef } from 'ag-grid-community'
 import { AgGridReact } from 'ag-grid-react'
 import React, { useCallback, useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from '../client-field-setting'
-import { renderIconDefault } from '../icon'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -93,7 +91,7 @@ const referemceGridColumns: ColDef[] = [
 
 interface ReferenceGridProps extends ReactClientFieldSetting<ReferenceFieldSetting> {
   dialogProps?: Partial<DialogProps>
-  renderPickerIcon?: (item: any) => JSX.Element
+  renderPickerIcon: (item: GenericContentWithIsParent | User) => JSX.Element
   pickerClasses?: PickerClassKey
 }
 
@@ -213,7 +211,7 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
     field: 'Icon',
     width: 24,
     minWidth: 24,
-    cellRenderer: (x: { data: GenericContent }) => renderIconLocal(x.data),
+    cellRenderer: (x: { data: GenericContent }) => props.renderPickerIcon(x.data),
     cellStyle: { padding: 0 },
   }
 
@@ -238,33 +236,6 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
       </Button>
     ),
   }
-
-  //Icons
-  const iconName = (isFolder?: boolean) => {
-    if (isFolder == null) {
-      return 'arrow_upward'
-    }
-    return isFolder ? 'folder' : 'insert_drive_file'
-  }
-  const renderIconLocal = (item: GenericContentWithIsParent | User) =>
-    props.repository?.schemas.isContentFromType<User>(item, 'User') ? (
-      (item as User).Avatar?.Url ? (
-        <Avatar
-          alt={item.DisplayName}
-          src={`${props.repository.configuration.repositoryUrl}${(item as User).Avatar!.Url}`}
-        />
-      ) : (
-        <Avatar alt={item.DisplayName}>
-          {item.DisplayName?.split(' ')
-            .map((namePart) => namePart[0])
-            .join('.')}
-        </Avatar>
-      )
-    ) : props.renderPickerIcon ? (
-      props.renderPickerIcon(item)
-    ) : (
-      renderIconDefault(iconName(item.IsFolder))
-    )
 
   const currentParent = props.content?.Path.substring(0, props.content?.Path.lastIndexOf('/')) || '/Root'
 
@@ -309,7 +280,7 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
               defaultValue={fieldValue}
               repository={props.repository!}
               path={currentParent}
-              renderIcon={renderIconLocal}
+              renderIcon={props.renderPickerIcon}
               allowMultiple={props.settings.AllowMultiple}
               onCancel={handleCancelClick}
               onSubmit={handleOkClick}
