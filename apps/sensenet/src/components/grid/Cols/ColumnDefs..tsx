@@ -306,15 +306,16 @@ export const trashColumnDefs: ColDef[] = [
     resizable: true,
   },
   {
-    headerName: 'Deletion Date',
+    headerName: 'Deleted When',
     field: 'CreationDate',
-    headerTooltip: 'Deletion Date',
+    headerTooltip: 'Deleted When',
     tooltipValueGetter: (params) => GetDate(params.value),
     cellRenderer: DateTimeFormatter,
     flex: 1.5,
     filter: true,
     sortable: true,
     resizable: true,
+    sort: 'desc',
   },
   {
     headerName: 'Actions',
