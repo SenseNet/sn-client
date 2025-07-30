@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { CircularProgress, createStyles, FormHelperText, InputLabel, makeStyles, Typography } from '@material-ui/core'
+import { CircularProgress, createStyles, FormHelperText, makeStyles, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { renderHtml } from '@sensenet/editor-react'
 import React, { lazy, Suspense } from 'react'
@@ -68,14 +68,9 @@ export const TinymceEditor: React.FC<
     case 'new':
       return (
         <div>
-          <InputLabel htmlFor={props.settings.Name} required={props.settings.Compulsory}>
-            {`${props.settings.DisplayName} (${props.settings.Name})`}
-          </InputLabel>
-
-          {/* <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-            {`${props.settings.DisplayName} (${props.settings.Name})`}
-          </label> */}
-
+          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
+          </label>
           <Suspense
             fallback={
               <div style={{ textAlign: 'center' }}>

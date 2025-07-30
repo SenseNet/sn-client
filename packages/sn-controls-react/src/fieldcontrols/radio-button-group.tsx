@@ -1,15 +1,7 @@
 /**
  * @module FieldControls
  */
-import {
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  FormLabel,
-  Radio,
-  RadioGroup,
-  Typography,
-} from '@material-ui/core'
+import { FormControl, FormControlLabel, FormHelperText, Radio, RadioGroup, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { ChoiceFieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
@@ -44,9 +36,9 @@ export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetti
           fullWidth={true}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>
-          <FormLabel style={{ transform: 'translate(0, 1.5px) scale(0.75)', transformOrigin: 'top left' }}>
-            {`${props.settings.DisplayName} (${props.settings.Name})`}
-          </FormLabel>
+          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
+          </label>
           <RadioGroup
             aria-label={`${props.settings.DisplayName} (${props.settings.Name})`}
             name={props.settings.Name}

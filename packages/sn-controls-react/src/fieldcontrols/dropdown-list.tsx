@@ -61,7 +61,7 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>
           <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-            {`${props.settings.DisplayName} (${props.settings.Name})`}
+            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
           </label>
           <Select
             variant="outlined"

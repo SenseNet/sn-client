@@ -53,9 +53,9 @@ export const AutoComplete: React.FC<ReactClientFieldSetting<ReferenceFieldSettin
     default: {
       return (
         <div>
-          <Typography variant="caption" gutterBottom={true}>
-            {`${props.settings.DisplayName} (${props.settings.Name})`}
-          </Typography>
+          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
+          </label>
           <Typography variant="body1" gutterBottom={true}>
             {props.fieldValue ? (props.fieldValue as any)[0].DisplayName : localization.noValue}
           </Typography>

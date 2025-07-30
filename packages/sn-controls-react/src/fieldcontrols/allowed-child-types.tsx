@@ -242,7 +242,7 @@ export const AllowedChildTypes: React.FC<ReactClientFieldSetting & { classes?: A
         <ClickAwayListener onClickAway={handleClickAway}>
           <div>
             <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-              {`${props.settings.DisplayName} (${props.settings.Name})`}
+              <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
             </label>
             <List dense={true} className={classes.container}>
               {selected.map((item, index) => (

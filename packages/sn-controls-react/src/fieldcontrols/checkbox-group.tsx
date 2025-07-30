@@ -94,7 +94,7 @@ export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>
           style={{ width: '100%' }}
           required={props.settings.Compulsory}>
           <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-            {`${props.settings.DisplayName} (${props.settings.Name})`}
+            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
           </label>
           <FormGroup className={classes.groupCont}>
             {props.settings.Options?.map((option) => {

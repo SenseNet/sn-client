@@ -8,7 +8,6 @@ import {
   IconButton,
   Input,
   InputAdornment,
-  InputLabel,
   makeStyles,
   Typography,
 } from '@material-ui/core'
@@ -48,9 +47,9 @@ export const Password: React.FC<ReactClientFieldSetting> = (props) => {
     case 'new':
       return (
         <FormControl fullWidth={true} className={classes.root}>
-          <InputLabel htmlFor={props.settings.Name} shrink={true}>
-            {`${props.settings.DisplayName} (${props.settings.Name})`}
-          </InputLabel>
+          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
+          </label>
           <Input
             autoComplete="new-password"
             type={showPassword ? 'text' : 'password'}

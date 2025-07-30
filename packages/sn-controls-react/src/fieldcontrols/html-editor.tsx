@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { InputLabel, Theme } from '@material-ui/core'
+import { Theme } from '@material-ui/core'
 import React, { useEffect, useRef, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 
@@ -43,7 +43,9 @@ export const HtmlEditor: React.FC<
 
   return (
     <>
-      <InputLabel shrink>{`${props.settings.DisplayName} (${props.settings.Name})`}</InputLabel>
+      <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+        <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
+      </label>
 
       <div style={{ maxHeight: '68vh', margin: '0.5rem 0' }} ref={containerRef} data-test="html-editor-container">
         <MonacoEditor

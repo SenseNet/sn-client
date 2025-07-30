@@ -47,13 +47,15 @@ export const FileSizeField: React.FC<ReactClientFieldSetting<NumberFieldSetting>
     case 'new':
       return (
         <>
+          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
+          </label>
           <TextField
             variant="outlined"
             style={{ width: '100%' }}
             autoFocus={props.autoFocus}
             name={props.settings.Name}
             type="number"
-            label={`${props.settings.DisplayName} (${props.settings.Name})`}
             value={value}
             required={props.settings.Compulsory}
             disabled={props.settings.ReadOnly}

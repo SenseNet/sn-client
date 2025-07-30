@@ -178,8 +178,8 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
           key={props.settings.Name}
           component={'fieldset' as 'div'}
           required={props.settings.Compulsory}>
-          <label className={classes.label} htmlFor={props.settings.Name}>
-            {`${props.settings.DisplayName} (${props.settings.Name})`}
+          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
           </label>
           <Typography variant="body1" gutterBottom={true}>
             {fileName}

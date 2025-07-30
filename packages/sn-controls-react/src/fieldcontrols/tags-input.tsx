@@ -9,7 +9,6 @@ import {
   FormGroup,
   FormHelperText,
   Input,
-  InputLabel,
   makeStyles,
   MenuItem,
   MenuProps,
@@ -80,12 +79,12 @@ export const TagsInput: React.FC<ReactClientFieldSetting<ReferenceFieldSetting>>
     let s: GenericContent[] = []
     props.settings.AllowMultiple && Array.isArray(event.target.value)
       ? (s = event.target.value.reduce<GenericContent[]>((value, c: number) => {
-        const content = getContentById(c)
-        if (content) {
-          value.push(content)
-        }
-        return value
-      }, []))
+          const content = getContentById(c)
+          if (content) {
+            value.push(content)
+          }
+          return value
+        }, []))
       : (s = [getContentById(event.target.value as number)!])
 
     setFieldValue(s)
@@ -249,9 +248,9 @@ export const TagsInput: React.FC<ReactClientFieldSetting<ReferenceFieldSetting>>
           key={props.settings.Name}
           component={'fieldset' as 'div'}
           required={props.settings.Compulsory}>
-          <InputLabel required={props.settings.Compulsory} htmlFor={props.settings.Name}>
-            {`${props.settings.DisplayName} (${props.settings.Name})`}
-          </InputLabel>
+          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
+          </label>
           <Select
             value={getValue()}
             onChange={handleChange}
@@ -278,8 +277,8 @@ export const TagsInput: React.FC<ReactClientFieldSetting<ReferenceFieldSetting>>
                       props.repository?.schemas.isContentFromType<User>(content, 'User')
                         ? undefined
                         : props.renderIcon
-                          ? props.renderIcon(content.Type.toLowerCase())
-                          : renderIconDefault(content.Type.toLowerCase())
+                        ? props.renderIcon(content.Type.toLowerCase())
+                        : renderIconDefault(content.Type.toLowerCase())
                     }
                     key={content.Id}
                     label={content.DisplayName}

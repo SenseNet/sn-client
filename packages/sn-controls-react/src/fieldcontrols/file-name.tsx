@@ -44,28 +44,32 @@ export const FileName: React.FC<ReactClientFieldSetting> = (props) => {
     case 'edit':
     case 'new':
       return (
-        <TextField
-          variant="outlined"
-          style={{ width: '100%' }}
-          autoFocus={props.autoFocus}
-          name={props.settings.Name}
-          id={props.settings.Name}
-          label={`${props.settings.DisplayName} (${props.settings.Name})`}
-          placeholder={props.settings.DisplayName}
-          value={value}
-          onChange={handleChange}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <span>{`.${getExtension()}`}</span>
-              </InputAdornment>
-            ),
-          }}
-          required={props.settings.Compulsory}
-          disabled={props.settings.ReadOnly}
-          fullWidth={true}
-          helperText={props.hideDescription ? undefined : props.settings.Description}
-        />
+        <>
+          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
+          </label>
+          <TextField
+            variant="outlined"
+            style={{ width: '100%' }}
+            autoFocus={props.autoFocus}
+            name={props.settings.Name}
+            id={props.settings.Name}
+            placeholder={props.settings.DisplayName}
+            value={value}
+            onChange={handleChange}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <span>{`.${getExtension()}`}</span>
+                </InputAdornment>
+              ),
+            }}
+            required={props.settings.Compulsory}
+            disabled={props.settings.ReadOnly}
+            fullWidth={true}
+            helperText={props.hideDescription ? undefined : props.settings.Description}
+          />
+        </>
       )
     case 'browse':
     default:

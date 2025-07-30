@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { FormControl, FormControlLabel, FormHelperText, Checkbox as MuiCheckbox } from '@material-ui/core'
+import { FormControl, FormHelperText, Checkbox as MuiCheckbox } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { FieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
@@ -32,11 +32,10 @@ export const Checkbox: React.FC<ReactClientFieldSetting<FieldSetting>> = (props)
     case 'new':
       return (
         <FormControl required={props.settings.Compulsory} disabled={props.settings.ReadOnly}>
-          <FormControlLabel
-            name={props.settings.Name}
-            control={<MuiCheckbox checked={value} onChange={handleChange} />}
-            label={`${props.settings.DisplayName} (${props.settings.Name})`}
-          />
+          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
+          </label>
+          <MuiCheckbox name={props.settings.Name} checked={value} onChange={handleChange} />
           {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </FormControl>
       )

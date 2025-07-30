@@ -138,7 +138,9 @@ export const Switcher: React.FC<ReactClientFieldSetting<FieldSetting>> = (props)
           disabled={props.settings.ReadOnly}>
           <Typography component="div" style={{ width: '100%' }}>
             <Grid component="label" className={classes.switcherCont} container spacing={1}>
-              <Grid item>{`${props.settings.DisplayName} (${props.settings.Name})`}</Grid>
+              <Grid item>
+                <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
+              </Grid>
               <Grid item>
                 <Switch data-test="edit-switch" size="medium" checked={value} onChange={handleChange} />
               </Grid>

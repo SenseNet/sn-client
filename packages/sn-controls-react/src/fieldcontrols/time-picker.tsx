@@ -39,11 +39,13 @@ export const TimePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
     case 'new':
       return (
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={props.locale}>
+          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
+            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
+          </label>
           <MUITimePicker
             value={value}
             name={props.settings.Name}
             onChange={handleDateChange}
-            label={`${props.settings.DisplayName} (${props.settings.Name})`}
             id={props.settings.Name}
             disabled={props.settings.ReadOnly}
             placeholder={props.settings.DisplayName}

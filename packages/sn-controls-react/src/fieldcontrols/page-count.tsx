@@ -29,7 +29,7 @@ export const PageCount: React.FC<ReactClientFieldSetting> = (props) => {
       return (
         <>
           <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-            {`${props.settings.DisplayName} (${props.settings.Name})`}
+            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
           </label>
           <TextField
             variant="outlined"
