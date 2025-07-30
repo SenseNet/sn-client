@@ -1,6 +1,7 @@
 import { LoadSettingsContextProvider } from '@sensenet/hooks-react'
 import React, { lazy, Suspense } from 'react'
 import { Route, Switch } from 'react-router-dom'
+import { GridKeyEnum } from '../../src/components/grid/enums/GridKey.enum'
 import { PATHS } from '../application-paths'
 import { InvalidPathErrorBoundary } from './content/InvalidPathErrorBoundary'
 import { ErrorBoundary } from './error-boundary'
@@ -42,6 +43,7 @@ export const MainRouter = () => {
                 showPageTitle
                 rootPath={PATHS.contentTemplates.snPath}
                 colDef={contentTemplatesColumnDefs}
+                gridKey={GridKeyEnum.CONTENTTEMPLATES}
               />
             </InvalidPathErrorBoundary>
           </Route>

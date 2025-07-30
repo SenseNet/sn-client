@@ -15,7 +15,6 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from 'rea
 import { useSelectionService } from '../../hooks'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { DropFileArea } from '../DropFileArea'
-import { contentColumnDefs } from './Cols/ColumnDefs.'
 import { GridProps } from './Props/GridProps'
 import { useGridLoading } from './Providers/GridLoadingProvider'
 
@@ -44,7 +43,7 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
   const columnApi = useRef<ColumnApi | null>(null)
   const gridRef = useRef<HTMLDivElement>(null)
   const fixedColumns: string[] = ['0', 'Icon', 'Actions']
-  const [columnDefs, setColumnDefs] = useState<ColDef[]>(props.colDef ?? contentColumnDefs)
+  const [columnDefs, setColumnDefs] = useState<ColDef[]>(props.colDef)
   const loadingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const setLoadingWithMinDuration = useCallback(
@@ -136,11 +135,32 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
     }
   }
 
+  const restoreSortModel = () => {
+    if (columnApi.current) {
+      const sortModelString = localStorage.getItem(`sortModel-${props.gridKey}`)
+      if (sortModelString) {
+        const sortModel = JSON.parse(sortModelString)
+        console.log('props.gridKey:', props.gridKey)
+        console.log('sortModel:', sortModel)
+        sortModel.forEach((s: { colId: string; sort: 'asc' | 'desc' }) => {
+          const col = columnApi.current!.getColumnState().find((c) => c.colId === s.colId)
+          if (col) {
+            columnApi.current!.applyColumnState({
+              state: [{ colId: s.colId, sort: s.sort }],
+              applyOrder: false,
+            })
+          }
+        })
+      }
+    }
+  }
+
   const onGridReady = (params: GridReadyEvent) => {
     gridApi.current = params.api
     columnApi.current = params.columnApi
     restoreColumnFlexRatios()
-    setLoadingWithMinDuration(false) // Reset loading when grid is ready
+    restoreSortModel()
+    setLoadingWithMinDuration(false)
   }
 
   useEffect(() => {
@@ -148,6 +168,19 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
       gridApi.current.setColumnDefs([...props.colDef])
     }
   }, [props.colDef])
+
+  const onSortChanged = useCallback(() => {
+    if (columnApi.current) {
+      const sortModel = columnApi.current
+        .getColumnState()
+        .filter((c) => c.sort)
+        .map((c) => ({
+          colId: c.colId,
+          sort: c.sort,
+        }))
+      localStorage.setItem(`sortModel-${props.gridKey}`, JSON.stringify(sortModel))
+    }
+  }, [props.gridKey])
 
   return (
     <DropFileArea parentContent={parentContent} style={{ height: '100%', overflow: 'hidden' }}>
@@ -175,6 +208,7 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
           onSelectionChanged={onSelectionChanged}
           onCellContextMenu={(event) => onContextMenu(event)}
           onColumnResized={onColumnResized}
+          onSortChanged={onSortChanged}
           suppressNoRowsOverlay={true}
         />
       </div>

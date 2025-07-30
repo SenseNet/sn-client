@@ -3,6 +3,7 @@ import SettingsIcon from '@material-ui/icons/Settings'
 import { clsx } from 'clsx'
 import React, { lazy } from 'react'
 import { matchPath, NavLink, useHistory, useLocation, useRouteMatch } from 'react-router-dom'
+import { GridKeyEnum } from '../../../src/components/grid/enums/GridKey.enum'
 import { PATHS, resolvePathParams } from '../../application-paths'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
@@ -11,7 +12,6 @@ import { ApiKeys } from './api-keys'
 import { Stats } from './stats'
 
 const ContentComponent = lazy(() => import(/* webpackChunkName: "content" */ '../content'))
-const SetupComponent = lazy(() => import(/* webpackChunkName: "setup" */ './setup'))
 const PersonalSettingsEditor = lazy(
   () => import(/* webpackChunkName: "PersonalSettingsEditor" */ './personal-settings-editor'),
 )
@@ -91,6 +91,7 @@ export const Settings: React.FunctionComponent = () => {
             disableColumnSettings
             rootPath={PATHS.localization.snPath}
             colDef={localizationColumnDefs}
+            gridKey={GridKeyEnum.LOCALIZATION}
           />
         )
       case 'settings':
@@ -99,6 +100,7 @@ export const Settings: React.FunctionComponent = () => {
             disableColumnSettings
             rootPath={PATHS.settings.snPath}
             colDef={getSettingsColumnDefs(history)}
+            gridKey={GridKeyEnum.SETTINGS}
           />
         )
       case 'adminui':
@@ -118,6 +120,7 @@ export const Settings: React.FunctionComponent = () => {
               { field: 'SuccessfulCalls' } as any,
             ]}
             colDef={webHooksColumnDefs}
+            gridKey={GridKeyEnum.WEBHOOKS}
             schema={'WebHookSubscription'}
           />
         )

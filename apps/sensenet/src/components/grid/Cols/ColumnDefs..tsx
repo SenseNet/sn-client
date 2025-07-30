@@ -315,7 +315,6 @@ export const trashColumnDefs: ColDef[] = [
     filter: true,
     sortable: true,
     resizable: true,
-    sort: 'desc',
   },
   {
     headerName: 'Actions',

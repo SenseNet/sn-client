@@ -4,6 +4,7 @@ import { Query } from '@sensenet/default-content-types'
 import { LoadSettingsContext, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
+import { GridKeyEnum } from '../../../src/components/grid/enums/GridKey.enum'
 import { PATHS } from '../../application-paths'
 import { useLocalization, useQuery, useSelectionService } from '../../hooks'
 import { navigateToAction } from '../../services'
@@ -82,7 +83,11 @@ export default function SavedQueries() {
         return (
           <>
             {queries.length > 0 ? (
-              <Content rootPath={PATHS.savedQueries.snPath} colDef={savedQueriesColumnDefs} />
+              <Content
+                rootPath={PATHS.savedQueries.snPath}
+                colDef={savedQueriesColumnDefs}
+                gridKey={GridKeyEnum.SAVEDQUERIES}
+              />
             ) : (
               <Typography variant="subtitle1" style={{ padding: '0 15px' }}>
                 {localization.noSavedQuery}

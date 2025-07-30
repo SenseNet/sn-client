@@ -21,4 +21,5 @@ export interface GridProps<T extends GenericContent> {
   containerProps?: DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
   disableColumnSettings?: boolean
   colDef: ColDef[]
+  gridKey: string
 }

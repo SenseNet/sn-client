@@ -1,6 +1,7 @@
 import { ConstantContent } from '@sensenet/client-core'
 import React, { FunctionComponent, useContext, useEffect } from 'react'
 import { useRouteMatch } from 'react-router-dom'
+import { GridKeyEnum } from '../../../src/components/grid/enums/GridKey.enum'
 import { ResponsivePersonalSettings } from '../../context'
 import { useTreeNavigation } from '../../hooks/use-tree-navigation'
 import { contentExplorerColumnDefs } from '../grid/Cols/ColumnDefs.'
@@ -28,6 +29,7 @@ export const CustomContent: FunctionComponent<ContentProps> = ({ rootPath }) => 
         <Explore
           currentPath={currentPath}
           colDef={contentExplorerColumnDefs}
+          gridKey={GridKeyEnum.CONTENT}
           onNavigate={onNavigate}
           rootPath={path}
           fieldsToDisplay={customDrawer?.settings.columns}

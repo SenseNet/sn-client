@@ -20,6 +20,7 @@ import {
 } from '@sensenet/hooks-react'
 import React, { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
+import { GridKeyEnum } from '../../../src/components/grid/enums/GridKey.enum'
 import { ResponsivePersonalSettings } from '../../context'
 import { useSearch } from '../../context/search'
 import { useSelectionService, useSnRoute } from '../../hooks'
@@ -111,6 +112,7 @@ export const SearchResults = ({
           <CurrentAncestorsContext.Provider value={[]}>
             <Grid
               colDef={searchColumnDefs}
+              gridKey={GridKeyEnum.SEARCHRESULTS}
               parentIdOrPath={0}
               onParentChange={(p) => {
                 history.push(getPrimaryActionUrl({ content: p, repository, uiSettings, location, snRoute }))

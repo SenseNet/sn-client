@@ -14,6 +14,7 @@ import { ColDef } from 'ag-grid-community'
 import { clsx } from 'clsx'
 import React, { useContext, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
+import { GridKeyEnum } from '../../../src/components/grid/enums/GridKey.enum'
 import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useQuery, useSelectionService, useSnRoute } from '../../hooks'
@@ -21,7 +22,6 @@ import { getPrimaryActionUrl, navigateToAction } from '../../services'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { DocumentViewer } from '../document-viewer'
 import { EditBinary } from '../edit/edit-binary'
-import { contentColumnDefs } from '../grid/Cols/ColumnDefs.'
 import { Grid } from '../grid/Grid'
 import { SimpleTree } from '../tree/simpletree'
 import { BrowseView, EditView, ImageView, NewView, PermissionView, VersionView } from '../view-controls'
@@ -125,7 +125,8 @@ export type ExploreProps = {
   alwaysRefreshChildren?: boolean
   showPageTitle?: boolean
   disableColumnSettings?: boolean
-  colDef?: ColDef[]
+  colDef: ColDef[]
+  gridKey: GridKeyEnum
 }
 
 export function Explore({
@@ -141,6 +142,7 @@ export function Explore({
   alwaysRefreshChildren,
   disableColumnSettings,
   colDef,
+  gridKey,
 }: ExploreProps) {
   const theme = useTheme()
   const selectionService = useSelectionService()
@@ -261,7 +263,8 @@ export function Explore({
           onActivateItem={onActivateItemOverride}
           onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
           parentIdOrPath={currentPath}
-          colDef={colDef ?? contentColumnDefs}
+          colDef={colDef}
+          gridKey={gridKey}
         />
       </>
     )
