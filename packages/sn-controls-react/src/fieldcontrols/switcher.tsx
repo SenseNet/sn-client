@@ -137,11 +137,17 @@ export const Switcher: React.FC<ReactClientFieldSetting<FieldSetting>> = (props)
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>
           <Typography component="div" style={{ width: '100%' }}>
-            <Grid component="label" className={classes.switcherCont} container spacing={1}>
-              <Grid item>
+            <Grid
+              component="label"
+              className={classes.switcherCont}
+              container
+              spacing={1}
+              alignItems="center"
+              wrap="wrap">
+              <Grid item xs>
                 <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
               </Grid>
-              <Grid item>
+              <Grid item style={{ marginLeft: 'auto' }}>
                 <Switch data-test="edit-switch" size="medium" checked={value} onChange={handleChange} />
               </Grid>
             </Grid>
