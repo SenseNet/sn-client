@@ -203,7 +203,7 @@ const TreeNode = ({ node, repository, renderIcon, path, expanded, setExpanded, o
       handleNodeClick()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [expanded])
+  }, [])
 
   return (
     <TreeItem
