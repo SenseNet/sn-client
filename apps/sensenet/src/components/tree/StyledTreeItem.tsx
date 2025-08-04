@@ -36,6 +36,7 @@ export const StyledTreeItem = (props: StyledTreeItemProps) => {
   const { location } = history
   const snRoute = useSnRoute()
   const uiSettings = useContext(ResponsivePersonalSettings)
+  const { navigate, editMode, ...restProps } = props
 
   const loadCollectionCB = useCallback(
     async (contentPath: string): Promise<void> => {
@@ -59,7 +60,7 @@ export const StyledTreeItem = (props: StyledTreeItemProps) => {
             nodeId={innerChild.Id.toString()}
             contentvalue={innerChild}
             navigate={props.navigate}
-            editMode={props.editMode}
+            editMode={editMode}
             onContextMenu={(event) => {
               event.preventDefault()
               event.stopPropagation()
@@ -75,10 +76,9 @@ export const StyledTreeItem = (props: StyledTreeItemProps) => {
         //
       }
     },
-    [loadChildren, props.activeitempath, props.navigate, props.editMode],
+    [loadChildren, props.activeitempath, props.navigate, editMode],
   )
 
-  const { navigate, ...restProps } = props
   useEffect(() => {
     const itemId = String(props.contentvalue.Id)
     if (expandItems.has(itemId)) {
@@ -141,7 +141,7 @@ export const StyledTreeItem = (props: StyledTreeItemProps) => {
       history.push(getPrimaryActionUrl({ content: props.contentvalue, repository, uiSettings, location, snRoute }))
       return
     }
-    if (props.editMode) {
+    if (editMode) {
       navigateToAction({
         history,
         routeMatch: snRoute.match!,

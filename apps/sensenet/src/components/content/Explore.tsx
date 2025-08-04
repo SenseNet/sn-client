@@ -166,8 +166,10 @@ export function Explore({
       isResizing.current = false
       document.body.style.userSelect = ''
       const newWidth = parseInt(resizeElement.style.width, 10)
-      setWidth(newWidth)
-      localStorage.setItem('treeWidth', String(newWidth))
+      if (newWidth !== null && !isNaN(newWidth)) {
+        setWidth(newWidth)
+        localStorage.setItem('treeWidth', String(newWidth))
+      }
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('mouseup', handleMouseUp)
     }
