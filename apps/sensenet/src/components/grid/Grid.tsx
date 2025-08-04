@@ -1,4 +1,4 @@
-import { LinearProgress, useTheme } from '@material-ui/core'
+import { debounce, LinearProgress, useTheme } from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { CurrentChildrenContext, CurrentContentContext } from '@sensenet/hooks-react'
 import {
@@ -17,6 +17,8 @@ import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { DropFileArea } from '../DropFileArea'
 import { GridProps } from './Props/GridProps'
 import { useGridLoading } from './Providers/GridLoadingProvider'
+
+const SMALL_SCREEN_COL_FILTER = ['Id', 'Actions']
 
 export function Grid<T extends GenericContent = GenericContent>(props: GridProps<T>) {
   const { isGridLoading, setIsGridLoading } = useGridLoading()
@@ -140,8 +142,6 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
       const sortModelString = localStorage.getItem(`sortModel-${props.gridKey}`)
       if (sortModelString) {
         const sortModel = JSON.parse(sortModelString)
-        console.log('props.gridKey:', props.gridKey)
-        console.log('sortModel:', sortModel)
         sortModel.forEach((s: { colId: string; sort: 'asc' | 'desc' }) => {
           const col = columnApi.current!.getColumnState().find((c) => c.colId === s.colId)
           if (col) {
@@ -154,6 +154,27 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
       }
     }
   }
+
+  const updateColumnDefsBasedOnWindowSize = useCallback(() => {
+    const width = window.innerWidth
+    if (width < 1536) {
+      const filteredCols = props.colDef.filter((col) => !SMALL_SCREEN_COL_FILTER.includes(col.field || ''))
+      setColumnDefs(filteredCols)
+    } else {
+      setColumnDefs(props.colDef)
+    }
+  }, [props.colDef])
+
+  useEffect(() => {
+    const debouncedResize = debounce(updateColumnDefsBasedOnWindowSize, 300)
+    debouncedResize()
+    window.addEventListener('resize', debouncedResize)
+
+    return () => {
+      window.removeEventListener('resize', debouncedResize)
+      debouncedResize.clear()
+    }
+  }, [updateColumnDefsBasedOnWindowSize])
 
   const onGridReady = (params: GridReadyEvent) => {
     gridApi.current = params.api
