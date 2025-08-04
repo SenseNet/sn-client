@@ -8,6 +8,7 @@ import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './full-screen-loader'
 import { contentTemplatesColumnDefs } from './grid/Cols/ColumnDefs.'
+import { Home } from './Home'
 
 const ContentComponent = lazy(() => import(/* webpackChunkName: "content" */ './content'))
 const DashboardComponent = lazy(() => import(/* webpackChunkName: "dashboard" */ './dashboard'))
@@ -84,8 +85,8 @@ export const MainRouter = () => {
             <CustomContent rootPath={PATHS.custom.snPath} />
           </Route>
 
-          <Route path={PATHS.root.snPath} exact>
-            <DashboardComponent />
+          <Route path={PATHS.home.snPath}>
+            <Home />
           </Route>
         </Switch>
       </Suspense>

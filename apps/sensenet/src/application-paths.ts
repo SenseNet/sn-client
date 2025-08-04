@@ -20,6 +20,7 @@ export const PATHS = {
   apiKeys: { appPath: '/system/apikeys' },
   landingPath: { appPath: '/content/explorer/' },
   root: { appPath: '/Root', snPath: '/Root' },
+  home: { appPath: '/', snPath: '/' },
 } as const
 
 type SettingsItemType = 'stats' | 'settings' | 'apikeys' | 'webhooks' | 'adminui'
