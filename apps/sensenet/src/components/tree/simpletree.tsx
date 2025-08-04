@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme: Theme) =>
       gap: '8px',
       flexWrap: 'wrap',
       justifyContent: 'center',
+      marginRight: '27px',
     },
   }),
 )
