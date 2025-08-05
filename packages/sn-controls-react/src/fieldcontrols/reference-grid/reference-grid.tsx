@@ -226,7 +226,7 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
         </Button>
       )
     },
-    headerComponentFramework: () => (
+    headerComponent: () => (
       <Button
         className={classes.actionButton}
         onClick={() => {

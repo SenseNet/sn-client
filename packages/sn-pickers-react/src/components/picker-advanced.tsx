@@ -182,6 +182,7 @@ type TreeNodeProps = {
 const TreeNode = ({ node, repository, renderIcon, path, expanded, setExpanded, onSetCurrentNode }: TreeNodeProps) => {
   const classes = useStyles()
   const [childNodes, setChildNodes] = useState<GenericContent[]>([])
+  const [isLoaded, setIsLoaded] = useState<boolean>(false)
 
   const handleNodeClick = async () => {
     const abortController = new AbortController()
@@ -192,6 +193,7 @@ const TreeNode = ({ node, repository, renderIcon, path, expanded, setExpanded, o
 
     onSetCurrentNode(node)
     setChildNodes(sortResults(childrenResult.d.results))
+    setIsLoaded(true)
 
     setExpanded((prevExpanded) =>
       prevExpanded.includes(node.Id.toString()) ? prevExpanded : [...prevExpanded, node.Id.toString()],
@@ -199,11 +201,11 @@ const TreeNode = ({ node, repository, renderIcon, path, expanded, setExpanded, o
   }
 
   useEffect(() => {
-    if (expanded.includes(node.Id.toString()) && childNodes.length === 0) {
+    if (expanded.includes(node.Id.toString()) && !isLoaded) {
       handleNodeClick()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [expanded])
 
   return (
     <TreeItem

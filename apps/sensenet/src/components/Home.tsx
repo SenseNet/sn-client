@@ -75,6 +75,9 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.type === 'light' ? '#f9f9f9' : '#333',
       color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
       marginBottom: '8px',
+      '&.Mui-expanded': {
+        margin: 0,
+      },
     },
     accordionSummary: {
       display: 'flex',
@@ -86,6 +89,14 @@ const useStyles = makeStyles((theme: Theme) =>
         [theme.breakpoints.down(600)]: {
           gridTemplateColumns: '1fr',
         },
+      },
+      '&.Mui-expanded': {
+        minHeight: 'unset',
+      },
+    },
+    accordionSummaryContent: {
+      '&.Mui-expanded': {
+        margin: '8px 0 8px 0',
       },
     },
     accordionDetails: {
@@ -173,7 +184,6 @@ export const Home = () => {
           method: 'GET',
           oDataOptions: {
             userName: user?.LoginName,
-            top: 100,
           } as any,
         })
         if (response) {
@@ -254,10 +264,11 @@ export const Home = () => {
               return (
                 <Accordion key={index} className={classes.accordion} disabled={!hasChanges}>
                   <AccordionSummary
-                    expandIcon={hasChanges ? <ExpandMoreIcon /> : null}
+                    expandIcon={<ExpandMoreIcon />}
                     aria-controls={`panel${index}-content`}
                     id={`panel${index}-header`}
-                    className={classes.accordionSummary}>
+                    className={classes.accordionSummary}
+                    classes={{ content: classes.accordionSummaryContent }}>
                     <Typography className={classes.fixedItem}>
                       {log.LogDate ? DateTimeFormatter({ value: log.LogDate }) : ''}
                     </Typography>
@@ -286,7 +297,7 @@ export const Home = () => {
               return (
                 <Accordion key={index} className={classes.accordion} disabled={!hasChanges}>
                   <AccordionSummary
-                    expandIcon={hasChanges ? <ExpandMoreIcon /> : null}
+                    expandIcon={<ExpandMoreIcon />}
                     aria-controls={`panel${index}-content`}
                     id={`panel${index}-header`}
                     className={classes.accordionSummary}>
