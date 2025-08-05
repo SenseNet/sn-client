@@ -7,7 +7,9 @@ import { renderHtml } from '@sensenet/editor-react'
 import React, { lazy, Suspense } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
+
 const Editor = lazy(() => import('../editor-wrapper').then((module) => ({ default: module.TinymceEditor })))
 
 const useStyles = makeStyles((theme) =>
@@ -68,9 +70,11 @@ export const TinymceEditor: React.FC<
     case 'new':
       return (
         <div>
-          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
-          </label>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+          />
           <Suspense
             fallback={
               <div style={{ textAlign: 'center' }}>

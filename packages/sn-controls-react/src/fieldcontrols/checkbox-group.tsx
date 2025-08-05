@@ -17,6 +17,7 @@ import { ChoiceFieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 
 const useStyles = makeStyles((theme) =>
@@ -93,9 +94,11 @@ export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>
           component={'fieldset' as 'div'}
           style={{ width: '100%' }}
           required={props.settings.Compulsory}>
-          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
-          </label>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+          />
           <FormGroup className={classes.groupCont}>
             {props.settings.Options?.map((option) => {
               return (

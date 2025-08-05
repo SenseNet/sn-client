@@ -8,6 +8,7 @@ import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { renderIconDefault } from './icon'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 
 /**
@@ -32,9 +33,11 @@ export const Checkbox: React.FC<ReactClientFieldSetting<FieldSetting>> = (props)
     case 'new':
       return (
         <FormControl required={props.settings.Compulsory} disabled={props.settings.ReadOnly}>
-          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
-          </label>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+          />
           <MuiCheckbox name={props.settings.Name} checked={value} onChange={handleChange} />
           {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </FormControl>

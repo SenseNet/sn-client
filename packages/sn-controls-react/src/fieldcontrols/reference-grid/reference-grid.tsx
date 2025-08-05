@@ -17,6 +17,7 @@ import { ColDef } from 'ag-grid-community'
 import { AgGridReact } from 'ag-grid-react'
 import React, { useCallback, useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from '../client-field-setting'
+import CustomLabel from '../label/custom-label'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -251,11 +252,11 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
             required={props.settings.Compulsory}
             className={classes.fieldName}
           />
-
-          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
-          </label>
-
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+          />
           <div style={{ width: '100%' }}>
             <AgGridReact
               rowData={fieldValue}

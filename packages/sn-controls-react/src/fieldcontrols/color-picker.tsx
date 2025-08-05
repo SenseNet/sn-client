@@ -8,6 +8,7 @@ import React, { useState } from 'react'
 import { ColorResult, SketchPicker } from 'react-color'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 
 const style = {
@@ -46,9 +47,11 @@ export const ColorPicker: React.FC<ReactClientFieldSetting<ColorFieldSetting>> =
     case 'new':
       return (
         <FormControl>
-          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
-          </label>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+          />
           <TextField
             variant="outlined"
             style={{ maxWidth: '420px', width: '100%' }}

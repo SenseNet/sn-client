@@ -21,6 +21,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { typeicons } from '../assets/icons'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { renderIconDefault } from './icon'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 
 const INPUT_PLACEHOLDER = 'Start typing to add another type'
@@ -241,9 +242,11 @@ export const AllowedChildTypes: React.FC<ReactClientFieldSetting & { classes?: A
       return (
         <ClickAwayListener onClickAway={handleClickAway}>
           <div>
-            <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-              <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
-            </label>
+            <CustomLabel
+              name={props.settings.Name}
+              displayName={props.settings.DisplayName}
+              highlighted={props.settings.Customization?.Highlighted}
+            />
             <List dense={true} className={classes.container}>
               {selected.map((item, index) => (
                 <ListItem key={index} className={classes.listItem}>

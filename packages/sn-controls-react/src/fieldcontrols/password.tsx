@@ -15,6 +15,7 @@ import { deepMerge } from '@sensenet/client-utils'
 import React, { useState } from 'react'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { renderIconDefault } from './icon'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 
 const useStyles = makeStyles(() => {
@@ -47,9 +48,11 @@ export const Password: React.FC<ReactClientFieldSetting> = (props) => {
     case 'new':
       return (
         <FormControl fullWidth={true} className={classes.root}>
-          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
-          </label>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+          />
           <Input
             autoComplete="new-password"
             type={showPassword ? 'text' : 'password'}

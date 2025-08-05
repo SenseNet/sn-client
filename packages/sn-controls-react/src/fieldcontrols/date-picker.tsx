@@ -9,6 +9,7 @@ import React, { useState } from 'react'
 import DatePickerLib from 'react-datepicker'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 import 'react-datepicker/dist/react-datepicker.css'
 
@@ -81,9 +82,11 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
     case 'new':
       return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
-          </label>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+          />
           <div style={{ maxWidth: '420px' }}>
             <DatePickerLib
               selected={value}

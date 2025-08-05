@@ -7,6 +7,7 @@ import MonacoEditor from 'react-monaco-editor'
 
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
+import CustomLabel from './label/custom-label'
 
 /**
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
@@ -43,10 +44,11 @@ export const HtmlEditor: React.FC<
 
   return (
     <>
-      <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-        <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
-      </label>
-
+      <CustomLabel
+        name={props.settings.Name}
+        displayName={props.settings.DisplayName}
+        highlighted={props.settings.Customization?.Highlighted}
+      />
       <div style={{ maxHeight: '68vh', margin: '0.5rem 0' }} ref={containerRef} data-test="html-editor-container">
         <MonacoEditor
           ref={editorRef}

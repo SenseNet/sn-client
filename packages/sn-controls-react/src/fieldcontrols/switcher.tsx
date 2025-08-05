@@ -145,7 +145,15 @@ export const Switcher: React.FC<ReactClientFieldSetting<FieldSetting>> = (props)
               alignItems="center"
               wrap="wrap">
               <Grid item xs>
-                <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
+                {props.settings.Customization?.Highlighted ? (
+                  <div>
+                    <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
+                  </div>
+                ) : (
+                  <div>
+                    <span style={{ fontSize: '17px' }}>{props.settings.DisplayName}</span> ({props.settings.Name})
+                  </div>
+                )}
               </Grid>
               <Grid item style={{ marginLeft: 'auto' }}>
                 <Switch data-test="edit-switch" size="medium" checked={value} onChange={handleChange} />

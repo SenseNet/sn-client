@@ -6,6 +6,7 @@ import { deepMerge } from '@sensenet/client-utils'
 import { ChoiceFieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 import { ReactClientFieldSetting } from '.'
 
@@ -60,9 +61,11 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
           style={{ maxWidth: '420px', width: '100%' }}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>
-          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
-          </label>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+          />
           <Select
             variant="outlined"
             onChange={handleChange}

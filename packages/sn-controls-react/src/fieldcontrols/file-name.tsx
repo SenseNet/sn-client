@@ -5,6 +5,7 @@ import { InputAdornment, TextField, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 import { ReactClientFieldSetting } from '.'
 
@@ -45,9 +46,11 @@ export const FileName: React.FC<ReactClientFieldSetting> = (props) => {
     case 'new':
       return (
         <>
-          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
-          </label>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+          />
           <TextField
             variant="outlined"
             style={{ width: '100%' }}

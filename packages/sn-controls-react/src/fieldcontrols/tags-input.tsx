@@ -20,6 +20,7 @@ import { GenericContent, ReferenceFieldSetting, User } from '@sensenet/default-c
 import React, { useCallback, useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { renderIconDefault } from './icon'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 
 const ITEM_HEIGHT = 48
@@ -248,9 +249,11 @@ export const TagsInput: React.FC<ReactClientFieldSetting<ReferenceFieldSetting>>
           key={props.settings.Name}
           component={'fieldset' as 'div'}
           required={props.settings.Compulsory}>
-          <label htmlFor={props.settings.Name} style={{ fontSize: '15px' }}>
-            <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
-          </label>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+          />
           <Select
             value={getValue()}
             onChange={handleChange}
