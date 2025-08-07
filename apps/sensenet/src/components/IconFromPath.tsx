@@ -1,52 +1,43 @@
 import { PathHelper } from '@sensenet/client-utils'
-import React, { memo, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IconOptions } from './Icon'
 
 const IconFromPath = ({ path, options }: { path: string; options: IconOptions }) => {
   const [icon, setIcon] = useState<string | null>(null)
 
-  const setResizedIcon = (svg: string) => {
-    setIcon(svg.replace('width=', 'width="24px" oldwidth=').replace('height=', 'height="24px" oldheight='))
-  }
-
   useEffect(() => {
-    async function fetchData() {
-      if (options.repo.iconCache.has(path)) {
-        const cachedData = options.repo.iconCache.get(path) ?? ''
-        setResizedIcon(cachedData)
-        return
-      }
-
+    const fetchIcon = async () => {
       const imageUrl = PathHelper.joinPaths(options.repo.configuration.repositoryUrl, path)
 
       if (path.endsWith('.svg')) {
-        const fetchedSvg = await options.repo.fetch(imageUrl, { cache: 'force-cache' })
-        if (!fetchedSvg.ok) {
-          return
+        try {
+          const response = await options.repo.fetch(imageUrl, { cache: 'force-cache' })
+          if (!response.ok) {
+            return
+          }
+          const svg = await response.text()
+          const resizedSvg = svg
+            .replace('width=', 'width="24px" oldwidth=')
+            .replace('height=', 'height="24px" oldheight=')
+          setIcon(resizedSvg)
+        } catch {
+          // handle error silently
         }
-        const svg = await fetchedSvg.text().catch(() => '')
-        options.repo.iconCache.set(path, svg)
-        setResizedIcon(svg)
-        return
+      } else {
+        setIcon(imageUrl)
       }
-
-      options.repo.iconCache.set(path, imageUrl)
-      setResizedIcon(imageUrl)
     }
-    fetchData()
+
+    fetchIcon()
   }, [options.repo, path])
 
-  if (!icon) {
-    return null
-  }
+  if (!icon) return null
 
-  if (path.endsWith('.svg')) {
-    return <span dangerouslySetInnerHTML={{ __html: icon }} style={options.style} />
-  }
-
-  return <img src={icon} alt="icon" style={options.style} />
+  return path.endsWith('.svg') ? (
+    <span dangerouslySetInnerHTML={{ __html: icon }} style={options.style} />
+  ) : (
+    <img src={icon} alt="icon" style={options.style} />
+  )
 }
 
-const memoIzedIconFromPath = memo(IconFromPath)
-
-export { memoIzedIconFromPath as IconFromPath }
+export { IconFromPath }
