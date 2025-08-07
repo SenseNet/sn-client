@@ -189,29 +189,29 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   {
     get: (item, options) => {
       let icon = item.Icon
-      if (!icon) {
+      const name = item.Name?.toLowerCase()
+      const type = item.Type?.toLowerCase()
+      const path = item.Path?.toLowerCase()
+      if (!icon || !type || !path) {
         return null
-      }
-      if (icon.toLowerCase() === 'excel') {
+      } else if (icon.toLowerCase() === 'excel') {
         icon = '/Root/System/Images/Icons/colors/csv.svg'
-      }
-      if (icon.toLowerCase() === 'word') {
+      } else if (icon.toLowerCase() === 'word') {
         icon = '/Root/System/Images/Icons/colors/word.svg'
-      }
-      if (icon.toLowerCase() === 'acrobat' || icon.toLowerCase() === 'adobe') {
+      } else if (icon.toLowerCase() === 'acrobat' || icon.toLowerCase() === 'adobe') {
         icon = '/Root/System/Images/Icons/colors/pdf.svg'
-      }
-      const name = item.Name
-      if (name.endsWith('.xls') || name.endsWith('.xlsx') || name.endsWith('.xlsm')) {
+      } else if (name.endsWith('.xls') || name.endsWith('.xlsx') || name.endsWith('.xlsm')) {
         icon = '/Root/System/Images/Icons/colors/xls.svg'
-      }
-      const type = item.Type.toLowerCase()
-      if (type.endsWith('file')) {
-        if (type.endsWith('.csv')) {
+      } else if (type.endsWith('file')) {
+        console.log('file - ', item)
+        if (path.endsWith('.csv')) {
           icon = '/Root/System/Images/Icons/colors/csv.svg'
-        } else if (type.endsWith('.svg')) {
+        } else if (path.endsWith('.svg')) {
+          console.log('svg - ', item)
           icon = '/Root/System/Images/Icons/colors/file_img.svg'
         }
+      } else if (!icon.startsWith('/')) {
+        return null
       }
       return <IconFromPath path={icon} options={options} />
     },
