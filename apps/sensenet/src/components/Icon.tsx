@@ -9,7 +9,6 @@ import {
   CodeOutlined,
   CommentOutlined,
   DeleteOutlined,
-  Description,
   DescriptionOutlined,
   DomainOutlined,
   Edit,
@@ -180,53 +179,42 @@ const getIconByName = (name: string | undefined, options: IconOptions) => {
       return <Edit style={options.style} />
     case 'Details':
       return <Info style={options.style} />
-    case 'Description':
-      return <Description style={options.style} />
     default:
       return null
   }
-}
-
-const getIconByPath = (content: GenericContent, iconOptions: IconOptions) => {
-  if (!content.Icon || !content.Icon.startsWith('/')) {
-    return null
-  }
-  return (
-    <IconFromPath path={content.Icon} options={iconOptions} contentPath={content.Path} contentType={content.Type} />
-  )
 }
 
 /* eslint-disable react/display-name */
 export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   {
     get: (item, options) => {
-      const name = item.Icon?.toLowerCase()
-      let svgPath = ''
-
-      switch (name) {
-        case 'excel':
-          svgPath = '/Root/System/Images/Icons/colors/csv.svg'
-          break
-        case 'word':
-          svgPath = '/Root/System/Images/Icons/colors/word.svg'
-          break
-        case 'acrobat':
-        case 'adobe':
-          svgPath = '/Root/System/Images/Icons/colors/pdf.svg'
-          break
-        default:
-          return null
+      let icon = item.Icon
+      if (!icon) {
+        return null
       }
-
-      if (item.Name.endsWith('.xls') || item.Name.endsWith('.xlsx') || item.Name.endsWith('.xlsm')) {
-        svgPath = '/Root/System/Images/Icons/colors/xls.svg'
+      if (icon.toLowerCase() === 'excel') {
+        icon = '/Root/System/Images/Icons/colors/csv.svg'
       }
-
-      return <IconFromPath path={svgPath} options={options} contentPath={item.Path} contentType={item.Type} />
+      if (icon.toLowerCase() === 'word') {
+        icon = '/Root/System/Images/Icons/colors/word.svg'
+      }
+      if (icon.toLowerCase() === 'acrobat' || icon.toLowerCase() === 'adobe') {
+        icon = '/Root/System/Images/Icons/colors/pdf.svg'
+      }
+      const name = item.Name
+      if (name.endsWith('.xls') || name.endsWith('.xlsx') || name.endsWith('.xlsm')) {
+        icon = '/Root/System/Images/Icons/colors/xls.svg'
+      }
+      const type = item.Type.toLowerCase()
+      if (type.endsWith('file')) {
+        if (type.endsWith('.csv')) {
+          icon = '/Root/System/Images/Icons/colors/csv.svg'
+        } else if (type.endsWith('.svg')) {
+          icon = '/Root/System/Images/Icons/colors/file_img.svg'
+        }
+      }
+      return <IconFromPath path={icon} options={options} />
     },
-  },
-  {
-    get: (item, options) => getIconByPath(item, options),
   },
   {
     get: (item, options) =>
@@ -348,7 +336,6 @@ export const IconComponent: FunctionComponent<{
   if (assignedResolver) {
     return assignedResolver.get(props.item, options)!
   }
-
   return defaultIcon
 }
 
