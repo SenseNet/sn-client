@@ -63,7 +63,6 @@ export function OperationsDialog(props: OperationsDialogProps) {
   const [UIDescription, setUIDescription] = useState<UIDescription>()
 
   useEffect(() => {
-    console.log(props.OperationName)
     const loadOperation = async () => {
       try {
         const result = await repository.executeAction<any, UIDescription>({

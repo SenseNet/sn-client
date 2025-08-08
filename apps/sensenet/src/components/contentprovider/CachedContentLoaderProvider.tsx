@@ -57,7 +57,6 @@ const CachedContentLoaderProvider = ({ children }: { children: ReactNode }) => {
     //   })
     //   setStoredContents(updatedContents)
     // })
-    console.log('CachedContentLoaderProvider useEffect')
   }, [currentContextId, repo, storedContents])
   return (
     <CachedContentLoaderContext.Provider

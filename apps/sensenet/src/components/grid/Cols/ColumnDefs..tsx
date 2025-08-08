@@ -233,7 +233,6 @@ export const groupColumnDefs: ColDef[] = [
     minWidth: 110,
     maxWidth: 110,
     cellRendererFramework: (params: any) => {
-      console.log('params:', params)
       return <ReferenceField content={params.data} fieldName={'Members'} parent={params.data} showIcon={true} />
     },
   },

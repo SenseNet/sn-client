@@ -203,11 +203,9 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
       } else if (name.endsWith('.xls') || name.endsWith('.xlsx') || name.endsWith('.xlsm')) {
         icon = '/Root/System/Images/Icons/colors/xls.svg'
       } else if (type.endsWith('file')) {
-        console.log('file - ', item)
         if (path.endsWith('.csv')) {
           icon = '/Root/System/Images/Icons/colors/csv.svg'
         } else if (path.endsWith('.svg')) {
-          console.log('svg - ', item)
           icon = '/Root/System/Images/Icons/colors/file_img.svg'
         }
       } else if (!icon.startsWith('/')) {
