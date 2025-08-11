@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
       marginBottom: '8px',
       '&.Mui-expanded': {
-        margin: 0,
+        margin: '0 0 8px 0',
       },
     },
     accordionSummary: {

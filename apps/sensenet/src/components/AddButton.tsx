@@ -108,7 +108,7 @@ export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
       }
     }
 
-    if (currentPath) {
+    if (currentPath && currentPath !== '/') {
       getActions()
     } else {
       setAvailable(false)
