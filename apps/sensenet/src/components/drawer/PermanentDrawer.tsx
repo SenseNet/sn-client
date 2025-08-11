@@ -119,7 +119,11 @@ export const PermanentDrawer = () => {
               PATHS.custom.appPath.replace(':path', 'root'),
             ]) ? (
               <AddButton aria-label={localization.add} isOpened={opened} />
-            ) : null}
+            ) : (
+              !matchPath(location.pathname, PATHS.savedQueries.appPath) && (
+                <AddButton aria-label={localization.add} isOpened={opened} isDisabled={true} />
+              )
+            )}
             {baseItems.map((item) => {
               return (
                 item.itemType !== 'Settings' && <PermanentDrawerItem item={item} opened={opened} key={item.itemType} />
