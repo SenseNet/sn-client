@@ -68,6 +68,7 @@ const useStyles = makeStyles((theme: Theme) => {
 })
 export interface AddButtonProps {
   isOpened?: boolean
+  isDisabled?: boolean
 }
 
 export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
@@ -96,7 +97,7 @@ export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
       try {
         const actions = await repo.getActions({ idOrPath: currentPath })
         const isActionFound = actions.d.results.some((action) => action.Name === 'Add' || action.Name === 'Upload')
-        setAvailable(isActionFound && !activeAction)
+        setAvailable(isActionFound && !activeAction && !props.isDisabled)
       } catch (error) {
         logger.error({
           message: localization.errorGettingActions,
@@ -112,7 +113,7 @@ export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
     } else {
       setAvailable(false)
     }
-  }, [localization.errorGettingActions, logger, repo, currentPath, activeAction])
+  }, [localization.errorGettingActions, logger, repo, currentPath, activeAction, props.isDisabled])
 
   useEffect(() => {
     const getAllowedChildTypes = async () => {
@@ -215,6 +216,7 @@ export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
             style={{
               overflow: 'hidden',
               whiteSpace: 'nowrap',
+              marginLeft: '3px',
             }}
           />
         </ListItem>

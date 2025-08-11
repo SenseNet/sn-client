@@ -20,11 +20,6 @@ const useStyles = makeStyles(() => {
   return createStyles({
     navLinkListItem: {
       width: '100%',
-      height: globals.common.drawerItemHeight,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-evenly',
-      textDecoration: 'none',
     },
   })
 })
@@ -40,22 +35,22 @@ export const SearchButton: FunctionComponent<SearchButtonProps> = (props) => {
   const localization = useLocalization().drawer
 
   return (
-    <div className={clsx(globalClasses.centered, globalClasses.relative)}>
+    <div className={clsx(globalClasses.relative)}>
       {!props.isOpened ? (
-        <div className={globalClasses.drawerIconButtonWrapper}>
-          <Tooltip title={localization.newSearch} placement="right">
-            <Link style={{ textDecoration: 'none' }} to={PATHS.search.appPath}>
-              <IconButton className={globalClasses.drawerButton}>
+        <div>
+          <Tooltip title={localization.newSearch}>
+            <Link to={PATHS.search.appPath}>
+              <IconButton className={globalClasses.drawerButton} style={{ margin: 4 }}>
                 <Add className={globalClasses.drawerButtonIcon} />
               </IconButton>
             </Link>
           </Tooltip>
         </div>
       ) : (
-        <Link className={classes.navLinkListItem} to={PATHS.search.appPath}>
-          <ListItem button={true} style={{ height: globals.common.drawerItemHeight }}>
-            <ListItemIcon className={globalClasses.centeredHorizontal}>
-              <Tooltip title={localization.newSearch} placement="right">
+        <Link to={PATHS.search.appPath}>
+          <ListItem button={true} style={{ height: 40, paddingLeft: 4 }}>
+            <ListItemIcon>
+              <Tooltip title={localization.newSearch}>
                 <span>
                   <IconButton className={globalClasses.drawerButtonExpanded}>
                     <Add className={globalClasses.drawerButtonIcon} />
@@ -66,7 +61,10 @@ export const SearchButton: FunctionComponent<SearchButtonProps> = (props) => {
             <ListItemText
               primary={localization.newSearch}
               style={{
+                marginLeft: 3,
                 color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
               }}
             />
           </ListItem>

@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       flexDirection: 'column',
       padding: '0 20px 20px 20px',
-      border: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid #2c2c2c',
+      borderTop: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid #2c2c2c',
       '& h2': {
         textAlign: 'center',
       },

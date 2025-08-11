@@ -134,6 +134,11 @@ const useStyles = makeStyles(() =>
       '& .MuiTreeItem-content': {
         padding: '0 4px',
       },
+      '& .MuiCollapse-container.MuiTreeItem-group': {
+        marginLeft: '10px',
+        paddingLeft: '10px',
+        borderLeft: '1px dashed #cececeff',
+      },
     },
     treeLabel: {
       fontSize: '11px',

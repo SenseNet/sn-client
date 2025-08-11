@@ -246,6 +246,7 @@ export const groupColumnDefs: ColDef[] = [
 ]
 
 export const savedQueriesColumnDefs: ColDef[] = [
+  iconCol,
   {
     headerName: 'Display Name',
     field: 'DisplayName',
@@ -677,6 +678,7 @@ export const webHooksColumnDefs: ColDef[] = [
 const hasDocumentation = ['Portal', 'OAuth', 'DocumentPreview', 'OfficeOnline', 'Indexing', 'Sharing']
 
 export const getSettingsColumnDefs = (history: any): ColDef[] => [
+  iconCol,
   {
     headerName: 'Display Name',
     field: 'DisplayName',
