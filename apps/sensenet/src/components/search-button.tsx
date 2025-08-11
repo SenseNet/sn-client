@@ -13,23 +13,14 @@ import { clsx } from 'clsx'
 import React, { FunctionComponent } from 'react'
 import { Link } from 'react-router-dom'
 import { PATHS } from '../application-paths'
-import { globals, useGlobalStyles } from '../globalStyles'
+import { useGlobalStyles } from '../globalStyles'
 import { useLocalization } from '../hooks'
-
-const useStyles = makeStyles(() => {
-  return createStyles({
-    navLinkListItem: {
-      width: '100%',
-    },
-  })
-})
 
 export interface SearchButtonProps {
   isOpened?: boolean
 }
 
 export const SearchButton: FunctionComponent<SearchButtonProps> = (props) => {
-  const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const theme = useTheme()
   const localization = useLocalization().drawer

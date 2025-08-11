@@ -79,10 +79,8 @@ export const PermanentDrawer = () => {
   const location = useLocation()
 
   const baseItems = items.filter((item) => !item.systemItem)
-  console.log('baseItems:', baseItems)
 
   const systemItems = items.filter((item) => item.systemItem)
-  console.log('systemItems:', systemItems)
 
   if (!settings.drawer.enabled) {
     return null
