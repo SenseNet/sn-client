@@ -46,8 +46,12 @@ const initialValueState = ({
   if (fieldValue === '0001-01-01T00:00:00Z') return null
 
   if (fieldValue) {
-    const parsed = new Date(fieldValue)
-    return isNaN(parsed.getTime()) ? null : parsed
+    let convertedDate = new Date(fieldValue).toLocaleString().replace('. ', '-').replace('. ', '-').replace('. ', ' ')
+    const splittedDate = convertedDate.split(' ')
+    if (splittedDate[1].length === 7) {
+      convertedDate = `${splittedDate[0]} 0${splittedDate[1]}`
+    }
+    return isNaN(new Date(convertedDate).getTime()) ? null : new Date(convertedDate)
   }
 
   if (actionName !== 'new') return null
@@ -67,9 +71,19 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
   const { settings, actionName, fieldValue, locale, localization, hideDescription, fieldOnChange } = props
   const localizationMerged = deepMerge(defaultLocalization.datePicker, localization?.datePicker)
   const [value, setValue] = useState<Date | null>(initialValueState({ fieldValue, actionName, settings }))
-  const localeCode = locale?.code || window.navigator.language
+  const localeCode = window.navigator.language
   const isDisabled = settings.ReadOnly || disabledDateTimes.includes(settings.Name)
   const dateFieldValue: Date = new Date(fieldValue as string)
+
+  let convertedDate = new Date(fieldValue as string)
+    .toLocaleString()
+    .replace('. ', '-')
+    .replace('. ', '-')
+    .replace('. ', ' ')
+  const splittedDate = convertedDate.split(' ')
+  if (splittedDate.length > 1 && splittedDate[1].length === 7) {
+    convertedDate = `${splittedDate[0]} 0${splittedDate[1]}`
+  }
 
   const handleDateChange = (date: Date | null) => {
     setValue(date)
@@ -124,8 +138,8 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
             <Typography variant="body1" gutterBottom={true}>
               {fieldValue
                 ? settings.DateTimeMode === DateTimeMode.Date
-                  ? new Intl.DateTimeFormat(localeCode).format(dateFieldValue)
-                  : new Intl.DateTimeFormat(localeCode, dateTimeOptions).format(dateFieldValue)
+                  ? convertedDate.split(' ')[0]
+                  : convertedDate
                 : localizationMerged.noValue}
             </Typography>
           </Tooltip>
