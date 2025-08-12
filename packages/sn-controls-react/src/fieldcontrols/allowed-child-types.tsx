@@ -2,7 +2,6 @@ import {
   ClickAwayListener,
   createStyles,
   FormGroup,
-  FormHelperText,
   IconButton,
   List,
   ListItem,
@@ -246,6 +245,8 @@ export const AllowedChildTypes: React.FC<ReactClientFieldSetting & { classes?: A
               name={props.settings.Name}
               displayName={props.settings.DisplayName}
               highlighted={props.settings.Customization?.Highlighted}
+              description={props.settings.Description}
+              showDescription={!props.hideDescription}
             />
             <List dense={true} className={classes.container}>
               {selected.map((item, index) => (
@@ -299,7 +300,6 @@ export const AllowedChildTypes: React.FC<ReactClientFieldSetting & { classes?: A
                   )}
                 </List>
               </Paper>
-              {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
             </div>
           </div>
         </ClickAwayListener>

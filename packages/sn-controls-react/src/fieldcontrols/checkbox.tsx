@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { FormControl, FormHelperText, Checkbox as MuiCheckbox } from '@material-ui/core'
+import { FormControl, Checkbox as MuiCheckbox } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { FieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
@@ -37,9 +37,10 @@ export const Checkbox: React.FC<ReactClientFieldSetting<FieldSetting>> = (props)
             name={props.settings.Name}
             displayName={props.settings.DisplayName}
             highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
           />
           <MuiCheckbox name={props.settings.Name} checked={value} onChange={handleChange} />
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </FormControl>
       )
     case 'browse':

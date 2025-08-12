@@ -7,7 +7,6 @@ import {
   FormControl,
   FormControlLabel,
   FormGroup,
-  FormHelperText,
   makeStyles,
   TextField,
   Typography,
@@ -98,6 +97,8 @@ export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>
             name={props.settings.Name}
             displayName={props.settings.DisplayName}
             highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
           />
           <FormGroup className={classes.groupCont}>
             {props.settings.Options?.map((option) => {
@@ -117,7 +118,6 @@ export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>
             })}
           </FormGroup>
           {props.settings.AllowExtraValue ? <TextField placeholder="Extra value" /> : null}
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </FormControl>
       )
     case 'browse':

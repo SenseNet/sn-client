@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogProps,
   FormControl,
-  FormHelperText,
   makeStyles,
   TextField,
   Typography,
@@ -256,6 +255,8 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
             name={props.settings.Name}
             displayName={props.settings.DisplayName}
             highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
           />
           <div style={{ width: '100%' }}>
             <AgGridReact
@@ -269,7 +270,6 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
               domLayout="autoHeight"
             />
           </div>
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
 
           <Dialog
             fullWidth

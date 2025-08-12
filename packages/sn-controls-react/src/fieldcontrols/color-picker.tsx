@@ -51,6 +51,8 @@ export const ColorPicker: React.FC<ReactClientFieldSetting<ColorFieldSetting>> =
             name={props.settings.Name}
             displayName={props.settings.DisplayName}
             highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
           />
           <TextField
             variant="outlined"
@@ -63,7 +65,6 @@ export const ColorPicker: React.FC<ReactClientFieldSetting<ColorFieldSetting>> =
             disabled={props.settings.ReadOnly}
             value={value}
             onClick={() => setIsPickerOpen(true)}
-            helperText={props.hideDescription ? undefined : props.settings.Description}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">

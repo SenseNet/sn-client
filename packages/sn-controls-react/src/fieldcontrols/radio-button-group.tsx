@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { FormControl, FormControlLabel, FormHelperText, Radio, RadioGroup, Typography } from '@material-ui/core'
+import { FormControl, FormControlLabel, Radio, RadioGroup, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { ChoiceFieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
@@ -41,6 +41,8 @@ export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetti
             name={props.settings.Name}
             displayName={props.settings.DisplayName}
             highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
           />
           <RadioGroup
             aria-label={`${props.settings.DisplayName} (${props.settings.Name})`}
@@ -54,7 +56,6 @@ export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetti
                 )
               })}
           </RadioGroup>
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </FormControl>
       )
     case 'browse':

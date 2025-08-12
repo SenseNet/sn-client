@@ -5,7 +5,6 @@ import {
   Button,
   createStyles,
   FormControl,
-  FormHelperText,
   Input,
   InputLabel,
   makeStyles,
@@ -183,6 +182,8 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
             name={props.settings.Name}
             displayName={props.settings.DisplayName}
             highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
           />
           <Typography variant="body1" gutterBottom={true}>
             {fileName}
@@ -192,7 +193,6 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
               {localization.buttonText}
             </Button>
           </InputLabel>
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
           <Input
             style={{ display: 'none' }}
             id={`raised-button-file-${props.settings.Name}`}

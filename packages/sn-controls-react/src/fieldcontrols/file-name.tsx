@@ -50,6 +50,8 @@ export const FileName: React.FC<ReactClientFieldSetting> = (props) => {
             name={props.settings.Name}
             displayName={props.settings.DisplayName}
             highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
           />
           <TextField
             variant="outlined"
@@ -70,7 +72,6 @@ export const FileName: React.FC<ReactClientFieldSetting> = (props) => {
             required={props.settings.Compulsory}
             disabled={props.settings.ReadOnly}
             fullWidth={true}
-            helperText={props.hideDescription ? undefined : props.settings.Description}
           />
         </>
       )

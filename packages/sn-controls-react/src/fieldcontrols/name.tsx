@@ -42,6 +42,8 @@ export const Name: React.FC<ReactClientFieldSetting> = (props) => {
             name={props.settings.Name}
             displayName={props.settings.DisplayName}
             highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
           />
           <TextField
             variant="outlined"
@@ -57,13 +59,7 @@ export const Name: React.FC<ReactClientFieldSetting> = (props) => {
             fullWidth={true}
             onChange={handleChange}
             error={!isValid}
-            helperText={
-              isValid
-                ? props.hideDescription
-                  ? undefined
-                  : props.settings.Description
-                : `${localization.invalidCharactersError} ${invalidCharacters.join(',')}`
-            }
+            helperText={!isValid && `${localization.invalidCharactersError} ${invalidCharacters.join(',')}`}
           />
         </>
       )

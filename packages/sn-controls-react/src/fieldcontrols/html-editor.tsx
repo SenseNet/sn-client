@@ -48,6 +48,8 @@ export const HtmlEditor: React.FC<
         name={props.settings.Name}
         displayName={props.settings.DisplayName}
         highlighted={props.settings.Customization?.Highlighted}
+        description={props.settings.Description}
+        showDescription={!props.hideDescription}
       />
       <div style={{ maxHeight: '68vh', margin: '0.5rem 0' }} ref={containerRef} data-test="html-editor-container">
         <MonacoEditor

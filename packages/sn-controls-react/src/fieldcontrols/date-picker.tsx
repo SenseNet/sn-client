@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { createStyles, FormHelperText, makeStyles, Theme, Tooltip, Typography } from '@material-ui/core'
+import { createStyles, makeStyles, Theme, Tooltip, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-types'
 import intlFormatDistance from 'date-fns/intlFormatDistance'
@@ -100,6 +100,8 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
             name={props.settings.Name}
             displayName={props.settings.DisplayName}
             highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!hideDescription}
           />
           <div style={{ maxWidth: '420px' }}>
             <DatePickerLib
@@ -117,7 +119,6 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
               isClearable
             />
           </div>
-          {!hideDescription && <FormHelperText>{settings.Description}</FormHelperText>}
         </div>
       )
     default:

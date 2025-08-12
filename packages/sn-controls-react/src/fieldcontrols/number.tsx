@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { FormHelperText, InputAdornment, TextField, Typography } from '@material-ui/core'
+import { InputAdornment, TextField, Typography } from '@material-ui/core'
 import { deepMerge, toNumber } from '@sensenet/client-utils'
 import { CurrencyFieldSetting, isCurrencyFieldSetting, NumberFieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
@@ -62,6 +62,8 @@ export const NumberField: React.FC<ReactClientFieldSetting<NumberFieldSetting | 
             name={props.settings.Name}
             displayName={props.settings.DisplayName}
             highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
           />
           <TextField
             variant="outlined"
@@ -85,7 +87,6 @@ export const NumberField: React.FC<ReactClientFieldSetting<NumberFieldSetting | 
             id={props.settings.Name}
             onChange={handleChange}
           />
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </div>
       )
     case 'browse':

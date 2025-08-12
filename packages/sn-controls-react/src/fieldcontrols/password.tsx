@@ -1,16 +1,7 @@
 /**
  * @module FieldControls
  */
-import {
-  createStyles,
-  FormControl,
-  FormHelperText,
-  IconButton,
-  Input,
-  InputAdornment,
-  makeStyles,
-  Typography,
-} from '@material-ui/core'
+import { createStyles, FormControl, IconButton, Input, InputAdornment, makeStyles, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import React, { useState } from 'react'
 import { ReactClientFieldSetting } from './client-field-setting'
@@ -52,6 +43,8 @@ export const Password: React.FC<ReactClientFieldSetting> = (props) => {
             name={props.settings.Name}
             displayName={props.settings.DisplayName}
             highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
           />
           <Input
             autoComplete="new-password"
@@ -73,7 +66,6 @@ export const Password: React.FC<ReactClientFieldSetting> = (props) => {
               </InputAdornment>
             }
           />
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </FormControl>
       )
     default:

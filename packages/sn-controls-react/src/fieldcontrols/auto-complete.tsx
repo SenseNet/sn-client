@@ -58,6 +58,8 @@ export const AutoComplete: React.FC<ReactClientFieldSetting<ReferenceFieldSettin
             name={props.settings.Name}
             displayName={props.settings.DisplayName}
             highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
           />
           <Typography variant="body1" gutterBottom={true}>
             {props.fieldValue ? (props.fieldValue as any)[0].DisplayName : localization.noValue}

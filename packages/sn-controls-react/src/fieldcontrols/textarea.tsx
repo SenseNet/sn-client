@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { FormHelperText, TextField, Typography } from '@material-ui/core'
+import { TextField, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { LongTextFieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
@@ -35,6 +35,8 @@ export const Textarea: React.FC<ReactClientFieldSetting<LongTextFieldSetting>> =
             name={props.settings.Name}
             displayName={props.settings.DisplayName}
             highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
           />
           <TextField
             variant="outlined"
@@ -48,9 +50,7 @@ export const Textarea: React.FC<ReactClientFieldSetting<LongTextFieldSetting>> =
             disabled={props.settings.ReadOnly}
             multiline={true}
             fullWidth={true}
-            helperText={props.hideDescription ? undefined : props.settings.Description}
           />
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </>
       )
     case 'browse':

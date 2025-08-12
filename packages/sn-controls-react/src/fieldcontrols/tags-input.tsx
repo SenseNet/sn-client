@@ -7,7 +7,6 @@ import {
   createStyles,
   FormControl,
   FormGroup,
-  FormHelperText,
   Input,
   makeStyles,
   MenuItem,
@@ -253,6 +252,8 @@ export const TagsInput: React.FC<ReactClientFieldSetting<ReferenceFieldSetting>>
             name={props.settings.Name}
             displayName={props.settings.DisplayName}
             highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
           />
           <Select
             value={getValue()}
@@ -301,7 +302,6 @@ export const TagsInput: React.FC<ReactClientFieldSetting<ReferenceFieldSetting>>
               </MenuItem>
             ))}
           </Select>
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </FormControl>
       )
     case 'browse':

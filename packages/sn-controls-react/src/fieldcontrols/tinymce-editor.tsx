@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { CircularProgress, createStyles, FormHelperText, makeStyles, Typography } from '@material-ui/core'
+import { CircularProgress, createStyles, makeStyles, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { renderHtml } from '@sensenet/editor-react'
 import React, { lazy, Suspense } from 'react'
@@ -74,6 +74,8 @@ export const TinymceEditor: React.FC<
             name={props.settings.Name}
             displayName={props.settings.DisplayName}
             highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
           />
           <Suspense
             fallback={
@@ -91,8 +93,6 @@ export const TinymceEditor: React.FC<
               path={props.content?.Path}
             />
           </Suspense>
-
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </div>
       )
     case 'browse':

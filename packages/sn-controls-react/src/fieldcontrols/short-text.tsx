@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { FormHelperText, TextField, Typography } from '@material-ui/core'
+import { TextField, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { ShortTextFieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
@@ -34,6 +34,8 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
             name={props.settings.Name}
             displayName={props.settings.DisplayName}
             highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
           />
           <TextField
             variant="outlined"
@@ -53,7 +55,6 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
             fullWidth={true}
             onChange={handleChange}
           />
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </>
       )
     case 'browse':

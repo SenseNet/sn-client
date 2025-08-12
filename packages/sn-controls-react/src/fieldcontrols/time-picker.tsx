@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { FormHelperText, Typography } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import { MuiPickersUtilsProvider, TimePicker as MUITimePicker } from '@material-ui/pickers'
 import type { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import { deepMerge } from '@sensenet/client-utils'
@@ -44,6 +44,8 @@ export const TimePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
             name={props.settings.Name}
             displayName={props.settings.DisplayName}
             highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
           />
           <MUITimePicker
             value={value}
@@ -55,7 +57,6 @@ export const TimePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
             required={props.settings.Compulsory}
             fullWidth={true}
           />
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </MuiPickersUtilsProvider>
       )
     case 'browse':

@@ -154,13 +154,13 @@ export const Switcher: React.FC<ReactClientFieldSetting<FieldSetting>> = (props)
                     <span style={{ fontSize: '17px' }}>{props.settings.DisplayName}</span> ({props.settings.Name})
                   </div>
                 )}
+                {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
               </Grid>
               <Grid item style={{ marginLeft: 'auto' }}>
                 <Switch data-test="edit-switch" size="medium" checked={value} onChange={handleChange} />
               </Grid>
             </Grid>
           </Typography>
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </FormControl>
       )
     case 'browse':

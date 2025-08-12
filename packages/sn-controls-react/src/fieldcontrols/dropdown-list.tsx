@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { FormControl, FormGroup, FormHelperText, MenuItem, Select, Typography } from '@material-ui/core'
+import { FormControl, FormGroup, MenuItem, Select, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { ChoiceFieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
@@ -57,16 +57,16 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
     case 'edit':
     case 'new':
       return (
-        <FormControl
-          style={{ maxWidth: '420px', width: '100%' }}
-          required={props.settings.Compulsory}
-          disabled={props.settings.ReadOnly}>
+        <FormControl style={{ width: '100%' }} required={props.settings.Compulsory} disabled={props.settings.ReadOnly}>
           <CustomLabel
             name={props.settings.Name}
             displayName={props.settings.DisplayName}
             highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
           />
           <Select
+            style={{ maxWidth: '420px', width: '100%' }}
             variant="outlined"
             onChange={handleChange}
             inputProps={
@@ -88,7 +88,6 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
               )
             })}
           </Select>
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </FormControl>
       )
     case 'browse':
