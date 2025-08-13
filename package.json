@@ -78,6 +78,5 @@
       "prettier --write"
     ]
   },
-  "dependencies": {},
-  "packageManager": ""
+  "dependencies": {}
 }
