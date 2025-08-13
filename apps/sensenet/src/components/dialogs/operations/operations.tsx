@@ -107,7 +107,7 @@ export function OperationsDialog(props: OperationsDialogProps) {
         body: formJson,
       })
 
-      const success = `: ${result?.ToastMessage}` || ''
+      const success = result.ToastMessage ? `: ${result?.ToastMessage}` : ''
 
       logger.information({ message: `${localization.success}${success}` })
 
