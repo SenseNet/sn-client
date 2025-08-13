@@ -8,7 +8,7 @@ export type TInfluenceField = {
 
 export const InfluenceField: React.FC<TInfluenceField> = ({ name, description, radioOptions }) => {
   return (
-    <div className="input-container">
+    <div className="input-container influence-field">
       <h3>{name}</h3>
       <p>{description}</p>
 
