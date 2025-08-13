@@ -13,9 +13,7 @@ export interface OperationsDialogProps {
   content: GenericContent
   OperationName: string
 }
-/*Ezt itt jól ki kell dolgozni!!! nem végleges csak demora van egyszerűsítve
-  Valószínüleg nem is itt lesz a végleges helye hanem ott ahol a GenericContent van
-*/
+/*Ezt itt jól ki kell dolgozni!!! nem végleges csak demora van egyszerűsítve*/
 
 type baseDescriptionFields = {
   title?: string
