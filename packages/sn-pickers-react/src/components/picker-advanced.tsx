@@ -109,6 +109,13 @@ const useStyles = makeStyles(() =>
       gap: '12px',
       padding: '4px',
     },
+    errorMsg: {
+      display: 'flex',
+      width: '100%',
+      alignItems: 'center',
+      marginLeft: '9px',
+      fontSize: '15px',
+    },
     treeCont: {
       flex: '1',
       display: 'flex',
@@ -178,13 +185,21 @@ const useStyles = makeStyles(() =>
 type TreeNodeProps = {
   node: GenericContent
   repository: Repository
+  currentPath: string
   renderIcon: (item: GenericContentWithIsParent | User) => JSX.Element
-  path: string
   expanded: string[]
   setExpanded: React.Dispatch<React.SetStateAction<string[]>>
   onSetCurrentNode: (content: GenericContent) => void
 }
-const TreeNode = ({ node, repository, renderIcon, path, expanded, setExpanded, onSetCurrentNode }: TreeNodeProps) => {
+const TreeNode = ({
+  node,
+  repository,
+  currentPath,
+  renderIcon,
+  expanded,
+  setExpanded,
+  onSetCurrentNode,
+}: TreeNodeProps) => {
   const classes = useStyles()
   const [childNodes, setChildNodes] = useState<GenericContent[]>([])
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
@@ -230,9 +245,9 @@ const TreeNode = ({ node, repository, renderIcon, path, expanded, setExpanded, o
         <TreeNode
           key={childNode.Id}
           node={childNode}
+          currentPath={currentPath}
           repository={repository}
           renderIcon={renderIcon}
-          path={path}
           expanded={expanded}
           setExpanded={setExpanded}
           onSetCurrentNode={onSetCurrentNode}
@@ -263,6 +278,7 @@ interface PickerAdvancedProps {
   onSubmit?: (selectedItems: GenericContent[]) => void | undefined
   allowMultiple?: boolean
   selectionRoots?: string[]
+  selectionRoots2?: string[]
   showDialogTitle?: boolean
   canPick?: boolean
   showSearch?: boolean
@@ -279,7 +295,7 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
   onCancel,
   onSubmit,
   allowMultiple = true,
-  selectionRoots,
+  selectionRoots = ['/Root'],
   showDialogTitle = true,
   canPick = true,
   showSearch = true,
@@ -307,6 +323,12 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
     field: '',
     width: 66,
     cellRenderer: (props: { data: GenericContent }) => {
+      if (selectionRoots && selectionRoots.length > 0) {
+        const isInSelectionRoots = selectionRoots.some(
+          (availablePath) => props.data.Path === availablePath || props.data.Path.startsWith(`${availablePath}/`),
+        )
+        if (!isInSelectionRoots) return <></>
+      }
       const isDisabled =
         selectedItems.some((item) => item.Id === props.data.Id) || (!allowMultiple && selectedItems.length > 0)
       if (isDisabled) return <></>
@@ -502,8 +524,8 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
               <TreeNode
                 repository={repository}
                 node={rootElement}
+                currentPath={currentPath}
                 renderIcon={renderIcon}
-                path={path}
                 expanded={expanded}
                 setExpanded={setExpanded}
                 onSetCurrentNode={onSetCurrentNode}
@@ -531,6 +553,11 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
         />
       </div>
       <div className={classes.buttonsCont}>
+        <div className={classes.errorMsg}>
+          {!selectionRoots.some((root) => currentPath === root || currentPath.startsWith(`${root}/`)) && (
+            <div>Disabled Path</div>
+          )}
+        </div>
         <Button
           type="button"
           onClick={() => {
@@ -540,7 +567,10 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
         </Button>
         <Button
           type="button"
-          disabled={isRequired && !selectedItems.length}
+          disabled={
+            !selectionRoots.some((root) => currentPath === root || currentPath.startsWith(`${root}/`)) ||
+            (isRequired && !selectedItems.length)
+          }
           onClick={() => {
             onSubmit?.(selectedItems)
           }}>
