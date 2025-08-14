@@ -16,7 +16,7 @@ import { PickerClassKey } from '@sensenet/pickers-react'
 import React, { ElementType, useCallback, useEffect, useMemo, useState } from 'react'
 import { ReactClientFieldSetting } from '../client-field-setting'
 import { defaultLocalization } from '../localization'
-import { DefaultItemTemplate } from './default-item-template'
+import { DefaultItemTemplate, Paths } from './default-item-template'
 import { ReferencePicker } from './reference-picker'
 
 const styles = {
@@ -38,6 +38,7 @@ interface ReferenceGridProps extends ReactClientFieldSetting<ReferenceFieldSetti
   dialogTitleComponent?: ElementType
   renderPickerIcon?: (item: any) => JSX.Element
   pickerClasses?: PickerClassKey
+  paths: Paths
 }
 
 export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
@@ -185,7 +186,11 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
     case 'new':
     case 'edit':
       return (
-        <FormControl style={styles.root as any} component={'fieldset' as 'div'} required={props.settings.Compulsory}>
+        <FormControl
+          data-test="edit-refence"
+          style={styles.root as any}
+          component={'fieldset' as 'div'}
+          required={props.settings.Compulsory}>
           <TextField
             name={props.content?.Name}
             autoComplete="off"
@@ -211,6 +216,7 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
                 repository={props.repository}
                 multiple={props.settings.AllowMultiple ? props.settings.AllowMultiple : false}
                 renderIcon={props.renderIcon}
+                paths={props.paths}
               />
             ))}
             {!props.settings.ReadOnly ? (
@@ -221,6 +227,7 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
                 repository={props.repository}
                 multiple={props.settings.AllowMultiple ? props.settings.AllowMultiple : false}
                 renderIcon={props.renderIcon}
+                paths={props.paths}
               />
             ) : null}
           </List>
@@ -271,6 +278,7 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
                       repository={props.repository}
                       multiple={props.settings.AllowMultiple ? props.settings.AllowMultiple : false}
                       renderIcon={props.renderIcon}
+                      paths={props.paths}
                     />
                   ))
                 ) : (
