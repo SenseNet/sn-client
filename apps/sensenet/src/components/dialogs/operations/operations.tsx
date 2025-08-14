@@ -2,28 +2,34 @@ import { Button, createStyles, DialogActions, DialogContent, makeStyles, TextFie
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useEffect, useRef, useState } from 'react'
-import { useCurrentUser } from '../../context'
-import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization } from '../../hooks'
-import { Icon } from '../Icon'
-import { DialogTitle, useDialog } from '.'
+import { DialogTitle, useDialog } from '..'
+import { useCurrentUser } from '../../../context'
+import { useGlobalStyles } from '../../../globalStyles'
+import { useLocalization } from '../../../hooks'
+import { Icon } from '../../Icon'
+import { InfluenceField, TInfluenceField } from './influenceField'
 
 export interface OperationsDialogProps {
   content: GenericContent
   OperationName: string
 }
-/*Ezt itt jól ki kell dolgozni!!! nem végleges csak demora van egyszerűsítve
-  Valószínüleg nem is itt lesz a végleges helye hanem ott ahol a GenericContent van
-*/
-type UIDescription = {
+/*Ezt itt jól ki kell dolgozni!!! nem végleges csak demora van egyszerűsítve*/
+
+type baseDescriptionFields = {
   title?: string
   submitTitle?: string
-  elements: Array<{
-    name?: string
-    description?: string
-    inputProps: React.HTMLProps<HTMLInputElement>
-  }>
 }
+
+type simpleInputField = {
+  name?: string
+  description?: string
+  inputProps: React.HTMLProps<HTMLInputElement>
+}
+
+type UIDescription =
+  | baseDescriptionFields & {
+      elements: Array<simpleInputField | TInfluenceField>
+    }
 
 type OperationResult = {
   ToastMessage?: string
@@ -99,7 +105,7 @@ export function OperationsDialog(props: OperationsDialogProps) {
         body: formJson,
       })
 
-      const success = `: ${result?.ToastMessage}` || ''
+      const success = result.ToastMessage ? `: ${result?.ToastMessage}` : ''
 
       logger.information({ message: `${localization.success}${success}` })
 
@@ -133,6 +139,10 @@ export function OperationsDialog(props: OperationsDialogProps) {
               submitAction(e)
             }}>
             {UIDescription?.elements.map((field, index) => {
+              if ('radioOptions' in field) {
+                return <InfluenceField {...field} key={index} />
+              }
+
               const { inputProps, description, name } = field
 
               return (
