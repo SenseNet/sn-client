@@ -1,5 +1,7 @@
+/* eslint-disable require-jsdoc */
 import {
   Avatar,
+  createStyles,
   Icon,
   IconButton,
   ListItem,
@@ -7,6 +9,7 @@ import {
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
+  makeStyles,
 } from '@material-ui/core'
 import { InsertDriveFile } from '@material-ui/icons'
 import { Repository } from '@sensenet/client-core'
@@ -14,6 +17,42 @@ import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent, Image, User } from '@sensenet/default-content-types'
 import React from 'react'
 import { renderIconDefault } from '../icon'
+
+export type PathConfig = {
+  appPath: string
+  snPath?: string
+}
+
+export type Paths = Record<string, PathConfig>
+
+function getAppPathAndContent(PATHS: Paths, targetPath: string) {
+  const matches = Object.entries(PATHS)
+    .filter(([, config]) => config.snPath && targetPath.startsWith(config.snPath))
+    .sort((a, b) => b[1].snPath!.length - a[1].snPath!.length)
+
+  if (!matches[0]) return undefined
+
+  const [, config] = matches[0]
+  const contentePath = targetPath.substring(config.snPath!.length)
+
+  return {
+    appPath: config.appPath,
+    contentePath,
+  }
+}
+
+function buildCustomPath(path: string, action: string | undefined, contentePath: string) {
+  const customPath = path
+    .replace(':browseType', 'explorer')
+    .replace('/:path', '') // Remove the path parameter
+    .replace(':action?', action || 'default')
+
+  const url = new URL(window.location.origin)
+  url.pathname = customPath
+  url.searchParams.set('content', contentePath)
+
+  return url.toString()
+}
 
 interface DefaultItemTemplateProps {
   content: GenericContent
@@ -24,13 +63,29 @@ interface DefaultItemTemplateProps {
   repository?: Repository
   multiple: boolean
   renderIcon?: (name: string) => JSX.Element
+  paths: Paths
 }
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    referenceItemText: {
+      textAlign: 'left',
+      paddingRight: 15,
+      cursor: 'pointer',
+      '&[data-clickable="true"]:hover': {
+        textDecoration: 'underline',
+      },
+    },
+  }),
+)
 
 /**
  * Represents a default renderer for reference grid row
  */
 export const DefaultItemTemplate: React.FC<DefaultItemTemplateProps> = (props) => {
-  const { content, repository } = props
+  const { content, repository, paths } = props
+
+  const classes = useStyles()
 
   const renderIcon = (item: GenericContent | User | Image) => {
     if (repository?.schemas.isContentFromType<User>(item, 'User')) {
@@ -107,7 +162,26 @@ export const DefaultItemTemplate: React.FC<DefaultItemTemplateProps> = (props) =
   return (
     <ListItem style={props.actionName === 'browse' ? { padding: 0 } : undefined} key={content.Id} button={false}>
       {content.Type ? renderIcon(content) : null}
-      <ListItemText primary={content.DisplayName} style={{ textAlign: 'left', paddingRight: 15 }} />
+      <ListItemText
+        onClick={() => {
+          if (content.Id === -1 || !paths) {
+            return
+          }
+          const referencedItemPaths = getAppPathAndContent(paths, content.Path)
+
+          if (!referencedItemPaths) {
+            return
+          }
+
+          const { appPath, contentePath } = referencedItemPaths
+
+          const fullUrl = buildCustomPath(appPath, props.actionName, contentePath)
+          window.location.href = fullUrl
+        }}
+        primary={content.DisplayName}
+        className={classes.referenceItemText}
+        data-clickable={content.Id !== -1}
+      />
       {props.actionName && props.actionName !== 'browse' && !props.readOnly ? (
         <ListItemSecondaryAction>
           {content.Id > 0 ? (
