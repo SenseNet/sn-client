@@ -14,7 +14,6 @@ export const CustomContent: FunctionComponent<ContentProps> = () => {
   const customDrawer = settings.drawer.items.find((item) => item.settings?.appPath === match.params.path)
   const path = customDrawer?.settings.root || settings.content.root || ConstantContent.PORTAL_ROOT.Path
   const { currentPath, onNavigate } = useTreeNavigation(path)
-  console.log(path, currentPath, match.params)
 
   switch (match.params.browseType) {
     default:
