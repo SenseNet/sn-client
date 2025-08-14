@@ -46,12 +46,19 @@ const initialValueState = ({
   if (fieldValue === '0001-01-01T00:00:00Z') return null
 
   if (fieldValue) {
-    let convertedDate = new Date(fieldValue).toLocaleString().replace('. ', '-').replace('. ', '-').replace('. ', ' ')
-    const splittedDate = convertedDate.split(' ')
-    if (splittedDate[1].length === 7) {
-      convertedDate = `${splittedDate[0]} 0${splittedDate[1]}`
+    const d = new Date(fieldValue)
+    if (isNaN(d.getTime())) {
+      return null
     }
-    return isNaN(new Date(convertedDate).getTime()) ? null : new Date(convertedDate)
+
+    const year = d.getFullYear()
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    const hours = String(d.getHours()).padStart(2, '0')
+    const minutes = String(d.getMinutes()).padStart(2, '0')
+
+    // Create a Date from a normalized string
+    return new Date(`${year}-${month}-${day} ${hours}:${minutes}`)
   }
 
   if (actionName !== 'new') return null

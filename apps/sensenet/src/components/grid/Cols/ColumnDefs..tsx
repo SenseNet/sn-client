@@ -62,12 +62,15 @@ function GetDate(date: any) {
   if (date === undefined) {
     return ''
   }
-  const convertedDate = new Date(date).toLocaleString().replace('. ', '-').replace('. ', '-').replace('. ', ' ')
-  const splittedDate = convertedDate.split(' ')
-  if (splittedDate[1].length === 7) {
-    return `${splittedDate[0]} 0${splittedDate[1]}`
-  }
-  return convertedDate
+
+  const d = new Date(date)
+  const year = d.getFullYear()
+  const month = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  const hours = String(d.getHours()).padStart(2, '0')
+  const minutes = String(d.getMinutes()).padStart(2, '0')
+
+  return `${year}-${month}-${day} ${hours}:${minutes}`
 }
 
 export const contentColumnDefs: ColDef[] = [
