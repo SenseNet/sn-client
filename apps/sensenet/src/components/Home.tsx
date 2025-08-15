@@ -17,6 +17,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { lazy, useEffect, useState } from 'react'
 // import { useAuth } from '../context/auth-provider'
+import { useLocalization } from '../hooks'
 import { DateTimeFormatter } from './grid/Formatters/DateTimeFormatter'
 
 const DashboardComponent = lazy(() => import(/* webpackChunkName: "dashboard" */ './dashboard'))
@@ -176,6 +177,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const Home = () => {
   const classes = useStyles()
   const repo = useRepository()
+  const localization = useLocalization().home
   // const { user } = useAuth()
 
   const [lastMinuteLogs, setLastMinuteLogs] = useState<any[]>([])
@@ -183,7 +185,7 @@ export const Home = () => {
   const [hasGetLogs, setHasGetLogs] = useState(false)
   // const [hasGetTopLogsByUser, setHasGetTopLogsByUser] = useState(false)
   const [canContentHistory, setCanContentHistory] = useState(false)
-  const [contentHistory, setContentHistory] = useState<any[]>([])
+  const [contentHistories, setContentHistories] = useState<Record<string, any[]>>({})
 
   useEffect(() => {
     async function getActionsAndLogs() {
@@ -279,10 +281,10 @@ export const Home = () => {
           <TableRow>
             <TableCell />
             <TableCell>
-              <strong>Old Value</strong>
+              <strong>{localization.oldValue}</strong>
             </TableCell>
             <TableCell>
-              <strong>New Value</strong>
+              <strong>{localization.newValue}</strong>
             </TableCell>
           </TableRow>
         </TableHead>
@@ -309,8 +311,10 @@ export const Home = () => {
         method: 'GET',
         oDataOptions: { contentId, limit: 10 } as any,
       })
-      console.log('response:', response)
-      setContentHistory(response || [])
+      setContentHistories((prev) => ({
+        ...prev,
+        [contentId]: response || [],
+      }))
     } catch (error: any) {
       console.error('GetTopLogsByContentId error:', error.message)
     }
@@ -323,7 +327,7 @@ export const Home = () => {
       <div className={classes.gridsCont}>
         {hasGetLogs && (
           <div className={classes.gridCont}>
-            <h2>Latest Changes</h2>
+            <h2>{localization.latestChanges}</h2>
             {lastMinuteLogs.map((log, index) => {
               const hasChanges = log.ExtendedProperties?.ChangedData?.length > 0
               return (
@@ -360,10 +364,10 @@ export const Home = () => {
                           aria-controls="content-history-content"
                           id="content-history-header"
                           className={''}>
-                          <Typography>Content History</Typography>
+                          <Typography>{localization.contentHistory}</Typography>
                         </AccordionSummary>
                         <AccordionDetails style={{ display: 'flex', flexDirection: 'column' }}>
-                          {contentHistory.map((historyLog, idx) => (
+                          {(contentHistories[log.ContentId] || []).map((historyLog, idx) => (
                             <div key={idx}>{getTable(historyLog)}</div>
                           ))}
                         </AccordionDetails>

@@ -691,6 +691,12 @@ const values = {
     cancel: 'Cancel',
     success: 'Succesfull Operation',
   },
+  home: {
+    latestChanges: 'Latest Changes',
+    oldValue: 'Old Value',
+    newValue: 'New Value',
+    contentHistory: 'Content History',
+  },
 }
 
 export default values
