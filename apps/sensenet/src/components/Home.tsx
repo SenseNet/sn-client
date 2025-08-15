@@ -85,7 +85,6 @@ const useStyles = makeStyles((theme: Theme) =>
         display: 'none',
       },
       '&:hover': {
-        backgroundColor: theme.palette.type === 'light' ? '#ddddddff' : '#4a4a4a',
         cursor: 'default',
       },
     },
@@ -183,6 +182,8 @@ export const Home = () => {
   // const [myLogs, setMyLogs] = useState<any[]>([])
   const [hasGetLogs, setHasGetLogs] = useState(false)
   // const [hasGetTopLogsByUser, setHasGetTopLogsByUser] = useState(false)
+  const [canContentHistory, setCanContentHistory] = useState(false)
+  const [contentHistory, setContentHistory] = useState<any[]>([])
 
   useEffect(() => {
     async function getActionsAndLogs() {
@@ -191,6 +192,7 @@ export const Home = () => {
         const actionNames = d.results.map((a: any) => a.Name)
 
         const canGetLogs = actionNames.includes('GetLogsForLastMinutes')
+        setCanContentHistory(actionNames.includes('GetTopLogsByContentId'))
         // const canGetUserLogs = actionNames.includes('GetTopLogsByUser')
 
         setHasGetLogs(canGetLogs)
@@ -299,6 +301,21 @@ export const Home = () => {
     )
   }
 
+  async function fetchContentHistory(contentId: string) {
+    try {
+      const response = await repo.executeAction<any[], any>({
+        idOrPath: '/Root',
+        name: 'LogEntries/GetTopLogsByContentId',
+        method: 'GET',
+        oDataOptions: { contentId, limit: 10 } as any,
+      })
+      console.log('response:', response)
+      setContentHistory(response || [])
+    } catch (error: any) {
+      console.error('GetTopLogsByContentId error:', error.message)
+    }
+  }
+
   return !hasGetLogs ? (
     <DashboardComponent />
   ) : (
@@ -331,6 +348,27 @@ export const Home = () => {
                   </AccordionSummary>
                   {hasChanges && (
                     <AccordionDetails className={classes.accordionDetails}>{getTable(log)}</AccordionDetails>
+                  )}
+                  {canContentHistory && (
+                    <>
+                      <Accordion
+                        className={''}
+                        onClick={() => fetchContentHistory(log.ContentId)}
+                        style={{ margin: '8px' }}>
+                        <AccordionSummary
+                          expandIcon={<ExpandMoreIcon />}
+                          aria-controls="content-history-content"
+                          id="content-history-header"
+                          className={''}>
+                          <Typography>Content History</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails style={{ display: 'flex', flexDirection: 'column' }}>
+                          {contentHistory.map((historyLog, idx) => (
+                            <div key={idx}>{getTable(historyLog)}</div>
+                          ))}
+                        </AccordionDetails>
+                      </Accordion>
+                    </>
                   )}
                 </Accordion>
               )
