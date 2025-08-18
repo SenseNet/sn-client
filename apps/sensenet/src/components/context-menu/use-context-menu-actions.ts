@@ -162,6 +162,18 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
           logger.warning({ message: `Couldn't undo checkout for ${getContentName()}`, data: { error } })
         }
         break
+      case 'ForceUndoCheckOut':
+        try {
+          const forceUndoCheckOutResult = await repository.versioning.forceUndoCheckOut(
+            content.Id,
+            contextMenuODataOptions,
+          )
+          logger.information({ message: `${getContentName()} force reverted successfully.` })
+          setActions(forceUndoCheckOutResult.d)
+        } catch (error) {
+          logger.warning({ message: `Couldn't force undo checkout for ${getContentName()}`, data: { error } })
+        }
+        break
       case 'Approve':
         openDialog({
           name: 'approve',
