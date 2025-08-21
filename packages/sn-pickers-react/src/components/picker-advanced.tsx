@@ -278,7 +278,6 @@ interface PickerAdvancedProps {
   onSubmit?: (selectedItems: GenericContent[]) => void | undefined
   allowMultiple?: boolean
   selectionRoots?: string[]
-  selectionRoots2?: string[]
   showDialogTitle?: boolean
   canPick?: boolean
   showSearch?: boolean
@@ -295,7 +294,7 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
   onCancel,
   onSubmit,
   allowMultiple = true,
-  selectionRoots = ['/Root'],
+  selectionRoots,
   showDialogTitle = true,
   canPick = true,
   showSearch = true,
@@ -554,9 +553,10 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
       </div>
       <div className={classes.buttonsCont}>
         <div className={classes.errorMsg}>
-          {!selectionRoots.some((root) => currentPath === root || currentPath.startsWith(`${root}/`)) && (
-            <div>Disabled Path</div>
-          )}
+          {selectionRoots &&
+            !selectionRoots.some((root) => currentPath === root || currentPath.startsWith(`${root}/`)) && (
+              <div>Disabled Path</div>
+            )}
         </div>
         <Button
           type="button"
@@ -568,7 +568,8 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
         <Button
           type="button"
           disabled={
-            !selectionRoots.some((root) => currentPath === root || currentPath.startsWith(`${root}/`)) ||
+            (selectionRoots &&
+              !selectionRoots.some((root) => currentPath === root || currentPath.startsWith(`${root}/`))) ||
             (isRequired && !selectedItems.length)
           }
           onClick={() => {
