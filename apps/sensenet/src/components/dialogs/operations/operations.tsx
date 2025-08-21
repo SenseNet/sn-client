@@ -1,4 +1,12 @@
-import { Button, createStyles, DialogActions, DialogContent, makeStyles, TextField } from '@material-ui/core'
+import {
+  Button,
+  CircularProgress,
+  createStyles,
+  DialogActions,
+  DialogContent,
+  makeStyles,
+  TextField,
+} from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useEffect, useRef, useState } from 'react'
@@ -8,7 +16,6 @@ import { useGlobalStyles } from '../../../globalStyles'
 import { useLocalization } from '../../../hooks'
 import { Icon } from '../../Icon'
 import { InfluenceField, TInfluenceField } from './influenceField'
-
 export interface OperationsDialogProps {
   content: GenericContent
   OperationName: string
@@ -67,6 +74,7 @@ export function OperationsDialog(props: OperationsDialogProps) {
   const globalClasses = useGlobalStyles()
 
   const [UIDescription, setUIDescription] = useState<UIDescription>()
+  const [isOperationSubmiting, setIsOperationSubmiting] = useState(false)
 
   useEffect(() => {
     console.log(props.OperationName)
@@ -87,6 +95,7 @@ export function OperationsDialog(props: OperationsDialogProps) {
   }, [logger, props.OperationName, props.content.Path, repository])
 
   const submitAction = async (e: React.FormEvent<HTMLFormElement>) => {
+    setIsOperationSubmiting(true)
     e.preventDefault()
     if (!formRef.current) return
 
@@ -112,6 +121,8 @@ export function OperationsDialog(props: OperationsDialogProps) {
       closeLastDialog()
     } catch (error) {
       logger.error({ message: error.message })
+    } finally {
+      setIsOperationSubmiting(false)
     }
   }
 
@@ -171,6 +182,8 @@ export function OperationsDialog(props: OperationsDialogProps) {
             color="primary"
             variant="contained"
             type="submit"
+            disabled={isOperationSubmiting}
+            endIcon={isOperationSubmiting && <CircularProgress size={20} />}
             autoFocus={true}>
             {UIDescription?.submitTitle || localization.submit}
           </Button>
