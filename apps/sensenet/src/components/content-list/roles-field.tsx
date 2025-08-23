@@ -8,6 +8,7 @@ import React, { FunctionComponent, useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { useDialog } from '../dialogs'
+import { Icon } from '../Icon'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -108,7 +109,9 @@ export const RolesField: FunctionComponent<RolesFieldProps> = ({ user, roles, di
             onClick={async (event) => {
               openGroupDialog(event, role)
               setAnchorEl(null)
-            }}>
+            }}
+            disabled={role.Type == 'OrganizationalUnit'}>
+            <Icon item={role} style={{ marginRight: '0.4em' }} />
             {role.DisplayName}
             {isIndirect(role) && (
               <div style={{ display: 'flex', paddingLeft: '6px' }}>
