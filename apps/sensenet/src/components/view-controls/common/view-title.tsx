@@ -20,18 +20,18 @@ interface ViewTitleProps {
 const useStyles = makeStyles((theme) => {
   return createStyles({
     title: {
-      height: '68px',
       fontSize: '20px',
-      flexShrink: 0,
-      flexDirection: 'column',
-      flexWrap: 'nowrap',
       borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
+      display: 'flex',
+      flexDirection: 'column',
     },
     textBolder: {
       fontWeight: 500,
+      textAlign: 'center',
     },
     actionBar: {
       display: 'flex',
+      marginBottom: '6px',
     },
     typeinfo: {
       fontSize: '12px',
@@ -40,12 +40,10 @@ const useStyles = makeStyles((theme) => {
     },
     actionText: {
       marginRight: '5px',
+      textAlign: 'center',
     },
     viewTitle: {
-      '& span': {
-        display: 'inline-block',
-        verticalAlign: 'middle',
-      },
+      padding: '6px',
     },
   })
 })
