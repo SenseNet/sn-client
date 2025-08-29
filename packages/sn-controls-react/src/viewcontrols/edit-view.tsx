@@ -238,9 +238,9 @@ export const EditView: React.FC<EditViewProps> = (props) => {
           .map((field) => renderField(field))}
 
         <Box className={classes.advancedFieldContainer}>
-          {advancedFields.map((group, index) =>
+          {advancedFields.map((group) =>
             group.fields.length > 0 ? (
-              <Box key={index} className={classes.advancedHolder} data-test="group-container">
+              <Box key={group.key} className={classes.advancedHolder} data-test="group-container">
                 <Box className={classes.divider} />
                 <Box data-test="group-header">
                   <Box className={classes.advancedFieldBox}>
@@ -263,9 +263,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
                     )
                     .map((field) => renderField(field))}
               </Box>
-            ) : (
-              <></>
-            ),
+            ) : null,
           )}
         </Box>
       </Grid>

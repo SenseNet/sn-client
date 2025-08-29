@@ -48,19 +48,27 @@ const Dashboard = () => {
   const [data, setData] = useState<DashboardData>()
   const logger = useLogger('Dashboard')
   const [isAdmin, setIsAdmin] = useState(false)
-  useEffect(() => {
-    ;(async () => {
-      const response = await repository.executeAction<any, DashboardData>({
-        idOrPath: '/Root',
-        name: 'GetDashboardData',
-        method: 'GET',
-        oDataOptions: {
-          select: ['Plan'],
-        },
-      })
 
-      setData(response)
+  useEffect(() => {
+    const ac = new AbortController()
+    ;(async () => {
+      try {
+        const response = await repository.executeAction<any, DashboardData>({
+          idOrPath: '/Root',
+          name: 'GetDashboardData',
+          method: 'GET',
+          oDataOptions: { select: ['Plan'] },
+          requestInit: { signal: ac.signal },
+        })
+        setData(response)
+      } catch (err: any) {
+        if (!ac.signal.aborted) {
+          console.error('Dashboard data fetch failed:', err)
+        }
+      }
     })()
+
+    return () => ac.abort()
   }, [repository])
 
   useEffect(() => {

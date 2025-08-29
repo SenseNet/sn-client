@@ -157,7 +157,7 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
       {props.renderTitle ? (
         props.renderTitle()
       ) : (
-        <Typography variant="h5" gutterBottom={true}>
+        <Typography variant="h5" component="h5" gutterBottom={true}>
           {schema.schema.DisplayName}
         </Typography>
       )}
@@ -174,9 +174,9 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
           .map((field) => renderField(field))}
 
         <Box className={classes.advancedFieldContainer} data-test="advanced-field-container">
-          {advancedFields.map((group, index) =>
+          {advancedFields.map((group) =>
             group.fields.length > 0 ? (
-              <Box key={index} data-test="group-container">
+              <Box key={group.key} data-test="group-container">
                 <Box className={classes.divider} />
                 <Box data-test="group-header">
                   <Box className={classes.advancedFieldBox}>
@@ -199,9 +199,7 @@ export const BrowseView: React.FC<BrowseViewProps> = (props) => {
                     )
                     .map((field) => renderField(field))}
               </Box>
-            ) : (
-              <></>
-            ),
+            ) : null,
           )}
         </Box>
       </Grid>

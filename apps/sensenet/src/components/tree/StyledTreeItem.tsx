@@ -2,7 +2,7 @@ import { ListItemIcon, ListItemText } from '@material-ui/core'
 import TreeItem from '@material-ui/lab/TreeItem'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import React, { MouseEventHandler, useCallback, useContext, useEffect, useState } from 'react'
+import React, { MouseEventHandler, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
 import { ResponsivePersonalSettings } from '../../context'
 import { useQuery, useSnRoute } from '../../hooks'
@@ -37,11 +37,22 @@ export const StyledTreeItem = (props: StyledTreeItemProps) => {
   const snRoute = useSnRoute()
   const uiSettings = useContext(ResponsivePersonalSettings)
   const { navigate, editMode, ...restProps } = props
+  const mountedRef = useRef(true)
+
+  useEffect(() => {
+    mountedRef.current = true
+    return () => {
+      mountedRef.current = false
+    }
+  }, [])
 
   const loadCollectionCB = useCallback(
     async (contentPath: string): Promise<void> => {
       try {
         const children = await loadChildren(contentPath)
+        if (!mountedRef.current) {
+          return
+        }
         children?.sort((a, b) => {
           const isAFolder = a.Type.toLowerCase().includes('folder') ? 0 : 1
           const isBFolder = b.Type.toLowerCase().includes('folder') ? 0 : 1

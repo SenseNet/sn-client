@@ -2,6 +2,7 @@
  * @module FieldControls
  */
 import {
+  Box,
   createStyles,
   FormControl,
   FormHelperText,
@@ -9,7 +10,6 @@ import {
   makeStyles,
   Switch as MuiSwitch,
   Theme,
-  Typography,
   withStyles,
 } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
@@ -136,7 +136,7 @@ export const Switcher: React.FC<ReactClientFieldSetting<FieldSetting>> = (props)
           })}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>
-          <Typography component="div" style={{ width: '100%' }}>
+          <Box style={{ width: '100%' }}>
             <Grid
               component="label"
               className={classes.switcherCont}
@@ -160,14 +160,14 @@ export const Switcher: React.FC<ReactClientFieldSetting<FieldSetting>> = (props)
                 <Switch data-test="edit-switch" size="medium" checked={value} onChange={handleChange} />
               </Grid>
             </Grid>
-          </Typography>
+          </Box>
         </FormControl>
       )
     case 'browse':
     default:
       return (
         <Grid
-          component={Typography}
+          component="div"
           container
           alignItems="center"
           spacing={1}
