@@ -9,7 +9,7 @@ import { GenericContent, User } from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
 import { ColDef } from 'ag-grid-community'
 import { AgGridReact } from 'ag-grid-react'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { GenericContentWithIsParent } from '../types'
 
 // Icons
@@ -204,25 +204,47 @@ const TreeNode = ({
   const [childNodes, setChildNodes] = useState<GenericContent[]>([])
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
 
-  const handleNodeClick = async () => {
+  const getChildren = useCallback(async () => {
     const abortController = new AbortController()
     const childrenResult = await repository.loadCollection<GenericContent>({
       path: node.Path,
       requestInit: { signal: abortController.signal },
     })
+    return sortResults(childrenResult.d.results)
+  }, [node.Path, repository])
 
-    onSetCurrentNode(node)
-    setChildNodes(sortResults(childrenResult.d.results))
-    setIsLoaded(true)
+  const setStates = async () => {
+    if (!isLoaded) {
+      const children = await getChildren()
+      setChildNodes(children)
+      setIsLoaded(true)
+    }
+  }
 
+  const setExpandedItems = useCallback(() => {
     setExpanded((prevExpanded) =>
       prevExpanded.includes(node.Id.toString()) ? prevExpanded : [...prevExpanded, node.Id.toString()],
     )
+  }, [node.Id, setExpanded])
+
+  const onLabelClick = async () => {
+    onSetCurrentNode(node)
+    setStates()
+    setExpandedItems()
+  }
+
+  const onIconClick = async () => {
+    setStates()
+    setExpandedItems()
   }
 
   useEffect(() => {
-    if (expanded.includes(node.Id.toString()) && !isLoaded) {
-      handleNodeClick()
+    if (!isLoaded) {
+      if (currentPath === node.Path) {
+        onLabelClick()
+      } else if (expanded.includes(node.Id.toString())) {
+        onIconClick()
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [expanded])
@@ -233,14 +255,16 @@ const TreeNode = ({
       key={node.Id}
       nodeId={node.Id.toString()}
       label={
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }} onClick={handleNodeClick}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}>
           <div className={classes.treeIcon}>{renderIcon(node)}</div>
           <div className={classes.treeLabel}>{node.Name}</div>
         </div>
       }
+      onIconClick={onIconClick}
+      onLabelClick={onLabelClick}
       collapseIcon={<MinusSquare />}
       expandIcon={<PlusSquare />}
-      endIcon={<PlusSquare />}>
+      endIcon={isLoaded && childNodes.length === 0 ? null : <PlusSquare />}>
       {childNodes.map((childNode) => (
         <TreeNode
           key={childNode.Id}
@@ -317,49 +341,77 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
   const searchFieldRef = useRef<HTMLInputElement | null>(null)
 
   //Grid Columns
-  const addCol: ColDef = {
-    headerName: '',
-    field: '',
-    width: 66,
-    cellRenderer: (props: { data: GenericContent }) => {
-      if (selectionRoots && selectionRoots.length > 0) {
-        const isInSelectionRoots = selectionRoots.some(
-          (availablePath) => props.data.Path === availablePath || props.data.Path.startsWith(`${availablePath}/`),
-        )
-        if (!isInSelectionRoots) return <></>
-      }
-      const isDisabled =
-        selectedItems.some((item) => item.Id === props.data.Id) || (!allowMultiple && selectedItems.length > 0)
-      if (isDisabled) return <></>
-      return (
-        <Button className={classes.actionButton} onClick={() => handleAdd(props.data)}>
-          &#10009;
-        </Button>
-      )
-    },
-  }
-  const removeCol: ColDef = {
-    headerName: '',
-    field: '',
-    width: 66,
-    cellRenderer: (props: { data: GenericContent }) => {
-      return (
-        <Button className={classes.actionButton} onClick={() => handleRemove(props.data)}>
-          &#10006;
-        </Button>
-      )
-    },
-  }
-  const iconCol: ColDef = {
-    headerName: '',
-    field: 'Icon',
-    width: 24,
-    minWidth: 24,
-    cellRenderer: (props: { data: GenericContent }) => renderIcon(props.data),
-    cellStyle: { padding: 0 },
-  }
-  const availableCols = [iconCol, ...baseColumns, ...(canPick ? [addCol] : [])]
-  const selectedCols = [iconCol, ...baseColumns, ...(canPick ? [removeCol] : [])]
+  const availableCols = useMemo(
+    () => [
+      {
+        headerName: '',
+        field: 'Icon',
+        width: 24,
+        minWidth: 24,
+        cellRenderer: (props: { data: GenericContent }) => renderIcon(props.data),
+        cellStyle: { padding: 0 },
+      },
+      ...baseColumns,
+      ...(canPick
+        ? [
+            {
+              headerName: 'Add',
+              field: '',
+              width: 66,
+              cellRenderer: (props: { data: GenericContent }) => {
+                if (selectionRoots && selectionRoots.length > 0) {
+                  const isInSelectionRoots = selectionRoots.some(
+                    (availablePath) =>
+                      props.data.Path === availablePath || props.data.Path.startsWith(`${availablePath}/`),
+                  )
+                  if (!isInSelectionRoots) return <></>
+                }
+                const isDisabled =
+                  selectedItems.some((item) => item.Id === props.data.Id) ||
+                  (!allowMultiple && selectedItems.length > 0)
+                if (isDisabled) return <></>
+                return (
+                  <Button className={classes.actionButton} onClick={() => handleAdd(props.data)}>
+                    &#10009;
+                  </Button>
+                )
+              },
+            },
+          ]
+        : []),
+    ],
+    [allowMultiple, canPick, classes.actionButton, renderIcon, selectedItems, selectionRoots],
+  )
+  const selectedCols = useMemo(
+    () => [
+      {
+        headerName: '',
+        field: 'Icon',
+        width: 24,
+        minWidth: 24,
+        cellRenderer: (props: { data: GenericContent }) => renderIcon(props.data),
+        cellStyle: { padding: 0 },
+      },
+      ...baseColumns,
+      ...(canPick
+        ? [
+            {
+              headerName: 'Remove',
+              field: '',
+              width: 69,
+              cellRenderer: (props: { data: GenericContent }) => {
+                return (
+                  <Button className={classes.actionButton} onClick={() => handleRemove(props.data)}>
+                    &#10006;
+                  </Button>
+                )
+              },
+            },
+          ]
+        : []),
+    ],
+    [canPick, classes.actionButton, renderIcon],
+  )
 
   //Button Actions
   const handleAdd = (item: GenericContent) => {
