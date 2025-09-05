@@ -13,32 +13,39 @@ import { ExpandItemsContext } from './Contexts/ExpandedItemsProvider'
 import { useTreeLoading } from './Contexts/TreeLoadingProvider'
 import StyledTreeItemProps from './Props/StyledTreeItemProps'
 
-export const StyledTreeItem = (props: StyledTreeItemProps) => {
+export const StyledTreeItem = ({
+  contentvalue,
+  activeitempath,
+  navigate,
+  editMode,
+  ...restProps
+}: StyledTreeItemProps) => {
   const { setIsTreeLoading, enabledPath } = useTreeLoading()
-  const [hasChildren, setHasChildren] = useState<boolean>(true)
   const [innerElements, setInnerElements] = useState<React.JSX.Element[]>()
-  const expContext = useContext(ExpandItemsContext)
-  const currentPath = useQuery().get('path')
-  if (!expContext) {
-    throw new Error('MyComponent must be used within a ExpandItemsProvider')
-  }
-  const [expandItems, setExpandItems, _expandOriginalItems, _setExpandOriginalItems, loadChildren] = expContext
   const [contextMenuItem, setContextMenuItem] = useState<GenericContent | null>(null)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
   const [contextMenuAnchorPos, setContextMenuAnchorPos] = useState<{ top: number; left: number }>({
     top: 0,
     left: 0,
   })
-  const path = props.contentvalue.Path
-  const isDisabled = !path.includes(enabledPath)
+
+  const expContext = useContext(ExpandItemsContext)
+  if (!expContext) throw new Error('StyledTreeItem must be used within ExpandItemsProvider')
+
+  const [expandItems, setExpandItems, , , loadChildren] = expContext
   const history = useHistory()
   const repository = useRepository()
-  const { location } = history
   const snRoute = useSnRoute()
   const uiSettings = useContext(ResponsivePersonalSettings)
-  const { navigate, editMode, ...restProps } = props
+
+  const currentPath = useQuery().get('path')
   const mountedRef = useRef(true)
 
+  const path = contentvalue.Path
+  const isDisabled = !path.includes(enabledPath)
+  const itemId = String(contentvalue.Id)
+
+  // Track mount state
   useEffect(() => {
     mountedRef.current = true
     return () => {
@@ -47,30 +54,26 @@ export const StyledTreeItem = (props: StyledTreeItemProps) => {
   }, [])
 
   const loadCollectionCB = useCallback(
-    async (contentPath: string): Promise<void> => {
+    async (contentPath: string) => {
       try {
         const children = await loadChildren(contentPath)
-        if (!mountedRef.current) {
-          return
-        }
-        children?.sort((a, b) => {
+        if (!mountedRef.current) return
+
+        const sorted = children?.sort((a, b) => {
           const isAFolder = a.Type.toLowerCase().includes('folder') ? 0 : 1
           const isBFolder = b.Type.toLowerCase().includes('folder') ? 0 : 1
-          if (isAFolder !== isBFolder) {
-            return isAFolder - isBFolder
-          }
-          return a.Name.localeCompare(b.Name)
+          return isAFolder - isBFolder || a.Name.localeCompare(b.Name)
         })
 
-        const elements = children?.map((innerChild: GenericContent) => (
+        const elements = sorted?.map((child) => (
           <StyledTreeItem
-            id={String(innerChild.Id)}
-            key={innerChild.Id}
-            data-id={innerChild.Id}
-            activeitempath={props.activeitempath}
-            nodeId={innerChild.Id.toString()}
-            contentvalue={innerChild}
-            navigate={props.navigate}
+            key={child.Id}
+            id={String(child.Id)}
+            data-id={child.Id}
+            activeitempath={activeitempath}
+            nodeId={child.Id.toString()}
+            contentvalue={child}
+            navigate={navigate}
             editMode={editMode}
             onContextMenu={(event) => {
               event.preventDefault()
@@ -78,29 +81,24 @@ export const StyledTreeItem = (props: StyledTreeItemProps) => {
             }}
           />
         ))
-
-        if (elements) {
-          setHasChildren(elements.length > 0)
-          setInnerElements(elements)
-        }
+        setInnerElements(elements)
       } finally {
         //
       }
     },
-    [loadChildren, props.activeitempath, props.navigate, editMode],
+    [loadChildren, activeitempath, navigate, editMode],
   )
 
+  // Load children if expanded
   useEffect(() => {
-    const itemId = String(props.contentvalue.Id)
     if (expandItems.has(itemId)) {
-      loadCollectionCB(props.contentvalue.Path)
+      loadCollectionCB(contentvalue.Path)
     }
-  }, [props, expandItems, loadCollectionCB, currentPath])
+  }, [expandItems, itemId, contentvalue.Path, currentPath, loadCollectionCB])
 
+  // Collapse if outside enabledPath
   useEffect(() => {
-    const itemId = String(props.contentvalue.Id)
-    const itemPath = props.contentvalue.Path
-
+    const itemPath = contentvalue.Path
     if (!enabledPath.startsWith(itemPath) && !itemPath.startsWith(enabledPath) && expandItems.has(itemId)) {
       setExpandItems((prev) => {
         const updated = new Set(prev)
@@ -108,101 +106,99 @@ export const StyledTreeItem = (props: StyledTreeItemProps) => {
         return updated
       })
     }
-  }, [enabledPath, expandItems, props.contentvalue.Id, props.contentvalue.Path, setExpandItems])
+  }, [enabledPath, expandItems, itemId, contentvalue.Path, setExpandItems])
 
-  const getLabel = () => {
-    return (
-      <>
-        <ListItemIcon key={props.contentvalue.Id}>
-          <Icon item={props.contentvalue} />
-        </ListItemIcon>
-        <ListItemText
-          style={{ fontSize: '11px!important', color: isDisabled ? 'grey' : '' }}
-          primary={`${props.contentvalue.Name}`}
-        />
-      </>
-    )
-  }
+  const getLabel = () => (
+    <>
+      <ListItemIcon>
+        <Icon item={contentvalue} style={{ height: 20, width: 20, fontSize: 18 }} />
+      </ListItemIcon>
+      <ListItemText style={{ fontSize: '11px', color: isDisabled ? 'grey' : undefined }} primary={contentvalue.Name} />
+    </>
+  )
 
   const onIconClick: MouseEventHandler = (event) => {
     if (isDisabled) return
     event.preventDefault()
     event.stopPropagation()
-    setExpandItems((eItems) => {
-      const updatedItems = new Set(eItems)
-      const itemId = props.contentvalue.Id.toString()
-      if (updatedItems.has(itemId)) {
-        if (document.activeElement) {
-          ;(document.activeElement as HTMLElement).blur()
-        }
-        updatedItems.delete(itemId)
+
+    setExpandItems((items) => {
+      const updated = new Set(items)
+      if (updated.has(itemId)) {
+        ;(document.activeElement as HTMLElement | null)?.blur()
+        updated.delete(itemId)
       } else {
         setIsTreeLoading(true)
-        updatedItems.add(itemId)
-        loadCollectionCB(props.contentvalue.Path).finally(() => setIsTreeLoading(false))
+        updated.add(itemId)
+        loadCollectionCB(contentvalue.Path).finally(() => setIsTreeLoading(false))
       }
-      return updatedItems
+      return updated
     })
   }
 
   const onLabelClick: MouseEventHandler = (event) => {
     if (isDisabled) return
-    const displayName = props.contentvalue.DisplayName
+    const displayName = contentvalue.DisplayName
+
     if (displayName?.endsWith('.settings') || displayName?.endsWith('.xml')) {
-      history.push(getPrimaryActionUrl({ content: props.contentvalue, repository, uiSettings, location, snRoute }))
+      history.push(
+        getPrimaryActionUrl({ content: contentvalue, repository, uiSettings, location: history.location, snRoute }),
+      )
       return
     }
+
     if (editMode) {
       navigateToAction({
         history,
         routeMatch: snRoute.match!,
         action: 'edit',
-        queryParams: { content: props.contentvalue.Path.replace(snRoute.path, '') },
+        queryParams: { content: contentvalue.Path.replace(snRoute.path, '') },
       })
     } else {
       const itemPath = (event.target as HTMLElement).closest('[data-path]')?.getAttribute('data-path')
-      const itemId = props.contentvalue.Id.toString()
-      setExpandItems((prevItems) => {
-        const updatedItems = new Set(prevItems)
+      setExpandItems((prev) => {
+        const updated = new Set(prev)
         if (!expandItems.has(itemId)) {
           setIsTreeLoading(true)
-          updatedItems.add(itemId)
-          loadCollectionCB(props.contentvalue.Path).finally(() => setIsTreeLoading(false))
-        } else {
-          if (itemPath === props.activeitempath) {
-            updatedItems.delete(itemId)
-          }
+          updated.add(itemId)
+          loadCollectionCB(contentvalue.Path).finally(() => setIsTreeLoading(false))
+        } else if (itemPath === activeitempath) {
+          updated.delete(itemId)
         }
-        return updatedItems
+        return updated
       })
-      props.navigate(props.contentvalue)
+      navigate(contentvalue)
     }
   }
 
-  const onContextMenu = (event: React.MouseEvent, data: GenericContent) => {
-    if (isDisabled) return
-    event.preventDefault()
-    event.stopPropagation()
-    setContextMenuItem(data)
-    setContextMenuAnchorPos({ top: event.clientY, left: event.clientX })
-    setIsContextMenuOpened(true)
-  }
+  const onContextMenu = useCallback(
+    (event: React.MouseEvent) => {
+      if (isDisabled) return
+      event.preventDefault()
+      event.stopPropagation()
+      setContextMenuItem(contentvalue)
+      setContextMenuAnchorPos({ top: event.clientY, left: event.clientX })
+      setIsContextMenuOpened(true)
+    },
+    [contentvalue, isDisabled],
+  )
 
   return (
     <>
       <TreeItem
         {...restProps}
         label={getLabel()}
-        id={props.contentvalue.Id.toString()}
-        data-path={props.contentvalue.Path}
+        id={itemId}
+        data-path={path}
         onIconClick={onIconClick}
         onLabelClick={onLabelClick}
-        onContextMenu={(event) => onContextMenu(event, props.contentvalue)}
+        onContextMenu={onContextMenu}
         expandIcon={isDisabled ? <></> : undefined}
-        collapseIcon={(!hasChildren || isDisabled) && <></>}>
+        collapseIcon={(!innerElements?.length || isDisabled) && <></>}>
         {innerElements}
         <></>
       </TreeItem>
+
       {contextMenuItem && (
         <ContentContextMenu
           isOpened={isContextMenuOpened}
