@@ -195,7 +195,7 @@ export const userColumnDefs: ColDef[] = [
     width: 110,
     minWidth: 110,
     maxWidth: 110,
-    cellRendererFramework: (params: any) => {
+    cellRenderer: (params: any) => {
       const roles = params.data.AllRoles.length ? params.data.AllRoles : []
       const directRoles = params.data.DirectRoles?.length ? params.data.DirectRoles : []
       return <RolesField user={params.data} roles={roles} directRoles={directRoles} />
@@ -240,7 +240,7 @@ export const groupColumnDefs: ColDef[] = [
     width: 110,
     minWidth: 110,
     maxWidth: 110,
-    cellRendererFramework: (params: any) => {
+    cellRenderer: (params: any) => {
       return <ReferenceField content={params.data} fieldName={'Members'} parent={params.data} showIcon={true} />
     },
   },

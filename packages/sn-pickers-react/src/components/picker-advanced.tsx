@@ -10,6 +10,7 @@ import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
 import { ColDef } from 'ag-grid-community'
 import { AgGridReact } from 'ag-grid-react'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useLocalization } from '../hooks/use-localization'
 import { GenericContentWithIsParent } from '../types'
 
 // Icons
@@ -152,6 +153,7 @@ const useStyles = makeStyles(() =>
       wordBreak: 'break-all',
     },
     treeIcon: {
+      width: '22px',
       '& span': {
         display: 'flex',
       },
@@ -337,6 +339,8 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
   const [selectedItems, setSelectedItems] = useState<GenericContent[]>(defaultValue ?? [])
   const [rootElement, setRootElement] = useState<GenericContent>()
   const [searchTerm, setSearchTerm] = useState<string>('')
+
+  const localization = useLocalization()
 
   const searchFieldRef = useRef<HTMLInputElement | null>(null)
 
@@ -555,7 +559,7 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
             <TextField
               ref={searchFieldRef}
               fullWidth={true}
-              placeholder={'Search'}
+              placeholder={localization.search}
               onChange={(ev) => {
                 onSearchFieldChange(ev.target.value)
               }}
@@ -607,7 +611,7 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
         <div className={classes.errorMsg}>
           {selectionRoots &&
             !selectionRoots.some((root) => currentPath === root || currentPath.startsWith(`${root}/`)) && (
-              <div>Disabled Path</div>
+              <div>{localization.disabledPath}</div>
             )}
         </div>
         <Button
@@ -615,7 +619,7 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
           onClick={() => {
             onCancel?.()
           }}>
-          Cancel
+          {localization.cancel}
         </Button>
         <Button
           type="button"
@@ -627,7 +631,7 @@ export const PickerAdvanced: React.FC<PickerAdvancedProps> = ({
           onClick={() => {
             onSubmit?.(selectedItems)
           }}>
-          Submit
+          {localization.submit}
         </Button>
       </div>
     </div>

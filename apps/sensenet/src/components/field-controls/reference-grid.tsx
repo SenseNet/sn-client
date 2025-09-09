@@ -10,7 +10,9 @@ export const ReferenceGrid: React.FC<ReactClientFieldSetting> = (props) => {
     <SnReferenceGrid
       {...props}
       dialogProps={{ classes: { paper: clsx(globalClasses.dialog, globalClasses.pickerDialog) } }}
-      renderPickerIcon={(item) => <Icon item={item} />}
+      renderPickerIcon={(item) => (
+        <Icon item={item} style={{ width: 'auto', height: 'auto', marginTop: 1, paddingTop: 1 }} />
+      )}
       pickerClasses={{ cancelButton: globalClasses.cancelButton }}
     />
   )

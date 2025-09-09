@@ -111,7 +111,7 @@ export const StyledTreeItem = ({
   const getLabel = () => (
     <>
       <ListItemIcon>
-        <Icon item={contentvalue} style={{ height: 20, width: 20, fontSize: 18 }} />
+        <Icon item={contentvalue} style={{ height: 20, width: 20, fontSize: 15 }} />
       </ListItemIcon>
       <ListItemText style={{ fontSize: '11px', color: isDisabled ? 'grey' : undefined }} primary={contentvalue.Name} />
     </>

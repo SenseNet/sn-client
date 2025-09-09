@@ -22,8 +22,6 @@ export function LogoutDialog() {
           <Icon
             style={{
               margin: '0 1em 0 0',
-              transition: 'filter linear 1s, opacity linear 1.5s',
-              width: '1.5em',
             }}
             item={user}
           />

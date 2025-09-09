@@ -22,8 +22,13 @@ export const UserAvatar: FC<{
     )
   }
   return (
-    <Avatar style={props.style}>
-      {(props.user?.DisplayName && props.user.DisplayName[0]) || (props.user?.Name && props.user.Name[0]) || 'U'}
+    <Avatar
+      style={{
+        ...props.style,
+      }}>
+      {(props.user?.DisplayName && props.user.DisplayName[0])?.toUpperCase() ||
+        (props.user?.Name && props.user.Name[0])?.toUpperCase() ||
+        'U'}
     </Avatar>
   )
 }
