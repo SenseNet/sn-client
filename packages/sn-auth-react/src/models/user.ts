@@ -3,6 +3,7 @@ export interface User {
   Path: string
   FullName: string
   LoginName: string
+  Domain: string
   Avatar: Avatar
   DisplayName: string
   Name: string

@@ -128,10 +128,8 @@ export const DesktopNavMenu: FunctionComponent = () => {
     service.setPersonalSettingsValue({ ...settings, preferDisplayName: event.target.checked })
   }
 
-  let DomainAndLoginName = ''
-  if (user?.Domain && user?.LoginName) {
-    DomainAndLoginName = `${user?.Domain}\\${user?.LoginName}`
-  }
+  const DomainAndLoginName =
+    user?.Domain && user?.Domain !== '' ? `${user?.Domain}\\${user?.LoginName}` : user?.LoginName
 
   return (
     <div className={clsx(globalClasses.centered, classes.navMenu)}>
