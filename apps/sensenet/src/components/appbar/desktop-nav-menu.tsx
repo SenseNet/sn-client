@@ -128,6 +128,11 @@ export const DesktopNavMenu: FunctionComponent = () => {
     service.setPersonalSettingsValue({ ...settings, preferDisplayName: event.target.checked })
   }
 
+  let DomainAndLoginName = ''
+  if (user?.Domain && user?.LoginName) {
+    DomainAndLoginName = `${user?.Domain}\\${user?.LoginName}`
+  }
+
   return (
     <div className={clsx(globalClasses.centered, classes.navMenu)}>
       <>
@@ -184,7 +189,7 @@ export const DesktopNavMenu: FunctionComponent = () => {
                         marginLeft: '20px',
                         color: theme.palette.type === 'light' ? globals.light.textColor : globals.dark.textColor,
                       },
-                      title: `Full-name: ${user?.DisplayName}` || user?.Name,
+                      title: `Full-name: ${user?.DisplayName || user?.Name}`,
                     }}
                     secondaryTypographyProps={{
                       style: {
@@ -193,10 +198,10 @@ export const DesktopNavMenu: FunctionComponent = () => {
                         marginLeft: '20px',
                         color: theme.palette.type === 'light' ? globals.light.textColor : globals.dark.textColor,
                       },
-                      title: `Login-name: ${user?.LoginName}` || user?.Name,
+                      title: `Login-name: ${DomainAndLoginName || user?.Name}`,
                     }}
                     primary={`${user?.DisplayName || user?.Name}`}
-                    secondary={`${user?.LoginName || user?.Name}`}
+                    secondary={`${DomainAndLoginName || user?.Name}`}
                   />
                 </MenuItem>
                 <MenuItem className={classes.userMenuItem}>

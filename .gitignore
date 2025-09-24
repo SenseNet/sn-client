@@ -60,3 +60,5 @@ jspm_packages/
 # Misc
 .DS_Store
 pipe\[0]
+.vs
+.vscode
