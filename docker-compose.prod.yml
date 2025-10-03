@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  sensenet-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sensenet-app
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - AUTH_TYPE=SNAuth
+    restart: unless-stopped
