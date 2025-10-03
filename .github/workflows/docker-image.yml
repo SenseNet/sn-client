@@ -5,7 +5,7 @@ on:
     branches:
       - "feature/docker-containerization" # Only containerization branch for now
   pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]  # Skip draft PRs
+    types: [opened, synchronize, reopened, ready_for_review] # Skip draft PRs
     branches:
       - "develop"
       - "main"
