@@ -1,0 +1,62 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches:
+      - "feature/docker-containerization" # Only containerization branch for now
+  pull_request:
+    branches:
+      - "develop"
+      - "main"
+      - "feature/sn-auth-package-extraimprovements" # Current dev branch with latest sn-auth
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Check if Dockerfile exists
+        id: check_dockerfile
+        run: |
+          if [ -f "Dockerfile" ]; then
+            echo "dockerfile_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "dockerfile_exists=false" >> $GITHUB_OUTPUT
+            echo "⚠️ No Dockerfile found, skipping Docker build"
+          fi
+
+      - name: Set up Docker metadata
+        if: steps.check_dockerfile.outputs.dockerfile_exists == 'true'
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: sensenetcsp/sn-client
+          tags: |
+            # Branch name
+            type=ref,event=branch
+            # Latest tag for main branch
+            type=raw,value=latest,enable={{is_default_branch}}
+            # PR number for pull requests
+            type=ref,event=pr
+            # Short SHA
+            type=sha,prefix={{branch}}-
+
+      - name: Login to DockerHub
+        if: steps.check_dockerfile.outputs.dockerfile_exists == 'true'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        if: steps.check_dockerfile.outputs.dockerfile_exists == 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
