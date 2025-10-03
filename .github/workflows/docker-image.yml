@@ -35,14 +35,14 @@ jobs:
         with:
           images: sensenetcsp/sn-client
           tags: |
-            # Branch name
-            type=ref,event=branch
+            # Branch name (replace slashes with hyphens)
+            type=ref,event=branch,suffix=-{{sha}}
             # Latest tag for main branch
             type=raw,value=latest,enable={{is_default_branch}}
             # PR number for pull requests
             type=ref,event=pr
-            # Short SHA
-            type=sha,prefix={{branch}}-
+            # Short SHA for current commit
+            type=sha,prefix=sha-
 
       - name: Login to DockerHub
         if: steps.check_dockerfile.outputs.dockerfile_exists == 'true'
