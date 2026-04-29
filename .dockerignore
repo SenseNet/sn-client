@@ -1,0 +1,42 @@
+# Node modules (will be installed in container)
+node_modules
+*/node_modules
+**/node_modules
+
+# Build outputs
+dist
+build
+coverage
+*.tsbuildinfo
+
+# Development files
+.git
+.github
+.vscode
+*.log
+# Note: We need yarn.lock and package-lock.json for dependency resolution
+# *.lock
+
+# Docker
+*.dockerignore
+Dockerfile*
+docker-compose*
+.docker
+
+# Docker volumes
+docker_data/
+docker_volumes/
+
+# Development
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Cypress
+cypress/videos
+cypress/screenshots
+
+# Misc
+.DS_Store
+Thumbs.db

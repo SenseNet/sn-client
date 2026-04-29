@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  sensenet-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sensenet-dev
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=development
+      - AUTH_TYPE=SNAuth
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: yarn snapp start
+    restart: unless-stopped
