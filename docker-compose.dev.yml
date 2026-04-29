@@ -16,7 +16,5 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-      - /app/packages/*/node_modules
-      - /app/apps/*/node_modules
     command: yarn snapp start
     restart: unless-stopped
