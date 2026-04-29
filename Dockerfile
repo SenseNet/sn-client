@@ -16,15 +16,15 @@ RUN yarn install
 # Build packages (required for the app to work)
 RUN yarn build
 
-# Build the app bundle at image build time (avoids runtime webpack rebuild)
-RUN yarn snapp build
+# Build the app bundle in production mode (avoids runtime webpack rebuild)
+RUN NODE_ENV=production yarn snapp build
 
 # Expose port
 EXPOSE 8080
 
 # Health check (start-period is short since static server starts instantly)
 HEALTHCHECK --interval=30s --timeout=3s --start-period=15s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:8080/ || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://localhost:8080/ || exit 1
 
 # Serve pre-built static files (fast startup, SPA mode with -s flag)
 CMD ["serve", "-s", "apps/sensenet/build", "-l", "8080"]
