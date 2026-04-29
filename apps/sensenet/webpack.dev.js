@@ -15,6 +15,7 @@ module.exports = (env) => {
     devServer: {
       historyApiFallback: true,
       open: true,
+      allowedHosts: process.env.ALLOWED_HOSTS === 'all' ? 'all' : 'auto',
     },
     output: {
       filename: 'static/js/[name].js',
