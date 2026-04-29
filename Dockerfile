@@ -1,5 +1,8 @@
-# Development Dockerfile for SenseNet client with hot reload
+# Dockerfile for SenseNet client
 FROM node:20-alpine
+
+# Install serve for static file serving
+RUN yarn global add serve
 
 # Set working directory
 WORKDIR /app
@@ -13,12 +16,15 @@ RUN yarn install
 # Build packages (required for the app to work)
 RUN yarn build
 
+# Build the app bundle at image build time (avoids runtime webpack rebuild)
+RUN yarn snapp build
+
 # Expose port
 EXPOSE 8080
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
+# Health check (start-period is short since static server starts instantly)
+HEALTHCHECK --interval=30s --timeout=3s --start-period=15s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:8080/ || exit 1
 
-# Default command (overridden in docker-compose for hot reload)
-CMD ["yarn", "snapp", "start"]
+# Serve pre-built static files (fast startup, SPA mode with -s flag)
+CMD ["serve", "-s", "apps/sensenet/build", "-l", "8080"]
