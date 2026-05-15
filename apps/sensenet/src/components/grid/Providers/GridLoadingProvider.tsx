@@ -12,7 +12,7 @@ interface GridLoadingProviderProps {
 }
 
 export const GridLoadingProvider: React.FC<GridLoadingProviderProps> = ({ children }) => {
-  const [isGridLoading, setIsGridLoading] = useState<boolean>(true)
+  const [isGridLoading, setIsGridLoading] = useState<boolean>(false)
 
   return (
     <GridLoadingContext.Provider value={{ isGridLoading, setIsGridLoading }}>{children}</GridLoadingContext.Provider>

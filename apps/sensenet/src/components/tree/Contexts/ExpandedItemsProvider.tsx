@@ -54,6 +54,7 @@ const ExpandedItemsProvider = ({ children }: { children: ReactNode }) => {
         path,
         oDataOptions: {
           select: ['Id', 'Path', 'Name', 'DisplayName', 'Type', 'Actions', 'Icon', 'ParentId'],
+          filter: 'IsFolder eq true',
           onlyselectList: true,
         },
       })

@@ -12,7 +12,7 @@ import {
 import { ColumnSetting } from '@sensenet/list-controls-react/src/ContentList/content-list-base-props'
 import { ColDef } from 'ag-grid-community'
 import { clsx } from 'clsx'
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useMemo, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
 import { GridKeyEnum } from '../../../src/components/grid/enums/GridKey.enum'
 import { ResponsivePersonalSettings } from '../../context'
@@ -27,6 +27,42 @@ import { SimpleTree } from '../tree/simpletree'
 import { BrowseView, EditView, ImageView, NewView, PermissionView, VersionView } from '../view-controls'
 import WopiPage from '../wopi-page'
 import { ContentInfo } from './ContentInfo'
+
+const requiredGridLoadFields: ODataFieldParameter<GenericContent> = [
+  'Id',
+  'ParentId',
+  'Path',
+  'Name',
+  'DisplayName',
+  'Type',
+  'Icon',
+  'IsFolder',
+  'IsFile',
+  'Actions',
+  'CreatedBy',
+  'CreationDate',
+  'ModifiedBy',
+  'ModificationDate',
+  'Index',
+  'Locked',
+]
+
+const getGridLoadChildrenSettings = (colDef: ColDef[]): ODataParams<GenericContent> => {
+  const selectFields = new Set<keyof GenericContent>(requiredGridLoadFields)
+
+  colDef.forEach((columnDefinition) => {
+    if (columnDefinition.field && columnDefinition.field !== '0') {
+      selectFields.add(columnDefinition.field as keyof GenericContent)
+    }
+  })
+
+  return {
+    orderby: [['DisplayName', 'asc']],
+    select: Array.from(selectFields),
+    expand: ['CreatedBy', 'ModifiedBy'],
+    onlyselectList: true,
+  }
+}
 
 const useStyles = makeStyles<Theme, { width: number }>((theme) =>
   createStyles({
@@ -186,6 +222,10 @@ export function Explore({
   const pathFromUrl = useQuery().get('path')
   const snRoute = useSnRoute()
   const activeAction = snRoute.match!.params.action
+  const currentChildrenLoadSettings = useMemo(
+    () => loadChildrenSettings || getGridLoadChildrenSettings(colDef),
+    [colDef, loadChildrenSettings],
+  )
   const onActivateItemOverride = async (activeItem: GenericContent) => {
     const expandedItem = await repository.load({
       idOrPath: activeItem.Id,
@@ -273,7 +313,9 @@ export function Explore({
   }
 
   return (
-    <LoadSettingsContextProvider>
+    <LoadSettingsContextProvider
+      key={JSON.stringify(currentChildrenLoadSettings)}
+      loadChildrenSettings={currentChildrenLoadSettings}>
       <CurrentContentProvider idOrPath={currentPath}>
         <CurrentChildrenProvider loadSettings={loadChildrenSettings} alwaysRefresh={alwaysRefreshChildren}>
           <CurrentAncestorsProvider root={rootPath}>

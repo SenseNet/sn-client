@@ -43,6 +43,7 @@ const systemFieldOptions = preferredCsvColumns.map<CsvFieldOption>((fieldName) =
   type: 'System',
   visibleBrowse: FieldVisibility.Show,
 }))
+const exportRequestBatchSize = 8
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -167,6 +168,21 @@ const getDefaultSelectedFields = (contentTypeFieldOptions: CsvFieldOption[][]) =
   return Array.from(fieldNames)
 }
 
+const loadContentsForExport = async (
+  contents: GenericContent[],
+  loadContent: (content: GenericContent) => Promise<GenericContent>,
+) => {
+  const loadedContents: GenericContent[] = []
+
+  for (let startIndex = 0; startIndex < contents.length; startIndex += exportRequestBatchSize) {
+    const contentBatch = contents.slice(startIndex, startIndex + exportRequestBatchSize)
+    const loadedBatch = await Promise.all(contentBatch.map(loadContent))
+    loadedContents.push(...loadedBatch)
+  }
+
+  return loadedContents
+}
+
 export const CsvExportDialog: React.FC<CsvExportDialogProps> = ({ open, selected, parent, onClose }) => {
   const classes = useStyles()
   const localization = useLocalization()
@@ -255,16 +271,14 @@ export const CsvExportDialog: React.FC<CsvExportDialogProps> = ({ open, selected
     setIsExporting(true)
 
     try {
-      const contents = await Promise.all(
-        selected.map(async (content) => {
-          const response = await repository.load<GenericContent>({
-            idOrPath: content.Id,
-            oDataOptions: { select: 'all' },
-          })
+      const contents = await loadContentsForExport(selected, async (content) => {
+        const response = await repository.load<GenericContent>({
+          idOrPath: content.Id,
+          oDataOptions: { select: 'all' },
+        })
 
-          return response.d
-        }),
-      )
+        return response.d
+      })
       const csvContent = createCsvFromContents(contents, selectedFields)
 
       downloadCsv(csvContent, getCsvExportFileName(contents, parent))
@@ -273,8 +287,8 @@ export const CsvExportDialog: React.FC<CsvExportDialogProps> = ({ open, selected
         data: {
           relatedRepository: repository.configuration.repositoryUrl,
           details: {
-            exportedContent: contents,
-            selectedFields,
+            exportedContentCount: contents.length,
+            selectedFieldCount: selectedFields.length,
           },
         },
       })
@@ -286,7 +300,7 @@ export const CsvExportDialog: React.FC<CsvExportDialogProps> = ({ open, selected
           error,
           relatedRepository: repository.configuration.repositoryUrl,
           details: {
-            selectedContent: selected,
+            selectedContentCount: selected.length,
             selectedFields,
           },
         },

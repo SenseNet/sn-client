@@ -3,57 +3,74 @@ import React, { memo, useEffect, useMemo, useState } from 'react'
 import { IconOptions } from './Icon'
 
 // Global cache for icons
-const iconCache = new Map<string, string>()
+const iconCache = new Map<string, string | null>()
+const iconRequestCache = new Map<string, Promise<string | null>>()
+
+const loadIcon = (path: string, options: IconOptions) => {
+  if (iconCache.has(path)) {
+    return Promise.resolve(iconCache.get(path)!)
+  }
+
+  const pendingRequest = iconRequestCache.get(path)
+
+  if (pendingRequest) {
+    return pendingRequest
+  }
+
+  const imageUrl = PathHelper.joinPaths(options.repo.configuration.repositoryUrl, path)
+  const request = (async () => {
+    if (!path.endsWith('.svg')) {
+      iconCache.set(path, imageUrl)
+      return imageUrl
+    }
+
+    try {
+      const response = await options.repo.fetch(imageUrl, { cache: 'force-cache' })
+
+      if (!response.ok) {
+        iconCache.set(path, null)
+        return null
+      }
+
+      const svg = await response.text()
+      const resizedSvg = svg.replace('width=', 'width="24px" oldwidth=').replace('height=', 'height="24px" oldheight=')
+
+      iconCache.set(path, resizedSvg)
+      return resizedSvg
+    } catch {
+      iconCache.set(path, null)
+      return null
+    }
+  })()
+
+  iconRequestCache.set(path, request)
+  request.finally(() => iconRequestCache.delete(path))
+
+  return request
+}
 
 const IconFromPath = ({ path, options }: { path: string; options: IconOptions }) => {
-  const [icon, setIcon] = useState<string | null>(iconCache.get(path) || null)
+  const [icon, setIcon] = useState<string | null>(() => iconCache.get(path) || null)
 
   useEffect(() => {
-    const controller = new AbortController()
-    const { signal } = controller
+    let isMounted = true
 
-    const fetchIcon = async () => {
-      // Check cache first
-      if (iconCache.has(path)) {
-        setIcon(iconCache.get(path)!)
-        return
-      }
-
-      const imageUrl = PathHelper.joinPaths(options.repo.configuration.repositoryUrl, path)
-
-      if (path.endsWith('.svg')) {
-        try {
-          const response = await options.repo.fetch(imageUrl, { cache: 'force-cache', signal })
-          if (!response.ok) return
-          const svg = await response.text()
-          const resizedSvg = svg
-            .replace('width=', 'width="24px" oldwidth=')
-            .replace('height=', 'height="24px" oldheight=')
-          if (!signal.aborted) {
-            iconCache.set(path, resizedSvg) // Store in cache
-            setIcon(resizedSvg)
-          }
-        } catch (err) {
-          if ((err as any).name !== 'AbortError') {
-            console.error('Failed to load SVG:', err)
-          }
-        }
-      } else {
-        if (!signal.aborted) {
-          iconCache.set(path, imageUrl) // Store in cache
-          setIcon(imageUrl)
-        }
-      }
+    if (iconCache.has(path)) {
+      setIcon(iconCache.get(path) || null)
+      return
     }
 
-    if (!icon) {
-      fetchIcon()
-    }
+    setIcon(null)
+    loadIcon(path, options).then((loadedIcon) => {
+      if (isMounted) {
+        setIcon(loadedIcon)
+      }
+    })
 
     return () => {
-      controller.abort()
+      isMounted = false
     }
-  }, [path, options.repo, icon])
+  }, [path, options.repo])
 
   // Memoize the rendered output to prevent unnecessary DOM updates
   const renderedIcon = useMemo(() => {

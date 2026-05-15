@@ -1,6 +1,6 @@
-import { debounce, LinearProgress, useTheme } from '@material-ui/core'
+import { CircularProgress, debounce, LinearProgress, Typography, useTheme } from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
-import { CurrentChildrenContext, CurrentContentContext } from '@sensenet/hooks-react'
+import { CurrentChildrenContext, CurrentChildrenIsLoadingContext, CurrentContentContext } from '@sensenet/hooks-react'
 import {
   CellContextMenuEvent,
   ColDef,
@@ -11,8 +11,8 @@ import {
   SelectionChangedEvent,
 } from 'ag-grid-community'
 import { AgGridReact } from 'ag-grid-react'
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
-import { useSelectionService } from '../../hooks'
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { useLocalization, useSelectionService } from '../../hooks'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { DropFileArea } from '../DropFileArea'
 import { GridProps } from './Props/GridProps'
@@ -23,16 +23,21 @@ const SMALL_SCREEN_COL_FILTER = ['Id', 'Actions']
 export function Grid<T extends GenericContent = GenericContent>(props: GridProps<T>) {
   const { isGridLoading, setIsGridLoading } = useGridLoading()
   const selectionService = useSelectionService()
+  const localization = useLocalization().common
   const parentContent = useContext(CurrentContentContext)
-  const children = (useContext(CurrentChildrenContext) as GenericContent[]).sort((a, b) => {
-    const aIsFolder = a.Type?.toLowerCase().includes('folder') ?? false
-    const bIsFolder = b.Type?.toLowerCase().includes('folder') ?? false
+  const currentChildren = useContext(CurrentChildrenContext) as GenericContent[]
+  const isCurrentChildrenLoading = useContext(CurrentChildrenIsLoadingContext)
+  const children = useMemo(() => {
+    return [...currentChildren].sort((a, b) => {
+      const aIsFolder = a.Type?.toLowerCase().includes('folder') ?? false
+      const bIsFolder = b.Type?.toLowerCase().includes('folder') ?? false
 
-    if (aIsFolder && !bIsFolder) return -1
-    if (!aIsFolder && bIsFolder) return 1
+      if (aIsFolder && !bIsFolder) return -1
+      if (!aIsFolder && bIsFolder) return 1
 
-    return (a.DisplayName ?? '').localeCompare(b.DisplayName ?? '')
-  })
+      return (a.DisplayName ?? '').localeCompare(b.DisplayName ?? '')
+    })
+  }, [currentChildren])
 
   const theme = useTheme()
   const [contextMenuItem, setContextMenuItem] = useState<GenericContent | null>(null)
@@ -203,9 +208,11 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
     }
   }, [props.gridKey])
 
+  const showGridLoading = isGridLoading || isCurrentChildrenLoading
+
   return (
-    <DropFileArea parentContent={parentContent} style={{ height: '100%', overflow: 'hidden' }}>
-      {isGridLoading && (
+    <DropFileArea parentContent={parentContent} style={{ height: '100%', overflow: 'hidden', position: 'relative' }}>
+      {showGridLoading && (
         <LinearProgress
           style={{
             position: 'absolute',
@@ -216,12 +223,13 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
           }}
         />
       )}
-      <div ref={gridRef} style={{ height: '100%', width: '100%' }}>
+      <div ref={gridRef} style={{ height: '100%', width: '100%' }} aria-busy={showGridLoading}>
         <AgGridReact
           rowData={children}
           columnDefs={columnDefs}
           className={theme.palette.type === 'light' ? 'ag-theme-balham' : 'ag-theme-balham-dark'}
           rowSelection={'multiple'}
+          suppressReactUi={true}
           tooltipShowDelay={100}
           onRowDoubleClicked={onRowDoubleClicked}
           preventDefaultOnContextMenu={true}
@@ -233,6 +241,34 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
           suppressNoRowsOverlay={true}
         />
       </div>
+      {showGridLoading && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            zIndex: 9,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            pointerEvents: 'none',
+            backgroundColor: theme.palette.type === 'light' ? 'rgba(255, 255, 255, 0.55)' : 'rgba(18, 18, 18, 0.35)',
+          }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 12,
+              color: theme.palette.text.primary,
+            }}>
+            <CircularProgress size={34} />
+            <Typography variant="body2">{localization.loadingContent}</Typography>
+          </div>
+        </div>
+      )}
       {contextMenuItem && (
         <ContentContextMenu
           isOpened={isContextMenuOpened}
