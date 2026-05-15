@@ -13,10 +13,7 @@ COPY . .
 # Install dependencies
 RUN yarn install
 
-# Build packages (required for the app to work)
-RUN yarn build
-
-# Build the app bundle in production mode (avoids runtime webpack rebuild)
+# Build the app bundle in production mode (the snapp webpack config resolves workspace packages from src)
 RUN NODE_ENV=production yarn snapp build
 
 # Expose port
