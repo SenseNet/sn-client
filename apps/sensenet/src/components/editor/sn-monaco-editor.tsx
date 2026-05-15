@@ -1,6 +1,6 @@
 import { Button, createStyles, makeStyles, useTheme } from '@material-ui/core'
 import { clsx } from 'clsx'
-import React, { lazy, useContext, useRef } from 'react'
+import React, { lazy, useContext, useEffect, useRef, useState } from 'react'
 import { Prompt, useHistory } from 'react-router'
 import { PATHS } from '../../application-paths'
 import { ResponsiveContext } from '../../context'
@@ -66,7 +66,7 @@ export interface SnMonacoEditorProps {
   savedTextValue: string
   hasChanges: boolean
   uri: import('react-monaco-editor').monaco.Uri
-  handleSubmit: Function
+  handleSubmit: () => void | Promise<unknown>
   renderTitle: () => JSX.Element
   additionalButtons?: JSX.Element
   handleCancel?: () => void
@@ -81,6 +81,34 @@ export const SnMonacoEditor: React.FunctionComponent<SnMonacoEditorProps> = (pro
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const formSubmitButton = useRef<HTMLButtonElement>(null)
+  const isMountedRef = useRef(true)
+  const isSubmittingRef = useRef(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
+    ev.preventDefault()
+    if (isSubmittingRef.current) {
+      return
+    }
+
+    isSubmittingRef.current = true
+    setIsSubmitting(true)
+
+    try {
+      await props.handleSubmit()
+    } finally {
+      isSubmittingRef.current = false
+      if (isMountedRef.current) {
+        setIsSubmitting(false)
+      }
+    }
+  }
+
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false
+    }
+  }, [])
 
   const renderPresets = () => {
     if (props.preset?.includes(PATHS.contentTypes.snPath)) {
@@ -98,10 +126,7 @@ export const SnMonacoEditor: React.FunctionComponent<SnMonacoEditorProps> = (pro
     <div data-test="editor-wrapper" className={classes.editorWrapper}>
       <form
         className={classes.form}
-        onSubmit={(ev) => {
-          ev.preventDefault()
-          props.handleSubmit()
-        }}
+        onSubmit={handleSubmit}
         onKeyDown={async (ev) => {
           if (ev.key.toLowerCase() === 's' && ev.ctrlKey) {
             try {
@@ -135,11 +160,12 @@ export const SnMonacoEditor: React.FunctionComponent<SnMonacoEditorProps> = (pro
             <Button
               data-test="monaco-editor-submit"
               aria-label={localization.forms.submit}
+              aria-busy={isSubmitting}
               variant="contained"
               color="primary"
               type="submit"
               ref={formSubmitButton}
-              disabled={!props.hasChanges}>
+              disabled={!props.hasChanges || isSubmitting}>
               {localization.forms.submit}
             </Button>
           </div>

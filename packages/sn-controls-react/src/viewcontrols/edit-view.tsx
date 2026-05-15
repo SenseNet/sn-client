@@ -23,7 +23,7 @@ export interface EditViewProps {
   actionName?: ActionName
   content?: GenericContent
   contentTypeName: string
-  onSubmit?: (content: Partial<GenericContent>, contentTypeName?: string) => void
+  onSubmit?: (content: Partial<GenericContent>, contentTypeName?: string) => void | Promise<unknown>
   renderIcon?: (name: string) => ReactElement
   renderTitle?: () => ReactElement
   handleCancel?: () => void
@@ -105,7 +105,10 @@ export const EditView: React.FC<EditViewProps> = (props) => {
   const [advancedFields, setAdvancedFields] = useState<AdvancedFieldGroup[]>([])
   const [advancedFieldStateGroup, setAdvancedFieldStateGroup] = useState<Array<{ key: string; isOpened: boolean }>>([])
   const contentRef = useRef({})
+  const isMountedRef = useRef(true)
+  const isSubmittingRef = useRef(false)
   const [content, setContent] = useState(contentRef.current)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   contentRef.current = content
   const classes = useStyles(props)
   const repository = useRepository()
@@ -114,9 +117,23 @@ export const EditView: React.FC<EditViewProps> = (props) => {
 
   let isAutofocusSet = false
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    props.onSubmit?.(content, schema.schema.ContentTypeName)
+    if (isSubmittingRef.current) {
+      return
+    }
+
+    isSubmittingRef.current = true
+    setIsSubmitting(true)
+
+    try {
+      await props.onSubmit?.(content, schema.schema.ContentTypeName)
+    } finally {
+      isSubmittingRef.current = false
+      if (isMountedRef.current) {
+        setIsSubmitting(false)
+      }
+    }
   }
 
   const handleInputChange = (field: string, value: unknown) => {
@@ -129,6 +146,12 @@ export const EditView: React.FC<EditViewProps> = (props) => {
     })
     return () => schemaObservable.dispose()
   }, [repository.schemas, actionName, controlMapper, props.contentTypeName])
+
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false
+    }
+  }, [])
 
   useEffect(() => {
     if (actionName && schema) {
@@ -280,8 +303,10 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         </MediaQuery>
         <Button
           aria-label={props.localization?.submit || 'Submit'}
+          aria-busy={isSubmitting}
           type="submit"
           data-test="submit"
+          disabled={isSubmitting}
           form={`edit-form-${uniqueId}`}
           variant="contained"
           color="primary">

@@ -18,7 +18,7 @@ services:
       - sensenet-app-node-modules:/app/apps/sensenet/node_modules
     command: sh -c "yarn build && yarn snapp start"
     healthcheck:
-      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:4052/" ]
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:8080/" ]
       interval: 30s
       timeout: 3s
       start_period: 120s

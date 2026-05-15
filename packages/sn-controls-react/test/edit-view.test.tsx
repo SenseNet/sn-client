@@ -90,6 +90,37 @@ describe('Edit view component', () => {
     wrapper.find('[component="form"]').simulate('submit', { preventDefault: jest.fn() })
     expect(onSubmit).toBeCalledWith({ VersioningMode: '1' }, 'GenericContent')
   })
+
+  it('should prevent duplicate submits while submit is pending', async () => {
+    let resolveSubmit: () => void = () => undefined
+    const onSubmit = jest.fn(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveSubmit = resolve
+        }),
+    )
+    const wrapper = shallow(
+      <EditView repository={testRepository} onSubmit={onSubmit} content={testFile} contentTypeName={testFile.Type} />,
+    )
+    const event = { preventDefault: jest.fn() }
+
+    act(() => {
+      wrapper.find('[component="form"]').simulate('submit', event)
+      wrapper.find('[component="form"]').simulate('submit', event)
+    })
+    wrapper.update()
+
+    expect(onSubmit).toBeCalledTimes(1)
+    expect(wrapper.find('[data-test="submit"]').prop('disabled')).toBe(true)
+
+    await act(async () => {
+      resolveSubmit()
+      await Promise.resolve()
+    })
+    wrapper.update()
+
+    expect(wrapper.find('[data-test="submit"]').prop('disabled')).toBe(false)
+  })
   //Advanced field tests
   it('Advanced field inputs in a group should be invisible by default', () => {
     const wrapper = mount(
