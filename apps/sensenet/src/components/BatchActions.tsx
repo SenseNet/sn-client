@@ -2,10 +2,12 @@ import { createStyles, IconButton, makeStyles, Theme, Tooltip } from '@material-
 import DeleteIcon from '@material-ui/icons/Delete'
 import FileCopyIcon from '@material-ui/icons/FileCopy'
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
+import GetAppIcon from '@material-ui/icons/GetApp'
 import { CurrentContentContext } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { useGlobalStyles } from '../globalStyles'
 import { useLocalization, useSelectionService } from '../hooks'
+import { CsvExportDialog } from './CsvExportDialog'
 import { useDialog } from './dialogs'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -37,6 +39,7 @@ export const BatchActions = () => {
   const classes = useStyles()
   const { openDialog } = useDialog()
   const [selected, setSelected] = useState(selectionService.selection.getValue())
+  const [isExportDialogOpen, setIsExportDialogOpen] = useState(false)
   const parent = useContext(CurrentContentContext)
 
   useEffect(() => {
@@ -51,6 +54,24 @@ export const BatchActions = () => {
 
   return (
     <div className={classes.batchActionWrapper} data-test="batch-actions">
+      <Tooltip title={localization.batchActions.exportCsv} placement="bottom">
+        <span>
+          <IconButton
+            className={classes.actionButton}
+            data-test="batch-export-csv"
+            aria-label="export-csv"
+            disabled={selected.length === 0}
+            onClick={() => setIsExportDialogOpen(true)}>
+            <GetAppIcon />
+          </IconButton>
+        </span>
+      </Tooltip>
+      <CsvExportDialog
+        open={isExportDialogOpen}
+        selected={selected}
+        parent={parent}
+        onClose={() => setIsExportDialogOpen(false)}
+      />
       <Tooltip title={localization.batchActions.delete} placement="bottom">
         <span>
           <IconButton
