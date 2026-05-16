@@ -31,6 +31,7 @@ const fileDownloadBatchSize = 4
 const zipUtf8Flag = 0x0800
 const zipVersionNeeded = 20
 const textEncoder = new TextEncoder()
+const invalidZipPathCharacters = new Set(['\\', '/', ':', '*', '?', '"', '<', '>', '|'])
 
 const crc32Table = (() => {
   const table = new Uint32Array(256)
@@ -75,7 +76,9 @@ const getContentDate = (content: GenericContent) => {
 
 const sanitizeZipPathSegment = (value: string | number | undefined) => {
   const segment = String(value || 'content')
-    .replace(/[\\/:*?"<>|\x00-\x1f]/g, '_')
+    .split('')
+    .map((character) => (invalidZipPathCharacters.has(character) || character.charCodeAt(0) < 32 ? '_' : character))
+    .join('')
     .trim()
 
   return segment || 'content'
@@ -124,8 +127,9 @@ const createZipEntry = (path: string, data: Uint8Array, date: Date, isDirectory 
 const loadAllChildren = async (repository: Repository, path: string) => {
   const children: GenericContent[] = []
   let skip = 0
+  let hasMoreChildren = true
 
-  while (true) {
+  while (hasMoreChildren) {
     const result = await repository.loadCollection<GenericContent>({
       path,
       oDataOptions: {
@@ -139,10 +143,7 @@ const loadAllChildren = async (repository: Repository, path: string) => {
 
     children.push(...loadedChildren)
 
-    if (loadedChildren.length < contentLoadBatchSize) {
-      break
-    }
-
+    hasMoreChildren = loadedChildren.length === contentLoadBatchSize
     skip += contentLoadBatchSize
   }
 

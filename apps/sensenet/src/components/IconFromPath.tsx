@@ -6,7 +6,7 @@ import { IconOptions } from './Icon'
 const iconCache = new Map<string, string | null>()
 const iconRequestCache = new Map<string, Promise<string | null>>()
 
-const loadIcon = (path: string, options: IconOptions) => {
+const loadIcon = (path: string, repo: IconOptions['repo']) => {
   if (iconCache.has(path)) {
     return Promise.resolve(iconCache.get(path)!)
   }
@@ -17,7 +17,7 @@ const loadIcon = (path: string, options: IconOptions) => {
     return pendingRequest
   }
 
-  const imageUrl = PathHelper.joinPaths(options.repo.configuration.repositoryUrl, path)
+  const imageUrl = PathHelper.joinPaths(repo.configuration.repositoryUrl, path)
   const request = (async () => {
     if (!path.endsWith('.svg')) {
       iconCache.set(path, imageUrl)
@@ -25,7 +25,7 @@ const loadIcon = (path: string, options: IconOptions) => {
     }
 
     try {
-      const response = await options.repo.fetch(imageUrl, { cache: 'force-cache' })
+      const response = await repo.fetch(imageUrl, { cache: 'force-cache' })
 
       if (!response.ok) {
         iconCache.set(path, null)
@@ -50,6 +50,7 @@ const loadIcon = (path: string, options: IconOptions) => {
 }
 
 const IconFromPath = ({ path, options }: { path: string; options: IconOptions }) => {
+  const { repo, style } = options
   const [icon, setIcon] = useState<string | null>(() => iconCache.get(path) || null)
 
   useEffect(() => {
@@ -61,7 +62,7 @@ const IconFromPath = ({ path, options }: { path: string; options: IconOptions })
     }
 
     setIcon(null)
-    loadIcon(path, options).then((loadedIcon) => {
+    loadIcon(path, repo).then((loadedIcon) => {
       if (isMounted) {
         setIcon(loadedIcon)
       }
@@ -70,18 +71,18 @@ const IconFromPath = ({ path, options }: { path: string; options: IconOptions })
     return () => {
       isMounted = false
     }
-  }, [path, options.repo])
+  }, [path, repo])
 
   // Memoize the rendered output to prevent unnecessary DOM updates
   const renderedIcon = useMemo(() => {
     if (!icon) return null
 
     return path.endsWith('.svg') ? (
-      <span dangerouslySetInnerHTML={{ __html: icon }} style={options.style} aria-hidden="true" />
+      <span dangerouslySetInnerHTML={{ __html: icon }} style={style} aria-hidden="true" />
     ) : (
-      <img src={icon} alt="icon" style={options.style} />
+      <img src={icon} alt="icon" style={style} />
     )
-  }, [icon, path, options.style])
+  }, [icon, path, style])
 
   return renderedIcon
 }

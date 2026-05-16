@@ -5,6 +5,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsProvider,
   CurrentChildrenProvider,
+  CurrentContentContext,
   CurrentContentProvider,
   LoadSettingsContextProvider,
   useRepository,
@@ -26,6 +27,7 @@ import { Grid } from '../grid/Grid'
 import { SimpleTree } from '../tree/simpletree'
 import { BrowseView, EditView, ImageView, NewView, PermissionView, VersionView } from '../view-controls'
 import WopiPage from '../wopi-page'
+import { AUI_APPLICATION_CONTENT_TYPE, AUIApplicationView } from './AUIApplicationView'
 import { ContentInfo } from './ContentInfo'
 
 const requiredGridLoadFields: ODataFieldParameter<GenericContent> = [
@@ -165,6 +167,51 @@ export type ExploreProps = {
   gridKey: GridKeyEnum
 }
 
+type ExploreGridOrApplicationProps = {
+  currentPath: string
+  fieldsToDisplay?: Array<ColumnSetting<GenericContent>>
+  schema?: string
+  disableColumnSettings?: boolean
+  colDef: ColDef[]
+  gridKey: GridKeyEnum
+  onNavigate: (content: GenericContent) => void
+  onActivateItem: (activeItem: GenericContent) => Promise<void>
+}
+
+const ExploreGridOrApplication: React.FC<ExploreGridOrApplicationProps> = ({
+  currentPath,
+  fieldsToDisplay,
+  schema,
+  disableColumnSettings,
+  colDef,
+  gridKey,
+  onNavigate,
+  onActivateItem,
+}) => {
+  const selectionService = useSelectionService()
+  const currentContent = useContext(CurrentContentContext)
+
+  if (currentContent.Type === AUI_APPLICATION_CONTENT_TYPE) {
+    return <AUIApplicationView />
+  }
+
+  return (
+    <Grid
+      disableColumnSettings={disableColumnSettings}
+      style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
+      enableBreadcrumbs={false}
+      fieldsToDisplay={fieldsToDisplay}
+      schema={schema}
+      onParentChange={onNavigate}
+      onActivateItem={onActivateItem}
+      onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
+      parentIdOrPath={currentPath}
+      colDef={colDef}
+      gridKey={gridKey}
+    />
+  )
+}
+
 export function Explore({
   currentPath,
   onNavigate,
@@ -181,7 +228,6 @@ export function Explore({
   gridKey,
 }: ExploreProps) {
   const theme = useTheme()
-  const selectionService = useSelectionService()
   const [width, setWidth] = useState<number>(Number(localStorage.getItem('treeWidth') ?? '400'))
   const classes = useStyles({ width })
   const globalClasses = useGlobalStyles()
@@ -295,16 +341,13 @@ export function Explore({
       <>
         {renderBeforeGrid?.()}
         <ContentInfo />
-        <Grid
+        <ExploreGridOrApplication
           disableColumnSettings={disableColumnSettings}
-          style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
-          enableBreadcrumbs={false}
           fieldsToDisplay={fieldsToDisplay}
           schema={schema}
-          onParentChange={onNavigate}
+          onNavigate={onNavigate}
           onActivateItem={onActivateItemOverride}
-          onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
-          parentIdOrPath={currentPath}
+          currentPath={currentPath}
           colDef={colDef}
           gridKey={gridKey}
         />

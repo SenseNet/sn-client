@@ -298,6 +298,7 @@ const values = {
     saveSuccessNotification: `The changes of '{0}' has been saved`,
     saveFailedNotification: `Failed to save changes of content '{0}'`,
     presets: 'Presets',
+    contentTypeTemplates: 'Content type templates',
     hints: {
       newContentTypeEditHint: `Please edit the <b>name</b>, <b>parent type</b> and <b>handler</b> attributes before saving!`,
       contentTypeTutorialrefenceHint: `Further <a href="https://docs.sensenet.com/tutorials/content-types" target="_blank" rel="noopener noreferrer"> informations </a>`,
