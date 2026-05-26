@@ -21,6 +21,7 @@ const values = {
   commandPalette: {
     title: 'Search',
     clear: 'Clear',
+    actions: 'Actions',
     help: {
       readMeTitle: 'ReadMe',
       readMeDescription: 'Opens the latest readme.md file from GitHub in a new window',

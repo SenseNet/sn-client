@@ -11,6 +11,7 @@ const values: Localization = {
   },
   commandPalette: {
     title: 'Command palette megnyitása',
+    actions: 'Műveletek',
     searchSuggestionList: 'Keresési javaslatok listája',
   },
   contentInfoDialog: {
