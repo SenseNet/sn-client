@@ -14,6 +14,7 @@ import {
   DeleteContentDialogProps,
   ExecuteActionDialogProps,
   OperationsDialogProps,
+  ODataActionsDialogProps,
   PermissionEditorDialogProps,
   ReferenceContentListProps,
   RestoreProps,
@@ -26,6 +27,7 @@ export type DialogWithProps = (
   | { name: 'error'; props: ErrorBoundaryState }
   | { name: 'copy-move'; props: CopyMoveDialogProps }
   | { name: 'operation'; props: OperationsDialogProps }
+  | { name: 'odata-actions'; props: ODataActionsDialogProps }
   | { name: 'check-in'; props: CheckInProps }
   | { name: 'are-you-sure'; props: AreYouSureProps }
   | { name: 'approve'; props: ApproveProps }

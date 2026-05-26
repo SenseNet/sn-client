@@ -204,6 +204,15 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
           },
         })
         break
+      case 'ODataActions':
+        openDialog({
+          name: 'odata-actions',
+          props: {
+            content,
+          },
+          dialogProps: { classes: { paper: globalClasses.pickerDialog } },
+        })
+        break
       /*Az az új hozzáállás, hogy ha nem találja meg az action-t akkor jöjjön be az operation kezelő.
         Ezt majd le kell!! cserélni úgy, hogy vizsgálva legyen a Type-ja*/
       default:

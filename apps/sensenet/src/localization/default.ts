@@ -502,6 +502,19 @@ const values = {
     unavailableRegenSecret: 'Currently regenerate secret is unavailable',
   },
   customActions: {
+    oDataActionsDialog: {
+      menuTitle: 'OData Actions',
+      title: `OData Actions for '{0}'`,
+      actionLabel: 'Action',
+      loadingActions: 'Loading OData actions...',
+      noActions: 'There are no OData actions available for this content.',
+      loadError: 'Failed to load OData actions.',
+      parameters: 'Parameters',
+      noParameters: 'The selected action does not have any parameters.',
+      cancelButton: 'Cancel',
+      executeButton: 'Execute',
+      executingAction: 'Executing OData action...',
+    },
     executeCustomActionDialog: {
       title: `Execute custom action '{0}' on content '{1}'`,
       noParameters: 'The action does not have any parameters',

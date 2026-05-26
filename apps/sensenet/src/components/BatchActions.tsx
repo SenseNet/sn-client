@@ -1,5 +1,6 @@
 import { CircularProgress, createStyles, IconButton, makeStyles, Theme, Tooltip } from '@material-ui/core'
 import ArchiveIcon from '@material-ui/icons/Archive'
+import AppsIcon from '@material-ui/icons/Apps'
 import DeleteIcon from '@material-ui/icons/Delete'
 import FileCopyIcon from '@material-ui/icons/FileCopy'
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
@@ -99,6 +100,24 @@ export const BatchActions = () => {
 
   return (
     <div className={classes.batchActionWrapper} data-test="batch-actions">
+      <Tooltip title={localization.customActions.oDataActionsDialog.menuTitle} placement="bottom">
+        <span>
+          <IconButton
+            className={classes.actionButton}
+            data-test="batch-odata-actions"
+            aria-label="odata-actions"
+            disabled={selected.length !== 1}
+            onClick={() =>
+              openDialog({
+                name: 'odata-actions',
+                props: { content: selected[0] },
+                dialogProps: { classes: { paper: globalClasses.pickerDialog } },
+              })
+            }>
+            <AppsIcon />
+          </IconButton>
+        </span>
+      </Tooltip>
       <Tooltip title={localization.batchActions.exportCsv} placement="bottom">
         <span>
           <IconButton
