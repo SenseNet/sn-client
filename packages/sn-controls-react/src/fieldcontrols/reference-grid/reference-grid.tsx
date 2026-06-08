@@ -3,20 +3,23 @@ import {
   createStyles,
   Dialog,
   DialogProps,
+  DialogTitle,
   FormControl,
   makeStyles,
   TextField,
   Typography,
   useTheme,
 } from '@material-ui/core'
-import { PathHelper } from '@sensenet/client-utils'
+import { deepMerge, PathHelper } from '@sensenet/client-utils'
 import { GenericContent, ReferenceFieldSetting, User } from '@sensenet/default-content-types'
 import { GenericContentWithIsParent, PickerAdvanced, PickerClassKey } from '@sensenet/pickers-react'
 import { ColDef } from 'ag-grid-community'
 import { AgGridReact } from 'ag-grid-react'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { ElementType, useCallback, useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from '../client-field-setting'
 import CustomLabel from '../label/custom-label'
+import { defaultLocalization } from '../localization'
+import { buildCustomPath, getAppPathAndContent, Paths } from './default-item-template'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -54,50 +57,28 @@ const useStyles = makeStyles(() =>
       padding: '8px 8px 0',
       border: '2px solid grey',
     },
+    pathCell: {
+      cursor: 'pointer',
+      '&[data-clickable="true"]:hover': {
+        textDecoration: 'underline',
+      },
+    },
   }),
 )
 
-const referemceGridColumns: ColDef[] = [
-  {
-    headerName: 'Path',
-    field: 'Path',
-    headerTooltip: 'Path',
-    flex: 5,
-    filter: true,
-    sortable: true,
-    comparator: (a: string, b: string) => a.toLowerCase().localeCompare(b.toLowerCase()),
-    resizable: true,
-  },
-  {
-    headerName: 'Display Name',
-    field: 'DisplayName',
-    headerTooltip: 'Display Name',
-    flex: 1.5,
-    filter: true,
-    sortable: true,
-    comparator: (a: string, b: string) => a.toLowerCase().localeCompare(b.toLowerCase()),
-    resizable: true,
-  },
-  {
-    headerName: 'Type',
-    field: 'Type',
-    headerTooltip: 'Type',
-    flex: 1,
-    filter: true,
-    sortable: true,
-    resizable: true,
-  },
-]
-
 interface ReferenceGridProps extends ReactClientFieldSetting<ReferenceFieldSetting> {
   dialogProps?: Partial<DialogProps>
+  dialogTitleComponent?: ElementType
   renderPickerIcon: (item: GenericContentWithIsParent | User) => JSX.Element
   pickerClasses?: PickerClassKey
+  paths: Paths
 }
 
 export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
   const theme = useTheme()
   const classes = useStyles()
+  const localization = deepMerge(defaultLocalization.referenceGrid, props.localization?.referenceGrid)
+  const DialogTitleComponent = props.dialogTitleComponent ?? DialogTitle
 
   const [isPickerOpen, setIsPickerOpen] = useState(false)
   const [fieldValue, setFieldValue] = useState<GenericContent[]>([])
@@ -161,6 +142,18 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
     handleDialogClose()
   }
 
+  const navigateToReference = (content: GenericContent) => {
+    if (!content?.Path || content.Id === -1 || !props.paths) {
+      return
+    }
+    const referencedItemPaths = getAppPathAndContent(props.paths, content.Path)
+    if (!referencedItemPaths) {
+      return
+    }
+    const { appPath, contentePath } = referencedItemPaths
+    window.location.href = buildCustomPath(appPath, props.actionName, contentePath)
+  }
+
   const getDefaultValue = useCallback(async () => {
     if (!props.settings.DefaultValue || !props.repository) {
       return
@@ -215,6 +208,51 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
     cellStyle: { padding: 0 },
   }
 
+  const pathCol: ColDef = {
+    headerName: 'Path',
+    field: 'Path',
+    headerTooltip: 'Path',
+    flex: 5,
+    filter: true,
+    sortable: true,
+    comparator: (a: string, b: string) => a.toLowerCase().localeCompare(b.toLowerCase()),
+    resizable: true,
+    cellRenderer: (x: { data: GenericContent; value: string }) => {
+      const clickable = Boolean(props.paths && x.data?.Id !== -1)
+      return (
+        <span
+          className={classes.pathCell}
+          data-clickable={clickable}
+          onClick={() => clickable && navigateToReference(x.data)}>
+          {x.value}
+        </span>
+      )
+    },
+  }
+
+  const displayNameCol: ColDef = {
+    headerName: 'Display Name',
+    field: 'DisplayName',
+    headerTooltip: 'Display Name',
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    comparator: (a: string, b: string) => a.toLowerCase().localeCompare(b.toLowerCase()),
+    resizable: true,
+  }
+
+  const typeCol: ColDef = {
+    headerName: 'Type',
+    field: 'Type',
+    headerTooltip: 'Type',
+    flex: 1,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  }
+
+  const dataCols: ColDef[] = [pathCol, displayNameCol, typeCol]
+
   const removeCol: ColDef = {
     headerName: '',
     field: '',
@@ -243,7 +281,11 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
     case 'new':
     case 'edit':
       return (
-        <FormControl className={classes.root} component={'fieldset' as 'div'} required={props.settings.Compulsory}>
+        <FormControl
+          data-test="edit-refence"
+          className={classes.root}
+          component={'fieldset' as 'div'}
+          required={props.settings.Compulsory}>
           <TextField
             name={props.content?.Name}
             autoComplete="off"
@@ -261,7 +303,7 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
           <div style={{ width: '100%' }}>
             <AgGridReact
               rowData={fieldValue}
-              columnDefs={[iconCol, ...referemceGridColumns, removeCol]}
+              columnDefs={[iconCol, ...dataCols, removeCol]}
               className={`${classes.grid} ${
                 theme.palette.type === 'light' ? 'ag-theme-balham' : 'ag-theme-balham-dark'
               }`}
@@ -278,6 +320,7 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
             onClose={handleDialogClose}
             open={isPickerOpen}
             {...props.dialogProps}>
+            <DialogTitleComponent style={{ width: '100%' }}>{localization.referencePickerTitle}</DialogTitleComponent>
             <PickerAdvanced
               defaultValue={fieldValue}
               repository={props.repository!}
@@ -297,17 +340,23 @@ export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {
           <Typography variant="caption" gutterBottom={true}>
             {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
-          <div style={{ height: `${35 + (fieldValue?.length || 0) * 27}px`, width: '100%' }}>
-            <AgGridReact
-              rowData={fieldValue}
-              columnDefs={[iconCol, ...referemceGridColumns]}
-              className={`${classes.grid} ${
-                theme.palette.type === 'light' ? 'ag-theme-balham' : 'ag-theme-balham-dark'
-              }`}
-              tooltipShowDelay={100}
-              suppressNoRowsOverlay={true}
-            />
-          </div>
+          {fieldValue?.length ? (
+            <div style={{ height: `${35 + fieldValue.length * 27}px`, width: '100%' }}>
+              <AgGridReact
+                rowData={fieldValue}
+                columnDefs={[iconCol, ...dataCols]}
+                className={`${classes.grid} ${
+                  theme.palette.type === 'light' ? 'ag-theme-balham' : 'ag-theme-balham-dark'
+                }`}
+                tooltipShowDelay={100}
+                suppressNoRowsOverlay={true}
+              />
+            </div>
+          ) : (
+            <Typography variant="body1" gutterBottom={true}>
+              {localization.noValue}
+            </Typography>
+          )}
         </FormControl>
       )
     }

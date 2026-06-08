@@ -1,29 +1,42 @@
-import { Button, createStyles, DialogActions, DialogContent, makeStyles, TextField } from '@material-ui/core'
+import {
+  Button,
+  CircularProgress,
+  createStyles,
+  DialogActions,
+  DialogContent,
+  makeStyles,
+  TextField,
+} from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository, useSession } from '@sensenet/hooks-react'
 import React, { useEffect, useRef, useState } from 'react'
-import { useCurrentUser } from '../../context'
-import { useGlobalStyles } from '../../globalStyles'
-import { useLocalization } from '../../hooks'
-import { Icon } from '../Icon'
-import { DialogTitle, useDialog } from '.'
-
+import { DialogTitle, useDialog } from '..'
+import { useCurrentUser } from '../../../context'
+import { useGlobalStyles } from '../../../globalStyles'
+import { useLocalization } from '../../../hooks'
+import { Icon } from '../../Icon'
+import { InfluenceField, TInfluenceField } from './influenceField'
 export interface OperationsDialogProps {
   content: GenericContent
   OperationName: string
 }
-/*Ezt itt jól ki kell dolgozni!!! nem végleges csak demora van egyszerűsítve
-  Valószínüleg nem is itt lesz a végleges helye hanem ott ahol a GenericContent van
-*/
-type UIDescription = {
+/*Ezt itt jól ki kell dolgozni!!! nem végleges csak demora van egyszerűsítve*/
+
+type baseDescriptionFields = {
   title?: string
   submitTitle?: string
-  elements: Array<{
-    name?: string
-    description?: string
-    inputProps: React.HTMLProps<HTMLInputElement>
-  }>
 }
+
+type simpleInputField = {
+  name?: string
+  description?: string
+  inputProps: React.HTMLProps<HTMLInputElement>
+}
+
+type UIDescription =
+  | baseDescriptionFields & {
+      elements: Array<simpleInputField | TInfluenceField>
+    }
 
 type OperationResult = {
   ToastMessage?: string
@@ -61,6 +74,7 @@ export function OperationsDialog(props: OperationsDialogProps) {
   const globalClasses = useGlobalStyles()
 
   const [UIDescription, setUIDescription] = useState<UIDescription>()
+  const [isOperationSubmiting, setIsOperationSubmiting] = useState(false)
 
   useEffect(() => {
     const loadOperation = async () => {
@@ -80,6 +94,7 @@ export function OperationsDialog(props: OperationsDialogProps) {
   }, [logger, props.OperationName, props.content.Path, repository])
 
   const submitAction = async (e: React.FormEvent<HTMLFormElement>) => {
+    setIsOperationSubmiting(true)
     e.preventDefault()
     if (!formRef.current) return
 
@@ -98,13 +113,15 @@ export function OperationsDialog(props: OperationsDialogProps) {
         body: formJson,
       })
 
-      const success = `: ${result?.ToastMessage}` || ''
+      const success = result.ToastMessage ? `: ${result?.ToastMessage}` : ''
 
       logger.information({ message: `${localization.success}${success}` })
 
       closeLastDialog()
     } catch (error) {
       logger.error({ message: error.message })
+    } finally {
+      setIsOperationSubmiting(false)
     }
   }
 
@@ -132,6 +149,10 @@ export function OperationsDialog(props: OperationsDialogProps) {
               submitAction(e)
             }}>
             {UIDescription?.elements?.map((field, index) => {
+              if ('radioOptions' in field) {
+                return <InfluenceField {...field} key={index} />
+              }
+
               const { inputProps, description, name } = field
 
               return (
@@ -160,6 +181,8 @@ export function OperationsDialog(props: OperationsDialogProps) {
             color="primary"
             variant="contained"
             type="submit"
+            disabled={isOperationSubmiting}
+            endIcon={isOperationSubmiting && <CircularProgress size={20} />}
             autoFocus={true}>
             {UIDescription?.submitTitle || localization.submit}
           </Button>
