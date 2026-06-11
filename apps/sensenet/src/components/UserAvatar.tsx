@@ -23,7 +23,9 @@ export const UserAvatar: FC<{
   }
   return (
     <Avatar
+      {...props.avatarProps}
       style={{
+        ...props.avatarProps?.style,
         ...props.style,
       }}>
       {(props.user?.DisplayName && props.user.DisplayName[0])?.toUpperCase() ||
