@@ -24,7 +24,7 @@ const ChangePasswordDialog = lazy(() => import('./change-password'))
 const DateRangePicker = lazy(() => import('./date-range-picker'))
 const AddDeleteUserGroups = lazy(() => import('./add-delete-user-groups'))
 const ColumnSettings = lazy(() => import('./column-settings'))
-const Operations = lazy(() => import('./operations'))
+const Operations = lazy(() => import('./operations/operations'))
 
 function dialogRenderer(dialog: DialogWithProps) {
   switch (dialog.name) {
