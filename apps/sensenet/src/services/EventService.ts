@@ -10,6 +10,7 @@ export class EventService {
   public static storageDebounceInterval = 1000
 
   public static storageKey = `sn-app-eventservice-events`
+  private static maxStoredEventLogLength = 500000
 
   public dismiss(entry: EventLogEntry<any>) {
     this.values.setValue(
@@ -34,8 +35,55 @@ export class EventService {
   private storeChanges = debounce(() => {
     const values = [...this.values.getValue()]
     const entries = values.slice(values.length - this.personalSettings.effectiveValue.getValue().eventLogSize)
-    localStorage.setItem(EventService.storageKey, JSON.stringify(entries))
+    EventService.storeEntries(entries)
   }, EventService.storageDebounceInterval)
+
+  private static storeEntries(entries: Array<EventLogEntry<any>>) {
+    try {
+      localStorage.setItem(EventService.storageKey, JSON.stringify(entries))
+    } catch {
+      try {
+        localStorage.setItem(EventService.storageKey, JSON.stringify(EventService.getCompactEntries(entries)))
+      } catch {
+        localStorage.removeItem(EventService.storageKey)
+      }
+    }
+  }
+
+  private static getStoredEntries(): Array<EventLogEntry<any & { guid: string }>> {
+    const storedEntries = localStorage.getItem(EventService.storageKey)
+
+    if (!storedEntries) {
+      return []
+    }
+
+    if (storedEntries.length > EventService.maxStoredEventLogLength) {
+      localStorage.removeItem(EventService.storageKey)
+      return []
+    }
+
+    try {
+      const parsedEntries = JSON.parse(storedEntries)
+
+      return Array.isArray(parsedEntries) ? EventService.getCompactEntries(parsedEntries) : []
+    } catch {
+      localStorage.removeItem(EventService.storageKey)
+      return []
+    }
+  }
+
+  private static getCompactEntries(entries: Array<EventLogEntry<any>>) {
+    return entries.map((entry) => ({
+      ...entry,
+      data: {
+        added: entry.data?.added,
+        digestMessage: entry.data?.digestMessage,
+        guid: entry.data?.guid,
+        isDismissed: entry.data?.isDismissed,
+        multiple: entry.data?.multiple,
+      },
+    }))
+  }
 
   public add(...notifications: Array<EventLogEntry<any>>) {
     // const newValues = this.values.getValue().push())
@@ -54,7 +102,7 @@ export class EventService {
   }
 
   public values: ObservableValue<Array<EventLogEntry<any & { guid: string }>>> = new ObservableValue(
-    JSON.parse(localStorage.getItem(EventService.storageKey) || '[]') || [],
+    EventService.getStoredEntries(),
   )
 
   public notificationValues: ObservableValue<{ [key: string]: Array<EventLogEntry<any>> }> = new ObservableValue(

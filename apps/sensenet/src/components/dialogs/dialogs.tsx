@@ -25,6 +25,7 @@ const DateRangePicker = lazy(() => import('./date-range-picker'))
 const AddDeleteUserGroups = lazy(() => import('./add-delete-user-groups'))
 const ColumnSettings = lazy(() => import('./column-settings'))
 const Operations = lazy(() => import('./operations/operations'))
+const ODataActions = lazy(() => import('./odata-actions'))
 
 function dialogRenderer(dialog: DialogWithProps) {
   switch (dialog.name) {
@@ -72,6 +73,8 @@ function dialogRenderer(dialog: DialogWithProps) {
       return <ColumnSettings {...dialog.props} />
     case 'operation':
       return <Operations {...dialog.props} />
+    case 'odata-actions':
+      return <ODataActions {...dialog.props} />
     default:
       return null
   }

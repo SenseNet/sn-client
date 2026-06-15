@@ -47,6 +47,7 @@ import { Repository } from '@sensenet/client-core'
 import { File } from '@sensenet/default-content-types'
 import { PickerAdvanced } from '@sensenet/pickers-react'
 import React, { useEffect, useRef } from 'react'
+import { createRepoFileDownloadMarkup } from './repo-file-plugin.utils'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -81,14 +82,7 @@ export const RepoFilePluginControl: React.FC<RepoFilePluginControlProps> = ({
   const handleInsert = (selection: File[]) => {
     const content = selection
       .filter((item) => item.IsFile)
-      .map((item) => {
-        const size = item.Size ? `(${(item.Size / 1024).toFixed(0)} KB)` : ''
-        return `<div class="download">
-          <div>${item.DisplayName}</div>
-          <a href="${item.Path}" target="_blank" rel="noopener">Download</a> ${size}
-          </div>
-          <p>&nbsp;</p>`
-      })
+      .map((item) => createRepoFileDownloadMarkup(item))
       .join('')
 
     editor.execCommand('mceInsertContent', false, content)

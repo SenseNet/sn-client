@@ -5,7 +5,7 @@ import { ActionModel, GenericContent, isActionModel } from '@sensenet/default-co
 import { useLogger, useWopi } from '@sensenet/hooks-react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { ResponsiveContext } from '../../../context'
-import { useLoadContent } from '../../../hooks'
+import { useLoadContent, useLocalization } from '../../../hooks'
 import { contextMenuODataOptions } from '../../context-menu/context-menu-odata-options'
 import { getIcon } from '../../context-menu/icons'
 import { useContextMenuActions } from '../../context-menu/use-context-menu-actions'
@@ -52,6 +52,7 @@ export function ActionFormatter(props: { data: Content }) {
 
   const { runAction } = useContextMenuActions(props.data, setActionsWopi)
   const device = useContext(ResponsiveContext)
+  const oDataActionsTitle = useLocalization().customActions.oDataActionsDialog.menuTitle
 
   useEffect(() => {
     if (content) {
@@ -65,12 +66,24 @@ export function ActionFormatter(props: { data: Content }) {
   const handleClose = () => {
     setAnchorEl(null)
   }
+  const runODataActions = () => {
+    setAnchorEl(null)
+    runAction('ODataActions')
+  }
   return (
     <>
       <IconButton aria-controls="simple-menu" className="simpleContextMenu" aria-haspopup="true" onClick={handleClick}>
         <MoreHoriz />
       </IconButton>
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+        <MenuItem
+          key="ODataActions"
+          disableRipple={true}
+          data-test="content-context-menu-odata-actions"
+          onClick={runODataActions}>
+          <ListItemIcon>{getIcon('odataactions')}</ListItemIcon>
+          <div style={{ flexGrow: 1 }}>{oDataActionsTitle}</div>
+        </MenuItem>
         {actions?.map((action) => {
           return (
             <MenuItem

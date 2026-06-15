@@ -14,6 +14,32 @@ type defaultSetting = {
   value: string
 }
 
+export const defaultContentTypeTemplates: defaultSetting[] = [
+  {
+    name: 'auiapplication',
+    title: 'AUIApplication CTD',
+    value: `<ContentType name="AUIApplication" parentType="Folder" handler="SenseNet.ContentRepository.Folder" xmlns="http://schemas.sensenet.com/SenseNet/ContentRepository/ContentTypeDefinition">
+  <DisplayName>Admin UI Application</DisplayName>
+  <Description>Custom Admin UI application that renders its HTML field instead of the folder grid.</Description>
+  <Icon>Content</Icon>
+  <AllowIncrementalNaming>true</AllowIncrementalNaming>
+  <Fields>
+    <Field name="Html" type="LongText">
+      <DisplayName>HTML</DisplayName>
+      <Description>HTML rendered by Admin UI when this content is opened. Referenced CSS and JavaScript files can be placed under this application folder and loaded with relative URLs.</Description>
+      <Configuration>
+        <TextType>LongText</TextType>
+        <ControlHint>sn:HtmlEditor</ControlHint>
+        <VisibleBrowse>Show</VisibleBrowse>
+        <VisibleEdit>Show</VisibleEdit>
+        <VisibleNew>Show</VisibleNew>
+      </Configuration>
+    </Field>
+  </Fields>
+</ContentType>`,
+  },
+]
+
 //CHANGE To comments
 export const defaultFieldSettings: defaultSetting[] = [
   {

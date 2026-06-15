@@ -107,6 +107,8 @@ export const TinymceEditor: FC<TinymceEditorProps> = (props) => {
           height: 500,
           menubar: true,
           automatic_uploads: true,
+          relative_urls: false,
+          remove_script_host: true,
           image_title: true,
           plugins: [
             'advlist',

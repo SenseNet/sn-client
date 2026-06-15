@@ -330,10 +330,15 @@ export const IconComponent: FunctionComponent<{
     ...defaultNotificationResolvers,
   ]
   const defaultIcon = props.defaultIcon || <WebAssetOutlined style={props.style} /> || null
-  const assignedResolver = resolvers.find((r) => (r.get(props.item, options) ? true : false))
-  if (assignedResolver) {
-    return assignedResolver.get(props.item, options)!
+
+  for (const resolver of resolvers) {
+    const icon = resolver.get(props.item, options)
+
+    if (icon) {
+      return icon
+    }
   }
+
   return defaultIcon
 }
 

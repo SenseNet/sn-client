@@ -1,13 +1,16 @@
-import { darken, Paper, useTheme } from '@material-ui/core'
+import { darken, IconButton, Paper, useTheme } from '@material-ui/core'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
+import MoreHoriz from '@material-ui/icons/MoreHoriz'
+import { GenericContent } from '@sensenet/default-content-types'
 import match from 'autosuggest-highlight/match'
 import parse from 'autosuggest-highlight/parse'
 import React, { FunctionComponent, useContext } from 'react'
 import { RenderSuggestionParams } from 'react-autosuggest'
 import { ResponsiveContext } from '../../context'
 import { globals } from '../../globalStyles'
+import { useLocalization } from '../../hooks'
 import { Icon } from '../Icon'
 import { CommandPaletteItem } from './CommandPalette'
 
@@ -35,9 +38,13 @@ export const getMatchParts = (hits: string[], term: string, actionParams?: strin
 export const CommandPaletteSuggestion: FunctionComponent<{
   suggestion: CommandPaletteItem
   params: RenderSuggestionParams
-}> = ({ suggestion, params }) => {
+  onOpenContextMenu: (ev: React.MouseEvent<HTMLButtonElement>, content: GenericContent) => void
+}> = ({ suggestion, params, onOpenContextMenu }) => {
   const device = useContext(ResponsiveContext)
   const theme = useTheme()
+  const localization = useLocalization().commandPalette
+  const canOpenContextMenu = typeof suggestion.content?.Id !== 'undefined'
+
   return (
     <Paper>
       <ListItem
@@ -68,6 +75,20 @@ export const CommandPaletteSuggestion: FunctionComponent<{
             },
           }}
         />
+        {canOpenContextMenu ? (
+          <IconButton
+            aria-label={localization.actions}
+            title={localization.actions}
+            edge="end"
+            data-test={`search-suggestion-actions-${suggestion.content?.Name?.replace(/\s+/g, '-').toLowerCase()}`}
+            onMouseDown={(ev) => onOpenContextMenu(ev, suggestion.content!)}
+            onClick={(ev) => {
+              ev.preventDefault()
+              ev.stopPropagation()
+            }}>
+            <MoreHoriz />
+          </IconButton>
+        ) : null}
       </ListItem>
     </Paper>
   )

@@ -5,6 +5,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsProvider,
   CurrentChildrenProvider,
+  CurrentContentContext,
   CurrentContentProvider,
   LoadSettingsContextProvider,
   useRepository,
@@ -12,7 +13,7 @@ import {
 import { ColumnSetting } from '@sensenet/list-controls-react/src/ContentList/content-list-base-props'
 import { ColDef } from 'ag-grid-community'
 import { clsx } from 'clsx'
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useMemo, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
 import { GridKeyEnum } from '../../../src/components/grid/enums/GridKey.enum'
 import { ResponsivePersonalSettings } from '../../context'
@@ -26,7 +27,44 @@ import { Grid } from '../grid/Grid'
 import { SimpleTree } from '../tree/simpletree'
 import { BrowseView, EditView, ImageView, NewView, PermissionView, VersionView } from '../view-controls'
 import WopiPage from '../wopi-page'
+import { AUI_APPLICATION_CONTENT_TYPE, AUIApplicationView } from './AUIApplicationView'
 import { ContentInfo } from './ContentInfo'
+
+const requiredGridLoadFields: ODataFieldParameter<GenericContent> = [
+  'Id',
+  'ParentId',
+  'Path',
+  'Name',
+  'DisplayName',
+  'Type',
+  'Icon',
+  'IsFolder',
+  'IsFile',
+  'Actions',
+  'CreatedBy',
+  'CreationDate',
+  'ModifiedBy',
+  'ModificationDate',
+  'Index',
+  'Locked',
+]
+
+const getGridLoadChildrenSettings = (colDef: ColDef[]): ODataParams<GenericContent> => {
+  const selectFields = new Set<keyof GenericContent>(requiredGridLoadFields)
+
+  colDef.forEach((columnDefinition) => {
+    if (columnDefinition.field && columnDefinition.field !== '0') {
+      selectFields.add(columnDefinition.field as keyof GenericContent)
+    }
+  })
+
+  return {
+    orderby: [['DisplayName', 'asc']],
+    select: Array.from(selectFields),
+    expand: ['CreatedBy', 'ModifiedBy'],
+    onlyselectList: true,
+  }
+}
 
 const useStyles = makeStyles<Theme, { width: number }>((theme) =>
   createStyles({
@@ -129,6 +167,51 @@ export type ExploreProps = {
   gridKey: GridKeyEnum
 }
 
+type ExploreGridOrApplicationProps = {
+  currentPath: string
+  fieldsToDisplay?: Array<ColumnSetting<GenericContent>>
+  schema?: string
+  disableColumnSettings?: boolean
+  colDef: ColDef[]
+  gridKey: GridKeyEnum
+  onNavigate: (content: GenericContent) => void
+  onActivateItem: (activeItem: GenericContent) => Promise<void>
+}
+
+const ExploreGridOrApplication: React.FC<ExploreGridOrApplicationProps> = ({
+  currentPath,
+  fieldsToDisplay,
+  schema,
+  disableColumnSettings,
+  colDef,
+  gridKey,
+  onNavigate,
+  onActivateItem,
+}) => {
+  const selectionService = useSelectionService()
+  const currentContent = useContext(CurrentContentContext)
+
+  if (currentContent.Type === AUI_APPLICATION_CONTENT_TYPE) {
+    return <AUIApplicationView />
+  }
+
+  return (
+    <Grid
+      disableColumnSettings={disableColumnSettings}
+      style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
+      enableBreadcrumbs={false}
+      fieldsToDisplay={fieldsToDisplay}
+      schema={schema}
+      onParentChange={onNavigate}
+      onActivateItem={onActivateItem}
+      onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
+      parentIdOrPath={currentPath}
+      colDef={colDef}
+      gridKey={gridKey}
+    />
+  )
+}
+
 export function Explore({
   currentPath,
   onNavigate,
@@ -145,7 +228,6 @@ export function Explore({
   gridKey,
 }: ExploreProps) {
   const theme = useTheme()
-  const selectionService = useSelectionService()
   const [width, setWidth] = useState<number>(Number(localStorage.getItem('treeWidth') ?? '400'))
   const classes = useStyles({ width })
   const globalClasses = useGlobalStyles()
@@ -186,6 +268,10 @@ export function Explore({
   const pathFromUrl = useQuery().get('path')
   const snRoute = useSnRoute()
   const activeAction = snRoute.match!.params.action
+  const currentChildrenLoadSettings = useMemo(
+    () => loadChildrenSettings || getGridLoadChildrenSettings(colDef),
+    [colDef, loadChildrenSettings],
+  )
   const onActivateItemOverride = async (activeItem: GenericContent) => {
     const expandedItem = await repository.load({
       idOrPath: activeItem.Id,
@@ -255,16 +341,13 @@ export function Explore({
       <>
         {renderBeforeGrid?.()}
         <ContentInfo />
-        <Grid
+        <ExploreGridOrApplication
           disableColumnSettings={disableColumnSettings}
-          style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
-          enableBreadcrumbs={false}
           fieldsToDisplay={fieldsToDisplay}
           schema={schema}
-          onParentChange={onNavigate}
+          onNavigate={onNavigate}
           onActivateItem={onActivateItemOverride}
-          onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
-          parentIdOrPath={currentPath}
+          currentPath={currentPath}
           colDef={colDef}
           gridKey={gridKey}
         />
@@ -273,7 +356,9 @@ export function Explore({
   }
 
   return (
-    <LoadSettingsContextProvider>
+    <LoadSettingsContextProvider
+      key={JSON.stringify(currentChildrenLoadSettings)}
+      loadChildrenSettings={currentChildrenLoadSettings}>
       <CurrentContentProvider idOrPath={currentPath}>
         <CurrentChildrenProvider loadSettings={loadChildrenSettings} alwaysRefresh={alwaysRefreshChildren}>
           <CurrentAncestorsProvider root={rootPath}>

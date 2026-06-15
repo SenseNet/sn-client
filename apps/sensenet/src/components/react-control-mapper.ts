@@ -30,7 +30,13 @@ export const reactControlMapper = (repository: Repository) => {
       }
     })
     .setupFieldSettingDefault<LongTextFieldSetting>('LongTextFieldSetting', (setting) => {
+      if (setting.Name === 'FormPropertiesJSON') {
+        return FieldControls.FormPropertiesEditor
+      }
+
       switch (setting.ControlHint) {
+        case 'sn:FormPropertiesEditor':
+          return FieldControls.FormPropertiesEditor
         case 'sn:WebhookFilter':
           return FieldControls.WebhookTrigger
         case 'sn:WebhookHeaders':

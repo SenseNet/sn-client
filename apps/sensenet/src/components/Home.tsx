@@ -16,11 +16,15 @@ import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { lazy, useEffect, useState } from 'react'
-// import { useAuth } from '../context/auth-provider'
+import { useAuth } from '../context/auth-provider'
 import { useLocalization } from '../hooks'
 import { DateTimeFormatter } from './grid/Formatters/DateTimeFormatter'
+import { HomeActivitySummary } from './home-activity-summary'
 
 const DashboardComponent = lazy(() => import(/* webpackChunkName: "dashboard" */ './dashboard'))
+
+const latestChangesLimit = 100
+const latestChangesWindowInMinutes = 600
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -178,7 +182,7 @@ export const Home = () => {
   const classes = useStyles()
   const repo = useRepository()
   const localization = useLocalization().home
-  // const { user } = useAuth()
+  const { user } = useAuth()
 
   const [lastMinuteLogs, setLastMinuteLogs] = useState<any[]>([])
   // const [myLogs, setMyLogs] = useState<any[]>([])
@@ -200,10 +204,17 @@ export const Home = () => {
         setHasGetLogs(canGetLogs)
         // setHasGetTopLogsByUser(canGetUserLogs)
 
-        if (canGetLogs) await getLatestChanges()
+        if (canGetLogs) {
+          await getLatestChanges()
+        } else {
+          setLastMinuteLogs([])
+        }
         // if (canGetUserLogs) await getMyChanges()
       } catch (error: any) {
         console.error('Fetching actions failed:', error.message)
+        setCanContentHistory(false)
+        setHasGetLogs(false)
+        setLastMinuteLogs([])
       }
     }
 
@@ -214,8 +225,9 @@ export const Home = () => {
           name: 'LogEntries/GetLogsForLastMinutes',
           method: 'GET',
           oDataOptions: {
-            top: 100,
-            minutes: 600,
+            limit: latestChangesLimit,
+            minutes: latestChangesWindowInMinutes,
+            top: latestChangesLimit,
           } as any,
         })
 
@@ -327,6 +339,11 @@ export const Home = () => {
       <div className={classes.gridsCont}>
         {hasGetLogs && (
           <div className={classes.gridCont}>
+            <HomeActivitySummary
+              logs={lastMinuteLogs}
+              user={user}
+              repositoryUrl={repo.configuration.repositoryUrl}
+            />
             <h2>{localization.latestChanges}</h2>
             {lastMinuteLogs.map((log, index) => {
               const hasChanges = log.ExtendedProperties?.ChangedData?.length > 0

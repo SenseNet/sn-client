@@ -35,6 +35,10 @@ The repositories you've visited will be also saved in your Personal Settings - y
 You can browse the whole repository with the **Content** menu.
 You can adjust the Content view in the personal setting's _"content"_ section.
 
+### Admin UI Applications
+
+The Admin UI can render repository-defined `AUIApplication` contents as small custom HTML applications inside the content explorer. See the [Admin UI Applications documentation](./docs/auiapplications.md) for the content type, bridge API, and repository read/update examples.
+
 ## 🌈 Command palette
 
 The command palette is useful if you want to search in the repository, navigate to a specific page or execute a specific command on the current content.

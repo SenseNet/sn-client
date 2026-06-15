@@ -9,7 +9,7 @@ import { ActionModel, GenericContent, isActionModel } from '@sensenet/default-co
 import { useLogger, useWopi } from '@sensenet/hooks-react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { ResponsiveContext } from '../../context'
-import { useLoadContent } from '../../hooks'
+import { useLoadContent, useLocalization } from '../../hooks'
 import { contextMenuODataOptions } from './context-menu-odata-options'
 import { getIcon } from './icons'
 import { useContextMenuActions } from './use-context-menu-actions'
@@ -64,13 +64,18 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
 
   const { runAction } = useContextMenuActions(props.content, setActionsWopi)
   const device = useContext(ResponsiveContext)
+  const oDataActionsTitle = useLocalization().customActions.oDataActionsDialog.menuTitle
+  const runODataActions = () => {
+    props.onClose?.()
+    runAction('ODataActions')
+  }
 
   useEffect(() => {
     if (content) {
       setActionsWopi(content)
     }
   }, [content, setActionsWopi])
-  return !actions?.length ? null : (
+  return (
     <div onKeyDown={(ev) => ev.stopPropagation()} onKeyPress={(ev) => ev.stopPropagation()}>
       {device === 'mobile' ? (
         <Drawer
@@ -80,6 +85,10 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
           open={props.isOpened}
           PaperProps={{ style: { paddingBottom: '2em' } }}>
           <List>
+            <ListItem onClick={runODataActions}>
+              <ListItemIcon>{getIcon('odataactions')}</ListItemIcon>
+              <ListItemText primary={oDataActionsTitle} />
+            </ListItem>
             {actions?.map((action) => {
               return (
                 <ListItem
@@ -98,6 +107,14 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
         </Drawer>
       ) : (
         <Menu open={props.isOpened} {...props.menuProps} data-test="content-context-menu-root">
+          <MenuItem
+            key="ODataActions"
+            disableRipple={true}
+            data-test="content-context-menu-odata-actions"
+            onClick={runODataActions}>
+            <ListItemIcon>{getIcon('odataactions')}</ListItemIcon>
+            <div style={{ flexGrow: 1 }}>{oDataActionsTitle}</div>
+          </MenuItem>
           {actions?.map((action) => {
             return (
               <MenuItem

@@ -1,11 +1,16 @@
-import { createStyles, IconButton, makeStyles, Theme, Tooltip } from '@material-ui/core'
+import { CircularProgress, createStyles, IconButton, makeStyles, Theme, Tooltip } from '@material-ui/core'
+import ArchiveIcon from '@material-ui/icons/Archive'
+import AppsIcon from '@material-ui/icons/Apps'
 import DeleteIcon from '@material-ui/icons/Delete'
 import FileCopyIcon from '@material-ui/icons/FileCopy'
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
-import { CurrentContentContext } from '@sensenet/hooks-react'
+import TableChartIcon from '@material-ui/icons/TableChart'
+import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { useGlobalStyles } from '../globalStyles'
 import { useLocalization, useSelectionService } from '../hooks'
+import { downloadContentsAsZip } from '../services/zip-download'
+import { CsvExportDialog } from './CsvExportDialog'
 import { useDialog } from './dialogs'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -36,7 +41,11 @@ export const BatchActions = () => {
   const globalClasses = useGlobalStyles()
   const classes = useStyles()
   const { openDialog } = useDialog()
+  const repository = useRepository()
+  const logger = useLogger('BatchActions')
   const [selected, setSelected] = useState(selectionService.selection.getValue())
+  const [isExportDialogOpen, setIsExportDialogOpen] = useState(false)
+  const [isZipDownloading, setIsZipDownloading] = useState(false)
   const parent = useContext(CurrentContentContext)
 
   useEffect(() => {
@@ -49,8 +58,96 @@ export const BatchActions = () => {
     }
   }, [selectionService.selection])
 
+  const downloadSelectedContentAsZip = async () => {
+    if (!selected.length || isZipDownloading) {
+      return
+    }
+
+    setIsZipDownloading(true)
+
+    try {
+      const result = await downloadContentsAsZip({ repository, contents: selected, parent })
+
+      logger.information({
+        message: localization.batchActions.downloadZipSuccess
+          .replace('{0}', String(result.fileCount))
+          .replace('{1}', String(result.folderCount)),
+        data: {
+          relatedRepository: repository.configuration.repositoryUrl,
+          details: {
+            fileCount: result.fileCount,
+            folderCount: result.folderCount,
+            skippedContentCount: result.skippedContentCount,
+            fileName: result.fileName,
+          },
+        },
+      })
+    } catch (error) {
+      logger.error({
+        message: localization.batchActions.downloadZipError,
+        data: {
+          error,
+          relatedRepository: repository.configuration.repositoryUrl,
+          details: {
+            selectedContentCount: selected.length,
+          },
+        },
+      })
+    } finally {
+      setIsZipDownloading(false)
+    }
+  }
+
   return (
     <div className={classes.batchActionWrapper} data-test="batch-actions">
+      <Tooltip title={localization.customActions.oDataActionsDialog.menuTitle} placement="bottom">
+        <span>
+          <IconButton
+            className={classes.actionButton}
+            data-test="batch-odata-actions"
+            aria-label="odata-actions"
+            disabled={selected.length !== 1}
+            onClick={() =>
+              openDialog({
+                name: 'odata-actions',
+                props: { content: selected[0] },
+                dialogProps: { classes: { paper: globalClasses.pickerDialog } },
+              })
+            }>
+            <AppsIcon />
+          </IconButton>
+        </span>
+      </Tooltip>
+      <Tooltip title={localization.batchActions.exportCsv} placement="bottom">
+        <span>
+          <IconButton
+            className={classes.actionButton}
+            data-test="batch-export-csv"
+            aria-label="export-csv"
+            disabled={selected.length === 0}
+            onClick={() => setIsExportDialogOpen(true)}>
+            <TableChartIcon />
+          </IconButton>
+        </span>
+      </Tooltip>
+      <CsvExportDialog
+        open={isExportDialogOpen}
+        selected={selected}
+        parent={parent}
+        onClose={() => setIsExportDialogOpen(false)}
+      />
+      <Tooltip title={localization.batchActions.downloadZip} placement="bottom">
+        <span>
+          <IconButton
+            className={classes.actionButton}
+            data-test="batch-download-zip"
+            aria-label="download-zip"
+            disabled={selected.length === 0 || isZipDownloading}
+            onClick={downloadSelectedContentAsZip}>
+            {isZipDownloading ? <CircularProgress size={22} color="inherit" /> : <ArchiveIcon />}
+          </IconButton>
+        </span>
+      </Tooltip>
       <Tooltip title={localization.batchActions.delete} placement="bottom">
         <span>
           <IconButton

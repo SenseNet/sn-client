@@ -2,7 +2,7 @@ import { Button, ListItemIcon, makeStyles, Theme } from '@material-ui/core'
 import { ActionModel, GenericContent, isActionModel } from '@sensenet/default-content-types'
 import { CurrentContentContext, useLogger, useWopi } from '@sensenet/hooks-react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { useLoadContent } from '../../hooks'
+import { useLoadContent, useLocalization } from '../../hooks'
 import { contextMenuODataOptions } from '../context-menu/context-menu-odata-options'
 import { getIcon } from '../context-menu/icons'
 import { useContextMenuActions } from '../context-menu/use-context-menu-actions'
@@ -19,6 +19,7 @@ export function ContentInfo() {
     isOpened: true,
   })
   const { isWriteAvailable } = useWopi()
+  const oDataActionsTitle = useLocalization().customActions.oDataActionsDialog.menuTitle
 
   const setActionsWopi = useCallback(
     (contentFromCallback: GenericContent) => {
@@ -77,6 +78,16 @@ export function ContentInfo() {
           <span> {parentContent.Path}</span>
         </div>
         <div className="buttonPanel">
+          <Button
+            key="ODataActions"
+            title={oDataActionsTitle}
+            disableRipple={true}
+            onClick={() => {
+              runAction('ODataActions')
+            }}>
+            <ListItemIcon>{getIcon('odataactions')}</ListItemIcon>
+            <div style={{ flexGrow: 1 }}>{oDataActionsTitle}</div>
+          </Button>
           {actions
             ?.filter((a: ActionModel) => {
               return a.Name !== 'Share' && a.Name !== 'Delete' && a.Name !== 'Browse'

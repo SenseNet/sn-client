@@ -12,6 +12,7 @@ import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals } from '../../globalStyles'
 import { useLocalization, useSnRoute, useTheme } from '../../hooks'
 import { CommandProviderManager } from '../../services'
+import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { CommandPaletteHitsContainer } from './CommandPaletteHitsContainer'
 import { CommandPaletteSuggestion } from './CommandPaletteSuggestion'
 
@@ -71,6 +72,12 @@ export const CommandPalette = () => {
   const containerRef = useRef<HTMLDivElement>(null)
   const [delayedOpened, setDelayedOpened] = useState(false)
   const [isOpened, setIsOpened] = useState(false)
+  const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
+  const [contextMenuAnchor, setContextMenuAnchor] = useState<{ top: number; left: number }>({
+    top: 0,
+    left: 0,
+  })
+  const [contextMenuContent, setContextMenuContent] = useState<GenericContent>()
   const [items, setItems] = useState<CommandPaletteItem[]>([])
   const [inputValue, setInputValue] = useState('')
   const localization = useLocalization().commandPalette
@@ -83,6 +90,7 @@ export const CommandPalette = () => {
   const repository = useRepository()
   const cpm = useMemo(() => injector.getInstance(CommandProviderManager), [injector])
   const snRoute = useSnRoute()
+  const isContextMenuInteractingRef = useRef(false)
 
   useEffect(() => {
     const handleKeyUp = (ev: KeyboardEvent) => {
@@ -188,6 +196,23 @@ export const CommandPalette = () => {
     setIsOpened(false)
   }
 
+  const handleOpenSuggestionContextMenu = (ev: React.MouseEvent<HTMLButtonElement>, content: GenericContent) => {
+    ev.preventDefault()
+    ev.stopPropagation()
+    const buttonRect = ev.currentTarget.getBoundingClientRect()
+    isContextMenuInteractingRef.current = true
+    setContextMenuAnchor({ top: buttonRect.bottom, left: buttonRect.left })
+    setContextMenuContent(content)
+    setIsContextMenuOpened(true)
+    setIsOpened(true)
+  }
+
+  const handleCloseSuggestionContextMenu = () => {
+    isContextMenuInteractingRef.current = false
+    setIsContextMenuOpened(false)
+    setIsOpened(false)
+  }
+
   return (
     <div className={classes.buttonWrapper}>
       <div ref={containerRef} className={classes.comboBox} data-test="command-box">
@@ -210,7 +235,11 @@ export const CommandPalette = () => {
           onSuggestionsClearRequested={() => setItems([])}
           getSuggestionValue={(suggestion) => suggestion.primaryText}
           renderSuggestion={(suggestion, params) => (
-            <CommandPaletteSuggestion suggestion={suggestion} params={params} />
+            <CommandPaletteSuggestion
+              suggestion={suggestion}
+              params={params}
+              onOpenContextMenu={handleOpenSuggestionContextMenu}
+            />
           )}
           renderSuggestionsContainer={(params) => <CommandPaletteHitsContainer {...params} />}
           inputProps={{
@@ -222,7 +251,11 @@ export const CommandPalette = () => {
             },
             id: 'CommandBoxInput',
             spellCheck: false,
-            onBlur: () => setIsOpened(false),
+            onBlur: () => {
+              if (!isContextMenuInteractingRef.current) {
+                setIsOpened(false)
+              }
+            },
           }}
         />
         {!inputValue && (
@@ -246,6 +279,22 @@ export const CommandPalette = () => {
           </IconButton>
         )}
       </div>
+      {contextMenuContent ? (
+        <ContentContextMenu
+          isOpened={isContextMenuOpened}
+          content={contextMenuContent}
+          menuProps={{
+            anchorReference: 'anchorPosition',
+            anchorPosition: contextMenuAnchor,
+            BackdropProps: {
+              onClick: handleCloseSuggestionContextMenu,
+              onContextMenu: (ev: React.MouseEvent) => ev.preventDefault(),
+            },
+            disableAutoFocusItem: true,
+          }}
+          onClose={handleCloseSuggestionContextMenu}
+        />
+      ) : null}
     </div>
   )
 }
