@@ -314,7 +314,7 @@ const getUserDetails = (user: AuthContextModel['user'], localization: HomeLocali
   return details.filter((detail) => detail.value)
 }
 
-const getTopItems = (items: (string | undefined)[], limit = 5): ChartItem[] => {
+const getTopItems = (items: Array<string | undefined>, limit = 5): ChartItem[] => {
   const counts = items.reduce<Record<string, ChartItem>>((acc, item) => {
     const key = normalizeLabel(item)
     if (!key) return acc
@@ -346,7 +346,8 @@ const getRecentLogins = (logs: HomeActivityLog[], limit = 6): LoginItem[] => {
     }
 
     acc[key].count += 1
-    const currentLastLogin = acc[key].lastLogin ? new Date(acc[key].lastLogin).getTime() : 0
+    const { lastLogin } = acc[key]
+    const currentLastLogin = lastLogin ? new Date(lastLogin).getTime() : 0
     const nextLogin = log.LogDate ? new Date(log.LogDate).getTime() : 0
     if (nextLogin > currentLastLogin) {
       acc[key].lastLogin = log.LogDate

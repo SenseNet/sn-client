@@ -11,7 +11,7 @@ WORKDIR /app
 COPY . .
 
 # Install dependencies
-RUN yarn install
+RUN HUSKY=0 yarn install --frozen-lockfile
 
 # Build the app bundle in production mode (the snapp webpack config resolves workspace packages from src)
 RUN NODE_ENV=production yarn snapp build

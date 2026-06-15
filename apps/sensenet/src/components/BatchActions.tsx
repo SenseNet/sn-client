@@ -1,6 +1,6 @@
 import { CircularProgress, createStyles, IconButton, makeStyles, Theme, Tooltip } from '@material-ui/core'
-import ArchiveIcon from '@material-ui/icons/Archive'
 import AppsIcon from '@material-ui/icons/Apps'
+import ArchiveIcon from '@material-ui/icons/Archive'
 import DeleteIcon from '@material-ui/icons/Delete'
 import FileCopyIcon from '@material-ui/icons/FileCopy'
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'

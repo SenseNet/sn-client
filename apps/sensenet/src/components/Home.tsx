@@ -339,11 +339,7 @@ export const Home = () => {
       <div className={classes.gridsCont}>
         {hasGetLogs && (
           <div className={classes.gridCont}>
-            <HomeActivitySummary
-              logs={lastMinuteLogs}
-              user={user}
-              repositoryUrl={repo.configuration.repositoryUrl}
-            />
+            <HomeActivitySummary logs={lastMinuteLogs} user={user} repositoryUrl={repo.configuration.repositoryUrl} />
             <h2>{localization.latestChanges}</h2>
             {lastMinuteLogs.map((log, index) => {
               const hasChanges = log.ExtendedProperties?.ChangedData?.length > 0
