@@ -71,7 +71,7 @@ interface ReferenceGridProps extends ReactClientFieldSetting<ReferenceFieldSetti
   dialogTitleComponent?: ElementType
   renderPickerIcon: (item: GenericContentWithIsParent | User) => JSX.Element
   pickerClasses?: PickerClassKey
-  paths: Paths
+  paths?: Paths
 }
 
 export const ReferenceGrid: React.FC<ReferenceGridProps> = (props) => {

@@ -24,6 +24,17 @@ module.exports = (env) => {
     plugins: [
       new ForkTsCheckerWebpackPlugin({
         eslint: { enabled: true, files: './src/**/*.{ts,tsx,js,jsx}' },
+        issue: {
+          include: [{ file: 'src/**/*' }],
+        },
+        typescript: {
+          configOverwrite: {
+            compilerOptions: {
+              rootDir: '../..',
+            },
+            references: [],
+          },
+        },
       }),
       new HtmlWebpackPlugin({
         template: './index.html',

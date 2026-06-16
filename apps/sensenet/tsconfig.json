@@ -12,7 +12,25 @@
     "noUnusedLocals": false,
     "types": ["node"],
     "paths": {
-      "react": [ "../../node_modules/@types/react" ]
+      "react": [ "../../node_modules/@types/react" ],
+      "@sensenet/authentication-oidc-react": [
+        "../../packages/sn-authentication-oidc-react/src/index.ts"
+      ],
+      "@sensenet/client-core": ["../../packages/sn-client-core/src/index.ts"],
+      "@sensenet/client-utils": ["../../packages/sn-client-utils/src/index.ts"],
+      "@sensenet/control-mapper": ["../../packages/sn-control-mapper/src/index.ts"],
+      "@sensenet/controls-react": ["../../packages/sn-controls-react/src/index.ts"],
+      "@sensenet/default-content-types": ["../../packages/sn-default-content-types/src/index.ts"],
+      "@sensenet/document-viewer-react": ["../../packages/sn-document-viewer-react/src/index.ts"],
+      "@sensenet/editor-react": ["../../packages/sn-editor-react/src/index.ts"],
+      "@sensenet/hooks-react": ["../../packages/sn-hooks-react/src/index.ts"],
+      "@sensenet/icons-react": ["../../packages/sn-icons-react/src/index.ts"],
+      "@sensenet/list-controls-react": ["../../packages/sn-list-controls-react/src/ContentList/index.ts"],
+      "@sensenet/pickers-react": ["../../packages/sn-pickers-react/src/index.ts"],
+      "@sensenet/query": ["../../packages/sn-query/src/index.ts"],
+      "@sensenet/repository-events": ["../../packages/sn-repository-events/src/index.ts"],
+      "@sensenet/search-react": ["../../packages/sn-search-react/src/index.ts"],
+      "@sensenet/sn-auth-react": ["../../packages/sn-auth-react/src/index.ts"]
     }
   },
   "include": ["src", "../../typings"],

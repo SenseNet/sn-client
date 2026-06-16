@@ -5,9 +5,13 @@ node_modules
 
 # Build outputs
 dist
+**/dist
 build
+**/build
 coverage
+**/coverage
 *.tsbuildinfo
+**/*.tsbuildinfo
 
 # Development files
 .git

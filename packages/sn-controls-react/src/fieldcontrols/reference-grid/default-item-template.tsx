@@ -63,7 +63,7 @@ interface DefaultItemTemplateProps {
   repository?: Repository
   multiple: boolean
   renderIcon?: (name: string) => JSX.Element
-  paths: Paths
+  paths?: Paths
 }
 
 const useStyles = makeStyles(() =>
