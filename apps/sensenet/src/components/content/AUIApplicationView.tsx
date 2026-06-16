@@ -3,6 +3,8 @@ import { ODataFieldParameter } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import { AUIApplicationBridgeLocation, createBridgeLocation } from './auiapplication-bridge'
 
 export const AUI_APPLICATION_CONTENT_TYPE = 'AUIApplication'
 
@@ -64,6 +66,7 @@ const createApplicationDocument = (
   repositoryUrl: string,
   adminUiUrl: string,
   content: AUIApplicationContent | undefined,
+  location: AUIApplicationBridgeLocation,
 ) => {
   const baseUrl = getApplicationBaseUrl(repositoryUrl, content?.Path ?? '')
   const bootstrap = `<base href="${escapeAttribute(baseUrl)}">
@@ -141,6 +144,7 @@ const createApplicationDocument = (
       DisplayName: content?.DisplayName,
       Type: content?.Type,
     })},
+    location: ${makeSafeScriptJson(location)},
     fetch: (input, init = {}) => {
       const requestId = \`\${Date.now()}-\${Math.random().toString(36).slice(2)}\`;
 
@@ -221,6 +225,7 @@ export const AUIApplicationView: React.FC = () => {
   const frameRef = useRef<HTMLIFrameElement>(null)
   const repository = useRepository()
   const logger = useLogger('AUIApplicationView')
+  const routerLocation = useLocation()
   const currentContent = useContext(CurrentContentContext) as AUIApplicationContent
   const [content, setContent] = useState<AUIApplicationContent>()
   const [isLoading, setIsLoading] = useState(false)
@@ -326,9 +331,20 @@ export const AUIApplicationView: React.FC = () => {
 
   const applicationHtml = content?.Html?.trim() ?? ''
   const adminUiUrl = window.location.origin
+  const bridgeLocation = useMemo(
+    () => createBridgeLocation(adminUiUrl, routerLocation),
+    [adminUiUrl, routerLocation.hash, routerLocation.pathname, routerLocation.search],
+  )
   const srcDoc = useMemo(
-    () => createApplicationDocument(applicationHtml, repository.configuration.repositoryUrl, adminUiUrl, content),
-    [adminUiUrl, applicationHtml, content, repository.configuration.repositoryUrl],
+    () =>
+      createApplicationDocument(
+        applicationHtml,
+        repository.configuration.repositoryUrl,
+        adminUiUrl,
+        content,
+        bridgeLocation,
+      ),
+    [adminUiUrl, applicationHtml, bridgeLocation, content, repository.configuration.repositoryUrl],
   )
 
   if (isLoading) {

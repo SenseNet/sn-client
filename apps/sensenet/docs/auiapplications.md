@@ -69,6 +69,13 @@ window.sensenetAdminApp = {
     DisplayName?: string
     Type?: string
   }
+  location: {
+    href: string
+    pathname: string
+    search: string
+    hash: string
+    params: Record<string, string>
+  }
   fetch(input: string, init?: {
     method?: string
     headers?: Record<string, string>
@@ -96,6 +103,33 @@ type BridgeResponse = {
 
 Requests are restricted to the current repository origin. Cross-repository and arbitrary external requests are rejected by the parent Admin UI.
 
+## Admin UI Route Location
+
+The iframe is sandboxed, so custom HTML should not try to read the parent route through `window.parent.location` or infer it from `document.referrer`. The Admin UI injects the current React Router location into the bridge:
+
+```js
+const app = window.sensenetAdminApp
+const userId = app.location.params.userId
+```
+
+For example, if the browser address bar shows:
+
+```text
+/content/explorer/?path=%2FContent%2FKELERData%2FKYCForm%2Fkycuserforms&userId=tarii
+```
+
+then inside the `AUIApplication` iframe:
+
+```js
+window.sensenetAdminApp.location.search
+// "?path=%2FContent%2FKELERData%2FKYCForm%2Fkycuserforms&userId=tarii"
+
+window.sensenetAdminApp.location.params.userId
+// "tarii"
+```
+
+The `params` object is built from the parent route query string with `Object.fromEntries(new URLSearchParams(location.search))`.
+
 ## URL Rules
 
 Use repository-relative URLs when possible:
@@ -114,7 +148,7 @@ Use `adminUiUrl` when you need to navigate back to Admin UI routes. Do not use r
 
 ```js
 const adminPath = (path) => path.replace(/^\/Root(?=\/|$)/, '') || '/'
-const adminUiUrl = window.sensenetAdminApp.adminUiUrl || new URL(document.referrer).origin
+const adminUiUrl = window.sensenetAdminApp.adminUiUrl
 const query = new URLSearchParams({
   path: adminPath('/Root/Content/test/BannerImages'),
   content: adminPath('/Root/Content/test/BannerImages/example.png'),
