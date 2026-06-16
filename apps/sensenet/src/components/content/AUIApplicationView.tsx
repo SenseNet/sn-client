@@ -1,10 +1,15 @@
-import { CircularProgress, createStyles, makeStyles, Theme, Typography } from '@material-ui/core'
+import { CircularProgress, createStyles, makeStyles, Theme, Typography, useTheme } from '@material-ui/core'
 import { ODataFieldParameter } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { AUIApplicationBridgeLocation, createBridgeLocation } from './auiapplication-bridge'
+import {
+  AUIApplicationBridgeLocation,
+  AUIApplicationBridgeTheme,
+  createBridgeLocation,
+  createBridgeTheme,
+} from './auiapplication-bridge'
 
 export const AUI_APPLICATION_CONTENT_TYPE = 'AUIApplication'
 
@@ -67,6 +72,7 @@ const createApplicationDocument = (
   adminUiUrl: string,
   content: AUIApplicationContent | undefined,
   location: AUIApplicationBridgeLocation,
+  theme: AUIApplicationBridgeTheme,
 ) => {
   const baseUrl = getApplicationBaseUrl(repositoryUrl, content?.Path ?? '')
   const bootstrap = `<base href="${escapeAttribute(baseUrl)}">
@@ -145,6 +151,7 @@ const createApplicationDocument = (
       Type: content?.Type,
     })},
     location: ${makeSafeScriptJson(location)},
+    theme: ${makeSafeScriptJson(theme)},
     fetch: (input, init = {}) => {
       const requestId = \`\${Date.now()}-\${Math.random().toString(36).slice(2)}\`;
 
@@ -222,6 +229,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const AUIApplicationView: React.FC = () => {
   const classes = useStyles()
+  const theme = useTheme<Theme>()
   const frameRef = useRef<HTMLIFrameElement>(null)
   const repository = useRepository()
   const logger = useLogger('AUIApplicationView')
@@ -335,6 +343,7 @@ export const AUIApplicationView: React.FC = () => {
     () => createBridgeLocation(adminUiUrl, routerLocation),
     [adminUiUrl, routerLocation.hash, routerLocation.pathname, routerLocation.search],
   )
+  const bridgeTheme = useMemo(() => createBridgeTheme(theme.palette.type), [theme.palette.type])
   const srcDoc = useMemo(
     () =>
       createApplicationDocument(
@@ -343,8 +352,9 @@ export const AUIApplicationView: React.FC = () => {
         adminUiUrl,
         content,
         bridgeLocation,
+        bridgeTheme,
       ),
-    [adminUiUrl, applicationHtml, bridgeLocation, content, repository.configuration.repositoryUrl],
+    [adminUiUrl, applicationHtml, bridgeLocation, bridgeTheme, content, repository.configuration.repositoryUrl],
   )
 
   if (isLoading) {

@@ -76,6 +76,7 @@ window.sensenetAdminApp = {
     hash: string
     params: Record<string, string>
   }
+  theme: 'light' | 'dark'
   fetch(input: string, init?: {
     method?: string
     headers?: Record<string, string>
@@ -129,6 +130,21 @@ window.sensenetAdminApp.location.params.userId
 ```
 
 The `params` object is built from the parent route query string with `Object.fromEntries(new URLSearchParams(location.search))`.
+
+## Admin UI Theme
+
+The bridge also exposes the current Admin UI theme mode. Use this instead of trying to inspect parent styles from the sandboxed iframe:
+
+```js
+const theme = window.sensenetAdminApp.theme
+document.documentElement.dataset.theme = theme
+
+if (theme === 'dark') {
+  // Render dark-friendly colors.
+}
+```
+
+The value is always either `"light"` or `"dark"`, matching the Admin UI view option.
 
 ## URL Rules
 

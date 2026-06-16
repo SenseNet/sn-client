@@ -6,6 +6,8 @@ export type AUIApplicationBridgeLocation = {
   params: Record<string, string>
 }
 
+export type AUIApplicationBridgeTheme = 'light' | 'dark'
+
 export const createBridgeLocation = (
   adminUiUrl: string,
   location: Pick<Location, 'pathname' | 'search' | 'hash'>,
@@ -23,3 +25,6 @@ export const createBridgeLocation = (
     params,
   }
 }
+
+export const createBridgeTheme = (theme: string | undefined): AUIApplicationBridgeTheme =>
+  theme === 'dark' ? 'dark' : 'light'
