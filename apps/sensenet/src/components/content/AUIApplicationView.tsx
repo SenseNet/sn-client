@@ -384,7 +384,7 @@ export const AUIApplicationView: React.FC = () => {
         ref={frameRef}
         className={classes.frame}
         title={content?.DisplayName || currentContent.DisplayName || AUI_APPLICATION_CONTENT_TYPE}
-        sandbox="allow-downloads allow-forms allow-modals allow-popups allow-scripts allow-top-navigation-by-user-activation"
+        sandbox="allow-downloads allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-scripts allow-top-navigation-by-user-activation"
         srcDoc={srcDoc}
       />
     </div>
