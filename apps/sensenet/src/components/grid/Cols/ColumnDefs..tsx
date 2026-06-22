@@ -196,8 +196,8 @@ export const userColumnDefs: ColDef[] = [
     minWidth: 110,
     maxWidth: 110,
     cellRenderer: (params: any) => {
-      const roles = params.data.AllRoles.length ? params.data.AllRoles : []
-      const directRoles = params.data.DirectRoles?.length ? params.data.DirectRoles : []
+      const roles = Array.isArray(params.data.AllRoles) ? params.data.AllRoles : []
+      const directRoles = Array.isArray(params.data.DirectRoles) ? params.data.DirectRoles : []
       return <RolesField user={params.data} roles={roles} directRoles={directRoles} />
     },
   },
