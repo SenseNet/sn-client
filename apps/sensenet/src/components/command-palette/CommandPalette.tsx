@@ -10,7 +10,7 @@ import Autosuggest, { SuggestionSelectedEventData, SuggestionsFetchRequestedPara
 import { useHistory } from 'react-router-dom'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals } from '../../globalStyles'
-import { useLocalization, useSnRoute, useTheme } from '../../hooks'
+import { useLocalization, useSelectionService, useSnRoute, useTheme } from '../../hooks'
 import { CommandProviderManager } from '../../services'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { CommandPaletteHitsContainer } from './CommandPaletteHitsContainer'
@@ -65,6 +65,19 @@ const useStyles = makeStyles(() => {
       borderBottomLeftRadius: 0,
       borderBottomRightRadius: 0,
     },
+    actionContextHeader: {
+      padding: '8px 12px',
+      borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+      color: '#3c4654',
+      fontSize: '12px',
+      lineHeight: '16px',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+    },
+    actionContextTarget: {
+      fontWeight: 600,
+    },
   })
 })
 
@@ -91,6 +104,16 @@ export const CommandPalette = () => {
   const cpm = useMemo(() => injector.getInstance(CommandProviderManager), [injector])
   const snRoute = useSnRoute()
   const isContextMenuInteractingRef = useRef(false)
+  const selectionService = useSelectionService()
+  const [activeContent, setActiveContent] = useState(selectionService.activeContent.getValue())
+
+  useEffect(() => {
+    const activeContentObserver = selectionService.activeContent.subscribe((content) => {
+      setActiveContent(content)
+    })
+
+    return () => activeContentObserver.dispose()
+  }, [selectionService.activeContent])
 
   useEffect(() => {
     const handleKeyUp = (ev: KeyboardEvent) => {
@@ -213,6 +236,23 @@ export const CommandPalette = () => {
     setIsOpened(false)
   }
 
+  const actionMode = inputValue.startsWith('>')
+  const actionContextHeader = actionMode ? (
+    <div className={classes.actionContextHeader} data-test="command-palette-action-context">
+      {activeContent ? (
+        <>
+          {localization.actionContext}
+          <span className={classes.actionContextTarget} title={activeContent.Path}>
+            {activeContent.DisplayName || activeContent.Name}
+          </span>
+          {activeContent.Path ? ` (${activeContent.Path})` : ''}
+        </>
+      ) : (
+        localization.noActionContext
+      )}
+    </div>
+  ) : undefined
+
   return (
     <div className={classes.buttonWrapper}>
       <div ref={containerRef} className={classes.comboBox} data-test="command-box">
@@ -241,7 +281,9 @@ export const CommandPalette = () => {
               onOpenContextMenu={handleOpenSuggestionContextMenu}
             />
           )}
-          renderSuggestionsContainer={(params) => <CommandPaletteHitsContainer {...params} />}
+          renderSuggestionsContainer={(params) => (
+            <CommandPaletteHitsContainer {...params} header={actionContextHeader} />
+          )}
           inputProps={{
             className: `${classes.input} ${inputValue ? classes.inputOpened : ''}`,
             value: inputValue,

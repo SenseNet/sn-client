@@ -12,6 +12,8 @@ const values: Localization = {
   commandPalette: {
     title: 'Command palette megnyitása',
     actions: 'Műveletek',
+    actionContext: 'Műveletek ezen: ',
+    noActionContext: 'Nincs kiválasztott tartalom a műveletekhez.',
     searchSuggestionList: 'Keresési javaslatok listája',
   },
   contentInfoDialog: {

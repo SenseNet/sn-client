@@ -3,16 +3,19 @@ import { useCallback, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router'
 import { resolvePathParams } from '../application-paths'
 import { useQuery } from '../hooks/use-query'
+import { useSelectionService } from '../hooks/use-selection-service'
 import { pathWithQueryParams } from '../services/query-string-builder'
 
 export const useTreeNavigation = (defaultPath: string) => {
   const history = useHistory()
   const match = useRouteMatch<{ browseType: string }>()
+  const selectionService = useSelectionService()
   const pathFromQuery = useQuery().get('path')
   const [currentPath, setCurrentPath] = useState(pathFromQuery ? decodeURIComponent(pathFromQuery) : '')
 
   const onNavigate = useCallback(
     (content: GenericContent) => {
+      selectionService.activeContent.setValue(content)
       const searchParams = new URLSearchParams(history.location.search)
       searchParams.delete('content')
       const newPath = content.Path.replace(defaultPath, '')
@@ -26,7 +29,7 @@ export const useTreeNavigation = (defaultPath: string) => {
       )
       setCurrentPath(newPath)
     },
-    [history, match.path, match.params, defaultPath],
+    [history, match.path, match.params, defaultPath, selectionService.activeContent],
   )
 
   useEffect(() => {
