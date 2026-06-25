@@ -128,6 +128,11 @@ export const DesktopNavMenu: FunctionComponent = () => {
     service.setPersonalSettingsValue({ ...settings, preferDisplayName: event.target.checked })
   }
 
+  const toggleSortFoldersFirstValue = () => (event: ChangeEvent<HTMLInputElement>) => {
+    const settings = service.userValue.getValue()
+    service.setPersonalSettingsValue({ ...settings, sortFoldersFirst: event.target.checked })
+  }
+
   return (
     <div className={clsx(globalClasses.centered, classes.navMenu)}>
       <>
@@ -295,6 +300,22 @@ export const DesktopNavMenu: FunctionComponent = () => {
                           data-test="prefer-display-name-checkbox"
                           checked={personalSettings.preferDisplayName}
                           onChange={togglePreferDisplayNameValue()}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Typography>
+                </MenuItem>
+                <MenuItem>
+                  <Typography component="div" className={classes.checkboxMenuItem} style={{ width: '100%' }}>
+                    <Grid component="label" container alignItems="center" justify="space-between">
+                      <Grid item style={{ paddingRight: '16px' }}>
+                        {localization.topMenu.sortFoldersFirst}
+                      </Grid>
+                      <Grid item>
+                        <Switch
+                          data-test="sort-folders-first-checkbox"
+                          checked={personalSettings.sortFoldersFirst}
+                          onChange={toggleSortFoldersFirstValue()}
                         />
                       </Grid>
                     </Grid>
