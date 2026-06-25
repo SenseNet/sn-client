@@ -66,7 +66,7 @@ function dialogRenderer(dialog: DialogWithProps) {
     case 'feedback':
       return <Feedback />
     case 'change-password':
-      return <ChangePasswordDialog />
+      return <ChangePasswordDialog {...dialog.props} />
     case 'date-range-picker':
       return <DateRangePicker {...dialog.props} />
     case 'column-settings':

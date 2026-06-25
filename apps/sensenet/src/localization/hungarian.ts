@@ -305,6 +305,7 @@ const values: Localization = {
   },
   changePassword: {
     changeYourPassword: 'Jelszómódosítás',
+    changePasswordFor: '{0} jelszavának módosítása',
     cancel: 'Cancel',
     update: 'Küldés',
     oldPassword: 'Régi jelszó',

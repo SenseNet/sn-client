@@ -677,6 +677,7 @@ const values = {
   },
   changePassword: {
     changeYourPassword: 'Change your password',
+    changePasswordFor: 'Change password for {0}',
     cancel: 'Cancel',
     update: 'Update',
     oldPassword: 'Old password',

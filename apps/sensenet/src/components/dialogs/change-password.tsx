@@ -1,5 +1,6 @@
 import { Button, DialogActions, DialogContent } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
+import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useState } from 'react'
 import { useAuth } from '../../context/auth-provider'
@@ -9,13 +10,18 @@ import { DialogTitle, useDialog } from '.'
 
 type PasswordFieldKeys = 'newPassword' | 'confirmPassword'
 
-export function ChangePasswordDialog() {
+export type ChangePasswordDialogProps = {
+  content?: GenericContent
+}
+
+export function ChangePasswordDialog({ content }: ChangePasswordDialogProps) {
   const { closeLastDialog } = useDialog()
   const localization = useLocalization().changePassword
   const logger = useLogger('change-password')
   const globalClasses = useGlobalStyles()
   const repo = useRepository()
   const { user } = useAuth()
+  const targetContent = content || user
   const [passwordFields, setPasswordFields] = useState<{
     [K in PasswordFieldKeys]?: string
   }>({
@@ -32,7 +38,7 @@ export function ChangePasswordDialog() {
 
     try {
       await repo.executeAction({
-        idOrPath: user!.Path,
+        idOrPath: targetContent!.Path,
         name: 'ChangePassword',
         method: 'POST',
         body: {
@@ -65,7 +71,11 @@ export function ChangePasswordDialog() {
   return (
     <>
       <DialogTitle>
-        <div className={globalClasses.centered}>{localization.changeYourPassword}</div>
+        <div className={globalClasses.centered}>
+          {content
+            ? localization.changePasswordFor.replace('{0}', content.DisplayName || content.Name)
+            : localization.changeYourPassword}
+        </div>
       </DialogTitle>
       <>
         <DialogContent data-test="change-password-fields">

@@ -184,6 +184,14 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
           },
         })
         break
+      case 'ChangePassword':
+        openDialog({
+          name: 'change-password',
+          props: {
+            content,
+          },
+        })
+        break
       case 'SetPermissions':
         if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({

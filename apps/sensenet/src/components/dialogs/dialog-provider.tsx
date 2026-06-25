@@ -6,6 +6,7 @@ import {
   AddDeleteUserGroupsProps,
   ApproveProps,
   AreYouSureProps,
+  ChangePasswordDialogProps,
   CheckInProps,
   ContentPickerDialogProps,
   CopyMoveDialogProps,
@@ -43,7 +44,7 @@ export type DialogWithProps = (
   | { name: 'member-select'; props: MemberSelectProps }
   | { name: 'content-picker'; props: ContentPickerDialogProps }
   | { name: 'feedback' }
-  | { name: 'change-password' }
+  | { name: 'change-password'; props?: ChangePasswordDialogProps }
   | { name: 'date-range-picker'; props: DateRangePickerProps }
   | { name: 'column-settings'; props: any }
 ) & { dialogProps?: Partial<DialogProps> }
