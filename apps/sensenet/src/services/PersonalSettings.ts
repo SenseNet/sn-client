@@ -90,6 +90,7 @@ export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   sendLogWithCrashReports: boolean
   showHiddenItems: boolean
   preferDisplayName: boolean
+  sortFoldersFirst: boolean
   logLevel: Array<keyof typeof LogLevel>
   language: 'default' | 'hungarian'
   theme: 'light' | 'dark'
@@ -144,6 +145,7 @@ export const defaultSettings: PersonalSettingsType = {
   showDescription: false,
   showHiddenItems: true,
   preferDisplayName: false,
+  sortFoldersFirst: true,
   uploadHandlers: [
     'SenseNet.ContentRepository.File',
     'SenseNet.ContentRepository.Image',

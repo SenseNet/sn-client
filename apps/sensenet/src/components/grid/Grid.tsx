@@ -13,9 +13,10 @@ import {
 } from 'ag-grid-community'
 import { AgGridReact } from 'ag-grid-react'
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
-import { useLocalization, useSelectionService } from '../../hooks'
+import { useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { DropFileArea } from '../DropFileArea'
+import { compareTreeItems } from '../tree/tree-helpers'
 import { GridProps } from './Props/GridProps'
 import { useGridLoading } from './Providers/GridLoadingProvider'
 
@@ -25,20 +26,13 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
   const { isGridLoading, setIsGridLoading } = useGridLoading()
   const selectionService = useSelectionService()
   const localization = useLocalization().common
+  const personalSettings = usePersonalSettings()
   const parentContent = useContext(CurrentContentContext)
   const currentChildren = useContext(CurrentChildrenContext) as GenericContent[]
   const isCurrentChildrenLoading = useContext(CurrentChildrenIsLoadingContext)
   const children = useMemo(() => {
-    return [...currentChildren].sort((a, b) => {
-      const aIsFolder = a.Type?.toLowerCase().includes('folder') ?? false
-      const bIsFolder = b.Type?.toLowerCase().includes('folder') ?? false
-
-      if (aIsFolder && !bIsFolder) return -1
-      if (!aIsFolder && bIsFolder) return 1
-
-      return (a.DisplayName ?? '').localeCompare(b.DisplayName ?? '')
-    })
-  }, [currentChildren])
+    return [...currentChildren].sort(compareTreeItems(true, personalSettings.sortFoldersFirst))
+  }, [currentChildren, personalSettings.sortFoldersFirst])
 
   const theme = useTheme()
   const [contextMenuItem, setContextMenuItem] = useState<GenericContent | null>(null)

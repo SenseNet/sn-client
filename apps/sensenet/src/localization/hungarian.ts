@@ -158,6 +158,7 @@ const values: Localization = {
     openViewOptions: 'Felületi beállítások kinyitása',
     showHiddenItems: 'Rejtett elemek megjelenítése',
     preferDisplayName: 'DisplayName a mappaszerkezetnél',
+    sortFoldersFirst: 'Mappák előre',
     viewOptions: 'Felület beállítások',
   },
   settings: {

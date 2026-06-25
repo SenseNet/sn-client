@@ -5,13 +5,14 @@ import { useRepository } from '@sensenet/hooks-react'
 import React, { MouseEventHandler, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
 import { ResponsivePersonalSettings } from '../../context'
-import { useQuery, useSelectionService, useSnRoute } from '../../hooks'
+import { usePersonalSettings, useQuery, useSelectionService, useSnRoute } from '../../hooks'
 import { getPrimaryActionUrl, navigateToAction } from '../../services'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { Icon } from '../Icon'
 import { ExpandItemsContext } from './Contexts/ExpandedItemsProvider'
 import { useTreeLoading } from './Contexts/TreeLoadingProvider'
 import StyledTreeItemProps from './Props/StyledTreeItemProps'
+import { compareTreeItems, getTreeItemLabel } from './tree-helpers'
 
 export const StyledTreeItem = ({
   contentvalue,
@@ -38,6 +39,7 @@ export const StyledTreeItem = ({
   const snRoute = useSnRoute()
   const uiSettings = useContext(ResponsivePersonalSettings)
   const selectionService = useSelectionService()
+  const personalSettings = usePersonalSettings()
 
   const currentPath = useQuery().get('path')
   const mountedRef = useRef(true)
@@ -60,11 +62,9 @@ export const StyledTreeItem = ({
         const children = await loadChildren(contentPath)
         if (!mountedRef.current) return
 
-        const sorted = children?.sort((a, b) => {
-          const isAFolder = a.Type.toLowerCase().includes('folder') ? 0 : 1
-          const isBFolder = b.Type.toLowerCase().includes('folder') ? 0 : 1
-          return isAFolder - isBFolder || a.Name.localeCompare(b.Name)
-        })
+        const sorted = children
+          ? [...children].sort(compareTreeItems(personalSettings.preferDisplayName, personalSettings.sortFoldersFirst))
+          : undefined
 
         const elements = sorted?.map((child) => (
           <StyledTreeItem
@@ -87,7 +87,14 @@ export const StyledTreeItem = ({
         //
       }
     },
-    [loadChildren, activeitempath, navigate, editMode],
+    [
+      loadChildren,
+      personalSettings.preferDisplayName,
+      personalSettings.sortFoldersFirst,
+      activeitempath,
+      navigate,
+      editMode,
+    ],
   )
 
   // Load children if expanded
@@ -114,7 +121,10 @@ export const StyledTreeItem = ({
       <ListItemIcon>
         <Icon item={contentvalue} style={{ height: 20, width: 20, fontSize: 15 }} />
       </ListItemIcon>
-      <ListItemText style={{ fontSize: '11px', color: isDisabled ? 'grey' : undefined }} primary={contentvalue.Name} />
+      <ListItemText
+        style={{ fontSize: '11px', color: isDisabled ? 'grey' : undefined }}
+        primary={getTreeItemLabel(contentvalue, personalSettings.preferDisplayName)}
+      />
     </>
   )
 

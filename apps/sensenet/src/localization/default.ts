@@ -321,6 +321,7 @@ const values = {
     openViewOptions: 'Open view options',
     showHiddenItems: 'Show hidden items',
     preferDisplayName: 'Prefer DisplayName in Tree',
+    sortFoldersFirst: 'Sort folders first',
     viewOptions: 'View options',
   },
   navigationCommandProvider: {

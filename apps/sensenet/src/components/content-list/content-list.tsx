@@ -22,6 +22,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from 'react'
 import { TableCellProps } from 'react-virtualized'
@@ -33,7 +34,7 @@ import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { useDialog } from '../dialogs'
 import { DropFileArea } from '../DropFileArea'
 import { SelectionControl } from '../SelectionControl'
-import { SETTINGS_FOLDER_FILTER } from '../tree/tree-with-data'
+import { isFolderLikeTreeItem, SETTINGS_FOLDER_FILTER } from '../tree/tree-helpers'
 import { ContextMenuWrapper } from './context-menu-wrapper'
 import {
   ActionsField,
@@ -94,6 +95,8 @@ export const isReferenceField = (fieldName: string, repo: Repository, schema = '
 
 const rowHeightConst = 67
 const headerHeightConst = 48
+const displayNameInArray = ['DisplayName']
+const sortableColumns = ['DisplayName', 'Path', 'Type', 'Name', 'Version', 'CreationDate', 'ModificationDate']
 
 /**
  * Compare passed minutes with
@@ -121,7 +124,7 @@ const ColumnSettingsContainer: ColumnSettingsContainerType = {}
 export const ContentList = <T extends GenericContent = GenericContent>(props: ContentListProps<T>) => {
   const selectionService = useSelectionService()
   const parentContent = useContext(CurrentContentContext)
-  const children = useContext(CurrentChildrenContext) as T[]
+  const currentChildren = useContext(CurrentChildrenContext) as T[]
   const ancestors = useContext(CurrentAncestorsContext) as T[]
   const device = useContext(ResponsiveContext)
   const personalSettings = useContext(ResponsivePersonalSettings)
@@ -133,8 +136,6 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
   const { openDialog, closeLastDialog } = useDialog()
   const logger = useLogger('ContentList')
   const localization = useLocalization()
-  const [selected, setSelected] = useState<T[]>([])
-  const [activeContent, setActiveContent] = useState<T>(children[0])
   const [isFocused, setIsFocused] = useState(true)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
   const [schema, setSchema] = useState(repo.schemas.getSchemaByName(props.schema || 'GenericContent'))
@@ -150,6 +151,35 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
   const [currentDirection, setCurrentDirection] = useState<'asc' | 'desc'>(
     (loadChildrenSettingsOrderBy?.[0][1] as 'asc' | 'desc') || 'asc',
   )
+  const children = useMemo(() => {
+    return [...currentChildren].sort((a, b) => {
+      if (userPersonalSettings.sortFoldersFirst) {
+        const folderOrder = Number(!isFolderLikeTreeItem(a)) - Number(!isFolderLikeTreeItem(b))
+
+        if (folderOrder) {
+          return folderOrder
+        }
+      }
+
+      if (sortableColumns.includes(String(currentOrder))) {
+        const nameA = String(a[currentOrder] ?? '')
+        const nameB = String(b[currentOrder] ?? '')
+
+        return currentDirection === 'asc' ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA)
+      }
+
+      if (currentOrder === 'CreatedBy' || currentOrder === 'ModifiedBy') {
+        const nameA = String((a[currentOrder] as GenericContent)?.DisplayName ?? '')
+        const nameB = String((b[currentOrder] as GenericContent)?.DisplayName ?? '')
+
+        return currentDirection === 'asc' ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA)
+      }
+
+      return 0
+    })
+  }, [currentChildren, currentDirection, currentOrder, userPersonalSettings.sortFoldersFirst])
+  const [selected, setSelected] = useState<T[]>([])
+  const [activeContent, setActiveContent] = useState<T>(children[0])
 
   const [columnSettings, setColumnSettings] = useState<Array<ColumnSetting<GenericContent>>>(
     personalSettings.content.fields,
@@ -673,9 +703,6 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
     },
   }
 
-  const displayNameInArray = ['DisplayName']
-  const sortableColumns = ['DisplayName', 'Path', 'Type', 'Name', 'Version', 'CreationDate', 'ModificationDate']
-
   return (
     <div style={{ ...props.style, ...{ height: '100%' } }} {...props.containerProps}>
       {props.enableBreadcrumbs ? (
@@ -719,34 +746,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
                 displayNameInArray) as any
             }
             getSelectionControl={getSelectionControl}
-            /* If the Order by Column Is The Display. The client will sort it. Due to some locale and indexing issues */
-            items={
-              sortableColumns.includes(String(currentOrder))
-                ? children?.sort((a, b) => {
-                    // If no display Name
-                    const nameA = String(a[currentOrder]) ?? '' // Provide a default value if displayName is undefined
-                    const nameB = String(b[currentOrder]) ?? '' // Provide a default value if displayName is undefined
-
-                    if (currentDirection === 'asc') {
-                      return nameA.localeCompare(nameB)
-                    }
-                    return nameB.localeCompare(nameA)
-                  })
-                : currentOrder === 'CreatedBy' || currentOrder === 'ModifiedBy'
-                ? children?.sort((a, b) => {
-                    const aTmp = a[currentOrder] as GenericContent
-                    const bTmp = b[currentOrder] as GenericContent
-
-                    const nameA = String(aTmp?.DisplayName) ?? ''
-                    const nameB = String(bTmp?.DisplayName) ?? ''
-
-                    if (currentDirection === 'asc') {
-                      return nameA.localeCompare(nameB)
-                    }
-                    return nameB.localeCompare(nameA)
-                  })
-                : children
-            }
+            items={children}
             onRequestOrderChange={onRequestOrderChangeFunc}
             onRequestSelectionChange={setSelected}
             orderBy={currentOrder}
