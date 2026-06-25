@@ -5,7 +5,7 @@ import { useRepository } from '@sensenet/hooks-react'
 import React, { MouseEventHandler, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
 import { ResponsivePersonalSettings } from '../../context'
-import { useQuery, useSnRoute } from '../../hooks'
+import { useQuery, useSelectionService, useSnRoute } from '../../hooks'
 import { getPrimaryActionUrl, navigateToAction } from '../../services'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { Icon } from '../Icon'
@@ -37,6 +37,7 @@ export const StyledTreeItem = ({
   const repository = useRepository()
   const snRoute = useSnRoute()
   const uiSettings = useContext(ResponsivePersonalSettings)
+  const selectionService = useSelectionService()
 
   const currentPath = useQuery().get('path')
   const mountedRef = useRef(true)
@@ -141,6 +142,7 @@ export const StyledTreeItem = ({
     const displayName = contentvalue.DisplayName
 
     if (displayName?.endsWith('.settings') || displayName?.endsWith('.xml')) {
+      selectionService.activeContent.setValue(contentvalue)
       history.push(
         getPrimaryActionUrl({ content: contentvalue, repository, uiSettings, location: history.location, snRoute }),
       )
@@ -148,6 +150,7 @@ export const StyledTreeItem = ({
     }
 
     if (editMode) {
+      selectionService.activeContent.setValue(contentvalue)
       navigateToAction({
         history,
         routeMatch: snRoute.match!,
@@ -155,6 +158,7 @@ export const StyledTreeItem = ({
         queryParams: { content: contentvalue.Path.replace(snRoute.path, '') },
       })
     } else {
+      selectionService.activeContent.setValue(contentvalue)
       const itemPath = (event.target as HTMLElement).closest('[data-path]')?.getAttribute('data-path')
       setExpandItems((prev) => {
         const updated = new Set(prev)
@@ -176,11 +180,12 @@ export const StyledTreeItem = ({
       if (isDisabled) return
       event.preventDefault()
       event.stopPropagation()
+      selectionService.activeContent.setValue(contentvalue)
       setContextMenuItem(contentvalue)
       setContextMenuAnchorPos({ top: event.clientY, left: event.clientX })
       setIsContextMenuOpened(true)
     },
-    [contentvalue, isDisabled],
+    [contentvalue, isDisabled, selectionService.activeContent],
   )
 
   return (

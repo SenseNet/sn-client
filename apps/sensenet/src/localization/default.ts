@@ -22,6 +22,8 @@ const values = {
     title: 'Search',
     clear: 'Clear',
     actions: 'Actions',
+    actionContext: 'Actions for: ',
+    noActionContext: 'No content selected for actions.',
     help: {
       readMeTitle: 'ReadMe',
       readMeDescription: 'Opens the latest readme.md file from GitHub in a new window',

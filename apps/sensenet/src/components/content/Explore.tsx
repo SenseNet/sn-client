@@ -13,7 +13,7 @@ import {
 import { ColumnSetting } from '@sensenet/list-controls-react/src/ContentList/content-list-base-props'
 import { ColDef } from 'ag-grid-community'
 import { clsx } from 'clsx'
-import React, { useContext, useMemo, useRef, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
 import { GridKeyEnum } from '../../../src/components/grid/enums/GridKey.enum'
 import { ResponsivePersonalSettings } from '../../context'
@@ -176,6 +176,21 @@ type ExploreGridOrApplicationProps = {
   gridKey: GridKeyEnum
   onNavigate: (content: GenericContent) => void
   onActivateItem: (activeItem: GenericContent) => Promise<void>
+}
+
+const ActiveContentRouteSync: React.FC = () => {
+  const currentContent = useContext(CurrentContentContext)
+  const selectionService = useSelectionService()
+
+  useEffect(() => {
+    const activeContent = selectionService.activeContent.getValue()
+
+    if (currentContent && (!activeContent || !PathHelper.isInSubTree(activeContent.Path, currentContent.Path))) {
+      selectionService.activeContent.setValue(currentContent)
+    }
+  }, [currentContent, selectionService.activeContent])
+
+  return null
 }
 
 const ExploreGridOrApplication: React.FC<ExploreGridOrApplicationProps> = ({
@@ -360,6 +375,7 @@ export function Explore({
       key={JSON.stringify(currentChildrenLoadSettings)}
       loadChildrenSettings={currentChildrenLoadSettings}>
       <CurrentContentProvider idOrPath={currentPath}>
+        <ActiveContentRouteSync />
         <CurrentChildrenProvider loadSettings={loadChildrenSettings} alwaysRefresh={alwaysRefreshChildren}>
           <CurrentAncestorsProvider root={rootPath}>
             <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>

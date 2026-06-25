@@ -7,6 +7,7 @@ import {
   ColumnApi,
   GridApi,
   GridReadyEvent,
+  RowClickedEvent,
   RowDoubleClickedEvent,
   SelectionChangedEvent,
 } from 'ag-grid-community'
@@ -86,8 +87,17 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
   }, [children, isGridLoading, setLoadingWithMinDuration])
 
   const onRowDoubleClicked = (item: RowDoubleClickedEvent) => {
+    if (item.data) {
+      props.onActiveItemChange?.(item.data)
+    }
     setLoadingWithMinDuration(true)
     item.data.isFolder ? props.onParentChange(item.data) : props.onActivateItem(item.data)
+  }
+
+  const onRowClicked = (item: RowClickedEvent) => {
+    if (item.data) {
+      props.onActiveItemChange?.(item.data)
+    }
   }
 
   const onSelectionChanged = (params: SelectionChangedEvent) => {
@@ -102,6 +112,7 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
     if (!event.node || !event.event) return
     const mouseEvent = event.event as MouseEvent
     setContextMenuItem(event.data)
+    event.data && props.onActiveItemChange?.(event.data)
     setContextMenuAnchorPos({ top: mouseEvent.clientY, left: mouseEvent.clientX })
     setIsContextMenuOpened(true)
   }
@@ -231,6 +242,7 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
           rowSelection={'multiple'}
           suppressReactUi={true}
           tooltipShowDelay={100}
+          onRowClicked={onRowClicked}
           onRowDoubleClicked={onRowDoubleClicked}
           preventDefaultOnContextMenu={true}
           onGridReady={onGridReady}
