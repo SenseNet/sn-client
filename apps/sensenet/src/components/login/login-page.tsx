@@ -6,6 +6,9 @@ import {
   createStyles,
   Grid,
   InputLabel,
+  List,
+  ListItem,
+  ListItemText,
   makeStyles,
   TextField,
   TextFieldProps,
@@ -50,9 +53,16 @@ const DEVDEMO_URL = `https://dev.demo.sensenet.com`
 type LoginPageProps = {
   handleSubmit: (url: string) => void
   isLoginInProgress: boolean
+  repositoryOptions?: Array<{ repoUrl: string; lastUsed?: string }>
+  handleSelectRepository?: (url: string) => void
 }
 
-export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPageProps) {
+export default function LoginPage({
+  handleSubmit,
+  isLoginInProgress,
+  repositoryOptions = [],
+  handleSelectRepository,
+}: LoginPageProps) {
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const localization = useLocalization().login
@@ -143,6 +153,31 @@ export default function LoginPage({ handleSubmit, isLoginInProgress }: LoginPage
               </Button>
             </form>
           </Grid>
+          {repositoryOptions.length > 0 && handleSelectRepository ? (
+            <Grid item style={{ marginTop: 32 }}>
+              <Typography align="center" variant="subtitle1" component="p" className={classes.loginSubtitle}>
+                {localization.recentRepositories}
+              </Typography>
+              <List dense={true}>
+                {repositoryOptions.map((repositoryOption) => (
+                  <ListItem
+                    button={true}
+                    disabled={isLoginInProgress}
+                    key={repositoryOption.repoUrl}
+                    onClick={() => handleSelectRepository(repositoryOption.repoUrl)}>
+                    <ListItemText
+                      primary={repositoryOption.repoUrl}
+                      secondary={
+                        repositoryOption.lastUsed
+                          ? localization.lastUsedRepository(new Date(repositoryOption.lastUsed).toLocaleString())
+                          : undefined
+                      }
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            </Grid>
+          ) : null}
         </Grid>
       </Container>
     </>

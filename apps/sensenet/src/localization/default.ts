@@ -237,9 +237,12 @@ const values = {
     welcome: 'Welcome to admin.sensenet.com',
     demoTitle: `If you don't have your own repository yet`,
     repositoryUrl: 'Otherwise please type in your repository URL to continue',
+    recentRepositories: 'Recent repositories',
+    lastUsedRepository: (lastUsed: string) => `Last used: ${lastUsed}`,
   },
   logout: {
     logoutButtonTitle: 'Log out',
+    switchRepositoryButtonTitle: 'Switch repository',
     logoutDialogTitle: 'Really log out?',
     loggingOutFrom: (repoUrl: string) => `Logging out from ${repoUrl}...`,
     logoutConfirmText: (repoUrl: string, userName: string) =>

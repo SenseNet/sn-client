@@ -109,10 +109,13 @@ const values: Localization = {
     passwordHelperText: 'A felhasználóhoz tartozó jelszó',
     repositoryLabel: 'Elérési út',
     repositoryHelperText: 'A repository teljes elérési útja (pl.: https://my-sensenet.com)',
+    recentRepositories: 'Korábban használt repository-k',
+    lastUsedRepository: (lastUsed: string) => `Legutóbb használva: ${lastUsed}`,
   },
   logout: {
     logoutCancel: 'Mégsem',
     logoutButtonTitle: 'Kijelentkezés',
+    switchRepositoryButtonTitle: 'Repository váltása',
     logoutDialogTitle: 'Biztosan kijelentkezel?',
     loggingOutFrom: (repoUrl: string) => `Kijelentkezés a ${repoUrl} repository-ból...`,
     logoutConfirmText: (repoUrl: string, userName: string) =>

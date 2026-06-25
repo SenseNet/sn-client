@@ -12,13 +12,18 @@ import { NotificationComponent } from '../components/NotificationComponent'
 import { useGlobalStyles } from '../globalStyles'
 import { useQuery } from '../hooks'
 import { getAuthConfig } from '../services/auth-config'
+import {
+  clearActiveRepositorySelection,
+  normalizeRepositoryUrl,
+  oidcAuthConfigKey,
+} from '../services/repository-session'
 
 const LoginPage = lazy(() => import(/* webpackChunkName: "login" */ '../components/login/login-page'))
 
-export const authConfigKey = 'sn-oidc-config'
+export const authConfigKey = oidcAuthConfigKey
 const customEvents = {
   onUserSignedOut: () => {
-    window.localStorage.removeItem(authConfigKey)
+    clearActiveRepositorySelection()
   },
 }
 
@@ -61,7 +66,7 @@ export function RepositoryProvider({
 
   useEffect(() => {
     if (url) {
-      setAuthState({ repoUrl: url, config: null })
+      setAuthState({ repoUrl: normalizeRepositoryUrl(url), config: null })
     }
   }, [url])
 
@@ -73,17 +78,25 @@ export function RepositoryProvider({
     try {
       setIsLoginInProgress(true)
       const config = await getAuthConfig(authState.repoUrl)
+      if (config.authServerSettings.type !== 'IdentityServer') {
+        changeAuthType(authState.repoUrl)
+        logger.error({ message: 'Incompatible authentication server type' })
+        clearActiveRepositorySelection()
+        setAuthState((oldState) => ({ ...oldState, repoUrl: '' }))
+        return
+      }
+
       window.localStorage.setItem(authConfigKey, JSON.stringify(config))
       // Set only userManagerSettings in authState to match the expected type
       setAuthState((oldState) => ({ ...oldState, config: config.userManagerSettings }))
     } catch (error) {
       logger.warning({ data: error, message: `Couldn't connect to ${authState.repoUrl}` })
-      window.localStorage.removeItem(authConfigKey)
+      clearActiveRepositorySelection()
       setAuthState((oldState) => ({ ...oldState, repoUrl: '' }))
     } finally {
       setIsLoginInProgress(false)
     }
-  }, [logger, authState.repoUrl])
+  }, [logger, authState.repoUrl, changeAuthType])
 
   useEffect(() => {
     getConfig()
@@ -101,7 +114,7 @@ export function RepositoryProvider({
               isLoginInProgress={isLoginInProgress}
               handleSubmit={(formUrl) => {
                 setAuthState({
-                  repoUrl: formUrl,
+                  repoUrl: normalizeRepositoryUrl(formUrl),
                   config: null,
                 })
               }}
@@ -216,7 +229,7 @@ const RepoProvider = ({
           const config = JSON.parse(configString)
           changeAuthType(repoUrl)
           logger.error({ data: error, message: `Couldn't connect to ${config.authority}` })
-          window.localStorage.removeItem(authConfigKey)
+          clearActiveRepositorySelection()
           clearAuthState()
         }
       }
