@@ -18,6 +18,7 @@ import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { useDrawerItems, useLocalization, useTheme } from '../../hooks'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
+import { RepositorySelector } from './repository-selector'
 
 type TemporaryDrawerProps = {
   isOpened: boolean
@@ -60,6 +61,7 @@ export const TemporaryDrawer = (props: TemporaryDrawerProps) => {
           transition: 'width 100ms ease-in-out',
         }}>
         <div style={{ paddingTop: '1em' }}>
+          <RepositorySelector />
           {items.map((item, index) => {
             const isActive = matchPath(location.pathname, item.url)
             return isActive ? (

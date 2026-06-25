@@ -15,6 +15,7 @@ import { useDrawerItems, useLocalization } from '../../hooks'
 import { AddButton } from '../AddButton'
 import { SearchButton } from '../search-button'
 import { PermanentDrawerItem } from './PermanentDrawerItem'
+import { RepositorySelector } from './repository-selector'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -109,6 +110,7 @@ export const PermanentDrawer = () => {
                 </ListItemIcon>
               </ListItem>
             ) : null}
+            {opened ? <RepositorySelector /> : null}
             {matchPath(location.pathname, PATHS.savedQueries.appPath) ? <SearchButton isOpened={opened} /> : null}{' '}
             {matchPath(location.pathname, [
               PATHS.content.appPath,

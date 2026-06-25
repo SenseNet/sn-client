@@ -50,7 +50,7 @@ export function SnAuthRepositoryProvider({
   })
   const cancelledLogin = useQuery().get('cancelledLogin')
   const [configString, setConfigString] = useState<any>()
-  const [authServerUrl, setAuthServerUrl] = useState()
+  const [authServerUrl, setAuthServerUrl] = useState<string>()
 
   const clearState = useCallback(() => setAuthState({ repoUrl: '', config: null }), [])
 
@@ -87,6 +87,7 @@ export function SnAuthRepositoryProvider({
       const storedConfig = getSnAuthRepositoryConfig(repoUrl)
 
       setSelectedSnAuthRepository(repoUrl)
+      setAuthServerUrl(storedConfig?.userManagerSettings.authority)
       setAuthState({ repoUrl, config: storedConfig?.userManagerSettings ?? null })
       setConfigString(storedConfig ? JSON.stringify(storedConfig) : null)
     }

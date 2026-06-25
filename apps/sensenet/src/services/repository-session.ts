@@ -10,6 +10,8 @@ const snAuthPendingLoginRepositoryKey = 'sn-auth-pending-login-repository'
 const snAuthScopedConfigKeyPrefix = 'sn-auth-config'
 const snAuthStorageKeyPrefix = 'sn-auth'
 
+export const snAuthRepositorySessionsChangedEvent = 'sn-auth-repository-sessions-changed'
+
 export type SnAuthRepositorySession = {
   repoUrl: string
   authServerUrl?: string
@@ -38,6 +40,15 @@ export const getSnAuthStorageKeyPrefix = (repoUrl: string) =>
 
 export const getSnAuthRepositoryConfigKey = (repoUrl: string) =>
   `${snAuthScopedConfigKeyPrefix}:${encodeRepositoryUrl(repoUrl)}`
+
+export const hasSnAuthRepositoryTokens = (repoUrl: string) => {
+  const storageKeyPrefix = getSnAuthStorageKeyPrefix(repoUrl)
+
+  return (
+    !!window.localStorage.getItem(getStorageKey(ACCESS_TOKEN_KEY, storageKeyPrefix)) &&
+    !!window.localStorage.getItem(getStorageKey(REFRESH_TOKEN_KEY, storageKeyPrefix))
+  )
+}
 
 export const getSelectedSnAuthRepository = () => window.localStorage.getItem(snAuthSelectedRepositoryKey)
 
@@ -83,6 +94,9 @@ export const getSnAuthRepositorySessions = (): SnAuthRepositorySession[] => {
   }
 }
 
+export const getAuthenticatedSnAuthRepositorySessions = () =>
+  getSnAuthRepositorySessions().filter((session) => hasSnAuthRepositoryTokens(session.repoUrl))
+
 export const upsertSnAuthRepositorySession = (repoUrl: string, authServerUrl?: string) => {
   const normalizedRepoUrl = normalizeRepositoryUrl(repoUrl)
   const sessions = getSnAuthRepositorySessions().filter((session) => session.repoUrl !== normalizedRepoUrl)
@@ -97,6 +111,7 @@ export const upsertSnAuthRepositorySession = (repoUrl: string, authServerUrl?: s
 
   window.localStorage.setItem(snAuthRepositorySessionsKey, JSON.stringify(nextSessions))
   setSelectedSnAuthRepository(normalizedRepoUrl)
+  window.dispatchEvent(new Event(snAuthRepositorySessionsChangedEvent))
 }
 
 export const removeSnAuthRepositorySession = (repoUrl: string) => {
@@ -112,6 +127,8 @@ export const removeSnAuthRepositorySession = (repoUrl: string) => {
   if (getSelectedSnAuthRepository() === normalizedRepoUrl) {
     clearSelectedSnAuthRepository()
   }
+
+  window.dispatchEvent(new Event(snAuthRepositorySessionsChangedEvent))
 }
 
 export const getSnAuthRepositoryConfig = (repoUrl: string) => {

@@ -7,6 +7,7 @@ import {
   LocalizationProvider,
   PersonalSettingsContextProvider,
   RepositoryProvider,
+  RepositorySwitchContext,
   ResponsiveContextProvider,
   ThemeProvider,
 } from '../context'
@@ -23,6 +24,7 @@ import {
 } from '../services'
 import {
   clearActiveRepositorySelection,
+  hasSnAuthRepositoryTokens,
   normalizeRepositoryUrl,
   startSnAuthRepositoryLogin,
 } from '../services/repository-session'
@@ -65,6 +67,18 @@ export default function AppProviders({ children }: AppProvidersProps) {
     })
   }, [])
 
+  const switchRepository = useCallback((providedUrl: string) => {
+    const normalizedUrl = normalizeRepositoryUrl(providedUrl)
+
+    if (!hasSnAuthRepositoryTokens(normalizedUrl)) {
+      startSnAuthRepositoryLogin(normalizedUrl)
+    }
+
+    window.localStorage.setItem('authType', 'SNAuth')
+    setAuthType('SNAuth')
+    setUrl(normalizedUrl)
+  }, [])
+
   useEffect(() => {
     const repoUrl = new URL(window.location.href).searchParams.get('repoUrl')
     if (repoUrl) {
@@ -96,31 +110,33 @@ export default function AppProviders({ children }: AppProvidersProps) {
               <GridLoadingProvider>
                 <TreeLoadingProvider>
                   <ThemeProvider>
-                    {authType === 'IdentityServer' ? (
-                      <RepositoryProvider url={url} changeAuthType={changeAuthType}>
-                        <ShareProvider>
-                          <ISAuthProvider>
-                            <ResponsiveContextProvider>
-                              <ExpandedItemsProvider>
-                                <DialogProvider>{children}</DialogProvider>
-                              </ExpandedItemsProvider>
-                            </ResponsiveContextProvider>
-                          </ISAuthProvider>
-                        </ShareProvider>
-                      </RepositoryProvider>
-                    ) : (
-                      <SnAuthRepositoryProvider url={url} changeAuthType={changeAuthType}>
-                        <ShareProvider>
-                          <SNAuthProvider>
-                            <ResponsiveContextProvider>
-                              <ExpandedItemsProvider>
-                                <DialogProvider>{children}</DialogProvider>
-                              </ExpandedItemsProvider>
-                            </ResponsiveContextProvider>
-                          </SNAuthProvider>
-                        </ShareProvider>
-                      </SnAuthRepositoryProvider>
-                    )}
+                    <RepositorySwitchContext.Provider value={{ authType, switchRepository }}>
+                      {authType === 'IdentityServer' ? (
+                        <RepositoryProvider url={url} changeAuthType={changeAuthType}>
+                          <ShareProvider>
+                            <ISAuthProvider>
+                              <ResponsiveContextProvider>
+                                <ExpandedItemsProvider>
+                                  <DialogProvider>{children}</DialogProvider>
+                                </ExpandedItemsProvider>
+                              </ResponsiveContextProvider>
+                            </ISAuthProvider>
+                          </ShareProvider>
+                        </RepositoryProvider>
+                      ) : (
+                        <SnAuthRepositoryProvider url={url} changeAuthType={changeAuthType}>
+                          <ShareProvider>
+                            <SNAuthProvider>
+                              <ResponsiveContextProvider>
+                                <ExpandedItemsProvider>
+                                  <DialogProvider>{children}</DialogProvider>
+                                </ExpandedItemsProvider>
+                              </ResponsiveContextProvider>
+                            </SNAuthProvider>
+                          </ShareProvider>
+                        </SnAuthRepositoryProvider>
+                      )}
+                    </RepositorySwitchContext.Provider>
                   </ThemeProvider>
                 </TreeLoadingProvider>
               </GridLoadingProvider>

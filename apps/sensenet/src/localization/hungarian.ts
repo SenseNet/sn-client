@@ -142,6 +142,7 @@ const values: Localization = {
     repositoryDisplayName: 'Egy tetszőleges megjelenítendő név',
   },
   repositorySelector: {
+    activeRepository: 'Repository',
     anotherRepo: 'Másik repository',
     loggedInAs: 'Bejelentkezve mint {0}',
     notLoggedIn: 'Nincs bejelentkezve',

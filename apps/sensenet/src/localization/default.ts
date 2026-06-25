@@ -292,6 +292,7 @@ const values = {
     sendLogWithCrashReports: 'Send log data with crash reports by default',
   },
   repositorySelector: {
+    activeRepository: 'Repository',
     loggedInAs: 'You are currently logged in as {0}',
     notLoggedIn: 'You are not logged in.',
     anotherRepo: 'Another repository',
