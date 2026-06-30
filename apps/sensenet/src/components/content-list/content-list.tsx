@@ -331,11 +331,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
 
   const handleActivateItem = useCallback(
     (item: T) => {
-      if (item.IsFolder) {
-        props.onParentChange(item)
-      } else {
-        props.onActivateItem(item)
-      }
+      props.onParentChange(item)
     },
     [props],
   )
