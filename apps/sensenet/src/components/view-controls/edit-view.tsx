@@ -74,10 +74,13 @@ export const EditView: React.FC<EditViewProps> = (props) => {
 
   const handleSubmit = async (saveableFields: GenericContent) => {
     try {
-      const response = await repository.patch({
-        idOrPath: content.Id,
-        content: saveableFields,
-      })
+      const response =
+        Object.keys(saveableFields).length > 0
+          ? await repository.patch({
+              idOrPath: content.Id,
+              content: saveableFields,
+            })
+          : { d: content }
       const parentPath = content.Path.split('/').slice(0, -1).join('/')
       deleteCache(parentPath)
       logger.information({

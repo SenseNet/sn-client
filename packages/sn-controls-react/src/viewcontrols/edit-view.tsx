@@ -4,12 +4,14 @@
 import { Box, Button, createStyles, Grid, IconButton, makeStyles, Theme, Typography } from '@material-ui/core'
 import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons'
 import { Repository } from '@sensenet/client-core'
+import { PathHelper } from '@sensenet/client-utils'
 import { ActionName, ControlMapper } from '@sensenet/control-mapper'
 import { FieldSetting, FieldVisibility, GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import type { Locale } from 'date-fns'
 import React, { createElement, ReactElement, useEffect, useRef, useState } from 'react'
 import MediaQuery from 'react-responsive'
+import { isTextBinaryFieldValue } from '../fieldcontrols/file-upload'
 import { FieldLocalization } from '../fieldcontrols/localization'
 import { reactControlMapper } from '../react-control-mapper'
 
@@ -127,7 +129,38 @@ export const EditView: React.FC<EditViewProps> = (props) => {
     setIsSubmitting(true)
 
     try {
-      await props.onSubmit?.(content, schema.schema.ContentTypeName)
+      const submitContent = { ...(contentRef.current as Partial<GenericContent>) }
+      let hasTextBinaryUpload = false
+
+      await Promise.all(
+        Object.entries(submitContent).map(async ([fieldName, value]) => {
+          if (!isTextBinaryFieldValue(value)) {
+            return
+          }
+
+          if (!props.content) {
+            throw new Error(`Cannot save text binary field '${fieldName}' without a content.`)
+          }
+
+          await props.repository.upload.textAsFile({
+            text: value.text,
+            parentPath: PathHelper.getParentPath(props.content.Path),
+            fileName: value.fileName || props.content.Name,
+            overwrite: true,
+            contentTypeName: props.content.Type,
+            binaryPropertyName: fieldName,
+          })
+
+          hasTextBinaryUpload = true
+          delete (submitContent as Record<string, unknown>)[fieldName]
+        }),
+      )
+
+      if (hasTextBinaryUpload) {
+        await props.repository.reloadSchema()
+      }
+
+      await props.onSubmit?.(submitContent, schema.schema.ContentTypeName)
     } finally {
       isSubmittingRef.current = false
       if (isMountedRef.current) {
