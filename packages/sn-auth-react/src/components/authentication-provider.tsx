@@ -48,6 +48,7 @@ export interface AuthenticationProviderProps {
   snAuthConfiguration: SnAuthConfiguration
   repoUrl: string
   authServerUrl: string
+  storageKeyPrefix?: string
   eventCallbacks?: {
     onInitialized?: () => void
     onNoInitialization?: () => void
@@ -68,6 +69,7 @@ const TOKEN_EXPIRY_THRESHOLD = 10 * 1000
 export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
   const [authState, setState] = useState<AuthState>({ isLoading: true })
   const [path, setPath] = useState<string>(window.location.pathname)
+  const { storageKeyPrefix } = props
 
   const setNewPath = () => setPath(window.location.pathname)
 
@@ -90,8 +92,8 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
       if (path !== props.snAuthConfiguration.callbackUri) {
         setState({ isLoading: true })
         try {
-          let accessToken = getAccessToken()
-          let refreshToken = getRefreshToken()
+          let accessToken = getAccessToken(storageKeyPrefix)
+          let refreshToken = getRefreshToken(storageKeyPrefix)
           if (accessToken && refreshToken) {
             const isValid = await validateTokenApiCall(props.authServerUrl, accessToken)
 
@@ -324,15 +326,15 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
       refreshToken: undefined,
     })
 
-    removeAccessToken()
-    removeRefreshToken()
+    removeAccessToken(storageKeyPrefix)
+    removeRefreshToken(storageKeyPrefix)
 
     window.history.pushState({}, '', '/')
   }
 
   const setAccessAndRefreshTokenStorage = (accessToken: string, refreshToken: string) => {
-    setAccessTokenStorage(accessToken)
-    setRefreshTokenStorage(refreshToken)
+    setAccessTokenStorage(accessToken, storageKeyPrefix)
+    setRefreshTokenStorage(refreshToken, storageKeyPrefix)
   }
 
   return (

@@ -1,4 +1,3 @@
-import { PathHelper } from '@sensenet/client-utils'
 import { InjectorContext, LoggerContextProvider } from '@sensenet/hooks-react'
 import React, { ReactNode, Suspense, useCallback, useEffect, useState } from 'react'
 import { BrowserRouter } from 'react-router-dom'
@@ -8,6 +7,7 @@ import {
   LocalizationProvider,
   PersonalSettingsContextProvider,
   RepositoryProvider,
+  RepositorySwitchContext,
   ResponsiveContextProvider,
   ThemeProvider,
 } from '../context'
@@ -22,6 +22,12 @@ import {
   NavigationCommandProvider,
   SearchCommandProvider,
 } from '../services'
+import {
+  clearActiveRepositorySelection,
+  hasSnAuthRepositoryTokens,
+  normalizeRepositoryUrl,
+  startSnAuthRepositoryLogin,
+} from '../services/repository-session'
 import { DialogProvider } from './dialogs/dialog-provider'
 
 import { GridLoadingProvider } from './grid/Providers/GridLoadingProvider'
@@ -34,28 +40,56 @@ export type AppProvidersProps = {
 }
 
 export default function AppProviders({ children }: AppProvidersProps) {
-  const initAuthType: AuthServerType = (window.localStorage.getItem('authType') as AuthServerType) ?? 'IdentityServer'
+  const initAuthType: AuthServerType =
+    (window.localStorage.getItem('authType') as AuthServerType) ?? defaultAuthConfig.authType
   const [authType, setAuthType] = useState<'IdentityServer' | 'SNAuth'>(initAuthType)
   const [url, setUrl] = useState<string>('')
 
+  const selectRepository = useCallback((providedUrl: string) => {
+    const normalizedUrl = normalizeRepositoryUrl(providedUrl)
+
+    clearActiveRepositorySelection()
+    startSnAuthRepositoryLogin(normalizedUrl)
+    setUrl(normalizedUrl)
+  }, [])
+
   const changeAuthType = useCallback((providedUrl: string) => {
-    setUrl(PathHelper.ensureDefaultSchema(providedUrl))
+    const normalizedUrl = normalizeRepositoryUrl(providedUrl)
+
+    setUrl(normalizedUrl)
     setAuthType((prev) => {
       const newAuthType = prev === 'IdentityServer' ? 'SNAuth' : 'IdentityServer'
+      if (newAuthType === 'SNAuth') {
+        startSnAuthRepositoryLogin(normalizedUrl)
+      }
       window.localStorage.setItem('authType', newAuthType)
       return newAuthType
     })
   }, [])
 
+  const switchRepository = useCallback((providedUrl: string) => {
+    const normalizedUrl = normalizeRepositoryUrl(providedUrl)
+
+    if (!hasSnAuthRepositoryTokens(normalizedUrl)) {
+      startSnAuthRepositoryLogin(normalizedUrl)
+    }
+
+    window.localStorage.setItem('authType', 'SNAuth')
+    setAuthType('SNAuth')
+    setUrl(normalizedUrl)
+  }, [])
+
   useEffect(() => {
+    const repoUrl = new URL(window.location.href).searchParams.get('repoUrl')
+    if (repoUrl) {
+      selectRepository(repoUrl)
+      return
+    }
+
     const IsAuthKey = localStorage.getItem(authConfigKeyIS)
     const SnAuthKey = localStorage.getItem(authConfigKeySN)
     if (IsAuthKey || SnAuthKey) return
-    const repoUrl = new URL(window.location.href).searchParams.get('repoUrl')
-    if (repoUrl) {
-      changeAuthType(repoUrl)
-    }
-  }, [changeAuthType])
+  }, [selectRepository])
 
   snInjector
     .getInstance(CommandProviderManager)
@@ -76,31 +110,33 @@ export default function AppProviders({ children }: AppProvidersProps) {
               <GridLoadingProvider>
                 <TreeLoadingProvider>
                   <ThemeProvider>
-                    {authType === 'IdentityServer' ? (
-                      <RepositoryProvider url={url} changeAuthType={changeAuthType}>
-                        <ShareProvider>
-                          <ISAuthProvider>
-                            <ResponsiveContextProvider>
-                              <ExpandedItemsProvider>
-                                <DialogProvider>{children}</DialogProvider>
-                              </ExpandedItemsProvider>
-                            </ResponsiveContextProvider>
-                          </ISAuthProvider>
-                        </ShareProvider>
-                      </RepositoryProvider>
-                    ) : (
-                      <SnAuthRepositoryProvider url={url} changeAuthType={changeAuthType}>
-                        <ShareProvider>
-                          <SNAuthProvider>
-                            <ResponsiveContextProvider>
-                              <ExpandedItemsProvider>
-                                <DialogProvider>{children}</DialogProvider>
-                              </ExpandedItemsProvider>
-                            </ResponsiveContextProvider>
-                          </SNAuthProvider>
-                        </ShareProvider>
-                      </SnAuthRepositoryProvider>
-                    )}
+                    <RepositorySwitchContext.Provider value={{ authType, switchRepository }}>
+                      {authType === 'IdentityServer' ? (
+                        <RepositoryProvider url={url} changeAuthType={changeAuthType}>
+                          <ShareProvider>
+                            <ISAuthProvider>
+                              <ResponsiveContextProvider>
+                                <ExpandedItemsProvider>
+                                  <DialogProvider>{children}</DialogProvider>
+                                </ExpandedItemsProvider>
+                              </ResponsiveContextProvider>
+                            </ISAuthProvider>
+                          </ShareProvider>
+                        </RepositoryProvider>
+                      ) : (
+                        <SnAuthRepositoryProvider url={url} changeAuthType={changeAuthType}>
+                          <ShareProvider>
+                            <SNAuthProvider>
+                              <ResponsiveContextProvider>
+                                <ExpandedItemsProvider>
+                                  <DialogProvider>{children}</DialogProvider>
+                                </ExpandedItemsProvider>
+                              </ResponsiveContextProvider>
+                            </SNAuthProvider>
+                          </ShareProvider>
+                        </SnAuthRepositoryProvider>
+                      )}
+                    </RepositorySwitchContext.Provider>
                   </ThemeProvider>
                 </TreeLoadingProvider>
               </GridLoadingProvider>

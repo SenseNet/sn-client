@@ -109,10 +109,13 @@ const values: Localization = {
     passwordHelperText: 'A felhasználóhoz tartozó jelszó',
     repositoryLabel: 'Elérési út',
     repositoryHelperText: 'A repository teljes elérési útja (pl.: https://my-sensenet.com)',
+    recentRepositories: 'Korábban használt repository-k',
+    lastUsedRepository: (lastUsed: string) => `Legutóbb használva: ${lastUsed}`,
   },
   logout: {
     logoutCancel: 'Mégsem',
     logoutButtonTitle: 'Kijelentkezés',
+    switchRepositoryButtonTitle: 'Repository váltása',
     logoutDialogTitle: 'Biztosan kijelentkezel?',
     loggingOutFrom: (repoUrl: string) => `Kijelentkezés a ${repoUrl} repository-ból...`,
     logoutConfirmText: (repoUrl: string, userName: string) =>
@@ -139,6 +142,7 @@ const values: Localization = {
     repositoryDisplayName: 'Egy tetszőleges megjelenítendő név',
   },
   repositorySelector: {
+    activeRepository: 'Repository',
     anotherRepo: 'Másik repository',
     loggedInAs: 'Bejelentkezve mint {0}',
     notLoggedIn: 'Nincs bejelentkezve',
