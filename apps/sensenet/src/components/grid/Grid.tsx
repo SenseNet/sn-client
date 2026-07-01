@@ -83,9 +83,9 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
   const onRowDoubleClicked = (item: RowDoubleClickedEvent) => {
     if (item.data) {
       props.onActiveItemChange?.(item.data)
+      setLoadingWithMinDuration(true)
+      props.onParentChange(item.data)
     }
-    setLoadingWithMinDuration(true)
-    item.data.isFolder ? props.onParentChange(item.data) : props.onActivateItem(item.data)
   }
 
   const onRowClicked = (item: RowClickedEvent) => {

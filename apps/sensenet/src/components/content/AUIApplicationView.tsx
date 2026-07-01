@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom'
 import {
   AUIApplicationBridgeLocation,
   AUIApplicationBridgeTheme,
+  createBridgeFetchResponse,
   createBridgeLocation,
   createBridgeTheme,
 } from './auiapplication-bridge'
@@ -104,18 +105,39 @@ const createApplicationDocument = (
     return headers;
   };
 
-  const createBridgeResponse = (response) => ({
-    ok: response.ok,
-    status: response.status,
-    statusText: response.statusText,
-    url: response.url,
-    headers: {
-      get: (name) => response.headers[String(name).toLowerCase()] || null,
-      entries: () => Object.entries(response.headers),
-    },
-    text: () => Promise.resolve(response.body),
-    json: () => Promise.resolve(JSON.parse(response.body)),
-  });
+  const createBodyBuffer = (body) => {
+    if (ArrayBuffer.isView(body)) {
+      return body.buffer.slice(body.byteOffset, body.byteOffset + body.byteLength);
+    }
+
+    if (body && typeof body.byteLength === 'number') {
+      return body.slice(0);
+    }
+
+    return new TextEncoder().encode(String(body || '')).buffer;
+  };
+
+  const createBridgeResponse = (response) => {
+    const bodyBuffer = createBodyBuffer(response.body);
+    const getHeader = (name) => response.headers[String(name).toLowerCase()] || null;
+    const getBodyCopy = () => bodyBuffer.slice(0);
+    const getBodyText = () => Promise.resolve(new TextDecoder().decode(getBodyCopy()));
+
+    return {
+      ok: response.ok,
+      status: response.status,
+      statusText: response.statusText,
+      url: response.url,
+      headers: {
+        get: getHeader,
+        entries: () => Object.entries(response.headers),
+      },
+      text: getBodyText,
+      json: () => getBodyText().then((body) => JSON.parse(body)),
+      arrayBuffer: () => Promise.resolve(getBodyCopy()),
+      blob: () => Promise.resolve(new Blob([getBodyCopy()], { type: getHeader('content-type') || '' })),
+    };
+  };
 
   window.addEventListener('message', (event) => {
     const data = event.data || {};
@@ -293,37 +315,38 @@ export const AUIApplicationView: React.FC = () => {
         return
       }
 
-      const postResponse = (message: Record<string, unknown>) => {
-        frameRef.current?.contentWindow?.postMessage(
-          {
-            source: AUI_APPLICATION_CONTENT_TYPE,
-            requestId: data.requestId,
-            ...message,
-          },
-          '*',
-        )
+      const postResponse = (message: Record<string, unknown>, transfer?: Transferable[]) => {
+        const targetWindow = frameRef.current?.contentWindow
+        const responseMessage = {
+          source: AUI_APPLICATION_CONTENT_TYPE,
+          requestId: data.requestId,
+          ...message,
+        }
+
+        if (!targetWindow) {
+          return
+        }
+
+        if (transfer?.length) {
+          targetWindow.postMessage(responseMessage, '*', transfer)
+          return
+        }
+
+        targetWindow.postMessage(responseMessage, '*')
       }
 
       try {
         const requestUrl = getRepositoryRequestUrl(repository.configuration.repositoryUrl, data.input)
         const response = await repository.fetch(requestUrl, getBridgeRequestInit(data.init))
-        const headers: Record<string, string> = {}
+        const bridgeResponse = await createBridgeFetchResponse(response)
 
-        response.headers.forEach((value, key) => {
-          headers[key.toLowerCase()] = value
-        })
-
-        postResponse({
-          type: 'fetch:success',
-          response: {
-            ok: response.ok,
-            status: response.status,
-            statusText: response.statusText,
-            url: response.url,
-            headers,
-            body: await response.text(),
+        postResponse(
+          {
+            type: 'fetch:success',
+            response: bridgeResponse,
           },
-        })
+          [bridgeResponse.body],
+        )
       } catch (error) {
         postResponse({
           type: 'fetch:error',

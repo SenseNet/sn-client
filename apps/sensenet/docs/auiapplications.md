@@ -99,8 +99,14 @@ type BridgeResponse = {
   }
   text(): Promise<string>
   json(): Promise<any>
+  arrayBuffer(): Promise<ArrayBuffer>
+  blob(): Promise<Blob>
 }
 ```
+
+Binary responses are transferred as `ArrayBuffer`, so downloads from endpoints such as
+`/binaryhandler.ashx?nodeid=...&propertyname=Binary` can be read with `blob()` or
+`arrayBuffer()` without converting the body through text first.
 
 Requests are restricted to the current repository origin. Cross-repository and arbitrary external requests are rejected by the parent Admin UI.
 
