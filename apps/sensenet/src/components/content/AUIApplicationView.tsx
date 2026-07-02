@@ -362,10 +362,7 @@ export const AUIApplicationView: React.FC = () => {
 
   const applicationHtml = content?.Html?.trim() ?? ''
   const adminUiUrl = window.location.origin
-  const bridgeLocation = useMemo(
-    () => createBridgeLocation(adminUiUrl, routerLocation),
-    [adminUiUrl, routerLocation.hash, routerLocation.pathname, routerLocation.search],
-  )
+  const bridgeLocation = useMemo(() => createBridgeLocation(adminUiUrl, routerLocation), [adminUiUrl, routerLocation])
   const bridgeTheme = useMemo(() => createBridgeTheme(theme.palette.type), [theme.palette.type])
   const srcDoc = useMemo(
     () =>

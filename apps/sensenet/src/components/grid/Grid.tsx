@@ -21,6 +21,7 @@ import { GridProps } from './Props/GridProps'
 import { useGridLoading } from './Providers/GridLoadingProvider'
 
 const SMALL_SCREEN_COL_FILTER = ['Id', 'Actions']
+const MOBILE_SCREEN_COL_FIELDS = ['0', 'Icon', 'DisplayName', 'Name', 'Actions']
 
 export function Grid<T extends GenericContent = GenericContent>(props: GridProps<T>) {
   const { isGridLoading, setIsGridLoading } = useGridLoading()
@@ -167,7 +168,10 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
 
   const updateColumnDefsBasedOnWindowSize = useCallback(() => {
     const width = window.innerWidth
-    if (width < 1536) {
+    if (width < 600) {
+      const mobileCols = props.colDef.filter((col) => MOBILE_SCREEN_COL_FIELDS.includes(col.field || ''))
+      setColumnDefs(mobileCols.length ? mobileCols : props.colDef.slice(0, 3))
+    } else if (width < 1536) {
       const filteredCols = props.colDef.filter((col) => !SMALL_SCREEN_COL_FILTER.includes(col.field || ''))
       setColumnDefs(filteredCols)
     } else {
@@ -196,9 +200,9 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
 
   useEffect(() => {
     if (gridApi.current) {
-      gridApi.current.setColumnDefs([...props.colDef])
+      updateColumnDefsBasedOnWindowSize()
     }
-  }, [props.colDef])
+  }, [props.colDef, updateColumnDefsBasedOnWindowSize])
 
   const onSortChanged = useCallback(() => {
     if (columnApi.current) {

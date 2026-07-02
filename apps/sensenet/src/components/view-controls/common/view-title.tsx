@@ -24,14 +24,21 @@ const useStyles = makeStyles((theme) => {
       borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
       display: 'flex',
       flexDirection: 'column',
+      minWidth: 0,
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '16px',
+      },
     },
     textBolder: {
       fontWeight: 500,
       textAlign: 'center',
+      overflowWrap: 'anywhere',
     },
     actionBar: {
       display: 'flex',
       marginBottom: '6px',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
     },
     typeinfo: {
       fontSize: '12px',
@@ -44,6 +51,9 @@ const useStyles = makeStyles((theme) => {
     },
     viewTitle: {
       padding: '6px',
+      maxWidth: '100%',
+      boxSizing: 'border-box',
+      overflowWrap: 'anywhere',
     },
   })
 })

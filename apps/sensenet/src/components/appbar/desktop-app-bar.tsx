@@ -7,12 +7,12 @@ import { clsx } from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../../assets/sensenet_white.png'
-import { ResponsivePersonalSettings } from '../../context'
+import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { CommandPalette } from '../command-palette/CommandPalette'
 import { DesktopNavMenu } from './desktop-nav-menu'
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme) => {
   return createStyles({
     appBar: {
       position: 'relative',
@@ -38,8 +38,17 @@ const useStyles = makeStyles(() => {
       fontSize: '18px',
       fontWeight: 500,
       fontFamily: 'Roboto,Helvetica,Arial,sans-serif',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      maxWidth: '36vw',
       '&:hover': {
         cursor: 'pointer',
+      },
+      [theme.breakpoints.down('sm')]: {
+        maxWidth: '28vw',
+        marginRight: '0.5rem',
+        fontSize: '13px',
       },
     },
   })
@@ -49,6 +58,7 @@ const PORTAL_SETTING_PATH = '/Root/System/Settings/Portal.settings'
 
 export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }> = (props) => {
   const personalSettings = useContext(ResponsivePersonalSettings)
+  const device = useContext(ResponsiveContext)
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const repository = useRepository()
@@ -110,7 +120,7 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
           <Link to="/" className={`${globalClasses.centeredVertical} ${classes.logo}`}>
             <img src={logo} alt="logo" data-test="sensenet-logo" width="29" height="32" />
           </Link>
-          {personalSettings.drawer.type === 'temporary' ? (
+          {personalSettings.drawer.enabled && (personalSettings.drawer.type === 'temporary' || device === 'mobile') ? (
             <IconButton
               onClick={() => {
                 props.openDrawer && props.openDrawer()

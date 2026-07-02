@@ -193,6 +193,43 @@ span.icon svg {
 .buttonPanel .MuiButton-label {
   flex-direction: column;
 }
+
+@media (max-width: 600px) {
+  .gridTopPanel {
+    padding: 8px;
+    padding-left: 44px;
+    align-items: flex-start;
+  }
+
+  .gridTopPanel .iconArea {
+    width: 36px;
+  }
+
+  .gridTopPanel h1 {
+    font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+
+  .gridTopPanel label,
+  .gridTopPanel a,
+  .gridTopPanel span {
+    overflow-wrap: anywhere;
+  }
+
+  .buttonPanel {
+    display: flex;
+    width: 100%;
+    height: auto;
+    margin-left: -36px;
+    overflow-x: auto;
+  }
+
+  .buttonPanel .MuiButton-root {
+    min-width: 64px;
+    flex: 0 0 auto;
+  }
+}
+
 .MuiListItemIcon-root .svgicon {
   width: 24px;
   height: 24px;

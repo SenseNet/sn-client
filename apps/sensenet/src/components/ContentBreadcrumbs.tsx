@@ -9,12 +9,24 @@ import { getPrimaryActionUrl } from '../services'
 import { BatchActions } from './BatchActions'
 import { BreadcrumbItem, Breadcrumbs } from './Breadcrumbs'
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme) => {
   return createStyles({
     buttonsWrapper: {
       display: 'flex',
       alignItems: 'center',
       marginLeft: '10px',
+      minWidth: 0,
+      overflow: 'hidden',
+      [theme.breakpoints.down('sm')]: {
+        marginLeft: 0,
+        width: '100%',
+        '& .MuiBreadcrumbs-ol': {
+          flexWrap: 'nowrap',
+          overflowX: 'auto',
+          overflowY: 'hidden',
+          maxWidth: '100%',
+        },
+      },
     },
   })
 })

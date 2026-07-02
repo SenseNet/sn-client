@@ -1,4 +1,5 @@
-import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core'
+import { createStyles, IconButton, makeStyles, SwipeableDrawer, Theme, Tooltip, useTheme } from '@material-ui/core'
+import MenuIcon from '@material-ui/icons/Menu'
 import { ODataFieldParameter, ODataParams } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
@@ -16,8 +17,8 @@ import { clsx } from 'clsx'
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
 import { GridKeyEnum } from '../../../src/components/grid/enums/GridKey.enum'
-import { ResponsivePersonalSettings } from '../../context'
-import { useGlobalStyles } from '../../globalStyles'
+import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
+import { globals, useGlobalStyles } from '../../globalStyles'
 import { useQuery, useSelectionService, useSnRoute } from '../../hooks'
 import { getPrimaryActionUrl, navigateToAction } from '../../services'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
@@ -72,21 +73,34 @@ const useStyles = makeStyles<Theme, { width: number }>((theme) =>
       boxSizing: 'border-box',
       borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
       justifyContent: 'start',
+      minHeight: globals.common.drawerItemHeight,
+      overflow: 'hidden',
+    },
+    breadcrumbsContent: {
+      minWidth: 0,
+      overflow: 'hidden',
+      flexGrow: 1,
     },
     treeAndDatagridWrapper: {
       display: 'flex',
       width: '100%',
       height: '100%',
       position: 'relative',
-      overflow: 'auto',
+      overflow: 'hidden',
+      minWidth: 0,
     },
     exploreContainer: {
       display: 'flex',
       flexFlow: 'column',
       width: '100%',
+      minWidth: 0,
+      flexGrow: 1,
       position: 'relative',
       overflow: 'hidden',
       borderLeft: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
+      [theme.breakpoints.down('sm')]: {
+        borderLeft: 'none',
+      },
     },
     simpleTree: {
       width: ({ width }) => `${width}px`,
@@ -120,6 +134,30 @@ const useStyles = makeStyles<Theme, { width: number }>((theme) =>
         paddingLeft: '18px',
         borderLeft: '1px dashed #cececeff',
       },
+    },
+    mobileTreeButton: {
+      display: 'none',
+      flexShrink: 0,
+      marginLeft: '4px',
+      [theme.breakpoints.down('sm')]: {
+        display: 'inline-flex',
+      },
+    },
+    mobileTreePaper: {
+      width: '86vw',
+      maxWidth: 360,
+      backgroundColor: theme.palette.background.default,
+      overflow: 'hidden',
+    },
+    mobileTreeHeader: {
+      height: globals.common.drawerItemHeight,
+      borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
+      padding: '0 12px',
+      fontWeight: 500,
+    },
+    mobileTreeContent: {
+      height: `calc(100% - ${globals.common.drawerItemHeight}px)`,
+      overflow: 'auto',
     },
     resizeButton: {
       position: 'sticky',
@@ -247,6 +285,9 @@ export function Explore({
   const classes = useStyles({ width })
   const globalClasses = useGlobalStyles()
   const isResizing = useRef(false)
+  const device = useContext(ResponsiveContext)
+  const [mobileTreeOpened, setMobileTreeOpened] = useState(false)
+  const isMobile = device === 'mobile'
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     isResizing.current = true
@@ -370,6 +411,22 @@ export function Explore({
     )
   }
 
+  const handleTreeNavigate = (item: GenericContent) => {
+    onNavigate(item)
+    setMobileTreeOpened(false)
+  }
+
+  const renderTree = () => (
+    <SimpleTree
+      onItemClick={handleTreeNavigate}
+      parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
+      activeItemPath={currentPath}
+      loadSettings={loadTreeSettings}
+      onNavigate={handleTreeNavigate}
+      rootLoaded={false}
+    />
+  )
+
   return (
     <LoadSettingsContextProvider
       key={JSON.stringify(currentChildrenLoadSettings)}
@@ -379,33 +436,48 @@ export function Explore({
         <CurrentChildrenProvider loadSettings={loadChildrenSettings} alwaysRefresh={alwaysRefreshChildren}>
           <CurrentAncestorsProvider root={rootPath}>
             <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
-              <ContentBreadcrumbs
-                onItemClick={(i) => {
-                  onNavigate(i.content)
-                }}
-                batchActions={true}
-              />
+              {hasTree && isMobile ? (
+                <Tooltip title="Open tree" placement="bottom">
+                  <IconButton
+                    className={classes.mobileTreeButton}
+                    size="small"
+                    aria-label="Open tree"
+                    onClick={() => setMobileTreeOpened(true)}>
+                    <MenuIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              ) : null}
+              <div className={classes.breadcrumbsContent}>
+                <ContentBreadcrumbs
+                  onItemClick={(i) => {
+                    onNavigate(i.content)
+                  }}
+                  batchActions={true}
+                />
+              </div>
             </div>
 
             <div className={`${classes.treeAndDatagridWrapper} leftTree theme-${theme.palette.type} `}>
-              {hasTree && (
+              {hasTree && !isMobile && (
                 <div className={classes.simpleTree}>
                   <div className={classes.resizeButton} onMouseDown={handleMouseDown}>
                     <div className={classes.symbol}>&#8596;</div>
                   </div>
-                  <SimpleTree
-                    onItemClick={(item) => {
-                      onNavigate(item)
-                    }}
-                    parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
-                    activeItemPath={currentPath}
-                    loadSettings={loadTreeSettings}
-                    onNavigate={onNavigate}
-                    rootLoaded={false}
-                  />
+                  {renderTree()}
                 </div>
               )}
               <div className={classes.exploreContainer}>{renderContent()}</div>
+              {hasTree && isMobile ? (
+                <SwipeableDrawer
+                  open={mobileTreeOpened}
+                  onOpen={() => setMobileTreeOpened(true)}
+                  onClose={() => setMobileTreeOpened(false)}
+                  ModalProps={{ keepMounted: true }}
+                  PaperProps={{ className: classes.mobileTreePaper }}>
+                  <div className={clsx(classes.mobileTreeHeader, globalClasses.centeredVertical)}>Content tree</div>
+                  <div className={classes.mobileTreeContent}>{renderTree()}</div>
+                </SwipeableDrawer>
+              ) : null}
             </div>
           </CurrentAncestorsProvider>
         </CurrentChildrenProvider>
