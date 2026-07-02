@@ -25,9 +25,20 @@ const useStyles = makeStyles((theme) => {
       minHeight: '42px',
       paddingLeft: '6px',
       paddingRight: 0,
+      [theme.breakpoints.down('sm')]: {
+        paddingLeft: '2px',
+      },
     },
     logo: {
       marginRight: '21px',
+      [theme.breakpoints.down('sm')]: {
+        marginRight: '4px',
+      },
+    },
+    drawerButton: {
+      padding: '8px',
+      marginRight: '2px',
+      flex: '0 0 auto',
     },
     commandPaletteReplacement: {
       flex: 1,
@@ -46,9 +57,7 @@ const useStyles = makeStyles((theme) => {
         cursor: 'pointer',
       },
       [theme.breakpoints.down('sm')]: {
-        maxWidth: '28vw',
-        marginRight: '0.5rem',
-        fontSize: '13px',
+        display: 'none',
       },
     },
   })
@@ -122,6 +131,7 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
           </Link>
           {personalSettings.drawer.enabled && (personalSettings.drawer.type === 'temporary' || device === 'mobile') ? (
             <IconButton
+              className={classes.drawerButton}
               onClick={() => {
                 props.openDrawer && props.openDrawer()
               }}>

@@ -1,4 +1,4 @@
-import { createStyles, IconButton, makeStyles, Tooltip } from '@material-ui/core'
+import { createStyles, IconButton, makeStyles } from '@material-ui/core'
 import Clear from '@material-ui/icons/Clear'
 import Search from '@material-ui/icons/Search'
 import { debounce } from '@sensenet/client-utils'
@@ -10,7 +10,7 @@ import Autosuggest, { SuggestionSelectedEventData, SuggestionsFetchRequestedPara
 import { useHistory } from 'react-router-dom'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals } from '../../globalStyles'
-import { useLocalization, useSelectionService, useSnRoute, useTheme } from '../../hooks'
+import { useLocalization, useSelectionService, useSnRoute } from '../../hooks'
 import { CommandProviderManager } from '../../services'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { CommandPaletteHitsContainer } from './CommandPaletteHitsContainer'
@@ -26,7 +26,7 @@ export interface CommandPaletteItem {
   parameters?: string[]
 }
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme) => {
   return createStyles({
     buttonWrapper: {
       display: 'flex',
@@ -36,6 +36,9 @@ const useStyles = makeStyles(() => {
       backgroundColor: 'transparent',
       '& .MuiIconButton-root': {
         color: globals.common.headerText,
+      },
+      [theme.breakpoints.down('sm')]: {
+        flex: '0 0 auto',
       },
     },
     iconButton: {
@@ -47,6 +50,23 @@ const useStyles = makeStyles(() => {
       position: 'relative',
       width: '50%',
       marginRight: '9px',
+    },
+    mobileComboBox: {
+      position: 'absolute',
+      top: globals.common.headerHeight,
+      left: 0,
+      right: 0,
+      zIndex: theme.zIndex.appBar + 1,
+      width: 'auto',
+      marginRight: 0,
+      padding: '6px 8px',
+      boxSizing: 'border-box',
+      backgroundColor: globals.common.headerBackground,
+      boxShadow: theme.shadows[2],
+    },
+    mobileOpenButton: {
+      padding: '8px',
+      marginRight: '2px',
     },
     input: {
       color: 'white',
@@ -94,7 +114,6 @@ export const CommandPalette = () => {
   const [items, setItems] = useState<CommandPaletteItem[]>([])
   const [inputValue, setInputValue] = useState('')
   const localization = useLocalization().commandPalette
-  const theme = useTheme()
   const history = useHistory()
   const classes = useStyles()
   const device = useContext(ResponsiveContext)
@@ -237,6 +256,8 @@ export const CommandPalette = () => {
   }
 
   const actionMode = inputValue.startsWith('>')
+  const isMobile = device === 'mobile'
+  const showCollapsedMobileSearch = isMobile && !isOpened
   const actionContextHeader = actionMode ? (
     <div className={classes.actionContextHeader} data-test="command-palette-action-context">
       {activeContent ? (
@@ -255,72 +276,87 @@ export const CommandPalette = () => {
 
   return (
     <div className={classes.buttonWrapper}>
-      <div ref={containerRef} className={classes.comboBox} data-test="command-box">
-        <Autosuggest<CommandPaletteItem>
-          theme={{
-            suggestionsList: {
-              listStyle: 'none',
-              margin: 0,
-              padding: 0,
-            },
-            inputFocused: {
-              outlineWidth: 0,
-            },
-          }}
-          alwaysRenderSuggestions={isOpened}
-          suggestions={items}
-          highlightFirstSuggestion={true}
-          onSuggestionSelected={handleSelectSuggestion}
-          onSuggestionsFetchRequested={handleSuggestionsFetchRequested}
-          onSuggestionsClearRequested={() => setItems([])}
-          getSuggestionValue={(suggestion) => suggestion.primaryText}
-          renderSuggestion={(suggestion, params) => (
-            <CommandPaletteSuggestion
-              suggestion={suggestion}
-              params={params}
-              onOpenContextMenu={handleOpenSuggestionContextMenu}
-            />
-          )}
-          renderSuggestionsContainer={(params) => (
-            <CommandPaletteHitsContainer {...params} header={actionContextHeader} />
-          )}
-          inputProps={{
-            className: `${classes.input} ${inputValue ? classes.inputOpened : ''}`,
-            value: inputValue,
-            placeholder: 'Search',
-            onChange: (_ev, changeEvent) => {
-              setInputValue(changeEvent.newValue)
-            },
-            id: 'CommandBoxInput',
-            spellCheck: false,
-            onBlur: () => {
-              if (!isContextMenuInteractingRef.current) {
-                setIsOpened(false)
-              }
-            },
-          }}
-        />
-        {!inputValue && (
-          <IconButton
-            title={'search'}
-            style={{ position: 'absolute', right: '0px', zIndex: 2, top: '50%', transform: 'translateY(-50%)' }}>
-            <Search />
-          </IconButton>
-        )}
-        {inputValue && (
-          <IconButton
-            title={localization.clear}
-            style={{ position: 'absolute', right: '0px', zIndex: 2, top: '50%', transform: 'translateY(-50%)' }}
-            onClick={() => {
-              setInputValue('')
-              setItems([])
-              handleSuggestionsFetchRequested({ value: '', reason: 'input-changed' })
+      {showCollapsedMobileSearch ? (
+        <IconButton
+          aria-label={localization.title}
+          title={localization.title}
+          className={classes.mobileOpenButton}
+          onClick={() => setIsOpened(true)}
+          data-test="command-palette-mobile-open">
+          <Search />
+        </IconButton>
+      ) : (
+        <div
+          ref={containerRef}
+          className={clsx(classes.comboBox, isMobile && classes.mobileComboBox)}
+          data-test="command-box">
+          <Autosuggest<CommandPaletteItem>
+            theme={{
+              suggestionsList: {
+                listStyle: 'none',
+                margin: 0,
+                padding: 0,
+              },
+              inputFocused: {
+                outlineWidth: 0,
+              },
             }}
-            onMouseDown={(ev) => ev.preventDefault()}>
-            <Clear />
-          </IconButton>
-        )}
-      </div>
+            alwaysRenderSuggestions={isOpened}
+            suggestions={items}
+            highlightFirstSuggestion={true}
+            onSuggestionSelected={handleSelectSuggestion}
+            onSuggestionsFetchRequested={handleSuggestionsFetchRequested}
+            onSuggestionsClearRequested={() => setItems([])}
+            getSuggestionValue={(suggestion) => suggestion.primaryText}
+            renderSuggestion={(suggestion, params) => (
+              <CommandPaletteSuggestion
+                suggestion={suggestion}
+                params={params}
+                onOpenContextMenu={handleOpenSuggestionContextMenu}
+              />
+            )}
+            renderSuggestionsContainer={(params) => (
+              <CommandPaletteHitsContainer {...params} header={actionContextHeader} />
+            )}
+            inputProps={{
+              className: `${classes.input} ${inputValue ? classes.inputOpened : ''}`,
+              value: inputValue,
+              placeholder: localization.title,
+              onChange: (_ev, changeEvent) => {
+                setInputValue(changeEvent.newValue)
+              },
+              id: 'CommandBoxInput',
+              spellCheck: false,
+              onBlur: () => {
+                if (!isContextMenuInteractingRef.current) {
+                  setIsOpened(false)
+                }
+              },
+            }}
+          />
+          {!inputValue && (
+            <IconButton
+              title={localization.title}
+              style={{ position: 'absolute', right: '8px', zIndex: 2, top: '50%', transform: 'translateY(-50%)' }}
+              onMouseDown={(ev) => ev.preventDefault()}>
+              <Search />
+            </IconButton>
+          )}
+          {inputValue && (
+            <IconButton
+              title={localization.clear}
+              style={{ position: 'absolute', right: '8px', zIndex: 2, top: '50%', transform: 'translateY(-50%)' }}
+              onClick={() => {
+                setInputValue('')
+                setItems([])
+                handleSuggestionsFetchRequested({ value: '', reason: 'input-changed' })
+              }}
+              onMouseDown={(ev) => ev.preventDefault()}>
+              <Clear />
+            </IconButton>
+          )}
+        </div>
+      )}
       {contextMenuContent ? (
         <ContentContextMenu
           isOpened={isContextMenuOpened}

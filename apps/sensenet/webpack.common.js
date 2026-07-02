@@ -60,6 +60,7 @@ module.exports = {
     new webpack.EnvironmentPlugin({
       APP_VERSION: require('./package.json').version,
       AUTH_TYPE: process.env.AUTH_TYPE || 'SNAuth', // Default to SNAuth if not specified
+      DISABLE_VIEW_OPTIONS_MENU: process.env.DISABLE_VIEW_OPTIONS_MENU || 'false',
     }),
     new MonacoWebpackPlugin({
       languages: ['json', 'xml', 'html', 'javascript', 'markdown'],

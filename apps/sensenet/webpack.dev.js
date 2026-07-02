@@ -5,6 +5,7 @@ const common = require('./webpack.common.js')
 
 module.exports = (env) => {
   const disableDevReload = process.env.DISABLE_DEV_RELOAD === 'true'
+  const clientWebSocketURL = process.env.WEBPACK_DEV_SERVER_CLIENT_WEB_SOCKET_URL || 'auto://0.0.0.0:0/ws'
 
   return mergeWithCustomize({
     customizeArray: customizeArray({
@@ -20,6 +21,9 @@ module.exports = (env) => {
       liveReload: !disableDevReload,
       open: true,
       allowedHosts: process.env.ALLOWED_HOSTS || 'auto',
+      client: {
+        webSocketURL: clientWebSocketURL,
+      },
     },
     output: {
       filename: 'static/js/[name].js',

@@ -16,9 +16,9 @@ export const CommandPaletteHitsContainer: FunctionComponent<
       square={true}
       style={{
         position: 'absolute',
-        zIndex: 1,
-        left: device === 'mobile' ? '64px' : undefined,
-        width: device === 'mobile' ? 'calc(100% - 80px)' : '100%',
+        zIndex: device === 'mobile' ? 1301 : 1,
+        left: device === 'mobile' ? 0 : undefined,
+        width: '100%',
       }}>
       <>
         {options.header}
