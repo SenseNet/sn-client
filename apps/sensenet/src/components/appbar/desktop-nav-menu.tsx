@@ -22,11 +22,24 @@ const useStyles = makeStyles((theme: Theme) =>
       cursor: 'pointer',
       marginRight: '16px',
       padding: '7px',
+      [theme.breakpoints.down('sm')]: {
+        marginRight: '6px',
+      },
     },
     navMenu: {
       height: '100%',
       width: '140px',
       background: theme.palette.background.default,
+      flex: '0 0 auto',
+      [theme.breakpoints.down('sm')]: {
+        width: '112px',
+      },
+    },
+    navMenuCompact: {
+      width: '76px',
+      [theme.breakpoints.down('sm')]: {
+        width: '70px',
+      },
     },
     paper: {
       marginRight: theme.spacing(2),
@@ -77,6 +90,7 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export const DesktopNavMenu: FunctionComponent = () => {
+  const isViewOptionsMenuDisabled = process.env.DISABLE_VIEW_OPTIONS_MENU === 'true'
   const personalSettings = usePersonalSettings()
   const injector = useInjector()
   const classes = useStyles()
@@ -134,15 +148,17 @@ export const DesktopNavMenu: FunctionComponent = () => {
   }
 
   return (
-    <div className={clsx(globalClasses.centered, classes.navMenu)}>
+    <div className={clsx(globalClasses.centered, classes.navMenu, isViewOptionsMenuDisabled && classes.navMenuCompact)}>
       <>
-        <IconButton
-          aria-label={localization.topMenu.openViewOptions}
-          aria-controls={openViewOptions ? 'menu-list-grow' : undefined}
-          className={classes.viewOptions}
-          onClick={() => handleToggle(setOpenViewOptions)}>
-          <TuneOutlined />
-        </IconButton>
+        {!isViewOptionsMenuDisabled ? (
+          <IconButton
+            aria-label={localization.topMenu.openViewOptions}
+            aria-controls={openViewOptions ? 'menu-list-grow' : undefined}
+            className={classes.viewOptions}
+            onClick={() => handleToggle(setOpenViewOptions)}>
+            <TuneOutlined />
+          </IconButton>
+        ) : null}
         <UserAvatar
           user={user!}
           repositoryUrl={repo.configuration.repositoryUrl}
@@ -231,7 +247,7 @@ export const DesktopNavMenu: FunctionComponent = () => {
           </div>
         </Paper>
       ) : null}
-      {openViewOptions ? (
+      {!isViewOptionsMenuDisabled && openViewOptions ? (
         <Paper className={classes.popperViewWrapper}>
           <div className={classes.popper}>
             <ClickAwayListener onClickAway={() => handleClose(setOpenViewOptions)}>

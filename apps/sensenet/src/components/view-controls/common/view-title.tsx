@@ -28,6 +28,14 @@ const useStyles = makeStyles((theme) => {
       boxSizing: 'border-box',
       minHeight: '54px',
       padding: '8px 24px',
+      minWidth: 0,
+      [theme.breakpoints.down('sm')]: {
+        alignItems: 'stretch',
+        flexDirection: 'column',
+        gap: '4px',
+        fontSize: '16px',
+        padding: '6px',
+      },
     },
     textBolder: {
       fontWeight: 500,
@@ -35,12 +43,21 @@ const useStyles = makeStyles((theme) => {
       overflow: 'hidden',
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
+      [theme.breakpoints.down('sm')]: {
+        textAlign: 'center',
+        overflowWrap: 'anywhere',
+        whiteSpace: 'normal',
+      },
     },
     actionBar: {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'flex-end',
       flexShrink: 0,
+      [theme.breakpoints.down('sm')]: {
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+      },
     },
     typeinfo: {
       fontSize: '12px',
@@ -57,6 +74,12 @@ const useStyles = makeStyles((theme) => {
       gap: '5px',
       minWidth: 0,
       overflow: 'hidden',
+      [theme.breakpoints.down('sm')]: {
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        maxWidth: '100%',
+        overflowWrap: 'anywhere',
+      },
     },
   })
 })

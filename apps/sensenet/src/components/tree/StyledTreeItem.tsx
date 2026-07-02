@@ -1,4 +1,4 @@
-import { ListItemIcon, ListItemText } from '@material-ui/core'
+import { createStyles, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core'
 import TreeItem from '@material-ui/lab/TreeItem'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
@@ -13,6 +13,29 @@ import { ExpandItemsContext } from './Contexts/ExpandedItemsProvider'
 import { useTreeLoading } from './Contexts/TreeLoadingProvider'
 import StyledTreeItemProps from './Props/StyledTreeItemProps'
 import { compareTreeItems, getTreeItemLabel } from './tree-helpers'
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    label: {
+      display: 'flex',
+      alignItems: 'center',
+      minWidth: 0,
+      width: '100%',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+    },
+    labelIcon: {
+      flex: '0 0 auto',
+      minWidth: 24,
+      marginRight: 4,
+    },
+    labelText: {
+      minWidth: 0,
+      overflow: 'hidden',
+      color: ({ isDisabled }: { isDisabled: boolean }) => (isDisabled ? 'grey' : undefined),
+    },
+  }),
+)
 
 export const StyledTreeItem = ({
   contentvalue,
@@ -46,6 +69,7 @@ export const StyledTreeItem = ({
 
   const path = contentvalue.Path
   const isDisabled = !path.includes(enabledPath)
+  const classes = useStyles({ isDisabled })
   const itemId = String(contentvalue.Id)
 
   // Track mount state
@@ -117,15 +141,16 @@ export const StyledTreeItem = ({
   }, [enabledPath, expandItems, itemId, contentvalue.Path, setExpandItems])
 
   const getLabel = () => (
-    <>
-      <ListItemIcon>
+    <div className={classes.label}>
+      <ListItemIcon className={classes.labelIcon}>
         <Icon item={contentvalue} style={{ height: 20, width: 20, fontSize: 15 }} />
       </ListItemIcon>
       <ListItemText
-        style={{ fontSize: '11px', color: isDisabled ? 'grey' : undefined }}
+        className={classes.labelText}
         primary={getTreeItemLabel(contentvalue, personalSettings.preferDisplayName)}
+        primaryTypographyProps={{ noWrap: true, style: { fontSize: '11px' } }}
       />
-    </>
+    </div>
   )
 
   const onIconClick: MouseEventHandler = (event) => {

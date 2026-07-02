@@ -8,10 +8,10 @@ import { act } from 'react-dom/test-utils'
 import { errorMessages, FileUpload, isTextBinaryFieldValue } from '../src/fieldcontrols/file-upload'
 
 jest.mock('react-monaco-editor', () => {
-  const React = require('react')
+  const { createElement } = jest.requireActual<typeof import('react')>('react')
 
   return jest.fn((props) =>
-    React.createElement(
+    createElement(
       'div',
       {
         'data-test': 'mock-monaco-editor',

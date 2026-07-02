@@ -13,6 +13,7 @@ import {
 } from 'ag-grid-community'
 import { AgGridReact } from 'ag-grid-react'
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { ResponsiveContext } from '../../context'
 import { useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { DropFileArea } from '../DropFileArea'
@@ -21,12 +22,14 @@ import { GridProps } from './Props/GridProps'
 import { useGridLoading } from './Providers/GridLoadingProvider'
 
 const SMALL_SCREEN_COL_FILTER = ['Id', 'Actions']
+const MOBILE_SCREEN_COL_FIELDS = ['0', 'Icon', 'DisplayName', 'Name', 'Actions']
 
 export function Grid<T extends GenericContent = GenericContent>(props: GridProps<T>) {
   const { isGridLoading, setIsGridLoading } = useGridLoading()
   const selectionService = useSelectionService()
   const localization = useLocalization().common
   const personalSettings = usePersonalSettings()
+  const device = useContext(ResponsiveContext)
   const parentContent = useContext(CurrentContentContext)
   const currentChildren = useContext(CurrentChildrenContext) as GenericContent[]
   const isCurrentChildrenLoading = useContext(CurrentChildrenIsLoadingContext)
@@ -91,6 +94,14 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
   const onRowClicked = (item: RowClickedEvent) => {
     if (item.data) {
       props.onActiveItemChange?.(item.data)
+
+      const target = item.event?.target as HTMLElement | null
+      const isInteractiveTarget = Boolean(target?.closest('button, a, [role="button"], .simpleContextMenu'))
+
+      if (device === 'mobile' && !isInteractiveTarget) {
+        setLoadingWithMinDuration(true)
+        props.onParentChange(item.data)
+      }
     }
   }
 
@@ -167,7 +178,10 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
 
   const updateColumnDefsBasedOnWindowSize = useCallback(() => {
     const width = window.innerWidth
-    if (width < 1536) {
+    if (width < 600) {
+      const mobileCols = props.colDef.filter((col) => MOBILE_SCREEN_COL_FIELDS.includes(col.field || ''))
+      setColumnDefs(mobileCols.length ? mobileCols : props.colDef.slice(0, 3))
+    } else if (width < 1536) {
       const filteredCols = props.colDef.filter((col) => !SMALL_SCREEN_COL_FILTER.includes(col.field || ''))
       setColumnDefs(filteredCols)
     } else {
@@ -196,9 +210,9 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
 
   useEffect(() => {
     if (gridApi.current) {
-      gridApi.current.setColumnDefs([...props.colDef])
+      updateColumnDefsBasedOnWindowSize()
     }
-  }, [props.colDef])
+  }, [props.colDef, updateColumnDefsBasedOnWindowSize])
 
   const onSortChanged = useCallback(() => {
     if (columnApi.current) {

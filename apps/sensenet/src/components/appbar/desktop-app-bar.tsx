@@ -7,12 +7,12 @@ import { clsx } from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../../assets/sensenet_white.png'
-import { ResponsivePersonalSettings } from '../../context'
+import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { CommandPalette } from '../command-palette/CommandPalette'
 import { DesktopNavMenu } from './desktop-nav-menu'
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme) => {
   return createStyles({
     appBar: {
       position: 'relative',
@@ -25,9 +25,20 @@ const useStyles = makeStyles(() => {
       minHeight: '42px',
       paddingLeft: '6px',
       paddingRight: 0,
+      [theme.breakpoints.down('sm')]: {
+        paddingLeft: '2px',
+      },
     },
     logo: {
       marginRight: '21px',
+      [theme.breakpoints.down('sm')]: {
+        marginRight: '4px',
+      },
+    },
+    drawerButton: {
+      padding: '8px',
+      marginRight: '2px',
+      flex: '0 0 auto',
     },
     commandPaletteReplacement: {
       flex: 1,
@@ -38,8 +49,15 @@ const useStyles = makeStyles(() => {
       fontSize: '18px',
       fontWeight: 500,
       fontFamily: 'Roboto,Helvetica,Arial,sans-serif',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      maxWidth: '36vw',
       '&:hover': {
         cursor: 'pointer',
+      },
+      [theme.breakpoints.down('sm')]: {
+        display: 'none',
       },
     },
   })
@@ -49,6 +67,7 @@ const PORTAL_SETTING_PATH = '/Root/System/Settings/Portal.settings'
 
 export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }> = (props) => {
   const personalSettings = useContext(ResponsivePersonalSettings)
+  const device = useContext(ResponsiveContext)
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const repository = useRepository()
@@ -110,8 +129,9 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
           <Link to="/" className={`${globalClasses.centeredVertical} ${classes.logo}`}>
             <img src={logo} alt="logo" data-test="sensenet-logo" width="29" height="32" />
           </Link>
-          {personalSettings.drawer.type === 'temporary' ? (
+          {personalSettings.drawer.enabled && (personalSettings.drawer.type === 'temporary' || device === 'mobile') ? (
             <IconButton
+              className={classes.drawerButton}
               onClick={() => {
                 props.openDrawer && props.openDrawer()
               }}>
