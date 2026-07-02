@@ -138,6 +138,12 @@ export const EditView: React.FC<EditViewProps> = (props) => {
             return
           }
 
+          delete (submitContent as Record<string, unknown>)[fieldName]
+
+          if (value.isModified === false) {
+            return
+          }
+
           if (!props.content) {
             throw new Error(`Cannot save text binary field '${fieldName}' without a content.`)
           }
@@ -152,7 +158,6 @@ export const EditView: React.FC<EditViewProps> = (props) => {
           })
 
           hasTextBinaryUpload = true
-          delete (submitContent as Record<string, unknown>)[fieldName]
         }),
       )
 

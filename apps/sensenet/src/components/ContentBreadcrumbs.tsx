@@ -9,14 +9,16 @@ import { useSelectionService } from '../hooks'
 import { getPrimaryActionUrl } from '../services'
 import { BatchActions } from './BatchActions'
 import { BreadcrumbItem, Breadcrumbs } from './Breadcrumbs'
+import CopyPath from './CopyPath'
 
 const useStyles = makeStyles((theme) => {
   return createStyles({
     buttonsWrapper: {
       display: 'flex',
       alignItems: 'center',
-      marginLeft: '10px',
+      width: '100%',
       minWidth: 0,
+      marginLeft: '10px',
       overflow: 'hidden',
       [theme.breakpoints.down('sm')]: {
         marginLeft: 0,
@@ -24,6 +26,8 @@ const useStyles = makeStyles((theme) => {
       },
     },
     desktopBreadcrumbs: {
+      display: 'flex',
+      alignItems: 'center',
       minWidth: 0,
       overflow: 'hidden',
       [theme.breakpoints.down('sm')]: {
@@ -57,6 +61,24 @@ const useStyles = makeStyles((theme) => {
     mobileUpButton: {
       flex: '0 0 auto',
       padding: 6,
+    },
+    breadcrumbsArea: {
+      display: 'flex',
+      alignItems: 'center',
+      flex: '1 1 auto',
+      minWidth: 0,
+      overflow: 'hidden',
+    },
+    copyPathArea: {
+      display: 'flex',
+      alignItems: 'center',
+      flexShrink: 0,
+    },
+    actionsArea: {
+      display: 'flex',
+      alignItems: 'center',
+      flexShrink: 0,
+      marginLeft: 'auto',
     },
   })
 })
@@ -104,31 +126,40 @@ export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(pr
 
   return (
     <div className={classes.buttonsWrapper}>
-      {device === 'mobile' ? (
-        <div className={classes.mobileLocation}>
-          {ancestorItem ? (
-            <Tooltip title={ancestorItem.title} placement="bottom">
-              <IconButton
-                className={classes.mobileUpButton}
-                aria-label="Go up"
-                size="small"
-                onClick={() => handleItemClick(ancestorItem)}>
-                <ArrowUpward fontSize="small" />
-              </IconButton>
+      <div className={classes.breadcrumbsArea}>
+        {device === 'mobile' ? (
+          <div className={classes.mobileLocation}>
+            {ancestorItem ? (
+              <Tooltip title={ancestorItem.title} placement="bottom">
+                <IconButton
+                  className={classes.mobileUpButton}
+                  aria-label="Go up"
+                  size="small"
+                  onClick={() => handleItemClick(ancestorItem)}>
+                  <ArrowUpward fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            ) : null}
+            <Tooltip title={parentItem.title} placement="bottom">
+              <Button className={classes.mobileLocationButton} aria-label={parentItem.displayName}>
+                {parentItem.displayName}
+              </Button>
             </Tooltip>
-          ) : null}
-          <Tooltip title={parentItem.title} placement="bottom">
-            <Button className={classes.mobileLocationButton} aria-label={parentItem.displayName}>
-              {parentItem.displayName}
-            </Button>
-          </Tooltip>
-        </div>
-      ) : (
-        <div className={classes.desktopBreadcrumbs}>
-          <Breadcrumbs<T> items={items} onItemClick={(_ev, item) => handleItemClick(item)} />
+          </div>
+        ) : (
+          <div className={classes.desktopBreadcrumbs}>
+            <div className={classes.copyPathArea}>
+              <CopyPath copyText={parent.Path} />
+            </div>
+            <Breadcrumbs<T> items={items} onItemClick={(_ev, item) => handleItemClick(item)} />
+          </div>
+        )}
+      </div>
+      {props.batchActions && (
+        <div className={classes.actionsArea}>
+          <BatchActions />
         </div>
       )}
-      {props.batchActions && <BatchActions />}
     </div>
   )
 }

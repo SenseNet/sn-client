@@ -40,8 +40,10 @@ module.exports = {
     rules: [
       {
         test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.PNG$/, /\.svg$/, /\.eot$/, /\.woff$/, /\.woff2$/, /\.ttf$/],
+        type: 'javascript/auto',
         loader: require.resolve('url-loader'),
         options: {
+          esModule: false,
           limit: 10000,
           name: 'static/media/[name].[contenthash:8].[ext]',
         },

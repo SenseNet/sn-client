@@ -3,6 +3,7 @@
  */
 import {
   Button,
+  Chip,
   createStyles,
   FormControl,
   Input,
@@ -17,7 +18,7 @@ import { Content } from '@sensenet/client-core'
 import { deepMerge, PathHelper } from '@sensenet/client-utils'
 import { BinaryFieldSetting } from '@sensenet/default-content-types'
 import { downloadFile, useRepository } from '@sensenet/hooks-react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 import { ReactClientFieldSetting } from './client-field-setting'
 import CustomLabel from './label/custom-label'
@@ -68,10 +69,55 @@ const useStyles = makeStyles(() => {
       position: 'relative',
       transform: 'none',
     },
+    fileNameRow: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px',
+      minHeight: '24px',
+      marginBottom: '4px',
+    },
+    modifiedIndicator: {
+      height: '20px',
+      fontSize: '11px',
+      fontWeight: 500,
+    },
     editorContainer: {
       width: '100%',
-      height: '420px',
       marginTop: '10px',
+      minHeight: '220px',
+      display: 'flex',
+      flexDirection: 'column',
+      overflow: 'hidden',
+    },
+    editorHost: {
+      flex: 1,
+      minHeight: 0,
+    },
+    editorLoading: {
+      height: '100%',
+      display: 'flex',
+      alignItems: 'center',
+    },
+    editorResizeHandle: {
+      width: '100%',
+      height: '12px',
+      minHeight: '12px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'ns-resize',
+      backgroundColor: 'rgba(127, 127, 127, 0.12)',
+      '&:focus': {
+        outline: '1px solid rgba(25, 118, 210, 0.85)',
+        outlineOffset: '-1px',
+      },
+      '&::before': {
+        content: '""',
+        width: '48px',
+        height: '3px',
+        borderRadius: '2px',
+        backgroundColor: 'rgba(127, 127, 127, 0.6)',
+      },
     },
   })
 })
@@ -98,11 +144,14 @@ interface Binary {
 }
 
 const textBinaryFieldValueMarker = 'sensenet:text-binary-field-value'
+const defaultEditorHeight = 420
+const minEditorHeight = 220
 
 export type TextBinaryFieldValue = {
   __type: typeof textBinaryFieldValueMarker
   text: string
   fileName: string
+  isModified?: boolean
 }
 
 export const isTextBinaryFieldValue = (value: unknown): value is TextBinaryFieldValue =>
@@ -110,10 +159,11 @@ export const isTextBinaryFieldValue = (value: unknown): value is TextBinaryField
   value !== null &&
   (value as Partial<TextBinaryFieldValue>).__type === textBinaryFieldValueMarker
 
-const createTextBinaryFieldValue = (text: string, fileName: string): TextBinaryFieldValue => ({
+const createTextBinaryFieldValue = (text: string, fileName: string, isModified: boolean): TextBinaryFieldValue => ({
   __type: textBinaryFieldValueMarker,
   text,
   fileName,
+  isModified,
 })
 
 export const errorMessages = {
@@ -179,6 +229,11 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
   const [fileName, setFileName] = useState<string>('')
   const [textValue, setTextValue] = useState<string>('')
   const [isTextLoading, setIsTextLoading] = useState(false)
+  const [isTextModified, setIsTextModified] = useState(false)
+  const [editorHeight, setEditorHeight] = useState(defaultEditorHeight)
+  const editorRef = useRef<any>(null)
+  const originalTextValueRef = useRef('')
+  const clearEditorResizeListenersRef = useRef<(() => void) | null>(null)
   const classes = useStyles()
 
   useEffect(() => {
@@ -220,11 +275,17 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
 
       if (!props.repository || !binaryPath) {
         setTextValue('')
+        originalTextValueRef.current = ''
+        setIsTextModified(false)
         return
       }
 
       try {
         setIsTextLoading(true)
+        setTextValue('')
+        originalTextValueRef.current = ''
+        setIsTextModified(false)
+
         const response = await props.repository.fetch(
           PathHelper.joinPaths(props.repository.configuration.repositoryUrl, binaryPath),
           {
@@ -237,6 +298,8 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
 
           if (!ac.signal.aborted) {
             setTextValue(text)
+            originalTextValueRef.current = text
+            setIsTextModified(false)
           }
         }
       } catch (error) {
@@ -252,6 +315,10 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
 
     return () => ac.abort()
   }, [isTextBinary, mediaResource?.media_src, props.actionName, props.repository])
+
+  useEffect(() => {
+    return () => clearEditorResizeListenersRef.current?.()
+  }, [])
 
   /**
    * returns a name from the given path
@@ -288,6 +355,8 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
       if (isTextBinary && e.target.files[0]) {
         const text = await e.target.files[0].text()
         setTextValue(text)
+        originalTextValueRef.current = text
+        setIsTextModified(false)
       }
     } catch (error) {
       console.error(error.message)
@@ -295,11 +364,60 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
   }
 
   const handleTextChange = (value: string) => {
+    const isModified = value !== originalTextValueRef.current
+
     setTextValue(value)
+    setIsTextModified(isModified)
     props.fieldOnChange?.(
       props.settings.Name,
-      createTextBinaryFieldValue(value, fileName || props.content?.Name || props.settings.Name),
+      createTextBinaryFieldValue(value, fileName || props.content?.Name || props.settings.Name, isModified),
     )
+  }
+
+  const layoutEditor = () => {
+    const schedule =
+      typeof window !== 'undefined' && window.requestAnimationFrame
+        ? window.requestAnimationFrame.bind(window)
+        : (callback: FrameRequestCallback) => setTimeout(() => callback(Date.now()), 0)
+
+    schedule(() => editorRef.current?.layout?.())
+  }
+
+  const resizeEditor = (height: number) => {
+    setEditorHeight(Math.max(minEditorHeight, Math.round(height)))
+    layoutEditor()
+  }
+
+  const handleEditorResizeMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault()
+
+    const startY = event.clientY
+    const startHeight = editorHeight
+
+    clearEditorResizeListenersRef.current?.()
+
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      resizeEditor(startHeight + moveEvent.clientY - startY)
+    }
+
+    const clearListeners = () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('mouseup', clearListeners)
+      clearEditorResizeListenersRef.current = null
+    }
+
+    clearEditorResizeListenersRef.current = clearListeners
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mouseup', clearListeners)
+  }
+
+  const handleEditorResizeKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') {
+      return
+    }
+
+    event.preventDefault()
+    resizeEditor(editorHeight + (event.key === 'ArrowDown' ? 40 : -40))
   }
 
   const handleDownload = () => {
@@ -351,9 +469,19 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
             description={props.settings.Description}
             showDescription={!props.hideDescription}
           />
-          <Typography variant="body1" gutterBottom={true}>
-            {fileName}
-          </Typography>
+          <div className={classes.fileNameRow}>
+            <Typography variant="body1">{fileName}</Typography>
+            {isTextBinary && isTextModified ? (
+              <Chip
+                className={classes.modifiedIndicator}
+                color="secondary"
+                data-test="binary-text-modified-indicator"
+                label={localization.modifiedStatus}
+                size="small"
+                aria-live="polite"
+              />
+            ) : null}
+          </div>
           <div className={classes.editActions}>
             <InputLabel className={classes.inputLabel} htmlFor={`raised-button-file-${props.settings.Name}`}>
               <Button aria-label={localization.buttonText} variant="contained" component="span" color="primary">
@@ -369,42 +497,58 @@ export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> =
             onChange={handleUpload}
           />
           {isTextBinary && props.actionName === 'edit' ? (
-            <div className={classes.editorContainer} data-test="binary-text-editor">
-              {isTextLoading ? (
-                <Typography variant="caption">{'Loading...'}</Typography>
-              ) : (
-                <MonacoEditor
-                  width="100%"
-                  height="100%"
-                  language={language}
-                  value={textValue}
-                  onChange={handleTextChange}
-                  theme={theme.palette.type === 'dark' ? 'admin-ui-dark' : 'vs-light'}
-                  options={{
-                    automaticLayout: true,
-                    contextmenu: true,
-                    hideCursorInOverviewRuler: true,
-                    lineNumbers: 'on',
-                    minimap: {
-                      enabled: true,
-                    },
-                    readOnly: props.settings.ReadOnly,
-                    scrollBeyondLastLine: false,
-                    selectOnLineNumbers: true,
-                    wordWrap: 'on',
-                  }}
-                  editorWillMount={(monaco) => {
-                    monaco.editor.defineTheme('admin-ui-dark', {
-                      base: 'vs-dark',
-                      inherit: true,
-                      rules: [],
-                      colors: {
-                        'editor.background': '#121212',
+            <div className={classes.editorContainer} style={{ height: editorHeight }} data-test="binary-text-editor">
+              <div className={classes.editorHost}>
+                {isTextLoading ? (
+                  <div className={classes.editorLoading}>
+                    <Typography variant="caption">{'Loading...'}</Typography>
+                  </div>
+                ) : (
+                  <MonacoEditor
+                    width="100%"
+                    height="100%"
+                    language={language}
+                    value={textValue}
+                    onChange={handleTextChange}
+                    theme={theme.palette.type === 'dark' ? 'admin-ui-dark' : 'vs-light'}
+                    options={{
+                      automaticLayout: true,
+                      contextmenu: true,
+                      hideCursorInOverviewRuler: true,
+                      lineNumbers: 'on',
+                      minimap: {
+                        enabled: true,
                       },
-                    })
-                  }}
-                />
-              )}
+                      readOnly: props.settings.ReadOnly,
+                      scrollBeyondLastLine: false,
+                      selectOnLineNumbers: true,
+                      wordWrap: 'on',
+                    }}
+                    editorDidMount={(editor: any) => {
+                      editorRef.current = editor
+                    }}
+                    editorWillMount={(monaco) => {
+                      monaco.editor.defineTheme('admin-ui-dark', {
+                        base: 'vs-dark',
+                        inherit: true,
+                        rules: [],
+                        colors: {
+                          'editor.background': '#121212',
+                        },
+                      })
+                    }}
+                  />
+                )}
+              </div>
+              <div
+                className={classes.editorResizeHandle}
+                data-test="binary-text-editor-resize-handle"
+                role="separator"
+                aria-orientation="horizontal"
+                tabIndex={0}
+                onMouseDown={handleEditorResizeMouseDown}
+                onKeyDown={handleEditorResizeKeyDown}
+              />
             </div>
           ) : null}
         </FormControl>
