@@ -26,6 +26,8 @@ const useStyles = makeStyles(() =>
     },
     labelIcon: {
       flex: '0 0 auto',
+      minWidth: 24,
+      marginRight: 4,
     },
     labelText: {
       minWidth: 0,
