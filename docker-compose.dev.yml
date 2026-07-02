@@ -12,6 +12,7 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
       - ALLOWED_HOSTS=all
+      - DISABLE_DEV_RELOAD=true
     volumes:
       - .:/app
       - sensenet-root-node-modules:/app/node_modules

@@ -13,6 +13,7 @@ import {
 } from 'ag-grid-community'
 import { AgGridReact } from 'ag-grid-react'
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { ResponsiveContext } from '../../context'
 import { useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { DropFileArea } from '../DropFileArea'
@@ -28,6 +29,7 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
   const selectionService = useSelectionService()
   const localization = useLocalization().common
   const personalSettings = usePersonalSettings()
+  const device = useContext(ResponsiveContext)
   const parentContent = useContext(CurrentContentContext)
   const currentChildren = useContext(CurrentChildrenContext) as GenericContent[]
   const isCurrentChildrenLoading = useContext(CurrentChildrenIsLoadingContext)
@@ -92,6 +94,14 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
   const onRowClicked = (item: RowClickedEvent) => {
     if (item.data) {
       props.onActiveItemChange?.(item.data)
+
+      const target = item.event?.target as HTMLElement | null
+      const isInteractiveTarget = Boolean(target?.closest('button, a, [role="button"], .simpleContextMenu'))
+
+      if (device === 'mobile' && !isInteractiveTarget) {
+        setLoadingWithMinDuration(true)
+        props.onParentChange(item.data)
+      }
     }
   }
 

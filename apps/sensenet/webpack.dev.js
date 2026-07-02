@@ -4,6 +4,8 @@ const { customizeArray, mergeWithCustomize } = require('webpack-merge')
 const common = require('./webpack.common.js')
 
 module.exports = (env) => {
+  const disableDevReload = process.env.DISABLE_DEV_RELOAD === 'true'
+
   return mergeWithCustomize({
     customizeArray: customizeArray({
       entry: 'replace',
@@ -14,6 +16,8 @@ module.exports = (env) => {
     devtool: 'cheap-module-source-map',
     devServer: {
       historyApiFallback: true,
+      hot: disableDevReload ? false : 'only',
+      liveReload: !disableDevReload,
       open: true,
       allowedHosts: process.env.ALLOWED_HOSTS || 'auto',
     },

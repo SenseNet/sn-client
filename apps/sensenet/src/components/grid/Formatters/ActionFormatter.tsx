@@ -60,6 +60,8 @@ export function ActionFormatter(props: { data: Content }) {
     }
   }, [content, setActionsWopi])
   const handleClick = (event: any) => {
+    event.preventDefault()
+    event.stopPropagation()
     setAnchorEl(event.currentTarget)
   }
 
@@ -80,7 +82,10 @@ export function ActionFormatter(props: { data: Content }) {
           key="ODataActions"
           disableRipple={true}
           data-test="content-context-menu-odata-actions"
-          onClick={runODataActions}>
+          onClick={(ev) => {
+            ev.stopPropagation()
+            runODataActions()
+          }}>
           <ListItemIcon>{getIcon('odataactions')}</ListItemIcon>
           <div style={{ flexGrow: 1 }}>{oDataActionsTitle}</div>
         </MenuItem>
@@ -91,7 +96,8 @@ export function ActionFormatter(props: { data: Content }) {
               disableRipple={true}
               disabled={DISABLED_ACTIONS.includes(action.Name)}
               data-test={`content-context-menu-${action.Name.replace(/\s+/g, '-').toLowerCase()}`}
-              onClick={() => {
+              onClick={(ev) => {
+                ev.stopPropagation()
                 setAnchorEl(null)
                 runAction(action.Name)
               }}>
