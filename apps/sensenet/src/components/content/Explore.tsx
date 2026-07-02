@@ -90,9 +90,13 @@ const useStyles = makeStyles<Theme, { width: number }>((theme) =>
     },
     simpleTree: {
       width: ({ width }) => `${width}px`,
-      overflow: 'auto',
+      overflow: 'hidden',
       position: 'relative',
       flex: 'none',
+      boxSizing: 'border-box',
+      paddingRight: '12px',
+      backgroundColor: theme.palette.background.paper,
+      height: '100%',
       '& .MuiTypography-body1': {
         fontSize: '12px !important',
         display: 'flex',
@@ -121,31 +125,41 @@ const useStyles = makeStyles<Theme, { width: number }>((theme) =>
         borderLeft: '1px dashed #cececeff',
       },
     },
+    treeViewport: {
+      height: '100%',
+      overflow: 'auto',
+    },
     resizeButton: {
-      position: 'sticky',
+      position: 'absolute',
       top: 0,
       right: 0,
-      width: '26px',
-      height: '25px',
+      bottom: 0,
+      width: '12px',
+      minWidth: '12px',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      cursor: 'pointer',
+      cursor: 'ew-resize',
       zIndex: 999,
-      margin: '-1px 0.5px -24px auto',
-      border: `1px solid ${theme.palette.primary.main}`,
-      backgroundColor: theme.palette.type === 'light' ? 'white' : 'black',
+      touchAction: 'none',
+      backgroundColor: 'rgba(127, 127, 127, 0.12)',
       '&:hover': {
-        backgroundColor: theme.palette.type === 'light' ? '#f0f0f0' : '#222222',
+        backgroundColor: 'rgba(127, 127, 127, 0.18)',
       },
       '&:active': {
-        backgroundColor: theme.palette.type === 'light' ? '#f0f0f0' : '#222222',
+        backgroundColor: 'rgba(127, 127, 127, 0.24)',
       },
-    },
-    symbol: {
-      color: theme.palette.primary.main,
-      fontSize: '18px',
-      paddingBottom: '3px',
+      '&:focus': {
+        outline: '1px solid rgba(25, 118, 210, 0.85)',
+        outlineOffset: '-1px',
+      },
+      '&::before': {
+        content: '""',
+        width: '3px',
+        height: '48px',
+        borderRadius: '2px',
+        backgroundColor: 'rgba(127, 127, 127, 0.6)',
+      },
     },
   }),
 )
@@ -249,8 +263,11 @@ export function Explore({
   const isResizing = useRef(false)
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault()
     isResizing.current = true
+    const previousCursor = document.body.style.cursor
     document.body.style.userSelect = 'none'
+    document.body.style.cursor = 'ew-resize'
     const startX = e.clientX
     const resizeElement = e.currentTarget.parentElement as HTMLDivElement
     const handleMouseMove = (event: MouseEvent) => {
@@ -262,6 +279,7 @@ export function Explore({
     const handleMouseUp = () => {
       isResizing.current = false
       document.body.style.userSelect = ''
+      document.body.style.cursor = previousCursor
       const newWidth = parseInt(resizeElement.style.width, 10)
       if (newWidth !== null && !isNaN(newWidth)) {
         setWidth(newWidth)
@@ -272,6 +290,21 @@ export function Explore({
     }
     window.addEventListener('mousemove', handleMouseMove)
     window.addEventListener('mouseup', handleMouseUp)
+  }
+
+  const handleResizeKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+      return
+    }
+
+    e.preventDefault()
+    const nextWidth = Math.max(width + (e.key === 'ArrowLeft' ? -20 : 20), 26)
+    const resizeElement = e.currentTarget.parentElement as HTMLDivElement | null
+    if (resizeElement) {
+      resizeElement.style.width = `${nextWidth}px`
+    }
+    setWidth(nextWidth)
+    localStorage.setItem('treeWidth', String(nextWidth))
   }
 
   const repository = useRepository()
@@ -390,18 +423,26 @@ export function Explore({
             <div className={`${classes.treeAndDatagridWrapper} leftTree theme-${theme.palette.type} `}>
               {hasTree && (
                 <div className={classes.simpleTree}>
-                  <div className={classes.resizeButton} onMouseDown={handleMouseDown}>
-                    <div className={classes.symbol}>&#8596;</div>
+                  <div className={classes.treeViewport}>
+                    <SimpleTree
+                      onItemClick={(item) => {
+                        onNavigate(item)
+                      }}
+                      parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
+                      activeItemPath={currentPath}
+                      loadSettings={loadTreeSettings}
+                      onNavigate={onNavigate}
+                      rootLoaded={false}
+                    />
                   </div>
-                  <SimpleTree
-                    onItemClick={(item) => {
-                      onNavigate(item)
-                    }}
-                    parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
-                    activeItemPath={currentPath}
-                    loadSettings={loadTreeSettings}
-                    onNavigate={onNavigate}
-                    rootLoaded={false}
+                  <div
+                    className={classes.resizeButton}
+                    onMouseDown={handleMouseDown}
+                    onKeyDown={handleResizeKeyDown}
+                    role="separator"
+                    aria-label="Resize tree panel"
+                    aria-orientation="vertical"
+                    tabIndex={0}
                   />
                 </div>
               )}

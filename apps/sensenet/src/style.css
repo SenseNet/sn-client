@@ -238,6 +238,55 @@ span.icon svg {
   font: caption;
 }
 
+/* Monaco 0.26 creates these icon registrations in JS, but the slim build may miss the generated CSS rules. */
+.monaco-editor .find-widget .codicon-widget-close::before {
+  content: '\ea76';
+}
+
+.monaco-editor .find-widget .codicon-find-collapsed::before {
+  content: '\eab6';
+}
+
+.monaco-editor .find-widget .codicon-find-expanded::before {
+  content: '\eab4';
+}
+
+.monaco-editor .find-widget .codicon-find-next-match::before {
+  content: '\ea9a';
+}
+
+.monaco-editor .find-widget .codicon-find-previous-match::before {
+  content: '\eaa1';
+}
+
+.monaco-editor .find-widget .codicon-find-replace::before {
+  content: '\eb3d';
+}
+
+.monaco-editor .find-widget .codicon-find-replace-all::before {
+  content: '\eb3c';
+}
+
+.monaco-editor .find-widget .codicon-find-selection::before {
+  content: '\eb85';
+}
+
+.monaco-editor .find-widget .codicon-case-sensitive::before {
+  content: '\eab1';
+}
+
+.monaco-editor .find-widget .codicon-preserve-case::before {
+  content: '\eb2e';
+}
+
+.monaco-editor .find-widget .codicon-regex::before {
+  content: '\eb38';
+}
+
+.monaco-editor .find-widget .codicon-whole-word::before {
+  content: '\eb7e';
+}
+
 .react-datepicker-wrapper input:hover {
   border-color: #666;
   cursor: text;

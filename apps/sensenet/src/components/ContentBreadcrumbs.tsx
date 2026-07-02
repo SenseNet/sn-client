@@ -8,13 +8,33 @@ import { useSelectionService } from '../hooks'
 import { getPrimaryActionUrl } from '../services'
 import { BatchActions } from './BatchActions'
 import { BreadcrumbItem, Breadcrumbs } from './Breadcrumbs'
+import CopyPath from './CopyPath'
 
 const useStyles = makeStyles(() => {
   return createStyles({
     buttonsWrapper: {
       display: 'flex',
       alignItems: 'center',
+      width: '100%',
+      minWidth: 0,
       marginLeft: '10px',
+    },
+    breadcrumbsArea: {
+      display: 'flex',
+      alignItems: 'center',
+      minWidth: 0,
+      overflow: 'hidden',
+    },
+    copyPathArea: {
+      display: 'flex',
+      alignItems: 'center',
+      flexShrink: 0,
+    },
+    actionsArea: {
+      display: 'flex',
+      alignItems: 'center',
+      flexShrink: 0,
+      marginLeft: 'auto',
     },
   })
 })
@@ -36,29 +56,38 @@ export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(pr
 
   return (
     <div className={classes.buttonsWrapper}>
-      <Breadcrumbs<T>
-        items={[
-          ...ancestors.map((content) => ({
-            displayName: content.DisplayName || content.Name,
-            title: content.Path,
-            url: getPrimaryActionUrl({ content, repository, uiSettings, location }),
-            content,
-          })),
-          {
-            displayName: parent.DisplayName || parent.Name,
-            title: parent.Path,
-            url: getPrimaryActionUrl({ content: parent, repository, uiSettings, location }),
-            content: parent,
-          },
-        ]}
-        onItemClick={(_ev, item) => {
-          selectionService.activeContent.setValue(item.content)
-          props.onItemClick
-            ? props.onItemClick(item)
-            : history.push(getPrimaryActionUrl({ content: item.content, repository, uiSettings, location }))
-        }}
-      />
-      {props.batchActions && <BatchActions />}
+      <div className={classes.breadcrumbsArea}>
+        <div className={classes.copyPathArea}>
+          <CopyPath copyText={parent.Path} />
+        </div>
+        <Breadcrumbs<T>
+          items={[
+            ...ancestors.map((content) => ({
+              displayName: content.DisplayName || content.Name,
+              title: content.Path,
+              url: getPrimaryActionUrl({ content, repository, uiSettings, location }),
+              content,
+            })),
+            {
+              displayName: parent.DisplayName || parent.Name,
+              title: parent.Path,
+              url: getPrimaryActionUrl({ content: parent, repository, uiSettings, location }),
+              content: parent,
+            },
+          ]}
+          onItemClick={(_ev, item) => {
+            selectionService.activeContent.setValue(item.content)
+            props.onItemClick
+              ? props.onItemClick(item)
+              : history.push(getPrimaryActionUrl({ content: item.content, repository, uiSettings, location }))
+          }}
+        />
+      </div>
+      {props.batchActions && (
+        <div className={classes.actionsArea}>
+          <BatchActions />
+        </div>
+      )}
     </div>
   )
 }

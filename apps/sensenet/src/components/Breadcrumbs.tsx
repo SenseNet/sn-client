@@ -6,7 +6,6 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { MouseEvent, useEffect, useState } from 'react'
 import { ContentContextMenu } from './context-menu/content-context-menu'
-import CopyPath from './CopyPath'
 import { DropFileArea } from './DropFileArea'
 
 export interface BreadcrumbItem<T extends GenericContent> {
@@ -121,7 +120,6 @@ export function Breadcrumbs<T extends GenericContent>(props: BreadcrumbProps<T>)
             )}
           </DropFileArea>
         ))}
-        <CopyPath copyText={props.items[props.items.length - 1].title} />
       </MUIBreadcrumbs>
       {contextMenuItem ? (
         <ContentContextMenu

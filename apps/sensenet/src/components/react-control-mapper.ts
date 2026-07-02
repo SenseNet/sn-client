@@ -1,6 +1,6 @@
 import { Repository } from '@sensenet/client-core'
 import { FieldControls as SnFieldControls, reactControlMapper as snReactControlMapper } from '@sensenet/controls-react'
-import { LongTextFieldSetting, ReferenceFieldSetting, RichTextFieldSetting } from '@sensenet/default-content-types'
+import { LongTextFieldSetting, RichTextFieldSetting } from '@sensenet/default-content-types'
 import * as FieldControls from './field-controls'
 
 /**
@@ -22,12 +22,8 @@ export const reactControlMapper = (repository: Repository) => {
           return SnFieldControls.ShortText
       }
     })
-    .setupFieldSettingDefault<ReferenceFieldSetting>('ReferenceFieldSetting', (setting) => {
-      if (setting.AllowedTypes && setting.AllowedTypes.indexOf('User') !== -1 && setting.AllowMultiple) {
-        return SnFieldControls.TagsInput
-      } else {
-        return FieldControls.ReferenceGrid
-      }
+    .setupFieldSettingDefault('ReferenceFieldSetting', () => {
+      return FieldControls.ReferenceGrid
     })
     .setupFieldSettingDefault<LongTextFieldSetting>('LongTextFieldSetting', (setting) => {
       if (setting.Name === 'FormPropertiesJSON') {

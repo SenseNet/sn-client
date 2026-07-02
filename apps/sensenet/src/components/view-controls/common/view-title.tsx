@@ -1,7 +1,6 @@
-import { createStyles, ListItemIcon, makeStyles } from '@material-ui/core'
+import { createStyles, makeStyles } from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import { clsx } from 'clsx'
 import React, { useCallback, useContext, useMemo } from 'react'
 import { useHistory } from 'react-router'
 import { ResponsivePersonalSettings } from '../../../context'
@@ -23,27 +22,41 @@ const useStyles = makeStyles((theme) => {
       fontSize: '20px',
       borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
       display: 'flex',
-      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: '16px',
+      boxSizing: 'border-box',
+      minHeight: '54px',
+      padding: '8px 24px',
     },
     textBolder: {
       fontWeight: 500,
-      textAlign: 'center',
+      textAlign: 'left',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
     },
     actionBar: {
       display: 'flex',
-      marginBottom: '6px',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      flexShrink: 0,
     },
     typeinfo: {
       fontSize: '12px',
       color: 'grey',
-      marginLeft: '5px',
+      flexShrink: 0,
     },
     actionText: {
-      marginRight: '5px',
-      textAlign: 'center',
+      flexShrink: 0,
+      textAlign: 'left',
     },
     viewTitle: {
-      padding: '6px',
+      display: 'flex',
+      alignItems: 'baseline',
+      gap: '5px',
+      minWidth: 0,
+      overflow: 'hidden',
     },
   })
 })
@@ -75,7 +88,7 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
   )
 
   return (
-    <div className={clsx(classes.title, globalClasses.centered)}>
+    <div className={classes.title}>
       <div data-test="viewtitle" className={classes.viewTitle}>
         <span className={classes.actionText}>{props.title}</span>
         <span className={classes.textBolder}>{props.titleBold}</span>

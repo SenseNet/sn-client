@@ -14,6 +14,7 @@ import {
   DatePicker,
   DropDownList,
   EmptyFieldControl,
+  FileUpload,
   FileName,
   Name,
   NumberField,
@@ -120,6 +121,37 @@ describe('Edit view component', () => {
     wrapper.update()
 
     expect(wrapper.find('[data-test="submit"]').prop('disabled')).toBe(false)
+  })
+
+  it('should skip text binary upload when the editor value is unchanged', async () => {
+    const onSubmit = jest.fn()
+    const upload = {
+      textAsFile: jest.fn(),
+    }
+    const repo = Object.assign(Object.create(testRepository), {
+      upload,
+      reloadSchema: jest.fn(),
+    })
+    const wrapper = shallow(
+      <EditView repository={repo} onSubmit={onSubmit} content={testFile} contentTypeName={testFile.Type} />,
+    )
+    const fieldOnChange = wrapper.find(FileUpload).prop('fieldOnChange')
+
+    fieldOnChange?.('Binary', {
+      __type: 'sensenet:text-binary-field-value',
+      text: '<ContentType />',
+      fileName: 'Sample-document.docx',
+      isModified: false,
+    } as any)
+
+    await act(async () => {
+      wrapper.find('[component="form"]').simulate('submit', { preventDefault: jest.fn() })
+      await Promise.resolve()
+    })
+
+    expect(upload.textAsFile).not.toBeCalled()
+    expect(repo.reloadSchema).not.toBeCalled()
+    expect(onSubmit).toBeCalledWith({}, 'GenericContent')
   })
   //Advanced field tests
   it('Advanced field inputs in a group should be invisible by default', () => {

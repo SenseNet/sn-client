@@ -16,6 +16,7 @@ jest.mock('react-monaco-editor', () => {
       {
         'data-test': 'mock-monaco-editor',
         'data-language': props.language,
+        onDoubleClick: () => props.onChange(props.value),
         onClick: () => props.onChange('<ChangedContentType />'),
       },
       props.value,
@@ -127,14 +128,43 @@ describe('File upload field control', () => {
 
     expect(wrapper.update().find("[data-test='mock-monaco-editor']").exists()).toBe(true)
     expect(wrapper.find("[data-test='download-button']").exists()).toBe(true)
+    expect(wrapper.find("[data-test='binary-text-editor']").prop('style')).toMatchObject({ height: 420 })
+    expect(wrapper.find("[data-test='binary-text-editor-resize-handle']").exists()).toBe(true)
+
+    wrapper.find("[data-test='mock-monaco-editor']").simulate('doubleClick')
+
+    const unchangedValue = fieldOnChange.mock.calls[0][1]
+
+    expect(fieldOnChange.mock.calls[0][0]).toBe(defaultSettings.Name)
+    expect(isTextBinaryFieldValue(unchangedValue)).toBe(true)
+    expect(unchangedValue.text).toBe('<ContentType />')
+    expect(unchangedValue.isModified).toBe(false)
+    expect(wrapper.update().find("[data-test='binary-text-modified-indicator']").exists()).toBe(false)
+
+    const preventDefault = jest.fn()
+
+    await act(async () => {
+      wrapper.find("[data-test='binary-text-editor-resize-handle']").simulate('keydown', {
+        key: 'ArrowDown',
+        preventDefault,
+      })
+      await sleepAsync(0)
+    })
+
+    expect(preventDefault).toBeCalled()
+    expect(wrapper.update().find("[data-test='binary-text-editor']").prop('style')).toMatchObject({ height: 460 })
 
     wrapper.find("[data-test='mock-monaco-editor']").simulate('click')
 
-    const changedValue = fieldOnChange.mock.calls[0][1]
+    const changedValue = fieldOnChange.mock.calls[1][1]
 
-    expect(fieldOnChange.mock.calls[0][0]).toBe(defaultSettings.Name)
+    expect(fieldOnChange.mock.calls[1][0]).toBe(defaultSettings.Name)
     expect(isTextBinaryFieldValue(changedValue)).toBe(true)
     expect(changedValue.text).toBe('<ChangedContentType />')
+    expect(changedValue.isModified).toBe(true)
+    expect(wrapper.update().find("[data-test='binary-text-modified-indicator']").text()).toBe(
+      defaultLocalization.fileUpload.modifiedStatus,
+    )
   })
 
   it('should throw error when no content is provided in upload', async () => {
