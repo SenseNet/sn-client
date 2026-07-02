@@ -37,9 +37,6 @@ const useStyles = makeStyles((theme) => {
       '& .MuiIconButton-root': {
         color: globals.common.headerText,
       },
-      [theme.breakpoints.down('sm')]: {
-        flex: '0 0 auto',
-      },
     },
     iconButton: {
       color: globals.common.headerText,
