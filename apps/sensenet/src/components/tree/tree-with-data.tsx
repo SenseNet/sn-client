@@ -6,7 +6,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { usePersonalSettings, usePreviousValue, useSelectionService } from '../../hooks'
 import { ItemType, Tree } from './tree'
-import { compareTreeItems, getTreeOrderBy, SETTINGS_FOLDER_FILTER } from './tree-helpers'
+import { compareTreeItems, getTreeFilter, getTreeOrderBy, SETTINGS_FOLDER_FILTER } from './tree-helpers'
 
 type TreeWithDataProps = {
   onItemClick: (item: GenericContent) => void
@@ -42,6 +42,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
 
   const prevActiveItemPath = usePreviousValue(props.activeItemPath)
   const prevShowHiddenItems = usePreviousValue(personalSettings.showHiddenItems)
+  const prevShowLeafItemsInTree = usePreviousValue(personalSettings.showLeafItemsInTree)
   const prevPreferDisplayName = usePreviousValue(personalSettings.preferDisplayName)
   const prevSortFoldersFirst = usePreviousValue(personalSettings.sortFoldersFirst)
   const { onTreeLoadingChange } = props
@@ -66,7 +67,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
           oDataOptions: {
             top,
             skip,
-            filter: `IsFolder eq true ${!personalSettings.showHiddenItems ? `and (${SETTINGS_FOLDER_FILTER})` : ''}`,
+            filter: getTreeFilter(personalSettings.showHiddenItems, personalSettings.showLeafItemsInTree),
             orderby: getTreeOrderBy(personalSettings.preferDisplayName),
           },
         })
@@ -90,6 +91,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
       onTreeLoadingChange,
       repo,
       personalSettings.showHiddenItems,
+      personalSettings.showLeafItemsInTree,
       personalSettings.preferDisplayName,
       sortTreeItems,
       logger,
@@ -312,8 +314,17 @@ export default function TreeWithData(props: TreeWithDataProps) {
   ])
 
   useEffect(() => {
-    openTree(personalSettings.showHiddenItems !== prevShowHiddenItems)
-  }, [openTree, personalSettings.showHiddenItems, prevShowHiddenItems])
+    openTree(
+      personalSettings.showHiddenItems !== prevShowHiddenItems ||
+        personalSettings.showLeafItemsInTree !== prevShowLeafItemsInTree,
+    )
+  }, [
+    openTree,
+    personalSettings.showHiddenItems,
+    prevShowHiddenItems,
+    personalSettings.showLeafItemsInTree,
+    prevShowLeafItemsInTree,
+  ])
 
   useEffect(() => {
     if (

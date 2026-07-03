@@ -1,4 +1,5 @@
 import { BrowseType } from './components/content'
+import { FAVORITES_ROOT_PATH } from './services/favorites-constants'
 
 export const PATHS = {
   loginCallback: { appPath: '/authentication/login-callback' },
@@ -10,6 +11,7 @@ export const PATHS = {
   dashboard: { appPath: '/dashboard' },
   contentTypes: { appPath: '/content-types/:browseType/:action?', snPath: '/Root/System/Schema/ContentTypes' },
   search: { appPath: '/search', snPath: '/Root' },
+  favorites: { appPath: '/favorites/:browseType/:action?', snPath: FAVORITES_ROOT_PATH },
   content: { appPath: '/content/:browseType/:action?', snPath: '/Root' },
   contentTemplates: { appPath: '/content-templates/:browseType/:action?', snPath: '/Root/ContentTemplates' },
   custom: { appPath: '/custom/:browseType/:path/:action?', snPath: '/Root' },
@@ -27,7 +29,7 @@ type SettingsItemType = 'stats' | 'settings' | 'apikeys' | 'webhooks' | 'adminui
 
 type RoutesWithContentBrowser = keyof Pick<
   typeof PATHS,
-  'content' | 'usersAndGroups' | 'contentTypes' | 'trash' | 'contentTemplates'
+  'content' | 'favorites' | 'usersAndGroups' | 'contentTypes' | 'trash' | 'contentTemplates'
 >
 
 type RoutesWithActionParam = keyof Pick<typeof PATHS, 'savedQueries' | 'localization' | 'configuration' | 'webhooks'>

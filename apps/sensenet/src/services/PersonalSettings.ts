@@ -25,6 +25,7 @@ export const CustomDrawerItemType = tuple('CustomContent')
 
 export const BuiltInDrawerItemType = tuple(
   'Content',
+  'Favorites',
   'ContentTypes',
   'SavedQueries',
   'Trash',
@@ -89,6 +90,7 @@ export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   eventLogSize: number
   sendLogWithCrashReports: boolean
   showHiddenItems: boolean
+  showLeafItemsInTree: boolean
   preferDisplayName: boolean
   sortFoldersFirst: boolean
   logLevel: Array<keyof typeof LogLevel>
@@ -144,6 +146,7 @@ export const defaultSettings: PersonalSettingsType = {
   theme: prefersDark ? 'dark' : 'light',
   showDescription: false,
   showHiddenItems: true,
+  showLeafItemsInTree: false,
   preferDisplayName: false,
   sortFoldersFirst: true,
   uploadHandlers: [

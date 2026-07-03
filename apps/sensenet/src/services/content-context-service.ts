@@ -52,9 +52,20 @@ export function getMonacoLanguage(content: GenericContent, repository: Repositor
 }
 
 export function getPathForContentPath({ path, uiSettings }: { path: string; uiSettings: UiSettings }) {
-  const pathOfContent: any = Object.values(PATHS).find((pathConfigElement: any) => {
-    return pathConfigElement.snPath ? PathHelper.isInSubTree(path, pathConfigElement.snPath) : false
-  })
+  const pathOfContent: any = Object.values(PATHS)
+    .filter((pathConfigElement: any) => {
+      if (
+        pathConfigElement.appPath === PATHS.search.appPath ||
+        pathConfigElement.appPath === PATHS.custom.appPath ||
+        pathConfigElement.appPath === PATHS.root.appPath ||
+        pathConfigElement.appPath === PATHS.home.appPath
+      ) {
+        return false
+      }
+
+      return pathConfigElement.snPath ? PathHelper.isInSubTree(path, pathConfigElement.snPath) : false
+    })
+    .sort((left: any, right: any) => right.snPath.length - left.snPath.length)[0]
 
   if (!pathOfContent) {
     const customDrawerItem = uiSettings.drawer.items

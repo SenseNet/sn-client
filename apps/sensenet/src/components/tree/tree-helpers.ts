@@ -5,11 +5,35 @@ type SortableTreeItem = Pick<GenericContent, 'DisplayName' | 'Name' | 'Type'> & 
 
 export const SETTINGS_FOLDER_FILTER = `not ((Name eq 'Settings') and (isOf('SystemFolder')))`
 
-export const getTreeItemLabel = (item: SortableTreeItem, preferDisplayName: boolean) =>
-  (preferDisplayName && item.DisplayName ? item.DisplayName : item.Name) || ''
+export const getTreeFilter = (showHiddenItems: boolean, showLeafItemsInTree: boolean) => {
+  const filters: string[] = []
 
-export const isFolderLikeTreeItem = (item: SortableTreeItem) =>
-  item.Type ? item.Type.toLowerCase().includes('folder') : item.IsFolder === true
+  if (!showLeafItemsInTree) {
+    filters.push('IsFolder eq true')
+  }
+
+  if (!showHiddenItems) {
+    filters.push(`(${SETTINGS_FOLDER_FILTER})`)
+  }
+
+  return filters.join(' and ')
+}
+
+export const getTreeItemLabel = (item: SortableTreeItem, preferDisplayName: boolean) => {
+  if ((item.Type === 'ContentLink' || item.Name === '(favorites)') && item.DisplayName) {
+    return item.DisplayName
+  }
+
+  return (preferDisplayName && item.DisplayName ? item.DisplayName : item.Name) || ''
+}
+
+export const isFolderLikeTreeItem = (item: SortableTreeItem) => {
+  if (item.Type === 'ContentLink') {
+    return false
+  }
+
+  return item.IsFolder === true || Boolean(item.Type?.toLowerCase().includes('folder'))
+}
 
 export const compareTreeItems =
   (preferDisplayName: boolean, sortFoldersFirst: boolean) => (left: SortableTreeItem, right: SortableTreeItem) => {

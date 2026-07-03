@@ -62,6 +62,7 @@ const values: Localization = {
   drawer: {
     titles: {
       Content: 'Tartalom',
+      Favorites: 'Favorites',
       SavedQueries: 'Mentett Keresések',
       Setup: 'Beállítás',
       UsersAndGroups: 'Felhasználók és csoportok',
@@ -78,6 +79,7 @@ const values: Localization = {
     },
     descriptions: {
       Content: 'Tartalom böngészése',
+      Favorites: 'Kedvenc tartalmak gyors elérése',
       SavedQueries: 'Testreszabott keresések futtatása és mentése későbbi használatra',
       Setup: 'A rendszer beállításai',
       UsersAndGroups: 'Felhasználó és csoport kezelése, szerkesztése',
@@ -156,7 +158,10 @@ const values: Localization = {
     openNewMenu: 'Újdonságok',
     accountSettings: 'Felhasználói beállítások',
     openViewOptions: 'Felületi beállítások kinyitása',
+    generalOptions: 'Általános',
+    treeOptions: 'Fa',
     showHiddenItems: 'Rejtett elemek megjelenítése',
+    showLeafItemsInTree: 'Levél elemek megjelenítése a fában',
     preferDisplayName: 'DisplayName a mappaszerkezetnél',
     sortFoldersFirst: 'Mappák előre',
     viewOptions: 'Felület beállítások',

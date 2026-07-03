@@ -7,12 +7,13 @@ import { useHistory } from 'react-router'
 import { ResponsivePersonalSettings } from '../../context'
 import { usePersonalSettings, useQuery, useSelectionService, useSnRoute } from '../../hooks'
 import { getPrimaryActionUrl, navigateToAction } from '../../services'
+import { isContentLink, resolveContentLinkTarget } from '../../services/favorites'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { Icon } from '../Icon'
 import { ExpandItemsContext } from './Contexts/ExpandedItemsProvider'
 import { useTreeLoading } from './Contexts/TreeLoadingProvider'
 import StyledTreeItemProps from './Props/StyledTreeItemProps'
-import { compareTreeItems, getTreeItemLabel } from './tree-helpers'
+import { compareTreeItems, getTreeItemLabel, isFolderLikeTreeItem } from './tree-helpers'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -69,6 +70,7 @@ export const StyledTreeItem = ({
 
   const path = contentvalue.Path
   const isDisabled = !path.includes(enabledPath)
+  const isFolderLike = isFolderLikeTreeItem(contentvalue)
   const classes = useStyles({ isDisabled })
   const itemId = String(contentvalue.Id)
 
@@ -154,7 +156,7 @@ export const StyledTreeItem = ({
   )
 
   const onIconClick: MouseEventHandler = (event) => {
-    if (isDisabled) return
+    if (isDisabled || !isFolderLike) return
     event.preventDefault()
     event.stopPropagation()
 
@@ -172,8 +174,38 @@ export const StyledTreeItem = ({
     })
   }
 
-  const onLabelClick: MouseEventHandler = (event) => {
+  const onLabelClick: MouseEventHandler = async (event) => {
     if (isDisabled) return
+
+    if (isContentLink(contentvalue)) {
+      setIsTreeLoading(true)
+      try {
+        const targetContent = await resolveContentLinkTarget(repository, contentvalue)
+        const expandedTarget = await repository.load<GenericContent>({
+          idOrPath: targetContent.Id || targetContent.Path,
+          oDataOptions: {
+            select: Array.isArray(repository.configuration.requiredSelect)
+              ? ([...repository.configuration.requiredSelect, 'Actions/Name'] as any)
+              : repository.configuration.requiredSelect,
+            expand: ['Actions'] as any,
+          },
+        })
+        selectionService.activeContent.setValue(expandedTarget.d)
+        history.push(
+          getPrimaryActionUrl({
+            content: expandedTarget.d,
+            repository,
+            uiSettings,
+            location: history.location,
+            snRoute,
+          }),
+        )
+      } finally {
+        setIsTreeLoading(false)
+      }
+      return
+    }
+
     const displayName = contentvalue.DisplayName
 
     if (displayName?.endsWith('.settings') || displayName?.endsWith('.xml')) {
@@ -194,6 +226,11 @@ export const StyledTreeItem = ({
       })
     } else {
       selectionService.activeContent.setValue(contentvalue)
+      if (!isFolderLike) {
+        navigate(contentvalue)
+        return
+      }
+
       const itemPath = (event.target as HTMLElement).closest('[data-path]')?.getAttribute('data-path')
       setExpandItems((prev) => {
         const updated = new Set(prev)
@@ -233,7 +270,7 @@ export const StyledTreeItem = ({
         onIconClick={onIconClick}
         onLabelClick={onLabelClick}
         onContextMenu={onContextMenu}
-        expandIcon={isDisabled ? <></> : undefined}
+        expandIcon={(!isFolderLike || isDisabled) && <></>}
         collapseIcon={(!innerElements?.length || isDisabled) && <></>}>
         {innerElements}
         <></>

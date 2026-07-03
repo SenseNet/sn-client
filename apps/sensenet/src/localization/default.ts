@@ -121,6 +121,7 @@ const values = {
   drawer: {
     titles: {
       Content: 'Content',
+      Favorites: 'Favorites',
       ContentTypes: 'Content Types',
       Localization: 'Localization',
       SavedQueries: 'Saved Queries',
@@ -139,6 +140,7 @@ const values = {
     },
     descriptions: {
       Content: 'Explore and manage your content in the repository',
+      Favorites: 'Open your favorite content links',
       ContentTypes: 'Manage content types',
       Localization: 'Manage string resources',
       SavedQueries: 'Execute custom searches, build and save queries',
@@ -319,7 +321,10 @@ const values = {
     openNewMenu: `What's new`,
     accountSettings: 'Account settings',
     openViewOptions: 'Open view options',
+    generalOptions: 'General',
+    treeOptions: 'Tree',
     showHiddenItems: 'Show hidden items',
+    showLeafItemsInTree: 'Show leaf items in Tree',
     preferDisplayName: 'Prefer DisplayName in Tree',
     sortFoldersFirst: 'Sort folders first',
     viewOptions: 'View options',

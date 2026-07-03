@@ -1,9 +1,10 @@
-import { Build, Delete, Description, Folder, People, Public, Save, Search, Widgets } from '@material-ui/icons'
+import { Build, Delete, Description, Folder, People, Public, Save, Search, Star, Widgets } from '@material-ui/icons'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { PATHS, resolvePathParams } from '../application-paths'
 import { Icon } from '../components/Icon'
 import { ResponsivePersonalSettings } from '../context'
+import { FAVORITES_ROOT_PARENT_PATH } from '../services/favorites-constants'
 import { CustomContentDrawerItem, DrawerItem as DrawerItemSetting } from '../services/PersonalSettings'
 import { useLocalization } from '.'
 
@@ -35,6 +36,17 @@ export const useDrawerItems = () => {
         permissions: [
           {
             path: PATHS.content.snPath,
+            action: 'Browse',
+          },
+        ],
+        systemItem: false,
+      },
+      {
+        itemType: 'Favorites',
+        settings: { root: PATHS.favorites.snPath },
+        permissions: [
+          {
+            path: FAVORITES_ROOT_PARENT_PATH,
             action: 'Browse',
           },
         ],
@@ -118,6 +130,8 @@ export const useDrawerItems = () => {
           )
         case 'Content':
           return <Public />
+        case 'Favorites':
+          return <Star />
         case 'ContentTemplates':
           return (
             <div>
@@ -146,6 +160,11 @@ export const useDrawerItems = () => {
         case 'Content':
           return resolvePathParams({
             path: PATHS.content.appPath,
+            params: { browseType: settings.content.browseType },
+          })
+        case 'Favorites':
+          return resolvePathParams({
+            path: PATHS.favorites.appPath,
             params: { browseType: settings.content.browseType },
           })
         case 'ContentTemplates':

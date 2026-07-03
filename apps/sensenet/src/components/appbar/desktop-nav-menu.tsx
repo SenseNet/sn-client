@@ -86,6 +86,17 @@ const useStyles = makeStyles((theme: Theme) =>
         color: theme.palette.type === 'light' ? theme.palette.common.white : theme.palette.common.black,
       },
     },
+    sectionHeaderMenuItem: {
+      listStyle: 'none',
+      padding: '12px 16px 2px',
+      cursor: 'default',
+    },
+    sectionHeaderText: {
+      color: theme.palette.text.secondary,
+      fontSize: '12px',
+      fontWeight: 600,
+      textTransform: 'uppercase',
+    },
   }),
 )
 
@@ -135,6 +146,11 @@ export const DesktopNavMenu: FunctionComponent = () => {
   const toggleHideSettingsFolder = () => (event: ChangeEvent<HTMLInputElement>) => {
     const settings = service.userValue.getValue()
     service.setPersonalSettingsValue({ ...settings, showHiddenItems: event.target.checked })
+  }
+
+  const toggleShowLeafItemsInTree = () => (event: ChangeEvent<HTMLInputElement>) => {
+    const settings = service.userValue.getValue()
+    service.setPersonalSettingsValue({ ...settings, showLeafItemsInTree: event.target.checked })
   }
 
   const togglePreferDisplayNameValue = () => (event: ChangeEvent<HTMLInputElement>) => {
@@ -257,6 +273,11 @@ export const DesktopNavMenu: FunctionComponent = () => {
                     {localization.topMenu.viewOptions}
                   </Typography>
                 </MenuItem>
+                <li className={classes.sectionHeaderMenuItem}>
+                  <Typography component="div" className={classes.sectionHeaderText}>
+                    {localization.topMenu.generalOptions}
+                  </Typography>
+                </li>
                 <MenuItem>
                   <Typography component="div" className={classes.checkboxMenuItem} style={{ width: '100%' }}>
                     <Grid component="label" container alignItems="center" justify="space-between">
@@ -300,6 +321,27 @@ export const DesktopNavMenu: FunctionComponent = () => {
                           data-test="hide-settings-folder-checkbox"
                           checked={personalSettings.showHiddenItems}
                           onChange={toggleHideSettingsFolder()}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Typography>
+                </MenuItem>
+                <li className={classes.sectionHeaderMenuItem}>
+                  <Typography component="div" className={classes.sectionHeaderText}>
+                    {localization.topMenu.treeOptions}
+                  </Typography>
+                </li>
+                <MenuItem>
+                  <Typography component="div" className={classes.checkboxMenuItem} style={{ width: '100%' }}>
+                    <Grid component="label" container alignItems="center" justify="space-between">
+                      <Grid item style={{ paddingRight: '16px' }}>
+                        {localization.topMenu.showLeafItemsInTree}
+                      </Grid>
+                      <Grid item>
+                        <Switch
+                          data-test="show-leaf-items-in-tree-checkbox"
+                          checked={personalSettings.showLeafItemsInTree}
+                          onChange={toggleShowLeafItemsInTree()}
                         />
                       </Grid>
                     </Grid>

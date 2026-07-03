@@ -62,7 +62,28 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 /** --- COMPONENT --- */
-export function SimpleTree({ activeItemPath, onNavigate }: SimpleTreeProps) {
+const normalizePath = (path: string) => (path.startsWith('/') ? path : `/${path}`)
+
+const getPathChain = (rootPath: string, activePath?: string) => {
+  const root = normalizePath(rootPath || '/Root')
+  const active = normalizePath(activePath || root)
+
+  if (active !== root && !active.startsWith(`${root}/`)) {
+    return [root]
+  }
+
+  const rootSegments = root.split('/').filter(Boolean)
+  const activeSegments = active.split('/').filter(Boolean)
+
+  return [
+    root,
+    ...activeSegments
+      .slice(rootSegments.length)
+      .map((_, index) => `/${activeSegments.slice(0, rootSegments.length + index + 1).join('/')}`),
+  ]
+}
+
+export function SimpleTree({ activeItemPath, parentPath, onNavigate }: SimpleTreeProps) {
   const { isTreeLoading, setIsTreeLoading } = useTreeLoading()
   const classes = useStyles()
   const repo = useRepository()
@@ -87,16 +108,20 @@ export function SimpleTree({ activeItemPath, onNavigate }: SimpleTreeProps) {
     setIsTreeLoading(true)
     try {
       const result = await repo.load<GenericContent>({
-        idOrPath: '/Root',
-        oDataOptions: { select: ['Path', 'DisplayName', 'Name', 'Actions'] },
+        idOrPath: parentPath || '/Root',
+        oDataOptions: {
+          select: ['Id', 'Path', 'DisplayName', 'Name', 'Type', 'Actions', 'Icon', 'ParentId', 'IsFolder'],
+        },
       })
       setRootElement(result.d)
 
-      if (!content?.Path) return
-      const segments = content.Path.split('/').filter(Boolean)
+      const activePath = content?.Path || result.d.Path
+      const pathsToExpand = getPathChain(result.d.Path, activePath)
 
       const parentContents = await Promise.all(
-        segments.map((_, i) => repo.load<GenericContent>({ idOrPath: `/${segments.slice(0, i + 1).join('/')}` })),
+        pathsToExpand.map((path) =>
+          path === result.d.Path ? Promise.resolve(result) : repo.load<GenericContent>({ idOrPath: path }),
+        ),
       )
 
       setSelected(String(parentContents.at(-1)?.d.Id ?? ''))
@@ -109,7 +134,7 @@ export function SimpleTree({ activeItemPath, onNavigate }: SimpleTreeProps) {
     } finally {
       setIsTreeLoading(false)
     }
-  }, [repo, content, setExpandItems, setIsTreeLoading])
+  }, [repo, parentPath, content, setExpandItems, setIsTreeLoading])
 
   useEffect(() => {
     loadRoot()

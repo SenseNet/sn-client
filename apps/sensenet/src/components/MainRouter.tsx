@@ -11,6 +11,7 @@ import { contentTemplatesColumnDefs } from './grid/Cols/ColumnDefs.'
 import { Home } from './Home'
 
 const ContentComponent = lazy(() => import(/* webpackChunkName: "content" */ './content'))
+const FavoritesComponent = lazy(() => import(/* webpackChunkName: "favorites" */ './favorites/Favorites'))
 const DashboardComponent = lazy(() => import(/* webpackChunkName: "dashboard" */ './dashboard'))
 const UsersAndGroupsComponent = lazy(() => import(/* webpackChunkName: "users-and-groups" */ './users-and-groups'))
 const SearchComponent = lazy(() => import(/* webpackChunkName: "search" */ './search'))
@@ -30,6 +31,12 @@ export const MainRouter = () => {
         <Switch>
           <Route path={PATHS.events.appPath}>
             <EventListComponent />
+          </Route>
+
+          <Route path={PATHS.favorites.appPath}>
+            <InvalidPathErrorBoundary>
+              <FavoritesComponent />
+            </InvalidPathErrorBoundary>
           </Route>
 
           <Route path={PATHS.content.appPath}>

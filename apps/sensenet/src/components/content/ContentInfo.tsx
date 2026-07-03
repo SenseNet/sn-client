@@ -6,6 +6,7 @@ import { useLoadContent, useLocalization } from '../../hooks'
 import { contextMenuODataOptions } from '../context-menu/context-menu-odata-options'
 import { getIcon } from '../context-menu/icons'
 import { useContextMenuActions } from '../context-menu/use-context-menu-actions'
+import { FavoriteButton } from '../favorites/FavoriteButton'
 import { Icon } from '../Icon'
 
 export function ContentInfo() {
@@ -78,6 +79,7 @@ export function ContentInfo() {
           <span> {parentContent.Path}</span>
         </div>
         <div className="buttonPanel">
+          <FavoriteButton content={parentContent} />
           <Button
             key="ODataActions"
             title={oDataActionsTitle}

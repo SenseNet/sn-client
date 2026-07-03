@@ -21,6 +21,7 @@ import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useQuery, useSelectionService, useSnRoute } from '../../hooks'
 import { getPrimaryActionUrl, navigateToAction } from '../../services'
+import { resolveContentLinkTarget } from '../../services/favorites'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { DocumentViewer } from '../document-viewer'
 import { EditBinary } from '../edit/edit-binary'
@@ -362,8 +363,9 @@ export function Explore({
     [colDef, loadChildrenSettings],
   )
   const onActivateItemOverride = async (activeItem: GenericContent) => {
+    const contentToOpen = await resolveContentLinkTarget(repository, activeItem)
     const expandedItem = await repository.load({
-      idOrPath: activeItem.Id,
+      idOrPath: contentToOpen.Id || contentToOpen.Path,
       oDataOptions: {
         select: Array.isArray(repository.configuration.requiredSelect)
           ? ([...repository.configuration.requiredSelect, 'Actions/Name'] as ODataFieldParameter<GenericContent>)

@@ -2,7 +2,8 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { createContext, ReactNode, useRef, useState } from 'react'
 import { usePersonalSettings } from '../../../hooks'
-import { getTreeOrderBy, SETTINGS_FOLDER_FILTER } from '../tree-helpers'
+import { isFavoriteRootPath } from '../../../services/favorites'
+import { getTreeFilter, getTreeOrderBy } from '../tree-helpers'
 // Meghatározzuk a Context típusát: egy string tömb és egy setter függvény
 type ExpandItemsContextType = [
   Set<string>,
@@ -28,7 +29,12 @@ const ExpandedItemsProvider = ({ children }: { children: ReactNode }) => {
     if (!path) return undefined
 
     const now = Date.now()
-    const cacheKey = `${path}|showHiddenItems:${personalSettings.showHiddenItems}`
+    const showLeafItemsInTree = personalSettings.showLeafItemsInTree || isFavoriteRootPath(path)
+    const cacheKey = [
+      path,
+      `showHiddenItems:${personalSettings.showHiddenItems}`,
+      `showLeafItemsInTree:${showLeafItemsInTree}`,
+    ].join('|')
 
     const cached = cache.current[cacheKey]
     if (cached) {
@@ -57,8 +63,8 @@ const ExpandedItemsProvider = ({ children }: { children: ReactNode }) => {
       const response = await repo.loadCollection<GenericContent>({
         path,
         oDataOptions: {
-          select: ['Id', 'Path', 'Name', 'DisplayName', 'Type', 'Actions', 'Icon', 'ParentId'],
-          filter: `IsFolder eq true ${!personalSettings.showHiddenItems ? `and (${SETTINGS_FOLDER_FILTER})` : ''}`,
+          select: ['Id', 'Path', 'Name', 'DisplayName', 'Type', 'Actions', 'Icon', 'ParentId', 'IsFolder'],
+          filter: getTreeFilter(personalSettings.showHiddenItems, showLeafItemsInTree),
           orderby: getTreeOrderBy(personalSettings.preferDisplayName),
           onlyselectList: true,
         },
