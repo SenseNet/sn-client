@@ -30,11 +30,11 @@ export const isImageContent = (content?: GenericContent | null) => {
     return true
   }
 
-  if (content.Type === 'Image' || content.Type.endsWith('Image')) {
+  if (content.Type === 'Image' || content.Type?.endsWith('Image')) {
     return true
   }
 
-  return SUPPORTED_IMAGE_EXTENSIONS.has(getFileExtension(content.Name || content.Path))
+  return SUPPORTED_IMAGE_EXTENSIONS.has(getFileExtension(content.Name || content.Path || ''))
 }
 
 export const getImagesFromContents = (contents: GenericContent[]) => contents.filter(isImageContent)

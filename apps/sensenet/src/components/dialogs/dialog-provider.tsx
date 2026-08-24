@@ -8,6 +8,7 @@ import {
   AreYouSureProps,
   ChangePasswordDialogProps,
   CheckInProps,
+  ColumnSettingsDialogProps,
   ContentPickerDialogProps,
   CopyMoveDialogProps,
   CustomActionResultDialogProps,
@@ -48,7 +49,7 @@ export type DialogWithProps = (
   | { name: 'feedback' }
   | { name: 'change-password'; props?: ChangePasswordDialogProps }
   | { name: 'date-range-picker'; props: DateRangePickerProps }
-  | { name: 'column-settings'; props: any }
+  | { name: 'column-settings'; props: ColumnSettingsDialogProps }
 ) & { dialogProps?: Partial<DialogProps> }
 
 type Action = { type: 'PUSH_DIALOG'; dialog: DialogWithProps } | { type: 'POP_DIALOG' } | { type: 'CLOSE_ALL_DIALOGS' }

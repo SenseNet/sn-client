@@ -1,6 +1,7 @@
 export * from './auth-config'
 export * from './CommandProviderManager'
 export * from './CommandProviders'
+export * from './column-settings-service'
 export * from './content-context-service'
 export * from './image-content-service'
 export * from './EventLogger'

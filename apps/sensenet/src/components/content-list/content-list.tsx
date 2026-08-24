@@ -29,7 +29,7 @@ import { TableCellProps } from 'react-virtualized'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
-import { isImageContent } from '../../services'
+import { isImageContent, LegacyColumnSettings } from '../../services'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { useDialog } from '../dialogs'
@@ -660,8 +660,9 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
     })
   }
 
-  const setCostumColumnSettings = async (newSettings: { columns: Array<ColumnSetting<GenericContent>> }) => {
-    ColumnSettingsContainer[props.parentIdOrPath] = { columns: newSettings.columns, lastValidation: new Date() }
+  const setCostumColumnSettings = async (newSettings: LegacyColumnSettings) => {
+    const legacyColumns = newSettings.columns as Array<ColumnSetting<GenericContent>>
+    ColumnSettingsContainer[props.parentIdOrPath] = { columns: legacyColumns, lastValidation: new Date() }
 
     const endpoint = 'WriteSettings'
 
@@ -681,7 +682,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
     } catch (error) {
       console.error(error)
     }
-    setColumnSettings(newSettings.columns)
+    setColumnSettings(legacyColumns)
     closeLastDialog()
   }
 

@@ -20,7 +20,9 @@ import { GridKeyEnum } from '../../../src/components/grid/enums/GridKey.enum'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useQuery, useSelectionService, useSnRoute } from '../../hooks'
+import { useRepositoryColumnSettings } from '../../hooks/use-repository-column-settings'
 import { getPrimaryActionUrl, navigateToAction } from '../../services'
+import { ColumnSettingsSource, LegacyColumnSetting, LegacyColumnSettings } from '../../services/column-settings-service'
 import { resolveContentLinkTarget } from '../../services/favorites'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { DocumentViewer } from '../document-viewer'
@@ -51,19 +53,33 @@ const requiredGridLoadFields: ODataFieldParameter<GenericContent> = [
   'Locked',
 ]
 
-const getGridLoadChildrenSettings = (colDef: ColDef[]): ODataParams<GenericContent> => {
-  const selectFields = new Set<keyof GenericContent>(requiredGridLoadFields)
+const getGridLoadChildrenSettings = (
+  colDef: ColDef[],
+  columnSettings?: LegacyColumnSetting[],
+): ODataParams<GenericContent> => {
+  const selectFields = new Set<string>(requiredGridLoadFields)
+  const expandFields = new Set<string>(['CreatedBy', 'ModifiedBy'])
 
   colDef.forEach((columnDefinition) => {
     if (columnDefinition.field && columnDefinition.field !== '0') {
-      selectFields.add(columnDefinition.field as keyof GenericContent)
+      selectFields.add(columnDefinition.field)
+    }
+  })
+
+  columnSettings?.forEach(({ field }) => {
+    if (!field || field === 'Actions') {
+      return
+    }
+    selectFields.add(field)
+    if (field.includes('/')) {
+      expandFields.add(field.split('/')[0])
     }
   })
 
   return {
     orderby: [['DisplayName', 'asc']],
-    select: Array.from(selectFields),
-    expand: ['CreatedBy', 'ModifiedBy'],
+    select: Array.from(selectFields) as ODataFieldParameter<GenericContent>,
+    expand: Array.from(expandFields) as ODataFieldParameter<GenericContent>,
     onlyselectList: true,
   }
 }
@@ -222,13 +238,16 @@ export type ExploreProps = {
 
 type ExploreGridOrApplicationProps = {
   currentPath: string
-  fieldsToDisplay?: Array<ColumnSetting<GenericContent>>
+  fieldsToDisplay?: LegacyColumnSetting[]
   schema?: string
   disableColumnSettings?: boolean
   colDef: ColDef[]
   gridKey: GridKeyEnum
   onNavigate: (content: GenericContent) => void
   onActivateItem: (activeItem: GenericContent) => Promise<void>
+  onColumnSettingsChange: (settings: LegacyColumnSettings, targetIdOrPath?: string | number) => Promise<void>
+  columnSettingsSource?: ColumnSettingsSource
+  isColumnSettingsLoading: boolean
 }
 
 const ActiveContentRouteSync: React.FC = () => {
@@ -255,6 +274,9 @@ const ExploreGridOrApplication: React.FC<ExploreGridOrApplicationProps> = ({
   gridKey,
   onNavigate,
   onActivateItem,
+  onColumnSettingsChange,
+  columnSettingsSource,
+  isColumnSettingsLoading,
 }) => {
   const selectionService = useSelectionService()
   const currentContent = useContext(CurrentContentContext)
@@ -269,6 +291,9 @@ const ExploreGridOrApplication: React.FC<ExploreGridOrApplicationProps> = ({
       style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
       enableBreadcrumbs={false}
       fieldsToDisplay={fieldsToDisplay}
+      onColumnSettingsChange={onColumnSettingsChange}
+      columnSettingsSource={columnSettingsSource}
+      isColumnSettingsLoading={isColumnSettingsLoading}
       schema={schema}
       onParentChange={onNavigate}
       onActivateItem={onActivateItem}
@@ -358,9 +383,19 @@ export function Explore({
   const pathFromUrl = useQuery().get('path')
   const snRoute = useSnRoute()
   const activeAction = snRoute.match!.params.action
+  const explicitColumnSettings = useMemo(
+    () =>
+      fieldsToDisplay?.map(({ field, title }) => ({
+        field: String(field),
+        title,
+      })),
+    [fieldsToDisplay],
+  )
+  const { columnSettings, columnSettingsSource, isColumnSettingsLoading, saveColumnSettings } =
+    useRepositoryColumnSettings(currentPath, explicitColumnSettings)
   const currentChildrenLoadSettings = useMemo(
-    () => loadChildrenSettings || getGridLoadChildrenSettings(colDef),
-    [colDef, loadChildrenSettings],
+    () => loadChildrenSettings || getGridLoadChildrenSettings(colDef, columnSettings),
+    [colDef, columnSettings, loadChildrenSettings],
   )
   const onActivateItemOverride = async (activeItem: GenericContent) => {
     const contentToOpen = await resolveContentLinkTarget(repository, activeItem)
@@ -434,7 +469,10 @@ export function Explore({
         <ContentInfo />
         <ExploreGridOrApplication
           disableColumnSettings={disableColumnSettings}
-          fieldsToDisplay={fieldsToDisplay}
+          fieldsToDisplay={columnSettings}
+          onColumnSettingsChange={saveColumnSettings}
+          columnSettingsSource={columnSettingsSource}
+          isColumnSettingsLoading={isColumnSettingsLoading}
           schema={schema}
           onNavigate={onNavigate}
           onActivateItem={onActivateItemOverride}

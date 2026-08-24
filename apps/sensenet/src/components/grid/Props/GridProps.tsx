@@ -1,7 +1,7 @@
 import { GenericContent } from '@sensenet/default-content-types'
-import { ColumnSetting } from '@sensenet/list-controls-react/src/ContentList/content-list-base-props'
 import { ColDef } from 'ag-grid-community'
 import { CSSProperties, DetailedHTMLProps, HTMLAttributes } from 'react'
+import { ColumnSettingsSource, LegacyColumnSetting, LegacyColumnSettings } from '../../../services'
 
 export interface GridProps<T extends GenericContent> {
   enableBreadcrumbs?: boolean
@@ -14,7 +14,7 @@ export interface GridProps<T extends GenericContent> {
   onActivateItem: (item: T) => void
   style?: CSSProperties
   containerRef?: (r: HTMLDivElement | null) => void
-  fieldsToDisplay?: Array<ColumnSetting<GenericContent>>
+  fieldsToDisplay?: LegacyColumnSetting[]
   schema?: string
   onSelectionChange?: (sel: T[]) => void
   onFocus?: () => void
@@ -22,4 +22,7 @@ export interface GridProps<T extends GenericContent> {
   disableColumnSettings?: boolean
   colDef: ColDef[]
   gridKey: string
+  onColumnSettingsChange?: (settings: LegacyColumnSettings, targetIdOrPath?: string | number) => void | Promise<void>
+  columnSettingsSource?: ColumnSettingsSource
+  isColumnSettingsLoading?: boolean
 }

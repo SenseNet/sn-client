@@ -1,6 +1,20 @@
-import { CircularProgress, debounce, LinearProgress, Typography, useTheme } from '@material-ui/core'
+import {
+  CircularProgress,
+  debounce,
+  IconButton,
+  LinearProgress,
+  Tooltip,
+  Typography,
+  useTheme,
+} from '@material-ui/core'
+import { ViewColumnOutlined } from '@material-ui/icons'
 import { GenericContent } from '@sensenet/default-content-types'
-import { CurrentChildrenContext, CurrentChildrenIsLoadingContext, CurrentContentContext } from '@sensenet/hooks-react'
+import {
+  CurrentChildrenContext,
+  CurrentChildrenIsLoadingContext,
+  CurrentContentContext,
+  useRepository,
+} from '@sensenet/hooks-react'
 import {
   CellContextMenuEvent,
   ColDef,
@@ -17,19 +31,46 @@ import { ResponsiveContext } from '../../context'
 import { useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { isImageContent } from '../../services'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
+import { useDialog } from '../dialogs'
 import { DropFileArea } from '../DropFileArea'
 import { useImageGallery } from '../image-gallery'
 import { compareTreeItems } from '../tree/tree-helpers'
+import { applyLegacyColumnSettings, getAvailableColumnSettings } from './column-settings'
 import { GridProps } from './Props/GridProps'
 import { useGridLoading } from './Providers/GridLoadingProvider'
 
-const SMALL_SCREEN_COL_FILTER = ['Id', 'Actions']
+const SMALL_SCREEN_COL_FILTER = ['Id']
 const MOBILE_SCREEN_COL_FIELDS = ['0', 'Icon', 'DisplayName', 'Name', 'Actions']
+
+const ColumnSettingsHeader = ({ onClick, label }: { onClick: () => void; label: string }) => (
+  <div
+    style={{
+      position: 'absolute',
+      inset: 0,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      pointerEvents: 'none',
+    }}>
+    <Tooltip title={label}>
+      <IconButton
+        aria-label={label}
+        data-test="column-settings"
+        onClick={onClick}
+        size="small"
+        style={{ pointerEvents: 'auto' }}>
+        <ViewColumnOutlined fontSize="small" />
+      </IconButton>
+    </Tooltip>
+  </div>
+)
 
 export function Grid<T extends GenericContent = GenericContent>(props: GridProps<T>) {
   const { isGridLoading, setIsGridLoading } = useGridLoading()
+  const repository = useRepository()
   const selectionService = useSelectionService()
-  const localization = useLocalization().common
+  const localizationValues = useLocalization()
+  const localization = localizationValues.common
   const personalSettings = usePersonalSettings()
   const device = useContext(ResponsiveContext)
   const parentContent = useContext(CurrentContentContext)
@@ -50,9 +91,77 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
   const columnApi = useRef<ColumnApi | null>(null)
   const gridRef = useRef<HTMLDivElement>(null)
   const fixedColumns: string[] = ['0', 'Icon', 'Actions']
-  const [columnDefs, setColumnDefs] = useState<ColDef[]>(props.colDef)
   const loadingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const { openImageGallery } = useImageGallery()
+  const { openDialog } = useDialog()
+  const contentFieldColumns = useMemo(() => {
+    const fieldsByName = new Map<string, { field: string; title: string }>()
+    const contentTypes = Array.from(new Set(children.map((child) => child.Type).filter(Boolean))).sort()
+
+    contentTypes.forEach((contentType) => {
+      repository.schemas.getSchemaByName(contentType).FieldSettings.forEach((fieldSetting) => {
+        const field = fieldSetting.Name
+        const title = fieldSetting.DisplayName || field
+        const current = fieldsByName.get(field)
+        if (!current || (current.title === field && title !== field)) {
+          fieldsByName.set(field, { field, title })
+        }
+      })
+    })
+
+    return Array.from(fieldsByName.values()).sort(
+      (left, right) => left.title.localeCompare(right.title) || left.field.localeCompare(right.field),
+    )
+  }, [children, repository.schemas])
+  const availableColumns = useMemo(
+    () => getAvailableColumnSettings(props.colDef, contentFieldColumns, props.fieldsToDisplay),
+    [contentFieldColumns, props.colDef, props.fieldsToDisplay],
+  )
+  const openColumnSettings = useCallback(() => {
+    if (!props.onColumnSettingsChange) return
+    openDialog({
+      name: 'column-settings',
+      props: {
+        columnSettings: props.fieldsToDisplay || [],
+        availableColumns,
+        defaultColumns: getAvailableColumnSettings(props.colDef),
+        settingsSource: props.columnSettingsSource,
+        setColumnSettings: props.onColumnSettingsChange,
+      },
+      dialogProps: { maxWidth: 'sm', fullWidth: true },
+    })
+  }, [
+    availableColumns,
+    openDialog,
+    props.colDef,
+    props.columnSettingsSource,
+    props.fieldsToDisplay,
+    props.onColumnSettingsChange,
+  ])
+  const configuredColumns = useMemo(
+    () =>
+      applyLegacyColumnSettings(props.colDef, props.fieldsToDisplay).map((column) =>
+        column.field === 'Actions' && !props.disableColumnSettings && props.onColumnSettingsChange
+          ? {
+              ...column,
+              headerComponent: ColumnSettingsHeader,
+              headerComponentParams: {
+                onClick: openColumnSettings,
+                label: localizationValues.columnSettingsDialog.title,
+              },
+            }
+          : column,
+      ),
+    [
+      localizationValues.columnSettingsDialog.title,
+      openColumnSettings,
+      props.colDef,
+      props.disableColumnSettings,
+      props.fieldsToDisplay,
+      props.onColumnSettingsChange,
+    ],
+  )
+  const [columnDefs, setColumnDefs] = useState<ColDef[]>(configuredColumns)
 
   const setLoadingWithMinDuration = useCallback(
     (isLoading: boolean) => {
@@ -190,15 +299,17 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
   const updateColumnDefsBasedOnWindowSize = useCallback(() => {
     const width = window.innerWidth
     if (width < 600) {
-      const mobileCols = props.colDef.filter((col) => MOBILE_SCREEN_COL_FIELDS.includes(col.field || ''))
-      setColumnDefs(mobileCols.length ? mobileCols : props.colDef.slice(0, 3))
+      const mobileCols = configuredColumns.filter((col) => MOBILE_SCREEN_COL_FIELDS.includes(col.field || ''))
+      setColumnDefs(mobileCols.length ? mobileCols : configuredColumns.slice(0, 3))
     } else if (width < 1536) {
-      const filteredCols = props.colDef.filter((col) => !SMALL_SCREEN_COL_FILTER.includes(col.field || ''))
+      const filteredCols = props.fieldsToDisplay?.length
+        ? configuredColumns
+        : configuredColumns.filter((col) => !SMALL_SCREEN_COL_FILTER.includes(col.field || ''))
       setColumnDefs(filteredCols)
     } else {
-      setColumnDefs(props.colDef)
+      setColumnDefs(configuredColumns)
     }
-  }, [props.colDef])
+  }, [configuredColumns, props.fieldsToDisplay])
 
   useEffect(() => {
     const debouncedResize = debounce(updateColumnDefsBasedOnWindowSize, 300)
@@ -223,7 +334,7 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
     if (gridApi.current) {
       updateColumnDefsBasedOnWindowSize()
     }
-  }, [props.colDef, updateColumnDefsBasedOnWindowSize])
+  }, [configuredColumns, updateColumnDefsBasedOnWindowSize])
 
   const onSortChanged = useCallback(() => {
     if (columnApi.current) {
@@ -238,7 +349,7 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
     }
   }, [props.gridKey])
 
-  const showGridLoading = isGridLoading || isCurrentChildrenLoading
+  const showGridLoading = isGridLoading || isCurrentChildrenLoading || props.isColumnSettingsLoading
 
   return (
     <DropFileArea parentContent={parentContent} style={{ height: '100%', overflow: 'hidden', position: 'relative' }}>
