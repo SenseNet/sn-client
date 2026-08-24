@@ -6,6 +6,7 @@ import Delete from '@material-ui/icons/Delete'
 import Edit from '@material-ui/icons/Edit'
 import FileCopyIcon from '@material-ui/icons/FileCopy'
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
+import Fullscreen from '@material-ui/icons/Fullscreen'
 import HistoryIcon from '@material-ui/icons/History'
 import InfoIcon from '@material-ui/icons/Info'
 import Lock from '@material-ui/icons/Lock'
@@ -40,6 +41,8 @@ export const getIcon = (actionName: string) => {
       return <PhotoLibraryOutlinedIcon />
     case 'edit':
       return <Edit />
+    case 'editbinary':
+      return <Fullscreen />
     case 'forceundocheckout':
       return <UndoIcon />
     case 'moveto':

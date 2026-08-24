@@ -7,7 +7,7 @@ import { GridKeyEnum } from '../../../src/components/grid/enums/GridKey.enum'
 import { PATHS, resolvePathParams } from '../../application-paths'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { getSettingsColumnDefs, localizationColumnDefs, webHooksColumnDefs } from '../grid/Cols/ColumnDefs.'
+import { getLocalizationColumnDefs, getSettingsColumnDefs, webHooksColumnDefs } from '../grid/Cols/ColumnDefs.'
 import { ApiKeys } from './api-keys'
 import { Stats } from './stats'
 
@@ -88,16 +88,16 @@ export const Settings: React.FunctionComponent = () => {
       case 'localization':
         return (
           <ContentComponent
-            disableColumnSettings
+            hasTree={false}
             rootPath={PATHS.localization.snPath}
-            colDef={localizationColumnDefs}
+            colDef={getLocalizationColumnDefs(history)}
             gridKey={GridKeyEnum.LOCALIZATION}
           />
         )
       case 'settings':
         return (
           <ContentComponent
-            disableColumnSettings
+            hasTree={false}
             rootPath={PATHS.settings.snPath}
             colDef={getSettingsColumnDefs(history)}
             gridKey={GridKeyEnum.SETTINGS}

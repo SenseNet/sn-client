@@ -6,7 +6,7 @@ import { useLogger, useWopi } from '@sensenet/hooks-react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { ResponsiveContext } from '../../../context'
 import { useLoadContent, useLocalization } from '../../../hooks'
-import { isImageContent } from '../../../services'
+import { addFullscreenEditAction, isImageContent } from '../../../services'
 import { contextMenuODataOptions } from '../../context-menu/context-menu-odata-options'
 import { getIcon } from '../../context-menu/icons'
 import { useContextMenuActions } from '../../context-menu/use-context-menu-actions'
@@ -23,16 +23,17 @@ export function ActionFormatter(props: { data: Content }) {
     isOpened: anchorEl !== null,
   })
   const { isWriteAvailable } = useWopi()
+  const fullscreenEditTitle = useLocalization().settings.fullscreenEdit
 
   const setActionsWopi = useCallback(
     (contentFromCallback: GenericContent) => {
       if (!isActionModel(contentFromCallback.Actions)) {
         logger.verbose({ message: 'There are no actions in content', data: contentFromCallback })
-        return
       }
-      const contentActions = contentFromCallback.Actions.filter((action) => !action.Forbidden).filter(
-        (item, i, arr) => arr.findIndex((t) => t.Name === item.Name) === i,
-      )
+      const serverActions = isActionModel(contentFromCallback.Actions) ? contentFromCallback.Actions : []
+      let contentActions = serverActions
+        .filter((action) => !action.Forbidden)
+        .filter((item, i, arr) => arr.findIndex((t) => t.Name === item.Name) === i)
 
       if (contentActions.some((action) => action.Name === 'Browse') && contentFromCallback.IsFile) {
         contentActions.push({
@@ -40,6 +41,8 @@ export function ActionFormatter(props: { data: Content }) {
           DisplayName: 'Download',
         } as ActionModel)
       }
+
+      contentActions = addFullscreenEditAction(contentFromCallback, contentActions, fullscreenEditTitle)
 
       if (isWriteAvailable(contentFromCallback)) {
         // If write is available it means that we have two actions. We want to show only the open edit for the user.
@@ -49,7 +52,7 @@ export function ActionFormatter(props: { data: Content }) {
         setActions(contentActions)
       }
     },
-    [isWriteAvailable, logger],
+    [fullscreenEditTitle, isWriteAvailable, logger],
   )
 
   const { runAction } = useContextMenuActions(props.data, setActionsWopi)

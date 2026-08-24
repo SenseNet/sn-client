@@ -260,17 +260,20 @@ export const ColumnSettings = ({
             }}>
             <IconButton
               size="small"
-              draggable
+              draggable={column.field !== 'Actions'}
+              disabled={column.field === 'Actions'}
               data-test={`column-settings-drag-${column.field.toLowerCase()}`}
               aria-label={`${localization.reorderColumn}: ${column.field}`}
               title={localization.reorderColumn}
               onDragStart={(event) => {
+                if (column.field === 'Actions') return
                 event.dataTransfer.effectAllowed = 'move'
                 event.dataTransfer.setData('text/plain', column.field)
                 setDraggedField(column.field)
               }}
               onDragEnd={finishDragging}
               onKeyDown={(event) => {
+                if (column.field === 'Actions') return
                 if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return
                 event.preventDefault()
                 moveColumn(index, index + (event.key === 'ArrowUp' ? -1 : 1))
@@ -291,6 +294,7 @@ export const ColumnSettings = ({
               variant="outlined"
               placeholder={column.field}
               value={column.title || ''}
+              disabled={column.field === 'Actions'}
               inputProps={{ 'aria-label': `${localization.columnTitle}: ${column.field}` }}
               onChange={(event) => {
                 const title = event.target.value

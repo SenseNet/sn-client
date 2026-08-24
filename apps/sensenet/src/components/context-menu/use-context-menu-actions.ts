@@ -40,6 +40,18 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
           history.push(getUrlForContent({ content, uiSettings, location: history.location, action: 'edit' }))
         }
         break
+      case 'EditBinary':
+        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+          navigateToAction({
+            history,
+            routeMatch: snRoute.match!,
+            action: 'edit-binary',
+            queryParams: { content: content.Path.replace(snRoute.path, '') },
+          })
+        } else {
+          history.push(getUrlForContent({ content, uiSettings, location: history.location, action: 'edit-binary' }))
+        }
+        break
       case 'Browse':
         if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({

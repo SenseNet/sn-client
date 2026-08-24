@@ -1,5 +1,8 @@
 import { ColDef, ValueGetterParams } from 'ag-grid-community'
 import { LegacyColumnSetting } from '../../services'
+import { DateTimeFormatter, formatDateTime } from './Formatters/DateTimeFormatter'
+
+const dateTimeFields = new Set(['CreationDate', 'ModificationDate'])
 
 const getNestedValue = (source: unknown, fieldPath: string): unknown =>
   fieldPath
@@ -23,17 +26,23 @@ const formatColumnValue = (value: unknown): string | number | boolean => {
   return String(value)
 }
 
-const createCustomColumnDefinition = (setting: LegacyColumnSetting): ColDef => ({
-  colId: setting.field,
-  headerName: setting.title || setting.field.split('/').pop() || setting.field,
-  headerTooltip: setting.title || setting.field,
-  valueGetter: (params: ValueGetterParams) => formatColumnValue(getNestedValue(params.data, setting.field)),
-  tooltipValueGetter: (params) => String(params.value ?? ''),
-  flex: 1.5,
-  filter: true,
-  sortable: true,
-  resizable: true,
-})
+const createCustomColumnDefinition = (setting: LegacyColumnSetting): ColDef => {
+  const fieldName = setting.field.split(/[/.]/).filter(Boolean).pop() || setting.field
+  const isDateTimeField = dateTimeFields.has(fieldName)
+
+  return {
+    colId: setting.field,
+    headerName: setting.title || fieldName,
+    headerTooltip: setting.title || setting.field,
+    valueGetter: (params: ValueGetterParams) => formatColumnValue(getNestedValue(params.data, setting.field)),
+    cellRenderer: isDateTimeField ? DateTimeFormatter : undefined,
+    tooltipValueGetter: (params) => (isDateTimeField ? formatDateTime(params.value) : String(params.value ?? '')),
+    flex: 1.5,
+    filter: true,
+    sortable: true,
+    resizable: true,
+  }
+}
 
 /** Converts the legacy ColumnSettings.settings contract into AG Grid column definitions. */
 export const applyLegacyColumnSettings = (defaultColumnDefs: ColDef[], settings?: LegacyColumnSetting[]): ColDef[] => {

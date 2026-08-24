@@ -560,6 +560,7 @@ const values = {
     name: 'Name',
     delete: 'Delete',
     edit: 'Edit',
+    fullscreenEdit: 'Full-screen edit',
     learnMore: 'Learn more',
     stats: 'Stats',
     storage: 'Storage',

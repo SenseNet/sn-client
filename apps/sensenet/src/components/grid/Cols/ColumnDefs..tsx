@@ -1,11 +1,14 @@
 import { IconButton } from '@material-ui/core'
 import { Edit, InfoOutlined } from '@material-ui/icons'
 import { ColDef } from 'ag-grid-community'
+import { History } from 'history'
 import React from 'react'
+import { PATHS, resolvePathParams } from '../../../application-paths'
+import { pathWithQueryParams, supportsFullscreenEdit } from '../../../services'
 import { ReferenceField, RolesField } from '../../content-list'
 import { createAnchorFromName, SETUP_DOCS_URL, UpdatedSettings } from '../../settings/settings-table'
 import { ActionFormatter } from '../Formatters/ActionFormatter'
-import { DateTimeFormatter } from '../Formatters/DateTimeFormatter'
+import { DateTimeFormatter, formatDateTime } from '../Formatters/DateTimeFormatter'
 import { IconFormatter } from '../Formatters/IconFormatter'
 import { UserNameFormatter } from '../Formatters/UserNameFormatter'
 
@@ -57,21 +60,6 @@ const idCol: ColDef = {
   sortable: true,
   resizable: true,
   cellStyle: { paddingRight: 0 },
-}
-
-function GetDate(date: any) {
-  if (date === undefined) {
-    return ''
-  }
-
-  const d = new Date(date)
-  const year = d.getFullYear()
-  const month = String(d.getMonth() + 1).padStart(2, '0')
-  const day = String(d.getDate()).padStart(2, '0')
-  const hours = String(d.getHours()).padStart(2, '0')
-  const minutes = String(d.getMinutes()).padStart(2, '0')
-
-  return `${year}-${month}-${day} ${hours}:${minutes}`
 }
 
 export const contentColumnDefs: ColDef[] = [
@@ -129,7 +117,7 @@ export const contentColumnDefs: ColDef[] = [
     field: 'CreationDate',
     headerTooltip: 'Creation Date',
     cellRenderer: DateTimeFormatter,
-    tooltipValueGetter: (params) => GetDate(params.value),
+    tooltipValueGetter: (params) => formatDateTime(params.value),
     flex: 1.5,
     filter: true,
     sortable: true,
@@ -150,7 +138,7 @@ export const contentColumnDefs: ColDef[] = [
     field: 'ModificationDate',
     headerTooltip: 'Modification Date',
     cellRenderer: DateTimeFormatter,
-    tooltipValueGetter: (params) => GetDate(params.value),
+    tooltipValueGetter: (params) => formatDateTime(params.value),
     flex: 1.5,
     filter: true,
     sortable: true,
@@ -318,7 +306,7 @@ export const trashColumnDefs: ColDef[] = [
     headerName: 'Deleted When',
     field: 'CreationDate',
     headerTooltip: 'Deleted When',
-    tooltipValueGetter: (params) => GetDate(params.value),
+    tooltipValueGetter: (params) => formatDateTime(params.value),
     cellRenderer: DateTimeFormatter,
     flex: 1.5,
     filter: true,
@@ -378,7 +366,7 @@ export const contentExplorerColumnDefs: ColDef[] = [
     headerName: 'Creation Date',
     field: 'CreationDate',
     headerTooltip: 'Creation Date',
-    tooltipValueGetter: (params) => GetDate(params.value),
+    tooltipValueGetter: (params) => formatDateTime(params.value),
     cellRenderer: DateTimeFormatter,
     flex: 1.5,
     filter: true,
@@ -399,7 +387,7 @@ export const contentExplorerColumnDefs: ColDef[] = [
     headerName: 'Modification Date',
     field: 'ModificationDate',
     headerTooltip: 'Modification Date',
-    tooltipValueGetter: (params) => GetDate(params.value),
+    tooltipValueGetter: (params) => formatDateTime(params.value),
     cellRenderer: DateTimeFormatter,
     flex: 1.5,
     filter: true,
@@ -475,7 +463,7 @@ export const contentTypesColumnDefs: ColDef[] = [
     headerName: 'Modification Date',
     field: 'ModificationDate',
     headerTooltip: 'Modification Date',
-    tooltipValueGetter: (params) => GetDate(params.value),
+    tooltipValueGetter: (params) => formatDateTime(params.value),
     cellRenderer: DateTimeFormatter,
     flex: 1.5,
     filter: true,
@@ -526,7 +514,7 @@ export const contentTemplatesColumnDefs: ColDef[] = [
     headerName: 'Creation Date',
     field: 'CreationDate',
     headerTooltip: 'Creation Date',
-    tooltipValueGetter: (params) => GetDate(params.value),
+    tooltipValueGetter: (params) => formatDateTime(params.value),
     cellRenderer: DateTimeFormatter,
     flex: 1.5,
     filter: true,
@@ -547,7 +535,7 @@ export const contentTemplatesColumnDefs: ColDef[] = [
     headerName: 'Modification Date',
     field: 'ModificationDate',
     headerTooltip: 'Modification Date',
-    tooltipValueGetter: (params) => GetDate(params.value),
+    tooltipValueGetter: (params) => formatDateTime(params.value),
     cellRenderer: DateTimeFormatter,
     flex: 1.5,
     filter: true,
@@ -566,7 +554,33 @@ export const contentTemplatesColumnDefs: ColDef[] = [
   },
 ]
 
-export const localizationColumnDefs: ColDef[] = [
+const getBinaryEditColumn = (
+  history: History,
+  appPath: typeof PATHS.configuration.appPath | typeof PATHS.localization.appPath,
+): ColDef => ({
+  headerName: 'Edit',
+  resizable: false,
+  width: 50,
+  cellRenderer: (params: any) =>
+    supportsFullscreenEdit(params.data) ? (
+      <IconButton
+        aria-label={`Edit ${params.data?.DisplayName || params.data?.Name || ''} in full screen`}
+        style={{ padding: '3px', marginBottom: '6px' }}
+        onClick={(event) => {
+          event.stopPropagation()
+          history.push(
+            pathWithQueryParams({
+              path: resolvePathParams({ path: appPath, params: { action: 'edit-binary' } }),
+              newParams: { path: '', content: `/${params.data?.Name || ''}` },
+            }),
+          )
+        }}>
+        <Edit style={{ fontSize: '16px' }} />
+      </IconButton>
+    ) : null,
+})
+
+export const getLocalizationColumnDefs = (history: History): ColDef[] => [
   checkBoxCol,
   iconCol,
   {
@@ -583,6 +597,7 @@ export const localizationColumnDefs: ColDef[] = [
     resizable: true,
   },
   lockedColDef,
+  getBinaryEditColumn(history, PATHS.localization.appPath),
 
   {
     headerName: 'Created By',
@@ -598,7 +613,7 @@ export const localizationColumnDefs: ColDef[] = [
     headerName: 'Creation Date',
     field: 'CreationDate',
     headerTooltip: 'Creation Date',
-    tooltipValueGetter: (params) => GetDate(params.value),
+    tooltipValueGetter: (params) => formatDateTime(params.value),
     cellRenderer: DateTimeFormatter,
     flex: 1.5,
     filter: true,
@@ -619,7 +634,7 @@ export const localizationColumnDefs: ColDef[] = [
     headerName: 'Modification Date',
     field: 'ModificationDate',
     headerTooltip: 'Modification Date',
-    tooltipValueGetter: (params) => GetDate(params.value),
+    tooltipValueGetter: (params) => formatDateTime(params.value),
     cellRenderer: DateTimeFormatter,
     flex: 1.5,
     filter: true,
@@ -630,7 +645,6 @@ export const localizationColumnDefs: ColDef[] = [
     headerName: 'Actions',
     field: 'Actions',
     headerTooltip: 'Actions',
-    tooltipField: 'Actions',
     cellRenderer: ActionFormatter,
     width: 70,
     resizable: false,
@@ -686,7 +700,7 @@ export const webHooksColumnDefs: ColDef[] = [
 
 const hasDocumentation = ['Portal', 'OAuth', 'DocumentPreview', 'OfficeOnline', 'Indexing', 'Sharing']
 
-export const getSettingsColumnDefs = (history: any): ColDef[] => [
+export const getSettingsColumnDefs = (history: History): ColDef[] => [
   iconCol,
   {
     headerName: 'Display Name',
@@ -705,23 +719,7 @@ export const getSettingsColumnDefs = (history: any): ColDef[] => [
     resizable: true,
     flex: 4,
   },
-  {
-    headerName: 'Edit',
-    resizable: false,
-    width: 50,
-    cellRenderer: (params: any) => {
-      const content = encodeURIComponent(params.data?.Name || '')
-      return (
-        <IconButton
-          style={{ padding: '3px', marginBottom: '6px' }}
-          onClick={() => {
-            history.push(`/system/settings/edit-binary?path=&content=%2F${content}`)
-          }}>
-          <Edit style={{ fontSize: '16px' }} />
-        </IconButton>
-      )
-    },
-  },
+  getBinaryEditColumn(history, PATHS.configuration.appPath),
   {
     headerName: 'Learn More',
     resizable: false,
@@ -737,6 +735,14 @@ export const getSettingsColumnDefs = (history: any): ColDef[] => [
         </a>
       ) : null,
     width: 90,
+  },
+  {
+    headerName: 'Actions',
+    field: 'Actions',
+    headerTooltip: 'Actions',
+    cellRenderer: ActionFormatter,
+    width: 70,
+    resizable: false,
   },
 ]
 

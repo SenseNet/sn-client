@@ -168,6 +168,7 @@ const values: Localization = {
   },
   settings: {
     edit: 'Módosítás',
+    fullscreenEdit: 'Teljes képernyős szerkesztés',
     learnMore: 'Bővebb információ',
     stats: 'Statisztika',
     storage: 'Tárhely',
