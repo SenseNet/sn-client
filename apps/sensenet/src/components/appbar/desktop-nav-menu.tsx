@@ -1,13 +1,13 @@
 import { Grid, IconButton, ListItemIcon, ListItemText, MenuItem, MenuList, Paper, Typography } from '@material-ui/core'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles'
-import { TuneOutlined } from '@material-ui/icons'
+import { ExitToApp, LockOutlined, PersonOutline, TuneOutlined } from '@material-ui/icons'
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
 import { Switch } from '@sensenet/controls-react'
 import { useInjector, useRepository } from '@sensenet/hooks-react'
 import { clsx } from 'clsx'
 import React, { ChangeEvent, Dispatch, FunctionComponent, SetStateAction, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { PATHS, resolvePathParams } from '../../application-paths'
 import { useAuth } from '../../context/auth-provider'
 import { globals, useGlobalStyles } from '../../globalStyles'
@@ -74,9 +74,19 @@ const useStyles = makeStyles((theme: Theme) =>
       minWidth: '35px',
     },
     userMenuItem: {
-      textDecoration: 'underline',
-      color: theme.palette.primary.main,
+      minHeight: '42px',
+      margin: theme.spacing(0.5, 1),
+      padding: theme.spacing(1, 1.5),
+      borderRadius: theme.shape.borderRadius,
+      color: theme.palette.text.primary,
       fontSize: '14px',
+      '&:hover, &:focus': {
+        backgroundColor: theme.palette.action.hover,
+      },
+    },
+    userMenuActionIcon: {
+      minWidth: '34px',
+      color: theme.palette.primary.main,
     },
     checkboxMenuItem: {
       color: theme.palette.primary.main,
@@ -112,6 +122,7 @@ export const DesktopNavMenu: FunctionComponent = () => {
   const repo = useRepository()
   const localization = useLocalization()
   const { openDialog } = useDialog()
+  const history = useHistory()
   const [openUserMenu, setOpenUserMenu] = useState(false)
   const [openViewOptions, setOpenViewOptions] = useState(false)
 
@@ -130,6 +141,22 @@ export const DesktopNavMenu: FunctionComponent = () => {
 
   const changePassword = async () => {
     openDialog({ name: 'change-password' })
+    handleClose(setOpenUserMenu)
+  }
+
+  const openAccountSettings = () => {
+    history.push(
+      pathWithQueryParams({
+        path: resolvePathParams({
+          path: PATHS.usersAndGroups.appPath,
+          params: { browseType: 'explorer', action: 'edit' },
+        }),
+        newParams: {
+          content: user?.Path,
+          needRoot: 'false',
+        },
+      }),
+    )
     handleClose(setOpenUserMenu)
   }
 
@@ -236,27 +263,29 @@ export const DesktopNavMenu: FunctionComponent = () => {
                     secondary={`${user?.LoginName || user?.Name}`}
                   />
                 </MenuItem>
-                <MenuItem className={classes.userMenuItem}>
-                  <Link
-                    onClick={() => handleClose(setOpenUserMenu)}
-                    to={pathWithQueryParams({
-                      path: resolvePathParams({
-                        path: PATHS.usersAndGroups.appPath,
-                        params: { browseType: 'explorer', action: 'edit' },
-                      }),
-                      newParams: {
-                        content: user?.Path,
-                        needRoot: 'false',
-                      },
-                    })}>
-                    {localization.topMenu.accountSettings}
-                  </Link>
+                <MenuItem className={classes.userMenuItem} onClick={openAccountSettings}>
+                  <ListItemIcon className={classes.userMenuActionIcon}>
+                    <PersonOutline fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={localization.topMenu.accountSettings}
+                    primaryTypographyProps={{ variant: 'body2' }}
+                  />
                 </MenuItem>
                 <MenuItem data-test="change-password-menu" onClick={changePassword} className={classes.userMenuItem}>
-                  {localization.topMenu.changePassword}
+                  <ListItemIcon className={classes.userMenuActionIcon}>
+                    <LockOutlined fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={localization.topMenu.changePassword}
+                    primaryTypographyProps={{ variant: 'body2' }}
+                  />
                 </MenuItem>
                 <MenuItem onClick={logout} className={classes.userMenuItem}>
-                  {localization.topMenu.logout}
+                  <ListItemIcon className={classes.userMenuActionIcon}>
+                    <ExitToApp fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText primary={localization.topMenu.logout} primaryTypographyProps={{ variant: 'body2' }} />
                 </MenuItem>
               </MenuList>
             </ClickAwayListener>

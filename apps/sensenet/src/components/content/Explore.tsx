@@ -84,6 +84,31 @@ const getGridLoadChildrenSettings = (
   }
 }
 
+const mergeGridLoadChildrenSettings = (
+  generatedSettings: ODataParams<GenericContent>,
+  explicitSettings?: ODataParams<GenericContent>,
+): ODataParams<GenericContent> => {
+  if (!explicitSettings) return generatedSettings
+
+  const generatedSelect = generatedSettings.select === 'all' ? [] : generatedSettings.select || []
+  const explicitSelect = explicitSettings.select === 'all' ? [] : explicitSettings.select || []
+  const generatedExpand = generatedSettings.expand || []
+  const explicitExpand = explicitSettings.expand || []
+  const select =
+    generatedSettings.select === 'all' || explicitSettings.select === 'all'
+      ? 'all'
+      : (Array.from(
+          new Set([...generatedSelect, ...explicitSelect, ...explicitExpand]),
+        ) as ODataFieldParameter<GenericContent>)
+
+  return {
+    ...generatedSettings,
+    ...explicitSettings,
+    select,
+    expand: Array.from(new Set([...generatedExpand, ...explicitExpand])) as ODataFieldParameter<GenericContent>,
+  }
+}
+
 const useStyles = makeStyles<Theme, { width: number }>((theme) =>
   createStyles({
     breadcrumbsWrapper: {
@@ -394,7 +419,7 @@ export function Explore({
   const { columnSettings, columnSettingsSource, isColumnSettingsLoading, saveColumnSettings } =
     useRepositoryColumnSettings(currentPath, explicitColumnSettings)
   const currentChildrenLoadSettings = useMemo(
-    () => loadChildrenSettings || getGridLoadChildrenSettings(colDef, columnSettings),
+    () => mergeGridLoadChildrenSettings(getGridLoadChildrenSettings(colDef, columnSettings), loadChildrenSettings),
     [colDef, columnSettings, loadChildrenSettings],
   )
   const onActivateItemOverride = async (activeItem: GenericContent) => {
