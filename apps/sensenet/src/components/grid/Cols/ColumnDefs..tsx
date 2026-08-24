@@ -41,10 +41,11 @@ const checkBoxCol: ColDef = {
 const iconCol: ColDef = {
   headerName: '',
   field: 'Icon',
-  width: 24,
-  minWidth: 24,
+  width: 44,
+  minWidth: 44,
+  maxWidth: 44,
   cellRenderer: IconFormatter,
-  cellStyle: { padding: 0 },
+  cellStyle: { padding: '0 6px', display: 'flex', alignItems: 'center' },
 }
 const idCol: ColDef = {
   headerName: 'ID',

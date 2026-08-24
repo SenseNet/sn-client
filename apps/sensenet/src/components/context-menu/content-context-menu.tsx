@@ -10,6 +10,8 @@ import { useLogger, useWopi } from '@sensenet/hooks-react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { ResponsiveContext } from '../../context'
 import { useLoadContent, useLocalization } from '../../hooks'
+import { isImageContent } from '../../services'
+import { useImageGallery } from '../image-gallery'
 import { contextMenuODataOptions } from './context-menu-odata-options'
 import { getIcon } from './icons'
 import { useContextMenuActions } from './use-context-menu-actions'
@@ -63,8 +65,11 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
   )
 
   const { runAction } = useContextMenuActions(props.content, setActionsWopi)
+  const { openImageGallery } = useImageGallery()
   const device = useContext(ResponsiveContext)
   const oDataActionsTitle = useLocalization().customActions.oDataActionsDialog.menuTitle
+  const imageGalleryLocalization = useLocalization().imageGallery
+  const canViewImage = isImageContent(props.content)
   const runODataActions = () => {
     props.onClose?.()
     runAction('ODataActions')
@@ -85,6 +90,17 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
           open={props.isOpened}
           PaperProps={{ style: { paddingBottom: '2em' } }}>
           <List>
+            {canViewImage ? (
+              <ListItem
+                button
+                onClick={() => {
+                  props.onClose?.()
+                  openImageGallery(props.content)
+                }}>
+                <ListItemIcon>{getIcon('viewimage')}</ListItemIcon>
+                <ListItemText primary={imageGalleryLocalization.openImage} />
+              </ListItem>
+            ) : null}
             <ListItem onClick={runODataActions}>
               <ListItemIcon>{getIcon('odataactions')}</ListItemIcon>
               <ListItemText primary={oDataActionsTitle} />
@@ -107,6 +123,19 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
         </Drawer>
       ) : (
         <Menu open={props.isOpened} {...props.menuProps} data-test="content-context-menu-root">
+          {canViewImage ? (
+            <MenuItem
+              key="ViewImage"
+              disableRipple={true}
+              data-test="content-context-menu-view-image"
+              onClick={() => {
+                props.onClose?.()
+                openImageGallery(props.content)
+              }}>
+              <ListItemIcon>{getIcon('viewimage')}</ListItemIcon>
+              <div style={{ flexGrow: 1 }}>{imageGalleryLocalization.openImage}</div>
+            </MenuItem>
+          ) : null}
           <MenuItem
             key="ODataActions"
             disableRipple={true}

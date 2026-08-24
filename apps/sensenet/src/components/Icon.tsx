@@ -60,7 +60,9 @@ import travisCi from '@iconify-icons/logos/travis-ci'
 import vercelIcon from '@iconify-icons/logos/vercel-icon'
 import React, { CSSProperties, FunctionComponent } from 'react'
 import { EventLogEntry } from '../services/EventService'
+import { isImageContent } from '../services/image-content-service'
 import { IconFromPath } from './IconFromPath'
+import { ImageThumbnail } from './image-thumbnail'
 import { UserAvatar } from './UserAvatar'
 
 export interface IconOptions {
@@ -186,6 +188,10 @@ const getIconByName = (name: string | undefined, options: IconOptions) => {
 
 /* eslint-disable react/display-name */
 export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
+  {
+    get: (item, options) =>
+      isImageContent(item) ? <ImageThumbnail content={item} repository={options.repo} style={options.style} /> : null,
+  },
   {
     get: (item, options) => {
       let icon = item.Icon

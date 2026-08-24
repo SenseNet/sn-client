@@ -14,6 +14,7 @@ const ExecuteAction = lazy(() => import('./execute-action'))
 const Logout = lazy(() => import('./logout'))
 const SaveQuery = lazy(() => import('./save-query'))
 const Upload = lazy(() => import('./upload/upload-dialog'))
+const ImageGallery = lazy(() => import('./image-gallery'))
 const ReferenceContentList = lazy(() => import('./reference-content-list'))
 const PermissionEditorDialog = lazy(() => import('./permission-editor-dialog'))
 const MemberSelect = lazy(() => import('./member-select-dialog'))
@@ -45,6 +46,8 @@ function dialogRenderer(dialog: DialogWithProps) {
       return <Restore {...dialog.props} />
     case 'upload':
       return <Upload {...dialog.props} />
+    case 'image-gallery':
+      return <ImageGallery {...dialog.props} />
     case 'execute-action':
       return <ExecuteAction {...dialog.props} />
     case 'custom-action-result':

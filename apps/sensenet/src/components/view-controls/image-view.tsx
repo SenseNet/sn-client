@@ -1,14 +1,14 @@
 /**
  * @module ViewControls
  */
-import { Button, createStyles, makeStyles } from '@material-ui/core'
+import { Button, CircularProgress, createStyles, makeStyles, Typography } from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { navigateToAction } from '../../services'
+import { getImageContentUrl, navigateToAction } from '../../services'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -70,7 +70,8 @@ export const ImageView: React.FC<ImageViewProps> = (props) => {
   const [currentContent, setCurrentContent] = useState<GenericContent>()
   const history = useHistory()
   const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
-  const [getBlob, setBlob] = useState<Blob>()
+  const [imageSource, setImageSource] = useState<string>()
+  const [loadError, setLoadError] = useState<string>()
   useEffect(() => {
     async function getCurrentContent() {
       const result = await repository.load({
@@ -81,22 +82,51 @@ export const ImageView: React.FC<ImageViewProps> = (props) => {
     getCurrentContent()
   }, [props.contentPath, repository])
   useEffect(() => {
-    const url = `${repository.configuration.repositoryUrl + contentPath}?t=${Date.now()}`
-    const { token } = repository.configuration
-    fetch(url, {
-      method: 'get',
-      headers: new Headers({
-        Authorization: `Bearer ${token}`,
-      }),
-    })
-      .then((response) => response.blob())
-      .then((blob) => {
-        setBlob(blob)
-      })
-      .catch((error) => {
-        console.error('Error fetching the file:', error)
-      })
-  }, [contentPath, repository.configuration])
+    if (!currentContent) {
+      return
+    }
+
+    const abortController = new AbortController()
+    let objectUrl: string | undefined
+    let isCurrentRequest = true
+    setImageSource(undefined)
+    setLoadError(undefined)
+
+    const loadImage = async () => {
+      try {
+        const response = await repository.fetch(
+          getImageContentUrl(repository.configuration.repositoryUrl, currentContent),
+          {
+            method: 'GET',
+            credentials: 'include',
+            signal: abortController.signal,
+          },
+        )
+        if (!response.ok) {
+          throw new Error(`${response.status} ${response.statusText}`.trim())
+        }
+
+        objectUrl = URL.createObjectURL(await response.blob())
+        if (isCurrentRequest) {
+          setImageSource(objectUrl)
+        }
+      } catch (error) {
+        if (isCurrentRequest && !abortController.signal.aborted) {
+          setLoadError(error instanceof Error ? error.message : String(error))
+        }
+      }
+    }
+
+    loadImage()
+
+    return () => {
+      isCurrentRequest = false
+      abortController.abort()
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl)
+      }
+    }
+  }, [currentContent, repository])
   return (
     <div className={classes.imageViewContainer}>
       <div className={classes.titleContainer}>
@@ -107,7 +137,11 @@ export const ImageView: React.FC<ImageViewProps> = (props) => {
         </div>
       </div>
       <div className={classes.imageContainer}>
-        {getBlob && <img className={classes.image} src={URL.createObjectURL(getBlob)} alt="" />}
+        {!imageSource && !loadError ? <CircularProgress /> : null}
+        {loadError ? <Typography color="error">{loadError}</Typography> : null}
+        {imageSource ? (
+          <img className={classes.image} src={imageSource} alt={currentContent?.DisplayName || ''} />
+        ) : null}
       </div>
       <div className={classes.buttonWrapper}>
         <Button

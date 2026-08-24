@@ -4,6 +4,7 @@ import { ActionModel, ContentType, File, GenericContent, Resource, Settings } fr
 import { History, Location } from 'history'
 import { match } from 'react-router-dom'
 import { PATHS, resolvePathParams } from '../application-paths'
+import { isImageContent } from './image-content-service'
 import { CustomContentDrawerItem } from './PersonalSettings'
 import { pathWithQueryParams, UiSettings } from '.'
 
@@ -192,15 +193,7 @@ export function getPrimaryActionUrl({
     return getUrlForContent({ content, uiSettings, location, action: 'edit-binary', snRoute, removePath })
   }
 
-  if (
-    content.Type === 'Image' ||
-    content.Type.endsWith('Image') ||
-    (content.Type.endsWith('File') && content.Name.toLocaleLowerCase().endsWith('.svg')) ||
-    (content.Type.endsWith('File') && content.Name.toLocaleLowerCase().endsWith('.png')) ||
-    (content.Type.endsWith('File') && content.Name.toLocaleLowerCase().endsWith('.jpg')) ||
-    (content.Type.endsWith('File') && content.Name.toLocaleLowerCase().endsWith('.gif')) ||
-    repository.schemas.isContentFromType<ContentType>(content, 'Image')
-  ) {
+  if (isImageContent(content) || repository.schemas.isContentFromType<ContentType>(content, 'Image')) {
     return getUrlForContent({ content, uiSettings, location, action: 'image', snRoute, removePath })
   }
 

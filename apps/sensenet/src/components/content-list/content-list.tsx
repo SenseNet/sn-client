@@ -29,10 +29,12 @@ import { TableCellProps } from 'react-virtualized'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
+import { isImageContent } from '../../services'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { useDialog } from '../dialogs'
 import { DropFileArea } from '../DropFileArea'
+import { useImageGallery } from '../image-gallery'
 import { SelectionControl } from '../SelectionControl'
 import { isFolderLikeTreeItem, SETTINGS_FOLDER_FILTER } from '../tree/tree-helpers'
 import { ContextMenuWrapper } from './context-menu-wrapper'
@@ -180,6 +182,7 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
   }, [currentChildren, currentDirection, currentOrder, userPersonalSettings.sortFoldersFirst])
   const [selected, setSelected] = useState<T[]>([])
   const [activeContent, setActiveContent] = useState<T>(children[0])
+  const { openImageGallery } = useImageGallery()
 
   const [columnSettings, setColumnSettings] = useState<Array<ColumnSetting<GenericContent>>>(
     personalSettings.content.fields,
@@ -331,9 +334,13 @@ export const ContentList = <T extends GenericContent = GenericContent>(props: Co
 
   const handleActivateItem = useCallback(
     (item: T) => {
+      if (isImageContent(item)) {
+        openImageGallery(item, children)
+        return
+      }
       props.onParentChange(item)
     },
-    [props],
+    [children, openImageGallery, props],
   )
 
   const handleItemClick = useCallback(

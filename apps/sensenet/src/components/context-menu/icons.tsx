@@ -10,12 +10,14 @@ import HistoryIcon from '@material-ui/icons/History'
 import InfoIcon from '@material-ui/icons/Info'
 import Lock from '@material-ui/icons/Lock'
 import LockOpen from '@material-ui/icons/LockOpen'
+import PhotoLibraryOutlinedIcon from '@material-ui/icons/PhotoLibraryOutlined'
 import MuiPublishIcon from '@material-ui/icons/Publish'
 import ReportProblemIcon from '@material-ui/icons/ReportProblem'
 import RestoreIcon from '@material-ui/icons/RestoreFromTrash'
 import Search from '@material-ui/icons/Search'
 import ShareIcon from '@material-ui/icons/Share'
 import UndoIcon from '@material-ui/icons/Undo'
+import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined'
 import React from 'react'
 
 export const getIcon = (actionName: string) => {
@@ -34,6 +36,8 @@ export const getIcon = (actionName: string) => {
       return <Delete />
     case 'download':
       return <CloudDownload />
+    case 'gallery':
+      return <PhotoLibraryOutlinedIcon />
     case 'edit':
       return <Edit />
     case 'forceundocheckout':
@@ -42,6 +46,8 @@ export const getIcon = (actionName: string) => {
       return <FileCopyIcon />
     case 'preview':
       return <Search />
+    case 'viewimage':
+      return <VisibilityOutlinedIcon />
     case 'publish':
       return <MuiPublishIcon />
     case 'setpermissions':

@@ -6,9 +6,11 @@ import { useLogger, useWopi } from '@sensenet/hooks-react'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { ResponsiveContext } from '../../../context'
 import { useLoadContent, useLocalization } from '../../../hooks'
+import { isImageContent } from '../../../services'
 import { contextMenuODataOptions } from '../../context-menu/context-menu-odata-options'
 import { getIcon } from '../../context-menu/icons'
 import { useContextMenuActions } from '../../context-menu/use-context-menu-actions'
+import { useImageGallery } from '../../image-gallery'
 const DISABLED_ACTIONS = ['Share', 'Preview']
 
 export function ActionFormatter(props: { data: Content }) {
@@ -53,6 +55,9 @@ export function ActionFormatter(props: { data: Content }) {
   const { runAction } = useContextMenuActions(props.data, setActionsWopi)
   const device = useContext(ResponsiveContext)
   const oDataActionsTitle = useLocalization().customActions.oDataActionsDialog.menuTitle
+  const imageGalleryLocalization = useLocalization().imageGallery
+  const { openImageGallery } = useImageGallery()
+  const canViewImage = isImageContent(props.data as GenericContent)
 
   useEffect(() => {
     if (content) {
@@ -78,6 +83,20 @@ export function ActionFormatter(props: { data: Content }) {
         <MoreHoriz />
       </IconButton>
       <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+        {canViewImage ? (
+          <MenuItem
+            key="ViewImage"
+            disableRipple={true}
+            data-test="content-context-menu-view-image"
+            onClick={(ev) => {
+              ev.stopPropagation()
+              setAnchorEl(null)
+              openImageGallery(props.data as GenericContent)
+            }}>
+            <ListItemIcon>{getIcon('viewimage')}</ListItemIcon>
+            <div style={{ flexGrow: 1 }}>{imageGalleryLocalization.openImage}</div>
+          </MenuItem>
+        ) : null}
         <MenuItem
           key="ODataActions"
           disableRipple={true}

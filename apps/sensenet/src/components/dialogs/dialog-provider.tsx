@@ -14,6 +14,7 @@ import {
   DateRangePickerProps,
   DeleteContentDialogProps,
   ExecuteActionDialogProps,
+  ImageGalleryDialogProps,
   ODataActionsDialogProps,
   OperationsDialogProps,
   PermissionEditorDialogProps,
@@ -34,6 +35,7 @@ export type DialogWithProps = (
   | { name: 'approve'; props: ApproveProps }
   | { name: 'restore'; props: RestoreProps }
   | { name: 'upload'; props: UploadDialogProps }
+  | { name: 'image-gallery'; props: ImageGalleryDialogProps }
   | { name: 'execute-action'; props: ExecuteActionDialogProps }
   | { name: 'custom-action-result'; props: CustomActionResultDialogProps }
   | { name: 'logout' }

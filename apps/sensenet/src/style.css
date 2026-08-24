@@ -239,8 +239,10 @@ span.icon svg {
 }
 .icon-grid {
   display: flex;
-  align-items: stretch;
+  align-items: center;
+  justify-content: center;
   width: 100%;
+  height: 100%;
 }
 
 .grid-checkbox-header {

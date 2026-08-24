@@ -8,6 +8,7 @@ import { getIcon } from '../context-menu/icons'
 import { useContextMenuActions } from '../context-menu/use-context-menu-actions'
 import { FavoriteButton } from '../favorites/FavoriteButton'
 import { Icon } from '../Icon'
+import { useImageGallery } from '../image-gallery'
 
 export function ContentInfo() {
   const DISABLED_ACTIONS = ['Share', 'Preview', 'Delete']
@@ -21,6 +22,8 @@ export function ContentInfo() {
   })
   const { isWriteAvailable } = useWopi()
   const oDataActionsTitle = useLocalization().customActions.oDataActionsDialog.menuTitle
+  const imageGalleryLocalization = useLocalization().imageGallery
+  const { images, openImageGallery } = useImageGallery()
 
   const setActionsWopi = useCallback(
     (contentFromCallback: GenericContent) => {
@@ -80,6 +83,17 @@ export function ContentInfo() {
         </div>
         <div className="buttonPanel">
           <FavoriteButton content={parentContent} />
+          {images.length ? (
+            <Button
+              key="Gallery"
+              title={imageGalleryLocalization.openGallery}
+              disableRipple={true}
+              data-test="content-gallery-action"
+              onClick={() => openImageGallery(images[0], images)}>
+              <ListItemIcon>{getIcon('gallery')}</ListItemIcon>
+              <div style={{ flexGrow: 1 }}>{imageGalleryLocalization.openGallery}</div>
+            </Button>
+          ) : null}
           <Button
             key="ODataActions"
             title={oDataActionsTitle}

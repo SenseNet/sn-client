@@ -148,6 +148,14 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
       height: '900px',
       maxHeight: '80%',
     },
+    imageGalleryDialog: {
+      width: 'min(1180px, calc(100vw - 48px))',
+      maxWidth: 'none',
+      height: 'min(860px, calc(100vh - 48px))',
+      maxHeight: 'none',
+      overflow: 'hidden',
+      backgroundColor: theme.palette.type === 'light' ? '#1b1d21' : '#111315',
+    },
   })
 })
 

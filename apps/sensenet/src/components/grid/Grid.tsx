@@ -15,8 +15,10 @@ import { AgGridReact } from 'ag-grid-react'
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { ResponsiveContext } from '../../context'
 import { useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
+import { isImageContent } from '../../services'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { DropFileArea } from '../DropFileArea'
+import { useImageGallery } from '../image-gallery'
 import { compareTreeItems } from '../tree/tree-helpers'
 import { GridProps } from './Props/GridProps'
 import { useGridLoading } from './Providers/GridLoadingProvider'
@@ -50,6 +52,7 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
   const fixedColumns: string[] = ['0', 'Icon', 'Actions']
   const [columnDefs, setColumnDefs] = useState<ColDef[]>(props.colDef)
   const loadingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const { openImageGallery } = useImageGallery()
 
   const setLoadingWithMinDuration = useCallback(
     (isLoading: boolean) => {
@@ -86,6 +89,10 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
   const onRowDoubleClicked = (item: RowDoubleClickedEvent) => {
     if (item.data) {
       props.onActiveItemChange?.(item.data)
+      if (isImageContent(item.data)) {
+        openImageGallery(item.data, children)
+        return
+      }
       setLoadingWithMinDuration(true)
       props.onParentChange(item.data)
     }
@@ -99,6 +106,10 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
       const isInteractiveTarget = Boolean(target?.closest('button, a, [role="button"], .simpleContextMenu'))
 
       if (device === 'mobile' && !isInteractiveTarget) {
+        if (isImageContent(item.data)) {
+          openImageGallery(item.data, children)
+          return
+        }
         setLoadingWithMinDuration(true)
         props.onParentChange(item.data)
       }
