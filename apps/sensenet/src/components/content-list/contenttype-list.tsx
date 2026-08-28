@@ -45,7 +45,15 @@ const ContentTypeList: React.FC = () => {
       gridKey={GridKeyEnum.CONTENTTYPES}
       rootPath={PATHS.contentTypes.snPath}
       loadChildrenSettings={{
-        select: ['DisplayName', 'Name', 'Description', 'ParentTypeName' as any, 'ModificationDate', 'ModifiedBy'],
+        select: [
+          'DisplayName',
+          'Name',
+          'Type',
+          'Description',
+          'ParentTypeName' as any,
+          'ModificationDate',
+          'ModifiedBy',
+        ],
         query: contentTypeQuery,
         inlinecount: 'allpages',
         top: 1000,
