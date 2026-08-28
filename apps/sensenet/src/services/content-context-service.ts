@@ -87,6 +87,10 @@ interface GetUrlForContentParams {
   removePath?: boolean
 }
 
+export function supportsRouteActions(snRoute?: { path?: string; match?: match<any> }) {
+  return Boolean(snRoute?.path && snRoute.match?.path.includes(':action'))
+}
+
 export function getUrlForContent({
   content,
   uiSettings,
@@ -95,7 +99,7 @@ export function getUrlForContent({
   snRoute,
   removePath = false,
 }: GetUrlForContentParams) {
-  if (snRoute?.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+  if (supportsRouteActions(snRoute) && PathHelper.isInSubTree(content.Path, snRoute.path)) {
     const contentPath = content.Path.replace(snRoute.path, '')
     const searchParams = new URLSearchParams(location.search)
     return pathWithQueryParams({

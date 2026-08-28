@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
 import { useSnRoute } from '../../hooks'
-import { getUrlForContent, navigateToAction } from '../../services'
+import { getUrlForContent, navigateToAction, supportsRouteActions } from '../../services'
 import { useDialog } from '../dialogs'
 import { contextMenuODataOptions } from './context-menu-odata-options'
 
@@ -29,7 +29,7 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
         openDialog({ name: 'delete', props: { content: [content] } })
         break
       case 'Edit':
-        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+        if (supportsRouteActions(snRoute) && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -41,7 +41,7 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
         }
         break
       case 'EditBinary':
-        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+        if (supportsRouteActions(snRoute) && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -53,7 +53,7 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
         }
         break
       case 'Browse':
-        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+        if (supportsRouteActions(snRoute) && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -79,7 +79,7 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
         break
       }
       case 'Preview':
-        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+        if (supportsRouteActions(snRoute) && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -119,7 +119,7 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
         download.download()
         break
       case 'WopiOpenView':
-        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+        if (supportsRouteActions(snRoute) && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -132,7 +132,7 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
 
         break
       case 'WopiOpenEdit':
-        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+        if (supportsRouteActions(snRoute) && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -144,7 +144,7 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
         }
         break
       case 'Versions':
-        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+        if (supportsRouteActions(snRoute) && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -205,7 +205,7 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
         })
         break
       case 'SetPermissions':
-        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+        if (supportsRouteActions(snRoute) && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,

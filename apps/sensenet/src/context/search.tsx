@@ -78,6 +78,10 @@ export function SearchProvider({
   )
 
   useEffect(() => {
+    setTerm(defaultTerm ?? '')
+  }, [defaultTerm])
+
+  useEffect(() => {
     const ac = new AbortController()
     const fetchResult = async () => {
       if (!term) {

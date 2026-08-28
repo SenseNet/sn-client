@@ -120,6 +120,8 @@ export const CommandPalette = () => {
   const cpm = useMemo(() => injector.getInstance(CommandProviderManager), [injector])
   const snRoute = useSnRoute()
   const isContextMenuInteractingRef = useRef(false)
+  const latestSearchTermRef = useRef('')
+  const searchRequestIdRef = useRef(0)
   const selectionService = useSelectionService()
   const [activeContent, setActiveContent] = useState(selectionService.activeContent.getValue())
 
@@ -159,6 +161,8 @@ export const CommandPalette = () => {
 
   useEffect(() => {
     if (!isOpened) {
+      searchRequestIdRef.current += 1
+      latestSearchTermRef.current = ''
       setItems([])
       setInputValue('')
     } else {
@@ -198,6 +202,7 @@ export const CommandPalette = () => {
 
   const debouncedFetchRef = useRef(
     debounce(async (term: string) => {
+      const requestId = ++searchRequestIdRef.current
       const {
         repository: currentRepository,
         device: currentDevice,
@@ -214,11 +219,14 @@ export const CommandPalette = () => {
         location: currentLocation,
         snRoute: currentSnRoute,
       })
-      setItems(foundItems)
+      if (requestId === searchRequestIdRef.current && term === latestSearchTermRef.current) {
+        setItems(foundItems)
+      }
     }, 200),
   )
 
   const handleSuggestionsFetchRequested = (options: SuggestionsFetchRequestedParams) => {
+    latestSearchTermRef.current = options.value
     debouncedFetchRef.current(options.value)
   }
 
