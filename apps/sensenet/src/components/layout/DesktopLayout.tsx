@@ -2,7 +2,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import { useInjector, useRepository } from '@sensenet/hooks-react'
 import { clsx } from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
-import { ResponsivePersonalSettings } from '../../context'
+import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { CustomActionCommandProvider } from '../../services/CommandProviders/CustomActionCommandProvider'
 import { DesktopAppBar } from '../appbar/desktop-app-bar'
@@ -47,12 +47,14 @@ const useStyles = makeStyles((theme: Theme) => {
 
 export const DesktopLayout: React.FunctionComponent = (props) => {
   const settings = useContext(ResponsivePersonalSettings)
+  const device = useContext(ResponsiveContext)
   const repo = useRepository()
   const { openDialog, closeLastDialog } = useDialog()
   const customActionService = useInjector().getInstance(CustomActionCommandProvider)
   const [tempDrawerOpened, setTempDrawerOpened] = useState(false)
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
+  const useTemporaryDrawer = settings.drawer.type === 'temporary' || device === 'mobile'
 
   useEffect(() => {
     const observables = [
@@ -99,7 +101,7 @@ export const DesktopLayout: React.FunctionComponent = (props) => {
       <div className={classes.drawerandContentSlot}>
         {settings.drawer.enabled ? (
           <>
-            {settings.drawer.type === 'temporary' ? (
+            {useTemporaryDrawer ? (
               <TemporaryDrawer
                 onClose={() => setTempDrawerOpened(false)}
                 onOpen={() => setTempDrawerOpened(true)}

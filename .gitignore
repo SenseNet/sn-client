@@ -59,3 +59,8 @@ jspm_packages/
 
 # Misc
 .DS_Store
+pipe\[0]
+# Environment variable files
+.env
+.env.local
+.env.*.local

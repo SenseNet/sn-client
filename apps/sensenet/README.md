@@ -35,6 +35,10 @@ The repositories you've visited will be also saved in your Personal Settings - y
 You can browse the whole repository with the **Content** menu.
 You can adjust the Content view in the personal setting's _"content"_ section.
 
+### Admin UI Applications
+
+The Admin UI can render repository-defined `AUIApplication` contents as small custom HTML applications inside the content explorer. See the [Admin UI Applications documentation](./docs/auiapplications.md) for the content type, bridge API, and repository read/update examples.
+
 ## 🌈 Command palette
 
 The command palette is useful if you want to search in the repository, navigate to a specific page or execute a specific command on the current content.
@@ -59,3 +63,67 @@ If you start typing a Content query term (that starts with a '+' sign), the term
 ## ℹ Version info
 
 (Coming soon...)
+
+# sensenet Admin UI
+
+React-based UI for sensenet. This application provides a rich UI for managing your sensenet content repository. It was designed to take advantage of the modern web technologies - which means we built it for evergreen browsers (Edge, Chrome, Firefox). If you need legacy browser support (e.g. IE11) please use the [old admin UI](https://github.com/SenseNet/sensenet/tree/master/src/nuget/snadmin/install-webpages) instead.
+
+## Authentication Configuration
+
+The application supports two authentication methods:
+
+- **SNAuth**: sensenet's JWT-based authentication
+- **IdentityServer**: OIDC-based authentication with Identity Server
+
+You can specify which authentication method to use during the build process. This is a build-time configuration, meaning the application will be built to use only one authentication method.
+
+### Building with specific authentication method
+
+To build the application with SNAuth (default):
+
+```bash
+yarn build:snauth
+# or npm run build:snauth
+```
+
+To build the application with Identity Server authentication:
+
+```bash
+yarn build:idserver
+# or npm run build:idserver
+```
+
+### Development with specific authentication method
+
+To run the development server with SNAuth:
+
+```bash
+yarn start:snauth
+# or npm run start:snauth
+```
+
+To run the development server with Identity Server authentication:
+
+```bash
+yarn start:idserver
+# or npm run start:idserver
+```
+
+If you don't specify an authentication method, the application will default to using SNAuth.
+
+## Development
+
+To run the application locally:
+
+```bash
+yarn install
+yarn start
+```
+
+Navigate to http://localhost:8080 in your browser.
+
+To build the application:
+
+```bash
+yarn build
+```

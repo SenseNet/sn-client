@@ -1,19 +1,34 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from './use-repository'
 
-export const fakeClick = (obj: EventTarget) => {
-  const ev = document.createEvent('MouseEvents')
-  ev.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
-  obj.dispatchEvent(ev)
+export const downloadFile = (
+  fileName: string,
+  repositorPath: string,
+  repositoryUrl: string,
+  token: string | undefined,
+) => {
+  const url = `${repositoryUrl}${repositorPath}?download&t=${Date.now()}`
+  fetch(url, {
+    method: 'get',
+    headers: new Headers({
+      Authorization: `Bearer ${token}`,
+    }),
+  })
+    .then((response) => response.blob())
+    .then((blob) => {
+      const urlInner = window.URL.createObjectURL(new Blob([blob]))
+      const link = document.createElement('a')
+      link.href = urlInner
+      link.download = fileName || 'downloaded-file'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+    })
+    .catch((error) => {
+      console.error('Error fetching the file:', error)
+    })
 }
-
-export const downloadFile = (name: string, repositoryUrl: string) => {
-  const saveLink = document.createElement('a')
-  saveLink.href = `${repositoryUrl}${name}?download?t=${Date.now()}`
-  saveLink.target = '_blank'
-  fakeClick(saveLink)
-}
-
 /**
  * Custom hook that downloads a specified content from a repository
  * Has to be wrapped with **RepositoryContext**
@@ -30,6 +45,7 @@ export const useDownload = (content: GenericContent) => {
     /**
      * Callback that will trigger the download
      */
-    download: () => downloadFile(content.Path, repo.configuration.repositoryUrl),
+    download: () =>
+      downloadFile(content.Name, content.Path, repo.configuration.repositoryUrl, repo.configuration.token),
   }
 }

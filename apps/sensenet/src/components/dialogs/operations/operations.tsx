@@ -8,7 +8,7 @@ import {
   TextField,
 } from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
+import { useLogger, useRepository, useSession } from '@sensenet/hooks-react'
 import React, { useEffect, useRef, useState } from 'react'
 import { DialogTitle, useDialog } from '..'
 import { useCurrentUser } from '../../../context'
@@ -65,7 +65,7 @@ const useStyles = makeStyles(() =>
 
 export function OperationsDialog(props: OperationsDialogProps) {
   const { closeLastDialog } = useDialog()
-  const currentUser = useCurrentUser()
+  const { currentUser } = useSession()
   const classes = useStyles()
   const logger = useLogger('Operations')
   const formRef = useRef<HTMLFormElement>(null)
@@ -77,11 +77,10 @@ export function OperationsDialog(props: OperationsDialogProps) {
   const [isOperationSubmiting, setIsOperationSubmiting] = useState(false)
 
   useEffect(() => {
-    console.log(props.OperationName)
     const loadOperation = async () => {
       try {
         const result = await repository.executeAction<any, UIDescription>({
-          method: 'GET',
+          method: 'POST',
           idOrPath: props.content.Path,
           name: props.OperationName,
         })
@@ -149,7 +148,7 @@ export function OperationsDialog(props: OperationsDialogProps) {
             onSubmit={(e) => {
               submitAction(e)
             }}>
-            {UIDescription?.elements.map((field, index) => {
+            {UIDescription?.elements?.map((field, index) => {
               if ('radioOptions' in field) {
                 return <InfluenceField {...field} key={index} />
               }

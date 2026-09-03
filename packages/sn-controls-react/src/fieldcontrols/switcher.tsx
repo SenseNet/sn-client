@@ -2,6 +2,7 @@
  * @module FieldControls
  */
 import {
+  Box,
   createStyles,
   FormControl,
   FormHelperText,
@@ -9,12 +10,11 @@ import {
   makeStyles,
   Switch as MuiSwitch,
   Theme,
-  Typography,
   withStyles,
 } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { FieldSetting } from '@sensenet/default-content-types'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
@@ -80,16 +80,28 @@ export const Switch = withStyles((theme: Theme) => ({
   },
 }))(MuiSwitch)
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
       width: '100%',
       display: 'flex',
-      justifyContent: 'center',
       alignItems: 'flex-start',
     },
     alignedCenter: {
       alignItems: 'flex-start',
+    },
+    switcherCont: {
+      padding: '1.5px 4px',
+      maxWidth: '420px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      border: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid #2c2c2c',
+      borderRadius: '4px 4px 0 0',
+      marginLeft: '0',
+      '&:hover': {
+        cursor: 'pointer',
+        border: '1px solid #666',
+      },
     },
   }),
 )
@@ -124,24 +136,38 @@ export const Switcher: React.FC<ReactClientFieldSetting<FieldSetting>> = (props)
           })}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>
-          <Typography component="div">
-            <Grid component="label" container alignItems="center" spacing={1}>
-              <Grid item style={{ paddingRight: '30px' }}>
-                {props.settings.DisplayName}
+          <Box style={{ width: '100%' }}>
+            <Grid
+              component="label"
+              className={classes.switcherCont}
+              container
+              spacing={1}
+              alignItems="center"
+              wrap="wrap">
+              <Grid item xs>
+                {props.settings.Customization?.Highlighted ? (
+                  <div>
+                    <strong style={{ fontSize: '17px' }}>{props.settings.DisplayName}</strong> ({props.settings.Name})
+                  </div>
+                ) : (
+                  <div>
+                    <span style={{ fontSize: '17px' }}>{props.settings.DisplayName}</span> ({props.settings.Name})
+                  </div>
+                )}
+                {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
               </Grid>
-              <Grid item>
-                <Switch data-test="edit-switch" size="small" checked={value} onChange={handleChange} />
+              <Grid item style={{ marginLeft: 'auto' }}>
+                <Switch data-test="edit-switch" size="medium" checked={value} onChange={handleChange} />
               </Grid>
             </Grid>
-          </Typography>
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
+          </Box>
         </FormControl>
       )
     case 'browse':
     default:
       return (
         <Grid
-          component={Typography}
+          component="div"
           container
           alignItems="center"
           spacing={1}
@@ -155,7 +181,7 @@ export const Switcher: React.FC<ReactClientFieldSetting<FieldSetting>> = (props)
             style={{
               paddingRight: '30px',
             }}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Grid>
           <Grid item>
             {props.fieldValue != null ? (

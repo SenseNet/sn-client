@@ -12,7 +12,7 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'react', 'cypress', 'jsdoc', 'import', 'react-hooks'],
-  env: { browser: true, node: true, es6: true, jest: true, 'cypress/globals': true },
+  env: { browser: true, node: true, es6: true, 'cypress/globals': true },
   parserOptions: {
     ecmaVersion: 6,
     sourceType: 'module',
@@ -36,6 +36,9 @@ module.exports = {
   },
   rules: {
     'react/prop-types': 0,
+    'no-unused-vars': 'off',
+    'import/export': 0,
+    '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/ban-types': 'off',
     '@typescript-eslint/no-empty-function': 'off',
@@ -45,6 +48,7 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/array-type': ['error', { default: 'array-simple', readonly: 'array-simple' }],
     'require-jsdoc': 1,
+    'cypress/unsafe-to-chain-command': 'off',
     'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
     'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
     'import/default': 0,

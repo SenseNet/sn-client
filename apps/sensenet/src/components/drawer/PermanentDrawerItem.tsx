@@ -9,11 +9,12 @@ import {
   useTheme,
 } from '@material-ui/core'
 import { clsx } from 'clsx'
-import React from 'react'
+import React, { useContext } from 'react'
 import { matchPath, NavLink, useLocation } from 'react-router-dom'
-import { globals, useGlobalStyles } from '../../globalStyles'
+import { globals } from '../../globalStyles'
 import { usePersonalSettings, useSelectionService } from '../../hooks'
 import { DrawerItem } from '../../hooks/use-drawer-items'
+import { ExpandItemsContext } from '../tree/Contexts/ExpandedItemsProvider'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -30,8 +31,8 @@ const useStyles = makeStyles((theme: Theme) => {
       },
     },
     listButton: {
-      height: '60px',
-      paddingLeft: '2px',
+      height: '40px',
+      paddingLeft: '7px',
     },
     listItemIconDark: {
       color: theme.palette.common.white,
@@ -62,12 +63,15 @@ export interface PermanentDrawerItemProps {
 
 export const PermanentDrawerItem: React.FunctionComponent<PermanentDrawerItemProps> = (props) => {
   const classes = useStyles()
-  const globalClasses = useGlobalStyles()
   const theme = useTheme()
 
   const selectionService = useSelectionService()
   const location = useLocation()
   const personalSettings = usePersonalSettings()
+  const expandContext = useContext(ExpandItemsContext)
+  if (!expandContext) throw new Error('Must be used inside ExpandItemsProvider')
+
+  const [, setExpandItems] = expandContext
 
   return (
     <Tooltip title={props.item.primaryText} placement="right">
@@ -77,6 +81,7 @@ export const PermanentDrawerItem: React.FunctionComponent<PermanentDrawerItemPro
         className={classes.navLink}
         onClick={() => {
           selectionService.activeContent.setValue(undefined)
+          setExpandItems(new Set())
         }}
         activeClassName={classes.navLinkActive}>
         <ListItem
@@ -86,7 +91,7 @@ export const PermanentDrawerItem: React.FunctionComponent<PermanentDrawerItemPro
           selected={!!matchPath(location.pathname, props.item.url)}
           data-test={`drawer-menu-item-${props.item.primaryText.replace(/\s+/g, '-').toLowerCase()}`}>
           <ListItemIcon
-            className={clsx(classes.listItemIconDark, globalClasses.centered, {
+            className={clsx(classes.listItemIconDark, {
               [classes.listItemIconLight]: personalSettings.theme === 'light',
             })}>
             <div className={classes.listIconWrapper}>{props.item.icon}</div>
@@ -96,6 +101,8 @@ export const PermanentDrawerItem: React.FunctionComponent<PermanentDrawerItemPro
               <ListItemText
                 primary={`${props.item.primaryText}`}
                 style={{
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
                   color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
                 }}
               />

@@ -12,17 +12,30 @@ import { NotificationComponent } from '../components/NotificationComponent'
 import { useGlobalStyles } from '../globalStyles'
 import { useQuery } from '../hooks'
 import { getAuthConfig } from '../services/auth-config'
+import {
+  clearActiveRepositorySelection,
+  normalizeRepositoryUrl,
+  oidcAuthConfigKey,
+} from '../services/repository-session'
 
 const LoginPage = lazy(() => import(/* webpackChunkName: "login" */ '../components/login/login-page'))
 
-export const authConfigKey = 'sn-oidc-config'
+export const authConfigKey = oidcAuthConfigKey
 const customEvents = {
   onUserSignedOut: () => {
-    window.localStorage.removeItem(authConfigKey)
+    clearActiveRepositorySelection()
   },
 }
 
-export function RepositoryProvider({ children }: { children: React.ReactNode }) {
+export function RepositoryProvider({
+  children,
+  url,
+  changeAuthType,
+}: {
+  children: React.ReactNode
+  url: string
+  changeAuthType: (x: string) => void
+}) {
   const [isLoginInProgress, setIsLoginInProgress] = useState(false)
   const logger = useLogger('repository-provider')
   const globalClasses = useGlobalStyles()
@@ -31,7 +44,6 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
     repoUrl: '',
     config: null,
   })
-  const repoFromUrl = useQuery().get('repoUrl')
   const configString = window.localStorage.getItem(authConfigKey)
   const [identityServerUrl, setIdentityServerUrl] = useState()
 
@@ -42,18 +54,21 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
       const prevAuthConfig = JSON.parse(configString)
       setIdentityServerUrl(prevAuthConfig.authority)
 
-      if (repoFromUrl && prevAuthConfig.extraQueryParams.snrepo !== repoFromUrl) {
-        return setAuthState({ repoUrl: repoFromUrl, config: null })
-      }
+      // Access extraQueryParams via userManagerSettings
+      const extraQueryParams = prevAuthConfig.userManagerSettings?.extraQueryParams
 
       setAuthState((oldState) => ({
-        repoUrl: prevAuthConfig?.extraQueryParams.snrepo || '',
-        config: prevAuthConfig?.extraQueryParams.snrepo === oldState.repoUrl ? prevAuthConfig : null,
+        repoUrl: extraQueryParams?.snrepo || '',
+        config: extraQueryParams?.snrepo === oldState.repoUrl ? prevAuthConfig.userManagerSettings : null,
       }))
-    } else {
-      repoFromUrl && setAuthState({ repoUrl: repoFromUrl, config: null })
     }
-  }, [repoFromUrl, configString])
+  }, [configString])
+
+  useEffect(() => {
+    if (url) {
+      setAuthState({ repoUrl: normalizeRepositoryUrl(url), config: null })
+    }
+  }, [url])
 
   const getConfig = useCallback(async () => {
     if (!authState.repoUrl) {
@@ -63,16 +78,25 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
     try {
       setIsLoginInProgress(true)
       const config = await getAuthConfig(authState.repoUrl)
+      if (config.authServerSettings.type !== 'IdentityServer') {
+        changeAuthType(authState.repoUrl)
+        logger.error({ message: 'Incompatible authentication server type' })
+        clearActiveRepositorySelection()
+        setAuthState((oldState) => ({ ...oldState, repoUrl: '' }))
+        return
+      }
+
       window.localStorage.setItem(authConfigKey, JSON.stringify(config))
-      setAuthState((oldState) => ({ ...oldState, config }))
+      // Set only userManagerSettings in authState to match the expected type
+      setAuthState((oldState) => ({ ...oldState, config: config.userManagerSettings }))
     } catch (error) {
       logger.warning({ data: error, message: `Couldn't connect to ${authState.repoUrl}` })
-      window.localStorage.removeItem(authConfigKey)
+      clearActiveRepositorySelection()
       setAuthState((oldState) => ({ ...oldState, repoUrl: '' }))
     } finally {
       setIsLoginInProgress(false)
     }
-  }, [logger, authState.repoUrl])
+  }, [logger, authState.repoUrl, changeAuthType])
 
   useEffect(() => {
     getConfig()
@@ -83,14 +107,14 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
       <div className={globalClasses.full}>
         <CssBaseline />
         <Suspense fallback={<FullScreenLoader loaderText="Loading" />}>
-          {configString || (!configString && repoFromUrl === authState.repoUrl) ? (
+          {configString ? (
             <FullScreenLoader loaderText="Loading" />
           ) : (
             <LoginPage
               isLoginInProgress={isLoginInProgress}
-              handleSubmit={(url) => {
+              handleSubmit={(formUrl) => {
                 setAuthState({
-                  repoUrl: url,
+                  repoUrl: normalizeRepositoryUrl(formUrl),
                   config: null,
                 })
               }}
@@ -129,7 +153,11 @@ export function RepositoryProvider({ children }: { children: React.ReactNode }) 
         />
       )}
       customEvents={customEvents}>
-      <RepoProvider repoUrl={authState.repoUrl} identityServerUrl={identityServerUrl} clearAuthState={clearState}>
+      <RepoProvider
+        repoUrl={authState.repoUrl}
+        identityServerUrl={identityServerUrl}
+        clearAuthState={clearState}
+        changeAuthType={changeAuthType}>
         {children}
       </RepoProvider>
     </AuthenticationProvider>
@@ -141,11 +169,13 @@ const RepoProvider = ({
   repoUrl,
   clearAuthState,
   identityServerUrl,
+  changeAuthType,
 }: {
   children: ReactNode
   repoUrl: string
   clearAuthState: Function
   identityServerUrl?: string
+  changeAuthType: (x: string) => void
 }) => {
   const { oidcUser, login, logout } = useOidcAuthentication()
   const logger = useLogger('repo-provider')
@@ -197,13 +227,14 @@ const RepoProvider = ({
           await login()
         } catch (error) {
           const config = JSON.parse(configString)
+          changeAuthType(repoUrl)
           logger.error({ data: error, message: `Couldn't connect to ${config.authority}` })
-          window.localStorage.removeItem(authConfigKey)
+          clearActiveRepositorySelection()
           clearAuthState()
         }
       }
     })()
-  }, [clearAuthState, logger, login, logout, oidcUser])
+  }, [clearAuthState, logger, login, logout, oidcUser, changeAuthType, repoUrl])
 
   if (!oidcUser || oidcUser.expired || !repo) {
     return null

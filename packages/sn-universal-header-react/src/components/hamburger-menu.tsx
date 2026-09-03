@@ -12,7 +12,7 @@ import {
   useTheme,
 } from '@material-ui/core'
 import { Close, Menu as MenuIcon } from '@material-ui/icons'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React, { useEffect, useRef, useState } from 'react'
 import { HEADER_HEIGHT } from '.'
 

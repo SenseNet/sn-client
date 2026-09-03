@@ -12,6 +12,9 @@ import { LoadSettingsContext } from './load-settings'
 export const CurrentChildrenContext = createContext<GenericContent[]>([])
 CurrentChildrenContext.displayName = 'CurrentChildrenContext'
 
+export const CurrentChildrenIsLoadingContext = createContext<boolean>(false)
+CurrentChildrenIsLoadingContext.displayName = 'CurrentChildrenIsLoadingContext'
+
 export interface CurrentChildrenProviderProps {
   loadSettings?: ODataParams<GenericContent>
   alwaysRefresh?: boolean
@@ -25,6 +28,7 @@ export interface CurrentChildrenProviderProps {
 export const CurrentChildrenProvider: FunctionComponent<CurrentChildrenProviderProps> = (props) => {
   const currentContent = useContext(CurrentContentContext)
   const [children, setChildren] = useState<GenericContent[]>([])
+  const [isLoading, setIsLoading] = useState(false)
 
   const alwaysRefresh = props.alwaysRefresh || currentContent.Type === 'SmartFolder'
 
@@ -38,23 +42,41 @@ export const CurrentChildrenProvider: FunctionComponent<CurrentChildrenProviderP
 
   useEffect(() => {
     const ac = new AbortController()
+    let isCurrentRequest = true
     ;(async () => {
-      if (currentContent.Path) {
-        try {
-          const childrenResult = await repo.loadCollection<GenericContent>({
-            path: currentContent.Path,
-            requestInit: { signal: ac.signal },
-            oDataOptions: deepMerge(loadSettings.loadChildrenSettings, props.loadSettings),
-          })
+      if (!currentContent.Path) {
+        setChildren([])
+        setIsLoading(false)
+        return
+      }
+
+      setError(undefined)
+      setIsLoading(true)
+
+      try {
+        const childrenResult = await repo.loadCollection<GenericContent>({
+          path: currentContent.Path,
+          requestInit: { signal: ac.signal },
+          oDataOptions: deepMerge(loadSettings.loadChildrenSettings, props.loadSettings),
+        })
+
+        if (isCurrentRequest) {
           setChildren(childrenResult.d.results)
-        } catch (err) {
-          if (!ac.signal.aborted) {
-            setError(err)
-          }
+        }
+      } catch (err) {
+        if (isCurrentRequest && !ac.signal.aborted) {
+          setError(err)
+        }
+      } finally {
+        if (isCurrentRequest) {
+          setIsLoading(false)
         }
       }
     })()
-    return () => ac.abort()
+    return () => {
+      isCurrentRequest = false
+      ac.abort()
+    }
   }, [currentContent.Path, loadSettings.loadChildrenSettings, props.loadSettings, repo, reloadToken])
 
   useEffect(() => {
@@ -152,5 +174,9 @@ export const CurrentChildrenProvider: FunctionComponent<CurrentChildrenProviderP
     throw error
   }
 
-  return <CurrentChildrenContext.Provider value={children}>{props.children}</CurrentChildrenContext.Provider>
+  return (
+    <CurrentChildrenIsLoadingContext.Provider value={isLoading}>
+      <CurrentChildrenContext.Provider value={children}>{props.children}</CurrentChildrenContext.Provider>
+    </CurrentChildrenIsLoadingContext.Provider>
+  )
 }

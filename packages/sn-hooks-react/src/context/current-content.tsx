@@ -3,7 +3,8 @@ import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { createContext, FunctionComponent, useCallback, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
-import { useRepository, useRepositoryEvents } from '../hooks'
+import { useLogger, useRepository, useRepositoryEvents } from '../hooks'
+import { useLocalization } from '../hooks/use-localization'
 
 /**
  * Returns a given content as current content
@@ -43,6 +44,8 @@ export const CurrentContentProvider: FunctionComponent<CurrentContentProviderPro
   const reload = () => setReloadToken(Math.random())
   const repo = useRepository()
   const events = useRepositoryEvents()
+  const logger = useLogger('CurrentContent')
+  const localization = useLocalization()
 
   const onDeleteContent = useCallback(
     async (deleted: Content[]) => {
@@ -99,10 +102,14 @@ export const CurrentContentProvider: FunctionComponent<CurrentContentProviderPro
   }, [repo, props.idOrPath, reloadToken, loadLock])
 
   if (errorState?.error) {
-    if (errorState?.status === 404) {
-      throw errorState
-    }
-    throw errorState.error
+    console.log(errorState)
+    logger.error({
+      message: localization.currentContextError,
+      data: {
+        error: errorState.error,
+      },
+    })
+    setErrorState({})
   }
 
   return (

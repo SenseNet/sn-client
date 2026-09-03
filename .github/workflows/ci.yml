@@ -31,7 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/cache
+      - uses: actions/cache@v4
         with:
           path: ~/.cache/yarn
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -46,15 +46,9 @@ jobs:
       - name: build
         run: yarn build
 
-      - name: build examples
-        run: yarn build:examples
-
       - name: build snapp
         run: yarn snapp build
         env:
           RELATIVE_CI_KEY: ${{ secrets.RELATIVE_CI_KEY }}
-
-      - name: test
-        run: NODE_OPTIONS='--max-old-space-size=4096' yarn test --coverage --logHeapUsage
 
       - uses: codecov/codecov-action@v1

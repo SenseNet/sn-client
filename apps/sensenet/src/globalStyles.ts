@@ -5,13 +5,13 @@ export const globals = {
   common: {
     //Fix sizes
     headerHeight: 42,
-    drawerWidthCollapsed: 60,
+    drawerWidthCollapsed: 40,
     drawerWidthExpanded: 240,
     drawerItemHeight: 42,
     formTitleHeight: 68,
     formActionButtonsHeight: 80,
     settingsDrawerWidth: 250,
-    addButtonHeight: 60,
+    addButtonHeight: 40,
     //Colors
     headerBackground: '#0192db',
     headerLightBackground: '#0192db',
@@ -126,12 +126,9 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
       border: theme.palette.type === 'light' ? clsx(globals.light.borderColor, '1px') : 'none',
       maxWidth: '700px',
     },
-    pickerDialog: {
-      height: '100%',
-      maxHeight: 750,
-    },
     cancelButton: {
-      border: theme.palette.type === 'light' ? '2px solid #212121DE' : '2px solid #505050',
+      //border: theme.palette.type === 'light' ? '2px solid #212121DE' : '2px solid #505050',
+      backgroundColor: theme.palette.type === 'light' ? '#cecece' : 'rgba(255, 255, 255, 0.05)',
       '& ~ button': {
         marginLeft: 38,
       },
@@ -144,6 +141,20 @@ export const useGlobalStyles = makeStyles((theme: Theme) => {
       '& .MuiGrid-item': {
         marginBottom: '12px',
       },
+    },
+    pickerDialog: {
+      width: '950px',
+      maxWidth: '80%',
+      height: '900px',
+      maxHeight: '80%',
+    },
+    imageGalleryDialog: {
+      width: 'min(1180px, calc(100vw - 48px))',
+      maxWidth: 'none',
+      height: 'min(860px, calc(100vh - 48px))',
+      maxHeight: 'none',
+      overflow: 'hidden',
+      backgroundColor: theme.palette.type === 'light' ? '#1b1d21' : '#111315',
     },
   })
 })

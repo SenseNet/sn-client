@@ -1,18 +1,26 @@
 /**
  * @module FieldControls
  */
-import { CircularProgress, createStyles, FormHelperText, InputLabel, makeStyles, Typography } from '@material-ui/core'
+import { CircularProgress, createStyles, makeStyles, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { renderHtml } from '@sensenet/editor-react'
 import React, { lazy, Suspense } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
+
 const Editor = lazy(() => import('../editor-wrapper').then((module) => ({ default: module.TinymceEditor })))
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
   createStyles({
-    richTextEditor: {},
+    richTextEditor: {
+      padding: '9px',
+      borderTopRightRadius: '4px',
+      borderTopLeftRadius: '4px',
+      borderBottom: theme.palette.type === 'light' ? '1px solid #878787' : '1px solid #bfbfbf',
+      backgroundColor: theme.palette.type === 'light' ? '#e8e8e8' : '#272727',
+    },
   }),
 )
 
@@ -55,17 +63,20 @@ export const TinymceEditor: React.FC<
     getFieldValue(props.fieldValue) ||
     (props.actionName === 'new' && changeTemplatedValue(props.settings.DefaultValue)) ||
     ''
-  const classes = useStyles(props)
+  // const classes = useStyles(props)
 
   switch (props.actionName) {
     case 'edit':
     case 'new':
       return (
-        <div className={classes.richTextEditor}>
-          <InputLabel shrink htmlFor={props.settings.Name} required={props.settings.Compulsory}>
-            {props.settings.DisplayName}
-          </InputLabel>
-
+        <div>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
+          />
           <Suspense
             fallback={
               <div style={{ textAlign: 'center' }}>
@@ -78,10 +89,10 @@ export const TinymceEditor: React.FC<
               onChange={(content) => {
                 props.fieldOnChange?.(props.settings.Name, content)
               }}
+              repository={props.repository}
+              path={props.content?.Path}
             />
           </Suspense>
-
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </div>
       )
     case 'browse':
@@ -89,7 +100,7 @@ export const TinymceEditor: React.FC<
       return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           {initialState ? (
             <div

@@ -1,26 +1,22 @@
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import { useDownload, useLogger, useRepository } from '@sensenet/hooks-react'
+import { CurrentContentContext, useDownload, useLogger, useRepository } from '@sensenet/hooks-react'
 import { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { ResponsivePersonalSettings } from '../../context'
 import { useGlobalStyles } from '../../globalStyles'
-import { useLoadContent, useSnRoute } from '../../hooks'
-import { getUrlForContent, navigateToAction } from '../../services'
+import { useSnRoute } from '../../hooks'
+import { getUrlForContent, navigateToAction, supportsRouteActions } from '../../services'
 import { useDialog } from '../dialogs'
 import { contextMenuODataOptions } from './context-menu-odata-options'
 
-export function useContextMenuActions(
-  content: GenericContent,
-  isOpened: boolean,
-  setActions: (content: GenericContent) => void,
-) {
+export function useContextMenuActions(content: GenericContent, setActions: (content: GenericContent) => void) {
   const logger = useLogger('context-menu')
   const history = useHistory()
   const repository = useRepository()
   const download = useDownload(content)
   const globalClasses = useGlobalStyles()
-  const currentParent = useLoadContent({ idOrPath: content.ParentId!, isOpened }).content
+  const currentParent = useContext(CurrentContentContext)
   const { openDialog } = useDialog()
   const uiSettings = useContext(ResponsivePersonalSettings)
   const snRoute = useSnRoute()
@@ -33,7 +29,7 @@ export function useContextMenuActions(
         openDialog({ name: 'delete', props: { content: [content] } })
         break
       case 'Edit':
-        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+        if (supportsRouteActions(snRoute) && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -44,8 +40,20 @@ export function useContextMenuActions(
           history.push(getUrlForContent({ content, uiSettings, location: history.location, action: 'edit' }))
         }
         break
+      case 'EditBinary':
+        if (supportsRouteActions(snRoute) && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+          navigateToAction({
+            history,
+            routeMatch: snRoute.match!,
+            action: 'edit-binary',
+            queryParams: { content: content.Path.replace(snRoute.path, '') },
+          })
+        } else {
+          history.push(getUrlForContent({ content, uiSettings, location: history.location, action: 'edit-binary' }))
+        }
+        break
       case 'Browse':
-        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+        if (supportsRouteActions(snRoute) && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -71,7 +79,7 @@ export function useContextMenuActions(
         break
       }
       case 'Preview':
-        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+        if (supportsRouteActions(snRoute) && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -111,7 +119,7 @@ export function useContextMenuActions(
         download.download()
         break
       case 'WopiOpenView':
-        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+        if (supportsRouteActions(snRoute) && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -124,7 +132,7 @@ export function useContextMenuActions(
 
         break
       case 'WopiOpenEdit':
-        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+        if (supportsRouteActions(snRoute) && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -136,7 +144,7 @@ export function useContextMenuActions(
         }
         break
       case 'Versions':
-        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+        if (supportsRouteActions(snRoute) && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -166,6 +174,18 @@ export function useContextMenuActions(
           logger.warning({ message: `Couldn't undo checkout for ${getContentName()}`, data: { error } })
         }
         break
+      case 'ForceUndoCheckOut':
+        try {
+          const forceUndoCheckOutResult = await repository.versioning.forceUndoCheckOut(
+            content.Id,
+            contextMenuODataOptions,
+          )
+          logger.information({ message: `${getContentName()} force reverted successfully.` })
+          setActions(forceUndoCheckOutResult.d)
+        } catch (error) {
+          logger.warning({ message: `Couldn't force undo checkout for ${getContentName()}`, data: { error } })
+        }
+        break
       case 'Approve':
         openDialog({
           name: 'approve',
@@ -176,8 +196,16 @@ export function useContextMenuActions(
           },
         })
         break
+      case 'ChangePassword':
+        openDialog({
+          name: 'change-password',
+          props: {
+            content,
+          },
+        })
+        break
       case 'SetPermissions':
-        if (snRoute.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+        if (supportsRouteActions(snRoute) && PathHelper.isInSubTree(content.Path, snRoute.path)) {
           navigateToAction({
             history,
             routeMatch: snRoute.match!,
@@ -194,6 +222,15 @@ export function useContextMenuActions(
           props: {
             content,
           },
+        })
+        break
+      case 'ODataActions':
+        openDialog({
+          name: 'odata-actions',
+          props: {
+            content,
+          },
+          dialogProps: { classes: { paper: globalClasses.pickerDialog } },
         })
         break
       /*Az az új hozzáállás, hogy ha nem találja meg az action-t akkor jöjjön be az operation kezelő.

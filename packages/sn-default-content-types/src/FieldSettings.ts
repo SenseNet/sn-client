@@ -74,6 +74,7 @@ export function isFieldSettingOfType<T extends FieldSetting>(setting: FieldSetti
 
 export type Customization = {
   Categories: string
+  Highlighted: boolean
 }
 
 export type FieldSetting = {

@@ -1,15 +1,28 @@
 import { MetadataAction } from '@sensenet/client-core'
 
-const getJsonType = (type: string) => {
+type ActionParameter = MetadataAction['parameters'][number]
+
+export const getEnumValues = (parameter: ActionParameter) => parameter.enumValues
+
+export const getJsonType = (type: string) => {
   const lowerType = type.toLowerCase()
-  if (lowerType.includes('[]')) {
+  if (
+    lowerType.includes('[]') ||
+    lowerType.includes('collection') ||
+    lowerType.includes('ienumerable') ||
+    lowerType.includes('list<')
+  ) {
     return 'array'
   }
   if (
     lowerType.includes('number') ||
     lowerType.includes('int') ||
     lowerType.includes('double') ||
-    lowerType.includes('float')
+    lowerType.includes('float') ||
+    lowerType.includes('decimal') ||
+    lowerType.includes('long') ||
+    lowerType.includes('short') ||
+    lowerType.includes('byte')
   ) {
     return 'number'
   }
@@ -22,6 +35,36 @@ const getJsonType = (type: string) => {
   return 'string'
 }
 
+const getInitialValue = (parameter: ActionParameter) => {
+  const enumValues = getEnumValues(parameter)
+  if (enumValues?.length) {
+    return enumValues[0]
+  }
+
+  switch (getJsonType(parameter.type)) {
+    case 'array':
+      return []
+    case 'boolean':
+      return false
+    case 'number':
+      return 0
+    case 'object':
+      return {}
+    default:
+      return ''
+  }
+}
+
+export const createActionParameterTemplate = (parameters: ActionParameter[]) =>
+  JSON.stringify(
+    parameters.reduce<Record<string, unknown>>((body, parameter) => {
+      body[parameter.name] = getInitialValue(parameter)
+      return body
+    }, {}),
+    undefined,
+    2,
+  )
+
 export const createCustomActionModel = async (
   uri: import('react-monaco-editor').monaco.Uri,
   actionMetadata: MetadataAction,
@@ -30,7 +73,18 @@ export const createCustomActionModel = async (
   const uriString = uri.toString()
 
   const properties: any = {}
-  actionMetadata.parameters.forEach((prop) => (properties[prop.name] = { type: getJsonType(prop.type) }))
+  actionMetadata.parameters.forEach((parameter) => {
+    const enumValues = getEnumValues(parameter)
+    properties[parameter.name] = {
+      type: getJsonType(parameter.type),
+      default: getInitialValue(parameter),
+      ...(enumValues?.length ? { enum: enumValues } : {}),
+      description: `${parameter.required ? 'Required' : 'Optional'} OData parameter. Type: ${parameter.type}`,
+      markdownDescription: `**${parameter.required ? 'Required' : 'Optional'}** OData parameter. Type: \`${
+        parameter.type
+      }\``,
+    }
+  })
 
   monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
     validate: true,

@@ -3,10 +3,16 @@
   "compilerOptions": {
     "outDir": "./dist/types",
     "emitDeclarationOnly": true,
-    "rootDir": "src"
+    "rootDir": "src",
+    "paths": {
+      "react": ["./node_modules/@types/react"]
+    }
   },
   "include": ["src"],
   "references": [
-    { "path": "../sn-client-utils" }
+    { "path": "../sn-client-utils" },
+    { "path": "../sn-pickers-react" },
+    { "path": "../sn-client-core" },
+    { "path": "../sn-hooks-react" }
   ]
 }

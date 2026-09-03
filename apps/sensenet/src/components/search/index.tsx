@@ -10,6 +10,7 @@ import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { useQuery } from '../../hooks/use-query'
 import { createSearchQuery } from '../../services/search-query-builder'
+import { BatchActions } from '../BatchActions'
 import { FullScreenLoader } from '../full-screen-loader'
 import { Filters } from './filters'
 import { defaultDateFilter } from './filters/date-filter'
@@ -25,7 +26,20 @@ export interface SearchFilters {
 const useStyles = makeStyles(() => {
   return createStyles({
     contentWrapper: {
-      paddingRight: 30,
+      padding: '0 30px',
+    },
+    contentTitle: {
+      paddingLeft: '10px',
+      paddingTop: '4px',
+    },
+    paginationControls: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px',
+      padding: '4px',
+    },
+    batchActions: {
+      marginLeft: '24px',
     },
   })
 })
@@ -40,6 +54,8 @@ export const Search = () => {
   const globalClasses = useGlobalStyles()
   const repository = useRepository()
   const [searchFilters, setSearchFilters] = useState<Partial<SearchFilters>>()
+  const [maxSearchResult, setMaxSearchResult] = useState(200)
+  const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
     ;(async () => {
@@ -85,26 +101,33 @@ export const Search = () => {
   return (
     <SearchProvider
       defaultTerm={queryFromUrl ? searchFilters?.term ?? '' : termFromUrl}
-      defaultFilters={searchFilters?.filters}>
-      <div className={clsx(globalClasses.contentWrapper, classes.contentWrapper)}>
-        <div className={clsx(globalClasses.contentTitle, globalClasses.centeredVertical)}>
-          <span style={{ fontSize: '20px' }}>{localization.title}</span>
+      defaultFilters={searchFilters?.filters}
+      currentPage={currentPage}
+      maxSearchResult={maxSearchResult}>
+      <div className={clsx(globalClasses.centeredVertical, classes.contentTitle)}>
+        <span style={{ fontSize: '20px' }}>{localization.title}</span>
+        <div className={classes.batchActions}>
+          <BatchActions />
         </div>
-
-        <SearchBar />
-
-        <Filters
-          defaultFilterVisibility={
-            queryFromUrl
-              ? !!searchFilters?.filters?.path ||
-                searchFilters?.filters?.date.name !== defaultDateFilter.name ||
-                searchFilters?.filters?.reference.name !== defaultReferenceFilter.name
-              : false
-          }
-        />
-
-        <SearchResults />
       </div>
+
+      <SearchBar />
+
+      <Filters
+        defaultFilterVisibility={
+          queryFromUrl
+            ? !!searchFilters?.filters?.path ||
+              searchFilters?.filters?.date.name !== defaultDateFilter.name ||
+              searchFilters?.filters?.reference.name !== defaultReferenceFilter.name
+            : false
+        }
+      />
+      <SearchResults
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        maxSearchResult={maxSearchResult}
+        setMaxSearchResult={setMaxSearchResult}
+      />
     </SearchProvider>
   )
 }

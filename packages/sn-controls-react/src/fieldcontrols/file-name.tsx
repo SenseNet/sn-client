@@ -5,6 +5,7 @@ import { InputAdornment, TextField, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 import { ReactClientFieldSetting } from '.'
 
@@ -44,33 +45,42 @@ export const FileName: React.FC<ReactClientFieldSetting> = (props) => {
     case 'edit':
     case 'new':
       return (
-        <TextField
-          autoFocus={props.autoFocus}
-          name={props.settings.Name}
-          id={props.settings.Name}
-          label={props.settings.DisplayName}
-          placeholder={props.settings.DisplayName}
-          value={value}
-          onChange={handleChange}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <span>{`.${getExtension()}`}</span>
-              </InputAdornment>
-            ),
-          }}
-          required={props.settings.Compulsory}
-          disabled={props.settings.ReadOnly}
-          fullWidth={true}
-          helperText={props.hideDescription ? undefined : props.settings.Description}
-        />
+        <>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
+          />
+          <TextField
+            variant="outlined"
+            style={{ width: '100%' }}
+            autoFocus={props.autoFocus}
+            name={props.settings.Name}
+            id={props.settings.Name}
+            placeholder={props.settings.DisplayName}
+            value={value}
+            onChange={handleChange}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <span>{`.${getExtension()}`}</span>
+                </InputAdornment>
+              ),
+            }}
+            required={props.settings.Compulsory}
+            disabled={props.settings.ReadOnly}
+            fullWidth={true}
+          />
+        </>
       )
     case 'browse':
     default:
       return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
             {props.fieldValue || localization.noValue}

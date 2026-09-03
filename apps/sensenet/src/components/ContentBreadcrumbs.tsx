@@ -1,36 +1,84 @@
-import { createStyles, IconButton, makeStyles, Theme, Tooltip } from '@material-ui/core'
-import DeleteIcon from '@material-ui/icons/Delete'
-import FileCopyIcon from '@material-ui/icons/FileCopy'
-import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
+import { Button, createStyles, IconButton, makeStyles, Tooltip } from '@material-ui/core'
+import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import { GenericContent } from '@sensenet/default-content-types'
 import { CurrentAncestorsContext, CurrentContentContext, useRepository } from '@sensenet/hooks-react'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
-import { ResponsivePersonalSettings } from '../context'
-import { useGlobalStyles } from '../globalStyles'
-import { useLocalization, useSelectionService } from '../hooks'
+import { ResponsiveContext, ResponsivePersonalSettings } from '../context'
+import { useSelectionService } from '../hooks'
 import { getPrimaryActionUrl } from '../services'
+import { BatchActions } from './BatchActions'
 import { BreadcrumbItem, Breadcrumbs } from './Breadcrumbs'
-import { useDialog } from './dialogs'
+import CopyPath from './CopyPath'
 
-const useStyles = makeStyles((theme: Theme) => {
+const useStyles = makeStyles((theme) => {
   return createStyles({
-    batchActionWrapper: {
-      ' & .MuiIconButton-root': {
-        color: theme.palette.type === 'light' ? theme.palette.common.black : theme.palette.common.white,
-      },
-      marginLeft: 'auto',
-      display: 'flex',
-      marginRight: '8px',
-      height: '40px',
-    },
     buttonsWrapper: {
       display: 'flex',
       alignItems: 'center',
+      width: '100%',
+      minWidth: 0,
+      marginLeft: '10px',
+      overflow: 'hidden',
+      [theme.breakpoints.down('sm')]: {
+        marginLeft: 0,
+        width: '100%',
+      },
     },
-    actionButton: {
-      width: '40px',
-      marginRight: '2px',
+    desktopBreadcrumbs: {
+      display: 'flex',
+      alignItems: 'center',
+      minWidth: 0,
+      overflow: 'hidden',
+      [theme.breakpoints.down('sm')]: {
+        display: 'none',
+      },
+    },
+    mobileLocation: {
+      display: 'none',
+      [theme.breakpoints.down('sm')]: {
+        display: 'flex',
+        alignItems: 'center',
+        minWidth: 0,
+        flex: '1 1 auto',
+      },
+    },
+    mobileLocationButton: {
+      minWidth: 0,
+      maxWidth: '100%',
+      paddingLeft: 4,
+      paddingRight: 4,
+      textTransform: 'none',
+      justifyContent: 'flex-start',
+      overflow: 'hidden',
+      '& .MuiButton-label': {
+        display: 'block',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+      },
+    },
+    mobileUpButton: {
+      flex: '0 0 auto',
+      padding: 6,
+    },
+    breadcrumbsArea: {
+      display: 'flex',
+      alignItems: 'center',
+      flex: '1 1 auto',
+      minWidth: 0,
+      overflow: 'hidden',
+    },
+    copyPathArea: {
+      display: 'flex',
+      alignItems: 'center',
+      flexShrink: 0,
+    },
+    actionsArea: {
+      display: 'flex',
+      alignItems: 'center',
+      flexShrink: 0,
+      marginLeft: 'auto',
     },
   })
 })
@@ -47,112 +95,71 @@ export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(pr
   const repository = useRepository()
   const history = useHistory()
   const { location } = history
-  const localization = useLocalization()
-  const globalClasses = useGlobalStyles()
   const classes = useStyles()
-  const { openDialog } = useDialog()
   const selectionService = useSelectionService()
-  const [selected, setSelected] = useState(selectionService.selection.getValue())
+  const device = useContext(ResponsiveContext)
 
-  useEffect(() => {
-    const selectedComponentsObserve = selectionService.selection.subscribe((newSelectedComponents) =>
-      setSelected(newSelectedComponents),
-    )
+  const items = [
+    ...ancestors.map((content) => ({
+      displayName: content.DisplayName || content.Name,
+      title: content.Path,
+      url: getPrimaryActionUrl({ content, repository, uiSettings, location }),
+      content,
+    })),
+    {
+      displayName: parent.DisplayName || parent.Name,
+      title: parent.Path,
+      url: getPrimaryActionUrl({ content: parent, repository, uiSettings, location }),
+      content: parent,
+    },
+  ]
 
-    return function cleanup() {
-      selectedComponentsObserve.dispose()
-    }
-  }, [selectionService.selection])
+  const handleItemClick = (item: BreadcrumbItem<T>) => {
+    selectionService.activeContent.setValue(item.content)
+    props.onItemClick
+      ? props.onItemClick(item)
+      : history.push(getPrimaryActionUrl({ content: item.content, repository, uiSettings, location }))
+  }
+
+  const parentItem = items[items.length - 1]
+  const ancestorItem = items[items.length - 2]
 
   return (
     <div className={classes.buttonsWrapper}>
-      <Breadcrumbs<T>
-        items={[
-          ...ancestors.map((content) => ({
-            displayName: content.DisplayName || content.Name,
-            title: content.Path,
-            url: getPrimaryActionUrl({ content, repository, uiSettings, location }),
-            content,
-          })),
-          {
-            displayName: parent.DisplayName || parent.Name,
-            title: parent.Path,
-            url: getPrimaryActionUrl({ content: parent, repository, uiSettings, location }),
-            content: parent,
-          },
-        ]}
-        onItemClick={(_ev, item) => {
-          selectionService.activeContent.setValue(item.content)
-          props.onItemClick
-            ? props.onItemClick(item)
-            : history.push(getPrimaryActionUrl({ content: item.content, repository, uiSettings, location }))
-        }}
-      />
-      {props.batchActions && selected.length > 0 ? (
-        <div className={classes.batchActionWrapper} data-test="batch-actions">
-          <Tooltip title={localization.batchActions.delete} placement="bottom">
-            <IconButton
-              className={classes.actionButton}
-              data-test="batch-delete"
-              aria-label="delete"
-              onClick={() => {
-                openDialog({
-                  name: 'delete',
-                  props: { content: selected },
-                  dialogProps: { disableBackdropClick: true, disableEscapeKeyDown: true },
-                })
-              }}>
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title={localization.batchActions.move} placement="bottom">
-            <IconButton
-              className={classes.actionButton}
-              data-test="batch-move"
-              aria-label="move"
-              onClick={() => {
-                openDialog({
-                  name: 'copy-move',
-                  props: {
-                    content: selected,
-                    currentParent: parent,
-                    operation: 'move',
-                  },
-                  dialogProps: {
-                    disableBackdropClick: true,
-                    disableEscapeKeyDown: true,
-                    classes: { paper: globalClasses.pickerDialog },
-                  },
-                })
-              }}>
-              <FileCopyIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title={localization.batchActions.copy} placement="bottom">
-            <IconButton
-              className={classes.actionButton}
-              data-test="batch-copy"
-              aria-label="copy"
-              onClick={() => {
-                openDialog({
-                  name: 'copy-move',
-                  props: {
-                    content: selected,
-                    currentParent: parent,
-                    operation: 'copy',
-                  },
-                  dialogProps: {
-                    disableBackdropClick: true,
-                    disableEscapeKeyDown: true,
-                    classes: { paper: globalClasses.pickerDialog },
-                  },
-                })
-              }}>
-              <FileCopyOutlinedIcon />
-            </IconButton>
-          </Tooltip>
+      <div className={classes.breadcrumbsArea}>
+        {device === 'mobile' ? (
+          <div className={classes.mobileLocation}>
+            {ancestorItem ? (
+              <Tooltip title={ancestorItem.title} placement="bottom">
+                <IconButton
+                  className={classes.mobileUpButton}
+                  aria-label="Go up"
+                  size="small"
+                  onClick={() => handleItemClick(ancestorItem)}>
+                  <ArrowUpward fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            ) : null}
+            <Tooltip title={parentItem.title} placement="bottom">
+              <Button className={classes.mobileLocationButton} aria-label={parentItem.displayName}>
+                {parentItem.displayName}
+              </Button>
+            </Tooltip>
+          </div>
+        ) : (
+          <div className={classes.desktopBreadcrumbs}>
+            <div className={classes.copyPathArea}>
+              <CopyPath copyText={parent.Path} />
+            </div>
+            <Breadcrumbs<T> items={items} onItemClick={(_ev, item) => handleItemClick(item)} />
+          </div>
+        )}
+      </div>
+      {props.batchActions && (
+        <div className={classes.actionsArea}>
+          <BatchActions />
         </div>
-      ) : null}
+      )}
     </div>
   )
 }

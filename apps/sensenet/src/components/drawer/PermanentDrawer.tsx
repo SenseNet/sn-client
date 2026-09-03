@@ -15,6 +15,7 @@ import { useDrawerItems, useLocalization } from '../../hooks'
 import { AddButton } from '../AddButton'
 import { SearchButton } from '../search-button'
 import { PermanentDrawerItem } from './PermanentDrawerItem'
+import { RepositorySelector } from './repository-selector'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -23,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) => {
       flexShrink: 0,
       position: 'relative',
       width: globals.common.drawerWidthCollapsed,
+      transition: 'width 250ms ease-in-out',
       '&$opened': {
         width: globals.common.drawerWidthExpanded,
       },
@@ -47,13 +49,14 @@ const useStyles = makeStyles((theme: Theme) => {
       paddingTop: 0,
     },
     listWrapper: {
-      overflowY: 'auto',
+      overflowY: 'hidden',
       overflowX: 'hidden',
       width: '100%',
     },
     listButton: {
-      height: '60px',
-      paddingLeft: '2px',
+      height: '36px',
+      paddingLeft: '7px',
+      width: 'auto',
     },
     expandCollapseWrapper: {
       height: '49px',
@@ -97,7 +100,7 @@ export const PermanentDrawer = () => {
                 onClick={() => setOpened(!opened)}
                 key="expandcollapse"
                 data-test="drawer-expandcollapse-button">
-                <ListItemIcon className={globalClasses.centered}>
+                <ListItemIcon>
                   <Tooltip
                     className={globalClasses.centered}
                     title={opened ? localization.collapse : localization.expand}
@@ -107,6 +110,7 @@ export const PermanentDrawer = () => {
                 </ListItemIcon>
               </ListItem>
             ) : null}
+            {opened ? <RepositorySelector /> : null}
             {matchPath(location.pathname, PATHS.savedQueries.appPath) ? <SearchButton isOpened={opened} /> : null}{' '}
             {matchPath(location.pathname, [
               PATHS.content.appPath,
@@ -117,7 +121,11 @@ export const PermanentDrawer = () => {
               PATHS.custom.appPath.replace(':path', 'root'),
             ]) ? (
               <AddButton aria-label={localization.add} isOpened={opened} />
-            ) : null}
+            ) : (
+              !matchPath(location.pathname, PATHS.savedQueries.appPath) && (
+                <AddButton aria-label={localization.add} isOpened={opened} isDisabled={true} />
+              )
+            )}
             {baseItems.map((item) => {
               return (
                 item.itemType !== 'Settings' && <PermanentDrawerItem item={item} opened={opened} key={item.itemType} />

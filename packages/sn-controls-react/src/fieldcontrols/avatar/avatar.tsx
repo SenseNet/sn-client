@@ -54,7 +54,7 @@ export const Avatar: FunctionComponent<AvatarProps> = (props) => {
       required={props.settings.Compulsory}>
       {!props.hideLabel && (
         <InputLabel shrink={true} htmlFor={props.settings.Name} className={classes.label}>
-          {props.settings.DisplayName}
+          {`${props.settings.DisplayName} (${props.settings.Name})`}
         </InputLabel>
       )}
 
@@ -87,7 +87,7 @@ export const Avatar: FunctionComponent<AvatarProps> = (props) => {
         shrink={true}
         htmlFor={props.settings.Name}
         style={{ paddingTop: '9px', transformOrigin: 'top center' }}>
-        {props.settings.DisplayName}
+        {`${props.settings.DisplayName} (${props.settings.Name})`}
       </InputLabel>
     </div>
   )

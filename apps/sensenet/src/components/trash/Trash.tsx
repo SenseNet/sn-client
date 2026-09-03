@@ -2,11 +2,13 @@ import { ODataParams } from '@sensenet/client-core'
 import { GenericContent, TrashBin } from '@sensenet/default-content-types'
 import React, { memo, useContext } from 'react'
 import { useHistory } from 'react-router-dom'
+import { GridKeyEnum } from '../../../src/components/grid/enums/GridKey.enum'
 import { PATHS, resolvePathParams } from '../../application-paths'
 import { ResponsivePersonalSettings } from '../../context'
 import { useLoadContent } from '../../hooks/use-loadContent'
 import { pathWithQueryParams } from '../../services'
 import { Content } from '../content'
+import { trashColumnDefs } from '../grid/Cols/ColumnDefs.'
 import TrashHeader from './TrashHeader'
 
 const oDataOptions: ODataParams<TrashBin> = { select: 'all' }
@@ -40,6 +42,8 @@ const Trash = memo(() => {
       </div>
       <Content
         rootPath={PATHS.trash.snPath}
+        colDef={trashColumnDefs}
+        gridKey={GridKeyEnum.TRASH}
         fieldsToDisplay={[
           { field: 'DisplayName' as keyof GenericContent },
           { field: 'Locked' as keyof GenericContent },

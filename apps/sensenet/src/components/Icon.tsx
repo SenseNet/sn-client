@@ -60,7 +60,9 @@ import travisCi from '@iconify-icons/logos/travis-ci'
 import vercelIcon from '@iconify-icons/logos/vercel-icon'
 import React, { CSSProperties, FunctionComponent } from 'react'
 import { EventLogEntry } from '../services/EventService'
+import { isImageContent } from '../services/image-content-service'
 import { IconFromPath } from './IconFromPath'
+import { ImageThumbnail } from './image-thumbnail'
 import { UserAvatar } from './UserAvatar'
 
 export interface IconOptions {
@@ -184,18 +186,39 @@ const getIconByName = (name: string | undefined, options: IconOptions) => {
   }
 }
 
-const getIconByPath = (icon: string | undefined, options: IconOptions) => {
-  if (!icon || !icon.startsWith('/')) {
-    return null
-  }
-
-  return <IconFromPath path={icon} options={options} />
-}
-
 /* eslint-disable react/display-name */
 export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   {
-    get: (item, options) => getIconByPath(item.Icon, options),
+    get: (item, options) =>
+      isImageContent(item) ? <ImageThumbnail content={item} repository={options.repo} style={options.style} /> : null,
+  },
+  {
+    get: (item, options) => {
+      let icon = item.Icon
+      const name = item.Name?.toLowerCase()
+      const type = item.Type?.toLowerCase()
+      const path = item.Path?.toLowerCase()
+      if (!icon || !type || !path) {
+        return null
+      } else if (icon.toLowerCase() === 'excel') {
+        icon = '/Root/System/Images/Icons/colors/csv.svg'
+      } else if (icon.toLowerCase() === 'word') {
+        icon = '/Root/System/Images/Icons/colors/word.svg'
+      } else if (icon.toLowerCase() === 'acrobat' || icon.toLowerCase() === 'adobe') {
+        icon = '/Root/System/Images/Icons/colors/pdf.svg'
+      } else if (name.endsWith('.xls') || name.endsWith('.xlsx') || name.endsWith('.xlsm')) {
+        icon = '/Root/System/Images/Icons/colors/xls.svg'
+      } else if (type.endsWith('file')) {
+        if (path.endsWith('.csv')) {
+          icon = '/Root/System/Images/Icons/colors/csv.svg'
+        } else if (path.endsWith('.svg')) {
+          icon = '/Root/System/Images/Icons/colors/file_img.svg'
+        }
+      } else if (!icon.startsWith('/')) {
+        return null
+      }
+      return <IconFromPath path={icon} options={options} />
+    },
   },
   {
     get: (item, options) =>
@@ -313,10 +336,15 @@ export const IconComponent: FunctionComponent<{
     ...defaultNotificationResolvers,
   ]
   const defaultIcon = props.defaultIcon || <WebAssetOutlined style={props.style} /> || null
-  const assignedResolver = resolvers.find((r) => (r.get(props.item, options) ? true : false))
-  if (assignedResolver) {
-    return assignedResolver.get(props.item, options)!
+
+  for (const resolver of resolvers) {
+    const icon = resolver.get(props.item, options)
+
+    if (icon) {
+      return icon
+    }
   }
+
   return defaultIcon
 }
 

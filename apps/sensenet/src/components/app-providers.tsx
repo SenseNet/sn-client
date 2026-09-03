@@ -1,15 +1,20 @@
 import { InjectorContext, LoggerContextProvider } from '@sensenet/hooks-react'
-import React, { ReactNode } from 'react'
+import React, { ReactNode, Suspense, useCallback, useEffect, useState } from 'react'
 import { BrowserRouter } from 'react-router-dom'
+import { AuthServerType, defaultAuthConfig } from '../auth-config'
 import {
-  CurrentUserProvider,
+  authConfigKey as authConfigKeyIS,
   LocalizationProvider,
   PersonalSettingsContextProvider,
   RepositoryProvider,
+  RepositorySwitchContext,
   ResponsiveContextProvider,
   ThemeProvider,
 } from '../context'
+import { ISAuthProvider, SNAuthProvider } from '../context/auth-provider'
+import PathSaver from '../context/PathSaver'
 import { ShareProvider } from '../context/ShareProvider'
+import { authConfigKey as authConfigKeySN, SnAuthRepositoryProvider } from '../context/sn-auth-repository-provider'
 import {
   CommandProviderManager,
   CustomActionCommandProvider,
@@ -17,14 +22,75 @@ import {
   NavigationCommandProvider,
   SearchCommandProvider,
 } from '../services'
+import {
+  clearActiveRepositorySelection,
+  hasSnAuthRepositoryTokens,
+  normalizeRepositoryUrl,
+  startSnAuthRepositoryLogin,
+} from '../services/repository-session'
 import { DialogProvider } from './dialogs/dialog-provider'
+
+import { GridLoadingProvider } from './grid/Providers/GridLoadingProvider'
 import { snInjector } from './sn-injector'
+import ExpandedItemsProvider from './tree/Contexts/ExpandedItemsProvider'
+import { TreeLoadingProvider } from './tree/Contexts/TreeLoadingProvider'
 
 export type AppProvidersProps = {
   children: ReactNode
 }
 
 export default function AppProviders({ children }: AppProvidersProps) {
+  const initAuthType: AuthServerType =
+    (window.localStorage.getItem('authType') as AuthServerType) ?? defaultAuthConfig.authType
+  const [authType, setAuthType] = useState<'IdentityServer' | 'SNAuth'>(initAuthType)
+  const [url, setUrl] = useState<string>('')
+
+  const selectRepository = useCallback((providedUrl: string) => {
+    const normalizedUrl = normalizeRepositoryUrl(providedUrl)
+
+    clearActiveRepositorySelection()
+    startSnAuthRepositoryLogin(normalizedUrl)
+    setUrl(normalizedUrl)
+  }, [])
+
+  const changeAuthType = useCallback((providedUrl: string) => {
+    const normalizedUrl = normalizeRepositoryUrl(providedUrl)
+
+    setUrl(normalizedUrl)
+    setAuthType((prev) => {
+      const newAuthType = prev === 'IdentityServer' ? 'SNAuth' : 'IdentityServer'
+      if (newAuthType === 'SNAuth') {
+        startSnAuthRepositoryLogin(normalizedUrl)
+      }
+      window.localStorage.setItem('authType', newAuthType)
+      return newAuthType
+    })
+  }, [])
+
+  const switchRepository = useCallback((providedUrl: string) => {
+    const normalizedUrl = normalizeRepositoryUrl(providedUrl)
+
+    if (!hasSnAuthRepositoryTokens(normalizedUrl)) {
+      startSnAuthRepositoryLogin(normalizedUrl)
+    }
+
+    window.localStorage.setItem('authType', 'SNAuth')
+    setAuthType('SNAuth')
+    setUrl(normalizedUrl)
+  }, [])
+
+  useEffect(() => {
+    const repoUrl = new URL(window.location.href).searchParams.get('repoUrl')
+    if (repoUrl) {
+      selectRepository(repoUrl)
+      return
+    }
+
+    const IsAuthKey = localStorage.getItem(authConfigKeyIS)
+    const SnAuthKey = localStorage.getItem(authConfigKeySN)
+    if (IsAuthKey || SnAuthKey) return
+  }, [selectRepository])
+
   snInjector
     .getInstance(CommandProviderManager)
     .RegisterProviders(
@@ -33,23 +99,47 @@ export default function AppProviders({ children }: AppProvidersProps) {
       NavigationCommandProvider,
       SearchCommandProvider,
     )
+
   return (
     <InjectorContext.Provider value={snInjector}>
       <LoggerContextProvider>
         <PersonalSettingsContextProvider>
           <LocalizationProvider>
             <BrowserRouter>
-              <ThemeProvider>
-                <RepositoryProvider>
-                  <ShareProvider>
-                    <CurrentUserProvider>
-                      <ResponsiveContextProvider>
-                        <DialogProvider>{children}</DialogProvider>
-                      </ResponsiveContextProvider>
-                    </CurrentUserProvider>
-                  </ShareProvider>
-                </RepositoryProvider>
-              </ThemeProvider>
+              <PathSaver />
+              <GridLoadingProvider>
+                <TreeLoadingProvider>
+                  <ThemeProvider>
+                    <RepositorySwitchContext.Provider value={{ authType, switchRepository }}>
+                      {authType === 'IdentityServer' ? (
+                        <RepositoryProvider url={url} changeAuthType={changeAuthType}>
+                          <ShareProvider>
+                            <ISAuthProvider>
+                              <ResponsiveContextProvider>
+                                <ExpandedItemsProvider>
+                                  <DialogProvider>{children}</DialogProvider>
+                                </ExpandedItemsProvider>
+                              </ResponsiveContextProvider>
+                            </ISAuthProvider>
+                          </ShareProvider>
+                        </RepositoryProvider>
+                      ) : (
+                        <SnAuthRepositoryProvider url={url} changeAuthType={changeAuthType}>
+                          <ShareProvider>
+                            <SNAuthProvider>
+                              <ResponsiveContextProvider>
+                                <ExpandedItemsProvider>
+                                  <DialogProvider>{children}</DialogProvider>
+                                </ExpandedItemsProvider>
+                              </ResponsiveContextProvider>
+                            </SNAuthProvider>
+                          </ShareProvider>
+                        </SnAuthRepositoryProvider>
+                      )}
+                    </RepositorySwitchContext.Provider>
+                  </ThemeProvider>
+                </TreeLoadingProvider>
+              </GridLoadingProvider>
             </BrowserRouter>
           </LocalizationProvider>
         </PersonalSettingsContextProvider>

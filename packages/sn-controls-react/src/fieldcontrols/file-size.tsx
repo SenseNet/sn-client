@@ -1,12 +1,13 @@
 /**
  * @module FieldControls
  */
-import { FormHelperText, InputAdornment, TextField, Typography } from '@material-ui/core'
+import { InputAdornment, TextField, Typography } from '@material-ui/core'
 import { deepMerge, toNumber } from '@sensenet/client-utils'
 import { NumberFieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { changeTemplatedValue, formatSize } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 
 /**
@@ -47,11 +48,19 @@ export const FileSizeField: React.FC<ReactClientFieldSetting<NumberFieldSetting>
     case 'new':
       return (
         <>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
+          />
           <TextField
+            variant="outlined"
+            style={{ width: '100%' }}
             autoFocus={props.autoFocus}
             name={props.settings.Name}
             type="number"
-            label={props.settings.DisplayName}
             value={value}
             required={props.settings.Compulsory}
             disabled={props.settings.ReadOnly}
@@ -68,7 +77,6 @@ export const FileSizeField: React.FC<ReactClientFieldSetting<NumberFieldSetting>
             fullWidth={true}
             onChange={handleChange}
           />
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </>
       )
     case 'browse':
@@ -76,7 +84,7 @@ export const FileSizeField: React.FC<ReactClientFieldSetting<NumberFieldSetting>
       return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
             {props.fieldValue && props.fieldValue !== '0' ? (

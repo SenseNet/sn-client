@@ -51,10 +51,16 @@ export function SearchProvider({
   defaultTerm,
   defaultFilters,
   children,
-}: PropsWithChildren<{ defaultTerm?: string; defaultFilters?: Filters }>) {
+  maxSearchResult = 200,
+  currentPage = 1,
+}: PropsWithChildren<{
+  defaultTerm?: string
+  defaultFilters?: Filters
+  maxSearchResult?: number
+  currentPage?: number
+}>) {
   const repository = useRepository()
   const history = useHistory()
-  const maxSearchResult = 200
 
   const [term, setTerm] = useState(defaultTerm ?? '')
   const [result, setResult] = useState<GenericContent[]>([])
@@ -70,6 +76,10 @@ export function SearchProvider({
       reference: defaultReferenceFilter,
     },
   )
+
+  useEffect(() => {
+    setTerm(defaultTerm ?? '')
+  }, [defaultTerm])
 
   useEffect(() => {
     const ac = new AbortController()
@@ -97,6 +107,7 @@ export function SearchProvider({
               : repository.configuration.requiredSelect,
             expand: ['ModifiedBy'],
             top: maxSearchResult,
+            skip: (currentPage - 1) * maxSearchResult,
           },
           requestInit: { signal: ac.signal },
         })
@@ -117,7 +128,7 @@ export function SearchProvider({
 
     fetchResult()
     return () => ac.abort()
-  }, [term, repository, history, filters])
+  }, [term, repository, history, filters, maxSearchResult, currentPage])
 
   return (
     <SearchContext.Provider
