@@ -7,6 +7,11 @@ import { PlatformDependent } from '../context'
 const settingsKey = `SN-APP-USER-SETTINGS`
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
 
+export const ContentViewModes = tuple('details', 'list', 'icons', 'thumbnails')
+export type ContentViewMode = (typeof ContentViewModes)[number]
+export const ContentIconSizes = tuple('small', 'medium', 'large', 'extraLarge')
+export type ContentIconSize = (typeof ContentIconSizes)[number]
+
 export interface UiSettings {
   content: {
     browseType: (typeof BrowseType)[number]
@@ -93,6 +98,10 @@ export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   showLeafItemsInTree: boolean
   preferDisplayName: boolean
   sortFoldersFirst: boolean
+  defaultContentView: ContentViewMode
+  contentIconSize: ContentIconSize
+  contentShowType: boolean
+  contentPreferDisplayName: boolean
   logLevel: Array<keyof typeof LogLevel>
   language: 'default' | 'hungarian'
   theme: 'light' | 'dark'
@@ -149,6 +158,10 @@ export const defaultSettings: PersonalSettingsType = {
   showLeafItemsInTree: false,
   preferDisplayName: false,
   sortFoldersFirst: true,
+  defaultContentView: 'details',
+  contentIconSize: 'medium',
+  contentShowType: true,
+  contentPreferDisplayName: true,
   uploadHandlers: [
     'SenseNet.ContentRepository.File',
     'SenseNet.ContentRepository.Image',
@@ -179,7 +192,24 @@ export class PersonalSettings {
   }
 
   private checkValues(settings: Partial<PersonalSettingsType>): Partial<PersonalSettingsType> {
-    return this.checkDrawerItems(settings)
+    if (!settings || typeof settings !== 'object' || Array.isArray(settings)) {
+      return {}
+    }
+
+    const checked = this.checkDrawerItems({ ...settings })
+    if (!ContentViewModes.includes(checked.defaultContentView as ContentViewMode)) {
+      delete checked.defaultContentView
+    }
+    if (!ContentIconSizes.includes(checked.contentIconSize as ContentIconSize)) {
+      delete checked.contentIconSize
+    }
+    if (typeof checked.contentShowType !== 'boolean') {
+      delete checked.contentShowType
+    }
+    if (typeof checked.contentPreferDisplayName !== 'boolean') {
+      delete checked.contentPreferDisplayName
+    }
+    return checked
   }
 
   public getLocalUserSettingsValue(): Partial<PersonalSettingsType> {
@@ -197,8 +227,9 @@ export class PersonalSettings {
   public effectiveValue = new ObservableValue(deepMerge(defaultSettings, this.userValue.getValue()))
 
   public setPersonalSettingsValue(settings: Partial<PersonalSettingsType>) {
-    this.userValue.setValue(settings)
-    this.effectiveValue.setValue(deepMerge(defaultSettings, settings))
-    localStorage.setItem(`${settingsKey}`, JSON.stringify(settings))
+    const checked = this.checkValues(settings)
+    this.userValue.setValue(checked)
+    this.effectiveValue.setValue(deepMerge(defaultSettings, checked))
+    localStorage.setItem(`${settingsKey}`, JSON.stringify(checked))
   }
 }

@@ -12,7 +12,15 @@ import { PATHS, resolvePathParams } from '../../application-paths'
 import { useAuth } from '../../context/auth-provider'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization, usePersonalSettings } from '../../hooks'
-import { pathWithQueryParams, PersonalSettings } from '../../services'
+import {
+  ContentIconSize,
+  ContentIconSizes,
+  ContentViewMode,
+  ContentViewModes,
+  pathWithQueryParams,
+  PersonalSettings,
+  PersonalSettingsType,
+} from '../../services'
 import { useDialog } from '../dialogs'
 import { UserAvatar } from '../UserAvatar'
 
@@ -62,7 +70,11 @@ const useStyles = makeStyles((theme: Theme) =>
       top: globals.common.headerHeight,
       right: '1px',
       height: 'fit-content',
-      width: '300px',
+      width: '340px',
+      maxWidth: 'calc(100vw - 16px)',
+      maxHeight: `calc(100vh - ${globals.common.headerHeight + 8}px)`,
+      overflowY: 'auto',
+      overscrollBehavior: 'contain',
     },
     popper: {
       backgroundColor: theme.palette.type === 'light' ? globals.light.navMenuColor : globals.dark.navMenuColor,
@@ -91,6 +103,7 @@ const useStyles = makeStyles((theme: Theme) =>
     checkboxMenuItem: {
       color: theme.palette.primary.main,
       fontSize: '14px',
+      whiteSpace: 'normal',
       '& .MuiButtonBase-root': {
         padding: '2px',
         color: theme.palette.type === 'light' ? theme.palette.common.white : theme.palette.common.black,
@@ -106,6 +119,38 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize: '12px',
       fontWeight: 600,
       textTransform: 'uppercase',
+    },
+    settingsSelect: {
+      listStyle: 'none',
+      padding: theme.spacing(1, 2),
+      display: 'grid',
+      gridTemplateColumns: '1fr minmax(145px, 50%)',
+      alignItems: 'center',
+      gap: 12,
+    },
+    settingsSelectLabel: {
+      color: theme.palette.primary.main,
+      fontSize: 14,
+      lineHeight: 1.4,
+    },
+    settingsSelectInput: {
+      width: '100%',
+      minWidth: 0,
+      minHeight: 32,
+      boxSizing: 'border-box',
+      padding: '5px 8px',
+      border: `1px solid ${theme.palette.divider}`,
+      borderRadius: 2,
+      backgroundColor: theme.palette.background.default,
+      color: theme.palette.text.primary,
+      font: 'inherit',
+      fontSize: 12,
+      cursor: 'pointer',
+      '&:hover': { borderColor: theme.palette.text.secondary },
+      '&:focus-visible': {
+        outline: `2px solid ${theme.palette.primary.main}`,
+        outlineOffset: 1,
+      },
     },
   }),
 )
@@ -190,13 +235,19 @@ export const DesktopNavMenu: FunctionComponent = () => {
     service.setPersonalSettingsValue({ ...settings, sortFoldersFirst: event.target.checked })
   }
 
+  const updateExplorerSettings = (settings: Partial<PersonalSettingsType>) => {
+    service.setPersonalSettingsValue({ ...service.userValue.getValue(), ...settings })
+  }
+
   return (
     <div className={clsx(globalClasses.centered, classes.navMenu, isViewOptionsMenuDisabled && classes.navMenuCompact)}>
       <>
         {!isViewOptionsMenuDisabled ? (
           <IconButton
             aria-label={localization.topMenu.openViewOptions}
-            aria-controls={openViewOptions ? 'menu-list-grow' : undefined}
+            aria-controls={openViewOptions ? 'view-options' : undefined}
+            aria-haspopup="true"
+            aria-expanded={openViewOptions}
             className={classes.viewOptions}
             onClick={() => handleToggle(setOpenViewOptions)}>
             <TuneOutlined />
@@ -293,10 +344,16 @@ export const DesktopNavMenu: FunctionComponent = () => {
         </Paper>
       ) : null}
       {!isViewOptionsMenuDisabled && openViewOptions ? (
-        <Paper className={classes.popperViewWrapper}>
+        <Paper
+          className={classes.popperViewWrapper}
+          onKeyDown={(event) => {
+            if (event.key === 'Escape') {
+              handleClose(setOpenViewOptions)
+            }
+          }}>
           <div className={classes.popper}>
             <ClickAwayListener onClickAway={() => handleClose(setOpenViewOptions)}>
-              <MenuList autoFocusItem={openViewOptions} id="menu-list-grow">
+              <MenuList autoFocusItem={openViewOptions} id="view-options" aria-label={localization.topMenu.viewOptions}>
                 <MenuItem onClick={() => handleClose(setOpenViewOptions)}>
                   <Typography component="div" style={{ margin: '0 auto' }}>
                     {localization.topMenu.viewOptions}
@@ -311,7 +368,7 @@ export const DesktopNavMenu: FunctionComponent = () => {
                   <Typography component="div" className={classes.checkboxMenuItem} style={{ width: '100%' }}>
                     <Grid component="label" container alignItems="center" justify="space-between">
                       <Grid item style={{ paddingRight: '16px' }} data-test="theme-status">
-                        {'Dark theme'}
+                        {localization.topMenu.darkTheme}
                       </Grid>
                       <Grid item>
                         <Switch
@@ -327,7 +384,7 @@ export const DesktopNavMenu: FunctionComponent = () => {
                   <Typography component="div" className={classes.checkboxMenuItem} style={{ width: '100%' }}>
                     <Grid component="label" container alignItems="center" justify="space-between">
                       <Grid item style={{ paddingRight: '16px' }} data-test="description-status">
-                        {'Show Description'}
+                        {localization.topMenu.showDescription}
                       </Grid>
                       <Grid item>
                         <Switch
@@ -350,6 +407,111 @@ export const DesktopNavMenu: FunctionComponent = () => {
                           data-test="hide-settings-folder-checkbox"
                           checked={personalSettings.showHiddenItems}
                           onChange={toggleHideSettingsFolder()}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Typography>
+                </MenuItem>
+                <MenuItem>
+                  <Typography component="div" className={classes.checkboxMenuItem} style={{ width: '100%' }}>
+                    <Grid component="label" container alignItems="center" justify="space-between">
+                      <Grid item style={{ paddingRight: '16px' }}>
+                        {localization.topMenu.sortFoldersFirst}
+                      </Grid>
+                      <Grid item>
+                        <Switch
+                          data-test="sort-folders-first-checkbox"
+                          checked={personalSettings.sortFoldersFirst}
+                          onChange={toggleSortFoldersFirstValue()}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Typography>
+                </MenuItem>
+                <li className={classes.sectionHeaderMenuItem}>
+                  <Typography component="div" className={classes.sectionHeaderText}>
+                    {localization.contentViews.explorerOptions}
+                  </Typography>
+                </li>
+                <li
+                  className={classes.settingsSelect}
+                  role="none"
+                  onKeyDown={(event) => {
+                    if (event.key !== 'Escape') event.stopPropagation()
+                  }}>
+                  <label htmlFor="default-content-view" className={classes.settingsSelectLabel}>
+                    {localization.contentViews.defaultView}
+                  </label>
+                  <select
+                    id="default-content-view"
+                    data-test="default-content-view"
+                    className={classes.settingsSelectInput}
+                    value={personalSettings.defaultContentView}
+                    onChange={(event) =>
+                      updateExplorerSettings({ defaultContentView: event.target.value as ContentViewMode })
+                    }>
+                    {ContentViewModes.map((mode) => (
+                      <option key={mode} value={mode}>
+                        {localization.contentViews[mode]}
+                      </option>
+                    ))}
+                  </select>
+                </li>
+                <li
+                  className={classes.settingsSelect}
+                  role="none"
+                  onKeyDown={(event) => {
+                    if (event.key !== 'Escape') event.stopPropagation()
+                  }}>
+                  <label htmlFor="default-content-icon-size" className={classes.settingsSelectLabel}>
+                    {localization.contentViews.iconSize}
+                  </label>
+                  <select
+                    id="default-content-icon-size"
+                    data-test="default-content-icon-size"
+                    className={classes.settingsSelectInput}
+                    value={personalSettings.contentIconSize}
+                    onChange={(event) =>
+                      updateExplorerSettings({ contentIconSize: event.target.value as ContentIconSize })
+                    }>
+                    {ContentIconSizes.map((size) => (
+                      <option key={size} value={size}>
+                        {localization.contentViews[size]}
+                      </option>
+                    ))}
+                  </select>
+                </li>
+                <MenuItem>
+                  <Typography component="div" className={classes.checkboxMenuItem} style={{ width: '100%' }}>
+                    <Grid component="label" container alignItems="center" justify="space-between">
+                      <Grid item style={{ paddingRight: '16px' }}>
+                        {localization.contentViews.showType}
+                      </Grid>
+                      <Grid item>
+                        <Switch
+                          data-test="content-show-type"
+                          checked={personalSettings.contentShowType}
+                          onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                            updateExplorerSettings({ contentShowType: event.target.checked })
+                          }
+                        />
+                      </Grid>
+                    </Grid>
+                  </Typography>
+                </MenuItem>
+                <MenuItem>
+                  <Typography component="div" className={classes.checkboxMenuItem} style={{ width: '100%' }}>
+                    <Grid component="label" container alignItems="center" justify="space-between">
+                      <Grid item style={{ paddingRight: '16px' }}>
+                        {localization.contentViews.preferDisplayName}
+                      </Grid>
+                      <Grid item>
+                        <Switch
+                          data-test="content-prefer-display-name"
+                          checked={personalSettings.contentPreferDisplayName}
+                          onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                            updateExplorerSettings({ contentPreferDisplayName: event.target.checked })
+                          }
                         />
                       </Grid>
                     </Grid>
@@ -387,22 +549,6 @@ export const DesktopNavMenu: FunctionComponent = () => {
                           data-test="prefer-display-name-checkbox"
                           checked={personalSettings.preferDisplayName}
                           onChange={togglePreferDisplayNameValue()}
-                        />
-                      </Grid>
-                    </Grid>
-                  </Typography>
-                </MenuItem>
-                <MenuItem>
-                  <Typography component="div" className={classes.checkboxMenuItem} style={{ width: '100%' }}>
-                    <Grid component="label" container alignItems="center" justify="space-between">
-                      <Grid item style={{ paddingRight: '16px' }}>
-                        {localization.topMenu.sortFoldersFirst}
-                      </Grid>
-                      <Grid item>
-                        <Switch
-                          data-test="sort-folders-first-checkbox"
-                          checked={personalSettings.sortFoldersFirst}
-                          onChange={toggleSortFoldersFirstValue()}
                         />
                       </Grid>
                     </Grid>

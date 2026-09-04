@@ -5,6 +5,8 @@ import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsProvider,
+  CurrentChildrenContext,
+  CurrentChildrenIsLoadingContext,
   CurrentChildrenProvider,
   CurrentContentContext,
   CurrentContentProvider,
@@ -19,11 +21,12 @@ import { useHistory } from 'react-router'
 import { GridKeyEnum } from '../../../src/components/grid/enums/GridKey.enum'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
-import { useQuery, useSelectionService, useSnRoute } from '../../hooks'
+import { usePersonalSettings, useQuery, useSelectionService, useSnRoute } from '../../hooks'
 import { useRepositoryColumnSettings } from '../../hooks/use-repository-column-settings'
 import { getPrimaryActionUrl, navigateToAction } from '../../services'
 import { ColumnSettingsSource, LegacyColumnSetting, LegacyColumnSettings } from '../../services/column-settings-service'
 import { resolveContentLinkTarget } from '../../services/favorites'
+import { ContentViewMode } from '../../services/PersonalSettings'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { DocumentViewer } from '../document-viewer'
 import { EditBinary } from '../edit/edit-binary'
@@ -33,6 +36,8 @@ import { BrowseView, EditView, ImageView, NewView, PermissionView, VersionView }
 import WopiPage from '../wopi-page'
 import { AUI_APPLICATION_CONTENT_TYPE, AUIApplicationView } from './AUIApplicationView'
 import { ContentInfo } from './ContentInfo'
+import { ContentItemsView } from './ContentItemsView'
+import { ContentViewToolbar } from './ContentViewToolbar'
 
 const requiredGridLoadFields: ODataFieldParameter<GenericContent> = [
   'Id',
@@ -51,6 +56,7 @@ const requiredGridLoadFields: ODataFieldParameter<GenericContent> = [
   'ModificationDate',
   'Index',
   'Locked',
+  'Version',
 ]
 
 const getGridLoadChildrenSettings = (
@@ -58,6 +64,8 @@ const getGridLoadChildrenSettings = (
   columnSettings?: LegacyColumnSetting[],
 ): ODataParams<GenericContent> => {
   const selectFields = new Set<string>(requiredGridLoadFields)
+  selectFields.add('Binary')
+  selectFields.add('PageCount')
   const expandFields = new Set<string>(['CreatedBy', 'ModifiedBy'])
 
   colDef.forEach((columnDefinition) => {
@@ -273,11 +281,34 @@ type ExploreGridOrApplicationProps = {
   onColumnSettingsChange: (settings: LegacyColumnSettings, targetIdOrPath?: string | number) => Promise<void>
   columnSettingsSource?: ColumnSettingsSource
   isColumnSettingsLoading: boolean
+  viewMode: ContentViewMode
+  onViewModeChange: (mode: ContentViewMode) => void
 }
 
 const ActiveContentRouteSync: React.FC = () => {
   const currentContent = useContext(CurrentContentContext)
+  const currentChildren = useContext(CurrentChildrenContext)
+  const isChildrenLoading = useContext(CurrentChildrenIsLoadingContext)
   const selectionService = useSelectionService()
+
+  useEffect(() => {
+    selectionService.selection.setValue([])
+  }, [currentContent.Id, selectionService.selection])
+
+  useEffect(() => {
+    if (isChildrenLoading) return
+    const selected = selectionService.selection.getValue()
+    const childrenById = new Map(currentChildren.map((item) => [item.Id, item]))
+    const refreshedSelection = selected
+      .map((item) => childrenById.get(item.Id))
+      .filter((item): item is GenericContent => Boolean(item))
+    if (
+      refreshedSelection.length !== selected.length ||
+      refreshedSelection.some((item, index) => item !== selected[index])
+    ) {
+      selectionService.selection.setValue(refreshedSelection)
+    }
+  }, [currentChildren, isChildrenLoading, selectionService.selection])
 
   useEffect(() => {
     const activeContent = selectionService.activeContent.getValue()
@@ -302,6 +333,8 @@ const ExploreGridOrApplication: React.FC<ExploreGridOrApplicationProps> = ({
   onColumnSettingsChange,
   columnSettingsSource,
   isColumnSettingsLoading,
+  viewMode,
+  onViewModeChange,
 }) => {
   const selectionService = useSelectionService()
   const currentContent = useContext(CurrentContentContext)
@@ -310,23 +343,33 @@ const ExploreGridOrApplication: React.FC<ExploreGridOrApplicationProps> = ({
     return <AUIApplicationView />
   }
 
+  const contentViewProps = {
+    disableColumnSettings,
+    enableBreadcrumbs: false,
+    fieldsToDisplay,
+    onColumnSettingsChange,
+    columnSettingsSource,
+    isColumnSettingsLoading,
+    schema,
+    onParentChange: onNavigate,
+    onActivateItem,
+    onActiveItemChange: (item: GenericContent) => selectionService.activeContent.setValue(item),
+    parentIdOrPath: currentPath,
+    colDef,
+    gridKey,
+  }
+
   return (
-    <Grid
-      disableColumnSettings={disableColumnSettings}
-      style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
-      enableBreadcrumbs={false}
-      fieldsToDisplay={fieldsToDisplay}
-      onColumnSettingsChange={onColumnSettingsChange}
-      columnSettingsSource={columnSettingsSource}
-      isColumnSettingsLoading={isColumnSettingsLoading}
-      schema={schema}
-      onParentChange={onNavigate}
-      onActivateItem={onActivateItem}
-      onActiveItemChange={(item) => selectionService.activeContent.setValue(item)}
-      parentIdOrPath={currentPath}
-      colDef={colDef}
-      gridKey={gridKey}
-    />
+    <>
+      <ContentViewToolbar viewMode={viewMode} onViewModeChange={onViewModeChange} />
+      <div style={{ flex: '1 1 0', minHeight: 0, overflow: 'hidden' }}>
+        {viewMode === 'details' ? (
+          <Grid {...contentViewProps} />
+        ) : (
+          <ContentItemsView {...contentViewProps} viewMode={viewMode} />
+        )}
+      </div>
+    </>
   )
 }
 
@@ -346,6 +389,11 @@ export function Explore({
   gridKey,
 }: ExploreProps) {
   const theme = useTheme()
+  const personalSettings = usePersonalSettings()
+  const [viewMode, setViewMode] = useState<ContentViewMode>(personalSettings.defaultContentView)
+  useEffect(() => {
+    setViewMode(personalSettings.defaultContentView)
+  }, [personalSettings.defaultContentView])
   const [width, setWidth] = useState<number>(Number(localStorage.getItem('treeWidth') ?? '400'))
   const classes = useStyles({ width })
   const globalClasses = useGlobalStyles()
@@ -493,6 +541,8 @@ export function Explore({
         {renderBeforeGrid?.()}
         <ContentInfo />
         <ExploreGridOrApplication
+          viewMode={viewMode}
+          onViewModeChange={setViewMode}
           disableColumnSettings={disableColumnSettings}
           fieldsToDisplay={columnSettings}
           onColumnSettingsChange={saveColumnSettings}
@@ -530,8 +580,8 @@ export function Explore({
       key={JSON.stringify(currentChildrenLoadSettings)}
       loadChildrenSettings={currentChildrenLoadSettings}>
       <CurrentContentProvider idOrPath={currentPath}>
-        <ActiveContentRouteSync />
         <CurrentChildrenProvider loadSettings={loadChildrenSettings} alwaysRefresh={alwaysRefreshChildren}>
+          <ActiveContentRouteSync />
           <CurrentAncestorsProvider root={rootPath}>
             <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
               {hasTree && isMobile ? (

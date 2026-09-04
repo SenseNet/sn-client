@@ -35,6 +35,12 @@ The repositories you've visited will be also saved in your Personal Settings - y
 You can browse the whole repository with the **Content** menu.
 You can adjust the Content view in the personal setting's _"content"_ section.
 
+### Explorer views
+
+Use the toolbar above the right panel to switch between **Details (grid)**, **List**, **Icons**, and **Thumbnails**. Icons and thumbnails support small, medium, large, and extra large sizes. Selection is kept when switching views; use Ctrl/Cmd-click to select individual items and Shift-click to select a range.
+
+Open **View options → Explorer** to choose the default view, icon/thumbnail size, and whether to show content types or prefer display names. These preferences are saved in this browser. The toolbar's view choice stays active while browsing folders; opening the explorer again or reloading uses the default view. Thumbnails show images and existing document previews, with a type icon when no preview is available.
+
 ### Admin UI Applications
 
 The Admin UI can render repository-defined `AUIApplication` contents as small custom HTML applications inside the content explorer. See the [Admin UI Applications documentation](./docs/auiapplications.md) for the content type, bridge API, and repository read/update examples.

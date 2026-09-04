@@ -88,6 +88,7 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
     left: 0,
   })
   const gridApi = useRef<GridApi | null>(null)
+  const restoringSelection = useRef(false)
   const columnApi = useRef<ColumnApi | null>(null)
   const gridRef = useRef<HTMLDivElement>(null)
   const fixedColumns: string[] = ['0', 'Icon', 'Actions']
@@ -226,10 +227,37 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
   }
 
   const onSelectionChanged = (params: SelectionChangedEvent) => {
+    if (restoringSelection.current) return
     const selectedIds = params.api.getSelectedRows().map((c) => c.Id)
     const selectedItems: GenericContent[] = children.filter((item) => selectedIds.includes(item.Id))
     selectionService.selection.setValue(selectedItems)
   }
+
+  const restoreSelection = useCallback(
+    (api: GridApi) => {
+      const selectedIds = new Set(selectionService.selection.getValue().map((item) => item.Id))
+      restoringSelection.current = true
+      try {
+        api.forEachNode((node) => {
+          const shouldSelect = selectedIds.has(node.data?.Id)
+          if (node.isSelected() !== shouldSelect) node.setSelected(shouldSelect, false, true)
+        })
+      } finally {
+        restoringSelection.current = false
+      }
+    },
+    [selectionService.selection],
+  )
+
+  useEffect(() => {
+    const subscription = selectionService.selection.subscribe(() => {
+      if (gridApi.current) restoreSelection(gridApi.current)
+    })
+    return () => {
+      subscription.dispose()
+      gridApi.current = null
+    }
+  }, [restoreSelection, selectionService.selection])
 
   const onContextMenu = (event: CellContextMenuEvent) => {
     event.event?.preventDefault()
@@ -367,6 +395,7 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
       <div ref={gridRef} style={{ height: '100%', width: '100%' }} aria-busy={showGridLoading}>
         <AgGridReact
           rowData={children}
+          getRowId={(params) => String(params.data.Id)}
           columnDefs={columnDefs}
           className={theme.palette.type === 'light' ? 'ag-theme-balham' : 'ag-theme-balham-dark'}
           rowSelection={'multiple'}
@@ -376,6 +405,8 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
           onRowDoubleClicked={onRowDoubleClicked}
           preventDefaultOnContextMenu={true}
           onGridReady={onGridReady}
+          onFirstDataRendered={(event) => restoreSelection(event.api)}
+          onRowDataUpdated={(event) => restoreSelection(event.api)}
           onSelectionChanged={onSelectionChanged}
           onCellContextMenu={(event) => onContextMenu(event)}
           onColumnResized={onColumnResized}
