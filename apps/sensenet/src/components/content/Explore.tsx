@@ -1,5 +1,5 @@
-import { createStyles, IconButton, makeStyles, SwipeableDrawer, Theme, Tooltip, useTheme } from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu'
+import { createStyles, makeStyles, SwipeableDrawer, Theme, useTheme } from '@material-ui/core'
+import FolderOpenOutlined from '@material-ui/icons/FolderOpenOutlined'
 import { ODataFieldParameter, ODataParams } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
@@ -11,17 +11,18 @@ import {
   CurrentContentContext,
   CurrentContentProvider,
   LoadSettingsContextProvider,
+  useLogger,
   useRepository,
 } from '@sensenet/hooks-react'
 import { ColumnSetting } from '@sensenet/list-controls-react/src/ContentList/content-list-base-props'
 import { ColDef } from 'ag-grid-community'
 import { clsx } from 'clsx'
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
-import { useHistory } from 'react-router'
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { useHistory, useLocation } from 'react-router'
 import { GridKeyEnum } from '../../../src/components/grid/enums/GridKey.enum'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
-import { usePersonalSettings, useQuery, useSelectionService, useSnRoute } from '../../hooks'
+import { useLocalization, usePersonalSettings, useQuery, useSelectionService, useSnRoute } from '../../hooks'
 import { useRepositoryColumnSettings } from '../../hooks/use-repository-column-settings'
 import { getPrimaryActionUrl, navigateToAction } from '../../services'
 import { ColumnSettingsSource, LegacyColumnSetting, LegacyColumnSettings } from '../../services/column-settings-service'
@@ -35,9 +36,10 @@ import { SimpleTree } from '../tree/simpletree'
 import { BrowseView, EditView, ImageView, NewView, PermissionView, VersionView } from '../view-controls'
 import WopiPage from '../wopi-page'
 import { AUI_APPLICATION_CONTENT_TYPE, AUIApplicationView } from './AUIApplicationView'
-import { ContentInfo } from './ContentInfo'
 import { ContentItemsView } from './ContentItemsView'
-import { ContentViewToolbar } from './ContentViewToolbar'
+import { ContentViewToolbar, ExplorerStatusBar } from './ContentViewToolbar'
+import { ExplorerDragDrop } from './ExplorerDragDrop'
+import './explorer.css'
 
 const requiredGridLoadFields: ODataFieldParameter<GenericContent> = [
   'Id',
@@ -67,6 +69,7 @@ const getGridLoadChildrenSettings = (
   selectFields.add('Binary')
   selectFields.add('PageCount')
   const expandFields = new Set<string>(['CreatedBy', 'ModifiedBy'])
+  const hasInlineEditColumn = colDef.some((column) => column.colId === 'edit-binary')
 
   colDef.forEach((columnDefinition) => {
     if (columnDefinition.field && columnDefinition.field !== '0') {
@@ -75,7 +78,11 @@ const getGridLoadChildrenSettings = (
   })
 
   columnSettings?.forEach(({ field }) => {
-    if (!field || field === 'Actions') {
+    if (
+      !field ||
+      field === 'Actions' ||
+      (hasInlineEditColumn && ['edit-binary', 'EditBinary', 'edit', 'Edit'].includes(field))
+    ) {
       return
     }
     selectFields.add(field)
@@ -121,9 +128,11 @@ const useStyles = makeStyles<Theme, { width: number }>((theme) =>
   createStyles({
     breadcrumbsWrapper: {
       boxSizing: 'border-box',
-      borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
+      borderBottom: '1px solid var(--sn-explorer-border)',
+      background: 'var(--sn-explorer-bg)',
       justifyContent: 'start',
-      minHeight: globals.common.drawerItemHeight,
+      minHeight: 54,
+      flexShrink: 0,
       overflow: 'hidden',
     },
     breadcrumbsContent: {
@@ -134,7 +143,8 @@ const useStyles = makeStyles<Theme, { width: number }>((theme) =>
     treeAndDatagridWrapper: {
       display: 'flex',
       width: '100%',
-      height: '100%',
+      flex: '1 1 0',
+      minHeight: 0,
       position: 'relative',
       overflow: 'hidden',
       minWidth: 0,
@@ -147,7 +157,8 @@ const useStyles = makeStyles<Theme, { width: number }>((theme) =>
       flexGrow: 1,
       position: 'relative',
       overflow: 'hidden',
-      borderLeft: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
+      background: 'var(--sn-explorer-surface)',
+      borderLeft: '1px solid var(--sn-explorer-border)',
       [theme.breakpoints.down('sm')]: {
         borderLeft: 'none',
       },
@@ -158,41 +169,26 @@ const useStyles = makeStyles<Theme, { width: number }>((theme) =>
       position: 'relative',
       flex: 'none',
       boxSizing: 'border-box',
-      paddingRight: '12px',
-      backgroundColor: theme.palette.background.paper,
+      paddingRight: '6px',
+      backgroundColor: 'var(--sn-explorer-sidebar)',
       height: '100%',
-      '& .MuiTypography-body1': {
-        fontSize: '12px !important',
-        display: 'flex',
-        alignSelf: 'center',
-        paddingRight: '4px',
-      },
-      '& .MuiListItemIcon-root': {
-        display: 'flex',
-        alignSelf: 'center',
-        minWidth: '25px',
-        marginRight: '3px',
-      },
-      '& .MuiSvgIcon-root': {
-        height: '16px',
-      },
-      '& .svgicon': {
-        width: '24px',
-        height: '24px',
-      },
-      '& .MuiSvgIcon-root svg': {
-        height: '16px !important',
-      },
-      '& .MuiCollapse-container.MuiTreeItem-group': {
-        marginLeft: '7px',
-        paddingLeft: '18px',
-        borderLeft: '1px dashed #cececeff',
-      },
     },
     mobileTreeButton: {
       display: 'none',
       flexShrink: 0,
-      marginLeft: '4px',
+      marginLeft: '10px',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: 32,
+      height: 32,
+      padding: 0,
+      color: 'var(--sn-explorer-text)',
+      background: 'var(--sn-explorer-surface)',
+      border: '1px solid var(--sn-explorer-border)',
+      borderRadius: 7,
+      cursor: 'pointer',
+      '&:hover': { background: 'var(--sn-explorer-hover)' },
+      '&:focus-visible': { outline: '2px solid var(--sn-explorer-accent)', outlineOffset: 2 },
       [theme.breakpoints.down('sm')]: {
         display: 'inline-flex',
       },
@@ -200,7 +196,7 @@ const useStyles = makeStyles<Theme, { width: number }>((theme) =>
     mobileTreePaper: {
       width: '86vw',
       maxWidth: 360,
-      backgroundColor: theme.palette.background.default,
+      backgroundColor: 'var(--sn-explorer-sidebar)',
       overflow: 'hidden',
     },
     mobileTreeHeader: {
@@ -222,17 +218,17 @@ const useStyles = makeStyles<Theme, { width: number }>((theme) =>
       top: 0,
       right: 0,
       bottom: 0,
-      width: '12px',
-      minWidth: '12px',
+      width: '6px',
+      minWidth: '6px',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       cursor: 'ew-resize',
       zIndex: 999,
       touchAction: 'none',
-      backgroundColor: 'rgba(127, 127, 127, 0.12)',
+      backgroundColor: 'transparent',
       '&:hover': {
-        backgroundColor: 'rgba(127, 127, 127, 0.18)',
+        backgroundColor: 'var(--sn-explorer-hover)',
       },
       '&:active': {
         backgroundColor: 'rgba(127, 127, 127, 0.24)',
@@ -243,10 +239,10 @@ const useStyles = makeStyles<Theme, { width: number }>((theme) =>
       },
       '&::before': {
         content: '""',
-        width: '3px',
-        height: '48px',
+        width: '2px',
+        height: '32px',
         borderRadius: '2px',
-        backgroundColor: 'rgba(127, 127, 127, 0.6)',
+        backgroundColor: 'var(--sn-explorer-border)',
       },
     },
   }),
@@ -282,7 +278,6 @@ type ExploreGridOrApplicationProps = {
   columnSettingsSource?: ColumnSettingsSource
   isColumnSettingsLoading: boolean
   viewMode: ContentViewMode
-  onViewModeChange: (mode: ContentViewMode) => void
 }
 
 const ActiveContentRouteSync: React.FC = () => {
@@ -334,7 +329,6 @@ const ExploreGridOrApplication: React.FC<ExploreGridOrApplicationProps> = ({
   columnSettingsSource,
   isColumnSettingsLoading,
   viewMode,
-  onViewModeChange,
 }) => {
   const selectionService = useSelectionService()
   const currentContent = useContext(CurrentContentContext)
@@ -357,12 +351,13 @@ const ExploreGridOrApplication: React.FC<ExploreGridOrApplicationProps> = ({
     parentIdOrPath: currentPath,
     colDef,
     gridKey,
+    rowHeight: 40,
+    headerHeight: 38,
   }
 
   return (
     <>
-      <ContentViewToolbar viewMode={viewMode} onViewModeChange={onViewModeChange} />
-      <div style={{ flex: '1 1 0', minHeight: 0, overflow: 'hidden' }}>
+      <div className="sn-explorer-content-view" style={{ flex: '1 1 0', minHeight: 0, overflow: 'hidden' }}>
         {viewMode === 'details' ? (
           <Grid {...contentViewProps} />
         ) : (
@@ -390,16 +385,35 @@ export function Explore({
 }: ExploreProps) {
   const theme = useTheme()
   const personalSettings = usePersonalSettings()
+  const localization = useLocalization().contentViews
+  const logger = useLogger('Explore')
   const [viewMode, setViewMode] = useState<ContentViewMode>(personalSettings.defaultContentView)
   useEffect(() => {
     setViewMode(personalSettings.defaultContentView)
   }, [personalSettings.defaultContentView])
-  const [width, setWidth] = useState<number>(Number(localStorage.getItem('treeWidth') ?? '400'))
+  const [width, setWidth] = useState<number>(Number(localStorage.getItem('treeWidth') ?? '280'))
   const classes = useStyles({ width })
   const globalClasses = useGlobalStyles()
   const isResizing = useRef(false)
   const device = useContext(ResponsiveContext)
   const [mobileTreeOpened, setMobileTreeOpened] = useState(false)
+  const [refreshToken, setRefreshToken] = useState(0)
+  const [loadFailure, setLoadFailure] = useState<{ path: string; error: Error }>()
+  useEffect(() => setLoadFailure(undefined), [currentPath])
+  const currentLoadError = loadFailure?.path === currentPath ? loadFailure.error : undefined
+  const onLoadError = useCallback(
+    (error: Error) => {
+      logger.debug({ message: localization.loadFailed, data: { error, currentPath } })
+      setLoadFailure({ path: currentPath, error })
+    },
+    [currentPath, localization.loadFailed, logger],
+  )
+  const refreshContent = () => {
+    setLoadFailure(undefined)
+    setRefreshToken((value) => value + 1)
+  }
+  const activationRequest = useRef<AbortController>()
+  useEffect(() => () => activationRequest.current?.abort(), [currentPath])
   const isMobile = device === 'mobile'
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -449,6 +463,8 @@ export function Explore({
 
   const repository = useRepository()
   const history = useHistory()
+  const routeLocation = useLocation()
+  useEffect(() => setMobileTreeOpened(false), [routeLocation.pathname, routeLocation.search])
   const uiSettings = useContext(ResponsivePersonalSettings)
   const activeContent = useQuery().get('content') ?? ''
   const needRoot = useQuery().get('needRoot') !== 'false'
@@ -465,24 +481,34 @@ export function Explore({
     [fieldsToDisplay],
   )
   const { columnSettings, columnSettingsSource, isColumnSettingsLoading, saveColumnSettings } =
-    useRepositoryColumnSettings(currentPath, explicitColumnSettings)
+    useRepositoryColumnSettings(currentPath, explicitColumnSettings, refreshToken)
   const currentChildrenLoadSettings = useMemo(
     () => mergeGridLoadChildrenSettings(getGridLoadChildrenSettings(colDef, columnSettings), loadChildrenSettings),
     [colDef, columnSettings, loadChildrenSettings],
   )
   const onActivateItemOverride = async (activeItem: GenericContent) => {
-    const contentToOpen = await resolveContentLinkTarget(repository, activeItem)
-    const expandedItem = await repository.load({
-      idOrPath: contentToOpen.Id || contentToOpen.Path,
-      oDataOptions: {
-        select: Array.isArray(repository.configuration.requiredSelect)
-          ? ([...repository.configuration.requiredSelect, 'Actions/Name'] as ODataFieldParameter<GenericContent>)
-          : repository.configuration.requiredSelect,
-        expand: ['Actions'] as ODataFieldParameter<GenericContent>,
-      },
-    })
-    const { location } = history
-    history.push(getPrimaryActionUrl({ content: expandedItem.d, repository, uiSettings, location, snRoute }))
+    activationRequest.current?.abort()
+    const ac = new AbortController()
+    activationRequest.current = ac
+    try {
+      const contentToOpen = await resolveContentLinkTarget(repository, activeItem)
+      if (ac.signal.aborted) return
+      const expandedItem = await repository.load({
+        idOrPath: contentToOpen.Id || contentToOpen.Path,
+        requestInit: { signal: ac.signal },
+        oDataOptions: {
+          select: Array.isArray(repository.configuration.requiredSelect)
+            ? ([...repository.configuration.requiredSelect, 'Actions/Name'] as ODataFieldParameter<GenericContent>)
+            : repository.configuration.requiredSelect,
+          expand: ['Actions'] as ODataFieldParameter<GenericContent>,
+        },
+      })
+      if (ac.signal.aborted) return
+      const { location } = history
+      history.push(getPrimaryActionUrl({ content: expandedItem.d, repository, uiSettings, location, snRoute }))
+    } catch (error) {
+      if (!ac.signal.aborted) onLoadError(error)
+    }
   }
 
   const renderContent = () => {
@@ -539,10 +565,8 @@ export function Explore({
     return (
       <>
         {renderBeforeGrid?.()}
-        <ContentInfo />
         <ExploreGridOrApplication
           viewMode={viewMode}
-          onViewModeChange={setViewMode}
           disableColumnSettings={disableColumnSettings}
           fieldsToDisplay={columnSettings}
           onColumnSettingsChange={saveColumnSettings}
@@ -566,6 +590,7 @@ export function Explore({
 
   const renderTree = () => (
     <SimpleTree
+      rootPath={rootPath}
       onItemClick={handleTreeNavigate}
       parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
       activeItemPath={currentPath}
@@ -579,59 +604,86 @@ export function Explore({
     <LoadSettingsContextProvider
       key={JSON.stringify(currentChildrenLoadSettings)}
       loadChildrenSettings={currentChildrenLoadSettings}>
-      <CurrentContentProvider idOrPath={currentPath}>
-        <CurrentChildrenProvider loadSettings={loadChildrenSettings} alwaysRefresh={alwaysRefreshChildren}>
+      <CurrentContentProvider key={refreshToken} idOrPath={currentPath} onError={onLoadError}>
+        <CurrentChildrenProvider alwaysRefresh={alwaysRefreshChildren} onError={onLoadError}>
           <ActiveContentRouteSync />
           <CurrentAncestorsProvider root={rootPath}>
-            <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
-              {hasTree && isMobile ? (
-                <Tooltip title="Open tree" placement="bottom">
-                  <IconButton
-                    className={classes.mobileTreeButton}
-                    size="small"
-                    aria-label="Open tree"
-                    onClick={() => setMobileTreeOpened(true)}>
-                    <MenuIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-              ) : null}
-              <div className={classes.breadcrumbsContent}>
-                <ContentBreadcrumbs
-                  onItemClick={(i) => {
-                    onNavigate(i.content)
-                  }}
-                  batchActions={true}
-                />
-              </div>
-            </div>
-
-            <div className={`${classes.treeAndDatagridWrapper} leftTree theme-${theme.palette.type} `}>
-              {hasTree && !isMobile && (
-                <div className={classes.simpleTree}>
-                  <div className={classes.treeViewport}>{renderTree()}</div>
-                  <div
-                    className={classes.resizeButton}
-                    onMouseDown={handleMouseDown}
-                    onKeyDown={handleResizeKeyDown}
-                    role="separator"
-                    aria-label="Resize tree panel"
-                    aria-orientation="vertical"
-                    tabIndex={0}
-                  />
+            <div className={`sn-explorer theme-${theme.palette.type}`} data-test="explorer-workspace">
+              <ExplorerDragDrop
+                enabled={!activeAction && !currentLoadError}
+                onNavigate={onNavigate}
+                onTouchDrop={() => setMobileTreeOpened(false)}>
+                <div className={clsx(classes.breadcrumbsWrapper, globalClasses.centeredVertical)}>
+                  {hasTree && isMobile ? (
+                    <button
+                      type="button"
+                      className={classes.mobileTreeButton}
+                      title={localization.openTree}
+                      aria-label={localization.openTree}
+                      onClick={() => setMobileTreeOpened(true)}>
+                      <FolderOpenOutlined fontSize="small" />
+                    </button>
+                  ) : null}
+                  <div className={classes.breadcrumbsContent}>
+                    <ContentBreadcrumbs
+                      rootPath={rootPath}
+                      onItemClick={(i) => {
+                        onNavigate(i.content)
+                      }}
+                      explorerNavigation
+                      onRefresh={!activeAction ? refreshContent : undefined}
+                    />
+                  </div>
                 </div>
-              )}
-              <div className={classes.exploreContainer}>{renderContent()}</div>
-              {hasTree && isMobile ? (
-                <SwipeableDrawer
-                  open={mobileTreeOpened}
-                  onOpen={() => setMobileTreeOpened(true)}
-                  onClose={() => setMobileTreeOpened(false)}
-                  ModalProps={{ keepMounted: true }}
-                  PaperProps={{ className: classes.mobileTreePaper }}>
-                  <div className={clsx(classes.mobileTreeHeader, globalClasses.centeredVertical)}>Content tree</div>
-                  <div className={classes.mobileTreeContent}>{renderTree()}</div>
-                </SwipeableDrawer>
-              ) : null}
+
+                {!activeAction && <ContentViewToolbar viewMode={viewMode} onViewModeChange={setViewMode} />}
+
+                <div className={`${classes.treeAndDatagridWrapper} leftTree theme-${theme.palette.type} `}>
+                  {hasTree && !isMobile && (
+                    <div className={classes.simpleTree}>
+                      <div className={classes.treeViewport}>{renderTree()}</div>
+                      <div
+                        className={classes.resizeButton}
+                        onMouseDown={handleMouseDown}
+                        onKeyDown={handleResizeKeyDown}
+                        role="separator"
+                        aria-label="Resize tree panel"
+                        aria-orientation="vertical"
+                        tabIndex={0}
+                      />
+                    </div>
+                  )}
+                  <div className={classes.exploreContainer}>
+                    {currentLoadError ? (
+                      <div className="sn-explorer-load-error" data-test="explorer-load-error" role="alert">
+                        <p>{localization.loadFailed}</p>
+                        <button type="button" data-test="explorer-load-retry" onClick={refreshContent}>
+                          {localization.retry}
+                        </button>
+                      </div>
+                    ) : (
+                      renderContent()
+                    )}
+                  </div>
+                  {hasTree && isMobile ? (
+                    <SwipeableDrawer
+                      open={mobileTreeOpened}
+                      onOpen={() => setMobileTreeOpened(true)}
+                      onClose={() => setMobileTreeOpened(false)}
+                      ModalProps={{ keepMounted: true }}
+                      PaperProps={{
+                        className: clsx(classes.mobileTreePaper, 'sn-explorer', `theme-${theme.palette.type}`),
+                        style: { width: '86vw', maxWidth: 360 },
+                      }}>
+                      <div className={clsx(classes.mobileTreeHeader, globalClasses.centeredVertical)}>
+                        {localization.folders}
+                      </div>
+                      <div className={classes.mobileTreeContent}>{renderTree()}</div>
+                    </SwipeableDrawer>
+                  ) : null}
+                </div>
+                {!activeAction && <ExplorerStatusBar />}
+              </ExplorerDragDrop>
             </div>
           </CurrentAncestorsProvider>
         </CurrentChildrenProvider>

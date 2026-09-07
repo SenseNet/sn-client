@@ -9,6 +9,7 @@ import { ReferenceField, RolesField } from '../../content-list'
 import { createAnchorFromName, SETUP_DOCS_URL, UpdatedSettings } from '../../settings/settings-table'
 import { ActionFormatter } from '../Formatters/ActionFormatter'
 import { DateTimeFormatter, formatDateTime } from '../Formatters/DateTimeFormatter'
+import { EditBinaryFormatter } from '../Formatters/EditBinaryFormatter'
 import { IconFormatter } from '../Formatters/IconFormatter'
 import { UserNameFormatter } from '../Formatters/UserNameFormatter'
 
@@ -434,6 +435,20 @@ export const contentTypesColumnDefs: ColDef[] = [
       return valueA.toLowerCase().localeCompare(valueB.toLowerCase())
     },
     resizable: true,
+  },
+  {
+    colId: 'edit-binary',
+    headerName: 'Edit',
+    headerTooltip: 'Edit XML',
+    width: 48,
+    minWidth: 48,
+    maxWidth: 48,
+    sortable: false,
+    filter: false,
+    resizable: false,
+    suppressMovable: true,
+    cellStyle: { padding: '0 10px', display: 'flex', alignItems: 'center' },
+    cellRenderer: EditBinaryFormatter,
   },
   {
     headerName: 'Description',

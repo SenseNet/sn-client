@@ -1,13 +1,16 @@
-import { createStyles, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import { InsertDriveFileOutlined } from '@material-ui/icons'
 import TreeItem from '@material-ui/lab/TreeItem'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
+import { clsx } from 'clsx'
 import React, { MouseEventHandler, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router'
 import { ResponsivePersonalSettings } from '../../context'
 import { usePersonalSettings, useQuery, useSelectionService, useSnRoute } from '../../hooks'
 import { getPrimaryActionUrl, navigateToAction } from '../../services'
 import { isContentLink, resolveContentLinkTarget } from '../../services/favorites'
+import { contentDragAttributes } from '../content/content-drag-drop'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { Icon } from '../Icon'
 import { ExpandItemsContext } from './Contexts/ExpandedItemsProvider'
@@ -15,25 +18,81 @@ import { useTreeLoading } from './Contexts/TreeLoadingProvider'
 import StyledTreeItemProps from './Props/StyledTreeItemProps'
 import { compareTreeItems, getTreeItemLabel, isFolderLikeTreeItem } from './tree-helpers'
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    itemRoot: {
+      minWidth: 0,
+      fontFamily: 'inherit',
+      fontSize: 13,
+      lineHeight: '20px',
+      color: ({ isDisabled }: { isDisabled: boolean }) =>
+        isDisabled
+          ? `var(--sn-explorer-muted, ${theme.palette.text.disabled})`
+          : `var(--sn-explorer-text, ${theme.palette.text.primary})`,
+      '& > .MuiTreeItem-content': {
+        boxSizing: 'border-box',
+        minWidth: 0,
+        height: 34,
+        padding: '0 8px 0 4px',
+        margin: '2px 0',
+        borderRadius: 7,
+        transition: 'background-color 120ms ease',
+      },
+      '& > .MuiTreeItem-content:hover': {
+        backgroundColor: `var(--sn-explorer-hover, ${theme.palette.action.hover})`,
+      },
+      '&.Mui-selected > .MuiTreeItem-content, &.Mui-selected > .MuiTreeItem-content:hover': {
+        backgroundColor: `var(--sn-explorer-selected, ${theme.palette.action.selected})`,
+      },
+      '&:focus-visible > .MuiTreeItem-content': {
+        outline: `2px solid var(--sn-explorer-accent, ${theme.palette.primary.main})`,
+        outlineOffset: -2,
+      },
+      '&&& > .MuiTreeItem-content > .MuiTreeItem-label': {
+        backgroundColor: 'transparent',
+        minWidth: 0,
+        paddingLeft: 0,
+      },
+      '& > .MuiTreeItem-content > .MuiTreeItem-iconContainer': {
+        width: 18,
+        height: 26,
+        marginRight: 4,
+        alignItems: 'center',
+        color: `var(--sn-explorer-muted, ${theme.palette.text.secondary})`,
+        '& svg': { width: 14, height: 14 },
+      },
+      '&& > .MuiCollapse-container.MuiTreeItem-group': {
+        marginLeft: 18,
+        paddingLeft: 0,
+        borderLeft: 0,
+      },
+    },
     label: {
       display: 'flex',
       alignItems: 'center',
       minWidth: 0,
       width: '100%',
+      gap: 8,
       overflow: 'hidden',
       whiteSpace: 'nowrap',
     },
     labelIcon: {
-      flex: '0 0 auto',
-      minWidth: 24,
-      marginRight: 4,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: '0 0 20px',
+      width: 20,
+      height: 20,
+      '& span': { display: 'block' },
+      '& svg, & img': { width: 20, height: 20, objectFit: 'contain' },
     },
     labelText: {
       minWidth: 0,
       overflow: 'hidden',
-      color: ({ isDisabled }: { isDisabled: boolean }) => (isDisabled ? 'grey' : undefined),
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      fontSize: 13,
+      lineHeight: '20px',
     },
   }),
 )
@@ -144,14 +203,16 @@ export const StyledTreeItem = ({
 
   const getLabel = () => (
     <div className={classes.label}>
-      <ListItemIcon className={classes.labelIcon}>
-        <Icon item={contentvalue} style={{ height: 20, width: 20, fontSize: 15 }} />
-      </ListItemIcon>
-      <ListItemText
-        className={classes.labelText}
-        primary={getTreeItemLabel(contentvalue, personalSettings.preferDisplayName)}
-        primaryTypographyProps={{ noWrap: true, style: { fontSize: '11px' } }}
-      />
+      <span className={classes.labelIcon} aria-hidden="true">
+        {contentvalue.Icon?.toLowerCase() === 'file' ? (
+          <InsertDriveFileOutlined style={{ height: 20, width: 20 }} />
+        ) : (
+          <Icon item={contentvalue} style={{ height: 20, width: 20, fontSize: 20 }} />
+        )}
+      </span>
+      <span className={classes.labelText} title={getTreeItemLabel(contentvalue, personalSettings.preferDisplayName)}>
+        {getTreeItemLabel(contentvalue, personalSettings.preferDisplayName)}
+      </span>
     </div>
   )
 
@@ -264,6 +325,8 @@ export const StyledTreeItem = ({
     <>
       <TreeItem
         {...restProps}
+        {...contentDragAttributes(contentvalue, !isDisabled)}
+        className={clsx(classes.itemRoot, restProps.className)}
         label={getLabel()}
         id={itemId}
         data-path={path}

@@ -1,15 +1,23 @@
 import { PathHelper } from '@sensenet/client-utils'
-import { ActionModel, GenericContent } from '@sensenet/default-content-types'
+import { ActionModel, GenericContent, isActionModel } from '@sensenet/default-content-types'
 import { PATHS } from '../application-paths'
 
 export const FULLSCREEN_EDIT_ACTION = 'EditBinary'
 
-const fullscreenEditRoots = [PATHS.settings.snPath, PATHS.localization.snPath]
+const fullscreenEditRoots = [PATHS.settings.snPath, PATHS.localization.snPath, PATHS.contentTypes.snPath]
 
 export const supportsFullscreenEdit = (content: GenericContent) => {
+  if (!content.Path) return false
   const containingRoot = fullscreenEditRoots.find((rootPath) => PathHelper.isInSubTree(content.Path, rootPath))
 
   if (!containingRoot || content.Path === containingRoot) {
+    return false
+  }
+
+  if (
+    isActionModel(content.Actions) &&
+    content.Actions.some((action) => ['Edit', FULLSCREEN_EDIT_ACTION].includes(action.Name) && action.Forbidden)
+  ) {
     return false
   }
 

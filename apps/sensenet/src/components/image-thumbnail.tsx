@@ -2,7 +2,8 @@ import { PhotoOutlined } from '@material-ui/icons'
 import { Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { CSSProperties, useEffect, useMemo, useState } from 'react'
-import { getImageContentUrl } from '../services'
+import { useRepositoryImage } from '../hooks/use-repository-image'
+import { getImageContentUrl } from '../services/image-content-service'
 
 type ImageThumbnailProps = {
   content: GenericContent
@@ -11,8 +12,9 @@ type ImageThumbnailProps = {
 }
 
 export const ImageThumbnail: React.FC<ImageThumbnailProps> = ({ content, repository, style }) => {
-  const [source, setSource] = useState<string>()
   const [hasError, setHasError] = useState(false)
+  const imageUrl = getImageContentUrl(repository.configuration.repositoryUrl, content)
+  const { source, error } = useRepositoryImage(repository, imageUrl, { revision: content.ModificationDate?.toString() })
   const thumbnailStyle = useMemo<CSSProperties>(
     () => ({
       width: 32,
@@ -28,50 +30,9 @@ export const ImageThumbnail: React.FC<ImageThumbnailProps> = ({ content, reposit
     [style],
   )
 
-  useEffect(() => {
-    const abortController = new AbortController()
-    let objectUrl: string | undefined
-    let isCurrentRequest = true
+  useEffect(() => setHasError(false), [source])
 
-    setSource(undefined)
-    setHasError(false)
-
-    const loadThumbnail = async () => {
-      try {
-        const response = await repository.fetch(getImageContentUrl(repository.configuration.repositoryUrl, content), {
-          method: 'GET',
-          credentials: 'include',
-          cache: 'force-cache',
-          signal: abortController.signal,
-        })
-
-        if (!response.ok) {
-          throw new Error(response.statusText)
-        }
-
-        objectUrl = URL.createObjectURL(await response.blob())
-        if (isCurrentRequest) {
-          setSource(objectUrl)
-        }
-      } catch {
-        if (isCurrentRequest && !abortController.signal.aborted) {
-          setHasError(true)
-        }
-      }
-    }
-
-    loadThumbnail()
-
-    return () => {
-      isCurrentRequest = false
-      abortController.abort()
-      if (objectUrl) {
-        URL.revokeObjectURL(objectUrl)
-      }
-    }
-  }, [content, repository])
-
-  if (!source || hasError) {
+  if (!source || error || hasError) {
     return <PhotoOutlined style={thumbnailStyle} aria-hidden="true" />
   }
 

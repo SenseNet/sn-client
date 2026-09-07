@@ -1,12 +1,4 @@
-import {
-  CircularProgress,
-  debounce,
-  IconButton,
-  LinearProgress,
-  Tooltip,
-  Typography,
-  useTheme,
-} from '@material-ui/core'
+import { CircularProgress, debounce, LinearProgress, Typography, useTheme } from '@material-ui/core'
 import { ViewColumnOutlined } from '@material-ui/icons'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
@@ -30,6 +22,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } 
 import { ResponsiveContext } from '../../context'
 import { useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { isImageContent } from '../../services'
+import { contentDragAttributes } from '../content/content-drag-drop'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { useDialog } from '../dialogs'
 import { DropFileArea } from '../DropFileArea'
@@ -52,16 +45,16 @@ const ColumnSettingsHeader = ({ onClick, label }: { onClick: () => void; label: 
       justifyContent: 'center',
       pointerEvents: 'none',
     }}>
-    <Tooltip title={label}>
-      <IconButton
-        aria-label={label}
-        data-test="column-settings"
-        onClick={onClick}
-        size="small"
-        style={{ pointerEvents: 'auto' }}>
-        <ViewColumnOutlined fontSize="small" />
-      </IconButton>
-    </Tooltip>
+    <button
+      type="button"
+      title={label}
+      aria-label={label}
+      data-test="column-settings"
+      className="sn-grid-column-settings"
+      onClick={onClick}
+      style={{ pointerEvents: 'auto' }}>
+      <ViewColumnOutlined fontSize="small" />
+    </button>
   </div>
 )
 
@@ -91,7 +84,7 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
   const restoringSelection = useRef(false)
   const columnApi = useRef<ColumnApi | null>(null)
   const gridRef = useRef<HTMLDivElement>(null)
-  const fixedColumns: string[] = ['0', 'Icon', 'Actions']
+  const fixedColumns: string[] = ['0', 'Icon', 'Actions', 'edit-binary']
   const loadingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const { openImageGallery } = useImageGallery()
   const { openDialog } = useDialog()
@@ -228,14 +221,22 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
 
   const onSelectionChanged = (params: SelectionChangedEvent) => {
     if (restoringSelection.current) return
-    const selectedIds = params.api.getSelectedRows().map((c) => c.Id)
+    const selectedIds = params.api
+      .getSelectedRows()
+      .map((c) => c.Id)
+      .filter((id) => Number.isInteger(id) && id > 0)
     const selectedItems: GenericContent[] = children.filter((item) => selectedIds.includes(item.Id))
     selectionService.selection.setValue(selectedItems)
   }
 
   const restoreSelection = useCallback(
     (api: GridApi) => {
-      const selectedIds = new Set(selectionService.selection.getValue().map((item) => item.Id))
+      const selectedIds = new Set(
+        selectionService.selection
+          .getValue()
+          .map((item) => item.Id)
+          .filter((id) => Number.isInteger(id) && id > 0),
+      )
       restoringSelection.current = true
       try {
         api.forEachNode((node) => {
@@ -327,7 +328,9 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
   const updateColumnDefsBasedOnWindowSize = useCallback(() => {
     const width = window.innerWidth
     if (width < 600) {
-      const mobileCols = configuredColumns.filter((col) => MOBILE_SCREEN_COL_FIELDS.includes(col.field || ''))
+      const mobileCols = configuredColumns.filter(
+        (col) => col.colId === 'edit-binary' || MOBILE_SCREEN_COL_FIELDS.includes(col.field || ''),
+      )
       setColumnDefs(mobileCols.length ? mobileCols : configuredColumns.slice(0, 3))
     } else if (width < 1536) {
       const filteredCols = props.fieldsToDisplay?.length
@@ -395,6 +398,13 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
       <div ref={gridRef} style={{ height: '100%', width: '100%' }} aria-busy={showGridLoading}>
         <AgGridReact
           rowData={children}
+          rowHeight={props.rowHeight}
+          headerHeight={props.headerHeight}
+          processRowPostCreate={(params) => {
+            for (const [name, value] of Object.entries(contentDragAttributes(params.node.data))) {
+              if (value !== undefined) params.eRow.setAttribute(name, String(value))
+            }
+          }}
           getRowId={(params) => String(params.data.Id)}
           columnDefs={columnDefs}
           className={theme.palette.type === 'light' ? 'ag-theme-balham' : 'ag-theme-balham-dark'}

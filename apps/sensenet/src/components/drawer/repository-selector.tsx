@@ -1,4 +1,3 @@
-import { FormControl, InputLabel, makeStyles, MenuItem, Select, Theme } from '@material-ui/core'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
@@ -11,15 +10,6 @@ import {
   snAuthRepositorySessionsChangedEvent,
 } from '../../services/repository-session'
 
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    padding: theme.spacing(1, 1, 0),
-  },
-  formControl: {
-    width: '100%',
-  },
-}))
-
 const getRepositoryHost = (repoUrl: string) => {
   try {
     return new URL(repoUrl).host
@@ -29,7 +19,6 @@ const getRepositoryHost = (repoUrl: string) => {
 }
 
 export const RepositorySelector = () => {
-  const classes = useStyles()
   const history = useHistory()
   const localization = useLocalization().repositorySelector
   const repository = useRepository()
@@ -50,30 +39,28 @@ export const RepositorySelector = () => {
   }
 
   return (
-    <div className={classes.root}>
-      <FormControl className={classes.formControl} variant="outlined" size="small">
-        <InputLabel id="repository-selector-label">{localization.activeRepository}</InputLabel>
-        <Select
-          labelId="repository-selector-label"
-          label={localization.activeRepository}
-          value={currentRepositoryUrl}
-          onChange={(ev) => {
-            const nextRepositoryUrl = ev.target.value as string
+    <label className="sn-app-navigation__repository">
+      <span>{localization.activeRepository}</span>
+      <select
+        aria-label={localization.activeRepository}
+        data-test="repository-selector"
+        value={currentRepositoryUrl}
+        onChange={(ev) => {
+          const nextRepositoryUrl = ev.target.value as string
 
-            if (nextRepositoryUrl === currentRepositoryUrl) {
-              return
-            }
+          if (nextRepositoryUrl === currentRepositoryUrl) {
+            return
+          }
 
-            switchRepository(nextRepositoryUrl)
-            history.push(PATHS.landingPath.appPath)
-          }}>
-          {repositorySessions.map((repositorySession) => (
-            <MenuItem key={repositorySession.repoUrl} value={repositorySession.repoUrl}>
-              {getRepositoryHost(repositorySession.repoUrl)}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div>
+          switchRepository(nextRepositoryUrl)
+          history.push(PATHS.landingPath.appPath)
+        }}>
+        {repositorySessions.map((repositorySession) => (
+          <option key={repositorySession.repoUrl} value={repositorySession.repoUrl}>
+            {getRepositoryHost(repositorySession.repoUrl)}
+          </option>
+        ))}
+      </select>
+    </label>
   )
 }

@@ -23,8 +23,37 @@ export function useContextMenuActions(content: GenericContent, setActions: (cont
 
   const getContentName = () => content.DisplayName ?? content.Name
 
-  const runAction = async (actionName: string) => {
+  const runAction = async (actionName: string, contentType?: string) => {
     switch (actionName) {
+      case 'Add': {
+        // The caller presents the allowed child types before invoking creation.
+        if (!contentType) return
+        if (supportsRouteActions(snRoute) && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+          navigateToAction({
+            history,
+            routeMatch: snRoute.match!,
+            action: 'new',
+            queryParams: { path: content.Path.slice(snRoute.path!.length), 'content-type': contentType },
+          })
+        } else {
+          const url = new URL(
+            getUrlForContent({ content, uiSettings, location: history.location, action: 'new' }),
+            window.location.origin,
+          )
+          url.searchParams.set('path', url.searchParams.get('content') || '')
+          url.searchParams.delete('content')
+          url.searchParams.set('content-type', contentType)
+          history.push(`${url.pathname}${url.search}`)
+        }
+        break
+      }
+      case 'Upload':
+        openDialog({
+          name: 'upload',
+          props: { uploadPath: content.Path },
+          dialogProps: { open: true, fullScreen: false },
+        })
+        break
       case 'Delete':
         openDialog({ name: 'delete', props: { content: [content] } })
         break

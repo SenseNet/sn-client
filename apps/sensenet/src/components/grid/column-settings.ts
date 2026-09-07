@@ -52,7 +52,8 @@ export const applyLegacyColumnSettings = (defaultColumnDefs: ColDef[], settings?
     )
   }
 
-  const selectionColumns = defaultColumnDefs.filter((column) => !column.field)
+  const inlineEditColumn = defaultColumnDefs.find((column) => column.colId === 'edit-binary')
+  const selectionColumns = defaultColumnDefs.filter((column) => !column.field && column !== inlineEditColumn)
   const iconColumn = defaultColumnDefs.find((column) => column.field === 'Icon')
   const actionColumn = defaultColumnDefs.find((column) => column.field === 'Actions')
   const defaultColumnsByField = new Map(
@@ -61,6 +62,7 @@ export const applyLegacyColumnSettings = (defaultColumnDefs: ColDef[], settings?
   const configuredColumns = settings
     .filter(({ field }, index, columns) => field && columns.findIndex((column) => column.field === field) === index)
     .filter(({ field }) => field !== 'Icon')
+    .filter(({ field }) => !inlineEditColumn || !['edit-binary', 'EditBinary', 'edit', 'Edit'].includes(field))
     .map((setting) => {
       const defaultColumn = defaultColumnsByField.get(setting.field)
       if (!defaultColumn) return createCustomColumnDefinition(setting)
@@ -71,6 +73,13 @@ export const applyLegacyColumnSettings = (defaultColumnDefs: ColDef[], settings?
         headerTooltip: setting.title || defaultColumn.headerTooltip || setting.field,
       }
     })
+
+  if (inlineEditColumn) {
+    const nameIndex = configuredColumns.findIndex((column) =>
+      ['DisplayName', 'Name'].includes(column.field || column.colId || ''),
+    )
+    configuredColumns.splice(nameIndex < 0 ? 0 : nameIndex + 1, 0, inlineEditColumn)
+  }
 
   if (actionColumn && !configuredColumns.some((column) => column.field === 'Actions')) {
     configuredColumns.push({ ...actionColumn, headerName: '', headerTooltip: undefined })

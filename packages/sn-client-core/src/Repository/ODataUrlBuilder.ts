@@ -64,7 +64,7 @@ export class ODataUrlBuilder {
       if (plainValue instanceof Array && plainValue.length) {
         parsedValue = plainValue.map((v) => v.join?.(' ') ?? v).join(',')
       }
-      if (name && parsedValue && parsedValue.toString().length) {
+      if (name && parsedValue !== undefined && parsedValue !== null && parsedValue.toString().length) {
         segments.push({ name, value: parsedValue })
       }
     }

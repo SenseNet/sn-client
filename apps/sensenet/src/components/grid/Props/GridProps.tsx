@@ -6,6 +6,8 @@ import { ColumnSettingsSource, LegacyColumnSetting, LegacyColumnSettings } from 
 export interface GridProps<T extends GenericContent> {
   enableBreadcrumbs?: boolean
   hideHeader?: boolean
+  rowHeight?: number
+  headerHeight?: number
   disableSelection?: boolean
   parentIdOrPath: number | string
   onParentChange: (newParent: T) => void

@@ -12,6 +12,7 @@ import { DropFileArea } from '../DropFileArea'
 import { GridProps } from '../grid/Props/GridProps'
 import { useImageGallery } from '../image-gallery'
 import { compareTreeItems, getTreeItemLabel } from '../tree/tree-helpers'
+import { contentDragAttributes } from './content-drag-drop'
 import { getContentViewSelection } from './content-view-selection'
 import { ContentItemPreview } from './ContentItemPreview'
 
@@ -28,11 +29,15 @@ const useStyles = makeStyles((theme: Theme) =>
       height: '100%',
       display: 'flex',
       flexDirection: 'column',
-      color: theme.palette.text.primary,
-      backgroundColor: theme.palette.background.paper,
+      color: 'var(--sn-explorer-text)',
+      backgroundColor: 'var(--sn-explorer-surface)',
+      border: 0,
+      borderRadius: 0,
+      overflow: 'hidden',
+      boxSizing: 'border-box',
       position: 'relative',
       fontFamily: 'inherit',
-      fontSize: 14,
+      fontSize: 13,
       lineHeight: 1.4,
     },
     header: {
@@ -43,7 +48,8 @@ const useStyles = makeStyles((theme: Theme) =>
       minHeight: 38,
       padding: '0 12px',
       gap: 12,
-      borderBottom: `1px solid ${theme.palette.divider}`,
+      borderBottom: '1px solid var(--sn-explorer-border)',
+      background: 'var(--sn-explorer-bg)',
       fontSize: 12,
     },
     selectAll: {
@@ -57,14 +63,10 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 16,
       height: 16,
       margin: 0,
-      accentColor: theme.palette.primary.main,
+      accentColor: 'var(--sn-explorer-accent)',
       cursor: 'pointer',
-      '&:focus-visible': { outline: `2px solid ${theme.palette.primary.main}`, outlineOffset: 3 },
+      '&:focus-visible': { outline: '2px solid var(--sn-explorer-accent)', outlineOffset: 3 },
       '&:disabled': { cursor: 'default' },
-    },
-    count: {
-      color: theme.palette.text.secondary,
-      textAlign: 'right',
     },
     items: {
       flex: 1,
@@ -72,25 +74,26 @@ const useStyles = makeStyles((theme: Theme) =>
       overflow: 'auto',
       display: 'grid',
       alignContent: 'start',
-      gap: 8,
-      padding: 12,
+      gap: 10,
+      padding: 14,
     },
-    list: { gap: 2, padding: 6 },
+    list: { gap: 2, padding: 6, '& $item:nth-child(even):not($selected)': { background: 'var(--sn-explorer-stripe)' } },
     item: {
       position: 'relative',
-      borderRadius: 4,
+      borderRadius: 7,
       border: '1px solid transparent',
       minWidth: 0,
       outline: 'none',
       userSelect: 'none',
       cursor: 'default',
-      '&:hover': { backgroundColor: theme.palette.action.hover },
-      '&:focus': { borderColor: theme.palette.primary.main },
+      transition: 'background-color 120ms ease',
+      '&:hover': { backgroundColor: 'var(--sn-explorer-hover)' },
+      '&:focus': { borderColor: 'var(--sn-explorer-accent)' },
     },
     selected: {
-      backgroundColor: theme.palette.action.selected,
-      borderColor: theme.palette.primary.main,
-      '&:hover': { backgroundColor: theme.palette.action.selected },
+      backgroundColor: 'var(--sn-explorer-selected)',
+      borderColor: 'var(--sn-explorer-accent)',
+      '&:hover': { backgroundColor: 'var(--sn-explorer-selected)' },
     },
     cell: {
       display: 'flex',
@@ -120,13 +123,14 @@ const useStyles = makeStyles((theme: Theme) =>
       '-webkit-line-clamp': 2,
       '-webkit-box-orient': 'vertical',
       overflowWrap: 'anywhere',
+      fontWeight: 500,
     },
     itemType: {
       display: 'block',
       overflow: 'hidden',
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
-      color: theme.palette.text.secondary,
+      color: 'var(--sn-explorer-muted)',
       fontSize: 12,
       marginTop: 2,
     },
@@ -157,12 +161,12 @@ const useStyles = makeStyles((theme: Theme) =>
       height: 30,
       padding: 4,
       border: '1px solid transparent',
-      borderRadius: 2,
+      borderRadius: 6,
       background: 'transparent',
-      color: 'inherit',
+      color: 'var(--sn-explorer-muted)',
       cursor: 'pointer',
-      '&:hover': { backgroundColor: theme.palette.action.hover, borderColor: theme.palette.divider },
-      '&:focus-visible': { outline: `2px solid ${theme.palette.primary.main}`, outlineOffset: 1 },
+      '&:hover': { backgroundColor: 'var(--sn-explorer-hover)', color: 'var(--sn-explorer-accent)' },
+      '&:focus-visible': { outline: '2px solid var(--sn-explorer-accent)', outlineOffset: 1 },
     },
     listControl: { position: 'relative', top: 'auto', left: 'auto', right: 'auto', flexShrink: 0 },
     empty: {
@@ -172,7 +176,7 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'center',
       flexDirection: 'column',
       gap: 12,
-      color: theme.palette.text.secondary,
+      color: 'var(--sn-explorer-muted)',
     },
     loading: {
       position: 'absolute',
@@ -357,7 +361,7 @@ export const ContentItemsView = (props: ContentItemsViewProps) => {
         onFocus={props.onFocus}
         aria-busy={isLoading}
         data-test={`content-items-${props.viewMode}`}>
-        <div className={classes.header}>
+        <div className={`${classes.header} sn-content-items-header`}>
           {!props.disableSelection && (
             <label className={classes.selectAll} data-test="content-view-select-all">
               <input
@@ -374,10 +378,6 @@ export const ContentItemsView = (props: ContentItemsViewProps) => {
               <span>{localization.selectAll}</span>
             </label>
           )}
-          <span className={classes.count} role="status">
-            {localization.itemCount.replace('{0}', String(children.length))}
-            {selectedCount > 0 && ` · ${localization.selectedCount.replace('{0}', String(selectedCount))}`}
-          </span>
         </div>
         {children.length ? (
           <div
@@ -396,6 +396,7 @@ export const ContentItemsView = (props: ContentItemsViewProps) => {
               return (
                 <div
                   key={item.Id}
+                  {...contentDragAttributes(item)}
                   ref={(element) => {
                     if (element) itemElements.current.set(item.Id, element)
                     else itemElements.current.delete(item.Id)

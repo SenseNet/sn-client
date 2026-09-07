@@ -1,62 +1,114 @@
-import { Button, LinearProgress, Switch } from '@material-ui/core'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import SvgIcon, { SvgIconProps } from '@material-ui/core/SvgIcon'
 import TreeView from '@material-ui/lab/TreeView'
-import { GenericContent } from '@sensenet/default-content-types'
+import { ODataParams } from '@sensenet/client-core'
+import { GenericContent, isActionModel } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import React, { memo, useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { useHistory, useLocation } from 'react-router'
 
-import { useLoadContent } from '../../hooks'
+import { ResponsivePersonalSettings } from '../../context'
+import { useLoadContent, useLocalization, useSnRoute } from '../../hooks'
+import { getUrlForContent } from '../../services'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { ExpandItemsContext } from './Contexts/ExpandedItemsProvider'
 import { useTreeLoading } from './Contexts/TreeLoadingProvider'
+import { FavoritesTree } from './FavoritesTree'
 import { SimpleTreeProps } from './Props/SimpleTreeProps'
 import { StyledTreeItem } from './StyledTreeItem'
+import { getTreeModeAction, getTreeModeTargetPath, isTreeEditAction } from './tree-mode-navigation'
 
-/** --- ICONS --- */
-const MinusSquare = memo((props: SvgIconProps) => (
-  <SvgIcon fontSize="inherit" style={{ width: 14, height: 14, opacity: 0.3 }} {...props}>
-    <path d="M22.047 22.074v0 0-20.147 0h-20.12v0 20.147 0h20.12zM22.047 24h-20.12q-.803 0-1.365-.562t-.562-1.365v-20.147q0-.776.562-1.351t1.365-.575h20.147q.776 0 1.351.575t.575 1.351v20.147q0 .803-.575 1.365t-1.378.562v0zM17.873 11.023h-11.826q-.375 0-.669.281t-.294.682v0q0 .401.294 .682t.669.281h11.826q.375 0 .669-.281t.294-.682v0q0-.401-.294-.682t-.669-.281z" />
-  </SvgIcon>
-))
-MinusSquare.displayName = 'MinusSquare'
+const modeContentOptions: ODataParams<GenericContent> = {
+  select: ['Id', 'Path', 'Name', 'DisplayName', 'Type', 'IsFolder', 'Actions', 'Icon', 'ParentId'],
+  expand: ['Actions'],
+  scenario: 'ContextMenu',
+}
 
-const PlusSquare = memo((props: SvgIconProps) => (
-  <SvgIcon fontSize="inherit" style={{ width: 14, height: 14 }} {...props}>
-    <path d="M22.047 22.074v0 0-20.147 0h-20.12v0 20.147 0h20.12zM22.047 24h-20.12q-.803 0-1.365-.562t-.562-1.365v-20.147q0-.776.562-1.351t1.365-.575h20.147q.776 0 1.351.575t.575 1.351v20.147q0 .803-.575 1.365t-1.378.562v0zM17.873 12.977h-4.923v4.896q0 .401-.281.682t-.682.281v0q-.375 0-.669-.281t-.294-.682v-4.896h-4.923q-.401 0-.682-.294t-.281-.669v0q0-.401.281-.682t.682-.281h4.923v-4.896q0-.401.294-.682t.669-.281v0q.401 0 .682.281t.281.682v4.896h4.923q.401 0 .682.281t.281.682v0q0 .375-.281.669t-.682.294z" />
-  </SvgIcon>
-))
-PlusSquare.displayName = 'PlusSquare'
+const TreeChevron = ({ expanded = false }: { expanded?: boolean }) => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 14 14"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ transform: expanded ? 'rotate(90deg)' : undefined }}
+    aria-hidden="true">
+    <path d="m5 3 4 4-4 4" />
+  </svg>
+)
 
 /** --- STYLES --- */
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: '100%',
-      backgroundColor: theme.palette.background.paper,
-      borderTop: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
+      minWidth: 0,
+      boxSizing: 'border-box',
+      padding: '8px 10px 18px',
+      backgroundColor: `var(--sn-explorer-sidebar, ${theme.palette.background.paper})`,
+      color: `var(--sn-explorer-text, ${theme.palette.text.primary})`,
     },
     btnCont: {
       position: 'sticky',
       top: 0,
       zIndex: 110,
       display: 'flex',
-      gap: '8px',
-      flexWrap: 'wrap',
       justifyContent: 'center',
       alignItems: 'center',
-      minHeight: '48px',
+      minHeight: 56,
+      padding: '10px 14px',
       boxSizing: 'border-box',
-      backgroundColor: theme.palette.background.paper,
-      borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
+      backgroundColor: `var(--sn-explorer-sidebar, ${theme.palette.background.paper})`,
+      borderBottom: `1px solid var(--sn-explorer-border, ${theme.palette.divider})`,
+    },
+    modeControl: {
+      display: 'grid',
+      boxSizing: 'border-box',
+      gridTemplateColumns: '1fr 1fr',
+      gap: 2,
+      padding: 3,
+      width: '100%',
+      maxWidth: 220,
+      border: `1px solid var(--sn-explorer-border, ${theme.palette.divider})`,
+      borderRadius: 9,
+      backgroundColor: `var(--sn-explorer-bg, ${theme.palette.background.default})`,
+    },
+    modeButton: {
+      minWidth: 0,
+      height: 28,
+      padding: '0 10px',
+      border: 0,
+      borderRadius: 6,
+      background: 'transparent',
+      color: `var(--sn-explorer-muted, ${theme.palette.text.secondary})`,
+      font: 'inherit',
+      fontSize: 13,
+      fontWeight: 500,
+      cursor: 'pointer',
+      transition: 'background-color 120ms ease, color 120ms ease',
+      '&:hover': { backgroundColor: `var(--sn-explorer-hover, ${theme.palette.action.hover})` },
+      '&:disabled': { opacity: 0.45, cursor: 'default' },
+      '&[aria-pressed="true"]': {
+        backgroundColor: `var(--sn-explorer-surface, ${theme.palette.background.paper})`,
+        color: `var(--sn-explorer-text, ${theme.palette.text.primary})`,
+        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.12)',
+      },
+      '&:focus-visible': {
+        outline: `2px solid var(--sn-explorer-accent, ${theme.palette.primary.main})`,
+        outlineOffset: 1,
+      },
     },
     progress: {
       position: 'sticky',
-      top: 48,
+      top: 56,
       left: 0,
       width: '100%',
+      height: 2,
       zIndex: 111,
-      marginBottom: -4,
+      marginBottom: -2,
+      backgroundColor: `var(--sn-explorer-accent, ${theme.palette.primary.main})`,
     },
   }),
 )
@@ -83,11 +135,39 @@ const getPathChain = (rootPath: string, activePath?: string) => {
   ]
 }
 
-export function SimpleTree({ activeItemPath, parentPath, onNavigate }: SimpleTreeProps) {
+export function SimpleTree({ activeItemPath, parentPath, rootPath: explorerRoot, onNavigate }: SimpleTreeProps) {
   const { isTreeLoading, setIsTreeLoading } = useTreeLoading()
   const classes = useStyles()
+  const localization = useLocalization()
   const repo = useRepository()
-  const { content } = useLoadContent({ idOrPath: activeItemPath })
+  const history = useHistory()
+  const location = useLocation()
+  const snRoute = useSnRoute()
+  const uiSettings = useContext(ResponsivePersonalSettings)
+  const rootPath = explorerRoot || snRoute.path || parentPath
+  const action = snRoute.match?.params.action
+  const editMode = isTreeEditAction(action)
+  const targetPath = getTreeModeTargetPath({ rootPath, currentPath: activeItemPath, action, search: location.search })
+  const { content: loadedContent } = useLoadContent({ idOrPath: targetPath, oDataOptions: modeContentOptions })
+  const content = loadedContent?.Path.toLowerCase() === targetPath.toLowerCase() ? loadedContent : undefined
+  const contentActions = content?.Actions
+  const editForbidden =
+    isActionModel(contentActions) && contentActions.some((item) => item.Name === 'Edit' && item.Forbidden)
+
+  const changeMode = (edit: boolean) => {
+    if (!content || edit === editMode || (edit && editForbidden)) return
+    // Use normal history navigation: editor blockers can reject the transition,
+    // and the pressed mode changes only when the route actually changes.
+    history.push(
+      getUrlForContent({
+        content,
+        uiSettings,
+        location: history.location,
+        snRoute: { ...snRoute, path: rootPath },
+        action: getTreeModeAction(content, edit),
+      }),
+    )
+  }
 
   const [rootElement, setRootElement] = useState<GenericContent>()
   const expContext = useContext(ExpandItemsContext)
@@ -96,7 +176,6 @@ export function SimpleTree({ activeItemPath, parentPath, onNavigate }: SimpleTre
   }
   const [expandItems, setExpandItems] = expContext
   const [selected, setSelected] = useState('')
-  const [editMode, setEditMode] = useState(false)
 
   // context menu
   const [contextMenuItem, setContextMenuItem] = useState<GenericContent | null>(null)
@@ -151,32 +230,52 @@ export function SimpleTree({ activeItemPath, parentPath, onNavigate }: SimpleTre
   return (
     <>
       {/* Toolbar */}
-      <div className={classes.btnCont}>
-        <Button onClick={() => setEditMode(false)}>View</Button>
-        <Switch checked={editMode} onChange={() => setEditMode((prev) => !prev)} />
-        <Button
-          color={editMode ? 'primary' : 'default'}
-          variant={editMode ? 'contained' : 'text'}
-          onClick={() => setEditMode(true)}>
-          Edit
-        </Button>
+      <div className={classes.btnCont} data-test="tree-mode-toolbar">
+        <div
+          className={classes.modeControl}
+          role="group"
+          aria-label={`${localization.contentViews.view} / ${localization.settings.edit}`}>
+          <button
+            type="button"
+            className={classes.modeButton}
+            aria-pressed={!editMode}
+            onClick={() => changeMode(false)}
+            disabled={!content}
+            data-test="tree-mode-view">
+            {localization.contentViews.view}
+          </button>
+          <button
+            type="button"
+            className={classes.modeButton}
+            aria-pressed={editMode}
+            onClick={() => changeMode(true)}
+            disabled={!content || editForbidden}
+            data-test="tree-mode-edit">
+            {localization.settings.edit}
+          </button>
+        </div>
       </div>
 
       {/* Loader */}
-      {isTreeLoading && <LinearProgress className={classes.progress} />}
+      {isTreeLoading && (
+        <div className={classes.progress} role="progressbar" aria-label={localization.common.loadingContent} />
+      )}
+
+      <FavoritesTree activeItemPath={targetPath} editMode={editMode} onNavigate={onNavigate} />
 
       {/* Tree */}
       <TreeView
         selected={selected}
         expanded={[...expandItems]}
         className={classes.root}
-        defaultCollapseIcon={<MinusSquare />}
-        defaultExpandIcon={<PlusSquare />}>
+        aria-busy={isTreeLoading}
+        defaultCollapseIcon={<TreeChevron expanded />}
+        defaultExpandIcon={<TreeChevron />}>
         {rootElement && (
           <StyledTreeItem
             navigate={onNavigate}
             nodeId={String(rootElement.Id)}
-            activeitempath={activeItemPath}
+            activeitempath={targetPath}
             data-id={rootElement.Id}
             contentvalue={rootElement}
             onContextMenu={(e) => onContextMenu(e, rootElement)}

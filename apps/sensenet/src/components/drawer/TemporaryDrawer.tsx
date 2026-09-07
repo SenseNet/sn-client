@@ -1,24 +1,16 @@
-import {
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemSecondaryAction,
-  ListItemText,
-  Paper,
-  SwipeableDrawer,
-  Tooltip,
-} from '@material-ui/core'
-import Settings from '@material-ui/icons/Settings'
+import { SwipeableDrawer } from '@material-ui/core'
+import { Close, PowerSettingsNew, Settings } from '@material-ui/icons'
 import { useRepository, useSession } from '@sensenet/hooks-react'
-import React, { useContext } from 'react'
-import { Link, matchPath, NavLink, useLocation } from 'react-router-dom'
+import React, { useContext, useEffect, useRef } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { PATHS, resolvePathParams } from '../../application-paths'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { useDrawerItems, useLocalization, useTheme } from '../../hooks'
-import { LogoutButton } from '../LogoutButton'
+import { useDialog } from '../dialogs'
 import { UserAvatar } from '../UserAvatar'
+import { PermanentDrawerItem } from './PermanentDrawerItem'
 import { RepositorySelector } from './repository-selector'
+import './app-navigation.css'
 
 type TemporaryDrawerProps = {
   isOpened: boolean
@@ -33,102 +25,99 @@ export const TemporaryDrawer = (props: TemporaryDrawerProps) => {
   const location = useLocation()
   const theme = useTheme()
   const session = useSession()
-  const items = useDrawerItems()
-  const localization = useLocalization().drawer
+  const items = useDrawerItems().filter((item) => item.itemType !== 'Favorites')
+  const localization = useLocalization()
+  const { openDialog } = useDialog()
+  const close = useRef(props.onClose)
+  close.current = props.onClose
+  const baseItems = items.filter((item) => !item.systemItem)
+  const systemItems = items.filter((item) => item.systemItem)
 
-  if (!settings.drawer.enabled) {
-    return null
-  }
+  useEffect(() => close.current(), [location.pathname, location.search])
+
+  if (!settings.drawer.enabled) return null
+
   return (
     <SwipeableDrawer
       ModalProps={{ keepMounted: true }}
-      PaperProps={{ style: { width: '90%' } }}
+      PaperProps={{
+        id: 'app-navigation-drawer',
+        className: `sn-app-navigation sn-app-navigation--expanded sn-app-navigation--overlay theme-${theme.palette.type}`,
+        'aria-label': localization.drawer.navigationTitle,
+      }}
+      BackdropProps={{ className: 'sn-app-navigation-backdrop', 'data-test': 'app-navigation-backdrop' } as any}
       open={props.isOpened}
-      onClose={() => props.onClose()}
-      onOpen={() => props.onOpen()}>
-      <List
-        dense={true}
-        style={{
-          height: '100%',
-          flexGrow: 1,
-          flexShrink: 0,
-          display: 'flex',
-          overflow: 'hidden',
-          justifyContent: 'space-between',
-          flexDirection: 'column',
-          backgroundColor: theme.palette.background.default, // '#222',
-          paddingTop: '1em',
-          transition: 'width 100ms ease-in-out',
-        }}>
-        <div style={{ paddingTop: '1em' }}>
-          <RepositorySelector />
-          {items.map((item, index) => {
-            const isActive = matchPath(location.pathname, item.url)
-            return isActive ? (
-              <ListItem button={true} selected key={index}>
-                <Tooltip
-                  title={
-                    <React.Fragment>
-                      {item.primaryText} <br /> {item.secondaryText}
-                    </React.Fragment>
-                  }
-                  placement="right">
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                </Tooltip>
-                <ListItemText primary={item.primaryText} secondary={item.secondaryText} />
-              </ListItem>
-            ) : (
-              <NavLink
-                onClick={() => props.onClose()}
-                to={item.url}
-                activeStyle={{ opacity: 1 }}
-                style={{ textDecoration: 'none', opacity: 0.54 }}
-                key={index}>
-                <ListItem button={true}>
-                  <Tooltip
-                    title={
-                      <React.Fragment>
-                        {item.primaryText} <br /> {item.secondaryText}
-                      </React.Fragment>
-                    }
-                    placement="right">
-                    <ListItemIcon>{item.icon}</ListItemIcon>
-                  </Tooltip>
-                  <ListItemText primary={item.primaryText} secondary={item.secondaryText} />
-                </ListItem>
-              </NavLink>
-            )
-          })}
+      onClose={props.onClose}
+      onOpen={props.onOpen}>
+      <div className="sn-app-navigation__header">
+        <span className="sn-app-navigation__title">{localization.drawer.navigationTitle}</span>
+        <button
+          type="button"
+          className="sn-app-navigation__toggle"
+          title={localization.drawer.closeNavigation}
+          aria-label={localization.drawer.closeNavigation}
+          onClick={props.onClose}
+          data-test="app-navigation-close">
+          <Close />
+        </button>
+      </div>
+      <RepositorySelector />
+      <nav className="sn-app-navigation__sections" aria-label={localization.drawer.navigationTitle}>
+        <ul className="sn-app-navigation__items">
+          {baseItems.map((item) => (
+            <li key={`${item.itemType}-${item.url}`}>
+              <PermanentDrawerItem item={item} opened onNavigate={props.onClose} />
+            </li>
+          ))}
+        </ul>
+        {systemItems.length > 0 && (
+          <div className="sn-app-navigation__system">
+            <div className="sn-app-navigation__group-title">{localization.drawer.titles.System}</div>
+            <ul className="sn-app-navigation__items">
+              {systemItems.map((item) => (
+                <li key={`${item.itemType}-${item.url}`}>
+                  <PermanentDrawerItem item={item} opened onNavigate={props.onClose} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </nav>
+      <div className="sn-app-navigation__account">
+        <UserAvatar
+          repositoryUrl={repo.configuration.repositoryUrl}
+          user={session.currentUser}
+          style={{ width: 32, height: 32, fontSize: 14 }}
+        />
+        <div className="sn-app-navigation__account-text">
+          <span>{session.currentUser.DisplayName || session.currentUser.Name}</span>
+          <small title={repo.configuration.repositoryUrl}>{repo.configuration.repositoryUrl}</small>
         </div>
-        <Paper style={{ padding: '1em' }}>
-          <ListItem>
-            <ListItemIcon>
-              <UserAvatar repositoryUrl={repo.configuration.repositoryUrl} user={session.currentUser} />
-            </ListItemIcon>
-            <ListItemText
-              primary={session.currentUser.DisplayName || session.currentUser.Name}
-              secondary={repo.configuration.repositoryUrl}
-              secondaryTypographyProps={{ style: { overflow: 'hidden', textOverflow: 'ellipsis' } }}
-            />
-            <ListItemSecondaryAction>
-              {device === 'mobile' ? null : (
-                <Link
-                  to={resolvePathParams({
-                    path: PATHS.settings.appPath,
-                    params: { submenu: 'adminui' },
-                  })}
-                  style={{ textDecoration: 'none' }}
-                  onClick={() => props.onClose()}>
-                  <IconButton title={localization.personalSettingsTitle}>
-                    <Settings />
-                  </IconButton>
-                </Link>
-              )}
-              <LogoutButton />
-            </ListItemSecondaryAction>
-          </ListItem>
-        </Paper>
-      </List>
+        <div className="sn-app-navigation__account-actions">
+          {device !== 'mobile' && (
+            <Link
+              className="sn-app-navigation__toggle"
+              to={resolvePathParams({ path: PATHS.settings.appPath, params: { submenu: 'adminui' } })}
+              title={localization.drawer.personalSettingsTitle}
+              aria-label={localization.drawer.personalSettingsTitle}
+              onClick={props.onClose}>
+              <Settings />
+            </Link>
+          )}
+          <button
+            type="button"
+            className="sn-app-navigation__toggle"
+            title={localization.logout.logoutButtonTitle}
+            aria-label={localization.logout.logoutButtonTitle}
+            data-test="app-navigation-logout"
+            onClick={() => {
+              props.onClose()
+              openDialog({ name: 'logout' })
+            }}>
+            <PowerSettingsNew />
+          </button>
+        </div>
+      </div>
     </SwipeableDrawer>
   )
 }

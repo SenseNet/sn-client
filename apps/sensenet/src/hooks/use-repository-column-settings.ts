@@ -14,6 +14,7 @@ import {
 export const useRepositoryColumnSettings = (
   parentIdOrPath: string | number,
   explicitColumns?: LegacyColumnSetting[],
+  reloadToken = 0,
 ) => {
   const repository = useRepository()
   const logger = useLogger('column-settings')
@@ -48,31 +49,23 @@ export const useRepositoryColumnSettings = (
 
     const abortController = new AbortController()
     let isCurrentRequest = true
+    setSettings(undefined)
+    setSettingsSource(undefined)
     setIsLoading(true)
 
-    Promise.all([
-      loadColumnSettings(repository, parentIdOrPath, abortController.signal),
-      resolveColumnSettingsSource(repository, parentIdOrPath, abortController.signal).catch((error) => {
-        if (abortController.signal.aborted) throw error
-        return undefined
-      }),
-    ])
-      .then(([loadedSettings, source]) => {
+    loadColumnSettings(repository, parentIdOrPath, abortController.signal)
+      .then((loadedSettings) => {
         if (isCurrentRequest) {
           setSettings(loadedSettings)
-          setSettingsSource(source)
         }
       })
       .catch((error) => {
-        if (!abortController.signal.aborted) {
+        if (isCurrentRequest && !abortController.signal.aborted) {
           logger.warning({
-            message: `Could not load ColumnSettings for ${parentIdOrPath}`,
+            message: `Could not load ColumnSettings for ${parentIdOrPath}; using default columns.`,
             data: { error, relatedRepository: repository.configuration.repositoryUrl },
           })
-          if (isCurrentRequest) {
-            setSettings(undefined)
-            setSettingsSource(undefined)
-          }
+          setSettings(undefined)
         }
       })
       .finally(() => {
@@ -81,11 +74,25 @@ export const useRepositoryColumnSettings = (
         }
       })
 
+    // Source metadata is only needed by the editor; it must not hold up the folder contents.
+    resolveColumnSettingsSource(repository, parentIdOrPath, abortController.signal)
+      .then((source) => {
+        if (isCurrentRequest) setSettingsSource(source)
+      })
+      .catch((error) => {
+        if (isCurrentRequest && !abortController.signal.aborted) {
+          logger.debug({
+            message: `Could not resolve the ColumnSettings source for ${parentIdOrPath}`,
+            data: { error, relatedRepository: repository.configuration.repositoryUrl },
+          })
+        }
+      })
+
     return () => {
       isCurrentRequest = false
       abortController.abort()
     }
-  }, [explicitSettings, logger, parentIdOrPath, repository])
+  }, [explicitSettings, logger, parentIdOrPath, reloadToken, repository])
 
   const save = useCallback(
     async (newSettings: LegacyColumnSettings, targetIdOrPath?: string | number) => {

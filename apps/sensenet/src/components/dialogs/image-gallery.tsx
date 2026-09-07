@@ -19,6 +19,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useLocalization } from '../../hooks'
+import { useRepositoryImage } from '../../hooks/use-repository-image'
 import { getImageContentUrl } from '../../services'
 import { useDialog } from './dialog-provider'
 
@@ -187,11 +188,18 @@ const ImageGalleryDialog: React.FC<ImageGalleryDialogProps> = ({ contents, initi
   const repository = useRepository()
   const { closeLastDialog } = useDialog()
   const [currentIndex, setCurrentIndex] = useState(() => getInitialIndex(contents, initialContentId))
-  const [imageSource, setImageSource] = useState<string>()
-  const [loadError, setLoadError] = useState<string>()
-  const [isLoading, setIsLoading] = useState(true)
+  const [decodeError, setDecodeError] = useState<string>()
   const [retryToken, setRetryToken] = useState(0)
   const currentContent = contents[currentIndex]
+  const {
+    source: imageSource,
+    error: fetchError,
+    isLoading,
+  } = useRepositoryImage(repository, getImageContentUrl(repository.configuration.repositoryUrl, currentContent), {
+    retryToken,
+    revision: currentContent.ModificationDate?.toString(),
+  })
+  const loadError = fetchError || decodeError
 
   const showPrevious = useCallback(() => {
     setCurrentIndex((index) => (index > 0 ? index - 1 : contents.length - 1))
@@ -217,53 +225,7 @@ const ImageGalleryDialog: React.FC<ImageGalleryDialogProps> = ({ contents, initi
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [contents.length, showNext, showPrevious])
 
-  useEffect(() => {
-    const abortController = new AbortController()
-    let objectUrl: string | undefined
-    let isCurrentRequest = true
-
-    setImageSource(undefined)
-    setLoadError(undefined)
-    setIsLoading(true)
-
-    const loadImage = async () => {
-      try {
-        const response = await repository.fetch(
-          getImageContentUrl(repository.configuration.repositoryUrl, currentContent),
-          {
-            method: 'GET',
-            credentials: 'include',
-            signal: abortController.signal,
-          },
-        )
-
-        if (!response.ok) {
-          throw new Error(`${response.status} ${response.statusText}`.trim())
-        }
-
-        const blob = await response.blob()
-        objectUrl = URL.createObjectURL(blob)
-        if (isCurrentRequest) {
-          setImageSource(objectUrl)
-        }
-      } catch (error) {
-        if (isCurrentRequest && !abortController.signal.aborted) {
-          setLoadError(error instanceof Error ? error.message : String(error))
-          setIsLoading(false)
-        }
-      }
-    }
-
-    loadImage()
-
-    return () => {
-      isCurrentRequest = false
-      abortController.abort()
-      if (objectUrl) {
-        URL.revokeObjectURL(objectUrl)
-      }
-    }
-  }, [currentContent, repository, retryToken])
+  useEffect(() => setDecodeError(undefined), [currentIndex, imageSource, retryToken])
 
   const displayName = currentContent.DisplayName || currentContent.Name
   const counterText = useMemo(
@@ -341,11 +303,7 @@ const ImageGalleryDialog: React.FC<ImageGalleryDialogProps> = ({ contents, initi
             className={classes.image}
             src={imageSource}
             alt={displayName}
-            onLoad={() => setIsLoading(false)}
-            onError={() => {
-              setLoadError(localization.unsupportedImage)
-              setIsLoading(false)
-            }}
+            onError={() => setDecodeError(localization.unsupportedImage)}
           />
         ) : null}
 

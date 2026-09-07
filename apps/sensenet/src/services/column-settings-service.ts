@@ -1,6 +1,7 @@
 import { Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
+import { loadRepositorySettings } from './repository-settings-service'
 
 export type LegacyColumnSetting = {
   field: string
@@ -45,7 +46,13 @@ const getSettingsOperationUrl = (repository: Repository, parentIdOrPath: string 
 const normalizeRepositoryPath = (path: string) => `/${PathHelper.trimSlashes(path)}`
 
 export const getLocalColumnSettingsPath = (contentPath: string) =>
-  normalizeRepositoryPath(PathHelper.joinPaths(contentPath, SETTINGS_FOLDER_NAME, COLUMN_SETTINGS_FILE_NAME))
+  normalizeRepositoryPath(
+    PathHelper.joinPaths(
+      normalizeRepositoryPath(contentPath).toLowerCase() === '/root' ? '/Root/System' : contentPath,
+      SETTINGS_FOLDER_NAME,
+      COLUMN_SETTINGS_FILE_NAME,
+    ),
+  )
 
 const getAncestorPaths = (contentPath: string) => {
   const paths: string[] = []
@@ -86,25 +93,26 @@ export const resolveColumnSettingsSource = async (
     ownerPath: normalizeRepositoryPath(ownerPath),
     settingsPath: getLocalColumnSettingsPath(ownerPath),
   }))
-  const matches = await Promise.all(
-    candidates.map(async (candidate) => {
-      try {
-        const response = await repository.load<GenericContent>({
-          idOrPath: candidate.settingsPath,
-          oDataOptions: { select: ['Path'] },
-          requestInit: { signal },
-        })
-        return {
-          ownerPath: candidate.ownerPath,
-          settingsPath: normalizeRepositoryPath(response.d.Path || candidate.settingsPath),
-        }
-      } catch (error) {
-        if (signal?.aborted) throw error
-        return undefined
+  let effectiveSettings: { ownerPath: string; settingsPath: string } | undefined
+  // Stop at the nearest readable source instead of probing every ancestor in parallel.
+  for (const candidate of candidates) {
+    try {
+      const response = await repository.load<GenericContent>({
+        idOrPath: candidate.settingsPath,
+        oDataOptions: { select: ['Path'] },
+        requestInit: { signal },
+      })
+      effectiveSettings = {
+        ownerPath: candidate.ownerPath,
+        settingsPath: normalizeRepositoryPath(response.d.Path || candidate.settingsPath),
       }
-    }),
-  )
-  const effectiveSettings = matches.find(Boolean)
+      break
+    } catch (error) {
+      if (signal?.aborted) throw error
+      const status = (error as any)?.statusCode ?? (error as any)?.response?.status
+      if (status !== 404 && status !== 403) throw error
+    }
+  }
   const effectiveSettingsPath = effectiveSettings?.settingsPath
 
   return {
@@ -121,22 +129,7 @@ export const loadColumnSettings = async (
   repository: Repository,
   parentIdOrPath: string | number,
   signal?: AbortSignal,
-) => {
-  const requestUrl = `${getSettingsOperationUrl(repository, parentIdOrPath, 'GetSettings')}?${new URLSearchParams({
-    name: 'ColumnSettings',
-  })}`
-  const response = await repository.fetch(requestUrl, {
-    method: 'GET',
-    credentials: 'include',
-    signal,
-  })
-
-  if (!response.ok) {
-    throw await repository.getErrorFromResponse(response)
-  }
-
-  return normalizeColumnSettings(await response.json())
-}
+) => normalizeColumnSettings(await loadRepositorySettings(repository, parentIdOrPath, 'ColumnSettings', signal))
 
 /** Persists the legacy { columns: [{ field, title }] } contract through WriteSettings. */
 export const saveColumnSettings = async (

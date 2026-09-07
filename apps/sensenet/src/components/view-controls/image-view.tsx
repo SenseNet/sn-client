@@ -8,6 +8,7 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+import { useRepositoryImage } from '../../hooks/use-repository-image'
 import { getImageContentUrl, navigateToAction } from '../../services'
 
 const useStyles = makeStyles(() => {
@@ -66,67 +67,47 @@ export const ImageView: React.FC<ImageViewProps> = (props) => {
   const formLocalization = useLocalization().forms
   const globalClasses = useGlobalStyles()
   const classes = useStyles()
-  const { contentPath } = props
   const [currentContent, setCurrentContent] = useState<GenericContent>()
   const history = useHistory()
   const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
-  const [imageSource, setImageSource] = useState<string>()
-  const [loadError, setLoadError] = useState<string>()
+  const [metadataError, setMetadataError] = useState<string>()
+  const [decodeError, setDecodeError] = useState<string>()
+  const imageLocalization = useLocalization().imageGallery
+  const {
+    source: imageSource,
+    error: imageError,
+    isLoading,
+  } = useRepositoryImage(
+    repository,
+    currentContent ? getImageContentUrl(repository.configuration.repositoryUrl, currentContent) : undefined,
+    { revision: currentContent?.ModificationDate?.toString() },
+  )
+  const loadError = metadataError || imageError || decodeError
   useEffect(() => {
+    const controller = new AbortController()
+    let current = true
+    setCurrentContent(undefined)
+    setMetadataError(undefined)
     async function getCurrentContent() {
-      const result = await repository.load({
-        idOrPath: props.contentPath,
-      })
-      setCurrentContent(result.d)
+      try {
+        const result = await repository.load({
+          idOrPath: props.contentPath,
+          requestInit: { signal: controller.signal },
+        })
+        if (current) setCurrentContent(result.d)
+      } catch (error) {
+        if (current && !controller.signal.aborted) {
+          setMetadataError(error instanceof Error ? error.message : String(error))
+        }
+      }
     }
     getCurrentContent()
-  }, [props.contentPath, repository])
-  useEffect(() => {
-    if (!currentContent) {
-      return
-    }
-
-    const abortController = new AbortController()
-    let objectUrl: string | undefined
-    let isCurrentRequest = true
-    setImageSource(undefined)
-    setLoadError(undefined)
-
-    const loadImage = async () => {
-      try {
-        const response = await repository.fetch(
-          getImageContentUrl(repository.configuration.repositoryUrl, currentContent),
-          {
-            method: 'GET',
-            credentials: 'include',
-            signal: abortController.signal,
-          },
-        )
-        if (!response.ok) {
-          throw new Error(`${response.status} ${response.statusText}`.trim())
-        }
-
-        objectUrl = URL.createObjectURL(await response.blob())
-        if (isCurrentRequest) {
-          setImageSource(objectUrl)
-        }
-      } catch (error) {
-        if (isCurrentRequest && !abortController.signal.aborted) {
-          setLoadError(error instanceof Error ? error.message : String(error))
-        }
-      }
-    }
-
-    loadImage()
-
     return () => {
-      isCurrentRequest = false
-      abortController.abort()
-      if (objectUrl) {
-        URL.revokeObjectURL(objectUrl)
-      }
+      current = false
+      controller.abort()
     }
-  }, [currentContent, repository])
+  }, [props.contentPath, repository])
+  useEffect(() => setDecodeError(undefined), [imageSource])
   return (
     <div className={classes.imageViewContainer}>
       <div className={classes.titleContainer}>
@@ -137,10 +118,15 @@ export const ImageView: React.FC<ImageViewProps> = (props) => {
         </div>
       </div>
       <div className={classes.imageContainer}>
-        {!imageSource && !loadError ? <CircularProgress /> : null}
+        {(!currentContent || isLoading) && !loadError ? <CircularProgress /> : null}
         {loadError ? <Typography color="error">{loadError}</Typography> : null}
         {imageSource ? (
-          <img className={classes.image} src={imageSource} alt={currentContent?.DisplayName || ''} />
+          <img
+            className={classes.image}
+            src={imageSource}
+            alt={currentContent?.DisplayName || ''}
+            onError={() => setDecodeError(imageLocalization.unsupportedImage)}
+          />
         ) : null}
       </div>
       <div className={classes.buttonWrapper}>

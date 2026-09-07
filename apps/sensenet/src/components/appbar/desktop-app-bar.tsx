@@ -1,7 +1,5 @@
-import { AppBar, createStyles, IconButton, makeStyles, Toolbar } from '@material-ui/core'
+import { AppBar, createStyles, makeStyles, Toolbar } from '@material-ui/core'
 import Menu from '@material-ui/icons/Menu'
-import { PathHelper } from '@sensenet/client-utils'
-import { Settings } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { clsx } from 'clsx'
 import React, { useContext, useEffect, useState } from 'react'
@@ -9,8 +7,11 @@ import { Link } from 'react-router-dom'
 import logo from '../../assets/sensenet_white.png'
 import { ResponsiveContext, ResponsivePersonalSettings } from '../../context'
 import { globals, useGlobalStyles } from '../../globalStyles'
+import { useLocalization } from '../../hooks'
+import { loadRepositorySettings } from '../../services/repository-settings-service'
 import { CommandPalette } from '../command-palette/CommandPalette'
 import { DesktopNavMenu } from './desktop-nav-menu'
+import '../drawer/app-navigation.css'
 
 const useStyles = makeStyles((theme) => {
   return createStyles({
@@ -63,11 +64,10 @@ const useStyles = makeStyles((theme) => {
   })
 })
 
-const PORTAL_SETTING_PATH = '/Root/System/Settings/Portal.settings'
-
-export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }> = (props) => {
+export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void; drawerOpened?: boolean }> = (props) => {
   const personalSettings = useContext(ResponsivePersonalSettings)
   const device = useContext(ResponsiveContext)
+  const localization = useLocalization().drawer
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
   const repository = useRepository()
@@ -79,42 +79,26 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
   }
 
   useEffect(() => {
-    async function getPermissionSettingJSON() {
+    const controller = new AbortController()
+    setHeaderColor(globals.common.headerBackground)
+    async function loadHeaderColor() {
       try {
-        const result = await repository.load<Settings>({
-          idOrPath: PORTAL_SETTING_PATH,
-        })
-        const binaryPath = result.d.Binary?.__mediaresource.media_src
-        if (!binaryPath) {
-          return
-        }
-        const textFile = await repository.fetch(
-          PathHelper.joinPaths(repository.configuration.repositoryUrl, binaryPath),
-        )
-        if (textFile.ok && textFile.body) {
-          const reader = textFile.body.getReader()
-          const decoder = new TextDecoder()
-          let jsonString = ''
-          let isDone = false
-          while (!isDone) {
-            const res = await reader.read()
-            isDone = res.done
-            jsonString += decoder.decode(res.value, { stream: true })
-          }
-          jsonString += decoder.decode()
-          const setting = JSON.parse(jsonString)
-          setHeaderColor(setting.HeaderColor)
+        const settings = await loadRepositorySettings(repository, '/Root', 'Portal', controller.signal)
+        const color = settings?.HeaderColor
+        if (!controller.signal.aborted && typeof color === 'string' && CSS.supports('color', color)) {
+          setHeaderColor(color)
         }
       } catch (error) {
-        logger.error({
-          message: 'Something went wrong during getting portal settings',
-          data: {
-            error,
-          },
+        if (controller.signal.aborted) return
+        // Optional branding must not add a second failure notification to a failed folder load.
+        logger.debug({
+          message: 'Could not load the portal header color; using the default.',
+          data: { error, relatedRepository: repository.configuration.repositoryUrl },
         })
       }
     }
-    getPermissionSettingJSON()
+    void loadHeaderColor()
+    return () => controller.abort()
   }, [repository, logger])
 
   return (
@@ -130,13 +114,19 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
             <img src={logo} alt="logo" data-test="sensenet-logo" width="29" height="32" />
           </Link>
           {personalSettings.drawer.enabled && (personalSettings.drawer.type === 'temporary' || device === 'mobile') ? (
-            <IconButton
-              className={classes.drawerButton}
+            <button
+              type="button"
+              className="sn-app-navigation-opener"
+              aria-label={localization.openNavigation}
+              title={localization.openNavigation}
+              aria-expanded={props.drawerOpened || false}
+              aria-controls="app-navigation-drawer"
+              data-test="app-navigation-toggle"
               onClick={() => {
                 props.openDrawer && props.openDrawer()
               }}>
               <Menu />
-            </IconButton>
+            </button>
           ) : null}
           <div
             className={classes.linkText}

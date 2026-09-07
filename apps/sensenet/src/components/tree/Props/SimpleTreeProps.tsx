@@ -4,6 +4,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 export interface SimpleTreeProps {
   onItemClick: (item: GenericContent) => void
   parentPath: string
+  rootPath?: string
   activeItemPath: string
   loadSettings?: ODataParams<GenericContent>
   onTreeLoadingChange?: (isLoading: boolean) => void

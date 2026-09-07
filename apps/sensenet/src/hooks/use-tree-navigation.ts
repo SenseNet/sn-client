@@ -11,7 +11,7 @@ export const useTreeNavigation = (defaultPath: string) => {
   const match = useRouteMatch<{ browseType: string }>()
   const selectionService = useSelectionService()
   const pathFromQuery = useQuery().get('path')
-  const [currentPath, setCurrentPath] = useState(pathFromQuery ? decodeURIComponent(pathFromQuery) : '')
+  const [currentPath, setCurrentPath] = useState(pathFromQuery || '')
 
   const onNavigate = useCallback(
     (content: GenericContent) => {
@@ -33,7 +33,7 @@ export const useTreeNavigation = (defaultPath: string) => {
   )
 
   useEffect(() => {
-    const path = pathFromQuery ? decodeURIComponent(pathFromQuery) : ''
+    const path = pathFromQuery || ''
     setCurrentPath(path)
   }, [pathFromQuery])
 

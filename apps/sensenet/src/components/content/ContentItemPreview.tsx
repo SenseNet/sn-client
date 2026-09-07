@@ -3,7 +3,8 @@ import { PathHelper } from '@sensenet/client-utils'
 import { File, GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { CSSProperties, useEffect, useRef, useState } from 'react'
-import { isImageContent } from '../../services'
+import { useRepositoryImage } from '../../hooks/use-repository-image'
+import { getRepositoryBinaryUrl, isImageContent } from '../../services'
 import { Icon } from '../Icon'
 import { ImageThumbnail } from '../image-thumbnail'
 
@@ -29,49 +30,19 @@ const ContentTypeIcon = ({ content, style }: { content: GenericContent; style: C
 
 const DocumentThumbnail = ({ content, size }: Omit<Props, 'thumbnails'>) => {
   const repository = useRepository()
-  const [source, setSource] = useState<string>()
   const [hasError, setHasError] = useState(false)
-
-  useEffect(() => {
-    const controller = new AbortController()
-    let objectUrl: string | undefined
-    let current = true
-    setSource(undefined)
-    setHasError(false)
-
-    const load = async () => {
-      try {
-        // Only read a previously generated preview; never request preview generation.
-        const response = await repository.fetch(
-          PathHelper.joinPaths(
-            repository.configuration.repositoryUrl,
-            content.Path,
-            'Previews',
-            content.Version as string,
-            'thumbnail1.png',
-          ),
-          { method: 'GET', credentials: 'include', cache: 'force-cache', signal: controller.signal },
-        )
-        if (!response.ok) throw new Error(response.statusText)
-        const blob = await response.blob()
-        if (!current) return
-        objectUrl = URL.createObjectURL(blob)
-        setSource(objectUrl)
-      } catch {
-        if (current && !controller.signal.aborted) setHasError(true)
-      }
-    }
-    load()
-
-    return () => {
-      current = false
-      controller.abort()
-      if (objectUrl) URL.revokeObjectURL(objectUrl)
-    }
-  }, [content.Path, content.Version, repository])
+  // Only read a previously generated preview; never request preview generation.
+  const previewUrl = getRepositoryBinaryUrl(
+    repository.configuration.repositoryUrl,
+    `/${PathHelper.joinPaths(content.Path, 'Previews', content.Version as string, 'thumbnail1.png')}`,
+  )
+  const { source, error } = useRepositoryImage(repository, previewUrl, {
+    revision: content.ModificationDate?.toString(),
+  })
+  useEffect(() => setHasError(false), [source])
 
   const style: CSSProperties = { width: size, height: size, objectFit: 'contain' }
-  return source && !hasError ? (
+  return source && !error && !hasError ? (
     <img src={source} alt="" style={style} onError={() => setHasError(true)} data-test="document-thumbnail" />
   ) : (
     <ContentTypeIcon content={content} style={style} />

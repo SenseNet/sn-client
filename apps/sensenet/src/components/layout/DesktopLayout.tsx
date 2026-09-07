@@ -97,7 +97,7 @@ export const DesktopLayout: React.FunctionComponent = (props) => {
 
   return (
     <div className={clsx(globalClasses.full, classes.desktopLayoutWrapper)}>
-      <DesktopAppBar openDrawer={() => setTempDrawerOpened(!tempDrawerOpened)} />
+      <DesktopAppBar openDrawer={() => setTempDrawerOpened(!tempDrawerOpened)} drawerOpened={tempDrawerOpened} />
       <div className={classes.drawerandContentSlot}>
         {settings.drawer.enabled ? (
           <>
