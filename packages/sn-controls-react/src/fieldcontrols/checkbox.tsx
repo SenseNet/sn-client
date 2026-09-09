@@ -1,13 +1,14 @@
 /**
  * @module FieldControls
  */
-import { FormControl, FormControlLabel, FormHelperText, Checkbox as MuiCheckbox } from '@material-ui/core'
+import { FormControl, Checkbox as MuiCheckbox } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { FieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { renderIconDefault } from './icon'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 
 /**
@@ -32,12 +33,14 @@ export const Checkbox: React.FC<ReactClientFieldSetting<FieldSetting>> = (props)
     case 'new':
       return (
         <FormControl required={props.settings.Compulsory} disabled={props.settings.ReadOnly}>
-          <FormControlLabel
+          <CustomLabel
             name={props.settings.Name}
-            control={<MuiCheckbox checked={value} onChange={handleChange} />}
-            label={props.settings.DisplayName}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
           />
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
+          <MuiCheckbox name={props.settings.Name} checked={value} onChange={handleChange} />
         </FormControl>
       )
     case 'browse':

@@ -1,4 +1,5 @@
 import { BrowseType } from './components/content'
+import { FAVORITES_ROOT_PATH } from './services/favorites-constants'
 
 export const PATHS = {
   loginCallback: { appPath: '/authentication/login-callback' },
@@ -9,22 +10,26 @@ export const PATHS = {
   usersAndGroups: { appPath: '/users-and-groups/:browseType/:action?', snPath: '/Root/IMS' },
   dashboard: { appPath: '/dashboard' },
   contentTypes: { appPath: '/content-types/:browseType/:action?', snPath: '/Root/System/Schema/ContentTypes' },
-  search: { appPath: '/search' },
-  content: { appPath: '/content/:browseType/:action?', snPath: '/Root/Content' },
+  search: { appPath: '/search', snPath: '/Root' },
+  favorites: { appPath: '/favorites/:browseType/:action?', snPath: FAVORITES_ROOT_PATH },
+  content: { appPath: '/content/:browseType/:action?', snPath: '/Root' },
   contentTemplates: { appPath: '/content-templates/:browseType/:action?', snPath: '/Root/ContentTemplates' },
-  custom: { appPath: '/custom/:browseType/:path/:action?' },
+  custom: { appPath: '/custom/:browseType/:path/:action?', snPath: '/Root' },
   configuration: { appPath: '/system/settings/:action?', snPath: '/Root/System/Settings' },
   localization: { appPath: '/system/localization/:action?', snPath: '/Root/Localization' },
   webhooks: { appPath: '/system/webhooks/:action?', snPath: '/Root/System/WebHooks' },
-  settings: { appPath: '/system/:submenu?' },
+  settings: { appPath: '/system/:submenu?', snPath: '/Root/System/Settings' },
   apiKeys: { appPath: '/system/apikeys' },
+  landingPath: { appPath: '/content/explorer/' },
+  root: { appPath: '/Root', snPath: '/Root' },
+  home: { appPath: '/', snPath: '/' },
 } as const
 
-type SettingsItemType = 'stats' | 'apikeys' | 'webhooks' | 'adminui'
+type SettingsItemType = 'stats' | 'settings' | 'apikeys' | 'webhooks' | 'adminui'
 
 type RoutesWithContentBrowser = keyof Pick<
   typeof PATHS,
-  'content' | 'usersAndGroups' | 'contentTypes' | 'trash' | 'contentTemplates'
+  'content' | 'favorites' | 'usersAndGroups' | 'contentTypes' | 'trash' | 'contentTemplates'
 >
 
 type RoutesWithActionParam = keyof Pick<typeof PATHS, 'savedQueries' | 'localization' | 'configuration' | 'webhooks'>

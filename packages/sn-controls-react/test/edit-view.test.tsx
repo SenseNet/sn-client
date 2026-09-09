@@ -15,6 +15,7 @@ import {
   DropDownList,
   EmptyFieldControl,
   FileName,
+  FileUpload,
   Name,
   NumberField,
   Password,
@@ -89,6 +90,68 @@ describe('Edit view component', () => {
     onChange?.('VersioningMode', VersioningMode.Option1)
     wrapper.find('[component="form"]').simulate('submit', { preventDefault: jest.fn() })
     expect(onSubmit).toBeCalledWith({ VersioningMode: '1' }, 'GenericContent')
+  })
+
+  it('should prevent duplicate submits while submit is pending', async () => {
+    let resolveSubmit: () => void = () => undefined
+    const onSubmit = jest.fn(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveSubmit = resolve
+        }),
+    )
+    const wrapper = shallow(
+      <EditView repository={testRepository} onSubmit={onSubmit} content={testFile} contentTypeName={testFile.Type} />,
+    )
+    const event = { preventDefault: jest.fn() }
+
+    act(() => {
+      wrapper.find('[component="form"]').simulate('submit', event)
+      wrapper.find('[component="form"]').simulate('submit', event)
+    })
+    wrapper.update()
+
+    expect(onSubmit).toBeCalledTimes(1)
+    expect(wrapper.find('[data-test="submit"]').prop('disabled')).toBe(true)
+
+    await act(async () => {
+      resolveSubmit()
+      await Promise.resolve()
+    })
+    wrapper.update()
+
+    expect(wrapper.find('[data-test="submit"]').prop('disabled')).toBe(false)
+  })
+
+  it('should skip text binary upload when the editor value is unchanged', async () => {
+    const onSubmit = jest.fn()
+    const upload = {
+      textAsFile: jest.fn(),
+    }
+    const repo = Object.assign(Object.create(testRepository), {
+      upload,
+      reloadSchema: jest.fn(),
+    })
+    const wrapper = shallow(
+      <EditView repository={repo} onSubmit={onSubmit} content={testFile} contentTypeName={testFile.Type} />,
+    )
+    const fieldOnChange = wrapper.find(FileUpload).prop('fieldOnChange')
+
+    fieldOnChange?.('Binary', {
+      __type: 'sensenet:text-binary-field-value',
+      text: '<ContentType />',
+      fileName: 'Sample-document.docx',
+      isModified: false,
+    } as any)
+
+    await act(async () => {
+      wrapper.find('[component="form"]').simulate('submit', { preventDefault: jest.fn() })
+      await Promise.resolve()
+    })
+
+    expect(upload.textAsFile).not.toBeCalled()
+    expect(repo.reloadSchema).not.toBeCalled()
+    expect(onSubmit).toBeCalledWith({}, 'GenericContent')
   })
   //Advanced field tests
   it('Advanced field inputs in a group should be invisible by default', () => {

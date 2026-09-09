@@ -1,4 +1,4 @@
-import { Checkbox, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core'
+import { Checkbox, List, ListItem, ListItemIcon, ListItemText, Typography, useTheme } from '@material-ui/core'
 import { ArrowUpward, Folder } from '@material-ui/icons'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { MouseEvent, useCallback } from 'react'
@@ -16,10 +16,12 @@ type useTreePickerNavigaTionProps = {
  */
 export function TreePicker<T extends GenericContentWithIsParent = GenericContent>(props: PickerProps<T>) {
   const { selection, setSelection } = useSelection()
+  const theme = useTheme()
 
   const { items, navigateTo, isLoading, error } = useTreePicker<T & useTreePickerNavigaTionProps>({
     repository: props.repository,
     currentPath: props.currentPath,
+    contextPath: props.contextPath,
     navigationPath: props.navigationPath,
     selectionRoots: props.selectionRoots,
     allowMultiple: props.allowMultiple,
@@ -73,7 +75,14 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
       const labelId = `checkbox-list-label-${item.Id}`
 
       return (
-        <ListItem key={item.Id} button={true}>
+        <ListItem
+          key={item.Id}
+          button={true}
+          style={{
+            paddingTop: '0px',
+            paddingBottom: '0px',
+            borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid #737373',
+          }}>
           <ListItemIcon>
             {!props.selectionBlacklist?.includes(item.Path) && (
               <Checkbox
@@ -91,6 +100,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
           </ListItemIcon>
           <ListItemIcon>{props.renderIcon?.(item) || <Folder style={{ color: 'primary' }} />}</ListItemIcon>
           <ListItemText
+            style={{ marginTop: '0px', marginBottom: '0px' }}
             id={labelId}
             primary={item.DisplayName}
             secondary={item.Path.replace(new RegExp('^/Root', 'g'), '')}
@@ -98,7 +108,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
         </ListItem>
       )
     },
-    [selection, onCheckedChangeHandler, props],
+    [selection, onCheckedChangeHandler, props, theme.palette.type],
   )
 
   const renderItem = props.renderItem || defaultRenderer
@@ -118,7 +128,7 @@ export function TreePicker<T extends GenericContentWithIsParent = GenericContent
   }
 
   return (
-    <List>
+    <List style={{ padding: '0px', maxHeight: '400px' }}>
       {items?.map((item) => (
         <div
           onClick={(e) => onCheckedChangeHandler(e, item as any)}

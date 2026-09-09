@@ -6,6 +6,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { usePersonalSettings, usePreviousValue, useSelectionService } from '../../hooks'
 import { ItemType, Tree } from './tree'
+import { compareTreeItems, getTreeFilter, getTreeOrderBy, SETTINGS_FOLDER_FILTER } from './tree-helpers'
 
 type TreeWithDataProps = {
   onItemClick: (item: GenericContent) => void
@@ -18,7 +19,6 @@ type TreeWithDataProps = {
 let lastRequest: { path: string; lastIndex: number } | undefined
 
 const ITEM_THRESHOLD = 50
-export const SETTINGS_FOLDER_FILTER = `not ((Name eq 'Settings') and (isOf('SystemFolder')))`
 
 const walkTree = (node: ItemType, callBack: (node: ItemType) => void) => {
   if (node?.children?.length) {
@@ -42,8 +42,16 @@ export default function TreeWithData(props: TreeWithDataProps) {
 
   const prevActiveItemPath = usePreviousValue(props.activeItemPath)
   const prevShowHiddenItems = usePreviousValue(personalSettings.showHiddenItems)
+  const prevShowLeafItemsInTree = usePreviousValue(personalSettings.showLeafItemsInTree)
   const prevPreferDisplayName = usePreviousValue(personalSettings.preferDisplayName)
+  const prevSortFoldersFirst = usePreviousValue(personalSettings.sortFoldersFirst)
   const { onTreeLoadingChange } = props
+
+  const sortTreeItems = useCallback(
+    (items: GenericContent[]) =>
+      [...items].sort(compareTreeItems(personalSettings.preferDisplayName, personalSettings.sortFoldersFirst)),
+    [personalSettings.preferDisplayName, personalSettings.sortFoldersFirst],
+  )
 
   const loadCollection = useCallback(
     async (path: string, top: number, skip: number) => {
@@ -59,14 +67,17 @@ export default function TreeWithData(props: TreeWithDataProps) {
           oDataOptions: {
             top,
             skip,
-            filter: `IsFolder eq true ${!personalSettings.showHiddenItems ? `and (${SETTINGS_FOLDER_FILTER})` : ''}`,
-            orderby: [
-              ['DisplayName', 'asc'],
-              ['Name', 'asc'],
-            ],
+            filter: getTreeFilter(personalSettings.showHiddenItems, personalSettings.showLeafItemsInTree),
+            orderby: getTreeOrderBy(personalSettings.preferDisplayName),
           },
         })
-        return result
+        return {
+          ...result,
+          d: {
+            ...result.d,
+            results: sortTreeItems(result.d.results),
+          },
+        }
       } catch (error) {
         if (!ac.signal.aborted) {
           logger.warning({ message: `Couldn't load containers for ${path}`, data: error })
@@ -76,7 +87,15 @@ export default function TreeWithData(props: TreeWithDataProps) {
         setIsLoading(false)
       }
     },
-    [onTreeLoadingChange, repo, personalSettings.showHiddenItems, logger],
+    [
+      onTreeLoadingChange,
+      repo,
+      personalSettings.showHiddenItems,
+      personalSettings.showLeafItemsInTree,
+      personalSettings.preferDisplayName,
+      sortTreeItems,
+      logger,
+    ],
   )
 
   useEffect(() => {
@@ -108,6 +127,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
 
         return items
           .filter((item) => item.ParentId === id)
+          .sort(compareTreeItems(personalSettings.preferDisplayName, personalSettings.sortFoldersFirst))
           .map((item) => ({
             ...item,
             children: buildTree(items, item.Id),
@@ -138,7 +158,16 @@ export default function TreeWithData(props: TreeWithDataProps) {
         setTreeData(undefined)
       }
     },
-    [treeData, props.parentPath, props.activeItemPath, props.loadSettings, repo, personalSettings.showHiddenItems],
+    [
+      treeData,
+      props.parentPath,
+      props.activeItemPath,
+      props.loadSettings,
+      repo,
+      personalSettings.showHiddenItems,
+      personalSettings.preferDisplayName,
+      personalSettings.sortFoldersFirst,
+    ],
   )
 
   const loadMoreItems = useCallback(
@@ -285,11 +314,23 @@ export default function TreeWithData(props: TreeWithDataProps) {
   ])
 
   useEffect(() => {
-    openTree(personalSettings.showHiddenItems !== prevShowHiddenItems)
-  }, [openTree, personalSettings.showHiddenItems, prevShowHiddenItems])
+    openTree(
+      personalSettings.showHiddenItems !== prevShowHiddenItems ||
+        personalSettings.showLeafItemsInTree !== prevShowLeafItemsInTree,
+    )
+  }, [
+    openTree,
+    personalSettings.showHiddenItems,
+    prevShowHiddenItems,
+    personalSettings.showLeafItemsInTree,
+    prevShowLeafItemsInTree,
+  ])
 
   useEffect(() => {
-    if (prevPreferDisplayName !== personalSettings.preferDisplayName) {
+    if (
+      prevPreferDisplayName !== personalSettings.preferDisplayName ||
+      prevSortFoldersFirst !== personalSettings.sortFoldersFirst
+    ) {
       const buildTree = (items: GenericContent[], id?: number): any => {
         if (!id) {
           return { ...items[0], children: buildTree(items, items[0].Id), hasNextPage: false, expanded: true }
@@ -297,6 +338,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
 
         return items
           .filter((item) => item.ParentId === id)
+          .sort(compareTreeItems(personalSettings.preferDisplayName, personalSettings.sortFoldersFirst))
           .map((item) => ({
             ...item,
             children: buildTree(items, item.Id),
@@ -313,7 +355,7 @@ export default function TreeWithData(props: TreeWithDataProps) {
           oDataOptions: {
             ...props.loadSettings,
             filter: !personalSettings.showHiddenItems ? SETTINGS_FOLDER_FILTER : '',
-            orderby: personalSettings.preferDisplayName ? [['DisplayName', 'asc']] : [['Name', 'asc']],
+            orderby: getTreeOrderBy(personalSettings.preferDisplayName),
           },
           body: {
             rootPath: props.parentPath,
@@ -331,7 +373,12 @@ export default function TreeWithData(props: TreeWithDataProps) {
         })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [prevPreferDisplayName, personalSettings.preferDisplayName])
+  }, [
+    prevPreferDisplayName,
+    personalSettings.preferDisplayName,
+    prevSortFoldersFirst,
+    personalSettings.sortFoldersFirst,
+  ])
 
   const onItemClick = async (item: ItemType) => {
     if (!treeData) {

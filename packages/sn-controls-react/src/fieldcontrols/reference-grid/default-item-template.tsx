@@ -25,7 +25,7 @@ export type PathConfig = {
 
 export type Paths = Record<string, PathConfig>
 
-function getAppPathAndContent(PATHS: Paths, targetPath: string) {
+export function getAppPathAndContent(PATHS: Paths, targetPath: string) {
   const matches = Object.entries(PATHS)
     .filter(([, config]) => config.snPath && targetPath.startsWith(config.snPath))
     .sort((a, b) => b[1].snPath!.length - a[1].snPath!.length)
@@ -41,7 +41,7 @@ function getAppPathAndContent(PATHS: Paths, targetPath: string) {
   }
 }
 
-function buildCustomPath(path: string, action: string | undefined, contentePath: string) {
+export function buildCustomPath(path: string, action: string | undefined, contentePath: string) {
   const customPath = path
     .replace(':browseType', 'explorer')
     .replace('/:path', '') // Remove the path parameter
@@ -63,7 +63,7 @@ interface DefaultItemTemplateProps {
   repository?: Repository
   multiple: boolean
   renderIcon?: (name: string) => JSX.Element
-  paths: Paths
+  paths?: Paths
 }
 
 const useStyles = makeStyles(() =>

@@ -2,15 +2,16 @@ import { createStyles, ListItem, ListItemText, makeStyles, Theme } from '@materi
 import SettingsIcon from '@material-ui/icons/Settings'
 import { clsx } from 'clsx'
 import React, { lazy } from 'react'
-import { matchPath, NavLink, useLocation, useRouteMatch } from 'react-router-dom'
+import { matchPath, NavLink, useHistory, useLocation, useRouteMatch } from 'react-router-dom'
+import { GridKeyEnum } from '../../../src/components/grid/enums/GridKey.enum'
 import { PATHS, resolvePathParams } from '../../application-paths'
 import { globals, useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
+import { getLocalizationColumnDefs, getSettingsColumnDefs, webHooksColumnDefs } from '../grid/Cols/ColumnDefs.'
 import { ApiKeys } from './api-keys'
 import { Stats } from './stats'
 
 const ContentComponent = lazy(() => import(/* webpackChunkName: "content" */ '../content'))
-const SetupComponent = lazy(() => import(/* webpackChunkName: "setup" */ './setup'))
 const PersonalSettingsEditor = lazy(
   () => import(/* webpackChunkName: "PersonalSettingsEditor" */ './personal-settings-editor'),
 )
@@ -30,6 +31,8 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRight: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
     },
     settingsContent: {
+      display: 'flex',
+      flexDirection: 'column',
       overflow: 'auto',
       width: `calc(100% - ${globals.common.settingsDrawerWidth}px)`,
     },
@@ -50,6 +53,7 @@ export const Settings: React.FunctionComponent = () => {
   const globalClasses = useGlobalStyles()
   const localizationDrawer = useLocalization().drawer
   const location = useLocation()
+  const history = useHistory()
 
   const settingsItems = [
     {
@@ -82,9 +86,23 @@ export const Settings: React.FunctionComponent = () => {
   const renderContent = () => {
     switch (routeMatch.params.submenu) {
       case 'localization':
-        return <ContentComponent disableColumnSettings rootPath={PATHS.localization.snPath} />
+        return (
+          <ContentComponent
+            hasTree={false}
+            rootPath={PATHS.localization.snPath}
+            colDef={getLocalizationColumnDefs(history)}
+            gridKey={GridKeyEnum.LOCALIZATION}
+          />
+        )
       case 'settings':
-        return <SetupComponent />
+        return (
+          <ContentComponent
+            hasTree={false}
+            rootPath={PATHS.settings.snPath}
+            colDef={getSettingsColumnDefs(history)}
+            gridKey={GridKeyEnum.SETTINGS}
+          />
+        )
       case 'adminui':
         return <PersonalSettingsEditor />
       case 'stats':
@@ -101,6 +119,8 @@ export const Settings: React.FunctionComponent = () => {
               { field: 'Enabled' } as any,
               { field: 'SuccessfulCalls' } as any,
             ]}
+            colDef={webHooksColumnDefs}
+            gridKey={GridKeyEnum.WEBHOOKS}
             schema={'WebHookSubscription'}
           />
         )

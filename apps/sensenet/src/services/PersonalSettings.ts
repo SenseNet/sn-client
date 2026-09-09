@@ -7,6 +7,11 @@ import { PlatformDependent } from '../context'
 const settingsKey = `SN-APP-USER-SETTINGS`
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
 
+export const ContentViewModes = tuple('details', 'list', 'icons', 'thumbnails')
+export type ContentViewMode = (typeof ContentViewModes)[number]
+export const ContentIconSizes = tuple('small', 'medium', 'large', 'extraLarge')
+export type ContentIconSize = (typeof ContentIconSizes)[number]
+
 export interface UiSettings {
   content: {
     browseType: (typeof BrowseType)[number]
@@ -25,6 +30,7 @@ export const CustomDrawerItemType = tuple('CustomContent')
 
 export const BuiltInDrawerItemType = tuple(
   'Content',
+  'Favorites',
   'ContentTypes',
   'SavedQueries',
   'Trash',
@@ -89,10 +95,17 @@ export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   eventLogSize: number
   sendLogWithCrashReports: boolean
   showHiddenItems: boolean
+  showLeafItemsInTree: boolean
   preferDisplayName: boolean
+  sortFoldersFirst: boolean
+  defaultContentView: ContentViewMode
+  contentIconSize: ContentIconSize
+  contentShowType: boolean
+  contentPreferDisplayName: boolean
   logLevel: Array<keyof typeof LogLevel>
   language: 'default' | 'hungarian'
   theme: 'light' | 'dark'
+  showDescription: boolean
   uploadHandlers: string[]
 }
 
@@ -140,8 +153,15 @@ export const defaultSettings: PersonalSettingsType = {
   sendLogWithCrashReports: true,
   logLevel: ['Information', 'Warning', 'Error', 'Fatal'],
   theme: prefersDark ? 'dark' : 'light',
+  showDescription: false,
   showHiddenItems: true,
+  showLeafItemsInTree: false,
   preferDisplayName: false,
+  sortFoldersFirst: true,
+  defaultContentView: 'details',
+  contentIconSize: 'medium',
+  contentShowType: true,
+  contentPreferDisplayName: true,
   uploadHandlers: [
     'SenseNet.ContentRepository.File',
     'SenseNet.ContentRepository.Image',
@@ -153,26 +173,43 @@ export const defaultSettings: PersonalSettingsType = {
 export class PersonalSettings {
   private checkDrawerItems(settings: Partial<PersonalSettingsType>): Partial<PersonalSettingsType> {
     if (settings.default?.drawer?.items?.find((i) => typeof i === 'string')) {
-      ; (settings.default.drawer.items as any) = undefined
+      ;(settings.default.drawer.items as any) = undefined
     }
 
     if (settings.desktop?.drawer?.items?.find((i) => typeof i === 'string')) {
-      ; (settings.desktop.drawer.items as any) = undefined
+      ;(settings.desktop.drawer.items as any) = undefined
     }
 
     if (settings.tablet?.drawer?.items?.find((i) => typeof i === 'string')) {
-      ; (settings.tablet.drawer.items as any) = undefined
+      ;(settings.tablet.drawer.items as any) = undefined
     }
 
     if (settings.mobile?.drawer?.items?.find((i) => typeof i === 'string')) {
-      ; (settings.mobile.drawer.items as any) = undefined
+      ;(settings.mobile.drawer.items as any) = undefined
     }
 
     return settings
   }
 
   private checkValues(settings: Partial<PersonalSettingsType>): Partial<PersonalSettingsType> {
-    return this.checkDrawerItems(settings)
+    if (!settings || typeof settings !== 'object' || Array.isArray(settings)) {
+      return {}
+    }
+
+    const checked = this.checkDrawerItems({ ...settings })
+    if (!ContentViewModes.includes(checked.defaultContentView as ContentViewMode)) {
+      delete checked.defaultContentView
+    }
+    if (!ContentIconSizes.includes(checked.contentIconSize as ContentIconSize)) {
+      delete checked.contentIconSize
+    }
+    if (typeof checked.contentShowType !== 'boolean') {
+      delete checked.contentShowType
+    }
+    if (typeof checked.contentPreferDisplayName !== 'boolean') {
+      delete checked.contentPreferDisplayName
+    }
+    return checked
   }
 
   public getLocalUserSettingsValue(): Partial<PersonalSettingsType> {
@@ -190,8 +227,9 @@ export class PersonalSettings {
   public effectiveValue = new ObservableValue(deepMerge(defaultSettings, this.userValue.getValue()))
 
   public setPersonalSettingsValue(settings: Partial<PersonalSettingsType>) {
-    this.userValue.setValue(settings)
-    this.effectiveValue.setValue(deepMerge(defaultSettings, settings))
-    localStorage.setItem(`${settingsKey}`, JSON.stringify(settings))
+    const checked = this.checkValues(settings)
+    this.userValue.setValue(checked)
+    this.effectiveValue.setValue(deepMerge(defaultSettings, checked))
+    localStorage.setItem(`${settingsKey}`, JSON.stringify(checked))
   }
 }

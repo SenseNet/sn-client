@@ -36,6 +36,7 @@ export const SelectionProvider: FC<{
   )
 
   return (
+    // eslint-disable-next-line react/react-in-jsx-scope
     <SelectionContext.Provider value={{ selection, setSelection, allowMultiple }}>{children}</SelectionContext.Provider>
   )
 }

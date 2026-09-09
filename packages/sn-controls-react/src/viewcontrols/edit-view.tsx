@@ -4,12 +4,14 @@
 import { Box, Button, createStyles, Grid, IconButton, makeStyles, Theme, Typography } from '@material-ui/core'
 import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons'
 import { Repository } from '@sensenet/client-core'
+import { PathHelper } from '@sensenet/client-utils'
 import { ActionName, ControlMapper } from '@sensenet/control-mapper'
 import { FieldSetting, FieldVisibility, GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import type { Locale } from 'date-fns'
 import React, { createElement, ReactElement, useEffect, useRef, useState } from 'react'
 import MediaQuery from 'react-responsive'
+import { isTextBinaryFieldValue } from '../fieldcontrols/file-upload'
 import { FieldLocalization } from '../fieldcontrols/localization'
 import { reactControlMapper } from '../react-control-mapper'
 
@@ -23,7 +25,7 @@ export interface EditViewProps {
   actionName?: ActionName
   content?: GenericContent
   contentTypeName: string
-  onSubmit?: (content: Partial<GenericContent>, contentTypeName?: string) => void
+  onSubmit?: (content: Partial<GenericContent>, contentTypeName?: string) => void | Promise<unknown>
   renderIcon?: (name: string) => ReactElement
   renderTitle?: () => ReactElement
   handleCancel?: () => void
@@ -47,11 +49,7 @@ const useStyles = makeStyles((theme: Theme) => {
     grid: {
       margin: '0 auto',
     },
-    field: {
-      width: '780px',
-      margin: 'auto',
-      maxWidth: '100%',
-    },
+    field: {},
     actionButtonWrapper: {
       textAlign: 'right',
     },
@@ -59,11 +57,16 @@ const useStyles = makeStyles((theme: Theme) => {
       marginRight: 20,
     },
     advancedFieldContainer: {
-      padding: '15px 0',
-      fontSize: '18px',
-      width: '780px',
+      padding: '15px 10px',
+      fontSize: '16px',
+      width: '100%',
       maxWidth: '100%',
       margin: 'auto',
+    },
+    advancedHolder: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '15px',
     },
     advancedFieldBox: {
       display: 'flex',
@@ -75,6 +78,7 @@ const useStyles = makeStyles((theme: Theme) => {
       height: '1px',
       margin: '16px auto',
       backgroundColor: theme.palette.primary.main,
+      width: '100%',
     },
   })
 })
@@ -103,7 +107,10 @@ export const EditView: React.FC<EditViewProps> = (props) => {
   const [advancedFields, setAdvancedFields] = useState<AdvancedFieldGroup[]>([])
   const [advancedFieldStateGroup, setAdvancedFieldStateGroup] = useState<Array<{ key: string; isOpened: boolean }>>([])
   const contentRef = useRef({})
+  const isMountedRef = useRef(true)
+  const isSubmittingRef = useRef(false)
   const [content, setContent] = useState(contentRef.current)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   contentRef.current = content
   const classes = useStyles(props)
   const repository = useRepository()
@@ -112,9 +119,59 @@ export const EditView: React.FC<EditViewProps> = (props) => {
 
   let isAutofocusSet = false
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    props.onSubmit?.(content, schema.schema.ContentTypeName)
+    if (isSubmittingRef.current) {
+      return
+    }
+
+    isSubmittingRef.current = true
+    setIsSubmitting(true)
+
+    try {
+      const submitContent = { ...(contentRef.current as Partial<GenericContent>) }
+      let hasTextBinaryUpload = false
+
+      await Promise.all(
+        Object.entries(submitContent).map(async ([fieldName, value]) => {
+          if (!isTextBinaryFieldValue(value)) {
+            return
+          }
+
+          delete (submitContent as Record<string, unknown>)[fieldName]
+
+          if (value.isModified === false) {
+            return
+          }
+
+          if (!props.content) {
+            throw new Error(`Cannot save text binary field '${fieldName}' without a content.`)
+          }
+
+          await props.repository.upload.textAsFile({
+            text: value.text,
+            parentPath: PathHelper.getParentPath(props.content.Path),
+            fileName: value.fileName || props.content.Name,
+            overwrite: true,
+            contentTypeName: props.content.Type,
+            binaryPropertyName: fieldName,
+          })
+
+          hasTextBinaryUpload = true
+        }),
+      )
+
+      if (hasTextBinaryUpload) {
+        await props.repository.reloadSchema()
+      }
+
+      await props.onSubmit?.(submitContent, schema.schema.ContentTypeName)
+    } finally {
+      isSubmittingRef.current = false
+      if (isMountedRef.current) {
+        setIsSubmitting(false)
+      }
+    }
   }
 
   const handleInputChange = (field: string, value: unknown) => {
@@ -127,6 +184,12 @@ export const EditView: React.FC<EditViewProps> = (props) => {
     })
     return () => schemaObservable.dispose()
   }, [repository.schemas, actionName, controlMapper, props.contentTypeName])
+
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false
+    }
+  }, [])
 
   useEffect(() => {
     if (actionName && schema) {
@@ -236,9 +299,9 @@ export const EditView: React.FC<EditViewProps> = (props) => {
           .map((field) => renderField(field))}
 
         <Box className={classes.advancedFieldContainer}>
-          {advancedFields.map((group, index) =>
+          {advancedFields.map((group) =>
             group.fields.length > 0 ? (
-              <Box key={index} data-test="group-container">
+              <Box key={group.key} className={classes.advancedHolder} data-test="group-container">
                 <Box className={classes.divider} />
                 <Box data-test="group-header">
                   <Box className={classes.advancedFieldBox}>
@@ -261,9 +324,7 @@ export const EditView: React.FC<EditViewProps> = (props) => {
                     )
                     .map((field) => renderField(field))}
               </Box>
-            ) : (
-              <></>
-            ),
+            ) : null,
           )}
         </Box>
       </Grid>
@@ -280,8 +341,10 @@ export const EditView: React.FC<EditViewProps> = (props) => {
         </MediaQuery>
         <Button
           aria-label={props.localization?.submit || 'Submit'}
+          aria-busy={isSubmitting}
           type="submit"
           data-test="submit"
+          disabled={isSubmitting}
           form={`edit-form-${uniqueId}`}
           variant="contained"
           color="primary">

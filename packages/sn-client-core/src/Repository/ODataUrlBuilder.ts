@@ -42,10 +42,12 @@ export class ODataUrlBuilder {
     if (config.requiredSelect === 'all' || config.defaultSelect === 'all' || oDataParams?.select === 'all') {
       oDataParams.select = undefined
     } else {
-      oDataParams.select = this.combineODataFieldParameters<T>(
-        config.requiredSelect as any,
-        oDataParams.select ?? (config.defaultSelect as any),
-      )
+      if (oDataParams.onlyselectList === undefined || !oDataParams.onlyselectList) {
+        oDataParams.select = this.combineODataFieldParameters<T>(
+          config.requiredSelect as any,
+          oDataParams.select ?? (config.defaultSelect as any),
+        )
+      }
     }
     oDataParams.metadata = oDataParams.metadata ?? config.defaultMetadata
     oDataParams.inlinecount = oDataParams.inlinecount ?? config.defaultInlineCount
@@ -62,7 +64,7 @@ export class ODataUrlBuilder {
       if (plainValue instanceof Array && plainValue.length) {
         parsedValue = plainValue.map((v) => v.join?.(' ') ?? v).join(',')
       }
-      if (name && parsedValue && parsedValue.toString().length) {
+      if (name && parsedValue !== undefined && parsedValue !== null && parsedValue.toString().length) {
         segments.push({ name, value: parsedValue })
       }
     }

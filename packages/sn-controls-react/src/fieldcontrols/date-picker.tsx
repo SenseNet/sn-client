@@ -1,17 +1,18 @@
 /**
  * @module FieldControls
  */
-import { createStyles, FormHelperText, makeStyles, Theme, Tooltip, Typography } from '@material-ui/core'
-import { DateTimePicker, DatePicker as MUIDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
-import type { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
+import { createStyles, makeStyles, Theme, Tooltip, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-types'
-import DateFnsUtils from '@date-io/date-fns'
 import intlFormatDistance from 'date-fns/intlFormatDistance'
 import React, { useState } from 'react'
+import DatePickerLib from 'react-datepicker'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
+import 'react-datepicker/dist/react-datepicker.css'
+
 const minDatePickerDate = new Date('0001-01-01')
 
 export const dateTimeOptions: Intl.DateTimeFormatOptions = {
@@ -35,90 +36,97 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 
+const disabledDateTimes: string[] = ['CreationDate', 'ModificationDate']
+
 const initialValueState = ({
   fieldValue,
   actionName,
   settings,
-}: Pick<ReactClientFieldSetting<DateTimeFieldSetting>, 'fieldValue' | 'actionName' | 'settings'>) => {
-  if (fieldValue === '0001-01-01T00:00:00Z') {
-    return null
-  }
+}: Pick<ReactClientFieldSetting<DateTimeFieldSetting>, 'fieldValue' | 'actionName' | 'settings'>): Date | null => {
+  if (fieldValue === '0001-01-01T00:00:00Z') return null
 
   if (fieldValue) {
-    return fieldValue
+    const d = new Date(fieldValue)
+    if (isNaN(d.getTime())) {
+      return null
+    }
+
+    const year = d.getFullYear()
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    const hours = String(d.getHours()).padStart(2, '0')
+    const minutes = String(d.getMinutes()).padStart(2, '0')
+
+    // Create a Date from a normalized string
+    return new Date(`${year}-${month}-${day} ${hours}:${minutes}`)
   }
 
-  if (actionName !== 'new') {
-    return null
-  }
+  if (actionName !== 'new') return null
 
-  const secureCheckedDateInput = changeTemplatedValue(settings.DefaultValue, settings.EvaluatedDefaultValue)
+  const defaultVal = changeTemplatedValue(settings.DefaultValue, settings.EvaluatedDefaultValue)
+  if (!defaultVal) return null
 
-  return secureCheckedDateInput
+  const parsed = new Date(defaultVal)
+  return isNaN(parsed.getTime()) ? null : parsed
 }
+
 /**
  * Field control that represents a Date field. Available values will be populated from the FieldSettings.
  */
 export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>> = (props) => {
   const classes = useStyles()
-
   const { settings, actionName, fieldValue, locale, localization, hideDescription, fieldOnChange } = props
-
   const localizationMerged = deepMerge(defaultLocalization.datePicker, localization?.datePicker)
+  const [value, setValue] = useState<Date | null>(initialValueState({ fieldValue, actionName, settings }))
+  const localeCode = window.navigator.language
+  const isDisabled = settings.ReadOnly || disabledDateTimes.includes(settings.Name)
+  const dateFieldValue: Date = new Date(fieldValue as string)
 
-  const [value, setValue] = useState(initialValueState({ fieldValue, actionName, settings }))
-
-  const handleDateChange = (date: MaterialUiPickersDate) => {
-    if (!date) {
-      return
-    }
-    setValue(new Date(date).toISOString())
-    fieldOnChange?.(settings.Name, new Date(date).toISOString())
+  let convertedDate = new Date(fieldValue as string)
+    .toLocaleString()
+    .replace('. ', '-')
+    .replace('. ', '-')
+    .replace('. ', ' ')
+  const splittedDate = convertedDate.split(' ')
+  if (splittedDate.length > 1 && splittedDate[1].length === 7) {
+    convertedDate = `${splittedDate[0]} 0${splittedDate[1]}`
   }
 
-  const localeCode = locale?.code || window.navigator.language
-
-  const dateFieldValue: Date = new Date(fieldValue as string)
+  const handleDateChange = (date: Date | null) => {
+    setValue(date)
+    const isoString = date?.toISOString() ?? null
+    fieldOnChange?.(settings.Name, isoString ?? '0001-01-01T00:00:00Z')
+  }
 
   switch (actionName) {
     case 'edit':
     case 'new':
       return (
-        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={locale}>
-          <>
-            {settings.DateTimeMode === DateTimeMode.Date ? (
-              <MUIDatePicker
-                style={{ display: 'inherit' }}
-                value={value}
-                minDate={minDatePickerDate}
-                onChange={handleDateChange}
-                name={settings.Name}
-                label={settings.DisplayName}
-                id={settings.Name}
-                disabled={settings.ReadOnly}
-                InputLabelProps={{ shrink: true }}
-                required={settings.Compulsory}
-                format="yyyy MMMM dd"
-              />
-            ) : (
-              <DateTimePicker
-                style={{ display: 'inherit' }}
-                minDate={minDatePickerDate}
-                value={value}
-                onChange={handleDateChange}
-                label={settings.DisplayName}
-                name={settings.Name}
-                id={settings.Name}
-                disabled={settings.ReadOnly}
-                InputLabelProps={{ shrink: true }}
-                required={settings.Compulsory}
-                format="yyyy MMMM dd hh:mm aaaa"
-                InputProps={{ readOnly: true, style: { minWidth: '200px', width: '100%' } }}
-              />
-            )}
-            {!hideDescription && <FormHelperText>{settings.Description}</FormHelperText>}
-          </>
-        </MuiPickersUtilsProvider>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!hideDescription}
+          />
+          <div style={{ maxWidth: '420px' }}>
+            <DatePickerLib
+              selected={value}
+              onChange={handleDateChange}
+              minDate={minDatePickerDate}
+              showTimeSelect={settings.DateTimeMode === DateTimeMode.DateAndTime}
+              dateFormat={settings.DateTimeMode === DateTimeMode.Date ? 'yyyy-MM-dd' : 'yyyy-MM-dd HH:mm'}
+              timeFormat="HH:mm"
+              timeIntervals={30}
+              locale={locale}
+              disabled={isDisabled}
+              placeholderText="Select date"
+              todayButton="Today"
+              isClearable
+            />
+          </div>
+        </div>
       )
     default:
       return (
@@ -138,8 +146,8 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
             <Typography variant="body1" gutterBottom={true}>
               {fieldValue
                 ? settings.DateTimeMode === DateTimeMode.Date
-                  ? new Intl.DateTimeFormat(localeCode).format(dateFieldValue)
-                  : new Intl.DateTimeFormat(localeCode, dateTimeOptions).format(dateFieldValue)
+                  ? convertedDate.split(' ')[0]
+                  : convertedDate
                 : localizationMerged.noValue}
             </Typography>
           </Tooltip>

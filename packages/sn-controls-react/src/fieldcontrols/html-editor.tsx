@@ -1,12 +1,13 @@
 /**
  * @module FieldControls
  */
-import { InputLabel, Theme } from '@material-ui/core'
+import { Theme } from '@material-ui/core'
 import React, { useEffect, useRef, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
+import CustomLabel from './label/custom-label'
 
 /**
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
@@ -43,8 +44,13 @@ export const HtmlEditor: React.FC<
 
   return (
     <>
-      <InputLabel shrink>{props.settings.DisplayName}</InputLabel>
-
+      <CustomLabel
+        name={props.settings.Name}
+        displayName={props.settings.DisplayName}
+        highlighted={props.settings.Customization?.Highlighted}
+        description={props.settings.Description}
+        showDescription={!props.hideDescription}
+      />
       <div style={{ maxHeight: '68vh', margin: '0.5rem 0' }} ref={containerRef} data-test="html-editor-container">
         <MonacoEditor
           ref={editorRef}

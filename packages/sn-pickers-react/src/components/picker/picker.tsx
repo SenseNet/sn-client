@@ -12,7 +12,6 @@ import { SelectionList } from '../selection-list'
 import { ShowSelectedButton } from '../show-selected-button'
 import { TreePicker } from '../tree-picker'
 import { CopyMoveTreePicker } from '../tree-picker/copy-move-tree-picker'
-import { PickerHelper } from './picker-helper'
 import { PickerProps } from './picker-props'
 
 export enum PickerModes {
@@ -132,12 +131,6 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
     return () => ac.abort()
   }, [term, props.repository, props.selectionRoots])
 
-  const handleJumpToCurrentPath = (path: string) => {
-    setNavigationPath(path)
-    debouncedQuery('')
-    setMode(PickerModes.TREE)
-  }
-
   return (
     <SelectionProvider
       allowMultiple={props.allowMultiple}
@@ -174,17 +167,8 @@ export const Picker: React.FunctionComponent<PickerProps<GenericContent>> = (pro
           />
         </Box>
 
-        <div className="selection-container" style={{ width: '100%', display: 'flex' }}>
-          <PickerHelper
-            handleJumpToCurrentPath={handleJumpToCurrentPath}
-            contextPath={props.contextPath}
-            styles={classes.jumpCurrentPath}
-            repository={props.repository}
-            selectionRoots={props.selectionRoots}
-            currentContentText={props.localization?.currentContentText}
-          />
-
-          <PickerContainer style={{ height: '545px', paddingTop: 0, position: 'relative', top: '-7px', width: '100%' }}>
+        <div className="selection-container" style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
+          <PickerContainer style={{ padding: '0px', overflowX: 'hidden' }}>
             {mode === PickerModes.TREE && (
               <TreePicker setNavigationPath={setNavigationPath} navigationPath={navigationPath} {...props} />
             )}
