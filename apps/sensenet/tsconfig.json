@@ -12,6 +12,9 @@
     "noUnusedLocals": false,
     "types": ["node"],
     "paths": {
+      "@material-ui/core": ["./node_modules/@material-ui/core", "../../node_modules/@material-ui/core"],
+      "@material-ui/core/*": ["./node_modules/@material-ui/core/*", "../../node_modules/@material-ui/core/*"],
+      "@material-ui/lab/*": ["./node_modules/@material-ui/lab/*", "../../node_modules/@material-ui/lab/*"],
       "react": [ "../../node_modules/@types/react" ],
       "@sensenet/authentication-oidc-react": [
         "../../packages/sn-authentication-oidc-react/src/index.ts"

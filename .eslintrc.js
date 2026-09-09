@@ -97,6 +97,13 @@ module.exports = {
   },
   overrides: [
     {
+      files: ['**/*.config.js'],
+      rules: {
+        // Node configuration files use CommonJS imports.
+        '@typescript-eslint/no-var-requires': 'off',
+      },
+    },
+    {
       files: ['**/test/**/*.{ts,tsx}'],
       rules: {
         'dot-notation': 'off',

@@ -2,8 +2,8 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import TreeView from '@material-ui/lab/TreeView'
 import { ODataParams } from '@sensenet/client-core'
 import { GenericContent, isActionModel } from '@sensenet/default-content-types'
-import { useRepository } from '@sensenet/hooks-react'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useHistory, useLocation } from 'react-router'
 
 import { ResponsivePersonalSettings } from '../../context'
@@ -140,6 +140,7 @@ export function SimpleTree({ activeItemPath, parentPath, rootPath: explorerRoot,
   const classes = useStyles()
   const localization = useLocalization()
   const repo = useRepository()
+  const logger = useLogger('SimpleTree')
   const history = useHistory()
   const location = useLocation()
   const snRoute = useSnRoute()
@@ -183,41 +184,53 @@ export function SimpleTree({ activeItemPath, parentPath, rootPath: explorerRoot,
   const [contextMenuAnchorPos, setContextMenuAnchorPos] = useState<{ top: number; left: number }>({ top: 0, left: 0 })
 
   /** load root + expand parents */
-  const loadRoot = useCallback(async () => {
-    setIsTreeLoading(true)
-    try {
-      const result = await repo.load<GenericContent>({
-        idOrPath: parentPath || '/Root',
-        oDataOptions: {
-          select: ['Id', 'Path', 'DisplayName', 'Name', 'Type', 'Actions', 'Icon', 'ParentId', 'IsFolder'],
-        },
-      })
-      setRootElement(result.d)
+  useEffect(() => {
+    const controller = new AbortController()
+    const { signal } = controller
+    const loadRoot = async () => {
+      setIsTreeLoading(true)
+      try {
+        const result = await repo.load<GenericContent>({
+          idOrPath: parentPath || '/Root',
+          requestInit: { signal },
+          oDataOptions: {
+            select: ['Id', 'Path', 'DisplayName', 'Name', 'Type', 'Actions', 'Icon', 'ParentId', 'IsFolder'],
+          },
+        })
+        if (signal.aborted) return
+        setRootElement(result.d)
 
-      const activePath = content?.Path || result.d.Path
-      const pathsToExpand = getPathChain(result.d.Path, activePath)
+        const activePath = content?.Path || result.d.Path
+        const pathsToExpand = getPathChain(result.d.Path, activePath)
+        const parentContents = await Promise.all(
+          pathsToExpand.map((path) =>
+            path === result.d.Path
+              ? Promise.resolve(result)
+              : repo.load<GenericContent>({ idOrPath: path, requestInit: { signal } }),
+          ),
+        )
+        if (signal.aborted) return
+        setSelected(String(parentContents.at(-1)?.d.Id ?? ''))
+        setExpandItems((prev) => {
+          const updated = new Set(prev)
+          parentContents.forEach((p) => p?.d?.Id && updated.add(String(p.d.Id)))
+          return updated
+        })
+      } catch (error) {
+        if (!signal.aborted) {
+          logger.error({ message: 'Failed to load the content tree', data: { error } })
+        }
+      } finally {
+        if (!signal.aborted) setIsTreeLoading(false)
+      }
+    }
 
-      const parentContents = await Promise.all(
-        pathsToExpand.map((path) =>
-          path === result.d.Path ? Promise.resolve(result) : repo.load<GenericContent>({ idOrPath: path }),
-        ),
-      )
-
-      setSelected(String(parentContents.at(-1)?.d.Id ?? ''))
-
-      setExpandItems((prev) => {
-        const updated = new Set(prev)
-        parentContents.forEach((p) => p?.d?.Id && updated.add(String(p.d.Id)))
-        return updated
-      })
-    } finally {
+    void loadRoot()
+    return () => {
+      controller.abort()
       setIsTreeLoading(false)
     }
-  }, [repo, parentPath, content, setExpandItems, setIsTreeLoading])
-
-  useEffect(() => {
-    loadRoot()
-  }, [loadRoot])
+  }, [repo, parentPath, content?.Path, logger, setExpandItems, setIsTreeLoading])
 
   /** context menu handler */
   const onContextMenu = (event: React.MouseEvent, data: GenericContent) => {

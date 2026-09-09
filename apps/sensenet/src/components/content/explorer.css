@@ -136,6 +136,10 @@
   line-height: 1.4;
 }
 
+.sn-explorer .ag-cell[col-id='Actions'] {
+  justify-content: center;
+}
+
 .sn-explorer .ag-cell[col-id='Name'],
 .sn-explorer .ag-cell[col-id='DisplayName'] {
   font-weight: 500;

@@ -409,7 +409,6 @@ export function Grid<T extends GenericContent = GenericContent>(props: GridProps
           columnDefs={columnDefs}
           className={theme.palette.type === 'light' ? 'ag-theme-balham' : 'ag-theme-balham-dark'}
           rowSelection={'multiple'}
-          suppressReactUi={true}
           tooltipShowDelay={100}
           onRowClicked={onRowClicked}
           onRowDoubleClicked={onRowDoubleClicked}

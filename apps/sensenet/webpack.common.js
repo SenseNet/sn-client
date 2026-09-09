@@ -33,11 +33,22 @@ module.exports = {
     publicPath: '/',
   },
   resolve: {
-    alias: packageSourceAliases,
+    alias: {
+      ...packageSourceAliases,
+      // Share the app's patched MUI version with workspace packages and their theme consumers.
+      '@material-ui/core': path.dirname(require.resolve('@material-ui/core/package.json')),
+      '@material-ui/lab': path.dirname(require.resolve('@material-ui/lab/package.json')),
+      react: path.dirname(require.resolve('react/package.json')),
+      'react-dom': path.dirname(require.resolve('react-dom/package.json')),
+    },
     extensions: ['.ts', '.tsx', '.js', '.json'],
   },
   module: {
     rules: [
+      {
+        test: /ag-grid-react[\\/]lib[\\/]reactUi[\\/]header[\\/]headerCellComp\.js$/,
+        loader: path.resolve(__dirname, 'loaders/ag-grid-react-aria.js'),
+      },
       {
         test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, /\.PNG$/, /\.svg$/, /\.eot$/, /\.woff$/, /\.woff2$/, /\.ttf$/],
         type: 'javascript/auto',

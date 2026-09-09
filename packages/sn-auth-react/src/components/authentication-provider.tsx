@@ -95,7 +95,10 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
           let accessToken = getAccessToken(storageKeyPrefix)
           let refreshToken = getRefreshToken(storageKeyPrefix)
           if (accessToken && refreshToken) {
-            const isValid = await validateTokenApiCall(props.authServerUrl, accessToken)
+            // Refresh expired (or nearly expired) tokens before sending an authenticated request.
+            const isValid =
+              !isTokenAboutToExpire(accessToken, TOKEN_EXPIRY_THRESHOLD) &&
+              (await validateTokenApiCall(props.authServerUrl, accessToken))
 
             if (!isValid) {
               const response = await refreshAccessToken(refreshToken)
