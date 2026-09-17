@@ -1,9 +1,10 @@
 import { useRepository } from '@sensenet/hooks-react'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { PATHS } from '../../application-paths'
 import { useRepositorySwitch } from '../../context'
 import { useLocalization } from '../../hooks'
+import { getLocalRepositories, localSessionsChanged } from '../../services/local-authentication'
 import {
   getAuthenticatedSnAuthRepositorySessions,
   normalizeRepositoryUrl,
@@ -24,17 +25,29 @@ export const RepositorySelector = () => {
   const repository = useRepository()
   const { authType, switchRepository } = useRepositorySwitch()
   const currentRepositoryUrl = normalizeRepositoryUrl(repository.configuration.repositoryUrl)
-  const [repositorySessions, setRepositorySessions] = useState(getAuthenticatedSnAuthRepositorySessions)
+  const readSessions = useCallback(
+    () =>
+      authType === 'Local'
+        ? getLocalRepositories().map((repoUrl) => ({ repoUrl }))
+        : getAuthenticatedSnAuthRepositorySessions(),
+    [authType],
+  )
+  const [repositorySessions, setRepositorySessions] = useState(readSessions)
 
   useEffect(() => {
-    const refreshRepositorySessions = () => setRepositorySessions(getAuthenticatedSnAuthRepositorySessions())
+    const refreshRepositorySessions = () => setRepositorySessions(readSessions())
+    refreshRepositorySessions()
+    window.addEventListener(localSessionsChanged, refreshRepositorySessions)
 
     window.addEventListener(snAuthRepositorySessionsChangedEvent, refreshRepositorySessions)
 
-    return () => window.removeEventListener(snAuthRepositorySessionsChangedEvent, refreshRepositorySessions)
-  }, [])
+    return () => {
+      window.removeEventListener(localSessionsChanged, refreshRepositorySessions)
+      window.removeEventListener(snAuthRepositorySessionsChangedEvent, refreshRepositorySessions)
+    }
+  }, [readSessions])
 
-  if (authType !== 'SNAuth' || repositorySessions.length < 2) {
+  if ((authType !== 'SNAuth' && authType !== 'Local') || repositorySessions.length < 2) {
     return null
   }
 
