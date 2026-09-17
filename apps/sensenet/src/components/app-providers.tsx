@@ -115,7 +115,9 @@ export default function AppProviders({ children }: AppProvidersProps) {
   )
 
   useEffect(() => {
-    const repoUrl = new URL(window.location.href).searchParams.get('repoUrl')
+    const location = new URL(window.location.href)
+    const repoUrl =
+      location.searchParams.get('repoUrl') || (/^\/login\/?$/.test(location.pathname) ? location.origin : '')
     if (repoUrl) selectRepository(repoUrl)
   }, [selectRepository])
 

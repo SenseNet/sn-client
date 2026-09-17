@@ -21,6 +21,14 @@ The navigation repository selector supports multiple saved local sessions. Selec
 from the login screen to establish a new one. Local and external providers use separate session lists.
 The current user returned by the repository must match the JWT subject before protected content renders.
 
+
+For an Admin UI hosted on the repository's own origin, open `/login` (or `/login/`).
+Without a `repoUrl` query parameter, this selects `window.location.origin` and uses the normal
+capability discovery and authentication policy. An explicit `repoUrl` still takes precedence,
+including on `/login`, so shared Admin UI deployments can target another repository. Other paths
+do not infer a repository from their origin. Configure the web server to serve the SPA for `/login`
+and forward the repository API and authentication endpoints to the backend.
+
 ## Server prerequisites
 
 Enable the optional server module in the matching sensenet SB-167 branch. Configure HTTPS, signing

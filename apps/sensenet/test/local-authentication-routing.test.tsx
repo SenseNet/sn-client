@@ -134,3 +134,31 @@ it('does not switch to local authentication when discovery fails', async () => {
   expect(mockLocal).not.toHaveBeenCalled()
   expect(mockExternal).not.toHaveBeenCalled()
 })
+
+it.each(['/login', '/login/'])('selects the same-origin repository at %s without a query parameter', async (path) => {
+  window.history.replaceState(null, '', path)
+  localStorage.setItem('authType', 'Local')
+  sessionStorage.setItem('selected-local', 'https://previous.example')
+  ;(discoverAuthentication as jest.Mock).mockResolvedValue({ mode: 'InternalOnly', local: {} })
+  await mount()
+  expect(discoverAuthentication).toHaveBeenCalledWith(window.location.origin)
+  expect(mockLocal).toHaveBeenLastCalledWith(window.location.origin)
+  expect(mockExternal).not.toHaveBeenCalled()
+  expect(window.location.search).toBe('')
+})
+
+it('keeps an explicit repository override at /login', async () => {
+  window.history.replaceState(null, '', '/login?repoUrl=https%3A%2F%2Fother.example')
+  ;(discoverAuthentication as jest.Mock).mockResolvedValue({ mode: 'InternalOnly', local: {} })
+  await mount()
+  expect(discoverAuthentication).toHaveBeenCalledWith('https://other.example')
+  expect(mockLocal).toHaveBeenLastCalledWith('https://other.example')
+})
+
+it.each(['/', '/login-help'])('does not infer a same-origin repository at %s', async (path) => {
+  window.history.replaceState(null, '', path)
+  await mount()
+  expect(discoverAuthentication).not.toHaveBeenCalled()
+  expect(mockLocal).not.toHaveBeenCalled()
+  expect(mockExternal).not.toHaveBeenCalled()
+})
