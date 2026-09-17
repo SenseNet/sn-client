@@ -115,3 +115,21 @@ it('treats only 404 as a legacy repository and rejects untrusted discovery endpo
     global.fetch = previous
   }
 })
+
+it('calls the default browser transport without binding it to the session', async () => {
+  const original = global.fetch
+  const request = jest.fn(function (this: unknown) {
+    if (this instanceof LocalRepositorySession) throw new TypeError('Illegal invocation')
+    return Promise.resolve(response(tokens()))
+  })
+  global.fetch = request
+  try {
+    const session = new LocalRepositorySession(repo, endpoints)
+    await session.login('admin', 'password')
+    await session.fetch(`${repo}/odata.svc/Root`)
+    await session.logout()
+    expect(request).toHaveBeenCalledTimes(3)
+  } finally {
+    global.fetch = original
+  }
+})

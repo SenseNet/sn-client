@@ -62,7 +62,11 @@ export class LocalRepositorySession {
   readonly repositoryUrl: string
   readonly storageKey: string
 
-  constructor(repoUrl: string, private endpoints: LocalEndpoints, private request: typeof fetch = fetch) {
+  constructor(
+    repoUrl: string,
+    private endpoints: LocalEndpoints,
+    private request: typeof fetch = (...args) => fetch(...args),
+  ) {
     this.repositoryUrl = normalizeRepositoryUrl(repoUrl)
     if (new URL(this.repositoryUrl).protocol !== 'https:') throw new Error('Internal authentication requires HTTPS.')
     this.storageKey = localSessionKey(this.repositoryUrl, endpoints.issuer)
