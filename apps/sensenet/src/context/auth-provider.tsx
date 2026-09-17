@@ -12,7 +12,7 @@ export interface AuthContextModel {
   logout: () => any
 }
 
-const AuthContext = createContext<AuthContextModel>({
+export const AuthContext = createContext<AuthContextModel>({
   user: null,
   userPath: null,
   login: () => {},
