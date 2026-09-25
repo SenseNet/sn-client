@@ -1,21 +1,12 @@
 /**
  * @module FieldControls
  */
-import {
-  createStyles,
-  FormControl,
-  FormHelperText,
-  IconButton,
-  Input,
-  InputAdornment,
-  InputLabel,
-  makeStyles,
-  Typography,
-} from '@material-ui/core'
+import { createStyles, FormControl, IconButton, Input, InputAdornment, makeStyles, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import React, { useState } from 'react'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { renderIconDefault } from './icon'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 
 const useStyles = makeStyles(() => {
@@ -48,9 +39,13 @@ export const Password: React.FC<ReactClientFieldSetting> = (props) => {
     case 'new':
       return (
         <FormControl fullWidth={true} className={classes.root}>
-          <InputLabel htmlFor={props.settings.Name} shrink={true}>
-            {props.settings.DisplayName}
-          </InputLabel>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
+          />
           <Input
             autoComplete="new-password"
             type={showPassword ? 'text' : 'password'}
@@ -71,13 +66,12 @@ export const Password: React.FC<ReactClientFieldSetting> = (props) => {
               </InputAdornment>
             }
           />
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </FormControl>
       )
     default:
       return (
         <Typography variant="caption" gutterBottom={true}>
-          {props.settings.DisplayName}
+          {`${props.settings.DisplayName} (${props.settings.Name})`}
         </Typography>
       )
   }

@@ -48,7 +48,7 @@ LoadSettingsContext.displayName = 'LoadSettingsContext'
 const initialLoadChildrenSettings: ODataParams<GenericContent> = {
   orderby: [['DisplayName', 'asc']],
   select: 'all',
-  expand: ['CreatedBy'],
+  expand: ['CreatedBy', 'ModifiedBy'],
 }
 /**
  * Provider for the LoadSettingsContext. Sets up default loading settings.

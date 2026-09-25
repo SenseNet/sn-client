@@ -15,7 +15,7 @@ export const Filters: React.FunctionComponent<FiltersProps> = ({ defaultFilterVi
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'space-between', margin: '15px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', margin: '12px' }}>
         <TypeFilter />
 
         <Button

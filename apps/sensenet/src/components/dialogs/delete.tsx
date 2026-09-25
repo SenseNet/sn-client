@@ -20,6 +20,7 @@ import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization, useQuery, useSelectionService, useSnRoute } from '../../hooks'
 import { navigateToAction } from '../../services'
 import { Icon } from '../Icon'
+import { useTreeLoading } from '../tree/Contexts/TreeLoadingProvider'
 import { DialogTitle, useDialog } from '.'
 
 export type DeleteContentDialogProps = {
@@ -40,6 +41,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
   const selectionService = useSelectionService()
   const snRoute = useSnRoute()
   const currentPath = useQuery().get('path')
+  const { setIsTreeLoading } = useTreeLoading()
   const hasUserOrGroupContent = props.content.some(
     (content) => repo.schemas.isContentFromType(content, 'User') || repo.schemas.isContentFromType(content, 'Group'),
   )
@@ -112,6 +114,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                   permanent,
                 })
                 if (result.d.results.length) {
+                  setIsTreeLoading(true)
                   logger.information({
                     message:
                       result.d.results.length > 1
@@ -176,6 +179,7 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                 selectionService.selection.setValue([])
                 setIsDeleteInProgress(false)
                 closeLastDialog()
+                setIsTreeLoading(false)
               }
             }}>
             {isTrashBag ? localization.deletePermanently : localization.deleteButton}

@@ -39,7 +39,7 @@ describe('useDownload()', () => {
 
   it('should trigger download on click', () => {
     jest.spyOn(downloadHook, 'downloadFile')
-    jest.spyOn(downloadHook, 'fakeClick')
+    jest.spyOn(downloadHook, 'useDownload')
     const t = mount(
       <DownloadDump
         content={{
@@ -52,6 +52,6 @@ describe('useDownload()', () => {
     )
     ;(t.find('div').prop('onClick') as any)()
     expect(downloadHook.downloadFile).toBeCalled()
-    expect(downloadHook.fakeClick).toBeCalled()
+    expect(downloadHook.useDownload).toBeCalled()
   })
 })

@@ -14,6 +14,7 @@ const ExecuteAction = lazy(() => import('./execute-action'))
 const Logout = lazy(() => import('./logout'))
 const SaveQuery = lazy(() => import('./save-query'))
 const Upload = lazy(() => import('./upload/upload-dialog'))
+const ImageGallery = lazy(() => import('./image-gallery'))
 const ReferenceContentList = lazy(() => import('./reference-content-list'))
 const PermissionEditorDialog = lazy(() => import('./permission-editor-dialog'))
 const MemberSelect = lazy(() => import('./member-select-dialog'))
@@ -25,6 +26,7 @@ const DateRangePicker = lazy(() => import('./date-range-picker'))
 const AddDeleteUserGroups = lazy(() => import('./add-delete-user-groups'))
 const ColumnSettings = lazy(() => import('./column-settings'))
 const Operations = lazy(() => import('./operations/operations'))
+const ODataActions = lazy(() => import('./odata-actions'))
 
 function dialogRenderer(dialog: DialogWithProps) {
   switch (dialog.name) {
@@ -44,6 +46,8 @@ function dialogRenderer(dialog: DialogWithProps) {
       return <Restore {...dialog.props} />
     case 'upload':
       return <Upload {...dialog.props} />
+    case 'image-gallery':
+      return <ImageGallery {...dialog.props} />
     case 'execute-action':
       return <ExecuteAction {...dialog.props} />
     case 'custom-action-result':
@@ -65,13 +69,15 @@ function dialogRenderer(dialog: DialogWithProps) {
     case 'feedback':
       return <Feedback />
     case 'change-password':
-      return <ChangePasswordDialog />
+      return <ChangePasswordDialog {...dialog.props} />
     case 'date-range-picker':
       return <DateRangePicker {...dialog.props} />
     case 'column-settings':
       return <ColumnSettings {...dialog.props} />
     case 'operation':
       return <Operations {...dialog.props} />
+    case 'odata-actions':
+      return <ODataActions {...dialog.props} />
     default:
       return null
   }

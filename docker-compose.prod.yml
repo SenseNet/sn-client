@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  sensenet-app:
+    image: sensenetcsp/sn-client:${IMAGE_TAG:-latest}
+    container_name: sensenet-app
+    ports:
+      - "${SENSENET_CLIENT_PORT:-8080}:8080"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped

@@ -28,7 +28,7 @@ export const useLoadContent = <T extends GenericContent>({ idOrPath, oDataOption
             requestInit: { signal: ac.signal },
             oDataOptions,
           })
-          setContent(response.d)
+          if (!ac.signal.aborted) setContent(response.d)
         } catch (err) {
           if (!ac.signal.aborted) {
             setError(err)

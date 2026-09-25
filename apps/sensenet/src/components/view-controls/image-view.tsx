@@ -1,14 +1,15 @@
 /**
  * @module ViewControls
  */
-import { Button, createStyles, makeStyles } from '@material-ui/core'
+import { Button, CircularProgress, createStyles, makeStyles, Typography } from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
-import { navigateToAction } from '../../services'
+import { useRepositoryImage } from '../../hooks/use-repository-image'
+import { getImageContentUrl, navigateToAction } from '../../services'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -66,21 +67,47 @@ export const ImageView: React.FC<ImageViewProps> = (props) => {
   const formLocalization = useLocalization().forms
   const globalClasses = useGlobalStyles()
   const classes = useStyles()
-  const { contentPath } = props
   const [currentContent, setCurrentContent] = useState<GenericContent>()
   const history = useHistory()
   const routeMatch = useRouteMatch<{ browseType: string; action?: string }>()
-
+  const [metadataError, setMetadataError] = useState<string>()
+  const [decodeError, setDecodeError] = useState<string>()
+  const imageLocalization = useLocalization().imageGallery
+  const {
+    source: imageSource,
+    error: imageError,
+    isLoading,
+  } = useRepositoryImage(
+    repository,
+    currentContent ? getImageContentUrl(repository.configuration.repositoryUrl, currentContent) : undefined,
+    { revision: currentContent?.ModificationDate?.toString() },
+  )
+  const loadError = metadataError || imageError || decodeError
   useEffect(() => {
+    const controller = new AbortController()
+    let current = true
+    setCurrentContent(undefined)
+    setMetadataError(undefined)
     async function getCurrentContent() {
-      const result = await repository.load({
-        idOrPath: props.contentPath,
-      })
-      setCurrentContent(result.d)
+      try {
+        const result = await repository.load({
+          idOrPath: props.contentPath,
+          requestInit: { signal: controller.signal },
+        })
+        if (current) setCurrentContent(result.d)
+      } catch (error) {
+        if (current && !controller.signal.aborted) {
+          setMetadataError(error instanceof Error ? error.message : String(error))
+        }
+      }
     }
     getCurrentContent()
+    return () => {
+      current = false
+      controller.abort()
+    }
   }, [props.contentPath, repository])
-
+  useEffect(() => setDecodeError(undefined), [imageSource])
   return (
     <div className={classes.imageViewContainer}>
       <div className={classes.titleContainer}>
@@ -91,11 +118,16 @@ export const ImageView: React.FC<ImageViewProps> = (props) => {
         </div>
       </div>
       <div className={classes.imageContainer}>
-        <img
-          className={classes.image}
-          src={`${repository.configuration.repositoryUrl}${contentPath}?t=${Date.now()}`}
-          alt=""
-        />
+        {(!currentContent || isLoading) && !loadError ? <CircularProgress /> : null}
+        {loadError ? <Typography color="error">{loadError}</Typography> : null}
+        {imageSource ? (
+          <img
+            className={classes.image}
+            src={imageSource}
+            alt={currentContent?.DisplayName || ''}
+            onError={() => setDecodeError(imageLocalization.unsupportedImage)}
+          />
+        ) : null}
       </div>
       <div className={classes.buttonWrapper}>
         <Button

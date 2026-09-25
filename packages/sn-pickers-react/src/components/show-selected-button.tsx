@@ -14,10 +14,13 @@ export const ShowSelectedButton: React.FC<ShowSelectedButtonProps> = ({ localiza
   const { selection } = useSelection()
 
   return (
-    <Box className={className} data-test="show-selected-container">
-      <Link component="button" variant="body2" onClick={handleClick}>
-        {localization.label} ({selection.length})
-      </Link>
-    </Box>
+    <>
+      {/* @ts-ignore*/}
+      <Box className={className} data-test="show-selected-container">
+        <Link component="button" variant="body2" onClick={handleClick}>
+          {localization.label} ({selection.length})
+        </Link>
+      </Box>
+    </>
   )
 }

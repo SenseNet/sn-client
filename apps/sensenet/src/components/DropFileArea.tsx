@@ -4,6 +4,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { clsx } from 'clsx'
 import React, { CSSProperties, DragEvent, FunctionComponent, useState } from 'react'
 import { useGlobalStyles } from '../globalStyles'
+import { contentDragAttributes } from './content/content-drag-drop'
 import { useDialog } from './dialogs'
 import { getFilesFromDragEvent } from './dialogs/upload/helper'
 
@@ -47,7 +48,10 @@ export const DropFileArea: FunctionComponent<Props> = (props) => {
   const classes = useStyles()
   const globalClasses = useGlobalStyles()
 
+  const isFileDrag = (event: DragEvent) => Array.from(event.dataTransfer.types).includes('Files')
+
   const onDrop = async (event: DragEvent) => {
+    if (!isFileDrag(event)) return
     event.stopPropagation()
     event.preventDefault()
     setDragOver(false)
@@ -67,21 +71,25 @@ export const DropFileArea: FunctionComponent<Props> = (props) => {
   return (
     <>
       <div
+        {...(props.parentContent ? contentDragAttributes(props.parentContent, false) : {})}
         className={clsx(classes.dropArea, { [classes.dragOverDropArea]: isDragOver })}
         style={{
           ...props.style,
         }}
         onDragEnter={(ev) => {
+          if (!isFileDrag(ev)) return
           ev.stopPropagation()
           ev.preventDefault()
           setDragOver(true)
         }}
         onDragLeave={(ev) => {
+          if (!isFileDrag(ev)) return
           ev.stopPropagation()
           ev.preventDefault()
           setDragOver(false)
         }}
         onDragOver={(ev) => {
+          if (!isFileDrag(ev)) return
           ev.stopPropagation()
           ev.preventDefault()
           setDragOver(true)

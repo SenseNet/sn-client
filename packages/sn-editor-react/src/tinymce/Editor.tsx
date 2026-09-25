@@ -1,3 +1,4 @@
+import { Repository } from '@sensenet/client-core'
 import { Editor, IAllProps } from '@tinymce/tinymce-react'
 import React, { FC, useRef } from 'react'
 import { type Editor as TinyMCEEditor } from 'tinymce'
@@ -51,6 +52,8 @@ import { RegisterPlugins } from './plugins'
 export interface TinymceEditorProps {
   onChange?: IAllProps['onEditorChange']
   initvalue?: string
+  repository?: Repository
+  path?: string
 }
 
 export const TinymceEditor: FC<TinymceEditorProps> = (props) => {
@@ -58,6 +61,7 @@ export const TinymceEditor: FC<TinymceEditorProps> = (props) => {
 
   return (
     <>
+      {/* @ts-ignore*/}
       <Editor
         licenseKey="gpl"
         onInit={(_evt, editor) => {
@@ -103,6 +107,8 @@ export const TinymceEditor: FC<TinymceEditorProps> = (props) => {
           height: 500,
           menubar: true,
           automatic_uploads: true,
+          relative_urls: false,
+          remove_script_host: true,
           image_title: true,
           plugins: [
             'advlist',
@@ -124,7 +130,7 @@ export const TinymceEditor: FC<TinymceEditorProps> = (props) => {
             'wordcount',
           ],
           setup: (editor) => {
-            RegisterPlugins({ editor })
+            RegisterPlugins({ editor, repository: props.repository, path: props.path })
           },
           menu: {
             file: {
@@ -141,7 +147,7 @@ export const TinymceEditor: FC<TinymceEditorProps> = (props) => {
             insert: {
               title: 'Insert',
               items:
-                'InsertAccordion link media addcomment pageembed codesample inserttable | math | charmap emoticons hr | pagebreak nonbreaking anchor tableofcontents | insertdatetime',
+                'InsertAccordion link media InsertRepoFile addcomment pageembed codesample inserttable | math | charmap emoticons hr | pagebreak nonbreaking anchor tableofcontents | insertdatetime',
             },
             format: {
               title: 'Format',

@@ -72,4 +72,22 @@ export const getFilesFromDragEvent = async (event: React.DragEvent) => {
   return await Promise.all(result)
 }
 
-export type FileWithFullPath = File & { fullPath?: string; progress?: UploadProgressInfo }
+export type UploadAttemptDetails = {
+  method: 'POST'
+  requestUrl: string
+  destinationPath: string
+  fileName: string
+  fileSize: number
+  contentType: string
+  binaryPropertyName: string
+  overwrite: boolean
+  uploadMode: 'single' | 'chunked'
+  chunkSize?: number
+  startedAt: string
+}
+
+export type FileWithFullPath = File & {
+  fullPath?: string
+  progress?: UploadProgressInfo
+  uploadAttempt?: UploadAttemptDetails
+}

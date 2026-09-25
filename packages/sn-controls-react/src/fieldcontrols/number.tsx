@@ -1,12 +1,13 @@
 /**
  * @module FieldControls
  */
-import { FormHelperText, InputAdornment, TextField, Typography } from '@material-ui/core'
+import { InputAdornment, TextField, Typography } from '@material-ui/core'
 import { deepMerge, toNumber } from '@sensenet/client-utils'
 import { CurrencyFieldSetting, isCurrencyFieldSetting, NumberFieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 
 /**
@@ -56,18 +57,24 @@ export const NumberField: React.FC<ReactClientFieldSetting<NumberFieldSetting | 
     case 'edit':
     case 'new':
       return (
-        <>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
+          />
           <TextField
-            style={{ width: '100%' }}
+            variant="outlined"
+            style={{ width: '100%', maxWidth: '420px' }}
             autoFocus={props.autoFocus}
             name={props.settings.Name}
             type="text"
-            label={props.settings.DisplayName}
             value={value}
             required={props.settings.Compulsory}
             disabled={props.settings.ReadOnly}
             placeholder="0"
-            InputLabelProps={{ shrink: true }}
             InputProps={{
               startAdornment: defineCurrency(),
               endAdornment: props.settings.ShowAsPercentage ? <InputAdornment position="end">%</InputAdornment> : null,
@@ -80,15 +87,14 @@ export const NumberField: React.FC<ReactClientFieldSetting<NumberFieldSetting | 
             id={props.settings.Name}
             onChange={handleChange}
           />
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
-        </>
+        </div>
       )
     case 'browse':
     default:
       return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
             {props.fieldValue != null ? (

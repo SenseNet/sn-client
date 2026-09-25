@@ -5,6 +5,7 @@ import { Query } from '@sensenet/query'
 import { ReferenceField } from '@sensenet/search-react'
 import React from 'react'
 import { changeTemplatedValue } from '../helpers'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 import { ReactClientFieldSetting } from '.'
 
@@ -53,9 +54,13 @@ export const AutoComplete: React.FC<ReactClientFieldSetting<ReferenceFieldSettin
     default: {
       return (
         <div>
-          <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
-          </Typography>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
+          />
           <Typography variant="body1" gutterBottom={true}>
             {props.fieldValue ? (props.fieldValue as any)[0].DisplayName : localization.noValue}
           </Typography>
