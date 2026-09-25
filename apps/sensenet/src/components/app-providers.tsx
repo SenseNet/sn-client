@@ -1,9 +1,8 @@
 import { InjectorContext, LoggerContextProvider } from '@sensenet/hooks-react'
-import React, { ReactNode, Suspense, useCallback, useEffect, useState } from 'react'
+import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthServerType, defaultAuthConfig } from '../auth-config'
 import {
-  authConfigKey as authConfigKeyIS,
   LocalizationProvider,
   PersonalSettingsContextProvider,
   RepositoryProvider,
@@ -12,9 +11,10 @@ import {
   ThemeProvider,
 } from '../context'
 import { ISAuthProvider, SNAuthProvider } from '../context/auth-provider'
+import { LocalRepositoryProvider } from '../context/local-repository-provider'
 import PathSaver from '../context/PathSaver'
 import { ShareProvider } from '../context/ShareProvider'
-import { authConfigKey as authConfigKeySN, SnAuthRepositoryProvider } from '../context/sn-auth-repository-provider'
+import { SnAuthRepositoryProvider } from '../context/sn-auth-repository-provider'
 import {
   CommandProviderManager,
   CustomActionCommandProvider,
@@ -22,6 +22,7 @@ import {
   NavigationCommandProvider,
   SearchCommandProvider,
 } from '../services'
+import { discoverAuthentication, getLocalRepositories, localSelectedRepository } from '../services/local-authentication'
 import {
   clearActiveRepositorySelection,
   hasSnAuthRepositoryTokens,
@@ -29,67 +30,119 @@ import {
   startSnAuthRepositoryLogin,
 } from '../services/repository-session'
 import { DialogProvider } from './dialogs/dialog-provider'
-
 import { GridLoadingProvider } from './grid/Providers/GridLoadingProvider'
+import { AuthenticationChoice } from './login/authentication-choice'
 import { snInjector } from './sn-injector'
 import ExpandedItemsProvider from './tree/Contexts/ExpandedItemsProvider'
 import { TreeLoadingProvider } from './tree/Contexts/TreeLoadingProvider'
 
-export type AppProvidersProps = {
-  children: ReactNode
-}
+export type AppProvidersProps = { children: ReactNode }
 
 export default function AppProviders({ children }: AppProvidersProps) {
-  const initAuthType: AuthServerType =
-    (window.localStorage.getItem('authType') as AuthServerType) ?? defaultAuthConfig.authType
-  const [authType, setAuthType] = useState<'IdentityServer' | 'SNAuth'>(initAuthType)
-  const [url, setUrl] = useState<string>('')
+  // Capture before any child mounts: a remembered Local provider may otherwise consume
+  // the fragment before the parent's repository-selection effect gets to inspect it.
+  const [resetLink, setResetLink] = useState(() => {
+    const location = new URL(window.location.href)
+    const token = new URLSearchParams(location.hash.slice(1)).get('localResetToken')
+    const repoUrl = location.searchParams.get('repoUrl')
+    if (token !== null) {
+      location.hash = ''
+      window.history.replaceState(window.history.state, '', location.href)
+    }
+    if (!token || !/^[A-Za-z0-9_-]{64}$/.test(token) || !repoUrl) return undefined
+    try {
+      const repositoryUrl = normalizeRepositoryUrl(repoUrl)
+      return new URL(repositoryUrl).protocol === 'https:' ? { token, repositoryUrl } : undefined
+    } catch {
+      return undefined
+    }
+  })
+  // Retain only the initial destination for startup routing, never a consumed token.
+  const initialResetRepository = useRef(resetLink?.repositoryUrl).current
+  const [authType, setAuthType] = useState<AuthServerType>(
+    resetLink ? 'Local' : (window.localStorage.getItem('authType') as AuthServerType) ?? defaultAuthConfig.authType,
+  )
+  const [url, setUrl] = useState(resetLink?.repositoryUrl || '')
+  const [choice, setChoice] = useState<string>()
+  const externalChoices = useRef(new Set<string>())
+  const discoveryVersion = useRef(0)
+
+  const selectLocal = useCallback((repoUrl: string) => {
+    discoveryVersion.current++
+    sessionStorage.setItem(localSelectedRepository, repoUrl)
+    window.localStorage.setItem('authType', 'Local')
+    setUrl(repoUrl)
+    setAuthType('Local')
+    setChoice(undefined)
+  }, [])
+
+  const prepareAuthentication = useCallback(
+    async (repoUrl: string) => {
+      const normalized = normalizeRepositoryUrl(repoUrl)
+      if (externalChoices.current.has(normalized)) return true
+      const version = ++discoveryVersion.current
+      const capabilities = await discoverAuthentication(normalized)
+      if (version !== discoveryVersion.current) return false
+      if (!capabilities || capabilities.mode === 'Disabled') return true
+      if (capabilities.mode === 'InternalOnly') {
+        selectLocal(normalized)
+        return false
+      }
+      if (capabilities.local) {
+        setChoice(normalized)
+        return false
+      }
+      return true
+    },
+    [selectLocal],
+  )
 
   const selectRepository = useCallback((providedUrl: string) => {
-    const normalizedUrl = normalizeRepositoryUrl(providedUrl)
-
+    const normalized = normalizeRepositoryUrl(providedUrl)
+    discoveryVersion.current++
+    externalChoices.current.delete(normalized)
     clearActiveRepositorySelection()
-    startSnAuthRepositoryLogin(normalizedUrl)
-    setUrl(normalizedUrl)
+    startSnAuthRepositoryLogin(normalized)
+    setChoice(undefined)
+    setAuthType(defaultAuthConfig.authType === 'Local' ? 'SNAuth' : defaultAuthConfig.authType)
+    setUrl(normalized)
   }, [])
 
   const changeAuthType = useCallback((providedUrl: string) => {
-    const normalizedUrl = normalizeRepositoryUrl(providedUrl)
-
-    setUrl(normalizedUrl)
-    setAuthType((prev) => {
-      const newAuthType = prev === 'IdentityServer' ? 'SNAuth' : 'IdentityServer'
-      if (newAuthType === 'SNAuth') {
-        startSnAuthRepositoryLogin(normalizedUrl)
-      }
-      window.localStorage.setItem('authType', newAuthType)
-      return newAuthType
+    const normalized = normalizeRepositoryUrl(providedUrl)
+    setUrl(normalized)
+    setAuthType((previous) => {
+      const next = previous === 'IdentityServer' ? 'SNAuth' : 'IdentityServer'
+      if (next === 'SNAuth') startSnAuthRepositoryLogin(normalized)
+      window.localStorage.setItem('authType', next)
+      return next
     })
   }, [])
 
-  const switchRepository = useCallback((providedUrl: string) => {
-    const normalizedUrl = normalizeRepositoryUrl(providedUrl)
-
-    if (!hasSnAuthRepositoryTokens(normalizedUrl)) {
-      startSnAuthRepositoryLogin(normalizedUrl)
-    }
-
-    window.localStorage.setItem('authType', 'SNAuth')
-    setAuthType('SNAuth')
-    setUrl(normalizedUrl)
-  }, [])
+  const switchRepository = useCallback(
+    (providedUrl: string) => {
+      const normalized = normalizeRepositoryUrl(providedUrl)
+      if (authType === 'Local' && getLocalRepositories().includes(normalized)) {
+        selectLocal(normalized)
+        return
+      }
+      if (!hasSnAuthRepositoryTokens(normalized)) startSnAuthRepositoryLogin(normalized)
+      window.localStorage.setItem('authType', 'SNAuth')
+      setAuthType('SNAuth')
+      setUrl(normalized)
+    },
+    [authType, selectLocal],
+  )
 
   useEffect(() => {
-    const repoUrl = new URL(window.location.href).searchParams.get('repoUrl')
+    const location = new URL(window.location.href)
+    const repoUrl =
+      location.searchParams.get('repoUrl') || (/^\/login\/?$/.test(location.pathname) ? location.origin : '')
     if (repoUrl) {
-      selectRepository(repoUrl)
-      return
+      if (initialResetRepository) selectLocal(initialResetRepository)
+      else selectRepository(repoUrl)
     }
-
-    const IsAuthKey = localStorage.getItem(authConfigKeyIS)
-    const SnAuthKey = localStorage.getItem(authConfigKeySN)
-    if (IsAuthKey || SnAuthKey) return
-  }, [selectRepository])
+  }, [selectRepository, selectLocal, initialResetRepository])
 
   snInjector
     .getInstance(CommandProviderManager)
@@ -100,6 +153,13 @@ export default function AppProviders({ children }: AppProvidersProps) {
       SearchCommandProvider,
     )
 
+  const content = (
+    <ResponsiveContextProvider>
+      <ExpandedItemsProvider>
+        <DialogProvider>{children}</DialogProvider>
+      </ExpandedItemsProvider>
+    </ResponsiveContextProvider>
+  )
   return (
     <InjectorContext.Provider value={snInjector}>
       <LoggerContextProvider>
@@ -111,28 +171,48 @@ export default function AppProviders({ children }: AppProvidersProps) {
                 <TreeLoadingProvider>
                   <ThemeProvider>
                     <RepositorySwitchContext.Provider value={{ authType, switchRepository }}>
-                      {authType === 'IdentityServer' ? (
-                        <RepositoryProvider url={url} changeAuthType={changeAuthType}>
+                      {choice ? (
+                        <AuthenticationChoice
+                          repositoryUrl={choice}
+                          onInternal={() => selectLocal(choice)}
+                          onExternal={() => {
+                            externalChoices.current.add(choice)
+                            startSnAuthRepositoryLogin(choice)
+                            setUrl(choice)
+                            setChoice(undefined)
+                          }}
+                          onCancel={() => {
+                            discoveryVersion.current++
+                            clearActiveRepositorySelection()
+                            setChoice(undefined)
+                            setUrl('')
+                          }}
+                        />
+                      ) : authType === 'Local' ? (
+                        <LocalRepositoryProvider
+                          key={url || sessionStorage.getItem(localSelectedRepository)}
+                          url={url}
+                          initialResetToken={resetLink?.repositoryUrl === url ? resetLink.token : undefined}
+                          onResetComplete={() => setResetLink(undefined)}
+                          selectRepository={selectRepository}>
+                          <ShareProvider>{content}</ShareProvider>
+                        </LocalRepositoryProvider>
+                      ) : authType === 'IdentityServer' ? (
+                        <RepositoryProvider
+                          url={url}
+                          changeAuthType={changeAuthType}
+                          prepareAuthentication={prepareAuthentication}>
                           <ShareProvider>
-                            <ISAuthProvider>
-                              <ResponsiveContextProvider>
-                                <ExpandedItemsProvider>
-                                  <DialogProvider>{children}</DialogProvider>
-                                </ExpandedItemsProvider>
-                              </ResponsiveContextProvider>
-                            </ISAuthProvider>
+                            <ISAuthProvider>{content}</ISAuthProvider>
                           </ShareProvider>
                         </RepositoryProvider>
                       ) : (
-                        <SnAuthRepositoryProvider url={url} changeAuthType={changeAuthType}>
+                        <SnAuthRepositoryProvider
+                          url={url}
+                          changeAuthType={changeAuthType}
+                          prepareAuthentication={prepareAuthentication}>
                           <ShareProvider>
-                            <SNAuthProvider>
-                              <ResponsiveContextProvider>
-                                <ExpandedItemsProvider>
-                                  <DialogProvider>{children}</DialogProvider>
-                                </ExpandedItemsProvider>
-                              </ResponsiveContextProvider>
-                            </SNAuthProvider>
+                            <SNAuthProvider>{content}</SNAuthProvider>
                           </ShareProvider>
                         </SnAuthRepositoryProvider>
                       )}

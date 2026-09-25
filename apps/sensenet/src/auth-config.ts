@@ -1,4 +1,4 @@
-export type AuthServerType = 'SNAuth' | 'IdentityServer'
+export type AuthServerType = 'SNAuth' | 'IdentityServer' | 'Local'
 
 export interface AuthenticationConfig {
   authType: AuthServerType

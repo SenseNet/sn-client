@@ -35,12 +35,15 @@ export function SnAuthRepositoryProvider({
   children,
   url,
   changeAuthType,
+  prepareAuthentication,
 }: {
   children: React.ReactNode
   url: string
   changeAuthType: (x: string) => void
+  prepareAuthentication: (repoUrl: string) => Promise<boolean>
 }) {
   const [isLoginInProgress, setIsLoginInProgress] = useState(false)
+  const [authenticationCheckedFor, setAuthenticationCheckedFor] = useState('')
   const logger = useLogger('repository-provider')
   const globalClasses = useGlobalStyles()
 
@@ -100,6 +103,8 @@ export function SnAuthRepositoryProvider({
     }
     try {
       setIsLoginInProgress(true)
+      if (!(await prepareAuthentication(authState.repoUrl))) return
+      setAuthenticationCheckedFor(authState.repoUrl)
       const storedConfig = getSnAuthRepositoryConfig(authState.repoUrl)
 
       if (storedConfig) {
@@ -127,11 +132,14 @@ export function SnAuthRepositoryProvider({
     } finally {
       setIsLoginInProgress(false)
     }
-  }, [logger, authState.repoUrl, changeAuthType])
+  }, [logger, authState.repoUrl, changeAuthType, prepareAuthentication])
 
   useEffect(() => {
     getConfig()
   }, [getConfig])
+
+  if (authState.repoUrl && authenticationCheckedFor !== authState.repoUrl)
+    return <FullScreenLoader loaderText="Loading authentication" />
 
   if (!authState.config || !authState.repoUrl || !authServerUrl) {
     return (
