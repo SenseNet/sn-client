@@ -41,7 +41,7 @@ export type AppProvidersProps = { children: ReactNode }
 export default function AppProviders({ children }: AppProvidersProps) {
   // Capture before any child mounts: a remembered Local provider may otherwise consume
   // the fragment before the parent's repository-selection effect gets to inspect it.
-  const [resetLink] = useState(() => {
+  const [resetLink, setResetLink] = useState(() => {
     const location = new URL(window.location.href)
     const token = new URLSearchParams(location.hash.slice(1)).get('localResetToken')
     const repoUrl = location.searchParams.get('repoUrl')
@@ -57,6 +57,8 @@ export default function AppProviders({ children }: AppProvidersProps) {
       return undefined
     }
   })
+  // Retain only the initial destination for startup routing, never a consumed token.
+  const initialResetRepository = useRef(resetLink?.repositoryUrl).current
   const [authType, setAuthType] = useState<AuthServerType>(
     resetLink ? 'Local' : (window.localStorage.getItem('authType') as AuthServerType) ?? defaultAuthConfig.authType,
   )
@@ -137,10 +139,10 @@ export default function AppProviders({ children }: AppProvidersProps) {
     const repoUrl =
       location.searchParams.get('repoUrl') || (/^\/login\/?$/.test(location.pathname) ? location.origin : '')
     if (repoUrl) {
-      if (resetLink) selectLocal(resetLink.repositoryUrl)
+      if (initialResetRepository) selectLocal(initialResetRepository)
       else selectRepository(repoUrl)
     }
-  }, [selectRepository, selectLocal, resetLink])
+  }, [selectRepository, selectLocal, initialResetRepository])
 
   snInjector
     .getInstance(CommandProviderManager)
@@ -191,6 +193,7 @@ export default function AppProviders({ children }: AppProvidersProps) {
                           key={url || sessionStorage.getItem(localSelectedRepository)}
                           url={url}
                           initialResetToken={resetLink?.repositoryUrl === url ? resetLink.token : undefined}
+                          onResetComplete={() => setResetLink(undefined)}
                           selectRepository={selectRepository}>
                           <ShareProvider>{content}</ShareProvider>
                         </LocalRepositoryProvider>

@@ -32,6 +32,7 @@ export function LocalLoginPage({
   error,
   resetToken,
   onAuthenticated,
+  onResetComplete,
   onChooseRepository,
 }: {
   repositoryUrl: string
@@ -40,6 +41,7 @@ export function LocalLoginPage({
   error: string
   resetToken?: string
   onAuthenticated: () => Promise<void>
+  onResetComplete?: () => void
   onChooseRepository: () => void
 }) {
   const mounted = useRef(true)
@@ -101,6 +103,7 @@ export function LocalLoginPage({
         await session.resetPassword(resetToken, value('password'))
         setMode('login')
         setNotice('Your password has been changed. Sign in with your new password.')
+        onResetComplete?.()
       }
     } catch {
       if (mounted.current)

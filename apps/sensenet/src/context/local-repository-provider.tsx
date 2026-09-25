@@ -15,10 +15,12 @@ export function LocalRepositoryProvider({
   url,
   selectRepository,
   initialResetToken,
+  onResetComplete,
   children,
 }: {
   url: string
   initialResetToken?: string
+  onResetComplete?: () => void
   selectRepository: (url: string) => void
   children: React.ReactNode
 }) {
@@ -30,7 +32,7 @@ export function LocalRepositoryProvider({
   const [error, setError] = useState('')
   const [chooseRepository, setChooseRepository] = useState(!repoUrl)
   const mounted = useRef(true)
-  const [resetToken] = useState(() => {
+  const [resetToken, setResetToken] = useState(() => {
     if (initialResetToken) return initialResetToken
     const location = new URL(window.location.href)
     const token = new URLSearchParams(location.hash.slice(1)).get('localResetToken')
@@ -40,6 +42,16 @@ export function LocalRepositoryProvider({
     }
     return token && /^[A-Za-z0-9_-]{64}$/.test(token) ? token : undefined
   })
+
+  // Initial entry decides whether to restore a session; consuming the token must not
+  // restart discovery or replace the active session object.
+  const enteredWithReset = useRef(!!resetToken).current
+  const finishReset = () => {
+    if (resetToken) {
+      setResetToken(undefined)
+      onResetComplete?.()
+    }
+  }
 
   const loadUser = async (current: LocalRepositorySession) => {
     const repo = new Repository(
@@ -103,7 +115,7 @@ export function LocalRepositoryProvider({
         if (!active) return
         const current = new LocalRepositorySession(repoUrl, capabilities.local)
         setSession(current)
-        if (current.hasSession && !resetToken) await loadUser(current)
+        if (current.hasSession && !enteredWithReset) await loadUser(current)
       } catch {
         if (active) setError('Internal authentication is unavailable or your session has ended.')
       } finally {
@@ -115,7 +127,7 @@ export function LocalRepositoryProvider({
       mounted.current = false
       abort.abort()
     }
-  }, [repoUrl, resetToken])
+  }, [repoUrl, enteredWithReset])
 
   if (chooseRepository) {
     return <LoginPage isLoginInProgress={false} handleSubmit={selectRepository} />
@@ -158,10 +170,12 @@ export function LocalRepositoryProvider({
       loading={busy}
       error={error}
       resetToken={resetToken}
+      onResetComplete={finishReset}
       onAuthenticated={async () => {
         if (session) {
           setError('')
           await loadUser(session)
+          finishReset()
         }
       }}
       onChooseRepository={() => setChooseRepository(true)}

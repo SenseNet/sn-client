@@ -36,10 +36,10 @@ jest.mock('../src/context/sn-auth-repository-provider', () => ({
   SnAuthRepositoryProvider: (props: any) => MockExternalProvider(props),
 }))
 jest.mock('../src/context/local-repository-provider', () => ({
-  LocalRepositoryProvider: ({ url, initialResetToken }: any) => {
+  LocalRepositoryProvider: ({ url, initialResetToken, onResetComplete }: any) => {
     mockLocal(url)
     mockReset(initialResetToken)
-    return <div>Internal login</div>
+    return <div>Internal login{initialResetToken && <button onClick={onResetComplete}>Complete reset</button>}</div>
   },
 }))
 jest.mock('../src/context/auth-provider', () => ({
@@ -177,4 +177,16 @@ it.each(['Local', 'SNAuth'])('preserves a reset link before mounting a remembere
   expect(mockExternal).not.toHaveBeenCalled()
   expect(discoverAuthentication).not.toHaveBeenCalled()
   expect(JSON.stringify(sessionStorage)).not.toContain(token)
+})
+
+it('clears a consumed parent reset token without restarting provider selection', async () => {
+  const token = 'r'.repeat(64)
+  window.history.replaceState(null, '', `/?repoUrl=https%3A%2F%2Frepo.example#localResetToken=${token}`)
+  await mount()
+  expect(mockReset).toHaveBeenLastCalledWith(token)
+  await choose('Complete reset')
+  expect(mockReset).toHaveBeenLastCalledWith(undefined)
+  expect(mockLocal).toHaveBeenLastCalledWith('https://repo.example')
+  expect(mockExternal).not.toHaveBeenCalled()
+  expect(discoverAuthentication).not.toHaveBeenCalled()
 })

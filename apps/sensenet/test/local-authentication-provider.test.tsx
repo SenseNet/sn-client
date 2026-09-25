@@ -65,10 +65,10 @@ afterEach(() => {
   element.remove()
   global.fetch = previousFetch
 })
-const mount = () =>
+const mount = (initialResetToken?: string) =>
   act(async () => {
     render(
-      <LocalRepositoryProvider url={repo} selectRepository={() => {}}>
+      <LocalRepositoryProvider url={repo} initialResetToken={initialResetToken} selectRepository={() => {}}>
         <Probe />
       </LocalRepositoryProvider>,
       element,
@@ -135,4 +135,44 @@ it('consumes the recovery fragment without restoring an existing session or stor
   expect(request).toHaveBeenCalledTimes(1)
   expect(JSON.stringify(sessionStorage)).not.toContain(resetToken)
   window.history.replaceState({}, '', '/')
+})
+
+it.each(['fragment', 'prop'])('returns to login after reset, sign-in and logout from a %s token', async (entry) => {
+  const resetToken = 'r'.repeat(64)
+  window.history.replaceState({}, '', entry === 'fragment' ? `/#localResetToken=${resetToken}` : '/')
+  const request = jest
+    .fn()
+    .mockResolvedValueOnce(
+      response({
+        mode: 'InternalOnly',
+        local: { ...endpoints, resetPassword: '/authentication/local/reset-password' },
+      }),
+    )
+    .mockResolvedValueOnce(new Response(null, { status: 204 }))
+    .mockResolvedValueOnce(response(tokens))
+    .mockResolvedValueOnce(response({ d: { Id: 42, Name: 'admin', Path: '/Root/IMS/Public/admin' } }))
+    .mockResolvedValueOnce(new Response(null, { status: 204 }))
+  global.fetch = request
+  await mount(entry === 'prop' ? resetToken : undefined)
+  expect(element.textContent).toContain('Choose a new password')
+  ;(element.querySelector('[name=password]') as HTMLInputElement).value = 'new-long-password'
+  ;(element.querySelector('[name=confirmPassword]') as HTMLInputElement).value = 'new-long-password'
+  await act(async () => {
+    Simulate.submit(element.querySelector('form')!)
+  })
+  expect(element.textContent).toContain('Your password has been changed')
+  ;(element.querySelector('[name=username]') as HTMLInputElement).value = 'admin'
+  ;(element.querySelector('[name=password]') as HTMLInputElement).value = 'new-long-password'
+  await act(async () => {
+    Simulate.submit(element.querySelector('form')!)
+  })
+  expect(element.textContent).toContain('Signed in as admin')
+  await act(async () => {
+    element.querySelector('button')!.click()
+  })
+  expect(element.querySelector('[name=username]')).not.toBeNull()
+  expect(element.querySelector('[name=confirmPassword]')).toBeNull()
+  expect(element.textContent).not.toContain('Choose a new password')
+  expect(request).toHaveBeenCalledTimes(5)
+  expect(window.location.hash).toBe('')
 })
