@@ -115,3 +115,24 @@ it('never renders authenticated content when a restored token resolves to Visito
   expect(element.textContent).not.toContain('Signed in as')
   expect(element.querySelector('[role=alert]')).not.toBeNull()
 })
+
+it('consumes the recovery fragment without restoring an existing session or storing its token', async () => {
+  const resetToken = 'x'.repeat(64)
+  window.history.replaceState({}, '', `/?repoUrl=${encodeURIComponent(repo)}#localResetToken=${resetToken}`)
+  sessionStorage.setItem(localSessionKey(repo, repo), JSON.stringify(tokens))
+  const request = jest.fn().mockResolvedValueOnce(
+    response({
+      mode: 'InternalOnly',
+      local: { ...endpoints, resetPassword: '/authentication/local/reset-password' },
+    }),
+  )
+  global.fetch = request
+  await mount()
+  expect(window.location.hash).toBe('')
+  expect(window.location.search).toContain('repoUrl=')
+  expect(element.textContent).toContain('Choose a new password')
+  expect(element.textContent).not.toContain('Signed in as')
+  expect(request).toHaveBeenCalledTimes(1)
+  expect(JSON.stringify(sessionStorage)).not.toContain(resetToken)
+  window.history.replaceState({}, '', '/')
+})

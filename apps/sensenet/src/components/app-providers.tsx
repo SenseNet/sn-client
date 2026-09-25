@@ -39,10 +39,28 @@ import { TreeLoadingProvider } from './tree/Contexts/TreeLoadingProvider'
 export type AppProvidersProps = { children: ReactNode }
 
 export default function AppProviders({ children }: AppProvidersProps) {
+  // Capture before any child mounts: a remembered Local provider may otherwise consume
+  // the fragment before the parent's repository-selection effect gets to inspect it.
+  const [resetLink] = useState(() => {
+    const location = new URL(window.location.href)
+    const token = new URLSearchParams(location.hash.slice(1)).get('localResetToken')
+    const repoUrl = location.searchParams.get('repoUrl')
+    if (token !== null) {
+      location.hash = ''
+      window.history.replaceState(window.history.state, '', location.href)
+    }
+    if (!token || !/^[A-Za-z0-9_-]{64}$/.test(token) || !repoUrl) return undefined
+    try {
+      const repositoryUrl = normalizeRepositoryUrl(repoUrl)
+      return new URL(repositoryUrl).protocol === 'https:' ? { token, repositoryUrl } : undefined
+    } catch {
+      return undefined
+    }
+  })
   const [authType, setAuthType] = useState<AuthServerType>(
-    (window.localStorage.getItem('authType') as AuthServerType) ?? defaultAuthConfig.authType,
+    resetLink ? 'Local' : (window.localStorage.getItem('authType') as AuthServerType) ?? defaultAuthConfig.authType,
   )
-  const [url, setUrl] = useState('')
+  const [url, setUrl] = useState(resetLink?.repositoryUrl || '')
   const [choice, setChoice] = useState<string>()
   const externalChoices = useRef(new Set<string>())
   const discoveryVersion = useRef(0)
@@ -118,8 +136,11 @@ export default function AppProviders({ children }: AppProvidersProps) {
     const location = new URL(window.location.href)
     const repoUrl =
       location.searchParams.get('repoUrl') || (/^\/login\/?$/.test(location.pathname) ? location.origin : '')
-    if (repoUrl) selectRepository(repoUrl)
-  }, [selectRepository])
+    if (repoUrl) {
+      if (resetLink) selectLocal(resetLink.repositoryUrl)
+      else selectRepository(repoUrl)
+    }
+  }, [selectRepository, selectLocal, resetLink])
 
   snInjector
     .getInstance(CommandProviderManager)
@@ -169,6 +190,7 @@ export default function AppProviders({ children }: AppProvidersProps) {
                         <LocalRepositoryProvider
                           key={url || sessionStorage.getItem(localSelectedRepository)}
                           url={url}
+                          initialResetToken={resetLink?.repositoryUrl === url ? resetLink.token : undefined}
                           selectRepository={selectRepository}>
                           <ShareProvider>{content}</ShareProvider>
                         </LocalRepositoryProvider>

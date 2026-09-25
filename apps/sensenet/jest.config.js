@@ -11,6 +11,7 @@ module.exports = {
     '<rootDir>/packages/sn-control-mapper/test/__mocks__',
   ],
   moduleNameMapper: {
+    '\\.(css|png|svg|ttf)$': '<rootDir>/apps/sensenet/test/asset-mock.js',
     '^@sensenet/list-controls-react$': '<rootDir>/packages/sn-list-controls-react/src/ContentList',
     '^@sensenet/sn-auth-react$': '<rootDir>/packages/sn-auth-react/src',
     '^@sensenet/(.*)$': '<rootDir>/packages/sn-$1/src',

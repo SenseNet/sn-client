@@ -1,8 +1,8 @@
-import { Button, Container, TextField, Typography } from '@material-ui/core'
 import { Repository } from '@sensenet/client-core'
 import { User } from '@sensenet/default-content-types'
 import { RepositoryContext } from '@sensenet/hooks-react'
 import React, { useEffect, useRef, useState } from 'react'
+import { LocalLoginPage } from '../components/login/local-login-page'
 import LoginPage from '../components/login/login-page'
 import {
   discoverAuthentication,
@@ -14,9 +14,11 @@ import { AuthContext } from './auth-provider'
 export function LocalRepositoryProvider({
   url,
   selectRepository,
+  initialResetToken,
   children,
 }: {
   url: string
+  initialResetToken?: string
   selectRepository: (url: string) => void
   children: React.ReactNode
 }) {
@@ -28,6 +30,16 @@ export function LocalRepositoryProvider({
   const [error, setError] = useState('')
   const [chooseRepository, setChooseRepository] = useState(!repoUrl)
   const mounted = useRef(true)
+  const [resetToken] = useState(() => {
+    if (initialResetToken) return initialResetToken
+    const location = new URL(window.location.href)
+    const token = new URLSearchParams(location.hash.slice(1)).get('localResetToken')
+    if (token) {
+      location.hash = ''
+      window.history.replaceState(window.history.state, '', location.href)
+    }
+    return token && /^[A-Za-z0-9_-]{64}$/.test(token) ? token : undefined
+  })
 
   const loadUser = async (current: LocalRepositorySession) => {
     const repo = new Repository(
@@ -91,7 +103,7 @@ export function LocalRepositoryProvider({
         if (!active) return
         const current = new LocalRepositorySession(repoUrl, capabilities.local)
         setSession(current)
-        if (current.hasSession) await loadUser(current)
+        if (current.hasSession && !resetToken) await loadUser(current)
       } catch {
         if (active) setError('Internal authentication is unavailable or your session has ended.')
       } finally {
@@ -103,7 +115,7 @@ export function LocalRepositoryProvider({
       mounted.current = false
       abort.abort()
     }
-  }, [repoUrl])
+  }, [repoUrl, resetToken])
 
   if (chooseRepository) {
     return <LoginPage isLoginInProgress={false} handleSubmit={selectRepository} />
@@ -140,73 +152,19 @@ export function LocalRepositoryProvider({
   }
 
   return (
-    <Container maxWidth="sm" style={{ paddingTop: 64 }}>
-      <Typography variant="h4" gutterBottom>
-        Internal authentication
-      </Typography>
-      <Typography paragraph>{repoUrl}</Typography>
-      {error && (
-        <Typography color="error" role="alert">
-          {error}
-        </Typography>
-      )}
-      <form
-        onSubmit={async (event) => {
-          event.preventDefault()
-          if (!session || busy) return
-          const form = event.currentTarget
-          const data = new FormData(form)
-          setBusy(true)
+    <LocalLoginPage
+      repositoryUrl={repoUrl}
+      session={session}
+      loading={busy}
+      error={error}
+      resetToken={resetToken}
+      onAuthenticated={async () => {
+        if (session) {
           setError('')
-          try {
-            await session.login(
-              String(data.get('username')),
-              String(data.get('password')),
-              String(data.get('twoFactorCode') || ''),
-            )
-            await loadUser(session)
-          } catch {
-            if (mounted.current)
-              setError('Sign-in failed. Check your credentials, verification code and network access.')
-          } finally {
-            form.reset()
-            if (mounted.current) setBusy(false)
-          }
-        }}>
-        <TextField
-          name="username"
-          label="Username"
-          autoComplete="username"
-          required
-          fullWidth
-          margin="normal"
-          disabled={busy || !session}
-        />
-        <TextField
-          name="password"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          required
-          fullWidth
-          margin="normal"
-          disabled={busy || !session}
-        />
-        <TextField
-          name="twoFactorCode"
-          label="Verification code (if required)"
-          autoComplete="one-time-code"
-          fullWidth
-          margin="normal"
-          disabled={busy || !session}
-        />
-        <Button type="submit" color="primary" variant="contained" disabled={busy || !session}>
-          Sign in
-        </Button>
-        <Button disabled={busy} onClick={() => setChooseRepository(true)}>
-          Choose another repository
-        </Button>
-      </form>
-    </Container>
+          await loadUser(session)
+        }
+      }}
+      onChooseRepository={() => setChooseRepository(true)}
+    />
   )
 }

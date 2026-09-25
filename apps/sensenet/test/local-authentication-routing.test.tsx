@@ -7,6 +7,7 @@ import { discoverAuthentication } from '../src/services/local-authentication'
 const mockPass = ({ children }: any) => <>{children}</>
 const mockExternal = jest.fn()
 const mockLocal = jest.fn()
+const mockReset = jest.fn()
 const MockExternalProvider = ({ children, url, prepareAuthentication }: any) => {
   useEffect(() => {
     if (url)
@@ -35,8 +36,9 @@ jest.mock('../src/context/sn-auth-repository-provider', () => ({
   SnAuthRepositoryProvider: (props: any) => MockExternalProvider(props),
 }))
 jest.mock('../src/context/local-repository-provider', () => ({
-  LocalRepositoryProvider: ({ url }: any) => {
+  LocalRepositoryProvider: ({ url, initialResetToken }: any) => {
     mockLocal(url)
+    mockReset(initialResetToken)
     return <div>Internal login</div>
   },
 }))
@@ -161,4 +163,18 @@ it.each(['/', '/login-help'])('does not infer a same-origin repository at %s', a
   expect(discoverAuthentication).not.toHaveBeenCalled()
   expect(mockLocal).not.toHaveBeenCalled()
   expect(mockExternal).not.toHaveBeenCalled()
+})
+
+it.each(['Local', 'SNAuth'])('preserves a reset link before mounting a remembered %s provider', async (previous) => {
+  const token = 'r'.repeat(64)
+  localStorage.setItem('authType', previous)
+  sessionStorage.setItem('selected-local', 'https://previous.example')
+  window.history.replaceState(null, '', `/?repoUrl=https%3A%2F%2Frepo.example#localResetToken=${token}`)
+  await mount()
+  expect(window.location.hash).toBe('')
+  expect(mockLocal).toHaveBeenLastCalledWith('https://repo.example')
+  expect(mockReset).toHaveBeenLastCalledWith(token)
+  expect(mockExternal).not.toHaveBeenCalled()
+  expect(discoverAuthentication).not.toHaveBeenCalled()
+  expect(JSON.stringify(sessionStorage)).not.toContain(token)
 })

@@ -1,6 +1,42 @@
 import { normalizeRepositoryUrl } from './repository-session'
 
-export type LocalEndpoints = { issuer: string; login: string; refresh: string; logout: string; revoke: string }
+export type LocalLoginAppearance = {
+  title?: string
+  backgroundImageUrl?: string
+  logoUrl?: string
+  backgroundColor?: string
+  brandColor?: string
+  buttonColor?: string
+  buttonTextColor?: string
+  textColor?: string
+  panelColor?: string
+}
+export type LocalMfaChallenge = {
+  challengeToken: string
+  expiresIn: number
+  manualEntryKey?: string
+  qrCodeSetupImageUrl?: string
+}
+const operationPaths = {
+  login: '/authentication/local/login',
+  refresh: '/authentication/local/refresh',
+  logout: '/authentication/local/logout',
+  mfa: '/authentication/local/mfa',
+  forgotPassword: '/authentication/local/forgot-password',
+  resetPassword: '/authentication/local/reset-password',
+}
+export type LocalEndpoints = {
+  issuer: string
+  login: string
+  refresh: string
+  logout: string
+  revoke: string
+  mfa?: string
+  forgotPassword?: string | null
+  resetPassword?: string | null
+  minimumPasswordLength?: number
+  appearance?: LocalLoginAppearance
+}
 export type RepositoryAuthCapabilities = {
   mode: 'Disabled' | 'Secondary' | 'InternalOnly'
   local: LocalEndpoints | null
@@ -26,6 +62,10 @@ export async function discoverAuthentication(repoUrl: string, signal?: AbortSign
   if (data.local) {
     if (new URL(repository).protocol !== 'https:' || new URL(data.local.issuer).protocol !== 'https:') {
       throw new Error('Internal authentication requires HTTPS.')
+    }
+    for (const operation of ['mfa', 'forgotPassword', 'resetPassword'] as const) {
+      if (data.local[operation] && data.local[operation] !== operationPaths[operation])
+        throw new Error('Invalid authentication endpoint.')
     }
     for (const operation of ['login', 'refresh', 'logout', 'revoke'] as const) {
       if (data.local[operation] !== `/authentication/local/${operation}`)
@@ -64,7 +104,7 @@ export class LocalRepositorySession {
 
   constructor(
     repoUrl: string,
-    private endpoints: LocalEndpoints,
+    readonly endpoints: LocalEndpoints,
     private request: typeof fetch = (...args) => fetch(...args),
   ) {
     this.repositoryUrl = normalizeRepositoryUrl(repoUrl)
@@ -132,10 +172,9 @@ export class LocalRepositorySession {
     window.dispatchEvent(new Event(localSessionsChanged))
   }
 
-  private async post(operation: 'login' | 'refresh' | 'logout', body: object) {
+  private async post(operation: keyof typeof operationPaths, body: object) {
     // Only fixed repository-relative paths: discovery cannot redirect credentials to another issuer.
-    if (this.endpoints[operation] !== `/authentication/local/${operation}`)
-      throw new Error('Invalid authentication endpoint.')
+    if (this.endpoints[operation] !== operationPaths[operation]) throw new Error('Invalid authentication endpoint.')
     const response = await this.request(`${this.repositoryUrl}${this.endpoints[operation]}`, {
       method: 'POST',
       credentials: 'omit',
@@ -153,6 +192,45 @@ export class LocalRepositorySession {
     const { generation } = this
     const response = await this.post('login', { username, password, twoFactorCode })
     this.save(await response.json(), generation)
+  }
+
+  async beginLogin(username: string, password: string, twoFactorCode?: string): Promise<LocalMfaChallenge | undefined> {
+    if (!this.endpoints.mfa) {
+      await this.login(username, password, twoFactorCode)
+      return
+    }
+    this.clear()
+    const { generation } = this
+    const response = await this.post('login', { username, password, requestMfaChallenge: true })
+    const data = await response.json()
+    if (generation !== this.generation) throw new Error('Session has ended.')
+    if (response.status === 202) {
+      if (
+        typeof data.challengeToken !== 'string' ||
+        !/^[A-Za-z0-9_-]{64}$/.test(data.challengeToken) ||
+        !Number.isFinite(data.expiresIn) ||
+        data.expiresIn <= 0 ||
+        data.expiresIn > 300
+      )
+        throw new Error('Invalid verification challenge.')
+      return data
+    }
+    this.save(data, generation)
+  }
+
+  async completeMfa(challengeToken: string, twoFactorCode: string) {
+    const { generation } = this
+    const response = await this.post('mfa', { challengeToken, twoFactorCode })
+    this.save(await response.json(), generation)
+  }
+
+  async forgotPassword(email: string) {
+    await this.post('forgotPassword', { email })
+  }
+
+  async resetPassword(token: string, password: string) {
+    await this.post('resetPassword', { token, password })
+    this.clear()
   }
 
   private async refresh() {
