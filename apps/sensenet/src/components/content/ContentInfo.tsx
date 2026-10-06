@@ -72,11 +72,15 @@ export const useExplorerFolderActions = (): {
 
   useEffect(() => {
     let current = true
+    const controller = new AbortController()
     if (!parentContent.Path) return
 
     const loadCreationOptions = async () => {
       try {
-        const response = await repository.getActions({ idOrPath: parentContent.Path })
+        const response = await repository.getActions({
+          idOrPath: parentContent.Path,
+          requestInit: { signal: controller.signal },
+        })
         const permittedActions = response.d.results.filter((action) => !action.Forbidden)
         const canAdd = permittedActions.some((action) => action.Name === 'Add')
         const canUpload = permittedActions.some((action) => action.Name === 'Upload')
@@ -90,7 +94,11 @@ export const useExplorerFolderActions = (): {
         setCreationOptions(options)
         if (!canAdd) return
 
-        const allowedTypes = await repository.allowedChildTypes.get({ idOrPath: parentContent.Path })
+        const allowedTypes = await repository.allowedChildTypes.get({
+          idOrPath: parentContent.Path,
+          requestInit: { signal: controller.signal },
+        })
+        if (!current) return
         const types = allowedTypes.d.results
           .map((type) => ({ name: type.Name, schema: repository.schemas.getSchemaByName(type.Name) }))
           .filter(({ name, schema }) => schema.ContentTypeName === name)
@@ -109,6 +117,7 @@ export const useExplorerFolderActions = (): {
     loadCreationOptions()
     return () => {
       current = false
+      controller.abort()
     }
   }, [localization.addButton.errorGettingAllowedContentTypes, logger, parentContent.Id, parentContent.Path, repository])
 
@@ -175,6 +184,7 @@ export const useExplorerFolderActions = (): {
               label: localization.drawer.titles.Favorites,
               icon: isFavorite ? <Star /> : <StarBorder />,
               disabled: isFavoriteBusy,
+              checked: isFavorite,
               onClick: toggleFavorite,
             },
           ]

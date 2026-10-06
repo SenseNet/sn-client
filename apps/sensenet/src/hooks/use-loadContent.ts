@@ -7,9 +7,15 @@ type Options = {
   idOrPath: string | number
   oDataOptions?: ODataParams<GenericContent>
   isOpened?: boolean
+  refreshToken?: number
 }
 
-export const useLoadContent = <T extends GenericContent>({ idOrPath, oDataOptions, isOpened }: Options) => {
+export const useLoadContent = <T extends GenericContent>({
+  idOrPath,
+  oDataOptions,
+  isOpened,
+  refreshToken,
+}: Options) => {
   const [content, setContent] = useState<T>()
   const [error, setError] = useState<Error | undefined>()
   const [reloadToken, setReloadToken] = useState(1)
@@ -20,7 +26,8 @@ export const useLoadContent = <T extends GenericContent>({ idOrPath, oDataOption
 
   useEffect(() => {
     const ac = new AbortController()
-    if (idOrPath && idOrPath !== content?.Id && idOrPath !== content?.Path && (isOpened === undefined || isOpened)) {
+    if (idOrPath && (isOpened === undefined || isOpened)) {
+      setError(undefined)
       ;(async () => {
         try {
           const response = await repo.load<T>({
@@ -37,7 +44,7 @@ export const useLoadContent = <T extends GenericContent>({ idOrPath, oDataOption
       })()
     }
     return () => ac.abort()
-  }, [repo, idOrPath, reloadToken, oDataOptions, isOpened, content])
+  }, [repo, idOrPath, reloadToken, oDataOptions, isOpened, refreshToken])
 
   return { content, error, reload }
 }

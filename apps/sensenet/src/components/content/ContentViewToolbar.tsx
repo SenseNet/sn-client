@@ -16,7 +16,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { ContentIconSizes, ContentViewMode, PersonalSettings } from '../../services/PersonalSettings'
 import { BatchActions } from '../BatchActions'
-import { ExplorerActionMenu } from '../ExplorerActionMenu'
+import { ExplorerActionButton, ExplorerActionMenu } from '../ExplorerActionMenu'
 import { AUI_APPLICATION_CONTENT_TYPE } from './AUIApplicationView'
 import { useExplorerFolderActions } from './ContentInfo'
 
@@ -26,6 +26,8 @@ const modes: Array<{ value: ContentViewMode; icon: typeof ViewListOutlined }> = 
   { value: 'icons', icon: AppsOutlined },
   { value: 'thumbnails', icon: PhotoLibraryOutlined },
 ]
+
+const toolbarActionIds = ['content-header-action-edit', 'content-gallery-action', 'content-header-action-favorites']
 
 const useSelectionCount = () => {
   const { selection } = useSelectionService()
@@ -53,6 +55,11 @@ export const ContentViewToolbar = ({
   const selectionService = useSelectionService()
   const parent = useContext(CurrentContentContext)
   const { creationActions, otherActions } = useExplorerFolderActions()
+  const toolbarActions = toolbarActionIds.flatMap((id) => {
+    const action = otherActions.find((item) => item.id === id)
+    return action ? [action] : []
+  })
+  const moreActions = otherActions.filter((item) => !toolbarActionIds.includes(item.id))
   const isApplication = parent.Type === AUI_APPLICATION_CONTENT_TYPE
   const viewActions = modes.map(({ value, icon: ViewIcon }) => ({
     id: `content-view-${value}`,
@@ -105,7 +112,10 @@ export const ContentViewToolbar = ({
         )}
         {selectedCount === 0 && (
           <>
-            <ExplorerActionMenu label={localization.more} testId="content-header-more-actions" items={otherActions} />
+            {toolbarActions.map((item) => (
+              <ExplorerActionButton key={item.id} item={item} />
+            ))}
+            <ExplorerActionMenu label={localization.more} testId="content-header-more-actions" items={moreActions} />
             {!isApplication && (
               <button
                 type="button"

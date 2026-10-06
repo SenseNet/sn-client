@@ -299,6 +299,12 @@
     align-items: flex-start;
     gap: 3px;
   }
+  .sn-explorer-commandbar:not(.has-selection) {
+    height: auto;
+    min-height: 92px;
+    flex-wrap: wrap;
+    padding-bottom: 44px;
+  }
   .sn-explorer-commandbar__divider {
     margin: 6px 4px;
   }

@@ -74,6 +74,24 @@ const useStyles = makeStyles((theme) => ({
   danger: { color: 'var(--sn-menu-danger)' },
 }))
 
+export const ExplorerActionButton = ({ item }: { item: ExplorerMenuAction }) => {
+  const classes = useStyles()
+  return (
+    <button
+      type="button"
+      className={classes.trigger}
+      title={item.label}
+      aria-label={item.label}
+      aria-pressed={item.checked}
+      disabled={item.disabled}
+      data-test={item.id}
+      onClick={item.onClick}>
+      {item.icon}
+      <span>{item.label}</span>
+    </button>
+  )
+}
+
 export const ExplorerActionMenu = ({
   label,
   icon = <MoreHoriz aria-hidden="true" />,

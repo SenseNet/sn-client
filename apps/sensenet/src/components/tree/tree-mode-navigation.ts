@@ -1,7 +1,5 @@
 import type { GenericContent } from '@sensenet/default-content-types'
 
-export const isTreeEditAction = (action?: string) => ['edit', 'edit-binary', 'wopi-edit', 'new'].includes(action || '')
-
 /** Action pages display the content query target, which may differ from the folder behind them. */
 export const getTreeModeTargetPath = ({
   rootPath,

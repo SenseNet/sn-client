@@ -52,6 +52,8 @@ const render = async (path = '/Root') => {
       <ExpandItemsContext.Provider
         value={[new Set(), mockExpand, new Set(), jest.fn(), jest.fn(), jest.fn(), jest.fn()]}>
         <SimpleTree
+          editMode={false}
+          onEditModeChange={jest.fn()}
           onItemClick={jest.fn()}
           onNavigate={jest.fn()}
           rootLoaded={false}

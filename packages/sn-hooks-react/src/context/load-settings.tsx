@@ -1,6 +1,6 @@
 import { ODataParams } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { createContext, Dispatch, FunctionComponent, useReducer } from 'react'
+import React, { createContext, Dispatch, FunctionComponent, useEffect, useReducer, useRef } from 'react'
 
 export interface LoadSettingsContextProps {
   /**
@@ -77,6 +77,13 @@ export const LoadSettingsContextProvider: FunctionComponent<{
     props.loadChildrenSettings ?? initialLoadChildrenSettings,
   )
   const [loadAncestorsSettings, setLoadAncestorsSettings] = useReducer(setLoadSettingsReducer, {})
+  const previousChildrenSettings = useRef(props.loadChildrenSettings)
+
+  useEffect(() => {
+    if (JSON.stringify(previousChildrenSettings.current) === JSON.stringify(props.loadChildrenSettings)) return
+    previousChildrenSettings.current = props.loadChildrenSettings
+    setLoadChildrenSettings(props.loadChildrenSettings ?? initialLoadChildrenSettings)
+  }, [props.loadChildrenSettings])
 
   return (
     <LoadSettingsContext.Provider

@@ -26,6 +26,8 @@ export interface CurrentContentProviderProps {
    * Optional OData options for loading the content
    */
   oDataOptions?: ODataParams<GenericContent>
+  /** Reloads the current content without remounting its consumers. */
+  refreshToken?: number
 }
 
 /**
@@ -109,7 +111,7 @@ export const CurrentContentProvider: FunctionComponent<CurrentContentProviderPro
     }
     return () => ac.abort()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [repo, props.idOrPath, reloadToken])
+  }, [repo, props.idOrPath, props.refreshToken, reloadToken])
 
   return (
     <CurrentContentContext.Provider value={content as GenericContent}>{props.children}</CurrentContentContext.Provider>

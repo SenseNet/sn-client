@@ -10,12 +10,13 @@ import { getPrimaryActionUrl, getUrlForContent } from '../services'
 import { BreadcrumbItem, Breadcrumbs } from './Breadcrumbs'
 import CopyPath from './CopyPath'
 import { EditableBreadcrumbPath } from './EditableBreadcrumbPath'
-import { getTreeModeAction, getTreeModeTargetPath, isTreeEditAction } from './tree/tree-mode-navigation'
+import { getTreeModeAction, getTreeModeTargetPath } from './tree/tree-mode-navigation'
 import './explorer-header.css'
 
 type ContentBreadcrumbsProps<T extends GenericContent> = {
   onItemClick?: (item: BreadcrumbItem<T>) => void
   explorerNavigation?: boolean
+  treeEditMode?: boolean
   onRefresh?: () => void
   rootPath?: string
 }
@@ -146,7 +147,7 @@ export const ContentBreadcrumbs = <T extends GenericContent = GenericContent>(pr
                   uiSettings,
                   location,
                   snRoute: { ...snRoute, path: rootPath },
-                  action: getTreeModeAction(content, isTreeEditAction(action)),
+                  action: getTreeModeAction(content, props.treeEditMode === true),
                 }),
               )
             }}>

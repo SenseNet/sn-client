@@ -388,6 +388,7 @@ export function Explore({
   const localization = useLocalization().contentViews
   const logger = useLogger('Explore')
   const [viewMode, setViewMode] = useState<ContentViewMode>(personalSettings.defaultContentView)
+  const [treeEditMode, setTreeEditMode] = useState(false)
   useEffect(() => {
     setViewMode(personalSettings.defaultContentView)
   }, [personalSettings.defaultContentView])
@@ -402,7 +403,8 @@ export function Explore({
   useEffect(() => setLoadFailure(undefined), [currentPath])
   const currentLoadError = loadFailure?.path === currentPath ? loadFailure.error : undefined
   const onLoadError = useCallback(
-    (error: Error) => {
+    (error: Error, failedPath = currentPath) => {
+      if (failedPath !== currentPath) return
       logger.debug({ message: localization.loadFailed, data: { error, currentPath } })
       setLoadFailure({ path: currentPath, error })
     },
@@ -590,6 +592,9 @@ export function Explore({
 
   const renderTree = () => (
     <SimpleTree
+      refreshToken={refreshToken}
+      editMode={treeEditMode}
+      onEditModeChange={setTreeEditMode}
       rootPath={rootPath}
       onItemClick={handleTreeNavigate}
       parentPath={PathHelper.isAncestorOf(rootPath, currentPath) ? rootPath : currentPath}
@@ -601,13 +606,14 @@ export function Explore({
   )
 
   return (
-    <LoadSettingsContextProvider
-      key={JSON.stringify(currentChildrenLoadSettings)}
-      loadChildrenSettings={currentChildrenLoadSettings}>
-      <CurrentContentProvider key={refreshToken} idOrPath={currentPath} onError={onLoadError}>
-        <CurrentChildrenProvider alwaysRefresh={alwaysRefreshChildren} onError={onLoadError}>
+    <LoadSettingsContextProvider loadChildrenSettings={currentChildrenLoadSettings}>
+      <CurrentContentProvider refreshToken={refreshToken} idOrPath={currentPath} onError={onLoadError}>
+        <CurrentChildrenProvider
+          refreshToken={refreshToken}
+          alwaysRefresh={alwaysRefreshChildren}
+          onError={onLoadError}>
           <ActiveContentRouteSync />
-          <CurrentAncestorsProvider root={rootPath}>
+          <CurrentAncestorsProvider root={rootPath} refreshToken={refreshToken}>
             <div className={`sn-explorer theme-${theme.palette.type}`} data-test="explorer-workspace">
               <ExplorerDragDrop
                 enabled={!activeAction && !currentLoadError}
@@ -626,6 +632,7 @@ export function Explore({
                   ) : null}
                   <div className={classes.breadcrumbsContent}>
                     <ContentBreadcrumbs
+                      treeEditMode={treeEditMode}
                       rootPath={rootPath}
                       onItemClick={(i) => {
                         onNavigate(i.content)

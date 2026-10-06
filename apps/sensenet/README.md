@@ -41,9 +41,32 @@ Use the toolbar above the right panel to switch between **Details (grid)**, **Li
 
 Open **View options → Explorer** to choose the default view, icon/thumbnail size, and whether to show content types or prefer display names. These preferences are saved in this browser. The toolbar's view choice stays active while browsing folders; opening the explorer again or reloading uses the default view. Thumbnails show images and existing document previews, with a type icon when no preview is available.
 
+The tree's **View / Edit** buttons control subsequent tree navigation. Opening an editor from a context menu is a one-time action and does not change this mode. Clicking **View** while an editor is open returns to viewing that content.
+
+Breadcrumb arrow menus load immediate children only when opened and cancel their requests when closed or when navigating to another folder. A failed menu can be retried within that menu. The folder panel's **Try again** reloads the folder, file list, ancestors, and tree without recreating the Explorer. Temporary network failures and HTTP 502/503/504 responses on GET/HEAD requests are retried at most twice; canceled requests and permission errors are not retried.
+
+Missing or unavailable repository icons fall back to the content type's icon or a default folder, file, or content icon. This also applies to breadcrumb menus.
+
 ### Admin UI Applications
 
 The Admin UI can render repository-defined `AUIApplication` contents as small custom HTML applications inside the content explorer. See the [Admin UI Applications documentation](./docs/auiapplications.md) for the content type, bridge API, and repository read/update examples.
+
+### Full-screen editing of text files
+
+The file context menu offers **Full-screen edit** for the following extensions, regardless of the repository folder. Extensions are matched case-insensitively using the file's name, with its path as a fallback. Folders and files with other extensions do not receive this action, including when the server supplies it. Explicitly forbidden editing actions are respected.
+
+| Text format                         | Extensions                                                                                                                                                    |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Plain text, tables, logs and markup | `txt`, `text`, `csv`, `tsv`, `log`, `md`, `markdown`, `rst`, `adoc`, `tex`                                                                                    |
+| JSON and structured configuration   | `json`, `json5`, `jsonc`, `jsonl`, `ndjson`, `yaml`, `yml`, `toml`, `ini`, `cfg`, `conf`, `config`, `properties`, `env`, `settings`                           |
+| Web pages, styles and scripts       | `html`, `htm`, `xhtml`, `css`, `scss`, `sass`, `less`, `js`, `jsx`, `mjs`, `cjs`, `ts`, `tsx`, `mts`, `cts`, `vue`, `svelte`                                  |
+| XML and vector graphics             | `xml`, `xsd`, `xsl`, `xslt`, `xaml`, `resx`, `svg`                                                                                                            |
+| Source code                         | `c`, `h`, `cc`, `cpp`, `cxx`, `hpp`, `hxx`, `cs`, `vb`, `java`, `kt`, `kts`, `scala`, `go`, `rs`, `swift`, `py`, `rb`, `php`, `phtml`, `pl`, `pm`, `lua`, `r` |
+| Page templates                      | `asp`, `aspx`, `ascx`, `asax`, `cshtml`, `vbhtml`, `razor`, `ejs`, `hbs`, `mustache`                                                                          |
+| Shell and command scripts           | `sh`, `bash`, `zsh`, `fish`, `ps1`, `psm1`, `psd1`, `bat`, `cmd`                                                                                              |
+| Queries, calendars and contacts     | `sql`, `graphql`, `gql`, `ics`, `vcf`                                                                                                                         |
+
+The existing full-screen editing of Settings, Resource and ContentType system documents remains available, including documents without filename extensions. This extension list controls text editing availability; syntax highlighting depends on the editor's supported languages.
 
 ## 🌈 Command palette
 

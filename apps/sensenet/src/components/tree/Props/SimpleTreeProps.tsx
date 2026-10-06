@@ -2,6 +2,9 @@ import { ODataParams } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 
 export interface SimpleTreeProps {
+  editMode: boolean
+  onEditModeChange: (edit: boolean) => void
+  refreshToken?: number
   onItemClick: (item: GenericContent) => void
   parentPath: string
   rootPath?: string

@@ -19,7 +19,9 @@ export interface CurrentChildrenProviderProps {
   loadSettings?: ODataParams<GenericContent>
   alwaysRefresh?: boolean
   /** Handles a failed load instead of passing it to an error boundary. */
-  onError?: (error: Error) => void
+  onError?: (error: Error, path?: string) => void
+  /** Reloads the collection without remounting its consumers. */
+  refreshToken?: number
 }
 
 /**
@@ -74,7 +76,7 @@ export const CurrentChildrenProvider: FunctionComponent<CurrentChildrenProviderP
         }
       } catch (err) {
         if (isCurrentRequest && !ac.signal.aborted) {
-          if (onError.current) onError.current(err)
+          if (onError.current) onError.current(err, currentContent.Path)
           else setError({ path: currentContent.Path, error: err })
         }
       } finally {
@@ -87,7 +89,14 @@ export const CurrentChildrenProvider: FunctionComponent<CurrentChildrenProviderP
       isCurrentRequest = false
       ac.abort()
     }
-  }, [currentContent.Path, loadSettings.loadChildrenSettings, props.loadSettings, repo, reloadToken])
+  }, [
+    currentContent.Path,
+    loadSettings.loadChildrenSettings,
+    props.loadSettings,
+    props.refreshToken,
+    repo,
+    reloadToken,
+  ])
 
   useEffect(() => {
     const handleCreate = (contents: Content[]) => {

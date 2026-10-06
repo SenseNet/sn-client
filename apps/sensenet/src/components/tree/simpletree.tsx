@@ -15,7 +15,7 @@ import { useTreeLoading } from './Contexts/TreeLoadingProvider'
 import { FavoritesTree } from './FavoritesTree'
 import { SimpleTreeProps } from './Props/SimpleTreeProps'
 import { StyledTreeItem } from './StyledTreeItem'
-import { getTreeModeAction, getTreeModeTargetPath, isTreeEditAction } from './tree-mode-navigation'
+import { getTreeModeAction, getTreeModeTargetPath } from './tree-mode-navigation'
 
 const modeContentOptions: ODataParams<GenericContent> = {
   select: ['Id', 'Path', 'Name', 'DisplayName', 'Type', 'IsFolder', 'Actions', 'Icon', 'ParentId'],
@@ -135,7 +135,15 @@ const getPathChain = (rootPath: string, activePath?: string) => {
   ]
 }
 
-export function SimpleTree({ activeItemPath, parentPath, rootPath: explorerRoot, onNavigate }: SimpleTreeProps) {
+export function SimpleTree({
+  activeItemPath,
+  parentPath,
+  rootPath: explorerRoot,
+  onNavigate,
+  editMode,
+  onEditModeChange,
+  refreshToken,
+}: SimpleTreeProps) {
   const { isTreeLoading, setIsTreeLoading } = useTreeLoading()
   const classes = useStyles()
   const localization = useLocalization()
@@ -147,26 +155,38 @@ export function SimpleTree({ activeItemPath, parentPath, rootPath: explorerRoot,
   const uiSettings = useContext(ResponsivePersonalSettings)
   const rootPath = explorerRoot || snRoute.path || parentPath
   const action = snRoute.match?.params.action
-  const editMode = isTreeEditAction(action)
+  const requestedEditMode = (location.state as { treeEditMode?: boolean } | undefined)?.treeEditMode
+  useEffect(() => {
+    // Only an accepted navigation from the mode buttons changes the tree's preference.
+    // Ordinary action URLs, such as context-menu Edit, never change it.
+    if (typeof requestedEditMode === 'boolean') onEditModeChange(requestedEditMode)
+  }, [location.key, requestedEditMode, onEditModeChange])
   const targetPath = getTreeModeTargetPath({ rootPath, currentPath: activeItemPath, action, search: location.search })
-  const { content: loadedContent } = useLoadContent({ idOrPath: targetPath, oDataOptions: modeContentOptions })
+  const { content: loadedContent } = useLoadContent({
+    idOrPath: targetPath,
+    oDataOptions: modeContentOptions,
+    refreshToken,
+  })
   const content = loadedContent?.Path.toLowerCase() === targetPath.toLowerCase() ? loadedContent : undefined
   const contentActions = content?.Actions
   const editForbidden =
     isActionModel(contentActions) && contentActions.some((item) => item.Name === 'Edit' && item.Forbidden)
 
   const changeMode = (edit: boolean) => {
-    if (!content || edit === editMode || (edit && editForbidden)) return
-    // Use normal history navigation: editor blockers can reject the transition,
-    // and the pressed mode changes only when the route actually changes.
+    if (!content || (edit && editForbidden)) return
+    const nextAction = getTreeModeAction(content, edit)
+    if (edit === editMode && action === nextAction) return
+    // Keep the preference in Explore so tree reloads and layout changes preserve it.
+    // History state updates it only after editor blockers accept this transition.
     history.push(
       getUrlForContent({
         content,
         uiSettings,
         location: history.location,
         snRoute: { ...snRoute, path: rootPath },
-        action: getTreeModeAction(content, edit),
+        action: nextAction,
       }),
+      { treeEditMode: edit },
     )
   }
 
@@ -200,7 +220,7 @@ export function SimpleTree({ activeItemPath, parentPath, rootPath: explorerRoot,
         if (signal.aborted) return
         setRootElement(result.d)
 
-        const activePath = content?.Path || result.d.Path
+        const activePath = targetPath || result.d.Path
         const pathsToExpand = getPathChain(result.d.Path, activePath)
         const parentContents = await Promise.all(
           pathsToExpand.map((path) =>
@@ -230,7 +250,7 @@ export function SimpleTree({ activeItemPath, parentPath, rootPath: explorerRoot,
       controller.abort()
       setIsTreeLoading(false)
     }
-  }, [repo, parentPath, content?.Path, logger, setExpandItems, setIsTreeLoading])
+  }, [repo, parentPath, targetPath, refreshToken, logger, setExpandItems, setIsTreeLoading])
 
   /** context menu handler */
   const onContextMenu = (event: React.MouseEvent, data: GenericContent) => {

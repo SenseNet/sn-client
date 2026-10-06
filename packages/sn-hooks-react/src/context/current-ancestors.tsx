@@ -16,6 +16,8 @@ export interface CurrentAncestorsProviderProps {
    * An optional root Path or ID. The top ancestor will be a content with the provided value.
    */
   root?: number | string
+  /** Reloads the ancestors without remounting its consumers. */
+  refreshToken?: number
 }
 
 /**
@@ -87,12 +89,16 @@ export const CurrentAncestorsProvider: FunctionComponent<CurrentAncestorsProvide
         if (!ac.signal.aborted) {
           logger.warning({
             message: `Error loading ancestors. ${err.message}`,
-            data: { error: err, relatedContent: currentContent, relatedRepository: repo.configuration.repositoryUrl },
+            data: {
+              error: err,
+              relatedContent: { Id: currentContent.Id, Path: currentContent.Path },
+              relatedRepository: repo.configuration.repositoryUrl,
+            },
           })
         }
       }
     })()
     return () => ac.abort()
-  }, [currentContent, logger, props.root, reloadToken, repo])
+  }, [currentContent.Id, currentContent.Path, logger, props.root, props.refreshToken, reloadToken, repo])
   return <CurrentAncestorsContext.Provider value={ancestors}>{props.children}</CurrentAncestorsContext.Provider>
 }

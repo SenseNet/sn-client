@@ -1,4 +1,4 @@
-import { getTreeModeAction, getTreeModeTargetPath, isTreeEditAction } from '../src/components/tree/tree-mode-navigation'
+import { getTreeModeAction, getTreeModeTargetPath } from '../src/components/tree/tree-mode-navigation'
 
 const parent = { rootPath: '/Root', currentPath: '/Root/Content', search: '?path=%2FContent' }
 
@@ -40,12 +40,6 @@ describe('Explorer tree View/Edit navigation', () => {
   it('uses the parent folder for an unsaved new item and the root for a root action', () => {
     expect(getTreeModeTargetPath({ ...parent, action: 'new' })).toBe('/Root/Content')
     expect(getTreeModeTargetPath({ ...parent, action: 'edit' })).toBe('/Root')
-  })
-
-  it('derives the pressed mode from editing routes including direct URLs and browser history', () => {
-    for (const action of ['edit', 'edit-binary', 'wopi-edit', 'new']) expect(isTreeEditAction(action)).toBe(true)
-    for (const action of [undefined, 'browse', 'image', 'preview', 'wopi-view', 'version'])
-      expect(isTreeEditAction(action)).toBe(false)
   })
 
   it('uses the grid for folder View and explicit browse for file View regardless of their primary action', () => {

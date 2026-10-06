@@ -119,9 +119,11 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
   useEffect(() => {
     if (!showTypes || !props.isOpened) return
     let current = true
+    const controller = new AbortController()
     repository.allowedChildTypes
-      .get({ idOrPath: props.content.Path })
+      .get({ idOrPath: props.content.Path, requestInit: { signal: controller.signal } })
       .then((response) => {
+        if (!current) return
         const types = response.d.results
           .map((type) => ({ name: type.Name, schema: repository.schemas.getSchemaByName(type.Name) }))
           .filter(({ name, schema }) => schema.ContentTypeName === name)
@@ -138,6 +140,7 @@ export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps
       })
     return () => {
       current = false
+      controller.abort()
     }
   }, [
     localization.addButton.errorGettingAllowedContentTypes,
