@@ -2,7 +2,9 @@ import { Button, ButtonGroup } from '@material-ui/core'
 import { ODataParams } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ColumnSetting } from '@sensenet/list-controls-react/src/ContentList/content-list-base-props'
+import { ColDef } from 'ag-grid-community'
 import React, { useState } from 'react'
+import { GridKeyEnum } from '../../src/components/grid/enums/GridKey.enum'
 
 interface GridSwitcherItem {
   icon?: JSX.Element
@@ -11,6 +13,8 @@ interface GridSwitcherItem {
   schema?: string
   fieldsToDisplay: Array<ColumnSetting<GenericContent>>
   loadSettings?: ODataParams<GenericContent>
+  colDef: ColDef[]
+  gridKey: GridKeyEnum
 }
 
 interface GridSwitcherProps {

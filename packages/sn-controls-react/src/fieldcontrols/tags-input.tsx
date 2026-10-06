@@ -7,9 +7,7 @@ import {
   createStyles,
   FormControl,
   FormGroup,
-  FormHelperText,
   Input,
-  InputLabel,
   makeStyles,
   MenuItem,
   MenuProps,
@@ -21,6 +19,7 @@ import { GenericContent, ReferenceFieldSetting, User } from '@sensenet/default-c
 import React, { useCallback, useEffect, useState } from 'react'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { renderIconDefault } from './icon'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 
 const ITEM_HEIGHT = 48
@@ -249,9 +248,13 @@ export const TagsInput: React.FC<ReactClientFieldSetting<ReferenceFieldSetting>>
           key={props.settings.Name}
           component={'fieldset' as 'div'}
           required={props.settings.Compulsory}>
-          <InputLabel required={props.settings.Compulsory} htmlFor={props.settings.Name}>
-            {props.settings.DisplayName}
-          </InputLabel>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
+          />
           <Select
             value={getValue()}
             onChange={handleChange}
@@ -299,7 +302,6 @@ export const TagsInput: React.FC<ReactClientFieldSetting<ReferenceFieldSetting>>
               </MenuItem>
             ))}
           </Select>
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </FormControl>
       )
     case 'browse':
@@ -307,7 +309,7 @@ export const TagsInput: React.FC<ReactClientFieldSetting<ReferenceFieldSetting>>
       return (
         <>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           <FormGroup>
             {fieldValue && fieldValue.length > 0 ? (

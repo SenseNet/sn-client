@@ -56,6 +56,24 @@ export const isExtendedError = (e: Error): e is ExtendedError => {
   return (e as ExtendedError).response ? true : false
 }
 
+const waitForReadRetry = (delay: number, signal?: AbortSignal | null) =>
+  new Promise<void>((resolve, reject) => {
+    const abort = () => {
+      clearTimeout(timer)
+      signal?.removeEventListener('abort', abort)
+      reject(new DOMException('The request was aborted.', 'AbortError'))
+    }
+    if (signal?.aborted) {
+      reject(new DOMException('The request was aborted.', 'AbortError'))
+      return
+    }
+    const timer = setTimeout(() => {
+      signal?.removeEventListener('abort', abort)
+      resolve()
+    }, delay)
+    signal?.addEventListener('abort', abort, { once: true })
+  })
+
 /**
  * Class that can be used as a main entry point to manipulate a sensenet content repository
  */
@@ -66,7 +84,6 @@ export class Repository implements Disposable {
   public dispose() {
     this.authentication.dispose()
   }
-
   /**
    * Authentication service associated with the repository object
    */
@@ -97,7 +114,20 @@ export class Repository implements Disposable {
     if (this.configuration.token) {
       request.headers.append('Authorization', `Bearer ${this.configuration.token}`)
     }
-    return await this.fetchMethod(request)
+    if (!['GET', 'HEAD'].includes(request.method)) return await this.fetchMethod(request)
+
+    // Folder navigation starts several independent reads. Recover from short-lived
+    // transport failures without replaying writes or retrying permission errors.
+    for (let attempt = 0; ; attempt++) {
+      if (request.signal?.aborted) throw new DOMException('The request was aborted.', 'AbortError')
+      try {
+        const response = await this.fetchMethod(request.clone())
+        if (attempt === 2 || ![502, 503, 504].includes(response.status)) return response
+      } catch (error) {
+        if (request.signal?.aborted || attempt === 2 || !(error instanceof TypeError)) throw error
+      }
+      await waitForReadRetry(200 * (attempt + 1), request.signal)
+    }
   }
 
   /**
@@ -186,6 +216,7 @@ export class Repository implements Disposable {
       credentials: 'include',
       method: 'GET',
     })
+
     if (!response.ok) {
       throw await this.getErrorFromResponse(response)
     }
@@ -394,6 +425,7 @@ export class Repository implements Disposable {
       'Actions',
     )
     const response = await this.fetch(`${path}${options.scenario ? `?scenario=${options.scenario}` : ''}`, {
+      ...options.requestInit,
       credentials: 'include',
       method: 'GET',
     })
@@ -501,6 +533,9 @@ export class Repository implements Disposable {
   }
 
   public iconCache = new Map<string, string>()
+  //Caches for tree and grid elements
+  public exploreContentCache = new Map<string, string>()
+  public exploreContentCollectionCache = new Map<string, string>()
 
   constructor(
     config?: RepositoryConfiguration,

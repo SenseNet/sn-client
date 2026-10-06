@@ -1,0 +1,274 @@
+<main class="app-shell">
+  <header class="hero">
+    <p class="eyebrow">Admin UI Application példa</p>
+    <h1>Banner képek</h1>
+    <p class="intro">
+      Ez a kis alkalmazás a <code>/Root/Content/test/BannerImages</code> alatti contenteket listázza, és minden sorhoz
+      ad egy gyors szerkesztés gombot.
+    </p>
+  </header>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Contentek</h2>
+      <button id="refresh-button" type="button">Frissítés</button>
+    </div>
+
+    <div id="status" class="status">Betöltés...</div>
+
+    <table id="content-table" hidden>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Típus</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="content-table-body"></tbody>
+    </table>
+  </section>
+</main>
+
+<style>
+  :root {
+    color: #e8eef2;
+    background: #101718;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  body {
+    margin: 0;
+    background: #101718;
+  }
+
+  .app-shell {
+    min-height: 100vh;
+    padding: 32px;
+    box-sizing: border-box;
+  }
+
+  .hero {
+    max-width: 980px;
+    margin: 0 auto 24px;
+  }
+
+  .eyebrow {
+    margin: 0 0 8px;
+    color: #29a8df;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  h1,
+  h2,
+  p {
+    margin-top: 0;
+  }
+
+  h1 {
+    margin-bottom: 8px;
+    font-size: 32px;
+    line-height: 1.2;
+  }
+
+  .intro {
+    max-width: 720px;
+    margin-bottom: 0;
+    color: #aebcc3;
+    line-height: 1.5;
+  }
+
+  code {
+    color: #fff;
+  }
+
+  .panel {
+    max-width: 980px;
+    margin: 0 auto;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: #151d1f;
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .panel-header h2 {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  button,
+  .edit-link {
+    border: 0;
+    border-radius: 3px;
+    padding: 8px 12px;
+    background: #0192db;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  button:hover,
+  .edit-link:hover {
+    background: #16a7ef;
+  }
+
+  .status {
+    padding: 18px;
+    color: #aebcc3;
+  }
+
+  .status.error {
+    color: #ffb6b6;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: 11px 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  th {
+    color: #aebcc3;
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+
+  td:last-child,
+  th:last-child {
+    width: 1%;
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  tr:hover td {
+    background: rgba(255, 255, 255, 0.04);
+  }
+</style>
+
+<script>
+  ;(() => {
+    const targetPath = '/Root/Content/test/BannerImages'
+    const adminApp = window.sensenetAdminApp || {}
+    const status = document.getElementById('status')
+    const table = document.getElementById('content-table')
+    const tableBody = document.getElementById('content-table-body')
+    const refreshButton = document.getElementById('refresh-button')
+
+    const setStatus = (message, isError = false) => {
+      status.textContent = message
+      status.classList.toggle('error', isError)
+      status.hidden = false
+      table.hidden = true
+    }
+
+    const escapeHtml = (value) =>
+      String(value || '').replace(/[&<>"']/g, (character) => {
+        const entities = {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#039;',
+        }
+
+        return entities[character]
+      })
+
+    const toAdminContentPath = (path) => path.replace(/^\/Root(?=\/|$)/, '') || '/'
+
+    const getAdminUiUrl = () => {
+      if (adminApp.adminUiUrl) {
+        return adminApp.adminUiUrl.replace(/\/+$/, '')
+      }
+
+      return ''
+    }
+
+    const getEditUrl = (contentPath) => {
+      const adminUiUrl = getAdminUiUrl()
+      const query = new URLSearchParams({
+        path: toAdminContentPath(targetPath),
+        content: toAdminContentPath(contentPath),
+      })
+      const editPath = `/content/explorer/edit?${query.toString()}`
+
+      return adminUiUrl ? `${adminUiUrl}${editPath}` : editPath
+    }
+
+    const loadContents = async () => {
+      if (!adminApp.fetch) {
+        setStatus(
+          'Nem található AUIApplication fetch bridge. Az alkalmazás csak az Admin UI AUIApplication nézetében futtatva működik.',
+          true,
+        )
+        return
+      }
+
+      setStatus('Betöltés...')
+
+      try {
+        const url = `/odata.svc${targetPath}?$select=Id,Name,DisplayName,Type,Path&$orderby=Name`
+        const response = await adminApp.fetch(url, {
+          headers: {
+            Accept: 'application/json',
+          },
+        })
+
+        if (!response.ok) {
+          throw new Error(`${response.status} ${response.statusText}`)
+        }
+
+        const result = await response.json()
+        const contents = result.d && result.d.results ? result.d.results : []
+
+        if (!contents.length) {
+          setStatus('Nincs megjeleníthető content ebben a mappában.')
+          return
+        }
+
+        tableBody.innerHTML = contents
+          .map(
+            (content) => `
+              <tr>
+                <td>${escapeHtml(content.Name)}</td>
+                <td>${escapeHtml(content.Type)}</td>
+                <td>
+                  <a class="edit-link" href="${getEditUrl(content.Path)}" target="_top">Edit</a>
+                </td>
+              </tr>
+            `,
+          )
+          .join('')
+
+        status.hidden = true
+        table.hidden = false
+      } catch (error) {
+        setStatus(
+          `Nem sikerült betölteni a contenteket. Részletek: ${
+            error.message || error
+          }. Ellenőrizd, hogy van-e jogosultságod a célmappához.`,
+          true,
+        )
+      }
+    }
+
+    refreshButton.addEventListener('click', loadContents)
+    loadContents()
+  })()
+</script>

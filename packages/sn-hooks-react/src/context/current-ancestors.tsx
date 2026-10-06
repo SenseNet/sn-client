@@ -2,7 +2,6 @@ import { ODataCollectionResponse } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { createContext, FunctionComponent, useContext, useEffect, useState } from 'react'
-import Semaphore from 'semaphore-async-await'
 import { useLogger, useRepository, useRepositoryEvents } from '../hooks'
 import { CurrentContentContext } from './current-content'
 
@@ -17,6 +16,8 @@ export interface CurrentAncestorsProviderProps {
    * An optional root Path or ID. The top ancestor will be a content with the provided value.
    */
   root?: number | string
+  /** Reloads the ancestors without remounting its consumers. */
+  refreshToken?: number
 }
 
 /**
@@ -25,7 +26,6 @@ export interface CurrentAncestorsProviderProps {
  */
 export const CurrentAncestorsProvider: FunctionComponent<CurrentAncestorsProviderProps> = (props) => {
   const currentContent = useContext(CurrentContentContext)
-  const [loadLock] = useState(new Semaphore(1))
 
   const [ancestors, setAncestors] = useState<GenericContent[]>([])
   const repo = useRepository()
@@ -61,13 +61,11 @@ export const CurrentAncestorsProvider: FunctionComponent<CurrentAncestorsProvide
     repo.configuration.repositoryUrl,
     requestReload,
   ])
-  const [error, setError] = useState<Error | undefined>()
-
   useEffect(() => {
     const ac = new AbortController()
+    setAncestors([])
     ;(async () => {
       try {
-        await loadLock.acquire()
         if ((props.root && currentContent.Id === props.root) || currentContent.Path === props.root) {
           setAncestors([])
         } else if (currentContent.Id) {
@@ -83,25 +81,24 @@ export const CurrentAncestorsProvider: FunctionComponent<CurrentAncestorsProvide
               orderby: [['Path', 'asc']],
             },
           })
+          if (ac.signal.aborted) return
           const rootIndex = ancestorsResult.d.results.findIndex((a) => a.Id === props.root || a.Path === props.root)
           setAncestors(rootIndex > 0 ? ancestorsResult.d.results.slice(rootIndex) : ancestorsResult.d.results)
         }
       } catch (err) {
         if (!ac.signal.aborted) {
-          setError(err)
+          logger.warning({
+            message: `Error loading ancestors. ${err.message}`,
+            data: {
+              error: err,
+              relatedContent: { Id: currentContent.Id, Path: currentContent.Path },
+              relatedRepository: repo.configuration.repositoryUrl,
+            },
+          })
         }
-      } finally {
-        loadLock.release()
       }
     })()
     return () => ac.abort()
-  }, [currentContent.Id, currentContent.Path, loadLock, props.root, reloadToken, repo])
-
-  if (error) {
-    logger.warning({
-      message: `Error loading ancestors. ${error.message}`,
-      data: { error, relatedContent: currentContent, relatedRepository: repo.configuration.repositoryUrl },
-    })
-  }
+  }, [currentContent.Id, currentContent.Path, logger, props.root, props.refreshToken, reloadToken, repo])
   return <CurrentAncestorsContext.Provider value={ancestors}>{props.children}</CurrentAncestorsContext.Provider>
 }

@@ -1,21 +1,27 @@
 import { createStyles, makeStyles } from '@material-ui/core'
 import { globals } from '../../../globalStyles'
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme) => {
   return createStyles({
     grid: {
-      padding: '14px 14px 0 14px',
+      padding: '21px',
       overflowY: 'auto',
       maxWidth: '100%',
       maxHeight: `calc(100% - ${globals.common.formActionButtonsHeight}px - ${globals.common.formTitleHeight}px)`,
+      [theme.breakpoints.down('sm')]: {
+        padding: '12px',
+        maxHeight: `calc(100% - ${globals.common.formActionButtonsHeight}px - ${globals.common.formTitleHeight}px)`,
+      },
     },
     actionButtonWrapper: {
-      height: '80px',
-      left: 0,
-      position: 'absolute',
-      padding: '20px',
-      bottom: 0,
-      right: '7%',
+      padding: '8px',
+      paddingRight: '39px',
+      borderTop: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
+      marginTop: 'auto',
+      [theme.breakpoints.down('sm')]: {
+        paddingRight: '8px',
+        flexWrap: 'wrap',
+      },
     },
   })
 })

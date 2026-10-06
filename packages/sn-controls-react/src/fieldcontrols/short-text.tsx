@@ -1,12 +1,13 @@
 /**
  * @module FieldControls
  */
-import { FormHelperText, TextField, Typography } from '@material-ui/core'
+import { TextField, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { ShortTextFieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 
 /**
@@ -29,12 +30,19 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
     case 'new':
       return (
         <>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
+          />
           <TextField
+            variant="outlined"
             autoFocus={props.autoFocus}
             autoComplete="off"
             name={props.settings.Name}
             id={props.settings.Name}
-            label={props.settings.DisplayName}
             InputLabelProps={{ shrink: true }}
             value={value}
             required={props.settings.Compulsory}
@@ -47,7 +55,6 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
             fullWidth={true}
             onChange={handleChange}
           />
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </>
       )
     case 'browse':
@@ -55,7 +62,7 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
       return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
             {/* Temporary hot fix */}

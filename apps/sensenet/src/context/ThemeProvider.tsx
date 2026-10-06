@@ -1,5 +1,4 @@
-import { MuiThemeProvider } from '@material-ui/core/styles'
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
+import { createTheme, MuiThemeProvider } from '@material-ui/core/styles'
 import zIndex from '@material-ui/core/styles/zIndex'
 import { useInjector } from '@sensenet/hooks-react'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -54,7 +53,7 @@ export const ThemeProvider: React.FunctionComponent = (props) => {
         'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF',
     }
 
-    const nextTheme = createMuiTheme({
+    const nextTheme = createTheme({
       typography: {
         fontFamily: ['Roboto', 'Helvetica', 'sans-serif', 'Arial', 'Larsseit'].join(','),
         h1: {
@@ -129,9 +128,24 @@ export const ThemeProvider: React.FunctionComponent = (props) => {
             '@font-face': [larsseit],
           },
         },
-        MuiInputLabel: {
+        MuiOutlinedInput: {
           root: {
-            fontSize: '1.3rem',
+            borderRadius: '4px 4px 0 0',
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderColor: pageTheme === 'light' ? '#DBDBDB' : '#2c2c2c',
+            },
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+              borderColor: '#666',
+            },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              borderColor: '#1976d2',
+            },
+          },
+          input: {
+            padding: '9px',
+          },
+          multiline: {
+            padding: '9px',
           },
         },
       },

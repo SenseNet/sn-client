@@ -8,6 +8,7 @@ import React, { FunctionComponent, useState } from 'react'
 import { useGlobalStyles } from '../../globalStyles'
 import { useLocalization } from '../../hooks'
 import { useDialog } from '../dialogs'
+import { getGroupDisplayName } from '../group-display-name'
 
 const useStyles = makeStyles(() => {
   return createStyles({
@@ -83,7 +84,8 @@ export const RolesField: FunctionComponent<RolesFieldProps> = ({ user, roles, di
     <TableCell className={clsx(globalClasses.centeredLeft, globalClasses.virtualizedCellStyle)} component="div">
       <Tooltip
         className={globalClasses.centered}
-        title={roles.length === 1 ? roles[0].DisplayName! : `${roles.length} roles`}
+        style={{ width: '100%', padding: '1px' }}
+        title={roles.length === 1 ? getGroupDisplayName(roles[0]) : `${roles.length} roles`}
         placement="top">
         <Button
           classes={{
@@ -98,7 +100,7 @@ export const RolesField: FunctionComponent<RolesFieldProps> = ({ user, roles, di
             event.stopPropagation()
             setAnchorEl(event.currentTarget)
           }}>
-          {roles.length === 1 ? roles[0].DisplayName! : `${roles.length} roles`}
+          {`${roles.length} roles`}
         </Button>
       </Tooltip>
       <Menu id="simple-roles" keepMounted anchorEl={anchorEl} open={!!anchorEl} onClose={() => setAnchorEl(null)}>
@@ -109,7 +111,7 @@ export const RolesField: FunctionComponent<RolesFieldProps> = ({ user, roles, di
               openGroupDialog(event, role)
               setAnchorEl(null)
             }}>
-            {role.DisplayName}
+            {getGroupDisplayName(role)}
             {isIndirect(role) && (
               <div style={{ display: 'flex', paddingLeft: '6px' }}>
                 <SwapHorizIcon />

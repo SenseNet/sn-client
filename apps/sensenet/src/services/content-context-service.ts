@@ -4,6 +4,7 @@ import { ActionModel, ContentType, File, GenericContent, Resource, Settings } fr
 import { History, Location } from 'history'
 import { match } from 'react-router-dom'
 import { PATHS, resolvePathParams } from '../application-paths'
+import { isImageContent } from './image-content-service'
 import { CustomContentDrawerItem } from './PersonalSettings'
 import { pathWithQueryParams, UiSettings } from '.'
 
@@ -52,9 +53,20 @@ export function getMonacoLanguage(content: GenericContent, repository: Repositor
 }
 
 export function getPathForContentPath({ path, uiSettings }: { path: string; uiSettings: UiSettings }) {
-  const pathOfContent: any = Object.values(PATHS).find((pathConfigElement: any) => {
-    return pathConfigElement.snPath ? PathHelper.isInSubTree(path, pathConfigElement.snPath) : false
-  })
+  const pathOfContent: any = Object.values(PATHS)
+    .filter((pathConfigElement: any) => {
+      if (
+        pathConfigElement.appPath === PATHS.search.appPath ||
+        pathConfigElement.appPath === PATHS.custom.appPath ||
+        pathConfigElement.appPath === PATHS.root.appPath ||
+        pathConfigElement.appPath === PATHS.home.appPath
+      ) {
+        return false
+      }
+
+      return pathConfigElement.snPath ? PathHelper.isInSubTree(path, pathConfigElement.snPath) : false
+    })
+    .sort((left: any, right: any) => right.snPath.length - left.snPath.length)[0]
 
   if (!pathOfContent) {
     const customDrawerItem = uiSettings.drawer.items
@@ -75,6 +87,10 @@ interface GetUrlForContentParams {
   removePath?: boolean
 }
 
+export function supportsRouteActions(snRoute?: { path?: string; match?: match<any> }) {
+  return Boolean(snRoute?.path && snRoute.match?.path.includes(':action'))
+}
+
 export function getUrlForContent({
   content,
   uiSettings,
@@ -83,7 +99,7 @@ export function getUrlForContent({
   snRoute,
   removePath = false,
 }: GetUrlForContentParams) {
-  if (snRoute?.path && PathHelper.isInSubTree(content.Path, snRoute.path)) {
+  if (supportsRouteActions(snRoute) && PathHelper.isInSubTree(content.Path, snRoute.path)) {
     const contentPath = content.Path.replace(snRoute.path, '')
     const searchParams = new URLSearchParams(location.search)
     return pathWithQueryParams({
@@ -181,7 +197,7 @@ export function getPrimaryActionUrl({
     return getUrlForContent({ content, uiSettings, location, action: 'edit-binary', snRoute, removePath })
   }
 
-  if (content.Type === 'Image' || repository.schemas.isContentFromType<ContentType>(content, 'Image')) {
+  if (isImageContent(content) || repository.schemas.isContentFromType<ContentType>(content, 'Image')) {
     return getUrlForContent({ content, uiSettings, location, action: 'image', snRoute, removePath })
   }
 

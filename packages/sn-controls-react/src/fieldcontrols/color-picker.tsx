@@ -8,6 +8,7 @@ import React, { useState } from 'react'
 import { ColorResult, SketchPicker } from 'react-color'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 
 const style = {
@@ -46,8 +47,16 @@ export const ColorPicker: React.FC<ReactClientFieldSetting<ColorFieldSetting>> =
     case 'new':
       return (
         <FormControl>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
+          />
           <TextField
-            label={props.settings.DisplayName}
+            variant="outlined"
+            style={{ maxWidth: '420px', width: '100%' }}
             type="text"
             name={props.settings.Name}
             id={props.settings.Name}
@@ -56,7 +65,6 @@ export const ColorPicker: React.FC<ReactClientFieldSetting<ColorFieldSetting>> =
             disabled={props.settings.ReadOnly}
             value={value}
             onClick={() => setIsPickerOpen(true)}
-            helperText={props.hideDescription ? undefined : props.settings.Description}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -84,7 +92,7 @@ export const ColorPicker: React.FC<ReactClientFieldSetting<ColorFieldSetting>> =
       return (
         <>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           {props.fieldValue ? (
             <div style={{ display: 'flex' }}>
