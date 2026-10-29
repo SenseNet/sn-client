@@ -176,3 +176,82 @@ it.each(['fragment', 'prop'])('returns to login after reset, sign-in and logout 
   expect(request).toHaveBeenCalledTimes(5)
   expect(window.location.hash).toBe('')
 })
+
+it.each(['success', 'failure'])('keeps a new login when an older pending logout finishes with %s', async (outcome) => {
+  let finishLogout!: (value: Response) => void
+  let failLogout!: (error: Error) => void
+  sessionStorage.setItem(localSessionKey(repo, repo), JSON.stringify(tokens))
+  const freshTokens = { ...tokens, refreshToken: 'n'.repeat(64) }
+  const request = jest
+    .fn()
+    .mockResolvedValueOnce(response({ mode: 'InternalOnly', local: endpoints }))
+    .mockResolvedValueOnce(response({ d: { Id: 42, Name: 'admin', Path: '/Root/IMS/Public/admin' } }))
+    .mockImplementationOnce(
+      () =>
+        new Promise((resolve, reject) => {
+          finishLogout = resolve
+          failLogout = reject
+        }),
+    )
+    .mockResolvedValueOnce(response(freshTokens))
+    .mockResolvedValueOnce(response({ d: { Id: 42, Name: 'admin', Path: '/Root/IMS/Public/admin' } }))
+  global.fetch = request
+  await mount()
+  await act(async () => {
+    element.querySelector('button')!.click()
+  })
+  expect(element.querySelector('[name=username]')).not.toBeNull()
+  ;(element.querySelector('[name=username]') as HTMLInputElement).value = 'admin'
+  ;(element.querySelector('[name=password]') as HTMLInputElement).value = 'password'
+  await act(async () => {
+    Simulate.submit(element.querySelector('form')!)
+  })
+  expect(element.textContent).toContain('Signed in as admin')
+  await act(async () => {
+    if (outcome === 'success') finishLogout(new Response(null, { status: 204 }))
+    else failLogout(new Error('Old logout failed'))
+  })
+  expect(element.textContent).toContain('Signed in as admin')
+  expect(element.querySelector('[role=alert]')).toBeNull()
+  expect(JSON.parse(sessionStorage.getItem(localSessionKey(repo, repo))!)).toEqual(freshTokens)
+})
+
+it('does not replace a new repository identity when an old provider load finishes', async () => {
+  const secondRepo = 'https://second.example'
+  const secondTokens = {
+    ...tokens,
+    accessToken: `h.${btoa(
+      JSON.stringify({ sub: '43', iss: secondRepo, exp: Math.floor(Date.now() / 1000) + 300 }),
+    )}.s`,
+  }
+  sessionStorage.setItem(localSessionKey(repo, repo), JSON.stringify(tokens))
+  sessionStorage.setItem(localSessionKey(secondRepo, secondRepo), JSON.stringify(secondTokens))
+  let finishFirstUser!: (value: Response) => void
+  const request = jest
+    .fn()
+    .mockResolvedValueOnce(response({ mode: 'InternalOnly', local: endpoints }))
+    .mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          finishFirstUser = resolve
+        }),
+    )
+    .mockResolvedValueOnce(response({ mode: 'InternalOnly', local: { ...endpoints, issuer: secondRepo } }))
+    .mockResolvedValueOnce(response({ d: { Id: 43, Name: 'second-admin', Path: '/Root/IMS/Public/second-admin' } }))
+  global.fetch = request
+  await mount()
+  await act(async () => {
+    render(
+      <LocalRepositoryProvider url={secondRepo} selectRepository={() => {}}>
+        <Probe />
+      </LocalRepositoryProvider>,
+      element,
+    )
+  })
+  expect(element.textContent).toContain('Signed in as second-admin')
+  await act(async () => {
+    finishFirstUser(response({ d: { Id: 42, Name: 'first-admin', Path: '/Root/IMS/Public/first-admin' } }))
+  })
+  expect(element.textContent).toContain('Signed in as second-admin')
+  expect(element.textContent).not.toContain('Signed in as first-admin')
+})

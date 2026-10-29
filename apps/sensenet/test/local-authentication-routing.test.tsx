@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { render, unmountComponentAtNode } from 'react-dom'
 import { act } from 'react-dom/test-utils'
+import { defaultAuthConfig } from '../src/auth-config'
 import AppProviders from '../src/components/app-providers'
 import { discoverAuthentication } from '../src/services/local-authentication'
 
@@ -8,6 +9,8 @@ const mockPass = ({ children }: any) => <>{children}</>
 const mockExternal = jest.fn()
 const mockLocal = jest.fn()
 const mockReset = jest.fn()
+const mockSnAuthMount = jest.fn()
+const mockIdentityServerMount = jest.fn()
 const MockExternalProvider = ({ children, url, prepareAuthentication }: any) => {
   useEffect(() => {
     if (url)
@@ -30,16 +33,28 @@ jest.mock('../src/context', () => ({
   ResponsiveContextProvider: (props: any) => mockPass(props),
   ThemeProvider: (props: any) => mockPass(props),
   RepositorySwitchContext: jest.requireActual('react').createContext(null),
-  RepositoryProvider: (props: any) => MockExternalProvider(props),
+  RepositoryProvider: (props: any) => {
+    mockIdentityServerMount(props.url)
+    return MockExternalProvider(props)
+  },
 }))
 jest.mock('../src/context/sn-auth-repository-provider', () => ({
-  SnAuthRepositoryProvider: (props: any) => MockExternalProvider(props),
+  SnAuthRepositoryProvider: (props: any) => {
+    mockSnAuthMount(props.url)
+    return MockExternalProvider(props)
+  },
 }))
 jest.mock('../src/context/local-repository-provider', () => ({
-  LocalRepositoryProvider: ({ url, initialResetToken, onResetComplete }: any) => {
+  LocalRepositoryProvider: ({ url, initialResetToken, onResetComplete, selectRepository }: any) => {
     mockLocal(url)
     mockReset(initialResetToken)
-    return <div>Internal login{initialResetToken && <button onClick={onResetComplete}>Complete reset</button>}</div>
+    return (
+      <div>
+        Internal login
+        {initialResetToken && <button onClick={onResetComplete}>Complete reset</button>}
+        <button onClick={() => selectRepository('https://external.example')}>Choose external repository</button>
+      </div>
+    )
   },
 }))
 jest.mock('../src/context/auth-provider', () => ({
@@ -74,6 +89,7 @@ jest.mock('../src/services/repository-session', () => ({
 
 let element: HTMLDivElement
 beforeEach(() => {
+  defaultAuthConfig.authType = 'SNAuth'
   jest.clearAllMocks()
   localStorage.clear()
   sessionStorage.clear()
@@ -190,3 +206,57 @@ it('clears a consumed parent reset token without restarting provider selection',
   expect(mockExternal).not.toHaveBeenCalled()
   expect(discoverAuthentication).not.toHaveBeenCalled()
 })
+
+it.each(['IdentityServer', 'SNAuth'] as const)(
+  'retains the selected %s mode on callback remount without discarding the previous local selection',
+  async (externalMode) => {
+    defaultAuthConfig.authType = externalMode
+    window.history.replaceState(null, '', '/')
+    localStorage.setItem('authType', 'Local')
+    sessionStorage.setItem('selected-local', 'https://previous.example')
+    sessionStorage.setItem('previous-local-session', 'preserved-session')
+    ;(discoverAuthentication as jest.Mock).mockResolvedValue(null)
+    await mount()
+    await choose('Choose external repository')
+    expect(mockExternal).toHaveBeenCalledWith('https://external.example')
+    expect(localStorage.getItem('authType')).toBe(externalMode)
+    act(() => {
+      unmountComponentAtNode(element)
+    })
+    mockLocal.mockClear()
+    window.history.replaceState(
+      null,
+      '',
+      externalMode === 'IdentityServer'
+        ? '/authentication/login-callback?code=fixture'
+        : '/authentication/callback?auth_code=fixture',
+    )
+    await mount()
+    expect(mockLocal).not.toHaveBeenCalled()
+    expect(localStorage.getItem('authType')).toBe(externalMode)
+    expect(sessionStorage.getItem('selected-local')).toBe('https://previous.example')
+    expect(sessionStorage.getItem('previous-local-session')).toBe('preserved-session')
+  },
+)
+
+it.each(['Local', 'IdentityServer'])(
+  'routes an SNAuth callback to its validating provider despite the globally remembered %s mode',
+  async (previousMode) => {
+    localStorage.setItem('authType', previousMode)
+    sessionStorage.setItem('selected-local', 'https://previous.example')
+    window.history.replaceState(
+      null,
+      '',
+      '/authentication/callback?auth_code=fixture&state=unknown&repoUrl=https%3A%2F%2Fwrong.example',
+    )
+    await mount()
+    expect(mockSnAuthMount).toHaveBeenCalledWith('')
+    expect(mockIdentityServerMount).not.toHaveBeenCalled()
+    expect(mockLocal).not.toHaveBeenCalled()
+    expect(discoverAuthentication).not.toHaveBeenCalled()
+    expect(mockExternal).not.toHaveBeenCalled()
+    expect(element.textContent).not.toContain('Choose how to sign in')
+    expect(localStorage.getItem('authType')).toBe(previousMode)
+    expect(sessionStorage.getItem('selected-local')).toBe('https://previous.example')
+  },
+)

@@ -1,5 +1,5 @@
 import { Button } from '@material-ui/core'
-import { mount } from 'enzyme'
+import { mount as enzymeMount, ReactWrapper } from 'enzyme'
 import { UserManager } from 'oidc-client'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
@@ -16,6 +16,18 @@ jest.mock('../src/authentication-service', () => {
     authenticationService: () => new UserManager({}),
     getUserManager: jest.fn(),
   }
+})
+
+const wrappers: ReactWrapper[] = []
+const mount = (element: React.ReactElement) => {
+  const wrapper = enzymeMount(element)
+  wrappers.push(wrapper)
+  return wrapper
+}
+afterEach(async () => {
+  await act(async () => {
+    wrappers.splice(0).forEach((wrapper) => wrapper.unmount())
+  })
 })
 
 describe('AuthenticationProvider component', () => {

@@ -1,4 +1,5 @@
 import { UserManager, UserManagerSettings } from 'oidc-client'
+import { coordinateUserManager } from './user-manager-lifecycle'
 
 let userManager: UserManager | undefined
 
@@ -14,6 +15,6 @@ export const authenticationService = (configuration: UserManagerSettings) => {
   if (userManager) {
     return userManager
   }
-  userManager = new UserManager(configuration)
+  userManager = coordinateUserManager(new UserManager(configuration), configuration)
   return userManager
 }
