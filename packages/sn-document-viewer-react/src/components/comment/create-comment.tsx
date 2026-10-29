@@ -122,7 +122,7 @@ export function CreateComment() {
           multiline={true}
           label={localization.commentInputPlaceholder}
           margin="normal"
-          variant="filled"
+          variant="outlined"
           value={createCommentValue}
           onChange={handleOnChange}
           InputProps={{

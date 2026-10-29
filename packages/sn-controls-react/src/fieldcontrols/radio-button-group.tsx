@@ -1,19 +1,12 @@
 /**
  * @module FieldControls
  */
-import {
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  FormLabel,
-  Radio,
-  RadioGroup,
-  Typography,
-} from '@material-ui/core'
+import { FormControl, FormControlLabel, Radio, RadioGroup, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { ChoiceFieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { ReactClientFieldSetting } from './client-field-setting'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 
 /**
@@ -44,11 +37,15 @@ export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetti
           fullWidth={true}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}>
-          <FormLabel style={{ transform: 'translate(0, 1.5px) scale(0.75)', transformOrigin: 'top left' }}>
-            {props.settings.DisplayName}
-          </FormLabel>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
+          />
           <RadioGroup
-            aria-label={props.settings.DisplayName}
+            aria-label={`${props.settings.DisplayName} (${props.settings.Name})`}
             name={props.settings.Name}
             value={value}
             onChange={handleChange}>
@@ -59,7 +56,6 @@ export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetti
                 )
               })}
           </RadioGroup>
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </FormControl>
       )
     case 'browse':
@@ -67,7 +63,7 @@ export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetti
       return (
         <>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           <Typography variant="body1" gutterBottom>
             {value ? props.settings.Options?.find((item) => item.Value === value)?.Text ?? value : localization.noValue}

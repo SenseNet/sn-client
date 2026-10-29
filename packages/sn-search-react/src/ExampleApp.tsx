@@ -293,7 +293,7 @@ export class ExampleApp extends Component<{}, ExampleComponentState> {
                     }}
                     helperText="This is the aggregated query from all of the fields above."
                     margin="none"
-                    variant="filled"
+                    variant="outlined"
                     label="Full query"
                     disabled={true}
                     value={this.state.fullQuery}

@@ -6,13 +6,17 @@ import {
   AddDeleteUserGroupsProps,
   ApproveProps,
   AreYouSureProps,
+  ChangePasswordDialogProps,
   CheckInProps,
+  ColumnSettingsDialogProps,
   ContentPickerDialogProps,
   CopyMoveDialogProps,
   CustomActionResultDialogProps,
   DateRangePickerProps,
   DeleteContentDialogProps,
   ExecuteActionDialogProps,
+  ImageGalleryDialogProps,
+  ODataActionsDialogProps,
   OperationsDialogProps,
   PermissionEditorDialogProps,
   ReferenceContentListProps,
@@ -26,11 +30,13 @@ export type DialogWithProps = (
   | { name: 'error'; props: ErrorBoundaryState }
   | { name: 'copy-move'; props: CopyMoveDialogProps }
   | { name: 'operation'; props: OperationsDialogProps }
+  | { name: 'odata-actions'; props: ODataActionsDialogProps }
   | { name: 'check-in'; props: CheckInProps }
   | { name: 'are-you-sure'; props: AreYouSureProps }
   | { name: 'approve'; props: ApproveProps }
   | { name: 'restore'; props: RestoreProps }
   | { name: 'upload'; props: UploadDialogProps }
+  | { name: 'image-gallery'; props: ImageGalleryDialogProps }
   | { name: 'execute-action'; props: ExecuteActionDialogProps }
   | { name: 'custom-action-result'; props: CustomActionResultDialogProps }
   | { name: 'logout' }
@@ -41,9 +47,9 @@ export type DialogWithProps = (
   | { name: 'member-select'; props: MemberSelectProps }
   | { name: 'content-picker'; props: ContentPickerDialogProps }
   | { name: 'feedback' }
-  | { name: 'change-password' }
+  | { name: 'change-password'; props?: ChangePasswordDialogProps }
   | { name: 'date-range-picker'; props: DateRangePickerProps }
-  | { name: 'column-settings'; props: any }
+  | { name: 'column-settings'; props: ColumnSettingsDialogProps }
 ) & { dialogProps?: Partial<DialogProps> }
 
 type Action = { type: 'PUSH_DIALOG'; dialog: DialogWithProps } | { type: 'POP_DIALOG' } | { type: 'CLOSE_ALL_DIALOGS' }

@@ -1,6 +1,6 @@
 import { ClickAwayListener, createStyles, IconButton, makeStyles, MenuList, Paper, Theme } from '@material-ui/core'
 import { MoreVert } from '@material-ui/icons'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React, { useEffect, useRef, useState } from 'react'
 import { HEADER_HEIGHT } from '.'
 

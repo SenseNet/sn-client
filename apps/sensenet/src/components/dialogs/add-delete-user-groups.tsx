@@ -16,6 +16,7 @@ import { GenericContent, Group, ReferenceFieldSetting, User } from '@sensenet/de
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import React, { FunctionComponent, useState } from 'react'
 import { useLocalization } from '../../hooks'
+import { getGroupDisplayName } from '../group-display-name'
 import { DialogTitle, useDialog, useStyles } from '.'
 
 export interface AddDeleteUserGroupsProps {
@@ -113,7 +114,7 @@ export const AddDeleteUserGroups: FunctionComponent<AddDeleteUserGroupsProps> = 
             groups.map((group) => (
               <ListItem key={group.Id}>
                 <GroupOutlined />
-                <ListItemText style={{ marginLeft: '0.5rem' }} primary={group.DisplayName} />
+                <ListItemText style={{ marginLeft: '0.5rem' }} primary={getGroupDisplayName(group)} />
                 {canEdit && (
                   <ListItemSecondaryAction>
                     <IconButton edge="end" aria-label="delete" onClick={(_) => handleOnDelete(group)}>

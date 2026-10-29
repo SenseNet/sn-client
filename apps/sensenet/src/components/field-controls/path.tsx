@@ -27,7 +27,7 @@ export const Path: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>> = (p
   return (
     <>
       <InputLabel shrink htmlFor={props.settings.Name} required={props.settings.Compulsory}>
-        {props.settings.DisplayName}
+        {`${props.settings.DisplayName} (${props.settings.Name})`}
       </InputLabel>
       <Input
         className={classes.input}

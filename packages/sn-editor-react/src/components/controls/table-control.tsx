@@ -89,7 +89,6 @@ export const TableControl: FC<TableControlProps> = ({ editor, buttonProps }) => 
                 onChange={(ev) => setRows(parseInt(ev.target.value, 10))}
                 className={classes.textField}
               />
-
               <TextField
                 margin="dense"
                 label={localization.tableControl.cols}

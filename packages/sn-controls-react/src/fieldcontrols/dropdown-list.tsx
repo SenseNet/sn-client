@@ -1,11 +1,12 @@
 /**
  * @module FieldControls
  */
-import { FormControl, FormGroup, FormHelperText, InputLabel, MenuItem, Select, Typography } from '@material-ui/core'
+import { FormControl, FormGroup, MenuItem, Select, Typography } from '@material-ui/core'
 import { deepMerge } from '@sensenet/client-utils'
 import { ChoiceFieldSetting } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 import { ReactClientFieldSetting } from '.'
 
@@ -56,14 +57,17 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
     case 'edit':
     case 'new':
       return (
-        <FormControl
-          style={{ minWidth: '220px', width: '100%' }}
-          required={props.settings.Compulsory}
-          disabled={props.settings.ReadOnly}>
-          <InputLabel htmlFor={props.settings.Name} shrink={true}>
-            {props.settings.DisplayName}
-          </InputLabel>
+        <FormControl style={{ width: '100%' }} required={props.settings.Compulsory} disabled={props.settings.ReadOnly}>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
+          />
           <Select
+            style={{ maxWidth: '420px', width: '100%' }}
+            variant="outlined"
             onChange={handleChange}
             inputProps={
               {
@@ -84,7 +88,6 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
               )
             })}
           </Select>
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </FormControl>
       )
     case 'browse':
@@ -92,7 +95,7 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
       return (
         <>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           <FormGroup>
             {props.fieldValue ? (

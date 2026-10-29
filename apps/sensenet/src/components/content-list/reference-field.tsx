@@ -1,5 +1,5 @@
 import { Button, createStyles, Link, makeStyles, TableCell, Theme, Tooltip } from '@material-ui/core'
-import { GenericContent } from '@sensenet/default-content-types'
+import { GenericContent, User } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
 import { clsx } from 'clsx'
 import React, { FunctionComponent, useContext } from 'react'
@@ -73,7 +73,7 @@ export const ReferenceField: FunctionComponent<ReferenceFieldProps> = ({ content
           {repository.schemas.isContentFromType(content, 'User') && showIcon ? (
             <Icon item={content} style={{ marginRight: '0.5rem' }} />
           ) : null}
-          <Tooltip title={`Open ${content.DisplayName || content.Name} for edit`}>
+          <Tooltip title={`Open ${content.Path || content.Name || content.Path} for edit`}>
             {content.Name === 'Somebody' ? (
               <>{content.DisplayName || content.Name}</>
             ) : (
@@ -91,7 +91,10 @@ export const ReferenceField: FunctionComponent<ReferenceFieldProps> = ({ content
                     }),
                   )
                 }}>
-                {content.DisplayName || content.Name}
+                {repository.schemas.isContentFromType(content, 'User')
+                  ? `${(content as User).Domain}\\${(content as User).LoginName}`
+                  : ''}
+                {content.Type !== 'User' ? content.Name : ''}
               </Link>
             )}
           </Tooltip>
