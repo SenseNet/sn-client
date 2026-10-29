@@ -9,6 +9,7 @@ import { User } from './models/user'
 export async function convertAuthTokenApiCall(
   server: string,
   authToken: string,
+  codeVerifier: string,
 ): Promise<{ accessToken: string; refreshToken: string }> {
   try {
     const response = await fetch(`${server}/api/auth/convert-auth-token`, {
@@ -16,7 +17,7 @@ export async function convertAuthTokenApiCall(
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ token: authToken }),
+      body: JSON.stringify({ token: authToken, codeVerifier }),
     })
 
     if (response.ok) {
@@ -61,6 +62,8 @@ export async function refreshTokenApiCall(
 }
 
 export async function logoutApiCall(server: string, accessToken: string): Promise<boolean> {
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 5000)
   try {
     const response = await fetch(`${server}/api/auth/logout`, {
       method: 'POST',
@@ -68,6 +71,7 @@ export async function logoutApiCall(server: string, accessToken: string): Promis
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
+      signal: controller.signal,
     })
 
     if (response.ok) {
@@ -78,6 +82,8 @@ export async function logoutApiCall(server: string, accessToken: string): Promis
   } catch (error) {
     console.error('Error:', error)
     throw error
+  } finally {
+    clearTimeout(timeout)
   }
 }
 

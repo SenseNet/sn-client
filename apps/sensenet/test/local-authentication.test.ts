@@ -1,4 +1,10 @@
-import { discoverAuthentication, LocalRepositorySession, localSessionKey } from '../src/services/local-authentication'
+import {
+  discoverAuthentication,
+  getLocalRepositories,
+  LocalRepositorySession,
+  localSelectedRepository,
+  localSessionKey,
+} from '../src/services/local-authentication'
 
 const repo = 'https://repo.example'
 const endpoints = {
@@ -8,15 +14,30 @@ const endpoints = {
   logout: '/authentication/local/logout',
   revoke: '/authentication/local/revoke',
 }
-const token = (subject = '1', lifetime = 300) =>
-  `header.${btoa(JSON.stringify({ sub: subject, iss: repo, exp: Math.floor(Date.now() / 1000) + lifetime }))}.signature`
+const token = (subject = '1', lifetime = 300, issuer = repo) =>
+  `header.${btoa(
+    JSON.stringify({ sub: subject, iss: issuer, exp: Math.floor(Date.now() / 1000) + lifetime }),
+  )}.signature`
 const tokens = (subject = '1') => ({ accessToken: token(subject), refreshToken: 'r'.repeat(64), expiresIn: 300 })
 const response = (body: any, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } })
+const deferred = <T>() => {
+  let resolve!: (value: T) => void
+  let reject!: (error: Error) => void
+  const promise = new Promise<T>((finish, fail) => {
+    resolve = finish
+    reject = fail
+  })
+  return { promise, resolve, reject }
+}
 beforeEach(() => {
+  // Near-expiry fixtures must not expire during a slow or concurrent build.
+  jest.spyOn(Date, 'now').mockReturnValue(Date.now())
   sessionStorage.clear()
   localStorage.clear()
 })
+
+afterEach(() => jest.restoreAllMocks())
 
 it('keeps local sessions isolated by repository and issuer and never stores passwords', async () => {
   const request = jest.fn().mockResolvedValue(response(tokens()))
@@ -132,4 +153,235 @@ it('calls the default browser transport without binding it to the session', asyn
   } finally {
     global.fetch = original
   }
+})
+
+it.each(['success', 'failure'])('does not restore a logged-out remount after an old refresh %s', async (outcome) => {
+  const refresh = deferred<Response>()
+  const request = jest
+    .fn()
+    .mockResolvedValueOnce(response({ ...tokens(), accessToken: token('1', 1) }))
+    .mockReturnValueOnce(refresh.promise)
+    .mockResolvedValueOnce(new Response(null, { status: 204 }))
+  const previous = new LocalRepositorySession(repo, endpoints, request)
+  await previous.login('admin', 'password')
+  const pending = expect(previous.fetch(`${repo}/data`)).rejects.toThrow('session has ended')
+  await Promise.resolve()
+  previous.dispose()
+  const current = new LocalRepositorySession(repo, endpoints, request)
+  await current.logout()
+  if (outcome === 'success') refresh.resolve(response(tokens()))
+  else refresh.reject(new Error('Old refresh failed'))
+  await pending
+  expect(current.hasSession).toBe(false)
+  expect(sessionStorage.getItem(current.storageKey)).toBeNull()
+})
+
+it('shares one refresh and its rotated tokens across session instances for the same repository and issuer', async () => {
+  const refresh = deferred<Response>()
+  const firstRequest = jest
+    .fn()
+    .mockResolvedValueOnce(response({ ...tokens(), accessToken: token('1', 1) }))
+    .mockReturnValueOnce(refresh.promise)
+    .mockResolvedValue(response({ ok: true }))
+  const secondRequest = jest.fn().mockResolvedValue(response({ ok: true }))
+  const first = new LocalRepositorySession(repo, endpoints, firstRequest)
+  await first.login('admin', 'password')
+  const firstFetch = first.fetch(`${repo}/first`)
+  await Promise.resolve()
+  const second = new LocalRepositorySession(repo, endpoints, secondRequest)
+  const secondFetch = second.fetch(`${repo}/second`)
+  const rotated = { ...tokens(), refreshToken: 'n'.repeat(64) }
+  refresh.resolve(response(rotated))
+  await Promise.all([firstFetch, secondFetch])
+  expect(firstRequest.mock.calls.filter(([url]) => url === repo + endpoints.refresh)).toHaveLength(1)
+  expect(secondRequest.mock.calls).toHaveLength(1)
+  expect(second.accessToken).toBe(rotated.accessToken)
+  expect(JSON.parse(sessionStorage.getItem(second.storageKey)!)).toEqual(rotated)
+})
+
+it.each(['success', 'failure'])('does not erase a new identity when an old refresh ends with %s', async (outcome) => {
+  const refresh = deferred<Response>()
+  const request = jest
+    .fn()
+    .mockResolvedValueOnce(response({ ...tokens(), accessToken: token('1', 1) }))
+    .mockReturnValueOnce(refresh.promise)
+    .mockResolvedValueOnce(response(tokens('2')))
+  const previous = new LocalRepositorySession(repo, endpoints, request)
+  await previous.login('first-user', 'password')
+  const pending = expect(previous.fetch(`${repo}/data`)).rejects.toThrow('session has ended')
+  await Promise.resolve()
+  previous.dispose()
+  const current = new LocalRepositorySession(repo, endpoints, request)
+  await current.login('second-user', 'password')
+  if (outcome === 'success') refresh.resolve(response(tokens('1')))
+  else refresh.reject(new Error('Old refresh failed'))
+  await pending
+  expect(current.subject).toBe('2')
+  expect(JSON.parse(sessionStorage.getItem(current.storageKey)!)).toEqual(tokens('2'))
+})
+
+it.each(['success', 'failure'])('does not let a disposed login %s overwrite a later login', async (outcome) => {
+  const login = deferred<Response>()
+  const previous = new LocalRepositorySession(repo, endpoints, jest.fn().mockReturnValue(login.promise))
+  const pending = expect(previous.login('first-user', 'password')).rejects.toThrow()
+  previous.dispose()
+  const current = new LocalRepositorySession(repo, endpoints, jest.fn().mockResolvedValue(response(tokens('2'))))
+  await current.login('second-user', 'password')
+  if (outcome === 'success') login.resolve(response(tokens('1')))
+  else login.reject(new Error('Old login failed'))
+  await pending
+  expect(current.subject).toBe('2')
+  expect(JSON.parse(sessionStorage.getItem(current.storageKey)!)).toEqual(tokens('2'))
+})
+
+it('does not change the selected repository when a disposed provider finishes a refresh', async () => {
+  const refresh = deferred<Response>()
+  const request = jest
+    .fn()
+    .mockResolvedValueOnce(response({ ...tokens(), accessToken: token('1', 1) }))
+    .mockReturnValueOnce(refresh.promise)
+  const previous = new LocalRepositorySession(repo, endpoints, request)
+  await previous.login('admin', 'password')
+  const pending = expect(previous.fetch(`${repo}/data`)).rejects.toThrow('Session has ended')
+  await Promise.resolve()
+  previous.dispose()
+  const otherRepo = 'https://other.example'
+  const otherTokens = { ...tokens(), accessToken: token('2', 300, otherRepo) }
+  const other = new LocalRepositorySession(
+    otherRepo,
+    { ...endpoints, issuer: otherRepo },
+    jest.fn().mockResolvedValue(response(otherTokens)),
+  )
+  await other.login('other-user', 'password')
+  refresh.resolve(response(tokens()))
+  await pending
+  expect(sessionStorage.getItem(localSelectedRepository)).toBe(otherRepo)
+  expect(other.subject).toBe('2')
+  expect(new LocalRepositorySession(repo, endpoints).hasSession).toBe(true)
+})
+
+it('keeps another issuer session and repository entry when one issuer logs out', async () => {
+  const first = new LocalRepositorySession(repo, endpoints, jest.fn().mockResolvedValue(response(tokens())))
+  await first.login('first-user', 'password')
+  const issuer = 'https://other-issuer.example'
+  const otherTokens = { ...tokens(), accessToken: token('2', 300, issuer) }
+  const other = new LocalRepositorySession(
+    repo,
+    { ...endpoints, issuer },
+    jest.fn().mockResolvedValue(response(otherTokens)),
+  )
+  await other.login('other-user', 'password')
+  await first.logout()
+  expect(first.hasSession).toBe(false)
+  expect(other.subject).toBe('2')
+  expect(sessionStorage.getItem(other.storageKey)).not.toBeNull()
+  expect(getLocalRepositories()).toContain(repo)
+})
+
+it('does not clear a newer login when an older password reset completes', async () => {
+  const reset = deferred<Response>()
+  const request = jest
+    .fn()
+    .mockResolvedValueOnce(response(tokens()))
+    .mockReturnValueOnce(reset.promise)
+    .mockResolvedValueOnce(response(tokens('2')))
+  const session = new LocalRepositorySession(
+    repo,
+    { ...endpoints, resetPassword: '/authentication/local/reset-password' },
+    request,
+  )
+  await session.login('first-user', 'password')
+  const pending = expect(session.resetPassword('reset-token', 'new-password')).rejects.toThrow('Session has ended')
+  await session.login('second-user', 'password')
+  reset.resolve(new Response(null, { status: 204 }))
+  await pending
+  expect(session.subject).toBe('2')
+})
+
+it('rejects a verification challenge from an ended session before sending an MFA request', async () => {
+  const request = jest.fn().mockResolvedValue(response({ challengeToken: 'c'.repeat(64), expiresIn: 120 }, 202))
+  const session = new LocalRepositorySession(repo, { ...endpoints, mfa: '/authentication/local/mfa' }, request)
+  await session.beginLogin('admin', 'password')
+  await session.logout()
+  await expect(session.completeMfa('c'.repeat(64), '123456')).rejects.toThrow('Verification challenge has ended')
+  expect(request).toHaveBeenCalledTimes(1)
+})
+
+it('waits for an active shared refresh before retrying a delayed 401 from an older token', async () => {
+  const oldResponse = deferred<Response>()
+  const latestRefresh = deferred<Response>()
+  const latestRefreshStarted = deferred<void>()
+  const initial = tokens()
+  const intermediate = { ...tokens(), accessToken: `${token()}-second`, refreshToken: 's'.repeat(64) }
+  const latest = { ...tokens(), accessToken: `${token()}-third`, refreshToken: 't'.repeat(64) }
+  let refreshCount = 0
+  let oldCount = 0
+  let rotationCount = 0
+  const request = jest.fn(async (input: RequestInfo) => {
+    const url = typeof input === 'string' ? input : input.url
+    if (url === repo + endpoints.login) return response(initial)
+    if (url === repo + endpoints.refresh) {
+      if (++refreshCount === 1) return response(intermediate)
+      latestRefreshStarted.resolve()
+      return latestRefresh.promise
+    }
+    if (url.endsWith('/old') && ++oldCount === 1) return oldResponse.promise
+    if (url.endsWith('/rotation')) return ++rotationCount === 1 ? response({}, 401) : response({ ok: true })
+    const authorized = input instanceof Request && input.headers.get('Authorization') === `Bearer ${latest.accessToken}`
+    return response({}, authorized ? 200 : 401)
+  })
+  const first = new LocalRepositorySession(repo, endpoints, request)
+  await first.login('admin', 'password')
+  const oldRequest = first.fetch(`${repo}/old`).then(
+    (result) => result.status,
+    (error) => error.message,
+  )
+  await first.fetch(`${repo}/rotation`)
+  const second = new LocalRepositorySession(repo, endpoints, request)
+  const currentRequest = second.fetch(`${repo}/current`).then(
+    (result) => result.status,
+    (error) => error.message,
+  )
+  await latestRefreshStarted.promise
+  oldResponse.resolve(response({}, 401))
+  await new Promise((resolve) => setTimeout(resolve, 0))
+  expect(oldCount).toBe(1)
+  latestRefresh.resolve(response(latest))
+  expect(await Promise.all([oldRequest, currentRequest])).toEqual([200, 200])
+  expect(first.accessToken).toBe(latest.accessToken)
+  expect(second.accessToken).toBe(latest.accessToken)
+  expect(refreshCount).toBe(2)
+})
+
+it('does not clear a newer token when an older retry eventually returns 401', async () => {
+  const oldRetry = deferred<Response>()
+  const oldRetryStarted = deferred<void>()
+  const intermediate = { ...tokens(), accessToken: `${token()}-second`, refreshToken: 's'.repeat(64) }
+  const latest = { ...tokens(), accessToken: `${token()}-third`, refreshToken: 't'.repeat(64) }
+  let refreshCount = 0
+  let oldCount = 0
+  let currentCount = 0
+  const request = jest.fn(async (input: RequestInfo) => {
+    const url = typeof input === 'string' ? input : input.url
+    if (url === repo + endpoints.login) return response(tokens())
+    if (url === repo + endpoints.refresh) return response(++refreshCount === 1 ? intermediate : latest)
+    if (url.endsWith('/old')) {
+      if (++oldCount === 1) return response({}, 401)
+      oldRetryStarted.resolve()
+      return oldRetry.promise
+    }
+    return ++currentCount === 1 ? response({}, 401) : response({ ok: true })
+  })
+  const session = new LocalRepositorySession(repo, endpoints, request)
+  await session.login('admin', 'password')
+  const oldRequest = session.fetch(`${repo}/old`)
+  await oldRetryStarted.promise
+  await session.fetch(`${repo}/current`)
+  oldRetry.resolve(response({}, 401))
+  expect((await oldRequest).status).toBe(401)
+  expect(session.hasSession).toBe(true)
+  expect(session.accessToken).toBe(latest.accessToken)
+  expect(JSON.parse(sessionStorage.getItem(session.storageKey)!)).toEqual(latest)
+  expect(oldCount).toBe(2)
+  expect(refreshCount).toBe(2)
 })

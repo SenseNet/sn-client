@@ -1,4 +1,5 @@
-import React, { createContext, ReactNode, useEffect, useState } from 'react'
+import React, { createContext, ReactNode, useEffect, useRef, useState } from 'react'
+import { clearPendingExternalLogin, consumeExternalLogin, prepareExternalLogin } from '../external-login'
 import { LoginRequest } from '../models/login-request'
 import { LoginResponse } from '../models/login-response'
 import { MultiFactorLoginRequest } from '../models/multi-factor-login-request'
@@ -31,8 +32,8 @@ export interface AuthenticationContextState {
   isLoading: boolean
   user?: User
   login: (loginRequest: LoginRequest) => Promise<LoginResponse>
-  externalLogin: () => void
-  multiFactorLogin: (multiFactorRequest: MultiFactorLoginRequest) => void
+  externalLogin: () => Promise<void>
+  multiFactorLogin: (multiFactorRequest: MultiFactorLoginRequest) => Promise<LoginResponse>
   forgotPassword: (email: string) => Promise<void>
   passwordRecovery: (token: string, password: string) => Promise<void>
   changePassword: (password: string) => Promise<void>
@@ -53,6 +54,7 @@ export interface AuthenticationProviderProps {
     onInitialized?: () => void
     onNoInitialization?: () => void
     onLogout?: () => void
+    onLogoutError?: (error: unknown) => void
   }
 }
 
@@ -68,276 +70,210 @@ const TOKEN_EXPIRY_THRESHOLD = 10 * 1000
 
 export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
   const [authState, setState] = useState<AuthState>({ isLoading: true })
-  const [path, setPath] = useState<string>(window.location.pathname)
-  const { storageKeyPrefix } = props
+  const [path, setPath] = useState(window.location.pathname)
+  const state = useRef(authState)
+  const mounted = useRef(true)
+  const generation = useRef(0)
+  const refreshing = useRef<number>()
+  const { storageKeyPrefix, repoUrl, authServerUrl } = props
+  const { callbackUri } = props.snAuthConfiguration
+  const target = { repoUrl, authServerUrl, callbackUri }
+  const callbacks = useRef(props.eventCallbacks)
+  callbacks.current = props.eventCallbacks
 
-  const setNewPath = () => setPath(window.location.pathname)
+  const active = (version: number) => mounted.current && generation.current === version
+  const publish = (next: AuthState) => {
+    state.current = next
+    if (mounted.current) setState(next)
+  }
+  const clearSession = (error?: string) => {
+    generation.current++
+    removeAccessToken(storageKeyPrefix)
+    removeRefreshToken(storageKeyPrefix)
+    clearPendingExternalLogin(target)
+    publish({ isLoading: false, ...(error ? { error } : {}) })
+  }
+  const saveSession = (version: number, accessToken: string, refreshToken: string, user: User) => {
+    if (!active(version)) return
+    setAccessTokenStorage(accessToken, storageKeyPrefix)
+    setRefreshTokenStorage(refreshToken, storageKeyPrefix)
+    publish({ accessToken, refreshToken, user, isLoading: false })
+  }
+  const beginSignIn = () => {
+    const version = ++generation.current
+    publish({ isLoading: true })
+    return version
+  }
 
   useEffect(() => {
-    window.addEventListener('popstate', setNewPath, false)
-    return () => window.removeEventListener('popstate', setNewPath, false)
+    mounted.current = true
+    return () => {
+      mounted.current = false
+      generation.current++
+    }
+  }, [repoUrl, authServerUrl, storageKeyPrefix])
+
+  useEffect(() => {
+    const updatePath = () => setPath(window.location.pathname)
+    window.addEventListener('popstate', updatePath)
+    return () => window.removeEventListener('popstate', updatePath)
   }, [])
 
   useEffect(() => {
-    if (path === props.snAuthConfiguration.callbackUri) {
-      convertAuthToken().finally(() => {
-        window.history.pushState({}, '', '/')
-        setNewPath()
-      })
-    }
-  }, [path])
-
-  useEffect(() => {
-    const validateAndRefreshToken = async () => {
-      if (path !== props.snAuthConfiguration.callbackUri) {
-        setState({ isLoading: true })
-        try {
-          let accessToken = getAccessToken(storageKeyPrefix)
-          let refreshToken = getRefreshToken(storageKeyPrefix)
-          if (accessToken && refreshToken) {
-            // Refresh expired (or nearly expired) tokens before sending an authenticated request.
-            const isValid =
-              !isTokenAboutToExpire(accessToken, TOKEN_EXPIRY_THRESHOLD) &&
-              (await validateTokenApiCall(props.authServerUrl, accessToken))
-
-            if (!isValid) {
-              const response = await refreshAccessToken(refreshToken)
-              if (!response?.accessToken) throw new Error()
-              const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response
-              accessToken = newAccessToken
-              refreshToken = newRefreshToken
-              setAccessAndRefreshTokenStorage(accessToken, refreshToken)
-            }
-
-            const userDetails = await getUserDetailsApiCall(props.repoUrl, accessToken)
-            setState({
-              accessToken,
-              refreshToken,
-              user: userDetails,
-              isLoading: false,
-            })
-            props.eventCallbacks?.onInitialized?.()
-          } else {
-            props.eventCallbacks?.onNoInitialization?.()
-            setState({
-              isLoading: false,
-            })
-          }
-        } catch (err) {
-          setState({
-            error: 'Failed to validate or refresh token',
+    if (path !== callbackUri) return
+    const version = beginSignIn()
+    ;(async () => {
+      try {
+        const query = new URLSearchParams(window.location.search)
+        const authToken = query.get('auth_code')
+        if (!authToken) throw new Error('The sign-in response contains no authorization code. Start sign-in again.')
+        const verifier = consumeExternalLogin(target, query.get('state'))
+        const response = await convertAuthTokenApiCall(authServerUrl, authToken, verifier)
+        if (!active(version)) return
+        const user = await getUserDetailsApiCall(repoUrl, response.accessToken)
+        saveSession(version, response.accessToken, response.refreshToken, user)
+      } catch (error) {
+        if (active(version)) {
+          publish({
+            error: error instanceof Error ? error.message : 'Failed to complete sign-in. Start sign-in again.',
             isLoading: false,
           })
-          logoutLocal()
+        }
+      } finally {
+        if (active(version)) {
+          window.history.replaceState({}, '', '/')
+          setPath('/')
         }
       }
-    }
-
-    validateAndRefreshToken()
-  }, [])
+    })()
+  }, [path, callbackUri, repoUrl, authServerUrl, storageKeyPrefix])
 
   useEffect(() => {
-    const intervalId = setInterval(async () => {
-      if (
-        authState.accessToken &&
-        authState.refreshToken &&
-        isTokenAboutToExpire(authState.accessToken, TOKEN_EXPIRY_THRESHOLD) &&
-        !authState.isLoading &&
-        !authState.error
-      ) {
-        setState({
-          ...authState,
-          isLoading: true,
-        })
-        try {
-          const response = await refreshAccessToken(authState.refreshToken)
-          if (!response?.accessToken) throw new Error()
-
-          const userDetails = await getUserDetailsApiCall(props.repoUrl, response.accessToken)
-          setState({
-            accessToken: response.accessToken,
-            refreshToken: response.refreshToken,
-            user: userDetails,
-            isLoading: false,
-          })
-          setAccessAndRefreshTokenStorage(response.accessToken, response.refreshToken)
-        } catch (err) {
-          setState({
-            error: 'Failed to refresh token',
-            isLoading: false,
-          })
-          logoutLocal()
+    if (path === callbackUri) return
+    const version = generation.current
+    publish({ isLoading: true })
+    ;(async () => {
+      try {
+        let accessToken = getAccessToken(storageKeyPrefix)
+        let refreshToken = getRefreshToken(storageKeyPrefix)
+        if (!accessToken || !refreshToken) {
+          publish({ isLoading: false })
+          callbacks.current?.onNoInitialization?.()
+          return
         }
+        const valid =
+          !isTokenAboutToExpire(accessToken, TOKEN_EXPIRY_THRESHOLD) &&
+          (await validateTokenApiCall(authServerUrl, accessToken))
+        if (!active(version)) return
+        if (!valid) {
+          const refreshed = await refreshTokenApiCall(authServerUrl, refreshToken)
+          if (!active(version)) return
+          ;({ accessToken, refreshToken } = refreshed)
+        }
+        const user = await getUserDetailsApiCall(repoUrl, accessToken)
+        if (!active(version)) return
+        saveSession(version, accessToken, refreshToken, user)
+        callbacks.current?.onInitialized?.()
+      } catch {
+        if (active(version)) clearSession('Failed to validate or refresh token. Sign in again.')
+      }
+    })()
+  }, [repoUrl, authServerUrl, storageKeyPrefix])
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const { current } = state
+      const version = generation.current
+      if (
+        !mounted.current ||
+        !current.accessToken ||
+        !current.refreshToken ||
+        current.isLoading ||
+        current.error ||
+        refreshing.current === version ||
+        !isTokenAboutToExpire(current.accessToken, TOKEN_EXPIRY_THRESHOLD)
+      )
+        return
+      refreshing.current = version
+      publish({ ...current, isLoading: true })
+      try {
+        const response = await refreshTokenApiCall(authServerUrl, current.refreshToken)
+        if (!active(version)) return
+        const user = await getUserDetailsApiCall(repoUrl, response.accessToken)
+        saveSession(version, response.accessToken, response.refreshToken, user)
+      } catch {
+        if (active(version)) clearSession('Failed to refresh token. Sign in again.')
+      } finally {
+        if (refreshing.current === version) refreshing.current = undefined
       }
     }, TOKEN_EXPIRY_THRESHOLD)
+    return () => clearInterval(interval)
+  }, [repoUrl, authServerUrl, storageKeyPrefix])
 
-    return () => clearInterval(intervalId)
-  }, [authState])
-
-  const externalLogin = () => {
-    window.location.replace(
-      `${props.authServerUrl}/Login?RedirectUrl=${window.location.origin}&CallbackUri=${props.snAuthConfiguration.callbackUri}`,
-    )
-  }
-
-  const convertAuthToken = async () => {
-    const urlParams = new URLSearchParams(window.location.search)
-    const authToken = urlParams.get('auth_code')
-
-    setState({
-      ...authState,
-      isLoading: true,
-    })
+  const externalLogin = async () => {
+    const version = beginSignIn()
     try {
-      if (authToken) {
-        const { accessToken, refreshToken } = await convertAuthTokenApiCall(props.authServerUrl, authToken)
-
-        const user = await getUserDetailsApiCall(props.repoUrl, accessToken)
-        setState({
-          user,
-          accessToken,
-          refreshToken,
-          isLoading: false,
-        })
-        setAccessAndRefreshTokenStorage(accessToken, refreshToken)
-      }
-    } catch (e) {
-      setState({
-        error: 'Failed to convert auth token',
-        isLoading: false,
-      })
-    }
-  }
-
-  const refreshAccessToken = async (refToken: string) => {
-    if (refToken) {
-      try {
-        setState({
-          ...authState,
-          isLoading: true,
-        })
-        const { accessToken, refreshToken } = await refreshTokenApiCall(props.authServerUrl, refToken)
-
-        return { accessToken, refreshToken }
-      } catch (e) {
-        console.error(e)
-        setState({
-          ...authState,
-          error: 'Failed to refresh access token',
-          isLoading: false,
-        })
-        logoutLocal()
-      }
+      const destination = await prepareExternalLogin(target, () => active(version))
+      if (active(version)) window.location.replace(destination)
+    } catch (error) {
+      if (active(version)) clearSession('Could not start secure sign-in. Start sign-in again.')
+      throw error
     }
   }
 
   const logout = () => {
-    if (authState.accessToken && props.authServerUrl)
-      logoutApiCall(props.authServerUrl, authState.accessToken)
-        .catch((e) => {
-          console.error(e)
-        })
-        .finally(() => {
-          props.eventCallbacks?.onLogout?.()
-          logoutLocal()
-        })
-    else logoutLocal()
+    const accessToken = state.current.accessToken || getAccessToken(storageKeyPrefix)
+    const onLogoutError = callbacks.current?.onLogoutError
+    clearSession()
+    window.history.replaceState({}, '', '/')
+    setPath('/')
+    callbacks.current?.onLogout?.()
+    if (accessToken && authServerUrl) {
+      logoutApiCall(authServerUrl, accessToken).catch((error) => {
+        console.error('Server logout could not be confirmed.')
+        onLogoutError?.(error)
+      })
+    }
   }
 
-  const login = async (loginRequest: LoginRequest): Promise<LoginResponse> => {
-    setState({
-      ...authState,
-      isLoading: true,
-    })
+  const login = async (request: LoginRequest): Promise<LoginResponse> => {
+    const version = beginSignIn()
     try {
-      const response = await loginApiCall(props.authServerUrl, loginRequest)
-
+      const response = await loginApiCall(authServerUrl, { ...request, siteUrl: repoUrl })
+      if (!active(version)) throw new Error('Sign-in was cancelled.')
       if (!response.multiFactorRequired && response.accessToken && response.refreshToken) {
-        const user = await getUserDetailsApiCall(props.repoUrl, response.accessToken)
-        setState({
-          user,
-          accessToken: response.accessToken,
-          refreshToken: response.refreshToken,
-          isLoading: false,
-        })
-        setAccessAndRefreshTokenStorage(response.accessToken, response.refreshToken)
-      }
-
+        const user = await getUserDetailsApiCall(repoUrl, response.accessToken)
+        if (!active(version)) throw new Error('Sign-in was cancelled.')
+        saveSession(version, response.accessToken, response.refreshToken, user)
+      } else publish({ isLoading: false })
       return response
-    } catch (e) {
-      setState({
-        ...authState,
-        error: 'Error during login.',
-        isLoading: false,
-      })
-      logoutLocal()
-
-      throw e
+    } catch (error) {
+      if (active(version)) clearSession('Error during login. Sign in again.')
+      throw error
     }
   }
 
-  const multiFactorLogin = async (multiFactorRequest: MultiFactorLoginRequest): Promise<LoginResponse> => {
+  const multiFactorLogin = async (request: MultiFactorLoginRequest): Promise<LoginResponse> => {
+    const version = beginSignIn()
     try {
-      setState({
-        ...authState,
-        isLoading: true,
-      })
-      const response = await multiFactorApiCall(props.authServerUrl, multiFactorRequest)
-
-      if (response.accessToken && response.refreshToken) {
-        const user = await getUserDetailsApiCall(props.repoUrl, response.accessToken)
-        setState({
-          user,
-          accessToken: response.accessToken,
-          refreshToken: response.refreshToken,
-          isLoading: false,
-        })
-        setAccessAndRefreshTokenStorage(response.accessToken, response.refreshToken)
-
-        return response
-      } else {
-        throw new Error()
-      }
-    } catch (e) {
-      setState({
-        ...authState,
-        error: 'Error during multi-factor validation.',
-      })
-      logoutLocal()
-
-      throw e
+      const response = await multiFactorApiCall(authServerUrl, { ...request, siteUrl: repoUrl })
+      if (!active(version)) throw new Error('Sign-in was cancelled.')
+      if (!response.accessToken || !response.refreshToken) throw new Error('Incomplete sign-in response.')
+      const user = await getUserDetailsApiCall(repoUrl, response.accessToken)
+      if (!active(version)) throw new Error('Sign-in was cancelled.')
+      saveSession(version, response.accessToken, response.refreshToken, user)
+      return response
+    } catch (error) {
+      if (active(version)) clearSession('Error during multi-factor validation. Sign in again.')
+      throw error
     }
   }
 
-  const forgotPassword = async (email: string) => {
-    await forgotPasswordApiCall(props.authServerUrl, { email })
-  }
-
-  const passwordRecovery = async (token: string, password: string) => {
-    await passwordRecoveryApiCall(props.authServerUrl, { token, password })
-  }
-
+  const forgotPassword = async (email: string) => forgotPasswordApiCall(authServerUrl, { email })
+  const passwordRecovery = async (token: string, password: string) =>
+    passwordRecoveryApiCall(authServerUrl, { token, password })
   const changePassword = async (password: string) => {
-    if (authState.accessToken) changePasswordApiCall(props.authServerUrl, authState.accessToken, { password })
-  }
-
-  const logoutLocal = () => {
-    setState({
-      ...authState,
-      accessToken: undefined,
-      user: undefined,
-      refreshToken: undefined,
-    })
-
-    removeAccessToken(storageKeyPrefix)
-    removeRefreshToken(storageKeyPrefix)
-
-    window.history.pushState({}, '', '/')
-  }
-
-  const setAccessAndRefreshTokenStorage = (accessToken: string, refreshToken: string) => {
-    setAccessTokenStorage(accessToken, storageKeyPrefix)
-    setRefreshTokenStorage(refreshToken, storageKeyPrefix)
+    if (state.current.accessToken) await changePasswordApiCall(authServerUrl, state.current.accessToken, { password })
   }
 
   return (
@@ -355,7 +291,7 @@ export const AuthenticationProvider = (props: AuthenticationProviderProps) => {
         changePassword,
         multiFactorLogin,
       }}>
-      <AuthRoutes callbackUri={props.snAuthConfiguration.callbackUri} currentPath={path}>
+      <AuthRoutes callbackUri={callbackUri} currentPath={path}>
         {props.children}
       </AuthRoutes>
     </AuthenticationContext.Provider>

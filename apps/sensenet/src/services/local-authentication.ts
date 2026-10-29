@@ -76,6 +76,15 @@ export async function discoverAuthentication(repoUrl: string, signal?: AbortSign
 }
 
 type Tokens = { accessToken: string; refreshToken: string; expiresIn: number }
+type LocalSessionState = {
+  tokens?: Tokens
+  saved: string | null
+  generation: number
+  refreshing?: Promise<void>
+  listeners: Set<() => void>
+}
+// sessionStorage is shared by every session instance in this tab. Its lifecycle must be shared too.
+const sessionStates = new Map<string, LocalSessionState>()
 type TokenClaims = { exp: number; sub: string; iss: string }
 const claims = (token: string): TokenClaims => {
   const part = token.split('.')[1]
@@ -96,9 +105,10 @@ export function getLocalRepositories(): string[] {
 
 /** An explicit human-login session. Passwords are never retained in configuration or storage. */
 export class LocalRepositorySession {
-  private tokens?: Tokens
-  private refreshing?: Promise<void>
-  private generation = 0
+  private readonly state: LocalSessionState
+  private disposed = false
+  private challenge?: { token: string; generation: number }
+  private readonly notify = () => this.onChange?.()
   readonly repositoryUrl: string
   readonly storageKey: string
 
@@ -110,15 +120,35 @@ export class LocalRepositorySession {
     this.repositoryUrl = normalizeRepositoryUrl(repoUrl)
     if (new URL(this.repositoryUrl).protocol !== 'https:') throw new Error('Internal authentication requires HTTPS.')
     this.storageKey = localSessionKey(this.repositoryUrl, endpoints.issuer)
-    try {
-      const saved = sessionStorage.getItem(this.storageKey)
-      if (saved) this.tokens = this.validateTokens(JSON.parse(saved), false)
-    } catch {
-      this.clear()
+    const existing = sessionStates.get(this.storageKey)
+    this.state = existing || { saved: null, generation: 0, listeners: new Set() }
+    sessionStates.set(this.storageKey, this.state)
+    const saved = sessionStorage.getItem(this.storageKey)
+    if (saved !== this.state.saved) {
+      // A new document/storage reset must also invalidate pending work from older instances.
+      this.state.generation++
+      this.state.refreshing = undefined
+      try {
+        this.state.tokens = saved ? this.validateTokens(JSON.parse(saved), false) : undefined
+        this.state.saved = saved
+        this.changed()
+      } catch {
+        this.clearSession()
+      }
     }
+    this.state.listeners.add(this.notify)
   }
 
   onChange?: () => void
+  private get tokens() {
+    return this.state.tokens
+  }
+  private get generation() {
+    return this.state.generation
+  }
+  get revision() {
+    return this.generation
+  }
   get accessToken() {
     return this.tokens?.accessToken
   }
@@ -127,6 +157,28 @@ export class LocalRepositorySession {
   }
   get subject() {
     return this.tokens ? claims(this.tokens.accessToken).sub : undefined
+  }
+
+  /** Detach this provider without signing out a repository that may be selected again. */
+  dispose() {
+    this.disposed = true
+    this.challenge = undefined
+    this.state.listeners.delete(this.notify)
+    this.onChange = undefined
+  }
+
+  private ensureActive() {
+    if (this.disposed) throw new Error('Session has ended.')
+  }
+
+  private ensureCurrent(generation: number) {
+    this.ensureActive()
+    if (generation !== this.generation) throw new Error('Session has ended.')
+  }
+
+  private changed() {
+    this.state.listeners.forEach((listener) => listener())
+    window.dispatchEvent(new Event(localSessionsChanged))
   }
 
   private validateTokens(tokens: Tokens, requireFresh = true) {
@@ -144,32 +196,44 @@ export class LocalRepositorySession {
     return tokens
   }
 
-  private save(tokens: Tokens, generation: number) {
+  private save(tokens: Tokens, generation: number, selectRepository = false) {
     if (generation !== this.generation) throw new Error('Session has ended.')
     const validated = this.validateTokens(tokens)
     if (this.tokens && claims(validated.accessToken).sub !== this.subject)
       throw new Error('Internal authentication changed identity.')
-    this.tokens = validated
-    sessionStorage.setItem(this.storageKey, JSON.stringify(tokens))
+    this.state.tokens = validated
+    this.state.saved = JSON.stringify(validated)
+    sessionStorage.setItem(this.storageKey, this.state.saved)
     sessionStorage.setItem(
       localRepositoriesKey,
       JSON.stringify([...new Set([...getLocalRepositories(), this.repositoryUrl])]),
     )
-    sessionStorage.setItem(localSelectedRepository, this.repositoryUrl)
-    this.onChange?.()
-    window.dispatchEvent(new Event(localSessionsChanged))
+    if (selectRepository) sessionStorage.setItem(localSelectedRepository, this.repositoryUrl)
+    this.changed()
   }
 
   clear() {
-    this.generation++
-    this.tokens = undefined
+    this.ensureActive()
+    this.clearSession()
+  }
+
+  private clearSession() {
+    this.state.generation++
+    this.state.tokens = undefined
+    this.state.saved = null
+    this.state.refreshing = undefined
+    this.challenge = undefined
     sessionStorage.removeItem(this.storageKey)
-    sessionStorage.setItem(
-      localRepositoriesKey,
-      JSON.stringify(getLocalRepositories().filter((url) => url !== this.repositoryUrl)),
-    )
-    this.onChange?.()
-    window.dispatchEvent(new Event(localSessionsChanged))
+    const prefix = `sn-local:${encodeURIComponent(this.repositoryUrl)}:`
+    const otherIssuerHasSession = Array.from({ length: sessionStorage.length }, (_, index) =>
+      sessionStorage.key(index),
+    ).some((key) => key?.startsWith(prefix) && sessionStorage.getItem(key))
+    if (!otherIssuerHasSession)
+      sessionStorage.setItem(
+        localRepositoriesKey,
+        JSON.stringify(getLocalRepositories().filter((url) => url !== this.repositoryUrl)),
+      )
+    this.changed()
   }
 
   private async post(operation: keyof typeof operationPaths, body: object) {
@@ -191,7 +255,9 @@ export class LocalRepositorySession {
     this.clear()
     const { generation } = this
     const response = await this.post('login', { username, password, twoFactorCode })
-    this.save(await response.json(), generation)
+    const tokens = await response.json()
+    this.ensureCurrent(generation)
+    this.save(tokens, generation, true)
   }
 
   async beginLogin(username: string, password: string, twoFactorCode?: string): Promise<LocalMfaChallenge | undefined> {
@@ -203,7 +269,7 @@ export class LocalRepositorySession {
     const { generation } = this
     const response = await this.post('login', { username, password, requestMfaChallenge: true })
     const data = await response.json()
-    if (generation !== this.generation) throw new Error('Session has ended.')
+    this.ensureCurrent(generation)
     if (response.status === 202) {
       if (
         typeof data.challengeToken !== 'string' ||
@@ -213,28 +279,41 @@ export class LocalRepositorySession {
         data.expiresIn > 300
       )
         throw new Error('Invalid verification challenge.')
+      this.challenge = { token: data.challengeToken, generation }
       return data
     }
-    this.save(data, generation)
+    this.save(data, generation, true)
   }
 
   async completeMfa(challengeToken: string, twoFactorCode: string) {
-    const { generation } = this
+    this.ensureActive()
+    const pending = this.challenge
+    if (!pending || pending.token !== challengeToken) throw new Error('Verification challenge has ended.')
+    const { generation } = pending
+    this.ensureCurrent(generation)
     const response = await this.post('mfa', { challengeToken, twoFactorCode })
-    this.save(await response.json(), generation)
+    const tokens = await response.json()
+    this.ensureCurrent(generation)
+    this.save(tokens, generation, true)
+    this.challenge = undefined
   }
 
   async forgotPassword(email: string) {
+    this.ensureActive()
     await this.post('forgotPassword', { email })
   }
 
   async resetPassword(token: string, password: string) {
+    this.ensureActive()
+    const { generation } = this
     await this.post('resetPassword', { token, password })
+    this.ensureCurrent(generation)
     this.clear()
   }
 
   private async refresh() {
-    if (this.refreshing) return this.refreshing
+    this.ensureActive()
+    if (this.state.refreshing) return this.state.refreshing
     const { generation } = this
     const refreshToken = this.tokens?.refreshToken
     if (!refreshToken) throw new Error('Sign in again.')
@@ -243,15 +322,15 @@ export class LocalRepositorySession {
         const response = await this.post('refresh', { refreshToken })
         this.save(await response.json(), generation)
       } catch {
-        if (generation === this.generation) this.clear()
+        if (generation === this.generation) this.clearSession()
         throw new Error('Your internal session has ended. Sign in again.')
       }
     })()
-    this.refreshing = operation
+    this.state.refreshing = operation
     try {
       await operation
     } finally {
-      if (this.refreshing === operation) this.refreshing = undefined
+      if (this.state.refreshing === operation) this.state.refreshing = undefined
     }
   }
 
@@ -263,6 +342,7 @@ export class LocalRepositorySession {
 
   /** Same-repository bearer transport with one refresh/retry after 401. */
   readonly fetch: typeof fetch = async (input, init) => {
+    this.ensureActive()
     const original = new Request(input, init)
     const target = new URL(original.url)
     const base = new URL(this.repositoryUrl)
@@ -276,6 +356,7 @@ export class LocalRepositorySession {
     const { generation } = this
     if (claims(this.tokens.accessToken).exp * 1000 <= Date.now() + 10000) await this.refresh()
     const send = () => {
+      this.ensureCurrent(generation)
       if (generation !== this.generation || !this.tokens) throw new Error('Your session has ended. Sign in again.')
       const headers = new Headers(original.headers)
       headers.set('Authorization', `Bearer ${this.tokens!.accessToken}`)
@@ -283,12 +364,21 @@ export class LocalRepositorySession {
     }
     const usedToken = this.tokens?.accessToken
     let response = await send()
+    this.ensureCurrent(generation)
     if (response.status === 401) {
-      if (generation !== this.generation) throw new Error('Your session has ended. Sign in again.')
-      if (this.tokens?.accessToken === usedToken) await this.refresh()
+      // Another request may already be rotating the token that replaced usedToken.
+      if (this.state.refreshing) await this.state.refreshing
+      else if (this.tokens?.accessToken === usedToken) await this.refresh()
+      this.ensureCurrent(generation)
       if (!this.tokens) throw new Error('Sign in again.')
+      const retryToken = this.tokens.accessToken
       response = await send()
-      if (response.status === 401 && generation === this.generation) this.clear()
+      this.ensureCurrent(generation)
+      if (response.status === 401) {
+        if (this.state.refreshing) await this.state.refreshing
+        this.ensureCurrent(generation)
+        if (this.tokens?.accessToken === retryToken) this.clearSession()
+      }
     }
     return response
   }

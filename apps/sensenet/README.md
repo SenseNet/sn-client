@@ -156,3 +156,8 @@ To build the application:
 ```bash
 yarn build
 ```
+
+## Authentication validation
+
+See [the authentication acceptance matrix](AUTHENTICATION-TESTING.md) for the
+IdentityServer, SNAuth and Local/internal test round and SNAuth server-first rollout.
