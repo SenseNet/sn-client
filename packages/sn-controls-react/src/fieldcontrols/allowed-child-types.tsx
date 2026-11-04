@@ -2,9 +2,7 @@ import {
   ClickAwayListener,
   createStyles,
   FormGroup,
-  FormHelperText,
   IconButton,
-  InputLabel,
   List,
   ListItem,
   ListItemIcon,
@@ -22,12 +20,13 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { typeicons } from '../assets/icons'
 import { ReactClientFieldSetting } from './client-field-setting'
 import { renderIconDefault } from './icon'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 
 const INPUT_PLACEHOLDER = 'Start typing to add another type'
 const ITEM_HEIGHT = 48
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme) => {
   return createStyles({
     inputContainer: {
       padding: '2px 4px',
@@ -61,6 +60,17 @@ const useStyles = makeStyles(() => {
     },
     ddIsClosed: {
       display: 'none',
+    },
+    container: {
+      maxWidth: '420px',
+      width: '100%',
+      paddingLeft: '11px',
+      paddingTop: '14px',
+      borderRadius: '4px 4px 0 0',
+      border: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid #2c2c2c',
+      '&:hover': {
+        border: '1px solid #666',
+      },
     },
   })
 })
@@ -230,11 +240,15 @@ export const AllowedChildTypes: React.FC<ReactClientFieldSetting & { classes?: A
     case 'new':
       return (
         <ClickAwayListener onClickAway={handleClickAway}>
-          <div style={{ display: 'inline-block', minWidth: '350px' }}>
-            <InputLabel shrink htmlFor={props.settings.Name} required={props.settings.Compulsory}>
-              {props.settings.DisplayName}
-            </InputLabel>
-            <List dense={true} className={classes.list}>
+          <div>
+            <CustomLabel
+              name={props.settings.Name}
+              displayName={props.settings.DisplayName}
+              highlighted={props.settings.Customization?.Highlighted}
+              description={props.settings.Description}
+              showDescription={!props.hideDescription}
+            />
+            <List dense={true} className={classes.container}>
               {selected.map((item, index) => (
                 <ListItem key={index} className={classes.listItem}>
                   <ListItemIcon style={{ margin: 0 }}>
@@ -258,6 +272,7 @@ export const AllowedChildTypes: React.FC<ReactClientFieldSetting & { classes?: A
             <div style={{ position: 'relative' }}>
               <FormGroup row className={classes.inputContainer}>
                 <TextField
+                  variant="outlined"
                   id={props.settings.Name}
                   autoComplete="off"
                   type="search"
@@ -270,6 +285,7 @@ export const AllowedChildTypes: React.FC<ReactClientFieldSetting & { classes?: A
                 <IconButton
                   color="primary"
                   className={classes.button}
+                  style={{ paddingRight: '9px' }}
                   disabled={currentSelected && currentSelected.Name.length > 0 ? false : true}
                   onClick={handleAddClick}>
                   {props.renderIcon ? props.renderIcon('add_circle') : renderIconDefault('add_circle')}
@@ -284,7 +300,6 @@ export const AllowedChildTypes: React.FC<ReactClientFieldSetting & { classes?: A
                   )}
                 </List>
               </Paper>
-              {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
             </div>
           </div>
         </ClickAwayListener>
@@ -294,7 +309,7 @@ export const AllowedChildTypes: React.FC<ReactClientFieldSetting & { classes?: A
       return (
         <>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           {selected.length ? (
             <List dense={true}>

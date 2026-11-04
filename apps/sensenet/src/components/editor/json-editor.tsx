@@ -24,9 +24,9 @@ export const JsonEditor: React.FunctionComponent<TextEditorProps> = (props) => {
   const logger = useLogger('JSONEditor')
   const [error, setError] = useState<Error | undefined>()
 
-  const saveContent = () => {
+  const saveContent = async () => {
     try {
-      props.saveContent(JSON.parse(textValue))
+      await props.saveContent(JSON.parse(textValue))
       logger.information({
         message: localization.textEditor.saveSuccessNotification.replace(
           '{0}',
@@ -41,6 +41,7 @@ export const JsonEditor: React.FunctionComponent<TextEditorProps> = (props) => {
           },
         },
       })
+      setSavedTextValue(textValue)
     } catch (err) {
       setHasChanges(true)
       logger.error({

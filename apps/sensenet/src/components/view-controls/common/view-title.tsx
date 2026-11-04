@@ -1,7 +1,6 @@
 import { createStyles, makeStyles } from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from '@sensenet/hooks-react'
-import { clsx } from 'clsx'
 import React, { useCallback, useContext, useMemo } from 'react'
 import { useHistory } from 'react-router'
 import { ResponsivePersonalSettings } from '../../../context'
@@ -17,33 +16,69 @@ interface ViewTitleProps {
   actionName?: string
 }
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme) => {
   return createStyles({
     title: {
-      height: '68px',
       fontSize: '20px',
-      flexShrink: 0,
-      flexDirection: 'column',
-      flexWrap: 'nowrap',
+      borderBottom: theme.palette.type === 'light' ? '1px solid #DBDBDB' : '1px solid rgba(255, 255, 255, 0.11)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: '16px',
+      boxSizing: 'border-box',
+      minHeight: '54px',
+      padding: '8px 24px',
+      minWidth: 0,
+      [theme.breakpoints.down('sm')]: {
+        alignItems: 'stretch',
+        flexDirection: 'column',
+        gap: '4px',
+        fontSize: '16px',
+        padding: '6px',
+      },
     },
     textBolder: {
       fontWeight: 500,
+      textAlign: 'left',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      [theme.breakpoints.down('sm')]: {
+        textAlign: 'center',
+        overflowWrap: 'anywhere',
+        whiteSpace: 'normal',
+      },
     },
     actionBar: {
       display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      flexShrink: 0,
+      [theme.breakpoints.down('sm')]: {
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+      },
     },
     typeinfo: {
       fontSize: '12px',
       color: 'grey',
-      marginLeft: '5px',
+      flexShrink: 0,
     },
     actionText: {
-      marginRight: '5px',
+      flexShrink: 0,
+      textAlign: 'left',
     },
     viewTitle: {
-      '& span': {
-        display: 'inline-block',
-        verticalAlign: 'middle',
+      display: 'flex',
+      alignItems: 'baseline',
+      gap: '5px',
+      minWidth: 0,
+      overflow: 'hidden',
+      [theme.breakpoints.down('sm')]: {
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        maxWidth: '100%',
+        overflowWrap: 'anywhere',
       },
     },
   })
@@ -76,7 +111,7 @@ export const ViewTitle: React.FunctionComponent<ViewTitleProps> = (props) => {
   )
 
   return (
-    <div className={clsx(classes.title, globalClasses.centered)}>
+    <div className={classes.title}>
       <div data-test="viewtitle" className={classes.viewTitle}>
         <span className={classes.actionText}>{props.title}</span>
         <span className={classes.textBolder}>{props.titleBold}</span>

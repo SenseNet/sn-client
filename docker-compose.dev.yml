@@ -1,0 +1,33 @@
+services:
+  sensenet-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sensenet-dev
+    ports:
+      - '4052:8080'
+    environment:
+      - NODE_ENV=development
+      - AUTH_TYPE=SNAuth
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+      - ALLOWED_HOSTS=all
+      - DISABLE_DEV_RELOAD=true
+      - WEBPACK_DEV_SERVER_CLIENT_WEB_SOCKET_URL=${WEBPACK_DEV_SERVER_CLIENT_WEB_SOCKET_URL:-auto://0.0.0.0:0/ws}
+      - DISABLE_VIEW_OPTIONS_MENU=${DISABLE_VIEW_OPTIONS_MENU:-false}
+    volumes:
+      - .:/app
+      - sensenet-root-node-modules:/app/node_modules
+      - sensenet-app-node-modules:/app/apps/sensenet/node_modules
+    command: sh -c "yarn snapp start"
+    healthcheck:
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://127.0.0.1:8080/']
+      interval: 30s
+      timeout: 3s
+      start_period: 120s
+      retries: 3
+    restart: unless-stopped
+
+volumes:
+  sensenet-root-node-modules:
+  sensenet-app-node-modules:

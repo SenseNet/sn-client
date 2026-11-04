@@ -2,9 +2,11 @@ import People from '@material-ui/icons/People'
 import Person from '@material-ui/icons/Person'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { FunctionComponent } from 'react'
+import { GridKeyEnum } from '../../src/components/grid/enums/GridKey.enum'
 import { PATHS } from '../application-paths'
 import { useGridSwitcher, useLocalization } from '../hooks'
 import { Content } from './content'
+import { groupColumnDefs, userColumnDefs } from './grid/Cols/ColumnDefs.'
 import { PageTitle } from './PageTitle'
 
 const gridSwitcherConfig = [
@@ -21,6 +23,8 @@ const gridSwitcherConfig = [
       { field: 'Actions' as keyof GenericContent },
     ],
     loadSettings: { filter: "isOf('User')", expand: ['DirectRoles', 'AllRoles', 'CheckedOutTo'] as any },
+    colDef: userColumnDefs,
+    gridKey: GridKeyEnum.USERS,
   },
   {
     icon: <People />,
@@ -34,6 +38,8 @@ const gridSwitcherConfig = [
       { field: 'Actions' as keyof GenericContent },
     ],
     loadSettings: { filter: "isOf('Group')" },
+    colDef: groupColumnDefs,
+    gridKey: GridKeyEnum.GROUPS,
   },
 ]
 
@@ -46,6 +52,8 @@ const UsersAndGroups: FunctionComponent = () => {
       <PageTitle title={localization.pageTitles.usersAndGroup} />
       <Content
         rootPath={PATHS.usersAndGroups.snPath}
+        colDef={gridSwitcher.activeItem.colDef}
+        gridKey={gridSwitcher.activeItem.gridKey}
         fieldsToDisplay={gridSwitcher.activeItem.fieldsToDisplay as any}
         renderBeforeGrid={(): JSX.Element => <div style={{ margin: '10px 12px' }}>{gridSwitcher.renderButtons()}</div>}
         schema={gridSwitcher.activeItem.schema}

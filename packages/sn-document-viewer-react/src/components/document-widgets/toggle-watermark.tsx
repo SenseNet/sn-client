@@ -1,6 +1,6 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import { BrandingWatermark } from '@material-ui/icons'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React from 'react'
 import { useDocumentPermissions, useLocalization, useViewerState } from '../../hooks'
 import { ToggleBase } from './toggle-base'

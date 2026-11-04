@@ -1,7 +1,9 @@
 import { Switch } from '@sensenet/controls-react'
 import { useRepository } from '@sensenet/hooks-react'
 import React, { lazy, useState } from 'react'
+import { GridKeyEnum } from '../../../src/components/grid/enums/GridKey.enum'
 import { PATHS } from '../../application-paths'
+import { contentTypesColumnDefs } from '../grid/Cols/ColumnDefs.'
 
 const ContentComponent = lazy(() => import(/* webpackChunkName: "content" */ '../content'))
 
@@ -39,22 +41,23 @@ const ContentTypeList: React.FC = () => {
   return (
     <ContentComponent
       renderBeforeGrid={renderBeforeGrid}
+      colDef={contentTypesColumnDefs}
+      gridKey={GridKeyEnum.CONTENTTYPES}
       rootPath={PATHS.contentTypes.snPath}
-      fieldsToDisplay={[
-        { field: 'DisplayName' },
-        { field: 'Name' },
-        { field: 'Description' },
-        { field: 'ParentTypeName' as any },
-        { field: 'ModificationDate' },
-        { field: 'ModifiedBy' },
-      ]}
       loadChildrenSettings={{
-        select: ['DisplayName', 'Name', 'Description', 'ParentTypeName' as any, 'ModificationDate', 'ModifiedBy'],
+        select: [
+          'DisplayName',
+          'Name',
+          'Type',
+          'Description',
+          'ParentTypeName' as any,
+          'ModificationDate',
+          'ModifiedBy',
+        ],
         query: contentTypeQuery,
         inlinecount: 'allpages',
         top: 1000,
       }}
-      hasTree={false}
       alwaysRefreshChildren={true}
     />
   )

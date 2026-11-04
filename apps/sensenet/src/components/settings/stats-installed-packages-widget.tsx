@@ -72,7 +72,7 @@ export const InstalledPackagesWidget: React.FunctionComponent<InstalledPackagesW
             </TableHead>
             <TableBody>
               {props.data.InstalledPackages.map((row) => (
-                <TableRow key={row.ComponentId}>
+                <TableRow key={row.Id}>
                   <TableCell align="left">{row.ComponentId}</TableCell>
                   <TableCell align="left">{row.Description}</TableCell>
                   <TableCell align="left">{dateUtils.formatDate(row.ReleaseDate, 'dd/MM/yyyy')}</TableCell>

@@ -1,92 +1,127 @@
-import { createStyles, Theme } from '@material-ui/core'
-import { darken, lighten, makeStyles } from '@material-ui/core/styles'
+import { createStyles, Theme, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 import { UploadProgressInfo } from '@sensenet/client-core'
 import { clsx } from 'clsx'
 import React from 'react'
 
-import { useLocalization, useTheme } from '../../../hooks'
+import { useLocalization } from '../../../hooks'
 
-const useStyles = makeStyles((theme: Theme) => {
-  const getColor = (color: string) => (theme.palette.type === 'light' ? lighten(color, 0.62) : darken(color, 0.5))
-
-  const backgroundPrimary = getColor(theme.palette.primary.main)
-  const backgroundError = getColor(theme.palette.error.main)
-
-  return createStyles({
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
     root: {
-      position: 'relative',
-      overflow: 'hidden',
-      height: 30,
-      backgroundColor: backgroundPrimary,
-      flexGrow: 3,
-      display: 'flex',
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-      flexBasis: 100,
-    },
-    bar: {
+      minWidth: 0,
       width: '100%',
-      position: 'absolute',
-      left: 0,
-      bottom: 0,
-      top: 0,
-      transition: 'transform 0.2s linear',
-      transformOrigin: 'left',
-      backgroundColor: theme.palette.primary.main,
+    },
+    statusRow: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      gap: theme.spacing(1),
+      marginBottom: theme.spacing(0.75),
+    },
+    status: {
+      color: theme.palette.text.secondary,
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
     },
     value: {
-      color: theme.palette.common.white,
-      zIndex: 1,
-      marginRight: theme.spacing(2),
+      color: theme.palette.text.secondary,
+      flexShrink: 0,
+      fontVariantNumeric: 'tabular-nums',
     },
-    error: {
-      backgroundColor: backgroundError,
+    track: {
+      height: 6,
+      width: '100%',
+      overflow: 'hidden',
+      borderRadius: 3,
+      backgroundColor: theme.palette.action.disabledBackground,
     },
-  })
-})
+    bar: {
+      height: '100%',
+      borderRadius: 3,
+      backgroundColor: theme.palette.primary.main,
+      transition: 'width 200ms ease-out',
+    },
+    completedBar: {
+      backgroundColor: theme.palette.success.main,
+    },
+    errorBar: {
+      backgroundColor: theme.palette.error.main,
+    },
+    completedStatus: {
+      color: theme.palette.success.main,
+    },
+    errorStatus: {
+      color: theme.palette.error.main,
+    },
+  }),
+)
 
 type Props = {
   progress: UploadProgressInfo
 }
 
+export const getProgressPercentage = (progress: UploadProgressInfo) => {
+  if (progress.completed) {
+    return 100
+  }
+
+  if (!progress.chunkCount || progress.uploadedChunks == null) {
+    return 0
+  }
+
+  return Math.max(0, Math.min(100, Math.round((progress.uploadedChunks / progress.chunkCount) * 100)))
+}
+
 export const ProgressBar = (props: Props) => {
   const classes = useStyles()
-  const theme = useTheme()
   const localization = useLocalization().uploadProgress
-  const inlineStyle: React.CSSProperties = { transform: '' }
+  const progress = getProgressPercentage(props.progress)
+  const isError = Boolean(props.progress.error)
+  const isCompleted = props.progress.completed
 
-  const getProgress = () => {
-    if (props.progress.chunkCount == null || props.progress.uploadedChunks == null) {
-      return 0
-    }
-    return Math.round((props.progress.uploadedChunks / props.progress.chunkCount) * 100)
-  }
+  const statusText = isError
+    ? localization.uploadFailed
+    : isCompleted
+    ? localization.uploadCompleted
+    : localization.uploading
 
-  const getProgressText = () => {
-    if (props.progress.error) {
-      return localization.uploadFailed
-    }
-
-    if (props.progress.completed) {
-      return localization.uploadCompleted
-    }
-
-    return `${getProgress()}%`
-  }
-
-  let transform = getProgress() - 100
-  if (theme.direction === 'rtl') {
-    transform = -transform
-  }
-  inlineStyle.transform = `translateX(${transform}%)`
+  // A terminal state fills the visual track so failure and completion are
+  // immediately distinguishable. The numeric value still describes bytes sent.
+  const visualProgress = isError ? 100 : progress
 
   return (
     <div
-      className={clsx(classes.root, { [classes.error]: props.progress.error })}
+      className={classes.root}
       role="progressbar"
-      aria-valuenow={getProgress()}>
-      <div className={classes.bar} style={inlineStyle} />
-      <p className={classes.value}>{getProgressText()}</p>
+      aria-label={statusText}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={progress}
+      aria-valuetext={statusText}>
+      <div className={classes.statusRow}>
+        <Typography
+          variant="caption"
+          className={clsx(classes.status, {
+            [classes.completedStatus]: isCompleted,
+            [classes.errorStatus]: isError,
+          })}>
+          {statusText}
+        </Typography>
+        <Typography variant="caption" className={classes.value}>
+          {isCompleted ? '100%' : isError ? localization.failedStatus : `${progress}%`}
+        </Typography>
+      </div>
+      <div className={classes.track} aria-hidden="true">
+        <div
+          className={clsx(classes.bar, {
+            [classes.completedBar]: isCompleted,
+            [classes.errorBar]: isError,
+          })}
+          style={{ width: `${visualProgress}%` }}
+        />
+      </div>
     </div>
   )
 }

@@ -6,6 +6,7 @@ import { deepMerge } from '@sensenet/client-utils'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 
 const invalidCharacters = ['%', '\\', '*', '~']
@@ -36,34 +37,38 @@ export const Name: React.FC<ReactClientFieldSetting> = (props) => {
     case 'edit':
     case 'new':
       return (
-        <TextField
-          autoFocus={props.autoFocus}
-          autoComplete="off"
-          name={props.settings.Name}
-          id={props.settings.Name}
-          label={props.settings.DisplayName}
-          placeholder={props.settings.DisplayName}
-          value={value}
-          required={props.settings.Compulsory}
-          disabled={props.settings.ReadOnly}
-          fullWidth={true}
-          onChange={handleChange}
-          error={!isValid}
-          helperText={
-            isValid
-              ? props.hideDescription
-                ? undefined
-                : props.settings.Description
-              : `${localization.invalidCharactersError} ${invalidCharacters.join(',')}`
-          }
-        />
+        <>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
+          />
+          <TextField
+            variant="outlined"
+            style={{ width: '100%' }}
+            autoFocus={props.autoFocus}
+            autoComplete="off"
+            name={props.settings.Name}
+            id={props.settings.Name}
+            placeholder={props.settings.DisplayName}
+            value={value}
+            required={props.settings.Compulsory}
+            disabled={props.settings.ReadOnly}
+            fullWidth={true}
+            onChange={handleChange}
+            error={!isValid}
+            helperText={!isValid && `${localization.invalidCharactersError} ${invalidCharacters.join(',')}`}
+          />
+        </>
       )
     case 'browse':
     default:
       return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
             {props.fieldValue || localization.noValue}

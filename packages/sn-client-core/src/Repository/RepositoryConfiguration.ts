@@ -18,12 +18,12 @@ export interface RepositoryConfiguration {
   chunkSize?: number
 
   /**
-   * This field sets up a default OData enableautofilters parameter
+   * This field sets up a default OData enableautofilters parameter. Omit it to use the server default.
    */
   defaultEnableAutofilters?: boolean
 
   /**
-   * This field sets up a default OData enablelifespan parameter
+   * This field sets up a default OData enablelifespan parameter. Omit it to use the server default.
    */
   defaultEnableLifespanfilter?: boolean
 
@@ -85,15 +85,14 @@ export interface RepositoryConfiguration {
 
 /**
  * Repository configuration with defaults that are not undefined.
- * token, defaultExpand properties doesn't have a default value. They are undefined.
+ * Authentication, expansion and filter flags remain optional. Omitted filter flags use server defaults.
  */
-export type RepositoryConfigurationWithDefaults = Required<Omit<RepositoryConfiguration, 'token' | 'defaultExpand'>> &
-  Pick<RepositoryConfiguration, 'token' | 'defaultExpand'>
+type OptionalRepositoryDefaults = 'token' | 'defaultExpand' | 'defaultEnableAutofilters' | 'defaultEnableLifespanfilter'
+export type RepositoryConfigurationWithDefaults = Required<Omit<RepositoryConfiguration, OptionalRepositoryDefaults>> &
+  Pick<RepositoryConfiguration, OptionalRepositoryDefaults>
 
 export const defaultRepositoryConfiguration: RepositoryConfigurationWithDefaults = {
   chunkSize: 1000000,
-  defaultEnableAutofilters: false,
-  defaultEnableLifespanfilter: false,
   defaultInlineCount: 'allpages',
   defaultMetadata: 'no',
   defaultSelect: ['DisplayName', 'Description', 'Icon'],

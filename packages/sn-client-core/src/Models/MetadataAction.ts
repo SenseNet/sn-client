@@ -11,6 +11,8 @@ export interface MetadataAction {
     name: string
     type: string
     required: boolean
+    /** Allowed values when the parameter type is an enum. */
+    enumValues?: Array<string | number>
   }>
   isODataAction: boolean
 }

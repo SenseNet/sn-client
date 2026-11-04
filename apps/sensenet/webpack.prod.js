@@ -34,7 +34,16 @@ module.exports = merge(common, {
     new CleanWebpackPlugin(),
     new ForkTsCheckerWebpackPlugin({
       async: false,
+      issue: {
+        include: [{ file: 'src/**/*' }],
+      },
       typescript: {
+        configOverwrite: {
+          compilerOptions: {
+            rootDir: '../..',
+          },
+          references: [],
+        },
         memoryLimit: 4096,
       },
     }),

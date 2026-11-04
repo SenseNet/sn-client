@@ -1,7 +1,7 @@
 /**
  * @module FieldControls
  */
-import { FormHelperText, Typography } from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import { MuiPickersUtilsProvider, TimePicker as MUITimePicker } from '@material-ui/pickers'
 import type { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import { deepMerge } from '@sensenet/client-utils'
@@ -11,6 +11,7 @@ import format from 'date-fns/format'
 import React, { useState } from 'react'
 import { changeTemplatedValue } from '../helpers'
 import { ReactClientFieldSetting } from './client-field-setting'
+import CustomLabel from './label/custom-label'
 import { defaultLocalization } from './localization'
 
 /**
@@ -39,18 +40,23 @@ export const TimePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
     case 'new':
       return (
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={props.locale}>
+          <CustomLabel
+            name={props.settings.Name}
+            displayName={props.settings.DisplayName}
+            highlighted={props.settings.Customization?.Highlighted}
+            description={props.settings.Description}
+            showDescription={!props.hideDescription}
+          />
           <MUITimePicker
             value={value}
             name={props.settings.Name}
             onChange={handleDateChange}
-            label={props.settings.DisplayName}
             id={props.settings.Name}
             disabled={props.settings.ReadOnly}
             placeholder={props.settings.DisplayName}
             required={props.settings.Compulsory}
             fullWidth={true}
           />
-          {!props.hideDescription && <FormHelperText>{props.settings.Description}</FormHelperText>}
         </MuiPickersUtilsProvider>
       )
     case 'browse':
@@ -58,7 +64,7 @@ export const TimePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
       return (
         <div>
           <Typography variant="caption" gutterBottom={true}>
-            {props.settings.DisplayName}
+            {`${props.settings.DisplayName} (${props.settings.Name})`}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
             {props.fieldValue

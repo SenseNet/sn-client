@@ -22,6 +22,7 @@ const setParentIdAndPath = <T extends GenericContent>(node: T, parent?: T) => {
 export const useTreePicker = <T extends GenericContentWithIsParent = GenericContent>(options: {
   repository: Repository
   currentPath?: string
+  contextPath?: string
   selectionRoots?: string[]
   allowMultiple?: boolean
   itemsODataOptions?: ODataParams<T>
@@ -29,7 +30,7 @@ export const useTreePicker = <T extends GenericContentWithIsParent = GenericCont
   navigationPath?: string
 }) => {
   // get defaults
-  const { repository, currentPath = '', navigationPath } = options
+  const { repository, contextPath = '', navigationPath } = options
 
   const roots = useMemo(
     () =>
@@ -40,7 +41,7 @@ export const useTreePicker = <T extends GenericContentWithIsParent = GenericCont
   )
 
   const [{ path, parentId }, dispatch] = useState<State>({
-    path: currentPath,
+    path: contextPath,
     parentId: undefined,
   })
 
@@ -59,8 +60,8 @@ export const useTreePicker = <T extends GenericContentWithIsParent = GenericCont
         setIsLoading(true)
 
         const result = await loadItems({
-          path: navigationPath || path,
-          loadParent: !roots?.includes(navigationPath || path),
+          path: contextPath || navigationPath || path,
+          loadParent: !roots?.includes(contextPath || navigationPath || path),
           repository,
           parentId,
           itemsODataOptions: options.itemsODataOptions,
@@ -86,6 +87,7 @@ export const useTreePicker = <T extends GenericContentWithIsParent = GenericCont
     options.parentODataOptions,
     path,
     navigationPath,
+    contextPath,
   ])
 
   const navigateTo = useCallback(

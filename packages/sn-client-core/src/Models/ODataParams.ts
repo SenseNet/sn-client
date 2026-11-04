@@ -29,6 +29,7 @@ export type ODataInlineCountType = 'none' | 'allpages'
  * Model class to define specific OData Request parameters. See https://docs.sensenet.com/api-docs/basic-concepts
  */
 export interface ODataParams<T> {
+  onlyselectList?: boolean
   /**
    * The field(s) to be include in a $select list. Can be a field (e.g. 'DisplayName'), an array of fields (e.g. ['Name', 'Type']) or 'all'
    */

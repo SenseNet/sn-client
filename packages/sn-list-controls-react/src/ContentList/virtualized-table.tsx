@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core'
 import { Build } from '@material-ui/icons'
 import { ActionModel, FieldSetting, GenericContent } from '@sensenet/default-content-types'
-import clsx from 'clsx'
+import { clsx } from 'clsx'
 import React, { useCallback, useMemo } from 'react'
 import {
   AutoSizer,

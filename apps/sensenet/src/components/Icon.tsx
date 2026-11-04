@@ -60,13 +60,16 @@ import travisCi from '@iconify-icons/logos/travis-ci'
 import vercelIcon from '@iconify-icons/logos/vercel-icon'
 import React, { CSSProperties, FunctionComponent } from 'react'
 import { EventLogEntry } from '../services/EventService'
-import { IconFromPath } from './IconFromPath'
+import { isImageContent } from '../services/image-content-service'
+import { IconFromPath, IconImage } from './IconFromPath'
+import { ImageThumbnail } from './image-thumbnail'
 import { UserAvatar } from './UserAvatar'
 
 export interface IconOptions {
   style?: CSSProperties
   injector: Injector
   repo: Repository
+  defaultIcon?: JSX.Element
 }
 
 export interface IconResolver<T> {
@@ -184,18 +187,54 @@ const getIconByName = (name: string | undefined, options: IconOptions) => {
   }
 }
 
-const getIconByPath = (icon: string | undefined, options: IconOptions) => {
-  if (!icon || !icon.startsWith('/')) {
-    return null
-  }
+const getSchemaIcon = (item: GenericContent | { ContentTypeName: string }, options: IconOptions) => {
+  let currentSchema = options.repo.schemas.getSchemaByName('ContentTypeName' in item ? item.ContentTypeName : item.Type)
 
-  return <IconFromPath path={icon} options={options} />
+  do {
+    const icon = getIconByName(currentSchema.Icon ?? currentSchema.ContentTypeName, options)
+    if (icon) return icon
+    currentSchema = options.repo.schemas.getSchemaByName(currentSchema.ParentTypeName || '')
+  } while (currentSchema.ContentTypeName && currentSchema.ContentTypeName !== 'GenericContent')
+
+  return null
 }
 
 /* eslint-disable react/display-name */
 export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   {
-    get: (item, options) => getIconByPath(item.Icon, options),
+    get: (item, options) =>
+      isImageContent(item) ? <ImageThumbnail content={item} repository={options.repo} style={options.style} /> : null,
+  },
+  {
+    get: (item, options) => {
+      let icon = item.Icon
+      const name = item.Name?.toLowerCase()
+      const type = item.Type?.toLowerCase()
+      const path = item.Path?.toLowerCase()
+      if (!icon || !type || !path) {
+        return null
+      } else if (icon.toLowerCase() === 'excel') {
+        icon = '/Root/System/Images/Icons/colors/csv.svg'
+      } else if (icon.toLowerCase() === 'word') {
+        icon = '/Root/System/Images/Icons/colors/word.svg'
+      } else if (icon.toLowerCase() === 'acrobat' || icon.toLowerCase() === 'adobe') {
+        icon = '/Root/System/Images/Icons/colors/pdf.svg'
+      } else if (name?.endsWith('.xls') || name?.endsWith('.xlsx') || name?.endsWith('.xlsm')) {
+        icon = '/Root/System/Images/Icons/colors/xls.svg'
+      } else if (type.endsWith('file')) {
+        if (path.endsWith('.csv')) {
+          icon = '/Root/System/Images/Icons/colors/csv.svg'
+        } else if (path.endsWith('.svg')) {
+          icon = '/Root/System/Images/Icons/colors/file_img.svg'
+        }
+      } else if (!icon.startsWith('/')) {
+        return null
+      }
+      if (!icon.startsWith('/')) return null
+      return (
+        <IconFromPath path={icon} options={options} fallback={getSchemaIcon(item, options) || options.defaultIcon} />
+      )
+    },
   },
   {
     get: (item, options) =>
@@ -223,8 +262,12 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
   {
     get: (item, options) =>
-      options.repo.schemas.isContentFromType<File>(item, 'File') && item.PageCount && item.PageCount > 0 ? (
-        <img
+      options.repo.schemas.isContentFromType<File>(item, 'File') &&
+      item.PageCount &&
+      item.PageCount > 0 &&
+      item.Version &&
+      item.Path ? (
+        <IconImage
           width={options.style?.width || 32}
           height={options.style?.width || 32}
           alt=""
@@ -236,18 +279,20 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
             'thumbnail1.png',
           )}?t=${Date.now()}`}
           style={options.style}
+          fallback={options.defaultIcon}
         />
       ) : null,
   },
   {
     get: (item, options) =>
       options.repo.schemas.isContentFromType<Image>(item, 'Image') && (!item.PageCount || item.PageCount <= 0) ? (
-        <img
+        <IconImage
           width={options.style?.width || 32}
           height={options.style?.width || 32}
           alt=""
           src={`${PathHelper.joinPaths(options.repo.configuration.repositoryUrl, item.Path)}?t=${Date.now()}`}
           style={options.style}
+          fallback={options.defaultIcon}
         />
       ) : null,
   },
@@ -258,21 +303,7 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
 
 export const defaultSchemaResolvers: Array<IconResolver<GenericContent | { ContentTypeName: string }>> = [
   {
-    get: (item, options) => {
-      let currentSchema = options.repo.schemas.getSchemaByName(
-        'ContentTypeName' in item ? item.ContentTypeName : item.Type,
-      )
-
-      do {
-        const icon = getIconByName(currentSchema.Icon ?? currentSchema.ContentTypeName, options)
-        if (icon) {
-          return icon
-        }
-        currentSchema = options.repo.schemas.getSchemaByName(currentSchema.ParentTypeName || '')
-      } while (currentSchema.ContentTypeName && currentSchema.ContentTypeName !== 'GenericContent')
-
-      return null
-    },
+    get: getSchemaIcon,
   },
 ]
 
@@ -305,18 +336,30 @@ export const IconComponent: FunctionComponent<{
   const injector = useInjector()
   const repo = useRepository()
 
-  const options: IconOptions = { style: props.style, injector, repo }
+  const defaultIcon =
+    props.defaultIcon ||
+    (props.item.IsFolder ? (
+      <Folder style={props.style} />
+    ) : props.item.IsFile ? (
+      <InsertDriveFileOutlined style={props.style} />
+    ) : (
+      <WebAssetOutlined style={props.style} />
+    ))
+  const options: IconOptions = { style: props.style, injector, repo, defaultIcon }
   const resolvers = [
     ...(props.resolvers || []),
     ...defaultContentResolvers,
     ...defaultSchemaResolvers,
     ...defaultNotificationResolvers,
   ]
-  const defaultIcon = props.defaultIcon || <WebAssetOutlined style={props.style} /> || null
-  const assignedResolver = resolvers.find((r) => (r.get(props.item, options) ? true : false))
-  if (assignedResolver) {
-    return assignedResolver.get(props.item, options)!
+  for (const resolver of resolvers) {
+    const icon = resolver.get(props.item, options)
+
+    if (icon) {
+      return icon
+    }
   }
+
   return defaultIcon
 }
 

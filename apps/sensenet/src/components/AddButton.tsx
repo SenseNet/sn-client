@@ -16,7 +16,7 @@ import Add from '@material-ui/icons/Add'
 import { Schema } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { clsx } from 'clsx'
-import React, { FunctionComponent, MouseEvent, useEffect, useState } from 'react'
+import React, { FunctionComponent, MouseEvent, useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { globals, useGlobalStyles } from '../globalStyles'
 import { useLocalization, usePersonalSettings, useQuery, useSnRoute } from '../hooks'
@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     addWrapper: {
       position: 'relative',
+      margin: 0,
     },
     addListLoader: {
       color: theme.palette.secondary.main,
@@ -43,12 +44,8 @@ const useStyles = makeStyles((theme: Theme) => {
       },
     },
     listItem: {
-      width: '100%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-evenly',
       height: globals.common.addButtonHeight,
-      paddingLeft: '2px',
+      paddingLeft: '4px',
     },
     listDropdown: {
       padding: '10px 0 10px 10px',
@@ -64,10 +61,14 @@ const useStyles = makeStyles((theme: Theme) => {
     disabled: {
       cursor: 'not-allowed',
     },
+    drawerIconButtonWrapper: {
+      height: '40px',
+    },
   })
 })
 export interface AddButtonProps {
   isOpened?: boolean
+  isDisabled?: boolean
 }
 
 export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
@@ -77,6 +78,7 @@ export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
   const history = useHistory()
   const { openDialog } = useDialog()
   const [showSelectType, setShowSelectType] = useState(false)
+  const typeMenuPath = useRef('')
   const [allowedChildTypes, setAllowedChildTypes] = useState<Schema[]>([])
   const localization = useLocalization().addButton
   const logger = useLogger('AddButton')
@@ -92,12 +94,19 @@ export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
   const activeAction = snRoute.match?.params.action
 
   useEffect(() => {
+    const controller = new AbortController()
+    let current = true
+    setAvailable(false)
     const getActions = async () => {
       try {
-        const actions = await repo.getActions({ idOrPath: currentPath })
-        const isActionFound = actions.d.results.some((action) => action.Name === 'Add' || action.Name === 'Upload')
-        setAvailable(isActionFound && !activeAction)
+        const actions = await repo.getActions({ idOrPath: currentPath, requestInit: { signal: controller.signal } })
+        if (!current) return
+        const isActionFound = actions.d.results.some(
+          (action) => !action.Forbidden && (action.Name === 'Add' || action.Name === 'Upload'),
+        )
+        setAvailable(isActionFound && !activeAction && !props.isDisabled)
       } catch (error) {
+        if (!current) return
         logger.error({
           message: localization.errorGettingActions,
           data: {
@@ -107,32 +116,48 @@ export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
       }
     }
 
-    if (currentPath) {
+    if (currentPath && currentPath !== '/' && !activeAction && !props.isDisabled) {
       getActions()
     } else {
       setAvailable(false)
     }
-  }, [localization.errorGettingActions, logger, repo, currentPath, activeAction])
+    return () => {
+      current = false
+      controller.abort()
+    }
+  }, [localization.errorGettingActions, logger, repo, currentPath, activeAction, props.isDisabled])
 
   useEffect(() => {
+    setShowSelectType(false)
+    setAnchorEl(null)
+  }, [currentPath, activeAction])
+
+  useEffect(() => {
+    const controller = new AbortController()
+    let current = true
     const getAllowedChildTypes = async () => {
       try {
         setIsLoading(true)
+        setAllowedChildTypes([])
+        setHasUpload(false)
         const allowedChildTypesFromRepo = await repo.allowedChildTypes.get({
           idOrPath: currentPath,
+          requestInit: { signal: controller.signal },
         })
+        if (!current) return
 
         //sort the allowed types by display name
         const filteredTypes = allowedChildTypesFromRepo.d.results
           .filter((type) => repo.schemas.getSchemaByName(type.Name).ContentTypeName === type.Name)
           .map((type) => repo.schemas.getSchemaByName(type.Name))
-          .sort((a, b) => a.DisplayName.localeCompare(b.DisplayName))
+          .sort((a, b) => (a.DisplayName || a.ContentTypeName).localeCompare(b.DisplayName || b.ContentTypeName))
 
         const tempHasUpload = filteredTypes.some((type) => personalSettings.uploadHandlers.includes(type.HandlerName))
 
         setAllowedChildTypes(filteredTypes)
         setHasUpload(tempHasUpload)
       } catch (error) {
+        if (!current) return
         logger.error({
           message: localization.errorGettingAllowedContentTypes,
           data: {
@@ -140,12 +165,18 @@ export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
           },
         })
       } finally {
-        setIsLoading(false)
+        if (current) setIsLoading(false)
       }
     }
 
-    if (showSelectType) {
+    if (showSelectType && typeMenuPath.current === currentPath) {
       currentPath ? getAllowedChildTypes() : setAllowedChildTypes([])
+    } else {
+      setIsLoading(false)
+    }
+    return () => {
+      current = false
+      controller.abort()
     }
   }, [
     localization.errorGettingAllowedContentTypes,
@@ -157,16 +188,18 @@ export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
   ])
 
   return (
-    <div className={clsx(globalClasses.centered, globalClasses.relative)}>
+    <div className={clsx(globalClasses.relative)}>
       {!props.isOpened ? (
-        <div className={globalClasses.drawerIconButtonWrapper}>
+        <div className={classes.drawerIconButtonWrapper}>
           {isAvailable ? (
             <div className={classes.addWrapper}>
               <Tooltip title={localization.addNew} placement="right">
                 <IconButton
                   className={globalClasses.drawerButton}
+                  style={{ margin: 4 }}
                   onClick={(event: MouseEvent<HTMLElement>) => {
                     if (isLoading) return
+                    typeMenuPath.current = currentPath
                     setAnchorEl(event.currentTarget)
                     setShowSelectType(true)
                   }}
@@ -181,6 +214,7 @@ export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
               className={clsx(globalClasses.drawerButton, {
                 [classes.addButtonDisabled]: !isAvailable,
               })}
+              style={{ margin: 4 }}
               data-test="add-button"
               disabled={true}>
               <Add className={globalClasses.drawerButtonIcon} />
@@ -192,11 +226,12 @@ export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
           className={classes.listItem}
           button={true}
           onClick={(event: MouseEvent<HTMLElement>) => {
+            typeMenuPath.current = currentPath
             setAnchorEl(event.currentTarget)
             setShowSelectType(true)
           }}
           disabled={!isAvailable}>
-          <ListItemIcon className={globalClasses.centeredHorizontal}>
+          <ListItemIcon>
             <Tooltip title={localization.addNew} placement="right" data-test="add-button">
               <IconButton
                 className={clsx(globalClasses.drawerButtonExpanded, {
@@ -208,12 +243,19 @@ export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
               </IconButton>
             </Tooltip>
           </ListItemIcon>
-          <ListItemText primary={localization.addNew} />
+          <ListItemText
+            primary={localization.addNew}
+            style={{
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              marginLeft: '3px',
+            }}
+          />
         </ListItem>
       )}
       {!isLoading && (
         <Popover
-          open={showSelectType}
+          open={showSelectType && typeMenuPath.current === currentPath}
           anchorEl={anchorEl}
           onClose={() => {
             setAnchorEl(null)
@@ -254,7 +296,10 @@ export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
               <div>{localization.noItems}</div>
             ) : (
               allowedChildTypes.map((childType) => (
-                <Tooltip key={childType.ContentTypeName} title={childType.DisplayName} placement="right">
+                <Tooltip
+                  key={childType.ContentTypeName}
+                  title={childType.DisplayName || childType.ContentTypeName}
+                  placement="right">
                   <ListItem
                     button={true}
                     style={{ padding: '10px 0 10px 10px' }}
@@ -267,11 +312,16 @@ export const AddButton: FunctionComponent<AddButtonProps> = (props) => {
                         queryParams: { 'content-type': childType.ContentTypeName },
                       })
                     }}
-                    data-test={`listitem-${childType.DisplayName.replace(/\s+/g, '-').toLowerCase()}`}>
+                    data-test={`listitem-${(childType.DisplayName || childType.ContentTypeName)
+                      .replace(/\s+/g, '-')
+                      .toLowerCase()}`}>
                     <ListItemIcon style={{ minWidth: '36px' }}>
                       <Icon item={childType} />
                     </ListItemIcon>
-                    <ListItemText primary={childType.DisplayName} className={classes.listItemTextDropdown} />
+                    <ListItemText
+                      primary={childType.DisplayName || childType.ContentTypeName}
+                      className={classes.listItemTextDropdown}
+                    />
                   </ListItem>
                 </Tooltip>
               ))

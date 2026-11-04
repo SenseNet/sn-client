@@ -1,7 +1,9 @@
 /**
  * Global Style overrides
 **/
-
+body {
+  font-size: 11px !important;
+}
 ul[role='listbox'] {
   margin: 0;
   padding: 0;
@@ -10,4 +12,344 @@ ul[role='listbox'] {
 .bread-crumbs-separator {
   padding: 0;
   margin: 0;
+}
+.MuiGrid-container {
+  max-height: 100% !important;
+}
+.MuiBreadcrumbs-separator {
+  margin: 0;
+}
+.bread-crumb-button {
+  min-width: 12px;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedPrimary[type='submit'] {
+  margin-left: 0px;
+}
+.ContentExtraInfo {
+  position: absolute;
+  right: 15px;
+}
+.ContentExtraInfo .ContentTypeSpan {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.ContentExtraInfo .ContentTypeSpan a {
+  color: #0292db;
+}
+span.icon svg {
+  width: 100%;
+}
+.react-grid-Main {
+  height: 100%;
+}
+
+.react-grid-Container {
+  height: 100%;
+}
+
+.react-grid-Grid {
+  min-height: 100% !important;
+}
+.react-grid-Grid span.locked {
+  font-size: 16px;
+  display: block;
+  text-align: center;
+}
+.react-grid-Canvas {
+  height: 100% !important;
+}
+.simpleContextMenu {
+  padding: 0 !important;
+  min-width: 45px;
+}
+
+.simpletree .MuiTypography-body1 {
+  font-size: 12px !important;
+  display: flex;
+  align-self: center;
+}
+.simpletree .MuiListItemIcon-root {
+  display: flex;
+  align-self: center;
+}
+.simpletree .MuiSvgIcon-root {
+  height: 16px;
+}
+.simpletree .svgicon {
+  width: 24px;
+  height: 24px;
+}
+.simpletree .MuiSvgIcon-root svg {
+  height: '16px!important';
+}
+.simpletree .MuiListItemIcon-root {
+  min-width: 25px;
+  margin-right: 3px;
+}
+.simpletree .MuiCollapse-container.MuiTreeItem-group {
+  margin-left: 7px;
+  padding-left: 18px;
+  border-left: 1px dashed #cececeff;
+}
+
+.gridTopPanel {
+  padding: 10px;
+  padding-left: 4rem;
+  position: relative;
+  border: 1px solid #dddddd;
+  background-color: #f9f9f9;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.gridTopPanel .MuiSvgIcon-root {
+  width: 18px;
+  height: 18px;
+}
+.gridTopPanel .MuiButton-label div {
+  font-size: 12px;
+  text-transform: none;
+}
+.gridTopPanel .svgicon {
+  width: 48px;
+  height: 48px;
+}
+.gridTopPanel h1 {
+  font-size: 16px;
+}
+.gridTopPanel a,
+.gridTopPanel h1,
+.gridTopPanel span {
+  padding: 0;
+  margin: 0;
+}
+.gridTopPanel h1 span {
+  font-weight: normal;
+  padding-left: 0.5rem;
+}
+.gridTopPanel label {
+  padding: 0;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.gridTopPanel label:first-of-type {
+  padding-left: 0;
+}
+.gridTopPanel .iconArea {
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 0;
+  width: 3rem;
+}
+.gridTopPanel .iconArea svg {
+  width: 100%;
+  height: auto;
+  padding-left: 0.4rem;
+}
+.gridTopPanel h1.title {
+  font-size: 1.2rem;
+}
+.theme-dark .gridTopPanel,
+.theme-dark .react-grid-Grid {
+  background-color: #121212;
+  border-color: #2c2c2c;
+}
+.theme-dark .react-grid-Canvas {
+  background-color: #121212;
+}
+.theme-dark .react-grid-Cell {
+  background-color: #232323;
+  border-color: #333 !important;
+}
+.theme-dark .react-grid-HeaderCell,
+.theme-dark .react-grid-Header {
+  background: #333;
+  border-color: #555;
+}
+
+.theme-dark .react-grid-Row:hover .react-grid-Cell,
+.theme-dark .react-grid-Row.row-context-menu .react-grid-Cell {
+  background-color: #666;
+}
+.theme-dark .react-grid-Cell.row-selected {
+  background-color: #555 !important;
+}
+.theme-dark .react-grid-checkbox + .react-grid-checkbox-label:before,
+.theme-dark .radio-custom + .radio-custom-label:before {
+  background: #777 !important;
+}
+.buttonPanel {
+  margin-left: auto;
+  height: 39px;
+}
+.buttonPanel .MuiListItemIcon-root {
+  min-width: 25px !important;
+}
+.buttonPanel .MuiButton-label {
+  flex-direction: column;
+}
+
+@media (max-width: 600px) {
+  .gridTopPanel {
+    padding: 8px;
+    padding-left: 44px;
+    align-items: flex-start;
+  }
+
+  .gridTopPanel .iconArea {
+    width: 36px;
+  }
+
+  .gridTopPanel h1 {
+    font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+
+  .gridTopPanel label,
+  .gridTopPanel a,
+  .gridTopPanel span {
+    overflow-wrap: anywhere;
+  }
+
+  .buttonPanel {
+    display: flex;
+    width: 100%;
+    height: auto;
+    margin-left: -36px;
+    overflow-x: auto;
+  }
+
+  .buttonPanel .MuiButton-root {
+    min-width: 64px;
+    flex: 0 0 auto;
+  }
+}
+
+.MuiListItemIcon-root .svgicon {
+  width: 24px;
+  height: 24px;
+}
+.MuiCollapse-wrapperInner {
+  width: 100%;
+}
+.icon-grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.grid-checkbox-header {
+  padding: 0px 4px !important;
+}
+/*.leftTree .MuiListItemIcon-root {
+  border-left: 2px dotted #ccc;
+  padding-left: 5px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin: 0;
+}
+.leftTree .MuiListItem-root {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+.leftTree span[class*='MuiTypography-body'] {
+  font-size: 12px;
+} */
+
+.react-datepicker-wrapper {
+  width: 100%;
+  max-width: 420px;
+}
+
+.react-datepicker-wrapper input {
+  width: 100%;
+  height: 37px;
+  border: 1px solid #dbdbdb;
+  border-radius: 4px 4px 0 0;
+  padding: 9px;
+  font: caption;
+}
+
+/* Monaco 0.26 creates these icon registrations in JS, but the slim build may miss the generated CSS rules. */
+.monaco-editor .find-widget .codicon-widget-close::before {
+  content: '\ea76';
+}
+
+.monaco-editor .find-widget .codicon-find-collapsed::before {
+  content: '\eab6';
+}
+
+.monaco-editor .find-widget .codicon-find-expanded::before {
+  content: '\eab4';
+}
+
+.monaco-editor .find-widget .codicon-find-next-match::before {
+  content: '\ea9a';
+}
+
+.monaco-editor .find-widget .codicon-find-previous-match::before {
+  content: '\eaa1';
+}
+
+.monaco-editor .find-widget .codicon-find-replace::before {
+  content: '\eb3d';
+}
+
+.monaco-editor .find-widget .codicon-find-replace-all::before {
+  content: '\eb3c';
+}
+
+.monaco-editor .find-widget .codicon-find-selection::before {
+  content: '\eb85';
+}
+
+.monaco-editor .find-widget .codicon-case-sensitive::before {
+  content: '\eab1';
+}
+
+.monaco-editor .find-widget .codicon-preserve-case::before {
+  content: '\eb2e';
+}
+
+.monaco-editor .find-widget .codicon-regex::before {
+  content: '\eb38';
+}
+
+.monaco-editor .find-widget .codicon-whole-word::before {
+  content: '\eb7e';
+}
+
+.react-datepicker-wrapper input:hover {
+  border-color: #666;
+  cursor: text;
+}
+
+.react-datepicker-wrapper input:disabled {
+  cursor: default;
+  border: 1px solid #dbdbdb;
+}
+
+.theme-dark .react-datepicker-wrapper input {
+  border: 1px solid #2c2c2c;
+  color: white;
+  background-color: #121212;
+}
+
+.theme-dark .react-datepicker-wrapper input:hover {
+  border-color: #666;
+}
+
+.theme-dark .react-datepicker-wrapper input:disabled {
+  border: 1px solid #2c2c2c;
+}
+
+.react-datepicker-popper {
+  z-index: 10;
 }

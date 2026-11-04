@@ -184,7 +184,7 @@ export interface ActionOptions<TBody, TContentType> extends WithOdataOptions<TCo
 /**
  * Options for fetching content actions
  */
-export interface GetActionOptions {
+export interface GetActionOptions extends WithRequestInit {
   /**
    * The content Id or path
    */

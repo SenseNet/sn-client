@@ -5,7 +5,9 @@ import { RenderSuggestionsContainerParams } from 'react-autosuggest'
 import { ResponsiveContext } from '../../context'
 import { useLocalization } from '../../hooks'
 
-export const CommandPaletteHitsContainer: FunctionComponent<RenderSuggestionsContainerParams> = (options) => {
+export const CommandPaletteHitsContainer: FunctionComponent<
+  RenderSuggestionsContainerParams & { header?: React.ReactNode }
+> = (options) => {
   const device = useContext(ResponsiveContext)
   const localization = useLocalization()
 
@@ -14,19 +16,22 @@ export const CommandPaletteHitsContainer: FunctionComponent<RenderSuggestionsCon
       square={true}
       style={{
         position: 'absolute',
-        zIndex: 1,
-        left: device === 'mobile' ? '64px' : undefined,
-        width: device === 'mobile' ? 'calc(100% - 80px)' : '100%',
+        zIndex: device === 'mobile' ? 1301 : 1,
+        left: device === 'mobile' ? 0 : undefined,
+        width: '100%',
       }}>
-      <List
-        aria-label={localization.commandPalette.searchSuggestionList}
-        dense={device === 'desktop' ? false : true}
-        component="nav"
-        data-test="search-suggestion-list"
-        {...options.containerProps}
-        style={{ padding: 0 }}>
-        {options.children}
-      </List>
+      <>
+        {options.header}
+        <List
+          aria-label={localization.commandPalette.searchSuggestionList}
+          dense={device === 'desktop' ? false : true}
+          component="nav"
+          data-test="search-suggestion-list"
+          {...options.containerProps}
+          style={{ padding: 0 }}>
+          {options.children}
+        </List>
+      </>
     </Paper>
   )
 }

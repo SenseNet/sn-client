@@ -12,9 +12,8 @@ const useStyles = makeStyles((theme) => {
   const commonStyles = getCommonStyles(theme)
   return createStyles({
     root: {
-      margin: '0.5rem 0',
-      boxShadow: '0px 10px 15px -7px rgba(0,0,0,0.4)',
-      borderRadius: '10px',
+      boxShadow: '0px 2px 4px 0px rgba(0, 0, 0, 0.4)',
+      borderRadius: '4px 4px 0 0',
     },
     editorWrapper: {
       padding: '0rem 1rem 0.5rem',

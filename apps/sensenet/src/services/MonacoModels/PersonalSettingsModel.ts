@@ -1,7 +1,7 @@
 import { LogLevel } from '@sensenet/client-utils'
 import { BrowseType } from '../../components/content'
 import defaultLanguage from '../../localization/default'
-import { ActionType, CustomDrawerItemType } from '../PersonalSettings'
+import { ActionType, ContentIconSizes, ContentViewModes, CustomDrawerItemType } from '../PersonalSettings'
 
 export const setupModel = async (language = defaultLanguage) => {
   const { monaco } = await import('react-monaco-editor')
@@ -143,6 +143,33 @@ export const setupModel = async (language = defaultLanguage) => {
             language: {
               description: language.personalSettings.languageTitle,
               enum: ['default', 'hungarian'],
+            },
+            defaultContentView: {
+              type: 'string',
+              description: language.contentViews.defaultView,
+              enum: [...ContentViewModes],
+              default: 'details',
+            },
+            contentIconSize: {
+              type: 'string',
+              description: language.contentViews.iconSize,
+              enum: [...ContentIconSizes],
+              default: 'medium',
+            },
+            contentShowType: {
+              type: 'boolean',
+              description: language.contentViews.showType,
+              default: true,
+            },
+            contentPreferDisplayName: {
+              type: 'boolean',
+              description: language.contentViews.preferDisplayName,
+              default: true,
+            },
+            sortFoldersFirst: {
+              type: 'boolean',
+              description: language.topMenu.sortFoldersFirst,
+              default: true,
             },
             uploadHandlers: { type: 'array', description: language.personalSettings.uploadHandlerTitle },
           },

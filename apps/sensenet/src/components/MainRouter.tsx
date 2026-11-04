@@ -1,13 +1,17 @@
 import { LoadSettingsContextProvider } from '@sensenet/hooks-react'
 import React, { lazy, Suspense } from 'react'
 import { Route, Switch } from 'react-router-dom'
+import { GridKeyEnum } from '../../src/components/grid/enums/GridKey.enum'
 import { PATHS } from '../application-paths'
 import { InvalidPathErrorBoundary } from './content/InvalidPathErrorBoundary'
 import { ErrorBoundary } from './error-boundary'
 import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
 import { FullScreenLoader } from './full-screen-loader'
+import { contentTemplatesColumnDefs } from './grid/Cols/ColumnDefs.'
+import { Home } from './Home'
 
 const ContentComponent = lazy(() => import(/* webpackChunkName: "content" */ './content'))
+const FavoritesComponent = lazy(() => import(/* webpackChunkName: "favorites" */ './favorites/Favorites'))
 const DashboardComponent = lazy(() => import(/* webpackChunkName: "dashboard" */ './dashboard'))
 const UsersAndGroupsComponent = lazy(() => import(/* webpackChunkName: "users-and-groups" */ './users-and-groups'))
 const SearchComponent = lazy(() => import(/* webpackChunkName: "search" */ './search'))
@@ -29,15 +33,26 @@ export const MainRouter = () => {
             <EventListComponent />
           </Route>
 
+          <Route path={PATHS.favorites.appPath}>
+            <InvalidPathErrorBoundary>
+              <FavoritesComponent />
+            </InvalidPathErrorBoundary>
+          </Route>
+
           <Route path={PATHS.content.appPath}>
             <InvalidPathErrorBoundary>
-              <ContentComponent />
+              <ContentComponent rootPath={PATHS.custom.snPath} />
             </InvalidPathErrorBoundary>
           </Route>
 
           <Route path={PATHS.contentTemplates.appPath}>
             <InvalidPathErrorBoundary>
-              <ContentComponent showPageTitle rootPath={PATHS.contentTemplates.snPath} />
+              <ContentComponent
+                showPageTitle
+                rootPath={PATHS.contentTemplates.snPath}
+                colDef={contentTemplatesColumnDefs}
+                gridKey={GridKeyEnum.CONTENTTEMPLATES}
+              />
             </InvalidPathErrorBoundary>
           </Route>
 
@@ -74,11 +89,11 @@ export const MainRouter = () => {
           </Route>
 
           <Route path={PATHS.custom.appPath}>
-            <CustomContent />
+            <CustomContent rootPath={PATHS.custom.snPath} />
           </Route>
 
-          <Route path="/" exact>
-            <DashboardComponent />
+          <Route path={PATHS.home.snPath}>
+            <Home />
           </Route>
         </Switch>
       </Suspense>

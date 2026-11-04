@@ -93,6 +93,7 @@ export class AllowedChildTypes {
       'AllowedChildTypes',
     )
     const response = await this.repository.fetch(`${path}?${params}`, {
+      ...options.requestInit,
       credentials: 'include',
       method: 'GET',
     })
@@ -116,6 +117,7 @@ export class AllowedChildTypes {
       'EffectiveAllowedChildTypes',
     )
     const response = await this.repository.fetch(`${path}?${params}`, {
+      ...options.requestInit,
       credentials: 'include',
       method: 'GET',
     })

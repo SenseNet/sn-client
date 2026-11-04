@@ -143,5 +143,52 @@ describe('ODataUrlBuilder', () => {
       })
       expect(urlParamString).toBe('enablelifespanfilter=true&metadata=no')
     })
+
+    it('preserves explicit false filters and zero pagination over truthy defaults', () => {
+      const params = new URLSearchParams(
+        ODataUrlBuilder.buildUrlParamString(
+          { defaultEnableAutofilters: true, defaultEnableLifespanfilter: true, defaultTop: 100 },
+          { enableautofilters: false, enablelifespanfilter: false, onlyselectList: false, top: 0, skip: 0 },
+        ),
+      )
+      expect(Object.fromEntries(params)).toEqual({
+        enableautofilters: 'false',
+        enablelifespanfilter: 'false',
+        onlyselectList: 'false',
+        $top: '0',
+        $skip: '0',
+      })
+    })
+
+    it('preserves configured false and zero defaults when no options are supplied', () => {
+      const params = new URLSearchParams(
+        ODataUrlBuilder.buildUrlParamString({
+          defaultEnableAutofilters: false,
+          defaultEnableLifespanfilter: false,
+          defaultTop: 0,
+        }),
+      )
+      expect(Object.fromEntries(params)).toEqual({
+        $top: '0',
+        enableautofilters: 'false',
+        enablelifespanfilter: 'false',
+      })
+    })
+
+    it('still omits null, undefined, empty string and empty array parameters', () => {
+      expect(
+        ODataUrlBuilder.buildUrlParamString({}, {
+          select: [],
+          expand: [],
+          orderby: [],
+          filter: '',
+          query: undefined,
+          customNull: null,
+          customUndefined: undefined,
+          customString: '',
+          customArray: [],
+        } as any),
+      ).toBe('')
+    })
   })
 })

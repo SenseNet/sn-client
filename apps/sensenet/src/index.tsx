@@ -1,8 +1,9 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { App } from './components/app'
+import 'monaco-editor/esm/vs/base/browser/ui/codicons/codicon/codicon.css'
 import './style.css'
-
-console.log(`%c@sensenet app v${process.env.APP_VERSION}`, 'color: #16AAA6; border-bottom: 1px solid black')
+import '@ag-grid-community/styles/ag-grid.css'
+import '@ag-grid-community/styles/ag-theme-balham.css'
 
 render(<App />, document.getElementById('root'))

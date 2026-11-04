@@ -32,8 +32,6 @@ export const SetFullAccess = (props: selectorProps) => {
 
   const isDiabled = false
 
-  // console.log(localResponseBody)
-
   const setPermission = (selectedPermission: keyof typeof PermissionValues) => {
     permissionSettingGroups?.forEach((groupsFromSettings: PermissionGroupType) => {
       Object.entries(groupsFromSettings).forEach(([groupName]) => {
