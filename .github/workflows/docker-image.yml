@@ -7,18 +7,10 @@ on:
       - 'main'
       - 'feature/docker-containerization'
       - 'feature/sn-auth-package-extraimprovements'
-  pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
-    branches:
-      - 'develop'
-      - 'main'
-      - 'feature/sn-auth-package-extraimprovements'
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    # Skip draft PRs
-    if: github.event.pull_request.draft == false || github.event_name == 'push'
 
     steps:
       - name: Check out the repo
@@ -47,11 +39,9 @@ jobs:
             type=ref,event=branch,suffix=-{{sha}}
             # Latest tag for main branch
             type=raw,value=latest,enable={{is_default_branch}}
-            # PR number for pull requests
-            type=ref,event=pr
 
       - name: Login to DockerHub
-        if: steps.check_dockerfile.outputs.dockerfile_exists == 'true' && github.event_name == 'push'
+        if: steps.check_dockerfile.outputs.dockerfile_exists == 'true'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -63,6 +53,6 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          push: ${{ github.event_name == 'push' }}
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
