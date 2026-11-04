@@ -38,10 +38,14 @@ export const NewView: React.FC<NewViewProps> = (props) => {
   const handleSubmit = async (content: GenericContent, contentTypeName?: string) => {
     try {
       const contentType = contentTypeName || props.contentTypeName
+      const contentToCreate = { ...content }
+      if (!contentToCreate.DisplayName && contentToCreate.Name) {
+        contentToCreate.DisplayName = contentToCreate.Name
+      }
       const created = await repository.post({
         contentType,
         parentPath: props.currentContentPath,
-        content,
+        content: contentToCreate,
         contentTemplate: contentType,
       })
       logger.information({
